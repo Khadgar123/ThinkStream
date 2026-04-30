@@ -2,35 +2,27 @@
   {
     "time": [
       0,
-      2
+      1
     ],
     "visible_entities": [
       {
-        "desc": "white ampersand symbol (&) in a serif, italicized font style",
+        "desc": "white ampersand symbol (&) with a soft, glowing, blurred edge effect",
         "action": "static",
         "position": "center"
       },
       {
-        "desc": "white text reading 'FOOD' and 'WINE' in a bold, sans-serif, uppercase font",
+        "desc": "white text reading 'FOOD & WINE' in a bold, sans-serif font",
         "action": "static",
         "position": "center"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "The video displays a white ampersand symbol centered on a black background.",
+        "fact": "The video displays a white ampersand symbol on a black background.",
         "confidence": 1.0
       },
       {
-        "fact": "The text 'FOOD' appears to the left of the ampersand.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The text 'WINE' appears to the right of the ampersand.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The full text reads 'FOOD & WINE'.",
+        "fact": "The text 'FOOD & WINE' appears on the screen.",
         "confidence": 1.0
       }
     ],
@@ -38,25 +30,35 @@
       "&",
       "FOOD & WINE"
     ],
-    "spatial": "The ampersand symbol is positioned in the center of the screen. The word 'FOOD' is to the left of the ampersand, and the word 'WINE' is to the right of the ampersand, forming a horizontal line of text.",
+    "spatial": "The ampersand symbol is centered on the black background. The text 'FOOD & WINE' is also centered on the black background, with the ampersand symbol positioned between the words 'FOOD' and 'WINE'.",
     "parse_success": true,
     "chunk_idx": 0,
     "video_id": "1Ur6mmy5GeE"
   },
   {
     "time": [
-      2,
-      4
+      1,
+      2
     ],
     "visible_entities": [
       {
-        "desc": "man with short blonde hair, wearing a black short-sleeved shirt and a grey pinstriped apron with yellow text",
-        "action": "pouring a dark liquid from a white cup",
+        "desc": "man with short blonde hair, wearing a black patterned shirt and a grey striped apron with yellow text",
+        "action": "pouring liquid from a cup",
         "position": "center"
       },
       {
-        "desc": "white ceramic cup",
+        "desc": "man with short blonde hair, wearing a light blue button-down shirt and a grey striped apron",
+        "action": "leaning forward with mouth open",
+        "position": "right"
+      },
+      {
+        "desc": "small white cup",
         "action": "being held and tilted",
+        "position": "center"
+      },
+      {
+        "desc": "dark brown liquid",
+        "action": "pouring out of the cup",
         "position": "center"
       },
       {
@@ -65,123 +67,136 @@
         "position": "left"
       },
       {
-        "desc": "white kitchen cabinets",
+        "desc": "white kitchen cabinets and tiled backsplash",
         "action": "static",
         "position": "background"
-      },
-      {
-        "desc": "food processor",
-        "action": "static",
-        "position": "bottom right"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A man is pouring a dark liquid from a white cup.",
+        "fact": "The man in the black shirt is pouring a dark liquid from a white cup.",
         "confidence": 1.0
       },
       {
-        "fact": "The man is wearing an apron with the text 'FOOD & WINE' on it.",
+        "fact": "The man in the blue shirt is leaning forward with an open mouth.",
         "confidence": 1.0
       },
       {
-        "fact": "The man is standing in a kitchen next to a refrigerator.",
+        "fact": "The apron has the text 'FOOD & WINE' printed on it.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The refrigerator is located to the left of the man pouring the liquid.",
         "confidence": 1.0
       }
     ],
     "ocr": [
       "FOOD & WINE"
     ],
-    "spatial": "The man is standing in the center of the frame, to the right of the stainless steel refrigerator. He is holding a white cup in his hand, positioned above a food processor in the bottom right corner. White kitchen cabinets are visible in the background behind the man.",
+    "spatial": "The man in the black shirt is positioned in the center of the frame, to the right of the stainless steel refrigerator. He is holding a white cup in front of his torso. The man in the blue shirt is located to the right of the first man. The kitchen cabinets and backsplash are behind the men.",
     "parse_success": true,
     "chunk_idx": 1,
     "video_id": "1Ur6mmy5GeE"
   },
   {
     "time": [
-      4,
-      6
+      2,
+      3
     ],
     "visible_entities": [
       {
-        "desc": "man with short blonde hair, wearing a blue plaid shirt and a dark apron",
-        "action": "holding a glass bottle horizontally",
+        "desc": "person with short blonde hair, wearing a blue and black plaid shirt and a dark apron",
+        "action": "holding a glass bottle and shaking it vigorously",
         "position": "center"
       },
       {
-        "desc": "clear glass bottle with a yellow cap",
-        "action": "being held by the man",
+        "desc": "clear glass bottle containing dark liquid and red cherries",
+        "action": "being shaken by the person",
         "position": "center"
       },
       {
-        "desc": "white tiled wall",
+        "desc": "white bowl filled with red cherries",
         "action": "static",
-        "position": "background"
+        "position": "right"
+      },
+      {
+        "desc": "stainless steel refrigerator",
+        "action": "static",
+        "position": "background left"
+      },
+      {
+        "desc": "black stovetop with silver knobs",
+        "action": "static",
+        "position": "background right"
+      },
+      {
+        "desc": "blue plastic straw",
+        "action": "static",
+        "position": "foreground"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "The man holds a glass bottle horizontally in front of his face.",
+        "fact": "The person is shaking a glass bottle containing cherries and liquid.",
         "confidence": 1.0
       },
       {
-        "fact": "The bottle appears to contain a yellow liquid or object.",
+        "fact": "A bowl of red cherries sits on the counter to the right of the person.",
         "confidence": 1.0
       },
       {
-        "fact": "The man is wearing a blue plaid shirt.",
+        "fact": "A blue straw lies on the dark surface in the foreground.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The person is wearing a plaid shirt and an apron.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The man is in the center of the frame, holding the glass bottle in front of his face. The white tiled wall is behind the man.",
+    "spatial": "The person is standing in the center of the kitchen, holding the bottle in front of their chest. To the person's right, a white bowl of cherries rests on the counter. Behind the person, a refrigerator is visible on the left and a stove is on the right. A blue straw lies on the table in the foreground, below the person's hands.",
     "parse_success": true,
     "chunk_idx": 2,
     "video_id": "1Ur6mmy5GeE"
   },
   {
     "time": [
-      6,
-      8
+      3,
+      4
     ],
     "visible_entities": [
       {
         "desc": "man with short blonde hair, wearing a light blue button-down shirt and a black apron with yellow text",
-        "action": "holding a plastic bottle in the first frame, then standing and gesturing in the split-screen frames",
+        "action": "holding a plastic bottle and shaking it",
         "position": "center"
       },
       {
-        "desc": "clear plastic bottle containing yellow chunks",
-        "action": "being held horizontally",
+        "desc": "clear plastic bottle containing water and yellow chunks",
+        "action": "being shaken horizontally",
         "position": "center"
       },
       {
-        "desc": "white bowl filled with chopped food",
+        "desc": "white bowl containing chopped food",
         "action": "static",
         "position": "right"
       },
       {
-        "desc": "white subway tile wall",
+        "desc": "white subway tile backsplash",
         "action": "static",
         "position": "background"
-      },
-      {
-        "desc": "grey concrete pillar",
-        "action": "static",
-        "position": "right background"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "The man holds a plastic bottle horizontally in front of his face.",
+        "fact": "The man holds a plastic bottle horizontally with both hands.",
         "confidence": 1.0
       },
       {
-        "fact": "The video transitions to a split-screen view showing the man in two different poses.",
+        "fact": "The man shakes the bottle containing water and yellow pieces.",
         "confidence": 1.0
       },
       {
-        "fact": "The man gestures with his hands while standing behind a counter.",
+        "fact": "The man is wearing a black apron with the text 'FOOD&WINE' on it.",
         "confidence": 1.0
       },
       {
@@ -192,49 +207,49 @@
     "ocr": [
       "FOOD&WINE"
     ],
-    "spatial": "The man is standing in the center of the kitchen, in front of a white tiled wall and a concrete pillar. In the split-screen view, the bowl of food is on the counter to the right of the man's torso.",
+    "spatial": "The man is in the center of the frame, holding the plastic bottle in front of his chest. The white tiled wall is behind the man. The bowl of food is on the counter to the right of the man.",
     "parse_success": true,
     "chunk_idx": 3,
     "video_id": "1Ur6mmy5GeE"
   },
   {
     "time": [
-      8,
-      10
+      4,
+      5
     ],
     "visible_entities": [
       {
-        "desc": "white thin sans-serif text",
+        "desc": "white text 'MAD' in a thin, sans-serif font",
         "action": "static",
         "position": "left"
       },
       {
-        "desc": "white thin sans-serif text",
-        "action": "static",
+        "desc": "white text 'TIPS' in a thin, sans-serif font",
+        "action": "appearing",
         "position": "right"
       },
       {
-        "desc": "small orange and red rectangular confetti particles",
+        "desc": "red and orange confetti-like particles",
         "action": "falling",
         "position": "foreground"
       },
       {
-        "desc": "blurred kitchen background with grey refrigerator and dark appliances",
+        "desc": "blurred kitchen background with a refrigerator on the left and a stove/oven on the right",
         "action": "static",
         "position": "background"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "The text 'MAD' is displayed on the left side of the screen.",
-        "confidence": 1.0
-      },
-      {
         "fact": "The text 'TIPS' appears on the right side of the screen.",
         "confidence": 1.0
       },
       {
-        "fact": "Orange and red confetti particles fall across the screen in the foreground.",
+        "fact": "Red and orange particles fall over the scene.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The text 'MAD' is visible on the left side of the screen.",
         "confidence": 1.0
       }
     ],
@@ -242,49 +257,44 @@
       "MAD",
       "TIPS"
     ],
-    "spatial": "The text 'MAD' is to the left of the text 'TIPS'. The falling confetti particles are in front of the blurred kitchen background.",
+    "spatial": "The text 'MAD' is to the left of the text 'TIPS'. The falling red and orange particles are in the foreground, in front of the blurred kitchen background. The refrigerator is to the left of the stove in the background.",
     "parse_success": true,
     "chunk_idx": 4,
     "video_id": "1Ur6mmy5GeE"
   },
   {
     "time": [
-      10,
-      12
+      5,
+      6
     ],
     "visible_entities": [
       {
-        "desc": "Title graphic 'MAD GENIUS TIPS' with 'MAD' and 'TIPS' in thin white font and 'GENIUS' in a bold, blocky orange and pink geometric font",
+        "desc": "Title graphic with 'MAD' and 'TIPS' in thin white sans-serif font, 'GENIUS' in a bold orange and pink geometric block font, and 'WITH JUSTIN CHAPPLE' in smaller white text below.",
         "action": "static",
         "position": "center"
       },
       {
-        "desc": "Subtitle text 'WITH JUSTIN CHAPPLE' in small white capital letters",
-        "action": "static",
-        "position": "center"
-      },
-      {
-        "desc": "Subtitle text 'How to Peel Tomatoes Easily' in white sentence-case letters",
+        "desc": "Subtitle text reading 'How to Peel Tomatoes Easily' in white sans-serif font.",
         "action": "static",
         "position": "bottom"
       },
       {
-        "desc": "Blurred kitchen background featuring a metallic refrigerator on the left and a stove/oven area on the right",
+        "desc": "Blurred background showing a kitchen environment with a stainless steel refrigerator on the left and a stove on the right.",
         "action": "static",
         "position": "background"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "The text 'How to Peel Tomatoes Easily' appears at the bottom of the screen.",
+        "fact": "The title 'MAD GENIUS TIPS' is displayed on screen.",
         "confidence": 1.0
       },
       {
-        "fact": "The title 'MAD GENIUS TIPS' is displayed in the center of the frame.",
+        "fact": "The subtitle 'How to Peel Tomatoes Easily' appears at the bottom of the frame.",
         "confidence": 1.0
       },
       {
-        "fact": "The background is a blurred kitchen setting.",
+        "fact": "The text 'WITH JUSTIN CHAPPLE' is visible below the main title.",
         "confidence": 1.0
       }
     ],
@@ -293,24 +303,24 @@
       "WITH JUSTIN CHAPPLE",
       "How to Peel Tomatoes Easily"
     ],
-    "spatial": "The title 'MAD GENIUS TIPS' is centered in the frame. The subtitle 'WITH JUSTIN CHAPPLE' is directly below the main title. The text 'How to Peel Tomatoes Easily' is positioned at the bottom of the screen, below the host's name. The blurred kitchen background is behind all the text elements.",
+    "spatial": "The main title graphic is centered in the frame. The subtitle text is located below the main title. The blurred kitchen background is behind the text overlay.",
     "parse_success": true,
     "chunk_idx": 5,
     "video_id": "1Ur6mmy5GeE"
   },
   {
     "time": [
-      12,
-      14
+      6,
+      7
     ],
     "visible_entities": [
       {
-        "desc": "man with short blonde hair, wearing a blue patterned button-down shirt and a dark grey apron with 'FOOD & WINE' in green text",
-        "action": "standing with arms spread",
+        "desc": "man with short blonde hair, wearing a blue patterned button-down shirt and a dark grey apron with 'FOOD & WINE' text in green and white",
+        "action": "standing behind a counter with hands gesturing outwards",
         "position": "center"
       },
       {
-        "desc": "silver metal baking sheet",
+        "desc": "rectangular silver metal baking sheet",
         "action": "static",
         "position": "center foreground"
       },
@@ -333,26 +343,15 @@
         "desc": "stainless steel stove and range hood",
         "action": "static",
         "position": "right background"
-      },
-      {
-        "desc": "white text 'MAD GENIUS TIPS' with 'GENIUS' in orange and pink block letters",
-        "action": "static",
-        "position": "center overlay"
-      },
-      {
-        "desc": "white text 'WITH JUSTIN CHAPPLE'",
-        "action": "static",
-        "position": "center overlay"
-      },
-      {
-        "desc": "white text 'How to Peel Tomatoes Easily'",
-        "action": "static",
-        "position": "bottom center overlay"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A man stands behind a wooden counter with his arms spread wide.",
+        "fact": "A man stands in a kitchen setting.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The man is gesturing with his hands open.",
         "confidence": 1.0
       },
       {
@@ -360,15 +359,7 @@
         "confidence": 1.0
       },
       {
-        "fact": "A bowl of red tomatoes sits to the right of the cutting board.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The text 'MAD GENIUS TIPS' is displayed in the center of the screen.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The text 'How to Peel Tomatoes Easily' appears at the bottom of the screen.",
+        "fact": "A bowl of tomatoes sits on the counter to the right of the cutting board.",
         "confidence": 1.0
       }
     ],
@@ -378,287 +369,20 @@
       "How to Peel Tomatoes Easily",
       "FOOD & WINE"
     ],
-    "spatial": "The man is standing behind the wooden cutting board which is on the counter. The metal baking sheet is on top of the cutting board. The bowl of tomatoes is to the right of the cutting board. The refrigerator is to the left of the man, and the stove is behind him to the right.",
+    "spatial": "The man is standing behind a wooden counter. The metal baking sheet is on top of the wooden cutting board, which is in front of the man. The bowl of tomatoes is to the right of the cutting board. The refrigerator is to the left of the man, and the stove is behind him to the right.",
     "parse_success": true,
     "chunk_idx": 6,
     "video_id": "1Ur6mmy5GeE"
   },
   {
     "time": [
-      14,
-      16
-    ],
-    "visible_entities": [
-      {
-        "desc": "man with short blonde hair, wearing a blue patterned button-down shirt and a grey apron with green text",
-        "action": "gesturing with both hands",
-        "position": "center"
-      },
-      {
-        "desc": "silver metal baking sheet",
-        "action": "static",
-        "position": "center foreground"
-      },
-      {
-        "desc": "thick wooden cutting board",
-        "action": "static",
-        "position": "center foreground"
-      },
-      {
-        "desc": "white bowl containing red tomatoes",
-        "action": "static",
-        "position": "right foreground"
-      },
-      {
-        "desc": "large stainless steel double-door refrigerator",
-        "action": "static",
-        "position": "left background"
-      },
-      {
-        "desc": "stainless steel stove with range hood",
-        "action": "static",
-        "position": "right background"
-      },
-      {
-        "desc": "white ceramic teapot",
-        "action": "static",
-        "position": "right background"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "The man is gesturing with his hands while standing behind a counter.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "A silver baking sheet rests on top of a wooden cutting board.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "A bowl of red tomatoes sits on the counter to the right of the cutting board.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The apron worn by the man displays the text 'FOOD & WINE'.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [
-      "FOOD & WINE"
-    ],
-    "spatial": "The man is standing in the center of the kitchen, behind a wooden counter. To his left is a large refrigerator, and to his right is a stove with a teapot on it. In front of him on the counter, a baking sheet is placed on top of a cutting board, and a bowl of tomatoes is positioned to the right of the board.",
-    "parse_success": true,
-    "chunk_idx": 7,
-    "video_id": "1Ur6mmy5GeE"
-  },
-  {
-    "time": [
-      16,
-      18
+      7,
+      8
     ],
     "visible_entities": [
       {
         "desc": "man with short blonde hair, wearing a blue patterned button-down shirt and a dark grey apron with green text",
         "action": "gesturing with hands",
-        "position": "center"
-      },
-      {
-        "desc": "rectangular silver metal baking sheet",
-        "action": "static",
-        "position": "foreground"
-      },
-      {
-        "desc": "thick wooden cutting board",
-        "action": "static",
-        "position": "foreground"
-      },
-      {
-        "desc": "white bowl containing red tomatoes",
-        "action": "static",
-        "position": "foreground right"
-      },
-      {
-        "desc": "stainless steel refrigerator",
-        "action": "static",
-        "position": "background left"
-      },
-      {
-        "desc": "stainless steel stove with range hood",
-        "action": "static",
-        "position": "background right"
-      },
-      {
-        "desc": "white ceramic teapot",
-        "action": "static",
-        "position": "background right"
-      },
-      {
-        "desc": "black and white logo with text 'FOOD & WINE'",
-        "action": "static",
-        "position": "top right"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "The man is gesturing with his hands in front of his chest.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The baking sheet is resting on top of the wooden cutting board.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The bowl of tomatoes is sitting on the wooden counter to the right of the cutting board.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The text 'FOOD & WINE' is visible on the man's apron.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [
-      "FOOD & WINE"
-    ],
-    "spatial": "The man is standing behind a wooden counter in the center of the frame. The wooden cutting board is on the counter in front of the man, with the metal baking sheet placed on top of it. To the right of the cutting board, a white bowl of tomatoes sits on the counter. The stainless steel refrigerator is to the left of the man, and the stove is behind him to the right.",
-    "parse_success": true,
-    "chunk_idx": 8,
-    "video_id": "1Ur6mmy5GeE"
-  },
-  {
-    "time": [
-      18,
-      20
-    ],
-    "visible_entities": [
-      {
-        "desc": "man with short blonde hair, wearing a blue patterned button-down shirt and a dark grey apron with green text",
-        "action": "gesturing with hands",
-        "position": "center"
-      },
-      {
-        "desc": "wooden cutting board, rectangular, dark brown",
-        "action": "static",
-        "position": "foreground"
-      },
-      {
-        "desc": "metal baking sheet, rectangular, silver",
-        "action": "static",
-        "position": "foreground"
-      },
-      {
-        "desc": "white bowl containing red tomatoes",
-        "action": "static",
-        "position": "foreground"
-      },
-      {
-        "desc": "stainless steel refrigerator, double-door",
-        "action": "static",
-        "position": "left"
-      },
-      {
-        "desc": "stainless steel stove and range hood",
-        "action": "static",
-        "position": "background"
-      },
-      {
-        "desc": "white kettle",
-        "action": "static",
-        "position": "background"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "The man gestures with his hands while standing behind a wooden counter.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "A metal baking sheet rests on top of a wooden cutting board.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "A white bowl filled with red tomatoes sits on the counter to the right of the cutting board.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The apron worn by the man displays the text 'FOOD & WINE' in green letters.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [
-      "FOOD & WINE"
-    ],
-    "spatial": "The man is standing behind a wooden counter in the center of the frame. On the counter, a metal baking sheet is placed on top of a wooden cutting board, and a bowl of tomatoes is to the right of the board. A stainless steel refrigerator is visible to the left of the man, while a stove with a white kettle is behind him to the right.",
-    "parse_success": true,
-    "chunk_idx": 9,
-    "video_id": "1Ur6mmy5GeE"
-  },
-  {
-    "time": [
-      20,
-      22
-    ],
-    "visible_entities": [
-      {
-        "desc": "man with short blonde hair, wearing a blue patterned button-down shirt and a black apron with green text",
-        "action": "standing and speaking",
-        "position": "center"
-      },
-      {
-        "desc": "stainless steel refrigerator with vertical handles",
-        "action": "static",
-        "position": "left"
-      },
-      {
-        "desc": "stainless steel stove with black cooktop and a white kettle",
-        "action": "static",
-        "position": "right"
-      },
-      {
-        "desc": "stainless steel range hood",
-        "action": "static",
-        "position": "top right"
-      },
-      {
-        "desc": "black square logo with white text",
-        "action": "static",
-        "position": "top right"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "The man is standing in the center of the kitchen.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The man is wearing an apron with the text 'FOOD & WINE'.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "A white kettle sits on the stove to the right of the man.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "A stainless steel refrigerator is located to the left of the man.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [
-      "FOOD & WINE"
-    ],
-    "spatial": "The man is standing in the center of the frame, positioned between the refrigerator on the left and the stove on the right. The range hood is mounted on the wall above the stove. The 'FOOD & WINE' logo is visible in the top right corner of the screen.",
-    "parse_success": true,
-    "chunk_idx": 10,
-    "video_id": "1Ur6mmy5GeE"
-  },
-  {
-    "time": [
-      22,
-      24
-    ],
-    "visible_entities": [
-      {
-        "desc": "man with short blonde hair, wearing a blue long-sleeved button-down shirt and a dark grey apron with green text",
-        "action": "gesturing with right hand",
         "position": "center"
       },
       {
@@ -674,48 +398,121 @@
       {
         "desc": "white bowl containing red tomatoes",
         "action": "static",
-        "position": "foreground right"
+        "position": "foreground"
       },
       {
-        "desc": "large stainless steel double-door refrigerator",
+        "desc": "stainless steel double-door refrigerator",
         "action": "static",
-        "position": "background left"
+        "position": "left"
       },
       {
-        "desc": "stainless steel stove with range hood",
+        "desc": "stainless steel stove with oven and range hood",
         "action": "static",
-        "position": "background right"
+        "position": "background"
       },
       {
-        "desc": "white teapot",
+        "desc": "white ceramic teapot",
         "action": "static",
-        "position": "background right"
+        "position": "background"
       },
       {
-        "desc": "framed picture with text",
+        "desc": "logo with text 'FOOD & WINE' in a black box",
         "action": "static",
-        "position": "background top right"
+        "position": "top right"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "The man is gesturing with his right hand while standing behind a wooden counter.",
+        "fact": "The man in the blue shirt is gesturing with his hands while standing behind a counter.",
         "confidence": 1.0
       },
       {
-        "fact": "A silver baking tray is placed on top of a wooden cutting board.",
+        "fact": "A silver baking tray rests on top of a wooden cutting board.",
         "confidence": 1.0
       },
       {
-        "fact": "A white bowl filled with red tomatoes sits on the counter to the right of the cutting board.",
+        "fact": "A bowl of red tomatoes sits on the counter to the right of the cutting board.",
         "confidence": 1.0
       },
       {
         "fact": "The text 'FOOD & WINE' is visible on the man's apron.",
         "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "FOOD & WINE"
+    ],
+    "spatial": "The man is standing behind a wooden counter in the center of the frame. The silver baking tray is on top of the wooden cutting board, which is in front of the man. To the right of the cutting board is a white bowl containing tomatoes. The refrigerator is to the left of the man, and the stove is behind him to the right.",
+    "parse_success": true,
+    "chunk_idx": 7,
+    "video_id": "1Ur6mmy5GeE"
+  },
+  {
+    "time": [
+      8,
+      9
+    ],
+    "visible_entities": [
+      {
+        "desc": "man with short blonde hair, wearing a blue patterned button-down shirt and a dark grey apron with green text",
+        "action": "gesturing with hands",
+        "position": "center"
       },
       {
-        "fact": "The text 'FOOD & WINE' is visible on a framed picture on the wall.",
+        "desc": "silver metal baking sheet",
+        "action": "static",
+        "position": "foreground"
+      },
+      {
+        "desc": "white bowl containing red tomatoes",
+        "action": "static",
+        "position": "right foreground"
+      },
+      {
+        "desc": "thick wooden cutting board",
+        "action": "static",
+        "position": "foreground"
+      },
+      {
+        "desc": "stainless steel refrigerator",
+        "action": "static",
+        "position": "left background"
+      },
+      {
+        "desc": "stainless steel stove and range hood",
+        "action": "static",
+        "position": "right background"
+      },
+      {
+        "desc": "white kettle",
+        "action": "static",
+        "position": "right background"
+      },
+      {
+        "desc": "black framed sign with white text",
+        "action": "static",
+        "position": "top right background"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The man is gesturing with his hands in front of his chest.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A silver baking sheet rests on a wooden cutting board.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A bowl of red tomatoes sits on the counter to the right of the cutting board.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The man is wearing an apron with the text 'FOOD & WINE'.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A sign in the background reads 'FOOD & WINE'.",
         "confidence": 1.0
       }
     ],
@@ -723,15 +520,232 @@
       "FOOD & WINE",
       "FOOD & WINE"
     ],
-    "spatial": "The man is standing behind a wooden counter in the center of the frame. To his left is a large stainless steel refrigerator, and to his right is a stove with a white teapot on it. In front of the man, a metal baking tray rests on a wooden cutting board, and a bowl of tomatoes is positioned to the right of the board.",
+    "spatial": "The man is standing in the center of the kitchen, behind a wooden cutting board. The baking sheet is on top of the cutting board. The bowl of tomatoes is to the right of the cutting board. The refrigerator is to the left of the man, and the stove is to his right. The 'FOOD & WINE' sign is on the wall in the upper right background.",
+    "parse_success": true,
+    "chunk_idx": 8,
+    "video_id": "1Ur6mmy5GeE"
+  },
+  {
+    "time": [
+      9,
+      10
+    ],
+    "visible_entities": [
+      {
+        "desc": "man with short blonde hair, wearing a blue patterned button-down shirt and a black apron with green text",
+        "action": "gesturing with hands",
+        "position": "center"
+      },
+      {
+        "desc": "stainless steel refrigerator",
+        "action": "static",
+        "position": "left"
+      },
+      {
+        "desc": "stainless steel range hood",
+        "action": "static",
+        "position": "background"
+      },
+      {
+        "desc": "stainless steel stove",
+        "action": "static",
+        "position": "background"
+      },
+      {
+        "desc": "white kettle",
+        "action": "static",
+        "position": "background"
+      },
+      {
+        "desc": "wooden cutting board",
+        "action": "static",
+        "position": "foreground"
+      },
+      {
+        "desc": "silver metal baking sheet",
+        "action": "static",
+        "position": "foreground"
+      },
+      {
+        "desc": "white bowl with red tomatoes",
+        "action": "static",
+        "position": "foreground"
+      },
+      {
+        "desc": "black and white framed picture",
+        "action": "static",
+        "position": "background"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The man is standing behind a wooden counter.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The man is gesturing with his hands open.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A silver baking sheet is placed on top of a wooden cutting board.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A white bowl containing red tomatoes sits on the counter.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The text 'FOOD & WINE' is visible on the man's apron.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "FOOD & WINE"
+    ],
+    "spatial": "The man is standing in the center of the kitchen, behind a wooden counter. To his left is a large stainless steel refrigerator. Behind him is a stove with a white kettle on it and a range hood above. On the counter in front of him, a silver baking sheet rests on a wooden cutting board, and a white bowl of tomatoes is to the right of the board.",
+    "parse_success": true,
+    "chunk_idx": 9,
+    "video_id": "1Ur6mmy5GeE"
+  },
+  {
+    "time": [
+      10,
+      11
+    ],
+    "visible_entities": [
+      {
+        "desc": "man with short reddish-blonde hair, wearing a blue long-sleeved shirt with a small white dot pattern and a dark grey apron with green text",
+        "action": "standing and talking",
+        "position": "center"
+      },
+      {
+        "desc": "stainless steel double-door refrigerator",
+        "action": "static",
+        "position": "left"
+      },
+      {
+        "desc": "stainless steel stove with a white kettle on top",
+        "action": "static",
+        "position": "right"
+      },
+      {
+        "desc": "stainless steel range hood",
+        "action": "static",
+        "position": "background"
+      },
+      {
+        "desc": "white rectangular logo with black text",
+        "action": "static",
+        "position": "top right"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The man is standing in a kitchen setting.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The man is wearing an apron with the text 'FOOD & WINE' printed on it.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A white kettle sits on the stove to the right of the man.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A stainless steel refrigerator is visible to the left of the man.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "FOOD & WINE"
+    ],
+    "spatial": "The man is standing in the center of the frame, in front of the kitchen counter. To his left is a large stainless steel refrigerator. To his right is a stove with a white kettle on it. Above the stove is a range hood. The 'FOOD & WINE' logo is in the top right corner of the screen.",
+    "parse_success": true,
+    "chunk_idx": 10,
+    "video_id": "1Ur6mmy5GeE"
+  },
+  {
+    "time": [
+      11,
+      12
+    ],
+    "visible_entities": [
+      {
+        "desc": "man with short blonde hair, wearing a blue button-down shirt and a dark grey apron with green text",
+        "action": "gesturing with right hand",
+        "position": "center"
+      },
+      {
+        "desc": "silver metal baking sheet, rectangular",
+        "action": "static",
+        "position": "foreground"
+      },
+      {
+        "desc": "white bowl filled with red tomatoes",
+        "action": "static",
+        "position": "foreground right"
+      },
+      {
+        "desc": "thick wooden cutting board, dark brown",
+        "action": "static",
+        "position": "foreground"
+      },
+      {
+        "desc": "stainless steel refrigerator, double door",
+        "action": "static",
+        "position": "background left"
+      },
+      {
+        "desc": "stainless steel stove and oven range",
+        "action": "static",
+        "position": "background right"
+      },
+      {
+        "desc": "white ceramic teapot",
+        "action": "static",
+        "position": "background right"
+      },
+      {
+        "desc": "framed picture with black text on white background",
+        "action": "static",
+        "position": "background top right"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The man is standing behind a wooden counter.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The man is gesturing with his right hand while speaking.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A metal baking sheet rests on a wooden cutting board.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A bowl of tomatoes sits on the counter to the right of the cutting board.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The apron worn by the man displays the text 'FOOD & WINE'.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "FOOD & WINE"
+    ],
+    "spatial": "The man is standing behind the wooden counter in the center of the frame. The baking sheet is on top of the cutting board, which is directly in front of the man. The bowl of tomatoes is to the right of the cutting board. The refrigerator is to the left of the man, and the stove is behind him to the right.",
     "parse_success": true,
     "chunk_idx": 11,
     "video_id": "1Ur6mmy5GeE"
   },
   {
     "time": [
-      24,
-      26
+      12,
+      13
     ],
     "visible_entities": [
       {
@@ -755,19 +769,19 @@
         "position": "foreground right"
       },
       {
-        "desc": "large stainless steel refrigerator",
+        "desc": "stainless steel double-door refrigerator",
         "action": "static",
         "position": "background left"
       },
       {
-        "desc": "stainless steel stove with range hood",
+        "desc": "stainless steel stove and oven with range hood",
         "action": "static",
         "position": "background right"
       },
       {
-        "desc": "white ceramic kettle",
+        "desc": "black square logo with white text",
         "action": "static",
-        "position": "background right"
+        "position": "top right"
       }
     ],
     "atomic_facts": [
@@ -776,7 +790,7 @@
         "confidence": 1.0
       },
       {
-        "fact": "The man's left hand rests on the wooden cutting board.",
+        "fact": "The man rests his left hand on the wooden cutting board.",
         "confidence": 1.0
       },
       {
@@ -784,103 +798,31 @@
         "confidence": 1.0
       },
       {
-        "fact": "The bowl of tomatoes is to the right of the cutting board.",
+        "fact": "The bowl of tomatoes is placed on the counter to the right of the cutting board.",
         "confidence": 1.0
       },
       {
-        "fact": "The refrigerator is to the left of the man.",
+        "fact": "The logo in the top right corner reads 'FOOD & WINE'.",
         "confidence": 1.0
       }
     ],
     "ocr": [
       "FOOD & WINE"
     ],
-    "spatial": "The man stands behind a wooden cutting board which is on a wooden counter. A metal tray is on the cutting board, and a bowl of tomatoes is to the right of the board. The refrigerator is to the left of the man, and the stove is behind him to the right.",
+    "spatial": "The man stands in the center of the kitchen, behind a wooden counter. The metal tray is on top of the wooden cutting board in front of him. The refrigerator is to the left of the man, and the stove is to his right. The bowl of tomatoes is on the counter to the right of the cutting board.",
     "parse_success": true,
     "chunk_idx": 12,
     "video_id": "1Ur6mmy5GeE"
   },
   {
     "time": [
-      26,
-      28
+      13,
+      14
     ],
     "visible_entities": [
       {
-        "desc": "man with short blonde hair, wearing a blue patterned long-sleeve shirt and a black apron with green text",
+        "desc": "man with short reddish-blonde hair, wearing a blue long-sleeved button-down shirt with a subtle white dot pattern, and a dark grey apron with 'FOOD & WINE' printed in green",
         "action": "gesturing with right hand",
-        "position": "center"
-      },
-      {
-        "desc": "silver metal baking sheet",
-        "action": "static",
-        "position": "foreground"
-      },
-      {
-        "desc": "thick wooden cutting board",
-        "action": "static",
-        "position": "foreground"
-      },
-      {
-        "desc": "white bowl containing red tomatoes",
-        "action": "static",
-        "position": "foreground"
-      },
-      {
-        "desc": "stainless steel refrigerator",
-        "action": "static",
-        "position": "background"
-      },
-      {
-        "desc": "stainless steel stove and range hood",
-        "action": "static",
-        "position": "background"
-      },
-      {
-        "desc": "white subway tile backsplash",
-        "action": "static",
-        "position": "background"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "The man is standing behind a wooden counter.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The man gestures with his right hand while speaking.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "A metal baking sheet rests on top of the wooden cutting board.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "A white bowl filled with red tomatoes sits on the counter to the right of the cutting board.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The apron worn by the man displays the text 'FOOD & WINE' in green letters.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [
-      "FOOD & WINE"
-    ],
-    "spatial": "The man is standing behind the wooden counter in the center of the frame. The baking sheet is on top of the cutting board, which is in front of the man. The bowl of tomatoes is to the right of the cutting board. The refrigerator is to the left of the man, and the stove is behind him to the right.",
-    "parse_success": true,
-    "chunk_idx": 13,
-    "video_id": "1Ur6mmy5GeE"
-  },
-  {
-    "time": [
-      28,
-      30
-    ],
-    "visible_entities": [
-      {
-        "desc": "man with short reddish-blonde hair, wearing a blue long-sleeved button-down shirt and a dark grey apron with 'FOOD&WINE' text in green and white",
-        "action": "gesturing with hands then picking up a white bowl",
         "position": "center"
       },
       {
@@ -894,111 +836,207 @@
         "position": "foreground"
       },
       {
-        "desc": "white bowl containing red cherry tomatoes",
+        "desc": "white ceramic bowl containing red tomatoes",
         "action": "static",
         "position": "foreground right"
       },
       {
-        "desc": "large stainless steel double-door refrigerator",
+        "desc": "stainless steel double-door refrigerator",
         "action": "static",
         "position": "left background"
       },
       {
-        "desc": "stainless steel range hood",
-        "action": "static",
-        "position": "background"
-      },
-      {
-        "desc": "white ceramic teapot",
-        "action": "static",
-        "position": "background"
-      },
-      {
-        "desc": "black and white striped kitchen towel",
-        "action": "static",
-        "position": "foreground right"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "The man gestures with his hands open over the baking sheet.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The man picks up a white bowl with his left hand.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "A baking sheet sits on top of a wooden cutting board.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "A bowl of red tomatoes is on the table to the right of the cutting board.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The man is wearing an apron with the text 'FOOD&WINE'.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [
-      "FOOD&WINE"
-    ],
-    "spatial": "The man is standing behind a wooden table in the center of the kitchen. A wooden cutting board is on the table in front of him, with a metal baking sheet placed on top of it. To the right of the cutting board, there is a white bowl filled with red tomatoes and a striped towel. The stainless steel refrigerator is to the left of the man, and the stove with a white teapot is behind him to the right.",
-    "parse_success": true,
-    "chunk_idx": 14,
-    "video_id": "1Ur6mmy5GeE"
-  },
-  {
-    "time": [
-      30,
-      32
-    ],
-    "visible_entities": [
-      {
-        "desc": "man with short reddish-blonde hair, wearing a blue long-sleeved button-down shirt and a dark grey apron with 'FOOD & WINE' text in green and white",
-        "action": "holding a white bowl and transferring red berries to a tray",
-        "position": "center"
-      },
-      {
-        "desc": "white ceramic bowl containing small red berries",
-        "action": "being held by the man",
-        "position": "center"
-      },
-      {
-        "desc": "rectangular silver metal baking tray",
-        "action": "static",
-        "position": "center foreground"
-      },
-      {
-        "desc": "thick dark wooden cutting board",
-        "action": "static",
-        "position": "center foreground"
-      },
-      {
-        "desc": "large stainless steel double-door refrigerator",
-        "action": "static",
-        "position": "left background"
-      },
-      {
-        "desc": "stainless steel stove with a white kettle on top",
+        "desc": "stainless steel stove and oven with a white kettle on top",
         "action": "static",
         "position": "right background"
       },
       {
         "desc": "stainless steel range hood",
         "action": "static",
-        "position": "top right background"
+        "position": "top background"
+      },
+      {
+        "desc": "white subway tile backsplash",
+        "action": "static",
+        "position": "background"
+      },
+      {
+        "desc": "logo with 'FOOD & WINE' in white text on a black square background",
+        "action": "static",
+        "position": "top right"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The man gestures with his right hand while speaking.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The man stands behind a wooden cutting board.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A metal baking sheet rests on the cutting board.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A bowl of tomatoes sits on the counter to the right of the cutting board.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The man wears an apron with the text 'FOOD & WINE' visible.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "FOOD & WINE",
+      "FOOD & WINE"
+    ],
+    "spatial": "The man is standing behind the wooden cutting board which is on the counter. The metal baking sheet is on top of the cutting board. The bowl of tomatoes is to the right of the cutting board. The refrigerator is to the left of the man, and the stove is behind him to the right.",
+    "parse_success": true,
+    "chunk_idx": 13,
+    "video_id": "1Ur6mmy5GeE"
+  },
+  {
+    "time": [
+      14,
+      15
+    ],
+    "visible_entities": [
+      {
+        "desc": "man with short reddish-blonde hair, wearing a blue button-down shirt and a dark grey apron with green text",
+        "action": "gesturing with hands then holding a white bowl",
+        "position": "center"
+      },
+      {
+        "desc": "rectangular silver metal baking tray",
+        "action": "static",
+        "position": "foreground"
+      },
+      {
+        "desc": "white ceramic bowl containing red tomatoes",
+        "action": "static",
+        "position": "foreground"
+      },
+      {
+        "desc": "thick wooden cutting board",
+        "action": "static",
+        "position": "foreground"
+      },
+      {
+        "desc": "large stainless steel double-door refrigerator",
+        "action": "static",
+        "position": "left"
+      },
+      {
+        "desc": "stainless steel range hood",
+        "action": "static",
+        "position": "background"
+      },
+      {
+        "desc": "stainless steel stove and oven",
+        "action": "static",
+        "position": "background"
+      },
+      {
+        "desc": "white ceramic kettle",
+        "action": "static",
+        "position": "background"
       },
       {
         "desc": "black and white striped kitchen towel",
         "action": "static",
-        "position": "right foreground"
+        "position": "foreground"
       },
       {
-        "desc": "logo with text 'FOOD & WINE' in white and green",
+        "desc": "black square logo with white text",
         "action": "static",
-        "position": "top right corner"
+        "position": "top right"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The man gestures with open hands over the baking tray.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The man picks up a white bowl.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The man holds the white bowl in his left hand.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The baking tray is placed on top of the wooden cutting board.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The bowl of tomatoes sits on the counter to the right of the cutting board.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The refrigerator is located to the left of the man.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The logo in the corner reads 'FOOD & WINE'.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "FOOD & WINE"
+    ],
+    "spatial": "The man stands in the center of the kitchen, positioned between the refrigerator on the left and the stove on the right. In front of him, a wooden cutting board rests on the counter with a metal tray on top of it. To the right of the cutting board, a bowl of tomatoes and a striped towel are visible. The range hood is mounted on the wall above the stove.",
+    "parse_success": true,
+    "chunk_idx": 14,
+    "video_id": "1Ur6mmy5GeE"
+  },
+  {
+    "time": [
+      15,
+      16
+    ],
+    "visible_entities": [
+      {
+        "desc": "man with short reddish-blonde hair, wearing a blue long-sleeved button-up shirt and a black apron with 'FOOD & WINE' text in green and white",
+        "action": "holding a white bowl and reaching inside it",
+        "position": "center"
+      },
+      {
+        "desc": "white ceramic bowl containing red berries",
+        "action": "being held by the man",
+        "position": "center foreground"
+      },
+      {
+        "desc": "rectangular silver metal baking sheet",
+        "action": "static",
+        "position": "foreground"
+      },
+      {
+        "desc": "thick wooden cutting board",
+        "action": "static",
+        "position": "foreground"
+      },
+      {
+        "desc": "large stainless steel double-door refrigerator",
+        "action": "static",
+        "position": "left background"
+      },
+      {
+        "desc": "stainless steel stove with oven and range hood",
+        "action": "static",
+        "position": "right background"
+      },
+      {
+        "desc": "black and white striped kitchen towel",
+        "action": "static",
+        "position": "foreground right"
+      },
+      {
+        "desc": "black square logo with white text 'FOOD & WINE'",
+        "action": "static",
+        "position": "top right"
       }
     ],
     "atomic_facts": [
@@ -1007,58 +1045,54 @@
         "confidence": 1.0
       },
       {
-        "fact": "The man is using his right hand to pick berries from the bowl.",
+        "fact": "The man reaches his right hand into the bowl to pick up berries.",
         "confidence": 1.0
       },
       {
-        "fact": "A silver baking tray sits on top of a wooden cutting board.",
+        "fact": "A silver baking sheet rests on top of a wooden cutting board.",
         "confidence": 1.0
       },
       {
-        "fact": "The refrigerator is located to the left of the man.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The stove is located behind the man to his right.",
+        "fact": "The 'FOOD & WINE' logo is visible in the top right corner of the screen.",
         "confidence": 1.0
       }
     ],
     "ocr": [
       "FOOD & WINE"
     ],
-    "spatial": "The man is standing in the center of the kitchen, positioned between the refrigerator on the left and the stove on the right. He is holding a white bowl in front of his torso, above a wooden cutting board that rests on the counter. A silver baking tray is placed on top of the cutting board, directly in front of the man. The range hood is mounted on the wall above the stove.",
+    "spatial": "The man is standing in the center of the kitchen, positioned between the refrigerator on the left and the stove on the right. He is holding the bowl of berries in front of his torso. The wooden cutting board with the baking sheet is on the counter directly in front of him. The striped towel is to the right of the cutting board.",
     "parse_success": true,
     "chunk_idx": 15,
     "video_id": "1Ur6mmy5GeE"
   },
   {
     "time": [
-      32,
-      34
+      16,
+      17
     ],
     "visible_entities": [
       {
         "desc": "person wearing a dark grey apron over a blue long-sleeved shirt",
-        "action": "transferring tomatoes from a bowl to a tray",
-        "position": "left"
+        "action": "placing tomatoes onto a tray",
+        "position": "left/center"
       },
       {
-        "desc": "white ceramic bowl containing red cherry tomatoes",
-        "action": "being held and tilted",
-        "position": "center"
-      },
-      {
-        "desc": "silver metal baking sheet lined with white parchment paper",
-        "action": "static",
-        "position": "center"
-      },
-      {
-        "desc": "red cherry tomatoes",
+        "desc": "small red cherry tomatoes, round and glossy",
         "action": "being placed on the tray",
         "position": "center"
       },
       {
-        "desc": "thick dark brown wooden cutting board",
+        "desc": "rectangular metal baking sheet lined with white parchment paper",
+        "action": "static",
+        "position": "center"
+      },
+      {
+        "desc": "white ceramic bowl",
+        "action": "being held",
+        "position": "center/right"
+      },
+      {
+        "desc": "thick dark wooden cutting board with end-grain pattern",
         "action": "static",
         "position": "foreground"
       },
@@ -1068,18 +1102,14 @@
         "position": "background"
       },
       {
-        "desc": "white square logo with black text",
+        "desc": "black square logo with white text reading 'FOOD & WINE'",
         "action": "static",
         "position": "top right"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "The person is holding a white bowl and pouring red cherry tomatoes onto a baking sheet.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The baking sheet is lined with white parchment paper.",
+        "fact": "A person is transferring red cherry tomatoes from a white bowl onto a parchment-lined baking sheet.",
         "confidence": 1.0
       },
       {
@@ -1087,45 +1117,43 @@
         "confidence": 1.0
       },
       {
-        "fact": "A black and white striped towel is visible in the background.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The 'FOOD & WINE' logo is displayed in the top right corner.",
+        "fact": "The 'FOOD & WINE' logo is visible in the top right corner of the screen.",
         "confidence": 1.0
       }
     ],
     "ocr": [
-      "FOOD & WINE"
+      "FOOD",
+      "&",
+      "WINE"
     ],
-    "spatial": "The person is standing to the left of the baking sheet, holding the bowl above it. The baking sheet is placed on top of the wooden cutting board. The striped towel is behind the baking sheet on the table surface.",
+    "spatial": "The person is positioned to the left of the frame, reaching over the baking sheet which is centered on the wooden cutting board. The white bowl is held above the baking sheet, and the striped towel lies on the table behind the cutting board.",
     "parse_success": true,
     "chunk_idx": 16,
     "video_id": "1Ur6mmy5GeE"
   },
   {
     "time": [
-      34,
-      36
+      17,
+      18
     ],
     "visible_entities": [
       {
-        "desc": "man with short reddish-blonde hair, wearing a blue long-sleeved shirt with small white dots and a black apron with 'FOOD & WINE' in green text",
-        "action": "speaking and gesturing with hands",
+        "desc": "man with short blonde hair, wearing a blue patterned long-sleeve shirt and a black apron with green text",
+        "action": "speaking and gesturing",
         "position": "center"
       },
       {
         "desc": "silver metal baking sheet",
         "action": "static",
-        "position": "foreground"
-      },
-      {
-        "desc": "small red cherry tomatoes",
-        "action": "being arranged",
         "position": "center"
       },
       {
-        "desc": "thick dark brown wooden cutting board",
+        "desc": "red cherry tomatoes",
+        "action": "static",
+        "position": "center"
+      },
+      {
+        "desc": "dark brown wooden cutting board",
         "action": "static",
         "position": "foreground"
       },
@@ -1140,54 +1168,63 @@
         "position": "background left"
       },
       {
-        "desc": "stainless steel stove and range hood",
+        "desc": "stainless steel range hood",
         "action": "static",
         "position": "background right"
       },
       {
-        "desc": "white kettle",
+        "desc": "black and white striped kitchen towel",
         "action": "static",
-        "position": "background right"
+        "position": "background"
+      },
+      {
+        "desc": "red wristwatch",
+        "action": "static",
+        "position": "right"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "The man is arranging red cherry tomatoes on a silver baking sheet.",
+        "fact": "A man in a blue shirt and black apron is speaking to the camera.",
         "confidence": 1.0
       },
       {
-        "fact": "The man is holding a white bowl in his left hand.",
+        "fact": "The man is gesturing with his hands.",
         "confidence": 1.0
       },
       {
-        "fact": "The baking sheet is placed on top of a large wooden cutting board.",
+        "fact": "Red cherry tomatoes are arranged on a silver baking sheet.",
         "confidence": 1.0
       },
       {
-        "fact": "The man is wearing a black apron with green text.",
+        "fact": "The baking sheet is placed on top of a dark wooden cutting board.",
         "confidence": 1.0
       },
       {
-        "fact": "A white kettle sits on the stove in the background.",
+        "fact": "A hand is holding a white bowl near the baking sheet.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The apron features the text 'FOOD & WINE' in green letters.",
         "confidence": 1.0
       }
     ],
     "ocr": [
       "FOOD & WINE"
     ],
-    "spatial": "The man is standing behind the wooden cutting board which is in the foreground. The baking sheet with tomatoes is on top of the cutting board. The white bowl is held in the man's hand to the right of the baking sheet. The refrigerator is to the left of the man in the background, while the stove is to his right.",
+    "spatial": "The man is standing in the center of the kitchen, in front of a stainless steel refrigerator and range hood. The wooden cutting board is in the foreground on the counter, with the baking sheet resting on top of it. The red tomatoes are on the baking sheet. To the right of the baking sheet, a hand is holding a white bowl. A striped towel is visible behind the baking sheet.",
     "parse_success": true,
     "chunk_idx": 17,
     "video_id": "1Ur6mmy5GeE"
   },
   {
     "time": [
-      36,
-      38
+      18,
+      19
     ],
     "visible_entities": [
       {
-        "desc": "man with short reddish-blonde hair, wearing a blue patterned button-down shirt and a black apron with green text",
+        "desc": "man with short reddish-blonde hair, wearing a blue patterned button-down shirt and a dark grey apron with green text",
         "action": "speaking and gesturing",
         "position": "center"
       },
@@ -1214,19 +1251,82 @@
     ],
     "atomic_facts": [
       {
-        "fact": "The man is speaking and gesturing with his hands.",
+        "fact": "The man in the blue shirt is speaking and gesturing with his hands.",
         "confidence": 1.0
       },
       {
-        "fact": "The man is wearing a black apron with the text 'FOOD & WINE' printed in green.",
+        "fact": "The man is wearing an apron that reads 'FOOD & WINE'.",
         "confidence": 1.0
       },
       {
-        "fact": "A white kettle is sitting on the stove.",
+        "fact": "A white kettle sits on the stove behind the man.",
         "confidence": 1.0
       },
       {
-        "fact": "The 'FOOD & WINE' logo is visible in the top right corner of the screen.",
+        "fact": "A 'FOOD & WINE' logo is visible in the top right corner.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "FOOD & WINE"
+    ],
+    "spatial": "The man is standing in the center of the kitchen, in front of the stove and range hood. To his left is a large stainless steel refrigerator. To his right, a white kettle rests on the stove.",
+    "parse_success": true,
+    "chunk_idx": 18,
+    "video_id": "1Ur6mmy5GeE"
+  },
+  {
+    "time": [
+      19,
+      20
+    ],
+    "visible_entities": [
+      {
+        "desc": "man with short reddish-blonde hair, wearing a blue patterned button-down shirt and a dark grey apron with green text",
+        "action": "speaking",
+        "position": "center"
+      },
+      {
+        "desc": "stainless steel double-door refrigerator",
+        "action": "static",
+        "position": "left"
+      },
+      {
+        "desc": "stainless steel stove with a white kettle on top",
+        "action": "static",
+        "position": "right"
+      },
+      {
+        "desc": "stainless steel range hood",
+        "action": "static",
+        "position": "background"
+      },
+      {
+        "desc": "white subway tile backsplash",
+        "action": "static",
+        "position": "background"
+      },
+      {
+        "desc": "black square logo with white text",
+        "action": "static",
+        "position": "top right"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The man in the blue shirt is speaking.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The apron displays the text 'FOOD & WINE' in green letters.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A white kettle sits on the stove.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The 'FOOD & WINE' logo is visible in the top right corner.",
         "confidence": 1.0
       }
     ],
@@ -1234,20 +1334,20 @@
       "FOOD & WINE",
       "FOOD & WINE"
     ],
-    "spatial": "The man is standing in the center of the kitchen, in front of the stove and range hood. The stainless steel refrigerator is to the left of the man. The stove with the white kettle is to the right of the man. The 'FOOD & WINE' logo is in the top right corner of the frame.",
+    "spatial": "The man is standing in the center of the kitchen, positioned between the refrigerator on the left and the stove on the right. The range hood is mounted on the wall above the stove. The 'FOOD & WINE' logo is located in the top right corner of the frame.",
     "parse_success": true,
-    "chunk_idx": 18,
+    "chunk_idx": 19,
     "video_id": "1Ur6mmy5GeE"
   },
   {
     "time": [
-      38,
-      40
+      20,
+      21
     ],
     "visible_entities": [
       {
-        "desc": "man with short reddish-blonde hair, wearing a blue long-sleeved button-up shirt with a small dark pattern and a black apron with green text",
-        "action": "speaking",
+        "desc": "man with short reddish-blonde hair, wearing a blue patterned button-down shirt and a black apron with green text",
+        "action": "looking down",
         "position": "center"
       },
       {
@@ -1266,11 +1366,6 @@
         "position": "background"
       },
       {
-        "desc": "white subway tile backsplash",
-        "action": "static",
-        "position": "background"
-      },
-      {
         "desc": "black square logo with white text",
         "action": "static",
         "position": "top right"
@@ -1278,7 +1373,7 @@
     ],
     "atomic_facts": [
       {
-        "fact": "The man in the blue shirt is speaking to the camera.",
+        "fact": "The man in the blue shirt looks down towards the counter.",
         "confidence": 1.0
       },
       {
@@ -1286,7 +1381,7 @@
         "confidence": 1.0
       },
       {
-        "fact": "A white kettle is sitting on the stove.",
+        "fact": "A white kettle sits on the stove.",
         "confidence": 1.0
       },
       {
@@ -1295,109 +1390,108 @@
       }
     ],
     "ocr": [
-      "FOOD & WINE",
       "FOOD & WINE"
     ],
-    "spatial": "The man is standing in the center of the frame, in front of the stove and range hood. The refrigerator is to the left of the man. The stove is to the right of the man. The 'FOOD & WINE' logo is in the top right corner of the screen.",
-    "parse_success": true,
-    "chunk_idx": 19,
-    "video_id": "1Ur6mmy5GeE"
-  },
-  {
-    "time": [
-      40,
-      42
-    ],
-    "visible_entities": [
-      {
-        "desc": "man with short reddish-blonde hair, wearing a blue patterned button-down shirt and a black apron with green text",
-        "action": "looking down and smiling",
-        "position": "center"
-      },
-      {
-        "desc": "stainless steel refrigerator with vertical handles",
-        "action": "static",
-        "position": "left"
-      },
-      {
-        "desc": "stainless steel stove with black cooktop and white kettle",
-        "action": "static",
-        "position": "right"
-      },
-      {
-        "desc": "stainless steel range hood",
-        "action": "static",
-        "position": "background"
-      },
-      {
-        "desc": "white subway tile backsplash",
-        "action": "static",
-        "position": "background"
-      },
-      {
-        "desc": "black square logo with white text",
-        "action": "static",
-        "position": "top right"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "The man looks down and smiles.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The man is wearing a black apron with the text 'FOOD & WINE' in green.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "A white kettle sits on the stove to the right of the man.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "A stainless steel refrigerator is visible to the left of the man.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The 'FOOD & WINE' logo is displayed in the top right corner.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [
-      "FOOD & WINE"
-    ],
-    "spatial": "The man is standing in the center of the kitchen, in front of the white tiled backsplash. To his left is a large stainless steel refrigerator. To his right is a stainless steel stove with a white kettle on top. Above the stove is a stainless steel range hood. The 'FOOD & WINE' logo is in the top right corner of the frame.",
+    "spatial": "The man is standing in the center of the kitchen, between the refrigerator on the left and the stove on the right. The range hood is mounted on the wall above the stove. The 'FOOD & WINE' logo is located in the top right corner of the frame.",
     "parse_success": true,
     "chunk_idx": 20,
     "video_id": "1Ur6mmy5GeE"
   },
   {
     "time": [
-      42,
-      44
+      21,
+      22
     ],
     "visible_entities": [
       {
-        "desc": "man with short reddish-blonde hair, wearing a blue button-down shirt and a black apron with 'FOOD & WINE' text in green and white",
-        "action": "gesturing with hands over a tray of strawberries",
+        "desc": "man with short reddish-blonde hair, wearing a blue patterned button-down shirt and a black apron with green text",
+        "action": "gesturing with hands open",
         "position": "center"
       },
       {
-        "desc": "rectangular metal tray containing sliced red strawberries",
-        "action": "resting on a wooden cutting board",
-        "position": "center foreground"
+        "desc": "rectangular metal baking tray containing sliced red strawberries",
+        "action": "static",
+        "position": "foreground"
       },
       {
         "desc": "thick dark wooden cutting board",
         "action": "static",
+        "position": "foreground"
+      },
+      {
+        "desc": "stainless steel double-door refrigerator",
+        "action": "static",
+        "position": "left"
+      },
+      {
+        "desc": "stainless steel oven and range hood",
+        "action": "static",
+        "position": "background"
+      },
+      {
+        "desc": "white bowl with black stripes",
+        "action": "static",
+        "position": "right"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The man is standing behind a wooden cutting board.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The man is gesturing with both hands open towards the tray of strawberries.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The tray of strawberries is resting on the wooden cutting board.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The refrigerator is located to the left of the man.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The oven is located behind the man.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "FOOD & WINE"
+    ],
+    "spatial": "The man is standing in the center of the kitchen, positioned behind the wooden cutting board. The tray of strawberries is on top of the cutting board in the foreground. To the left of the man is a large stainless steel refrigerator, and to his right is a white bowl. Behind the man is a stainless steel oven and range hood.",
+    "parse_success": true,
+    "chunk_idx": 21,
+    "video_id": "1Ur6mmy5GeE"
+  },
+  {
+    "time": [
+      22,
+      23
+    ],
+    "visible_entities": [
+      {
+        "desc": "man with short reddish-blonde hair, wearing a blue long-sleeved button-up shirt and a dark grey apron with 'FOOD & WINE' text in green and white",
+        "action": "standing behind a wooden counter and gesturing towards a tray of tomatoes",
+        "position": "center"
+      },
+      {
+        "desc": "small red tomatoes, roasted with wrinkled skins and green stems, resting on white parchment paper",
+        "action": "static",
+        "position": "foreground"
+      },
+      {
+        "desc": "rectangular metal baking sheet lined with white parchment paper",
+        "action": "static",
         "position": "center foreground"
       },
       {
-        "desc": "large stainless steel refrigerator with vertical handles",
+        "desc": "stainless steel refrigerator with vertical handles",
         "action": "static",
         "position": "left background"
       },
       {
-        "desc": "stainless steel stove with a white kettle on top",
+        "desc": "stainless steel range hood and stove",
         "action": "static",
         "position": "right background"
       },
@@ -1407,127 +1501,58 @@
         "position": "right foreground"
       },
       {
-        "desc": "black framed sign with white text",
+        "desc": "thick wooden cutting board",
         "action": "static",
-        "position": "top right background"
+        "position": "center foreground"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "The man gestures with both hands open over the tray of strawberries.",
+        "fact": "The man is standing in a kitchen behind a wooden counter.",
         "confidence": 1.0
       },
       {
-        "fact": "The tray of strawberries is placed on a wooden cutting board.",
+        "fact": "The man is gesturing with his hands over a baking sheet of roasted tomatoes.",
         "confidence": 1.0
       },
       {
-        "fact": "The man is wearing an apron with the text 'FOOD & WINE'.",
+        "fact": "The roasted tomatoes are sitting on parchment paper inside a metal baking sheet.",
         "confidence": 1.0
       },
       {
-        "fact": "A white kettle sits on the stove in the background.",
+        "fact": "The baking sheet is placed on top of a wooden cutting board.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A white bowl is sitting on the counter to the right of the cutting board.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A stainless steel refrigerator is visible in the background on the left.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The apron worn by the man displays the text 'FOOD & WINE'.",
         "confidence": 1.0
       }
     ],
     "ocr": [
       "FOOD & WINE"
     ],
-    "spatial": "The man is standing behind the wooden cutting board which is on the counter. The tray of strawberries is on top of the cutting board. The refrigerator is to the left of the man, and the stove is to the right of the man. The white bowl is to the right of the cutting board.",
-    "parse_success": true,
-    "chunk_idx": 21,
-    "video_id": "1Ur6mmy5GeE"
-  },
-  {
-    "time": [
-      44,
-      46
-    ],
-    "visible_entities": [
-      {
-        "desc": "man with short reddish-blonde hair, wearing a blue long-sleeved button-down shirt and a black apron with green 'FOOD & WINE' text",
-        "action": "gesturing with hands over a tray",
-        "position": "center"
-      },
-      {
-        "desc": "roasted red tomatoes with wrinkled skins, some with green stems, resting on white parchment paper",
-        "action": "static",
-        "position": "center foreground"
-      },
-      {
-        "desc": "silver metal baking sheet",
-        "action": "static",
-        "position": "center foreground"
-      },
-      {
-        "desc": "thick dark wooden cutting board",
-        "action": "static",
-        "position": "center foreground"
-      },
-      {
-        "desc": "stainless steel double-door refrigerator",
-        "action": "static",
-        "position": "left background"
-      },
-      {
-        "desc": "stainless steel stove with range hood",
-        "action": "static",
-        "position": "right background"
-      },
-      {
-        "desc": "white ceramic bowl with black stripes",
-        "action": "static",
-        "position": "right foreground"
-      },
-      {
-        "desc": "white subway tile backsplash",
-        "action": "static",
-        "position": "background"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "The man is standing behind a wooden cutting board.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The man is gesturing with both hands over the tray of tomatoes.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The tray of roasted tomatoes is placed on top of the wooden cutting board.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The refrigerator is to the left of the man.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The stove is behind the man to the right.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The white bowl is on the counter to the right of the cutting board.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [
-      "FOOD & WINE"
-    ],
-    "spatial": "The man is standing behind the wooden cutting board which is on the counter. The baking sheet with tomatoes is on top of the cutting board in front of the man. The refrigerator is to the left of the man, and the stove is behind him to the right. The white bowl is on the counter to the right of the cutting board.",
+    "spatial": "The man is standing behind the wooden counter. The baking sheet containing the tomatoes is on top of a wooden cutting board in front of the man. To the right of the cutting board, a white bowl sits on the counter. In the background, the refrigerator is to the left of the man, and the stove is to the right.",
     "parse_success": true,
     "chunk_idx": 22,
     "video_id": "1Ur6mmy5GeE"
   },
   {
     "time": [
-      46,
-      48
+      23,
+      24
     ],
     "visible_entities": [
       {
-        "desc": "person wearing a dark blue long-sleeved shirt and a red wristband",
-        "action": "holding a tomato",
+        "desc": "person wearing a dark blue long-sleeved shirt with a red wristband on the left wrist",
+        "action": "holding a small red tomato",
         "position": "center"
       },
       {
@@ -1551,22 +1576,22 @@
         "confidence": 1.0
       },
       {
-        "fact": "The logo 'FOOD & WINE' is visible in the top right corner.",
+        "fact": "The 'FOOD & WINE' logo is visible in the top right corner.",
         "confidence": 1.0
       }
     ],
     "ocr": [
       "FOOD & WINE"
     ],
-    "spatial": "The person is holding the red tomato in their hand, which is positioned to the right of the person's torso. The 'FOOD & WINE' logo is in the top right corner of the frame, above the person's hand.",
+    "spatial": "The person's hand holding the tomato is in the center-right of the frame. The red wristband is on the person's wrist, below the hand. The 'FOOD & WINE' logo is in the top right corner, above the hand.",
     "parse_success": true,
     "chunk_idx": 23,
     "video_id": "1Ur6mmy5GeE"
   },
   {
     "time": [
-      48,
-      50
+      24,
+      25
     ],
     "visible_entities": [
       {
@@ -1576,11 +1601,16 @@
       },
       {
         "desc": "small red tomato, shiny skin",
-        "action": "being held",
+        "action": "being held up",
+        "position": "right"
+      },
+      {
+        "desc": "silver metal baking sheet",
+        "action": "static",
         "position": "center"
       },
       {
-        "desc": "silver baking tray with roasted red tomatoes",
+        "desc": "red tomatoes",
         "action": "static",
         "position": "center"
       },
@@ -1590,51 +1620,69 @@
         "position": "left"
       },
       {
-        "desc": "stainless steel range hood",
+        "desc": "stainless steel stove and range hood",
         "action": "static",
         "position": "background"
       },
       {
-        "desc": "white bowl with black stripes",
+        "desc": "white ceramic bowl",
+        "action": "static",
+        "position": "right"
+      },
+      {
+        "desc": "wooden cutting board",
+        "action": "static",
+        "position": "center"
+      },
+      {
+        "desc": "red wristband",
         "action": "static",
         "position": "right"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "The man is holding a small red tomato in his left hand.",
+        "fact": "A man in a blue shirt and black apron is standing in a kitchen.",
         "confidence": 1.0
       },
       {
-        "fact": "The man is gesturing with his right hand.",
+        "fact": "The man is holding a single red tomato in his left hand.",
         "confidence": 1.0
       },
       {
-        "fact": "A tray of roasted tomatoes sits on a wooden cutting board.",
+        "fact": "A metal baking sheet containing several red tomatoes sits on a wooden cutting board.",
         "confidence": 1.0
       },
       {
-        "fact": "The apron displays the text 'FOOD & WINE'.",
+        "fact": "A white bowl is placed on the counter to the right of the cutting board.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A stainless steel refrigerator is visible on the left side of the frame.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The text 'FOOD & WINE' is printed in green on the man's apron.",
         "confidence": 1.0
       }
     ],
     "ocr": [
       "FOOD & WINE"
     ],
-    "spatial": "The man is standing behind a wooden counter. The tray of tomatoes is on the counter in front of the man. The refrigerator is to the left of the man. The range hood is above the stove in the background.",
+    "spatial": "The man is standing behind a wooden counter in the center of the frame. To his left is a large stainless steel refrigerator. On the counter in front of him, a baking sheet with tomatoes rests on a wooden cutting board. To the right of the cutting board is a white bowl. The man holds a tomato up in his hand, positioned to the right of his torso.",
     "parse_success": true,
     "chunk_idx": 24,
     "video_id": "1Ur6mmy5GeE"
   },
   {
     "time": [
-      50,
-      52
+      25,
+      26
     ],
     "visible_entities": [
       {
         "desc": "man with short blonde hair, wearing a blue patterned button-down shirt and a dark grey apron with green text",
-        "action": "holding a red strawberry and gesturing",
+        "action": "holding a red strawberry",
         "position": "center"
       },
       {
@@ -1645,7 +1693,7 @@
       {
         "desc": "rectangular white tray with red strawberries",
         "action": "static",
-        "position": "bottom center"
+        "position": "foreground"
       },
       {
         "desc": "stainless steel refrigerator",
@@ -1655,21 +1703,21 @@
       {
         "desc": "stainless steel stove and range hood",
         "action": "static",
-        "position": "background right"
+        "position": "background"
       },
       {
-        "desc": "white bowl with black stripes",
+        "desc": "white bowl",
         "action": "static",
         "position": "bottom right"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "The man holds a single red strawberry in his left hand.",
+        "fact": "The man holds a single red strawberry in his hand.",
         "confidence": 1.0
       },
       {
-        "fact": "The man gestures with his right hand while looking at the strawberry.",
+        "fact": "The man gestures with his other hand while holding the fruit.",
         "confidence": 1.0
       },
       {
@@ -1684,49 +1732,50 @@
     "ocr": [
       "FOOD & WINE"
     ],
-    "spatial": "The man is standing in the center of the kitchen, in front of the stove and range hood. To his left is a large stainless steel refrigerator. In front of him, on the counter, is a wooden cutting board with a tray of strawberries. A white bowl is to the right of the cutting board.",
+    "spatial": "The man is standing in the center of the kitchen, positioned between the refrigerator on the left and the stove on the right. He is holding a strawberry in front of his chest. The tray of strawberries is on the wooden counter in front of him, and a white bowl is to his right.",
     "parse_success": true,
     "chunk_idx": 25,
     "video_id": "1Ur6mmy5GeE"
   },
   {
     "time": [
-      52,
-      54
+      26,
+      27
     ],
     "visible_entities": [
       {
-        "desc": "person with fair skin, wearing a black long-sleeved garment",
-        "action": "squeezing a tomato and holding a bowl",
-        "position": "left/center"
+        "desc": "hand with fair skin",
+        "action": "squeezing a red tomato",
+        "position": "center"
       },
       {
-        "desc": "red tomato, soft and wrinkled texture",
+        "desc": "red tomato, wrinkled skin",
         "action": "being squeezed",
         "position": "center"
       },
       {
-        "desc": "white ceramic bowl, smooth surface, wide rim",
-        "action": "being held",
-        "position": "center/foreground"
+        "desc": "white ceramic bowl, smooth, round",
+        "action": "static",
+        "position": "bottom center"
       },
       {
-        "desc": "black square logo with white text",
+        "desc": "person wearing a black shirt",
+        "action": "static",
+        "position": "left"
+      },
+      {
+        "desc": "logo with white text 'FOOD & WINE' on a black square background",
         "action": "static",
         "position": "top right"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A person is squeezing a red tomato over a white bowl.",
+        "fact": "A hand is squeezing a red tomato over a white bowl.",
         "confidence": 1.0
       },
       {
-        "fact": "The person's hand is holding the rim of the white bowl.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The tomato appears soft and wrinkled as it is compressed.",
+        "fact": "The tomato appears to be cooked or roasted given its wrinkled texture.",
         "confidence": 1.0
       },
       {
@@ -1737,118 +1786,119 @@
     "ocr": [
       "FOOD & WINE"
     ],
-    "spatial": "The person is positioned to the left of the frame, holding the white bowl in the center foreground. The red tomato is held in the person's other hand directly above the opening of the bowl. The 'FOOD & WINE' logo is located in the top right corner, above the bowl.",
+    "spatial": "The hand is positioned above the white bowl, holding the red tomato directly over the bowl's opening. The person in the black shirt is to the left of the bowl. The 'FOOD & WINE' logo is in the top right corner of the frame.",
     "parse_success": true,
     "chunk_idx": 26,
     "video_id": "1Ur6mmy5GeE"
   },
   {
     "time": [
-      54,
-      56
+      27,
+      28
     ],
     "visible_entities": [
       {
-        "desc": "man with short blonde hair, wearing a blue long-sleeved button-down shirt and a dark grey apron with green 'FOOD & WINE' text",
-        "action": "holding a small red fruit and a white bowl, then dropping the fruit",
+        "desc": "man with short blonde hair, wearing a blue long-sleeved button-up shirt and a dark grey apron with green 'FOOD & WINE' text",
+        "action": "holding a white bowl and a red tomato",
         "position": "center"
       },
       {
-        "desc": "small red fruit, likely a cherry tomato",
-        "action": "being held then dropped into a bowl",
+        "desc": "small red cherry tomato",
+        "action": "being held up by the man",
         "position": "center"
       },
       {
-        "desc": "white ceramic bowl, round, medium-sized",
-        "action": "being held",
+        "desc": "white ceramic bowl",
+        "action": "being held by the man",
         "position": "center"
       },
       {
-        "desc": "rectangular metal baking tray with several red fruits on it",
+        "desc": "silver metal baking tray with red tomatoes",
         "action": "static",
         "position": "foreground"
       },
       {
-        "desc": "thick wooden cutting board, dark brown",
+        "desc": "large wooden cutting board",
         "action": "static",
         "position": "foreground"
       },
       {
-        "desc": "stainless steel refrigerator, double-door",
+        "desc": "stainless steel refrigerator",
         "action": "static",
         "position": "left"
       },
       {
-        "desc": "stainless steel stove and oven range with a range hood above",
-        "action": "static",
-        "position": "right"
-      },
-      {
-        "desc": "white subway tile backsplash",
+        "desc": "stainless steel stove and range hood",
         "action": "static",
         "position": "background"
       },
       {
-        "desc": "framed picture with text 'FOOD & WINE'",
+        "desc": "white kitchen cabinets and tiled backsplash",
         "action": "static",
-        "position": "top right"
+        "position": "background"
+      },
+      {
+        "desc": "black and white striped kitchen towel",
+        "action": "static",
+        "position": "foreground"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A man in a blue shirt and grey apron is standing in a kitchen.",
+        "fact": "The man holds a red tomato up in his right hand.",
         "confidence": 1.0
       },
       {
-        "fact": "The man holds a small red fruit in his right hand and a white bowl in his left hand.",
+        "fact": "The man holds a white bowl in his left hand.",
         "confidence": 1.0
       },
       {
-        "fact": "The man drops the red fruit from his hand into the white bowl.",
+        "fact": "A tray of tomatoes sits on a wooden cutting board.",
         "confidence": 1.0
       },
       {
-        "fact": "A metal tray with more red fruits sits on a wooden cutting board in front of the man.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The apron worn by the man has the text 'FOOD & WINE' printed in green.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "A framed picture on the wall to the right also displays the text 'FOOD & WINE'.",
+        "fact": "The apron has the text 'FOOD & WINE' printed on it.",
         "confidence": 1.0
       }
     ],
     "ocr": [
-      "FOOD & WINE",
       "FOOD & WINE"
     ],
-    "spatial": "The man is standing in the center of the kitchen, positioned between a stainless steel refrigerator on the left and a stove on the right. He is holding a white bowl in front of his torso. A wooden cutting board with a metal tray is on the counter in front of him. A framed picture is on the wall to the right of the range hood.",
+    "spatial": "The man is standing in the center of the kitchen, behind a wooden cutting board. The baking tray with tomatoes is on top of the cutting board in the foreground. The refrigerator is to the left of the man, and the stove is behind him.",
     "parse_success": true,
     "chunk_idx": 27,
     "video_id": "1Ur6mmy5GeE"
   },
   {
     "time": [
-      56,
-      58
+      28,
+      29
     ],
     "visible_entities": [
       {
-        "desc": "person's hand with light skin tone, wearing a black sleeve",
-        "action": "holding and tilting a bowl",
-        "position": "top center"
+        "desc": "hand with light skin tone",
+        "action": "holding a white bowl",
+        "position": "top/center"
       },
       {
-        "desc": "white ceramic bowl, round, smooth, glossy finish",
-        "action": "being tilted by hand",
-        "position": "center"
+        "desc": "white ceramic bowl, round, smooth, glossy",
+        "action": "being held and tilted",
+        "position": "center/foreground"
       },
       {
-        "desc": "small red spherical object, shiny, gelatinous or glazed texture",
+        "desc": "small red spherical object, shiny, glazed appearance",
         "action": "rolling inside the bowl",
-        "position": "bottom center"
+        "position": "inside the bowl"
+      },
+      {
+        "desc": "black sleeve of clothing",
+        "action": "static",
+        "position": "left"
+      },
+      {
+        "desc": "white square logo with black text",
+        "action": "static",
+        "position": "top right"
       }
     ],
     "atomic_facts": [
@@ -1857,45 +1907,44 @@
         "confidence": 1.0
       },
       {
-        "fact": "The hand tilts the bowl to the right.",
+        "fact": "The bowl is tilted to the right.",
         "confidence": 1.0
       },
       {
-        "fact": "A small red sphere rolls along the inner curve of the bowl as it tilts.",
+        "fact": "A small red spherical object is rolling inside the bowl.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The logo 'FOOD & WINE' is visible in the top right corner.",
         "confidence": 1.0
       }
     ],
     "ocr": [
       "FOOD & WINE"
     ],
-    "spatial": "The person's hand is positioned above and holding the white bowl. The red spherical object is inside the bowl, resting near the bottom edge. The 'FOOD & WINE' logo is in the top right corner of the frame.",
+    "spatial": "The hand is above the white bowl, gripping its rim. The red spherical object is inside the bowl, resting near the bottom edge. The black sleeve is to the left of the bowl. The 'FOOD & WINE' logo is in the top right corner of the frame.",
     "parse_success": true,
     "chunk_idx": 28,
     "video_id": "1Ur6mmy5GeE"
   },
   {
     "time": [
-      58,
-      60
+      29,
+      30
     ],
     "visible_entities": [
       {
-        "desc": "man with short blonde hair, wearing a blue patterned button-down shirt and a dark grey apron with 'FOOD & WINE' text in green and white",
-        "action": "standing with hands raised in a gesturing pose",
-        "position": "center/background"
-      },
-      {
-        "desc": "white ceramic bowl, smooth, round, containing a small red object",
-        "action": "being held by a hand",
-        "position": "foreground"
-      },
-      {
-        "desc": "rectangular metal tray with sliced red tomatoes",
-        "action": "static",
+        "desc": "man with short blonde hair, wearing a blue patterned long-sleeve shirt and a dark grey apron with 'FOOD & WINE' text in green",
+        "action": "gesturing with both hands raised",
         "position": "center"
       },
       {
-        "desc": "dark wooden cutting board",
+        "desc": "white ceramic bowl, round, smooth, containing a small red piece of food",
+        "action": "being held and tilted by a hand",
+        "position": "foreground"
+      },
+      {
+        "desc": "rectangular metal tray with red food items",
         "action": "static",
         "position": "center"
       },
@@ -1907,83 +1956,79 @@
       {
         "desc": "stainless steel stove and range hood",
         "action": "static",
-        "position": "right"
+        "position": "background"
       },
       {
-        "desc": "white tiled backsplash",
+        "desc": "wooden cutting board",
         "action": "static",
-        "position": "background"
+        "position": "center"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A hand is holding a white bowl containing a small red object.",
+        "fact": "A hand holds and tilts a white bowl containing a small red piece of food.",
         "confidence": 1.0
       },
       {
-        "fact": "The man stands behind a wooden counter with a tray of tomatoes.",
+        "fact": "The man stands behind a wooden counter with a tray of red food items.",
         "confidence": 1.0
       },
       {
-        "fact": "The tray of tomatoes is placed on top of a dark wooden cutting board.",
+        "fact": "The man gestures with both hands raised in the air.",
         "confidence": 1.0
       },
       {
-        "fact": "The refrigerator is to the left of the man.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The stove is to the right of the man.",
+        "fact": "The text 'FOOD & WINE' is visible on the man's apron.",
         "confidence": 1.0
       }
     ],
     "ocr": [
       "FOOD & WINE"
     ],
-    "spatial": "The man is standing behind the wooden counter. The white bowl is in the foreground, held by a hand. The tray of tomatoes is on the cutting board, which is on the counter in front of the man. The refrigerator is to the left of the man, and the stove is to the right of the man.",
+    "spatial": "The man is standing behind the wooden counter. The tray of food is on the cutting board in front of the man. The refrigerator is to the left of the man. The stove and range hood are behind the man. The white bowl is being held in the foreground, to the right of the cutting board.",
     "parse_success": true,
     "chunk_idx": 29,
     "video_id": "1Ur6mmy5GeE"
   },
   {
     "time": [
-      60,
-      62
+      30,
+      31
     ],
     "visible_entities": [
       {
-        "desc": "hands with fair skin, short fingernails, no visible jewelry",
+        "desc": "person with fair skin, wearing a black shirt",
         "action": "pressing tomatoes into dough",
         "position": "center"
       },
       {
-        "desc": "small red tomatoes, round, glossy skin, some with green stems attached",
-        "action": "being pressed into dough",
-        "position": "center"
-      },
-      {
-        "desc": "rectangular metal baking sheet, silver, rimmed edges",
+        "desc": "rectangular metal baking sheet, silver, slightly worn edges",
         "action": "static",
         "position": "center"
       },
       {
-        "desc": "sheet of pale yellow dough, flat, rectangular, covering the bottom of the tray",
+        "desc": "sheet of pale yellow dough, smooth texture",
         "action": "static",
         "position": "center"
       },
       {
-        "desc": "white rectangular logo with black text",
+        "desc": "small red tomatoes, round, glossy skin",
+        "action": "being pressed",
+        "position": "center"
+      },
+      {
+        "desc": "white text logo reading 'FOOD & WINE' in a sans-serif font",
         "action": "static",
         "position": "top right"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "Hands are pressing whole red tomatoes into a sheet of dough.",
+        "fact": "A person is pressing small red tomatoes into a sheet of dough.",
         "confidence": 1.0
       },
       {
-        "fact": "The tomatoes are arranged in rows on the dough.",
+        "fact": "The tomatoes are arranged on top of the dough.",
         "confidence": 1.0
       },
       {
@@ -1998,26 +2043,31 @@
     "ocr": [
       "FOOD & WINE"
     ],
-    "spatial": "The hands are positioned above the baking sheet, pressing the tomatoes into the dough. The tomatoes are arranged on top of the dough, which lines the bottom of the metal baking sheet. The 'FOOD & WINE' logo is located in the top right corner of the frame, above the baking sheet.",
+    "spatial": "The person's hands are above the baking sheet, pressing the tomatoes into the dough. The dough is inside the baking sheet. The 'FOOD & WINE' logo is in the top right corner of the frame.",
     "parse_success": true,
     "chunk_idx": 30,
     "video_id": "1Ur6mmy5GeE"
   },
   {
     "time": [
-      62,
-      64
+      31,
+      32
     ],
     "visible_entities": [
       {
         "desc": "man with short blonde hair, wearing a blue button-down shirt and a dark grey apron with green text",
-        "action": "holding a red tomato",
+        "action": "holding a roasted tomato",
         "position": "center"
       },
       {
-        "desc": "metal baking sheet with parchment paper and roasted red tomatoes",
+        "desc": "silver metal baking sheet containing roasted red tomatoes",
         "action": "static",
         "position": "foreground"
+      },
+      {
+        "desc": "small roasted red tomato with wrinkled skin",
+        "action": "being held",
+        "position": "center"
       },
       {
         "desc": "stainless steel refrigerator",
@@ -2037,7 +2087,7 @@
     ],
     "atomic_facts": [
       {
-        "fact": "The man holds a small red tomato up with his right hand.",
+        "fact": "The man holds a roasted tomato up in his right hand.",
         "confidence": 1.0
       },
       {
@@ -2045,30 +2095,30 @@
         "confidence": 1.0
       },
       {
-        "fact": "The apron displays the text 'FOOD & WINE'.",
+        "fact": "The apron worn by the man displays the text 'FOOD & WINE'.",
         "confidence": 1.0
       },
       {
-        "fact": "The man is standing in a kitchen setting.",
+        "fact": "The tomatoes on the tray appear roasted with wrinkled skins.",
         "confidence": 1.0
       }
     ],
     "ocr": [
       "FOOD & WINE"
     ],
-    "spatial": "The man is standing behind a wooden counter in the center of the frame. The baking sheet with tomatoes is on the counter in front of him. The refrigerator is to the left of the man, and the stove is to his right. The white bowl is on the counter to the right of the baking sheet.",
+    "spatial": "The man is standing behind a wooden cutting board which is on a counter. The baking sheet is on top of the cutting board in front of the man. A white bowl is to the right of the baking sheet. The refrigerator is to the left of the man, and the stove is behind him to the right.",
     "parse_success": true,
     "chunk_idx": 31,
     "video_id": "1Ur6mmy5GeE"
   },
   {
     "time": [
-      64,
-      66
+      32,
+      33
     ],
     "visible_entities": [
       {
-        "desc": "man with short blonde hair, wearing a blue long-sleeved shirt with a white dot pattern and a dark grey apron with green text",
+        "desc": "man with short blonde hair, wearing a blue patterned button-down shirt and a black apron with 'FOOD & WINE' in green text",
         "action": "holding a small red object",
         "position": "center"
       },
@@ -2078,7 +2128,7 @@
         "position": "center-left"
       },
       {
-        "desc": "stainless steel refrigerator with vertical handles",
+        "desc": "stainless steel refrigerator",
         "action": "static",
         "position": "left"
       },
@@ -2088,198 +2138,51 @@
         "position": "background right"
       },
       {
-        "desc": "stainless steel stove with a white kettle on top",
+        "desc": "black screen with white text and social media icons",
         "action": "static",
-        "position": "background right"
-      },
-      {
-        "desc": "white text on a black background with social media icons",
-        "action": "static",
-        "position": "center"
+        "position": "full frame"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "The man holds a small red object up to eye level.",
+        "fact": "The man holds a small red object up in his right hand.",
         "confidence": 1.0
       },
       {
-        "fact": "The man is wearing an apron with the text 'FOOD&WINE' printed in green.",
+        "fact": "The man is wearing an apron with the text 'FOOD & WINE' on it.",
         "confidence": 1.0
       },
       {
-        "fact": "The video transitions to a black screen with white text.",
+        "fact": "The video cuts to a black screen displaying social media information.",
         "confidence": 1.0
       },
       {
-        "fact": "The text 'FOOD&WINE' is displayed prominently on the black screen.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "Social media handles for YouTube, a website, Twitter, and Instagram are listed on the black screen.",
+        "fact": "The text 'FOOD & WINE' is displayed in large white letters.",
         "confidence": 1.0
       }
     ],
     "ocr": [
       "FOOD & WINE",
-      "FOOD&WINE",
       "youtube.com/foodandwine",
       "&",
       "foodandwine.com/madgeniustips",
       "@foodandwine #madgeniustips"
     ],
-    "spatial": "The man is in the center of the kitchen, standing in front of the stove and range hood. The refrigerator is to the left of the man. The small red object is held in the man's right hand, positioned in front of his chest. The black screen with text appears after the kitchen scene.",
+    "spatial": "The man is standing in front of a stainless steel refrigerator which is to his left. A range hood is visible in the background behind him. The black screen with text appears after the scene with the man.",
     "parse_success": true,
     "chunk_idx": 32,
     "video_id": "1Ur6mmy5GeE"
   },
   {
     "time": [
-      66,
-      68
+      33,
+      34
     ],
     "visible_entities": [
       {
-        "desc": "Large white sans-serif text reading 'FOOD & WINE' with a stylized ampersand",
+        "desc": "Large white sans-serif text reading 'FOOD & WINE'",
         "action": "static",
         "position": "top/center"
-      },
-      {
-        "desc": "Red YouTube play button icon",
-        "action": "static",
-        "position": "center"
-      },
-      {
-        "desc": "White ampersand symbol '&'",
-        "action": "static",
-        "position": "center"
-      },
-      {
-        "desc": "Blue Twitter bird icon and a camera-style Instagram icon",
-        "action": "static",
-        "position": "center"
-      },
-      {
-        "desc": "White text lines listing social media handles and URLs",
-        "action": "static",
-        "position": "center"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "The screen displays a static end card with social media information.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The text 'FOOD & WINE' is positioned at the top of the screen.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The YouTube URL 'youtube.com/foodandwine' is displayed next to a red play button icon.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The website 'foodandwine.com/madgeniustips' is listed below the YouTube link.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The social handle '@foodandwine' and hashtag '#madgeniustips' are displayed at the bottom.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [
-      "FOOD & WINE",
-      "youtube.com/foodandwine",
-      "&",
-      "foodandwine.com/madgeniustips",
-      "@foodandwine #madgeniustips"
-    ],
-    "spatial": "The 'FOOD & WINE' title is centered at the top of the black background. Below the title, a list of social media links and icons is centered vertically and horizontally. The YouTube icon is to the left of its corresponding URL, and the Twitter and Instagram icons are to the left of the handle text at the bottom.",
-    "parse_success": true,
-    "chunk_idx": 33,
-    "video_id": "1Ur6mmy5GeE"
-  },
-  {
-    "time": [
-      68,
-      70
-    ],
-    "visible_entities": [
-      {
-        "desc": "large white sans-serif text reading 'FOOD & WINE' with a stylized ampersand",
-        "action": "static",
-        "position": "top/center"
-      },
-      {
-        "desc": "red YouTube play button icon",
-        "action": "static",
-        "position": "center"
-      },
-      {
-        "desc": "white ampersand symbol '&'",
-        "action": "static",
-        "position": "center"
-      },
-      {
-        "desc": "light blue Twitter bird icon",
-        "action": "static",
-        "position": "center"
-      },
-      {
-        "desc": "Instagram camera icon with gradient colors",
-        "action": "static",
-        "position": "center"
-      },
-      {
-        "desc": "white text listing social media handles and URLs",
-        "action": "static",
-        "position": "center"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "The video displays a static end screen with social media information.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The text 'FOOD & WINE' is positioned at the top of the screen.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The YouTube URL 'youtube.com/foodandwine' is displayed next to the YouTube logo.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The website 'foodandwine.com/madgeniustips' is listed next to an ampersand.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The handle '@foodandwine' and hashtag '#madgeniustips' are displayed next to Twitter and Instagram icons.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [
-      "FOOD & WINE",
-      "youtube.com/foodandwine",
-      "&",
-      "foodandwine.com/madgeniustips",
-      "@foodandwine #madgeniustips"
-    ],
-    "spatial": "The 'FOOD & WINE' title is located at the top center of the black background. Below the title, a vertical list of social media icons and corresponding text is centered. The YouTube icon is to the left of its URL, the ampersand is to the left of the website URL, and the Twitter and Instagram icons are to the left of the handle and hashtag.",
-    "parse_success": true,
-    "chunk_idx": 34,
-    "video_id": "1Ur6mmy5GeE"
-  },
-  {
-    "time": [
-      70,
-      72
-    ],
-    "visible_entities": [
-      {
-        "desc": "Large white sans-serif text reading 'FOOD & WINE' with a stylized ampersand",
-        "action": "static",
-        "position": "top"
       },
       {
         "desc": "Red YouTube play button icon",
@@ -2294,17 +2197,22 @@
       {
         "desc": "Blue Twitter bird icon",
         "action": "static",
-        "position": "bottom"
+        "position": "center"
       },
       {
         "desc": "Brown and white Instagram camera icon",
         "action": "static",
-        "position": "bottom"
+        "position": "center"
+      },
+      {
+        "desc": "White text listing social media handles and URLs",
+        "action": "static",
+        "position": "center"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "The video displays a static end screen with social media information.",
+        "fact": "The screen displays a static end card with contact information.",
         "confidence": 1.0
       },
       {
@@ -2312,11 +2220,86 @@
         "confidence": 1.0
       },
       {
-        "fact": "Social media handles and URLs are listed below the main title.",
+        "fact": "Social media icons and corresponding text links are listed vertically below the main title.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The YouTube URL is 'youtube.com/foodandwine'.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The website URL is 'foodandwine.com/madgeniustips'.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The Twitter and Instagram handle is '@foodandwine'.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "FOOD & WINE",
+      "youtube.com/foodandwine",
+      "&",
+      "foodandwine.com/madgeniustips",
+      "@foodandwine #madgeniustips"
+    ],
+    "spatial": "The 'FOOD & WINE' title is centered at the top of the black background. Below the title, a vertical list of social media information is centered, with icons positioned to the left of their corresponding text URLs and handles.",
+    "parse_success": true,
+    "chunk_idx": 33,
+    "video_id": "1Ur6mmy5GeE"
+  },
+  {
+    "time": [
+      34,
+      35
+    ],
+    "visible_entities": [
+      {
+        "desc": "Large white text logo 'FOOD & WINE' in a bold, sans-serif font with a stylized ampersand.",
+        "action": "static",
+        "position": "top/center"
+      },
+      {
+        "desc": "Red YouTube play button icon.",
+        "action": "static",
+        "position": "center"
+      },
+      {
+        "desc": "White ampersand symbol '&'.",
+        "action": "static",
+        "position": "center"
+      },
+      {
+        "desc": "Blue Twitter bird icon.",
+        "action": "static",
+        "position": "center"
+      },
+      {
+        "desc": "Brown and white Instagram camera icon.",
+        "action": "static",
+        "position": "center"
+      },
+      {
+        "desc": "White text lines listing social media handles and URLs.",
+        "action": "static",
+        "position": "center"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The 'FOOD & WINE' logo is displayed at the top of the screen.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "Social media contact information is listed below the main logo.",
         "confidence": 1.0
       },
       {
         "fact": "The text 'youtube.com/foodandwine' appears next to the YouTube icon.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The text 'foodandwine.com/madgeniustips' appears next to the ampersand.",
         "confidence": 1.0
       },
       {
@@ -2331,19 +2314,19 @@
       "foodandwine.com/madgeniustips",
       "@foodandwine #madgeniustips"
     ],
-    "spatial": "The 'FOOD & WINE' title is centered at the top of the black background. Below the title, a list of social media links is centered, with icons on the left and corresponding text on the right. The YouTube link is at the top of this list, followed by a website URL, and finally the Twitter and Instagram handles at the bottom.",
+    "spatial": "The 'FOOD & WINE' logo is positioned above the list of social media links. The YouTube icon is to the left of the URL 'youtube.com/foodandwine'. The Twitter and Instagram icons are to the left of the handle '@foodandwine #madgeniustips'.",
     "parse_success": true,
-    "chunk_idx": 35,
+    "chunk_idx": 34,
     "video_id": "1Ur6mmy5GeE"
   },
   {
     "time": [
-      72,
-      74
+      35,
+      36
     ],
     "visible_entities": [
       {
-        "desc": "Large white text 'FOOD & WINE' in a bold sans-serif font, with a stylized ampersand.",
+        "desc": "Large white text reading 'FOOD & WINE' in a bold, sans-serif font, with a stylized ampersand.",
         "action": "static",
         "position": "top/center"
       },
@@ -2353,29 +2336,24 @@
         "position": "center"
       },
       {
-        "desc": "White ampersand symbol.",
+        "desc": "White ampersand symbol '&'.",
         "action": "static",
         "position": "center"
       },
       {
-        "desc": "Blue Twitter bird icon.",
+        "desc": "Blue Twitter bird icon and a brown/beige Instagram camera icon.",
         "action": "static",
         "position": "center"
       },
       {
-        "desc": "Instagram camera icon with a gradient border.",
-        "action": "static",
-        "position": "center"
-      },
-      {
-        "desc": "White text listing social media handles and URLs.",
+        "desc": "White text displaying social media handles and URLs.",
         "action": "static",
         "position": "center"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "The screen displays a static black background with white text and social media icons.",
+        "fact": "The video displays a static black screen with white text and social media icons.",
         "confidence": 1.0
       },
       {
@@ -2383,7 +2361,7 @@
         "confidence": 1.0
       },
       {
-        "fact": "Social media links for YouTube, a website, Twitter, and Instagram are listed below the main title.",
+        "fact": "Social media contact information is listed below the main title.",
         "confidence": 1.0
       }
     ],
@@ -2394,7 +2372,73 @@
       "foodandwine.com/madgeniustips",
       "@foodandwine #madgeniustips"
     ],
-    "spatial": "The 'FOOD & WINE' title is located at the top center of the frame. Below the title, a list of social media information is centered, with icons on the left and corresponding text URLs or handles on the right.",
+    "spatial": "The 'FOOD & WINE' title is located at the top center of the frame. Below the title, a list of social media links is arranged vertically in the center. Each link consists of an icon on the left and the corresponding text URL or handle on the right.",
+    "parse_success": true,
+    "chunk_idx": 35,
+    "video_id": "1Ur6mmy5GeE"
+  },
+  {
+    "time": [
+      36,
+      37
+    ],
+    "visible_entities": [
+      {
+        "desc": "large white text 'FOOD & WINE' in a bold sans-serif font",
+        "action": "static",
+        "position": "top/center"
+      },
+      {
+        "desc": "red YouTube play button icon",
+        "action": "static",
+        "position": "center"
+      },
+      {
+        "desc": "white ampersand symbol '&'",
+        "action": "static",
+        "position": "center"
+      },
+      {
+        "desc": "blue Twitter bird icon and a brown/white Instagram camera icon",
+        "action": "static",
+        "position": "center"
+      },
+      {
+        "desc": "white social media handles and hashtags text",
+        "action": "static",
+        "position": "center"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The screen displays a static end card with social media information.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The text 'FOOD & WINE' is positioned at the top of the frame.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The YouTube URL 'youtube.com/foodandwine' is listed next to the YouTube icon.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The website 'foodandwine.com/madgeniustips' is listed next to an ampersand.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The handle '@foodandwine' and hashtag '#madgeniustips' are listed next to the Twitter and Instagram icons.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "FOOD & WINE",
+      "youtube.com/foodandwine",
+      "&",
+      "foodandwine.com/madgeniustips",
+      "@foodandwine #madgeniustips"
+    ],
+    "spatial": "The text 'FOOD & WINE' is located at the top center of the black background. Below this title, a vertical list of social media icons and corresponding text is centered. The YouTube icon is to the left of its URL, the ampersand is to the left of the website address, and the Twitter and Instagram icons are to the left of the handle and hashtag.",
     "parse_success": true,
     "chunk_idx": 36,
     "video_id": "1Ur6mmy5GeE"

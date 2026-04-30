@@ -2,245 +2,93 @@
   {
     "time": [
       0,
-      2
+      1
     ],
     "visible_entities": [
       {
         "desc": "red stand mixer with a silver band around the head and a silver base plate",
         "action": "static",
-        "position": "left/center"
+        "position": "left"
       },
       {
-        "desc": "three black cylindrical food processor attachments with metal grating surfaces",
+        "desc": "three cylindrical metal grater attachments with black tops",
         "action": "static",
-        "position": "right/foreground"
+        "position": "right"
       },
       {
-        "desc": "pile of fresh produce including a large green cabbage, yellow cheese blocks, and red apples",
+        "desc": "pile of fresh produce including a green cabbage, yellow cheese, and red fruit",
         "action": "static",
-        "position": "right/background"
+        "position": "right"
       },
       {
         "desc": "white kitchen countertop",
         "action": "static",
         "position": "bottom"
-      },
-      {
-        "desc": "white kitchen cabinets and shelves in the background",
-        "action": "static",
-        "position": "background"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A red stand mixer sits on the left side of the white countertop.",
+        "fact": "A red stand mixer sits on the left side of the counter.",
         "confidence": 1.0
       },
       {
-        "fact": "Three black food processor attachments are arranged on the counter to the right of the mixer.",
+        "fact": "Three grater attachments are arranged in a row to the right of the mixer.",
         "confidence": 1.0
       },
       {
-        "fact": "Fresh vegetables and cheese are placed behind the attachments.",
+        "fact": "Fresh food ingredients are placed behind the grater attachments.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The red stand mixer is positioned on the left side of the white countertop. To the right of the mixer, three black cylindrical attachments are arranged in a group. Behind these attachments, a pile of vegetables and cheese sits on the counter. The entire scene is set in front of white kitchen cabinetry.",
+    "spatial": "The red stand mixer is positioned on the left side of the white countertop. To the right of the mixer, there is a group of three grater attachments. Behind the grater attachments, a pile of vegetables and cheese is visible.",
     "parse_success": true,
     "chunk_idx": 0,
-    "video_id": "Kitchenaid_Slice_and__Shred_Attachment_for_the_Mixer_-_review_and_instructions",
-    "_rescued": "parse"
+    "video_id": "Kitchenaid_Slice_and__Shred_Attachment_for_the_Mixer_-_review_and_instructions"
   },
   {
     "time": [
-      2,
-      4
+      1,
+      2
     ],
     "visible_entities": [
       {
-        "desc": "red KitchenAid stand mixer with silver band and white slicer/shredder attachment",
+        "desc": "red KitchenAid stand mixer with silver band, attached to a white plastic slicer/shredder attachment with a clear feed tube",
         "action": "static",
-        "position": "left"
+        "position": "left/center"
       },
       {
-        "desc": "three black cylindrical shredder blades with metal grating",
+        "desc": "three black cylindrical shredding blades with metal grating surfaces",
+        "action": "static",
+        "position": "foreground right"
+      },
+      {
+        "desc": "pile of fresh produce including green cabbage, yellow cheese block, red radishes, and green cucumber",
+        "action": "static",
+        "position": "background right"
+      },
+      {
+        "desc": "white text overlay reading 'FRESH PREP SLICER/SHREDDER STAND MIXER ATTACHMENT' and 'KitchenAid' logo",
         "action": "static",
         "position": "center"
       },
       {
-        "desc": "pile of vegetables including cabbage, cheese, and cucumber",
+        "desc": "orange and black warning label graphic with text",
         "action": "static",
-        "position": "right"
-      },
-      {
-        "desc": "white text overlay reading 'FRESH PREP SLICER/SHREDDER STAND MIXER ATTACHMENT' and 'KitchenAid'",
-        "action": "static",
-        "position": "center"
-      },
-      {
-        "desc": "orange and white warning label with black text",
-        "action": "static",
-        "position": "bottom-left"
+        "position": "bottom left"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "The video displays a red KitchenAid stand mixer equipped with a white slicer/shredder attachment.",
+        "fact": "The video displays a red stand mixer equipped with a food processing attachment.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "Text on screen identifies the product as a 'FRESH PREP SLICER/SHREDDER STAND MIXER ATTACHMENT'.",
         "confidence": 1.0
       },
       {
         "fact": "Three interchangeable shredding blades are sitting on the counter next to the mixer.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "Text on the screen identifies the product as the 'FRESH PREP SLICER/SHREDDER STAND MIXER ATTACHMENT'.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "A warning label is visible in the bottom left corner of the frame.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [
-      "FRESH PREP SLICER/SHREDDER",
-      "STAND MIXER ATTACHMENT",
-      "Get Started",
-      "KitchenAid",
-      "WARNING",
-      "Rotating Blade Hazard",
-      "Always use food pusher.",
-      "Keep fingers out of openings.",
-      "Keep away from children.",
-      "Never try to un-jam blade or impeller on side."
-    ],
-    "spatial": "The red stand mixer is positioned on the left side of the white countertop. The three shredder blades are arranged in a row to the right of the mixer. The pile of vegetables is located behind the blades on the right side. The warning label is situated in the bottom-left corner, below the mixer.",
-    "parse_success": true,
-    "chunk_idx": 1,
-    "video_id": "Kitchenaid_Slice_and__Shred_Attachment_for_the_Mixer_-_review_and_instructions",
-    "_rescued": "parse"
-  },
-  {
-    "time": [
-      4,
-      6
-    ],
-    "visible_entities": [
-      {
-        "desc": "red KitchenAid stand mixer, glossy finish, silver band",
-        "action": "static",
-        "position": "left"
-      },
-      {
-        "desc": "transparent plastic food pusher attachment",
-        "action": "static",
-        "position": "center"
-      },
-      {
-        "desc": "three metal shredding/slicing drums with black bases",
-        "action": "static",
-        "position": "foreground"
-      },
-      {
-        "desc": "fresh vegetables including cabbage, radishes, cucumber, and cheese",
-        "action": "static",
-        "position": "right"
-      },
-      {
-        "desc": "orange and white warning label with black text",
-        "action": "static",
-        "position": "bottom-left"
-      },
-      {
-        "desc": "white text overlay 'FRESH PREP SLICER/SHREDDER STAND MIXER ATTACHMENT' and 'KitchenAid'",
-        "action": "static",
-        "position": "center"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "A red stand mixer sits on a white countertop.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "Three metal shredding drums are arranged in the foreground.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The text 'FRESH PREP SLICER/SHREDDER STAND MIXER ATTACHMENT' is displayed in the center.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "A warning label is visible in the bottom left corner.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [
-      "FRESH PREP SLICER/SHREDDER",
-      "STAND MIXER ATTACHMENT",
-      "Get Started",
-      "KitchenAid",
-      "WARNING",
-      "Rotating Blade Hazard",
-      "Please use food pusher.",
-      "Keep fingers out of openings.",
-      "Keep away from children.",
-      "Failure to do so can result in amputation or loss."
-    ],
-    "spatial": "The red stand mixer is positioned on the left side of the frame. The metal shredding drums are in the foreground, to the right of the mixer. The fresh vegetables are located on the right side, behind the drums. The warning label is in the bottom left corner, below the mixer.",
-    "parse_success": true,
-    "chunk_idx": 2,
-    "video_id": "Kitchenaid_Slice_and__Shred_Attachment_for_the_Mixer_-_review_and_instructions",
-    "_rescued": "parse"
-  },
-  {
-    "time": [
-      6,
-      8
-    ],
-    "visible_entities": [
-      {
-        "desc": "red KitchenAid stand mixer with silver band",
-        "action": "static",
-        "position": "left"
-      },
-      {
-        "desc": "clear plastic food processor attachment with black lid",
-        "action": "static",
-        "position": "center"
-      },
-      {
-        "desc": "three black cylindrical shredder blades with metal grates",
-        "action": "static",
-        "position": "foreground"
-      },
-      {
-        "desc": "fresh vegetables including cabbage, radishes, cucumber, and cheese on a wooden board",
-        "action": "static",
-        "position": "right"
-      },
-      {
-        "desc": "white text overlay reading 'FRESH PREP SLICER/SHREDDER STAND MIXER ATTACHMENT' and 'KitchenAid'",
-        "action": "static",
-        "position": "center"
-      },
-      {
-        "desc": "orange and black warning label graphic",
-        "action": "static",
-        "position": "bottom-left"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "The video displays a red stand mixer with a clear food processor attachment mounted on top.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "Three different shredding blades are arranged on the counter in front of the mixer.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "Text on the screen identifies the product as a 'FRESH PREP SLICER/SHREDDER STAND MIXER ATTACHMENT'.",
         "confidence": 1.0
       },
       {
@@ -255,51 +103,201 @@
       "KitchenAid",
       "WARNING",
       "Rotating Blade Hazard",
+      "Always use food pusher.",
+      "Keep fingers out of openings.",
+      "Keep away from children.",
+      "Refer to the use and care instructions for safety."
+    ],
+    "spatial": "The red stand mixer is positioned on the left side of the white countertop. The three black shredding blades are arranged in the foreground to the right of the mixer. The pile of vegetables and cheese is located behind the blades on the right side. The product title text is overlaid in the center of the frame, above the KitchenAid logo.",
+    "parse_success": true,
+    "chunk_idx": 1,
+    "video_id": "Kitchenaid_Slice_and__Shred_Attachment_for_the_Mixer_-_review_and_instructions"
+  },
+  {
+    "time": [
+      2,
+      3
+    ],
+    "visible_entities": [
+      {
+        "desc": "red KitchenAid stand mixer with silver band and black base",
+        "action": "static",
+        "position": "left"
+      },
+      {
+        "desc": "clear plastic food pusher attachment",
+        "action": "static",
+        "position": "top center"
+      },
+      {
+        "desc": "three metal shredder/slicer drums with black bases",
+        "action": "static",
+        "position": "foreground center"
+      },
+      {
+        "desc": "wooden cutting board with green cabbage, yellow cheese, red radishes, and green cucumber",
+        "action": "static",
+        "position": "right"
+      },
+      {
+        "desc": "orange and white warning label with black text and icon",
+        "action": "static",
+        "position": "bottom left"
+      },
+      {
+        "desc": "white text overlay 'FRESH PREP SLICER/SHREDDER STAND MIXER ATTACHMENT Get Started KitchenAid'",
+        "action": "static",
+        "position": "center"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A red stand mixer is positioned on the left side of the counter.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "Three metal shredder drums are arranged in the foreground.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "Fresh vegetables and cheese are placed on a cutting board to the right.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A warning label is visible in the bottom left corner.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The text 'FRESH PREP SLICER/SHREDDER STAND MIXER ATTACHMENT' is displayed on the screen.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "FRESH PREP SLICER/SHREDDER",
+      "STAND MIXER ATTACHMENT",
+      "Get Started",
+      "KitchenAid",
+      "WARNING",
+      "Rotating Blade Hazard",
       "Please use food pusher.",
       "Keep fingers out of openings.",
       "Keep away from children.",
       "Failure to do so can result in amputation or loss."
     ],
-    "spatial": "The red stand mixer is positioned on the left side of the frame, while the fresh vegetables are arranged on the right side. The clear food processor attachment is mounted vertically on top of the mixer. The three black shredder blades are placed on the counter in the foreground, in front of the mixer and vegetables.",
+    "spatial": "The red stand mixer is to the left of the three metal shredder drums. The clear plastic food pusher is positioned above the mixer's attachment hub. The cutting board with vegetables is to the right of the mixer and behind the shredder drums. The warning label is in the bottom left corner, below the mixer.",
     "parse_success": true,
-    "chunk_idx": 3,
-    "video_id": "Kitchenaid_Slice_and__Shred_Attachment_for_the_Mixer_-_review_and_instructions",
-    "_rescued": "parse"
+    "chunk_idx": 2,
+    "video_id": "Kitchenaid_Slice_and__Shred_Attachment_for_the_Mixer_-_review_and_instructions"
   },
   {
     "time": [
-      8,
-      10
+      3,
+      4
     ],
     "visible_entities": [
       {
-        "desc": "red stand mixer with a silver band featuring black text",
+        "desc": "red KitchenAid stand mixer with silver accents",
         "action": "static",
         "position": "left"
       },
       {
-        "desc": "white plastic food grinder attachment with a metal collar and a clear plastic hopper",
+        "desc": "clear plastic food processor attachment with black lid",
         "action": "static",
         "position": "center"
       },
       {
-        "desc": "two cylindrical metal grater drums with black plastic tops",
+        "desc": "three cylindrical metal shredding discs with black bases",
         "action": "static",
         "position": "foreground"
       },
       {
-        "desc": "blurred colorful vegetables in the background",
+        "desc": "fresh vegetables and cheese including cabbage, radishes, cucumber, and yellow cheese block",
+        "action": "static",
+        "position": "right"
+      },
+      {
+        "desc": "orange and black warning label graphic",
+        "action": "static",
+        "position": "bottom left"
+      },
+      {
+        "desc": "white text overlay reading 'FRESH PREP SLICER/SHREDDER STAND MIXER ATTACHMENT Get Started KitchenAid'",
+        "action": "static",
+        "position": "center"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A red stand mixer is displayed on a white countertop.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A clear plastic food processor attachment is mounted on the mixer.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "Three metal shredding discs are arranged in front of the mixer.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "Fresh produce and cheese are placed to the right of the appliance.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The text 'FRESH PREP SLICER/SHREDDER STAND MIXER ATTACHMENT' is overlaid on the screen.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The brand name 'KitchenAid' is visible in white text.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "FRESH PREP SLICER/SHREDDER",
+      "STAND MIXER ATTACHMENT",
+      "Get Started",
+      "KitchenAid",
+      "WARNING",
+      "Rotating Blade Hazard",
+      "Please use food pusher.",
+      "Keep fingers out of openings.",
+      "Keep away from children.",
+      "Failure to do so can result in amputation or loss."
+    ],
+    "spatial": "The red stand mixer is positioned on the left side of the frame. The clear plastic attachment is mounted on top of the mixer. The three metal shredding discs are in the foreground, to the right of the mixer base. The vegetables and cheese are on a wooden board to the right of the discs. The warning label is in the bottom left corner.",
+    "parse_success": true,
+    "chunk_idx": 3,
+    "video_id": "Kitchenaid_Slice_and__Shred_Attachment_for_the_Mixer_-_review_and_instructions"
+  },
+  {
+    "time": [
+      4,
+      5
+    ],
+    "visible_entities": [
+      {
+        "desc": "red KitchenAid stand mixer with a white plastic food grinder attachment featuring a clear top hopper and a silver metal band",
+        "action": "static",
+        "position": "left/center"
+      },
+      {
+        "desc": "two cylindrical metal shredding blades with black plastic tops and central drive shafts",
+        "action": "static",
+        "position": "foreground"
+      },
+      {
+        "desc": "blurred background containing colorful vegetables including red, yellow, and green items",
         "action": "static",
         "position": "background"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "The white food grinder attachment is connected to the red stand mixer.",
+        "fact": "A white food grinder attachment is connected to the front hub of a red stand mixer.",
         "confidence": 1.0
       },
       {
-        "fact": "Two metal grater drums are positioned in the foreground.",
+        "fact": "Two metal shredding blades are standing upright in the foreground.",
         "confidence": 1.0
       },
       {
@@ -307,7 +305,7 @@
         "confidence": 1.0
       },
       {
-        "fact": "The text 'KitchenAid' is visible on the silver band of the red mixer.",
+        "fact": "The text 'KitchenAid' is visible on the silver band of the red mixer base.",
         "confidence": 1.0
       }
     ],
@@ -315,50 +313,44 @@
       "KitchenAid",
       "KitchenAid"
     ],
-    "spatial": "The red stand mixer is located on the left side of the frame. The white food grinder attachment is attached to the front of the mixer and extends towards the center. The two metal grater drums are in the foreground, positioned in front of the blurred vegetables in the background.",
+    "spatial": "The red stand mixer with the white attachment is positioned to the left and behind the metal shredding blades. The shredding blades are in the foreground, standing in front of the blurred vegetables.",
     "parse_success": true,
     "chunk_idx": 4,
-    "video_id": "Kitchenaid_Slice_and__Shred_Attachment_for_the_Mixer_-_review_and_instructions",
-    "_rescued": "parse"
+    "video_id": "Kitchenaid_Slice_and__Shred_Attachment_for_the_Mixer_-_review_and_instructions"
   },
   {
     "time": [
-      10,
-      12
+      5,
+      6
     ],
     "visible_entities": [
       {
-        "desc": "red KitchenAid Artisan stand mixer with a silver metallic band and black text",
+        "desc": "three cylindrical stainless steel grater attachments with black plastic bases and top nozzles, featuring various hole sizes for shredding",
         "action": "static",
-        "position": "left"
+        "position": "center"
       },
       {
-        "desc": "cylindrical metal grater attachment with black plastic top and bottom, featuring various sizes of holes",
-        "action": "being inserted",
+        "desc": "red KitchenAid Artisan stand mixer with a glossy finish and silver metallic band",
+        "action": "static",
         "position": "right"
       },
       {
-        "desc": "hands with light skin tone",
-        "action": "inserting the grater attachment",
+        "desc": "pair of hands with light skin tone",
+        "action": "inserting a grater attachment into the mixer hub",
         "position": "right"
-      },
-      {
-        "desc": "three metal grater attachments with black plastic bases standing on a white surface",
-        "action": "static",
-        "position": "background"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A person is inserting a metal grater attachment into the front hub of a red stand mixer.",
+        "fact": "A pair of hands is inserting a black and silver grater attachment into the front hub of a red stand mixer.",
         "confidence": 1.0
       },
       {
-        "fact": "The mixer has the text 'KitchenAid' and 'ARTISAN' visible on a silver band.",
+        "fact": "Three different grater attachments are displayed on a white surface.",
         "confidence": 1.0
       },
       {
-        "fact": "Three different grater attachments are standing on the counter in the background.",
+        "fact": "The text 'KitchenAid' is visible on the silver band of the mixer.",
         "confidence": 1.0
       }
     ],
@@ -366,62 +358,56 @@
       "KitchenAid",
       "ARTISAN"
     ],
-    "spatial": "The red stand mixer is on the left side of the frame. The hands are to the right of the mixer, holding the grater attachment and inserting it into the mixer's hub. The group of three standing grater attachments is in the background, behind the mixer and the hands.",
+    "spatial": "The three grater attachments are positioned to the left of the red stand mixer. The hands are located on the right side of the frame, interacting with the front of the mixer. The mixer is situated on a white countertop.",
     "parse_success": true,
     "chunk_idx": 5,
-    "video_id": "Kitchenaid_Slice_and__Shred_Attachment_for_the_Mixer_-_review_and_instructions",
-    "_rescued": "parse"
+    "video_id": "Kitchenaid_Slice_and__Shred_Attachment_for_the_Mixer_-_review_and_instructions"
   },
   {
     "time": [
-      12,
-      14
+      6,
+      7
     ],
     "visible_entities": [
       {
-        "desc": "red KitchenAid Artisan stand mixer with a glossy finish and a silver metal band around the base of the head",
+        "desc": "red KitchenAid Artisan stand mixer with a glossy finish and a silver metallic band",
         "action": "static",
         "position": "left"
       },
       {
-        "desc": "white plastic food grinder attachment with a clear plastic hopper and a metal auger shaft",
+        "desc": "white plastic food grinder attachment with a clear plastic hopper and a metal drive shaft",
         "action": "being inserted into the mixer",
         "position": "center"
       },
       {
-        "desc": "person's hands with light skin tone",
-        "action": "holding and inserting the attachment",
+        "desc": "person's hand with light skin tone and manicured nails",
+        "action": "holding the attachment",
         "position": "right"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A person is attaching a white food grinder accessory to the front hub of a red stand mixer.",
+        "fact": "A person is attaching a white food grinder to a red stand mixer.",
         "confidence": 1.0
       },
       {
-        "fact": "The mixer features a silver band with the text 'KitchenAid' and 'ARTISAN' visible.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The attachment has a clear plastic container on top for feeding food.",
+        "fact": "The mixer features a silver band with the text 'KitchenAid' and 'ARTISAN'.",
         "confidence": 1.0
       }
     ],
     "ocr": [
-      "KitchenAid",
-      "ARTISAN"
+      "ARTISAN",
+      "KitchenAid"
     ],
-    "spatial": "The red stand mixer is positioned on the left side of the frame. The white attachment is in the center, being held by hands on the right. The attachment is being inserted into the front hub of the mixer.",
+    "spatial": "The red stand mixer is positioned on the left side of the frame. The white food grinder attachment is being held by a hand on the right and is being inserted into the front hub of the mixer.",
     "parse_success": true,
     "chunk_idx": 6,
-    "video_id": "Kitchenaid_Slice_and__Shred_Attachment_for_the_Mixer_-_review_and_instructions",
-    "_rescued": "parse"
+    "video_id": "Kitchenaid_Slice_and__Shred_Attachment_for_the_Mixer_-_review_and_instructions"
   },
   {
     "time": [
-      14,
-      16
+      7,
+      8
     ],
     "visible_entities": [
       {
@@ -430,17 +416,17 @@
         "position": "left"
       },
       {
-        "desc": "white plastic food grinder attachment with a clear plastic hopper and a silver metal ring",
+        "desc": "white plastic food grinder attachment with a clear top container and a silver metal ring",
         "action": "being attached",
         "position": "center"
       },
       {
-        "desc": "person's hand with light skin tone",
+        "desc": "hand with light skin tone",
         "action": "tightening a black knob",
         "position": "right"
       },
       {
-        "desc": "black plastic tightening knob with a threaded metal screw",
+        "desc": "black plastic knob with a textured grip",
         "action": "being turned",
         "position": "center"
       }
@@ -451,205 +437,193 @@
         "confidence": 1.0
       },
       {
-        "fact": "The person's hand is turning a black knob to secure the attachment.",
+        "fact": "The hand is turning a black knob to secure the attachment.",
         "confidence": 1.0
       },
       {
-        "fact": "The text 'KitchenAid' is visible on the silver band of the red mixer.",
+        "fact": "The mixer has a silver band with the text 'KitchenAid' and 'ARTISAN' visible.",
         "confidence": 1.0
       }
     ],
     "ocr": [
-      "KitchenAid"
+      "KitchenAid",
+      "ARTISAN"
     ],
-    "spatial": "The red stand mixer is positioned to the left of the white food grinder attachment. The person's hand is on the right side, holding the attachment and manipulating the black knob located between the two main objects.",
+    "spatial": "The red stand mixer is positioned to the left of the white food grinder attachment. The hand is on the right side of the frame, holding the attachment and manipulating the black knob located at the connection point between the two devices.",
     "parse_success": true,
     "chunk_idx": 7,
-    "video_id": "Kitchenaid_Slice_and__Shred_Attachment_for_the_Mixer_-_review_and_instructions",
-    "_rescued": "parse"
+    "video_id": "Kitchenaid_Slice_and__Shred_Attachment_for_the_Mixer_-_review_and_instructions"
   },
   {
     "time": [
-      16,
-      18
+      8,
+      9
     ],
     "visible_entities": [
       {
-        "desc": "red KitchenAid stand mixer with a white food grinder attachment",
+        "desc": "red KitchenAid stand mixer with a white food processor attachment",
         "action": "static",
         "position": "left"
       },
       {
         "desc": "hand with light skin tone",
-        "action": "inserting a black shredding blade into the grinder",
+        "action": "holding a black grater drum",
         "position": "right"
       },
       {
-        "desc": "black cylindrical shredding blade with metal grating holes",
-        "action": "being held by hand",
+        "desc": "black grater drum with metal grating surface",
+        "action": "being held",
         "position": "right"
       },
       {
-        "desc": "black cylindrical slicing blade with metal slots",
+        "desc": "two black grater drums with metal grating surfaces",
         "action": "static",
         "position": "center"
       },
       {
-        "desc": "wooden cutting board with green cabbage, red potatoes, yellow squash, and green cucumber",
+        "desc": "wooden cutting board with cabbage, red potatoes, yellow squash, and cucumber",
         "action": "static",
-        "position": "background"
+        "position": "right background"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A hand inserts a black shredding blade into the white food grinder attachment.",
+        "fact": "A hand is holding a black grater drum in the air.",
         "confidence": 1.0
       },
       {
-        "fact": "The red stand mixer has the brand name 'KitchenAid' printed on the side.",
+        "fact": "A red KitchenAid stand mixer is positioned on the left side of the counter.",
         "confidence": 1.0
       },
       {
-        "fact": "Two black metal blades are sitting on the white countertop.",
+        "fact": "Two black grater drums are standing upright on the white countertop.",
         "confidence": 1.0
       },
       {
-        "fact": "Fresh vegetables including cabbage and potatoes are arranged on a cutting board in the background.",
+        "fact": "Vegetables including cabbage and potatoes are arranged on a wooden cutting board.",
         "confidence": 1.0
       }
     ],
     "ocr": [
       "KitchenAid"
     ],
-    "spatial": "The red stand mixer is positioned on the left side of the frame. The hand holding the black blade is to the right of the mixer's attachment. A second black blade sits on the counter in the center, between the mixer and the hand. The cutting board with vegetables is in the background, behind the blades.",
+    "spatial": "The red KitchenAid stand mixer is on the left side of the frame. To the right of the mixer, two black grater drums are standing on the counter. In the background on the right, a hand is holding another grater drum near a wooden cutting board filled with vegetables.",
     "parse_success": true,
     "chunk_idx": 8,
-    "video_id": "Kitchenaid_Slice_and__Shred_Attachment_for_the_Mixer_-_review_and_instructions",
-    "_rescued": "parse"
+    "video_id": "Kitchenaid_Slice_and__Shred_Attachment_for_the_Mixer_-_review_and_instructions"
   },
   {
     "time": [
-      18,
-      20
+      9,
+      10
     ],
     "visible_entities": [
       {
-        "desc": "red KitchenAid stand mixer with silver accents",
-        "action": "static",
-        "position": "left"
-      },
-      {
-        "desc": "white food grinder attachment with a clear plastic hopper and a black retaining ring",
-        "action": "being held",
-        "position": "center"
-      },
-      {
-        "desc": "person's hand and forearm",
-        "action": "holding the food grinder attachment",
-        "position": "right"
-      },
-      {
-        "desc": "two cylindrical metal grater blades with black plastic bases",
-        "action": "static",
-        "position": "foreground"
-      },
-      {
-        "desc": "wooden cutting board with vegetables including cabbage, radishes, and peppers",
-        "action": "static",
-        "position": "background"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "A person is holding the white food grinder attachment connected to the red stand mixer.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The food grinder attachment has the 'KitchenAid' brand name embossed on its side.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "Two metal grater blades are sitting on the white countertop in the foreground.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The red stand mixer is positioned on the left side of the counter.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [
-      "KitchenAid"
-    ],
-    "spatial": "The red stand mixer is on the left side of the frame. The white food grinder attachment is connected to the mixer and is being held by a hand on the right. Two grater blades are on the countertop in front of the mixer. A cutting board with vegetables is in the background behind the grater blades.",
-    "parse_success": true,
-    "chunk_idx": 9,
-    "video_id": "Kitchenaid_Slice_and__Shred_Attachment_for_the_Mixer_-_review_and_instructions",
-    "_rescued": "parse"
-  },
-  {
-    "time": [
-      20,
-      22
-    ],
-    "visible_entities": [
-      {
-        "desc": "white plastic food grinder attachment with a clear plastic hopper and a black internal auger",
-        "action": "being held by a hand",
-        "position": "center"
-      },
-      {
-        "desc": "red stand mixer with a silver band",
+        "desc": "red KitchenAid stand mixer with silver accents and a white food grinder attachment",
         "action": "static",
         "position": "left"
       },
       {
         "desc": "person's hand with light skin tone",
+        "action": "holding and rotating the black ring of the food grinder attachment",
+        "position": "right"
+      },
+      {
+        "desc": "two cylindrical metal shredding blades with black plastic bases",
+        "action": "static",
+        "position": "foreground"
+      },
+      {
+        "desc": "assorted vegetables including green cabbage, red radishes, and a green cucumber",
+        "action": "static",
+        "position": "background"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A hand is rotating the black locking ring on the white food grinder attachment.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The red stand mixer is positioned on a white countertop.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "Two metal shredding blades are standing upright on the counter in front of the mixer.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "Vegetables are resting on a wooden cutting board in the background.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "KitchenAid"
+    ],
+    "spatial": "The red stand mixer is to the left of the person's hand. The two shredding blades are in front of the mixer and to the right of its base. The vegetables are behind the shredding blades and to the right of the mixer.",
+    "parse_success": true,
+    "chunk_idx": 9,
+    "video_id": "Kitchenaid_Slice_and__Shred_Attachment_for_the_Mixer_-_review_and_instructions"
+  },
+  {
+    "time": [
+      10,
+      11
+    ],
+    "visible_entities": [
+      {
+        "desc": "white plastic food grinder attachment with a black internal auger and a clear plastic hopper on top",
+        "action": "being held by a hand",
+        "position": "center"
+      },
+      {
+        "desc": "red stand mixer base with a silver metallic band",
+        "action": "static",
+        "position": "left"
+      },
+      {
+        "desc": "human hand with light skin tone",
         "action": "holding the grinder attachment",
         "position": "right"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A person's hand is holding the white food grinder attachment.",
+        "fact": "A hand is holding the white food grinder attachment.",
         "confidence": 1.0
       },
       {
-        "fact": "The food grinder attachment is connected to the red stand mixer.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The word 'KitchenAid' is embossed on the side of the white attachment.",
+        "fact": "The food grinder attachment is connected to the red stand mixer on the left.",
         "confidence": 1.0
       }
     ],
     "ocr": [
       "KitchenAid"
     ],
-    "spatial": "The white food grinder attachment is in the center foreground, connected to the red stand mixer on the left. A person's hand is on the right side, holding the opening of the grinder attachment. The clear plastic hopper is on top of the white grinder body.",
+    "spatial": "The red stand mixer is to the left of the white food grinder attachment. The hand is holding the right side of the grinder attachment. The clear hopper is on top of the white grinder body.",
     "parse_success": true,
     "chunk_idx": 10,
-    "video_id": "Kitchenaid_Slice_and__Shred_Attachment_for_the_Mixer_-_review_and_instructions",
-    "_rescued": "parse"
+    "video_id": "Kitchenaid_Slice_and__Shred_Attachment_for_the_Mixer_-_review_and_instructions"
   },
   {
     "time": [
-      22,
-      24
+      11,
+      12
     ],
     "visible_entities": [
       {
-        "desc": "person's left hand with fair skin, fingers spread to grip the vegetable",
-        "action": "holding the cucumber steady",
+        "desc": "person's left hand with fair skin, fingers spread to hold the vegetable",
+        "action": "holding the cucumber",
         "position": "left"
       },
       {
-        "desc": "green cucumber with bumpy skin texture, partially sliced",
-        "action": "being cut",
+        "desc": "long green cucumber with bumpy texture and dark green skin",
+        "action": "being sliced",
         "position": "center"
       },
       {
         "desc": "silver kitchen knife with a long, straight metal blade",
-        "action": "slicing through the cucumber",
+        "action": "cutting the cucumber",
         "position": "right"
       },
       {
@@ -658,47 +632,41 @@
         "position": "background"
       },
       {
-        "desc": "small, round slice of cucumber with pale green interior",
+        "desc": "small round slice of cucumber showing pale green interior",
         "action": "static",
         "position": "right"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "The person is slicing a green cucumber on a wooden board.",
+        "fact": "A person is slicing a green cucumber on a wooden cutting board.",
         "confidence": 1.0
       },
       {
-        "fact": "The knife blade is cutting through the middle of the cucumber.",
+        "fact": "The knife is cutting through the cucumber to create a slice.",
         "confidence": 1.0
       },
       {
-        "fact": "A single slice of cucumber lies separated on the board to the right.",
+        "fact": "A previously cut slice of cucumber lies on the board to the right.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The person's hand is on the left side, holding the cucumber which lies horizontally across the center of the wooden cutting board. The silver knife is positioned to the right of the hand, actively cutting into the cucumber. A detached cucumber slice is located to the right of the main vegetable body.",
+    "spatial": "The person's hand is on the left side, holding the cucumber steady on the wooden cutting board. The silver knife is positioned to the right of the hand, actively cutting through the vegetable. A cut slice of cucumber is located to the right of the main cucumber body.",
     "parse_success": true,
     "chunk_idx": 11,
-    "video_id": "Kitchenaid_Slice_and__Shred_Attachment_for_the_Mixer_-_review_and_instructions",
-    "_rescued": "parse"
+    "video_id": "Kitchenaid_Slice_and__Shred_Attachment_for_the_Mixer_-_review_and_instructions"
   },
   {
     "time": [
-      24,
-      26
+      12,
+      13
     ],
     "visible_entities": [
       {
-        "desc": "person's hands with fair skin, holding a knife and a cucumber",
-        "action": "cutting the cucumber",
-        "position": "foreground"
-      },
-      {
-        "desc": "silver kitchen knife with a metallic blade and handle",
-        "action": "slicing through the cucumber",
-        "position": "center"
+        "desc": "person's hands with light skin tone, no visible jewelry or nail polish",
+        "action": "holding cucumber and knife",
+        "position": "left and bottom foreground"
       },
       {
         "desc": "long green cucumber with bumpy texture, partially sliced",
@@ -706,12 +674,17 @@
         "position": "center"
       },
       {
-        "desc": "rectangular wooden cutting board with light brown grain and lighter edges",
+        "desc": "silver kitchen knife with a metallic blade and handle",
+        "action": "slicing through cucumber",
+        "position": "center"
+      },
+      {
+        "desc": "rectangular wooden cutting board with light brown grain and rounded corners",
         "action": "static",
         "position": "background"
       },
       {
-        "desc": "two small round slices of green cucumber",
+        "desc": "two small round cucumber slices, green skin with pale interior",
         "action": "static",
         "position": "right"
       }
@@ -726,47 +699,46 @@
         "confidence": 1.0
       },
       {
-        "fact": "Two slices of cucumber are lying on the right side of the board.",
+        "fact": "Two slices of cucumber are already cut and resting on the right side of the board.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The person's hands are holding the knife and cucumber in the center of the wooden cutting board. The cucumber slices are to the right of the main cucumber piece. The cutting board is underneath the cucumber and knife.",
+    "spatial": "The person's hands are holding the cucumber and knife in the center of the wooden cutting board. The cut cucumber slices are to the right of the main cucumber piece. The cutting board is underneath all the food items.",
     "parse_success": true,
     "chunk_idx": 12,
-    "video_id": "Kitchenaid_Slice_and__Shred_Attachment_for_the_Mixer_-_review_and_instructions",
-    "_rescued": "parse"
+    "video_id": "Kitchenaid_Slice_and__Shred_Attachment_for_the_Mixer_-_review_and_instructions"
   },
   {
     "time": [
-      26,
-      28
+      13,
+      14
     ],
     "visible_entities": [
       {
-        "desc": "red KitchenAid stand mixer with a white food grinder attachment",
+        "desc": "red KitchenAid stand mixer with a white meat grinder attachment",
         "action": "static",
         "position": "left"
       },
       {
-        "desc": "person's hands and arm wearing a beige long-sleeved shirt",
-        "action": "placing a glass bowl on the counter",
-        "position": "right"
-      },
-      {
-        "desc": "clear glass mixing bowl containing chopped vegetables",
+        "desc": "clear glass mixing bowl",
         "action": "being placed on the counter",
         "position": "right"
       },
       {
-        "desc": "white kitchen countertop",
+        "desc": "person's hands and arms wearing a beige long-sleeved top",
+        "action": "holding and placing the bowl",
+        "position": "right"
+      },
+      {
+        "desc": "white countertop",
         "action": "static",
         "position": "bottom"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A person places a glass bowl containing vegetables onto the counter.",
+        "fact": "A person is placing a clear glass bowl on the countertop.",
         "confidence": 1.0
       },
       {
@@ -774,61 +746,60 @@
         "confidence": 1.0
       },
       {
-        "fact": "The glass bowl is positioned in front of the mixer's attachment.",
+        "fact": "The meat grinder attachment is connected to the front of the mixer.",
         "confidence": 1.0
       }
     ],
     "ocr": [
       "KitchenAid"
     ],
-    "spatial": "The red stand mixer is on the left side of the white countertop. The person's hands are on the right side, holding a glass bowl. The glass bowl is placed on the counter in front of the mixer's white attachment.",
+    "spatial": "The red stand mixer is to the left of the clear glass bowl. The person's hands are holding the bowl on the right side of the frame. The bowl is placed on the white countertop, which is below the mixer.",
     "parse_success": true,
     "chunk_idx": 13,
-    "video_id": "Kitchenaid_Slice_and__Shred_Attachment_for_the_Mixer_-_review_and_instructions",
-    "_rescued": "parse"
+    "video_id": "Kitchenaid_Slice_and__Shred_Attachment_for_the_Mixer_-_review_and_instructions"
   },
   {
     "time": [
-      28,
-      30
+      14,
+      15
     ],
     "visible_entities": [
       {
-        "desc": "red KitchenAid stand mixer with a white meat grinder attachment and a silver control panel",
+        "desc": "red KitchenAid stand mixer with white meat grinder attachment, silver speed control plate, black lever",
         "action": "static",
         "position": "left"
       },
       {
-        "desc": "clear glass mixing bowl with a handle",
+        "desc": "clear glass mixing bowl with handle and spout",
         "action": "static",
         "position": "right"
       },
       {
-        "desc": "person's hand",
+        "desc": "human hand with light skin tone",
         "action": "moving near the bowl",
         "position": "bottom right"
       },
       {
-        "desc": "black speed control lever on the mixer",
-        "action": "being adjusted",
-        "position": "center"
+        "desc": "black circular object (lid or base)",
+        "action": "static",
+        "position": "bottom right"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A person's hand is moving near the glass bowl.",
+        "fact": "A hand is moving near the glass bowl and a black circular object.",
         "confidence": 1.0
       },
       {
-        "fact": "The speed control lever is positioned at the 'Stir' setting.",
+        "fact": "The stand mixer is equipped with a white meat grinder attachment.",
         "confidence": 1.0
       },
       {
-        "fact": "The mixer is equipped with a white meat grinder attachment.",
+        "fact": "The speed control plate displays settings from 'Off/0' to '10'.",
         "confidence": 1.0
       },
       {
-        "fact": "The text 'For best results, do not run stand mixer faster than speed 4' is visible on the screen.",
+        "fact": "On-screen text advises not to run the stand mixer faster than speed 4.",
         "confidence": 1.0
       }
     ],
@@ -843,68 +814,71 @@
       "ARTISAN",
       "For best results, do not run stand mixer faster than speed 4"
     ],
-    "spatial": "The red stand mixer is to the left of the clear glass bowl. The person's hand is in the foreground near the bottom right of the bowl. The white meat grinder attachment is mounted on the front of the mixer.",
+    "spatial": "The red stand mixer is positioned to the left of the clear glass bowl. The white meat grinder attachment is mounted on the front of the mixer, extending towards the right. The hand is located to the right of the mixer and near the glass bowl. The black circular object is on the counter below the hand.",
     "parse_success": true,
     "chunk_idx": 14,
-    "video_id": "Kitchenaid_Slice_and__Shred_Attachment_for_the_Mixer_-_review_and_instructions",
-    "_rescued": "parse"
+    "video_id": "Kitchenaid_Slice_and__Shred_Attachment_for_the_Mixer_-_review_and_instructions"
   },
   {
     "time": [
-      30,
-      32
+      15,
+      16
     ],
     "visible_entities": [
       {
-        "desc": "red stand mixer with a silver speed control panel and a black adjustment lever",
+        "desc": "red stand mixer with a silver speed control panel and black adjustment knob",
         "action": "static",
         "position": "center"
       },
       {
-        "desc": "hand with light skin tone",
+        "desc": "human hand with light skin tone",
         "action": "adjusting the mixer speed",
         "position": "bottom"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A hand is adjusting the speed lever of the red stand mixer.",
+        "fact": "A hand is adjusting the black knob on the red stand mixer.",
         "confidence": 1.0
       },
       {
-        "fact": "The mixer speed settings range from 'Off/0' to '10'.",
+        "fact": "The mixer speed is being changed from a lower setting to a higher setting.",
         "confidence": 1.0
       },
       {
-        "fact": "On-screen text advises not to run the mixer faster than speed 4.",
+        "fact": "The text 'For best results, do not run stand mixer faster than speed 4' is visible in the bottom left corner.",
         "confidence": 1.0
       }
     ],
     "ocr": [
-      "Off/0 Stir 2 4 6 8 10",
+      "Off/0",
+      "Stir",
+      "2",
+      "4",
+      "6",
+      "8",
+      "10",
       "ARTIS",
-      "For best results, do not run",
-      "stand mixer faster than speed 4"
+      "For best results, do not run stand mixer faster than speed 4"
     ],
-    "spatial": "The hand is positioned below the silver speed control panel. The black adjustment lever is located on the panel, between the 'Stir' and '2' markings. The on-screen text is located in the bottom left corner of the frame.",
+    "spatial": "The hand is positioned below the silver speed control panel on the red mixer. The black adjustment knob is located on the panel, between the 'Stir' and '2' speed markings initially, and moves towards the '4' marking. The warning text is located in the bottom left corner of the frame, below the mixer.",
     "parse_success": true,
     "chunk_idx": 15,
-    "video_id": "Kitchenaid_Slice_and__Shred_Attachment_for_the_Mixer_-_review_and_instructions",
-    "_rescued": "parse"
+    "video_id": "Kitchenaid_Slice_and__Shred_Attachment_for_the_Mixer_-_review_and_instructions"
   },
   {
     "time": [
-      32,
-      34
+      16,
+      17
     ],
     "visible_entities": [
       {
-        "desc": "red KitchenAid Artisan stand mixer with a white grinder attachment and a clear plastic food pusher",
+        "desc": "red KitchenAid Artisan stand mixer with a white meat grinder attachment and a clear plastic food pusher",
         "action": "static",
         "position": "center"
       },
       {
-        "desc": "hand with light skin tone",
+        "desc": "person's hand with light skin tone",
         "action": "removing the black lid from the food pusher",
         "position": "top right"
       }
@@ -915,190 +889,162 @@
         "confidence": 1.0
       },
       {
-        "fact": "The food pusher is inserted into the white grinder attachment.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The grinder attachment is connected to the front hub of the red stand mixer.",
+        "fact": "The meat grinder attachment is connected to the front hub of the red mixer.",
         "confidence": 1.0
       }
     ],
     "ocr": [
       "ARTISAN",
-      "KitchenAid",
-      "STIR",
-      "2",
-      "4",
-      "6",
-      "8",
-      "10"
+      "Kitc"
     ],
-    "spatial": "The red stand mixer is positioned in the center of the frame. The white grinder attachment is attached to the front of the mixer. The clear plastic food pusher is inserted vertically into the top of the grinder attachment. The hand is located above and to the right of the food pusher, holding the black lid.",
+    "spatial": "The red stand mixer is positioned in the center of the frame. The white meat grinder attachment extends to the right of the mixer body. The person's hand is above the attachment, interacting with the food pusher.",
     "parse_success": true,
     "chunk_idx": 16,
-    "video_id": "Kitchenaid_Slice_and__Shred_Attachment_for_the_Mixer_-_review_and_instructions",
-    "_rescued": "parse"
+    "video_id": "Kitchenaid_Slice_and__Shred_Attachment_for_the_Mixer_-_review_and_instructions"
   },
   {
     "time": [
-      34,
-      36
+      17,
+      18
     ],
     "visible_entities": [
       {
-        "desc": "person's hand and forearm, light skin tone",
-        "action": "pressing down on the food pusher",
-        "position": "top right"
-      },
-      {
-        "desc": "red KitchenAid Artisan stand mixer, glossy finish",
+        "desc": "red KitchenAid Artisan stand mixer with a white plastic food grinder attachment",
         "action": "static",
-        "position": "left"
+        "position": "left/center"
       },
       {
-        "desc": "white plastic food grinder attachment",
-        "action": "static",
-        "position": "center"
+        "desc": "person's hand and forearm",
+        "action": "holding a clear plastic food pusher",
+        "position": "top/center"
       },
       {
-        "desc": "clear plastic food pusher tool",
+        "desc": "green vegetable stick inside the grinder chute",
         "action": "being pushed down",
-        "position": "center top"
-      },
-      {
-        "desc": "dark green cylindrical vegetable",
-        "action": "being processed",
-        "position": "inside the grinder"
+        "position": "center"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A person's hand is pressing down on the clear food pusher.",
+        "fact": "A hand is pushing a clear plastic tool into the top of the food grinder attachment.",
         "confidence": 1.0
       },
       {
-        "fact": "The food pusher is forcing a green vegetable into the grinder attachment.",
+        "fact": "The green vegetable is located inside the transparent chute of the grinder.",
         "confidence": 1.0
       },
       {
         "fact": "The white grinder attachment is connected to the front hub of the red mixer.",
         "confidence": 1.0
-      },
-      {
-        "fact": "The mixer has a silver band with the text 'ARTISAN' and 'KitchenAid'.",
-        "confidence": 1.0
       }
     ],
     "ocr": [
       "ARTISAN",
       "KitchenAid"
     ],
-    "spatial": "The red stand mixer is positioned on the left side of the frame. The white grinder attachment is attached to the front of the mixer. The person's hand is above the grinder attachment, holding the clear food pusher which is inside the grinder's chute.",
+    "spatial": "The red stand mixer is positioned on the left side of the frame. The white food grinder attachment is attached to the front of the mixer, extending towards the center. The person's hand is above the grinder attachment, holding the clear plastic pusher which is inside the top of the grinder's chute.",
     "parse_success": true,
     "chunk_idx": 17,
-    "video_id": "Kitchenaid_Slice_and__Shred_Attachment_for_the_Mixer_-_review_and_instructions",
-    "_rescued": "parse"
+    "video_id": "Kitchenaid_Slice_and__Shred_Attachment_for_the_Mixer_-_review_and_instructions"
   },
   {
     "time": [
-      36,
-      38
+      18,
+      19
     ],
     "visible_entities": [
       {
-        "desc": "red KitchenAid Artisan stand mixer with a white spiralizer attachment",
-        "action": "processing vegetable",
+        "desc": "red KitchenAid Artisan stand mixer with a silver metallic band",
+        "action": "static",
         "position": "left"
       },
       {
-        "desc": "green vegetable, likely a cucumber or zucchini",
-        "action": "being spiralized",
+        "desc": "white plastic food grinder attachment with a clear vertical feed tube",
+        "action": "processing food",
         "position": "center"
       },
       {
-        "desc": "spiralized green vegetable strands",
-        "action": "emerging from attachment",
+        "desc": "green vegetable chunks",
+        "action": "being extruded",
         "position": "center"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A red stand mixer is actively processing a green vegetable.",
+        "fact": "The red stand mixer is stationary on the left side of the frame.",
         "confidence": 1.0
       },
       {
-        "fact": "Spiralized green vegetable strands are emerging from the front of the white attachment.",
+        "fact": "The white food grinder attachment is connected to the mixer and actively processing food.",
         "confidence": 1.0
       },
       {
-        "fact": "The text 'ARTISAN' and 'KitchenAid' is visible on the mixer's silver band.",
+        "fact": "Green vegetable chunks are being pushed out of the front nozzle of the grinder attachment.",
         "confidence": 1.0
       }
     ],
     "ocr": [
       "ARTISAN",
-      "KitchenAid"
+      "Kitchen"
     ],
-    "spatial": "The red stand mixer is positioned on the left side of the frame. The white spiralizer attachment is connected to the front of the mixer. The green vegetable is inside the top chute of the attachment, and the spiralized strands are exiting the front opening of the attachment.",
+    "spatial": "The red stand mixer is positioned to the left of the white food grinder attachment. The white attachment is connected to the front of the mixer. The green vegetable chunks are emerging from the front opening of the white attachment.",
     "parse_success": true,
     "chunk_idx": 18,
-    "video_id": "Kitchenaid_Slice_and__Shred_Attachment_for_the_Mixer_-_review_and_instructions",
-    "_rescued": "parse"
+    "video_id": "Kitchenaid_Slice_and__Shred_Attachment_for_the_Mixer_-_review_and_instructions"
   },
   {
     "time": [
-      38,
-      40
+      19,
+      20
     ],
     "visible_entities": [
       {
-        "desc": "red KitchenAid stand mixer with silver metallic band and white plastic spiralizer attachment",
-        "action": "processing vegetable",
+        "desc": "red KitchenAid stand mixer with silver band and white spiralizer attachment",
+        "action": "slicing green vegetable",
         "position": "left"
       },
       {
-        "desc": "green vegetable, likely zucchini or cucumber, being sliced into thin ribbons",
-        "action": "falling into bowl",
+        "desc": "green vegetable slices, thin and ribbon-like",
+        "action": "falling from attachment",
         "position": "center"
       },
       {
-        "desc": "clear glass measuring cup with white measurement markings",
+        "desc": "clear glass measuring cup with white markings",
         "action": "collecting vegetable slices",
         "position": "right"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "The red stand mixer is actively slicing a green vegetable.",
+        "fact": "The stand mixer is actively slicing a green vegetable into ribbons.",
         "confidence": 1.0
       },
       {
-        "fact": "Green vegetable ribbons are falling from the attachment into the glass cup.",
+        "fact": "The vegetable slices are falling from the attachment into the glass cup.",
         "confidence": 1.0
       },
       {
-        "fact": "The glass cup contains a pile of sliced green vegetables.",
+        "fact": "The glass cup is accumulating the sliced vegetable pieces.",
         "confidence": 1.0
       }
     ],
     "ocr": [
       "Kitchen"
     ],
-    "spatial": "The red stand mixer is positioned on the left side of the frame. The clear glass measuring cup is located to the right of the mixer, directly underneath the spiralizer attachment to catch the falling food.",
+    "spatial": "The red stand mixer is positioned on the left side of the frame. The clear glass measuring cup is located to the right of the mixer, directly underneath the spiralizer attachment to catch the falling vegetable slices.",
     "parse_success": true,
     "chunk_idx": 19,
-    "video_id": "Kitchenaid_Slice_and__Shred_Attachment_for_the_Mixer_-_review_and_instructions",
-    "_rescued": "parse"
+    "video_id": "Kitchenaid_Slice_and__Shred_Attachment_for_the_Mixer_-_review_and_instructions"
   },
   {
     "time": [
-      40,
-      42
+      20,
+      21
     ],
     "visible_entities": [
       {
-        "desc": "red KitchenAid stand mixer with a silver metallic band and a white vegetable slicer attachment",
-        "action": "slicing cucumber",
+        "desc": "red KitchenAid stand mixer with silver metallic band, attached to a white plastic food processor attachment",
+        "action": "processing cucumber",
         "position": "left"
       },
       {
@@ -1108,63 +1054,62 @@
       },
       {
         "desc": "green cucumber slices",
-        "action": "falling into the cup",
+        "action": "falling into cup",
         "position": "center"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "The red stand mixer is actively slicing a cucumber using the white attachment.",
+        "fact": "The white food processor attachment is actively slicing green cucumber.",
         "confidence": 1.0
       },
       {
-        "fact": "Sliced cucumber pieces are falling from the attachment into the glass measuring cup.",
+        "fact": "Sliced cucumber pieces are falling from the attachment into the glass cup.",
         "confidence": 1.0
       },
       {
-        "fact": "The glass measuring cup contains a pile of sliced cucumber at the bottom.",
+        "fact": "The glass cup contains a pile of sliced cucumber at the bottom.",
         "confidence": 1.0
       }
     ],
     "ocr": [
       "KitchenAid"
     ],
-    "spatial": "The red stand mixer is positioned to the left of the clear glass measuring cup. The white slicer attachment is mounted on the mixer and extends over the opening of the glass cup. Sliced cucumber pieces are falling from the attachment into the cup below.",
+    "spatial": "The red stand mixer is to the left of the clear glass measuring cup. The white food processor attachment is mounted on the front of the mixer, positioned directly above the glass cup. The sliced cucumber is falling from the attachment into the cup.",
     "parse_success": true,
     "chunk_idx": 20,
-    "video_id": "Kitchenaid_Slice_and__Shred_Attachment_for_the_Mixer_-_review_and_instructions",
-    "_rescued": "parse"
+    "video_id": "Kitchenaid_Slice_and__Shred_Attachment_for_the_Mixer_-_review_and_instructions"
   },
   {
     "time": [
-      42,
-      44
+      21,
+      22
     ],
     "visible_entities": [
       {
-        "desc": "red KitchenAid stand mixer with a silver band featuring the brand logo",
+        "desc": "person's hands and forearms, wearing a beige long-sleeved top",
+        "action": "attaching a white food processor attachment to the mixer",
+        "position": "right"
+      },
+      {
+        "desc": "red KitchenAid stand mixer with a silver band around the head",
         "action": "static",
         "position": "left"
       },
       {
-        "desc": "white plastic food processor attachment with a clear vertical feed tube and black lid",
-        "action": "being attached",
+        "desc": "white plastic food processor attachment with a clear feed tube and black lid",
+        "action": "being attached to the mixer",
         "position": "center"
       },
       {
-        "desc": "person's hands and arms wearing a beige long-sleeved top",
-        "action": "attaching the food processor to the mixer",
-        "position": "right"
-      },
-      {
-        "desc": "silver metal locking knob on the front of the mixer",
-        "action": "static",
-        "position": "center-left"
+        "desc": "silver metal locking pin on the mixer head",
+        "action": "being manipulated by a finger",
+        "position": "center"
       },
       {
         "desc": "clear glass bowl containing sliced green vegetables",
         "action": "static",
-        "position": "bottom-right"
+        "position": "bottom right"
       }
     ],
     "atomic_facts": [
@@ -1173,31 +1118,84 @@
         "confidence": 1.0
       },
       {
-        "fact": "The person's hands are holding the attachment and aligning it with the mixer.",
+        "fact": "A finger is pressing the silver locking pin on the mixer head to secure the attachment.",
         "confidence": 1.0
       },
       {
-        "fact": "A glass bowl with sliced green vegetables sits on the counter below the attachment.",
+        "fact": "The mixer is positioned on a white countertop.",
         "confidence": 1.0
       },
       {
-        "fact": "The mixer has a silver band with the text 'KitchenAid' visible.",
+        "fact": "A glass bowl with sliced vegetables sits on the counter below the attachment.",
         "confidence": 1.0
       }
     ],
     "ocr": [
       "KitchenAid"
     ],
-    "spatial": "The red stand mixer is positioned on the left side of the frame. The person's hands are to the right of the mixer, holding the white attachment in front of the mixer's hub. The glass bowl is located below the attachment and to the right of the mixer base.",
+    "spatial": "The red stand mixer is on the left side of the frame. The person's hands are to the right of the mixer, holding the white attachment in front of the mixer's hub. The glass bowl is below the attachment and to the right of the mixer base.",
     "parse_success": true,
     "chunk_idx": 21,
-    "video_id": "Kitchenaid_Slice_and__Shred_Attachment_for_the_Mixer_-_review_and_instructions",
-    "_rescued": "parse"
+    "video_id": "Kitchenaid_Slice_and__Shred_Attachment_for_the_Mixer_-_review_and_instructions"
   },
   {
     "time": [
-      44,
-      46
+      22,
+      23
+    ],
+    "visible_entities": [
+      {
+        "desc": "red KitchenAid stand mixer with silver band and black knob",
+        "action": "static",
+        "position": "left"
+      },
+      {
+        "desc": "white food processor attachment with clear hopper and black lid",
+        "action": "static",
+        "position": "center"
+      },
+      {
+        "desc": "person's hands and arms with fair skin",
+        "action": "removing the blade assembly",
+        "position": "right"
+      },
+      {
+        "desc": "black cylindrical blade assembly with metal grating",
+        "action": "being held",
+        "position": "right"
+      },
+      {
+        "desc": "clear glass measuring cup containing sliced green vegetables",
+        "action": "static",
+        "position": "bottom right"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The person removes the black blade assembly from the white food processor attachment.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The red stand mixer is positioned on the white countertop.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "Sliced green vegetables are visible inside the glass bowl.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "KitchenAid"
+    ],
+    "spatial": "The red stand mixer is to the left of the white food processor attachment. The person's hands are to the right of the attachment, holding the black blade assembly. The glass bowl is below the attachment and to the right of the mixer.",
+    "parse_success": true,
+    "chunk_idx": 22,
+    "video_id": "Kitchenaid_Slice_and__Shred_Attachment_for_the_Mixer_-_review_and_instructions"
+  },
+  {
+    "time": [
+      23,
+      24
     ],
     "visible_entities": [
       {
@@ -1206,67 +1204,236 @@
         "position": "left"
       },
       {
-        "desc": "white vegetable slicer attachment with clear feed tube and black lid",
+        "desc": "white plastic food processor attachment with clear feed tube",
         "action": "static",
         "position": "center"
       },
       {
-        "desc": "person's hands and forearms with light skin tone",
-        "action": "removing black blade assembly",
+        "desc": "black cylindrical shredding blade with metal teeth",
+        "action": "being placed into dishwasher",
         "position": "right"
       },
       {
-        "desc": "black cylindrical blade assembly with metal grating surface",
-        "action": "being held and removed",
-        "position": "center-right"
+        "desc": "hand with fair skin",
+        "action": "holding black shredding blade",
+        "position": "right"
+      },
+      {
+        "desc": "metal dishwasher rack with tines",
+        "action": "static",
+        "position": "background"
       },
       {
         "desc": "clear glass mixing bowl containing sliced green vegetables",
         "action": "static",
-        "position": "bottom-right"
-      },
-      {
-        "desc": "block of pale yellow cheese",
-        "action": "static",
-        "position": "bottom-right"
-      },
-      {
-        "desc": "white kitchen countertop",
-        "action": "static",
-        "position": "bottom"
+        "position": "bottom right"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A person's hands are removing the black blade assembly from the white slicer attachment.",
+        "fact": "A hand is placing a black shredding blade attachment into a dishwasher rack.",
         "confidence": 1.0
       },
       {
-        "fact": "The red stand mixer is positioned on the left side of the white countertop.",
+        "fact": "The red stand mixer is sitting on a white countertop.",
         "confidence": 1.0
       },
       {
-        "fact": "The glass bowl contains sliced green vegetables.",
+        "fact": "A white food processor attachment is connected to the front of the mixer.",
         "confidence": 1.0
       },
       {
-        "fact": "The slicer attachment is connected to the front of the mixer.",
+        "fact": "Sliced green vegetables are visible inside a glass bowl on the counter.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The text 'KitchenAid' is visible on the silver band of the mixer.",
         "confidence": 1.0
       }
     ],
     "ocr": [
       "KitchenAid"
     ],
-    "spatial": "The red stand mixer is on the left side of the white countertop. The white slicer attachment is connected to the front of the mixer. The person's hands are to the right of the slicer, holding the black blade assembly. The glass bowl is below the slicer attachment and to the right of the mixer base.",
+    "spatial": "The red stand mixer is on the left side of the counter, with a white attachment connected to its front. To the right of the mixer, a hand is holding a black shredding blade over a dishwasher rack. Below the mixer and attachment, a glass bowl containing sliced vegetables sits on the countertop.",
     "parse_success": true,
-    "chunk_idx": 22,
-    "video_id": "Kitchenaid_Slice_and__Shred_Attachment_for_the_Mixer_-_review_and_instructions",
-    "_rescued": "parse"
+    "chunk_idx": 23,
+    "video_id": "Kitchenaid_Slice_and__Shred_Attachment_for_the_Mixer_-_review_and_instructions"
   },
   {
     "time": [
-      46,
-      48
+      24,
+      25
+    ],
+    "visible_entities": [
+      {
+        "desc": "hand with fair skin",
+        "action": "placing a coffee filter basket",
+        "position": "right"
+      },
+      {
+        "desc": "black coffee filter basket with silver metal mesh and black plastic nozzle",
+        "action": "being placed",
+        "position": "right"
+      },
+      {
+        "desc": "black coffee filter basket with silver metal mesh and black plastic nozzle",
+        "action": "static",
+        "position": "center"
+      },
+      {
+        "desc": "black coffee filter basket with silver metal mesh and black plastic nozzle",
+        "action": "static",
+        "position": "left"
+      },
+      {
+        "desc": "clear glass cup",
+        "action": "static",
+        "position": "left"
+      },
+      {
+        "desc": "metal dishwasher rack with tines",
+        "action": "static",
+        "position": "bottom"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A hand places a black coffee filter basket into the dishwasher rack.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "Three black coffee filter baskets are visible in the dishwasher rack.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A clear glass cup sits on the left side of the rack.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The hand is to the right of the central coffee filter basket. The coffee filter baskets are arranged in a row on the metal rack. The clear glass cup is to the left of the leftmost filter basket.",
+    "parse_success": true,
+    "chunk_idx": 24,
+    "video_id": "Kitchenaid_Slice_and__Shred_Attachment_for_the_Mixer_-_review_and_instructions"
+  },
+  {
+    "time": [
+      25,
+      26
+    ],
+    "visible_entities": [
+      {
+        "desc": "black cylindrical food processor blades with silver metal grating holes",
+        "action": "static",
+        "position": "center"
+      },
+      {
+        "desc": "red KitchenAid stand mixer",
+        "action": "static",
+        "position": "left"
+      },
+      {
+        "desc": "white handheld food processor motor base",
+        "action": "being wiped",
+        "position": "right"
+      },
+      {
+        "desc": "person's hands",
+        "action": "wiping the white motor base",
+        "position": "right"
+      },
+      {
+        "desc": "white cloth",
+        "action": "wiping the white motor base",
+        "position": "right"
+      },
+      {
+        "desc": "dishwasher rack with metal tines",
+        "action": "static",
+        "position": "background"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A person is wiping a white handheld food processor motor base with a white cloth.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "Black food processor blades are sitting on a dishwasher rack.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A red KitchenAid stand mixer is visible on the left side of the counter.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "KitchenAid"
+    ],
+    "spatial": "The red KitchenAid stand mixer is to the left of the white handheld food processor motor base. The person's hands are holding the white motor base and wiping it with a cloth. The black food processor blades are inside the dishwasher rack in the background.",
+    "parse_success": true,
+    "chunk_idx": 25,
+    "video_id": "Kitchenaid_Slice_and__Shred_Attachment_for_the_Mixer_-_review_and_instructions"
+  },
+  {
+    "time": [
+      26,
+      27
+    ],
+    "visible_entities": [
+      {
+        "desc": "hands with light skin tone",
+        "action": "wiping the white attachment",
+        "position": "right foreground"
+      },
+      {
+        "desc": "white plastic meat grinder attachment with a metal screw tip and a clear plastic hopper",
+        "action": "being wiped",
+        "position": "center foreground"
+      },
+      {
+        "desc": "white cloth or towel",
+        "action": "wiping the attachment",
+        "position": "right foreground"
+      },
+      {
+        "desc": "red KitchenAid stand mixer with silver metallic accents and a black knob",
+        "action": "static",
+        "position": "left background"
+      },
+      {
+        "desc": "white countertop surface",
+        "action": "static",
+        "position": "bottom background"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A person is using a white cloth to wipe the white plastic attachment.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The red stand mixer is sitting on the white countertop.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The meat grinder attachment has a metal auger tip visible.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "Kitchen",
+      "ARTISAN"
+    ],
+    "spatial": "The red stand mixer is to the left of the white meat grinder attachment. The hands are holding the white attachment and the cloth in the center-right foreground. The attachment is positioned above the white countertop.",
+    "parse_success": true,
+    "chunk_idx": 26,
+    "video_id": "Kitchenaid_Slice_and__Shred_Attachment_for_the_Mixer_-_review_and_instructions"
+  },
+  {
+    "time": [
+      27,
+      28
     ],
     "visible_entities": [
       {
@@ -1275,290 +1442,65 @@
         "position": "left"
       },
       {
-        "desc": "white plastic food processor attachment with clear hopper",
-        "action": "static",
-        "position": "center"
-      },
-      {
-        "desc": "black cylindrical metal shredding blade",
-        "action": "being placed",
-        "position": "right"
-      },
-      {
-        "desc": "hand with light skin tone",
-        "action": "placing blade into dishwasher",
-        "position": "right"
-      },
-      {
-        "desc": "metal dishwasher rack",
-        "action": "static",
-        "position": "background"
-      },
-      {
-        "desc": "clear glass bowl with chopped green vegetables",
-        "action": "static",
-        "position": "bottom right"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "A hand places a black metal shredding blade into a dishwasher rack.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The red stand mixer is attached to a white food processing unit.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "Chopped green vegetables are visible inside a glass bowl.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [
-      "KitchenAid"
-    ],
-    "spatial": "The red stand mixer is to the left of the white food processor attachment. The hand is to the right of the attachment, holding the black blade above the metal dishwasher rack. The glass bowl containing vegetables is in the foreground, below the mixer and attachment.",
-    "parse_success": true,
-    "chunk_idx": 23,
-    "video_id": "Kitchenaid_Slice_and__Shred_Attachment_for_the_Mixer_-_review_and_instructions",
-    "_rescued": "parse"
-  },
-  {
-    "time": [
-      48,
-      50
-    ],
-    "visible_entities": [
-      {
-        "desc": "person's hand with light skin tone",
-        "action": "placing a black cylindrical object into the rack",
-        "position": "right"
-      },
-      {
-        "desc": "black cylindrical object with a silver perforated metal mesh body and a black plastic top with a nozzle",
-        "action": "being placed into the rack",
-        "position": "right"
-      },
-      {
-        "desc": "black cylindrical object with a silver perforated metal mesh body and a black plastic top with a nozzle",
-        "action": "static",
-        "position": "center"
-      },
-      {
-        "desc": "black cylindrical object with a silver perforated metal mesh body and a black plastic top with a nozzle",
-        "action": "static",
-        "position": "left"
-      },
-      {
-        "desc": "clear glass tumbler",
-        "action": "static",
-        "position": "left"
-      },
-      {
-        "desc": "metal wire dishwasher rack with vertical tines",
-        "action": "static",
-        "position": "bottom"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "A hand places a black cylindrical filter into the dishwasher rack.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "Three black cylindrical filters are arranged in a row on the rack.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The filters feature a silver perforated metal mesh body.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "A clear glass is positioned to the left of the filters.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [],
-    "spatial": "The metal wire rack is at the bottom of the frame, holding the objects. A clear glass is to the left of the leftmost black cylindrical filter. The hand enters from the right side to place the rightmost filter next to the center filter.",
-    "parse_success": true,
-    "chunk_idx": 24,
-    "video_id": "Kitchenaid_Slice_and__Shred_Attachment_for_the_Mixer_-_review_and_instructions",
-    "_rescued": "parse"
-  },
-  {
-    "time": [
-      50,
-      52
-    ],
-    "visible_entities": [
-      {
-        "desc": "black cylindrical food processor blade attachments with silver metal grating surfaces",
-        "action": "static",
-        "position": "foreground"
-      },
-      {
-        "desc": "silver metal dishwasher rack with vertical tines",
-        "action": "static",
-        "position": "background"
-      },
-      {
-        "desc": "red KitchenAid stand mixer",
-        "action": "static",
-        "position": "left"
-      },
-      {
-        "desc": "white motor unit of a food processor attachment",
-        "action": "being wiped",
-        "position": "right"
-      },
-      {
-        "desc": "white cleaning cloth",
-        "action": "wiping the white motor unit",
-        "position": "right"
-      },
-      {
-        "desc": "person's hands",
-        "action": "wiping the white motor unit",
-        "position": "right"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "Three black food processor blade attachments are sitting inside a dishwasher rack.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "A person is wiping the white motor unit of a food processor attachment with a white cloth.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The red KitchenAid stand mixer is positioned on the counter to the left of the cleaning action.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [
-      "KitchenAid"
-    ],
-    "spatial": "The black food processor blades are inside the silver dishwasher rack in the foreground. To the right, a person's hands are holding a white cloth and wiping the white motor unit. The red KitchenAid stand mixer is to the left of the white motor unit being cleaned.",
-    "parse_success": true,
-    "chunk_idx": 25,
-    "video_id": "Kitchenaid_Slice_and__Shred_Attachment_for_the_Mixer_-_review_and_instructions",
-    "_rescued": "parse"
-  },
-  {
-    "time": [
-      52,
-      54
-    ],
-    "visible_entities": [
-      {
-        "desc": "person's hands with light skin tone",
-        "action": "wiping a white appliance",
-        "position": "right foreground"
-      },
-      {
-        "desc": "white handheld kitchen appliance, smooth plastic body, silver metal nozzle, small silver lever on top",
-        "action": "being wiped",
-        "position": "center foreground"
-      },
-      {
-        "desc": "white fluffy cloth or towel",
-        "action": "wiping the appliance",
-        "position": "right foreground"
-      },
-      {
-        "desc": "red KitchenAid Artisan stand mixer, glossy finish, silver band with black text",
-        "action": "static",
-        "position": "left background"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "A person is wiping a white handheld kitchen appliance with a white cloth.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The white appliance has a silver metal nozzle and a small lever.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "A red stand mixer is sitting on the counter.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [
-      "KitchenAid",
-      "ARTISAN"
-    ],
-    "spatial": "The person's hands are to the right of the red stand mixer. The white handheld appliance is held in front of the mixer. The white cloth is wrapped around the back of the appliance.",
-    "parse_success": true,
-    "chunk_idx": 26,
-    "video_id": "Kitchenaid_Slice_and__Shred_Attachment_for_the_Mixer_-_review_and_instructions",
-    "_rescued": "parse"
-  },
-  {
-    "time": [
-      54,
-      56
-    ],
-    "visible_entities": [
-      {
-        "desc": "red KitchenAid stand mixer with silver band and black lettering",
-        "action": "static",
-        "position": "left"
-      },
-      {
-        "desc": "white cylindrical plastic attachment with metal nozzle",
+        "desc": "white cylindrical pasta extruder attachment with metal nozzle",
         "action": "being held",
         "position": "center"
       },
       {
-        "desc": "clear glass measuring cup containing white liquid",
-        "action": "being poured",
+        "desc": "clear glass measuring cup",
+        "action": "being held",
         "position": "right"
       },
       {
-        "desc": "person's hands with light skin tone",
-        "action": "holding attachment and pouring liquid",
-        "position": "right"
+        "desc": "person's hands",
+        "action": "holding objects",
+        "position": "foreground"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A person is holding a white cylindrical attachment in their left hand.",
+        "fact": "A person is holding a white pasta extruder attachment in their left hand.",
         "confidence": 1.0
       },
       {
-        "fact": "A person is pouring a white liquid from a clear glass cup into the white attachment.",
+        "fact": "A person is holding a clear glass cup in their right hand.",
         "confidence": 1.0
       },
       {
-        "fact": "The red stand mixer is sitting on the white countertop.",
+        "fact": "The glass cup is positioned above the opening of the white attachment.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The red mixer is sitting on the white countertop.",
         "confidence": 1.0
       }
     ],
     "ocr": [
       "Kitchen"
     ],
-    "spatial": "The red stand mixer is to the left of the white attachment. The person's hands are to the right of the mixer, holding the attachment and the glass cup. The glass cup is positioned above the opening of the white attachment to pour liquid into it.",
+    "spatial": "The red KitchenAid mixer is on the left side of the frame. The person's hands are in the center and right foreground, holding the white attachment and the glass cup. The glass cup is positioned above the white attachment.",
     "parse_success": true,
     "chunk_idx": 27,
-    "video_id": "Kitchenaid_Slice_and__Shred_Attachment_for_the_Mixer_-_review_and_instructions",
-    "_rescued": "parse"
+    "video_id": "Kitchenaid_Slice_and__Shred_Attachment_for_the_Mixer_-_review_and_instructions"
   },
   {
     "time": [
-      56,
-      58
+      28,
+      29
     ],
     "visible_entities": [
       {
-        "desc": "hand with fair skin tone",
-        "action": "placing cucumber slices",
-        "position": "right"
+        "desc": "hand with fair skin",
+        "action": "placing cucumber slice",
+        "position": "right/foreground"
       },
       {
-        "desc": "green cucumber slices, thin, round, fresh",
+        "desc": "white rectangular serving platter",
+        "action": "static",
+        "position": "center"
+      },
+      {
+        "desc": "green cucumber slices, round, fresh",
         "action": "being arranged",
         "position": "right"
       },
@@ -1578,45 +1520,44 @@
         "position": "center-left"
       },
       {
-        "desc": "white rectangular serving platter",
+        "desc": "dark green leafy lettuce base",
         "action": "static",
         "position": "bottom"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A hand is placing cucumber slices onto the salad platter.",
+        "fact": "A hand is placing a slice of cucumber onto a salad platter.",
         "confidence": 1.0
       },
       {
-        "fact": "The salad ingredients are arranged in distinct rows on the platter.",
+        "fact": "The salad is arranged in distinct sections of vegetables.",
         "confidence": 1.0
       },
       {
-        "fact": "Radish slices are positioned to the left of the shredded lettuce.",
+        "fact": "Sliced radishes are positioned on the left side of the platter.",
         "confidence": 1.0
       },
       {
-        "fact": "Cherry tomatoes are positioned in the center of the platter.",
+        "fact": "Cherry tomatoes are clustered in the center of the platter.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The hand is on the right side of the frame, reaching towards the cucumber slices. The cucumber slices are to the right of the cherry tomatoes. The cherry tomatoes are in the center, flanked by shredded lettuce on the left and cucumbers on the right. The radish slices are on the far left of the platter.",
+    "spatial": "The hand is on the right side of the frame, reaching over the cucumber slices. The cucumber slices are to the right of the cherry tomatoes. The cherry tomatoes are next to the shredded lettuce. The radish slices are to the left of the shredded lettuce. All vegetables are arranged on top of the white rectangular platter.",
     "parse_success": true,
     "chunk_idx": 28,
-    "video_id": "Kitchenaid_Slice_and__Shred_Attachment_for_the_Mixer_-_review_and_instructions",
-    "_rescued": "parse"
+    "video_id": "Kitchenaid_Slice_and__Shred_Attachment_for_the_Mixer_-_review_and_instructions"
   },
   {
     "time": [
-      58,
-      60
+      29,
+      30
     ],
     "visible_entities": [
       {
-        "desc": "hand with light skin tone",
-        "action": "sprinkling yellow shredded cheese",
+        "desc": "hand with fair skin",
+        "action": "placing yellow cheese",
         "position": "bottom right"
       },
       {
@@ -1625,7 +1566,7 @@
         "position": "center"
       },
       {
-        "desc": "shredded orange cheese",
+        "desc": "shredded orange carrots",
         "action": "static",
         "position": "left"
       },
@@ -1651,114 +1592,116 @@
       },
       {
         "desc": "shredded yellow cheese",
-        "action": "being sprinkled",
+        "action": "being placed",
         "position": "far right"
       },
       {
-        "desc": "mixed salad greens",
+        "desc": "green leafy salad base",
         "action": "static",
         "position": "background"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A hand is sprinkling shredded yellow cheese onto the salad.",
+        "fact": "A hand is placing shredded yellow cheese onto the salad platter.",
         "confidence": 1.0
       },
       {
-        "fact": "The salad ingredients are arranged in vertical stripes on a white platter.",
+        "fact": "The platter contains vertical rows of carrots, radishes, lettuce, tomatoes, cucumbers, and cheese.",
         "confidence": 1.0
       },
       {
-        "fact": "The platter contains shredded orange cheese, sliced radishes, shredded lettuce, cherry tomatoes, sliced cucumbers, and shredded yellow cheese.",
+        "fact": "The ingredients are arranged on a bed of mixed greens.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The white rectangular platter is in the center of the frame. From left to right, the platter holds shredded orange cheese, sliced radishes, shredded lettuce, cherry tomatoes, sliced cucumbers, and shredded yellow cheese. A hand is visible at the bottom right, sprinkling cheese onto the far right section of the salad.",
+    "spatial": "The white rectangular platter is in the center of the frame. From left to right, the ingredients are arranged in vertical stripes: shredded carrots, sliced radishes, shredded lettuce, cherry tomatoes, sliced cucumbers, and shredded cheese. The hand is in the bottom right corner, reaching towards the cheese.",
     "parse_success": true,
     "chunk_idx": 29,
-    "video_id": "Kitchenaid_Slice_and__Shred_Attachment_for_the_Mixer_-_review_and_instructions",
-    "_rescued": "parse"
+    "video_id": "Kitchenaid_Slice_and__Shred_Attachment_for_the_Mixer_-_review_and_instructions"
   },
   {
     "time": [
-      60,
-      62
+      30,
+      31
     ],
     "visible_entities": [
       {
-        "desc": "green and golden-brown vegetable fritters with a textured, fried surface",
+        "desc": "golden-brown zucchini fritters with visible green vegetable shreds, arranged in a circle",
         "action": "static",
         "position": "left"
       },
       {
-        "desc": "small clear glass bowl filled with white creamy dip garnished with green herbs",
+        "desc": "small clear glass bowl containing white creamy dip garnished with green herbs",
         "action": "static",
-        "position": "left"
+        "position": "center-left"
       },
       {
-        "desc": "plate of spaghetti with red meat sauce topped with shredded white cheese",
+        "desc": "plate of spaghetti with red meat sauce topped with grated white cheese",
         "action": "static",
         "position": "right"
       },
       {
-        "desc": "fresh salad with yellow corn, red cherry tomatoes, sliced cucumbers, radishes, and lettuce",
+        "desc": "fresh salad with sliced cucumbers, red cherry tomatoes, radish slices, yellow peppers, and lettuce",
         "action": "static",
         "position": "foreground"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A plate of vegetable fritters sits next to a bowl of white dip.",
+        "fact": "A plate of zucchini fritters is displayed with a central bowl of white dip.",
         "confidence": 1.0
       },
       {
-        "fact": "A plate of spaghetti with meat sauce is positioned in the background.",
+        "fact": "A plate of spaghetti with meat sauce is positioned to the right of the fritters.",
         "confidence": 1.0
       },
       {
-        "fact": "A fresh salad is placed in the foreground of the table setting.",
+        "fact": "A fresh vegetable salad is placed in the foreground of the scene.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The food items are arranged on a white surface.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The plate of vegetable fritters and dip is to the left of the plate of spaghetti. The salad is in the foreground, positioned in front of the spaghetti and fritters. The bowl of dip is placed in the center of the fritter plate.",
+    "spatial": "The plate of zucchini fritters is to the left of the plate of spaghetti. The small bowl of white dip is in the center of the fritter plate. The salad is in the foreground, below the other two dishes.",
     "parse_success": true,
     "chunk_idx": 30,
-    "video_id": "Kitchenaid_Slice_and__Shred_Attachment_for_the_Mixer_-_review_and_instructions",
-    "_rescued": "parse"
+    "video_id": "Kitchenaid_Slice_and__Shred_Attachment_for_the_Mixer_-_review_and_instructions"
   },
   {
     "time": [
-      62,
-      64
+      31,
+      32
     ],
     "visible_entities": [
       {
-        "desc": "red KitchenAid stand mixer with silver accents and a white food grinder attachment",
+        "desc": "red KitchenAid stand mixer with a white food grinder attachment",
         "action": "static",
-        "position": "left"
+        "position": "left/center"
       },
       {
-        "desc": "plate of spaghetti with red meat sauce and shredded white cheese",
+        "desc": "plate of spaghetti with meat sauce and grated cheese",
         "action": "static",
-        "position": "right"
+        "position": "right/foreground"
       },
       {
-        "desc": "two metal grater drums with black tops",
+        "desc": "two metal shredding blades with black tops",
         "action": "static",
-        "position": "bottom left"
+        "position": "left/foreground"
       },
       {
-        "desc": "plate of green pasta with white sauce",
+        "desc": "plate of sliced green vegetables",
         "action": "static",
-        "position": "center"
+        "position": "center/foreground"
       },
       {
-        "desc": "plate of salad with yellow and red vegetables",
+        "desc": "plate of salad",
         "action": "static",
-        "position": "bottom right"
+        "position": "right/foreground"
       },
       {
         "desc": "white kitchen counter",
@@ -1768,7 +1711,7 @@
     ],
     "atomic_facts": [
       {
-        "fact": "A red KitchenAid stand mixer is sitting on a white counter.",
+        "fact": "A red stand mixer is positioned on the kitchen counter.",
         "confidence": 1.0
       },
       {
@@ -1776,31 +1719,30 @@
         "confidence": 1.0
       },
       {
-        "fact": "A plate of spaghetti with meat sauce and cheese is placed on the counter.",
+        "fact": "Two metal shredding blades are placed on the counter to the left of the mixer.",
         "confidence": 1.0
       },
       {
-        "fact": "Two metal grater drums are sitting on the counter to the left of the mixer.",
+        "fact": "A plate of spaghetti is visible on the counter to the right of the mixer.",
         "confidence": 1.0
       },
       {
-        "fact": "A plate of green pasta and a plate of salad are on the counter to the right of the mixer.",
+        "fact": "Plates of sliced vegetables and salad are arranged on the counter in front of the mixer.",
         "confidence": 1.0
       }
     ],
     "ocr": [
       "KitchenAid"
     ],
-    "spatial": "The red KitchenAid stand mixer is on the left side of the white kitchen counter. The white food grinder attachment is connected to the front of the mixer. To the left of the mixer, two metal grater drums are sitting on the counter. To the right of the mixer, there are three plates of food: one with spaghetti, one with green pasta, and one with salad.",
+    "spatial": "The red stand mixer is to the left of the plate of spaghetti. The two metal shredding blades are to the left of the mixer. The plate of sliced green vegetables is in front of the mixer. The plate of salad is to the right of the sliced vegetables.",
     "parse_success": true,
     "chunk_idx": 31,
-    "video_id": "Kitchenaid_Slice_and__Shred_Attachment_for_the_Mixer_-_review_and_instructions",
-    "_rescued": "parse"
+    "video_id": "Kitchenaid_Slice_and__Shred_Attachment_for_the_Mixer_-_review_and_instructions"
   },
   {
     "time": [
-      64,
-      66
+      32,
+      33
     ],
     "visible_entities": [
       {
@@ -1819,91 +1761,75 @@
         "position": "center-right"
       },
       {
-        "desc": "white rectangular plate with a colorful salad containing yellow and green vegetables",
+        "desc": "white rectangular plate with a salad containing yellow and green vegetables",
         "action": "static",
         "position": "right"
       },
       {
-        "desc": "plate with cooked pasta topped with grated cheese",
+        "desc": "dark plate with pasta topped with white cheese",
         "action": "static",
         "position": "right"
       },
       {
-        "desc": "white kitchen counter surface",
-        "action": "static",
-        "position": "bottom"
-      },
-      {
-        "desc": "bright window with white trim",
-        "action": "static",
-        "position": "background"
-      },
-      {
-        "desc": "white shelves with jars and kitchen items",
-        "action": "static",
-        "position": "background"
-      },
-      {
-        "desc": "KitchenAid logo in red text on a white background",
+        "desc": "red 'KitchenAid' logo text on a white background",
         "action": "static",
         "position": "center"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "The video displays a red KitchenAid stand mixer equipped with a food grinder attachment.",
+        "fact": "The video transitions from a shot of the red stand mixer with food attachments to a white screen displaying the KitchenAid logo.",
         "confidence": 1.0
       },
       {
-        "fact": "Plates of prepared food, including salad and pasta, are arranged on the counter next to the mixer.",
+        "fact": "The stand mixer is positioned on a white countertop.",
         "confidence": 1.0
       },
       {
-        "fact": "Two metal shredding blades are sitting on the counter to the left of the mixer.",
+        "fact": "Plates of prepared food are arranged on the counter to the right of the mixer.",
         "confidence": 1.0
       },
       {
-        "fact": "The scene transitions to a white screen displaying the red KitchenAid logo.",
+        "fact": "The text 'KitchenAid' is displayed in red font.",
         "confidence": 1.0
       }
     ],
     "ocr": [
       "KitchenAid"
     ],
-    "spatial": "The red stand mixer is positioned in the center of the white counter. To the left of the mixer are two metal shredding blades. To the right of the mixer are three plates of food. The window and shelves are in the background behind the counter.",
+    "spatial": "The red stand mixer is in the center of the frame, with metal shredding blades to its left. Plates of food are arranged to the right of the mixer on the countertop. The 'KitchenAid' logo appears centered on a white background in the final frame.",
     "parse_success": true,
     "chunk_idx": 32,
-    "video_id": "Kitchenaid_Slice_and__Shred_Attachment_for_the_Mixer_-_review_and_instructions",
-    "_rescued": "parse"
+    "video_id": "Kitchenaid_Slice_and__Shred_Attachment_for_the_Mixer_-_review_and_instructions"
   },
   {
     "time": [
-      66,
-      68
+      33,
+      34
     ],
     "visible_entities": [
       {
-        "desc": "The text 'KitchenAid' written in a bold, sans-serif font with a deep red or maroon color, accompanied by a registered trademark symbol.",
-        "action": "static"
+        "desc": "The word 'KitchenAid' written in a bold, maroon-colored serif font with a registered trademark symbol (®) at the top right.",
+        "action": "static",
+        "position": "center"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "The KitchenAid logo is displayed on the screen.",
+        "fact": "The KitchenAid logo is displayed statically on the screen.",
         "confidence": 1.0
       },
       {
-        "fact": "The text 'KitchenAid' is visible in the center of the frame.",
+        "fact": "The text reads 'KitchenAid' in maroon letters.",
         "confidence": 1.0
       }
     ],
     "ocr": [
-      "KitchenAid"
+      "KitchenAid®"
     ],
-    "spatial": "The red 'KitchenAid' text is positioned in the center of the white background.",
+    "spatial": "The maroon 'KitchenAid' logo is centered on a plain white background.",
     "parse_success": true,
     "chunk_idx": 33,
-    "video_id": "Kitchenaid_Slice_and__Shred_Attachment_for_the_Mixer_-_review_and_instructions",
-    "_rescued": "parse"
+    "video_id": "Kitchenaid_Slice_and__Shred_Attachment_for_the_Mixer_-_review_and_instructions"
   }
 ]

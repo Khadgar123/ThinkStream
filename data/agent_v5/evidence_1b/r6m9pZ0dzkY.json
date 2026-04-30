@@ -2,14 +2,14 @@
   {
     "time": [
       0,
-      2
+      1
     ],
     "visible_entities": [
       {
-        "desc": "Text reading 'Cuts Wood, Metal and Concrete!' in a bold, white, sans-serif font",
-        "action": "static",
+        "desc": "Text reading 'Cuts Wood, Metal and Concrete!' in a bold, sans-serif font. The text appears in dark grey at the start and transitions to bright white.",
+        "action": "changing color from dark grey to white",
         "position": "top",
-        "id": "text_cuts_materials_1"
+        "id": "text_headline_1"
       }
     ],
     "atomic_facts": [
@@ -18,50 +18,47 @@
         "confidence": 1.0
       },
       {
-        "fact": "The text remains static in the upper portion of the frame.",
+        "fact": "The text changes visibility from a faint dark grey to a solid white color.",
         "confidence": 1.0
       }
     ],
     "ocr": [
       "Cuts Wood, Metal and Concrete!"
     ],
-    "spatial": "The white text is positioned at the top of the frame, centered horizontally against a black background.",
+    "spatial": "The text is positioned at the top of the black background.",
     "parse_success": true,
     "chunk_idx": 0,
     "video_id": "r6m9pZ0dzkY",
-    "state_changes": []
+    "state_changes": [
+      "Headline text transitions color from dark grey to bright white."
+    ]
   },
   {
     "time": [
-      2,
-      4
+      1,
+      2
     ],
     "visible_entities": [
       {
-        "desc": "white sans-serif text overlay",
+        "desc": "large white sans-serif text reading 'Cuts Wood, Metal and Concrete!'",
         "action": "static",
-        "position": "top"
+        "position": "top",
+        "id": "text_headline_1"
       },
       {
-        "desc": "black sans-serif text block",
+        "desc": "small black sans-serif instructional text on a wooden background",
         "action": "static",
         "position": "left"
       },
       {
-        "desc": "inset image of a power tool with a black hose attachment",
-        "action": "static",
-        "position": "right",
-        "id": "inset_tool_image_1"
-      },
-      {
-        "desc": "yellow circle highlighting a port on the tool",
+        "desc": "power saw tool, dark grey and black, resting on a wooden surface",
         "action": "static",
         "position": "right"
       },
       {
-        "desc": "wooden surface background",
+        "desc": "yellow circle graphic highlighting a port on the tool",
         "action": "static",
-        "position": "background"
+        "position": "right"
       }
     ],
     "atomic_facts": [
@@ -70,11 +67,15 @@
         "confidence": 1.0
       },
       {
-        "fact": "Text on the left instructs to hook up a mini vac to the attachment port.",
+        "fact": "The instructional text on the left reads 'ADD A BIT OF DEPTH AND CONTROL THE MESS AT THE SAME TIME, BY HOOKING UP A MINI VAC TO THE ATTACHMENT PORT ON THE SIDE'.",
         "confidence": 1.0
       },
       {
-        "fact": "An inset image shows a power tool with a hose connected to its side.",
+        "fact": "A power saw is shown on the right side of the screen.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A yellow circle highlights the attachment port on the side of the saw.",
         "confidence": 1.0
       }
     ],
@@ -85,7 +86,7 @@
       "HOOKING UP A MINI VAC TO THE",
       "ATTACHMENT PORT ON THE SIDE"
     ],
-    "spatial": "The white headline text is positioned at the top of the frame, above the black instructional text on the left and the inset image on the right. The black text block is to the left of the inset image. The inset image is situated on the right side of the screen against a wooden background.",
+    "spatial": "The large white headline text is positioned at the top of the frame, above the other content. The block of instructional text is located on the left side of the screen. The image of the power saw is positioned to the right of the instructional text. The yellow circle is superimposed on the saw image, specifically highlighting the side attachment port.",
     "parse_success": true,
     "chunk_idx": 1,
     "video_id": "r6m9pZ0dzkY",
@@ -93,33 +94,31 @@
   },
   {
     "time": [
-      4,
-      6
+      2,
+      3
     ],
     "visible_entities": [
       {
-        "desc": "light brown wooden background with vertical grain pattern and scattered wood shavings",
-        "action": "static",
-        "position": "background",
-        "id": "background_wood_floor_1"
-      },
-      {
-        "desc": "large white sans-serif text reading 'Cuts Wood, Metal and Concrete!'",
-        "action": "static",
-        "position": "top",
-        "id": "text_cuts_materials_1"
-      },
-      {
-        "desc": "black sans-serif text reading 'ADD A WATER HOSE FOR CONCRETE' and 'ADD A CO2 HOSE FOR METAL WORK'",
-        "action": "static",
-        "position": "left",
-        "id": "text_hose_addons_1"
-      },
-      {
-        "desc": "inset image showing a grey circular saw mounted on a wooden board with a black corrugated hose attached",
+        "desc": "black circular saw with a large black corrugated dust extraction hose attached, mounted on a light-colored wooden board",
         "action": "static",
         "position": "right",
-        "id": "inset_tool_image_1"
+        "id": "saw_circular_black_1"
+      },
+      {
+        "desc": "light brown wooden plank background with scattered wood shavings",
+        "action": "static",
+        "position": "background"
+      },
+      {
+        "desc": "white bold sans-serif text reading 'Cuts Wood, Metal and Concrete!'",
+        "action": "static",
+        "position": "top",
+        "id": "text_headline_1"
+      },
+      {
+        "desc": "black sans-serif text listing instructions",
+        "action": "static",
+        "position": "left"
       }
     ],
     "atomic_facts": [
@@ -128,15 +127,15 @@
         "confidence": 1.0
       },
       {
-        "fact": "The text 'ADD A WATER HOSE FOR CONCRETE' appears on the left side.",
+        "fact": "The text on the left updates to include the instruction 'ADD A CO2 HOSE FOR METAL WORK'.",
         "confidence": 1.0
       },
       {
-        "fact": "The text 'ADD A CO2 HOSE FOR METAL WORK' appears below the concrete instruction.",
+        "fact": "A circular saw is positioned on a wooden board.",
         "confidence": 1.0
       },
       {
-        "fact": "An inset image shows a circular saw setup on the right side of the screen.",
+        "fact": "A black hose is connected to the saw for dust extraction.",
         "confidence": 1.0
       }
     ],
@@ -145,7 +144,7 @@
       "ADD A WATER HOSE FOR CONCRETE",
       "ADD A CO2 HOSE FOR METAL WORK"
     ],
-    "spatial": "The large white text is located at the top of the wooden background. The black instructional text is positioned on the left side, below the main headline. The inset image of the saw is situated to the right of the black text.",
+    "spatial": "The circular saw is located on the right side of the frame, resting on a wooden board. The instructional text is positioned to the left of the saw. The main headline text is situated above the instructional text and the saw.",
     "parse_success": true,
     "chunk_idx": 2,
     "video_id": "r6m9pZ0dzkY",
@@ -153,42 +152,47 @@
   },
   {
     "time": [
-      6,
-      8
+      3,
+      4
     ],
     "visible_entities": [
       {
-        "desc": "light brown wooden plank background with visible wood grain and scattered wood shavings",
+        "desc": "light brown wooden surface with visible grain and knots, scattered wood shavings",
         "action": "static",
-        "id": "background_wood_floor_1"
+        "position": "background"
       },
       {
-        "desc": "black circular saw mounted on a wooden workbench with a black corrugated vacuum hose attached",
+        "desc": "black circular saw mounted on a wooden base with a black flexible hose attached",
         "action": "static",
-        "id": "saw_straight_flush_1"
+        "position": "right",
+        "id": "saw_circular_black_1"
       },
       {
-        "desc": "white text with black outline reading 'Cuts Wood, Metal and Concrete!'",
+        "desc": "white text with black outline",
         "action": "static",
-        "id": "text_cuts_materials_1"
+        "position": "top"
       },
       {
-        "desc": "black text reading 'ADD A WATER HOSE FOR CONCRETE' and 'ADD A CO2 HOSE FOR METAL WORK'",
+        "desc": "black text in all caps",
         "action": "static",
-        "id": "text_hose_addons_1"
+        "position": "left"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "The video displays a static informational graphic about a tool's capabilities.",
+        "fact": "The video displays a static promotional slide for a tool.",
         "confidence": 1.0
       },
       {
-        "fact": "The text states the tool cuts wood, metal, and concrete.",
+        "fact": "The text 'Cuts Wood, Metal and Concrete!' is displayed at the top.",
         "confidence": 1.0
       },
       {
-        "fact": "The text instructs to add a water hose for concrete and a CO2 hose for metal work.",
+        "fact": "The text 'ADD A WATER HOSE FOR CONCRETE' is displayed on the left.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The text 'ADD A CO2 HOSE FOR METAL WORK' is displayed below the water hose text.",
         "confidence": 1.0
       },
       {
@@ -201,7 +205,7 @@
       "ADD A WATER HOSE FOR CONCRETE",
       "ADD A CO2 HOSE FOR METAL WORK"
     ],
-    "spatial": "The title text 'Cuts Wood, Metal and Concrete!' is positioned at the top center of the screen. The instructional text regarding hoses is located on the left side, below the title. An inset image showing a circular saw is positioned on the right side of the screen, next to the instructional text. The entire scene is set against a wooden background.",
+    "spatial": "The main headline text is located at the top of the screen above the other elements. The instructional text is positioned on the left side of the screen. The inset image of the circular saw is located to the right of the instructional text.",
     "parse_success": true,
     "chunk_idx": 3,
     "video_id": "r6m9pZ0dzkY",
@@ -209,115 +213,47 @@
   },
   {
     "time": [
-      8,
-      10
+      4,
+      5
     ],
     "visible_entities": [
       {
-        "desc": "black circular saw with a black corrugated vacuum hose attached, mounted on a wooden board",
-        "action": "static",
-        "position": "right",
-        "id": "saw_straight_flush_1"
-      },
-      {
-        "desc": "light brown wooden plank background with wood grain texture",
-        "action": "static",
-        "position": "background",
-        "id": "background_wood_floor_1"
-      },
-      {
-        "desc": "white text with black outline reading 'Cuts Wood, Metal and Concrete!'",
-        "action": "static",
-        "position": "top",
-        "id": "text_cuts_materials_1"
-      },
-      {
-        "desc": "black text reading 'ADD A WATER HOSE FOR CONCRETE' and 'ADD A CO2 HOSE FOR METAL WORK'",
-        "action": "static",
-        "position": "left",
-        "id": "text_hose_addons_1"
-      },
-      {
-        "desc": "pile of light-colored wood shavings",
-        "action": "static",
-        "position": "bottom",
-        "id": "sawdust_piles_1"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "The video displays a static informational graphic about a tool's capabilities.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The text states the tool cuts wood, metal, and concrete.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The text instructs to add a water hose for concrete and a CO2 hose for metal work.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "A circular saw is shown mounted on a wooden surface.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [
-      "Cuts Wood, Metal and Concrete!",
-      "ADD A WATER HOSE FOR CONCRETE",
-      "ADD A CO2 HOSE FOR METAL WORK"
-    ],
-    "spatial": "The image of the circular saw is positioned on the right side of the screen. The instructional text about hoses is located to the left of the saw image. The main headline text is above the saw image and the instructional text. The wood shavings are at the bottom of the frame, below the instructional text.",
-    "parse_success": true,
-    "chunk_idx": 4,
-    "video_id": "r6m9pZ0dzkY",
-    "state_changes": []
-  },
-  {
-    "time": [
-      10,
-      12
-    ],
-    "visible_entities": [
-      {
-        "desc": "light brown wooden background with visible grain and scattered wood shavings",
+        "desc": "light brown wooden plank background with visible wood grain and scattered wood shavings",
         "action": "static",
         "position": "background"
       },
       {
-        "desc": "white sans-serif text with drop shadow reading 'Cuts Wood, Metal and Concrete!'",
+        "desc": "large white sans-serif text with black outline",
         "action": "static",
-        "position": "top",
-        "id": "text_cuts_materials_1"
+        "position": "top"
       },
       {
-        "desc": "black sans-serif text reading 'ADD A WATER HOSE FOR CONCRETE' and 'ADD A CO2 HOSE FOR METAL WORK'",
+        "desc": "smaller black sans-serif instructional text",
         "action": "static",
-        "position": "left",
-        "id": "text_hose_addons_1"
+        "position": "left"
       },
       {
         "desc": "black circular saw mounted on a wooden base with a black corrugated vacuum hose attached",
         "action": "static",
         "position": "right",
-        "id": "saw_straight_flush_1"
+        "id": "saw_circular_black_1"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "The text states the tool cuts wood, metal, and concrete.",
+        "fact": "The text 'Cuts Wood, Metal and Concrete!' is displayed at the top of the screen.",
         "confidence": 1.0
       },
       {
-        "fact": "The text instructs to add a water hose for concrete.",
+        "fact": "The text instructs to 'ADD A WATER HOSE FOR CONCRETE'.",
         "confidence": 1.0
       },
       {
-        "fact": "The text instructs to add a CO2 hose for metal work.",
+        "fact": "The text instructs to 'ADD A CO2 HOSE FOR METAL WORK'.",
         "confidence": 1.0
       },
       {
-        "fact": "A circular saw is mounted on a wooden board.",
+        "fact": "A black circular saw is mounted on a wooden board.",
         "confidence": 1.0
       }
     ],
@@ -328,51 +264,103 @@
     ],
     "spatial": "The instructional text is located on the left side of the screen, below the main headline. The image of the circular saw is positioned to the right of the instructional text. The saw is mounted on top of a wooden board.",
     "parse_success": true,
+    "chunk_idx": 4,
+    "video_id": "r6m9pZ0dzkY",
+    "state_changes": []
+  },
+  {
+    "time": [
+      5,
+      6
+    ],
+    "visible_entities": [
+      {
+        "desc": "black circular saw with a black corrugated vacuum hose attached, mounted on a light-colored wooden board",
+        "action": "static",
+        "position": "right",
+        "id": "saw_circular_black_1"
+      },
+      {
+        "desc": "light brown wooden plank background with visible wood grain and scattered wood shavings",
+        "action": "static",
+        "position": "background"
+      },
+      {
+        "desc": "white text with black outline reading 'Cuts Wood, Metal and Concrete!'",
+        "action": "static",
+        "position": "top",
+        "id": "text_headline_1"
+      },
+      {
+        "desc": "black text reading 'ADD A WATER HOSE FOR CONCRETE' and 'ADD A CO2 HOSE FOR METAL WORK'",
+        "action": "static",
+        "position": "left"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The image displays a circular saw setup on a wooden board.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "Text on the screen claims the tool cuts wood, metal, and concrete.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "Instructions are visible to add a water hose for concrete and a CO2 hose for metal work.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "Cuts Wood, Metal and Concrete!",
+      "ADD A WATER HOSE FOR CONCRETE",
+      "ADD A CO2 HOSE FOR METAL WORK"
+    ],
+    "spatial": "The circular saw is positioned on the right side of the frame, resting on a wooden board. The instructional text is located to the left of the saw. The main headline text is positioned above the instructional text and the saw.",
+    "parse_success": true,
     "chunk_idx": 5,
     "video_id": "r6m9pZ0dzkY",
     "state_changes": []
   },
   {
     "time": [
-      12,
-      14
+      6,
+      7
     ],
     "visible_entities": [
       {
-        "desc": "light brown wooden planks with visible grain patterns and knots",
+        "desc": "wooden floorboards, light brown, vertical grain pattern",
         "action": "static",
         "position": "background"
       },
       {
         "desc": "piles of light-colored wood shavings",
         "action": "static",
-        "position": "top left and bottom center",
-        "id": "sawdust_piles_1"
+        "position": "top-left and bottom-center",
+        "id": "debris_sawdust_1"
       },
       {
-        "desc": "white text with black outline reading 'Cuts Wood, Metal and Concrete!'",
+        "desc": "white text with black outline, sans-serif font",
         "action": "static",
-        "position": "top center",
-        "id": "text_cuts_materials_1"
+        "position": "top-center"
       },
       {
-        "desc": "black bold text reading 'WOOD • CONCRETE • METAL'",
+        "desc": "black text, bold sans-serif font",
         "action": "static",
-        "position": "center",
-        "id": "text_wood_concrete_metal_1"
+        "position": "center"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "The video displays a static shot of a wooden surface.",
+        "fact": "The text 'Cuts Wood, Metal and Concrete!' is displayed at the top of the screen.",
         "confidence": 1.0
       },
       {
-        "fact": "Text overlays advertise that the product cuts wood, metal, and concrete.",
+        "fact": "The text 'WOOD • CONCRETE • METAL' is displayed below the headline.",
         "confidence": 1.0
       },
       {
-        "fact": "Wood shavings are scattered on the wooden planks.",
+        "fact": "Wood shavings are scattered on the wooden floorboards.",
         "confidence": 1.0
       }
     ],
@@ -380,7 +368,7 @@
       "Cuts Wood, Metal and Concrete!",
       "WOOD • CONCRETE • METAL"
     ],
-    "spatial": "The white text 'Cuts Wood, Metal and Concrete!' is located at the top of the frame, above the black text 'WOOD • CONCRETE • METAL'. The piles of wood shavings are positioned on the wooden planks, with one pile in the top left corner and another near the bottom center.",
+    "spatial": "The white headline text is above the black list of materials. The piles of wood shavings are on the wooden floorboards, with one pile in the top-left corner and another near the bottom-center.",
     "parse_success": true,
     "chunk_idx": 6,
     "video_id": "r6m9pZ0dzkY",
@@ -388,69 +376,49 @@
   },
   {
     "time": [
-      14,
-      16
+      7,
+      8
     ],
     "visible_entities": [
       {
-        "desc": "wooden floorboards, light brown, vertical orientation with visible wood grain",
+        "desc": "light brown wooden floorboards with visible grain texture and scattered wood shavings",
         "action": "static",
-        "position": "background",
-        "id": "background_wood_floor_1"
+        "position": "background"
       },
       {
-        "desc": "sawdust pile, light beige, fine texture, scattered",
+        "desc": "white text with black outline reading 'Cuts Wood, Metal and Concrete!'",
         "action": "static",
-        "position": "top left",
-        "id": "sawdust_piles_1"
+        "position": "top",
+        "id": "text_headline_1"
       },
       {
-        "desc": "sawdust pile, light beige, fine texture, scattered",
+        "desc": "black bold text reading 'WOOD • CONCRETE • METAL'",
         "action": "static",
-        "position": "bottom center",
-        "id": "sawdust_piles_1"
+        "position": "center",
+        "id": "text_materials_1"
       },
       {
-        "desc": "white text with black outline, sans-serif font",
-        "action": "static",
-        "position": "top center"
-      },
-      {
-        "desc": "black text, bold sans-serif font",
-        "action": "static",
-        "position": "center"
-      },
-      {
-        "desc": "faded black text, bold sans-serif font, appearing as a motion blur or transition effect",
+        "desc": "black bold text reading 'ALL IN THE SAME SAW?'",
         "action": "static",
         "position": "center"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "The text 'Cuts Wood, Metal and Concrete!' is displayed at the top of the screen.",
+        "fact": "Text on screen claims the saw cuts wood, metal, and concrete.",
         "confidence": 1.0
       },
       {
-        "fact": "The text 'WOOD • CONCRETE • METAL' is displayed in the center.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The text 'ALL IN THE SAME SAW?' is displayed below the material list.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "A faded, ghosted version of the text 'ALL IN THE SAME SAW?' appears behind the main text, suggesting a visual transition or motion effect.",
+        "fact": "Text asks if these materials can be cut 'ALL IN THE SAME SAW?'.",
         "confidence": 1.0
       }
     ],
     "ocr": [
       "Cuts Wood, Metal and Concrete!",
       "WOOD • CONCRETE • METAL",
-      "ALL IN THE SAME SAW?",
       "ALL IN THE SAME SAW?"
     ],
-    "spatial": "The white headline text is positioned above the black text listing materials. The black text listing materials is above the question text. The sawdust piles are located on the wooden floorboards, one in the top left corner and one near the bottom center.",
+    "spatial": "The white text 'Cuts Wood, Metal and Concrete!' is positioned at the top of the frame. Below it, in the center, is the black text 'WOOD • CONCRETE • METAL'. Directly underneath that is the text 'ALL IN THE SAME SAW?'. All text is superimposed over the wooden floorboards background.",
     "parse_success": true,
     "chunk_idx": 7,
     "video_id": "r6m9pZ0dzkY",
@@ -458,23 +426,22 @@
   },
   {
     "time": [
-      16,
-      18
+      8,
+      9
     ],
     "visible_entities": [
       {
-        "desc": "light brown wooden floorboards with visible grain patterns",
+        "desc": "light brown wooden floorboards with visible grain and knots",
         "action": "static",
-        "position": "background",
-        "id": "background_wood_floor_1"
+        "position": "background"
       },
       {
-        "desc": "white text with black outline in sans-serif font",
+        "desc": "white text with black outline, sans-serif font",
         "action": "static",
         "position": "top"
       },
       {
-        "desc": "black bold text in sans-serif font",
+        "desc": "black bold text, sans-serif font",
         "action": "static",
         "position": "center"
       },
@@ -482,20 +449,12 @@
         "desc": "piles of light-colored wood shavings",
         "action": "static",
         "position": "top-left and bottom-center",
-        "id": "sawdust_piles_1"
+        "id": "debris_sawdust_1"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "The text 'Cuts Wood, Metal and Concrete!' is displayed at the top of the screen.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The text 'WOOD • CONCRETE • METAL' is displayed in the center.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The text 'ALL IN THE SAME SAW?' is displayed below the material list.",
+        "fact": "Text on screen asks if a saw can cut wood, concrete, and metal.",
         "confidence": 1.0
       },
       {
@@ -508,7 +467,7 @@
       "WOOD • CONCRETE • METAL",
       "ALL IN THE SAME SAW?"
     ],
-    "spatial": "The white text 'Cuts Wood, Metal and Concrete!' is positioned above the black text 'WOOD • CONCRETE • METAL'. The black text 'ALL IN THE SAME SAW?' is located below the material list. Piles of wood shavings are visible in the top-left and bottom-center areas of the wooden floor background.",
+    "spatial": "The white text 'Cuts Wood, Metal and Concrete!' is located at the top of the frame. The black text listing materials and asking a question is centered below the white text. Piles of wood shavings are positioned on the wooden floorboards, with one pile near the top left and another near the bottom center.",
     "parse_success": true,
     "chunk_idx": 8,
     "video_id": "r6m9pZ0dzkY",
@@ -516,51 +475,39 @@
   },
   {
     "time": [
-      18,
-      20
+      9,
+      10
     ],
     "visible_entities": [
       {
-        "desc": "light brown wooden planks with visible grain and knots",
+        "desc": "light brown wooden planks with visible grain patterns",
         "action": "static",
         "position": "background"
       },
       {
-        "desc": "piles of light-colored wood shavings",
+        "desc": "piles of light-colored sawdust",
         "action": "static",
-        "position": "top and bottom",
-        "id": "sawdust_piles_1"
+        "position": "top-left and bottom-center",
+        "id": "debris_sawdust_1"
       },
       {
-        "desc": "black bold sans-serif text reading 'WOOD • CONCRETE • METAL ALL IN THE SAME SAW?'",
+        "desc": "black text overlay in bold sans-serif font",
         "action": "static",
-        "position": "center",
-        "id": "text_wood_concrete_metal_1"
+        "position": "center"
       },
       {
-        "desc": "black bold sans-serif text reading 'CAN A HANDHELD SAW REALLY DO THAT?'",
+        "desc": "faint white text overlay in sans-serif font",
         "action": "static",
-        "position": "bottom",
-        "id": "text_handheld_question_1"
-      },
-      {
-        "desc": "faint white sans-serif text reading 'Cuts Wood, Metal and Concrete!'",
-        "action": "static",
-        "position": "top",
-        "id": "text_cuts_materials_1"
+        "position": "top"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "The text 'WOOD • CONCRETE • METAL ALL IN THE SAME SAW?' is displayed in the center of the screen.",
+        "fact": "Text on the screen asks if a handheld saw can cut wood, concrete, and metal.",
         "confidence": 1.0
       },
       {
-        "fact": "The text 'CAN A HANDHELD SAW REALLY DO THAT?' appears at the bottom of the screen.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "Wood shavings are scattered on the wooden surface at the top and bottom of the frame.",
+        "fact": "Sawdust is visible on the wooden surface.",
         "confidence": 1.0
       }
     ],
@@ -570,7 +517,7 @@
       "ALL IN THE SAME SAW?",
       "CAN A HANDHELD SAW REALLY DO THAT?"
     ],
-    "spatial": "The black text 'WOOD • CONCRETE • METAL ALL IN THE SAME SAW?' is centered on the wooden background. The text 'CAN A HANDHELD SAW REALLY DO THAT?' is located below the central text. Piles of wood shavings are positioned at the top and bottom edges of the frame, surrounding the text.",
+    "spatial": "The black text 'WOOD • CONCRETE • METAL' is centered on the wooden background. The faint white text 'Cuts Wood, Metal and Concrete!' is positioned above the black text. The piles of sawdust are located at the top-left and bottom-center of the frame, resting on the wooden planks.",
     "parse_success": true,
     "chunk_idx": 9,
     "video_id": "r6m9pZ0dzkY",
@@ -578,39 +525,43 @@
   },
   {
     "time": [
-      20,
-      22
+      10,
+      11
     ],
     "visible_entities": [
       {
-        "desc": "bald man with a goatee, wearing a dark grey t-shirt with a small logo on the left chest pocket",
-        "action": "speaking and gesturing with hands",
+        "desc": "man with shaved head, goatee, wearing a dark grey t-shirt with a chest pocket",
+        "action": "standing and gesturing with hands",
         "position": "center",
-        "id": "person_presenter_1"
+        "id": "person_host_1"
       },
       {
         "desc": "text overlay reading 'WOOD • CONCRETE • METAL ALL IN THE SAME SAW? CAN A HANDHELD SAW REALLY DO THAT?'",
         "action": "static",
         "position": "background",
-        "id": "text_handheld_question_1"
+        "id": "text_materials_1"
       },
       {
-        "desc": "wooden floorboards with sawdust piles",
+        "desc": "wooden floorboards with sawdust",
         "action": "static",
         "position": "background"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "The man is speaking and gesturing with his hands.",
+        "fact": "A man is standing in front of a white background.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The man is gesturing with his hands while speaking.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The background features a wooden floor with sawdust.",
         "confidence": 1.0
       },
       {
         "fact": "Text on the screen asks if a handheld saw can cut wood, concrete, and metal.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The background features wooden planks and scattered sawdust.",
         "confidence": 1.0
       }
     ],
@@ -619,59 +570,25 @@
       "ALL IN THE SAME SAW?",
       "CAN A HANDHELD SAW REALLY DO THAT?"
     ],
-    "spatial": "The man is in the foreground, centered in the frame. The text overlay is positioned behind the man, superimposed over the background image of wooden floorboards.",
+    "spatial": "The man is in the foreground, centered in the frame. The text overlay and wooden floor background are behind the man.",
     "parse_success": true,
     "chunk_idx": 10,
     "video_id": "r6m9pZ0dzkY",
     "state_changes": [
-      "presenter appears on screen speaking and gesturing"
+      "Host (person_host_1) appears on screen and begins gesturing."
     ]
   },
   {
     "time": [
-      22,
-      24
+      11,
+      12
     ],
     "visible_entities": [
       {
-        "desc": "bald man with a goatee, wearing a dark grey short-sleeved t-shirt with a chest pocket featuring a small square logo",
+        "desc": "bald man with a goatee, wearing a dark grey short-sleeved t-shirt with a chest pocket and a small square logo",
         "action": "standing still with hands clasped",
         "position": "center",
-        "id": "person_presenter_1"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "A man stands facing the camera against a white background.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The man has his hands clasped together in front of his lower torso.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The man's mouth is slightly open.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [],
-    "spatial": "The man is centered in the frame against a plain white background. His hands are positioned in front of his stomach area.",
-    "parse_success": true,
-    "chunk_idx": 11,
-    "video_id": "r6m9pZ0dzkY",
-    "state_changes": []
-  },
-  {
-    "time": [
-      24,
-      26
-    ],
-    "visible_entities": [
-      {
-        "desc": "man with shaved head, goatee, wearing a dark grey short-sleeved t-shirt with a left chest pocket and a small square logo",
-        "action": "standing and speaking",
-        "position": "center",
-        "id": "person_presenter_1"
+        "id": "person_host_1"
       }
     ],
     "atomic_facts": [
@@ -680,16 +597,50 @@
         "confidence": 1.0
       },
       {
-        "fact": "The man is speaking with his mouth open.",
+        "fact": "The man's hands are clasped together in front of his torso.",
         "confidence": 1.0
       },
       {
-        "fact": "The man's hands are clasped together in front of his lower torso.",
+        "fact": "The man is looking forward.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The man is centered in the frame against a plain white background. His hands are positioned below his chest and in front of his stomach.",
+    "spatial": "The man is centered in the frame. His hands are positioned in front of his stomach area. The logo is on the pocket located on the left side of his chest.",
+    "parse_success": true,
+    "chunk_idx": 11,
+    "video_id": "r6m9pZ0dzkY",
+    "state_changes": []
+  },
+  {
+    "time": [
+      12,
+      13
+    ],
+    "visible_entities": [
+      {
+        "desc": "bald man with a goatee, wearing a dark grey short-sleeved t-shirt with a left chest pocket featuring a small square logo",
+        "action": "standing still",
+        "position": "center",
+        "id": "person_host_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A man is standing in front of a white background.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The man is wearing a dark grey t-shirt.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The man has his hands clasped in front of his lower torso.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The man is centered in the frame against a plain white background. His hands are positioned in front of his stomach area.",
     "parse_success": true,
     "chunk_idx": 12,
     "video_id": "r6m9pZ0dzkY",
@@ -697,29 +648,33 @@
   },
   {
     "time": [
-      26,
-      28
+      13,
+      14
     ],
     "visible_entities": [
       {
-        "desc": "bald man with a goatee, wearing a dark grey short-sleeved t-shirt with a left chest pocket featuring a small square logo",
-        "action": "standing still with hands clasped in front of the torso",
+        "desc": "man with shaved head, goatee, wearing a dark grey short-sleeved t-shirt with a chest pocket and a small square logo",
+        "action": "standing still",
         "position": "center",
-        "id": "person_presenter_1"
+        "id": "person_host_1"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "The man stands facing the camera with his hands clasped together in front of his stomach.",
+        "fact": "A man is standing in front of a white background.",
         "confidence": 1.0
       },
       {
-        "fact": "The man's mouth is slightly open.",
+        "fact": "The man is wearing a dark grey t-shirt.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The man has his hands clasped in front of his waist.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The man is centered in the frame against a white background. His hands are positioned in front of his torso.",
+    "spatial": "The man is centered in the frame against a white background. His hands are positioned in front of his lower torso.",
     "parse_success": true,
     "chunk_idx": 13,
     "video_id": "r6m9pZ0dzkY",
@@ -727,46 +682,147 @@
   },
   {
     "time": [
-      28,
-      30
+      14,
+      15
     ],
     "visible_entities": [
       {
-        "desc": "light brown wooden plank with black text reading 'WOOD • CONCRETE • METAL'",
+        "desc": "light brown wooden plank with black text",
         "action": "static",
-        "position": "top",
-        "id": "text_wood_concrete_metal_1"
+        "position": "top"
       },
       {
-        "desc": "light brown wooden floorboards with visible wood grain",
+        "desc": "light brown wooden floorboards",
         "action": "static",
-        "position": "background",
-        "id": "background_wood_floor_1"
+        "position": "background"
       },
       {
-        "desc": "piles of light-colored wood shavings/sawdust",
+        "desc": "piles of light-colored wood shavings",
         "action": "static",
-        "position": "top-left and bottom-center",
-        "id": "sawdust_piles_1"
+        "position": "top left and bottom center",
+        "id": "debris_sawdust_1"
       },
       {
-        "desc": "black bold text overlay reading 'THIS IS ONE OF THE STRAIGHT FLUSH SAW'S BIGGEST ADVANTAGES'",
+        "desc": "black bold text overlay",
         "action": "static",
-        "position": "center",
-        "id": "text_straight_flush_advantage_1"
+        "position": "center"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "The video displays a static shot of a wooden surface.",
+        "fact": "The text 'WOOD • CONCRETE • METAL' is printed on the wooden plank.",
         "confidence": 1.0
       },
       {
-        "fact": "Text on the screen lists materials: 'WOOD • CONCRETE • METAL'.",
+        "fact": "The text 'THIS IS ONE OF THE STRAIGHT FLUSH SAW'S BIGGEST ADVANTAGES' is displayed in the center of the screen.",
         "confidence": 1.0
       },
       {
-        "fact": "Text on the screen states: 'THIS IS ONE OF THE STRAIGHT FLUSH SAW'S BIGGEST ADVANTAGES'.",
+        "fact": "Wood shavings are scattered on the wooden floor.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "WOOD • CONCRETE • METAL",
+      "THIS IS ONE OF THE STRAIGHT FLUSH SAW'S BIGGEST ADVANTAGES"
+    ],
+    "spatial": "The wooden plank with text is positioned horizontally across the top section of the frame. The main text overlay is located below the plank in the center of the screen. Piles of wood shavings are visible in the top left corner and at the bottom center, resting on the wooden floorboards.",
+    "parse_success": true,
+    "chunk_idx": 14,
+    "video_id": "r6m9pZ0dzkY",
+    "state_changes": []
+  },
+  {
+    "time": [
+      15,
+      16
+    ],
+    "visible_entities": [
+      {
+        "desc": "light brown wooden plank with a smooth, natural wood grain texture",
+        "action": "static",
+        "position": "top"
+      },
+      {
+        "desc": "light brown wooden floorboards arranged vertically with visible grain patterns",
+        "action": "static",
+        "position": "background"
+      },
+      {
+        "desc": "piles of light-colored sawdust shavings",
+        "action": "static",
+        "position": "top-left and bottom-center",
+        "id": "debris_sawdust_1"
+      },
+      {
+        "desc": "black bold sans-serif text overlay",
+        "action": "static",
+        "position": "center"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A wooden plank is placed horizontally across the upper portion of the wooden floor.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The text 'WOOD • CONCRETE • METAL' is displayed on the wooden plank.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The text 'THIS IS ONE OF THE STRAIGHT FLUSH SAW'S BIGGEST ADVANTAGES' is displayed below the plank.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "Sawdust is scattered on the floor near the plank.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "WOOD • CONCRETE • METAL",
+      "THIS IS ONE OF THE STRAIGHT FLUSH SAW'S BIGGEST ADVANTAGES"
+    ],
+    "spatial": "The wooden plank is positioned horizontally above the main body of text. The text 'WOOD • CONCRETE • METAL' is located on the wooden plank. The main text block is centered below the plank. Piles of sawdust are visible in the top-left corner and at the bottom-center of the frame, resting on the wooden floorboards.",
+    "parse_success": true,
+    "chunk_idx": 15,
+    "video_id": "r6m9pZ0dzkY",
+    "state_changes": []
+  },
+  {
+    "time": [
+      16,
+      17
+    ],
+    "visible_entities": [
+      {
+        "desc": "light brown wooden surface with vertical grain pattern and scattered wood shavings",
+        "action": "static",
+        "position": "background"
+      },
+      {
+        "desc": "horizontal wooden plank, light brown, smooth texture",
+        "action": "static",
+        "position": "top"
+      },
+      {
+        "desc": "black text reading 'WOOD • CONCRETE • METAL' on the wooden plank",
+        "action": "static",
+        "position": "top",
+        "id": "text_materials_1"
+      },
+      {
+        "desc": "large black bold text reading 'THIS IS ONE OF THE STRAIGHT FLUSH SAW'S BIGGEST ADVANTAGES'",
+        "action": "static",
+        "position": "center"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The text 'WOOD • CONCRETE • METAL' is displayed on a wooden plank.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The text 'THIS IS ONE OF THE STRAIGHT FLUSH SAW'S BIGGEST ADVANTAGES' is overlaid on the wooden background.",
         "confidence": 1.0
       },
       {
@@ -778,48 +834,48 @@
       "WOOD • CONCRETE • METAL",
       "THIS IS ONE OF THE STRAIGHT FLUSH SAW'S BIGGEST ADVANTAGES"
     ],
-    "spatial": "The wooden plank with material text is positioned at the top of the frame. The main text overlay is centered below the plank. The wood shavings are located at the top-left and bottom-center of the frame, resting on the wooden floorboards.",
+    "spatial": "The wooden plank is positioned at the top of the frame. The text 'WOOD • CONCRETE • METAL' is on the wooden plank. The large text block is below the wooden plank and centered on the wooden background.",
     "parse_success": true,
-    "chunk_idx": 14,
+    "chunk_idx": 16,
     "video_id": "r6m9pZ0dzkY",
     "state_changes": []
   },
   {
     "time": [
-      30,
-      32
+      17,
+      18
     ],
     "visible_entities": [
       {
-        "desc": "light brown wooden floorboards with visible grain patterns",
-        "action": "static",
-        "position": "background",
-        "id": "background_wood_floor_1"
-      },
-      {
-        "desc": "light brown wooden plank, rectangular, smooth texture",
-        "action": "static",
-        "position": "top"
-      },
-      {
-        "desc": "black bold sans-serif text overlay",
+        "desc": "black text overlay listing materials and a statement about a saw's advantage",
         "action": "static",
         "position": "center"
+      },
+      {
+        "desc": "light brown wooden floorboards with visible grain",
+        "action": "static",
+        "position": "background"
       },
       {
         "desc": "piles of light-colored wood shavings",
         "action": "static",
         "position": "top-left and bottom-center",
-        "id": "sawdust_piles_1"
+        "id": "debris_sawdust_1"
+      },
+      {
+        "desc": "dark green power tool, likely a straight flush saw, with a black power cord",
+        "action": "static",
+        "position": "foreground",
+        "id": "saw_track_green_1"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "The text 'WOOD • CONCRETE • METAL' is displayed on the wooden plank.",
+        "fact": "The video displays text stating 'WOOD • CONCRETE • METAL' and 'THIS IS ONE OF THE STRAIGHT FLUSH SAW'S BIGGEST ADVANTAGES'.",
         "confidence": 1.0
       },
       {
-        "fact": "The text 'THIS IS ONE OF THE STRAIGHT FLUSH SAW'S BIGGEST ADVANTAGES' is displayed below the plank.",
+        "fact": "A dark green power tool is positioned on a wooden surface.",
         "confidence": 1.0
       },
       {
@@ -831,155 +887,36 @@
       "WOOD • CONCRETE • METAL",
       "THIS IS ONE OF THE STRAIGHT FLUSH SAW'S BIGGEST ADVANTAGES"
     ],
-    "spatial": "The wooden plank is positioned horizontally across the top portion of the frame, above the main body of text. The text is centered on the wooden floorboards. Piles of wood shavings are visible in the top-left corner and near the bottom center of the frame.",
-    "parse_success": true,
-    "chunk_idx": 15,
-    "video_id": "r6m9pZ0dzkY",
-    "state_changes": []
-  },
-  {
-    "time": [
-      32,
-      34
-    ],
-    "visible_entities": [
-      {
-        "desc": "wooden plank, light-brown, smooth texture, rectangular shape",
-        "action": "static",
-        "position": "top"
-      },
-      {
-        "desc": "wooden floorboards, light-brown, vertical grain pattern",
-        "action": "static",
-        "position": "background",
-        "id": "background_wood_floor_1"
-      },
-      {
-        "desc": "sawdust, light-colored, fine texture, scattered piles",
-        "action": "static",
-        "position": "top-left and bottom-center",
-        "id": "sawdust_piles_1"
-      },
-      {
-        "desc": "black text overlay, sans-serif font, bold style",
-        "action": "static",
-        "position": "center"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "The text 'WOOD • CONCRETE • METAL' is displayed on the wooden plank.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The text 'THIS IS ONE OF THE STRAIGHT FLUSH SAW'S BIGGEST ADVANTAGES' is displayed below the plank.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "Piles of sawdust are scattered on the wooden floorboards.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [
-      "WOOD • CONCRETE • METAL",
-      "THIS IS ONE OF THE STRAIGHT FLUSH SAW'S BIGGEST ADVANTAGES"
-    ],
-    "spatial": "The wooden plank is positioned horizontally near the top of the frame, above the main body of text. The text is centered on the wooden floorboards. Piles of sawdust are located at the top-left and bottom-center of the frame, resting on the floorboards.",
-    "parse_success": true,
-    "chunk_idx": 16,
-    "video_id": "r6m9pZ0dzkY",
-    "state_changes": []
-  },
-  {
-    "time": [
-      34,
-      36
-    ],
-    "visible_entities": [
-      {
-        "desc": "light brown wooden floorboards with visible grain and scattered wood shavings",
-        "action": "static",
-        "position": "background",
-        "id": "background_wood_floor_1"
-      },
-      {
-        "desc": "light brown wooden plank with black text reading 'WOOD • CONCRETE • METAL'",
-        "action": "static",
-        "position": "top",
-        "id": "text_wood_concrete_metal_1"
-      },
-      {
-        "desc": "black bold sans-serif text overlay reading 'THIS IS ONE OF THE STRAIGHT FLUSH SAW'S BIGGEST ADVANTAGES'",
-        "action": "static",
-        "position": "center",
-        "id": "text_straight_flush_advantage_1"
-      },
-      {
-        "desc": "dark green power tool with a silver motor housing and black power cord",
-        "action": "resting on wood",
-        "position": "foreground",
-        "id": "tool_green_power_1"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "Text on screen lists materials: 'WOOD • CONCRETE • METAL'.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "Text on screen states: 'THIS IS ONE OF THE STRAIGHT FLUSH SAW'S BIGGEST ADVANTAGES'.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "A dark green power tool is resting on a wooden surface.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "Wood shavings are scattered on the wooden floorboards.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [
-      "WOOD • CONCRETE • METAL",
-      "THIS IS ONE OF THE STRAIGHT FLUSH SAW'S BIGGEST ADVANTAGES"
-    ],
-    "spatial": "The wooden plank with material text is positioned above the main text overlay. The main text overlay is centered on the screen, superimposed over the wooden floorboards. The power tool is in the foreground, resting on the wooden surface.",
+    "spatial": "The text overlay is centered in the frame, appearing above the wooden floorboards. The dark green power tool is in the foreground, resting on the wooden surface. Piles of wood shavings are located near the top-left and bottom-center of the frame.",
     "parse_success": true,
     "chunk_idx": 17,
     "video_id": "r6m9pZ0dzkY",
     "state_changes": [
-      "dark green power tool appears resting on wood surface"
+      "Dark green straight flush saw appears on the workbench."
     ]
   },
   {
     "time": [
-      36,
-      38
+      18,
+      19
     ],
     "visible_entities": [
       {
-        "desc": "red and silver circular saw with a metal base plate and black handle",
-        "action": "resting on wood",
+        "desc": "red and silver circular saw with 'SKILSAW' text on the blade guard",
+        "action": "static",
         "position": "center",
-        "id": "saw_skil_1"
+        "id": "saw_skilsaw_red_silver_1"
       },
       {
-        "desc": "light brown oriented strand board (OSB) sheet with visible wood chips",
+        "desc": "light brown oriented strand board (OSB) sheet",
         "action": "static",
-        "position": "foreground",
-        "id": "background_osb_1"
+        "position": "bottom"
       },
       {
-        "desc": "wooden framing beams",
-        "action": "static",
-        "position": "background",
-        "id": "background_wood_framing_1"
-      },
-      {
-        "desc": "green grassy lawn",
+        "desc": "wooden framing joists",
         "action": "static",
         "position": "background",
-        "id": "background_grass_1"
+        "id": "background_framing_1"
       }
     ],
     "atomic_facts": [
@@ -988,165 +925,92 @@
         "confidence": 1.0
       },
       {
-        "fact": "The saw is positioned on top of a wooden structure.",
+        "fact": "The text 'SKILSAW' is visible on the saw's blade guard.",
         "confidence": 1.0
       }
     ],
     "ocr": [
       "SKILSAW"
     ],
-    "spatial": "The circular saw is on top of the light brown wood sheet. The wooden framing beams are behind the saw. The green grass is in the background behind the wooden structure.",
+    "spatial": "The circular saw is positioned on top of the light brown wooden board. The wooden board is resting on top of wooden framing joists in the background.",
     "parse_success": true,
     "chunk_idx": 18,
     "video_id": "r6m9pZ0dzkY",
     "state_changes": [
-      "scene transitions to outdoor setting with grass and OSB sheet"
+      "Scene changes to show red/silver Skilsaw and wooden framing joists."
     ]
   },
   {
     "time": [
-      38,
-      40
+      19,
+      20
     ],
     "visible_entities": [
       {
-        "desc": "silver circular saw with red handle and red 'SKILSAW' text",
+        "desc": "silver circular saw with red motor housing and black power cord, featuring 'SKILSAW' text in red on the blade guard",
         "action": "static",
         "position": "center",
-        "id": "saw_skil_1"
+        "id": "saw_skilsaw_red_silver_1"
       },
       {
-        "desc": "black circular saw with black handle",
-        "action": "being held by person",
-        "position": "right",
-        "id": "saw_straight_flush_1"
-      },
-      {
-        "desc": "person wearing black shirt",
-        "action": "holding black saw",
-        "position": "right",
-        "id": "person_operator_1"
-      },
-      {
-        "desc": "light-colored wooden plank",
+        "desc": "light-colored wooden plank with visible wood grain texture",
         "action": "static",
-        "position": "foreground",
-        "id": "background_wood_floor_1"
+        "position": "foreground"
       },
       {
-        "desc": "wooden framing structure",
-        "action": "static",
-        "position": "background",
-        "id": "background_wood_framing_1"
+        "desc": "black circular saw with a black handle and metal base plate",
+        "action": "being guided by a person",
+        "position": "right"
+      },
+      {
+        "desc": "person's hands and arms wearing a black short-sleeved shirt",
+        "action": "guiding the black saw",
+        "position": "right",
+        "id": "person_operator_3"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A silver Skilsaw rests on a wooden plank.",
+        "fact": "A silver Skilsaw is resting on a wooden plank.",
         "confidence": 1.0
       },
       {
-        "fact": "A person holds a black circular saw on a wooden plank.",
+        "fact": "A person is guiding a black circular saw along a wooden board.",
         "confidence": 1.0
       },
       {
-        "fact": "The text 'SKILSAW' is visible on the silver tool.",
+        "fact": "The saw blade is cutting into the wood.",
         "confidence": 1.0
       }
     ],
     "ocr": [
       "SKILSAW"
     ],
-    "spatial": "The silver Skilsaw is to the left of the black circular saw. The black saw is held by a person on the right side of the frame. Both saws are positioned on top of wooden planks.",
+    "spatial": "The silver Skilsaw is positioned in the center of the frame, resting on top of a wooden plank. To the right, a person's hands are holding and guiding a black circular saw along another wooden board. The wooden planks are in the foreground, with a grassy area visible in the background.",
     "parse_success": true,
     "chunk_idx": 19,
     "video_id": "r6m9pZ0dzkY",
     "state_changes": [
-      "person begins holding black circular saw"
+      "Operator begins guiding a black circular saw through wood."
     ]
   },
   {
     "time": [
-      40,
-      42
+      20,
+      21
     ],
     "visible_entities": [
       {
-        "desc": "person wearing a black short-sleeved shirt",
-        "action": "operating a power tool",
+        "desc": "person with light skin, wearing a black short-sleeved shirt",
+        "action": "operating a chainsaw",
         "position": "right",
-        "id": "person_operator_1"
+        "id": "person_operator_3"
       },
       {
-        "desc": "black electric chainsaw mill with metal guide rails and a handle",
+        "desc": "black chainsaw with a guide bar and visible mechanical parts",
         "action": "cutting wood",
         "position": "center",
-        "id": "tool_chainsaw_mill_1"
-      },
-      {
-        "desc": "long, light-colored wooden plank with visible grain",
-        "action": "static",
-        "position": "foreground"
-      },
-      {
-        "desc": "green grassy lawn",
-        "action": "static",
-        "position": "background",
-        "id": "background_grass_1"
-      },
-      {
-        "desc": "white vehicle, partially visible and out of focus",
-        "action": "static",
-        "position": "background",
-        "id": "vehicle_white_1"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "A person is operating a chainsaw mill on a wooden plank.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The chainsaw mill is moving along the length of the wood.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "Sawdust is being ejected from the cutting area.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The person's hand is resting on the wood to stabilize it.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [
-      "Husqvarna"
-    ],
-    "spatial": "The person is to the right of the chainsaw mill. The chainsaw mill is on top of the wooden plank. The wooden plank is in the foreground, in front of the green grass and the white vehicle.",
-    "parse_success": true,
-    "chunk_idx": 20,
-    "video_id": "r6m9pZ0dzkY",
-    "state_changes": [
-      "chainsaw mill starts cutting wood with operator"
-    ]
-  },
-  {
-    "time": [
-      42,
-      44
-    ],
-    "visible_entities": [
-      {
-        "desc": "person wearing a black short-sleeved shirt",
-        "action": "holding and operating a power tool",
-        "position": "right",
-        "id": "person_operator_1"
-      },
-      {
-        "desc": "black circular saw with a metal base plate and dust extraction port",
-        "action": "cutting wood",
-        "position": "center",
-        "id": "saw_straight_flush_1"
+        "id": "tool_chainsaw_1"
       },
       {
         "desc": "light-colored wooden plank with visible grain",
@@ -1154,91 +1018,134 @@
         "position": "bottom"
       },
       {
-        "desc": "red metal sawhorse leg",
+        "desc": "green grassy area",
         "action": "static",
-        "position": "bottom left",
-        "id": "support_sawhorse_1"
+        "position": "background"
       },
       {
-        "desc": "green grassy background",
+        "desc": "white vehicle, partially visible and out of focus",
         "action": "static",
-        "position": "background",
-        "id": "background_grass_1"
+        "position": "background"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A person is using a black circular saw to cut a wooden plank.",
+        "fact": "A person is operating a chainsaw to cut a wooden plank.",
         "confidence": 1.0
       },
       {
-        "fact": "Sawdust is spraying into the air from the cutting action.",
+        "fact": "The chainsaw is positioned on top of the wooden plank.",
         "confidence": 1.0
       },
       {
-        "fact": "The person's hands are visible holding the saw and guiding it along the wood.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The wooden plank is resting on a support structure.",
+        "fact": "Sawdust is being ejected from the cutting area.",
         "confidence": 1.0
       }
     ],
-    "ocr": [],
-    "spatial": "The person is to the right of the circular saw, holding it. The circular saw is on top of the wooden plank in the center of the frame. The wooden plank is positioned horizontally across the bottom foreground. The red sawhorse leg is below the plank on the left side. The green grassy background is behind the person and the saw.",
+    "ocr": [
+      "HOMELITE"
+    ],
+    "spatial": "The person is to the right of the chainsaw, holding it with both hands. The chainsaw is on top of the wooden plank. The wooden plank is in the foreground, while the green grass and white vehicle are in the background.",
     "parse_success": true,
-    "chunk_idx": 21,
+    "chunk_idx": 20,
     "video_id": "r6m9pZ0dzkY",
     "state_changes": [
-      "circular saw begins cutting wood with dust extraction"
+      "Action switches to operating a chainsaw in an outdoor setting."
     ]
   },
   {
     "time": [
-      44,
-      46
+      21,
+      22
     ],
     "visible_entities": [
       {
-        "desc": "person wearing a black t-shirt and blue jeans",
-        "action": "holding and guiding a circular saw",
+        "desc": "person with dark skin, wearing a black short-sleeved shirt",
+        "action": "guiding the tool",
         "position": "right",
-        "id": "person_operator_1"
+        "id": "person_operator_3"
       },
       {
-        "desc": "black circular saw with a metal base plate and handle",
-        "action": "cutting through wood",
+        "desc": "black circular saw with a metal base plate and a dust port",
+        "action": "cutting the wood",
         "position": "center",
-        "id": "saw_straight_flush_1"
+        "id": "saw_circular_generic_1"
       },
       {
-        "desc": "long, light-colored wooden plank",
+        "desc": "long, light-colored wooden plank with a smooth surface",
         "action": "static",
-        "position": "left"
+        "position": "bottom"
       },
       {
-        "desc": "red metal sawhorse or support stand",
-        "action": "static",
-        "position": "bottom",
-        "id": "support_sawhorse_1"
+        "desc": "white cloud of sawdust",
+        "action": "rising",
+        "position": "center",
+        "id": "debris_sawdust_1"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A person is operating a circular saw to cut a wooden plank.",
+        "fact": "The person is operating a circular saw to cut a wooden plank.",
         "confidence": 1.0
       },
       {
-        "fact": "The saw blade is spinning and cutting into the wood.",
+        "fact": "Sawdust is being ejected from the saw as it cuts through the wood.",
         "confidence": 1.0
       },
       {
-        "fact": "The wooden plank is resting on a red support stand.",
+        "fact": "The person's hand is placed on the wood to stabilize it.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The person is to the right of the circular saw, holding its handle. The saw is positioned on top of the wooden plank. The wooden plank is resting on the red metal stand below it.",
+    "spatial": "The person is to the right of the circular saw. The circular saw is on top of the wooden plank. The sawdust is rising above the saw and the plank.",
+    "parse_success": true,
+    "chunk_idx": 21,
+    "video_id": "r6m9pZ0dzkY",
+    "state_changes": [
+      "Action switches to cutting wood with a circular saw, generating a cloud of sawdust."
+    ]
+  },
+  {
+    "time": [
+      22,
+      23
+    ],
+    "visible_entities": [
+      {
+        "desc": "person wearing a black short-sleeved shirt and blue jeans",
+        "action": "holding and guiding a circular saw",
+        "position": "right",
+        "id": "person_operator_3"
+      },
+      {
+        "desc": "black circular saw with a metal base plate and handle",
+        "action": "cutting through a wooden plank",
+        "position": "center",
+        "id": "saw_circular_generic_1"
+      },
+      {
+        "desc": "light-colored wooden plank",
+        "action": "being cut",
+        "position": "left"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A person is operating a circular saw to cut a piece of wood.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The saw blade is spinning and cutting through the wooden plank.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The person's right hand is holding the rear handle of the saw.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The person is to the right of the wooden plank. The circular saw is on top of the wooden plank and is being held by the person. The background is behind the person and the saw.",
     "parse_success": true,
     "chunk_idx": 22,
     "video_id": "r6m9pZ0dzkY",
@@ -1246,313 +1153,345 @@
   },
   {
     "time": [
-      46,
-      48
+      23,
+      24
     ],
     "visible_entities": [
       {
-        "desc": "olive green mechanical device with a black handle, metal base, and a curved adjustment scale marked with numbers",
+        "desc": "olive green metal machine gun with black handles and a curved ammunition feed chute",
         "action": "being adjusted by a hand",
-        "position": "center",
-        "id": "saw_olive_green_1"
+        "position": "center"
       },
       {
-        "desc": "person's hand with light skin tone",
-        "action": "gripping the handle of the device",
-        "position": "top",
-        "id": "hand_operator_1"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "A hand is gripping the black handle of the olive green mechanical device.",
-        "confidence": 1.0
+        "desc": "human hand with light skin tone",
+        "action": "gripping the top handle of the machine gun",
+        "position": "top"
       },
       {
-        "fact": "The device features a curved scale with numerical markings including 0, 15, 30, 45, and 60.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The device is resting on a flat surface.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [
-      "60",
-      "45",
-      "30",
-      "15",
-      "0"
-    ],
-    "spatial": "The person's hand is above and holding the handle of the olive green mechanical device. The device is positioned in the center of the frame, resting on a surface. The numerical scale is located on the side of the device's main body.",
-    "parse_success": true,
-    "chunk_idx": 23,
-    "video_id": "r6m9pZ0dzkY",
-    "state_changes": [
-      "hand adjusts olive green mechanical device"
-    ]
-  },
-  {
-    "time": [
-      48,
-      50
-    ],
-    "visible_entities": [
-      {
-        "desc": "olive green circular saw with black handles, metal base plate, and a curved metal angle adjustment scale marked with degrees",
-        "action": "static",
-        "position": "center",
-        "id": "saw_olive_green_1"
-      },
-      {
-        "desc": "light-colored wooden plank",
-        "action": "static",
-        "position": "bottom",
-        "id": "background_wood_floor_1"
-      },
-      {
-        "desc": "person's hand and arm wearing a white shirt",
-        "action": "holding the saw",
-        "position": "top",
-        "id": "hand_operator_1"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "A person is holding an olive green circular saw.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The saw is resting on a wooden plank.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The angle adjustment scale on the saw shows markings for 60, 45, 30, 15, and 0 degrees.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [
-      "60",
-      "45",
-      "30",
-      "15",
-      "0"
-    ],
-    "spatial": "The person's hand is above the circular saw, holding its handle. The saw is positioned on top of the wooden plank. The angle scale is located on the side of the saw's motor housing.",
-    "parse_success": true,
-    "chunk_idx": 24,
-    "video_id": "r6m9pZ0dzkY",
-    "state_changes": [
-      "olive green circular saw shown static with hand holding it"
-    ]
-  },
-  {
-    "time": [
-      50,
-      52
-    ],
-    "visible_entities": [
-      {
-        "desc": "circular saw with a silver metallic blade guard, serrated metal blade, and a blue plastic motor housing with a black power cord",
-        "action": "resting on the wood",
-        "position": "right/foreground",
-        "id": "tool_blue_saw_1"
-      },
-      {
-        "desc": "light-colored wooden planks with visible wood grain texture",
-        "action": "static",
-        "position": "center/foreground",
-        "id": "background_wood_floor_1"
-      },
-      {
-        "desc": "green grass lawn and a blurred house structure with windows",
-        "action": "static",
-        "position": "background",
-        "id": "background_grass_1"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "A circular saw is resting on top of wooden planks.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The saw is positioned on the right side of the frame.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The background consists of a green lawn and a house.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [],
-    "spatial": "The circular saw is resting on top of the wooden planks in the foreground. The wooden planks are situated in front of the green lawn and house in the background.",
-    "parse_success": true,
-    "chunk_idx": 25,
-    "video_id": "r6m9pZ0dzkY",
-    "state_changes": []
-  },
-  {
-    "time": [
-      52,
-      54
-    ],
-    "visible_entities": [
-      {
-        "desc": "person with light skin, wearing a dark brown short-sleeved shirt",
-        "action": "holding and adjusting a weapon",
-        "position": "left/center",
-        "id": "person_operator_3"
-      },
-      {
-        "desc": "large, olive-green, boxy weapon with a ribbed rectangular body, a black pistol grip, and a circular saw blade attachment at the bottom",
-        "action": "being held and manipulated",
-        "position": "center/foreground",
-        "id": "tool_weapon_saw_1"
-      },
-      {
-        "desc": "light-colored, textured surface, possibly concrete or wood",
-        "action": "static",
-        "position": "bottom"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "The person is holding the large green weapon with both hands.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The person's left hand is gripping the black handle on the side of the weapon.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The person's right hand is touching a component on the top of the weapon.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The weapon has a circular saw blade attached to its underside.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The weapon is resting on a light-colored surface.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [],
-    "spatial": "The person is to the left of the weapon's main body. The person's hands are holding the weapon, which is positioned above the light-colored surface. The circular saw blade is below the main rectangular body of the weapon.",
-    "parse_success": true,
-    "chunk_idx": 26,
-    "video_id": "r6m9pZ0dzkY",
-    "state_changes": [
-      "person holds and manipulates weapon-like saw tool"
-    ]
-  },
-  {
-    "time": [
-      54,
-      56
-    ],
-    "visible_entities": [
-      {
-        "desc": "dark green pneumatic framing nailer with a black vacuum hose attachment",
-        "action": "driving nails into the base of the door frame",
-        "position": "center",
-        "id": "tool_nailer_1"
-      },
-      {
-        "desc": "person's hand and forearm",
-        "action": "gripping and operating the nail gun",
-        "position": "right",
-        "id": "hand_operator_1"
-      },
-      {
-        "desc": "white painted wooden door jamb",
-        "action": "static",
-        "position": "left",
-        "id": "door_jamb_1"
-      },
-      {
-        "desc": "light-colored subfloor with black printed text",
-        "action": "static",
-        "position": "bottom"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "A person is using a pneumatic nail gun to fasten a white door jamb to the floor.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The nail gun is positioned at the base of the door frame.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "A vacuum hose is attached to the tool to collect dust.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [
-      "ite"
-    ],
-    "spatial": "The person's hand is on the right side of the frame, holding the nail gun which is positioned in front of the white door jamb. The door jamb is located to the left of the tool. The entire assembly rests on top of the subfloor.",
-    "parse_success": true,
-    "chunk_idx": 27,
-    "video_id": "r6m9pZ0dzkY",
-    "state_changes": [
-      "framing nailer begins driving nails into door frame"
-    ]
-  },
-  {
-    "time": [
-      56,
-      58
-    ],
-    "visible_entities": [
-      {
-        "desc": "black oval logo with white 'Cuz-D' text and 'INDUSTRIES' below",
-        "action": "static",
-        "position": "left",
-        "id": "logo_cuzd_1"
-      },
-      {
-        "desc": "black circular saw with a metal base plate and handle",
-        "action": "static",
-        "position": "right",
-        "id": "saw_straight_flush_1"
-      },
-      {
-        "desc": "text 'STRAIGHT FLUSH' in black serif font",
-        "action": "static",
-        "position": "right",
-        "id": "text_straight_flush_brand_1"
-      },
-      {
-        "desc": "text 'FINISH WORK' in black sans-serif font",
-        "action": "static",
-        "position": "center",
-        "id": "text_construction_tasks_1"
-      },
-      {
-        "desc": "light brown wood paneling background with wood shavings",
+        "desc": "person wearing a white shirt",
         "action": "static",
         "position": "background"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "The video displays a static graphic layout for Cuz-D Industries.",
+        "fact": "A hand is gripping the top handle of the machine gun.",
         "confidence": 1.0
       },
       {
-        "fact": "The text 'STRAIGHT FLUSH' is positioned below the image of the circular saw.",
+        "fact": "The machine gun features a curved metal arc with numerical markings for elevation adjustment.",
         "confidence": 1.0
       },
       {
-        "fact": "The text 'FINISH WORK' is centered below the saw image.",
+        "fact": "The numbers 15, 30, 45, and 60 are visible on the adjustment scale.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "15",
+      "30",
+      "45",
+      "60"
+    ],
+    "spatial": "The human hand is positioned above the olive green machine gun, gripping its black handle. The machine gun is in the foreground, while the person wearing a white shirt is visible in the background behind the weapon.",
+    "parse_success": true,
+    "chunk_idx": 23,
+    "video_id": "r6m9pZ0dzkY",
+    "state_changes": [
+      "Scene abruptly changes to a person adjusting an olive green machine gun."
+    ]
+  },
+  {
+    "time": [
+      24,
+      25
+    ],
+    "visible_entities": [
+      {
+        "desc": "olive green circular saw with black handles, metal base plate, and a curved metal angle adjustment scale marked with degrees",
+        "action": "resting on a wooden surface",
+        "position": "center",
+        "id": "saw_track_green_1"
+      },
+      {
+        "desc": "light-colored wooden plank",
+        "action": "static",
+        "position": "bottom"
+      },
+      {
+        "desc": "person's hand and white clothing",
+        "action": "static",
+        "position": "background"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The olive green circular saw is resting on a light-colored wooden plank.",
         "confidence": 1.0
       },
       {
-        "fact": "The background features a split design of wood paneling and oriented strand board (OSB).",
+        "fact": "The angle adjustment scale on the saw displays markings for 60, 45, 30, 15, and 0 degrees.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A person's hand is visible holding the rear handle of the saw.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "60",
+      "45",
+      "30",
+      "15",
+      "0"
+    ],
+    "spatial": "The olive green circular saw is positioned on top of the wooden plank. The person's hand is behind the saw, gripping the black handle. The angle adjustment scale is located on the side of the saw's motor housing.",
+    "parse_success": true,
+    "chunk_idx": 24,
+    "video_id": "r6m9pZ0dzkY",
+    "state_changes": [
+      "Object changes from machine gun to olive green circular saw resting on wood."
+    ]
+  },
+  {
+    "time": [
+      25,
+      26
+    ],
+    "visible_entities": [
+      {
+        "desc": "circular saw with a blue motor housing, silver metal blade guard, and a toothed metal blade",
+        "action": "resting on wood",
+        "position": "right foreground",
+        "id": "saw_circular_blue_1"
+      },
+      {
+        "desc": "light brown wooden plank, smooth texture",
+        "action": "static",
+        "position": "center foreground"
+      },
+      {
+        "desc": "wooden framing structure, light brown",
+        "action": "static",
+        "position": "bottom foreground",
+        "id": "background_framing_1"
+      },
+      {
+        "desc": "green grass lawn",
+        "action": "static",
+        "position": "background"
+      },
+      {
+        "desc": "house with white siding and dark windows",
+        "action": "static",
+        "position": "background"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A circular saw is resting on a wooden plank.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The wooden plank is positioned on top of a wooden frame structure.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A green lawn is visible behind the construction materials.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The circular saw is on the right side of the wooden plank. The wooden plank is on top of the wooden framing structure. The green lawn and house are in the background behind the wooden plank and saw.",
+    "parse_success": true,
+    "chunk_idx": 25,
+    "video_id": "r6m9pZ0dzkY",
+    "state_changes": [
+      "Scene changes to show a blue motor housing saw and exterior house background."
+    ]
+  },
+  {
+    "time": [
+      26,
+      27
+    ],
+    "visible_entities": [
+      {
+        "desc": "person with fair skin, wearing a dark brown short-sleeved shirt",
+        "action": "holding and adjusting the device",
+        "position": "left"
+      },
+      {
+        "desc": "olive green rectangular electronic device with horizontal ribbed texture, black handle, and attached black cable",
+        "action": "being manipulated",
+        "position": "center",
+        "id": "device_olive_rect_1"
+      },
+      {
+        "desc": "black circular saw blade with sharp teeth",
+        "action": "static",
+        "position": "bottom right"
+      },
+      {
+        "desc": "light-colored wooden surface",
+        "action": "static",
+        "position": "bottom"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A person is holding an olive green electronic device with both hands.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The device is resting on a wooden surface.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A circular saw blade is attached to the bottom of the device.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The person's left hand is gripping the side handle of the device.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The person is positioned to the left of the olive green device. The device is placed on top of the wooden surface. The circular saw blade is located underneath the right side of the device.",
+    "parse_success": true,
+    "chunk_idx": 26,
+    "video_id": "r6m9pZ0dzkY",
+    "state_changes": [
+      "Person manipulates an olive green rectangular electronic device."
+    ]
+  },
+  {
+    "time": [
+      27,
+      28
+    ],
+    "visible_entities": [
+      {
+        "desc": "person's hands and forearm, light skin tone",
+        "action": "operating a power tool",
+        "position": "right"
+      },
+      {
+        "desc": "dark green pneumatic nail gun, metal and plastic construction, boxy shape",
+        "action": "being pressed against a wooden frame",
+        "position": "center",
+        "id": "tool_nailgun_1"
+      },
+      {
+        "desc": "black corrugated vacuum hose, flexible plastic",
+        "action": "positioned near the tool base",
+        "position": "foreground",
+        "id": "hose_vacuum_1"
+      },
+      {
+        "desc": "light-colored wooden door frame, vertical orientation",
+        "action": "static",
+        "position": "left"
+      },
+      {
+        "desc": "plywood subfloor, light tan color with black printed text",
+        "action": "static",
+        "position": "bottom"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A person is using a green pneumatic nail gun to fasten a wooden door frame to the floor.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The nail gun is positioned vertically against the base of the door jamb.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A black vacuum hose is held near the tool to collect dust or debris.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "rite"
+    ],
+    "spatial": "The person's hands are on the right side, holding the green nail gun which is positioned next to the vertical wooden door frame on the left. The black vacuum hose is in the foreground, extending towards the base of the tool. The entire assembly rests on the plywood subfloor at the bottom of the frame.",
+    "parse_success": true,
+    "chunk_idx": 27,
+    "video_id": "r6m9pZ0dzkY",
+    "state_changes": [
+      "Action switches to operating a pneumatic nail gun on a door frame."
+    ]
+  },
+  {
+    "time": [
+      28,
+      29
+    ],
+    "visible_entities": [
+      {
+        "desc": "black oval logo with 'Cuz-D' in white serif font and 'INDUSTRIES' in black sans-serif font below",
+        "action": "static",
+        "position": "left",
+        "id": "logo_cuzd_1"
+      },
+      {
+        "desc": "light brown oriented strand board (OSB) panel with visible wood chip texture",
+        "action": "static",
+        "position": "left",
+        "id": "background_osb_wood_1"
+      },
+      {
+        "desc": "light brown wooden plank surface with vertical grain pattern",
+        "action": "static",
+        "position": "right",
+        "id": "background_osb_wood_1"
+      },
+      {
+        "desc": "framed image of a black circular saw with a flat base plate",
+        "action": "static",
+        "position": "top right",
+        "id": "saw_circular_framed_1"
+      },
+      {
+        "desc": "text 'STRAIGHT FLUSH' in black serif font",
+        "action": "static",
+        "position": "top right",
+        "id": "text_straight_flush_1"
+      },
+      {
+        "desc": "text 'FINISH WORK' in black bold sans-serif font with a bullet point",
+        "action": "static",
+        "position": "center",
+        "id": "text_finish_list_1"
+      },
+      {
+        "desc": "white wood shavings scattered on the surface",
+        "action": "static",
+        "position": "background",
+        "id": "debris_sawdust_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The Cuz-D Industries logo is displayed on the left side of the screen.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A framed image of a circular saw is shown in the upper right corner.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The text 'STRAIGHT FLUSH' appears below the saw image.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The text 'FINISH WORK' is centered on the wooden background.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The background consists of an OSB panel on the left and wooden planks on the right.",
         "confidence": 1.0
       }
     ],
@@ -1563,18 +1502,18 @@
       "FLUSH",
       "FINISH WORK"
     ],
-    "spatial": "The Cuz-D Industries logo is on the left side of the screen. The image of the circular saw is on the right side, positioned above the text 'STRAIGHT FLUSH'. The text 'FINISH WORK' is centered below the saw image. The entire scene is set against a background of wood paneling.",
+    "spatial": "The Cuz-D Industries logo is on the left side, superimposed over an OSB panel. To the right of the logo is a wooden plank background. Above the center text 'FINISH WORK' is a framed image of a circular saw. The text 'STRAIGHT FLUSH' is located directly below the saw image.",
     "parse_success": true,
     "chunk_idx": 28,
     "video_id": "r6m9pZ0dzkY",
     "state_changes": [
-      "Cuz-D logo and STRAIGHT FLUSH branding appears"
+      "Scene transitions to static product display with 'Cuz-D' logo and feature list."
     ]
   },
   {
     "time": [
-      58,
-      60
+      29,
+      30
     ],
     "visible_entities": [
       {
@@ -1584,47 +1523,41 @@
         "id": "logo_cuzd_1"
       },
       {
-        "desc": "black circular saw with a flat base plate and handle, inside a square frame",
+        "desc": "black circular saw tool with a flat base plate and handle, displayed on a white background inside a wooden frame",
         "action": "static",
-        "position": "top right",
-        "id": "saw_straight_flush_1"
+        "position": "top-right",
+        "id": "saw_circular_framed_1"
       },
       {
-        "desc": "text 'STRAIGHT FLUSH' in black serif font",
-        "action": "static",
-        "position": "right",
-        "id": "text_straight_flush_brand_1"
-      },
-      {
-        "desc": "bulleted list text 'FINISH WORK', 'FRAMING', 'SIDING' in black bold font",
-        "action": "static",
-        "position": "center",
-        "id": "text_construction_tasks_1"
-      },
-      {
-        "desc": "text 'FORM SETTING' in black bold font",
+        "desc": "black text reading 'STRAIGHT FLUSH' in a serif font",
         "action": "static",
         "position": "right",
-        "id": "text_construction_tasks_1"
+        "id": "text_straight_flush_1"
       },
       {
-        "desc": "background of light brown wood planks and OSB board with scattered sawdust",
+        "desc": "black bulleted list text reading 'FINISH WORK', 'FRAMING', 'SIDING', and 'FORM SETTING'",
+        "action": "static",
+        "position": "center-right",
+        "id": "text_finish_list_1"
+      },
+      {
+        "desc": "background composed of light brown oriented strand board (OSB) on the left and vertical wooden planks on the right",
         "action": "static",
         "position": "background",
-        "id": "background_osb_1"
+        "id": "background_osb_wood_1"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "The text 'FORM SETTING' appears on the screen next to the existing list.",
+        "fact": "The text 'FORM SETTING' appears in the list on the right side of the screen.",
         "confidence": 1.0
       },
       {
-        "fact": "The circular saw image is displayed inside a square frame.",
+        "fact": "The circular saw image is positioned above the list of applications.",
         "confidence": 1.0
       },
       {
-        "fact": "The background consists of wood textures and sawdust.",
+        "fact": "The background features a split texture of OSB and wood planks.",
         "confidence": 1.0
       }
     ],
@@ -1638,7 +1571,7 @@
       "SIDING",
       "FORM SETTING"
     ],
-    "spatial": "The 'Cuz-D INDUSTRIES' logo is on the left side of the screen. The image of the circular saw is in the top right corner, positioned above the text 'STRAIGHT FLUSH'. The bulleted list containing 'FINISH WORK', 'FRAMING', and 'SIDING' is in the center, with 'FORM SETTING' appearing to its right. All text and images are superimposed over a background of wood planks and sawdust.",
+    "spatial": "The 'Cuz-D INDUSTRIES' logo is on the left side of the screen, next to the wooden plank background. The framed image of the circular saw is in the top-right corner, positioned above the text 'STRAIGHT FLUSH' and the bulleted list of applications.",
     "parse_success": true,
     "chunk_idx": 29,
     "video_id": "r6m9pZ0dzkY",
@@ -1646,56 +1579,56 @@
   },
   {
     "time": [
-      60,
-      62
+      30,
+      31
     ],
     "visible_entities": [
       {
-        "desc": "black oval logo with white text 'Cuz-D INDUSTRIES'",
+        "desc": "black oval logo with 'Cuz-D' in white serif font and 'INDUSTRIES' in smaller sans-serif font below",
         "action": "static",
         "position": "left",
         "id": "logo_cuzd_1"
       },
       {
-        "desc": "black circular saw tool with a flat base plate",
+        "desc": "black circular saw with a flat base plate, shown in a white square frame with a wood border",
         "action": "static",
         "position": "top-right",
-        "id": "saw_straight_flush_1"
+        "id": "saw_circular_framed_1"
       },
       {
         "desc": "text 'STRAIGHT FLUSH' in black serif font",
         "action": "static",
         "position": "top-right",
-        "id": "text_straight_flush_brand_1"
+        "id": "text_straight_flush_1"
       },
       {
-        "desc": "list of construction tasks in black bold sans-serif font",
+        "desc": "list of text items in black bold sans-serif font",
         "action": "static",
         "position": "bottom-right",
-        "id": "text_construction_tasks_1"
+        "id": "text_finish_list_1"
       },
       {
-        "desc": "background of light brown plywood and OSB wood panels with sawdust",
+        "desc": "background of light brown wood planks and OSB board with sawdust",
         "action": "static",
         "position": "background",
-        "id": "background_osb_1"
+        "id": "background_osb_wood_1"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "The text 'Cuz-D INDUSTRIES' is displayed on the left side.",
+        "fact": "The text list changes between the two frames.",
         "confidence": 1.0
       },
       {
-        "fact": "An image of a circular saw is shown in a frame on the right.",
+        "fact": "The first frame lists 'FINISH WORK', 'FRAMING', 'SIDING', and 'FORM SETTING'.",
         "confidence": 1.0
       },
       {
-        "fact": "The text 'STRAIGHT FLUSH' appears below the saw image.",
+        "fact": "The second frame lists 'FINISH WORK', 'FRAMING', 'SIDING', 'FORM SETTING', 'METAL', and 'CONCRETE'.",
         "confidence": 1.0
       },
       {
-        "fact": "A list of applications including 'FINISH WORK', 'FRAMING', 'SIDING', 'FORM SETTING', 'METAL', and 'CONCRETE' is displayed in the second frame.",
+        "fact": "The words 'METAL' and 'CONCRETE' appear in the second frame but not the first.",
         "confidence": 1.0
       }
     ],
@@ -1711,7 +1644,7 @@
       "METAL",
       "CONCRETE"
     ],
-    "spatial": "The 'Cuz-D INDUSTRIES' logo is on the left side of the screen. The image of the circular saw is positioned in the top right, above the list of construction tasks. The text 'STRAIGHT FLUSH' is located directly below the saw image.",
+    "spatial": "The 'Cuz-D INDUSTRIES' logo is on the left side of the screen. The image of the circular saw and the text 'STRAIGHT FLUSH' are in the top-right corner. The bulleted list of applications is located below the saw image in the bottom-right area. The entire graphic is set against a background of wood planks and sawdust.",
     "parse_success": true,
     "chunk_idx": 30,
     "video_id": "r6m9pZ0dzkY",
@@ -1719,49 +1652,59 @@
   },
   {
     "time": [
-      62,
-      64
+      31,
+      32
     ],
     "visible_entities": [
       {
-        "desc": "black circular saw with a black handle and a black dust extraction hose attached",
+        "desc": "black circular saw with a black handle and a black dust extraction port, mounted on a black metal frame",
         "action": "static",
         "position": "center",
-        "id": "saw_straight_flush_1"
+        "id": "saw_circular_black_1"
       },
       {
-        "desc": "light-colored wooden board with a rough, chipboard-like texture",
+        "desc": "black corrugated vacuum hose connected to the saw",
+        "action": "static",
+        "position": "left",
+        "id": "hose_vacuum_1"
+      },
+      {
+        "desc": "light brown oriented strand board (OSB) plank with visible wood chips and texture",
         "action": "static",
         "position": "center"
       },
       {
-        "desc": "red metal support structure",
+        "desc": "red metal support structure or stand",
         "action": "static",
-        "position": "bottom",
-        "id": "support_sawhorse_1"
+        "position": "right",
+        "id": "stand_red_metal_1"
       },
       {
-        "desc": "grey concrete ground surface",
+        "desc": "grey concrete driveway surface",
         "action": "static",
         "position": "background"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "The black circular saw is resting on the wooden board.",
+        "fact": "The black circular saw is mounted on a black metal frame.",
         "confidence": 1.0
       },
       {
-        "fact": "A black corrugated hose is connected to the side of the saw.",
+        "fact": "The saw is positioned on top of a light brown OSB plank.",
         "confidence": 1.0
       },
       {
-        "fact": "The wooden board is supported by a red metal frame.",
+        "fact": "A black corrugated vacuum hose is attached to the saw's dust port.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The setup is resting on a red metal support structure.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The black circular saw is positioned on top of the light-colored wooden board. The red metal support structure is located below the wooden board. The grey concrete ground is visible in the background behind the setup.",
+    "spatial": "The black circular saw is mounted on a black metal frame which is positioned on top of the light brown OSB plank. The black corrugated vacuum hose is connected to the left side of the saw. The red metal support structure is underneath and to the right of the OSB plank. The entire setup is on a grey concrete driveway.",
     "parse_success": true,
     "chunk_idx": 31,
     "video_id": "r6m9pZ0dzkY",
@@ -1769,51 +1712,50 @@
   },
   {
     "time": [
-      64,
-      66
+      32,
+      33
     ],
     "visible_entities": [
       {
-        "desc": "black circular saw with a black dust extraction hose attached",
+        "desc": "black circular saw with a black dust collection hose attached",
         "action": "static",
         "position": "center",
-        "id": "saw_straight_flush_1"
+        "id": "saw_circular_black_1"
       },
       {
-        "desc": "light-brown oriented strand board (OSB) plank",
+        "desc": "light-brown oriented strand board (OSB) plank with a rough, flaky wood texture",
         "action": "static",
-        "position": "center",
-        "id": "background_osb_1"
+        "position": "center"
       },
       {
         "desc": "red metal support structure",
         "action": "static",
         "position": "bottom",
-        "id": "support_sawhorse_1"
+        "id": "stand_red_metal_1"
       },
       {
         "desc": "black metal guide rail",
         "action": "static",
-        "position": "center",
-        "id": "guide_rail_1"
+        "position": "bottom",
+        "id": "rail_guide_1"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A black circular saw is resting on a wooden board.",
+        "fact": "The circular saw is resting on top of the OSB plank.",
         "confidence": 1.0
       },
       {
-        "fact": "The saw is connected to a black corrugated vacuum hose.",
+        "fact": "The saw is positioned on a black metal guide rail.",
         "confidence": 1.0
       },
       {
-        "fact": "The wooden board is supported by a red metal frame.",
+        "fact": "The OSB plank is supported by a red metal structure.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The black circular saw is positioned on top of the light-brown wooden board. The black metal guide rail is located below the saw, running along the board. The red metal support structure is underneath the wooden board, holding it up.",
+    "spatial": "The black circular saw is positioned on top of the light-brown OSB plank. The saw is also resting on a black metal guide rail that runs along the bottom of the plank. The red metal support structure is located underneath the OSB plank.",
     "parse_success": true,
     "chunk_idx": 32,
     "video_id": "r6m9pZ0dzkY",
@@ -1821,51 +1763,51 @@
   },
   {
     "time": [
-      66,
-      68
+      33,
+      34
     ],
     "visible_entities": [
       {
-        "desc": "black circular saw with a matte finish, featuring a side handle, a blade guard, and a dust extraction port",
+        "desc": "black circular saw with a black dust extraction port and a black handle, mounted on a black metal frame",
         "action": "static",
         "position": "center",
-        "id": "saw_straight_flush_1"
+        "id": "saw_circular_black_1"
       },
       {
-        "desc": "black corrugated vacuum hose, flexible and ribbed",
+        "desc": "light-brown oriented strand board (OSB) sheet with visible wood chip texture",
+        "action": "static",
+        "position": "center",
+        "id": "background_osb_wood_1"
+      },
+      {
+        "desc": "black corrugated vacuum hose",
         "action": "static",
         "position": "left",
         "id": "hose_vacuum_1"
       },
       {
-        "desc": "light-brown oriented strand board (OSB) sheet with a rough, flaky wood texture",
-        "action": "static",
-        "position": "bottom",
-        "id": "background_osb_1"
-      },
-      {
-        "desc": "red metal support structure, partially visible",
+        "desc": "red metal support structure",
         "action": "static",
         "position": "right",
-        "id": "support_sawhorse_1"
+        "id": "stand_red_metal_1"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "The black circular saw is resting on the wooden board.",
+        "fact": "A black circular saw is mounted on a piece of oriented strand board.",
         "confidence": 1.0
       },
       {
-        "fact": "The vacuum hose is connected to the saw's dust port.",
+        "fact": "A black corrugated hose is connected to the saw's dust port.",
         "confidence": 1.0
       },
       {
-        "fact": "The saw is positioned on top of the OSB sheet.",
+        "fact": "The saw and board assembly is resting on a red metal frame.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The black circular saw is centered on top of the light-brown wooden board. The black vacuum hose is attached to the left side of the saw and extends upwards. The red metal support is visible underneath the right side of the wooden board.",
+    "spatial": "The black circular saw is positioned on top of the light-brown oriented strand board. The black corrugated vacuum hose is to the left of the saw and connected to it. The red metal support structure is underneath and to the right of the board.",
     "parse_success": true,
     "chunk_idx": 33,
     "video_id": "r6m9pZ0dzkY",
@@ -1873,145 +1815,257 @@
   },
   {
     "time": [
-      68,
-      70
+      34,
+      35
     ],
     "visible_entities": [
       {
-        "desc": "black power tool, likely a jigsaw, with a matte finish, mounted on a black metal base plate",
+        "desc": "black handheld power planer with a matte finish, featuring a rear handle, a front depth adjustment knob, and a side-mounted dust extraction port",
         "action": "static",
-        "position": "center"
+        "position": "center",
+        "id": "tool_planer_1"
       },
       {
-        "desc": "black corrugated vacuum hose, flexible, ribbed texture",
+        "desc": "black corrugated flexible vacuum hose",
         "action": "static",
         "position": "left",
         "id": "hose_vacuum_1"
       },
       {
-        "desc": "light brown wooden board, oriented strand board (OSB) texture with visible wood chips",
+        "desc": "light-brown oriented strand board (OSB) workbench surface with visible wood chip texture",
         "action": "static",
-        "position": "bottom"
+        "position": "bottom",
+        "id": "background_osb_wood_1"
       },
       {
-        "desc": "black plastic handle and trigger mechanism on the tool",
-        "action": "static",
-        "position": "right"
-      },
-      {
-        "desc": "red metal support structure, partially visible",
+        "desc": "red metal support structure or stand",
         "action": "static",
         "position": "background",
-        "id": "support_sawhorse_1"
+        "id": "stand_red_metal_1"
+      },
+      {
+        "desc": "black metal guide rail or fence attached to the planer",
+        "action": "static",
+        "position": "bottom",
+        "id": "rail_guide_1"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "The black power tool is resting on the wooden board.",
+        "fact": "A black power planer is resting on a wooden workbench.",
         "confidence": 1.0
       },
       {
-        "fact": "A vacuum hose is connected to the side of the tool.",
+        "fact": "A vacuum hose is connected to the side of the planer for dust collection.",
         "confidence": 1.0
       },
       {
-        "fact": "The tool is positioned on a workbench surface.",
+        "fact": "The planer is positioned on top of a guide rail system.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The black power tool is positioned in the center of the frame, resting on top of the light brown wooden board. To the left of the tool, a black corrugated vacuum hose extends upwards. The tool's handle is located on the right side of the main body. The entire setup is situated above a red metal support structure visible in the background.",
+    "spatial": "The black power planer is centered on top of the light-brown OSB workbench. The black vacuum hose is connected to the left side of the planer and extends upwards. The red metal support structure is visible in the background behind the workbench.",
     "parse_success": true,
     "chunk_idx": 34,
     "video_id": "r6m9pZ0dzkY",
-    "state_changes": []
-  },
-  {
-    "time": [
-      70,
-      72
-    ],
-    "visible_entities": [
-      {
-        "desc": "black track saw with a dust extraction hose attached, featuring a black plastic housing and handle",
-        "action": "cutting through wood",
-        "position": "center",
-        "id": "saw_track_1"
-      },
-      {
-        "desc": "light-brown oriented strand board (OSB) sheet with a rough, flaky wood chip texture",
-        "action": "being cut",
-        "position": "foreground",
-        "id": "background_osb_1"
-      },
-      {
-        "desc": "black metal guide rail with a toothed edge",
-        "action": "static",
-        "position": "bottom",
-        "id": "guide_rail_1"
-      },
-      {
-        "desc": "red metal support structure",
-        "action": "static",
-        "position": "background",
-        "id": "support_sawhorse_1"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "The black track saw is actively cutting through the OSB sheet.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The saw is sliding along the black metal guide rail.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "A black corrugated hose is connected to the saw for dust extraction.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [],
-    "spatial": "The black track saw is positioned on top of the light-brown OSB sheet. The saw is riding along the black metal guide rail which is placed on the wood surface. A red metal support structure is visible in the background behind the saw.",
-    "parse_success": true,
-    "chunk_idx": 35,
-    "video_id": "r6m9pZ0dzkY",
     "state_changes": [
-      "track saw begins cutting through OSB sheet"
+      "Tool changes to a black handheld power planer on a workbench."
     ]
   },
   {
     "time": [
-      72,
-      74
+      35,
+      36
     ],
     "visible_entities": [
       {
-        "desc": "black power tool with a flat metal base and vertical guide mechanism",
-        "action": "cutting along the base of the wooden wall",
+        "desc": "black electric track saw with a plastic housing, rear handle, and attached black dust extraction hose",
+        "action": "sliding forward along a metal guide rail",
         "position": "center"
+      },
+      {
+        "desc": "light-brown oriented strand board (OSB) sheet with visible wood chip texture",
+        "action": "static",
+        "position": "foreground",
+        "id": "background_osb_wood_1"
+      },
+      {
+        "desc": "black metal guide rail with a straight edge",
+        "action": "static",
+        "position": "bottom",
+        "id": "rail_guide_1"
+      },
+      {
+        "desc": "red metal support structure or stand",
+        "action": "static",
+        "position": "left",
+        "id": "stand_red_metal_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The black track saw is sliding forward along the metal guide rail.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The saw is cutting into the light-brown OSB sheet.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A black dust extraction hose is connected to the rear of the saw.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The guide rail is positioned on top of the wooden board.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The black track saw is positioned on top of the light-brown OSB sheet and is aligned with the black metal guide rail. The red metal support structure is visible to the left of the saw and the wooden board. The black dust extraction hose extends upwards from the back of the saw.",
+    "parse_success": true,
+    "chunk_idx": 35,
+    "video_id": "r6m9pZ0dzkY",
+    "state_changes": [
+      "Black electric track saw begins sliding forward along the guide rail."
+    ]
+  },
+  {
+    "time": [
+      36,
+      37
+    ],
+    "visible_entities": [
+      {
+        "desc": "black power tool with a flat base plate and metal guide rails",
+        "action": "static",
+        "position": "center",
+        "id": "saw_circular_generic_1"
+      },
+      {
+        "desc": "light-colored wooden wall framing",
+        "action": "static",
+        "position": "left",
+        "id": "background_framing_1"
+      },
+      {
+        "desc": "light-colored wooden subfloor with visible grain",
+        "action": "static",
+        "position": "bottom"
+      },
+      {
+        "desc": "human hand with light skin tone",
+        "action": "holding a metal straight edge",
+        "position": "right"
+      },
+      {
+        "desc": "metal straight edge tool",
+        "action": "being held",
+        "position": "right"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A black power tool is positioned on the wooden floor next to the wall framing.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A hand enters the frame from the right holding a metal straight edge.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The metal straight edge is placed on the floor near the tool's guide rails.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The black power tool is in the center, resting on the wooden subfloor. The wooden wall framing is to the left of the tool. A hand holding a metal straight edge is to the right of the tool.",
+    "parse_success": true,
+    "chunk_idx": 36,
+    "video_id": "r6m9pZ0dzkY",
+    "state_changes": [
+      "Scene shifts to wall framing; hand uses a metal straight edge tool."
+    ]
+  },
+  {
+    "time": [
+      37,
+      38
+    ],
+    "visible_entities": [
+      {
+        "desc": "black power tool with a flat base plate and a vertical metal guide fence",
+        "action": "cutting the base of the wooden wall",
+        "position": "center-right",
+        "id": "saw_circular_generic_1"
       },
       {
         "desc": "light-colored wooden wall framing with vertical studs",
         "action": "static",
         "position": "left",
-        "id": "background_wood_framing_1"
+        "id": "background_framing_1"
       },
       {
-        "desc": "light-colored wooden floor surface",
+        "desc": "light beige subfloor with a rough texture",
         "action": "static",
         "position": "bottom"
       },
       {
-        "desc": "human hand",
-        "action": "guiding the tool",
-        "position": "right",
-        "id": "hand_operator_1"
+        "desc": "blurred wooden structure in the background",
+        "action": "static",
+        "position": "background"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A black power tool is cutting along the bottom edge of a wooden wall frame.",
+        "fact": "A black power tool is cutting the bottom edge of a wooden wall frame.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The tool is positioned on the subfloor next to the wall.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The tool features a metal guide fence extending to the right.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The black power tool is to the right of the wooden wall framing. The tool rests on top of the subfloor. The blurred wooden structure is behind the power tool.",
+    "parse_success": true,
+    "chunk_idx": 37,
+    "video_id": "r6m9pZ0dzkY",
+    "state_changes": [
+      "Power tool begins cutting the base of the wooden wall studs."
+    ]
+  },
+  {
+    "time": [
+      38,
+      39
+    ],
+    "visible_entities": [
+      {
+        "desc": "black power tool with a metal base plate and guide fence",
+        "action": "cutting the wooden wall",
+        "position": "center",
+        "id": "saw_circular_generic_1"
+      },
+      {
+        "desc": "light-colored wooden wall studs and sheathing",
+        "action": "static",
+        "position": "left",
+        "id": "background_framing_1"
+      },
+      {
+        "desc": "light-colored wooden subfloor",
+        "action": "static",
+        "position": "bottom"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A black power tool is cutting into the bottom of a wooden wall.",
         "confidence": 1.0
       },
       {
@@ -2019,159 +2073,58 @@
         "confidence": 1.0
       },
       {
-        "fact": "A hand is visible on the right side, operating the tool.",
+        "fact": "The wall is made of light-colored wood.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The black power tool is in the center, positioned on the wooden floor and next to the wooden wall framing on the left. A human hand is to the right of the tool, guiding it.",
+    "spatial": "The black power tool is to the right of the wooden wall studs. The tool is on top of the wooden subfloor. The tool is cutting the bottom edge of the wall.",
     "parse_success": true,
-    "chunk_idx": 36,
-    "video_id": "r6m9pZ0dzkY",
-    "state_changes": [
-      "power tool cuts along base of wooden wall framing"
-    ]
-  },
-  {
-    "time": [
-      74,
-      76
-    ],
-    "visible_entities": [
-      {
-        "desc": "black circular saw with metal base plate and blade guard",
-        "action": "cutting wood",
-        "position": "center",
-        "id": "saw_straight_flush_1"
-      },
-      {
-        "desc": "light-colored wooden wall studs and floor sheathing",
-        "action": "static",
-        "position": "left",
-        "id": "background_wood_framing_1"
-      },
-      {
-        "desc": "oriented strand board (OSB) wall panel",
-        "action": "static",
-        "position": "background",
-        "id": "background_osb_1"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "The circular saw is cutting into the base of a wooden wall stud.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The saw blade is positioned flush against the wood surface.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The setting is an unfinished room with exposed framing.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [],
-    "spatial": "The black circular saw is positioned in the center, resting on the floor sheathing. The saw is to the right of the vertical wooden studs it is cutting. The OSB wall panel is in the background, behind the saw.",
-    "parse_success": true,
-    "chunk_idx": 37,
+    "chunk_idx": 38,
     "video_id": "r6m9pZ0dzkY",
     "state_changes": []
   },
   {
     "time": [
-      76,
-      78
-    ],
-    "visible_entities": [
-      {
-        "desc": "black electric power tool, likely a router or trimmer, with a flat metal base plate and vertical motor housing",
-        "action": "cutting along the base of the wall",
-        "position": "center"
-      },
-      {
-        "desc": "light-colored wooden floor surface, smooth texture",
-        "action": "static",
-        "position": "bottom"
-      },
-      {
-        "desc": "vertical wooden wall framing studs, light brown wood grain, unfinished",
-        "action": "static",
-        "position": "left",
-        "id": "background_wood_framing_1"
-      },
-      {
-        "desc": "oriented strand board (OSB) wall sheathing, textured wood chip pattern",
-        "action": "static",
-        "position": "background",
-        "id": "background_osb_1"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "A black power tool is actively cutting or trimming the bottom edge of the wooden wall framing.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The tool is positioned on the floor, sliding along the base of the studs.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The setting is an unfinished room with exposed wooden framing and OSB sheathing.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [],
-    "spatial": "The black power tool is in the center, resting on the light-colored wooden floor. To the left of the tool are vertical wooden wall studs. Behind the tool is a wall made of oriented strand board (OSB).",
-    "parse_success": true,
-    "chunk_idx": 38,
-    "video_id": "r6m9pZ0dzkY",
-    "state_changes": [
-      "router/trimmer cuts along wall base"
-    ]
-  },
-  {
-    "time": [
-      78,
-      80
+      39,
+      40
     ],
     "visible_entities": [
       {
         "desc": "black power tool with a circular blade and a flat metal base plate",
-        "action": "cutting wood",
-        "position": "center"
+        "action": "cutting along the wooden surface",
+        "position": "center",
+        "id": "saw_circular_generic_1"
       },
       {
-        "desc": "light-colored wooden framing studs and a plywood floor",
+        "desc": "light-colored wooden wall framing and floor",
         "action": "static",
-        "position": "background",
-        "id": "background_wood_framing_1"
+        "position": "background"
       },
       {
         "desc": "text reading 'STRAIGHT FLUSH' in a serif font",
         "action": "static",
-        "position": "right",
-        "id": "text_straight_flush_brand_1"
+        "position": "bottom right"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A black power tool is cutting into a wooden stud.",
+        "fact": "A black power tool is cutting along the base of a wooden wall.",
         "confidence": 1.0
       },
       {
-        "fact": "The tool is positioned on a wooden floor.",
+        "fact": "The text 'STRAIGHT FLUSH' is displayed on the screen.",
         "confidence": 1.0
       },
       {
-        "fact": "The text 'STRAIGHT FLUSH' appears on the screen.",
+        "fact": "The tool is positioned on a light-colored wooden floor.",
         "confidence": 1.0
       }
     ],
     "ocr": [
       "STRAIGHT FLUSH"
     ],
-    "spatial": "The black power tool is in the center of the frame, positioned on the wooden floor and cutting the vertical wooden stud. The text 'STRAIGHT FLUSH' is located to the right of the tool.",
+    "spatial": "The black power tool is in the center of the frame, positioned on the wooden floor and next to the vertical wooden wall studs. The text 'STRAIGHT FLUSH' is located in the bottom right corner, below the tool.",
     "parse_success": true,
     "chunk_idx": 39,
     "video_id": "r6m9pZ0dzkY",
@@ -2179,54 +2132,48 @@
   },
   {
     "time": [
-      80,
-      82
+      40,
+      41
     ],
     "visible_entities": [
       {
-        "desc": "black circular saw with a handle and base plate, displayed inside a square frame with a light brown border",
+        "desc": "black circular saw with a handle and base plate, shown in a white square frame",
         "action": "static",
         "position": "left",
-        "id": "saw_straight_flush_1"
+        "id": "saw_circular_framed_1"
       },
       {
-        "desc": "large black text with a motion blur effect",
-        "action": "static",
-        "position": "right"
-      },
-      {
-        "desc": "smaller black serif text reading 'STRAIGHT FLUSH'",
-        "action": "static",
-        "position": "bottom-left",
-        "id": "text_straight_flush_brand_1"
-      },
-      {
-        "desc": "light brown wooden floorboards with wood grain texture",
+        "desc": "light brown wooden floorboards with visible grain and scattered wood shavings",
         "action": "static",
         "position": "background"
       },
       {
-        "desc": "piles of light-colored wood shavings",
+        "desc": "black text reading 'DECREASES THE NEED TO USE THE BIG FOOT BEAM SAW' in bold sans-serif font",
         "action": "static",
-        "position": "top and bottom",
-        "id": "sawdust_piles_1"
+        "position": "right",
+        "id": "text_big_foot_1"
+      },
+      {
+        "desc": "black text reading 'STRAIGHT FLUSH' in serif font",
+        "action": "static",
+        "position": "bottom-left"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "The text 'DECREASES THE NEED TO USE THE BIG FOOT BEAM SAW' is displayed on the right side of the screen.",
+        "fact": "The video displays a static informational slide about a tool.",
         "confidence": 1.0
       },
       {
-        "fact": "The text 'STRAIGHT FLUSH' appears below the image of the saw.",
+        "fact": "The text 'DECREASES THE NEED TO USE THE BIG FOOT BEAM SAW' is visible on the right side.",
         "confidence": 1.0
       },
       {
-        "fact": "The background consists of wooden planks arranged diagonally.",
+        "fact": "The text 'STRAIGHT FLUSH' is visible below the image of the saw.",
         "confidence": 1.0
       },
       {
-        "fact": "Wood shavings are scattered at the top and bottom of the frame.",
+        "fact": "Wood shavings are scattered on the wooden floor background.",
         "confidence": 1.0
       }
     ],
@@ -2237,7 +2184,7 @@
       "NEED TO USE THE",
       "BIG FOOT BEAM SAW"
     ],
-    "spatial": "The image of the circular saw is to the left of the large text block. The text 'STRAIGHT FLUSH' is located below the saw image. Wood shavings are positioned above and below the central text and image elements on the wooden floor background.",
+    "spatial": "The image of the black circular saw is positioned on the left side of the screen. To the right of the saw image is the large text block reading 'DECREASES THE NEED TO USE THE BIG FOOT BEAM SAW'. The text 'STRAIGHT FLUSH' is located below the saw image. The entire composition is set against a background of wooden floorboards.",
     "parse_success": true,
     "chunk_idx": 40,
     "video_id": "r6m9pZ0dzkY",
@@ -2245,44 +2192,118 @@
   },
   {
     "time": [
-      82,
-      84
+      41,
+      42
     ],
     "visible_entities": [
       {
-        "desc": "black circular saw with a handle and base plate, displayed inside a square frame with a light brown wood texture border",
+        "desc": "black circular saw with a handle and base plate, displayed inside a square wooden frame",
         "action": "static",
         "position": "left",
-        "id": "saw_straight_flush_1"
+        "id": "saw_circular_generic_1"
       },
       {
-        "desc": "large, bold, black sans-serif text reading 'DECREASES THE NEED TO USE THE BIG FOOT BEAM SAW'",
+        "desc": "light brown wooden plank background with visible wood grain",
+        "action": "static",
+        "position": "background"
+      },
+      {
+        "desc": "large bold black text reading 'DECREASES THE NEED TO USE THE BIG FOOT BEAM SAW'",
         "action": "static",
         "position": "right",
-        "id": "text_big_foot_comparison_1"
+        "id": "text_big_foot_1"
       },
       {
-        "desc": "smaller black sans-serif text reading 'STRAIGHT FLUSH'",
+        "desc": "black serif text reading 'STRAIGHT FLUSH'",
         "action": "static",
         "position": "bottom-left",
-        "id": "text_straight_flush_brand_1"
+        "id": "text_straight_flush_1"
       },
       {
-        "desc": "white rectangular text box with black text reading 'ONLY HAVE TO RESORT TO YOUR BIG FOOT WHEN YOU NEED TO CUT A BEAM THAT'S BIGGER THAN 8X8'",
+        "desc": "smaller black text on a semi-transparent beige banner reading 'ONLY HAVE TO RESORT TO YOUR BIG FOOT WHEN YOU NEED TO CUT A BEAM THAT'S BIGGER THAN 8X8'",
         "action": "static",
         "position": "bottom-right",
-        "id": "text_big_foot_detail_1"
+        "id": "text_big_foot_1"
       },
       {
-        "desc": "light brown wooden plank background with vertical grain",
+        "desc": "piles of light-colored wood shavings",
+        "action": "static",
+        "position": "top-left and bottom-center",
+        "id": "debris_sawdust_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The video displays a static informational slide about woodworking tools.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The text 'STRAIGHT FLUSH' appears below the image of the saw.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The text 'DECREASES THE NEED TO USE THE BIG FOOT BEAM SAW' is positioned to the right of the saw image.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A caption explains that the 'big foot' tool is only needed for beams bigger than 8x8.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "STRAIGHT",
+      "FLUSH",
+      "DECREASES THE",
+      "NEED TO USE THE",
+      "BIG FOOT BEAM SAW",
+      "ONLY HAVE TO RESORT TO YOUR BIG FOOT WHEN YOU",
+      "NEED TO CUT A BEAM THAT'S BIGGER THAN 8X8"
+    ],
+    "spatial": "The image of the black circular saw is on the left side of the screen, framed by wood. To the right of the saw image is the large text 'DECREASES THE NEED TO USE THE BIG FOOT BEAM SAW'. Below the saw image is the text 'STRAIGHT FLUSH'. At the bottom right, below the large text, is a smaller banner with explanatory text. Wood shavings are scattered at the top left and bottom center of the wooden background.",
+    "parse_success": true,
+    "chunk_idx": 41,
+    "video_id": "r6m9pZ0dzkY",
+    "state_changes": []
+  },
+  {
+    "time": [
+      42,
+      43
+    ],
+    "visible_entities": [
+      {
+        "desc": "black circular saw with a handle and base plate, displayed inside a white square frame with a wooden border",
+        "action": "static",
+        "position": "left",
+        "id": "saw_circular_framed_1"
+      },
+      {
+        "desc": "light brown wooden floorboards with visible grain texture",
         "action": "static",
         "position": "background"
       },
       {
         "desc": "piles of light-colored wood shavings",
         "action": "static",
-        "position": "top-left and bottom-center",
-        "id": "sawdust_piles_1"
+        "position": "top and bottom",
+        "id": "debris_sawdust_1"
+      },
+      {
+        "desc": "large black bold text reading 'DECREASES THE NEED TO USE THE BIG FOOT BEAM SAW'",
+        "action": "static",
+        "position": "right"
+      },
+      {
+        "desc": "smaller black text reading 'STRAIGHT FLUSH'",
+        "action": "static",
+        "position": "bottom left",
+        "id": "text_straight_flush_1"
+      },
+      {
+        "desc": "text on a light wooden strip reading 'ONLY HAVE TO RESORT TO YOUR BIG FOOT WHEN YOU NEED TO CUT A BEAM THAT'S BIGGER THAN 8X8'",
+        "action": "static",
+        "position": "bottom right",
+        "id": "text_big_foot_1"
       }
     ],
     "atomic_facts": [
@@ -2299,11 +2320,7 @@
         "confidence": 1.0
       },
       {
-        "fact": "The text 'STRAIGHT FLUSH' is visible below the saw image.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "Wood shavings are scattered on the wooden background.",
+        "fact": "The words 'STRAIGHT FLUSH' are displayed below the image of the saw.",
         "confidence": 1.0
       }
     ],
@@ -2316,82 +2333,7 @@
       "ONLY HAVE TO RESORT TO YOUR BIG FOOT WHEN YOU",
       "NEED TO CUT A BEAM THAT'S BIGGER THAN 8X8"
     ],
-    "spatial": "The image of the black circular saw is on the left side of the screen. The large text block describing the tool's benefits is to the right of the saw image. The text 'STRAIGHT FLUSH' is located below the saw image. A white text box containing additional specifications is positioned below the large text block on the right. Wood shavings are scattered near the top-left and bottom-center of the frame.",
-    "parse_success": true,
-    "chunk_idx": 41,
-    "video_id": "r6m9pZ0dzkY",
-    "state_changes": []
-  },
-  {
-    "time": [
-      84,
-      86
-    ],
-    "visible_entities": [
-      {
-        "desc": "black circular saw with a handle and base plate, displayed inside a white rectangular frame",
-        "action": "static",
-        "position": "left",
-        "id": "saw_straight_flush_1"
-      },
-      {
-        "desc": "wooden plank background with light brown grain texture",
-        "action": "static",
-        "position": "background"
-      },
-      {
-        "desc": "piles of light-colored wood shavings",
-        "action": "static",
-        "position": "top and bottom",
-        "id": "sawdust_piles_1"
-      },
-      {
-        "desc": "large bold black text reading 'DECREASES THE NEED TO USE THE BIG FOOT BEAM SAW'",
-        "action": "static",
-        "position": "right",
-        "id": "text_big_foot_comparison_1"
-      },
-      {
-        "desc": "smaller black text reading 'ONLY HAVE TO RESORT TO YOUR BIG FOOT WHEN YOU NEED TO CUT A BEAM THAT'S BIGGER THAN 8X8' on a light wood strip",
-        "action": "static",
-        "position": "bottom right",
-        "id": "text_big_foot_detail_1"
-      },
-      {
-        "desc": "black serif text reading 'STRAIGHT FLUSH'",
-        "action": "static",
-        "position": "bottom left",
-        "id": "text_straight_flush_brand_1"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "The video displays a static informational slide about woodworking tools.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The text states that the tool decreases the need to use the 'Big Foot Beam Saw'.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The text specifies that the 'Big Foot' is only needed for beams bigger than 8x8.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The words 'STRAIGHT FLUSH' appear below the image of the saw.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [
-      "STRAIGHT",
-      "FLUSH",
-      "DECREASES THE",
-      "NEED TO USE THE",
-      "BIG FOOT BEAM SAW",
-      "ONLY HAVE TO RESORT TO YOUR BIG FOOT WHEN YOU",
-      "NEED TO CUT A BEAM THAT'S BIGGER THAN 8X8"
-    ],
-    "spatial": "The image of the black circular saw is positioned on the left side of the screen. The large descriptive text is to the right of the saw image. The 'STRAIGHT FLUSH' text is located below the saw image. Wood shavings are scattered at the top and bottom of the frame, overlaying the wooden background.",
+    "spatial": "The image of the black circular saw is positioned on the left side of the screen. To the right of the saw image is the large text 'DECREASES THE NEED TO USE THE BIG FOOT BEAM SAW'. Below the saw image is the text 'STRAIGHT FLUSH'. Below the large text on the right is a wooden strip containing smaller explanatory text. Wood shavings are scattered at the top and bottom of the frame, overlaying the wooden floor background.",
     "parse_success": true,
     "chunk_idx": 42,
     "video_id": "r6m9pZ0dzkY",
@@ -2399,282 +2341,277 @@
   },
   {
     "time": [
-      86,
-      88
+      43,
+      44
     ],
     "visible_entities": [
       {
-        "desc": "black circular saw with a handle and base plate, shown in a white box",
+        "desc": "black circular saw with a silver blade guard and black handle",
         "action": "static",
         "position": "left",
-        "id": "saw_straight_flush_1"
+        "id": "saw_circular_generic_1"
       },
       {
-        "desc": "silver and black Ryobi brand plunge router with black handles",
+        "desc": "silver and black Ryobi router with black handles and a visible power cord",
         "action": "resting on wood",
         "position": "center",
-        "id": "saw_ryobi_router_1"
+        "id": "tool_router_ryobi_1"
       },
       {
         "desc": "light brown wooden plank with visible grain",
         "action": "static",
-        "position": "bottom",
-        "id": "background_wood_floor_1"
+        "position": "foreground"
       },
       {
-        "desc": "black text overlay reading 'DECREASES THE NEED TO USE THE BIG FOOT BEAM SAW'",
+        "desc": "wooden floor background with scattered wood shavings",
         "action": "static",
-        "position": "right",
-        "id": "text_big_foot_comparison_1"
+        "position": "background"
       },
       {
-        "desc": "black text overlay reading 'STRAIGHT FLUSH'",
+        "desc": "black text on white background and wooden planks",
         "action": "static",
-        "position": "bottom-left"
-      },
-      {
-        "desc": "small pile of light-colored wood shavings",
-        "action": "static",
-        "position": "bottom-center",
-        "id": "sawdust_piles_1"
+        "position": "right"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A silver and black router is resting on a wooden plank.",
+        "fact": "A Ryobi router is resting on a wooden plank outdoors.",
         "confidence": 1.0
       },
       {
-        "fact": "Text on the screen states that the tool decreases the need to use a big foot beam saw.",
+        "fact": "A graphic displays a circular saw next to text about a 'BIG FOOT BEAM SAW'.",
         "confidence": 1.0
       },
       {
-        "fact": "Text on the screen reads 'STRAIGHT FLUSH'.",
+        "fact": "The text states the tool 'DECREASES THE NEED TO USE THE BIG FOOT BEAM SAW'.",
         "confidence": 1.0
       },
       {
-        "fact": "Wood shavings are scattered on the wooden surface.",
+        "fact": "The text notes you 'ONLY HAVE TO RESORT TO YOUR BIG FOOT WHEN YOU NEED TO CUT A BEAM THAT'S BIGGER THAN 8X8'.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "Wood shavings are scattered on the wooden floor background.",
         "confidence": 1.0
       }
     ],
     "ocr": [
+      "STRAIGHT",
+      "FLUSH",
       "DECREASES THE",
       "NEED TO USE THE",
       "BIG FOOT BEAM SAW",
       "ONLY HAVE TO RESORT TO YOUR BIG FOOT WHEN YOU",
       "NEED TO CUT A BEAM THAT'S BIGGER THAN 8X8",
-      "STRAIGHT",
-      "FLUSH",
       "RYOBI"
     ],
-    "spatial": "The image of the black circular saw is to the left of the large black text. The router is positioned on top of the wooden plank in the foreground. The text 'STRAIGHT FLUSH' is below the image of the saw. The pile of wood shavings is below the router and near the bottom edge of the frame.",
+    "spatial": "The circular saw image is to the left of the large black text. The text is positioned above a smaller text box on a wooden strip. The router is in the center of the frame, resting on a wooden plank in the foreground. The wooden floor background is behind the router and the text overlay.",
     "parse_success": true,
     "chunk_idx": 43,
     "video_id": "r6m9pZ0dzkY",
-    "state_changes": []
+    "state_changes": [
+      "Ryobi router appears on the wooden surface."
+    ]
   },
   {
     "time": [
-      88,
-      90
+      44,
+      45
     ],
     "visible_entities": [
       {
-        "desc": "Ryobi brand plunge router with a black motor housing, silver metal base, and black ergonomic handles",
-        "action": "resting on a wooden plank",
+        "desc": "Ryobi brand plunge router, black motor housing, silver metal base, black handles, black power cord",
+        "action": "cutting wood",
         "position": "center",
-        "id": "saw_ryobi_router_1"
+        "id": "tool_router_ryobi_1"
       },
       {
-        "desc": "light-colored wooden plank with visible wood grain texture",
+        "desc": "light-colored wooden plank, flat surface",
         "action": "static",
-        "position": "foreground"
+        "position": "bottom"
       },
       {
-        "desc": "black power cord",
+        "desc": "vertical wooden post, light brown",
         "action": "static",
-        "position": "right",
-        "id": "power_cord_1"
+        "position": "right"
       },
       {
-        "desc": "vertical wooden post",
-        "action": "static",
-        "position": "right",
-        "id": "post_wooden_1"
-      },
-      {
-        "desc": "blurred background featuring a house with a window and green trees",
+        "desc": "green grass and blurred house background",
         "action": "static",
         "position": "background"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A Ryobi router is resting on a wooden plank.",
+        "fact": "The router is actively cutting into the wooden plank.",
         "confidence": 1.0
       },
       {
-        "fact": "The router is positioned at an angle on the wood surface.",
+        "fact": "The router is tilted at an angle on the wood surface.",
         "confidence": 1.0
       },
       {
-        "fact": "The text 'RYOBI' is visible on the side of the tool.",
+        "fact": "The text 'RYOBI' is visible on the tool's label.",
         "confidence": 1.0
       }
     ],
     "ocr": [
       "RYOBI"
     ],
-    "spatial": "The router is in the center of the frame, resting on top of the wooden plank in the foreground. A black power cord extends from the router towards the right side of the frame. A vertical wooden post stands to the right of the router. The house and trees are located in the background behind the router.",
+    "spatial": "The router is positioned in the center of the frame, resting on top of the wooden plank. The vertical wooden post is to the right of the router. The background scenery is behind the router and the wood.",
     "parse_success": true,
     "chunk_idx": 44,
     "video_id": "r6m9pZ0dzkY",
     "state_changes": [
-      "Ryobi plunge router shown resting on wooden plank"
+      "Ryobi router begins cutting wood; background includes green grass."
     ]
   },
   {
     "time": [
-      90,
-      92
+      45,
+      46
     ],
     "visible_entities": [
       {
-        "desc": "hand with light skin tone, covered in fine white sawdust particles",
-        "action": "gripping and operating a power tool",
-        "position": "right",
-        "id": "hand_operator_1"
+        "desc": "person's hand and forearm, fair skin, covered in fine white sawdust",
+        "action": "guiding a power tool",
+        "position": "right"
       },
       {
-        "desc": "black handheld power router with a silver circular base plate and a black adjustment knob",
-        "action": "cutting into wood",
+        "desc": "black handheld power tool, likely a router, with a visible silver circular cutting bit",
+        "action": "cutting wood",
         "position": "center",
-        "id": "saw_ryobi_router_1"
+        "id": "tool_router_ryobi_1"
       },
       {
-        "desc": "light-colored wooden plank with visible vertical grain texture",
+        "desc": "vertical wooden planks, light brown, smooth surface",
         "action": "static",
         "position": "left"
+      },
+      {
+        "desc": "sheet of oriented strand board (OSB), textured wood surface",
+        "action": "static",
+        "position": "background"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A hand is gripping the handle of a black power router.",
+        "fact": "The person is operating a power tool to cut or shape the edge of the wooden planks.",
         "confidence": 1.0
       },
       {
-        "fact": "The router is cutting a groove along the edge of a wooden plank.",
+        "fact": "Fine white sawdust is visible on the person's skin and the tool, indicating active cutting.",
         "confidence": 1.0
       },
       {
-        "fact": "Fine white sawdust is visible on the hand and the tool.",
+        "fact": "The silver circular bit of the tool is spinning against the wood.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The wooden plank is positioned to the left of the power router. The hand is holding the router on the right side, pressing it against the wood. The silver base plate of the router is in contact with the surface of the wooden plank.",
+    "spatial": "The person's hand is on the right side of the frame, holding the black power tool. The tool is positioned in the center, pressing its silver bit against the vertical wooden planks on the left. The textured OSB sheet is in the background behind the planks.",
     "parse_success": true,
     "chunk_idx": 45,
     "video_id": "r6m9pZ0dzkY",
     "state_changes": [
-      "hand operates router cutting into wood"
+      "Close-up of router cutting wood with visible sawdust on operator's arm."
     ]
   },
   {
     "time": [
-      92,
-      94
+      46,
+      47
     ],
     "visible_entities": [
       {
         "desc": "bald man with glasses, wearing a grey t-shirt and blue jeans",
-        "action": "operating a power tool",
+        "action": "operating a black power tool",
         "position": "center",
-        "id": "person_presenter_2"
+        "id": "person_operator_2"
       },
       {
-        "desc": "black power tool, handheld",
+        "desc": "black handheld power tool",
         "action": "being used on a wooden shelf",
-        "position": "center",
-        "id": "saw_ryobi_router_1"
+        "position": "center"
       },
       {
-        "desc": "wooden wall framing with light brown OSB sheathing",
+        "desc": "wooden framing structure with oriented strand board (OSB) sheathing",
         "action": "static",
         "position": "background",
-        "id": "background_wood_framing_1"
-      },
-      {
-        "desc": "small wooden shelf, light brown",
-        "action": "static",
-        "position": "center",
-        "id": "shelf_wooden_1"
+        "id": "background_framing_1"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A man is using a black power tool on a small wooden shelf.",
+        "fact": "The man is using a power tool on a small wooden shelf inside a wall frame.",
         "confidence": 1.0
       },
       {
-        "fact": "The man is standing in front of a wall framed with wood and covered in OSB sheathing.",
+        "fact": "The wall structure is made of vertical wooden studs and OSB panels.",
         "confidence": 1.0
       },
       {
-        "fact": "The man is wearing a grey t-shirt and blue jeans.",
+        "fact": "The man is holding the tool with both hands.",
         "confidence": 1.0
       }
     ],
-    "ocr": [],
-    "spatial": "The man is in front of the wooden wall framing. He is holding the black power tool over the small wooden shelf. The shelf is attached to the vertical wooden studs of the wall.",
+    "ocr": [
+      "APA",
+      "RATED SHEATHING",
+      "24/16",
+      "0518",
+      "SIZED FOR SPACING",
+      "THICKNESS"
+    ],
+    "spatial": "The man is standing in front of the wooden wall frame. He is holding the black power tool in his hands, positioning it on top of a small wooden shelf that is installed between the vertical studs. The OSB sheathing is behind the man and the tool.",
     "parse_success": true,
     "chunk_idx": 46,
     "video_id": "r6m9pZ0dzkY",
     "state_changes": [
-      "presenter with glasses appears operating power tool"
+      "Operator (person_operator_2) appears using a black handheld tool on a shelf."
     ]
   },
   {
     "time": [
-      94,
-      96
+      47,
+      48
     ],
     "visible_entities": [
       {
         "desc": "bald man with glasses, wearing a dark grey t-shirt and blue jeans",
-        "action": "operating a power tool",
+        "action": "operating a black power tool",
         "position": "center",
-        "id": "person_presenter_2"
+        "id": "person_operator_2"
       },
       {
-        "desc": "black handheld power tool (router)",
-        "action": "being held against wood",
+        "desc": "black handheld power tool, likely a router",
+        "action": "being used on wood",
         "position": "center",
-        "id": "saw_ryobi_router_1"
+        "id": "tool_router_ryobi_1"
       },
       {
-        "desc": "wooden wall framing with oriented strand board (OSB) sheathing",
+        "desc": "wooden wall framing with light-colored studs and OSB sheathing",
         "action": "static",
         "position": "background",
-        "id": "background_wood_framing_1"
+        "id": "background_framing_1"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A bald man is using a black power tool on a wooden shelf inside a wall frame.",
+        "fact": "A man is using a black power tool on a wooden shelf inside a wall frame.",
         "confidence": 1.0
       },
       {
-        "fact": "The man is holding the tool with both hands against the wood surface.",
+        "fact": "The man is wearing blue jeans and a dark grey t-shirt.",
         "confidence": 1.0
       },
       {
-        "fact": "The wall structure consists of vertical wooden studs and OSB panels.",
+        "fact": "The wall structure consists of vertical wooden studs and oriented strand board panels.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The man is standing in front of the wooden wall framing. He is holding the black power tool against a horizontal wooden shelf that is part of the frame. The OSB sheathing is behind the wooden studs.",
+    "spatial": "The man is standing in front of the wooden wall framing. He is holding the black power tool with both hands, positioning it on a horizontal wooden shelf within the frame.",
     "parse_success": true,
     "chunk_idx": 47,
     "video_id": "r6m9pZ0dzkY",
@@ -2682,39 +2619,37 @@
   },
   {
     "time": [
-      96,
-      98
+      48,
+      49
     ],
     "visible_entities": [
       {
-        "desc": "person wearing a white t-shirt with a small orange logo on the chest and blue jeans",
-        "action": "operating a circular saw",
+        "desc": "person wearing a light grey t-shirt with a small orange logo on the chest and blue jeans",
+        "action": "holding a circular saw and cutting wood",
         "position": "center",
-        "id": "person_operator_2"
+        "id": "person_operator_3"
       },
       {
-        "desc": "green and black handheld circular saw",
-        "action": "cutting wood",
+        "desc": "green and black circular saw with a black power cord",
+        "action": "cutting a wooden plank",
         "position": "center",
-        "id": "saw_skil_1"
+        "id": "saw_circular_green_black_1"
       },
       {
-        "desc": "light-colored wooden plank",
+        "desc": "long, light-colored wooden plank",
         "action": "being cut",
-        "position": "center",
-        "id": "background_wood_floor_1"
+        "position": "center"
       },
       {
-        "desc": "red and black workbench support with 'SKIL' logo",
+        "desc": "black and red workbench with 'SKIL' branding",
         "action": "static",
         "position": "bottom left",
-        "id": "support_sawhorse_1"
+        "id": "workbench_skil_1"
       },
       {
         "desc": "black car",
         "action": "static",
-        "position": "background left",
-        "id": "vehicle_black_1"
+        "position": "background left"
       },
       {
         "desc": "white text overlay",
@@ -2728,15 +2663,19 @@
         "confidence": 1.0
       },
       {
-        "fact": "Sawdust is flying from the blade as it cuts through the wood.",
+        "fact": "Sawdust is flying from the saw blade.",
         "confidence": 1.0
       },
       {
-        "fact": "The text 'I'm Ready to get Mine What's the Price?' is displayed at the top of the screen.",
+        "fact": "The text 'I'm Ready to get Mine What's the Price?' is displayed at the top.",
         "confidence": 1.0
       },
       {
-        "fact": "The text 'Scroll down for our amazing deal...' is displayed at the bottom of the screen.",
+        "fact": "The text 'Scroll down for our amazing deal...' is displayed at the bottom.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The workbench has the brand name 'SKIL' visible.",
         "confidence": 1.0
       }
     ],
@@ -2746,53 +2685,46 @@
       "Scroll down for our amazing deal...",
       "SKIL"
     ],
-    "spatial": "The person is standing behind the wooden plank and holding the circular saw. The saw is positioned on top of the plank, cutting into it. The red workbench support is underneath the left side of the plank. The black car is parked in the background behind the person.",
+    "spatial": "The person is standing behind the wooden plank, holding the circular saw which is positioned on top of the plank. The workbench is below the plank, supporting it. The black car is in the background to the left of the person. The text overlays are positioned above and below the main action.",
     "parse_success": true,
     "chunk_idx": 48,
     "video_id": "r6m9pZ0dzkY",
     "state_changes": [
-      "different operator in white shirt uses green/black circular saw"
+      "New operator cuts wood with a green/black circular saw near a Skil workbench."
     ]
   },
   {
     "time": [
-      98,
-      100
+      49,
+      50
     ],
     "visible_entities": [
       {
-        "desc": "person wearing blue jeans and a black shirt",
-        "action": "operating a power saw",
+        "desc": "person wearing blue jeans and a black t-shirt",
+        "action": "operating a circular saw",
         "position": "right",
-        "id": "person_operator_1"
+        "id": "person_operator_3"
       },
       {
-        "desc": "black circular saw with metal base plate",
+        "desc": "black circular saw with a metal base plate",
         "action": "cutting wood",
         "position": "center",
-        "id": "saw_straight_flush_1"
+        "id": "saw_circular_generic_1"
       },
       {
         "desc": "light-colored wooden plank",
-        "action": "static",
-        "position": "bottom",
-        "id": "background_wood_floor_1"
-      },
-      {
-        "desc": "sheet of oriented strand board (OSB) with wood chip texture",
-        "action": "static",
-        "position": "right",
-        "id": "background_osb_1"
-      },
-      {
-        "desc": "white text overlay",
-        "action": "static",
-        "position": "top"
-      },
-      {
-        "desc": "white text overlay",
-        "action": "static",
+        "action": "being cut",
         "position": "bottom"
+      },
+      {
+        "desc": "sheet of oriented strand board (OSB) with a textured wood chip pattern",
+        "action": "static",
+        "position": "right"
+      },
+      {
+        "desc": "white text overlay with black outline",
+        "action": "static",
+        "position": "top and bottom"
       }
     ],
     "atomic_facts": [
@@ -2801,107 +2733,9 @@
         "confidence": 1.0
       },
       {
-        "fact": "Sawdust is visible around the blade of the saw.",
+        "fact": "Sawdust is visible around the cutting area.",
         "confidence": 1.0
       },
-      {
-        "fact": "The text 'I'm Ready to get Mine What's the Price?' is displayed at the top.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The text 'Scroll down for our amazing deal...' is displayed at the bottom.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [
-      "I'm Ready to get Mine",
-      "What's the Price?",
-      "Scroll down for our amazing deal..."
-    ],
-    "spatial": "The person is positioned to the right of the saw, holding it. The saw is on top of the wooden plank. The OSB sheet is to the right of the plank. The top text is above the saw, and the bottom text is below the plank.",
-    "parse_success": true,
-    "chunk_idx": 49,
-    "video_id": "r6m9pZ0dzkY",
-    "state_changes": []
-  },
-  {
-    "time": [
-      100,
-      102
-    ],
-    "visible_entities": [
-      {
-        "desc": "person wearing blue denim jeans and a black belt",
-        "action": "operating a circular saw",
-        "position": "left"
-      },
-      {
-        "desc": "black circular saw with a silver blade",
-        "action": "cutting through wood",
-        "position": "center",
-        "id": "saw_straight_flush_1"
-      },
-      {
-        "desc": "light-colored wooden plank",
-        "action": "static",
-        "position": "bottom",
-        "id": "background_wood_floor_1"
-      },
-      {
-        "desc": "vertical sheet of oriented strand board (OSB) with a flake texture",
-        "action": "static",
-        "position": "right",
-        "id": "background_osb_1"
-      },
-      {
-        "desc": "white sans-serif text overlay",
-        "action": "static",
-        "position": "top and bottom"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "A person is cutting a wooden plank with a circular saw.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The saw blade is spinning and cutting into the wood.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The text 'I'm Ready to get Mine What's the Price?' is displayed at the top.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The text 'Scroll down for our amazing deal...' is displayed at the bottom.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [
-      "I'm Ready to get Mine",
-      "What's the Price?",
-      "Scroll down for our amazing deal..."
-    ],
-    "spatial": "The person is on the left side of the frame, holding the circular saw which is positioned in the center. The saw is cutting a wooden plank located at the bottom. To the right of the saw is a vertical sheet of OSB. The text overlays are positioned above and below the main action.",
-    "parse_success": true,
-    "chunk_idx": 50,
-    "video_id": "r6m9pZ0dzkY",
-    "state_changes": []
-  },
-  {
-    "time": [
-      102,
-      104
-    ],
-    "visible_entities": [
-      {
-        "desc": "White text in a sans-serif font on a black background",
-        "action": "static",
-        "position": "top and bottom",
-        "id": "background_black_text_1"
-      }
-    ],
-    "atomic_facts": [
       {
         "fact": "The text 'I'm Ready to get Mine What's the Price?' is displayed at the top of the screen.",
         "confidence": 1.0
@@ -2909,10 +2743,6 @@
       {
         "fact": "The text 'Scroll down for our amazing deal...' is displayed at the bottom of the screen.",
         "confidence": 1.0
-      },
-      {
-        "fact": "The text remains static throughout the clip.",
-        "confidence": 1.0
       }
     ],
     "ocr": [
@@ -2920,33 +2750,62 @@
       "What's the Price?",
       "Scroll down for our amazing deal..."
     ],
-    "spatial": "The text 'I'm Ready to get Mine What's the Price?' is located at the top of the frame. The text 'Scroll down for our amazing deal...' is located at the bottom of the frame. The bottom text is below the top text.",
+    "spatial": "The person is positioned to the right of the circular saw, holding it with their hands. The saw is on top of the wooden plank in the foreground. The sheet of OSB is to the right of the saw and the plank. The text overlays are located above and below the main action in the center.",
     "parse_success": true,
-    "chunk_idx": 51,
+    "chunk_idx": 49,
     "video_id": "r6m9pZ0dzkY",
     "state_changes": [
-      "transition to black background with white text for closing"
+      "Operator changes to person in black t-shirt cutting wood with a circular saw."
     ]
   },
   {
     "time": [
-      104,
-      106
+      50,
+      51
     ],
     "visible_entities": [
       {
-        "desc": "Black background with white sans-serif text",
+        "desc": "person wearing blue denim jeans and a blue shirt, with a hand gripping a black handle",
+        "action": "operating a circular saw",
+        "position": "left/center"
+      },
+      {
+        "desc": "circular saw with a black body and a silver blade, partially obscured by motion blur",
+        "action": "cutting wood",
+        "position": "center",
+        "id": "saw_circular_generic_1"
+      },
+      {
+        "desc": "light-colored wooden plank",
         "action": "static",
-        "id": "background_black_text_1"
+        "position": "bottom/foreground"
+      },
+      {
+        "desc": "vertical sheet of oriented strand board (OSB) with a textured, flake-like wood pattern",
+        "action": "static",
+        "position": "right/background"
+      },
+      {
+        "desc": "white sans-serif text overlay",
+        "action": "static",
+        "position": "top/bottom"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "The screen displays white text on a black background.",
+        "fact": "A person is actively pushing a circular saw forward to cut a wooden plank.",
         "confidence": 1.0
       },
       {
-        "fact": "The text asks 'What's the Price?' and instructs the viewer to 'Scroll down for our amazing deal...'.",
+        "fact": "The saw blade is spinning rapidly, indicated by motion blur.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The text 'I'm Ready to get Mine What's the Price?' is displayed at the top of the screen.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The text 'Scroll down for our amazing deal...' is displayed at the bottom of the screen.",
         "confidence": 1.0
       }
     ],
@@ -2955,29 +2814,31 @@
       "What's the Price?",
       "Scroll down for our amazing deal..."
     ],
-    "spatial": "The text 'I'm Ready to get Mine' and 'What's the Price?' is located at the top of the screen. The text 'Scroll down for our amazing deal...' is located at the bottom of the screen.",
+    "spatial": "The person is positioned to the left of the vertical OSB board. The circular saw is in front of the person and is cutting through the wooden plank at the bottom. The text overlays are positioned above and below the central action of the saw cutting the wood.",
     "parse_success": true,
-    "chunk_idx": 52,
+    "chunk_idx": 50,
     "video_id": "r6m9pZ0dzkY",
-    "state_changes": []
+    "state_changes": [
+      "Operator changes to person in blue shirt cutting wood; motion blur increases."
+    ]
   },
   {
     "time": [
-      106,
-      108
+      51,
+      52
     ],
     "visible_entities": [
       {
-        "desc": "white sans-serif text on a black background",
+        "desc": "White sans-serif text reading 'I'm Ready to get Mine What's the Price?'",
         "action": "static",
-        "position": "top",
-        "id": "background_black_text_1"
+        "position": "top/center",
+        "id": "text_cta_1"
       },
       {
-        "desc": "white sans-serif text on a black background",
+        "desc": "White sans-serif text reading 'Scroll down for our amazing deal...'",
         "action": "static",
-        "position": "bottom",
-        "id": "background_black_text_1"
+        "position": "bottom/center",
+        "id": "text_cta_1"
       }
     ],
     "atomic_facts": [
@@ -2999,42 +2860,37 @@
       "What's the Price?",
       "Scroll down for our amazing deal..."
     ],
-    "spatial": "The text 'I'm Ready to get Mine What's the Price?' is located at the top of the frame. The text 'Scroll down for our amazing deal...' is located at the bottom of the frame. The top text is above the bottom text.",
+    "spatial": "The text 'I'm Ready to get Mine What's the Price?' is located above the text 'Scroll down for our amazing deal...'. Both text blocks are centered horizontally against the black background.",
     "parse_success": true,
-    "chunk_idx": 53,
+    "chunk_idx": 51,
     "video_id": "r6m9pZ0dzkY",
-    "state_changes": []
+    "state_changes": [
+      "Video cuts to final call-to-action text screen."
+    ]
   },
   {
     "time": [
-      108,
-      110
+      52,
+      53
     ],
     "visible_entities": [
       {
-        "desc": "White sans-serif text reading 'I'm Ready to get Mine What's the Price?'",
+        "desc": "white sans-serif text on a black background",
         "action": "static",
-        "position": "top",
-        "id": "text_cta_price_1"
-      },
-      {
-        "desc": "White sans-serif text reading 'Scroll down for our amazing deal...'",
-        "action": "static",
-        "position": "bottom",
-        "id": "text_cta_price_1"
+        "position": "top and bottom"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "The video displays a static black screen with white text.",
+        "fact": "The text 'I'm Ready to get Mine What's the Price?' is displayed at the top of the screen.",
         "confidence": 1.0
       },
       {
-        "fact": "The text 'I'm Ready to get Mine What's the Price?' is positioned at the top of the frame.",
+        "fact": "The text 'Scroll down for our amazing deal...' is displayed at the bottom of the screen.",
         "confidence": 1.0
       },
       {
-        "fact": "The text 'Scroll down for our amazing deal...' is positioned at the bottom of the frame.",
+        "fact": "The background is solid black.",
         "confidence": 1.0
       }
     ],
@@ -3043,7 +2899,87 @@
       "What's the Price?",
       "Scroll down for our amazing deal..."
     ],
-    "spatial": "The text 'I'm Ready to get Mine What's the Price?' is located at the top of the black background. The text 'Scroll down for our amazing deal...' is located at the bottom of the black background, below the top text.",
+    "spatial": "The text 'I'm Ready to get Mine What's the Price?' is located at the top of the frame. The text 'Scroll down for our amazing deal...' is located at the bottom of the frame. Both text elements are centered horizontally against a black background.",
+    "parse_success": true,
+    "chunk_idx": 52,
+    "video_id": "r6m9pZ0dzkY",
+    "state_changes": []
+  },
+  {
+    "time": [
+      53,
+      54
+    ],
+    "visible_entities": [
+      {
+        "desc": "white sans-serif text on a black background",
+        "action": "static",
+        "position": "top"
+      },
+      {
+        "desc": "white sans-serif text on a black background",
+        "action": "static",
+        "position": "bottom"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The text 'I'm Ready to get Mine What's the Price?' is displayed at the top of the screen.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The text 'Scroll down for our amazing deal...' is displayed at the bottom of the screen.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "I'm Ready to get Mine",
+      "What's the Price?",
+      "Scroll down for our amazing deal..."
+    ],
+    "spatial": "The text 'I'm Ready to get Mine What's the Price?' is positioned above the text 'Scroll down for our amazing deal...'.",
+    "parse_success": true,
+    "chunk_idx": 53,
+    "video_id": "r6m9pZ0dzkY",
+    "state_changes": []
+  },
+  {
+    "time": [
+      54,
+      55
+    ],
+    "visible_entities": [
+      {
+        "desc": "white sans-serif text reading 'I'm Ready to get Mine What's the Price?'",
+        "action": "static",
+        "position": "top"
+      },
+      {
+        "desc": "white sans-serif text reading 'Scroll down for our amazing deal...'",
+        "action": "static",
+        "position": "bottom"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The video displays a static black screen with white text.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The text at the top asks 'What's the Price?'.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The text at the bottom instructs the viewer to 'Scroll down for our amazing deal...'.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "I'm Ready to get Mine",
+      "What's the Price?",
+      "Scroll down for our amazing deal..."
+    ],
+    "spatial": "The text 'I'm Ready to get Mine What's the Price?' is located at the top of the black background. The text 'Scroll down for our amazing deal...' is located at the bottom of the screen, below the first block of text.",
     "parse_success": true,
     "chunk_idx": 54,
     "video_id": "r6m9pZ0dzkY",

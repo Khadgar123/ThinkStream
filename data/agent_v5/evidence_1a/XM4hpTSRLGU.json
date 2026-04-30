@@ -2,54 +2,63 @@
   {
     "time": [
       0,
-      2
+      1
     ],
     "visible_entities": [
       {
         "desc": "person wearing a blue long-sleeved shirt",
-        "action": "holding a black cylindrical object",
+        "action": "holding a black circular object and a silver tool",
         "position": "left"
       },
       {
-        "desc": "black cylindrical object with a silver metallic handle and a dark circular head",
-        "action": "being held and manipulated",
-        "position": "center"
+        "desc": "black circular object with a matte finish, held in the left hand",
+        "action": "being manipulated",
+        "position": "center-left"
       },
       {
-        "desc": "light-colored wooden table surface",
+        "desc": "silver cylindrical tool with a metallic finish, held in the right hand",
+        "action": "being used to press against the black object",
+        "position": "center-left"
+      },
+      {
+        "desc": "light-colored wooden table with a smooth surface and visible grain",
         "action": "static",
         "position": "background"
       },
       {
-        "desc": "small dark textured object",
+        "desc": "small dark textured object, possibly a cleaning pad or cloth",
         "action": "static",
-        "position": "bottom left"
+        "position": "bottom-left"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A person is holding a black cylindrical tool with a silver handle.",
+        "fact": "A person is holding a black circular object in their left hand.",
         "confidence": 1.0
       },
       {
-        "fact": "The person's fingers are touching the dark circular head of the object.",
+        "fact": "The person is pressing a silver cylindrical tool against the black object.",
         "confidence": 1.0
       },
       {
-        "fact": "The object is being held over a wooden table.",
+        "fact": "The action takes place on a light-colored wooden table.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A small dark textured object rests on the table near the person's hands.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The person is on the left side of the frame, holding the black object in the center. The black object is positioned above the wooden table surface. A small dark textured object is located on the table to the bottom left of the person's hands.",
+    "spatial": "The person is positioned to the left of the frame, holding the black circular object and the silver tool over the wooden table. The small dark textured object is on the table, below and to the left of the person's hands. The wooden table serves as the background surface for the activity.",
     "parse_success": true,
     "chunk_idx": 0,
     "video_id": "XM4hpTSRLGU"
   },
   {
     "time": [
-      2,
-      4
+      1,
+      2
     ],
     "visible_entities": [
       {
@@ -58,19 +67,19 @@
         "position": "left"
       },
       {
-        "desc": "black cylindrical object with a flat top surface",
+        "desc": "black cylindrical object with a flat top, possibly a lens cap or small container",
         "action": "being held",
         "position": "center-left"
       },
       {
-        "desc": "silver tool with an orange handle",
-        "action": "being used to scrape the object",
+        "desc": "tool with a silver metallic shaft and a bright orange handle",
+        "action": "being used to manipulate the black object",
         "position": "left"
       },
       {
-        "desc": "light-colored wooden table surface",
+        "desc": "light-colored wooden table surface with visible grain",
         "action": "static",
-        "position": "background"
+        "position": "bottom"
       }
     ],
     "atomic_facts": [
@@ -79,7 +88,7 @@
         "confidence": 1.0
       },
       {
-        "fact": "The person is using a silver tool with an orange handle to scrape the side of the black object.",
+        "fact": "The person is using a tool with an orange handle to interact with the black object.",
         "confidence": 1.0
       },
       {
@@ -88,15 +97,15 @@
       }
     ],
     "ocr": [],
-    "spatial": "The person is positioned on the left side of the frame, holding the black object in front of them. The silver tool is in the person's right hand, positioned against the side of the black object. The wooden table surface extends to the right of the person's hands.",
+    "spatial": "The person's hands are positioned on the left side of the frame, holding the black object and the tool. The black object is held in the left hand, while the tool is held in the right hand and is positioned near the side of the black object. The wooden table is below the hands and objects.",
     "parse_success": true,
     "chunk_idx": 1,
     "video_id": "XM4hpTSRLGU"
   },
   {
     "time": [
-      4,
-      6
+      2,
+      3
     ],
     "visible_entities": [
       {
@@ -105,24 +114,24 @@
         "position": "left"
       },
       {
-        "desc": "black cylindrical object, smooth surface, held in hand",
-        "action": "being manipulated",
+        "desc": "black round object with a matte finish",
+        "action": "being held",
         "position": "center-left"
       },
       {
         "desc": "silver metal tool with an orange handle",
-        "action": "being used on the black object",
+        "action": "being used",
         "position": "left"
       },
       {
-        "desc": "light-colored wooden surface, smooth texture, with visible wood grain",
+        "desc": "light-colored wooden surface with visible grain",
         "action": "static",
         "position": "background"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A person is holding a black cylindrical object in their left hand.",
+        "fact": "A person is holding a black round object in their left hand.",
         "confidence": 1.0
       },
       {
@@ -130,123 +139,127 @@
         "confidence": 1.0
       },
       {
-        "fact": "The action takes place on a light wooden table.",
+        "fact": "The action takes place on a wooden surface.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The person is on the left side of the frame. The black object is held in the person's hand, positioned above the wooden surface. The silver tool is being applied to the black object.",
+    "spatial": "The person is on the left side of the frame, holding the black object above the wooden surface. The silver tool is in the person's right hand, positioned next to the black object.",
     "parse_success": true,
     "chunk_idx": 2,
     "video_id": "XM4hpTSRLGU"
   },
   {
     "time": [
-      6,
-      8
+      3,
+      4
     ],
     "visible_entities": [
       {
-        "desc": "hands with light skin tone, wearing a blue long-sleeved garment",
-        "action": "holding and manipulating a tool",
+        "desc": "person's hands, light skin tone, wearing a blue long-sleeved shirt",
+        "action": "holding and adjusting a tool",
         "position": "left"
       },
       {
         "desc": "cylindrical tool with a silver metallic handle and a black circular head",
-        "action": "being held and adjusted",
+        "action": "being held and manipulated",
         "position": "left"
       },
       {
-        "desc": "light-colored wooden surface with visible grain patterns and knots",
+        "desc": "light-colored wooden surface with visible grain and knots",
         "action": "static",
         "position": "center"
       },
       {
-        "desc": "small dark purple oval-shaped object",
+        "desc": "dark grey, flat, oval-shaped object",
         "action": "static",
         "position": "bottom left"
-      },
-      {
-        "desc": "reddish-brown wooden trim or edge",
-        "action": "static",
-        "position": "top"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A person is holding a silver and black tool with both hands.",
+        "fact": "A person is holding a cylindrical tool with a silver handle and black head.",
         "confidence": 1.0
       },
       {
-        "fact": "The tool is positioned over a wooden table.",
+        "fact": "The person is adjusting the black circular head of the tool.",
         "confidence": 1.0
       },
       {
-        "fact": "The person appears to be adjusting or demonstrating the tool.",
+        "fact": "A dark grey oval object is resting on the wooden surface.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The wooden surface has a light brown finish with visible wood grain.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The hands are on the left side of the frame, holding the tool above the wooden surface. The small purple object is located on the table below the hands. The wooden trim runs along the top edge of the wooden surface.",
+    "spatial": "The person's hands are holding the cylindrical tool on the left side of the frame. The tool is positioned above the light-colored wooden surface. The dark grey oval object is on the wooden surface, below and to the left of the tool.",
     "parse_success": true,
     "chunk_idx": 3,
     "video_id": "XM4hpTSRLGU"
   },
   {
     "time": [
-      8,
-      10
+      4,
+      5
     ],
     "visible_entities": [
       {
-        "desc": "hand holding a cylindrical tool with a silver metallic shaft and a black circular head",
-        "action": "moving the tool over the table surface",
-        "position": "left"
+        "desc": "silver cylindrical tool with a black circular head",
+        "action": "being held and moved over the table",
+        "position": "left/foreground"
       },
       {
-        "desc": "light-colored wooden table surface with visible grain patterns",
+        "desc": "light-colored wooden table surface with visible grain",
         "action": "static",
-        "position": "center"
+        "position": "center/background"
       },
       {
-        "desc": "small, dark, oval-shaped object, possibly a stone or magnet",
+        "desc": "small dark purple stone",
         "action": "static",
         "position": "bottom left"
+      },
+      {
+        "desc": "human hand",
+        "action": "holding the tool",
+        "position": "left"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A hand is holding a tool with a silver shaft and black head.",
+        "fact": "A hand is holding a silver tool with a black head.",
         "confidence": 1.0
       },
       {
-        "fact": "The tool is being moved across the wooden table surface.",
+        "fact": "The tool is being moved over the wooden surface.",
         "confidence": 1.0
       },
       {
-        "fact": "A small dark object rests on the table near the bottom left corner.",
+        "fact": "A small purple stone rests on the table.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The hand holding the tool is positioned on the left side of the frame, hovering above the wooden table. The small dark object is located on the table surface, below and to the right of the tool's head.",
+    "spatial": "The hand is on the left side of the frame, holding the silver tool. The tool is positioned above the wooden table surface. The small purple stone is located on the table in the bottom left corner, below the tool.",
     "parse_success": true,
     "chunk_idx": 4,
     "video_id": "XM4hpTSRLGU"
   },
   {
     "time": [
-      10,
-      12
+      5,
+      6
     ],
     "visible_entities": [
       {
-        "desc": "light-colored wooden surface with visible grain and knots, likely a workbench or table",
+        "desc": "light-colored wooden surface with visible grain patterns and knots",
         "action": "static",
         "position": "center"
       },
       {
-        "desc": "small, dark grey, flat, oval-shaped stone",
+        "desc": "small, dark grey, smooth, oval-shaped stone",
         "action": "static",
         "position": "bottom-left"
       },
@@ -256,101 +269,96 @@
         "position": "top-left"
       },
       {
-        "desc": "reddish-brown wooden trim or skirting board",
+        "desc": "reddish-brown wooden trim",
         "action": "static",
         "position": "top"
-      },
-      {
-        "desc": "small black cylindrical object, possibly a chess piece or tool component",
-        "action": "static",
-        "position": "left"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A small grey stone rests on the wooden surface.",
+        "fact": "A small dark grey stone rests on the wooden surface.",
         "confidence": 1.0
       },
       {
-        "fact": "A transparent acrylic stand is positioned in the top-left corner.",
+        "fact": "A transparent acrylic stand is positioned in the upper left corner.",
         "confidence": 1.0
       },
       {
-        "fact": "A reddish-brown wooden trim runs horizontally along the top edge of the frame.",
+        "fact": "The wooden surface features a reddish-brown trim along the top edge.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The small grey stone is located in the bottom-left area of the wooden surface. The transparent acrylic stand is positioned to the left of the center, near the top edge. The reddish-brown wooden trim is situated above the main wooden surface, running along the background wall.",
+    "spatial": "The small dark grey stone is located in the bottom-left area of the light-colored wooden surface. The transparent acrylic stand is positioned to the left of the center, near the top edge. The reddish-brown wooden trim runs horizontally along the top of the wooden surface.",
     "parse_success": true,
     "chunk_idx": 5,
     "video_id": "XM4hpTSRLGU"
   },
   {
     "time": [
-      12,
-      14
+      6,
+      7
     ],
     "visible_entities": [
       {
-        "desc": "light-colored wooden surface with horizontal grain patterns and knots",
+        "desc": "light-colored wooden surface, likely a butcher block countertop, featuring horizontal planks with visible wood grain and knots",
         "action": "static",
         "position": "center"
       },
       {
-        "desc": "reddish-brown wooden trim or edge",
+        "desc": "reddish-brown wooden trim or backsplash running horizontally",
         "action": "static",
         "position": "top"
       },
       {
-        "desc": "transparent rectangular plastic container",
+        "desc": "small, dark, oval-shaped object with a textured surface, resembling a stone or coaster",
+        "action": "static",
+        "position": "bottom left"
+      },
+      {
+        "desc": "transparent rectangular plastic container or box",
         "action": "static",
         "position": "top left"
       },
       {
-        "desc": "small black cylindrical object",
+        "desc": "small black cylindrical object, possibly a chess piece or knob",
         "action": "static",
         "position": "left"
-      },
-      {
-        "desc": "small dark grey oval object with textured surface",
-        "action": "static",
-        "position": "bottom left"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "The camera remains static on a wooden surface.",
+        "fact": "The camera remains static, focusing on the wooden surface.",
         "confidence": 1.0
       },
       {
-        "fact": "A transparent container sits on the wooden surface.",
+        "fact": "A dark oval object rests on the wooden surface in the foreground.",
         "confidence": 1.0
       },
       {
-        "fact": "A reddish-brown wooden trim runs along the top edge of the frame.",
+        "fact": "A transparent plastic container sits on the wooden surface in the background.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The transparent plastic container is located in the top left corner of the wooden surface. The reddish-brown wooden trim is positioned above the main wooden surface. The small black cylindrical object is to the left of the center, near the transparent container.",
+    "spatial": "The light-colored wooden surface occupies the majority of the frame. The reddish-brown wooden trim is positioned above the wooden surface, running along the top edge. The transparent plastic container is located in the top left corner, resting on the wooden surface. The small dark oval object is situated in the bottom left foreground, also on the wooden surface.",
     "parse_success": true,
     "chunk_idx": 6,
     "video_id": "XM4hpTSRLGU"
   },
   {
     "time": [
-      14,
-      16
+      7,
+      8
     ],
     "visible_entities": [
       {
-        "desc": "person's hand and arm wearing a blue long-sleeved shirt",
-        "action": "holding a black and white spool",
+        "desc": "person's hand and forearm wearing a blue long-sleeved shirt",
+        "action": "holding a spool",
         "position": "left"
       },
       {
-        "desc": "black spool with white tape, cylindrical shape",
+        "desc": "small spool with black tape on top and white tape on bottom",
         "action": "being held",
         "position": "left"
       },
@@ -360,18 +368,18 @@
         "position": "center"
       },
       {
-        "desc": "small dark textured oval object",
+        "desc": "small dark grey textured object",
         "action": "static",
         "position": "bottom left"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A person is holding a black spool with white tape.",
+        "fact": "A person is holding a small spool of tape over a wooden table.",
         "confidence": 1.0
       },
       {
-        "fact": "The hand is positioned over the wooden table.",
+        "fact": "The spool has black tape wound on the top half and white tape on the bottom half.",
         "confidence": 1.0
       },
       {
@@ -380,93 +388,88 @@
       }
     ],
     "ocr": [],
-    "spatial": "The person's hand is holding the black spool above the wooden table. The spool is to the right of the person's arm. The small dark textured object is on the table, located below and to the left of the hand.",
+    "spatial": "The person's hand is on the left side of the frame, holding the spool above the wooden table. The small dark textured object is on the table surface, located below and to the left of the hand.",
     "parse_success": true,
     "chunk_idx": 7,
     "video_id": "XM4hpTSRLGU"
   },
   {
     "time": [
-      16,
-      18
+      8,
+      9
     ],
     "visible_entities": [
       {
         "desc": "person's hand and arm wearing a blue long-sleeved shirt",
-        "action": "holding a small cylindrical object",
+        "action": "holding and placing a spool",
         "position": "left"
       },
       {
-        "desc": "small cylindrical object, black top and bottom with a white middle band, featuring a central hole",
-        "action": "being held",
+        "desc": "small spool with black tape and white backing, cylindrical shape",
+        "action": "being placed on the table",
         "position": "left"
       },
       {
-        "desc": "light-colored wooden table surface with visible wood grain",
+        "desc": "light-colored wooden table surface with visible grain and knots",
         "action": "static",
         "position": "center"
       },
       {
-        "desc": "black circular microphone head on a stand",
+        "desc": "black cylindrical tool or mount attached to the person's wrist",
         "action": "static",
         "position": "left"
       },
       {
-        "desc": "small dark textured circular object on the table",
+        "desc": "small dark oval object, possibly a sanding pad or stone",
         "action": "static",
         "position": "bottom left"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A person's hand is holding a small black and white cylindrical object.",
+        "fact": "A person's hand is holding a small spool of black tape.",
         "confidence": 1.0
       },
       {
-        "fact": "The object is positioned above the wooden table surface.",
+        "fact": "The person places the spool onto the wooden table surface.",
         "confidence": 1.0
       },
       {
-        "fact": "A microphone is positioned to the left of the hand.",
+        "fact": "A black cylindrical tool is attached to the person's wrist.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The person's hand is holding the cylindrical object above the wooden table. The microphone is to the left of the hand and object. The small dark textured object is on the table, below the hand.",
+    "spatial": "The person's hand is holding the spool above the wooden table. The black cylindrical tool is attached to the wrist of the person. The small dark oval object is on the table to the left of the spool.",
     "parse_success": true,
     "chunk_idx": 8,
     "video_id": "XM4hpTSRLGU"
   },
   {
     "time": [
-      18,
-      20
+      9,
+      10
     ],
     "visible_entities": [
       {
-        "desc": "person's hands and arms, wearing a blue long-sleeved shirt",
+        "desc": "person wearing a blue long-sleeved shirt",
         "action": "holding a black cylindrical object and a silver tool",
         "position": "left"
       },
       {
-        "desc": "black cylindrical object, matte texture, round top",
+        "desc": "black cylindrical object with a matte finish",
         "action": "being held and manipulated",
         "position": "left"
       },
       {
-        "desc": "silver metallic tool, cylindrical handle",
+        "desc": "silver metallic tool with a ribbed handle",
         "action": "being held",
         "position": "left"
       },
       {
-        "desc": "light-colored wooden surface, smooth finish with visible grain",
+        "desc": "light-colored wooden table surface with visible grain and a darker wooden edge",
         "action": "static",
         "position": "center"
-      },
-      {
-        "desc": "small dark flat object, possibly a sanding pad or stone",
-        "action": "static",
-        "position": "left"
       }
     ],
     "atomic_facts": [
@@ -479,195 +482,101 @@
         "confidence": 1.0
       },
       {
-        "fact": "The objects are positioned over a wooden table.",
+        "fact": "The person is manipulating the black object with the silver tool.",
         "confidence": 1.0
       },
       {
-        "fact": "A small dark object rests on the table surface.",
+        "fact": "The action takes place on a wooden table.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The person's hands are on the left side of the frame, holding the black object and silver tool above the wooden table. The small dark object is on the table surface, below the person's hands.",
+    "spatial": "The person is on the left side of the frame, positioned behind the wooden table. The black cylindrical object is held in the person's left hand, and the silver tool is held in their right hand, near the black object. The table surface extends from the left to the right of the frame.",
     "parse_success": true,
     "chunk_idx": 9,
     "video_id": "XM4hpTSRLGU"
   },
   {
     "time": [
-      20,
-      22
+      10,
+      11
     ],
     "visible_entities": [
       {
-        "desc": "hands with light skin tone",
+        "desc": "person's hands with light skin tone",
         "action": "manipulating a small red object",
         "position": "left"
       },
       {
-        "desc": "black suction cup mount with a silver metal ball joint",
+        "desc": "black suction cup mount with a silver metal stem",
         "action": "static",
         "position": "left"
       },
       {
-        "desc": "roll of white tape with a black inner core",
+        "desc": "roll of white tape with a black core",
         "action": "static",
         "position": "left"
       },
       {
-        "desc": "small dark grey flat stone",
+        "desc": "small dark grey oval-shaped object",
         "action": "static",
         "position": "left"
       },
       {
-        "desc": "light-colored wooden workbench surface",
+        "desc": "light-colored wooden workbench surface with visible grain",
         "action": "static",
         "position": "center"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A person is holding a small red object in their left hand.",
+        "fact": "A person's hands are holding and manipulating a small red object.",
         "confidence": 1.0
       },
       {
-        "fact": "A black suction cup mount is resting on the wooden table.",
+        "fact": "The black suction cup mount is resting on the wooden table.",
         "confidence": 1.0
       },
       {
-        "fact": "A roll of white tape is placed on the table near the mount.",
+        "fact": "The roll of white tape is positioned behind the suction cup mount.",
         "confidence": 1.0
       },
       {
-        "fact": "A dark grey stone is lying on the table in the foreground.",
+        "fact": "The small dark grey object is lying on the table near the hands.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The hands are on the left side of the frame, holding a red object above the wooden table. The black suction cup mount is positioned to the right of the hands. The roll of white tape is behind the suction cup mount. The dark grey stone is in front of the suction cup mount.",
+    "spatial": "The person's hands are on the left side of the frame, holding a red object. The black suction cup mount is positioned in front of the roll of white tape. The small dark grey object is below the hands on the wooden surface.",
     "parse_success": true,
     "chunk_idx": 10,
     "video_id": "XM4hpTSRLGU"
   },
   {
     "time": [
-      22,
-      24
+      11,
+      12
     ],
     "visible_entities": [
       {
         "desc": "hand with fair skin, wearing a blue long-sleeved shirt",
-        "action": "holding a textured brown object",
+        "action": "holding a small round object",
         "position": "left"
       },
       {
-        "desc": "small, round, brown object with a ridged or ribbed texture",
-        "action": "being held and moved",
-        "position": "left"
-      },
-      {
-        "desc": "silver cylindrical tool with a black circular mesh head",
-        "action": "static",
-        "position": "left"
-      },
-      {
-        "desc": "light-colored wooden surface with visible grain",
-        "action": "static",
-        "position": "background"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "A hand is holding a small, round, brown object with a ridged texture.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The hand moves the brown object over the mesh head of a silver tool.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The silver tool rests on a light-colored wooden surface.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [],
-    "spatial": "The hand is positioned above the silver tool and the wooden surface. The brown object is held in the hand, directly above the mesh head of the tool. The tool is to the left of the center of the frame, resting on the wooden surface.",
-    "parse_success": true,
-    "chunk_idx": 11,
-    "video_id": "XM4hpTSRLGU"
-  },
-  {
-    "time": [
-      24,
-      26
-    ],
-    "visible_entities": [
-      {
-        "desc": "person's hand with fair skin, wearing a blue long-sleeved shirt",
-        "action": "holding a brown ribbed object",
-        "position": "left"
-      },
-      {
-        "desc": "brown ribbed cylindrical object, textured surface",
-        "action": "being held above a metal tool",
-        "position": "left"
-      },
-      {
-        "desc": "metal tool with a black circular rim and a silver handle",
-        "action": "resting on the table",
-        "position": "left"
-      },
-      {
-        "desc": "light-colored wooden table surface with visible wood grain",
-        "action": "static",
-        "position": "center"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "A person's hand is holding a brown ribbed object.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The brown object is positioned directly above the circular opening of a metal tool.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The metal tool is resting on a wooden table.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [],
-    "spatial": "The person's hand is on the left side of the frame, holding the brown ribbed object. The brown object is positioned directly above the circular opening of the metal tool. The metal tool is resting on the light-colored wooden table surface.",
-    "parse_success": true,
-    "chunk_idx": 12,
-    "video_id": "XM4hpTSRLGU"
-  },
-  {
-    "time": [
-      26,
-      28
-    ],
-    "visible_entities": [
-      {
-        "desc": "hand with fair skin, wearing a blue long-sleeved shirt",
-        "action": "holding a textured object",
-        "position": "left"
-      },
-      {
-        "desc": "small, round, brownish-purple object with a ribbed texture",
+        "desc": "small round object, brownish-grey, textured surface",
         "action": "being held",
         "position": "left"
       },
       {
-        "desc": "silver metallic tool with a black circular head containing a grey pad",
-        "action": "resting on the table",
+        "desc": "silver metal tool with a black circular mesh head",
+        "action": "static",
         "position": "left"
       },
       {
-        "desc": "light-colored wooden surface with visible grain",
+        "desc": "light-colored wooden table surface",
         "action": "static",
-        "position": "background"
+        "position": "center"
       }
     ],
     "atomic_facts": [
@@ -676,7 +585,7 @@
         "confidence": 1.0
       },
       {
-        "fact": "The object is positioned directly above the grey pad of the metallic tool.",
+        "fact": "The object is positioned directly above the mesh head of a silver tool.",
         "confidence": 1.0
       },
       {
@@ -685,24 +594,114 @@
       }
     ],
     "ocr": [],
-    "spatial": "The hand is on the left side of the frame, holding the round object. The object is positioned directly above the grey pad of the silver tool. The tool is resting on the light-colored wooden surface.",
+    "spatial": "The hand is holding the small round object above the silver tool. The tool is resting on the wooden table surface. The hand and tool are located on the left side of the frame.",
+    "parse_success": true,
+    "chunk_idx": 11,
+    "video_id": "XM4hpTSRLGU"
+  },
+  {
+    "time": [
+      12,
+      13
+    ],
+    "visible_entities": [
+      {
+        "desc": "person's hand with light skin tone, wearing a blue long-sleeved shirt",
+        "action": "holding a textured brown object",
+        "position": "left"
+      },
+      {
+        "desc": "small brown object with a ribbed, spiral texture, resembling a nut or shell",
+        "action": "being held above a tool",
+        "position": "left"
+      },
+      {
+        "desc": "metallic tool with a silver cylindrical handle and a black circular head containing a grey pad",
+        "action": "static",
+        "position": "left"
+      },
+      {
+        "desc": "light-colored wooden surface with visible grain patterns and a darker wooden edge",
+        "action": "static",
+        "position": "center"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A person's hand is holding a small, brown, ribbed object.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The hand is positioning the object directly above the grey pad of a metallic tool.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The tool and hand are resting on a light-colored wooden table.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The person's hand is holding the brown object above the metallic tool. The tool is positioned on the left side of the wooden surface. The wooden surface extends to the right of the hand and tool.",
+    "parse_success": true,
+    "chunk_idx": 12,
+    "video_id": "XM4hpTSRLGU"
+  },
+  {
+    "time": [
+      13,
+      14
+    ],
+    "visible_entities": [
+      {
+        "desc": "hand with fair skin, wearing a blue long-sleeved shirt",
+        "action": "holding a brown textured object",
+        "position": "left"
+      },
+      {
+        "desc": "brown spherical object with a ribbed or grooved texture",
+        "action": "being placed into a metal scoop",
+        "position": "left"
+      },
+      {
+        "desc": "metal ice cream scoop with a black handle and silver bowl",
+        "action": "resting on the table",
+        "position": "left"
+      },
+      {
+        "desc": "light-colored wooden table surface with visible grain and a darker wood edge",
+        "action": "static",
+        "position": "center"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A hand is placing a brown textured sphere into the bowl of a metal scoop.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The scoop is resting on a wooden surface.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The hand is above the metal scoop, holding the brown object directly over the scoop's bowl. The scoop is positioned on the left side of the wooden table.",
     "parse_success": true,
     "chunk_idx": 13,
     "video_id": "XM4hpTSRLGU"
   },
   {
     "time": [
-      28,
-      30
+      14,
+      15
     ],
     "visible_entities": [
       {
         "desc": "person wearing a blue long-sleeved shirt",
         "action": "holding a tool and a textured object",
-        "position": "left"
+        "position": "left/foreground"
       },
       {
-        "desc": "silver cylindrical tool with a black circular head",
+        "desc": "metallic cylindrical tool with a black circular head and a red trigger",
         "action": "being held against the table",
         "position": "center"
       },
@@ -719,43 +718,43 @@
     ],
     "atomic_facts": [
       {
-        "fact": "A person is holding a silver tool with a black head in their left hand.",
+        "fact": "A person is holding a metallic tool in their left hand.",
         "confidence": 1.0
       },
       {
-        "fact": "The person is pressing a brown ribbed sphere against the flat surface of the tool.",
+        "fact": "The person is pressing a brown ribbed sphere against the black circular head of the tool.",
         "confidence": 1.0
       },
       {
-        "fact": "The tool is resting on a wooden table.",
+        "fact": "The tool is resting on the wooden table surface.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The person is positioned on the left side of the frame. The silver tool is held in the person's hand and rests on the wooden table. The brown ribbed sphere is held above the tool and is in contact with it.",
+    "spatial": "The person is positioned on the left side of the frame. The metallic tool is held in the center, resting on the wooden table. The brown spherical object is held by the person's right hand and is positioned directly above and in contact with the tool's head.",
     "parse_success": true,
     "chunk_idx": 14,
     "video_id": "XM4hpTSRLGU"
   },
   {
     "time": [
-      30,
-      32
+      15,
+      16
     ],
     "visible_entities": [
       {
         "desc": "person wearing a blue long-sleeved shirt",
-        "action": "attaching a sanding disc to a tool",
+        "action": "manipulating a sanding tool",
         "position": "left"
       },
       {
-        "desc": "silver handheld power tool with a black circular attachment head",
+        "desc": "silver handheld rotary tool with a black attachment",
         "action": "being held by the person",
         "position": "center"
       },
       {
-        "desc": "round abrasive sanding disc, brownish-grey with a textured surface",
-        "action": "being pressed onto the tool",
+        "desc": "round sanding disc, brownish-grey with a textured surface",
+        "action": "being attached to the tool",
         "position": "center"
       },
       {
@@ -764,60 +763,60 @@
         "position": "background"
       },
       {
-        "desc": "pile of various colored sanding discs",
+        "desc": "pile of various sanding discs, some red and black",
         "action": "static",
         "position": "left"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A person is attaching a round sanding disc to the head of a silver power tool.",
+        "fact": "A person is attaching a round sanding disc to a handheld rotary tool.",
         "confidence": 1.0
       },
       {
-        "fact": "The person uses their right hand to press the disc onto the tool while holding the tool with their left hand.",
+        "fact": "The person holds the tool in their left hand and the disc in their right hand.",
         "confidence": 1.0
       },
       {
-        "fact": "The tool is resting on a wooden workbench.",
+        "fact": "The sanding disc is pressed against the black attachment of the tool.",
         "confidence": 1.0
       },
       {
-        "fact": "Several other sanding discs are scattered on the table to the left.",
+        "fact": "Several other sanding discs are lying on the wooden table to the left.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The person is positioned on the left side of the frame, holding the silver tool in the center. The sanding disc is being placed onto the tool head. The pile of extra discs is to the left of the tool on the wooden workbench.",
+    "spatial": "The person is positioned on the left side of the frame, holding the silver tool and the sanding disc in the center. The wooden workbench serves as the surface below the hands and tools. A pile of unused sanding discs is located to the left of the person's hands.",
     "parse_success": true,
     "chunk_idx": 15,
     "video_id": "XM4hpTSRLGU"
   },
   {
     "time": [
-      32,
-      34
+      16,
+      17
     ],
     "visible_entities": [
       {
-        "desc": "person with fair skin, wearing a blue long-sleeved shirt",
+        "desc": "person wearing a blue long-sleeved shirt",
         "action": "manipulating a white object",
-        "position": "left/foreground"
+        "position": "left"
       },
       {
-        "desc": "black spherical object with a silver metal rod attached",
+        "desc": "black suction cup mount with a silver metal rod",
         "action": "static",
         "position": "center"
       },
       {
-        "desc": "small white object with a pinkish tip, possibly a tool or applicator",
+        "desc": "small white oval-shaped object",
         "action": "being held",
         "position": "center"
       },
       {
         "desc": "roll of white tape with a black core",
         "action": "static",
-        "position": "center/background"
+        "position": "center"
       },
       {
         "desc": "light-colored wooden table surface",
@@ -825,100 +824,39 @@
         "position": "background"
       },
       {
-        "desc": "dark brown oval-shaped object, textured",
+        "desc": "small brown textured oval object",
         "action": "static",
-        "position": "right"
+        "position": "center"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A person is holding a small white object with a pink tip.",
+        "fact": "A person is holding a small white oval-shaped object.",
         "confidence": 1.0
       },
       {
-        "fact": "The person is positioning the white object near the black spherical device.",
+        "fact": "The person is positioning the white object against the black suction cup mount.",
         "confidence": 1.0
       },
       {
-        "fact": "A roll of white tape is sitting on the wooden table.",
+        "fact": "A roll of white tape sits on the wooden table.",
         "confidence": 1.0
       },
       {
-        "fact": "A dark brown oval object is lying on the table to the right of the black device.",
+        "fact": "A brown textured object lies on the table surface.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The person is positioned to the left of the frame, holding a white object in front of a black spherical device. The black device is in the center of the wooden table. A roll of white tape is behind the black device. A dark brown oval object is to the right of the black device.",
+    "spatial": "The person's hands are to the left of the center, holding the white object near the black suction cup mount. The roll of white tape is behind the mount on the wooden table. The brown textured object is to the right of the mount.",
     "parse_success": true,
     "chunk_idx": 16,
     "video_id": "XM4hpTSRLGU"
   },
   {
     "time": [
-      34,
-      36
-    ],
-    "visible_entities": [
-      {
-        "desc": "person wearing a blue long-sleeved shirt",
-        "action": "holding an orange circular object",
-        "position": "left"
-      },
-      {
-        "desc": "bright orange circular foam pad",
-        "action": "being held by hands",
-        "position": "center-left"
-      },
-      {
-        "desc": "black circular object with a textured surface",
-        "action": "static",
-        "position": "center"
-      },
-      {
-        "desc": "roll of white tape with a black core",
-        "action": "static",
-        "position": "center"
-      },
-      {
-        "desc": "small brown textured oval object",
-        "action": "static",
-        "position": "center-right"
-      },
-      {
-        "desc": "light-colored wooden table surface",
-        "action": "static",
-        "position": "background"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "The person is holding a bright orange circular foam pad with both hands.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The orange pad is positioned directly above a black circular object.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "A roll of white tape sits on the wooden table surface.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "A small brown textured object lies on the table to the right of the black object.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [],
-    "spatial": "The person's hands are on the left side of the frame, holding the orange pad. The orange pad is positioned above the black circular object. The roll of white tape is behind the black object. The small brown object is to the right of the black object on the wooden table.",
-    "parse_success": true,
-    "chunk_idx": 17,
-    "video_id": "XM4hpTSRLGU"
-  },
-  {
-    "time": [
-      36,
-      38
+      17,
+      18
     ],
     "visible_entities": [
       {
@@ -927,14 +865,9 @@
         "position": "left/foreground"
       },
       {
-        "desc": "bright orange circular foam pad, smooth texture",
-        "action": "being held by hands",
+        "desc": "bright orange circular object, matte texture",
+        "action": "being held",
         "position": "center/foreground"
-      },
-      {
-        "desc": "light-colored wooden table surface",
-        "action": "static",
-        "position": "background"
       },
       {
         "desc": "black circular object, possibly a mount or base",
@@ -950,117 +883,53 @@
         "desc": "small brown textured oval object",
         "action": "static",
         "position": "center/right"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "The person is holding a bright orange circular pad with both hands.",
-        "confidence": 1.0
       },
       {
-        "fact": "The person is manipulating the orange pad near a black circular object.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "A roll of white tape sits on the wooden table.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "A small brown textured object lies on the table surface.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [],
-    "spatial": "The person's hands are holding the orange pad in the foreground, positioned to the left of the black circular object. The roll of white tape is behind the black object on the wooden table. The small brown textured object is to the right of the black object.",
-    "parse_success": true,
-    "chunk_idx": 18,
-    "video_id": "XM4hpTSRLGU"
-  },
-  {
-    "time": [
-      38,
-      40
-    ],
-    "visible_entities": [
-      {
-        "desc": "person wearing a blue long-sleeved shirt",
-        "action": "manipulating a black object with a white pad",
-        "position": "left"
-      },
-      {
-        "desc": "black spherical object, smooth surface",
-        "action": "being held",
-        "position": "center-left"
-      },
-      {
-        "desc": "white oval pad, smooth texture",
-        "action": "being pressed against the black object",
-        "position": "center-left"
-      },
-      {
-        "desc": "orange oval pad, smooth texture",
-        "action": "being held",
-        "position": "center-left"
-      },
-      {
-        "desc": "silver cylindrical tool, metallic finish",
-        "action": "static",
-        "position": "left"
-      },
-      {
-        "desc": "light-colored wooden table, smooth surface with visible grain",
+        "desc": "light-colored wooden table surface",
         "action": "static",
         "position": "background"
-      },
-      {
-        "desc": "small dark brown textured oval object",
-        "action": "static",
-        "position": "center"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "The person is holding a black spherical object in their left hand.",
+        "fact": "A person is holding a bright orange circular object with both hands.",
         "confidence": 1.0
       },
       {
-        "fact": "The person presses a white oval pad against the black object.",
+        "fact": "The person is positioning the orange object near a black circular object on the table.",
         "confidence": 1.0
       },
       {
-        "fact": "The person holds an orange oval pad in their right hand.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "A silver tool rests on the table to the left of the person's hands.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "A small dark brown object sits on the wooden table surface.",
+        "fact": "A roll of white tape is sitting on the wooden table.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The person is positioned on the left side of the frame, working over a light-colored wooden table. The black spherical object is held in the person's hands, with the white pad being applied to it. The orange pad is held next to the black object. A silver tool lies on the table to the left of the hands, and a small dark brown object rests on the table to the right of the hands.",
+    "spatial": "The person's hands are in the foreground on the left, holding the orange object. The orange object is positioned just above and to the left of the black circular object. The roll of white tape is behind the black object. The small brown textured object is to the right of the black object on the wooden table.",
     "parse_success": true,
-    "chunk_idx": 19,
+    "chunk_idx": 17,
     "video_id": "XM4hpTSRLGU"
   },
   {
     "time": [
-      40,
-      42
+      18,
+      19
     ],
     "visible_entities": [
       {
         "desc": "person wearing a blue long-sleeved shirt",
-        "action": "manipulating a black and orange object",
+        "action": "holding an orange disc",
         "position": "left"
       },
       {
-        "desc": "black and orange circular object, possibly a tool or component",
-        "action": "being held and adjusted",
+        "desc": "bright orange circular disc, matte texture",
+        "action": "being held",
         "position": "center-left"
+      },
+      {
+        "desc": "black circular object, possibly a mount or base",
+        "action": "static",
+        "position": "center"
       },
       {
         "desc": "roll of white tape with a black core",
@@ -1068,49 +937,162 @@
         "position": "center"
       },
       {
-        "desc": "small, dark, textured oval object on the table",
+        "desc": "small brown textured oval object",
         "action": "static",
         "position": "center-right"
       },
       {
-        "desc": "light-colored wooden table with a visible grain pattern",
+        "desc": "light-colored wooden table surface",
         "action": "static",
         "position": "background"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A person is holding a black and orange object with both hands.",
+        "fact": "A person is holding a bright orange disc with both hands.",
         "confidence": 1.0
       },
       {
-        "fact": "The person is adjusting or manipulating the black and orange object.",
+        "fact": "The person is positioning the orange disc near a black circular object.",
         "confidence": 1.0
       },
       {
-        "fact": "A roll of white tape is sitting on the wooden table.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "A small, dark, textured object is resting on the table surface.",
+        "fact": "A roll of white tape sits on the wooden table.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The person in the blue shirt is on the left side of the frame, holding the black and orange object. The roll of white tape is to the right of the person's hands. The small, dark, textured object is on the table to the right of the tape roll. All items are on top of the light-colored wooden table.",
+    "spatial": "The person is positioned on the left side of the frame, holding the orange disc in front of the black object. The roll of white tape is located behind the black object on the table. The small brown textured object is to the right of the black object.",
+    "parse_success": true,
+    "chunk_idx": 18,
+    "video_id": "XM4hpTSRLGU"
+  },
+  {
+    "time": [
+      19,
+      20
+    ],
+    "visible_entities": [
+      {
+        "desc": "person with blue long-sleeved shirt",
+        "action": "manipulating a black spherical object",
+        "position": "left"
+      },
+      {
+        "desc": "black spherical object with a matte finish",
+        "action": "being held",
+        "position": "center"
+      },
+      {
+        "desc": "small white oval sticker",
+        "action": "being applied",
+        "position": "center"
+      },
+      {
+        "desc": "small orange oval sticker",
+        "action": "being applied",
+        "position": "center"
+      },
+      {
+        "desc": "light-colored wooden table with visible grain",
+        "action": "static",
+        "position": "background"
+      },
+      {
+        "desc": "dark brown textured oval object",
+        "action": "static",
+        "position": "right"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A person in a blue shirt is holding a black spherical object.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The person applies a white oval sticker to the black object in the first frame.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The person applies an orange oval sticker to the black object in the second frame.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A dark brown textured object sits on the wooden table.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The person is on the left side of the frame, holding the black spherical object in the center. The white and orange stickers are being placed on the surface of the black object. The dark brown textured object is to the right of the black object on the wooden table.",
+    "parse_success": true,
+    "chunk_idx": 19,
+    "video_id": "XM4hpTSRLGU"
+  },
+  {
+    "time": [
+      20,
+      21
+    ],
+    "visible_entities": [
+      {
+        "desc": "person wearing a blue long-sleeved shirt",
+        "action": "holding and manipulating a black and orange circular object",
+        "position": "left"
+      },
+      {
+        "desc": "black and orange circular object, appearing to be a puck or tool component",
+        "action": "being held",
+        "position": "left"
+      },
+      {
+        "desc": "roll of white tape with a black core",
+        "action": "static",
+        "position": "center"
+      },
+      {
+        "desc": "small, dark brown textured oval object",
+        "action": "static",
+        "position": "center"
+      },
+      {
+        "desc": "light-colored wooden table surface",
+        "action": "static",
+        "position": "background"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The person is holding a black and orange circular object with both hands.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The person is manipulating the orange part of the object, possibly peeling or adjusting it.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A roll of white tape is resting on the wooden table.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A small dark oval object is lying on the table surface.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The person is positioned on the left side of the frame, holding the black and orange object. The roll of white tape is to the right of the person's hands. The small dark oval object is located further to the right on the wooden table surface.",
     "parse_success": true,
     "chunk_idx": 20,
     "video_id": "XM4hpTSRLGU"
   },
   {
     "time": [
-      42,
-      44
+      21,
+      22
     ],
     "visible_entities": [
       {
         "desc": "person wearing a blue long-sleeved shirt",
-        "action": "manipulating an orange and black ball",
+        "action": "holding an orange and black ball",
         "position": "left"
       },
       {
@@ -1119,49 +1101,49 @@
         "position": "left"
       },
       {
-        "desc": "light-colored wooden table, smooth surface with wood grain",
+        "desc": "light-colored wooden table with visible grain and a handle cutout",
         "action": "static",
         "position": "center"
       },
       {
-        "desc": "roll of black and white tape",
+        "desc": "small dark textured object, oval-shaped, rough surface",
         "action": "static",
         "position": "center"
       },
       {
-        "desc": "small dark textured object, oval-shaped",
+        "desc": "roll of white tape with a black core",
         "action": "static",
-        "position": "center"
+        "position": "left"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A person is holding an orange and black ball with both hands.",
+        "fact": "person holds an orange and black ball with both hands",
         "confidence": 1.0
       },
       {
-        "fact": "The person's right hand moves rapidly, creating a blur.",
+        "fact": "the person's right hand moves rapidly, creating motion blur",
         "confidence": 1.0
       },
       {
-        "fact": "A roll of tape sits on the wooden table.",
+        "fact": "a small dark textured object rests on the wooden table",
         "confidence": 1.0
       },
       {
-        "fact": "A small dark object rests on the table surface.",
+        "fact": "a roll of white tape sits on the table near the person's hands",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The person is positioned on the left side of the frame, holding the orange and black ball. The roll of tape is to the right of the person's hands on the table. The small dark textured object is located further to the right on the table, near the center.",
+    "spatial": "The person in the blue shirt is positioned on the left side of the frame, holding the orange and black ball. The small dark textured object is on the wooden table to the right of the person's hands. The roll of white tape is on the table behind the ball.",
     "parse_success": true,
     "chunk_idx": 21,
     "video_id": "XM4hpTSRLGU"
   },
   {
     "time": [
-      44,
-      46
+      22,
+      23
     ],
     "visible_entities": [
       {
@@ -1170,7 +1152,7 @@
         "position": "left"
       },
       {
-        "desc": "small round object with a brown textured top and an orange side",
+        "desc": "small round object with a brown textured top and orange side",
         "action": "being held",
         "position": "center"
       },
@@ -1180,86 +1162,39 @@
         "position": "background"
       },
       {
-        "desc": "roll of black tape with a white core",
+        "desc": "roll of black and white tape",
         "action": "static",
         "position": "center"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A person is holding a small round object with both hands.",
+        "fact": "The person is holding a small round object with both hands.",
         "confidence": 1.0
       },
       {
-        "fact": "The person is manipulating the object on a wooden table.",
+        "fact": "The person is manipulating the object, possibly peeling or adjusting it.",
         "confidence": 1.0
       },
       {
-        "fact": "A roll of black tape sits on the table near the person's hands.",
+        "fact": "The object has a brown, textured top surface and an orange side.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A roll of black and white tape is sitting on the table.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The person is positioned on the left side of the frame. The person's hands are holding the round object in the center foreground. The roll of black tape is located on the wooden table, slightly behind and to the right of the object being held.",
+    "spatial": "The person is on the left side of the frame, holding the round object in front of them. The round object is positioned above the wooden table surface. The roll of tape is on the table, slightly behind and to the right of the person's hands.",
     "parse_success": true,
     "chunk_idx": 22,
     "video_id": "XM4hpTSRLGU"
   },
   {
     "time": [
-      46,
-      48
-    ],
-    "visible_entities": [
-      {
-        "desc": "person wearing a blue long-sleeved shirt",
-        "action": "holding a tool and a black object",
-        "position": "left"
-      },
-      {
-        "desc": "silver cylindrical tool with a black handle",
-        "action": "being held",
-        "position": "center-left"
-      },
-      {
-        "desc": "black object with a round, textured, reddish-brown top",
-        "action": "being held",
-        "position": "center"
-      },
-      {
-        "desc": "light-colored wooden table with a visible grain pattern",
-        "action": "static",
-        "position": "background"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "A person is holding a silver tool in their left hand.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The person is holding a black object with a reddish-brown top in their right hand.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The tool is being brought into contact with the black object.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The action takes place on a wooden table.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [],
-    "spatial": "The person is on the left side of the frame, holding the silver tool and the black object over the wooden table. The silver tool is to the left of the black object. The black object is in the center of the frame, in front of the person.",
-    "parse_success": true,
-    "chunk_idx": 23,
-    "video_id": "XM4hpTSRLGU"
-  },
-  {
-    "time": [
-      48,
-      50
+      23,
+      24
     ],
     "visible_entities": [
       {
@@ -1268,103 +1203,19 @@
         "position": "left"
       },
       {
-        "desc": "tool with a silver cylindrical handle and a black circular head featuring a textured reddish-orange pad",
+        "desc": "silver cylindrical tool with a black handle and a round, reddish-brown textured pad",
         "action": "being held",
         "position": "center"
       },
       {
-        "desc": "light-colored wooden workbench with visible grain and a darker wood trim along the back edge",
+        "desc": "light-colored wooden surface with a visible grain pattern",
         "action": "static",
         "position": "background"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A person is holding a tool with a silver handle and a round, textured head.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The tool is positioned over a wooden workbench.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The person's hand grips the black body of the tool.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [],
-    "spatial": "The person is to the left of the frame, holding the tool in the center. The tool is positioned above the wooden workbench.",
-    "parse_success": true,
-    "chunk_idx": 24,
-    "video_id": "XM4hpTSRLGU"
-  },
-  {
-    "time": [
-      50,
-      52
-    ],
-    "visible_entities": [
-      {
-        "desc": "person wearing a blue long-sleeved shirt",
-        "action": "holding a tool",
-        "position": "left"
-      },
-      {
-        "desc": "tool with a silver cylindrical handle and a black head featuring a round, orange-rimmed pad with a brown textured surface",
-        "action": "being held",
-        "position": "center"
-      },
-      {
-        "desc": "light-colored wooden workbench with visible grain and a handle cutout",
-        "action": "static",
-        "position": "background"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "A person is holding a tool with both hands over a wooden surface.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The tool has a silver handle and a round pad with an orange rim.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The wooden workbench is light-colored with a visible grain pattern.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [],
-    "spatial": "The person is to the left of the frame, holding the tool in the center. The tool is positioned above the wooden workbench.",
-    "parse_success": true,
-    "chunk_idx": 25,
-    "video_id": "XM4hpTSRLGU"
-  },
-  {
-    "time": [
-      52,
-      54
-    ],
-    "visible_entities": [
-      {
-        "desc": "person wearing a blue long-sleeved shirt",
-        "action": "holding a tool",
-        "position": "left"
-      },
-      {
-        "desc": "tool with a silver cylindrical handle and a black head featuring a round, reddish-brown textured pad with an orange rim",
-        "action": "being held",
-        "position": "center"
-      },
-      {
-        "desc": "light-colored wooden surface with visible grain and a darker wooden edge",
-        "action": "static",
-        "position": "background"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "A person is holding a tool with a silver handle and a textured pad.",
+        "fact": "A person is holding a silver tool with a reddish-brown pad.",
         "confidence": 1.0
       },
       {
@@ -1372,104 +1223,20 @@
         "confidence": 1.0
       },
       {
-        "fact": "The person's hands are gripping the tool firmly.",
+        "fact": "The person's hands are manipulating the tool.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The person is on the left side of the frame, holding the tool in the center. The tool is positioned above the wooden surface.",
+    "spatial": "The person is on the left side of the frame. The person is holding the tool in front of them, over the wooden surface which occupies the majority of the background.",
     "parse_success": true,
-    "chunk_idx": 26,
+    "chunk_idx": 23,
     "video_id": "XM4hpTSRLGU"
   },
   {
     "time": [
-      54,
-      56
-    ],
-    "visible_entities": [
-      {
-        "desc": "person wearing a blue long-sleeved shirt",
-        "action": "holding a tool against a wooden surface",
-        "position": "left"
-      },
-      {
-        "desc": "silver and black power tool with a round orange sanding pad",
-        "action": "being held against the wood",
-        "position": "center"
-      },
-      {
-        "desc": "light-colored wooden workbench with visible grain and a handle cutout",
-        "action": "static",
-        "position": "foreground"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "A person is holding a power tool with an orange sanding pad against a wooden surface.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The tool is positioned on the left side of the wooden workbench.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The wooden surface has a visible grain pattern and a handle cutout near the bottom left.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [],
-    "spatial": "The person's hands are holding the tool, which is positioned on the wooden workbench. The tool is to the left of the center of the workbench. The workbench is in the foreground, and a wall is visible in the background.",
-    "parse_success": true,
-    "chunk_idx": 27,
-    "video_id": "XM4hpTSRLGU"
-  },
-  {
-    "time": [
-      56,
-      58
-    ],
-    "visible_entities": [
-      {
-        "desc": "person wearing a blue long-sleeved shirt",
-        "action": "holding a tool and touching the sanding pad",
-        "position": "left"
-      },
-      {
-        "desc": "power tool with a silver cylindrical body and a black head featuring a round, reddish-brown abrasive sanding pad with an orange rim",
-        "action": "being held and adjusted",
-        "position": "center"
-      },
-      {
-        "desc": "light-colored wooden workbench with visible grain and a handle cutout",
-        "action": "static",
-        "position": "background"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "A person is holding a power tool with a sanding attachment over a wooden surface.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The person's hand touches the reddish-brown abrasive surface of the sanding pad.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The tool has a silver metal body and a black plastic head.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [],
-    "spatial": "The person in the blue shirt is on the left side of the frame, holding the tool in the center. The tool is positioned above the wooden workbench. The person's left hand is resting on the workbench surface near the bottom left corner.",
-    "parse_success": true,
-    "chunk_idx": 28,
-    "video_id": "XM4hpTSRLGU"
-  },
-  {
-    "time": [
-      58,
-      60
+      24,
+      25
     ],
     "visible_entities": [
       {
@@ -1478,7 +1245,49 @@
         "position": "left"
       },
       {
-        "desc": "pneumatic sander with a silver cylindrical metal body, black handle, and a round orange sanding pad with a reddish-brown abrasive surface",
+        "desc": "tool with a silver cylindrical handle and a black base topped with a round, textured reddish-orange pad",
+        "action": "being held",
+        "position": "center"
+      },
+      {
+        "desc": "light-colored wooden surface with visible grain",
+        "action": "static",
+        "position": "background"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A person is holding a tool with a silver handle and a red textured pad.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The tool is positioned above a wooden table.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The person's hand grips the black base of the tool.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The person's hand is holding the tool in the center of the frame. The tool is positioned above the light-colored wooden surface. The wooden surface extends to the right of the person's hand.",
+    "parse_success": true,
+    "chunk_idx": 24,
+    "video_id": "XM4hpTSRLGU"
+  },
+  {
+    "time": [
+      25,
+      26
+    ],
+    "visible_entities": [
+      {
+        "desc": "person wearing a blue long-sleeved shirt",
+        "action": "holding a tool",
+        "position": "left"
+      },
+      {
+        "desc": "handheld tool with a silver cylindrical handle, black body, and a round orange pad with a ribbed texture",
         "action": "being held",
         "position": "center"
       },
@@ -1490,75 +1299,28 @@
     ],
     "atomic_facts": [
       {
-        "fact": "A person is holding a pneumatic sander in their right hand.",
+        "fact": "A person is holding a handheld tool with both hands.",
         "confidence": 1.0
       },
       {
-        "fact": "The sander has a round orange sanding pad attached to it.",
+        "fact": "The tool is positioned over a wooden surface.",
         "confidence": 1.0
       },
       {
-        "fact": "The person's left hand is resting on the wooden surface.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [],
-    "spatial": "The person is positioned on the left side of the frame, holding the sander in front of them. The sander is located centrally in the foreground, hovering just above the light-colored wooden surface which extends across the background.",
-    "parse_success": true,
-    "chunk_idx": 29,
-    "video_id": "XM4hpTSRLGU"
-  },
-  {
-    "time": [
-      60,
-      62
-    ],
-    "visible_entities": [
-      {
-        "desc": "person wearing a blue long-sleeved shirt",
-        "action": "holding and twisting a jar",
-        "position": "left"
-      },
-      {
-        "desc": "small black jar with a textured orange lid",
-        "action": "being held",
-        "position": "center"
-      },
-      {
-        "desc": "light-colored wooden table surface",
-        "action": "static",
-        "position": "bottom"
-      },
-      {
-        "desc": "clear acrylic stand",
-        "action": "static",
-        "position": "background"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "A person is holding a small black jar with an orange lid.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The person is twisting the lid of the jar.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The jar is positioned over a wooden table.",
+        "fact": "The tool features a round orange pad with a ribbed texture.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The person is on the left side of the frame, holding the jar in front of them. The jar is positioned above the wooden table surface. A clear acrylic stand is visible in the background behind the person's hands.",
+    "spatial": "The person in the blue shirt is on the left side of the frame, holding the tool in the center. The tool is positioned above the light-colored wooden surface.",
     "parse_success": true,
-    "chunk_idx": 30,
+    "chunk_idx": 25,
     "video_id": "XM4hpTSRLGU"
   },
   {
     "time": [
-      62,
-      64
+      26,
+      27
     ],
     "visible_entities": [
       {
@@ -1567,59 +1329,12 @@
         "position": "left"
       },
       {
-        "desc": "handheld tool with a silver cylindrical handle, black body, and a round orange sanding pad with a textured surface",
-        "action": "being held against wood",
+        "desc": "tool with a silver cylindrical handle and a black head featuring a round, orange-rimmed abrasive pad with a reddish-brown textured surface",
+        "action": "being held",
         "position": "center"
       },
       {
-        "desc": "light-colored wooden surface with visible grain",
-        "action": "static",
-        "position": "foreground"
-      },
-      {
-        "desc": "clear acrylic stand with a white card",
-        "action": "static",
-        "position": "background"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "A person is holding a handheld sanding tool with both hands.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The tool is pressed against the wooden surface.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The tool has a round orange sanding pad.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [],
-    "spatial": "The person in the blue shirt is on the left side of the frame, holding the tool in the center. The tool is positioned on top of the light-colored wooden surface. The clear acrylic stand is behind the person's hands in the background.",
-    "parse_success": true,
-    "chunk_idx": 31,
-    "video_id": "XM4hpTSRLGU"
-  },
-  {
-    "time": [
-      64,
-      66
-    ],
-    "visible_entities": [
-      {
-        "desc": "person wearing a blue long-sleeved shirt",
-        "action": "holding and rotating a tool",
-        "position": "left"
-      },
-      {
-        "desc": "handheld tool with a silver cylindrical handle, black joint, and a round orange abrasive pad",
-        "action": "being manipulated",
-        "position": "center"
-      },
-      {
-        "desc": "light-colored wooden workbench with visible grain and a handle cutout",
+        "desc": "light-colored wooden surface with visible grain and knots",
         "action": "static",
         "position": "background"
       }
@@ -1630,33 +1345,289 @@
         "confidence": 1.0
       },
       {
-        "fact": "The person rotates the tool to show the orange abrasive pad.",
+        "fact": "The tool has a silver handle and a round abrasive pad.",
         "confidence": 1.0
       },
       {
-        "fact": "The tool is positioned above the wooden workbench.",
+        "fact": "The tool is positioned over a wooden surface.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The person in the blue shirt is on the left side of the frame, holding the tool in the center. The tool is positioned above the wooden workbench.",
+    "spatial": "The person in the blue shirt is on the left side of the frame. The person is holding the tool with the silver handle in their hands. The tool is positioned above the light-colored wooden surface.",
+    "parse_success": true,
+    "chunk_idx": 26,
+    "video_id": "XM4hpTSRLGU"
+  },
+  {
+    "time": [
+      27,
+      28
+    ],
+    "visible_entities": [
+      {
+        "desc": "person wearing a blue long-sleeved shirt",
+        "action": "holding a tool",
+        "position": "left"
+      },
+      {
+        "desc": "silver and black handheld power tool with a round orange abrasive pad",
+        "action": "being pressed against wood",
+        "position": "center"
+      },
+      {
+        "desc": "light-colored wooden surface with visible grain",
+        "action": "static",
+        "position": "background"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A person is holding a power tool with both hands.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The tool has an orange circular pad attached to it.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The person is pressing the tool against the wooden surface.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The person is positioned to the left of the frame, holding the tool. The tool is in the center, resting on top of the wooden surface.",
+    "parse_success": true,
+    "chunk_idx": 27,
+    "video_id": "XM4hpTSRLGU"
+  },
+  {
+    "time": [
+      28,
+      29
+    ],
+    "visible_entities": [
+      {
+        "desc": "person wearing a blue long-sleeved shirt",
+        "action": "holding a tool",
+        "position": "left"
+      },
+      {
+        "desc": "sanding tool with a silver cylindrical metal body and a black head featuring a round, reddish-brown abrasive pad with an orange rim",
+        "action": "being held and adjusted",
+        "position": "center"
+      },
+      {
+        "desc": "light-colored wooden workbench surface with visible wood grain and a cutout handle slot",
+        "action": "static",
+        "position": "background"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A person is holding a sanding tool over a wooden workbench.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The person's right hand is gripping the black head of the tool.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The person's left hand is touching the abrasive pad of the tool.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The tool has a silver metal shaft extending to the left.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The person in the blue shirt is positioned on the left side of the frame. The sanding tool is held in the center, directly above the wooden workbench surface. The person's left hand is placed on top of the tool's sanding pad.",
+    "parse_success": true,
+    "chunk_idx": 28,
+    "video_id": "XM4hpTSRLGU"
+  },
+  {
+    "time": [
+      29,
+      30
+    ],
+    "visible_entities": [
+      {
+        "desc": "person wearing a blue long-sleeved shirt",
+        "action": "holding a tool and touching the table",
+        "position": "left"
+      },
+      {
+        "desc": "silver and black handheld tool with a round, textured orange and purple sanding pad",
+        "action": "being held",
+        "position": "center"
+      },
+      {
+        "desc": "light-colored wooden table surface with visible wood grain",
+        "action": "static",
+        "position": "bottom"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A person is holding a handheld tool with a round sanding attachment.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The person's left hand is resting on the wooden table surface.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The tool is positioned above the wooden table.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The person is on the left side of the frame, holding the tool in their right hand. The tool is positioned above the wooden table. The person's left hand is placed on the table surface to the left of the tool.",
+    "parse_success": true,
+    "chunk_idx": 29,
+    "video_id": "XM4hpTSRLGU"
+  },
+  {
+    "time": [
+      30,
+      31
+    ],
+    "visible_entities": [
+      {
+        "desc": "person wearing a blue long-sleeved shirt",
+        "action": "holding and manipulating a small object",
+        "position": "left"
+      },
+      {
+        "desc": "small round object with a black base and a textured brown top with an orange rim",
+        "action": "being held",
+        "position": "center"
+      },
+      {
+        "desc": "light-colored wooden surface",
+        "action": "static",
+        "position": "background"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A person is holding a small round object with both hands.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The person is manipulating the object on a wooden surface.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The object has a textured brown top and a black base.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The person in the blue shirt is on the left side of the frame. The person is holding the small round object in their hands, which are positioned above the wooden surface. The wooden surface extends to the right and behind the hands.",
+    "parse_success": true,
+    "chunk_idx": 30,
+    "video_id": "XM4hpTSRLGU"
+  },
+  {
+    "time": [
+      31,
+      32
+    ],
+    "visible_entities": [
+      {
+        "desc": "person wearing a blue long-sleeved shirt",
+        "action": "holding a tool",
+        "position": "left"
+      },
+      {
+        "desc": "handheld tool with a silver cylindrical handle and a black head featuring a round, reddish-brown textured pad",
+        "action": "being pressed against the wood",
+        "position": "center"
+      },
+      {
+        "desc": "light-colored wooden surface with visible grain and knots",
+        "action": "static",
+        "position": "background"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The person is holding the tool with both hands.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The tool is being pressed against the wooden surface.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The tool has a reddish-brown circular pad.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The person is to the left of the frame, holding the tool. The tool is positioned in the center, resting on the wooden surface. The wooden surface extends across the background and foreground.",
+    "parse_success": true,
+    "chunk_idx": 31,
+    "video_id": "XM4hpTSRLGU"
+  },
+  {
+    "time": [
+      32,
+      33
+    ],
+    "visible_entities": [
+      {
+        "desc": "person wearing a blue long-sleeved shirt",
+        "action": "holding and manipulating a tool",
+        "position": "left"
+      },
+      {
+        "desc": "handheld tool with a silver cylindrical handle, black joint, and a round orange abrasive pad",
+        "action": "being rotated and pressed against wood",
+        "position": "center"
+      },
+      {
+        "desc": "light-colored wooden workbench surface with visible grain",
+        "action": "static",
+        "position": "background"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The person is holding the tool with both hands.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The tool is being rotated or pressed against the wooden surface.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The orange pad on the tool is spinning or moving rapidly.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The person is positioned to the left of the frame, holding the tool in the center. The tool is in contact with the wooden workbench surface, which extends to the right and background.",
     "parse_success": true,
     "chunk_idx": 32,
     "video_id": "XM4hpTSRLGU"
   },
   {
     "time": [
-      66,
-      68
+      33,
+      34
     ],
     "visible_entities": [
       {
-        "desc": "person's hand and forearm wearing a solid blue long-sleeved shirt",
-        "action": "manipulating a tool",
+        "desc": "person's hand and forearm wearing a blue long-sleeved shirt",
+        "action": "holding a tool with an orange pad",
         "position": "left/foreground"
       },
       {
-        "desc": "tool with a silver cylindrical handle, black mounting bracket, and a bright orange circular pad",
+        "desc": "tool with a silver metal handle, black mounting bracket, and a round orange foam pad",
         "action": "being held and moved",
         "position": "center/foreground"
       },
@@ -1671,12 +1642,7 @@
         "position": "background"
       },
       {
-        "desc": "small dark purple oval-shaped object",
-        "action": "static",
-        "position": "center"
-      },
-      {
-        "desc": "assorted crafting supplies including discs and a clear plastic box",
+        "desc": "assorted small crafting items including discs and a plastic box",
         "action": "static",
         "position": "left/background"
       }
@@ -1687,7 +1653,7 @@
         "confidence": 1.0
       },
       {
-        "fact": "The tool is being moved over the wooden surface.",
+        "fact": "The tool is moved across the wooden surface.",
         "confidence": 1.0
       },
       {
@@ -1696,24 +1662,24 @@
       }
     ],
     "ocr": [],
-    "spatial": "The person's hand is holding the tool with the orange pad in the foreground. The tool is positioned to the left of the roll of white tape. The tape and the tool are resting on the light-colored wooden workbench.",
+    "spatial": "The person's hand is holding the tool with the orange pad in the foreground. The tool is positioned to the left of the roll of white tape. The roll of tape is resting on the wooden workbench surface.",
     "parse_success": true,
     "chunk_idx": 33,
     "video_id": "XM4hpTSRLGU"
   },
   {
     "time": [
-      68,
-      70
+      34,
+      35
     ],
     "visible_entities": [
       {
         "desc": "person wearing a blue long-sleeved shirt",
-        "action": "holding a small plastic bag",
+        "action": "holding a plastic bag",
         "position": "foreground"
       },
       {
-        "desc": "small clear plastic zip-lock bag containing a grey circular object",
+        "desc": "small clear plastic ziplock bag containing dark circular discs",
         "action": "being held",
         "position": "center"
       },
@@ -1723,14 +1689,24 @@
         "position": "background"
       },
       {
-        "desc": "assorted tools and supplies including a roll of white tape, an orange circular pad, and various discs",
+        "desc": "tool with a black handle and a bright orange circular pad",
+        "action": "static",
+        "position": "center"
+      },
+      {
+        "desc": "roll of white tape with a black core",
+        "action": "static",
+        "position": "center"
+      },
+      {
+        "desc": "assorted sanding discs and small parts",
         "action": "static",
         "position": "left"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A person is holding a small plastic bag in their hand.",
+        "fact": "A person is holding a small plastic bag containing dark discs.",
         "confidence": 1.0
       },
       {
@@ -1738,59 +1714,7 @@
         "confidence": 1.0
       },
       {
-        "fact": "Various tools and supplies are scattered on the wooden table.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [],
-    "spatial": "The person in the blue shirt is in the foreground, holding the plastic bag in front of the wooden workbench. The scattered tools and supplies are to the left of the person's hand on the table surface.",
-    "parse_success": true,
-    "chunk_idx": 34,
-    "video_id": "XM4hpTSRLGU"
-  },
-  {
-    "time": [
-      70,
-      72
-    ],
-    "visible_entities": [
-      {
-        "desc": "person wearing a blue long-sleeved shirt",
-        "action": "holding a plastic bag",
-        "position": "center"
-      },
-      {
-        "desc": "small transparent plastic bag containing purple circular discs",
-        "action": "being held and manipulated",
-        "position": "center"
-      },
-      {
-        "desc": "silver cylindrical tool with a black handle and a bright orange circular pad",
-        "action": "static",
-        "position": "left"
-      },
-      {
-        "desc": "light-colored wooden table surface",
-        "action": "static",
-        "position": "background"
-      },
-      {
-        "desc": "roll of white tape",
-        "action": "static",
-        "position": "left"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "The person holds a small plastic bag with both hands.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The person manipulates the bag, appearing to open it or adjust its contents.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "A silver tool with an orange pad rests on the wooden table.",
+        "fact": "A tool with an orange pad rests on the wooden table.",
         "confidence": 1.0
       },
       {
@@ -1799,29 +1723,90 @@
       }
     ],
     "ocr": [],
-    "spatial": "The person is positioned centrally, holding the plastic bag above the wooden table. The silver tool with the orange pad lies on the table to the left of the person's hands. The roll of white tape is located behind the silver tool.",
+    "spatial": "The person in the blue shirt is in the foreground, holding the plastic bag in front of the wooden workbench. The tool with the orange pad and the roll of white tape are on the table, positioned to the left of the person's hand. The pile of sanding discs is located further to the left on the table surface.",
+    "parse_success": true,
+    "chunk_idx": 34,
+    "video_id": "XM4hpTSRLGU"
+  },
+  {
+    "time": [
+      35,
+      36
+    ],
+    "visible_entities": [
+      {
+        "desc": "person wearing a blue long-sleeved shirt",
+        "action": "holding a small plastic bag",
+        "position": "center"
+      },
+      {
+        "desc": "small clear plastic zip-lock bag containing purple circular discs",
+        "action": "being held",
+        "position": "center"
+      },
+      {
+        "desc": "silver cylindrical tool with a black handle and a bright red circular pad",
+        "action": "static",
+        "position": "left"
+      },
+      {
+        "desc": "light-colored wooden workbench surface",
+        "action": "static",
+        "position": "background"
+      },
+      {
+        "desc": "roll of white tape",
+        "action": "static",
+        "position": "left"
+      },
+      {
+        "desc": "purple circular disc",
+        "action": "static",
+        "position": "left"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A person in a blue shirt is holding a small plastic bag with both hands.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The person is manipulating the bag containing purple discs.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A silver tool with a red pad is lying on the wooden table.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A roll of white tape is sitting on the table near the tool.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The person is positioned centrally, holding the plastic bag above the wooden table. To the left of the person's hands, a silver tool with a red pad and a roll of white tape are resting on the table surface. A single purple disc is lying on the table below the tool.",
     "parse_success": true,
     "chunk_idx": 35,
     "video_id": "XM4hpTSRLGU"
   },
   {
     "time": [
-      72,
-      74
+      36,
+      37
     ],
     "visible_entities": [
       {
         "desc": "person's hand and arm wearing a blue long-sleeved shirt",
-        "action": "holding and shaking a clear plastic bag",
+        "action": "holding and moving a clear plastic bag",
         "position": "top center"
       },
       {
-        "desc": "clear plastic bag containing dark purple abrasive discs",
+        "desc": "clear plastic bag containing dark purple or grey circular pads",
         "action": "being held and shaken",
-        "position": "top center"
+        "position": "center"
       },
       {
-        "desc": "silver pneumatic sander tool with a black handle and a bright orange circular sanding pad",
+        "desc": "silver cylindrical tool with a black handle and a bright orange circular pad attached",
         "action": "static",
         "position": "center left"
       },
@@ -1836,137 +1821,128 @@
         "position": "center"
       },
       {
-        "desc": "assorted sanding discs in various colors (purple, white, black) and sizes",
+        "desc": "collection of various circular sanding or polishing discs in different colors",
         "action": "static",
         "position": "left"
-      },
-      {
-        "desc": "single dark purple sanding disc",
-        "action": "static",
-        "position": "bottom center"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A person is holding a plastic bag filled with sanding discs.",
+        "fact": "A person is holding a plastic bag filled with pads.",
         "confidence": 1.0
       },
       {
-        "fact": "The person shakes the bag of sanding discs.",
+        "fact": "The person moves the bag over the workbench.",
         "confidence": 1.0
       },
       {
-        "fact": "A silver sander with an orange pad rests on the wooden table.",
+        "fact": "A silver tool with an orange pad lies on the table.",
         "confidence": 1.0
       },
       {
-        "fact": "Various sanding discs are scattered on the left side of the table.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "A roll of tape sits on the table near the sander.",
+        "fact": "A roll of tape sits on the wooden surface.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The person's hand is positioned above the wooden workbench, holding the plastic bag. The silver sander lies horizontally on the table, to the left of the roll of tape. The scattered sanding discs are located to the left of the sander, while a single disc rests below the sander.",
+    "spatial": "The person's hand is holding the plastic bag above the wooden workbench. The silver tool with the orange pad is lying on the table to the left of the tape roll. The collection of loose discs is positioned to the left of the silver tool.",
     "parse_success": true,
     "chunk_idx": 36,
     "video_id": "XM4hpTSRLGU"
   },
   {
     "time": [
-      74,
-      76
+      37,
+      38
     ],
     "visible_entities": [
       {
         "desc": "person wearing a blue long-sleeved shirt",
-        "action": "manipulating a small object",
+        "action": "manipulating a bottle",
         "position": "left"
       },
       {
-        "desc": "small black cylindrical object with a bright orange cap",
-        "action": "being held and turned",
-        "position": "center"
-      },
-      {
-        "desc": "light-colored wooden workbench surface",
-        "action": "static",
-        "position": "background"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "A person wearing a blue shirt is holding a small black object with an orange cap.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The person is turning the object in their hands.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The object is positioned above a wooden table.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [],
-    "spatial": "The person is on the left side of the frame, holding the black and orange object in the center. The object is positioned above the wooden workbench surface.",
-    "parse_success": true,
-    "chunk_idx": 37,
-    "video_id": "XM4hpTSRLGU"
-  },
-  {
-    "time": [
-      76,
-      78
-    ],
-    "visible_entities": [
-      {
-        "desc": "person wearing a blue long-sleeved shirt",
-        "action": "holding and manipulating an object",
-        "position": "left"
-      },
-      {
-        "desc": "small round orange object, possibly a ball or stress toy",
-        "action": "being held",
+        "desc": "small dark bottle with a bright orange cap",
+        "action": "being held and opened",
         "position": "center"
       },
       {
         "desc": "light-colored wooden table surface",
         "action": "static",
         "position": "background"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "person is holding a small dark bottle with an orange cap",
+        "confidence": 1.0
       },
       {
-        "desc": "clear plastic display stand",
+        "fact": "person is using both hands to manipulate the bottle",
+        "confidence": 1.0
+      },
+      {
+        "fact": "the bottle is positioned on a wooden table",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The person in the blue shirt is on the left side of the frame, holding the bottle in front of them. The bottle is positioned above the wooden table surface. The person's hands are wrapped around the bottle.",
+    "parse_success": true,
+    "chunk_idx": 37,
+    "video_id": "XM4hpTSRLGU"
+  },
+  {
+    "time": [
+      38,
+      39
+    ],
+    "visible_entities": [
+      {
+        "desc": "person wearing a blue long-sleeved shirt",
+        "action": "holding a round orange object",
+        "position": "left"
+      },
+      {
+        "desc": "round orange object, smooth texture",
+        "action": "being held by hands",
+        "position": "center"
+      },
+      {
+        "desc": "light-colored wooden table surface with visible grain",
+        "action": "static",
+        "position": "background"
+      },
+      {
+        "desc": "transparent plastic stand",
         "action": "static",
         "position": "background"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A person is holding a small orange object with both hands.",
+        "fact": "person is holding a round orange object with both hands",
         "confidence": 1.0
       },
       {
-        "fact": "The person is manipulating the orange object on a wooden table.",
+        "fact": "the orange object is positioned above the wooden table",
         "confidence": 1.0
       },
       {
-        "fact": "A clear plastic stand is visible in the background.",
+        "fact": "the person is wearing a blue long-sleeved shirt",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The person in the blue shirt is on the left side of the frame. Their hands are holding the orange object in the center, positioned above the wooden table. The clear plastic stand is behind the person's hands.",
+    "spatial": "The person in the blue shirt is on the left side of the frame. Their hands are holding the orange object in the center, directly above the wooden table. The transparent plastic stand is behind the hands on the table.",
     "parse_success": true,
     "chunk_idx": 38,
     "video_id": "XM4hpTSRLGU"
   },
   {
     "time": [
-      78,
-      80
+      39,
+      40
     ],
     "visible_entities": [
       {
@@ -1975,120 +1951,126 @@
         "position": "left"
       },
       {
-        "desc": "orange circular object with a black rim",
-        "action": "being held and pressed",
+        "desc": "bright orange circular object with a black rim",
+        "action": "being held",
         "position": "center"
       },
       {
         "desc": "light-colored wooden table surface",
         "action": "static",
         "position": "background"
+      },
+      {
+        "desc": "black ring-shaped object",
+        "action": "static",
+        "position": "center"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "The person is holding the orange circular object with both hands.",
+        "fact": "A person is holding a bright orange circular object with both hands.",
         "confidence": 1.0
       },
       {
-        "fact": "The person presses the orange object down onto the wooden surface.",
+        "fact": "The person is manipulating the orange object on the wooden table.",
         "confidence": 1.0
       },
       {
-        "fact": "The orange object is moved out of the frame by the end of the clip.",
+        "fact": "A black ring-shaped object is lying on the table near the person's hands.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The person is positioned to the left of the frame, with their hands extending towards the center. The orange circular object is held in the person's hands, positioned above the wooden table surface.",
+    "spatial": "The person in the blue shirt is positioned on the left side of the frame. The person's hands are holding the orange circular object in the center, directly above the wooden table surface. The black ring-shaped object is on the table, slightly behind and to the right of the orange object.",
     "parse_success": true,
     "chunk_idx": 39,
     "video_id": "XM4hpTSRLGU"
   },
   {
     "time": [
-      80,
-      82
+      40,
+      41
     ],
     "visible_entities": [
       {
         "desc": "person wearing a blue long-sleeved shirt",
         "action": "manipulating a black cylindrical object",
-        "position": "left"
+        "position": "left/foreground"
       },
       {
-        "desc": "black cylindrical object with a silver metallic base",
-        "action": "being held and adjusted",
+        "desc": "black cylindrical object with a white top rim",
+        "action": "being held and rotated",
         "position": "center"
       },
       {
-        "desc": "light-colored wooden table surface",
-        "action": "static",
-        "position": "background"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "A person is holding a black cylindrical object with a silver base.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The person is manipulating the object on a wooden table.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The object is positioned centrally in the frame.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [],
-    "spatial": "The person in the blue shirt is on the left side of the frame. The black cylindrical object is in the center, held by the person's hands. The wooden table is beneath the object and extends to the right.",
-    "parse_success": true,
-    "chunk_idx": 40,
-    "video_id": "XM4hpTSRLGU"
-  },
-  {
-    "time": [
-      82,
-      84
-    ],
-    "visible_entities": [
-      {
-        "desc": "person with fair skin, wearing a blue long-sleeved shirt",
-        "action": "holding and adjusting a tool",
-        "position": "left/center"
-      },
-      {
-        "desc": "metallic tool with a silver cylindrical handle and a black circular head",
-        "action": "being held",
-        "position": "center"
-      },
-      {
-        "desc": "light-colored wooden workbench with visible grain and a handle cutout",
+        "desc": "light-colored wooden table surface with visible grain",
         "action": "static",
         "position": "background/bottom"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A person is holding a metallic tool with a black head in their hands.",
+        "fact": "A person wearing a blue long-sleeved shirt is holding a black cylindrical object.",
         "confidence": 1.0
       },
       {
-        "fact": "The person's left hand is gripping the silver handle of the tool.",
+        "fact": "The person rotates the black object in their hands.",
         "confidence": 1.0
       },
       {
-        "fact": "The person's right hand is touching or adjusting the black circular head of the tool.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The tool is positioned horizontally above the wooden workbench.",
+        "fact": "The action takes place on a light-colored wooden table.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The person is positioned to the left of the frame, holding the tool in the center. The tool is located above the wooden workbench. The person's hands are wrapped around the tool, with the right hand near the black head and the left hand near the silver handle.",
+    "spatial": "The person in the blue shirt is positioned to the left of the frame. Their hands are holding the black cylindrical object in the center of the view. The object is positioned above the wooden table surface.",
+    "parse_success": true,
+    "chunk_idx": 40,
+    "video_id": "XM4hpTSRLGU"
+  },
+  {
+    "time": [
+      41,
+      42
+    ],
+    "visible_entities": [
+      {
+        "desc": "person wearing a blue long-sleeved shirt",
+        "action": "holding a tool",
+        "position": "left"
+      },
+      {
+        "desc": "tool with a black cylindrical head and a silver metallic handle",
+        "action": "being held and manipulated",
+        "position": "center"
+      },
+      {
+        "desc": "light-colored wooden workbench with visible grain and a handle cutout",
+        "action": "static",
+        "position": "bottom"
+      },
+      {
+        "desc": "orange circular object",
+        "action": "static",
+        "position": "background"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A person is holding a tool with a black head and silver handle.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The person's hands are manipulating the tool over a wooden surface.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The tool is positioned horizontally in the person's hands.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The person is to the left of the frame, holding the tool in the center. The tool is positioned above the wooden workbench. The orange circular object is in the background, behind the person's hands.",
     "parse_success": true,
     "chunk_idx": 41,
     "video_id": "XM4hpTSRLGU"

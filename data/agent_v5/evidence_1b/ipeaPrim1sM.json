@@ -2,28 +2,28 @@
   {
     "time": [
       0,
-      2
+      1
     ],
     "visible_entities": [
       {
-        "desc": "vertical colored stripes including pink, cyan, light blue, orange, yellow, green, magenta, dark blue, and gray",
+        "desc": "vertical stripes of varying colors including pink, cyan, orange, yellow, green, magenta, and grey",
         "action": "static",
-        "position": "left/right/center",
-        "id": "videojug_colorbar_1"
+        "position": "background",
+        "id": "graphic_colorbar_1"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "The video displays a static pattern of vertical colored bars.",
+        "fact": "The video displays a static pattern of vertical colored stripes.",
         "confidence": 1.0
       },
       {
-        "fact": "The colors include pink, cyan, light blue, orange, yellow, green, magenta, dark blue, and gray.",
+        "fact": "The stripes are arranged side-by-side filling the frame.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The vertical colored stripes are arranged side-by-side across the frame, with a white space visible in the center of the first frame.",
+    "spatial": "The vertical stripes are arranged side-by-side, filling the entire frame from left to right.",
     "parse_success": true,
     "chunk_idx": 0,
     "video_id": "ipeaPrim1sM",
@@ -31,50 +31,40 @@
   },
   {
     "time": [
-      2,
-      4
+      1,
+      2
     ],
     "visible_entities": [
       {
-        "desc": "Logo text 'videojug' in bold, dark grey, lowercase sans-serif font with rounded dots on the 'i' and 'j'",
+        "desc": "black 'videojug' logo with grey 'get good at life' tagline",
         "action": "static",
         "position": "center",
-        "id": "videojug_logo_1"
+        "id": "logo_videojug_1"
       },
       {
-        "desc": "Tagline text 'get good at life' in smaller, lighter grey, lowercase sans-serif font",
+        "desc": "horizontal bar composed of colored rectangular segments (purple, blue, yellow, green, pink, orange, cyan, dark blue, magenta, grey)",
         "action": "static",
         "position": "center",
-        "id": "videojug_tagline_1"
+        "id": "graphic_colorbar_1"
       },
       {
-        "desc": "Horizontal bar composed of multiple colored rectangular segments (purple, light blue, yellow, green, magenta, orange, cyan, dark blue, pink, grey)",
-        "action": "static",
-        "position": "center",
-        "id": "videojug_colorbar_1"
-      },
-      {
-        "desc": "Title text 'How To: Ribbon Bow Making' in black, sentence-case sans-serif font",
+        "desc": "black text reading 'How To: Ribbon Bow Making' in a sans-serif font",
         "action": "static",
         "position": "bottom",
-        "id": "title_text_1"
+        "id": "text_title_1"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "The 'videojug' logo is displayed prominently in the center of the screen.",
+        "fact": "The video displays a title card for a tutorial.",
         "confidence": 1.0
       },
       {
-        "fact": "The tagline 'get good at life' is positioned directly below the main logo.",
+        "fact": "The text 'How To: Ribbon Bow Making' is visible at the bottom of the screen.",
         "confidence": 1.0
       },
       {
-        "fact": "A multi-colored horizontal bar separates the logo area from the title text.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The title 'How To: Ribbon Bow Making' is displayed at the bottom of the frame.",
+        "fact": "The 'videojug' logo is positioned above the colored bar.",
         "confidence": 1.0
       }
     ],
@@ -83,90 +73,88 @@
       "get good at life",
       "How To: Ribbon Bow Making"
     ],
-    "spatial": "The 'videojug' logo is above the tagline 'get good at life'. The multi-colored horizontal bar is below the tagline and above the title text 'How To: Ribbon Bow Making'. All elements are centered horizontally on a white background.",
+    "spatial": "The 'videojug' logo is centered at the top of the screen. The multi-colored horizontal bar is positioned below the logo and above the text 'How To: Ribbon Bow Making'.",
     "parse_success": true,
     "chunk_idx": 1,
     "video_id": "ipeaPrim1sM",
-    "state_changes": [
-      "intro graphics transition to title card with video logo and how-to title"
-    ]
+    "state_changes": []
   },
   {
     "time": [
-      4,
-      6
+      2,
+      3
     ],
     "visible_entities": [
       {
-        "desc": "woman with shoulder-length blonde hair and bangs, wearing a bright pink long-sleeved button-up shirt with silver buttons and two chest pockets",
-        "action": "peeking from behind colorful poles then smiling at the camera",
+        "desc": "woman with shoulder-length blonde hair and bangs, wearing a bright pink long-sleeved button-up shirt with silver buttons and chest pockets",
+        "action": "smiling and looking forward",
         "position": "center",
-        "id": "presenter_woman_1"
-      },
-      {
-        "desc": "vertical colorful poles in shades of purple, green, blue, pink, and yellow",
-        "action": "static",
-        "position": "foreground",
-        "id": "videojug_colorbar_1"
+        "id": "person_presenter_1"
       },
       {
         "desc": "red brick wall",
         "action": "static",
         "position": "background",
-        "id": "brick_wall_background_1"
+        "id": "background_brickwall_1"
+      },
+      {
+        "desc": "vertical colorful bars (purple, green, blue, pink, yellow)",
+        "action": "moving out of frame",
+        "position": "foreground",
+        "id": "graphic_colorbar_1"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "The woman peeks through the gaps in the colorful poles.",
+        "fact": "The colorful vertical bars slide away to reveal the woman.",
         "confidence": 1.0
       },
       {
-        "fact": "The woman smiles with her mouth open.",
+        "fact": "The woman is smiling with her mouth open.",
         "confidence": 1.0
       },
       {
-        "fact": "The colorful poles are positioned in front of the woman.",
+        "fact": "The woman is positioned in front of a brick wall.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The woman is positioned in the center of the frame, behind the vertical colorful poles. The colorful poles are in the foreground, obscuring parts of the woman. The red brick wall is in the background behind the woman.",
+    "spatial": "The woman is in the center of the frame, positioned in front of the red brick wall. The colorful vertical bars are in the foreground, initially obscuring the woman before moving to the sides.",
     "parse_success": true,
     "chunk_idx": 2,
     "video_id": "ipeaPrim1sM",
     "state_changes": [
-      "presenter appears on screen, intro sequence ends"
+      "Presenter appears on screen; intro graphics transition out."
     ]
   },
   {
     "time": [
-      6,
-      8
+      3,
+      4
     ],
     "visible_entities": [
       {
-        "desc": "woman with shoulder-length blonde hair and bangs, wearing a bright pink button-down shirt",
+        "desc": "woman with shoulder-length blonde hair and bangs, wearing a bright pink collared shirt",
         "action": "speaking",
         "position": "center",
-        "id": "presenter_woman_1"
+        "id": "person_presenter_1"
       },
       {
         "desc": "red brick wall background",
         "action": "static",
         "position": "background",
-        "id": "brick_wall_background_1"
+        "id": "background_brickwall_1"
       },
       {
-        "desc": "white lower-third graphic with black text and a colorful horizontal bar",
+        "desc": "white lower-third graphic with black text and a colorful horizontal stripe",
         "action": "static",
         "position": "bottom",
-        "id": "lower_third_graphic_1"
+        "id": "graphic_lowertthird_1"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "The woman is speaking to the camera.",
+        "fact": "The woman is speaking.",
         "confidence": 1.0
       },
       {
@@ -174,7 +162,7 @@
         "confidence": 1.0
       },
       {
-        "fact": "The text identifies the woman as 'Jenny Jones' and her title as 'Arts & Crafts Expert'.",
+        "fact": "The text identifies the woman as 'Jenny Jones'.",
         "confidence": 1.0
       }
     ],
@@ -182,35 +170,37 @@
       "Jenny Jones",
       "Arts & Crafts Expert"
     ],
-    "spatial": "The woman is centered in the frame, positioned in front of the red brick wall. The white lower-third graphic containing text is located at the bottom of the screen, overlaying the lower portion of the woman's torso.",
+    "spatial": "The woman is positioned in the center of the frame, in front of the red brick wall. The white lower-third graphic is located at the bottom of the screen, below the woman.",
     "parse_success": true,
     "chunk_idx": 3,
     "video_id": "ipeaPrim1sM",
-    "state_changes": []
+    "state_changes": [
+      "Lower-third graphic appears while presenter speaks."
+    ]
   },
   {
     "time": [
-      8,
-      10
+      4,
+      5
     ],
     "visible_entities": [
       {
         "desc": "woman with shoulder-length blonde hair and bangs, wearing a bright pink collared shirt",
         "action": "speaking",
         "position": "center",
-        "id": "presenter_woman_1"
+        "id": "person_presenter_1"
       },
       {
         "desc": "red brick wall background",
         "action": "static",
         "position": "background",
-        "id": "brick_wall_background_1"
+        "id": "background_brickwall_1"
       },
       {
-        "desc": "white lower-third graphic with black text and a multi-colored horizontal stripe",
+        "desc": "white lower-third graphic with black text and a colorful horizontal stripe",
         "action": "static",
         "position": "bottom",
-        "id": "lower_third_graphic_1"
+        "id": "graphic_lowertthird_1"
       }
     ],
     "atomic_facts": [
@@ -219,7 +209,11 @@
         "confidence": 1.0
       },
       {
-        "fact": "The lower-third graphic identifies the speaker as 'Jenny Jones' and her title as 'Arts & Crafts Expert'.",
+        "fact": "The text 'Jenny Jones' is displayed on the screen.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The text 'Arts & Crafts Expert' is displayed below the name.",
         "confidence": 1.0
       }
     ],
@@ -227,7 +221,7 @@
       "Jenny Jones",
       "Arts & Crafts Expert"
     ],
-    "spatial": "The woman is centered in the frame, positioned in front of the red brick wall. The white text graphic is located at the bottom of the screen, below the woman.",
+    "spatial": "The woman is positioned in the center of the frame in front of the brick wall. The white graphic containing the text is located at the bottom of the screen, overlaying the lower portion of the woman's shirt.",
     "parse_success": true,
     "chunk_idx": 4,
     "video_id": "ipeaPrim1sM",
@@ -235,27 +229,27 @@
   },
   {
     "time": [
-      10,
-      12
+      5,
+      6
     ],
     "visible_entities": [
       {
-        "desc": "woman with shoulder-length blonde hair and bangs, wearing a bright pink button-up shirt",
+        "desc": "woman with shoulder-length blonde hair and bangs, wearing a bright pink button-up shirt with silver buttons and chest pockets",
         "action": "speaking",
         "position": "center",
-        "id": "presenter_woman_1"
+        "id": "person_presenter_1"
       },
       {
-        "desc": "red brick wall",
+        "desc": "red brick wall background",
         "action": "static",
         "position": "background",
-        "id": "brick_wall_background_1"
+        "id": "background_brickwall_1"
       },
       {
-        "desc": "colorful rectangular graphic overlay",
+        "desc": "row of colorful rectangular blocks (purple, light blue, green, magenta, orange, pink, grey)",
         "action": "static",
         "position": "bottom",
-        "id": "lower_third_graphic_1"
+        "id": "graphic_colorbar_1"
       }
     ],
     "atomic_facts": [
@@ -264,16 +258,12 @@
         "confidence": 1.0
       },
       {
-        "fact": "A colorful graphic overlay is present at the bottom of the screen in the first frame.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The graphic overlay disappears in the second frame.",
+        "fact": "A row of colorful blocks is overlaid at the bottom of the screen.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The woman is positioned in the center of the frame, in front of the red brick wall. The colorful graphic overlay is located at the bottom of the screen, below the woman.",
+    "spatial": "The woman is centered in the foreground in front of the red brick wall. The row of colorful blocks is positioned below the woman at the bottom of the frame.",
     "parse_success": true,
     "chunk_idx": 5,
     "video_id": "ipeaPrim1sM",
@@ -281,27 +271,27 @@
   },
   {
     "time": [
-      12,
-      14
+      6,
+      7
     ],
     "visible_entities": [
       {
         "desc": "person with straight blonde hair",
         "action": "static",
         "position": "foreground",
-        "id": "finished_bow_on_person_1"
+        "id": "person_presenter_1"
       },
       {
-        "desc": "purple satin ribbon bow with a central gold button",
+        "desc": "purple satin ribbon bow with a small gold button center",
         "action": "static",
         "position": "center",
-        "id": "purple_ribbon_bow_1"
+        "id": "ribbon_purple_1"
       },
       {
         "desc": "red brick wall",
         "action": "static",
         "position": "background",
-        "id": "brick_wall_background_1"
+        "id": "background_brickwall_1"
       }
     ],
     "atomic_facts": [
@@ -310,45 +300,41 @@
         "confidence": 1.0
       },
       {
-        "fact": "The bow features a small, round gold button in the center.",
+        "fact": "The bow features a small gold button in the center.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The purple satin bow is attached to the blonde hair in the foreground. The blonde hair is positioned in front of the red brick wall in the background.",
+    "spatial": "The purple satin bow is attached to the blonde hair in the foreground. The red brick wall is behind the person's head.",
     "parse_success": true,
     "chunk_idx": 6,
     "video_id": "ipeaPrim1sM",
     "state_changes": [
-      "cut from presenter to finished bow display shot"
+      "Scene cuts to close-up of finished bow on presenter's hair."
     ]
   },
   {
     "time": [
-      14,
-      16
+      7,
+      8
     ],
     "visible_entities": [
       {
-        "desc": "person with blonde hair, wearing a large purple satin bow with a gold center button",
+        "desc": "person with blonde hair, wearing a purple satin bow with a gold center button",
         "action": "static",
-        "position": "foreground",
-        "id": "finished_bow_on_person_1"
+        "position": "left/foreground",
+        "id": "person_presenter_1"
       },
       {
         "desc": "red brick wall",
         "action": "static",
         "position": "background",
-        "id": "brick_wall_background_1"
+        "id": "background_brickwall_1"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A person with blonde hair is wearing a purple bow.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The bow is made of shiny purple satin material.",
+        "fact": "A purple satin bow is clipped into blonde hair.",
         "confidence": 1.0
       },
       {
@@ -357,7 +343,7 @@
       }
     ],
     "ocr": [],
-    "spatial": "The person with blonde hair is in the foreground, positioned in front of the red brick wall background. The purple bow is attached to the hair on the side of the person's head.",
+    "spatial": "The person with blonde hair is in the foreground on the left side of the frame. The red brick wall is behind the person.",
     "parse_success": true,
     "chunk_idx": 7,
     "video_id": "ipeaPrim1sM",
@@ -365,35 +351,39 @@
   },
   {
     "time": [
-      16,
-      18
+      8,
+      9
     ],
     "visible_entities": [
       {
-        "desc": "person with blonde hair, wearing a large purple satin ribbon hair bow with a small brown button center",
+        "desc": "person with straight blonde hair, wearing a purple satin bow hair accessory with a small gold button center",
         "action": "static",
         "position": "foreground",
-        "id": "finished_bow_on_person_1"
+        "id": "person_presenter_1"
       },
       {
-        "desc": "red brick wall",
+        "desc": "red brick wall with light mortar lines",
         "action": "static",
         "position": "background",
-        "id": "brick_wall_background_1"
+        "id": "background_brickwall_1"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A person with blonde hair is wearing a purple hair bow.",
+        "fact": "A person with blonde hair is positioned in the foreground.",
         "confidence": 1.0
       },
       {
-        "fact": "The hair bow is made of shiny purple satin ribbon.",
+        "fact": "A purple satin bow is clipped into the person's hair.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The background consists of a red brick wall.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The person with blonde hair is in the foreground, positioned in front of the red brick wall. The purple satin bow is attached to the hair on the right side of the person's head.",
+    "spatial": "The person with blonde hair is in front of the red brick wall. The purple bow is attached to the hair on the right side of the person's head.",
     "parse_success": true,
     "chunk_idx": 8,
     "video_id": "ipeaPrim1sM",
@@ -401,111 +391,102 @@
   },
   {
     "time": [
-      18,
-      20
+      9,
+      10
     ],
     "visible_entities": [
+      {
+        "desc": "green transparent plastic ruler with black measurement markings and text",
+        "action": "static",
+        "position": "bottom right",
+        "id": "ruler_green_1"
+      },
       {
         "desc": "purple satin ribbon, smooth texture, looped shape",
         "action": "static",
         "position": "top left",
-        "id": "purple_ribbon_1"
+        "id": "ribbon_purple_1"
       },
       {
-        "desc": "green plastic ruler, translucent, with black measurement markings",
-        "action": "static",
-        "position": "bottom right",
-        "id": "green_ruler_1"
-      },
-      {
-        "desc": "red wire outline, thin, shaped like a butterfly",
-        "action": "static",
-        "position": "center"
-      },
-      {
-        "desc": "small gold metal bead, round",
+        "desc": "small gold-colored metal button or snap fastener",
         "action": "static",
         "position": "center",
-        "id": "gold_button_1"
+        "id": "button_gold_1"
       },
       {
-        "desc": "thin silver needle, straight",
+        "desc": "red wire outline shaped like a map or abstract figure",
         "action": "static",
         "position": "center",
-        "id": "sewing_needle_1"
+        "id": "wire_red_1"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A green ruler is placed on a gray surface.",
+        "fact": "A green ruler, a purple ribbon, a gold button, and a red wire outline are arranged on a grey surface.",
         "confidence": 1.0
       },
       {
-        "fact": "A purple ribbon lies next to a red wire butterfly outline.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The text 'Shatterproof' is printed on the ruler.",
+        "fact": "The text 'Shatterproof' is visible on the green ruler.",
         "confidence": 1.0
       }
     ],
     "ocr": [
       "Shatterproof"
     ],
-    "spatial": "The purple ribbon is located in the top left area, above the red wire butterfly outline. The green ruler is positioned in the bottom right corner, to the right of the wire outline. The small gold bead and needle are situated between the ribbon and the ruler.",
+    "spatial": "The purple ribbon is positioned in the top left area, above the red wire outline and the gold button. The green ruler is located in the bottom right corner, below the other objects. The red wire outline is situated to the left of the ruler.",
     "parse_success": true,
     "chunk_idx": 9,
     "video_id": "ipeaPrim1sM",
     "state_changes": [
-      "transition to tools and materials layout display"
+      "Scene transitions to display of tools and materials (ruler, ribbon, button, wire)."
     ]
   },
   {
     "time": [
-      20,
-      22
+      10,
+      11
     ],
     "visible_entities": [
       {
-        "desc": "purple satin ribbon, smooth texture, approximately 30 inches long",
+        "desc": "purple satin ribbon, approximately 30 inches long",
         "action": "static",
         "position": "top left",
-        "id": "purple_ribbon_1"
+        "id": "ribbon_purple_1"
       },
       {
-        "desc": "green plastic ruler with black markings and 'Shatterproof' text",
+        "desc": "green plastic ruler with black markings",
         "action": "static",
         "position": "bottom right",
-        "id": "green_ruler_1"
+        "id": "ruler_green_1"
       },
       {
         "desc": "small gold button",
         "action": "static",
         "position": "center",
-        "id": "gold_button_1"
+        "id": "button_gold_1"
       },
       {
-        "desc": "red thread, tangled",
+        "desc": "red thread tangled on surface",
         "action": "static",
         "position": "center",
-        "id": "red_thread_1"
+        "id": "thread_red_1"
       },
       {
-        "desc": "small metal needle",
+        "desc": "silver sewing needle",
         "action": "static",
         "position": "center",
-        "id": "sewing_needle_1"
+        "id": "needle_silver_1"
       },
       {
         "desc": "white text overlay listing tools and materials",
         "action": "static",
         "position": "top",
-        "id": "tools_materials_text_1"
+        "id": "text_tools_1"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "The video displays a collection of crafting tools and materials on a gray surface.",
+        "fact": "The video displays a collection of sewing tools and materials on a gray surface.",
         "confidence": 1.0
       },
       {
@@ -526,53 +507,55 @@
       "Ruler",
       "Shatterproof"
     ],
-    "spatial": "The purple ribbon is located in the top left area, above the needle and thread. The green ruler is positioned to the right of the button and thread, extending towards the bottom right corner. The text labels are overlaid near their corresponding objects.",
+    "spatial": "The purple ribbon is located in the upper left area, above the needle and thread. The green ruler is positioned to the right of the thread and button. The text labels are overlaid directly on top of or next to their corresponding physical objects.",
     "parse_success": true,
     "chunk_idx": 10,
     "video_id": "ipeaPrim1sM",
-    "state_changes": []
+    "state_changes": [
+      "Text overlay listing tools and materials appears."
+    ]
   },
   {
     "time": [
-      22,
-      24
+      11,
+      12
     ],
     "visible_entities": [
       {
         "desc": "purple satin ribbon, smooth texture, approximately 30 inches long",
         "action": "static",
         "position": "top left",
-        "id": "purple_ribbon_1"
+        "id": "ribbon_purple_1"
       },
       {
         "desc": "green plastic ruler with black measurement markings and 'Shatterproof' text",
         "action": "static",
         "position": "bottom right",
-        "id": "green_ruler_1"
+        "id": "ruler_green_1"
       },
       {
-        "desc": "small gold-colored button",
+        "desc": "small gold-colored metal button",
         "action": "static",
         "position": "center",
-        "id": "gold_button_1"
+        "id": "button_gold_1"
       },
       {
-        "desc": "thin red thread, tangled",
+        "desc": "red thread tangled in a loose pile",
         "action": "static",
         "position": "center",
-        "id": "red_thread_1"
+        "id": "thread_red_1"
       },
       {
-        "desc": "small metal sewing needle",
+        "desc": "silver sewing needle",
         "action": "static",
         "position": "center",
-        "id": "sewing_needle_1"
+        "id": "needle_silver_1"
       },
       {
         "desc": "white text overlay listing 'Tools & Materials'",
         "action": "static",
         "position": "top",
-        "id": "tools_materials_text_1"
+        "id": "text_tools_1"
       }
     ],
     "atomic_facts": [
@@ -602,7 +585,7 @@
       "Ruler",
       "Shatterproof"
     ],
-    "spatial": "The purple ribbon is located in the top left area, above the tangled red thread and needle in the center. The green ruler is positioned diagonally in the bottom right, below the button and thread. The white text labels are overlaid near their corresponding physical items.",
+    "spatial": "The purple ribbon is located in the top left area, above the pile of red thread and the needle. The green ruler is positioned diagonally in the bottom right corner, to the right of the thread and button. The text labels are overlaid near their corresponding physical items.",
     "parse_success": true,
     "chunk_idx": 11,
     "video_id": "ipeaPrim1sM",
@@ -610,45 +593,45 @@
   },
   {
     "time": [
-      24,
-      26
+      12,
+      13
     ],
     "visible_entities": [
       {
-        "desc": "purple satin ribbon, approximately 30 inches long, looped",
+        "desc": "purple satin ribbon, smooth texture, approximately 30 inches long",
         "action": "static",
         "position": "top left",
-        "id": "purple_ribbon_1"
+        "id": "ribbon_purple_1"
       },
       {
-        "desc": "green plastic ruler with white measurement markings",
+        "desc": "green plastic ruler with black measurement markings",
         "action": "static",
         "position": "bottom right",
-        "id": "green_ruler_1"
+        "id": "ruler_green_1"
       },
       {
-        "desc": "small round gold button",
+        "desc": "small gold button",
         "action": "static",
         "position": "center",
-        "id": "gold_button_1"
+        "id": "button_gold_1"
       },
       {
-        "desc": "red thread tangled on the surface",
+        "desc": "red thread tangled in a loose pile",
         "action": "static",
         "position": "center",
-        "id": "red_thread_1"
+        "id": "thread_red_1"
       },
       {
         "desc": "silver sewing needle",
         "action": "static",
         "position": "center",
-        "id": "sewing_needle_1"
+        "id": "needle_silver_1"
       },
       {
         "desc": "white text overlay listing tools and materials",
         "action": "static",
-        "position": "overlay",
-        "id": "tools_materials_text_1"
+        "position": "top",
+        "id": "text_tools_1"
       }
     ],
     "atomic_facts": [
@@ -665,7 +648,7 @@
         "confidence": 1.0
       },
       {
-        "fact": "A purple ribbon is looped in the upper left area.",
+        "fact": "A purple ribbon is laid out in the upper left area.",
         "confidence": 1.0
       }
     ],
@@ -678,7 +661,7 @@
       "Ruler",
       "Shatterproof"
     ],
-    "spatial": "The purple ribbon is located in the top left area, above the needle and thread. The green ruler is positioned diagonally in the bottom right corner, below the button. The text labels are overlaid directly next to or above their corresponding physical objects.",
+    "spatial": "The purple ribbon is located in the top left area, above the red thread and needle which are in the center. The green ruler is positioned diagonally in the bottom right, to the right of the thread and button. The text labels are overlaid directly next to or above their corresponding physical items.",
     "parse_success": true,
     "chunk_idx": 12,
     "video_id": "ipeaPrim1sM",
@@ -686,58 +669,62 @@
   },
   {
     "time": [
-      26,
-      28
+      13,
+      14
     ],
     "visible_entities": [
       {
-        "desc": "purple satin ribbon, approximately 30 inches long, smooth texture, slightly curved",
+        "desc": "purple satin ribbon, smooth texture, approximately 30 inches long",
         "action": "static",
-        "position": "top/center",
-        "id": "purple_ribbon_1"
+        "position": "top left",
+        "id": "ribbon_purple_1"
       },
       {
-        "desc": "green plastic ruler, transparent, with black measurement markings and 'Shatterproof' text",
+        "desc": "green plastic ruler with black markings and 'Shatterproof' text",
         "action": "static",
         "position": "bottom right",
-        "id": "green_ruler_1"
+        "id": "ruler_green_1"
       },
       {
-        "desc": "small round button, metallic or beige color",
+        "desc": "small gold-colored button",
         "action": "static",
         "position": "center",
-        "id": "gold_button_1"
+        "id": "button_gold_1"
       },
       {
-        "desc": "thin metal sewing needle",
+        "desc": "thin needle",
         "action": "static",
         "position": "center",
-        "id": "sewing_needle_1"
+        "id": "needle_silver_1"
       },
       {
-        "desc": "red thread, tangled and loose",
+        "desc": "red thread, tangled",
         "action": "static",
         "position": "center",
-        "id": "red_thread_1"
+        "id": "thread_red_1"
       },
       {
-        "desc": "white text overlay with drop shadow, listing 'Tools & Materials: 30 inches of Ribbon', 'Needle', 'Thread', 'Button', 'Ruler'",
+        "desc": "white text overlay listing tools and materials",
         "action": "static",
-        "position": "top/center/right",
-        "id": "tools_materials_text_1"
+        "position": "top",
+        "id": "text_tools_1"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "The video displays a collection of crafting tools and materials laid out on a gray surface.",
+        "fact": "The video displays a collection of crafting tools and materials on a gray surface.",
         "confidence": 1.0
       },
       {
-        "fact": "The text overlay lists the specific items needed: 30 inches of Ribbon, Needle, Thread, Button, and Ruler.",
+        "fact": "The text overlay lists '30 inches of Ribbon', 'Needle', 'Thread', 'Button', and 'Ruler'.",
         "confidence": 1.0
       },
       {
-        "fact": "The green ruler is positioned diagonally in the lower right area of the frame.",
+        "fact": "The green ruler is positioned diagonally in the lower right corner.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The purple ribbon is coiled in the upper left area.",
         "confidence": 1.0
       }
     ],
@@ -750,7 +737,7 @@
       "Ruler",
       "Shatterproof"
     ],
-    "spatial": "The purple ribbon is positioned at the top of the frame, above the needle, button, and red thread which are clustered in the center. The green ruler is located below and to the right of the central items. The text labels are overlaid on the image, generally positioned near their corresponding physical objects.",
+    "spatial": "The purple ribbon is located in the top left area, above the needle and thread which are in the center. The green ruler is positioned to the right of the thread and below the ribbon. The text labels are overlaid near their corresponding items, with the main header 'Tools & Materials:' at the top left.",
     "parse_success": true,
     "chunk_idx": 13,
     "video_id": "ipeaPrim1sM",
@@ -758,71 +745,71 @@
   },
   {
     "time": [
-      28,
-      30
+      14,
+      15
     ],
     "visible_entities": [
       {
-        "desc": "woman with shoulder-length blonde hair and bangs, wearing a bright pink polo shirt",
-        "action": "talking",
+        "desc": "woman with shoulder-length blonde hair and bangs, wearing a bright pink collared shirt",
+        "action": "speaking",
         "position": "center",
-        "id": "presenter_woman_1"
+        "id": "person_presenter_1"
       },
       {
         "desc": "pale pink ribbon, thin and translucent",
         "action": "static",
         "position": "top",
-        "id": "white_surface_1"
+        "id": "ribbon_purple_1"
       },
       {
-        "desc": "light green rectangular strip, smooth texture",
+        "desc": "pale green rectangular strip, paper-like texture",
         "action": "static",
         "position": "bottom",
-        "id": "white_surface_1"
+        "id": "strip_green_1"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "The woman in the pink shirt is talking.",
+        "fact": "woman speaks directly to the camera",
         "confidence": 1.0
       },
       {
-        "fact": "A pale pink ribbon is positioned above the woman.",
+        "fact": "pale pink ribbon is positioned above the green strip",
         "confidence": 1.0
       },
       {
-        "fact": "A light green strip is positioned below the woman.",
+        "fact": "green strip has text printed on it",
         "confidence": 1.0
       }
     ],
     "ocr": [
       "Shamrock"
     ],
-    "spatial": "The woman is centered in the frame against a brick wall background. The pale pink ribbon is above the woman. The light green strip is below the woman.",
+    "spatial": "The woman is centered in the frame against a brick wall background. The pale pink ribbon is located above the pale green rectangular strip. The green strip is positioned below the ribbon.",
     "parse_success": true,
     "chunk_idx": 14,
     "video_id": "ipeaPrim1sM",
     "state_changes": [
-      "presenter returns to explain materials"
+      "Presenter returns to screen; scene shifts from tool display to instruction."
     ]
   },
   {
     "time": [
-      30,
-      32
+      15,
+      16
     ],
     "visible_entities": [
       {
-        "desc": "woman with shoulder-length blonde hair, straight bangs, fair skin, wearing a solid pink collared shirt",
+        "desc": "woman with shoulder-length blonde hair and bangs, wearing a bright pink collared shirt",
         "action": "speaking",
         "position": "center",
-        "id": "presenter_woman_1"
+        "id": "person_presenter_1"
       },
       {
-        "desc": "red brick wall with light-colored mortar",
+        "desc": "red brick wall",
         "action": "static",
         "position": "background",
-        "id": "brick_wall_background_1"
+        "id": "background_brickwall_1"
       }
     ],
     "atomic_facts": [
@@ -831,16 +818,16 @@
         "confidence": 1.0
       },
       {
-        "fact": "The woman is facing the camera.",
+        "fact": "The woman is wearing a pink shirt.",
         "confidence": 1.0
       },
       {
-        "fact": "A red brick wall is behind the woman.",
+        "fact": "The background is a brick wall.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The woman is in front of the red brick wall. The wall is behind the woman.",
+    "spatial": "The woman is in front of the red brick wall.",
     "parse_success": true,
     "chunk_idx": 15,
     "video_id": "ipeaPrim1sM",
@@ -848,40 +835,40 @@
   },
   {
     "time": [
-      32,
-      34
+      16,
+      17
     ],
     "visible_entities": [
       {
-        "desc": "finger with a French manicure (white tip, natural pink nail bed)",
-        "action": "holding the ribbon in place",
-        "position": "top left",
-        "id": "presenter_hands_1"
-      },
-      {
-        "desc": "strip of light purple satin ribbon",
+        "desc": "green transparent plastic ruler with black markings, dual scale (inches 0-4 and centimeters 19-30)",
         "action": "static",
         "position": "center",
-        "id": "purple_ribbon_1"
+        "id": "ruler_green_1"
       },
       {
-        "desc": "translucent green plastic ruler with black markings",
+        "desc": "pink satin ribbon strip, smooth texture",
         "action": "static",
-        "position": "bottom",
-        "id": "green_ruler_1"
+        "position": "center",
+        "id": "ribbon_purple_1"
+      },
+      {
+        "desc": "hand with manicured fingernails featuring a French tip style (white tips, natural base)",
+        "action": "pressing down on the ribbon",
+        "position": "top left",
+        "id": "hand_presenter_1"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A finger with a French manicure is pressing down on the left end of a purple ribbon.",
+        "fact": "A hand with a French manicure is pressing down on the left end of a pink ribbon.",
         "confidence": 1.0
       },
       {
-        "fact": "The ruler is placed directly below the ribbon to measure its length.",
+        "fact": "The pink ribbon is positioned horizontally above the green ruler.",
         "confidence": 1.0
       },
       {
-        "fact": "The ruler displays measurements in both inches (top edge) and centimeters (bottom edge).",
+        "fact": "The ruler displays inch markings from 0 to 4 on the top edge and centimeter markings from 19 to 30 on the bottom edge.",
         "confidence": 1.0
       }
     ],
@@ -891,7 +878,6 @@
       "2",
       "3",
       "4",
-      "16 mm",
       "30",
       "29",
       "28",
@@ -906,49 +892,50 @@
       "19",
       "8"
     ],
-    "spatial": "The finger is positioned above the left end of the purple ribbon. The purple ribbon is located directly above the green ruler. The ruler lies horizontally across the bottom of the frame.",
+    "spatial": "The green ruler is positioned horizontally in the center of the frame. The pink ribbon lies directly above the ruler, running parallel to it. A hand is located at the top left, with a finger pressing down on the ribbon near the 0-inch mark of the ruler.",
     "parse_success": true,
     "chunk_idx": 16,
     "video_id": "ipeaPrim1sM",
     "state_changes": [
-      "hands-on demonstration begins, ribbon folding starts"
+      "Close-up of hands begins; ribbon folding action starts."
     ]
   },
   {
     "time": [
-      34,
-      36
+      17,
+      18
     ],
     "visible_entities": [
       {
-        "desc": "hands with manicured nails featuring a French tip style",
-        "action": "manipulating a purple ribbon",
+        "desc": "hands with manicured fingernails featuring a French tip style (white tips, natural base)",
+        "action": "manipulating a ribbon",
         "position": "top/foreground",
-        "id": "presenter_hands_1"
+        "id": "hand_presenter_1"
       },
       {
-        "desc": "purple satin ribbon",
-        "action": "being folded and held",
-        "position": "center"
-      },
-      {
-        "desc": "green transparent plastic ruler with black markings",
+        "desc": "translucent green plastic ruler with black measurement markings",
         "action": "static",
-        "position": "bottom",
-        "id": "green_ruler_1"
+        "position": "bottom/foreground",
+        "id": "ruler_green_1"
+      },
+      {
+        "desc": "thin, light purple ribbon",
+        "action": "being folded and pressed",
+        "position": "center",
+        "id": "ribbon_purple_1"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "The hands are folding the purple ribbon into a loop shape.",
+        "fact": "The hands are folding the purple ribbon over itself.",
         "confidence": 1.0
       },
       {
-        "fact": "The ruler is placed horizontally below the ribbon.",
+        "fact": "The ruler is positioned horizontally below the ribbon.",
         "confidence": 1.0
       },
       {
-        "fact": "The ruler displays measurements in both centimeters and inches.",
+        "fact": "The ruler displays centimeter markings from 0 to 30.",
         "confidence": 1.0
       }
     ],
@@ -959,19 +946,6 @@
       "3",
       "4",
       "5",
-      "6",
-      "7",
-      "8",
-      "9",
-      "10",
-      "11",
-      "12",
-      "13",
-      "14",
-      "15",
-      "16",
-      "17",
-      "18",
       "19",
       "20",
       "21",
@@ -983,11 +957,9 @@
       "27",
       "28",
       "29",
-      "30",
-      "cm",
-      "mm"
+      "30"
     ],
-    "spatial": "The hands are positioned above the green ruler and are holding the purple ribbon. The purple ribbon is located between the hands and the ruler. The ruler lies flat on the white surface at the bottom of the frame.",
+    "spatial": "The hands are positioned above the ruler and the ribbon. The purple ribbon is located between the hands and the ruler. The ruler lies horizontally at the bottom of the frame, below the ribbon.",
     "parse_success": true,
     "chunk_idx": 17,
     "video_id": "ipeaPrim1sM",
@@ -995,40 +967,40 @@
   },
   {
     "time": [
-      36,
-      38
+      18,
+      19
     ],
     "visible_entities": [
       {
-        "desc": "hands with fair skin and manicured nails featuring a French tip style (white tips, natural pink base)",
-        "action": "folding and pressing a purple ribbon",
+        "desc": "hands with fair skin and manicured nails featuring a French tip style (white tips with natural pink base)",
+        "action": "manipulating a purple ribbon",
         "position": "center",
-        "id": "presenter_hands_1"
+        "id": "hand_presenter_1"
       },
       {
-        "desc": "purple satin ribbon, smooth texture, approximately 1-2 cm wide",
-        "action": "being folded into a loop",
+        "desc": "purple satin ribbon, smooth texture, approximately 1 inch wide",
+        "action": "being folded and pressed",
         "position": "center",
-        "id": "purple_ribbon_1"
+        "id": "ribbon_purple_1"
       },
       {
-        "desc": "green plastic ruler with black measurement markings and numbers",
+        "desc": "green plastic ruler with black measurement markings",
         "action": "static",
         "position": "bottom",
-        "id": "green_ruler_1"
+        "id": "ruler_green_1"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "The hands are manipulating a purple ribbon to create a fold or loop.",
+        "fact": "The hands are folding a purple ribbon into a loop shape.",
         "confidence": 1.0
       },
       {
-        "fact": "The fingers are pressing down on the ribbon to secure the fold.",
+        "fact": "The fingers are pressing down on the ribbon to secure a fold.",
         "confidence": 1.0
       },
       {
-        "fact": "The green ruler is positioned horizontally at the bottom of the frame.",
+        "fact": "A green ruler is placed horizontally at the bottom of the frame.",
         "confidence": 1.0
       },
       {
@@ -1043,6 +1015,7 @@
       "5",
       "6",
       "7",
+      "10ths",
       "27",
       "26",
       "25",
@@ -1058,10 +1031,9 @@
       "15",
       "14",
       "13",
-      "12",
-      "11"
+      "12"
     ],
-    "spatial": "The hands are positioned above the green ruler. The purple ribbon is held between the fingers of the hands, directly above the ruler's surface. The ruler is at the bottom of the frame, serving as a base for the activity.",
+    "spatial": "The hands are positioned above the green ruler. The purple ribbon is held between the fingers and rests on the surface just above the ruler. The ruler is located at the bottom of the frame, running horizontally.",
     "parse_success": true,
     "chunk_idx": 18,
     "video_id": "ipeaPrim1sM",
@@ -1069,45 +1041,39 @@
   },
   {
     "time": [
-      38,
-      40
+      19,
+      20
     ],
     "visible_entities": [
       {
-        "desc": "person with fair skin and manicured fingernails featuring white tips",
-        "action": "manipulating a ribbon",
+        "desc": "person with fair skin and manicured nails featuring white tips",
+        "action": "manipulating a purple ribbon",
         "position": "center",
-        "id": "presenter_hands_1"
+        "id": "person_presenter_1"
       },
       {
-        "desc": "purple satin ribbon, smooth and shiny",
-        "action": "being folded",
+        "desc": "purple satin ribbon, smooth texture, shiny surface",
+        "action": "being folded and held",
         "position": "center",
-        "id": "purple_ribbon_1"
-      },
-      {
-        "desc": "white surface, smooth and plain",
-        "action": "static",
-        "position": "background",
-        "id": "white_surface_1"
+        "id": "ribbon_purple_1"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "The person is holding a purple ribbon with both hands.",
+        "fact": "The person is holding the purple ribbon with both hands.",
         "confidence": 1.0
       },
       {
-        "fact": "The person is folding the purple ribbon into a loop.",
+        "fact": "The person is folding the ribbon to create a loop.",
         "confidence": 1.0
       },
       {
-        "fact": "The ribbon is positioned on top of the white surface.",
+        "fact": "The ribbon is positioned on a white surface.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The person's hands are positioned in the center of the frame, holding the purple ribbon. The ribbon is located above the white surface.",
+    "spatial": "The person's hands are positioned in the center of the frame, holding the purple ribbon. The ribbon is located above the white table surface. The person's left hand is to the left of the right hand.",
     "parse_success": true,
     "chunk_idx": 19,
     "video_id": "ipeaPrim1sM",
@@ -1115,39 +1081,39 @@
   },
   {
     "time": [
-      40,
-      42
+      20,
+      21
     ],
     "visible_entities": [
       {
-        "desc": "person with fair skin and manicured nails with white tips, wearing a red top",
-        "action": "manipulating a purple ribbon",
+        "desc": "person with fair skin and manicured fingernails with white tips",
+        "action": "manipulating a purple strip",
         "position": "center",
-        "id": "presenter_hands_1"
+        "id": "person_presenter_1"
       },
       {
-        "desc": "purple ribbon, smooth texture, narrow width",
+        "desc": "thin purple paper strip",
         "action": "being folded",
         "position": "center",
-        "id": "purple_ribbon_1"
+        "id": "ribbon_purple_1"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "The person is holding a purple ribbon with both hands.",
+        "fact": "The person is holding a thin purple strip of paper with both hands.",
         "confidence": 1.0
       },
       {
-        "fact": "The person is folding the purple ribbon.",
+        "fact": "The person is folding the purple strip into a loop shape.",
         "confidence": 1.0
       },
       {
-        "fact": "The ribbon is being held horizontally.",
+        "fact": "The background is a plain white surface.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The person's hands are in the center of the frame, holding the purple ribbon. The ribbon is positioned horizontally between the hands. The background is a plain white surface below the hands.",
+    "spatial": "The person's hands are positioned in the center of the frame, holding the purple strip. The purple strip is located between the person's left and right hands.",
     "parse_success": true,
     "chunk_idx": 20,
     "video_id": "ipeaPrim1sM",
@@ -1155,45 +1121,35 @@
   },
   {
     "time": [
-      42,
-      44
+      21,
+      22
     ],
     "visible_entities": [
       {
-        "desc": "hands with manicured nails featuring white tips",
-        "action": "folding and manipulating a purple ribbon",
+        "desc": "person's hands with manicured fingernails featuring white tips",
+        "action": "manipulating a purple ribbon",
         "position": "center",
-        "id": "presenter_hands_1"
+        "id": "hand_presenter_1"
       },
       {
-        "desc": "purple satin ribbon, smooth texture, shiny",
+        "desc": "shiny purple satin ribbon",
         "action": "being folded into a loop",
         "position": "center",
-        "id": "purple_ribbon_1"
-      },
-      {
-        "desc": "white surface, smooth and plain",
-        "action": "static",
-        "position": "background",
-        "id": "white_surface_1"
+        "id": "ribbon_purple_1"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "The hands are folding the purple ribbon into a loop shape.",
+        "fact": "The person is folding the purple ribbon to create a loop shape.",
         "confidence": 1.0
       },
       {
-        "fact": "The fingers are pinching the ribbon to hold the fold in place.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The ribbon has a shiny, satin-like texture.",
+        "fact": "The hands are holding the ribbon in the center of the frame.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The hands are positioned in the center of the frame, holding the purple ribbon. The ribbon is being manipulated above the white surface.",
+    "spatial": "The hands are positioned in the center of the frame, holding the purple ribbon. The ribbon is being manipulated between the fingers of both hands.",
     "parse_success": true,
     "chunk_idx": 21,
     "video_id": "ipeaPrim1sM",
@@ -1201,30 +1157,30 @@
   },
   {
     "time": [
-      44,
-      46
+      22,
+      23
     ],
     "visible_entities": [
       {
         "desc": "hands with manicured nails featuring white tips",
-        "action": "manipulating a purple ribbon",
+        "action": "manipulating a purple strip",
         "position": "center",
-        "id": "presenter_hands_1"
+        "id": "hand_presenter_1"
       },
       {
-        "desc": "purple ribbon, smooth texture, flat strip",
-        "action": "being folded and twisted",
+        "desc": "purple ribbon-like strip, smooth texture, flexible",
+        "action": "being folded and held",
         "position": "center",
-        "id": "purple_ribbon_1"
+        "id": "ribbon_purple_1"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "hands are holding and twisting a purple ribbon",
+        "fact": "hands are folding a purple strip of material",
         "confidence": 1.0
       },
       {
-        "fact": "the ribbon is being folded into a loop shape",
+        "fact": "the purple strip is being looped and pressed together",
         "confidence": 1.0
       },
       {
@@ -1233,7 +1189,7 @@
       }
     ],
     "ocr": [],
-    "spatial": "The hands are positioned in the center of the frame, holding the purple ribbon. The ribbon is located between the fingers of both hands. The hands and ribbon are above the white background surface.",
+    "spatial": "The hands are in the center of the frame, holding the purple strip. The purple strip is positioned between the fingers of both hands.",
     "parse_success": true,
     "chunk_idx": 22,
     "video_id": "ipeaPrim1sM",
@@ -1241,44 +1197,39 @@
   },
   {
     "time": [
-      46,
-      48
+      23,
+      24
     ],
     "visible_entities": [
       {
-        "desc": "hands with fair skin and white French manicured nails",
+        "desc": "hands with fair skin and white-tipped fingernails",
         "action": "manipulating a purple strip",
         "position": "center",
-        "id": "presenter_hands_1"
+        "id": "hand_presenter_1"
       },
       {
-        "desc": "purple strip, textured, rectangular, flexible",
-        "action": "being stretched and folded",
+        "desc": "purple strip, flat, rectangular, flexible material",
+        "action": "being held and stretched",
         "position": "center",
-        "id": "purple_ribbon_1"
-      },
-      {
-        "desc": "white surface, smooth, plain",
-        "action": "static",
-        "position": "background"
+        "id": "ribbon_purple_1"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "Hands are holding a purple strip.",
+        "fact": "hands are holding a purple strip",
         "confidence": 1.0
       },
       {
-        "fact": "The purple strip is being stretched horizontally.",
+        "fact": "the purple strip is being stretched horizontally",
         "confidence": 1.0
       },
       {
-        "fact": "The purple strip is being folded or manipulated in the center.",
+        "fact": "the fingernails have white tips",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The hands are in the center of the frame, holding the purple strip. The purple strip is positioned horizontally between the hands. The white surface is below the hands and the strip.",
+    "spatial": "The hands are in the center of the frame, holding the purple strip between the thumbs and fingers. The purple strip is positioned horizontally in front of the hands.",
     "parse_success": true,
     "chunk_idx": 23,
     "video_id": "ipeaPrim1sM",
@@ -1286,39 +1237,35 @@
   },
   {
     "time": [
-      48,
-      50
+      24,
+      25
     ],
     "visible_entities": [
       {
-        "desc": "person's hands with fair skin and manicured nails featuring a white French tip design",
-        "action": "holding a purple strip",
+        "desc": "hands with fair skin and manicured nails featuring white tips",
+        "action": "holding a purple ribbon",
         "position": "foreground",
-        "id": "presenter_hands_1"
+        "id": "hand_presenter_1"
       },
       {
-        "desc": "rectangular strip of purple material, likely ribbon or foam, with a smooth surface and textured edges",
+        "desc": "purple ribbon, flat, rectangular strip",
         "action": "being held horizontally",
         "position": "center",
-        "id": "purple_ribbon_1"
+        "id": "ribbon_purple_1"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "The person holds the purple strip horizontally with both hands.",
+        "fact": "A pair of hands is holding a purple ribbon horizontally.",
         "confidence": 1.0
       },
       {
-        "fact": "The thumbs are positioned on the top surface of the purple strip.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The fingers are curled underneath the purple strip to support it.",
+        "fact": "The ribbon is stretched taut between the left and right hands.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The hands are positioned on the left and right sides of the frame, holding the purple strip in the center. The strip is located in front of a plain, light pink background surface.",
+    "spatial": "The hands are positioned on the left and right sides of the frame, holding the purple ribbon in the center. The ribbon is located in front of the hands and above the white background surface.",
     "parse_success": true,
     "chunk_idx": 24,
     "video_id": "ipeaPrim1sM",
@@ -1326,29 +1273,30 @@
   },
   {
     "time": [
-      50,
-      52
+      25,
+      26
     ],
     "visible_entities": [
       {
-        "desc": "woman with shoulder-length blonde hair and straight bangs, wearing a bright pink collared shirt",
-        "action": "speaking",
-        "position": "center"
+        "desc": "woman with shoulder-length blonde hair and bangs, wearing a bright pink polo shirt",
+        "action": "talking",
+        "position": "center",
+        "id": "person_presenter_1"
       },
       {
         "desc": "red brick wall",
         "action": "static",
         "position": "background",
-        "id": "brick_wall_background_1"
+        "id": "background_brickwall_1"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "The woman is speaking.",
+        "fact": "The woman is talking.",
         "confidence": 1.0
       },
       {
-        "fact": "The woman is wearing a pink shirt.",
+        "fact": "The woman is wearing a pink top.",
         "confidence": 1.0
       },
       {
@@ -1362,168 +1310,162 @@
     "chunk_idx": 25,
     "video_id": "ipeaPrim1sM",
     "state_changes": [
-      "cut back to presenter for explanation"
+      "Cut back to presenter speaking."
     ]
   },
   {
     "time": [
-      52,
-      54
+      26,
+      27
     ],
     "visible_entities": [
       {
         "desc": "woman with shoulder-length blonde hair and bangs, wearing a bright pink collared shirt",
-        "action": "speaking",
-        "position": "center",
-        "id": "presenter_woman_1"
-      },
-      {
-        "desc": "red brick wall",
-        "action": "static",
-        "position": "background",
-        "id": "brick_wall_background_1"
-      },
-      {
-        "desc": "gold-colored metal button",
         "action": "static",
         "position": "center",
-        "id": "gold_button_1"
+        "id": "person_presenter_1"
+      },
+      {
+        "desc": "gold-colored metal button with four holes",
+        "action": "static",
+        "position": "center",
+        "id": "button_gold_1"
       },
       {
         "desc": "silver sewing needle",
         "action": "static",
         "position": "center",
-        "id": "sewing_needle_1"
+        "id": "needle_silver_1"
       },
       {
-        "desc": "red thread",
+        "desc": "red thread, tangled",
         "action": "static",
         "position": "center",
-        "id": "red_thread_1"
+        "id": "thread_red_1"
       },
       {
-        "desc": "green ruler",
+        "desc": "green ruler with black markings",
         "action": "static",
         "position": "bottom right",
-        "id": "green_ruler_1"
+        "id": "ruler_green_1"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "The woman is speaking to the camera.",
+        "fact": "The video cuts from a woman speaking to a close-up of sewing supplies.",
         "confidence": 1.0
       },
       {
-        "fact": "A gold button is placed on a white surface.",
+        "fact": "A needle is threaded with red thread.",
         "confidence": 1.0
       },
       {
-        "fact": "A needle threaded with red string is lying on the white surface.",
+        "fact": "The button is placed above the needle.",
         "confidence": 1.0
       },
       {
-        "fact": "The green ruler is partially visible in the bottom right corner.",
+        "fact": "The ruler is partially visible in the bottom right corner.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The woman is positioned in front of the red brick wall. The sewing supplies, including the needle, thread, and button, are arranged on a white surface below the woman's face level. The green ruler is located to the right of the tangled red thread.",
+    "spatial": "The woman is centered in the first frame. In the second frame, the gold button is above the silver needle. The tangled red thread is below the needle and button. The green ruler is in the bottom right corner of the white surface.",
     "parse_success": true,
     "chunk_idx": 26,
     "video_id": "ipeaPrim1sM",
-    "state_changes": []
+    "state_changes": [
+      "Cut back to close-up of tools (button, needle, thread)."
+    ]
   },
   {
     "time": [
-      54,
-      56
+      27,
+      28
     ],
     "visible_entities": [
       {
-        "desc": "metal sewing needle with a sharp point and an eye at the other end",
+        "desc": "gold-colored metal button with a textured, embossed center design",
+        "action": "static",
+        "position": "top center",
+        "id": "button_gold_1"
+      },
+      {
+        "desc": "silver sewing needle with a sharp point and an eye",
         "action": "static",
         "position": "center",
-        "id": "sewing_needle_1"
+        "id": "needle_silver_1"
       },
       {
-        "desc": "long, thin, tangled red thread",
+        "desc": "long, thin red thread, tangled and knotted in the foreground",
         "action": "static",
-        "position": "center",
-        "id": "red_thread_1"
+        "position": "center and bottom",
+        "id": "thread_red_1"
       },
       {
-        "desc": "small, round, gold-colored metal button with a textured center",
+        "desc": "green ruler with black measurement markings",
         "action": "static",
-        "position": "top-center",
-        "id": "gold_button_1"
-      },
-      {
-        "desc": "green ruler with white measurement markings",
-        "action": "static",
-        "position": "bottom-right",
-        "id": "green_ruler_1"
+        "position": "bottom right",
+        "id": "ruler_green_1"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "The red thread is threaded through the eye of the needle.",
+        "fact": "A silver needle is threaded with red thread.",
         "confidence": 1.0
       },
       {
-        "fact": "The needle is lying horizontally on the white surface.",
+        "fact": "The red thread is tangled in a loose knot on the white surface.",
         "confidence": 1.0
       },
       {
-        "fact": "The gold button is positioned above the needle.",
+        "fact": "A gold button rests on the surface above the needle.",
         "confidence": 1.0
       },
       {
-        "fact": "The green ruler is partially visible in the bottom right corner.",
+        "fact": "The number '13' is visible on the green ruler.",
         "confidence": 1.0
       }
     ],
     "ocr": [
       "13"
     ],
-    "spatial": "The gold button is above the needle. The needle is threaded with red thread and lies in the center of the frame. The green ruler is in the bottom right corner, below the tangled thread.",
+    "spatial": "The gold button is positioned above the silver needle. The needle lies horizontally across the center, with the red thread extending from its eye and tangling below it. The green ruler is located in the bottom right corner, partially visible.",
     "parse_success": true,
     "chunk_idx": 27,
     "video_id": "ipeaPrim1sM",
-    "state_changes": [
-      "close-up of sewing tools (needle, thread, button)"
-    ]
+    "state_changes": []
   },
   {
     "time": [
-      56,
-      58
+      28,
+      29
     ],
     "visible_entities": [
       {
-        "desc": "hand with fair skin and a French manicure (white tips on natural nails)",
-        "action": "pointing at the knot",
+        "desc": "person's hand with fair skin and a manicured fingernail featuring a white French tip",
+        "action": "static",
         "position": "top right",
-        "id": "presenter_hands_1"
+        "id": "hand_presenter_1"
       },
       {
-        "desc": "thin red thread with a small, tangled knot at the end",
+        "desc": "thin red thread with a small knotted end",
         "action": "static",
         "position": "center left",
-        "id": "red_thread_1"
+        "id": "thread_red_1"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A hand points a finger at the end of a red thread.",
+        "fact": "A person's hand is positioned near a piece of red thread.",
         "confidence": 1.0
       },
       {
-        "fact": "The red thread has a small knot tied at its rightmost end.",
+        "fact": "The red thread lies horizontally on a white surface.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The hand is positioned in the top right corner, hovering above the white surface. The red thread lies horizontally across the center of the frame, with the knot located directly below the pointing finger.",
+    "spatial": "The hand is located in the top right corner of the frame, positioned above and to the right of the red thread. The red thread is lying on the white surface in the center-left area.",
     "parse_success": true,
     "chunk_idx": 28,
     "video_id": "ipeaPrim1sM",
@@ -1531,74 +1473,74 @@
   },
   {
     "time": [
-      58,
-      60
+      29,
+      30
     ],
     "visible_entities": [
       {
-        "desc": "hands with manicured nails featuring white tips",
-        "action": "holding and adjusting a ribbon",
+        "desc": "hands with manicured fingernails featuring a French tip style",
+        "action": "holding and manipulating a ribbon",
         "position": "foreground",
-        "id": "presenter_hands_1"
+        "id": "hand_presenter_1"
       },
       {
-        "desc": "wide, smooth, light purple satin ribbon",
-        "action": "being held and folded",
+        "desc": "purple satin ribbon, smooth texture, folded into a loop",
+        "action": "being held",
         "position": "center",
-        "id": "purple_ribbon_1"
+        "id": "ribbon_purple_1"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A pair of hands is holding a folded piece of purple ribbon.",
+        "fact": "hands are holding a folded purple ribbon",
         "confidence": 1.0
       },
       {
-        "fact": "The ribbon is being manipulated to create a loop or fold.",
+        "fact": "the ribbon has a smooth, shiny satin texture",
         "confidence": 1.0
       },
       {
-        "fact": "The ribbon has a shiny, satin texture.",
+        "fact": "the fingernails are manicured with white tips",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The hands are in the foreground, holding the purple ribbon in the center of the frame. The ribbon is positioned horizontally across the hands.",
+    "spatial": "The hands are in the foreground, holding the purple ribbon in the center of the frame. The ribbon is positioned horizontally across the view.",
     "parse_success": true,
     "chunk_idx": 29,
     "video_id": "ipeaPrim1sM",
     "state_changes": [
-      "ribbon folding and loop formation resumes"
+      "Hands resume manipulating ribbon, forming loops."
     ]
   },
   {
     "time": [
-      60,
-      62
+      30,
+      31
     ],
     "visible_entities": [
       {
         "desc": "hands with manicured nails featuring a French tip style",
         "action": "sewing a ribbon",
         "position": "center",
-        "id": "presenter_hands_1"
+        "id": "hand_presenter_1"
       },
       {
         "desc": "purple satin ribbon, folded over",
-        "action": "being stitched",
+        "action": "being held and sewn",
         "position": "center",
-        "id": "purple_ribbon_1"
+        "id": "ribbon_purple_1"
       },
       {
         "desc": "thin red thread",
         "action": "being pulled through fabric",
         "position": "center",
-        "id": "red_thread_1"
+        "id": "thread_red_1"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "Hands are holding a folded purple ribbon.",
+        "fact": "Hands are holding a folded piece of purple ribbon.",
         "confidence": 1.0
       },
       {
@@ -1611,55 +1553,55 @@
       }
     ],
     "ocr": [],
-    "spatial": "The hands are positioned in the center of the frame, holding the purple ribbon horizontally. The red thread extends vertically from the ribbon where the needle is inserted.",
+    "spatial": "The hands are positioned in the center of the frame, holding the purple ribbon horizontally. The red thread extends vertically from the point where the needle pierces the ribbon.",
     "parse_success": true,
     "chunk_idx": 30,
     "video_id": "ipeaPrim1sM",
     "state_changes": [
-      "sewing action begins, thread pierces ribbon"
+      "Sewing action begins; thread is pulled through ribbon."
     ]
   },
   {
     "time": [
-      62,
-      64
+      31,
+      32
     ],
     "visible_entities": [
       {
         "desc": "hand with light skin tone and manicured fingernails with white tips",
-        "action": "holding a purple ribbon",
-        "position": "right foreground",
-        "id": "presenter_hands_1"
+        "action": "holding a loop of ribbon",
+        "position": "right/foreground",
+        "id": "hand_presenter_1"
       },
       {
-        "desc": "wide purple satin ribbon, folded into a loop",
-        "action": "being held",
-        "position": "center left",
-        "id": "purple_ribbon_1"
+        "desc": "wide, smooth, light purple satin ribbon",
+        "action": "being held in a loop",
+        "position": "center/left",
+        "id": "ribbon_purple_1"
       },
       {
-        "desc": "thin red thread",
-        "action": "piercing the ribbon",
+        "desc": "thin, dark red thread",
+        "action": "threading through the ribbon",
         "position": "center",
-        "id": "red_thread_1"
+        "id": "thread_red_1"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A hand holds a folded purple ribbon.",
+        "fact": "The hand holds a folded loop of purple ribbon.",
         "confidence": 1.0
       },
       {
-        "fact": "A red thread pierces through the layers of the purple ribbon.",
+        "fact": "A thin red thread is being pulled through the layers of the purple ribbon.",
         "confidence": 1.0
       },
       {
-        "fact": "The ribbon has a shiny, satin texture.",
+        "fact": "The thread passes through the center of the ribbon loop.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The hand is on the right side of the frame, holding the purple ribbon which extends to the left. The red thread is positioned above the ribbon and passes through it.",
+    "spatial": "The hand is on the right side of the frame, holding the purple ribbon which extends to the left. The red thread is positioned above the ribbon and is being threaded through it.",
     "parse_success": true,
     "chunk_idx": 31,
     "video_id": "ipeaPrim1sM",
@@ -1667,41 +1609,45 @@
   },
   {
     "time": [
-      64,
-      66
+      32,
+      33
     ],
     "visible_entities": [
       {
-        "desc": "hand with light skin and short, white-painted fingernails",
-        "action": "holding a folded purple ribbon",
+        "desc": "hand with light skin tone and manicured nails with white tips",
+        "action": "holding a purple ribbon",
         "position": "right",
-        "id": "presenter_hands_1"
+        "id": "hand_presenter_1"
       },
       {
-        "desc": "folded purple satin ribbon with a smooth, shiny texture",
-        "action": "being held and threaded",
+        "desc": "purple satin ribbon, folded into a loop",
+        "action": "being held",
         "position": "center",
-        "id": "purple_ribbon_1"
+        "id": "ribbon_purple_1"
       },
       {
-        "desc": "thin, dark red thread",
-        "action": "passing through the ribbon",
+        "desc": "thin red thread",
+        "action": "threading through the ribbon",
         "position": "center",
-        "id": "red_thread_1"
+        "id": "thread_red_1"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A hand is holding a loop of purple ribbon.",
+        "fact": "A hand is holding a folded loop of purple ribbon.",
         "confidence": 1.0
       },
       {
-        "fact": "A thin red thread is being threaded through the folded purple ribbon.",
+        "fact": "A thin red thread is being threaded through the layers of the purple ribbon.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The ribbon has a smooth, shiny texture.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The hand is on the right side of the frame, holding the purple ribbon which is positioned in the center. The red thread passes through the ribbon from the left side towards the hand.",
+    "spatial": "The hand is on the right side of the frame, holding the purple ribbon which is positioned in the center. The red thread runs through the ribbon from the left side towards the hand.",
     "parse_success": true,
     "chunk_idx": 32,
     "video_id": "ipeaPrim1sM",
@@ -1709,101 +1655,63 @@
   },
   {
     "time": [
-      66,
-      68
+      33,
+      34
     ],
     "visible_entities": [
       {
-        "desc": "woman with shoulder-length blonde hair and bangs, wearing a pink polo shirt",
-        "action": "talking",
+        "desc": "woman with shoulder-length blonde hair and bangs, wearing a bright pink polo shirt",
+        "action": "smiling and speaking",
         "position": "center",
-        "id": "presenter_woman_1"
+        "id": "person_presenter_1"
       },
       {
         "desc": "red brick wall",
         "action": "static",
         "position": "background",
-        "id": "brick_wall_background_1"
+        "id": "background_brickwall_1"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "The woman is talking.",
+        "fact": "The woman is smiling and speaking to the camera.",
         "confidence": 1.0
       },
       {
-        "fact": "The woman is wearing a pink polo shirt.",
+        "fact": "The woman is wearing a pink collared shirt.",
         "confidence": 1.0
       },
       {
-        "fact": "The woman has blonde hair with bangs.",
+        "fact": "The background is a brick wall.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The woman is in front of the red brick wall.",
+    "spatial": "The woman is positioned in the center of the frame, in front of the red brick wall.",
     "parse_success": true,
     "chunk_idx": 33,
     "video_id": "ipeaPrim1sM",
-    "state_changes": []
+    "state_changes": [
+      "Cut back to presenter speaking."
+    ]
   },
   {
     "time": [
-      68,
-      70
-    ],
-    "visible_entities": [
-      {
-        "desc": "hands with manicured fingernails featuring a French tip style (white tips, natural base)",
-        "action": "manipulating a purple ribbon",
-        "position": "foreground",
-        "id": "presenter_hands_1"
-      },
-      {
-        "desc": "purple satin ribbon, shiny texture, folded into a loop structure",
-        "action": "being held and adjusted",
-        "position": "center",
-        "id": "purple_ribbon_1"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "Hands are holding and adjusting a folded purple ribbon.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The ribbon has a shiny, satin-like texture.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The fingernails are manicured with white tips.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [],
-    "spatial": "The hands are positioned in the foreground, holding the purple ribbon in the center of the frame. The fingers are wrapped around the ribbon loops.",
-    "parse_success": true,
-    "chunk_idx": 34,
-    "video_id": "ipeaPrim1sM",
-    "state_changes": []
-  },
-  {
-    "time": [
-      70,
-      72
+      34,
+      35
     ],
     "visible_entities": [
       {
         "desc": "hands with manicured fingernails featuring white tips (French manicure)",
         "action": "manipulating a purple ribbon",
         "position": "foreground",
-        "id": "presenter_hands_1"
+        "id": "hand_presenter_1"
       },
       {
-        "desc": "purple satin ribbon, shiny texture, folded into a looped structure",
+        "desc": "purple satin ribbon, shiny, folded into a loop structure",
         "action": "being held and adjusted",
         "position": "center",
-        "id": "purple_ribbon_1"
+        "id": "ribbon_purple_1"
       }
     ],
     "atomic_facts": [
@@ -1812,16 +1720,58 @@
         "confidence": 1.0
       },
       {
-        "fact": "The fingers are adjusting the loops of the ribbon.",
+        "fact": "The fingers are adjusting the loop of the ribbon.",
         "confidence": 1.0
       },
       {
-        "fact": "The ribbon has a shiny, satin-like finish.",
+        "fact": "The ribbon has a shiny, satin texture.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The hands are in the foreground, holding the purple ribbon in the center of the frame. The left hand is positioned to the left of the ribbon, while the right hand is to the right, with fingers touching the ribbon loops.",
+    "spatial": "The hands are in the foreground, holding the purple ribbon in the center. The left hand is positioned to the left of the ribbon, while the right hand is positioned to the right and underneath the ribbon.",
+    "parse_success": true,
+    "chunk_idx": 34,
+    "video_id": "ipeaPrim1sM",
+    "state_changes": [
+      "Cut back to hands adjusting the ribbon loop structure."
+    ]
+  },
+  {
+    "time": [
+      35,
+      36
+    ],
+    "visible_entities": [
+      {
+        "desc": "hands with manicured nails featuring white tips",
+        "action": "manipulating a ribbon",
+        "position": "center",
+        "id": "hand_presenter_1"
+      },
+      {
+        "desc": "purple satin ribbon, shiny, folded into a looped structure",
+        "action": "being held and adjusted",
+        "position": "center",
+        "id": "ribbon_purple_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "Hands are holding a folded purple ribbon.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The fingers are adjusting the loops of the ribbon structure.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The ribbon has a shiny, satin-like texture.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The hands are positioned on the left and right sides of the frame, holding the purple ribbon in the center. The ribbon is situated between the thumbs and fingers of both hands.",
     "parse_success": true,
     "chunk_idx": 35,
     "video_id": "ipeaPrim1sM",
@@ -1829,45 +1779,41 @@
   },
   {
     "time": [
-      72,
-      74
+      36,
+      37
     ],
     "visible_entities": [
       {
-        "desc": "hand with light skin tone and a manicured fingernail featuring a white tip",
-        "action": "holding the ribbon bow",
+        "desc": "hand with fair skin and manicured fingernails featuring white tips",
+        "action": "holding a purple ribbon bow",
         "position": "right",
-        "id": "presenter_hands_1"
+        "id": "hand_presenter_1"
       },
       {
-        "desc": "light purple satin ribbon bow with a ribbed texture and multiple loops",
+        "desc": "purple satin ribbon bow with a ribbed texture and multiple loops",
         "action": "being held",
         "position": "center",
-        "id": "purple_ribbon_1"
+        "id": "ribbon_purple_1"
       },
       {
-        "desc": "thin, dark red thread",
-        "action": "extending from the ribbon",
+        "desc": "thin red thread",
+        "action": "extending from the center of the bow",
         "position": "left",
-        "id": "red_thread_1"
+        "id": "thread_red_1"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A hand is holding a light purple satin ribbon bow.",
+        "fact": "A hand is holding a purple ribbon bow.",
         "confidence": 1.0
       },
       {
-        "fact": "A thin red thread is attached to the center of the ribbon bow.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The thread extends from the ribbon towards the left side of the frame.",
+        "fact": "A thin red thread extends from the center of the bow towards the left side of the frame.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The hand is on the right side of the frame, holding the purple ribbon bow which is positioned in the center. The red thread is attached to the center of the bow and extends towards the left.",
+    "spatial": "The hand is positioned to the right of the purple ribbon bow. The red thread extends from the center of the bow towards the left.",
     "parse_success": true,
     "chunk_idx": 36,
     "video_id": "ipeaPrim1sM",
@@ -1875,57 +1821,21 @@
   },
   {
     "time": [
-      74,
-      76
+      37,
+      38
     ],
     "visible_entities": [
       {
-        "desc": "woman with shoulder-length blonde hair and bangs, wearing a bright pink collared shirt",
+        "desc": "woman with shoulder-length blonde hair and bangs, wearing a pink collared shirt",
         "action": "speaking",
         "position": "center",
-        "id": "presenter_woman_1"
+        "id": "person_presenter_1"
       },
       {
-        "desc": "red brick wall",
+        "desc": "red brick wall with white mortar",
         "action": "static",
         "position": "background",
-        "id": "brick_wall_background_1"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "The woman is speaking.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The woman is wearing a pink shirt.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [],
-    "spatial": "The woman is in front of the red brick wall.",
-    "parse_success": true,
-    "chunk_idx": 37,
-    "video_id": "ipeaPrim1sM",
-    "state_changes": []
-  },
-  {
-    "time": [
-      76,
-      78
-    ],
-    "visible_entities": [
-      {
-        "desc": "woman with shoulder-length blonde hair and bangs, wearing a bright pink polo shirt",
-        "action": "speaking",
-        "position": "center",
-        "id": "presenter_woman_1"
-      },
-      {
-        "desc": "red brick wall",
-        "action": "static",
-        "position": "background",
-        "id": "brick_wall_background_1"
+        "id": "background_brickwall_1"
       }
     ],
     "atomic_facts": [
@@ -1939,7 +1849,45 @@
       }
     ],
     "ocr": [],
-    "spatial": "The woman is in the foreground, centered in the frame. The red brick wall is behind her.",
+    "spatial": "The woman is in the foreground, centered in the frame. The red brick wall is behind the woman, serving as the background.",
+    "parse_success": true,
+    "chunk_idx": 37,
+    "video_id": "ipeaPrim1sM",
+    "state_changes": [
+      "Cut back to presenter speaking."
+    ]
+  },
+  {
+    "time": [
+      38,
+      39
+    ],
+    "visible_entities": [
+      {
+        "desc": "woman with shoulder-length blonde hair and bangs, wearing a bright pink polo shirt",
+        "action": "speaking",
+        "position": "center",
+        "id": "person_presenter_1"
+      },
+      {
+        "desc": "red brick wall with white mortar",
+        "action": "static",
+        "position": "background",
+        "id": "background_brickwall_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The woman is speaking.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The woman is positioned in front of a brick wall.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The woman is in the foreground, centered in the frame. The red brick wall is behind the woman, filling the background.",
     "parse_success": true,
     "chunk_idx": 38,
     "video_id": "ipeaPrim1sM",
@@ -1947,92 +1895,92 @@
   },
   {
     "time": [
-      78,
-      80
+      39,
+      40
     ],
     "visible_entities": [
       {
-        "desc": "hands with manicured nails featuring white tips",
+        "desc": "person's hands with manicured nails featuring white tips",
         "action": "manipulating a ribbon and button",
-        "position": "center",
-        "id": "presenter_hands_1"
+        "position": "foreground",
+        "id": "hand_presenter_1"
       },
       {
-        "desc": "purple satin ribbon bow",
-        "action": "being held",
+        "desc": "purple ribbon bow, shiny texture, tied in loops",
+        "action": "being held and adjusted",
         "position": "center",
-        "id": "purple_ribbon_bow_1"
+        "id": "ribbon_purple_1"
       },
       {
         "desc": "small gold-colored button with four holes",
         "action": "being threaded",
         "position": "center",
-        "id": "gold_button_1"
+        "id": "button_gold_1"
       },
       {
         "desc": "thin red thread",
         "action": "being pulled through the button",
         "position": "center",
-        "id": "red_thread_1"
+        "id": "thread_red_1"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A person is sewing a gold button onto the center of a purple ribbon bow.",
+        "fact": "The person is threading a red string through a gold button.",
         "confidence": 1.0
       },
       {
-        "fact": "The red thread is being pulled through the holes of the button.",
+        "fact": "The hands are holding a purple ribbon bow steady.",
         "confidence": 1.0
       },
       {
-        "fact": "The hands are holding the ribbon and button steady.",
+        "fact": "The button is positioned at the center of the ribbon bow.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The hands are holding the purple ribbon bow in the center of the frame. The gold button is positioned on top of the ribbon, and the red thread is passing through the button holes.",
+    "spatial": "The person's hands are in the foreground, holding the purple ribbon bow. The gold button is positioned in the center of the bow, and the red thread is being pulled through the button holes by the fingers.",
     "parse_success": true,
     "chunk_idx": 39,
     "video_id": "ipeaPrim1sM",
     "state_changes": [
-      "button attachment to bow center begins"
+      "Cut back to hands threading the button onto the bow center."
     ]
   },
   {
     "time": [
-      80,
-      82
+      40,
+      41
     ],
     "visible_entities": [
       {
-        "desc": "hand with light skin and manicured fingernails featuring white tips",
-        "action": "manipulating a purple ribbon",
-        "position": "right/foreground",
-        "id": "presenter_hands_1"
+        "desc": "hand with manicured fingernails painted white",
+        "action": "holding a purple ribbon",
+        "position": "right",
+        "id": "hand_presenter_1"
       },
       {
-        "desc": "purple satin ribbon, shiny and smooth texture",
-        "action": "being held and adjusted",
-        "position": "center/foreground",
-        "id": "purple_ribbon_1"
+        "desc": "purple satin ribbon, shiny texture",
+        "action": "being manipulated",
+        "position": "center",
+        "id": "ribbon_purple_1"
       },
       {
         "desc": "thin red string or thread",
         "action": "hanging vertically",
         "position": "center",
-        "id": "red_thread_1"
+        "id": "thread_red_1"
       },
       {
-        "desc": "pink surface, smooth and solid",
+        "desc": "pink background surface",
         "action": "static",
         "position": "background",
-        "id": "white_surface_1"
+        "id": "background_pink_1"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A hand with white-tipped nails is holding and adjusting a purple ribbon.",
+        "fact": "A hand with white nail polish is holding a purple ribbon.",
         "confidence": 1.0
       },
       {
@@ -2040,12 +1988,12 @@
         "confidence": 1.0
       },
       {
-        "fact": "The background consists of a solid pink surface.",
+        "fact": "The purple ribbon is positioned below the red string.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The hand is to the right of the purple ribbon. The red string is positioned above the ribbon. The pink surface is behind the hand and ribbon.",
+    "spatial": "The hand is to the right of the purple ribbon. The red string is above the ribbon. The pink background is behind the hand and the ribbon.",
     "parse_success": true,
     "chunk_idx": 40,
     "video_id": "ipeaPrim1sM",
@@ -2053,143 +2001,147 @@
   },
   {
     "time": [
-      82,
-      84
+      41,
+      42
     ],
     "visible_entities": [
       {
         "desc": "woman with shoulder-length blonde hair and bangs, wearing a bright pink collared shirt",
-        "action": "speaking",
+        "action": "blinking eyes and smiling",
         "position": "center",
-        "id": "presenter_woman_1"
+        "id": "person_presenter_1"
       },
       {
         "desc": "red brick wall",
         "action": "static",
         "position": "background",
-        "id": "brick_wall_background_1"
+        "id": "background_brickwall_1"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "The woman is speaking.",
+        "fact": "The woman blinks her eyes.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The woman smiles.",
         "confidence": 1.0
       },
       {
         "fact": "The woman is wearing a pink shirt.",
         "confidence": 1.0
-      },
-      {
-        "fact": "The background is a brick wall.",
-        "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The woman is in front of the red brick wall.",
+    "spatial": "The woman is positioned in the foreground, centered in front of the red brick wall background.",
     "parse_success": true,
     "chunk_idx": 41,
     "video_id": "ipeaPrim1sM",
-    "state_changes": []
+    "state_changes": [
+      "Cut back to presenter speaking."
+    ]
   },
   {
     "time": [
-      84,
-      86
+      42,
+      43
     ],
     "visible_entities": [
       {
-        "desc": "person with shoulder-length blonde hair and bangs, wearing a pink collared shirt",
+        "desc": "woman with shoulder-length blonde hair and bangs, wearing a bright pink collared shirt",
         "action": "static",
-        "position": "center/background",
-        "id": "presenter_woman_1"
+        "position": "center",
+        "id": "person_presenter_1"
       },
       {
-        "desc": "purple satin ribbon, shiny texture",
-        "action": "being manipulated",
-        "position": "center/foreground",
-        "id": "purple_ribbon_1"
+        "desc": "purple satin ribbon",
+        "action": "being held",
+        "position": "foreground",
+        "id": "ribbon_purple_1"
       },
       {
-        "desc": "hand with white manicured nails",
-        "action": "holding the ribbon",
-        "position": "right/foreground",
-        "id": "presenter_hands_1"
+        "desc": "hand with white nail polish",
+        "action": "holding ribbon",
+        "position": "right",
+        "id": "hand_presenter_1"
       },
       {
         "desc": "red brick wall",
         "action": "static",
         "position": "background",
-        "id": "brick_wall_background_1"
+        "id": "background_brickwall_1"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A hand with white nails is holding and manipulating a purple satin ribbon.",
+        "fact": "A woman with blonde hair is speaking in front of a brick wall.",
         "confidence": 1.0
       },
       {
-        "fact": "The ribbon is being folded into a loop or bow shape.",
+        "fact": "A hand with white nail polish is holding a purple satin ribbon.",
         "confidence": 1.0
       },
       {
-        "fact": "A person with blonde hair is visible in the background against a brick wall.",
+        "fact": "The ribbon is being manipulated into a loop or bow shape.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The hand holding the purple ribbon is in the foreground, positioned in front of the person with blonde hair. The person is centered against the red brick wall background.",
+    "spatial": "The woman is centered in the frame in front of the red brick wall. The hand holding the purple ribbon is in the foreground, appearing to the right of the woman's position in the sequence.",
     "parse_success": true,
     "chunk_idx": 42,
     "video_id": "ipeaPrim1sM",
-    "state_changes": []
+    "state_changes": [
+      "Brief cut to hands holding ribbon, then back to presenter context."
+    ]
   },
   {
     "time": [
-      86,
-      88
+      43,
+      44
     ],
     "visible_entities": [
       {
-        "desc": "hand with manicured nails featuring white polish and gold tips",
-        "action": "holding and adjusting a ribbon",
-        "position": "right/foreground",
-        "id": "presenter_hands_1"
+        "desc": "hand with manicured fingernails featuring white polish and gold tips",
+        "action": "holding a purple ribbon",
+        "position": "right",
+        "id": "hand_presenter_1"
       },
       {
-        "desc": "light purple satin ribbon",
-        "action": "being manipulated into a bow shape",
+        "desc": "shiny light purple satin ribbon",
+        "action": "being manipulated",
         "position": "center",
-        "id": "purple_ribbon_1"
+        "id": "ribbon_purple_1"
       },
       {
-        "desc": "small gold metal button",
+        "desc": "small gold-colored metal button or pin",
         "action": "static",
         "position": "center",
-        "id": "gold_button_1"
+        "id": "button_gold_1"
       },
       {
         "desc": "thin red thread",
         "action": "static",
-        "position": "left/background",
-        "id": "red_thread_1"
+        "position": "left",
+        "id": "thread_red_1"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A hand is holding a light purple satin ribbon.",
+        "fact": "The hand is holding the purple ribbon in a looped shape.",
         "confidence": 1.0
       },
       {
-        "fact": "The ribbon is being folded around a small gold button.",
+        "fact": "The gold button is positioned at the center of the ribbon loops.",
         "confidence": 1.0
       },
       {
-        "fact": "A thin red thread is visible on the surface to the left.",
+        "fact": "The thumb presses the ribbon against the gold button.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The hand is on the right side of the frame, holding the purple ribbon in the center. The gold button is positioned in the middle of the ribbon loops. The red thread is located to the left of the ribbon on the background surface.",
+    "spatial": "The hand is on the right side of the frame, holding the purple ribbon which is centered. The gold button is located in the middle of the ribbon loops. A thin red thread is visible to the left of the ribbon.",
     "parse_success": true,
     "chunk_idx": 43,
     "video_id": "ipeaPrim1sM",
@@ -2197,21 +2149,21 @@
   },
   {
     "time": [
-      88,
-      90
+      44,
+      45
     ],
     "visible_entities": [
       {
-        "desc": "woman with shoulder-length blonde hair and bangs, wearing a pink polo shirt",
+        "desc": "woman with shoulder-length blonde hair and straight bangs, wearing a bright pink polo shirt",
         "action": "speaking",
         "position": "center",
-        "id": "presenter_woman_1"
+        "id": "person_presenter_1"
       },
       {
         "desc": "red brick wall",
         "action": "static",
         "position": "background",
-        "id": "brick_wall_background_1"
+        "id": "background_brickwall_1"
       }
     ],
     "atomic_facts": [
@@ -2220,107 +2172,104 @@
         "confidence": 1.0
       },
       {
-        "fact": "The woman is wearing a pink shirt.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The background is a brick wall.",
+        "fact": "The woman is positioned in front of a brick wall.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The woman is in front of the red brick wall.",
+    "spatial": "The woman is in the foreground, centered in the frame. The red brick wall is behind the woman, filling the background.",
     "parse_success": true,
     "chunk_idx": 44,
     "video_id": "ipeaPrim1sM",
-    "state_changes": []
+    "state_changes": [
+      "Cut back to presenter speaking."
+    ]
   },
   {
     "time": [
-      90,
-      92
+      45,
+      46
     ],
     "visible_entities": [
       {
-        "desc": "hand with manicured fingernails featuring white tips",
-        "action": "holding purple ribbon",
-        "position": "center/foreground",
-        "id": "presenter_hands_1"
+        "desc": "hand with fair skin and manicured nails featuring a white French tip design",
+        "action": "holding the center of a ribbon",
+        "position": "center",
+        "id": "hand_presenter_1"
       },
       {
-        "desc": "purple satin ribbon bow",
-        "action": "being stitched",
-        "position": "center/bottom",
-        "id": "purple_ribbon_bow_1"
+        "desc": "purple satin ribbon bow with a glossy texture and folded loops",
+        "action": "being tied",
+        "position": "center",
+        "id": "ribbon_purple_1"
       },
       {
         "desc": "thin red thread",
-        "action": "being pulled through ribbon",
+        "action": "wrapping around the ribbon",
         "position": "center",
-        "id": "red_thread_1"
+        "id": "thread_red_1"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A hand is holding a purple satin ribbon bow in place.",
+        "fact": "A hand with white-tipped nails presses down on the center of a purple ribbon bow.",
         "confidence": 1.0
       },
       {
-        "fact": "A thin red thread is being pulled through the center of the purple ribbon.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The fingernails on the hand have a white tip manicure style.",
+        "fact": "A thin red thread is being wrapped around the middle of the purple ribbon to secure its shape.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The hand is positioned above the purple ribbon bow. The red thread is located in the center of the ribbon, passing through the loops held by the fingers.",
+    "spatial": "The hand is positioned above the purple ribbon bow, with fingers pressing down on the center. The red thread is wrapped around the ribbon directly under the fingertips.",
     "parse_success": true,
     "chunk_idx": 45,
     "video_id": "ipeaPrim1sM",
-    "state_changes": []
+    "state_changes": [
+      "Cut back to hands tying the thread around the bow center."
+    ]
   },
   {
     "time": [
-      92,
-      94
+      46,
+      47
     ],
     "visible_entities": [
       {
-        "desc": "hand with fair skin and manicured nails featuring white tips (French manicure)",
+        "desc": "hand with manicured nails featuring a French tip style (white tips on a natural base)",
         "action": "pressing down on the center of the ribbon",
-        "position": "right/foreground"
+        "position": "right/foreground",
+        "id": "hand_presenter_1"
       },
       {
-        "desc": "purple satin ribbon bow with a smooth, shiny texture",
-        "action": "being held in place",
+        "desc": "purple satin ribbon, shiny and smooth texture, folded into a bow shape",
+        "action": "being manipulated",
         "position": "center",
-        "id": "purple_ribbon_bow_1"
+        "id": "ribbon_purple_1"
       },
       {
-        "desc": "thin red thread",
-        "action": "being pulled through the ribbon center",
+        "desc": "thin red thread or string",
+        "action": "being pulled vertically",
         "position": "center",
-        "id": "red_thread_1"
+        "id": "thread_red_1"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A hand is pressing down on the center of a purple satin ribbon bow.",
+        "fact": "A hand is pressing down on the center of a purple ribbon.",
         "confidence": 1.0
       },
       {
-        "fact": "A thin red thread is being pulled through the center of the ribbon to secure it.",
+        "fact": "A thin red thread is being pulled vertically through the center of the ribbon.",
         "confidence": 1.0
       },
       {
-        "fact": "The ribbon has a shiny, smooth texture.",
+        "fact": "The ribbon is folded into a bow shape.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The hand is positioned to the right of the purple ribbon bow. The red thread is located in the center of the ribbon, passing underneath the fingers of the hand. The entire assembly rests on a white surface.",
+    "spatial": "The hand is positioned to the right of the purple ribbon. The red thread is located in the center of the ribbon, extending vertically upwards. The ribbon rests on a white surface below the hand.",
     "parse_success": true,
     "chunk_idx": 46,
     "video_id": "ipeaPrim1sM",
@@ -2328,27 +2277,27 @@
   },
   {
     "time": [
-      94,
-      96
+      47,
+      48
     ],
     "visible_entities": [
       {
-        "desc": "hand with manicured fingernails featuring white tips",
+        "desc": "hand with manicured nails featuring white tips",
         "action": "pressing the center of the ribbon",
         "position": "right",
-        "id": "presenter_hands_1"
+        "id": "hand_presenter_1"
       },
       {
-        "desc": "purple satin ribbon bow",
-        "action": "being manipulated",
+        "desc": "purple satin ribbon bow with a shiny texture",
+        "action": "being tied",
         "position": "center",
-        "id": "purple_ribbon_bow_1"
+        "id": "ribbon_purple_1"
       },
       {
         "desc": "thin red thread",
-        "action": "hanging vertically",
+        "action": "securing the bow",
         "position": "center",
-        "id": "red_thread_1"
+        "id": "thread_red_1"
       }
     ],
     "atomic_facts": [
@@ -2357,16 +2306,16 @@
         "confidence": 1.0
       },
       {
-        "fact": "A thin red thread hangs vertically over the center of the bow.",
+        "fact": "A thin red thread is wrapped around the middle of the bow to secure it.",
         "confidence": 1.0
       },
       {
-        "fact": "The purple ribbon is tied into a bow shape with multiple loops.",
+        "fact": "The bow is resting on a white surface.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The hand is positioned to the right of the purple ribbon bow. The red thread is located above the center of the bow where the hand is pressing. The bow rests on a white surface.",
+    "spatial": "The hand is positioned to the right of the purple bow. The red thread is wrapped around the center of the bow. The bow is on top of a white surface.",
     "parse_success": true,
     "chunk_idx": 47,
     "video_id": "ipeaPrim1sM",
@@ -2374,20 +2323,20 @@
   },
   {
     "time": [
-      96,
-      98
+      48,
+      49
     ],
     "visible_entities": [
       {
-        "desc": "light purple satin ribbon bow with a smooth, shiny texture, featuring four loops and two tails, secured at the center with small red stitches",
+        "desc": "purple satin ribbon bow with a smooth, shiny texture, tied in a multi-looped knot with visible red stitching at the center",
         "action": "static",
         "position": "center",
-        "id": "purple_ribbon_1"
+        "id": "ribbon_purple_1"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A light purple satin ribbon bow is resting on a white surface.",
+        "fact": "A purple satin ribbon bow is resting on a white surface.",
         "confidence": 1.0
       },
       {
@@ -2396,149 +2345,155 @@
       }
     ],
     "ocr": [],
-    "spatial": "The light purple satin ribbon bow is centered on a plain white background.",
+    "spatial": "The purple satin ribbon bow is positioned in the center of the frame, resting on top of a plain white background.",
     "parse_success": true,
     "chunk_idx": 48,
-    "video_id": "ipeaPrim1sM",
-    "state_changes": [
-      "bow assembly completed, finished product shown"
-    ]
-  },
-  {
-    "time": [
-      98,
-      100
-    ],
-    "visible_entities": [
-      {
-        "desc": "woman with shoulder-length blonde hair and bangs, wearing a bright pink collared shirt",
-        "action": "talking",
-        "position": "center",
-        "id": "presenter_woman_1"
-      },
-      {
-        "desc": "red brick wall",
-        "action": "static",
-        "position": "background",
-        "id": "brick_wall_background_1"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "The woman is talking.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The woman is wearing a pink shirt.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [],
-    "spatial": "The woman is in front of the red brick wall.",
-    "parse_success": true,
-    "chunk_idx": 49,
     "video_id": "ipeaPrim1sM",
     "state_changes": []
   },
   {
     "time": [
-      100,
-      102
+      49,
+      50
     ],
     "visible_entities": [
       {
-        "desc": "person with shoulder-length blonde hair and bangs, wearing a bright pink polo shirt",
+        "desc": "woman with shoulder-length blonde hair and bangs, wearing a pink polo shirt",
+        "action": "speaking",
+        "position": "center",
+        "id": "person_presenter_1"
+      },
+      {
+        "desc": "red brick wall",
+        "action": "static",
+        "position": "background",
+        "id": "background_brickwall_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The woman is speaking.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The woman is wearing a pink shirt.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The background is a brick wall.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The woman is in the foreground, centered in the frame. The red brick wall is behind the woman.",
+    "parse_success": true,
+    "chunk_idx": 49,
+    "video_id": "ipeaPrim1sM",
+    "state_changes": [
+      "Cut back to presenter speaking."
+    ]
+  },
+  {
+    "time": [
+      50,
+      51
+    ],
+    "visible_entities": [
+      {
+        "desc": "person with shoulder-length blonde hair and bangs, wearing a pink collared shirt",
         "action": "static",
         "position": "center",
-        "id": "presenter_woman_1"
+        "id": "person_presenter_1"
       },
       {
         "desc": "hands with manicured nails holding a purple satin ribbon bow",
         "action": "cutting the ribbon",
-        "position": "foreground"
+        "position": "foreground",
+        "id": "hand_presenter_1"
       },
       {
         "desc": "scissors with black handles and silver blades",
         "action": "cutting the ribbon",
-        "position": "foreground",
+        "position": "left",
         "id": "scissors_1"
       },
       {
         "desc": "red brick wall background",
         "action": "static",
         "position": "background",
-        "id": "brick_wall_background_1"
+        "id": "background_brickwall_1"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A person with blonde hair and a pink shirt is shown against a brick wall.",
+        "fact": "A person is cutting a purple satin ribbon bow with scissors.",
         "confidence": 1.0
       },
       {
-        "fact": "Hands are using scissors to cut a purple satin ribbon bow.",
+        "fact": "The scissors are cutting through the center of the ribbon bow.",
         "confidence": 1.0
       },
       {
-        "fact": "The scissors are cutting through the center of the ribbon.",
+        "fact": "The person has blonde hair and is wearing a pink shirt.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The person with blonde hair is in front of the red brick wall. The hands holding the purple ribbon and scissors are in the foreground, positioned in front of the person.",
+    "spatial": "The person with blonde hair is in the center of the frame, in front of a red brick wall. In the foreground, hands are holding a purple ribbon bow. A pair of scissors is positioned to the left of the hands, cutting the ribbon.",
     "parse_success": true,
     "chunk_idx": 50,
     "video_id": "ipeaPrim1sM",
     "state_changes": [
-      "trimming demonstration begins with scissors"
+      "Cut to hands using scissors to trim the ribbon tails."
     ]
   },
   {
     "time": [
-      102,
-      104
+      51,
+      52
     ],
     "visible_entities": [
       {
-        "desc": "hand with manicured nails featuring a French tip style (white tips, natural pink base)",
-        "action": "holding the ribbon",
+        "desc": "hand with manicured fingernails featuring a French tip style (pale pink base with white tips)",
+        "action": "holding the purple ribbon bow",
         "position": "right",
-        "id": "presenter_hands_1"
+        "id": "hand_presenter_1"
       },
       {
-        "desc": "hand holding a tool",
-        "action": "manipulating the tool",
-        "position": "left"
+        "desc": "hand with visible skin",
+        "action": "holding the scissors",
+        "position": "left",
+        "id": "hand_presenter_1"
       },
       {
-        "desc": "purple satin ribbon bow, shiny texture, looped structure",
+        "desc": "purple satin ribbon bow, shiny texture, tied in a multi-loop style",
         "action": "being cut",
         "position": "center",
-        "id": "purple_ribbon_bow_1"
+        "id": "ribbon_purple_1"
       },
       {
-        "desc": "black handled tool with silver metal blades, resembling pliers or specialized shears",
+        "desc": "scissors with black plastic handles and silver metal blades",
         "action": "cutting the ribbon",
-        "position": "left",
+        "position": "center-left",
         "id": "scissors_1"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A person is cutting a purple satin ribbon bow with a black handled tool.",
+        "fact": "A person is using scissors to cut the tails of a purple satin ribbon bow.",
         "confidence": 1.0
       },
       {
-        "fact": "The tool's blades are positioned around the ribbon loops.",
+        "fact": "The scissors are positioned to trim the bottom edge of the ribbon loops.",
         "confidence": 1.0
       },
       {
-        "fact": "The hand on the right holds the bow steady while the hand on the left operates the tool.",
+        "fact": "The hand on the right is stabilizing the bow while the hand on the left operates the scissors.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The hand with manicured nails is on the right side of the frame, holding the purple ribbon bow. The hand holding the black tool is on the left side. The tool is positioned in front of the ribbon, with its blades engaging the material in the center.",
+    "spatial": "The hand holding the scissors is to the left of the purple ribbon bow. The hand holding the bow is to the right of the scissors. The scissors are in front of the bow, with the blades inserted into the ribbon loops to make a cut.",
     "parse_success": true,
     "chunk_idx": 51,
     "video_id": "ipeaPrim1sM",
@@ -2546,24 +2501,24 @@
   },
   {
     "time": [
-      104,
-      106
+      52,
+      53
     ],
     "visible_entities": [
       {
-        "desc": "hands with manicured fingernails painted with glossy light pink polish",
-        "action": "holding a purple ribbon and scissors",
-        "position": "foreground",
-        "id": "presenter_hands_1"
+        "desc": "hand with manicured fingernails painted with glossy light pink polish",
+        "action": "holding a purple ribbon bow",
+        "position": "right",
+        "id": "hand_presenter_1"
       },
       {
-        "desc": "wide purple satin ribbon with a shiny texture, tied into a bow shape",
+        "desc": "purple satin ribbon bow with a shiny texture",
         "action": "being cut",
         "position": "center",
-        "id": "purple_ribbon_1"
+        "id": "ribbon_purple_1"
       },
       {
-        "desc": "scissors with black plastic handles and silver metal blades",
+        "desc": "scissors with black handles and silver metal blades",
         "action": "cutting the ribbon",
         "position": "left",
         "id": "scissors_1"
@@ -2571,20 +2526,20 @@
     ],
     "atomic_facts": [
       {
-        "fact": "A person is using scissors to cut the tail of a purple satin ribbon.",
+        "fact": "A hand holds a purple satin ribbon bow steady.",
         "confidence": 1.0
       },
       {
-        "fact": "The scissors are positioned to trim the end of the ribbon bow.",
+        "fact": "Scissors are cutting the tail of the purple ribbon bow.",
         "confidence": 1.0
       },
       {
-        "fact": "The ribbon has a shiny, smooth texture characteristic of satin.",
+        "fact": "The scissors have black handles.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The hands are in the foreground, holding the purple ribbon in the center of the frame. The scissors are held in the left hand and are positioned to the left of the ribbon, with the blades cutting into the fabric.",
+    "spatial": "The hand with pink nails is on the right side of the frame, holding the purple ribbon bow. The scissors are positioned to the left of the hand, with their blades cutting into the ribbon in the center.",
     "parse_success": true,
     "chunk_idx": 52,
     "video_id": "ipeaPrim1sM",
@@ -2592,68 +2547,26 @@
   },
   {
     "time": [
-      106,
-      108
+      53,
+      54
     ],
     "visible_entities": [
       {
         "desc": "woman with shoulder-length blonde hair and bangs, wearing a bright pink collared shirt",
-        "action": "talking",
+        "action": "speaking",
         "position": "center",
-        "id": "presenter_woman_1"
+        "id": "person_presenter_1"
       },
       {
-        "desc": "red brick wall",
+        "desc": "red brick wall with light mortar",
         "action": "static",
         "position": "background",
-        "id": "brick_wall_background_1"
+        "id": "background_brickwall_1"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "The woman is talking.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The woman is wearing a pink shirt.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The woman has blonde hair.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [],
-    "spatial": "The woman is in front of the red brick wall.",
-    "parse_success": true,
-    "chunk_idx": 53,
-    "video_id": "ipeaPrim1sM",
-    "state_changes": [
-      "presenter returns after cutting demonstration"
-    ]
-  },
-  {
-    "time": [
-      108,
-      110
-    ],
-    "visible_entities": [
-      {
-        "desc": "woman with shoulder-length blonde hair and bangs, wearing a bright pink collared shirt",
-        "action": "smiling and looking forward",
-        "position": "center foreground",
-        "id": "presenter_woman_1"
-      },
-      {
-        "desc": "red brick wall with light-colored mortar",
-        "action": "static",
-        "position": "background",
-        "id": "brick_wall_background_1"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "The woman smiles, showing her upper teeth.",
+        "fact": "The woman is speaking with her mouth open.",
         "confidence": 1.0
       },
       {
@@ -2662,7 +2575,49 @@
       }
     ],
     "ocr": [],
-    "spatial": "The woman is in front of the red brick wall. The wall serves as the background behind her.",
+    "spatial": "The woman is in the foreground, centered in the frame. The red brick wall is behind the woman, serving as the background.",
+    "parse_success": true,
+    "chunk_idx": 53,
+    "video_id": "ipeaPrim1sM",
+    "state_changes": [
+      "Cut back to presenter speaking."
+    ]
+  },
+  {
+    "time": [
+      54,
+      55
+    ],
+    "visible_entities": [
+      {
+        "desc": "woman with shoulder-length blonde hair and bangs, wearing a bright pink collared shirt",
+        "action": "talking",
+        "position": "center",
+        "id": "person_presenter_1"
+      },
+      {
+        "desc": "red brick wall",
+        "action": "static",
+        "position": "background",
+        "id": "background_brickwall_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The woman is talking.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The woman is wearing a pink shirt.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A brick wall is behind the woman.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The woman is in the foreground, centered in the frame. The red brick wall is behind the woman.",
     "parse_success": true,
     "chunk_idx": 54,
     "video_id": "ipeaPrim1sM",
@@ -2670,39 +2625,39 @@
   },
   {
     "time": [
-      110,
-      112
+      55,
+      56
     ],
     "visible_entities": [
       {
-        "desc": "woman with shoulder-length blonde hair and straight bangs, wearing a bright pink polo shirt",
-        "action": "speaking and smiling",
+        "desc": "woman with shoulder-length blonde hair and bangs, wearing a pink collared shirt",
+        "action": "smiling and blinking",
         "position": "center",
-        "id": "presenter_woman_1"
+        "id": "person_presenter_1"
       },
       {
-        "desc": "red brick wall",
+        "desc": "red brick wall with white mortar",
         "action": "static",
         "position": "background",
-        "id": "brick_wall_background_1"
+        "id": "background_brickwall_1"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "The woman is speaking and smiling.",
+        "fact": "The woman smiles with her eyes closed in the first frame.",
         "confidence": 1.0
       },
       {
-        "fact": "The woman is wearing a pink polo shirt.",
+        "fact": "The woman opens her eyes and looks forward in the second frame.",
         "confidence": 1.0
       },
       {
-        "fact": "A red brick wall is visible in the background.",
+        "fact": "The woman is wearing a pink shirt.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The woman is in the foreground, positioned in front of the red brick wall.",
+    "spatial": "The woman is in front of the red brick wall.",
     "parse_success": true,
     "chunk_idx": 55,
     "video_id": "ipeaPrim1sM",
@@ -2710,82 +2665,67 @@
   },
   {
     "time": [
-      112,
-      114
+      56,
+      57
     ],
     "visible_entities": [
       {
-        "desc": "person with straight blonde hair",
+        "desc": "person with straight blonde hair, wearing a purple satin ribbon bow with a small round button center",
         "action": "static",
-        "position": "left",
-        "id": "finished_bow_on_person_1"
+        "position": "left/center/foreground",
+        "id": "person_presenter_1"
       },
       {
-        "desc": "purple satin ribbon bow with a central gold button featuring a red gem",
+        "desc": "red brick wall, out of focus",
         "action": "static",
-        "position": "center",
-        "id": "purple_ribbon_bow_1"
+        "position": "right/background",
+        "id": "background_brickwall_1"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A purple satin bow is clipped into the blonde hair.",
+        "fact": "A purple satin bow is clipped into blonde hair.",
         "confidence": 1.0
       },
       {
-        "fact": "The bow features a decorative button with a red center.",
+        "fact": "The bow features a small button in the center.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The purple satin bow is attached to the blonde hair on the left side of the frame. The hair is in the foreground, while a blurred brick wall is visible in the background to the right.",
+    "spatial": "The purple satin bow is attached to the blonde hair in the foreground. The red brick wall is behind the person's head.",
     "parse_success": true,
     "chunk_idx": 56,
     "video_id": "ipeaPrim1sM",
     "state_changes": [
-      "final product showcase on model begins"
+      "Scene cuts to final result: presenter wearing the completed bow."
     ]
   },
   {
     "time": [
-      114,
-      116
+      57,
+      58
     ],
     "visible_entities": [
       {
-        "desc": "person with blonde hair",
+        "desc": "person with blonde hair, wearing a purple satin bow with a gold center button",
         "action": "static",
-        "position": "left/center/foreground"
-      },
-      {
-        "desc": "purple satin ribbon bow with a small brown button center",
-        "action": "static",
-        "position": "center/foreground",
-        "id": "purple_ribbon_bow_1"
-      },
-      {
-        "desc": "red brick wall",
-        "action": "static",
-        "position": "background",
-        "id": "brick_wall_background_1"
+        "position": "foreground",
+        "id": "person_presenter_1"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A purple satin bow is clipped into the blonde hair.",
+        "fact": "A purple satin bow is clipped into blonde hair.",
         "confidence": 1.0
       },
       {
-        "fact": "The bow features a small brown button in the center.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The background consists of a red brick wall.",
+        "fact": "The bow remains static in the hair.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The person with blonde hair is in the foreground, positioned to the left of the frame. The purple satin bow is attached to the hair on the right side of the head. The red brick wall is behind the person.",
+    "spatial": "The purple bow is attached to the blonde hair in the foreground. The hair is positioned in front of a blurred red brick wall background.",
     "parse_success": true,
     "chunk_idx": 57,
     "video_id": "ipeaPrim1sM",
@@ -2793,30 +2733,30 @@
   },
   {
     "time": [
-      116,
-      118
+      58,
+      59
     ],
     "visible_entities": [
       {
         "desc": "person with blonde hair, wearing a purple satin bow with a gold center button",
         "action": "static",
-        "position": "foreground",
-        "id": "finished_bow_on_person_1"
+        "position": "left/foreground",
+        "id": "person_presenter_1"
       },
       {
         "desc": "red brick wall",
         "action": "static",
         "position": "background",
-        "id": "brick_wall_background_1"
+        "id": "background_brickwall_1"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A person with blonde hair is shown from the back.",
+        "fact": "A person with blonde hair is shown in a close-up view.",
         "confidence": 1.0
       },
       {
-        "fact": "A purple satin bow is attached to the person's hair.",
+        "fact": "A purple satin bow is clipped into the person's hair.",
         "confidence": 1.0
       },
       {
@@ -2825,7 +2765,7 @@
       }
     ],
     "ocr": [],
-    "spatial": "The person with blonde hair is in the foreground, positioned in front of the red brick wall background. The purple bow is on the right side of the person's head.",
+    "spatial": "The person with blonde hair is in the foreground on the left side of the frame. The purple bow is attached to the hair on the right side of the person's head. The red brick wall is in the background behind the person.",
     "parse_success": true,
     "chunk_idx": 58,
     "video_id": "ipeaPrim1sM",
@@ -2833,21 +2773,21 @@
   },
   {
     "time": [
-      118,
-      120
+      59,
+      60
     ],
     "visible_entities": [
       {
-        "desc": "woman with shoulder-length blonde hair and bangs, wearing a pink top and a large purple satin bow hair clip with a gold center",
-        "action": "smiling and tilting head",
+        "desc": "woman with blonde hair and bangs, wearing a pink top and a large purple satin bow with a gold center button",
+        "action": "smiling at the camera",
         "position": "center",
-        "id": "finished_bow_on_person_1"
+        "id": "person_presenter_1"
       },
       {
-        "desc": "red brick wall with light mortar lines",
+        "desc": "red brick wall",
         "action": "static",
         "position": "background",
-        "id": "brick_wall_background_1"
+        "id": "background_brickwall_1"
       }
     ],
     "atomic_facts": [
@@ -2856,16 +2796,12 @@
         "confidence": 1.0
       },
       {
-        "fact": "The woman tilts her head slightly to her left.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "A large purple bow is clipped into the woman's hair on the right side of her head.",
+        "fact": "A large purple bow is clipped into the woman's hair.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The woman is positioned in the foreground, centered in the frame. The red brick wall is behind the woman. The purple bow is on the right side of the woman's head, above her ear.",
+    "spatial": "The woman is in front of the red brick wall. The purple bow is on the right side of the woman's head.",
     "parse_success": true,
     "chunk_idx": 59,
     "video_id": "ipeaPrim1sM",
@@ -2873,26 +2809,26 @@
   },
   {
     "time": [
-      120,
-      122
+      60,
+      61
     ],
     "visible_entities": [
       {
-        "desc": "woman with blonde shoulder-length hair and bangs, wearing a pink top and a large purple bow in her hair",
+        "desc": "woman with shoulder-length blonde hair and bangs, wearing a large purple bow hair accessory and a pink top",
         "action": "smiling and tilting head",
-        "position": "center",
-        "id": "finished_bow_on_person_1"
+        "position": "center foreground",
+        "id": "person_presenter_1"
       },
       {
         "desc": "red brick wall",
         "action": "static",
         "position": "background",
-        "id": "brick_wall_background_1"
+        "id": "background_brickwall_1"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "The woman smiles and tilts her head slightly.",
+        "fact": "The woman smiles and tilts her head slightly to the right.",
         "confidence": 1.0
       },
       {
@@ -2901,7 +2837,7 @@
       }
     ],
     "ocr": [],
-    "spatial": "The woman is in front of the red brick wall. The purple bow is in her hair, positioned on the right side of her head.",
+    "spatial": "The woman is positioned in front of the red brick wall. The purple bow is located on the right side of her head.",
     "parse_success": true,
     "chunk_idx": 60,
     "video_id": "ipeaPrim1sM",
@@ -2909,30 +2845,38 @@
   },
   {
     "time": [
-      122,
-      124
+      61,
+      62
     ],
     "visible_entities": [
       {
-        "desc": "woman with shoulder-length blonde hair, straight bangs, wearing a large purple bow hair clip and a pink top",
+        "desc": "woman with shoulder-length blonde hair and bangs, wearing a pink top and a large purple bow hair accessory",
         "action": "smiling and looking slightly to the left",
         "position": "center",
-        "id": "finished_bow_on_person_1"
+        "id": "person_presenter_1"
       },
       {
         "desc": "red brick wall",
         "action": "static",
         "position": "background",
-        "id": "brick_wall_background_1"
+        "id": "background_brickwall_1"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "The woman smiles and tilts her head slightly.",
+        "fact": "The woman is smiling.",
         "confidence": 1.0
       },
       {
-        "fact": "A purple bow is clipped into the woman's hair.",
+        "fact": "The woman is wearing a purple bow in her hair.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The woman is wearing a pink top.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The background is a brick wall.",
         "confidence": 1.0
       }
     ],
@@ -2945,56 +2889,57 @@
   },
   {
     "time": [
-      124,
-      126
+      62,
+      63
     ],
     "visible_entities": [
       {
-        "desc": "Logo with the word 'videojug' in a dark grey, stylized lowercase font with circular dots on the 'i' and 'j', and the tagline 'get good at life' in a smaller, lighter grey sans-serif font below it.",
+        "desc": "black lowercase 'videojug' logo with a tagline 'get good at life' underneath",
         "action": "static",
         "position": "center",
-        "id": "videojug_logo_1"
+        "id": "logo_videojug_1"
       },
       {
-        "desc": "A horizontal bar composed of vertical stripes in various colors including purple, light blue, yellow, green, magenta, orange, cyan, dark blue, pink, and grey.",
+        "desc": "horizontal bar composed of vertical stripes in purple, blue, yellow, green, magenta, orange, cyan, dark blue, pink, and grey",
         "action": "static",
         "position": "bottom",
-        "id": "videojug_colorbar_1"
+        "id": "graphic_colorbar_1"
       },
       {
-        "desc": "Text block with legal information and a copyright notice in a small, grey, sans-serif font.",
+        "desc": "small black text containing legal disclaimers and copyright information",
         "action": "static",
         "position": "bottom",
-        "id": "legal_text_1"
+        "id": "text_legal_1"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "The 'videojug' logo is displayed on a white background.",
+        "fact": "The video displays a static end screen with the 'videojug' logo.",
         "confidence": 1.0
       },
       {
-        "fact": "A multi-colored striped bar is positioned below the logo.",
+        "fact": "A colorful striped bar separates the logo from the legal text.",
         "confidence": 1.0
       },
       {
-        "fact": "The text '© 2012 Videojug Corporation Ltd' is visible at the bottom of the screen.",
+        "fact": "The text '© 2012 Videojug Corporation Ltd' is visible at the bottom.",
         "confidence": 1.0
       }
     ],
     "ocr": [
       "videojug",
       "get good at life",
-      "The content of this video is subject to the Terms and Conditions and Disclaimer that can be found at:",
+      "The content of this video is subject to the Terms and",
+      "Conditions and Disclaimer that can be found at:",
       "www.videojug.com/terms.aspx",
       "© 2012 Videojug Corporation Ltd"
     ],
-    "spatial": "The 'videojug' logo is centered on the screen. The multi-colored striped bar is located below the logo. The legal text and copyright notice are positioned below the striped bar.",
+    "spatial": "The 'videojug' logo is centered above the colorful horizontal bar. The legal disclaimer text is located below the colorful bar.",
     "parse_success": true,
     "chunk_idx": 62,
     "video_id": "ipeaPrim1sM",
     "state_changes": [
-      "outro graphics with logo and legal text"
+      "Outro graphics and legal text appear; video ends."
     ]
   }
 ]

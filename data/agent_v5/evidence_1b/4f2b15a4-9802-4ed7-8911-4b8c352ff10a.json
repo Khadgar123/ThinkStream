@@ -2,67 +2,76 @@
   {
     "time": [
       0,
-      2
+      1
     ],
     "visible_entities": [
       {
-        "desc": "silver iMac desktop computer with a black screen and Apple logo",
+        "desc": "silver laptop with black keyboard and screen displaying a desktop wallpaper with sand dunes and icons",
+        "action": "static",
+        "position": "right",
+        "id": "macbook_silver_1"
+      },
+      {
+        "desc": "large silver all-in-one desktop computer with a black screen and Apple logo",
         "action": "static",
         "position": "center",
         "id": "imac_silver_1"
       },
       {
-        "desc": "silver laptop with an open screen displaying a desktop interface",
-        "action": "static",
-        "position": "right",
-        "id": "laptop_silver_1"
-      },
-      {
-        "desc": "white wireless keyboard with square keys",
+        "desc": "white wireless keyboard with low-profile keys",
         "action": "static",
         "position": "left",
         "id": "keyboard_white_1"
       },
       {
-        "desc": "black smartphone with a lit screen showing a timer",
+        "desc": "black smartphone held in hand, screen displaying a timer reading '00:00' and '00:01'",
         "action": "being held",
         "position": "foreground",
         "id": "smartphone_black_1"
       },
       {
-        "desc": "black wired computer mouse",
+        "desc": "black computer mouse",
         "action": "static",
         "position": "center",
         "id": "mouse_black_1"
       },
       {
-        "desc": "yellow sticky notes attached to the wall",
+        "desc": "yellow sticky notes with handwritten text attached to the wall",
         "action": "static",
         "position": "background",
         "id": "sticky_notes_yellow_1"
       },
       {
-        "desc": "blue pen lying on the desk",
+        "desc": "blue pen",
         "action": "static",
         "position": "left",
-        "id": "pen_desk_1"
+        "id": "pen_blue_1"
+      },
+      {
+        "desc": "white computer mouse",
+        "action": "static",
+        "position": "center"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A hand is holding a smartphone in the foreground.",
+        "fact": "A person is holding a smartphone in the foreground.",
         "confidence": 1.0
       },
       {
-        "fact": "The smartphone screen displays a timer reading '00:00' and '00:01'.",
+        "fact": "The smartphone screen displays a timer counting up from 00:00 to 00:01.",
         "confidence": 1.0
       },
       {
-        "fact": "The iMac screen is turned off.",
+        "fact": "A silver laptop is open on the right side of the desk.",
         "confidence": 1.0
       },
       {
-        "fact": "The laptop screen is turned on and displays a desktop with icons.",
+        "fact": "A large desktop monitor sits in the center of the desk.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A white keyboard is placed to the left of the desktop monitor.",
         "confidence": 1.0
       },
       {
@@ -74,7 +83,7 @@
       "00:00",
       "00:01"
     ],
-    "spatial": "The white keyboard is to the left of the black mouse. The silver laptop is to the right of the iMac. The smartphone is held in front of the mouse. The yellow sticky notes are on the wall above the laptop.",
+    "spatial": "The smartphone is held in the foreground, positioned in front of the black mouse and the laptop. The white keyboard is to the left of the large desktop monitor. The silver laptop is to the right of the desktop monitor. The yellow sticky notes are on the wall above and behind the laptop.",
     "parse_success": true,
     "chunk_idx": 0,
     "video_id": "4f2b15a4-9802-4ed7-8911-4b8c352ff10a",
@@ -82,54 +91,51 @@
   },
   {
     "time": [
-      2,
-      4
+      1,
+      2
     ],
     "visible_entities": [
       {
-        "desc": "large black computer monitor with silver bezel and stand, featuring an Apple logo",
+        "desc": "large silver iMac computer with a black screen",
         "action": "static",
-        "position": "center",
-        "id": "imac_silver_1"
+        "position": "center"
       },
       {
-        "desc": "open laptop with screen displaying a desktop wallpaper of sand dunes and various icons",
+        "desc": "silver laptop with a lit screen displaying a desktop interface",
         "action": "static",
-        "position": "right",
-        "id": "laptop_silver_1"
+        "position": "right"
       },
       {
-        "desc": "silver adjustable desk lamp with a cone-shaped shade",
+        "desc": "silver adjustable desk lamp with a conical shade",
         "action": "static",
-        "position": "top right",
-        "id": "desk_lamp_silver_1"
+        "position": "top right"
       },
       {
         "desc": "row of yellow sticky notes attached to the wall",
         "action": "static",
-        "position": "background",
+        "position": "background right",
         "id": "sticky_notes_yellow_1"
       },
       {
-        "desc": "white keyboard on the desk surface",
+        "desc": "white keyboard",
         "action": "static",
         "position": "bottom left",
         "id": "keyboard_white_1"
       },
       {
-        "desc": "blue and black pen lying on the desk",
+        "desc": "blue and black pen",
         "action": "static",
-        "position": "left",
-        "id": "pen_desk_1"
+        "position": "bottom left",
+        "id": "pen_black_1"
       },
       {
-        "desc": "coiled black cable on the desk",
+        "desc": "black coiled cable",
         "action": "static",
-        "position": "left",
+        "position": "bottom left",
         "id": "cable_black_1"
       },
       {
-        "desc": "white wall surface",
+        "desc": "white wall",
         "action": "static",
         "position": "background",
         "id": "wall_white_1"
@@ -137,32 +143,28 @@
     ],
     "atomic_facts": [
       {
-        "fact": "The camera angle shifts slightly upwards, revealing more of the white wall and ceiling area.",
+        "fact": "A silver laptop is open and powered on, displaying a desktop background with icons.",
         "confidence": 1.0
       },
       {
-        "fact": "A large black monitor sits centrally on a white desk.",
+        "fact": "A large iMac monitor is positioned on the desk with its screen turned off.",
         "confidence": 1.0
       },
       {
-        "fact": "An open laptop is positioned to the right of the monitor.",
+        "fact": "A silver desk lamp is mounted above the workspace, extending over the monitors.",
         "confidence": 1.0
       },
       {
-        "fact": "A silver lamp is mounted or placed above the desk area.",
+        "fact": "Several yellow sticky notes are arranged in a horizontal row on the wall behind the laptop.",
         "confidence": 1.0
       },
       {
-        "fact": "Several yellow sticky notes are adhered to the wall behind the laptop.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "A white keyboard is visible in the foreground on the left.",
+        "fact": "A blue pen and a coiled black cable lie on the desk surface to the left of the iMac.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The large black monitor is in the center of the desk, with the open laptop to its right. The silver lamp is positioned above and slightly behind the monitor. The row of yellow sticky notes is on the wall behind the laptop and to the right of the lamp. The white keyboard is in front of the monitor on the left side of the desk.",
+    "spatial": "The large iMac is positioned in the center of the desk, to the left of the open laptop. The silver desk lamp is mounted above and to the right of the iMac, extending its arm over the workspace. The row of yellow sticky notes is on the wall behind the laptop and to the right of the iMac. The white keyboard is located in the foreground, in front of the iMac.",
     "parse_success": true,
     "chunk_idx": 1,
     "video_id": "4f2b15a4-9802-4ed7-8911-4b8c352ff10a",
@@ -170,66 +172,58 @@
   },
   {
     "time": [
-      4,
-      6
+      2,
+      3
     ],
     "visible_entities": [
       {
-        "desc": "silver aluminum articulated desk lamp with a conical shade and tension springs",
+        "desc": "silver metallic articulated desk lamp with a conical shade",
         "action": "static",
-        "position": "center-right",
-        "id": "desk_lamp_silver_1"
+        "position": "center"
       },
       {
-        "desc": "large black computer monitor with a silver aluminum base and black bezel",
+        "desc": "large black computer monitor with a silver chin and Apple logo",
         "action": "static",
-        "position": "left",
-        "id": "imac_silver_1"
+        "position": "left"
       },
       {
         "desc": "laptop displaying a desktop interface with a mountain wallpaper and grid of icons",
         "action": "static",
-        "position": "bottom-center",
-        "id": "laptop_silver_1"
+        "position": "bottom center"
       },
       {
-        "desc": "row of five bright yellow sticky notes attached to the wall",
+        "desc": "row of yellow sticky notes attached to the wall",
         "action": "static",
-        "position": "center"
+        "position": "center",
+        "id": "sticky_notes_yellow_1"
       },
       {
         "desc": "translucent blue water bottle",
         "action": "static",
         "position": "right",
         "id": "water_bottle_teal_1"
-      },
-      {
-        "desc": "wooden cabinet or shelf unit",
-        "action": "static",
-        "position": "right background",
-        "id": "cabinet_wooden_1"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "The desk lamp is positioned above the laptop and sticky notes.",
+        "fact": "A silver desk lamp is positioned above a laptop and a large monitor.",
         "confidence": 1.0
       },
       {
-        "fact": "The laptop screen is illuminated, showing a desktop background and application icons.",
+        "fact": "The laptop screen is illuminated, displaying a desktop background and application icons.",
         "confidence": 1.0
       },
       {
-        "fact": "The large monitor is turned off or displaying a black screen.",
+        "fact": "Yellow sticky notes are adhered to the white wall behind the desk setup.",
         "confidence": 1.0
       },
       {
-        "fact": "A blue water bottle sits on a wooden surface to the right of the desk setup.",
+        "fact": "A blue water bottle sits on a wooden surface to the right of the lamp.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The large black monitor is to the left of the laptop. The silver desk lamp is mounted above the laptop and the row of yellow sticky notes. The sticky notes are adhered to the white wall behind the laptop. The blue water bottle is on a wooden cabinet to the right of the lamp's base.",
+    "spatial": "The large black monitor is to the left of the laptop. The silver desk lamp is positioned above the laptop and extends from the right side towards the center. The row of yellow sticky notes is on the wall behind the lamp and laptop. The blue water bottle is to the right of the lamp's base.",
     "parse_success": true,
     "chunk_idx": 2,
     "video_id": "4f2b15a4-9802-4ed7-8911-4b8c352ff10a",
@@ -237,58 +231,54 @@
   },
   {
     "time": [
-      6,
-      8
+      3,
+      4
     ],
     "visible_entities": [
       {
-        "desc": "silver aluminum desk lamp with an articulated arm and a conical shade",
+        "desc": "silver aluminum desk lamp with an articulated arm and conical shade",
         "action": "static",
-        "position": "top right",
-        "id": "desk_lamp_silver_1"
+        "position": "top right"
       },
       {
-        "desc": "large silver all-in-one desktop computer with a black screen and a central logo",
+        "desc": "large silver all-in-one desktop computer with a black screen",
         "action": "static",
-        "position": "center",
-        "id": "imac_silver_1"
+        "position": "center"
       },
       {
-        "desc": "laptop with a screen displaying a desktop interface with icons and a mountain wallpaper",
+        "desc": "laptop with a screen displaying a purple and orange mountain wallpaper and desktop icons",
         "action": "static",
-        "position": "bottom right",
-        "id": "laptop_silver_1"
+        "position": "bottom right"
       },
       {
-        "desc": "row of bright yellow sticky notes attached to the wall",
+        "desc": "row of five yellow sticky notes attached to the wall",
         "action": "static",
-        "position": "right",
-        "id": "sticky_notes_yellow_1"
+        "position": "right background"
       },
       {
-        "desc": "human hand with fingers visible",
-        "action": "moving into frame",
-        "position": "bottom left",
+        "desc": "human hand with light skin tone",
+        "action": "moving into the frame from the left",
+        "position": "left foreground",
         "id": "person_hand_1"
       },
       {
-        "desc": "blue pen lying on the desk surface",
+        "desc": "blue pen lying on the white desk surface",
         "action": "static",
         "position": "bottom left",
-        "id": "pen_desk_1"
+        "id": "pen_blue_1"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A hand enters the frame from the bottom left corner.",
+        "fact": "A hand enters the frame from the left side.",
         "confidence": 1.0
       },
       {
-        "fact": "The large desktop monitor is turned off with a black screen.",
+        "fact": "The desktop computer screen is black and turned off.",
         "confidence": 1.0
       },
       {
-        "fact": "The laptop is open and displaying a graphical user interface.",
+        "fact": "The laptop screen is on and displays a grid of application icons.",
         "confidence": 1.0
       },
       {
@@ -302,38 +292,40 @@
     "chunk_idx": 3,
     "video_id": "4f2b15a4-9802-4ed7-8911-4b8c352ff10a",
     "state_changes": [
-      "human hand with fingers visible moving into frame"
+      "Human hand enters the frame from the left."
     ]
   },
   {
     "time": [
-      8,
-      10
+      4,
+      5
     ],
     "visible_entities": [
       {
-        "desc": "silver iMac with black screen, white chin, and Apple logo",
-        "action": "static",
-        "position": "center",
-        "id": "imac_silver_1"
+        "desc": "hand with light skin tone, fingers extended",
+        "action": "moving in the foreground",
+        "position": "bottom left",
+        "id": "person_hand_1"
       },
       {
-        "desc": "silver laptop with screen displaying a desktop wallpaper of purple and orange mountains",
+        "desc": "silver Apple iMac computer with a black screen",
         "action": "static",
-        "position": "right",
-        "id": "laptop_silver_1"
+        "position": "center"
       },
       {
-        "desc": "white wireless keyboard",
+        "desc": "silver laptop with a lit screen displaying a desktop interface",
         "action": "static",
-        "position": "bottom center",
-        "id": "keyboard_white_1"
+        "position": "bottom right"
       },
       {
         "desc": "silver adjustable desk lamp with a conical shade",
         "action": "static",
-        "position": "top right",
-        "id": "desk_lamp_silver_1"
+        "position": "top right"
+      },
+      {
+        "desc": "white wireless keyboard",
+        "action": "static",
+        "position": "bottom center"
       },
       {
         "desc": "row of yellow sticky notes attached to the wall",
@@ -342,10 +334,9 @@
         "id": "sticky_notes_yellow_1"
       },
       {
-        "desc": "human hand with light skin tone",
-        "action": "moving in the foreground",
-        "position": "bottom left",
-        "id": "person_hand_1"
+        "desc": "white desk surface",
+        "action": "static",
+        "position": "bottom"
       }
     ],
     "atomic_facts": [
@@ -354,20 +345,20 @@
         "confidence": 1.0
       },
       {
-        "fact": "The iMac screen is turned off and appears black.",
+        "fact": "The iMac screen is black, indicating it is off or in sleep mode.",
         "confidence": 1.0
       },
       {
-        "fact": "The laptop screen is on and displays a desktop interface.",
+        "fact": "The laptop screen is on, displaying a desktop background with icons.",
         "confidence": 1.0
       },
       {
-        "fact": "A row of yellow sticky notes is adhered to the wall.",
+        "fact": "A row of yellow sticky notes is adhered to the wall on the right side.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The silver iMac is positioned in the center of the desk, with a white keyboard directly in front of it. To the right of the iMac, a laptop is open and displaying a screen. Above the laptop and to the right of the iMac, a silver desk lamp is mounted. Behind the laptop, a row of yellow sticky notes is attached to the wall.",
+    "spatial": "The silver iMac is positioned in the center of the white desk. To the right of the iMac is a laptop with its screen illuminated. Above the laptop and to the right of the iMac, a silver lamp is mounted or placed. A row of yellow sticky notes is on the wall to the right of the lamp. A white keyboard sits on the desk in front of the iMac. A hand is visible in the bottom left foreground, near the edge of the desk.",
     "parse_success": true,
     "chunk_idx": 4,
     "video_id": "4f2b15a4-9802-4ed7-8911-4b8c352ff10a",
@@ -375,157 +366,24 @@
   },
   {
     "time": [
-      10,
-      12
+      5,
+      6
     ],
     "visible_entities": [
       {
-        "desc": "large all-in-one desktop computer with a silver aluminum chassis, black screen bezel, and a central Apple logo",
+        "desc": "large silver all-in-one desktop computer with a black screen and a visible Apple logo on the bottom bezel",
         "action": "static",
-        "position": "center",
-        "id": "imac_silver_1"
+        "position": "center"
       },
       {
-        "desc": "silver laptop with an illuminated screen displaying a desktop interface with a purple and orange mountain wallpaper and a grid of application icons",
+        "desc": "silver laptop with an illuminated screen displaying a desktop interface with a mountain wallpaper and grid of icons",
         "action": "static",
-        "position": "bottom right",
-        "id": "laptop_silver_1"
+        "position": "bottom right"
       },
       {
-        "desc": "silver articulated desk lamp with a conical shade and a long, jointed metal arm",
+        "desc": "silver adjustable desk lamp with a conical shade and articulated metal arm",
         "action": "static",
-        "position": "top right",
-        "id": "desk_lamp_silver_1"
-      },
-      {
-        "desc": "row of rectangular yellow sticky notes adhered to the wall",
-        "action": "static",
-        "position": "right",
-        "id": "sticky_notes_yellow_1"
-      },
-      {
-        "desc": "black power cable coiled on the white desk surface",
-        "action": "static",
-        "position": "bottom left",
-        "id": "cable_black_1"
-      },
-      {
-        "desc": "small blue electrical outlet or adapter mounted on the left wall",
-        "action": "static",
-        "position": "left",
-        "id": "outlet_blue_1"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "The desktop computer and laptop are sitting statically on a white desk surface.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The laptop screen is on, displaying a graphical user interface with a grid of icons.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The silver desk lamp is positioned above the laptop and to the right of the desktop monitor.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "A row of yellow sticky notes is attached to the wall behind the laptop.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [],
-    "spatial": "The large desktop computer is positioned to the left of the laptop. The silver desk lamp is located above the laptop and extends over the workspace from the right. The row of yellow sticky notes is on the wall behind the laptop and to the right of the desktop monitor. The black cable lies on the desk surface in front of the left wall.",
-    "parse_success": true,
-    "chunk_idx": 5,
-    "video_id": "4f2b15a4-9802-4ed7-8911-4b8c352ff10a",
-    "state_changes": []
-  },
-  {
-    "time": [
-      12,
-      14
-    ],
-    "visible_entities": [
-      {
-        "desc": "large silver iMac computer with a black screen",
-        "action": "static",
-        "position": "left",
-        "id": "imac_silver_1"
-      },
-      {
-        "desc": "silver laptop with a lit screen displaying a desktop interface",
-        "action": "static",
-        "position": "right",
-        "id": "laptop_silver_1"
-      },
-      {
-        "desc": "silver adjustable desk lamp with an articulated arm",
-        "action": "static",
-        "position": "right",
-        "id": "desk_lamp_silver_1"
-      },
-      {
-        "desc": "row of yellow sticky notes attached to the wall",
-        "action": "static",
-        "position": "background",
-        "id": "sticky_notes_yellow_1"
-      },
-      {
-        "desc": "white desk surface",
-        "action": "static",
-        "position": "bottom",
-        "id": "desk_white_1"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "A silver desk lamp is positioned above the laptop.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The laptop screen is illuminated, showing a desktop background with icons.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The iMac screen is turned off and appears black.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "Yellow sticky notes are arranged in a horizontal row on the wall.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [],
-    "spatial": "The large silver iMac is to the left of the silver laptop. The silver desk lamp is positioned above and slightly behind the laptop. The row of yellow sticky notes is on the wall behind the laptop and to the right of the iMac. Both computers are sitting on the white desk surface.",
-    "parse_success": true,
-    "chunk_idx": 6,
-    "video_id": "4f2b15a4-9802-4ed7-8911-4b8c352ff10a",
-    "state_changes": []
-  },
-  {
-    "time": [
-      14,
-      16
-    ],
-    "visible_entities": [
-      {
-        "desc": "silver all-in-one desktop computer with a black bezel and silver chin featuring an Apple logo",
-        "action": "turning on",
-        "position": "center",
-        "id": "imac_silver_1"
-      },
-      {
-        "desc": "silver laptop with a screen displaying a desktop interface with icons and a dock",
-        "action": "static",
-        "position": "right",
-        "id": "laptop_silver_1"
-      },
-      {
-        "desc": "silver adjustable desk lamp with a conical shade and articulated arm",
-        "action": "static",
-        "position": "top right",
-        "id": "desk_lamp_silver_1"
+        "position": "right"
       },
       {
         "desc": "row of yellow sticky notes attached to the wall",
@@ -534,7 +392,72 @@
         "id": "sticky_notes_yellow_1"
       },
       {
-        "desc": "white wall with a recessed alcove or shelf structure above the desk",
+        "desc": "black cable coiled on the white desk surface",
+        "action": "static",
+        "position": "bottom left"
+      },
+      {
+        "desc": "small blue object mounted on the left wall",
+        "action": "static",
+        "position": "left",
+        "id": "outlet_blue_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The laptop screen is illuminated, displaying a desktop interface.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The desktop computer screen is black and turned off.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A row of yellow sticky notes is attached to the wall behind the laptop.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A silver lamp is positioned above the laptop and to the right of the desktop monitor.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The large silver desktop computer is positioned in the center of the desk, to the left of the silver laptop. The laptop is in the bottom right foreground, situated below the adjustable silver lamp. The row of yellow sticky notes is on the wall behind the laptop and to the right of the desktop monitor. A black cable lies on the desk surface to the left of the desktop computer.",
+    "parse_success": true,
+    "chunk_idx": 5,
+    "video_id": "4f2b15a4-9802-4ed7-8911-4b8c352ff10a",
+    "state_changes": []
+  },
+  {
+    "time": [
+      6,
+      7
+    ],
+    "visible_entities": [
+      {
+        "desc": "large all-in-one desktop computer with a black screen and silver aluminum chassis, featuring a central Apple logo on the bottom bezel",
+        "action": "static",
+        "position": "center"
+      },
+      {
+        "desc": "open laptop with a silver body, displaying a desktop interface with a purple mountain wallpaper and a grid of application icons",
+        "action": "static",
+        "position": "right foreground",
+        "id": "macbook_silver_1"
+      },
+      {
+        "desc": "silver articulated desk lamp with a conical shade and a long, jointed metal arm",
+        "action": "static",
+        "position": "right background",
+        "id": "lamp_silver_1"
+      },
+      {
+        "desc": "row of five rectangular yellow sticky notes attached to the wall",
+        "action": "static",
+        "position": "right background"
+      },
+      {
+        "desc": "white wall with a curved architectural archway or alcove overhead",
         "action": "static",
         "position": "background",
         "id": "wall_white_1"
@@ -542,75 +465,15 @@
     ],
     "atomic_facts": [
       {
-        "fact": "The central desktop computer screen transitions from black to displaying a colorful login screen.",
+        "fact": "A large silver desktop monitor sits centrally on the desk surface.",
         "confidence": 1.0
       },
       {
-        "fact": "The laptop on the right remains powered on with a visible desktop background.",
+        "fact": "An open laptop is positioned to the right of the desktop monitor.",
         "confidence": 1.0
       },
       {
-        "fact": "A row of yellow sticky notes is adhered to the wall behind the laptop.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [],
-    "spatial": "The silver desktop computer is positioned in the center of the desk, to the left of the silver laptop. The adjustable desk lamp is mounted above and to the right of the desktop computer, extending over the workspace. The yellow sticky notes are on the wall behind the laptop and to the right of the desktop monitor.",
-    "parse_success": true,
-    "chunk_idx": 7,
-    "video_id": "4f2b15a4-9802-4ed7-8911-4b8c352ff10a",
-    "state_changes": [
-      "iMac computer turning on (screen state change from black to displaying content)"
-    ]
-  },
-  {
-    "time": [
-      16,
-      18
-    ],
-    "visible_entities": [
-      {
-        "desc": "silver all-in-one desktop computer with a black bezel, displaying a colorful login screen with a mountain landscape wallpaper",
-        "action": "static",
-        "position": "center",
-        "id": "imac_silver_1"
-      },
-      {
-        "desc": "silver laptop with a black keyboard, displaying a desktop interface with a grid of icons and a mountain wallpaper",
-        "action": "static",
-        "position": "right",
-        "id": "laptop_silver_1"
-      },
-      {
-        "desc": "silver articulated desk lamp with a conical shade and adjustable arm",
-        "action": "static",
-        "position": "top right",
-        "id": "desk_lamp_silver_1"
-      },
-      {
-        "desc": "row of yellow sticky notes attached to the wall",
-        "action": "static",
-        "position": "right background",
-        "id": "sticky_notes_yellow_1"
-      },
-      {
-        "desc": "black power cable coiled on the white desk surface",
-        "action": "static",
-        "position": "bottom left",
-        "id": "cable_black_1"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "The desktop computer screen displays a login prompt with a user icon in the center.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The laptop screen shows a grid of application icons on the right side of the display.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The desk lamp is positioned above the desktop computer and laptop.",
+        "fact": "A silver lamp is mounted or placed behind the laptop, extending over the desk area.",
         "confidence": 1.0
       },
       {
@@ -619,7 +482,120 @@
       }
     ],
     "ocr": [],
-    "spatial": "The silver desktop computer is in the center of the desk, with the silver laptop positioned to its right. The silver desk lamp is mounted above and to the right of the desktop computer, extending over the workspace. A row of yellow sticky notes is on the wall behind the laptop. A black cable lies on the desk surface in front of the desktop computer.",
+    "spatial": "The large silver desktop monitor is positioned in the center of the desk. To the right of the monitor and slightly in the foreground is an open laptop. Behind the laptop, a silver articulated lamp extends from the right side towards the center. A row of yellow sticky notes is attached to the wall behind the laptop and to the right of the monitor.",
+    "parse_success": true,
+    "chunk_idx": 6,
+    "video_id": "4f2b15a4-9802-4ed7-8911-4b8c352ff10a",
+    "state_changes": []
+  },
+  {
+    "time": [
+      7,
+      8
+    ],
+    "visible_entities": [
+      {
+        "desc": "large silver iMac monitor with a black bezel and Apple logo",
+        "action": "turning on",
+        "position": "center"
+      },
+      {
+        "desc": "silver laptop with an open screen displaying a desktop interface",
+        "action": "static",
+        "position": "right"
+      },
+      {
+        "desc": "silver adjustable desk lamp with a cone-shaped shade",
+        "action": "static",
+        "position": "top right",
+        "id": "lamp_silver_1"
+      },
+      {
+        "desc": "row of yellow sticky notes attached to the wall",
+        "action": "static",
+        "position": "background right",
+        "id": "sticky_notes_yellow_1"
+      },
+      {
+        "desc": "white wall with a recessed shelf area",
+        "action": "static",
+        "position": "background"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The large central monitor transitions from a black screen to displaying a colorful login screen.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The laptop on the right remains on, showing a desktop with various icons.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The large iMac monitor is positioned in the center of the desk, to the left of the laptop. The silver desk lamp is mounted above and to the right of the monitor. The row of yellow sticky notes is on the wall behind the laptop and to the right of the monitor.",
+    "parse_success": true,
+    "chunk_idx": 7,
+    "video_id": "4f2b15a4-9802-4ed7-8911-4b8c352ff10a",
+    "state_changes": [
+      "Large silver iMac monitor turns on (screen changes from black to active)."
+    ]
+  },
+  {
+    "time": [
+      8,
+      9
+    ],
+    "visible_entities": [
+      {
+        "desc": "silver all-in-one desktop computer with a black bezel and a silver chin featuring an Apple logo",
+        "action": "static",
+        "position": "center",
+        "id": "imac_silver_1"
+      },
+      {
+        "desc": "silver laptop with a black keyboard and screen bezel",
+        "action": "static",
+        "position": "right"
+      },
+      {
+        "desc": "silver articulated desk lamp with a conical shade",
+        "action": "static",
+        "position": "top right"
+      },
+      {
+        "desc": "row of yellow sticky notes attached to the wall",
+        "action": "static",
+        "position": "right background",
+        "id": "sticky_notes_yellow_1"
+      },
+      {
+        "desc": "black power cable coiled on the desk surface",
+        "action": "static",
+        "position": "bottom left",
+        "id": "cable_black_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The desktop computer screen displays a login interface with a user icon and password field against a colorful mountain wallpaper.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The laptop screen displays a desktop environment with a grid of application icons and a dock at the bottom.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The desk lamp is positioned above the desktop computer.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "Yellow sticky notes are adhered to the wall behind the laptop.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The silver desktop computer is in the center of the desk, positioned to the left of the silver laptop. The articulated desk lamp is mounted above and slightly behind the desktop computer. A row of yellow sticky notes is on the wall to the right of the desktop monitor and above the laptop. A black cable lies on the desk surface in front of the desktop computer.",
     "parse_success": true,
     "chunk_idx": 8,
     "video_id": "4f2b15a4-9802-4ed7-8911-4b8c352ff10a",
@@ -627,27 +603,24 @@
   },
   {
     "time": [
-      18,
-      20
+      9,
+      10
     ],
     "visible_entities": [
       {
-        "desc": "silver Apple iMac desktop computer with a black bezel and a colorful mountain landscape wallpaper on the screen",
+        "desc": "silver all-in-one desktop computer with a black bezel and an Apple logo on the bottom chin, displaying a login screen with a colorful mountain wallpaper",
         "action": "static",
-        "position": "center",
-        "id": "imac_silver_1"
+        "position": "center"
       },
       {
-        "desc": "silver laptop with a purple mountain landscape wallpaper and visible desktop icons",
+        "desc": "laptop computer with a black bezel, displaying a desktop interface with a purple mountain wallpaper and multiple icons",
         "action": "static",
-        "position": "right",
-        "id": "laptop_silver_1"
+        "position": "right"
       },
       {
-        "desc": "silver articulated desk lamp with a conical shade",
+        "desc": "silver articulated desk lamp with a conical shade and adjustable metal arm",
         "action": "static",
-        "position": "top right",
-        "id": "desk_lamp_silver_1"
+        "position": "top right"
       },
       {
         "desc": "row of yellow sticky notes attached to the wall",
@@ -664,79 +637,15 @@
     ],
     "atomic_facts": [
       {
-        "fact": "The iMac screen displays a login prompt with a user icon in the center.",
+        "fact": "The desktop computer is displaying a login prompt with a user icon and password field.",
         "confidence": 1.0
       },
       {
-        "fact": "The laptop screen shows a grid of application icons on the right side.",
+        "fact": "The laptop screen shows a grid of application icons on the right side of the display.",
         "confidence": 1.0
       },
       {
-        "fact": "The desk lamp is positioned above the iMac and laptop.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [],
-    "spatial": "The silver iMac is positioned in the center of the desk, while the silver laptop is to the right of the iMac. The silver desk lamp is mounted above the computers, extending from the right side. The yellow sticky notes are on the wall behind the laptop.",
-    "parse_success": true,
-    "chunk_idx": 9,
-    "video_id": "4f2b15a4-9802-4ed7-8911-4b8c352ff10a",
-    "state_changes": []
-  },
-  {
-    "time": [
-      20,
-      22
-    ],
-    "visible_entities": [
-      {
-        "desc": "silver iMac desktop computer with a black bezel and Apple logo, displaying a login screen with a colorful mountain landscape wallpaper",
-        "action": "displaying a login screen",
-        "position": "left",
-        "id": "imac_silver_1"
-      },
-      {
-        "desc": "silver laptop with a black bezel, displaying a desktop interface with a grid of icons and a purple mountain wallpaper",
-        "action": "static",
-        "position": "right",
-        "id": "laptop_silver_1"
-      },
-      {
-        "desc": "silver articulated desk lamp with a conical shade and metal arm",
-        "action": "static",
-        "position": "top right",
-        "id": "desk_lamp_silver_1"
-      },
-      {
-        "desc": "row of yellow sticky notes attached to the wall",
-        "action": "static",
-        "position": "background",
-        "id": "sticky_notes_yellow_1"
-      },
-      {
-        "desc": "white desk surface",
-        "action": "static",
-        "position": "bottom",
-        "id": "desk_white_1"
-      },
-      {
-        "desc": "black cables coiled on the desk",
-        "action": "static",
-        "position": "bottom left",
-        "id": "cable_black_1"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "The iMac screen displays a login prompt with a user icon in the center.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The laptop screen shows a desktop with multiple application icons arranged in a grid.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The desk lamp is positioned above the workspace, extending from the right side.",
+        "fact": "A silver lamp is positioned above the laptop and to the right of the desktop monitor.",
         "confidence": 1.0
       },
       {
@@ -745,7 +654,66 @@
       }
     ],
     "ocr": [],
-    "spatial": "The iMac is to the left of the laptop. The desk lamp is positioned above and slightly behind the laptop. The yellow sticky notes are on the wall behind the laptop and to the right of the iMac. The cables are on the desk in front of the iMac.",
+    "spatial": "The desktop computer is in the center of the frame, with the laptop positioned to its right. The silver desk lamp is located above the laptop and to the right of the desktop monitor. The yellow sticky notes are on the wall behind the laptop, to the right of the desktop screen.",
+    "parse_success": true,
+    "chunk_idx": 9,
+    "video_id": "4f2b15a4-9802-4ed7-8911-4b8c352ff10a",
+    "state_changes": [
+      "iMac screen content changes to display a login screen with colorful mountain wallpaper."
+    ]
+  },
+  {
+    "time": [
+      10,
+      11
+    ],
+    "visible_entities": [
+      {
+        "desc": "silver iMac desktop computer with a black bezel and Apple logo",
+        "action": "displaying a login screen with a colorful mountain wallpaper",
+        "position": "left"
+      },
+      {
+        "desc": "silver laptop with a black bezel",
+        "action": "displaying a desktop interface with icons",
+        "position": "right"
+      },
+      {
+        "desc": "silver articulated desk lamp with a conical shade",
+        "action": "static",
+        "position": "center"
+      },
+      {
+        "desc": "row of yellow sticky notes",
+        "action": "static",
+        "position": "background"
+      },
+      {
+        "desc": "white desk surface",
+        "action": "static",
+        "position": "bottom"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The iMac screen displays a login interface with a user icon and password field.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The laptop screen displays a desktop environment with a grid of application icons.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A silver desk lamp is positioned above the workspace.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "Yellow sticky notes are adhered to the wall behind the laptop.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The iMac is to the left of the laptop. The desk lamp is positioned above and between the two computers. The row of yellow sticky notes is on the wall behind the laptop.",
     "parse_success": true,
     "chunk_idx": 10,
     "video_id": "4f2b15a4-9802-4ed7-8911-4b8c352ff10a",
@@ -753,26 +721,24 @@
   },
   {
     "time": [
-      22,
-      24
+      11,
+      12
     ],
     "visible_entities": [
       {
-        "desc": "large computer monitor with a black bezel, displaying a desktop interface with a mountain landscape wallpaper and an open white window",
+        "desc": "large computer monitor with a black bezel, displaying a desktop interface with a mountain landscape wallpaper and a central white window",
         "action": "static",
-        "position": "left"
+        "position": "center"
       },
       {
-        "desc": "silver articulated desk lamp with a cone-shaped shade and adjustable arm",
+        "desc": "silver articulated desk lamp with a conical shade and adjustable metal arm",
         "action": "static",
-        "position": "top-right",
-        "id": "desk_lamp_silver_1"
+        "position": "right"
       },
       {
-        "desc": "laptop screen showing a desktop interface with a purple mountain wallpaper and grid of icons",
+        "desc": "laptop screen partially visible, displaying a desktop with a purple and black wallpaper",
         "action": "static",
-        "position": "bottom-right",
-        "id": "laptop_silver_1"
+        "position": "bottom right"
       },
       {
         "desc": "row of yellow sticky notes attached to the wall",
@@ -781,32 +747,31 @@
         "id": "sticky_notes_yellow_1"
       },
       {
-        "desc": "white wall with a recessed shelf or alcove structure",
+        "desc": "white wall with a recessed shelf or architectural overhang above the desk area",
         "action": "static",
-        "position": "background",
-        "id": "wall_white_1"
+        "position": "background"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "The desk lamp is positioned above the computer monitor.",
+        "fact": "The large monitor displays a desktop interface with a mountain landscape wallpaper.",
         "confidence": 1.0
       },
       {
-        "fact": "The laptop screen is located to the right of the large monitor.",
+        "fact": "A white window is open in the center of the large monitor's screen.",
         "confidence": 1.0
       },
       {
-        "fact": "Yellow sticky notes are adhered to the wall next to the lamp.",
+        "fact": "The silver desk lamp is positioned above and to the right of the large monitor.",
         "confidence": 1.0
       },
       {
-        "fact": "The computer monitor displays a desktop environment with a visible dock at the bottom.",
+        "fact": "Yellow sticky notes are arranged in a horizontal row on the wall to the right of the monitor.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The large computer monitor is on the left side of the frame, while the laptop screen is positioned to its right. The silver desk lamp is mounted above the monitor, extending from the right side. A row of yellow sticky notes is attached to the wall to the right of the monitor and below the lamp arm. The entire setup is situated against a white wall featuring a recessed shelf area near the top.",
+    "spatial": "The large computer monitor is centered in the frame, with a laptop screen positioned to its right and slightly below. The silver desk lamp is located above and to the right of the large monitor, with its arm extending over the workspace. A row of yellow sticky notes is attached to the wall to the right of the monitor. The white wall with a recessed shelf forms the background behind all the desk items.",
     "parse_success": true,
     "chunk_idx": 11,
     "video_id": "4f2b15a4-9802-4ed7-8911-4b8c352ff10a",
@@ -814,27 +779,30 @@
   },
   {
     "time": [
-      24,
-      26
+      12,
+      13
     ],
     "visible_entities": [
       {
-        "desc": "silver aluminum iMac desktop computer with a large screen displaying a macOS interface",
+        "desc": "silver aluminum iMac desktop computer with a large screen displaying a macOS interface, featuring a mountain landscape wallpaper and a white application window",
         "action": "static",
-        "position": "left",
-        "id": "imac_silver_1"
+        "position": "left"
       },
       {
-        "desc": "silver laptop with a screen displaying a macOS desktop and icons",
+        "desc": "silver laptop computer with a screen displaying a macOS interface, featuring a purple and orange desert dune wallpaper",
         "action": "static",
-        "position": "center-right",
-        "id": "laptop_silver_1"
+        "position": "center-right"
       },
       {
-        "desc": "silver articulated desk lamp with a conical shade and metal arm",
+        "desc": "silver articulated desk lamp with a conical shade and a long metal arm",
+        "action": "static",
+        "position": "right"
+      },
+      {
+        "desc": "translucent blue water bottle",
         "action": "static",
         "position": "right",
-        "id": "desk_lamp_silver_1"
+        "id": "water_bottle_teal_1"
       },
       {
         "desc": "row of yellow sticky notes attached to the wall",
@@ -843,28 +811,31 @@
         "id": "sticky_notes_yellow_1"
       },
       {
-        "desc": "translucent blue water bottle",
+        "desc": "white wall with a curved architectural beam or ceiling feature at the top",
         "action": "static",
-        "position": "far right",
-        "id": "water_bottle_teal_1"
+        "position": "background"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "The iMac and laptop screens are illuminated and displaying desktop interfaces.",
+        "fact": "The iMac and laptop screens are illuminated and displaying active desktop environments.",
         "confidence": 1.0
       },
       {
-        "fact": "The desk lamp is positioned over the workspace with its arm extended.",
+        "fact": "The desk lamp is positioned above the laptop and to the right of the iMac.",
         "confidence": 1.0
       },
       {
-        "fact": "Yellow sticky notes are adhered to the wall behind the laptop.",
+        "fact": "The blue water bottle is standing on a surface to the right of the laptop.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "Yellow sticky notes are adhered to the wall behind the computers.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The iMac is to the left of the laptop. The silver desk lamp is positioned to the right of the laptop, with its head extending over the desk area. The row of yellow sticky notes is on the wall behind the laptop and to the right of the iMac. The blue water bottle is on the far right side of the desk, near the base of the lamp.",
+    "spatial": "The iMac is to the left of the laptop. The laptop is in front of the wall with the sticky notes. The desk lamp is above the laptop and to the right of the iMac. The blue water bottle is to the right of the laptop and near the base of the lamp.",
     "parse_success": true,
     "chunk_idx": 12,
     "video_id": "4f2b15a4-9802-4ed7-8911-4b8c352ff10a",
@@ -872,273 +843,187 @@
   },
   {
     "time": [
-      26,
-      28
+      13,
+      14
     ],
     "visible_entities": [
       {
-        "desc": "large silver Apple iMac desktop computer with a black bezel and a landscape wallpaper featuring mountains and water",
+        "desc": "silver iMac desktop computer with a large screen displaying a mountain landscape wallpaper and an open white window",
         "action": "static",
-        "position": "left",
-        "id": "imac_silver_1"
+        "position": "left"
       },
       {
-        "desc": "silver laptop computer with a screen displaying a purple and orange desert dune wallpaper",
+        "desc": "silver laptop with a screen displaying a purple and orange desert dune wallpaper",
         "action": "static",
         "position": "center",
-        "id": "laptop_silver_1"
+        "id": "macbook_silver_1"
       },
       {
-        "desc": "silver articulated desk lamp with a conical shade and a metal arm",
+        "desc": "silver articulated desk lamp with a cone-shaped shade and metal arm",
         "action": "static",
-        "position": "center-right",
-        "id": "desk_lamp_silver_1"
-      },
-      {
-        "desc": "translucent blue water bottle",
-        "action": "static",
-        "position": "right",
-        "id": "water_bottle_teal_1"
-      },
-      {
-        "desc": "row of five yellow sticky notes attached to the wall",
-        "action": "static",
-        "position": "center-background",
-        "id": "sticky_notes_yellow_1"
+        "position": "top"
       },
       {
         "desc": "black smartphone standing upright",
-        "action": "static",
-        "position": "foreground-center",
-        "id": "smartphone_black_1"
-      },
-      {
-        "desc": "human finger",
-        "action": "resting on the laptop keyboard",
-        "position": "bottom-center",
-        "id": "person_hand_1"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "A finger is resting on the keyboard of the laptop.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The iMac is positioned to the left of the laptop.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The desk lamp is positioned behind the laptop and extends over the desk.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The blue water bottle is sitting on a wooden surface to the right of the laptop.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The yellow sticky notes are adhered to the white wall behind the computers.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [],
-    "spatial": "The large iMac is to the left of the laptop. The laptop is in front of the desk lamp. The blue water bottle is to the right of the laptop. The yellow sticky notes are on the wall behind the laptop.",
-    "parse_success": true,
-    "chunk_idx": 13,
-    "video_id": "4f2b15a4-9802-4ed7-8911-4b8c352ff10a",
-    "state_changes": [
-      "human finger resting on laptop keyboard (interaction begins)"
-    ]
-  },
-  {
-    "time": [
-      28,
-      30
-    ],
-    "visible_entities": [
-      {
-        "desc": "large silver iMac desktop computer with a black bezel and Apple logo",
-        "action": "static",
-        "position": "left",
-        "id": "imac_silver_1"
-      },
-      {
-        "desc": "silver laptop computer with a black keyboard and screen displaying a desert wallpaper",
-        "action": "static",
-        "position": "center-right",
-        "id": "laptop_silver_1"
-      },
-      {
-        "desc": "silver articulated desk lamp with a conical shade",
-        "action": "static",
-        "position": "top",
-        "id": "desk_lamp_silver_1"
-      },
-      {
-        "desc": "white wireless keyboard",
-        "action": "static",
-        "position": "bottom-left",
-        "id": "keyboard_white_1"
-      },
-      {
-        "desc": "black smartphone standing upright",
-        "action": "static",
-        "position": "foreground-center",
-        "id": "smartphone_black_1"
-      },
-      {
-        "desc": "row of five yellow sticky notes attached to the wall",
-        "action": "static",
-        "position": "background-center",
-        "id": "sticky_notes_yellow_1"
-      },
-      {
-        "desc": "teal water bottle",
-        "action": "static",
-        "position": "right",
-        "id": "water_bottle_teal_1"
-      },
-      {
-        "desc": "black computer mouse",
-        "action": "static",
-        "position": "bottom-center",
-        "id": "mouse_black_1"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "The iMac screen displays a window with the text 'TeamViewer' and a login interface.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The laptop screen shows a desktop with multiple file icons arranged in a grid.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "A row of yellow sticky notes is adhered to the wall behind the laptop.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The desk lamp is positioned above the workspace, extending from the right side.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "A smartphone is placed on the desk in front of the laptop.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [
-      "TeamViewer"
-    ],
-    "spatial": "The large iMac is to the left of the laptop. The laptop is positioned to the right of the iMac and below the row of yellow sticky notes. The desk lamp is mounted above the desk, with its arm extending over the laptop area. The white keyboard is in front of the iMac, and the smartphone is in front of the laptop.",
-    "parse_success": true,
-    "chunk_idx": 14,
-    "video_id": "4f2b15a4-9802-4ed7-8911-4b8c352ff10a",
-    "state_changes": []
-  },
-  {
-    "time": [
-      30,
-      32
-    ],
-    "visible_entities": [
-      {
-        "desc": "silver iMac desktop computer with a large screen displaying a macOS interface, featuring a mountain landscape wallpaper and an open window",
-        "action": "static",
-        "position": "left",
-        "id": "imac_silver_1"
-      },
-      {
-        "desc": "silver laptop computer with a screen displaying a macOS interface, featuring a sand dune wallpaper and desktop icons",
-        "action": "static",
-        "position": "right",
-        "id": "laptop_silver_1"
-      },
-      {
-        "desc": "silver adjustable desk lamp with a long metal arm and a conical shade",
-        "action": "static",
-        "position": "top",
-        "id": "desk_lamp_silver_1"
-      },
-      {
-        "desc": "smartphone with a black screen displaying a user interface with a green icon",
         "action": "static",
         "position": "foreground",
         "id": "smartphone_black_1"
       },
       {
-        "desc": "white wireless keyboard with low-profile keys",
+        "desc": "row of five yellow sticky notes attached to the wall",
         "action": "static",
-        "position": "bottom left",
-        "id": "keyboard_white_1"
+        "position": "background"
       },
       {
-        "desc": "black computer mouse",
+        "desc": "blue translucent water bottle",
         "action": "static",
-        "position": "bottom center",
-        "id": "mouse_black_1"
-      },
-      {
-        "desc": "five yellow sticky notes arranged in a horizontal row on the wall",
-        "action": "static",
-        "position": "center background",
-        "id": "sticky_notes_yellow_1"
-      },
-      {
-        "desc": "black pen lying on the desk surface",
-        "action": "static",
-        "position": "bottom left",
-        "id": "pen_desk_1"
+        "position": "right",
+        "id": "water_bottle_teal_1"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "The iMac and laptop are both powered on and displaying desktop environments.",
+        "fact": "The silver desk lamp is positioned above the laptop and iMac.",
         "confidence": 1.0
       },
       {
-        "fact": "The desk lamp is positioned above the computers, extending from the right side.",
+        "fact": "The black smartphone is placed in front of the laptop screen.",
         "confidence": 1.0
       },
       {
-        "fact": "The smartphone is placed on the desk in front of the laptop.",
+        "fact": "The yellow sticky notes are arranged in a horizontal row on the wall behind the computers.",
         "confidence": 1.0
       },
       {
-        "fact": "The yellow sticky notes are adhered to the wall behind the laptop.",
+        "fact": "The iMac displays a desktop interface with a white application window open on the left side.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The silver iMac is to the left of the silver laptop. The adjustable desk lamp is positioned above both computers, with its base near the right edge of the frame. The smartphone is in the foreground, situated in front of the laptop and to the right of the mouse. The row of yellow sticky notes is on the wall behind the laptop. The white keyboard is on the desk in front of the iMac.",
+    "spatial": "The silver iMac is to the left of the silver laptop. The articulated desk lamp is positioned above both computers, with its arm extending from the right side of the frame towards the center. The row of yellow sticky notes is on the wall behind the laptop and to the right of the iMac. The black smartphone is in the foreground, directly in front of the laptop screen. The blue water bottle is on the far right, near the base of the lamp.",
     "parse_success": true,
-    "chunk_idx": 15,
+    "chunk_idx": 13,
     "video_id": "4f2b15a4-9802-4ed7-8911-4b8c352ff10a",
-    "state_changes": []
+    "state_changes": [
+      "Black smartphone appears standing upright on the desk."
+    ]
   },
   {
     "time": [
-      32,
-      34
+      14,
+      15
     ],
     "visible_entities": [
       {
-        "desc": "large silver iMac desktop computer with a black bezel, displaying a macOS interface with a mountain wallpaper and an open window",
+        "desc": "silver Apple iMac desktop computer with a large screen displaying a macOS interface, featuring a mountain landscape wallpaper and an open window with a white background.",
         "action": "static",
         "position": "left",
         "id": "imac_silver_1"
       },
       {
-        "desc": "silver laptop (MacBook) with a black keyboard, displaying a macOS desktop with a sand dune wallpaper",
+        "desc": "silver Apple MacBook laptop with a screen displaying a macOS interface, featuring a purple and orange sand dune wallpaper and a grid of desktop icons.",
         "action": "static",
         "position": "right",
-        "id": "laptop_silver_1"
+        "id": "macbook_silver_1"
       },
       {
-        "desc": "smartphone with a black screen displaying a dark interface with a green circular icon",
+        "desc": "silver articulated desk lamp with a conical shade and a long, jointed metal arm.",
         "action": "static",
-        "position": "foreground center",
-        "id": "smartphone_black_1"
+        "position": "top"
+      },
+      {
+        "desc": "white Apple Magic Keyboard with low-profile keys.",
+        "action": "static",
+        "position": "bottom left",
+        "id": "keyboard_white_1"
+      },
+      {
+        "desc": "black computer mouse.",
+        "action": "static",
+        "position": "bottom center"
+      },
+      {
+        "desc": "black smartphone with a dark screen, positioned vertically.",
+        "action": "static",
+        "position": "bottom center"
+      },
+      {
+        "desc": "five yellow sticky notes arranged in a horizontal row on the wall.",
+        "action": "static",
+        "position": "center background"
+      },
+      {
+        "desc": "teal-colored water bottle with a black lid.",
+        "action": "static",
+        "position": "right background",
+        "id": "water_bottle_teal_1"
+      },
+      {
+        "desc": "black computer mouse on the far right of the desk.",
+        "action": "static",
+        "position": "right",
+        "id": "mouse_black_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A silver iMac and a silver MacBook are open and powered on, displaying their respective desktop screens.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A silver desk lamp is positioned above the two computers.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "Five yellow sticky notes are adhered to the wall between the iMac and the water bottle.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A white keyboard and a black mouse are on the desk in front of the iMac.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A black smartphone is standing upright on the desk between the iMac and the MacBook.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "Teams",
+      "Residential Life"
+    ],
+    "spatial": "The silver iMac is to the left of the silver MacBook. The silver desk lamp is positioned above both computers, with its arm extending over the workspace. The row of five yellow sticky notes is on the wall, located to the right of the iMac and to the left of the teal water bottle. The white keyboard is in front of the iMac, and the black smartphone is on the desk between the iMac and the MacBook.",
+    "parse_success": true,
+    "chunk_idx": 14,
+    "video_id": "4f2b15a4-9802-4ed7-8911-4b8c352ff10a",
+    "state_changes": [
+      "Teal water bottle with black lid appears; black computer mouse appears on the far right."
+    ]
+  },
+  {
+    "time": [
+      15,
+      16
+    ],
+    "visible_entities": [
+      {
+        "desc": "silver Apple iMac desktop computer with a large screen displaying a mountain landscape wallpaper and an open application window",
+        "action": "static",
+        "position": "left"
+      },
+      {
+        "desc": "silver laptop with a screen displaying a desert dune wallpaper and a grid of desktop icons",
+        "action": "static",
+        "position": "right"
+      },
+      {
+        "desc": "smartphone with a dark screen showing a user interface with a green circular icon",
+        "action": "static",
+        "position": "foreground center"
+      },
+      {
+        "desc": "silver adjustable desk lamp with a long metal arm and a conical shade",
+        "action": "static",
+        "position": "top center"
       },
       {
         "desc": "white wireless keyboard with low-profile keys",
@@ -1153,27 +1038,20 @@
         "id": "mouse_black_1"
       },
       {
-        "desc": "silver adjustable desk lamp with a conical shade and articulated arm",
+        "desc": "row of five yellow sticky notes attached to the wall",
         "action": "static",
-        "position": "top center",
-        "id": "desk_lamp_silver_1"
+        "position": "background center"
       },
       {
-        "desc": "five yellow sticky notes arranged in a horizontal row on the wall",
+        "desc": "black pen lying on the desk surface",
         "action": "static",
-        "position": "background right",
-        "id": "sticky_notes_yellow_1"
-      },
-      {
-        "desc": "white wall background",
-        "action": "static",
-        "position": "background",
-        "id": "wall_white_1"
+        "position": "bottom left",
+        "id": "pen_black_1"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "The iMac and laptop screens are both illuminated and displaying active desktop interfaces.",
+        "fact": "The iMac and laptop screens are illuminated, displaying their respective desktop environments.",
         "confidence": 1.0
       },
       {
@@ -1185,204 +1063,39 @@
         "confidence": 1.0
       },
       {
-        "fact": "The yellow sticky notes are adhered to the wall to the right of the iMac.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [],
-    "spatial": "The large iMac monitor is to the left of the laptop. The smartphone is in front of the laptop and to the right of the mouse. The desk lamp is mounted above the monitors, with its head positioned over the space between them. The row of yellow sticky notes is on the wall to the right of the iMac and above the laptop.",
-    "parse_success": true,
-    "chunk_idx": 16,
-    "video_id": "4f2b15a4-9802-4ed7-8911-4b8c352ff10a",
-    "state_changes": []
-  },
-  {
-    "time": [
-      34,
-      36
-    ],
-    "visible_entities": [
-      {
-        "desc": "silver all-in-one desktop computer with a black bezel and a visible Apple logo on the chin",
-        "action": "static",
-        "position": "left",
-        "id": "imac_silver_1"
-      },
-      {
-        "desc": "silver laptop with a black keyboard and a screen displaying a desert wallpaper",
-        "action": "static",
-        "position": "right",
-        "id": "laptop_silver_1"
-      },
-      {
-        "desc": "silver adjustable desk lamp with a conical shade and articulated arm",
-        "action": "static",
-        "position": "top",
-        "id": "desk_lamp_silver_1"
-      },
-      {
-        "desc": "white wireless keyboard with low-profile keys",
-        "action": "static",
-        "position": "bottom-left",
-        "id": "keyboard_white_1"
-      },
-      {
-        "desc": "black computer mouse",
-        "action": "static",
-        "position": "bottom-center",
-        "id": "mouse_black_1"
-      },
-      {
-        "desc": "black smartphone with a dark screen",
-        "action": "static",
-        "position": "bottom-center",
-        "id": "smartphone_black_1"
-      },
-      {
-        "desc": "row of five yellow sticky notes with handwritten text",
-        "action": "static",
-        "position": "center-right",
-        "id": "sticky_notes_yellow_1"
-      },
-      {
-        "desc": "white wall background",
-        "action": "static",
-        "position": "background",
-        "id": "wall_white_1"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "The desktop computer and laptop are both powered on and displaying their respective desktop interfaces.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "A row of yellow sticky notes is adhered to the wall behind the laptop.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "A silver desk lamp is positioned above the workspace, extending over the monitors.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "A white keyboard and black mouse are placed on the desk in front of the desktop monitor.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [
-      "TeamViewer"
-    ],
-    "spatial": "The desktop computer is to the left of the laptop. The desk lamp is mounted above the monitors, with its shade hanging over the space between them. The yellow sticky notes are on the wall to the right of the desktop monitor and above the laptop. The keyboard and mouse are on the desk surface in front of the desktop computer.",
-    "parse_success": true,
-    "chunk_idx": 17,
-    "video_id": "4f2b15a4-9802-4ed7-8911-4b8c352ff10a",
-    "state_changes": [
-      "sticky notes now show handwritten text"
-    ]
-  },
-  {
-    "time": [
-      36,
-      38
-    ],
-    "visible_entities": [
-      {
-        "desc": "silver all-in-one desktop computer with a black bezel and silver stand, displaying a mountain landscape wallpaper and an open application window",
-        "action": "static",
-        "position": "left",
-        "id": "imac_silver_1"
-      },
-      {
-        "desc": "silver laptop with a black keyboard, displaying a desert dune wallpaper and desktop icons",
-        "action": "static",
-        "position": "right",
-        "id": "laptop_silver_1"
-      },
-      {
-        "desc": "smartphone with a black case, displaying a screen with app icons",
-        "action": "static",
-        "position": "foreground",
-        "id": "smartphone_black_1"
-      },
-      {
-        "desc": "white wireless keyboard with low-profile keys",
-        "action": "static",
-        "position": "bottom-left",
-        "id": "keyboard_white_1"
-      },
-      {
-        "desc": "black computer mouse",
-        "action": "static",
-        "position": "bottom-center",
-        "id": "mouse_black_1"
-      },
-      {
-        "desc": "silver adjustable desk lamp with a conical shade and articulated arm",
-        "action": "static",
-        "position": "top",
-        "id": "desk_lamp_silver_1"
-      },
-      {
-        "desc": "five yellow rectangular sticky notes arranged in a row",
-        "action": "static",
-        "position": "background",
-        "id": "sticky_notes_yellow_1"
-      },
-      {
-        "desc": "white desk surface",
-        "action": "static",
-        "position": "bottom",
-        "id": "desk_white_1"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "The desktop computer and laptop are both powered on and displaying their respective user interfaces.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The smartphone is positioned in front of the laptop.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The desk lamp is positioned above the workspace, extending over the laptop.",
-        "confidence": 1.0
-      },
-      {
         "fact": "The sticky notes are adhered to the wall behind the laptop.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The silver desktop computer is to the left of the silver laptop. The smartphone is in front of the laptop and to the right of the black mouse. The white keyboard is in front of the desktop computer. The silver desk lamp is above the laptop and extends from the right side. The yellow sticky notes are on the wall behind the laptop.",
+    "spatial": "The iMac is to the left of the laptop. The smartphone is in front of the laptop and to the right of the mouse. The desk lamp is mounted above the monitors. The keyboard is in front of the iMac. The sticky notes are on the wall behind the laptop.",
     "parse_success": true,
-    "chunk_idx": 18,
+    "chunk_idx": 15,
     "video_id": "4f2b15a4-9802-4ed7-8911-4b8c352ff10a",
-    "state_changes": []
+    "state_changes": [
+      "Smartphone screen lights up showing a green circular icon; black pen appears lying on the desk."
+    ]
   },
   {
     "time": [
-      38,
-      40
+      16,
+      17
     ],
     "visible_entities": [
       {
-        "desc": "large silver all-in-one desktop computer with a black bezel and a visible Apple logo on the chin",
+        "desc": "silver all-in-one desktop computer with a black bezel, displaying a desktop interface with a mountain landscape wallpaper and an open white application window",
         "action": "static",
-        "position": "left",
-        "id": "imac_silver_1"
+        "position": "left"
       },
       {
-        "desc": "silver laptop with a black keyboard and a screen displaying a desert landscape wallpaper",
+        "desc": "silver laptop with a black keyboard, displaying a desktop interface with a sand dune wallpaper",
         "action": "static",
-        "position": "right",
-        "id": "laptop_silver_1"
+        "position": "right"
       },
       {
-        "desc": "white adjustable desk lamp with a conical shade and a long articulated metal arm",
+        "desc": "black smartphone with a lit screen displaying a dark interface with a green circular icon",
         "action": "static",
-        "position": "top",
-        "id": "desk_lamp_silver_1"
+        "position": "foreground"
       },
       {
         "desc": "white wireless keyboard with low-profile keys",
@@ -1397,249 +1110,71 @@
         "id": "mouse_black_1"
       },
       {
-        "desc": "smartphone with a black bezel and a white screen displaying a messaging interface",
-        "action": "static",
-        "position": "foreground center",
-        "id": "smartphone_black_1"
-      },
-      {
-        "desc": "row of five yellow sticky notes attached to the wall",
-        "action": "static",
-        "position": "center background",
-        "id": "sticky_notes_yellow_1"
-      },
-      {
-        "desc": "black pen lying on the desk surface",
-        "action": "static",
-        "position": "bottom left",
-        "id": "pen_desk_1"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "The desktop monitor displays an open window with a white background on the left side of the screen.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The laptop screen shows a grid of application icons on the right side of the desktop.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The smartphone screen is illuminated, showing a chat interface with text bubbles.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The desk lamp is positioned above the workspace, extending from the right side towards the center.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The yellow sticky notes are arranged in a horizontal line on the wall behind the laptop.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [
-      "TeamViewer",
-      "Reply",
-      "Morgan D"
-    ],
-    "spatial": "The large desktop monitor is to the left of the laptop. The smartphone is in front of the laptop and slightly to the left of the mouse. The desk lamp is mounted above the desk, with its head positioned over the space between the two computers. The row of yellow sticky notes is on the wall behind the laptop and to the right of the desktop monitor.",
-    "parse_success": true,
-    "chunk_idx": 19,
-    "video_id": "4f2b15a4-9802-4ed7-8911-4b8c352ff10a",
-    "state_changes": []
-  },
-  {
-    "time": [
-      40,
-      42
-    ],
-    "visible_entities": [
-      {
-        "desc": "large silver Apple iMac desktop computer with a black bezel, displaying a macOS interface with a mountain wallpaper and an open window",
-        "action": "static",
-        "position": "left",
-        "id": "imac_silver_1"
-      },
-      {
-        "desc": "silver laptop (MacBook) with a black keyboard, displaying a macOS desktop with a desert dune wallpaper and grid of icons",
-        "action": "static",
-        "position": "center-right",
-        "id": "laptop_silver_1"
-      },
-      {
-        "desc": "silver articulated desk lamp with a conical shade and adjustable metal arm",
+        "desc": "white adjustable desk lamp with a metal arm and a conical shade",
         "action": "static",
         "position": "top",
-        "id": "desk_lamp_silver_1"
+        "id": "lamp_silver_1"
       },
       {
-        "desc": "five yellow rectangular sticky notes arranged in a horizontal row on the wall",
+        "desc": "row of yellow sticky notes attached to the wall",
         "action": "static",
         "position": "background",
         "id": "sticky_notes_yellow_1"
       },
       {
-        "desc": "white wireless keyboard with low-profile keys",
-        "action": "static",
-        "position": "bottom-left",
-        "id": "keyboard_white_1"
-      },
-      {
-        "desc": "black computer mouse",
-        "action": "static",
-        "position": "bottom-center",
-        "id": "mouse_black_1"
-      },
-      {
-        "desc": "smartphone with a white bezel, displaying a messaging app interface",
-        "action": "static",
-        "position": "foreground",
-        "id": "smartphone_black_1"
-      },
-      {
-        "desc": "tall translucent teal water bottle",
-        "action": "static",
-        "position": "far-right",
-        "id": "water_bottle_teal_1"
-      },
-      {
-        "desc": "dark wooden box or shelf unit",
-        "action": "static",
-        "position": "far-right",
-        "id": "cabinet_wooden_1"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "The iMac and laptop are both powered on and displaying their respective desktop screens.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The smartphone is resting on the laptop's keyboard area.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The desk lamp is positioned above the workspace, extending over the monitors.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The sticky notes are adhered to the white wall behind the laptop.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [
-      "Residential Life",
-      "Residential Life",
-      "Residential Life",
-      "Residential Life",
-      "Residential Life"
-    ],
-    "spatial": "The large iMac monitor is to the left of the laptop. The silver desk lamp is mounted above the desk, with its arm extending over the center of the workspace. The row of yellow sticky notes is on the wall behind the laptop and to the right of the iMac. The white keyboard is in front of the iMac on the desk surface. The smartphone is placed in front of the laptop, resting on its base.",
-    "parse_success": true,
-    "chunk_idx": 20,
-    "video_id": "4f2b15a4-9802-4ed7-8911-4b8c352ff10a",
-    "state_changes": []
-  },
-  {
-    "time": [
-      42,
-      44
-    ],
-    "visible_entities": [
-      {
-        "desc": "large silver iMac desktop computer with a black bezel, displaying a macOS interface with a mountain landscape wallpaper and an open window",
+        "desc": "black pen lying on the desk surface",
         "action": "static",
         "position": "left",
-        "id": "imac_silver_1"
-      },
-      {
-        "desc": "silver laptop (MacBook) with a black keyboard, displaying a macOS interface with a sand dune wallpaper",
-        "action": "static",
-        "position": "center-right",
-        "id": "laptop_silver_1"
-      },
-      {
-        "desc": "black smartphone with a dark screen, lying flat",
-        "action": "static",
-        "position": "foreground-center",
-        "id": "smartphone_black_1"
-      },
-      {
-        "desc": "silver articulated desk lamp with a conical shade and a long metal arm",
-        "action": "static",
-        "position": "top-right",
-        "id": "desk_lamp_silver_1"
-      },
-      {
-        "desc": "row of five yellow sticky notes attached to the wall",
-        "action": "static",
-        "position": "center-background",
-        "id": "sticky_notes_yellow_1"
-      },
-      {
-        "desc": "white wireless keyboard with low-profile keys",
-        "action": "static",
-        "position": "bottom-left",
-        "id": "keyboard_white_1"
-      },
-      {
-        "desc": "black computer mouse",
-        "action": "static",
-        "position": "bottom-center",
-        "id": "mouse_black_1"
-      },
-      {
-        "desc": "teal translucent water bottle",
-        "action": "static",
-        "position": "far-right",
-        "id": "water_bottle_teal_1"
+        "id": "pen_black_1"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "The iMac and laptop screens are illuminated, indicating they are powered on.",
+        "fact": "The smartphone screen is illuminated, displaying a user interface.",
         "confidence": 1.0
       },
       {
-        "fact": "A row of yellow sticky notes is adhered to the white wall behind the laptop.",
+        "fact": "The desktop monitor and laptop screens are both powered on and displaying operating system desktops.",
         "confidence": 1.0
       },
       {
-        "fact": "A silver desk lamp is positioned above the workspace, extending from the right side.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "A smartphone is placed on the desk surface in front of the laptop.",
+        "fact": "A row of yellow sticky notes is adhered to the wall behind the laptop.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The large iMac monitor is positioned to the left of the laptop. The laptop sits to the right of the iMac and below the row of yellow sticky notes on the wall. The silver desk lamp is mounted above the laptop and extends over the desk area. The white keyboard is located in front of the iMac, and the black mouse is positioned between the keyboard and the laptop.",
+    "spatial": "The silver all-in-one desktop computer is positioned to the left of the silver laptop. The white desk lamp is mounted above the workspace, extending over the area between the two computers. The smartphone is placed in the foreground, directly in front of the laptop and to the right of the black mouse. The yellow sticky notes are on the wall behind the laptop.",
     "parse_success": true,
-    "chunk_idx": 21,
+    "chunk_idx": 16,
     "video_id": "4f2b15a4-9802-4ed7-8911-4b8c352ff10a",
-    "state_changes": []
+    "state_changes": [
+      "Desk lamp appearance changes to white adjustable model."
+    ]
   },
   {
     "time": [
-      44,
-      46
+      17,
+      18
     ],
     "visible_entities": [
       {
-        "desc": "large silver Apple iMac desktop computer with a black bezel, displaying a macOS interface with a mountain wallpaper and an open window",
+        "desc": "large silver Apple iMac desktop computer with a black bezel, displaying a desktop interface with a mountain wallpaper and an open window",
         "action": "static",
         "position": "left",
         "id": "imac_silver_1"
       },
       {
-        "desc": "silver laptop computer with a black keyboard, displaying a macOS interface with a desert dune wallpaper",
+        "desc": "silver laptop computer with a black keyboard, displaying a desktop interface with a sand dune wallpaper",
         "action": "static",
-        "position": "right",
-        "id": "laptop_silver_1"
+        "position": "right"
       },
       {
-        "desc": "white wireless computer keyboard with low-profile keys",
+        "desc": "silver articulated desk lamp with a conical shade and metal arm",
+        "action": "static",
+        "position": "top"
+      },
+      {
+        "desc": "white wireless keyboard with low-profile keys",
         "action": "static",
         "position": "bottom left",
         "id": "keyboard_white_1"
@@ -1657,16 +1192,9 @@
         "id": "smartphone_black_1"
       },
       {
-        "desc": "silver adjustable desk lamp with a conical shade and articulated arm",
-        "action": "static",
-        "position": "top center",
-        "id": "desk_lamp_silver_1"
-      },
-      {
         "desc": "row of five yellow sticky notes attached to the wall",
         "action": "static",
-        "position": "center background",
-        "id": "sticky_notes_yellow_1"
+        "position": "center background"
       },
       {
         "desc": "white wall surface",
@@ -1677,7 +1205,415 @@
     ],
     "atomic_facts": [
       {
-        "fact": "The iMac and laptop are both powered on and displaying desktop interfaces.",
+        "fact": "The iMac and laptop screens are illuminated and displaying active desktop environments.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A row of yellow sticky notes is adhered to the wall behind the laptop.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The desk lamp is positioned above the workspace, extending from the right side.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A white keyboard and black mouse are placed on the desk surface in front of the iMac.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The large iMac monitor is situated to the left of the laptop. The silver desk lamp is positioned above the desk, with its arm extending over the area between the two computers. The row of yellow sticky notes is attached to the wall behind the laptop and to the right of the iMac screen. The white keyboard and black mouse are on the desk surface in front of the iMac.",
+    "parse_success": true,
+    "chunk_idx": 17,
+    "video_id": "4f2b15a4-9802-4ed7-8911-4b8c352ff10a",
+    "state_changes": []
+  },
+  {
+    "time": [
+      18,
+      19
+    ],
+    "visible_entities": [
+      {
+        "desc": "large silver iMac monitor with a colorful mountain landscape wallpaper and an open window displaying a list",
+        "action": "static",
+        "position": "left",
+        "id": "imac_silver_1"
+      },
+      {
+        "desc": "silver laptop with a desert dune wallpaper and a grid of blue folder icons on the desktop",
+        "action": "static",
+        "position": "right"
+      },
+      {
+        "desc": "smartphone with a dark screen displaying a media player interface with a circular album art icon",
+        "action": "static",
+        "position": "foreground",
+        "id": "smartphone_black_1"
+      },
+      {
+        "desc": "white wireless keyboard with low-profile keys",
+        "action": "static",
+        "position": "bottom left",
+        "id": "keyboard_white_1"
+      },
+      {
+        "desc": "black computer mouse",
+        "action": "static",
+        "position": "bottom center",
+        "id": "mouse_black_1"
+      },
+      {
+        "desc": "silver articulated desk lamp with a conical shade and a long metal arm",
+        "action": "static",
+        "position": "top right"
+      },
+      {
+        "desc": "five yellow sticky notes arranged in a horizontal row on the wall",
+        "action": "static",
+        "position": "center background",
+        "id": "sticky_notes_yellow_1"
+      },
+      {
+        "desc": "white wall serving as the background",
+        "action": "static",
+        "position": "background"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A large silver monitor is positioned on the left side of the desk.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A laptop is open on the right side of the desk.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A smartphone is placed in front of the laptop.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "Five yellow sticky notes are attached to the wall behind the laptop.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A silver desk lamp is clamped to the right side, extending over the workspace.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The large silver monitor is to the left of the laptop. The smartphone is in front of the laptop and to the right of the white keyboard. The silver desk lamp is above the laptop and extends from the right side of the frame. The row of yellow sticky notes is on the wall behind the laptop.",
+    "parse_success": true,
+    "chunk_idx": 18,
+    "video_id": "4f2b15a4-9802-4ed7-8911-4b8c352ff10a",
+    "state_changes": [
+      "Smartphone screen changes to display a media player interface with album art."
+    ]
+  },
+  {
+    "time": [
+      19,
+      20
+    ],
+    "visible_entities": [
+      {
+        "desc": "silver Apple iMac desktop computer with a large screen displaying a window and desktop icons",
+        "action": "static",
+        "position": "left"
+      },
+      {
+        "desc": "silver laptop computer with a screen displaying a desert landscape wallpaper and desktop icons",
+        "action": "static",
+        "position": "right"
+      },
+      {
+        "desc": "smartphone with a black bezel and a lit screen displaying a messaging interface",
+        "action": "static",
+        "position": "foreground",
+        "id": "smartphone_black_1"
+      },
+      {
+        "desc": "white articulated desk lamp with a metal arm and a conical shade",
+        "action": "static",
+        "position": "top"
+      },
+      {
+        "desc": "white wireless keyboard with low-profile keys",
+        "action": "static",
+        "position": "bottom left",
+        "id": "keyboard_white_1"
+      },
+      {
+        "desc": "black computer mouse",
+        "action": "static",
+        "position": "bottom center",
+        "id": "mouse_black_1"
+      },
+      {
+        "desc": "five yellow sticky notes arranged in a horizontal row on the wall",
+        "action": "static",
+        "position": "background",
+        "id": "sticky_notes_yellow_1"
+      },
+      {
+        "desc": "teal translucent water bottle",
+        "action": "static",
+        "position": "far right",
+        "id": "water_bottle_teal_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The iMac and laptop are both powered on and displaying their respective desktop interfaces.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The smartphone in the foreground displays a chat application with a visible text bubble.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The desk lamp is positioned above the workspace, extending over the laptop.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The yellow sticky notes are adhered to the wall behind the laptop.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "TeamViewer"
+    ],
+    "spatial": "The iMac is located to the left of the laptop on the desk. The smartphone is positioned in the foreground, directly in front of the laptop. The desk lamp is mounted above the workspace, with its arm extending over the laptop. The row of yellow sticky notes is on the wall behind the laptop and to the right of the iMac.",
+    "parse_success": true,
+    "chunk_idx": 19,
+    "video_id": "4f2b15a4-9802-4ed7-8911-4b8c352ff10a",
+    "state_changes": [
+      "Smartphone screen changes to display a messaging interface; teal water bottle reappears."
+    ]
+  },
+  {
+    "time": [
+      20,
+      21
+    ],
+    "visible_entities": [
+      {
+        "desc": "silver all-in-one desktop computer with a black bezel and a silver stand, displaying a desktop interface with a mountain wallpaper and an open white window",
+        "action": "static",
+        "position": "left"
+      },
+      {
+        "desc": "silver laptop computer with a black keyboard, displaying a desktop interface with a desert dune wallpaper",
+        "action": "static",
+        "position": "center-right"
+      },
+      {
+        "desc": "white wireless keyboard with low-profile keys",
+        "action": "static",
+        "position": "bottom-left",
+        "id": "keyboard_white_1"
+      },
+      {
+        "desc": "black computer mouse",
+        "action": "static",
+        "position": "bottom-center",
+        "id": "mouse_black_1"
+      },
+      {
+        "desc": "smartphone with a black bezel, displaying a messaging app interface",
+        "action": "static",
+        "position": "bottom-center"
+      },
+      {
+        "desc": "silver articulated desk lamp with a conical shade and a long metal arm",
+        "action": "static",
+        "position": "top"
+      },
+      {
+        "desc": "five yellow sticky notes arranged in a horizontal row on the wall",
+        "action": "static",
+        "position": "center",
+        "id": "sticky_notes_yellow_1"
+      },
+      {
+        "desc": "tall translucent teal water bottle",
+        "action": "static",
+        "position": "far-right",
+        "id": "water_bottle_teal_1"
+      },
+      {
+        "desc": "black pen lying on the desk surface",
+        "action": "static",
+        "position": "bottom-left",
+        "id": "pen_black_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The desktop computer and laptop are both powered on and displaying their respective operating system interfaces.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A smartphone is placed directly in front of the laptop keyboard.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The desk lamp is positioned above the workspace, extending from the right side towards the center.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The sticky notes are adhered to the wall behind the laptop.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "Messages",
+      "Camera"
+    ],
+    "spatial": "The desktop computer is to the left of the laptop. The laptop is positioned to the right of the desktop computer and below the row of yellow sticky notes on the wall. The smartphone is in front of the laptop. The desk lamp is above both computers, with its arm extending from the right side of the frame.",
+    "parse_success": true,
+    "chunk_idx": 20,
+    "video_id": "4f2b15a4-9802-4ed7-8911-4b8c352ff10a",
+    "state_changes": []
+  },
+  {
+    "time": [
+      21,
+      22
+    ],
+    "visible_entities": [
+      {
+        "desc": "large silver all-in-one desktop computer with a black bezel and a lit screen displaying a mountain landscape wallpaper",
+        "action": "static",
+        "position": "left"
+      },
+      {
+        "desc": "silver laptop with a lit screen displaying a desert dune wallpaper",
+        "action": "static",
+        "position": "right"
+      },
+      {
+        "desc": "silver articulated desk lamp with a conical shade",
+        "action": "static",
+        "position": "top"
+      },
+      {
+        "desc": "row of five yellow sticky notes attached to the wall",
+        "action": "static",
+        "position": "center"
+      },
+      {
+        "desc": "white wireless keyboard",
+        "action": "static",
+        "position": "bottom left"
+      },
+      {
+        "desc": "black computer mouse",
+        "action": "static",
+        "position": "bottom center",
+        "id": "mouse_black_1"
+      },
+      {
+        "desc": "black smartphone lying flat on the desk",
+        "action": "static",
+        "position": "bottom right",
+        "id": "smartphone_black_1"
+      },
+      {
+        "desc": "teal translucent water bottle",
+        "action": "static",
+        "position": "far right",
+        "id": "water_bottle_teal_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The desk lamp is positioned above the laptop and extends over the workspace.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The desktop monitor displays a window with a white background on the left side of the screen.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The laptop screen shows a grid of application icons on the right side.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The yellow sticky notes are arranged in a horizontal line on the wall between the two screens.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The large desktop monitor is to the left of the laptop. The articulated lamp is mounted above the desk, with its head positioned over the laptop. The row of yellow sticky notes is on the wall behind the laptop and to the right of the desktop monitor. The keyboard and mouse are on the desk surface in front of the desktop monitor.",
+    "parse_success": true,
+    "chunk_idx": 21,
+    "video_id": "4f2b15a4-9802-4ed7-8911-4b8c352ff10a",
+    "state_changes": [
+      "Smartphone changes position to lying flat on the desk."
+    ]
+  },
+  {
+    "time": [
+      22,
+      23
+    ],
+    "visible_entities": [
+      {
+        "desc": "large silver iMac desktop computer with a black bezel, displaying a macOS interface with a mountain landscape wallpaper and an open white window",
+        "action": "static",
+        "position": "left"
+      },
+      {
+        "desc": "silver laptop (MacBook) with a black keyboard, displaying a macOS interface with a desert dune wallpaper",
+        "action": "static",
+        "position": "right",
+        "id": "macbook_silver_1"
+      },
+      {
+        "desc": "silver articulated desk lamp with a conical shade, mounted to the wall or desk edge",
+        "action": "static",
+        "position": "top"
+      },
+      {
+        "desc": "white wireless keyboard with low-profile keys",
+        "action": "static",
+        "position": "bottom left",
+        "id": "keyboard_white_1"
+      },
+      {
+        "desc": "black computer mouse",
+        "action": "static",
+        "position": "bottom center",
+        "id": "mouse_black_1"
+      },
+      {
+        "desc": "black smartphone with a dark screen",
+        "action": "static",
+        "position": "bottom center",
+        "id": "smartphone_black_1"
+      },
+      {
+        "desc": "row of five yellow sticky notes attached to the wall",
+        "action": "static",
+        "position": "center background"
+      },
+      {
+        "desc": "black pen lying on the desk surface",
+        "action": "static",
+        "position": "bottom left",
+        "id": "pen_black_1"
+      },
+      {
+        "desc": "teal water bottle",
+        "action": "static",
+        "position": "far right"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The iMac and laptop screens are illuminated, indicating they are powered on.",
         "confidence": 1.0
       },
       {
@@ -1685,16 +1621,16 @@
         "confidence": 1.0
       },
       {
-        "fact": "The yellow sticky notes are adhered to the wall behind the laptop.",
+        "fact": "A row of yellow sticky notes is adhered to the wall behind the laptop.",
         "confidence": 1.0
       },
       {
-        "fact": "The keyboard and mouse are placed on the desk surface in front of the iMac.",
+        "fact": "The smartphone is placed on the desk between the mouse and the laptop.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The large iMac is to the left of the laptop. The silver desk lamp is positioned above and between the two computers. The row of yellow sticky notes is on the wall behind the laptop. The white keyboard is in front of the iMac on the desk surface.",
+    "spatial": "The large iMac monitor is to the left of the laptop. The silver desk lamp is positioned above the laptop and the sticky notes. The white keyboard is in front of the iMac. The black mouse and smartphone are located between the keyboard and the laptop. The yellow sticky notes are on the wall behind the laptop.",
     "parse_success": true,
     "chunk_idx": 22,
     "video_id": "4f2b15a4-9802-4ed7-8911-4b8c352ff10a",
@@ -1702,33 +1638,31 @@
   },
   {
     "time": [
-      46,
-      48
+      23,
+      24
     ],
     "visible_entities": [
       {
-        "desc": "silver articulated desk lamp with a conical shade and spring-loaded arm",
+        "desc": "silver aluminum articulated desk lamp with a conical shade and tension springs",
         "action": "static",
         "position": "center",
-        "id": "desk_lamp_silver_1"
+        "id": "lamp_silver_1"
       },
       {
-        "desc": "large silver desktop monitor displaying a desktop interface with a mountain wallpaper",
+        "desc": "large silver desktop computer monitor with a black bezel displaying a desktop interface",
         "action": "static",
-        "position": "left",
-        "id": "imac_silver_1"
+        "position": "left"
       },
       {
-        "desc": "laptop screen displaying a desktop interface with a purple and orange sand dune wallpaper",
+        "desc": "laptop computer with a silver chassis displaying a desktop interface with a desert wallpaper",
         "action": "static",
         "position": "bottom",
-        "id": "laptop_silver_1"
+        "id": "macbook_silver_1"
       },
       {
         "desc": "row of five yellow sticky notes attached to the wall",
         "action": "static",
-        "position": "center",
-        "id": "sticky_notes_yellow_1"
+        "position": "center"
       },
       {
         "desc": "translucent blue water bottle",
@@ -1741,62 +1675,74 @@
         "action": "static",
         "position": "right",
         "id": "router_white_1"
+      },
+      {
+        "desc": "white shelving unit",
+        "action": "static",
+        "position": "right",
+        "id": "shelves_white_1"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "The camera pans from right to left, revealing the desk setup.",
+        "fact": "The camera pans to the left, shifting the view from the center of the desk to the left side.",
         "confidence": 1.0
       },
       {
-        "fact": "The silver desk lamp is positioned above the laptop screen.",
+        "fact": "A silver articulated lamp is positioned above the laptop and to the right of the desktop monitor.",
         "confidence": 1.0
       },
       {
-        "fact": "The yellow sticky notes are arranged in a horizontal row on the wall.",
+        "fact": "Five yellow sticky notes are arranged in a horizontal row on the wall behind the laptop.",
         "confidence": 1.0
       },
       {
-        "fact": "The blue water bottle sits on a wooden surface to the right of the lamp.",
+        "fact": "The desktop monitor displays a window with a white background on the left side of the screen.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A blue water bottle sits on a wooden surface to the right of the lamp's base.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The large silver monitor is to the left of the laptop screen. The silver desk lamp is mounted above the laptop and extends towards the center. The row of yellow sticky notes is on the wall behind the laptop and to the right of the large monitor. The blue water bottle is to the right of the lamp's base.",
+    "spatial": "The large desktop monitor is to the left of the laptop. The silver lamp is positioned above the laptop and extends from the right side towards the center. The row of yellow sticky notes is on the wall behind the laptop and to the right of the desktop monitor. The blue water bottle is to the right of the lamp's base and in front of the white shelving unit.",
     "parse_success": true,
     "chunk_idx": 23,
     "video_id": "4f2b15a4-9802-4ed7-8911-4b8c352ff10a",
-    "state_changes": []
+    "state_changes": [
+      "White wireless router and white shelving unit appear in the scene."
+    ]
   },
   {
     "time": [
-      48,
-      50
+      24,
+      25
     ],
     "visible_entities": [
       {
-        "desc": "silver Apple iMac computer monitor with a black bezel, displaying a desktop interface with a mountain landscape wallpaper and an open window",
+        "desc": "Silver Apple iMac computer monitor with a black bezel, displaying a desktop interface with a mountain landscape wallpaper and an open white application window.",
         "action": "static",
         "position": "right",
         "id": "imac_silver_1"
       },
       {
-        "desc": "dark rectangular book or box with a circular design on the cover",
+        "desc": "Dark rectangular book or box with a circular design on the cover, resting on a surface.",
         "action": "static",
         "position": "bottom left",
         "id": "book_dark_1"
       },
       {
-        "desc": "black cable coiled on the white desk surface",
+        "desc": "Black cable coiled on the white desk surface.",
         "action": "static",
         "position": "bottom center",
         "id": "cable_black_1"
       },
       {
-        "desc": "white wall with a recessed alcove or shelf structure",
+        "desc": "Blue electrical outlet or adapter mounted on the white wall.",
         "action": "static",
-        "position": "background",
-        "id": "wall_white_1"
+        "position": "center background",
+        "id": "outlet_blue_1"
       }
     ],
     "atomic_facts": [
@@ -1805,125 +1751,55 @@
         "confidence": 1.0
       },
       {
-        "fact": "A window is open on the computer screen, obscuring part of the desktop wallpaper.",
+        "fact": "A book or box is resting on the surface to the left of the monitor.",
         "confidence": 1.0
       },
       {
-        "fact": "A black cable lies on the desk surface near the base of the monitor.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The book or box is resting on the desk to the left of the monitor.",
+        "fact": "The scene is static with no movement observed between the frames.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The silver computer monitor is positioned on the right side of the frame, sitting on a white desk surface. To the left of the monitor, a dark book or box rests on the desk. A black cable is coiled on the desk in front of the wall and to the left of the monitor's base. The white wall serves as the background behind the desk setup.",
+    "spatial": "The silver computer monitor is positioned on the right side of the frame. To the left of the monitor, a dark book or box sits on the surface. A black cable lies on the desk in front of the wall, which features a blue outlet behind the monitor area.",
     "parse_success": true,
     "chunk_idx": 24,
     "video_id": "4f2b15a4-9802-4ed7-8911-4b8c352ff10a",
-    "state_changes": []
-  },
-  {
-    "time": [
-      50,
-      52
-    ],
-    "visible_entities": [
-      {
-        "desc": "hand with light skin tone holding a thin, dark-colored pen or stylus",
-        "action": "writing or drawing on a surface",
-        "position": "bottom center",
-        "id": "person_hand_1"
-      },
-      {
-        "desc": "thick book with a dark cover featuring a circular, metallic-looking emblem or design in the center",
-        "action": "static",
-        "position": "bottom left",
-        "id": "book_dark_1"
-      },
-      {
-        "desc": "Apple iMac computer with a silver aluminum stand and black bezel, displaying a macOS desktop",
-        "action": "static",
-        "position": "right",
-        "id": "imac_silver_1"
-      },
-      {
-        "desc": "white wall with a vertical seam and a small blue plastic hook or clip attached",
-        "action": "static",
-        "position": "background",
-        "id": "wall_white_1"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "A hand is holding a pen and moving it across a surface, indicating writing or drawing.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The iMac screen displays a window for 'TeamViewer' with a 'Sign In' prompt.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The macOS dock is visible at the bottom of the screen with various application icons.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "A thick book with a decorative cover is resting on the desk next to the writing area.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [
-      "TeamViewer",
-      "Sign In",
-      "Remote Control",
-      "File Transfer",
-      "VPN",
-      "Meeting"
-    ],
-    "spatial": "The hand holding the pen is in the foreground, positioned to the right of the thick book. The book is on the desk, to the left of the hand. The iMac is to the right of the hand and the book. The blue hook is on the wall behind the iMac.",
-    "parse_success": true,
-    "chunk_idx": 25,
-    "video_id": "4f2b15a4-9802-4ed7-8911-4b8c352ff10a",
     "state_changes": [
-      "hand holding pen begins writing or drawing action"
+      "Scene shifts focus: dark book and coiled cable appear prominently; blue outlet visible."
     ]
   },
   {
     "time": [
-      52,
-      54
+      25,
+      26
     ],
     "visible_entities": [
       {
-        "desc": "hand holding a pen",
-        "action": "writing on a yellow notepad",
-        "position": "bottom center",
-        "id": "person_hand_1"
+        "desc": "hand with light skin tone, holding a pen",
+        "action": "writing on a notepad",
+        "position": "bottom center"
       },
       {
-        "desc": "computer monitor with silver bezel and Apple logo",
-        "action": "displaying a desktop interface with a TeamViewer window",
-        "position": "right",
-        "id": "imac_silver_1"
+        "desc": "computer monitor with silver bezel and black screen border, displaying a desktop interface",
+        "action": "static",
+        "position": "right"
       },
       {
-        "desc": "thick book with a dark cover featuring a circular gold design",
+        "desc": "thick book with a dark brown cover featuring a circular gold emblem",
         "action": "static",
         "position": "bottom left",
         "id": "book_dark_1"
       },
       {
         "desc": "yellow notepad",
-        "action": "being written on",
+        "action": "static",
         "position": "bottom center",
         "id": "notepad_yellow_1"
       },
       {
-        "desc": "white wall",
+        "desc": "white wall with a vertical seam",
         "action": "static",
-        "position": "background",
-        "id": "wall_white_1"
+        "position": "background"
       }
     ],
     "atomic_facts": [
@@ -1932,77 +1808,148 @@
         "confidence": 1.0
       },
       {
-        "fact": "The computer monitor displays a TeamViewer application window.",
+        "fact": "The computer monitor displays a window with the text 'TeamViewer' visible in the bottom left corner of the window.",
         "confidence": 1.0
       },
       {
-        "fact": "A thick book with a gold design is resting on the desk.",
+        "fact": "A thick book with a gold emblem is resting on the desk surface.",
         "confidence": 1.0
       },
       {
-        "fact": "The monitor is turned on and showing a desktop background.",
+        "fact": "The monitor is positioned to the right of the book and notepad.",
         "confidence": 1.0
       }
     ],
     "ocr": [
       "TeamViewer"
     ],
-    "spatial": "The computer monitor is positioned to the right of the thick book. The yellow notepad is located in front of the book and to the left of the monitor. The hand is positioned over the notepad, holding a pen.",
+    "spatial": "The computer monitor is positioned on the right side of the desk. To the left of the monitor, a hand is writing on a yellow notepad. A thick book with a dark cover is located to the left of the notepad, near the corner of the white wall.",
     "parse_success": true,
-    "chunk_idx": 26,
+    "chunk_idx": 25,
     "video_id": "4f2b15a4-9802-4ed7-8911-4b8c352ff10a",
     "state_changes": [
-      "hand writing on yellow notepad (notepad being used)"
+      "Hand begins writing on a yellow notepad; thick book with gold emblem appears."
     ]
   },
   {
     "time": [
-      54,
-      56
+      26,
+      27
     ],
     "visible_entities": [
       {
-        "desc": "hand with light skin tone holding a pen",
-        "action": "writing on a yellow notepad",
+        "desc": "silver all-in-one desktop computer with a black bezel, displaying a macOS interface with a mountain landscape wallpaper and an open window",
+        "action": "displaying a static screen",
+        "position": "right"
+      },
+      {
+        "desc": "dark hardcover book with a circular gold or metallic emblem on the cover",
+        "action": "resting on a yellow surface",
+        "position": "bottom left",
+        "id": "book_dark_1"
+      },
+      {
+        "desc": "human hand holding a pen",
+        "action": "holding a pen",
         "position": "bottom center",
         "id": "person_hand_1"
       },
       {
-        "desc": "yellow notepad with handwritten text",
+        "desc": "dark blue or black pen",
+        "action": "being held",
+        "position": "bottom center",
+        "id": "pen_black_1"
+      },
+      {
+        "desc": "yellow notebook or paper",
         "action": "static",
         "position": "bottom left",
         "id": "notepad_yellow_1"
       },
       {
-        "desc": "thick book with a dark cover featuring a circular design",
-        "action": "static",
-        "position": "bottom left",
-        "id": "book_dark_1"
-      },
-      {
-        "desc": "silver Apple iMac computer displaying a desktop interface",
-        "action": "static",
-        "position": "right",
-        "id": "imac_silver_1"
-      },
-      {
-        "desc": "black cable coiled on the desk surface",
-        "action": "static",
+        "desc": "black cable",
+        "action": "lying on the desk",
         "position": "center",
         "id": "cable_black_1"
+      },
+      {
+        "desc": "white wall and desk corner",
+        "action": "static",
+        "position": "background",
+        "id": "wall_white_1"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A hand is writing on a yellow notepad.",
+        "fact": "A hand is holding a pen over a desk.",
         "confidence": 1.0
       },
       {
-        "fact": "The computer screen displays a window with the text 'TeamViewer'.",
+        "fact": "The computer monitor displays a window with the text 'TeamViewer'.",
         "confidence": 1.0
       },
       {
-        "fact": "The computer screen displays a window with the text 'Remote Control'.",
+        "fact": "A book with a circular design is placed on top of a yellow notebook.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The desktop background shows a landscape with mountains and water.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "TeamViewer"
+    ],
+    "spatial": "The computer monitor is on the right side of the desk. To the left of the monitor, a black cable lies on the white surface. In the bottom left corner, a dark book rests on top of a yellow notebook. A hand holding a pen is positioned in the lower center, near the cable and the books.",
+    "parse_success": true,
+    "chunk_idx": 26,
+    "video_id": "4f2b15a4-9802-4ed7-8911-4b8c352ff10a",
+    "state_changes": [
+      "Hand holding pen moves over yellow notebook; black cable visible on desk."
+    ]
+  },
+  {
+    "time": [
+      27,
+      28
+    ],
+    "visible_entities": [
+      {
+        "desc": "hand with light skin tone holding a pen",
+        "action": "writing on paper",
+        "position": "bottom center",
+        "id": "person_hand_1"
+      },
+      {
+        "desc": "silver Apple iMac computer monitor with a black bezel",
+        "action": "static",
+        "position": "right"
+      },
+      {
+        "desc": "thick hardcover book with a dark cover featuring a circular design",
+        "action": "static",
+        "position": "left"
+      },
+      {
+        "desc": "yellow notepad",
+        "action": "static",
+        "position": "left",
+        "id": "notepad_yellow_1"
+      },
+      {
+        "desc": "TeamViewer software window on screen",
+        "action": "static",
+        "position": "right",
+        "id": "software_teamviewer_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A hand is writing on a yellow notepad with a pen.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The computer screen displays the TeamViewer application interface.",
         "confidence": 1.0
       },
       {
@@ -2010,197 +1957,202 @@
         "confidence": 1.0
       },
       {
-        "fact": "The iMac is positioned on the right side of the desk.",
+        "fact": "The monitor is positioned to the right of the book and notepad.",
         "confidence": 1.0
       }
     ],
     "ocr": [
       "TeamViewer",
-      "Remote Control"
+      "Remote Control",
+      "File Transfer",
+      "Chat",
+      "VPN"
     ],
-    "spatial": "The hand is positioned in the foreground, writing on the yellow notepad which is located at the bottom left. The thick book is placed on top of the notepad. The iMac computer is situated to the right of the notepad and book. A black cable lies on the desk surface between the writing area and the computer.",
+    "spatial": "The hand holding the pen is positioned in the bottom center, writing on the yellow notepad. The thick book is on top of the yellow notepad to the left of the hand. The computer monitor is to the right of the book and hand, displaying a software window.",
     "parse_success": true,
     "chunk_idx": 27,
     "video_id": "4f2b15a4-9802-4ed7-8911-4b8c352ff10a",
-    "state_changes": []
+    "state_changes": [
+      "TeamViewer software window becomes visible on the iMac screen."
+    ]
   },
   {
     "time": [
-      56,
-      58
+      28,
+      29
     ],
     "visible_entities": [
       {
-        "desc": "silver Apple iMac desktop computer with a large screen displaying a macOS interface, featuring a landscape wallpaper and an open white window",
+        "desc": "silver all-in-one desktop computer with a black bezel, displaying a macOS interface with a mountain landscape wallpaper and an open white window",
         "action": "static",
         "position": "center",
         "id": "imac_silver_1"
       },
       {
-        "desc": "silver laptop (likely a MacBook) with a screen displaying a purple mountain landscape wallpaper and desktop icons",
+        "desc": "silver laptop with a black bezel, displaying a dark mountain landscape wallpaper",
         "action": "static",
-        "position": "right",
-        "id": "laptop_silver_1"
+        "position": "right"
       },
       {
-        "desc": "white adjustable desk lamp with a metal articulated arm and a conical shade",
+        "desc": "white adjustable desk lamp with a metal arm and a conical shade",
         "action": "static",
         "position": "top right",
-        "id": "desk_lamp_silver_1"
+        "id": "lamp_silver_1"
       },
       {
-        "desc": "thick book with a dark cover featuring a circular design, resting on a yellow notepad",
+        "desc": "dark rectangular book with a circular design on the cover",
+        "action": "static",
+        "position": "bottom left"
+      },
+      {
+        "desc": "yellow notepad",
         "action": "static",
         "position": "bottom left",
-        "id": "book_dark_1"
+        "id": "notepad_yellow_1"
       },
       {
-        "desc": "black pen lying on the desk surface",
+        "desc": "black pen",
         "action": "static",
         "position": "bottom center",
-        "id": "pen_desk_1"
+        "id": "pen_black_1"
       },
       {
-        "desc": "black power cable coiled on the desk",
+        "desc": "black cable",
         "action": "static",
         "position": "bottom center",
         "id": "cable_black_1"
       },
       {
-        "desc": "row of bright green sticky notes attached to the wall",
+        "desc": "green sticky notes",
         "action": "static",
-        "position": "right background",
-        "id": "sticky_notes_green_1"
+        "position": "background right",
+        "id": "sticky_notes_yellow_1"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "The camera pans from left to right, revealing a laptop and a desk lamp next to the iMac.",
+        "fact": "The camera pans to the right, revealing a laptop next to the desktop computer.",
         "confidence": 1.0
       },
       {
-        "fact": "The iMac screen displays a Finder window over a desktop background of a lake and mountains.",
+        "fact": "The desktop computer is displaying an open application window over the desktop background.",
         "confidence": 1.0
       },
       {
-        "fact": "The laptop screen is illuminated with a purple-hued desktop wallpaper.",
+        "fact": "A book is resting on top of a yellow notepad on the desk.",
         "confidence": 1.0
       },
       {
-        "fact": "A book is placed on top of a yellow notepad on the left side of the desk.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "Green sticky notes are adhered to the wall behind the laptop.",
+        "fact": "A black pen lies on the desk surface near the computer cables.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The iMac is positioned in the center of the desk, with the laptop to its right. The white desk lamp is mounted above and behind the laptop. To the left of the iMac, a book rests on a yellow notepad near the corner of the wall. The green sticky notes are on the wall to the right of the iMac and above the laptop.",
+    "spatial": "The silver desktop computer is positioned in the center of the desk, with a silver laptop to its right. A white desk lamp is mounted above and behind the computers. To the left of the desktop, a dark book rests on top of a yellow notepad. A black pen and cable are on the desk surface in front of the computer.",
     "parse_success": true,
     "chunk_idx": 28,
     "video_id": "4f2b15a4-9802-4ed7-8911-4b8c352ff10a",
     "state_changes": [
-      "green sticky notes appear on wall (different from previous yellow ones)"
+      "Green sticky notes appear; black pen and cable remain static on desk."
     ]
   },
   {
     "time": [
-      58,
-      60
+      29,
+      30
     ],
     "visible_entities": [
       {
-        "desc": "silver aluminum iMac desktop computer with a large screen displaying a macOS interface, featuring a mountain landscape wallpaper and an open white window",
+        "desc": "large silver all-in-one desktop computer with a black bezel and a visible Apple logo on the chin",
         "action": "static",
         "position": "left",
         "id": "imac_silver_1"
       },
       {
-        "desc": "silver laptop (MacBook) with a screen displaying a macOS desktop, featuring a purple and orange sand dune wallpaper",
+        "desc": "silver laptop with a black keyboard area and a screen displaying a desert landscape wallpaper",
         "action": "static",
-        "position": "center-right",
-        "id": "laptop_silver_1"
+        "position": "center-right"
       },
       {
-        "desc": "articulated desk lamp with a silver metal finish, conical shade, and adjustable arm",
+        "desc": "silver articulated desk lamp with a conical shade and a long metal arm",
         "action": "static",
-        "position": "top-right",
-        "id": "desk_lamp_silver_1"
+        "position": "top-right"
       },
       {
-        "desc": "row of five yellow sticky notes attached to the wall",
+        "desc": "row of five yellow rectangular sticky notes attached to the wall",
         "action": "static",
-        "position": "center",
-        "id": "sticky_notes_yellow_1"
+        "position": "center"
       },
       {
-        "desc": "translucent teal water bottle",
+        "desc": "smartphone with a white bezel displaying a light-colored interface",
         "action": "static",
-        "position": "right",
-        "id": "water_bottle_teal_1"
-      },
-      {
-        "desc": "smartphone with a lit screen showing a white interface",
-        "action": "static",
-        "position": "bottom-center",
-        "id": "smartphone_black_1"
+        "position": "bottom-center"
       },
       {
         "desc": "black computer mouse",
         "action": "static",
         "position": "right",
         "id": "mouse_black_1"
+      },
+      {
+        "desc": "blue translucent water bottle",
+        "action": "static",
+        "position": "far-right",
+        "id": "water_bottle_teal_1"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "The iMac and laptop screens are illuminated and displaying the macOS operating system.",
+        "fact": "The desktop computer screen displays an open window with a white background over a mountain wallpaper.",
         "confidence": 1.0
       },
       {
-        "fact": "The desk lamp is positioned above the laptop.",
+        "fact": "The laptop screen displays a grid of application icons on a desert-themed background.",
         "confidence": 1.0
       },
       {
-        "fact": "The smartphone is placed on the desk in front of the laptop.",
+        "fact": "The desk lamp is positioned above the laptop and extends from the right side of the frame.",
         "confidence": 1.0
       },
       {
-        "fact": "The sticky notes are arranged in a horizontal line on the wall.",
+        "fact": "The yellow sticky notes are arranged in a horizontal line on the wall behind the laptop.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The smartphone is placed on the desk surface directly in front of the laptop.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The iMac is to the left of the laptop. The desk lamp is positioned above and slightly behind the laptop, with its arm extending over the workspace. The row of yellow sticky notes is on the wall behind the laptop and to the right of the iMac. The smartphone is in the foreground, sitting on the desk in front of the laptop.",
+    "spatial": "The large desktop computer is to the left of the laptop. The silver desk lamp is positioned above the laptop, with its arm extending from the right side. The row of yellow sticky notes is on the wall behind the laptop and to the right of the desktop monitor. The smartphone is in front of the laptop on the desk surface.",
     "parse_success": true,
     "chunk_idx": 29,
     "video_id": "4f2b15a4-9802-4ed7-8911-4b8c352ff10a",
-    "state_changes": []
+    "state_changes": [
+      "Smartphone with white bezel and light interface appears."
+    ]
   },
   {
     "time": [
-      60,
-      62
+      30,
+      31
     ],
     "visible_entities": [
       {
-        "desc": "silver Apple iMac desktop computer with a large screen displaying a macOS interface, featuring a mountain landscape wallpaper and an open white window",
+        "desc": "large silver Apple iMac desktop computer with a black bezel, displaying a macOS interface with a mountain landscape wallpaper and an open window",
         "action": "static",
-        "position": "left",
-        "id": "imac_silver_1"
+        "position": "left"
       },
       {
-        "desc": "silver laptop with a screen displaying a macOS interface, featuring a purple and orange sand dune wallpaper and desktop icons",
+        "desc": "silver laptop (MacBook) with a black keyboard, displaying a macOS interface with a desert dune wallpaper",
         "action": "static",
         "position": "right",
-        "id": "laptop_silver_1"
+        "id": "macbook_silver_1"
       },
       {
-        "desc": "silver articulated desk lamp with a conical shade and a long metal arm",
+        "desc": "silver articulated desk lamp with a conical shade and adjustable metal arm",
         "action": "static",
-        "position": "top",
-        "id": "desk_lamp_silver_1"
+        "position": "top"
       },
       {
         "desc": "five yellow sticky notes arranged in a horizontal row on the wall",
@@ -2227,32 +2179,36 @@
         "id": "mouse_black_1"
       },
       {
-        "desc": "white wall serving as the background",
+        "desc": "black pen lying on the desk surface",
         "action": "static",
-        "position": "background",
-        "id": "wall_white_1"
+        "position": "bottom left",
+        "id": "pen_black_1"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "The iMac and laptop are both powered on and displaying their respective desktop screens.",
+        "fact": "The iMac and laptop screens are illuminated, displaying active desktop environments.",
         "confidence": 1.0
       },
       {
-        "fact": "The desk lamp is positioned above the workspace, with its arm extended over the monitors.",
+        "fact": "The desk lamp is positioned above the workspace, extending over the monitors.",
         "confidence": 1.0
       },
       {
-        "fact": "The yellow sticky notes are affixed to the wall between the two computer screens.",
+        "fact": "A row of yellow sticky notes is adhered to the wall between the two screens.",
         "confidence": 1.0
       },
       {
-        "fact": "The smartphone is placed on the desk in front of the laptop.",
+        "fact": "A white keyboard is placed on the desk in front of the iMac.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A smartphone is resting on the desk in front of the laptop.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The iMac is to the left of the laptop. The desk lamp is above both computers. The row of yellow sticky notes is on the wall, positioned between the iMac and the laptop. The keyboard is in front of the iMac, and the smartphone is in front of the laptop.",
+    "spatial": "The large iMac monitor is to the left of the laptop. The silver desk lamp is mounted above the monitors, with its arm extending towards the center. The row of yellow sticky notes is on the wall behind the laptop and to the right of the iMac. The white keyboard is on the desk in front of the iMac, while the smartphone is positioned in front of the laptop.",
     "parse_success": true,
     "chunk_idx": 30,
     "video_id": "4f2b15a4-9802-4ed7-8911-4b8c352ff10a",
@@ -2260,42 +2216,38 @@
   },
   {
     "time": [
-      62,
-      64
+      31,
+      32
     ],
     "visible_entities": [
       {
-        "desc": "large silver all-in-one desktop computer with a black bezel, displaying a windowed application over a mountain landscape wallpaper",
+        "desc": "large silver iMac computer with a black bezel, displaying a desktop with a mountain landscape wallpaper and an open window",
         "action": "static",
-        "position": "left",
-        "id": "imac_silver_1"
+        "position": "left"
       },
       {
-        "desc": "silver laptop with a black keyboard, displaying a desktop with a purple sand dune wallpaper",
+        "desc": "silver laptop with a black keyboard, displaying a desktop with a purple and orange sand dune wallpaper",
         "action": "static",
-        "position": "right",
-        "id": "laptop_silver_1"
+        "position": "right"
       },
       {
-        "desc": "white adjustable metal desk lamp with a conical shade and articulated arm",
+        "desc": "silver articulated desk lamp with a conical shade and a long metal arm",
         "action": "static",
-        "position": "top",
-        "id": "desk_lamp_silver_1"
+        "position": "top"
       },
       {
-        "desc": "row of five yellow sticky notes with handwritten text",
+        "desc": "row of five yellow sticky notes attached to the wall",
         "action": "static",
-        "position": "background",
-        "id": "sticky_notes_yellow_1"
+        "position": "center"
       },
       {
-        "desc": "white wireless keyboard",
+        "desc": "white wireless keyboard with low-profile keys",
         "action": "static",
         "position": "bottom left",
         "id": "keyboard_white_1"
       },
       {
-        "desc": "black smartphone",
+        "desc": "black smartphone standing upright",
         "action": "static",
         "position": "bottom center",
         "id": "smartphone_black_1"
@@ -2305,33 +2257,43 @@
         "action": "static",
         "position": "bottom right",
         "id": "mouse_black_1"
+      },
+      {
+        "desc": "black pen lying on the desk surface",
+        "action": "static",
+        "position": "bottom left",
+        "id": "pen_black_1"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "The desk lamp is positioned above the workspace, extending over the monitors.",
+        "fact": "The silver desk lamp is positioned above the laptop and the sticky notes.",
         "confidence": 1.0
       },
       {
-        "fact": "The desktop monitor displays an open application window on the left side of the screen.",
+        "fact": "The iMac is located to the left of the laptop.",
         "confidence": 1.0
       },
       {
-        "fact": "Yellow sticky notes are adhered to the wall behind the laptop.",
+        "fact": "The yellow sticky notes are attached to the wall between the two screens.",
         "confidence": 1.0
       },
       {
-        "fact": "The laptop screen shows a grid of file icons on the right side.",
+        "fact": "The white keyboard is placed in front of the iMac.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The smartphone is standing in front of the laptop.",
         "confidence": 1.0
       }
     ],
-    "ocr": [
-      "TeamViewer"
-    ],
-    "spatial": "The large desktop monitor is to the left of the laptop. The adjustable desk lamp is mounted above the desk, with its head positioned between the two screens. The row of yellow sticky notes is on the wall behind the laptop and to the right of the desktop monitor. The white keyboard is in front of the desktop monitor, and the black mouse is to the right of the laptop.",
+    "ocr": [],
+    "spatial": "The large silver iMac is to the left of the silver laptop. The silver desk lamp is above the laptop and the row of yellow sticky notes. The white keyboard is in front of the iMac, and the black smartphone is in front of the laptop.",
     "parse_success": true,
     "chunk_idx": 31,
     "video_id": "4f2b15a4-9802-4ed7-8911-4b8c352ff10a",
-    "state_changes": []
+    "state_changes": [
+      "Black smartphone changes position to standing upright."
+    ]
   }
 ]

@@ -2,64 +2,56 @@
   {
     "time": [
       0,
-      2
+      1
     ],
     "visible_entities": [
       {
-        "desc": "person wearing a red long-sleeved shirt and dark pants",
+        "desc": "person wearing a bright red long-sleeved shirt and dark pants",
         "action": "standing and interacting with another person",
         "position": "left",
-        "id": "person_red_1"
+        "id": "person_red_main"
       },
       {
         "desc": "person wearing a patterned top and dark pants",
-        "action": "standing and interacting with the person in red",
+        "action": "standing and facing the person in red",
         "position": "right",
-        "id": "person_dark_patterned_1"
+        "id": "person_dark_partner"
       },
       {
-        "desc": "stone wall with a rough texture",
+        "desc": "rough-textured stone wall illuminated by a light",
         "action": "static",
         "position": "background",
-        "id": "stone_wall_1"
+        "id": "stone_wall_main"
       },
       {
-        "desc": "white plastic chairs",
+        "desc": "white plastic chair",
         "action": "static",
         "position": "right",
-        "id": "chairs_white_plastic_1"
+        "id": "chair_white_plastic"
       },
       {
-        "desc": "bright light fixture",
+        "desc": "large white rectangular sign",
         "action": "static",
-        "position": "background",
-        "id": "light_fixture_1"
+        "position": "top left",
+        "id": "sign_white_rect"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "Two people are standing close to each other in an outdoor setting at night.",
+        "fact": "Two people are standing close to each other in an outdoor area at night.",
         "confidence": 1.0
       },
       {
-        "fact": "The person in the red shirt is on the left side of the frame.",
+        "fact": "A light source on the stone wall illuminates the scene.",
         "confidence": 1.0
       },
       {
-        "fact": "The person in the patterned top is on the right side of the frame.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "A bright light illuminates the stone wall behind the people.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "White plastic chairs are visible to the right of the people.",
+        "fact": "The person in the red shirt is facing the person in the patterned top.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The person in the red shirt is to the left of the person in the patterned top. Both people are in front of the stone wall. The white plastic chairs are to the right of the person in the patterned top. The bright light is on the stone wall, above the people.",
+    "spatial": "The person in the red shirt is to the left of the person in the patterned top. The stone wall is behind both people. The white plastic chair is to the right of the person in the patterned top. The large white sign is above and to the left of the people.",
     "parse_success": true,
     "chunk_idx": 0,
     "video_id": "BN25n8-eHBQ",
@@ -67,645 +59,44 @@
   },
   {
     "time": [
-      2,
-      4
+      1,
+      2
     ],
     "visible_entities": [
       {
-        "desc": "person wearing a red long-sleeved top and dark pants",
-        "action": "dancing with a partner",
+        "desc": "person wearing a red short-sleeved shirt and dark pants",
+        "action": "dancing or moving rhythmically",
         "position": "center",
-        "id": "person_red_1"
+        "id": "person_red_main"
       },
       {
         "desc": "person wearing a dark top and dark pants",
-        "action": "dancing with a partner",
+        "action": "dancing or moving rhythmically",
         "position": "left",
-        "id": "person_red_1"
+        "id": "person_dark_partner"
       },
       {
         "desc": "stone wall with rough texture",
         "action": "static",
         "position": "background",
-        "id": "stone_wall_1"
+        "id": "stone_wall_main"
       },
       {
-        "desc": "bright light fixture",
+        "desc": "bright light source mounted on the wall",
         "action": "static",
         "position": "background",
-        "id": "light_fixture_1"
+        "id": "light_fixture_main"
       },
       {
         "desc": "outdoor table and chairs",
         "action": "static",
         "position": "right",
-        "id": "outdoor_furniture_1"
+        "id": "furniture_outdoor_set"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "Two people are dancing together in an outdoor area at night.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The person in the red top is holding the hand of the person in the dark top.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "A bright light illuminates the stone wall behind the dancers.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "Outdoor furniture is visible to the right of the dancers.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [],
-    "spatial": "The person in the red top is to the right of the person in the dark top. They are in front of a stone wall. The outdoor table and chairs are to the right of the dancing couple.",
-    "parse_success": true,
-    "chunk_idx": 1,
-    "video_id": "BN25n8-eHBQ",
-    "state_changes": [
-      "dancing action started between two people"
-    ]
-  },
-  {
-    "time": [
-      4,
-      6
-    ],
-    "visible_entities": [
-      {
-        "desc": "person wearing a red long-sleeved top and dark pants",
-        "action": "bending over and pulling another person",
-        "position": "center",
-        "id": "person_red_1"
-      },
-      {
-        "desc": "person wearing a dark top, sitting or crouching",
-        "action": "being pulled by the person in red",
-        "position": "center-left",
-        "id": "person_dark_1"
-      },
-      {
-        "desc": "stone wall with rough texture",
-        "action": "static",
-        "position": "background",
-        "id": "stone_wall_1"
-      },
-      {
-        "desc": "bright wall-mounted light fixture",
-        "action": "static",
-        "position": "background",
-        "id": "light_fixture_1"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "The person in the red top is physically pulling the other person.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The person in the red top is bending forward while holding the other person's arm or shoulder.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The scene takes place outdoors at night next to a stone building.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [],
-    "spatial": "The person in the red top is to the right of the person being pulled. The person being pulled is in front of the stone wall. The bright light fixture is mounted on the wall above the people.",
-    "parse_success": true,
-    "chunk_idx": 2,
-    "video_id": "BN25n8-eHBQ",
-    "state_changes": [
-      "pulling action started, one person bending over"
-    ]
-  },
-  {
-    "time": [
-      6,
-      8
-    ],
-    "visible_entities": [
-      {
-        "desc": "person wearing a red long-sleeved top and dark pants",
-        "action": "standing and moving arms",
-        "position": "center",
-        "id": "person_red_1"
-      },
-      {
-        "desc": "stone wall with rough texture",
-        "action": "static",
-        "position": "background",
-        "id": "stone_wall_1"
-      },
-      {
-        "desc": "stack of light-colored chairs",
-        "action": "static",
-        "position": "right",
-        "id": "chairs_white_plastic_1"
-      },
-      {
-        "desc": "bright light source",
-        "action": "static",
-        "position": "background",
-        "id": "light_fixture_1"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "A person in a red top is standing in the center of the frame.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The person is moving their arms, possibly gesturing or dancing.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "A stack of chairs is visible on the right side of the scene.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "A bright light illuminates the stone wall in the background.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [],
-    "spatial": "The person in the red top is in front of the stone wall. The stack of chairs is to the right of the person. The bright light source is above and behind the person, casting light on the wall.",
-    "parse_success": true,
-    "chunk_idx": 3,
-    "video_id": "BN25n8-eHBQ",
-    "state_changes": []
-  },
-  {
-    "time": [
-      8,
-      10
-    ],
-    "visible_entities": [
-      {
-        "desc": "person wearing a red short-sleeved top and dark pants",
-        "action": "standing and moving arms",
-        "position": "center",
-        "id": "person_red_1"
-      },
-      {
-        "desc": "stone wall with rough texture",
-        "action": "static",
-        "position": "background",
-        "id": "stone_wall_1"
-      },
-      {
-        "desc": "outdoor furniture including chairs",
-        "action": "static",
-        "position": "right",
-        "id": "outdoor_furniture_1"
-      },
-      {
-        "desc": "bright light source",
-        "action": "static",
-        "position": "background",
-        "id": "light_fixture_1"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "A person in a red top is standing in the center of the frame.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The person is moving their arms.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "A bright light is illuminating the stone wall behind the person.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "Chairs are visible to the right of the person.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [],
-    "spatial": "The person in the red top is in front of the stone wall. The bright light is on the wall behind the person. The outdoor furniture is to the right of the person.",
-    "parse_success": true,
-    "chunk_idx": 4,
-    "video_id": "BN25n8-eHBQ",
-    "state_changes": []
-  },
-  {
-    "time": [
-      10,
-      12
-    ],
-    "visible_entities": [
-      {
-        "desc": "person wearing a red t-shirt with a white graphic on the chest and dark pants",
-        "action": "standing still",
-        "position": "left",
-        "id": "person_red_1"
-      },
-      {
-        "desc": "person with dark hair wearing a dark patterned top and dark pants",
-        "action": "dancing or moving arms",
-        "position": "center",
-        "id": "person_dark_patterned_1"
-      },
-      {
-        "desc": "stone wall with a bright light fixture mounted on it",
-        "action": "static",
-        "position": "background",
-        "id": "stone_wall_1"
-      },
-      {
-        "desc": "white plastic chairs",
-        "action": "static",
-        "position": "right",
-        "id": "chairs_white_plastic_1"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "The person in the center is moving their arms and body, appearing to dance.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The person in the red shirt is standing relatively still on the left side.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "A bright light fixture is illuminating the stone wall in the background.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [],
-    "spatial": "The person in the red shirt is to the left of the person in the patterned top. The person in the patterned top is in front of the stone wall. The white plastic chairs are to the right of the person in the patterned top.",
-    "parse_success": true,
-    "chunk_idx": 5,
-    "video_id": "BN25n8-eHBQ",
-    "state_changes": [
-      "person with dark patterned top started dancing"
-    ]
-  },
-  {
-    "time": [
-      12,
-      14
-    ],
-    "visible_entities": [
-      {
-        "desc": "person wearing a red top and dark pants",
-        "action": "moving left",
-        "position": "left",
-        "id": "person_red_1"
-      },
-      {
-        "desc": "stone wall, textured, beige/brown",
-        "action": "static",
-        "position": "background",
-        "id": "stone_wall_1"
-      },
-      {
-        "desc": "outdoor furniture, including chairs and a table",
-        "action": "static",
-        "position": "right",
-        "id": "outdoor_furniture_1"
-      },
-      {
-        "desc": "bright light source, casting a glow",
-        "action": "static",
-        "position": "center",
-        "id": "light_fixture_1"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "A person in a red top is moving towards the left side of the frame.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The scene is set outdoors at night.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "A bright light illuminates the stone wall in the background.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [],
-    "spatial": "The person in the red top is on the left side of the frame. The outdoor furniture is to the right of the person. The stone wall is behind the person and the furniture. The bright light is on the stone wall, above the furniture.",
-    "parse_success": true,
-    "chunk_idx": 6,
-    "video_id": "BN25n8-eHBQ",
-    "state_changes": [
-      "person in red started moving left"
-    ]
-  },
-  {
-    "time": [
-      14,
-      16
-    ],
-    "visible_entities": [
-      {
-        "desc": "person with dark hair, wearing a red short-sleeved top and dark pants",
-        "action": "dancing or moving rhythmically",
-        "position": "left",
-        "id": "person_red_1"
-      },
-      {
-        "desc": "person with dark hair, wearing a dark patterned top and dark pants",
-        "action": "dancing or moving rhythmically",
-        "position": "center",
-        "id": "person_dark_patterned_1"
-      },
-      {
-        "desc": "stone wall with rough texture, illuminated by a warm light source",
-        "action": "static",
-        "position": "background",
-        "id": "stone_wall_1"
-      },
-      {
-        "desc": "metal chairs, stacked or arranged in a group",
-        "action": "static",
-        "position": "right",
-        "id": "chairs_metal_1"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "Two people are dancing or moving rhythmically in an outdoor setting at night.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "A bright light source illuminates the stone wall behind the people.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "Metal chairs are visible in the background to the right.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [],
-    "spatial": "The person in the red top is to the left of the person in the patterned top. Both people are in front of the stone wall. The metal chairs are to the right of the people and near the stone wall.",
-    "parse_success": true,
-    "chunk_idx": 7,
-    "video_id": "BN25n8-eHBQ",
-    "state_changes": []
-  },
-  {
-    "time": [
-      16,
-      18
-    ],
-    "visible_entities": [
-      {
-        "desc": "person wearing a red short-sleeved t-shirt with a white graphic on the chest, dark blue jeans, and a red cap",
-        "action": "dancing with a partner",
-        "position": "left",
-        "id": "person_red_1"
-      },
-      {
-        "desc": "person wearing a dark patterned top and dark pants",
-        "action": "dancing with a partner",
-        "position": "center",
-        "id": "person_dark_patterned_1"
-      },
-      {
-        "desc": "rough stone wall illuminated by a warm light",
-        "action": "static",
-        "position": "background",
-        "id": "stone_wall_1"
-      },
-      {
-        "desc": "empty metal chairs and tables",
-        "action": "static",
-        "position": "right",
-        "id": "chairs_metal_1"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "A person in a red shirt is holding hands with a partner in a dark top.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The couple is performing a dance move on a paved surface.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "A light fixture on the wall casts a glow on the stone texture.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [],
-    "spatial": "The person in the red shirt is to the left of the person in the dark top. The dancing couple is in front of the stone wall. The empty chairs are to the right of the dancers.",
-    "parse_success": true,
-    "chunk_idx": 8,
-    "video_id": "BN25n8-eHBQ",
-    "state_changes": []
-  },
-  {
-    "time": [
-      18,
-      20
-    ],
-    "visible_entities": [
-      {
-        "desc": "person wearing a bright red long-sleeved top and dark pants",
-        "action": "standing and leaning forward",
-        "position": "center",
-        "id": "person_red_1"
-      },
-      {
-        "desc": "person wearing dark clothing, partially obscured",
-        "action": "standing",
-        "position": "center"
-      },
-      {
-        "desc": "rough stone wall with a bright light fixture",
-        "action": "static",
-        "position": "background",
-        "id": "stone_wall_1"
-      },
-      {
-        "desc": "outdoor furniture including a chair and table",
-        "action": "static",
-        "position": "right",
-        "id": "outdoor_furniture_1"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "A person in a red top is leaning forward towards another person.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The scene is illuminated by a bright light mounted on a stone wall.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "Outdoor furniture is visible to the right of the people.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [],
-    "spatial": "The person in the red top is in front of the stone wall and to the left of the outdoor furniture. The second person is standing next to the person in red. The light fixture is mounted on the wall above the people.",
-    "parse_success": true,
-    "chunk_idx": 9,
-    "video_id": "BN25n8-eHBQ",
-    "state_changes": [
-      "dancing stopped, person standing and leaning forward"
-    ]
-  },
-  {
-    "time": [
-      20,
-      22
-    ],
-    "visible_entities": [
-      {
-        "desc": "person wearing a red hooded top and dark pants",
-        "action": "bending down towards another person",
-        "position": "center",
-        "id": "person_red_1"
-      },
-      {
-        "desc": "person wearing a patterned top and dark pants",
-        "action": "sitting or crouching on the ground",
-        "position": "center",
-        "id": "person_dark_patterned_1"
-      },
-      {
-        "desc": "stone wall with a rough texture",
-        "action": "static",
-        "position": "background",
-        "id": "stone_wall_1"
-      },
-      {
-        "desc": "outdoor light fixture",
-        "action": "static",
-        "position": "background",
-        "id": "light_fixture_1"
-      },
-      {
-        "desc": "outdoor chair",
-        "action": "static",
-        "position": "right",
-        "id": "outdoor_furniture_1"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "A person in a red hooded top bends down towards a person who is sitting or crouching.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The person in the red hooded top is positioned behind the person who is sitting or crouching.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "A light fixture mounted on the stone wall illuminates the scene.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [],
-    "spatial": "The person in the red hooded top is behind the person who is sitting or crouching. The stone wall is behind both people. An outdoor chair is to the right of the people.",
-    "parse_success": true,
-    "chunk_idx": 10,
-    "video_id": "BN25n8-eHBQ",
-    "state_changes": [
-      "person bending down towards another person on ground"
-    ]
-  },
-  {
-    "time": [
-      22,
-      24
-    ],
-    "visible_entities": [
-      {
-        "desc": "person wearing a red short-sleeved t-shirt and dark pants",
-        "action": "dancing or moving rhythmically",
-        "position": "center-right",
-        "id": "person_red_1"
-      },
-      {
-        "desc": "person wearing a dark patterned top and dark pants",
-        "action": "dancing or moving rhythmically",
-        "position": "left",
-        "id": "person_dark_patterned_1"
-      },
-      {
-        "desc": "stone wall with rough texture",
-        "action": "static",
-        "position": "background",
-        "id": "stone_wall_1"
-      },
-      {
-        "desc": "outdoor chairs",
-        "action": "static",
-        "position": "right background",
-        "id": "outdoor_furniture_1"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "Two people are dancing or moving rhythmically in an outdoor setting at night.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The person in the red shirt is positioned to the right of the person in the patterned top.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "A bright light source illuminates the stone wall behind the dancers.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [],
-    "spatial": "The person in the red shirt is to the right of the person in the patterned top. Both people are in front of the stone wall. The chairs are to the right of the dancers.",
-    "parse_success": true,
-    "chunk_idx": 11,
-    "video_id": "BN25n8-eHBQ",
-    "state_changes": []
-  },
-  {
-    "time": [
-      24,
-      26
-    ],
-    "visible_entities": [
-      {
-        "desc": "person wearing a red long-sleeved top with a white graphic on the chest and dark pants",
-        "action": "standing and facing right",
-        "position": "left",
-        "id": "person_red_1"
-      },
-      {
-        "desc": "person with long hair wearing a dark patterned top and dark pants",
-        "action": "standing and facing left",
-        "position": "right",
-        "id": "person_dark_patterned_1"
-      },
-      {
-        "desc": "stone wall with a rough texture",
-        "action": "static",
-        "position": "background",
-        "id": "stone_wall_1"
-      },
-      {
-        "desc": "bright light source",
-        "action": "static",
-        "position": "background",
-        "id": "light_fixture_1"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "Two people are standing facing each other in a dimly lit area.",
+        "fact": "Two people are dancing or moving together in an outdoor area at night.",
         "confidence": 1.0
       },
       {
@@ -713,97 +104,112 @@
         "confidence": 1.0
       },
       {
-        "fact": "The person on the left is wearing a red top.",
+        "fact": "The person in the red shirt is positioned to the right of the person in the dark top.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The person in the red top is to the left of the person with long hair. Both people are in front of the stone wall. The bright light source is on the stone wall, above and between the two people.",
+    "spatial": "The person in the red shirt is to the right of the person in the dark top. Both people are in front of the stone wall. The table and chairs are to the right of the people.",
     "parse_success": true,
-    "chunk_idx": 12,
+    "chunk_idx": 1,
     "video_id": "BN25n8-eHBQ",
-    "state_changes": []
+    "state_changes": [
+      "Persons transition from standing/interacting to dancing/moving rhythmically."
+    ]
   },
   {
     "time": [
-      26,
-      28
+      2,
+      3
     ],
     "visible_entities": [
       {
-        "desc": "person wearing a red short-sleeved shirt, dark pants, and a dark baseball cap",
-        "action": "dancing with a partner",
+        "desc": "person wearing a red short-sleeved shirt and dark pants",
+        "action": "bending forward and holding another person",
         "position": "center",
-        "id": "person_red_1"
+        "id": "person_red_main"
       },
       {
-        "desc": "person with long hair wearing a patterned top and dark pants",
-        "action": "dancing with a partner",
+        "desc": "person with dark hair, wearing a dark top",
+        "action": "being held and lifted off the ground",
         "position": "center",
-        "id": "person_dark_patterned_1"
+        "id": "person_dark_partner"
       },
       {
-        "desc": "stone wall with a warm light fixture mounted on it",
+        "desc": "stone wall with rough texture",
         "action": "static",
         "position": "background",
-        "id": "stone_wall_1"
+        "id": "stone_wall_main"
       },
       {
-        "desc": "white patio chairs",
+        "desc": "bright outdoor light fixture",
         "action": "static",
-        "position": "right",
-        "id": "chairs_white_plastic_1"
+        "position": "background",
+        "id": "light_fixture_main"
+      },
+      {
+        "desc": "white rectangular sign",
+        "action": "static",
+        "position": "top left",
+        "id": "sign_white_rect"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A person in a red shirt is dancing with another person in a patterned top.",
+        "fact": "The person in the red shirt is physically lifting the other person.",
         "confidence": 1.0
       },
       {
-        "fact": "The two people are holding hands or arms while moving.",
+        "fact": "The person being lifted is bent over with their head down.",
         "confidence": 1.0
       },
       {
-        "fact": "A light fixture on the background wall illuminates the scene.",
+        "fact": "The scene takes place outdoors at night.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A bright light illuminates the stone wall behind the people.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The person in the red shirt is in front of the stone wall and to the left of the white patio chairs. The person in the patterned top is to the right of the person in the red shirt. The light fixture is above the dancers on the wall.",
+    "spatial": "The person in the red shirt is standing in front of the stone wall and is holding the other person. The bright light is mounted on the wall above the people. The white sign is located to the left of the light fixture.",
     "parse_success": true,
-    "chunk_idx": 13,
+    "chunk_idx": 2,
     "video_id": "BN25n8-eHBQ",
-    "state_changes": []
+    "state_changes": [
+      "Action shifts to lifting: person in red bends forward to hold/lift the other person off the ground."
+    ]
   },
   {
     "time": [
-      28,
-      30
+      3,
+      4
     ],
     "visible_entities": [
       {
-        "desc": "person wearing a red long-sleeved shirt and dark pants",
-        "action": "standing and moving arms",
+        "desc": "person wearing a red long-sleeved shirt with a white graphic on the chest, dark pants, and dark shoes",
+        "action": "standing and holding a glowing object",
         "position": "center",
-        "id": "person_red_1"
+        "id": "person_red_main"
       },
       {
-        "desc": "person wearing dark clothing",
-        "action": "standing",
-        "position": "right"
+        "desc": "glowing object emitting bright white light",
+        "action": "being held by the person",
+        "position": "center",
+        "id": "light_fixture_main"
       },
       {
-        "desc": "stone wall with a bright light fixture",
+        "desc": "stone wall with rough texture",
         "action": "static",
         "position": "background",
-        "id": "stone_wall_1"
+        "id": "stone_wall_main"
       },
       {
-        "desc": "white plastic chairs",
+        "desc": "stack of chairs",
         "action": "static",
-        "position": "right background",
-        "id": "chairs_white_plastic_1"
+        "position": "right",
+        "id": "chair_white_plastic"
       }
     ],
     "atomic_facts": [
@@ -812,20 +218,654 @@
         "confidence": 1.0
       },
       {
-        "fact": "The person in the red shirt is moving their arms.",
+        "fact": "The person is holding a bright light source in front of their upper body.",
         "confidence": 1.0
       },
       {
-        "fact": "A second person is standing to the right of the person in red.",
+        "fact": "The light source illuminates the stone wall behind the person.",
         "confidence": 1.0
       },
       {
-        "fact": "A bright light is mounted on the stone wall in the background.",
+        "fact": "Chairs are stacked against the wall on the right side.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The person in the red shirt is in the center foreground. The second person is to the right of the person in red. The stone wall is behind both people. The white plastic chairs are to the right of the second person and in front of the wall.",
+    "spatial": "The person in the red shirt is standing in the center, in front of the stone wall. The person is holding a glowing object near their chest. To the right of the person, a stack of chairs is positioned against the wall.",
+    "parse_success": true,
+    "chunk_idx": 3,
+    "video_id": "BN25n8-eHBQ",
+    "state_changes": [
+      "New entity appears: person in red is now holding a glowing object; previous lifting action ends."
+    ]
+  },
+  {
+    "time": [
+      4,
+      5
+    ],
+    "visible_entities": [
+      {
+        "desc": "person wearing a red short-sleeved shirt and dark pants",
+        "action": "standing and moving arms",
+        "position": "center",
+        "id": "person_red_main"
+      },
+      {
+        "desc": "stone wall with rough texture",
+        "action": "static",
+        "position": "background",
+        "id": "stone_wall_main"
+      },
+      {
+        "desc": "bright light source",
+        "action": "static",
+        "position": "background",
+        "id": "light_fixture_main"
+      },
+      {
+        "desc": "outdoor furniture including chairs",
+        "action": "static",
+        "position": "right",
+        "id": "furniture_outdoor_set"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A person in a red shirt is standing in the center of the frame.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The person is moving their arms, possibly gesturing or dancing.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A bright light illuminates the stone wall behind the person.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "Chairs are visible to the right of the person.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The person in the red shirt is in front of the stone wall. The bright light is on the wall, above and behind the person. The outdoor furniture is to the right of the person.",
+    "parse_success": true,
+    "chunk_idx": 4,
+    "video_id": "BN25n8-eHBQ",
+    "state_changes": []
+  },
+  {
+    "time": [
+      5,
+      6
+    ],
+    "visible_entities": [
+      {
+        "desc": "person wearing a red short-sleeved t-shirt and dark pants",
+        "action": "standing",
+        "position": "left",
+        "id": "person_red_main"
+      },
+      {
+        "desc": "person wearing a dark patterned top and dark pants",
+        "action": "dancing or moving arms",
+        "position": "center",
+        "id": "person_dark_partner"
+      },
+      {
+        "desc": "stone wall with rough texture",
+        "action": "static",
+        "position": "background",
+        "id": "stone_wall_main"
+      },
+      {
+        "desc": "bright light source on the wall",
+        "action": "static",
+        "position": "background",
+        "id": "light_fixture_main"
+      },
+      {
+        "desc": "white plastic chairs",
+        "action": "static",
+        "position": "right background",
+        "id": "chair_white_plastic"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The person in the red shirt is standing still on the left side of the frame.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The person in the center is moving their arms and body, appearing to dance.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A bright light illuminates the stone wall behind the people.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "White chairs are stacked or placed against the wall on the right.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The person in the red shirt is to the left of the person in the patterned top. The person in the patterned top is in front of the stone wall. The white chairs are to the right of the person in the patterned top and are near the wall.",
+    "parse_success": true,
+    "chunk_idx": 5,
+    "video_id": "BN25n8-eHBQ",
+    "state_changes": [
+      "Person in dark patterned top begins dancing/moving arms; person in red returns to standing."
+    ]
+  },
+  {
+    "time": [
+      6,
+      7
+    ],
+    "visible_entities": [
+      {
+        "desc": "person wearing a red top and dark pants",
+        "action": "moving left",
+        "position": "left",
+        "id": "person_red_main"
+      },
+      {
+        "desc": "stone wall with rough texture",
+        "action": "static",
+        "position": "background",
+        "id": "stone_wall_main"
+      },
+      {
+        "desc": "bright light source mounted on the wall",
+        "action": "static",
+        "position": "center",
+        "id": "light_fixture_main"
+      },
+      {
+        "desc": "outdoor furniture including chairs and a table",
+        "action": "static",
+        "position": "right",
+        "id": "furniture_outdoor_set"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "person wearing a red top is moving to the left side of the frame",
+        "confidence": 1.0
+      },
+      {
+        "fact": "a bright light is illuminating the stone wall in the background",
+        "confidence": 1.0
+      },
+      {
+        "fact": "outdoor furniture is arranged on the right side of the patio",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The person in the red top is to the left of the outdoor furniture. The bright light is mounted on the stone wall above the furniture. The furniture is in front of the stone wall.",
+    "parse_success": true,
+    "chunk_idx": 6,
+    "video_id": "BN25n8-eHBQ",
+    "state_changes": [
+      "Person in red begins moving left."
+    ]
+  },
+  {
+    "time": [
+      7,
+      8
+    ],
+    "visible_entities": [
+      {
+        "desc": "person wearing a red shirt and dark pants",
+        "action": "standing and interacting with another person",
+        "position": "left",
+        "id": "person_red_main"
+      },
+      {
+        "desc": "person with long dark hair wearing a dark patterned top and dark pants",
+        "action": "standing and interacting with another person",
+        "position": "center",
+        "id": "person_dark_partner"
+      },
+      {
+        "desc": "stone wall with a rough texture",
+        "action": "static",
+        "position": "background",
+        "id": "stone_wall_main"
+      },
+      {
+        "desc": "metal chairs",
+        "action": "static",
+        "position": "right",
+        "id": "furniture_outdoor_set"
+      },
+      {
+        "desc": "bright light source",
+        "action": "static",
+        "position": "background",
+        "id": "light_fixture_main"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "Two people are standing near each other in a dimly lit outdoor area.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A bright light source is illuminating the stone wall in the background.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "Metal chairs are positioned to the right of the people.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The person in the red shirt is to the left of the person with long dark hair. The stone wall is behind both people. The metal chairs are to the right of the people and in front of the stone wall.",
+    "parse_success": true,
+    "chunk_idx": 7,
+    "video_id": "BN25n8-eHBQ",
+    "state_changes": []
+  },
+  {
+    "time": [
+      8,
+      9
+    ],
+    "visible_entities": [
+      {
+        "desc": "person wearing a red t-shirt with a white graphic on the chest and dark blue jeans",
+        "action": "dancing or moving arms",
+        "position": "left",
+        "id": "person_red_main"
+      },
+      {
+        "desc": "person wearing a dark patterned top and dark pants",
+        "action": "dancing or moving arms",
+        "position": "center",
+        "id": "person_dark_partner"
+      },
+      {
+        "desc": "rough stone wall illuminated by a bright light",
+        "action": "static",
+        "position": "background",
+        "id": "stone_wall_main"
+      },
+      {
+        "desc": "metal chairs and tables",
+        "action": "static",
+        "position": "right",
+        "id": "furniture_outdoor_set"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A person in a red shirt is moving their arms in the foreground.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A second person in dark clothing is moving next to the person in the red shirt.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The stone wall is illuminated by a light source above it.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "Outdoor furniture is arranged to the right of the people.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The person in the red shirt is to the left of the person in the dark patterned top. Both people are in front of the illuminated stone wall. The metal chairs and tables are to the right of the people.",
+    "parse_success": true,
+    "chunk_idx": 8,
+    "video_id": "BN25n8-eHBQ",
+    "state_changes": [
+      "Both persons transition to dancing/moving arms together."
+    ]
+  },
+  {
+    "time": [
+      9,
+      10
+    ],
+    "visible_entities": [
+      {
+        "desc": "person wearing a red long-sleeved top and dark pants",
+        "action": "standing and leaning forward",
+        "position": "center",
+        "id": "person_red_main"
+      },
+      {
+        "desc": "stone wall with rough texture",
+        "action": "static",
+        "position": "background",
+        "id": "stone_wall_main"
+      },
+      {
+        "desc": "bright light fixture",
+        "action": "static",
+        "position": "background",
+        "id": "light_fixture_main"
+      },
+      {
+        "desc": "outdoor furniture including chairs",
+        "action": "static",
+        "position": "right",
+        "id": "furniture_outdoor_set"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A person in a red top is standing in the center of the frame.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The person is leaning forward slightly.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A bright light is illuminating the stone wall in the background.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "Chairs are visible to the right of the person.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The person in the red top is standing in front of the stone wall. The bright light is mounted on the wall above the person's head level. The outdoor furniture is positioned to the right of the person.",
+    "parse_success": true,
+    "chunk_idx": 9,
+    "video_id": "BN25n8-eHBQ",
+    "state_changes": [
+      "Person in red changes action to standing and leaning forward; dancing stops."
+    ]
+  },
+  {
+    "time": [
+      10,
+      11
+    ],
+    "visible_entities": [
+      {
+        "desc": "person wearing a red hooded sweatshirt and dark pants",
+        "action": "bending forward over another person",
+        "position": "center",
+        "id": "person_red_main"
+      },
+      {
+        "desc": "person wearing a dark shirt and dark pants",
+        "action": "crouching or kneeling on the ground",
+        "position": "center",
+        "id": "person_dark_partner"
+      },
+      {
+        "desc": "rough stone wall with a bright light fixture mounted on it",
+        "action": "static",
+        "position": "background",
+        "id": "stone_wall_main"
+      },
+      {
+        "desc": "stacked chairs or furniture",
+        "action": "static",
+        "position": "right",
+        "id": "chair_white_plastic"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A person in a red hooded sweatshirt is bending over a person who is crouching on the ground.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The crouching person is positioned in front of the stone wall.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A bright light illuminates the stone wall in the background.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The person in the red hooded sweatshirt is standing behind and bending over the crouching person. The crouching person is in front of the stone wall. The stacked chairs are to the right of the people.",
+    "parse_success": true,
+    "chunk_idx": 10,
+    "video_id": "BN25n8-eHBQ",
+    "state_changes": [
+      "Action shifts to ground interaction: person in red (now hooded) bends over, person in dark crouches/kneels."
+    ]
+  },
+  {
+    "time": [
+      11,
+      12
+    ],
+    "visible_entities": [
+      {
+        "desc": "person with short hair, wearing a dark patterned top and dark pants",
+        "action": "dancing",
+        "position": "left",
+        "id": "person_dark_partner"
+      },
+      {
+        "desc": "person with short hair, wearing a red t-shirt and dark pants",
+        "action": "dancing",
+        "position": "right",
+        "id": "person_red_main"
+      },
+      {
+        "desc": "rough stone wall",
+        "action": "static",
+        "position": "background",
+        "id": "stone_wall_main"
+      },
+      {
+        "desc": "outdoor furniture",
+        "action": "static",
+        "position": "right",
+        "id": "furniture_outdoor_set"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "Two people are dancing next to each other.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The person in the red shirt is on the right.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The person in the patterned shirt is on the left.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A light source illuminates the stone wall behind the dancers.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The person in the patterned top is to the left of the person in the red shirt. The stone wall is behind both people. The outdoor furniture is to the right of the person in the red shirt.",
+    "parse_success": true,
+    "chunk_idx": 11,
+    "video_id": "BN25n8-eHBQ",
+    "state_changes": [
+      "Both persons resume dancing."
+    ]
+  },
+  {
+    "time": [
+      12,
+      13
+    ],
+    "visible_entities": [
+      {
+        "desc": "person wearing a red long-sleeved top with a white circular graphic on the chest and dark pants",
+        "action": "standing and facing right",
+        "position": "left"
+      },
+      {
+        "desc": "person with long hair wearing a dark patterned top and dark pants",
+        "action": "walking to the right",
+        "position": "center-right",
+        "id": "person_dark_partner"
+      },
+      {
+        "desc": "stone wall with rough texture",
+        "action": "static",
+        "position": "background",
+        "id": "stone_wall_main"
+      },
+      {
+        "desc": "bright light fixture",
+        "action": "static",
+        "position": "background",
+        "id": "light_fixture_main"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A person in a red top is standing on the left side of the frame.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A person with long hair is walking towards the right side of the frame.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A bright light illuminates a stone wall in the background.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The person in the red top is to the left of the person with long hair. The stone wall is behind both people. The bright light is mounted on the stone wall.",
+    "parse_success": true,
+    "chunk_idx": 12,
+    "video_id": "BN25n8-eHBQ",
+    "state_changes": [
+      "Movement divergence: person in red stands facing right, person in dark walks to the right."
+    ]
+  },
+  {
+    "time": [
+      13,
+      14
+    ],
+    "visible_entities": [
+      {
+        "desc": "person wearing a red short-sleeved shirt, dark pants, and a dark cap",
+        "action": "dancing with a partner",
+        "position": "center",
+        "id": "person_red_main"
+      },
+      {
+        "desc": "person with long hair, wearing a patterned sleeveless top and dark pants",
+        "action": "dancing with a partner",
+        "position": "center",
+        "id": "person_dark_partner"
+      },
+      {
+        "desc": "stone wall with a rough texture",
+        "action": "static",
+        "position": "background",
+        "id": "stone_wall_main"
+      },
+      {
+        "desc": "bright light source mounted on the wall",
+        "action": "static",
+        "position": "background",
+        "id": "light_fixture_main"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "Two people are holding each other in a dance embrace.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The person in the red shirt is facing away from the camera.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The person in the patterned top is facing towards the person in the red shirt.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The couple is positioned in front of a stone wall.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The person in the red shirt is in the foreground, holding the person in the patterned top. The person in the patterned top is to the right of the person in the red shirt. Both individuals are standing in front of a stone wall that has a bright light source mounted on it.",
+    "parse_success": true,
+    "chunk_idx": 13,
+    "video_id": "BN25n8-eHBQ",
+    "state_changes": [
+      "Persons begin dancing with partners (implied interaction)."
+    ]
+  },
+  {
+    "time": [
+      14,
+      15
+    ],
+    "visible_entities": [
+      {
+        "desc": "person wearing a bright red long-sleeved top and dark pants",
+        "action": "dancing or moving rhythmically",
+        "position": "center"
+      },
+      {
+        "desc": "person wearing dark clothing, partially obscured",
+        "action": "standing or moving slightly",
+        "position": "right",
+        "id": "person_dark_partner"
+      },
+      {
+        "desc": "stone wall with rough texture",
+        "action": "static",
+        "position": "background",
+        "id": "stone_wall_main"
+      },
+      {
+        "desc": "white plastic chairs",
+        "action": "static",
+        "position": "background right",
+        "id": "chair_white_plastic"
+      },
+      {
+        "desc": "bright light source mounted on the wall",
+        "action": "static",
+        "position": "background left",
+        "id": "light_fixture_main"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A person in a red top is moving their body in the center of the frame.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The person in red is positioned in front of a stone wall.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A bright light illuminates the wall behind the people.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "White chairs are stacked or placed against the wall in the background.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The person in the red top is in the center, in front of the stone wall. The second person is to the right of the person in red. The white chairs are in the background to the right of the people. The light source is on the wall to the left of the center.",
     "parse_success": true,
     "chunk_idx": 14,
     "video_id": "BN25n8-eHBQ",
@@ -833,156 +873,488 @@
   },
   {
     "time": [
-      30,
-      32
+      15,
+      16
     ],
     "visible_entities": [
       {
-        "desc": "person with short dark hair, wearing a red short-sleeved shirt and dark pants",
-        "action": "bending over and interacting with a low object",
+        "desc": "person wearing a red short-sleeved shirt and dark pants",
+        "action": "bending down and interacting with a low object",
         "position": "center",
-        "id": "person_red_1"
+        "id": "person_red_main"
       },
       {
         "desc": "stone wall with rough texture",
         "action": "static",
         "position": "background",
-        "id": "stone_wall_1"
+        "id": "stone_wall_main"
       },
       {
         "desc": "white plastic chairs",
         "action": "static",
-        "position": "right",
-        "id": "chairs_white_plastic_1"
+        "position": "right background",
+        "id": "chair_white_plastic"
       },
       {
         "desc": "bright light source",
         "action": "static",
         "position": "background",
-        "id": "light_fixture_1"
+        "id": "light_fixture_main"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "The person in the red shirt is bending forward at the waist.",
+        "fact": "A person in a red shirt is bending over in the center of the frame.",
         "confidence": 1.0
       },
       {
-        "fact": "The person is reaching down towards the ground or a low object.",
+        "fact": "The person appears to be manipulating or picking up an object near the ground.",
         "confidence": 1.0
       },
       {
-        "fact": "A bright light is illuminating the stone wall behind the person.",
+        "fact": "A bright light illuminates the stone wall in the background.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The person in the red shirt is in the center of the frame, positioned in front of the stone wall. The white plastic chairs are to the right of the person. The bright light source is on the wall behind the person.",
+    "spatial": "The person is in front of the stone wall and to the left of the white plastic chairs. The light source is mounted on the wall above the person.",
     "parse_success": true,
     "chunk_idx": 15,
     "video_id": "BN25n8-eHBQ",
     "state_changes": [
-      "person bending over interacting with low object"
+      "Person in red bends down to interact with a low object; dancing stops."
     ]
   },
   {
     "time": [
-      32,
-      34
+      16,
+      17
     ],
     "visible_entities": [
       {
-        "desc": "person with dark hair, wearing a dark sleeveless top with a white or light-colored floral/abstract pattern, and dark pants",
-        "action": "dancing with a partner",
+        "desc": "person with dark hair, wearing a dark top with a light-colored floral or abstract pattern and dark pants",
+        "action": "dancing or moving with a partner",
         "position": "left",
-        "id": "person_dark_patterned_1"
+        "id": "person_dark_partner"
       },
       {
-        "desc": "person with short dark hair, wearing a bright red t-shirt and dark pants",
-        "action": "dancing with a partner",
+        "desc": "person wearing a red short-sleeved shirt and dark pants",
+        "action": "dancing or moving with a partner",
         "position": "center",
-        "id": "person_red_1"
+        "id": "person_red_main"
       },
       {
-        "desc": "rough-textured stone wall illuminated by a bright light",
+        "desc": "stone or brick wall, illuminated by a warm light source",
         "action": "static",
         "position": "background",
-        "id": "stone_wall_1"
+        "id": "stone_wall_main"
       },
       {
-        "desc": "stack of white plastic chairs",
+        "desc": "white plastic chairs, stacked or arranged",
         "action": "static",
         "position": "right",
-        "id": "chairs_white_plastic_1"
+        "id": "chair_white_plastic"
+      },
+      {
+        "desc": "dark glass door or window frame",
+        "action": "static",
+        "position": "left",
+        "id": "structure_dark_opening"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "Two people are dancing together in a dimly lit area.",
+        "fact": "Two people are engaged in a partnered dance or movement in the center of the frame.",
         "confidence": 1.0
       },
       {
-        "fact": "The person in the red shirt is holding the hand of the person in the patterned top.",
+        "fact": "The person in the red shirt is positioned to the right of the person in the patterned top.",
         "confidence": 1.0
       },
       {
-        "fact": "A bright light source is mounted on the stone wall in the background.",
+        "fact": "A bright light source on the background wall creates a strong glare and illuminates the scene.",
         "confidence": 1.0
       },
       {
-        "fact": "White chairs are stacked against the wall on the right side.",
+        "fact": "The setting appears to be an outdoor patio or courtyard at night.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The person in the patterned top is to the left of the person in the red shirt. The couple is in front of the stone wall. The stack of white chairs is to the right of the dancing couple.",
+    "spatial": "The person in the patterned top is to the left of the person in the red shirt. The stone wall is behind both individuals. The white chairs are to the right of the dancing pair and in front of the wall. The glass door is to the left of the person in the patterned top.",
     "parse_success": true,
     "chunk_idx": 16,
     "video_id": "BN25n8-eHBQ",
-    "state_changes": []
+    "state_changes": [
+      "Persons resume dancing/moving with partners."
+    ]
   },
   {
     "time": [
-      34,
-      36
+      17,
+      18
     ],
     "visible_entities": [
       {
-        "desc": "person wearing a red short-sleeved shirt, dark pants, and a dark cap",
-        "action": "standing and reaching out hand",
+        "desc": "person wearing a red short-sleeved shirt and dark pants",
+        "action": "standing and extending arm",
         "position": "center",
-        "id": "person_red_1"
+        "id": "person_red_main"
       },
       {
         "desc": "person wearing a red patterned shirt and dark pants",
-        "action": "standing and holding the other person's hand",
+        "action": "standing and holding hands with the other person",
         "position": "right",
-        "id": "person_red_1"
+        "id": "person_red_main"
       },
       {
         "desc": "stone wall with rough texture",
         "action": "static",
         "position": "background",
-        "id": "stone_wall_1"
+        "id": "stone_wall_main"
       },
       {
-        "desc": "bright light fixture mounted on the wall",
+        "desc": "bright light fixture",
         "action": "static",
         "position": "background",
-        "id": "light_fixture_1"
+        "id": "light_fixture_main"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A person in a red shirt and cap stands in the center of the frame.",
+        "fact": "Two people are holding hands in the center of the frame.",
         "confidence": 1.0
       },
       {
-        "fact": "The person in the center extends their right arm towards the person on the right.",
+        "fact": "The person on the left is extending their right arm towards the person on the right.",
         "confidence": 1.0
       },
       {
-        "fact": "The person on the right holds the hand of the person in the center.",
+        "fact": "A bright light illuminates the stone wall in the background.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The person in the red shirt is to the left of the person in the patterned shirt. They are holding hands in the center of the frame. The stone wall is behind both individuals.",
+    "parse_success": true,
+    "chunk_idx": 17,
+    "video_id": "BN25n8-eHBQ",
+    "state_changes": [
+      "Action changes to holding hands; one person extends an arm."
+    ]
+  },
+  {
+    "time": [
+      18,
+      19
+    ],
+    "visible_entities": [
+      {
+        "desc": "person wearing a red long-sleeved top and dark pants",
+        "action": "dancing or moving rhythmically",
+        "position": "center",
+        "id": "person_red_main"
+      },
+      {
+        "desc": "person wearing a dark top with a graphic print and dark pants",
+        "action": "standing and moving slightly",
+        "position": "left",
+        "id": "person_dark_partner"
+      },
+      {
+        "desc": "stone wall with a bright light fixture",
+        "action": "static",
+        "position": "background",
+        "id": "stone_wall_main"
+      },
+      {
+        "desc": "stack of white plastic chairs",
+        "action": "static",
+        "position": "right",
+        "id": "chair_white_plastic"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The person in the red top is moving their arms and body in a dancing motion.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A bright light on the stone wall illuminates the scene.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "Two people are standing on a paved surface at night.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The person in the red top is in the center of the frame, to the right of the person in the dark graphic top. The stone wall is behind both people. The stack of white chairs is to the right of the person in the red top.",
+    "parse_success": true,
+    "chunk_idx": 18,
+    "video_id": "BN25n8-eHBQ",
+    "state_changes": [
+      "Resume rhythmic dancing/moving."
+    ]
+  },
+  {
+    "time": [
+      19,
+      20
+    ],
+    "visible_entities": [
+      {
+        "desc": "person with short reddish hair, wearing a red short-sleeved t-shirt and dark pants",
+        "action": "swinging a large dark object",
+        "position": "center",
+        "id": "person_red_main"
+      },
+      {
+        "desc": "large dark object, appearing to be a bag or bundle",
+        "action": "being swung",
+        "position": "center",
+        "id": "bag_dark_bundle"
+      },
+      {
+        "desc": "stone wall with rough texture",
+        "action": "static",
+        "position": "background",
+        "id": "stone_wall_main"
+      },
+      {
+        "desc": "bright light source, likely a wall sconce",
+        "action": "static",
+        "position": "background",
+        "id": "light_fixture_main"
+      },
+      {
+        "desc": "stack of white plastic chairs",
+        "action": "static",
+        "position": "right",
+        "id": "chair_white_plastic"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The person in the red shirt is swinging a large dark object.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The object is moving from the person's left side towards their right side.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A bright light illuminates the stone wall behind the person.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The person in the red shirt is in front of the stone wall. The bright light is on the wall above and to the left of the person. The stack of white chairs is to the right of the person.",
+    "parse_success": true,
+    "chunk_idx": 19,
+    "video_id": "BN25n8-eHBQ",
+    "state_changes": [
+      "New action: person in red swings a large dark object (bag/bundle)."
+    ]
+  },
+  {
+    "time": [
+      20,
+      21
+    ],
+    "visible_entities": [
+      {
+        "desc": "person with dark hair, wearing a dark sleeveless top and dark pants",
+        "action": "holding a child and spinning",
+        "position": "center"
+      },
+      {
+        "desc": "child wearing a red top",
+        "action": "being held and spun",
+        "position": "center",
+        "id": "child_red_1"
+      },
+      {
+        "desc": "stone wall with rough texture",
+        "action": "static",
+        "position": "background",
+        "id": "stone_wall_main"
+      },
+      {
+        "desc": "outdoor chairs and tables",
+        "action": "static",
+        "position": "right",
+        "id": "furniture_outdoor_set"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A person is holding a child in their arms.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The person is spinning around with the child.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The scene takes place outdoors at night.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A light fixture illuminates the stone wall in the background.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The person holding the child is in the center of the frame, in front of the stone wall. The outdoor furniture is to the right of the person. The light source is above the stone wall.",
+    "parse_success": true,
+    "chunk_idx": 20,
+    "video_id": "BN25n8-eHBQ",
+    "state_changes": [
+      "Scene shift: person in dark holds and spins a child; swinging action ends."
+    ]
+  },
+  {
+    "time": [
+      21,
+      22
+    ],
+    "visible_entities": [
+      {
+        "desc": "person with dark hair, wearing a red sleeveless top and dark pants",
+        "action": "lifting a large dark object overhead",
+        "position": "center",
+        "id": "person_red_main"
+      },
+      {
+        "desc": "large dark object, appearing to be a heavy bag or bundle",
+        "action": "being lifted",
+        "position": "center",
+        "id": "bag_dark_bundle"
+      },
+      {
+        "desc": "stone wall, textured, light-colored",
+        "action": "static",
+        "position": "background",
+        "id": "stone_wall_main"
+      },
+      {
+        "desc": "outdoor furniture, including chairs and a table",
+        "action": "static",
+        "position": "right background",
+        "id": "furniture_outdoor_set"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A person is lifting a large dark object above their head.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The person is standing on a paved surface.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The scene is dimly lit, likely at night.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The person is in the center of the frame, holding the large dark object above their head. The stone wall is behind the person. The outdoor furniture is to the right of the person and in front of the stone wall.",
+    "parse_success": true,
+    "chunk_idx": 21,
+    "video_id": "BN25n8-eHBQ",
+    "state_changes": [
+      "Action shift: person in red (now sleeveless) lifts the large dark object overhead."
+    ]
+  },
+  {
+    "time": [
+      22,
+      23
+    ],
+    "visible_entities": [
+      {
+        "desc": "person wearing a red short-sleeved shirt and dark pants",
+        "action": "holding a small animal",
+        "position": "left",
+        "id": "person_red_main"
+      },
+      {
+        "desc": "small animal with light-colored fur",
+        "action": "being held",
+        "position": "center",
+        "id": "animal_small_1"
+      },
+      {
+        "desc": "stone wall with rough texture",
+        "action": "static",
+        "position": "background",
+        "id": "stone_wall_main"
+      },
+      {
+        "desc": "bright light fixture",
+        "action": "static",
+        "position": "background",
+        "id": "light_fixture_main"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "person holds a small animal in their arms",
+        "confidence": 1.0
+      },
+      {
+        "fact": "light fixture illuminates the stone wall",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The person in the red shirt is to the left of the stone wall. The small animal is held in front of the person's chest. The light fixture is mounted on the stone wall in the background.",
+    "parse_success": true,
+    "chunk_idx": 22,
+    "video_id": "BN25n8-eHBQ",
+    "state_changes": [
+      "Object change: person in red now holds a small animal; lifting action ends."
+    ]
+  },
+  {
+    "time": [
+      23,
+      24
+    ],
+    "visible_entities": [
+      {
+        "desc": "person wearing a red long-sleeved shirt and dark pants",
+        "action": "dancing or moving arms",
+        "position": "center"
+      },
+      {
+        "desc": "person wearing a dark patterned top and dark pants",
+        "action": "dancing or moving arms",
+        "position": "left",
+        "id": "person_dark_partner"
+      },
+      {
+        "desc": "stone wall with rough texture",
+        "action": "static",
+        "position": "background",
+        "id": "stone_wall_main"
+      },
+      {
+        "desc": "bright light fixture",
+        "action": "static",
+        "position": "background",
+        "id": "light_fixture_main"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "Two people are moving their arms and bodies in a rhythmic manner, likely dancing.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The person in the red shirt is positioned to the right of the person in the patterned top.",
         "confidence": 1.0
       },
       {
@@ -991,99 +1363,148 @@
       }
     ],
     "ocr": [],
-    "spatial": "The person in the red shirt and cap is to the left of the person in the patterned shirt. The stone wall is behind both people. The light fixture is mounted on the wall above the people's heads.",
+    "spatial": "The person in the red shirt is to the right of the person in the patterned top. Both people are in front of the stone wall. The bright light is on the stone wall, above the people.",
     "parse_success": true,
-    "chunk_idx": 17,
+    "chunk_idx": 23,
     "video_id": "BN25n8-eHBQ",
-    "state_changes": []
+    "state_changes": [
+      "Resume dancing/moving arms for both persons."
+    ]
   },
   {
     "time": [
-      36,
-      38
+      24,
+      25
     ],
     "visible_entities": [
       {
-        "desc": "person wearing a red long-sleeved top and dark pants",
-        "action": "dancing or moving rhythmically",
+        "desc": "person wearing a red short-sleeved shirt and dark pants",
+        "action": "dancing or moving arms",
         "position": "center",
-        "id": "person_red_1"
+        "id": "person_red_main"
       },
       {
-        "desc": "person wearing a dark t-shirt with a graphic print and dark pants",
+        "desc": "person wearing a dark patterned shirt and dark pants",
         "action": "standing",
-        "position": "left",
-        "id": "person_dark_1"
+        "position": "left"
       },
       {
         "desc": "stone wall with a bright light fixture",
         "action": "static",
         "position": "background",
-        "id": "stone_wall_1"
+        "id": "stone_wall_main"
       },
       {
-        "desc": "stack of white plastic chairs",
+        "desc": "white rectangular sign",
         "action": "static",
-        "position": "right",
-        "id": "chairs_white_plastic_1"
+        "position": "top left",
+        "id": "sign_white_rect"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "The person in the red top is moving their arms and body in the center of the frame.",
+        "fact": "The person in the red shirt is moving their arms outward.",
         "confidence": 1.0
       },
       {
-        "fact": "A second person stands to the left of the person in red.",
+        "fact": "A bright light is illuminating the stone wall in the background.",
         "confidence": 1.0
       },
       {
-        "fact": "A bright light illuminates the stone wall in the background.",
+        "fact": "Two people are standing on a paved surface at night.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The person in the red top is in the center, positioned to the right of the person in the dark t-shirt. The stone wall is behind both individuals. The stack of white chairs is to the right of the person in the red top.",
+    "spatial": "The person in the red shirt is to the right of the person in the dark patterned shirt. The white sign is above the person on the left. The stone wall is behind both people.",
     "parse_success": true,
-    "chunk_idx": 18,
+    "chunk_idx": 24,
     "video_id": "BN25n8-eHBQ",
-    "state_changes": []
+    "state_changes": [
+      "Person in dark stops dancing and stands still."
+    ]
   },
   {
     "time": [
-      38,
-      40
+      25,
+      26
     ],
     "visible_entities": [
       {
-        "desc": "person wearing a red short-sleeved t-shirt and dark pants",
+        "desc": "person wearing a red t-shirt with a white graphic on the front and dark pants",
+        "action": "dancing or moving with a partner",
+        "position": "left"
+      },
+      {
+        "desc": "person with long dark hair, wearing a dark sleeveless top and dark pants",
+        "action": "dancing or moving with a partner",
+        "position": "right",
+        "id": "person_dark_partner"
+      },
+      {
+        "desc": "stone wall with a rough texture, illuminated by a bright light",
+        "action": "static",
+        "position": "background",
+        "id": "stone_wall_main"
+      },
+      {
+        "desc": "stack of white plastic chairs",
+        "action": "static",
+        "position": "right background",
+        "id": "chair_white_plastic"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "Two people are holding hands and moving together in a dance-like motion.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The person in the red shirt is on the left, and the person with long hair is on the right.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A bright light is mounted on the stone wall in the background.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The person in the red shirt is to the left of the person with long hair. They are holding hands and are in front of the stone wall. The stack of white chairs is to the right of the dancers and near the stone wall.",
+    "parse_success": true,
+    "chunk_idx": 25,
+    "video_id": "BN25n8-eHBQ",
+    "state_changes": [
+      "Resume dancing/moving with a partner."
+    ]
+  },
+  {
+    "time": [
+      26,
+      27
+    ],
+    "visible_entities": [
+      {
+        "desc": "person wearing a red t-shirt and dark pants",
         "action": "swinging a large dark object",
-        "position": "center",
-        "id": "person_red_1"
+        "position": "left"
       },
       {
-        "desc": "large dark object, possibly a bag or piece of fabric",
-        "action": "being swung through the air",
+        "desc": "large dark object, possibly a bag or bundle",
+        "action": "being swung",
         "position": "center",
-        "id": "large_dark_object_1"
+        "id": "bag_dark_bundle"
       },
       {
-        "desc": "stone wall with rough texture",
+        "desc": "stone wall, illuminated by a light",
         "action": "static",
         "position": "background",
-        "id": "stone_wall_1"
+        "id": "stone_wall_main"
       },
       {
-        "desc": "bright light source mounted on the wall",
-        "action": "static",
-        "position": "background",
-        "id": "light_fixture_1"
-      },
-      {
-        "desc": "stacked chairs",
+        "desc": "stack of chairs",
         "action": "static",
         "position": "right",
-        "id": "chairs_metal_1"
+        "id": "chair_white_plastic"
       }
     ],
     "atomic_facts": [
@@ -1092,167 +1513,65 @@
         "confidence": 1.0
       },
       {
-        "fact": "The person is standing in front of a stone wall.",
+        "fact": "The object is moving from the person's right to their left.",
         "confidence": 1.0
       },
       {
-        "fact": "A bright light illuminates the wall behind the person.",
+        "fact": "A stone wall is in the background.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A stack of chairs is to the right of the person.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The person in the red shirt is in the center of the frame, positioned in front of the stone wall. The bright light is mounted on the wall above the person's head. To the right of the person, there are stacked chairs in the background.",
+    "spatial": "The person in the red shirt is to the left of the stack of chairs. The person is in front of the stone wall. The large dark object is being held and swung by the person.",
     "parse_success": true,
-    "chunk_idx": 19,
+    "chunk_idx": 26,
     "video_id": "BN25n8-eHBQ",
     "state_changes": [
-      "large dark object appeared, being swung through air"
+      "Action shift: person in red swings the large dark object again."
     ]
   },
   {
     "time": [
-      40,
-      42
+      27,
+      28
     ],
     "visible_entities": [
       {
-        "desc": "person with dark hair, wearing a dark sleeveless top and dark pants",
-        "action": "dancing with a partner",
+        "desc": "person wearing a red t-shirt with a dark graphic design on the chest, dark blue jeans, and dark shoes",
+        "action": "spinning rapidly",
         "position": "center",
-        "id": "person_dark_1"
-      },
-      {
-        "desc": "person with dark hair, wearing a red top",
-        "action": "dancing with a partner",
-        "position": "center",
-        "id": "person_red_1"
+        "id": "person_red_main"
       },
       {
         "desc": "stone wall with rough texture",
         "action": "static",
         "position": "background",
-        "id": "stone_wall_1"
+        "id": "stone_wall_main"
       },
       {
-        "desc": "outdoor chairs and tables",
+        "desc": "bright wall-mounted light fixture",
+        "action": "static",
+        "position": "background",
+        "id": "light_fixture_main"
+      },
+      {
+        "desc": "outdoor patio furniture including a table and chairs",
         "action": "static",
         "position": "right",
-        "id": "outdoor_furniture_1"
+        "id": "furniture_outdoor_set"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "Two people are dancing together in a dimly lit outdoor area.",
+        "fact": "A person in a red shirt is spinning rapidly in the center of the frame.",
         "confidence": 1.0
       },
       {
-        "fact": "The person in the dark top is holding the person in the red top.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "A stone wall is visible in the background.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [],
-    "spatial": "The two people are dancing in the center of the frame, in front of the stone wall. The chairs and tables are to the right of the dancing couple.",
-    "parse_success": true,
-    "chunk_idx": 20,
-    "video_id": "BN25n8-eHBQ",
-    "state_changes": []
-  },
-  {
-    "time": [
-      42,
-      44
-    ],
-    "visible_entities": [
-      {
-        "desc": "person with dark hair, wearing a red sleeveless top and dark pants",
-        "action": "lifting a large dark object overhead",
-        "position": "center",
-        "id": "person_red_1"
-      },
-      {
-        "desc": "large dark object, possibly a bag or piece of equipment",
-        "action": "being lifted",
-        "position": "center",
-        "id": "large_dark_object_1"
-      },
-      {
-        "desc": "stone wall, textured, light-colored",
-        "action": "static",
-        "position": "background",
-        "id": "stone_wall_1"
-      },
-      {
-        "desc": "outdoor furniture, including chairs and a table",
-        "action": "static",
-        "position": "right",
-        "id": "outdoor_furniture_1"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "A person in a red top is lifting a large dark object above their head.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The person is standing on a paved surface in front of a stone wall.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "Outdoor furniture is visible to the right of the person.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [],
-    "spatial": "The person is in the center of the frame, in front of the stone wall. The large dark object is being held above the person's head. The outdoor furniture is to the right of the person.",
-    "parse_success": true,
-    "chunk_idx": 21,
-    "video_id": "BN25n8-eHBQ",
-    "state_changes": [
-      "large dark object lifted overhead"
-    ]
-  },
-  {
-    "time": [
-      44,
-      46
-    ],
-    "visible_entities": [
-      {
-        "desc": "person wearing a red long-sleeved shirt and dark pants",
-        "action": "dancing or moving rhythmically",
-        "position": "left",
-        "id": "person_red_1"
-      },
-      {
-        "desc": "stone wall with rough texture",
-        "action": "static",
-        "position": "background",
-        "id": "stone_wall_1"
-      },
-      {
-        "desc": "bright outdoor light fixture",
-        "action": "static",
-        "position": "background",
-        "id": "light_fixture_1"
-      },
-      {
-        "desc": "outdoor furniture including chairs",
-        "action": "static",
-        "position": "right",
-        "id": "outdoor_furniture_1"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "A person in a red shirt is moving their body and arms in a rhythmic manner.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The person is standing on a paved surface.",
+        "fact": "The person's body is blurred due to the speed of the rotation.",
         "confidence": 1.0
       },
       {
@@ -1261,224 +1580,48 @@
       }
     ],
     "ocr": [],
-    "spatial": "The person in the red shirt is to the left of the stone wall. The outdoor furniture is to the right of the person. The light fixture is mounted on the wall above the furniture.",
+    "spatial": "The person in the red shirt is in front of the stone wall and the bright light fixture. The outdoor patio furniture is to the right of the person.",
     "parse_success": true,
-    "chunk_idx": 22,
-    "video_id": "BN25n8-eHBQ",
-    "state_changes": []
-  },
-  {
-    "time": [
-      46,
-      48
-    ],
-    "visible_entities": [
-      {
-        "desc": "person wearing a red short-sleeved shirt and dark pants",
-        "action": "dancing with arms raised",
-        "position": "center",
-        "id": "person_red_1"
-      },
-      {
-        "desc": "person wearing a dark top and dark pants",
-        "action": "dancing",
-        "position": "left",
-        "id": "person_red_1"
-      },
-      {
-        "desc": "stone wall with rough texture",
-        "action": "static",
-        "position": "background",
-        "id": "stone_wall_1"
-      },
-      {
-        "desc": "bright light source",
-        "action": "static",
-        "position": "background",
-        "id": "light_fixture_1"
-      },
-      {
-        "desc": "white plastic chair",
-        "action": "static",
-        "position": "right",
-        "id": "chairs_white_plastic_1"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "The person in the red shirt is dancing in the center of the frame.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "A second person is dancing to the left of the person in red.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "A bright light illuminates the stone wall in the background.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "A white chair is positioned on the right side of the scene.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [],
-    "spatial": "The person in the red shirt is in the center, to the right of the person in the dark top. The stone wall is behind both people. The white chair is to the right of the person in the red shirt.",
-    "parse_success": true,
-    "chunk_idx": 23,
-    "video_id": "BN25n8-eHBQ",
-    "state_changes": []
-  },
-  {
-    "time": [
-      48,
-      50
-    ],
-    "visible_entities": [
-      {
-        "desc": "person wearing a red short-sleeved shirt and dark pants",
-        "action": "dancing with arms raised",
-        "position": "center",
-        "id": "person_red_1"
-      },
-      {
-        "desc": "person wearing a dark patterned shirt and dark pants",
-        "action": "dancing",
-        "position": "left",
-        "id": "person_dark_patterned_1"
-      },
-      {
-        "desc": "stone wall with rough texture",
-        "action": "static",
-        "position": "background",
-        "id": "stone_wall_1"
-      },
-      {
-        "desc": "bright outdoor light fixture",
-        "action": "static",
-        "position": "background",
-        "id": "light_fixture_1"
-      },
-      {
-        "desc": "white rectangular sign",
-        "action": "static",
-        "position": "top left",
-        "id": "sign_white_1"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "The person in the red shirt is dancing in the center of the frame.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "A second person is dancing to the left of the person in red.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "A bright light illuminates the stone wall in the background.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [],
-    "spatial": "The person in the red shirt is to the right of the person in the patterned shirt. Both people are in front of the stone wall. The white sign is above the person on the left.",
-    "parse_success": true,
-    "chunk_idx": 24,
-    "video_id": "BN25n8-eHBQ",
-    "state_changes": []
-  },
-  {
-    "time": [
-      50,
-      52
-    ],
-    "visible_entities": [
-      {
-        "desc": "person wearing a red short-sleeved t-shirt with a white graphic on the chest and dark pants",
-        "action": "standing with arms slightly raised",
-        "position": "left",
-        "id": "person_red_1"
-      },
-      {
-        "desc": "person with long dark hair, wearing a dark sleeveless top and dark pants",
-        "action": "standing and facing the person in red",
-        "position": "center",
-        "id": "person_dark_patterned_1"
-      },
-      {
-        "desc": "stone wall with a rough texture, illuminated by a bright light source",
-        "action": "static",
-        "position": "background",
-        "id": "stone_wall_1"
-      },
-      {
-        "desc": "stack of light-colored plastic chairs",
-        "action": "static",
-        "position": "right",
-        "id": "chairs_white_plastic_1"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "The person in the red shirt is standing to the left of the person with long dark hair.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The person with long dark hair is facing the person in the red shirt.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "A stack of chairs is visible to the right of the people.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The scene is set outdoors at night in front of a stone wall.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [],
-    "spatial": "The person in the red shirt is to the left of the person with long dark hair. The person with long dark hair is in front of the stone wall. The stack of chairs is to the right of the person with long dark hair.",
-    "parse_success": true,
-    "chunk_idx": 25,
+    "chunk_idx": 27,
     "video_id": "BN25n8-eHBQ",
     "state_changes": [
-      "dancing stopped, people standing with arms raised"
+      "Action shift: person in red spins rapidly; swinging stops."
     ]
   },
   {
     "time": [
-      52,
-      54
+      28,
+      29
     ],
     "visible_entities": [
       {
-        "desc": "person wearing a red t-shirt and dark pants",
-        "action": "swinging a long dark object",
-        "position": "left",
-        "id": "person_red_1"
+        "desc": "person wearing a red t-shirt with a white graphic on the chest, dark blue jeans, and a belt with a silver buckle",
+        "action": "holding a large dark object in their arms",
+        "position": "center",
+        "id": "person_red_main"
+      },
+      {
+        "desc": "large dark object, possibly a bag or bundle, being held",
+        "action": "being carried",
+        "position": "center",
+        "id": "bag_dark_bundle"
       },
       {
         "desc": "stone wall with rough texture",
         "action": "static",
         "position": "background",
-        "id": "stone_wall_1"
+        "id": "stone_wall_main"
       },
       {
-        "desc": "bright light source",
+        "desc": "bright light source mounted on the wall",
         "action": "static",
-        "position": "center",
-        "id": "light_fixture_1"
-      },
-      {
-        "desc": "stack of chairs",
-        "action": "static",
-        "position": "right",
-        "id": "chairs_metal_1"
+        "position": "background",
+        "id": "light_fixture_main"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A person in a red shirt is swinging a long dark object.",
+        "fact": "A person in a red shirt is holding a large dark object.",
         "confidence": 1.0
       },
       {
@@ -1486,206 +1629,101 @@
         "confidence": 1.0
       },
       {
-        "fact": "A bright light illuminates the center of the wall.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "Chairs are stacked on the right side of the scene.",
+        "fact": "A light on the wall illuminates the scene.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The person in the red shirt is to the left of the stacked chairs. The bright light is on the stone wall behind the person. The chairs are to the right of the light source.",
-    "parse_success": true,
-    "chunk_idx": 26,
-    "video_id": "BN25n8-eHBQ",
-    "state_changes": [
-      "long dark object swinging started"
-    ]
-  },
-  {
-    "time": [
-      54,
-      56
-    ],
-    "visible_entities": [
-      {
-        "desc": "person with dark hair, wearing a red short-sleeved t-shirt and dark blue jeans",
-        "action": "spinning around while holding a large dark object",
-        "position": "center"
-      },
-      {
-        "desc": "large dark object, possibly a bag or bundle, being held by the person",
-        "action": "being swung in a circle",
-        "position": "center",
-        "id": "large_dark_object_1"
-      },
-      {
-        "desc": "stone wall with a rough texture, illuminated by a bright light source",
-        "action": "static",
-        "position": "background",
-        "id": "stone_wall_1"
-      },
-      {
-        "desc": "outdoor furniture including a table and chairs",
-        "action": "static",
-        "position": "right",
-        "id": "outdoor_furniture_1"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "A person in a red shirt is spinning in a circle.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The person is holding a large dark object while spinning.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The scene takes place outdoors at night.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "A bright light illuminates the stone wall in the background.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [],
-    "spatial": "The person in the red shirt is in the center of the frame, in front of the stone wall. The outdoor furniture is to the right of the person. The bright light is on the wall, above the furniture.",
-    "parse_success": true,
-    "chunk_idx": 27,
-    "video_id": "BN25n8-eHBQ",
-    "state_changes": [
-      "person spinning while holding large dark object"
-    ]
-  },
-  {
-    "time": [
-      56,
-      58
-    ],
-    "visible_entities": [
-      {
-        "desc": "person wearing a red short-sleeved t-shirt and dark pants",
-        "action": "holding and lifting a large dark object",
-        "position": "center",
-        "id": "person_red_1"
-      },
-      {
-        "desc": "large dark object, possibly a bag or bundle",
-        "action": "being lifted",
-        "position": "center",
-        "id": "large_dark_object_1"
-      },
-      {
-        "desc": "stone wall with a bright light fixture",
-        "action": "static",
-        "position": "background",
-        "id": "stone_wall_1"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "A person in a red shirt is lifting a large dark object.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The person is holding the object in front of their body.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The scene takes place outdoors at night.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [],
-    "spatial": "The person is in the center of the frame, holding the large dark object in front of them. The stone wall with the light fixture is behind the person.",
+    "spatial": "The person is in the center of the frame, standing in front of the stone wall. The bright light source is mounted on the wall above and behind the person. The person is holding the large dark object in front of their torso.",
     "parse_success": true,
     "chunk_idx": 28,
     "video_id": "BN25n8-eHBQ",
     "state_changes": [
-      "large dark object being lifted"
+      "Action shift: person in red carries/holds the large dark object in arms."
     ]
   },
   {
     "time": [
-      58,
-      60
+      29,
+      30
     ],
     "visible_entities": [
       {
-        "desc": "person with long blonde hair, wearing a dark sleeveless top with a white pattern and dark pants",
+        "desc": "person with long blonde hair, wearing a dark sleeveless top with a white floral pattern and dark pants",
         "action": "dancing with a partner",
         "position": "left",
-        "id": "person_blonde_1"
+        "id": "person_dark_partner"
       },
       {
-        "desc": "person with short dark hair, wearing a red t-shirt and dark pants",
+        "desc": "person wearing a red t-shirt, dark pants, and a dark cap",
         "action": "dancing with a partner",
         "position": "right",
-        "id": "person_red_1"
+        "id": "person_red_main"
+      },
+      {
+        "desc": "rough stone wall",
+        "action": "static",
+        "position": "background",
+        "id": "stone_wall_main"
+      },
+      {
+        "desc": "bright wall-mounted light fixture",
+        "action": "static",
+        "position": "background",
+        "id": "light_fixture_main"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "Two people are dancing together in a dimly lit outdoor area.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A bright light fixture is mounted on the stone wall in the background.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The person in the red shirt is holding the hand of the person in the floral top.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The person in the floral top is to the left of the person in the red shirt. The person in the red shirt is in front of the stone wall. The light fixture is mounted on the wall above the dancers.",
+    "parse_success": true,
+    "chunk_idx": 29,
+    "video_id": "BN25n8-eHBQ",
+    "state_changes": [
+      "Resume dancing with a partner (different visual description of persons)."
+    ]
+  },
+  {
+    "time": [
+      30,
+      31
+    ],
+    "visible_entities": [
+      {
+        "desc": "person wearing a red long-sleeved top and dark pants",
+        "action": "dancing with arms raised",
+        "position": "left",
+        "id": "person_red_main"
+      },
+      {
+        "desc": "person wearing a patterned sleeveless top and dark pants",
+        "action": "dancing with arms raised",
+        "position": "right",
+        "id": "person_dark_partner"
       },
       {
         "desc": "stone wall with a bright light fixture",
         "action": "static",
         "position": "background",
-        "id": "stone_wall_1"
+        "id": "stone_wall_main"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "Two people are dancing together in a dimly lit outdoor area.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "A bright light on the stone wall illuminates the dancers.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The person in the red shirt is facing the person with blonde hair.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [],
-    "spatial": "The person in the red shirt is to the right of the person with long blonde hair. Both people are in front of the stone wall. The light fixture is on the wall, above and behind the dancers.",
-    "parse_success": true,
-    "chunk_idx": 29,
-    "video_id": "BN25n8-eHBQ",
-    "state_changes": []
-  },
-  {
-    "time": [
-      60,
-      62
-    ],
-    "visible_entities": [
-      {
-        "desc": "person wearing a red long-sleeved top, dark pants, and a red head covering",
-        "action": "dancing with arms raised",
-        "position": "left",
-        "id": "person_red_1"
-      },
-      {
-        "desc": "person wearing a dark patterned sleeveless top and dark pants",
-        "action": "dancing facing the other person",
-        "position": "right",
-        "id": "person_dark_patterned_1"
-      },
-      {
-        "desc": "rough stone wall illuminated by a bright light",
-        "action": "static",
-        "position": "background",
-        "id": "stone_wall_1"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "Two people are dancing together in a dimly lit outdoor area.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The person on the left raises their arms while dancing.",
+        "fact": "Two people are dancing together in an outdoor setting at night.",
         "confidence": 1.0
       },
       {
@@ -1694,50 +1732,52 @@
       }
     ],
     "ocr": [],
-    "spatial": "The person in the red top is to the left of the person in the patterned top. Both people are in front of the illuminated stone wall.",
+    "spatial": "The person in the red top is to the left of the person in the patterned top. Both people are in front of the stone wall.",
     "parse_success": true,
     "chunk_idx": 30,
     "video_id": "BN25n8-eHBQ",
-    "state_changes": []
+    "state_changes": [
+      "Dancing style change: both persons dance with arms raised."
+    ]
   },
   {
     "time": [
-      62,
-      64
+      31,
+      32
     ],
     "visible_entities": [
       {
         "desc": "person wearing a red t-shirt with a white graphic on the chest, dark pants, and a red cap",
-        "action": "dancing with arms raised",
+        "action": "standing with legs spread apart",
         "position": "center",
-        "id": "person_red_1"
+        "id": "person_red_main"
       },
       {
-        "desc": "person wearing a pink patterned top and dark pants",
-        "action": "dancing",
+        "desc": "person wearing a patterned shirt and dark pants",
+        "action": "standing behind the person in red",
         "position": "left",
-        "id": "person_pink_1"
+        "id": "person_dark_partner"
       },
       {
         "desc": "stone wall with rough texture",
         "action": "static",
         "position": "background",
-        "id": "stone_wall_1"
+        "id": "stone_wall_main"
       },
       {
         "desc": "bright light fixture",
         "action": "static",
         "position": "background",
-        "id": "light_fixture_1"
+        "id": "light_fixture_main"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "The person in the red shirt is dancing with arms raised.",
+        "fact": "A person in a red shirt stands in the center of the frame.",
         "confidence": 1.0
       },
       {
-        "fact": "The person in the pink top is dancing to the left of the person in red.",
+        "fact": "A second person stands to the left of the person in the red shirt.",
         "confidence": 1.0
       },
       {
@@ -1746,106 +1786,128 @@
       }
     ],
     "ocr": [],
-    "spatial": "The person in the red shirt is in the center of the frame. The person in the pink top is to the left of the person in the red shirt. The stone wall is behind both people.",
+    "spatial": "The person in the red shirt is in front of the stone wall. The second person is to the left of the person in the red shirt. The bright light is on the stone wall.",
     "parse_success": true,
     "chunk_idx": 31,
     "video_id": "BN25n8-eHBQ",
-    "state_changes": []
+    "state_changes": [
+      "Action stop: both persons stand still (legs spread/standing behind)."
+    ]
   },
   {
     "time": [
-      64,
-      66
+      32,
+      33
     ],
     "visible_entities": [
       {
-        "desc": "person wearing a red t-shirt with a white graphic on the chest, dark pants, and a red cap",
-        "action": "standing with legs apart and arms moving",
+        "desc": "person wearing a red t-shirt with a white rectangular graphic on the chest, dark pants, and a red cap",
+        "action": "standing with legs spread apart and arms moving",
         "position": "center",
-        "id": "person_red_1"
+        "id": "person_red_main"
       },
       {
         "desc": "stone wall with rough texture",
         "action": "static",
         "position": "background",
-        "id": "stone_wall_1"
+        "id": "stone_wall_main"
       },
       {
-        "desc": "bright light source",
+        "desc": "bright light fixture",
         "action": "static",
         "position": "background",
-        "id": "light_fixture_1"
+        "id": "light_fixture_main"
+      },
+      {
+        "desc": "dark doorway or window structure",
+        "action": "static",
+        "position": "left",
+        "id": "structure_dark_opening"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A person in a red t-shirt stands with legs apart.",
+        "fact": "person stands with legs spread apart",
         "confidence": 1.0
       },
       {
-        "fact": "The person's arms are moving in a blurred motion.",
+        "fact": "person moves arms in front of body",
         "confidence": 1.0
       },
       {
-        "fact": "A bright light illuminates the stone wall behind the person.",
+        "fact": "light fixture illuminates the stone wall",
+        "confidence": 1.0
+      },
+      {
+        "fact": "person is wearing a red cap",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The person is in front of the stone wall. The bright light is on the wall, above and to the right of the person.",
+    "spatial": "The person is in front of the stone wall. The bright light fixture is mounted on the stone wall to the right of the person. The dark doorway structure is to the left of the person.",
     "parse_success": true,
     "chunk_idx": 32,
     "video_id": "BN25n8-eHBQ",
     "state_changes": [
-      "dancing stopped, person standing with legs apart"
+      "Person in red begins moving arms while standing."
     ]
   },
   {
     "time": [
-      66,
-      68
+      33,
+      34
     ],
     "visible_entities": [
       {
-        "desc": "person wearing a red t-shirt with a white graphic on the chest, dark pants, and a red cap",
+        "desc": "person with dark hair, wearing a red t-shirt with a white rectangular graphic on the chest and dark blue jeans",
         "action": "standing with hands on hips",
         "position": "center",
-        "id": "person_red_1"
+        "id": "person_red_main"
       },
       {
-        "desc": "person wearing a dark sleeveless top with a white pattern and dark pants",
+        "desc": "person with dark hair, wearing a dark patterned sleeveless top and dark pants",
         "action": "standing with hands on hips",
-        "position": "center",
-        "id": "person_dark_patterned_1"
+        "position": "left",
+        "id": "person_dark_partner"
       },
       {
-        "desc": "stone wall with a bright light fixture",
+        "desc": "stone wall with rough texture",
         "action": "static",
-        "position": "background right",
-        "id": "stone_wall_1"
+        "position": "right background",
+        "id": "stone_wall_main"
+      },
+      {
+        "desc": "bright wall-mounted light fixture",
+        "action": "static",
+        "position": "right background",
+        "id": "light_fixture_main"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A person in a red shirt stands with hands on hips.",
+        "fact": "A person in a red shirt stands in the center of the frame.",
         "confidence": 1.0
       },
       {
-        "fact": "A person in a dark patterned top stands with hands on hips.",
+        "fact": "A second person stands to the left of the person in the red shirt.",
         "confidence": 1.0
       },
       {
-        "fact": "The scene transitions between two different people in the same spot.",
+        "fact": "Both individuals are standing with their hands on their hips.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A light fixture illuminates the stone wall behind the person in the red shirt.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The person in the red shirt is in front of the stone wall. The person in the dark patterned top is in the same central position as the person in the red shirt, suggesting a transition or cut in the video.",
+    "spatial": "The person in the red shirt is to the right of the person in the patterned top. The stone wall is behind the person in the red shirt. The light fixture is mounted on the stone wall.",
     "parse_success": true,
     "chunk_idx": 33,
     "video_id": "BN25n8-eHBQ",
     "state_changes": [
-      "both people standing with hands on hips"
+      "Final pose: both persons stand with hands on hips."
     ]
   }
 ]

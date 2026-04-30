@@ -2,23 +2,23 @@
   {
     "time": [
       0,
-      2
+      1
     ],
     "visible_entities": [
       {
         "desc": "white lowercase sans-serif text reading 'hopman'",
         "action": "static",
-        "position": "center"
+        "position": "center-left"
       },
       {
         "desc": "white lowercase sans-serif text reading 'cup'",
-        "action": "appearing",
+        "action": "static",
         "position": "center"
       },
       {
-        "desc": "stylized abstract tennis player figure composed of colorful horizontal stripes in pink, yellow, blue, and purple, holding a racket",
-        "action": "appearing",
-        "position": "top-right"
+        "desc": "stylized abstract figure of a tennis player composed of colorful diagonal stripes (pink, yellow, blue, orange) holding a racket",
+        "action": "static",
+        "position": "center-right"
       },
       {
         "desc": "blue silhouette of a city skyline with various skyscrapers",
@@ -26,150 +26,103 @@
         "position": "bottom"
       },
       {
-        "desc": "small white 'ITF' logo",
+        "desc": "gradient background transitioning from bright blue sky at the top to yellow-green at the horizon",
         "action": "static",
-        "position": "top-right"
+        "position": "background"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "The text 'hopman' is visible in the center of the screen.",
+        "fact": "The text 'hopman' is visible on the screen.",
         "confidence": 1.0
       },
       {
-        "fact": "The text 'cup' appears next to 'hopman' to form the phrase 'hopman cup'.",
+        "fact": "The word 'cup' appears next to 'hopman'.",
         "confidence": 1.0
       },
       {
-        "fact": "A colorful striped tennis player graphic appears above the text.",
+        "fact": "A colorful abstract tennis player figure appears above the text.",
         "confidence": 1.0
       },
       {
-        "fact": "A blue city skyline silhouette is positioned at the bottom of the frame.",
+        "fact": "The city skyline is positioned at the bottom of the frame.",
         "confidence": 1.0
       }
     ],
     "ocr": [
       "hopman",
-      "hopman cup",
-      "ITF"
+      "cup"
     ],
-    "spatial": "The text 'hopman cup' is centered in the middle of the screen, positioned above the blue city skyline silhouette. The colorful tennis player figure is located to the right of the text and above the skyline. The 'ITF' logo is situated near the tennis player's racket in the upper right area.",
+    "spatial": "The text 'hopman' is to the left of the word 'cup'. The colorful tennis player figure is positioned above and to the right of the text. The blue city skyline is located at the bottom of the frame, below the text and the figure.",
     "parse_success": true,
     "chunk_idx": 0,
     "video_id": "ytb_pu-tGEnCwpw"
   },
   {
     "time": [
-      2,
-      4
+      1,
+      2
     ],
     "visible_entities": [
       {
-        "desc": "woman with curly light brown hair, wearing a teal sleeveless tank top with a black logo on the chest and a gold necklace",
+        "desc": "woman with curly light brown hair, wearing a teal sleeveless tank top with a small black logo on the chest and a thin gold necklace",
         "action": "standing and smiling",
         "position": "left"
       },
       {
-        "desc": "man with short black hair, wearing a white polo shirt with a black grid pattern and a black collar",
+        "desc": "man with short black hair, wearing a white polo shirt with a black grid pattern and a small logo on the left chest",
         "action": "standing and smiling",
         "position": "right"
       },
       {
-        "desc": "rows of blue stadium seats",
+        "desc": "rows of empty blue stadium seats",
+        "action": "static",
+        "position": "background"
+      },
+      {
+        "desc": "graphic with a blue sky gradient background, a city skyline silhouette at the bottom, a colorful stylized tennis player figure, and the Mastercard logo",
         "action": "static",
         "position": "background"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A woman with curly hair stands on the left side of the frame.",
+        "fact": "The woman and man are standing side-by-side in a stadium.",
         "confidence": 1.0
       },
       {
-        "fact": "A man in a checkered shirt stands on the right side of the frame.",
+        "fact": "The background features rows of empty blue seats.",
         "confidence": 1.0
       },
       {
-        "fact": "Both individuals are smiling while standing in front of blue stadium seating.",
+        "fact": "The graphic displays the text 'mastercard hopman cup PERTH'.",
         "confidence": 1.0
       }
     ],
     "ocr": [
-      "adidas",
-      "Babolat"
+      "mastercard",
+      "hopman cup",
+      "PERTH",
+      "ITF"
     ],
-    "spatial": "The woman in the teal top is to the left of the man in the white checkered shirt. Both people are standing in front of the rows of blue stadium seats.",
+    "spatial": "The woman is to the left of the man. The rows of blue seats are behind the two people. The text 'hopman cup' is below the colorful tennis player figure in the graphic.",
     "parse_success": true,
     "chunk_idx": 1,
     "video_id": "ytb_pu-tGEnCwpw"
   },
   {
     "time": [
-      4,
-      6
+      2,
+      3
     ],
     "visible_entities": [
       {
         "desc": "woman with curly light brown hair in a high ponytail, wearing a teal sleeveless tank top with a small black logo on the chest and a thin gold necklace",
-        "action": "smiling broadly",
-        "position": "left"
-      },
-      {
-        "desc": "man with short black hair and a light beard, wearing a white polo shirt with a black grid pattern and a collar",
-        "action": "smiling and looking slightly to the right",
-        "position": "right"
-      },
-      {
-        "desc": "rows of blue plastic stadium seats",
-        "action": "static",
-        "position": "background"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "The woman on the left smiles broadly, showing her teeth.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The man on the right smiles while looking off-camera.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The woman is wearing a teal tank top with a visible Adidas logo.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The man is wearing a white polo shirt with a grid pattern and a Babolat logo.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The background consists of empty blue stadium seating.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [
-      "adidas",
-      "Babolat"
-    ],
-    "spatial": "The woman in the teal tank top is standing to the left of the man in the white grid-patterned shirt. Both individuals are positioned in the foreground, in front of the rows of blue stadium seats.",
-    "parse_success": true,
-    "chunk_idx": 2,
-    "video_id": "ytb_pu-tGEnCwpw"
-  },
-  {
-    "time": [
-      6,
-      8
-    ],
-    "visible_entities": [
-      {
-        "desc": "woman with curly light brown hair, wearing a teal sleeveless tank top with a black Adidas logo, and a gold necklace",
         "action": "standing and smiling",
         "position": "left"
       },
       {
-        "desc": "man with short dark hair, wearing a white polo shirt with a black grid pattern and a Babolat logo",
+        "desc": "man with short black hair and a light goatee, wearing a white polo shirt with a black grid pattern and a logo on the left chest",
         "action": "standing and smiling",
         "position": "right"
       },
@@ -181,15 +134,19 @@
     ],
     "atomic_facts": [
       {
-        "fact": "The woman in the teal tank top is standing to the left of the man in the white polo shirt.",
+        "fact": "The woman on the left is smiling with her mouth closed.",
         "confidence": 1.0
       },
       {
-        "fact": "The man in the white polo shirt is standing to the right of the woman.",
+        "fact": "The man on the right is smiling with his teeth visible.",
         "confidence": 1.0
       },
       {
-        "fact": "Both individuals are smiling and looking forward.",
+        "fact": "The woman's tank top features a small black Adidas logo.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The man's shirt features a 'Babolat' logo.",
         "confidence": 1.0
       },
       {
@@ -201,15 +158,68 @@
       "adidas",
       "Babolat"
     ],
-    "spatial": "The woman in the teal tank top is standing to the left of the man in the white polo shirt. The man is standing to the right of the woman. Both individuals are in the foreground, positioned in front of the rows of blue stadium seats.",
+    "spatial": "The woman is to the left of the man. The man is to the right of the woman. Both individuals are standing in front of the rows of blue stadium seats.",
+    "parse_success": true,
+    "chunk_idx": 2,
+    "video_id": "ytb_pu-tGEnCwpw"
+  },
+  {
+    "time": [
+      3,
+      4
+    ],
+    "visible_entities": [
+      {
+        "desc": "woman with curly light brown hair, wearing a teal sleeveless tank top with a black Adidas logo, and a gold necklace",
+        "action": "standing and smiling",
+        "position": "left"
+      },
+      {
+        "desc": "man with short black hair, wearing a white polo shirt with a black grid pattern and a Babolat logo",
+        "action": "standing and smiling",
+        "position": "right"
+      },
+      {
+        "desc": "rows of empty blue stadium seats",
+        "action": "static",
+        "position": "background"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The woman stands to the left of the man.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The man stands to the right of the woman.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "Both individuals are standing in front of rows of empty blue seats.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The woman is wearing a teal tank top with an Adidas logo.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The man is wearing a white checkered polo shirt with a Babolat logo.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "adidas",
+      "Babolat"
+    ],
+    "spatial": "The woman is to the left of the man. The man is to the right of the woman. Both people are in the foreground, standing in front of the background rows of blue stadium seats.",
     "parse_success": true,
     "chunk_idx": 3,
     "video_id": "ytb_pu-tGEnCwpw"
   },
   {
     "time": [
-      8,
-      10
+      4,
+      5
     ],
     "visible_entities": [
       {
@@ -223,22 +233,26 @@
         "position": "right"
       },
       {
-        "desc": "rows of empty blue stadium seats",
+        "desc": "rows of blue stadium seats",
         "action": "static",
         "position": "background"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "The woman and man are standing next to each other.",
+        "fact": "The woman is standing to the left of the man.",
         "confidence": 1.0
       },
       {
-        "fact": "The man's shirt has a 'Babolat' logo on the left chest.",
+        "fact": "The man is wearing a white polo shirt with a black grid pattern.",
         "confidence": 1.0
       },
       {
-        "fact": "The background consists of empty blue stadium seating.",
+        "fact": "The woman is wearing a teal tank top.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The background consists of empty blue stadium seats.",
         "confidence": 1.0
       }
     ],
@@ -252,22 +266,128 @@
   },
   {
     "time": [
-      10,
-      12
+      5,
+      6
+    ],
+    "visible_entities": [
+      {
+        "desc": "woman with long curly light-brown hair in a high ponytail, wearing a teal sleeveless tank top with a black Adidas logo, a gold necklace, and a pearl earring",
+        "action": "smiling",
+        "position": "left"
+      },
+      {
+        "desc": "man with short dark hair and a goatee, wearing a white polo shirt with a black grid pattern and a Babolat logo",
+        "action": "smiling",
+        "position": "right"
+      },
+      {
+        "desc": "rows of blue plastic stadium seats",
+        "action": "static",
+        "position": "background"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The woman is smiling and looking slightly to her right.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The man is smiling and looking forward.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The woman is wearing a teal tank top with a visible Adidas logo.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The man is wearing a white polo shirt with a black grid pattern and a Babolat logo.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The background consists of empty blue stadium seating.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "adidas",
+      "Babolat"
+    ],
+    "spatial": "The woman is to the left of the man. Both individuals are standing in the foreground in front of the rows of blue stadium seats.",
+    "parse_success": true,
+    "chunk_idx": 5,
+    "video_id": "ytb_pu-tGEnCwpw"
+  },
+  {
+    "time": [
+      6,
+      7
     ],
     "visible_entities": [
       {
         "desc": "woman with curly light brown hair in a high ponytail, wearing a teal sleeveless tank top with a black Adidas logo, a gold necklace, and pearl earrings",
-        "action": "standing and smiling",
+        "action": "smiling and standing",
         "position": "left"
       },
       {
-        "desc": "man with short dark hair and facial hair, wearing a white polo shirt with a black grid pattern and a Babolat logo",
-        "action": "standing and smiling",
+        "desc": "man with short black hair, wearing a white polo shirt with a black grid pattern and a Babolat logo",
+        "action": "smiling and standing",
         "position": "right"
       },
       {
-        "desc": "rows of empty blue stadium seats",
+        "desc": "rows of blue stadium seats",
+        "action": "static",
+        "position": "background"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The woman on the left is smiling with her teeth visible.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The man on the right is smiling with his teeth visible.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The woman is wearing a teal tank top with the Adidas logo.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The man is wearing a white polo shirt with a grid pattern and the Babolat logo.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The background consists of empty blue stadium seating.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "adidas",
+      "Babolat"
+    ],
+    "spatial": "The woman is to the left of the man. The man is to the right of the woman. Both individuals are standing in the foreground in front of the rows of blue stadium seats.",
+    "parse_success": true,
+    "chunk_idx": 6,
+    "video_id": "ytb_pu-tGEnCwpw"
+  },
+  {
+    "time": [
+      7,
+      8
+    ],
+    "visible_entities": [
+      {
+        "desc": "woman with curly light brown hair in a high ponytail, wearing a teal sleeveless tank top with a small black logo on the chest, a gold necklace, and a stud earring",
+        "action": "standing still",
+        "position": "left"
+      },
+      {
+        "desc": "man with short black hair and a goatee, wearing a white polo shirt with a black grid pattern and a logo on the left chest",
+        "action": "standing still",
+        "position": "right"
+      },
+      {
+        "desc": "rows of blue stadium seats",
         "action": "static",
         "position": "background"
       }
@@ -278,11 +398,109 @@
         "confidence": 1.0
       },
       {
-        "fact": "Both individuals are smiling while facing forward.",
+        "fact": "The man is standing to the right of the woman.",
         "confidence": 1.0
       },
       {
-        "fact": "The background consists of tiered blue seating in a stadium.",
+        "fact": "Both individuals are standing in front of rows of empty blue seats.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The woman is positioned to the left of the man. The man is positioned to the right of the woman. Both individuals are standing in the foreground, with the rows of blue stadium seats located behind them.",
+    "parse_success": true,
+    "chunk_idx": 7,
+    "video_id": "ytb_pu-tGEnCwpw"
+  },
+  {
+    "time": [
+      8,
+      9
+    ],
+    "visible_entities": [
+      {
+        "desc": "woman with curly light brown hair in a high ponytail, wearing a teal sleeveless tank top with a small dark logo on the chest and a gold necklace",
+        "action": "static",
+        "position": "left"
+      },
+      {
+        "desc": "man with short dark hair and a mustache, wearing a white short-sleeved polo shirt with a black grid pattern and a white logo on the left chest",
+        "action": "static",
+        "position": "right"
+      },
+      {
+        "desc": "rows of empty blue stadium seats",
+        "action": "static",
+        "position": "background"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The woman stands to the left of the man.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The man stands to the right of the woman.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "Both individuals are standing still in front of the stadium seating.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The logo on the man's shirt reads 'Babolat'.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "Babolat"
+    ],
+    "spatial": "The woman is positioned to the left of the man. The man is positioned to the right of the woman. Both people are standing in the foreground, in front of the rows of blue stadium seats.",
+    "parse_success": true,
+    "chunk_idx": 8,
+    "video_id": "ytb_pu-tGEnCwpw"
+  },
+  {
+    "time": [
+      9,
+      10
+    ],
+    "visible_entities": [
+      {
+        "desc": "woman with curly light brown hair, wearing a teal sleeveless tank top with a small black logo on the chest and a thin gold necklace",
+        "action": "standing and smiling",
+        "position": "left"
+      },
+      {
+        "desc": "man with short dark hair and a mustache, wearing a white polo shirt with a black grid pattern and a logo on the left chest",
+        "action": "standing and looking forward",
+        "position": "right"
+      },
+      {
+        "desc": "rows of empty blue plastic stadium seats",
+        "action": "static",
+        "position": "background"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The woman on the left is smiling with her teeth visible.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The man on the right has a neutral facial expression.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The woman is wearing a teal tank top.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The man is wearing a white shirt with a black grid pattern.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The background consists of tiered blue seating.",
         "confidence": 1.0
       }
     ],
@@ -290,29 +508,29 @@
       "adidas",
       "Babolat"
     ],
-    "spatial": "The woman is positioned to the left of the man. Both are standing in the foreground in front of the rows of blue stadium seats.",
+    "spatial": "The woman in the teal top is to the left of the man in the white checkered shirt. Both individuals are standing in front of the rows of blue stadium seats. The man is to the right of the woman.",
     "parse_success": true,
-    "chunk_idx": 5,
+    "chunk_idx": 9,
     "video_id": "ytb_pu-tGEnCwpw"
   },
   {
     "time": [
-      12,
-      14
+      10,
+      11
     ],
     "visible_entities": [
       {
-        "desc": "woman with curly light brown hair in a high ponytail, wearing a teal sleeveless tank top with a black Adidas logo, a gold necklace, and pearl earrings",
-        "action": "standing and smiling",
+        "desc": "woman with curly light brown hair in a high ponytail, wearing a teal sleeveless tank top with a small black logo on the chest and a thin gold necklace",
+        "action": "smiling and looking forward",
         "position": "left"
       },
       {
-        "desc": "man with short black hair, wearing a white polo shirt with a black grid pattern and a Babolat logo",
-        "action": "standing and smiling",
+        "desc": "man with short dark hair, wearing a white polo shirt with a black grid pattern and a black collar",
+        "action": "smiling and looking forward",
         "position": "right"
       },
       {
-        "desc": "rows of blue stadium seats",
+        "desc": "rows of blue stadium seats in the background",
         "action": "static",
         "position": "background"
       }
@@ -335,6 +553,157 @@
         "confidence": 1.0
       },
       {
+        "fact": "The background consists of empty blue stadium seating.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "adidas",
+      "Babolat"
+    ],
+    "spatial": "The woman is to the left of the man. The man is to the right of the woman. Both individuals are standing in front of the blue stadium seats.",
+    "parse_success": true,
+    "chunk_idx": 10,
+    "video_id": "ytb_pu-tGEnCwpw"
+  },
+  {
+    "time": [
+      11,
+      12
+    ],
+    "visible_entities": [
+      {
+        "desc": "woman with curly light brown hair in a high ponytail, wearing a teal sleeveless tank top with an Adidas logo, a gold necklace, and earrings",
+        "action": "smiling and looking forward",
+        "position": "left"
+      },
+      {
+        "desc": "man with short dark hair, wearing a white polo shirt with a black grid pattern and a Babolat logo",
+        "action": "gesturing with his right hand",
+        "position": "right"
+      },
+      {
+        "desc": "rows of empty blue stadium seats",
+        "action": "static",
+        "position": "background"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The woman is smiling at the camera.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The man raises his right hand in a gesture.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The woman's shirt has an Adidas logo.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The man's shirt has a Babolat logo.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "adidas",
+      "Babolat"
+    ],
+    "spatial": "The woman is to the left of the man. The man is to the right of the woman. Both individuals are standing in front of the blue stadium seats.",
+    "parse_success": true,
+    "chunk_idx": 11,
+    "video_id": "ytb_pu-tGEnCwpw"
+  },
+  {
+    "time": [
+      12,
+      13
+    ],
+    "visible_entities": [
+      {
+        "desc": "woman with long curly blonde and brown hair in a high ponytail, wearing a teal sleeveless tank top with a black Adidas logo, a thin gold necklace, and small stud earrings",
+        "action": "standing and smiling",
+        "position": "left"
+      },
+      {
+        "desc": "man with short black hair and a goatee, wearing a white polo shirt with a black grid pattern and a Babolat logo",
+        "action": "standing and smiling",
+        "position": "right"
+      },
+      {
+        "desc": "rows of blue plastic stadium seats",
+        "action": "static",
+        "position": "background"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The woman is standing to the left of the man.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The man is wearing a white polo shirt with a black grid pattern.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The woman is wearing a teal tank top with an Adidas logo.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The background consists of empty blue stadium seating.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "adidas",
+      "Babolat"
+    ],
+    "spatial": "The woman is positioned to the left of the man. Both individuals are standing in the foreground, in front of the rows of blue stadium seats.",
+    "parse_success": true,
+    "chunk_idx": 12,
+    "video_id": "ytb_pu-tGEnCwpw"
+  },
+  {
+    "time": [
+      13,
+      14
+    ],
+    "visible_entities": [
+      {
+        "desc": "woman with curly light brown hair in a high ponytail, wearing a teal sleeveless tank top with a black Adidas logo, a gold necklace, and a pearl earring",
+        "action": "smiling and looking to the right",
+        "position": "left"
+      },
+      {
+        "desc": "man with short black hair, wearing a white polo shirt with a black grid pattern and a 'Babolat' logo on the chest",
+        "action": "smiling and looking forward",
+        "position": "right"
+      },
+      {
+        "desc": "rows of blue plastic stadium seats",
+        "action": "static",
+        "position": "background"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The woman on the left smiles and looks towards the man.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The man on the right smiles and looks forward.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The woman is wearing a teal tank top with an Adidas logo.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The man is wearing a white polo shirt with a grid pattern and a Babolat logo.",
+        "confidence": 1.0
+      },
+      {
         "fact": "The background consists of empty blue stadium seats.",
         "confidence": 1.0
       }
@@ -343,25 +712,71 @@
       "adidas",
       "Babolat"
     ],
-    "spatial": "The woman in the teal tank top is to the left of the man in the white polo shirt. Both individuals are standing in front of the rows of blue stadium seats.",
+    "spatial": "The woman is to the left of the man. The man is to the right of the woman. Both individuals are standing in front of the rows of blue stadium seats.",
     "parse_success": true,
-    "chunk_idx": 6,
+    "chunk_idx": 13,
     "video_id": "ytb_pu-tGEnCwpw"
   },
   {
     "time": [
       14,
+      15
+    ],
+    "visible_entities": [
+      {
+        "desc": "woman with curly light brown hair in a high ponytail, wearing a teal sleeveless tank top with a small logo on the chest and a thin gold necklace",
+        "action": "standing and smiling",
+        "position": "left"
+      },
+      {
+        "desc": "man with short black hair and a mustache, wearing a white polo shirt with a black grid pattern and a logo on the left chest",
+        "action": "standing and smiling",
+        "position": "right"
+      },
+      {
+        "desc": "rows of blue stadium seats",
+        "action": "static",
+        "position": "background"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The woman and man are standing next to each other in a stadium.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The woman is smiling at the camera.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The man is smiling at the camera.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The background consists of empty blue stadium seats.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The woman is to the left of the man. The man is to the right of the woman. Both individuals are in front of the rows of blue stadium seats.",
+    "parse_success": true,
+    "chunk_idx": 14,
+    "video_id": "ytb_pu-tGEnCwpw"
+  },
+  {
+    "time": [
+      15,
       16
     ],
     "visible_entities": [
       {
-        "desc": "woman with curly light brown hair in a high ponytail, wearing a teal sleeveless tank top with a small logo, gold necklace, and earrings",
-        "action": "standing still",
+        "desc": "woman with curly light brown hair in a high ponytail, wearing a teal sleeveless tank top with a small black logo on the chest and a thin gold necklace",
+        "action": "static",
         "position": "left"
       },
       {
-        "desc": "man with short dark hair and a goatee, wearing a white polo shirt with a black grid pattern and a logo on the chest",
-        "action": "standing still",
+        "desc": "man with short black hair and a mustache, wearing a white polo shirt with a black grid pattern and a logo on the left chest",
+        "action": "static",
         "position": "right"
       },
       {
@@ -382,440 +797,37 @@
       {
         "fact": "Both individuals are standing in front of rows of empty blue stadium seats.",
         "confidence": 1.0
-      }
-    ],
-    "ocr": [
-      "Babolat"
-    ],
-    "spatial": "The woman is to the left of the man. The man is to the right of the woman. Both people are in front of the blue stadium seats.",
-    "parse_success": true,
-    "chunk_idx": 7,
-    "video_id": "ytb_pu-tGEnCwpw"
-  },
-  {
-    "time": [
-      16,
-      18
-    ],
-    "visible_entities": [
-      {
-        "desc": "woman with curly light brown hair in a high ponytail, wearing a teal sleeveless tank top with a small black logo on the chest and a gold necklace",
-        "action": "standing and smiling",
-        "position": "left"
       },
       {
-        "desc": "man with short black hair and a mustache, wearing a white polo shirt with a black grid pattern and a logo on the left chest",
-        "action": "standing and looking forward",
-        "position": "right"
-      },
-      {
-        "desc": "rows of blue plastic stadium seats",
-        "action": "static",
-        "position": "background"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "The woman on the left is smiling with her teeth visible.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The man on the right has a neutral facial expression.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The text 'Babolat' is visible on the man's shirt.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The background consists of empty blue stadium seating.",
+        "fact": "The second frame is significantly overexposed, washing out most details of the scene.",
         "confidence": 1.0
       }
     ],
-    "ocr": [
-      "Babolat"
-    ],
-    "spatial": "The woman is standing to the left of the man. The man is standing to the right of the woman. Both individuals are positioned in the foreground in front of the rows of blue stadium seats.",
-    "parse_success": true,
-    "chunk_idx": 8,
-    "video_id": "ytb_pu-tGEnCwpw"
-  },
-  {
-    "time": [
-      18,
-      20
-    ],
-    "visible_entities": [
-      {
-        "desc": "woman with curly light brown hair, wearing a teal sleeveless tank top with a black Adidas logo, a gold necklace, and pearl earrings",
-        "action": "standing and smiling",
-        "position": "left"
-      },
-      {
-        "desc": "man with short black hair and a mustache, wearing a white polo shirt with a black grid pattern and a Babolat logo",
-        "action": "standing and looking forward",
-        "position": "right"
-      },
-      {
-        "desc": "rows of blue stadium seats",
-        "action": "static",
-        "position": "background"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "The woman is standing to the left of the man.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The woman is smiling with her teeth visible.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The man is looking slightly to his right.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The background consists of empty blue stadium seating.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The woman's shirt features an Adidas logo.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The man's shirt features a Babolat logo.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [
-      "adidas",
-      "Babolat"
-    ],
-    "spatial": "The woman in the teal tank top is standing to the left of the man in the white checkered shirt. Both individuals are positioned in the foreground in front of rows of blue stadium seats.",
-    "parse_success": true,
-    "chunk_idx": 9,
-    "video_id": "ytb_pu-tGEnCwpw"
-  },
-  {
-    "time": [
-      20,
-      22
-    ],
-    "visible_entities": [
-      {
-        "desc": "woman with curly light brown hair, wearing a teal sleeveless tank top with a black Adidas logo, and a thin gold necklace",
-        "action": "smiling",
-        "position": "left"
-      },
-      {
-        "desc": "man with short black hair, wearing a white short-sleeved polo shirt with a black grid pattern and a Babolat logo",
-        "action": "smiling",
-        "position": "right"
-      },
-      {
-        "desc": "rows of empty blue plastic stadium seats",
-        "action": "static",
-        "position": "background"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "The woman on the left smiles at the camera.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The man on the right smiles at the camera.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The woman wears a teal tank top with an Adidas logo.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The man wears a white polo shirt with a grid pattern and a Babolat logo.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The background consists of empty blue stadium seating.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [
-      "adidas",
-      "Babolat"
-    ],
-    "spatial": "The woman is standing to the left of the man. Both individuals are positioned in the foreground in front of the rows of blue stadium seats.",
-    "parse_success": true,
-    "chunk_idx": 10,
-    "video_id": "ytb_pu-tGEnCwpw"
-  },
-  {
-    "time": [
-      22,
-      24
-    ],
-    "visible_entities": [
-      {
-        "desc": "woman with curly blonde and brown hair in a high ponytail, wearing a teal sleeveless tank top with a small black logo on the chest and a gold necklace",
-        "action": "standing and smiling",
-        "position": "left"
-      },
-      {
-        "desc": "man with short dark hair and a goatee, wearing a white polo shirt with a black grid pattern and a logo on the left chest",
-        "action": "gesturing with right hand",
-        "position": "right"
-      },
-      {
-        "desc": "rows of empty blue stadium seats",
-        "action": "static",
-        "position": "background"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "The woman stands to the left of the man.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The man raises his right hand and gestures outward.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The woman smiles while looking forward.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The background consists of tiered blue seating in an arena.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [
-      "adidas",
-      "Babolat"
-    ],
-    "spatial": "The woman is to the left of the man. The man is to the right of the woman. Both individuals are standing in front of the rows of blue stadium seats.",
-    "parse_success": true,
-    "chunk_idx": 11,
-    "video_id": "ytb_pu-tGEnCwpw"
-  },
-  {
-    "time": [
-      24,
-      26
-    ],
-    "visible_entities": [
-      {
-        "desc": "woman with long curly blonde hair in a high ponytail, wearing a teal sleeveless tank top with a small black logo on the chest, a thin gold necklace, and a stud earring",
-        "action": "standing and smiling",
-        "position": "left"
-      },
-      {
-        "desc": "man with short dark hair and a goatee, wearing a white short-sleeved polo shirt with a black grid pattern and a logo on the left chest",
-        "action": "standing and smiling",
-        "position": "right"
-      },
-      {
-        "desc": "rows of empty blue plastic stadium seats",
-        "action": "static",
-        "position": "background"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "The woman is standing to the left of the man.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The man is wearing a white polo shirt with a black grid pattern.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The woman is wearing a teal tank top.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The background consists of empty blue stadium seating.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [
-      "adidas",
-      "Babolat"
-    ],
-    "spatial": "The woman is standing to the left of the man. The man is standing to the right of the woman. Both individuals are in the foreground, positioned in front of the rows of blue stadium seats.",
-    "parse_success": true,
-    "chunk_idx": 12,
-    "video_id": "ytb_pu-tGEnCwpw"
-  },
-  {
-    "time": [
-      26,
-      28
-    ],
-    "visible_entities": [
-      {
-        "desc": "woman with curly light brown hair in a high ponytail, wearing a teal Adidas tank top and a gold necklace",
-        "action": "standing and smiling",
-        "position": "left"
-      },
-      {
-        "desc": "man with short dark hair, wearing a white polo shirt with a black grid pattern and a 'Babolat' logo",
-        "action": "standing and smiling",
-        "position": "right"
-      },
-      {
-        "desc": "rows of blue plastic stadium seats",
-        "action": "static",
-        "position": "background"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "The woman on the left is smiling and looking towards the man.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The man on the right is smiling and looking forward.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The woman is wearing a teal tank top with an Adidas logo.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The man is wearing a white polo shirt with a black grid pattern.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The background consists of empty blue stadium seats.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [
-      "adidas",
-      "Babolat"
-    ],
-    "spatial": "The woman is to the left of the man. Both individuals are standing in front of the rows of blue stadium seats.",
-    "parse_success": true,
-    "chunk_idx": 13,
-    "video_id": "ytb_pu-tGEnCwpw"
-  },
-  {
-    "time": [
-      28,
-      30
-    ],
-    "visible_entities": [
-      {
-        "desc": "woman with curly light brown hair in a high ponytail, wearing a teal sleeveless tank top with a small logo, a thin gold necklace, and a stud earring",
-        "action": "standing still and smiling",
-        "position": "left"
-      },
-      {
-        "desc": "man with short black hair and a light mustache, wearing a white polo shirt with a black grid pattern and a logo on the chest",
-        "action": "standing still and smiling",
-        "position": "right"
-      },
-      {
-        "desc": "rows of empty blue stadium seats",
-        "action": "static",
-        "position": "background"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "The woman and the man are standing side-by-side in the foreground.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The man is wearing a white polo shirt with a black grid pattern.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The woman is wearing a teal tank top.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The background consists of tiered blue stadium seating.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [
-      "Babolat"
-    ],
-    "spatial": "The woman is to the left of the man. The man is to the right of the woman. Both individuals are in front of the rows of blue stadium seats.",
-    "parse_success": true,
-    "chunk_idx": 14,
-    "video_id": "ytb_pu-tGEnCwpw"
-  },
-  {
-    "time": [
-      30,
-      32
-    ],
-    "visible_entities": [
-      {
-        "desc": "woman with curly light brown hair in a high ponytail, wearing a teal sleeveless tank top with a small logo and a gold necklace",
-        "action": "static",
-        "position": "left"
-      },
-      {
-        "desc": "man with short dark hair, wearing a white polo shirt with a black grid pattern and a logo on the chest",
-        "action": "static",
-        "position": "right"
-      },
-      {
-        "desc": "rows of empty blue stadium seats",
-        "action": "static",
-        "position": "background"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "The woman stands to the left of the man.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The man stands to the right of the woman.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The background consists of tiered blue seating in an arena.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The second frame is heavily overexposed, washing out details of the scene.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [
-      "Babolat"
-    ],
-    "spatial": "The woman is to the left of the man. The man is to the right of the woman. Both individuals are in the foreground, positioned in front of the rows of blue stadium seats.",
+    "ocr": [],
+    "spatial": "The woman is to the left of the man. The man is to the right of the woman. Both the man and the woman are in front of the blue stadium seats.",
     "parse_success": true,
     "chunk_idx": 15,
     "video_id": "ytb_pu-tGEnCwpw"
   },
   {
     "time": [
-      32,
-      34
+      16,
+      17
     ],
     "visible_entities": [
       {
-        "desc": "woman with curly light brown hair in a high ponytail, wearing a teal sleeveless tank top with a small black logo on the chest and a gold necklace",
-        "action": "standing still",
+        "desc": "woman with curly blonde hair in a high ponytail, wearing a teal sleeveless tank top with a small black logo on the chest and a thin gold necklace",
+        "action": "static",
         "position": "left"
       },
       {
-        "desc": "man with short dark hair and a mustache, wearing a white polo shirt with a black grid pattern and a logo on the chest",
-        "action": "standing still",
+        "desc": "man with short dark hair and a mustache, wearing a white polo shirt with a black grid pattern and a logo on the left chest",
+        "action": "static",
         "position": "right"
       },
       {
-        "desc": "large animated graphic featuring a dark blue circle with a bright yellow center, surrounded by a light blue ring with a yellow border",
-        "action": "appearing in the foreground",
+        "desc": "large graphic overlay consisting of a dark blue circle with a yellow center and a light blue outer ring",
+        "action": "appearing in foreground",
         "position": "center"
       },
       {
@@ -826,15 +838,11 @@
     ],
     "atomic_facts": [
       {
-        "fact": "A woman in a teal tank top stands on the left side of the frame.",
+        "fact": "A woman and a man are standing side-by-side in a stadium.",
         "confidence": 1.0
       },
       {
-        "fact": "A man in a white grid-patterned shirt stands on the right side of the frame.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "A large animated graphic appears in the center, obscuring the view of the people.",
+        "fact": "A large circular graphic overlay appears in the center of the frame, obscuring the view of the people.",
         "confidence": 1.0
       },
       {
@@ -845,69 +853,69 @@
     "ocr": [
       "Babolat"
     ],
-    "spatial": "The woman is to the left of the man. The animated graphic is in the foreground, positioned in front of both the man and the woman. The blue stadium seats are in the background behind the people.",
+    "spatial": "The woman is to the left of the man. The man is to the right of the woman. The circular graphic is in front of both the man and the woman. The blue stadium seats are behind the two people.",
     "parse_success": true,
     "chunk_idx": 16,
     "video_id": "ytb_pu-tGEnCwpw"
   },
   {
     "time": [
-      34,
-      36
+      17,
+      18
     ],
     "visible_entities": [
       {
         "desc": "woman with curly blonde hair, wearing a teal sleeveless tank top with a small logo on the chest and a gold necklace",
-        "action": "standing still",
+        "action": "static",
         "position": "left"
       },
       {
-        "desc": "man with short dark hair, wearing a white polo shirt with a black grid pattern",
-        "action": "standing still",
+        "desc": "man with short dark hair, wearing a white polo shirt with a black grid pattern and a logo on the left chest",
+        "action": "static",
         "position": "right"
       },
       {
-        "desc": "rows of blue stadium seats",
+        "desc": "rows of empty blue stadium seats",
         "action": "static",
         "position": "background"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "The woman and man are standing side-by-side in a stadium.",
+        "fact": "A woman in a teal tank top stands next to a man in a white grid-patterned shirt.",
         "confidence": 1.0
       },
       {
-        "fact": "The man's shirt features a 'Babolat' logo on the left chest.",
+        "fact": "The man and woman are standing in front of rows of empty blue seats.",
         "confidence": 1.0
       },
       {
-        "fact": "The background consists of empty blue seating tiers.",
+        "fact": "The logo on the man's shirt reads 'Babolat'.",
         "confidence": 1.0
       }
     ],
     "ocr": [
       "Babolat"
     ],
-    "spatial": "The woman is to the left of the man. The man is to the right of the woman. Both individuals are in the foreground, positioned in front of the rows of blue stadium seats.",
+    "spatial": "The woman is to the left of the man. The man is to the right of the woman. Both individuals are in front of the blue stadium seating.",
     "parse_success": true,
     "chunk_idx": 17,
     "video_id": "ytb_pu-tGEnCwpw"
   },
   {
     "time": [
-      36,
-      38
+      18,
+      19
     ],
     "visible_entities": [
       {
-        "desc": "woman with curly blonde hair, wearing a teal sleeveless tank top and a gold necklace",
+        "desc": "woman with curly blonde hair, wearing a teal tank top and a gold necklace",
         "action": "standing still",
         "position": "left"
       },
       {
-        "desc": "man with short dark hair and a mustache, wearing a white polo shirt with a black grid pattern",
-        "action": "touching his nose with his right hand",
+        "desc": "man with short black hair, wearing a white polo shirt with a black grid pattern",
+        "action": "touching his nose",
         "position": "right"
       },
       {
@@ -922,15 +930,11 @@
         "confidence": 1.0
       },
       {
-        "fact": "The woman stands with her arms behind her back.",
+        "fact": "The woman stands with her arms at her sides.",
         "confidence": 1.0
       },
       {
-        "fact": "The man's shirt features a 'Babolat' logo on the left chest.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The setting is a tennis arena with blue seating.",
+        "fact": "The text 'Babolat' is visible on the man's shirt.",
         "confidence": 1.0
       }
     ],
@@ -944,8 +948,8 @@
   },
   {
     "time": [
-      38,
-      40
+      19,
+      20
     ],
     "visible_entities": [
       {
@@ -954,7 +958,7 @@
         "position": "left"
       },
       {
-        "desc": "man with short dark hair and a goatee, wearing a white polo shirt with a black grid pattern",
+        "desc": "man with short dark hair and a mustache, wearing a white polo shirt with a black grid pattern",
         "action": "standing",
         "position": "right"
       },
@@ -970,39 +974,35 @@
         "confidence": 1.0
       },
       {
-        "fact": "The man on the right stands with a neutral expression.",
+        "fact": "The man on the right is standing with a neutral expression.",
         "confidence": 1.0
       },
       {
-        "fact": "The man's shirt features a 'Babolat' logo on the left chest.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The background consists of empty blue seating in an arena.",
+        "fact": "The man's shirt features a 'Babolat' logo on the chest.",
         "confidence": 1.0
       }
     ],
     "ocr": [
       "Babolat"
     ],
-    "spatial": "The woman is to the left of the man. The man is to the right of the woman. Both individuals are standing in front of the rows of blue stadium seats.",
+    "spatial": "The woman is to the left of the man. Both individuals are standing in the foreground in front of the rows of blue stadium seats.",
     "parse_success": true,
     "chunk_idx": 19,
     "video_id": "ytb_pu-tGEnCwpw"
   },
   {
     "time": [
-      40,
-      42
+      20,
+      21
     ],
     "visible_entities": [
       {
-        "desc": "woman with curly blonde hair, wearing a teal sleeveless tank top with a small black logo on the chest and a gold necklace",
-        "action": "smiling and tilting head to the right",
+        "desc": "woman with curly blonde hair, wearing a teal sleeveless tank top and a necklace",
+        "action": "smiling and laughing",
         "position": "left"
       },
       {
-        "desc": "man with short dark hair and facial hair, wearing a white polo shirt with a black grid pattern and a 'Babolat' logo",
+        "desc": "man with short dark hair and facial hair, wearing a white polo shirt with a black grid pattern",
         "action": "standing with hands on hips",
         "position": "right"
       },
@@ -1010,16 +1010,11 @@
         "desc": "rows of blue stadium seats",
         "action": "static",
         "position": "background"
-      },
-      {
-        "desc": "sign with white text on a blue background",
-        "action": "static",
-        "position": "background"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "The woman on the left smiles and tilts her head.",
+        "fact": "The woman on the left smiles broadly and laughs.",
         "confidence": 1.0
       },
       {
@@ -1027,7 +1022,7 @@
         "confidence": 1.0
       },
       {
-        "fact": "The sign in the background reads 'PERTH ARENA'.",
+        "fact": "The background consists of empty blue stadium seating.",
         "confidence": 1.0
       }
     ],
@@ -1035,24 +1030,24 @@
       "PERTH ARENA",
       "Babolat"
     ],
-    "spatial": "The woman is to the left of the man. The man is to the right of the woman. The blue stadium seats are behind both the man and the woman. The 'PERTH ARENA' sign is in the background, above the seats.",
+    "spatial": "The woman is to the left of the man. The man is to the right of the woman. Both individuals are standing in front of the rows of blue stadium seats.",
     "parse_success": true,
     "chunk_idx": 20,
     "video_id": "ytb_pu-tGEnCwpw"
   },
   {
     "time": [
-      42,
-      44
+      21,
+      22
     ],
     "visible_entities": [
       {
-        "desc": "woman with curly blonde hair, wearing a teal sleeveless tank top with a small logo on the chest and a thin gold necklace",
-        "action": "smiling and looking forward",
+        "desc": "woman with curly blonde hair, wearing a teal sleeveless tank top with a small logo, a gold necklace with a pendant, and small earrings",
+        "action": "standing and smiling",
         "position": "left"
       },
       {
-        "desc": "man with short black hair and a mustache, wearing a white polo shirt with a black grid pattern",
+        "desc": "man with short dark hair and a mustache, wearing a white polo shirt with a black grid pattern",
         "action": "standing with hands on hips",
         "position": "right"
       },
@@ -1064,42 +1059,46 @@
     ],
     "atomic_facts": [
       {
+        "fact": "The woman is standing to the left of the man.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The man has his hands placed on his hips.",
+        "confidence": 1.0
+      },
+      {
         "fact": "The woman is smiling broadly.",
         "confidence": 1.0
       },
       {
-        "fact": "The man is standing with his hands on his hips.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The background consists of tiered blue seating in a stadium.",
+        "fact": "The background consists of tiered blue seating.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The woman is to the left of the man. The man is to the right of the woman. Both individuals are standing in front of the rows of blue stadium seats.",
+    "spatial": "The woman is positioned to the left of the man in the foreground. The man is standing to the right of the woman. Both individuals are standing in front of the rows of blue stadium seats.",
     "parse_success": true,
     "chunk_idx": 21,
     "video_id": "ytb_pu-tGEnCwpw"
   },
   {
     "time": [
-      44,
-      46
+      22,
+      23
     ],
     "visible_entities": [
       {
-        "desc": "woman with curly blonde hair, wearing a teal sleeveless tank top with a small logo on the chest, and a gold necklace",
+        "desc": "woman with curly blonde hair, wearing a teal sleeveless tank top with a small logo on the chest and a gold necklace",
         "action": "standing and smiling",
         "position": "left"
       },
       {
-        "desc": "man with short dark hair and a mustache, wearing a white polo shirt with a black grid pattern and a 'Babolat' logo",
+        "desc": "man with short dark hair and a goatee, wearing a white polo shirt with a black grid pattern",
         "action": "standing with hands on hips",
         "position": "right"
       },
       {
-        "desc": "rows of empty blue stadium seats",
+        "desc": "rows of blue stadium seats",
         "action": "static",
         "position": "background"
       }
@@ -1118,32 +1117,32 @@
         "confidence": 1.0
       },
       {
-        "fact": "The background consists of tiered blue seating.",
+        "fact": "The background consists of empty blue stadium seating.",
         "confidence": 1.0
       }
     ],
     "ocr": [
       "Babolat"
     ],
-    "spatial": "The woman is standing to the left of the man. The man is standing to the right of the woman. Both individuals are positioned in the foreground in front of the rows of blue stadium seats.",
+    "spatial": "The woman is to the left of the man. The man is to the right of the woman. Both individuals are in the foreground, standing in front of the rows of blue stadium seats.",
     "parse_success": true,
     "chunk_idx": 22,
     "video_id": "ytb_pu-tGEnCwpw"
   },
   {
     "time": [
-      46,
-      48
+      23,
+      24
     ],
     "visible_entities": [
       {
-        "desc": "woman with long curly blonde hair in a high ponytail, wearing a teal sleeveless tank top with a black Adidas logo, a gold necklace with a pearl pendant, and a small earring",
+        "desc": "woman with curly blonde hair in a high ponytail, wearing a teal sleeveless tank top with a black Adidas logo, a gold necklace with a pearl pendant, and pearl earrings",
         "action": "standing and looking to the right",
         "position": "left"
       },
       {
-        "desc": "man with short dark hair and a goatee, wearing a white short-sleeved polo shirt with a black grid pattern and a 'Babolat' logo on the chest",
-        "action": "standing with hands on hips",
+        "desc": "man with short dark hair and a goatee, wearing a white short-sleeved polo shirt with a black grid pattern and a grey 'Babolat' logo",
+        "action": "standing with hands on hips and looking forward",
         "position": "right"
       },
       {
@@ -1162,15 +1161,11 @@
         "confidence": 1.0
       },
       {
-        "fact": "The woman is wearing a teal tank top with an Adidas logo.",
+        "fact": "The woman is looking towards the man.",
         "confidence": 1.0
       },
       {
-        "fact": "The man is wearing a white polo shirt with a grid pattern.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The background consists of rows of blue stadium seats.",
+        "fact": "The background consists of empty blue stadium seating.",
         "confidence": 1.0
       }
     ],
@@ -1178,25 +1173,25 @@
       "adidas",
       "Babolat"
     ],
-    "spatial": "The woman in the teal tank top is to the left of the man in the white polo shirt. The man is to the right of the woman. Both individuals are in front of the rows of blue stadium seats.",
+    "spatial": "The woman in the teal top is to the left of the man in the white checkered shirt. The man is to the right of the woman. Both individuals are in the foreground, standing in front of rows of blue stadium seats.",
     "parse_success": true,
     "chunk_idx": 23,
     "video_id": "ytb_pu-tGEnCwpw"
   },
   {
     "time": [
-      48,
-      50
+      24,
+      25
     ],
     "visible_entities": [
       {
-        "desc": "woman with long curly blonde hair, wearing a teal sleeveless tank top with a black Adidas logo, gold necklace, and pearl earrings",
-        "action": "smiling and looking forward",
+        "desc": "woman with curly blonde hair, wearing a teal sleeveless tank top with a black Adidas logo, and a gold necklace with a small pendant",
+        "action": "standing and smiling",
         "position": "left"
       },
       {
-        "desc": "man with short dark hair and facial hair, wearing a white polo shirt with a black grid pattern and a 'Babolat' logo",
-        "action": "smiling and looking to the right",
+        "desc": "man with short dark hair and facial hair, wearing a white polo shirt with a black grid pattern and a 'Babolat' logo on the chest",
+        "action": "standing with hands on hips",
         "position": "right"
       },
       {
@@ -1207,23 +1202,19 @@
     ],
     "atomic_facts": [
       {
-        "fact": "The woman smiles broadly, showing her teeth.",
+        "fact": "The woman on the left is smiling and looking slightly to her right.",
         "confidence": 1.0
       },
       {
-        "fact": "The man looks to his right and smiles.",
+        "fact": "The man on the right is smiling and looking to his left.",
         "confidence": 1.0
       },
       {
-        "fact": "The woman wears a teal tank top with an Adidas logo.",
+        "fact": "The woman is wearing a necklace with a small pendant.",
         "confidence": 1.0
       },
       {
-        "fact": "The man wears a white polo shirt with a black grid pattern and a Babolat logo.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The background consists of empty blue stadium seats.",
+        "fact": "The man has his hands placed on his hips.",
         "confidence": 1.0
       }
     ],
@@ -1231,25 +1222,25 @@
       "adidas",
       "Babolat"
     ],
-    "spatial": "The woman is to the left of the man. The man is to the right of the woman. Both individuals are in the foreground, standing in front of the rows of blue stadium seats.",
+    "spatial": "The woman is to the left of the man. The man is to the right of the woman. Both individuals are standing in front of the rows of blue stadium seats.",
     "parse_success": true,
     "chunk_idx": 24,
     "video_id": "ytb_pu-tGEnCwpw"
   },
   {
     "time": [
-      50,
-      52
+      25,
+      26
     ],
     "visible_entities": [
       {
-        "desc": "woman with curly light brown hair in a high ponytail, wearing a teal sleeveless tank top with a small black logo on the chest and a gold necklace",
-        "action": "smiling and standing",
+        "desc": "woman with curly blonde hair, wearing a teal sleeveless tank top with a small logo, and a gold necklace",
+        "action": "smiling",
         "position": "left"
       },
       {
-        "desc": "man with short dark hair, wearing a white polo shirt with a black grid pattern and a logo on the left chest",
-        "action": "smiling and standing",
+        "desc": "man with short black hair, wearing a white polo shirt with a black grid pattern and a logo on the chest",
+        "action": "smiling",
         "position": "right"
       },
       {
@@ -1260,15 +1251,19 @@
     ],
     "atomic_facts": [
       {
-        "fact": "The woman on the left is smiling.",
+        "fact": "The woman and the man are standing side-by-side.",
         "confidence": 1.0
       },
       {
-        "fact": "The man on the right is smiling.",
+        "fact": "The woman is smiling.",
         "confidence": 1.0
       },
       {
-        "fact": "The man's shirt has a visible 'Babolat' logo.",
+        "fact": "The man is smiling.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The background consists of empty blue stadium seating.",
         "confidence": 1.0
       }
     ],
@@ -1282,29 +1277,29 @@
   },
   {
     "time": [
-      52,
-      54
+      26,
+      27
     ],
     "visible_entities": [
       {
-        "desc": "woman with long curly blonde hair, wearing a teal sleeveless tank top with a small black logo on the chest and a thin gold necklace",
+        "desc": "woman with curly blonde and brown hair, wearing a teal sleeveless tank top with a black logo, gold necklace, and pearl earrings",
         "action": "smiling and looking to the right",
         "position": "left"
       },
       {
-        "desc": "man with short dark hair and a mustache, wearing a white polo shirt with a black grid pattern and a logo on the left chest",
+        "desc": "man with short black hair and facial hair, wearing a white short-sleeved polo shirt with a black grid pattern",
         "action": "standing with hands on hips and looking to the right",
         "position": "right"
       },
       {
-        "desc": "rows of empty blue stadium seats",
+        "desc": "rows of blue stadium seats",
         "action": "static",
         "position": "background"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "The woman is smiling.",
+        "fact": "The woman is smiling and looking towards the man.",
         "confidence": 1.0
       },
       {
@@ -1312,36 +1307,36 @@
         "confidence": 1.0
       },
       {
-        "fact": "Both individuals are looking towards the right side of the frame.",
+        "fact": "The man is looking to the right.",
         "confidence": 1.0
       },
       {
-        "fact": "The background consists of tiered blue seating.",
+        "fact": "The text 'Babolat' is visible on the man's shirt.",
         "confidence": 1.0
       }
     ],
     "ocr": [
       "Babolat"
     ],
-    "spatial": "The woman is to the left of the man. The man is to the right of the woman. Both individuals are in the foreground, positioned in front of the rows of blue stadium seats.",
+    "spatial": "The woman is to the left of the man. The man is to the right of the woman. Both individuals are in the foreground, in front of the rows of blue stadium seats.",
     "parse_success": true,
     "chunk_idx": 26,
     "video_id": "ytb_pu-tGEnCwpw"
   },
   {
     "time": [
-      54,
-      56
+      27,
+      28
     ],
     "visible_entities": [
       {
-        "desc": "woman with curly blonde hair, wearing a teal sleeveless tank top with a small black logo on the chest and a thin gold necklace",
-        "action": "smiling and standing",
+        "desc": "woman with curly blonde hair, wearing a teal sleeveless tank top with a black logo, and a gold necklace",
+        "action": "smiling",
         "position": "left"
       },
       {
-        "desc": "man with short black hair, wearing a white short-sleeved polo shirt with a black grid pattern and a logo on the left chest",
-        "action": "smiling and standing with hands on hips",
+        "desc": "man with short black hair, wearing a white polo shirt with a black grid pattern and a logo on the chest",
+        "action": "smiling",
         "position": "right"
       },
       {
@@ -1360,36 +1355,37 @@
         "confidence": 1.0
       },
       {
-        "fact": "The man has his hands on his hips.",
+        "fact": "The woman is wearing a teal tank top.",
         "confidence": 1.0
       },
       {
-        "fact": "The text 'Babolat' is visible on the man's shirt.",
+        "fact": "The man is wearing a white checkered polo shirt.",
         "confidence": 1.0
       }
     ],
     "ocr": [
+      "adidas",
       "Babolat"
     ],
-    "spatial": "The woman is to the left of the man. The man is to the right of the woman. Both people are in front of the rows of blue stadium seats.",
+    "spatial": "The woman is to the left of the man. The man is to the right of the woman. Both individuals are standing in front of the blue stadium seats.",
     "parse_success": true,
     "chunk_idx": 27,
     "video_id": "ytb_pu-tGEnCwpw"
   },
   {
     "time": [
-      56,
-      58
+      28,
+      29
     ],
     "visible_entities": [
       {
-        "desc": "woman with curly light brown hair in a high ponytail, wearing a teal sleeveless tank top with a small logo on the chest and a thin gold necklace",
-        "action": "standing still",
+        "desc": "woman with curly light brown hair in a high ponytail, wearing a teal sleeveless tank top with a small logo on the chest and a gold necklace",
+        "action": "static",
         "position": "left"
       },
       {
-        "desc": "man with short dark hair and a goatee, wearing a white short-sleeved polo shirt with a black grid pattern and a 'Babolat' logo on the chest",
-        "action": "standing with hands on hips",
+        "desc": "man with short black hair and a mustache, wearing a white polo shirt with a black grid pattern and a 'Babolat' logo",
+        "action": "static",
         "position": "right"
       },
       {
@@ -1400,15 +1396,19 @@
     ],
     "atomic_facts": [
       {
-        "fact": "The woman is standing to the left of the man.",
+        "fact": "The woman and man are standing side-by-side in the foreground.",
         "confidence": 1.0
       },
       {
-        "fact": "The man has his hands placed on his hips.",
+        "fact": "The man is wearing a white polo shirt with a black grid pattern.",
         "confidence": 1.0
       },
       {
-        "fact": "The background consists of tiered blue seating in a stadium.",
+        "fact": "The woman is wearing a teal tank top.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The background consists of tiered blue seating.",
         "confidence": 1.0
       }
     ],
@@ -1422,12 +1422,12 @@
   },
   {
     "time": [
-      58,
-      60
+      29,
+      30
     ],
     "visible_entities": [
       {
-        "desc": "woman with curly blonde and brown hair in a high ponytail, wearing a teal sleeveless tank top with a small logo on the chest and a thin gold necklace",
+        "desc": "woman with curly blonde hair in a high ponytail, wearing a teal sleeveless tank top with a small logo on the chest and a gold necklace",
         "action": "standing still and smiling",
         "position": "left"
       },
@@ -1437,18 +1437,18 @@
         "position": "right"
       },
       {
-        "desc": "rows of empty blue stadium seats",
+        "desc": "rows of blue stadium seats",
         "action": "static",
         "position": "background"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "The woman is standing to the left of the man.",
+        "fact": "The woman stands to the left of the man.",
         "confidence": 1.0
       },
       {
-        "fact": "The man has his hands placed on his hips.",
+        "fact": "The man stands with his hands on his hips.",
         "confidence": 1.0
       },
       {
@@ -1456,32 +1456,32 @@
         "confidence": 1.0
       },
       {
-        "fact": "The background consists of tiered blue seating.",
+        "fact": "The background consists of empty blue stadium seating.",
         "confidence": 1.0
       }
     ],
     "ocr": [
       "Babolat"
     ],
-    "spatial": "The woman is standing to the left of the man. The man is standing to the right of the woman. Both individuals are positioned in the foreground in front of the rows of blue stadium seats.",
+    "spatial": "The woman is to the left of the man. The man is to the right of the woman. Both individuals are standing in front of the rows of blue stadium seats.",
     "parse_success": true,
     "chunk_idx": 29,
     "video_id": "ytb_pu-tGEnCwpw"
   },
   {
     "time": [
-      60,
-      62
+      30,
+      31
     ],
     "visible_entities": [
       {
-        "desc": "woman with curly blonde and brown hair, wearing a teal tank top and a necklace",
+        "desc": "woman with long curly blonde and brown hair, wearing a teal tank top and a gold necklace",
         "action": "smiling and looking to the right",
         "position": "left"
       },
       {
-        "desc": "man with short black hair and facial hair, wearing a white polo shirt with a black grid pattern",
-        "action": "standing with hands on hips",
+        "desc": "man with short black hair and a goatee, wearing a white polo shirt with a black grid pattern",
+        "action": "standing with hands on hips and smiling",
         "position": "right"
       },
       {
@@ -1496,51 +1496,7 @@
         "confidence": 1.0
       },
       {
-        "fact": "The man on the right is standing with his hands on his hips.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The man is wearing a white polo shirt with a black grid pattern.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [
-      "Babolat"
-    ],
-    "spatial": "The woman is to the left of the man. The man is to the right of the woman. Both individuals are in front of the rows of blue stadium seats.",
-    "parse_success": true,
-    "chunk_idx": 30,
-    "video_id": "ytb_pu-tGEnCwpw"
-  },
-  {
-    "time": [
-      62,
-      64
-    ],
-    "visible_entities": [
-      {
-        "desc": "woman with curly blonde and brown hair, wearing a teal sleeveless tank top with a black logo, gold necklace, and pearl earrings",
-        "action": "smiling and looking to the right",
-        "position": "left"
-      },
-      {
-        "desc": "man with short black hair and facial stubble, wearing a white polo shirt with a black grid pattern and a logo on the chest",
-        "action": "smiling and looking forward",
-        "position": "right"
-      },
-      {
-        "desc": "rows of blue plastic stadium seats",
-        "action": "static",
-        "position": "background"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "The woman on the left is smiling with her eyes closed.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The man on the right is smiling with his mouth open.",
+        "fact": "The man on the right is smiling and looking forward.",
         "confidence": 1.0
       },
       {
@@ -1548,182 +1504,36 @@
         "confidence": 1.0
       },
       {
-        "fact": "The background consists of empty blue stadium seating.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [
-      "Babolat"
-    ],
-    "spatial": "The woman is to the left of the man. The man is to the right of the woman. Both individuals are standing in front of the rows of blue stadium seats.",
-    "parse_success": true,
-    "chunk_idx": 31,
-    "video_id": "ytb_pu-tGEnCwpw"
-  },
-  {
-    "time": [
-      64,
-      66
-    ],
-    "visible_entities": [
-      {
-        "desc": "woman with curly blonde hair in a high ponytail, wearing a teal sleeveless tank top with a small white Adidas logo on the chest and a gold necklace",
-        "action": "static",
-        "position": "left"
-      },
-      {
-        "desc": "man with short dark hair and a mustache, wearing a white short-sleeved polo shirt with a black grid pattern and a 'Babolat' logo on the left chest",
-        "action": "static",
-        "position": "right"
-      },
-      {
-        "desc": "rows of empty blue stadium seats",
-        "action": "static",
-        "position": "background"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "The woman and man are standing side-by-side facing forward.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The woman is wearing a teal tank top with an Adidas logo.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The man is wearing a white polo shirt with a black grid pattern and a Babolat logo.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The background consists of empty blue stadium seating.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [
-      "adidas",
-      "Babolat"
-    ],
-    "spatial": "The woman is to the left of the man. The man is to the right of the woman. Both individuals are in the foreground, standing in front of the rows of blue stadium seats.",
-    "parse_success": true,
-    "chunk_idx": 32,
-    "video_id": "ytb_pu-tGEnCwpw"
-  },
-  {
-    "time": [
-      66,
-      68
-    ],
-    "visible_entities": [
-      {
-        "desc": "woman with curly light-brown hair in a high ponytail, wearing a teal sleeveless tank top with a small white logo on the chest, a gold necklace, and small earrings",
-        "action": "standing and smiling",
-        "position": "left"
-      },
-      {
-        "desc": "man with short dark hair and a mustache, wearing a white polo shirt with a black grid pattern and a logo on the left chest",
-        "action": "standing and looking forward",
-        "position": "right"
-      },
-      {
-        "desc": "rows of empty blue stadium seats",
-        "action": "static",
-        "position": "background"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "The woman is standing to the left of the man.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The man is wearing a white polo shirt with a black grid pattern.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The woman is wearing a teal sleeveless top.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The background consists of rows of empty blue stadium seats.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The woman is smiling while the man maintains a neutral expression.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [
-      "adidas",
-      "Babolat"
-    ],
-    "spatial": "The woman is standing to the left of the man. The man is standing to the right of the woman. Both individuals are in the foreground, positioned in front of the rows of blue stadium seats.",
-    "parse_success": true,
-    "chunk_idx": 33,
-    "video_id": "ytb_pu-tGEnCwpw"
-  },
-  {
-    "time": [
-      68,
-      70
-    ],
-    "visible_entities": [
-      {
-        "desc": "woman with long curly blonde and brown hair, wearing a teal sleeveless tank top with a small logo on the chest and a gold necklace",
-        "action": "standing and looking at the man",
-        "position": "left"
-      },
-      {
-        "desc": "man with short dark hair and facial hair, wearing a white polo shirt with a black grid pattern and a 'Babolat' logo",
-        "action": "standing and looking at the woman",
-        "position": "right"
-      },
-      {
-        "desc": "rows of blue stadium seats",
-        "action": "static",
-        "position": "background"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "The woman is standing to the left of the man.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The man is standing to the right of the woman.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The man and woman are facing each other.",
-        "confidence": 1.0
-      },
-      {
         "fact": "The text 'Babolat' is visible on the man's shirt.",
         "confidence": 1.0
+      },
+      {
+        "fact": "The setting is an indoor sports arena with blue seating.",
+        "confidence": 1.0
       }
     ],
     "ocr": [
       "Babolat"
     ],
-    "spatial": "The woman is to the left of the man. The man is to the right of the woman. Both are standing in front of the blue stadium seats.",
+    "spatial": "The woman is to the left of the man. The man is to the right of the woman. Both individuals are in the foreground, in front of the rows of blue stadium seats.",
     "parse_success": true,
-    "chunk_idx": 34,
+    "chunk_idx": 30,
     "video_id": "ytb_pu-tGEnCwpw"
   },
   {
     "time": [
-      70,
-      72
+      31,
+      32
     ],
     "visible_entities": [
       {
-        "desc": "woman with curly blonde and brown hair in a high ponytail, wearing a teal sleeveless tank top, gold necklace, and pearl earrings",
-        "action": "smiling and looking to the right",
+        "desc": "woman with long curly blonde hair, wearing a teal sleeveless tank top with a small black logo on the chest and a thin gold necklace",
+        "action": "smiling with eyes closed then opening them",
         "position": "left"
       },
       {
-        "desc": "man with short dark hair and facial hair, wearing a white polo shirt with a black grid pattern",
-        "action": "standing and looking to the left",
+        "desc": "man with short black hair, wearing a white polo shirt with a black grid pattern and a grey logo on the left chest",
+        "action": "smiling with mouth open",
         "position": "right"
       },
       {
@@ -1734,216 +1544,19 @@
     ],
     "atomic_facts": [
       {
-        "fact": "The woman is smiling and looking at the man.",
+        "fact": "The woman on the left smiles with her eyes closed in the first frame and open in the second.",
         "confidence": 1.0
       },
       {
-        "fact": "The man is looking at the woman.",
+        "fact": "The man on the right smiles with his mouth open.",
         "confidence": 1.0
       },
       {
-        "fact": "The man's shirt has a 'Babolat' logo on the left chest.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The setting is a stadium with blue seats.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [
-      "Babolat"
-    ],
-    "spatial": "The woman is to the left of the man. The man is to the right of the woman. The rows of blue stadium seats are behind both the man and the woman.",
-    "parse_success": true,
-    "chunk_idx": 35,
-    "video_id": "ytb_pu-tGEnCwpw"
-  },
-  {
-    "time": [
-      72,
-      74
-    ],
-    "visible_entities": [
-      {
-        "desc": "woman with curly blonde hair in a high ponytail, wearing a teal sleeveless tank top with a small logo on the chest and a necklace",
-        "action": "smiling and looking to the right",
-        "position": "left"
-      },
-      {
-        "desc": "man with short black hair and a mustache, wearing a white polo shirt with a black grid pattern and a logo on the left chest",
-        "action": "smiling and looking to the right",
-        "position": "right"
-      },
-      {
-        "desc": "rows of empty blue plastic stadium seats",
-        "action": "static",
-        "position": "background"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "The woman and the man are standing next to each other.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The woman is smiling and looking towards the man.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The man is smiling and looking towards the right.",
+        "fact": "The man's shirt has a visible 'Babolat' logo.",
         "confidence": 1.0
       },
       {
         "fact": "The background consists of empty blue stadium seating.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [
-      "Babolat"
-    ],
-    "spatial": "The woman is to the left of the man. The man is to the right of the woman. Both individuals are in the foreground, positioned in front of the rows of blue stadium seats.",
-    "parse_success": true,
-    "chunk_idx": 36,
-    "video_id": "ytb_pu-tGEnCwpw"
-  },
-  {
-    "time": [
-      74,
-      76
-    ],
-    "visible_entities": [
-      {
-        "desc": "woman with long curly blonde and brown hair in a high ponytail, wearing a teal sleeveless tank top with a small logo on the chest, a gold necklace, and a stud earring",
-        "action": "standing and looking to the right",
-        "position": "left"
-      },
-      {
-        "desc": "man with short dark hair and facial hair, wearing a white short-sleeved polo shirt with a black grid pattern and a logo on the left chest",
-        "action": "standing and looking to the left",
-        "position": "right"
-      },
-      {
-        "desc": "rows of empty blue stadium seats",
-        "action": "static",
-        "position": "background"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "The woman is standing to the left of the man.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The man is standing to the right of the woman.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The woman is looking towards the man.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The man is looking towards the woman.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The background consists of empty blue stadium seating.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [
-      "ARENA",
-      "Babolat"
-    ],
-    "spatial": "The woman is to the left of the man. The man is to the right of the woman. Both individuals are in the foreground, standing in front of the rows of blue stadium seats.",
-    "parse_success": true,
-    "chunk_idx": 37,
-    "video_id": "ytb_pu-tGEnCwpw"
-  },
-  {
-    "time": [
-      76,
-      78
-    ],
-    "visible_entities": [
-      {
-        "desc": "woman with curly light brown hair in a high ponytail, wearing a teal sleeveless tank top with a small gold logo on the chest, a gold necklace with a pendant, and a stud earring",
-        "action": "standing still and smiling",
-        "position": "left"
-      },
-      {
-        "desc": "man with short black hair and a mustache, wearing a white short-sleeved polo shirt with a black grid pattern and a logo on the left chest",
-        "action": "standing still",
-        "position": "right"
-      },
-      {
-        "desc": "rows of empty blue plastic stadium seats",
-        "action": "static",
-        "position": "background"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "The woman is standing to the left of the man.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The man is wearing a white polo shirt with a black grid pattern.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The woman is wearing a teal tank top.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The background consists of rows of empty blue seats.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [
-      "Babolat"
-    ],
-    "spatial": "The woman is standing to the left of the man. Both individuals are in the foreground, positioned in front of the rows of blue stadium seats.",
-    "parse_success": true,
-    "chunk_idx": 38,
-    "video_id": "ytb_pu-tGEnCwpw"
-  },
-  {
-    "time": [
-      78,
-      80
-    ],
-    "visible_entities": [
-      {
-        "desc": "woman with curly blonde and brown hair, wearing a teal sleeveless tank top with a small logo, a gold necklace, and earrings",
-        "action": "standing and smiling",
-        "position": "left"
-      },
-      {
-        "desc": "man with short dark hair and facial hair, wearing a white polo shirt with a black grid pattern and a logo on the chest",
-        "action": "standing and smiling",
-        "position": "right"
-      },
-      {
-        "desc": "rows of blue plastic stadium seats",
-        "action": "static",
-        "position": "background"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "A woman and a man are standing next to each other in the foreground.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The man is wearing a white polo shirt with a black grid pattern.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The woman is wearing a teal sleeveless top.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The background consists of empty blue stadium seats.",
         "confidence": 1.0
       }
     ],
@@ -1952,66 +1565,22 @@
     ],
     "spatial": "The woman is to the left of the man. The man is to the right of the woman. Both individuals are in front of the rows of blue stadium seats.",
     "parse_success": true,
-    "chunk_idx": 39,
+    "chunk_idx": 31,
     "video_id": "ytb_pu-tGEnCwpw"
   },
   {
     "time": [
-      80,
-      82
+      32,
+      33
     ],
     "visible_entities": [
       {
-        "desc": "woman with curly light brown hair in a high ponytail, wearing a teal sleeveless tank top with a small dark logo on the chest, a gold necklace, and a stud earring",
+        "desc": "woman with curly blonde hair in a high ponytail, wearing a teal sleeveless tank top with a white Adidas logo and a gold necklace",
         "action": "static",
         "position": "left"
       },
       {
-        "desc": "man with short black hair and a goatee, wearing a white short-sleeved polo shirt with a black grid pattern and a 'Babolat' logo on the left chest",
-        "action": "static",
-        "position": "right"
-      },
-      {
-        "desc": "rows of empty blue plastic stadium seats",
-        "action": "static",
-        "position": "background"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "The woman and the man are standing side-by-side in the foreground.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The man's shirt features a 'Babolat' logo.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The background consists of tiered blue seating in an arena.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [
-      "Babolat"
-    ],
-    "spatial": "The woman is to the left of the man. Both individuals are standing in front of the rows of blue stadium seats. The 'Babolat' logo is on the left side of the man's chest.",
-    "parse_success": true,
-    "chunk_idx": 40,
-    "video_id": "ytb_pu-tGEnCwpw"
-  },
-  {
-    "time": [
-      82,
-      84
-    ],
-    "visible_entities": [
-      {
-        "desc": "woman with curly light brown hair, wearing a teal sleeveless tank top with a small black logo on the chest and a thin gold necklace",
-        "action": "static",
-        "position": "left"
-      },
-      {
-        "desc": "man with short dark hair, wearing a white polo shirt with a black grid pattern and a 'Babolat' logo on the chest",
+        "desc": "man with short dark hair and a goatee, wearing a white polo shirt with a black grid pattern and a Babolat logo",
         "action": "static",
         "position": "right"
       },
@@ -2031,36 +1600,94 @@
         "confidence": 1.0
       },
       {
-        "fact": "Both individuals are standing in front of rows of empty blue seats.",
+        "fact": "The woman's shirt displays an Adidas logo.",
         "confidence": 1.0
       },
       {
-        "fact": "The text 'Babolat' is visible on the man's shirt.",
+        "fact": "The man's shirt displays a Babolat logo.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "Both individuals are standing in front of empty blue stadium seating.",
         "confidence": 1.0
       }
     ],
     "ocr": [
+      "adidas",
       "Babolat"
     ],
-    "spatial": "The woman is to the left of the man. The man is to the right of the woman. Both people are in the foreground, positioned in front of the blue stadium seating in the background.",
+    "spatial": "The woman is positioned to the left of the man. Both individuals are standing in the foreground, in front of the rows of blue stadium seats which fill the background.",
     "parse_success": true,
-    "chunk_idx": 41,
+    "chunk_idx": 32,
     "video_id": "ytb_pu-tGEnCwpw"
   },
   {
     "time": [
-      84,
-      86
+      33,
+      34
     ],
     "visible_entities": [
       {
-        "desc": "woman with curly light brown hair in a high ponytail, wearing a teal sleeveless tank top with a small black logo on the chest and a gold necklace",
+        "desc": "woman with curly light brown hair in a high ponytail, wearing a teal sleeveless tank top with a white Adidas logo, a gold necklace, and a small earring",
         "action": "static",
         "position": "left"
       },
       {
-        "desc": "man with short black hair and a mustache, wearing a white polo shirt with a black grid pattern and a 'Babolat' logo",
+        "desc": "man with short dark hair and a mustache, wearing a white polo shirt with a black grid pattern and a Babolat logo",
         "action": "static",
+        "position": "right"
+      },
+      {
+        "desc": "rows of blue stadium seats",
+        "action": "static",
+        "position": "background"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The woman stands to the left of the man.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The man stands to the right of the woman.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "Both individuals are standing still in front of blue stadium seating.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The woman's top features an Adidas logo.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The man's shirt features a Babolat logo.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "adidas",
+      "Babolat"
+    ],
+    "spatial": "The woman is to the left of the man. The man is to the right of the woman. Both people are in the foreground, standing in front of the rows of blue stadium seats.",
+    "parse_success": true,
+    "chunk_idx": 33,
+    "video_id": "ytb_pu-tGEnCwpw"
+  },
+  {
+    "time": [
+      34,
+      35
+    ],
+    "visible_entities": [
+      {
+        "desc": "woman with long curly blonde and brown hair in a high ponytail, wearing a teal sleeveless tank top with a small logo on the chest and a thin gold necklace",
+        "action": "standing and looking to the right",
+        "position": "left"
+      },
+      {
+        "desc": "man with short dark hair and facial hair, wearing a white polo shirt with a black grid pattern and a logo on the left chest",
+        "action": "standing and looking to the left",
         "position": "right"
       },
       {
@@ -2071,59 +1698,59 @@
     ],
     "atomic_facts": [
       {
-        "fact": "The woman in the teal tank top stands to the left of the man in the white grid-patterned shirt.",
+        "fact": "The woman is standing to the left of the man.",
         "confidence": 1.0
       },
       {
-        "fact": "The man in the white grid-patterned shirt stands to the right of the woman.",
+        "fact": "The man is looking at the woman.",
         "confidence": 1.0
       },
       {
-        "fact": "Both individuals are standing still in front of rows of blue seats.",
+        "fact": "The woman is looking at the man.",
         "confidence": 1.0
       },
       {
-        "fact": "The text 'Babolat' is visible on the man's shirt.",
+        "fact": "The man's shirt has a 'Babolat' logo.",
         "confidence": 1.0
       }
     ],
     "ocr": [
       "Babolat"
     ],
-    "spatial": "The woman in the teal tank top is to the left of the man in the white grid-patterned shirt. The man is to the right of the woman. Both people are in the foreground, positioned in front of the blue stadium seats which fill the background.",
+    "spatial": "The woman is to the left of the man. The man is to the right of the woman. Both people are in front of the rows of blue stadium seats.",
     "parse_success": true,
-    "chunk_idx": 42,
+    "chunk_idx": 34,
     "video_id": "ytb_pu-tGEnCwpw"
   },
   {
     "time": [
-      86,
-      88
+      35,
+      36
     ],
     "visible_entities": [
       {
-        "desc": "woman with long curly blonde hair in a high ponytail, wearing a teal sleeveless tank top with a small black logo on the chest and a thin gold necklace",
-        "action": "standing and smiling",
+        "desc": "woman with long curly blonde hair, dark skin, wearing a teal sleeveless tank top with a small black logo on the chest, a gold necklace with a pendant, and a small earring",
+        "action": "smiling and looking to the right",
         "position": "left"
       },
       {
-        "desc": "man with short dark hair and a goatee, wearing a white short-sleeved polo shirt with a black grid pattern and a logo on the left chest",
-        "action": "standing and looking to the right",
+        "desc": "man with short dark hair, light skin, wearing a white short-sleeved polo shirt with a black grid pattern and a 'Babolat' logo on the left chest",
+        "action": "looking to the left",
         "position": "right"
       },
       {
-        "desc": "rows of empty blue plastic stadium seats",
+        "desc": "rows of empty blue stadium seats",
         "action": "static",
         "position": "background"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "The woman on the left smiles broadly in the second frame.",
+        "fact": "The woman is smiling and looking towards the man.",
         "confidence": 1.0
       },
       {
-        "fact": "The man on the right looks off-camera to his right.",
+        "fact": "The man is looking towards the woman.",
         "confidence": 1.0
       },
       {
@@ -2134,124 +1761,31 @@
     "ocr": [
       "Babolat"
     ],
-    "spatial": "The woman is standing to the left of the man. Both individuals are positioned in the foreground, in front of the rows of blue stadium seats.",
+    "spatial": "The woman is to the left of the man. The man is to the right of the woman. Both individuals are in front of the rows of blue stadium seats.",
     "parse_success": true,
-    "chunk_idx": 43,
+    "chunk_idx": 35,
     "video_id": "ytb_pu-tGEnCwpw"
   },
   {
     "time": [
-      88,
-      90
+      36,
+      37
     ],
     "visible_entities": [
       {
-        "desc": "woman with curly light brown hair in a high ponytail, wearing a teal sleeveless tank top with a small black logo on the chest, a gold necklace, and small earrings",
+        "desc": "woman with long curly blonde and brown hair, wearing a teal sleeveless tank top with a small logo, a gold necklace, and pearl earrings",
         "action": "smiling and looking to the right",
         "position": "left"
       },
       {
-        "desc": "man with short black hair and a mustache, wearing a white short-sleeved polo shirt with a black grid pattern and a logo on the left chest",
-        "action": "standing and looking forward",
-        "position": "right"
-      },
-      {
-        "desc": "rows of empty blue stadium seats",
-        "action": "static",
-        "position": "background"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "The woman is smiling broadly.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The man is standing next to the woman.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The background consists of tiered blue seating.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [
-      "Babolat"
-    ],
-    "spatial": "The woman is to the left of the man. The man is to the right of the woman. Both individuals are in front of the rows of blue stadium seats.",
-    "parse_success": true,
-    "chunk_idx": 44,
-    "video_id": "ytb_pu-tGEnCwpw"
-  },
-  {
-    "time": [
-      90,
-      92
-    ],
-    "visible_entities": [
-      {
-        "desc": "woman with curly blonde hair in a high ponytail, wearing a teal sleeveless tank top with a small black logo on the chest and a gold necklace",
+        "desc": "man with short black hair and a mustache, wearing a white polo shirt with a black grid pattern and a logo on the chest",
         "action": "smiling and looking to the right",
-        "position": "left"
-      },
-      {
-        "desc": "man with short dark hair and a goatee, wearing a white polo shirt with a black grid pattern and a logo on the left chest",
-        "action": "turning head from left to face forward",
         "position": "right"
       },
       {
-        "desc": "rows of blue plastic stadium seats",
+        "desc": "rows of empty blue plastic stadium seats",
         "action": "static",
         "position": "background"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "The woman on the left is smiling.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The man on the right turns his head to face the camera.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The man is wearing a white shirt with a grid pattern.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [
-      "Babolat"
-    ],
-    "spatial": "The woman is to the left of the man. The man is to the right of the woman. Both individuals are in front of the rows of blue stadium seats.",
-    "parse_success": true,
-    "chunk_idx": 45,
-    "video_id": "ytb_pu-tGEnCwpw"
-  },
-  {
-    "time": [
-      92,
-      94
-    ],
-    "visible_entities": [
-      {
-        "desc": "woman with curly blonde and brown hair, wearing a teal sleeveless tank top with a black logo on the chest and a gold necklace",
-        "action": "standing and smiling",
-        "position": "left"
-      },
-      {
-        "desc": "man with short black hair and a goatee, wearing a white polo shirt with a black grid pattern and a 'Babolat' logo",
-        "action": "standing and looking forward",
-        "position": "right"
-      },
-      {
-        "desc": "rows of blue stadium seats",
-        "action": "static",
-        "position": "background"
-      },
-      {
-        "desc": "vertical blue and orange graphic bars",
-        "action": "appearing",
-        "position": "foreground"
       }
     ],
     "atomic_facts": [
@@ -2264,11 +1798,160 @@
         "confidence": 1.0
       },
       {
-        "fact": "The background consists of empty blue stadium seats.",
+        "fact": "The woman is wearing a teal sleeveless top.",
         "confidence": 1.0
       },
       {
-        "fact": "Blue and orange graphic bars appear on the left side of the screen, partially obscuring the woman.",
+        "fact": "Both individuals are smiling.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The background consists of tiered blue stadium seating.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "Babolat"
+    ],
+    "spatial": "The woman is standing to the left of the man. Both individuals are in the foreground, positioned in front of the rows of blue stadium seats.",
+    "parse_success": true,
+    "chunk_idx": 36,
+    "video_id": "ytb_pu-tGEnCwpw"
+  },
+  {
+    "time": [
+      37,
+      38
+    ],
+    "visible_entities": [
+      {
+        "desc": "woman with curly blonde and brown hair in a high ponytail, wearing a teal sleeveless tank top with a small logo, a gold necklace, and a stud earring",
+        "action": "standing and looking to the right",
+        "position": "left"
+      },
+      {
+        "desc": "man with short dark hair and a goatee, wearing a white short-sleeved polo shirt with a black grid pattern",
+        "action": "standing and looking to the left",
+        "position": "right"
+      },
+      {
+        "desc": "rows of blue plastic stadium seats",
+        "action": "static",
+        "position": "background"
+      },
+      {
+        "desc": "blue wall with white text reading 'ARENA'",
+        "action": "static",
+        "position": "background"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The woman is standing to the left of the man.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The man is looking towards the woman.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The woman is looking towards the man.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The text 'ARENA' is visible on the wall in the background.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The man's shirt has a grid pattern.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "ARENA"
+    ],
+    "spatial": "The woman is to the left of the man. The man is to the right of the woman. Both people are in front of the rows of blue stadium seats. The 'ARENA' text is on the wall behind the people.",
+    "parse_success": true,
+    "chunk_idx": 37,
+    "video_id": "ytb_pu-tGEnCwpw"
+  },
+  {
+    "time": [
+      38,
+      39
+    ],
+    "visible_entities": [
+      {
+        "desc": "woman with curly light brown hair in a high ponytail, wearing a teal sleeveless tank top with a small logo, a gold necklace, and a stud earring",
+        "action": "static",
+        "position": "left"
+      },
+      {
+        "desc": "man with short dark hair and a mustache, wearing a white polo shirt with a black grid pattern and a logo on the chest",
+        "action": "static",
+        "position": "right"
+      },
+      {
+        "desc": "rows of blue stadium seats",
+        "action": "static",
+        "position": "background"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The woman and the man are standing next to each other.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The woman is smiling.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The man is looking forward.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "Babolat"
+    ],
+    "spatial": "The woman is to the left of the man. The rows of blue stadium seats are behind both the woman and the man.",
+    "parse_success": true,
+    "chunk_idx": 38,
+    "video_id": "ytb_pu-tGEnCwpw"
+  },
+  {
+    "time": [
+      39,
+      40
+    ],
+    "visible_entities": [
+      {
+        "desc": "woman with curly blonde hair in a high ponytail, wearing a teal sleeveless tank top with a small logo on the chest and a thin gold necklace",
+        "action": "standing",
+        "position": "left"
+      },
+      {
+        "desc": "man with short dark hair and a mustache, wearing a white polo shirt with a black grid pattern and a logo on the left chest",
+        "action": "standing",
+        "position": "right"
+      },
+      {
+        "desc": "rows of empty blue stadium seats",
+        "action": "static",
+        "position": "background"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The woman and man are standing side-by-side in front of the stadium seating.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The woman is looking slightly to her right.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The man is looking forward.",
         "confidence": 1.0
       },
       {
@@ -2279,29 +1962,117 @@
     "ocr": [
       "Babolat"
     ],
-    "spatial": "The woman is to the left of the man. The man is in front of the rows of blue stadium seats. The blue and orange graphic bars are in the foreground on the left side, partially covering the woman.",
+    "spatial": "The woman is to the left of the man. The man is to the right of the woman. Both individuals are in the foreground, positioned in front of the rows of blue stadium seats.",
     "parse_success": true,
-    "chunk_idx": 46,
+    "chunk_idx": 39,
     "video_id": "ytb_pu-tGEnCwpw"
   },
   {
     "time": [
-      94,
-      96
+      40,
+      41
     ],
     "visible_entities": [
       {
-        "desc": "woman with curly blonde and brown hair in a high ponytail, wearing a teal sleeveless tank top with a small logo, a gold necklace, and earrings",
+        "desc": "woman with curly blonde hair, wearing a teal tank top with a small black logo on the chest and a gold necklace",
         "action": "static",
         "position": "left"
       },
       {
-        "desc": "man with short black hair and a mustache, wearing a white polo shirt with a black grid pattern and a logo on the chest",
+        "desc": "man with short black hair, wearing a white polo shirt with a black grid pattern and a 'Babolat' logo",
         "action": "static",
         "position": "right"
       },
       {
         "desc": "rows of empty blue stadium seats",
+        "action": "static",
+        "position": "background"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The woman and the man are standing side-by-side in the foreground.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The man is wearing a white polo shirt with a black grid pattern.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The woman is wearing a teal tank top.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "Babolat"
+    ],
+    "spatial": "The woman is to the left of the man. The man is to the right of the woman. Both individuals are in front of the rows of blue stadium seats.",
+    "parse_success": true,
+    "chunk_idx": 40,
+    "video_id": "ytb_pu-tGEnCwpw"
+  },
+  {
+    "time": [
+      41,
+      42
+    ],
+    "visible_entities": [
+      {
+        "desc": "woman with curly light brown hair, wearing a teal sleeveless tank top and a gold necklace",
+        "action": "static",
+        "position": "left"
+      },
+      {
+        "desc": "man with short black hair and facial hair, wearing a white polo shirt with a black grid pattern",
+        "action": "static",
+        "position": "right"
+      },
+      {
+        "desc": "rows of empty blue stadium seats",
+        "action": "static",
+        "position": "background"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The woman and man are standing side-by-side in the foreground.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The man's shirt features a 'Babolat' logo on the left chest.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The background consists of tiered blue seating in an arena.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "Babolat"
+    ],
+    "spatial": "The woman is to the left of the man. The man is to the right of the woman. Both individuals are in front of the rows of blue stadium seats.",
+    "parse_success": true,
+    "chunk_idx": 41,
+    "video_id": "ytb_pu-tGEnCwpw"
+  },
+  {
+    "time": [
+      42,
+      43
+    ],
+    "visible_entities": [
+      {
+        "desc": "woman with curly light brown hair in a high ponytail, wearing a teal sleeveless tank top with a small black logo on the chest and a gold necklace",
+        "action": "static",
+        "position": "left"
+      },
+      {
+        "desc": "man with short dark hair and a mustache, wearing a white polo shirt with a black grid pattern and a 'Babolat' logo on the chest",
+        "action": "static",
+        "position": "right"
+      },
+      {
+        "desc": "rows of empty blue plastic stadium seats",
         "action": "static",
         "position": "background"
       }
@@ -2329,29 +2100,170 @@
     ],
     "spatial": "The woman is to the left of the man. The man is to the right of the woman. Both people are in the foreground, standing in front of the rows of blue stadium seats.",
     "parse_success": true,
-    "chunk_idx": 47,
+    "chunk_idx": 42,
     "video_id": "ytb_pu-tGEnCwpw"
   },
   {
     "time": [
-      96,
-      98
+      43,
+      44
     ],
     "visible_entities": [
       {
-        "desc": "woman with curly blonde and brown hair, wearing a teal sleeveless tank top and a gold necklace",
+        "desc": "woman with curly light brown hair in a high ponytail, wearing a teal sleeveless tank top with a small black logo on the chest and a thin gold necklace",
+        "action": "smiling and looking forward",
+        "position": "left"
+      },
+      {
+        "desc": "man with short dark hair and a light beard, wearing a white short-sleeved polo shirt with a black grid pattern and a logo on the left chest",
+        "action": "standing with mouth slightly open",
+        "position": "right"
+      },
+      {
+        "desc": "rows of empty blue stadium seats",
+        "action": "static",
+        "position": "background"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The woman on the left smiles broadly in the second frame.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The man on the right stands next to the woman.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The background consists of tiered blue seating in an arena.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "Babolat"
+    ],
+    "spatial": "The woman in the teal top is to the left of the man in the white grid-patterned shirt. The rows of blue seats are behind both individuals.",
+    "parse_success": true,
+    "chunk_idx": 43,
+    "video_id": "ytb_pu-tGEnCwpw"
+  },
+  {
+    "time": [
+      44,
+      45
+    ],
+    "visible_entities": [
+      {
+        "desc": "woman with curly light brown hair in a high ponytail, wearing a teal sleeveless tank top with a small black logo on the chest, a gold necklace with a pendant, and small earrings",
+        "action": "smiling and looking to the right",
+        "position": "left"
+      },
+      {
+        "desc": "man with short dark hair and a mustache, wearing a white short-sleeved polo shirt with a black grid pattern and a logo on the left chest",
+        "action": "standing with a neutral expression, looking to the right",
+        "position": "right"
+      },
+      {
+        "desc": "rows of empty blue stadium seats",
+        "action": "static",
+        "position": "background"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The woman on the left is smiling broadly.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The man on the right has a neutral facial expression.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "Both individuals are standing in front of rows of empty blue stadium seats.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The logo on the man's shirt reads 'Babolat'.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "Babolat"
+    ],
+    "spatial": "The woman is to the left of the man. The man is to the right of the woman. Both are in the foreground, with the blue stadium seats behind them.",
+    "parse_success": true,
+    "chunk_idx": 44,
+    "video_id": "ytb_pu-tGEnCwpw"
+  },
+  {
+    "time": [
+      45,
+      46
+    ],
+    "visible_entities": [
+      {
+        "desc": "woman with curly blonde hair in a high ponytail, wearing a teal sleeveless tank top with a small black logo on the chest and a gold necklace",
+        "action": "smiling and looking to the right",
+        "position": "left"
+      },
+      {
+        "desc": "man with short dark hair and a light beard, wearing a white polo shirt with a black grid pattern and a logo on the left chest",
+        "action": "standing and looking forward",
+        "position": "right"
+      },
+      {
+        "desc": "rows of empty blue stadium seats",
+        "action": "static",
+        "position": "background"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The woman is smiling and looking towards the man.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The man is standing next to the woman.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The background consists of empty blue stadium seating.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "Babolat"
+    ],
+    "spatial": "The woman is to the left of the man. The man is to the right of the woman. Both individuals are in the foreground, positioned in front of the rows of blue stadium seats.",
+    "parse_success": true,
+    "chunk_idx": 45,
+    "video_id": "ytb_pu-tGEnCwpw"
+  },
+  {
+    "time": [
+      46,
+      47
+    ],
+    "visible_entities": [
+      {
+        "desc": "woman with curly blonde hair in a high ponytail, wearing a teal sleeveless tank top with a black logo on the chest and a gold necklace",
         "action": "static",
         "position": "left"
       },
       {
-        "desc": "man with short black hair and a mustache, wearing a white polo shirt with a black grid pattern",
+        "desc": "man with short black hair and a goatee, wearing a white polo shirt with a black grid pattern and a logo on the left chest",
         "action": "static",
         "position": "right"
       },
       {
-        "desc": "rows of blue stadium seats",
+        "desc": "rows of empty blue stadium seats",
         "action": "static",
         "position": "background"
+      },
+      {
+        "desc": "vertical blue and orange graphic bars",
+        "action": "static",
+        "position": "left foreground"
       }
     ],
     "atomic_facts": [
@@ -2364,193 +2276,40 @@
         "confidence": 1.0
       },
       {
-        "fact": "The text 'Babolat' is visible on the man's shirt.",
+        "fact": "Blue stadium seats are visible behind the two people.",
         "confidence": 1.0
       },
       {
-        "fact": "The background consists of empty blue stadium seating.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [
-      "Babolat"
-    ],
-    "spatial": "The woman is standing to the left of the man. The man is standing to the right of the woman. Both individuals are positioned in the foreground in front of the rows of blue stadium seats.",
-    "parse_success": true,
-    "chunk_idx": 48,
-    "video_id": "ytb_pu-tGEnCwpw"
-  },
-  {
-    "time": [
-      98,
-      100
-    ],
-    "visible_entities": [
-      {
-        "desc": "woman with long curly blonde and brown hair, wearing a teal tank top with a small logo, a gold necklace, and pearl earrings",
-        "action": "standing still",
-        "position": "left"
-      },
-      {
-        "desc": "man with short dark hair and facial hair, wearing a white polo shirt with a black grid pattern and a logo on the chest",
-        "action": "talking",
-        "position": "right"
-      },
-      {
-        "desc": "rows of blue stadium seats",
-        "action": "static",
-        "position": "background"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "The man on the right is talking while the woman on the left listens.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The woman is wearing a teal tank top.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The man is wearing a white polo shirt with a black grid pattern.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The background consists of empty blue stadium seats.",
+        "fact": "A graphic overlay with blue and orange bars appears on the left side of the screen in the second frame.",
         "confidence": 1.0
       }
     ],
     "ocr": [
       "Babolat"
     ],
-    "spatial": "The woman is to the left of the man. The man is to the right of the woman. Both are standing in front of the rows of blue stadium seats.",
+    "spatial": "The woman is to the left of the man. The man is to the right of the woman. The blue stadium seats are behind both the man and the woman. The graphic bars are in front of the woman on the left side.",
     "parse_success": true,
-    "chunk_idx": 49,
+    "chunk_idx": 46,
     "video_id": "ytb_pu-tGEnCwpw"
   },
   {
     "time": [
-      100,
-      102
+      47,
+      48
     ],
     "visible_entities": [
       {
-        "desc": "woman with curly blonde and brown hair in a high ponytail, wearing a teal sleeveless tank top with a small logo, a gold necklace, and earrings",
-        "action": "standing and smiling",
-        "position": "left"
-      },
-      {
-        "desc": "man with short dark hair and facial hair, wearing a white polo shirt with a black grid pattern and a 'Babolat' logo",
-        "action": "standing and looking to the left",
-        "position": "right"
-      },
-      {
-        "desc": "rows of blue stadium seats",
-        "action": "static",
-        "position": "background"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "The woman is standing to the left of the man.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The man is looking towards the woman.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The woman is smiling.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The man's shirt has the text 'Babolat' on the chest.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [
-      "Babolat"
-    ],
-    "spatial": "The woman is standing to the left of the man. The man is standing to the right of the woman. Both individuals are in front of rows of blue stadium seats.",
-    "parse_success": true,
-    "chunk_idx": 50,
-    "video_id": "ytb_pu-tGEnCwpw"
-  },
-  {
-    "time": [
-      102,
-      104
-    ],
-    "visible_entities": [
-      {
-        "desc": "woman with curly light brown hair in a high ponytail, wearing a teal sleeveless tank top with a small logo on the chest and a gold necklace",
-        "action": "standing and smiling",
-        "position": "left"
-      },
-      {
-        "desc": "man with short dark hair, wearing a white polo shirt with a black grid pattern and a logo on the left chest",
-        "action": "standing and looking forward",
-        "position": "right"
-      },
-      {
-        "desc": "rows of blue stadium seats",
-        "action": "static",
-        "position": "background"
-      },
-      {
-        "desc": "blue graphic overlay with a vertical yellow line",
-        "action": "static",
-        "position": "bottom"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "The woman is standing to the left of the man.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The man is wearing a white polo shirt with a grid pattern.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The woman is wearing a teal tank top.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "Blue stadium seats are visible in the background behind the people.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "A blue graphic overlay appears at the bottom of the screen.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [
-      "Babolat"
-    ],
-    "spatial": "The woman is to the left of the man. Both individuals are standing in the foreground in front of the blue stadium seats. The blue graphic overlay is positioned at the bottom of the frame, below the people.",
-    "parse_success": true,
-    "chunk_idx": 51,
-    "video_id": "ytb_pu-tGEnCwpw"
-  },
-  {
-    "time": [
-      104,
-      106
-    ],
-    "visible_entities": [
-      {
-        "desc": "woman with curly blonde hair in a high ponytail, wearing a teal sleeveless tank top and a gold necklace",
+        "desc": "woman with curly blonde and brown hair in a high ponytail, wearing a teal sleeveless tank top with a small logo on the chest and a gold necklace",
         "action": "static",
         "position": "left"
       },
       {
-        "desc": "man with short black hair and a mustache, wearing a white polo shirt with a black grid pattern",
+        "desc": "man with short dark hair and a mustache, wearing a white polo shirt with a black grid pattern and a 'Babolat' logo",
         "action": "static",
         "position": "right"
       },
       {
-        "desc": "rows of blue plastic stadium seats",
+        "desc": "rows of empty blue stadium seats",
         "action": "static",
         "position": "background"
       }
@@ -2576,24 +2335,24 @@
     "ocr": [
       "Babolat"
     ],
-    "spatial": "The woman is to the left of the man. The man is to the right of the woman. Both people are in the foreground, positioned in front of the rows of blue stadium seats.",
+    "spatial": "The woman is to the left of the man. The man is to the right of the woman. Both people are in front of the rows of blue stadium seats.",
     "parse_success": true,
-    "chunk_idx": 52,
+    "chunk_idx": 47,
     "video_id": "ytb_pu-tGEnCwpw"
   },
   {
     "time": [
-      106,
-      108
+      48,
+      49
     ],
     "visible_entities": [
       {
-        "desc": "woman with curly blonde hair in a high ponytail, wearing a teal sleeveless tank top with a small black logo on the chest and a gold necklace",
+        "desc": "woman with curly blonde hair in a high ponytail, wearing a teal sleeveless tank top with a small logo on the chest and a thin gold necklace",
         "action": "standing still",
         "position": "left"
       },
       {
-        "desc": "man with short dark hair and facial hair, wearing a white polo shirt with a black grid pattern and a 'Babolat' logo",
+        "desc": "man with short dark hair and a mustache, wearing a white polo shirt with a black grid pattern and a logo on the left chest",
         "action": "standing still",
         "position": "right"
       },
@@ -2605,44 +2364,40 @@
     ],
     "atomic_facts": [
       {
-        "fact": "The woman stands to the left of the man.",
+        "fact": "The woman is standing to the left of the man.",
         "confidence": 1.0
       },
       {
-        "fact": "The man stands to the right of the woman.",
+        "fact": "The man is wearing a white polo shirt with a black grid pattern.",
         "confidence": 1.0
       },
       {
-        "fact": "Both individuals are standing in front of rows of empty blue seats.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The text 'Babolat' is visible on the man's shirt.",
+        "fact": "The background consists of empty blue stadium seating.",
         "confidence": 1.0
       }
     ],
     "ocr": [
       "Babolat"
     ],
-    "spatial": "The woman is to the left of the man. The man is to the right of the woman. Both people are in the foreground, positioned in front of the blue stadium seats which fill the background.",
+    "spatial": "The woman is standing to the left of the man. The man is standing to the right of the woman. Both individuals are positioned in the foreground in front of the rows of blue stadium seats.",
     "parse_success": true,
-    "chunk_idx": 53,
+    "chunk_idx": 48,
     "video_id": "ytb_pu-tGEnCwpw"
   },
   {
     "time": [
-      108,
-      110
+      49,
+      50
     ],
     "visible_entities": [
       {
-        "desc": "woman with long curly blonde and brown hair in a high ponytail, wearing a teal sleeveless tank top with a black logo, a thin necklace, and a small earring",
-        "action": "standing and looking to the right",
+        "desc": "woman with curly blonde hair in a high ponytail, wearing a teal sleeveless tank top with a small logo on the chest and a gold necklace",
+        "action": "standing still",
         "position": "left"
       },
       {
-        "desc": "man with short dark hair and a mustache, wearing a white polo shirt with a black grid pattern and a logo on the chest",
-        "action": "standing and looking forward",
+        "desc": "man with short dark hair and a goatee, wearing a white polo shirt with a black grid pattern and a logo on the left chest",
+        "action": "standing still",
         "position": "right"
       },
       {
@@ -2661,41 +2416,40 @@
         "confidence": 1.0
       },
       {
-        "fact": "The background consists of tiered rows of empty blue seats.",
+        "fact": "The man is wearing a white polo shirt with a grid pattern.",
         "confidence": 1.0
       },
       {
-        "fact": "The woman is looking towards the man.",
+        "fact": "The woman is wearing a teal tank top.",
         "confidence": 1.0
       },
       {
-        "fact": "The man is facing forward.",
+        "fact": "The background consists of empty blue stadium seating.",
         "confidence": 1.0
       }
     ],
     "ocr": [
-      "ARENA",
       "Babolat"
     ],
     "spatial": "The woman is to the left of the man. The man is to the right of the woman. Both individuals are in the foreground, standing in front of the rows of blue stadium seats.",
     "parse_success": true,
-    "chunk_idx": 54,
+    "chunk_idx": 49,
     "video_id": "ytb_pu-tGEnCwpw"
   },
   {
     "time": [
-      110,
-      112
+      50,
+      51
     ],
     "visible_entities": [
       {
-        "desc": "woman with curly blonde hair, wearing a teal sleeveless tank top and a gold necklace",
-        "action": "standing and smiling",
+        "desc": "woman with long curly blonde hair in a high ponytail, wearing a teal sleeveless tank top with a small logo on the chest and a gold necklace",
+        "action": "smiling and looking to the right",
         "position": "left"
       },
       {
-        "desc": "man with short dark hair, wearing a white polo shirt with a black grid pattern",
-        "action": "standing and smiling",
+        "desc": "man with short dark hair and a goatee, wearing a white polo shirt with a black grid pattern and a 'Babolat' logo",
+        "action": "standing and looking forward",
         "position": "right"
       },
       {
@@ -2706,48 +2460,145 @@
     ],
     "atomic_facts": [
       {
-        "fact": "The woman on the left smiles and looks slightly downward.",
+        "fact": "The woman is smiling and looking towards the man.",
         "confidence": 1.0
       },
       {
-        "fact": "The man on the right smiles and looks forward.",
+        "fact": "The man is standing next to the woman.",
         "confidence": 1.0
       },
       {
-        "fact": "The man's shirt features a 'Babolat' logo on the left chest.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The setting is a stadium with blue seating.",
+        "fact": "The background consists of empty blue stadium seating.",
         "confidence": 1.0
       }
     ],
     "ocr": [
       "Babolat"
     ],
-    "spatial": "The woman is to the left of the man. The man is to the right of the woman. Both individuals are standing in front of the rows of blue stadium seats.",
+    "spatial": "The woman is to the left of the man. The man is to the right of the woman. Both individuals are in the foreground, positioned in front of the rows of blue stadium seats.",
     "parse_success": true,
-    "chunk_idx": 55,
+    "chunk_idx": 50,
     "video_id": "ytb_pu-tGEnCwpw"
   },
   {
     "time": [
-      112,
-      114
+      51,
+      52
     ],
     "visible_entities": [
       {
-        "desc": "woman with curly blonde hair, wearing a teal sleeveless tank top with a small logo, and a gold necklace",
-        "action": "standing still",
+        "desc": "woman with curly blonde hair in a high ponytail, wearing a teal sleeveless tank top with a small logo and a gold necklace",
+        "action": "standing and smiling",
         "position": "left"
       },
       {
-        "desc": "man with short black hair, wearing a white polo shirt with a black grid pattern",
-        "action": "standing still",
+        "desc": "man with short dark hair and facial hair, wearing a white polo shirt with a black grid pattern and a logo on the chest",
+        "action": "standing and looking forward",
         "position": "right"
       },
       {
         "desc": "rows of blue plastic stadium seats",
+        "action": "static",
+        "position": "background"
+      },
+      {
+        "desc": "blue graphic overlay bar with a vertical yellow line",
+        "action": "static",
+        "position": "bottom"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The woman on the left is smiling with her eyes closed in the first frame.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The man on the right is standing next to the woman.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The background consists of empty blue stadium seating.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A blue graphic overlay appears at the bottom of the screen in the second frame.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "Babolat"
+    ],
+    "spatial": "The woman is to the left of the man. Both individuals are standing in front of the rows of blue stadium seats. The graphic overlay is at the bottom of the frame, below the people.",
+    "parse_success": true,
+    "chunk_idx": 51,
+    "video_id": "ytb_pu-tGEnCwpw"
+  },
+  {
+    "time": [
+      52,
+      53
+    ],
+    "visible_entities": [
+      {
+        "desc": "woman with curly blonde and brown hair in a high ponytail, wearing a teal sleeveless tank top with a small black logo on the chest and a thin gold necklace",
+        "action": "standing still",
+        "position": "left"
+      },
+      {
+        "desc": "man with short black hair and a mustache, wearing a white polo shirt with a black grid pattern and a 'Babolat' logo on the chest",
+        "action": "standing still",
+        "position": "right"
+      },
+      {
+        "desc": "rows of empty blue stadium seats",
+        "action": "static",
+        "position": "background"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The woman in the teal tank top is standing to the left of the man in the white polo shirt.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The man in the white polo shirt is standing to the right of the woman.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The 'Babolat' logo is visible on the man's shirt.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "Rows of empty blue seats are visible in the background behind the two people.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "Babolat"
+    ],
+    "spatial": "The woman in the teal tank top is to the left of the man in the white polo shirt. The man is to the right of the woman. Both individuals are standing in front of rows of empty blue stadium seats.",
+    "parse_success": true,
+    "chunk_idx": 52,
+    "video_id": "ytb_pu-tGEnCwpw"
+  },
+  {
+    "time": [
+      53,
+      54
+    ],
+    "visible_entities": [
+      {
+        "desc": "woman with curly blonde hair in a high ponytail, wearing a teal sleeveless tank top with a small black logo on the chest and a gold necklace",
+        "action": "standing still",
+        "position": "left"
+      },
+      {
+        "desc": "man with short dark hair and facial hair, wearing a white short-sleeved polo shirt with a black grid pattern and a 'Babolat' logo",
+        "action": "standing still",
+        "position": "right"
+      },
+      {
+        "desc": "rows of empty blue stadium seats",
         "action": "static",
         "position": "background"
       }
@@ -2762,47 +2613,47 @@
         "confidence": 1.0
       },
       {
-        "fact": "The background consists of empty blue stadium seating.",
+        "fact": "The background consists of tiered blue stadium seating.",
         "confidence": 1.0
       },
       {
-        "fact": "The text 'PERTH ARENA' is visible on the wall in the background.",
+        "fact": "The text 'Babolat' is visible on the man's shirt.",
         "confidence": 1.0
       }
     ],
     "ocr": [
-      "PERTH ARENA"
+      "Babolat"
     ],
-    "spatial": "The woman is to the left of the man. Both individuals are in the foreground, standing in front of the rows of blue stadium seats.",
+    "spatial": "The woman is to the left of the man. The man is to the right of the woman. Both individuals are standing in the foreground in front of the rows of blue stadium seats.",
     "parse_success": true,
-    "chunk_idx": 56,
+    "chunk_idx": 53,
     "video_id": "ytb_pu-tGEnCwpw"
   },
   {
     "time": [
-      114,
-      116
+      54,
+      55
     ],
     "visible_entities": [
       {
-        "desc": "woman with curly blonde hair, wearing a teal sleeveless tank top with a black Adidas logo, a gold necklace with a pendant, and pearl stud earrings",
-        "action": "standing still",
+        "desc": "woman with curly blonde and brown hair in a high ponytail, wearing a teal sleeveless tank top with a black Adidas logo, a thin gold necklace with a pearl pendant, and a small stud earring",
+        "action": "standing and looking to the right",
         "position": "left"
       },
       {
-        "desc": "man with short dark hair, wearing a white polo shirt with a black grid pattern and a Babolat logo",
-        "action": "standing still",
+        "desc": "man with short dark hair and a mustache, wearing a white polo shirt with a black grid pattern and a 'Babolat' logo on the chest",
+        "action": "standing and looking forward",
         "position": "right"
       },
       {
-        "desc": "rows of empty blue stadium seats",
+        "desc": "rows of empty blue plastic stadium seats",
         "action": "static",
         "position": "background"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A woman stands to the left of a man in a stadium setting.",
+        "fact": "The woman is standing to the left of the man.",
         "confidence": 1.0
       },
       {
@@ -2814,72 +2665,221 @@
         "confidence": 1.0
       },
       {
-        "fact": "Rows of blue seats are visible behind the two people.",
+        "fact": "The background consists of empty blue stadium seats.",
         "confidence": 1.0
       }
     ],
     "ocr": [
-      "adidas",
+      "ARENA",
       "Babolat",
-      "TH ARENA"
+      "adidas"
     ],
-    "spatial": "The woman is to the left of the man. The man is to the right of the woman. Both individuals are in the foreground, standing in front of rows of blue stadium seats.",
+    "spatial": "The woman is to the left of the man. The man is to the right of the woman. Both individuals are in the foreground, standing in front of the rows of blue stadium seats.",
     "parse_success": true,
-    "chunk_idx": 57,
+    "chunk_idx": 54,
     "video_id": "ytb_pu-tGEnCwpw"
   },
   {
     "time": [
-      116,
-      118
+      55,
+      56
     ],
     "visible_entities": [
       {
-        "desc": "woman with curly blonde hair, wearing a teal sleeveless tank top with a small black logo on the chest and a gold necklace",
-        "action": "standing and smiling",
+        "desc": "woman with curly blonde hair, wearing a teal sleeveless tank top and a gold necklace",
+        "action": "standing",
         "position": "left"
       },
       {
-        "desc": "man with short dark hair, wearing a white polo shirt with a black grid pattern and a logo on the left chest",
-        "action": "standing and looking forward",
+        "desc": "man with short dark hair, wearing a white polo shirt with a black grid pattern",
+        "action": "standing",
         "position": "right"
       },
       {
-        "desc": "rows of blue plastic stadium seats",
+        "desc": "rows of empty blue stadium seats",
         "action": "static",
         "position": "background"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "The woman on the left is smiling broadly.",
+        "fact": "The woman stands to the left of the man.",
         "confidence": 1.0
       },
       {
-        "fact": "The man on the right stands with a neutral expression.",
+        "fact": "The man stands to the right of the woman.",
         "confidence": 1.0
       },
       {
-        "fact": "The background consists of empty blue stadium seating.",
+        "fact": "Both individuals are positioned in front of the stadium seating.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The text 'Babolat' is visible on the man's shirt.",
         "confidence": 1.0
       }
     ],
     "ocr": [
       "Babolat"
     ],
-    "spatial": "The woman in the teal top is to the left of the man in the white grid-patterned shirt. The rows of blue seats are behind both individuals.",
+    "spatial": "The woman is to the left of the man. The man is to the right of the woman. Both people are in front of the rows of blue seats.",
+    "parse_success": true,
+    "chunk_idx": 55,
+    "video_id": "ytb_pu-tGEnCwpw"
+  },
+  {
+    "time": [
+      56,
+      57
+    ],
+    "visible_entities": [
+      {
+        "desc": "woman with curly blonde hair, wearing a teal sleeveless tank top with a small logo on the chest and a thin gold necklace",
+        "action": "static",
+        "position": "left"
+      },
+      {
+        "desc": "man with short black hair, wearing a white short-sleeved polo shirt with a black grid pattern and a logo on the left chest",
+        "action": "static",
+        "position": "right"
+      },
+      {
+        "desc": "rows of empty blue plastic stadium seats",
+        "action": "static",
+        "position": "background"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The woman stands to the left of the man.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The man stands to the right of the woman.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "Both individuals are facing forward in front of the stadium seating.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The text 'PERTH ARENA' is visible on the wall in the background.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "PERTH ARENA",
+      "Babolat"
+    ],
+    "spatial": "The woman is positioned to the left of the man. Both individuals are standing in the foreground in front of the rows of blue stadium seats. The text 'PERTH ARENA' is located in the background above the seating area.",
+    "parse_success": true,
+    "chunk_idx": 56,
+    "video_id": "ytb_pu-tGEnCwpw"
+  },
+  {
+    "time": [
+      57,
+      58
+    ],
+    "visible_entities": [
+      {
+        "desc": "woman with curly light brown hair, wearing a teal sleeveless tank top with a small black logo on the chest, a gold necklace, and a pearl earring",
+        "action": "standing",
+        "position": "left"
+      },
+      {
+        "desc": "man with short black hair, wearing a white short-sleeved polo shirt with a black grid pattern and a logo on the left chest",
+        "action": "standing",
+        "position": "right"
+      },
+      {
+        "desc": "rows of empty blue stadium seats",
+        "action": "static",
+        "position": "background"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The woman stands to the left of the man.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The man stands to the right of the woman.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "Both individuals are positioned in front of rows of blue stadium seating.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The text 'Babolat' is visible on the man's shirt.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "Babolat"
+    ],
+    "spatial": "The woman is to the left of the man. The man is to the right of the woman. Both people are in the foreground, standing in front of the blue stadium seats which fill the background.",
+    "parse_success": true,
+    "chunk_idx": 57,
+    "video_id": "ytb_pu-tGEnCwpw"
+  },
+  {
+    "time": [
+      58,
+      59
+    ],
+    "visible_entities": [
+      {
+        "desc": "woman with curly blonde hair, wearing a teal sleeveless tank top with a black logo, gold necklace, and pearl earrings",
+        "action": "smiling and standing",
+        "position": "left"
+      },
+      {
+        "desc": "man with short dark hair and facial hair, wearing a white polo shirt with a black grid pattern and a 'Babolat' logo",
+        "action": "standing and looking forward",
+        "position": "right"
+      },
+      {
+        "desc": "rows of blue stadium seats",
+        "action": "static",
+        "position": "background"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The woman on the left smiles broadly in the second frame.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The man stands with his hands on his hips.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The background consists of empty blue stadium seating.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The man's shirt features a 'Babolat' logo on the left chest.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "Babolat"
+    ],
+    "spatial": "The woman is standing to the left of the man. The man is standing to the right of the woman. Both individuals are positioned in the foreground in front of the rows of blue stadium seats.",
     "parse_success": true,
     "chunk_idx": 58,
     "video_id": "ytb_pu-tGEnCwpw"
   },
   {
     "time": [
-      118,
-      120
+      59,
+      60
     ],
     "visible_entities": [
       {
-        "desc": "woman with curly blonde hair, wearing a teal sleeveless tank top and a gold necklace",
+        "desc": "woman with curly light-brown hair, wearing a teal sleeveless tank top and a gold necklace",
         "action": "standing and smiling",
         "position": "left"
       },
@@ -2901,22 +2901,22 @@
     ],
     "atomic_facts": [
       {
-        "fact": "A woman and a man are standing next to each other in a stadium.",
+        "fact": "The woman and man are standing side-by-side in a stadium setting.",
         "confidence": 1.0
       },
       {
-        "fact": "The man is wearing a shirt with a 'Babolat' logo.",
+        "fact": "The man's shirt features a 'Babolat' logo.",
         "confidence": 1.0
       },
       {
-        "fact": "The video cuts to a graphic featuring a black circle and gold ring.",
+        "fact": "The scene transitions to a graphic overlay with a black circle and gold ring.",
         "confidence": 1.0
       }
     ],
     "ocr": [
       "Babolat"
     ],
-    "spatial": "The woman is to the left of the man. The man is to the right of the woman. Both people are in front of the rows of blue stadium seats.",
+    "spatial": "The woman is to the left of the man. The blue stadium seats are behind both individuals. The graphic overlay appears in the foreground, obscuring the previous scene.",
     "parse_success": true,
     "chunk_idx": 59,
     "video_id": "ytb_pu-tGEnCwpw"

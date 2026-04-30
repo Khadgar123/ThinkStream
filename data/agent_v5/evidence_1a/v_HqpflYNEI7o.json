@@ -2,7 +2,7 @@
   {
     "time": [
       0,
-      2
+      1
     ],
     "visible_entities": [
       {
@@ -13,11 +13,11 @@
     ],
     "atomic_facts": [
       {
-        "fact": "The text 'Halloween Jack o' Lantern 2010' is displayed on a black background.",
+        "fact": "The text 'Halloween Jack o' Lantern' is displayed above the text '2010'.",
         "confidence": 1.0
       },
       {
-        "fact": "The text remains static throughout the duration of the clip.",
+        "fact": "The text is orange against a black background.",
         "confidence": 1.0
       }
     ],
@@ -25,15 +25,15 @@
       "Halloween Jack o' Lantern",
       "2010"
     ],
-    "spatial": "The text '2010' is positioned directly below the text 'Halloween Jack o' Lantern'. Both lines of text are centered horizontally on the black background.",
+    "spatial": "The text '2010' is below the text 'Halloween Jack o' Lantern'. Both lines of text are centered on the black background.",
     "parse_success": true,
     "chunk_idx": 0,
     "video_id": "v_HqpflYNEI7o"
   },
   {
     "time": [
-      2,
-      4
+      1,
+      2
     ],
     "visible_entities": [
       {
@@ -44,11 +44,11 @@
     ],
     "atomic_facts": [
       {
-        "fact": "The text 'Halloween Jack o' Lantern 2010' is displayed on the screen.",
+        "fact": "The text 'Halloween Jack o' Lantern 2010' is displayed in orange against a black background.",
         "confidence": 1.0
       },
       {
-        "fact": "The text remains static throughout the duration.",
+        "fact": "The text remains static throughout the clip.",
         "confidence": 1.0
       }
     ],
@@ -56,26 +56,26 @@
       "Halloween Jack o' Lantern",
       "2010"
     ],
-    "spatial": "The text '2010' is positioned below the text 'Halloween Jack o' Lantern'. Both lines of text are centered against a black background.",
+    "spatial": "The text 'Halloween Jack o' Lantern' is positioned above the text '2010'. Both lines of text are centered horizontally on the black background.",
     "parse_success": true,
     "chunk_idx": 1,
     "video_id": "v_HqpflYNEI7o"
   },
   {
     "time": [
-      4,
-      6
+      2,
+      3
     ],
     "visible_entities": [
       {
-        "desc": "large orange pumpkin with deep vertical ribs and a short, curved dark green stem",
+        "desc": "large orange pumpkin with deep vertical ridges and a curved dark green stem",
         "action": "static",
-        "position": "center/foreground"
+        "position": "center"
       },
       {
-        "desc": "beige tiled kitchen countertop with dark grout lines",
+        "desc": "beige tiled kitchen counter with dark grout lines",
         "action": "static",
-        "position": "bottom/foreground"
+        "position": "foreground"
       },
       {
         "desc": "wooden kitchen cabinets with a light brown finish",
@@ -83,9 +83,71 @@
         "position": "background"
       },
       {
+        "desc": "small orange pumpkin decoration",
+        "action": "static",
+        "position": "background"
+      },
+      {
+        "desc": "black wallet or small pouch",
+        "action": "static",
+        "position": "right"
+      },
+      {
+        "desc": "greenish-grey crumpled cloth or towel",
+        "action": "static",
+        "position": "right"
+      },
+      {
         "desc": "stainless steel refrigerator",
         "action": "static",
-        "position": "left/background"
+        "position": "left"
+      },
+      {
+        "desc": "bunch of yellow bananas",
+        "action": "static",
+        "position": "left"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A large orange pumpkin sits on a tiled kitchen counter.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The pumpkin remains stationary in the center of the frame.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A black wallet rests on the counter to the right of the pumpkin.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The large orange pumpkin is in the center foreground, resting on the beige tiled counter. To the right of the pumpkin, a black wallet and a crumpled green cloth are lying on the counter. In the background, wooden cabinets are visible above the counter, and a stainless steel refrigerator is to the left.",
+    "parse_success": true,
+    "chunk_idx": 2,
+    "video_id": "v_HqpflYNEI7o"
+  },
+  {
+    "time": [
+      3,
+      4
+    ],
+    "visible_entities": [
+      {
+        "desc": "large orange pumpkin with deep vertical ridges and a curved dark green stem",
+        "action": "static",
+        "position": "center/foreground"
+      },
+      {
+        "desc": "beige square tiled countertop",
+        "action": "static",
+        "position": "bottom/foreground"
+      },
+      {
+        "desc": "wooden kitchen cabinets with light brown finish",
+        "action": "static",
+        "position": "background"
       },
       {
         "desc": "smaller orange pumpkin",
@@ -93,9 +155,9 @@
         "position": "right/background"
       },
       {
-        "desc": "bunch of yellow bananas",
+        "desc": "black wallet and green fabric items",
         "action": "static",
-        "position": "left/background"
+        "position": "right/foreground"
       }
     ],
     "atomic_facts": [
@@ -104,7 +166,7 @@
         "confidence": 1.0
       },
       {
-        "fact": "The camera angle shifts slightly, revealing more of the pumpkin's stem in the second frame.",
+        "fact": "The pumpkin has a prominent curved stem pointing to the left.",
         "confidence": 1.0
       },
       {
@@ -113,126 +175,60 @@
       }
     ],
     "ocr": [],
-    "spatial": "The large orange pumpkin is centered in the foreground, resting on the beige tiled countertop. To the left in the background, a stainless steel refrigerator and yellow bananas are visible. To the right in the background, a smaller orange pumpkin sits near some clutter. Wooden cabinets are located above and behind the main pumpkin.",
-    "parse_success": true,
-    "chunk_idx": 2,
-    "video_id": "v_HqpflYNEI7o"
-  },
-  {
-    "time": [
-      6,
-      8
-    ],
-    "visible_entities": [
-      {
-        "desc": "large orange pumpkin with deep vertical ridges, smooth waxy texture, and a thick curved dark green stem",
-        "action": "static",
-        "position": "center foreground"
-      },
-      {
-        "desc": "beige square tiled countertop with dark grout lines",
-        "action": "static",
-        "position": "bottom foreground"
-      },
-      {
-        "desc": "wooden kitchen cabinets with a light brown finish and raised panel doors",
-        "action": "static",
-        "position": "background"
-      },
-      {
-        "desc": "stainless steel refrigerator with a vertical handle",
-        "action": "static",
-        "position": "left background"
-      },
-      {
-        "desc": "small orange decorative pumpkin",
-        "action": "static",
-        "position": "right background"
-      },
-      {
-        "desc": "pile of green fabric or clothing",
-        "action": "static",
-        "position": "right foreground"
-      },
-      {
-        "desc": "black zippered pouch or wallet",
-        "action": "static",
-        "position": "right foreground"
-      },
-      {
-        "desc": "artificial floral arrangement with green leaves and white flowers",
-        "action": "static",
-        "position": "top center background"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "The large orange pumpkin sits stationary on the tiled countertop.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The camera angle shifts slightly, revealing more of the pumpkin's left side in the second frame.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "A small orange pumpkin is visible in the background on the right side.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "A black pouch rests on the counter to the right of the large pumpkin.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [],
-    "spatial": "The large orange pumpkin is in the center foreground, resting on the beige tiled countertop. To the right of the large pumpkin, a black pouch and a pile of green fabric are on the counter. In the background, wooden cabinets are mounted on the wall above the counter, and a stainless steel refrigerator is to the left. A small orange pumpkin is located on the counter in the far right background, near a blue box.",
+    "spatial": "The large orange pumpkin is centered on the beige tiled countertop. To the right of the large pumpkin, a black wallet and green fabric are resting on the counter. In the background, wooden cabinets are mounted on the wall, and a smaller pumpkin sits on a surface to the right.",
     "parse_success": true,
     "chunk_idx": 3,
     "video_id": "v_HqpflYNEI7o"
   },
   {
     "time": [
-      8,
-      10
+      4,
+      5
     ],
     "visible_entities": [
       {
-        "desc": "large orange pumpkin with deep vertical ridges and a green stem",
+        "desc": "large orange pumpkin with deep vertical ribs and a green stem",
         "action": "static",
         "position": "center"
       },
       {
-        "desc": "red-handled carving tool with a serrated metal blade",
+        "desc": "red-handled carving tool with a metal blade",
         "action": "stuck into the top of the pumpkin",
-        "position": "center"
+        "position": "top center"
       },
       {
         "desc": "bright orange plastic bowl",
         "action": "static",
-        "position": "right"
+        "position": "right foreground"
       },
       {
-        "desc": "red-handled carving tools lying on the counter",
+        "desc": "red and black carving tools",
         "action": "static",
-        "position": "left"
+        "position": "left foreground"
       },
       {
-        "desc": "beige tiled kitchen counter",
-        "action": "static",
-        "position": "bottom"
-      },
-      {
-        "desc": "wooden kitchen cabinets and stainless steel refrigerator",
+        "desc": "wooden kitchen cabinets",
         "action": "static",
         "position": "background"
+      },
+      {
+        "desc": "stainless steel refrigerator",
+        "action": "static",
+        "position": "left background"
+      },
+      {
+        "desc": "tiled kitchen counter",
+        "action": "static",
+        "position": "bottom"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A red-handled carving tool is stuck vertically into the top of the large orange pumpkin.",
+        "fact": "A red-handled carving tool is stuck vertically into the top of the pumpkin.",
         "confidence": 1.0
       },
       {
-        "fact": "The pumpkin sits on a beige tiled kitchen counter.",
+        "fact": "The pumpkin is sitting on a tiled kitchen counter.",
         "confidence": 1.0
       },
       {
@@ -240,20 +236,20 @@
         "confidence": 1.0
       },
       {
-        "fact": "Additional carving tools are lying on the counter to the left of the pumpkin.",
+        "fact": "Carving tools are lying on the counter to the left of the pumpkin.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The large orange pumpkin is in the center of the frame, resting on the tiled counter. A red carving tool is inserted into the top of the pumpkin. To the right of the pumpkin is a bright orange bowl. To the left of the pumpkin, other carving tools are lying on the counter surface. Wooden cabinets are visible in the background behind the pumpkin.",
+    "spatial": "The large orange pumpkin is in the center of the tiled kitchen counter. A red-handled carving tool is stuck into the top of the pumpkin. To the right of the pumpkin is a bright orange plastic bowl. To the left of the pumpkin, several other carving tools are lying on the counter. In the background, wooden cabinets and a stainless steel refrigerator are visible.",
     "parse_success": true,
     "chunk_idx": 4,
     "video_id": "v_HqpflYNEI7o"
   },
   {
     "time": [
-      10,
-      12
+      5,
+      6
     ],
     "visible_entities": [
       {
@@ -272,33 +268,28 @@
         "position": "right"
       },
       {
-        "desc": "red plastic carving tools",
-        "action": "static",
-        "position": "left"
-      },
-      {
-        "desc": "tiled kitchen counter with beige tiles",
+        "desc": "tiled kitchen counter with light beige square tiles",
         "action": "static",
         "position": "bottom"
       },
       {
-        "desc": "wooden kitchen cabinets",
+        "desc": "wooden kitchen cabinets with a light brown finish",
         "action": "static",
         "position": "background"
       },
       {
-        "desc": "stainless steel refrigerator",
+        "desc": "red plastic carving tools lying on the counter",
         "action": "static",
-        "position": "background"
+        "position": "left"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A red plastic carving tool is stuck into the top of the pumpkin.",
+        "fact": "A red plastic carving tool is inserted into the top of the large orange pumpkin.",
         "confidence": 1.0
       },
       {
-        "fact": "The pumpkin is sitting on a tiled kitchen counter.",
+        "fact": "The pumpkin sits on a tiled kitchen counter.",
         "confidence": 1.0
       },
       {
@@ -306,25 +297,25 @@
         "confidence": 1.0
       },
       {
-        "fact": "Several red carving tools are lying on the counter to the left of the pumpkin.",
+        "fact": "Additional red carving tools are lying on the counter to the left of the pumpkin.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The large orange pumpkin is in the center of the tiled counter. The red carving tool is inserted into the top of the pumpkin. The orange bowl is to the right of the pumpkin. The loose red carving tools are to the left of the pumpkin. The wooden cabinets are in the background behind the counter.",
+    "spatial": "The large orange pumpkin is in the center of the frame, resting on the tiled counter. The red carving tool is inserted into the top of the pumpkin. To the right of the pumpkin is a bright orange bowl. To the left of the pumpkin, other red tools are lying on the counter surface. Wooden cabinets are visible in the background behind the counter.",
     "parse_success": true,
     "chunk_idx": 5,
     "video_id": "v_HqpflYNEI7o"
   },
   {
     "time": [
-      12,
-      14
+      6,
+      7
     ],
     "visible_entities": [
       {
-        "desc": "large orange pumpkin with deep vertical ridges and a fibrous, cut stem area",
-        "action": "sitting on the counter",
+        "desc": "large orange pumpkin with deep vertical ribs and a rough, fibrous stem area",
+        "action": "static",
         "position": "center"
       },
       {
@@ -333,24 +324,19 @@
         "position": "right"
       },
       {
-        "desc": "red-handled carving tools",
+        "desc": "red and black carving tools",
         "action": "static",
         "position": "left"
-      },
-      {
-        "desc": "wooden kitchen cabinets",
-        "action": "static",
-        "position": "background"
-      },
-      {
-        "desc": "stainless steel refrigerator",
-        "action": "static",
-        "position": "background left"
       },
       {
         "desc": "tiled kitchen countertop",
         "action": "static",
         "position": "bottom"
+      },
+      {
+        "desc": "wooden kitchen cabinets",
+        "action": "static",
+        "position": "background"
       }
     ],
     "atomic_facts": [
@@ -359,50 +345,45 @@
         "confidence": 1.0
       },
       {
-        "fact": "Red-handled carving tools are lying on the counter to the left of the pumpkin.",
+        "fact": "An orange plastic bowl is positioned to the right of the pumpkin.",
         "confidence": 1.0
       },
       {
-        "fact": "An orange bowl is positioned on the counter to the right of the pumpkin.",
+        "fact": "Red and black carving tools are lying on the counter to the left of the pumpkin.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The large orange pumpkin is in the center of the tiled countertop. The red-handled carving tools are to the left of the pumpkin. The orange bowl is to the right of the pumpkin. Wooden cabinets are visible in the background behind the counter.",
+    "spatial": "The large orange pumpkin is in the center of the frame, resting on the tiled countertop. The orange plastic bowl is to the right of the pumpkin. The carving tools are to the left of the pumpkin. Wooden cabinets are in the background behind the pumpkin.",
     "parse_success": true,
     "chunk_idx": 6,
     "video_id": "v_HqpflYNEI7o"
   },
   {
     "time": [
-      14,
-      16
+      7,
+      8
     ],
     "visible_entities": [
       {
-        "desc": "large orange pumpkin with deep vertical ribs and a smooth, matte texture",
+        "desc": "large orange pumpkin with deep vertical ridges and a smooth, matte texture",
         "action": "static",
         "position": "center"
       },
       {
         "desc": "red-handled carving tool with a thin metal blade",
-        "action": "inserted into the top of the pumpkin",
+        "action": "inserted into pumpkin",
         "position": "top-left"
       },
       {
-        "desc": "cut-off top of the pumpkin with a dark green, curved stem",
+        "desc": "cut pumpkin top with a dark green, curved stem and orange flesh",
         "action": "static",
-        "position": "right foreground"
+        "position": "bottom-right"
       },
       {
         "desc": "bright orange plastic bowl",
         "action": "static",
         "position": "right"
-      },
-      {
-        "desc": "red-handled carving tools lying on the counter",
-        "action": "static",
-        "position": "left foreground"
       },
       {
         "desc": "kitchen counter with light-colored square tiles and dark grout",
@@ -421,39 +402,35 @@
         "confidence": 1.0
       },
       {
-        "fact": "The top of the pumpkin has been cut off and is resting on the counter to the right.",
+        "fact": "The pumpkin top with the stem is resting on the tiled counter.",
         "confidence": 1.0
       },
       {
-        "fact": "The pumpkin is sitting on a tiled kitchen counter.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "An orange bowl is positioned to the right of the pumpkin.",
+        "fact": "The orange bowl is placed on the counter to the right of the pumpkin.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The large orange pumpkin is in the center of the tiled kitchen counter. The cut-off top of the pumpkin is to the right of the main pumpkin body. An orange bowl is next to the pumpkin top on the right. A red-handled carving tool is inserted into the top-left side of the pumpkin. Other carving tools are on the counter to the left of the pumpkin. Wooden cabinets are in the background behind the counter.",
+    "spatial": "The large orange pumpkin is in the center of the tiled kitchen counter. The red-handled tool is inserted into the top-left side of the pumpkin. The cut pumpkin top is on the counter to the right of the main pumpkin body. The orange bowl is to the right of the pumpkin top. Wooden cabinets are in the background behind the counter.",
     "parse_success": true,
     "chunk_idx": 7,
     "video_id": "v_HqpflYNEI7o"
   },
   {
     "time": [
-      16,
-      18
+      8,
+      9
     ],
     "visible_entities": [
       {
-        "desc": "large orange pumpkin with deep vertical ridges and a red-handled carving tool inserted into the top",
+        "desc": "large orange pumpkin with deep vertical ridges and a red carving tool inserted into the top",
         "action": "static",
         "position": "center"
       },
       {
-        "desc": "cut-off top of a pumpkin with a dark green curved stem",
+        "desc": "cut-off top of a pumpkin with a dark green stem",
         "action": "static",
-        "position": "right foreground"
+        "position": "bottom right"
       },
       {
         "desc": "bright orange plastic bowl",
@@ -461,54 +438,219 @@
         "position": "right"
       },
       {
-        "desc": "red-handled carving tools lying on the counter",
+        "desc": "red plastic carving tool",
         "action": "static",
-        "position": "left foreground"
+        "position": "bottom left"
       },
       {
-        "desc": "tiled kitchen countertop with light beige tiles and dark grout",
+        "desc": "tiled kitchen counter with light beige tiles",
         "action": "static",
         "position": "bottom"
       },
       {
-        "desc": "wooden kitchen cabinets in the background",
+        "desc": "wooden kitchen cabinets",
         "action": "static",
         "position": "background"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A red-handled carving tool is inserted into the top of the large orange pumpkin.",
+        "fact": "A red carving tool is inserted into the top of the large orange pumpkin.",
         "confidence": 1.0
       },
       {
-        "fact": "The top of the pumpkin has been cut off and is resting on the counter to the right.",
+        "fact": "The top of the pumpkin has been cut off and placed on the counter.",
         "confidence": 1.0
       },
       {
-        "fact": "Carving tools are lying on the tiled countertop to the left of the pumpkin.",
+        "fact": "The pumpkin sits on a tiled kitchen counter.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The large orange pumpkin is in the center of the tiled countertop. To the right of the pumpkin, the cut-off pumpkin top sits in front of a bright orange bowl. To the left of the pumpkin, red-handled carving tools are lying on the counter. Wooden cabinets are visible in the background behind the countertop.",
+    "spatial": "The large orange pumpkin is in the center of the tiled counter. The cut-off pumpkin top is to the bottom right of the main pumpkin. The orange bowl is to the right of the pumpkin. The red carving tool is on the counter to the bottom left of the pumpkin.",
     "parse_success": true,
     "chunk_idx": 8,
     "video_id": "v_HqpflYNEI7o"
   },
   {
     "time": [
-      18,
-      20
+      9,
+      10
     ],
     "visible_entities": [
       {
-        "desc": "large orange pumpkin with vertical ridges and a red-handled carving tool inserted into its side",
+        "desc": "large orange pumpkin with vertical ridges and a smooth, matte texture",
+        "action": "being carved",
+        "position": "center"
+      },
+      {
+        "desc": "red-handled carving saw with a serrated metal blade",
+        "action": "inserted into the pumpkin",
+        "position": "left"
+      },
+      {
+        "desc": "cut pumpkin top with a dark green and brown curved stem",
+        "action": "static",
+        "position": "right"
+      },
+      {
+        "desc": "bright orange plastic bowl",
+        "action": "static",
+        "position": "right"
+      },
+      {
+        "desc": "white tiled countertop with dark grout lines",
+        "action": "static",
+        "position": "bottom"
+      },
+      {
+        "desc": "dark wooden kitchen cabinets and a doorway",
+        "action": "static",
+        "position": "background"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A red-handled carving saw is inserted into the side of the large orange pumpkin.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The top of the pumpkin has been cut off and is resting on the counter.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "An orange bowl sits on the counter next to the pumpkin top.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The large orange pumpkin is in the center of the white tiled countertop. The red-handled saw is inserted into the left side of the pumpkin. To the right of the pumpkin, the cut pumpkin top lies on the counter in front of an orange bowl. The background features dark wooden cabinets.",
+    "parse_success": true,
+    "chunk_idx": 9,
+    "video_id": "v_HqpflYNEI7o"
+  },
+  {
+    "time": [
+      10,
+      11
+    ],
+    "visible_entities": [
+      {
+        "desc": "large orange pumpkin with vertical ridges and a red plastic carving tool inserted into the top",
+        "action": "being carved",
+        "position": "center"
+      },
+      {
+        "desc": "orange plastic bowl",
+        "action": "static",
+        "position": "right"
+      },
+      {
+        "desc": "cut-off top of a pumpkin with a green stem",
+        "action": "static",
+        "position": "bottom right"
+      },
+      {
+        "desc": "red plastic pumpkin carving tool",
+        "action": "static",
+        "position": "bottom left"
+      },
+      {
+        "desc": "white tiled kitchen counter",
+        "action": "static",
+        "position": "bottom"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A red plastic carving tool is inserted into the top of the large orange pumpkin.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The top of the pumpkin has been cut off and placed on the counter.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "An orange bowl sits on the counter to the right of the pumpkin.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The large orange pumpkin is in the center of the white tiled counter. The cut-off pumpkin top is to the right of the main pumpkin. The orange bowl is to the right of the pumpkin top. A red carving tool lies on the counter to the left of the pumpkin.",
+    "parse_success": true,
+    "chunk_idx": 10,
+    "video_id": "v_HqpflYNEI7o"
+  },
+  {
+    "time": [
+      11,
+      12
+    ],
+    "visible_entities": [
+      {
+        "desc": "large orange pumpkin, ribbed texture, with a small carved hole on the left side and a red plastic ghost-shaped tool inserted into the top right",
         "action": "static",
         "position": "center"
       },
       {
-        "desc": "pumpkin top with a dark green curved stem, cut flat at the bottom",
+        "desc": "cut pumpkin top with a dark green curved stem, resting on the counter",
+        "action": "static",
+        "position": "right foreground"
+      },
+      {
+        "desc": "bright orange plastic bowl",
+        "action": "static",
+        "position": "right background"
+      },
+      {
+        "desc": "white tiled countertop with dark grout lines",
+        "action": "static",
+        "position": "bottom"
+      },
+      {
+        "desc": "dark wooden kitchen cabinets and a doorway in the background",
+        "action": "static",
+        "position": "background"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A large orange pumpkin sits on a tiled countertop.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A red plastic tool shaped like a ghost is stuck into the side of the pumpkin.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The top of the pumpkin has been cut off and is lying on the counter to the right.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "An orange bowl is positioned behind the pumpkin top.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The large orange pumpkin is in the center of the frame, resting on the white tiled countertop. To the right of the pumpkin, the cut-off top with the stem lies on the counter. Behind the pumpkin top is a bright orange bowl. The background features dark wooden cabinets and a doorway.",
+    "parse_success": true,
+    "chunk_idx": 11,
+    "video_id": "v_HqpflYNEI7o"
+  },
+  {
+    "time": [
+      12,
+      13
+    ],
+    "visible_entities": [
+      {
+        "desc": "large orange pumpkin with vertical ridges, a carved rectangular hole on the left side, and a red plastic handle inserted into the top",
+        "action": "static",
+        "position": "center"
+      },
+      {
+        "desc": "cut-off top of the pumpkin with a green and brown stem",
         "action": "static",
         "position": "right foreground"
       },
@@ -518,12 +660,181 @@
         "position": "right background"
       },
       {
-        "desc": "red-handled carving tool with a serrated blade",
+        "desc": "red plastic carving tool",
+        "action": "static",
+        "position": "left foreground"
+      },
+      {
+        "desc": "white tiled countertop with dark grout",
+        "action": "static",
+        "position": "bottom"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A large orange pumpkin sits on a tiled countertop.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The top of the pumpkin has been cut off and placed to the right.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A red plastic handle is inserted into the top of the pumpkin.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A rectangular hole is carved into the left side of the pumpkin.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The large orange pumpkin is in the center of the frame, resting on a white tiled countertop. The cut-off top of the pumpkin lies to the right of the main body. An orange bowl is positioned behind the pumpkin top. A red carving tool is on the countertop to the left of the pumpkin.",
+    "parse_success": true,
+    "chunk_idx": 12,
+    "video_id": "v_HqpflYNEI7o"
+  },
+  {
+    "time": [
+      13,
+      14
+    ],
+    "visible_entities": [
+      {
+        "desc": "large orange pumpkin with carved triangular eyes",
+        "action": "static",
+        "position": "center"
+      },
+      {
+        "desc": "small red plastic object, possibly a tool handle",
+        "action": "appearing on the pumpkin",
+        "position": "center"
+      },
+      {
+        "desc": "cut pumpkin top with a green stem",
+        "action": "static",
+        "position": "right"
+      },
+      {
+        "desc": "orange plastic bowl",
+        "action": "static",
+        "position": "right"
+      },
+      {
+        "desc": "kitchen counter with white tiles",
+        "action": "static",
+        "position": "bottom"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A small red object appears on the surface of the pumpkin in the second frame.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The pumpkin has two triangular eyes carved into it.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The top of the pumpkin is cut off and placed on the counter.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The large orange pumpkin is in the center of the frame, sitting on the tiled kitchen counter. To the right of the pumpkin is the cut-off top with the stem and an orange bowl. The red object is located on the front face of the pumpkin, between the carved eyes.",
+    "parse_success": true,
+    "chunk_idx": 13,
+    "video_id": "v_HqpflYNEI7o"
+  },
+  {
+    "time": [
+      14,
+      15
+    ],
+    "visible_entities": [
+      {
+        "desc": "large orange pumpkin, ribbed texture, partially carved with a face outline",
+        "action": "being carved",
+        "position": "center"
+      },
+      {
+        "desc": "small carving tool with a red plastic handle and a thin metal blade",
         "action": "inserted into pumpkin",
         "position": "center"
       },
       {
+        "desc": "orange plastic bowl",
+        "action": "static",
+        "position": "right"
+      },
+      {
+        "desc": "pumpkin top with a dark green curved stem",
+        "action": "static",
+        "position": "bottom right"
+      },
+      {
         "desc": "white tiled countertop with dark grout lines",
+        "action": "static",
+        "position": "bottom"
+      },
+      {
+        "desc": "wooden kitchen cabinets, dark brown finish",
+        "action": "static",
+        "position": "background"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A red-handled carving tool is inserted into the side of the orange pumpkin.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The pumpkin is sitting on a white tiled countertop.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The top of the pumpkin with the stem is removed and placed on the counter.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "An orange bowl is positioned to the right of the pumpkin.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The large orange pumpkin is in the center of the frame, resting on a white tiled countertop. A red-handled tool is inserted into the left side of the pumpkin. To the right of the pumpkin, there is an orange bowl and the removed pumpkin top with a green stem. Wooden cabinets are visible in the background behind the pumpkin.",
+    "parse_success": true,
+    "chunk_idx": 14,
+    "video_id": "v_HqpflYNEI7o"
+  },
+  {
+    "time": [
+      15,
+      16
+    ],
+    "visible_entities": [
+      {
+        "desc": "large orange pumpkin with carved triangular eyes and a nose, smooth skin",
+        "action": "static",
+        "position": "center"
+      },
+      {
+        "desc": "red plastic carving tool with a handle",
+        "action": "being removed from the pumpkin",
+        "position": "center"
+      },
+      {
+        "desc": "cut pumpkin top with a green and brown stem",
+        "action": "static",
+        "position": "right"
+      },
+      {
+        "desc": "orange plastic bowl",
+        "action": "static",
+        "position": "right"
+      },
+      {
+        "desc": "white tiled kitchen counter",
         "action": "static",
         "position": "bottom"
       },
@@ -535,451 +846,52 @@
     ],
     "atomic_facts": [
       {
-        "fact": "A red-handled carving tool is inserted into the side of the large orange pumpkin.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The top of the pumpkin, featuring a dark green stem, rests on the countertop to the right of the main pumpkin body.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "An orange plastic bowl sits on the countertop behind the pumpkin top.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [],
-    "spatial": "The large orange pumpkin is in the center of the white tiled countertop. The pumpkin top with the green stem is to the right of the main pumpkin body and in front of the orange bowl. The orange bowl is to the right of the pumpkin. The dark wooden cabinets are in the background behind the pumpkin.",
-    "parse_success": true,
-    "chunk_idx": 9,
-    "video_id": "v_HqpflYNEI7o"
-  },
-  {
-    "time": [
-      20,
-      22
-    ],
-    "visible_entities": [
-      {
-        "desc": "large orange pumpkin with vertical ridges and a red plastic carving tool inserted into the top",
-        "action": "being carved",
-        "position": "center"
-      },
-      {
-        "desc": "cut-off top section of the pumpkin with a green and brown stem",
-        "action": "static",
-        "position": "bottom right"
-      },
-      {
-        "desc": "orange plastic bowl",
-        "action": "static",
-        "position": "right"
-      },
-      {
-        "desc": "white tiled countertop with dark grout",
-        "action": "static",
-        "position": "bottom"
-      },
-      {
-        "desc": "red and black plastic carving tools",
-        "action": "static",
-        "position": "left"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "A red plastic tool is inserted into the top of the pumpkin.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The pumpkin is being carved on a tiled countertop.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The top of the pumpkin has been cut off and placed to the side.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [],
-    "spatial": "The large orange pumpkin is in the center of the frame, resting on the white tiled countertop. The cut-off pumpkin top is to the right of the main pumpkin body. The orange bowl is positioned to the right of the pumpkin. The red carving tools are lying on the countertop to the left of the pumpkin.",
-    "parse_success": true,
-    "chunk_idx": 10,
-    "video_id": "v_HqpflYNEI7o"
-  },
-  {
-    "time": [
-      22,
-      24
-    ],
-    "visible_entities": [
-      {
-        "desc": "large orange pumpkin with vertical ridges, featuring a small carved hole on the left side and a red plastic tool with a smiley face inserted into the top right",
-        "action": "static",
-        "position": "center"
-      },
-      {
-        "desc": "cut-off top of the pumpkin with a dark green and brown curved stem",
-        "action": "static",
-        "position": "right foreground"
-      },
-      {
-        "desc": "orange plastic bowl",
-        "action": "static",
-        "position": "right background"
-      },
-      {
-        "desc": "white tiled countertop with dark grout lines",
-        "action": "static",
-        "position": "bottom"
-      },
-      {
-        "desc": "kitchen background with wooden cabinets and a doorway",
-        "action": "static",
-        "position": "background"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "A large orange pumpkin sits on a tiled countertop.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "A red plastic tool is inserted into the top right side of the pumpkin.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The top of the pumpkin has been cut off and placed on the counter to the right.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "An orange bowl is positioned behind the pumpkin top.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [],
-    "spatial": "The large orange pumpkin is in the center of the frame, resting on the tiled countertop. To the right of the pumpkin, in the foreground, lies the cut-off top with the stem. Behind the pumpkin top is an orange plastic bowl. The kitchen cabinets are visible in the background behind the pumpkin.",
-    "parse_success": true,
-    "chunk_idx": 11,
-    "video_id": "v_HqpflYNEI7o"
-  },
-  {
-    "time": [
-      24,
-      26
-    ],
-    "visible_entities": [
-      {
-        "desc": "large orange pumpkin with vertical ridges, a small hole carved on the upper left side, and a red plastic handle inserted into the top",
-        "action": "static",
-        "position": "center"
-      },
-      {
-        "desc": "orange plastic bowl",
-        "action": "static",
-        "position": "right"
-      },
-      {
-        "desc": "pumpkin top with a dark green and orange stem",
-        "action": "static",
-        "position": "bottom right"
-      },
-      {
-        "desc": "red plastic carving tool",
-        "action": "static",
-        "position": "left"
-      },
-      {
-        "desc": "white tiled countertop with dark grout",
-        "action": "static",
-        "position": "bottom"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "A large orange pumpkin sits on a tiled countertop.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "A red plastic handle is inserted into the top of the pumpkin.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "A small hole is carved into the upper left side of the pumpkin.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The top of the pumpkin, with its stem, is resting on the counter to the right.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [],
-    "spatial": "The large orange pumpkin is in the center of the frame, resting on the white tiled countertop. To the right of the pumpkin is an orange plastic bowl, and in front of the bowl is the pumpkin's severed top. To the left of the pumpkin, a red carving tool lies on the counter.",
-    "parse_success": true,
-    "chunk_idx": 12,
-    "video_id": "v_HqpflYNEI7o"
-  },
-  {
-    "time": [
-      26,
-      28
-    ],
-    "visible_entities": [
-      {
-        "desc": "large orange pumpkin with carved triangular eyes and a nose, sitting on a tiled surface",
-        "action": "static",
-        "position": "center"
-      },
-      {
-        "desc": "red plastic carving tool or handle",
-        "action": "inserted into the pumpkin",
-        "position": "center"
-      },
-      {
-        "desc": "pumpkin top with a curved green stem",
-        "action": "static",
-        "position": "right"
-      },
-      {
-        "desc": "orange plastic bowl",
-        "action": "static",
-        "position": "right"
-      },
-      {
-        "desc": "white tiled countertop with dark grout lines",
-        "action": "static",
-        "position": "bottom"
-      },
-      {
-        "desc": "kitchen background with wooden cabinets and a stainless steel refrigerator",
-        "action": "static",
-        "position": "background"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "A red plastic tool is inserted into the center of the pumpkin.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The pumpkin top with the stem is resting on the counter next to the bowl.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The pumpkin is sitting on a white tiled countertop.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [],
-    "spatial": "The large orange pumpkin is in the center of the frame, resting on the white tiled countertop. To the right of the pumpkin, there is an orange bowl and the pumpkin's top with the stem. The red tool is inserted into the front face of the pumpkin. The kitchen cabinets and refrigerator are in the background behind the pumpkin.",
-    "parse_success": true,
-    "chunk_idx": 13,
-    "video_id": "v_HqpflYNEI7o"
-  },
-  {
-    "time": [
-      28,
-      30
-    ],
-    "visible_entities": [
-      {
-        "desc": "large orange pumpkin, round, with carved triangular eyes and a nose, sitting on a tiled surface",
-        "action": "static",
-        "position": "center"
-      },
-      {
-        "desc": "red plastic carving tool with a serrated metal tip",
-        "action": "inserted into the pumpkin's nose",
-        "position": "center"
-      },
-      {
-        "desc": "orange plastic bowl, round",
-        "action": "static",
-        "position": "right"
-      },
-      {
-        "desc": "cut-off top of the pumpkin with a dark green curved stem",
-        "action": "static",
-        "position": "bottom right"
-      },
-      {
-        "desc": "white tiled countertop with dark grout lines",
-        "action": "static",
-        "position": "bottom"
-      },
-      {
-        "desc": "kitchen background with wooden cabinets and a stainless steel refrigerator",
-        "action": "static",
-        "position": "background"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "A red carving tool is inserted into the nose area of the pumpkin.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The top of the pumpkin has been cut off and placed on the counter.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "An orange bowl sits on the counter next to the pumpkin.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [],
-    "spatial": "The large orange pumpkin is in the center of the frame, resting on the white tiled countertop. The red carving tool is inserted into the front of the pumpkin. To the right of the pumpkin is an orange bowl, and in front of the bowl lies the cut-off pumpkin top.",
-    "parse_success": true,
-    "chunk_idx": 14,
-    "video_id": "v_HqpflYNEI7o"
-  },
-  {
-    "time": [
-      30,
-      32
-    ],
-    "visible_entities": [
-      {
-        "desc": "large orange pumpkin with carved triangular eyes and nose, partially carved mouth",
-        "action": "static",
-        "position": "center"
-      },
-      {
-        "desc": "red plastic carving tool with a curved handle",
-        "action": "being removed from the pumpkin",
-        "position": "center"
-      },
-      {
-        "desc": "cut-off top of the pumpkin with a green and brown stem",
-        "action": "static",
-        "position": "right"
-      },
-      {
-        "desc": "orange plastic bowl containing pumpkin pulp",
-        "action": "static",
-        "position": "right"
-      },
-      {
-        "desc": "tiled kitchen countertop with white tiles and dark grout",
-        "action": "static",
-        "position": "bottom"
-      },
-      {
-        "desc": "wooden kitchen cabinets in the background",
-        "action": "static",
-        "position": "background"
-      }
-    ],
-    "atomic_facts": [
-      {
         "fact": "A red plastic carving tool is being pulled out of the pumpkin's face.",
         "confidence": 1.0
       },
       {
-        "fact": "The pumpkin has carved triangular eyes and a nose.",
+        "fact": "The pumpkin sits on a white tiled counter.",
         "confidence": 1.0
       },
       {
-        "fact": "The pumpkin top with the stem is resting on the counter next to the bowl.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The orange bowl contains yellow pumpkin pulp.",
+        "fact": "The pumpkin top is resting on the counter to the right of the pumpkin.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The large orange pumpkin is in the center of the tiled countertop. The cut-off pumpkin top is to the right of the pumpkin, next to the orange bowl. The red carving tool is embedded in the face of the pumpkin. The wooden cabinets are in the background behind the pumpkin.",
+    "spatial": "The large orange pumpkin is in the center of the frame, sitting on the white tiled counter. To the right of the pumpkin is an orange bowl and the cut pumpkin top. The dark wooden cabinets are in the background behind the pumpkin.",
     "parse_success": true,
     "chunk_idx": 15,
     "video_id": "v_HqpflYNEI7o"
   },
   {
     "time": [
-      32,
-      34
+      16,
+      17
     ],
     "visible_entities": [
       {
-        "desc": "large orange pumpkin with carved triangular eyes and nose, unlit",
+        "desc": "large orange pumpkin with carved triangular eyes and nose, and a jagged mouth",
         "action": "static",
         "position": "center"
       },
       {
-        "desc": "orange plastic bowl filled with yellow pumpkin pulp and seeds",
+        "desc": "orange plastic bowl filled with yellow pumpkin pulp",
         "action": "static",
         "position": "right"
       },
       {
         "desc": "cut pumpkin top with a dark green curved stem",
         "action": "static",
-        "position": "right"
+        "position": "bottom right"
       },
       {
         "desc": "red plastic carving tool",
         "action": "static",
-        "position": "center"
+        "position": "bottom center"
       },
       {
-        "desc": "kitchen counter with beige square tiles",
-        "action": "static",
-        "position": "bottom"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "A large orange pumpkin sits on a tiled kitchen counter.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The pumpkin has carved triangular eyes and a nose.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "A red carving tool is resting against the side of the pumpkin.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "An orange bowl containing pumpkin guts is placed to the right of the pumpkin.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The top of the pumpkin with the stem is lying on the counter.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [],
-    "spatial": "The large orange pumpkin is in the center of the frame, resting on the tiled kitchen counter. To the right of the pumpkin, there is an orange bowl filled with pulp and the cut-off top of the pumpkin. A red carving tool is positioned against the lower right side of the pumpkin.",
-    "parse_success": true,
-    "chunk_idx": 16,
-    "video_id": "v_HqpflYNEI7o"
-  },
-  {
-    "time": [
-      34,
-      36
-    ],
-    "visible_entities": [
-      {
-        "desc": "large orange pumpkin with a carved face featuring triangular eyes, a triangular nose, and a rectangular mouth; a small red plastic object is inserted into the mouth area",
-        "action": "static",
-        "position": "center"
-      },
-      {
-        "desc": "cut-off top of the pumpkin with a green and brown stem",
-        "action": "static",
-        "position": "right"
-      },
-      {
-        "desc": "orange plastic bowl containing yellow pumpkin guts and seeds",
-        "action": "static",
-        "position": "right"
-      },
-      {
-        "desc": "red and black plastic carving tools",
-        "action": "static",
-        "position": "left"
-      },
-      {
-        "desc": "kitchen counter with white square tiles and dark grout",
+        "desc": "white tiled kitchen counter with dark grout",
         "action": "static",
         "position": "bottom"
       },
@@ -991,56 +903,224 @@
     ],
     "atomic_facts": [
       {
-        "fact": "The pumpkin is sitting on a tiled kitchen counter.",
+        "fact": "A large orange pumpkin sits on a tiled counter.",
         "confidence": 1.0
       },
       {
-        "fact": "The top of the pumpkin has been removed and placed to the right of the main pumpkin body.",
+        "fact": "The pumpkin has been carved with a face featuring triangular eyes and nose.",
         "confidence": 1.0
       },
       {
-        "fact": "A red plastic object is sticking out of the pumpkin's carved mouth.",
+        "fact": "A red carving tool rests against the bottom of the pumpkin.",
         "confidence": 1.0
       },
       {
-        "fact": "Carving tools are lying on the counter to the left of the pumpkin.",
+        "fact": "An orange bowl containing pumpkin guts is placed to the right of the pumpkin.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The top of the pumpkin with the stem attached lies on the counter.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The carved pumpkin is in the center of the frame, resting on the tiled counter. To the right of the pumpkin is the cut-off top with the stem and an orange bowl filled with pumpkin guts. To the left of the pumpkin are the carving tools. The wooden cabinets are in the background behind the counter.",
+    "spatial": "The carved pumpkin is in the center of the frame, sitting on the tiled counter. To the right of the pumpkin is an orange bowl filled with pulp. The cut pumpkin top is in front of the bowl and to the right of the main pumpkin body. A red tool is positioned at the bottom of the pumpkin. Wooden cabinets are visible in the background behind the counter.",
+    "parse_success": true,
+    "chunk_idx": 16,
+    "video_id": "v_HqpflYNEI7o"
+  },
+  {
+    "time": [
+      17,
+      18
+    ],
+    "visible_entities": [
+      {
+        "desc": "large orange pumpkin with a carved face featuring triangular eyes, a triangular nose, and a rectangular mouth, sitting on a tiled countertop",
+        "action": "static"
+      },
+      {
+        "desc": "red plastic object, possibly a candy or decoration, protruding from the pumpkin's mouth",
+        "action": "falling out"
+      },
+      {
+        "desc": "orange plastic bowl filled with pumpkin guts and seeds",
+        "action": "static"
+      },
+      {
+        "desc": "cut-off top of the pumpkin with its green stem, resting on the countertop",
+        "action": "static"
+      },
+      {
+        "desc": "kitchen setting with wooden cabinets, a stainless steel refrigerator, and a tiled countertop",
+        "action": "static"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A red plastic object is falling out of the carved pumpkin's mouth.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The pumpkin is on a tiled countertop.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The bowl of pumpkin guts is to the right of the pumpkin.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The pumpkin top is next to the bowl.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The carved pumpkin is in the center of the frame on a tiled countertop. To the right of the pumpkin is an orange bowl filled with pumpkin guts, and next to the bowl is the cut-off top of the pumpkin. In the background, there are wooden kitchen cabinets and a stainless steel refrigerator.",
     "parse_success": true,
     "chunk_idx": 17,
     "video_id": "v_HqpflYNEI7o"
   },
   {
     "time": [
-      36,
-      38
+      18,
+      19
     ],
     "visible_entities": [
       {
-        "desc": "large orange pumpkin with a carved face featuring triangular eyes, a triangular nose, and a rectangular mouth",
+        "desc": "large orange pumpkin with a carved face featuring triangular eyes, a triangular nose, and a rectangular mouth, sitting on a tiled countertop",
         "action": "static",
         "position": "center"
       },
       {
-        "desc": "orange plastic carving tool with a red handle and a serrated metal blade",
-        "action": "inserted into the side of the pumpkin",
+        "desc": "orange plastic carving tool with a red handle, inserted into the side of the pumpkin",
+        "action": "static",
         "position": "left"
       },
       {
-        "desc": "cut-off top of the pumpkin with a green and brown stem",
+        "desc": "top of the pumpkin with a green and brown stem, resting on the counter",
         "action": "static",
         "position": "right"
+      },
+      {
+        "desc": "orange plastic bowl containing pumpkin guts and seeds",
+        "action": "static",
+        "position": "right"
+      },
+      {
+        "desc": "kitchen background with wooden cabinets, a stainless steel refrigerator, and a doorway",
+        "action": "static",
+        "position": "background"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "An orange carving tool is inserted into the left side of the pumpkin.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The top of the pumpkin with its stem is resting on the counter to the right of the main pumpkin body.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The pumpkin is sitting on a tiled kitchen countertop.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The large carved pumpkin is in the center of the frame, sitting on a tiled countertop. To its left, an orange carving tool is inserted into its side. To the right of the pumpkin, the pumpkin's top with the stem is on the counter, and behind it is an orange bowl filled with pumpkin guts. The entire scene is set in a kitchen with wooden cabinets and a refrigerator in the background.",
+    "parse_success": true,
+    "chunk_idx": 18,
+    "video_id": "v_HqpflYNEI7o"
+  },
+  {
+    "time": [
+      19,
+      20
+    ],
+    "visible_entities": [
+      {
+        "desc": "large orange pumpkin with carved triangular eyes and nose, and a rectangular mouth outline",
+        "action": "static",
+        "position": "center"
+      },
+      {
+        "desc": "red plastic tongue piece",
+        "action": "being inserted into the pumpkin's mouth",
+        "position": "center-left"
+      },
+      {
+        "desc": "orange plastic bowl containing pumpkin guts",
+        "action": "static",
+        "position": "right"
+      },
+      {
+        "desc": "pumpkin lid with green stem",
+        "action": "static",
+        "position": "bottom-right"
+      },
+      {
+        "desc": "red plastic carving tools",
+        "action": "static",
+        "position": "left"
+      },
+      {
+        "desc": "white tiled kitchen counter",
+        "action": "static",
+        "position": "bottom"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A red plastic tongue is inserted into the carved mouth of the pumpkin.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The pumpkin sits on a white tiled kitchen counter.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "An orange bowl filled with pumpkin guts is placed to the right of the pumpkin.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The pumpkin lid with the stem rests on the counter near the bowl.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The carved pumpkin is in the center of the frame, resting on a white tiled counter. To the right of the pumpkin is an orange bowl, and below the bowl is the pumpkin lid. To the left of the pumpkin are red carving tools.",
+    "parse_success": true,
+    "chunk_idx": 19,
+    "video_id": "v_HqpflYNEI7o"
+  },
+  {
+    "time": [
+      20,
+      21
+    ],
+    "visible_entities": [
+      {
+        "desc": "large orange pumpkin with carved triangular eyes, a triangular nose, and a jagged mouth, featuring a small pink object inserted into the nose area",
+        "action": "static",
+        "position": "center"
+      },
+      {
+        "desc": "pumpkin top with a curved green and brown stem",
+        "action": "static",
+        "position": "right foreground"
       },
       {
         "desc": "orange plastic bowl containing yellow pumpkin guts",
         "action": "static",
-        "position": "right"
+        "position": "right background"
       },
       {
-        "desc": "white tiled countertop with dark grout lines",
+        "desc": "red-handled carving tools",
+        "action": "static",
+        "position": "left foreground"
+      },
+      {
+        "desc": "tiled kitchen countertop with light-colored square tiles",
         "action": "static",
         "position": "bottom"
       },
@@ -1052,145 +1132,36 @@
     ],
     "atomic_facts": [
       {
-        "fact": "A carving tool is inserted into the left side of the pumpkin.",
+        "fact": "A carved pumpkin sits on a tiled countertop.",
         "confidence": 1.0
       },
       {
-        "fact": "The pumpkin top is resting on the counter next to the bowl.",
+        "fact": "A pink object is inserted into the nose of the pumpkin.",
         "confidence": 1.0
       },
       {
-        "fact": "The bowl contains the removed insides of the pumpkin.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [],
-    "spatial": "The carved pumpkin is in the center of the tiled countertop. The orange carving tool is inserted into the left side of the pumpkin. To the right of the pumpkin, the cut-off top with the stem lies on the counter next to an orange bowl filled with pumpkin guts.",
-    "parse_success": true,
-    "chunk_idx": 18,
-    "video_id": "v_HqpflYNEI7o"
-  },
-  {
-    "time": [
-      38,
-      40
-    ],
-    "visible_entities": [
-      {
-        "desc": "large orange pumpkin with carved triangular eyes, a triangular nose, and a jagged mouth outline",
-        "action": "being carved",
-        "position": "center"
-      },
-      {
-        "desc": "red plastic carving tool",
-        "action": "static",
-        "position": "left"
-      },
-      {
-        "desc": "orange plastic bowl containing pumpkin seeds and pulp",
-        "action": "static",
-        "position": "right"
-      },
-      {
-        "desc": "top section of the pumpkin with a green and brown stem",
-        "action": "static",
-        "position": "right"
-      },
-      {
-        "desc": "white tiled countertop with dark grout",
-        "action": "static",
-        "position": "bottom"
-      },
-      {
-        "desc": "wooden kitchen cabinets and a stainless steel refrigerator",
-        "action": "static",
-        "position": "background"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "A red carving tool is inserted into the left side of the pumpkin's mouth area.",
+        "fact": "The top of the pumpkin with its stem rests on the counter to the right.",
         "confidence": 1.0
       },
       {
-        "fact": "The pumpkin is sitting on a white tiled countertop.",
+        "fact": "Carving tools are lying on the counter to the left of the pumpkin.",
         "confidence": 1.0
       },
       {
-        "fact": "The top of the pumpkin with the stem is resting on the counter next to an orange bowl.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The orange bowl contains the removed insides of the pumpkin.",
+        "fact": "An orange bowl filled with pumpkin guts is visible in the background.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The large orange pumpkin is in the center of the frame, resting on a white tiled countertop. To the left of the pumpkin, a red carving tool is stuck into its side. To the right of the pumpkin, the removed top with the stem lies next to an orange bowl filled with pumpkin guts. The background features wooden cabinets and a refrigerator.",
-    "parse_success": true,
-    "chunk_idx": 19,
-    "video_id": "v_HqpflYNEI7o"
-  },
-  {
-    "time": [
-      40,
-      42
-    ],
-    "visible_entities": [
-      {
-        "desc": "large orange pumpkin with a carved face featuring triangular eyes, a triangular nose, and a jagged mouth, with a small pink object inserted into the nose area",
-        "action": "static",
-        "position": "center"
-      },
-      {
-        "desc": "orange plastic bowl filled with yellow pumpkin pulp and seeds",
-        "action": "static",
-        "position": "right"
-      },
-      {
-        "desc": "top section of the pumpkin with a green stem, resting upside down",
-        "action": "static",
-        "position": "bottom right"
-      },
-      {
-        "desc": "red and black carving tools",
-        "action": "static",
-        "position": "left"
-      },
-      {
-        "desc": "white tiled countertop with dark grout lines",
-        "action": "static",
-        "position": "bottom"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "A large orange pumpkin sits on a tiled countertop.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The pumpkin has a carved face with a pink object in its nose.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "An orange bowl containing pumpkin guts is placed to the right of the pumpkin.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The top of the pumpkin with the stem is lying on the counter.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [],
-    "spatial": "The carved pumpkin is in the center of the frame, resting on a white tiled countertop. To the right of the pumpkin is an orange bowl filled with pumpkin pulp. Below and to the right of the bowl is the cut-off top of the pumpkin. To the left of the pumpkin, carving tools are lying on the counter.",
+    "spatial": "The carved pumpkin is in the center of the frame, resting on the tiled countertop. To the right of the pumpkin, the pumpkin top with the stem lies in the foreground, while an orange bowl is positioned behind it. To the left of the pumpkin, red-handled carving tools are scattered on the counter. The kitchen cabinets and refrigerator are in the background behind the countertop.",
     "parse_success": true,
     "chunk_idx": 20,
     "video_id": "v_HqpflYNEI7o"
   },
   {
     "time": [
-      42,
-      44
+      21,
+      22
     ],
     "visible_entities": [
       {
@@ -1199,140 +1170,22 @@
         "position": "center"
       },
       {
-        "desc": "red gummy candy strip",
-        "action": "protruding from the pumpkin's mouth",
+        "desc": "small red gummy candy piece",
+        "action": "protruding from the mouth",
         "position": "center"
       },
       {
-        "desc": "orange plastic bowl containing pumpkin guts",
+        "desc": "orange plastic bowl filled with yellow pumpkin pulp and seeds",
         "action": "static",
         "position": "right"
       },
       {
-        "desc": "pumpkin top with a green stem",
+        "desc": "cut pumpkin top with a green and brown stem",
         "action": "static",
-        "position": "bottom right"
+        "position": "right"
       },
       {
         "desc": "red and black carving tools",
-        "action": "static",
-        "position": "left"
-      },
-      {
-        "desc": "tiled kitchen counter",
-        "action": "static",
-        "position": "bottom"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "A red gummy candy strip is sticking out of the carved pumpkin's mouth, resembling a tongue.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The pumpkin is sitting on a tiled kitchen counter.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "An orange bowl filled with pumpkin seeds and pulp is to the right of the pumpkin.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The top of the pumpkin with its stem is resting on the counter near the bowl.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [],
-    "spatial": "The carved pumpkin is in the center of the frame, sitting on a tiled counter. To the right of the pumpkin is an orange bowl, and below the bowl is the pumpkin's stem. To the left of the pumpkin are some carving tools.",
-    "parse_success": true,
-    "chunk_idx": 21,
-    "video_id": "v_HqpflYNEI7o"
-  },
-  {
-    "time": [
-      44,
-      46
-    ],
-    "visible_entities": [
-      {
-        "desc": "large orange pumpkin with a carved jack-o'-lantern face featuring triangular eyes, a triangular nose, and a jagged mouth",
-        "action": "static",
-        "position": "center"
-      },
-      {
-        "desc": "top section of a pumpkin with a curved green and brown stem",
-        "action": "static",
-        "position": "right foreground"
-      },
-      {
-        "desc": "orange plastic bowl containing pumpkin guts and seeds",
-        "action": "static",
-        "position": "right"
-      },
-      {
-        "desc": "red-handled carving tool with a serrated blade",
-        "action": "sticking out of the pumpkin",
-        "position": "right side of pumpkin"
-      },
-      {
-        "desc": "white tiled countertop with dark grout lines",
-        "action": "static",
-        "position": "bottom"
-      },
-      {
-        "desc": "small orange and black carving tools",
-        "action": "static",
-        "position": "left foreground"
-      },
-      {
-        "desc": "wooden kitchen cabinets",
-        "action": "static",
-        "position": "background"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "A red-handled carving tool is inserted into the side of the orange pumpkin.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The pumpkin top with the stem is resting on the counter next to the bowl.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The carved pumpkin is sitting on a white tiled countertop.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [],
-    "spatial": "The carved pumpkin is in the center of the frame, sitting on the tiled countertop. To the right of the pumpkin is an orange bowl filled with pumpkin guts, and in front of the bowl is the pumpkin's stem top. A red carving tool is sticking out of the right side of the pumpkin. To the left of the pumpkin, other carving tools are lying on the counter.",
-    "parse_success": true,
-    "chunk_idx": 22,
-    "video_id": "v_HqpflYNEI7o"
-  },
-  {
-    "time": [
-      46,
-      48
-    ],
-    "visible_entities": [
-      {
-        "desc": "large orange pumpkin with a carved jack-o'-lantern face featuring jagged eyes, a triangular nose, and a wide toothy grin",
-        "action": "static",
-        "position": "center"
-      },
-      {
-        "desc": "orange pumpkin lid with a dark green curved stem",
-        "action": "being placed on top of the pumpkin",
-        "position": "center/foreground"
-      },
-      {
-        "desc": "bright orange plastic bowl filled with pumpkin pulp and seeds",
-        "action": "static",
-        "position": "right"
-      },
-      {
-        "desc": "red-handled carving tools",
         "action": "static",
         "position": "left"
       },
@@ -1344,7 +1197,7 @@
     ],
     "atomic_facts": [
       {
-        "fact": "The pumpkin lid is placed on top of the carved pumpkin.",
+        "fact": "A red gummy candy piece is sticking out of the carved pumpkin's mouth.",
         "confidence": 1.0
       },
       {
@@ -1352,24 +1205,141 @@
         "confidence": 1.0
       },
       {
-        "fact": "An orange bowl containing pumpkin guts is positioned to the right of the pumpkin.",
+        "fact": "An orange bowl containing pumpkin guts is placed to the right of the pumpkin.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The top of the pumpkin with the stem is resting on the counter next to the bowl.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The carved pumpkin is in the center of the frame, resting on the white tiled countertop. The pumpkin lid is placed directly on top of the pumpkin. To the right of the pumpkin is an orange bowl filled with pulp, and to the left are red carving tools.",
+    "spatial": "The carved pumpkin is in the center of the frame, resting on the tiled countertop. To the right of the pumpkin, there is an orange bowl filled with pumpkin pulp, and next to the bowl lies the cut-off top of the pumpkin. To the left of the pumpkin, red carving tools are lying on the counter.",
+    "parse_success": true,
+    "chunk_idx": 21,
+    "video_id": "v_HqpflYNEI7o"
+  },
+  {
+    "time": [
+      22,
+      23
+    ],
+    "visible_entities": [
+      {
+        "desc": "large orange pumpkin with a carved jack-o'-lantern face featuring triangular eyes, a triangular nose, and a jagged mouth; the mouth is partially cut in the first frame and fully open in the second",
+        "action": "being carved",
+        "position": "center"
+      },
+      {
+        "desc": "red plastic pumpkin carving tool with a serrated tip",
+        "action": "inserted into the pumpkin",
+        "position": "right"
+      },
+      {
+        "desc": "top section of the pumpkin with a dark green curved stem",
+        "action": "static",
+        "position": "bottom right"
+      },
+      {
+        "desc": "orange plastic bowl containing pumpkin pulp and seeds",
+        "action": "static",
+        "position": "right"
+      },
+      {
+        "desc": "white tiled countertop with dark grout lines",
+        "action": "static",
+        "position": "bottom"
+      },
+      {
+        "desc": "small red and black carving tools",
+        "action": "static",
+        "position": "left"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A person is carving a pumpkin, as evidenced by the red tool inserted into the side of the fruit.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The pumpkin's mouth transitions from being partially cut to fully open between the two frames.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The top of the pumpkin with the stem has been removed and placed on the counter.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "Pumpkin guts are collected in an orange bowl next to the carving area.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The large orange pumpkin is centered on the white tiled countertop. To the right of the pumpkin is an orange bowl filled with pulp, and below that is the removed pumpkin top. A red carving tool is inserted into the right side of the pumpkin. To the left of the pumpkin, other small carving tools lie on the counter.",
+    "parse_success": true,
+    "chunk_idx": 22,
+    "video_id": "v_HqpflYNEI7o"
+  },
+  {
+    "time": [
+      23,
+      24
+    ],
+    "visible_entities": [
+      {
+        "desc": "large orange pumpkin with a carved jack-o'-lantern face featuring triangular eyes, a triangular nose, and a wide, toothy grin",
+        "action": "static",
+        "position": "center"
+      },
+      {
+        "desc": "pumpkin lid with a curved, dark green and brown stem",
+        "action": "being placed on top of the pumpkin",
+        "position": "top"
+      },
+      {
+        "desc": "bright orange plastic bowl filled with pumpkin pulp and seeds",
+        "action": "static",
+        "position": "right"
+      },
+      {
+        "desc": "small carving tools with red and black handles",
+        "action": "static",
+        "position": "left"
+      },
+      {
+        "desc": "white tiled countertop with dark grout lines",
+        "action": "static",
+        "position": "bottom"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The pumpkin lid is being placed on top of the carved pumpkin.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The carved pumpkin sits on a white tiled countertop.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "An orange bowl containing pumpkin guts is to the right of the pumpkin.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The carved pumpkin is in the center of the frame, resting on the white tiled countertop. The pumpkin lid is positioned above the pumpkin, being placed onto it. To the right of the pumpkin is an orange bowl filled with pumpkin pulp. To the left of the pumpkin are several small carving tools.",
     "parse_success": true,
     "chunk_idx": 23,
     "video_id": "v_HqpflYNEI7o"
   },
   {
     "time": [
-      48,
-      50
+      24,
+      25
     ],
     "visible_entities": [
       {
-        "desc": "orange pumpkin with a carved face featuring triangular eyes, a triangular nose, and a wide, toothy grin",
+        "desc": "orange pumpkin carved with triangular eyes, a triangular nose, and a wide, toothy grin",
         "action": "glowing from within",
         "position": "center"
       },
@@ -1379,7 +1349,7 @@
         "position": "right"
       },
       {
-        "desc": "carving tools with orange handles",
+        "desc": "small orange and black carving tools",
         "action": "static",
         "position": "left"
       },
@@ -1395,52 +1365,20 @@
         "confidence": 1.0
       },
       {
-        "fact": "The ambient lighting in the room dims significantly, highlighting the glowing pumpkin.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "Carving tools are lying on the countertop to the left of the pumpkin.",
+        "fact": "The lighting in the room dims significantly between the two frames.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The glowing pumpkin is in the center of the frame, resting on the white tiled countertop. To the right of the pumpkin is an orange plastic bowl. To the left of the pumpkin, a set of carving tools lies on the counter.",
+    "spatial": "The carved pumpkin is in the center of the frame, resting on the white tiled countertop. The orange bowl is to the right of the pumpkin. The carving tools are to the left of the pumpkin.",
     "parse_success": true,
     "chunk_idx": 24,
     "video_id": "v_HqpflYNEI7o"
   },
   {
     "time": [
-      50,
-      52
-    ],
-    "visible_entities": [
-      {
-        "desc": "carved pumpkin (Jack-o'-lantern) with a glowing orange interior, featuring triangular eyes, a triangular nose, and a wide, toothy grin",
-        "action": "glowing",
-        "position": "center"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "The carved pumpkin is glowing with an orange light.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The pumpkin features a face with triangular eyes and a toothy smile.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [],
-    "spatial": "The glowing carved pumpkin is centered in the frame against a black background.",
-    "parse_success": true,
-    "chunk_idx": 25,
-    "video_id": "v_HqpflYNEI7o"
-  },
-  {
-    "time": [
-      52,
-      54
+      25,
+      26
     ],
     "visible_entities": [
       {
@@ -1451,102 +1389,130 @@
     ],
     "atomic_facts": [
       {
-        "fact": "A carved pumpkin is glowing with an orange light from within.",
+        "fact": "The carved pumpkin emits a bright orange light from within.",
         "confidence": 1.0
       },
       {
-        "fact": "The pumpkin features a classic jack-o'-lantern face with triangular eyes and nose.",
+        "fact": "The pumpkin remains stationary in the center of the frame.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The glowing pumpkin is centered in the frame against a black background.",
+    "spatial": "The glowing carved pumpkin is centered against a solid black background.",
+    "parse_success": true,
+    "chunk_idx": 25,
+    "video_id": "v_HqpflYNEI7o"
+  },
+  {
+    "time": [
+      26,
+      27
+    ],
+    "visible_entities": [
+      {
+        "desc": "carved pumpkin with a glowing orange interior, featuring triangular eyes, a triangular nose, and a wide, toothy grin with a jagged mouth shape",
+        "action": "static",
+        "position": "center"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The carved pumpkin is illuminated from within, casting a bright orange glow.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The pumpkin's features, including eyes, nose, and mouth, are cut out to form a face.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The glowing carved pumpkin is centered in the frame against a black background. The triangular nose is positioned between the two triangular eyes and above the wide, toothy mouth.",
     "parse_success": true,
     "chunk_idx": 26,
     "video_id": "v_HqpflYNEI7o"
   },
   {
     "time": [
-      54,
-      56
+      27,
+      28
     ],
     "visible_entities": [
       {
-        "desc": "carved pumpkin face (Jack-o'-lantern) with a glowing orange interior, featuring triangular eyes, a triangular nose, and a wide, toothy grin",
+        "desc": "carved pumpkin face with triangular eyes and nose, jagged mouth, glowing orange interior",
         "action": "static",
         "position": "center"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "The carved pumpkin face remains static in the center of the frame.",
+        "fact": "The carved pumpkin face is glowing orange against a black background.",
         "confidence": 1.0
       },
       {
-        "fact": "The interior of the pumpkin glows with a bright orange light against a black background.",
+        "fact": "The pumpkin's features include triangular eyes and nose with a jagged mouth.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The glowing orange interior is visible inside the carved pumpkin face. The pumpkin face is centered against a black background.",
+    "spatial": "The carved pumpkin face is centered in the frame. The glowing orange interior is visible through the carved features.",
     "parse_success": true,
     "chunk_idx": 27,
     "video_id": "v_HqpflYNEI7o"
   },
   {
     "time": [
-      56,
-      58
+      28,
+      29
     ],
     "visible_entities": [
       {
-        "desc": "glowing orange jack-o'-lantern with carved triangular eyes, a triangular nose, and a wide, toothy grin",
+        "desc": "carved pumpkin face (Jack-o'-lantern) with triangular eyes, a triangular nose, and a wide, toothy grin, glowing orange from within against a black background",
         "action": "static",
         "position": "center"
       },
       {
-        "desc": "orange serif text reading 'Happy Halloween!!!'",
+        "desc": "text reading 'Happy Halloween!!!' in an orange serif font on a black background",
         "action": "static",
         "position": "center"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "The video displays a close-up of a glowing jack-o'-lantern face.",
+        "fact": "The video displays a close-up of a glowing carved pumpkin face.",
         "confidence": 1.0
       },
       {
-        "fact": "The text 'Happy Halloween!!!' appears on a black background.",
+        "fact": "The video displays the text 'Happy Halloween!!!' in orange letters.",
         "confidence": 1.0
       },
       {
-        "fact": "The jack-o'-lantern features a carved triangular nose and mouth.",
+        "fact": "The scene transitions from the pumpkin face to the text greeting.",
         "confidence": 1.0
       }
     ],
     "ocr": [
       "Happy Halloween!!!"
     ],
-    "spatial": "The jack-o'-lantern face is centered in the frame. The text 'Happy Halloween!!!' is centered horizontally and vertically on the screen.",
+    "spatial": "The carved pumpkin face is centered in the frame. The text 'Happy Halloween!!!' is centered in the frame.",
     "parse_success": true,
     "chunk_idx": 28,
     "video_id": "v_HqpflYNEI7o"
   },
   {
     "time": [
-      58,
-      60
+      29,
+      30
     ],
     "visible_entities": [
       {
-        "desc": "orange serif text reading 'Happy Halloween!!!' with three exclamation marks",
+        "desc": "The text 'Happy Halloween!!!' written in a bold, orange serif font",
         "action": "static",
         "position": "center"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "The text 'Happy Halloween!!!' is displayed in the center of the screen.",
+        "fact": "The text 'Happy Halloween!!!' remains static on the screen.",
         "confidence": 1.0
       },
       {
@@ -1564,19 +1530,19 @@
   },
   {
     "time": [
-      60,
-      62
+      30,
+      31
     ],
     "visible_entities": [
       {
-        "desc": "Orange serif text reading 'Happy Halloween!!!'",
+        "desc": "Text reading 'Happy Halloween!!!' in a bold, orange serif font",
         "action": "static",
         "position": "center"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "The text 'Happy Halloween!!!' is displayed on the screen.",
+        "fact": "The text 'Happy Halloween!!!' is displayed on a black background.",
         "confidence": 1.0
       },
       {
@@ -1587,30 +1553,29 @@
     "ocr": [
       "Happy Halloween!!!"
     ],
-    "spatial": "The orange text is centered on a black background.",
+    "spatial": "The orange text is centered horizontally and vertically against the black background.",
     "parse_success": true,
     "chunk_idx": 30,
     "video_id": "v_HqpflYNEI7o"
   },
   {
     "time": [
-      62,
-      64
+      31,
+      32
     ],
     "visible_entities": [
       {
-        "desc": "text reading 'Happy Halloween!!!' in an orange serif font",
-        "action": "static",
-        "position": "center"
+        "desc": "orange serif text reading 'Happy Halloween!!!' on a black background",
+        "action": "static"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "The text 'Happy Halloween!!!' is displayed on the screen.",
+        "fact": "The text 'Happy Halloween!!!' is displayed in orange.",
         "confidence": 1.0
       },
       {
-        "fact": "The text is colored orange against a black background.",
+        "fact": "The text remains static on the screen.",
         "confidence": 1.0
       }
     ],
@@ -1624,19 +1589,24 @@
   },
   {
     "time": [
-      64,
-      66
+      32,
+      33
     ],
     "visible_entities": [
       {
-        "desc": "orange text in a stylized, jagged font reading 'Silverpsycho78' and '10-30-2010'",
+        "desc": "Orange text reading 'Silverpsycho78' in a stylized, jagged font",
+        "action": "static",
+        "position": "center"
+      },
+      {
+        "desc": "Orange text reading '10-30-2010' in a smaller, jagged font",
         "action": "static",
         "position": "center"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "The text 'Silverpsycho78' is displayed in the center of the screen.",
+        "fact": "The text 'Silverpsycho78' is displayed in orange.",
         "confidence": 1.0
       },
       {
@@ -1644,7 +1614,7 @@
         "confidence": 1.0
       },
       {
-        "fact": "The text remains static on the black background.",
+        "fact": "The text remains static throughout the clip.",
         "confidence": 1.0
       }
     ],
@@ -1652,15 +1622,15 @@
       "Silverpsycho78",
       "10-30-2010"
     ],
-    "spatial": "The text 'Silverpsycho78' is positioned above the date '10-30-2010'. Both text elements are centered on the black background.",
+    "spatial": "The text 'Silverpsycho78' is positioned above the text '10-30-2010'. Both lines of text are centered horizontally and vertically against a black background.",
     "parse_success": true,
     "chunk_idx": 32,
     "video_id": "v_HqpflYNEI7o"
   },
   {
     "time": [
-      66,
-      68
+      33,
+      34
     ],
     "visible_entities": [
       {
@@ -1669,7 +1639,7 @@
         "position": "center"
       },
       {
-        "desc": "Orange text reading '10-30-2010' in a smaller, matching stylized font",
+        "desc": "Orange text reading '10-30-2010' in a smaller, wavy font",
         "action": "static",
         "position": "center"
       }
@@ -1684,7 +1654,7 @@
         "confidence": 1.0
       },
       {
-        "fact": "The background is solid black.",
+        "fact": "The text remains static throughout the duration of the clip.",
         "confidence": 1.0
       }
     ],
@@ -1692,7 +1662,7 @@
       "Silverpsycho78",
       "10-30-2010"
     ],
-    "spatial": "The text 'Silverpsycho78' is above the text '10-30-2010'. Both text elements are centered on the black background.",
+    "spatial": "The text 'Silverpsycho78' is positioned above the text '10-30-2010'. Both text elements are centered against a black background.",
     "parse_success": true,
     "chunk_idx": 33,
     "video_id": "v_HqpflYNEI7o"

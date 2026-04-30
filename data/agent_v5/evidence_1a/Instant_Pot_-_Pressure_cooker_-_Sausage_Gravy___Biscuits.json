@@ -2,33 +2,33 @@
   {
     "time": [
       0,
-      2
+      1
     ],
     "visible_entities": [
       {
-        "desc": "golden-brown biscuits covered in thick, creamy sausage gravy with visible chunks of meat",
+        "desc": "text overlay reading 'INSTANT POT SAUSAGE GRAVY & BISCUITS' in a bold, beige, serif font with a dark outline",
         "action": "static",
         "position": "left"
       },
       {
-        "desc": "yellow scrambled eggs",
+        "desc": "a blue and white striped ceramic plate holding breakfast food",
+        "action": "static",
+        "position": "center"
+      },
+      {
+        "desc": "golden-brown biscuits covered in thick, creamy sausage gravy with visible chunks of meat",
+        "action": "static",
+        "position": "center"
+      },
+      {
+        "desc": "a serving of fluffy, yellow scrambled eggs",
         "action": "static",
         "position": "top"
       },
       {
-        "desc": "stainless steel Instant Pot pressure cooker with a black lid and digital display",
+        "desc": "a stainless steel Instant Pot pressure cooker with a black lid and a digital display showing '0:01'",
         "action": "static",
         "position": "right"
-      },
-      {
-        "desc": "white and blue striped ceramic plate",
-        "action": "static",
-        "position": "bottom"
-      },
-      {
-        "desc": "text overlay in large, bold, white serif font with a drop shadow",
-        "action": "static",
-        "position": "top-left"
       }
     ],
     "atomic_facts": [
@@ -37,15 +37,19 @@
         "confidence": 1.0
       },
       {
-        "fact": "The text 'INSTANT POT SAUSAGE GRAVY & BISCUITS' is overlaid on the screen.",
+        "fact": "The text overlay reads 'INSTANT POT SAUSAGE GRAVY & BISCUITS'.",
         "confidence": 1.0
       },
       {
-        "fact": "The Instant Pot digital display shows the numbers '0:01'.",
+        "fact": "A plate of biscuits and gravy is shown next to scrambled eggs.",
         "confidence": 1.0
       },
       {
-        "fact": "Sausage gravy is poured over the biscuits on the plate.",
+        "fact": "An Instant Pot is displayed on the right side of the frame.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The Instant Pot's digital screen shows a timer at '0:01'.",
         "confidence": 1.0
       }
     ],
@@ -58,39 +62,29 @@
       "Instant Pot",
       "0:01"
     ],
-    "spatial": "The plate of biscuits and gravy is positioned on the left side of the frame, while the Instant Pot is located on the right side. The scrambled eggs are situated at the top of the plate, above the biscuits. The text overlay is positioned in the upper-left quadrant, partially covering the food.",
+    "spatial": "The text overlay is positioned on the left side of the frame, partially covering the plate of food. The plate containing the biscuits, gravy, and eggs is in the center and background. The Instant Pot is located on the right side, in the foreground, next to the plate.",
     "parse_success": true,
     "chunk_idx": 0,
     "video_id": "Instant_Pot_-_Pressure_cooker_-_Sausage_Gravy___Biscuits"
   },
   {
     "time": [
-      2,
-      4
+      1,
+      2
     ],
     "visible_entities": [
       {
-        "desc": "golden-brown biscuit topped with thick, creamy sausage gravy containing visible chunks of meat",
+        "desc": "Text overlay reading 'INSTANT POT SAUSAGE GRAVY & BISCUITS' in a bold, beige, serif font with a dark outline.",
         "action": "static",
-        "position": "center"
+        "position": "left"
       },
       {
-        "desc": "stainless steel Instant Pot pressure cooker with a black lid and a digital display showing '0:01'",
+        "desc": "A stainless steel Instant Pot pressure cooker with a black lid and a digital display showing '0:01'.",
         "action": "static",
         "position": "right"
       },
       {
-        "desc": "large, bold, beige serif text with a dark outline",
-        "action": "static",
-        "position": "top-left"
-      },
-      {
-        "desc": "blue and white striped ceramic plate",
-        "action": "static",
-        "position": "bottom"
-      },
-      {
-        "desc": "yellow scrambled eggs",
+        "desc": "A plate of food featuring golden-brown biscuits covered in thick, creamy sausage gravy, with yellow scrambled eggs in the background.",
         "action": "static",
         "position": "background"
       }
@@ -101,11 +95,11 @@
         "confidence": 1.0
       },
       {
-        "fact": "The Instant Pot display reads '0:01'.",
+        "fact": "The Instant Pot display reads '0:01', indicating one minute remaining.",
         "confidence": 1.0
       },
       {
-        "fact": "The sausage gravy is poured over the biscuit.",
+        "fact": "The biscuits are smothered in sausage gravy.",
         "confidence": 1.0
       }
     ],
@@ -115,64 +109,47 @@
       "GRAVY",
       "&",
       "BISCUITS",
+      "Instant Pot",
       "0:01"
     ],
-    "spatial": "The Instant Pot is positioned to the right of the plate of food. The text overlay is located in the upper-left corner, above the biscuit and gravy. The scrambled eggs are in the background, behind the main dish.",
+    "spatial": "The text overlay is positioned on the left side of the frame, partially covering the plate of food. The Instant Pot is situated on the right side, in front of the plate of food. The biscuits and gravy are in the foreground of the plate, while the scrambled eggs are behind them.",
     "parse_success": true,
     "chunk_idx": 1,
     "video_id": "Instant_Pot_-_Pressure_cooker_-_Sausage_Gravy___Biscuits"
   },
   {
     "time": [
-      4,
-      6
+      2,
+      3
     ],
     "visible_entities": [
       {
-        "desc": "white ceramic plate with a blue rim, holding food",
+        "desc": "plate of food with golden-brown biscuits covered in creamy white sausage gravy and a side of yellow scrambled eggs",
         "action": "static",
-        "position": "left"
+        "position": "left/center/background"
       },
       {
-        "desc": "golden-brown biscuit topped with thick, creamy white sausage gravy",
+        "desc": "stainless steel Instant Pot pressure cooker with a black lid and a digital display showing '0:01'",
         "action": "static",
-        "position": "center"
+        "position": "right/foreground"
       },
       {
-        "desc": "pile of fluffy yellow scrambled eggs",
+        "desc": "text overlay in large, bold, beige font with a dark outline",
         "action": "static",
-        "position": "top"
-      },
-      {
-        "desc": "stainless steel Instant Pot pressure cooker with a black lid and digital display showing '0:01'",
-        "action": "static",
-        "position": "right"
-      },
-      {
-        "desc": "large text overlay in a beige serif font with a drop shadow",
-        "action": "static",
-        "position": "top-left"
+        "position": "top/left"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "The text 'INSTANT POT SAUSAGE GRAVY & BISCUITS' is displayed on the screen.",
+        "fact": "The video displays a title card for a recipe.",
         "confidence": 1.0
       },
       {
-        "fact": "The Instant Pot digital display reads '0:01'.",
+        "fact": "The text 'INSTANT POT SAUSAGE GRAVY & BISCUITS' is overlaid on the image.",
         "confidence": 1.0
       },
       {
-        "fact": "A biscuit is covered in sausage gravy on the plate.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "Scrambled eggs are served next to the gravy and biscuit.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The Instant Pot is positioned to the right of the plate of food.",
+        "fact": "The Instant Pot display reads '0:01', indicating the cooking time.",
         "confidence": 1.0
       }
     ],
@@ -184,119 +161,114 @@
       "BISCUITS",
       "0:01"
     ],
-    "spatial": "The plate of food is on the left side of the frame, while the Instant Pot is on the right side. The scrambled eggs are positioned above the sausage gravy and biscuit on the plate. The text overlay is situated in the upper-left corner, partially covering the food.",
+    "spatial": "The Instant Pot is positioned in the foreground on the right side of the frame. The plate of sausage gravy and biscuits is located behind and to the left of the Instant Pot. The text overlay is situated in the upper left corner, above the food.",
     "parse_success": true,
     "chunk_idx": 2,
     "video_id": "Instant_Pot_-_Pressure_cooker_-_Sausage_Gravy___Biscuits"
   },
   {
     "time": [
-      6,
-      8
+      3,
+      4
     ],
     "visible_entities": [
       {
-        "desc": "thick, creamy, beige gravy with visible dark specks of seasoning",
-        "action": "being poured onto food",
-        "position": "center"
-      },
-      {
-        "desc": "golden-brown, flaky biscuit, split open",
+        "desc": "golden-brown biscuits, split open with a fluffy interior texture",
         "action": "static",
+        "position": "foreground"
+      },
+      {
+        "desc": "thick, creamy white sausage gravy with visible dark specks of pepper and meat",
+        "action": "being poured",
         "position": "center"
       },
       {
-        "desc": "yellow, fluffy scrambled eggs",
+        "desc": "yellow scrambled eggs, fluffy texture",
         "action": "static",
         "position": "background"
       },
       {
-        "desc": "dark brown, round sausage patty",
+        "desc": "dark brown round sausage patty",
         "action": "static",
-        "position": "left background"
+        "position": "background left"
       },
       {
-        "desc": "white plate with blue concentric stripes on the rim",
+        "desc": "white plate with blue concentric rim stripes",
         "action": "static",
         "position": "bottom"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A spoon pours a large amount of thick gravy over a split biscuit.",
+        "fact": "A large spoonful of thick white gravy is being poured over the split biscuits.",
         "confidence": 1.0
       },
       {
-        "fact": "The gravy covers the surface of the biscuit.",
+        "fact": "The gravy covers the center and right portions of the biscuits.",
         "confidence": 1.0
       },
       {
-        "fact": "Scrambled eggs and a sausage patty are visible on the plate behind the biscuit.",
+        "fact": "Scrambled eggs and a sausage patty are visible in the background.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The biscuit covered in gravy is in the foreground on the plate. The scrambled eggs are behind the biscuit, and the sausage patty is to the left of the eggs. The plate is underneath all the food items.",
+    "spatial": "The biscuits are in the foreground on the plate. The gravy is being poured on top of the biscuits. The scrambled eggs are behind the biscuits to the right, and the sausage patty is behind the biscuits to the left.",
     "parse_success": true,
     "chunk_idx": 3,
     "video_id": "Instant_Pot_-_Pressure_cooker_-_Sausage_Gravy___Biscuits"
   },
   {
     "time": [
-      8,
-      10
+      4,
+      5
     ],
     "visible_entities": [
       {
-        "desc": "silver stainless steel inner pot with a brushed metal finish and circular bottom pattern",
+        "desc": "stainless steel inner pot, shiny, reflective surface with concentric circular brushed texture",
         "action": "static",
         "position": "center"
       },
       {
-        "desc": "black plastic handle with a rectangular cutout",
+        "desc": "dark grey plastic handle with a rectangular cutout",
         "action": "static",
         "position": "left"
       },
       {
-        "desc": "black outer rim of the appliance",
-        "action": "static",
-        "position": "center"
-      },
-      {
-        "desc": "grey speckled countertop surface",
+        "desc": "dark grey textured countertop surface",
         "action": "static",
         "position": "background"
       },
       {
-        "desc": "dark blurry object, likely a lid or utensil",
+        "desc": "large blurry dark object, likely a lid or utensil",
         "action": "moving out of frame",
         "position": "foreground"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A dark blurry object moves out of the frame to the right, revealing the interior of the pot.",
+        "fact": "A blurry dark object moves out of the frame, revealing the interior of the pot.",
         "confidence": 1.0
       },
       {
-        "fact": "The stainless steel pot is empty and clean.",
+        "fact": "The stainless steel pot sits on a dark countertop.",
         "confidence": 1.0
       },
       {
-        "fact": "The pot is situated inside a black appliance housing.",
+        "fact": "The interior of the pot is empty and reflects light.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The stainless steel inner pot is centered inside the black appliance housing. A black handle is attached to the left side of the appliance. The appliance rests on a grey speckled countertop.",
+    "spatial": "The stainless steel pot is centered in the frame. The dark grey handle is attached to the left side of the pot. The pot rests on the dark grey countertop. The blurry dark object is in the foreground, partially obscuring the view before moving away.",
     "parse_success": true,
     "chunk_idx": 4,
     "video_id": "Instant_Pot_-_Pressure_cooker_-_Sausage_Gravy___Biscuits"
   },
   {
     "time": [
-      10,
-      12
+      5,
+      6
     ],
     "visible_entities": [
       {
@@ -305,23 +277,23 @@
         "position": "bottom left"
       },
       {
-        "desc": "white control panel with glossy finish, featuring multiple rectangular buttons with colored outlines (purple, red, green) and black text",
+        "desc": "white appliance control panel with glossy finish, featuring rectangular buttons with colored outlines (blue, red, green) and black text",
         "action": "static",
         "position": "center"
       },
       {
-        "desc": "small circular LED indicator light, illuminated white",
-        "action": "glowing",
+        "desc": "small circular white indicator light",
+        "action": "illuminated",
         "position": "left"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A thumb presses the 'Sauté' button on the appliance.",
+        "fact": "A thumb presses the 'Sauté' button on the control panel.",
         "confidence": 1.0
       },
       {
-        "fact": "The 'Sauté' indicator light is illuminated.",
+        "fact": "A small white indicator light is illuminated next to the 'Sauté' label.",
         "confidence": 1.0
       },
       {
@@ -330,14 +302,14 @@
       }
     ],
     "ocr": [
-      "Slow Cook",
-      "Delay Start",
-      "Cancel",
       "Temp",
       "Pressure",
+      "Slow Cook",
+      "Delay Start",
       "Keep Warm",
-      "Start",
       "Yogurt",
+      "Cancel",
+      "Start",
       "Sous Vide",
       "Sauté"
     ],
@@ -348,8 +320,8 @@
   },
   {
     "time": [
-      12,
-      14
+      6,
+      7
     ],
     "visible_entities": [
       {
@@ -363,14 +335,9 @@
         "position": "center"
       },
       {
-        "desc": "small orange indicator light",
+        "desc": "illuminated orange indicator light",
         "action": "static",
         "position": "top"
-      },
-      {
-        "desc": "buttons labeled 'Delay Start', 'Cancel', 'Keep Warm', 'Start', 'Yogurt', 'Sous Vide'",
-        "action": "static",
-        "position": "center"
       }
     ],
     "atomic_facts": [
@@ -379,79 +346,71 @@
         "confidence": 1.0
       },
       {
-        "fact": "The orange indicator light is illuminated above the 'Keep Warm' button.",
+        "fact": "The 'Keep Warm' indicator light is illuminated in orange.",
         "confidence": 1.0
       },
       {
-        "fact": "The 'Keep Warm' button is located above the 'Start' button.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The 'Cancel' button is located below the 'Delay Start' button.",
+        "fact": "The appliance is in a pre-heating or cooking state.",
         "confidence": 1.0
       }
     ],
     "ocr": [
       "Pressure",
       "Delay Start",
-      "Keep Warm",
-      "Yogurt",
       "Cancel",
+      "Keep Warm",
       "Start",
+      "Yogurt",
       "Sous Vide",
+      "On",
       "Pre-heating",
       "Cooking",
-      "On",
       "Temperature",
       "High"
     ],
-    "spatial": "The digital display showing 'On' is in the center of the panel. The 'Keep Warm' button is above the 'Start' button. The 'Delay Start' button is to the left of the 'Keep Warm' button. The 'Cancel' button is below the 'Delay Start' button.",
+    "spatial": "The digital display showing 'On' is located in the center of the control panel. The 'Keep Warm' button and its illuminated orange light are positioned above the 'Start' button. The 'Delay Start' and 'Cancel' buttons are to the left of the central buttons.",
     "parse_success": true,
     "chunk_idx": 6,
     "video_id": "Instant_Pot_-_Pressure_cooker_-_Sausage_Gravy___Biscuits"
   },
   {
     "time": [
-      14,
-      16
+      7,
+      8
     ],
     "visible_entities": [
       {
-        "desc": "digital display screen with a dark background, showing white segmented text and icons",
+        "desc": "digital display screen with black background, showing white segmented text 'Hot' and blue status icons",
         "action": "static",
+        "position": "background"
+      },
+      {
+        "desc": "hand with light skin tone holding a small white plastic cup",
+        "action": "pouring liquid",
         "position": "center"
       },
       {
-        "desc": "human hand with light skin tone, holding a white plastic squeeze bottle",
-        "action": "pouring oil",
-        "position": "top"
+        "desc": "yellow translucent liquid",
+        "action": "pouring",
+        "position": "center"
       },
       {
-        "desc": "metallic cooking pot rim, silver in color, circular shape",
+        "desc": "metallic pot rim with a silver finish",
         "action": "static",
         "position": "bottom"
-      },
-      {
-        "desc": "yellow cooking oil, viscous liquid stream",
-        "action": "flowing",
-        "position": "center"
       }
     ],
     "atomic_facts": [
+      {
+        "fact": "A hand pours yellow liquid from a white cup into a pot.",
+        "confidence": 1.0
+      },
       {
         "fact": "The digital display reads 'Hot' in large letters.",
         "confidence": 1.0
       },
       {
-        "fact": "The display indicates the temperature is 'High'.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "A hand is pouring yellow oil from a white bottle into the pot.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The 'Cooking' status bar is illuminated on the screen.",
+        "fact": "The 'Cooking' indicator is active on the screen.",
         "confidence": 1.0
       }
     ],
@@ -461,317 +420,296 @@
       "Keep Warm",
       "Hot",
       "Temperature",
-      "High",
-      "Rice",
-      "up",
-      "oth",
-      "Bea",
-      "Grai",
-      "ke",
-      "Porrid",
-      "Oatme"
+      "High"
     ],
-    "spatial": "The digital display is superimposed in the center of the frame, appearing in front of the physical cooking pot. The hand holding the bottle is positioned above the pot rim, pouring the yellow oil downwards into the container. The text 'Hot' is located in the middle of the screen, above the word 'Temperature'.",
+    "spatial": "The digital display screen is in the background. The hand holding the cup is in front of the screen and above the metallic pot rim. The yellow liquid flows from the cup down towards the pot.",
     "parse_success": true,
     "chunk_idx": 7,
     "video_id": "Instant_Pot_-_Pressure_cooker_-_Sausage_Gravy___Biscuits"
   },
   {
     "time": [
-      16,
-      18
+      8,
+      9
     ],
     "visible_entities": [
       {
-        "desc": "hand with light skin tone",
+        "desc": "hand with fair skin",
         "action": "pouring liquid",
         "position": "top left"
       },
       {
-        "desc": "white ceramic bowl, smooth, round",
+        "desc": "white ceramic bowl",
         "action": "being tilted",
         "position": "top center"
       },
       {
-        "desc": "stainless steel cooking pot, shiny, metallic, cylindrical",
+        "desc": "stainless steel inner pot",
         "action": "static",
         "position": "center"
       },
       {
-        "desc": "electric pressure cooker base, silver and black",
+        "desc": "silver and black pressure cooker base",
         "action": "static",
         "position": "bottom"
       },
       {
-        "desc": "cooked ground meat, brown, crumbly texture",
-        "action": "static",
-        "position": "inside pot"
+        "desc": "wooden spatula",
+        "action": "stirring",
+        "position": "center"
       },
       {
-        "desc": "wooden spatula, light brown, flat",
-        "action": "resting on meat",
+        "desc": "cooked ground meat",
+        "action": "being stirred",
         "position": "inside pot"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A hand is tilting a white bowl to pour a clear liquid into a stainless steel pot.",
+        "fact": "A hand is pouring a clear liquid from a white bowl into a metal pot.",
         "confidence": 1.0
       },
       {
-        "fact": "The stainless steel pot contains cooked ground meat.",
+        "fact": "A wooden spatula is stirring cooked ground meat inside the pot.",
         "confidence": 1.0
       },
       {
-        "fact": "A wooden spatula is resting on top of the ground meat inside the pot.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The pot is situated inside the base of an electric pressure cooker.",
+        "fact": "The metal pot is sitting inside the pressure cooker base.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The hand is holding the white bowl above the stainless steel pot. The pot is inside the electric pressure cooker base. The ground meat and wooden spatula are inside the pot.",
+    "spatial": "The hand is above the stainless steel pot, holding the white bowl. The wooden spatula is inside the pot, resting on top of the ground meat. The pot is situated inside the black and silver pressure cooker base.",
     "parse_success": true,
     "chunk_idx": 8,
     "video_id": "Instant_Pot_-_Pressure_cooker_-_Sausage_Gravy___Biscuits"
   },
   {
     "time": [
-      18,
-      20
+      9,
+      10
     ],
     "visible_entities": [
       {
-        "desc": "light-colored wooden spatula with a flat, wide head and a handle featuring a hole",
+        "desc": "hand with light skin tone holding a wooden spatula",
         "action": "stirring ground meat",
+        "position": "foreground"
+      },
+      {
+        "desc": "wooden spatula, light brown, flat head",
+        "action": "being used to stir",
         "position": "center"
       },
       {
-        "desc": "hand with light skin tone, fingers gripping the spatula handle",
-        "action": "holding the spatula",
-        "position": "bottom-left"
-      },
-      {
-        "desc": "cooked ground meat, browned and crumbled into small pieces",
+        "desc": "ground meat, browned, crumbly texture",
         "action": "being stirred",
         "position": "center"
       },
       {
-        "desc": "silver metal pot, likely an Instant Pot inner liner, with a reflective surface",
+        "desc": "silver metal pot interior",
         "action": "static",
         "position": "background"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A hand is holding a wooden spatula.",
+        "fact": "A hand is stirring browned ground meat inside a pot.",
         "confidence": 1.0
       },
       {
-        "fact": "The wooden spatula is stirring cooked ground meat inside a metal pot.",
+        "fact": "The wooden spatula is moving through the meat mixture.",
         "confidence": 1.0
       },
       {
-        "fact": "The ground meat is browned and crumbled.",
+        "fact": "The meat is cooked and broken into small crumbles.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The hand is holding the wooden spatula, which is positioned inside the silver metal pot. The spatula is moving through the ground meat, which fills the bottom of the pot.",
+    "spatial": "The hand is in the foreground holding the wooden spatula. The spatula is inside the silver pot, positioned above the ground meat. The ground meat is at the bottom of the pot.",
     "parse_success": true,
     "chunk_idx": 9,
     "video_id": "Instant_Pot_-_Pressure_cooker_-_Sausage_Gravy___Biscuits"
   },
   {
     "time": [
-      20,
-      22
+      10,
+      11
     ],
     "visible_entities": [
       {
-        "desc": "hand with light skin tone holding a wooden spatula",
+        "desc": "hand with fair skin, holding a light-colored wooden spatula",
         "action": "stirring ground meat",
-        "position": "left/foreground"
+        "position": "foreground"
       },
       {
-        "desc": "brown ground meat, crumbly texture, cooking in a pot",
-        "action": "being stirred",
-        "position": "center/background"
-      },
-      {
-        "desc": "silver metal pot, round, containing the meat",
+        "desc": "silver metal pot containing browned ground meat",
         "action": "static",
-        "position": "center/background"
+        "position": "center"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A hand is stirring brown ground meat inside a metal pot.",
+        "fact": "A hand is stirring browned ground meat inside a metal pot.",
         "confidence": 1.0
       },
       {
-        "fact": "The wooden spatula is moving through the meat, creating a cleared path.",
+        "fact": "The wooden spatula is being used to mix the food.",
         "confidence": 1.0
       },
       {
-        "fact": "Steam is rising from the cooking meat.",
+        "fact": "Steam is rising from the hot meat.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The hand holding the wooden spatula is in the foreground on the left side of the frame. The spatula is inside the silver metal pot, which is centered in the view. The ground meat is inside the pot and is being moved by the spatula.",
+    "spatial": "The hand holding the wooden spatula is in the foreground, positioned above the ground meat inside the metal pot. The pot is centered in the frame.",
     "parse_success": true,
     "chunk_idx": 10,
     "video_id": "Instant_Pot_-_Pressure_cooker_-_Sausage_Gravy___Biscuits"
   },
   {
     "time": [
-      22,
-      24
+      11,
+      12
     ],
     "visible_entities": [
       {
-        "desc": "hand with light skin tone",
-        "action": "dropping butter cubes",
-        "position": "right/foreground"
+        "desc": "hand with fair skin",
+        "action": "holding and dropping butter",
+        "position": "right"
       },
       {
         "desc": "yellow butter cubes, rectangular, solid",
-        "action": "falling into pot",
-        "position": "center/right"
+        "action": "being dropped into pot",
+        "position": "center"
       },
       {
-        "desc": "brown ground meat, crumbled texture",
+        "desc": "brown cooked ground meat, crumbly texture",
         "action": "static",
-        "position": "center/background"
+        "position": "center"
       },
       {
-        "desc": "wooden spatula, light brown, flat",
+        "desc": "wooden spoon, light brown, flat handle",
         "action": "resting in pot",
         "position": "left"
       },
       {
-        "desc": "silver metal pot interior, reflective",
+        "desc": "silver metal pot interior, reflective surface",
         "action": "static",
         "position": "background"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A hand drops yellow butter cubes into a pot.",
+        "fact": "A hand drops yellow cubes of butter into a pot of brown ground meat.",
         "confidence": 1.0
       },
       {
-        "fact": "The pot contains cooked brown ground meat.",
+        "fact": "Steam rises from the hot meat inside the metal pot.",
         "confidence": 1.0
       },
       {
-        "fact": "A wooden spatula rests on the left side of the pot.",
+        "fact": "A wooden spoon rests on the left side of the pot.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The hand is positioned on the right side of the frame, holding butter cubes above the pot. The butter cubes are falling into the center of the pot, landing on top of the brown ground meat. The wooden spatula is located on the left side, resting inside the pot against the meat.",
+    "spatial": "The hand is positioned on the right side of the frame, holding butter cubes above the ground meat. The ground meat fills the bottom center of the silver pot. The wooden spoon is located to the left of the meat.",
     "parse_success": true,
     "chunk_idx": 11,
     "video_id": "Instant_Pot_-_Pressure_cooker_-_Sausage_Gravy___Biscuits"
   },
   {
     "time": [
-      24,
-      26
+      12,
+      13
     ],
     "visible_entities": [
       {
-        "desc": "human hands with light skin tone",
-        "action": "adding chunks of butter",
-        "position": "right/foreground"
+        "desc": "hand with light skin tone",
+        "action": "holding and dropping butter",
+        "position": "right"
       },
       {
-        "desc": "pale yellow rectangular chunks of butter",
-        "action": "being dropped into pot",
-        "position": "center/foreground"
+        "desc": "rectangular chunks of pale yellow butter",
+        "action": "falling into pot",
+        "position": "center"
       },
       {
-        "desc": "silver metal cooking pot containing brown crumbled food",
+        "desc": "silver metal pot containing brown crumbled food",
         "action": "static",
-        "position": "center/background"
+        "position": "background"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A person is holding chunks of butter in their hand.",
+        "fact": "A hand is holding a chunk of butter.",
         "confidence": 1.0
       },
       {
-        "fact": "The person drops the butter chunks into the metal pot.",
+        "fact": "Chunks of butter are being dropped into the pot.",
         "confidence": 1.0
       },
       {
-        "fact": "The pot contains brown, crumbled food ingredients.",
+        "fact": "The pot contains brown crumbled food.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The human hands are positioned on the right side of the frame, holding the butter chunks above the metal pot. The pot is located in the center and background, containing the brown food mixture below the falling butter.",
+    "spatial": "The hand is positioned on the right side of the frame, holding a chunk of butter. The butter chunks are falling into the center of the silver pot, which is situated below the hand. The brown crumbled food is inside the pot, underneath the falling butter.",
     "parse_success": true,
     "chunk_idx": 12,
     "video_id": "Instant_Pot_-_Pressure_cooker_-_Sausage_Gravy___Biscuits"
   },
   {
     "time": [
-      26,
-      28
+      13,
+      14
     ],
     "visible_entities": [
       {
         "desc": "hand with light skin tone, holding a wooden spoon",
-        "action": "stirring contents in the pot",
+        "action": "stirring ground meat",
         "position": "right/foreground"
       },
       {
-        "desc": "wooden spoon, light brown, flat head",
-        "action": "being moved through the meat",
-        "position": "center/right"
-      },
-      {
-        "desc": "cooked ground meat, brown, crumbly texture",
+        "desc": "brown crumbled ground meat, cooked texture",
         "action": "being stirred",
         "position": "center/inside pot"
       },
       {
-        "desc": "yellow rectangular chunk of butter",
+        "desc": "rectangular yellow butter pat, solid",
         "action": "melting",
         "position": "center/inside pot"
       },
       {
-        "desc": "silver metal pot, round interior",
+        "desc": "silver metal pot, reflective interior surface",
         "action": "static",
-        "position": "background/container"
+        "position": "center/background"
       },
       {
-        "desc": "clear glass bowl, containing white powder",
+        "desc": "wooden spoon, light brown, flat head",
+        "action": "mixing ingredients",
+        "position": "right/center"
+      },
+      {
+        "desc": "glass bowl, transparent, containing white granular substance",
         "action": "static",
         "position": "bottom left"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A hand is stirring brown ground meat inside a metal pot using a wooden spoon.",
+        "fact": "A hand is stirring brown ground meat inside a metal pot with a wooden spoon.",
         "confidence": 1.0
       },
       {
-        "fact": "A yellow chunk of butter is melting into the hot meat mixture.",
+        "fact": "A pat of yellow butter is melting into the ground meat.",
         "confidence": 1.0
       },
       {
-        "fact": "A glass bowl containing white powder is visible in the bottom left corner.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "Steam is rising from the cooking food.",
+        "fact": "A glass bowl containing a white substance is visible in the bottom left corner.",
         "confidence": 1.0
       }
     ],
@@ -783,65 +721,79 @@
   },
   {
     "time": [
-      28,
-      30
+      14,
+      15
     ],
     "visible_entities": [
       {
-        "desc": "hand with a silver ring on the ring finger",
+        "desc": "hand with fair skin wearing a silver ring with a dark inlay on the ring finger",
         "action": "pouring white powder",
         "position": "left"
       },
       {
-        "desc": "wooden spoon, light brown",
-        "action": "stirring food",
+        "desc": "hand with fair skin",
+        "action": "holding wooden spoon",
+        "position": "right"
+      },
+      {
+        "desc": "light-colored wooden spoon with a flat, wide head",
+        "action": "stirring contents",
         "position": "center"
       },
       {
-        "desc": "brown ground meat mixture",
-        "action": "being stirred",
+        "desc": "small clear glass bowl containing white granular powder",
+        "action": "being tilted",
+        "position": "left"
+      },
+      {
+        "desc": "brown crumbled cooked meat mixture",
+        "action": "static",
         "position": "center"
       },
       {
-        "desc": "white powder",
-        "action": "falling into pot",
+        "desc": "small yellowish chunk of solid fat or garlic",
+        "action": "static",
         "position": "center"
       },
       {
-        "desc": "metal pot",
+        "desc": "silver metal cooking pot",
         "action": "static",
         "position": "background"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A hand pours white powder from a small glass bowl into a pot.",
+        "fact": "A hand pours white powder from a glass bowl into a pot.",
         "confidence": 1.0
       },
       {
-        "fact": "A wooden spoon stirs the brown ground meat mixture.",
+        "fact": "A wooden spoon stirs the brown meat mixture inside the pot.",
         "confidence": 1.0
       },
       {
-        "fact": "A clove of garlic is visible in the pot.",
+        "fact": "The white powder falls onto the meat and a yellow chunk.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The person wears a silver ring on their left hand.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The hand is to the left of the pot, pouring powder into the center. The wooden spoon is inside the pot, stirring the meat mixture. The garlic clove is near the bottom right of the pot.",
+    "spatial": "The hand holding the glass bowl is to the left of the wooden spoon. The wooden spoon is inside the metal pot, positioned above the brown meat mixture. The yellow chunk is resting on top of the meat mixture near the center of the pot.",
     "parse_success": true,
     "chunk_idx": 14,
     "video_id": "Instant_Pot_-_Pressure_cooker_-_Sausage_Gravy___Biscuits"
   },
   {
     "time": [
-      30,
-      32
+      15,
+      16
     ],
     "visible_entities": [
       {
-        "desc": "hand with fair skin and a large silver ring on the ring finger",
-        "action": "holding the pot rim",
+        "desc": "hand with fair skin wearing a large silver ring on the ring finger",
+        "action": "resting on the pot rim",
         "position": "left"
       },
       {
@@ -850,115 +802,117 @@
         "position": "right"
       },
       {
-        "desc": "light brown wooden spoon",
-        "action": "stirring the contents",
+        "desc": "light-brown wooden spoon",
+        "action": "mixing ingredients",
         "position": "center"
       },
       {
-        "desc": "metal pot containing brown ground meat, white powder, and a yellow chunk",
-        "action": "static",
+        "desc": "stainless steel pot",
+        "action": "containing food",
         "position": "center"
+      },
+      {
+        "desc": "brown crumbly food mixture",
+        "action": "being stirred",
+        "position": "inside pot"
+      },
+      {
+        "desc": "white granular powder",
+        "action": "being mixed",
+        "position": "center"
+      },
+      {
+        "desc": "yellow chunk of butter",
+        "action": "melting",
+        "position": "right"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A person is stirring brown ground meat inside a metal pot.",
+        "fact": "A hand on the right is stirring brown crumbly food with a wooden spoon.",
         "confidence": 1.0
       },
       {
-        "fact": "A wooden spoon is being used to mix the ingredients.",
+        "fact": "White granular powder is being mixed into the brown food mixture.",
         "confidence": 1.0
       },
       {
-        "fact": "A yellow chunk, likely butter or garlic, is visible in the meat.",
+        "fact": "A chunk of yellow butter is visible inside the pot.",
         "confidence": 1.0
       },
       {
-        "fact": "White powder is being incorporated into the meat mixture.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "A hand wearing a silver ring is holding the side of the pot.",
+        "fact": "A hand on the left rests on the rim of the stainless steel pot.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The metal pot is in the center of the frame. A hand with a ring is on the left side, holding the pot's rim. Another hand is on the right side, holding a wooden spoon that is inside the pot, mixing the ground meat.",
+    "spatial": "The stainless steel pot is in the center of the frame. The hand with the ring is on the left side of the pot, while the hand holding the wooden spoon is on the right. The brown food mixture, white powder, and yellow butter are all inside the pot.",
     "parse_success": true,
     "chunk_idx": 15,
     "video_id": "Instant_Pot_-_Pressure_cooker_-_Sausage_Gravy___Biscuits"
   },
   {
     "time": [
-      32,
-      34
+      16,
+      17
     ],
     "visible_entities": [
       {
         "desc": "hand with light skin tone",
-        "action": "stirring meat",
-        "position": "right"
+        "action": "holding a wooden spoon",
+        "position": "right/foreground"
       },
       {
-        "desc": "wooden spoon, light brown, flat head",
-        "action": "stirring meat",
+        "desc": "wooden spoon, light-brown, flat head",
+        "action": "stirring brown ground meat",
         "position": "center"
       },
       {
-        "desc": "cooked ground meat, brown, crumbly texture",
-        "action": "being stirred",
-        "position": "center"
+        "desc": "brown ground meat, cooked, crumbled texture",
+        "action": "being stirred inside pot",
+        "position": "center/inside pot"
       },
       {
-        "desc": "metal pot, silver, round interior",
+        "desc": "silver metal pot, round, deep",
         "action": "static",
-        "position": "background"
+        "position": "background/center"
       },
       {
-        "desc": "glass bowl, transparent, containing white liquid",
-        "action": "pouring liquid",
+        "desc": "clear glass bowl containing white liquid",
+        "action": "being poured",
         "position": "bottom left"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A hand is stirring cooked ground meat with a wooden spoon.",
+        "fact": "A hand is stirring brown ground meat with a wooden spoon inside a metal pot.",
         "confidence": 1.0
       },
       {
-        "fact": "White liquid is being poured from a glass bowl into the pot.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The meat is sizzling inside the metal pot.",
+        "fact": "A clear glass bowl containing white liquid is being poured into the pot.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The hand is on the right side of the frame, holding the wooden spoon which is inside the metal pot. The cooked ground meat is at the bottom of the pot. The glass bowl containing white liquid is positioned at the bottom left, pouring its contents into the pot next to the meat.",
+    "spatial": "The hand is to the right of the pot, holding the wooden spoon which is inside the pot. The brown ground meat is inside the pot, below the spoon. The glass bowl with white liquid is to the left of the pot and is being tilted to pour its contents into the pot.",
     "parse_success": true,
     "chunk_idx": 16,
     "video_id": "Instant_Pot_-_Pressure_cooker_-_Sausage_Gravy___Biscuits"
   },
   {
     "time": [
-      34,
-      36
+      17,
+      18
     ],
     "visible_entities": [
       {
-        "desc": "hand with light skin tone",
+        "desc": "light-colored wooden spoon",
         "action": "stirring mixture",
-        "position": "right"
-      },
-      {
-        "desc": "light brown wooden spoon",
-        "action": "mixing ingredients",
         "position": "center"
       },
       {
         "desc": "brown crumbly food mixture",
-        "action": "being stirred",
+        "action": "being mixed",
         "position": "center"
       },
       {
@@ -967,134 +921,129 @@
         "position": "left"
       },
       {
-        "desc": "silver metal pot",
+        "desc": "metal bowl",
         "action": "static",
-        "position": "background"
+        "position": "center"
       },
       {
-        "desc": "clear glass container",
-        "action": "pouring liquid",
-        "position": "bottom left"
+        "desc": "hand",
+        "action": "holding spoon",
+        "position": "right"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A hand is stirring a brown crumbly mixture inside a metal pot.",
+        "fact": "A hand is stirring a brown crumbly mixture with a wooden spoon.",
         "confidence": 1.0
       },
       {
-        "fact": "White liquid is being poured from a glass container into the pot.",
+        "fact": "White liquid is being poured from a container on the left into the bowl.",
         "confidence": 1.0
       },
       {
-        "fact": "The wooden spoon is mixing the white liquid with the brown crumbs.",
+        "fact": "The mixture is inside a metal bowl.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The hand is on the right side of the frame, holding the wooden spoon which is inside the metal pot. The glass container is located at the bottom left, positioned to pour liquid into the center of the pot where the brown mixture is.",
+    "spatial": "The metal bowl is in the center of the frame containing the brown mixture. The wooden spoon is inside the bowl, held by a hand on the right side. A container with white liquid is positioned to the left of the bowl, pouring liquid into the mixture.",
     "parse_success": true,
     "chunk_idx": 17,
     "video_id": "Instant_Pot_-_Pressure_cooker_-_Sausage_Gravy___Biscuits"
   },
   {
     "time": [
-      36,
-      38
+      18,
+      19
     ],
     "visible_entities": [
       {
-        "desc": "light-colored wooden spoon",
-        "action": "stirring the meat mixture",
-        "position": "center"
-      },
-      {
-        "desc": "brown ground meat",
+        "desc": "brown crumbly ground meat mixture",
         "action": "being stirred",
         "position": "center"
       },
       {
-        "desc": "white liquid",
-        "action": "being poured",
-        "position": "left"
+        "desc": "hand holding a wooden spatula",
+        "action": "stirring the meat",
+        "position": "right"
+      },
+      {
+        "desc": "white liquid in a clear container",
+        "action": "static",
+        "position": "bottom left"
       },
       {
         "desc": "silver metal pot",
         "action": "static",
-        "position": "background"
-      },
-      {
-        "desc": "hand",
-        "action": "holding the spoon",
-        "position": "right"
+        "position": "center"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A hand is stirring brown ground meat in a pot with a wooden spoon.",
+        "fact": "A hand is stirring brown crumbly ground meat inside a metal pot.",
         "confidence": 1.0
       },
       {
-        "fact": "White liquid is being poured from a container on the left into the pot.",
+        "fact": "A container of white liquid is visible in the bottom left corner.",
         "confidence": 1.0
       },
       {
-        "fact": "Steam is rising from the cooking meat.",
+        "fact": "The meat mixture appears to be cooking with some liquid or steam present.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The silver metal pot is in the center of the frame containing the brown ground meat. A hand holding a wooden spoon is positioned to the right of the pot, stirring the contents. A container pouring white liquid is located to the left of the pot.",
+    "spatial": "The metal pot is in the center of the frame containing the meat mixture. The hand holding the wooden spatula is on the right side, reaching into the pot. The container with white liquid is located at the bottom left, next to the pot.",
     "parse_success": true,
     "chunk_idx": 18,
     "video_id": "Instant_Pot_-_Pressure_cooker_-_Sausage_Gravy___Biscuits"
   },
   {
     "time": [
-      38,
-      40
+      19,
+      20
     ],
     "visible_entities": [
       {
         "desc": "hand with fair skin holding a clear glass measuring cup with red markings",
         "action": "pouring white liquid",
-        "position": "left/foreground"
+        "position": "left foreground"
       },
       {
-        "desc": "hand with fair skin holding a light-brown wooden spoon",
+        "desc": "hand with fair skin holding a light brown wooden spoon",
         "action": "stirring mixture",
-        "position": "right/foreground"
+        "position": "right foreground"
       },
       {
-        "desc": "stainless steel pot containing a creamy white liquid with brown speckles",
-        "action": "being stirred",
-        "position": "center"
+        "desc": "silver metal pot containing a creamy white liquid with brown chunks",
+        "action": "static",
+        "position": "center background"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A person is pouring a white liquid from a glass measuring cup into a pot.",
+        "fact": "A person pours a white liquid from a glass measuring cup into a pot.",
         "confidence": 1.0
       },
       {
-        "fact": "A person is stirring the contents of the pot with a wooden spoon.",
+        "fact": "A person stirs the contents of the pot with a wooden spoon.",
         "confidence": 1.0
       },
       {
-        "fact": "The mixture in the pot is creamy and contains small brown particles.",
+        "fact": "The mixture in the pot appears to be a soup or stew with a creamy base.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The hand holding the measuring cup is to the left of the pot. The hand holding the wooden spoon is to the right of the pot. The spoon is inside the pot, mixing the liquid.",
+    "spatial": "The hand holding the measuring cup is on the left side of the frame, positioned above the pot. The hand holding the wooden spoon is on the right side, inside the pot. The pot is centered in the frame, containing the food mixture.",
     "parse_success": true,
     "chunk_idx": 19,
     "video_id": "Instant_Pot_-_Pressure_cooker_-_Sausage_Gravy___Biscuits"
   },
   {
     "time": [
-      40,
-      42
+      20,
+      21
     ],
     "visible_entities": [
       {
@@ -1103,45 +1052,45 @@
         "position": "right"
       },
       {
-        "desc": "wooden spoon, light brown, smooth handle",
+        "desc": "wooden spoon, light brown, smooth texture",
         "action": "stirring the mixture",
         "position": "center"
       },
       {
-        "desc": "creamy white liquid with small dark brown specks",
+        "desc": "creamy white liquid with small dark specks",
         "action": "being stirred",
         "position": "center"
       },
       {
-        "desc": "silver metal pot, round, reflective interior",
+        "desc": "metal pot, silver, reflective interior",
         "action": "static",
         "position": "center"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A hand is holding a wooden spoon.",
+        "fact": "A hand is stirring a creamy mixture in a pot.",
         "confidence": 1.0
       },
       {
-        "fact": "The spoon is stirring a creamy liquid inside a metal pot.",
+        "fact": "The mixture contains small dark specks.",
         "confidence": 1.0
       },
       {
-        "fact": "The liquid contains small dark particles.",
+        "fact": "The pot is made of metal.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The hand is on the right side of the frame, holding the wooden spoon which extends into the center of the pot. The creamy mixture is inside the silver metal pot.",
+    "spatial": "The hand is holding the wooden spoon. The spoon is inside the metal pot. The creamy mixture is inside the pot and is being stirred by the spoon.",
     "parse_success": true,
     "chunk_idx": 20,
     "video_id": "Instant_Pot_-_Pressure_cooker_-_Sausage_Gravy___Biscuits"
   },
   {
     "time": [
-      42,
-      44
+      21,
+      22
     ],
     "visible_entities": [
       {
@@ -1155,130 +1104,107 @@
         "position": "center"
       },
       {
-        "desc": "metal pot, silver, reflective interior",
+        "desc": "stainless steel pot, round, reflective interior",
         "action": "static",
         "position": "center"
       },
       {
         "desc": "creamy white liquid with small dark specks",
         "action": "being stirred",
-        "position": "inside the pot"
+        "position": "inside pot"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A hand is holding a wooden spoon.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The wooden spoon is stirring the creamy white liquid inside the metal pot.",
+        "fact": "A hand is stirring a creamy white liquid inside a stainless steel pot.",
         "confidence": 1.0
       },
       {
         "fact": "The liquid contains small dark specks.",
         "confidence": 1.0
+      },
+      {
+        "fact": "A wooden spoon is being used to stir the mixture.",
+        "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The metal pot is in the center of the frame. The creamy white liquid is inside the pot. The hand is to the right of the pot and is holding the wooden spoon, which is inside the pot stirring the liquid.",
+    "spatial": "The hand is on the right side of the frame, holding the wooden spoon. The wooden spoon is inside the stainless steel pot, submerged in the creamy white liquid. The pot is centered in the frame.",
     "parse_success": true,
     "chunk_idx": 21,
     "video_id": "Instant_Pot_-_Pressure_cooker_-_Sausage_Gravy___Biscuits"
   },
   {
     "time": [
-      44,
-      46
+      22,
+      23
     ],
     "visible_entities": [
-      {
-        "desc": "creamy white liquid with a smooth, slightly glossy surface",
-        "action": "static",
-        "position": "center"
-      },
-      {
-        "desc": "dark granular seasoning, likely black pepper",
-        "action": "being sprinkled",
-        "position": "center"
-      },
       {
         "desc": "hand with light skin tone",
         "action": "sprinkling seasoning",
         "position": "right"
       },
       {
-        "desc": "stainless steel pot with a metallic rim and dark grey handles",
+        "desc": "creamy white liquid with dark speckles",
         "action": "static",
         "position": "center"
+      },
+      {
+        "desc": "stainless steel pot with black handles",
+        "action": "static",
+        "position": "background"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A hand enters the frame from the right side.",
+        "fact": "A hand sprinkles dark granular seasoning into the pot.",
         "confidence": 1.0
       },
       {
-        "fact": "The hand sprinkles dark granular seasoning onto the surface of the white liquid.",
+        "fact": "The pot contains a creamy white liquid.",
         "confidence": 1.0
       },
       {
-        "fact": "The liquid is contained inside a stainless steel pot.",
+        "fact": "The pot is sitting on a speckled countertop.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The white liquid is inside the stainless steel pot. The hand is positioned to the right of the pot, reaching over the liquid to sprinkle the seasoning.",
+    "spatial": "The hand is positioned to the right of the pot, reaching over the liquid. The creamy liquid is inside the stainless steel pot. The pot is resting on a countertop.",
     "parse_success": true,
     "chunk_idx": 22,
     "video_id": "Instant_Pot_-_Pressure_cooker_-_Sausage_Gravy___Biscuits"
   },
   {
     "time": [
-      46,
-      48
+      23,
+      24
     ],
     "visible_entities": [
       {
-        "desc": "person's hand with light skin tone",
+        "desc": "hand with fair skin, holding a light-brown wooden spatula",
         "action": "stirring the mixture",
         "position": "right"
       },
       {
-        "desc": "wooden spatula, light brown, flat",
-        "action": "stirring the mixture",
-        "position": "center"
-      },
-      {
-        "desc": "creamy white liquid mixture with black specks",
-        "action": "being stirred",
-        "position": "center"
-      },
-      {
-        "desc": "stainless steel pot, round, metallic",
+        "desc": "silver metal pot containing a creamy white liquid with black specks",
         "action": "static",
         "position": "center"
       },
       {
-        "desc": "yellow text with orange outline, cursive font",
+        "desc": "yellow text with red outline",
         "action": "static",
         "position": "bottom"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A person's hand is stirring a creamy white mixture inside a metal pot.",
+        "fact": "A hand is stirring the creamy white liquid inside the pot with a wooden spatula.",
         "confidence": 1.0
       },
       {
-        "fact": "The mixture contains small black specks, likely pepper.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The wooden spatula is being used to mix the ingredients.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The text 'The Full Recipe In the Description Box Below the Video' is overlaid at the bottom of the screen.",
+        "fact": "The text 'The Full Recipe In the Description Box Below the Video' is overlaid on the bottom of the screen.",
         "confidence": 1.0
       }
     ],
@@ -1286,31 +1212,36 @@
       "The Full Recipe In the",
       "Description Box Below the Video"
     ],
-    "spatial": "The person's hand is on the right side of the frame, holding the wooden spatula which is inside the stainless steel pot. The creamy mixture fills the bottom of the pot. The yellow text is positioned below the pot in the foreground.",
+    "spatial": "The hand holding the wooden spatula is positioned on the right side of the frame, reaching into the center where the silver pot is located. The yellow text is overlaid at the bottom of the screen, below the pot.",
     "parse_success": true,
     "chunk_idx": 23,
     "video_id": "Instant_Pot_-_Pressure_cooker_-_Sausage_Gravy___Biscuits"
   },
   {
     "time": [
-      48,
-      50
+      24,
+      25
     ],
     "visible_entities": [
       {
         "desc": "hand with light skin tone",
         "action": "holding a ladle",
-        "position": "right"
+        "position": "top right"
       },
       {
-        "desc": "metal ladle with a long handle and round bowl",
+        "desc": "metal ladle with a long handle and deep bowl",
         "action": "scooping liquid",
         "position": "center"
       },
       {
-        "desc": "stainless steel pot containing a creamy white liquid with small dark specks",
-        "action": "static",
+        "desc": "creamy white liquid with small dark specks",
+        "action": "being stirred",
         "position": "center"
+      },
+      {
+        "desc": "large stainless steel pot with black side handles",
+        "action": "static",
+        "position": "background"
       }
     ],
     "atomic_facts": [
@@ -1323,78 +1254,78 @@
         "confidence": 1.0
       },
       {
-        "fact": "The liquid contains small dark particles or specks.",
+        "fact": "The liquid contains small dark particles.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The pot is made of stainless steel.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The hand is on the right side of the frame, holding the ladle which is positioned inside the pot. The pot is centered in the view.",
+    "spatial": "The hand is positioned at the top right, holding the handle of the ladle which extends down into the center of the pot. The ladle is submerged in the creamy liquid inside the stainless steel pot.",
     "parse_success": true,
     "chunk_idx": 24,
     "video_id": "Instant_Pot_-_Pressure_cooker_-_Sausage_Gravy___Biscuits"
   },
   {
     "time": [
-      50,
-      52
+      25,
+      26
     ],
     "visible_entities": [
       {
-        "desc": "silver metal ladle holding a scoop of creamy, beige-colored porridge with visible dark specks",
-        "action": "being held over the pot",
+        "desc": "metal ladle holding creamy, beige-colored soup with visible chunks of meat or vegetables",
+        "action": "being lifted from pot",
         "position": "center"
       },
       {
-        "desc": "large, round stainless steel pot containing a creamy liquid mixture",
+        "desc": "silver metal cooking pot containing the soup",
         "action": "static",
-        "position": "center"
+        "position": "background"
       },
       {
-        "desc": "black plastic handle attached to the side of the pot",
-        "action": "static",
-        "position": "left"
+        "desc": "hand with a silver ring on the ring finger",
+        "action": "holding a blue bottle",
+        "position": "right"
       },
       {
-        "desc": "human hand holding the handle of the ladle",
-        "action": "holding the ladle",
-        "position": "top right"
+        "desc": "blue cylindrical bottle with white label text",
+        "action": "being held",
+        "position": "right"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A hand is holding a ladle filled with porridge above a pot.",
+        "fact": "A ladle lifts a portion of creamy soup from a pot.",
         "confidence": 1.0
       },
       {
-        "fact": "The ladle is scooping the creamy mixture from the pot.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The pot contains a beige liquid with solid ingredients.",
+        "fact": "A hand holds a blue bottle next to the pot.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The ladle is positioned in the center, held above the pot. The hand is at the top right, gripping the handle of the ladle. The black handle of the pot is visible on the left side of the frame.",
+    "spatial": "The ladle is positioned above the center of the pot, lifting the soup. The hand holding the blue bottle is to the right of the pot and ladle.",
     "parse_success": true,
     "chunk_idx": 25,
     "video_id": "Instant_Pot_-_Pressure_cooker_-_Sausage_Gravy___Biscuits"
   },
   {
     "time": [
-      52,
-      54
+      26,
+      27
     ],
     "visible_entities": [
       {
-        "desc": "grey air fryer appliance with black control panel and white text",
+        "desc": "grey air fryer appliance with black control panel and digital display",
         "action": "static",
-        "position": "background"
+        "position": "left/background"
       },
       {
-        "desc": "black air fryer basket containing four golden-brown biscuits",
+        "desc": "black air fryer basket containing four golden-brown round biscuits",
         "action": "being held in foreground",
-        "position": "foreground"
+        "position": "right/foreground"
       },
       {
         "desc": "white plate with blue rim holding biscuits and gravy, scrambled eggs, and sausage",
@@ -1402,36 +1333,36 @@
         "position": "center"
       },
       {
-        "desc": "golden-brown biscuits covered in creamy white sausage gravy",
+        "desc": "golden-brown biscuits split open and covered in creamy white sausage gravy",
         "action": "static",
-        "position": "center"
+        "position": "center/foreground"
       },
       {
-        "desc": "yellow scrambled eggs",
+        "desc": "yellow fluffy scrambled eggs",
         "action": "static",
-        "position": "top"
+        "position": "center/top"
       },
       {
         "desc": "dark brown round sausage patty",
         "action": "static",
-        "position": "top left"
+        "position": "left/top"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A person holds a black air fryer basket containing four golden-brown biscuits in front of the air fryer unit.",
+        "fact": "The video shows a transition from cooking to serving.",
         "confidence": 1.0
       },
       {
-        "fact": "The scene cuts to a close-up of a prepared breakfast plate.",
+        "fact": "Four golden-brown biscuits are visible inside the black air fryer basket.",
         "confidence": 1.0
       },
       {
-        "fact": "The plate features biscuits split open and covered in sausage gravy.",
+        "fact": "The biscuits are split open and covered with sausage gravy on the plate.",
         "confidence": 1.0
       },
       {
-        "fact": "Scrambled eggs and a sausage patty are served alongside the biscuits and gravy.",
+        "fact": "Scrambled eggs and a sausage patty accompany the biscuits and gravy on the plate.",
         "confidence": 1.0
       },
       {
@@ -1441,156 +1372,149 @@
     ],
     "ocr": [
       "10-13 min",
-      "10-13 min",
-      "REHEAT",
-      "STOP/CLEAR"
+      "10-13 min"
     ],
-    "spatial": "The black air fryer basket is held in front of the grey air fryer appliance. The plate of food is shown in a separate shot, with the scrambled eggs positioned above the biscuits and gravy, and the sausage patty to the left of the eggs.",
+    "spatial": "The black air fryer basket containing biscuits is held in the foreground to the right of the grey air fryer base. The plate of food is shown in a separate shot, with the biscuits and gravy in the foreground, the scrambled eggs above them, and the sausage patty to the left of the eggs.",
     "parse_success": true,
     "chunk_idx": 26,
     "video_id": "Instant_Pot_-_Pressure_cooker_-_Sausage_Gravy___Biscuits"
   },
   {
     "time": [
-      54,
-      56
+      27,
+      28
     ],
     "visible_entities": [
       {
-        "desc": "thick, creamy, beige sausage gravy with visible dark specks of seasoning",
-        "action": "being poured onto the biscuit",
-        "position": "center/foreground"
+        "desc": "split biscuit halves with a golden-brown crust and fluffy white interior",
+        "action": "static",
+        "position": "foreground"
       },
       {
-        "desc": "golden-brown biscuit, split open with a fluffy white interior",
-        "action": "static",
-        "position": "center/bottom"
+        "desc": "thick, creamy, beige sausage gravy with visible specks of black pepper and meat",
+        "action": "being poured",
+        "position": "center"
       },
       {
         "desc": "fluffy yellow scrambled eggs",
         "action": "static",
-        "position": "top/center"
+        "position": "background"
       },
       {
         "desc": "dark brown, round sausage patty",
         "action": "static",
-        "position": "top/left"
+        "position": "top left"
       },
       {
-        "desc": "white plate with a dark blue rim featuring thin white concentric stripes",
+        "desc": "white plate with a dark blue rim featuring concentric white stripes",
         "action": "static",
         "position": "background"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "Gravy is being poured from a container onto the left half of the split biscuit.",
+        "fact": "Gravy is being poured from a container onto the biscuit halves.",
         "confidence": 1.0
       },
       {
-        "fact": "The gravy covers the surface of the biscuit and drips slightly over the edge.",
+        "fact": "The gravy covers the surface of the biscuits.",
         "confidence": 1.0
       },
       {
-        "fact": "A sausage patty sits next to the scrambled eggs on the plate.",
+        "fact": "Scrambled eggs are located behind the biscuits.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A sausage patty is visible in the upper left corner of the plate.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The split biscuit is in the foreground, positioned below the scrambled eggs and sausage patty. The gravy is being poured onto the left side of the biscuit. The sausage patty is to the left of the scrambled eggs.",
+    "spatial": "The biscuits covered in gravy are in the foreground, positioned below the scrambled eggs. The sausage patty is to the left of the eggs and behind the left biscuit. The plate supports all the food items.",
     "parse_success": true,
     "chunk_idx": 27,
     "video_id": "Instant_Pot_-_Pressure_cooker_-_Sausage_Gravy___Biscuits"
   },
   {
     "time": [
-      56,
-      58
+      28,
+      29
     ],
     "visible_entities": [
       {
-        "desc": "golden-brown biscuits topped with thick, creamy, beige-colored sausage gravy containing visible chunks of meat",
-        "action": "static",
-        "position": "foreground"
+        "desc": "golden-brown biscuit halves, split open, covered in thick, creamy, beige sausage gravy with visible chunks of meat",
+        "action": "static"
       },
       {
         "desc": "fluffy yellow scrambled eggs",
-        "action": "static",
-        "position": "center"
+        "action": "static"
       },
       {
         "desc": "dark brown, round sausage patty",
-        "action": "static",
-        "position": "top left"
+        "action": "static"
       },
       {
-        "desc": "white plate with a blue rim",
-        "action": "static",
-        "position": "background"
+        "desc": "white ceramic plate with concentric blue stripes along the rim",
+        "action": "static"
       },
       {
-        "desc": "white text 'ENJOY!!!' in a bold sans-serif font with a slight drop shadow",
-        "action": "static",
-        "position": "center"
+        "desc": "white, bold, sans-serif text overlay",
+        "action": "static"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "The text 'ENJOY!!!' appears overlaid on the center of the food.",
+        "fact": "The text 'ENJOY!!!' appears overlaid on the center of the food in the second frame.",
         "confidence": 1.0
       },
       {
-        "fact": "The biscuits are covered in gravy.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The sausage patty is positioned next to the scrambled eggs.",
+        "fact": "The plate holds a breakfast meal consisting of biscuits and gravy, eggs, and sausage.",
         "confidence": 1.0
       }
     ],
     "ocr": [
       "ENJOY!!!"
     ],
-    "spatial": "The biscuits with gravy are in the foreground, below the scrambled eggs and sausage patty. The scrambled eggs are in the center of the plate, to the right of the sausage patty. The text 'ENJOY!!!' is superimposed over the center of the image, partially covering the biscuits.",
+    "spatial": "The biscuits covered in gravy are in the foreground, occupying the bottom and left portions of the plate. The scrambled eggs are positioned above the biscuits in the upper center. The sausage patty is located to the left of the eggs. The text overlay is centered on top of the image.",
     "parse_success": true,
     "chunk_idx": 28,
     "video_id": "Instant_Pot_-_Pressure_cooker_-_Sausage_Gravy___Biscuits"
   },
   {
     "time": [
-      58,
-      60
+      29,
+      30
     ],
     "visible_entities": [
       {
-        "desc": "golden-brown biscuit split in half, covered in thick, creamy white sausage gravy with visible dark specks",
+        "desc": "golden-brown biscuit split in half, covered in thick, creamy sausage gravy with visible chunks of meat and black pepper specks",
         "action": "static",
         "position": "foreground"
       },
       {
-        "desc": "fluffy yellow scrambled eggs",
+        "desc": "fluffy yellow scrambled eggs with visible curds",
         "action": "static",
         "position": "background"
       },
       {
-        "desc": "dark brown, round sausage patty",
+        "desc": "dark brown, round sausage patty with a textured surface",
         "action": "static",
-        "position": "top left"
+        "position": "background"
       },
       {
-        "desc": "white plate with blue concentric rim stripes",
+        "desc": "white ceramic plate with concentric blue stripes along the rim",
         "action": "static",
-        "position": "center"
+        "position": "bottom"
       },
       {
-        "desc": "white text overlay reading 'ENJOY!!!' in bold sans-serif font",
+        "desc": "white text with a drop shadow reading 'ENJOY!!!'",
         "action": "static",
         "position": "center"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "The video displays a close-up of a breakfast plate.",
+        "fact": "A plate of breakfast food is presented.",
         "confidence": 1.0
       },
       {
@@ -1598,66 +1522,70 @@
         "confidence": 1.0
       },
       {
-        "fact": "Gravy is poured over the biscuits.",
+        "fact": "Sausage gravy is poured over the biscuits.",
         "confidence": 1.0
       }
     ],
     "ocr": [
       "ENJOY!!!"
     ],
-    "spatial": "The biscuits covered in gravy are in the foreground, positioned below the scrambled eggs and the sausage patty. The sausage patty is to the left of the scrambled eggs. The text overlay is centered on top of the biscuits.",
+    "spatial": "The biscuits covered in gravy are in the foreground, positioned below the scrambled eggs and sausage patty. The sausage patty is to the left of the scrambled eggs. The text 'ENJOY!!!' is superimposed over the center of the food.",
     "parse_success": true,
     "chunk_idx": 29,
     "video_id": "Instant_Pot_-_Pressure_cooker_-_Sausage_Gravy___Biscuits"
   },
   {
     "time": [
-      60,
-      62
+      30,
+      31
     ],
     "visible_entities": [
       {
-        "desc": "golden-brown biscuit halves, fluffy interior, split open",
+        "desc": "golden-brown split biscuit halves with a fluffy, porous interior texture",
         "action": "static",
         "position": "foreground"
       },
       {
-        "desc": "thick, creamy, beige sausage gravy with visible dark specks of meat",
+        "desc": "thick, creamy, beige-colored sausage gravy with visible dark specks of seasoning",
         "action": "static",
         "position": "foreground"
       },
       {
-        "desc": "yellow scrambled eggs, fluffy texture",
+        "desc": "fluffy yellow scrambled eggs",
         "action": "static",
         "position": "background"
       },
       {
         "desc": "dark brown, round, fried sausage patty",
         "action": "static",
-        "position": "background left"
+        "position": "background"
       },
       {
-        "desc": "white ceramic plate with concentric blue stripes on the rim",
+        "desc": "white ceramic plate with concentric blue stripes along the rim",
         "action": "static",
-        "position": "background"
+        "position": "bottom"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "The plate holds a breakfast meal consisting of biscuits, gravy, eggs, and sausage.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The gravy is poured generously over the split biscuit halves.",
+        "fact": "The gravy is poured over the split biscuit halves.",
         "confidence": 1.0
       },
       {
         "fact": "The scrambled eggs are positioned behind the biscuits.",
         "confidence": 1.0
+      },
+      {
+        "fact": "The sausage patty sits to the left of the eggs.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The food is arranged on a blue-rimmed plate.",
+        "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The biscuits covered in gravy are in the foreground, occupying the center and right portions of the plate. The scrambled eggs are located above and behind the biscuits. The sausage patty is to the left of the eggs and behind the leftmost biscuit. All food items are resting on the white plate with blue stripes.",
+    "spatial": "The biscuits covered in gravy are in the foreground, positioned below the scrambled eggs and sausage patty. The sausage patty is to the left of the scrambled eggs. The entire meal rests on top of the white plate with blue stripes.",
     "parse_success": true,
     "chunk_idx": 30,
     "video_id": "Instant_Pot_-_Pressure_cooker_-_Sausage_Gravy___Biscuits"

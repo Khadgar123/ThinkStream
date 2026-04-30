@@ -2,20 +2,13 @@
   {
     "time": [
       0,
-      2
+      1
     ],
     "visible_entities": [
       {
-        "desc": "Logo graphic featuring the word 'INSIDE' in bold black uppercase letters and 'it' in white lowercase letters on a red background, all contained within a grey rounded rectangle",
-        "action": "appearing on screen",
-        "position": "center",
-        "id": "inside_edition_logo_1"
-      },
-      {
-        "desc": "Thin black line art forming a rounded rectangular frame",
-        "action": "static",
-        "position": "background",
-        "id": "black_frame_1"
+        "desc": "Logo graphic with the word 'INSIDE' in bold black sans-serif font on a light grey rounded rectangle, and the word 'it' in white lowercase font on a red rectangular background below it.",
+        "action": "appearing",
+        "position": "center"
       }
     ],
     "atomic_facts": [
@@ -32,7 +25,7 @@
       "INSIDE",
       "it"
     ],
-    "spatial": "The 'INSIDE it' logo is centered in the frame. The logo is positioned in front of the thin black line art frame.",
+    "spatial": "The 'INSIDE it' logo is centered on the screen. The red block containing 'it' is below the grey block containing 'INSIDE'.",
     "parse_success": true,
     "chunk_idx": 0,
     "video_id": "ytb_SDHI2SX7mH4",
@@ -40,41 +33,38 @@
   },
   {
     "time": [
-      2,
-      4
+      1,
+      2
     ],
     "visible_entities": [
       {
-        "desc": "man with short dark hair, wearing a dark blue suit jacket, white collared shirt, and a red pocket square",
+        "desc": "man with short dark hair, wearing a dark navy suit jacket, white collared shirt, and a red pocket square",
         "action": "hugging another person",
-        "position": "right",
-        "id": "man_dark_suit_1"
+        "position": "right foreground"
       },
       {
         "desc": "person wearing a dark blue suit jacket",
         "action": "being hugged",
+        "position": "center foreground"
+      },
+      {
+        "desc": "logo with 'INSIDE' in black text on a white background and 'edition' in white text on a red background",
+        "action": "static",
         "position": "center"
       },
       {
-        "desc": "crowd of people sitting in stadium seats",
+        "desc": "audience members seated in stadium rows",
         "action": "static",
-        "position": "background",
-        "id": "crowd_spectators_1"
-      },
-      {
-        "desc": "graphic logo with 'INSIDE' in black text on a white background and 'edition' in white text on a red background",
-        "action": "static",
-        "position": "center",
-        "id": "inside_edition_logo_1"
+        "position": "background"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "The man in the dark blue suit is hugging another person.",
+        "fact": "The man in the dark navy suit is hugging another person.",
         "confidence": 1.0
       },
       {
-        "fact": "The 'INSIDE edition' logo is overlaid on the center of the screen.",
+        "fact": "The 'INSIDE edition' logo is overlaid in the center of the screen.",
         "confidence": 1.0
       },
       {
@@ -87,410 +77,201 @@
       "edition",
       "New York Knicks"
     ],
-    "spatial": "The man in the dark blue suit is on the right side of the frame, hugging a person in the center. The crowd is seated in the background behind the two men. The 'INSIDE edition' logo is positioned in the center foreground, partially obscuring the view of the people.",
+    "spatial": "The man in the navy suit is on the right side of the frame, hugging a person positioned in the center. The 'INSIDE edition' logo is superimposed over the center of the image, partially obscuring the people. The audience is seated in the background behind the two men.",
     "parse_success": true,
     "chunk_idx": 1,
     "video_id": "ytb_SDHI2SX7mH4",
     "state_changes": [
-      "first people appear on screen hugging in stadium setting"
+      "Scene transitions from intro logo to live action with people hugging in stadium."
     ]
   },
   {
     "time": [
-      4,
-      6
+      2,
+      3
     ],
     "visible_entities": [
       {
-        "desc": "golden retriever dog with light brown fur, wearing a blue vest with white stars and red trim",
-        "action": "walking on the court",
-        "position": "center/foreground",
-        "id": "golden_retriever_service_dog_1"
-      },
-      {
-        "desc": "person wearing a navy blue t-shirt with white text on the back, khaki pants, and dark shoes",
-        "action": "walking and holding a leash",
+        "desc": "golden retriever dog wearing a red, white, and blue vest with white stars",
+        "action": "walking forward",
         "position": "center"
       },
       {
-        "desc": "black leash strap",
-        "action": "static",
-        "position": "center",
-        "id": "black_leash_1"
+        "desc": "man wearing a navy blue t-shirt with white text on the back, khaki pants, and black shoes",
+        "action": "walking forward",
+        "position": "center"
       },
       {
-        "desc": "person wearing black pants and dark shoes",
+        "desc": "black leash",
+        "action": "static",
+        "position": "center"
+      },
+      {
+        "desc": "person in black clothing holding a coiled black cable",
         "action": "standing",
         "position": "right"
       },
       {
-        "desc": "black coiled cable",
+        "desc": "wooden basketball court floor with painted lines and a large orange and blue logo",
         "action": "static",
-        "position": "right",
-        "id": "black_cable_1"
+        "position": "background"
       },
       {
-        "desc": "polished wooden basketball court floor with painted lines and a large orange and blue logo",
+        "desc": "INSIDE edition logo",
         "action": "static",
-        "position": "background/bottom",
-        "id": "basketball_court_1"
+        "position": "bottom left"
       },
       {
-        "desc": "white text 'New York Knicks'",
+        "desc": "New York Knicks text overlay",
         "action": "static",
-        "position": "top right",
-        "id": "ny_knicks_text_1"
-      },
-      {
-        "desc": "logo with text 'INSIDE edition' in white and red",
-        "action": "static",
-        "position": "bottom left",
-        "id": "inside_edition_logo_1"
-      },
-      {
-        "desc": "white text 'WWW.PAWSOFWAR.ORG' on the back of the navy blue shirt",
-        "action": "static",
-        "position": "center"
+        "position": "top right"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A golden retriever dog is walking on a basketball court.",
+        "fact": "The man is holding the leash attached to the dog.",
         "confidence": 1.0
       },
       {
-        "fact": "A person in a navy blue shirt is holding a leash attached to the dog.",
+        "fact": "The dog is walking next to the man on the basketball court.",
         "confidence": 1.0
       },
       {
-        "fact": "The dog is wearing a vest with a star pattern.",
+        "fact": "The man's shirt displays the text 'WWW.PAWSOFWAR.ORG'.",
         "confidence": 1.0
       },
       {
-        "fact": "The person's shirt displays the text 'WWW.PAWSOFWAR.ORG'.",
+        "fact": "The dog is wearing a patriotic-themed vest.",
         "confidence": 1.0
       }
     ],
     "ocr": [
-      "New York Knicks",
       "INSIDE edition",
-      "WWW.PAWSOFWAR.ORG"
+      "New York Knicks",
+      "WWW.PAWSOFWAR.ORG",
+      "HELPING DOWN FROM UP THE LEASH",
+      "NBATICKETS.COM"
     ],
-    "spatial": "The golden retriever is walking in front of the person holding the leash. The person holding the leash is to the left of the person in black pants. The 'New York Knicks' text is located in the top right corner of the frame, above the people on the court.",
+    "spatial": "The dog is walking to the left of the man in the navy blue shirt. The man is holding the leash which connects to the dog's collar. The person holding the cable is standing to the right of the man and dog. The large court logo is visible on the floor behind the dog.",
     "parse_success": true,
     "chunk_idx": 2,
     "video_id": "ytb_SDHI2SX7mH4",
     "state_changes": [
-      "golden retriever service dog appears walking on court with handler"
+      "Golden retriever dog enters the scene walking forward; man in navy t-shirt enters walking."
     ]
   },
   {
     "time": [
-      6,
-      8
+      3,
+      4
     ],
     "visible_entities": [
       {
-        "desc": "man with short buzz-cut hair, wearing a dark blue military dress uniform with gold buttons, colorful ribbon bars, and a name tag",
-        "action": "laughing and standing",
-        "position": "center",
-        "id": "military_man_uniform_1"
+        "desc": "man with short buzz-cut hair, wearing a dark blue military dress uniform with gold buttons, colorful ribbon bars, and a name tag reading 'VOLPI'",
+        "action": "smiling broadly",
+        "position": "center"
       },
       {
-        "desc": "man with dark skin, wearing a dark suit jacket and white dress shirt",
-        "action": "standing and smiling",
-        "position": "right",
-        "id": "man_dark_suit_1"
-      },
-      {
-        "desc": "blue digital display board with white text and logos",
-        "action": "static",
-        "position": "bottom",
-        "id": "blue_ad_board_1"
+        "desc": "man with dark skin, wearing a dark suit jacket and white collared shirt",
+        "action": "standing next to the man in uniform",
+        "position": "right"
       },
       {
         "desc": "crowd of spectators in casual and business attire",
-        "action": "sitting in background",
-        "position": "background",
-        "id": "crowd_spectators_1"
+        "action": "sitting in the background",
+        "position": "background"
+      },
+      {
+        "desc": "blue digital advertising board",
+        "action": "static",
+        "position": "bottom left"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "The man in the military uniform is laughing with his mouth open.",
+        "fact": "The man in the military uniform is smiling with his mouth open.",
         "confidence": 1.0
       },
       {
-        "fact": "The man in the suit is standing to the right of the military man.",
+        "fact": "The man in the suit is standing to the right of the man in the uniform.",
         "confidence": 1.0
       },
       {
-        "fact": "The text 'New York Knicks' is visible in the top right corner.",
+        "fact": "The name tag on the uniform reads 'VOLPI'.",
         "confidence": 1.0
       },
       {
         "fact": "The 'INSIDE edition' logo is visible in the bottom left corner.",
         "confidence": 1.0
-      }
-    ],
-    "ocr": [
-      "New York Knicks",
-      "INSIDE edition"
-    ],
-    "spatial": "The man in the military uniform is standing in the center, slightly to the left of the man in the dark suit. The blue digital display board is located below the men in the foreground. The crowd of spectators is seated in the background behind the men.",
-    "parse_success": true,
-    "chunk_idx": 3,
-    "video_id": "ytb_SDHI2SX7mH4",
-    "state_changes": []
-  },
-  {
-    "time": [
-      8,
-      10
-    ],
-    "visible_entities": [
-      {
-        "desc": "man with short grey hair, wearing a dark blue military dress uniform with gold shoulder cords, colorful ribbon bars, and medals",
-        "action": "smiling and standing",
-        "position": "center",
-        "id": "military_man_uniform_1"
-      },
-      {
-        "desc": "tall man with dark skin, wearing a black suit, white shirt, and black bow tie",
-        "action": "clapping hands",
-        "position": "right",
-        "id": "man_dark_suit_1"
-      },
-      {
-        "desc": "woman with long blonde hair, wearing a dark blue t-shirt and black pants",
-        "action": "holding a white jersey",
-        "position": "center-left",
-        "id": "woman_blonde_1"
-      },
-      {
-        "desc": "man with short hair, wearing a dark blue polo shirt and khaki pants",
-        "action": "walking left",
-        "position": "left",
-        "id": "bald_man_casual_1"
-      },
-      {
-        "desc": "golden retriever dog wearing a red and purple service vest",
-        "action": "walking left",
-        "position": "left",
-        "id": "golden_retriever_service_dog_1"
-      },
-      {
-        "desc": "black cane",
-        "action": "static",
-        "position": "center",
-        "id": "black_cane_1"
-      },
-      {
-        "desc": "white basketball jersey with orange and blue trim",
-        "action": "static",
-        "position": "center-left",
-        "id": "white_basketball_jersey_1"
-      },
-      {
-        "desc": "blue digital advertising banner",
-        "action": "static",
-        "position": "background",
-        "id": "blue_ad_board_1"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "A man in a military uniform stands on the basketball court holding a black cane.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "A tall man in a black suit claps his hands next to the man in uniform.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "A woman holds up a white basketball jersey.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "A man walks a golden retriever dog across the court from right to left.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The dog is wearing a service vest.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The background banner displays the text 'TICKETS.COM'.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [
-      "New York Knicks",
-      "INSIDE edition",
-      "TICKETS.COM",
-      "NBA",
-      "KNICKS"
-    ],
-    "spatial": "The man in the military uniform is standing in the center of the court, to the left of the tall man in the black suit. To the left of the man in uniform, a woman is holding a white jersey. Further to the left, a man is walking a golden retriever dog across the court. The blue advertising banner is located behind the group of people.",
-    "parse_success": true,
-    "chunk_idx": 4,
-    "video_id": "ytb_SDHI2SX7mH4",
-    "state_changes": [
-      "dog vest color changes, man begins walking across court"
-    ]
-  },
-  {
-    "time": [
-      10,
-      12
-    ],
-    "visible_entities": [
-      {
-        "desc": "man with short dark hair, wearing a dark suit, white shirt, and brown shoes",
-        "action": "standing and clapping",
-        "position": "right"
-      },
-      {
-        "desc": "man with short hair, wearing a dark jacket with gold stripes on the sleeves and blue pants with a gold stripe",
-        "action": "bending down to pet a dog",
-        "position": "center"
-      },
-      {
-        "desc": "man with a shaved head, wearing a blue polo shirt and khaki pants",
-        "action": "standing and holding a leash",
-        "position": "left"
-      },
-      {
-        "desc": "woman with long blonde hair, wearing a dark blue t-shirt",
-        "action": "standing and holding a white jersey",
-        "position": "center-left",
-        "id": "woman_blonde_1"
-      },
-      {
-        "desc": "golden retriever dog wearing a maroon vest",
-        "action": "standing on the court",
-        "position": "center",
-        "id": "golden_retriever_service_dog_1"
-      },
-      {
-        "desc": "white basketball jersey with orange and blue trim",
-        "action": "being held up",
-        "position": "center",
-        "id": "white_basketball_jersey_1"
-      },
-      {
-        "desc": "blue digital advertising banner",
-        "action": "static",
-        "position": "background",
-        "id": "blue_ad_board_1"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "A man in a dark suit is clapping his hands.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "A man in a striped jacket is bending over to pet a golden retriever.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "A woman is holding up a white basketball jersey.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The dog is standing on the basketball court floor.",
-        "confidence": 1.0
       },
       {
         "fact": "The text 'New York Knicks' is visible in the top right corner.",
         "confidence": 1.0
-      },
-      {
-        "fact": "The text 'INSIDE edition' is visible in the bottom left corner.",
-        "confidence": 1.0
       }
     ],
     "ocr": [
-      "New York Knicks",
       "INSIDE edition",
-      "TICKETS.COM",
-      "KETS."
+      "New York Knicks",
+      "VOLPI"
     ],
-    "spatial": "The man in the dark suit is standing to the right of the man in the striped jacket. The man in the striped jacket is bending down in front of the golden retriever. The woman holding the jersey is standing to the left of the dog and behind the man in the blue polo shirt. The blue advertising banner is located in the background behind the group of people.",
+    "spatial": "The man in the military uniform is in the center foreground, standing to the left of the man in the dark suit. The blue advertising board is located below and to the left of the man in the uniform. The crowd of spectators is seated in the background behind the two men.",
     "parse_success": true,
-    "chunk_idx": 5,
+    "chunk_idx": 3,
     "video_id": "ytb_SDHI2SX7mH4",
     "state_changes": [
-      "man bends down to pet the dog for first time"
+      "Man in military uniform (Volpi) appears smiling; crowd visible in background."
     ]
   },
   {
     "time": [
-      12,
-      14
+      4,
+      5
     ],
     "visible_entities": [
       {
-        "desc": "man in a dark blue uniform with gold stripes on the pants and gold embroidery on the sleeves",
-        "action": "kneeling on the court floor",
-        "position": "center",
-        "id": "military_man_uniform_1"
+        "desc": "man with shaved head, wearing a dark blue military dress uniform with gold shoulder cords, medals, and a name tag",
+        "action": "smiling and standing",
+        "position": "center"
       },
       {
-        "desc": "golden retriever dog with light brown fur",
-        "action": "standing on the court floor",
-        "position": "center",
-        "id": "golden_retriever_service_dog_1"
+        "desc": "man wearing a black suit, white shirt, and black bow tie",
+        "action": "clapping",
+        "position": "right"
       },
       {
-        "desc": "bald man wearing a dark blue t-shirt with white text on the back and khaki cargo pants",
-        "action": "bending over the dog",
-        "position": "center-left",
-        "id": "bald_man_casual_1"
+        "desc": "man wearing a blue polo shirt and khaki pants",
+        "action": "walking left",
+        "position": "left"
       },
       {
-        "desc": "man in a black suit, white shirt, and brown shoes",
-        "action": "standing and clapping",
-        "position": "center-right",
-        "id": "man_dark_suit_1"
+        "desc": "golden retriever dog wearing a red service vest",
+        "action": "walking left",
+        "position": "left"
       },
       {
-        "desc": "woman with long blonde hair wearing a dark blue top",
-        "action": "standing behind the kneeling man",
-        "position": "background center",
-        "id": "woman_blonde_1"
+        "desc": "woman with long blonde hair, wearing a dark blue t-shirt and black pants",
+        "action": "holding a white jersey",
+        "position": "center-left"
       },
       {
-        "desc": "black leash",
+        "desc": "black cane",
         "action": "static",
-        "position": "center",
-        "id": "black_leash_1"
+        "position": "center"
       },
       {
-        "desc": "basketball court floor with orange and blue painted markings",
+        "desc": "white basketball jersey with orange trim",
         "action": "static",
-        "position": "bottom",
-        "id": "basketball_court_1"
+        "position": "center-left"
       },
       {
-        "desc": "blue digital advertising board with white text",
+        "desc": "basketball court with orange and blue painted floor",
         "action": "static",
-        "position": "background",
-        "id": "blue_ad_board_1"
+        "position": "bottom"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "The man in the dark blue uniform is kneeling on the basketball court.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The man in the dark blue uniform is kissing the golden retriever dog.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The bald man in the blue t-shirt is holding the dog's leash.",
+        "fact": "The man in the military uniform is smiling.",
         "confidence": 1.0
       },
       {
@@ -498,6 +279,22 @@
         "confidence": 1.0
       },
       {
+        "fact": "The man in the blue polo shirt is walking a dog on a leash.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The woman is holding up a white jersey.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The man in the military uniform is holding a black cane.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The dog is walking on the basketball court.",
+        "confidence": 1.0
+      },
+      {
         "fact": "The text 'New York Knicks' is visible in the top right corner.",
         "confidence": 1.0
       },
@@ -506,7 +303,171 @@
         "confidence": 1.0
       },
       {
-        "fact": "The text 'ATICKETS.COM' is displayed on the blue background board.",
+        "fact": "The text 'TICKETS.COM' is visible on the digital banner in the background.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "New York Knicks",
+      "INSIDE edition",
+      "TICKETS.COM",
+      "KNICKS.COM"
+    ],
+    "spatial": "The man in the military uniform is in the center of the frame, standing next to the man in the black suit who is to his right. To the left of the military man, a woman is holding a jersey, and further left, a man is walking a dog. The dog is on the basketball court floor, which is below all the people. The 'INSIDE edition' logo is in the bottom left corner, and the 'New York Knicks' text is in the top right corner.",
+    "parse_success": true,
+    "chunk_idx": 4,
+    "video_id": "ytb_SDHI2SX7mH4",
+    "state_changes": [
+      "Man in black suit starts clapping; man in blue polo walks left; dog walks left; woman holds up jersey."
+    ]
+  },
+  {
+    "time": [
+      5,
+      6
+    ],
+    "visible_entities": [
+      {
+        "desc": "man with short dark hair, wearing a black suit jacket, white shirt, and black trousers",
+        "action": "standing and clapping",
+        "position": "right"
+      },
+      {
+        "desc": "man with short grey hair, wearing a dark military dress uniform with gold stripes on the sleeves and yellow stripes on the trousers",
+        "action": "bending down to pet a dog",
+        "position": "center"
+      },
+      {
+        "desc": "man with a shaved head, wearing a blue t-shirt and khaki pants",
+        "action": "standing and holding a leash",
+        "position": "left"
+      },
+      {
+        "desc": "woman with long blonde hair, wearing a dark blue t-shirt and black pants",
+        "action": "standing and holding a white jersey",
+        "position": "center-left"
+      },
+      {
+        "desc": "golden retriever dog wearing a maroon vest",
+        "action": "standing on the court",
+        "position": "center"
+      },
+      {
+        "desc": "white basketball jersey with orange and blue trim",
+        "action": "being held up",
+        "position": "center"
+      },
+      {
+        "desc": "blue digital advertising banner",
+        "action": "static",
+        "position": "background"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The man in the military uniform bends down to pet the golden retriever.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The man in the black suit claps his hands.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The woman holds up a white jersey for the dog to see.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The man in the blue shirt holds the dog's leash.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The dog stands on the orange and blue painted logo on the basketball court.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "New York Knicks",
+      "INSIDE edition",
+      "TICKETS.COM",
+      "KNICKS"
+    ],
+    "spatial": "The man in the military uniform is in the center, bending down in front of the golden retriever. To his right stands the man in the black suit. To the left of the dog stands the man in the blue shirt holding the leash. Behind the group, the woman holds the jersey. The blue advertising banner is in the background behind all the people.",
+    "parse_success": true,
+    "chunk_idx": 5,
+    "video_id": "ytb_SDHI2SX7mH4",
+    "state_changes": [
+      "Man in grey-haired military uniform bends down to pet the dog; dog changes vest color/context."
+    ]
+  },
+  {
+    "time": [
+      6,
+      7
+    ],
+    "visible_entities": [
+      {
+        "desc": "man with short dark hair, wearing a black suit, white shirt, and brown shoes",
+        "action": "clapping hands",
+        "position": "right"
+      },
+      {
+        "desc": "man with a shaved head, wearing a navy blue t-shirt with white text on the back and khaki pants",
+        "action": "standing and holding a leash",
+        "position": "center-left"
+      },
+      {
+        "desc": "person in a dark blue uniform with gold stripes on the pants and black shoes",
+        "action": "kneeling on the floor",
+        "position": "center"
+      },
+      {
+        "desc": "golden retriever dog with light brown fur",
+        "action": "standing on the court",
+        "position": "center"
+      },
+      {
+        "desc": "woman with long blonde hair wearing a dark top",
+        "action": "standing",
+        "position": "background"
+      },
+      {
+        "desc": "basketball court floor with orange and blue painted logo",
+        "action": "static",
+        "position": "bottom"
+      },
+      {
+        "desc": "blue digital advertising board with white text",
+        "action": "static",
+        "position": "background"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A man in a black suit is clapping his hands.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A person in a dark blue uniform is kneeling on the basketball court.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A man in a navy blue t-shirt is holding a leash attached to a golden retriever.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The golden retriever is standing near the kneeling person.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The text 'New York Knicks' is visible in the top right corner.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The text 'INSIDE edition' is visible in the bottom left corner.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The text 'ATICKETS.COM' is displayed on the blue board in the background.",
         "confidence": 1.0
       }
     ],
@@ -516,71 +477,59 @@
       "ATICKETS.COM",
       "KETS.COM"
     ],
-    "spatial": "The man in the dark blue uniform is kneeling on the floor in front of the blue advertising board. The golden retriever dog is standing directly in front of the kneeling man. The bald man in the blue t-shirt is to the left of the dog and is bending over it. The man in the black suit is standing to the right of the kneeling man. The woman with blonde hair is standing behind the kneeling man and the dog.",
+    "spatial": "The man in the black suit is standing to the right of the kneeling person. The kneeling person is in front of the man in the navy blue t-shirt. The golden retriever is between the man in the navy blue t-shirt and the kneeling person. The blue digital advertising board is behind the group of people on the court.",
     "parse_success": true,
     "chunk_idx": 6,
     "video_id": "ytb_SDHI2SX7mH4",
     "state_changes": [
-      "man kneels on court floor near dog"
+      "Person in uniform kneels on the floor; dog stands still."
     ]
   },
   {
     "time": [
-      14,
-      16
+      7,
+      8
     ],
     "visible_entities": [
       {
-        "desc": "man in a dark suit, white shirt, and brown shoes",
+        "desc": "man in a dark suit with a white shirt and brown shoes",
         "action": "standing and clapping",
-        "position": "right",
-        "id": "man_dark_suit_1"
+        "position": "right"
       },
       {
-        "desc": "man in a dark military dress uniform with gold stripes on the pants and black shoes",
-        "action": "kneeling and petting a dog",
-        "position": "center",
-        "id": "military_man_uniform_1"
+        "desc": "man in a dark blue military dress uniform with gold stripes on the pants and black shoes",
+        "action": "kneeling on one knee",
+        "position": "center"
       },
       {
-        "desc": "golden retriever dog wearing a red vest",
-        "action": "standing and being petted",
-        "position": "center",
-        "id": "golden_retriever_service_dog_1"
-      },
-      {
-        "desc": "man with a shaved head, wearing a blue t-shirt and khaki pants",
-        "action": "bending over towards the dog",
+        "desc": "man with a shaved head wearing a dark blue t-shirt and khaki pants",
+        "action": "bending over",
         "position": "center-left"
       },
       {
-        "desc": "man with a shaved head, wearing a blue and grey jacket and jeans",
+        "desc": "man with a shaved head wearing a blue and grey jacket and blue jeans",
         "action": "standing and clapping",
         "position": "left"
       },
       {
-        "desc": "woman with long blonde hair, wearing a dark blue long-sleeved shirt",
-        "action": "standing and holding a white jersey",
-        "position": "center-background",
-        "id": "woman_blonde_1"
+        "desc": "woman with long blonde hair wearing a dark blue long-sleeved shirt",
+        "action": "standing",
+        "position": "background"
+      },
+      {
+        "desc": "golden retriever dog wearing a red vest",
+        "action": "sitting",
+        "position": "center"
       },
       {
         "desc": "black cane lying on the floor",
         "action": "static",
-        "position": "center-foreground",
-        "id": "black_cane_1"
+        "position": "foreground"
       },
       {
-        "desc": "blue LED advertising board",
+        "desc": "blue digital advertising board with white text",
         "action": "static",
-        "position": "background",
-        "id": "blue_ad_board_1"
-      },
-      {
-        "desc": "orange and blue basketball court floor",
-        "action": "static",
-        "position": "bottom",
-        "id": "basketball_court_1"
+        "position": "background"
       }
     ],
     "atomic_facts": [
@@ -589,7 +538,11 @@
         "confidence": 1.0
       },
       {
-        "fact": "The kneeling man is petting a golden retriever dog.",
+        "fact": "The kneeling man is reaching out to pet the golden retriever.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A man in a dark suit stands to the right, clapping his hands.",
         "confidence": 1.0
       },
       {
@@ -597,15 +550,7 @@
         "confidence": 1.0
       },
       {
-        "fact": "A man in a dark suit is standing to the right, clapping his hands.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "A woman is holding up a white basketball jersey.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "A black cane is lying on the floor near the group.",
+        "fact": "A black cane is lying on the orange and blue court floor.",
         "confidence": 1.0
       },
       {
@@ -615,218 +560,248 @@
       {
         "fact": "The text 'INSIDE edition' is visible in the bottom left corner.",
         "confidence": 1.0
+      },
+      {
+        "fact": "The background LED board displays the text 'TICKETS.COM'.",
+        "confidence": 1.0
       }
     ],
     "ocr": [
       "New York Knicks",
       "INSIDE edition",
-      "TICKETS.COM",
-      "KNICKS"
+      "TICKETS.COM"
     ],
-    "spatial": "The man in the military uniform is kneeling in front of the woman holding the jersey. The golden retriever is standing between the kneeling man and the man in the blue t-shirt. The man in the dark suit is standing to the right of the kneeling man. The black cane is lying on the floor in front of the man in the blue t-shirt. The blue advertising board is behind the group of people.",
+    "spatial": "The man in the military uniform is kneeling in front of the man in the blue t-shirt. The golden retriever is sitting between the kneeling man and the man in the blue t-shirt. The man in the dark suit is standing to the right of the group. The black cane is lying on the floor in front of the man in the blue t-shirt. The blue advertising board is behind the people on the court.",
     "parse_success": true,
     "chunk_idx": 7,
     "video_id": "ytb_SDHI2SX7mH4",
-    "state_changes": []
-  },
-  {
-    "time": [
-      16,
-      18
-    ],
-    "visible_entities": [
-      {
-        "desc": "man with shaved head, wearing a dark blue military dress uniform with gold braided cords, gold chevron stripes on the sleeve, and a yellow stripe on the blue trousers",
-        "action": "kneeling on one knee and holding the dog's face with both hands",
-        "position": "center",
-        "id": "military_man_uniform_1"
-      },
-      {
-        "desc": "golden retriever dog with light brown fur, wearing a red service vest with patches and a red, white, and blue patterned bandana",
-        "action": "sitting on the floor and looking at the kneeling man",
-        "position": "center",
-        "id": "golden_retriever_service_dog_1"
-      },
-      {
-        "desc": "man with short dark hair, wearing a black suit jacket, white dress shirt, and black trousers",
-        "action": "standing and clapping hands",
-        "position": "right",
-        "id": "man_dark_suit_1"
-      },
-      {
-        "desc": "bald man with tattoos on his left arm, wearing a dark blue polo shirt and khaki pants",
-        "action": "standing and holding a black leash",
-        "position": "left",
-        "id": "bald_man_casual_1"
-      },
-      {
-        "desc": "man with short dark hair, wearing a dark blue long-sleeved shirt and blue jeans",
-        "action": "standing and clapping hands",
-        "position": "far left"
-      },
-      {
-        "desc": "black cane lying on the floor",
-        "action": "static",
-        "position": "bottom center",
-        "id": "black_cane_1"
-      },
-      {
-        "desc": "blue LED advertising board",
-        "action": "static",
-        "position": "background",
-        "id": "blue_ad_board_1"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "The man in the military uniform kneels on the basketball court.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The man in the military uniform holds the dog's face with both hands.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The golden retriever dog sits on the floor facing the kneeling man.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The man in the black suit stands to the right and claps his hands.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The bald man in the blue polo shirt stands to the left holding a leash.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "A black cane lies on the floor near the dog.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The text 'New York Knicks' is visible in the top right corner.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The text 'INSIDE edition' is visible in the bottom left corner.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [
-      "New York Knicks",
-      "INSIDE edition",
-      "ICKETS.COM",
-      "CKETS.COM",
-      "Service Dog"
-    ],
-    "spatial": "The man in the military uniform is kneeling in the center of the frame, directly in front of the sitting dog. The man in the black suit stands to the right of the kneeling man. The bald man in the blue polo shirt stands to the left of the dog, holding a leash attached to it. The blue advertising board is behind the group of people.",
-    "parse_success": true,
-    "chunk_idx": 8,
-    "video_id": "ytb_SDHI2SX7mH4",
     "state_changes": [
-      "man holds dog's face with both hands (new interaction type)"
+      "Man in military uniform kneels on one knee; dog sits down; man in blue/grey jacket claps."
     ]
   },
   {
     "time": [
-      18,
-      20
+      8,
+      9
     ],
     "visible_entities": [
       {
-        "desc": "man with shaved head wearing a dark blue military dress uniform with gold braided cords, gold sleeve stripes, and a chevron patch on the shoulder",
-        "action": "kneeling on the floor and petting a dog",
-        "position": "right/foreground"
+        "desc": "man with shaved head, wearing a dark blue military dress uniform with gold braided cords, gold stripes on sleeves, and a yellow stripe on blue trousers",
+        "action": "kneeling on one knee and holding the dog's face with both hands",
+        "position": "center"
       },
       {
-        "desc": "golden retriever dog with light brown fur wearing a red harness",
-        "action": "sitting and being petted",
-        "position": "left/foreground",
-        "id": "golden_retriever_service_dog_1"
+        "desc": "golden retriever dog with light fur, wearing a red service vest with patches and a red, white, and blue patterned bandana",
+        "action": "sitting and looking at the kneeling man",
+        "position": "center"
       },
       {
-        "desc": "large overhead jumbotron screen displaying a live feed of the court and text",
-        "action": "static",
-        "position": "background/top",
-        "id": "jumbotron_1"
+        "desc": "man with short dark hair, wearing a dark suit jacket, white shirt, and dark trousers",
+        "action": "standing and clapping",
+        "position": "right"
       },
       {
-        "desc": "person wearing a white basketball jersey with orange and blue trim and the number 0",
+        "desc": "man with a shaved head, wearing a dark blue polo shirt and khaki pants",
+        "action": "standing and holding a black leash",
+        "position": "left"
+      },
+      {
+        "desc": "man with short hair, wearing a dark blue jacket and blue jeans",
+        "action": "standing and clapping",
+        "position": "far left"
+      },
+      {
+        "desc": "woman with long blonde hair, wearing a dark blue top",
         "action": "standing",
-        "position": "left/background",
-        "id": "white_basketball_jersey_1"
+        "position": "background"
+      },
+      {
+        "desc": "blue LED advertising board",
+        "action": "static",
+        "position": "background"
+      },
+      {
+        "desc": "orange and blue painted basketball court floor",
+        "action": "static",
+        "position": "bottom"
+      },
+      {
+        "desc": "white text 'INSIDE edition' in a red box",
+        "action": "static",
+        "position": "bottom left"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A man in a military uniform is kneeling on the basketball court.",
+        "fact": "A man in a military uniform kneels on the basketball court.",
         "confidence": 1.0
       },
       {
-        "fact": "The man is petting the golden retriever on the face.",
+        "fact": "The kneeling man holds the golden retriever's face with both hands.",
         "confidence": 1.0
       },
       {
-        "fact": "The jumbotron screen displays the text 'MADISON SQUARE GARDEN' and 'TROOPS FOR TROOPS'.",
+        "fact": "The dog sits calmly while being held.",
         "confidence": 1.0
       },
       {
-        "fact": "The 'INSIDE edition' logo is visible in the bottom left corner.",
+        "fact": "A man in a dark suit stands to the right and claps his hands.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A man in a polo shirt stands to the left holding the dog's leash.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The text 'TICKETS.COM' is visible on the blue background screen.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The text 'New York Knicks' is visible in the top right corner.",
         "confidence": 1.0
       }
     ],
     "ocr": [
-      "New York Knicks",
-      "MADISON SQUARE GARDEN",
-      "TROOPS FOR TROOPS",
-      "Jennifer Pinto",
       "INSIDE edition",
-      "0"
+      "New York Knicks",
+      "TICKETS.COM",
+      "Service Dog"
     ],
-    "spatial": "The man in the military uniform is kneeling to the right of the golden retriever. The dog is sitting on the court floor in front of the man. The large jumbotron screen is located above the people on the court. The person in the white jersey is standing behind the dog.",
+    "spatial": "The kneeling man is in the center of the frame, directly in front of the sitting dog. The man in the suit is to the right of the kneeling man. The man holding the leash is to the left of the dog. The blue advertising board is behind all the people on the court.",
     "parse_success": true,
-    "chunk_idx": 9,
+    "chunk_idx": 8,
     "video_id": "ytb_SDHI2SX7mH4",
-    "state_changes": []
+    "state_changes": [
+      "Kneeling man holds the dog's face with both hands; dog looks at him."
+    ]
   },
   {
     "time": [
-      20,
-      22
+      9,
+      10
     ],
     "visible_entities": [
       {
-        "desc": "man with shaved head, wearing a dark blue military dress uniform with gold braided cords and yellow stripes on the pants",
+        "desc": "man with shaved head, wearing a dark blue military dress uniform with gold braided cords, gold chevrons on sleeves, and white cuffs",
+        "action": "kneeling and petting a dog",
+        "position": "center"
+      },
+      {
+        "desc": "golden retriever dog with light brown fur, wearing a red harness with a patch",
+        "action": "sitting and being petted",
+        "position": "left"
+      },
+      {
+        "desc": "person wearing a white basketball jersey with orange and blue trim and the number 0",
+        "action": "standing",
+        "position": "left background"
+      },
+      {
+        "desc": "large arena jumbotron screen displaying a live feed of the event",
+        "action": "static",
+        "position": "background"
+      },
+      {
+        "desc": "text 'MADISON SQUARE GARDEN' in yellow letters",
+        "action": "static",
+        "position": "top background"
+      },
+      {
+        "desc": "text 'TROOPS FOR TROOPS' in white letters on a red and blue banner",
+        "action": "static",
+        "position": "top background"
+      },
+      {
+        "desc": "text 'New York Knicks' in white letters",
+        "action": "static",
+        "position": "top right"
+      },
+      {
+        "desc": "text 'Jennifer Pinto' in white letters",
+        "action": "static",
+        "position": "top right"
+      },
+      {
+        "desc": "text 'INSIDE edition' logo in white and red",
+        "action": "static",
+        "position": "bottom left"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A man in a military uniform is kneeling on a basketball court.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The man is petting a golden retriever dog.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The dog is wearing a red harness.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The event is taking place at Madison Square Garden.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The jumbotron displays the text 'TROOPS FOR TROOPS'.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The text 'New York Knicks' is visible in the top right corner.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The text 'Jennifer Pinto' is visible in the top right corner.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "MADISON SQUARE GARDEN",
+      "TROOPS FOR TROOPS",
+      "New York Knicks",
+      "Jennifer Pinto",
+      "INSIDE edition"
+    ],
+    "spatial": "The man in the military uniform is to the right of the golden retriever dog. The dog is in front of the person wearing the white jersey. The jumbotron screen is above and behind the man and the dog. The 'MADISON SQUARE GARDEN' text is above the 'TROOPS FOR TROOPS' text on the screen.",
+    "parse_success": true,
+    "chunk_idx": 9,
+    "video_id": "ytb_SDHI2SX7mH4",
+    "state_changes": [
+      "Man transitions from holding face to petting the dog; jumbotron and specific text overlays appear."
+    ]
+  },
+  {
+    "time": [
+      10,
+      11
+    ],
+    "visible_entities": [
+      {
+        "desc": "man with shaved head, wearing a dark blue military dress uniform with gold braided cords on the shoulder and yellow stripes on the pants",
         "action": "kneeling on the floor and petting a dog",
-        "position": "center",
-        "id": "military_man_uniform_1"
+        "position": "center"
       },
       {
-        "desc": "golden retriever dog wearing a blue and red vest with patches",
+        "desc": "golden retriever dog wearing a red and blue vest with patches",
         "action": "lying on the floor",
-        "position": "center",
-        "id": "golden_retriever_service_dog_1"
+        "position": "center"
       },
       {
-        "desc": "person wearing khaki cargo pants and a dark blue shirt",
+        "desc": "person wearing khaki cargo pants and a dark blue t-shirt",
         "action": "standing and holding a leash",
         "position": "left"
       },
       {
         "desc": "large curved digital scoreboard screen",
         "action": "displaying video footage and text",
-        "position": "top",
-        "id": "jumbotron_1"
-      },
-      {
-        "desc": "white text reading 'MADISON SQUARE GARDEN' and 'HOOPS FOR TROOPS' on a black background",
-        "action": "static",
-        "position": "top"
+        "position": "background"
       },
       {
         "desc": "red and white 'INSIDE edition' logo",
         "action": "static",
-        "position": "bottom left",
-        "id": "inside_edition_logo_1"
+        "position": "bottom-left"
       }
     ],
     "atomic_facts": [
@@ -839,88 +814,80 @@
         "confidence": 1.0
       },
       {
-        "fact": "The scoreboard above displays the text 'MADISON SQUARE GARDEN' and 'HOOPS FOR TROOPS'.",
+        "fact": "The scoreboard displays the text 'MADISON SQUARE GARDEN' and 'HOOPS FOR TROOPS'.",
         "confidence": 1.0
       },
       {
-        "fact": "A person standing to the left is holding a leash attached to the dog.",
+        "fact": "A person to the left is holding the leash attached to the dog.",
         "confidence": 1.0
       }
     ],
     "ocr": [
+      "Jennifer Pinto",
       "MADISON SQUARE GARDEN",
       "HOOPS FOR TROOPS",
+      "Budweiser",
       "INSIDE edition",
-      "Jennifer Pinto",
-      "ESPN",
-      "CHASE",
-      "Budweiser"
+      "ESPN"
     ],
-    "spatial": "The man in the military uniform is kneeling on the floor next to the dog. The dog is lying on the orange and blue painted court surface. The large scoreboard screen is positioned above the people on the court. The 'INSIDE edition' logo is in the bottom left corner of the frame.",
+    "spatial": "The man in the military uniform is kneeling on the floor next to the golden retriever dog. The dog is lying in front of the man. A person holding the leash is standing to the left of the dog. The large scoreboard screen is above the people on the court.",
     "parse_success": true,
     "chunk_idx": 10,
     "video_id": "ytb_SDHI2SX7mH4",
     "state_changes": [
-      "dog changes position from sitting to lying on floor"
+      "Dog lies down on the floor while being petted."
     ]
   },
   {
     "time": [
-      22,
-      24
+      11,
+      12
     ],
     "visible_entities": [
       {
-        "desc": "golden retriever dog with light brown fur, wearing a blue and red service vest with patches",
-        "action": "sitting on the basketball court",
-        "position": "center",
-        "id": "golden_retriever_service_dog_1"
+        "desc": "golden retriever dog with light brown fur, wearing a blue and red service vest with patches and a red collar",
+        "action": "sitting on the floor",
+        "position": "center"
       },
       {
-        "desc": "bald man in a dark blue military dress uniform with gold stripes on the sleeves and pants, black shiny shoes",
+        "desc": "bald man in a dark blue military dress uniform with gold stripes on the sleeves and yellow stripes on the pants",
         "action": "kneeling and petting the dog",
-        "position": "right",
-        "id": "military_man_uniform_1"
+        "position": "right"
       },
       {
-        "desc": "person wearing khaki pants and a dark blue shirt, holding a black leash",
+        "desc": "person wearing khaki pants and a dark blue shirt",
         "action": "standing",
         "position": "left"
       },
       {
         "desc": "black cane lying on the floor",
         "action": "static",
-        "position": "bottom",
-        "id": "black_cane_1"
+        "position": "bottom"
       },
       {
-        "desc": "bald man in a camouflage military uniform",
+        "desc": "man in camouflage military uniform",
         "action": "static",
-        "position": "left (inset)",
-        "id": "bald_man_casual_1"
+        "position": "left (inset)"
       },
       {
-        "desc": "bald man in a green jacket and camouflage pants",
+        "desc": "man in green jacket and camouflage pants",
         "action": "static",
-        "position": "center (inset)",
-        "id": "bald_man_casual_1"
+        "position": "center (inset)"
       },
       {
-        "desc": "bald man in a black t-shirt and shorts with a white cast on his left leg, holding a crutch",
+        "desc": "man in black t-shirt and shorts with a white cast on his left foot, holding a crutch",
         "action": "standing",
-        "position": "right (inset)",
-        "id": "bald_man_casual_1"
+        "position": "right (inset)"
       },
       {
-        "desc": "young girl with long brown hair, wearing a black t-shirt and light blue jeans",
+        "desc": "girl with long brown hair, wearing a black t-shirt and light blue jeans",
         "action": "standing",
-        "position": "right (inset)",
-        "id": "woman_brown_hair_1"
+        "position": "right (inset)"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A man in a military dress uniform kneels to pet a golden retriever dog.",
+        "fact": "A man in a military dress uniform kneels down to pet a golden retriever.",
         "confidence": 1.0
       },
       {
@@ -928,23 +895,19 @@
         "confidence": 1.0
       },
       {
-        "fact": "A black cane lies on the floor in front of the dog.",
+        "fact": "A black cane is lying on the floor near the dog.",
         "confidence": 1.0
       },
       {
-        "fact": "A person stands to the left of the dog holding a leash.",
+        "fact": "The video displays a split-screen montage of photos showing a man in military attire and later with a leg cast.",
         "confidence": 1.0
       },
       {
-        "fact": "The video displays a split-screen montage of photos.",
+        "fact": "The 'INSIDE edition' logo is visible in the bottom left corner.",
         "confidence": 1.0
       },
       {
-        "fact": "One photo shows a man in a military uniform standing next to flags.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "Another photo shows a man with a leg cast standing with a young girl.",
+        "fact": "The 'ESPN' logo is visible in the top right corner.",
         "confidence": 1.0
       }
     ],
@@ -953,88 +916,80 @@
       "INSIDE edition",
       "New York Knicks"
     ],
-    "spatial": "The man in the military dress uniform is kneeling to the right of the golden retriever dog. The dog is sitting in the center of the frame on the basketball court. The person holding the leash is standing to the left of the dog. The black cane is lying on the floor in the foreground, below the dog. The inset photos are arranged horizontally across the screen, with the man in the camouflage uniform on the left, the man in the green jacket in the center, and the man with the cast and the girl on the right.",
+    "spatial": "The man in the military dress uniform is kneeling to the right of the golden retriever. The dog is sitting on the basketball court floor, with a black cane lying in front of it. In the background, a person in khaki pants stands to the left of the dog. The inset photos are arranged horizontally, with the man in the camouflage uniform on the left and the man with the crutch on the right.",
     "parse_success": true,
     "chunk_idx": 11,
     "video_id": "ytb_SDHI2SX7mH4",
     "state_changes": [
-      "new people appear: man with cast/crutch and young girl"
+      "Dog sits up; injured man with cast and crutches appears; girl in jeans appears."
     ]
   },
   {
     "time": [
-      24,
-      26
+      12,
+      13
     ],
     "visible_entities": [
       {
-        "desc": "man with bald head, wearing a green fleece pullover and camouflage pants",
-        "action": "standing and smiling",
-        "position": "center-left",
-        "id": "bald_man_casual_1"
+        "desc": "bald man wearing a green fleece jacket, camouflage pants, and tan boots",
+        "action": "standing",
+        "position": "center-left"
       },
       {
-        "desc": "man with bald head, wearing a black t-shirt and black shorts",
+        "desc": "bald man wearing a black t-shirt, black shorts, and a white cast on his left leg",
         "action": "standing with crutches",
-        "position": "center-right",
-        "id": "bald_man_casual_1"
+        "position": "center-right"
       },
       {
-        "desc": "young woman with long brown hair, wearing a black t-shirt with yellow text and light blue jeans",
-        "action": "standing next to the man in black",
-        "position": "right",
-        "id": "woman_brown_hair_1"
+        "desc": "young woman with long brown hair, wearing a black t-shirt with yellow text, light blue jeans, and a black arm brace",
+        "action": "standing",
+        "position": "right"
       },
       {
-        "desc": "white crutches",
-        "action": "being held",
-        "position": "center-right",
-        "id": "white_crutches_1"
-      },
-      {
-        "desc": "white cast on leg",
+        "desc": "person in camouflage military uniform",
         "action": "static",
-        "position": "center-right",
-        "id": "white_cast_1"
+        "position": "far left"
       },
       {
-        "desc": "military flags",
-        "action": "hanging",
-        "position": "background",
-        "id": "flags_1"
-      },
-      {
-        "desc": "INSIDE edition logo",
+        "desc": "person in camouflage military uniform",
         "action": "static",
-        "position": "bottom-left",
-        "id": "inside_edition_logo_1"
+        "position": "far right"
       },
       {
-        "desc": "New York Knicks text",
+        "desc": "red and white logo with the text 'INSIDE edition'",
         "action": "static",
-        "position": "top-right",
-        "id": "ny_knicks_text_1"
+        "position": "bottom-left"
+      },
+      {
+        "desc": "white text reading 'New York Knicks'",
+        "action": "static",
+        "position": "top-right"
+      },
+      {
+        "desc": "flags on poles",
+        "action": "static",
+        "position": "background"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A man in a green fleece pullover stands in front of military flags.",
+        "fact": "The man in the center-right is holding two crutches and has a cast on his leg.",
         "confidence": 1.0
       },
       {
-        "fact": "A man in a black t-shirt uses crutches and has a white cast on his left leg.",
+        "fact": "The young woman is wearing a black brace on her left arm.",
         "confidence": 1.0
       },
       {
-        "fact": "A young woman stands next to the man with the cast.",
+        "fact": "The 'INSIDE edition' logo is visible in the bottom-left corner.",
         "confidence": 1.0
       },
       {
-        "fact": "The text 'INSIDE edition' is visible in the bottom left corner.",
+        "fact": "The text 'New York Knicks' is visible in the top-right corner.",
         "confidence": 1.0
       },
       {
-        "fact": "The text 'New York Knicks' is visible in the top right corner.",
+        "fact": "Flags are displayed in the background behind the man in the green jacket.",
         "confidence": 1.0
       }
     ],
@@ -1042,73 +997,49 @@
       "INSIDE edition",
       "New York Knicks"
     ],
-    "spatial": "The man in the green fleece is to the left of the man in the black t-shirt. The young woman is to the right of the man in the black t-shirt. The man in the black t-shirt is holding crutches. The flags are behind the man in the green fleece.",
+    "spatial": "The man in the green jacket is to the left of the man with the cast. The young woman is standing next to the man with the cast on his right side. The person in the military uniform is partially visible on the far left edge of the frame. The 'INSIDE edition' logo is below the person on the far left.",
     "parse_success": true,
     "chunk_idx": 12,
     "video_id": "ytb_SDHI2SX7mH4",
     "state_changes": [
-      "military flags appear, crutches now being held"
+      "Man in green fleece and camo pants appears; young woman with arm brace appears."
     ]
   },
   {
     "time": [
-      26,
-      28
+      13,
+      14
     ],
     "visible_entities": [
       {
-        "desc": "man with shaved head, wearing a green fleece jacket and blue digital camouflage pants",
+        "desc": "bald man in green military jacket and camouflage pants",
         "action": "static",
-        "position": "left",
-        "id": "bald_man_casual_1"
+        "position": "left"
       },
       {
-        "desc": "man with shaved head, wearing a black t-shirt, black shorts, and a white cast on his left leg",
-        "action": "static",
-        "position": "center",
-        "id": "bald_man_casual_1"
+        "desc": "bald man in black t-shirt and shorts with a white cast on his left leg",
+        "action": "standing with crutches",
+        "position": "center"
       },
       {
-        "desc": "young woman with long brown hair, wearing a black t-shirt and light blue jeans",
-        "action": "static",
-        "position": "center",
-        "id": "woman_brown_hair_1"
+        "desc": "young woman with long brown hair, black t-shirt, and light blue jeans",
+        "action": "standing next to the man",
+        "position": "center"
       },
       {
-        "desc": "man with shaved head, wearing a tan compression shirt and camouflage pants",
+        "desc": "bald man in camouflage military uniform and tan compression shirt",
         "action": "static",
-        "position": "right",
-        "id": "bald_man_casual_1"
+        "position": "right"
       },
       {
-        "desc": "silver crutch",
-        "action": "static",
-        "position": "center",
-        "id": "white_crutches_1"
+        "desc": "white crutches",
+        "action": "being held",
+        "position": "center"
       },
       {
-        "desc": "flags on poles",
+        "desc": "flags on stands",
         "action": "static",
-        "position": "left background",
-        "id": "flags_1"
-      },
-      {
-        "desc": "flat-screen TV",
-        "action": "static",
-        "position": "left background",
-        "id": "tv_screen_1"
-      },
-      {
-        "desc": "logo with white text 'INSIDE' above red text 'edition' in a black box",
-        "action": "static",
-        "position": "bottom left",
-        "id": "inside_edition_logo_1"
-      },
-      {
-        "desc": "white text 'New York Knicks'",
-        "action": "static",
-        "position": "top right",
-        "id": "ny_knicks_text_1"
+        "position": "left background"
       }
     ],
     "atomic_facts": [
@@ -1117,7 +1048,7 @@
         "confidence": 1.0
       },
       {
-        "fact": "The man in the center is holding a crutch under his right arm.",
+        "fact": "The man in the center is using crutches to support his weight.",
         "confidence": 1.0
       },
       {
@@ -1129,7 +1060,11 @@
         "confidence": 1.0
       },
       {
-        "fact": "The text 'INSIDE edition' is visible in the bottom left corner.",
+        "fact": "The man on the right is standing with his hands on his hips.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The 'INSIDE edition' logo is visible in the bottom left corner.",
         "confidence": 1.0
       },
       {
@@ -1141,7 +1076,7 @@
       "INSIDE edition",
       "New York Knicks"
     ],
-    "spatial": "The screen is divided into three vertical sections. In the left section, a man in a green jacket stands in front of flags and a TV. In the center section, a man with a cast stands next to a young woman. In the right section, a man in a tan shirt stands with his hands on his hips. The 'INSIDE edition' logo is below the left section, and the 'New York Knicks' text is above the right section.",
+    "spatial": "The screen is divided into three vertical panels. In the left panel, a man in a military jacket stands in front of flags. In the center panel, a man with a cast stands next to a young woman. In the right panel, a man in a camouflage uniform stands against a wall. The 'INSIDE edition' logo is below the left panel, and the 'New York Knicks' text is above the right panel.",
     "parse_success": true,
     "chunk_idx": 13,
     "video_id": "ytb_SDHI2SX7mH4",
@@ -1149,57 +1084,44 @@
   },
   {
     "time": [
-      28,
-      30
+      14,
+      15
     ],
     "visible_entities": [
       {
-        "desc": "bald man with light skin, wearing a green fleece pullover with patches and blue digital camouflage pants",
-        "action": "standing and smiling",
-        "position": "left",
-        "id": "bald_man_casual_1"
+        "desc": "man with shaved head, wearing a green fleece jacket and blue digital camouflage pants",
+        "action": "standing",
+        "position": "left"
       },
       {
-        "desc": "bald man with light skin, wearing a black t-shirt, black shorts, and a white cast on his left foot",
+        "desc": "man with shaved head, wearing a black t-shirt, black shorts, and a white cast on his left foot",
         "action": "standing with crutches",
-        "position": "center-left",
-        "id": "bald_man_casual_1"
+        "position": "center-left"
       },
       {
         "desc": "young woman with long brown hair, wearing a black t-shirt with yellow text, light blue jeans, and a black wrist brace",
-        "action": "standing next to the man with crutches",
-        "position": "center-right",
-        "id": "woman_brown_hair_1"
+        "action": "standing",
+        "position": "center-right"
       },
       {
-        "desc": "bald man with light skin, wearing a tan compression shirt and woodland camouflage pants",
+        "desc": "man with shaved head, wearing a tan compression shirt and woodland camouflage pants",
         "action": "standing with hands on hips",
-        "position": "right",
-        "id": "bald_man_casual_1"
+        "position": "right"
       },
       {
         "desc": "white crutches",
         "action": "being held",
-        "position": "center",
-        "id": "white_crutches_1"
+        "position": "center"
       },
       {
-        "desc": "flags on stands",
+        "desc": "red and white 'INSIDE edition' logo",
         "action": "static",
-        "position": "background left",
-        "id": "flags_1"
+        "position": "bottom-left"
       },
       {
-        "desc": "INSIDE edition logo",
+        "desc": "white 'New York Knicks' text",
         "action": "static",
-        "position": "bottom left",
-        "id": "inside_edition_logo_1"
-      },
-      {
-        "desc": "New York Knicks text",
-        "action": "static",
-        "position": "top right",
-        "id": "ny_knicks_text_1"
+        "position": "top-right"
       }
     ],
     "atomic_facts": [
@@ -1208,23 +1130,19 @@
         "confidence": 1.0
       },
       {
-        "fact": "The man on the left is standing in front of flags.",
+        "fact": "The man in the center is using crutches to support his weight.",
         "confidence": 1.0
       },
       {
-        "fact": "The man in the center is using crutches and has a cast on his left foot.",
+        "fact": "The man in the center has a white cast on his left foot.",
         "confidence": 1.0
       },
       {
-        "fact": "The woman in the center is wearing a wrist brace.",
+        "fact": "The man on the right is standing with his hands on his hips.",
         "confidence": 1.0
       },
       {
-        "fact": "The man on the right is wearing a compression garment on his torso.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The text 'INSIDE edition' is visible in the bottom left corner.",
+        "fact": "The 'INSIDE edition' logo is visible in the bottom left corner.",
         "confidence": 1.0
       },
       {
@@ -1236,141 +1154,68 @@
       "INSIDE edition",
       "New York Knicks"
     ],
-    "spatial": "The screen is divided into three vertical panels. The man in the green fleece is in the left panel. The man with crutches and the woman are in the center panel, standing next to each other. The man in the compression shirt is in the right panel. The 'INSIDE edition' logo is below the man in the green fleece. The 'New York Knicks' text is above the man in the compression shirt.",
+    "spatial": "The screen is divided into three vertical sections. The man in the green jacket is on the left side. The man with the cast and the young woman are in the center section, standing next to each other. The man in the tan shirt is on the right side. The 'INSIDE edition' logo is below the man on the left. The 'New York Knicks' text is above the man on the right.",
     "parse_success": true,
     "chunk_idx": 14,
     "video_id": "ytb_SDHI2SX7mH4",
-    "state_changes": []
-  },
-  {
-    "time": [
-      30,
-      32
-    ],
-    "visible_entities": [
-      {
-        "desc": "woman with long wavy blonde hair, wearing a dark blue t-shirt with a circular orange and white logo, holding a white basketball jersey",
-        "action": "standing and clapping",
-        "position": "left",
-        "id": "woman_blonde_1"
-      },
-      {
-        "desc": "man with a shaved head, wearing a dark blue military dress uniform with gold buttons, medals, and yellow stripes on the pants, holding a black cane",
-        "action": "waving right hand",
-        "position": "center",
-        "id": "military_man_uniform_1"
-      },
-      {
-        "desc": "man with short black hair, wearing a black suit jacket, white dress shirt, and black trousers",
-        "action": "clapping hands",
-        "position": "right",
-        "id": "man_dark_suit_1"
-      },
-      {
-        "desc": "white basketball jersey with blue and orange trim and the name 'ZIVA' on the back",
-        "action": "being held",
-        "position": "left",
-        "id": "white_basketball_jersey_1"
-      },
-      {
-        "desc": "black cane",
-        "action": "being held",
-        "position": "center",
-        "id": "black_cane_1"
-      },
-      {
-        "desc": "wooden basketball court floor with large blue and orange painted graphics",
-        "action": "static",
-        "position": "background",
-        "id": "basketball_court_1"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "The man in the center raises his right hand to wave.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The woman on the left holds a white jersey with the name 'ZIVA' visible.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The man on the right claps his hands together.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The man in the center holds a black cane in his left hand.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The text 'New York Knicks' is visible in the top right corner.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The 'INSIDE edition' logo is visible in the bottom left corner.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [
-      "DEN",
-      "New York Knicks",
-      "INSIDE edition",
-      "ZIVA"
-    ],
-    "spatial": "The woman is to the left of the man in the military uniform. The man in the suit is to the right of the man in the military uniform. The woman is holding the white jersey in front of her. The man in the uniform is holding the cane in his left hand. All three people are standing on the basketball court floor.",
-    "parse_success": true,
-    "chunk_idx": 15,
-    "video_id": "ytb_SDHI2SX7mH4",
     "state_changes": [
-      "man with cane begins waving hand"
+      "Man in tan compression shirt appears standing with hands on hips."
     ]
   },
   {
     "time": [
-      32,
-      34
+      15,
+      16
     ],
     "visible_entities": [
       {
-        "desc": "woman with long wavy blonde hair, wearing a dark blue t-shirt with a circular graphic, holding a white basketball jersey",
-        "action": "standing and holding a jersey",
-        "position": "left",
-        "id": "woman_blonde_1"
+        "desc": "woman with long wavy blonde hair, wearing a dark blue t-shirt with a circular orange and white logo, holding a white basketball jersey",
+        "action": "holding a jersey",
+        "position": "left"
       },
       {
-        "desc": "man with short hair, wearing a dark blue military dress uniform with gold buttons, medals, and chevrons on the sleeves, holding a black cane",
-        "action": "standing and smiling",
-        "position": "center",
-        "id": "military_man_uniform_1"
+        "desc": "man with a shaved head, wearing a dark blue military dress uniform with gold buttons, medals, and yellow piping on the trousers, holding a black cane",
+        "action": "waving right hand",
+        "position": "center"
       },
       {
-        "desc": "tall man with short dark hair, wearing a black suit jacket, white dress shirt, and black trousers",
+        "desc": "man with short black hair, wearing a black suit jacket, white dress shirt, and black trousers",
         "action": "clapping hands",
-        "position": "right",
-        "id": "man_dark_suit_1"
+        "position": "right"
       },
       {
-        "desc": "white basketball jersey with blue and orange trim and the name 'ANTETOKOUNMPO' on the back",
-        "action": "being held",
-        "position": "left",
-        "id": "white_basketball_jersey_1"
+        "desc": "white basketball jersey with blue and orange trim and the name 'ZVA' on the back",
+        "action": "static",
+        "position": "held by the woman"
       },
       {
         "desc": "black cane",
-        "action": "being held",
-        "position": "center",
-        "id": "black_cane_1"
+        "action": "static",
+        "position": "held by the man in the center"
       },
       {
-        "desc": "wooden basketball court floor with painted blue and orange graphics",
+        "desc": "wooden basketball court floor with blue and orange painted markings",
         "action": "static",
-        "position": "background",
-        "id": "basketball_court_1"
+        "position": "background"
+      },
+      {
+        "desc": "white text 'New York Knicks' in the top right corner",
+        "action": "static",
+        "position": "top right"
+      },
+      {
+        "desc": "red and white 'INSIDE edition' logo in the bottom left corner",
+        "action": "static",
+        "position": "bottom left"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "The man in the black suit jacket is clapping his hands.",
+        "fact": "The man in the center is waving his right hand.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The man on the right is clapping his hands.",
         "confidence": 1.0
       },
       {
@@ -1378,7 +1223,7 @@
         "confidence": 1.0
       },
       {
-        "fact": "The man in the center is holding a black cane in his right hand.",
+        "fact": "The man in the center is holding a black cane in his left hand.",
         "confidence": 1.0
       },
       {
@@ -1388,64 +1233,184 @@
       {
         "fact": "The 'INSIDE edition' logo is visible in the bottom left corner.",
         "confidence": 1.0
-      },
-      {
-        "fact": "The word 'DEN' is painted on the floor in the background.",
-        "confidence": 1.0
       }
     ],
     "ocr": [
       "New York Knicks",
       "INSIDE edition",
       "DEN",
-      "RK"
+      "ZVA"
     ],
-    "spatial": "The woman is to the left of the man in the military uniform. The man in the suit is to the right of the man in the military uniform. The woman is holding the white jersey in front of her. The man in the uniform is holding the cane in his right hand.",
+    "spatial": "The woman is to the left of the man in the military uniform. The man in the suit is to the right of the man in the military uniform. The woman is holding a white jersey in front of her. The man in the center is holding a cane in his left hand. The 'New York Knicks' text is above the man in the suit.",
     "parse_success": true,
-    "chunk_idx": 16,
+    "chunk_idx": 15,
     "video_id": "ytb_SDHI2SX7mH4",
     "state_changes": [
-      "basketball jersey name changes to ANTETOKOUNMPO"
+      "Man in military uniform holding cane waves his right hand; woman holds jersey prominently."
     ]
   },
   {
     "time": [
-      34,
-      36
+      16,
+      17
     ],
     "visible_entities": [
       {
-        "desc": "Golden Retriever puppy with light golden fur, large dark eyes, and a black nose, wearing a red and white patterned collar",
-        "action": "looking at the camera",
-        "position": "center",
-        "id": "golden_retriever_puppy_1"
+        "desc": "woman with long wavy blonde hair, wearing a dark blue t-shirt with a circular logo and black pants",
+        "action": "holding a white jersey",
+        "position": "left"
       },
       {
-        "desc": "Abstract background with horizontal motion blur streaks in shades of orange, purple, white, and red",
-        "action": "static",
-        "position": "background",
-        "id": "abstract_background_1"
+        "desc": "man with a shaved head, wearing a dark blue military dress uniform with gold buttons, medals, and chevrons on the sleeve",
+        "action": "smiling and standing",
+        "position": "center"
       },
       {
-        "desc": "Logo with 'INSIDE' in white text on a black background and 'edition' in white text on a red background",
-        "action": "static",
-        "position": "bottom left",
-        "id": "inside_edition_logo_1"
+        "desc": "man with short dark hair, wearing a black suit jacket, white shirt, and black pants",
+        "action": "clapping hands",
+        "position": "right"
       },
       {
-        "desc": "Text 'Jillian Jackson' in white font",
+        "desc": "white sports jersey with blue and orange trim",
+        "action": "being held",
+        "position": "left"
+      },
+      {
+        "desc": "black cane",
+        "action": "being held",
+        "position": "center"
+      },
+      {
+        "desc": "wooden basketball court floor with painted blue and orange markings",
         "action": "static",
-        "position": "top right",
-        "id": "jillian_jackson_text_1"
+        "position": "background"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "The Golden Retriever puppy looks at the camera.",
+        "fact": "The man in the black suit is clapping his hands.",
         "confidence": 1.0
       },
       {
-        "fact": "The video transitions from a blurred background to a clear shot of the puppy.",
+        "fact": "The woman is holding a white jersey with the name 'ANTETOKOUNMPO' visible on the back.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The man in the military uniform is holding a black cane in his right hand.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The text 'New York Knicks' is visible in the top right corner.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The text 'INSIDE edition' is visible in the bottom left corner.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "DEN",
+      "New York Knicks",
+      "INSIDE edition",
+      "ANTETOKOUNMPO"
+    ],
+    "spatial": "The woman is to the left of the man in the military uniform. The man in the black suit is to the right of the man in the military uniform. The woman is holding the white jersey in front of her. The man in the military uniform is holding the black cane in his right hand. All three people are standing on the basketball court floor.",
+    "parse_success": true,
+    "chunk_idx": 16,
+    "video_id": "ytb_SDHI2SX7mH4",
+    "state_changes": []
+  },
+  {
+    "time": [
+      17,
+      18
+    ],
+    "visible_entities": [
+      {
+        "desc": "golden retriever puppy with light golden fur, dark eyes, and a black nose",
+        "action": "looking at the camera",
+        "position": "center"
+      },
+      {
+        "desc": "red and white patterned collar",
+        "action": "static",
+        "position": "around the dog's neck"
+      },
+      {
+        "desc": "INSIDE edition logo",
+        "action": "static",
+        "position": "bottom left"
+      },
+      {
+        "desc": "Jillian Jackson text",
+        "action": "static",
+        "position": "top right"
+      },
+      {
+        "desc": "wooden floor",
+        "action": "static",
+        "position": "background"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The puppy is looking at the camera.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The puppy is wearing a red and white patterned collar.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The 'INSIDE edition' logo is visible in the bottom left corner.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The text 'Jillian Jackson' is visible in the top right corner.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "INSIDE edition",
+      "Jillian Jackson"
+    ],
+    "spatial": "The puppy is in the center of the frame, in front of the wooden floor. The 'INSIDE edition' logo is in the bottom left corner, and the 'Jillian Jackson' text is in the top right corner. The collar is around the puppy's neck.",
+    "parse_success": true,
+    "chunk_idx": 17,
+    "video_id": "ytb_SDHI2SX7mH4",
+    "state_changes": [
+      "Scene cuts to close-up of golden retriever puppy; adult dog and crowd disappear."
+    ]
+  },
+  {
+    "time": [
+      18,
+      19
+    ],
+    "visible_entities": [
+      {
+        "desc": "golden retriever puppy with light golden fur, large dark eyes, and a black nose, wearing a red and white patterned collar",
+        "action": "looking directly at the camera",
+        "position": "center"
+      },
+      {
+        "desc": "logo with white text 'INSIDE' above red text 'edition' on a black background",
+        "action": "static",
+        "position": "bottom left"
+      },
+      {
+        "desc": "white text 'Jillian Jackson'",
+        "action": "static",
+        "position": "top right"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The golden retriever puppy is looking directly at the camera.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The puppy is wearing a red and white patterned collar.",
         "confidence": 1.0
       },
       {
@@ -1461,52 +1426,604 @@
       "INSIDE edition",
       "Jillian Jackson"
     ],
-    "spatial": "The Golden Retriever puppy is in the center of the frame. The 'INSIDE edition' logo is below and to the left of the puppy. The text 'Jillian Jackson' is above and to the right of the puppy.",
+    "spatial": "The puppy is in the center of the frame. The 'INSIDE edition' logo is in the bottom left corner, below the puppy's head. The text 'Jillian Jackson' is in the top right corner, above and to the right of the puppy's head.",
     "parse_success": true,
-    "chunk_idx": 17,
+    "chunk_idx": 18,
     "video_id": "ytb_SDHI2SX7mH4",
-    "state_changes": [
-      "scene transitions to puppy closeup with abstract background"
-    ]
+    "state_changes": []
   },
   {
     "time": [
-      36,
-      38
+      19,
+      20
     ],
     "visible_entities": [
       {
-        "desc": "golden retriever puppy with light golden fur, large dark eyes, and a black nose",
+        "desc": "golden retriever puppy with light golden fur, large dark eyes, black nose, wearing a clear plastic cone collar and a patterned red and white collar",
         "action": "looking at the camera",
-        "position": "center",
-        "id": "golden_retriever_puppy_1"
+        "position": "center/foreground"
       },
       {
-        "desc": "red and white patterned collar",
-        "action": "static",
-        "position": "bottom",
-        "id": "red_white_collar_1"
+        "desc": "man with short dark hair, wearing a dark blue military dress uniform with gold buttons, shoulder cords, and various colorful ribbons and badges",
+        "action": "smiling broadly",
+        "position": "center"
       },
       {
-        "desc": "white text reading 'Jillian Jackson'",
-        "action": "static",
-        "position": "top right",
-        "id": "jillian_jackson_text_1"
+        "desc": "man with dark skin, wearing a dark suit jacket and white shirt",
+        "action": "standing",
+        "position": "right"
       },
       {
-        "desc": "logo with white text 'INSIDE' and red text 'edition'",
+        "desc": "logo with white text 'INSIDE' above red text 'edition' on a black background",
         "action": "static",
-        "position": "bottom left",
-        "id": "inside_edition_logo_1"
+        "position": "bottom-left"
+      },
+      {
+        "desc": "white text 'Jillian Jackson'",
+        "action": "static",
+        "position": "top-right"
+      },
+      {
+        "desc": "white text 'ESPN'",
+        "action": "static",
+        "position": "top-right"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "The puppy is looking directly at the camera.",
+        "fact": "A golden retriever puppy is looking at the camera.",
         "confidence": 1.0
       },
       {
-        "fact": "The puppy is wearing a red and white patterned collar.",
+        "fact": "The puppy is wearing a clear plastic cone collar.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A man in a military uniform is smiling broadly.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The man in the military uniform is standing next to a man in a suit.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The 'INSIDE edition' logo is visible in the bottom-left corner.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The name 'Jillian Jackson' is visible in the top-right corner of the first frame.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The text 'ESPN' is visible in the top-right corner of the second frame.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "INSIDE",
+      "edition",
+      "Jillian Jackson",
+      "ESPN"
+    ],
+    "spatial": "In the first frame, the golden retriever puppy is in the center and foreground. In the second frame, the man in the military uniform is in the center, and the man in the suit is to his right. The 'INSIDE edition' logo is in the bottom-left corner of both frames.",
+    "parse_success": true,
+    "chunk_idx": 19,
+    "video_id": "ytb_SDHI2SX7mH4",
+    "state_changes": [
+      "Puppy now wears a clear plastic cone collar; man in military uniform and man in suit appear in background."
+    ]
+  },
+  {
+    "time": [
+      20,
+      21
+    ],
+    "visible_entities": [
+      {
+        "desc": "man with shaved head, wearing a dark blue military dress uniform with gold buttons, shoulder cords, and various ribbons and badges",
+        "action": "smiling and standing",
+        "position": "center"
+      },
+      {
+        "desc": "man with dark skin, wearing a dark suit jacket and white shirt",
+        "action": "clapping and smiling",
+        "position": "right"
+      },
+      {
+        "desc": "man with shaved head, wearing a dark blue t-shirt and khaki pants",
+        "action": "walking left",
+        "position": "left"
+      },
+      {
+        "desc": "golden retriever dog with light brown fur",
+        "action": "walking left",
+        "position": "left"
+      },
+      {
+        "desc": "woman with long blonde hair, wearing a dark blue t-shirt and black pants",
+        "action": "standing and holding a white towel",
+        "position": "center"
+      },
+      {
+        "desc": "person with gray hair, wearing a black shirt and headphones",
+        "action": "standing",
+        "position": "foreground"
+      },
+      {
+        "desc": "wooden basketball court with orange and blue painted logo",
+        "action": "static",
+        "position": "bottom"
+      },
+      {
+        "desc": "digital advertising board with blue background and white text",
+        "action": "static",
+        "position": "background"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A man in a military uniform is smiling broadly.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A man in a suit is clapping his hands.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A golden retriever dog is walking across the basketball court.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A man in a blue t-shirt is walking next to the dog.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A woman is holding a white towel.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The digital board displays the text 'NBATICKETS.COM'.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "ESPN",
+      "INSIDE edition",
+      "NBATICKETS.COM",
+      "YULFO"
+    ],
+    "spatial": "The man in the military uniform is standing to the left of the man in the suit. The dog is walking to the left of the woman holding the towel. The person with headphones is in the foreground, in front of the group on the court. The digital advertising board is in the background, behind the people.",
+    "parse_success": true,
+    "chunk_idx": 20,
+    "video_id": "ytb_SDHI2SX7mH4",
+    "state_changes": [
+      "Scene returns to adult dog walking left; man in blue t-shirt walks left; audio tech person appears."
+    ]
+  },
+  {
+    "time": [
+      21,
+      22
+    ],
+    "visible_entities": [
+      {
+        "desc": "man with shaved head, wearing a navy blue t-shirt with white text on the back, khaki cargo pants, and dark shoes",
+        "action": "walking across the court",
+        "position": "center"
+      },
+      {
+        "desc": "light-colored dog, medium size, fluffy tail",
+        "action": "walking next to the man in the navy shirt",
+        "position": "center"
+      },
+      {
+        "desc": "man in a dark military dress uniform with medals and a cane",
+        "action": "standing and smiling",
+        "position": "center-right"
+      },
+      {
+        "desc": "tall man in a dark suit and white shirt",
+        "action": "clapping hands",
+        "position": "right"
+      },
+      {
+        "desc": "woman with long blonde hair, wearing a dark t-shirt and dark pants",
+        "action": "standing and holding a white cloth",
+        "position": "left"
+      },
+      {
+        "desc": "person with grey hair wearing headphones and a black shirt",
+        "action": "static",
+        "position": "foreground-right"
+      },
+      {
+        "desc": "blue digital advertising board",
+        "action": "static",
+        "position": "background"
+      },
+      {
+        "desc": "large orange and blue New York Knicks logo painted on the wooden floor",
+        "action": "static",
+        "position": "center"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A man in a navy blue t-shirt and khaki pants walks across the basketball court.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A light-colored dog walks alongside the man in the navy blue t-shirt.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A man in a military uniform stands holding a cane.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A tall man in a suit claps his hands.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The text 'NBATICKETS.COM' is displayed on the blue digital board in the background.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The 'INSIDE edition' logo is visible in the bottom left corner.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "ESPN",
+      "NBATICKETS.COM",
+      "INSIDE edition",
+      "BUD LIGHT"
+    ],
+    "spatial": "The man in the navy blue shirt and the dog are walking in the center of the court, positioned to the left of the man in the military uniform. The man in the suit stands to the right of the man in the military uniform. The cameraman is in the foreground, facing the group on the court. The blue advertising board is behind the people on the court.",
+    "parse_success": true,
+    "chunk_idx": 21,
+    "video_id": "ytb_SDHI2SX7mH4",
+    "state_changes": [
+      "Different light-colored fluffy dog appears walking next to man in navy shirt."
+    ]
+  },
+  {
+    "time": [
+      22,
+      23
+    ],
+    "visible_entities": [
+      {
+        "desc": "golden retriever dog with light brown fur, wearing a red and blue service vest",
+        "action": "sitting and being kissed",
+        "position": "center"
+      },
+      {
+        "desc": "bald man in a dark blue military dress uniform with gold stripes on the sleeves and pants",
+        "action": "kneeling and kissing the dog",
+        "position": "right"
+      },
+      {
+        "desc": "person wearing a dark blue t-shirt, tan cargo pants, and black shoes, with tattoos on the left arm",
+        "action": "standing",
+        "position": "left"
+      },
+      {
+        "desc": "person in a black suit",
+        "action": "standing",
+        "position": "far right"
+      },
+      {
+        "desc": "basketball court floor with orange and blue painted sections",
+        "action": "static",
+        "position": "bottom"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A man in a military uniform is kneeling on the court floor.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The man is kissing the golden retriever on the nose.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The dog is sitting on the orange section of the court.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The 'INSIDE edition' logo is visible in the bottom left corner.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The 'ESPN' logo is visible in the top right corner.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "INSIDE edition",
+      "ESPN"
+    ],
+    "spatial": "The man in the military uniform is to the right of the dog and is kneeling in front of it. The person in the tan pants is standing to the left of the dog. The dog is sitting on the basketball court floor, which is below all the standing people.",
+    "parse_success": true,
+    "chunk_idx": 22,
+    "video_id": "ytb_SDHI2SX7mH4",
+    "state_changes": [
+      "Golden retriever sits and is kissed by kneeling man; tattooed arm person appears."
+    ]
+  },
+  {
+    "time": [
+      23,
+      24
+    ],
+    "visible_entities": [
+      {
+        "desc": "golden retriever dog with golden fur, wearing a red and black vest with white text and a circular logo",
+        "action": "sitting on a wooden bench",
+        "position": "center"
+      },
+      {
+        "desc": "wooden bench with horizontal slats",
+        "action": "static",
+        "position": "bottom"
+      },
+      {
+        "desc": "black leash attached to the dog's vest",
+        "action": "static",
+        "position": "center"
+      },
+      {
+        "desc": "metal railing with vertical bars",
+        "action": "static",
+        "position": "background"
+      },
+      {
+        "desc": "white text 'Jillian Jackson' in sans-serif font",
+        "action": "static",
+        "position": "top right"
+      },
+      {
+        "desc": "logo with 'INSIDE edition' in white text on a red and black background",
+        "action": "static",
+        "position": "bottom left"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The golden retriever is sitting on a wooden bench.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The dog is wearing a vest that reads 'Service Dog' and 'IN TRAINING'.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A black leash is attached to the dog's vest and lies on the bench.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The dog is positioned in front of a metal railing.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "Jillian Jackson",
+      "INSIDE edition",
+      "Service Dog",
+      "IN TRAINING"
+    ],
+    "spatial": "The golden retriever is sitting on top of the wooden bench. The metal railing is behind the dog. The 'INSIDE edition' logo is in the bottom left corner of the frame, while the 'Jillian Jackson' text is in the top right corner.",
+    "parse_success": true,
+    "chunk_idx": 23,
+    "video_id": "ytb_SDHI2SX7mH4",
+    "state_changes": [
+      "Dog moves to sit on a wooden bench; leash attached to vest visible."
+    ]
+  },
+  {
+    "time": [
+      24,
+      25
+    ],
+    "visible_entities": [
+      {
+        "desc": "golden retriever dog with light brown fur, wearing a red and black vest with white text",
+        "action": "sitting on a wooden surface",
+        "position": "center"
+      },
+      {
+        "desc": "man with a shaved head, smiling, wearing a black t-shirt with a logo",
+        "action": "static",
+        "position": "center"
+      },
+      {
+        "desc": "wooden railing with vertical bars",
+        "action": "static",
+        "position": "background"
+      },
+      {
+        "desc": "black leash",
+        "action": "static",
+        "position": "foreground"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The golden retriever is sitting on a wooden deck.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The dog is wearing a vest that reads 'Service Dog IN TRAINING'.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The man is wearing a t-shirt with the text 'BLUE LINE K9 SERVICES'.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A black leash is lying on the wooden surface near the dog.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "Jillian Jackson",
+      "INSIDE edition",
+      "Service Dog",
+      "IN TRAINING",
+      "BLUE LINE K9 SERVICES"
+    ],
+    "spatial": "The golden retriever is sitting on a wooden deck in front of a railing. The black leash is on the deck near the dog's front paws. The man in the black t-shirt is shown in a separate shot, likely indoors.",
+    "parse_success": true,
+    "chunk_idx": 24,
+    "video_id": "ytb_SDHI2SX7mH4",
+    "state_changes": []
+  },
+  {
+    "time": [
+      25,
+      26
+    ],
+    "visible_entities": [
+      {
+        "desc": "bald man with light skin, smiling, wearing a black t-shirt with a 'BLUE LINE K9 SERVICES' logo featuring a paw print and blue line",
+        "action": "static",
+        "position": "center"
+      },
+      {
+        "desc": "black flat-screen television",
+        "action": "static",
+        "position": "background right"
+      },
+      {
+        "desc": "brown textured curtain",
+        "action": "static",
+        "position": "background left"
+      },
+      {
+        "desc": "white text reading 'Jillian Jackson'",
+        "action": "static",
+        "position": "top right"
+      },
+      {
+        "desc": "red and white 'INSIDE edition' logo",
+        "action": "static",
+        "position": "bottom left"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A bald man is smiling at the camera.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The man is wearing a black t-shirt with a 'BLUE LINE K9 SERVICES' logo.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The text 'Jillian Jackson' is visible in the top right corner.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The 'INSIDE edition' logo is visible in the bottom left corner.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "Jillian Jackson",
+      "INSIDE edition",
+      "BLUE LINE K9 SERVICES"
+    ],
+    "spatial": "The man is in the center foreground. The television is behind him to the right. The curtain is behind him to the left. The 'Jillian Jackson' text is above the television. The 'INSIDE edition' logo is in the bottom left corner of the frame.",
+    "parse_success": true,
+    "chunk_idx": 25,
+    "video_id": "ytb_SDHI2SX7mH4",
+    "state_changes": []
+  },
+  {
+    "time": [
+      26,
+      27
+    ],
+    "visible_entities": [
+      {
+        "desc": "bald man with light skin, wearing a black t-shirt with a 'BLUE LINE K9 SERVICES' logo featuring a paw print and blue stripe",
+        "action": "smiling at the camera",
+        "position": "foreground"
+      },
+      {
+        "desc": "young boy with short dark hair, wearing a dark green long-sleeved shirt",
+        "action": "hugging a dog",
+        "position": "right"
+      },
+      {
+        "desc": "golden retriever dog with golden fur and dark eyes",
+        "action": "being hugged",
+        "position": "left"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A bald man in a black t-shirt smiles at the camera.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A young boy hugs a golden retriever dog.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The man's shirt displays the text 'BLUE LINE K9 SERVICES'.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "Jillian Jackson",
+      "INSIDE edition",
+      "BLUE LINE K9 SERVICES"
+    ],
+    "spatial": "The man is positioned in the foreground of the first frame. In the second frame, the boy is to the right of the dog, holding it close. The 'INSIDE edition' logo is in the bottom left corner of both frames.",
+    "parse_success": true,
+    "chunk_idx": 26,
+    "video_id": "ytb_SDHI2SX7mH4",
+    "state_changes": [
+      "Young boy in green shirt appears hugging the dog."
+    ]
+  },
+  {
+    "time": [
+      27,
+      28
+    ],
+    "visible_entities": [
+      {
+        "desc": "young boy with short dark hair and dark eyes, wearing a dark olive green long-sleeved shirt",
+        "action": "hugging the dog",
+        "position": "right"
+      },
+      {
+        "desc": "golden retriever dog with light brown fur, floppy ears, and a black nose",
+        "action": "being hugged",
+        "position": "left"
+      },
+      {
+        "desc": "white text reading 'Jillian Jackson' in a sans-serif font",
+        "action": "static",
+        "position": "top right"
+      },
+      {
+        "desc": "logo with 'INSIDE' in white text on a black background and 'edition' in white text on a red background",
+        "action": "static",
+        "position": "bottom left"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The boy is hugging the golden retriever dog.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The dog is positioned to the left of the boy.",
         "confidence": 1.0
       },
       {
@@ -1523,694 +2040,7 @@
       "INSIDE",
       "edition"
     ],
-    "spatial": "The puppy is in the center of the frame, with its collar around its neck. The 'Jillian Jackson' text is above and to the right of the puppy. The 'INSIDE edition' logo is below and to the left of the puppy.",
-    "parse_success": true,
-    "chunk_idx": 18,
-    "video_id": "ytb_SDHI2SX7mH4",
-    "state_changes": []
-  },
-  {
-    "time": [
-      38,
-      40
-    ],
-    "visible_entities": [
-      {
-        "desc": "golden retriever puppy with light golden fur, large black nose, dark eyes, and a red and white patterned collar",
-        "action": "looking at the camera",
-        "position": "foreground",
-        "id": "golden_retriever_puppy_1"
-      },
-      {
-        "desc": "man with short dark hair, wearing a dark blue military dress uniform with gold buttons, shoulder cords, and various ribbons",
-        "action": "smiling broadly",
-        "position": "center",
-        "id": "military_man_uniform_1"
-      },
-      {
-        "desc": "man with dark skin wearing a dark suit jacket and white shirt",
-        "action": "standing next to the soldier",
-        "position": "right",
-        "id": "man_dark_suit_1"
-      },
-      {
-        "desc": "crowd of spectators in stadium seating",
-        "action": "static",
-        "position": "background",
-        "id": "crowd_spectators_1"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "The video cuts from a close-up of a golden retriever puppy to a man in a military uniform.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The man in the military uniform is smiling broadly.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The text 'Jillian Jackson' is visible in the top right corner of the first frame.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The text 'ESPN' is visible in the top right corner of the second frame.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [
-      "Jillian Jackson",
-      "INSIDE edition",
-      "ESPN",
-      "YULFO"
-    ],
-    "spatial": "The puppy is in the foreground of the first shot. In the second shot, the man in the military uniform is in the center, and the man in the suit is to his right. The crowd is in the background behind the men.",
-    "parse_success": true,
-    "chunk_idx": 19,
-    "video_id": "ytb_SDHI2SX7mH4",
-    "state_changes": [
-      "people appear alongside puppy in frame"
-    ]
-  },
-  {
-    "time": [
-      40,
-      42
-    ],
-    "visible_entities": [
-      {
-        "desc": "man with shaved head, wearing a dark blue military dress uniform with gold buttons, shoulder cords, and various ribbons and badges, name tag reading 'YULFO'",
-        "action": "smiling and standing",
-        "position": "center",
-        "id": "military_man_uniform_1"
-      },
-      {
-        "desc": "man with short dark hair, wearing a dark suit jacket and white shirt",
-        "action": "clapping and smiling",
-        "position": "right",
-        "id": "man_dark_suit_1"
-      },
-      {
-        "desc": "woman with long blonde hair, wearing a dark blue t-shirt and black pants",
-        "action": "standing and holding a white towel",
-        "position": "center",
-        "id": "woman_blonde_1"
-      },
-      {
-        "desc": "man with shaved head, wearing a dark blue t-shirt and khaki pants",
-        "action": "walking away from the camera",
-        "position": "left",
-        "id": "bald_man_casual_1"
-      },
-      {
-        "desc": "golden retriever dog wearing a blue vest",
-        "action": "walking on the court",
-        "position": "left",
-        "id": "golden_retriever_service_dog_1"
-      },
-      {
-        "desc": "person with grey hair wearing a black shirt and headphones",
-        "action": "standing in the foreground",
-        "position": "foreground",
-        "id": "person_headphones_1"
-      },
-      {
-        "desc": "wooden basketball court with a large orange and blue team logo painted on the floor",
-        "action": "static",
-        "position": "background",
-        "id": "basketball_court_1"
-      },
-      {
-        "desc": "blue digital advertising boards with white text",
-        "action": "static",
-        "position": "background",
-        "id": "blue_ad_board_1"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "The man in the military uniform is smiling broadly.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The man in the suit is clapping his hands.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The golden retriever dog is walking across the basketball court.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The man in the khaki pants is walking away from the camera.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The woman is holding a white towel.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The advertising boards display the text 'NBATICKETS.COM'.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [
-      "YULFO",
-      "INSIDE edition",
-      "ESPN",
-      "NBATICKETS.COM",
-      "NBATICKETS"
-    ],
-    "spatial": "The man in the military uniform is standing to the left of the man in the suit. The woman is standing to the left of the man in the military uniform. The dog is walking on the court to the left of the woman. The person with headphones is in the foreground, in front of the group on the court. The advertising boards are behind the people on the court.",
-    "parse_success": true,
-    "chunk_idx": 20,
-    "video_id": "ytb_SDHI2SX7mH4",
-    "state_changes": [
-      "woman with towel appears, man walks away from camera"
-    ]
-  },
-  {
-    "time": [
-      42,
-      44
-    ],
-    "visible_entities": [
-      {
-        "desc": "man with shaved head, dark blue t-shirt with white text on back, khaki cargo pants, dark shoes",
-        "action": "walking towards the center",
-        "position": "center"
-      },
-      {
-        "desc": "light-colored dog, medium size, fluffy tail",
-        "action": "walking next to the man in the blue shirt",
-        "position": "center",
-        "id": "light_dog_1"
-      },
-      {
-        "desc": "man in military dress uniform with medals, holding a cane",
-        "action": "standing and smiling",
-        "position": "center-right",
-        "id": "military_man_uniform_1"
-      },
-      {
-        "desc": "tall man in a black suit and white shirt",
-        "action": "standing and clapping",
-        "position": "right",
-        "id": "man_dark_suit_1"
-      },
-      {
-        "desc": "woman with long blonde hair, dark t-shirt, black pants",
-        "action": "standing near the man in the blue shirt",
-        "position": "left",
-        "id": "woman_blonde_1"
-      },
-      {
-        "desc": "person with grey hair wearing headphones and a black shirt",
-        "action": "static",
-        "position": "foreground",
-        "id": "person_headphones_1"
-      },
-      {
-        "desc": "blue digital advertising board with white text",
-        "action": "static",
-        "position": "background",
-        "id": "blue_ad_board_1"
-      },
-      {
-        "desc": "wooden basketball court floor with large orange and blue logo",
-        "action": "static",
-        "position": "bottom",
-        "id": "basketball_court_1"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "A man in a blue shirt and a dog walk across the basketball court.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "A man in a military uniform stands holding a cane.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "A tall man in a suit claps his hands.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The text 'NBATICKETS.COM' is visible on the blue board.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The 'INSIDE edition' logo is in the bottom left corner.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [
-      "ESPN",
-      "NBATICKETS.COM",
-      "INSIDE edition",
-      "BUD LIGHT"
-    ],
-    "spatial": "The man in the blue shirt and the dog are in the center of the court, walking towards the man in the military uniform. The man in the suit is to the right of the man in the military uniform. The woman is to the left of the man in the blue shirt. The person with headphones is in the foreground, facing the group on the court. The blue advertising board is behind the people on the court.",
-    "parse_success": true,
-    "chunk_idx": 21,
-    "video_id": "ytb_SDHI2SX7mH4",
-    "state_changes": []
-  },
-  {
-    "time": [
-      44,
-      46
-    ],
-    "visible_entities": [
-      {
-        "desc": "golden retriever dog, light brown fur, wearing a red and blue service vest",
-        "action": "sitting and looking up",
-        "position": "center",
-        "id": "golden_retriever_service_dog_1"
-      },
-      {
-        "desc": "man in a dark blue military dress uniform with gold stripes on the pants and gold braids on the shoulder",
-        "action": "kneeling and kissing the dog",
-        "position": "right",
-        "id": "military_man_uniform_1"
-      },
-      {
-        "desc": "person wearing a dark blue t-shirt, tan cargo pants, and black shoes, with tattoos on the left arm",
-        "action": "standing and holding a leash",
-        "position": "left",
-        "id": "person_tattoo_arm_1"
-      },
-      {
-        "desc": "black leash",
-        "action": "static",
-        "position": "left",
-        "id": "black_leash_1"
-      },
-      {
-        "desc": "basketball court floor with orange and blue painted sections",
-        "action": "static",
-        "position": "bottom",
-        "id": "basketball_court_1"
-      },
-      {
-        "desc": "INSIDE edition logo, white text on a red background",
-        "action": "static",
-        "position": "bottom left",
-        "id": "inside_edition_logo_1"
-      },
-      {
-        "desc": "ESPN logo, white text",
-        "action": "static",
-        "position": "top right",
-        "id": "espn_logo_1"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "A man in a military uniform kneels on the basketball court.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The man kisses the golden retriever on the nose.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The dog sits calmly while being kissed.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "A person to the left holds the dog's leash.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The 'INSIDE edition' logo is visible in the bottom left corner.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The 'ESPN' logo is visible in the top right corner.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [
-      "INSIDE edition",
-      "ESPN"
-    ],
-    "spatial": "The man in the military uniform is to the right of the dog and is kneeling in front of it. The person holding the leash is to the left of the dog. The dog is sitting on the orange and blue basketball court floor. The 'INSIDE edition' logo is below the person holding the leash.",
-    "parse_success": true,
-    "chunk_idx": 22,
-    "video_id": "ytb_SDHI2SX7mH4",
-    "state_changes": [
-      "man kisses dog (new affectionate interaction)"
-    ]
-  },
-  {
-    "time": [
-      46,
-      48
-    ],
-    "visible_entities": [
-      {
-        "desc": "golden retriever dog with golden fur, wearing a red and black vest with white text and a circular logo",
-        "action": "sitting",
-        "position": "center",
-        "id": "golden_retriever_service_dog_1"
-      },
-      {
-        "desc": "black leash attached to the dog's vest",
-        "action": "static",
-        "position": "center",
-        "id": "black_leash_1"
-      },
-      {
-        "desc": "wooden bench with horizontal slats",
-        "action": "static",
-        "position": "bottom",
-        "id": "wooden_bench_1"
-      },
-      {
-        "desc": "metal railing with vertical bars",
-        "action": "static",
-        "position": "background",
-        "id": "metal_railing_1"
-      },
-      {
-        "desc": "logo with white text 'INSIDE edition' on a red and black background",
-        "action": "static",
-        "position": "bottom-left",
-        "id": "inside_edition_logo_1"
-      },
-      {
-        "desc": "white text 'Jillian Jackson'",
-        "action": "static",
-        "position": "top-right",
-        "id": "jillian_jackson_text_1"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "A golden retriever dog is sitting on a wooden bench.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The dog is wearing a vest that reads 'IN TRAINING'.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The dog has its tongue out.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "A black leash is attached to the dog and lies on the bench.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The 'INSIDE edition' logo is visible in the bottom-left corner.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The name 'Jillian Jackson' is visible in the top-right corner.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [
-      "INSIDE edition",
-      "Jillian Jackson",
-      "IN TRAINING",
-      "Service Dog"
-    ],
-    "spatial": "The golden retriever dog is sitting on the wooden bench. The metal railing is behind the dog. The 'INSIDE edition' logo is in the bottom-left corner of the frame, and the text 'Jillian Jackson' is in the top-right corner.",
-    "parse_success": true,
-    "chunk_idx": 23,
-    "video_id": "ytb_SDHI2SX7mH4",
-    "state_changes": [
-      "wooden bench and metal railing appear (new setting elements)"
-    ]
-  },
-  {
-    "time": [
-      48,
-      50
-    ],
-    "visible_entities": [
-      {
-        "desc": "golden retriever dog with light brown fur, wearing a red and black vest with a logo and text",
-        "action": "sitting on a wooden deck",
-        "position": "center",
-        "id": "golden_retriever_service_dog_1"
-      },
-      {
-        "desc": "man with a bald head, smiling, wearing a black t-shirt with a logo featuring a paw print and a blue line",
-        "action": "static",
-        "position": "center"
-      },
-      {
-        "desc": "wooden deck with metal railing",
-        "action": "static",
-        "position": "background",
-        "id": "wooden_deck_1"
-      },
-      {
-        "desc": "black leash",
-        "action": "static",
-        "position": "foreground",
-        "id": "black_leash_1"
-      },
-      {
-        "desc": "logo for 'INSIDE edition' in white and red text",
-        "action": "static",
-        "position": "bottom-left",
-        "id": "inside_edition_logo_1"
-      },
-      {
-        "desc": "text 'Jillian Jackson' in white font",
-        "action": "static",
-        "position": "top-right",
-        "id": "jillian_jackson_text_1"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "A golden retriever dog is sitting on a wooden deck.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The dog is wearing a vest that says 'Service Dog IN TRAINING'.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "A man with a bald head is smiling at the camera.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The man is wearing a black t-shirt with a 'BLUE LINE K9 SERVICES' logo.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The 'INSIDE edition' logo is visible in the bottom-left corner.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The name 'Jillian Jackson' is visible in the top-right corner.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [
-      "Service Dog",
-      "IN TRAINING",
-      "BLUE LINE K9 SERVICES",
-      "INSIDE edition",
-      "Jillian Jackson"
-    ],
-    "spatial": "The golden retriever is sitting on the wooden deck in front of a metal railing. The black leash is on the deck next to the dog. The man is shown in a separate shot, not spatially related to the dog in the same frame. The 'INSIDE edition' logo is in the bottom-left corner of the screen, and the 'Jillian Jackson' text is in the top-right corner.",
-    "parse_success": true,
-    "chunk_idx": 24,
-    "video_id": "ytb_SDHI2SX7mH4",
-    "state_changes": [
-      "scene moves to wooden deck location"
-    ]
-  },
-  {
-    "time": [
-      50,
-      52
-    ],
-    "visible_entities": [
-      {
-        "desc": "bald man with light skin, smiling, wearing a black short-sleeved t-shirt with a white rectangular logo on the chest featuring a blue line and a white paw print",
-        "action": "static",
-        "position": "center",
-        "id": "bald_man_casual_1"
-      },
-      {
-        "desc": "flat-screen television with a black bezel and a reflective screen",
-        "action": "static",
-        "position": "background right",
-        "id": "tv_screen_1"
-      },
-      {
-        "desc": "text 'Jillian Jackson' in white font",
-        "action": "static",
-        "position": "top right",
-        "id": "jillian_jackson_text_1"
-      },
-      {
-        "desc": "logo 'INSIDE edition' with white text on a black box and red text below",
-        "action": "static",
-        "position": "bottom left",
-        "id": "inside_edition_logo_1"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "The man is smiling and facing the camera.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The man is wearing a black t-shirt with the text 'BLUE LINE K9 SERVICES' visible on the chest.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The text 'Jillian Jackson' is displayed in the top right corner.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The 'INSIDE edition' logo is displayed in the bottom left corner.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [
-      "Jillian Jackson",
-      "INSIDE edition",
-      "BLUE LINE K9 SERVICES"
-    ],
-    "spatial": "The man is positioned in the center foreground of the frame. The television is located behind the man and to his right. The 'Jillian Jackson' text is above the television in the top right corner. The 'INSIDE edition' logo is in the bottom left corner, below the man's right shoulder.",
-    "parse_success": true,
-    "chunk_idx": 25,
-    "video_id": "ytb_SDHI2SX7mH4",
-    "state_changes": []
-  },
-  {
-    "time": [
-      52,
-      54
-    ],
-    "visible_entities": [
-      {
-        "desc": "bald man with light skin, wearing a black t-shirt with a 'BLUE LINE K9 SERVICES' logo featuring a paw print and blue line",
-        "action": "static",
-        "position": "left",
-        "id": "bald_man_casual_1"
-      },
-      {
-        "desc": "young boy with short dark hair, wearing a dark green shirt",
-        "action": "hugging a dog",
-        "position": "right",
-        "id": "young_boy_1"
-      },
-      {
-        "desc": "golden retriever dog with golden fur",
-        "action": "being hugged",
-        "position": "center",
-        "id": "golden_retriever_service_dog_1"
-      },
-      {
-        "desc": "white text 'Jillian Jackson'",
-        "action": "static",
-        "position": "top right",
-        "id": "jillian_jackson_text_1"
-      },
-      {
-        "desc": "red and white 'INSIDE edition' logo",
-        "action": "static",
-        "position": "bottom left",
-        "id": "inside_edition_logo_1"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "The video cuts from a shot of a bald man to a shot of a boy hugging a dog.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The boy is hugging the golden retriever dog.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The man's shirt displays the text 'BLUE LINE K9 SERVICES'.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The name 'Jillian Jackson' appears in the top right corner.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [
-      "Jillian Jackson",
-      "BLUE LINE K9 SERVICES",
-      "INSIDE edition"
-    ],
-    "spatial": "The first frame shows a man on the left side of the screen. The second frame shows a boy on the right side of the screen, positioned next to a dog on the left side of the frame. The boy is holding the dog. The 'INSIDE edition' logo is in the bottom left corner of both frames.",
-    "parse_success": true,
-    "chunk_idx": 26,
-    "video_id": "ytb_SDHI2SX7mH4",
-    "state_changes": [
-      "young boy appears hugging the dog"
-    ]
-  },
-  {
-    "time": [
-      54,
-      56
-    ],
-    "visible_entities": [
-      {
-        "desc": "young boy with short dark hair and dark eyes, wearing a dark green long-sleeved shirt",
-        "action": "hugging the dog",
-        "position": "right",
-        "id": "young_boy_1"
-      },
-      {
-        "desc": "golden retriever dog with golden-brown fur and a black nose",
-        "action": "being hugged",
-        "position": "left",
-        "id": "golden_retriever_service_dog_1"
-      },
-      {
-        "desc": "white and red logo with the text 'INSIDE edition'",
-        "action": "static",
-        "position": "bottom left",
-        "id": "inside_edition_logo_1"
-      },
-      {
-        "desc": "white text watermark reading 'Jillian Jackson'",
-        "action": "static",
-        "position": "top right",
-        "id": "jillian_jackson_text_1"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "A young boy is hugging a golden retriever dog.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The boy's cheek is pressed against the dog's head.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The 'INSIDE edition' logo is visible in the bottom left corner.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The name 'Jillian Jackson' is displayed in the top right corner.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [
-      "INSIDE edition",
-      "Jillian Jackson"
-    ],
-    "spatial": "The boy is positioned to the right of the dog. The dog is to the left of the boy. The 'INSIDE edition' logo is below the dog and boy. The 'Jillian Jackson' text is above the boy's head.",
+    "spatial": "The golden retriever dog is to the left of the young boy. The boy is hugging the dog, with his face pressed against the dog's head. The 'Jillian Jackson' text is above the boy's head. The 'INSIDE edition' logo is below the dog.",
     "parse_success": true,
     "chunk_idx": 27,
     "video_id": "ytb_SDHI2SX7mH4",
@@ -2218,134 +2048,54 @@
   },
   {
     "time": [
-      56,
-      58
+      28,
+      29
     ],
     "visible_entities": [
       {
-        "desc": "man with short dark hair, wearing a dark jacket and dark pants",
-        "action": "static",
-        "position": "left",
-        "id": "man_dark_suit_1"
+        "desc": "man with short hair, wearing a dark jacket and dark pants",
+        "action": "standing",
+        "position": "left"
       },
       {
-        "desc": "man with short hair, wearing a dark jacket and light-colored pants, holding a cane",
-        "action": "static",
-        "position": "center-left",
-        "id": "man_dark_suit_1"
+        "desc": "man with short hair, wearing a dark jacket and light-colored pants",
+        "action": "standing",
+        "position": "left-center"
       },
       {
-        "desc": "man in a dark uniform with badges, holding a cane",
-        "action": "static",
-        "position": "center",
-        "id": "military_man_uniform_1"
+        "desc": "man in a dark uniform with a badge, holding a cane",
+        "action": "standing",
+        "position": "center-left"
       },
       {
-        "desc": "man with a shaved head, wearing a dark t-shirt with a logo and a white ID badge, and dark pants",
-        "action": "static",
-        "position": "center-right"
-      },
-      {
-        "desc": "woman with long dark hair, wearing a dark t-shirt with a red circular design and dark pants",
-        "action": "static",
-        "position": "right"
-      },
-      {
-        "desc": "woman with short dark hair, wearing a dark jacket and blue jeans",
-        "action": "static",
-        "position": "right"
-      },
-      {
-        "desc": "woman with dark hair, wearing a light-colored scarf and a dark top",
-        "action": "static",
-        "position": "far right",
-        "id": "woman Scarf_1"
-      },
-      {
-        "desc": "golden retriever dog with golden fur",
-        "action": "static",
-        "position": "center-right",
-        "id": "golden_retriever_service_dog_1"
-      },
-      {
-        "desc": "logo with 'INSIDE' in white text on a black background and 'edition' in white text on a red background",
-        "action": "static",
-        "position": "bottom-left",
-        "id": "inside_edition_logo_1"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "A group of seven people and a dog are posing for a photo.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The man in the center is holding a cane.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The man to his left is also holding a cane.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The dog is sitting on the floor next to the woman in the dark t-shirt.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The 'INSIDE edition' logo is visible in the bottom-left corner.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [
-      "INSIDE edition"
-    ],
-    "spatial": "The group of people is standing in a line. The man in the uniform is in the center of the group, with the man holding a cane to his left. The dog is sitting on the floor to the right of the man with the ID badge and to the left of the woman in the dark t-shirt. The 'INSIDE edition' logo is in the bottom-left corner of the frame.",
-    "parse_success": true,
-    "chunk_idx": 28,
-    "video_id": "ytb_SDHI2SX7mH4",
-    "state_changes": []
-  },
-  {
-    "time": [
-      58,
-      60
-    ],
-    "visible_entities": [
-      {
-        "desc": "group of people including men in dark jackets and uniforms, women in dark tops, and one woman in a light scarf",
-        "action": "standing in a line",
-        "position": "center",
-        "id": "group_people_1"
+        "desc": "man in a dark t-shirt with a circular logo and a white name tag",
+        "action": "standing",
+        "position": "center"
       },
       {
         "desc": "golden retriever dog",
         "action": "sitting",
-        "position": "center-right",
-        "id": "golden_retriever_service_dog_1"
+        "position": "center-right"
       },
       {
-        "desc": "man in a dark uniform with a cane",
+        "desc": "woman with long dark hair, wearing a dark t-shirt with a red circular logo",
         "action": "standing",
-        "position": "center-left",
-        "id": "military_man_uniform_1"
+        "position": "center-right"
       },
       {
-        "desc": "woman with a light blue and white striped scarf",
+        "desc": "woman with short hair, wearing a dark jacket and jeans",
         "action": "standing",
-        "position": "right",
-        "id": "woman Scarf_1"
+        "position": "right"
       },
       {
-        "desc": "logo with white text 'INSIDE' and red text 'edition'",
-        "action": "static",
-        "position": "bottom-left",
-        "id": "inside_edition_logo_1"
+        "desc": "woman with dark hair, wearing a light-colored scarf and dark clothing",
+        "action": "standing",
+        "position": "right"
       },
       {
-        "desc": "white text 'New York Knicks'",
+        "desc": "logo with white text 'INSIDE' on a black background and red text 'edition' below it",
         "action": "static",
-        "position": "top-right",
-        "id": "ny_knicks_text_1"
+        "position": "bottom-left"
       }
     ],
     "atomic_facts": [
@@ -2354,100 +2104,155 @@
         "confidence": 1.0
       },
       {
-        "fact": "The dog is sitting on the floor next to the people.",
+        "fact": "The dog is sitting on the floor between two people.",
         "confidence": 1.0
       },
       {
         "fact": "The 'INSIDE edition' logo is visible in the bottom-left corner.",
         "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "INSIDE",
+      "edition"
+    ],
+    "spatial": "The group of people is standing in a line. The man in the uniform is to the left of the man in the t-shirt. The golden retriever is sitting on the floor to the right of the man in the t-shirt and to the left of the woman in the dark t-shirt. The 'INSIDE edition' logo is in the bottom-left corner of the frame.",
+    "parse_success": true,
+    "chunk_idx": 28,
+    "video_id": "ytb_SDHI2SX7mH4",
+    "state_changes": [
+      "Group shot forms with multiple people (men in uniforms, women) standing together."
+    ]
+  },
+  {
+    "time": [
+      29,
+      30
+    ],
+    "visible_entities": [
+      {
+        "desc": "group of people including men in dark uniforms and women in casual wear, standing with a golden retriever dog",
+        "action": "posing for a photo",
+        "position": "center"
       },
       {
-        "fact": "The text 'New York Knicks' is visible in the top-right corner.",
+        "desc": "golden retriever dog with light brown fur",
+        "action": "sitting",
+        "position": "center-right"
+      },
+      {
+        "desc": "man in a dark uniform holding a black cane",
+        "action": "standing",
+        "position": "center-left"
+      },
+      {
+        "desc": "woman wearing a light blue and white striped scarf",
+        "action": "standing",
+        "position": "right"
+      },
+      {
+        "desc": "logo with white text 'INSIDE' above red text 'edition' on a black background",
+        "action": "static",
+        "position": "bottom-left"
+      },
+      {
+        "desc": "white text 'New York Knicks' on a dark background",
+        "action": "static",
+        "position": "top-right"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A group of people and a dog are posing together for a photograph.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The dog is sitting on the floor next to the people.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The 'INSIDE edition' logo is visible in the bottom left corner.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The text 'New York Knicks' is visible in the top right corner.",
         "confidence": 1.0
       }
     ],
     "ocr": [
-      "INSIDE edition",
+      "INSIDE",
+      "edition",
       "New York Knicks"
     ],
-    "spatial": "The group of people is standing in a line in the center of the frame. The golden retriever dog is sitting on the floor to the right of the man with the cane. The 'INSIDE edition' logo is in the bottom-left corner, and the 'New York Knicks' text is in the top-right corner.",
+    "spatial": "The group of people is standing in the center of the room. The golden retriever dog is sitting on the floor to the right of the man holding the cane. The woman with the striped scarf is on the far right of the group. The 'INSIDE edition' logo is in the bottom left corner of the frame, and the 'New York Knicks' text is in the top right corner.",
     "parse_success": true,
     "chunk_idx": 29,
     "video_id": "ytb_SDHI2SX7mH4",
-    "state_changes": []
+    "state_changes": [
+      "Group poses for a photo; woman with striped scarf visible."
+    ]
   },
   {
     "time": [
-      60,
-      62
+      30,
+      31
     ],
     "visible_entities": [
       {
         "desc": "woman with shoulder-length wavy brown hair, wearing a black sleeveless dress and red lipstick",
         "action": "static",
-        "position": "left",
-        "id": "woman_brown_hair_1"
+        "position": "left"
       },
       {
-        "desc": "bald man with a mustache, wearing a dark military dress uniform with gold buttons, shoulder cords, and various medals",
+        "desc": "bald man in a dark green military dress uniform with medals, ribbons, and a black tie",
         "action": "static",
-        "position": "center-left",
-        "id": "military_man_uniform_1"
+        "position": "center-left"
       },
       {
-        "desc": "group of soldiers in desert camouflage uniforms, some standing and some kneeling",
+        "desc": "group of soldiers in desert camouflage uniforms",
         "action": "static",
-        "position": "right",
-        "id": "group_soldiers_1"
+        "position": "right"
       },
       {
-        "desc": "military trucks, dark green/grey, parked in the background",
+        "desc": "military trucks in the background",
         "action": "static",
-        "position": "background",
-        "id": "military_trucks_1"
+        "position": "background right"
       },
       {
         "desc": "white backdrop with logos",
         "action": "static",
-        "position": "background",
-        "id": "white_backdrop_1"
+        "position": "background left"
       },
       {
         "desc": "text 'INSIDE edition' in a red and white box",
         "action": "static",
-        "position": "bottom-left",
-        "id": "inside_edition_logo_1"
+        "position": "bottom left"
       },
       {
-        "desc": "text 'New York Knicks' in white font",
+        "desc": "text 'New York Knicks' in white",
         "action": "static",
-        "position": "top-right",
-        "id": "ny_knicks_text_1"
+        "position": "top right"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "The video displays a split-screen view with two different scenes.",
+        "fact": "A woman in a black dress stands next to a man in a military uniform.",
         "confidence": 1.0
       },
       {
-        "fact": "On the left, a woman and a man in a military uniform pose for a photo.",
+        "fact": "A group of soldiers poses for a photo in front of military vehicles.",
         "confidence": 1.0
       },
       {
-        "fact": "On the right, a group of soldiers pose for a group photograph outdoors.",
+        "fact": "The 'INSIDE edition' logo is visible in the bottom left corner.",
         "confidence": 1.0
       },
       {
-        "fact": "The text 'INSIDE edition' is visible in the bottom-left corner.",
+        "fact": "The text 'New York Knicks' is visible in the top right corner.",
         "confidence": 1.0
       },
       {
-        "fact": "The text 'New York Knicks' is visible in the top-right corner.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The backdrop behind the couple on the left features logos for 'DELTA' and 'Luke's WINGS'.",
+        "fact": "The man in uniform is smiling at the camera.",
         "confidence": 1.0
       }
     ],
@@ -2457,132 +2262,129 @@
       "DELTA",
       "Luke's WINGS"
     ],
-    "spatial": "The screen is split vertically. The scene with the couple is on the left side, and the scene with the soldiers is on the right side. In the left scene, the woman is to the left of the man in the military uniform. In the right scene, the soldiers are in front of the military trucks. The 'INSIDE edition' logo is below the couple. The 'New York Knicks' text is above the group of soldiers.",
+    "spatial": "The woman is to the left of the man in the military uniform. The group of soldiers is to the right of the couple. The military trucks are behind the soldiers. The 'INSIDE edition' logo is below the couple. The 'New York Knicks' text is above the group of soldiers.",
     "parse_success": true,
     "chunk_idx": 30,
     "video_id": "ytb_SDHI2SX7mH4",
     "state_changes": [
-      "military trucks appear in background with group of soldiers"
+      "Scene changes to woman in black dress and soldiers in desert camo with military trucks."
     ]
   },
   {
     "time": [
-      62,
-      64
+      31,
+      32
     ],
     "visible_entities": [
       {
-        "desc": "woman with long wavy brown hair, wearing a navy blue t-shirt with a circular orange and white 'KNICKS' logo, black pants",
+        "desc": "woman with long wavy brown hair, wearing a dark blue t-shirt with a circular orange and white logo, black pants",
         "action": "pointing to the left",
-        "position": "left",
-        "id": "woman_brown_hair_1"
+        "position": "left"
       },
       {
-        "desc": "man with short hair, wearing a dark blue military dress uniform with gold buttons, medals, and chevrons on the sleeve, holding a cane",
+        "desc": "man with short hair, wearing a dark military dress uniform with gold buttons, medals, and chevrons on the sleeve, holding a cane",
         "action": "standing",
-        "position": "center",
-        "id": "military_man_uniform_1"
+        "position": "center"
       },
       {
-        "desc": "man with short dark hair, wearing a black suit jacket, white collared shirt, and black trousers",
+        "desc": "man with short dark hair, wearing a black suit jacket, white shirt, and black pants",
         "action": "standing",
-        "position": "right",
-        "id": "man_dark_suit_1"
+        "position": "right"
       },
       {
-        "desc": "wooden basketball court floor with painted blue and orange graphics",
+        "desc": "wooden basketball court floor with blue and orange painted markings",
         "action": "static",
-        "position": "background",
-        "id": "basketball_court_1"
+        "position": "background"
       },
       {
-        "desc": "white and blue towel",
-        "action": "held by the woman",
-        "position": "center-left",
-        "id": "white_blue_towel_1"
+        "desc": "red and white logo with text 'INSIDE edition'",
+        "action": "static",
+        "position": "bottom-left"
+      },
+      {
+        "desc": "white text 'ESPN'",
+        "action": "static",
+        "position": "top-right"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "The woman in the navy blue t-shirt points her left arm towards the left side of the frame.",
+        "fact": "The woman on the left points her arm towards the left side of the frame.",
         "confidence": 1.0
       },
       {
-        "fact": "The man in the military uniform stands between the woman and the man in the suit.",
+        "fact": "The man in the center holds a black cane in his right hand.",
         "confidence": 1.0
       },
       {
-        "fact": "The woman holds a white and blue towel in her right hand.",
+        "fact": "The man in the center wears a military dress uniform with visible rank insignia on his sleeve.",
         "confidence": 1.0
       },
       {
-        "fact": "The man in the military uniform holds a black cane in his right hand.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The group is standing on a basketball court with visible court markings.",
+        "fact": "The group stands on a basketball court with visible court lines and logos.",
         "confidence": 1.0
       }
     ],
     "ocr": [
+      "INSIDE edition",
+      "ESPN",
       "DEN",
       "KNICKS",
-      "INSIDE edition",
-      "ESPN"
+      "UNIVERSITY"
     ],
-    "spatial": "The woman is to the left of the man in the military uniform. The man in the black suit is to the right of the man in the military uniform. The woman is holding a towel in her hand. The group is standing on the basketball court floor.",
+    "spatial": "The woman in the blue t-shirt is to the left of the man in the military uniform. The man in the black suit is to the right of the man in the military uniform. The 'INSIDE edition' logo is in the bottom-left corner of the screen, while the 'ESPN' logo is in the top-right corner.",
     "parse_success": true,
     "chunk_idx": 31,
     "video_id": "ytb_SDHI2SX7mH4",
     "state_changes": [
-      "woman points to the left (new gesture action)"
+      "Woman in blue t-shirt points to the left."
     ]
   },
   {
     "time": [
-      64,
-      66
+      32,
+      33
     ],
     "visible_entities": [
       {
-        "desc": "man with bald head, wearing a dark blue polo shirt with a red and white badge on the chest, khaki pants, and black shoes",
-        "action": "walking forward while holding a leash",
+        "desc": "bald man wearing a dark blue polo shirt with a logo on the left chest, an orange rectangular badge, and khaki pants",
+        "action": "walking forward on the court",
+        "position": "center-left"
+      },
+      {
+        "desc": "golden retriever dog wearing a blue vest with white stars and red stripes",
+        "action": "walking on a leash",
         "position": "center"
       },
       {
-        "desc": "golden retriever dog with light brown fur, wearing a blue vest with white stars and red stripes",
-        "action": "walking on a leash",
-        "position": "center foreground",
-        "id": "golden_retriever_service_dog_1"
-      },
-      {
-        "desc": "man with short brown hair, wearing a dark blue jacket and light beige pants",
-        "action": "walking and holding a phone",
-        "position": "right",
-        "id": "man_dark_suit_1"
+        "desc": "man with short brown hair wearing a dark blue pullover and light beige pants",
+        "action": "walking to the right",
+        "position": "center-right"
       },
       {
         "desc": "man in a dark suit jacket and dark pants",
         "action": "walking away",
-        "position": "left",
-        "id": "man_dark_suit_1"
+        "position": "left"
       },
       {
-        "desc": "crowd of spectators in the stands",
-        "action": "static",
-        "position": "background",
-        "id": "crowd_spectators_1"
+        "desc": "cameraman holding a large black video camera",
+        "action": "filming",
+        "position": "right"
+      },
+      {
+        "desc": "crowd of spectators in casual clothing",
+        "action": "sitting and watching",
+        "position": "background"
       },
       {
         "desc": "wooden basketball court floor with blue painted areas and white lines",
         "action": "static",
-        "position": "bottom",
-        "id": "basketball_court_1"
+        "position": "bottom"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A man in a dark blue polo shirt is walking a golden retriever on a leash across a basketball court.",
+        "fact": "A bald man in a blue polo shirt is walking a golden retriever on a leash across a basketball court.",
         "confidence": 1.0
       },
       {
@@ -2590,19 +2392,11 @@
         "confidence": 1.0
       },
       {
-        "fact": "A man in a dark jacket is walking to the right of the dog handler.",
+        "fact": "A cameraman is filming the scene from the right side.",
         "confidence": 1.0
       },
       {
-        "fact": "The text 'ESPN' is visible in the top right corner.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The text 'INSIDE edition' is visible in the bottom left corner.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The text 'New York Knicks' is visible in the top right corner in the second frame.",
+        "fact": "Spectators are seated in the stands behind the court.",
         "confidence": 1.0
       }
     ],
@@ -2611,48 +2405,39 @@
       "INSIDE edition",
       "New York Knicks"
     ],
-    "spatial": "The man in the dark blue polo shirt is to the left of the man in the dark jacket. The golden retriever is in front of the man in the polo shirt and is being held by a leash. The crowd of spectators is in the background, behind the people on the court. The 'INSIDE edition' logo is in the bottom left corner of the screen.",
+    "spatial": "The bald man is to the left of the man in the beige pants. The dog is walking next to the bald man, slightly in front of him. The cameraman is to the right of the group walking on the court. The crowd is behind the people on the court.",
     "parse_success": true,
     "chunk_idx": 32,
     "video_id": "ytb_SDHI2SX7mH4",
     "state_changes": [
-      "multiple people walking with dogs on court"
+      "Dog in blue vest walks on leash; cameraman filming appears; man in pullover walks right."
     ]
   },
   {
     "time": [
-      66,
-      68
+      33,
+      34
     ],
     "visible_entities": [
       {
-        "desc": "golden retriever dog with light brown fur, wearing a blue vest with white stars and red trim",
+        "desc": "golden retriever dog with a blue vest featuring white stars and red trim",
         "action": "walking on the court",
-        "position": "center",
-        "id": "golden_retriever_service_dog_1"
-      },
-      {
-        "desc": "person wearing a navy blue t-shirt, khaki cargo pants, and black shoes",
-        "action": "walking and holding a leash",
         "position": "center"
       },
       {
-        "desc": "man with a shaved head wearing a dark blue military dress uniform with gold braided cords and yellow stripes on the pants",
-        "action": "kneeling on the floor",
-        "position": "right",
-        "id": "military_man_uniform_1"
+        "desc": "person wearing a dark blue shirt, khaki pants, and black shoes",
+        "action": "holding a leash",
+        "position": "center"
       },
       {
-        "desc": "black leash attached to the dog's vest",
-        "action": "being held",
-        "position": "center",
-        "id": "black_leash_1"
+        "desc": "man in a dark military dress uniform with gold stripes on the sleeves",
+        "action": "kneeling on the floor",
+        "position": "right"
       },
       {
         "desc": "wooden basketball court floor with blue and orange painted markings",
         "action": "static",
-        "position": "background",
-        "id": "basketball_court_1"
+        "position": "background"
       }
     ],
     "atomic_facts": [
@@ -2678,7 +2463,7 @@
       "INSIDE edition",
       "ESPN"
     ],
-    "spatial": "The golden retriever is in the center of the frame, walking towards the man in the military uniform who is kneeling on the right. The person holding the leash is standing behind and slightly to the left of the dog. The 'INSIDE edition' logo is in the bottom left corner, while the 'ESPN' logo is in the top right corner.",
+    "spatial": "The golden retriever is in the center of the frame, walking on the wooden court floor. The person holding the leash is standing next to the dog. The man in the military uniform is kneeling on the floor to the right of the dog, reaching out to touch it.",
     "parse_success": true,
     "chunk_idx": 33,
     "video_id": "ytb_SDHI2SX7mH4",
@@ -2686,64 +2471,60 @@
   },
   {
     "time": [
-      68,
-      70
+      34,
+      35
     ],
     "visible_entities": [
       {
-        "desc": "person in a dark blue uniform jacket with gold trim on the cuffs and matching blue pants with a yellow stripe, kneeling",
-        "action": "kneeling and hugging a dog",
+        "desc": "man with shaved head, wearing a dark blue uniform jacket with gold trim on the sleeves and blue pants with a yellow stripe",
+        "action": "kneeling on the floor and hugging a dog",
         "position": "center"
       },
       {
-        "desc": "golden retriever dog with light brown fur, wearing a blue vest with red and white patches",
-        "action": "standing and being hugged",
-        "position": "center",
-        "id": "golden_retriever_service_dog_1"
+        "desc": "golden retriever dog with light brown fur, wearing a blue vest with a red patch",
+        "action": "standing and being hugged by the kneeling man",
+        "position": "center"
       },
       {
-        "desc": "person wearing a dark blue t-shirt, tan cargo pants, and black shoes, with a tattoo on their left forearm",
-        "action": "static",
-        "position": "left",
-        "id": "person_tattoo_arm_1"
+        "desc": "man with tattoos on his left arm, wearing a dark blue t-shirt, khaki cargo pants, and black shoes",
+        "action": "standing and holding a leash",
+        "position": "left"
       },
       {
-        "desc": "person wearing a dark suit jacket and black pants",
+        "desc": "person in a dark suit jacket and black pants",
         "action": "static",
         "position": "right"
       },
       {
-        "desc": "person holding a white basketball jersey with orange and blue trim and the number 30",
+        "desc": "white basketball jersey with orange and blue trim, number 30 and 'ANTHONY' on the back",
         "action": "static",
-        "position": "background",
-        "id": "white_basketball_jersey_1"
+        "position": "background"
       },
       {
         "desc": "black cane lying on the floor",
         "action": "static",
-        "position": "bottom",
-        "id": "black_cane_1"
+        "position": "bottom"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A person in a blue uniform is kneeling on the basketball court floor.",
+        "fact": "A man in a blue uniform is kneeling on the basketball court floor.",
         "confidence": 1.0
       },
       {
-        "fact": "The kneeling person is hugging a golden retriever dog.",
+        "fact": "The kneeling man is hugging a golden retriever dog.",
         "confidence": 1.0
       },
       {
-        "fact": "The dog is wearing a blue service vest.",
+        "fact": "A man with tattoos on his arm is standing to the left of the dog.",
         "confidence": 1.0
       },
       {
-        "fact": "A black cane is lying on the floor near the kneeling person.",
+        "fact": "The man with tattoos is holding a leash attached to the dog.",
         "confidence": 1.0
       },
       {
-        "fact": "A person to the left is standing and holding a leash attached to the dog.",
+        "fact": "A black cane is lying on the floor in the foreground.",
         "confidence": 1.0
       },
       {
@@ -2758,67 +2539,69 @@
     "ocr": [
       "INSIDE edition",
       "ESPN",
-      "30"
+      "30",
+      "ANTHONY"
     ],
-    "spatial": "The person in the blue uniform is kneeling in the center of the frame, hugging the golden retriever. To the left of the dog, a person in tan pants stands holding a leash. To the right of the kneeling person, another individual in a dark suit stands partially visible. A black cane lies on the floor in front of the kneeling person. In the background, a person holds up a white jersey.",
+    "spatial": "The man in the blue uniform is kneeling on the floor in front of the dog. The dog is standing between the kneeling man and the man with tattoos. The man with tattoos is to the left of the dog and is holding its leash. A black cane is on the floor in front of the kneeling man. The person in the suit is to the right of the kneeling man.",
     "parse_success": true,
     "chunk_idx": 34,
     "video_id": "ytb_SDHI2SX7mH4",
     "state_changes": [
-      "person kneels and hugs dog"
+      "Man in uniform kneels and hugs the dog; dog stands to receive hug."
     ]
   },
   {
     "time": [
-      70,
-      72
+      35,
+      36
     ],
     "visible_entities": [
       {
-        "desc": "man with shaved head, wearing a dark blue military-style dress uniform with gold braided cords on the shoulder and gold stripes on the pants",
+        "desc": "man with shaved head, wearing a dark blue formal uniform jacket with gold braided trim on the cuffs and shoulders, dark blue trousers with a yellow stripe, and black dress shoes",
         "action": "kneeling on the floor and hugging the dog",
-        "position": "right",
-        "id": "military_man_uniform_1"
+        "position": "right"
       },
       {
         "desc": "golden retriever dog with light brown fur and a red collar",
-        "action": "jumping up and being hugged",
-        "position": "center",
-        "id": "golden_retriever_service_dog_1"
+        "action": "sitting on the floor and being hugged",
+        "position": "center"
       },
       {
-        "desc": "person wearing a dark blue t-shirt, khaki cargo pants, and black shoes",
-        "action": "standing and holding a leash",
+        "desc": "person wearing a dark blue shirt, tan cargo pants, and black shoes",
+        "action": "standing",
         "position": "left"
+      },
+      {
+        "desc": "person wearing blue jeans and a dark top",
+        "action": "standing",
+        "position": "background"
       },
       {
         "desc": "black cane lying on the floor",
         "action": "static",
-        "position": "bottom",
-        "id": "black_cane_1"
+        "position": "bottom"
       },
       {
-        "desc": "white jersey with blue and orange trim",
+        "desc": "white basketball jersey with orange and blue trim",
         "action": "static",
-        "position": "background",
-        "id": "white_basketball_jersey_1"
+        "position": "background"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "The man in the military uniform is kneeling on the basketball court floor.",
+        "fact": "The man in the dark blue uniform is kneeling on the basketball court floor.",
         "confidence": 1.0
       },
       {
-        "fact": "The golden retriever dog is jumping up to embrace the kneeling man.",
+        "fact": "The man in the dark blue uniform is hugging the golden retriever dog.",
         "confidence": 1.0
       },
       {
-        "fact": "The person in khaki pants is standing to the left of the dog.",
+        "fact": "The golden retriever dog is sitting on the floor.",
         "confidence": 1.0
       },
       {
-        "fact": "A black cane is lying on the orange floor near the people.",
+        "fact": "A black cane is lying on the floor near the people.",
         "confidence": 1.0
       },
       {
@@ -2834,71 +2617,71 @@
       "INSIDE edition",
       "ESPN"
     ],
-    "spatial": "The man in the military uniform is kneeling on the right side of the frame, facing the dog. The dog is in the center, positioned between the kneeling man and the standing person in khaki pants. The black cane is lying on the floor in front of the standing person. The 'INSIDE edition' logo is below the standing person's legs.",
+    "spatial": "The man in the dark blue uniform is kneeling to the right of the golden retriever dog. The person in tan pants is standing to the left of the dog. The black cane is lying on the floor in front of the person in tan pants. The dog is positioned between the kneeling man and the standing person.",
     "parse_success": true,
     "chunk_idx": 35,
     "video_id": "ytb_SDHI2SX7mH4",
     "state_changes": [
-      "dog jumps up while being hugged"
+      "Dog sits down while being hugged."
     ]
   },
   {
     "time": [
-      72,
-      74
+      36,
+      37
     ],
     "visible_entities": [
       {
-        "desc": "man with shaved head, wearing a dark blue military dress uniform with gold braided cords on the shoulder and yellow stripes on the pants",
-        "action": "kneeling on the floor and reaching out to the dog",
-        "position": "right",
-        "id": "military_man_uniform_1"
+        "desc": "golden retriever dog with light brown fur, wearing a red harness",
+        "action": "lying on the floor",
+        "position": "center"
       },
       {
-        "desc": "golden retriever dog with light brown fur and a red harness",
-        "action": "lying on the floor and interacting with the kneeling man",
-        "position": "center",
-        "id": "golden_retriever_service_dog_1"
+        "desc": "man with a shaved head, wearing a dark blue military dress uniform with gold braided cords on the shoulder and yellow stripes on the pants",
+        "action": "kneeling and reaching out to the dog",
+        "position": "right"
       },
       {
-        "desc": "person wearing a dark blue long-sleeved shirt, tan cargo pants, and black shoes, with a tattooed arm",
-        "action": "standing next to the dog",
-        "position": "left",
-        "id": "person_tattoo_arm_1"
+        "desc": "person wearing a dark blue shirt, tan cargo pants, and black shoes, with a tattooed arm",
+        "action": "standing",
+        "position": "left"
       },
       {
         "desc": "person wearing blue jeans and a dark top",
-        "action": "standing in the background",
+        "action": "standing",
         "position": "background"
       },
       {
-        "desc": "basketball court floor with orange and blue painted sections and white lines",
+        "desc": "wooden basketball court floor with orange and blue painted markings",
         "action": "static",
-        "position": "bottom",
-        "id": "basketball_court_1"
+        "position": "background"
       },
       {
-        "desc": "graphic logo with the word 'INSIDE' in black text inside a grey rounded rectangle, framed by red lines on a black background",
+        "desc": "logo with the word 'INSIDE' in black text inside a grey rounded rectangle, surrounded by red lines",
         "action": "static",
-        "position": "foreground",
-        "id": "inside_edition_logo_1"
+        "position": "bottom left"
+      },
+      {
+        "desc": "logo with the text 'ESPN' in white",
+        "action": "static",
+        "position": "top right"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A man in a military uniform kneels on the basketball court floor.",
+        "fact": "A man in a military uniform is kneeling on the basketball court.",
         "confidence": 1.0
       },
       {
-        "fact": "The man reaches his hand out to a golden retriever dog.",
+        "fact": "The man in the uniform is extending his hand towards the golden retriever.",
         "confidence": 1.0
       },
       {
-        "fact": "The dog is lying on the floor near the man's hand.",
+        "fact": "The golden retriever is lying on the floor near the man's hand.",
         "confidence": 1.0
       },
       {
-        "fact": "A person in tan pants stands to the left of the dog.",
+        "fact": "A person in tan pants is standing to the left of the dog.",
         "confidence": 1.0
       },
       {
@@ -2915,66 +2698,77 @@
       "edition",
       "ESPN"
     ],
-    "spatial": "The man in the military uniform is kneeling on the right side of the frame, reaching towards the golden retriever which is lying in the center. The person in tan pants is standing to the left of the dog. The 'INSIDE edition' logo is in the bottom left corner, and the 'ESPN' logo is in the top right corner.",
+    "spatial": "The man in the military uniform is to the right of the golden retriever. The dog is lying on the floor in front of the person wearing tan pants. The 'INSIDE edition' logo is below the person in tan pants.",
     "parse_success": true,
     "chunk_idx": 36,
     "video_id": "ytb_SDHI2SX7mH4",
-    "state_changes": []
+    "state_changes": [
+      "Dog lies on the floor; man reaches out to it; ESPN logo appears."
+    ]
   },
   {
     "time": [
-      74,
-      76
+      37,
+      38
     ],
     "visible_entities": [
       {
-        "desc": "Inside Edition logo featuring the word 'INSIDE' in bold black sans-serif font on a grey rounded rectangle, above the word 'edition' in white lowercase sans-serif font on a red rounded rectangle",
+        "desc": "Inside Edition logo with 'INSIDE' in black text on a grey background and 'edition' in white text on a red background",
         "action": "static",
-        "position": "center",
-        "id": "inside_edition_logo_1"
+        "position": "center"
       },
       {
-        "desc": "Facebook social media icon (white 'f' in a square) and text 'LIKE US ON FACEBOOK' in white sans-serif font",
+        "desc": "Facebook 'f' icon",
         "action": "static",
-        "position": "bottom-left",
-        "id": "facebook_social_1"
+        "position": "bottom left"
       },
       {
-        "desc": "Twitter social media icon (white bird silhouette) and text 'FOLLOW US ON TWITTER' in white sans-serif font",
+        "desc": "Twitter bird icon",
         "action": "static",
-        "position": "bottom-right",
-        "id": "twitter_social_1"
+        "position": "center right"
       },
       {
-        "desc": "YouTube logo and text 'SUBSCRIBE TO YouTube' in white sans-serif font",
+        "desc": "YouTube logo",
         "action": "static",
-        "position": "bottom-center",
-        "id": "youtube_social_1"
+        "position": "center"
       },
       {
-        "desc": "Text 'Check Local Listings' in red italicized sans-serif font",
+        "desc": "Text 'LIKE US ON FACEBOOK' in white",
         "action": "static",
-        "position": "bottom-center",
-        "id": "check_listings_text_1"
+        "position": "bottom left"
       },
       {
-        "desc": "Copyright text '© MMXVI INSIDE EDITION INC. ALL RIGHTS RESERVED.' in small white sans-serif font",
+        "desc": "Text 'FOLLOW US ON TWITTER' in white",
         "action": "static",
-        "position": "bottom-center",
-        "id": "copyright_text_1"
+        "position": "center right"
+      },
+      {
+        "desc": "Text 'SUBSCRIBE TO YouTube' in white",
+        "action": "static",
+        "position": "center"
+      },
+      {
+        "desc": "Text 'Check Local Listings' in red",
+        "action": "static",
+        "position": "bottom center"
+      },
+      {
+        "desc": "Copyright text '© MMXVI INSIDE EDITION INC. ALL RIGHTS RESERVED.' in white",
+        "action": "static",
+        "position": "bottom"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "The Inside Edition logo is displayed centrally on a black background.",
+        "fact": "The Inside Edition logo is displayed in the center of the screen.",
         "confidence": 1.0
       },
       {
-        "fact": "Social media prompts for Facebook, Twitter, and YouTube appear below the main logo.",
+        "fact": "Social media prompts for Facebook, Twitter, and YouTube are visible.",
         "confidence": 1.0
       },
       {
-        "fact": "The text 'Check Local Listings' is displayed in red below the social media links.",
+        "fact": "The text 'Check Local Listings' is displayed in red.",
         "confidence": 1.0
       },
       {
@@ -2991,68 +2785,62 @@
       "Check Local Listings",
       "© MMXVI INSIDE EDITION INC. ALL RIGHTS RESERVED."
     ],
-    "spatial": "The Inside Edition logo is centered in the upper portion of the screen. Below the logo, the Facebook prompt is on the left, the Twitter prompt is on the right, and the YouTube prompt is centered between them. The 'Check Local Listings' text is positioned below the social media row, and the copyright text is at the very bottom of the screen.",
+    "spatial": "The Inside Edition logo is centered at the top of the screen. Below the logo, social media prompts are arranged horizontally, with the Facebook link on the left, the Twitter link on the right, and the YouTube subscription prompt in the middle. The 'Check Local Listings' text is below the social media prompts, and the copyright text is at the very bottom of the screen.",
     "parse_success": true,
     "chunk_idx": 37,
     "video_id": "ytb_SDHI2SX7mH4",
     "state_changes": [
-      "end screen graphics appear with social media icons and copyright"
+      "Scene transitions to end card with social media icons and copyright text."
     ]
   },
   {
     "time": [
-      76,
-      78
+      38,
+      39
     ],
     "visible_entities": [
       {
-        "desc": "Logo with 'INSIDE' in black text on a grey background and 'edition' in white text on a red background",
+        "desc": "Inside Edition logo, featuring the word 'INSIDE' in black text on a grey background and 'edition' in white text on a red background, enclosed in a rounded rectangle.",
         "action": "static",
-        "position": "top center",
-        "id": "inside_edition_logo_1"
+        "position": "top center"
       },
       {
-        "desc": "Facebook icon and text 'LIKE US ON FACEBOOK' in white",
+        "desc": "Facebook icon, a white 'f' in a square outline.",
         "action": "static",
-        "position": "middle left",
-        "id": "facebook_social_1"
+        "position": "middle left"
       },
       {
-        "desc": "Twitter icon and text 'FOLLOW US ON TWITTER' in white",
+        "desc": "Twitter icon, a white bird silhouette.",
         "action": "static",
-        "position": "middle right",
-        "id": "twitter_social_1"
+        "position": "middle right"
       },
       {
-        "desc": "YouTube logo and text 'SUBSCRIBE TO YouTube' in white",
+        "desc": "YouTube logo, black text 'You' and white text 'Tube' in a red rounded rectangle.",
         "action": "static",
-        "position": "center",
-        "id": "youtube_social_1"
+        "position": "center"
       },
       {
-        "desc": "Text 'Check Local Listings' in red",
+        "desc": "Text 'Check Local Listings' in red font.",
         "action": "static",
-        "position": "bottom center",
-        "id": "check_listings_text_1"
+        "position": "bottom center"
       },
       {
-        "desc": "Copyright text '© MMXVI INSIDE EDITION INC. ALL RIGHTS RESERVED.' in white",
+        "desc": "Copyright text '© MMXVI INSIDE EDITION INC. ALL RIGHTS RESERVED.' in white font.",
         "action": "static",
-        "position": "bottom",
-        "id": "copyright_text_1"
+        "position": "bottom"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "The screen displays a static end card for the show 'Inside Edition'.",
+        "fact": "The screen displays social media calls to action for Facebook, Twitter, and YouTube.",
         "confidence": 1.0
       },
       {
-        "fact": "Social media calls to action for Facebook, Twitter, and YouTube are visible.",
+        "fact": "The text 'Check Local Listings' is displayed in red.",
         "confidence": 1.0
       },
       {
-        "fact": "The copyright year is displayed as MMXVI (2016).",
+        "fact": "The copyright notice indicates the year 2016 (MMXVI).",
         "confidence": 1.0
       }
     ],
@@ -3065,7 +2853,7 @@
       "Check Local Listings",
       "© MMXVI INSIDE EDITION INC. ALL RIGHTS RESERVED."
     ],
-    "spatial": "The 'Inside Edition' logo is at the top center of the screen. The Facebook and Twitter prompts are positioned side-by-side below the logo, with Facebook on the left and Twitter on the right. The YouTube subscription prompt is centered below the social media row. The 'Check Local Listings' text is below the YouTube prompt, and the copyright text is at the very bottom of the screen.",
+    "spatial": "The Inside Edition logo is at the top center of the screen. Below the logo, the Facebook and Twitter prompts are arranged horizontally, with the Facebook prompt on the left and the Twitter prompt on the right. The YouTube subscription prompt is centered below these two. The red 'Check Local Listings' text is below the YouTube prompt, and the copyright text is at the very bottom of the screen.",
     "parse_success": true,
     "chunk_idx": 38,
     "video_id": "ytb_SDHI2SX7mH4",

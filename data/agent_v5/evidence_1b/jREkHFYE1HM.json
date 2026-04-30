@@ -2,1441 +2,35 @@
   {
     "time": [
       0,
-      2
+      1
     ],
     "visible_entities": [
       {
-        "desc": "man with short dark hair, thick dark eyebrows, facial stubble, wearing a black sleeveless shirt",
-        "action": "lying down and looking at the camera",
-        "position": "right foreground"
-      },
-      {
-        "desc": "young child with short brown hair, wearing a teal long-sleeved shirt",
-        "action": "lying down and looking forward",
-        "position": "left background"
-      },
-      {
-        "desc": "white bedding with a black and white abstract or animal print pattern",
-        "action": "static",
-        "position": "background"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "A man with dark hair and stubble is lying down in the foreground.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "A young child in a teal shirt is lying down to the left of the man.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The man is positioned closer to the camera than the child.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [],
-    "spatial": "The man is in the foreground on the right side of the frame. The child is to the left of the man and slightly behind him. Both individuals are lying on the patterned bedding.",
-    "parse_success": true,
-    "chunk_idx": 0,
-    "video_id": "jREkHFYE1HM",
-    "state_changes": [],
-    "_rescued": "parse"
-  },
-  {
-    "time": [
-      2,
-      4
-    ],
-    "visible_entities": [
-      {
-        "desc": "man with dark hair, stubble, and a visible bruise on his right eyelid",
-        "action": "holding hand to nose",
-        "position": "right foreground"
-      },
-      {
-        "desc": "child with short brown hair wearing a teal shirt",
-        "action": "static",
-        "position": "left background"
-      },
-      {
-        "desc": "white pillowcase with black line-art pattern",
-        "action": "static",
-        "position": "background"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "The man holds his hand over his nose and mouth area.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The man has a visible bruise or discoloration on his right eyelid.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The child is lying down next to the man.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [],
-    "spatial": "The man is positioned in the foreground on the right side of the frame. The child is located to the left of the man and slightly behind him. Both individuals are lying on a pillow with a black pattern.",
-    "parse_success": true,
-    "chunk_idx": 1,
-    "video_id": "jREkHFYE1HM",
-    "state_changes": [],
-    "_rescued": "parse"
-  },
-  {
-    "time": [
-      4,
-      6
-    ],
-    "visible_entities": [
-      {
-        "desc": "man with dark hair, dark eyebrows, and facial stubble",
-        "action": "lying down and making a grimacing face with mouth open",
-        "position": "right foreground"
-      },
-      {
-        "desc": "child with short hair wearing a teal shirt",
+        "desc": "man with short dark hair, dark eyebrows, and facial stubble, wearing a black sleeveless top",
         "action": "lying down",
-        "position": "left background"
+        "position": "right foreground",
+        "id": "man_father_1"
       },
       {
-        "desc": "white pillowcase with black line-art pattern",
-        "action": "static",
-        "position": "background"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "The man in the foreground scrunches his nose and opens his mouth wide.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The child is lying next to the man.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [],
-    "spatial": "The man is in the foreground on the right side of the frame. The child is to the left of the man and slightly behind him. Both are lying on a pillow with a black pattern.",
-    "parse_success": true,
-    "chunk_idx": 2,
-    "video_id": "jREkHFYE1HM",
-    "state_changes": [],
-    "_rescued": "parse"
-  },
-  {
-    "time": [
-      6,
-      8
-    ],
-    "visible_entities": [
-      {
-        "desc": "man with short dark hair, dark eyebrows, and facial stubble, wearing a black shirt",
-        "action": "lying down with eyes closed and mouth slightly open",
-        "position": "foreground right"
-      },
-      {
-        "desc": "child with dark hair and dark eyebrows, wearing a teal shirt",
-        "action": "lying down with eyes closed",
-        "position": "background left"
-      },
-      {
-        "desc": "white pillowcase with a black line-art pattern of a zebra or tiger",
-        "action": "static",
-        "position": "background"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "The man in the foreground is lying down with his eyes closed.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The child is lying down next to the man.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The man's mouth is slightly open.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [],
-    "spatial": "The man is in the foreground on the right side of the frame. The child is to the left of the man and slightly behind him. The patterned pillow is behind the heads of both individuals.",
-    "parse_success": true,
-    "chunk_idx": 3,
-    "video_id": "jREkHFYE1HM",
-    "state_changes": [],
-    "_rescued": "parse"
-  },
-  {
-    "time": [
-      8,
-      10
-    ],
-    "visible_entities": [
-      {
-        "desc": "man with dark hair, facial stubble, wearing a black top",
+        "desc": "young child with short dark hair, wearing a teal long-sleeved shirt",
         "action": "lying down",
-        "position": "right"
+        "position": "left background",
+        "id": "child_baby_1"
       },
       {
-        "desc": "child with short hair, wearing a teal shirt",
-        "action": "smiling",
-        "position": "left"
-      },
-      {
-        "desc": "white pillowcase with black line-art patterns",
-        "action": "static",
-        "position": "background"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "The man is lying down on a bed.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The child is smiling next to the man.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The man's eyes are partially closed.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [],
-    "spatial": "The child is to the left of the man. The man is in the foreground on the right side of the frame. The patterned pillowcase is behind the heads of both the man and the child.",
-    "parse_success": true,
-    "chunk_idx": 4,
-    "video_id": "jREkHFYE1HM",
-    "state_changes": [],
-    "_rescued": "parse"
-  },
-  {
-    "time": [
-      10,
-      12
-    ],
-    "visible_entities": [
-      {
-        "desc": "man with dark hair and facial stubble, wearing a black top",
-        "action": "holding a foot near his face",
-        "position": "right foreground"
-      },
-      {
-        "desc": "child with short dark hair, wearing a green and white shirt",
-        "action": "smiling",
-        "position": "left background"
-      },
-      {
-        "desc": "bare foot",
-        "action": "being held",
-        "position": "center foreground"
-      },
-      {
-        "desc": "white pillowcase with black line-art illustrations",
-        "action": "static",
-        "position": "background"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "The man is holding a bare foot up to his nose and mouth area.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The child is smiling and looking towards the man.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The man is lying down on a pillow with black illustrations.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [],
-    "spatial": "The man is positioned to the right of the child. The child is lying on a pillow with black illustrations. The man is holding a foot in front of his face.",
-    "parse_success": true,
-    "chunk_idx": 5,
-    "video_id": "jREkHFYE1HM",
-    "state_changes": [],
-    "_rescued": "parse"
-  },
-  {
-    "time": [
-      12,
-      14
-    ],
-    "visible_entities": [
-      {
-        "desc": "toddler with short dark hair, wearing a long-sleeved shirt with a white torso featuring a raccoon face graphic and green sleeves",
-        "action": "smiling and looking forward",
-        "position": "left"
-      },
-      {
-        "desc": "man with short dark hair and facial stubble, wearing a black top",
-        "action": "turning head to the left",
-        "position": "right"
-      },
-      {
-        "desc": "white pillowcase with black line-art illustrations of cartoon characters",
-        "action": "static",
-        "position": "background"
-      },
-      {
-        "desc": "grey blanket with yellow and blue patterns",
-        "action": "static",
-        "position": "top"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "The toddler is smiling with an open mouth.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The man turns his head to look at the toddler.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The toddler is lying on a pillow with cartoon illustrations.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [],
-    "spatial": "The toddler is to the left of the man. The man is to the right of the toddler. The pillow is behind the heads of both the toddler and the man. The grey blanket is above the pillow.",
-    "parse_success": true,
-    "chunk_idx": 6,
-    "video_id": "jREkHFYE1HM",
-    "state_changes": [],
-    "_rescued": "parse"
-  },
-  {
-    "time": [
-      14,
-      16
-    ],
-    "visible_entities": [
-      {
-        "desc": "man with dark hair and stubble, wearing a black beanie",
-        "action": "lying down with eyes closed",
-        "position": "right foreground"
-      },
-      {
-        "desc": "child with short dark hair, wearing a green and white shirt",
-        "action": "smiling and holding a foot",
-        "position": "left background"
-      },
-      {
-        "desc": "human foot, pale skin",
-        "action": "being held against the man's face",
-        "position": "center"
-      },
-      {
-        "desc": "white pillowcase with black line-art illustrations",
-        "action": "static",
-        "position": "background"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "The child is holding a foot and pressing it against the man's nose and cheek.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The man is lying down with his eyes closed.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The child is smiling.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [],
-    "spatial": "The man is to the right of the child. The child is holding the foot next to the man's face. The pillow is behind the man and child.",
-    "parse_success": true,
-    "chunk_idx": 7,
-    "video_id": "jREkHFYE1HM",
-    "state_changes": [],
-    "_rescued": "parse"
-  },
-  {
-    "time": [
-      16,
-      18
-    ],
-    "visible_entities": [
-      {
-        "desc": "man with dark hair, beard, and a black headband with ears",
-        "action": "scrunching face and reacting to a foot",
-        "position": "right"
-      },
-      {
-        "desc": "baby with short dark hair wearing a green shirt",
-        "action": "laughing and holding a foot",
-        "position": "left"
-      },
-      {
-        "desc": "white pillow with black line-art pattern",
-        "action": "static",
-        "position": "background"
-      },
-      {
-        "desc": "small baby foot",
-        "action": "touching the man's nose",
-        "position": "center"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "The baby is laughing while holding a foot.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The man scrunches his face as the foot touches his nose.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The man is lying on a pillow with a black pattern.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [],
-    "spatial": "The baby is to the left of the man. The man is lying on the patterned pillow. The baby's foot is in front of the man's face, touching his nose.",
-    "parse_success": true,
-    "chunk_idx": 8,
-    "video_id": "jREkHFYE1HM",
-    "state_changes": [],
-    "_rescued": "parse"
-  },
-  {
-    "time": [
-      18,
-      20
-    ],
-    "visible_entities": [
-      {
-        "desc": "man with dark hair and stubble, wearing a black hooded garment with ears",
-        "action": "lying down and making a grimacing facial expression",
-        "position": "right"
-      },
-      {
-        "desc": "child with short dark hair, wearing a green and white shirt",
-        "action": "lying down and smiling",
-        "position": "left"
-      },
-      {
-        "desc": "pillow with a black and white graphic pattern",
-        "action": "static",
-        "position": "background"
-      },
-      {
-        "desc": "colorful blanket with blue, yellow, and red colors",
-        "action": "static",
-        "position": "top"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "The man on the right scrunches his face and opens his mouth.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The child on the left smiles and raises a hand.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The man and child are lying next to each other on a bed.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [],
-    "spatial": "The man is to the right of the child. The child is to the left of the man. Both are lying on a bed with a patterned pillow behind their heads and a colorful blanket above them.",
-    "parse_success": true,
-    "chunk_idx": 9,
-    "video_id": "jREkHFYE1HM",
-    "state_changes": [],
-    "_rescued": "parse"
-  },
-  {
-    "time": [
-      20,
-      22
-    ],
-    "visible_entities": [
-      {
-        "desc": "man with dark hair, mustache, and stubble, wearing a black shirt",
-        "action": "lying down with eyes closed and mouth puckered",
-        "position": "right"
-      },
-      {
-        "desc": "young child with short dark hair, wearing a grey t-shirt",
-        "action": "smiling and holding a foot",
-        "position": "left"
-      },
-      {
-        "desc": "small bare foot, light skin tone",
-        "action": "being held and moved towards the man's face",
-        "position": "center"
-      },
-      {
-        "desc": "hand with a tattoo on the wrist",
-        "action": "holding the foot",
-        "position": "center"
-      },
-      {
-        "desc": "pillow with black and white graphic print",
-        "action": "static",
-        "position": "background"
-      },
-      {
-        "desc": "colorful blanket with purple, red, and green sections",
-        "action": "static",
-        "position": "top background"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "The child is holding a small foot in their hand.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The child moves the foot towards the man's nose.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The man scrunches his face and closes his eyes as the foot approaches.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The man and child are lying on a bed with a patterned pillow.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [],
-    "spatial": "The child is to the left of the man. The man is lying on a pillow that is behind his head. The colorful blanket is above the pillow at the top of the frame. The child's hand is holding the foot in front of the man's face.",
-    "parse_success": true,
-    "chunk_idx": 10,
-    "video_id": "jREkHFYE1HM",
-    "state_changes": [],
-    "_rescued": "parse"
-  },
-  {
-    "time": [
-      22,
-      24
-    ],
-    "visible_entities": [
-      {
-        "desc": "man with dark hair, wearing a black headband with ears, black shirt",
-        "action": "making a funny face and reacting to a foot",
-        "position": "right"
-      },
-      {
-        "desc": "child with short brown hair, wearing a white shirt",
-        "action": "lying down and laughing",
-        "position": "left"
-      },
-      {
-        "desc": "human foot",
-        "action": "moving towards the man's face",
-        "position": "center"
-      },
-      {
-        "desc": "pillow with black and white graphic pattern",
-        "action": "static",
-        "position": "background"
-      },
-      {
-        "desc": "blanket with purple, yellow, and red colors",
-        "action": "static",
-        "position": "top"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "The man on the right scrunches his face and opens his mouth as if reacting to a smell.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "A foot is positioned directly in front of the man's nose.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The child on the left is smiling and laughing.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The man is wearing a black headband with ears.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [],
-    "spatial": "The man is on the right side of the frame, lying next to the child who is on the left. A foot is in front of the man's face. The patterned pillow is behind the man's head, and the colorful blanket is above the pillow.",
-    "parse_success": true,
-    "chunk_idx": 11,
-    "video_id": "jREkHFYE1HM",
-    "state_changes": [],
-    "_rescued": "parse"
-  },
-  {
-    "time": [
-      24,
-      26
-    ],
-    "visible_entities": [
-      {
-        "desc": "man with dark hair, light skin, wearing a black top",
-        "action": "lying down and talking",
-        "position": "right"
-      },
-      {
-        "desc": "child with short dark hair, wearing a green shirt",
-        "action": "lying down and moving hand",
-        "position": "left"
-      },
-      {
-        "desc": "pillow with black and white graphic print",
-        "action": "static",
-        "position": "background"
-      },
-      {
-        "desc": "folded blanket with purple, red, and yellow colors",
-        "action": "static",
-        "position": "top background"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "A man is lying down and talking.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "A child is lying down next to the man.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The child is moving their hand in front of the camera.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The man and child are resting on a pillow with a black and white graphic print.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [],
-    "spatial": "The man is to the right of the child. The child is to the left of the man. The pillow is behind the man and child. The folded blanket is above the pillow.",
-    "parse_success": true,
-    "chunk_idx": 12,
-    "video_id": "jREkHFYE1HM",
-    "state_changes": [],
-    "_rescued": "parse"
-  },
-  {
-    "time": [
-      26,
-      28
-    ],
-    "visible_entities": [
-      {
-        "desc": "man with dark hair, beard, and a black headband",
-        "action": "lying down with eyes closed while holding a foot",
-        "position": "right/foreground"
-      },
-      {
-        "desc": "child with short brown hair wearing a white shirt",
-        "action": "smiling and looking at the man",
-        "position": "left/background"
-      },
-      {
-        "desc": "human foot",
-        "action": "being held by the man",
-        "position": "center/foreground"
-      },
-      {
-        "desc": "pillow with black and white graphic print",
-        "action": "static",
-        "position": "background"
-      },
-      {
-        "desc": "folded blanket with blue, purple, and red colors",
-        "action": "static",
-        "position": "top background"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "The man is holding a foot near his face.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The child is smiling while looking at the man.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The man has his eyes closed.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [],
-    "spatial": "The man is to the right of the child. The child is behind the man's arm. The pillow with the graphic print is behind the man's head. The folded blanket is above the pillow.",
-    "parse_success": true,
-    "chunk_idx": 13,
-    "video_id": "jREkHFYE1HM",
-    "state_changes": [],
-    "_rescued": "parse"
-  },
-  {
-    "time": [
-      28,
-      30
-    ],
-    "visible_entities": [
-      {
-        "desc": "man with dark hair, black headband, and black bear ears, wearing a black shirt",
-        "action": "making a surprised face with wide eyes and open mouth",
-        "position": "right"
-      },
-      {
-        "desc": "toddler with short brown hair, wearing a green and white shirt",
-        "action": "smiling and holding up a bare foot",
-        "position": "left"
-      },
-      {
-        "desc": "pillow with a black and white pattern",
-        "action": "static",
-        "position": "background"
-      },
-      {
-        "desc": "blanket with red and yellow patterns on a light background",
-        "action": "static",
-        "position": "top background"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "The toddler is holding up their bare foot.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The man is making a surprised facial expression.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The man is wearing a headband with black bear ears.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The toddler is smiling.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [],
-    "spatial": "The toddler is to the left of the man. The man is to the right of the toddler. The patterned pillow is behind both the man and the toddler. The blanket is above the pillow.",
-    "parse_success": true,
-    "chunk_idx": 14,
-    "video_id": "jREkHFYE1HM",
-    "state_changes": [],
-    "_rescued": "parse"
-  },
-  {
-    "time": [
-      30,
-      32
-    ],
-    "visible_entities": [
-      {
-        "desc": "man with dark hair, stubble, wearing a black fuzzy hat with ears",
-        "action": "holding a foot and pressing toes to his face",
-        "position": "right"
-      },
-      {
-        "desc": "child with dark hair, wearing a white and green shirt",
-        "action": "smiling with mouth open",
-        "position": "left"
-      },
-      {
-        "desc": "small human foot with toes",
-        "action": "being held and moved",
-        "position": "center"
-      },
-      {
-        "desc": "pillow with black and white graphic pattern",
-        "action": "static",
-        "position": "background"
-      },
-      {
-        "desc": "folded blanket with blue, yellow, and red colors",
-        "action": "static",
-        "position": "top background"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "The man holds a small foot in his hand.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The man presses the toes of the foot against his nose and mouth.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The child is smiling and looking at the man.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The man is wearing a black hat with ears.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [],
-    "spatial": "The man is positioned to the right of the child. The child is lying on a patterned pillow. The man is holding the foot in front of his face. The folded blanket is above the pillow in the background.",
-    "parse_success": true,
-    "chunk_idx": 15,
-    "video_id": "jREkHFYE1HM",
-    "state_changes": [],
-    "_rescued": "parse"
-  },
-  {
-    "time": [
-      32,
-      34
-    ],
-    "visible_entities": [
-      {
-        "desc": "man with dark hair and beard, wearing black mouse ears",
-        "action": "lying down with eyes closed while holding a foot",
-        "position": "right"
-      },
-      {
-        "desc": "toddler with short brown hair, wearing a white shirt",
-        "action": "smiling and watching",
-        "position": "left"
-      },
-      {
-        "desc": "human foot, light skin tone",
-        "action": "being held near the man's face",
-        "position": "center"
-      },
-      {
-        "desc": "pillow with black and white graphic pattern",
-        "action": "static",
-        "position": "background"
-      },
-      {
-        "desc": "blanket with purple, blue, and red colors",
-        "action": "static",
-        "position": "top background"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "The man is holding a foot with both hands near his face.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The man has his eyes closed and lips puckered.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The toddler is looking at the man and smiling.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [],
-    "spatial": "The toddler is to the left of the man. The man is lying down with the foot held in front of his face. The patterned pillow is behind the man and the toddler.",
-    "parse_success": true,
-    "chunk_idx": 16,
-    "video_id": "jREkHFYE1HM",
-    "state_changes": [],
-    "_rescued": "parse"
-  },
-  {
-    "time": [
-      34,
-      36
-    ],
-    "visible_entities": [
-      {
-        "desc": "man with dark hair and stubble, wearing a black shirt",
-        "action": "lying down with eyes closed and face scrunched",
-        "position": "right"
-      },
-      {
-        "desc": "toddler with short brown hair, wearing a white and green shirt",
-        "action": "smiling and looking at the man",
-        "position": "left"
-      },
-      {
-        "desc": "bare foot",
-        "action": "raised in the foreground",
-        "position": "center"
-      },
-      {
-        "desc": "hand with a tattoo on the wrist",
-        "action": "moving in the foreground",
-        "position": "bottom left"
-      },
-      {
-        "desc": "bedding with a colorful patterned blanket and a black and white patterned pillow",
-        "action": "static",
-        "position": "background"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "A man is lying down with his eyes closed and his face scrunched.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "A toddler is smiling next to the man.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "A bare foot is raised in the foreground near the man's face.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "A hand with a tattoo is moving in the foreground.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [],
-    "spatial": "The toddler is to the left of the man. The man is lying on bedding that is behind him. The bare foot is in front of the man's face. The tattooed hand is in the bottom left foreground.",
-    "parse_success": true,
-    "chunk_idx": 17,
-    "video_id": "jREkHFYE1HM",
-    "state_changes": [],
-    "_rescued": "parse"
-  },
-  {
-    "time": [
-      36,
-      38
-    ],
-    "visible_entities": [
-      {
-        "desc": "man with dark hair, wearing a black shirt",
-        "action": "lying down and making a grimacing face",
-        "position": "right"
-      },
-      {
-        "desc": "child with short hair, wearing a green shirt",
-        "action": "lying down and smiling",
-        "position": "left"
-      },
-      {
-        "desc": "white pillow with a black and white graphic pattern",
-        "action": "static",
-        "position": "background"
-      },
-      {
-        "desc": "folded blanket with blue, yellow, and red colors",
-        "action": "static",
-        "position": "top"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "The man is lying down next to the child.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The man scrunches his nose and mouth into a grimace.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The child is smiling and looking towards the camera.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The child's foot is raised near their face.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [],
-    "spatial": "The man is to the right of the child. Both are lying down on a bed with a patterned pillow behind their heads. A colorful blanket is positioned above the pillow.",
-    "parse_success": true,
-    "chunk_idx": 18,
-    "video_id": "jREkHFYE1HM",
-    "state_changes": [],
-    "_rescued": "parse"
-  },
-  {
-    "time": [
-      38,
-      40
-    ],
-    "visible_entities": [
-      {
-        "desc": "man with dark hair, beard, and mustache, wearing a black shirt",
-        "action": "lying down with eyes closed and mouth open",
-        "position": "right"
-      },
-      {
-        "desc": "toddler with short brown hair, wearing a white t-shirt with a green sleeve and a cartoon eye graphic",
-        "action": "lying down and smiling",
-        "position": "left"
-      },
-      {
-        "desc": "white pillowcase with black line-art patterns",
-        "action": "static",
-        "position": "background"
-      },
-      {
-        "desc": "folded blanket with blue, purple, and red colors",
-        "action": "static",
-        "position": "top"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "The man is lying down with his eyes closed and mouth open.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The toddler is lying next to the man and smiling.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The toddler is wearing a shirt with a cartoon eye graphic.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "A patterned pillow is behind the heads of the man and toddler.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [],
-    "spatial": "The toddler is to the left of the man. The man is to the right of the toddler. Both are lying on a pillow with black patterns. A folded blanket is above the pillow.",
-    "parse_success": true,
-    "chunk_idx": 19,
-    "video_id": "jREkHFYE1HM",
-    "state_changes": [],
-    "_rescued": "parse"
-  },
-  {
-    "time": [
-      40,
-      42
-    ],
-    "visible_entities": [
-      {
-        "desc": "man with short dark hair, dark eyebrows, facial stubble, wearing a black t-shirt",
-        "action": "lying down with eyes closed",
-        "position": "right/foreground"
-      },
-      {
-        "desc": "young child with short brown hair, wearing a white sleeveless top",
-        "action": "smiling and reaching out",
-        "position": "left/background"
-      },
-      {
-        "desc": "hand with a visible tattoo on the wrist/forearm",
-        "action": "moving in front of the man's face",
-        "position": "center/foreground"
-      },
-      {
-        "desc": "pillow with a black and white graphic pattern",
-        "action": "static",
-        "position": "background"
-      },
-      {
-        "desc": "folded blanket with blue, red, and yellow colors",
-        "action": "static",
-        "position": "top/background"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "A hand with a wrist tattoo moves in front of the man's face.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The man lies down with his eyes closed.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The child smiles while looking at the man.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The man and child are lying on a bed with patterned bedding.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [],
-    "spatial": "The man is lying on the right side of the frame, while the child is positioned to his left. The child is slightly behind the man's shoulder. A hand is moving in the foreground, positioned between the camera and the man's face. The patterned pillow is behind the man's head, and a colorful blanket is above the pillow.",
-    "parse_success": true,
-    "chunk_idx": 20,
-    "video_id": "jREkHFYE1HM",
-    "state_changes": [],
-    "_rescued": "parse"
-  },
-  {
-    "time": [
-      42,
-      44
-    ],
-    "visible_entities": [
-      {
-        "desc": "man with dark hair, short beard, wearing a black t-shirt and a black cap",
-        "action": "lying down",
-        "position": "right"
-      },
-      {
-        "desc": "child with short dark hair, wearing a green shirt",
-        "action": "lying down",
-        "position": "left"
-      },
-      {
-        "desc": "bare foot with toes",
-        "action": "being held up",
-        "position": "center foreground"
-      },
-      {
-        "desc": "pillow with black and white graphic pattern",
-        "action": "static",
-        "position": "background"
-      },
-      {
-        "desc": "folded blanket with blue, yellow, and red colors",
-        "action": "static",
-        "position": "top background"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "A hand holds a bare foot up in the center of the frame.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The man and the child are lying down next to each other.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The child is positioned to the left of the man.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The patterned pillow is behind the heads of the man and child.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [],
-    "spatial": "The man is to the right of the child. The bare foot is in front of the child and near the man's face. The patterned pillow is behind the man and child, and the folded blanket is above the pillow.",
-    "parse_success": true,
-    "chunk_idx": 21,
-    "video_id": "jREkHFYE1HM",
-    "state_changes": [],
-    "_rescued": "parse"
-  },
-  {
-    "time": [
-      44,
-      46
-    ],
-    "visible_entities": [
-      {
-        "desc": "man with short dark hair, stubble, wearing a black t-shirt, tattoos on left wrist",
-        "action": "lying down with eyes closed",
-        "position": "right",
-        "id": "person_man_1"
-      },
-      {
-        "desc": "young child with short dark hair, wearing a patterned top",
-        "action": "touching the man's face",
-        "position": "left",
-        "id": "person_child_1"
-      },
-      {
-        "desc": "black baseball cap",
-        "action": "static",
-        "position": "top right",
-        "id": "cap_black_1"
-      },
-      {
-        "desc": "colorful blanket with blue, red, and green patterns",
+        "desc": "white pillowcase with a black abstract or zebra-like pattern",
         "action": "static",
         "position": "background",
-        "id": "blanket_colorful_1"
+        "id": "bedding_pillow_1"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "The child places a hand on the man's face, specifically near the nose.",
+        "fact": "The man is lying down on his back.",
         "confidence": 1.0
       },
       {
-        "fact": "The man is lying down with his eyes closed.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The child is smiling and looking at the man.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "A black cap is resting on a pillow behind the man's head.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [],
-    "spatial": "The child is to the left of the man and is in front of the colorful blanket. The man is lying down with his head near the black cap, which is positioned above him on the pillow. The child's hand is touching the man's face.",
-    "parse_success": true,
-    "chunk_idx": 22,
-    "video_id": "jREkHFYE1HM",
-    "state_changes": [
-      "man and child appeared, child touching man's face"
-    ]
-  },
-  {
-    "time": [
-      46,
-      48
-    ],
-    "visible_entities": [
-      {
-        "desc": "man with dark hair, facial stubble, wearing a black shirt",
-        "action": "lying down with eyes closed",
-        "position": "right"
-      },
-      {
-        "desc": "child with short dark hair, wearing a green shirt",
-        "action": "touching the man's face",
-        "position": "left"
-      },
-      {
-        "desc": "hand with visible tattoos on the back",
-        "action": "holding a small light-colored object",
-        "position": "center"
-      },
-      {
-        "desc": "pillow with black and white graphic pattern",
-        "action": "static",
-        "position": "background"
-      },
-      {
-        "desc": "colorful blanket with blue, red, and yellow sections",
-        "action": "static",
-        "position": "top"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "The man is lying down with his eyes closed.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The child is positioned next to the man.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "A hand with tattoos is holding a small object near the man's face.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The child reaches out and touches the man's cheek.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [],
-    "spatial": "The child is to the left of the man. The man is lying on a pillow with a black and white pattern. A colorful blanket is located above the pillow and the people. The tattooed hand is in the foreground, positioned between the child and the man.",
-    "parse_success": true,
-    "chunk_idx": 23,
-    "video_id": "jREkHFYE1HM",
-    "state_changes": [
-      "entities disappeared, scene empty"
-    ],
-    "_rescued": "parse"
-  },
-  {
-    "time": [
-      48,
-      50
-    ],
-    "visible_entities": [
-      {
-        "desc": "person with short dark hair, light skin, wearing a white shirt",
-        "action": "lying down",
-        "position": "left"
-      },
-      {
-        "desc": "man with short dark hair, facial stubble, wearing a black shirt",
-        "action": "lying down",
-        "position": "right"
-      },
-      {
-        "desc": "pillow with a black and white graphic print",
-        "action": "static",
-        "position": "background"
-      },
-      {
-        "desc": "blanket with purple, yellow, and red colors",
-        "action": "static",
-        "position": "top"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "A person with short dark hair is lying on a bed.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "A man with facial stubble is lying next to the person.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The man's eyes are closed.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [],
-    "spatial": "The person with short dark hair is to the left of the man with facial stubble. The pillow with the black and white graphic print is behind the person's head. The colorful blanket is above the pillow.",
-    "parse_success": true,
-    "chunk_idx": 24,
-    "video_id": "jREkHFYE1HM",
-    "state_changes": [],
-    "_rescued": "parse"
-  },
-  {
-    "time": [
-      50,
-      52
-    ],
-    "visible_entities": [
-      {
-        "desc": "man with dark hair, beard, and mustache, wearing a black shirt",
-        "action": "lying down",
-        "position": "right"
-      },
-      {
-        "desc": "young child with short brown hair",
-        "action": "lying down",
-        "position": "left"
-      },
-      {
-        "desc": "bare foot",
-        "action": "touching face",
-        "position": "center"
-      },
-      {
-        "desc": "white pillowcase with black graphic print",
-        "action": "static",
-        "position": "background"
-      },
-      {
-        "desc": "blue and yellow patterned blanket",
-        "action": "static",
-        "position": "top"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "A bare foot is touching the man's nose.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The child is lying next to the man.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The man and child are lying on a pillow with a black graphic print.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [],
-    "spatial": "The child is to the left of the man. The foot is in front of the child and is touching the man's face. The pillow is behind the man and child, and the blanket is above them.",
-    "parse_success": true,
-    "chunk_idx": 25,
-    "video_id": "jREkHFYE1HM",
-    "state_changes": [],
-    "_rescued": "parse"
-  },
-  {
-    "time": [
-      52,
-      54
-    ],
-    "visible_entities": [
-      {
-        "desc": "man with short dark hair, facial stubble, wearing a black top",
-        "action": "lying down with eyes closed",
-        "position": "right foreground"
-      },
-      {
-        "desc": "young child with short dark hair, wearing a teal shirt",
-        "action": "lying down and looking at the man",
-        "position": "left foreground"
-      },
-      {
-        "desc": "white pillowcase with a black and white graphic print",
-        "action": "static",
-        "position": "background"
-      },
-      {
-        "desc": "colorful blanket with purple, yellow, and red patterns",
-        "action": "static",
-        "position": "top background"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "A man is lying down with his eyes closed.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "A young child is lying next to the man.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The child is awake and looking towards the man.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [],
-    "spatial": "The man is to the right of the child. The child is to the left of the man. Both are lying on a pillowcase that is behind them. A colorful blanket is above the pillowcase.",
-    "parse_success": true,
-    "chunk_idx": 26,
-    "video_id": "jREkHFYE1HM",
-    "state_changes": [],
-    "_rescued": "parse"
-  },
-  {
-    "time": [
-      54,
-      56
-    ],
-    "visible_entities": [
-      {
-        "desc": "man with dark hair, stubble, wearing a black hat or hood",
-        "action": "lying down and looking at the camera",
-        "position": "right foreground"
-      },
-      {
-        "desc": "young child with short dark hair, wearing a teal shirt",
-        "action": "lying down and smiling",
-        "position": "left background"
-      },
-      {
-        "desc": "white pillow with black and white graphic pattern",
-        "action": "static",
-        "position": "center background"
-      },
-      {
-        "desc": "grey blanket with red and yellow patches",
-        "action": "static",
-        "position": "top background"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "The man is lying down next to the child.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The child is smiling while lying on the pillow.",
+        "fact": "The child is lying down next to the man.",
         "confidence": 1.0
       },
       {
@@ -1445,136 +39,40 @@
       }
     ],
     "ocr": [],
-    "spatial": "The man is in the foreground on the right side of the frame. The child is to the left of the man, positioned slightly behind him. Both individuals are lying on a patterned pillow which is below them. A grey blanket is visible above the pillow in the background.",
+    "spatial": "The man is in the foreground on the right side of the frame. The child is to the left of the man and slightly behind him. The patterned pillowcase is behind the heads of both the man and the child.",
     "parse_success": true,
-    "chunk_idx": 27,
+    "chunk_idx": 0,
     "video_id": "jREkHFYE1HM",
-    "state_changes": [],
-    "_rescued": "parse"
+    "state_changes": []
   },
   {
     "time": [
-      56,
-      58
+      1,
+      2
     ],
     "visible_entities": [
       {
-        "desc": "toddler with short dark hair, wearing a white shirt with a green collar and a grey graphic print",
-        "action": "lying on back and smiling",
-        "position": "left"
+        "desc": "man with dark hair and stubble",
+        "action": "touching his nose with his hand",
+        "position": "right foreground",
+        "id": "man_father_1"
       },
       {
-        "desc": "adult with dark hair and facial stubble, wearing a black shirt",
-        "action": "lying down and holding the toddler's foot",
-        "position": "right"
-      },
-      {
-        "desc": "pillow with a black and white graphic pattern",
+        "desc": "child with short dark hair wearing a teal shirt",
         "action": "static",
-        "position": "background"
+        "position": "left background",
+        "id": "child_baby_1"
+      },
+      {
+        "desc": "bedding with a black and white patterned sheet and a grey blanket",
+        "action": "static",
+        "position": "background",
+        "id": "bedding_pillow_1"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "The toddler is lying on their back on a patterned pillow.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The adult is holding the toddler's bare foot up to their face.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The toddler is smiling with their mouth open.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [],
-    "spatial": "The toddler is positioned to the left of the adult. The adult is holding the toddler's foot near their own face. Both individuals are lying on top of the patterned pillow.",
-    "parse_success": true,
-    "chunk_idx": 28,
-    "video_id": "jREkHFYE1HM",
-    "state_changes": [],
-    "_rescued": "parse"
-  },
-  {
-    "time": [
-      58,
-      60
-    ],
-    "visible_entities": [
-      {
-        "desc": "baby with short dark hair, wearing a white and green shirt",
-        "action": "smiling and looking down",
-        "position": "left"
-      },
-      {
-        "desc": "man with dark hair and facial stubble, wearing a black shirt",
-        "action": "lying down with eyes closed",
-        "position": "right"
-      },
-      {
-        "desc": "white pillowcase with a black graphic print of a tiger",
-        "action": "static",
-        "position": "background"
-      },
-      {
-        "desc": "grey blanket with colorful patterns",
-        "action": "static",
-        "position": "top"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "The baby is smiling while looking downwards.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The man is lying down with his eyes closed.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The baby is positioned next to the man.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [],
-    "spatial": "The baby is to the left of the man. The man is lying on the pillow which is behind his head. The blanket is above the pillow.",
-    "parse_success": true,
-    "chunk_idx": 29,
-    "video_id": "jREkHFYE1HM",
-    "state_changes": [],
-    "_rescued": "parse"
-  },
-  {
-    "time": [
-      60,
-      62
-    ],
-    "visible_entities": [
-      {
-        "desc": "man with short dark hair, dark eyebrows, and facial stubble, wearing a black shirt",
-        "action": "lying down with eyes closed",
-        "position": "right/foreground"
-      },
-      {
-        "desc": "child with light brown hair, wearing a green shirt",
-        "action": "lying down",
-        "position": "left"
-      },
-      {
-        "desc": "white pillowcase with a black line-art graphic print",
-        "action": "static",
-        "position": "background"
-      },
-      {
-        "desc": "grey blanket with yellow and red patterns",
-        "action": "static",
-        "position": "top/background"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "The man is lying down with his eyes closed.",
+        "fact": "The man in the foreground touches his nose with his hand.",
         "confidence": 1.0
       },
       {
@@ -1582,131 +80,1766 @@
         "confidence": 1.0
       },
       {
-        "fact": "The man's head is resting on a pillow with a graphic print.",
+        "fact": "The man's hand is in front of his face.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The man is positioned to the right of the child. The child is to the left of the man. The pillow with the graphic print is behind the man's head. The grey blanket is above the pillow in the background.",
+    "spatial": "The man is to the right of the child. The child is to the left of the man. The patterned bedding is behind both the man and the child.",
     "parse_success": true,
-    "chunk_idx": 30,
+    "chunk_idx": 1,
     "video_id": "jREkHFYE1HM",
-    "state_changes": [],
-    "_rescued": "parse"
+    "state_changes": [
+      "Man starts touching his nose; child changes from teal long-sleeve to generic teal shirt description."
+    ]
   },
   {
     "time": [
-      62,
-      64
+      2,
+      3
     ],
     "visible_entities": [
       {
-        "desc": "man with short dark hair, facial stubble, wearing a black shirt and a black headband with white trim",
+        "desc": "man with dark hair, dark eyebrows, facial stubble, wearing a black shirt",
         "action": "lying down and scrunching face",
-        "position": "foreground right"
+        "position": "right foreground",
+        "id": "man_father_1"
       },
       {
-        "desc": "white pillow with black graphic print",
+        "desc": "child with short hair, wearing a teal shirt",
+        "action": "lying down",
+        "position": "left background",
+        "id": "child_baby_1"
+      },
+      {
+        "desc": "white pillowcase with black line-art pattern",
         "action": "static",
-        "position": "background left"
+        "position": "background",
+        "id": "bedding_pillow_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The man scrunches his face, closing his eyes and baring his teeth.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The man is lying down next to the child.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The child is lying on the patterned pillowcase.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The man is positioned to the right of the child in the foreground. The child is lying on the white pillowcase with black patterns, which is behind the man's head.",
+    "parse_success": true,
+    "chunk_idx": 2,
+    "video_id": "jREkHFYE1HM",
+    "state_changes": []
+  },
+  {
+    "time": [
+      3,
+      4
+    ],
+    "visible_entities": [
+      {
+        "desc": "man with short dark hair, dark eyebrows, and facial stubble, wearing a black sleeveless top",
+        "action": "lying down and speaking",
+        "position": "right foreground",
+        "id": "man_father_1"
+      },
+      {
+        "desc": "child with short dark hair, wearing a teal shirt",
+        "action": "lying down",
+        "position": "left",
+        "id": "child_baby_1"
+      },
+      {
+        "desc": "white pillowcase with a black line-art pattern of a zebra or tiger",
+        "action": "static",
+        "position": "background",
+        "id": "bedding_pillow_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The man is lying down and moving his mouth as if speaking.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The child is lying down next to the man.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The man and child are resting on a pillow with an animal print.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The man is positioned in the foreground on the right side of the frame. The child is to the left of the man. The patterned pillow is behind the heads of both individuals.",
+    "parse_success": true,
+    "chunk_idx": 3,
+    "video_id": "jREkHFYE1HM",
+    "state_changes": []
+  },
+  {
+    "time": [
+      4,
+      5
+    ],
+    "visible_entities": [
+      {
+        "desc": "man with dark hair, facial stubble, wearing a black shirt",
+        "action": "lying down and talking",
+        "position": "right foreground"
+      },
+      {
+        "desc": "child with short dark hair, wearing a green shirt",
+        "action": "smiling and moving",
+        "position": "left background",
+        "id": "child_baby_1"
+      },
+      {
+        "desc": "white pillowcase with black line-art patterns",
+        "action": "static",
+        "position": "background",
+        "id": "bedding_pillow_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The man is lying down with his head on a pillow.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The man is talking to the camera.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The child is smiling next to the man.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The pillowcase features black line drawings.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The man is positioned in the right foreground, lying on a pillow. The child is to the left of the man and slightly behind him. The patterned pillow is underneath the man's head.",
+    "parse_success": true,
+    "chunk_idx": 4,
+    "video_id": "jREkHFYE1HM",
+    "state_changes": [
+      "Child's shirt color changes from teal to green; child starts smiling and moving."
+    ]
+  },
+  {
+    "time": [
+      5,
+      6
+    ],
+    "visible_entities": [
+      {
+        "desc": "man with dark hair and facial hair, wearing a black hat with round ears",
+        "action": "holding a foot and sniffing it",
+        "position": "right foreground",
+        "id": "man_father_1"
+      },
+      {
+        "desc": "child with short dark hair, wearing a green and white shirt",
+        "action": "smiling",
+        "position": "left background",
+        "id": "child_baby_1"
+      },
+      {
+        "desc": "human foot",
+        "action": "being held",
+        "position": "center foreground",
+        "id": "foot_child_1"
+      },
+      {
+        "desc": "white pillow with black line-art pattern",
+        "action": "static",
+        "position": "background",
+        "id": "bedding_pillow_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The man holds a foot up to his nose.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The man sniffs the foot.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The child is smiling in the background.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The man is wearing a black hat with round ears.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The man is positioned to the right of the child. The child is lying on the white patterned pillow behind the man. The foot is held in front of the man's face.",
+    "parse_success": true,
+    "chunk_idx": 5,
+    "video_id": "jREkHFYE1HM",
+    "state_changes": [
+      "Man puts on a black hat with round ears; man starts holding and sniffing the child's foot."
+    ]
+  },
+  {
+    "time": [
+      6,
+      7
+    ],
+    "visible_entities": [
+      {
+        "desc": "toddler with short dark hair, wearing a long-sleeved shirt with a white torso featuring a raccoon face graphic and green sleeves",
+        "action": "smiling and looking at the man",
+        "position": "left",
+        "id": "child_baby_1"
+      },
+      {
+        "desc": "man with short dark hair and facial stubble, wearing a black shirt",
+        "action": "lying down and talking",
+        "position": "right",
+        "id": "man_father_1"
+      },
+      {
+        "desc": "white pillowcase with black line-art illustrations of characters",
+        "action": "static",
+        "position": "background",
+        "id": "bedding_pillow_1"
+      },
+      {
+        "desc": "grey blanket with yellow and blue patterns",
+        "action": "static",
+        "position": "top",
+        "id": "blanket_colorful_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The toddler is smiling with an open mouth.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The man is lying down next to the toddler.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The man's mouth is open as if speaking.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The toddler is to the left of the man. The man is to the right of the toddler. Both are lying on a pillow with black illustrations, which is below them. A grey blanket is above their heads.",
+    "parse_success": true,
+    "chunk_idx": 6,
+    "video_id": "jREkHFYE1HM",
+    "state_changes": []
+  },
+  {
+    "time": [
+      7,
+      8
+    ],
+    "visible_entities": [
+      {
+        "desc": "man with dark hair, facial stubble, wearing a black beanie",
+        "action": "lying down with eyes closed",
+        "position": "right",
+        "id": "man_father_1"
+      },
+      {
+        "desc": "child with short dark hair, wearing a green and white shirt",
+        "action": "smiling and looking at the man",
+        "position": "left",
+        "id": "child_baby_1"
+      },
+      {
+        "desc": "small human foot, light skin tone",
+        "action": "being held against the man's face",
+        "position": "center",
+        "id": "foot_child_1"
+      },
+      {
+        "desc": "white pillowcase with black line-art patterns",
+        "action": "static",
+        "position": "background",
+        "id": "bedding_pillow_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A hand is holding a small foot against the man's nose and cheek.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The man has his eyes closed while the foot touches his face.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The child is smiling while looking at the man.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The child is to the left of the man. The man is lying on a pillow with black patterns. The foot is positioned in front of the man's face.",
+    "parse_success": true,
+    "chunk_idx": 7,
+    "video_id": "jREkHFYE1HM",
+    "state_changes": [
+      "Man changes headwear to a black beanie; man closes eyes; foot is pressed against man's face."
+    ]
+  },
+  {
+    "time": [
+      8,
+      9
+    ],
+    "visible_entities": [
+      {
+        "desc": "man with dark hair, beard, wearing a black hat with white trim",
+        "action": "lying down with eyes closed and nose wrinkled",
+        "position": "right",
+        "id": "man_father_1"
+      },
+      {
+        "desc": "baby with short dark hair, wearing a green and white striped shirt",
+        "action": "laughing",
+        "position": "left",
+        "id": "child_baby_1"
+      },
+      {
+        "desc": "small baby foot",
+        "action": "touching the man's nose",
+        "position": "center",
+        "id": "foot_child_1"
+      },
+      {
+        "desc": "white pillowcase with black line-art pattern",
+        "action": "static",
+        "position": "background",
+        "id": "bedding_pillow_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A baby foot is touching the man's nose.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The man is lying down with his eyes closed.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The baby is laughing next to the man.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The baby is to the left of the man. The baby's foot is in front of the man's face. The man is lying on the pillowcase.",
+    "parse_success": true,
+    "chunk_idx": 8,
+    "video_id": "jREkHFYE1HM",
+    "state_changes": [
+      "Man changes headwear to a black hat with white trim; baby starts laughing; foot touches man's nose."
+    ]
+  },
+  {
+    "time": [
+      9,
+      10
+    ],
+    "visible_entities": [
+      {
+        "desc": "man with dark hair, wearing a black shirt and a black hat with ears",
+        "action": "lying down and making a facial expression",
+        "position": "right foreground",
+        "id": "man_father_1"
+      },
+      {
+        "desc": "child with short dark hair, wearing a green and white shirt",
+        "action": "smiling and raising a hand",
+        "position": "left background",
+        "id": "child_baby_1"
+      },
+      {
+        "desc": "pillow with a black and white graphic pattern",
+        "action": "static",
+        "position": "background",
+        "id": "bedding_pillow_1"
+      },
+      {
+        "desc": "colorful blanket with blue, yellow, and red sections",
+        "action": "static",
+        "position": "top background",
+        "id": "blanket_colorful_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A man is lying down on the right side of the frame.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A child is lying down on the left side of the frame.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The child raises their hand towards the camera.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The man is wearing a black hat with ears.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The man is to the right of the child. The child is to the left of the man. Both are lying on a pillow which is behind them. A colorful blanket is above the pillow.",
+    "parse_success": true,
+    "chunk_idx": 9,
+    "video_id": "jREkHFYE1HM",
+    "state_changes": [
+      "Man changes headwear to black hat with ears; child raises a hand."
+    ]
+  },
+  {
+    "time": [
+      10,
+      11
+    ],
+    "visible_entities": [
+      {
+        "desc": "man with dark hair, mustache, and beard, wearing a black shirt",
+        "action": "holding a foot to his face",
+        "position": "right",
+        "id": "man_father_1"
+      },
+      {
+        "desc": "young child with short dark hair, wearing a white shirt",
+        "action": "smiling",
+        "position": "left",
+        "id": "child_baby_1"
+      },
+      {
+        "desc": "small foot",
+        "action": "being held",
+        "position": "center",
+        "id": "foot_child_1"
+      },
+      {
+        "desc": "colorful blanket with purple, blue, and red patterns",
+        "action": "static",
+        "position": "background",
+        "id": "blanket_colorful_1"
+      },
+      {
+        "desc": "black and white patterned pillow",
+        "action": "static",
+        "position": "background",
+        "id": "bedding_pillow_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The man holds a small foot near his nose and mouth.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The man scrunches his face as if smelling the foot.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The child smiles while looking at the man.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The man has a tattoo on his left wrist.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The child is to the left of the man. The man is holding the foot in front of his face. The colorful blanket is above the black and white patterned pillow in the background.",
+    "parse_success": true,
+    "chunk_idx": 10,
+    "video_id": "jREkHFYE1HM",
+    "state_changes": [
+      "Child's shirt changes to white; man holds foot to face again."
+    ]
+  },
+  {
+    "time": [
+      11,
+      12
+    ],
+    "visible_entities": [
+      {
+        "desc": "man with dark hair, black headband, black shirt",
+        "action": "making a funny face with wide eyes and hand near mouth",
+        "position": "right",
+        "id": "man_father_1"
+      },
+      {
+        "desc": "child with short hair, light-colored shirt",
+        "action": "lying down and smiling",
+        "position": "left",
+        "id": "child_baby_1"
+      },
+      {
+        "desc": "pillow with black and white graphic pattern",
+        "action": "static",
+        "position": "background",
+        "id": "bedding_pillow_1"
+      },
+      {
+        "desc": "blanket with colorful pattern including red and blue",
+        "action": "static",
+        "position": "top background",
+        "id": "blanket_colorful_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The man on the right is making a funny face with wide eyes and his hand near his mouth.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The child on the left is smiling.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The man and child are lying on a bed.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The man is to the right of the child. The child is to the left of the man. Both are lying on a bed with a patterned pillow behind them and a colorful blanket above the pillow.",
+    "parse_success": true,
+    "chunk_idx": 11,
+    "video_id": "jREkHFYE1HM",
+    "state_changes": [
+      "Man changes headwear to black headband; man makes a funny face with wide eyes."
+    ]
+  },
+  {
+    "time": [
+      12,
+      13
+    ],
+    "visible_entities": [
+      {
+        "desc": "man with dark hair and facial stubble, wearing a black headband with ears",
+        "action": "lying down and talking",
+        "position": "right foreground",
+        "id": "man_father_1"
+      },
+      {
+        "desc": "child with short dark hair, wearing a green shirt",
+        "action": "lying down and waving hand",
+        "position": "left background",
+        "id": "child_baby_1"
+      },
+      {
+        "desc": "white pillow with black and white graphic pattern",
+        "action": "static",
+        "position": "background",
+        "id": "bedding_pillow_1"
+      },
+      {
+        "desc": "folded blanket with purple, red, and yellow colors",
+        "action": "static",
+        "position": "top background",
+        "id": "blanket_colorful_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The man is lying down with his head on a pillow.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The child is lying next to the man.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The child waves their hand in front of the camera.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The man is speaking or singing.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The man is to the right of the child. The child is lying on the patterned pillow. The folded blanket is above the pillow and the people.",
+    "parse_success": true,
+    "chunk_idx": 12,
+    "video_id": "jREkHFYE1HM",
+    "state_changes": [
+      "Man's headband now has ears; child starts waving hand."
+    ]
+  },
+  {
+    "time": [
+      13,
+      14
+    ],
+    "visible_entities": [
+      {
+        "desc": "man with dark hair, facial stubble, wearing a black headband, lying down",
+        "action": "lying down with eyes closed",
+        "position": "right",
+        "id": "man_father_1"
+      },
+      {
+        "desc": "baby with short brown hair, wearing a white shirt",
+        "action": "smiling and holding a foot",
+        "position": "left",
+        "id": "child_baby_1"
+      },
+      {
+        "desc": "human foot with light skin tone",
+        "action": "being held against the man's face",
+        "position": "center",
+        "id": "foot_child_1"
+      },
+      {
+        "desc": "pillow with black and white graphic pattern",
+        "action": "static",
+        "position": "background",
+        "id": "bedding_pillow_1"
+      },
+      {
+        "desc": "blanket with blue, purple, and red colors",
+        "action": "static",
+        "position": "top background",
+        "id": "blanket_colorful_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The baby is holding a foot and pressing the toes against the man's nose.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The man is lying down with his eyes closed.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The baby is smiling while interacting with the man.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The baby is to the left of the man. The man is lying on a pillow with a black and white pattern. A colorful blanket is located above the pillow in the background. The baby is holding a foot in front of the man's face.",
+    "parse_success": true,
+    "chunk_idx": 13,
+    "video_id": "jREkHFYE1HM",
+    "state_changes": [
+      "Man closes eyes; baby holds the foot."
+    ]
+  },
+  {
+    "time": [
+      14,
+      15
+    ],
+    "visible_entities": [
+      {
+        "desc": "man with dark hair, black t-shirt, wearing a black fuzzy headband with ears",
+        "action": "lying down, holding a foot, making facial expressions",
+        "position": "right foreground",
+        "id": "man_father_1"
+      },
+      {
+        "desc": "child with short brown hair, wearing a green and white shirt",
+        "action": "smiling, sitting",
+        "position": "left background",
+        "id": "child_baby_1"
+      },
+      {
+        "desc": "human foot",
+        "action": "being held up",
+        "position": "center foreground",
+        "id": "foot_child_1"
+      },
+      {
+        "desc": "white pillow with black abstract line patterns",
+        "action": "static",
+        "position": "background",
+        "id": "bedding_pillow_1"
+      },
+      {
+        "desc": "folded blanket with purple, white, and red colors",
+        "action": "static",
+        "position": "top background",
+        "id": "blanket_colorful_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The man holds a foot up in front of his face.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The man's eyes are wide open in the first frame and closed in the second frame.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The child is smiling in the background.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The man is lying on a pillow with black patterns.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The man is to the right of the child. The foot is in front of the man's face. The patterned pillow is behind the man and the child. The folded blanket is above the pillow.",
+    "parse_success": true,
+    "chunk_idx": 14,
+    "video_id": "jREkHFYE1HM",
+    "state_changes": [
+      "Man's headband becomes fuzzy; child transitions to sitting position."
+    ]
+  },
+  {
+    "time": [
+      15,
+      16
+    ],
+    "visible_entities": [
+      {
+        "desc": "man with dark hair and facial stubble, wearing a black fuzzy hat with ears",
+        "action": "holding a foot and pressing it against his face",
+        "position": "right",
+        "id": "man_father_1"
+      },
+      {
+        "desc": "child with dark hair, wearing a white and green shirt",
+        "action": "smiling and laughing",
+        "position": "left",
+        "id": "child_baby_1"
+      },
+      {
+        "desc": "bare foot",
+        "action": "being held and moved",
+        "position": "center",
+        "id": "foot_child_1"
+      },
+      {
+        "desc": "pillow with black and white pattern",
+        "action": "static",
+        "position": "background",
+        "id": "bedding_pillow_1"
+      },
+      {
+        "desc": "blue blanket with red and yellow patterns",
+        "action": "static",
+        "position": "top background",
+        "id": "blanket_colorful_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The man holds a foot in his hand.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The man presses the foot against his cheek and mouth area.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The child is smiling with an open mouth.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The man is wearing a black hat with ears.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The child is to the left of the man. The man is holding the foot in front of his face. The patterned pillow is behind the man and child. The blue blanket is above the pillow.",
+    "parse_success": true,
+    "chunk_idx": 15,
+    "video_id": "jREkHFYE1HM",
+    "state_changes": [
+      "Man's hat becomes fuzzy; man presses foot against his face; child starts laughing."
+    ]
+  },
+  {
+    "time": [
+      16,
+      17
+    ],
+    "visible_entities": [
+      {
+        "desc": "man with short dark hair, facial stubble, wearing a black headband with ears, shirtless",
+        "action": "lying down with eyes closed and mouth puckered",
+        "position": "right/foreground",
+        "id": "man_father_1"
+      },
+      {
+        "desc": "toddler with short dark hair, wearing a white shirt with green trim",
+        "action": "smiling and looking at the man",
+        "position": "left/background",
+        "id": "child_baby_1"
+      },
+      {
+        "desc": "human foot, light skin tone",
+        "action": "being held by the man",
+        "position": "center/foreground"
+      },
+      {
+        "desc": "bedding with a black and white patterned pillowcase and a colorful blanket with red and blue patches",
+        "action": "static",
+        "position": "background",
+        "id": "bedding_pillow_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The man is holding a human foot with both hands.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The man has his eyes closed and lips puckered as if blowing air.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The toddler is smiling while looking at the man.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The man is wearing a black headband with ears.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The man is lying down on the right side of the frame, positioned in front of the toddler who is on the left. The man is holding the foot in front of his face. The colorful blanket is above the patterned pillowcase in the background.",
+    "parse_success": true,
+    "chunk_idx": 16,
+    "video_id": "jREkHFYE1HM",
+    "state_changes": [
+      "Man becomes shirtless but keeps headband; man puckers mouth."
+    ]
+  },
+  {
+    "time": [
+      17,
+      18
+    ],
+    "visible_entities": [
+      {
+        "desc": "man with dark hair and stubble, wearing a black shirt",
+        "action": "lying down with eyes closed and face scrunched",
+        "position": "right"
+      },
+      {
+        "desc": "child with short dark hair, wearing a white and green shirt",
+        "action": "smiling and looking at the man",
+        "position": "left",
+        "id": "child_baby_1"
+      },
+      {
+        "desc": "human foot",
+        "action": "raised in the foreground",
+        "position": "foreground",
+        "id": "foot_child_1"
+      },
+      {
+        "desc": "human hand",
+        "action": "blurred in motion in the foreground",
+        "position": "foreground",
+        "id": "man_father_1"
+      },
+      {
+        "desc": "pillows with black and white patterns and a colorful blanket",
+        "action": "static",
+        "position": "background",
+        "id": "bedding_pillow_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A man is lying down with his eyes closed.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A child is smiling next to the man.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A foot is raised in the foreground near the man's face.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A hand is moving in the foreground.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The child is to the left of the man. The man is lying on pillows in the background. The foot and hand are in the foreground, in front of the man.",
+    "parse_success": true,
+    "chunk_idx": 17,
+    "video_id": "jREkHFYE1HM",
+    "state_changes": [
+      "Man puts black shirt back on; foot is raised in foreground; blurred hand appears."
+    ]
+  },
+  {
+    "time": [
+      18,
+      19
+    ],
+    "visible_entities": [
+      {
+        "desc": "man with short dark hair and stubble, wearing a black shirt",
+        "action": "lying down and making a scrunched facial expression",
+        "position": "right",
+        "id": "man_father_1"
+      },
+      {
+        "desc": "child with short dark hair, wearing a green shirt",
+        "action": "lying down and smiling",
+        "position": "left",
+        "id": "child_baby_1"
+      },
+      {
+        "desc": "white pillow with a black and white graphic print",
+        "action": "static",
+        "position": "background",
+        "id": "bedding_pillow_1"
+      },
+      {
+        "desc": "folded blanket with blue, red, and yellow colors",
+        "action": "static",
+        "position": "top",
+        "id": "blanket_colorful_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The man scrunches his face and opens his mouth.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The child smiles and moves their hand near their face.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The man and child are lying on a bed.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The child is to the left of the man. The man is to the right of the child. Both are lying on a pillow, which is behind their heads. A folded blanket is above the pillow.",
+    "parse_success": true,
+    "chunk_idx": 18,
+    "video_id": "jREkHFYE1HM",
+    "state_changes": []
+  },
+  {
+    "time": [
+      19,
+      20
+    ],
+    "visible_entities": [
+      {
+        "desc": "man with dark hair, beard, and mustache, wearing a black shirt",
+        "action": "lying down with eyes closed",
+        "position": "right",
+        "id": "man_father_1"
+      },
+      {
+        "desc": "toddler with short brown hair, wearing a white t-shirt with a green sleeve and a cartoon eye graphic",
+        "action": "smiling while lying down",
+        "position": "left",
+        "id": "child_baby_1"
+      },
+      {
+        "desc": "white pillow with black abstract line art patterns",
+        "action": "static",
+        "position": "background",
+        "id": "bedding_pillow_1"
       },
       {
         "desc": "folded blanket with purple, yellow, and red colors",
         "action": "static",
-        "position": "background top"
+        "position": "top background",
+        "id": "blanket_colorful_1"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "The man is lying down on a bed.",
+        "fact": "The man is lying down with his eyes closed.",
         "confidence": 1.0
       },
       {
-        "fact": "The man scrunches his nose and closes his eyes.",
+        "fact": "The toddler is smiling and looking towards the man.",
         "confidence": 1.0
       },
       {
-        "fact": "The man raises his hand towards his ear.",
+        "fact": "The toddler is positioned to the left of the man.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The man and toddler are resting on a pillow with black patterns.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The man is in the foreground on the right side of the frame. The white pillow is to the left of the man's head. The folded blanket is above the pillow.",
+    "spatial": "The toddler is to the left of the man. The man is in the foreground on the right side of the frame. Both individuals are lying on a pillow that is behind their heads. A colorful blanket is positioned above the pillow at the top of the frame.",
     "parse_success": true,
-    "chunk_idx": 31,
+    "chunk_idx": 19,
     "video_id": "jREkHFYE1HM",
-    "state_changes": [],
-    "_rescued": "parse"
+    "state_changes": []
   },
   {
     "time": [
-      64,
-      66
+      20,
+      21
     ],
     "visible_entities": [
       {
-        "desc": "man with short dark hair, dark eyebrows, facial stubble, wearing a black shirt",
-        "action": "making facial expressions",
-        "position": "center"
+        "desc": "man with dark hair, beard, and black shirt",
+        "action": "lying down with eyes closed",
+        "position": "right",
+        "id": "man_father_1"
       },
       {
-        "desc": "white pillow with a black line-drawing pattern",
-        "action": "static",
-        "position": "background"
+        "desc": "child with short brown hair",
+        "action": "smiling and reaching out",
+        "position": "left",
+        "id": "child_baby_1"
       },
       {
-        "desc": "folded blanket with blue, yellow, and red colors",
+        "desc": "hand with a tattoo on the wrist",
+        "action": "waving in front of the camera",
+        "position": "foreground",
+        "id": "man_father_1"
+      },
+      {
+        "desc": "pillow with black and white graphic pattern",
         "action": "static",
-        "position": "top"
+        "position": "background",
+        "id": "bedding_pillow_1"
+      },
+      {
+        "desc": "colorful blanket with blue, red, and yellow patches",
+        "action": "static",
+        "position": "top background",
+        "id": "blanket_colorful_1"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "The man scrunches his nose and purses his lips.",
+        "fact": "A hand with a wrist tattoo waves in the foreground, partially obscuring the view.",
         "confidence": 1.0
       },
       {
-        "fact": "The man opens his mouth to show his teeth.",
+        "fact": "A child is smiling while looking towards the man.",
         "confidence": 1.0
       },
       {
-        "fact": "The man's hand is raised near his ear.",
+        "fact": "The man is lying down with his eyes closed.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A patterned pillow is positioned behind the man's head.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The man is in the foreground, lying down. The white pillow is behind his head. The colorful blanket is above the pillow in the background.",
+    "spatial": "The child is to the left of the man. The man is lying on a pillow with a black and white pattern. A colorful blanket is above the pillow. A hand is in the foreground, in front of both the man and the child.",
     "parse_success": true,
-    "chunk_idx": 32,
+    "chunk_idx": 20,
     "video_id": "jREkHFYE1HM",
-    "state_changes": [],
-    "_rescued": "parse"
+    "state_changes": [
+      "Tattooed hand waves in front of camera; child reaches out."
+    ]
   },
   {
     "time": [
-      66,
-      68
+      21,
+      22
     ],
     "visible_entities": [
       {
-        "desc": "man with short dark hair, light skin, facial stubble, wearing a black fuzzy headband with ears",
-        "action": "lying down with mouth open",
-        "position": "center"
+        "desc": "man with dark hair, facial stubble, wearing a black shirt and a black hat with ears",
+        "action": "lying down and looking at the camera",
+        "position": "right",
+        "id": "man_father_1"
       },
       {
-        "desc": "toddler with short brown hair, wearing a white and green shirt",
-        "action": "reaching out with hand",
-        "position": "left"
+        "desc": "child with short dark hair wearing a green shirt",
+        "action": "lying down and smiling",
+        "position": "left",
+        "id": "child_baby_1"
+      },
+      {
+        "desc": "bare foot with visible toes",
+        "action": "being held up in the foreground",
+        "position": "center",
+        "id": "foot_child_1"
+      },
+      {
+        "desc": "pillow with black and white graphic pattern",
+        "action": "static",
+        "position": "background",
+        "id": "bedding_pillow_1"
+      },
+      {
+        "desc": "folded blanket with blue, red, and yellow colors",
+        "action": "static",
+        "position": "top background",
+        "id": "blanket_colorful_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A hand is holding up a bare foot in the center of the frame.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The child is smiling while looking at the foot.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The man is lying next to the child on a bed.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The man is to the right of the child. The foot is in front of the child's face. The patterned pillow is behind the heads of the man and child. The colorful blanket is above the pillow.",
+    "parse_success": true,
+    "chunk_idx": 21,
+    "video_id": "jREkHFYE1HM",
+    "state_changes": [
+      "Man puts black hat with ears back on; bare foot held up in foreground."
+    ]
+  },
+  {
+    "time": [
+      22,
+      23
+    ],
+    "visible_entities": [
+      {
+        "desc": "man with short dark hair, facial stubble, wearing a black t-shirt and a black cap with a white brim, has a tattoo on his left wrist",
+        "action": "lying down with eyes closed",
+        "position": "right",
+        "id": "man_father_1"
+      },
+      {
+        "desc": "young child with short brown hair, wearing a patterned sleeveless top",
+        "action": "reaching out and touching the man's face",
+        "position": "left",
+        "id": "child_baby_1"
+      },
+      {
+        "desc": "colorful blanket with blue, red, and yellow patterns",
+        "action": "static",
+        "position": "background",
+        "id": "blanket_colorful_1"
+      },
+      {
+        "desc": "pillow with black and white graphic print",
+        "action": "static",
+        "position": "background",
+        "id": "bedding_pillow_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The child extends their arm to touch the man's nose and mouth area.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The man lies still with his eyes closed while the child interacts with his face.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The man's left hand is raised near his own face.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The child is positioned to the left of the man. The man is lying on a pillow with a black and white graphic print. A colorful blanket is located above the pillow in the background.",
+    "parse_success": true,
+    "chunk_idx": 22,
+    "video_id": "jREkHFYE1HM",
+    "state_changes": [
+      "Man changes to black cap with white brim; child touches man's face."
+    ]
+  },
+  {
+    "time": [
+      23,
+      24
+    ],
+    "visible_entities": [
+      {
+        "desc": "man with short dark hair, facial stubble, wearing a black shirt",
+        "action": "lying down with eyes closed",
+        "position": "right"
+      },
+      {
+        "desc": "young child with short dark hair, wearing a green shirt",
+        "action": "lying down and touching the man's face",
+        "position": "left",
+        "id": "child_baby_1"
+      },
+      {
+        "desc": "hand with visible tattoos on the wrist and forearm",
+        "action": "touching the man's cheek",
+        "position": "center",
+        "id": "man_father_1"
+      },
+      {
+        "desc": "pillow with a black and white graphic print pattern",
+        "action": "static",
+        "position": "background",
+        "id": "bedding_pillow_1"
+      },
+      {
+        "desc": "blanket with a colorful pattern including purple, blue, and red",
+        "action": "static",
+        "position": "top background",
+        "id": "blanket_colorful_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The child is lying next to the man.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A hand with tattoos is touching the man's face.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The man has his eyes closed.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The child is smiling.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The child is to the left of the man. The tattooed hand is in front of the man's face. The patterned pillow is behind the heads of the man and child. The colorful blanket is above the pillow.",
+    "parse_success": true,
+    "chunk_idx": 23,
+    "video_id": "jREkHFYE1HM",
+    "state_changes": [
+      "Man removes cap; tattooed hand touches man's cheek."
+    ]
+  },
+  {
+    "time": [
+      24,
+      25
+    ],
+    "visible_entities": [
+      {
+        "desc": "man with short dark hair and facial stubble, wearing a black top",
+        "action": "lying down with eyes closed",
+        "position": "right",
+        "id": "man_father_1"
+      },
+      {
+        "desc": "baby with short dark hair, wearing a white shirt",
+        "action": "lying down and smiling",
+        "position": "left",
+        "id": "child_baby_1"
+      },
+      {
+        "desc": "black and white patterned pillow",
+        "action": "static",
+        "position": "background",
+        "id": "bedding_pillow_1"
+      },
+      {
+        "desc": "colorful blanket with purple, yellow, and red patterns",
+        "action": "static",
+        "position": "top background",
+        "id": "blanket_colorful_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The man is lying down with his eyes closed.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The baby is lying next to the man and smiling.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The baby's hand is touching the man's face.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The baby is to the left of the man. The man is lying on the black and white patterned pillow. The colorful blanket is above the pillow and the people.",
+    "parse_success": true,
+    "chunk_idx": 24,
+    "video_id": "jREkHFYE1HM",
+    "state_changes": []
+  },
+  {
+    "time": [
+      25,
+      26
+    ],
+    "visible_entities": [
+      {
+        "desc": "man with short dark hair and facial stubble, wearing a black shirt",
+        "action": "lying down",
+        "position": "right",
+        "id": "man_father_1"
+      },
+      {
+        "desc": "baby with short brown hair and light skin",
+        "action": "touching the man's face",
+        "position": "left",
+        "id": "child_baby_1"
+      },
+      {
+        "desc": "white pillowcase with a black and white graphic print of a tiger or animal",
+        "action": "static",
+        "position": "background",
+        "id": "bedding_pillow_1"
+      },
+      {
+        "desc": "blue blanket with colorful patterns",
+        "action": "static",
+        "position": "top",
+        "id": "blanket_colorful_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A baby is reaching out and touching the nose of a man lying next to them.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The man and baby are lying on a bed with patterned bedding.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The baby is to the left of the man. The man is to the right of the baby. Both are lying on a pillow with a tiger print, which is below them. A blue blanket is above the pillow in the background.",
+    "parse_success": true,
+    "chunk_idx": 25,
+    "video_id": "jREkHFYE1HM",
+    "state_changes": [
+      "Baby touches man's face."
+    ]
+  },
+  {
+    "time": [
+      26,
+      27
+    ],
+    "visible_entities": [
+      {
+        "desc": "man with short dark hair, stubble, and closed eyes",
+        "action": "lying down",
+        "position": "right",
+        "id": "man_father_1"
+      },
+      {
+        "desc": "child with short brown hair and a green shirt",
+        "action": "lying down",
+        "position": "left",
+        "id": "child_baby_1"
+      },
+      {
+        "desc": "white pillowcase with black line-art graphics of a zebra and other figures",
+        "action": "static",
+        "position": "background",
+        "id": "bedding_pillow_1"
+      },
+      {
+        "desc": "colorful blanket with purple, yellow, and red patterns",
+        "action": "static",
+        "position": "top",
+        "id": "blanket_colorful_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A man and a child are lying down next to each other.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The man's eyes are closed.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The child is looking towards the camera.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The man and child are resting their heads on a pillow with black graphics.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The child is to the left of the man. The man is to the right of the child. Both are lying on a pillow which is below their heads. A colorful blanket is above the pillow.",
+    "parse_success": true,
+    "chunk_idx": 26,
+    "video_id": "jREkHFYE1HM",
+    "state_changes": []
+  },
+  {
+    "time": [
+      27,
+      28
+    ],
+    "visible_entities": [
+      {
+        "desc": "man with dark hair and facial stubble, wearing a black hooded garment",
+        "action": "lying down",
+        "position": "right foreground",
+        "id": "man_father_1"
+      },
+      {
+        "desc": "young child with short dark hair, wearing a green shirt with a grey and white patterned design",
+        "action": "smiling and lying down",
+        "position": "left background",
+        "id": "child_baby_1"
+      },
+      {
+        "desc": "bedding with a white pillowcase featuring a black abstract line pattern and a folded blanket with purple, yellow, and red colors",
+        "action": "static",
+        "position": "background",
+        "id": "bedding_pillow_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The man is lying down next to the child.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The child is smiling with their mouth open.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The child is wearing a green shirt.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The man is in the foreground on the right side of the frame. The child is to the left of the man and slightly behind him. The patterned pillow is behind the child's head, and the colorful blanket is above the pillow.",
+    "parse_success": true,
+    "chunk_idx": 27,
+    "video_id": "jREkHFYE1HM",
+    "state_changes": [
+      "Man puts on black hooded garment."
+    ]
+  },
+  {
+    "time": [
+      28,
+      29
+    ],
+    "visible_entities": [
+      {
+        "desc": "toddler with short dark hair, wearing a white and green shirt with a grey graphic print",
+        "action": "smiling and looking down",
+        "position": "left",
+        "id": "child_baby_1"
+      },
+      {
+        "desc": "adult male with dark hair and stubble, wearing a black shirt",
+        "action": "lying down with eyes closed",
+        "position": "right",
+        "id": "man_father_1"
       },
       {
         "desc": "white pillowcase with black line-art illustrations of figures",
         "action": "static",
-        "position": "background"
+        "position": "background",
+        "id": "bedding_pillow_1"
       },
       {
-        "desc": "blue and yellow patterned blanket",
+        "desc": "grey blanket",
         "action": "static",
-        "position": "top"
+        "position": "top",
+        "id": "blanket_colorful_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The toddler is smiling with an open mouth.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The adult male has his eyes closed.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The toddler is lying next to the adult male.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The pillowcase features black line drawings.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The toddler is to the left of the adult male. The adult male is to the right of the toddler. Both individuals are lying on a pillow with black illustrations. A grey blanket is positioned above the pillow.",
+    "parse_success": true,
+    "chunk_idx": 28,
+    "video_id": "jREkHFYE1HM",
+    "state_changes": []
+  },
+  {
+    "time": [
+      29,
+      30
+    ],
+    "visible_entities": [
+      {
+        "desc": "baby with short dark hair, wearing a white and green top",
+        "action": "smiling and looking down",
+        "position": "left",
+        "id": "child_baby_1"
+      },
+      {
+        "desc": "man with dark hair and facial stubble, wearing a black shirt",
+        "action": "lying down with mouth open",
+        "position": "right",
+        "id": "man_father_1"
+      },
+      {
+        "desc": "white pillowcase with black graphic print",
+        "action": "static",
+        "position": "background",
+        "id": "bedding_pillow_1"
+      },
+      {
+        "desc": "grey blanket with colorful pattern",
+        "action": "static",
+        "position": "top",
+        "id": "blanket_colorful_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The baby is smiling with an open mouth.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The man is lying down with his mouth open.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The baby is positioned to the left of the man.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The baby is to the left of the man. Both individuals are lying on a white pillowcase with a black graphic print. A grey blanket is positioned above their heads.",
+    "parse_success": true,
+    "chunk_idx": 29,
+    "video_id": "jREkHFYE1HM",
+    "state_changes": [
+      "Man opens mouth."
+    ]
+  },
+  {
+    "time": [
+      30,
+      31
+    ],
+    "visible_entities": [
+      {
+        "desc": "man with short dark hair, light skin, facial stubble, wearing a black shirt",
+        "action": "lying down with eyes closed",
+        "position": "right/foreground",
+        "id": "man_father_1"
+      },
+      {
+        "desc": "child with short brown hair, wearing a green long-sleeved shirt",
+        "action": "lying down",
+        "position": "left",
+        "id": "child_baby_1"
+      },
+      {
+        "desc": "white pillowcase with a black line-art graphic print",
+        "action": "static",
+        "position": "background",
+        "id": "bedding_pillow_1"
+      },
+      {
+        "desc": "grey blanket with yellow and red patterns",
+        "action": "static",
+        "position": "top/background",
+        "id": "blanket_colorful_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The man lies down with his eyes closed.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The child lies next to the man.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The man's head rests on the white pillowcase.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The man is to the right of the child. The child is to the left of the man. The white pillowcase is behind the man's head. The grey blanket is above the pillowcase.",
+    "parse_success": true,
+    "chunk_idx": 30,
+    "video_id": "jREkHFYE1HM",
+    "state_changes": []
+  },
+  {
+    "time": [
+      31,
+      32
+    ],
+    "visible_entities": [
+      {
+        "desc": "man with short dark hair, facial stubble, wearing a black headband with ears, lying on a white pillow with a black graphic print",
+        "action": "lying down and scrunching face",
+        "position": "foreground",
+        "id": "man_father_1"
+      },
+      {
+        "desc": "person with short hair, partially visible",
+        "action": "static",
+        "position": "left",
+        "id": "child_baby_1"
+      },
+      {
+        "desc": "folded blanket with blue, yellow, and red colors",
+        "action": "static",
+        "position": "background",
+        "id": "blanket_colorful_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The man in the foreground scrunches his face, closing his eyes and wrinkling his nose.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The man is lying on a pillow with a black graphic design.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A folded blanket is resting behind the man's head.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The man is in the foreground, lying on a pillow. A second person is partially visible to the left of the man. The folded blanket is behind the man's head.",
+    "parse_success": true,
+    "chunk_idx": 31,
+    "video_id": "jREkHFYE1HM",
+    "state_changes": [
+      "Man puts on black headband with ears again; scrunches face."
+    ]
+  },
+  {
+    "time": [
+      32,
+      33
+    ],
+    "visible_entities": [
+      {
+        "desc": "man with short dark hair, dark eyebrows, facial stubble, wearing a black top",
+        "action": "lying down and making facial expressions",
+        "position": "center/foreground",
+        "id": "man_father_1"
+      },
+      {
+        "desc": "white pillow with a black line drawing pattern",
+        "action": "static",
+        "position": "background/left",
+        "id": "bedding_pillow_1"
+      },
+      {
+        "desc": "folded blanket with blue, yellow, and red colors",
+        "action": "static",
+        "position": "top/background",
+        "id": "blanket_colorful_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A man is lying down with his head resting on a pillow.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The man scrunches his nose and mouth in the first frame.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The man opens his mouth to show his teeth in the second frame.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A hand is visible near the man's ear.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The man is lying in the foreground with his head positioned on the white pillow. The folded colorful blanket is located above the pillow in the background. The man's hand is raised next to the side of his head.",
+    "parse_success": true,
+    "chunk_idx": 32,
+    "video_id": "jREkHFYE1HM",
+    "state_changes": []
+  },
+  {
+    "time": [
+      33,
+      34
+    ],
+    "visible_entities": [
+      {
+        "desc": "man with short dark hair, light skin, facial stubble, wearing a black fuzzy hat with white trim",
+        "action": "lying down with mouth open and teeth bared",
+        "position": "center/foreground",
+        "id": "man_father_1"
+      },
+      {
+        "desc": "toddler with short brown hair, wearing a white and green top",
+        "action": "smiling and reaching hand toward the man's face",
+        "position": "left",
+        "id": "child_baby_1"
+      },
+      {
+        "desc": "white pillow with black line-art pattern",
+        "action": "static",
+        "position": "background",
+        "id": "bedding_pillow_1"
+      },
+      {
+        "desc": "blue, yellow, and red patterned blanket",
+        "action": "static",
+        "position": "top background",
+        "id": "blanket_colorful_1"
       }
     ],
     "atomic_facts": [
@@ -1715,100 +1848,106 @@
         "confidence": 1.0
       },
       {
-        "fact": "The toddler is reaching a hand towards the man's face.",
+        "fact": "The toddler is smiling while reaching a hand out towards the man's ear.",
         "confidence": 1.0
       },
       {
-        "fact": "The man is wearing a black fuzzy headband with ears.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The pillowcase features black line drawings of figures.",
+        "fact": "The man is wearing a black fuzzy hat.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The toddler is to the left of the man. The man is lying on the pillowcase which is behind his head. The blue and yellow blanket is above the pillowcase.",
+    "spatial": "The toddler is to the left of the man. The man is lying on a white pillow with a black pattern. A colorful blanket is positioned above the pillow in the background.",
     "parse_success": true,
     "chunk_idx": 33,
     "video_id": "jREkHFYE1HM",
-    "state_changes": [],
-    "_rescued": "parse"
+    "state_changes": [
+      "Man changes to black fuzzy hat with white trim; bares teeth."
+    ]
   },
   {
     "time": [
-      68,
-      70
+      34,
+      35
     ],
     "visible_entities": [
       {
-        "desc": "man with short dark hair and facial stubble, wearing a black shirt",
+        "desc": "man with short dark hair, stubble, and a black cap, wearing a dark shirt",
         "action": "lying down with eyes closed",
-        "position": "right foreground"
+        "position": "right foreground",
+        "id": "man_father_1"
       },
       {
-        "desc": "young child with short brown hair, wearing a white shirt with a green collar",
-        "action": "smiling and looking at the man",
-        "position": "left center"
+        "desc": "toddler with short dark hair, wearing a white and grey striped shirt with a teal collar",
+        "action": "smiling and lying down",
+        "position": "left foreground",
+        "id": "child_baby_1"
       },
       {
         "desc": "pillow with a black and white zebra print pattern",
         "action": "static",
-        "position": "background"
+        "position": "background",
+        "id": "bedding_pillow_1"
       },
       {
-        "desc": "blanket with a colorful pattern including purple, red, and yellow",
+        "desc": "blanket with a colorful pattern including purple, red, and yellow sections",
         "action": "static",
-        "position": "top background"
+        "position": "top background",
+        "id": "blanket_colorful_1"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A man is lying down with his eyes closed.",
+        "fact": "A man and a toddler are lying down next to each other.",
         "confidence": 1.0
       },
       {
-        "fact": "A young child is smiling next to the man.",
+        "fact": "The toddler is smiling with their mouth open.",
         "confidence": 1.0
       },
       {
-        "fact": "The child is positioned to the left of the man.",
+        "fact": "The man has his eyes closed.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The man is in the foreground on the right side of the frame. The child is to the left of the man. The zebra print pillow is behind the child and the man. The colorful blanket is above the zebra print pillow.",
+    "spatial": "The toddler is to the left of the man. Both are lying in front of a zebra-print pillow. A colorful blanket is located above the pillow in the background.",
     "parse_success": true,
     "chunk_idx": 34,
     "video_id": "jREkHFYE1HM",
-    "state_changes": [],
-    "_rescued": "parse"
+    "state_changes": [
+      "Man changes to black cap; closes eyes."
+    ]
   },
   {
     "time": [
-      70,
-      72
+      35,
+      36
     ],
     "visible_entities": [
       {
-        "desc": "man with short dark hair, dark eyebrows, facial stubble, wearing a black headband with round ears",
+        "desc": "man with short dark hair, dark eyebrows, and facial stubble",
         "action": "lying down with eyes closed",
-        "position": "right foreground"
+        "position": "right foreground",
+        "id": "man_father_1"
       },
       {
-        "desc": "young child with short dark hair, wearing a striped shirt",
-        "action": "smiling and looking at the man",
-        "position": "left background"
+        "desc": "toddler with short dark hair wearing a striped shirt",
+        "action": "smiling and reaching out",
+        "position": "left background",
+        "id": "child_baby_1"
       },
       {
-        "desc": "white pillowcase with black abstract line art pattern",
+        "desc": "white pillow with black graphic line art pattern",
         "action": "static",
-        "position": "background"
+        "position": "center background",
+        "id": "bedding_pillow_1"
       },
       {
-        "desc": "folded blanket with blue, white, and red colors",
+        "desc": "folded blanket with blue, yellow, and red colors",
         "action": "static",
-        "position": "top background"
+        "position": "top background",
+        "id": "blanket_colorful_1"
       }
     ],
     "atomic_facts": [
@@ -1817,177 +1956,181 @@
         "confidence": 1.0
       },
       {
-        "fact": "The child is smiling while looking at the man.",
+        "fact": "The toddler is smiling and reaching a hand towards the man's face.",
         "confidence": 1.0
       },
       {
-        "fact": "The child's hand is raised near the man's face.",
+        "fact": "The man is positioned to the right of the toddler.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The man is in the foreground on the right side of the frame. The child is to the left of the man and slightly behind him. The patterned pillow is behind the child's head. The folded blanket is above the pillow in the background.",
+    "spatial": "The man is in the foreground on the right side of the frame. The toddler is to the left of the man and slightly behind him. The patterned pillow is behind the toddler, and the folded blanket is above the pillow.",
     "parse_success": true,
     "chunk_idx": 35,
     "video_id": "jREkHFYE1HM",
-    "state_changes": [],
-    "_rescued": "parse"
+    "state_changes": []
   },
   {
     "time": [
-      72,
-      74
+      36,
+      37
     ],
     "visible_entities": [
       {
-        "desc": "man with short dark hair, sunglasses on head, light stubble",
+        "desc": "man with short brown hair, facial stubble, and sunglasses resting on top of his head",
         "action": "lying down with eyes closed",
-        "position": "right foreground"
+        "position": "right foreground",
+        "id": "man_father_1"
       },
       {
-        "desc": "child with short dark hair, green shirt",
+        "desc": "child with short brown hair wearing a green and white shirt",
         "action": "lying down with eyes closed",
-        "position": "left foreground"
+        "position": "left foreground",
+        "id": "child_baby_1"
       },
       {
-        "desc": "white pillowcase with black line art pattern",
+        "desc": "white pillow with black line-art graphic print",
         "action": "static",
-        "position": "center background"
+        "position": "background",
+        "id": "bedding_pillow_1"
       },
       {
-        "desc": "colorful blanket with red, yellow, and blue patches",
+        "desc": "colorful blanket with red, yellow, and blue patterns",
         "action": "static",
-        "position": "top background"
+        "position": "top background",
+        "id": "blanket_colorful_1"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "The man and child are lying down next to each other.",
+        "fact": "The man and the child are lying down next to each other.",
         "confidence": 1.0
       },
       {
-        "fact": "Both individuals have their eyes closed, appearing to be sleeping or resting.",
+        "fact": "Both individuals have their eyes closed, appearing to be asleep or resting.",
         "confidence": 1.0
       },
       {
-        "fact": "The man has sunglasses resting on top of his head.",
+        "fact": "The man is positioned to the right of the child.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The man is to the right of the child. The child is to the left of the man. Both are lying in front of a patterned pillowcase and a colorful blanket.",
+    "spatial": "The man is to the right of the child in the foreground. The white pillow with black graphics is behind the heads of both individuals. The colorful blanket is positioned above the pillow against the wall.",
     "parse_success": true,
     "chunk_idx": 36,
     "video_id": "jREkHFYE1HM",
-    "state_changes": [],
-    "_rescued": "parse"
+    "state_changes": [
+      "Man puts sunglasses on head; child closes eyes."
+    ]
   },
   {
     "time": [
-      74,
-      76
+      37,
+      38
     ],
     "visible_entities": [
       {
-        "desc": "man with short dark hair, light skin, facial stubble, wearing a black top",
+        "desc": "man with short dark brown hair, light skin, facial stubble, wearing a black top",
         "action": "lying down with eyes closed",
-        "position": "center/foreground"
+        "position": "foreground right",
+        "id": "man_father_1"
       },
       {
-        "desc": "person with dark hair, wearing a teal shirt",
+        "desc": "child with dark hair, wearing a teal shirt",
         "action": "lying down",
-        "position": "left/background"
+        "position": "background left",
+        "id": "child_baby_1"
       },
       {
-        "desc": "white pillowcase with black line-art pattern",
+        "desc": "white pillowcase with black line-art cartoon pattern",
         "action": "static",
-        "position": "background"
+        "position": "background",
+        "id": "bedding_pillow_1"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A man is lying down with his eyes closed.",
+        "fact": "The man lies with his eyes closed and hand near his face.",
         "confidence": 1.0
       },
       {
-        "fact": "A hand is touching the man's face near his ear.",
+        "fact": "A child is lying next to the man on the left side.",
         "confidence": 1.0
       },
       {
-        "fact": "A second person is visible to the left of the man.",
+        "fact": "The man rests his head on a patterned pillow.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The man is in the foreground, positioned to the right of the second person. The patterned pillowcase is behind the man's head. The hand is touching the side of the man's face.",
+    "spatial": "The man is in the foreground on the right side of the frame. The child is to the left of the man and slightly behind him. The patterned pillow is behind the man's head.",
     "parse_success": true,
     "chunk_idx": 37,
     "video_id": "jREkHFYE1HM",
-    "state_changes": [],
-    "_rescued": "parse"
+    "state_changes": []
   },
   {
     "time": [
-      76,
-      78
+      38,
+      39
     ],
     "visible_entities": [
       {
-        "desc": "man with short dark brown hair, light skin, facial stubble, wearing a dark top",
+        "desc": "man with short dark brown hair, dark eyebrows, light skin, and facial stubble",
         "action": "static",
-        "position": "center"
+        "position": "center",
+        "id": "man_father_1"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "The man's eyes are closed.",
+        "fact": "the man keeps his eyes closed",
         "confidence": 1.0
       },
       {
-        "fact": "The man is facing slightly to the left.",
+        "fact": "the man's head remains stationary",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The man is in the center foreground of the frame. A dark object is positioned above his head.",
+    "spatial": "The man is in the foreground of the frame. A dark object is positioned above his head.",
     "parse_success": true,
     "chunk_idx": 38,
     "video_id": "jREkHFYE1HM",
-    "state_changes": [],
-    "_rescued": "parse"
+    "state_changes": []
   },
   {
     "time": [
-      78,
-      80
+      39,
+      40
     ],
     "visible_entities": [
       {
-        "desc": "man with short dark brown hair, light skin, and facial stubble",
-        "action": "closing eyes and touching face",
-        "position": "center"
+        "desc": "man with short dark brown hair, light skin, facial stubble, wearing a dark garment",
+        "action": "touching face",
+        "position": "center",
+        "id": "man_father_1"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "The man closes his eyes.",
+        "fact": "man touches his nose with his hand",
         "confidence": 1.0
       },
       {
-        "fact": "The man raises his hand to touch the side of his nose.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The camera angle is a close-up profile view.",
+        "fact": "man's eyes are closed",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The man is centered in the frame. His hand is positioned in front of his face, touching his nose. A dark object is visible above his head in the background.",
+    "spatial": "The man is in the foreground. His hand is near his nose. The dark garment is on his head.",
     "parse_success": true,
     "chunk_idx": 39,
     "video_id": "jREkHFYE1HM",
-    "state_changes": [],
-    "_rescued": "parse"
+    "state_changes": [
+      "Man starts touching his face."
+    ]
   }
 ]

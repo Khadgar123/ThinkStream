@@ -2,69 +2,25 @@
   {
     "time": [
       0,
-      2
+      1
     ],
     "visible_entities": [
       {
-        "desc": "Title graphic with 'myrecipes' in small serif font and 'HOLIDAY TABLE' in large serif font, accompanied by a dark silhouette of a holly branch with berries",
+        "desc": "Title graphic reading 'myrecipes HOLIDAY TABLE' with 'myrecipes' in small serif font and 'HOLIDAY TABLE' in large serif font",
         "action": "static",
         "position": "center",
-        "id": "title_holiday_table"
+        "id": "logo_myrecipes_holiday_title"
       },
       {
-        "desc": "Background with a gradient shifting from warm beige to cool teal, featuring faint star and swirl patterns",
+        "desc": "Silhouette of a holly sprig with three berries, dark brown in color",
         "action": "static",
-        "position": "background",
-        "id": "background_holiday_intro"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "The video displays a title card for 'myrecipes HOLIDAY TABLE'.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The background color transitions from a warm beige tone to a cooler teal tone.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "A decorative holly graphic is positioned in the upper right corner.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [
-      "myrecipes",
-      "HOLIDAY",
-      "TABLE"
-    ],
-    "spatial": "The text 'myrecipes HOLIDAY TABLE' is centered in the frame. The holly graphic is located above and to the right of the text. The faint star patterns are scattered across the background behind the text.",
-    "parse_success": true,
-    "chunk_idx": 0,
-    "video_id": "SEfO4cL-yqM",
-    "state_changes": []
-  },
-  {
-    "time": [
-      2,
-      4
-    ],
-    "visible_entities": [
-      {
-        "desc": "Title graphic with 'myrecipes' in small gold serif font and 'HOLIDAY TABLE' in large brown serif font with drop shadows",
-        "action": "static",
-        "position": "center",
-        "id": "title_holiday_table"
-      },
-      {
-        "desc": "Light blue background with faint white swirl patterns and a holly leaf silhouette on the left",
-        "action": "static",
-        "position": "background",
+        "position": "top right",
         "id": "background_holiday_intro"
       },
       {
-        "desc": "White and gold hanging Christmas ornaments and snowflakes with intricate patterns",
+        "desc": "Background with a warm beige to yellow gradient and faint leaf patterns",
         "action": "static",
-        "position": "right",
+        "position": "background",
         "id": "background_holiday_intro"
       }
     ],
@@ -74,11 +30,11 @@
         "confidence": 1.0
       },
       {
-        "fact": "The text 'HOLIDAY TABLE' is positioned below the text 'myrecipes'.",
+        "fact": "A dark holly silhouette is positioned in the top right corner.",
         "confidence": 1.0
       },
       {
-        "fact": "Decorative ornaments are hanging on the right side of the frame.",
+        "fact": "The background features a warm, golden-hued gradient.",
         "confidence": 1.0
       }
     ],
@@ -87,32 +43,69 @@
       "HOLIDAY",
       "TABLE"
     ],
-    "spatial": "The title text is centered in the foreground. The hanging ornaments are to the right of the text. The holly leaf silhouette is to the left of the text. The text is in front of the light blue background.",
+    "spatial": "The 'myrecipes HOLIDAY TABLE' text is centered on the screen. The holly silhouette is located to the right of and slightly above the text. The text and holly are superimposed over the gradient background.",
     "parse_success": true,
-    "chunk_idx": 1,
+    "chunk_idx": 0,
     "video_id": "SEfO4cL-yqM",
     "state_changes": []
   },
   {
     "time": [
-      4,
-      6
+      1,
+      2
     ],
     "visible_entities": [
       {
-        "desc": "The text 'Beating Egg Whites' written in a grey serif font.",
+        "desc": "Title graphic featuring the text 'myrecipes' in small gold serif font above 'HOLIDAY' in large brown serif font, with 'TABLE' in brown serif font below. The background is light blue with faint white swirls, holly leaves, and hanging white snowflake and ornament decorations.",
         "action": "static",
-        "position": "center"
-      },
-      {
-        "desc": "The 'myrecipes' logo with the tagline 'search. save. share.' in the top right corner.",
-        "action": "static",
-        "position": "top right"
+        "id": "logo_myrecipes_holiday_title"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "The text 'Beating Egg Whites' is displayed in the center of the screen.",
+        "fact": "The title card displays the text 'myrecipes HOLIDAY TABLE'.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The graphic remains static throughout the clip.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "myrecipes",
+      "HOLIDAY",
+      "TABLE"
+    ],
+    "spatial": "The text 'myrecipes' is positioned above the word 'HOLIDAY'. The word 'TABLE' is located below 'HOLIDAY'. The entire text block is centered against a blue background decorated with faint white swirls and hanging ornaments.",
+    "parse_success": true,
+    "chunk_idx": 1,
+    "video_id": "SEfO4cL-yqM",
+    "state_changes": [
+      "Title graphic changes from beige gradient to light blue holiday theme."
+    ]
+  },
+  {
+    "time": [
+      2,
+      3
+    ],
+    "visible_entities": [
+      {
+        "desc": "The text 'Beating Egg Whites' in a grey serif font",
+        "action": "static",
+        "position": "center",
+        "id": "text_instruction_beating"
+      },
+      {
+        "desc": "The 'myrecipes' logo with a red cherry graphic and the tagline 'search. save. share.'",
+        "action": "static",
+        "position": "top right",
+        "id": "logo_myrecipes_main"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The title 'Beating Egg Whites' is displayed in the center of the screen.",
         "confidence": 1.0
       },
       {
@@ -121,30 +114,32 @@
       }
     ],
     "ocr": [
-      "Beating Egg Whites",
       "myrecipes",
-      "search. save. share."
+      "search. save. share.",
+      "Beating Egg Whites"
     ],
-    "spatial": "The text 'Beating Egg Whites' is centered on the white background. The 'myrecipes' logo is positioned above and to the right of the central text.",
+    "spatial": "The 'myrecipes' logo is located in the top right corner of the screen. The text 'Beating Egg Whites' is positioned in the center of the screen, below the logo.",
     "parse_success": true,
     "chunk_idx": 2,
     "video_id": "SEfO4cL-yqM",
-    "state_changes": []
+    "state_changes": [
+      "Scene transitions to instruction text 'Beating Egg Whites'."
+    ]
   },
   {
     "time": [
-      6,
-      8
+      3,
+      4
     ],
     "visible_entities": [
       {
-        "desc": "Text 'Beating Egg Whites' in a dark grey serif font",
+        "desc": "text 'Beating Egg Whites' in a dark grey serif font",
         "action": "static",
         "position": "center",
-        "id": "text_beating_egg_whites"
+        "id": "text_instruction_beating"
       },
       {
-        "desc": "Logo 'myrecipes' with a stylized red cherry on the 'm' and the tagline 'search save share' in small grey text below",
+        "desc": "logo with 'my' in black and 'recipes' in yellow, with a small red graphic",
         "action": "static",
         "position": "top right",
         "id": "logo_myrecipes_main"
@@ -173,13 +168,13 @@
   },
   {
     "time": [
-      8,
-      10
+      4,
+      5
     ],
     "visible_entities": [
       {
         "desc": "hands with light skin and manicured nails",
-        "action": "pouring liquid from a small bowl",
+        "action": "pouring liquid from a small glass bowl",
         "position": "left/center",
         "id": "person_chef_1"
       },
@@ -187,28 +182,28 @@
         "desc": "large stainless steel mixing bowl, shiny, reflective",
         "action": "static",
         "position": "center/foreground",
-        "id": "bowl_stainless_steel_1"
-      },
-      {
-        "desc": "small clear glass bowl",
-        "action": "being tilted",
-        "position": "center",
-        "id": "bowl_glass_small_1"
+        "id": "bowl_metal_large"
       },
       {
         "desc": "metal wire whisk",
         "action": "static",
         "position": "left/inside bowl",
-        "id": "whisk_beaters_metal_1"
+        "id": "whisk_attachment_metal"
       },
       {
-        "desc": "yellow liquid, likely egg yolk or oil",
+        "desc": "small clear glass bowl",
+        "action": "being held and tilted",
+        "position": "center/left",
+        "id": "bowl_glass_small"
+      },
+      {
+        "desc": "yellow liquid",
         "action": "being poured",
-        "position": "inside bowl",
-        "id": "mixture_egg_whites_progressing"
+        "position": "inside large bowl",
+        "id": "mixture_egg_whites_raw"
       },
       {
-        "desc": "logo text 'myrecipes' in black and orange",
+        "desc": "logo 'myrecipes' with tagline 'search save share'",
         "action": "static",
         "position": "top right",
         "id": "logo_myrecipes_main"
@@ -220,63 +215,7 @@
         "confidence": 1.0
       },
       {
-        "fact": "A wire whisk is resting inside the large metal bowl.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The 'myrecipes' logo is visible in the top right corner.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [
-      "myrecipes"
-    ],
-    "spatial": "The hands are holding the small glass bowl above the large metal mixing bowl. The wire whisk is inside the metal bowl, to the left of where the liquid is being poured. The 'myrecipes' logo is in the top right corner of the frame.",
-    "parse_success": true,
-    "chunk_idx": 4,
-    "video_id": "SEfO4cL-yqM",
-    "state_changes": [
-      "cooking begins - hands appear pouring yellow liquid from small glass bowl into stainless steel mixing bowl"
-    ]
-  },
-  {
-    "time": [
-      10,
-      12
-    ],
-    "visible_entities": [
-      {
-        "desc": "large, shiny, silver stainless steel mixing bowl",
-        "action": "static",
-        "position": "center",
-        "id": "bowl_stainless_steel_1"
-      },
-      {
-        "desc": "metal wire whisk attachment with silver finish",
-        "action": "hovering above liquid",
-        "position": "left",
-        "id": "whisk_beaters_metal_1"
-      },
-      {
-        "desc": "yellowish, translucent liquid with bubbles",
-        "action": "static",
-        "position": "bottom",
-        "id": "mixture_egg_whites_progressing"
-      },
-      {
-        "desc": "logo text 'myrecipes' in black and orange font",
-        "action": "static",
-        "position": "top-right",
-        "id": "logo_myrecipes_main"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "A metal whisk is positioned inside a stainless steel bowl.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The bowl contains a yellow liquid with bubbles on the surface.",
+        "fact": "A metal whisk is resting inside the large mixing bowl.",
         "confidence": 1.0
       },
       {
@@ -286,41 +225,42 @@
     ],
     "ocr": [
       "myrecipes",
-      "CUPS",
-      "LITERS"
+      "search save share"
     ],
-    "spatial": "The metal whisk is positioned to the left of the bowl's center, hovering just above the yellow liquid. The yellow liquid is at the bottom of the stainless steel bowl. The 'myrecipes' logo is located in the top right corner of the frame, above the bowl.",
+    "spatial": "The large metal mixing bowl is in the center of the frame. The metal whisk is inside the bowl on the left side. The person's hands are holding a small glass bowl above the large bowl, pouring liquid into it. The 'myrecipes' logo is in the top right corner of the screen.",
     "parse_success": true,
-    "chunk_idx": 5,
+    "chunk_idx": 4,
     "video_id": "SEfO4cL-yqM",
-    "state_changes": []
+    "state_changes": [
+      "Chef's hands appear and begin pouring yellow liquid from a small glass bowl into a large metal bowl."
+    ]
   },
   {
     "time": [
-      12,
-      14
+      5,
+      6
     ],
     "visible_entities": [
       {
-        "desc": "metal wire whisk with a silver handle",
-        "action": "static",
-        "position": "left",
-        "id": "whisk_beaters_metal_1"
-      },
-      {
-        "desc": "stainless steel mixing bowl",
+        "desc": "shiny stainless steel mixing bowl",
         "action": "static",
         "position": "center",
-        "id": "bowl_stainless_steel_1"
+        "id": "bowl_metal_large"
       },
       {
-        "desc": "yellow liquid with bubbles",
-        "action": "static",
+        "desc": "metal wire whisk",
+        "action": "resting inside bowl",
+        "position": "left",
+        "id": "whisk_attachment_metal"
+      },
+      {
+        "desc": "yellow liquid mixture",
+        "action": "sitting at bottom of bowl",
         "position": "bottom",
-        "id": "mixture_egg_whites_progressing"
+        "id": "mixture_egg_whites_raw"
       },
       {
-        "desc": "logo with 'myrecipes' text and tagline",
+        "desc": "myrecipes logo",
         "action": "static",
         "position": "top right",
         "id": "logo_myrecipes_main"
@@ -328,11 +268,184 @@
     ],
     "atomic_facts": [
       {
-        "fact": "A metal whisk is held over a stainless steel bowl.",
+        "fact": "A metal wire whisk rests inside a stainless steel mixing bowl.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A yellow liquid mixture is visible at the bottom of the bowl.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The 'myrecipes' logo is displayed in the top right corner.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "myrecipes",
+      "world's most shared"
+    ],
+    "spatial": "The metal wire whisk is positioned on the left side inside the stainless steel mixing bowl. The yellow liquid mixture is at the bottom of the bowl, underneath the whisk. The 'myrecipes' logo is located in the top right corner of the frame, above the bowl.",
+    "parse_success": true,
+    "chunk_idx": 5,
+    "video_id": "SEfO4cL-yqM",
+    "state_changes": []
+  },
+  {
+    "time": [
+      6,
+      7
+    ],
+    "visible_entities": [
+      {
+        "desc": "stainless steel mixing bowl, shiny, reflective, with embossed measurement markings on the interior wall",
+        "action": "static",
+        "position": "center",
+        "id": "bowl_metal_large"
+      },
+      {
+        "desc": "yellow liquid, translucent, viscous, with small bubbles on the surface",
+        "action": "static",
+        "position": "bottom",
+        "id": "mixture_egg_whites_raw"
+      },
+      {
+        "desc": "metal wire whisk, silver, with a cylindrical handle",
+        "action": "static",
+        "position": "left",
+        "id": "whisk_attachment_metal"
+      },
+      {
+        "desc": "logo text 'myrecipes' in black and orange font with the tagline 'worth your share' below it",
+        "action": "static",
+        "position": "top right",
+        "id": "logo_myrecipes_main"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A metal wire whisk is held over a stainless steel mixing bowl.",
         "confidence": 1.0
       },
       {
         "fact": "Yellow liquid with bubbles sits at the bottom of the bowl.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The bowl has embossed measurement markings visible on the inside wall.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The 'myrecipes' logo is visible in the top right corner.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "myrecipes",
+      "worth your share"
+    ],
+    "spatial": "The metal wire whisk is positioned above the yellow liquid inside the stainless steel mixing bowl. The liquid is at the bottom of the bowl. The 'myrecipes' logo is located in the top right corner of the frame, above the bowl.",
+    "parse_success": true,
+    "chunk_idx": 6,
+    "video_id": "SEfO4cL-yqM",
+    "state_changes": []
+  },
+  {
+    "time": [
+      7,
+      8
+    ],
+    "visible_entities": [
+      {
+        "desc": "silver metal wire whisk with a cylindrical handle",
+        "action": "static",
+        "position": "left/center",
+        "id": "whisk_attachment_metal"
+      },
+      {
+        "desc": "large stainless steel mixing bowl with measurement markings",
+        "action": "static",
+        "position": "center",
+        "id": "bowl_metal_large"
+      },
+      {
+        "desc": "yellow translucent liquid with bubbles",
+        "action": "static",
+        "position": "bottom/inside",
+        "id": "mixture_egg_whites_raw"
+      },
+      {
+        "desc": "logo text 'myrecipes' in black and orange font",
+        "action": "static",
+        "position": "top right",
+        "id": "logo_myrecipes_main"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A metal whisk is positioned inside a stainless steel bowl.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "Yellow liquid sits at the bottom of the bowl.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The bowl has measurement markings visible on the inner wall.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The 'myrecipes' logo is visible in the top right corner.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "myrecipes",
+      "switch your flavor"
+    ],
+    "spatial": "The metal whisk is positioned inside the stainless steel mixing bowl, hovering above the yellow liquid. The yellow liquid is at the bottom of the bowl. The 'myrecipes' logo is located in the top right corner of the frame, above the bowl.",
+    "parse_success": true,
+    "chunk_idx": 7,
+    "video_id": "SEfO4cL-yqM",
+    "state_changes": []
+  },
+  {
+    "time": [
+      8,
+      9
+    ],
+    "visible_entities": [
+      {
+        "desc": "metal wire whisk attachment with a cylindrical connector",
+        "action": "static",
+        "position": "left/center",
+        "id": "whisk_attachment_metal"
+      },
+      {
+        "desc": "shiny stainless steel mixing bowl with embossed measurement markings",
+        "action": "static",
+        "position": "center/foreground",
+        "id": "bowl_metal_large"
+      },
+      {
+        "desc": "yellow translucent liquid with bubbles on the surface",
+        "action": "static",
+        "position": "bottom/inside bowl",
+        "id": "mixture_egg_whites_raw"
+      },
+      {
+        "desc": "logo text 'myrecipes' in black and orange font",
+        "action": "static",
+        "position": "top right",
+        "id": "logo_myrecipes_main"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A metal whisk attachment is positioned inside a stainless steel bowl.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "Yellow liquid sits at the bottom of the bowl.",
         "confidence": 1.0
       },
       {
@@ -342,96 +455,41 @@
     ],
     "ocr": [
       "myrecipes",
-      "switch your share on"
-    ],
-    "spatial": "The metal whisk is positioned on the left side, hovering above the yellow liquid inside the stainless steel bowl. The 'myrecipes' logo is located in the top right corner of the frame, above the bowl.",
-    "parse_success": true,
-    "chunk_idx": 6,
-    "video_id": "SEfO4cL-yqM",
-    "state_changes": []
-  },
-  {
-    "time": [
-      14,
-      16
-    ],
-    "visible_entities": [
-      {
-        "desc": "silver metal wire whisk with a cylindrical handle",
-        "action": "static",
-        "position": "left",
-        "id": "whisk_beaters_metal_1"
-      },
-      {
-        "desc": "large stainless steel mixing bowl with embossed measurement markings",
-        "action": "static",
-        "position": "center",
-        "id": "bowl_stainless_steel_1"
-      },
-      {
-        "desc": "translucent yellow liquid with bubbles",
-        "action": "static",
-        "position": "bottom",
-        "id": "mixture_egg_whites_progressing"
-      },
-      {
-        "desc": "logo text 'myrecipes' in black and orange font",
-        "action": "static",
-        "position": "top right",
-        "id": "logo_myrecipes_main"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "A metal whisk is positioned inside a stainless steel bowl.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "Yellow liquid fills the bottom of the bowl.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The bowl features embossed measurement markings on the inner wall.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [
-      "myrecipes",
-      "switch your share",
-      "CUPS",
+      "with your share",
       "CUPS"
     ],
-    "spatial": "The metal whisk is positioned inside the stainless steel mixing bowl, extending from the left side. The yellow liquid is at the bottom of the bowl, below the whisk. The 'myrecipes' logo is located in the top right corner of the frame, above the bowl.",
+    "spatial": "The metal whisk is positioned inside the stainless steel bowl, hovering above the yellow liquid. The liquid is at the bottom of the bowl. The 'myrecipes' logo is located in the top right corner of the frame, above the bowl.",
     "parse_success": true,
-    "chunk_idx": 7,
+    "chunk_idx": 8,
     "video_id": "SEfO4cL-yqM",
     "state_changes": []
   },
   {
     "time": [
-      16,
-      18
+      9,
+      10
     ],
     "visible_entities": [
       {
         "desc": "stainless steel mixing bowl, shiny, reflective, with embossed measurement markings",
         "action": "static",
-        "position": "center"
+        "position": "center",
+        "id": "bowl_metal_large"
       },
       {
-        "desc": "metal wire whisk, silver, mesh-like structure",
+        "desc": "metal wire whisk, silver, attached to a handle",
         "action": "static",
         "position": "left",
-        "id": "whisk_beaters_metal_1"
+        "id": "whisk_attachment_metal"
       },
       {
-        "desc": "yellow liquid, translucent, with bubbles on the surface",
+        "desc": "yellow liquid, translucent, viscous, with bubbles",
         "action": "static",
         "position": "bottom",
-        "id": "mixture_egg_whites_progressing"
+        "id": "mixture_egg_whites_raw"
       },
       {
-        "desc": "logo text 'myrecipes' with tagline 'search save share'",
+        "desc": "logo text 'myrecipes' with tagline 'worth your share', black and orange font",
         "action": "static",
         "position": "top right",
         "id": "logo_myrecipes_main"
@@ -453,64 +511,9 @@
     ],
     "ocr": [
       "myrecipes",
-      "search save share"
-    ],
-    "spatial": "The metal wire whisk is positioned on the left side, resting inside the stainless steel mixing bowl. The yellow liquid is at the bottom of the bowl, below the whisk. The 'myrecipes' logo is located in the top right corner of the frame, above the bowl.",
-    "parse_success": true,
-    "chunk_idx": 8,
-    "video_id": "SEfO4cL-yqM",
-    "state_changes": []
-  },
-  {
-    "time": [
-      18,
-      20
-    ],
-    "visible_entities": [
-      {
-        "desc": "silver metal wire whisk with a cylindrical handle",
-        "action": "static",
-        "position": "left",
-        "id": "whisk_beaters_metal_1"
-      },
-      {
-        "desc": "large stainless steel mixing bowl with a shiny, reflective interior surface",
-        "action": "static",
-        "position": "center",
-        "id": "bowl_stainless_steel_1"
-      },
-      {
-        "desc": "yellow translucent liquid with small bubbles on the surface",
-        "action": "static",
-        "position": "bottom",
-        "id": "mixture_egg_whites_progressing"
-      },
-      {
-        "desc": "logo text 'myrecipes' in black and orange font with the tagline 'worth your share' below it",
-        "action": "static",
-        "position": "top right",
-        "id": "logo_myrecipes_main"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "A metal whisk rests inside a stainless steel bowl.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "Yellow liquid sits at the bottom of the bowl.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The logo 'myrecipes' is visible in the top right corner.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [
-      "myrecipes",
       "worth your share"
     ],
-    "spatial": "The metal whisk is positioned inside the stainless steel mixing bowl, resting against the left side. The yellow liquid is at the bottom of the bowl, underneath the whisk. The 'myrecipes' logo is located in the top right corner of the frame, above the bowl.",
+    "spatial": "The metal wire whisk is positioned on the left side, resting inside the stainless steel mixing bowl. The yellow liquid is at the bottom of the bowl, underneath the whisk. The 'myrecipes' logo is located in the top right corner of the frame, above the bowl.",
     "parse_success": true,
     "chunk_idx": 9,
     "video_id": "SEfO4cL-yqM",
@@ -518,110 +521,42 @@
   },
   {
     "time": [
-      20,
-      22
+      10,
+      11
     ],
     "visible_entities": [
       {
-        "desc": "silver metal wire whisk with a cylindrical handle attachment",
-        "action": "static",
-        "position": "left/foreground",
-        "id": "whisk_beaters_metal_1"
-      },
-      {
-        "desc": "large stainless steel mixing bowl with a reflective interior surface",
+        "desc": "stainless steel mixing bowl, shiny, reflective, with embossed measurement markings",
         "action": "static",
         "position": "center",
-        "id": "bowl_stainless_steel_1"
+        "id": "bowl_metal_large"
       },
       {
-        "desc": "yellow translucent liquid with small bubbles on the surface",
+        "desc": "metal wire whisk, silver, with a cylindrical handle",
         "action": "static",
-        "position": "bottom/inside",
-        "id": "mixture_egg_whites_progressing"
+        "position": "left",
+        "id": "whisk_attachment_metal"
       },
       {
-        "desc": "logo text 'myrecipes' in black and orange with the tagline 'worth your time' in small grey text",
+        "desc": "yellow liquid, translucent, with small bubbles on the surface",
         "action": "static",
-        "position": "top right",
+        "position": "bottom",
+        "id": "mixture_egg_whites_raw"
+      },
+      {
+        "desc": "logo text 'myrecipes' in black and orange font with the tagline 'worth your time' underneath",
+        "action": "static",
+        "position": "top-right",
         "id": "logo_myrecipes_main"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A metal whisk is positioned inside a stainless steel bowl.",
+        "fact": "A metal wire whisk rests inside a stainless steel mixing bowl.",
         "confidence": 1.0
       },
       {
-        "fact": "Yellow liquid sits at the bottom of the bowl.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "Small bubbles are visible on the surface of the yellow liquid.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The 'myrecipes' logo is displayed in the top right corner.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [
-      "myrecipes",
-      "worth your time"
-    ],
-    "spatial": "The metal whisk is positioned on the left side of the frame, extending into the center of the stainless steel bowl. The yellow liquid is at the bottom inside the bowl, beneath the whisk. The 'myrecipes' logo is located in the top right corner of the image, above the bowl.",
-    "parse_success": true,
-    "chunk_idx": 10,
-    "video_id": "SEfO4cL-yqM",
-    "state_changes": []
-  },
-  {
-    "time": [
-      22,
-      24
-    ],
-    "visible_entities": [
-      {
-        "desc": "silver metal mixing bowl, reflective, with measurement markings",
-        "action": "static",
-        "position": "center",
-        "id": "bowl_stainless_steel_1"
-      },
-      {
-        "desc": "yellow liquid, translucent, with bubbles on surface",
-        "action": "being whisked",
-        "position": "inside bowl",
-        "id": "mixture_egg_whites_progressing"
-      },
-      {
-        "desc": "metal whisk attachment, wire loops",
-        "action": "rotating rapidly",
-        "position": "inside bowl",
-        "id": "whisk_beaters_metal_1"
-      },
-      {
-        "desc": "black plastic mixer head, cylindrical",
-        "action": "static",
-        "position": "top center",
-        "id": "mixer_hand_white_1"
-      },
-      {
-        "desc": "logo text 'myrecipes' with tagline 'search. save. share.'",
-        "action": "static",
-        "position": "top right"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "A metal whisk attachment is rotating rapidly inside a bowl.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The whisk is mixing a yellow liquid, creating bubbles.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The bowl has measurement markings visible on the inner wall.",
+        "fact": "The bowl contains a yellow liquid with bubbles.",
         "confidence": 1.0
       },
       {
@@ -631,48 +566,160 @@
     ],
     "ocr": [
       "myrecipes",
-      "search. save. share."
+      "worth your time"
     ],
-    "spatial": "The metal whisk is inside the silver mixing bowl. The yellow liquid is at the bottom of the bowl, underneath the whisk. The black mixer head is above the whisk attachment. The 'myrecipes' logo is in the top right corner of the frame, above the bowl.",
+    "spatial": "The metal wire whisk is positioned on the left side, resting inside the stainless steel mixing bowl. The yellow liquid is at the bottom of the bowl, underneath the whisk. The 'myrecipes' logo is located in the top right corner of the frame, above the bowl.",
+    "parse_success": true,
+    "chunk_idx": 10,
+    "video_id": "SEfO4cL-yqM",
+    "state_changes": []
+  },
+  {
+    "time": [
+      11,
+      12
+    ],
+    "visible_entities": [
+      {
+        "desc": "silver metal mixing bowl with embossed measurement markings",
+        "action": "static",
+        "position": "center",
+        "id": "bowl_metal_large"
+      },
+      {
+        "desc": "yellow translucent liquid with bubbles",
+        "action": "being whisked",
+        "position": "inside the bowl",
+        "id": "mixture_egg_whites_raw"
+      },
+      {
+        "desc": "metal wire whisk attachment",
+        "action": "rotating rapidly",
+        "position": "center",
+        "id": "whisk_attachment_metal"
+      },
+      {
+        "desc": "logo text 'myrecipes' with 'search save share' tagline",
+        "action": "static",
+        "position": "top right",
+        "id": "logo_myrecipes_main"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A metal whisk attachment is rotating rapidly inside a bowl.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The whisk is mixing a yellow liquid, creating bubbles on the surface.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The bowl has embossed measurement markings visible on the inner wall.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The 'myrecipes' logo is displayed in the top right corner.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "myrecipes",
+      "search save share"
+    ],
+    "spatial": "The metal whisk is inside the silver mixing bowl. The yellow liquid is at the bottom of the bowl, underneath the whisk. The 'myrecipes' logo is above the bowl in the top right corner of the frame.",
     "parse_success": true,
     "chunk_idx": 11,
     "video_id": "SEfO4cL-yqM",
     "state_changes": [
-      "mixing action starts - whisk attachment begins rotating rapidly in the bowl"
+      "Whisking action begins; the yellow liquid starts being mixed."
     ]
   },
   {
     "time": [
-      24,
-      26
+      12,
+      13
     ],
     "visible_entities": [
       {
-        "desc": "metallic silver mixing bowl, shiny surface",
+        "desc": "silver metal mixing bowl containing yellow liquid",
         "action": "static",
         "position": "center",
-        "id": "bowl_stainless_steel_1"
+        "id": "bowl_metal_large"
       },
       {
-        "desc": "yellow liquid mixture, frothy texture",
-        "action": "being whisked",
-        "position": "inside the bowl",
-        "id": "mixture_egg_whites_progressing"
-      },
-      {
-        "desc": "metal whisk attachment, silver color",
-        "action": "spinning rapidly",
+        "desc": "electric mixer with white body and metal whisk attachment",
+        "action": "whisking yellow liquid",
         "position": "center",
-        "id": "whisk_beaters_metal_1"
+        "id": "mixer_stand_white"
       },
       {
-        "desc": "white mixer head, smooth plastic surface",
+        "desc": "yellow liquid mixture",
+        "action": "being whisked",
+        "position": "inside bowl",
+        "id": "mixture_egg_whites_raw"
+      },
+      {
+        "desc": "text 'myrecipes' in black and orange font",
+        "action": "static",
+        "position": "top right",
+        "id": "logo_myrecipes_main"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "An electric mixer is whisking a yellow liquid mixture inside a metal bowl.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The liquid is being agitated by the rotating whisk attachment.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The text 'myrecipes' is visible in the top right corner.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "myrecipes"
+    ],
+    "spatial": "The electric mixer is positioned inside the silver metal mixing bowl. The yellow liquid is at the bottom of the bowl, beneath the mixer's whisk. The 'myrecipes' text is located in the top right corner of the frame, above the bowl.",
+    "parse_success": true,
+    "chunk_idx": 12,
+    "video_id": "SEfO4cL-yqM",
+    "state_changes": []
+  },
+  {
+    "time": [
+      13,
+      14
+    ],
+    "visible_entities": [
+      {
+        "desc": "metallic silver mixing bowl, reflective interior surface",
+        "action": "static",
+        "position": "center",
+        "id": "bowl_metal_large"
+      },
+      {
+        "desc": "metal whisk attachment, shiny silver, spinning rapidly",
+        "action": "whisking liquid",
+        "position": "center"
+      },
+      {
+        "desc": "pale yellow liquid mixture, frothy and aerated",
+        "action": "being mixed",
+        "position": "inside bowl",
+        "id": "mixture_egg_whites_frothy"
+      },
+      {
+        "desc": "white stand mixer head, smooth plastic finish",
         "action": "static",
         "position": "top",
-        "id": "mixer_hand_white_1"
+        "id": "mixer_stand_white"
       },
       {
-        "desc": "text logo 'myrecipes' with tagline 'search save share'",
+        "desc": "'myrecipes' logo text, black font with orange 'recipes' and a red heart icon",
         "action": "static",
         "position": "top right",
         "id": "logo_myrecipes_main"
@@ -684,78 +731,7 @@
         "confidence": 1.0
       },
       {
-        "fact": "The whisk is blending a yellow liquid mixture, creating a frothy texture.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The mixer head is positioned above the bowl.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The 'myrecipes' logo is visible in the top right corner.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [
-      "myrecipes",
-      "search save share"
-    ],
-    "spatial": "The white mixer head is above the metallic silver mixing bowl. The metal whisk attachment is inside the bowl, submerged in the yellow liquid mixture. The 'myrecipes' logo is in the top right corner of the frame.",
-    "parse_success": true,
-    "chunk_idx": 12,
-    "video_id": "SEfO4cL-yqM",
-    "state_changes": [
-      "mixture state change - yellow liquid becomes frothy from whisking"
-    ]
-  },
-  {
-    "time": [
-      26,
-      28
-    ],
-    "visible_entities": [
-      {
-        "desc": "silver metal mixing bowl",
-        "action": "static",
-        "position": "center",
-        "id": "bowl_stainless_steel_1"
-      },
-      {
-        "desc": "pale yellow liquid mixture",
-        "action": "being whipped",
-        "position": "inside bowl",
-        "id": "mixture_egg_whites_progressing"
-      },
-      {
-        "desc": "metal stand mixer whisk attachment",
-        "action": "spinning rapidly",
-        "position": "center",
-        "id": "whisk_beaters_metal_1"
-      },
-      {
-        "desc": "white stand mixer head",
-        "action": "static",
-        "position": "top",
-        "id": "mixer_hand_white_1"
-      },
-      {
-        "desc": "myrecipes logo with orange text",
-        "action": "static",
-        "position": "top right",
-        "id": "logo_myrecipes_main"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "A stand mixer is actively whipping a pale yellow liquid mixture.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The whisk attachment is spinning rapidly, creating a vortex in the liquid.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The mixture is contained within a large stainless steel bowl.",
+        "fact": "The whisk is agitating a pale yellow liquid, creating a frothy texture.",
         "confidence": 1.0
       },
       {
@@ -766,44 +742,39 @@
     "ocr": [
       "myrecipes"
     ],
-    "spatial": "The white stand mixer head is positioned above the silver metal mixing bowl. The metal whisk attachment extends down from the mixer head into the center of the bowl. The pale yellow liquid mixture is inside the bowl, surrounding the spinning whisk. The 'myrecipes' logo is located in the top right corner, above the bowl.",
+    "spatial": "The white mixer head is positioned above the silver mixing bowl. The metal whisk attachment extends down from the mixer head into the center of the bowl. The pale yellow liquid is inside the bowl, surrounding the spinning whisk. The 'myrecipes' logo is located in the top right corner, above the bowl.",
     "parse_success": true,
     "chunk_idx": 13,
     "video_id": "SEfO4cL-yqM",
-    "state_changes": []
+    "state_changes": [
+      "Mixing tool changes to a stand mixer; mixture becomes frothy and aerated."
+    ]
   },
   {
     "time": [
-      28,
-      30
+      14,
+      15
     ],
     "visible_entities": [
       {
-        "desc": "stainless steel mixing bowl, shiny, reflective, containing pale yellow liquid",
-        "action": "static",
-        "position": "center",
-        "id": "bowl_stainless_steel_1"
+        "desc": "metallic mixing bowl containing a pale yellow, creamy liquid mixture",
+        "action": "being mixed",
+        "position": "center"
       },
       {
-        "desc": "electric mixer beaters, metallic, silver, cylindrical",
+        "desc": "silver metal beaters of a stand mixer",
         "action": "spinning rapidly",
         "position": "center",
-        "id": "whisk_beaters_metal_1"
+        "id": "beaters_metal"
       },
       {
-        "desc": "pale yellow liquid mixture, frothy, viscous",
-        "action": "being whipped",
-        "position": "inside bowl",
-        "id": "mixture_egg_whites_progressing"
-      },
-      {
-        "desc": "white electric mixer body, smooth plastic",
+        "desc": "white stand mixer head",
         "action": "static",
         "position": "top",
-        "id": "mixer_hand_white_1"
+        "id": "mixer_stand_white"
       },
       {
-        "desc": "logo text 'myrecipes' in black and orange font",
+        "desc": "logo with text 'myrecipes' and tagline 'search. save. share.'",
         "action": "static",
         "position": "top right",
         "id": "logo_myrecipes_main"
@@ -811,15 +782,66 @@
     ],
     "atomic_facts": [
       {
-        "fact": "The electric mixer beaters are spinning rapidly inside the bowl.",
+        "fact": "The stand mixer beaters are spinning rapidly inside the bowl.",
         "confidence": 1.0
       },
       {
-        "fact": "The beaters are whipping the pale yellow liquid mixture.",
+        "fact": "The yellow mixture is being whipped into a frothy consistency.",
         "confidence": 1.0
       },
       {
-        "fact": "The liquid mixture is becoming frothy due to the agitation.",
+        "fact": "The 'myrecipes' logo is visible in the top right corner.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "myrecipes",
+      "search. save. share."
+    ],
+    "spatial": "The white mixer head is positioned above the metallic bowl. The silver beaters are inside the bowl, submerged in the yellow mixture. The 'myrecipes' logo is located in the top right corner of the frame, above the mixing action.",
+    "parse_success": true,
+    "chunk_idx": 14,
+    "video_id": "SEfO4cL-yqM",
+    "state_changes": []
+  },
+  {
+    "time": [
+      15,
+      16
+    ],
+    "visible_entities": [
+      {
+        "desc": "white electric hand mixer with grey accents and metal beaters",
+        "action": "whisking liquid mixture",
+        "position": "center",
+        "id": "mixer_hand_white"
+      },
+      {
+        "desc": "stainless steel mixing bowl",
+        "action": "static",
+        "position": "center",
+        "id": "bowl_metal_large"
+      },
+      {
+        "desc": "pale yellow frothy liquid mixture",
+        "action": "being mixed",
+        "position": "inside bowl",
+        "id": "mixture_egg_whites_frothy"
+      },
+      {
+        "desc": "logo with 'myrecipes' in black and orange text",
+        "action": "static",
+        "position": "top right",
+        "id": "logo_myrecipes_main"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The electric mixer is actively whisking the liquid mixture inside the bowl.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The liquid mixture is pale yellow and frothy.",
         "confidence": 1.0
       },
       {
@@ -828,167 +850,49 @@
       }
     ],
     "ocr": [
-      "myrecipes"
-    ],
-    "spatial": "The electric mixer body is positioned above the stainless steel bowl. The metallic beaters extend down from the mixer body into the center of the bowl. The pale yellow liquid is inside the bowl, surrounding the spinning beaters. The 'myrecipes' logo is located in the top right corner of the frame, above the bowl.",
-    "parse_success": true,
-    "chunk_idx": 14,
-    "video_id": "SEfO4cL-yqM",
-    "state_changes": []
-  },
-  {
-    "time": [
-      30,
-      32
-    ],
-    "visible_entities": [
-      {
-        "desc": "white electric hand mixer with grey accents and metal beaters",
-        "action": "mixing liquid in bowl",
-        "position": "center",
-        "id": "mixer_hand_white_1"
-      },
-      {
-        "desc": "stainless steel mixing bowl",
-        "action": "static",
-        "position": "center",
-        "id": "bowl_stainless_steel_1"
-      },
-      {
-        "desc": "pale yellow frothy liquid",
-        "action": "being mixed",
-        "position": "inside bowl",
-        "id": "mixture_egg_whites_progressing"
-      },
-      {
-        "desc": "hand holding mixer",
-        "action": "holding mixer",
-        "position": "left",
-        "id": "person_chef_1"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "A hand holds the white electric mixer on the left side of the frame.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The mixer's metal beaters are submerged in the pale yellow liquid.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The mixer is actively whipping the liquid, creating bubbles and foam.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The liquid fills the bottom of the stainless steel bowl.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [
       "myrecipes",
-      "search and share",
-      "BLACK & DECKER",
-      "PowerPro"
+      "search save share"
     ],
-    "spatial": "The hand is to the left of the mixer body. The mixer is positioned above and inside the stainless steel bowl. The beaters are submerged within the pale yellow liquid. The 'myrecipes' logo is in the top right corner of the frame.",
+    "spatial": "The white electric mixer is positioned above the stainless steel bowl, with its beaters submerged inside the pale yellow liquid mixture. The 'myrecipes' logo is located in the top right corner of the frame, above the bowl.",
     "parse_success": true,
     "chunk_idx": 15,
     "video_id": "SEfO4cL-yqM",
     "state_changes": [
-      "tool transition - hand mixer now being held by hand (vs stand mixer)"
+      "Mixing tool changes to a white electric hand mixer."
     ]
   },
   {
     "time": [
-      32,
-      34
+      16,
+      17
     ],
     "visible_entities": [
       {
-        "desc": "white electric hand mixer with black text branding",
-        "action": "mixing ingredients",
+        "desc": "white electric hand mixer with metal beaters",
+        "action": "whisking mixture",
         "position": "center",
-        "id": "mixer_hand_white_1"
+        "id": "mixer_hand_white"
       },
       {
         "desc": "stainless steel mixing bowl",
         "action": "static",
         "position": "center",
-        "id": "bowl_stainless_steel_1"
+        "id": "bowl_metal_large"
       },
       {
-        "desc": "pale yellow liquid mixture",
-        "action": "being whisked",
+        "desc": "pale yellow frothy liquid mixture",
+        "action": "being mixed",
         "position": "inside bowl",
-        "id": "mixture_egg_whites_progressing"
-      },
-      {
-        "desc": "logo with 'myrecipes' text in black and orange",
-        "action": "static",
-        "position": "top right",
-        "id": "logo_myrecipes_main"
+        "id": "mixture_egg_whites_frothy"
       },
       {
         "desc": "hand holding a white container",
-        "action": "pouring",
+        "action": "pouring ingredient",
         "position": "left",
         "id": "person_chef_1"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "A hand mixer is actively blending a pale yellow liquid in a metal bowl.",
-        "confidence": 1.0
       },
       {
-        "fact": "A hand is visible on the left side pouring contents from a white container into the bowl.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The 'myrecipes' logo is visible in the top right corner.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [
-      "myrecipes",
-      "BLACK&DECKER",
-      "PowerPro"
-    ],
-    "spatial": "The white electric hand mixer is positioned above the stainless steel mixing bowl, with its beaters submerged inside the pale yellow mixture. The hand holding the white container is to the left of the mixer. The 'myrecipes' logo is located in the top right corner of the frame, above the mixing action.",
-    "parse_success": true,
-    "chunk_idx": 16,
-    "video_id": "SEfO4cL-yqM",
-    "state_changes": [
-      "ingredient addition - hand holding container pours additional ingredient into mixture"
-    ]
-  },
-  {
-    "time": [
-      34,
-      36
-    ],
-    "visible_entities": [
-      {
-        "desc": "white electric hand mixer with grey accents and metal beaters",
-        "action": "whisking liquid",
-        "position": "center",
-        "id": "mixer_hand_white_1"
-      },
-      {
-        "desc": "stainless steel mixing bowl",
-        "action": "static",
-        "position": "center",
-        "id": "bowl_stainless_steel_1"
-      },
-      {
-        "desc": "pale yellow frothy liquid",
-        "action": "being mixed",
-        "position": "inside bowl",
-        "id": "mixture_egg_whites_progressing"
-      },
-      {
-        "desc": "myrecipes logo with black text and orange underline",
+        "desc": "logo text 'myrecipes' in black and orange",
         "action": "static",
         "position": "top right",
         "id": "logo_myrecipes_main"
@@ -996,19 +900,15 @@
     ],
     "atomic_facts": [
       {
-        "fact": "The electric mixer is actively whisking the liquid in the bowl.",
+        "fact": "A hand mixer is actively whisking a pale yellow liquid in a metal bowl.",
         "confidence": 1.0
       },
       {
-        "fact": "The liquid inside the bowl is becoming frothy and aerated.",
+        "fact": "A hand on the left is pouring a white ingredient from a container into the bowl.",
         "confidence": 1.0
       },
       {
-        "fact": "The beaters of the mixer are submerged in the mixture.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The 'myrecipes' logo is visible in the top right corner.",
+        "fact": "The mixture is becoming frothy and aerated.",
         "confidence": 1.0
       }
     ],
@@ -1016,7 +916,68 @@
       "myrecipes",
       "search save share"
     ],
-    "spatial": "The white electric hand mixer is positioned above the stainless steel mixing bowl, with its beaters extending inside the bowl to mix the pale yellow liquid. The 'myrecipes' logo is located in the top right corner of the frame, above the bowl.",
+    "spatial": "The white hand mixer is positioned in the center of the stainless steel bowl, with its beaters submerged inside the pale yellow mixture. A hand holding a white container is visible to the left of the bowl, pouring contents into it. The 'myrecipes' logo is located in the top right corner of the frame.",
+    "parse_success": true,
+    "chunk_idx": 16,
+    "video_id": "SEfO4cL-yqM",
+    "state_changes": [
+      "Chef's hand appears holding a white container, adding an ingredient to the mixture."
+    ]
+  },
+  {
+    "time": [
+      17,
+      18
+    ],
+    "visible_entities": [
+      {
+        "desc": "white electric hand mixer with metal beaters",
+        "action": "whisking liquid",
+        "position": "center",
+        "id": "mixer_hand_white"
+      },
+      {
+        "desc": "stainless steel mixing bowl",
+        "action": "static",
+        "position": "center",
+        "id": "bowl_metal_large"
+      },
+      {
+        "desc": "frothy pale yellow liquid",
+        "action": "being mixed",
+        "position": "inside bowl",
+        "id": "mixture_egg_whites_frothy"
+      },
+      {
+        "desc": "logo text 'myrecipes' in black and orange",
+        "action": "static",
+        "position": "top right",
+        "id": "logo_myrecipes_main"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The electric mixer is actively whisking the liquid inside the bowl.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The liquid is becoming frothy and pale yellow.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The mixer is held above the stainless steel bowl.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The text 'myrecipes' is visible in the top right corner.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "myrecipes",
+      "search save share"
+    ],
+    "spatial": "The white electric mixer is positioned above the stainless steel mixing bowl, with its beaters submerged inside the frothy liquid. The 'myrecipes' logo is located in the top right corner of the frame, above the bowl.",
     "parse_success": true,
     "chunk_idx": 17,
     "video_id": "SEfO4cL-yqM",
@@ -1024,30 +985,29 @@
   },
   {
     "time": [
-      36,
-      38
+      18,
+      19
     ],
     "visible_entities": [
       {
         "desc": "white electric hand mixer with metal beaters",
-        "action": "whisking liquid mixture",
+        "action": "mixing ingredients",
         "position": "center",
-        "id": "mixer_hand_white_1"
+        "id": "mixer_hand_white"
       },
       {
         "desc": "stainless steel mixing bowl",
         "action": "static",
         "position": "center",
-        "id": "bowl_stainless_steel_1"
+        "id": "bowl_metal_large"
       },
       {
-        "desc": "pale yellow frothy liquid mixture",
-        "action": "being whisked",
-        "position": "inside bowl",
-        "id": "mixture_egg_whites_progressing"
+        "desc": "pale yellow liquid mixture",
+        "action": "being mixed",
+        "position": "inside bowl"
       },
       {
-        "desc": "logo text 'myrecipes' in black and orange font",
+        "desc": "myrecipes logo with orange and black text",
         "action": "static",
         "position": "top right",
         "id": "logo_myrecipes_main"
@@ -1055,15 +1015,15 @@
     ],
     "atomic_facts": [
       {
-        "fact": "The electric mixer is actively whisking the pale yellow liquid.",
+        "fact": "An electric hand mixer is blending a pale yellow liquid mixture.",
         "confidence": 1.0
       },
       {
-        "fact": "The liquid mixture is frothy and swirling inside the bowl.",
+        "fact": "The beaters of the mixer are submerged in the liquid.",
         "confidence": 1.0
       },
       {
-        "fact": "The metal beaters of the mixer are submerged in the mixture.",
+        "fact": "The mixture is contained within a stainless steel bowl.",
         "confidence": 1.0
       },
       {
@@ -1075,7 +1035,7 @@
       "myrecipes",
       "search save share"
     ],
-    "spatial": "The white electric mixer is positioned above the stainless steel bowl, with its beaters inside the bowl. The pale yellow mixture is inside the bowl and surrounds the beaters. The 'myrecipes' logo is located in the top right corner of the frame, above the mixing action.",
+    "spatial": "The electric hand mixer is positioned above the stainless steel mixing bowl. The beaters are inside the bowl, submerged in the pale yellow liquid mixture. The 'myrecipes' logo is located in the top right corner of the frame, above the mixing action.",
     "parse_success": true,
     "chunk_idx": 18,
     "video_id": "SEfO4cL-yqM",
@@ -1083,30 +1043,30 @@
   },
   {
     "time": [
-      38,
-      40
+      19,
+      20
     ],
     "visible_entities": [
       {
         "desc": "white electric hand mixer with grey accents and metal beaters",
-        "action": "whisking liquid mixture",
+        "action": "whisking liquid",
         "position": "center",
-        "id": "mixer_hand_white_1"
+        "id": "mixer_hand_white"
       },
       {
         "desc": "stainless steel mixing bowl",
         "action": "static",
         "position": "center",
-        "id": "bowl_stainless_steel_1"
+        "id": "bowl_metal_large"
       },
       {
         "desc": "pale yellow frothy liquid mixture",
         "action": "being mixed",
         "position": "inside bowl",
-        "id": "mixture_egg_whites_progressing"
+        "id": "mixture_egg_whites_frothy"
       },
       {
-        "desc": "logo text 'myrecipes' in black and orange font",
+        "desc": "logo with text 'myrecipes' in orange and black font",
         "action": "static",
         "position": "top right",
         "id": "logo_myrecipes_main"
@@ -1118,11 +1078,11 @@
         "confidence": 1.0
       },
       {
-        "fact": "The liquid mixture is frothy and pale yellow.",
+        "fact": "The beaters are submerged in the pale yellow liquid.",
         "confidence": 1.0
       },
       {
-        "fact": "The mixer is positioned inside the stainless steel bowl.",
+        "fact": "The liquid is frothy and swirling due to the mixing action.",
         "confidence": 1.0
       },
       {
@@ -1132,9 +1092,9 @@
     ],
     "ocr": [
       "myrecipes",
-      "with your share"
+      "with our share"
     ],
-    "spatial": "The white electric mixer is positioned above the stainless steel bowl, with its beaters submerged inside the pale yellow liquid. The 'myrecipes' logo is located in the top right corner of the frame, above the mixing action.",
+    "spatial": "The electric mixer is positioned above the stainless steel bowl, with its beaters inside the bowl. The pale yellow liquid is inside the bowl. The 'myrecipes' logo is located in the top right corner of the frame, above the mixing action.",
     "parse_success": true,
     "chunk_idx": 19,
     "video_id": "SEfO4cL-yqM",
@@ -1142,84 +1102,29 @@
   },
   {
     "time": [
-      40,
-      42
+      20,
+      21
     ],
     "visible_entities": [
       {
-        "desc": "white electric hand mixer with grey accents and metal beaters",
-        "action": "mixing liquid",
-        "position": "center/foreground",
-        "id": "mixer_hand_white_1"
+        "desc": "white electric hand mixer with grey accents and a blue logo",
+        "action": "mixing ingredients",
+        "position": "center",
+        "id": "mixer_hand_white"
       },
       {
         "desc": "stainless steel mixing bowl",
         "action": "static",
-        "position": "center/bottom",
-        "id": "bowl_stainless_steel_1"
+        "position": "bottom",
+        "id": "bowl_metal_large"
       },
       {
-        "desc": "pale yellow liquid mixture",
-        "action": "being agitated",
-        "position": "inside bowl",
-        "id": "mixture_egg_whites_progressing"
+        "desc": "pale yellow creamy mixture",
+        "action": "being whipped",
+        "position": "inside bowl"
       },
       {
-        "desc": "logo text 'myrecipes' with tagline 'search. save. share.'",
-        "action": "static",
-        "position": "top right"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "The electric mixer is actively beating the liquid mixture in the bowl.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The liquid is frothy and swirling due to the motion of the beaters.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The 'myrecipes' logo is visible in the top right corner of the frame.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [
-      "myrecipes",
-      "search. save. share."
-    ],
-    "spatial": "The white electric mixer is positioned above the stainless steel bowl, with its beaters submerged inside the pale yellow liquid. The 'myrecipes' logo is located in the top right corner, above the mixing action.",
-    "parse_success": true,
-    "chunk_idx": 20,
-    "video_id": "SEfO4cL-yqM",
-    "state_changes": []
-  },
-  {
-    "time": [
-      42,
-      44
-    ],
-    "visible_entities": [
-      {
-        "desc": "white electric hand mixer with metal beaters",
-        "action": "whisking mixture",
-        "position": "center",
-        "id": "mixer_hand_white_1"
-      },
-      {
-        "desc": "stainless steel mixing bowl",
-        "action": "static",
-        "position": "center",
-        "id": "bowl_stainless_steel_1"
-      },
-      {
-        "desc": "pale yellow liquid mixture",
-        "action": "being mixed",
-        "position": "inside bowl",
-        "id": "mixture_egg_whites_progressing"
-      },
-      {
-        "desc": "logo text 'myrecipes' in black and orange font",
+        "desc": "myrecipes logo with orange and black text",
         "action": "static",
         "position": "top right",
         "id": "logo_myrecipes_main"
@@ -1227,11 +1132,235 @@
     ],
     "atomic_facts": [
       {
-        "fact": "The electric mixer is actively whisking the pale yellow liquid inside the bowl.",
+        "fact": "The electric hand mixer is actively whipping the mixture in the bowl.",
         "confidence": 1.0
       },
       {
-        "fact": "The beaters are submerged in the mixture.",
+        "fact": "The mixture inside the bowl is becoming frothy and aerated.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The metal beaters of the mixer are submerged in the liquid.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "myrecipes",
+      "search save share"
+    ],
+    "spatial": "The white electric hand mixer is positioned above the stainless steel mixing bowl. The beaters of the mixer are inside the bowl, submerged in the pale yellow mixture. The 'myrecipes' logo is located in the top right corner of the frame, above the mixing action.",
+    "parse_success": true,
+    "chunk_idx": 20,
+    "video_id": "SEfO4cL-yqM",
+    "state_changes": []
+  },
+  {
+    "time": [
+      21,
+      22
+    ],
+    "visible_entities": [
+      {
+        "desc": "white electric hand mixer with metal beaters",
+        "action": "mixing pale yellow liquid",
+        "position": "center",
+        "id": "mixer_hand_white"
+      },
+      {
+        "desc": "stainless steel mixing bowl",
+        "action": "static",
+        "position": "center",
+        "id": "bowl_metal_large"
+      },
+      {
+        "desc": "pale yellow liquid mixture",
+        "action": "being mixed",
+        "position": "inside bowl"
+      },
+      {
+        "desc": "myrecipes logo with orange text",
+        "action": "static",
+        "position": "top right",
+        "id": "logo_myrecipes_main"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The electric mixer is actively blending the contents of the bowl.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The beaters are submerged in the pale yellow liquid.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The liquid is swirling due to the motion of the mixer.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The 'myrecipes' logo is visible in the top right corner.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "myrecipes",
+      "search save share"
+    ],
+    "spatial": "The white electric hand mixer is positioned above and inside the stainless steel mixing bowl. The metal beaters are submerged in the pale yellow liquid mixture within the bowl. The 'myrecipes' logo is located in the top right corner of the frame, above the mixing action.",
+    "parse_success": true,
+    "chunk_idx": 21,
+    "video_id": "SEfO4cL-yqM",
+    "state_changes": []
+  },
+  {
+    "time": [
+      22,
+      23
+    ],
+    "visible_entities": [
+      {
+        "desc": "metal wire whisk with thin loops",
+        "action": "whisking creamy liquid",
+        "position": "center",
+        "id": "whisk_attachment_metal"
+      },
+      {
+        "desc": "thick white creamy liquid",
+        "action": "being mixed",
+        "position": "center",
+        "id": "mixture_egg_whites_stiff"
+      },
+      {
+        "desc": "silver metal mixing bowl",
+        "action": "static",
+        "position": "foreground",
+        "id": "bowl_metal_large"
+      },
+      {
+        "desc": "logo with 'my' in black and 'recipes' in orange",
+        "action": "static",
+        "position": "top right",
+        "id": "logo_myrecipes_main"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A metal whisk is being used to mix a thick white liquid.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The liquid has a smooth, glossy texture.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The text 'myrecipes' is visible in the top right corner.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "myrecipes",
+      "search save share"
+    ],
+    "spatial": "The metal whisk is positioned inside the silver mixing bowl, submerged in the white creamy liquid. The 'myrecipes' logo is located in the top right corner of the frame, above the bowl.",
+    "parse_success": true,
+    "chunk_idx": 22,
+    "video_id": "SEfO4cL-yqM",
+    "state_changes": [
+      "Mixture texture changes significantly to thick white creamy liquid."
+    ]
+  },
+  {
+    "time": [
+      23,
+      24
+    ],
+    "visible_entities": [
+      {
+        "desc": "silver metal wire whisk",
+        "action": "whisking the mixture",
+        "position": "center",
+        "id": "whisk_attachment_metal"
+      },
+      {
+        "desc": "white creamy liquid mixture",
+        "action": "being stirred",
+        "position": "center"
+      },
+      {
+        "desc": "silver metal mixing bowl",
+        "action": "static",
+        "position": "center",
+        "id": "bowl_metal_large"
+      },
+      {
+        "desc": "myrecipes logo with orange and black text",
+        "action": "static",
+        "position": "top right",
+        "id": "logo_myrecipes_main"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A metal whisk is actively stirring a white liquid mixture inside a bowl.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The liquid mixture is becoming frothy and thick as it is whisked.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The 'myrecipes' logo is visible in the top right corner of the screen.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "myrecipes",
+      "worth your time"
+    ],
+    "spatial": "The metal whisk is positioned inside the silver mixing bowl, submerged in the white liquid mixture. The 'myrecipes' logo is located above and to the right of the mixing bowl.",
+    "parse_success": true,
+    "chunk_idx": 23,
+    "video_id": "SEfO4cL-yqM",
+    "state_changes": []
+  },
+  {
+    "time": [
+      24,
+      25
+    ],
+    "visible_entities": [
+      {
+        "desc": "white, glossy, viscous mixture with soft peaks",
+        "action": "being whipped",
+        "position": "center",
+        "id": "mixture_egg_whites_stiff"
+      },
+      {
+        "desc": "metal electric mixer beaters",
+        "action": "spinning rapidly",
+        "position": "center",
+        "id": "beaters_metal"
+      },
+      {
+        "desc": "silver metal mixing bowl",
+        "action": "static",
+        "position": "bottom",
+        "id": "bowl_metal_large"
+      },
+      {
+        "desc": "'myrecipes' logo with orange and black text",
+        "action": "static",
+        "position": "top right",
+        "id": "logo_myrecipes_main"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "Electric mixer beaters are spinning rapidly inside the bowl.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The white mixture is being whipped into a glossy, thick consistency.",
         "confidence": 1.0
       },
       {
@@ -1242,210 +1371,40 @@
     "ocr": [
       "myrecipes"
     ],
-    "spatial": "The white electric hand mixer is positioned above the stainless steel mixing bowl, with its beaters extending inside the bowl to mix the liquid. The 'myrecipes' logo is located in the top right corner of the frame, above the mixing action.",
-    "parse_success": true,
-    "chunk_idx": 21,
-    "video_id": "SEfO4cL-yqM",
-    "state_changes": []
-  },
-  {
-    "time": [
-      44,
-      46
-    ],
-    "visible_entities": [
-      {
-        "desc": "metal wire whisk with a looped structure",
-        "action": "whisking the mixture",
-        "position": "center",
-        "id": "whisk_beaters_metal_1"
-      },
-      {
-        "desc": "thick, creamy white liquid mixture",
-        "action": "being stirred",
-        "position": "center",
-        "id": "mixture_egg_whites_progressing"
-      },
-      {
-        "desc": "large stainless steel mixing bowl",
-        "action": "static",
-        "position": "center",
-        "id": "bowl_stainless_steel_1"
-      },
-      {
-        "desc": "logo text 'myrecipes' with a cherry icon and tagline 'search. save. share.'",
-        "action": "static",
-        "position": "top right",
-        "id": "logo_myrecipes_main"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "A metal whisk is actively stirring a thick white liquid inside a bowl.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The mixture has a smooth, glossy texture.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The 'myrecipes' logo is visible in the top right corner.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [
-      "myrecipes",
-      "search. save. share."
-    ],
-    "spatial": "The metal whisk is positioned in the center of the bowl, partially submerged in the white liquid mixture. The liquid fills the bottom of the stainless steel bowl. The 'myrecipes' logo is located in the top right corner of the frame, above the bowl.",
-    "parse_success": true,
-    "chunk_idx": 22,
-    "video_id": "SEfO4cL-yqM",
-    "state_changes": [
-      "mixture state change - pale yellow liquid transforms to thick creamy white"
-    ]
-  },
-  {
-    "time": [
-      46,
-      48
-    ],
-    "visible_entities": [
-      {
-        "desc": "metal whisk attachment with thin wire loops",
-        "action": "whisking white liquid",
-        "position": "center",
-        "id": "whisk_beaters_metal_1"
-      },
-      {
-        "desc": "white creamy liquid mixture",
-        "action": "being whisked",
-        "position": "center",
-        "id": "mixture_egg_whites_progressing"
-      },
-      {
-        "desc": "silver metal mixing bowl",
-        "action": "static",
-        "position": "background",
-        "id": "bowl_stainless_steel_1"
-      },
-      {
-        "desc": "myrecipes logo with black text and orange tagline",
-        "action": "static",
-        "position": "top right",
-        "id": "logo_myrecipes_main"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "A metal whisk is being used to mix a white liquid in a bowl.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The liquid appears thick and creamy as it is being agitated.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The 'myrecipes' logo is visible in the top right corner.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [
-      "myrecipes",
-      "worth your time"
-    ],
-    "spatial": "The metal whisk is positioned in the center of the silver mixing bowl, submerged in the white liquid. The 'myrecipes' logo is located in the top right corner of the frame, above the bowl.",
-    "parse_success": true,
-    "chunk_idx": 23,
-    "video_id": "SEfO4cL-yqM",
-    "state_changes": []
-  },
-  {
-    "time": [
-      48,
-      50
-    ],
-    "visible_entities": [
-      {
-        "desc": "white, glossy, viscous liquid mixture with soft peaks",
-        "action": "being whipped",
-        "position": "center",
-        "id": "mixture_egg_whites_progressing"
-      },
-      {
-        "desc": "metallic electric mixer beaters",
-        "action": "spinning rapidly",
-        "position": "center",
-        "id": "whisk_beaters_metal_1"
-      },
-      {
-        "desc": "silver metal mixing bowl",
-        "action": "static",
-        "position": "bottom",
-        "id": "bowl_stainless_steel_1"
-      },
-      {
-        "desc": "logo text 'myrecipes' with tagline 'worth your time'",
-        "action": "static",
-        "position": "top right"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "The mixer beaters are spinning rapidly to whip the white mixture.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The mixture has a glossy texture and forms soft peaks.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The beaters are submerged inside the metal bowl.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The 'myrecipes' logo is visible in the top right corner.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [
-      "myrecipes",
-      "worth your time"
-    ],
-    "spatial": "The metallic mixer beaters are positioned in the center of the silver metal bowl, submerged within the white liquid mixture. The mixture fills the bottom and center of the bowl. The 'myrecipes' logo is located in the top right corner of the frame, above the mixing action.",
+    "spatial": "The metal beaters are inside the silver mixing bowl, submerged in the white mixture. The 'myrecipes' logo is located in the top right corner, above the mixing action.",
     "parse_success": true,
     "chunk_idx": 24,
     "video_id": "SEfO4cL-yqM",
     "state_changes": [
-      "mixture consistency - soft peaks form in the whipped mixture"
+      "Mixture reaches soft peaks stage; glossy and viscous texture visible."
     ]
   },
   {
     "time": [
-      50,
-      52
+      25,
+      26
     ],
     "visible_entities": [
       {
-        "desc": "thick, glossy white mixture with soft peaks",
+        "desc": "thick, glossy white mixture with soft peaks and swirls",
         "action": "being whipped",
-        "position": "center/foreground",
-        "id": "mixture_egg_whites_progressing"
-      },
-      {
-        "desc": "metal electric mixer beaters, shiny silver",
-        "action": "rotating rapidly",
         "position": "center",
-        "id": "whisk_beaters_metal_1"
+        "id": "mixture_egg_whites_stiff"
       },
       {
-        "desc": "clear glass bowl rim",
+        "desc": "metal electric mixer beaters, silver, shiny, conical shape",
+        "action": "spinning rapidly",
+        "position": "center",
+        "id": "beaters_metal"
+      },
+      {
+        "desc": "clear glass mixing bowl, transparent rim",
         "action": "static",
         "position": "bottom",
-        "id": "bowl_glass_small_1"
+        "id": "bowl_glass_small"
       },
       {
-        "desc": "myrecipes logo, black and orange text",
+        "desc": "text logo 'myrecipes' in black serif font with a red cherry icon",
         "action": "static",
         "position": "top right",
         "id": "logo_myrecipes_main"
@@ -1453,7 +1412,7 @@
     ],
     "atomic_facts": [
       {
-        "fact": "Metal beaters are rotating rapidly within the white mixture.",
+        "fact": "The metal beaters are spinning rapidly inside the white mixture.",
         "confidence": 1.0
       },
       {
@@ -1468,7 +1427,7 @@
     "ocr": [
       "myrecipes"
     ],
-    "spatial": "The metal beaters are inside the clear glass bowl, submerged in the white mixture. The mixture fills the bottom and center of the frame. The 'myrecipes' logo is positioned above and to the right of the mixing action.",
+    "spatial": "The metal beaters are inside the clear glass bowl, submerged in the white mixture. The mixture fills the bottom and center of the bowl. The 'myrecipes' logo is located in the top right corner, above the mixing action.",
     "parse_success": true,
     "chunk_idx": 25,
     "video_id": "SEfO4cL-yqM",
@@ -1476,24 +1435,24 @@
   },
   {
     "time": [
-      52,
-      54
+      26,
+      27
     ],
     "visible_entities": [
       {
-        "desc": "two metal electric mixer beaters, silver, wire-frame construction",
-        "action": "whisking the mixture",
+        "desc": "two metal wire whisk attachments, silver, shiny, cylindrical base with thin wires",
+        "action": "spinning rapidly",
         "position": "center",
-        "id": "whisk_beaters_metal_1"
+        "id": "whisk_attachment_metal"
       },
       {
-        "desc": "thick white creamy mixture, frothy texture",
+        "desc": "thick white creamy mixture, frothy, glossy, viscous texture",
         "action": "being whipped",
-        "position": "bottom",
-        "id": "mixture_egg_whites_progressing"
+        "position": "background",
+        "id": "mixture_egg_whites_stiff"
       },
       {
-        "desc": "logo text 'myrecipes' with a cherry icon",
+        "desc": "logo text 'myrecipes' in black and orange serif font with tagline 'search save share' below",
         "action": "static",
         "position": "top right",
         "id": "logo_myrecipes_main"
@@ -1501,22 +1460,23 @@
     ],
     "atomic_facts": [
       {
-        "fact": "The electric mixer beaters are rotating rapidly inside the bowl.",
+        "fact": "Two metal whisks are spinning rapidly inside a bowl.",
         "confidence": 1.0
       },
       {
-        "fact": "The beaters are whipping a white substance into a frothy consistency.",
+        "fact": "The whisks are whipping a white creamy mixture into a froth.",
         "confidence": 1.0
       },
       {
-        "fact": "The 'myrecipes' logo is visible in the top right corner.",
+        "fact": "The mixture appears thick and glossy as it is agitated.",
         "confidence": 1.0
       }
     ],
     "ocr": [
-      "myrecipes"
+      "myrecipes",
+      "search save share"
     ],
-    "spatial": "The metal mixer beaters are positioned in the center of the frame, submerged in the white mixture below them. The 'myrecipes' logo is located in the top right corner, above the mixing action.",
+    "spatial": "The two metal whisk attachments are positioned in the center of the frame, submerged in the white creamy mixture. The mixture surrounds the whisks and fills the background. The 'myrecipes' logo is located in the top right corner, above the mixing action.",
     "parse_success": true,
     "chunk_idx": 26,
     "video_id": "SEfO4cL-yqM",
@@ -1524,30 +1484,30 @@
   },
   {
     "time": [
-      54,
-      56
+      27,
+      28
     ],
     "visible_entities": [
       {
-        "desc": "metal wire whisk with multiple tines, silver color",
-        "action": "lifting white creamy mixture",
+        "desc": "metal wire whisk with multiple tines, silver, shiny",
+        "action": "lifting out of mixture",
         "position": "right",
-        "id": "whisk_beaters_metal_1"
+        "id": "whisk_attachment_metal"
       },
       {
-        "desc": "thick white creamy mixture, viscous texture",
+        "desc": "thick white creamy mixture, glossy, viscous",
         "action": "dripping from whisk",
         "position": "center",
-        "id": "mixture_egg_whites_progressing"
+        "id": "mixture_egg_whites_stiff"
       },
       {
-        "desc": "clear glass mixing bowl",
+        "desc": "clear glass bowl, reflective rim",
         "action": "static",
         "position": "left",
-        "id": "bowl_glass_small_1"
+        "id": "bowl_glass_small"
       },
       {
-        "desc": "logo text 'myrecipes' in black and orange font",
+        "desc": "logo text 'myrecipes' in black and orange serif font",
         "action": "static",
         "position": "top right",
         "id": "logo_myrecipes_main"
@@ -1555,15 +1515,70 @@
     ],
     "atomic_facts": [
       {
-        "fact": "A metal wire whisk is lifted out of a bowl.",
+        "fact": "A metal wire whisk is being lifted out of a bowl.",
         "confidence": 1.0
       },
       {
-        "fact": "Thick white mixture drips from the whisk tines back into the bowl.",
+        "fact": "Thick white mixture is clinging to the whisk wires.",
         "confidence": 1.0
       },
       {
-        "fact": "The mixture has a viscous, creamy consistency.",
+        "fact": "The mixture is dripping back into the bowl.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The bowl contains a pale yellowish-white liquid.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "myrecipes"
+    ],
+    "spatial": "The metal whisk is positioned on the right side of the frame, partially inside the glass bowl. The white mixture is coating the whisk and dripping down towards the liquid in the bowl. The 'myrecipes' logo is located in the top right corner, above the whisk.",
+    "parse_success": true,
+    "chunk_idx": 27,
+    "video_id": "SEfO4cL-yqM",
+    "state_changes": [
+      "Whisk is lifted from the bowl, showing the thick mixture dripping (stiff peaks check)."
+    ]
+  },
+  {
+    "time": [
+      28,
+      29
+    ],
+    "visible_entities": [
+      {
+        "desc": "silver metal wire beaters",
+        "action": "whisking the mixture",
+        "position": "center",
+        "id": "whisk_attachment_metal"
+      },
+      {
+        "desc": "thick, pale yellow creamy mixture",
+        "action": "being whipped",
+        "position": "center"
+      },
+      {
+        "desc": "metal mixing bowl",
+        "action": "static",
+        "position": "background",
+        "id": "bowl_metal_large"
+      },
+      {
+        "desc": "myrecipes logo text",
+        "action": "static",
+        "position": "top right",
+        "id": "logo_myrecipes_main"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The metal beaters are rapidly rotating and mixing the creamy substance.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The mixture is becoming frothy and aerated.",
         "confidence": 1.0
       },
       {
@@ -1574,64 +1589,7 @@
     "ocr": [
       "myrecipes"
     ],
-    "spatial": "The metal wire whisk is positioned on the right side of the frame, partially inside the clear glass mixing bowl which occupies the left and center. The white creamy mixture is coating the whisk and dripping down towards the bulk of the mixture inside the bowl. The 'myrecipes' logo is located in the top right corner, above the whisk.",
-    "parse_success": true,
-    "chunk_idx": 27,
-    "video_id": "SEfO4cL-yqM",
-    "state_changes": [
-      "consistency check - whisk lifted showing viscous mixture dripping"
-    ]
-  },
-  {
-    "time": [
-      56,
-      58
-    ],
-    "visible_entities": [
-      {
-        "desc": "metal electric mixer beaters",
-        "action": "whisking mixture",
-        "position": "center",
-        "id": "whisk_beaters_metal_1"
-      },
-      {
-        "desc": "white creamy mixture",
-        "action": "being mixed",
-        "position": "center",
-        "id": "mixture_egg_whites_progressing"
-      },
-      {
-        "desc": "silver metal bowl",
-        "action": "static",
-        "position": "background",
-        "id": "bowl_stainless_steel_1"
-      },
-      {
-        "desc": "myrecipes logo",
-        "action": "static",
-        "position": "top right",
-        "id": "logo_myrecipes_main"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "Metal beaters are rapidly whisking a white mixture.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The mixture is becoming frothy and increasing in volume.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The 'myrecipes' logo is visible in the top right corner.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [
-      "myrecipes",
-      "search save share"
-    ],
-    "spatial": "The metal beaters are inside the silver bowl, positioned in the center of the frame. The beaters are submerged in the white creamy mixture. The 'myrecipes' logo is located in the top right corner, above the mixing action.",
+    "spatial": "The metal beaters are positioned inside the mixing bowl, submerged within the creamy mixture. The mixture fills the bottom of the bowl. The 'myrecipes' logo is located in the top right corner of the frame, above the mixing action.",
     "parse_success": true,
     "chunk_idx": 28,
     "video_id": "SEfO4cL-yqM",
@@ -1639,24 +1597,29 @@
   },
   {
     "time": [
-      58,
-      60
+      29,
+      30
     ],
     "visible_entities": [
       {
-        "desc": "two metal electric mixer beaters with wire whisks",
-        "action": "whipping white mixture",
+        "desc": "two metal electric mixer beaters, silver, wire whisk style",
+        "action": "whisking white mixture",
         "position": "center",
-        "id": "whisk_beaters_metal_1"
+        "id": "beaters_metal"
       },
       {
-        "desc": "thick white foamy mixture",
+        "desc": "white fluffy mixture, creamy texture, likely egg whites or cream",
         "action": "being whipped",
-        "position": "background",
-        "id": "mixture_egg_whites_progressing"
+        "position": "center",
+        "id": "mixture_egg_whites_stiff"
       },
       {
-        "desc": "logo text 'myrecipes' with tagline 'search save share'",
+        "desc": "metal mixing bowl rim, silver, curved",
+        "action": "static",
+        "position": "bottom left"
+      },
+      {
+        "desc": "logo text 'myrecipes' with tagline 'worth your share'",
         "action": "static",
         "position": "top right",
         "id": "logo_myrecipes_main"
@@ -1664,11 +1627,11 @@
     ],
     "atomic_facts": [
       {
-        "fact": "Two metal beaters are actively whipping a white mixture.",
+        "fact": "Two metal beaters are actively whisking a white, fluffy mixture.",
         "confidence": 1.0
       },
       {
-        "fact": "The mixture has a thick, foamy texture.",
+        "fact": "The mixture appears to be forming stiff peaks.",
         "confidence": 1.0
       },
       {
@@ -1678,9 +1641,9 @@
     ],
     "ocr": [
       "myrecipes",
-      "search save share"
+      "worth your share"
     ],
-    "spatial": "The metal beaters are in the center of the frame, submerged in the white mixture. The 'myrecipes' logo is located in the top right corner, above the mixing action.",
+    "spatial": "The metal beaters are positioned in the center of the frame, submerged in the white mixture. The rim of the metal bowl is visible at the bottom left, containing the mixture. The 'myrecipes' logo is located in the top right corner, above the mixing action.",
     "parse_success": true,
     "chunk_idx": 29,
     "video_id": "SEfO4cL-yqM",
@@ -1688,42 +1651,42 @@
   },
   {
     "time": [
-      60,
-      62
+      30,
+      31
     ],
     "visible_entities": [
       {
         "desc": "metal wire whisk with multiple thin loops",
-        "action": "stirring white mixture",
+        "action": "whisking white mixture",
         "position": "center",
-        "id": "whisk_beaters_metal_1"
+        "id": "whisk_attachment_metal"
       },
       {
-        "desc": "thick white foamy mixture with stiff peaks",
+        "desc": "white frothy liquid mixture",
         "action": "being mixed",
         "position": "center",
-        "id": "mixture_egg_whites_progressing"
+        "id": "mixture_egg_whites_frothy"
       },
       {
         "desc": "silver metal mixing bowl",
         "action": "static",
         "position": "background",
-        "id": "bowl_stainless_steel_1"
+        "id": "bowl_metal_large"
       },
       {
-        "desc": "logo with 'my' in black serif font and 'recipes' in orange sans-serif font",
+        "desc": "myrecipes logo with black and orange text",
         "action": "static",
-        "position": "top-right",
+        "position": "top right",
         "id": "logo_myrecipes_main"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A metal whisk is stirring a thick white mixture inside a bowl.",
+        "fact": "A metal wire whisk is stirring a white, frothy liquid mixture.",
         "confidence": 1.0
       },
       {
-        "fact": "The mixture has a foamy texture with visible peaks.",
+        "fact": "The mixture is contained within a silver metal bowl.",
         "confidence": 1.0
       },
       {
@@ -1734,40 +1697,38 @@
     "ocr": [
       "myrecipes"
     ],
-    "spatial": "The metal whisk is inside the silver mixing bowl, positioned centrally. The whisk is interacting with the white foamy mixture, which fills the bottom of the bowl. The 'myrecipes' logo is located in the top right corner, above the bowl.",
+    "spatial": "The metal wire whisk is positioned inside the silver metal bowl, partially submerged in the white frothy mixture. The 'myrecipes' logo is located in the top right corner of the frame, above the bowl.",
     "parse_success": true,
     "chunk_idx": 30,
     "video_id": "SEfO4cL-yqM",
-    "state_changes": [
-      "final consistency achieved - stiff peaks formed in egg whites"
-    ]
+    "state_changes": []
   },
   {
     "time": [
-      62,
-      64
+      31,
+      32
     ],
     "visible_entities": [
       {
-        "desc": "metal wire whisk with thin, silver loops",
+        "desc": "metal wire whisk with multiple thin loops",
         "action": "whisking white foam",
         "position": "center",
-        "id": "whisk_beaters_metal_1"
+        "id": "whisk_attachment_metal"
       },
       {
-        "desc": "white, fluffy, frothy mixture with stiff peaks",
+        "desc": "white foamy mixture with stiff peaks",
         "action": "being mixed",
         "position": "bottom",
-        "id": "mixture_egg_whites_progressing"
+        "id": "mixture_egg_whites_stiff"
       },
       {
-        "desc": "shiny, silver metal mixing bowl",
+        "desc": "silver metal mixing bowl",
         "action": "static",
         "position": "background",
-        "id": "bowl_stainless_steel_1"
+        "id": "bowl_metal_large"
       },
       {
-        "desc": "logo with text 'myrecipes' in black and orange serif font",
+        "desc": "text logo 'myrecipes' with tagline 'worth your time'",
         "action": "static",
         "position": "top right",
         "id": "logo_myrecipes_main"
@@ -1775,22 +1736,23 @@
     ],
     "atomic_facts": [
       {
-        "fact": "A metal wire whisk is actively mixing a white, frothy substance.",
+        "fact": "A metal whisk is actively mixing a white, foamy substance.",
         "confidence": 1.0
       },
       {
-        "fact": "The mixture has a fluffy texture with visible peaks.",
+        "fact": "The mixture has formed stiff peaks that cling to the whisk wires.",
         "confidence": 1.0
       },
       {
-        "fact": "The 'myrecipes' logo is displayed in the top right corner.",
+        "fact": "The 'myrecipes' logo is visible in the top right corner.",
         "confidence": 1.0
       }
     ],
     "ocr": [
-      "myrecipes"
+      "myrecipes",
+      "worth your time"
     ],
-    "spatial": "The metal wire whisk is positioned in the center, partially submerged in the white frothy mixture at the bottom of the frame. The silver mixing bowl surrounds the mixture in the background. The 'myrecipes' logo is located in the top right corner, above the mixing action.",
+    "spatial": "The metal whisk is positioned in the center of the frame, partially submerged in the white foamy mixture inside the silver bowl. The 'myrecipes' logo is located in the top right corner, above the bowl.",
     "parse_success": true,
     "chunk_idx": 31,
     "video_id": "SEfO4cL-yqM",
@@ -1798,46 +1760,40 @@
   },
   {
     "time": [
-      64,
-      66
+      32,
+      33
     ],
     "visible_entities": [
       {
-        "desc": "light blue background with a faint, darker blue geometric snowflake pattern",
+        "desc": "light blue background with a large, darker blue, semi-transparent snowflake pattern",
         "action": "static",
         "position": "background",
-        "id": "background_holiday_outro"
+        "id": "background_snowflake_blue"
       },
       {
         "desc": "dark blue serif text reading 'FIND THOUSANDS OF HOLIDAY MENUS AND RECIPES AT'",
         "action": "static",
         "position": "center",
-        "id": "text_cta_holiday_recipes"
+        "id": "text_cta_blue"
       },
       {
-        "desc": "logo text 'myrecipes.com' with 'my' in brown serif font, 'recipes' in gold serif font, and '.com' in brown sans-serif font",
+        "desc": "website logo 'myrecipes.com' with 'my' in brown, 'recipes' in yellow, and '.com' in grey",
         "action": "static",
         "position": "center",
-        "id": "logo_myrecipes_main"
-      },
-      {
-        "desc": "small red holly berry graphic with a green leaf",
-        "action": "static",
-        "position": "center",
-        "id": "background_holiday_outro"
+        "id": "logo_myrecipes_website"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "The text 'FIND THOUSANDS OF HOLIDAY MENUS AND RECIPES AT' is displayed in the center of the screen.",
+        "fact": "The screen displays a static promotional graphic.",
         "confidence": 1.0
       },
       {
-        "fact": "The logo 'myrecipes.com' is positioned below the main text.",
+        "fact": "The text 'FIND THOUSANDS OF HOLIDAY MENUS AND RECIPES AT' is visible.",
         "confidence": 1.0
       },
       {
-        "fact": "A red holly berry graphic is placed on top of the letter 'y' in 'myrecipes.com'.",
+        "fact": "The website address 'myrecipes.com' is displayed below the main text.",
         "confidence": 1.0
       }
     ],
@@ -1846,50 +1802,50 @@
       "HOLIDAY MENUS AND RECIPES AT",
       "myrecipes.com"
     ],
-    "spatial": "The text 'FIND THOUSANDS OF HOLIDAY MENUS AND RECIPES AT' is above the 'myrecipes.com' logo. The red holly berry graphic is on top of the 'y' in 'myrecipes.com'. The snowflake pattern is behind the text.",
+    "spatial": "The text 'FIND THOUSANDS OF HOLIDAY MENUS AND RECIPES AT' is positioned above the 'myrecipes.com' logo. Both text elements are centered on the screen against the blue snowflake background.",
     "parse_success": true,
     "chunk_idx": 32,
     "video_id": "SEfO4cL-yqM",
     "state_changes": [
-      "cooking complete - transition to outro screen with CTA text and holiday graphics"
+      "Cooking scene ends; transitions to blue snowflake background with website URL."
     ]
   },
   {
     "time": [
-      66,
-      68
+      33,
+      34
     ],
     "visible_entities": [
       {
-        "desc": "Text reading 'FIND THOUSANDS OF HOLIDAY MENUS AND RECIPES AT' in a dark blue serif font",
-        "action": "static",
-        "position": "center",
-        "id": "text_cta_holiday_recipes"
-      },
-      {
-        "desc": "Logo text 'myrecipes.com' in a stylized font with 'my' in brown and 'recipes' in yellow, featuring a small red berry graphic",
-        "action": "static",
-        "position": "center",
-        "id": "logo_myrecipes_main"
-      },
-      {
-        "desc": "Background with a light blue gradient and large, faint, darker blue snowflake patterns",
+        "desc": "light blue background with a large, faint, darker blue snowflake pattern",
         "action": "static",
         "position": "background",
-        "id": "background_holiday_outro"
+        "id": "background_snowflake_blue"
+      },
+      {
+        "desc": "text reading 'FIND THOUSANDS OF HOLIDAY MENUS AND RECIPES AT' in a dark blue serif font",
+        "action": "static",
+        "position": "center",
+        "id": "text_cta_blue"
+      },
+      {
+        "desc": "logo text 'myrecipes.com' with 'my' in brown, 'recipes' in yellow, and '.com' in grey, featuring a small red holly berry on the 'm'",
+        "action": "static",
+        "position": "center",
+        "id": "logo_myrecipes_website"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "The text 'FIND THOUSANDS OF HOLIDAY MENUS AND RECIPES AT' is displayed on the screen.",
+        "fact": "The video displays a static promotional graphic for a website.",
         "confidence": 1.0
       },
       {
-        "fact": "The website 'myrecipes.com' is shown below the main text.",
+        "fact": "The text 'FIND THOUSANDS OF HOLIDAY MENUS AND RECIPES AT' is visible above the website URL.",
         "confidence": 1.0
       },
       {
-        "fact": "The background features a winter theme with snowflake designs.",
+        "fact": "The website 'myrecipes.com' is displayed at the bottom of the text block.",
         "confidence": 1.0
       }
     ],
@@ -1898,7 +1854,7 @@
       "HOLIDAY MENUS AND RECIPES AT",
       "myrecipes.com"
     ],
-    "spatial": "The text 'FIND THOUSANDS OF HOLIDAY MENUS AND RECIPES AT' is positioned above the 'myrecipes.com' logo. Both text elements are centered against the light blue background with snowflake patterns.",
+    "spatial": "The dark blue text 'FIND THOUSANDS OF HOLIDAY MENUS AND RECIPES AT' is positioned above the multi-colored 'myrecipes.com' logo. Both text elements are centered against the light blue background with the snowflake pattern.",
     "parse_success": true,
     "chunk_idx": 33,
     "video_id": "SEfO4cL-yqM",
@@ -1906,32 +1862,34 @@
   },
   {
     "time": [
-      68,
-      70
+      34,
+      35
     ],
     "visible_entities": [
       {
-        "desc": "Text reading 'FIND THOUSANDS OF HOLIDAY MENUS AND RECIPES AT' in a dark blue serif font, and a logo 'myrecipes.com' with 'my' in brown, 'recipes' in yellow, and '.com' in grey.",
+        "desc": "Text reading 'FIND THOUSANDS OF HOLIDAY MENUS AND RECIPES AT' in a blue serif font, and 'myrecipes.com' in a stylized font with 'my' in brown, 'recipes' in yellow, and '.com' in grey.",
         "action": "static",
-        "position": "center"
+        "position": "center",
+        "id": "logo_myrecipes_website"
       },
       {
-        "desc": "A large, stylized snowflake graphic in a light blue shade, slightly out of focus.",
+        "desc": "A large, light blue snowflake pattern with a soft, blurry texture.",
         "action": "static",
-        "position": "background"
+        "position": "background",
+        "id": "background_snowflake_blue"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "The text 'FIND THOUSANDS OF HOLIDAY MENUS AND RECIPES AT' is displayed in the center of the screen.",
+        "fact": "The video displays a static promotional graphic.",
         "confidence": 1.0
       },
       {
-        "fact": "The website address 'myrecipes.com' is shown below the main text.",
+        "fact": "The text invites viewers to find holiday menus and recipes at myrecipes.com.",
         "confidence": 1.0
       },
       {
-        "fact": "A snowflake graphic serves as the background for the text.",
+        "fact": "The background features a snowflake pattern, indicating a winter or holiday theme.",
         "confidence": 1.0
       }
     ],
@@ -1940,7 +1898,7 @@
       "HOLIDAY MENUS AND RECIPES AT",
       "myrecipes.com"
     ],
-    "spatial": "The text 'FIND THOUSANDS OF HOLIDAY MENUS AND RECIPES AT' is positioned above the 'myrecipes.com' logo. Both text elements are centered in front of the background snowflake graphic.",
+    "spatial": "The text is centered in the foreground. The snowflake pattern is behind the text, filling the entire background.",
     "parse_success": true,
     "chunk_idx": 34,
     "video_id": "SEfO4cL-yqM",

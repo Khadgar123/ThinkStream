@@ -2,36 +2,40 @@
   {
     "time": [
       0,
-      2
+      1
     ],
     "visible_entities": [
       {
-        "desc": "Text reading 'Easy Step' in a white, cursive, script-style font",
-        "action": "static",
+        "desc": "Text reading 'Easy Step' in a white, cursive, handwritten-style font",
+        "action": "appearing",
         "position": "left",
-        "id": "text_intro_1"
+        "id": "text_logo_easy_steps"
       },
       {
-        "desc": "Cluster of glowing, sparkling particles in shades of purple and white, resembling stars or glitter",
-        "action": "static",
+        "desc": "A cluster of glowing purple and white sparkles with cross-shaped highlights",
+        "action": "emerging",
         "position": "left",
-        "id": "particles_sparkle_1"
+        "id": "background_sparkles_1"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "The text 'Easy Step' is displayed on the screen.",
+        "fact": "The text 'Easy Step' appears on the screen.",
         "confidence": 1.0
       },
       {
-        "fact": "Purple and white sparkling particles surround the text.",
+        "fact": "Purple and white sparkles emerge around the text.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The text and sparkles are positioned on the left side of the frame against a black background.",
         "confidence": 1.0
       }
     ],
     "ocr": [
       "Easy Step"
     ],
-    "spatial": "The text 'Easy Step' is positioned on the left side of the frame. The sparkling particles are located behind and around the text, extending towards the center.",
+    "spatial": "The text 'Easy Step' is surrounded by the cluster of purple and white sparkles. Both the text and the sparkles are located on the left side of the black background.",
     "parse_success": true,
     "chunk_idx": 0,
     "video_id": "o8xgP4HEmno",
@@ -39,46 +43,151 @@
   },
   {
     "time": [
+      1,
+      2
+    ],
+    "visible_entities": [
+      {
+        "desc": "white cursive text reading 'Easy Steps present' surrounded by sparkling purple and white particle effects",
+        "action": "static",
+        "position": "center",
+        "id": "text_logo_easy_steps"
+      },
+      {
+        "desc": "white Range Rover vehicle hood featuring black 'RANGE ROVER' lettering and a black honeycomb mesh grille",
+        "action": "static",
+        "position": "foreground",
+        "id": "car_range_rover_1"
+      },
+      {
+        "desc": "black metal fence with decorative finials",
+        "action": "static",
+        "position": "left",
+        "id": "fence_black_1"
+      },
+      {
+        "desc": "green bushes and parked cars",
+        "action": "static",
+        "position": "background",
+        "id": "background_bushes_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The video transitions from a title card reading 'Easy Steps present' to a shot of a vehicle.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The text 'RANGE ROVER' is visible on the front hood of the white car.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A black metal fence stands to the left of the vehicle.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "Easy Steps present",
+      "RANGE ROVER"
+    ],
+    "spatial": "The white Range Rover is positioned in the foreground to the right of the black metal fence. The green bushes and other parked cars are located in the background behind the fence and the main vehicle.",
+    "parse_success": true,
+    "chunk_idx": 1,
+    "video_id": "o8xgP4HEmno",
+    "state_changes": [
+      "Scene transitions from intro graphics to exterior shot of white Range Rover and fence."
+    ]
+  },
+  {
+    "time": [
       2,
+      3
+    ],
+    "visible_entities": [
+      {
+        "desc": "white Range Rover SUV, front view, black honeycomb grille, black 'RANGE ROVER' lettering on hood",
+        "action": "static",
+        "position": "foreground",
+        "id": "car_range_rover_1"
+      },
+      {
+        "desc": "black metal fence with decorative finials",
+        "action": "static",
+        "position": "left",
+        "id": "fence_black_1"
+      },
+      {
+        "desc": "green bushes and grass",
+        "action": "static",
+        "position": "background",
+        "id": "background_bushes_1"
+      },
+      {
+        "desc": "white text overlay at bottom of screen",
+        "action": "static",
+        "position": "bottom"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The camera focuses on the front of a white Range Rover.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A black metal fence is visible to the left of the vehicle.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The text 'RANGE ROVER' is clearly visible on the hood of the car.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The subtitle text reads 'How to add an Coin Tray or Storage Tray on Range Rover Sport'.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "RANGE ROVER",
+      "How to add an Coin Tray or Storage Tray on Range Rover Sport"
+    ],
+    "spatial": "The white Range Rover is in the foreground, occupying the center and right of the frame. The black metal fence is to the left of the vehicle. The green bushes are in the background behind the fence and car. The text overlay is at the bottom of the screen.",
+    "parse_success": true,
+    "chunk_idx": 2,
+    "video_id": "o8xgP4HEmno",
+    "state_changes": []
+  },
+  {
+    "time": [
+      3,
       4
     ],
     "visible_entities": [
       {
-        "desc": "white cursive text reading 'Easy Steps present' with sparkling particle effects",
-        "action": "static",
-        "position": "center",
-        "id": "text_intro_1"
-      },
-      {
-        "desc": "white Range Rover vehicle with a black honeycomb grille and black lettering on the hood",
+        "desc": "white Range Rover vehicle with a black honeycomb mesh grille and black lettering on the hood",
         "action": "static",
         "position": "foreground",
-        "id": "vehicle_range_rover_1"
+        "id": "car_range_rover_1"
+      },
+      {
+        "desc": "beige leather center console armrest with a black plastic hinge mechanism",
+        "action": "static",
+        "position": "center",
+        "id": "car_console_armrest_1"
       },
       {
         "desc": "black metal fence with decorative spear-point finials",
         "action": "static",
         "position": "left",
         "id": "fence_black_1"
-      },
-      {
-        "desc": "green manicured bushes",
-        "action": "static",
-        "position": "background",
-        "id": "bushes_green_1"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "The video transitions from a title card to a shot of a vehicle.",
+        "fact": "The video displays the front exterior of a white Range Rover.",
         "confidence": 1.0
       },
       {
-        "fact": "The text 'Easy Steps present' is displayed on a black background.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The white Range Rover is parked next to a black metal fence.",
+        "fact": "The video cuts to an interior view showing a beige armrest.",
         "confidence": 1.0
       },
       {
@@ -87,369 +196,98 @@
       }
     ],
     "ocr": [
-      "Easy Steps present",
       "RANGE ROVER"
     ],
-    "spatial": "The white Range Rover is in the foreground, positioned to the right of the black metal fence. The green bushes are behind the fence in the background. The title text is centered on the screen before the scene changes.",
+    "spatial": "The black metal fence is to the left of the white Range Rover. The 'RANGE ROVER' text is located on the hood above the black grille. The beige armrest is shown in a separate interior shot.",
     "parse_success": true,
-    "chunk_idx": 1,
+    "chunk_idx": 3,
     "video_id": "o8xgP4HEmno",
     "state_changes": [
-      "scene transitions from intro particles to outdoor Range Rover shot"
+      "Scene cuts from exterior vehicle view to interior close-up of the center console armrest."
     ]
   },
   {
     "time": [
       4,
-      6
+      5
     ],
     "visible_entities": [
       {
-        "desc": "white Range Rover vehicle front, featuring a black honeycomb mesh grille and black 'RANGE ROVER' lettering on the hood",
+        "desc": "beige car center console armrest with a smooth, padded surface and a dark grey plastic hinge mechanism on the right side",
         "action": "static",
-        "position": "center/right/foreground",
-        "id": "vehicle_range_rover_1"
+        "position": "center",
+        "id": "car_console_armrest_1"
       },
       {
-        "desc": "black metal fence with decorative spear-point finials and twisted vertical bars",
-        "action": "static",
-        "position": "left/background",
-        "id": "fence_black_1"
+        "desc": "person wearing a blue protective glove and a blue garment",
+        "action": "positioned near the console",
+        "position": "left",
+        "id": "person_operator_1"
       },
       {
-        "desc": "white text overlay at the bottom of the screen",
+        "desc": "black car dashboard control panel with a yellow button featuring a red indicator light",
         "action": "static",
-        "position": "bottom"
+        "position": "bottom left",
+        "id": "car_control_panel_1"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "The camera captures a close-up view of the front of a white Range Rover.",
+        "fact": "A beige armrest is positioned centrally in the vehicle interior.",
         "confidence": 1.0
       },
       {
-        "fact": "A black metal fence is visible to the left of the vehicle.",
+        "fact": "A person wearing a blue glove is visible on the left side of the frame.",
         "confidence": 1.0
       },
       {
-        "fact": "The text 'How to add an Coin Tray or Storage Tray on Range Rover Sport' is displayed at the bottom of the screen.",
+        "fact": "A black control panel with a yellow button is located below the armrest.",
         "confidence": 1.0
       }
     ],
-    "ocr": [
-      "RANGE ROVER",
-      "How to add an Coin Tray or Storage Tray on Range Rover Sport"
-    ],
-    "spatial": "The white Range Rover is positioned in the foreground to the right of the black metal fence. The 'RANGE ROVER' lettering is located on the hood above the black honeycomb grille. The instructional text overlay is situated at the bottom of the frame, below the vehicle.",
+    "ocr": [],
+    "spatial": "The beige armrest is in the center of the frame. The person wearing the blue glove is to the left of the armrest. The black control panel is below and to the left of the armrest.",
     "parse_success": true,
-    "chunk_idx": 2,
+    "chunk_idx": 4,
     "video_id": "o8xgP4HEmno",
-    "state_changes": []
+    "state_changes": [
+      "Person wearing blue protective gear appears next to the console."
+    ]
   },
   {
     "time": [
-      6,
-      8
+      5,
+      6
     ],
     "visible_entities": [
       {
-        "desc": "white Range Rover vehicle with a black honeycomb mesh grille and black 'RANGE ROVER' lettering on the hood",
-        "action": "static",
-        "position": "foreground",
-        "id": "vehicle_range_rover_1"
-      },
-      {
-        "desc": "beige leather center console armrest with a black plastic hinge mechanism",
+        "desc": "beige car center armrest with a smooth, padded leather-like texture and a black plastic hinge mechanism on the right side",
         "action": "static",
         "position": "center",
-        "id": "armrest_beige_1"
+        "id": "car_console_armrest_1"
       },
       {
         "desc": "person wearing a blue protective suit or coverall",
         "action": "leaning over the armrest",
         "position": "left",
-        "id": "person_worker_1"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "The video shows the front exterior of a white Range Rover.",
-        "confidence": 1.0
+        "id": "person_operator_1"
       },
       {
-        "fact": "The text 'RANGE ROVER' is visible in black letters on the front of the hood.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "A person in a blue suit is leaning over the beige interior armrest.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [
-      "RANGE ROVER"
-    ],
-    "spatial": "The white Range Rover is in the foreground. The beige armrest is located inside the vehicle. The person in the blue suit is to the left of the armrest and is leaning over it.",
-    "parse_success": true,
-    "chunk_idx": 3,
-    "video_id": "o8xgP4HEmno",
-    "state_changes": [
-      "scene moves to car interior, person in blue suit appears at armrest"
-    ]
-  },
-  {
-    "time": [
-      8,
-      10
-    ],
-    "visible_entities": [
-      {
-        "desc": "beige car center console armrest with a smooth, light-colored padded top and dark grey plastic sides",
-        "action": "static",
-        "position": "center",
-        "id": "armrest_beige_1"
-      },
-      {
-        "desc": "black control panel with a yellow button and white directional markings",
+        "desc": "black center console control panel with a yellow button and a rotary dial",
         "action": "static",
         "position": "bottom left",
-        "id": "dashboard_controls_1"
+        "id": "car_control_panel_1"
       },
       {
-        "desc": "person's arm wearing a blue long-sleeved garment",
+        "desc": "green text watermark reading 'Harginder Sidhu'",
         "action": "static",
         "position": "top left",
-        "id": "person_worker_1"
+        "id": "text_name_harjinder_sidhu"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A beige car armrest is positioned in the center of the frame.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "A black control panel with a yellow button is visible in the bottom left corner.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "A person's arm in a blue sleeve is visible in the top left corner.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [],
-    "spatial": "The beige armrest is in the center of the frame. The black control panel is to the left of the armrest. The person's arm is above the control panel and to the left of the armrest.",
-    "parse_success": true,
-    "chunk_idx": 4,
-    "video_id": "o8xgP4HEmno",
-    "state_changes": []
-  },
-  {
-    "time": [
-      10,
-      12
-    ],
-    "visible_entities": [
-      {
-        "desc": "beige car center console armrest with a smooth, light-colored surface and a black plastic hinge mechanism on the right side",
-        "action": "static",
-        "position": "center",
-        "id": "armrest_beige_1"
-      },
-      {
-        "desc": "person wearing a blue protective suit or coverall",
-        "action": "static",
-        "position": "left",
-        "id": "person_worker_1"
-      },
-      {
-        "desc": "black control panel with a yellow button and white markings",
-        "action": "static",
-        "position": "bottom-left",
-        "id": "dashboard_controls_1"
-      },
-      {
-        "desc": "green text watermark reading 'Hanginder Sidhu'",
-        "action": "static",
-        "position": "top-left",
-        "id": "text_watermark_1"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "A person in a blue suit is positioned to the left of the beige armrest.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The beige armrest is attached to the vehicle's center console.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "A black control panel with a yellow button is visible below the armrest.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The text 'Hanginder Sidhu' is overlaid in the top-left corner of the frame.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [
-      "Hanginder Sidhu"
-    ],
-    "spatial": "The person in the blue suit is to the left of the beige armrest. The black control panel is below and to the left of the armrest. The green watermark text is above the person's shoulder in the top-left corner.",
-    "parse_success": true,
-    "chunk_idx": 5,
-    "video_id": "o8xgP4HEmno",
-    "state_changes": []
-  },
-  {
-    "time": [
-      12,
-      14
-    ],
-    "visible_entities": [
-      {
-        "desc": "beige car center console armrest with a smooth, padded surface and dark grey plastic side accents",
-        "action": "static",
-        "position": "center",
-        "id": "armrest_beige_1"
-      },
-      {
-        "desc": "black dashboard control panel with a circular dial and a yellow button featuring a red dot",
-        "action": "static",
-        "position": "bottom left",
-        "id": "dashboard_controls_1"
-      },
-      {
-        "desc": "text overlay in the top left corner with 'Harjinder Sidhu' in white and a yellow stylized logo",
-        "action": "static",
-        "position": "top left",
-        "id": "text_watermark_1"
-      },
-      {
-        "desc": "beige car seat upholstery visible in the background",
-        "action": "static",
-        "position": "background",
-        "id": "car_seat_beige_1"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "The camera remains focused on the car's center console armrest.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The text 'Harjinder Sidhu' is visible in the top left corner.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "A yellow button with a red dot is part of the dashboard controls.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [
-      "Harjinder Sidhu"
-    ],
-    "spatial": "The beige armrest is in the center of the frame. The black dashboard control panel is located to the left of the armrest. The text overlay is positioned in the top left corner, above the dashboard controls.",
-    "parse_success": true,
-    "chunk_idx": 6,
-    "video_id": "o8xgP4HEmno",
-    "state_changes": []
-  },
-  {
-    "time": [
-      14,
-      16
-    ],
-    "visible_entities": [
-      {
-        "desc": "beige car center console armrest with a smooth, padded top surface and black plastic sides",
-        "action": "static",
-        "position": "center",
-        "id": "armrest_beige_1"
-      },
-      {
-        "desc": "hand wearing a blue disposable glove",
-        "action": "holding a plastic-wrapped object",
-        "position": "top left",
-        "id": "person_worker_1"
-      },
-      {
-        "desc": "black dashboard control panel with a yellow button and a rotary dial",
-        "action": "static",
-        "position": "bottom left",
-        "id": "dashboard_controls_1"
-      },
-      {
-        "desc": "text overlay in yellow and white font reading 'Easy Steps' and 'Harjinder Sidhu'",
-        "action": "static",
-        "position": "top left",
-        "id": "text_watermark_1"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "A hand wearing a blue glove holds a plastic-wrapped object above the car's center console.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The beige armrest is positioned next to the black dashboard controls.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The text 'Easy Steps' is visible in the top left corner.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [
-      "Easy Steps",
-      "Harjinder Sidhu"
-    ],
-    "spatial": "The hand wearing a blue glove is located above and to the left of the beige armrest. The black dashboard control panel is situated to the left of the armrest. The text overlay is positioned in the top left corner of the frame, above the hand.",
-    "parse_success": true,
-    "chunk_idx": 7,
-    "video_id": "o8xgP4HEmno",
-    "state_changes": [
-      "person begins handling objects with gloved hand"
-    ]
-  },
-  {
-    "time": [
-      16,
-      18
-    ],
-    "visible_entities": [
-      {
-        "desc": "beige car center console armrest with a smooth, curved top surface and a black plastic hinge mechanism on the right side",
-        "action": "static",
-        "position": "center",
-        "id": "armrest_beige_1"
-      },
-      {
-        "desc": "hand wearing a blue disposable glove",
-        "action": "holding a plastic bag",
-        "position": "top left",
-        "id": "person_worker_1"
-      },
-      {
-        "desc": "crumpled clear plastic bag or sheet",
-        "action": "being held",
-        "position": "top left",
-        "id": "plastic_bag_1"
-      },
-      {
-        "desc": "black dashboard control panel with a yellow button and white markings",
-        "action": "static",
-        "position": "bottom left"
-      },
-      {
-        "desc": "text overlay in the top left corner",
-        "action": "static",
-        "position": "top left",
-        "id": "text_watermark_1"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "A hand wearing a blue glove is holding a clear plastic bag above the car's center console.",
+        "fact": "A person in a blue suit is leaning over the beige car armrest.",
         "confidence": 1.0
       },
       {
@@ -457,115 +295,115 @@
         "confidence": 1.0
       },
       {
-        "fact": "The text 'Easy Steps' and 'Harjinder Sidhu' is visible in the top left corner of the screen.",
+        "fact": "A black control panel with a yellow button is visible to the left of the armrest.",
         "confidence": 1.0
       }
     ],
     "ocr": [
-      "Easy Steps",
-      "Harjinder Sidhu"
+      "Harginder Sidhu"
     ],
-    "spatial": "The hand wearing a blue glove is located above and to the left of the beige armrest. The black dashboard control panel is to the left of the armrest. The text overlay is in the top left corner of the frame.",
+    "spatial": "The person in the blue suit is to the left of the beige armrest. The black control panel is below and to the left of the armrest. The watermark text is located in the top left corner of the frame.",
     "parse_success": true,
-    "chunk_idx": 8,
+    "chunk_idx": 5,
     "video_id": "o8xgP4HEmno",
     "state_changes": []
   },
   {
     "time": [
-      18,
-      20
+      6,
+      7
     ],
     "visible_entities": [
       {
-        "desc": "hand wearing a blue disposable glove",
-        "action": "opening the armrest lid",
-        "position": "left",
-        "id": "person_worker_1"
-      },
-      {
-        "desc": "beige car center console armrest with a smooth, curved lid and black plastic hinge mechanism",
-        "action": "being opened",
-        "position": "center",
-        "id": "armrest_beige_1"
-      },
-      {
-        "desc": "dark interior storage compartment inside the armrest",
-        "action": "being revealed",
-        "position": "center",
-        "id": "storage_compartment_1"
-      },
-      {
-        "desc": "yellow text 'Easy Steps' and white text 'Harjinder Sidhu' in the top left corner",
+        "desc": "beige car center console armrest, smooth padded material, rectangular shape with rounded edges",
         "action": "static",
-        "position": "top-left",
-        "id": "text_watermark_1"
+        "position": "center",
+        "id": "car_console_armrest_1"
+      },
+      {
+        "desc": "black car control panel with a yellow button and white markings",
+        "action": "static",
+        "position": "bottom left",
+        "id": "car_control_panel_1"
+      },
+      {
+        "desc": "person wearing blue clothing, partially visible",
+        "action": "static",
+        "position": "left",
+        "id": "person_operator_1"
+      },
+      {
+        "desc": "text overlay 'Harjinder Sidhu' in yellow cursive font",
+        "action": "static",
+        "position": "top left",
+        "id": "text_name_harjinder_sidhu"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A hand wearing a blue glove lifts the lid of the beige car armrest.",
+        "fact": "The camera focuses on the interior of a vehicle.",
         "confidence": 1.0
       },
       {
-        "fact": "The armrest opens to reveal a dark storage compartment inside.",
+        "fact": "A beige armrest is positioned centrally in the frame.",
         "confidence": 1.0
       },
       {
-        "fact": "The text 'Easy Steps' and 'Harjinder Sidhu' is visible in the top left corner.",
+        "fact": "A control panel with a yellow button is visible to the left of the armrest.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The text 'Harjinder Sidhu' is displayed in the top left corner.",
         "confidence": 1.0
       }
     ],
     "ocr": [
-      "Easy Steps",
       "Harjinder Sidhu"
     ],
-    "spatial": "The gloved hand is to the left of the beige armrest. The dark storage compartment is inside the armrest. The text overlay is above the armrest in the top left corner.",
+    "spatial": "The beige armrest is in the center of the frame. The black control panel is to the left of the armrest. The person in blue is partially visible on the far left, next to the control panel. The text overlay is above the person and the control panel.",
     "parse_success": true,
-    "chunk_idx": 9,
+    "chunk_idx": 6,
     "video_id": "o8xgP4HEmno",
-    "state_changes": [
-      "armrest lid opened, storage compartment revealed"
-    ]
+    "state_changes": []
   },
   {
     "time": [
-      20,
-      22
+      7,
+      8
     ],
     "visible_entities": [
       {
-        "desc": "person's arm wearing a blue disposable glove",
-        "action": "reaching into the storage compartment",
-        "position": "center",
-        "id": "person_worker_1"
-      },
-      {
-        "desc": "open center console storage compartment, black plastic interior with beige leather exterior trim",
+        "desc": "beige car center console armrest with a smooth, padded top surface and a dark grey plastic base featuring control buttons",
         "action": "static",
         "position": "center",
-        "id": "storage_compartment_1"
+        "id": "car_console_armrest_1"
       },
       {
-        "desc": "beige leather car seat",
-        "action": "static",
-        "position": "background",
-        "id": "car_seat_beige_1"
+        "desc": "person's hand wearing a blue disposable glove",
+        "action": "holding a plastic-wrapped object",
+        "position": "top left",
+        "id": "person_operator_1"
       },
       {
-        "desc": "yellow text 'Easy Steps' and white text 'Harjinder Sidhu'",
+        "desc": "object wrapped in clear plastic with a white label",
+        "action": "being held",
+        "position": "top left",
+        "id": "package_plastic_bag_1"
+      },
+      {
+        "desc": "yellow text overlay reading 'Easy Steps' and 'Harjinder Sidhu'",
         "action": "static",
         "position": "top left",
-        "id": "text_watermark_1"
+        "id": "text_logo_easy_steps"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A person wearing a blue glove reaches their hand into the open center console compartment.",
+        "fact": "A hand wearing a blue glove is holding a plastic-wrapped object above the car armrest.",
         "confidence": 1.0
       },
       {
-        "fact": "The center console lid is flipped open, revealing a black storage bin.",
+        "fact": "The beige armrest is positioned centrally in the frame.",
         "confidence": 1.0
       },
       {
@@ -577,217 +415,49 @@
       "Easy Steps",
       "Harjinder Sidhu"
     ],
-    "spatial": "The gloved hand is positioned inside the black storage compartment. The compartment is located in front of the beige car seat. The text overlay is above the car seat in the top left corner.",
+    "spatial": "The hand wearing the blue glove is located in the top left corner, positioned above the beige center console armrest. The plastic-wrapped object is held by the hand, hovering over the left side of the armrest. The yellow text overlay is superimposed in the top left corner, above the hand.",
     "parse_success": true,
-    "chunk_idx": 10,
-    "video_id": "o8xgP4HEmno",
-    "state_changes": []
-  },
-  {
-    "time": [
-      22,
-      24
-    ],
-    "visible_entities": [
-      {
-        "desc": "person's arm with light skin tone, wearing a blue disposable glove",
-        "action": "reaching into the compartment",
-        "position": "center",
-        "id": "person_worker_1"
-      },
-      {
-        "desc": "black plastic center console storage compartment with an open lid",
-        "action": "static",
-        "position": "center",
-        "id": "storage_compartment_1"
-      },
-      {
-        "desc": "beige leather car seat",
-        "action": "static",
-        "position": "background",
-        "id": "car_seat_beige_1"
-      },
-      {
-        "desc": "yellow text 'Easy Steps' and white text 'Harjinder Sidhu' in the top left corner",
-        "action": "static",
-        "position": "top left",
-        "id": "text_watermark_1"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "A person wearing a blue glove reaches their arm deep into the open center console compartment.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The person withdraws their arm from the compartment, leaving it empty.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The center console lid is hinged open to the right.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [
-      "Easy Steps",
-      "Harjinder Sidhu"
-    ],
-    "spatial": "The person's arm is inside the black center console compartment. The compartment is located in front of the beige car seat. The text overlay is positioned above the car seat and to the left of the console.",
-    "parse_success": true,
-    "chunk_idx": 11,
-    "video_id": "o8xgP4HEmno",
-    "state_changes": []
-  },
-  {
-    "time": [
-      24,
-      26
-    ],
-    "visible_entities": [
-      {
-        "desc": "hand wearing a blue disposable glove",
-        "action": "holding a plastic bag",
-        "position": "top left",
-        "id": "person_worker_1"
-      },
-      {
-        "desc": "clear plastic bag containing green and white items",
-        "action": "being held",
-        "position": "top left",
-        "id": "plastic_bag_1"
-      },
-      {
-        "desc": "black car center console storage bin, rectangular, open",
-        "action": "static",
-        "position": "center",
-        "id": "storage_compartment_1"
-      },
-      {
-        "desc": "beige leather car seat",
-        "action": "static",
-        "position": "background",
-        "id": "car_seat_beige_1"
-      },
-      {
-        "desc": "text overlay 'Easy Steps Harjinder Sidhu' in green and white font",
-        "action": "static",
-        "position": "top left",
-        "id": "text_watermark_1"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "A hand wearing a blue glove is holding a plastic bag.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The plastic bag is positioned above the open center console.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The center console is located between the car seats.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [
-      "Easy Steps",
-      "Harjinder Sidhu"
-    ],
-    "spatial": "The hand wearing the blue glove is holding the plastic bag above the black center console. The center console is situated in front of the beige leather car seat. The text overlay is located in the top left corner of the frame.",
-    "parse_success": true,
-    "chunk_idx": 12,
+    "chunk_idx": 7,
     "video_id": "o8xgP4HEmno",
     "state_changes": [
-      "plastic bag with items introduced"
+      "Person begins holding a plastic-wrapped object over the console."
     ]
   },
   {
     "time": [
-      26,
-      28
-    ],
-    "visible_entities": [
-      {
-        "desc": "hands wearing blue disposable gloves",
-        "action": "holding and lowering a plastic bag",
-        "position": "left/foreground",
-        "id": "person_worker_1"
-      },
-      {
-        "desc": "clear plastic bag containing a black object with a white label",
-        "action": "being placed into the compartment",
-        "position": "center/foreground",
-        "id": "plastic_bag_1"
-      },
-      {
-        "desc": "black car center console storage compartment with a beige leather seat in the background",
-        "action": "static",
-        "position": "center/right",
-        "id": "storage_compartment_1"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "A person wearing blue gloves is lowering a plastic bag into a car's center console.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The plastic bag contains a black item with a white label.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The label on the bag displays a barcode and the text 'FU600012PV'.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [
-      "Easy Steps",
-      "Harjinder Sidhu",
-      "FU600012PV"
-    ],
-    "spatial": "The gloved hands are holding the plastic bag above the open black storage compartment. The compartment is located in front of the beige leather car seat. The text 'Easy Steps' is visible in the top left corner of the frame.",
-    "parse_success": true,
-    "chunk_idx": 13,
-    "video_id": "o8xgP4HEmno",
-    "state_changes": [
-      "plastic bag placed into storage compartment"
-    ]
-  },
-  {
-    "time": [
-      28,
-      30
+      8,
+      9
     ],
     "visible_entities": [
       {
         "desc": "hand wearing a blue disposable glove",
-        "action": "holding a plastic bag",
-        "position": "left",
-        "id": "person_worker_1"
+        "action": "holding a clear plastic bag",
+        "position": "top left",
+        "id": "person_operator_1"
       },
       {
-        "desc": "clear crinkled plastic bag containing a black object",
-        "action": "being held",
-        "position": "center",
-        "id": "plastic_bag_1"
-      },
-      {
-        "desc": "white rectangular label with green border and barcode",
+        "desc": "beige car center console armrest with a smooth, padded surface and black plastic side trim",
         "action": "static",
         "position": "center",
-        "id": "plastic_bag_1"
+        "id": "car_console_armrest_1"
       },
       {
-        "desc": "black electronic device with a yellow button and dial",
+        "desc": "clear plastic bag containing a dark object",
+        "action": "being held",
+        "position": "top left",
+        "id": "package_plastic_bag_1"
+      },
+      {
+        "desc": "yellow text reading 'Easy Steps' and 'Harjinder Sidhu'",
+        "action": "static",
+        "position": "top left",
+        "id": "text_logo_easy_steps"
+      },
+      {
+        "desc": "black car gear shift knob with a yellow sticker",
         "action": "static",
         "position": "bottom left",
-        "id": "dashboard_controls_1"
-      },
-      {
-        "desc": "black storage compartment or console",
-        "action": "static",
-        "position": "right",
-        "id": "storage_compartment_1"
+        "id": "car_gear_shift_1"
       }
     ],
     "atomic_facts": [
@@ -796,820 +466,66 @@
         "confidence": 1.0
       },
       {
-        "fact": "The plastic bag contains a black object.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The label on the bag displays the text 'FJ800010PL'.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The bag is positioned above a black storage compartment.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [
-      "FJ800010PL"
-    ],
-    "spatial": "The gloved hand is to the left of the plastic bag. The plastic bag is held above the black storage compartment. The electronic device with the yellow button is below the hand and to the left of the storage compartment.",
-    "parse_success": true,
-    "chunk_idx": 14,
-    "video_id": "o8xgP4HEmno",
-    "state_changes": []
-  },
-  {
-    "time": [
-      30,
-      32
-    ],
-    "visible_entities": [
-      {
-        "desc": "hand wearing a blue disposable nitrile glove",
-        "action": "holding a plastic-wrapped package",
-        "position": "left",
-        "id": "person_worker_1"
-      },
-      {
-        "desc": "black rectangular object wrapped in crinkled clear plastic with a white label",
-        "action": "being held",
-        "position": "center",
-        "id": "plastic_bag_1"
-      },
-      {
-        "desc": "beige car interior console with a black storage compartment and a control knob",
-        "action": "static",
-        "position": "background",
-        "id": "storage_compartment_1"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "A hand wearing a blue glove is holding a plastic-wrapped package.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The package has a white label with a barcode and text.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The text on the label reads 'FJU50001PN'.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The package is being held over a black storage compartment in a car console.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [
-      "Harjinder Sidhu",
-      "FJU50001PN"
-    ],
-    "spatial": "The gloved hand is on the left, holding the plastic-wrapped package in the center. The package is positioned above the open black storage compartment of the beige car console.",
-    "parse_success": true,
-    "chunk_idx": 15,
-    "video_id": "o8xgP4HEmno",
-    "state_changes": []
-  },
-  {
-    "time": [
-      32,
-      34
-    ],
-    "visible_entities": [
-      {
-        "desc": "hand wearing a blue disposable nitrile glove",
-        "action": "holding a plastic bag and then a black tray",
-        "position": "left",
-        "id": "person_worker_1"
-      },
-      {
-        "desc": "clear crinkled plastic bag with a white label containing green text and a barcode",
-        "action": "being held and moved",
-        "position": "center",
-        "id": "plastic_bag_1"
-      },
-      {
-        "desc": "black rectangular plastic tray with raised edges",
-        "action": "being held",
-        "position": "center",
-        "id": "tray_black_1"
-      },
-      {
-        "desc": "beige car interior console with a black storage compartment",
-        "action": "static",
-        "position": "background",
-        "id": "storage_compartment_1"
-      },
-      {
-        "desc": "yellow and black text overlay in the top left corner",
-        "action": "static",
-        "position": "top-left"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "A hand wearing a blue glove holds a plastic bag containing a black object.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The hand removes the black object from the bag, revealing it to be a rectangular tray.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The label on the bag displays the text 'FUJINON' and a barcode.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The text 'Easy Steps' and 'Harjinder Sidhu' is visible in the top left corner.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [
-      "Easy Steps",
-      "Harjinder Sidhu",
-      "FUJINON"
-    ],
-    "spatial": "The gloved hand is on the left side of the frame, holding the plastic bag and tray in the center. The beige car console is behind the hand and the objects being manipulated. The text overlay is positioned above the hand in the top left corner.",
-    "parse_success": true,
-    "chunk_idx": 16,
-    "video_id": "o8xgP4HEmno",
-    "state_changes": [
-      "black plastic tray introduced"
-    ]
-  },
-  {
-    "time": [
-      34,
-      36
-    ],
-    "visible_entities": [
-      {
-        "desc": "hand wearing a blue disposable glove",
-        "action": "holding and lifting a black plastic tray",
-        "position": "left",
-        "id": "person_worker_1"
-      },
-      {
-        "desc": "black plastic tray, rectangular with a textured bottom surface",
-        "action": "being lifted out of the console",
-        "position": "center",
-        "id": "tray_black_1"
-      },
-      {
-        "desc": "beige car interior console with a black storage compartment",
-        "action": "static",
-        "position": "background",
-        "id": "storage_compartment_1"
-      },
-      {
-        "desc": "text 'Easy Step' in yellow cursive font and 'Harjinder Sidhu' in white serif font",
-        "action": "static",
-        "position": "top-left",
-        "id": "text_watermark_1"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "A hand wearing a blue glove lifts a black plastic tray out of a car's center console.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The tray is removed to reveal the empty storage compartment underneath.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The text 'Easy Step' and 'Harjinder Sidhu' is visible in the top-left corner.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [
-      "Easy Step",
-      "Harjinder Sidhu"
-    ],
-    "spatial": "The hand wearing the blue glove is on the left side of the frame, holding the black tray. The tray is positioned above the open storage compartment of the beige console. The text overlay is located in the top-left corner, above the hand and console.",
-    "parse_success": true,
-    "chunk_idx": 17,
-    "video_id": "o8xgP4HEmno",
-    "state_changes": [
-      "tray lifted out of console"
-    ]
-  },
-  {
-    "time": [
-      36,
-      38
-    ],
-    "visible_entities": [
-      {
-        "desc": "hands wearing blue disposable gloves",
-        "action": "holding and lowering a tray",
-        "position": "left/center",
-        "id": "person_worker_1"
-      },
-      {
-        "desc": "black rectangular plastic tray with a textured bottom surface and a small handle cutout",
-        "action": "being placed into a compartment",
-        "position": "center",
-        "id": "tray_black_1"
-      },
-      {
-        "desc": "beige car interior console with a black storage compartment",
-        "action": "static",
-        "position": "background",
-        "id": "storage_compartment_1"
-      },
-      {
-        "desc": "yellow text overlay reading 'Easy Step' and 'Harjinder Sidhu'",
-        "action": "static",
-        "position": "top left"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "A person wearing blue gloves is holding a black tray.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The person lowers the black tray into the car's center console compartment.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The tray has a textured, ribbed surface on the bottom.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [
-      "Easy Step",
-      "Harjinder Sidhu"
-    ],
-    "spatial": "The hands wearing blue gloves are holding the black tray above the open compartment of the beige car console. The text overlay is located in the top left corner of the frame, above the action.",
-    "parse_success": true,
-    "chunk_idx": 18,
-    "video_id": "o8xgP4HEmno",
-    "state_changes": [
-      "tray placed back into compartment"
-    ]
-  },
-  {
-    "time": [
-      38,
-      40
-    ],
-    "visible_entities": [
-      {
-        "desc": "person wearing blue disposable gloves",
-        "action": "adjusting the black tray",
-        "position": "left/center",
-        "id": "person_worker_1"
-      },
-      {
-        "desc": "black rectangular plastic tray",
-        "action": "being placed into the console",
-        "position": "center",
-        "id": "tray_black_1"
-      },
-      {
-        "desc": "beige car interior console with black plastic components",
-        "action": "static",
-        "position": "background/center",
-        "id": "storage_compartment_1"
-      },
-      {
-        "desc": "yellow text 'Easy Steps' and white text 'Harjinder Sidhu'",
-        "action": "static",
-        "position": "top-left",
-        "id": "text_watermark_1"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "A person wearing blue gloves is placing a black tray into a car console.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The black tray fits into a recessed area of the center console.",
+        "fact": "The plastic bag is positioned above the beige armrest.",
         "confidence": 1.0
       },
       {
         "fact": "The text 'Easy Steps' is visible in the top left corner.",
         "confidence": 1.0
+      },
+      {
+        "fact": "The text 'Harjinder Sidhu' is visible below 'Easy Steps'.",
+        "confidence": 1.0
       }
     ],
     "ocr": [
       "Easy Steps",
       "Harjinder Sidhu"
     ],
-    "spatial": "The person wearing blue gloves is positioned to the left of the center console. The black tray is being placed inside the console compartment. The text overlay is located above the person's hand in the top-left corner.",
+    "spatial": "The gloved hand holding the plastic bag is located above and to the left of the beige armrest. The gear shift knob is to the left of the armrest. The text overlay is in the top left corner of the frame.",
     "parse_success": true,
-    "chunk_idx": 19,
+    "chunk_idx": 8,
     "video_id": "o8xgP4HEmno",
     "state_changes": []
   },
   {
     "time": [
-      40,
-      42
+      9,
+      10
     ],
     "visible_entities": [
       {
         "desc": "hand wearing a blue disposable glove",
-        "action": "holding coins then placing them into the console",
-        "position": "left/center",
-        "id": "person_worker_1"
-      },
-      {
-        "desc": "small pile of copper-colored coins",
-        "action": "being placed into the storage bin",
-        "position": "center",
-        "id": "coins_assorted_1"
-      },
-      {
-        "desc": "black plastic center console storage bin, open and empty",
-        "action": "static",
-        "position": "center/right",
-        "id": "storage_compartment_1"
-      },
-      {
-        "desc": "beige leather car seat",
-        "action": "static",
-        "position": "background",
-        "id": "car_seat_beige_1"
-      },
-      {
-        "desc": "yellow text 'Easy Steps' and white text 'Harjinder Sidhu' with a swirl graphic",
-        "action": "static",
-        "position": "top left"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "A hand wearing a blue glove holds a small pile of coins.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The hand places the coins into the black center console storage bin.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The center console lid is open, revealing the storage compartment.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The text 'Easy Steps' and 'Harjinder Sidhu' is visible in the top left corner.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [
-      "Easy Steps",
-      "Harjinder Sidhu"
-    ],
-    "spatial": "The gloved hand is to the left of the open center console. The coins are held by the hand and then placed inside the console bin. The beige car seat is behind the center console. The text overlay is in the top left corner of the frame.",
-    "parse_success": true,
-    "chunk_idx": 20,
-    "video_id": "o8xgP4HEmno",
-    "state_changes": [
-      "coins placed into storage bin"
-    ]
-  },
-  {
-    "time": [
-      42,
-      44
-    ],
-    "visible_entities": [
-      {
-        "desc": "person's hand wearing a blue disposable glove and a silver bracelet",
-        "action": "placing a rolled banknote into the console",
-        "position": "left/foreground",
-        "id": "person_worker_1"
-      },
-      {
-        "desc": "rolled banknote with the number '10' visible",
-        "action": "being placed into the compartment",
-        "position": "center",
-        "id": "currency_rolled_1"
-      },
-      {
-        "desc": "open black plastic car center console armrest compartment",
-        "action": "static",
-        "position": "center/right",
-        "id": "storage_compartment_1"
-      },
-      {
-        "desc": "loose coins (copper and silver colored)",
-        "action": "static",
-        "position": "inside the compartment",
-        "id": "coins_assorted_1"
-      },
-      {
-        "desc": "beige leather car seat",
-        "action": "static",
-        "position": "background",
-        "id": "car_seat_beige_1"
-      },
-      {
-        "desc": "yellow and black text watermark 'Easy Steps Harjinder Sidhu'",
-        "action": "static",
-        "position": "top left",
-        "id": "text_watermark_1"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "A gloved hand places a rolled 10 dollar bill into the center console.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The center console compartment contains several loose coins at the bottom.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The text 'Easy Steps Harjinder Sidhu' is visible in the top left corner.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [
-      "Easy Steps",
-      "Harjinder Sidhu",
-      "10"
-    ],
-    "spatial": "The gloved hand is positioned above the open center console compartment. The rolled banknote is being placed inside the compartment, next to the loose coins. The beige car seat is behind the console.",
-    "parse_success": true,
-    "chunk_idx": 21,
-    "video_id": "o8xgP4HEmno",
-    "state_changes": [
-      "rolled banknote placed into compartment"
-    ]
-  },
-  {
-    "time": [
-      44,
-      46
-    ],
-    "visible_entities": [
-      {
-        "desc": "person wearing blue latex gloves",
-        "action": "closing the armrest lid",
+        "action": "opening the armrest lid",
         "position": "left",
-        "id": "person_worker_1"
+        "id": "person_operator_1"
       },
       {
-        "desc": "beige leather car center console armrest with black plastic interior",
-        "action": "being closed",
-        "position": "center",
-        "id": "armrest_beige_1"
-      },
-      {
-        "desc": "rolled stack of US ten dollar bills",
-        "action": "static",
-        "position": "center",
-        "id": "currency_rolled_1"
-      },
-      {
-        "desc": "assorted copper and silver coins",
-        "action": "static",
-        "position": "center",
-        "id": "coins_assorted_1"
-      },
-      {
-        "desc": "text 'Easy Steps Harjinder Sidhu' in yellow and white font",
-        "action": "static",
-        "position": "top left",
-        "id": "text_watermark_1"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "A person wearing blue gloves is closing the lid of a car's center console armrest.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "A rolled stack of ten dollar bills and several coins are sitting inside the open storage compartment.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The text 'Easy Steps Harjinder Sidhu' is visible in the top left corner of the screen.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [
-      "Easy Steps",
-      "Harjinder Sidhu",
-      "10"
-    ],
-    "spatial": "The person with blue gloves is to the left of the beige armrest. The rolled ten dollar bills and coins are inside the black storage compartment of the armrest. The text overlay is above the armrest in the top left corner.",
-    "parse_success": true,
-    "chunk_idx": 22,
-    "video_id": "o8xgP4HEmno",
-    "state_changes": [
-      "armrest lid closed"
-    ]
-  },
-  {
-    "time": [
-      46,
-      48
-    ],
-    "visible_entities": [
-      {
-        "desc": "person wearing blue latex gloves",
-        "action": "lifting the armrest lid",
-        "position": "left",
-        "id": "person_worker_1"
-      },
-      {
-        "desc": "beige car center console armrest with black plastic hinge",
+        "desc": "beige car center console armrest with a black hinge mechanism",
         "action": "being opened",
         "position": "center",
-        "id": "armrest_beige_1"
+        "id": "car_console_armrest_1"
       },
       {
-        "desc": "yellow and black text overlay",
-        "action": "static",
-        "position": "top left",
-        "id": "text_watermark_1"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "A person wearing blue gloves lifts the lid of the beige armrest.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The armrest lid is hinged at the back and opens upwards.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The text 'Easy Steps' and 'Harjinder Sidhu' is visible in the top left corner.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [
-      "Easy Steps",
-      "Harjinder Sidhu"
-    ],
-    "spatial": "The person's hands are positioned on the left side of the armrest. The text overlay is located in the top left corner of the frame, above the person's hand. The armrest is centrally located in the foreground.",
-    "parse_success": true,
-    "chunk_idx": 23,
-    "video_id": "o8xgP4HEmno",
-    "state_changes": [
-      "armrest lid reopened"
-    ]
-  },
-  {
-    "time": [
-      48,
-      50
-    ],
-    "visible_entities": [
-      {
-        "desc": "hand wearing a blue disposable glove",
-        "action": "gesturing near the console",
-        "position": "left",
-        "id": "person_worker_1"
-      },
-      {
-        "desc": "black car center console storage compartment",
+        "desc": "black storage compartment interior",
         "action": "static",
         "position": "center",
-        "id": "storage_compartment_1"
-      },
-      {
-        "desc": "rolled stack of US dollar bills with a visible '10' denomination",
-        "action": "static",
-        "position": "center",
-        "id": "currency_rolled_1"
-      },
-      {
-        "desc": "assorted coins including copper and silver colored ones",
-        "action": "static",
-        "position": "center",
-        "id": "coins_assorted_1"
-      },
-      {
-        "desc": "beige car interior upholstery",
-        "action": "static",
-        "position": "background",
-        "id": "car_seat_beige_1"
-      },
-      {
-        "desc": "yellow text watermark reading 'Easy Steps Harjinder Sidhu'",
-        "action": "static",
-        "position": "top-left",
-        "id": "text_watermark_1"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "A hand wearing a blue glove is positioned to the left of the open storage compartment.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "A rolled stack of ten-dollar bills is resting inside the black storage compartment.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "Several coins are scattered at the bottom of the compartment next to the paper money.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The text 'Easy Steps Harjinder Sidhu' is visible in the top left corner of the frame.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [
-      "Easy Steps",
-      "Harjinder Sidhu",
-      "10"
-    ],
-    "spatial": "The hand wearing the blue glove is to the left of the black storage compartment. Inside the compartment, the rolled stack of bills is positioned above the loose coins. The beige car seat is visible in the background behind the console.",
-    "parse_success": true,
-    "chunk_idx": 24,
-    "video_id": "o8xgP4HEmno",
-    "state_changes": []
-  },
-  {
-    "time": [
-      50,
-      52
-    ],
-    "visible_entities": [
-      {
-        "desc": "hand wearing a blue disposable glove",
-        "action": "reaching into the compartment",
-        "position": "left",
-        "id": "person_worker_1"
-      },
-      {
-        "desc": "black plastic car center console storage compartment",
-        "action": "static",
-        "position": "center",
-        "id": "storage_compartment_1"
-      },
-      {
-        "desc": "rolled stack of US ten dollar bills",
-        "action": "static",
-        "position": "center",
-        "id": "currency_rolled_1"
-      },
-      {
-        "desc": "loose coins including pennies and dimes",
-        "action": "static",
-        "position": "center",
-        "id": "coins_assorted_1"
-      },
-      {
-        "desc": "beige car interior upholstery",
-        "action": "static",
-        "position": "background",
-        "id": "car_seat_beige_1"
-      },
-      {
-        "desc": "yellow text logo 'Easy Steps Harjinder Sidhu'",
-        "action": "static",
-        "position": "top-left",
-        "id": "text_watermark_1"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "A hand wearing a blue glove reaches towards the open center console.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "A rolled stack of ten dollar bills sits inside the storage compartment.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "Several coins are scattered in the bottom of the compartment.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [
-      "Easy Steps",
-      "Harjinder Sidhu",
-      "10"
-    ],
-    "spatial": "The hand wearing the blue glove is to the left of the open center console compartment. The rolled ten dollar bills are inside the compartment, resting above the loose coins. The 'Easy Steps' text logo is in the top-left corner of the frame, above the hand.",
-    "parse_success": true,
-    "chunk_idx": 25,
-    "video_id": "o8xgP4HEmno",
-    "state_changes": []
-  },
-  {
-    "time": [
-      52,
-      54
-    ],
-    "visible_entities": [
-      {
-        "desc": "hand wearing a blue disposable latex glove",
-        "action": "lifting a black tray",
-        "position": "left",
-        "id": "person_worker_1"
-      },
-      {
-        "desc": "black rectangular plastic tray",
-        "action": "being lifted out of the compartment",
-        "position": "center",
-        "id": "tray_black_1"
-      },
-      {
-        "desc": "roll of US currency bills, primarily showing a ten-dollar bill",
-        "action": "static",
-        "position": "inside the tray",
-        "id": "currency_rolled_1"
-      },
-      {
-        "desc": "assorted coins, including copper and silver colored ones",
-        "action": "static",
-        "position": "inside the tray",
-        "id": "coins_assorted_1"
-      },
-      {
-        "desc": "beige car interior console with a black storage compartment",
-        "action": "static",
-        "position": "background",
-        "id": "storage_compartment_1"
-      },
-      {
-        "desc": "yellow and black text watermark",
-        "action": "static",
-        "position": "top left",
-        "id": "text_watermark_1"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "A gloved hand lifts a black tray containing money out of a car console.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The tray holds a roll of ten-dollar bills and loose change.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The text 'Easy Steps' and 'Harjinder Sidhu' is visible in the top left corner.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [
-      "Easy Steps",
-      "Harjinder Sidhu",
-      "10"
-    ],
-    "spatial": "The gloved hand is on the left side of the frame, holding the black tray. The tray is positioned above the open storage compartment of the beige car console. The roll of money and coins are inside the tray. The watermark text is located in the top left corner, above the hand.",
-    "parse_success": true,
-    "chunk_idx": 26,
-    "video_id": "o8xgP4HEmno",
-    "state_changes": [
-      "tray lifted out of compartment again"
-    ]
-  },
-  {
-    "time": [
-      54,
-      56
-    ],
-    "visible_entities": [
-      {
-        "desc": "hand wearing a blue disposable glove and a silver bracelet",
-        "action": "placing a tray into a compartment",
-        "position": "left",
-        "id": "person_worker_1"
-      },
-      {
-        "desc": "black plastic tray containing a rolled ten-dollar bill and several coins",
-        "action": "being moved into the console",
-        "position": "center",
-        "id": "tray_black_1"
-      },
-      {
-        "desc": "black car center console storage compartment",
-        "action": "static",
-        "position": "center",
-        "id": "storage_compartment_1"
-      },
-      {
-        "desc": "beige car interior upholstery",
-        "action": "static",
-        "position": "background",
-        "id": "car_seat_beige_1"
+        "id": "car_console_storage_bin_1"
       },
       {
         "desc": "yellow text 'Easy Steps' and white text 'Harjinder Sidhu'",
         "action": "static",
         "position": "top-left",
-        "id": "text_watermark_1"
+        "id": "text_logo_easy_steps"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A hand wearing a blue glove is placing a black tray into the center console.",
+        "fact": "A hand wearing a blue glove lifts the lid of the beige armrest.",
         "confidence": 1.0
       },
       {
-        "fact": "The tray holds a rolled ten-dollar bill and loose coins.",
+        "fact": "The armrest lid opens to reveal a black storage compartment.",
         "confidence": 1.0
       },
       {
@@ -1619,145 +535,50 @@
     ],
     "ocr": [
       "Easy Steps",
-      "Harjinder Sidhu",
-      "10"
+      "Harjinder Sidhu"
     ],
-    "spatial": "The hand wearing the blue glove is to the left of the center console. The black tray is held above the open storage compartment before being placed inside it. The beige car seat is behind the console.",
+    "spatial": "The hand wearing the blue glove is to the left of the beige armrest. The black storage compartment is inside the armrest. The text 'Easy Steps' is above the hand and the armrest.",
     "parse_success": true,
-    "chunk_idx": 27,
+    "chunk_idx": 9,
     "video_id": "o8xgP4HEmno",
     "state_changes": [
-      "tray with money placed into console"
+      "Person opens the center console armrest lid, revealing the storage compartment."
     ]
   },
   {
     "time": [
-      56,
-      58
+      10,
+      11
     ],
     "visible_entities": [
       {
-        "desc": "person's hand wearing a blue latex glove",
-        "action": "moving near the console",
-        "position": "left",
-        "id": "person_worker_1"
+        "desc": "person's arm and hand wearing a blue disposable glove",
+        "action": "reaching into the compartment",
+        "position": "center",
+        "id": "person_operator_1"
       },
       {
-        "desc": "black car center console storage compartment",
+        "desc": "open car center console storage compartment with a black interior and beige exterior trim",
         "action": "static",
         "position": "center",
-        "id": "storage_compartment_1"
+        "id": "car_console_storage_bin_1"
       },
       {
-        "desc": "rolled stack of US ten-dollar bills",
-        "action": "static",
-        "position": "center",
-        "id": "currency_rolled_1"
-      },
-      {
-        "desc": "loose coins including copper and silver colored ones",
-        "action": "static",
-        "position": "center",
-        "id": "coins_assorted_1"
-      },
-      {
-        "desc": "beige car interior upholstery",
+        "desc": "beige leather car seat",
         "action": "static",
         "position": "background",
-        "id": "car_seat_beige_1"
+        "id": "car_seat_1"
       },
       {
-        "desc": "yellow and black car climate control knob",
-        "action": "static",
-        "position": "bottom left",
-        "id": "dashboard_controls_1"
-      },
-      {
-        "desc": "text overlay 'Easy Steps Harjinder Sidhu' in yellow and white font",
-        "action": "static",
-        "position": "top left",
-        "id": "text_watermark_1"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "A person wearing a blue glove is moving their hand near the open center console.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "A rolled stack of ten-dollar bills is resting inside the storage compartment.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "Several coins are scattered next to the bills in the compartment.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The text 'Easy Steps Harjinder Sidhu' is visible in the top left corner.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [
-      "Easy Steps",
-      "Harjinder Sidhu",
-      "10"
-    ],
-    "spatial": "The black center console is in the center of the frame, containing the rolled bills and coins inside it. The person's blue-gloved hand is to the left of the console. The beige car seats are behind the console. The climate control knob is below the console on the left side.",
-    "parse_success": true,
-    "chunk_idx": 28,
-    "video_id": "o8xgP4HEmno",
-    "state_changes": []
-  },
-  {
-    "time": [
-      58,
-      60
-    ],
-    "visible_entities": [
-      {
-        "desc": "hand wearing a blue disposable glove",
-        "action": "holding a white cloth",
-        "position": "left",
-        "id": "person_worker_1"
-      },
-      {
-        "desc": "rolled stack of US currency with a visible 10 dollar bill",
-        "action": "static",
-        "position": "center",
-        "id": "currency_rolled_1"
-      },
-      {
-        "desc": "assorted coins including copper and silver ones",
-        "action": "static",
-        "position": "center",
-        "id": "coins_assorted_1"
-      },
-      {
-        "desc": "black plastic car center console storage compartment",
-        "action": "static",
-        "position": "center",
-        "id": "storage_compartment_1"
-      },
-      {
-        "desc": "beige car interior upholstery",
-        "action": "static",
-        "position": "background",
-        "id": "car_seat_beige_1"
-      },
-      {
-        "desc": "yellow and black text watermark",
+        "desc": "yellow text 'Easy Steps' and 'Harjinder Sidhu'",
         "action": "static",
         "position": "top-left",
-        "id": "text_watermark_1"
+        "id": "text_logo_easy_steps"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A hand wearing a blue glove holds a white cloth on the left side of the frame.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "A rolled stack of money and loose coins are resting inside the open center console.",
+        "fact": "A hand wearing a blue glove reaches inside the open center console compartment.",
         "confidence": 1.0
       },
       {
@@ -1767,55 +588,113 @@
     ],
     "ocr": [
       "Easy Steps",
-      "Harjinder Sidhu",
-      "10"
+      "Harjinder Sidhu"
     ],
-    "spatial": "The hand wearing the blue glove is to the left of the open center console. The rolled money and coins are inside the black storage compartment. The beige car seat is behind the center console. The watermark text is above the hand and the console.",
+    "spatial": "The gloved hand is reaching inside the black interior of the center console. The console is situated in front of the beige car seat. The text overlay is positioned in the top-left corner of the frame, above the console.",
     "parse_success": true,
-    "chunk_idx": 29,
+    "chunk_idx": 10,
     "video_id": "o8xgP4HEmno",
-    "state_changes": [
-      "white cloth introduced for cleaning"
-    ]
+    "state_changes": []
   },
   {
     "time": [
-      60,
-      62
+      11,
+      12
     ],
     "visible_entities": [
       {
-        "desc": "hand wearing a blue disposable nitrile glove",
-        "action": "pressing down on the armrest",
+        "desc": "arm with light skin tone, wearing a blue disposable glove",
+        "action": "reaching into the console",
         "position": "center",
-        "id": "person_worker_1"
+        "id": "person_operator_1"
       },
       {
-        "desc": "beige car center console armrest, smooth leather texture, rectangular with rounded edges",
-        "action": "being pressed",
+        "desc": "black plastic center console storage compartment, open",
+        "action": "static",
         "position": "center",
-        "id": "armrest_beige_1"
+        "id": "car_console_storage_bin_1"
       },
       {
-        "desc": "black car dashboard controls with a yellow button and rotary dial",
+        "desc": "beige leather car seat",
         "action": "static",
-        "position": "bottom left",
-        "id": "dashboard_controls_1"
+        "position": "background",
+        "id": "car_seat_1"
       },
       {
-        "desc": "text overlay 'Easy Steps Harjinder Sidhu' in yellow and white font",
+        "desc": "yellow text 'Easy Steps' and white text 'Harjinder Sidhu'",
         "action": "static",
-        "position": "top left",
-        "id": "text_watermark_1"
+        "position": "top-left",
+        "id": "text_logo_easy_steps"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A gloved hand presses down on the beige armrest.",
+        "fact": "A gloved arm reaches deep inside the open center console compartment.",
         "confidence": 1.0
       },
       {
-        "fact": "The armrest is located next to the black dashboard controls.",
+        "fact": "The arm is removed from the compartment, leaving it empty.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The text 'Easy Steps' is visible in the top left corner.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "Easy Steps",
+      "Harjinder Sidhu"
+    ],
+    "spatial": "The arm is inside the black center console compartment. The console is situated between the beige leather seats. The text overlay is located in the top-left corner of the frame.",
+    "parse_success": true,
+    "chunk_idx": 11,
+    "video_id": "o8xgP4HEmno",
+    "state_changes": []
+  },
+  {
+    "time": [
+      12,
+      13
+    ],
+    "visible_entities": [
+      {
+        "desc": "hand wearing a light blue disposable glove",
+        "action": "holding a plastic-wrapped package",
+        "position": "top left",
+        "id": "person_operator_1"
+      },
+      {
+        "desc": "clear plastic bag containing a black object",
+        "action": "being held",
+        "position": "top left",
+        "id": "package_plastic_bag_1"
+      },
+      {
+        "desc": "black car center console storage bin",
+        "action": "static",
+        "position": "center",
+        "id": "car_console_storage_bin_1"
+      },
+      {
+        "desc": "beige leather car seat",
+        "action": "static",
+        "position": "background",
+        "id": "car_seat_1"
+      },
+      {
+        "desc": "text overlay 'Easy Steps Harjinder Sidhu' in green and white font",
+        "action": "static",
+        "position": "top left",
+        "id": "text_name_harjinder_sidhu"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A gloved hand is holding a plastic-wrapped package above the center console.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The black storage bin is open and empty.",
         "confidence": 1.0
       },
       {
@@ -1827,66 +706,1263 @@
       "Easy Steps",
       "Harjinder Sidhu"
     ],
-    "spatial": "The gloved hand is on top of the beige armrest. The armrest is to the right of the black dashboard controls. The text overlay is above the gloved hand.",
+    "spatial": "The gloved hand holding the plastic package is positioned above the black center console storage bin. The beige leather seat is behind the console. The text overlay is in the top left corner of the frame.",
     "parse_success": true,
-    "chunk_idx": 30,
+    "chunk_idx": 12,
     "video_id": "o8xgP4HEmno",
-    "state_changes": [
-      "armrest pressed closed, console work completed"
-    ]
+    "state_changes": []
   },
   {
     "time": [
-      62,
-      64
+      13,
+      14
     ],
     "visible_entities": [
       {
-        "desc": "text reading 'PLEASE SUBSCRIBE' in a serif font, light gray color with a reflection effect",
-        "action": "static",
+        "desc": "hands wearing blue disposable gloves",
+        "action": "holding and lowering a plastic bag",
+        "position": "top left",
+        "id": "person_operator_1"
+      },
+      {
+        "desc": "clear crinkled plastic bag containing a black object with a white label",
+        "action": "being lowered into the console",
         "position": "center",
-        "id": "text_subscribe_1"
+        "id": "package_plastic_bag_1"
       },
       {
-        "desc": "dish of reddish-brown stir-fried meat chunks with green onions and sesame seeds",
+        "desc": "black car center console storage bin, rectangular and empty",
         "action": "static",
-        "position": "top-left",
-        "id": "food_stirfry_1"
+        "position": "bottom center",
+        "id": "car_console_storage_bin_1"
       },
       {
-        "desc": "baked golden-brown chicken drumsticks on a wire rack",
+        "desc": "beige leather car seat",
         "action": "static",
-        "position": "top-center",
-        "id": "food_chicken_drumsticks_1"
+        "position": "background",
+        "id": "car_seat_1"
       },
       {
-        "desc": "three pieces of garlic naan bread with green herbs",
+        "desc": "yellow text overlay 'Easy Steps' and white text 'Harjinder Sidhu'",
         "action": "static",
-        "position": "top-right",
-        "id": "food_naan_1"
-      },
-      {
-        "desc": "chicken curry in a silver metal wok or pan",
-        "action": "static",
-        "position": "bottom-left",
-        "id": "food_chicken_curry_1"
-      },
-      {
-        "desc": "chicken curry with carrots and cilantro on a white plate with a brown rim",
-        "action": "static",
-        "position": "bottom-center",
-        "id": "food_chicken_curry_1"
-      },
-      {
-        "desc": "mixed vegetable dish with cauliflower, peas, and carrots",
-        "action": "static",
-        "position": "bottom-right",
-        "id": "food_vegetables_1"
+        "position": "top left",
+        "id": "text_logo_easy_steps"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "The text 'PLEASE SUBSCRIBE' is displayed in the center of the screen.",
+        "fact": "The person is lowering a plastic bag into the center console.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The plastic bag has a white label with a barcode and the text 'FU600012HV'.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The center console storage bin is open and empty.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The video overlay text reads 'Easy Steps' and 'Harjinder Sidhu'.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "Easy Steps",
+      "Harjinder Sidhu",
+      "FU600012HV"
+    ],
+    "spatial": "The gloved hands are holding the plastic bag above the open center console. The beige car seat is behind the console. The text overlay is in the top left corner of the frame.",
+    "parse_success": true,
+    "chunk_idx": 13,
+    "video_id": "o8xgP4HEmno",
+    "state_changes": [
+      "Person lowers the plastic-wrapped package into the open console compartment."
+    ]
+  },
+  {
+    "time": [
+      14,
+      15
+    ],
+    "visible_entities": [
+      {
+        "desc": "hand wearing a blue disposable glove",
+        "action": "holding a plastic bag",
+        "position": "left",
+        "id": "person_operator_1"
+      },
+      {
+        "desc": "transparent crinkled plastic bag containing a black object",
+        "action": "being held",
+        "position": "center",
+        "id": "package_plastic_bag_1"
+      },
+      {
+        "desc": "white rectangular label with green borders and black text",
+        "action": "static",
+        "position": "on the plastic bag"
+      },
+      {
+        "desc": "black control panel with a yellow section and a dial",
+        "action": "static",
+        "position": "bottom left",
+        "id": "car_control_panel_1"
+      },
+      {
+        "desc": "beige and black interior console structure",
+        "action": "static",
+        "position": "right",
+        "id": "car_console_armrest_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A hand wearing a blue glove is holding a transparent plastic bag.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The plastic bag contains a black object.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The label on the bag displays the text 'FJ850012PL'.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The bag is positioned above a black control panel.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "FJ850012PL"
+    ],
+    "spatial": "The gloved hand is on the left side, holding the plastic bag in the center. The plastic bag is positioned above the black control panel and to the left of the beige console structure. The label is attached to the surface of the plastic bag.",
+    "parse_success": true,
+    "chunk_idx": 14,
+    "video_id": "o8xgP4HEmno",
+    "state_changes": []
+  },
+  {
+    "time": [
+      15,
+      16
+    ],
+    "visible_entities": [
+      {
+        "desc": "hand wearing a blue disposable glove",
+        "action": "holding a plastic bag",
+        "position": "left",
+        "id": "person_operator_1"
+      },
+      {
+        "desc": "clear crinkled plastic bag containing a black object, with a white label featuring a barcode and green text",
+        "action": "being held over a compartment",
+        "position": "center",
+        "id": "package_plastic_bag_1"
+      },
+      {
+        "desc": "black center console storage compartment with a beige interior trim",
+        "action": "static",
+        "position": "right"
+      },
+      {
+        "desc": "black control panel with a yellow button and a dial",
+        "action": "static",
+        "position": "bottom left",
+        "id": "car_control_panel_1"
+      },
+      {
+        "desc": "text overlay 'Harjinder Sidhu' in white cursive font",
+        "action": "static",
+        "position": "top left",
+        "id": "text_name_harjinder_sidhu"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A hand wearing a blue glove is holding a plastic-wrapped package.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The package is positioned directly above an open storage compartment.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The label on the package contains the text 'FJU50001PN'.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "Harjinder Sidhu",
+      "FJU50001PN"
+    ],
+    "spatial": "The gloved hand is to the left of the center console compartment. The plastic bag is held in front of the compartment opening. The control panel is below the hand and to the left of the compartment.",
+    "parse_success": true,
+    "chunk_idx": 15,
+    "video_id": "o8xgP4HEmno",
+    "state_changes": []
+  },
+  {
+    "time": [
+      16,
+      17
+    ],
+    "visible_entities": [
+      {
+        "desc": "hand wearing a blue disposable latex glove",
+        "action": "holding a plastic bag and then a black tray",
+        "position": "left",
+        "id": "person_operator_1"
+      },
+      {
+        "desc": "black plastic tray, rectangular with rounded corners, matte finish",
+        "action": "being removed from a plastic bag",
+        "position": "center",
+        "id": "car_console_tray_1"
+      },
+      {
+        "desc": "clear crinkled plastic packaging bag with a white and green label",
+        "action": "being held and opened",
+        "position": "center",
+        "id": "package_plastic_bag_1"
+      },
+      {
+        "desc": "beige and black vehicle center console with a storage compartment",
+        "action": "static",
+        "position": "background",
+        "id": "car_console_armrest_1"
+      },
+      {
+        "desc": "yellow text overlay 'Easy Steps' and white text 'Harjinder Sidhu'",
+        "action": "static",
+        "position": "top-left",
+        "id": "text_logo_easy_steps"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A hand wearing a blue glove is holding a plastic-wrapped item.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The person removes a black plastic tray from the clear packaging.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The label on the packaging reads 'FUJITSU' and has a barcode.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The tray is being held over the open storage compartment of the center console.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "Easy Steps",
+      "Harjinder Sidhu",
+      "FUJITSU"
+    ],
+    "spatial": "The gloved hand is on the left side of the frame, holding the plastic bag and the black tray. The tray is positioned in the center, directly above the open storage compartment of the vehicle's center console. The text overlay is located in the top-left corner of the screen.",
+    "parse_success": true,
+    "chunk_idx": 16,
+    "video_id": "o8xgP4HEmno",
+    "state_changes": [
+      "Person removes a black plastic tray from the plastic packaging."
+    ]
+  },
+  {
+    "time": [
+      17,
+      18
+    ],
+    "visible_entities": [
+      {
+        "desc": "hand wearing a blue disposable glove",
+        "action": "holding and lifting a black tray",
+        "position": "left",
+        "id": "person_operator_1"
+      },
+      {
+        "desc": "black rectangular plastic tray with a textured bottom surface and raised edges",
+        "action": "being lifted out of the compartment",
+        "position": "center",
+        "id": "car_console_tray_1"
+      },
+      {
+        "desc": "beige car interior upholstery",
+        "action": "static",
+        "position": "background",
+        "id": "car_seat_1"
+      },
+      {
+        "desc": "black car center console compartment",
+        "action": "static",
+        "position": "bottom",
+        "id": "car_console_storage_bin_1"
+      },
+      {
+        "desc": "yellow text 'Easy Step' and white text 'Harjinder Sidhu' in the top left corner",
+        "action": "static",
+        "position": "top left",
+        "id": "text_logo_easy_steps"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A hand wearing a blue glove is lifting a black plastic tray out of a car's center console compartment.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The black tray has a textured surface on its interior bottom.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The text 'Easy Step' and 'Harjinder Sidhu' is visible in the top left corner of the screen.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "Easy Step",
+      "Harjinder Sidhu"
+    ],
+    "spatial": "The hand in the blue glove is on the left side of the frame, holding the black tray. The tray is positioned above the open center console compartment. The beige car seat is in the background, behind the console.",
+    "parse_success": true,
+    "chunk_idx": 17,
+    "video_id": "o8xgP4HEmno",
+    "state_changes": []
+  },
+  {
+    "time": [
+      18,
+      19
+    ],
+    "visible_entities": [
+      {
+        "desc": "person wearing blue disposable gloves",
+        "action": "holding a black tray",
+        "position": "left",
+        "id": "person_operator_1"
+      },
+      {
+        "desc": "black rectangular plastic tray with a textured bottom and a handle",
+        "action": "being placed into a compartment",
+        "position": "center",
+        "id": "car_console_tray_1"
+      },
+      {
+        "desc": "beige car center console with a black storage compartment",
+        "action": "static",
+        "position": "right",
+        "id": "car_console_armrest_1"
+      },
+      {
+        "desc": "yellow and black text overlay",
+        "action": "static",
+        "position": "top left",
+        "id": "text_logo_easy_steps"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A person wearing blue gloves is holding a black plastic tray.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The person is lowering the black tray into a storage compartment in the car's center console.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The text 'Easy Step' and 'Harjinder Sidhu' is visible in the top left corner.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "Easy Step",
+      "Harjinder Sidhu"
+    ],
+    "spatial": "The person's gloved hands are holding the black tray, which is positioned above the open storage compartment of the beige center console. The text overlay is located in the top left corner of the frame, above the person's hands.",
+    "parse_success": true,
+    "chunk_idx": 18,
+    "video_id": "o8xgP4HEmno",
+    "state_changes": [
+      "Person places the black plastic tray into the console compartment."
+    ]
+  },
+  {
+    "time": [
+      19,
+      20
+    ],
+    "visible_entities": [
+      {
+        "desc": "person wearing blue disposable gloves",
+        "action": "adjusting the tray",
+        "position": "left/center",
+        "id": "person_operator_1"
+      },
+      {
+        "desc": "black rectangular plastic tray",
+        "action": "being placed into the compartment",
+        "position": "center",
+        "id": "car_console_tray_1"
+      },
+      {
+        "desc": "beige car interior console with black plastic components",
+        "action": "static",
+        "position": "background",
+        "id": "car_console_armrest_1"
+      },
+      {
+        "desc": "yellow text 'Easy Steps' and white text 'Harjinder Sidhu'",
+        "action": "static",
+        "position": "top-left",
+        "id": "text_logo_easy_steps"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A person wearing blue gloves is placing a black tray into a car console compartment.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The tray fits into a recessed area of the center console.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The text 'Easy Steps' is visible in the top left corner.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "Easy Steps",
+      "Harjinder Sidhu"
+    ],
+    "spatial": "The person's gloved hands are positioned above and around the black tray. The tray is being lowered into the center console, which is located to the right of the gear shift area. The text overlay is in the top-left corner of the frame, above the action.",
+    "parse_success": true,
+    "chunk_idx": 19,
+    "video_id": "o8xgP4HEmno",
+    "state_changes": []
+  },
+  {
+    "time": [
+      20,
+      21
+    ],
+    "visible_entities": [
+      {
+        "desc": "hand wearing a blue disposable glove and a silver metal bangle bracelet",
+        "action": "dropping coins into the console",
+        "position": "left",
+        "id": "person_operator_1"
+      },
+      {
+        "desc": "black plastic center console storage compartment, rectangular and open",
+        "action": "static",
+        "position": "center",
+        "id": "car_console_storage_bin_1"
+      },
+      {
+        "desc": "small pile of copper-colored coins",
+        "action": "being dropped",
+        "position": "center",
+        "id": "money_coins_1"
+      },
+      {
+        "desc": "beige leather car seat",
+        "action": "static",
+        "position": "background",
+        "id": "car_seat_1"
+      },
+      {
+        "desc": "yellow and black text watermark 'Easy Steps Harjinder Sidhu' with a swirl graphic",
+        "action": "static",
+        "position": "top-left",
+        "id": "text_logo_easy_steps"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A gloved hand drops copper-colored coins into a black car console.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The coins fall from the hand into the storage bin.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The text 'Easy Steps Harjinder Sidhu' is visible in the top-left corner.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "Easy Steps",
+      "Harjinder Sidhu"
+    ],
+    "spatial": "The gloved hand is positioned above the black center console. The coins are falling from the hand into the console. The beige car seat is behind the console. The watermark text is in the top-left corner of the frame.",
+    "parse_success": true,
+    "chunk_idx": 20,
+    "video_id": "o8xgP4HEmno",
+    "state_changes": [
+      "Person drops loose coins into the console compartment."
+    ]
+  },
+  {
+    "time": [
+      21,
+      22
+    ],
+    "visible_entities": [
+      {
+        "desc": "person wearing blue disposable gloves and a silver bracelet",
+        "action": "placing a rolled banknote into the console",
+        "position": "left",
+        "id": "person_operator_1"
+      },
+      {
+        "desc": "black plastic car center console storage compartment",
+        "action": "static",
+        "position": "center",
+        "id": "car_console_storage_bin_1"
+      },
+      {
+        "desc": "rolled 10 dollar banknote",
+        "action": "being placed into the compartment",
+        "position": "center",
+        "id": "money_bill_roll_1"
+      },
+      {
+        "desc": "loose coins (copper and silver)",
+        "action": "static",
+        "position": "inside the compartment",
+        "id": "money_coins_1"
+      },
+      {
+        "desc": "beige leather car seat",
+        "action": "static",
+        "position": "background",
+        "id": "car_seat_1"
+      },
+      {
+        "desc": "yellow and black text watermark",
+        "action": "static",
+        "position": "top left",
+        "id": "text_logo_easy_steps"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A person wearing blue gloves places a rolled banknote into the car's center console.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The center console contains several loose coins at the bottom.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The text 'Easy Steps' and 'Harjinder Sidhu' is visible in the top left corner.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "Easy Steps",
+      "Harjinder Sidhu",
+      "10"
+    ],
+    "spatial": "The person's gloved hand is positioned above the open center console compartment. The rolled banknote is being placed inside the compartment, which is located in front of the beige car seat. The watermark text is located in the top left corner of the frame, above the person's arm.",
+    "parse_success": true,
+    "chunk_idx": 21,
+    "video_id": "o8xgP4HEmno",
+    "state_changes": [
+      "Person places a rolled banknote into the console compartment alongside the coins."
+    ]
+  },
+  {
+    "time": [
+      22,
+      23
+    ],
+    "visible_entities": [
+      {
+        "desc": "person wearing blue latex gloves",
+        "action": "closing the console lid",
+        "position": "left",
+        "id": "person_operator_1"
+      },
+      {
+        "desc": "beige leather car center console armrest",
+        "action": "being closed",
+        "position": "center",
+        "id": "car_console_armrest_1"
+      },
+      {
+        "desc": "roll of US ten-dollar bills",
+        "action": "static",
+        "position": "inside console",
+        "id": "money_bill_roll_1"
+      },
+      {
+        "desc": "assorted coins (copper and silver)",
+        "action": "static",
+        "position": "inside console",
+        "id": "money_coins_1"
+      },
+      {
+        "desc": "yellow text watermark",
+        "action": "static",
+        "position": "top left",
+        "id": "text_logo_easy_steps"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A person wearing blue gloves is closing the lid of a car's center console.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A roll of ten-dollar bills and loose coins are visible inside the open console compartment.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The text 'Easy Steps Harjinder Sidhu' is visible in the top left corner.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "Easy Steps",
+      "Harjinder Sidhu",
+      "10"
+    ],
+    "spatial": "The person with blue gloves is to the left of the center console. The roll of money and coins are inside the console compartment. The beige armrest lid is above the money and is being lowered to cover it.",
+    "parse_success": true,
+    "chunk_idx": 22,
+    "video_id": "o8xgP4HEmno",
+    "state_changes": [
+      "Person closes the center console armrest lid."
+    ]
+  },
+  {
+    "time": [
+      23,
+      24
+    ],
+    "visible_entities": [
+      {
+        "desc": "hands wearing blue disposable gloves",
+        "action": "lifting the armrest lid",
+        "position": "left",
+        "id": "person_operator_1"
+      },
+      {
+        "desc": "beige leather car center console armrest",
+        "action": "being opened",
+        "position": "center",
+        "id": "car_console_armrest_1"
+      },
+      {
+        "desc": "black plastic hinge mechanism",
+        "action": "static",
+        "position": "right"
+      },
+      {
+        "desc": "yellow and black text logo 'Easy Steps Harjinder Sidhu' with a swirl graphic",
+        "action": "static",
+        "position": "top",
+        "id": "text_logo_easy_steps"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A pair of hands in blue gloves is lifting the lid of the beige armrest.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The armrest lid is hinged at the back and is being raised to reveal the storage compartment.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The text 'Easy Steps Harjinder Sidhu' is visible in the top left corner.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "Easy Steps",
+      "Harjinder Sidhu"
+    ],
+    "spatial": "The hands wearing blue gloves are positioned to the left of the beige armrest. The black hinge mechanism is attached to the right side of the armrest. The text logo is located above the armrest in the top left corner of the frame.",
+    "parse_success": true,
+    "chunk_idx": 23,
+    "video_id": "o8xgP4HEmno",
+    "state_changes": [
+      "Person re-opens the center console armrest lid."
+    ]
+  },
+  {
+    "time": [
+      24,
+      25
+    ],
+    "visible_entities": [
+      {
+        "desc": "hand wearing a blue disposable glove",
+        "action": "gesturing near the console",
+        "position": "left",
+        "id": "person_operator_1"
+      },
+      {
+        "desc": "black car center console storage compartment",
+        "action": "static",
+        "position": "center",
+        "id": "car_console_storage_bin_1"
+      },
+      {
+        "desc": "rolled stack of US ten dollar bills",
+        "action": "static",
+        "position": "center",
+        "id": "money_bill_roll_1"
+      },
+      {
+        "desc": "assorted coins (copper and silver)",
+        "action": "static",
+        "position": "center",
+        "id": "money_coins_1"
+      },
+      {
+        "desc": "beige car interior upholstery",
+        "action": "static",
+        "position": "background",
+        "id": "car_seat_1"
+      },
+      {
+        "desc": "yellow text watermark 'Easy Steps Harjinder Sidhu'",
+        "action": "static",
+        "position": "top-left",
+        "id": "text_logo_easy_steps"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A hand wearing a blue glove is positioned to the left of the center console.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A rolled stack of ten dollar bills is resting inside the open storage compartment.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "Several coins are scattered at the bottom of the storage compartment.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The text 'Easy Steps Harjinder Sidhu' is visible in the top left corner.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "Easy Steps",
+      "Harjinder Sidhu",
+      "10"
+    ],
+    "spatial": "The gloved hand is to the left of the black center console. The rolled ten dollar bills are inside the storage compartment, positioned above the loose coins. The beige car seats are in the background behind the console.",
+    "parse_success": true,
+    "chunk_idx": 24,
+    "video_id": "o8xgP4HEmno",
+    "state_changes": []
+  },
+  {
+    "time": [
+      25,
+      26
+    ],
+    "visible_entities": [
+      {
+        "desc": "hand wearing a blue disposable glove",
+        "action": "reaching into the compartment",
+        "position": "left",
+        "id": "person_operator_1"
+      },
+      {
+        "desc": "black plastic car center console storage compartment",
+        "action": "static",
+        "position": "center",
+        "id": "car_console_storage_bin_1"
+      },
+      {
+        "desc": "rolled stack of US ten dollar bills",
+        "action": "static",
+        "position": "center",
+        "id": "money_bill_roll_1"
+      },
+      {
+        "desc": "loose coins including pennies and quarters",
+        "action": "static",
+        "position": "center",
+        "id": "money_coins_1"
+      },
+      {
+        "desc": "beige car interior upholstery",
+        "action": "static",
+        "position": "background",
+        "id": "car_seat_1"
+      },
+      {
+        "desc": "yellow text 'Easy Steps' and 'Harjinder Sidhu' with decorative swirl",
+        "action": "static",
+        "position": "top-left",
+        "id": "text_logo_easy_steps"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A hand wearing a blue glove reaches into the open center console compartment.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A rolled stack of ten dollar bills rests inside the storage tray.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "Several coins are scattered at the bottom of the compartment.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The text 'Easy Steps' and 'Harjinder Sidhu' is visible in the top left corner.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "Easy Steps",
+      "Harjinder Sidhu",
+      "10"
+    ],
+    "spatial": "The gloved hand is to the left of the center console compartment. The rolled ten dollar bills are inside the compartment, resting above the loose coins. The beige upholstery is behind the console.",
+    "parse_success": true,
+    "chunk_idx": 25,
+    "video_id": "o8xgP4HEmno",
+    "state_changes": []
+  },
+  {
+    "time": [
+      26,
+      27
+    ],
+    "visible_entities": [
+      {
+        "desc": "hand wearing a blue disposable glove",
+        "action": "lifting a black plastic tray",
+        "position": "left",
+        "id": "person_operator_1"
+      },
+      {
+        "desc": "black plastic tray containing a roll of US currency and coins",
+        "action": "being lifted out of the console",
+        "position": "center",
+        "id": "car_console_tray_1"
+      },
+      {
+        "desc": "beige car center console with a black storage compartment",
+        "action": "static",
+        "position": "background",
+        "id": "car_console_armrest_1"
+      },
+      {
+        "desc": "yellow and black text watermark",
+        "action": "static",
+        "position": "top left",
+        "id": "text_logo_easy_steps"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A gloved hand lifts a black tray out of a car's center console.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The tray contains a roll of ten-dollar bills and several coins.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The center console is beige with a black interior compartment.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The text 'Easy Steps' is visible in the top left corner.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "Easy Steps",
+      "Harjinder Sidhu",
+      "10"
+    ],
+    "spatial": "The gloved hand is on the left side of the frame, holding the black tray. The tray is positioned above the open black storage compartment of the beige center console. The watermark text is located in the top left corner, above the hand.",
+    "parse_success": true,
+    "chunk_idx": 26,
+    "video_id": "o8xgP4HEmno",
+    "state_changes": [
+      "Person lifts the black tray (now containing money) out of the console."
+    ]
+  },
+  {
+    "time": [
+      27,
+      28
+    ],
+    "visible_entities": [
+      {
+        "desc": "hand wearing a blue nitrile glove and a silver bracelet",
+        "action": "placing a tray into the console",
+        "position": "left/foreground",
+        "id": "person_operator_1"
+      },
+      {
+        "desc": "black plastic removable tray containing a rolled $10 bill and copper coins",
+        "action": "being lowered into the compartment",
+        "position": "center",
+        "id": "car_console_tray_1"
+      },
+      {
+        "desc": "black rectangular storage compartment inside a beige car interior",
+        "action": "static",
+        "position": "center/background",
+        "id": "car_console_storage_bin_1"
+      },
+      {
+        "desc": "yellow text 'Easy Steps' and white text 'Harjinder Sidhu' in the top left corner",
+        "action": "static",
+        "position": "top-left"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A hand wearing a blue glove is lowering a black tray into a car's center console.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The tray contains a rolled-up 10 dollar bill and several coins.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The storage compartment is open and empty, waiting to receive the tray.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "Easy Steps",
+      "Harjinder Sidhu",
+      "10"
+    ],
+    "spatial": "The gloved hand is to the left of the center console, holding the black tray above the open storage compartment. The text overlay is located in the top left corner of the frame, above the hand and tray.",
+    "parse_success": true,
+    "chunk_idx": 27,
+    "video_id": "o8xgP4HEmno",
+    "state_changes": [
+      "Person places the tray with money back into the console compartment."
+    ]
+  },
+  {
+    "time": [
+      28,
+      29
+    ],
+    "visible_entities": [
+      {
+        "desc": "hand wearing a blue latex glove",
+        "action": "reaching into the compartment",
+        "position": "left",
+        "id": "person_operator_1"
+      },
+      {
+        "desc": "black car center console storage compartment",
+        "action": "static",
+        "position": "center",
+        "id": "car_console_storage_bin_1"
+      },
+      {
+        "desc": "rolled stack of US ten dollar bills",
+        "action": "static",
+        "position": "center",
+        "id": "money_bill_roll_1"
+      },
+      {
+        "desc": "loose coins including pennies and quarters",
+        "action": "static",
+        "position": "center",
+        "id": "money_coins_1"
+      },
+      {
+        "desc": "beige car interior upholstery",
+        "action": "static",
+        "position": "background",
+        "id": "car_seat_1"
+      },
+      {
+        "desc": "yellow and black text watermark",
+        "action": "static",
+        "position": "top-left",
+        "id": "text_logo_easy_steps"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A hand wearing a blue glove is reaching towards the open center console.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A rolled stack of ten dollar bills is sitting inside the storage compartment.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "Several coins are scattered at the bottom of the compartment.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The text 'Easy Steps Harjinder Sidhu' is visible in the top left corner.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "Easy Steps",
+      "Harjinder Sidhu",
+      "10"
+    ],
+    "spatial": "The hand wearing the blue glove is to the left of the black center console. The rolled ten dollar bills are inside the compartment, positioned above the loose coins. The beige car seats are behind the center console.",
+    "parse_success": true,
+    "chunk_idx": 28,
+    "video_id": "o8xgP4HEmno",
+    "state_changes": []
+  },
+  {
+    "time": [
+      29,
+      30
+    ],
+    "visible_entities": [
+      {
+        "desc": "hand wearing a blue disposable glove",
+        "action": "holding a white cloth",
+        "position": "left",
+        "id": "person_operator_1"
+      },
+      {
+        "desc": "black plastic car center console storage tray",
+        "action": "static",
+        "position": "center"
+      },
+      {
+        "desc": "rolled-up US ten dollar bill",
+        "action": "static",
+        "position": "center",
+        "id": "money_bill_roll_1"
+      },
+      {
+        "desc": "loose coins including copper and silver ones",
+        "action": "static",
+        "position": "center",
+        "id": "money_coins_1"
+      },
+      {
+        "desc": "beige car interior upholstery",
+        "action": "static",
+        "position": "background",
+        "id": "car_seat_1"
+      },
+      {
+        "desc": "yellow and black text overlay",
+        "action": "static",
+        "position": "top-left",
+        "id": "text_logo_easy_steps"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A hand in a blue glove is holding a white cloth near the center console.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A rolled-up ten dollar bill is resting inside the black storage tray.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "Several coins are scattered in the tray next to the paper money.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The text 'Easy Steps' and 'Harjinder Sidhu' is visible in the top left corner.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "Easy Steps",
+      "Harjinder Sidhu",
+      "10"
+    ],
+    "spatial": "The black storage tray is located in the center of the frame, containing the rolled-up ten dollar bill and loose coins. The hand wearing the blue glove is positioned to the left of the tray, holding a white cloth. The beige car seat is visible in the background behind the console.",
+    "parse_success": true,
+    "chunk_idx": 29,
+    "video_id": "o8xgP4HEmno",
+    "state_changes": []
+  },
+  {
+    "time": [
+      30,
+      31
+    ],
+    "visible_entities": [
+      {
+        "desc": "hands wearing blue disposable gloves",
+        "action": "pressing down on the armrest",
+        "position": "left/center",
+        "id": "person_operator_1"
+      },
+      {
+        "desc": "beige car center console armrest, padded, rectangular with rounded edges",
+        "action": "being pressed",
+        "position": "center",
+        "id": "car_console_armrest_1"
+      },
+      {
+        "desc": "black car interior trim with a yellow button and dial controls",
+        "action": "static",
+        "position": "bottom left",
+        "id": "car_control_panel_1"
+      },
+      {
+        "desc": "text overlay 'Easy Steps' in yellow and 'Harjinder Sidhu' in white",
+        "action": "static",
+        "position": "top left"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A person wearing blue gloves is pressing down on the beige armrest.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The armrest is located on the center console of a vehicle.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The text 'Easy Steps' and 'Harjinder Sidhu' is visible in the top left corner.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "Easy Steps",
+      "Harjinder Sidhu"
+    ],
+    "spatial": "The hands wearing blue gloves are positioned on top of the beige armrest. The armrest is to the right of the black control panel with the yellow button. The text overlay is located in the top left corner, above the hands.",
+    "parse_success": true,
+    "chunk_idx": 30,
+    "video_id": "o8xgP4HEmno",
+    "state_changes": [
+      "Person presses down firmly on the armrest to close/lock it."
+    ]
+  },
+  {
+    "time": [
+      31,
+      32
+    ],
+    "visible_entities": [
+      {
+        "desc": "collage of six food images: top-left stir-fry with red sauce and green onions, top-center roasted chicken drumsticks on a rack, top-right garlic naan bread, bottom-left chicken curry in a metal pot, bottom-center chicken curry with carrots on a plate, bottom-right mixed vegetable stir-fry with cauliflower and peas",
+        "action": "static",
+        "id": "food_collage_1"
+      },
+      {
+        "desc": "text 'THANK YOU' in a serif font, light gray color with a reflection effect",
+        "action": "static",
+        "id": "text_outro_messages"
+      },
+      {
+        "desc": "text 'PLEASE SUBSCRIBE' in a serif font, light gray color with a reflection effect",
+        "action": "static",
+        "id": "text_outro_messages"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The video displays a static collage of six different food dishes.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The text 'THANK YOU' appears in the center of the screen in the first frame.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The text changes to 'PLEASE SUBSCRIBE' in the center of the screen in the second frame.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The food images surround the central text area.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "THANK YOU",
+      "PLEASE SUBSCRIBE"
+    ],
+    "spatial": "The text is located in the center of the screen, positioned between the top row of three food images and the bottom row of three food images. The stir-fry dish is to the left of the roasted chicken, which is to the left of the naan bread in the top row.",
+    "parse_success": true,
+    "chunk_idx": 31,
+    "video_id": "o8xgP4HEmno",
+    "state_changes": [
+      "Scene transitions from car interior to a collage of food images with outro text."
+    ]
+  },
+  {
+    "time": [
+      32,
+      33
+    ],
+    "visible_entities": [
+      {
+        "desc": "Text 'HARJINDER SIDHU' in a grey serif font with a reflection effect below it",
+        "action": "static",
+        "position": "center",
+        "id": "text_name_harjinder_sidhu"
+      },
+      {
+        "desc": "Plate of stir-fried meat with red sauce, green onions, and sesame seeds",
+        "action": "static",
+        "position": "top left",
+        "id": "food_collage_1"
+      },
+      {
+        "desc": "Roasted chicken drumsticks arranged on a wire rack over a baking sheet",
+        "action": "static",
+        "position": "top center",
+        "id": "food_collage_1"
+      },
+      {
+        "desc": "Three pieces of golden-brown garlic naan bread sprinkled with herbs",
+        "action": "static",
+        "position": "top right",
+        "id": "food_collage_1"
+      },
+      {
+        "desc": "Chicken curry simmering in a silver metal pan",
+        "action": "static",
+        "position": "bottom left",
+        "id": "food_collage_1"
+      },
+      {
+        "desc": "Chicken and vegetable curry with carrots and cilantro on a plate",
+        "action": "static",
+        "position": "bottom center",
+        "id": "food_collage_1"
+      },
+      {
+        "desc": "Mixed vegetable dish with cauliflower, peas, and carrots on a white plate",
+        "action": "static",
+        "position": "bottom right",
+        "id": "food_collage_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The text 'HARJINDER SIDHU' is displayed in the center of the screen.",
         "confidence": 1.0
       },
       {
@@ -1894,103 +1970,18 @@
         "confidence": 1.0
       },
       {
-        "fact": "The top-left image shows a stir-fry dish garnished with green onions.",
+        "fact": "The top row features a stir-fry, roasted chicken, and naan bread.",
         "confidence": 1.0
       },
       {
-        "fact": "The top-center image shows roasted chicken drumsticks.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The bottom-left image shows a curry dish inside a metal cooking vessel.",
+        "fact": "The bottom row features a curry in a pan, a plated curry, and a vegetable mix.",
         "confidence": 1.0
       }
     ],
     "ocr": [
-      "PLEASE SUBSCRIBE"
-    ],
-    "spatial": "The text 'PLEASE SUBSCRIBE' is located in the center of the frame. The stir-fry dish is to the left of the roasted chicken, which is to the left of the naan bread. The chicken curry in the pan is below the stir-fry dish. The plated chicken curry is below the roasted chicken. The vegetable dish is below the naan bread.",
-    "parse_success": true,
-    "chunk_idx": 31,
-    "video_id": "o8xgP4HEmno",
-    "state_changes": [
-      "scene transitions to food display with subscribe text"
-    ]
-  },
-  {
-    "time": [
-      64,
-      66
-    ],
-    "visible_entities": [
-      {
-        "desc": "text 'YOUR HOST' in grey serif font with reflection",
-        "action": "static",
-        "position": "center",
-        "id": "text_host_1"
-      },
-      {
-        "desc": "text 'HARJINDER SIDHU' in grey serif font with reflection",
-        "action": "static",
-        "position": "center",
-        "id": "text_host_1"
-      },
-      {
-        "desc": "dish with reddish-brown chunks, green onions, and sesame seeds on a white plate",
-        "action": "static",
-        "position": "top-left",
-        "id": "food_stirfry_1"
-      },
-      {
-        "desc": "roasted chicken drumsticks on a wire rack",
-        "action": "static",
-        "position": "top-center",
-        "id": "food_chicken_drumsticks_1"
-      },
-      {
-        "desc": "garlic naan bread with green herbs",
-        "action": "static",
-        "position": "top-right",
-        "id": "food_naan_1"
-      },
-      {
-        "desc": "chicken curry in a metal wok",
-        "action": "static",
-        "position": "bottom-left",
-        "id": "food_chicken_curry_1"
-      },
-      {
-        "desc": "chicken curry with carrots on a brown-rimmed plate",
-        "action": "static",
-        "position": "bottom-center",
-        "id": "food_chicken_curry_1"
-      },
-      {
-        "desc": "mixed vegetable dish with cauliflower and peas",
-        "action": "static",
-        "position": "bottom-right",
-        "id": "food_vegetables_1"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "The text 'YOUR HOST' is displayed in the center of the screen.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The text changes to 'HARJINDER SIDHU' in the center of the screen.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "Six different food dishes are arranged in a grid around the text.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [
-      "YOUR HOST",
       "HARJINDER SIDHU"
     ],
-    "spatial": "The text 'YOUR HOST' and 'HARJINDER SIDHU' is located in the center of the screen. Three food images are positioned above the text, and three food images are positioned below the text.",
+    "spatial": "The text 'HARJINDER SIDHU' is in the center of the frame. The stir-fried meat dish is to the top left of the text, and the roasted chicken is above the text. The garlic naan is to the top right of the text. The chicken curry in the pan is below the stir-fry on the bottom left, and the mixed vegetables are on the bottom right.",
     "parse_success": true,
     "chunk_idx": 32,
     "video_id": "o8xgP4HEmno",

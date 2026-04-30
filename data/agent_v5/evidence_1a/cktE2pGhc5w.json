@@ -2,78 +2,16 @@
   {
     "time": [
       0,
-      2
+      1
     ],
     "visible_entities": [
       {
-        "desc": "white plastic bag with red accents, featuring a 'Shur Fine' logo and 'Seasoned Taters' text, containing frozen tater tots",
+        "desc": "white plastic bag with red accents, featuring a red and white checkered logo and an image of golden-brown tater tots",
         "action": "static",
         "position": "left"
       },
       {
-        "desc": "white ceramic bowl with a blue rim, filled with golden-brown tater tots covered in red sauce",
-        "action": "static",
-        "position": "right"
-      },
-      {
-        "desc": "metal spoon with a dark handle",
-        "action": "static",
-        "position": "right"
-      },
-      {
-        "desc": "wooden table surface with a brown finish",
-        "action": "static",
-        "position": "bottom"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "A bag of 'Shur Fine Seasoned Taters' is placed on a table.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "A bowl of tater tots topped with red sauce sits next to the bag.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "A spoon rests inside the bowl on top of the food.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The bag displays nutritional information and a 'USA' label.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [
-      "Shur Fine",
-      "Seasoned Taters",
-      "Shredded",
-      "Potatoes",
-      "0g",
-      "TRANS FAT",
-      "0",
-      "SODIUM",
-      "VITAMIN C",
-      "USA"
-    ],
-    "spatial": "The bag of frozen tater tots is to the left of the bowl of cooked tater tots. The spoon is inside the bowl, resting on top of the food. Both the bag and the bowl are sitting on the wooden table surface.",
-    "parse_success": true,
-    "chunk_idx": 0,
-    "video_id": "cktE2pGhc5w"
-  },
-  {
-    "time": [
-      2,
-      4
-    ],
-    "visible_entities": [
-      {
-        "desc": "white plastic bag with red accents, featuring a picture of golden-brown tater tots and the text 'Seasoned Taters'",
-        "action": "static",
-        "position": "left"
-      },
-      {
-        "desc": "white ceramic plate with a blue rim, containing golden-brown tater tots covered in red ketchup",
+        "desc": "white ceramic bowl with a blue rim stripe, containing golden-brown tater tots covered in red sauce",
         "action": "static",
         "position": "right"
       },
@@ -90,41 +28,148 @@
     ],
     "atomic_facts": [
       {
-        "fact": "A bag of 'Seasoned Taters' sits on a table.",
+        "fact": "A bag of frozen tater tots sits on the table.",
         "confidence": 1.0
       },
       {
-        "fact": "A plate of tater tots topped with ketchup is placed next to the bag.",
+        "fact": "A bowl of cooked tater tots topped with red sauce is placed next to the bag.",
         "confidence": 1.0
       },
       {
-        "fact": "A spoon rests on the plate.",
+        "fact": "A spoon rests inside the bowl of food.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The bag text reads 'Seasoned Taters'.",
         "confidence": 1.0
       }
     ],
     "ocr": [
-      "Stay & Fine",
+      "Shur Fine",
+      "Seasoned Taters",
+      "Shredded",
+      "Potatoes",
+      "0g",
+      "TRANS FAT",
+      "0mg",
+      "SODIUM",
+      "VITAMIN C",
+      "US"
+    ],
+    "spatial": "The bag of frozen tater tots is to the left of the white bowl. The bowl containing the cooked food is to the right of the bag. The silver spoon is resting inside the bowl on top of the tater tots. Both the bag and the bowl are sitting on a wooden table surface.",
+    "parse_success": true,
+    "chunk_idx": 0,
+    "video_id": "cktE2pGhc5w"
+  },
+  {
+    "time": [
+      1,
+      2
+    ],
+    "visible_entities": [
+      {
+        "desc": "white plastic bag with red and black text reading 'Seasoned Taters' and 'Shur Fine', featuring an image of golden-brown tater tots",
+        "action": "static",
+        "position": "left"
+      },
+      {
+        "desc": "white ceramic plate with a blue rim, holding golden-brown tater tots covered in red ketchup",
+        "action": "static",
+        "position": "right"
+      },
+      {
+        "desc": "silver metal spoon",
+        "action": "static",
+        "position": "right"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A bag of frozen tater tots sits on a wooden surface.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A plate of cooked tater tots topped with ketchup is placed next to the bag.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A spoon rests on the plate with the food.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "Shur Fine",
       "Seasoned Taters",
       "USA"
     ],
-    "spatial": "The bag of tater tots is to the left of the plate. The plate is to the right of the bag. The spoon is resting on the plate. Both the bag and the plate are on the wooden table.",
+    "spatial": "The bag of seasoned taters is to the left of the plate. The plate is to the right of the bag. The spoon is on top of the plate, resting on the rim.",
     "parse_success": true,
     "chunk_idx": 1,
     "video_id": "cktE2pGhc5w"
   },
   {
     "time": [
-      4,
-      6
+      2,
+      3
     ],
     "visible_entities": [
       {
-        "desc": "white plastic bag with red and white checkered logo, containing golden-brown tater tots",
+        "desc": "white and red plastic bag of 'Shur Fine Seasoned Taters' with nutritional information and a picture of tater tots",
         "action": "static",
         "position": "left"
       },
       {
-        "desc": "white ceramic plate with blue rim stripes, holding cooked tater tots covered in red sauce",
+        "desc": "white plate with a blue rim containing golden-brown tater tots covered in red ketchup",
+        "action": "static",
+        "position": "right"
+      },
+      {
+        "desc": "metal spoon resting on the plate",
+        "action": "static",
+        "position": "right"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A bag of Shur Fine Seasoned Taters sits on a table next to a plate of food.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The tater tots on the plate are topped with ketchup.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A spoon is placed on the plate next to the tater tots.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "Shur Fine",
+      "Seasoned Taters",
+      "120",
+      "2.5g",
+      "0g",
+      "VITAMIN C",
+      "USA"
+    ],
+    "spatial": "The bag of tater tots is to the left of the plate. The plate is to the right of the bag. The spoon is on the plate, near the top edge.",
+    "parse_success": true,
+    "chunk_idx": 2,
+    "video_id": "cktE2pGhc5w"
+  },
+  {
+    "time": [
+      3,
+      4
+    ],
+    "visible_entities": [
+      {
+        "desc": "white plastic bag with red and white checkered logo, featuring an image of golden-brown tater tots and nutritional information labels",
+        "action": "static",
+        "position": "left"
+      },
+      {
+        "desc": "white ceramic plate with a blue rim stripe, containing a pile of golden-brown tater tots covered in red sauce",
         "action": "static",
         "position": "right"
       },
@@ -146,66 +191,20 @@
     ],
     "atomic_facts": [
       {
-        "fact": "A bag of frozen tater tots is placed on the table.",
+        "fact": "A bag of tater tots is placed on a wooden surface.",
         "confidence": 1.0
       },
       {
-        "fact": "A plate of cooked tater tots topped with red sauce is placed on the table.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The text 'Seasoned Taters' is visible on the bag.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The text 'Shur Fine' is visible on the bag logo.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [
-      "Shur Fine",
-      "Seasoned Taters",
-      "USA"
-    ],
-    "spatial": "The bag of tater tots is to the left of the plate. The plate is to the right of the bag. The spoon is resting on the plate next to the food.",
-    "parse_success": true,
-    "chunk_idx": 2,
-    "video_id": "cktE2pGhc5w"
-  },
-  {
-    "time": [
-      6,
-      8
-    ],
-    "visible_entities": [
-      {
-        "desc": "white plastic bag with red and blue 'Shur Fine' logo and 'Seasoned Taters' text, featuring a picture of golden-brown tater tots",
-        "action": "static",
-        "position": "left"
-      },
-      {
-        "desc": "white ceramic plate with a blue rim stripe, holding golden-brown tater tots covered in red ketchup",
-        "action": "static",
-        "position": "right"
-      },
-      {
-        "desc": "silver metal spoon",
-        "action": "static",
-        "position": "right"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "A bag of frozen tater tots is placed on a wooden surface.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "A plate of cooked tater tots topped with ketchup sits next to the bag.",
+        "fact": "A plate of cooked tater tots topped with red sauce is positioned next to the bag.",
         "confidence": 1.0
       },
       {
         "fact": "A spoon rests on the plate.",
         "confidence": 1.0
+      },
+      {
+        "fact": "The bag displays the text 'Seasoned Taters' and 'Shur Fine'.",
+        "confidence": 1.0
       }
     ],
     "ocr": [
@@ -213,24 +212,24 @@
       "Seasoned Taters",
       "USA"
     ],
-    "spatial": "The bag of tater tots is to the left of the plate. The plate is to the right of the bag. The spoon is on the plate.",
+    "spatial": "The bag of tater tots is to the left of the plate. The plate is to the right of the bag. The spoon is on the plate. The cooked tater tots are inside the plate. The red sauce is on top of the tater tots.",
     "parse_success": true,
     "chunk_idx": 3,
     "video_id": "cktE2pGhc5w"
   },
   {
     "time": [
-      8,
-      10
+      4,
+      5
     ],
     "visible_entities": [
       {
-        "desc": "white plastic bag with red and black text and graphics, featuring an image of golden-brown tater tots",
+        "desc": "white and red plastic bag labeled 'Shur Fine Seasoned Taters' with nutritional info and 'USA' logo",
         "action": "static",
         "position": "left"
       },
       {
-        "desc": "white plate with a blue rim, containing golden-brown tater tots covered in red sauce",
+        "desc": "white plate with blue rim containing golden-brown tater tots covered in red ketchup",
         "action": "static",
         "position": "right"
       },
@@ -242,19 +241,15 @@
     ],
     "atomic_facts": [
       {
-        "fact": "A bag of tater tots is positioned on the left side of the frame.",
+        "fact": "A bag of frozen tater tots sits on the table.",
         "confidence": 1.0
       },
       {
-        "fact": "A plate of tater tots covered in red sauce is positioned on the right side of the frame.",
+        "fact": "A plate of cooked tater tots is covered in ketchup.",
         "confidence": 1.0
       },
       {
-        "fact": "The bag displays the text 'Seasoned Taters' and 'USA'.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "A fork rests on the plate.",
+        "fact": "The bag text reads 'Seasoned Taters' and 'USA'.",
         "confidence": 1.0
       }
     ],
@@ -263,19 +258,19 @@
       "Seasoned Taters",
       "USA"
     ],
-    "spatial": "The bag of tater tots is to the left of the plate. The plate is to the right of the bag. The fork is on the plate.",
+    "spatial": "The bag of tater tots is to the left of the plate. The plate is on the right side of the frame. The fork is resting on the plate near the top edge.",
     "parse_success": true,
     "chunk_idx": 4,
     "video_id": "cktE2pGhc5w"
   },
   {
     "time": [
-      10,
-      12
+      5,
+      6
     ],
     "visible_entities": [
       {
-        "desc": "white plastic bag with red and black text, featuring a photo of golden-brown tater tots",
+        "desc": "white plastic bag of frozen food with red and orange branding, featuring a photo of golden-brown potato pieces",
         "action": "static",
         "position": "center"
       },
@@ -287,15 +282,19 @@
     ],
     "atomic_facts": [
       {
-        "fact": "A hand is holding a bag of frozen food.",
+        "fact": "A hand is holding a bag of 'Seasoned Taters'.",
         "confidence": 1.0
       },
       {
-        "fact": "The bag is labeled 'Seasoned Taters'.",
+        "fact": "The bag displays the text 'Seasoned Taters' in large black letters.",
         "confidence": 1.0
       },
       {
-        "fact": "The bag features an image of shredded potatoes.",
+        "fact": "The text 'Shredded Potatoes!' is written in a script font below the main title.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The bag features an image of cooked, golden-brown potato chunks.",
         "confidence": 1.0
       }
     ],
@@ -303,90 +302,93 @@
       "Seasoned Taters",
       "Shredded Potatoes!"
     ],
-    "spatial": "The hand is on the left side of the frame, holding the bag which occupies the center and right. The text 'Seasoned Taters' is printed above the image of the potatoes on the bag.",
+    "spatial": "The hand is on the left side of the frame, holding the bag which occupies the center and right. The text 'Seasoned Taters' is positioned above the image of the potatoes on the bag.",
     "parse_success": true,
     "chunk_idx": 5,
     "video_id": "cktE2pGhc5w"
   },
   {
     "time": [
-      12,
-      14
+      6,
+      7
     ],
     "visible_entities": [
       {
-        "desc": "white plastic bag with red and black text, featuring a picture of golden-brown fried potato pieces",
+        "desc": "white plastic bag of frozen food with a red and white checkered logo, featuring a photo of golden-brown tater tots",
         "action": "static",
         "position": "center"
       },
       {
-        "desc": "golden-brown fried potato pieces (tater tots) depicted on the bag",
-        "action": "static",
-        "position": "bottom"
-      },
-      {
-        "desc": "red and white checkered logo with 'Shur Fine' text",
+        "desc": "black bold serif text reading 'Seasoned Taters' and smaller cursive text reading 'Shredded Potatoes!'",
         "action": "static",
         "position": "top"
+      },
+      {
+        "desc": "red and white oval logo with white script text reading 'Our Fine'",
+        "action": "static",
+        "position": "top"
+      },
+      {
+        "desc": "nutritional information panel with black text on a white background",
+        "action": "static",
+        "position": "right"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "The camera focuses on a bag of 'Seasoned Taters'.",
+        "fact": "The camera focuses on a bag of frozen food.",
         "confidence": 1.0
       },
       {
-        "fact": "The bag displays the brand name 'Shur Fine' in a red logo.",
+        "fact": "The text 'Seasoned Taters' is prominently displayed on the packaging.",
         "confidence": 1.0
       },
       {
-        "fact": "The text 'Shredded Potatoes!' is visible below the main product name.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "A nutrition label showing '150' calories is visible on the right side.",
+        "fact": "The bag features an image of cooked tater tots.",
         "confidence": 1.0
       }
     ],
     "ocr": [
-      "Shur Fine",
       "Seasoned Taters",
       "Shredded Potatoes!",
-      "150"
+      "Our Fine",
+      "4 PIECE SERVING",
+      "150 CALORIES",
+      "1g SAT FAT",
+      "240mg SODIUM"
     ],
-    "spatial": "The 'Shur Fine' logo is located at the top center of the bag. The text 'Seasoned Taters' is positioned below the logo in the center. The image of the potato pieces is at the bottom of the bag, below the text.",
+    "spatial": "The 'Our Fine' logo is located at the top center of the bag, above the 'Seasoned Taters' text. The text 'Shredded Potatoes!' is positioned to the left of the main title. The nutritional information panel is situated on the right side of the bag, next to the image of the food.",
     "parse_success": true,
     "chunk_idx": 6,
     "video_id": "cktE2pGhc5w"
   },
   {
     "time": [
-      14,
-      16
+      7,
+      8
     ],
     "visible_entities": [
       {
-        "desc": "white plastic bag with red and white checkered logo, black text, and a picture of golden-brown tater tots",
+        "desc": "white plastic bag with red and white checkered logo, black text, and a photo of golden-brown tater tots",
         "action": "static",
         "position": "center"
-      },
-      {
-        "desc": "golden-brown, crispy-looking tater tots",
-        "action": "static",
-        "position": "bottom"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A bag of Shur Fine Seasoned Taters is shown in a close-up shot.",
+        "fact": "The bag displays the brand name 'Shur Fine' in a red oval logo.",
         "confidence": 1.0
       },
       {
-        "fact": "The bag features a picture of the cooked product at the bottom.",
+        "fact": "The product name 'Seasoned Taters' is printed in large black font.",
         "confidence": 1.0
       },
       {
-        "fact": "The text 'Seasoned Taters' is printed in large black letters.",
+        "fact": "The text 'Shredded Potatoes!' appears below the product name.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A nutrition label indicates '180 CALORIES' per serving.",
         "confidence": 1.0
       }
     ],
@@ -396,40 +398,42 @@
       "Shredded Potatoes!",
       "Nutrition Facts",
       "9 PIECE SERVING",
-      "180 CALORIES"
+      "180 CALORIES",
+      "1g SAT FAT"
     ],
-    "spatial": "The 'Shur Fine' logo is at the top center of the bag. The text 'Seasoned Taters' is in the middle of the bag, above the image of the tater tots. The image of the tater tots is at the bottom of the bag.",
+    "spatial": "The 'Shur Fine' logo is located at the top center of the bag. The text 'Seasoned Taters' is positioned in the middle of the bag, above the image of the food. The nutrition facts panel runs vertically along the right edge of the packaging.",
     "parse_success": true,
     "chunk_idx": 7,
     "video_id": "cktE2pGhc5w"
   },
   {
     "time": [
-      16,
-      18
+      8,
+      9
     ],
     "visible_entities": [
       {
-        "desc": "white plastic bag with red and black text and a photo of golden-brown tater tots",
+        "desc": "white plastic bag with red and black text, featuring a picture of golden-brown seasoned tater tots",
         "action": "static",
         "position": "center"
+      },
+      {
+        "desc": "red oval logo with white cursive text reading 'Shur Fine'",
+        "action": "static",
+        "position": "bottom left"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "The bag of seasoned taters is lying on a surface.",
+        "fact": "The bag displays the text 'Seasoned Taters' and 'Shredded Potatoes!'.",
         "confidence": 1.0
       },
       {
-        "fact": "The text 'Seasoned Taters' is printed in large black letters.",
+        "fact": "The brand logo 'Shur Fine' is visible on the lower left side of the packaging.",
         "confidence": 1.0
       },
       {
-        "fact": "The brand logo 'Shur Fine' is visible in a red oval.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The net weight is listed as 32 OZ (2 LBS) 907g.",
+        "fact": "The bag is resting on a surface.",
         "confidence": 1.0
       }
     ],
@@ -439,39 +443,43 @@
       "Shur Fine",
       "NET WT 32 OZ (2 LBS) 907g"
     ],
-    "spatial": "The 'Shur Fine' logo is located in the bottom left corner of the bag. The text 'Seasoned Taters' is positioned above the image of the tater tots. The nutritional information panel is visible on the right side of the bag.",
+    "spatial": "The 'Seasoned Taters' text is located at the top center of the bag. The image of the tater tots is in the middle of the bag, below the main title. The 'Shur Fine' logo is positioned at the bottom left corner of the bag.",
     "parse_success": true,
     "chunk_idx": 8,
     "video_id": "cktE2pGhc5w"
   },
   {
     "time": [
-      18,
-      20
+      9,
+      10
     ],
     "visible_entities": [
       {
-        "desc": "white plastic bag with red and white checkered logo, printed text, and image of golden-brown food",
+        "desc": "white plastic bag of 'Shur Fine' brand 'Seasoned Taters' featuring a red and white checkered logo, black text, and a picture of golden-brown shredded potato nuggets",
         "action": "static",
         "position": "center"
       },
       {
-        "desc": "white plate with blue rim",
+        "desc": "white plate with a blue rim",
         "action": "static",
         "position": "right"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A bag of Shur Fine Seasoned Taters is displayed.",
+        "fact": "A bag of frozen seasoned taters is resting on a surface.",
         "confidence": 1.0
       },
       {
-        "fact": "The bag features an image of shredded potatoes.",
+        "fact": "The bag displays the brand name 'Shur Fine' in a red logo.",
         "confidence": 1.0
       },
       {
-        "fact": "A plate is positioned next to the bag.",
+        "fact": "The text 'Seasoned Taters' is printed in large black letters.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The text 'Shredded Potatoes!' is visible below the main title.",
         "confidence": 1.0
       }
     ],
@@ -482,52 +490,56 @@
       "130",
       "340"
     ],
-    "spatial": "The bag of Seasoned Taters is in the center of the frame. The plate with the blue rim is to the right of the bag.",
+    "spatial": "The bag of seasoned taters is positioned in the center of the frame. A white plate with a blue rim is located to the right of the bag.",
     "parse_success": true,
     "chunk_idx": 9,
     "video_id": "cktE2pGhc5w"
   },
   {
     "time": [
-      20,
-      22
+      10,
+      11
     ],
     "visible_entities": [
       {
-        "desc": "white plastic bag with red and white checkered logo, containing golden-brown tater tots",
+        "desc": "white plastic bag with red and white checkered logo, black text, and image of golden-brown tater tots",
         "action": "static",
         "position": "center"
       },
       {
-        "desc": "golden-brown, crispy, bite-sized shredded potato pieces",
+        "desc": "golden-brown fried potato pieces (tater tots)",
         "action": "static",
         "position": "bottom"
       },
       {
-        "desc": "red and white checkered oval logo with white cursive text",
+        "desc": "white plate with blue rim",
         "action": "static",
-        "position": "top"
+        "position": "right"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "The bag of 'Seasoned Taters' is lying flat on a surface.",
+        "fact": "The bag of 'Seasoned Taters' is sitting on a surface.",
         "confidence": 1.0
       },
       {
-        "fact": "The text 'Shur Fine' is visible inside the red and white checkered logo.",
+        "fact": "The text 'Shur Fine' is visible inside a red oval logo.",
         "confidence": 1.0
       },
       {
-        "fact": "The text 'Seasoned Taters' is printed in large black letters across the center of the bag.",
+        "fact": "The text 'Seasoned Taters' is printed in large black letters.",
         "confidence": 1.0
       },
       {
-        "fact": "The text 'Shredded Potatoes!' is written in smaller black script below the main title.",
+        "fact": "The text 'Shredded Potatoes!' is printed below the main title.",
         "confidence": 1.0
       },
       {
-        "fact": "Nutritional information is visible on the right side of the bag.",
+        "fact": "A nutrition facts label is visible on the right side of the bag.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "An image of cooked tater tots is displayed on the lower portion of the bag.",
         "confidence": 1.0
       }
     ],
@@ -535,28 +547,31 @@
       "Shur Fine",
       "Seasoned Taters",
       "Shredded Potatoes!",
+      "Nutrition Facts",
+      "Serving Size",
       "180",
       "1",
-      "340"
+      "340",
+      "U"
     ],
-    "spatial": "The red and white checkered logo is at the top of the bag. The text 'Seasoned Taters' is below the logo and above the image of the tater tots. The image of the tater tots is at the bottom of the bag. The nutritional facts panel is on the right side of the bag.",
+    "spatial": "The white bag of tater tots is in the center of the frame. The image of the fried potatoes is below the text on the bag. A white plate with a blue rim is to the right of the bag.",
     "parse_success": true,
     "chunk_idx": 10,
     "video_id": "cktE2pGhc5w"
   },
   {
     "time": [
-      22,
-      24
+      11,
+      12
     ],
     "visible_entities": [
       {
-        "desc": "white plastic bag of frozen food with red and white checkered logo, featuring an image of golden-brown shredded potato tater tots",
+        "desc": "white plastic bag with red and white checkered logo, featuring a photo of golden-brown shredded potato pieces",
         "action": "static",
         "position": "center"
       },
       {
-        "desc": "white plate with a blue rim, partially visible",
+        "desc": "white plate with blue rim",
         "action": "static",
         "position": "right"
       }
@@ -569,6 +584,10 @@
       {
         "fact": "The bag displays the text 'Seasoned Taters' and 'Shredded Potatoes!'.",
         "confidence": 1.0
+      },
+      {
+        "fact": "A plate is positioned to the right of the potato bag.",
+        "confidence": 1.0
       }
     ],
     "ocr": [
@@ -576,38 +595,40 @@
       "Seasoned Taters",
       "Shredded Potatoes!",
       "Nutrition Facts",
+      "9 PIECES",
       "180 CALORIES",
+      "1g SAT FAT",
       "340mg SODIUM"
     ],
-    "spatial": "The bag of Seasoned Taters is positioned in the center of the frame. The plate with the blue rim is located to the right of the bag.",
+    "spatial": "The bag of seasoned taters is in the center of the frame. The plate with the blue rim is to the right of the bag. The nutritional information panel is on the right side of the bag.",
     "parse_success": true,
     "chunk_idx": 11,
     "video_id": "cktE2pGhc5w"
   },
   {
     "time": [
-      24,
-      26
+      12,
+      13
     ],
     "visible_entities": [
       {
-        "desc": "white plastic bag of Shur Fine Seasoned Taters with red checkered logo, black text, and image of golden-brown shredded potatoes",
+        "desc": "white plastic bag of Shur Fine Seasoned Taters, featuring a red and white checkered logo, black text, and a photo of golden-brown shredded potatoes",
         "action": "static",
         "position": "center"
       },
       {
-        "desc": "white plate with blue rim, partially visible",
+        "desc": "white plate with a blue rim",
         "action": "static",
         "position": "right"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A bag of Shur Fine Seasoned Taters is sitting on a surface.",
+        "fact": "A bag of Shur Fine Seasoned Taters is lying on a surface.",
         "confidence": 1.0
       },
       {
-        "fact": "The bag features an image of golden-brown shredded potatoes.",
+        "fact": "The bag features the text 'Seasoned Taters' and 'Shredded Potatoes!'.",
         "confidence": 1.0
       },
       {
@@ -619,23 +640,22 @@
       "Shur Fine",
       "Seasoned Taters",
       "Shredded Potatoes!",
-      "150",
-      "1g",
-      "240"
+      "160",
+      "340"
     ],
-    "spatial": "The bag of Shur Fine Seasoned Taters is in the center of the frame. A white plate with a blue rim is to the right of the bag. The text 'Seasoned Taters' is above the image of the potatoes on the bag.",
+    "spatial": "The bag of seasoned taters is in the center of the frame. The plate with the blue rim is to the right of the bag. The text 'Seasoned Taters' is above the image of the potatoes on the bag.",
     "parse_success": true,
     "chunk_idx": 12,
     "video_id": "cktE2pGhc5w"
   },
   {
     "time": [
-      26,
-      28
+      13,
+      14
     ],
     "visible_entities": [
       {
-        "desc": "white plastic bag of frozen food with red accents, featuring a photo of golden-brown tater tots in a red basket",
+        "desc": "white plastic bag of frozen food with red and black text and a picture of golden-brown tater tots",
         "action": "static",
         "position": "center"
       },
@@ -651,7 +671,7 @@
         "confidence": 1.0
       },
       {
-        "fact": "The bag displays the brand name 'Shur Fine' in a red logo.",
+        "fact": "The bag features a serving suggestion image of tater tots in a red container.",
         "confidence": 1.0
       },
       {
@@ -663,13 +683,13 @@
       "Shur Fine",
       "Seasoned Taters",
       "Shredded Potatoes!",
-      "NET WT 32 OZ (2 LBS) 907g",
-      "KEEP FROZEN",
       "Serving Suggestion",
+      "KEEP FROZEN",
+      "NET WT 32 OZ (2 LBS) 907g",
       "100",
-      "0",
       "340",
-      "0"
+      "0g",
+      "C"
     ],
     "spatial": "The bag of Seasoned Taters is in the center of the frame. The plate with the blue rim is to the right of the bag. The text 'Seasoned Taters' is above the image of the potatoes on the bag.",
     "parse_success": true,
@@ -678,49 +698,36 @@
   },
   {
     "time": [
-      28,
-      30
+      14,
+      15
     ],
     "visible_entities": [
       {
-        "desc": "white plastic bag of frozen food with red and white checkered logo, featuring an image of golden-brown shredded potato patties",
+        "desc": "white plastic bag of frozen food with red checkered logo, golden-brown potato product image, and nutrition label",
         "action": "being held and tilted",
         "position": "center"
       },
       {
-        "desc": "white plate with a blue rim",
+        "desc": "white plate with blue rim",
         "action": "static",
         "position": "right"
-      },
-      {
-        "desc": "hand with light skin tone",
-        "action": "holding the bag",
-        "position": "left"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A hand is holding a bag of 'Shur Fine' brand 'Seasoned Taters'.",
+        "fact": "A hand holds and tilts a bag of 'Seasoned Taters' to show the front and side.",
         "confidence": 1.0
       },
       {
-        "fact": "The bag is tilted, revealing the bottom portion of the packaging in the second frame.",
+        "fact": "The bag features a red and white checkered logo with the text 'Shur Fine'.",
         "confidence": 1.0
       },
       {
-        "fact": "The text 'Shur Fine' is visible inside a red and white checkered circle logo.",
+        "fact": "The bag displays an image of golden-brown shredded potatoes in a red basket.",
         "confidence": 1.0
       },
       {
-        "fact": "The product name 'Seasoned Taters' is printed in large black letters.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The description 'Shredded Potatoes' is written in a cursive font below the main title.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "A nutrition facts label is partially visible on the right side of the bag.",
+        "fact": "A nutrition facts label is visible on the side of the bag.",
         "confidence": 1.0
       }
     ],
@@ -728,25 +735,25 @@
       "Shur Fine",
       "Seasoned Taters",
       "Shredded Potatoes",
-      "110",
+      "100",
       "340",
       "0g"
     ],
-    "spatial": "The hand is on the left side of the frame, holding the bag of tater tots. The bag occupies the center and foreground of the shot. To the right of the bag, a white plate with a blue rim is partially visible in the background.",
+    "spatial": "The bag of taters is in the center foreground, held by a hand. The plate with the blue rim is to the right of the bag.",
     "parse_success": true,
     "chunk_idx": 14,
     "video_id": "cktE2pGhc5w"
   },
   {
     "time": [
-      30,
-      32
+      15,
+      16
     ],
     "visible_entities": [
       {
-        "desc": "hand with light skin tone",
-        "action": "holding the bag",
-        "position": "left/foreground"
+        "desc": "hand with light skin tone, fingers curled",
+        "action": "holding a bag",
+        "position": "foreground left"
       },
       {
         "desc": "white plastic bag with red and blue text and images of tater tots",
@@ -754,32 +761,32 @@
         "position": "left"
       },
       {
-        "desc": "white plate with a blue rim",
+        "desc": "white ceramic plate with a blue rim stripe",
         "action": "static",
         "position": "right"
       },
       {
         "desc": "golden-brown tater tots covered in red ketchup",
         "action": "static",
-        "position": "right"
+        "position": "on the plate"
       },
       {
-        "desc": "metal spoon",
-        "action": "resting on plate",
-        "position": "right"
+        "desc": "metal spoon with a dark handle",
+        "action": "resting on the plate",
+        "position": "top right"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A hand is holding a bag of tater tots.",
+        "fact": "A hand is holding a bag of seasoned tater tots.",
         "confidence": 1.0
       },
       {
-        "fact": "The bag is labeled 'Seasoned Taters'.",
+        "fact": "The bag is positioned to the left of a plate of food.",
         "confidence": 1.0
       },
       {
-        "fact": "A plate of tater tots with ketchup is on the table.",
+        "fact": "The plate contains tater tots topped with ketchup.",
         "confidence": 1.0
       },
       {
@@ -790,146 +797,29 @@
     "ocr": [
       "Seasoned Taters"
     ],
-    "spatial": "The bag of tater tots is to the left of the plate. The hand is in the foreground holding the bag. The spoon is on the plate next to the tater tots.",
+    "spatial": "The hand holding the bag is in the foreground on the left side of the frame. The bag is positioned to the left of the plate. The plate with food is on the right side of the frame. The spoon is resting on the top right edge of the plate.",
     "parse_success": true,
     "chunk_idx": 15,
     "video_id": "cktE2pGhc5w"
   },
   {
     "time": [
-      32,
-      34
+      16,
+      17
     ],
     "visible_entities": [
       {
-        "desc": "golden-brown cylindrical tater tots covered in red sauce",
+        "desc": "golden-brown, cylindrical tater tots with a crispy texture",
         "action": "static",
         "position": "center"
       },
       {
-        "desc": "white plate with a dark blue rim",
+        "desc": "thick, glossy red sauce, likely ketchup or cocktail sauce",
         "action": "static",
         "position": "center"
       },
       {
-        "desc": "metal spoon",
-        "action": "static",
-        "position": "top right"
-      },
-      {
-        "desc": "hand with light skin tone",
-        "action": "holding a package",
-        "position": "left"
-      },
-      {
-        "desc": "white package with black text",
-        "action": "being held",
-        "position": "left"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "A hand is holding a white package on the left side of the frame.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "Tater tots are piled in the center of the plate.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "Red sauce is drizzled over the tater tots.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "A metal spoon rests on the edge of the plate.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [
-      "ers",
-      "US"
-    ],
-    "spatial": "The plate of tater tots is in the center of the frame. The spoon is resting on the top right edge of the plate. The hand holding the package is to the left of the plate.",
-    "parse_success": true,
-    "chunk_idx": 16,
-    "video_id": "cktE2pGhc5w"
-  },
-  {
-    "time": [
-      34,
-      36
-    ],
-    "visible_entities": [
-      {
-        "desc": "golden-brown, cylindrical tater tots with a crispy, textured surface",
-        "action": "static",
-        "position": "center"
-      },
-      {
-        "desc": "thick, glossy red sauce (likely ketchup or cocktail sauce)",
-        "action": "static",
-        "position": "center"
-      },
-      {
-        "desc": "white ceramic plate with a dark blue rim stripe",
-        "action": "static",
-        "position": "center"
-      },
-      {
-        "desc": "metal spoon with a dark handle",
-        "action": "static",
-        "position": "top right"
-      },
-      {
-        "desc": "white paper wrapper with black text and a red logo",
-        "action": "static",
-        "position": "left"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "The red sauce is poured over the pile of tater tots.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The tater tots are served on a white plate with a blue rim.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "A spoon rests on the edge of the plate.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "A paper wrapper is visible to the left of the plate.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [
-      "US"
-    ],
-    "spatial": "The tater tots covered in red sauce are in the center of the white plate. The metal spoon is resting on the top right rim of the plate. The paper wrapper is located to the left of the plate.",
-    "parse_success": true,
-    "chunk_idx": 17,
-    "video_id": "cktE2pGhc5w"
-  },
-  {
-    "time": [
-      36,
-      38
-    ],
-    "visible_entities": [
-      {
-        "desc": "golden-brown, cylindrical tater tots with a crispy texture, piled in a mound",
-        "action": "static",
-        "position": "center"
-      },
-      {
-        "desc": "bright red, viscous ketchup sauce drizzled over the food",
-        "action": "static",
-        "position": "center"
-      },
-      {
-        "desc": "white ceramic bowl with a thick dark blue rim stripe",
+        "desc": "white ceramic plate with a thick blue rim and a thin inner blue line",
         "action": "static",
         "position": "center"
       },
@@ -939,95 +829,106 @@
         "position": "top right"
       },
       {
-        "desc": "white paper wrapper with black text and graphics",
+        "desc": "hand with light skin tone",
+        "action": "holding a bag",
+        "position": "bottom left"
+      },
+      {
+        "desc": "white snack bag with red and black text",
+        "action": "being held",
+        "position": "left"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A hand is holding a white snack bag on the left side of the frame.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "Red sauce is poured over a pile of tater tots on the plate.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A spoon rests on the rim of the plate.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "ers",
+      "US"
+    ],
+    "spatial": "The pile of tater tots covered in red sauce is in the center of the white plate with a blue rim. The spoon is resting on the top right edge of the plate. A hand holding a white bag is visible to the left of the plate.",
+    "parse_success": true,
+    "chunk_idx": 16,
+    "video_id": "cktE2pGhc5w"
+  },
+  {
+    "time": [
+      17,
+      18
+    ],
+    "visible_entities": [
+      {
+        "desc": "golden-brown tater tots, cylindrical and textured, piled on a plate",
+        "action": "static",
+        "position": "center"
+      },
+      {
+        "desc": "red ketchup sauce, glossy and viscous, drizzled over the tater tots",
+        "action": "static",
+        "position": "center"
+      },
+      {
+        "desc": "white ceramic plate with a thick dark blue rim stripe",
+        "action": "static",
+        "position": "center"
+      },
+      {
+        "desc": "silver metal spoon, partially visible",
+        "action": "static",
+        "position": "top right"
+      },
+      {
+        "desc": "white paper wrapper with red and black text",
         "action": "static",
         "position": "left"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A bowl of tater tots covered in ketchup sits on a table.",
+        "fact": "A plate of tater tots covered in ketchup sits on a table.",
         "confidence": 1.0
       },
       {
-        "fact": "A spoon rests inside the bowl at the top edge.",
+        "fact": "A spoon rests on the edge of the plate.",
         "confidence": 1.0
       },
       {
-        "fact": "The text 'US' is visible on the wrapper to the left.",
+        "fact": "A wrapper with the text 'US' is visible to the left of the plate.",
         "confidence": 1.0
       }
     ],
     "ocr": [
       "US"
     ],
-    "spatial": "The bowl of tater tots is in the center of the frame. The spoon is resting inside the bowl at the top right. The paper wrapper is to the left of the bowl.",
+    "spatial": "The pile of tater tots covered in ketchup is in the center of the white plate with the blue rim. The silver spoon is resting on the top right edge of the plate. The paper wrapper is positioned to the left of the plate.",
     "parse_success": true,
-    "chunk_idx": 18,
+    "chunk_idx": 17,
     "video_id": "cktE2pGhc5w"
   },
   {
     "time": [
-      38,
-      40
+      18,
+      19
     ],
     "visible_entities": [
       {
-        "desc": "golden-brown tater tots, cylindrical and textured, piled in the center",
+        "desc": "golden-brown, cylindrical tater tots",
         "action": "static",
         "position": "center"
       },
       {
-        "desc": "thick red sauce, glossy and viscous, drizzled over the food",
-        "action": "static",
-        "position": "center"
-      },
-      {
-        "desc": "white ceramic bowl with a dark blue rim",
-        "action": "static",
-        "position": "center"
-      },
-      {
-        "desc": "silver metal utensil handle",
-        "action": "static",
-        "position": "top right"
-      },
-      {
-        "desc": "white paper wrapper with black text",
-        "action": "static",
-        "position": "left"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "A pile of tater tots is covered in red sauce.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The food is served in a white bowl with a blue rim.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "A utensil rests on the edge of the bowl.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [
-      "560965"
-    ],
-    "spatial": "The tater tots and red sauce are inside the white bowl. The bowl is positioned in the center of the frame. The silver utensil handle is visible at the top right edge of the bowl. The paper wrapper is to the left of the bowl.",
-    "parse_success": true,
-    "chunk_idx": 19,
-    "video_id": "cktE2pGhc5w"
-  },
-  {
-    "time": [
-      40,
-      42
-    ],
-    "visible_entities": [
-      {
-        "desc": "golden-brown tater tots with crispy texture, covered in glossy red sauce",
+        "desc": "red ketchup sauce",
         "action": "static",
         "position": "center"
       },
@@ -1037,167 +938,7 @@
         "position": "center"
       },
       {
-        "desc": "metal fork handle",
-        "action": "static",
-        "position": "top right"
-      },
-      {
-        "desc": "white packaging with black text",
-        "action": "static",
-        "position": "left"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "A bowl of tater tots is covered in red sauce.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The tater tots are piled in the center of the bowl.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The text '50000' is visible on the packaging to the left.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [
-      "50000"
-    ],
-    "spatial": "The bowl of tater tots is in the center of the frame. The fork handle is to the top right of the bowl. The packaging is to the left of the bowl.",
-    "parse_success": true,
-    "chunk_idx": 20,
-    "video_id": "cktE2pGhc5w"
-  },
-  {
-    "time": [
-      42,
-      44
-    ],
-    "visible_entities": [
-      {
-        "desc": "golden-brown tater tots, cylindrical and textured",
-        "action": "static",
-        "position": "center"
-      },
-      {
-        "desc": "thick red sauce, glossy",
-        "action": "static",
-        "position": "center"
-      },
-      {
-        "desc": "white plate with a dark blue rim",
-        "action": "static",
-        "position": "center"
-      },
-      {
-        "desc": "silver metal utensil handle",
-        "action": "static",
-        "position": "top right"
-      },
-      {
-        "desc": "white paper with black printed text",
-        "action": "static",
-        "position": "left"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "A pile of tater tots sits on a plate.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "Red sauce is poured over the tater tots.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The plate rests on a surface next to a piece of paper.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [
-      "88985"
-    ],
-    "spatial": "The tater tots are in the center of the white plate. The red sauce is on top of the tater tots. The plate is to the right of the paper with text. The utensil handle is visible at the top right edge of the plate.",
-    "parse_success": true,
-    "chunk_idx": 21,
-    "video_id": "cktE2pGhc5w"
-  },
-  {
-    "time": [
-      44,
-      46
-    ],
-    "visible_entities": [
-      {
-        "desc": "golden-brown, cylindrical tater tots with a crispy, textured surface",
-        "action": "static",
-        "position": "center"
-      },
-      {
-        "desc": "thick, glossy red sauce (likely ketchup or cocktail sauce)",
-        "action": "static",
-        "position": "center"
-      },
-      {
-        "desc": "white ceramic plate with a thick dark blue rim and a thin inner blue line",
-        "action": "static",
-        "position": "center"
-      },
-      {
-        "desc": "silver metal fork",
-        "action": "static",
-        "position": "top right"
-      },
-      {
-        "desc": "white paper wrapper with black text and a small orange dot",
-        "action": "static",
-        "position": "left"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "The red sauce is poured over the pile of tater tots.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The tater tots are resting on the white plate.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The fork is resting on the rim of the plate.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [],
-    "spatial": "The pile of tater tots covered in red sauce is in the center of the white plate. The silver fork is resting on the top right edge of the plate. The paper wrapper is positioned to the left of the plate.",
-    "parse_success": true,
-    "chunk_idx": 22,
-    "video_id": "cktE2pGhc5w"
-  },
-  {
-    "time": [
-      46,
-      48
-    ],
-    "visible_entities": [
-      {
-        "desc": "golden-brown, cylindrical tater tots with a textured surface",
-        "action": "static",
-        "position": "center"
-      },
-      {
-        "desc": "thick, glossy red sauce (likely ketchup)",
-        "action": "static",
-        "position": "center"
-      },
-      {
-        "desc": "white ceramic bowl with a dark blue rim stripe",
-        "action": "static",
-        "position": "center"
-      },
-      {
-        "desc": "metal spoon handle",
+        "desc": "metal spoon",
         "action": "static",
         "position": "top right"
       },
@@ -1209,387 +950,53 @@
     ],
     "atomic_facts": [
       {
-        "fact": "The red sauce is poured over the pile of tater tots.",
+        "fact": "A serving of tater tots is covered in ketchup.",
         "confidence": 1.0
       },
       {
-        "fact": "The tater tots are served inside the white bowl.",
+        "fact": "The food is contained within a white bowl with a blue rim.",
         "confidence": 1.0
       },
       {
-        "fact": "The metal spoon rests on the edge of the bowl.",
+        "fact": "A metal spoon rests on the edge of the bowl.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A paper wrapper with visible text is positioned to the left of the bowl.",
         "confidence": 1.0
       }
     ],
     "ocr": [
       "US"
     ],
-    "spatial": "The pile of tater tots covered in red sauce is located in the center of the white bowl. The metal spoon handle extends from the top right edge of the bowl. The white paper wrapper with 'US' text is positioned to the left of the bowl.",
+    "spatial": "The bowl of tater tots is in the center of the frame. The metal spoon is resting on the top right edge of the bowl. The paper wrapper is to the left of the bowl.",
     "parse_success": true,
-    "chunk_idx": 23,
+    "chunk_idx": 18,
     "video_id": "cktE2pGhc5w"
   },
   {
     "time": [
-      48,
-      50
+      19,
+      20
     ],
     "visible_entities": [
       {
-        "desc": "golden-brown, cylindrical tater tots with a crispy texture",
+        "desc": "golden-brown, cylindrical tater tots with a textured, fried surface",
         "action": "static",
         "position": "center"
       },
       {
-        "desc": "thick, glossy red sauce (likely ketchup or hot sauce)",
+        "desc": "thick, glossy red sauce (likely ketchup or sweet and sour sauce)",
         "action": "static",
         "position": "center"
       },
       {
-        "desc": "white ceramic bowl with a dark blue rim stripe",
+        "desc": "white ceramic plate with a thick dark blue rim",
         "action": "static",
         "position": "center"
       },
       {
-        "desc": "silver metal fork",
-        "action": "static",
-        "position": "top right"
-      },
-      {
-        "desc": "white paper wrapper with black text",
-        "action": "static",
-        "position": "left"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "A serving of tater tots is covered in red sauce.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The food is presented inside a white bowl with a blue rim.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "A fork rests on the edge of the bowl.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [
-      "US",
-      "688"
-    ],
-    "spatial": "The tater tots covered in red sauce are piled in the center of the white bowl. The silver fork is positioned at the top right edge of the bowl, resting on the rim. A white paper wrapper with visible text is located to the left of the bowl.",
-    "parse_success": true,
-    "chunk_idx": 24,
-    "video_id": "cktE2pGhc5w"
-  },
-  {
-    "time": [
-      50,
-      52
-    ],
-    "visible_entities": [
-      {
-        "desc": "golden-brown tater tots, crispy texture, piled in a mound",
-        "action": "static",
-        "position": "center"
-      },
-      {
-        "desc": "thick red sauce, glossy, covering the center of the food",
-        "action": "static",
-        "position": "center"
-      },
-      {
-        "desc": "white ceramic plate with a dark blue rim",
-        "action": "static",
-        "position": "center"
-      },
-      {
-        "desc": "silver metal fork tines",
-        "action": "static",
-        "position": "top right"
-      },
-      {
-        "desc": "white paper wrapper with black text and barcodes",
-        "action": "static",
-        "position": "left"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "A plate of tater tots covered in red sauce sits on a table.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The red sauce is poured over the center of the pile of tater tots.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "A fork rests on the edge of the plate.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [
-      "95865"
-    ],
-    "spatial": "The pile of tater tots is in the center of the white plate with the blue rim. The red sauce is on top of the tater tots. The fork is to the top right of the food pile, resting on the plate's rim. The paper wrapper is to the left of the plate.",
-    "parse_success": true,
-    "chunk_idx": 25,
-    "video_id": "cktE2pGhc5w"
-  },
-  {
-    "time": [
-      52,
-      54
-    ],
-    "visible_entities": [
-      {
-        "desc": "golden-brown tater tots, crispy texture, cylindrical shape",
-        "action": "static",
-        "position": "center"
-      },
-      {
-        "desc": "thick red sauce, glossy texture, covering the food",
-        "action": "static",
-        "position": "center"
-      },
-      {
-        "desc": "white ceramic plate with a dark blue rim stripe",
-        "action": "static",
-        "position": "center"
-      },
-      {
-        "desc": "silver metal fork, partially visible",
-        "action": "static",
-        "position": "top right"
-      },
-      {
-        "desc": "white paper wrapper with black printed text",
-        "action": "static",
-        "position": "left"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "A pile of tater tots sits on a white plate.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "Red sauce is poured over the center of the tater tots.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "A fork rests on the edge of the plate.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The plate is placed on a wooden surface.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [
-      "5666"
-    ],
-    "spatial": "The tater tots covered in red sauce are in the center of the white plate. The fork is resting on the top right edge of the plate. The paper wrapper is located to the left of the plate.",
-    "parse_success": true,
-    "chunk_idx": 26,
-    "video_id": "cktE2pGhc5w"
-  },
-  {
-    "time": [
-      54,
-      56
-    ],
-    "visible_entities": [
-      {
-        "desc": "golden-brown fried tater tots covered in red ketchup",
-        "action": "being picked up by hand",
-        "position": "center"
-      },
-      {
-        "desc": "white plate with a dark blue rim",
-        "action": "static",
-        "position": "center"
-      },
-      {
-        "desc": "human hand with light skin tone",
-        "action": "reaching for food",
-        "position": "foreground right"
-      },
-      {
-        "desc": "metal fork",
-        "action": "static",
-        "position": "top right"
-      },
-      {
-        "desc": "newspaper or printed paper with black text columns",
-        "action": "static",
-        "position": "left"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "A hand reaches into the frame from the right side.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The hand picks up a tater tot from the plate.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The tater tots are topped with a generous amount of red sauce.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [],
-    "spatial": "The plate of food is in the center of the frame. The hand is in the foreground on the right, reaching towards the center of the plate. The fork rests on the top right edge of the plate. The newspaper is visible to the left of the plate.",
-    "parse_success": true,
-    "chunk_idx": 27,
-    "video_id": "cktE2pGhc5w"
-  },
-  {
-    "time": [
-      56,
-      58
-    ],
-    "visible_entities": [
-      {
-        "desc": "golden-brown tater tots, crispy texture, piled together",
-        "action": "being covered with sauce",
-        "position": "center"
-      },
-      {
-        "desc": "red sauce, thick consistency, glossy",
-        "action": "being spread over food",
-        "position": "center"
-      },
-      {
-        "desc": "human hand, blurry due to motion, light skin tone",
-        "action": "reaching into the plate",
-        "position": "foreground"
-      },
-      {
-        "desc": "white ceramic plate with a dark blue rim stripe",
-        "action": "static",
-        "position": "center"
-      },
-      {
-        "desc": "metal spoon, silver, reflective",
-        "action": "static",
-        "position": "top right"
-      },
-      {
-        "desc": "white paper wrapper with black text and graphics",
-        "action": "static",
-        "position": "left"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "A hand reaches towards the center of the plate.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "Red sauce is poured over a pile of tater tots.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "A metal spoon rests on the upper edge of the plate.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The plate sits on a wooden surface.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [
-      "6969"
-    ],
-    "spatial": "The pile of tater tots covered in red sauce is in the center of the white plate. The blurry hand is in the foreground, reaching in front of the food. The metal spoon is resting on the top right rim of the plate. The paper wrapper is to the left of the plate.",
-    "parse_success": true,
-    "chunk_idx": 28,
-    "video_id": "cktE2pGhc5w"
-  },
-  {
-    "time": [
-      58,
-      60
-    ],
-    "visible_entities": [
-      {
-        "desc": "golden-brown fried food nugget, round, textured surface",
-        "action": "being held up to the camera",
-        "position": "foreground"
-      },
-      {
-        "desc": "white plate with a blue rim, containing food covered in red sauce",
-        "action": "static",
-        "position": "center"
-      },
-      {
-        "desc": "human hand with visible thumb and fingers",
-        "action": "holding the food nugget",
-        "position": "right"
-      },
-      {
-        "desc": "metal spoon",
-        "action": "static",
-        "position": "background"
-      },
-      {
-        "desc": "white paper napkin with black text and graphics",
-        "action": "static",
-        "position": "left"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "A hand is holding a golden-brown fried food nugget in the foreground.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The nugget is positioned in front of a plate of food.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The plate contains food covered in a red sauce.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "A spoon rests on the plate behind the food.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [],
-    "spatial": "The hand holding the food nugget is in the foreground on the right side of the frame. The plate with the red sauce is in the center, behind the nugget. The spoon is resting on the plate in the background. The napkin is to the left of the plate.",
-    "parse_success": true,
-    "chunk_idx": 29,
-    "video_id": "cktE2pGhc5w"
-  },
-  {
-    "time": [
-      60,
-      62
-    ],
-    "visible_entities": [
-      {
-        "desc": "golden-brown, cylindrical tater tots with a crispy texture, piled in a mound",
-        "action": "static",
-        "position": "center"
-      },
-      {
-        "desc": "thick, glossy red sauce (likely ketchup) drizzled over the food",
-        "action": "static",
-        "position": "center"
-      },
-      {
-        "desc": "white ceramic plate with a dark blue or black rim stripe",
-        "action": "static",
-        "position": "center"
-      },
-      {
-        "desc": "metal spoon handle",
+        "desc": "silver metal utensil handle",
         "action": "static",
         "position": "top right"
       },
@@ -1605,34 +1012,30 @@
         "confidence": 1.0
       },
       {
-        "fact": "Red sauce is poured over the tater tots.",
+        "fact": "Red sauce is drizzled over the top of the tater tots.",
         "confidence": 1.0
       },
       {
-        "fact": "The plate sits on a wooden surface.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "A spoon rests on the edge of the plate.",
+        "fact": "A utensil rests on the edge of the plate.",
         "confidence": 1.0
       }
     ],
     "ocr": [
-      "US"
+      "89698"
     ],
-    "spatial": "The pile of tater tots covered in red sauce is in the center of the white plate. The metal spoon handle is visible at the top right edge of the plate. The paper wrapper with text is located to the left of the plate.",
+    "spatial": "The tater tots covered in red sauce are in the center of the white plate with the blue rim. The silver utensil handle is positioned at the top right edge of the plate. The paper wrapper is located to the left of the plate.",
     "parse_success": true,
-    "chunk_idx": 30,
+    "chunk_idx": 19,
     "video_id": "cktE2pGhc5w"
   },
   {
     "time": [
-      62,
-      64
+      20,
+      21
     ],
     "visible_entities": [
       {
-        "desc": "golden-brown tater tots, crispy texture, piled in a mound",
+        "desc": "golden-brown tater tots, crispy texture, piled in the center",
         "action": "static",
         "position": "center"
       },
@@ -1642,44 +1045,114 @@
         "position": "center"
       },
       {
-        "desc": "white ceramic plate with a dark blue rim",
+        "desc": "white bowl with a dark blue rim",
         "action": "static",
-        "position": "background"
+        "position": "center"
       },
       {
-        "desc": "small red sauce droplet",
+        "desc": "metal fork, silver color",
+        "action": "static",
+        "position": "top right"
+      },
+      {
+        "desc": "white packaging with black text",
         "action": "static",
         "position": "left"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A pile of tater tots sits on a plate.",
+        "fact": "A pile of tater tots is covered in red sauce.",
         "confidence": 1.0
       },
       {
-        "fact": "Red sauce is drizzled over the tater tots.",
+        "fact": "The food is served in a white bowl with a blue rim.",
         "confidence": 1.0
       },
       {
-        "fact": "A small droplet of red sauce is visible on the plate's rim.",
+        "fact": "A fork rests on the edge of the bowl.",
         "confidence": 1.0
       }
     ],
-    "ocr": [],
-    "spatial": "The pile of tater tots is in the center of the white plate. The red sauce is on top of the tater tots. The small red droplet is to the left of the main food pile.",
+    "ocr": [
+      "5 05893 0"
+    ],
+    "spatial": "The tater tots and red sauce are inside the white bowl. The fork is resting on the top right edge of the bowl. The packaging is to the left of the bowl.",
     "parse_success": true,
-    "chunk_idx": 31,
+    "chunk_idx": 20,
     "video_id": "cktE2pGhc5w"
   },
   {
     "time": [
-      64,
-      66
+      21,
+      22
     ],
     "visible_entities": [
       {
-        "desc": "golden-brown tater tots with crispy texture, covered in red ketchup",
+        "desc": "golden-brown cylindrical tater tots with a crispy, textured surface",
+        "action": "static",
+        "position": "center"
+      },
+      {
+        "desc": "thick, glossy red sauce (ketchup or cocktail sauce) drizzled over the food",
+        "action": "static",
+        "position": "center"
+      },
+      {
+        "desc": "white ceramic plate with a dark blue rim",
+        "action": "static",
+        "position": "background"
+      },
+      {
+        "desc": "metal utensil handle (fork or knife)",
+        "action": "static",
+        "position": "top right"
+      },
+      {
+        "desc": "white paper receipt with black printed text",
+        "action": "static",
+        "position": "left"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The tater tots are piled in the center of the plate.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "Red sauce is poured over the top of the tater tots.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A receipt is visible on the table to the left of the plate.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The text '888-888-8888' is visible on the receipt.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "888-888-8888"
+    ],
+    "spatial": "The pile of tater tots covered in red sauce is in the center of the white plate with a blue rim. The receipt is to the left of the plate. The metal utensil handle is to the top right of the plate.",
+    "parse_success": true,
+    "chunk_idx": 21,
+    "video_id": "cktE2pGhc5w"
+  },
+  {
+    "time": [
+      22,
+      23
+    ],
+    "visible_entities": [
+      {
+        "desc": "golden-brown, cylindrical tater tots with a crispy texture",
+        "action": "static",
+        "position": "center"
+      },
+      {
+        "desc": "thick, glossy red sauce",
         "action": "static",
         "position": "center"
       },
@@ -1692,50 +1165,112 @@
         "desc": "silver metal utensil handle",
         "action": "static",
         "position": "top right"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A pile of tater tots is covered in red sauce.",
+        "confidence": 1.0
       },
       {
-        "desc": "small red ketchup stain",
+        "fact": "The food is served on a white plate with a blue rim.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The tater tots are in the center of the white plate. The red sauce is on top of the tater tots. The silver utensil handle is visible at the top right edge of the plate.",
+    "parse_success": true,
+    "chunk_idx": 22,
+    "video_id": "cktE2pGhc5w"
+  },
+  {
+    "time": [
+      23,
+      24
+    ],
+    "visible_entities": [
+      {
+        "desc": "golden-brown cylindrical tater tots with a crispy, textured surface, piled in a mound",
+        "action": "static",
+        "position": "center"
+      },
+      {
+        "desc": "thick, glossy red sauce (likely ketchup) drizzled over the food",
+        "action": "static",
+        "position": "center"
+      },
+      {
+        "desc": "white ceramic bowl with a dark blue rim stripe",
+        "action": "static",
+        "position": "center"
+      },
+      {
+        "desc": "silver metal spoon",
+        "action": "static",
+        "position": "top right"
+      },
+      {
+        "desc": "white paper wrapper with black text and a red logo",
         "action": "static",
         "position": "left"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A plate of tater tots covered in ketchup sits on a surface.",
+        "fact": "A serving of tater tots is covered in red sauce.",
         "confidence": 1.0
       },
       {
-        "fact": "A utensil rests on the edge of the plate.",
+        "fact": "The food is contained within a white bowl with a blue rim.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A spoon rests on the edge of the bowl.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The text 'US' is visible on the wrapper to the left.",
         "confidence": 1.0
       }
     ],
-    "ocr": [],
-    "spatial": "The pile of tater tots is in the center of the white plate. The utensil is positioned at the top right edge of the plate. A small ketchup stain is visible on the surface to the left of the plate.",
+    "ocr": [
+      "US"
+    ],
+    "spatial": "The tater tots covered in red sauce are inside the white bowl. The silver spoon is resting on the top right rim of the bowl. The paper wrapper is to the left of the bowl.",
     "parse_success": true,
-    "chunk_idx": 32,
+    "chunk_idx": 23,
     "video_id": "cktE2pGhc5w"
   },
   {
     "time": [
-      66,
-      68
+      24,
+      25
     ],
     "visible_entities": [
       {
-        "desc": "golden-brown fried tater tots with a crispy, textured surface, piled in a mound",
-        "action": "static"
+        "desc": "golden-brown, cylindrical tater tots with a crispy texture",
+        "action": "static",
+        "position": "center"
       },
       {
-        "desc": "thick, glossy red sauce (likely ketchup) drizzled over the food",
-        "action": "static"
+        "desc": "thick, glossy red sauce (likely ketchup or cocktail sauce)",
+        "action": "static",
+        "position": "center"
       },
       {
-        "desc": "white ceramic plate with a dark blue rim",
-        "action": "static"
+        "desc": "white ceramic plate with a dark blue rim stripe",
+        "action": "static",
+        "position": "center"
       },
       {
-        "desc": "silver metal fork tines",
-        "action": "static"
+        "desc": "metal fork handle",
+        "action": "static",
+        "position": "top right"
+      },
+      {
+        "desc": "white paper wrapper with black text and red accents",
+        "action": "static",
+        "position": "left"
       }
     ],
     "atomic_facts": [
@@ -1750,32 +1285,38 @@
       {
         "fact": "A fork rests on the edge of the plate.",
         "confidence": 1.0
+      },
+      {
+        "fact": "A paper wrapper is visible to the left of the plate.",
+        "confidence": 1.0
       }
     ],
-    "ocr": [],
-    "spatial": "The pile of tater tots is in the center of the white plate. The red sauce is on top of the tater tots. The fork is positioned at the top right edge of the plate, next to the food.",
+    "ocr": [
+      "US"
+    ],
+    "spatial": "The tater tots covered in red sauce are in the center of the white plate. The metal fork is resting on the top right edge of the plate. The paper wrapper is located to the left of the plate.",
     "parse_success": true,
-    "chunk_idx": 33,
+    "chunk_idx": 24,
     "video_id": "cktE2pGhc5w"
   },
   {
     "time": [
-      68,
-      70
+      25,
+      26
     ],
     "visible_entities": [
       {
-        "desc": "golden-brown cylindrical tater tots with a crispy, textured surface",
+        "desc": "golden-brown tater tots, crispy texture, piled in a mound",
         "action": "static",
         "position": "center"
       },
       {
-        "desc": "thick, glossy red sauce (likely ketchup) with a smooth texture",
+        "desc": "thick red sauce, glossy texture, drizzled over the food",
         "action": "static",
         "position": "center"
       },
       {
-        "desc": "white ceramic plate with a thick dark blue rim",
+        "desc": "white ceramic bowl with a dark blue rim",
         "action": "static",
         "position": "center"
       },
@@ -1783,41 +1324,93 @@
         "desc": "silver metal utensil handle",
         "action": "static",
         "position": "top right"
+      },
+      {
+        "desc": "white paper wrapper with black text",
+        "action": "static",
+        "position": "left"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "The red sauce is poured over the pile of tater tots.",
+        "fact": "A pile of tater tots is covered in red sauce.",
         "confidence": 1.0
       },
       {
-        "fact": "The tater tots are piled in the center of the plate.",
+        "fact": "The food is served inside a white bowl with a blue rim.",
         "confidence": 1.0
       },
       {
-        "fact": "A small drop of red sauce is visible on the white rim of the plate to the left.",
+        "fact": "A utensil rests on the edge of the bowl.",
         "confidence": 1.0
       }
     ],
-    "ocr": [],
-    "spatial": "The pile of tater tots covered in red sauce is in the center of the white plate. The silver utensil handle is located at the top right edge of the plate. A small drop of sauce is to the left of the main food pile on the plate's rim.",
+    "ocr": [
+      "65563"
+    ],
+    "spatial": "The tater tots covered in red sauce are inside the white bowl with the blue rim. The silver utensil handle is resting on the top right edge of the bowl. The white paper wrapper is to the left of the bowl.",
     "parse_success": true,
-    "chunk_idx": 34,
+    "chunk_idx": 25,
     "video_id": "cktE2pGhc5w"
   },
   {
     "time": [
-      70,
-      72
+      26,
+      27
     ],
     "visible_entities": [
       {
-        "desc": "golden-brown cylindrical tater tots with a crispy texture",
+        "desc": "golden-brown tater tots, cylindrical and crispy, covered in red ketchup",
         "action": "static",
         "position": "center"
       },
       {
-        "desc": "thick, glossy red sauce (likely ketchup)",
+        "desc": "white ceramic plate with a dark blue rim",
+        "action": "static",
+        "position": "center"
+      },
+      {
+        "desc": "metal fork, silver-colored",
+        "action": "static",
+        "position": "top right"
+      },
+      {
+        "desc": "newspaper or printed paper with black text columns",
+        "action": "static",
+        "position": "left"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A plate of tater tots covered in ketchup sits on a table.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A fork rests on the edge of the plate.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "US"
+    ],
+    "spatial": "The tater tots are piled in the center of the white plate. The fork is resting on the top right edge of the plate. The newspaper is positioned to the left of the plate.",
+    "parse_success": true,
+    "chunk_idx": 26,
+    "video_id": "cktE2pGhc5w"
+  },
+  {
+    "time": [
+      27,
+      28
+    ],
+    "visible_entities": [
+      {
+        "desc": "hand with light skin tone, fingers curled",
+        "action": "reaching for food",
+        "position": "foreground right"
+      },
+      {
+        "desc": "golden-brown fried food chunks, irregular shape, covered in thick red sauce",
         "action": "static",
         "position": "center"
       },
@@ -1832,44 +1425,452 @@
         "position": "top right"
       },
       {
-        "desc": "newspaper with black text columns",
+        "desc": "white paper wrapper with black text",
         "action": "static",
-        "position": "top left"
+        "position": "left"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A pile of tater tots is covered in red sauce.",
+        "fact": "A hand reaches into the frame from the right side towards the plate.",
         "confidence": 1.0
       },
       {
-        "fact": "The food is served on a white plate with a blue rim.",
+        "fact": "The fried food is piled in the center of the plate.",
         "confidence": 1.0
       },
       {
-        "fact": "A fork rests on the edge of the plate.",
+        "fact": "Red sauce is poured over the top of the fried food chunks.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A fork rests on the upper edge of the plate.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The tater tots covered in red sauce are piled in the center of the white plate. The plate is positioned on a surface next to a newspaper on the left. A fork is resting on the top right edge of the plate.",
+    "spatial": "The hand is in the foreground to the right of the plate. The fried food is in the center of the plate. The fork is resting on the top right edge of the plate. The paper wrapper is to the left of the plate.",
+    "parse_success": true,
+    "chunk_idx": 27,
+    "video_id": "cktE2pGhc5w"
+  },
+  {
+    "time": [
+      28,
+      29
+    ],
+    "visible_entities": [
+      {
+        "desc": "white plate with a dark blue rim",
+        "action": "static",
+        "position": "center"
+      },
+      {
+        "desc": "golden-brown tater tots covered in red sauce",
+        "action": "static",
+        "position": "center"
+      },
+      {
+        "desc": "blurry human hand",
+        "action": "moving over the food",
+        "position": "foreground"
+      },
+      {
+        "desc": "metal spoon",
+        "action": "static",
+        "position": "top right"
+      },
+      {
+        "desc": "newspaper or printed paper with black text and graphics",
+        "action": "static",
+        "position": "left"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A blurry hand moves over the tater tots.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "Tater tots are covered in red sauce.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A spoon rests on the plate.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The plate of tater tots is in the center of the frame. A blurry hand is in front of the food. A metal spoon is on the top right edge of the plate. A piece of newspaper is to the left of the plate.",
+    "parse_success": true,
+    "chunk_idx": 28,
+    "video_id": "cktE2pGhc5w"
+  },
+  {
+    "time": [
+      29,
+      30
+    ],
+    "visible_entities": [
+      {
+        "desc": "golden-brown fried food nugget, round and textured",
+        "action": "being held by fingers",
+        "position": "foreground right"
+      },
+      {
+        "desc": "white plate with a blue rim",
+        "action": "static",
+        "position": "center"
+      },
+      {
+        "desc": "pile of fried food covered in red sauce",
+        "action": "static",
+        "position": "center left"
+      },
+      {
+        "desc": "human fingers, light skin tone",
+        "action": "holding food nugget",
+        "position": "foreground right"
+      },
+      {
+        "desc": "silver spoon",
+        "action": "static",
+        "position": "background top"
+      },
+      {
+        "desc": "white paper napkin with black text",
+        "action": "static",
+        "position": "left"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A hand is holding a golden-brown fried food nugget in the foreground.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The nugget is positioned in front of a plate containing other fried food covered in red sauce.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A silver spoon rests on the plate in the background.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A napkin with printed text is visible on the left side of the frame.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "1888"
+    ],
+    "spatial": "The hand holding the food nugget is in the foreground on the right side of the frame. The plate with the sauced food is located to the left of the hand and below the spoon. The spoon rests on the top edge of the plate. The napkin is positioned to the left of the plate.",
+    "parse_success": true,
+    "chunk_idx": 29,
+    "video_id": "cktE2pGhc5w"
+  },
+  {
+    "time": [
+      30,
+      31
+    ],
+    "visible_entities": [
+      {
+        "desc": "golden-brown cylindrical tater tots covered in glossy red ketchup",
+        "action": "static",
+        "position": "center"
+      },
+      {
+        "desc": "white ceramic plate with a thick dark blue rim",
+        "action": "static",
+        "position": "center"
+      },
+      {
+        "desc": "metal spoon handle",
+        "action": "static",
+        "position": "top right"
+      },
+      {
+        "desc": "white paper wrapper with black text and graphics",
+        "action": "static",
+        "position": "left"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A pile of tater tots covered in ketchup sits on a plate.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A metal spoon rests on the edge of the plate.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A paper wrapper is visible to the left of the plate.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "US"
+    ],
+    "spatial": "The tater tots are in the center of the white plate with the blue rim. The metal spoon is resting on the top right edge of the plate. The paper wrapper is positioned to the left of the plate.",
+    "parse_success": true,
+    "chunk_idx": 30,
+    "video_id": "cktE2pGhc5w"
+  },
+  {
+    "time": [
+      31,
+      32
+    ],
+    "visible_entities": [
+      {
+        "desc": "golden-brown tater tots, crispy texture, piled in a mound",
+        "action": "static",
+        "position": "center"
+      },
+      {
+        "desc": "thick red sauce, glossy texture, drizzled over food",
+        "action": "static",
+        "position": "center"
+      },
+      {
+        "desc": "white plate with a dark blue rim",
+        "action": "static",
+        "position": "center"
+      },
+      {
+        "desc": "silver knife handle",
+        "action": "static",
+        "position": "top right"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A pile of tater tots sits on a white plate.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "Red sauce is poured over the tater tots.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A knife rests on the edge of the plate.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The tater tots are in the center of the white plate. The red sauce is on top of the tater tots. The knife is to the top right of the plate.",
+    "parse_success": true,
+    "chunk_idx": 31,
+    "video_id": "cktE2pGhc5w"
+  },
+  {
+    "time": [
+      32,
+      33
+    ],
+    "visible_entities": [
+      {
+        "desc": "golden-brown tater tots, crispy texture, cylindrical shape",
+        "action": "static",
+        "position": "center"
+      },
+      {
+        "desc": "red sauce, thick consistency, glossy appearance",
+        "action": "static",
+        "position": "center"
+      },
+      {
+        "desc": "white plate with a dark blue rim",
+        "action": "static",
+        "position": "center"
+      },
+      {
+        "desc": "silver utensil handle",
+        "action": "static",
+        "position": "top right"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A pile of tater tots is served on a plate.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "Red sauce is poured over the tater tots.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The food is static on the plate.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The tater tots are piled in the center of the white plate. The red sauce is on top of the tater tots. The silver utensil is to the top right of the plate.",
+    "parse_success": true,
+    "chunk_idx": 32,
+    "video_id": "cktE2pGhc5w"
+  },
+  {
+    "time": [
+      33,
+      34
+    ],
+    "visible_entities": [
+      {
+        "desc": "golden-brown, cylindrical tater tots with a textured, fried surface",
+        "action": "static",
+        "position": "center"
+      },
+      {
+        "desc": "thick, glossy red sauce (likely ketchup) with a smooth texture",
+        "action": "static",
+        "position": "center"
+      },
+      {
+        "desc": "white ceramic plate with a dark blue rim",
+        "action": "static",
+        "position": "center"
+      },
+      {
+        "desc": "metal fork tines",
+        "action": "static",
+        "position": "top right"
+      },
+      {
+        "desc": "small red sauce droplet",
+        "action": "static",
+        "position": "left"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The red sauce is poured over the pile of tater tots.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The tater tots are arranged in a mound on the plate.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A small droplet of red sauce sits on the plate's rim to the left of the food.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The pile of tater tots covered in red sauce is in the center of the white plate. The metal fork is positioned at the top right edge of the plate, next to the food. A small red sauce droplet is located on the left side of the plate, near the blue rim.",
+    "parse_success": true,
+    "chunk_idx": 33,
+    "video_id": "cktE2pGhc5w"
+  },
+  {
+    "time": [
+      34,
+      35
+    ],
+    "visible_entities": [
+      {
+        "desc": "golden-brown, cylindrical tater tots with a textured surface",
+        "action": "static",
+        "position": "center"
+      },
+      {
+        "desc": "thick, glossy red sauce",
+        "action": "static",
+        "position": "center"
+      },
+      {
+        "desc": "white ceramic plate with a dark blue rim",
+        "action": "static",
+        "position": "center"
+      },
+      {
+        "desc": "silver metal utensil handle",
+        "action": "static",
+        "position": "top right"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The red sauce is poured over the pile of tater tots.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The tater tots are piled in the center of the plate.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A utensil rests on the edge of the plate.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The tater tots are in the center of the plate. The red sauce is on top of the tater tots. The utensil is to the top right of the food.",
+    "parse_success": true,
+    "chunk_idx": 34,
+    "video_id": "cktE2pGhc5w"
+  },
+  {
+    "time": [
+      35,
+      36
+    ],
+    "visible_entities": [
+      {
+        "desc": "golden-brown tater tots, cylindrical and textured",
+        "action": "static",
+        "position": "center"
+      },
+      {
+        "desc": "thick red sauce, glossy and viscous",
+        "action": "static",
+        "position": "center"
+      },
+      {
+        "desc": "white plate with a dark blue rim",
+        "action": "static",
+        "position": "center"
+      },
+      {
+        "desc": "silver metal utensil handle",
+        "action": "static",
+        "position": "top right"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "Red sauce is poured over the pile of tater tots.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The tater tots are arranged in a mound on the plate.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A utensil rests on the edge of the plate.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The pile of tater tots is in the center of the white plate. The red sauce is on top of the tater tots. The silver utensil handle is visible at the top right edge of the plate.",
     "parse_success": true,
     "chunk_idx": 35,
     "video_id": "cktE2pGhc5w"
   },
   {
     "time": [
-      72,
-      74
+      36,
+      37
     ],
     "visible_entities": [
       {
-        "desc": "golden-brown cylindrical tater tots with a crispy, textured surface",
+        "desc": "golden-brown fried tater tots, cylindrical shape, crispy texture",
         "action": "static",
         "position": "center"
       },
       {
-        "desc": "thick, glossy red sauce (ketchup) drizzled over the food",
+        "desc": "thick red sauce, glossy texture",
         "action": "static",
         "position": "center"
       },
@@ -1879,49 +1880,49 @@
         "position": "background"
       },
       {
-        "desc": "small red droplet of sauce",
+        "desc": "metal fork tines",
         "action": "static",
-        "position": "left"
+        "position": "top right"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A pile of tater tots is covered in red sauce.",
+        "fact": "Red sauce is poured over the pile of tater tots.",
         "confidence": 1.0
       },
       {
-        "fact": "The food sits on a white plate with a blue rim.",
+        "fact": "A fork rests on the edge of the plate.",
         "confidence": 1.0
       },
       {
-        "fact": "A small drop of red sauce is visible on the plate to the left of the main pile.",
+        "fact": "The food is served on a white plate with a blue rim.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The pile of tater tots covered in red sauce is in the center of the white plate. The dark blue rim surrounds the edge of the plate. A small red droplet of sauce is located to the left of the main food pile.",
+    "spatial": "The pile of tater tots covered in red sauce is in the center of the white plate. The fork is positioned at the top right edge of the plate, next to the food.",
     "parse_success": true,
     "chunk_idx": 36,
     "video_id": "cktE2pGhc5w"
   },
   {
     "time": [
-      74,
-      76
+      37,
+      38
     ],
     "visible_entities": [
       {
-        "desc": "golden-brown fried tater tots with a crispy, textured surface",
+        "desc": "golden-brown fried tater tots with crispy texture",
         "action": "static",
         "position": "center"
       },
       {
-        "desc": "thick, glossy red sauce (likely ketchup or sweet chili sauce)",
+        "desc": "thick red sauce, likely ketchup or cocktail sauce",
         "action": "static",
         "position": "center"
       },
       {
-        "desc": "white ceramic plate with a dark blue rim",
+        "desc": "white plate with a dark blue rim",
         "action": "static",
         "position": "background"
       },
@@ -1933,37 +1934,37 @@
     ],
     "atomic_facts": [
       {
-        "fact": "The red sauce is poured over the pile of tater tots.",
+        "fact": "A spoon is visible on the right side of the plate in the second frame.",
         "confidence": 1.0
       },
       {
-        "fact": "A metal spoon rests on the right side of the plate.",
+        "fact": "Red sauce is poured over a pile of tater tots.",
         "confidence": 1.0
       },
       {
-        "fact": "The tater tots are piled in the center of the plate.",
+        "fact": "The food is served on a white plate with a blue rim.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The pile of tater tots covered in red sauce is in the center of the white plate. The metal spoon is to the right of the food pile. The blue rim surrounds the white center of the plate.",
+    "spatial": "The tater tots are piled in the center of the white plate. The red sauce is on top of the tater tots. The metal spoon is to the right of the food pile.",
     "parse_success": true,
     "chunk_idx": 37,
     "video_id": "cktE2pGhc5w"
   },
   {
     "time": [
-      76,
-      78
+      38,
+      39
     ],
     "visible_entities": [
       {
-        "desc": "golden-brown tater tots, cylindrical and textured, piled together",
+        "desc": "golden-brown, crispy, cylindrical tater tots",
         "action": "static",
         "position": "center"
       },
       {
-        "desc": "thick, glossy red sauce, likely ketchup or cocktail sauce",
+        "desc": "thick, glossy, orange-red sauce",
         "action": "static",
         "position": "center"
       },
@@ -1973,14 +1974,14 @@
         "position": "background"
       },
       {
-        "desc": "silver metal spoon",
+        "desc": "silver metal fork",
         "action": "static",
-        "position": "top right"
+        "position": "right"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "The red sauce is poured over the pile of tater tots.",
+        "fact": "The orange-red sauce is poured over the pile of tater tots.",
         "confidence": 1.0
       },
       {
@@ -1988,29 +1989,29 @@
         "confidence": 1.0
       },
       {
-        "fact": "A silver spoon is positioned at the top right of the food pile.",
+        "fact": "The fork is positioned on the right side of the plate.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The pile of tater tots is in the center of the white plate. The red sauce is on top of the tater tots. The silver spoon is to the right of the food pile.",
+    "spatial": "The pile of tater tots is in the center of the white plate. The orange-red sauce is on top of the tater tots. The silver fork is to the right of the food.",
     "parse_success": true,
     "chunk_idx": 38,
     "video_id": "cktE2pGhc5w"
   },
   {
     "time": [
-      78,
-      80
+      39,
+      40
     ],
     "visible_entities": [
       {
-        "desc": "golden-brown tater tots with a crispy, textured surface",
+        "desc": "golden-brown tater tots, crispy texture, cylindrical shape",
         "action": "static",
         "position": "center"
       },
       {
-        "desc": "thick, glossy red sauce",
+        "desc": "thick glossy red sauce, smooth texture",
         "action": "static",
         "position": "center"
       },
@@ -2020,46 +2021,187 @@
         "position": "background"
       },
       {
-        "desc": "metal fork",
+        "desc": "silver metal fork",
         "action": "static",
         "position": "right"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "Red sauce is poured over the tater tots.",
+        "fact": "Red sauce is poured over a pile of tater tots.",
         "confidence": 1.0
       },
       {
-        "fact": "A fork is resting in the bowl on the right side.",
+        "fact": "A fork rests on the right side of the bowl.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The tater tots are piled in the center of the white bowl. The red sauce is on top of the tater tots. The metal fork is to the right of the food pile, resting inside the bowl.",
+    "spatial": "The tater tots are piled in the center of the white bowl. The red sauce is on top of the tater tots. The fork is to the right of the food pile.",
     "parse_success": true,
     "chunk_idx": 39,
     "video_id": "cktE2pGhc5w"
   },
   {
     "time": [
-      80,
-      82
+      40,
+      41
     ],
     "visible_entities": [
       {
-        "desc": "golden-brown, cylindrical tater tots with a textured surface",
+        "desc": "golden-brown fried tater tots, cylindrical shape, textured surface",
+        "action": "being scooped",
+        "position": "center"
+      },
+      {
+        "desc": "thick red sauce, glossy texture, covering the food",
+        "action": "static",
+        "position": "center"
+      },
+      {
+        "desc": "silver metal spoon, reflective surface",
+        "action": "scooping tater tots",
+        "position": "right"
+      },
+      {
+        "desc": "white bowl with a dark blue rim",
+        "action": "static",
+        "position": "background"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A silver spoon scoops up a tater tot covered in red sauce.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The tater tots are piled in the center of the bowl.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "Red sauce is drizzled over the fried food.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The tater tots covered in red sauce are inside the white bowl. The silver spoon is on the right side, lifting a piece of food from the pile. The dark blue rim surrounds the white interior of the bowl.",
+    "parse_success": true,
+    "chunk_idx": 40,
+    "video_id": "cktE2pGhc5w"
+  },
+  {
+    "time": [
+      41,
+      42
+    ],
+    "visible_entities": [
+      {
+        "desc": "golden-brown, crispy, bite-sized fried food pieces (resembling tater tots or nuggets)",
+        "action": "being covered with sauce",
+        "position": "center"
+      },
+      {
+        "desc": "thick, glossy, bright red sauce",
+        "action": "being poured onto the food",
+        "position": "center/foreground"
+      },
+      {
+        "desc": "white ceramic plate with a dark blue rim",
+        "action": "static",
+        "position": "background"
+      },
+      {
+        "desc": "silver metal spoon",
+        "action": "pouring sauce",
+        "position": "top right"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A spoon is pouring red sauce over the fried food.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The food is piled in the center of the plate.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The sauce is coating the food pieces.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The fried food is in the center of the white plate. The spoon is above the food, pouring sauce onto it. The sauce is on top of the food pieces.",
+    "parse_success": true,
+    "chunk_idx": 41,
+    "video_id": "cktE2pGhc5w"
+  },
+  {
+    "time": [
+      42,
+      43
+    ],
+    "visible_entities": [
+      {
+        "desc": "golden-brown fried tater tots, cylindrical shape, crispy texture",
+        "action": "static",
+        "position": "center"
+      },
+      {
+        "desc": "thick, glossy orange sauce, viscous consistency",
+        "action": "static",
+        "position": "center"
+      },
+      {
+        "desc": "white ceramic plate with a dark blue rim",
+        "action": "static",
+        "position": "background"
+      },
+      {
+        "desc": "metal spoon, reflective surface, silver color",
+        "action": "resting on plate",
+        "position": "right"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The orange sauce is poured over the pile of tater tots.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A metal spoon rests on the right side of the plate.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The tater tots are piled in the center of the white plate.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The pile of tater tots covered in orange sauce is in the center of the white plate. The metal spoon is to the right of the food pile. The dark blue rim is on the edge of the plate, surrounding the food.",
+    "parse_success": true,
+    "chunk_idx": 42,
+    "video_id": "cktE2pGhc5w"
+  },
+  {
+    "time": [
+      43,
+      44
+    ],
+    "visible_entities": [
+      {
+        "desc": "golden-brown, cylindrical tater tots with a crispy texture",
         "action": "being scooped up",
         "position": "center"
       },
       {
         "desc": "thick, glossy red sauce",
-        "action": "coating the food",
+        "action": "coating the tater tots",
         "position": "center"
       },
       {
         "desc": "silver metal spoon",
-        "action": "lifting food",
+        "action": "lifting a tater tot",
         "position": "right"
       },
       {
@@ -2074,121 +2216,35 @@
         "confidence": 1.0
       },
       {
-        "fact": "The tater tots are piled in the center of the bowl.",
+        "fact": "The tater tots are piled inside the white bowl.",
         "confidence": 1.0
       },
       {
-        "fact": "Red sauce is drizzled over the pile of tater tots.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [],
-    "spatial": "The tater tots are inside the white bowl. The silver spoon is to the right of the pile of food and is lifting a piece from the center. The red sauce is on top of the tater tots.",
-    "parse_success": true,
-    "chunk_idx": 40,
-    "video_id": "cktE2pGhc5w"
-  },
-  {
-    "time": [
-      82,
-      84
-    ],
-    "visible_entities": [
-      {
-        "desc": "golden-brown fried tater tots, irregular cylindrical shape, crispy texture",
-        "action": "being covered in sauce",
-        "position": "center"
-      },
-      {
-        "desc": "thick red sauce, glossy, viscous",
-        "action": "being poured",
-        "position": "center"
-      },
-      {
-        "desc": "white ceramic plate with a dark blue rim",
-        "action": "static",
-        "position": "background"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "Red sauce is being poured over a pile of tater tots.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The tater tots are sitting on a white plate with a blue rim.",
+        "fact": "Red sauce is drizzled over the food.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The tater tots are in the center of the white plate. The red sauce is on top of the tater tots. The blue rim is around the edge of the plate.",
+    "spatial": "The spoon is to the right of the pile of tater tots. The tater tots are inside the white bowl. The red sauce is on top of the tater tots.",
     "parse_success": true,
-    "chunk_idx": 41,
+    "chunk_idx": 43,
     "video_id": "cktE2pGhc5w"
   },
   {
     "time": [
-      84,
-      86
+      44,
+      45
     ],
     "visible_entities": [
       {
-        "desc": "golden-brown, cylindrical tater tots with a crispy texture",
+        "desc": "golden-brown, cylindrical tater tots with a crispy, textured surface",
         "action": "static",
         "position": "center"
       },
       {
-        "desc": "thick, glossy, bright orange sauce",
-        "action": "coating the tater tots",
-        "position": "center"
-      },
-      {
-        "desc": "white ceramic plate with a dark blue rim",
+        "desc": "thick, glossy red sauce (likely ketchup or buffalo sauce)",
         "action": "static",
-        "position": "background"
-      },
-      {
-        "desc": "metal spoon with a reflective surface",
-        "action": "resting on the plate",
-        "position": "right"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "A metal spoon is resting on the right side of the plate.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The orange sauce is coating the tater tots.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [],
-    "spatial": "The tater tots are piled in the center of the white plate. The orange sauce is on top of the tater tots. The metal spoon is to the right of the tater tots.",
-    "parse_success": true,
-    "chunk_idx": 42,
-    "video_id": "cktE2pGhc5w"
-  },
-  {
-    "time": [
-      86,
-      88
-    ],
-    "visible_entities": [
-      {
-        "desc": "golden-brown cylindrical tater tots with a crispy, textured surface",
-        "action": "being scooped up by a spoon",
         "position": "center"
-      },
-      {
-        "desc": "thick, glossy red sauce drizzled over the food",
-        "action": "coating the tater tots",
-        "position": "center"
-      },
-      {
-        "desc": "silver metal spoon with a reflective surface",
-        "action": "lifting a tater tot",
-        "position": "right"
       },
       {
         "desc": "white ceramic bowl with a dark blue rim",
@@ -2198,70 +2254,71 @@
     ],
     "atomic_facts": [
       {
-        "fact": "A silver spoon lifts a single tater tot covered in red sauce from the bowl.",
+        "fact": "The red sauce is drizzled over the pile of tater tots.",
         "confidence": 1.0
       },
       {
-        "fact": "The tater tots are piled in the center of the bowl.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "Red sauce is poured over the pile of tater tots.",
+        "fact": "The tater tots are piled inside the white bowl.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The pile of tater tots is inside the white bowl with the blue rim. The silver spoon is positioned to the right of the pile, lifting one tot above the others. The red sauce is on top of the tater tots.",
-    "parse_success": true,
-    "chunk_idx": 43,
-    "video_id": "cktE2pGhc5w"
-  },
-  {
-    "time": [
-      88,
-      90
-    ],
-    "visible_entities": [
-      {
-        "desc": "golden-brown tater tots with crispy texture",
-        "action": "static",
-        "position": "center"
-      },
-      {
-        "desc": "thick red sauce",
-        "action": "static",
-        "position": "center"
-      },
-      {
-        "desc": "white plate with dark blue rim",
-        "action": "static",
-        "position": "background"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "Red sauce is poured over the tater tots.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The tater tots are piled in the center of the plate.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [],
-    "spatial": "The tater tots are in the center of the white plate. The red sauce is on top of the tater tots. The dark blue rim surrounds the edge of the plate.",
+    "spatial": "The tater tots are piled in the center of the white bowl. The red sauce is on top of the tater tots. The bowl is in the foreground.",
     "parse_success": true,
     "chunk_idx": 44,
     "video_id": "cktE2pGhc5w"
   },
   {
     "time": [
-      90,
-      92
+      45,
+      46
     ],
     "visible_entities": [
       {
-        "desc": "golden-brown tater tots with a crispy, textured surface",
+        "desc": "golden-brown, cylindrical tater tots with a crispy texture",
+        "action": "static",
+        "position": "center"
+      },
+      {
+        "desc": "thick, glossy red sauce (likely ketchup or buffalo sauce)",
+        "action": "static",
+        "position": "center"
+      },
+      {
+        "desc": "white ceramic plate with a dark blue rim",
+        "action": "static",
+        "position": "background"
+      },
+      {
+        "desc": "metal spoon with a reflective surface",
+        "action": "static",
+        "position": "top right"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "Red sauce is poured over the pile of tater tots.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A metal spoon rests on the plate next to the food.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The pile of tater tots covered in red sauce is in the center of the white plate. The metal spoon is positioned to the right of the tater tots, resting on the plate's rim.",
+    "parse_success": true,
+    "chunk_idx": 45,
+    "video_id": "cktE2pGhc5w"
+  },
+  {
+    "time": [
+      46,
+      47
+    ],
+    "visible_entities": [
+      {
+        "desc": "golden-brown, cylindrical tater tots with a crispy, textured surface",
         "action": "static",
         "position": "center"
       },
@@ -2271,112 +2328,78 @@
         "position": "center"
       },
       {
-        "desc": "silver metal spoon with a reflective bowl",
-        "action": "static",
-        "position": "top right"
-      },
-      {
-        "desc": "white plate with a dark blue rim",
-        "action": "static",
-        "position": "background"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "A pile of tater tots is covered in red sauce.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "A spoon rests on the plate next to the food.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [],
-    "spatial": "The tater tots are piled in the center of the plate. The red sauce is drizzled on top of the tater tots. The spoon is to the right of the food pile, resting on the plate.",
-    "parse_success": true,
-    "chunk_idx": 45,
-    "video_id": "cktE2pGhc5w"
-  },
-  {
-    "time": [
-      92,
-      94
-    ],
-    "visible_entities": [
-      {
-        "desc": "golden-brown tater tots covered in thick red sauce",
-        "action": "static",
-        "position": "center"
-      },
-      {
-        "desc": "silver metal spoon",
+        "desc": "metal spoon with a reflective silver bowl and handle",
         "action": "static",
         "position": "right"
       },
       {
-        "desc": "white plate with a dark blue rim",
+        "desc": "white bowl with a dark blue rim",
         "action": "static",
         "position": "background"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A spoon rests on the right side of the plate.",
+        "fact": "The red sauce is drizzled over the pile of tater tots.",
         "confidence": 1.0
       },
       {
-        "fact": "Red sauce is poured over the tater tots.",
+        "fact": "A metal spoon rests on the right side of the bowl.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The tater tots are piled in the center of the bowl.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The tater tots are piled in the center of the plate. The spoon is to the right of the tater tots, resting on the plate's surface.",
+    "spatial": "The pile of tater tots covered in red sauce is in the center of the white bowl. The metal spoon is to the right of the tater tots, resting inside the bowl. The bowl is on a surface with a patterned object visible to the left.",
     "parse_success": true,
     "chunk_idx": 46,
     "video_id": "cktE2pGhc5w"
   },
   {
     "time": [
-      94,
-      96
+      47,
+      48
     ],
     "visible_entities": [
       {
-        "desc": "golden-brown tater tots covered in red sauce",
+        "desc": "golden-brown, cylindrical tater tots covered in a thick, glossy red sauce",
         "action": "static",
         "position": "center"
       },
       {
-        "desc": "metal spoon",
+        "desc": "silver metal spoon with a rounded bowl and a straight handle",
         "action": "static",
         "position": "right"
       },
       {
-        "desc": "white bowl with dark blue rim",
+        "desc": "white ceramic bowl with a thick, dark blue rim",
         "action": "static",
-        "position": "center"
+        "position": "background"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A spoon rests on the right side of the bowl.",
+        "fact": "A serving of tater tots covered in red sauce sits in a bowl.",
         "confidence": 1.0
       },
       {
-        "fact": "The tater tots are covered in red sauce.",
+        "fact": "A metal spoon rests on the right side of the bowl.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The tater tots are inside the white bowl. The metal spoon is resting on the right side of the bowl, next to the food.",
+    "spatial": "The pile of tater tots is located in the center of the white bowl. The silver spoon is positioned to the right of the tater tots, resting inside the bowl.",
     "parse_success": true,
     "chunk_idx": 47,
     "video_id": "cktE2pGhc5w"
   },
   {
     "time": [
-      96,
-      98
+      48,
+      49
     ],
     "visible_entities": [
       {
@@ -2395,362 +2418,228 @@
         "position": "center"
       },
       {
-        "desc": "human fingers",
+        "desc": "human hand",
         "action": "reaching for food",
         "position": "right"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "Human fingers reach into the frame from the right side.",
-        "confidence": 1.0
       },
       {
-        "fact": "The fingers grasp a tater tot on the right side of the bowl.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The tater tots are covered in a red sauce.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [
-      "US"
-    ],
-    "spatial": "The bowl of tater tots is in the center of the frame. The spoon rests inside the bowl on the right side. The human fingers are to the right of the bowl, reaching in to pick up a tater tot.",
-    "parse_success": true,
-    "chunk_idx": 48,
-    "video_id": "cktE2pGhc5w"
-  },
-  {
-    "time": [
-      98,
-      100
-    ],
-    "visible_entities": [
-      {
-        "desc": "golden-brown, cylindrical tater tots with a crispy texture",
-        "action": "being picked up by hand",
-        "position": "center"
-      },
-      {
-        "desc": "thick, bright red sauce",
-        "action": "coating the tater tots",
-        "position": "center"
-      },
-      {
-        "desc": "white ceramic bowl with a dark blue rim",
-        "action": "static",
-        "position": "center"
-      },
-      {
-        "desc": "silver metal spoon",
-        "action": "resting in the bowl",
-        "position": "right"
-      },
-      {
-        "desc": "human hand with fingers",
-        "action": "grasping a tater tot",
-        "position": "foreground"
-      },
-      {
-        "desc": "white paper wrapper with black text",
+        "desc": "white wrapper with black text",
         "action": "static",
         "position": "left"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A hand is picking up a tater tot from the bowl.",
+        "fact": "A hand reaches into the frame from the right side.",
         "confidence": 1.0
       },
       {
-        "fact": "The tater tots are covered in red sauce.",
+        "fact": "The hand picks up a tater tot from the bowl.",
         "confidence": 1.0
       },
       {
-        "fact": "A silver spoon rests inside the bowl.",
+        "fact": "The tater tots are covered in a red sauce.",
         "confidence": 1.0
       },
       {
-        "fact": "The bowl sits on a wooden surface.",
+        "fact": "A spoon rests inside the bowl next to the food.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "US"
+    ],
+    "spatial": "The bowl of tater tots is in the center of the frame. The spoon is inside the bowl to the right of the food pile. The hand enters from the right side and is positioned next to the bowl. The wrapper is visible on the left side of the bowl.",
+    "parse_success": true,
+    "chunk_idx": 48,
+    "video_id": "cktE2pGhc5w"
+  },
+  {
+    "time": [
+      49,
+      50
+    ],
+    "visible_entities": [
+      {
+        "desc": "golden-brown tater tots, cylindrical shape, textured surface",
+        "action": "being picked up by hand",
+        "position": "center/foreground"
+      },
+      {
+        "desc": "red sauce, thick consistency, glossy",
+        "action": "static",
+        "position": "center"
+      },
+      {
+        "desc": "white plate with dark blue rim",
+        "action": "static",
+        "position": "center/background"
+      },
+      {
+        "desc": "metal spoon, silver, reflective",
+        "action": "static",
+        "position": "right"
+      },
+      {
+        "desc": "hand, light skin tone, fingers",
+        "action": "picking up tater tot",
+        "position": "right/foreground"
+      },
+      {
+        "desc": "newspaper, black text on white paper",
+        "action": "static",
+        "position": "left"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A hand picks up a tater tot from the plate.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "Tater tots are covered in red sauce.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A metal spoon rests on the plate.",
         "confidence": 1.0
       }
     ],
     "ocr": [
       "US",
-      "FRESH"
+      "FREE"
     ],
-    "spatial": "The white bowl with a blue rim is in the center of the frame. Inside the bowl, the tater tots are piled next to a silver spoon. A hand is in the foreground on the right, holding a tater tot above the bowl. A paper wrapper is visible to the left of the bowl.",
+    "spatial": "The plate is in the center of the frame. The tater tots are on the plate. The spoon is to the right of the tater tots. The hand is in the foreground, reaching for a tater tot. The newspaper is to the left of the plate.",
     "parse_success": true,
     "chunk_idx": 49,
     "video_id": "cktE2pGhc5w"
   },
   {
     "time": [
-      100,
-      102
+      50,
+      51
     ],
     "visible_entities": [
       {
-        "desc": "golden-brown fried food nugget, textured surface",
+        "desc": "golden-brown fried food nugget, crispy texture",
         "action": "being held by fingers",
-        "position": "right foreground"
+        "position": "foreground right"
       },
       {
-        "desc": "hand with fingers",
-        "action": "holding food",
-        "position": "right foreground"
-      },
-      {
-        "desc": "white ceramic bowl with blue rim",
+        "desc": "pile of fried food nuggets covered in red sauce",
         "action": "static",
         "position": "center"
       },
       {
-        "desc": "fried food nuggets covered in red sauce",
+        "desc": "white plate with a dark blue rim",
         "action": "static",
-        "position": "center inside bowl"
+        "position": "background"
       },
       {
         "desc": "metal spoon",
         "action": "static",
-        "position": "inside bowl"
+        "position": "center"
       },
       {
-        "desc": "newspaper with black text",
-        "action": "static",
-        "position": "top left background"
+        "desc": "human fingers",
+        "action": "holding food",
+        "position": "foreground right"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A hand is holding a piece of fried food in the foreground.",
+        "fact": "A person is holding a piece of fried food in the foreground.",
         "confidence": 1.0
       },
       {
-        "fact": "Fried food nuggets covered in red sauce are inside a bowl.",
+        "fact": "Fried food nuggets are piled on a plate.",
         "confidence": 1.0
       },
       {
-        "fact": "A metal spoon rests inside the bowl next to the food.",
+        "fact": "Red sauce is drizzled over the food on the plate.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A metal spoon rests on the plate behind the food.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The hand holding the food is in the right foreground, in front of the bowl. The bowl containing the sauced food and spoon is in the center. The newspaper is to the left of the bowl in the background.",
+    "spatial": "The fingers holding the food nugget are in the foreground to the right. The plate containing the pile of sauced food and the spoon is behind the hand. The spoon is positioned to the right of the food pile on the plate.",
     "parse_success": true,
     "chunk_idx": 50,
     "video_id": "cktE2pGhc5w"
   },
   {
     "time": [
-      102,
-      104
+      51,
+      52
     ],
     "visible_entities": [
       {
-        "desc": "golden-brown fried tater tots, cylindrical shape, crispy texture",
-        "action": "being held",
-        "position": "foreground"
+        "desc": "golden-brown, crispy, irregularly shaped fried food nugget",
+        "action": "being held by a hand",
+        "position": "foreground right"
       },
       {
-        "desc": "pile of tater tots covered in thick red sauce",
+        "desc": "hand with visible fingers and thumb",
+        "action": "holding a nugget",
+        "position": "foreground right"
+      },
+      {
+        "desc": "pile of golden-brown fried nuggets covered in thick red sauce",
         "action": "static",
         "position": "center"
       },
       {
         "desc": "white ceramic plate with a dark blue rim",
         "action": "static",
-        "position": "background"
-      },
-      {
-        "desc": "silver metal spoon",
-        "action": "static",
         "position": "center"
       },
       {
-        "desc": "human hand with fingers",
-        "action": "holding food",
-        "position": "right"
+        "desc": "metal spoon with a rounded bowl",
+        "action": "static",
+        "position": "center right"
+      },
+      {
+        "desc": "white paper with black printed text and lines",
+        "action": "static",
+        "position": "background left"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A hand is holding a single fried tater tot in the foreground.",
+        "fact": "A hand is holding a single fried nugget in the foreground.",
         "confidence": 1.0
       },
       {
-        "fact": "A pile of tater tots covered in red sauce sits on the plate.",
+        "fact": "The plate contains a pile of fried nuggets covered in red sauce.",
         "confidence": 1.0
       },
       {
-        "fact": "A silver spoon rests on the plate behind the food.",
+        "fact": "A metal spoon rests on the plate next to the sauced nuggets.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The hand holding the single tater tot is in the foreground on the right side of the frame. The pile of sauced tater tots is in the center of the plate, to the left of the hand. The silver spoon is resting on the plate behind the pile of food.",
+    "spatial": "The hand holding the nugget is in the foreground to the right of the plate. The spoon is on the plate to the right of the pile of sauced nuggets. The paper with text is to the left of the plate in the background.",
     "parse_success": true,
     "chunk_idx": 51,
     "video_id": "cktE2pGhc5w"
   },
   {
     "time": [
-      104,
-      106
+      52,
+      53
     ],
     "visible_entities": [
       {
-        "desc": "golden-brown, cylindrical tater tots with a crispy texture",
+        "desc": "golden-brown cylindrical tater tots with a textured, fried surface",
         "action": "static",
         "position": "center"
       },
       {
-        "desc": "thick, glossy, bright orange sauce",
-        "action": "static",
-        "position": "center"
-      },
-      {
-        "desc": "metal spoon with a reflective surface",
-        "action": "static",
-        "position": "right"
-      },
-      {
-        "desc": "white ceramic plate with a dark blue rim",
-        "action": "static",
-        "position": "background"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "The orange sauce is poured over the pile of tater tots.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "A metal spoon rests on the plate next to the food.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The tater tots are clustered in the center of the plate.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [],
-    "spatial": "The tater tots covered in orange sauce are in the center of the white plate. The metal spoon is to the right of the tater tots. The plate is underneath the food and the spoon.",
-    "parse_success": true,
-    "chunk_idx": 52,
-    "video_id": "cktE2pGhc5w"
-  },
-  {
-    "time": [
-      106,
-      108
-    ],
-    "visible_entities": [
-      {
-        "desc": "golden-brown tater tots, crispy texture, covered in thick red sauce",
-        "action": "static",
-        "position": "center"
-      },
-      {
-        "desc": "silver metal spoon, reflective surface",
-        "action": "static",
-        "position": "right"
-      },
-      {
-        "desc": "white ceramic bowl with a dark blue rim",
-        "action": "static",
-        "position": "background"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "Red sauce is poured over the tater tots.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "A silver spoon rests on the right side of the bowl.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The food is contained within a white bowl with a blue rim.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [],
-    "spatial": "The tater tots are piled in the center of the bowl. The spoon is positioned to the right of the tater tots, resting inside the bowl. The sauce is on top of the tater tots.",
-    "parse_success": true,
-    "chunk_idx": 53,
-    "video_id": "cktE2pGhc5w"
-  },
-  {
-    "time": [
-      108,
-      110
-    ],
-    "visible_entities": [
-      {
-        "desc": "golden-brown tater tots, cylindrical shape, crispy texture",
-        "action": "static",
-        "position": "center"
-      },
-      {
-        "desc": "thick red sauce, glossy texture, covering the food",
-        "action": "static",
-        "position": "center"
-      },
-      {
-        "desc": "silver metal spoon, reflective surface",
-        "action": "static",
-        "position": "right"
-      },
-      {
-        "desc": "white bowl with a dark blue rim",
-        "action": "static",
-        "position": "center"
-      },
-      {
-        "desc": "white paper napkin with black text",
-        "action": "static",
-        "position": "top-left"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "A serving of tater tots is covered in red sauce.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "A silver spoon rests on the right side of the bowl.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The food is contained within a white bowl with a blue rim.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [
-      "8888888888"
-    ],
-    "spatial": "The tater tots covered in red sauce are piled in the center of the white bowl. The silver spoon is positioned to the right of the food pile, resting inside the bowl. The bowl is placed on a surface next to a white napkin visible in the top-left corner.",
-    "parse_success": true,
-    "chunk_idx": 54,
-    "video_id": "cktE2pGhc5w"
-  },
-  {
-    "time": [
-      110,
-      112
-    ],
-    "visible_entities": [
-      {
-        "desc": "golden-brown cylindrical tater tots, crispy texture, piled in the center",
-        "action": "static",
-        "position": "center"
-      },
-      {
-        "desc": "thick red sauce, glossy texture, drizzled over the tater tots",
+        "desc": "thick, glossy orange sauce",
         "action": "static",
         "position": "center"
       },
@@ -2767,96 +2656,7 @@
     ],
     "atomic_facts": [
       {
-        "fact": "A pile of tater tots is covered in red sauce.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "A silver spoon rests on the right side of the plate.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The food is served on a white plate with a blue rim.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [],
-    "spatial": "The pile of tater tots covered in red sauce is in the center of the white plate. The silver spoon is to the right of the tater tots. The plate is underneath the food and the spoon.",
-    "parse_success": true,
-    "chunk_idx": 55,
-    "video_id": "cktE2pGhc5w"
-  },
-  {
-    "time": [
-      112,
-      114
-    ],
-    "visible_entities": [
-      {
-        "desc": "golden-brown tater tots, crispy texture, piled in a mound",
-        "action": "static",
-        "position": "center"
-      },
-      {
-        "desc": "thick red sauce, glossy, covering the tater tots",
-        "action": "static",
-        "position": "center"
-      },
-      {
-        "desc": "metal spoon, silver, reflective surface",
-        "action": "static",
-        "position": "right"
-      },
-      {
-        "desc": "white plate with a dark blue rim",
-        "action": "static",
-        "position": "background"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "A pile of tater tots sits in the center of the plate.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "Red sauce is poured over the tater tots.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "A metal spoon rests on the right side of the plate.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [],
-    "spatial": "The tater tots covered in red sauce are in the center of the plate. The metal spoon is to the right of the tater tots. The plate is underneath the food and spoon.",
-    "parse_success": true,
-    "chunk_idx": 56,
-    "video_id": "cktE2pGhc5w"
-  },
-  {
-    "time": [
-      114,
-      116
-    ],
-    "visible_entities": [
-      {
-        "desc": "golden-brown tater tots, crispy texture, covered in thick red sauce",
-        "action": "static",
-        "position": "center"
-      },
-      {
-        "desc": "silver metal spoon, reflective surface",
-        "action": "static",
-        "position": "right"
-      },
-      {
-        "desc": "white ceramic plate with a dark blue rim",
-        "action": "static",
-        "position": "center"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "A pile of tater tots is covered in red sauce.",
+        "fact": "The orange sauce is poured over the tater tots.",
         "confidence": 1.0
       },
       {
@@ -2865,83 +2665,78 @@
       }
     ],
     "ocr": [],
-    "spatial": "The tater tots are piled in the center of the white plate. The silver spoon is positioned to the right of the tater tots, resting on the plate's surface.",
+    "spatial": "The tater tots are piled in the center of the white plate. The orange sauce is on top of the tater tots. The silver spoon is to the right of the pile of tater tots.",
     "parse_success": true,
-    "chunk_idx": 57,
+    "chunk_idx": 52,
     "video_id": "cktE2pGhc5w"
   },
   {
     "time": [
-      116,
-      118
+      53,
+      54
     ],
     "visible_entities": [
       {
-        "desc": "golden-brown, cylindrical tater tots with a crispy texture",
+        "desc": "golden-brown cylindrical tater tots with crispy texture, covered in thick glossy red sauce",
         "action": "static",
         "position": "center"
       },
       {
-        "desc": "thick, glossy red sauce",
-        "action": "static",
-        "position": "center"
-      },
-      {
-        "desc": "metal spoon with a reflective bowl and handle",
+        "desc": "silver metal spoon with a reflective bowl and handle",
         "action": "static",
         "position": "right"
       },
       {
-        "desc": "white ceramic plate with a dark blue rim",
+        "desc": "white ceramic bowl with a thick dark blue rim",
         "action": "static",
-        "position": "background"
+        "position": "center"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "Red sauce is drizzled over the tater tots.",
+        "fact": "Tater tots are piled in the center of the bowl.",
         "confidence": 1.0
       },
       {
-        "fact": "A metal spoon rests on the plate next to the food.",
+        "fact": "Red sauce is poured over the tater tots.",
         "confidence": 1.0
       },
       {
-        "fact": "The tater tots are piled in the center of the plate.",
+        "fact": "A spoon rests on the right side of the bowl.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The tater tots are piled in the center of the white plate. The red sauce is on top of the tater tots. The metal spoon is to the right of the tater tots, resting on the plate.",
+    "spatial": "The tater tots covered in red sauce are in the center of the white bowl. The silver spoon is to the right of the tater tots, resting inside the bowl.",
     "parse_success": true,
-    "chunk_idx": 58,
+    "chunk_idx": 53,
     "video_id": "cktE2pGhc5w"
   },
   {
     "time": [
-      118,
-      120
+      54,
+      55
     ],
     "visible_entities": [
       {
-        "desc": "golden-brown, cylindrical tater tots with a crispy texture",
+        "desc": "golden-brown, cylindrical tater tots with a crispy, textured surface",
         "action": "static",
         "position": "center"
       },
       {
-        "desc": "thick, glossy red sauce",
+        "desc": "thick, glossy red sauce (likely ketchup or cocktail sauce) drizzled over the food",
         "action": "static",
         "position": "center"
       },
       {
-        "desc": "silver metal spoon",
+        "desc": "silver metal spoon with a reflective bowl and handle",
         "action": "static",
         "position": "right"
       },
       {
-        "desc": "white plate with a dark blue rim",
+        "desc": "white ceramic bowl with a dark blue rim",
         "action": "static",
-        "position": "background"
+        "position": "center"
       }
     ],
     "atomic_facts": [
@@ -2950,28 +2745,28 @@
         "confidence": 1.0
       },
       {
-        "fact": "A silver spoon rests on the plate next to the food.",
+        "fact": "A silver spoon rests on the right side of the bowl.",
         "confidence": 1.0
       },
       {
-        "fact": "The tater tots are piled in the center of the plate.",
+        "fact": "The tater tots are piled in the center of the bowl.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The pile of tater tots covered in red sauce is in the center of the white plate. The silver spoon is to the right of the food, resting on the plate's surface. The dark blue rim surrounds the edge of the white plate.",
+    "spatial": "The tater tots covered in red sauce are piled in the center of the white bowl. The silver spoon is positioned to the right of the food pile, resting inside the bowl. The bowl is placed on a surface with a patterned paper visible in the top left corner.",
     "parse_success": true,
-    "chunk_idx": 59,
+    "chunk_idx": 54,
     "video_id": "cktE2pGhc5w"
   },
   {
     "time": [
-      120,
-      122
+      55,
+      56
     ],
     "visible_entities": [
       {
-        "desc": "golden-brown tater tots, cylindrical shape, textured surface",
+        "desc": "golden-brown tater tots, cylindrical shape, crispy texture",
         "action": "static",
         "position": "center"
       },
@@ -2981,233 +2776,54 @@
         "position": "center"
       },
       {
-        "desc": "white ceramic plate with a dark blue rim",
-        "action": "static",
-        "position": "background"
-      },
-      {
-        "desc": "silver metal spoon, reflective surface",
-        "action": "static",
-        "position": "right"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "Red sauce is poured over a pile of tater tots.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "A silver spoon rests on the plate next to the food.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [],
-    "spatial": "The pile of tater tots covered in red sauce is in the center of the white plate. The silver spoon is to the right of the tater tots. The plate is underneath the food and spoon.",
-    "parse_success": true,
-    "chunk_idx": 60,
-    "video_id": "cktE2pGhc5w"
-  },
-  {
-    "time": [
-      122,
-      124
-    ],
-    "visible_entities": [
-      {
-        "desc": "golden-brown cylindrical tater tots with a crispy, textured surface",
-        "action": "static",
-        "position": "center"
-      },
-      {
-        "desc": "thick, glossy red sauce (likely ketchup or buffalo sauce) drizzled over the food",
-        "action": "static",
-        "position": "center"
-      },
-      {
-        "desc": "silver metal spoon with a reflective bowl",
+        "desc": "metal spoon, silver, reflective surface",
         "action": "static",
         "position": "right"
       },
       {
-        "desc": "white ceramic plate with a dark blue rim",
+        "desc": "white bowl with a dark blue rim",
         "action": "static",
-        "position": "background"
+        "position": "center"
       }
     ],
     "atomic_facts": [
-      {
-        "fact": "The red sauce is poured over the pile of tater tots.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "A silver spoon rests on the right side of the plate.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The tater tots are piled in the center of the plate.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [],
-    "spatial": "The pile of tater tots covered in red sauce is in the center of the white plate. The silver spoon is positioned to the right of the food, resting on the plate's rim. The blue rim surrounds the white center of the plate.",
-    "parse_success": true,
-    "chunk_idx": 61,
-    "video_id": "cktE2pGhc5w"
-  },
-  {
-    "time": [
-      124,
-      126
-    ],
-    "visible_entities": [
-      {
-        "desc": "golden-brown, cylindrical tater tots with a crispy texture",
-        "action": "static",
-        "position": "center"
-      },
-      {
-        "desc": "thick, glossy red sauce",
-        "action": "static",
-        "position": "center"
-      },
-      {
-        "desc": "silver metal spoon with a reflective surface",
-        "action": "static",
-        "position": "right"
-      },
-      {
-        "desc": "white ceramic plate with a dark blue rim",
-        "action": "static",
-        "position": "background"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "The tater tots are piled in the center of the plate.",
-        "confidence": 1.0
-      },
       {
         "fact": "Red sauce is poured over the tater tots.",
         "confidence": 1.0
       },
       {
-        "fact": "A spoon rests on the plate next to the food.",
+        "fact": "A metal spoon rests on the right side of the bowl.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The tater tots are piled in the center of the bowl.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The pile of tater tots covered in red sauce is in the center of the white plate. The silver spoon is to the right of the tater tots, resting on the plate's surface.",
+    "spatial": "The tater tots are inside the white bowl. The red sauce is on top of the tater tots. The metal spoon is to the right of the tater tots and rests inside the bowl.",
     "parse_success": true,
-    "chunk_idx": 62,
+    "chunk_idx": 55,
     "video_id": "cktE2pGhc5w"
   },
   {
     "time": [
-      126,
-      128
+      56,
+      57
     ],
     "visible_entities": [
       {
-        "desc": "golden-brown cylindrical tater tots with a crispy texture",
+        "desc": "golden-brown tater tots, crispy texture, cylindrical shape",
         "action": "static",
         "position": "center"
       },
       {
-        "desc": "thick red sauce drizzled over the food",
+        "desc": "thick red sauce, glossy texture, covering the food",
         "action": "static",
         "position": "center"
       },
       {
-        "desc": "white ceramic plate with a dark blue rim",
-        "action": "static",
-        "position": "background"
-      },
-      {
-        "desc": "silver metal spoon",
-        "action": "static",
-        "position": "right"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "A pile of tater tots sits on a plate.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "Red sauce is poured over the tater tots.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "A spoon rests on the plate next to the food.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [],
-    "spatial": "The tater tots covered in red sauce are in the center of the white plate with a blue rim. The silver spoon is positioned to the right of the pile of food, resting on the plate's surface.",
-    "parse_success": true,
-    "chunk_idx": 63,
-    "video_id": "cktE2pGhc5w"
-  },
-  {
-    "time": [
-      128,
-      130
-    ],
-    "visible_entities": [
-      {
-        "desc": "golden-brown cylindrical tater tots with a crispy texture",
-        "action": "static",
-        "position": "center"
-      },
-      {
-        "desc": "thick red sauce, likely ketchup or hot sauce",
-        "action": "static",
-        "position": "center"
-      },
-      {
-        "desc": "silver metal spoon with a reflective bowl",
-        "action": "static",
-        "position": "right"
-      },
-      {
-        "desc": "white ceramic plate with a dark blue rim",
-        "action": "static",
-        "position": "background"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "The tater tots are piled in the center of the plate.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "Red sauce is drizzled over the tater tots.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "A spoon rests on the right side of the plate.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [],
-    "spatial": "The tater tots are in the center of the white plate. The red sauce is on top of the tater tots. The silver spoon is to the right of the tater tots, resting on the plate.",
-    "parse_success": true,
-    "chunk_idx": 64,
-    "video_id": "cktE2pGhc5w"
-  },
-  {
-    "time": [
-      130,
-      132
-    ],
-    "visible_entities": [
-      {
-        "desc": "golden-brown tater tots with crispy texture, covered in thick red sauce",
-        "action": "static",
-        "position": "center"
-      },
-      {
-        "desc": "silver metal spoon with a reflective surface",
+        "desc": "metal spoon, silver, reflective surface, resting on the plate",
         "action": "static",
         "position": "right"
       },
@@ -3223,29 +2839,67 @@
         "confidence": 1.0
       },
       {
-        "fact": "A silver spoon rests on the plate next to the food.",
+        "fact": "A metal spoon rests on the right side of the plate.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The tater tots are piled in the center of the white plate. The silver spoon is positioned to the right of the food pile. The blue rim surrounds the edge of the plate.",
+    "spatial": "The tater tots covered in red sauce are in the center of the plate. The metal spoon is to the right of the food pile. The food is inside the white plate with the blue rim.",
     "parse_success": true,
-    "chunk_idx": 65,
+    "chunk_idx": 56,
     "video_id": "cktE2pGhc5w"
   },
   {
     "time": [
-      132,
-      134
+      57,
+      58
     ],
     "visible_entities": [
       {
-        "desc": "golden-brown tater tots with crispy texture, covered in thick red sauce",
+        "desc": "golden-brown tater tots covered in red sauce",
         "action": "static",
         "position": "center"
       },
       {
-        "desc": "silver metal spoon with a reflective bowl",
+        "desc": "silver metal spoon",
+        "action": "static",
+        "position": "right"
+      },
+      {
+        "desc": "white plate with a dark blue rim",
+        "action": "static",
+        "position": "center"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A spoon rests on the plate next to the tater tots.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "Red sauce is poured over the pile of tater tots.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The tater tots are in the center of the white plate. The silver spoon is to the right of the tater tots, resting on the plate. The blue rim surrounds the edge of the plate.",
+    "parse_success": true,
+    "chunk_idx": 57,
+    "video_id": "cktE2pGhc5w"
+  },
+  {
+    "time": [
+      58,
+      59
+    ],
+    "visible_entities": [
+      {
+        "desc": "golden-brown cylindrical tater tots covered in thick red sauce",
+        "action": "static",
+        "position": "center"
+      },
+      {
+        "desc": "silver metal spoon with a rounded bowl",
         "action": "static",
         "position": "right"
       },
@@ -3257,28 +2911,75 @@
     ],
     "atomic_facts": [
       {
-        "fact": "A pile of tater tots sits in the center of the plate.",
+        "fact": "A pile of tater tots sits on a plate.",
         "confidence": 1.0
       },
       {
-        "fact": "Red sauce is drizzled over the tater tots.",
+        "fact": "Red sauce is poured over the tater tots.",
         "confidence": 1.0
       },
       {
-        "fact": "A metal spoon rests on the right side of the plate.",
+        "fact": "A silver spoon rests on the plate next to the food.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The tater tots are in the center of the plate. The metal spoon is to the right of the tater tots. The red sauce is on top of the tater tots.",
+    "spatial": "The pile of tater tots is in the center of the white plate. The silver spoon is to the right of the tater tots. The red sauce is on top of the tater tots.",
     "parse_success": true,
-    "chunk_idx": 66,
+    "chunk_idx": 58,
     "video_id": "cktE2pGhc5w"
   },
   {
     "time": [
-      134,
-      136
+      59,
+      60
+    ],
+    "visible_entities": [
+      {
+        "desc": "golden-brown fried tater tots, cylindrical shape, crispy texture",
+        "action": "static",
+        "position": "center"
+      },
+      {
+        "desc": "thick red sauce, glossy, viscous",
+        "action": "static",
+        "position": "center"
+      },
+      {
+        "desc": "silver metal spoon, reflective surface",
+        "action": "static",
+        "position": "right"
+      },
+      {
+        "desc": "white ceramic plate with a dark blue rim",
+        "action": "static",
+        "position": "background"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "Red sauce is poured over the tater tots.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A spoon rests on the plate next to the food.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The tater tots are piled in the center of the plate.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The pile of tater tots covered in red sauce is in the center of the white plate. The silver spoon is to the right of the tater tots. The blue rim surrounds the edge of the plate.",
+    "parse_success": true,
+    "chunk_idx": 59,
+    "video_id": "cktE2pGhc5w"
+  },
+  {
+    "time": [
+      60,
+      61
     ],
     "visible_entities": [
       {
@@ -3297,9 +2998,320 @@
         "position": "right"
       },
       {
+        "desc": "white ceramic plate with a dark blue rim",
+        "action": "static",
+        "position": "background"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The tater tots are piled in the center of the plate.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "Red sauce is poured over the tater tots.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A silver spoon rests on the right side of the plate.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The pile of tater tots covered in red sauce is in the center of the white plate. The silver spoon is positioned to the right of the food, resting on the plate's surface.",
+    "parse_success": true,
+    "chunk_idx": 60,
+    "video_id": "cktE2pGhc5w"
+  },
+  {
+    "time": [
+      61,
+      62
+    ],
+    "visible_entities": [
+      {
+        "desc": "golden-brown tater tots, cylindrical shape, crispy texture",
+        "action": "static",
+        "position": "center"
+      },
+      {
+        "desc": "thick red sauce, glossy texture, drizzled over food",
+        "action": "static",
+        "position": "center"
+      },
+      {
+        "desc": "silver metal spoon, reflective surface, oval bowl",
+        "action": "static",
+        "position": "right"
+      },
+      {
+        "desc": "white ceramic plate with a dark blue rim",
+        "action": "static",
+        "position": "background"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "Red sauce is poured over the tater tots.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A silver spoon rests on the plate next to the food.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The tater tots are piled in the center of the plate.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The pile of tater tots covered in red sauce is in the center of the white plate. The silver spoon is to the right of the tater tots. The blue rim surrounds the edge of the plate.",
+    "parse_success": true,
+    "chunk_idx": 61,
+    "video_id": "cktE2pGhc5w"
+  },
+  {
+    "time": [
+      62,
+      63
+    ],
+    "visible_entities": [
+      {
+        "desc": "golden-brown tater tots with crispy texture",
+        "action": "static",
+        "position": "center"
+      },
+      {
+        "desc": "thick red sauce",
+        "action": "static",
+        "position": "center"
+      },
+      {
+        "desc": "white plate with dark blue rim",
+        "action": "static",
+        "position": "background"
+      },
+      {
+        "desc": "metal spoon",
+        "action": "static",
+        "position": "right"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "Red sauce is poured over the tater tots.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A metal spoon rests on the plate next to the food.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The tater tots covered in red sauce are piled in the center of the white plate. The metal spoon is positioned to the right of the food pile, resting on the plate's surface.",
+    "parse_success": true,
+    "chunk_idx": 62,
+    "video_id": "cktE2pGhc5w"
+  },
+  {
+    "time": [
+      63,
+      64
+    ],
+    "visible_entities": [
+      {
+        "desc": "golden-brown fried tater tots with a crispy texture, covered in a thick, glossy red sauce",
+        "action": "static",
+        "position": "center"
+      },
+      {
+        "desc": "silver metal spoon with a reflective surface",
+        "action": "static",
+        "position": "right"
+      },
+      {
+        "desc": "white ceramic plate with a dark blue rim",
+        "action": "static",
+        "position": "background"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A pile of tater tots is served on a plate.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "Red sauce is poured over the tater tots.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A spoon rests on the plate next to the food.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The pile of tater tots is in the center of the white plate. The silver spoon is to the right of the tater tots. The red sauce is on top of the tater tots.",
+    "parse_success": true,
+    "chunk_idx": 63,
+    "video_id": "cktE2pGhc5w"
+  },
+  {
+    "time": [
+      64,
+      65
+    ],
+    "visible_entities": [
+      {
+        "desc": "golden-brown tater tots, cylindrical shape, crispy texture",
+        "action": "static",
+        "position": "center"
+      },
+      {
+        "desc": "red sauce, viscous, glossy",
+        "action": "static",
+        "position": "center"
+      },
+      {
+        "desc": "silver metal spoon, reflective surface",
+        "action": "static",
+        "position": "right"
+      },
+      {
         "desc": "white plate with a dark blue rim",
         "action": "static",
         "position": "background"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "Red sauce is drizzled over the pile of tater tots.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A silver spoon rests on the plate next to the food.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The tater tots are piled in the center of the plate.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The pile of tater tots covered in red sauce is in the center of the white plate. The silver spoon is to the right of the tater tots. The blue rim surrounds the edge of the plate.",
+    "parse_success": true,
+    "chunk_idx": 64,
+    "video_id": "cktE2pGhc5w"
+  },
+  {
+    "time": [
+      65,
+      66
+    ],
+    "visible_entities": [
+      {
+        "desc": "golden-brown, cylindrical tater tots with a crispy, textured surface",
+        "action": "static",
+        "position": "center"
+      },
+      {
+        "desc": "thick, glossy, bright orange sauce",
+        "action": "static",
+        "position": "center"
+      },
+      {
+        "desc": "silver metal spoon with a reflective bowl",
+        "action": "static",
+        "position": "right"
+      },
+      {
+        "desc": "white ceramic plate with a dark blue rim",
+        "action": "static",
+        "position": "background"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The orange sauce is poured over the pile of tater tots.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The spoon rests on the plate next to the food.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The tater tots are piled in the center of the plate.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The pile of tater tots covered in orange sauce is in the center of the white plate. The silver spoon is positioned to the right of the food, resting on the plate's surface. The dark blue rim surrounds the edge of the plate.",
+    "parse_success": true,
+    "chunk_idx": 65,
+    "video_id": "cktE2pGhc5w"
+  },
+  {
+    "time": [
+      66,
+      67
+    ],
+    "visible_entities": [
+      {
+        "desc": "golden-brown tater tots, crispy texture, covered in thick red sauce",
+        "action": "static",
+        "position": "center"
+      },
+      {
+        "desc": "metal spoon, silver, reflective bowl",
+        "action": "static",
+        "position": "right"
+      },
+      {
+        "desc": "white plate with a dark blue rim",
+        "action": "static",
+        "position": "background"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A pile of tater tots is covered in red sauce.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A metal spoon rests on the plate next to the food.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The tater tots are in the center of the plate. The metal spoon is to the right of the tater tots. The food is on the white plate with the blue rim.",
+    "parse_success": true,
+    "chunk_idx": 66,
+    "video_id": "cktE2pGhc5w"
+  },
+  {
+    "time": [
+      67,
+      68
+    ],
+    "visible_entities": [
+      {
+        "desc": "golden-brown cylindrical tater tots, crispy texture, piled in center",
+        "action": "static",
+        "position": "center"
+      },
+      {
+        "desc": "thick red sauce, glossy, drizzled over the tater tots",
+        "action": "static",
+        "position": "center"
+      },
+      {
+        "desc": "white plate with a dark blue rim",
+        "action": "static",
+        "position": "background"
+      },
+      {
+        "desc": "metal spoon, silver, resting on the plate",
+        "action": "static",
+        "position": "right"
       }
     ],
     "atomic_facts": [
@@ -3317,105 +3329,109 @@
       }
     ],
     "ocr": [],
-    "spatial": "The pile of tater tots covered in red sauce is in the center of the white plate. The silver spoon is positioned to the right of the tater tots, resting on the plate's surface.",
+    "spatial": "The tater tots covered in red sauce are in the center of the white plate. The metal spoon is to the right of the tater tots. The plate is underneath the food and spoon.",
     "parse_success": true,
     "chunk_idx": 67,
     "video_id": "cktE2pGhc5w"
   },
   {
     "time": [
-      136,
-      138
+      68,
+      69
     ],
     "visible_entities": [
       {
-        "desc": "golden-brown cylindrical tater tots with a crispy, textured surface",
+        "desc": "golden-brown, cylindrical tater tots with a crispy, textured surface",
         "action": "static",
         "position": "center"
       },
       {
-        "desc": "thick, glossy red sauce drizzled over the food",
+        "desc": "thick, glossy red sauce, likely ketchup or sweet chili sauce",
         "action": "static",
         "position": "center"
-      },
-      {
-        "desc": "metal spoon with a reflective silver bowl and handle",
-        "action": "static",
-        "position": "right"
       },
       {
         "desc": "white ceramic plate with a dark blue rim",
         "action": "static",
         "position": "background"
+      },
+      {
+        "desc": "metal spoon with a reflective surface",
+        "action": "static",
+        "position": "right"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A pile of tater tots sits on a plate.",
+        "fact": "The red sauce is poured over the pile of tater tots.",
         "confidence": 1.0
       },
       {
-        "fact": "Red sauce covers the center of the tater tots.",
+        "fact": "The tater tots are resting on the white plate.",
         "confidence": 1.0
       },
       {
-        "fact": "A metal spoon rests on the right side of the plate.",
+        "fact": "The spoon is placed on the plate next to the food.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The tater tots are piled in the center of the white plate. The red sauce is on top of the tater tots. The metal spoon is to the right of the tater tots, resting on the plate's surface.",
+    "spatial": "The pile of tater tots covered in red sauce is in the center of the plate. The metal spoon is to the right of the tater tots. The plate is underneath the food and the spoon.",
     "parse_success": true,
     "chunk_idx": 68,
     "video_id": "cktE2pGhc5w"
   },
   {
     "time": [
-      138,
-      140
+      69,
+      70
     ],
     "visible_entities": [
       {
-        "desc": "golden-brown tater tots, crispy texture, cylindrical shape",
+        "desc": "golden-brown, cylindrical tater tots with a crispy, textured surface",
         "action": "static",
         "position": "center"
       },
       {
-        "desc": "thick red sauce, glossy texture",
+        "desc": "thick, glossy red sauce (likely ketchup or hot sauce)",
         "action": "static",
         "position": "center"
       },
       {
-        "desc": "white ceramic plate with a dark blue rim",
-        "action": "static",
-        "position": "background"
-      },
-      {
-        "desc": "silver metal spoon",
+        "desc": "silver metal spoon with a reflective bowl and handle",
         "action": "static",
         "position": "right"
+      },
+      {
+        "desc": "white ceramic plate with a dark blue or black rim",
+        "action": "static",
+        "position": "background"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A pile of tater tots is covered in red sauce.",
+        "fact": "Red sauce is poured over a pile of tater tots.",
         "confidence": 1.0
       },
       {
         "fact": "A silver spoon rests on the plate next to the food.",
         "confidence": 1.0
+      },
+      {
+        "fact": "The plate sits on a surface with a patterned cloth visible in the corner.",
+        "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The pile of tater tots covered in red sauce is in the center of the white plate. The silver spoon is to the right of the tater tots. The blue rim surrounds the edge of the plate.",
+    "spatial": "The pile of tater tots covered in red sauce is in the center of the white plate. The silver spoon is to the right of the tater tots, resting on the plate's surface. The dark rim surrounds the edge of the plate.",
     "parse_success": true,
     "chunk_idx": 69,
     "video_id": "cktE2pGhc5w"
   },
   {
     "time": [
-      140,
-      142
+      70,
+      71
     ],
     "visible_entities": [
       {
@@ -3434,14 +3450,14 @@
         "position": "background"
       },
       {
-        "desc": "human hand, blurry, light skin tone",
+        "desc": "human hand",
         "action": "moving into frame",
         "position": "foreground"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A hand moves into the foreground, obscuring the view of the food.",
+        "fact": "A human hand moves into the foreground, obscuring the view of the food.",
         "confidence": 1.0
       },
       {
@@ -3449,54 +3465,54 @@
         "confidence": 1.0
       },
       {
-        "fact": "A metal spoon rests on the right side of the plate.",
+        "fact": "A metal spoon rests on the plate next to the food.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The plate of tater tots is in the center of the frame. A metal spoon is on the right side of the plate. A blurry hand moves in front of the plate, obscuring the view.",
+    "spatial": "The tater tots are in the center of the white plate with a blue rim. The metal spoon is to the right of the tater tots. The human hand is in front of the plate and the food.",
     "parse_success": true,
     "chunk_idx": 70,
     "video_id": "cktE2pGhc5w"
   },
   {
     "time": [
-      142,
-      144
+      71,
+      72
     ],
     "visible_entities": [
       {
-        "desc": "golden-brown tater tots, cylindrical shape, covered in red sauce",
+        "desc": "golden-brown tater tots covered in red sauce",
         "action": "static",
         "position": "center"
       },
       {
-        "desc": "white ceramic bowl with a blue rim stripe",
+        "desc": "white ceramic bowl with a dark blue rim",
         "action": "static",
         "position": "center"
       },
       {
-        "desc": "metal spoon, silver, reflective",
+        "desc": "silver metal spoon",
         "action": "static",
-        "position": "right"
+        "position": "center"
       },
       {
-        "desc": "white plastic bag with red and black text",
+        "desc": "white and red food packaging wrapper",
         "action": "static",
         "position": "left"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A bowl of tater tots covered in red sauce sits on a surface.",
+        "fact": "A spoon rests on top of the tater tots inside the bowl.",
         "confidence": 1.0
       },
       {
-        "fact": "A metal spoon rests inside the bowl on the right side.",
+        "fact": "Red sauce is poured over the pile of tater tots.",
         "confidence": 1.0
       },
       {
-        "fact": "A white bag with visible text is positioned to the left of the bowl.",
+        "fact": "The bowl sits on a wooden surface.",
         "confidence": 1.0
       }
     ],
@@ -3504,7 +3520,7 @@
       "ers",
       "U"
     ],
-    "spatial": "The white bowl containing the food is in the center of the frame. The metal spoon is inside the bowl, resting on the right side. The white plastic bag is to the left of the bowl.",
+    "spatial": "The bowl containing the tater tots is in the center of the frame. The spoon is inside the bowl, resting on top of the food. The food wrapper is to the left of the bowl.",
     "parse_success": true,
     "chunk_idx": 71,
     "video_id": "cktE2pGhc5w"

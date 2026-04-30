@@ -2,95 +2,98 @@
   {
     "time": [
       0,
-      2
+      1
     ],
     "visible_entities": [
       {
-        "desc": "vintage television set with a grey plastic casing, horizontal speaker grilles on the sides, and two silver control knobs on the right",
+        "desc": "vintage television set with a silver-grey plastic casing, horizontal speaker grilles on the left and right sides, and two large circular control knobs on the right panel",
         "action": "static",
         "position": "center"
       },
       {
-        "desc": "white text logo reading 'LOT 26 STUDIO' with a stylized font",
+        "desc": "black television screen with a thin horizontal white line across the middle",
+        "action": "static",
+        "position": "center"
+      },
+      {
+        "desc": "white text logo reading 'LOT 26 STUDIO' with a stylized font, appearing over a static background",
         "action": "appearing",
         "position": "center"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A vintage television set is displayed against a black background.",
+        "fact": "The television screen transitions from a black display with a horizontal line to a static-filled display.",
         "confidence": 1.0
       },
       {
-        "fact": "A white horizontal line appears across the middle of the screen at the start.",
+        "fact": "The text 'LOT 26 STUDIO' appears in the center of the television screen.",
         "confidence": 1.0
       },
       {
-        "fact": "The text 'LOT 26 STUDIO' appears in the center of the screen over a static background.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The television screen transitions from a black screen with a line to a static-filled screen with a logo.",
+        "fact": "The television set features two large circular knobs on the right side.",
         "confidence": 1.0
       }
     ],
     "ocr": [
       "LOT 26 STUDIO"
     ],
-    "spatial": "The television screen is in the center of the frame, flanked by speaker grilles on the left and right. The control knobs are located on the right side of the television casing, positioned vertically next to each other. The 'LOT 26 STUDIO' logo is centered inside the television screen.",
+    "spatial": "The black screen is located inside the silver-grey frame of the television set. The speaker grilles are positioned to the left and right of the screen. The control knobs are situated on the right panel, vertically stacked next to the screen. The 'LOT 26 STUDIO' text is centered on the screen.",
     "parse_success": true,
     "chunk_idx": 0,
     "video_id": "6d4FxUQplAo"
   },
   {
     "time": [
-      2,
-      4
+      1,
+      2
     ],
     "visible_entities": [
       {
-        "desc": "vintage television set with a grey plastic casing, horizontal speaker grilles on the sides, and two silver control knobs on the right",
-        "action": "static",
-        "position": "center"
+        "desc": "vintage television set with a silver-grey casing, a dark speaker grille on the left, and two silver control knobs on the right",
+        "action": "static"
       },
       {
-        "desc": "white logo graphic featuring the text 'LOT 26 STUDIO' inside a rectangular border with a distressed texture",
-        "action": "static",
-        "position": "center"
+        "desc": "white logo graphic featuring the text 'LOT 26 STUDIO' inside a rectangular border",
+        "action": "static"
+      },
+      {
+        "desc": "dark, grainy static noise filling the television screen",
+        "action": "flickering"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "The television screen displays a static image with a dark, grainy background.",
+        "fact": "The television screen displays a logo for 'LOT 26 STUDIO'.",
         "confidence": 1.0
       },
       {
-        "fact": "The text 'LOT 26 STUDIO' is visible in the center of the screen.",
+        "fact": "The background of the screen consists of dark, flickering static.",
         "confidence": 1.0
       },
       {
-        "fact": "The television set has two control knobs positioned vertically on the right side.",
+        "fact": "The television set remains stationary throughout the clip.",
         "confidence": 1.0
       }
     ],
     "ocr": [
       "LOT 26 STUDIO"
     ],
-    "spatial": "The 'LOT 26 STUDIO' logo is centered inside the television screen. The television screen is located in the middle of the grey casing, flanked by speaker grilles on the left and control knobs on the right.",
+    "spatial": "The vintage television set occupies the center of the frame. The 'LOT 26 STUDIO' logo is centered inside the television screen. The speaker grille is to the left of the screen, and the control knobs are to the right of the screen.",
     "parse_success": true,
     "chunk_idx": 1,
     "video_id": "6d4FxUQplAo"
   },
   {
     "time": [
-      4,
-      6
+      2,
+      3
     ],
     "visible_entities": [
       {
-        "desc": "person with dark hair in a ponytail, wearing a grey long-sleeved jacket and black pants",
-        "action": "wiping the wall",
-        "position": "left"
+        "desc": "person with dark hair in a ponytail, wearing a grey belted jacket and black pants",
+        "action": "wiping the wall with a white cloth",
+        "position": "center"
       },
       {
         "desc": "white wall",
@@ -98,7 +101,7 @@
         "position": "background"
       },
       {
-        "desc": "white text graphics",
+        "desc": "white text overlay",
         "action": "static",
         "position": "right"
       },
@@ -108,22 +111,22 @@
         "position": "bottom left"
       },
       {
-        "desc": "rolled up canvas",
+        "desc": "rolled canvas package",
         "action": "static",
         "position": "bottom left"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "person is wiping the wall with a cloth",
+        "fact": "person wipes the wall with a white cloth",
         "confidence": 1.0
       },
       {
-        "fact": "text on the wall reads 'CANVAS WALL HANGING' and 'Make a BIG statement in any space!'",
+        "fact": "text overlay reads 'CANVAS WALL HANGING' and 'Make a BIG statement in any space!'",
         "confidence": 1.0
       },
       {
-        "fact": "rolled up canvas is on the wooden table",
+        "fact": "rolled canvas package rests on the wooden table",
         "confidence": 1.0
       }
     ],
@@ -131,15 +134,15 @@
       "CANVAS WALL HANGING",
       "Make a BIG statement in any space!"
     ],
-    "spatial": "The person is to the left of the text on the wall. The wooden table is below the person. The rolled up canvas is on the wooden table.",
+    "spatial": "The person is standing in front of the white wall. The text overlay is to the right of the person. The wooden table is below the person's hand, and the rolled canvas package is on the table.",
     "parse_success": true,
     "chunk_idx": 2,
     "video_id": "6d4FxUQplAo"
   },
   {
     "time": [
-      6,
-      8
+      3,
+      4
     ],
     "visible_entities": [
       {
@@ -148,71 +151,55 @@
         "position": "center"
       },
       {
-        "desc": "white cloth",
-        "action": "being moved against the wall",
-        "position": "center"
-      },
-      {
-        "desc": "white wall",
-        "action": "static",
-        "position": "background"
-      },
-      {
-        "desc": "white text overlay reading 'CANVAS WALL HANGING' and 'Make a BIG statement in any space!'",
+        "desc": "white text overlay with 'CANVAS WALL HANGING' in mixed script and serif fonts, and 'Make a BIG statement in any space!' in sans-serif fonts",
         "action": "static",
         "position": "right"
       },
       {
-        "desc": "wooden table with a packaged item on top",
+        "desc": "wooden table surface with a packaged product labeled 'CANVAS WALL HANGING'",
         "action": "static",
         "position": "bottom left"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "The person is wiping the white wall with a cloth.",
+        "fact": "person wipes the white wall with a white cloth in their right hand",
         "confidence": 1.0
       },
       {
-        "fact": "The text 'CANVAS WALL HANGING' is visible on the right side of the screen.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "A wooden table is located in the bottom left corner.",
+        "fact": "text overlay promotes 'CANVAS WALL HANGING' and 'Make a BIG statement in any space!'",
         "confidence": 1.0
       }
     ],
     "ocr": [
       "CANVAS WALL HANGING",
-      "Make a",
-      "BIG",
-      "statement",
-      "in any space!"
+      "Make a BIG statement in any space!",
+      "CANVAS WALL HANGING"
     ],
-    "spatial": "The person is standing in the center of the frame, in front of the white wall. The promotional text is positioned to the right of the person. The wooden table is located in the bottom left corner, below the person's arm level.",
+    "spatial": "The person is standing in the center of the frame, facing the wall. The promotional text is positioned on the right side of the wall, to the right of the person. The wooden table with the product package is located in the bottom left corner, below the person's arm.",
     "parse_success": true,
     "chunk_idx": 3,
     "video_id": "6d4FxUQplAo"
   },
   {
     "time": [
-      8,
-      10
+      4,
+      5
     ],
     "visible_entities": [
       {
-        "desc": "woman with dark hair pulled back in a ponytail, wearing a grey button-up jacket with pockets and black pants",
-        "action": "turning body and reaching for an object",
+        "desc": "woman with dark hair pulled back in a ponytail, wearing a grey button-up jacket with shoulder epaulets and black pants",
+        "action": "turning body to face forward and reaching for a package",
         "position": "left"
       },
       {
-        "desc": "wooden table surface",
-        "action": "static",
+        "desc": "white rectangular package with black text and a shipping label",
+        "action": "resting on the table",
         "position": "bottom left"
       },
       {
-        "desc": "white package with black text",
-        "action": "being picked up",
+        "desc": "light brown wooden table surface",
+        "action": "static",
         "position": "bottom left"
       }
     ],
@@ -222,56 +209,56 @@
         "confidence": 1.0
       },
       {
-        "fact": "The woman reaches down with her right hand to pick up a white package.",
+        "fact": "The woman reaches out with her right hand to touch the package.",
         "confidence": 1.0
       },
       {
-        "fact": "The package has the word 'NORDIC' printed on it.",
+        "fact": "The package rests on the wooden table.",
         "confidence": 1.0
       }
     ],
     "ocr": [
-      "NORDIC"
+      "PRIORITY"
     ],
-    "spatial": "The woman is standing to the right of the wooden table. The white package is resting on the table. The woman is reaching for the package which is in front of her.",
+    "spatial": "The woman is standing to the right of the wooden table. The white package is on top of the table, near the woman's right hand. The woman is positioned in front of the white wall.",
     "parse_success": true,
     "chunk_idx": 4,
     "video_id": "6d4FxUQplAo"
   },
   {
     "time": [
-      10,
-      12
+      5,
+      6
     ],
     "visible_entities": [
       {
-        "desc": "woman with dark hair pulled back, wearing a grey long-sleeved button-up shirt with shoulder epaulets and chest pockets, and black pants",
-        "action": "holding a product box then lowering it towards a table",
-        "position": "center"
+        "desc": "woman with dark hair pulled back, wearing a grey button-up jacket with epaulets and black pants",
+        "action": "holding a tall box",
+        "position": "left"
       },
       {
-        "desc": "tall rectangular product box, white with grey and black text and graphics",
-        "action": "being held and moved downwards",
-        "position": "center"
+        "desc": "tall rectangular product box, white with grey top and black text",
+        "action": "being held and tilted",
+        "position": "left"
       },
       {
-        "desc": "light brown wooden table surface",
+        "desc": "wooden table surface, light brown",
         "action": "static",
         "position": "bottom left"
       },
       {
-        "desc": "crumpled white cloth",
+        "desc": "white cloth, crumpled",
         "action": "static",
         "position": "bottom left"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "The woman holds the product box up in front of her chest.",
+        "fact": "The woman is holding a tall product box with both hands.",
         "confidence": 1.0
       },
       {
-        "fact": "The woman lowers the product box towards the table.",
+        "fact": "The woman tilts the box downwards towards the table.",
         "confidence": 1.0
       },
       {
@@ -279,86 +266,90 @@
         "confidence": 1.0
       },
       {
-        "fact": "A white cloth rests on the table.",
+        "fact": "A white cloth rests on the wooden table.",
         "confidence": 1.0
       }
     ],
     "ocr": [
       "KITCHEN"
     ],
-    "spatial": "The woman is standing in front of a white wall. She is holding the product box in front of her torso. The table is located to the left of the woman and below the box as she lowers it. The white cloth is on the table.",
+    "spatial": "The woman is standing to the left of the frame, holding the box in front of her torso. The wooden table is below the box and to the woman's left. The white cloth is on the table, near the edge.",
     "parse_success": true,
     "chunk_idx": 5,
     "video_id": "6d4FxUQplAo"
   },
   {
     "time": [
-      12,
-      14
+      6,
+      7
     ],
     "visible_entities": [
       {
         "desc": "woman with dark hair pulled back, wearing a grey button-up jacket with shoulder epaulets and black pants",
-        "action": "pulling a white poster out of a clear plastic sleeve",
+        "action": "pulling a white object out of a plastic bag",
         "position": "left"
       },
       {
-        "desc": "white poster with black text reading 'Kitten' and a graphic",
-        "action": "being removed from packaging",
-        "position": "left"
-      },
-      {
-        "desc": "clear plastic packaging sleeve",
+        "desc": "clear plastic shopping bag with black text reading 'otten'",
         "action": "being held open",
         "position": "left"
       },
       {
-        "desc": "light brown wooden table",
+        "desc": "white fabric item, possibly a shirt or garment",
+        "action": "being removed from the bag",
+        "position": "left"
+      },
+      {
+        "desc": "light brown wooden table surface",
         "action": "static",
         "position": "bottom left"
       },
       {
-        "desc": "crumpled white tissue or cloth",
+        "desc": "crumpled white cloth or tissue",
         "action": "static",
         "position": "bottom left"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "The woman is holding a plastic sleeve in one hand and pulling a white poster out with the other.",
+        "fact": "The woman is holding a plastic bag with both hands.",
         "confidence": 1.0
       },
       {
-        "fact": "The poster features the word 'Kitten' in large black letters.",
+        "fact": "The woman is pulling a white fabric item out of the bag.",
         "confidence": 1.0
       },
       {
-        "fact": "A crumpled white cloth rests on the wooden table surface.",
+        "fact": "The bag has the text 'otten' printed on it in black letters.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A crumpled white cloth rests on the wooden table.",
         "confidence": 1.0
       }
     ],
     "ocr": [
-      "Kitten"
+      "otten"
     ],
-    "spatial": "The woman is standing to the left of the frame, positioned behind the wooden table. She is holding the poster and plastic sleeve in front of her body. The crumpled white cloth is on the table to the left of the poster.",
+    "spatial": "The woman is standing to the right of the wooden table. She is holding the plastic bag in front of her body, slightly above the table surface. The white cloth is on the table to the left of the bag.",
     "parse_success": true,
     "chunk_idx": 6,
     "video_id": "6d4FxUQplAo"
   },
   {
     "time": [
-      14,
-      16
+      7,
+      8
     ],
     "visible_entities": [
       {
         "desc": "woman with dark hair pulled back, wearing a grey button-up jacket with shoulder epaulets and black pants",
-        "action": "unrolling a white poster",
+        "action": "unrolling a poster",
         "position": "left"
       },
       {
-        "desc": "white paper poster with black text",
-        "action": "being unrolled",
+        "desc": "white poster with black text",
+        "action": "being held and unrolled",
         "position": "left"
       },
       {
@@ -373,7 +364,7 @@
         "confidence": 1.0
       },
       {
-        "fact": "The poster reveals the text 'USE KIND WORDS' and 'know you are loved'.",
+        "fact": "The poster displays the text 'USE KIND WORDS know you are loved'.",
         "confidence": 1.0
       },
       {
@@ -385,29 +376,29 @@
       "USE KIND WORDS",
       "know you are loved"
     ],
-    "spatial": "The woman is standing to the left of the frame, holding the poster in front of her. The wooden table is below the poster and to the left of the woman.",
+    "spatial": "The woman is standing to the left of the frame, holding the poster in front of her. The poster is positioned above the wooden table in the bottom left corner.",
     "parse_success": true,
     "chunk_idx": 7,
     "video_id": "6d4FxUQplAo"
   },
   {
     "time": [
-      16,
-      18
+      8,
+      9
     ],
     "visible_entities": [
       {
-        "desc": "woman with dark hair pulled back, wearing a grey button-up jacket with shoulder epaulets and black pants",
-        "action": "unrolling a large white sheet of paper",
+        "desc": "woman with dark hair pulled back, wearing a grey button-up jacket with shoulder epaulets and flap pockets, and black pants",
+        "action": "unrolling a large white sheet",
         "position": "left"
       },
       {
-        "desc": "large roll of white paper with black text printed on it",
+        "desc": "large white sheet of paper or fabric with black text printed on it",
         "action": "being unrolled",
         "position": "left foreground"
       },
       {
-        "desc": "light-colored wooden table surface",
+        "desc": "wooden table surface",
         "action": "static",
         "position": "bottom left"
       },
@@ -419,31 +410,34 @@
     ],
     "atomic_facts": [
       {
-        "fact": "The woman is unrolling a large sheet of white paper on a table.",
+        "fact": "The woman is unrolling a large white sheet on a wooden table.",
         "confidence": 1.0
       },
       {
-        "fact": "The paper has black text printed on it.",
+        "fact": "The sheet has black text printed on it.",
         "confidence": 1.0
       },
       {
-        "fact": "The woman is holding the paper with both hands.",
+        "fact": "The text 'Keep your' is visible on the sheet.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The woman is wearing a grey jacket with epaulets.",
         "confidence": 1.0
       }
     ],
     "ocr": [
-      "Keep your",
-      "m"
+      "Keep your"
     ],
-    "spatial": "The woman is standing to the left of the frame, behind the wooden table. She is holding the roll of paper, which is positioned on the table in front of her. The white wall is behind the woman and the table.",
+    "spatial": "The woman is standing to the left of the frame, in front of a plain white wall. She is holding the large white sheet, which is positioned on a wooden table in front of her. The sheet is being unrolled from right to left across the table surface.",
     "parse_success": true,
     "chunk_idx": 8,
     "video_id": "6d4FxUQplAo"
   },
   {
     "time": [
-      18,
-      20
+      9,
+      10
     ],
     "visible_entities": [
       {
@@ -452,12 +446,12 @@
         "position": "left"
       },
       {
-        "desc": "large white sheet of paper or fabric, flexible material",
+        "desc": "large white sheet of paper or fabric",
         "action": "being held and unfolded",
         "position": "left"
       },
       {
-        "desc": "light brown wooden table",
+        "desc": "light-colored wooden table",
         "action": "static",
         "position": "bottom left"
       }
@@ -468,7 +462,7 @@
         "confidence": 1.0
       },
       {
-        "fact": "She is in the process of unfolding or shaking out the white material.",
+        "fact": "She is in the process of unfolding the white sheet.",
         "confidence": 1.0
       },
       {
@@ -477,45 +471,45 @@
       }
     ],
     "ocr": [],
-    "spatial": "The woman is standing to the left of the frame, next to a wooden table. She is holding the large white sheet in front of her body. The table is located below her hands and to her left.",
+    "spatial": "The woman is standing to the left of the frame, positioned next to a wooden table. She is holding the large white sheet in front of her body. The table is below her hands.",
     "parse_success": true,
     "chunk_idx": 9,
     "video_id": "6d4FxUQplAo"
   },
   {
     "time": [
-      20,
-      22
+      10,
+      11
     ],
     "visible_entities": [
       {
-        "desc": "woman with dark hair pulled back, wearing a grey long-sleeved jacket with shoulder epaulets and front pockets, black pants",
-        "action": "placing a large white sheet on the table",
-        "position": "center/background"
+        "desc": "woman with dark hair pulled back, wearing a grey long-sleeved button-up shirt with shoulder epaulets and front pockets, and black pants",
+        "action": "holding the top edge of a large white sheet of paper",
+        "position": "center"
       },
       {
-        "desc": "large white sheet of paper with faint grey grid lines or text",
-        "action": "being laid flat on the table",
-        "position": "foreground/center"
+        "desc": "large white sheet of paper with faint grid lines or text",
+        "action": "being held up by the woman",
+        "position": "foreground"
       },
       {
         "desc": "light brown wooden table",
         "action": "static",
-        "position": "foreground/left"
+        "position": "bottom"
       },
       {
-        "desc": "clear plastic storage box with a label",
+        "desc": "clear plastic storage box",
         "action": "static",
         "position": "left"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "The woman places a large white sheet of paper onto the wooden table.",
+        "fact": "The woman is holding the top edge of a large white sheet of paper.",
         "confidence": 1.0
       },
       {
-        "fact": "She uses both hands to smooth the paper out.",
+        "fact": "The paper is positioned over the wooden table.",
         "confidence": 1.0
       },
       {
@@ -524,77 +518,26 @@
       }
     ],
     "ocr": [],
-    "spatial": "The woman is standing behind the wooden table. The large white sheet of paper is on the table in front of her. The clear plastic box is to the left of the paper on the table.",
+    "spatial": "The woman is standing behind the wooden table. She is holding the large white sheet of paper in front of her, positioning it above the table surface. The clear plastic box is to the left of the paper on the table.",
     "parse_success": true,
     "chunk_idx": 10,
     "video_id": "6d4FxUQplAo"
   },
   {
     "time": [
-      22,
-      24
+      11,
+      12
     ],
     "visible_entities": [
       {
         "desc": "woman with dark hair pulled back, wearing a grey long-sleeved button-up shirt with shoulder epaulets and chest pockets",
-        "action": "standing behind a table and looking down at a large sheet of paper",
+        "action": "standing behind a table",
         "position": "center/background"
       },
       {
-        "desc": "large white sheet of paper with faint horizontal lines, resembling a musical score or ruled paper",
-        "action": "static",
-        "position": "foreground/center"
-      },
-      {
-        "desc": "light brown wooden table",
+        "desc": "large white sheet of paper with printed text, lying flat",
         "action": "static",
         "position": "foreground"
-      },
-      {
-        "desc": "clear plastic rectangular container with a blue and white label",
-        "action": "static",
-        "position": "left"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "The woman is standing behind the table.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The woman is looking down at the paper on the table.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "A large sheet of paper is lying flat on the table surface.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "A plastic container is sitting on the left side of the table.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [],
-    "spatial": "The woman is standing behind the wooden table. The large white sheet of paper is on the table in front of the woman. The clear plastic container is to the left of the paper on the table.",
-    "parse_success": true,
-    "chunk_idx": 11,
-    "video_id": "6d4FxUQplAo"
-  },
-  {
-    "time": [
-      24,
-      26
-    ],
-    "visible_entities": [
-      {
-        "desc": "woman with dark hair tied in a bun, wearing a grey long-sleeved button-up shirt with shoulder epaulets and chest pockets",
-        "action": "smoothing a large sheet of paper on the table",
-        "position": "center/background"
-      },
-      {
-        "desc": "large white sheet of paper with a grid of handwritten text",
-        "action": "static",
-        "position": "foreground/center"
       },
       {
         "desc": "light brown wooden table",
@@ -609,80 +552,132 @@
     ],
     "atomic_facts": [
       {
-        "fact": "The woman is using both hands to press down and smooth the large sheet of paper.",
+        "fact": "The woman is standing behind the table.",
         "confidence": 1.0
       },
       {
-        "fact": "The paper is covered in a grid of handwritten text.",
+        "fact": "The large white sheet of paper is lying flat on the table.",
         "confidence": 1.0
       },
       {
-        "fact": "A plastic box sits on the left side of the table.",
+        "fact": "The plastic box is on the left side of the table.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The woman is standing behind the wooden table. The large sheet of paper is spread out on the table in front of her. The plastic box is to the left of the paper on the table.",
+    "spatial": "The woman is standing behind the light brown wooden table. The large white sheet of paper is on the table in front of the woman. The clear plastic box is to the left of the paper on the table.",
     "parse_success": true,
-    "chunk_idx": 12,
+    "chunk_idx": 11,
     "video_id": "6d4FxUQplAo"
   },
   {
     "time": [
-      26,
-      28
+      12,
+      13
     ],
     "visible_entities": [
       {
-        "desc": "person with dark hair pulled back, wearing a grey long-sleeved shirt with epaulets and a ring on the left hand",
-        "action": "smoothing a large white sheet",
+        "desc": "person with dark hair tied back, wearing a grey long-sleeved button-up shirt with shoulder epaulets and chest pockets, and black pants",
+        "action": "smoothing a large sheet of paper",
         "position": "center"
       },
       {
-        "desc": "large white sheet of paper with faint grey text, rectangular",
-        "action": "lying flat",
-        "position": "center"
-      },
-      {
-        "desc": "light brown wooden table, smooth surface",
+        "desc": "large white sheet of paper with printed text, appearing to be a document or poster",
         "action": "static",
         "position": "foreground"
       },
       {
-        "desc": "clear plastic packaging with a label",
+        "desc": "light brown wooden table",
+        "action": "static",
+        "position": "foreground"
+      },
+      {
+        "desc": "clear plastic storage box with a blue and white label",
         "action": "static",
         "position": "left"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "The person uses their hands to smooth out the large white sheet on the table.",
+        "fact": "The person is using both hands to smooth out a large sheet of paper on the table.",
         "confidence": 1.0
       },
       {
-        "fact": "The white sheet covers a significant portion of the wooden table surface.",
+        "fact": "The paper is covered in lines of printed text.",
         "confidence": 1.0
       },
       {
-        "fact": "A plastic package sits on the left side of the table.",
+        "fact": "A plastic box is sitting on the left side of the table.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The person stands behind the wooden table. The large white sheet is spread out on top of the table, directly in front of the person. The clear plastic packaging is located to the left of the white sheet on the table surface.",
+    "spatial": "The person is standing behind the wooden table. The large sheet of paper is spread out on the table in front of the person. The clear plastic box is to the left of the paper on the table.",
+    "parse_success": true,
+    "chunk_idx": 12,
+    "video_id": "6d4FxUQplAo"
+  },
+  {
+    "time": [
+      13,
+      14
+    ],
+    "visible_entities": [
+      {
+        "desc": "person with dark hair pulled back, wearing a grey long-sleeved button-up shirt",
+        "action": "smoothing a large white sheet",
+        "position": "center"
+      },
+      {
+        "desc": "large white sheet of paper with faint grid lines or text",
+        "action": "lying flat on table",
+        "position": "center"
+      },
+      {
+        "desc": "light brown wooden table",
+        "action": "static",
+        "position": "foreground"
+      },
+      {
+        "desc": "clear plastic packaging with blue and white label",
+        "action": "static",
+        "position": "left"
+      },
+      {
+        "desc": "hands with a silver ring on the left ring finger",
+        "action": "peeling a corner of the white sheet",
+        "position": "center"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The person is smoothing a large white sheet of paper on the table.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The person's hands are peeling back the corner of the white sheet.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A clear plastic package is sitting on the left side of the table.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The person is standing behind the wooden table. The large white sheet is on top of the table in front of the person. The clear plastic packaging is to the left of the white sheet.",
     "parse_success": true,
     "chunk_idx": 13,
     "video_id": "6d4FxUQplAo"
   },
   {
     "time": [
-      28,
-      30
+      14,
+      15
     ],
     "visible_entities": [
       {
-        "desc": "person wearing a grey short-sleeved shirt and black pants, with a silver ring on the left ring finger",
-        "action": "peeling the backing paper off a decal",
+        "desc": "person with tan skin, wearing a grey shirt and a silver ring on the left ring finger",
+        "action": "peeling backing paper from a decal",
         "position": "center"
       },
       {
@@ -698,85 +693,85 @@
     ],
     "atomic_facts": [
       {
-        "fact": "A person is peeling the white backing paper away from a vinyl decal.",
+        "fact": "A person is using their hands to peel the white backing paper away from a vinyl decal.",
         "confidence": 1.0
       },
       {
-        "fact": "The decal features the word 'RULES' in large, grey, capital letters.",
+        "fact": "The decal features the word 'RULES' in large, grey, sans-serif letters.",
         "confidence": 1.0
       },
       {
-        "fact": "The person is using both hands to separate the layers of the decal sheet.",
+        "fact": "The decal is resting on a wooden table.",
         "confidence": 1.0
       }
     ],
     "ocr": [
       "RULES"
     ],
-    "spatial": "The person is positioned behind the wooden table. The white decal sheet is lying on the table in front of the person. The person's hands are holding the corner of the decal sheet to peel it.",
+    "spatial": "The person is positioned behind the decal sheet, with their hands reaching over the table surface to manipulate the material. The decal lies flat on the wooden table in the foreground.",
     "parse_success": true,
     "chunk_idx": 14,
     "video_id": "6d4FxUQplAo"
   },
   {
     "time": [
-      30,
-      32
+      15,
+      16
     ],
     "visible_entities": [
       {
-        "desc": "person's hand with a silver ring on the ring finger, wearing a grey long-sleeved top and black pants",
-        "action": "holding the corner of a white sheet",
+        "desc": "person with dark skin, wearing a grey long-sleeved shirt and black pants, with a silver ring on the ring finger",
+        "action": "holding a white sheet",
         "position": "top center"
       },
       {
-        "desc": "white sheet with large, light grey text printed on it",
+        "desc": "white sheet of paper or vinyl with large, reversed grey text",
         "action": "being held",
         "position": "center foreground"
       },
       {
         "desc": "light brown wooden table surface",
         "action": "static",
-        "position": "background"
+        "position": "bottom left"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A person is holding the top corner of a white sheet.",
+        "fact": "A person is holding the corner of a white sheet with their left hand.",
         "confidence": 1.0
       },
       {
-        "fact": "The sheet has the word 'RULES' printed on it in reverse.",
+        "fact": "The sheet features large, reversed text reading 'RULES'.",
         "confidence": 1.0
       },
       {
-        "fact": "The person is wearing a ring on their finger.",
+        "fact": "The person is wearing a silver ring on their ring finger.",
         "confidence": 1.0
       }
     ],
     "ocr": [
       "RULES"
     ],
-    "spatial": "The person's hand is holding the top edge of the white sheet. The sheet is positioned above the wooden table. The text 'RULES' is visible on the sheet.",
+    "spatial": "The person is standing behind the wooden table. The person's hand is holding the top edge of the white sheet, which is positioned above the table surface. The text 'RULES' is visible on the sheet.",
     "parse_success": true,
     "chunk_idx": 15,
     "video_id": "6d4FxUQplAo"
   },
   {
     "time": [
-      32,
-      34
+      16,
+      17
     ],
     "visible_entities": [
       {
-        "desc": "person's hand with a silver ring on the ring finger",
-        "action": "holding the corner of a white sheet",
-        "position": "top center"
+        "desc": "hand with dark skin tone, wearing a silver ring on the ring finger",
+        "action": "peeling the backing paper off a decal",
+        "position": "center"
       },
       {
-        "desc": "white sheet with large, reversed grey text",
-        "action": "being held and manipulated",
-        "position": "center foreground"
+        "desc": "white decal sheet with grey reversed text",
+        "action": "static",
+        "position": "foreground"
       },
       {
         "desc": "light brown wooden table surface",
@@ -786,40 +781,41 @@
     ],
     "atomic_facts": [
       {
-        "fact": "A hand is holding the top corner of a white sheet.",
+        "fact": "A hand is peeling the white backing paper away from a decal.",
         "confidence": 1.0
       },
       {
-        "fact": "The sheet displays the reversed text 'RULES'.",
+        "fact": "The decal features the reversed text 'RULES' and 'together'.",
         "confidence": 1.0
       },
       {
-        "fact": "The sheet is positioned over a wooden table.",
+        "fact": "The decal is resting on a wooden table.",
         "confidence": 1.0
       }
     ],
     "ocr": [
-      "RULES"
+      "RULES",
+      "together"
     ],
-    "spatial": "The hand is positioned above the white sheet, gripping its top edge. The white sheet is in front of the wooden table surface. The text 'RULES' is printed on the white sheet.",
+    "spatial": "The hand is positioned above the wooden table, holding the corner of the white decal sheet. The decal sheet lies flat on the table surface.",
     "parse_success": true,
     "chunk_idx": 16,
     "video_id": "6d4FxUQplAo"
   },
   {
     "time": [
-      34,
-      36
+      17,
+      18
     ],
     "visible_entities": [
       {
-        "desc": "person wearing black pants and a grey top",
+        "desc": "person wearing a grey long-sleeved top and black pants",
         "action": "reaching hand towards the paper",
         "position": "background"
       },
       {
         "desc": "white paper with large grey text",
-        "action": "lying flat on the table",
+        "action": "static",
         "position": "foreground"
       },
       {
@@ -830,15 +826,15 @@
     ],
     "atomic_facts": [
       {
-        "fact": "A person reaches their hand towards a sheet of paper on a table.",
+        "fact": "A person reaches their hand towards a piece of paper on a table.",
         "confidence": 1.0
       },
       {
-        "fact": "The paper displays the word 'RULES' in large, reversed, grey letters.",
+        "fact": "The paper displays the text 'RULES' in large letters.",
         "confidence": 1.0
       },
       {
-        "fact": "The paper is resting on a wooden surface.",
+        "fact": "The paper is lying flat on the wooden surface.",
         "confidence": 1.0
       }
     ],
@@ -846,271 +842,120 @@
       "RULES",
       "ther"
     ],
-    "spatial": "The white paper is in the foreground, lying on top of the light brown wooden table. The person is standing behind the table, reaching their hand over the paper.",
+    "spatial": "The white paper with text is in the foreground, lying on the light brown wooden table. The person is standing behind the table, reaching their hand down towards the paper.",
     "parse_success": true,
     "chunk_idx": 17,
     "video_id": "6d4FxUQplAo"
   },
   {
     "time": [
-      36,
-      38
+      18,
+      19
     ],
     "visible_entities": [
       {
-        "desc": "person wearing a grey long-sleeved top, black pants, and a silver ring on the ring finger",
-        "action": "pressing down on the paper",
+        "desc": "person with fair skin, wearing a grey long-sleeved top, black pants, and a silver ring on their ring finger",
+        "action": "pressing down on a white sheet of paper",
         "position": "top right"
       },
       {
-        "desc": "white paper with large grey text",
+        "desc": "white sheet of paper with large, light grey text",
         "action": "static",
-        "position": "center foreground"
+        "position": "bottom center"
       },
       {
         "desc": "light brown wooden table surface",
         "action": "static",
-        "position": "background"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "A person presses their hand onto a sheet of paper on a table.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The paper displays the word 'RULES' in large, grey, capital letters.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The text on the paper is oriented upside down relative to the camera view.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [
-      "RULES"
-    ],
-    "spatial": "The person is positioned to the right of the paper. The paper lies flat on top of the wooden table. The person's hand is placed directly on the upper edge of the paper.",
-    "parse_success": true,
-    "chunk_idx": 18,
-    "video_id": "6d4FxUQplAo"
-  },
-  {
-    "time": [
-      38,
-      40
-    ],
-    "visible_entities": [
-      {
-        "desc": "person with dark hair in a ponytail, wearing a grey long-sleeved shirt",
-        "action": "peeling backing off a sign and placing it on a wall",
         "position": "center"
       },
       {
-        "desc": "white rectangular sign with black text",
-        "action": "being manipulated and placed on wall",
-        "position": "center"
-      },
-      {
-        "desc": "wooden table surface",
+        "desc": "transparent plastic sheet",
         "action": "static",
         "position": "left"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A person is peeling the backing off a white sign.",
+        "fact": "A person's hand is pressing down on the corner of a white sheet of paper.",
         "confidence": 1.0
       },
       {
-        "fact": "The person is placing the sign onto a white wall.",
+        "fact": "The paper features the word 'RULES' printed in large, light grey letters.",
         "confidence": 1.0
       },
       {
-        "fact": "The sign features the text 'FAMILY RULES' at the top.",
+        "fact": "A transparent plastic sheet rests on the wooden table to the left of the paper.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "RULES",
+      "ther"
+    ],
+    "spatial": "The person is standing behind the wooden table. The white sheet of paper is on the table in the foreground. The transparent plastic sheet is to the left of the paper.",
+    "parse_success": true,
+    "chunk_idx": 18,
+    "video_id": "6d4FxUQplAo"
+  },
+  {
+    "time": [
+      19,
+      20
+    ],
+    "visible_entities": [
+      {
+        "desc": "person with dark hair in a ponytail, wearing a grey long-sleeved shirt",
+        "action": "hanging a poster on the wall",
+        "position": "center"
+      },
+      {
+        "desc": "white poster with black text",
+        "action": "being placed on the wall",
+        "position": "center"
+      },
+      {
+        "desc": "white wall",
+        "action": "static",
+        "position": "background"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "person is hanging a poster on the wall",
+        "confidence": 1.0
+      },
+      {
+        "fact": "the poster reads 'FAMILY RULES'",
         "confidence": 1.0
       }
     ],
     "ocr": [
       "FAMILY RULES",
-      "Each Other",
+      "ach Other",
       "Tell the Truth",
-      "ARE",
       "sea",
       "ents",
-      "urself",
+      "rself",
       "you"
     ],
-    "spatial": "The person is in the center of the frame, holding the white sign. The wooden table is to the left of the person. The sign is being placed on the white wall in front of the person.",
+    "spatial": "The person is standing in front of the white wall. The person is holding the poster with both hands, positioning it against the wall.",
     "parse_success": true,
     "chunk_idx": 19,
     "video_id": "6d4FxUQplAo"
   },
   {
     "time": [
-      40,
-      42
+      20,
+      21
     ],
     "visible_entities": [
       {
-        "desc": "person with long dark hair in a ponytail, wearing a grey long-sleeved shirt",
-        "action": "hanging a sign on the wall",
-        "position": "center"
-      },
-      {
-        "desc": "large rectangular white sign with black text",
-        "action": "being held against the wall",
-        "position": "center"
-      },
-      {
-        "desc": "plain white wall",
-        "action": "static",
-        "position": "background"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "A person is holding a sign against a white wall with both hands.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The sign features the heading 'FAMILY RULES'.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The sign lists rules such as 'Help Each Other' and 'Always Tell the Truth'.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [
-      "FAMILY RULES",
-      "Help Each Other",
-      "Always Tell the Truth",
-      "RESPECT",
-      "yourself",
-      "you",
-      "INGS",
-      "ful",
-      "sion"
-    ],
-    "spatial": "The person is standing in front of the white wall. The person is holding the 'FAMILY RULES' sign against the wall with their hands positioned at the top corners of the sign.",
-    "parse_success": true,
-    "chunk_idx": 20,
-    "video_id": "6d4FxUQplAo"
-  },
-  {
-    "time": [
-      42,
-      44
-    ],
-    "visible_entities": [
-      {
-        "desc": "person with long black hair tied in a low ponytail, wearing a grey long-sleeved top",
+        "desc": "person with long dark hair tied in a ponytail, wearing a grey long-sleeved top",
         "action": "holding a sign against the wall",
         "position": "center"
       },
       {
         "desc": "rectangular white sign with black text and a distressed border",
-        "action": "being held against the wall",
-        "position": "center"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "A person is holding a sign against a white wall.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The sign displays the heading 'FAMILY RULES'.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The sign lists rules such as 'Help Each Other' and 'Always Tell the Truth'.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [
-      "FAMILY RULES",
-      "Help Each Other",
-      "Always Tell the Truth",
-      "SHARE",
-      "RESPECT",
-      "Listen",
-      "Tell",
-      "You",
-      "INGS",
-      "ful",
-      "sion"
-    ],
-    "spatial": "The person is standing in front of the white wall. The person is holding the sign with both hands, positioning it against the wall. The text 'FAMILY RULES' is at the top of the sign, above the other text.",
-    "parse_success": true,
-    "chunk_idx": 21,
-    "video_id": "6d4FxUQplAo"
-  },
-  {
-    "time": [
-      44,
-      46
-    ],
-    "visible_entities": [
-      {
-        "desc": "person with long black hair tied in a low ponytail, wearing a grey long-sleeved shirt",
-        "action": "hanging a sign on the wall",
-        "position": "center"
-      },
-      {
-        "desc": "rectangular white sign with black text and a distressed border",
-        "action": "being held against the wall",
-        "position": "center"
-      },
-      {
-        "desc": "plain white wall",
-        "action": "static",
-        "position": "background"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "A person is holding a sign against a white wall with both hands.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The sign displays the text 'FAMILY RULES' at the top.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The sign lists rules such as 'Help Each Other' and 'Always Tell the Truth'.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [
-      "FAMILY RULES",
-      "Help Each Other",
-      "Always Tell the Truth",
-      "RESPECT",
-      "You",
-      "KINDNESS",
-      "ful",
-      "sion"
-    ],
-    "spatial": "The person is standing in front of the white wall. The person is holding the sign against the wall with their hands positioned at the top corners of the sign.",
-    "parse_success": true,
-    "chunk_idx": 22,
-    "video_id": "6d4FxUQplAo"
-  },
-  {
-    "time": [
-      46,
-      48
-    ],
-    "visible_entities": [
-      {
-        "desc": "person with long dark hair tied in a ponytail, wearing a grey long-sleeved shirt",
-        "action": "holding a sign against the wall",
-        "position": "center"
-      },
-      {
-        "desc": "large rectangular white sign with black text and a distressed border",
         "action": "being positioned on the wall",
         "position": "center"
       },
@@ -1122,7 +967,173 @@
     ],
     "atomic_facts": [
       {
-        "fact": "The person is holding the sign with both hands raised above their head.",
+        "fact": "person holds a sign against the wall with both hands",
+        "confidence": 1.0
+      },
+      {
+        "fact": "the sign reads 'FAMILY RULES' at the top",
+        "confidence": 1.0
+      },
+      {
+        "fact": "the sign lists rules such as 'Help Each Other' and 'Always Tell the Truth'",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "FAMILY RULES",
+      "Help Each Other",
+      "Always Tell the Truth",
+      "RESPECT",
+      "yourself",
+      "you",
+      "THINGS",
+      "ful",
+      "sion"
+    ],
+    "spatial": "The person is standing in front of the white wall. The person is holding the sign with both hands, positioning it against the wall. The text 'FAMILY RULES' is at the top of the sign, above the other listed rules.",
+    "parse_success": true,
+    "chunk_idx": 20,
+    "video_id": "6d4FxUQplAo"
+  },
+  {
+    "time": [
+      21,
+      22
+    ],
+    "visible_entities": [
+      {
+        "desc": "person with long black hair tied in a ponytail, wearing a grey long-sleeved shirt",
+        "action": "holding a sign against a wall",
+        "position": "center"
+      },
+      {
+        "desc": "large rectangular white sign with black text and a distressed border",
+        "action": "being held",
+        "position": "center"
+      },
+      {
+        "desc": "plain white wall",
+        "action": "static",
+        "position": "background"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A person is holding a 'FAMILY RULES' sign against a white wall.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The sign features a list of rules in black text.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The person's hands are gripping the top corners of the sign.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "FAMILY RULES",
+      "Help Each Other",
+      "Always Tell the Truth",
+      "SHARE",
+      "RESPECT",
+      "es",
+      "nts",
+      "ell",
+      "you",
+      "NGS",
+      "ful",
+      "sion"
+    ],
+    "spatial": "The person is in front of the white wall. The person is holding the sign against the wall. The text 'FAMILY RULES' is at the top of the sign.",
+    "parse_success": true,
+    "chunk_idx": 21,
+    "video_id": "6d4FxUQplAo"
+  },
+  {
+    "time": [
+      22,
+      23
+    ],
+    "visible_entities": [
+      {
+        "desc": "person with long black hair tied in a low ponytail, wearing a grey long-sleeved shirt",
+        "action": "holding a sign against a wall",
+        "position": "center"
+      },
+      {
+        "desc": "rectangular white sign with black text and a distressed border",
+        "action": "being held against the wall",
+        "position": "center"
+      },
+      {
+        "desc": "plain white wall",
+        "action": "static",
+        "position": "background"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "person holds a sign against the wall with both hands",
+        "confidence": 1.0
+      },
+      {
+        "fact": "the sign reads 'FAMILY RULES' at the top",
+        "confidence": 1.0
+      },
+      {
+        "fact": "the sign lists rules such as 'Help Each Other' and 'Always Tell the Truth'",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "FAMILY RULES",
+      "Help Each Other",
+      "Always Tell the Truth",
+      "R",
+      "R",
+      "es",
+      "nts",
+      "ell",
+      "ou",
+      "NGS",
+      "ful",
+      "sion"
+    ],
+    "spatial": "The person is standing in front of the white wall. The person is holding the sign against the wall. The text 'FAMILY RULES' is at the top of the sign.",
+    "parse_success": true,
+    "chunk_idx": 22,
+    "video_id": "6d4FxUQplAo"
+  },
+  {
+    "time": [
+      23,
+      24
+    ],
+    "visible_entities": [
+      {
+        "desc": "person with long dark hair tied in a ponytail, wearing a grey long-sleeved shirt",
+        "action": "adjusting a sign on the wall",
+        "position": "center"
+      },
+      {
+        "desc": "large rectangular sign with a white background, black text, and a distressed dark border",
+        "action": "being held against the wall",
+        "position": "center"
+      },
+      {
+        "desc": "plain white wall",
+        "action": "static",
+        "position": "background"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A person is holding a sign against a white wall with both hands.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The person is adjusting the position of the sign.",
         "confidence": 1.0
       },
       {
@@ -1130,58 +1141,62 @@
         "confidence": 1.0
       },
       {
-        "fact": "The person is standing in front of the white wall.",
+        "fact": "The sign lists rules such as 'Help Each Other' and 'Always Tell the Truth'.",
         "confidence": 1.0
       }
     ],
     "ocr": [
       "FAMILY RULES",
-      "Help Each Other",
-      "Always Tell the Truth",
-      "SHARE",
-      "OUR",
-      "s",
+      "Help Each Othe",
+      "Alw Tell the Tr",
+      "AR",
+      "UR",
+      "ses",
       "nts",
       "sell",
       "you",
       "INGS",
       "kful",
-      "sion",
-      "ny"
+      "sion"
     ],
-    "spatial": "The person is standing in front of the white wall. The sign is held by the person and is positioned against the wall. The text 'FAMILY RULES' is at the top of the sign, above the other text lines.",
+    "spatial": "The person is standing in front of the white wall. The person is holding the sign against the wall. The text 'FAMILY RULES' is at the top of the sign, above the other text.",
     "parse_success": true,
     "chunk_idx": 23,
     "video_id": "6d4FxUQplAo"
   },
   {
     "time": [
-      48,
-      50
+      24,
+      25
     ],
     "visible_entities": [
       {
-        "desc": "person with long dark hair tied in a ponytail, wearing a grey long-sleeved shirt",
-        "action": "adjusting a poster on the wall",
+        "desc": "person with long dark hair tied in a ponytail, wearing a grey long-sleeved top",
+        "action": "adjusting a sign on the wall",
         "position": "center"
       },
       {
-        "desc": "rectangular white poster with black text and a distressed border",
-        "action": "static",
+        "desc": "rectangular white sign with black text and a distressed border",
+        "action": "being held against the wall",
         "position": "center"
+      },
+      {
+        "desc": "plain white wall",
+        "action": "static",
+        "position": "background"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "person is adjusting a poster on the wall",
+        "fact": "A person is pressing a sign against a white wall with both hands.",
         "confidence": 1.0
       },
       {
-        "fact": "the poster reads 'FAMILY RULES' at the top",
+        "fact": "The person is adjusting the position of the sign.",
         "confidence": 1.0
       },
       {
-        "fact": "the poster is positioned against a white wall",
+        "fact": "The sign displays the text 'FAMILY RULES' at the top.",
         "confidence": 1.0
       }
     ],
@@ -1190,17 +1205,20 @@
       "Help Each Other",
       "Always Tell the Truth",
       "SHARE",
-      "BE"
+      "BE",
+      "THINGS",
+      "SH",
+      "ion"
     ],
-    "spatial": "The person is standing in front of the white wall. The poster is on the wall, positioned in front of the person's torso as they reach up to adjust it.",
+    "spatial": "The person is standing in front of the white wall. The person is holding the sign against the wall with their hands. The sign is positioned in the center of the frame.",
     "parse_success": true,
     "chunk_idx": 24,
     "video_id": "6d4FxUQplAo"
   },
   {
     "time": [
-      50,
-      52
+      25,
+      26
     ],
     "visible_entities": [
       {
@@ -1221,66 +1239,62 @@
     ],
     "atomic_facts": [
       {
-        "fact": "A person is holding a sign against a wall with both hands.",
+        "fact": "A person is adjusting the top right corner of a sign against a wall.",
         "confidence": 1.0
       },
       {
-        "fact": "The person is adjusting the top right corner of the sign.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The sign displays a list of rules under the heading 'FAMILY RULES'.",
+        "fact": "The sign displays a list of 'FAMILY RULES'.",
         "confidence": 1.0
       }
     ],
     "ocr": [
-      "FAMILY RULES",
+      "FAMILY RU",
       "Help Each Other",
       "Always Tell the Truth",
       "SHARE",
-      "Do Your Best",
+      "DO YOUR BEST",
       "pay attention",
       "Listen",
       "Laugh",
-      "Say Please and Thank you",
+      "Say Please and Thank You",
       "TRY NEW THINGS",
-      "Be Respectful",
-      "Show Compassion",
-      "PLAY NICE"
+      "Be Kind",
+      "Show Respect",
+      "Love One Another"
     ],
-    "spatial": "The person is standing in front of the white wall. The person is holding the sign against the wall. The text 'FAMILY RULES' is at the top of the sign.",
+    "spatial": "The person is standing in front of the white wall. The person is holding the sign against the wall with their hands raised to the top corners. The text on the sign is arranged in a vertical list format.",
     "parse_success": true,
     "chunk_idx": 25,
     "video_id": "6d4FxUQplAo"
   },
   {
     "time": [
-      52,
-      54
+      26,
+      27
     ],
     "visible_entities": [
       {
-        "desc": "person with long dark hair tied back, wearing a grey long-sleeved shirt",
-        "action": "smoothing the top of a poster",
+        "desc": "person with long dark hair tied back, wearing a grey long-sleeved top",
+        "action": "adjusting a sign on the wall",
         "position": "center"
       },
       {
-        "desc": "rectangular white poster with black text and a distressed border",
-        "action": "being mounted on the wall",
+        "desc": "rectangular white sign with black text and a distressed border",
+        "action": "being held against the wall",
         "position": "center"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "person presses both hands against the top edge of the poster",
+        "fact": "A person is adjusting a sign on the wall.",
         "confidence": 1.0
       },
       {
-        "fact": "the poster is titled 'FAMILY RULES'",
+        "fact": "The sign displays the text 'FAMILY RULES' at the top.",
         "confidence": 1.0
       },
       {
-        "fact": "the poster lists rules such as 'Help Each Other' and 'Always Tell the Truth'",
+        "fact": "The person is using both hands to position the sign.",
         "confidence": 1.0
       }
     ],
@@ -1288,50 +1302,55 @@
       "FAMILY RULES",
       "Help Each Other",
       "Always Tell the Truth",
-      "ARE",
-      "OR",
-      "ST",
-      "sses",
-      "rents",
-      "rself",
-      "you",
-      "INGS",
-      "ful",
-      "sion"
+      "LOVE",
+      "DO YOUR BEST",
+      "Hugs and Kisses",
+      "Respect your Parents",
+      "Be yourself",
+      "Love you",
+      "THINGS",
+      "Thankful",
+      "Passion",
+      "FAMILY"
     ],
-    "spatial": "The person is standing in front of the white wall, facing the poster. The poster is positioned on the wall directly in front of the person. The person's hands are placed on the upper section of the poster.",
+    "spatial": "The person is standing in front of the white wall. The sign is positioned on the wall in front of the person. The person's hands are raised above their head, touching the top edge of the sign.",
     "parse_success": true,
     "chunk_idx": 26,
     "video_id": "6d4FxUQplAo"
   },
   {
     "time": [
-      54,
-      56
+      27,
+      28
     ],
     "visible_entities": [
       {
         "desc": "person with short dark hair, wearing a grey long-sleeved shirt",
-        "action": "adjusting a wall sign",
+        "action": "placing a poster on the wall",
         "position": "center"
       },
       {
-        "desc": "rectangular wall sign with a distressed white background and black typography",
-        "action": "being mounted on the wall",
+        "desc": "rectangular white poster with black text and a distressed border",
+        "action": "being held against the wall",
         "position": "center"
+      },
+      {
+        "desc": "plain white wall",
+        "action": "static",
+        "position": "background"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A person is using both hands to press a sign against a white wall.",
+        "fact": "A person is holding a poster against a white wall with both hands.",
         "confidence": 1.0
       },
       {
-        "fact": "The sign displays a list of rules under the heading 'FAMILY RULES'.",
+        "fact": "The poster displays a list of rules under the heading 'FAMILY RULES'.",
         "confidence": 1.0
       },
       {
-        "fact": "The person is standing in front of the sign, partially obscuring the text.",
+        "fact": "The person is standing in front of the wall.",
         "confidence": 1.0
       }
     ],
@@ -1342,46 +1361,47 @@
       "SHARE",
       "DO YOUR BEST",
       "Listen to your parents",
-      "Say Please and Thank You",
+      "Laugh a lot",
+      "Say I'm sorry",
+      "Say Please and Thank you",
       "Love",
-      "Laugh",
-      "Hug",
       "Forgive",
       "Keep your promises",
       "Try new things",
       "BE GRATEFUL",
-      "USE KIND WORDS",
+      "Use KIND WORDS",
       "Know you are loved",
       "Hug Often",
-      "Other",
-      "RE",
-      "UR",
-      "ST",
-      "you",
-      "INGS",
-      "kful",
+      "Help",
+      "ARE",
+      "OUR BEST",
+      "and kisses",
+      "Laugh at yourself",
+      "Tell you",
+      "THINGS",
+      "ful",
       "sion"
     ],
-    "spatial": "The person is standing in front of the wall sign, with their hands placed on the upper portion of the sign. The sign is centered on the white wall. The text 'FAMILY RULES' is located at the top of the sign, above the list of rules.",
+    "spatial": "The person is standing in front of the white wall. The person is holding the 'FAMILY RULES' poster against the wall. The text on the poster is arranged vertically.",
     "parse_success": true,
     "chunk_idx": 27,
     "video_id": "6d4FxUQplAo"
   },
   {
     "time": [
-      56,
-      58
+      28,
+      29
     ],
     "visible_entities": [
       {
         "desc": "person with short dark hair, wearing a grey long-sleeved shirt and black pants",
-        "action": "crouching and adjusting the bottom of a wall decal",
-        "position": "center foreground"
+        "action": "bending down to adjust the bottom of the wall art",
+        "position": "center"
       },
       {
-        "desc": "rectangular wall decal with black text on a white background, listing 'FAMILY RULES'",
+        "desc": "large rectangular wall art with black text on a white background",
         "action": "static",
-        "position": "center background"
+        "position": "right"
       },
       {
         "desc": "light brown wooden table surface",
@@ -1391,15 +1411,15 @@
     ],
     "atomic_facts": [
       {
-        "fact": "A person is crouching in front of a wall decal.",
+        "fact": "A person is bending over to smooth out the bottom edge of a wall decal.",
         "confidence": 1.0
       },
       {
-        "fact": "The person is using their hand to smooth the bottom edge of the decal against the wall.",
+        "fact": "The wall art features a list of 'FAMILY RULES'.",
         "confidence": 1.0
       },
       {
-        "fact": "The wall decal features a list of rules titled 'FAMILY RULES'.",
+        "fact": "The person is positioned between the table and the wall art.",
         "confidence": 1.0
       }
     ],
@@ -1427,44 +1447,44 @@
       "know you are loved",
       "Hug Often"
     ],
-    "spatial": "The person is in front of the wall decal. The wooden table is to the left of the person. The wall decal is mounted on the wall behind the person.",
+    "spatial": "The person is standing in front of the wall art, bending down near the bottom edge. The wooden table is to the left of the person. The wall art is hanging on the wall to the right of the table.",
     "parse_success": true,
     "chunk_idx": 28,
     "video_id": "6d4FxUQplAo"
   },
   {
     "time": [
-      58,
-      60
+      29,
+      30
     ],
     "visible_entities": [
       {
-        "desc": "Person with dark hair, wearing a grey long-sleeved shirt and black pants",
-        "action": "bending over and adjusting the bottom of a wall sign",
+        "desc": "person with short dark hair, wearing a grey long-sleeved shirt and black pants",
+        "action": "bending over and adjusting the bottom of the wall art",
         "position": "center"
       },
       {
-        "desc": "Rectangular wall art sign with a distressed white background and black typography",
+        "desc": "rectangular wall art with a distressed white background and black typography",
         "action": "static",
         "position": "background"
       },
       {
-        "desc": "Light brown wooden table surface",
+        "desc": "light-colored wooden table surface",
         "action": "static",
         "position": "bottom left"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A person is bending forward at the waist to smooth out the bottom edge of a wall sign.",
+        "fact": "A person is bending forward to adjust the bottom edge of a wall hanging.",
         "confidence": 1.0
       },
       {
-        "fact": "The wall sign displays a list of 'FAMILY RULES' in various font sizes.",
+        "fact": "The wall art displays a list of 'FAMILY RULES' in various fonts.",
         "confidence": 1.0
       },
       {
-        "fact": "The sign is hanging vertically on a plain white wall.",
+        "fact": "The text on the sign includes phrases like 'SHARE', 'DO YOUR BEST', and 'Hug Often'.",
         "confidence": 1.0
       }
     ],
@@ -1485,30 +1505,31 @@
       "Help Each Other",
       "Dream Big",
       "Keep your promises",
-      "Laugh Out Loud",
+      "Smile and Thank You",
       "BE GRATEFUL",
+      "Say please and thank you",
       "USE KIND WORDS",
       "Know you are loved",
       "Hug Often"
     ],
-    "spatial": "The person is standing in front of the wall sign, bending down towards its lower section. The wooden table is located to the left of the person and below the sign.",
+    "spatial": "The person is standing in front of the wall art, bending down towards its lower section. The wooden table is located in the bottom left corner, to the left of the person. The wall art is mounted on the wall behind the person.",
     "parse_success": true,
     "chunk_idx": 29,
     "video_id": "6d4FxUQplAo"
   },
   {
     "time": [
-      60,
-      62
+      30,
+      31
     ],
     "visible_entities": [
       {
-        "desc": "woman with dark hair tied in a ponytail, wearing a grey long-sleeved jacket with pockets and black pants",
-        "action": "turning to face the camera and smiling",
+        "desc": "woman with dark hair tied in a ponytail, wearing a grey button-up jacket with pockets and black pants",
+        "action": "turning to face the camera",
         "position": "left"
       },
       {
-        "desc": "tall rectangular wall sign with a distressed white background and black text",
+        "desc": "large vertical rectangular wall sign with a distressed white background and black typography of various fonts and sizes",
         "action": "static",
         "position": "right"
       },
@@ -1520,15 +1541,19 @@
     ],
     "atomic_facts": [
       {
-        "fact": "The woman turns her body from facing the wall to facing the camera.",
+        "fact": "The woman turns her body from facing the sign to facing forward.",
         "confidence": 1.0
       },
       {
-        "fact": "The woman smiles at the camera.",
+        "fact": "The woman smiles at the camera in the second frame.",
         "confidence": 1.0
       },
       {
-        "fact": "The sign lists 'FAMILY RULES' including 'SHARE', 'DO YOUR BEST', and 'BE HAPPY'.",
+        "fact": "The sign lists 'FAMILY RULES' at the top.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The sign includes the phrase 'Hug Often' at the bottom.",
         "confidence": 1.0
       }
     ],
@@ -1557,24 +1582,24 @@
       "Know you are loved",
       "Hug Often"
     ],
-    "spatial": "The woman is standing to the left of the 'FAMILY RULES' wall sign. The wooden table is in the bottom left foreground, below the woman.",
+    "spatial": "The woman stands to the left of the large vertical sign. The wooden table is in the foreground at the bottom left, below the woman. The sign is mounted on the wall to the right of the woman.",
     "parse_success": true,
     "chunk_idx": 30,
     "video_id": "6d4FxUQplAo"
   },
   {
     "time": [
-      62,
-      64
+      31,
+      32
     ],
     "visible_entities": [
       {
-        "desc": "woman with dark hair pulled back, wearing a grey button-up shirt with shoulder epaulets and black pants",
+        "desc": "woman with dark hair pulled back, wearing a grey button-up shirt with shoulder epaulets and two chest pockets, and black pants",
         "action": "standing and smiling",
         "position": "left"
       },
       {
-        "desc": "large vertical rectangular canvas print with black text on a white background",
+        "desc": "large vertical rectangular wall art with a distressed white background and black text in mixed fonts",
         "action": "static",
         "position": "right"
       },
@@ -1584,42 +1609,22 @@
         "position": "bottom left"
       },
       {
-        "desc": "illustration of tall buildings in green and brown tones",
+        "desc": "illustration of tall buildings in green and brown tones against a yellow sky",
         "action": "static",
-        "position": "foreground"
+        "position": "center"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A woman stands next to a wall decal listing family rules.",
+        "fact": "A woman stands next to a large wall art piece displaying family rules.",
         "confidence": 1.0
       },
       {
-        "fact": "The decal includes the text 'FAMILY RULES' at the top.",
+        "fact": "The wall art lists rules such as 'SHARE', 'DO YOUR BEST', and 'BE HAPPY'.",
         "confidence": 1.0
       },
       {
-        "fact": "The decal includes the text 'SHARE' in large bold letters.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The decal includes the text 'BE HAPPY' in large bold letters.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The decal includes the text 'Dream Big' in large bold letters.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The decal includes the text 'BE GRATEFUL' in large bold letters.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The decal includes the text 'Hug Often' at the bottom.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "An illustration of buildings is visible in the foreground.",
+        "fact": "The scene transitions to a close-up view of an illustration showing tall city buildings.",
         "confidence": 1.0
       }
     ],
@@ -1629,7 +1634,7 @@
       "Always Tell the Truth",
       "SHARE",
       "DO YOUR BEST",
-      "Play with bugs and leaves",
+      "Play with hope and kindness",
       "Listen to your parents",
       "Laugh at Yourself",
       "Say I Love you",
@@ -1648,35 +1653,41 @@
       "Know you are loved",
       "Hug Often"
     ],
-    "spatial": "The woman is standing to the left of the large 'FAMILY RULES' sign. The wooden table is in the bottom left corner, below the woman. The building illustration is in the foreground, obscuring parts of the background.",
+    "spatial": "The woman is standing to the left of the 'FAMILY RULES' wall art. The wooden table is in the bottom left corner, below the woman. The second frame shows an illustration that appears to be a detail or separate graphic, replacing the previous scene.",
     "parse_success": true,
     "chunk_idx": 31,
     "video_id": "6d4FxUQplAo"
   },
   {
     "time": [
-      64,
-      66
+      32,
+      33
     ],
     "visible_entities": [
       {
-        "desc": "wall mural featuring a stylized tree with a brown trunk and branches, green leaves, purple birds, and inspirational text in various fonts and colors (purple, brown, green)",
-        "action": "static",
-        "position": "background"
+        "desc": "wall mural featuring a stylized tree with a beige trunk and branches, green leaves, purple flowers, and purple bird silhouettes. The tree is covered in inspirational text phrases in various fonts and colors (purple, green, brown) such as 'RECYCLE NOW', 'CHOOSE PEACE', and 'INSPIRE CHANGE'.",
+        "action": "static"
       },
       {
-        "desc": "grey sofa with a lime green pillow and a white pillow",
-        "action": "static",
-        "position": "foreground right"
+        "desc": "light green throw pillow with a smooth texture, resting on a grey upholstered surface.",
+        "action": "static"
+      },
+      {
+        "desc": "grey upholstered furniture, likely a sofa or armchair, visible at the bottom right.",
+        "action": "static"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "The scene transitions from a tilted view of a building to a straight-on view of a wall mural.",
+        "fact": "The camera view transitions from a tilted photograph of a building to a straight-on view of a wall mural.",
         "confidence": 1.0
       },
       {
-        "fact": "The wall mural displays inspirational phrases such as 'RECYCLE NOW' and 'CHOOSE PEACE'.",
+        "fact": "The wall mural features a tree design with text integrated into the branches.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A green pillow is placed on the grey furniture in the foreground.",
         "confidence": 1.0
       }
     ],
@@ -1691,26 +1702,26 @@
       "MAKE IT HAPPEN",
       "Be the change you want to see in the world",
       "BELIEVE",
-      "LOVE",
-      "PEACE",
       "CHOOSE PEACE",
       "LIVE",
+      "DARE TO CARE",
       "DREAM",
-      "DARE TO CARE"
+      "LOVE & PEACE",
+      "peace symbol"
     ],
-    "spatial": "The wall mural is located behind the grey sofa. The lime green pillow is resting on the sofa, positioned to the left of the white pillow. The text and bird graphics are distributed across the branches and leaves of the tree design on the wall.",
+    "spatial": "The wall mural is in the background, covering the wall. The grey furniture is in the foreground at the bottom right, positioned in front of the mural. The green pillow is resting on top of the grey furniture.",
     "parse_success": true,
     "chunk_idx": 32,
     "video_id": "6d4FxUQplAo"
   },
   {
     "time": [
-      66,
-      68
+      33,
+      34
     ],
     "visible_entities": [
       {
-        "desc": "wall decal of a stylized tree with a brown trunk and branches, green leaves, pink flowers, and purple birds",
+        "desc": "wall decal featuring a stylized tree with a trunk made of inspirational words, green leaves, purple birds, and pink flowers",
         "action": "static",
         "position": "left"
       },
@@ -1720,80 +1731,85 @@
         "position": "right"
       },
       {
-        "desc": "wall decal of a teal multi-story building",
+        "desc": "wall decal featuring a teal multi-story building with windows",
         "action": "static",
         "position": "right"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A wall decal featuring a tree with inspirational words is applied to the wall.",
+        "fact": "The video displays two overlapping photos against a black background.",
         "confidence": 1.0
       },
       {
-        "fact": "A grey sofa with green and white pillows is positioned next to the tree decal.",
+        "fact": "The left photo shows a wall decal of a tree next to a sofa.",
         "confidence": 1.0
       },
       {
-        "fact": "A second wall decal depicting a teal building is visible to the right of the tree decal.",
+        "fact": "The right photo shows a wall decal of a building next to the same sofa.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The tree decal includes text such as 'HOPE', 'BELIEVE', and 'PEACE'.",
         "confidence": 1.0
       }
     ],
     "ocr": [
       "BELIEVE",
       "HOPE",
-      "RECYCLE",
+      "PEACE",
       "LOVE",
-      "CHOOSE PEACE",
+      "CHOOSE",
+      "PEACE",
       "Love"
     ],
-    "spatial": "The tree wall decal is to the left of the grey sofa. The sofa is in the foreground, positioned below the wall art. The teal building decal is to the right of the tree decal.",
+    "spatial": "The photo containing the tree decal is positioned to the left of the photo containing the building decal. In both photos, the sofa is situated to the right of the wall decal. The pillows are resting on the sofa.",
     "parse_success": true,
     "chunk_idx": 33,
     "video_id": "6d4FxUQplAo"
   },
   {
     "time": [
-      68,
-      70
+      34,
+      35
     ],
     "visible_entities": [
       {
-        "desc": "White rectangular wall decal with black text listing New York landmarks (e.g., Statue of Liberty, Times Square) and Paris landmarks (e.g., Eiffel Tower, Champs Elysees) in a typographic style",
+        "desc": "White vertical wall panel featuring two black rectangular signs with white text listing New York and Paris landmarks",
         "action": "static",
         "position": "center"
       },
       {
-        "desc": "Kitchen interior featuring white subway tile backsplash, white cabinets with black handles, and a stainless steel sink",
+        "desc": "Kitchen scene with white cabinets, a stainless steel sink, and a green kettle",
         "action": "static",
         "position": "left"
       },
       {
-        "desc": "Living room scene with a grey sofa, lime green pillows, and a wall decal of a green building",
+        "desc": "Living room scene with a grey sofa, lime green pillows, and a wall decal of a tree with purple birds",
         "action": "static",
-        "position": "right"
+        "position": "center-right"
       },
       {
-        "desc": "Wall decal featuring a tree silhouette with purple and pink leaves and birds",
+        "desc": "Room corner scene with a green building wall decal and a brick wall decal",
         "action": "static",
-        "position": "center"
+        "position": "right"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "The video displays a collage of interior design photos.",
+        "fact": "The video displays a collage of interior design photos arranged in a fanned-out layout.",
         "confidence": 1.0
       },
       {
-        "fact": "A wall decal lists New York landmarks such as 'Statue of Liberty' and 'Times Square'.",
+        "fact": "The central panel lists landmarks for New York and Paris.",
         "confidence": 1.0
       },
       {
-        "fact": "A wall decal lists Paris landmarks such as 'Eiffel Tower' and 'Champs Elysees'.",
+        "fact": "The kitchen scene is visible on the left side of the composition.",
         "confidence": 1.0
       },
       {
-        "fact": "A kitchen scene shows white cabinets and a stainless steel sink.",
+        "fact": "The text on the signs is white against a black background.",
         "confidence": 1.0
       }
     ],
@@ -1815,65 +1831,71 @@
       "PALAIS ROYAL",
       "ARC DE TRIOMPHE",
       "Musee d'Orsay",
-      "LE LOUVRE"
+      "LE LOUVRE",
+      "VERSAILLES"
     ],
-    "spatial": "The central image containing the text-based wall decals is positioned in the foreground, overlapping the background images. To the left of the central text decal is a photo of a kitchen with white cabinets. To the right of the central text decal is a photo of a living room with a grey sofa and a green building wall decal.",
+    "spatial": "The kitchen scene is positioned to the left of the central text panel. The living room scene with the tree decal is located to the right of the text panel. The room corner scene with the green building decal is positioned to the far right, partially behind the living room photo. The text signs are vertically stacked on the central white panel.",
     "parse_success": true,
     "chunk_idx": 34,
     "video_id": "6d4FxUQplAo"
   },
   {
     "time": [
-      70,
-      72
+      35,
+      36
     ],
     "visible_entities": [
       {
-        "desc": "rectangular wall art with black background and white text listing New York landmarks (Empire State Building, Statue of Liberty, Times Square, Central Park, Chrysler Building) and Paris landmarks (Eiffel Tower, Champs Elysees, Louvre, Musee d'Orsay, Le Louvre, Versailles)",
+        "desc": "wall decal with black text listing New York landmarks (Empire State Building, Statue of Liberty, Times Square, Central Park) and Paris landmarks (Eiffel Tower, Champs Elysees, Louvre, Versailles)",
         "action": "static",
         "position": "left"
       },
       {
-        "desc": "rectangular wall art featuring a tree with purple flowers and purple birds on branches",
+        "desc": "wall decal featuring a tree with purple flowers and purple birds",
         "action": "static",
-        "position": "center-left"
+        "position": "center"
       },
       {
-        "desc": "rectangular wall art depicting a green multi-story building with windows",
+        "desc": "wall decal showing a tall green building with many windows",
         "action": "static",
         "position": "center-right"
       },
       {
-        "desc": "rectangular wall art with a green background, blue peace sign, and text reading 'PEACE', 'LOVE', 'DREAM' with butterflies",
+        "desc": "wall decal with colorful text reading 'PEACE', 'LOVE', 'DREAM' surrounded by blue birds and green leaves",
         "action": "static",
         "position": "right"
       },
       {
-        "desc": "rectangular wall art showing a silhouette of a bare tree against a beige background",
+        "desc": "wall decal showing a silhouette of a bare tree against a beige background",
         "action": "static",
-        "position": "far-left"
+        "position": "left"
       },
       {
         "desc": "grey sofa with a lime green pillow",
         "action": "static",
         "position": "center"
+      },
+      {
+        "desc": "kitchen area with grey cabinets and a stainless steel range hood",
+        "action": "static",
+        "position": "left"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "Multiple rectangular wall art pieces are displayed in a fanned-out arrangement.",
+        "fact": "A collage of images displays various wall decals applied to interior walls.",
         "confidence": 1.0
       },
       {
-        "fact": "The wall art on the left lists specific landmarks for New York and Paris.",
+        "fact": "The text on the left decal lists 'NEW YORK' and 'PARIS' landmarks.",
         "confidence": 1.0
       },
       {
-        "fact": "The wall art on the right features the words 'PEACE', 'LOVE', and 'DREAM'.",
+        "fact": "The decal on the far right features the words 'PEACE', 'LOVE', and 'DREAM'.",
         "confidence": 1.0
       },
       {
-        "fact": "A grey sofa with a green pillow is visible behind the central wall art pieces.",
+        "fact": "A grey sofa with a green pillow is visible in the center image.",
         "confidence": 1.0
       }
     ],
@@ -1885,135 +1907,142 @@
       "Statue of Liberty",
       "Times Square",
       "Central Park",
-      "Chrysler Building",
       "PARIS",
       "EIFFEL TOWER",
-      "CHAMPS ELYSEES",
-      "LOUVRE",
-      "MUSEE D'ORSAY",
+      "Champs Elysees",
+      "Arc de Triomphe",
+      "Musee d'Orsay",
       "LE LOUVRE",
       "VERSAILLES",
       "PEACE",
       "LOVE",
       "DREAM"
     ],
-    "spatial": "The wall art featuring the tree silhouette is on the far left. To its right is the black text-based art listing New York and Paris landmarks. The art with the flowering tree is positioned behind and slightly to the right of the text art. The green building art is to the right of the flowering tree art. The 'PEACE LOVE DREAM' art is on the far right. The grey sofa is located behind the central cluster of wall art.",
+    "spatial": "The image is a collage where the kitchen scene with the landmark text decal is on the left. The tree silhouette decal is also on the left side. The floral tree decal and the green building decal are in the center. The colorful 'PEACE LOVE DREAM' decal is on the right side of the collage.",
     "parse_success": true,
     "chunk_idx": 35,
     "video_id": "6d4FxUQplAo"
   },
   {
     "time": [
-      72,
-      74
+      36,
+      37
     ],
     "visible_entities": [
       {
-        "desc": "collage of framed art prints and posters",
-        "action": "floating and rotating",
-        "position": "center"
-      },
-      {
-        "desc": "poster with a large brown tree silhouette on a beige background",
+        "desc": "white rectangular frame with black text listing 'FAMILY RULES' including 'SHARE', 'DO YOUR BEST', 'BE HAPPY', 'Dream Big'",
         "action": "static",
         "position": "left"
       },
       {
-        "desc": "poster with black text on a white background listing rules",
+        "desc": "white rectangular frame with a black silhouette of a bare tree against a beige background",
         "action": "static",
-        "position": "bottom-left"
+        "position": "top-left"
       },
       {
-        "desc": "poster with a cityscape photograph of skyscrapers",
+        "desc": "white rectangular frame with a black and white photograph of a dense city skyline",
         "action": "static",
         "position": "center"
       },
       {
-        "desc": "poster with a green background, blue peace sign, and colorful text",
+        "desc": "white rectangular frame with a colorful vertical poster featuring a peace sign, butterflies, and the words 'PEACE', 'LOVE', 'DREAM'",
         "action": "static",
         "position": "right"
       },
       {
-        "desc": "poster with black and white text about New York and the Eiffel Tower",
+        "desc": "white rectangular frame with a black and white image of the Eiffel Tower and text 'NEW YORK', 'PARIS', 'EIFFEL TOWER'",
         "action": "static",
         "position": "center-left"
+      },
+      {
+        "desc": "white rectangular frame with a small image of purple flowers and butterflies",
+        "action": "static",
+        "position": "top-center"
+      },
+      {
+        "desc": "white rectangular frame with a greenish image of a building tower",
+        "action": "static",
+        "position": "center-right"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A collage of various framed art prints is displayed against a black background.",
+        "fact": "Multiple white rectangular frames are arranged in a scattered, overlapping collage layout.",
         "confidence": 1.0
       },
       {
-        "fact": "The prints are arranged in a scattered, overlapping manner.",
+        "fact": "The 'FAMILY RULES' frame is positioned on the far left.",
         "confidence": 1.0
       },
       {
-        "fact": "The text 'FAMILY RULES' is visible on a poster in the bottom left.",
+        "fact": "The 'PEACE LOVE DREAM' frame is positioned on the far right.",
         "confidence": 1.0
       },
       {
-        "fact": "The text 'PEACE LOVE DREAM' is visible on a poster on the right side.",
+        "fact": "The city skyline frame is centrally located and tilted.",
         "confidence": 1.0
       },
       {
-        "fact": "A poster featuring a cityscape is positioned in the center of the frame.",
+        "fact": "The tree silhouette frame is located in the upper left corner.",
         "confidence": 1.0
       }
     ],
     "ocr": [
       "FAMILY RULES",
-      "Always Tell The Truth",
+      "Always Tell the Truth",
       "SHARE",
       "DO YOUR BEST",
-      "Say I love you",
+      "Say I Love you",
       "Be Thankful",
+      "Show Compassion",
       "BE HAPPY",
       "Dream Big",
       "Laugh Out Loud",
       "NEW YORK",
       "PARIS",
       "EIFFEL TOWER",
-      "LE LOUVRE",
       "PEACE",
       "LOVE",
       "DREAM"
     ],
-    "spatial": "The poster with the tree silhouette is to the left of the central cityscape print. The 'FAMILY RULES' poster is below the tree poster and to the left of the 'NEW YORK' poster. The 'PEACE LOVE DREAM' poster is to the right of the central cityscape print. The various posters are layered on top of each other in a floating arrangement.",
+    "spatial": "The 'FAMILY RULES' frame is on the left side of the composition. The 'PEACE LOVE DREAM' frame is on the right side. The city skyline frame is in the center, slightly overlapping the Eiffel Tower frame which is to its left. The tree silhouette frame is above the 'FAMILY RULES' frame.",
     "parse_success": true,
     "chunk_idx": 36,
     "video_id": "6d4FxUQplAo"
   },
   {
     "time": [
-      74,
-      76
+      37,
+      38
     ],
     "visible_entities": [
       {
-        "desc": "collage of framed wall art prints featuring various designs including a black and white Eiffel Tower, a 'FAMILY RULES' typographic poster, a 'NEW YORK' travel poster, and a colorful 'DREAM' word cloud",
-        "action": "static"
+        "desc": "collage of framed art prints including a sepia-toned Eiffel Tower print, a black and white 'FAMILY RULES' text print, a 'NEW YORK' text print, and a colorful 'DREAM' word cloud print",
+        "action": "static",
+        "position": "center"
       },
       {
-        "desc": "white wall surface serving as the background for the art display",
-        "action": "static"
+        "desc": "white wall or door frame",
+        "action": "static",
+        "position": "left"
+      },
+      {
+        "desc": "dark staircase steps",
+        "action": "static",
+        "position": "center"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A collage of framed art prints is displayed on a wall.",
+        "fact": "A collage of various framed art prints is displayed.",
         "confidence": 1.0
       },
       {
-        "fact": "The 'FAMILY RULES' poster is positioned to the left of the Eiffel Tower print.",
+        "fact": "The Eiffel Tower print is positioned above the dark staircase steps.",
         "confidence": 1.0
       },
       {
-        "fact": "The 'NEW YORK' poster is visible behind the 'FAMILY RULES' print.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "A colorful 'DREAM' poster is positioned to the right of the Eiffel Tower print.",
+        "fact": "The 'FAMILY RULES' print is visible on the left side of the collage.",
         "confidence": 1.0
       }
     ],
@@ -2025,13 +2054,13 @@
       "DO YOUR BEST",
       "Pay with hugs and kisses",
       "Listen to your parents",
-      "Laugh at yourself",
-      "Say I Love you",
+      "Laugh at Yourself",
+      "Say I Love You",
       "TRY NEW THINGS",
       "Be Thankful",
       "Show Compassion",
       "BE HAPPY",
-      "Dream Reach Strive",
+      "Dream Reach Give",
       "Dream Big",
       "Respect one Another",
       "Laugh Out Loud",
@@ -2039,92 +2068,81 @@
       "NEW YORK",
       "Empire State Building",
       "Rockefeller Center",
-      "So. Park Ave.",
-      "Statue of Liberty",
+      "So. Park Ave",
       "PARIS",
       "EIFFEL TOWER",
       "Champs Elysees",
-      "Louvre",
       "Musee d'Orsay",
       "LE LOUVRE",
       "DREAM",
-      "DREAM",
-      "less",
-      "more",
+      "CHEER",
+      "LISTEN",
+      "GIVE",
+      "CARE",
+      "SHARE",
+      "LOVE",
+      "PEACE",
+      "HOPE",
+      "POUR",
       "WORK"
     ],
-    "spatial": "The 'FAMILY RULES' poster is on the left side of the arrangement. The Eiffel Tower print is in the center, slightly overlapping the 'NEW YORK' poster which is behind it. The colorful 'DREAM' poster is to the right of the Eiffel Tower print. All prints are mounted on a white wall.",
+    "spatial": "The collage of art prints is positioned to the right of the white wall frame. The Eiffel Tower print is located above the dark staircase steps in the background. The 'FAMILY RULES' print is to the left of the 'NEW YORK' print within the collage.",
     "parse_success": true,
     "chunk_idx": 37,
     "video_id": "6d4FxUQplAo"
   },
   {
     "time": [
-      76,
-      78
+      38,
+      39
     ],
     "visible_entities": [
       {
-        "desc": "white rectangular canvas print with black text listing 'FAMILY RULES' in various fonts and sizes",
+        "desc": "white rectangular poster with black text listing 'FAMILY RULES' in various fonts and sizes",
         "action": "static",
-        "position": "left"
+        "position": "bottom left"
       },
       {
-        "desc": "beige wall art featuring a black silhouette of a tree with bare branches",
+        "desc": "framed artwork of a dark tree silhouette with bare branches against a beige background",
         "action": "static",
         "position": "top left"
       },
       {
-        "desc": "black and white typographic poster listing New York landmarks like 'Empire State Building'",
-        "action": "static",
-        "position": "center left"
-      },
-      {
-        "desc": "black and white typographic poster listing Paris landmarks like 'Eiffel Tower'",
+        "desc": "vertical black and white print featuring the Eiffel Tower with a vintage, textured look",
         "action": "static",
         "position": "center"
       },
       {
-        "desc": "canvas print depicting the Eiffel Tower in a vintage, sepia-toned style",
-        "action": "static",
-        "position": "center right"
-      },
-      {
-        "desc": "white framed art with colorful text listing words like 'DREAM', 'BELIEVE', 'WORK' in a word cloud style",
+        "desc": "white framed artwork with a colorful word cloud design on a beige background",
         "action": "static",
         "position": "right"
       },
       {
-        "desc": "white framed art with a teal background and a stylized blue bird silhouette",
+        "desc": "black and white print listing New York landmarks like 'Empire State Building'",
         "action": "static",
-        "position": "top right"
+        "position": "center left"
       },
       {
-        "desc": "white framed art with a purple butterfly and green leaves",
-        "action": "static",
-        "position": "top center"
-      },
-      {
-        "desc": "small framed photo showing a staircase and a cityscape",
+        "desc": "small framed image showing a staircase and interior wall",
         "action": "static",
         "position": "center"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A collection of framed wall art prints are arranged in an overlapping collage.",
+        "fact": "Multiple framed art prints are arranged in a scattered, overlapping collage layout.",
         "confidence": 1.0
       },
       {
-        "fact": "The 'FAMILY RULES' print is positioned on the far left of the arrangement.",
+        "fact": "The 'FAMILY RULES' poster is positioned below the tree silhouette artwork.",
         "confidence": 1.0
       },
       {
-        "fact": "The Eiffel Tower print is positioned to the right of the New York and Paris text posters.",
+        "fact": "The Eiffel Tower print is located to the right of the New York landmarks print.",
         "confidence": 1.0
       },
       {
-        "fact": "The 'DREAM BELIEVE' word cloud print is located on the right side of the image.",
+        "fact": "The word cloud artwork is positioned to the right of the Eiffel Tower print.",
         "confidence": 1.0
       }
     ],
@@ -2134,13 +2152,16 @@
       "Always Tell the Truth",
       "SHARE",
       "DO YOUR BEST",
+      "Laugh at Yourself",
       "Say I Love You",
       "TRY NEW THINGS",
       "Be Thankful",
       "Show Compassion",
       "BE HAPPY",
       "Dream Big",
+      "Respect one Another",
       "Laugh Out Loud",
+      "Keep your promises",
       "NEW YORK",
       "Empire State Building",
       "Rockefeller Center",
@@ -2152,111 +2173,62 @@
       "Musee d'Orsay",
       "LE LOUVRE",
       "DREAM",
-      "BELIEVE",
+      "CHEER",
       "LISTEN",
-      "GIVE",
-      "HUG",
+      "CARE",
       "KISS",
+      "HUG",
       "LOVE",
       "PEACE",
-      "PROUD",
+      "HOPE",
       "WORK"
     ],
-    "spatial": "The 'FAMILY RULES' print is on the left side of the image. The Eiffel Tower print is to the right of the New York and Paris text posters. The 'DREAM BELIEVE' word cloud print is on the right side, partially overlapping the Eiffel Tower print. The tree silhouette art is above the 'FAMILY RULES' print.",
+    "spatial": "The 'FAMILY RULES' poster is located in the bottom left corner, below the tree silhouette artwork. The Eiffel Tower print is in the center, positioned to the right of the New York landmarks print. The colorful word cloud artwork is on the far right, next to the Eiffel Tower print.",
     "parse_success": true,
     "chunk_idx": 38,
     "video_id": "6d4FxUQplAo"
   },
   {
     "time": [
-      78,
-      80
+      39,
+      40
     ],
     "visible_entities": [
       {
-        "desc": "human hand with medium-dark skin tone, short fingernails, and visible knuckles",
-        "action": "resting flat on a white surface",
+        "desc": "human hand with light brown skin tone, short fingernails, and visible knuckles",
+        "action": "resting on a white surface",
         "position": "center"
       },
       {
         "desc": "plain white background surface",
         "action": "static",
         "position": "background"
-      },
-      {
-        "desc": "collage of framed wall art prints featuring text and illustrations",
-        "action": "static",
-        "position": "left"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A hand is resting flat on a white surface with fingers spread apart.",
+        "fact": "A hand is resting flat against a white surface.",
         "confidence": 1.0
       },
       {
-        "fact": "A collage of framed art prints is visible on the left side of the screen.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "One print displays a list of 'FAMILY RULES' in black text.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "Another print features an illustration of the Eiffel Tower.",
+        "fact": "The fingers are spread slightly apart.",
         "confidence": 1.0
       }
     ],
-    "ocr": [
-      "FAMILY RULES",
-      "Help Each Other",
-      "Always Tell the Truth",
-      "SHARE",
-      "DO YOUR BEST",
-      "Say I Love You",
-      "TRY NEW THINGS",
-      "Be Thankful",
-      "Show Compassion",
-      "BE HAPPY",
-      "Dream Big",
-      "Respect one Another",
-      "Laugh Out Loud",
-      "Keep your promises",
-      "NEW YORK",
-      "Empire State Building",
-      "Rockefeller Center",
-      "PARIS",
-      "EIFFEL TOWER",
-      "Champs Elysees",
-      "Musee d'Orsay",
-      "LE LOUVRE",
-      "DREAM",
-      "CHEER",
-      "LISTEN",
-      "KISS",
-      "HUG",
-      "GIGGLE",
-      "PLAY",
-      "SMILE",
-      "PEACE",
-      "LOVE",
-      "MORE",
-      "POSSIBLE",
-      "WORK"
-    ],
-    "spatial": "The hand is positioned in the center of the frame, resting on the white background. The collage of framed art prints is located to the left of the hand.",
+    "ocr": [],
+    "spatial": "The hand is positioned in the center of the frame, resting on top of the white background.",
     "parse_success": true,
     "chunk_idx": 39,
     "video_id": "6d4FxUQplAo"
   },
   {
     "time": [
-      80,
-      82
+      40,
+      41
     ],
     "visible_entities": [
       {
-        "desc": "rectangular logo with rounded corners, black outline, white background, containing black text 'LOT 26 STUDIO' in serif fonts",
+        "desc": "black and white logo graphic featuring the text 'LOT 26 STUDIO' inside a double-lined rounded rectangle border",
         "action": "static",
         "position": "center"
       }
@@ -2267,15 +2239,15 @@
         "confidence": 1.0
       },
       {
-        "fact": "The text 'LOT' is oriented vertically on the left side of the logo.",
+        "fact": "The text 'LOT' is oriented vertically on the left side of the graphic.",
         "confidence": 1.0
       },
       {
-        "fact": "The number '26' is displayed prominently in the center.",
+        "fact": "The number '26' is displayed in a large serif font in the upper right section.",
         "confidence": 1.0
       },
       {
-        "fact": "The word 'STUDIO' is positioned horizontally at the bottom.",
+        "fact": "The word 'STUDIO' is written horizontally below the number '26'.",
         "confidence": 1.0
       }
     ],
@@ -2284,7 +2256,7 @@
       "26",
       "STUDIO"
     ],
-    "spatial": "The logo is centered on a plain white background. Inside the logo, the vertical text 'LOT' is to the left of the number '26', and the word 'STUDIO' is below both.",
+    "spatial": "The logo is centered on a plain white background. The vertical text 'LOT' is to the left of the number '26'. The word 'STUDIO' is positioned below the number '26'.",
     "parse_success": true,
     "chunk_idx": 40,
     "video_id": "6d4FxUQplAo"

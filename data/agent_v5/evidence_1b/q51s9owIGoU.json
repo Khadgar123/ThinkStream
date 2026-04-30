@@ -2,23 +2,27 @@
   {
     "time": [
       0,
-      2
+      1
     ],
     "visible_entities": [
       {
-        "desc": "Felt Bicycles logo featuring a stylized white 'FELT' wordmark with a red underline, the word 'bicycles' in white lowercase sans-serif font below it, and '2014 NINE & 7 SERIES' text in white uppercase below that",
-        "action": "fading in from darkness to full visibility",
-        "position": "center",
-        "id": "felt_logo_branding"
+        "desc": "Felt Bicycles logo featuring a stylized white 'FELT' text with a red underline and the word 'bicycles' below it, set against a dark, smoky background.",
+        "action": "fading into view",
+        "id": "felt_logo_1"
+      },
+      {
+        "desc": "White text reading '2014 NINE & 7 SERIES' in a sans-serif font.",
+        "action": "appearing",
+        "id": "felt_logo_1"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "The Felt Bicycles logo and text fade in from a black background.",
+        "fact": "The Felt Bicycles logo fades in from the darkness.",
         "confidence": 1.0
       },
       {
-        "fact": "The text '2014 NINE & 7 SERIES' appears below the brand logo.",
+        "fact": "The text '2014 NINE & 7 SERIES' appears below the logo.",
         "confidence": 1.0
       }
     ],
@@ -27,190 +31,198 @@
       "bicycles",
       "2014 NINE & 7 SERIES"
     ],
-    "spatial": "The red underline is below the 'FELT' wordmark. The word 'bicycles' is below the red line. The text '2014 NINE & 7 SERIES' is below the word 'bicycles'. All elements are centered on the black background.",
+    "spatial": "The 'FELT' logo is centered in the frame. The word 'bicycles' is directly below the red line of the logo. The text '2014 NINE & 7 SERIES' is below the 'bicycles' text.",
     "parse_success": true,
     "chunk_idx": 0,
     "video_id": "q51s9owIGoU",
     "state_changes": [
-      "Felt logo fades in from darkness to full visibility"
+      "Felt Bicycles logo and '2014 NINE & 7 SERIES' text fade into view"
+    ]
+  },
+  {
+    "time": [
+      1,
+      2
+    ],
+    "visible_entities": [
+      {
+        "desc": "Felt Bicycles logo featuring stylized silver 'FELT' text with a red underline, 'bicycles' text below, and '2014 NINE & 7 SERIES' text at the bottom, all on a black background",
+        "action": "fading out",
+        "id": "felt_logo_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The Felt Bicycles logo and text fade to black.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The text '2014 NINE & 7 SERIES' is visible below the logo.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "FELT",
+      "bicycles",
+      "2014 NINE & 7 SERIES"
+    ],
+    "spatial": "The 'FELT' logo is centered in the frame. The word 'bicycles' is directly below the logo. The text '2014 NINE & 7 SERIES' is below the 'bicycles' text.",
+    "parse_success": true,
+    "chunk_idx": 1,
+    "video_id": "q51s9owIGoU",
+    "state_changes": [
+      "Felt Bicycles logo fades out"
     ]
   },
   {
     "time": [
       2,
-      4
+      3
     ],
     "visible_entities": [
       {
-        "desc": "FELT logo with stylized silver metallic text and a red underline, followed by 'bicycles' in smaller silver text and '2014 NINE & 7 SERIES' in grey text below",
+        "desc": "cluster of slender trees with smooth, pale white bark and green leafy canopies",
         "action": "static",
         "position": "center",
-        "id": "felt_logo_branding"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "The FELT logo is displayed in the center of the screen.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The text '2014 NINE & 7 SERIES' appears below the main logo.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [
-      "FELT",
-      "bicycles",
-      "2014 NINE & 7 SERIES"
-    ],
-    "spatial": "The word 'bicycles' is below the 'FELT' logo. The text '2014 NINE & 7 SERIES' is below the word 'bicycles'. A red line is under the 'FELT' text.",
-    "parse_success": true,
-    "chunk_idx": 1,
-    "video_id": "q51s9owIGoU",
-    "state_changes": []
-  },
-  {
-    "time": [
-      4,
-      6
-    ],
-    "visible_entities": [
-      {
-        "desc": "cluster of aspen trees with smooth white bark and green leaves",
-        "action": "static",
-        "position": "center",
-        "id": "forest_vegetation"
+        "id": "vegetation_green_1"
       },
       {
         "desc": "dense green foliage and bushes",
         "action": "static",
         "position": "left",
-        "id": "forest_vegetation"
+        "id": "vegetation_green_1"
       },
       {
-        "desc": "dry grassy hillside with brown vegetation",
+        "desc": "dry, brownish hillside with sparse vegetation",
         "action": "static",
-        "position": "right",
-        "id": "dry_terrain"
-      },
-      {
-        "desc": "patch of blue sky",
-        "action": "static",
-        "position": "top"
+        "position": "background",
+        "id": "vegetation_dry_1"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "The camera pans slightly to the right, revealing more of the hillside.",
+        "fact": "A cluster of white-barked trees stands in the center of the frame.",
         "confidence": 1.0
       },
       {
-        "fact": "Sunlight filters through the canopy, casting shadows on the white tree trunks.",
+        "fact": "Dense green foliage is visible to the left of the white trees.",
         "confidence": 1.0
       },
       {
-        "fact": "The white-barked trees stand in front of the grassy slope.",
+        "fact": "A dry, grassy hillside rises in the background behind the trees.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The cluster of white-barked aspen trees is in the center of the frame. To the left of the trees is dense green foliage. To the right of the trees is a dry, grassy hillside. The blue sky is visible above the tree canopy.",
+    "spatial": "The cluster of white-barked trees is in the center, with dense green foliage to their left. The dry hillside is behind the trees and foliage.",
     "parse_success": true,
     "chunk_idx": 2,
     "video_id": "q51s9owIGoU",
     "state_changes": [
-      "Scene transitions from logo to outdoor forest environment with trees and sky"
+      "Scene transitions from logo to outdoor forest environment with trees and hills"
     ]
   },
   {
     "time": [
-      6,
-      8
+      3,
+      4
     ],
     "visible_entities": [
       {
-        "desc": "person wearing a dark short-sleeved shirt and dark shorts, riding a bicycle",
-        "action": "riding a bicycle through the woods",
+        "desc": "person wearing a black sleeveless top and dark shorts",
+        "action": "riding a mountain bike downhill",
         "position": "center",
-        "id": "cyclist_dark_helmet"
+        "id": "person_legs_generic_1"
       },
       {
-        "desc": "tall trees with white bark and green leaves",
+        "desc": "mountain bike with dark frame",
+        "action": "being ridden",
+        "position": "center",
+        "id": "bike_generic_moving_1"
+      },
+      {
+        "desc": "thin white-barked trees with green leaves",
         "action": "static",
         "position": "foreground",
-        "id": "forest_vegetation"
+        "id": "tree_trunks_1"
       },
       {
-        "desc": "dry grassy hillside with scattered green bushes",
+        "desc": "dry grassy hillside with scattered green trees",
         "action": "static",
         "position": "background",
-        "id": "dry_terrain"
+        "id": "vegetation_dry_1"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A person is riding a bicycle through a wooded area.",
+        "fact": "A person rides a mountain bike down a grassy slope.",
         "confidence": 1.0
       },
       {
-        "fact": "The rider is navigating a path behind several white-barked trees.",
+        "fact": "The rider navigates through a grove of thin trees.",
         "confidence": 1.0
       },
       {
-        "fact": "The terrain is a dry, grassy hillside.",
+        "fact": "The terrain is dry and uneven.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The person on the bicycle is in the center of the frame, positioned behind the white-barked trees in the foreground. The grassy hillside is in the background behind the rider.",
+    "spatial": "The person on the bike is in the center of the frame, positioned behind the thin white-barked trees in the foreground. The rider is moving down the grassy hillside which is in the background.",
     "parse_success": true,
     "chunk_idx": 3,
     "video_id": "q51s9owIGoU",
     "state_changes": [
-      "First cyclist appears riding through the woods"
+      "Cyclist appears riding a mountain bike downhill"
     ]
   },
   {
     "time": [
-      8,
-      10
+      4,
+      5
     ],
     "visible_entities": [
       {
-        "desc": "person wearing a white helmet and a light-colored sleeveless top",
-        "action": "riding a bicycle",
+        "desc": "person wearing a white helmet, a light-colored sleeveless top, and dark shorts",
+        "action": "riding a bicycle down a hill",
         "position": "center",
-        "id": "cyclist_white_helmet"
+        "id": "cyclist_white_helmet_1"
+      },
+      {
+        "desc": "bicycle",
+        "action": "being ridden",
+        "position": "center",
+        "id": "bike_components_generic_1"
       },
       {
         "desc": "green leafy tree branches",
         "action": "static",
         "position": "top right",
-        "id": "forest_vegetation"
+        "id": "vegetation_green_1"
       },
       {
-        "desc": "dry grassy hillside with scattered pine trees",
+        "desc": "green bushes and trees",
         "action": "static",
         "position": "background",
-        "id": "dry_terrain"
+        "id": "vegetation_green_1"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A person wearing a white helmet rides a bicycle across the center of the frame.",
+        "fact": "A person wearing a white helmet is riding a bicycle down a grassy, rocky slope.",
         "confidence": 1.0
       },
       {
-        "fact": "The cyclist moves from the left side towards the right side of the screen.",
+        "fact": "The cyclist moves from the center of the frame towards the right.",
         "confidence": 1.0
       },
       {
-        "fact": "Green tree branches hang in the top right corner of the foreground.",
+        "fact": "Green leafy branches are visible in the top right corner of the frame.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The cyclist is in the center of the frame, positioned in front of the grassy hillside and pine trees. The green tree branches are located in the top right corner, hanging above the scene.",
+    "spatial": "The person on the bicycle is in the center of the frame, positioned in front of the background trees and bushes. The green leafy branches are above and to the right of the cyclist.",
     "parse_success": true,
     "chunk_idx": 4,
     "video_id": "q51s9owIGoU",
@@ -218,50 +230,45 @@
   },
   {
     "time": [
-      10,
-      12
+      5,
+      6
     ],
     "visible_entities": [
       {
-        "desc": "bicycle wheel, black tire, silver spokes, metal rim",
-        "action": "rolling on dirt path",
+        "desc": "bicycle wheel, black tire, silver spokes, metallic rim",
+        "action": "rolling forward",
         "position": "left/foreground",
-        "id": "generic_bicycle"
+        "id": "bike_components_generic_1"
       },
       {
-        "desc": "dirt trail, light brown, dry, uneven surface",
+        "desc": "dirt trail, dry, dusty, light-brown, uneven surface",
         "action": "static",
-        "position": "center/bottom",
-        "id": "dirt_trail"
+        "position": "center/background",
+        "id": "dirt_trail_1"
       },
       {
-        "desc": "green leafy tree branches",
+        "desc": "green leafy tree branches, sunlit",
         "action": "static",
         "position": "top/right",
-        "id": "forest_vegetation"
-      },
-      {
-        "desc": "distant cyclist, dark clothing, riding a bike",
-        "action": "riding away",
-        "position": "background/right"
+        "id": "vegetation_green_1"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A bicycle wheel is rolling on a dirt path.",
+        "fact": "A bicycle wheel is rolling along a dirt path.",
         "confidence": 1.0
       },
       {
-        "fact": "A cyclist is riding in the distance on the trail.",
+        "fact": "The camera follows the movement of the bicycle wheel.",
         "confidence": 1.0
       },
       {
-        "fact": "The camera is positioned low, near the ground.",
+        "fact": "Sunlight filters through the leaves of the trees on the right.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The bicycle wheel is in the immediate foreground on the left side of the frame. The dirt trail extends from the bottom center towards the background. The distant cyclist is to the right of the trail, further back in the scene. Tree branches are above the trail on the right side.",
+    "spatial": "The bicycle wheel is in the foreground on the left side of the frame. The dirt trail extends into the background behind the wheel. The green tree branches are positioned above and to the right of the trail.",
     "parse_success": true,
     "chunk_idx": 5,
     "video_id": "q51s9owIGoU",
@@ -269,55 +276,39 @@
   },
   {
     "time": [
-      12,
-      14
+      6,
+      7
     ],
     "visible_entities": [
       {
-        "desc": "person wearing a dark short-sleeved top and dark shorts, riding a bicycle",
-        "action": "cycling away from the camera",
+        "desc": "person wearing a dark short-sleeved top with a white triangular logo on the back, dark shorts, and white socks",
+        "action": "riding a bicycle",
         "position": "center",
-        "id": "cyclist_dark_helmet"
+        "id": "person_legs_generic_1"
       },
       {
-        "desc": "bicycle with a visible rear wheel and frame",
-        "action": "moving forward on a dirt path",
+        "desc": "mountain bike with a visible rear tire and frame",
+        "action": "moving forward",
         "position": "center",
-        "id": "generic_bicycle"
-      },
-      {
-        "desc": "dirt path with uneven terrain and shadows",
-        "action": "static",
-        "position": "background",
-        "id": "dirt_trail"
-      },
-      {
-        "desc": "green foliage and trees",
-        "action": "static",
-        "position": "right",
-        "id": "forest_vegetation"
+        "id": "bike_generic_moving_1"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A person is cycling away from the camera on a dirt path.",
+        "fact": "A person is riding a bicycle away from the camera on a dirt trail.",
         "confidence": 1.0
       },
       {
-        "fact": "The cyclist is wearing dark clothing.",
+        "fact": "The rider is wearing a dark top with a white logo on the back.",
         "confidence": 1.0
       },
       {
-        "fact": "The path is surrounded by green foliage on the right side.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The scene is captured from a low angle, likely from another bicycle following behind.",
+        "fact": "The bicycle is moving along a path surrounded by trees and vegetation.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The person is in the center of the frame, riding the bicycle. The bicycle is on the dirt path. The green foliage is to the right of the path and the cyclist. The shadow of the cyclist and bicycle is cast on the path to their left.",
+    "spatial": "The person is on the bicycle, positioned in the center of the frame. The bicycle is on the dirt path, with trees and bushes to the right and left of the rider.",
     "parse_success": true,
     "chunk_idx": 6,
     "video_id": "q51s9owIGoU",
@@ -325,45 +316,55 @@
   },
   {
     "time": [
-      14,
-      16
+      7,
+      8
     ],
     "visible_entities": [
       {
-        "desc": "person wearing a dark short-sleeved shirt, dark shorts, and a helmet",
-        "action": "riding a mountain bike down the trail",
-        "position": "center",
-        "id": "cyclist_dark_helmet"
+        "desc": "person wearing a dark short-sleeved t-shirt, dark shorts, and a helmet",
+        "action": "riding a bicycle down a trail",
+        "position": "center/background",
+        "id": "person_legs_generic_1"
       },
       {
         "desc": "narrow dirt trail",
         "action": "static",
         "position": "center",
-        "id": "dirt_trail"
+        "id": "dirt_trail_1"
       },
       {
-        "desc": "tall green grass and leafy bushes",
+        "desc": "tall green grass",
         "action": "static",
-        "position": "left/right/foreground",
-        "id": "forest_vegetation"
+        "position": "left/right",
+        "id": "vegetation_green_1"
+      },
+      {
+        "desc": "green leafy bushes",
+        "action": "static",
+        "position": "foreground",
+        "id": "vegetation_green_1"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A person is riding a mountain bike down a narrow dirt path.",
+        "fact": "A person is riding a bicycle down a narrow dirt path.",
         "confidence": 1.0
       },
       {
-        "fact": "The rider is wearing a helmet for safety.",
+        "fact": "The cyclist is moving towards the camera.",
         "confidence": 1.0
       },
       {
-        "fact": "The trail is surrounded by dense green vegetation.",
+        "fact": "Tall grass lines both sides of the trail.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "Green foliage frames the foreground of the shot.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The person on the bike is in the center of the frame, positioned on the dirt trail. The trail is flanked on both the left and right sides by tall green grass and bushes. Some leafy branches are visible in the immediate foreground, framing the view of the rider.",
+    "spatial": "The person on the bicycle is in the center background, riding down the dirt trail. The trail is flanked by tall grass on the left and right. Green leafy bushes are in the foreground, partially obscuring the view of the trail.",
     "parse_success": true,
     "chunk_idx": 7,
     "video_id": "q51s9owIGoU",
@@ -371,39 +372,36 @@
   },
   {
     "time": [
-      16,
-      18
+      8,
+      9
     ],
     "visible_entities": [
       {
-        "desc": "person wearing a silver helmet, sunglasses, black short-sleeved jersey with red accents, and black shorts with red trim",
-        "action": "riding a mountain bike along a dirt path",
+        "desc": "person wearing a silver helmet, sunglasses, and a black short-sleeved cycling jersey with red accents on the sleeves and sides, riding a mountain bike",
+        "action": "riding a bike towards the camera",
         "position": "center",
-        "id": "cyclist_silver_helmet"
+        "id": "cyclist_silver_helmet_1"
       },
       {
-        "desc": "narrow dirt path surrounded by dense green foliage and trees",
+        "desc": "narrow dirt path surrounded by dense green trees and bushes",
         "action": "static",
         "position": "background",
-        "id": "dirt_trail"
+        "id": "dirt_trail_1"
       },
       {
         "desc": "bright green leaves in the foreground",
         "action": "static",
-        "position": "foreground"
+        "position": "foreground",
+        "id": "vegetation_green_1"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A person rides a mountain bike towards the camera on a wooded trail.",
+        "fact": "A person rides a mountain bike down a wooded trail.",
         "confidence": 1.0
       },
       {
-        "fact": "The cyclist is wearing a silver helmet and sunglasses.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The path is flanked by tall grass and bushes.",
+        "fact": "The cyclist moves from the background towards the foreground.",
         "confidence": 1.0
       },
       {
@@ -412,109 +410,30 @@
       }
     ],
     "ocr": [],
-    "spatial": "The cyclist is in the center of the frame, riding on the dirt path. The bright green leaves are in the foreground, partially obscuring the view of the cyclist. The dense green foliage is on both sides of the path, behind the cyclist.",
+    "spatial": "The cyclist is in the center of the frame, riding on the dirt path. The path is surrounded by trees and bushes on both the left and right sides. Bright green leaves are in the immediate foreground, partially obscuring the view of the cyclist.",
     "parse_success": true,
     "chunk_idx": 8,
     "video_id": "q51s9owIGoU",
-    "state_changes": []
+    "state_changes": [
+      "New cyclist with silver helmet and red-accented jersey appears riding towards camera"
+    ]
   },
   {
     "time": [
-      18,
-      20
+      9,
+      10
     ],
     "visible_entities": [
       {
-        "desc": "person wearing black shorts with white reflective stripes on the sides, holding handlebars with neon green accents",
+        "desc": "person wearing black shorts with white reflective stripes on the sides, light skin tone",
         "action": "riding a bicycle",
-        "position": "left"
+        "position": "left",
+        "id": "person_legs_generic_1"
       },
       {
-        "desc": "blurred brown textured background, likely a dirt wall or ground",
-        "action": "static",
-        "position": "right"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "A person is riding a bicycle on the left side of the frame.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The bicycle handlebars feature bright neon green accents.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The rider is wearing black shorts with white reflective stripes.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [],
-    "spatial": "The person riding the bicycle is positioned on the left side of the frame. The blurred brown background is to the right of the cyclist.",
-    "parse_success": true,
-    "chunk_idx": 9,
-    "video_id": "q51s9owIGoU",
-    "state_changes": []
-  },
-  {
-    "time": [
-      20,
-      22
-    ],
-    "visible_entities": [
-      {
-        "desc": "cyclist wearing black shorts with a white stripe and black top, tan skin",
-        "action": "riding a bicycle",
-        "position": "left"
-      },
-      {
-        "desc": "black mountain bike with neon yellow accents on the frame and handlebars",
+        "desc": "bicycle with black handlebars and bright lime green accents",
         "action": "being ridden",
         "position": "left"
-      },
-      {
-        "desc": "dry, brown, grassy terrain",
-        "action": "static",
-        "position": "background",
-        "id": "dry_terrain"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "A cyclist is riding a mountain bike on a dirt path.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The cyclist's hand is gripping the handlebar.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The bike frame features bright neon yellow details.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [],
-    "spatial": "The cyclist is positioned on the left side of the frame, riding the bicycle which is also on the left. The dry, grassy terrain is to the right of the cyclist and fills the background.",
-    "parse_success": true,
-    "chunk_idx": 10,
-    "video_id": "q51s9owIGoU",
-    "state_changes": []
-  },
-  {
-    "time": [
-      22,
-      24
-    ],
-    "visible_entities": [
-      {
-        "desc": "person wearing black cycling shorts with a white stripe and black gloves",
-        "action": "riding a bicycle",
-        "position": "center"
-      },
-      {
-        "desc": "black bicycle handlebars with bright neon yellow accents",
-        "action": "being held",
-        "position": "foreground"
       }
     ],
     "atomic_facts": [
@@ -523,16 +442,101 @@
         "confidence": 1.0
       },
       {
-        "fact": "The rider's hands are gripping the handlebars.",
+        "fact": "The cyclist's hands are gripping the handlebars.",
         "confidence": 1.0
       },
       {
-        "fact": "The bicycle has neon yellow details on the black frame.",
+        "fact": "The bicycle features distinct lime green details on the frame and handlebars.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The person is positioned behind the handlebars, holding them with gloved hands. The handlebars are in the foreground, extending across the frame.",
+    "spatial": "The person is positioned on the left side of the frame, holding the handlebars of the bicycle. The bicycle is directly in front of the person. A blurry, textured brown surface, likely a dirt bank or wall, is to the right of the cyclist.",
+    "parse_success": true,
+    "chunk_idx": 9,
+    "video_id": "q51s9owIGoU",
+    "state_changes": []
+  },
+  {
+    "time": [
+      10,
+      11
+    ],
+    "visible_entities": [
+      {
+        "desc": "person wearing black cycling shorts with a white stripe and black socks",
+        "action": "riding a bicycle",
+        "position": "left"
+      },
+      {
+        "desc": "black mountain bike with neon yellow accents on the frame and handlebars",
+        "action": "being ridden",
+        "position": "left",
+        "id": "felt_bike_black_neon_1"
+      },
+      {
+        "desc": "dry, brown grassy terrain",
+        "action": "static",
+        "position": "background",
+        "id": "vegetation_dry_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A person is riding a bicycle on a dirt path.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The cyclist's hand is gripping the handlebar.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The bicycle has neon yellow details on the frame.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The person is sitting on the bicycle, which is positioned on the left side of the frame. The dry grassy terrain is to the right of the cyclist and fills the background.",
+    "parse_success": true,
+    "chunk_idx": 10,
+    "video_id": "q51s9owIGoU",
+    "state_changes": []
+  },
+  {
+    "time": [
+      11,
+      12
+    ],
+    "visible_entities": [
+      {
+        "desc": "cyclist wearing black shorts with white piping and a white logo on the thigh, gripping handlebars",
+        "action": "riding a bicycle",
+        "position": "center",
+        "id": "cyclist_black_helmet_1"
+      },
+      {
+        "desc": "black bicycle handlebars with bright neon yellow accents and black brake levers",
+        "action": "being held",
+        "position": "foreground",
+        "id": "felt_bike_black_neon_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A cyclist is riding a bicycle on a dirt path.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The cyclist's hands are gripping the handlebars.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The handlebars feature distinct neon yellow markings.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The cyclist is positioned behind the handlebars in the foreground. The handlebars are held by the cyclist's hands. The background consists of a blurry dirt surface below the cyclist.",
     "parse_success": true,
     "chunk_idx": 11,
     "video_id": "q51s9owIGoU",
@@ -540,90 +544,90 @@
   },
   {
     "time": [
-      24,
-      26
+      12,
+      13
     ],
     "visible_entities": [
       {
         "desc": "person wearing a white helmet with black ventilation holes, a dark sleeveless top, and dark shorts",
-        "action": "riding a bicycle down a dirt ramp",
+        "action": "riding a bicycle into a dirt berm",
         "position": "right",
-        "id": "cyclist_white_helmet"
-      },
-      {
-        "desc": "dirt berm ramp, light brown, curved, surrounded by dry grass",
-        "action": "static",
-        "position": "center",
-        "id": "dirt_trail"
+        "id": "cyclist_white_helmet_1"
       },
       {
         "desc": "bicycle with a visible front wheel and handlebars",
-        "action": "being ridden",
+        "action": "being ridden into the dirt berm",
         "position": "right",
-        "id": "generic_bicycle"
+        "id": "bike_generic_moving_1"
+      },
+      {
+        "desc": "dirt berm, curved, earthen, surrounded by dry brown grass",
+        "action": "static",
+        "position": "center",
+        "id": "dirt_trail_1"
       },
       {
         "desc": "green prickly pear cactus pads",
         "action": "static",
-        "position": "bottom right"
+        "position": "bottom right",
+        "id": "vegetation_green_1"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A person wearing a white helmet is riding a bicycle down a dirt berm.",
+        "fact": "A person wearing a white helmet rides a bicycle into a dirt berm.",
         "confidence": 1.0
       },
       {
-        "fact": "The bicycle is positioned on the slope of the dirt ramp.",
+        "fact": "The bicycle's front wheel is entering the curve of the berm.",
         "confidence": 1.0
       },
       {
-        "fact": "Cactus pads are visible in the foreground near the bottom right corner.",
+        "fact": "The setting is a dry, grassy outdoor area with cacti.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The person is to the right of the center of the frame, riding the bicycle down the dirt berm. The cactus pads are in the bottom right foreground, near the path of the bicycle.",
+    "spatial": "The person on the bicycle is to the right of the center of the dirt berm. The cactus pads are in the bottom right foreground, near the berm. The dry grass surrounds the berm.",
     "parse_success": true,
     "chunk_idx": 12,
     "video_id": "q51s9owIGoU",
-    "state_changes": []
+    "state_changes": [
+      "Cyclist rides into a dirt berm"
+    ]
   },
   {
     "time": [
-      26,
-      28
+      13,
+      14
     ],
     "visible_entities": [
       {
-        "desc": "person wearing a white helmet with black vents, a black short-sleeved jersey with white text and red collar accents, black shorts, and white socks",
-        "action": "riding a mountain bike",
+        "desc": "person wearing a white helmet with black vents, a black short-sleeved jersey with white and red accents, black shorts, and white socks",
+        "action": "riding a mountain bike around a dirt curve",
         "position": "center",
-        "id": "cyclist_white_helmet"
+        "id": "cyclist_white_helmet_1"
       },
       {
         "desc": "mountain bike with a black frame, white front fork, and knobby tires",
-        "action": "moving along a dirt path",
-        "position": "center"
+        "action": "being ridden on a dirt trail",
+        "position": "center",
+        "id": "bike_generic_moving_1"
       },
       {
-        "desc": "dry, brown grassy hillside with scattered green prickly pear cacti",
+        "desc": "dry brown grass and green prickly pear cacti",
         "action": "static",
-        "position": "background"
-      },
-      {
-        "desc": "dust cloud kicked up by the bike tires",
-        "action": "rising",
-        "position": "center"
+        "position": "background",
+        "id": "vegetation_dry_1"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "The person is leaning the bike into a turn on a dirt trail.",
+        "fact": "The person is leaning the bike to the left to navigate a turn.",
         "confidence": 1.0
       },
       {
-        "fact": "Dust is visible rising from the rear tire as the bike moves.",
+        "fact": "Dust is being kicked up by the rear tire of the bike.",
         "confidence": 1.0
       },
       {
@@ -632,7 +636,7 @@
       }
     ],
     "ocr": [],
-    "spatial": "The person is on the mountain bike, which is positioned in the center of the frame. The bike is on a dirt path that cuts through the dry grassy hillside. The cacti are located to the right of the rider and in the background.",
+    "spatial": "The person is on the mountain bike. The bike is on a dirt path. The dry grass and cacti are in the background surrounding the path.",
     "parse_success": true,
     "chunk_idx": 13,
     "video_id": "q51s9owIGoU",
@@ -640,49 +644,51 @@
   },
   {
     "time": [
-      28,
-      30
+      14,
+      15
     ],
     "visible_entities": [
       {
-        "desc": "person wearing a black short-sleeved shirt, black cycling shorts with white side panels and white text, black gloves, and white shoes",
+        "desc": "person wearing a black short-sleeved shirt, black cycling shorts with white side panels and white lettering, black socks, and white shoes",
         "action": "riding a mountain bike",
-        "position": "center"
+        "position": "center",
+        "id": "person_legs_generic_1"
       },
       {
-        "desc": "black mountain bike with knobby tires",
-        "action": "being ridden",
-        "position": "center"
+        "desc": "mountain bike with a dark frame and knobby tires",
+        "action": "being ridden on a dirt path",
+        "position": "center",
+        "id": "bike_generic_moving_1"
       },
       {
-        "desc": "large dark brown tree trunk with rough bark",
+        "desc": "large tree trunk with dark, rough bark",
         "action": "static",
         "position": "right",
-        "id": "forest_vegetation"
+        "id": "tree_trunks_1"
       },
       {
-        "desc": "dirt trail with scattered rocks and dry pine needles",
+        "desc": "dirt trail with dry brown pine needles and scattered grey rocks",
         "action": "static",
-        "position": "bottom",
-        "id": "dirt_trail"
+        "position": "foreground",
+        "id": "dirt_trail_1"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A person rides a mountain bike along a dirt path.",
+        "fact": "A person is riding a mountain bike along a dirt trail.",
         "confidence": 1.0
       },
       {
-        "fact": "The cyclist is moving from the left side of the frame towards the right.",
+        "fact": "The cyclist is leaning forward over the handlebars.",
         "confidence": 1.0
       },
       {
-        "fact": "The bike is positioned on the dirt trail.",
+        "fact": "The bike is moving past a large tree trunk on the right side of the frame.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The person is sitting on the mountain bike, which is positioned on the dirt trail. The large tree trunk is to the right of the cyclist. The rocks are scattered on the ground near the trail.",
+    "spatial": "The cyclist is positioned in the center of the frame, riding on the dirt trail. The large tree trunk is to the right of the cyclist. The scattered rocks and pine needles are on the ground below the cyclist and the bike.",
     "parse_success": true,
     "chunk_idx": 14,
     "video_id": "q51s9owIGoU",
@@ -690,90 +696,102 @@
   },
   {
     "time": [
-      30,
-      32
+      15,
+      16
     ],
     "visible_entities": [
       {
-        "desc": "person wearing a black long-sleeved top, black shorts, and a black helmet, riding a mountain bike",
+        "desc": "person wearing a black long-sleeved top, black shorts, and a black helmet",
         "action": "riding a mountain bike away from the camera",
-        "position": "center",
-        "id": "cyclist_dark_helmet"
+        "position": "left/center",
+        "id": "cyclist_black_helmet_1"
       },
       {
-        "desc": "large tree trunk with rough dark bark",
+        "desc": "mountain bike with knobby tires and a dark frame",
+        "action": "being ridden on a dirt trail",
+        "position": "left/center"
+      },
+      {
+        "desc": "large tree trunk with dark, textured bark",
         "action": "static",
         "position": "right",
-        "id": "forest_vegetation"
+        "id": "tree_trunks_1"
       },
       {
         "desc": "dirt trail with scattered rocks and dry pine needles",
         "action": "static",
-        "position": "foreground",
-        "id": "dirt_trail"
+        "position": "foreground/background",
+        "id": "dirt_trail_1"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "The person is riding a mountain bike away from the camera on a dirt trail.",
+        "fact": "A person is riding a mountain bike along a rocky dirt path.",
         "confidence": 1.0
       },
       {
-        "fact": "The cyclist is navigating a path surrounded by trees and rocks.",
+        "fact": "The cyclist is moving away from the camera view.",
         "confidence": 1.0
       },
       {
-        "fact": "The rider is positioned to the left of the large tree trunk.",
+        "fact": "The trail is surrounded by trees and dry vegetation.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The person on the bike is in the center of the frame, riding away from the viewer. The large tree trunk is to the right of the cyclist. The dirt trail is below the cyclist and extends into the background.",
+    "spatial": "The person on the bike is to the left of the large tree trunk. The bike is on the dirt trail. The trail is in front of the background trees.",
     "parse_success": true,
     "chunk_idx": 15,
     "video_id": "q51s9owIGoU",
-    "state_changes": []
+    "state_changes": [
+      "Cyclist changes to long-sleeved top and rides away from camera"
+    ]
   },
   {
     "time": [
-      32,
-      34
+      16,
+      17
     ],
     "visible_entities": [
       {
-        "desc": "person wearing a black short-sleeved jersey with white text and trim, black shorts with white stripes, black knee pads, black socks, black gloves, and black shoes",
-        "action": "riding a mountain bike",
+        "desc": "person wearing black cycling jersey with white text and logos, black shorts with white stripes, black gloves, black socks, and black shoes",
+        "action": "riding a bicycle",
         "position": "center",
-        "id": "cyclist_dark_helmet"
+        "id": "cyclist_black_helmet_1"
       },
       {
         "desc": "black mountain bike with front suspension forks and knobby tires",
-        "action": "moving forward on a dirt path",
-        "position": "center"
+        "action": "being ridden",
+        "position": "center",
+        "id": "bike_generic_moving_1"
       },
       {
-        "desc": "dirt trail surrounded by dry yellow grass and green bushes",
+        "desc": "dirt trail with dry grass and bushes",
         "action": "static",
         "position": "background",
-        "id": "dirt_trail"
+        "id": "dirt_trail_1"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A person is riding a mountain bike on a dirt trail.",
+        "fact": "person is riding a mountain bike on a dirt trail",
         "confidence": 1.0
       },
       {
-        "fact": "The rider is wearing protective knee pads.",
+        "fact": "the rider is wearing a black jersey with white text",
         "confidence": 1.0
       },
       {
-        "fact": "The bike is moving towards the camera.",
+        "fact": "the bike has front suspension forks",
+        "confidence": 1.0
+      },
+      {
+        "fact": "the trail is surrounded by dry vegetation",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The person is on the mountain bike, holding the handlebars. The bike is on the dirt path. The dry grass and bushes are behind and to the sides of the rider.",
+    "spatial": "The person is on the bicycle, which is on the dirt trail. The bushes are behind and to the sides of the person and bicycle.",
     "parse_success": true,
     "chunk_idx": 16,
     "video_id": "q51s9owIGoU",
@@ -781,43 +799,45 @@
   },
   {
     "time": [
-      34,
-      36
+      17,
+      18
     ],
     "visible_entities": [
       {
-        "desc": "person wearing black cycling shorts with white stripes, black socks, black gloves, and dark shoes",
+        "desc": "person wearing black cycling shorts with white stripes, black socks, and black gloves",
         "action": "riding a mountain bike",
-        "position": "center"
+        "position": "center",
+        "id": "cyclist_black_helmet_1"
       },
       {
         "desc": "black mountain bike with knobby tires",
         "action": "moving forward on a dirt path",
-        "position": "center"
+        "position": "center",
+        "id": "bike_generic_moving_1"
       },
       {
-        "desc": "dirt trail surrounded by dry brown grass and green bushes",
+        "desc": "dirt path surrounded by dry brown grass and green bushes",
         "action": "static",
         "position": "background",
-        "id": "dirt_trail"
+        "id": "dirt_trail_1"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A person is riding a mountain bike along a dirt path.",
+        "fact": "person is riding a mountain bike on a dirt path",
         "confidence": 1.0
       },
       {
-        "fact": "The cyclist is wearing black shorts with white stripes.",
+        "fact": "the bike is moving forward",
         "confidence": 1.0
       },
       {
-        "fact": "The terrain consists of dry grass and bushes.",
+        "fact": "the path is surrounded by dry vegetation",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The person is sitting on the mountain bike, which is positioned in the center of the dirt path. The dry grass and bushes are located on both sides of the path, surrounding the cyclist.",
+    "spatial": "The person is on the mountain bike. The bike is on the dirt path. The dry grass and bushes are to the left and right of the path.",
     "parse_success": true,
     "chunk_idx": 17,
     "video_id": "q51s9owIGoU",
@@ -825,75 +845,103 @@
   },
   {
     "time": [
-      36,
-      38
+      18,
+      19
     ],
     "visible_entities": [
       {
-        "desc": "black mountain bike with a matte finish, white 'GIANT' logo on the downtube, red accents on the seat post, and knobby tires",
+        "desc": "dark grey full-suspension mountain bike with white 'GIANT' branding on the frame, black handlebars, and a red reflector light on the stem",
         "action": "static",
         "position": "center",
-        "id": "giant_bike"
+        "id": "giant_bike_1"
+      },
+      {
+        "desc": "dark grey hardtail mountain bike with yellow accents on the frame and crankset, black handlebars, and a silver bell on the left grip",
+        "action": "static",
+        "position": "center",
+        "id": "bike_generic_moving_1"
       },
       {
         "desc": "large tree trunk with rough, reddish-brown bark",
         "action": "static",
         "position": "background",
-        "id": "forest_vegetation"
+        "id": "tree_trunks_1"
       },
       {
-        "desc": "ground covered in brown pine needles and dry leaves",
+        "desc": "large grey rock",
+        "action": "static",
+        "position": "background",
+        "id": "bike_components_generic_1"
+      },
+      {
+        "desc": "ground covered in brown pine needles",
         "action": "static",
         "position": "bottom",
-        "id": "dry_terrain"
+        "id": "vegetation_dry_1"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "The black mountain bike is parked and leaning against the large tree trunk.",
+        "fact": "A dark grey full-suspension mountain bike is parked in front of a large tree trunk.",
         "confidence": 1.0
       },
       {
-        "fact": "The bike features a suspension fork and disc brakes.",
+        "fact": "A dark grey hardtail mountain bike is parked in front of a large grey rock.",
         "confidence": 1.0
       },
       {
-        "fact": "The 'GIANT' logo is clearly visible on the side of the bike frame.",
+        "fact": "The text 'GIANT' is visible in white on the downtube of the first bike.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The text 'XCR' is visible on the crankset of the second bike.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The first bike has a red light mounted on the handlebar stem.",
         "confidence": 1.0
       }
     ],
     "ocr": [
-      "GIANT"
+      "GIANT",
+      "XCR"
     ],
-    "spatial": "The black mountain bike is positioned in front of the large tree trunk. The bike's tires are resting on the ground covered in pine needles. The 'GIANT' logo is located on the downtube of the bike frame.",
+    "spatial": "The first mountain bike is positioned in front of the large tree trunk. The second mountain bike is positioned in front of the large grey rock. The ground covered in pine needles is below both bicycles.",
     "parse_success": true,
     "chunk_idx": 18,
     "video_id": "q51s9owIGoU",
     "state_changes": [
-      "Action stops - transitions from riding scenes to static bike showcase displays"
+      "Scene cuts to static shots of parked bikes (Giant brand) and tree trunks"
     ]
   },
   {
     "time": [
-      38,
-      40
+      19,
+      20
     ],
     "visible_entities": [
       {
-        "desc": "black hardtail mountain bike with yellow accents, front suspension fork, knobby tires, and 'XCR' branding on the crankset",
+        "desc": "black mountain bike with yellow accents, featuring a front suspension fork, knobby tires, and disc brakes",
         "action": "static",
-        "position": "center"
+        "position": "center",
+        "id": "bike_generic_moving_1"
       },
       {
-        "desc": "dirt trail with visible tire tracks and reddish-brown dry grass",
+        "desc": "dirt trail with visible tire tracks and ruts, flanked by dry reddish-brown grass",
         "action": "static",
         "position": "background",
-        "id": "dirt_trail"
+        "id": "dirt_trail_1"
+      },
+      {
+        "desc": "large grey rock",
+        "action": "static",
+        "position": "background",
+        "id": "bike_components_generic_1"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "The mountain bike is parked on a bed of pine needles and dirt.",
+        "fact": "A black mountain bike is parked on a bed of pine needles.",
         "confidence": 1.0
       },
       {
@@ -901,14 +949,23 @@
         "confidence": 1.0
       },
       {
-        "fact": "The dirt trail is visible in the background behind the bike.",
+        "fact": "The text 'XCR' is visible on the bicycle's crank arm.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The text 'KENDA' is visible on the bicycle tire sidewall.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The scene transitions to a view of a dirt trail with tire tracks.",
         "confidence": 1.0
       }
     ],
     "ocr": [
-      "XCR"
+      "XCR",
+      "KENDA"
     ],
-    "spatial": "The black mountain bike is in the foreground, positioned in front of a large grey rock. The dirt trail is located behind the bike and the rock, extending into the background.",
+    "spatial": "The black mountain bike is in the foreground, positioned in front of a large grey rock. The rock is behind the bike. The dirt trail is visible in the background environment.",
     "parse_success": true,
     "chunk_idx": 19,
     "video_id": "q51s9owIGoU",
@@ -916,88 +973,93 @@
   },
   {
     "time": [
-      40,
-      42
+      20,
+      21
     ],
     "visible_entities": [
       {
-        "desc": "cyclist wearing black shorts with white stripes, black socks, and black shoes with red accents",
-        "action": "riding a mountain bike",
-        "position": "center"
+        "desc": "person wearing black shorts with a white stripe, black socks, and black shoes with red accents",
+        "action": "riding a bicycle",
+        "position": "center",
+        "id": "person_legs_generic_1"
       },
       {
-        "desc": "mountain bike with a visible front tire and frame",
-        "action": "moving along a dirt path",
-        "position": "center"
+        "desc": "bicycle with a black frame and knobby tires",
+        "action": "moving forward on a dirt path",
+        "position": "center",
+        "id": "bike_generic_moving_1"
       },
       {
-        "desc": "dirt trail surrounded by dry, brown grass and sparse vegetation",
+        "desc": "dirt trail surrounded by dry, brown grass and sparse bushes",
         "action": "static",
         "position": "background",
-        "id": "dirt_trail"
+        "id": "dirt_trail_1"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A cyclist is riding a mountain bike on a dirt trail.",
+        "fact": "A person is riding a bicycle on a dirt trail.",
         "confidence": 1.0
       },
       {
-        "fact": "The bike's front tire is kicking up dust as it moves.",
+        "fact": "The bicycle's rear wheel is kicking up dust as it moves.",
         "confidence": 1.0
       },
       {
-        "fact": "The cyclist is wearing black shorts with white stripes.",
+        "fact": "The rider is wearing black shorts with a white stripe.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The cyclist is on the mountain bike, which is positioned in the center of the dirt trail. The dry grass and vegetation are on both sides of the trail, surrounding the cyclist.",
+    "spatial": "The person is on the bicycle, which is in the center of the frame. The bicycle is on a dirt path that is surrounded by dry grass and bushes.",
     "parse_success": true,
     "chunk_idx": 20,
     "video_id": "q51s9owIGoU",
-    "state_changes": []
+    "state_changes": [
+      "Cyclist reappears riding on a dirt path"
+    ]
   },
   {
     "time": [
-      42,
-      44
+      21,
+      22
     ],
     "visible_entities": [
       {
-        "desc": "person wearing a black cycling jersey with a white logo on the back, black shorts, black knee pads, black socks, and a black helmet",
-        "action": "riding a bicycle away from the camera",
+        "desc": "person wearing a black short-sleeved cycling jersey with a white winged logo on the back, black cycling shorts with white trim, black knee pads, black socks, black shoes, and a black helmet",
+        "action": "riding a mountain bike away from the camera",
         "position": "center",
-        "id": "cyclist_dark_helmet"
+        "id": "cyclist_black_helmet_1"
       },
       {
         "desc": "mountain bike with black tires and frame",
-        "action": "moving along a dirt path",
-        "position": "center"
+        "action": "moving forward on a dirt path",
+        "position": "center",
+        "id": "bike_generic_moving_1"
       },
       {
-        "desc": "dirt trail surrounded by dry grass and green bushes",
+        "desc": "dirt trail surrounded by dry brown grass and green bushes",
         "action": "static",
         "position": "background",
-        "id": "dirt_trail"
+        "id": "dirt_trail_1"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A person is riding a mountain bike on a dirt trail.",
+        "fact": "The person is riding a mountain bike away from the camera.",
         "confidence": 1.0
       },
       {
-        "fact": "The cyclist is moving away from the camera.",
+        "fact": "The bike is kicking up dust as it moves along the trail.",
         "confidence": 1.0
       },
       {
-        "fact": "The terrain is dry and dusty with vegetation on the sides.",
+        "fact": "The rider is wearing protective knee pads.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The person is on the bicycle, positioned in the center of the frame. The bicycle is on the dirt path. The green bushes are to the left and right of the path, forming the background.",
+    "spatial": "The person is on top of the mountain bike. The bike is on the dirt trail. The trail is surrounded by bushes and dry grass.",
     "parse_success": true,
     "chunk_idx": 21,
     "video_id": "q51s9owIGoU",
@@ -1005,25 +1067,148 @@
   },
   {
     "time": [
-      44,
-      46
+      22,
+      23
     ],
     "visible_entities": [
       {
         "desc": "person wearing a black helmet, black short-sleeved jersey with a white logo on the back, and black shorts with white graphics",
-        "action": "riding a bicycle down a dirt path",
+        "action": "riding a mountain bike through tall grass",
         "position": "right",
-        "id": "cyclist_dark_helmet"
+        "id": "cyclist_black_helmet_1"
+      },
+      {
+        "desc": "mountain bike, dark frame, partially obscured by vegetation",
+        "action": "being ridden",
+        "position": "right",
+        "id": "bike_generic_moving_1"
+      },
+      {
+        "desc": "dirt trail, light brown, winding through vegetation",
+        "action": "static",
+        "position": "bottom left",
+        "id": "dirt_trail_1"
+      },
+      {
+        "desc": "tall green and brown grass and bushes",
+        "action": "static",
+        "position": "background",
+        "id": "vegetation_green_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A person is riding a mountain bike off the main dirt path and into the tall grass on the right.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The rider is leaning forward over the handlebars.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The dirt trail curves to the left in the foreground.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The person on the mountain bike is to the right of the dirt trail. The rider is moving into the tall grass which is to the right of the trail. The bushes are behind the rider.",
+    "parse_success": true,
+    "chunk_idx": 22,
+    "video_id": "q51s9owIGoU",
+    "state_changes": []
+  },
+  {
+    "time": [
+      23,
+      24
+    ],
+    "visible_entities": [
+      {
+        "desc": "person wearing dark clothing and a helmet, riding a bicycle",
+        "action": "riding a bike down a dirt trail",
+        "position": "center",
+        "id": "person_legs_generic_1"
+      },
+      {
+        "desc": "rocky cliff face with loose stones and dry grass",
+        "action": "static",
+        "position": "left",
+        "id": "bike_components_generic_1"
+      },
+      {
+        "desc": "dense green bushes and trees",
+        "action": "static",
+        "position": "right",
+        "id": "vegetation_green_1"
+      },
+      {
+        "desc": "dirt path winding through the terrain",
+        "action": "static",
+        "position": "bottom",
+        "id": "dirt_trail_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A person is riding a bike down a dirt trail.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The trail is situated between a rocky slope and green vegetation.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The sky above is clear and blue.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The person on the bike is in the center of the frame, riding on the dirt path. To the left of the path is a steep rocky cliff. To the right of the path are dense green bushes. The blue sky is above the entire scene.",
+    "parse_success": true,
+    "chunk_idx": 23,
+    "video_id": "q51s9owIGoU",
+    "state_changes": []
+  },
+  {
+    "time": [
+      24,
+      25
+    ],
+    "visible_entities": [
+      {
+        "desc": "person wearing a black short-sleeved shirt, dark shorts, and a white helmet",
+        "action": "riding a mountain bike down a dirt trail",
+        "position": "center",
+        "id": "person_legs_generic_1"
       },
       {
         "desc": "mountain bike with dark frame and knobby tires",
-        "action": "being ridden",
-        "position": "right"
+        "action": "being ridden down a slope",
+        "position": "center"
       },
       {
-        "desc": "dirt trail surrounded by green bushes and dry grass",
+        "desc": "rocky hillside with large boulders and dry grass",
         "action": "static",
-        "position": "background"
+        "position": "left",
+        "id": "bike_components_generic_1"
+      },
+      {
+        "desc": "dense green bushes and trees",
+        "action": "static",
+        "position": "right",
+        "id": "vegetation_green_1"
+      },
+      {
+        "desc": "dirt trail with loose rocks and dust",
+        "action": "static",
+        "position": "bottom",
+        "id": "dirt_trail_1"
+      },
+      {
+        "desc": "blue sky",
+        "action": "static",
+        "position": "top",
+        "id": "sky_dust_1"
       }
     ],
     "atomic_facts": [
@@ -1032,171 +1217,66 @@
         "confidence": 1.0
       },
       {
-        "fact": "The rider is wearing a black helmet and black clothing.",
+        "fact": "The cyclist is wearing a white helmet and black clothing.",
         "confidence": 1.0
       },
       {
-        "fact": "The rider is positioned on the right side of the frame, moving away from the camera.",
+        "fact": "The trail is situated between a rocky slope on the left and green vegetation on the right.",
         "confidence": 1.0
       },
       {
-        "fact": "The trail is surrounded by dense green vegetation and dry grass.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [],
-    "spatial": "The person is on the bicycle, which is on the dirt trail. The trail is in the foreground and center-left, while the rider is to the right of the trail, moving through the vegetation. The green bushes are to the left of the rider.",
-    "parse_success": true,
-    "chunk_idx": 22,
-    "video_id": "q51s9owIGoU",
-    "state_changes": []
-  },
-  {
-    "time": [
-      46,
-      48
-    ],
-    "visible_entities": [
-      {
-        "desc": "person wearing dark clothing and a helmet, riding a bicycle",
-        "action": "riding a bicycle down a dirt path",
-        "position": "center",
-        "id": "cyclist_dark_helmet"
-      },
-      {
-        "desc": "rocky cliff face with loose stones and dry grass",
-        "action": "static",
-        "position": "left"
-      },
-      {
-        "desc": "dense green bushes and trees",
-        "action": "static",
-        "position": "right",
-        "id": "forest_vegetation"
-      },
-      {
-        "desc": "dirt trail with loose rocks",
-        "action": "static",
-        "position": "bottom",
-        "id": "dirt_trail"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "A person is riding a bicycle down a dirt path.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The path is situated between a rocky cliff on the left and green vegetation on the right.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The sky is clear and blue.",
+        "fact": "The rider is kicking up dust as they descend the path.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The person on the bicycle is in the center of the frame, positioned between the rocky cliff on the left and the green bushes on the right. The dirt path is below the person and extends into the background.",
-    "parse_success": true,
-    "chunk_idx": 23,
-    "video_id": "q51s9owIGoU",
-    "state_changes": []
-  },
-  {
-    "time": [
-      48,
-      50
-    ],
-    "visible_entities": [
-      {
-        "desc": "person wearing a white helmet, black short-sleeved shirt, and dark shorts",
-        "action": "riding a mountain bike down a dirt path",
-        "position": "center",
-        "id": "cyclist_white_helmet"
-      },
-      {
-        "desc": "mountain bike with dark frame and knobby tires",
-        "action": "being ridden down the trail",
-        "position": "center"
-      },
-      {
-        "desc": "dirt trail with loose rocks and dry grass",
-        "action": "static",
-        "position": "center",
-        "id": "dirt_trail"
-      },
-      {
-        "desc": "large rocky outcrop and boulders",
-        "action": "static",
-        "position": "left"
-      },
-      {
-        "desc": "dense green bushes and trees",
-        "action": "static",
-        "position": "right",
-        "id": "forest_vegetation"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "A person wearing a white helmet is riding a mountain bike down a dirt trail.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The cyclist is navigating a rocky path between a rock face and bushes.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The terrain is uneven with loose stones and dry vegetation.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [],
-    "spatial": "The cyclist is in the center of the frame, riding on the dirt trail. To the left of the cyclist is a large rocky outcrop. To the right of the cyclist are dense green bushes.",
+    "spatial": "The cyclist is in the center of the frame, riding on the dirt trail. The rocky hillside is to the left of the cyclist, and the dense green bushes are to the right of the cyclist. The blue sky is above the hillside and bushes.",
     "parse_success": true,
     "chunk_idx": 24,
     "video_id": "q51s9owIGoU",
-    "state_changes": []
+    "state_changes": [
+      "Cyclist rides down a rocky slope with blue sky visible"
+    ]
   },
   {
     "time": [
-      50,
-      52
+      25,
+      26
     ],
     "visible_entities": [
       {
-        "desc": "man wearing a white helmet, sunglasses, and a black cycling jersey with red trim on the sleeves",
+        "desc": "person wearing a white helmet, dark sunglasses, and a black cycling jersey with red trim on the sleeves",
         "action": "riding a mountain bike",
         "position": "center",
-        "id": "cyclist_white_helmet"
+        "id": "cyclist_white_helmet_1"
       },
       {
-        "desc": "black mountain bike front wheel with a knobby tire featuring white 'RACING RALPH' and 'SHIMANO' text",
-        "action": "rolling over dry ground",
-        "position": "foreground"
+        "desc": "black mountain bike front wheel with white 'RACING RALPH' and 'DEORE XT' text on the tire",
+        "action": "rolling over dry pine needles",
+        "position": "foreground",
+        "id": "shimano_components_1"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "The man is riding a mountain bike along a dirt path.",
+        "fact": "A person is riding a mountain bike on a dirt trail.",
         "confidence": 1.0
       },
       {
-        "fact": "The bike tire is rolling over dry pine needles and dirt.",
+        "fact": "The bike tire has 'RACING RALPH' and 'DEORE XT' printed on the sidewall.",
         "confidence": 1.0
       },
       {
-        "fact": "The tire sidewall displays the text 'RACING RALPH' and 'SHIMANO'.",
+        "fact": "The ground is covered in dry pine needles and dirt.",
         "confidence": 1.0
       }
     ],
     "ocr": [
       "RACING RALPH",
-      "SHIMANO",
-      "XT",
-      "DEORE"
+      "DEORE XT",
+      "SHIMANO"
     ],
-    "spatial": "The man is positioned above the bicycle, holding the handlebars. The front wheel is in the foreground, below the man's torso. Green bushes are to the right of the dirt path.",
+    "spatial": "The person is positioned behind the front wheel of the bicycle. The bicycle is on a dirt path with green bushes to the right.",
     "parse_success": true,
     "chunk_idx": 25,
     "video_id": "q51s9owIGoU",
@@ -1204,49 +1284,56 @@
   },
   {
     "time": [
-      52,
-      54
+      26,
+      27
     ],
     "visible_entities": [
       {
-        "desc": "black mountain bike wheel with knobby tire, white rim decals, silver spokes, and a silver disc brake rotor",
-        "action": "static",
-        "position": "center"
-      },
-      {
-        "desc": "black bicycle suspension fork with white vertical text",
+        "desc": "black mountain bike front wheel with knobby tire, silver spokes, and white decals reading 'DEORE XT' and 'SHIMANO'",
         "action": "static",
         "position": "center",
-        "id": "rockshox_fork"
+        "id": "shimano_components_1"
       },
       {
-        "desc": "brown tree bark with rough texture",
+        "desc": "black bicycle suspension fork with white 'ROCKSHOX' text",
+        "action": "static",
+        "position": "center",
+        "id": "rockshox_fork_1"
+      },
+      {
+        "desc": "silver disc brake rotor attached to the wheel hub",
+        "action": "static",
+        "position": "center",
+        "id": "bike_components_generic_1"
+      },
+      {
+        "desc": "brown textured tree trunk",
         "action": "static",
         "position": "background",
-        "id": "forest_vegetation"
+        "id": "tree_trunks_1"
       },
       {
-        "desc": "dry brown pine needles on the ground",
+        "desc": "dry brown pine needles covering the ground",
         "action": "static",
         "position": "bottom",
-        "id": "dry_terrain"
+        "id": "vegetation_dry_1"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "The mountain bike wheel is stationary in front of a tree.",
+        "fact": "The mountain bike wheel is resting on a bed of pine needles.",
         "confidence": 1.0
       },
       {
-        "fact": "The text 'ROCKSHOX' is visible on the black suspension fork.",
+        "fact": "The wheel is positioned in front of a tree trunk.",
         "confidence": 1.0
       },
       {
-        "fact": "The text 'DEORE XT' and 'SHIMANO' is visible on the white rim decals.",
+        "fact": "The text 'ROCKSHOX' is visible on the black fork.",
         "confidence": 1.0
       },
       {
-        "fact": "The tire has a knobby tread pattern suitable for off-road terrain.",
+        "fact": "The text 'DEORE XT' is visible on the wheel rim.",
         "confidence": 1.0
       }
     ],
@@ -1255,7 +1342,7 @@
       "DEORE XT",
       "SHIMANO"
     ],
-    "spatial": "The black suspension fork is positioned vertically in the center of the frame, connecting to the wheel hub. The wheel is in front of the brown tree bark background. The dry pine needles are on the ground below the tire.",
+    "spatial": "The black mountain bike wheel is in the foreground, positioned in front of the brown tree trunk. The 'ROCKSHOX' fork is located above the wheel hub and disc brake rotor. The dry pine needles are below the tire, covering the ground.",
     "parse_success": true,
     "chunk_idx": 26,
     "video_id": "q51s9owIGoU",
@@ -1263,32 +1350,33 @@
   },
   {
     "time": [
-      54,
-      56
+      27,
+      28
     ],
     "visible_entities": [
       {
-        "desc": "black mountain bike front wheel with knobby tire, black suspension fork, silver disc brake rotor",
+        "desc": "black mountain bike wheel with knobby tire, white 'SCHWALBE' and 'DEORE XT' decals, silver disc brake rotor, black RockShox suspension fork",
         "action": "static",
-        "position": "foreground"
+        "position": "foreground",
+        "id": "shimano_components_1"
       },
       {
-        "desc": "rough brown tree bark with vertical grooves",
+        "desc": "rough brown tree bark",
         "action": "static",
         "position": "background",
-        "id": "forest_vegetation"
+        "id": "tree_trunks_1"
       },
       {
-        "desc": "dry brown pine needles and grass on the ground",
+        "desc": "dry brown pine needles and ground cover",
         "action": "static",
         "position": "bottom",
-        "id": "dry_terrain"
+        "id": "vegetation_dry_1"
       },
       {
-        "desc": "sunlit dry bushes and trees on a hillside",
+        "desc": "sunset-lit landscape with green bushes, yellow wildflowers, and distant hills",
         "action": "static",
         "position": "background",
-        "id": "dry_terrain"
+        "id": "sky_dust_1"
       }
     ],
     "atomic_facts": [
@@ -1297,7 +1385,7 @@
         "confidence": 1.0
       },
       {
-        "fact": "The tire features white lettering reading 'SCHWALBE' and 'DEORE XT'.",
+        "fact": "The tire features 'SCHWALBE' branding at the top and 'DEORE XT' on the sidewall.",
         "confidence": 1.0
       },
       {
@@ -1305,7 +1393,7 @@
         "confidence": 1.0
       },
       {
-        "fact": "The scene transitions from a close-up of the bike to a wider view of the dry landscape.",
+        "fact": "The scene cuts from a close-up of the bike to a wide shot of a sunlit field.",
         "confidence": 1.0
       }
     ],
@@ -1315,59 +1403,61 @@
       "ROCK SHOX",
       "SHIMANO"
     ],
-    "spatial": "The black mountain bike wheel is in the foreground, positioned in front of the rough brown tree bark. The dry pine needles are below the wheel on the ground. The sunlit bushes are visible in the background behind the foreground elements.",
+    "spatial": "The mountain bike wheel is in the foreground, positioned in front of the rough tree bark. The dry pine needles are below the wheel on the ground. The landscape with bushes and hills is in the background of the second frame.",
     "parse_success": true,
     "chunk_idx": 27,
     "video_id": "q51s9owIGoU",
-    "state_changes": []
+    "state_changes": [
+      "Lighting changes to sunset-lit landscape"
+    ]
   },
   {
     "time": [
-      56,
-      58
+      28,
+      29
     ],
     "visible_entities": [
       {
-        "desc": "large bush with dense, dry, reddish-brown foliage and yellowish tips",
+        "desc": "tall, bushy shrub with dry, reddish-brown foliage and yellowish flowering tops",
         "action": "static",
         "position": "right foreground",
-        "id": "dry_terrain"
+        "id": "sky_dust_1"
       },
       {
-        "desc": "dark green coniferous tree with needle-like leaves",
+        "desc": "dark green coniferous tree with dense branches",
         "action": "static",
         "position": "left background",
-        "id": "forest_vegetation"
+        "id": "vegetation_green_1"
       },
       {
-        "desc": "dry, brown grassy ground cover",
+        "desc": "dry, brown grass and low-lying scrub vegetation",
         "action": "static",
-        "position": "bottom foreground",
-        "id": "dry_terrain"
+        "position": "center foreground",
+        "id": "vegetation_dry_1"
       },
       {
-        "desc": "dark, shadowed hillside",
+        "desc": "dark, silhouetted hillside ridge",
         "action": "static",
         "position": "background",
-        "id": "dry_terrain"
+        "id": "sky_dust_1"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "Sunlight illuminates the reddish-brown bush on the right side of the frame.",
+        "fact": "Sunlight illuminates the right side of the scene, casting a warm, golden glow on the vegetation.",
         "confidence": 1.0
       },
       {
-        "fact": "A dark green tree stands to the left of the reddish-brown bush.",
+        "fact": "The landscape consists of dry, scrubby terrain typical of a chaparral or desert environment.",
         "confidence": 1.0
       },
       {
-        "fact": "The hillside is located behind the foreground vegetation.",
+        "fact": "The background hill is in shadow, contrasting with the sunlit foreground plants.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The reddish-brown bush is in the right foreground, positioned to the right of the dark green tree. The dry grassy ground is below the bushes and trees. The dark hillside is in the background, behind all the foreground vegetation.",
+    "spatial": "The reddish-brown shrub is in the right foreground, positioned to the right of the dry grass in the center. The dark green coniferous tree is located in the left background, behind the foreground vegetation. The silhouetted hillside ridge is above and behind all the foreground plants.",
     "parse_success": true,
     "chunk_idx": 28,
     "video_id": "q51s9owIGoU",
@@ -1375,45 +1465,50 @@
   },
   {
     "time": [
-      58,
-      60
+      29,
+      30
     ],
     "visible_entities": [
       {
-        "desc": "person wearing a black helmet and dark clothing",
-        "action": "riding a bicycle",
-        "position": "center",
-        "id": "cyclist_dark_helmet"
+        "desc": "person wearing a black helmet, black short-sleeved top, and dark shorts with white accents",
+        "action": "riding a mountain bike",
+        "position": "center-right"
       },
       {
-        "desc": "bicycle",
+        "desc": "mountain bike, dark frame",
         "action": "being ridden",
-        "position": "center",
-        "id": "generic_bicycle"
+        "position": "center-right",
+        "id": "bike_generic_moving_1"
       },
       {
-        "desc": "dry brownish-orange bushes and green trees",
+        "desc": "dry, golden-brown brush and green bushes",
         "action": "static",
-        "position": "foreground/background",
-        "id": "dry_terrain"
+        "position": "foreground",
+        "id": "vegetation_dry_1"
+      },
+      {
+        "desc": "hilly terrain with trees",
+        "action": "static",
+        "position": "background",
+        "id": "sky_dust_1"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A person wearing a helmet is riding a bicycle through a brushy landscape.",
+        "fact": "A person is riding a mountain bike through a brushy landscape.",
         "confidence": 1.0
       },
       {
-        "fact": "The rider is moving from right to left across the frame.",
+        "fact": "The rider is moving from left to right across the frame.",
         "confidence": 1.0
       },
       {
-        "fact": "The scene is illuminated by warm sunlight, casting shadows.",
+        "fact": "The scene is illuminated by warm, low-angle sunlight, suggesting sunset or sunrise.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The person is on the bicycle, positioned centrally in the frame. The rider is surrounded by bushes and trees, with some vegetation in the foreground and a hill in the background.",
+    "spatial": "The person on the mountain bike is to the right of the central tree and behind the foreground brush. The hilly terrain is in the background, behind the rider and the vegetation.",
     "parse_success": true,
     "chunk_idx": 29,
     "video_id": "q51s9owIGoU",
@@ -1421,49 +1516,44 @@
   },
   {
     "time": [
-      60,
-      62
+      30,
+      31
     ],
     "visible_entities": [
       {
-        "desc": "person wearing dark clothing, riding a mountain bike",
-        "action": "riding a bike through the forest",
+        "desc": "person wearing dark clothing and a helmet, riding a mountain bike",
+        "action": "riding a bicycle through the forest",
         "position": "center",
-        "id": "cyclist_dark_helmet"
+        "id": "person_legs_generic_1"
       },
       {
-        "desc": "mountain bike with dark frame",
-        "action": "being ridden",
+        "desc": "mountain bike with dark frame and knobby tires",
+        "action": "being ridden over uneven terrain",
         "position": "center"
       },
       {
-        "desc": "forest environment with trees and bushes",
+        "desc": "forest setting with tall trees, bushes, and dry grass",
         "action": "static",
         "position": "background",
-        "id": "forest_vegetation"
-      },
-      {
-        "desc": "sunlight creating lens flare",
-        "action": "static",
-        "position": "top"
+        "id": "vegetation_green_1"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A person is riding a mountain bike through a forest.",
+        "fact": "A person is riding a mountain bike through a wooded area.",
         "confidence": 1.0
       },
       {
-        "fact": "The sun is shining brightly, creating a lens flare effect.",
+        "fact": "The sun is shining brightly through the trees, creating a lens flare.",
         "confidence": 1.0
       },
       {
-        "fact": "The rider is moving from left to right across the frame.",
+        "fact": "The rider is navigating a dirt path surrounded by vegetation.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The person is on the mountain bike, which is in the center of the frame. The forest trees and bushes are behind and to the sides of the rider. The bright sunlight is above the rider, causing a lens flare that appears in the foreground.",
+    "spatial": "The person is on the mountain bike, which is in the center of the frame. The forest trees and bushes are in the background and to the sides of the rider. The sun is above and behind the trees, casting light into the scene.",
     "parse_success": true,
     "chunk_idx": 30,
     "video_id": "q51s9owIGoU",
@@ -1471,27 +1561,33 @@
   },
   {
     "time": [
-      62,
-      64
+      31,
+      32
     ],
     "visible_entities": [
       {
         "desc": "person wearing dark clothing, riding a bicycle",
         "action": "riding a bicycle through the forest",
         "position": "left",
-        "id": "cyclist_dark_helmet"
+        "id": "person_legs_generic_1"
       },
       {
         "desc": "bicycle with visible wheels and frame",
-        "action": "moving along the trail",
+        "action": "being ridden",
         "position": "left",
-        "id": "generic_bicycle"
+        "id": "bike_generic_moving_1"
       },
       {
-        "desc": "tall trees and bushes with sunlight filtering through",
+        "desc": "forest environment with trees and bushes",
         "action": "static",
         "position": "background",
-        "id": "forest_vegetation"
+        "id": "vegetation_green_1"
+      },
+      {
+        "desc": "sunlight creating lens flare",
+        "action": "shining",
+        "position": "top right",
+        "id": "sky_dust_1"
       }
     ],
     "atomic_facts": [
@@ -1500,7 +1596,7 @@
         "confidence": 1.0
       },
       {
-        "fact": "Sunlight is filtering through the trees, creating a warm glow.",
+        "fact": "The sun is shining brightly from the top right, creating a lens flare.",
         "confidence": 1.0
       },
       {
@@ -1509,49 +1605,51 @@
       }
     ],
     "ocr": [],
-    "spatial": "The person is on the bicycle, which is to the left of the frame. The trees and bushes are in the background, surrounding the cyclist. The sunlight is coming from the top right, illuminating the scene.",
+    "spatial": "The person on the bicycle is on the left side of the frame. The trees and bushes are in the background, surrounding the path. The sunlight is in the top right corner, above the trees.",
     "parse_success": true,
     "chunk_idx": 31,
     "video_id": "q51s9owIGoU",
-    "state_changes": []
+    "state_changes": [
+      "Sunlight creates lens flare in the forest setting"
+    ]
   },
   {
     "time": [
-      64,
-      66
+      32,
+      33
     ],
     "visible_entities": [
       {
-        "desc": "black mountain bike frame with white 'FOCUS' branding, visible rear wheel and drivetrain components",
+        "desc": "black mountain bike frame with white 'FELT' logo, visible rear wheel, cassette, and chain",
         "action": "static",
         "position": "foreground",
-        "id": "focus_bike"
+        "id": "felt_bike_matte_white_1"
       },
       {
-        "desc": "sunlit forest setting with tall dark tree trunks, green foliage, and dry golden-brown grass",
+        "desc": "sunlit forest setting with tall tree trunks, green foliage, and dry golden grass",
         "action": "static",
         "position": "background",
-        "id": "forest_vegetation"
+        "id": "vegetation_green_1"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A black mountain bike is positioned in the foreground.",
+        "fact": "A black mountain bike frame is positioned in the foreground.",
         "confidence": 1.0
       },
       {
-        "fact": "The bike frame features white 'FOCUS' lettering.",
+        "fact": "The 'FELT' brand logo is visible on the downtube of the bike.",
         "confidence": 1.0
       },
       {
-        "fact": "The scene transitions from a sunlit forest background to a close-up of the bicycle.",
+        "fact": "The background consists of a forest with sunlight filtering through the trees.",
         "confidence": 1.0
       }
     ],
     "ocr": [
-      "FOCUS"
+      "FELT"
     ],
-    "spatial": "The black mountain bike is in the foreground, positioned in front of the forest background. The 'FOCUS' text is located on the downtube of the bike frame.",
+    "spatial": "The black mountain bike frame is in front of the forest background. The 'FELT' logo is on the side of the bike frame. The dry grass is below the trees in the background.",
     "parse_success": true,
     "chunk_idx": 32,
     "video_id": "q51s9owIGoU",
@@ -1559,40 +1657,43 @@
   },
   {
     "time": [
-      66,
-      68
+      33,
+      34
     ],
     "visible_entities": [
       {
-        "desc": "matte black mountain bike frame with white 'FELT' logo, black knobby tires, silver chain, and black suspension fork",
+        "desc": "black matte mountain bike frame with white 'FELT' logo, black suspension fork, black knobby tires with white 'MAXXIS' and 'IKON' lettering, silver chain, and black drivetrain components",
         "action": "static",
-        "position": "center",
-        "id": "felt_bike"
+        "position": "foreground",
+        "id": "felt_bike_matte_white_1"
       },
       {
         "desc": "rough brown tree trunk with textured bark",
         "action": "static",
-        "position": "background"
+        "position": "background",
+        "id": "tree_trunks_1"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A matte black mountain bike is leaning against a tree trunk.",
+        "fact": "The mountain bike is stationary, leaning against a tree trunk.",
         "confidence": 1.0
       },
       {
-        "fact": "The bike frame features a prominent white 'FELT' logo on the downtube.",
+        "fact": "The 'FELT' logo is visible on the downtube of the bike frame.",
         "confidence": 1.0
       },
       {
-        "fact": "The bike has knobby tires suitable for off-road terrain.",
+        "fact": "The 'MAXXIS' and 'IKON' text is visible on the sidewall of the rear tire.",
         "confidence": 1.0
       }
     ],
     "ocr": [
-      "FELT"
+      "FELT",
+      "MAXXIS",
+      "IKON"
     ],
-    "spatial": "The matte black mountain bike is positioned in front of the rough brown tree trunk. The 'FELT' logo is located on the downtube of the bike frame, between the handlebars and the pedals.",
+    "spatial": "The black mountain bike is positioned in the foreground, directly in front of the rough brown tree trunk. The 'FELT' logo is located on the downtube, which is centrally positioned in the frame. The rear tire is to the left of the main frame structure.",
     "parse_success": true,
     "chunk_idx": 33,
     "video_id": "q51s9owIGoU",
@@ -1600,37 +1701,34 @@
   },
   {
     "time": [
-      68,
-      70
+      34,
+      35
     ],
     "visible_entities": [
       {
-        "desc": "matte black mountain bike frame with white 'FELT' logo, black suspension fork with 'ROCKSHOX' text, knobby tires with 'MAXXIS' branding",
+        "desc": "black matte mountain bike frame with white 'FELT' branding, black suspension fork with 'ROCKSHOX' text, knobby tires with 'MAXXIS' branding",
         "action": "static",
         "position": "center",
-        "id": "felt_bike"
+        "id": "felt_bike_matte_white_1"
       },
       {
-        "desc": "rough brown tree trunk with textured bark",
+        "desc": "rough brown tree bark",
         "action": "static",
-        "position": "background"
+        "position": "background",
+        "id": "tree_trunks_1"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "The black mountain bike is leaning against a tree trunk.",
+        "fact": "A black mountain bike is leaning against a tree.",
         "confidence": 1.0
       },
       {
-        "fact": "The bike frame features a large white 'FELT' logo on the downtube.",
+        "fact": "The bike frame features the brand name 'FELT' in large white letters.",
         "confidence": 1.0
       },
       {
         "fact": "The front suspension fork displays 'ROCKSHOX' branding.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The tires have 'MAXXIS' written on the sidewalls.",
         "confidence": 1.0
       }
     ],
@@ -1639,7 +1737,7 @@
       "ROCKSHOX",
       "MAXXIS"
     ],
-    "spatial": "The matte black mountain bike is positioned in front of the rough brown tree trunk. The 'FELT' logo is located on the downtube of the frame, between the handlebars and the pedals. The front wheel is to the right of the frame, and the rear wheel is to the left.",
+    "spatial": "The black mountain bike is positioned in the foreground, leaning against the rough tree bark which is in the background. The 'FELT' logo is located on the downtube of the frame, while the 'ROCKSHOX' text is visible on the front fork to the right.",
     "parse_success": true,
     "chunk_idx": 34,
     "video_id": "q51s9owIGoU",
@@ -1647,56 +1745,61 @@
   },
   {
     "time": [
-      70,
-      72
+      35,
+      36
     ],
     "visible_entities": [
       {
         "desc": "matte black mountain bike frame with white 'FELT' logo",
         "action": "static",
         "position": "center",
-        "id": "felt_bike"
+        "id": "felt_bike_matte_white_1"
       },
       {
-        "desc": "black bicycle crankset with silver chainrings and 'DEORE XT' logo",
+        "desc": "black bicycle crankset with silver chainrings and 'DEORE XT' branding",
         "action": "static",
         "position": "center",
-        "id": "deore_xt_component"
+        "id": "shimano_components_1"
       },
       {
-        "desc": "black bicycle suspension fork with 'ROCKSHOX' text",
-        "action": "static",
-        "position": "right",
-        "id": "rockshox_fork"
-      },
-      {
-        "desc": "rough brown tree bark",
+        "desc": "rough textured brown rock wall",
         "action": "static",
         "position": "background",
-        "id": "forest_vegetation"
+        "id": "bike_components_generic_1"
+      },
+      {
+        "desc": "black bicycle suspension fork with 'ROCKSHOX' branding",
+        "action": "static",
+        "position": "right",
+        "id": "rockshox_fork_1"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "The video shows a close-up of a matte black mountain bike frame.",
+        "fact": "The video displays a close-up of a matte black mountain bike frame against a rock wall.",
         "confidence": 1.0
       },
       {
-        "fact": "The camera focuses on the Shimano Deore XT crankset.",
+        "fact": "The camera focuses on the drivetrain, showing a Shimano Deore XT crankset.",
         "confidence": 1.0
       },
       {
-        "fact": "The bike is positioned in front of a tree trunk.",
+        "fact": "The text 'FELT' is visible in white on the down tube of the bike.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The text 'DEORE XT' is visible on the crank arm.",
         "confidence": 1.0
       }
     ],
     "ocr": [
       "FELT",
-      "DEORE XT",
+      "DEORE",
+      "XT",
       "SHIMANO",
       "ROCKSHOX"
     ],
-    "spatial": "The matte black bike frame is in front of the rough brown tree bark. The crankset is located below the top tube of the frame. The suspension fork is to the right of the crankset.",
+    "spatial": "The matte black bike frame is positioned in front of the rough brown rock wall. The crankset is located below the main frame tube and to the left of the front suspension fork. The 'FELT' logo is on the down tube, which runs diagonally across the center of the frame.",
     "parse_success": true,
     "chunk_idx": 35,
     "video_id": "q51s9owIGoU",
@@ -1704,47 +1807,40 @@
   },
   {
     "time": [
-      72,
-      74
+      36,
+      37
     ],
     "visible_entities": [
       {
-        "desc": "black bicycle crankset with a matte finish, featuring a large chainring with silver teeth and a spider arm assembly",
-        "action": "static",
-        "position": "center"
-      },
-      {
-        "desc": "black bicycle crank arm extending horizontally to the right, with white branding text",
-        "action": "static",
-        "position": "right"
-      },
-      {
-        "desc": "silver bicycle chain wrapped around the teeth of the chainring",
+        "desc": "black bicycle crank arm with a matte finish, featuring white 'DEORE XT' and 'SHIMANO' branding",
         "action": "static",
         "position": "center",
-        "id": "bike_components_generic"
+        "id": "shimano_components_1"
       },
       {
-        "desc": "dark carbon fiber bicycle frame tubing visible in the background",
+        "desc": "dark grey metallic chainring with teeth, attached to the crank spider",
         "action": "static",
-        "position": "background"
+        "position": "left",
+        "id": "bike_components_generic_1"
+      },
+      {
+        "desc": "silver metal bicycle chain wrapped around the chainring",
+        "action": "static",
+        "position": "left",
+        "id": "bike_components_generic_1"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "The bicycle crankset is stationary in the frame.",
+        "fact": "The bicycle crank arm and chainring are stationary.",
         "confidence": 1.0
       },
       {
-        "fact": "The chain is engaged with the teeth of the large chainring.",
+        "fact": "The text 'DEORE XT' is printed in white on the crank arm.",
         "confidence": 1.0
       },
       {
-        "fact": "The text 'DEORE XT' is printed in white on the crank arm near the center.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The text 'SHIMANO' and a logo are printed in white on the outer section of the crank arm.",
+        "fact": "The text 'SHIMANO' is printed in white on the crank arm.",
         "confidence": 1.0
       }
     ],
@@ -1753,7 +1849,7 @@
       "XT",
       "SHIMANO"
     ],
-    "spatial": "The black crank arm extends to the right of the central chainring assembly. The silver chain is wrapped around the outer edge of the chainring. The carbon fiber frame tubing is positioned behind the crankset mechanism.",
+    "spatial": "The black crank arm extends horizontally across the center of the frame. The chainring is positioned to the left of the crank arm's center. The chain is wrapped around the outer edge of the chainring.",
     "parse_success": true,
     "chunk_idx": 36,
     "video_id": "q51s9owIGoU",
@@ -1761,101 +1857,46 @@
   },
   {
     "time": [
-      74,
-      76
+      37,
+      38
     ],
     "visible_entities": [
       {
-        "desc": "black bicycle frame with large white 'FELT' lettering",
+        "desc": "black mountain bike frame with large white 'FELT' lettering",
         "action": "static",
         "position": "left",
-        "id": "felt_bike"
-      },
-      {
-        "desc": "black bicycle front fork with 'ROCK SHOX' sticker",
-        "action": "static",
-        "position": "right",
-        "id": "rockshox_fork"
-      },
-      {
-        "desc": "black bicycle tire with white 'DEORE XT' text",
-        "action": "static",
-        "position": "bottom right",
-        "id": "deore_xt_component"
-      },
-      {
-        "desc": "brown rocky ground surface",
-        "action": "static",
-        "position": "background"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "The bicycle is stationary on the ground.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The frame features the brand name 'FELT'.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The tire displays the model name 'DEORE XT'.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [
-      "FELT",
-      "ROCK SHOX",
-      "DEORE XT",
-      "SCH"
-    ],
-    "spatial": "The black bicycle frame with 'FELT' text is on the left side of the image. The front fork with the 'ROCK SHOX' sticker is to the right of the frame. The tire with 'DEORE XT' text is located below the fork and frame, resting on the brown rocky ground.",
-    "parse_success": true,
-    "chunk_idx": 37,
-    "video_id": "q51s9owIGoU",
-    "state_changes": []
-  },
-  {
-    "time": [
-      76,
-      78
-    ],
-    "visible_entities": [
-      {
-        "desc": "black bicycle frame with large white 'TREK' lettering",
-        "action": "static",
-        "position": "left",
-        "id": "trek_bike"
+        "id": "felt_bike_matte_white_1"
       },
       {
         "desc": "black suspension fork with a red and white 'ROCK SHOX' sticker",
         "action": "static",
         "position": "right",
-        "id": "rockshox_fork"
+        "id": "rockshox_fork_1"
       },
       {
-        "desc": "black mountain bike tire with white 'DEORE XT' text on the sidewall",
+        "desc": "black bicycle tire with white 'DEORE XT' text on the sidewall",
         "action": "static",
         "position": "center",
-        "id": "deore_xt_component"
+        "id": "shimano_components_1"
       },
       {
-        "desc": "brown rocky ground with dry leaves and twigs",
+        "desc": "brown rocky ground surface",
         "action": "static",
-        "position": "background"
+        "position": "background",
+        "id": "vegetation_dry_1"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "The bicycle is stationary on the ground.",
+        "fact": "The camera remains static on the bicycle parts.",
         "confidence": 1.0
       },
       {
-        "fact": "The tire is positioned between the frame and the fork.",
+        "fact": "The 'FELT' logo is visible on the bike frame.",
         "confidence": 1.0
       },
       {
-        "fact": "The 'ROCK SHOX' sticker is visible on the lower leg of the fork.",
+        "fact": "The 'ROCK SHOX' sticker is attached to the fork leg.",
         "confidence": 1.0
       },
       {
@@ -1864,11 +1905,72 @@
       }
     ],
     "ocr": [
-      "TREK",
+      "FELT",
       "ROCK SHOX",
       "DEORE XT"
     ],
-    "spatial": "The black bicycle frame is to the left of the black suspension fork. The tire is positioned below the frame and next to the fork. The brown rocky ground is behind and below the bicycle components.",
+    "spatial": "The black bike frame with 'FELT' text is to the left of the suspension fork. The tire is positioned between the frame and the fork, resting on the brown rocky ground in the background.",
+    "parse_success": true,
+    "chunk_idx": 37,
+    "video_id": "q51s9owIGoU",
+    "state_changes": []
+  },
+  {
+    "time": [
+      38,
+      39
+    ],
+    "visible_entities": [
+      {
+        "desc": "black bicycle frame with large white stylized 'FELT' lettering",
+        "action": "static",
+        "position": "left",
+        "id": "felt_bike_matte_white_1"
+      },
+      {
+        "desc": "black bicycle front fork with a red and white 'ROCK SHOX' sticker",
+        "action": "static",
+        "position": "right",
+        "id": "rockshox_fork_1"
+      },
+      {
+        "desc": "black bicycle tire with knobby tread and white 'DEORE XT' lettering",
+        "action": "static",
+        "position": "center",
+        "id": "shimano_components_1"
+      },
+      {
+        "desc": "brown dry leaves covering the ground",
+        "action": "static",
+        "position": "background",
+        "id": "vegetation_dry_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The bicycle is stationary on a bed of dry leaves.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The tire features the text 'DEORE XT' in white.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The fork displays a 'ROCK SHOX' brand sticker.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The frame displays the brand name 'FELT' in large letters.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "FELT",
+      "ROCK SHOX",
+      "DEORE XT",
+      "SC"
+    ],
+    "spatial": "The black bicycle frame with 'FELT' text is to the left of the black front fork. The 'ROCK SHOX' sticker is attached to the upper part of the fork. The knobby tire is positioned between the frame and the fork, resting on top of the brown leaves in the background.",
     "parse_success": true,
     "chunk_idx": 38,
     "video_id": "q51s9owIGoU",
@@ -1876,46 +1978,51 @@
   },
   {
     "time": [
-      78,
-      80
+      39,
+      40
     ],
     "visible_entities": [
       {
-        "desc": "black and red mountain bike with a matte finish, featuring a suspension fork, disc brakes, and black tires with white 'WTB' lettering",
+        "desc": "black mountain bike with red frame accents, white 'WTB' lettering on tires, and a suspension fork",
         "action": "static",
         "position": "foreground",
-        "id": "kona_bike"
+        "id": "bike_generic_moving_1"
       },
       {
-        "desc": "massive tree trunk with thick, deeply furrowed reddish-brown bark",
+        "desc": "massive tree trunk with thick, reddish-brown, deeply furrowed bark",
+        "action": "static",
+        "position": "center",
+        "id": "tree_trunks_1"
+      },
+      {
+        "desc": "dense green foliage and bushes",
         "action": "static",
         "position": "background",
-        "id": "forest_vegetation"
-      },
-      {
-        "desc": "green leafy bushes and trees",
-        "action": "static",
-        "position": "background"
+        "id": "vegetation_green_1"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A black and red mountain bike is parked on a dirt path.",
+        "fact": "A black mountain bike is leaning against the base of a large tree.",
         "confidence": 1.0
       },
       {
-        "fact": "The bike is positioned in front of a large tree trunk.",
+        "fact": "The bike has 'WTB' written in white on the black tires.",
         "confidence": 1.0
       },
       {
-        "fact": "The text 'WTB' is visible in white on the bike's tires.",
+        "fact": "The tree has a very thick, textured trunk with reddish-brown bark.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The bike is positioned in front of the tree trunk.",
         "confidence": 1.0
       }
     ],
     "ocr": [
       "WTB"
     ],
-    "spatial": "The mountain bike is in the foreground, positioned in front of the massive tree trunk. The green bushes are to the left of the tree trunk and behind the bike.",
+    "spatial": "The black mountain bike is in the foreground, leaning against the massive tree trunk which is in the center. The bike is in front of the tree. Dense green bushes are visible to the left of the tree and in the background.",
     "parse_success": true,
     "chunk_idx": 39,
     "video_id": "q51s9owIGoU",
@@ -1923,56 +2030,58 @@
   },
   {
     "time": [
-      80,
-      82
+      40,
+      41
     ],
     "visible_entities": [
       {
-        "desc": "black full-suspension mountain bike with red frame accents, white 'KONA' branding on the downtube, and black 'WTB' tires",
+        "desc": "black mountain bike with red frame accents, white 'GIANT' logo on the downtube, white 'STANS' logo on the black wheel rims, and a front suspension fork",
         "action": "static",
         "position": "center",
-        "id": "kona_bike"
+        "id": "giant_bike_1"
       },
       {
         "desc": "large tree trunk with rough, reddish-brown bark",
         "action": "static",
         "position": "background",
-        "id": "forest_vegetation"
+        "id": "tree_trunks_1"
       },
       {
         "desc": "green leafy bushes and trees",
         "action": "static",
-        "position": "background"
+        "position": "background",
+        "id": "vegetation_green_1"
       },
       {
-        "desc": "dry, brown dirt ground",
+        "desc": "brown dirt ground with scattered pine needles",
         "action": "static",
-        "position": "bottom"
+        "position": "bottom",
+        "id": "vegetation_dry_1"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A black mountain bike is parked on a dirt path.",
+        "fact": "A black mountain bike is parked leaning against a large tree trunk.",
         "confidence": 1.0
       },
       {
-        "fact": "The bike is leaning against the base of a large tree.",
+        "fact": "The bike has 'GIANT' written in white on the frame.",
         "confidence": 1.0
       },
       {
-        "fact": "The text 'KONA' is visible on the bike frame.",
+        "fact": "The bike has 'STANS' written in white on the wheel rims.",
         "confidence": 1.0
       },
       {
-        "fact": "The text 'WTB' is visible on the bicycle tires.",
+        "fact": "The bike is positioned on a dirt path in a wooded area.",
         "confidence": 1.0
       }
     ],
     "ocr": [
-      "KONA",
-      "WTB"
+      "GIANT",
+      "STANS"
     ],
-    "spatial": "The mountain bike is positioned in front of the large tree trunk. The bike is resting on the dry dirt ground. Green bushes are visible to the left and behind the bike.",
+    "spatial": "The mountain bike is in front of the large tree trunk. The green bushes are to the left of the tree trunk. The bike is resting on the brown dirt ground.",
     "parse_success": true,
     "chunk_idx": 40,
     "video_id": "q51s9owIGoU",
@@ -1980,40 +2089,47 @@
   },
   {
     "time": [
-      82,
-      84
+      41,
+      42
     ],
     "visible_entities": [
       {
-        "desc": "red bicycle frame tube with a black and white graphic decal featuring a carbon-fiber texture pattern and a small red bolt",
+        "desc": "red bicycle frame tube with a glossy finish, featuring a large white and black graphic decal with a carbon fiber texture pattern",
         "action": "static",
-        "position": "center"
+        "position": "center",
+        "id": "felt_bike_carbon_red_1"
       },
       {
         "desc": "black bicycle tire with a knobby tread pattern",
         "action": "static",
         "position": "right",
-        "id": "bike_components_generic"
+        "id": "bike_components_generic_1"
+      },
+      {
+        "desc": "small red bolt or screw head",
+        "action": "static",
+        "position": "bottom left",
+        "id": "bike_components_generic_1"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "The camera focuses on the red bicycle frame tube.",
+        "fact": "The camera focuses on a close-up of a red bicycle frame.",
         "confidence": 1.0
       },
       {
-        "fact": "The black and white decal on the frame displays a carbon-fiber texture pattern.",
+        "fact": "A knobby black tire is visible in the background.",
         "confidence": 1.0
       },
       {
-        "fact": "A knobby tire is visible in the background to the right of the frame.",
+        "fact": "The text 'SL' is partially visible on the frame decal.",
         "confidence": 1.0
       }
     ],
     "ocr": [
-      "75"
+      "SL"
     ],
-    "spatial": "The red bicycle frame tube is in the foreground, positioned to the left of the black knobby tire. The black and white graphic decal is on the surface of the red frame tube. The tire is behind the frame tube.",
+    "spatial": "The red bicycle frame tube is in the foreground, positioned to the left of the black tire. The tire is located to the right of the frame and appears slightly behind it due to the depth of field. The red bolt is attached to the lower section of the red frame.",
     "parse_success": true,
     "chunk_idx": 41,
     "video_id": "q51s9owIGoU",
@@ -2021,30 +2137,23 @@
   },
   {
     "time": [
-      84,
-      86
+      42,
+      43
     ],
     "visible_entities": [
       {
         "desc": "black bicycle frame with a glossy finish, featuring a red stripe and a visible carbon fiber weave texture",
         "action": "static",
-        "position": "center"
+        "id": "felt_bike_carbon_red_1"
       },
       {
-        "desc": "large white stylized lettering on the bicycle frame",
-        "action": "static",
-        "position": "center"
+        "desc": "large white stylized lettering logo on the frame",
+        "action": "static"
       },
       {
-        "desc": "small white text reading 'KONZE' on the upper part of the frame",
+        "desc": "black bicycle tire with a knobby, textured tread pattern",
         "action": "static",
-        "position": "top"
-      },
-      {
-        "desc": "black bicycle tire with a knobby tread pattern",
-        "action": "static",
-        "position": "right",
-        "id": "bike_components_generic"
+        "id": "bike_components_generic_1"
       }
     ],
     "atomic_facts": [
@@ -2053,22 +2162,18 @@
         "confidence": 1.0
       },
       {
-        "fact": "The frame features a red stripe running along its length.",
+        "fact": "The frame displays a carbon fiber weave pattern beneath the paint.",
         "confidence": 1.0
       },
       {
-        "fact": "The text 'KONZE' is visible on the upper section of the frame.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "A knobby tire is positioned to the right of the frame.",
+        "fact": "The text 'NOMAD' is visible on the upper tube of the frame.",
         "confidence": 1.0
       }
     ],
     "ocr": [
-      "KONZE"
+      "NOMAD"
     ],
-    "spatial": "The black bicycle frame with the red stripe is in the center foreground. The white lettering is on the side of the frame. The 'KONZE' text is above the white lettering on the top tube. The knobby tire is to the right of the frame.",
+    "spatial": "The black bicycle frame with red accents is in the foreground, positioned to the left of the black knobby tire. The white logo is located on the side of the frame, below the red stripe.",
     "parse_success": true,
     "chunk_idx": 42,
     "video_id": "q51s9owIGoU",
@@ -2076,44 +2181,53 @@
   },
   {
     "time": [
-      86,
-      88
+      43,
+      44
     ],
     "visible_entities": [
       {
-        "desc": "black carbon fiber bicycle frame with a woven texture, featuring a bold red stripe and white text",
+        "desc": "black carbon fiber bicycle frame with a red stripe and white text",
         "action": "static",
-        "position": "foreground"
+        "position": "foreground",
+        "id": "felt_bike_carbon_red_1"
       },
       {
-        "desc": "black bicycle handlebars with red accent rings, black textured grips, and a silver brake lever",
+        "desc": "black bicycle handlebars with red accents and black grips",
         "action": "static",
-        "position": "center"
+        "position": "center",
+        "id": "felt_bike_carbon_red_1"
       },
       {
-        "desc": "blurred natural background with brown and green tones",
+        "desc": "black bicycle brake lever",
         "action": "static",
-        "position": "background"
+        "position": "right",
+        "id": "bike_components_generic_1"
+      },
+      {
+        "desc": "blurred background of brown earth and green foliage",
+        "action": "static",
+        "position": "background",
+        "id": "vegetation_green_1"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "The camera focuses on the details of a bicycle frame and handlebars.",
+        "fact": "The camera focuses on the details of a bicycle.",
         "confidence": 1.0
       },
       {
-        "fact": "The text 'NINE 5 SERIES' is printed in white on the red stripe of the frame.",
+        "fact": "The text 'NINE 5 SERIES' is visible on the bicycle frame.",
         "confidence": 1.0
       },
       {
-        "fact": "The bicycle frame exhibits a carbon fiber weave pattern.",
+        "fact": "The handlebars are positioned above the bicycle frame.",
         "confidence": 1.0
       }
     ],
     "ocr": [
       "NINE 5 SERIES"
     ],
-    "spatial": "The black handlebars are positioned above the bicycle frame. The red stripe with text runs along the top tube of the frame, which is in the foreground. The blurred natural background is behind the bicycle components.",
+    "spatial": "The black handlebars are positioned above the bicycle frame. The brake lever is attached to the right side of the handlebars. The bicycle frame is in the foreground, with the blurred natural background behind it.",
     "parse_success": true,
     "chunk_idx": 43,
     "video_id": "q51s9owIGoU",
@@ -2121,47 +2235,53 @@
   },
   {
     "time": [
-      88,
-      90
+      44,
+      45
     ],
     "visible_entities": [
       {
-        "desc": "black mountain bike handlebars with red accents and red grip ends, featuring black brake levers and cables",
+        "desc": "black bicycle handlebar assembly with red accents, featuring black grips, brake levers, and gear shifters",
         "action": "static",
-        "position": "center/foreground"
+        "position": "center",
+        "id": "felt_bike_carbon_red_1"
       },
       {
-        "desc": "black bicycle stem with red vertical text logo",
+        "desc": "black bicycle stem with red graphics and branding text",
         "action": "static",
-        "position": "center"
+        "position": "center",
+        "id": "felt_bike_carbon_red_1"
       },
       {
-        "desc": "black bicycle frame top tube with red vertical text logo",
+        "desc": "black bicycle frame top tube with red geometric logo",
         "action": "static",
-        "position": "center/bottom"
+        "position": "bottom",
+        "id": "felt_bike_carbon_red_1"
       },
       {
-        "desc": "blurred green foliage and brown ground",
+        "desc": "blurred green foliage and brown earth background",
         "action": "static",
-        "position": "background"
+        "position": "background",
+        "id": "vegetation_green_1"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "The camera pans slightly to the left, revealing the left brake lever.",
+        "fact": "The camera focuses on the cockpit of a mountain bike.",
         "confidence": 1.0
       },
       {
-        "fact": "The bicycle handlebars are black with red graphic accents.",
+        "fact": "Black cables run from the handlebars down into the frame.",
         "confidence": 1.0
       },
       {
-        "fact": "The stem connects the handlebars to the frame.",
+        "fact": "The handlebar stem connects the handlebars to the bike frame.",
         "confidence": 1.0
       }
     ],
-    "ocr": [],
-    "spatial": "The black handlebars are positioned horizontally across the center of the frame. The stem is located in the center, connecting the handlebars to the frame below. The brake levers are mounted on the left and right sides of the handlebars. The blurred background is behind the bicycle components.",
+    "ocr": [
+      "KONA"
+    ],
+    "spatial": "The black handlebar assembly is positioned horizontally across the top of the frame. The stem is located in the center, connecting the handlebars to the frame below. The black cables are routed in front of the stem and drop down towards the frame. The blurred foliage is behind the bicycle components.",
     "parse_success": true,
     "chunk_idx": 44,
     "video_id": "q51s9owIGoU",
@@ -2169,82 +2289,87 @@
   },
   {
     "time": [
-      90,
-      92
+      45,
+      46
     ],
     "visible_entities": [
       {
-        "desc": "black bicycle handlebars with red accents, black textured grips with red end caps, silver metal brake lever, black cables",
+        "desc": "black mountain bike handlebars with red accents, black textured grips with red end caps, silver brake lever, black cables",
         "action": "static",
-        "position": "foreground"
+        "position": "foreground",
+        "id": "felt_bike_carbon_red_1"
       },
       {
         "desc": "person wearing a white helmet and dark clothing",
-        "action": "riding a bicycle",
-        "position": "left",
-        "id": "cyclist_white_helmet"
+        "action": "riding a bike",
+        "position": "background",
+        "id": "cyclist_white_helmet_1"
       },
       {
-        "desc": "dry, brown, hilly terrain with scattered green cacti and low shrubs",
+        "desc": "dry, hilly landscape with brown brush, green cacti, and distant houses",
         "action": "static",
         "position": "background",
-        "id": "dry_terrain"
+        "id": "vegetation_dry_1"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "The video cuts from a close-up of bicycle handlebars to a wide shot of a rider.",
+        "fact": "A person wearing a white helmet is riding a bike down a hill in the distance.",
         "confidence": 1.0
       },
       {
-        "fact": "A person is riding a bicycle along a dirt path on a hillside.",
+        "fact": "The camera focuses on the handlebars of a stationary bike in the foreground.",
         "confidence": 1.0
       },
       {
-        "fact": "The terrain is arid with visible cacti.",
+        "fact": "The background features a dry, arid landscape with scattered cacti.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The bicycle handlebars are in the foreground in the first frame. In the second frame, the rider is on the left side of the screen, positioned on a hill that is above the lower vegetation. The cacti are scattered across the dry ground in the background.",
+    "spatial": "The black handlebars are in the foreground, obscuring the lower view. The person riding the bike is in the background, positioned to the left of the center frame. The rider is above the dry brush and cacti on the hillside.",
     "parse_success": true,
     "chunk_idx": 45,
     "video_id": "q51s9owIGoU",
-    "state_changes": []
+    "state_changes": [
+      "Scene shifts to hilly landscape with cacti and distant houses"
+    ]
   },
   {
     "time": [
-      92,
-      94
+      46,
+      47
     ],
     "visible_entities": [
       {
-        "desc": "person wearing a white helmet, black short-sleeved shirt, and dark shorts",
-        "action": "riding a mountain bike down a dirt trail",
+        "desc": "person wearing a white helmet with black vents, a black short-sleeved jersey with white text/graphics on the chest, and dark shorts",
+        "action": "riding a mountain bike downhill",
         "position": "left",
-        "id": "cyclist_white_helmet"
+        "id": "cyclist_white_helmet_1"
       },
       {
-        "desc": "mountain bike with a black frame and yellow accents",
-        "action": "being ridden",
-        "position": "left"
+        "desc": "mountain bike with a black frame, yellow accents on the frame, and knobby tires",
+        "action": "being ridden over rough terrain",
+        "position": "left",
+        "id": "bike_generic_moving_1"
       },
       {
         "desc": "green prickly pear cactus pads",
         "action": "static",
-        "position": "foreground"
+        "position": "foreground",
+        "id": "vegetation_green_1"
       },
       {
-        "desc": "dry brown brush and vegetation",
+        "desc": "dry, brown brush and scrub vegetation",
         "action": "static",
         "position": "foreground",
-        "id": "dry_terrain"
+        "id": "vegetation_dry_1"
       },
       {
-        "desc": "hills with houses and green trees",
+        "desc": "hills with scattered houses and trees",
         "action": "static",
         "position": "background",
-        "id": "dry_terrain"
+        "id": "sky_dust_1"
       }
     ],
     "atomic_facts": [
@@ -2253,20 +2378,20 @@
         "confidence": 1.0
       },
       {
-        "fact": "The rider is wearing a white helmet.",
+        "fact": "The cyclist is leaning forward while navigating the terrain.",
         "confidence": 1.0
       },
       {
-        "fact": "The mountain bike has yellow accents on the frame.",
+        "fact": "The bike is moving from the left side of the frame towards the center.",
         "confidence": 1.0
       },
       {
-        "fact": "Green cactus pads are visible in the foreground.",
+        "fact": "Green cactus pads are visible in the immediate foreground.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The person riding the bike is on the left side of the frame. The cactus pads are in the foreground, below the rider. The hills with houses are in the background, behind the rider and the trail.",
+    "spatial": "The cyclist is to the left of the frame, riding past the green cactus pads in the foreground. The dry brush is below the cyclist and in front of the distant hills. The hills are behind the cyclist and the vegetation.",
     "parse_success": true,
     "chunk_idx": 46,
     "video_id": "q51s9owIGoU",
@@ -2274,92 +2399,97 @@
   },
   {
     "time": [
-      94,
-      96
+      47,
+      48
     ],
     "visible_entities": [
       {
-        "desc": "person wearing a white t-shirt, black cycling shorts, and a black backpack",
-        "action": "riding a mountain bike",
+        "desc": "person wearing a black sleeveless top, black shorts, and a cap",
+        "action": "riding a bicycle",
         "position": "center",
-        "id": "cyclist_white_helmet"
+        "id": "cyclist_cap_1"
       },
       {
-        "desc": "black mountain bike with knobby tires and a front suspension fork",
-        "action": "moving along a dirt path",
-        "position": "center"
+        "desc": "black mountain bike with a visible front suspension fork",
+        "action": "moving right",
+        "position": "center",
+        "id": "bike_generic_moving_1"
       },
       {
-        "desc": "dry, grassy landscape with sparse vegetation and rolling hills",
+        "desc": "dry, grassy terrain with low shrubs and a cactus",
         "action": "static",
         "position": "background",
-        "id": "dry_terrain"
+        "id": "vegetation_dry_1"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A person is riding a mountain bike from left to right across the frame.",
+        "fact": "A person is riding a mountain bike from left to right.",
         "confidence": 1.0
       },
       {
-        "fact": "The cyclist is wearing a black backpack.",
+        "fact": "The cyclist is wearing a black sleeveless top and black shorts.",
         "confidence": 1.0
       },
       {
-        "fact": "The bike is traveling on a dirt trail.",
+        "fact": "The bicycle has a front suspension fork.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The terrain is dry and dusty with sparse vegetation.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The person is sitting on the mountain bike. The bike is in the foreground, positioned in front of the dry, grassy landscape.",
+    "spatial": "The person is sitting on the bicycle, which is in the center of the frame. The bicycle is moving across the dry, grassy terrain that fills the background.",
     "parse_success": true,
     "chunk_idx": 47,
     "video_id": "q51s9owIGoU",
-    "state_changes": []
+    "state_changes": [
+      "Cyclist wearing a cap appears riding right"
+    ]
   },
   {
     "time": [
-      96,
-      98
+      48,
+      49
     ],
     "visible_entities": [
       {
-        "desc": "person wearing a white cap, black and white cycling jersey with red accents, black shorts with white trim, black socks, and cycling shoes",
+        "desc": "person wearing a white cap, black short-sleeved jersey with white side panels and logos, black shorts with white accents, and black socks",
         "action": "riding a mountain bike",
         "position": "center",
-        "id": "cyclist_white_helmet"
+        "id": "cyclist_cap_1"
       },
       {
-        "desc": "black mountain bike with yellow accents on the handlebars",
+        "desc": "black mountain bike with neon yellow handlebar grips and white lettering on the frame",
         "action": "being ridden",
-        "position": "center"
+        "position": "center",
+        "id": "felt_bike_black_neon_1"
       },
       {
-        "desc": "dry, brown vegetation and green cactus pads",
+        "desc": "dry, brown brush and cactus plants",
         "action": "static",
-        "position": "left"
+        "position": "left",
+        "id": "vegetation_dry_1"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A person is riding a mountain bike on a dirt path.",
+        "fact": "A person is riding a mountain bike along a dirt path.",
         "confidence": 1.0
       },
       {
-        "fact": "The person is wearing a white cap.",
+        "fact": "The rider is gripping the handlebars which have bright yellow accents.",
         "confidence": 1.0
       },
       {
-        "fact": "The person is wearing a black and white cycling jersey.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The bike has yellow accents on the handlebars.",
+        "fact": "The terrain is dry and dusty with sparse vegetation.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The person is on the mountain bike. The bike is to the right of the dry vegetation and cactus pads. The person is holding the handlebars of the bike.",
+    "spatial": "The person is positioned on top of the mountain bike, holding the handlebars. The bike is moving along a path that is to the right of the dry brush and cactus plants.",
     "parse_success": true,
     "chunk_idx": 48,
     "video_id": "q51s9owIGoU",
@@ -2367,43 +2497,45 @@
   },
   {
     "time": [
-      98,
-      100
+      49,
+      50
     ],
     "visible_entities": [
       {
-        "desc": "person wearing black cycling shorts, black socks, and dark shoes",
-        "action": "riding a mountain bike",
-        "position": "center"
+        "desc": "person wearing black shorts, black socks, and grey shoes",
+        "action": "riding a bicycle",
+        "position": "center",
+        "id": "person_legs_generic_1"
       },
       {
-        "desc": "black mountain bike with neon yellow accents on the frame and handlebars, equipped with a front suspension fork",
-        "action": "moving forward on a dirt path",
-        "position": "center"
+        "desc": "black mountain bike with neon yellow accents on the handlebars and frame",
+        "action": "moving forward",
+        "position": "center",
+        "id": "felt_bike_black_neon_1"
       },
       {
-        "desc": "dry, brown grass and vegetation",
+        "desc": "dry, brown grass and dirt path",
         "action": "static",
-        "position": "left",
-        "id": "dry_terrain"
+        "position": "background",
+        "id": "vegetation_dry_1"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A person is riding a mountain bike towards the camera.",
+        "fact": "A person is riding a mountain bike along a dirt trail.",
         "confidence": 1.0
       },
       {
-        "fact": "The bike has neon yellow accents on the black frame.",
+        "fact": "The bike has neon yellow details on the handlebars and frame.",
         "confidence": 1.0
       },
       {
-        "fact": "The rider is wearing black shorts and socks.",
+        "fact": "The rider is wearing black shorts and grey shoes.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The person is sitting on the mountain bike, holding the handlebars. The bike is positioned in the center of the frame, moving along a dirt path. Dry grass is visible to the left of the bike and rider.",
+    "spatial": "The person is sitting on the bicycle, holding the handlebars. The bicycle is positioned on the dirt path, which is surrounded by dry grass.",
     "parse_success": true,
     "chunk_idx": 49,
     "video_id": "q51s9owIGoU",
@@ -2411,28 +2543,36 @@
   },
   {
     "time": [
-      100,
-      102
+      50,
+      51
     ],
     "visible_entities": [
       {
-        "desc": "cyclist wearing black shorts with white graphics, black socks, and black cycling shoes",
+        "desc": "cyclist wearing black shorts with white graphics, black socks, and dark shoes",
         "action": "riding a mountain bike",
-        "position": "center"
+        "position": "center",
+        "id": "cyclist_black_helmet_1"
       },
       {
-        "desc": "black mountain bike with yellow frame accents, front suspension forks, and knobby tires",
-        "action": "moving forward on a dirt path",
-        "position": "center"
+        "desc": "mountain bike with a black frame, neon yellow accents, and a front suspension fork",
+        "action": "moving forward",
+        "position": "center",
+        "id": "bike_generic_moving_1"
+      },
+      {
+        "desc": "dirt trail with dry, brown grass on the sides",
+        "action": "static",
+        "position": "background",
+        "id": "dirt_trail_1"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "The cyclist is riding a mountain bike along a dirt trail.",
+        "fact": "A cyclist is riding a mountain bike on a dirt trail.",
         "confidence": 1.0
       },
       {
-        "fact": "The bike's front wheel is turning as it moves over the ground.",
+        "fact": "The bike's front wheel is turning as it moves along the path.",
         "confidence": 1.0
       },
       {
@@ -2441,7 +2581,7 @@
       }
     ],
     "ocr": [],
-    "spatial": "The cyclist is positioned on top of the mountain bike. The bike is in the center of the frame, moving along a dirt path. Dry grass is visible to the left and right of the path.",
+    "spatial": "The cyclist is positioned on top of the mountain bike. The bike is on the dirt trail. The dry grass is to the left and right of the trail.",
     "parse_success": true,
     "chunk_idx": 50,
     "video_id": "q51s9owIGoU",
@@ -2449,38 +2589,45 @@
   },
   {
     "time": [
-      102,
-      104
+      51,
+      52
     ],
     "visible_entities": [
       {
-        "desc": "person wearing black shorts with a dark patterned band near the hem, bare legs",
+        "desc": "person's lower leg and knee, bare skin, wearing black shorts",
         "action": "riding a bicycle",
         "position": "left",
-        "id": "cyclist_dark_helmet"
+        "id": "person_legs_generic_1"
       },
       {
-        "desc": "black mountain bike with a silver seat post, neon yellow accents, and a black saddle",
+        "desc": "black mountain bike frame with a silver seat post and a vertical neon yellow sticker",
         "action": "being ridden",
-        "position": "left"
+        "position": "center",
+        "id": "felt_bike_black_neon_1"
+      },
+      {
+        "desc": "dry, sandy ground with sparse vegetation",
+        "action": "static",
+        "position": "background",
+        "id": "vegetation_dry_1"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A person is riding a mountain bike.",
+        "fact": "A person is riding a mountain bike on a dirt trail.",
         "confidence": 1.0
       },
       {
-        "fact": "The camera zooms in on the bike's seat post.",
+        "fact": "The bike frame features a silver seat post with a neon yellow decal.",
         "confidence": 1.0
       },
       {
-        "fact": "The seat post features a neon yellow graphic decal.",
+        "fact": "The rider is wearing black shorts.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The person is seated on the bicycle. The seat post is located vertically below the saddle and behind the rider's legs. The background is out of focus behind the bike.",
+    "spatial": "The person's leg is positioned to the left of the bike's seat post. The bike is situated above the sandy ground. The background vegetation is behind the bike and rider.",
     "parse_success": true,
     "chunk_idx": 51,
     "video_id": "q51s9owIGoU",
@@ -2488,46 +2635,50 @@
   },
   {
     "time": [
-      104,
-      106
+      52,
+      53
     ],
     "visible_entities": [
       {
-        "desc": "black bicycle frame with a glossy finish, featuring a curved top tube and a seat tube with a small yellow sticker near the top",
+        "desc": "black bicycle frame with a glossy finish, featuring a curved top tube and a vertical seat tube",
         "action": "static",
         "position": "center"
       },
       {
-        "desc": "black cable housing routed along the frame, secured by black zip ties",
+        "desc": "black cables routed along the underside of the bicycle frame, secured by black zip ties",
         "action": "static",
         "position": "center",
-        "id": "bike_components_generic"
-      },
-      {
-        "desc": "silver metallic seat post inserted into the frame",
-        "action": "static",
-        "position": "center",
-        "id": "bike_components_generic"
+        "id": "bike_components_generic_1"
       },
       {
         "desc": "black bicycle tire with a knobby tread pattern",
         "action": "static",
         "position": "left",
-        "id": "bike_components_generic"
+        "id": "bike_components_generic_1"
+      },
+      {
+        "desc": "small yellow rectangular sticker on the upper part of the seat tube",
+        "action": "static",
+        "position": "top",
+        "id": "bike_components_generic_1"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "The camera focuses on the junction of the bicycle frame's top tube and seat tube.",
+        "fact": "The camera focuses on the junction of the seat tube and top tube of a bicycle.",
         "confidence": 1.0
       },
       {
-        "fact": "Black zip ties are used to secure the cable housing to the frame.",
+        "fact": "Black cables are secured to the frame using zip ties.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A knobby tire is visible in the background on the left side.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The silver seat post is inserted into the center of the black bicycle frame. The black cable housing runs along the top tube, positioned above the seat post. A portion of a knobby tire is visible on the left side of the frame.",
+    "spatial": "The black cables run along the underside of the top tube, positioned below the main frame structure. The knobby tire is located to the left of the seat tube and behind the frame. The yellow sticker is adhered to the upper section of the vertical seat tube.",
     "parse_success": true,
     "chunk_idx": 52,
     "video_id": "q51s9owIGoU",
@@ -2535,26 +2686,27 @@
   },
   {
     "time": [
-      106,
-      108
+      53,
+      54
     ],
     "visible_entities": [
       {
-        "desc": "black bicycle frame with neon yellow geometric graphics and text",
+        "desc": "black bicycle frame with neon yellow graphics and text",
         "action": "static",
         "position": "right foreground",
-        "id": "neon_yellow_bike"
+        "id": "felt_bike_black_neon_1"
       },
       {
-        "desc": "black bicycle fork with white and neon yellow accents",
+        "desc": "black bicycle suspension fork with white and neon yellow accents",
         "action": "static",
-        "position": "center"
+        "position": "center",
+        "id": "felt_bike_black_neon_1"
       },
       {
         "desc": "black bicycle tire with knobby tread pattern",
         "action": "static",
         "position": "left background",
-        "id": "bike_components_generic"
+        "id": "bike_components_generic_1"
       }
     ],
     "atomic_facts": [
@@ -2563,14 +2715,18 @@
         "confidence": 1.0
       },
       {
-        "fact": "The text '7SIXTY' is visible on the bicycle frame.",
+        "fact": "The text '7SIXTY' is printed vertically on the bicycle frame.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The bicycle tire has a rugged, knobby texture suitable for off-road terrain.",
         "confidence": 1.0
       }
     ],
     "ocr": [
       "7SIXTY"
     ],
-    "spatial": "The black bicycle frame with neon yellow graphics is in the foreground on the right side. The black fork is positioned to the left of the frame. The knobby tire is located behind the fork on the left side.",
+    "spatial": "The black bicycle frame with neon yellow graphics is in the right foreground. The suspension fork is positioned to the left of the frame and in front of the tire. The knobby tire is located in the background on the left side of the image.",
     "parse_success": true,
     "chunk_idx": 53,
     "video_id": "q51s9owIGoU",
@@ -2578,48 +2734,48 @@
   },
   {
     "time": [
-      108,
-      110
+      54,
+      55
     ],
     "visible_entities": [
       {
-        "desc": "bicycle frame, black and neon yellow, glossy finish, with black stripes and text",
+        "desc": "bicycle frame, black and neon yellow, featuring black stripes and 'TREK' branding",
         "action": "static",
         "position": "foreground",
-        "id": "neon_yellow_bike"
-      },
-      {
-        "desc": "bicycle tire, black, knobby tread pattern",
-        "action": "static",
-        "position": "background",
-        "id": "bike_components_generic"
+        "id": "felt_bike_black_neon_1"
       },
       {
         "desc": "bicycle chainring and chain, metallic silver",
         "action": "static",
         "position": "left",
-        "id": "bike_components_generic"
+        "id": "bike_components_generic_1"
+      },
+      {
+        "desc": "bicycle tire, black with knobby tread pattern",
+        "action": "static",
+        "position": "background",
+        "id": "bike_components_generic_1"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "The camera focuses on a bicycle frame.",
+        "fact": "The camera focuses on the bicycle frame.",
         "confidence": 1.0
       },
       {
-        "fact": "The text 'TREK' is visible on the frame.",
+        "fact": "The bicycle frame displays the text 'TREK' and '7 SL'.",
         "confidence": 1.0
       },
       {
-        "fact": "The text '7.5' is visible on the frame.",
+        "fact": "The chainring is positioned to the left of the frame.",
         "confidence": 1.0
       }
     ],
     "ocr": [
       "TREK",
-      "7.5"
+      "7 SL"
     ],
-    "spatial": "The neon yellow and black bicycle frame is in the foreground. The knobby tire is behind the frame. The metallic chainring is to the left of the frame.",
+    "spatial": "The neon yellow and black bicycle frame is in the foreground. The metallic chainring is to the left of the frame. The knobby tire is behind the frame in the background.",
     "parse_success": true,
     "chunk_idx": 54,
     "video_id": "q51s9owIGoU",
@@ -2627,43 +2783,51 @@
   },
   {
     "time": [
-      110,
-      112
+      55,
+      56
     ],
     "visible_entities": [
       {
-        "desc": "black bicycle frame with neon yellow stripes and 'S26' text",
+        "desc": "bicycle frame, black with neon yellow stripes and accents",
         "action": "static",
         "position": "center",
-        "id": "neon_yellow_bike"
+        "id": "felt_bike_black_neon_1"
       },
       {
-        "desc": "silver metal bicycle chain",
+        "desc": "metal bicycle chain, silver",
         "action": "static",
         "position": "center",
-        "id": "bike_components_generic"
+        "id": "bike_components_generic_1"
       },
       {
-        "desc": "black crankset with silver chainrings and 'XCR' text",
-        "action": "static",
-        "position": "right"
-      },
-      {
-        "desc": "silver rear cassette gears",
+        "desc": "rear cassette, silver metal gears",
         "action": "static",
         "position": "left",
-        "id": "bike_components_generic"
+        "id": "bike_components_generic_1"
       },
       {
-        "desc": "black bicycle tire with tread pattern",
+        "desc": "front chainring, black with silver teeth",
         "action": "static",
         "position": "right",
-        "id": "bike_components_generic"
+        "id": "bike_components_generic_1"
       },
       {
-        "desc": "grey textured rock surface",
+        "desc": "rear derailleur, silver and black metal mechanism",
         "action": "static",
-        "position": "background"
+        "position": "left",
+        "id": "bike_components_generic_1"
+      },
+      {
+        "desc": "bicycle tire, black rubber",
+        "action": "static",
+        "position": "left",
+        "id": "bike_components_generic_1"
+      },
+      {
+        "desc": "grey rock surface, textured",
+        "action": "static",
+        "position": "background",
+        "id": "bike_components_generic_1"
       }
     ],
     "atomic_facts": [
@@ -2672,11 +2836,11 @@
         "confidence": 1.0
       },
       {
-        "fact": "The chain connects the front crankset to the rear cassette.",
+        "fact": "The chain connects the front chainring to the rear cassette.",
         "confidence": 1.0
       },
       {
-        "fact": "The text 'S26' is visible on the chainstay.",
+        "fact": "The text 'S25' is visible on the bicycle frame.",
         "confidence": 1.0
       },
       {
@@ -2685,10 +2849,10 @@
       }
     ],
     "ocr": [
-      "S26",
+      "S25",
       "XCR"
     ],
-    "spatial": "The black and neon yellow bicycle frame is positioned above the grey rock surface. The silver chain runs horizontally from the crankset on the right to the rear cassette on the left. The rear tire is located behind the cassette gears.",
+    "spatial": "The bicycle frame is positioned above the grey rock surface. The rear cassette and derailleur are to the left of the frame, while the front chainring is to the right. The chain runs horizontally between the front chainring and the rear cassette.",
     "parse_success": true,
     "chunk_idx": 55,
     "video_id": "q51s9owIGoU",
@@ -2696,29 +2860,30 @@
   },
   {
     "time": [
-      112,
-      114
+      56,
+      57
     ],
     "visible_entities": [
       {
-        "desc": "black bicycle frame with neon yellow geometric stripe decal, black crank arm labeled 'XCR', silver multi-gear cassette, silver chain, black tire with 'S25' text",
+        "desc": "black bicycle rear triangle with neon yellow graphic accents, silver metal cassette with multiple gears, black chain, black and silver crankset with chainrings, black tire with white lettering",
         "action": "static",
         "position": "center",
-        "id": "neon_yellow_bike"
+        "id": "felt_bike_black_neon_1"
       },
       {
         "desc": "grey textured stone surface",
         "action": "static",
-        "position": "background"
+        "position": "background",
+        "id": "bike_components_generic_1"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "The bicycle is resting on a stone surface.",
+        "fact": "The bicycle is resting stationary on a stone surface.",
         "confidence": 1.0
       },
       {
-        "fact": "The chain connects the front chainring to the rear cassette.",
+        "fact": "The chain connects the rear cassette to the front chainrings.",
         "confidence": 1.0
       },
       {
@@ -2731,10 +2896,10 @@
       }
     ],
     "ocr": [
-      "XCR",
-      "S25"
+      "S25",
+      "XCR"
     ],
-    "spatial": "The bicycle frame is positioned in front of the grey stone surface. The rear cassette is to the left of the front chainring. The chain runs horizontally between the gears.",
+    "spatial": "The bicycle's rear wheel and drivetrain are positioned in the foreground, resting on top of the grey stone surface which serves as the background. The cassette is located to the left of the crankset, connected by the chain.",
     "parse_success": true,
     "chunk_idx": 56,
     "video_id": "q51s9owIGoU",
@@ -2742,54 +2907,54 @@
   },
   {
     "time": [
-      114,
-      116
+      57,
+      58
     ],
     "visible_entities": [
       {
-        "desc": "black mountain bike frame with glossy finish, featuring a top tube with a distinct rectangular cutout and yellow accents on the handlebars",
+        "desc": "black mountain bike frame with glossy finish, featuring a top tube with a protective cable routing channel and a down tube with yellow and white graphics",
         "action": "static",
         "position": "center"
       },
       {
-        "desc": "black suspension fork with a red 'ROCKSHOX' sticker near the bottom",
+        "desc": "black suspension fork with a silver stanchion tube and a red and white 'ROCKSHOX' sticker on the lower leg",
         "action": "static",
         "position": "right",
-        "id": "rockshox_fork"
+        "id": "rockshox_fork_1"
       },
       {
-        "desc": "black bicycle tire with white 'SCHWALBE' lettering on the sidewall",
+        "desc": "black handlebar with a black and yellow grip",
+        "action": "static",
+        "position": "top right",
+        "id": "bike_components_generic_1"
+      },
+      {
+        "desc": "black knobby tire with white 'SCHWALBE' lettering",
         "action": "static",
         "position": "bottom right",
-        "id": "schwalbe_tire"
+        "id": "schwalbe_tire_1"
       },
       {
-        "desc": "grey rock surface",
+        "desc": "out-of-focus background of green trees and a grey rock",
         "action": "static",
-        "position": "bottom left"
-      },
-      {
-        "desc": "blurred green foliage and tree trunks",
-        "action": "static",
-        "position": "background",
-        "id": "forest_vegetation"
+        "position": "background"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A black mountain bike frame is resting on a grey rock.",
+        "fact": "The mountain bike is resting on a grey rock.",
         "confidence": 1.0
       },
       {
-        "fact": "The bike features a suspension fork with a visible RockShox logo.",
+        "fact": "The text 'SCHWALBE' is visible on the tire sidewall.",
         "confidence": 1.0
       },
       {
-        "fact": "The tire displays the brand name Schwalbe in white text.",
+        "fact": "The text 'ROCKSHOX' is visible on the fork leg.",
         "confidence": 1.0
       },
       {
-        "fact": "The top tube of the bike frame has a rectangular cutout design.",
+        "fact": "The bike frame is black with yellow accents.",
         "confidence": 1.0
       }
     ],
@@ -2797,7 +2962,7 @@
       "SCHWALBE",
       "ROCKSHOX"
     ],
-    "spatial": "The black mountain bike frame is positioned above the grey rock. The suspension fork is attached to the front of the frame, located to the right of the main body. The blurred green foliage is in the background, behind the bicycle.",
+    "spatial": "The black mountain bike frame is positioned in the center of the view. The suspension fork is attached to the front of the frame on the right side. The handlebar is located above the fork. The tire is below the fork. The bike is in front of a background of green trees.",
     "parse_success": true,
     "chunk_idx": 57,
     "video_id": "q51s9owIGoU",
@@ -2805,46 +2970,58 @@
   },
   {
     "time": [
-      116,
-      118
+      58,
+      59
     ],
     "visible_entities": [
       {
-        "desc": "black mountain bike frame with a glossy finish, featuring a straight top tube and a sloping down tube, equipped with a black suspension fork and black handlebars with lime green accents on the grips and stem",
+        "desc": "black mountain bike frame with a matte finish, featuring a straight top tube and a sloping down tube",
         "action": "static",
         "position": "center"
       },
       {
-        "desc": "black bicycle tire with a knobby tread pattern and white 'SCHWALBE' lettering on the sidewall",
+        "desc": "black bicycle handlebars with lime green accents on the grips and stem",
         "action": "static",
-        "position": "bottom right",
-        "id": "schwalbe_tire"
+        "position": "top",
+        "id": "felt_bike_black_neon_1"
       },
       {
-        "desc": "out-of-focus background consisting of green foliage and light-colored tree trunks",
+        "desc": "black suspension fork with a glossy finish",
+        "action": "static",
+        "position": "right",
+        "id": "bike_components_generic_1"
+      },
+      {
+        "desc": "black bicycle tire with white lettering",
+        "action": "static",
+        "position": "bottom right",
+        "id": "bike_components_generic_1"
+      },
+      {
+        "desc": "blurred background of trees with green leaves and light-colored trunks",
         "action": "static",
         "position": "background",
-        "id": "forest_vegetation"
+        "id": "vegetation_green_1"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "The black mountain bike frame is positioned centrally in the foreground.",
+        "fact": "A black mountain bike is positioned statically in a wooded area.",
         "confidence": 1.0
       },
       {
-        "fact": "The 'SCHWALBE' brand name is visible in white text on the tire sidewall.",
+        "fact": "The bike features a suspension fork and handlebars with green accents.",
         "confidence": 1.0
       },
       {
-        "fact": "Lime green accents are present on the handlebar grips and stem.",
+        "fact": "The text 'SCHWALBE' is visible in white letters on the tire sidewall.",
         "confidence": 1.0
       }
     ],
     "ocr": [
       "SCHWALBE"
     ],
-    "spatial": "The black mountain bike frame is in front of the blurred trees and green foliage. The front tire is located below the handlebars and to the right of the main frame structure. The handlebars are positioned above the front fork and at the top right of the frame.",
+    "spatial": "The black mountain bike frame is in the foreground, positioned in front of the blurred trees. The handlebars are located above the frame's head tube. The front tire is situated below the suspension fork on the right side of the image.",
     "parse_success": true,
     "chunk_idx": 58,
     "video_id": "q51s9owIGoU",
@@ -2852,40 +3029,45 @@
   },
   {
     "time": [
-      118,
-      120
+      59,
+      60
     ],
     "visible_entities": [
       {
-        "desc": "black mountain bike with a matte finish, featuring a rigid frame, black handlebars with neon yellow accents, and a stem cap with a yellow and black logo",
+        "desc": "black mountain bike with a matte finish, featuring a top tube with a protective cable guide, a front suspension fork with black stanchions and blue accents, and handlebars with black and neon yellow grips.",
         "action": "static",
-        "position": "foreground"
+        "position": "foreground",
+        "id": "felt_bike_black_neon_1"
       },
       {
-        "desc": "blurred forest background with green foliage and light-colored tree trunks",
+        "desc": "a circular black and yellow logo with a stylized 'V' shape on the handlebar stem cap.",
         "action": "static",
-        "position": "background",
-        "id": "forest_vegetation"
+        "position": "top center"
+      },
+      {
+        "desc": "a blurred background of green foliage and thin, light-colored tree trunks.",
+        "action": "static",
+        "position": "background"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A black mountain bike is positioned in the foreground.",
+        "fact": "The video shows a static close-up of the front section of a black mountain bike.",
         "confidence": 1.0
       },
       {
-        "fact": "The bike features a stem cap with a distinct yellow and black logo.",
+        "fact": "The bike is positioned in front of a wooded area.",
         "confidence": 1.0
       },
       {
-        "fact": "The scene transitions to a pinkish-white fade-out effect.",
+        "fact": "The handlebar stem cap features a logo with a 'V' design.",
         "confidence": 1.0
       }
     ],
     "ocr": [
-      "SCHWALBE"
+      "V"
     ],
-    "spatial": "The black mountain bike is in front of the blurred forest background. The handlebars are located at the top right of the bike frame. The 'SCHWALBE' text is visible on the tire at the bottom right.",
+    "spatial": "The black mountain bike is in the foreground, positioned in front of the blurred trees and foliage. The handlebars are at the top of the bike's frame, and the front wheel is partially visible at the bottom right.",
     "parse_success": true,
     "chunk_idx": 59,
     "video_id": "q51s9owIGoU",
@@ -2893,31 +3075,32 @@
   },
   {
     "time": [
-      120,
-      122
+      60,
+      61
     ],
     "visible_entities": [
       {
         "desc": "person wearing a white helmet with red accents, a black sleeveless top, and dark shorts",
         "action": "riding a mountain bike",
         "position": "left",
-        "id": "cyclist_white_helmet"
+        "id": "person_legs_generic_1"
       },
       {
         "desc": "mountain bike with a silver frame and black handlebars",
-        "action": "being ridden on a dirt path",
-        "position": "left"
+        "action": "being ridden",
+        "position": "left",
+        "id": "bike_generic_moving_1"
       },
       {
-        "desc": "narrow dirt trail winding through dry brush",
+        "desc": "sandy dirt trail winding through dry, brown brush",
         "action": "static",
         "position": "center",
-        "id": "dirt_trail"
+        "id": "dirt_trail_1"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A person is riding a mountain bike along a dirt path.",
+        "fact": "A person is riding a mountain bike on a dirt trail.",
         "confidence": 1.0
       },
       {
@@ -2925,59 +3108,66 @@
         "confidence": 1.0
       },
       {
-        "fact": "The terrain is dry with brown vegetation on either side of the trail.",
+        "fact": "The trail is surrounded by dry, brown vegetation.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The person is positioned on the left side of the frame, riding the bike which is on the dirt path. The path extends from the foreground towards the background, curving slightly to the right. Dry bushes are located to the right of the path and in the background.",
+    "spatial": "The person is on the mountain bike, which is positioned on the left side of the sandy trail. The trail winds through the center of the frame, surrounded by dry brush.",
     "parse_success": true,
     "chunk_idx": 60,
     "video_id": "q51s9owIGoU",
     "state_changes": [
-      "Returns to cycling action after static bike showcase segment"
+      "Cyclist with white/red helmet appears on a sandy trail"
     ]
   },
   {
     "time": [
-      122,
-      124
+      61,
+      62
     ],
     "visible_entities": [
       {
-        "desc": "person wearing a red and white helmet, black short-sleeved shirt, black shorts, and dark shoes",
-        "action": "riding a mountain bike",
+        "desc": "person wearing a red and white helmet, black short-sleeved shirt, black shorts, and white shoes",
+        "action": "riding a bicycle",
         "position": "center",
-        "id": "cyclist_red_helmet"
+        "id": "cyclist_red_helmet_1"
       },
       {
-        "desc": "mountain bike with black frame and tires",
+        "desc": "mountain bike with black tires and frame",
         "action": "being ridden",
-        "position": "center"
+        "position": "center",
+        "id": "bike_generic_moving_1"
       },
       {
-        "desc": "sandy dirt trail winding through dry, brown brush and bushes",
+        "desc": "dry, brown brush and bushes",
         "action": "static",
-        "position": "background",
-        "id": "dirt_trail"
+        "position": "left/right/foreground",
+        "id": "vegetation_dry_1"
+      },
+      {
+        "desc": "sandy dirt trail",
+        "action": "static",
+        "position": "center/ground",
+        "id": "dirt_trail_1"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A person is riding a mountain bike away from the camera.",
+        "fact": "A person is riding a bicycle away from the camera.",
         "confidence": 1.0
       },
       {
-        "fact": "The cyclist is navigating a sandy path.",
+        "fact": "The cyclist is navigating a sandy dirt path.",
         "confidence": 1.0
       },
       {
-        "fact": "The terrain is dry and covered with low-lying vegetation.",
+        "fact": "The terrain is surrounded by dry, brown vegetation.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The person is on the mountain bike, which is positioned on the sandy trail. The trail is surrounded by dry bushes on both the left and right sides.",
+    "spatial": "The person is on top of the bicycle. The bicycle is on the sandy dirt trail. The trail is surrounded by dry brush on the left and right sides.",
     "parse_success": true,
     "chunk_idx": 61,
     "video_id": "q51s9owIGoU",
@@ -2985,44 +3175,50 @@
   },
   {
     "time": [
-      124,
-      126
+      62,
+      63
     ],
     "visible_entities": [
       {
-        "desc": "person wearing a red helmet, black short-sleeved shirt, black shorts, and dark shoes",
-        "action": "riding a mountain bike away from the camera",
+        "desc": "person wearing a red helmet, black short-sleeved shirt, and dark shorts",
+        "action": "riding a mountain bike",
         "position": "center",
-        "id": "cyclist_red_helmet"
+        "id": "person_legs_generic_1"
       },
       {
         "desc": "mountain bike with dark frame and knobby tires",
-        "action": "moving along a dirt path",
+        "action": "being ridden on a dirt path",
         "position": "center"
       },
       {
-        "desc": "narrow sandy dirt trail winding through dry, brown brush and low bushes",
+        "desc": "narrow sandy dirt trail",
+        "action": "static",
+        "position": "center",
+        "id": "dirt_trail_1"
+      },
+      {
+        "desc": "dry brown bushes and sparse green vegetation",
         "action": "static",
         "position": "background",
-        "id": "dirt_trail"
+        "id": "vegetation_dry_1"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A person is riding a mountain bike away from the camera.",
+        "fact": "A person wearing a red helmet is riding a mountain bike away from the camera.",
         "confidence": 1.0
       },
       {
-        "fact": "The cyclist is navigating a winding dirt path.",
+        "fact": "The cyclist is navigating a narrow dirt path through a hilly landscape.",
         "confidence": 1.0
       },
       {
-        "fact": "The terrain is dry and covered in low vegetation.",
+        "fact": "The terrain is dry with brown brush and scattered green plants.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The person is on the mountain bike, positioned in the center of the frame. The bike is on the sandy dirt trail. The trail is surrounded by dry brush on both the left and right sides.",
+    "spatial": "The person is on the mountain bike, positioned in the center of the frame. The bike is on the sandy dirt path. The dry bushes and vegetation are to the left and right of the path, surrounding the cyclist.",
     "parse_success": true,
     "chunk_idx": 62,
     "video_id": "q51s9owIGoU",
@@ -3030,49 +3226,56 @@
   },
   {
     "time": [
-      126,
-      128
+      63,
+      64
     ],
     "visible_entities": [
       {
-        "desc": "person wearing a red helmet, dark short-sleeved shirt, and dark shorts",
+        "desc": "person wearing a red helmet, black short-sleeved shirt, and dark shorts",
         "action": "riding a bicycle uphill",
         "position": "center",
-        "id": "cyclist_red_helmet"
+        "id": "person_legs_generic_1"
       },
       {
-        "desc": "mountain bike with visible wheels and frame",
-        "action": "being ridden on a dirt path",
-        "position": "center"
+        "desc": "mountain bike",
+        "action": "being ridden",
+        "position": "center",
+        "id": "bike_generic_moving_1"
       },
       {
-        "desc": "dry, brown scrub brush and bushes",
-        "action": "static",
-        "position": "foreground/background"
-      },
-      {
-        "desc": "light-colored sandy dirt path",
+        "desc": "dirt trail",
         "action": "static",
         "position": "center",
-        "id": "dirt_trail"
+        "id": "dirt_trail_1"
+      },
+      {
+        "desc": "dry brown brush and bushes",
+        "action": "static",
+        "position": "background",
+        "id": "vegetation_dry_1"
+      },
+      {
+        "desc": "tree branch with green leaves",
+        "action": "static",
+        "position": "right foreground"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A person wearing a red helmet is riding a bicycle away from the camera.",
+        "fact": "A person is riding a bicycle up a dirt trail.",
         "confidence": 1.0
       },
       {
-        "fact": "The cyclist is navigating a sandy, uphill trail.",
+        "fact": "The cyclist is moving away from the camera.",
         "confidence": 1.0
       },
       {
-        "fact": "The terrain is covered in dry, brown vegetation.",
+        "fact": "The terrain is a dry, hilly landscape covered in brush.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The cyclist is in the center of the frame, riding on the sandy path. The dry bushes are located on both sides of the path and in the background. The path winds upwards in front of the cyclist.",
+    "spatial": "The person is on the bicycle, which is positioned on the dirt trail. The trail winds through the dry brush in the background. A tree branch with green leaves is in the right foreground, partially obscuring the view.",
     "parse_success": true,
     "chunk_idx": 63,
     "video_id": "q51s9owIGoU",
@@ -3080,43 +3283,48 @@
   },
   {
     "time": [
-      128,
-      130
+      64,
+      65
     ],
     "visible_entities": [
       {
         "desc": "person wearing a white helmet, dark short-sleeved shirt, and dark shorts",
         "action": "riding a mountain bike",
+        "position": "center/right",
+        "id": "cyclist_white_helmet_1"
+      },
+      {
+        "desc": "mountain bike with dark frame and knobby tires",
+        "action": "moving along a dirt path",
         "position": "center/right"
       },
       {
-        "desc": "mountain bike with a dark frame and thin tires",
-        "action": "being ridden on a dirt path",
-        "position": "center/right"
-      },
-      {
-        "desc": "dry, grassy terrain with sparse bushes and a dirt trail",
+        "desc": "dirt path surrounded by dry, brown vegetation and hills",
         "action": "static",
         "position": "background/foreground",
-        "id": "dirt_trail"
+        "id": "dirt_trail_1"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A person is riding a mountain bike along a dirt path.",
+        "fact": "A person is riding a mountain bike on a dirt path.",
         "confidence": 1.0
       },
       {
-        "fact": "The cyclist is moving from the background towards the right foreground.",
+        "fact": "The rider is wearing a white helmet.",
         "confidence": 1.0
       },
       {
-        "fact": "The terrain is dry and dusty with low vegetation.",
+        "fact": "The bike is kicking up dust as it moves.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The terrain is dry and dusty with sparse vegetation.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The person is on the mountain bike, positioned in the center-right of the frame. The bike is on the dirt path, which runs through the dry, grassy terrain. The cyclist is in front of the distant hills and background vegetation.",
+    "spatial": "The person is on the mountain bike, which is positioned on the dirt path. The dry vegetation is to the left and right of the path. The hills are in the background behind the rider.",
     "parse_success": true,
     "chunk_idx": 64,
     "video_id": "q51s9owIGoU",
@@ -3124,49 +3332,46 @@
   },
   {
     "time": [
-      130,
-      132
+      65,
+      66
     ],
     "visible_entities": [
       {
-        "desc": "person wearing a black short-sleeved shirt with white trim on the sleeves and a white horizontal stripe on the back, black shorts, black socks, and dark shoes",
+        "desc": "person wearing a black short-sleeved shirt with white trim on the sleeves and a white horizontal stripe on the back, black shorts, and black socks",
         "action": "riding a mountain bike",
         "position": "left"
       },
       {
         "desc": "black mountain bike with knobby tires",
         "action": "being ridden",
-        "position": "left"
+        "position": "left",
+        "id": "bike_generic_moving_1"
       },
       {
         "desc": "green prickly pear cactus pads",
         "action": "static",
-        "position": "foreground"
+        "position": "foreground",
+        "id": "vegetation_green_1"
       },
       {
         "desc": "dry brown brush and shrubs",
         "action": "static",
-        "position": "center",
-        "id": "dry_terrain"
+        "position": "center"
       },
       {
-        "desc": "distant hills with scattered houses and green vegetation",
+        "desc": "distant hills with houses and green vegetation",
         "action": "static",
         "position": "background",
-        "id": "dry_terrain"
+        "id": "sky_dust_1"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A person is riding a mountain bike from left to right.",
+        "fact": "A person is riding a mountain bike on a dirt trail.",
         "confidence": 1.0
       },
       {
-        "fact": "The bike's wheels are in motion.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The rider is wearing a black outfit with white accents.",
+        "fact": "The cyclist is moving from the left side of the frame.",
         "confidence": 1.0
       },
       {
@@ -3174,12 +3379,12 @@
         "confidence": 1.0
       },
       {
-        "fact": "The terrain is dry and dusty with brown vegetation.",
+        "fact": "The background features a valley with residential houses.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The person on the mountain bike is to the left of the dry brush. The green cactus pads are in the foreground, below the rider and the bike. The distant hills are in the background, behind the brush and the rider.",
+    "spatial": "The person on the mountain bike is to the left of the dry brush. The cactus pads are in the foreground, below the cyclist and the brush. The distant hills are behind the brush and the cyclist.",
     "parse_success": true,
     "chunk_idx": 65,
     "video_id": "q51s9owIGoU",
@@ -3187,42 +3392,42 @@
   },
   {
     "time": [
-      132,
-      134
+      66,
+      67
     ],
     "visible_entities": [
       {
-        "desc": "black mountain bike tire with knobby tread pattern and white 'SCHWALBE' lettering",
+        "desc": "black mountain bike tire with knobby tread texture",
         "action": "static",
         "position": "center",
-        "id": "schwalbe_tire"
+        "id": "bike_components_generic_1"
       },
       {
-        "desc": "black bicycle suspension fork with silver metallic stanchions and a red and white 'ROCK SHOX' sticker",
+        "desc": "black suspension fork stanchion with a red and white rectangular logo",
         "action": "static",
         "position": "left",
-        "id": "rockshox_fork"
+        "id": "bike_components_generic_1"
       },
       {
         "desc": "silver metal tire valve stem",
         "action": "static",
         "position": "center",
-        "id": "bike_components_generic"
+        "id": "bike_components_generic_1"
       },
       {
-        "desc": "thin silver metal wheel spokes",
+        "desc": "thin silver metal spokes",
         "action": "static",
         "position": "center",
-        "id": "bike_components_generic"
+        "id": "bike_components_generic_1"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "The camera focuses on a stationary mountain bike wheel.",
+        "fact": "The camera focuses on a close-up of a bicycle wheel and suspension fork.",
         "confidence": 1.0
       },
       {
-        "fact": "The tire brand 'SCHWALBE' is visible in white text.",
+        "fact": "The tire brand name 'SCHWALBE' is visible in white lettering on the sidewall.",
         "confidence": 1.0
       },
       {
@@ -3230,7 +3435,7 @@
         "confidence": 1.0
       },
       {
-        "fact": "A silver valve stem protrudes from the wheel rim.",
+        "fact": "The tire valve stem is positioned vertically near the center of the frame.",
         "confidence": 1.0
       }
     ],
@@ -3239,7 +3444,7 @@
       "ROCK",
       "SHOX"
     ],
-    "spatial": "The black suspension fork is positioned to the left of the tire. The 'SCHWALBE' text is printed on the sidewall of the tire. The silver valve stem is located near the center of the wheel, between the spokes.",
+    "spatial": "The black suspension fork is positioned to the left of the tire. The 'SCHWALBE' text is printed on the upper curve of the tire sidewall. The silver valve stem protrudes from the rim below the text. The thin spokes are visible behind the tire and valve stem.",
     "parse_success": true,
     "chunk_idx": 66,
     "video_id": "q51s9owIGoU",
@@ -3247,48 +3452,49 @@
   },
   {
     "time": [
-      134,
-      136
+      67,
+      68
     ],
     "visible_entities": [
       {
-        "desc": "black bicycle tire with knobby tread pattern and white 'SCHWALBE' lettering on the sidewall",
+        "desc": "black mountain bike tire with knobby tread pattern and white 'SCHWALBE' lettering",
         "action": "static",
         "position": "center",
-        "id": "schwalbe_tire"
+        "id": "schwalbe_tire_1"
       },
       {
-        "desc": "black bicycle suspension fork with a silver stanchion tube and a red and white 'ROCK SHOX' sticker",
+        "desc": "black bicycle suspension fork with a silver stanchion tube and a red and white 'ROCK SHOX' logo sticker",
         "action": "static",
         "position": "left",
-        "id": "rockshox_fork"
+        "id": "rockshox_fork_1"
       },
       {
         "desc": "silver metal tire valve stem",
         "action": "static",
         "position": "center",
-        "id": "bike_components_generic"
+        "id": "bike_components_generic_1"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "The camera focuses on a stationary bicycle wheel and fork assembly.",
+        "fact": "The camera focuses on the front wheel assembly of a bicycle.",
         "confidence": 1.0
       },
       {
-        "fact": "The tire sidewall displays the brand name 'SCHWALBE' in white text.",
+        "fact": "The tire brand 'SCHWALBE' is clearly visible in white text.",
         "confidence": 1.0
       },
       {
-        "fact": "The suspension fork features a 'ROCK SHOX' logo sticker.",
+        "fact": "The suspension fork features a 'ROCK SHOX' brand sticker.",
         "confidence": 1.0
       }
     ],
     "ocr": [
       "SCHWALBE",
-      "ROCK SHOX"
+      "ROCK",
+      "SHOX"
     ],
-    "spatial": "The black suspension fork is positioned to the left of the bicycle tire. The silver valve stem protrudes from the rim, located below the 'SCHWALBE' text on the tire.",
+    "spatial": "The black suspension fork is positioned to the left of the tire. The silver valve stem protrudes from the center of the wheel rim, located below the tire branding.",
     "parse_success": true,
     "chunk_idx": 67,
     "video_id": "q51s9owIGoU",
@@ -3296,26 +3502,27 @@
   },
   {
     "time": [
-      136,
-      138
+      68,
+      69
     ],
     "visible_entities": [
       {
-        "desc": "person wearing a white helmet with black vents, a black short-sleeved jersey, and black shorts",
-        "action": "riding a mountain bike down a sandy trail",
+        "desc": "person wearing a white helmet with black ventilation holes, a black short-sleeved cycling jersey with white accents on the sleeves, and black cycling shorts",
+        "action": "riding a mountain bike down a sandy slope",
         "position": "center",
-        "id": "cyclist_white_helmet"
+        "id": "cyclist_white_helmet_1"
       },
       {
         "desc": "mountain bike with black handlebars and frame",
         "action": "being ridden",
-        "position": "center"
+        "position": "center",
+        "id": "bike_generic_moving_1"
       },
       {
-        "desc": "dry, sandy terrain with brown scrub brush",
+        "desc": "sandy trail surrounded by dry, brown scrub brush and bushes",
         "action": "static",
         "position": "background",
-        "id": "dry_terrain"
+        "id": "dirt_trail_1"
       }
     ],
     "atomic_facts": [
@@ -3328,101 +3535,52 @@
         "confidence": 1.0
       },
       {
-        "fact": "The terrain is dry and dusty with vegetation on the sides.",
+        "fact": "The terrain consists of sand and dry vegetation.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The person is sitting on the mountain bike. The bike is on the sandy trail. The scrub brush is to the left and right of the rider.",
+    "spatial": "The person is positioned in the center of the frame, riding the mountain bike. The bike is directly beneath the person. The sandy trail is under the bike, and dry bushes are located to the left and right of the rider.",
     "parse_success": true,
     "chunk_idx": 68,
     "video_id": "q51s9owIGoU",
-    "state_changes": []
+    "state_changes": [
+      "Cyclist rides down a sandy slope"
+    ]
   },
   {
     "time": [
-      138,
-      140
+      69,
+      70
     ],
     "visible_entities": [
       {
-        "desc": "person wearing a white helmet with black ventilation holes, a black short-sleeved jersey with red and white accents, and dark shorts",
-        "action": "riding a mountain bike down a dirt path",
+        "desc": "person wearing a white helmet with black ventilation holes, a black short-sleeved jersey with red and white accents on the shoulders, and dark shorts",
+        "action": "riding a mountain bike down a sandy slope",
         "position": "center",
-        "id": "cyclist_white_helmet"
+        "id": "cyclist_white_helmet_1"
       },
       {
-        "desc": "mountain bike with handlebars and front wheel visible",
-        "action": "being ridden",
+        "desc": "mountain bike with handlebars and a frame, partially obscured by the rider and terrain",
+        "action": "being ridden down the slope",
         "position": "center"
       },
       {
-        "desc": "dry, brown bushes and sandy dirt path",
+        "desc": "cloud of light brown dust",
+        "action": "rising into the air behind the rider",
+        "position": "center",
+        "id": "sky_dust_1"
+      },
+      {
+        "desc": "dry, sandy terrain with sparse brown bushes and scrub vegetation",
         "action": "static",
         "position": "background",
-        "id": "dirt_trail"
+        "id": "vegetation_dry_1"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "The person is riding a mountain bike down a sandy trail.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The rider leans forward over the handlebars.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The bike kicks up dust as it moves through the dry terrain.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [],
-    "spatial": "The person is on top of the mountain bike. The bike is on the sandy dirt path. The dry bushes are to the left and right of the path.",
-    "parse_success": true,
-    "chunk_idx": 69,
-    "video_id": "q51s9owIGoU",
-    "state_changes": []
-  },
-  {
-    "time": [
-      140,
-      142
-    ],
-    "visible_entities": [
-      {
-        "desc": "person wearing a white helmet with red accents, a black short-sleeved shirt, and dark shorts",
-        "action": "riding a mountain bike",
-        "position": "left",
-        "id": "cyclist_white_helmet"
-      },
-      {
-        "desc": "dark mountain bike",
-        "action": "being ridden",
-        "position": "left"
-      },
-      {
-        "desc": "dry, grassy terrain with bushes and a dirt path",
-        "action": "static",
-        "position": "background",
-        "id": "dirt_trail"
-      },
-      {
-        "desc": "silver stylized 'FELT' logo with a red underline",
-        "action": "static",
-        "position": "center",
-        "id": "felt_logo_branding"
-      },
-      {
-        "desc": "white text reading 'bicycles' and '2014 NINE'",
-        "action": "static",
-        "position": "center",
-        "id": "felt_logo_branding"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "A person is riding a mountain bike on a dirt trail.",
+        "fact": "The person is riding a mountain bike down a steep, sandy hill.",
         "confidence": 1.0
       },
       {
@@ -3430,11 +3588,79 @@
         "confidence": 1.0
       },
       {
-        "fact": "The scene transitions from the outdoor footage to a black screen with a logo.",
+        "fact": "A cloud of dust is kicked up behind the bike as it moves.",
         "confidence": 1.0
       },
       {
-        "fact": "The text '2014 NINE' is visible below the brand logo.",
+        "fact": "The terrain is dry and covered with low-lying bushes.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The person is positioned in the center of the frame, riding the bike down the slope. The cloud of dust is behind the person and the bike. The dry bushes are scattered around the sandy path, flanking the rider on the left and right.",
+    "parse_success": true,
+    "chunk_idx": 69,
+    "video_id": "q51s9owIGoU",
+    "state_changes": [
+      "Cloud of dust rises behind the rider"
+    ]
+  },
+  {
+    "time": [
+      70,
+      71
+    ],
+    "visible_entities": [
+      {
+        "desc": "person wearing a white helmet with red accents, a black short-sleeved shirt, and dark shorts",
+        "action": "riding a bicycle through brush",
+        "position": "left",
+        "id": "person_legs_generic_1"
+      },
+      {
+        "desc": "bicycle with a dark frame and knobby tires",
+        "action": "being ridden",
+        "position": "left",
+        "id": "bike_generic_moving_1"
+      },
+      {
+        "desc": "dry, brown brush and vegetation",
+        "action": "static",
+        "position": "foreground",
+        "id": "vegetation_dry_1"
+      },
+      {
+        "desc": "sandy, light-colored dirt path",
+        "action": "static",
+        "position": "right",
+        "id": "dirt_trail_1"
+      },
+      {
+        "desc": "silver and red logo with the text 'FELT bicycles' and '2014 NINE' below it",
+        "action": "static",
+        "position": "center",
+        "id": "felt_logo_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A person is riding a bicycle through dry brush.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The rider is wearing a white helmet.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The video transitions to a black screen with a logo.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The text 'FELT bicycles' is visible on the screen.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The text '2014 NINE' is visible below the logo.",
         "confidence": 1.0
       }
     ],
@@ -3443,93 +3669,38 @@
       "bicycles",
       "2014 NINE"
     ],
-    "spatial": "The cyclist is on the left side of the frame, riding through the grassy terrain. The 'FELT' logo is centered on the screen, with the word 'bicycles' directly below it and '2014 NINE' positioned underneath that.",
+    "spatial": "The person on the bicycle is to the left of the sandy path. The dry brush is in the foreground, partially obscuring the rider. The logo text is centered on the black background.",
     "parse_success": true,
     "chunk_idx": 70,
-    "video_id": "q51s9owIGoU",
-    "state_changes": [
-      "Transitions from riding scenes back to Felt logo branding"
-    ]
-  },
-  {
-    "time": [
-      142,
-      144
-    ],
-    "visible_entities": [
-      {
-        "desc": "Felt Bicycles logo featuring a stylized white 'FELT' text with a metallic gradient effect, a horizontal red line underneath, and the word 'bicycles' in smaller white lowercase letters below the line.",
-        "action": "static",
-        "id": "felt_logo_branding"
-      },
-      {
-        "desc": "White text reading '2014 NINE & 7 SERIES' in a clean sans-serif font.",
-        "action": "static",
-        "id": "felt_logo_branding"
-      },
-      {
-        "desc": "Dark, textured background with a subtle spotlight effect in the center.",
-        "action": "static",
-        "id": "felt_logo_background"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "The Felt Bicycles logo is displayed in the center of the screen.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The text '2014 NINE & 7 SERIES' is positioned below the logo.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The background remains static throughout the clip.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [
-      "FELT",
-      "bicycles",
-      "2014 NINE & 7 SERIES"
-    ],
-    "spatial": "The Felt Bicycles logo is centered on the screen. The text '2014 NINE & 7 SERIES' is located below the logo. The red line is situated between the 'FELT' text and the 'bicycles' text.",
-    "parse_success": true,
-    "chunk_idx": 71,
     "video_id": "q51s9owIGoU",
     "state_changes": []
   },
   {
     "time": [
-      144,
-      146
+      71,
+      72
     ],
     "visible_entities": [
       {
-        "desc": "Stylized silver 'FELT' logo with a metallic gradient finish, positioned above a thin horizontal red line, followed by the word 'bicycles' in a smaller, spaced-out silver font.",
+        "desc": "Felt Bicycles logo featuring stylized white 'FELT' text with a red underline, 'bicycles' text below, and '2014 NINE & 7 SERIES' text at the bottom",
         "action": "static",
-        "id": "felt_logo_branding"
+        "position": "center",
+        "id": "felt_logo_1"
       },
       {
-        "desc": "White text reading '2014 NINE & 7 SERIES' in a clean, sans-serif font.",
-        "action": "static"
-      },
-      {
-        "desc": "Dark, textured background with a subtle spotlight effect centered behind the logo.",
+        "desc": "dark textured background",
         "action": "static",
-        "id": "felt_logo_background"
+        "position": "background",
+        "id": "sky_dust_1"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "The 'FELT bicycles' logo remains static in the center of the screen.",
+        "fact": "The video displays a static title card for Felt Bicycles.",
         "confidence": 1.0
       },
       {
-        "fact": "The text '2014 NINE & 7 SERIES' is displayed below the logo.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "A red line separates the main brand name from the word 'bicycles'.",
+        "fact": "The text '2014 NINE & 7 SERIES' is visible at the bottom of the screen.",
         "confidence": 1.0
       }
     ],
@@ -3538,7 +3709,42 @@
       "bicycles",
       "2014 NINE & 7 SERIES"
     ],
-    "spatial": "The 'FELT' logo is centered in the frame. The word 'bicycles' is directly below the 'FELT' logo, separated by a red line. The text '2014 NINE & 7 SERIES' is positioned below the 'bicycles' text.",
+    "spatial": "The 'FELT' logo is centered on the screen. The word 'bicycles' is located directly below the red line under the 'FELT' logo. The text '2014 NINE & 7 SERIES' is positioned below the 'bicycles' text.",
+    "parse_success": true,
+    "chunk_idx": 71,
+    "video_id": "q51s9owIGoU",
+    "state_changes": [
+      "Scene transitions back to Felt Bicycles logo on dark background"
+    ]
+  },
+  {
+    "time": [
+      72,
+      73
+    ],
+    "visible_entities": [
+      {
+        "desc": "FELT bicycles logo featuring stylized silver 'FELT' text with a red underline, 'bicycles' text below, and '2014 NINE & 7 SERIES' text at the bottom",
+        "action": "static",
+        "id": "felt_logo_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The FELT bicycles logo is displayed on a dark background.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The text '2014 NINE & 7 SERIES' is visible below the logo.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "FELT",
+      "bicycles",
+      "2014 NINE & 7 SERIES"
+    ],
+    "spatial": "The stylized 'FELT' text is at the top of the graphic. A red line is below the 'FELT' text. The word 'bicycles' is below the red line. The text '2014 NINE & 7 SERIES' is at the bottom, below 'bicycles'.",
     "parse_success": true,
     "chunk_idx": 72,
     "video_id": "q51s9owIGoU",
@@ -3546,18 +3752,18 @@
   },
   {
     "time": [
-      146,
-      148
+      73,
+      74
     ],
     "visible_entities": [],
     "atomic_facts": [
       {
-        "fact": "The video frame is completely black, showing no visible content or light.",
+        "fact": "The video frame is completely black, showing no visible content.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "There are no visible entities to describe spatial relations for.",
+    "spatial": "The frame is entirely black with no visible entities or spatial relationships to describe.",
     "parse_success": true,
     "chunk_idx": 73,
     "video_id": "q51s9owIGoU",

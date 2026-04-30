@@ -2,13 +2,13 @@
   {
     "time": [
       0,
-      2
+      1
     ],
     "visible_entities": [
       {
         "desc": "Solid dark green background with centered white sans-serif text",
         "action": "static",
-        "id": "title_card_green"
+        "id": "text_overlay_green"
       }
     ],
     "atomic_facts": [
@@ -17,109 +17,7 @@
         "confidence": 1.0
       },
       {
-        "fact": "The text identifies the subject as 'Jared Roth' from 'Amphitheater High School'.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The text states the subject is a 'Senior' attempting a '6'8\" High Jump'.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The text indicates the goal is 'A back to back State Championship title'.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [
-      "Jared Roth",
-      "Amphitheater High School",
-      "Senior",
-      "6'8\" High Jump for",
-      "A back to back State",
-      "Championship title"
-    ],
-    "spatial": "The text lines are stacked vertically in the center of the green background. The name 'Jared Roth' is at the top, followed by the school name, then the grade level, the event details, and finally the championship goal at the bottom.",
-    "parse_success": true,
-    "chunk_idx": 0,
-    "video_id": "v_fUJ88Ir7Dgc",
-    "state_changes": []
-  },
-  {
-    "time": [
-      2,
-      4
-    ],
-    "visible_entities": [
-      {
-        "desc": "solid dark green background",
-        "action": "static",
-        "position": "background",
-        "id": "title_card_green"
-      },
-      {
-        "desc": "white sans-serif text arranged in centered lines",
-        "action": "static",
-        "position": "center",
-        "id": "title_card_green"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "The screen displays white text on a green background.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The text identifies the subject as 'Jared Roth' from 'Amphitheater High School'.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The text states the subject is a 'Senior' and achieved a '6'8\" High Jump'.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The text mentions a 'back to back State Championship title'.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [
-      "Jared Roth",
-      "Amphitheater High School",
-      "Senior",
-      "6'8\" High Jump for",
-      "A back to back State",
-      "Championship title"
-    ],
-    "spatial": "The white text is centered on the screen against the green background. The name 'Jared Roth' is at the top, followed by the school name, grade, jump height, and championship details below it.",
-    "parse_success": true,
-    "chunk_idx": 1,
-    "video_id": "v_fUJ88Ir7Dgc",
-    "state_changes": []
-  },
-  {
-    "time": [
-      4,
-      6
-    ],
-    "visible_entities": [
-      {
-        "desc": "solid dark green background",
-        "action": "static",
-        "position": "background",
-        "id": "title_card_green"
-      },
-      {
-        "desc": "white sans-serif text arranged in six centered lines",
-        "action": "static",
-        "position": "center",
-        "id": "title_card_green"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "The video displays a static title card with white text on a green background.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The text identifies the subject as 'Jared Roth', a 'Senior' at 'Amphitheater High School'.",
+        "fact": "The text identifies the subject as 'Jared Roth', an 'Amphitheater High School Senior'.",
         "confidence": 1.0
       },
       {
@@ -135,7 +33,88 @@
       "A back to back State",
       "Championship title"
     ],
-    "spatial": "The block of white text is centered on the screen against the solid dark green background. The name 'Jared Roth' is at the top of the text block, positioned above the school name and the details of the athletic achievement.",
+    "spatial": "The text block is centered on the green background. The name 'Jared Roth' is at the top of the text block, followed by the school name, grade, jump height, and championship details in descending order.",
+    "parse_success": true,
+    "chunk_idx": 0,
+    "video_id": "v_fUJ88Ir7Dgc",
+    "state_changes": []
+  },
+  {
+    "time": [
+      1,
+      2
+    ],
+    "visible_entities": [
+      {
+        "desc": "white sans-serif text on a solid dark green background",
+        "action": "static",
+        "position": "center",
+        "id": "text_overlay_green"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The text identifies the subject as Jared Roth, a Senior at Amphitheater High School.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The text states a high jump height of 6'8\".",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The text mentions a goal for a back to back State Championship title.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "Jared Roth",
+      "Amphitheater High School",
+      "Senior",
+      "6'8\" High Jump for",
+      "A back to back State",
+      "Championship title"
+    ],
+    "spatial": "The text block is centered on the green background. The name 'Jared Roth' is at the top, followed by the school name and grade level. The specific athletic achievement details are located below the personal information.",
+    "parse_success": true,
+    "chunk_idx": 1,
+    "video_id": "v_fUJ88Ir7Dgc",
+    "state_changes": []
+  },
+  {
+    "time": [
+      2,
+      3
+    ],
+    "visible_entities": [
+      {
+        "desc": "Solid dark green background with centered white sans-serif text",
+        "action": "static",
+        "id": "text_overlay_green"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The screen displays a static informational slide with white text on a green background.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The text identifies the subject as 'Jared Roth', a 'Senior' at 'Amphitheater High School'.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The text states the subject achieved a '6'8\" High Jump' for a 'back to back State Championship title'.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "Jared Roth",
+      "Amphitheater High School",
+      "Senior",
+      "6'8\" High Jump for",
+      "A back to back State",
+      "Championship title"
+    ],
+    "spatial": "The text block is centered on the green background. The name 'Jared Roth' is at the top of the text block, followed by the school name, then the grade level, and finally the athletic achievement details at the bottom.",
     "parse_success": true,
     "chunk_idx": 2,
     "video_id": "v_fUJ88Ir7Dgc",
@@ -143,33 +122,33 @@
   },
   {
     "time": [
-      6,
-      8
+      3,
+      4
     ],
     "visible_entities": [
       {
-        "desc": "person wearing a red long-sleeved top and dark shorts",
-        "action": "walking left",
+        "desc": "person wearing a red jacket and dark pants",
+        "action": "walking to the left",
         "position": "left",
-        "id": "athlete_other_colors"
-      },
-      {
-        "desc": "football goalpost with white uprights",
-        "action": "static",
-        "position": "left",
-        "id": "football_goalpost"
-      },
-      {
-        "desc": "bright stadium floodlights",
-        "action": "static",
-        "position": "top",
-        "id": "stadium_floodlights"
+        "id": "person_red_jacket"
       },
       {
         "desc": "red running track with white lane lines",
         "action": "static",
         "position": "foreground",
         "id": "running_track"
+      },
+      {
+        "desc": "tall stadium lights emitting bright white light",
+        "action": "static",
+        "position": "background",
+        "id": "stadium_lights"
+      },
+      {
+        "desc": "football goal post",
+        "action": "static",
+        "position": "left background",
+        "id": "goal_post"
       },
       {
         "desc": "bleachers with spectators",
@@ -180,59 +159,65 @@
     ],
     "atomic_facts": [
       {
-        "fact": "A person in a red top is walking towards the left side of the frame.",
+        "fact": "A person in a red jacket is walking along the track.",
         "confidence": 1.0
       },
       {
-        "fact": "The scene takes place at night on an illuminated athletic field.",
+        "fact": "Stadium lights are illuminating the field at night.",
         "confidence": 1.0
       },
       {
-        "fact": "Spectators are seated in the background bleachers.",
+        "fact": "Spectators are seated in the bleachers in the background.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The person in the red top is walking on the red running track in the foreground. The football goalpost is to the left of the person. The bright stadium lights are positioned above the field and bleachers. The bleachers filled with spectators are in the background behind the track.",
+    "spatial": "The person in the red jacket is walking on the red running track in the foreground. The football goal post is to the left of the person and behind them. The stadium lights are positioned above the field and bleachers in the background.",
     "parse_success": true,
     "chunk_idx": 3,
     "video_id": "v_fUJ88Ir7Dgc",
     "state_changes": [
-      "transition from title card to live action scene with athlete walking on track"
+      "Scene transitions from static text overlay to live stadium footage; person in red jacket appears walking."
     ]
   },
   {
     "time": [
-      8,
-      10
+      4,
+      5
     ],
     "visible_entities": [
       {
-        "desc": "person with short dark hair, wearing a black athletic singlet with white side panels and black shorts",
-        "action": "walking on the track",
+        "desc": "person with dark hair, wearing a black athletic tank top with white side panels and black shorts",
+        "action": "walking to the right",
         "position": "center",
-        "id": "athlete_black_singlet"
+        "id": "person_athlete_black_white_singlet"
       },
       {
-        "desc": "orange cylindrical cooler with a white lid and a white 'G' logo",
+        "desc": "large orange beverage cooler with a white lid and a white 'G' logo",
         "action": "static",
         "position": "right",
         "id": "orange_cooler_gatorade"
       },
       {
-        "desc": "silver metal trash can with a black liner",
+        "desc": "silver metal trash can with a black plastic liner",
         "action": "static",
         "position": "right foreground",
-        "id": "trash_can_silver"
+        "id": "trash_can"
       },
       {
         "desc": "small orange traffic cone",
         "action": "static",
         "position": "bottom left",
-        "id": "orange_traffic_cones"
+        "id": "traffic_cone"
       },
       {
-        "desc": "crowd of spectators in bleachers",
+        "desc": "reddish-brown running track surface",
+        "action": "static",
+        "position": "bottom",
+        "id": "running_track"
+      },
+      {
+        "desc": "bleachers with spectators in the background",
         "action": "static",
         "position": "background",
         "id": "bleachers_spectators"
@@ -244,131 +229,73 @@
         "confidence": 1.0
       },
       {
-        "fact": "An orange cooler with a 'G' logo sits on a table to the right.",
+        "fact": "An orange cooler with a Gatorade logo sits on a stand.",
         "confidence": 1.0
       },
       {
-        "fact": "A silver trash can is positioned in front of the cooler table.",
+        "fact": "A silver trash can is positioned near the cooler.",
         "confidence": 1.0
       },
       {
-        "fact": "Spectators are seated in the bleachers in the background.",
+        "fact": "An orange cone marks a spot on the track in the foreground.",
         "confidence": 1.0
       }
     ],
     "ocr": [
       "G"
     ],
-    "spatial": "The person in the black uniform is walking in the center of the frame, to the left of the silver trash can. The trash can is in front of the table holding the orange cooler. The small orange cone is on the ground in the lower left foreground.",
+    "spatial": "The person is walking in the center of the frame, to the left of the orange cooler. The silver trash can is in the foreground, in front of the cooler and to the right of the person. The orange cone is on the track in the bottom left corner, below the person.",
     "parse_success": true,
     "chunk_idx": 4,
     "video_id": "v_fUJ88Ir7Dgc",
     "state_changes": [
-      "different athlete appears (black singlet), cooler and trash can visible"
+      "New athlete (black tank top, white panels) appears walking; orange cooler and trash can enter the scene."
     ]
   },
   {
     "time": [
-      10,
-      12
+      5,
+      6
     ],
     "visible_entities": [
       {
-        "desc": "person with dark hair, wearing a black sleeveless athletic top and black shorts with a white vertical stripe",
+        "desc": "person with dark hair, wearing a black athletic tank top with white side panels and black shorts",
         "action": "standing with hands on hips",
         "position": "center",
-        "id": "athlete_black_singlet"
+        "id": "person_athlete_black_white_singlet"
       },
       {
-        "desc": "large orange cylindrical cooler with a white lid and a white logo",
+        "desc": "large orange cylindrical cooler with a white lid and a white 'G' logo",
         "action": "static",
         "position": "right",
         "id": "orange_cooler_gatorade"
       },
       {
+        "desc": "silver metal trash can with a black liner",
+        "action": "static",
+        "position": "foreground",
+        "id": "trash_can"
+      },
+      {
         "desc": "black metal folding table",
         "action": "static",
         "position": "right",
-        "id": "black_folding_table"
+        "id": "folding_table"
       },
       {
-        "desc": "silver cylindrical trash can",
+        "desc": "bleachers with spectators in the background",
         "action": "static",
-        "position": "foreground",
-        "id": "trash_can_silver"
-      },
-      {
-        "desc": "crowd of spectators in bleachers",
-        "action": "sitting",
         "position": "background",
         "id": "bleachers_spectators"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A person in a black athletic uniform stands on a red track with hands on hips.",
+        "fact": "A person in a black and white athletic uniform stands on a red track with hands on hips.",
         "confidence": 1.0
       },
       {
-        "fact": "An orange cooler sits on a black table to the right of the person.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "Spectators are seated in bleachers in the background.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [],
-    "spatial": "The person in the black uniform is standing in the center of the frame, to the left of the orange cooler. The orange cooler is placed on top of a black table. A silver trash can is in the foreground, positioned in front of the table and the person.",
-    "parse_success": true,
-    "chunk_idx": 5,
-    "video_id": "v_fUJ88Ir7Dgc",
-    "state_changes": []
-  },
-  {
-    "time": [
-      12,
-      14
-    ],
-    "visible_entities": [
-      {
-        "desc": "person with short dark hair, wearing a black athletic tank top with white side panels and black shorts",
-        "action": "standing still",
-        "position": "center",
-        "id": "athlete_black_singlet"
-      },
-      {
-        "desc": "large orange cylindrical beverage cooler with a white lid and a white 'G' logo",
-        "action": "static",
-        "position": "right",
-        "id": "orange_cooler_gatorade"
-      },
-      {
-        "desc": "silver metal trash can with a black plastic liner",
-        "action": "static",
-        "position": "foreground center",
-        "id": "trash_can_silver"
-      },
-      {
-        "desc": "person wearing a white cap and white shirt",
-        "action": "standing",
-        "position": "right",
-        "id": "staff_white_cap"
-      },
-      {
-        "desc": "crowd of spectators sitting on bleachers",
-        "action": "static",
-        "position": "background left",
-        "id": "bleachers_spectators"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "A person in a black and white athletic uniform is standing on the track.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "An orange cooler is placed on a table to the right of the athlete.",
+        "fact": "An orange cooler with a Gatorade logo sits on a black table.",
         "confidence": 1.0
       },
       {
@@ -379,7 +306,69 @@
     "ocr": [
       "G"
     ],
-    "spatial": "The athlete is standing in the center of the frame, to the left of the orange cooler. The silver trash can is in the foreground, positioned between the camera and the athlete. The crowd is seated on bleachers in the background to the left of the athlete.",
+    "spatial": "The person is standing in the center of the frame, to the left of the orange cooler. The orange cooler is placed on top of the black table on the right side. The silver trash can is in the foreground, positioned in front of the table and the person.",
+    "parse_success": true,
+    "chunk_idx": 5,
+    "video_id": "v_fUJ88Ir7Dgc",
+    "state_changes": [
+      "Athlete in black tank top changes action from walking to standing with hands on hips; black folding table appears."
+    ]
+  },
+  {
+    "time": [
+      6,
+      7
+    ],
+    "visible_entities": [
+      {
+        "desc": "person wearing a black athletic tank top with white side panels and black shorts",
+        "action": "standing still",
+        "position": "center",
+        "id": "person_athlete_black_white_singlet"
+      },
+      {
+        "desc": "large orange cylindrical beverage cooler with a white lid and a white 'G' logo",
+        "action": "static",
+        "position": "right",
+        "id": "orange_cooler_gatorade"
+      },
+      {
+        "desc": "silver metal trash can with a black plastic liner",
+        "action": "static",
+        "position": "foreground",
+        "id": "trash_can"
+      },
+      {
+        "desc": "person wearing a white cap and white shirt",
+        "action": "standing",
+        "position": "right",
+        "id": "person_staff_white_cap"
+      },
+      {
+        "desc": "metal bleachers filled with spectators",
+        "action": "static",
+        "position": "background",
+        "id": "bleachers_spectators"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A person in a black and white athletic uniform is standing on the track.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "An orange cooler with a Gatorade logo sits on a table to the right.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A silver trash can is positioned in the foreground.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "G"
+    ],
+    "spatial": "The person in the black uniform is standing to the left of the orange cooler. The silver trash can is in the foreground, in front of the cooler and the table. The bleachers are in the background behind the person.",
     "parse_success": true,
     "chunk_idx": 6,
     "video_id": "v_fUJ88Ir7Dgc",
@@ -387,55 +376,57 @@
   },
   {
     "time": [
-      14,
-      16
+      7,
+      8
     ],
     "visible_entities": [
       {
-        "desc": "person with short dark hair, wearing a black athletic singlet with white side panels and black shorts",
+        "desc": "person wearing a black athletic singlet with white side panels and black shorts",
         "action": "standing with hands on hips",
         "position": "right foreground",
-        "id": "athlete_black_singlet"
+        "id": "person_athlete_black_white_singlet"
       },
       {
         "desc": "crowd of spectators in casual clothing",
         "action": "sitting on bleachers",
-        "position": "left background",
+        "position": "background left",
         "id": "bleachers_spectators"
       },
       {
         "desc": "metal bleachers",
         "action": "static",
-        "position": "left background",
+        "position": "background left",
         "id": "bleachers_spectators"
       },
       {
-        "desc": "tall light pole",
+        "desc": "white vertical pole",
         "action": "static",
-        "position": "background",
-        "id": "stadium_floodlights"
+        "position": "right background",
+        "id": "white_pole"
+      },
+      {
+        "desc": "dark cylindrical object",
+        "action": "static",
+        "position": "bottom right foreground",
+        "id": "dark_cylindrical_object"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A person in a black and white athletic uniform stands in the foreground.",
+        "fact": "A person in a black and white athletic uniform stands with hands on hips.",
         "confidence": 1.0
       },
       {
-        "fact": "The person has their hands placed on their hips.",
+        "fact": "Spectators are seated on metal bleachers in the background.",
         "confidence": 1.0
       },
       {
-        "fact": "Spectators are seated on bleachers in the background.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The scene takes place at night under artificial lighting.",
+        "fact": "A white vertical pole stands behind the person in the foreground.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The person in the black and white uniform is standing in the foreground to the right of the bleachers. The crowd of spectators is sitting on the bleachers in the background. A tall light pole is visible behind the bleachers.",
+    "spatial": "The person in the black and white athletic uniform is in the right foreground, standing in front of the bleachers. The crowd of spectators is seated on the bleachers to the left and behind the person. The white vertical pole is to the right of the person and behind them. The dark cylindrical object is in the bottom right corner, in front of the person.",
     "parse_success": true,
     "chunk_idx": 7,
     "video_id": "v_fUJ88Ir7Dgc",
@@ -443,18 +434,24 @@
   },
   {
     "time": [
-      16,
-      18
+      8,
+      9
     ],
     "visible_entities": [
       {
-        "desc": "person with short dark hair, wearing a black athletic tank top with white side panels and black shorts with a white vertical stripe",
-        "action": "running from left to right",
-        "position": "right foreground",
-        "id": "athlete_black_singlet"
+        "desc": "person with short dark hair, wearing a black athletic tank top with white side panels and black athletic shorts with a white vertical stripe",
+        "action": "jogging to the right",
+        "position": "center foreground",
+        "id": "person_athlete_black_white_singlet"
       },
       {
-        "desc": "crowd of spectators sitting on metal bleachers",
+        "desc": "crowd of spectators in casual clothing",
+        "action": "static",
+        "position": "background",
+        "id": "bleachers_spectators"
+      },
+      {
+        "desc": "white metal bleachers",
         "action": "static",
         "position": "background",
         "id": "bleachers_spectators"
@@ -463,51 +460,55 @@
         "desc": "tall white vertical pole",
         "action": "static",
         "position": "left",
-        "id": "stadium_floodlights"
+        "id": "white_pole"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A person in a black and white athletic uniform is running across the track.",
+        "fact": "A person in a black and white athletic uniform is jogging from left to right.",
         "confidence": 1.0
       },
       {
-        "fact": "Spectators are seated in the stands behind the runner.",
+        "fact": "Spectators are seated in the bleachers behind the runner.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The scene takes place at night under artificial lighting.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The runner is in the foreground, positioned to the right of the tall white pole. The crowd of spectators is in the background, sitting on bleachers behind the runner.",
+    "spatial": "The person in the black and white uniform is in front of the white metal bleachers. The tall white vertical pole is to the left of the person. The crowd of spectators is sitting on the bleachers in the background.",
     "parse_success": true,
     "chunk_idx": 8,
     "video_id": "v_fUJ88Ir7Dgc",
     "state_changes": [
-      "athlete starts running (action change from standing)"
+      "Athlete in black tank top begins jogging; camera focuses on track activity."
     ]
   },
   {
     "time": [
-      18,
-      20
+      9,
+      10
     ],
     "visible_entities": [
       {
-        "desc": "tall male athlete with short dark hair, wearing a black sleeveless athletic uniform (singlet and shorts) with white side panels and a white race bib on the chest",
-        "action": "walking slowly to the right",
-        "position": "right foreground",
-        "id": "athlete_black_singlet"
+        "desc": "person with short dark hair, wearing a black sleeveless athletic uniform with white side panels and a white number bib on the chest, dark shorts, and red and white running shoes",
+        "action": "walking on the track",
+        "position": "right",
+        "id": "person_athlete_black_white_singlet"
       },
       {
-        "desc": "metal bleachers filled with spectators",
+        "desc": "white metal football goalpost structure",
         "action": "static",
+        "position": "left",
+        "id": "goal_post"
+      },
+      {
+        "desc": "crowd of spectators in casual clothing",
+        "action": "sitting in bleachers",
         "position": "background",
         "id": "bleachers_spectators"
-      },
-      {
-        "desc": "white football goalpost upright",
-        "action": "static",
-        "position": "left background",
-        "id": "football_goalpost"
       },
       {
         "desc": "red running track surface",
@@ -518,76 +519,86 @@
     ],
     "atomic_facts": [
       {
-        "fact": "The athlete is walking slowly across the track.",
+        "fact": "A person in a black athletic uniform is walking on the red track.",
         "confidence": 1.0
       },
       {
-        "fact": "Spectators are seated in the bleachers in the background.",
+        "fact": "The person is moving from the right side of the frame towards the left.",
         "confidence": 1.0
       },
       {
-        "fact": "The scene takes place at night under stadium lighting.",
+        "fact": "Spectators are seated in the bleachers behind the track.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The athlete is in the foreground, positioned to the right of the white goalpost. The bleachers are behind the athlete and the track. The red track is below the athlete.",
+    "spatial": "The person in the black uniform is to the right of the white goalpost. The goalpost is on the left side of the frame. The crowd of spectators is behind the person and the track.",
     "parse_success": true,
     "chunk_idx": 9,
     "video_id": "v_fUJ88Ir7Dgc",
-    "state_changes": []
+    "state_changes": [
+      "Athlete transitions from jogging to walking on the track; goalpost becomes prominent."
+    ]
   },
   {
     "time": [
-      20,
-      22
+      10,
+      11
     ],
     "visible_entities": [
       {
-        "desc": "male athlete with short dark hair, wearing a black sleeveless singlet with white side panels and a white race bib, black shorts, and red running shoes",
-        "action": "walking right",
+        "desc": "person with short dark hair, wearing a black sleeveless athletic top with white side panels and a white race bib, black shorts, and pink/red running shoes",
+        "action": "walking to the right",
         "position": "center",
-        "id": "athlete_black_singlet"
+        "id": "person_athlete_black_white_singlet"
       },
       {
-        "desc": "white metal football goalpost with a curved support base",
+        "desc": "white metal football goalpost with a curved support arm",
         "action": "static",
         "position": "left",
-        "id": "football_goalpost"
+        "id": "goal_post"
       },
       {
-        "desc": "white canopy tents with peaked roofs",
+        "desc": "red-brown running track surface",
         "action": "static",
-        "position": "background left",
-        "id": "white_canopy_tents"
+        "position": "bottom",
+        "id": "running_track"
       },
       {
-        "desc": "metal bleachers with spectators sitting on them",
+        "desc": "green grass field",
         "action": "static",
-        "position": "background right",
+        "position": "background",
+        "id": "grass_field"
+      },
+      {
+        "desc": "white canopy tent with lights underneath",
+        "action": "static",
+        "position": "background",
+        "id": "canopy_tent"
+      },
+      {
+        "desc": "metal bleachers with spectators",
+        "action": "static",
+        "position": "background",
         "id": "bleachers_spectators"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "The male athlete walks from left to right across the track.",
+        "fact": "A person is walking on the red-brown running track.",
         "confidence": 1.0
       },
       {
-        "fact": "The athlete is wearing red shoes.",
+        "fact": "The person is moving from the left side of the frame towards the right.",
         "confidence": 1.0
       },
       {
-        "fact": "The goalpost is positioned to the left of the athlete.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "Spectators are sitting in the bleachers in the background.",
+        "fact": "A white goalpost stands on the green grass field.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The athlete is in the center of the frame, walking to the right of the white goalpost. The goalpost stands on the green grass field to the left of the reddish-brown track. The white tents and bleachers are located behind the athlete and the goalpost.",
+    "spatial": "The person is to the right of the white goalpost. The goalpost is situated on the green grass field, which is behind the red-brown running track. The white canopy tent is in the background to the left of the person.",
     "parse_success": true,
     "chunk_idx": 10,
     "video_id": "v_fUJ88Ir7Dgc",
@@ -595,61 +606,61 @@
   },
   {
     "time": [
-      22,
-      24
+      11,
+      12
     ],
     "visible_entities": [
       {
-        "desc": "person with short dark hair, wearing a dark blue sleeveless athletic jersey with white side panels and a white number bib, dark shorts, and red shoes",
-        "action": "walking to the right",
+        "desc": "person with short dark hair, wearing a black sleeveless athletic singlet with white vertical side panels and a white number bib, black shorts, and pink running shoes",
+        "action": "walking on the track",
         "position": "center",
-        "id": "athlete_dark_blue_top"
+        "id": "person_athlete_black_white_singlet"
       },
       {
-        "desc": "white metal football goalpost structure",
+        "desc": "white metal football goalpost with a curved support arm",
         "action": "static",
         "position": "background",
-        "id": "football_goalpost"
+        "id": "goal_post"
       },
       {
-        "desc": "crowd of spectators sitting on bleachers",
+        "desc": "bright stadium floodlights",
+        "action": "static",
+        "position": "background",
+        "id": "stadium_lights"
+      },
+      {
+        "desc": "crowd of spectators sitting in bleachers",
         "action": "static",
         "position": "background",
         "id": "bleachers_spectators"
       },
       {
-        "desc": "bright stadium floodlights",
-        "action": "static",
-        "position": "top left",
-        "id": "stadium_floodlights"
-      },
-      {
         "desc": "red running track surface",
         "action": "static",
-        "position": "bottom",
+        "position": "foreground",
         "id": "running_track"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "person walks to the right on the red track",
+        "fact": "A person in a black and white athletic uniform is walking across the red track.",
         "confidence": 1.0
       },
       {
-        "fact": "white goalpost stands behind the person",
+        "fact": "The person is wearing pink shoes.",
         "confidence": 1.0
       },
       {
-        "fact": "spectators sit in the background bleachers",
+        "fact": "A white goalpost stands in the background behind the person.",
         "confidence": 1.0
       },
       {
-        "fact": "stadium lights illuminate the scene from the top left",
+        "fact": "Spectators are visible in the stands in the background.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The person is walking on the red track in the foreground. The white goalpost is behind the person. The crowd of spectators is to the right of the goalpost in the background. The bright stadium lights are above and to the left of the person.",
+    "spatial": "The person is walking on the red track in the foreground. The white goalpost is behind the person. The crowd of spectators is in the background, to the right of the goalpost.",
     "parse_success": true,
     "chunk_idx": 11,
     "video_id": "v_fUJ88Ir7Dgc",
@@ -657,109 +668,117 @@
   },
   {
     "time": [
-      24,
-      26
+      12,
+      13
     ],
     "visible_entities": [
       {
-        "desc": "person with short dark hair, wearing a dark sleeveless athletic top with white side panels and dark shorts",
+        "desc": "person with short dark hair, wearing a dark blue and white athletic singlet and dark shorts",
         "action": "sitting on the ground",
         "position": "left foreground",
-        "id": "athlete_dark_blue_top"
+        "id": "person_athlete_blue_white_singlet"
       },
       {
-        "desc": "person with short dark hair, wearing a dark sleeveless athletic top with white side panels and dark shorts",
+        "desc": "person with short dark hair, wearing a dark blue and white athletic singlet and dark shorts",
         "action": "walking to the right",
         "position": "right foreground",
-        "id": "athlete_dark_blue_top"
+        "id": "person_athlete_blue_white_singlet"
       },
       {
-        "desc": "white rectangular trailer or utility box with a dark circular vent",
+        "desc": "white rectangular equipment box with a black circular vent",
         "action": "static",
         "position": "left background",
         "id": "white_equipment_box"
       },
       {
-        "desc": "crowd of people sitting on the grass",
+        "desc": "tall stadium light fixture emitting bright white light",
+        "action": "static",
+        "position": "top center",
+        "id": "stadium_lights"
+      },
+      {
+        "desc": "crowd of spectators",
         "action": "static",
         "position": "background",
         "id": "bleachers_spectators"
-      },
-      {
-        "desc": "bright stadium floodlights",
-        "action": "static",
-        "position": "top center",
-        "id": "stadium_floodlights"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A person is sitting on the track in the foreground.",
+        "fact": "A person is sitting on the track surface in the foreground.",
         "confidence": 1.0
       },
       {
-        "fact": "Another person is walking across the track from left to right.",
+        "fact": "Another person is walking towards the right side of the frame.",
         "confidence": 1.0
       },
       {
-        "fact": "A white trailer is parked on the grass behind the track.",
+        "fact": "A white equipment box is positioned behind the sitting person.",
         "confidence": 1.0
       },
       {
-        "fact": "Spectators are sitting on the grass in the background.",
+        "fact": "Stadium lights illuminate the scene from above.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The person sitting on the ground is to the left of the person walking. The white trailer is behind the sitting person and to the left of the walking person. The crowd of spectators is behind both people on the track.",
+    "spatial": "The sitting person is to the left of the walking person. The white equipment box is behind the sitting person. The stadium lights are above the crowd and the athletes.",
     "parse_success": true,
     "chunk_idx": 12,
     "video_id": "v_fUJ88Ir7Dgc",
-    "state_changes": []
+    "state_changes": [
+      "New athlete (blue/white singlet) appears sitting on the ground; another instance of same athlete walking."
+    ]
   },
   {
     "time": [
-      26,
-      28
+      13,
+      14
     ],
     "visible_entities": [
       {
-        "desc": "man with short dark hair, wearing a black sleeveless athletic jersey with white side panels and a white number tag on the chest",
+        "desc": "person with short dark hair, wearing a black sleeveless athletic top with white side panels and a white number bib on the chest",
         "action": "standing still",
         "position": "center",
-        "id": "athlete_black_singlet"
+        "id": "person_athlete_black_white_singlet"
       },
       {
-        "desc": "large white rectangular box structure with black horizontal stripes and a black circle graphic",
+        "desc": "white rectangular box-like structure with black horizontal stripes and a black circle on the side",
         "action": "static",
         "position": "left",
         "id": "white_equipment_box"
       },
       {
-        "desc": "blurry crowd of people in the background",
+        "desc": "tall thin vertical pole, likely a light pole",
         "action": "static",
         "position": "background",
-        "id": "bleachers_spectators"
+        "id": "stadium_lights"
+      },
+      {
+        "desc": "blurred crowd of people with colorful clothing",
+        "action": "static",
+        "position": "bottom"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A man in a black athletic jersey stands next to a white box structure.",
+        "fact": "A person in a black athletic top stands next to a white structure.",
         "confidence": 1.0
       },
       {
-        "fact": "The white box features a black circle and horizontal black stripes.",
+        "fact": "The white structure has a black circle and text on its side.",
         "confidence": 1.0
       },
       {
-        "fact": "The scene takes place at night under artificial lighting.",
+        "fact": "A crowd is visible in the background below the standing person.",
         "confidence": 1.0
       }
     ],
     "ocr": [
-      "20 & 1M"
+      "20",
+      "M"
     ],
-    "spatial": "The man is standing to the right of the large white box structure. The blurry crowd is located in the background behind the man and the box.",
+    "spatial": "The person in the black athletic top is to the right of the white box-like structure. The white structure is in the foreground on the left. The blurred crowd is below the standing person and the white structure.",
     "parse_success": true,
     "chunk_idx": 13,
     "video_id": "v_fUJ88Ir7Dgc",
@@ -767,83 +786,86 @@
   },
   {
     "time": [
-      28,
-      30
+      14,
+      15
     ],
     "visible_entities": [
       {
-        "desc": "dark green palm tree tops with visible fronds",
+        "desc": "dark blue sky, uniform color, slightly grainy texture",
         "action": "static",
-        "position": "bottom",
-        "id": "sky_trees"
+        "position": "background"
       },
       {
-        "desc": "solid dark blue sky",
+        "desc": "palm tree tops, dark green fronds, blurry appearance",
         "action": "static",
-        "position": "background",
-        "id": "sky_trees"
+        "position": "bottom",
+        "id": "palm_trees"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "The scene consists of a dark blue sky filling the majority of the frame.",
+        "fact": "The scene shows a dark blue sky with palm tree tops visible at the bottom.",
         "confidence": 1.0
       },
       {
-        "fact": "The tops of several palm trees are visible along the bottom edge of the frame.",
+        "fact": "The palm trees are stationary against the sky.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The palm tree tops are located at the bottom of the frame, positioned below the dark blue sky which fills the rest of the view.",
+    "spatial": "The palm tree tops are positioned at the bottom of the frame, below the dark blue sky which fills the rest of the view.",
     "parse_success": true,
     "chunk_idx": 14,
     "video_id": "v_fUJ88Ir7Dgc",
     "state_changes": [
-      "scene change to trees and sky view"
+      "Camera pans up to sky and palm trees; crowd and track no longer visible."
     ]
   },
   {
     "time": [
-      30,
-      32
+      15,
+      16
     ],
     "visible_entities": [
       {
-        "desc": "blurry figure of a person, appearing to wear dark clothing",
-        "action": "standing or walking",
+        "desc": "blurry figure of a person, wearing dark clothing, standing upright",
+        "action": "standing",
         "position": "left",
-        "id": "athlete_other_colors"
+        "id": "person_generic_dark_clothing"
       },
       {
-        "desc": "tall, vertical white structure, possibly a pole or equipment",
+        "desc": "large white vertical structure, possibly a tent or pole",
         "action": "static",
-        "position": "center",
-        "id": "stadium_floodlights"
+        "position": "center"
       },
       {
-        "desc": "large, blurry white object, possibly a vehicle or container",
+        "desc": "dark background area, likely night sky or dark building",
+        "action": "static",
+        "position": "background"
+      },
+      {
+        "desc": "indistinct white object, possibly a vehicle or equipment",
         "action": "static",
         "position": "right",
-        "id": "white_equipment_box"
+        "id": "indistinct_white_object"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A blurry figure is visible on the left side of the frame.",
+        "fact": "A person is standing on the left side of the frame.",
         "confidence": 1.0
       },
       {
-        "fact": "A tall white structure stands in the center background.",
+        "fact": "The scene is outdoors at night with artificial lighting.",
         "confidence": 1.0
       },
       {
-        "fact": "A large white object is positioned on the right side.",
+        "fact": "A large white structure is visible in the center background.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The blurry figure is to the left of the tall white structure. The large white object is to the right of the tall white structure. All entities appear to be on a grassy surface.",
+    "spatial": "The person is to the left of the large white vertical structure. The white structure is in the center background. The indistinct white object is to the right of the central structure.",
     "parse_success": true,
     "chunk_idx": 15,
     "video_id": "v_fUJ88Ir7Dgc",
@@ -851,120 +873,108 @@
   },
   {
     "time": [
-      32,
-      34
+      16,
+      17
     ],
     "visible_entities": [
       {
-        "desc": "person wearing dark clothing, sitting on the ground",
-        "action": "sitting on the track",
+        "desc": "person wearing a dark sleeveless top and dark shorts",
+        "action": "sitting on the ground",
         "position": "right foreground",
-        "id": "athlete_other_colors"
+        "id": "person_generic_dark_clothing"
       },
       {
-        "desc": "person wearing dark shorts and a dark top",
+        "desc": "person wearing a dark tank top and dark shorts",
         "action": "standing",
         "position": "center background",
-        "id": "athlete_other_colors"
+        "id": "person_generic_dark_clothing"
       },
       {
-        "desc": "person wearing dark clothing",
+        "desc": "person wearing a dark tank top and dark shorts",
         "action": "standing",
         "position": "left background",
-        "id": "athlete_other_colors"
+        "id": "person_generic_dark_clothing"
       },
       {
-        "desc": "red running track surface",
+        "desc": "large blue and green object, possibly a folded tent or equipment cover",
         "action": "static",
-        "position": "foreground",
-        "id": "running_track"
-      },
-      {
-        "desc": "green grassy field",
-        "action": "static",
-        "position": "center",
-        "id": "green_field"
+        "position": "left middle ground",
+        "id": "blue_green_cover"
       },
       {
         "desc": "small orange cone",
         "action": "static",
         "position": "right foreground",
-        "id": "orange_traffic_cones"
+        "id": "traffic_cone"
       },
       {
-        "desc": "tall white structure, possibly a scoreboard or tower",
+        "desc": "tall white structure, possibly a scoreboard or lighting rig",
         "action": "static",
         "position": "center background",
-        "id": "stadium_floodlights"
+        "id": "stadium_lights"
       },
       {
         "desc": "white portable toilet",
         "action": "static",
         "position": "right background",
-        "id": "white_equipment_box"
+        "id": "portable_toilet"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A person is sitting on the red running track in the foreground.",
+        "fact": "A person is sitting on the reddish-brown track surface in the foreground.",
         "confidence": 1.0
       },
       {
-        "fact": "Two people are standing on the green grassy field in the background.",
+        "fact": "Two people are standing on the green field in the background.",
         "confidence": 1.0
       },
       {
-        "fact": "A small orange cone is placed on the track near the sitting person.",
+        "fact": "A small orange cone is on the track near the sitting person.",
         "confidence": 1.0
       },
       {
-        "fact": "The scene takes place at night under artificial lighting.",
+        "fact": "A large blue and green object is on the grass to the left.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The person sitting on the track is in the right foreground, with a small orange cone near them. The green grassy field is to the left of the sitting person and in front of the standing people. The tall white structure and the white portable toilet are in the background, behind the people on the field.",
+    "spatial": "The person sitting on the track is in the right foreground. The small orange cone is on the track in front of the sitting person. The two standing people are in the background, on the green field. The large blue and green object is on the grass to the left of the standing people. The tall white structure is behind the standing people in the center background. The white portable toilet is in the right background, behind the sitting person.",
     "parse_success": true,
     "chunk_idx": 16,
     "video_id": "v_fUJ88Ir7Dgc",
     "state_changes": [
-      "scene returns to track/field with multiple people and portable toilet"
+      "Scene shifts to sideline area; multiple people in dark clothing appear sitting/standing; portable toilet and large cover visible."
     ]
   },
   {
     "time": [
-      34,
-      36
+      17,
+      18
     ],
     "visible_entities": [
       {
-        "desc": "person with short dark hair, wearing a dark sleeveless top with white side panels and dark shorts",
-        "action": "sitting on the ground",
+        "desc": "person with short dark hair, wearing a dark sleeveless athletic top with white side panels and dark shorts",
+        "action": "sitting on the track",
         "position": "center foreground",
-        "id": "athlete_dark_blue_top"
+        "id": "person_generic_dark_clothing"
       },
       {
-        "desc": "person with short dark hair, wearing a dark sleeveless top and dark shorts with a white stripe",
+        "desc": "person with short dark hair, wearing a dark sleeveless athletic top with white side panels and dark shorts",
         "action": "standing",
-        "position": "center background"
+        "position": "center background",
+        "id": "person_generic_dark_clothing"
+      },
+      {
+        "desc": "white rectangular portable structure",
+        "action": "static",
+        "position": "background"
       },
       {
         "desc": "small orange cone",
         "action": "static",
-        "position": "bottom center",
-        "id": "orange_traffic_cones"
-      },
-      {
-        "desc": "white rectangular structure",
-        "action": "static",
-        "position": "background",
-        "id": "white_equipment_box"
-      },
-      {
-        "desc": "bright stadium light",
-        "action": "static",
-        "position": "top right",
-        "id": "stadium_floodlights"
+        "position": "foreground",
+        "id": "traffic_cone"
       }
     ],
     "atomic_facts": [
@@ -973,20 +983,16 @@
         "confidence": 1.0
       },
       {
-        "fact": "Another person is standing behind the sitting person.",
+        "fact": "A person is standing behind the sitting person.",
         "confidence": 1.0
       },
       {
-        "fact": "A small orange cone is placed on the ground near the sitting person.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The scene is illuminated by a bright overhead light.",
+        "fact": "A small orange cone is placed on the track in front of the sitting person.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The person sitting on the ground is in front of the standing person. The small orange cone is to the right of the sitting person. The white rectangular structure is behind the standing person. The bright stadium light is above the white structure.",
+    "spatial": "The sitting person is in the foreground, positioned in front of the standing person. The standing person is to the left of the white portable structure in the background. The orange cone is on the track surface near the sitting person.",
     "parse_success": true,
     "chunk_idx": 17,
     "video_id": "v_fUJ88Ir7Dgc",
@@ -994,33 +1000,175 @@
   },
   {
     "time": [
-      36,
-      38
+      18,
+      19
     ],
     "visible_entities": [
       {
-        "desc": "person with short dark hair, wearing a dark blue sleeveless top with white side panels and dark shorts",
-        "action": "sitting on the ground",
+        "desc": "person wearing a blue and white sleeveless athletic jersey and dark shorts, sitting on the ground",
+        "action": "sitting on the track",
         "position": "center foreground",
-        "id": "athlete_dark_blue_top"
+        "id": "person_athlete_blue_white_singlet"
       },
       {
-        "desc": "person wearing a dark tank top and dark shorts",
-        "action": "walking to the left",
+        "desc": "person wearing a black tank top and black shorts with white stripes",
+        "action": "walking left",
         "position": "left background",
-        "id": "athlete_other_colors"
+        "id": "person_athlete_black_white_singlet"
+      },
+      {
+        "desc": "small orange traffic cone",
+        "action": "static",
+        "position": "center foreground",
+        "id": "traffic_cone"
+      },
+      {
+        "desc": "tall white metal light tower structure",
+        "action": "static",
+        "position": "left background",
+        "id": "stadium_lights"
+      },
+      {
+        "desc": "white rectangular equipment box on wheels",
+        "action": "static",
+        "position": "center background",
+        "id": "white_equipment_box"
+      },
+      {
+        "desc": "bright stadium floodlights",
+        "action": "static",
+        "position": "top right",
+        "id": "stadium_lights"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A person in a blue and white jersey is sitting on the reddish-brown track surface.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A person in black athletic wear is walking in the background.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "An orange cone is placed on the track near the sitting person.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "Stadium lights are illuminating the field at night.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The person sitting on the track is in front of the white equipment box. The orange cone is near the sitting person's feet. The walking person is to the left of the sitting person and in front of the tall light tower.",
+    "parse_success": true,
+    "chunk_idx": 18,
+    "video_id": "v_fUJ88Ir7Dgc",
+    "state_changes": [
+      "New athlete (blue/white jersey) appears sitting; athlete in black tank top walks left."
+    ]
+  },
+  {
+    "time": [
+      19,
+      20
+    ],
+    "visible_entities": [
+      {
+        "desc": "person with short hair, wearing a dark sleeveless top with white side panels and dark shorts",
+        "action": "sitting on the track",
+        "position": "center-right foreground",
+        "id": "person_generic_dark_clothing"
+      },
+      {
+        "desc": "person wearing a dark sleeveless top and dark shorts",
+        "action": "standing",
+        "position": "center-left background",
+        "id": "person_generic_dark_clothing"
+      },
+      {
+        "desc": "large white rectangular equipment box",
+        "action": "static",
+        "position": "center background",
+        "id": "white_equipment_box"
+      },
+      {
+        "desc": "tall metal light tower",
+        "action": "static",
+        "position": "center background",
+        "id": "stadium_lights"
       },
       {
         "desc": "small orange cone",
         "action": "static",
         "position": "center foreground",
-        "id": "orange_traffic_cones"
+        "id": "traffic_cone"
       },
       {
-        "desc": "tall metal light tower structure",
+        "desc": "bright stadium floodlights",
+        "action": "illuminating",
+        "position": "top right",
+        "id": "stadium_lights"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A person is sitting on the reddish-brown track surface.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The sitting person is positioned next to a small orange cone.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A standing person is located to the left of the sitting person.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A large white equipment box is positioned behind the sitting person.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "Stadium lights are illuminating the field from the background.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The person sitting on the track is in the foreground, positioned to the right of the standing person. The small orange cone is on the ground in front of the sitting person. The large white equipment box and the tall metal light tower are in the background, behind the people on the track.",
+    "parse_success": true,
+    "chunk_idx": 19,
+    "video_id": "v_fUJ88Ir7Dgc",
+    "state_changes": []
+  },
+  {
+    "time": [
+      20,
+      21
+    ],
+    "visible_entities": [
+      {
+        "desc": "person wearing a dark blue sleeveless top with white side panels and dark shorts",
+        "action": "sitting on the track",
+        "position": "center-right foreground",
+        "id": "person_athlete_blue_white_singlet"
+      },
+      {
+        "desc": "person wearing a black sleeveless top and black shorts",
+        "action": "standing",
+        "position": "center-left background",
+        "id": "person_athlete_black_white_singlet"
+      },
+      {
+        "desc": "small orange cone",
         "action": "static",
-        "position": "left background",
-        "id": "stadium_floodlights"
+        "position": "center foreground",
+        "id": "traffic_cone"
+      },
+      {
+        "desc": "large white light tower structure",
+        "action": "static",
+        "position": "center background",
+        "id": "stadium_lights"
       },
       {
         "desc": "white rectangular equipment box",
@@ -1032,184 +1180,29 @@
         "desc": "bright stadium floodlights",
         "action": "static",
         "position": "top right background",
-        "id": "stadium_floodlights"
-      },
-      {
-        "desc": "white football goalpost",
-        "action": "static",
-        "position": "right background",
-        "id": "football_goalpost"
+        "id": "stadium_lights"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A person in a blue and white top is sitting on the reddish-brown track surface.",
+        "fact": "A person is sitting on the red track surface.",
         "confidence": 1.0
       },
       {
-        "fact": "Another person is walking in the background near the light tower.",
+        "fact": "A person is standing near a large light tower.",
         "confidence": 1.0
       },
       {
-        "fact": "An orange cone is placed on the track near the sitting person.",
+        "fact": "An orange cone is placed on the track in front of the sitting person.",
         "confidence": 1.0
       },
       {
-        "fact": "The scene takes place at night under artificial stadium lighting.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [],
-    "spatial": "The person sitting on the ground is in the center foreground, positioned to the right of the walking person. The orange cone is on the ground near the sitting person. The tall light tower is to the left of the white equipment box in the background. The football goalpost is visible on the far right side of the field.",
-    "parse_success": true,
-    "chunk_idx": 18,
-    "video_id": "v_fUJ88Ir7Dgc",
-    "state_changes": [
-      "person walking left (action change), goalpost visible"
-    ]
-  },
-  {
-    "time": [
-      38,
-      40
-    ],
-    "visible_entities": [
-      {
-        "desc": "person wearing a dark blue and white sleeveless athletic top and dark shorts",
-        "action": "sitting on the track",
-        "position": "right foreground",
-        "id": "athlete_dark_blue_top"
-      },
-      {
-        "desc": "person wearing a dark sleeveless top and dark shorts",
-        "action": "standing",
-        "position": "center background",
-        "id": "athlete_other_colors"
-      },
-      {
-        "desc": "small orange cone",
-        "action": "static",
-        "position": "right foreground",
-        "id": "orange_traffic_cones"
-      },
-      {
-        "desc": "tall white metal structure with a ladder",
-        "action": "static",
-        "position": "center background",
-        "id": "stadium_floodlights"
-      },
-      {
-        "desc": "white rectangular box-like object",
-        "action": "static",
-        "position": "center background",
-        "id": "white_equipment_box"
-      },
-      {
-        "desc": "large blue tarp or cover",
-        "action": "static",
-        "position": "left background",
-        "id": "blue_tarp"
-      },
-      {
-        "desc": "bright stadium floodlights",
-        "action": "static",
-        "position": "top background",
-        "id": "stadium_floodlights"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "A person in a blue and white top is sitting on the red track surface.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "An orange cone is placed on the track near the sitting person.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "Another person is standing near a tall white structure in the background.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "A large blue tarp covers an object on the grass to the left.",
+        "fact": "The scene is illuminated by bright stadium lights at night.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The person sitting on the track is to the right of the person standing near the tall white structure. The orange cone is on the track in front of the sitting person. The tall white structure is behind the standing person and to the left of the white box-like object.",
-    "parse_success": true,
-    "chunk_idx": 19,
-    "video_id": "v_fUJ88Ir7Dgc",
-    "state_changes": []
-  },
-  {
-    "time": [
-      40,
-      42
-    ],
-    "visible_entities": [
-      {
-        "desc": "person wearing a dark sleeveless top with white side panels and dark shorts",
-        "action": "sitting on the red track",
-        "position": "center-right foreground"
-      },
-      {
-        "desc": "person wearing a dark sleeveless top and dark shorts",
-        "action": "standing",
-        "position": "center background",
-        "id": "athlete_other_colors"
-      },
-      {
-        "desc": "small orange traffic cone",
-        "action": "static",
-        "position": "center foreground",
-        "id": "orange_traffic_cones"
-      },
-      {
-        "desc": "tall metal light tower structure",
-        "action": "static",
-        "position": "center background",
-        "id": "stadium_floodlights"
-      },
-      {
-        "desc": "white rectangular equipment box on a wheeled trailer",
-        "action": "static",
-        "position": "center background",
-        "id": "white_equipment_box"
-      },
-      {
-        "desc": "bright stadium floodlights",
-        "action": "static",
-        "position": "top right",
-        "id": "stadium_floodlights"
-      },
-      {
-        "desc": "green athletic field",
-        "action": "static",
-        "position": "background",
-        "id": "green_field"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "A person is sitting on the red track surface with knees bent.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "An orange cone is placed on the track near the sitting person.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "A person is standing near the base of a tall metal light tower.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "Stadium lights are illuminating the field at night.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [],
-    "spatial": "The person sitting on the track is to the right of the standing person. The orange cone is in front of the sitting person. The white equipment box is behind the sitting person and to the right of the standing person. The light tower is behind the standing person.",
+    "spatial": "The person sitting on the track is to the right of the standing person. The orange cone is in front of the sitting person. The large white light tower is behind the standing person. The white equipment box is to the right of the light tower.",
     "parse_success": true,
     "chunk_idx": 20,
     "video_id": "v_fUJ88Ir7Dgc",
@@ -1217,44 +1210,45 @@
   },
   {
     "time": [
-      42,
-      44
+      21,
+      22
     ],
     "visible_entities": [
       {
-        "desc": "person with dark skin, wearing a dark blue or black sleeveless athletic top with white side panels and black shorts",
+        "desc": "person with short dark hair, wearing a dark blue and white athletic singlet and black shorts",
         "action": "sitting on the track",
         "position": "center-right foreground",
-        "id": "athlete_dark_blue_top"
+        "id": "person_athlete_blue_white_singlet"
       },
       {
-        "desc": "person with dark skin, wearing a dark sleeveless top and dark shorts",
+        "desc": "person with dark hair, wearing a black sleeveless top and black shorts",
         "action": "standing",
-        "position": "center-left background"
+        "position": "center-left background",
+        "id": "person_athlete_black_white_singlet"
       },
       {
-        "desc": "person wearing a white long-sleeved shirt and dark shorts",
+        "desc": "person wearing a white t-shirt and dark shorts",
         "action": "walking",
         "position": "left background",
-        "id": "staff_white_cap"
+        "id": "person_white_top_dark_shorts"
       },
       {
-        "desc": "large white rectangular equipment box on wheels",
+        "desc": "tall white metal structure, likely a scoreboard or lighting rig",
+        "action": "static",
+        "position": "center background",
+        "id": "stadium_lights"
+      },
+      {
+        "desc": "white rectangular equipment box on wheels",
         "action": "static",
         "position": "center background",
         "id": "white_equipment_box"
       },
       {
-        "desc": "tall white metal structure",
-        "action": "static",
-        "position": "center-left background",
-        "id": "stadium_floodlights"
-      },
-      {
-        "desc": "small orange cone",
+        "desc": "small orange traffic cone",
         "action": "static",
         "position": "center foreground",
-        "id": "orange_traffic_cones"
+        "id": "traffic_cone"
       },
       {
         "desc": "red-brown running track surface",
@@ -1263,685 +1257,92 @@
         "id": "running_track"
       },
       {
-        "desc": "green grass field",
+        "desc": "green grassy field",
         "action": "static",
         "position": "background",
-        "id": "green_field"
+        "id": "grass_field"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A person is sitting on the red-brown track surface.",
+        "fact": "A person in a blue and white singlet is sitting on the red track surface.",
         "confidence": 1.0
       },
       {
-        "fact": "A person in a white shirt is walking on the green field.",
+        "fact": "A person in a white t-shirt is walking in the background.",
         "confidence": 1.0
       },
       {
-        "fact": "A small orange cone is placed on the track near the sitting person.",
+        "fact": "An orange cone is placed on the track near the sitting person.",
         "confidence": 1.0
       },
       {
-        "fact": "A large white equipment box is positioned on the grass field.",
+        "fact": "A large white metal structure stands in the background.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The person sitting on the track is to the right of the standing person. The small orange cone is in front of the sitting person. The large white equipment box is behind the sitting person and to the right of the tall white metal structure. The green grass field is behind the red-brown track.",
+    "spatial": "The person sitting on the track is to the right of the standing person in black. The orange cone is in front of the sitting person. The white equipment box is to the right of the tall metal structure. The green field is behind the red track.",
     "parse_success": true,
     "chunk_idx": 21,
     "video_id": "v_fUJ88Ir7Dgc",
-    "state_changes": []
+    "state_changes": [
+      "New person (white t-shirt) appears walking; scene includes both sitting and standing athletes."
+    ]
   },
   {
     "time": [
-      44,
-      46
-    ],
-    "visible_entities": [
-      {
-        "desc": "person with short dark hair, wearing a dark sleeveless top with white side panels and dark shorts",
-        "action": "sitting on the track",
-        "position": "center-right foreground",
-        "id": "athlete_dark_blue_top"
-      },
-      {
-        "desc": "person with short dark hair, wearing a white sleeveless top and dark shorts",
-        "action": "standing",
-        "position": "left background",
-        "id": "athlete_other_colors"
-      },
-      {
-        "desc": "small orange traffic cone",
-        "action": "static",
-        "position": "center foreground",
-        "id": "orange_traffic_cones"
-      },
-      {
-        "desc": "large white trailer with black markings and wheels",
-        "action": "static",
-        "position": "left background",
-        "id": "white_equipment_box"
-      },
-      {
-        "desc": "white rectangular utility box with black vents",
-        "action": "static",
-        "position": "center background",
-        "id": "white_equipment_box"
-      },
-      {
-        "desc": "bright stadium floodlights",
-        "action": "static",
-        "position": "top right",
-        "id": "stadium_floodlights"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "A person is sitting on the reddish-brown running track with knees bent.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "A small orange cone is placed on the track in front of the sitting person.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "A person in a white top is standing near the large white trailer.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "Bright stadium lights illuminate the scene from the top right.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [],
-    "spatial": "The person sitting on the track is to the right of the standing person and in front of the white utility box. The orange cone is on the track in front of the sitting person. The large white trailer is to the left of the utility box and behind the standing person.",
-    "parse_success": true,
-    "chunk_idx": 22,
-    "video_id": "v_fUJ88Ir7Dgc",
-    "state_changes": []
-  },
-  {
-    "time": [
-      46,
-      48
+      22,
+      23
     ],
     "visible_entities": [
       {
         "desc": "person with short dark hair, wearing a purple and white sleeveless athletic top and black shorts",
-        "action": "sitting on the track",
+        "action": "sitting on the ground with knees bent",
         "position": "center/foreground",
-        "id": "athlete_other_colors"
-      },
-      {
-        "desc": "person with short dark hair, wearing a black tank top and black shorts",
-        "action": "walking left",
-        "position": "left/mid-ground",
-        "id": "athlete_black_singlet"
-      },
-      {
-        "desc": "person wearing a white long-sleeved shirt, dark pants, and a white cap",
-        "action": "walking left",
-        "position": "center/mid-ground",
-        "id": "staff_white_cap"
+        "id": "person_athlete_purple_white"
       },
       {
         "desc": "small orange traffic cone",
         "action": "static",
         "position": "center/foreground",
-        "id": "orange_traffic_cones"
+        "id": "traffic_cone"
       },
       {
-        "desc": "large white rectangular equipment box on a wheeled trailer",
+        "desc": "person with short dark hair, wearing a black tank top and black shorts",
+        "action": "standing",
+        "position": "left/background",
+        "id": "person_athlete_black_white_singlet"
+      },
+      {
+        "desc": "large white trailer structure with a metal frame",
+        "action": "static",
+        "position": "left/background",
+        "id": "white_trailer_structure"
+      },
+      {
+        "desc": "white rectangular utility box with black vents",
         "action": "static",
         "position": "center/background",
         "id": "white_equipment_box"
       },
       {
-        "desc": "tall metal stadium light pole with bright lights",
+        "desc": "bright stadium floodlights",
         "action": "static",
-        "position": "top right/background",
-        "id": "stadium_floodlights"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "A person in a purple and white top is sitting on the reddish-brown track surface.",
-        "confidence": 1.0
+        "position": "top/right",
+        "id": "stadium_lights"
       },
       {
-        "fact": "A person in a black tank top is walking to the left in the background.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "A person in a white shirt and cap is walking to the left behind the sitting person.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "An orange cone is placed on the track near the sitting person.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "A large white equipment box is positioned on the grass field behind the track.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [],
-    "spatial": "The person sitting on the track is in front of the person walking in the white shirt. The orange cone is on the track to the right of the sitting person. The large white equipment box is behind the walking people on the green grass field.",
-    "parse_success": true,
-    "chunk_idx": 23,
-    "video_id": "v_fUJ88Ir7Dgc",
-    "state_changes": []
-  },
-  {
-    "time": [
-      48,
-      50
-    ],
-    "visible_entities": [
-      {
-        "desc": "person with dark hair, wearing a blue and white sleeveless athletic jersey and black shorts",
-        "action": "sitting on the ground",
-        "position": "center/foreground"
-      },
-      {
-        "desc": "person with dark hair, wearing a black tank top and black shorts",
-        "action": "walking",
-        "position": "left/background",
-        "id": "athlete_black_singlet"
-      },
-      {
-        "desc": "person wearing a white t-shirt, black shorts, and a white cap",
-        "action": "walking",
-        "position": "right/background",
-        "id": "staff_white_cap"
-      },
-      {
-        "desc": "large white rectangular equipment box with a black circular vent",
+        "desc": "red running track surface",
         "action": "static",
-        "position": "center/background",
-        "id": "white_equipment_box"
-      },
-      {
-        "desc": "small orange traffic cone",
-        "action": "static",
-        "position": "center/foreground",
-        "id": "orange_traffic_cones"
-      },
-      {
-        "desc": "tall white metal lighting tower structure",
-        "action": "static",
-        "position": "left/background",
-        "id": "stadium_floodlights"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "A person in a blue and white jersey is sitting on the reddish-brown track surface.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "A person in a black tank top is walking in the background.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "A person in a white shirt and cap is walking in the background.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "An orange cone is placed on the track near the sitting person.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [],
-    "spatial": "The person sitting on the ground is in the center foreground, positioned in front of the white equipment box. To the left of the sitting person, another person is walking away. To the right of the sitting person, a third person is walking. The orange cone is on the ground near the sitting person's legs.",
-    "parse_success": true,
-    "chunk_idx": 24,
-    "video_id": "v_fUJ88Ir7Dgc",
-    "state_changes": []
-  },
-  {
-    "time": [
-      50,
-      52
-    ],
-    "visible_entities": [
-      {
-        "desc": "person with dark skin, wearing a dark blue sleeveless top with white side panels and dark shorts",
-        "action": "sitting on the track with knees bent",
-        "position": "center foreground",
-        "id": "athlete_dark_blue_top"
-      },
-      {
-        "desc": "person with short dark hair, wearing a black sleeveless top",
-        "action": "standing behind a white box",
-        "position": "center background",
-        "id": "athlete_black_singlet"
-      },
-      {
-        "desc": "large white rectangular box or equipment case",
-        "action": "static",
-        "position": "center background",
-        "id": "white_equipment_box"
-      },
-      {
-        "desc": "person wearing a white long-sleeved shirt, dark shorts, and a white cap",
-        "action": "walking to the right",
-        "position": "right background",
-        "id": "staff_white_cap"
-      },
-      {
-        "desc": "small orange traffic cone",
-        "action": "static",
-        "position": "bottom center",
-        "id": "orange_traffic_cones"
-      },
-      {
-        "desc": "tall stadium floodlights",
-        "action": "static",
-        "position": "top background",
-        "id": "stadium_floodlights"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "A person in a blue and white uniform is sitting on the reddish-brown track surface.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "A person in a white shirt and cap is walking towards the right side of the frame.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "A person in a black top is standing behind a white box.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "An orange cone is placed on the track in the foreground.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [],
-    "spatial": "The person sitting on the track is in front of the person standing behind the white box. The orange cone is on the track in front of the sitting person. The person in the white shirt is to the right of the white box.",
-    "parse_success": true,
-    "chunk_idx": 25,
-    "video_id": "v_fUJ88Ir7Dgc",
-    "state_changes": []
-  },
-  {
-    "time": [
-      52,
-      54
-    ],
-    "visible_entities": [
-      {
-        "desc": "person with short dark hair, wearing a black tank top and black shorts",
-        "action": "standing with arms crossed",
-        "position": "center",
-        "id": "athlete_black_singlet"
-      },
-      {
-        "desc": "person with short dark hair, wearing a dark blue tank top with white side panels and black shorts",
-        "action": "sitting on the ground",
         "position": "foreground",
-        "id": "athlete_dark_blue_top"
+        "id": "running_track"
       },
       {
-        "desc": "person wearing a dark shirt and light-colored shorts",
-        "action": "bending over",
-        "position": "background",
-        "id": "athlete_other_colors"
-      },
-      {
-        "desc": "white rectangular scoreboard or equipment stand",
-        "action": "static",
-        "position": "center",
-        "id": "white_equipment_box"
-      },
-      {
-        "desc": "tall metal stadium light fixture",
+        "desc": "green grassy field",
         "action": "static",
         "position": "background",
-        "id": "stadium_floodlights"
-      },
-      {
-        "desc": "white metal football goalpost",
-        "action": "static",
-        "position": "right",
-        "id": "football_goalpost"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "A person in a black tank top stands with their arms crossed in front of a white scoreboard.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "A person in a blue and white tank top sits on the red track surface in the foreground.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "A person in the background is bending forward at the waist.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "Bright stadium lights illuminate the field against a dark night sky.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [],
-    "spatial": "The person sitting on the ground is in the foreground, positioned below and in front of the standing person. The standing person is in front of the white scoreboard. The football goalpost is to the right of the stadium lights.",
-    "parse_success": true,
-    "chunk_idx": 26,
-    "video_id": "v_fUJ88Ir7Dgc",
-    "state_changes": []
-  },
-  {
-    "time": [
-      54,
-      56
-    ],
-    "visible_entities": [
-      {
-        "desc": "person with short dark hair, wearing a dark sleeveless athletic top with white side panels and dark shorts",
-        "action": "sitting on the track with knees bent and arms resting on legs",
-        "position": "foreground center",
-        "id": "athlete_dark_blue_top"
-      },
-      {
-        "desc": "person with dark hair, wearing a black tank top and black shorts",
-        "action": "standing and clapping hands",
-        "position": "middle ground left",
-        "id": "athlete_black_singlet"
-      },
-      {
-        "desc": "large white rectangular equipment box with black markings and a circular vent",
-        "action": "static",
-        "position": "middle ground center",
-        "id": "white_equipment_box"
-      },
-      {
-        "desc": "bright stadium floodlight emitting intense white light",
-        "action": "static",
-        "position": "background upper right",
-        "id": "stadium_floodlights"
-      },
-      {
-        "desc": "crowd of spectators wearing various colors",
-        "action": "static",
-        "position": "background",
-        "id": "bleachers_spectators"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "A person in a dark athletic outfit is sitting on the track surface in the foreground.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "A person in a black tank top is standing and clapping their hands.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "A white equipment box is positioned on the grass behind the sitting person.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "Bright stadium lights are illuminating the field at night.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [],
-    "spatial": "The person sitting on the track is in the foreground, positioned in front of the white equipment box. The person clapping is to the left of the white equipment box. The stadium floodlight is above the crowd in the background.",
-    "parse_success": true,
-    "chunk_idx": 27,
-    "video_id": "v_fUJ88Ir7Dgc",
-    "state_changes": [
-      "person clapping hands (new action)"
-    ]
-  },
-  {
-    "time": [
-      56,
-      58
-    ],
-    "visible_entities": [
-      {
-        "desc": "person with short hair, wearing a dark blue sleeveless top with white side panels and dark shorts",
-        "action": "sitting on the ground",
-        "position": "foreground center",
-        "id": "athlete_dark_blue_top"
-      },
-      {
-        "desc": "person with short dark hair, wearing a black tank top and black shorts",
-        "action": "walking to the left",
-        "position": "middle ground left",
-        "id": "athlete_black_singlet"
-      },
-      {
-        "desc": "white rectangular portable toilet with a black circular vent and a small black square window",
-        "action": "static",
-        "position": "middle ground center",
-        "id": "white_equipment_box"
-      },
-      {
-        "desc": "tall metal lighting tower structure with multiple bright floodlights",
-        "action": "static",
-        "position": "background right",
-        "id": "stadium_floodlights"
-      },
-      {
-        "desc": "orange traffic cone",
-        "action": "static",
-        "position": "foreground left",
-        "id": "orange_traffic_cones"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "A person in a blue and white top is sitting on the reddish-brown track surface.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "A person in black clothing is walking past the portable toilet.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The lighting tower is illuminating the field with bright white light.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [],
-    "spatial": "The person sitting on the ground is in the foreground, positioned in front of the white portable toilet. The person walking is to the left of the portable toilet. The tall lighting tower is in the background to the right of the portable toilet. An orange cone is on the ground to the left of the sitting person.",
-    "parse_success": true,
-    "chunk_idx": 28,
-    "video_id": "v_fUJ88Ir7Dgc",
-    "state_changes": []
-  },
-  {
-    "time": [
-      58,
-      60
-    ],
-    "visible_entities": [
-      {
-        "desc": "person with short hair, wearing a blue and white sleeveless athletic top and black shorts",
-        "action": "sitting on the track with knees bent",
-        "position": "foreground center",
-        "id": "athlete_other_colors"
-      },
-      {
-        "desc": "person with short dark hair, wearing a black sleeveless top and black shorts",
-        "action": "standing",
-        "position": "middle ground center",
-        "id": "athlete_black_singlet"
-      },
-      {
-        "desc": "white rectangular equipment box with a black circle and black horizontal stripes",
-        "action": "static",
-        "position": "middle ground center",
-        "id": "white_equipment_box"
-      },
-      {
-        "desc": "orange traffic cone",
-        "action": "static",
-        "position": "left foreground",
-        "id": "orange_traffic_cones"
-      },
-      {
-        "desc": "bright stadium floodlights",
-        "action": "static",
-        "position": "top right background",
-        "id": "stadium_floodlights"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "A person in a blue and white top is sitting on the reddish-brown track surface.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "A person in black is standing behind the seated person.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "A white equipment box is positioned between the standing person and the seated person.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "An orange cone is visible on the track to the left of the seated person.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [],
-    "spatial": "The person sitting on the track is in the foreground, positioned in front of the standing person and the white equipment box. The orange cone is to the left of the seated person. The stadium lights are above the scene in the background.",
-    "parse_success": true,
-    "chunk_idx": 29,
-    "video_id": "v_fUJ88Ir7Dgc",
-    "state_changes": []
-  },
-  {
-    "time": [
-      60,
-      62
-    ],
-    "visible_entities": [
-      {
-        "desc": "person with short dark hair, wearing a dark blue and white sleeveless athletic top and black shorts",
-        "action": "sitting on the track",
-        "position": "foreground center",
-        "id": "athlete_dark_blue_top"
-      },
-      {
-        "desc": "person with short dark hair, wearing a black sleeveless athletic top and black shorts",
-        "action": "standing",
-        "position": "center",
-        "id": "athlete_black_singlet"
-      },
-      {
-        "desc": "white rectangular scoreboard with black markings and a circular logo",
-        "action": "static",
-        "position": "center background",
-        "id": "white_equipment_box"
-      },
-      {
-        "desc": "tall metal structure, possibly a camera tower or lighting rig",
-        "action": "static",
-        "position": "left background",
-        "id": "stadium_floodlights"
-      },
-      {
-        "desc": "orange traffic cone",
-        "action": "static",
-        "position": "left foreground",
-        "id": "orange_traffic_cones"
-      },
-      {
-        "desc": "person in dark clothing bending over",
-        "action": "bending over",
-        "position": "right background",
-        "id": "athlete_other_colors"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "A person in a blue and white top is sitting on the reddish-brown track surface.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "A person in a black top is standing behind the sitting person.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "An orange traffic cone is placed on the track near the metal structure.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "A scoreboard is positioned in the background behind the standing person.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "Another person is bending over in the distance to the right.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [],
-    "spatial": "The person sitting on the track is in front of the standing person. The standing person is to the left of the scoreboard. The orange cone is to the left of the sitting person and near the base of the tall metal structure. The person bending over is to the right of the scoreboard in the background.",
-    "parse_success": true,
-    "chunk_idx": 30,
-    "video_id": "v_fUJ88Ir7Dgc",
-    "state_changes": [
-      "person bending over (action change)"
-    ]
-  },
-  {
-    "time": [
-      62,
-      64
-    ],
-    "visible_entities": [
-      {
-        "desc": "person with short hair, wearing a purple and white sleeveless athletic top and black shorts",
-        "action": "sitting on the track",
-        "position": "foreground left",
-        "id": "athlete_other_colors"
-      },
-      {
-        "desc": "person with short dark hair, wearing a black sleeveless athletic top and black shorts",
-        "action": "standing",
-        "position": "center",
-        "id": "athlete_black_singlet"
-      },
-      {
-        "desc": "person wearing a black and white athletic outfit",
-        "action": "bending forward",
-        "position": "background right",
-        "id": "athlete_other_colors"
-      },
-      {
-        "desc": "large white rectangular scoreboard or equipment box",
-        "action": "static",
-        "position": "center",
-        "id": "white_equipment_box"
-      },
-      {
-        "desc": "bright stadium floodlights",
-        "action": "static",
-        "position": "top right",
-        "id": "stadium_floodlights"
-      },
-      {
-        "desc": "orange traffic cone",
-        "action": "static",
-        "position": "bottom left",
-        "id": "orange_traffic_cones"
-      },
-      {
-        "desc": "colorful flags or banners",
-        "action": "static",
-        "position": "background",
-        "id": "flags_banners"
+        "id": "grass_field"
       }
     ],
     "atomic_facts": [
@@ -1950,92 +1351,717 @@
         "confidence": 1.0
       },
       {
-        "fact": "A person in a black top is standing next to a large white box.",
+        "fact": "An orange cone is placed on the track in front of the sitting person.",
         "confidence": 1.0
       },
       {
-        "fact": "A person in the background is bending forward at the waist.",
+        "fact": "A person in a black tank top is standing near a large white trailer.",
         "confidence": 1.0
       },
       {
-        "fact": "Bright stadium lights are illuminating the scene from above.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "An orange cone is placed on the track near the sitting person.",
+        "fact": "Stadium lights are illuminating the scene from the top right.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The person sitting on the track is in the foreground to the left of the standing person. The standing person is positioned in front of the large white scoreboard. The person bending forward is in the background to the right of the standing person. The stadium lights are located above all the people and the field.",
+    "spatial": "The person in the purple and white top is sitting on the red track in the center foreground. An orange cone is on the track in front of and slightly to the right of the sitting person. To the left and behind the sitting person, another person in a black tank top is standing near a large white trailer. The white utility box is located behind the sitting person in the background.",
     "parse_success": true,
-    "chunk_idx": 31,
+    "chunk_idx": 22,
     "video_id": "v_fUJ88Ir7Dgc",
-    "state_changes": []
+    "state_changes": [
+      "New athlete (purple/white top) appears sitting on ground."
+    ]
   },
   {
     "time": [
-      64,
-      66
+      23,
+      24
     ],
     "visible_entities": [
       {
-        "desc": "person with short hair, wearing a blue and white sleeveless athletic top and dark shorts",
-        "action": "sitting on the ground",
-        "position": "foreground left",
-        "id": "athlete_other_colors"
+        "desc": "person with short hair, wearing a purple and white sleeveless athletic top and black shorts",
+        "action": "sitting on the track",
+        "position": "center foreground",
+        "id": "person_athlete_purple_white"
       },
       {
-        "desc": "person with short hair, wearing a black sleeveless athletic top and dark shorts",
-        "action": "standing",
-        "position": "center",
-        "id": "athlete_other_colors"
+        "desc": "person with short hair, wearing a black tank top and black shorts",
+        "action": "walking left",
+        "position": "left background",
+        "id": "person_athlete_black_white_singlet"
       },
       {
-        "desc": "white rectangular scoreboard with black markings and a circular logo",
+        "desc": "person wearing a white long-sleeved shirt, dark pants, and a white cap",
+        "action": "walking left",
+        "position": "center background",
+        "id": "person_staff_white_cap"
+      },
+      {
+        "desc": "small orange traffic cone",
         "action": "static",
-        "position": "center",
-        "id": "white_equipment_box"
+        "position": "center foreground",
+        "id": "traffic_cone"
       },
       {
-        "desc": "person wearing a black top and white socks",
-        "action": "bending forward",
-        "position": "background center",
-        "id": "athlete_other_colors"
+        "desc": "large white trailer with black markings",
+        "action": "static",
+        "position": "center background",
+        "id": "white_trailer_structure"
       },
       {
         "desc": "bright stadium floodlights",
         "action": "static",
         "position": "top right",
-        "id": "stadium_floodlights"
-      },
-      {
-        "desc": "colorful pennant flags strung in a line",
-        "action": "static",
-        "position": "background",
-        "id": "flags_banners"
+        "id": "stadium_lights"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A person in a blue and white top is sitting on the track surface.",
+        "fact": "A person in a purple and white top is sitting on the reddish-brown track surface.",
         "confidence": 1.0
       },
       {
-        "fact": "A person in a black top is standing behind the seated person.",
+        "fact": "A person in a black tank top is walking towards the left side of the frame.",
         "confidence": 1.0
       },
       {
-        "fact": "A person in the background is bending forward at the waist.",
+        "fact": "A person in a white shirt and cap is walking behind the seated person.",
         "confidence": 1.0
       },
       {
-        "fact": "Stadium lights are illuminating the track field at night.",
+        "fact": "An orange cone is placed on the track near the seated person.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The person sitting on the ground is in the foreground, to the left of the standing person. The white scoreboard is positioned behind the standing person. The person bending forward is in the background, to the right of the scoreboard. The stadium lights are above the field and the people.",
+    "spatial": "The person in the purple top is sitting on the track in front of the large white trailer. The person in the black tank top is to the left of the seated person. The orange cone is on the ground near the seated person's feet. The stadium lights are above the scene in the top right corner.",
+    "parse_success": true,
+    "chunk_idx": 23,
+    "video_id": "v_fUJ88Ir7Dgc",
+    "state_changes": [
+      "Athlete in purple/white top remains sitting; staff member (white cap) walks left."
+    ]
+  },
+  {
+    "time": [
+      24,
+      25
+    ],
+    "visible_entities": [
+      {
+        "desc": "person with short dark hair, wearing a blue and white sleeveless athletic jersey and black shorts",
+        "action": "sitting on the ground",
+        "position": "center foreground",
+        "id": "person_athlete_blue_white_singlet"
+      },
+      {
+        "desc": "person with short dark hair, wearing a black sleeveless top and black shorts",
+        "action": "walking left",
+        "position": "left background",
+        "id": "person_athlete_black_white_singlet"
+      },
+      {
+        "desc": "person wearing a white t-shirt, dark shorts, and a white cap",
+        "action": "walking right",
+        "position": "right background",
+        "id": "person_staff_white_cap"
+      },
+      {
+        "desc": "large white rectangular equipment box with black trim and a circular logo",
+        "action": "static",
+        "position": "center background",
+        "id": "white_equipment_box"
+      },
+      {
+        "desc": "small orange cone",
+        "action": "static",
+        "position": "center foreground",
+        "id": "traffic_cone"
+      },
+      {
+        "desc": "tall white metal structure with a ladder",
+        "action": "static",
+        "position": "left background",
+        "id": "stadium_lights"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A person in a blue and white jersey is sitting on the ground.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A person in a black outfit is walking to the left.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A person in a white shirt and cap is walking to the right.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "An orange cone is on the ground near the sitting person.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The person in the blue and white jersey is sitting on the ground in the center foreground, with a small orange cone in front of them. To the left, a person in black is walking away from a tall white metal structure. To the right, a person in a white shirt and cap is walking past a large white equipment box.",
+    "parse_success": true,
+    "chunk_idx": 24,
+    "video_id": "v_fUJ88Ir7Dgc",
+    "state_changes": [
+      "Athlete in blue/white jersey appears sitting; person in white cap changes direction to walk right."
+    ]
+  },
+  {
+    "time": [
+      25,
+      26
+    ],
+    "visible_entities": [
+      {
+        "desc": "person wearing a dark blue and white athletic singlet and black shorts, sitting on the ground",
+        "action": "sitting on the track",
+        "position": "center foreground",
+        "id": "person_athlete_blue_white_singlet"
+      },
+      {
+        "desc": "person wearing a dark sleeveless top, standing behind a white box",
+        "action": "standing",
+        "position": "center background"
+      },
+      {
+        "desc": "person wearing a white t-shirt, black shorts, and a white cap",
+        "action": "walking right",
+        "position": "right background",
+        "id": "person_staff_white_cap"
+      },
+      {
+        "desc": "large white rectangular box or equipment case",
+        "action": "static",
+        "position": "center background",
+        "id": "white_equipment_box"
+      },
+      {
+        "desc": "small orange cone",
+        "action": "static",
+        "position": "bottom center",
+        "id": "traffic_cone"
+      },
+      {
+        "desc": "bright stadium floodlights",
+        "action": "static",
+        "position": "top right",
+        "id": "stadium_lights"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A person in a blue and white uniform is sitting on the red track surface.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A person in a white shirt and cap is walking towards the right side of the frame.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A small orange cone is placed on the track in the foreground.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "Stadium lights are illuminating the scene from the top right.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The person sitting on the track is in the foreground, positioned in front of the person standing behind the white box. The person walking in the white shirt is to the right of the central group. The orange cone is on the ground near the bottom edge of the frame, in front of the sitting person.",
+    "parse_success": true,
+    "chunk_idx": 25,
+    "video_id": "v_fUJ88Ir7Dgc",
+    "state_changes": []
+  },
+  {
+    "time": [
+      26,
+      27
+    ],
+    "visible_entities": [
+      {
+        "desc": "person with short dark hair, wearing a black tank top and black shorts",
+        "action": "standing with arms crossed",
+        "position": "center",
+        "id": "person_athlete_black_white_singlet"
+      },
+      {
+        "desc": "person with short hair, wearing a blue and white athletic jersey and dark shorts",
+        "action": "sitting on the ground",
+        "position": "foreground",
+        "id": "person_athlete_blue_white_singlet"
+      },
+      {
+        "desc": "person wearing a dark shirt and light-colored shorts",
+        "action": "bending forward",
+        "position": "background"
+      },
+      {
+        "desc": "tall metal stadium light structure emitting bright white light",
+        "action": "static",
+        "position": "background",
+        "id": "stadium_lights"
+      },
+      {
+        "desc": "white rectangular scoreboard or equipment box",
+        "action": "static",
+        "position": "center",
+        "id": "white_equipment_box"
+      },
+      {
+        "desc": "orange traffic cone",
+        "action": "static",
+        "position": "left",
+        "id": "traffic_cone"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A person in a black tank top stands with arms crossed in the center of the frame.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A person in a blue and white jersey sits on the ground in the foreground.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A person in the background bends forward at the waist.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A bright stadium light illuminates the scene from the background.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "An orange cone sits on the ground to the left.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The person sitting on the ground is in the foreground, positioned in front of the standing person. The standing person is located in front of a white rectangular box. The person bending over is in the background, to the right of the standing person. The bright stadium light is above and behind the athletes. The orange cone is to the left of the sitting person.",
+    "parse_success": true,
+    "chunk_idx": 26,
+    "video_id": "v_fUJ88Ir7Dgc",
+    "state_changes": [
+      "Person in dark shirt appears bending forward; athlete in black tank top stands with arms crossed."
+    ]
+  },
+  {
+    "time": [
+      27,
+      28
+    ],
+    "visible_entities": [
+      {
+        "desc": "person wearing a dark sleeveless top with white side panels and dark shorts",
+        "action": "sitting on the track",
+        "position": "foreground center",
+        "id": "person_generic_dark_clothing"
+      },
+      {
+        "desc": "person wearing a dark sleeveless top with white side panels and dark shorts",
+        "action": "standing and clapping hands",
+        "position": "middle ground left",
+        "id": "person_generic_dark_clothing"
+      },
+      {
+        "desc": "white rectangular equipment box with black markings",
+        "action": "static",
+        "position": "middle ground center",
+        "id": "white_equipment_box"
+      },
+      {
+        "desc": "bright stadium floodlights",
+        "action": "static",
+        "position": "background upper right",
+        "id": "stadium_lights"
+      },
+      {
+        "desc": "white metal goal post structure",
+        "action": "static",
+        "position": "background right",
+        "id": "goal_post"
+      },
+      {
+        "desc": "crowd of people",
+        "action": "static",
+        "position": "background"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A person in the middle ground is clapping their hands.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A person is sitting on the red track surface in the foreground.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The scene takes place at night under artificial stadium lighting.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The person sitting on the track is in front of the person standing and clapping. The white equipment box is to the right of the standing person. The goal post is to the right of the floodlights.",
+    "parse_success": true,
+    "chunk_idx": 27,
+    "video_id": "v_fUJ88Ir7Dgc",
+    "state_changes": [
+      "Person in dark sleeveless top begins clapping hands while standing."
+    ]
+  },
+  {
+    "time": [
+      28,
+      29
+    ],
+    "visible_entities": [
+      {
+        "desc": "person with short dark hair, wearing a dark blue sleeveless top with white side panels and dark shorts",
+        "action": "sitting on the ground",
+        "position": "foreground center",
+        "id": "person_athlete_blue_white_singlet"
+      },
+      {
+        "desc": "person with short dark hair, wearing a dark sleeveless top and dark shorts",
+        "action": "walking left",
+        "position": "mid-ground left",
+        "id": "person_generic_dark_clothing"
+      },
+      {
+        "desc": "large white rectangular box-like structure with black markings",
+        "action": "static",
+        "position": "mid-ground center",
+        "id": "white_equipment_box"
+      },
+      {
+        "desc": "tall metal light tower structure",
+        "action": "static",
+        "position": "background left",
+        "id": "stadium_lights"
+      },
+      {
+        "desc": "bright stadium floodlights",
+        "action": "static",
+        "position": "background right",
+        "id": "stadium_lights"
+      },
+      {
+        "desc": "orange traffic cone",
+        "action": "static",
+        "position": "mid-ground left",
+        "id": "traffic_cone"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A person is sitting on the reddish-brown track surface with knees bent.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "Another person is walking from right to left in the background.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A large white box is positioned on the grass field.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The scene is illuminated by bright overhead stadium lights at night.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The person sitting is in the foreground, positioned in front of the white box structure. The walking person is to the left of the white box and behind the sitting person. The orange cone is to the left of the walking person. The light tower is to the left of the white box in the background.",
+    "parse_success": true,
+    "chunk_idx": 28,
+    "video_id": "v_fUJ88Ir7Dgc",
+    "state_changes": []
+  },
+  {
+    "time": [
+      29,
+      30
+    ],
+    "visible_entities": [
+      {
+        "desc": "person with short hair, wearing a blue and white sleeveless athletic top and dark shorts",
+        "action": "sitting on the track with knees bent",
+        "position": "foreground center",
+        "id": "person_athlete_blue_white_singlet"
+      },
+      {
+        "desc": "person with short dark hair, wearing a dark sleeveless top and dark shorts",
+        "action": "standing",
+        "position": "middle ground center",
+        "id": "person_generic_dark_clothing"
+      },
+      {
+        "desc": "white rectangular equipment box with a black circular detail",
+        "action": "static",
+        "position": "middle ground center",
+        "id": "white_equipment_box"
+      },
+      {
+        "desc": "person in a dark uniform with white socks",
+        "action": "standing",
+        "position": "background right",
+        "id": "person_bending_white_socks"
+      },
+      {
+        "desc": "large white metal structure",
+        "action": "static",
+        "position": "left",
+        "id": "stadium_lights"
+      },
+      {
+        "desc": "orange traffic cone",
+        "action": "static",
+        "position": "left",
+        "id": "traffic_cone"
+      },
+      {
+        "desc": "bright stadium floodlights",
+        "action": "static",
+        "position": "top right",
+        "id": "stadium_lights"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A person in a blue and white top is sitting on the red track surface.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A person in a dark uniform is standing in the background.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A white equipment box is positioned behind the sitting person.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "An orange cone is placed on the ground near the large white structure.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The person sitting on the track is in front of the white equipment box. The large white metal structure is to the left of the sitting person. The standing person in the dark uniform is to the right of the equipment box. The orange cone is to the left of the sitting person.",
+    "parse_success": true,
+    "chunk_idx": 29,
+    "video_id": "v_fUJ88Ir7Dgc",
+    "state_changes": [
+      "Person in dark uniform with white socks appears standing near equipment box."
+    ]
+  },
+  {
+    "time": [
+      30,
+      31
+    ],
+    "visible_entities": [
+      {
+        "desc": "person with short dark hair, wearing a dark blue and white athletic singlet and black shorts",
+        "action": "sitting on the ground",
+        "position": "foreground center",
+        "id": "person_athlete_blue_white_singlet"
+      },
+      {
+        "desc": "person with short dark hair, wearing a black athletic singlet",
+        "action": "standing",
+        "position": "center background",
+        "id": "person_athlete_black_white_singlet"
+      },
+      {
+        "desc": "white rectangular scoreboard with black markings",
+        "action": "static",
+        "position": "center background",
+        "id": "white_equipment_box"
+      },
+      {
+        "desc": "tall metal structure with white framework",
+        "action": "static",
+        "position": "left background",
+        "id": "stadium_lights"
+      },
+      {
+        "desc": "orange traffic cone",
+        "action": "static",
+        "position": "left foreground",
+        "id": "traffic_cone"
+      },
+      {
+        "desc": "bright stadium floodlights",
+        "action": "static",
+        "position": "top right",
+        "id": "stadium_lights"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A person in a blue and white singlet is sitting on the red track surface.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A person in a black singlet is standing behind the seated person.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "An orange cone is placed on the ground to the left of the seated person.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The scene takes place at night under artificial stadium lighting.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The person in the blue and white singlet is sitting on the track in the foreground, in front of the standing person in the black singlet. The white scoreboard is located behind the standing person. The tall metal structure is to the left of the scoreboard. The orange cone is to the left of the seated person.",
+    "parse_success": true,
+    "chunk_idx": 30,
+    "video_id": "v_fUJ88Ir7Dgc",
+    "state_changes": []
+  },
+  {
+    "time": [
+      31,
+      32
+    ],
+    "visible_entities": [
+      {
+        "desc": "person with short hair, wearing a purple and white sleeveless athletic top and black shorts",
+        "action": "sitting on the ground",
+        "position": "foreground left",
+        "id": "person_athlete_purple_white"
+      },
+      {
+        "desc": "person with short dark hair, wearing a black sleeveless athletic top and black shorts",
+        "action": "standing",
+        "position": "center",
+        "id": "person_athlete_black_white_singlet"
+      },
+      {
+        "desc": "person wearing a black top and white shorts",
+        "action": "bending forward",
+        "position": "background right",
+        "id": "person_bending_white_socks"
+      },
+      {
+        "desc": "white rectangular scoreboard or equipment box",
+        "action": "static",
+        "position": "center",
+        "id": "white_equipment_box"
+      },
+      {
+        "desc": "bright stadium floodlights",
+        "action": "static",
+        "position": "top right",
+        "id": "stadium_lights"
+      },
+      {
+        "desc": "orange traffic cone",
+        "action": "static",
+        "position": "bottom left",
+        "id": "traffic_cone"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A person in a purple and white top is sitting on the track surface.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A person in a black top is standing next to a white scoreboard.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A person in the background is bending over at the waist.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The scene takes place at night under artificial stadium lighting.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The person sitting on the ground is in the foreground, positioned to the left of the standing person. The standing person is located next to the white scoreboard. The person bending over is in the background, to the right of the scoreboard. The stadium lights are positioned above the scene.",
+    "parse_success": true,
+    "chunk_idx": 31,
+    "video_id": "v_fUJ88Ir7Dgc",
+    "state_changes": [
+      "Person in black top and white shorts appears bending forward."
+    ]
+  },
+  {
+    "time": [
+      32,
+      33
+    ],
+    "visible_entities": [
+      {
+        "desc": "person with short hair, wearing a purple and white sleeveless athletic top and dark shorts",
+        "action": "sitting on the ground with knees bent",
+        "position": "foreground left",
+        "id": "person_athlete_purple_white"
+      },
+      {
+        "desc": "person with short hair, wearing a dark sleeveless top and dark shorts",
+        "action": "standing",
+        "position": "center left",
+        "id": "person_generic_dark_clothing"
+      },
+      {
+        "desc": "white rectangular scoreboard with black markings and a circular logo",
+        "action": "static",
+        "position": "center left",
+        "id": "white_equipment_box"
+      },
+      {
+        "desc": "person wearing a dark top and white socks",
+        "action": "bending forward",
+        "position": "center background",
+        "id": "person_bending_white_socks"
+      },
+      {
+        "desc": "bright stadium floodlights",
+        "action": "static",
+        "position": "top right",
+        "id": "stadium_lights"
+      },
+      {
+        "desc": "colorful triangular flags strung together",
+        "action": "static",
+        "position": "background",
+        "id": "flags_bunting"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A person in a purple and white top is sitting on the track surface.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A person in a dark top is standing next to a white scoreboard.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "Another person is bending forward in the distance on the grass field.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "Stadium lights are illuminating the scene from above.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The person sitting on the ground is in the foreground, to the left of the standing person. The standing person is positioned next to the white scoreboard. The person bending forward is in the background, to the right of the scoreboard. The colorful flags are strung across the background behind the people.",
     "parse_success": true,
     "chunk_idx": 32,
     "video_id": "v_fUJ88Ir7Dgc",
@@ -2043,132 +2069,138 @@
   },
   {
     "time": [
-      66,
-      68
+      33,
+      34
     ],
     "visible_entities": [
       {
         "desc": "person with short dark hair, wearing a black sleeveless athletic jersey with white side panels and black shorts",
-        "action": "running from left to right",
-        "position": "left/center",
-        "id": "athlete_black_singlet"
+        "action": "running to the right",
+        "position": "center",
+        "id": "person_athlete_black_white_singlet"
       },
       {
         "desc": "white metal goal post structure",
         "action": "static",
         "position": "foreground",
-        "id": "football_goalpost"
+        "id": "goal_post"
       },
       {
         "desc": "tiered bleachers with spectators",
         "action": "static",
         "position": "background",
         "id": "bleachers_spectators"
+      },
+      {
+        "desc": "bright stadium light",
+        "action": "static",
+        "position": "left",
+        "id": "stadium_lights"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A person in a black and white uniform is running across the field.",
+        "fact": "A person in a black and white uniform is running across the field from left to right.",
         "confidence": 1.0
       },
       {
-        "fact": "The person is moving past a white goal post.",
+        "fact": "A white goal post stands in the foreground, partially obscuring the view.",
         "confidence": 1.0
       },
       {
-        "fact": "Spectators are seated in the background bleachers.",
+        "fact": "Spectators are seated in the bleachers in the background.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The person is running in front of the background bleachers. The white goal post is in the foreground, positioned to the right of the person as they move across the frame.",
+    "spatial": "The person running is located behind the white goal post structure. The bright stadium light is to the left of the person. The bleachers are in the background behind the running person.",
     "parse_success": true,
     "chunk_idx": 33,
     "video_id": "v_fUJ88Ir7Dgc",
     "state_changes": [
-      "athlete starts running (track event begins)"
+      "Athlete in black jersey begins running to the right."
     ]
   },
   {
     "time": [
-      68,
-      70
+      34,
+      35
     ],
     "visible_entities": [
       {
-        "desc": "person with short dark hair, wearing a black sleeveless top and black shorts",
+        "desc": "person with light skin, wearing a black sleeveless top and black shorts",
         "action": "performing a high jump over a horizontal bar",
         "position": "center",
-        "id": "athlete_black_singlet"
+        "id": "person_athlete_black_white_singlet"
       },
       {
-        "desc": "large orange cylindrical cooler with a white lid",
+        "desc": "large orange cooler with a white lid",
         "action": "static",
         "position": "bottom left",
         "id": "orange_cooler_gatorade"
       },
       {
-        "desc": "person with dark hair wearing a red sleeveless top",
+        "desc": "person with dark hair, wearing a red sleeveless top",
         "action": "standing",
         "position": "right",
-        "id": "athlete_other_colors"
+        "id": "person_red_jacket"
       },
       {
-        "desc": "person with long blonde hair",
+        "desc": "blurry dark shape, likely the back of a person's head",
         "action": "static",
-        "position": "bottom left foreground",
-        "id": "athlete_other_colors"
+        "position": "foreground",
+        "id": "blurry_head"
       },
       {
-        "desc": "high jump bar (horizontal pole)",
+        "desc": "horizontal high jump bar",
         "action": "static",
         "position": "center",
-        "id": "high_jump_bar"
+        "id": "high_jump_equipment"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A person in black athletic wear is mid-air, arching their back over a high jump bar.",
+        "fact": "A person in black athletic wear is arching their back to clear a high jump bar.",
         "confidence": 1.0
       },
       {
-        "fact": "The jumper's body is positioned horizontally above the bar.",
+        "fact": "The jumper is positioned horizontally above the bar.",
         "confidence": 1.0
       },
       {
-        "fact": "An orange cooler is situated below the jumping area.",
+        "fact": "An orange cooler sits on the ground below the jumper.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The person in black is above the high jump bar and to the right of the orange cooler. The person in the red top is to the right of the jumper. The person with blonde hair is in the foreground, to the left of the cooler.",
+    "spatial": "The person in black is above the horizontal bar and above the orange cooler. The orange cooler is to the left of the person in the red top. The blurry dark shape is in the foreground, in front of the jumping action.",
     "parse_success": true,
     "chunk_idx": 34,
     "video_id": "v_fUJ88Ir7Dgc",
     "state_changes": [
-      "high jump event begins, athlete performing high jump"
+      "High jump event begins; athlete performs jump over bar."
     ]
   },
   {
     "time": [
-      70,
-      72
+      35,
+      36
     ],
     "visible_entities": [
       {
         "desc": "person wearing a dark sleeveless top and light-colored shorts",
         "action": "running across the field",
-        "position": "left",
-        "id": "athlete_other_colors"
+        "position": "center",
+        "id": "person_generic_dark_clothing"
       },
       {
-        "desc": "white metal football goalpost",
+        "desc": "white metal goalpost structure",
         "action": "static",
         "position": "left",
-        "id": "football_goalpost"
+        "id": "goal_post"
       },
       {
-        "desc": "crowd of spectators",
+        "desc": "crowd of spectators in the background",
         "action": "static",
         "position": "background",
         "id": "bleachers_spectators"
@@ -2176,45 +2208,47 @@
     ],
     "atomic_facts": [
       {
-        "fact": "A person runs from the left side of the frame towards the right.",
+        "fact": "A person is running across the field from left to right.",
         "confidence": 1.0
       },
       {
-        "fact": "The scene takes place on a sports field at night.",
+        "fact": "A white goalpost stands on the left side of the frame.",
         "confidence": 1.0
       },
       {
-        "fact": "A white goalpost stands in the foreground on the left.",
+        "fact": "Spectators are visible in the background behind the runner.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The person is to the right of the white goalpost. The crowd of spectators is in the background behind the person and the goalpost.",
+    "spatial": "The person is to the right of the white goalpost. The crowd of spectators is behind the person and the goalpost.",
     "parse_success": true,
     "chunk_idx": 35,
     "video_id": "v_fUJ88Ir7Dgc",
-    "state_changes": []
+    "state_changes": [
+      "New runner (dark top, light shorts) appears running across field."
+    ]
   },
   {
     "time": [
-      72,
-      74
+      36,
+      37
     ],
     "visible_entities": [
       {
-        "desc": "person with short dark hair, wearing a black sleeveless athletic jersey with white side panels and black shorts",
-        "action": "running to the left",
+        "desc": "person with short dark hair, wearing a black sleeveless jersey with white side panels and black shorts with white stripes",
+        "action": "running to the right",
         "position": "center",
-        "id": "athlete_black_singlet"
+        "id": "person_athlete_black_white_singlet"
       },
       {
         "desc": "white basketball backboard and rim structure",
         "action": "static",
         "position": "left",
-        "id": "basketback_backboard"
+        "id": "basketball_hoop"
       },
       {
-        "desc": "blurred background crowd or bleachers",
+        "desc": "blurred background crowd in stadium seating",
         "action": "static",
         "position": "background",
         "id": "bleachers_spectators"
@@ -2222,20 +2256,20 @@
     ],
     "atomic_facts": [
       {
-        "fact": "A person is running across the court from right to left.",
+        "fact": "The person in the black jersey is running across the court from left to right.",
         "confidence": 1.0
       },
       {
-        "fact": "The person is wearing a black and white basketball uniform.",
+        "fact": "The basketball hoop is located on the left side of the frame.",
         "confidence": 1.0
       },
       {
-        "fact": "A basketball hoop structure is visible on the left side of the frame.",
+        "fact": "The background consists of blurred spectators in tiered seating.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The person is running in front of the blurred background crowd. The basketball hoop structure is to the left of the running person.",
+    "spatial": "The person in the black jersey is to the right of the basketball hoop. The hoop is in the foreground on the left. The blurred crowd is behind the person.",
     "parse_success": true,
     "chunk_idx": 36,
     "video_id": "v_fUJ88Ir7Dgc",
@@ -2243,91 +2277,74 @@
   },
   {
     "time": [
-      74,
-      76
+      37,
+      38
     ],
     "visible_entities": [
       {
-        "desc": "person with dark hair, wearing a red shirt and dark shorts",
-        "action": "jumping over a high jump bar",
+        "desc": "person with dark hair, wearing a white sleeveless top and dark shorts",
+        "action": "jumping over a horizontal bar",
         "position": "center",
-        "id": "athlete_other_colors"
+        "id": "person_white_top_dark_shorts"
       },
       {
-        "desc": "high jump bar, thin horizontal pole",
-        "action": "static",
-        "position": "center",
-        "id": "high_jump_bar"
-      },
-      {
-        "desc": "orange cooler, large plastic container",
+        "desc": "large orange cylindrical cooler with a white lid",
         "action": "static",
         "position": "right",
         "id": "orange_cooler_gatorade"
       },
       {
-        "desc": "person with dark hair, back of head visible",
+        "desc": "person with dark hair in the foreground",
         "action": "static",
-        "position": "foreground",
-        "id": "athlete_other_colors"
+        "position": "foreground"
       },
       {
         "desc": "person wearing a yellow shirt",
-        "action": "standing",
+        "action": "static",
         "position": "background",
-        "id": "athlete_other_colors"
+        "id": "person_athlete_yellow"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A person in a red shirt is jumping over a high jump bar.",
+        "fact": "A person is jumping over a horizontal bar.",
         "confidence": 1.0
       },
       {
-        "fact": "The jumper's body is arched over the bar.",
+        "fact": "The jumper is wearing a white sleeveless top and dark shorts.",
         "confidence": 1.0
       },
       {
-        "fact": "An orange cooler is positioned on the right side of the track area.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "A spectator is visible in the background wearing a yellow shirt.",
+        "fact": "An orange cooler is positioned to the right of the jumper.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The person in the red shirt is in the center of the frame, jumping over the high jump bar. The orange cooler is to the right of the jumper. The back of a spectator's head is in the foreground, obscuring the lower left view. The person in the yellow shirt is in the background, behind the jumping area.",
+    "spatial": "The person jumping is in the center of the frame, clearing a horizontal bar. The large orange cooler is to the right of the jumper. A person with dark hair is in the immediate foreground, obscuring the bottom left view.",
     "parse_success": true,
     "chunk_idx": 37,
     "video_id": "v_fUJ88Ir7Dgc",
     "state_changes": [
-      "different athlete jumping over high jump bar"
+      "New athlete (white top, dark shorts) performs high jump."
     ]
   },
   {
     "time": [
-      76,
-      78
+      38,
+      39
     ],
     "visible_entities": [
       {
-        "desc": "person with short hair, wearing a black sleeveless top and dark shorts",
+        "desc": "person wearing a black sleeveless top and dark shorts, with short hair",
         "action": "jumping over a horizontal bar",
         "position": "center",
-        "id": "athlete_other_colors"
+        "id": "person_athlete_black_white_singlet"
       },
       {
-        "desc": "person with short hair, wearing a white sleeveless top",
+        "desc": "high jump bar, horizontal, reddish color",
         "action": "static",
-        "position": "left",
-        "id": "athlete_other_colors"
-      },
-      {
-        "desc": "person with long dark hair, wearing a yellow t-shirt",
-        "action": "static",
-        "position": "background",
-        "id": "athlete_other_colors"
+        "position": "center",
+        "id": "high_jump_equipment"
       },
       {
         "desc": "orange cooler with a white lid and a white logo",
@@ -2336,56 +2353,80 @@
         "id": "orange_cooler_gatorade"
       },
       {
-        "desc": "horizontal bar on vertical stands",
+        "desc": "person with long dark hair, wearing a yellow t-shirt",
         "action": "static",
-        "position": "center",
-        "id": "high_jump_bar"
+        "position": "bottom center",
+        "id": "person_athlete_yellow"
+      },
+      {
+        "desc": "person with short hair, wearing a yellow t-shirt",
+        "action": "static",
+        "position": "bottom right",
+        "id": "person_athlete_yellow"
+      },
+      {
+        "desc": "person with short hair, wearing a white sleeveless top",
+        "action": "static",
+        "position": "left",
+        "id": "person_white_top_dark_shorts"
+      },
+      {
+        "desc": "high jump upright, white vertical pole",
+        "action": "static",
+        "position": "right",
+        "id": "high_jump_equipment"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A person in a black top is jumping over a horizontal bar.",
+        "fact": "A person is jumping over a horizontal bar.",
         "confidence": 1.0
       },
       {
-        "fact": "A person in a white top stands to the left of the jumper.",
+        "fact": "The jumper is wearing a black sleeveless top.",
         "confidence": 1.0
       },
       {
-        "fact": "An orange cooler is visible in the foreground.",
+        "fact": "An orange cooler is visible in the background.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "Two people in yellow shirts are watching from the background.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The person in the black top is in the center, jumping over the horizontal bar. The person in the white top is to the left of the jumper. The orange cooler is in the bottom left foreground, below the jumper.",
+    "spatial": "The person jumping is above the horizontal bar. The orange cooler is to the left of the jumper. The person in the white sleeveless top is to the left of the jumper. The person in the yellow shirt is below and behind the jumper. The white vertical pole is to the right of the jumper.",
     "parse_success": true,
     "chunk_idx": 38,
     "video_id": "v_fUJ88Ir7Dgc",
-    "state_changes": []
+    "state_changes": [
+      "Another athlete (black top, short hair) performs high jump; multiple spectators in yellow shirts visible."
+    ]
   },
   {
     "time": [
-      78,
-      80
+      39,
+      40
     ],
     "visible_entities": [
       {
-        "desc": "person wearing a blue sleeveless top and blue shorts with white trim",
+        "desc": "person wearing a blue sleeveless top and blue shorts",
         "action": "running",
         "position": "left",
-        "id": "athlete_other_colors"
+        "id": "person_blue_shorts_runner"
       },
       {
-        "desc": "person wearing a dark sleeveless top and dark shorts with red and white side panels",
+        "desc": "person wearing a dark sleeveless top and dark shorts with a white side stripe",
         "action": "running",
         "position": "right",
-        "id": "athlete_other_colors"
+        "id": "person_dark_stripe_shorts"
       },
       {
-        "desc": "red horizontal barriers or benches",
+        "desc": "red horizontal barrier or railing",
         "action": "static",
         "position": "background",
-        "id": "red_barriers"
+        "id": "red_barrier"
       }
     ],
     "atomic_facts": [
@@ -2394,25 +2435,17 @@
         "confidence": 1.0
       },
       {
-        "fact": "The person on the left is wearing a blue outfit.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The person on the right is wearing a dark outfit with red accents.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "Red barriers are visible in the background.",
+        "fact": "A red barrier is positioned behind the runners.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The person in the blue outfit is to the left of the person in the dark outfit. Both people are in front of the red barriers.",
+    "spatial": "The person in the blue outfit is to the left of the person in the dark outfit. Both runners are in front of the red horizontal barrier.",
     "parse_success": true,
     "chunk_idx": 39,
     "video_id": "v_fUJ88Ir7Dgc",
     "state_changes": [
-      "multiple athletes running simultaneously"
+      "Two runners (blue outfit and dark outfit with stripe) appear running simultaneously."
     ]
   }
 ]

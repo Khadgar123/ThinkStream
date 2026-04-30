@@ -2,12 +2,12 @@
   {
     "time": [
       0,
-      2
+      1
     ],
     "visible_entities": [
       {
         "desc": "person wearing dark clothing and black boots",
-        "action": "holding a horseshoe and a hammer",
+        "action": "holding a horseshoe",
         "position": "center",
         "id": "person_farrier_1"
       },
@@ -15,11 +15,11 @@
         "desc": "silver metal horseshoe",
         "action": "being held",
         "position": "center",
-        "id": "horseshoe_1"
+        "id": "horseshoe_silver_1"
       },
       {
-        "desc": "brown horse leg",
-        "action": "static",
+        "desc": "horse leg with brown fur and hoof",
+        "action": "standing",
         "position": "right",
         "id": "horse_leg_1"
       },
@@ -27,29 +27,25 @@
         "desc": "collection of metal tools including files and a red-handled tool",
         "action": "static",
         "position": "bottom left",
-        "id": "tool_cart_1"
+        "id": "tool_rasp_file_1"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A person is holding a silver horseshoe in their left hand.",
+        "fact": "person is holding a silver horseshoe in their hand",
         "confidence": 1.0
       },
       {
-        "fact": "The person is holding a hammer in their right hand.",
+        "fact": "horse leg is standing on the ground to the right of the person",
         "confidence": 1.0
       },
       {
-        "fact": "A brown horse leg is standing on the floor to the right of the person.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "A tray of farrier tools is visible in the bottom left corner.",
+        "fact": "tools are lying on the ground in the bottom left corner",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The person is positioned in the center of the frame, standing next to the horse leg which is on the right. The person is holding the horseshoe in front of their legs. The collection of tools is located in the bottom left corner, to the left of the person.",
+    "spatial": "The person is in the center of the frame, holding the horseshoe. The horse leg is to the right of the person. The collection of tools is in the bottom left foreground, near the person's feet.",
     "parse_success": true,
     "chunk_idx": 0,
     "video_id": "dA5GBOjQgeg",
@@ -57,21 +53,21 @@
   },
   {
     "time": [
-      2,
-      4
+      1,
+      2
     ],
     "visible_entities": [
       {
-        "desc": "person wearing dark sleeveless top, blue jeans, and dark boots",
-        "action": "holding a horseshoe and a tool",
+        "desc": "person wearing a black short-sleeved shirt, blue jeans, and black boots",
+        "action": "holding a horseshoe and a hammer",
         "position": "center",
         "id": "person_farrier_1"
       },
       {
-        "desc": "silver metal horseshoe",
-        "action": "static",
+        "desc": "silver metal horseshoe with visible nail holes",
+        "action": "being held",
         "position": "center",
-        "id": "horseshoe_1"
+        "id": "horseshoe_silver_1"
       },
       {
         "desc": "dark brown horse leg and hoof",
@@ -80,10 +76,10 @@
         "id": "horse_leg_1"
       },
       {
-        "desc": "collection of metal tools with red and black handles",
+        "desc": "collection of metal tools including files and a hammer with a red handle",
         "action": "static",
-        "position": "bottom-left",
-        "id": "tool_cart_1"
+        "position": "bottom left",
+        "id": "tool_rasp_file_1"
       }
     ],
     "atomic_facts": [
@@ -92,20 +88,20 @@
         "confidence": 1.0
       },
       {
-        "fact": "person holds a metal tool in their right hand",
+        "fact": "person holds a hammer in their right hand",
         "confidence": 1.0
       },
       {
-        "fact": "horse leg is standing on the floor to the right of the person",
+        "fact": "tools are resting on the floor in the bottom left corner",
         "confidence": 1.0
       },
       {
-        "fact": "tools are gathered in a container on the floor",
+        "fact": "horse leg is standing on the right side of the frame",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The person is positioned in the center of the frame, holding the horseshoe in front of their legs. The horse's leg is to the right of the person. The collection of tools is located in the bottom-left corner, to the left of the person.",
+    "spatial": "The person is positioned in the center of the frame, standing next to the horse leg on the right. The person is holding the horseshoe and hammer in front of their legs. A collection of tools is located on the floor to the left of the person.",
     "parse_success": true,
     "chunk_idx": 1,
     "video_id": "dA5GBOjQgeg",
@@ -113,39 +109,39 @@
   },
   {
     "time": [
-      4,
-      6
+      2,
+      3
     ],
     "visible_entities": [
       {
-        "desc": "person wearing dark sleeveless top, blue jeans, and dark boots",
+        "desc": "person wearing dark blue jeans and black boots",
         "action": "holding a horseshoe and a hammer",
         "position": "center",
         "id": "person_farrier_1"
       },
       {
         "desc": "silver metal horseshoe",
-        "action": "static",
+        "action": "being held",
         "position": "center",
-        "id": "horseshoe_1"
+        "id": "horseshoe_silver_1"
       },
       {
         "desc": "hammer with a wooden handle",
-        "action": "static",
+        "action": "being held",
         "position": "center",
         "id": "tool_hammer_1"
       },
       {
-        "desc": "black metal tool cart containing various metal tools and a red handle",
-        "action": "static",
-        "position": "left",
-        "id": "tool_cart_1"
-      },
-      {
-        "desc": "animal leg with a hoof",
+        "desc": "dark brown horse leg and hoof",
         "action": "static",
         "position": "right",
         "id": "horse_leg_1"
+      },
+      {
+        "desc": "black tray containing various metal tools",
+        "action": "static",
+        "position": "bottom left",
+        "id": "tool_misc_1"
       }
     ],
     "atomic_facts": [
@@ -158,16 +154,16 @@
         "confidence": 1.0
       },
       {
-        "fact": "A tool cart is positioned to the left of the person.",
+        "fact": "A horse's leg is standing on the floor to the right of the person.",
         "confidence": 1.0
       },
       {
-        "fact": "An animal leg is standing to the right of the person.",
+        "fact": "A tray of tools is located in the bottom left foreground.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The person is in the center of the frame, positioned between the tool cart on the left and the animal leg on the right. The person is holding the horseshoe and hammer in front of their legs. The tool cart is in the foreground on the left side.",
+    "spatial": "The person is in the center of the frame, positioned to the left of the horse's leg. The person is holding the horseshoe and hammer in front of their legs. The tray of tools is in the bottom left corner, in front of the person.",
     "parse_success": true,
     "chunk_idx": 2,
     "video_id": "dA5GBOjQgeg",
@@ -175,111 +171,111 @@
   },
   {
     "time": [
-      6,
-      8
+      3,
+      4
     ],
     "visible_entities": [
       {
-        "desc": "person wearing dark blue jeans and dark boots, bending over",
-        "action": "holding a horseshoe against their leg",
+        "desc": "person wearing dark blue jeans and dark boots",
+        "action": "holding a horseshoe and hammering it",
         "position": "center",
         "id": "person_farrier_1"
       },
       {
         "desc": "silver metal horseshoe with nail holes",
-        "action": "being held",
+        "action": "being held against a boot",
         "position": "center",
-        "id": "horseshoe_1"
+        "id": "horseshoe_silver_1"
       },
       {
-        "desc": "horse leg, dark brown fur",
+        "desc": "dark brown horse leg and hoof",
         "action": "static",
         "position": "right",
         "id": "horse_leg_1"
       },
       {
-        "desc": "pile of metal tools including wrenches and a red-handled tool",
+        "desc": "collection of metal farrier tools including rasps and nippers with red handles",
         "action": "static",
         "position": "bottom left",
-        "id": "tool_cart_1"
+        "id": "tool_rasp_file_1"
+      },
+      {
+        "desc": "concrete floor with scattered debris",
+        "action": "static",
+        "position": "background",
+        "id": "floor_concrete_1"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A person is bending forward while holding a silver horseshoe against their blue-jeaned leg.",
+        "fact": "The person is holding a silver horseshoe against their boot.",
         "confidence": 1.0
       },
       {
-        "fact": "A horse's leg stands on the floor to the right of the person.",
+        "fact": "The person is using a hammer to strike the horseshoe.",
         "confidence": 1.0
       },
       {
-        "fact": "A collection of metal tools rests on the floor in the bottom left corner.",
+        "fact": "A horse leg is standing to the right of the person.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "Farrier tools are lying on the floor in the bottom left corner.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The person is positioned in the center of the frame, bending over. The horse's leg is to the right of the person. The pile of tools is on the floor to the left of the person.",
+    "spatial": "The person is in the center of the frame, positioned to the left of the horse's leg. The horseshoe is held in front of the person's legs. The collection of tools is on the floor to the left of the person.",
     "parse_success": true,
     "chunk_idx": 3,
     "video_id": "dA5GBOjQgeg",
     "state_changes": [
-      "person begins positioning horseshoe against horse leg"
+      "Person begins hammering the horseshoe against their boot."
     ]
   },
   {
     "time": [
-      8,
-      10
+      4,
+      5
     ],
     "visible_entities": [
       {
-        "desc": "person with dark hair, wearing a dark short-sleeved shirt, blue jeans, and dark boots",
+        "desc": "person wearing dark clothing and dark boots",
         "action": "holding a horseshoe against a horse's hoof",
         "position": "center",
         "id": "person_farrier_1"
       },
       {
-        "desc": "horse's leg and hoof, brown fur",
-        "action": "standing still",
+        "desc": "horse's leg and hoof",
+        "action": "standing",
         "position": "right",
         "id": "horse_leg_1"
       },
       {
-        "desc": "silver metal horseshoe, U-shaped",
-        "action": "being held against the hoof",
+        "desc": "silver metal horseshoe",
+        "action": "being held against hoof",
         "position": "center",
-        "id": "horseshoe_1"
+        "id": "horseshoe_silver_1"
       },
       {
-        "desc": "wooden-handled tool, likely a hammer or rasp",
-        "action": "being held in the person's hand",
-        "position": "center",
-        "id": "tool_hammer_1"
-      },
-      {
-        "desc": "collection of farrier tools including metal files and a red-handled tool",
+        "desc": "collection of tools including screwdrivers and pliers",
         "action": "static",
-        "position": "bottom-left",
-        "id": "tool_cart_1"
+        "position": "bottom left",
+        "id": "tool_misc_1"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A person is bending over to fit a horseshoe onto a horse's hoof.",
+        "fact": "person is holding a silver horseshoe against the horse's hoof",
         "confidence": 1.0
       },
       {
-        "fact": "The person is holding a wooden-handled tool in their right hand.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "A pile of metal tools is visible on the floor in the bottom-left corner.",
+        "fact": "tools are resting on the floor in the foreground",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The person is positioned in the center, bending over the horse's leg which is to their right. The person is holding the horseshoe against the hoof. A collection of tools is located on the floor to the left of the person.",
+    "spatial": "The person is in the center of the frame, bending over the horse's leg which is to their right. The horseshoe is held between the person's hands and the horse's hoof. A collection of tools is visible in the bottom left corner, near the person's feet.",
     "parse_success": true,
     "chunk_idx": 4,
     "video_id": "dA5GBOjQgeg",
@@ -287,33 +283,33 @@
   },
   {
     "time": [
-      10,
-      12
+      5,
+      6
     ],
     "visible_entities": [
       {
-        "desc": "person wearing a black short-sleeved shirt, blue jeans, and black boots",
+        "desc": "person wearing black shirt, blue jeans, and black boots",
         "action": "holding a horseshoe against their leg",
         "position": "center",
         "id": "person_farrier_1"
       },
       {
         "desc": "silver metal horseshoe",
-        "action": "being held against the person's leg",
+        "action": "being held against a leg",
         "position": "center",
-        "id": "horseshoe_1"
+        "id": "horseshoe_silver_1"
       },
       {
         "desc": "wooden stick or tool handle",
         "action": "being held by a hand",
         "position": "center",
-        "id": "tool_wooden_stick_1"
+        "id": "tool_misc_1"
       },
       {
         "desc": "arm and hand of a second person",
         "action": "holding the wooden stick",
         "position": "right",
-        "id": "person_helper_1"
+        "id": "person_assistant_1"
       },
       {
         "desc": "brown horse leg and hoof",
@@ -324,7 +320,7 @@
     ],
     "atomic_facts": [
       {
-        "fact": "A person is holding a silver horseshoe against their blue jeans.",
+        "fact": "A person is holding a silver horseshoe against their blue-jeaned leg.",
         "confidence": 1.0
       },
       {
@@ -332,42 +328,42 @@
         "confidence": 1.0
       },
       {
-        "fact": "A horse's leg is standing on the ground to the right of the person.",
+        "fact": "A horse's leg is standing on the ground to the right of the people.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The person in the black shirt is in the center of the frame. The silver horseshoe is held against the person's leg. The arm of the second person is to the right of the horseshoe, holding a wooden stick. The horse's leg is to the right of the person and the second person's arm.",
+    "spatial": "The person in the black shirt is in the center of the frame. The silver horseshoe is held against the person's leg. The hand holding the wooden stick is to the right of the horseshoe. The horse's leg is to the right of the person in the black shirt.",
     "parse_success": true,
     "chunk_idx": 5,
     "video_id": "dA5GBOjQgeg",
     "state_changes": [
-      "second person's arm/hand appears holding wooden stick"
+      "A second person (assistant) appears, holding a wooden stick."
     ]
   },
   {
     "time": [
-      12,
-      14
+      6,
+      7
     ],
     "visible_entities": [
       {
-        "desc": "person wearing a black t-shirt, blue jeans, and black boots",
+        "desc": "person wearing a black short-sleeved shirt, blue jeans, and black boots",
         "action": "holding a horseshoe and a wooden stick",
         "position": "center",
         "id": "person_farrier_1"
       },
       {
-        "desc": "silver horseshoe with white markings",
+        "desc": "silver metal horseshoe",
         "action": "being held",
         "position": "center",
-        "id": "horseshoe_1"
+        "id": "horseshoe_silver_1"
       },
       {
         "desc": "wooden stick, light brown, cylindrical",
         "action": "being held",
         "position": "center",
-        "id": "tool_wooden_stick_1"
+        "id": "tool_misc_1"
       },
       {
         "desc": "horse leg, dark brown, with a hoof",
@@ -386,12 +382,12 @@
         "confidence": 1.0
       },
       {
-        "fact": "A horse leg is standing on the ground to the right of the person.",
+        "fact": "A horse's leg is standing on the ground to the right of the person.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The person is in the center of the frame, holding the horseshoe and stick. The horse leg is to the right of the person. The horseshoe is in front of the person's legs.",
+    "spatial": "The person is in the center of the frame, holding the horseshoe and the wooden stick. The horse's leg is to the right of the person. The horseshoe is positioned in front of the person's legs.",
     "parse_success": true,
     "chunk_idx": 6,
     "video_id": "dA5GBOjQgeg",
@@ -399,138 +395,30 @@
   },
   {
     "time": [
-      14,
-      16
+      7,
+      8
     ],
     "visible_entities": [
       {
-        "desc": "person wearing a black short-sleeved shirt, blue jeans, and black boots",
+        "desc": "person wearing a black t-shirt, blue jeans, and black rubber boots",
         "action": "bending over and holding a horseshoe",
         "position": "center",
         "id": "person_farrier_1"
       },
       {
-        "desc": "silver horseshoe with white markings",
-        "action": "being held",
-        "position": "center",
-        "id": "horseshoe_1"
-      },
-      {
-        "desc": "brown horse leg",
-        "action": "static",
-        "position": "right",
-        "id": "horse_leg_1"
-      },
-      {
-        "desc": "long thin tool",
-        "action": "being held",
-        "position": "left",
-        "id": "tool_nippers_pliers_1"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "person is bending over",
-        "confidence": 1.0
-      },
-      {
-        "fact": "person is holding a silver horseshoe in their right hand",
-        "confidence": 1.0
-      },
-      {
-        "fact": "person is holding a long thin tool in their left hand",
-        "confidence": 1.0
-      },
-      {
-        "fact": "a horse leg is standing on the ground",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [],
-    "spatial": "The person is in the center of the frame, bending over. The person is holding the horseshoe in front of their legs. The horse leg is to the right of the person. The tool is in the person's left hand, positioned to the left of the horseshoe.",
-    "parse_success": true,
-    "chunk_idx": 7,
-    "video_id": "dA5GBOjQgeg",
-    "state_changes": []
-  },
-  {
-    "time": [
-      16,
-      18
-    ],
-    "visible_entities": [
-      {
-        "desc": "person wearing dark blue jeans and black boots",
-        "action": "holding a horseshoe",
-        "position": "center",
-        "id": "person_farrier_1"
-      },
-      {
-        "desc": "silver horseshoe with white residue on the inner rim",
-        "action": "being held",
-        "position": "center",
-        "id": "horseshoe_1"
-      },
-      {
-        "desc": "brown horse leg with a hoof",
-        "action": "static",
-        "position": "right",
-        "id": "horse_leg_1"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "A person is holding a silver horseshoe in front of their legs.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The horseshoe has white residue or paste along its inner curve.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "A brown horse leg is standing on the ground to the right of the person.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [],
-    "spatial": "The person is positioned in the center of the frame, holding the horseshoe in front of their legs. The brown horse leg is to the right of the person and the horseshoe.",
-    "parse_success": true,
-    "chunk_idx": 8,
-    "video_id": "dA5GBOjQgeg",
-    "state_changes": []
-  },
-  {
-    "time": [
-      18,
-      20
-    ],
-    "visible_entities": [
-      {
-        "desc": "person wearing a black short-sleeved t-shirt, blue denim jeans, and black rubber boots",
-        "action": "holding a horse's hoof and manipulating a tool",
-        "position": "center",
-        "id": "person_farrier_1"
-      },
-      {
-        "desc": "dark brown horse leg and hoof",
-        "action": "being held up",
-        "position": "right",
-        "id": "horse_leg_1"
-      },
-      {
         "desc": "silver metal horseshoe",
+        "action": "being held",
+        "position": "center",
+        "id": "horseshoe_silver_1"
+      },
+      {
+        "desc": "brown horse leg and hoof",
         "action": "static",
-        "position": "center",
-        "id": "horseshoe_1"
+        "position": "right",
+        "id": "horse_leg_1"
       },
       {
-        "desc": "metal farrier tool (rasp or knife)",
-        "action": "being used on the hoof",
-        "position": "center",
-        "id": "tool_rasp_file_1"
-      },
-      {
-        "desc": "concrete floor with wood shavings",
+        "desc": "concrete floor with debris",
         "action": "static",
         "position": "background",
         "id": "floor_concrete_1"
@@ -538,806 +426,49 @@
     ],
     "atomic_facts": [
       {
-        "fact": "A person is holding a horse's hoof with their left hand.",
+        "fact": "The person is bending forward at the waist.",
         "confidence": 1.0
       },
       {
-        "fact": "The person is using a metal tool to work on the bottom of the horse's hoof.",
+        "fact": "The person is holding a silver horseshoe in their left hand.",
         "confidence": 1.0
       },
       {
-        "fact": "A silver horseshoe is resting on the person's leg.",
+        "fact": "The person's right hand is reaching down towards the floor.",
         "confidence": 1.0
       },
       {
-        "fact": "The person is wearing black rubber boots.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [],
-    "spatial": "The person is standing in the center of the frame, holding the horse's leg to their right. The horseshoe is resting on the person's thigh, below their hands. The metal tool is positioned under the hoof in the person's right hand.",
-    "parse_success": true,
-    "chunk_idx": 9,
-    "video_id": "dA5GBOjQgeg",
-    "state_changes": [
-      "active hoof work begins - person manipulating tool on hoof"
-    ]
-  },
-  {
-    "time": [
-      20,
-      22
-    ],
-    "visible_entities": [
-      {
-        "desc": "person wearing blue jeans, black shirt, and black rubber boots",
-        "action": "holding a horseshoe and working on a hoof",
-        "position": "center",
-        "id": "person_farrier_1"
-      },
-      {
-        "desc": "silver metal horseshoe",
-        "action": "being held",
-        "position": "center",
-        "id": "horseshoe_1"
-      },
-      {
-        "desc": "dark brown animal hoof",
-        "action": "being manipulated",
-        "position": "right",
-        "id": "horse_leg_1"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "person is holding a silver horseshoe in their left hand",
-        "confidence": 1.0
-      },
-      {
-        "fact": "person is using their right hand to manipulate the animal's hoof",
-        "confidence": 1.0
-      },
-      {
-        "fact": "the person is wearing black rubber boots",
+        "fact": "A horse's leg is standing on the right side of the frame.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The person is standing in the center of the frame, bending over. The horseshoe is held in the person's left hand, positioned near the animal's hoof which is to the right of the person's legs.",
+    "spatial": "The person is positioned in the center of the frame, bending over the concrete floor. The silver horseshoe is held in the person's hand, located centrally in the foreground. The brown horse leg is standing to the right of the person.",
     "parse_success": true,
-    "chunk_idx": 10,
+    "chunk_idx": 7,
     "video_id": "dA5GBOjQgeg",
     "state_changes": []
   },
   {
     "time": [
-      22,
-      24
+      8,
+      9
     ],
     "visible_entities": [
       {
-        "desc": "person wearing blue jeans and black rubber boots",
-        "action": "bending over and using a tool on a hoof",
-        "position": "center",
-        "id": "person_farrier_1"
-      },
-      {
-        "desc": "brown animal leg with a hoof",
-        "action": "static",
-        "position": "right",
-        "id": "horse_leg_1"
-      },
-      {
-        "desc": "metal hoof tool",
-        "action": "being used to clean the hoof",
-        "position": "center",
-        "id": "tool_rasp_file_1"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "A person is bending over to work on an animal's hoof.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The person is using a metal tool to scrape or clean the bottom of the hoof.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The animal's leg is lifted slightly off the ground.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [],
-    "spatial": "The person is positioned to the left of the animal's leg. The metal tool is held in the person's hand and is in contact with the bottom of the hoof.",
-    "parse_success": true,
-    "chunk_idx": 11,
-    "video_id": "dA5GBOjQgeg",
-    "state_changes": []
-  },
-  {
-    "time": [
-      24,
-      26
-    ],
-    "visible_entities": [
-      {
-        "desc": "person wearing blue jeans, black boots, and a dark top",
+        "desc": "person wearing blue jeans and black boots",
         "action": "holding a horseshoe",
-        "position": "left",
-        "id": "person_farrier_1"
-      },
-      {
-        "desc": "horseshoe, silver metal, U-shaped",
-        "action": "being held",
-        "position": "center",
-        "id": "horseshoe_1"
-      },
-      {
-        "desc": "animal leg, brown fur, hoof",
-        "action": "static",
-        "position": "right",
-        "id": "horse_leg_1"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "A person is holding a silver horseshoe near an animal's leg.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The animal's leg is standing on a dirt or concrete surface.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [],
-    "spatial": "The person is positioned to the left of the animal leg. The horseshoe is held in the person's hands, located between the person and the animal leg.",
-    "parse_success": true,
-    "chunk_idx": 12,
-    "video_id": "dA5GBOjQgeg",
-    "state_changes": []
-  },
-  {
-    "time": [
-      26,
-      28
-    ],
-    "visible_entities": [
-      {
-        "desc": "person wearing blue jeans and black rubber boots",
-        "action": "holding a horseshoe and a tool",
-        "position": "center",
-        "id": "person_farrier_1"
-      },
-      {
-        "desc": "silver metal horseshoe",
-        "action": "being held",
-        "position": "center",
-        "id": "horseshoe_1"
-      },
-      {
-        "desc": "brown horse leg and hoof",
-        "action": "static",
-        "position": "right",
-        "id": "horse_leg_1"
-      },
-      {
-        "desc": "metal tool, possibly nippers or pliers",
-        "action": "being held",
-        "position": "center",
-        "id": "tool_nippers_pliers_1"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "person is holding a silver horseshoe in their left hand",
-        "confidence": 1.0
-      },
-      {
-        "fact": "person is holding a metal tool in their right hand",
-        "confidence": 1.0
-      },
-      {
-        "fact": "horse hoof is visible on the right side of the frame",
-        "confidence": 1.0
-      },
-      {
-        "fact": "person is wearing black rubber boots",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [],
-    "spatial": "The person in blue jeans is positioned to the left of the horse's leg. The horseshoe is held in the person's hands, located between the person's legs and the horse's hoof. The metal tool is held in the person's right hand, near the horseshoe.",
-    "parse_success": true,
-    "chunk_idx": 13,
-    "video_id": "dA5GBOjQgeg",
-    "state_changes": []
-  },
-  {
-    "time": [
-      28,
-      30
-    ],
-    "visible_entities": [
-      {
-        "desc": "person wearing blue jeans and black rubber boots",
-        "action": "holding metal tongs",
-        "position": "center",
-        "id": "person_farrier_1"
-      },
-      {
-        "desc": "dark brown horse leg with a hoof",
-        "action": "static",
-        "position": "right",
-        "id": "horse_leg_1"
-      },
-      {
-        "desc": "long silver metal tongs",
-        "action": "being held",
-        "position": "center",
-        "id": "tool_nippers_pliers_1"
-      },
-      {
-        "desc": "dusty concrete floor with debris",
-        "action": "static",
-        "position": "bottom",
-        "id": "floor_concrete_1"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "person is holding long metal tongs",
-        "confidence": 1.0
-      },
-      {
-        "fact": "tongs are positioned near the horse's hoof",
-        "confidence": 1.0
-      },
-      {
-        "fact": "sparks are visible on the ground near the tongs",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [],
-    "spatial": "The person in blue jeans is standing to the left of the horse's leg. The person is holding the metal tongs in front of their legs, near the ground. The horse's hoof is to the right of the tongs.",
-    "parse_success": true,
-    "chunk_idx": 14,
-    "video_id": "dA5GBOjQgeg",
-    "state_changes": [
-      "person switches to using metal tongs"
-    ]
-  },
-  {
-    "time": [
-      30,
-      32
-    ],
-    "visible_entities": [
-      {
-        "desc": "person wearing black pants and black rubber boots",
-        "action": "holding a horseshoe and using tongs",
-        "position": "center",
-        "id": "person_farrier_1"
-      },
-      {
-        "desc": "metal horseshoe, silver, U-shaped",
-        "action": "being held and manipulated",
-        "position": "center",
-        "id": "horseshoe_1"
-      },
-      {
-        "desc": "metal tongs, silver, long-handled",
-        "action": "being used to grip the horseshoe",
-        "position": "center",
-        "id": "tool_nippers_pliers_1"
-      },
-      {
-        "desc": "horse leg, dark brown fur, hoof",
-        "action": "static",
-        "position": "right",
-        "id": "horse_leg_1"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "person is holding a silver horseshoe with one hand",
-        "confidence": 1.0
-      },
-      {
-        "fact": "person is using metal tongs to grip the horseshoe",
-        "confidence": 1.0
-      },
-      {
-        "fact": "horse leg is standing on the ground to the right of the person",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [],
-    "spatial": "The person is in the center of the frame, holding the horseshoe in front of their legs. The horse leg is to the right of the person. The tongs are below the horseshoe, gripping its edge.",
-    "parse_success": true,
-    "chunk_idx": 15,
-    "video_id": "dA5GBOjQgeg",
-    "state_changes": [
-      "tongs now being used to grip horseshoe"
-    ]
-  },
-  {
-    "time": [
-      32,
-      34
-    ],
-    "visible_entities": [
-      {
-        "desc": "person wearing dark blue jeans and black rubber boots",
-        "action": "holding a horseshoe",
-        "position": "center",
-        "id": "person_farrier_1"
-      },
-      {
-        "desc": "silver metal horseshoe",
-        "action": "being held",
-        "position": "center",
-        "id": "horseshoe_1"
-      },
-      {
-        "desc": "brown horse leg with hoof",
-        "action": "static",
-        "position": "right",
-        "id": "horse_leg_1"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "person is holding a silver horseshoe in their hands",
-        "confidence": 1.0
-      },
-      {
-        "fact": "person is standing on a dirt floor",
-        "confidence": 1.0
-      },
-      {
-        "fact": "horse leg is standing to the right of the person",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [],
-    "spatial": "The person wearing black boots is standing in the center of the frame. The silver horseshoe is held in front of the person's legs. The brown horse leg is positioned to the right of the person.",
-    "parse_success": true,
-    "chunk_idx": 16,
-    "video_id": "dA5GBOjQgeg",
-    "state_changes": []
-  },
-  {
-    "time": [
-      34,
-      36
-    ],
-    "visible_entities": [
-      {
-        "desc": "person wearing dark blue jeans and black rubber boots",
-        "action": "holding a horseshoe and a metal tool",
         "position": "center",
         "id": "person_farrier_1"
       },
       {
         "desc": "silver horseshoe, metallic, U-shaped",
-        "action": "static",
-        "position": "center",
-        "id": "horseshoe_1"
-      },
-      {
-        "desc": "long silver metal tool, likely a rasp or file",
-        "action": "static",
-        "position": "center",
-        "id": "tool_rasp_file_1"
-      },
-      {
-        "desc": "horse leg, dark brown fur, hoof with light-colored sole",
-        "action": "static",
-        "position": "right",
-        "id": "horse_leg_1"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "person is holding a silver horseshoe in their hand",
-        "confidence": 1.0
-      },
-      {
-        "fact": "person is holding a long metal tool in their other hand",
-        "confidence": 1.0
-      },
-      {
-        "fact": "horse leg is standing on the ground to the right of the person",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [],
-    "spatial": "The person is in the center of the frame, standing on a concrete floor. The silver horseshoe is held in front of the person's legs. The horse leg is to the right of the person.",
-    "parse_success": true,
-    "chunk_idx": 17,
-    "video_id": "dA5GBOjQgeg",
-    "state_changes": []
-  },
-  {
-    "time": [
-      36,
-      38
-    ],
-    "visible_entities": [
-      {
-        "desc": "person wearing dark blue jeans and black rubber boots",
-        "action": "holding a metal horseshoe and a tool",
-        "position": "center",
-        "id": "person_farrier_1"
-      },
-      {
-        "desc": "dark brown horse leg and hoof",
-        "action": "static",
-        "position": "right",
-        "id": "horse_leg_1"
-      },
-      {
-        "desc": "metal horseshoe, silver/grey, U-shaped",
         "action": "being held",
         "position": "center",
-        "id": "horseshoe_1"
-      },
-      {
-        "desc": "metal tool, likely a hoof pick or rasp, silver/grey",
-        "action": "being held",
-        "position": "center",
-        "id": "tool_hoof_pick_1"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "person holds a metal horseshoe in their left hand",
-        "confidence": 1.0
-      },
-      {
-        "fact": "person holds a metal tool in their right hand",
-        "confidence": 1.0
-      },
-      {
-        "fact": "horse leg is standing on the ground to the right of the person",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [],
-    "spatial": "The person is in the center of the frame. The horse's leg is to the right of the person. The horseshoe and tool are held by the person in front of their legs.",
-    "parse_success": true,
-    "chunk_idx": 18,
-    "video_id": "dA5GBOjQgeg",
-    "state_changes": []
-  },
-  {
-    "time": [
-      38,
-      40
-    ],
-    "visible_entities": [
-      {
-        "desc": "person wearing dark blue jeans and black boots",
-        "action": "holding a horseshoe and a tool",
-        "position": "center",
-        "id": "person_farrier_1"
-      },
-      {
-        "desc": "silver metal horseshoe, U-shaped",
-        "action": "being held",
-        "position": "center",
-        "id": "horseshoe_1"
-      },
-      {
-        "desc": "dark metal tool, possibly a hoof pick or file",
-        "action": "being held",
-        "position": "center",
-        "id": "tool_hoof_pick_1"
+        "id": "horseshoe_silver_1"
       },
       {
         "desc": "brown horse leg and hoof",
-        "action": "standing",
-        "position": "right",
-        "id": "horse_leg_1"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "person holds a silver horseshoe in their left hand",
-        "confidence": 1.0
-      },
-      {
-        "fact": "person holds a dark metal tool in their right hand",
-        "confidence": 1.0
-      },
-      {
-        "fact": "horse leg is standing on the ground to the right of the person",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [],
-    "spatial": "The person is in the center of the frame, holding the horseshoe in front of their legs. The horse's leg is to the right of the person. The tool is held in the person's right hand, near the horseshoe.",
-    "parse_success": true,
-    "chunk_idx": 19,
-    "video_id": "dA5GBOjQgeg",
-    "state_changes": []
-  },
-  {
-    "time": [
-      40,
-      42
-    ],
-    "visible_entities": [
-      {
-        "desc": "person wearing a black sleeveless top, blue jeans, and black boots",
-        "action": "holding a horseshoe and manipulating a tool",
-        "position": "center",
-        "id": "person_farrier_1"
-      },
-      {
-        "desc": "metal horseshoe, silver/grey color, U-shaped",
-        "action": "being held",
-        "position": "center",
-        "id": "horseshoe_1"
-      },
-      {
-        "desc": "horse leg, brown fur, hoof",
-        "action": "static",
-        "position": "right",
-        "id": "horse_leg_1"
-      },
-      {
-        "desc": "metal tool, possibly pliers or nippers",
-        "action": "being used on the horseshoe",
-        "position": "center",
-        "id": "tool_nippers_pliers_1"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "A person is holding a metal horseshoe with their left hand.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The person is using a metal tool with their right hand to work on the horseshoe.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "A horse's leg is standing on the ground to the right of the person.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [],
-    "spatial": "The person is in the center of the frame, bending over. The horseshoe is held in the person's hands. The horse's leg is to the right of the person. The tool is in the person's right hand, positioned against the horseshoe.",
-    "parse_success": true,
-    "chunk_idx": 20,
-    "video_id": "dA5GBOjQgeg",
-    "state_changes": []
-  },
-  {
-    "time": [
-      42,
-      44
-    ],
-    "visible_entities": [
-      {
-        "desc": "person wearing blue jeans, black top, and black rubber boots",
-        "action": "holding and manipulating a metal tool on a hoof",
-        "position": "center",
-        "id": "person_farrier_1"
-      },
-      {
-        "desc": "dark brown horse leg with a hoof",
-        "action": "static",
-        "position": "right",
-        "id": "horse_leg_1"
-      },
-      {
-        "desc": "silver metal tool, likely hoof nippers or a rasp",
-        "action": "being held against the hoof",
-        "position": "center"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "A person is holding a silver metal tool against the hoof of a horse.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The person is wearing black rubber boots.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The horse's leg is positioned to the right of the person.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [],
-    "spatial": "The person is in the center of the frame, bending over. The horse's leg is to the right of the person. The person is holding the metal tool in front of their legs, applying it to the horse's hoof.",
-    "parse_success": true,
-    "chunk_idx": 21,
-    "video_id": "dA5GBOjQgeg",
-    "state_changes": []
-  },
-  {
-    "time": [
-      44,
-      46
-    ],
-    "visible_entities": [
-      {
-        "desc": "person wearing a black short-sleeved t-shirt, blue jeans, and black rubber boots",
-        "action": "bending over and using a metal tool on a hoof",
-        "position": "center"
-      },
-      {
-        "desc": "dark brown horse leg and hoof",
-        "action": "static",
-        "position": "right",
-        "id": "horse_leg_1"
-      },
-      {
-        "desc": "silver metal hoof pick or farrier tool",
-        "action": "being manipulated by the person's hands",
-        "position": "center",
-        "id": "tool_hoof_pick_1"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "A person is bending forward at the waist.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The person is holding a metal tool with both hands.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The tool is being used to clean or scrape the bottom of a horse's hoof.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The person is wearing black rubber boots.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [],
-    "spatial": "The person is positioned to the left of the horse's leg. The person is holding the metal tool in front of the horse's hoof. The horse's hoof is resting on the concrete floor.",
-    "parse_success": true,
-    "chunk_idx": 22,
-    "video_id": "dA5GBOjQgeg",
-    "state_changes": []
-  },
-  {
-    "time": [
-      46,
-      48
-    ],
-    "visible_entities": [
-      {
-        "desc": "person wearing a black short-sleeved shirt, blue jeans, and black rubber boots",
-        "action": "filing a horseshoe",
-        "position": "center"
-      },
-      {
-        "desc": "dark brown horse leg and hoof",
-        "action": "static",
-        "position": "right",
-        "id": "horse_leg_1"
-      },
-      {
-        "desc": "shiny silver metal horseshoe",
-        "action": "being held",
-        "position": "center",
-        "id": "horseshoe_1"
-      },
-      {
-        "desc": "metal rasp tool with a handle",
-        "action": "being used",
-        "position": "center",
-        "id": "tool_rasp_file_1"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "A person is holding a silver horseshoe in their left hand.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The person is using a metal rasp tool to file the surface of the horseshoe.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The person is wearing black rubber boots.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "A horse's leg is standing on the ground to the right of the person.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [],
-    "spatial": "The person is positioned in the center of the frame, bending over. The horse's leg is to the right of the person. The person is holding the horseshoe in front of their body and using the tool on it.",
-    "parse_success": true,
-    "chunk_idx": 23,
-    "video_id": "dA5GBOjQgeg",
-    "state_changes": [
-      "person begins filing the horseshoe"
-    ]
-  },
-  {
-    "time": [
-      48,
-      50
-    ],
-    "visible_entities": [
-      {
-        "desc": "person wearing black rubber boots and dark blue pants",
-        "action": "holding a horseshoe and a metal tool",
-        "position": "center",
-        "id": "person_farrier_1"
-      },
-      {
-        "desc": "silver metal horseshoe",
-        "action": "being held",
-        "position": "center",
-        "id": "horseshoe_1"
-      },
-      {
-        "desc": "dark metal tool, possibly a rasp or file",
-        "action": "being held",
-        "position": "center",
-        "id": "tool_general_1"
-      },
-      {
-        "desc": "brown horse leg and hoof",
-        "action": "static",
-        "position": "right",
-        "id": "horse_leg_1"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "person holds a silver horseshoe in their left hand",
-        "confidence": 1.0
-      },
-      {
-        "fact": "person holds a metal tool in their right hand",
-        "confidence": 1.0
-      },
-      {
-        "fact": "horse leg is standing on the ground",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [],
-    "spatial": "The person is in the center of the frame, holding the horseshoe and tool. The horse's leg is to the right of the person. The person's black boots are on the concrete floor.",
-    "parse_success": true,
-    "chunk_idx": 24,
-    "video_id": "dA5GBOjQgeg",
-    "state_changes": []
-  },
-  {
-    "time": [
-      50,
-      52
-    ],
-    "visible_entities": [
-      {
-        "desc": "person wearing dark blue jeans and black rubber boots",
-        "action": "holding a horseshoe",
-        "position": "center",
-        "id": "person_farrier_1"
-      },
-      {
-        "desc": "silver horseshoe",
-        "action": "being held",
-        "position": "center",
-        "id": "horseshoe_1"
-      },
-      {
-        "desc": "brown horse leg",
         "action": "static",
         "position": "right",
         "id": "horse_leg_1"
@@ -1349,43 +480,347 @@
         "confidence": 1.0
       },
       {
-        "fact": "horse leg stands to the right of the person",
+        "fact": "horse leg is standing on the ground to the right of the person",
         "confidence": 1.0
       }
     ],
     "ocr": [],
     "spatial": "The person is in the center of the frame, holding the horseshoe in front of their legs. The horse leg is to the right of the person.",
     "parse_success": true,
-    "chunk_idx": 25,
+    "chunk_idx": 8,
     "video_id": "dA5GBOjQgeg",
     "state_changes": []
   },
   {
     "time": [
-      52,
-      54
+      9,
+      10
     ],
     "visible_entities": [
       {
-        "desc": "person wearing dark blue jeans and black rubber boots",
+        "desc": "person wearing a black short-sleeved t-shirt, blue jeans, and black rubber boots",
         "action": "holding a horseshoe and a tool",
         "position": "center",
         "id": "person_farrier_1"
       },
       {
+        "desc": "dark brown horse leg and hoof",
+        "action": "being held",
+        "position": "right",
+        "id": "horse_leg_1"
+      },
+      {
+        "desc": "silver metal horseshoe",
+        "action": "being held",
+        "position": "center",
+        "id": "horseshoe_silver_1"
+      },
+      {
+        "desc": "metal tool with a handle",
+        "action": "being used on hoof",
+        "position": "center",
+        "id": "tool_misc_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A person is holding a silver horseshoe in their left hand.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The person is using a metal tool on the horse's hoof with their right hand.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The person is bending over to work on the horse's leg.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The person is in the center of the frame, bending over. The horse's leg is to the right of the person. The horseshoe is held in the person's left hand, positioned below their waist. The metal tool is in the person's right hand, near the horse's hoof.",
+    "parse_success": true,
+    "chunk_idx": 9,
+    "video_id": "dA5GBOjQgeg",
+    "state_changes": [
+      "Transition from holding/positioning horseshoe to actively using a metal tool on the hoof."
+    ]
+  },
+  {
+    "time": [
+      10,
+      11
+    ],
+    "visible_entities": [
+      {
+        "desc": "person wearing a black t-shirt, blue jeans, and black rubber boots",
+        "action": "holding a horse's hoof",
+        "position": "center",
+        "id": "person_farrier_1"
+      },
+      {
+        "desc": "dark brown horse hoof",
+        "action": "being held",
+        "position": "right",
+        "id": "horse_leg_1"
+      },
+      {
+        "desc": "metal horseshoe with white residue",
+        "action": "being positioned",
+        "position": "center",
+        "id": "horseshoe_silver_1"
+      },
+      {
+        "desc": "concrete floor with scattered debris",
+        "action": "static",
+        "position": "background",
+        "id": "floor_concrete_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A person is holding a horse's hoof up with their left hand.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The person is positioning a metal horseshoe against the bottom of the hoof.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The horseshoe has white material on its surface.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The person is wearing black rubber boots.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The person is standing on the concrete floor. The person is holding the horse's hoof in front of their legs. The horseshoe is held near the bottom of the hoof.",
+    "parse_success": true,
+    "chunk_idx": 10,
+    "video_id": "dA5GBOjQgeg",
+    "state_changes": []
+  },
+  {
+    "time": [
+      11,
+      12
+    ],
+    "visible_entities": [
+      {
+        "desc": "person with dark hair, wearing a dark short-sleeved shirt, blue jeans, and black rubber boots",
+        "action": "trimming the horse's hoof",
+        "position": "center",
+        "id": "person_farrier_1"
+      },
+      {
+        "desc": "brown horse leg and hoof",
+        "action": "being held and trimmed",
+        "position": "right",
+        "id": "horse_leg_1"
+      },
+      {
+        "desc": "metal farrier tool, likely nippers or a hoof knife",
+        "action": "being used to cut the hoof",
+        "position": "center-right",
+        "id": "tool_nippers_tongs_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The person is bending over to work on the horse's hoof.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The person is holding the horse's leg with their left hand.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The person is using a metal tool to trim the bottom of the horse's hoof.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The person is wearing black rubber boots.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The person is positioned to the left of the horse's leg. The horse's leg is on the right side of the frame. The metal tool is held by the person and is in contact with the bottom of the horse's hoof.",
+    "parse_success": true,
+    "chunk_idx": 11,
+    "video_id": "dA5GBOjQgeg",
+    "state_changes": [
+      "Action shifts to trimming the horse's hoof with nippers/knife."
+    ]
+  },
+  {
+    "time": [
+      12,
+      13
+    ],
+    "visible_entities": [
+      {
+        "desc": "person wearing blue jeans and black boots",
+        "action": "holding a horseshoe",
+        "position": "center",
+        "id": "person_farrier_1"
+      },
+      {
+        "desc": "horseshoe, silver metal, U-shaped",
+        "action": "being held",
+        "position": "center",
+        "id": "horseshoe_silver_1"
+      },
+      {
+        "desc": "animal leg, brown, hoof visible",
+        "action": "standing",
+        "position": "right",
+        "id": "horse_leg_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "person holds a silver horseshoe in their hands",
+        "confidence": 1.0
+      },
+      {
+        "fact": "animal leg is standing on the ground to the right of the person",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The person is to the left of the animal leg. The horseshoe is held in front of the person's legs. The animal leg is standing on the ground.",
+    "parse_success": true,
+    "chunk_idx": 12,
+    "video_id": "dA5GBOjQgeg",
+    "state_changes": []
+  },
+  {
+    "time": [
+      13,
+      14
+    ],
+    "visible_entities": [
+      {
+        "desc": "person wearing blue jeans, black rubber boots, and a dark shirt",
+        "action": "bending over and holding a horseshoe",
+        "position": "center",
+        "id": "person_farrier_1"
+      },
+      {
+        "desc": "horseshoe, silver metal, U-shaped",
+        "action": "being held by the person",
+        "position": "center",
+        "id": "horseshoe_silver_1"
+      },
+      {
+        "desc": "horse leg, brown fur, hoof",
+        "action": "static",
+        "position": "right",
+        "id": "horse_leg_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "person is bending over and holding a silver horseshoe with both hands",
+        "confidence": 1.0
+      },
+      {
+        "fact": "horse leg is standing on the ground to the right of the person",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The person in blue jeans is in the center of the frame, bending over. The silver horseshoe is held in the person's hands, positioned below their waist. The horse's brown leg is to the right of the person.",
+    "parse_success": true,
+    "chunk_idx": 13,
+    "video_id": "dA5GBOjQgeg",
+    "state_changes": []
+  },
+  {
+    "time": [
+      14,
+      15
+    ],
+    "visible_entities": [
+      {
+        "desc": "person wearing blue jeans and black rubber boots",
+        "action": "holding metal tongs",
+        "position": "left",
+        "id": "person_farrier_1"
+      },
+      {
+        "desc": "person with bare legs and brown boots",
+        "action": "holding horse hoof",
+        "position": "right",
+        "id": "person_assistant_1"
+      },
+      {
+        "desc": "horse hoof",
+        "action": "being held and worked on",
+        "position": "center",
+        "id": "horse_leg_1"
+      },
+      {
+        "desc": "long metal tongs",
+        "action": "being held near hoof",
+        "position": "center",
+        "id": "tool_nippers_tongs_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "person in blue jeans holds metal tongs near a horse hoof",
+        "confidence": 1.0
+      },
+      {
+        "fact": "person with bare legs holds the horse hoof steady",
+        "confidence": 1.0
+      },
+      {
+        "fact": "sparks are visible near the hoof and tongs",
+        "confidence": 1.0
+      },
+      {
+        "fact": "the ground is covered in dirt and debris",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The person in blue jeans is to the left of the person with bare legs. The horse hoof is positioned between them, held by the person on the right. The metal tongs are held by the person on the left, positioned near the hoof.",
+    "parse_success": true,
+    "chunk_idx": 14,
+    "video_id": "dA5GBOjQgeg",
+    "state_changes": [
+      "Primary farrier switches to holding tongs; assistant (bare legs) takes over holding the hoof."
+    ]
+  },
+  {
+    "time": [
+      15,
+      16
+    ],
+    "visible_entities": [
+      {
+        "desc": "person wearing black pants and black rubber boots",
+        "action": "holding a horseshoe and tongs",
+        "position": "center",
+        "id": "person_farrier_1"
+      },
+      {
         "desc": "silver metal horseshoe, U-shaped",
-        "action": "static",
+        "action": "being held",
         "position": "center",
-        "id": "horseshoe_1"
+        "id": "horseshoe_silver_1"
       },
       {
-        "desc": "dark metal tool, possibly a rasp or file",
-        "action": "static",
+        "desc": "metal tongs with long handles",
+        "action": "being held",
         "position": "center",
-        "id": "tool_general_1"
+        "id": "tool_nippers_tongs_1"
       },
       {
-        "desc": "brown horse leg with hoof",
+        "desc": "dark brown horse leg and hoof",
         "action": "static",
         "position": "right",
         "id": "horse_leg_1"
@@ -1397,37 +832,86 @@
         "confidence": 1.0
       },
       {
-        "fact": "person holds a metal tool in their right hand",
+        "fact": "person holds metal tongs in their right hand",
         "confidence": 1.0
       },
       {
-        "fact": "horse leg is standing on the ground",
+        "fact": "horse leg stands on the ground to the right of the person",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The person is in the center of the frame, holding the horseshoe and tool. The horse leg is to the right of the person. The tool is held near the horseshoe.",
+    "spatial": "The person is in the center of the frame, standing on a dirt floor. The person is holding the horseshoe and tongs in front of their legs. The horse's leg is to the right of the person.",
     "parse_success": true,
-    "chunk_idx": 26,
+    "chunk_idx": 15,
     "video_id": "dA5GBOjQgeg",
     "state_changes": []
   },
   {
     "time": [
-      54,
-      56
+      16,
+      17
     ],
     "visible_entities": [
       {
-        "desc": "person wearing blue jeans and black boots",
+        "desc": "person wearing dark blue jeans and black rubber boots",
         "action": "holding a horseshoe",
-        "position": "center"
+        "position": "center",
+        "id": "person_farrier_1"
       },
       {
         "desc": "silver metal horseshoe",
         "action": "being held",
         "position": "center",
-        "id": "horseshoe_1"
+        "id": "horseshoe_silver_1"
+      },
+      {
+        "desc": "brown horse leg with hoof",
+        "action": "static",
+        "position": "right",
+        "id": "horse_leg_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "person holds a silver horseshoe in front of their legs",
+        "confidence": 1.0
+      },
+      {
+        "fact": "horse leg is standing on the ground to the right",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The person in blue jeans is in the center of the frame, holding the silver horseshoe in front of their legs. The brown horse leg is to the right of the person.",
+    "parse_success": true,
+    "chunk_idx": 16,
+    "video_id": "dA5GBOjQgeg",
+    "state_changes": []
+  },
+  {
+    "time": [
+      17,
+      18
+    ],
+    "visible_entities": [
+      {
+        "desc": "person wearing dark blue jeans and black rubber boots",
+        "action": "holding a horseshoe and a metal tool",
+        "position": "center",
+        "id": "person_farrier_1"
+      },
+      {
+        "desc": "silver metal horseshoe, U-shaped",
+        "action": "being held",
+        "position": "center",
+        "id": "horseshoe_silver_1"
+      },
+      {
+        "desc": "long, thin, silver metal tool",
+        "action": "being held",
+        "position": "center",
+        "id": "tool_rasp_file_1"
       },
       {
         "desc": "brown horse leg and hoof",
@@ -1438,16 +922,555 @@
     ],
     "atomic_facts": [
       {
-        "fact": "person holds a silver horseshoe with both hands",
+        "fact": "person is holding a silver horseshoe in one hand",
         "confidence": 1.0
       },
       {
-        "fact": "horse leg stands on the ground to the right of the person",
+        "fact": "person is holding a long metal tool in the other hand",
+        "confidence": 1.0
+      },
+      {
+        "fact": "a horse's hoof is visible on the right side of the frame",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The person in blue jeans is standing in the center of the frame, holding the silver horseshoe in front of their legs. The brown horse leg is positioned to the right of the person.",
+    "spatial": "The person is standing in the center of the frame, holding the horseshoe and the metal tool. The horse's leg is to the right of the person. The person is wearing black boots which are on the concrete floor.",
+    "parse_success": true,
+    "chunk_idx": 17,
+    "video_id": "dA5GBOjQgeg",
+    "state_changes": []
+  },
+  {
+    "time": [
+      18,
+      19
+    ],
+    "visible_entities": [
+      {
+        "desc": "person wearing dark blue jeans and black rubber boots",
+        "action": "holding a metal horseshoe and a tool",
+        "position": "center",
+        "id": "person_farrier_1"
+      },
+      {
+        "desc": "dark brown horse leg with a hoof",
+        "action": "static",
+        "position": "right",
+        "id": "horse_leg_1"
+      },
+      {
+        "desc": "metal horseshoe, silver, U-shaped",
+        "action": "being held",
+        "position": "center",
+        "id": "horseshoe_silver_1"
+      },
+      {
+        "desc": "metal tool, likely a hoof pick or rasp",
+        "action": "being held",
+        "position": "center",
+        "id": "tool_rasp_file_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A person is holding a metal horseshoe in their left hand.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A person is holding a metal tool in their right hand.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The person is standing next to a horse's leg.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The horse's hoof is resting on the ground.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The person is to the left of the horse's leg. The horseshoe is held by the person in the center of the frame. The metal tool is held in the person's other hand, near the horseshoe.",
+    "parse_success": true,
+    "chunk_idx": 18,
+    "video_id": "dA5GBOjQgeg",
+    "state_changes": []
+  },
+  {
+    "time": [
+      19,
+      20
+    ],
+    "visible_entities": [
+      {
+        "desc": "person wearing dark blue jeans and black boots",
+        "action": "holding a horseshoe and a metal tool",
+        "position": "center",
+        "id": "person_farrier_1"
+      },
+      {
+        "desc": "shiny silver metal horseshoe",
+        "action": "being held",
+        "position": "center",
+        "id": "horseshoe_silver_1"
+      },
+      {
+        "desc": "dark brown horse leg and hoof",
+        "action": "standing",
+        "position": "right",
+        "id": "horse_leg_1"
+      },
+      {
+        "desc": "small metal tool, possibly a hoof pick or file",
+        "action": "being held",
+        "position": "center",
+        "id": "tool_rasp_file_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "person is holding a horseshoe in their left hand",
+        "confidence": 1.0
+      },
+      {
+        "fact": "person is holding a metal tool in their right hand",
+        "confidence": 1.0
+      },
+      {
+        "fact": "horse leg is standing on the ground to the right of the person",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The person is in the center of the frame, holding the horseshoe and tool. The horse's leg is to the right of the person. The ground is below all entities.",
+    "parse_success": true,
+    "chunk_idx": 19,
+    "video_id": "dA5GBOjQgeg",
+    "state_changes": []
+  },
+  {
+    "time": [
+      20,
+      21
+    ],
+    "visible_entities": [
+      {
+        "desc": "person wearing a black sleeveless top, blue jeans, and black boots",
+        "action": "holding a horseshoe and using a tool",
+        "position": "center",
+        "id": "person_farrier_1"
+      },
+      {
+        "desc": "dark-colored horse leg and hoof",
+        "action": "static",
+        "position": "right",
+        "id": "horse_leg_1"
+      },
+      {
+        "desc": "metal horseshoe, silver/grey color",
+        "action": "being held",
+        "position": "center",
+        "id": "horseshoe_silver_1"
+      },
+      {
+        "desc": "metal tool, possibly pliers or nippers",
+        "action": "being used",
+        "position": "center",
+        "id": "tool_nippers_tongs_1"
+      },
+      {
+        "desc": "red object, blurry, partially visible",
+        "action": "static",
+        "position": "bottom left",
+        "id": "tool_misc_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A person is holding a horseshoe with one hand.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The person is using a metal tool on the horseshoe.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A horse's leg is standing next to the person.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The person is wearing black boots.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The person is in the center of the frame, bending over. The horse's leg is to the right of the person. The person is holding the horseshoe in front of their body. The red object is in the bottom left corner, near the person's left side.",
+    "parse_success": true,
+    "chunk_idx": 20,
+    "video_id": "dA5GBOjQgeg",
+    "state_changes": []
+  },
+  {
+    "time": [
+      21,
+      22
+    ],
+    "visible_entities": [
+      {
+        "desc": "person wearing blue jeans, black tall boots, and a dark top",
+        "action": "holding and manipulating a metal tool",
+        "position": "center",
+        "id": "person_farrier_1"
+      },
+      {
+        "desc": "dark brown horse leg and hoof",
+        "action": "static",
+        "position": "right",
+        "id": "horse_leg_1"
+      },
+      {
+        "desc": "silver metal tool, likely hoof nippers",
+        "action": "being used on the hoof",
+        "position": "center",
+        "id": "tool_nippers_tongs_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "person is using a metal tool to trim the horse's hoof",
+        "confidence": 1.0
+      },
+      {
+        "fact": "the person is holding the tool with both hands",
+        "confidence": 1.0
+      },
+      {
+        "fact": "the horse's leg is lifted and held by the person",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The person is in the center of the frame, bending over. The horse's leg is to the right of the person. The person is holding the metal tool in front of the horse's hoof.",
+    "parse_success": true,
+    "chunk_idx": 21,
+    "video_id": "dA5GBOjQgeg",
+    "state_changes": [
+      "Resumption of active trimming/cutting on the hoof with nippers."
+    ]
+  },
+  {
+    "time": [
+      22,
+      23
+    ],
+    "visible_entities": [
+      {
+        "desc": "person wearing a black short-sleeved shirt, blue jeans, and black rubber boots",
+        "action": "trimming the horse's hoof",
+        "position": "center",
+        "id": "person_farrier_1"
+      },
+      {
+        "desc": "dark-colored horse leg and hoof",
+        "action": "being held up",
+        "position": "right",
+        "id": "horse_leg_1"
+      },
+      {
+        "desc": "metal hoof trimming tool",
+        "action": "being used on the hoof",
+        "position": "center",
+        "id": "tool_nippers_tongs_1"
+      },
+      {
+        "desc": "concrete floor with scattered debris",
+        "action": "static",
+        "position": "background",
+        "id": "floor_concrete_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A person is bending over to work on a horse's hoof.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The person is holding a metal tool against the bottom of the horse's hoof.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The horse is standing on the concrete floor with one leg lifted.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The person is positioned in the center of the frame, bending over the horse's leg which is to their right. The person is holding the metal tool in their hands, applying it to the underside of the lifted hoof. The concrete floor is beneath the person and the horse.",
+    "parse_success": true,
+    "chunk_idx": 22,
+    "video_id": "dA5GBOjQgeg",
+    "state_changes": [
+      "Continued trimming action with the hoof now held up."
+    ]
+  },
+  {
+    "time": [
+      23,
+      24
+    ],
+    "visible_entities": [
+      {
+        "desc": "person wearing blue jeans, black tall boots, and a dark short-sleeved top",
+        "action": "holding a horseshoe and manipulating it with a tool",
+        "position": "center",
+        "id": "person_farrier_1"
+      },
+      {
+        "desc": "dark-colored horse leg and hoof",
+        "action": "static",
+        "position": "right",
+        "id": "horse_leg_1"
+      },
+      {
+        "desc": "metal horseshoe, silver-colored, U-shaped",
+        "action": "being held and worked on",
+        "position": "center",
+        "id": "horseshoe_silver_1"
+      },
+      {
+        "desc": "metal tool, thin, rod-like, silver",
+        "action": "being used to touch the horseshoe",
+        "position": "center"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A person is holding a silver horseshoe in their left hand.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The person is using a thin metal tool in their right hand to touch or work on the horseshoe.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The person is wearing tall black boots.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A horse's leg is standing on the ground to the right of the person.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The person is in the center of the frame, bending over. The horse's leg is to the right of the person. The horseshoe is held in the person's hands, positioned between the person's legs and the horse's leg. The metal tool is in the person's right hand, touching the horseshoe.",
+    "parse_success": true,
+    "chunk_idx": 23,
+    "video_id": "dA5GBOjQgeg",
+    "state_changes": []
+  },
+  {
+    "time": [
+      24,
+      25
+    ],
+    "visible_entities": [
+      {
+        "desc": "person wearing black rubber boots and dark pants",
+        "action": "holding a horseshoe and a hammer",
+        "position": "center",
+        "id": "person_farrier_1"
+      },
+      {
+        "desc": "silver metal horseshoe",
+        "action": "being held",
+        "position": "center",
+        "id": "horseshoe_silver_1"
+      },
+      {
+        "desc": "dark hammer with a wooden handle",
+        "action": "being held",
+        "position": "center",
+        "id": "tool_hammer_1"
+      },
+      {
+        "desc": "brown horse leg and hoof",
+        "action": "static",
+        "position": "right",
+        "id": "horse_leg_1"
+      },
+      {
+        "desc": "concrete floor with debris",
+        "action": "static",
+        "position": "background",
+        "id": "floor_concrete_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A person is holding a silver horseshoe in their left hand.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The person is holding a hammer in their right hand.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The person is standing on a concrete floor.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A horse's leg is visible to the right of the person.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The person is in the center of the frame, standing on the concrete floor. The horse's leg is to the right of the person. The person is holding the horseshoe and the hammer in front of their body.",
+    "parse_success": true,
+    "chunk_idx": 24,
+    "video_id": "dA5GBOjQgeg",
+    "state_changes": []
+  },
+  {
+    "time": [
+      25,
+      26
+    ],
+    "visible_entities": [
+      {
+        "desc": "person wearing dark blue jeans and black rubber boots",
+        "action": "holding a horseshoe",
+        "position": "center",
+        "id": "person_farrier_1"
+      },
+      {
+        "desc": "silver metal horseshoe",
+        "action": "being held",
+        "position": "center",
+        "id": "horseshoe_silver_1"
+      },
+      {
+        "desc": "brown horse leg and hoof",
+        "action": "static",
+        "position": "right",
+        "id": "horse_leg_1"
+      },
+      {
+        "desc": "concrete floor with debris",
+        "action": "static",
+        "position": "background",
+        "id": "floor_concrete_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "person holds a silver horseshoe in front of their legs",
+        "confidence": 1.0
+      },
+      {
+        "fact": "horse leg is standing on the concrete floor",
+        "confidence": 1.0
+      },
+      {
+        "fact": "debris is scattered on the floor",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The person is standing in the center of the frame, holding the horseshoe in front of their legs. The horse leg is to the right of the person. The concrete floor is below the person and the horse.",
+    "parse_success": true,
+    "chunk_idx": 25,
+    "video_id": "dA5GBOjQgeg",
+    "state_changes": []
+  },
+  {
+    "time": [
+      26,
+      27
+    ],
+    "visible_entities": [
+      {
+        "desc": "person wearing dark blue jeans and black rubber boots",
+        "action": "holding a horseshoe and a tool",
+        "position": "center",
+        "id": "person_farrier_1"
+      },
+      {
+        "desc": "silver metal horseshoe, U-shaped",
+        "action": "being held",
+        "position": "center",
+        "id": "horseshoe_silver_1"
+      },
+      {
+        "desc": "dark metal tool, possibly a rasp or hammer",
+        "action": "being held",
+        "position": "center",
+        "id": "tool_rasp_file_1"
+      },
+      {
+        "desc": "brown horse leg and hoof",
+        "action": "static",
+        "position": "right",
+        "id": "horse_leg_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "person holds a silver horseshoe in their left hand",
+        "confidence": 1.0
+      },
+      {
+        "fact": "person holds a dark tool in their right hand",
+        "confidence": 1.0
+      },
+      {
+        "fact": "horse leg is standing on the ground to the right",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The person is in the center of the frame, holding the horseshoe and tool. The horse leg is to the right of the person. The person is standing on a concrete floor.",
+    "parse_success": true,
+    "chunk_idx": 26,
+    "video_id": "dA5GBOjQgeg",
+    "state_changes": []
+  },
+  {
+    "time": [
+      27,
+      28
+    ],
+    "visible_entities": [
+      {
+        "desc": "person wearing blue jeans and black rubber boots",
+        "action": "holding a horseshoe",
+        "position": "center",
+        "id": "person_farrier_1"
+      },
+      {
+        "desc": "metal horseshoe, silver-colored",
+        "action": "being held",
+        "position": "center",
+        "id": "horseshoe_silver_1"
+      },
+      {
+        "desc": "horse leg, brown fur",
+        "action": "static",
+        "position": "right",
+        "id": "horse_leg_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "person holds a metal horseshoe with both hands",
+        "confidence": 1.0
+      },
+      {
+        "fact": "horse leg is standing on the ground to the right",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The person is standing in the center of the frame, holding the horseshoe in front of their legs. The horse leg is positioned to the right of the person.",
     "parse_success": true,
     "chunk_idx": 27,
     "video_id": "dA5GBOjQgeg",
@@ -1455,30 +1478,30 @@
   },
   {
     "time": [
-      56,
-      58
+      28,
+      29
     ],
     "visible_entities": [
       {
-        "desc": "person wearing blue jeans, black t-shirt, and black rubber boots",
-        "action": "filing a horse hoof",
+        "desc": "person wearing blue jeans, black rubber boots, and a black short-sleeved shirt",
+        "action": "holding a metal tool against a hoof",
         "position": "center",
         "id": "person_farrier_1"
       },
       {
-        "desc": "horse leg with brown hoof",
+        "desc": "brown animal hoof",
         "action": "static",
         "position": "right",
         "id": "horse_leg_1"
       },
       {
-        "desc": "metal rasp tool",
+        "desc": "metal tool with a handle and a curved blade",
         "action": "being held",
         "position": "center",
-        "id": "tool_rasp_file_1"
+        "id": "tool_misc_1"
       },
       {
-        "desc": "concrete floor with wood shavings",
+        "desc": "concrete floor with scattered debris",
         "action": "static",
         "position": "background",
         "id": "floor_concrete_1"
@@ -1486,161 +1509,7 @@
     ],
     "atomic_facts": [
       {
-        "fact": "person is holding a metal rasp tool against a horse hoof",
-        "confidence": 1.0
-      },
-      {
-        "fact": "person is wearing black rubber boots",
-        "confidence": 1.0
-      },
-      {
-        "fact": "wood shavings are scattered on the floor",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [],
-    "spatial": "The person is standing to the left of the horse leg. The metal rasp tool is held in the person's hands, positioned against the horse hoof. The wood shavings are on the floor below the person and the horse.",
-    "parse_success": true,
-    "chunk_idx": 28,
-    "video_id": "dA5GBOjQgeg",
-    "state_changes": [
-      "person switches to filing the horse hoof directly"
-    ]
-  },
-  {
-    "time": [
-      58,
-      60
-    ],
-    "visible_entities": [
-      {
-        "desc": "person wearing blue jeans, black top, and black rubber boots",
-        "action": "filing the horse's hoof",
-        "position": "center",
-        "id": "person_farrier_1"
-      },
-      {
-        "desc": "horse's dark brown leg and hoof",
-        "action": "being held up",
-        "position": "right",
-        "id": "horse_leg_1"
-      },
-      {
-        "desc": "metal rasp tool",
-        "action": "being used on hoof",
-        "position": "center",
-        "id": "tool_rasp_file_1"
-      },
-      {
-        "desc": "red-handled tool",
-        "action": "static",
-        "position": "bottom left",
-        "id": "tool_red_handle_1"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "person is filing the horse's hoof with a rasp",
-        "confidence": 1.0
-      },
-      {
-        "fact": "the horse's leg is lifted off the ground",
-        "confidence": 1.0
-      },
-      {
-        "fact": "hoof shavings are scattered on the concrete floor",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [],
-    "spatial": "The person is standing in the center, holding the horse's leg which is to their right. The rasp is in the person's hands, positioned against the horse's hoof. The red-handled tool is on the floor to the left of the person.",
-    "parse_success": true,
-    "chunk_idx": 29,
-    "video_id": "dA5GBOjQgeg",
-    "state_changes": []
-  },
-  {
-    "time": [
-      60,
-      62
-    ],
-    "visible_entities": [
-      {
-        "desc": "person wearing blue jeans, black top, and tall black rubber boots",
-        "action": "holding and cleaning a horse hoof",
-        "position": "center",
-        "id": "person_farrier_1"
-      },
-      {
-        "desc": "dark brown horse leg and hoof",
-        "action": "being held up",
-        "position": "right",
-        "id": "horse_leg_1"
-      },
-      {
-        "desc": "metal hoof pick tool",
-        "action": "being used to clean the hoof",
-        "position": "center",
-        "id": "tool_hoof_pick_1"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "A person is holding up a horse's leg.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The person is using a metal tool to clean the underside of the horse's hoof.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The person is wearing tall black rubber boots.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [],
-    "spatial": "The person is standing in the center of the frame, positioned to the left of the horse's leg. The person is holding the horse's hoof in their hands. The metal tool is in the person's hand, positioned against the horse's hoof.",
-    "parse_success": true,
-    "chunk_idx": 30,
-    "video_id": "dA5GBOjQgeg",
-    "state_changes": [
-      "person switches to cleaning hoof with pick tool"
-    ]
-  },
-  {
-    "time": [
-      62,
-      64
-    ],
-    "visible_entities": [
-      {
-        "desc": "person wearing blue jeans and black rubber boots",
-        "action": "holding and manipulating a metal tool on a hoof",
-        "position": "center",
-        "id": "person_farrier_1"
-      },
-      {
-        "desc": "dark brown horse leg and hoof",
-        "action": "static",
-        "position": "right",
-        "id": "horse_leg_1"
-      },
-      {
-        "desc": "metal tool, silver, long-handled",
-        "action": "being used on the hoof",
-        "position": "center",
-        "id": "tool_general_1"
-      },
-      {
-        "desc": "concrete floor, light grey, scattered with debris",
-        "action": "static",
-        "position": "background",
-        "id": "floor_concrete_1"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "A person is using a metal tool on the horse's hoof.",
+        "fact": "A person is holding a metal tool against an animal's hoof.",
         "confidence": 1.0
       },
       {
@@ -1648,12 +1517,160 @@
         "confidence": 1.0
       },
       {
-        "fact": "The horse's leg is positioned to the right of the person.",
+        "fact": "The animal hoof is resting on the floor.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The person is in the center of the frame, bending over the horse's leg which is to their right. The person is holding a metal tool against the horse's hoof. The scene takes place on a concrete floor.",
+    "spatial": "The person is positioned in the center of the frame, bending over. The animal's hoof is to the right of the person. The person is holding the metal tool in their hands, positioning it near the hoof. The concrete floor is below the person and the hoof.",
+    "parse_success": true,
+    "chunk_idx": 28,
+    "video_id": "dA5GBOjQgeg",
+    "state_changes": []
+  },
+  {
+    "time": [
+      29,
+      30
+    ],
+    "visible_entities": [
+      {
+        "desc": "person wearing blue jeans, black long-sleeved top, and black rubber boots",
+        "action": "holding a rasp and filing the horse's hoof",
+        "position": "center",
+        "id": "person_farrier_1"
+      },
+      {
+        "desc": "horse leg with dark fur and a light-colored hoof",
+        "action": "static",
+        "position": "right",
+        "id": "horse_leg_1"
+      },
+      {
+        "desc": "metal rasp tool with a handle",
+        "action": "being used to file hoof",
+        "position": "center-right",
+        "id": "tool_rasp_file_1"
+      },
+      {
+        "desc": "concrete floor with scattered debris",
+        "action": "static",
+        "position": "background",
+        "id": "floor_concrete_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The person is using a rasp to file the horse's hoof.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The person is holding the horse's leg with their left hand.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The horse's hoof is resting on the concrete floor.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The person is to the left of the horse's leg. The person is holding the rasp in their right hand and is filing the hoof. The horse's leg is to the right of the person. The debris is scattered on the floor below the person and the horse's leg.",
+    "parse_success": true,
+    "chunk_idx": 29,
+    "video_id": "dA5GBOjQgeg",
+    "state_changes": [
+      "Action changes to filing the hoof with a rasp."
+    ]
+  },
+  {
+    "time": [
+      30,
+      31
+    ],
+    "visible_entities": [
+      {
+        "desc": "person wearing blue jeans, black top, and black rubber boots",
+        "action": "holding and cleaning a horse hoof",
+        "position": "center",
+        "id": "person_farrier_1"
+      },
+      {
+        "desc": "horse with dark brown or black fur and a hoof",
+        "action": "standing with leg lifted",
+        "position": "right",
+        "id": "horse_leg_1"
+      },
+      {
+        "desc": "metal horseshoe",
+        "action": "being held",
+        "position": "center",
+        "id": "horseshoe_silver_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "person is holding a horse's leg",
+        "confidence": 1.0
+      },
+      {
+        "fact": "person is holding a metal horseshoe",
+        "confidence": 1.0
+      },
+      {
+        "fact": "person is cleaning or inspecting the horse's hoof",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The person is standing to the left of the horse. The person is holding the horse's leg in front of them. The horseshoe is held in the person's hand near the horse's hoof.",
+    "parse_success": true,
+    "chunk_idx": 30,
+    "video_id": "dA5GBOjQgeg",
+    "state_changes": [
+      "Action shifts to cleaning the hoof; horse lifts leg."
+    ]
+  },
+  {
+    "time": [
+      31,
+      32
+    ],
+    "visible_entities": [
+      {
+        "desc": "person wearing blue jeans and black rubber boots",
+        "action": "holding a horse's hoof",
+        "position": "center",
+        "id": "person_farrier_1"
+      },
+      {
+        "desc": "dark brown horse leg and hoof",
+        "action": "being held up",
+        "position": "right",
+        "id": "horse_leg_1"
+      },
+      {
+        "desc": "metal farrier tool",
+        "action": "being used on hoof",
+        "position": "center",
+        "id": "tool_misc_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "person is holding a horse's hoof up",
+        "confidence": 1.0
+      },
+      {
+        "fact": "person is using a metal tool on the horse's hoof",
+        "confidence": 1.0
+      },
+      {
+        "fact": "horse leg is dark brown",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The person is to the left of the horse's leg. The person is holding the horse's hoof in front of them. The metal tool is in the person's hands, positioned against the hoof.",
     "parse_success": true,
     "chunk_idx": 31,
     "video_id": "dA5GBOjQgeg",
@@ -1661,8 +1678,8 @@
   },
   {
     "time": [
-      64,
-      66
+      32,
+      33
     ],
     "visible_entities": [
       {
@@ -1672,7 +1689,7 @@
         "id": "person_farrier_1"
       },
       {
-        "desc": "dark brown horse leg and hoof",
+        "desc": "horse's dark brown leg and hoof",
         "action": "static",
         "position": "right",
         "id": "horse_leg_1"
@@ -1687,64 +1704,124 @@
         "desc": "metal horseshoe",
         "action": "static",
         "position": "center",
-        "id": "horseshoe_1"
+        "id": "horseshoe_silver_1"
+      },
+      {
+        "desc": "metal tongs on the floor",
+        "action": "static",
+        "position": "bottom left",
+        "id": "tool_nippers_tongs_1"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "The person is using a rasp to file the bottom of the horse's hoof.",
+        "fact": "person is filing the horse's hoof with a rasp",
         "confidence": 1.0
       },
       {
-        "fact": "The person is holding the horse's leg up with one hand and the tool with the other.",
+        "fact": "metal tongs are lying on the floor in the bottom left corner",
         "confidence": 1.0
       },
       {
-        "fact": "A metal horseshoe is visible near the person's hand.",
+        "fact": "a horseshoe is visible near the person's hands",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The person is standing to the left of the horse's leg. The person is holding the horse's hoof in front of their legs. The rasp is being moved against the bottom of the hoof.",
+    "spatial": "The person is standing in the center, bending over to work on the horse's leg which is to their right. The metal tongs are on the floor to the left of the person's feet.",
     "parse_success": true,
     "chunk_idx": 32,
+    "video_id": "dA5GBOjQgeg",
+    "state_changes": [
+      "Resumption of filing the hoof with a rasp."
+    ]
+  },
+  {
+    "time": [
+      33,
+      34
+    ],
+    "visible_entities": [
+      {
+        "desc": "person wearing black pants and black boots",
+        "action": "holding a horseshoe and a tool",
+        "position": "center",
+        "id": "person_farrier_1"
+      },
+      {
+        "desc": "silver metal horseshoe",
+        "action": "being held",
+        "position": "center",
+        "id": "horseshoe_silver_1"
+      },
+      {
+        "desc": "dark metal tool with two prongs",
+        "action": "being held",
+        "position": "center",
+        "id": "tool_nippers_tongs_1"
+      },
+      {
+        "desc": "brown horse leg and hoof",
+        "action": "static",
+        "position": "right",
+        "id": "horse_leg_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "person holds a silver horseshoe in their left hand",
+        "confidence": 1.0
+      },
+      {
+        "fact": "person holds a two-pronged metal tool in their right hand",
+        "confidence": 1.0
+      },
+      {
+        "fact": "horse leg is standing on the ground to the right of the person",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The person is in the center of the frame, holding the horseshoe and tool. The horse leg is to the right of the person. The tool is positioned near the horseshoe.",
+    "parse_success": true,
+    "chunk_idx": 33,
     "video_id": "dA5GBOjQgeg",
     "state_changes": []
   },
   {
     "time": [
-      66,
-      68
+      34,
+      35
     ],
     "visible_entities": [
       {
-        "desc": "person wearing black pants and black boots, holding tools",
-        "action": "manipulating a horseshoe with pliers",
+        "desc": "person wearing dark blue jeans and black rubber boots",
+        "action": "holding a horseshoe and a metal tool",
         "position": "center",
         "id": "person_farrier_1"
       },
       {
         "desc": "silver metal horseshoe, U-shaped",
-        "action": "being held and worked on",
+        "action": "being held against the person's leg",
         "position": "center",
-        "id": "horseshoe_1"
+        "id": "horseshoe_silver_1"
       },
       {
-        "desc": "dark brown horse leg and hoof",
-        "action": "static",
+        "desc": "horse's brown leg and hoof",
+        "action": "standing on the ground",
         "position": "right",
         "id": "horse_leg_1"
       },
       {
-        "desc": "metal pliers with long handles",
-        "action": "being used to grip the horseshoe",
+        "desc": "metal tool, possibly nippers or pliers",
+        "action": "being held in the person's hand",
         "position": "center",
-        "id": "tool_nippers_pliers_1"
+        "id": "tool_nippers_tongs_1"
       },
       {
-        "desc": "dirt floor with scattered debris",
+        "desc": "dirt and debris on the floor",
         "action": "static",
-        "position": "background",
+        "position": "bottom",
         "id": "floor_concrete_1"
       }
     ],
@@ -1754,85 +1831,31 @@
         "confidence": 1.0
       },
       {
-        "fact": "person is using pliers to grip the edge of the horseshoe",
+        "fact": "person is holding a metal tool in their right hand",
         "confidence": 1.0
       },
       {
-        "fact": "horse leg is standing on the dirt floor to the right of the person",
+        "fact": "horse's hoof is visible on the right side of the frame",
+        "confidence": 1.0
+      },
+      {
+        "fact": "debris is scattered on the ground",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The person is in the center of the frame, holding the horseshoe in front of their legs. The horse leg is to the right of the person. The pliers are in the person's hands, gripping the horseshoe.",
+    "spatial": "The person is in the center of the frame, holding the horseshoe against their leg. The horse's leg is to the right of the person. The metal tool is in the person's hand, near the horseshoe. Debris is on the ground below the person and the horse.",
     "parse_success": true,
-    "chunk_idx": 33,
+    "chunk_idx": 34,
     "video_id": "dA5GBOjQgeg",
     "state_changes": [
-      "person uses pliers to manipulate horseshoe"
+      "Horseshoe is positioned against the person's leg instead of the horse."
     ]
   },
   {
     "time": [
-      68,
-      70
-    ],
-    "visible_entities": [
-      {
-        "desc": "person wearing blue jeans and black rubber boots",
-        "action": "holding a horseshoe and a metal tool",
-        "position": "center",
-        "id": "person_farrier_1"
-      },
-      {
-        "desc": "silver metal horseshoe",
-        "action": "being held",
-        "position": "center",
-        "id": "horseshoe_1"
-      },
-      {
-        "desc": "dark brown horse leg and hoof",
-        "action": "static",
-        "position": "right",
-        "id": "horse_leg_1"
-      },
-      {
-        "desc": "metal tool with a handle",
-        "action": "being held",
-        "position": "center",
-        "id": "tool_general_1"
-      },
-      {
-        "desc": "concrete floor with dirt and debris",
-        "action": "static",
-        "position": "bottom",
-        "id": "floor_concrete_1"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "person holds a silver horseshoe against their leg",
-        "confidence": 1.0
-      },
-      {
-        "fact": "person holds a metal tool in their hand",
-        "confidence": 1.0
-      },
-      {
-        "fact": "horse leg is standing on the floor",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [],
-    "spatial": "The person is in the center of the frame, holding a horseshoe in front of their legs. The horse's leg is to the right of the person. The metal tool is held in the person's hand near the horseshoe.",
-    "parse_success": true,
-    "chunk_idx": 34,
-    "video_id": "dA5GBOjQgeg",
-    "state_changes": []
-  },
-  {
-    "time": [
-      70,
-      72
+      35,
+      36
     ],
     "visible_entities": [
       {
@@ -1845,28 +1868,28 @@
         "desc": "silver metal horseshoe",
         "action": "being held",
         "position": "center",
-        "id": "horseshoe_1"
+        "id": "horseshoe_silver_1"
       },
       {
-        "desc": "dark brown horse leg and hoof",
+        "desc": "horse leg with brown fur and hoof",
         "action": "static",
         "position": "right",
         "id": "horse_leg_1"
       },
       {
         "desc": "small metal tool",
-        "action": "being manipulated",
+        "action": "being used on horseshoe",
         "position": "center",
-        "id": "tool_two_prong_1"
+        "id": "tool_misc_1"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "person is holding a silver horseshoe in their left hand",
+        "fact": "person is holding a silver horseshoe with their left hand",
         "confidence": 1.0
       },
       {
-        "fact": "person is using a small metal tool with their right hand on the horseshoe",
+        "fact": "person is using a small metal tool on the horseshoe with their right hand",
         "confidence": 1.0
       },
       {
@@ -1875,7 +1898,7 @@
       }
     ],
     "ocr": [],
-    "spatial": "The person is standing in the center of the frame, holding the horseshoe in front of their legs. The horse's leg is to the right of the person. The tool is positioned between the person's hands and the horseshoe.",
+    "spatial": "The person is in the center of the frame, holding the horseshoe in front of them. The horse leg is to the right of the person. The tool is in the person's hand, positioned against the horseshoe.",
     "parse_success": true,
     "chunk_idx": 35,
     "video_id": "dA5GBOjQgeg",
@@ -1883,92 +1906,30 @@
   },
   {
     "time": [
-      72,
-      74
+      36,
+      37
     ],
     "visible_entities": [
       {
-        "desc": "person wearing blue jeans and black rubber boots",
-        "action": "holding a horseshoe",
+        "desc": "person wearing blue jeans, black rubber boots, and a dark sleeveless top",
+        "action": "holding a horseshoe and pointing at it",
         "position": "center",
         "id": "person_farrier_1"
       },
       {
-        "desc": "dark brown horse leg and hoof",
+        "desc": "metal horseshoe, silver/grey color",
+        "action": "being held",
+        "position": "center",
+        "id": "horseshoe_silver_1"
+      },
+      {
+        "desc": "brown horse leg and hoof",
         "action": "static",
         "position": "right",
         "id": "horse_leg_1"
       },
       {
-        "desc": "silver metal horseshoe",
-        "action": "being held",
-        "position": "center",
-        "id": "horseshoe_1"
-      },
-      {
-        "desc": "dirt and debris on concrete floor",
-        "action": "static",
-        "position": "bottom",
-        "id": "floor_concrete_1"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "person is holding a silver horseshoe with both hands",
-        "confidence": 1.0
-      },
-      {
-        "fact": "person is wearing black rubber boots",
-        "confidence": 1.0
-      },
-      {
-        "fact": "horse leg is standing on the right side of the frame",
-        "confidence": 1.0
-      },
-      {
-        "fact": "debris is scattered on the ground near the person's feet",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [],
-    "spatial": "The person is standing in the center of the frame, holding the horseshoe in front of their legs. The horse's leg is positioned to the right of the person. The person is standing on a concrete floor covered with dirt.",
-    "parse_success": true,
-    "chunk_idx": 36,
-    "video_id": "dA5GBOjQgeg",
-    "state_changes": []
-  },
-  {
-    "time": [
-      74,
-      76
-    ],
-    "visible_entities": [
-      {
-        "desc": "person wearing dark blue jeans and black rubber boots",
-        "action": "holding a horseshoe and using pliers",
-        "position": "center",
-        "id": "person_farrier_1"
-      },
-      {
-        "desc": "dark brown horse leg and hoof",
-        "action": "static",
-        "position": "right",
-        "id": "horse_leg_1"
-      },
-      {
-        "desc": "metal horseshoe, silver/grey, U-shaped",
-        "action": "being held",
-        "position": "center",
-        "id": "horseshoe_1"
-      },
-      {
-        "desc": "metal pliers, silver, hand tool",
-        "action": "being used",
-        "position": "center",
-        "id": "tool_nippers_pliers_1"
-      },
-      {
-        "desc": "concrete floor, grey, scattered with debris",
+        "desc": "concrete floor with scattered debris",
         "action": "static",
         "position": "background",
         "id": "floor_concrete_1"
@@ -1976,48 +1937,108 @@
     ],
     "atomic_facts": [
       {
-        "fact": "person holds a horseshoe with one hand",
+        "fact": "person holds a horseshoe in their left hand",
         "confidence": 1.0
       },
       {
-        "fact": "person uses pliers to work on the horseshoe",
+        "fact": "person points at the horseshoe with their right index finger",
         "confidence": 1.0
       },
       {
-        "fact": "horse leg stands to the right of the person",
+        "fact": "horse leg is standing on the floor to the right of the person",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The person is in the center of the frame, holding the horseshoe in front of their legs. The horse's leg is to the right of the person. The pliers are in the person's hands, positioned against the horseshoe.",
+    "spatial": "The person is in the center of the frame, holding the horseshoe in front of their legs. The horse's leg is to the right of the person. The person is standing on the concrete floor.",
     "parse_success": true,
-    "chunk_idx": 37,
+    "chunk_idx": 36,
     "video_id": "dA5GBOjQgeg",
     "state_changes": []
   },
   {
     "time": [
-      76,
-      78
+      37,
+      38
     ],
     "visible_entities": [
       {
-        "desc": "person wearing dark blue jeans, black rubber boots, and a dark top",
+        "desc": "person wearing dark blue jeans and black rubber boots",
+        "action": "holding a horseshoe and using a tool on it",
+        "position": "center",
+        "id": "person_farrier_1"
+      },
+      {
+        "desc": "dark brown horse leg with a hoof",
+        "action": "static",
+        "position": "right",
+        "id": "horse_leg_1"
+      },
+      {
+        "desc": "metal horseshoe, silver/grey, U-shaped",
+        "action": "being held and worked on",
+        "position": "center",
+        "id": "horseshoe_silver_1"
+      },
+      {
+        "desc": "metal tool, likely pliers or nippers, silver/grey",
+        "action": "being used on the horseshoe",
+        "position": "center",
+        "id": "tool_nippers_tongs_1"
+      },
+      {
+        "desc": "concrete floor, light grey, with scattered debris",
+        "action": "static",
+        "position": "background",
+        "id": "floor_concrete_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A person is holding a metal horseshoe with their left hand.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The person is using a metal tool with their right hand to work on the horseshoe.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A horse's leg is standing on the concrete floor to the right of the person.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The person is in the center of the frame, holding the horseshoe in front of their legs. The horse's leg is to the right of the person. The metal tool is in the person's right hand, positioned against the horseshoe.",
+    "parse_success": true,
+    "chunk_idx": 37,
+    "video_id": "dA5GBOjQgeg",
+    "state_changes": [
+      "Tool is actively used on the horseshoe itself rather than the hoof."
+    ]
+  },
+  {
+    "time": [
+      38,
+      39
+    ],
+    "visible_entities": [
+      {
+        "desc": "person wearing dark blue jeans and black rubber boots",
         "action": "holding a horseshoe and a metal tool",
         "position": "center",
         "id": "person_farrier_1"
       },
       {
-        "desc": "silver metal horseshoe, U-shaped",
+        "desc": "silver metal horseshoe",
         "action": "being held",
         "position": "center",
-        "id": "horseshoe_1"
+        "id": "horseshoe_silver_1"
       },
       {
-        "desc": "metal tool, possibly a rasp or file, with a handle",
+        "desc": "metal tool with a handle",
         "action": "being held",
         "position": "center",
-        "id": "tool_rasp_file_1"
+        "id": "tool_misc_1"
       },
       {
         "desc": "dark brown horse leg and hoof",
@@ -2028,24 +2049,24 @@
     ],
     "atomic_facts": [
       {
-        "fact": "person is holding a horseshoe in their left hand",
+        "fact": "A person is holding a silver horseshoe in their left hand.",
         "confidence": 1.0
       },
       {
-        "fact": "person is holding a metal tool in their right hand",
+        "fact": "The person is holding a metal tool in their right hand.",
         "confidence": 1.0
       },
       {
-        "fact": "the tool is positioned near the horseshoe",
+        "fact": "The person is standing on a concrete floor.",
         "confidence": 1.0
       },
       {
-        "fact": "a horse leg is standing on the ground to the right of the person",
+        "fact": "A horse's leg is visible on the right side of the frame.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The person is in the center of the frame, holding the horseshoe in front of their legs. The metal tool is held in the person's right hand, positioned next to the horseshoe. The horse's leg is to the right of the person.",
+    "spatial": "The person is in the center of the frame, standing on a concrete floor. The person is holding the horseshoe and the metal tool in front of their legs. The horse's leg is to the right of the person.",
     "parse_success": true,
     "chunk_idx": 38,
     "video_id": "dA5GBOjQgeg",
@@ -2053,51 +2074,45 @@
   },
   {
     "time": [
-      78,
-      80
+      39,
+      40
     ],
     "visible_entities": [
       {
-        "desc": "person wearing dark blue jeans and black rubber boots",
-        "action": "holding a horseshoe and tool",
+        "desc": "person wearing blue jeans, black rubber boots, and a dark sleeveless top",
+        "action": "holding a metal tool against a hoof",
         "position": "center",
         "id": "person_farrier_1"
       },
       {
-        "desc": "dark brown horse leg and hoof",
+        "desc": "horse leg with brown fur and a dark hoof",
         "action": "static",
         "position": "right",
         "id": "horse_leg_1"
       },
       {
-        "desc": "metal horseshoe, silver/grey, U-shaped",
-        "action": "being held",
+        "desc": "metal tool, silver, pincer-like shape",
+        "action": "being manipulated",
         "position": "center",
-        "id": "horseshoe_1"
-      },
-      {
-        "desc": "metal tool, likely nippers or pliers, silver/grey",
-        "action": "being used",
-        "position": "center",
-        "id": "tool_nippers_pliers_1"
+        "id": "tool_nippers_tongs_1"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "person is holding a horseshoe in their left hand",
+        "fact": "A person is bending over and holding a metal tool against a horse's hoof.",
         "confidence": 1.0
       },
       {
-        "fact": "person is using a metal tool on the horseshoe with their right hand",
+        "fact": "The person is wearing black rubber boots.",
         "confidence": 1.0
       },
       {
-        "fact": "horse leg is standing on the ground to the right of the person",
+        "fact": "The horse's leg is positioned to the right of the person.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The person is in the center of the frame, bending over. The horse's leg is to the right of the person. The horseshoe and tool are held in the person's hands, positioned between the person's legs and near the horse's hoof.",
+    "spatial": "The person is in the center of the frame, bending over. The horse's leg is to the right of the person. The person is holding the metal tool in front of their legs, near the horse's hoof.",
     "parse_success": true,
     "chunk_idx": 39,
     "video_id": "dA5GBOjQgeg",
@@ -2105,13 +2120,13 @@
   },
   {
     "time": [
-      80,
-      82
+      40,
+      41
     ],
     "visible_entities": [
       {
-        "desc": "person with dark hair, wearing a black sleeveless top, blue jeans, and black rubber boots",
-        "action": "bending over and manipulating a tool near a horse's hoof",
+        "desc": "person with dark hair, wearing a black sleeveless top, blue jeans, and black boots",
+        "action": "bending over and manipulating a tool",
         "position": "center",
         "id": "person_farrier_1"
       },
@@ -2122,32 +2137,32 @@
         "id": "horse_leg_1"
       },
       {
-        "desc": "metal tool, likely a hoof pick or rasp",
-        "action": "being held and used",
+        "desc": "metal tool with a silver blade and handle",
+        "action": "being held",
         "position": "center",
-        "id": "tool_hoof_pick_1"
+        "id": "tool_misc_1"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "person is bending over a horse's hoof",
+        "fact": "A person is bending forward at the waist.",
         "confidence": 1.0
       },
       {
-        "fact": "person is holding a metal tool in their hands",
+        "fact": "The person is holding a metal tool in their hands.",
         "confidence": 1.0
       },
       {
-        "fact": "person is manipulating the tool against the horse's hoof",
+        "fact": "The tool is positioned near the person's boots.",
         "confidence": 1.0
       },
       {
-        "fact": "horse leg is standing on a dirt or concrete floor",
+        "fact": "A horse leg is standing on the ground to the right of the person.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The person is positioned to the left of the horse's leg. The person is bending over, placing their hands and the tool below their torso and near the horse's hoof. The horse's leg is to the right of the person.",
+    "spatial": "The person is positioned to the left of the horse leg. The person is holding the metal tool in front of their legs and below their torso. The horse leg is standing on the ground next to the person.",
     "parse_success": true,
     "chunk_idx": 40,
     "video_id": "dA5GBOjQgeg",
@@ -2155,74 +2170,81 @@
   },
   {
     "time": [
-      82,
-      84
+      41,
+      42
     ],
     "visible_entities": [
       {
-        "desc": "person wearing a black sleeveless top, blue jeans, and black rubber boots",
-        "action": "holding a horseshoe",
-        "position": "center"
+        "desc": "person wearing a black short-sleeved shirt, blue jeans, and black rubber boots",
+        "action": "holding a dark horseshoe",
+        "position": "center",
+        "id": "person_farrier_1"
       },
       {
-        "desc": "dark brown horse leg and hoof",
+        "desc": "dark brown horse leg with a hoof",
         "action": "static",
         "position": "right",
         "id": "horse_leg_1"
       },
       {
-        "desc": "metal horseshoe, silver/grey color",
+        "desc": "dark metallic horseshoe",
         "action": "being held",
         "position": "center",
-        "id": "horseshoe_1"
+        "id": "horseshoe_dark_1"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "person is holding a horseshoe with both hands",
+        "fact": "A person is holding a horseshoe with both hands.",
         "confidence": 1.0
       },
       {
-        "fact": "horse leg is standing on the ground next to the person",
+        "fact": "The person is standing on a concrete floor.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A horse's leg is standing next to the person.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The person is in the center of the frame, holding the horseshoe in front of their body. The horse leg is to the right of the person. The person is standing on a dirt or concrete floor.",
+    "spatial": "The person is standing in the center of the frame, holding the horseshoe in front of their legs. The horse's leg is positioned to the right of the person. The person's black boots are on the concrete floor.",
     "parse_success": true,
     "chunk_idx": 41,
     "video_id": "dA5GBOjQgeg",
-    "state_changes": []
+    "state_changes": [
+      "Switch from a silver horseshoe to a dark metallic horseshoe."
+    ]
   },
   {
     "time": [
-      84,
-      86
+      42,
+      43
     ],
     "visible_entities": [
       {
-        "desc": "person wearing blue jeans, black sleeveless top, and black rubber boots",
+        "desc": "person wearing a black sleeveless top, blue jeans, and black rubber boots",
         "action": "holding a horseshoe and a metal tool",
         "position": "center",
         "id": "person_farrier_1"
       },
       {
-        "desc": "shiny silver metal horseshoe",
+        "desc": "silver metal horseshoe",
         "action": "being held",
         "position": "center",
-        "id": "horseshoe_1"
+        "id": "horseshoe_silver_1"
       },
       {
-        "desc": "dark brown horse leg and hoof",
+        "desc": "brown horse leg and hoof",
         "action": "static",
         "position": "right",
         "id": "horse_leg_1"
       },
       {
-        "desc": "long thin metal tool",
+        "desc": "long metal tool, possibly a rasp or file",
         "action": "being held",
         "position": "center",
-        "id": "tool_nippers_pliers_1"
+        "id": "tool_rasp_file_1"
       }
     ],
     "atomic_facts": [
@@ -2235,12 +2257,12 @@
         "confidence": 1.0
       },
       {
-        "fact": "horse leg is standing on the ground to the right of the person",
+        "fact": "the horse's leg is standing on the ground to the right of the person",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The person is in the center of the frame, holding the horseshoe and tool. The horse's leg is to the right of the person. The ground is below the person and the horse.",
+    "spatial": "The person is in the center of the frame, holding the horseshoe and the metal tool. The horse's leg is to the right of the person. The metal tool is positioned below the horseshoe.",
     "parse_success": true,
     "chunk_idx": 42,
     "video_id": "dA5GBOjQgeg",
@@ -2248,51 +2270,51 @@
   },
   {
     "time": [
-      86,
-      88
+      43,
+      44
     ],
     "visible_entities": [
       {
         "desc": "person wearing dark blue jeans and black rubber boots",
-        "action": "holding a horseshoe and a metal tool",
+        "action": "holding a horseshoe and tongs",
         "position": "center",
         "id": "person_farrier_1"
       },
       {
         "desc": "silver metal horseshoe, U-shaped",
-        "action": "being held by the person",
+        "action": "being held",
         "position": "center",
-        "id": "horseshoe_1"
+        "id": "horseshoe_silver_1"
+      },
+      {
+        "desc": "metal tongs or pliers, dark color",
+        "action": "being used to hold the horseshoe",
+        "position": "center",
+        "id": "tool_nippers_tongs_1"
       },
       {
         "desc": "brown horse leg and hoof",
         "action": "static",
         "position": "right",
         "id": "horse_leg_1"
-      },
-      {
-        "desc": "metal tool, possibly pliers or tongs",
-        "action": "being held by the person",
-        "position": "center",
-        "id": "tool_nippers_pliers_1"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "person holds a silver horseshoe in their right hand",
+        "fact": "person is holding a horseshoe with tongs",
         "confidence": 1.0
       },
       {
-        "fact": "person holds a metal tool in their left hand",
+        "fact": "the horseshoe is positioned near the horse's hoof",
         "confidence": 1.0
       },
       {
-        "fact": "horse leg is standing on the ground to the right of the person",
+        "fact": "the person is standing on a dirt or concrete floor",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The person is in the center of the frame, holding the horseshoe and tool. The horse leg is to the right of the person. The ground is below all visible entities.",
+    "spatial": "The person is in the center of the frame, holding the horseshoe and tongs. The horse's leg is to the right of the person. The horseshoe is held in front of the person's legs.",
     "parse_success": true,
     "chunk_idx": 43,
     "video_id": "dA5GBOjQgeg",
@@ -2300,8 +2322,8 @@
   },
   {
     "time": [
-      88,
-      90
+      44,
+      45
     ],
     "visible_entities": [
       {
@@ -2314,7 +2336,7 @@
         "desc": "silver metal horseshoe, U-shaped",
         "action": "being held",
         "position": "center",
-        "id": "horseshoe_1"
+        "id": "horseshoe_silver_1"
       },
       {
         "desc": "metal tool, likely a rasp or file, silver/grey",
@@ -2331,20 +2353,20 @@
     ],
     "atomic_facts": [
       {
-        "fact": "person is holding a silver horseshoe in their left hand",
+        "fact": "A person is holding a silver horseshoe in their left hand.",
         "confidence": 1.0
       },
       {
-        "fact": "person is holding a metal tool in their right hand",
+        "fact": "The person is holding a metal tool in their right hand.",
         "confidence": 1.0
       },
       {
-        "fact": "horse leg is standing on the ground to the right of the person",
+        "fact": "A horse's leg is standing on the ground to the right of the person.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The person is in the center of the frame, holding the horseshoe in front of their legs. The horse's leg is to the right of the person. The metal tool is held in the person's right hand, near the horseshoe.",
+    "spatial": "The person is in the center of the frame, holding the horseshoe and tool in front of their legs. The horse's leg is to the right of the person. The ground is below the person and the horse.",
     "parse_success": true,
     "chunk_idx": 44,
     "video_id": "dA5GBOjQgeg",
@@ -2352,67 +2374,13 @@
   },
   {
     "time": [
-      90,
-      92
+      45,
+      46
     ],
     "visible_entities": [
       {
         "desc": "person wearing blue jeans and black rubber boots",
-        "action": "holding a horseshoe and hammering it",
-        "position": "center",
-        "id": "person_farrier_1"
-      },
-      {
-        "desc": "silver metal horseshoe, U-shaped",
-        "action": "being held and hammered",
-        "position": "center",
-        "id": "horseshoe_1"
-      },
-      {
-        "desc": "dark metal hammer",
-        "action": "striking the horseshoe",
-        "position": "center",
-        "id": "tool_hammer_1"
-      },
-      {
-        "desc": "brown horse leg and hoof",
-        "action": "static",
-        "position": "right",
-        "id": "horse_leg_1"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "person is holding a silver horseshoe against their leg",
-        "confidence": 1.0
-      },
-      {
-        "fact": "person is striking the horseshoe with a hammer",
-        "confidence": 1.0
-      },
-      {
-        "fact": "a horse leg is standing on the ground to the right",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [],
-    "spatial": "The person is in the center of the frame, holding the horseshoe against their left leg. The horse leg is to the right of the person. The hammer is in the person's hand, positioned above the horseshoe.",
-    "parse_success": true,
-    "chunk_idx": 45,
-    "video_id": "dA5GBOjQgeg",
-    "state_changes": [
-      "person begins hammering the horseshoe"
-    ]
-  },
-  {
-    "time": [
-      92,
-      94
-    ],
-    "visible_entities": [
-      {
-        "desc": "person wearing blue jeans and black rubber boots",
-        "action": "holding a horseshoe and a hammer",
+        "action": "holding a hammer and a horseshoe",
         "position": "center",
         "id": "person_farrier_1"
       },
@@ -2420,16 +2388,16 @@
         "desc": "silver metal horseshoe",
         "action": "being held",
         "position": "center",
-        "id": "horseshoe_1"
+        "id": "horseshoe_silver_1"
       },
       {
-        "desc": "silver hammer",
+        "desc": "hammer with a wooden handle and metal head",
         "action": "being held",
         "position": "center",
         "id": "tool_hammer_1"
       },
       {
-        "desc": "brown horse leg and hoof",
+        "desc": "brown horse leg",
         "action": "static",
         "position": "right",
         "id": "horse_leg_1"
@@ -2445,12 +2413,66 @@
         "confidence": 1.0
       },
       {
-        "fact": "horse leg is standing on the ground to the right of the person",
+        "fact": "horse leg is standing on the ground",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The person is in the center of the frame, holding the horseshoe in front of their legs. The horse's leg is to the right of the person. The hammer is held above the horseshoe.",
+    "spatial": "The person is in the center of the frame. The horseshoe is held in front of the person's legs. The horse leg is to the right of the person. The hammer is held above the horseshoe.",
+    "parse_success": true,
+    "chunk_idx": 45,
+    "video_id": "dA5GBOjQgeg",
+    "state_changes": [
+      "Hammer is reintroduced and held alongside the horseshoe."
+    ]
+  },
+  {
+    "time": [
+      46,
+      47
+    ],
+    "visible_entities": [
+      {
+        "desc": "person wearing blue jeans and black rubber boots",
+        "action": "holding a horseshoe and a hammer",
+        "position": "center",
+        "id": "person_farrier_1"
+      },
+      {
+        "desc": "silver metal horseshoe, U-shaped",
+        "action": "being held against a leg",
+        "position": "center",
+        "id": "horseshoe_silver_1"
+      },
+      {
+        "desc": "metal hammer with a silver head",
+        "action": "being held in hand",
+        "position": "center",
+        "id": "tool_hammer_1"
+      },
+      {
+        "desc": "brown horse leg and hoof",
+        "action": "standing",
+        "position": "right",
+        "id": "horse_leg_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A person is holding a silver horseshoe against their leg.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The person is holding a hammer in their right hand.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A horse's leg is standing on the ground to the right of the person.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The person is in the center of the frame, holding the horseshoe in front of their legs. The hammer is held in the person's hand above the horseshoe. The horse's leg is to the right of the person.",
     "parse_success": true,
     "chunk_idx": 46,
     "video_id": "dA5GBOjQgeg",
@@ -2458,51 +2480,51 @@
   },
   {
     "time": [
-      94,
-      96
+      47,
+      48
     ],
     "visible_entities": [
       {
         "desc": "person wearing dark blue jeans and black rubber boots",
-        "action": "holding a horseshoe and a metal tool",
+        "action": "holding a horseshoe and a tool",
         "position": "center",
         "id": "person_farrier_1"
       },
       {
-        "desc": "horseshoe, silver metal, U-shaped",
+        "desc": "silver horseshoe with white markings",
         "action": "being held",
         "position": "center",
-        "id": "horseshoe_1"
+        "id": "horseshoe_silver_1"
       },
       {
-        "desc": "metal tool with two prongs, silver",
-        "action": "being held",
-        "position": "center",
-        "id": "tool_two_prong_1"
-      },
-      {
-        "desc": "horse leg, brown fur, hoof",
+        "desc": "horse leg with brown fur and hoof",
         "action": "static",
         "position": "right",
         "id": "horse_leg_1"
+      },
+      {
+        "desc": "metal tool with two prongs",
+        "action": "being held",
+        "position": "center",
+        "id": "tool_nippers_tongs_1"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "person holds a silver horseshoe in one hand",
+        "fact": "person holds a silver horseshoe in their left hand",
         "confidence": 1.0
       },
       {
-        "fact": "person holds a two-pronged metal tool in the other hand",
+        "fact": "person holds a metal tool with two prongs in their right hand",
         "confidence": 1.0
       },
       {
-        "fact": "horse leg stands on the ground to the right of the person",
+        "fact": "horse leg is standing on the ground to the right of the person",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The person is in the center of the frame, holding the horseshoe and tool. The horse leg is to the right of the person. The ground is below all entities.",
+    "spatial": "The person is in the center of the frame, holding the horseshoe and tool. The horse leg is to the right of the person. The horseshoe is in front of the person's legs.",
     "parse_success": true,
     "chunk_idx": 47,
     "video_id": "dA5GBOjQgeg",
@@ -2510,76 +2532,67 @@
   },
   {
     "time": [
-      96,
-      98
+      48,
+      49
     ],
     "visible_entities": [
       {
-        "desc": "person wearing dark blue jeans and black rubber boots",
+        "desc": "person wearing blue jeans and black boots",
         "action": "standing on wet floor",
         "position": "center",
         "id": "person_farrier_1"
       },
       {
-        "desc": "brown animal leg, likely a horse",
-        "action": "standing",
+        "desc": "brown animal leg",
+        "action": "standing on wet floor",
         "position": "right",
         "id": "horse_leg_1"
       },
       {
-        "desc": "metallic tool, possibly pliers or tongs",
+        "desc": "metallic tool or object",
         "action": "being held",
-        "position": "bottom center",
-        "id": "tool_nippers_pliers_1"
-      },
-      {
-        "desc": "blue cylindrical object, part of a stand or equipment",
-        "action": "static",
         "position": "left",
-        "id": "tool_stand_1"
+        "id": "tool_misc_1"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A person wearing black boots is standing on a wet, dirty floor.",
+        "fact": "A person wearing blue jeans and black boots is standing on a wet floor.",
         "confidence": 1.0
       },
       {
-        "fact": "The person is holding a metallic tool in their hand.",
+        "fact": "A brown animal leg is visible to the right of the person.",
         "confidence": 1.0
       },
       {
-        "fact": "An animal leg is visible standing next to the person.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "Water or liquid is splashing on the floor near the person's feet.",
+        "fact": "A metallic tool or object is being held by a hand on the left side.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The person in blue jeans is standing in the center of the frame, to the left of the brown animal leg. The person is holding a metallic tool in their hand, positioned near the bottom of the frame. A blue object is visible on the far left side of the scene.",
+    "spatial": "The person in blue jeans is in the center of the frame. The brown animal leg is to the right of the person. The metallic tool is to the left of the person.",
     "parse_success": true,
     "chunk_idx": 48,
     "video_id": "dA5GBOjQgeg",
     "state_changes": [
-      "person standing on wet floor, work phase appears complete"
+      "Scene context changes to a wet floor; horse and person standing still."
     ]
   },
   {
     "time": [
-      98,
-      100
+      49,
+      50
     ],
     "visible_entities": [
       {
-        "desc": "person wearing dark blue jeans and black boots, holding a metal tool",
-        "action": "manipulating a tool near an animal's leg",
-        "position": "left"
+        "desc": "person wearing dark blue jeans and black boots",
+        "action": "walking and holding a metal tool",
+        "position": "center",
+        "id": "person_farrier_1"
       },
       {
-        "desc": "brown animal leg and hoof",
-        "action": "standing on the floor",
+        "desc": "brown horse legs",
+        "action": "standing",
         "position": "right",
         "id": "horse_leg_1"
       },
@@ -2587,10 +2600,10 @@
         "desc": "metal tool with a red handle",
         "action": "static",
         "position": "bottom left",
-        "id": "tool_red_handle_1"
+        "id": "tool_misc_1"
       },
       {
-        "desc": "light-colored floor with debris",
+        "desc": "concrete floor with debris",
         "action": "static",
         "position": "background",
         "id": "floor_concrete_1"
@@ -2598,27 +2611,29 @@
     ],
     "atomic_facts": [
       {
-        "fact": "A person is holding a metal tool in their hands.",
+        "fact": "person is walking towards the horse",
         "confidence": 1.0
       },
       {
-        "fact": "The person is standing next to a brown animal's leg.",
+        "fact": "person is holding a metal tool in their left hand",
         "confidence": 1.0
       },
       {
-        "fact": "A metal tool with a red handle is lying on the floor in the bottom left corner.",
+        "fact": "a metal tool with a red handle is lying on the floor",
         "confidence": 1.0
       },
       {
-        "fact": "There is debris scattered on the light-colored floor.",
+        "fact": "horse legs are standing on the concrete floor",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The person is to the left of the brown animal's leg. The metal tool with the red handle is on the floor in the bottom left, below the person's hands. The debris is scattered on the floor around the person and the animal's leg.",
+    "spatial": "The person is to the left of the horse legs. The metal tool with a red handle is on the floor in the bottom left corner. The person is walking on the concrete floor which is below them.",
     "parse_success": true,
     "chunk_idx": 49,
     "video_id": "dA5GBOjQgeg",
-    "state_changes": []
+    "state_changes": [
+      "Person begins walking while holding a tool."
+    ]
   }
 ]

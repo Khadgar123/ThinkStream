@@ -2,66 +2,70 @@
   {
     "time": [
       0,
-      2
+      1
     ],
     "visible_entities": [
       {
-        "desc": "green stylized text logo reading 'eHow' with a folded ribbon effect",
-        "action": "appearing and forming",
+        "desc": "green text logo reading 'eHow' with a stylized, folded ribbon design",
+        "action": "appearing on screen",
         "position": "center"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "The text 'eHow' forms on the screen.",
+        "fact": "The text 'eHow' appears on the screen.",
         "confidence": 1.0
       },
       {
-        "fact": "The logo consists of green letters on a white background.",
+        "fact": "The logo features a green color scheme.",
         "confidence": 1.0
       }
     ],
     "ocr": [
       "eHow"
     ],
-    "spatial": "The green text logo is positioned in the center of the white background.",
+    "spatial": "The green 'eHow' logo is centered on a white background.",
     "parse_success": true,
     "chunk_idx": 0,
     "video_id": "MDrxVQjHmcU"
   },
   {
     "time": [
-      2,
-      4
+      1,
+      2
     ],
     "visible_entities": [
       {
-        "desc": "green text logo 'eHow' with a folded ribbon style",
+        "desc": "green stylized text logo reading 'eHow' with a folded ribbon effect",
         "action": "static",
-        "position": "top/center"
+        "position": "center"
       },
       {
-        "desc": "red background with diagonal shadow lines",
+        "desc": "solid red background with diagonal shadow lines",
         "action": "static",
         "position": "background"
       },
       {
-        "desc": "white text 'food' in a sans-serif font",
+        "desc": "white lowercase sans-serif text reading 'food'",
         "action": "static",
         "position": "center"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "The 'eHow' logo is visible at the top of the screen.",
+        "fact": "The green 'eHow' logo is displayed on a white background.",
         "confidence": 1.0
       },
       {
-        "fact": "The word 'food' is displayed in the center of the screen.",
+        "fact": "The scene transitions to a red background.",
         "confidence": 1.0
       },
       {
-        "fact": "The background is red.",
+        "fact": "The word 'food' appears in white text on the red background.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The 'eHow' logo shrinks and moves to the top edge of the frame.",
         "confidence": 1.0
       }
     ],
@@ -69,19 +73,19 @@
       "eHow",
       "food"
     ],
-    "spatial": "The 'eHow' logo is above the word 'food'. The word 'food' is centered on the red background.",
+    "spatial": "The 'eHow' logo is initially centered on the white background. In the second frame, the 'eHow' logo is positioned at the top center, above the word 'food'. The word 'food' is centered on the red background.",
     "parse_success": true,
     "chunk_idx": 1,
     "video_id": "MDrxVQjHmcU"
   },
   {
     "time": [
-      4,
-      6
+      2,
+      3
     ],
     "visible_entities": [
       {
-        "desc": "woman with shoulder-length blonde hair, wearing a long-sleeved top with a geometric pattern in shades of blue, purple, and white",
+        "desc": "woman with shoulder-length blonde hair, wearing a long-sleeved top with a geometric pattern in blue, purple, and grey",
         "action": "standing behind a kitchen counter",
         "position": "center"
       },
@@ -101,19 +105,29 @@
         "position": "left"
       },
       {
-        "desc": "wooden kitchen cabinets",
+        "desc": "wooden kitchen cabinets, light brown",
         "action": "static",
         "position": "background"
       },
       {
-        "desc": "gas stovetop",
+        "desc": "stainless steel gas stovetop",
         "action": "static",
         "position": "right"
       },
       {
-        "desc": "green and white 'Food Evolution' logo",
+        "desc": "black handled knife",
+        "action": "static",
+        "position": "center"
+      },
+      {
+        "desc": "glass bowl with white powder",
         "action": "static",
         "position": "left"
+      },
+      {
+        "desc": "white sticky note with green text",
+        "action": "static",
+        "position": "top"
       }
     ],
     "atomic_facts": [
@@ -122,35 +136,44 @@
         "confidence": 1.0
       },
       {
-        "fact": "There are pieces of butternut squash on the white cutting board.",
+        "fact": "The woman is standing behind a kitchen counter.",
         "confidence": 1.0
       },
       {
-        "fact": "A 'Food Evolution' logo is visible on the refrigerator door.",
+        "fact": "A refrigerator is visible on the left side of the kitchen.",
         "confidence": 1.0
       },
       {
-        "fact": "The kitchen has wooden cabinets and a tiled backsplash.",
+        "fact": "A gas stovetop is visible on the right side of the counter.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The text 'eHow' is visible on a sticky note at the top of the screen.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The text 'food' is displayed in large white letters on a red background.",
         "confidence": 1.0
       }
     ],
     "ocr": [
-      "Food Evolution"
+      "eHow",
+      "food"
     ],
-    "spatial": "The woman is standing in the center, behind a kitchen counter. The refrigerator is to her left, and the gas stovetop is to her right. The cutting board with squash is on the counter in front of her. The wooden cabinets are above the counter and behind her.",
+    "spatial": "The woman is standing behind the kitchen counter. The cutting board with the squash is on the counter in front of her. The refrigerator is to the left of the woman, and the stovetop is to the right. The wooden cabinets are above the counter in the background.",
     "parse_success": true,
     "chunk_idx": 2,
     "video_id": "MDrxVQjHmcU"
   },
   {
     "time": [
-      6,
-      8
+      3,
+      4
     ],
     "visible_entities": [
       {
-        "desc": "woman with shoulder-length blonde hair, wearing a long-sleeved top with a blue, green, and white geometric pattern",
-        "action": "standing behind a kitchen counter",
+        "desc": "woman with shoulder-length blonde hair, wearing a long-sleeved top with a geometric pattern in blue, green, and purple",
+        "action": "standing behind the counter",
         "position": "center"
       },
       {
@@ -174,7 +197,7 @@
         "position": "background"
       },
       {
-        "desc": "stainless steel gas stovetop with black grates",
+        "desc": "black gas stovetop with metal grates",
         "action": "static",
         "position": "right foreground"
       },
@@ -186,19 +209,15 @@
     ],
     "atomic_facts": [
       {
-        "fact": "The woman is holding a piece of cut butternut squash in her left hand.",
+        "fact": "The woman is holding a piece of butternut squash.",
         "confidence": 1.0
       },
       {
-        "fact": "A white cutting board is on the counter in front of the woman.",
+        "fact": "The 'Food Evolution' magnet is on the refrigerator door.",
         "confidence": 1.0
       },
       {
-        "fact": "The 'Food Evolution' magnet is on the upper door of the refrigerator.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The eHow logo is visible in the bottom left corner of the screen.",
+        "fact": "The eHow logo is visible in the bottom left corner.",
         "confidence": 1.0
       }
     ],
@@ -206,68 +225,81 @@
       "Food EVOLUTION",
       "eHow"
     ],
-    "spatial": "The woman is standing behind the kitchen counter. The cutting board is on the counter in front of her. The refrigerator is to the left of the woman. The stovetop is to the right of the cutting board. The wooden cabinets are above the counter and behind the woman.",
+    "spatial": "The woman is standing behind the kitchen counter. The cutting board with the squash is in front of her. The refrigerator is to her left, and the stovetop is to her right. The wooden cabinets are above the counter.",
     "parse_success": true,
     "chunk_idx": 3,
     "video_id": "MDrxVQjHmcU"
   },
   {
     "time": [
-      8,
-      10
+      4,
+      5
     ],
     "visible_entities": [
       {
-        "desc": "woman with blonde shoulder-length hair, wearing a long-sleeved top with a geometric pattern in blue, green, and purple",
-        "action": "standing behind a counter",
+        "desc": "woman with shoulder-length blonde hair, wearing a long-sleeved top with a blue, green, and white abstract geometric pattern, and dangling earrings",
+        "action": "standing and speaking",
         "position": "center"
       },
       {
-        "desc": "butternut squash, tan skin, elongated shape",
+        "desc": "stainless steel refrigerator with a green and white 'Food Evolution' magnet on the upper door",
         "action": "static",
-        "position": "foreground left"
+        "position": "left"
       },
       {
-        "desc": "kitchen knife with a black handle and silver blade",
-        "action": "static",
-        "position": "foreground left"
-      },
-      {
-        "desc": "stainless steel refrigerator with a green and white magnet on the door",
-        "action": "static",
-        "position": "background left"
-      },
-      {
-        "desc": "wooden kitchen cabinets, reddish-brown finish",
+        "desc": "wooden kitchen cabinets, reddish-brown finish, with silver handles",
         "action": "static",
         "position": "background"
       },
       {
-        "desc": "gas stovetop with black grates",
+        "desc": "beige tiled backsplash with a mosaic pattern",
+        "action": "static",
+        "position": "background"
+      },
+      {
+        "desc": "black gas stovetop with metal grates",
         "action": "static",
         "position": "foreground right"
       },
       {
-        "desc": "lower-third graphic overlay with white text on a semi-transparent dark background",
+        "desc": "yellow squash on a wooden cutting board",
         "action": "static",
-        "position": "bottom left"
+        "position": "foreground left"
+      },
+      {
+        "desc": "black-handled kitchen knife with a silver blade",
+        "action": "static",
+        "position": "foreground left"
+      },
+      {
+        "desc": "lower-third graphic overlay with a white 'eHow' logo and text identifying 'Diane Hoch' as 'Chef & Nutritional Health Counselor'",
+        "action": "static",
+        "position": "bottom"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A woman stands in a kitchen behind a counter.",
+        "fact": "A woman is standing in a kitchen and speaking.",
         "confidence": 1.0
       },
       {
-        "fact": "A butternut squash and a knife are resting on the counter in front of the woman.",
+        "fact": "The woman is positioned behind a wooden cutting board.",
         "confidence": 1.0
       },
       {
-        "fact": "The lower-third graphic identifies the woman as Diane Hoch, Chef & Nutritional Health Counselor.",
+        "fact": "A yellow squash and a knife are on the cutting board in front of the woman.",
         "confidence": 1.0
       },
       {
-        "fact": "The eHow logo is visible on the graphic overlay.",
+        "fact": "A stainless steel refrigerator is to the left of the woman.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A black gas stovetop is in the foreground to the right of the cutting board.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The on-screen text identifies the woman as Diane Hoch, Chef & Nutritional Health Counselor.",
         "confidence": 1.0
       }
     ],
@@ -277,24 +309,125 @@
       "Chef & Nutritional Health Counselor",
       "Food EVOLUTION"
     ],
-    "spatial": "The woman is standing behind the kitchen counter. To her left is a stainless steel refrigerator. On the counter in front of her, a butternut squash is positioned to the left of a knife. To the right of the counter is a gas stovetop. The wooden cabinets are mounted on the wall above the counter and sink.",
+    "spatial": "The woman is standing in the center of the kitchen, behind a wooden cutting board. To her left is a stainless steel refrigerator, and to her right is a sink area. In the foreground, the cutting board with a squash and knife is on the counter, and a black gas stovetop is to the right of the cutting board. Wooden cabinets are above the counter and backsplash.",
     "parse_success": true,
     "chunk_idx": 4,
     "video_id": "MDrxVQjHmcU"
   },
   {
     "time": [
-      10,
-      12
+      5,
+      6
     ],
     "visible_entities": [
       {
-        "desc": "woman with shoulder-length blonde hair, wearing a long-sleeved top with a blue, green, and white abstract geometric pattern",
-        "action": "standing and gesturing with her right hand",
+        "desc": "woman with blonde shoulder-length hair, wearing a long-sleeved top with a blue, green, and white abstract geometric pattern",
+        "action": "standing behind a kitchen counter and gesturing with her right hand",
         "position": "center"
       },
       {
         "desc": "silver refrigerator with a 'Food Evolution' magnet on the upper door",
+        "action": "static",
+        "position": "left"
+      },
+      {
+        "desc": "wooden kitchen cabinets, medium brown finish, with silver handles",
+        "action": "static",
+        "position": "background"
+      },
+      {
+        "desc": "beige tiled backsplash with small mosaic tiles",
+        "action": "static",
+        "position": "background"
+      },
+      {
+        "desc": "stainless steel sink with a faucet",
+        "action": "static",
+        "position": "background"
+      },
+      {
+        "desc": "black gas stovetop with metal grates",
+        "action": "static",
+        "position": "foreground right"
+      },
+      {
+        "desc": "light-colored countertop with a knife and a butternut squash",
+        "action": "static",
+        "position": "foreground"
+      },
+      {
+        "desc": "lower-third graphic overlay with the 'eHow' logo and text identifying 'Diane Hoch' as a 'Chef & Nutritional Health Counselor'",
+        "action": "static",
+        "position": "bottom"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A woman stands in a kitchen setting behind a counter.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The woman gestures with her right hand while speaking.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A knife and a butternut squash are on the counter in front of the woman.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The on-screen text identifies the woman as Diane Hoch, a Chef & Nutritional Health Counselor.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "eHow",
+      "Diane Hoch",
+      "Chef & Nutritional Health Counselor",
+      "Food EVOLUTION"
+    ],
+    "spatial": "The woman is standing behind the kitchen counter. To her left is a silver refrigerator. Behind her are wooden cabinets and a tiled backsplash. In the foreground to the right is a black stovetop. The knife and squash are on the counter in front of her.",
+    "parse_success": true,
+    "chunk_idx": 5,
+    "video_id": "MDrxVQjHmcU"
+  },
+  {
+    "time": [
+      6,
+      7
+    ],
+    "visible_entities": [
+      {
+        "desc": "woman with blonde shoulder-length hair, wearing a long-sleeved top with a blue, green, and white abstract pattern",
+        "action": "gesturing with her right hand while standing behind a counter",
+        "position": "center"
+      },
+      {
+        "desc": "butternut squash, tan skin, elongated shape",
+        "action": "static",
+        "position": "left"
+      },
+      {
+        "desc": "white cutting board, rectangular",
+        "action": "static",
+        "position": "center"
+      },
+      {
+        "desc": "cut pieces of butternut squash, orange flesh",
+        "action": "being touched by the woman's left hand",
+        "position": "center"
+      },
+      {
+        "desc": "chef's knife, black handle, silver blade",
+        "action": "static",
+        "position": "center"
+      },
+      {
+        "desc": "stainless steel refrigerator",
+        "action": "static",
+        "position": "left"
+      },
+      {
+        "desc": "green and white sign with text",
         "action": "static",
         "position": "left"
       },
@@ -304,129 +437,47 @@
         "position": "background"
       },
       {
-        "desc": "butternut squash, tan skin, elongated shape",
-        "action": "static",
-        "position": "foreground"
-      },
-      {
-        "desc": "black-handled chef's knife",
-        "action": "static",
-        "position": "foreground"
-      },
-      {
-        "desc": "stainless steel gas stovetop with black grates",
-        "action": "static",
-        "position": "bottom right"
-      },
-      {
-        "desc": "lower-third graphic overlay with 'eHow' logo and text",
-        "action": "static",
-        "position": "bottom left"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "The woman is gesturing with her right hand while standing in a kitchen.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "A butternut squash and a knife are resting on the counter in front of the woman.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The text overlay identifies the woman as 'Diane Hoch' and her title as 'Chef & Nutritional Health Counselor'.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "A magnet reading 'Food Evolution' is attached to the refrigerator door.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [
-      "eHow",
-      "Diane Hoch",
-      "Chef & Nutritional Health Counselor",
-      "Food",
-      "EVOLUTION"
-    ],
-    "spatial": "The woman is standing in the center of the kitchen, positioned between the refrigerator on her left and the sink area on her right. The butternut squash and knife are on the counter in front of her, to the left of the stovetop. The wooden cabinets are mounted on the wall above the countertop and behind the woman.",
-    "parse_success": true,
-    "chunk_idx": 5,
-    "video_id": "MDrxVQjHmcU"
-  },
-  {
-    "time": [
-      12,
-      14
-    ],
-    "visible_entities": [
-      {
-        "desc": "woman with blonde hair, wearing a long-sleeved top with a blue, green, and white abstract pattern",
-        "action": "gesturing with right hand and touching a yellow squash",
-        "position": "center"
-      },
-      {
-        "desc": "yellow butternut squash, cut into pieces",
-        "action": "being touched by the woman",
-        "position": "center"
-      },
-      {
-        "desc": "stainless steel refrigerator with a 'Food Evolution' magnet",
-        "action": "static",
-        "position": "left"
-      },
-      {
-        "desc": "wooden kitchen cabinets, medium brown color",
-        "action": "static",
-        "position": "background"
-      },
-      {
-        "desc": "black gas stovetop with metal grates",
+        "desc": "black gas stovetop with grates",
         "action": "static",
         "position": "right"
-      },
-      {
-        "desc": "white cutting board on a countertop",
-        "action": "static",
-        "position": "center"
-      },
-      {
-        "desc": "green and white 'eHow' logo",
-        "action": "static",
-        "position": "bottom-left"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A woman is standing in a kitchen and gesturing with her right hand.",
+        "fact": "The woman is gesturing with her right hand while her left hand touches pieces of cut squash on a cutting board.",
         "confidence": 1.0
       },
       {
-        "fact": "The woman is touching pieces of cut butternut squash on a white cutting board.",
+        "fact": "A whole butternut squash sits on the counter to the left of the cutting board.",
         "confidence": 1.0
       },
       {
-        "fact": "A refrigerator with a 'Food Evolution' magnet is visible on the left.",
+        "fact": "A knife is lying on the counter in front of the cutting board.",
         "confidence": 1.0
       },
       {
-        "fact": "The 'eHow' logo is displayed in the bottom-left corner of the screen.",
+        "fact": "A sign on the refrigerator reads 'food EVOLUTION'.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "An 'eHow' logo is visible in the bottom left corner.",
         "confidence": 1.0
       }
     ],
     "ocr": [
-      "Food EVOLUTION",
+      "food",
+      "EVOLUTION",
       "eHow"
     ],
-    "spatial": "The woman is standing in the center of the kitchen, in front of the wooden cabinets and to the right of the refrigerator. The cut butternut squash is on a white cutting board in front of her. The gas stovetop is to her right. The 'eHow' logo is in the bottom-left corner of the frame.",
+    "spatial": "The woman is standing behind the kitchen counter. To her left is a stainless steel refrigerator with a sign on it. On the counter in front of her is a white cutting board with cut squash pieces, and a whole squash is to the left of the board. A knife is on the counter in front of the cutting board. To the right of the counter is a black gas stovetop. Wooden cabinets are above the counter and behind the woman.",
     "parse_success": true,
     "chunk_idx": 6,
     "video_id": "MDrxVQjHmcU"
   },
   {
     "time": [
-      14,
-      16
+      7,
+      8
     ],
     "visible_entities": [
       {
@@ -435,7 +486,45 @@
         "position": "center"
       },
       {
-        "desc": "rectangular metal baking sheet with raised edges, silver color",
+        "desc": "silver metal baking sheet with raised edges",
+        "action": "static",
+        "position": "center"
+      },
+      {
+        "desc": "brown parchment paper liner",
+        "action": "static",
+        "position": "center"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "Cubed vegetables are spread across the parchment paper.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The vegetables appear roasted with caramelized edges.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The roasted vegetable cubes are scattered on top of the brown parchment paper. The parchment paper is placed inside the silver metal baking sheet. The baking sheet rests on a light-colored surface.",
+    "parse_success": true,
+    "chunk_idx": 7,
+    "video_id": "MDrxVQjHmcU"
+  },
+  {
+    "time": [
+      8,
+      9
+    ],
+    "visible_entities": [
+      {
+        "desc": "small, cubed, orange roasted vegetables with browned edges and visible seasoning specks",
+        "action": "static",
+        "position": "center"
+      },
+      {
+        "desc": "rectangular metal baking sheet with raised edges",
         "action": "static",
         "position": "center"
       },
@@ -447,112 +536,80 @@
     ],
     "atomic_facts": [
       {
-        "fact": "The roasted vegetable cubes are spread across the parchment paper.",
+        "fact": "The roasted vegetable cubes are scattered across the parchment paper.",
         "confidence": 1.0
       },
       {
         "fact": "The parchment paper lines the metal baking sheet.",
         "confidence": 1.0
-      },
-      {
-        "fact": "The vegetables appear to be roasted with browned edges.",
-        "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The roasted vegetable cubes are on top of the parchment paper. The parchment paper is inside the metal baking sheet. The baking sheet is centered in the frame.",
-    "parse_success": true,
-    "chunk_idx": 7,
-    "video_id": "MDrxVQjHmcU"
-  },
-  {
-    "time": [
-      16,
-      18
-    ],
-    "visible_entities": [
-      {
-        "desc": "golden-brown roasted cubed vegetables, likely sweet potatoes or squash, with browned edges and a slightly textured surface",
-        "action": "static",
-        "position": "center"
-      },
-      {
-        "desc": "silver metal baking sheet with raised edges",
-        "action": "static",
-        "position": "center"
-      },
-      {
-        "desc": "light brown parchment paper",
-        "action": "static",
-        "position": "center"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "Cubed vegetables are roasted on a baking sheet.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The vegetables are arranged in a single layer on parchment paper.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [],
-    "spatial": "The roasted vegetable cubes are scattered on top of the parchment paper. The parchment paper is placed inside the metal baking sheet, covering most of its surface.",
+    "spatial": "The roasted vegetable cubes are on top of the parchment paper. The parchment paper is inside the metal baking sheet. The baking sheet is on a flat surface.",
     "parse_success": true,
     "chunk_idx": 8,
     "video_id": "MDrxVQjHmcU"
   },
   {
     "time": [
-      18,
-      20
+      9,
+      10
     ],
     "visible_entities": [
       {
-        "desc": "woman with shoulder-length blonde hair, wearing a long-sleeved top with a geometric pattern in blue, white, and grey",
+        "desc": "woman with blonde shoulder-length hair, wearing a long-sleeved top with a geometric pattern in blue, purple, and white",
         "action": "gesturing with hands open",
         "position": "center"
       },
       {
         "desc": "butternut squash, tan skin, elongated shape",
         "action": "static",
-        "position": "foreground left"
+        "position": "left"
+      },
+      {
+        "desc": "yellow squash pieces, cut into rounds and chunks",
+        "action": "static",
+        "position": "center"
       },
       {
         "desc": "white cutting board, rectangular",
         "action": "static",
-        "position": "foreground center"
+        "position": "center"
       },
       {
-        "desc": "sliced butternut squash, yellow-orange flesh, round slice",
+        "desc": "chef's knife, black handle, silver blade",
         "action": "static",
-        "position": "foreground center"
-      },
-      {
-        "desc": "black-handled kitchen knife",
-        "action": "static",
-        "position": "foreground center"
+        "position": "center"
       },
       {
         "desc": "stainless steel refrigerator",
         "action": "static",
-        "position": "background left"
+        "position": "left"
       },
       {
-        "desc": "green and white sign with text",
+        "desc": "green and white logo sticker",
         "action": "static",
-        "position": "background left"
+        "position": "left"
       },
       {
-        "desc": "wooden kitchen cabinets, medium brown finish",
+        "desc": "wooden kitchen cabinets, reddish-brown finish",
         "action": "static",
         "position": "background"
       },
       {
         "desc": "gas stovetop, black grates",
         "action": "static",
-        "position": "foreground right"
+        "position": "right"
+      },
+      {
+        "desc": "glass bowl with white powder",
+        "action": "static",
+        "position": "left"
+      },
+      {
+        "desc": "baking sheet with diced yellow squash",
+        "action": "static",
+        "position": "bottom left"
       }
     ],
     "atomic_facts": [
@@ -561,43 +618,43 @@
         "confidence": 1.0
       },
       {
-        "fact": "A whole butternut squash is on the counter next to a cutting board.",
+        "fact": "A whole butternut squash sits on the counter next to a cutting board.",
         "confidence": 1.0
       },
       {
-        "fact": "A slice of butternut squash is on the cutting board.",
+        "fact": "Sliced pieces of yellow squash are on the cutting board.",
         "confidence": 1.0
       },
       {
-        "fact": "A knife is lying on the counter in front of the cutting board.",
+        "fact": "A baking sheet filled with diced yellow squash is visible in the foreground.",
         "confidence": 1.0
       },
       {
-        "fact": "The sign on the refrigerator reads 'food EVOLUTION'.",
+        "fact": "The refrigerator has a 'Food Evolution' sticker on the upper door.",
         "confidence": 1.0
       }
     ],
     "ocr": [
-      "food EVOLUTION"
+      "Food EVOLUTION"
     ],
-    "spatial": "The woman is standing behind the kitchen counter. To her left is a stainless steel refrigerator with a sign on it. In front of her on the counter is a cutting board with a slice of squash on it. To the left of the cutting board is a whole butternut squash. To the right of the cutting board is a gas stovetop.",
+    "spatial": "The woman is standing behind the kitchen counter. To her left is a stainless steel refrigerator with a logo on it. On the counter in front of her, a cutting board is placed centrally with a knife and squash pieces on it. To the right of the cutting board is a gas stovetop. In the foreground, a baking sheet with diced squash is positioned below the cutting board.",
     "parse_success": true,
     "chunk_idx": 9,
     "video_id": "MDrxVQjHmcU"
   },
   {
     "time": [
-      20,
-      22
+      10,
+      11
     ],
     "visible_entities": [
       {
-        "desc": "person wearing a long-sleeved shirt with a blue, white, and teal geometric pattern",
+        "desc": "person wearing a blue, white, and teal geometric patterned long-sleeve top",
         "action": "holding and placing a butternut squash",
         "position": "center"
       },
       {
-        "desc": "whole butternut squash, beige skin, bulbous shape",
+        "desc": "whole butternut squash, tan skin, bulbous shape",
         "action": "being placed on the cutting board",
         "position": "center"
       },
@@ -607,29 +664,24 @@
         "position": "center"
       },
       {
-        "desc": "sliced yellow squash rounds, stacked",
+        "desc": "round slices of yellow squash",
         "action": "static",
         "position": "center-right"
       },
       {
-        "desc": "glass measuring cup with red markings, containing white powder",
+        "desc": "glass measuring cup with red markings containing white powder",
         "action": "static",
-        "position": "bottom-left"
+        "position": "left"
       },
       {
         "desc": "silver knife blade",
         "action": "static",
-        "position": "bottom-center"
+        "position": "bottom"
       },
       {
-        "desc": "cut yellow squash pieces",
+        "desc": "peeled yellow squash pieces",
         "action": "static",
-        "position": "bottom-right"
-      },
-      {
-        "desc": "black handle of a utensil",
-        "action": "static",
-        "position": "left"
+        "position": "right"
       }
     ],
     "atomic_facts": [
@@ -642,35 +694,45 @@
         "confidence": 1.0
       },
       {
-        "fact": "Sliced rounds of yellow squash are stacked on the cutting board.",
+        "fact": "Slices of yellow squash are sitting on the cutting board.",
         "confidence": 1.0
       },
       {
-        "fact": "A glass measuring cup containing white powder sits on the counter.",
+        "fact": "A glass measuring cup with white powder is on the table.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The person is standing behind the counter, holding the squash above the white cutting board. The sliced squash rounds are to the right of the whole squash on the board. The measuring cup is to the left of the cutting board, and the knife is in front of the board.",
+    "spatial": "The person is standing behind the white cutting board. The whole butternut squash is being placed in the center of the cutting board, to the left of the yellow squash slices. The glass measuring cup is to the left of the cutting board. The silver knife is in the foreground, below the cutting board.",
     "parse_success": true,
     "chunk_idx": 10,
     "video_id": "MDrxVQjHmcU"
   },
   {
     "time": [
-      22,
-      24
+      11,
+      12
     ],
     "visible_entities": [
       {
-        "desc": "person wearing a blue and white patterned apron over a long-sleeved blue shirt",
+        "desc": "person wearing a long-sleeved top with a blue, teal, and white abstract geometric pattern",
         "action": "holding a glass measuring cup",
         "position": "center"
       },
       {
-        "desc": "glass measuring cup with red markings, containing white granular substance",
+        "desc": "clear glass measuring cup containing white granular substance",
         "action": "being held",
-        "position": "center-left"
+        "position": "left"
+      },
+      {
+        "desc": "whole beige butternut squash",
+        "action": "static",
+        "position": "center"
+      },
+      {
+        "desc": "two round slices of yellow squash",
+        "action": "static",
+        "position": "right"
       },
       {
         "desc": "white rectangular cutting board",
@@ -678,59 +740,48 @@
         "position": "center"
       },
       {
-        "desc": "round slices of yellow squash",
-        "action": "static",
-        "position": "right"
-      },
-      {
-        "desc": "whole butternut squash, tan skin",
-        "action": "static",
-        "position": "center-left"
-      },
-      {
-        "desc": "large chef knife with black handle",
+        "desc": "chef's knife with black handle",
         "action": "static",
         "position": "foreground"
       },
       {
-        "desc": "small glass bowls containing spices",
+        "desc": "small glass bowls with spices",
         "action": "static",
         "position": "left"
-      },
-      {
-        "desc": "baking sheet with diced yellow squash",
-        "action": "static",
-        "position": "bottom-left"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "person holds a glass measuring cup filled with white granules",
+        "fact": "person holds a glass measuring cup filled with white granules over the counter",
         "confidence": 1.0
       },
       {
-        "fact": "slices of yellow squash are arranged on the white cutting board",
+        "fact": "two round slices of yellow squash are stacked on the white cutting board",
         "confidence": 1.0
       },
       {
-        "fact": "a baking sheet with diced squash sits in the foreground",
+        "fact": "a whole butternut squash sits behind the measuring cup",
+        "confidence": 1.0
+      },
+      {
+        "fact": "a chef's knife lies horizontally in the foreground",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The person is standing behind the counter, holding the measuring cup above the left side of the cutting board. The sliced squash is on the right side of the cutting board, while the whole squash is behind the cup. The knife lies horizontally in the foreground below the cutting board.",
+    "spatial": "The person is standing behind the counter, holding the measuring cup in their left hand. The measuring cup is positioned to the left of the whole butternut squash. The white cutting board is in the center, with the yellow squash slices on its right side. The chef's knife is lying in front of the cutting board.",
     "parse_success": true,
     "chunk_idx": 11,
     "video_id": "MDrxVQjHmcU"
   },
   {
     "time": [
-      24,
-      26
+      12,
+      13
     ],
     "visible_entities": [
       {
-        "desc": "person wearing a blue and white patterned apron",
+        "desc": "person wearing a blue and white patterned apron over a light-colored shirt",
         "action": "reaching for a small glass bowl",
         "position": "center"
       },
@@ -745,11 +796,6 @@
         "position": "right"
       },
       {
-        "desc": "white cutting board",
-        "action": "static",
-        "position": "right"
-      },
-      {
         "desc": "glass measuring cup containing white powder",
         "action": "static",
         "position": "center"
@@ -757,10 +803,20 @@
       {
         "desc": "small glass bowl containing brown powder",
         "action": "being touched",
-        "position": "center-left"
+        "position": "left"
       },
       {
-        "desc": "small glass bowl containing clear liquid",
+        "desc": "black-handled kitchen knife",
+        "action": "static",
+        "position": "bottom right"
+      },
+      {
+        "desc": "white cutting board",
+        "action": "static",
+        "position": "right"
+      },
+      {
+        "desc": "jar of coconut oil with a black label",
         "action": "static",
         "position": "left"
       },
@@ -770,19 +826,9 @@
         "position": "left"
       },
       {
-        "desc": "large kitchen knife with black handle",
+        "desc": "baking sheet with cubed yellow squash",
         "action": "static",
-        "position": "bottom-right"
-      },
-      {
-        "desc": "jar of coconut oil with white label",
-        "action": "static",
-        "position": "left"
-      },
-      {
-        "desc": "yellow squash cubes on a baking sheet",
-        "action": "static",
-        "position": "bottom-left"
+        "position": "bottom left"
       }
     ],
     "atomic_facts": [
@@ -795,44 +841,44 @@
         "confidence": 1.0
       },
       {
-        "fact": "A whole butternut squash sits on the table behind the measuring cup.",
+        "fact": "The jar on the left is labeled 'COCONUT OIL'.",
         "confidence": 1.0
       },
       {
-        "fact": "Two round slices of squash are stacked on the cutting board.",
+        "fact": "Sliced squash rounds are resting on the white cutting board.",
         "confidence": 1.0
       },
       {
-        "fact": "A jar labeled 'COCONUT' is visible on the left side of the table.",
+        "fact": "Cubed squash is arranged on a baking sheet in the foreground.",
         "confidence": 1.0
       }
     ],
     "ocr": [
-      "COCONUT"
+      "COCONUT OIL"
     ],
-    "spatial": "The person is standing behind the table, reaching towards the center where the spices and measuring cup are located. The cutting board with squash slices is to the right of the person's hand. The knife lies in front of the cutting board. The jar of coconut oil is to the left of the small spice bowls.",
+    "spatial": "The person is standing behind the wooden table. The white cutting board is on the right side of the table, holding the sliced squash. The whole butternut squash is in the center, behind the measuring cup. The jar of coconut oil and the basting brush are to the left of the measuring cup. The knife is lying on the table in the foreground, to the right of the baking sheet.",
     "parse_success": true,
     "chunk_idx": 12,
     "video_id": "MDrxVQjHmcU"
   },
   {
     "time": [
-      26,
-      28
+      13,
+      14
     ],
     "visible_entities": [
       {
-        "desc": "person wearing a blue, brown, and white patterned long-sleeved shirt",
-        "action": "picking up a small glass bowl",
+        "desc": "person wearing a blue, purple, and white patterned apron over a blue long-sleeved shirt",
+        "action": "picking up a small glass bowl containing red powder",
         "position": "center"
       },
       {
-        "desc": "small clear glass bowl containing reddish-brown powder",
-        "action": "being lifted by a hand",
-        "position": "center-left"
+        "desc": "large beige butternut squash, whole and unpeeled",
+        "action": "static",
+        "position": "center"
       },
       {
-        "desc": "white cutting board",
+        "desc": "white rectangular cutting board",
         "action": "static",
         "position": "right"
       },
@@ -842,172 +888,187 @@
         "position": "right"
       },
       {
-        "desc": "whole butternut squash, beige skin",
+        "desc": "clear glass measuring cup containing white powder",
         "action": "static",
         "position": "center"
       },
       {
-        "desc": "glass measuring cup with white powder",
+        "desc": "small clear glass bowl containing red powder",
+        "action": "being picked up",
+        "position": "center"
+      },
+      {
+        "desc": "small clear glass bowl containing brown liquid",
         "action": "static",
         "position": "center"
       },
       {
-        "desc": "jar with a white label reading 'COCONUT OIL'",
+        "desc": "jar of coconut oil with a white label",
         "action": "static",
         "position": "left"
       },
       {
-        "desc": "large kitchen knife with a black handle",
+        "desc": "large chef's knife with a black handle",
         "action": "static",
-        "position": "bottom-right"
+        "position": "right"
       },
       {
-        "desc": "baking sheet with cubed yellow squash",
+        "desc": "baking tray lined with parchment paper containing cubed yellow squash",
         "action": "static",
-        "position": "bottom-left"
+        "position": "foreground"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A person's hand is lifting a small glass bowl containing reddish-brown powder from the table.",
+        "fact": "A person is picking up a small glass bowl containing red powder.",
         "confidence": 1.0
       },
       {
-        "fact": "The person is wearing a multi-colored patterned shirt.",
+        "fact": "A large whole butternut squash sits on the table.",
         "confidence": 1.0
       },
       {
-        "fact": "Slices of yellow squash are resting on a white cutting board.",
+        "fact": "Two round slices of yellow squash are stacked on the cutting board.",
         "confidence": 1.0
       },
       {
-        "fact": "A jar labeled 'COCONUT OIL' is visible on the left side of the counter.",
+        "fact": "Cubed yellow squash is arranged on a baking tray in the foreground.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The jar label reads 'COCONUT OIL'.",
         "confidence": 1.0
       }
     ],
     "ocr": [
       "COCONUT OIL"
     ],
-    "spatial": "The person is standing behind the counter, reaching towards the center. The jar of coconut oil is to the left of the measuring cup. The cutting board with squash slices is to the right of the whole butternut squash. The baking sheet with cubed squash is in the foreground at the bottom left.",
+    "spatial": "The person is standing behind the table, reaching for a small bowl located to the left of the measuring cup. The large whole squash is behind the measuring cup and to the left of the cutting board. The knife is lying on the table in front of the cutting board, and the tray of cubed squash is in the foreground below the other ingredients.",
     "parse_success": true,
     "chunk_idx": 13,
     "video_id": "MDrxVQjHmcU"
   },
   {
     "time": [
-      28,
-      30
+      14,
+      15
     ],
     "visible_entities": [
       {
-        "desc": "person wearing a blue, white, and grey patterned apron over a long-sleeved shirt",
+        "desc": "person wearing a blue, white, and teal patterned apron over a long-sleeved shirt",
         "action": "holding a glass measuring cup",
         "position": "center"
       },
       {
-        "desc": "clear glass measuring cup with red markings",
-        "action": "being held by the person",
+        "desc": "clear glass measuring cup with red measurement markings",
+        "action": "being held",
         "position": "center"
       },
       {
-        "desc": "white cutting board",
+        "desc": "white plastic cutting board",
         "action": "static",
         "position": "center"
       },
       {
-        "desc": "round slices of yellow squash",
+        "desc": "round slices of orange butternut squash",
         "action": "static",
         "position": "center"
       },
       {
-        "desc": "cubed yellow squash pieces",
+        "desc": "cubed orange butternut squash",
         "action": "static",
         "position": "left"
       },
       {
-        "desc": "large kitchen knife with a black handle",
-        "action": "static",
-        "position": "right"
-      },
-      {
-        "desc": "black-handled vegetable peeler",
+        "desc": "whole butternut squash",
         "action": "static",
         "position": "center"
       },
       {
-        "desc": "stainless steel stovetop with black knobs",
+        "desc": "jar of coconut oil with a white label",
+        "action": "static",
+        "position": "left"
+      },
+      {
+        "desc": "black-handled kitchen knife",
         "action": "static",
         "position": "right"
       },
       {
-        "desc": "jar of coconut oil",
+        "desc": "black silicone spatula",
+        "action": "static",
+        "position": "center"
+      },
+      {
+        "desc": "small glass bowls with spices",
         "action": "static",
         "position": "left"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "person is holding a glass measuring cup containing a clear liquid",
+        "fact": "The person is holding a glass measuring cup filled with clear liquid.",
         "confidence": 1.0
       },
       {
-        "fact": "the person's hand is reaching towards the cubed squash on the cutting board",
+        "fact": "The person's hand is reaching towards the cubed squash on the cutting board.",
         "confidence": 1.0
       },
       {
-        "fact": "slices of yellow squash are resting on the white cutting board",
+        "fact": "There are round slices of squash on the cutting board.",
         "confidence": 1.0
       },
       {
-        "fact": "a knife and peeler are lying on the counter next to the cutting board",
+        "fact": "A jar labeled 'COCONUT OIL' is sitting on the counter.",
         "confidence": 1.0
       },
       {
-        "fact": "the jar label reads 'COCONUT OIL'",
+        "fact": "A knife is resting on the counter next to the cutting board.",
         "confidence": 1.0
       }
     ],
     "ocr": [
-      "COCONUT OIL"
+      "COCONUT OIL",
+      "pyrex"
     ],
-    "spatial": "The person is standing behind the counter, holding the measuring cup above the cutting board. The cutting board is in the center, with cubed squash to its left and round slices to its right. The knife and peeler are to the right of the cutting board, near the stovetop.",
+    "spatial": "The person is standing behind the counter, holding the measuring cup above the cutting board. The cutting board is in the center of the frame, with cubed squash on the left side and round slices on the right. The jar of coconut oil is to the left of the cutting board, and the knife is to the right of the cutting board.",
     "parse_success": true,
     "chunk_idx": 14,
     "video_id": "MDrxVQjHmcU"
   },
   {
     "time": [
-      30,
-      32
+      15,
+      16
     ],
     "visible_entities": [
       {
         "desc": "person wearing a long-sleeved shirt with blue, teal, and brown horizontal stripes and a blue and white patterned apron",
-        "action": "pouring water from a measuring cup",
+        "action": "pouring liquid from a measuring cup",
         "position": "center"
       },
       {
-        "desc": "clear glass measuring cup with red markings",
+        "desc": "clear glass measuring cup with red markings and handle",
         "action": "being held and tilted",
         "position": "center"
       },
       {
-        "desc": "white rectangular cutting board",
+        "desc": "white plastic cutting board",
         "action": "static",
         "position": "left"
       },
       {
-        "desc": "yellow-orange squash, cut into cubes and slices",
+        "desc": "yellow squash cut into cubes and slices",
         "action": "static",
         "position": "left"
       },
       {
-        "desc": "large kitchen knife with a black handle and silver blade",
+        "desc": "black-handled kitchen knife",
         "action": "static",
         "position": "right"
       },
       {
-        "desc": "stainless steel stovetop with black grates",
+        "desc": "silver stovetop with black knobs",
         "action": "static",
         "position": "right"
       }
@@ -1018,39 +1079,35 @@
         "confidence": 1.0
       },
       {
-        "fact": "Cubed yellow squash is arranged on the white cutting board.",
+        "fact": "Cubed yellow squash is scattered on the white cutting board.",
         "confidence": 1.0
       },
       {
-        "fact": "The glass measuring cup has red text reading 'pyrex' and measurement lines.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "A large knife is resting on the counter to the right of the cutting board.",
+        "fact": "A kitchen knife rests on the counter next to the cutting board.",
         "confidence": 1.0
       }
     ],
     "ocr": [
       "pyrex"
     ],
-    "spatial": "The person is standing behind the counter, holding the measuring cup above the white cutting board. The cut squash is on the cutting board to the left of the knife. The stovetop is to the right of the knife and cutting board.",
+    "spatial": "The person is standing behind the counter, holding the measuring cup above the white cutting board. The cutting board is to the left of the kitchen knife and the stovetop. Pieces of yellow squash are on top of the cutting board.",
     "parse_success": true,
     "chunk_idx": 15,
     "video_id": "MDrxVQjHmcU"
   },
   {
     "time": [
-      32,
-      34
+      16,
+      17
     ],
     "visible_entities": [
       {
-        "desc": "person wearing a blue, white, and grey patterned long-sleeve shirt with a white apron",
+        "desc": "person wearing a blue, white, and grey patterned long-sleeve shirt and a white apron",
         "action": "pouring liquid from a small glass bowl into a measuring cup",
         "position": "center"
       },
       {
-        "desc": "clear glass Pyrex measuring cup with red markings",
+        "desc": "clear glass Pyrex measuring cup containing water and a cube of yellow squash",
         "action": "being held by the person",
         "position": "center"
       },
@@ -1060,77 +1117,9 @@
         "position": "center"
       },
       {
-        "desc": "white cutting board with diced orange squash",
-        "action": "static",
-        "position": "left"
-      },
-      {
-        "desc": "whole peeled yellow squash",
-        "action": "static",
-        "position": "bottom right"
-      },
-      {
-        "desc": "black-handled knife",
-        "action": "static",
-        "position": "right"
-      },
-      {
-        "desc": "white-handled knife",
-        "action": "static",
-        "position": "right"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "person pours a clear liquid from a small glass bowl into a measuring cup",
-        "confidence": 1.0
-      },
-      {
-        "fact": "the measuring cup contains water and a piece of orange squash",
-        "confidence": 1.0
-      },
-      {
-        "fact": "diced orange squash is scattered on the white cutting board",
-        "confidence": 1.0
-      },
-      {
-        "fact": "the text 'pyrex' is visible in red on the measuring cup",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [
-      "pyrex"
-    ],
-    "spatial": "The person is standing behind the counter, holding the measuring cup in their left hand and the small bowl in their right hand. The white cutting board with diced squash is to the left of the measuring cup. The whole yellow squash and two knives are to the right of the measuring cup on the counter.",
-    "parse_success": true,
-    "chunk_idx": 16,
-    "video_id": "MDrxVQjHmcU"
-  },
-  {
-    "time": [
-      34,
-      36
-    ],
-    "visible_entities": [
-      {
-        "desc": "person wearing a blue and white patterned apron over a long-sleeved shirt with blue, grey, and white patterns",
-        "action": "pouring liquid from a small glass bowl into a measuring cup",
-        "position": "center"
-      },
-      {
-        "desc": "clear glass Pyrex measuring cup with red markings",
-        "action": "static",
-        "position": "center"
-      },
-      {
-        "desc": "small clear glass bowl containing a clear liquid",
-        "action": "being held and tilted",
-        "position": "center"
-      },
-      {
         "desc": "white rectangular cutting board",
         "action": "static",
-        "position": "center"
+        "position": "left"
       },
       {
         "desc": "cubed yellow squash pieces",
@@ -1138,134 +1127,129 @@
         "position": "left"
       },
       {
-        "desc": "black-handled kitchen knife",
+        "desc": "large chef knife with a black handle",
         "action": "static",
         "position": "right"
       },
       {
-        "desc": "black-handled vegetable peeler",
-        "action": "static",
-        "position": "right"
-      },
-      {
-        "desc": "yellow squash remnant with skin removed",
+        "desc": "peeled yellow squash",
         "action": "static",
         "position": "right"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "person pours a clear liquid from a small glass bowl into a Pyrex measuring cup",
+        "fact": "The person is pouring a clear liquid from a small glass bowl into a measuring cup.",
         "confidence": 1.0
       },
       {
-        "fact": "cubed yellow squash is scattered on the white cutting board",
+        "fact": "The measuring cup contains water and a piece of yellow squash.",
         "confidence": 1.0
       },
       {
-        "fact": "a knife and a peeler are placed on the counter to the right of the cutting board",
+        "fact": "Cubed yellow squash is scattered on the white cutting board.",
         "confidence": 1.0
       },
       {
-        "fact": "the measuring cup contains some liquid and squash pieces",
+        "fact": "A large knife rests on the counter to the right of the cutting board.",
         "confidence": 1.0
       }
     ],
     "ocr": [
       "pyrex"
     ],
-    "spatial": "The person is standing behind the counter, holding the small bowl above the measuring cup. The measuring cup is on the white cutting board, which is in the center of the frame. To the left of the measuring cup are cubed squash pieces. To the right of the cutting board, on the counter, are a knife, a peeler, and a piece of squash.",
+    "spatial": "The person is standing behind the counter, holding the measuring cup over the white cutting board. The small glass bowl is held above the measuring cup as liquid is poured into it. The knife and remaining squash are to the right of the cutting board.",
+    "parse_success": true,
+    "chunk_idx": 16,
+    "video_id": "MDrxVQjHmcU"
+  },
+  {
+    "time": [
+      17,
+      18
+    ],
+    "visible_entities": [
+      {
+        "desc": "person wearing a blue and white plaid apron over a long-sleeved shirt with blue and grey patterns",
+        "action": "pouring liquid from a small glass bowl into a measuring cup",
+        "position": "center"
+      },
+      {
+        "desc": "clear glass measuring cup with red markings",
+        "action": "static",
+        "position": "center"
+      },
+      {
+        "desc": "small clear glass bowl containing clear liquid",
+        "action": "being held and tilted",
+        "position": "center"
+      },
+      {
+        "desc": "white cutting board",
+        "action": "static",
+        "position": "left"
+      },
+      {
+        "desc": "yellow squash cubes",
+        "action": "static",
+        "position": "left"
+      },
+      {
+        "desc": "large kitchen knife with a black handle",
+        "action": "static",
+        "position": "right"
+      },
+      {
+        "desc": "black-handled peeler",
+        "action": "static",
+        "position": "right"
+      },
+      {
+        "desc": "yellow squash piece",
+        "action": "static",
+        "position": "right"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The person is pouring a clear liquid from a small glass bowl into a glass measuring cup.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The measuring cup contains water and some yellow squash cubes.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "Yellow squash cubes are scattered on the white cutting board.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A knife and a peeler are lying on the counter to the right of the cutting board.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "pyrex"
+    ],
+    "spatial": "The person is standing behind the counter, holding a small bowl above a measuring cup. The measuring cup is on the white cutting board, which is to the left of the knife and peeler. The yellow squash cubes are on the cutting board and inside the measuring cup.",
     "parse_success": true,
     "chunk_idx": 17,
     "video_id": "MDrxVQjHmcU"
   },
   {
     "time": [
-      36,
-      38
+      18,
+      19
     ],
     "visible_entities": [
       {
-        "desc": "person wearing a blue, purple, and white patterned long-sleeve shirt and a brown apron",
+        "desc": "person wearing a blue and white patterned apron over a blue long-sleeved shirt",
         "action": "holding a glass measuring cup",
         "position": "center"
       },
       {
-        "desc": "clear glass Pyrex measuring cup with red text and measurement markings",
+        "desc": "clear glass Pyrex measuring cup with red markings",
         "action": "being held by the person",
-        "position": "center"
-      },
-      {
-        "desc": "white rectangular plastic cutting board",
-        "action": "static",
-        "position": "left"
-      },
-      {
-        "desc": "yellow squash cut into cubes and chunks",
-        "action": "static",
-        "position": "left"
-      },
-      {
-        "desc": "large chef knife with a black handle and silver blade",
-        "action": "static",
-        "position": "right"
-      },
-      {
-        "desc": "small black-handled kitchen tool",
-        "action": "static",
-        "position": "right"
-      },
-      {
-        "desc": "light brown wooden countertop",
-        "action": "static",
-        "position": "bottom"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "person is holding a glass measuring cup containing yellow squash pieces",
-        "confidence": 1.0
-      },
-      {
-        "fact": "cubed yellow squash is scattered on the white cutting board",
-        "confidence": 1.0
-      },
-      {
-        "fact": "a chef knife rests on the wooden countertop to the right of the cutting board",
-        "confidence": 1.0
-      },
-      {
-        "fact": "the measuring cup has red 'pyrex' text printed on it",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [
-      "pyrex"
-    ],
-    "spatial": "The person is standing behind the wooden countertop. The white cutting board with squash cubes is to the left of the person's hands. The glass measuring cup is held in the person's right hand, positioned above the cutting board. The chef knife is to the right of the cutting board on the countertop.",
-    "parse_success": true,
-    "chunk_idx": 18,
-    "video_id": "MDrxVQjHmcU"
-  },
-  {
-    "time": [
-      38,
-      40
-    ],
-    "visible_entities": [
-      {
-        "desc": "person wearing a blue and white plaid apron over a light blue long-sleeved shirt",
-        "action": "pouring liquid from a small glass bowl into a measuring cup",
-        "position": "center"
-      },
-      {
-        "desc": "clear glass Pyrex measuring cup with red markings and text",
-        "action": "being held and filled",
-        "position": "center"
-      },
-      {
-        "desc": "small clear glass bowl containing dark liquid",
-        "action": "being tipped to pour contents",
         "position": "center"
       },
       {
@@ -1279,7 +1263,7 @@
         "position": "left"
       },
       {
-        "desc": "large chef knife with a black handle and silver blade",
+        "desc": "large kitchen knife with a black handle and silver blade",
         "action": "static",
         "position": "right"
       },
@@ -1292,59 +1276,59 @@
         "desc": "peeled yellow squash or pumpkin",
         "action": "static",
         "position": "right"
-      },
-      {
-        "desc": "metal baking sheet lined with parchment paper",
-        "action": "static",
-        "position": "bottom"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A person is pouring a dark liquid from a small glass bowl into a larger glass measuring cup.",
+        "fact": "person holds a glass measuring cup containing a piece of yellow squash",
         "confidence": 1.0
       },
       {
-        "fact": "The measuring cup is labeled 'pyrex' in red text.",
+        "fact": "cubed yellow squash pieces are on the white cutting board",
         "confidence": 1.0
       },
       {
-        "fact": "Cubed yellow vegetables are scattered on the left side of the white cutting board.",
+        "fact": "the measuring cup has red text reading 'pyrex'",
         "confidence": 1.0
       },
       {
-        "fact": "A large chef knife and a small paring knife are resting on the table to the right of the cutting board.",
+        "fact": "a large knife and a small knife are on the table to the right of the cutting board",
         "confidence": 1.0
       }
     ],
     "ocr": [
       "pyrex"
     ],
-    "spatial": "The person is standing behind the table, holding the measuring cup over the cutting board. The small glass bowl is positioned above the measuring cup as liquid is poured into it. To the left of the measuring cup are cubed yellow vegetables, and to the right are two knives and a peeled vegetable. The baking sheet is located in the foreground at the bottom of the frame.",
+    "spatial": "The person is standing behind the white cutting board which is on the table. The glass measuring cup is held by the person above the cutting board. The cubed yellow squash is on the left side of the cutting board. The large knife and small knife are to the right of the cutting board.",
     "parse_success": true,
-    "chunk_idx": 19,
+    "chunk_idx": 18,
     "video_id": "MDrxVQjHmcU"
   },
   {
     "time": [
-      40,
-      42
+      19,
+      20
     ],
     "visible_entities": [
       {
-        "desc": "person wearing a blue and white patterned apron over a long-sleeved shirt",
-        "action": "holding a glass measuring cup",
+        "desc": "person wearing a blue and white patterned apron over a light blue long-sleeved shirt",
+        "action": "pouring liquid from a small glass container into a measuring cup",
         "position": "center"
       },
       {
-        "desc": "clear glass measuring cup with red markings",
-        "action": "being held and tilted",
+        "desc": "clear glass Pyrex measuring cup with red markings and text",
+        "action": "being held by the person",
         "position": "center"
       },
       {
-        "desc": "white rectangular cutting board",
+        "desc": "small clear glass container",
+        "action": "being tipped to pour contents",
+        "position": "center"
+      },
+      {
+        "desc": "white cutting board",
         "action": "static",
-        "position": "center"
+        "position": "left"
       },
       {
         "desc": "cubed yellow squash",
@@ -1352,12 +1336,75 @@
         "position": "left"
       },
       {
-        "desc": "round slices of yellow squash",
+        "desc": "peeled yellow squash",
         "action": "static",
-        "position": "center"
+        "position": "right"
       },
       {
         "desc": "large kitchen knife with a black handle",
+        "action": "static",
+        "position": "right"
+      },
+      {
+        "desc": "small black-handled tool",
+        "action": "static",
+        "position": "right"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The person is pouring a dark liquid from a small glass container into a Pyrex measuring cup.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The Pyrex measuring cup contains a dark liquid.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "Cubed yellow squash is scattered on the white cutting board.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A peeled yellow squash sits on the table next to the cutting board.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "pyrex"
+    ],
+    "spatial": "The person is standing behind the table, holding the measuring cup in the center. The white cutting board with yellow squash cubes is to the left of the measuring cup. The peeled squash and knives are to the right of the measuring cup.",
+    "parse_success": true,
+    "chunk_idx": 19,
+    "video_id": "MDrxVQjHmcU"
+  },
+  {
+    "time": [
+      20,
+      21
+    ],
+    "visible_entities": [
+      {
+        "desc": "person wearing a blue and white plaid apron over a light blue long-sleeved shirt",
+        "action": "holding a glass measuring cup",
+        "position": "center"
+      },
+      {
+        "desc": "clear glass measuring cup with red markings, containing a brown liquid",
+        "action": "being held and tilted",
+        "position": "center"
+      },
+      {
+        "desc": "white rectangular cutting board",
+        "action": "static",
+        "position": "left"
+      },
+      {
+        "desc": "orange squash cubes and slices",
+        "action": "static",
+        "position": "left"
+      },
+      {
+        "desc": "large chef's knife with a black handle and silver blade",
         "action": "static",
         "position": "right"
       },
@@ -1367,60 +1414,60 @@
         "position": "right"
       },
       {
-        "desc": "peeled yellow squash",
+        "desc": "peeled yellow squash piece",
         "action": "static",
         "position": "right"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A person is holding a glass measuring cup containing a dark liquid and spices.",
+        "fact": "person holds a glass measuring cup containing brown liquid",
         "confidence": 1.0
       },
       {
-        "fact": "The person tilts the measuring cup over the cutting board.",
+        "fact": "person tilts the measuring cup over the cutting board",
         "confidence": 1.0
       },
       {
-        "fact": "Cubed yellow squash is arranged on the left side of the white cutting board.",
+        "fact": "orange squash is cut into cubes and slices on the cutting board",
         "confidence": 1.0
       },
       {
-        "fact": "A large knife rests on the wooden surface to the right of the cutting board.",
+        "fact": "a chef's knife rests on the table to the right of the cutting board",
         "confidence": 1.0
       }
     ],
     "ocr": [
       "PYREX"
     ],
-    "spatial": "The person is standing behind the wooden counter, holding the measuring cup above the white cutting board. The cubed squash is to the left of the round squash slices on the board. The large knife and black tool are to the right of the cutting board, next to a peeled squash.",
+    "spatial": "The person is standing behind the counter, holding the measuring cup above the white cutting board. The cutting board, which has squash cubes on it, is to the left of the chef's knife. The peeled squash piece is on the table to the right of the cutting board and below the measuring cup.",
     "parse_success": true,
     "chunk_idx": 20,
     "video_id": "MDrxVQjHmcU"
   },
   {
     "time": [
-      42,
-      44
+      21,
+      22
     ],
     "visible_entities": [
       {
-        "desc": "person wearing a blue, white, and grey geometric patterned long-sleeve top",
+        "desc": "person wearing a long-sleeved shirt with a blue, white, and grey geometric pattern",
         "action": "holding a glass measuring cup",
         "position": "center"
       },
       {
-        "desc": "clear glass measuring cup containing dark liquid and orange chunks",
+        "desc": "clear glass measuring cup containing a dark brown liquid",
         "action": "being held",
-        "position": "foreground"
+        "position": "center foreground"
       },
       {
-        "desc": "white cutting board with cubed and sliced yellow squash",
+        "desc": "white cutting board with yellow squash pieces",
         "action": "static",
         "position": "left"
       },
       {
-        "desc": "silver chef's knife with a black handle",
+        "desc": "large knife with a silver blade and black handle",
         "action": "static",
         "position": "right"
       },
@@ -1430,71 +1477,81 @@
         "position": "right"
       },
       {
-        "desc": "black vegetable peeler",
+        "desc": "black peeler",
         "action": "static",
         "position": "right"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "person holds a glass measuring cup containing dark liquid and orange chunks",
+        "fact": "The person is holding a glass measuring cup containing a dark liquid.",
         "confidence": 1.0
       },
       {
-        "fact": "cubed yellow squash sits on a white cutting board",
+        "fact": "Pieces of yellow squash are cut into cubes and slices on the white cutting board.",
         "confidence": 1.0
       },
       {
-        "fact": "a silver knife and black shears rest on the counter to the right of the cutting board",
+        "fact": "A knife, peeler, and kitchen shears are resting on the counter to the right of the cutting board.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The person is positioned behind the counter, holding the glass measuring cup in the foreground. To the left of the cup is a white cutting board with yellow squash. To the right of the cup, a silver knife, black shears, and a peeler are arranged on the counter surface.",
+    "spatial": "The person is standing behind the counter, holding the glass measuring cup in the center foreground. To the left of the cup is a white cutting board with yellow squash pieces. To the right of the cup, a knife, peeler, and kitchen shears are lying on the counter.",
     "parse_success": true,
     "chunk_idx": 21,
     "video_id": "MDrxVQjHmcU"
   },
   {
     "time": [
-      44,
-      46
+      22,
+      23
     ],
     "visible_entities": [
       {
         "desc": "woman with blonde hair, wearing a long-sleeved top with a blue, white, and purple abstract pattern",
-        "action": "stirring a mixture in a glass bowl with a black spatula",
+        "action": "stirring liquid in a glass bowl",
         "position": "center"
       },
       {
-        "desc": "small clear glass bowl containing a dark reddish-brown liquid",
-        "action": "static",
-        "position": "center"
-      },
-      {
-        "desc": "large metal baking sheet filled with cubed yellow squash",
-        "action": "static",
-        "position": "foreground"
-      },
-      {
-        "desc": "white cutting board with cubed yellow squash and a whole butternut squash",
-        "action": "static",
-        "position": "left"
-      },
-      {
-        "desc": "silver refrigerator with a green and white 'food EVOLUTION' magnet",
+        "desc": "silver refrigerator with a 'Food Evolution' magnet",
         "action": "static",
         "position": "background left"
       },
       {
-        "desc": "stainless steel gas stovetop with black grates",
+        "desc": "white cutting board with cubed yellow squash",
+        "action": "static",
+        "position": "center left"
+      },
+      {
+        "desc": "metal baking sheet filled with cubed yellow squash",
+        "action": "static",
+        "position": "foreground"
+      },
+      {
+        "desc": "small glass bowl with dark liquid",
+        "action": "being stirred",
+        "position": "center"
+      },
+      {
+        "desc": "black spatula",
+        "action": "being held",
+        "position": "center"
+      },
+      {
+        "desc": "gas stovetop with black grates",
         "action": "static",
         "position": "right"
+      },
+      {
+        "desc": "whole butternut squash",
+        "action": "static",
+        "position": "left"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "The woman is stirring a dark liquid in a glass bowl using a black spatula.",
+        "fact": "The woman is stirring a dark liquid in a small glass bowl using a black spatula.",
         "confidence": 1.0
       },
       {
@@ -1502,46 +1559,31 @@
         "confidence": 1.0
       },
       {
-        "fact": "A cutting board with more cubed squash and a whole butternut squash is to the left of the woman.",
+        "fact": "Cubed yellow squash is arranged on a white cutting board to the left of the woman.",
         "confidence": 1.0
       },
       {
-        "fact": "The refrigerator in the background has a magnet that reads 'food EVOLUTION'.",
+        "fact": "A refrigerator with a 'Food Evolution' magnet is visible in the background.",
         "confidence": 1.0
       }
     ],
     "ocr": [
-      "food EVOLUTION"
+      "Food EVOLUTION"
     ],
-    "spatial": "The woman is standing in the center of the kitchen, behind the counter. The baking sheet with squash is in the foreground, in front of the woman. The cutting board is to the left of the woman, and the stovetop is to her right. The refrigerator is in the background to the left.",
+    "spatial": "The woman is standing in the center of the kitchen, positioned between the refrigerator on the left and the stovetop on the right. She is holding a spatula inside a small glass bowl that is placed on the counter in front of her. To her left, a cutting board with squash cubes is next to a whole squash, while a large tray of prepared squash is in the immediate foreground.",
     "parse_success": true,
     "chunk_idx": 22,
     "video_id": "MDrxVQjHmcU"
   },
   {
     "time": [
-      46,
-      48
+      23,
+      24
     ],
     "visible_entities": [
       {
         "desc": "woman with shoulder-length blonde hair, wearing a long-sleeved top with a blue, white, and grey abstract geometric pattern",
-        "action": "stirring ingredients in a small glass bowl with a black spoon",
-        "position": "center"
-      },
-      {
-        "desc": "large metal baking sheet filled with diced yellow squash",
-        "action": "static",
-        "position": "foreground"
-      },
-      {
-        "desc": "small clear glass bowl containing dark brown liquid",
-        "action": "being stirred",
-        "position": "center"
-      },
-      {
-        "desc": "white cutting board with diced yellow squash and a large butternut squash",
-        "action": "static",
+        "action": "stirring a mixture in a small glass bowl with a black spatula",
         "position": "center"
       },
       {
@@ -1550,93 +1592,126 @@
         "position": "background left"
       },
       {
-        "desc": "black gas stovetop with silver knobs",
+        "desc": "wooden cutting board with chopped yellow squash cubes and a whole butternut squash",
+        "action": "static",
+        "position": "center foreground"
+      },
+      {
+        "desc": "large metal baking sheet filled with cubed yellow squash",
+        "action": "static",
+        "position": "bottom foreground"
+      },
+      {
+        "desc": "black gas stovetop with metal grates",
         "action": "static",
         "position": "right"
+      },
+      {
+        "desc": "small glass bowl containing a dark brown liquid mixture",
+        "action": "being stirred",
+        "position": "center"
+      },
+      {
+        "desc": "black spatula",
+        "action": "being held and used to stir",
+        "position": "center"
       },
       {
         "desc": "white jar with a brown label",
         "action": "static",
         "position": "left"
+      },
+      {
+        "desc": "wooden kitchen cabinets",
+        "action": "static",
+        "position": "background"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "The woman is stirring a dark liquid in a small glass bowl using a black spoon.",
+        "fact": "The woman is stirring a dark liquid in a small glass bowl with a black spatula.",
         "confidence": 1.0
       },
       {
-        "fact": "A baking sheet filled with cubed yellow squash sits in the foreground.",
+        "fact": "A baking sheet filled with cubed yellow squash sits on the counter in the foreground.",
         "confidence": 1.0
       },
       {
-        "fact": "A large butternut squash rests on the cutting board.",
+        "fact": "Chopped pieces of yellow squash are on a cutting board next to the bowl.",
         "confidence": 1.0
       },
       {
-        "fact": "The refrigerator in the background displays a magnet reading 'Food Evolution'.",
+        "fact": "A refrigerator with a 'Food Evolution' magnet is visible in the background.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A white jar with a brown label is on the counter to the left.",
         "confidence": 1.0
       }
     ],
     "ocr": [
-      "Food",
-      "EVOLUTION"
+      "Food EVOLUTION"
     ],
-    "spatial": "The woman is standing behind the kitchen counter, positioned between the refrigerator on the left and the stovetop on the right. The baking sheet with squash is in the foreground, directly in front of the cutting board where the woman is working. The small bowl being stirred is located on the cutting board, to the right of the diced squash pieces.",
+    "spatial": "The woman is standing in the center of the kitchen, behind the counter. In front of her on the counter is a cutting board with squash and a small bowl she is stirring. To her right is a gas stovetop. To her left is a white jar and a refrigerator. In the immediate foreground, a large baking sheet filled with squash is positioned below the cutting board.",
     "parse_success": true,
     "chunk_idx": 23,
     "video_id": "MDrxVQjHmcU"
   },
   {
     "time": [
-      48,
-      50
+      24,
+      25
     ],
     "visible_entities": [
       {
-        "desc": "woman with shoulder-length blonde hair, wearing a long-sleeved top with a blue, grey, and white abstract geometric pattern",
+        "desc": "woman with shoulder-length blonde hair, wearing a long-sleeved top with a blue, purple, and white abstract pattern",
         "action": "stirring liquid in a glass measuring cup",
         "position": "center"
       },
       {
-        "desc": "glass measuring cup containing dark brown liquid",
-        "action": "being held and stirred",
-        "position": "center"
-      },
-      {
-        "desc": "black ladle or large spoon",
-        "action": "being used to stir",
-        "position": "center"
-      },
-      {
-        "desc": "white cutting board with cubed yellow squash",
-        "action": "static",
-        "position": "foreground"
-      },
-      {
-        "desc": "silver refrigerator with a magnet sign",
+        "desc": "silver refrigerator with a green and white 'Food Evolution' sign on the door",
         "action": "static",
         "position": "left background"
       },
       {
-        "desc": "wooden kitchen cabinets",
+        "desc": "wooden kitchen cabinets, medium brown finish",
         "action": "static",
         "position": "background"
       },
       {
-        "desc": "stainless steel sink and faucet",
+        "desc": "butternut squash, tan skin, whole and cut pieces",
         "action": "static",
-        "position": "background right"
+        "position": "foreground left"
       },
       {
-        "desc": "black gas stovetop",
+        "desc": "glass measuring cup containing dark brown liquid",
+        "action": "being stirred",
+        "position": "center foreground"
+      },
+      {
+        "desc": "black ladle",
+        "action": "being held",
+        "position": "center"
+      },
+      {
+        "desc": "white cutting board",
+        "action": "static",
+        "position": "foreground"
+      },
+      {
+        "desc": "baking tray filled with diced yellow squash",
+        "action": "static",
+        "position": "bottom foreground"
+      },
+      {
+        "desc": "stainless steel gas stovetop with black grates",
         "action": "static",
         "position": "bottom right"
       },
       {
-        "desc": "whole butternut squash",
+        "desc": "jar with a white lid and brown label",
         "action": "static",
-        "position": "left foreground"
+        "position": "bottom left"
       }
     ],
     "atomic_facts": [
@@ -1645,36 +1720,41 @@
         "confidence": 1.0
       },
       {
-        "fact": "Cubed yellow squash is sitting on a white cutting board.",
+        "fact": "Pieces of cut butternut squash are on a white cutting board.",
         "confidence": 1.0
       },
       {
-        "fact": "A whole butternut squash is on the counter to the left of the cutting board.",
+        "fact": "A baking tray filled with diced yellow squash sits on the counter.",
         "confidence": 1.0
       },
       {
-        "fact": "A sign on the refrigerator reads 'the food EVOLUTION'.",
+        "fact": "A sign reading 'Food Evolution' is attached to the refrigerator door.",
         "confidence": 1.0
       }
     ],
     "ocr": [
-      "the food EVOLUTION"
+      "Food EVOLUTION"
     ],
-    "spatial": "The woman is standing in the center of the kitchen, behind the counter. To her left is a silver refrigerator, and to her right is a sink and stovetop. In front of her on the counter is a cutting board with squash, and she is holding a measuring cup over it.",
+    "spatial": "The woman is standing in the center of the kitchen, behind the counter. To her left is a silver refrigerator. In front of her on the counter is a white cutting board with squash pieces and a glass measuring cup she is holding. To the right of the cutting board is a gas stovetop. Below the cutting board is a baking tray filled with diced squash.",
     "parse_success": true,
     "chunk_idx": 24,
     "video_id": "MDrxVQjHmcU"
   },
   {
     "time": [
-      50,
-      52
+      25,
+      26
     ],
     "visible_entities": [
       {
-        "desc": "woman with shoulder-length blonde hair, wearing a long-sleeved top with a geometric pattern in blue, green, and white",
+        "desc": "woman with shoulder-length blonde hair, wearing a long-sleeved top with a blue, green, and white geometric pattern",
         "action": "pouring liquid from a glass measuring cup onto food",
         "position": "center"
+      },
+      {
+        "desc": "metal baking sheet filled with cubed yellow squash",
+        "action": "static",
+        "position": "foreground"
       },
       {
         "desc": "glass measuring cup containing dark brown liquid",
@@ -1682,12 +1762,7 @@
         "position": "center"
       },
       {
-        "desc": "metal baking sheet filled with diced yellow squash",
-        "action": "static",
-        "position": "foreground"
-      },
-      {
-        "desc": "stainless steel refrigerator with a 'Food Evolution' magnet",
+        "desc": "stainless steel refrigerator with a green and white 'Food Evolution' magnet",
         "action": "static",
         "position": "background left"
       },
@@ -1697,42 +1772,46 @@
         "position": "background"
       },
       {
-        "desc": "black gas stovetop",
+        "desc": "butternut squash on a white cutting board",
         "action": "static",
-        "position": "foreground right"
+        "position": "center left"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "The woman is pouring a dark liquid from a glass measuring cup onto the diced yellow squash in the baking sheet.",
+        "fact": "The woman pours a dark liquid from a glass measuring cup onto the yellow squash in the baking sheet.",
         "confidence": 1.0
       },
       {
-        "fact": "The baking sheet is sitting on the kitchen counter in front of the woman.",
+        "fact": "The baking sheet is filled with cubed yellow squash.",
         "confidence": 1.0
       },
       {
-        "fact": "The refrigerator is behind the woman to her left.",
+        "fact": "A magnet on the refrigerator reads 'Food Evolution'.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The woman is holding a knife in her left hand.",
         "confidence": 1.0
       }
     ],
     "ocr": [
       "Food EVOLUTION"
     ],
-    "spatial": "The woman is standing in the center of the kitchen, behind the counter. The baking sheet with squash is on the counter in front of her. The refrigerator is to the left of the woman, and the stovetop is to her right.",
+    "spatial": "The woman is standing in the center of the kitchen, behind the counter. The baking sheet with squash is on the counter in front of her. To her left, there is a cutting board with a butternut squash. The refrigerator is in the background to the left of the woman.",
     "parse_success": true,
     "chunk_idx": 25,
     "video_id": "MDrxVQjHmcU"
   },
   {
     "time": [
-      52,
-      54
+      26,
+      27
     ],
     "visible_entities": [
       {
-        "desc": "woman with blonde shoulder-length hair, wearing a long-sleeved top with a geometric pattern in blue, green, and beige",
-        "action": "seasoning food",
+        "desc": "woman with shoulder-length blonde hair, wearing a long-sleeved top with a geometric pattern in blue, green, and beige",
+        "action": "pouring seasoning from a jar onto food",
         "position": "center"
       },
       {
@@ -1741,12 +1820,12 @@
         "position": "foreground"
       },
       {
-        "desc": "small glass jar with a white lid containing seasoning",
-        "action": "being held",
+        "desc": "clear glass jar with a red lid containing brown seasoning",
+        "action": "being held and tilted",
         "position": "center"
       },
       {
-        "desc": "stainless steel refrigerator with a green and white magnet",
+        "desc": "stainless steel refrigerator with a 'Food Evolution' magnet",
         "action": "static",
         "position": "background left"
       },
@@ -1768,19 +1847,15 @@
     ],
     "atomic_facts": [
       {
-        "fact": "The woman is sprinkling seasoning from a small glass jar onto the cubed vegetables in the glass dish.",
+        "fact": "The woman is pouring seasoning from a jar onto the cubed vegetables in the glass dish.",
         "confidence": 1.0
       },
       {
-        "fact": "The woman is holding the seasoning jar in her right hand.",
+        "fact": "The woman is holding the jar in her right hand.",
         "confidence": 1.0
       },
       {
-        "fact": "The glass dish is sitting on the kitchen counter in front of the woman.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The refrigerator is behind the woman to her left.",
+        "fact": "The refrigerator is located to the left of the woman.",
         "confidence": 1.0
       },
       {
@@ -1789,22 +1864,23 @@
       }
     ],
     "ocr": [
-      "Food EVOLUTION"
+      "Food",
+      "EVOLUTION"
     ],
-    "spatial": "The woman is standing behind the kitchen counter, with the glass dish of vegetables in front of her. The refrigerator is to her left and behind her. The stovetop is to the right of the dish. The cutting board is to the left of the dish.",
+    "spatial": "The woman is standing behind the kitchen counter. The glass dish with vegetables is on the counter in front of her. To her left is a cutting board and a refrigerator. To her right is a black stovetop. Wooden cabinets are mounted on the wall above the counter.",
     "parse_success": true,
     "chunk_idx": 26,
     "video_id": "MDrxVQjHmcU"
   },
   {
     "time": [
-      54,
-      56
+      27,
+      28
     ],
     "visible_entities": [
       {
-        "desc": "person wearing a blue and white patterned apron over a long-sleeved shirt with blue and light green sleeves",
-        "action": "brushing oil onto squash cubes",
+        "desc": "person wearing a blue and white patterned apron over a long-sleeved shirt with blue and grey sleeves",
+        "action": "brushing oil onto cubed squash",
         "position": "center"
       },
       {
@@ -1818,12 +1894,7 @@
         "position": "center"
       },
       {
-        "desc": "clear glass measuring cup containing a yellow liquid",
-        "action": "static",
-        "position": "left"
-      },
-      {
-        "desc": "white cutting board with diced squash and a large piece of squash",
+        "desc": "white cutting board with cut pieces of yellow squash",
         "action": "static",
         "position": "center background"
       },
@@ -1833,49 +1904,129 @@
         "position": "left background"
       },
       {
+        "desc": "glass measuring cup containing a yellow liquid",
+        "action": "static",
+        "position": "left center"
+      },
+      {
         "desc": "stainless steel gas stovetop with black grates and knobs",
         "action": "static",
         "position": "right"
       },
       {
-        "desc": "large chef's knife with a black handle",
+        "desc": "chef's knife with a black handle",
         "action": "static",
-        "position": "right"
+        "position": "right center"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A person is using a black silicone brush to coat diced yellow squash on a baking sheet.",
+        "fact": "A person is using a black basting brush to coat diced yellow squash on a baking sheet.",
         "confidence": 1.0
       },
       {
-        "fact": "The baking sheet is filled with cubed squash.",
+        "fact": "The baking sheet is filled with cubes of squash.",
         "confidence": 1.0
       },
       {
-        "fact": "A glass measuring cup with yellow liquid sits on the counter.",
+        "fact": "A glass measuring cup containing yellow liquid sits on the counter near the cutting board.",
         "confidence": 1.0
       },
       {
-        "fact": "A whole butternut squash is visible in the background.",
+        "fact": "A whole butternut squash rests on the counter to the left of the cutting board.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A knife is lying on the counter to the right of the cutting board.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The baking sheet with squash is in the foreground, directly in front of the person. The person is standing behind the counter, holding the brush over the tray. To the left of the tray is a glass measuring cup and a cutting board. To the right of the tray is a gas stovetop and a knife.",
+    "spatial": "The person is standing behind the counter, holding a basting brush over a baking sheet in the foreground. To the left of the baking sheet is a glass measuring cup and a whole butternut squash. Behind the baking sheet is a white cutting board with more squash pieces. To the right of the cutting board and baking sheet is a gas stovetop.",
     "parse_success": true,
     "chunk_idx": 27,
     "video_id": "MDrxVQjHmcU"
   },
   {
     "time": [
-      56,
-      58
+      28,
+      29
     ],
     "visible_entities": [
       {
-        "desc": "person wearing a blue and white patterned apron over a long-sleeved shirt with blue and grey sections",
+        "desc": "person wearing a blue and white patterned apron over a long-sleeved shirt with blue and grey stripes",
         "action": "brushing sauce onto food",
+        "position": "center/background"
+      },
+      {
+        "desc": "silver metal baking sheet filled with cubed yellow squash",
+        "action": "static",
+        "position": "foreground"
+      },
+      {
+        "desc": "black silicone basting brush with a black handle",
+        "action": "being held and moved over the squash",
+        "position": "center"
+      },
+      {
+        "desc": "white cutting board with cut yellow squash cubes and a round slice",
+        "action": "static",
+        "position": "center/background"
+      },
+      {
+        "desc": "whole butternut squash, tan skin",
+        "action": "static",
+        "position": "left/background"
+      },
+      {
+        "desc": "stainless steel gas stovetop with black grates",
+        "action": "static",
+        "position": "right"
+      },
+      {
+        "desc": "glass measuring cup containing a clear liquid",
+        "action": "static",
+        "position": "left/center"
+      },
+      {
+        "desc": "chef's knife with a black handle",
+        "action": "static",
+        "position": "right/center"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A person is using a black basting brush to apply a dark liquid glaze to cubed yellow squash on a baking sheet.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The baking sheet is positioned on a beige countertop in front of the person.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "Cut pieces of squash are arranged on a white cutting board behind the baking sheet.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A whole butternut squash sits on the counter to the left of the cutting board.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The baking sheet filled with squash is in the foreground, positioned in front of the person and the cutting board. The person stands behind the counter, holding the brush over the tray. To the right of the cutting board and baking sheet is a stainless steel gas stovetop. To the left of the cutting board are a glass measuring cup and a whole butternut squash.",
+    "parse_success": true,
+    "chunk_idx": 28,
+    "video_id": "MDrxVQjHmcU"
+  },
+  {
+    "time": [
+      29,
+      30
+    ],
+    "visible_entities": [
+      {
+        "desc": "person wearing a long-sleeved shirt with blue, purple, and beige color blocks, and a beige apron",
+        "action": "arranging diced squash on a baking sheet",
         "position": "center"
       },
       {
@@ -1884,12 +2035,7 @@
         "position": "foreground"
       },
       {
-        "desc": "black silicone basting brush",
-        "action": "brushing",
-        "position": "center"
-      },
-      {
-        "desc": "white cutting board with diced yellow squash and a round slice of squash",
+        "desc": "white plastic cutting board with diced squash and a knife",
         "action": "static",
         "position": "center"
       },
@@ -1904,247 +2050,110 @@
         "position": "right"
       },
       {
-        "desc": "glass measuring cup containing dark liquid",
+        "desc": "glass measuring cup containing a clear liquid",
         "action": "static",
         "position": "left"
       },
       {
-        "desc": "silver kitchen knife with black handle",
+        "desc": "black-handled kitchen knife",
         "action": "static",
         "position": "center"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "person is brushing a dark sauce onto diced yellow squash on a baking sheet",
+        "fact": "A person is using their hands to spread diced squash evenly on a baking sheet.",
         "confidence": 1.0
       },
       {
-        "fact": "diced yellow squash is arranged on a silver baking sheet",
+        "fact": "The baking sheet is filled with yellow cubes of squash.",
         "confidence": 1.0
       },
       {
-        "fact": "a whole butternut squash sits on the counter to the left",
+        "fact": "A whole butternut squash sits on the counter to the left.",
         "confidence": 1.0
       },
       {
-        "fact": "a knife rests on the counter next to the cutting board",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [],
-    "spatial": "The person is standing behind the counter, reaching over the baking sheet which is in the foreground. The baking sheet is to the left of the gas stovetop. The cutting board is behind the baking sheet. The whole butternut squash is to the left of the cutting board.",
-    "parse_success": true,
-    "chunk_idx": 28,
-    "video_id": "MDrxVQjHmcU"
-  },
-  {
-    "time": [
-      58,
-      60
-    ],
-    "visible_entities": [
-      {
-        "desc": "person wearing a long-sleeved shirt with blue, grey, and white patterns and a dark apron",
-        "action": "spreading diced yellow squash on a baking sheet",
-        "position": "center"
-      },
-      {
-        "desc": "silver metal baking sheet filled with diced yellow squash",
-        "action": "static",
-        "position": "foreground"
-      },
-      {
-        "desc": "white cutting board with diced yellow squash and a black knife",
-        "action": "static",
-        "position": "center"
-      },
-      {
-        "desc": "whole butternut squash, tan skin",
-        "action": "static",
-        "position": "left"
-      },
-      {
-        "desc": "stainless steel gas stovetop with black grates and knobs",
-        "action": "static",
-        "position": "right"
-      },
-      {
-        "desc": "glass measuring cup containing liquid",
-        "action": "static",
-        "position": "left"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "The person uses both hands to spread the diced squash evenly across the baking sheet.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "A baking sheet filled with cubed yellow squash sits on the counter.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "A whole butternut squash is visible on the left side of the counter.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "A knife rests on the cutting board next to the squash pieces.",
+        "fact": "A glass measuring cup is positioned near the cutting board.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The person is standing behind the counter, reaching forward to touch the baking sheet in the foreground. The baking sheet is positioned in front of the cutting board. To the left of the cutting board are a whole butternut squash and a glass measuring cup. To the right of the cutting board is a stainless steel stovetop.",
+    "spatial": "The person is standing behind the counter, arranging the squash on the baking sheet which is in the foreground. To the right of the baking sheet is a gas stovetop. To the left of the baking sheet are a whole butternut squash and a glass measuring cup. The cutting board is behind the baking sheet.",
     "parse_success": true,
     "chunk_idx": 29,
     "video_id": "MDrxVQjHmcU"
   },
   {
     "time": [
-      60,
-      62
+      30,
+      31
     ],
     "visible_entities": [
       {
-        "desc": "person wearing a blue and grey striped long-sleeve shirt and a white apron",
-        "action": "mixing cubed vegetables",
+        "desc": "person wearing a blue and grey striped long-sleeve shirt and a blue apron with a white waistband",
+        "action": "mixing diced yellow squash on a baking sheet",
         "position": "center"
       },
       {
-        "desc": "silver metal baking sheet",
-        "action": "static",
-        "position": "center"
+        "desc": "silver metal baking sheet filled with diced yellow squash",
+        "action": "being manipulated",
+        "position": "foreground"
       },
       {
-        "desc": "cubed yellow squash or pumpkin",
-        "action": "being mixed",
-        "position": "center"
+        "desc": "white cutting board with a black-handled knife and a slice of yellow squash",
+        "action": "static",
+        "position": "center background"
       },
       {
-        "desc": "white cutting board",
+        "desc": "whole butternut squash, tan skin",
         "action": "static",
-        "position": "background"
+        "position": "left background"
       },
       {
-        "desc": "black basting brush",
+        "desc": "glass measuring cup containing liquid",
         "action": "static",
-        "position": "background"
+        "position": "left background"
       },
       {
         "desc": "stainless steel gas stovetop with black grates",
         "action": "static",
         "position": "right"
-      },
-      {
-        "desc": "whole butternut squash",
-        "action": "static",
-        "position": "left"
-      },
-      {
-        "desc": "glass measuring cup",
-        "action": "static",
-        "position": "left"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "The person is using both hands to toss and mix the cubed yellow vegetables on the baking sheet.",
+        "fact": "A person is using both hands to toss and mix diced yellow squash on a baking sheet.",
         "confidence": 1.0
       },
       {
-        "fact": "The baking sheet is placed on a beige countertop.",
+        "fact": "The diced squash is spread out on the silver tray.",
         "confidence": 1.0
       },
       {
-        "fact": "A black basting brush rests on a white cutting board behind the baking sheet.",
+        "fact": "A knife rests on a white cutting board behind the tray.",
         "confidence": 1.0
       },
       {
-        "fact": "A whole butternut squash sits on the counter to the left of the baking sheet.",
+        "fact": "A whole butternut squash sits on the counter to the left.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The person is standing behind the baking sheet, which is in the center of the frame. The gas stovetop is to the right of the baking sheet. To the left of the baking sheet, there is a glass measuring cup and a whole butternut squash. The white cutting board is behind the baking sheet.",
+    "spatial": "The person is standing behind the baking sheet, reaching over it to mix the squash. The baking sheet is in the foreground, positioned in front of the cutting board and to the left of the gas stovetop. The whole butternut squash is to the left of the cutting board.",
     "parse_success": true,
     "chunk_idx": 30,
     "video_id": "MDrxVQjHmcU"
   },
   {
     "time": [
-      62,
-      64
+      31,
+      32
     ],
     "visible_entities": [
       {
-        "desc": "person wearing a blue and grey striped long-sleeve shirt and a brown apron with white trim",
+        "desc": "person wearing a blue and grey striped long-sleeve shirt with a brown apron",
         "action": "spreading diced yellow squash on a baking sheet",
-        "position": "center"
-      },
-      {
-        "desc": "silver metal baking sheet",
-        "action": "static",
-        "position": "center"
-      },
-      {
-        "desc": "diced yellow squash cubes",
-        "action": "being spread",
-        "position": "center"
-      },
-      {
-        "desc": "stainless steel gas stovetop with black grates and knobs",
-        "action": "static",
-        "position": "right"
-      },
-      {
-        "desc": "white cutting board with a black knife",
-        "action": "static",
-        "position": "background"
-      },
-      {
-        "desc": "whole butternut squash",
-        "action": "static",
-        "position": "background left"
-      },
-      {
-        "desc": "glass measuring cup",
-        "action": "static",
-        "position": "left"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "person spreads diced yellow squash across a baking sheet with both hands",
-        "confidence": 1.0
-      },
-      {
-        "fact": "the baking sheet is placed on a beige countertop",
-        "confidence": 1.0
-      },
-      {
-        "fact": "a gas stovetop is located to the right of the baking sheet",
-        "confidence": 1.0
-      },
-      {
-        "fact": "a cutting board with a knife is behind the baking sheet",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [],
-    "spatial": "The person is standing behind the baking sheet, spreading the diced squash. The baking sheet is on the countertop in the foreground, to the left of the gas stovetop. The cutting board and whole squash are on the counter behind the baking sheet.",
-    "parse_success": true,
-    "chunk_idx": 31,
-    "video_id": "MDrxVQjHmcU"
-  },
-  {
-    "time": [
-      64,
-      66
-    ],
-    "visible_entities": [
-      {
-        "desc": "person wearing a blue and grey striped long-sleeved shirt and a blue apron",
-        "action": "spreading cubed yellow vegetables on a baking sheet",
         "position": "center"
       },
       {
@@ -2153,80 +2162,9 @@
         "position": "foreground"
       },
       {
-        "desc": "cubed yellow squash",
+        "desc": "diced yellow squash cubes",
         "action": "being spread",
         "position": "center"
-      },
-      {
-        "desc": "white cutting board with a black knife",
-        "action": "static",
-        "position": "center"
-      },
-      {
-        "desc": "whole butternut squash",
-        "action": "static",
-        "position": "left"
-      },
-      {
-        "desc": "stainless steel gas stovetop",
-        "action": "static",
-        "position": "right"
-      },
-      {
-        "desc": "glass measuring cup",
-        "action": "static",
-        "position": "left"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "The person is using both hands to spread the cubed vegetables across the baking sheet.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The baking sheet is placed on a beige countertop.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "A whole butternut squash sits on the counter to the left of the cutting board.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The stovetop is located to the right of the baking sheet.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [],
-    "spatial": "The person is standing behind the baking sheet, spreading the yellow cubes. The baking sheet is in the foreground, positioned to the left of the stainless steel stovetop. To the left of the baking sheet, there is a glass measuring cup and a whole butternut squash. The cutting board is behind the baking sheet.",
-    "parse_success": true,
-    "chunk_idx": 32,
-    "video_id": "MDrxVQjHmcU"
-  },
-  {
-    "time": [
-      66,
-      68
-    ],
-    "visible_entities": [
-      {
-        "desc": "person wearing a blue and grey striped long-sleeve shirt with a white apron",
-        "action": "tossing cubed vegetables",
-        "position": "center"
-      },
-      {
-        "desc": "silver metal baking sheet",
-        "action": "static",
-        "position": "center"
-      },
-      {
-        "desc": "yellow cubed butternut squash",
-        "action": "being tossed",
-        "position": "center"
-      },
-      {
-        "desc": "stainless steel gas stovetop with black grates",
-        "action": "static",
-        "position": "right"
       },
       {
         "desc": "white cutting board",
@@ -2249,14 +2187,80 @@
         "position": "background"
       },
       {
-        "desc": "black silicone basting brush",
+        "desc": "stainless steel gas stovetop with black grates",
         "action": "static",
-        "position": "background"
+        "position": "right"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "The person is using both hands to toss and spread the yellow cubed vegetables on the baking sheet.",
+        "fact": "The person is using both hands to spread diced yellow squash on a baking sheet.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A whole butternut squash sits on the counter to the left of the cutting board.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A black handled knife rests on the white cutting board.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The baking sheet is positioned in front of the person.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The person is standing behind the baking sheet, spreading the squash. The baking sheet is in the foreground, to the left of the gas stovetop. The cutting board and whole squash are behind the baking sheet on the counter.",
+    "parse_success": true,
+    "chunk_idx": 31,
+    "video_id": "MDrxVQjHmcU"
+  },
+  {
+    "time": [
+      32,
+      33
+    ],
+    "visible_entities": [
+      {
+        "desc": "person wearing a blue, grey, and white striped long-sleeve shirt with a grey apron",
+        "action": "spreading diced yellow squash on a baking sheet",
+        "position": "center"
+      },
+      {
+        "desc": "silver metal baking sheet lined with parchment paper",
+        "action": "static",
+        "position": "foreground"
+      },
+      {
+        "desc": "diced yellow butternut squash cubes",
+        "action": "being spread",
+        "position": "center"
+      },
+      {
+        "desc": "white cutting board with a black-handled knife",
+        "action": "static",
+        "position": "center"
+      },
+      {
+        "desc": "stainless steel gas stovetop with black grates and knobs",
+        "action": "static",
+        "position": "right"
+      },
+      {
+        "desc": "whole butternut squash and a cut squash piece",
+        "action": "static",
+        "position": "left"
+      },
+      {
+        "desc": "glass measuring cup with liquid",
+        "action": "static",
+        "position": "left"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A person is spreading diced yellow squash across a baking sheet with their hands.",
         "confidence": 1.0
       },
       {
@@ -2264,32 +2268,94 @@
         "confidence": 1.0
       },
       {
-        "fact": "A whole butternut squash sits on the counter to the left of the baking sheet.",
+        "fact": "A white cutting board is positioned behind the baking sheet.",
         "confidence": 1.0
       },
       {
-        "fact": "A gas stovetop is located to the right of the baking sheet.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "A knife and a basting brush are resting on the cutting board in the background.",
+        "fact": "A whole butternut squash sits on the counter to the left of the cutting board.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The person is standing behind the baking sheet, which is centered on the counter. To the right of the baking sheet is the gas stovetop. To the left of the baking sheet are a glass measuring cup and a whole butternut squash. Behind the baking sheet is a white cutting board with a knife and brush on it.",
+    "spatial": "The person is standing behind the baking sheet, which is in the foreground. The stovetop is to the right of the person and the baking sheet. The cutting board is behind the baking sheet and in front of the person. The whole squash is to the left of the cutting board.",
+    "parse_success": true,
+    "chunk_idx": 32,
+    "video_id": "MDrxVQjHmcU"
+  },
+  {
+    "time": [
+      33,
+      34
+    ],
+    "visible_entities": [
+      {
+        "desc": "person wearing a blue and grey striped long-sleeve shirt and a white apron",
+        "action": "spreading diced orange squash on a baking sheet",
+        "position": "center"
+      },
+      {
+        "desc": "silver metal baking sheet with diced orange squash",
+        "action": "static",
+        "position": "center foreground"
+      },
+      {
+        "desc": "stainless steel gas stovetop with black grates and knobs",
+        "action": "static",
+        "position": "right"
+      },
+      {
+        "desc": "whole butternut squash, tan skin",
+        "action": "static",
+        "position": "left background"
+      },
+      {
+        "desc": "white cutting board with knife and squash pieces",
+        "action": "static",
+        "position": "left background"
+      },
+      {
+        "desc": "glass measuring cup with liquid",
+        "action": "static",
+        "position": "left"
+      },
+      {
+        "desc": "bottle with white label and black text",
+        "action": "static",
+        "position": "far left"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The person is using both hands to spread diced orange squash on a baking sheet.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The baking sheet is placed on a beige countertop.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The stovetop is to the right of the baking sheet.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The whole butternut squash is behind the cutting board.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The person is standing behind the baking sheet, spreading the squash. The baking sheet is in the center foreground on the counter. To the right of the baking sheet is the gas stovetop. To the left and behind the baking sheet are the cutting board, the whole squash, and the measuring cup.",
     "parse_success": true,
     "chunk_idx": 33,
     "video_id": "MDrxVQjHmcU"
   },
   {
     "time": [
-      68,
-      70
+      34,
+      35
     ],
     "visible_entities": [
       {
-        "desc": "person wearing a blue and grey striped long-sleeve shirt and a white apron",
+        "desc": "person wearing a blue and grey striped long-sleeve shirt and a white apron with a blue geometric pattern",
         "action": "mixing diced squash with hands",
         "position": "center"
       },
@@ -2299,17 +2365,12 @@
         "position": "center"
       },
       {
-        "desc": "yellow diced butternut squash cubes",
+        "desc": "diced yellow squash cubes",
         "action": "being tossed",
         "position": "center"
       },
       {
-        "desc": "stainless steel gas stovetop with black grates and knobs",
-        "action": "static",
-        "position": "right"
-      },
-      {
-        "desc": "whole butternut squash and a cut piece of squash",
+        "desc": "whole butternut squash, tan skin",
         "action": "static",
         "position": "left"
       },
@@ -2319,60 +2380,70 @@
         "position": "left"
       },
       {
-        "desc": "black knife",
+        "desc": "black handled knife",
         "action": "static",
         "position": "left"
+      },
+      {
+        "desc": "stainless steel gas stovetop with black grates",
+        "action": "static",
+        "position": "right"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "The person is using both hands to toss and mix the diced squash on the baking sheet.",
+        "fact": "The person is using both hands to toss and mix the diced yellow squash on the baking sheet.",
         "confidence": 1.0
       },
       {
-        "fact": "The baking sheet is placed on a beige countertop.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The stovetop is located to the right of the baking sheet.",
+        "fact": "The diced squash is piled in the center of the parchment-lined baking sheet.",
         "confidence": 1.0
       },
       {
         "fact": "A whole butternut squash sits on the counter to the left of the baking sheet.",
         "confidence": 1.0
+      },
+      {
+        "fact": "A glass measuring cup containing a liquid is positioned near the whole squash.",
+        "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The person is standing behind the baking sheet, reaching over it to mix the squash. The baking sheet is positioned to the left of the gas stovetop. To the left of the baking sheet, there is a cutting board with a knife, a measuring cup, and whole squash.",
+    "spatial": "The person is standing behind the baking sheet, reaching over it to mix the food. The baking sheet is placed on the countertop to the left of the gas stovetop. The whole butternut squash and measuring cup are to the left of the baking sheet.",
     "parse_success": true,
     "chunk_idx": 34,
     "video_id": "MDrxVQjHmcU"
   },
   {
     "time": [
-      70,
-      72
+      35,
+      36
     ],
     "visible_entities": [
       {
-        "desc": "person wearing a long-sleeved shirt with blue, grey, and white horizontal stripes and a geometric pattern",
-        "action": "spreading diced vegetables on a baking sheet",
+        "desc": "person wearing a long-sleeved shirt with blue, grey, and white horizontal stripes and a geometric pattern on the torso",
+        "action": "spreading diced orange vegetables on a baking sheet",
         "position": "center"
       },
       {
         "desc": "silver metal baking sheet lined with brown parchment paper",
         "action": "static",
-        "position": "center"
+        "position": "center foreground"
       },
       {
-        "desc": "diced yellow-orange vegetables, likely butternut squash",
+        "desc": "small, diced cubes of orange squash",
         "action": "being spread",
-        "position": "center"
+        "position": "on the baking sheet"
+      },
+      {
+        "desc": "stainless steel gas stovetop with black grates and control knobs",
+        "action": "static",
+        "position": "right"
       },
       {
         "desc": "whole butternut squash, tan skin",
         "action": "static",
-        "position": "left"
+        "position": "background left"
       },
       {
         "desc": "glass measuring cup containing clear liquid",
@@ -2380,72 +2451,136 @@
         "position": "left"
       },
       {
-        "desc": "black handled knife",
+        "desc": "white cutting board with a black knife",
         "action": "static",
-        "position": "center"
+        "position": "background center"
       },
       {
-        "desc": "stainless steel gas stovetop with black grates",
+        "desc": "bottle with a dark label",
         "action": "static",
-        "position": "right"
-      },
-      {
-        "desc": "wooden kitchen cabinets, reddish-brown",
-        "action": "static",
-        "position": "background"
+        "position": "far left"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "person is using both hands to spread diced vegetables on a baking sheet",
+        "fact": "The person is using both hands to spread the diced squash evenly across the parchment-lined baking sheet.",
         "confidence": 1.0
       },
       {
-        "fact": "the baking sheet is lined with parchment paper",
+        "fact": "The baking sheet is placed on a beige countertop.",
         "confidence": 1.0
       },
       {
-        "fact": "a whole butternut squash sits on the counter to the left",
+        "fact": "A whole butternut squash sits on the counter behind the measuring cup.",
         "confidence": 1.0
       },
       {
-        "fact": "a glass measuring cup is placed near the squash",
-        "confidence": 1.0
-      },
-      {
-        "fact": "a knife rests on a white cutting board behind the baking sheet",
+        "fact": "The stovetop is located to the right of the baking sheet.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The person is standing behind the baking sheet, spreading the diced vegetables. The baking sheet is in the center of the counter, to the left of the gas stovetop. The whole butternut squash and measuring cup are to the left of the baking sheet. The wooden cabinets are in the background behind the counter.",
+    "spatial": "The person is standing behind the baking sheet, which is centered on the countertop. To the right of the baking sheet is the gas stovetop. To the left of the baking sheet are a glass measuring cup and a bottle. In the background, behind the baking sheet, is a cutting board with a knife and a whole butternut squash.",
     "parse_success": true,
     "chunk_idx": 35,
     "video_id": "MDrxVQjHmcU"
   },
   {
     "time": [
-      72,
-      74
+      36,
+      37
     ],
     "visible_entities": [
       {
         "desc": "woman with shoulder-length blonde hair, wearing a long-sleeved top with a blue, grey, and white abstract geometric pattern",
-        "action": "holding a baking sheet with both hands",
+        "action": "holding a baking sheet",
         "position": "center"
       },
       {
-        "desc": "silver metal baking sheet filled with diced orange butternut squash cubes",
+        "desc": "silver metal baking sheet filled with diced yellow squash cubes",
         "action": "being held",
         "position": "center foreground"
       },
       {
-        "desc": "stainless steel refrigerator with a green and white 'Food Evolution' magnet on the upper door",
+        "desc": "stainless steel refrigerator with a green and white 'food EVOLUTION' magnet on the upper door",
         "action": "static",
         "position": "left background"
       },
       {
-        "desc": "wooden kitchen cabinets, medium brown finish, with silver handles",
+        "desc": "whole butternut squash, tan skin, elongated shape",
+        "action": "static",
+        "position": "left foreground"
+      },
+      {
+        "desc": "white cutting board with a black-handled knife and a pastry brush",
+        "action": "static",
+        "position": "left foreground"
+      },
+      {
+        "desc": "black gas stovetop with metal grates",
+        "action": "static",
+        "position": "right foreground"
+      },
+      {
+        "desc": "wooden kitchen cabinets, reddish-brown finish, with silver handles",
+        "action": "static",
+        "position": "background"
+      },
+      {
+        "desc": "white paper towel roll on a wall-mounted holder",
+        "action": "static",
+        "position": "background right"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The woman is holding a baking sheet filled with diced yellow squash.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A whole butternut squash rests on the counter to the left of the baking sheet.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A knife and a pastry brush are lying on a white cutting board on the counter.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The refrigerator has a magnet that reads 'food EVOLUTION'.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "food EVOLUTION"
+    ],
+    "spatial": "The woman is standing in the center of the kitchen, holding the baking sheet in front of her. To her left, a whole butternut squash and a cutting board with tools are on the counter. Behind her to the left is a stainless steel refrigerator. To her right in the foreground is a black gas stovetop. Wooden cabinets are mounted on the wall above the counter and sink area.",
+    "parse_success": true,
+    "chunk_idx": 36,
+    "video_id": "MDrxVQjHmcU"
+  },
+  {
+    "time": [
+      37,
+      38
+    ],
+    "visible_entities": [
+      {
+        "desc": "woman with shoulder-length blonde hair, wearing a long-sleeved top with a blue, purple, and white abstract pattern",
+        "action": "holding a baking sheet",
+        "position": "center"
+      },
+      {
+        "desc": "silver metal baking sheet filled with diced yellow squash",
+        "action": "being held",
+        "position": "center"
+      },
+      {
+        "desc": "stainless steel refrigerator with a 'Food Evolution' sign",
+        "action": "static",
+        "position": "left"
+      },
+      {
+        "desc": "wooden kitchen cabinets, medium brown finish",
         "action": "static",
         "position": "background"
       },
@@ -2455,19 +2590,19 @@
         "position": "bottom right"
       },
       {
-        "desc": "whole butternut squash, tan skin, elongated shape",
+        "desc": "whole butternut squash, tan skin",
         "action": "static",
         "position": "left foreground"
       },
       {
-        "desc": "white cutting board with a knife and a brush resting on it",
+        "desc": "white cutting board with a black-handled knife and squash pieces",
         "action": "static",
-        "position": "center foreground"
+        "position": "left foreground"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "The woman is holding a baking sheet filled with diced butternut squash.",
+        "fact": "The woman is holding a baking sheet filled with diced yellow squash with both hands.",
         "confidence": 1.0
       },
       {
@@ -2475,7 +2610,7 @@
         "confidence": 1.0
       },
       {
-        "fact": "A whole butternut squash sits on the counter to the left of the cutting board.",
+        "fact": "A whole butternut squash rests on the counter to the left of the cutting board.",
         "confidence": 1.0
       },
       {
@@ -2484,27 +2619,92 @@
       }
     ],
     "ocr": [
-      "Food EVOLUTION"
+      "food",
+      "EVOLUTION"
     ],
-    "spatial": "The woman is standing in the center of the kitchen, holding the baking sheet in front of her. To her left is a stainless steel refrigerator, and behind her are wooden cabinets and a tiled backsplash. In the foreground on the counter, a whole butternut squash is to the left of a white cutting board, which is next to a black stovetop on the right.",
+    "spatial": "The woman is standing in the center of the kitchen, holding a baking sheet in front of her. To her left is a stainless steel refrigerator and a counter with a cutting board and squash. Behind her are wooden cabinets and a sink. In the foreground to the right is a black gas stovetop.",
     "parse_success": true,
-    "chunk_idx": 36,
+    "chunk_idx": 37,
     "video_id": "MDrxVQjHmcU"
   },
   {
     "time": [
-      74,
-      76
+      38,
+      39
     ],
     "visible_entities": [
       {
-        "desc": "woman with shoulder-length blonde hair, wearing a long-sleeved top with a blue, purple, and white abstract pattern",
-        "action": "holding a baking sheet with both hands",
+        "desc": "woman with shoulder-length blonde hair, wearing a long-sleeved top with a geometric pattern in shades of blue, grey, and white",
+        "action": "holding a baking sheet",
         "position": "center"
       },
       {
-        "desc": "silver metal baking sheet filled with diced orange squash cubes",
-        "action": "being held by the woman",
+        "desc": "silver metal baking sheet filled with diced yellow-orange vegetables",
+        "action": "being held",
+        "position": "center"
+      },
+      {
+        "desc": "stainless steel refrigerator with a green and white 'Food Evolution' magnet",
+        "action": "static",
+        "position": "left"
+      },
+      {
+        "desc": "wooden kitchen cabinets, reddish-brown finish",
+        "action": "static",
+        "position": "background"
+      },
+      {
+        "desc": "butternut squash, tan skin, whole",
+        "action": "static",
+        "position": "left foreground"
+      },
+      {
+        "desc": "white cutting board with diced squash and a knife",
+        "action": "static",
+        "position": "left foreground"
+      },
+      {
+        "desc": "black gas stovetop with metal grates",
+        "action": "static",
+        "position": "right foreground"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The woman is holding a baking sheet filled with diced squash.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A whole butternut squash sits on the counter next to a cutting board.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The refrigerator has a 'Food Evolution' magnet on the upper door.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "Food EVOLUTION"
+    ],
+    "spatial": "The woman is standing in the center of the kitchen, holding the baking sheet in front of her. To her left is a stainless steel refrigerator and a counter with a cutting board and squash. To her right is a black gas stovetop. Wooden cabinets are mounted on the wall above the counter behind her.",
+    "parse_success": true,
+    "chunk_idx": 38,
+    "video_id": "MDrxVQjHmcU"
+  },
+  {
+    "time": [
+      39,
+      40
+    ],
+    "visible_entities": [
+      {
+        "desc": "woman with shoulder-length blonde hair, wearing a long-sleeved top with a blue, green, and white abstract pattern",
+        "action": "holding a baking sheet",
+        "position": "center"
+      },
+      {
+        "desc": "silver metal baking sheet filled with diced orange butternut squash",
+        "action": "being held",
         "position": "center foreground"
       },
       {
@@ -2518,319 +2718,55 @@
         "position": "background"
       },
       {
-        "desc": "whole butternut squash, tan skin",
-        "action": "static",
-        "position": "left foreground"
-      },
-      {
         "desc": "black gas stovetop with metal grates",
         "action": "static",
-        "position": "right foreground"
+        "position": "bottom right foreground"
       },
       {
-        "desc": "white cutting board with a black-handled knife and squash pieces",
+        "desc": "white cutting board with a knife, a piece of squash, and a black spatula",
         "action": "static",
-        "position": "left foreground"
+        "position": "bottom left foreground"
+      },
+      {
+        "desc": "whole butternut squash, tan skin",
+        "action": "static",
+        "position": "bottom left foreground"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "The woman is holding a baking sheet filled with diced squash.",
+        "fact": "The woman is holding a baking sheet filled with diced butternut squash with both hands.",
         "confidence": 1.0
       },
       {
-        "fact": "The woman is standing in a kitchen setting.",
+        "fact": "The baking sheet is positioned in front of the woman's torso.",
         "confidence": 1.0
       },
       {
-        "fact": "A whole butternut squash rests on the counter to the left.",
+        "fact": "A whole butternut squash rests on the counter to the left of the cutting board.",
         "confidence": 1.0
       },
       {
-        "fact": "The refrigerator has a magnet that reads 'food EVOLUTION'.",
+        "fact": "The refrigerator is located to the left of the woman.",
         "confidence": 1.0
       }
     ],
     "ocr": [
       "food EVOLUTION"
     ],
-    "spatial": "The woman is standing in the center of the kitchen, holding the baking sheet in front of her. To her left is a stainless steel refrigerator and a counter with a whole squash and cutting board. To her right is a black gas stovetop. Wooden cabinets are mounted on the wall above the counter behind her.",
-    "parse_success": true,
-    "chunk_idx": 37,
-    "video_id": "MDrxVQjHmcU"
-  },
-  {
-    "time": [
-      76,
-      78
-    ],
-    "visible_entities": [
-      {
-        "desc": "woman with shoulder-length blonde hair, wearing a long-sleeved top with a geometric pattern in shades of blue, grey, and white",
-        "action": "holding a baking sheet",
-        "position": "center"
-      },
-      {
-        "desc": "silver metal baking sheet filled with diced yellow-orange vegetables",
-        "action": "being held",
-        "position": "center foreground"
-      },
-      {
-        "desc": "stainless steel refrigerator with a green and white magnet on the door",
-        "action": "static",
-        "position": "left background"
-      },
-      {
-        "desc": "wooden kitchen cabinets with silver handles",
-        "action": "static",
-        "position": "background"
-      },
-      {
-        "desc": "black gas stovetop with metal grates",
-        "action": "static",
-        "position": "right foreground"
-      },
-      {
-        "desc": "white cutting board with a knife, a peeled butternut squash, and a measuring cup",
-        "action": "static",
-        "position": "left foreground"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "The woman is holding a baking sheet filled with diced vegetables with both hands.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The refrigerator has a magnet that reads 'Food Evolution'.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "A knife and a peeled butternut squash are resting on a cutting board on the counter.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [
-      "Food EVOLUTION"
-    ],
-    "spatial": "The woman is standing in the center of the kitchen, holding the baking sheet in front of her. To her left is a stainless steel refrigerator, and to her right is a black gas stovetop. The wooden cabinets are mounted on the wall above the counter behind her.",
-    "parse_success": true,
-    "chunk_idx": 38,
-    "video_id": "MDrxVQjHmcU"
-  },
-  {
-    "time": [
-      78,
-      80
-    ],
-    "visible_entities": [
-      {
-        "desc": "woman with shoulder-length blonde hair, wearing a long-sleeved top with a blue, green, and white abstract pattern",
-        "action": "holding a baking sheet",
-        "position": "center"
-      },
-      {
-        "desc": "silver metal baking sheet filled with diced orange squash",
-        "action": "being held",
-        "position": "center/foreground"
-      },
-      {
-        "desc": "stainless steel refrigerator with a 'Food Evolution' magnet",
-        "action": "static",
-        "position": "left/background"
-      },
-      {
-        "desc": "wooden kitchen cabinets",
-        "action": "static",
-        "position": "background"
-      },
-      {
-        "desc": "black gas stovetop",
-        "action": "static",
-        "position": "right/foreground"
-      },
-      {
-        "desc": "white cutting board with a knife and squash pieces",
-        "action": "static",
-        "position": "left/foreground"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "A woman is holding a baking sheet filled with diced orange squash.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The baking sheet is positioned in front of the woman.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "A refrigerator with a 'Food Evolution' sign is visible in the background.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [
-      "Food EVOLUTION"
-    ],
-    "spatial": "The woman is standing in the center of the kitchen, holding the baking sheet in front of her. The refrigerator is to her left, and the stovetop is to her right in the foreground. The cutting board is on the counter to the left of the baking sheet.",
+    "spatial": "The woman is standing in the center of the kitchen, holding the baking sheet in front of her. To her left is a stainless steel refrigerator, and behind her are wooden cabinets and a tiled backsplash. In the foreground, a cutting board and a whole squash are on the counter to the left, while a gas stovetop is visible in the bottom right corner.",
     "parse_success": true,
     "chunk_idx": 39,
     "video_id": "MDrxVQjHmcU"
   },
   {
     "time": [
-      80,
-      82
+      40,
+      41
     ],
     "visible_entities": [
       {
-        "desc": "woman with shoulder-length blonde hair, wearing a long-sleeved top with a geometric pattern in blue, grey, and white",
-        "action": "holding a baking sheet with both hands",
-        "position": "center"
-      },
-      {
-        "desc": "silver metal baking sheet filled with diced yellow squash",
-        "action": "being held",
-        "position": "center foreground"
-      },
-      {
-        "desc": "stainless steel refrigerator with a green and white 'Food Evolution' sign on the door",
-        "action": "static",
-        "position": "left background"
-      },
-      {
-        "desc": "wooden kitchen cabinets with silver handles",
-        "action": "static",
-        "position": "background"
-      },
-      {
-        "desc": "black gas stovetop with metal grates",
-        "action": "static",
-        "position": "bottom right foreground"
-      },
-      {
-        "desc": "white cutting board with a knife, diced squash, and a small piece of squash",
-        "action": "static",
-        "position": "bottom left foreground"
-      },
-      {
-        "desc": "whole butternut squash, tan skin",
-        "action": "static",
-        "position": "bottom left"
-      },
-      {
-        "desc": "glass measuring cup with liquid",
-        "action": "static",
-        "position": "bottom left"
-      },
-      {
-        "desc": "kitchen sink with a faucet",
-        "action": "static",
-        "position": "right background"
-      },
-      {
-        "desc": "paper towel roll on a holder under the cabinets",
-        "action": "static",
-        "position": "background"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "A woman is holding a baking sheet filled with diced yellow squash.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The baking sheet is positioned in front of the woman.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "A refrigerator with a 'Food Evolution' sign is to the left of the woman.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "A gas stovetop is in the foreground to the right of the woman.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "A cutting board with a knife and more squash is on the counter in front of the woman.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [
-      "Food EVOLUTION"
-    ],
-    "spatial": "The woman is standing in the center of the kitchen, holding a baking sheet in front of her. To her left is a stainless steel refrigerator, and to her right is a kitchen sink. In front of her, on the counter, is a cutting board with a knife and a whole butternut squash. A gas stovetop is in the foreground to her right. Wooden cabinets are above the counter and behind the woman.",
-    "parse_success": true,
-    "chunk_idx": 40,
-    "video_id": "MDrxVQjHmcU"
-  },
-  {
-    "time": [
-      82,
-      84
-    ],
-    "visible_entities": [
-      {
-        "desc": "woman with shoulder-length blonde hair, wearing a long-sleeved top with a geometric pattern in blue, grey, and white",
-        "action": "holding a baking sheet",
-        "position": "center"
-      },
-      {
-        "desc": "silver metal baking sheet filled with diced orange butternut squash",
-        "action": "being held",
-        "position": "center foreground"
-      },
-      {
-        "desc": "stainless steel refrigerator with a green and white 'Food Evolution' magnet",
-        "action": "static",
-        "position": "left background"
-      },
-      {
-        "desc": "wooden kitchen cabinets, medium brown finish",
-        "action": "static",
-        "position": "background"
-      },
-      {
-        "desc": "black gas stovetop with metal grates",
-        "action": "static",
-        "position": "bottom right"
-      },
-      {
-        "desc": "white cutting board with a knife and squash pieces",
-        "action": "static",
-        "position": "bottom left foreground"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "The woman is holding a baking sheet filled with diced butternut squash.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The refrigerator has a 'Food Evolution' sign on it.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "A knife and squash pieces are on the cutting board.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [
-      "Food EVOLUTION"
-    ],
-    "spatial": "The woman is standing in the center of the kitchen, holding the baking sheet in front of her. To her left is a stainless steel refrigerator. In the foreground on the counter, there is a cutting board with a knife and squash pieces. To the right of the woman is a gas stovetop.",
-    "parse_success": true,
-    "chunk_idx": 41,
-    "video_id": "MDrxVQjHmcU"
-  },
-  {
-    "time": [
-      84,
-      86
-    ],
-    "visible_entities": [
-      {
-        "desc": "woman with shoulder-length blonde hair, wearing a long-sleeved top with a blue, grey, and white abstract pattern",
+        "desc": "woman with shoulder-length blonde hair, wearing a long-sleeved top with a geometric pattern in blue, green, and white",
         "action": "holding a baking sheet",
         "position": "center"
       },
@@ -2840,29 +2776,29 @@
         "position": "center foreground"
       },
       {
-        "desc": "stainless steel refrigerator with a green and white 'Food Evolution' magnet",
+        "desc": "stainless steel refrigerator with a green and white 'food EVOLUTION' magnet",
         "action": "static",
         "position": "left background"
       },
       {
-        "desc": "wooden kitchen cabinets, medium brown finish",
+        "desc": "wooden kitchen cabinets with silver handles",
         "action": "static",
         "position": "background"
       },
       {
+        "desc": "butternut squash, partially peeled and diced",
+        "action": "static",
+        "position": "left foreground"
+      },
+      {
+        "desc": "white cutting board with a black-handled knife and squash pieces",
+        "action": "static",
+        "position": "left foreground"
+      },
+      {
         "desc": "black gas stovetop with metal grates",
         "action": "static",
-        "position": "bottom right"
-      },
-      {
-        "desc": "white cutting board with a black-handled knife and vegetable scraps",
-        "action": "static",
-        "position": "bottom left"
-      },
-      {
-        "desc": "whole butternut squash, tan skin",
-        "action": "static",
-        "position": "left"
+        "position": "right foreground"
       }
     ],
     "atomic_facts": [
@@ -2871,165 +2807,169 @@
         "confidence": 1.0
       },
       {
+        "fact": "The refrigerator has a magnet that reads 'food EVOLUTION'.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A butternut squash is on the counter next to a cutting board.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "food EVOLUTION"
+    ],
+    "spatial": "The woman is standing in the center of the kitchen, holding the baking sheet in front of her. To her left is a refrigerator and a counter with a cutting board and squash. To her right is a gas stovetop. The wooden cabinets are above the counter and behind the woman.",
+    "parse_success": true,
+    "chunk_idx": 40,
+    "video_id": "MDrxVQjHmcU"
+  },
+  {
+    "time": [
+      41,
+      42
+    ],
+    "visible_entities": [
+      {
+        "desc": "woman with shoulder-length blonde hair, wearing a long-sleeved top with a blue, white, and grey abstract pattern, and dangling earrings",
+        "action": "holding a baking sheet",
+        "position": "center"
+      },
+      {
+        "desc": "silver metal baking sheet filled with diced yellow squash",
+        "action": "being held",
+        "position": "center foreground"
+      },
+      {
+        "desc": "stainless steel refrigerator with a 'Food Evolution' magnet",
+        "action": "static",
+        "position": "left background"
+      },
+      {
+        "desc": "wooden kitchen cabinets, medium brown finish",
+        "action": "static",
+        "position": "background"
+      },
+      {
+        "desc": "white cutting board with diced squash, a knife, and a spatula",
+        "action": "static",
+        "position": "bottom left foreground"
+      },
+      {
+        "desc": "black gas stovetop with metal grates",
+        "action": "static",
+        "position": "bottom right foreground"
+      },
+      {
+        "desc": "whole butternut squash, tan skin",
+        "action": "static",
+        "position": "left foreground"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The woman is holding a baking sheet filled with diced yellow squash.",
+        "confidence": 1.0
+      },
+      {
         "fact": "The baking sheet is positioned in front of the woman's torso.",
         "confidence": 1.0
       },
       {
-        "fact": "A refrigerator with a 'Food Evolution' logo is visible to the left.",
+        "fact": "A cutting board with a knife and more diced squash is on the counter to the left.",
         "confidence": 1.0
       },
       {
-        "fact": "A cutting board with a knife sits on the counter in the foreground.",
+        "fact": "The refrigerator is to the left of the woman.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The stovetop is to the right of the woman.",
         "confidence": 1.0
       }
     ],
     "ocr": [
       "Food EVOLUTION"
     ],
-    "spatial": "The woman is standing in the center of the kitchen, holding the baking sheet in front of her. To her left is a stainless steel refrigerator. In the foreground on the counter, there is a cutting board with a knife and a whole squash. Behind her are wooden cabinets and a tiled backsplash.",
+    "spatial": "The woman is standing in the center of the kitchen, holding a baking sheet in front of her. To her left is a stainless steel refrigerator and a countertop with a cutting board and a whole squash. To her right is a gas stovetop. The wooden cabinets are behind her and above the counter.",
+    "parse_success": true,
+    "chunk_idx": 41,
+    "video_id": "MDrxVQjHmcU"
+  },
+  {
+    "time": [
+      42,
+      43
+    ],
+    "visible_entities": [
+      {
+        "desc": "woman with shoulder-length blonde hair, wearing a long-sleeved top with a blue, grey, and white abstract pattern",
+        "action": "holding a baking sheet",
+        "position": "center"
+      },
+      {
+        "desc": "silver metal baking sheet filled with diced yellow squash",
+        "action": "being held",
+        "position": "center foreground"
+      },
+      {
+        "desc": "stainless steel refrigerator with a 'Food Evolution' sign",
+        "action": "static",
+        "position": "left background"
+      },
+      {
+        "desc": "wooden kitchen cabinets",
+        "action": "static",
+        "position": "background"
+      },
+      {
+        "desc": "white cutting board with squash pieces and a knife",
+        "action": "static",
+        "position": "bottom left foreground"
+      },
+      {
+        "desc": "black gas stovetop",
+        "action": "static",
+        "position": "bottom right foreground"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The woman is holding a baking sheet filled with diced yellow squash.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The baking sheet is positioned in front of the woman.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A cutting board with a knife and squash pieces is on the counter to the left.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The refrigerator is to the left of the woman.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The stovetop is to the right of the cutting board.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "Food EVOLUTION"
+    ],
+    "spatial": "The woman is in the center of the frame, holding a baking sheet in front of her. To her left is a refrigerator, and to her right is a kitchen sink area. In the foreground, a cutting board is on the counter to the left, and a stovetop is on the counter to the right.",
     "parse_success": true,
     "chunk_idx": 42,
     "video_id": "MDrxVQjHmcU"
   },
   {
     "time": [
-      86,
-      88
+      43,
+      44
     ],
     "visible_entities": [
       {
-        "desc": "woman with shoulder-length blonde hair, wearing a long-sleeved top with a blue, purple, and white abstract pattern",
-        "action": "holding a baking sheet",
-        "position": "center"
-      },
-      {
-        "desc": "metal baking sheet lined with parchment paper, filled with diced orange squash cubes",
-        "action": "being held",
-        "position": "center foreground"
-      },
-      {
-        "desc": "stainless steel refrigerator with a green and white 'Food Evolution' logo magnet",
-        "action": "static",
-        "position": "left background"
-      },
-      {
-        "desc": "wooden kitchen cabinets, medium brown finish, with silver handles",
-        "action": "static",
-        "position": "background"
-      },
-      {
-        "desc": "white cutting board with a black knife, diced squash, and a whole butternut squash",
-        "action": "static",
-        "position": "left foreground"
-      },
-      {
-        "desc": "black gas stovetop with metal grates",
-        "action": "static",
-        "position": "right foreground"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "The woman is holding a baking sheet filled with diced orange squash.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The refrigerator has a 'Food Evolution' logo on the upper door.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "A whole butternut squash sits on the counter next to a cutting board.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The kitchen features wooden cabinets and a tiled backsplash.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [
-      "Food EVOLUTION"
-    ],
-    "spatial": "The woman is standing in the center of the kitchen, holding the baking sheet in front of her. To her left is a stainless steel refrigerator and a counter with a cutting board and squash. To her right is a black gas stovetop. The wooden cabinets are mounted on the wall above the counter and behind the woman.",
-    "parse_success": true,
-    "chunk_idx": 43,
-    "video_id": "MDrxVQjHmcU"
-  },
-  {
-    "time": [
-      88,
-      90
-    ],
-    "visible_entities": [
-      {
-        "desc": "woman with shoulder-length blonde hair, wearing a long-sleeved top with a geometric pattern in shades of blue, grey, and white, and dangling earrings",
-        "action": "holding a baking sheet with both hands",
-        "position": "center"
-      },
-      {
-        "desc": "silver metal baking sheet filled with diced orange butternut squash cubes",
-        "action": "being held",
-        "position": "center"
-      },
-      {
-        "desc": "stainless steel refrigerator with a white sign featuring green text",
-        "action": "static",
-        "position": "left"
-      },
-      {
-        "desc": "wooden kitchen cabinets, medium brown finish, with silver handles",
-        "action": "static",
-        "position": "background"
-      },
-      {
-        "desc": "white cutting board with diced squash, a knife, and a black spatula",
-        "action": "static",
-        "position": "foreground"
-      },
-      {
-        "desc": "whole butternut squash and a jar of orange puree",
-        "action": "static",
-        "position": "foreground left"
-      },
-      {
-        "desc": "black gas stovetop with metal grates",
-        "action": "static",
-        "position": "foreground right"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "The woman is holding a baking sheet filled with diced orange squash.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "A cutting board with a knife and spatula sits on the counter in front of the woman.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "A whole butternut squash is visible on the counter to the left.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The refrigerator in the background displays a sign that reads 'Food EVOLUTION'.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [
-      "Food EVOLUTION"
-    ],
-    "spatial": "The woman is standing in the center of the kitchen, holding the baking sheet in front of her torso. To her left is a stainless steel refrigerator, and behind her are wooden cabinets and a tiled backsplash. In the foreground, a cutting board with cooking tools is on the counter, positioned below the baking sheet she is holding.",
-    "parse_success": true,
-    "chunk_idx": 44,
-    "video_id": "MDrxVQjHmcU"
-  },
-  {
-    "time": [
-      90,
-      92
-    ],
-    "visible_entities": [
-      {
-        "desc": "woman with shoulder-length blonde hair, wearing a long-sleeved top with a geometric pattern in blue, green, and grey",
+        "desc": "woman with shoulder-length blonde hair, wearing a long-sleeved top with a blue, green, and white abstract geometric pattern",
         "action": "holding a baking sheet",
         "position": "center"
       },
@@ -3039,7 +2979,7 @@
         "position": "center foreground"
       },
       {
-        "desc": "stainless steel refrigerator with a 'Food Evolution' magnet",
+        "desc": "stainless steel refrigerator with a white sign reading 'Food Evolution' in green script",
         "action": "static",
         "position": "left background"
       },
@@ -3049,33 +2989,156 @@
         "position": "background"
       },
       {
-        "desc": "white cutting board with a knife, squash pieces, and a peeler",
+        "desc": "black gas stovetop with metal grates",
         "action": "static",
-        "position": "left foreground"
+        "position": "bottom right foreground"
+      },
+      {
+        "desc": "white cutting board with a black knife and squash pieces",
+        "action": "static",
+        "position": "bottom left foreground"
       },
       {
         "desc": "whole butternut squash, tan skin",
         "action": "static",
-        "position": "left foreground"
-      },
-      {
-        "desc": "black gas stovetop with metal grates",
-        "action": "static",
-        "position": "right foreground"
-      },
-      {
-        "desc": "tiled backsplash with small beige and brown mosaic tiles",
-        "action": "static",
-        "position": "background"
+        "position": "bottom left"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "The woman is holding a baking sheet filled with diced squash.",
+        "fact": "The woman is holding a baking sheet filled with diced orange squash.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The refrigerator has a sign that reads 'Food Evolution'.",
         "confidence": 1.0
       },
       {
         "fact": "A cutting board with a knife and squash pieces sits on the counter.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "Food Evolution"
+    ],
+    "spatial": "The woman is standing in the center of the kitchen, holding the baking sheet in front of her. To her left is a stainless steel refrigerator. In the foreground, a stovetop is visible on the right, and a cutting board with squash is on the left counter.",
+    "parse_success": true,
+    "chunk_idx": 43,
+    "video_id": "MDrxVQjHmcU"
+  },
+  {
+    "time": [
+      44,
+      45
+    ],
+    "visible_entities": [
+      {
+        "desc": "woman with shoulder-length blonde hair, wearing a long-sleeved top with a geometric pattern in blue, green, and grey",
+        "action": "holding a baking sheet",
+        "position": "center"
+      },
+      {
+        "desc": "silver metal baking sheet filled with diced yellow squash",
+        "action": "being held",
+        "position": "center"
+      },
+      {
+        "desc": "stainless steel refrigerator with a 'Food Evolution' magnet",
+        "action": "static",
+        "position": "left"
+      },
+      {
+        "desc": "butternut squash, whole and cut pieces, on a white cutting board",
+        "action": "static",
+        "position": "foreground left"
+      },
+      {
+        "desc": "wooden kitchen cabinets, medium brown finish",
+        "action": "static",
+        "position": "background"
+      },
+      {
+        "desc": "black gas stovetop with metal grates",
+        "action": "static",
+        "position": "foreground right"
+      },
+      {
+        "desc": "white paper towel roll on a holder",
+        "action": "static",
+        "position": "background center"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The woman is holding a baking sheet filled with diced yellow squash.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A 'Food Evolution' magnet is attached to the refrigerator door.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "Pieces of butternut squash are on a cutting board on the counter.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The kitchen has wooden cabinets and a tiled backsplash.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "Food EVOLUTION"
+    ],
+    "spatial": "The woman is standing in the center of the kitchen, holding a baking sheet in front of her. To her left is a stainless steel refrigerator. In the foreground, on the counter to her left, is a cutting board with squash. To her right is a gas stovetop. Behind her are wooden cabinets and a sink area.",
+    "parse_success": true,
+    "chunk_idx": 44,
+    "video_id": "MDrxVQjHmcU"
+  },
+  {
+    "time": [
+      45,
+      46
+    ],
+    "visible_entities": [
+      {
+        "desc": "woman with shoulder-length blonde hair, wearing a long-sleeved top with a blue, purple, and white abstract pattern, and dangling earrings",
+        "action": "holding a baking sheet",
+        "position": "center"
+      },
+      {
+        "desc": "silver metal baking sheet filled with diced orange squash",
+        "action": "being held",
+        "position": "center"
+      },
+      {
+        "desc": "stainless steel refrigerator with a 'Food Evolution' magnet",
+        "action": "static",
+        "position": "left"
+      },
+      {
+        "desc": "wooden kitchen cabinets, medium brown finish",
+        "action": "static",
+        "position": "background"
+      },
+      {
+        "desc": "white cutting board with diced squash, a knife, and a peeler",
+        "action": "static",
+        "position": "foreground"
+      },
+      {
+        "desc": "whole butternut squash, tan skin",
+        "action": "static",
+        "position": "left"
+      },
+      {
+        "desc": "black gas stovetop with metal grates",
+        "action": "static",
+        "position": "right"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A woman is holding a baking sheet filled with diced squash.",
         "confidence": 1.0
       },
       {
@@ -3083,26 +3146,106 @@
         "confidence": 1.0
       },
       {
-        "fact": "A whole butternut squash rests on the counter near the cutting board.",
+        "fact": "A cutting board with a knife and more diced squash is on the counter in front of the woman.",
         "confidence": 1.0
       }
     ],
     "ocr": [
       "Food EVOLUTION"
     ],
-    "spatial": "The woman is standing in the center of the kitchen, holding the baking sheet in front of her. To her left, on the counter, is a cutting board with a knife and squash pieces, and further left is a stainless steel refrigerator. To her right, in the foreground, is a black gas stovetop. Behind her are wooden cabinets and a tiled backsplash.",
+    "spatial": "The woman is in the center of the kitchen, holding a baking sheet in front of her. To her left is a stainless steel refrigerator. In the foreground, on the counter, is a cutting board with a knife and diced squash. To her right is a black gas stovetop. The wooden cabinets are above the counter and behind the woman.",
     "parse_success": true,
     "chunk_idx": 45,
     "video_id": "MDrxVQjHmcU"
   },
   {
     "time": [
-      92,
-      94
+      46,
+      47
     ],
     "visible_entities": [
       {
-        "desc": "orange cubed vegetables, likely sweet potatoes, with browned edges and visible seasoning specks",
+        "desc": "small, cubed, orange roasted vegetables (likely sweet potatoes or squash) with browned edges and visible seasoning specks",
+        "action": "static",
+        "position": "center"
+      },
+      {
+        "desc": "rectangular metal baking sheet with raised edges",
+        "action": "static",
+        "position": "center"
+      },
+      {
+        "desc": "sheet of light brown parchment paper",
+        "action": "static",
+        "position": "center"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The roasted vegetable cubes are scattered across the parchment paper.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The parchment paper lines the metal baking sheet.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The roasted vegetable cubes are on top of the parchment paper. The parchment paper is inside the metal baking sheet, covering its bottom surface.",
+    "parse_success": true,
+    "chunk_idx": 46,
+    "video_id": "MDrxVQjHmcU"
+  },
+  {
+    "time": [
+      47,
+      48
+    ],
+    "visible_entities": [
+      {
+        "desc": "golden-brown roasted vegetable cubes, diced into small irregular chunks, seasoned with spices, resting on parchment paper",
+        "action": "static",
+        "position": "center"
+      },
+      {
+        "desc": "silver metal baking sheet with raised edges",
+        "action": "static",
+        "position": "background"
+      },
+      {
+        "desc": "light brown parchment paper lining the tray",
+        "action": "static",
+        "position": "center"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "Roasted vegetable cubes are spread across the baking sheet.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The vegetables are resting on parchment paper.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The food appears to be cooked or roasted.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The roasted vegetable cubes are scattered on top of the parchment paper. The parchment paper is placed inside the silver metal baking sheet, covering the bottom surface.",
+    "parse_success": true,
+    "chunk_idx": 47,
+    "video_id": "MDrxVQjHmcU"
+  },
+  {
+    "time": [
+      48,
+      49
+    ],
+    "visible_entities": [
+      {
+        "desc": "golden-brown roasted vegetable cubes, likely sweet potato or squash, with browned edges and visible seasoning specks",
         "action": "static",
         "position": "center"
       },
@@ -3119,278 +3262,146 @@
     ],
     "atomic_facts": [
       {
-        "fact": "The orange vegetable cubes are resting on the parchment paper.",
+        "fact": "The roasted vegetable cubes are spread across the baking sheet.",
         "confidence": 1.0
       },
       {
-        "fact": "The vegetables are spread out in a single layer across the baking sheet.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [],
-    "spatial": "The orange vegetable cubes are on top of the brown parchment paper. The parchment paper is inside the silver baking sheet.",
-    "parse_success": true,
-    "chunk_idx": 46,
-    "video_id": "MDrxVQjHmcU"
-  },
-  {
-    "time": [
-      94,
-      96
-    ],
-    "visible_entities": [
-      {
-        "desc": "golden-brown roasted vegetable cubes, likely butternut squash or sweet potato, with visible seasoning specks and caramelized edges",
-        "action": "static",
-        "position": "center"
-      },
-      {
-        "desc": "silver metal baking sheet with raised edges",
-        "action": "static",
-        "position": "background"
-      },
-      {
-        "desc": "sheet of light brown parchment paper",
-        "action": "static",
-        "position": "center"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "The roasted vegetable cubes are resting on the parchment paper.",
+        "fact": "The parchment paper lines the metal baking sheet.",
         "confidence": 1.0
       },
       {
-        "fact": "The parchment paper is placed inside the metal baking sheet.",
+        "fact": "The vegetables appear to be roasted with caramelized edges.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The roasted vegetable cubes are scattered across the center of the parchment paper. The parchment paper is positioned inside the silver metal baking sheet, covering most of its surface area.",
-    "parse_success": true,
-    "chunk_idx": 47,
-    "video_id": "MDrxVQjHmcU"
-  },
-  {
-    "time": [
-      96,
-      98
-    ],
-    "visible_entities": [
-      {
-        "desc": "cubed orange vegetables, likely sweet potatoes or squash, with browned edges and visible seasoning specks, cut into small irregular cubes",
-        "action": "static",
-        "position": "center"
-      },
-      {
-        "desc": "silver metal baking sheet with raised edges, lined with light brown parchment paper",
-        "action": "static",
-        "position": "center"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "Cubed orange vegetables are spread across the parchment paper on the baking sheet.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The vegetables show signs of roasting with browned edges.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [],
-    "spatial": "The cubed orange vegetables are scattered on top of the parchment paper. The parchment paper is inside the silver metal baking sheet. The baking sheet is centered in the frame.",
+    "spatial": "The roasted vegetable cubes are scattered on top of the brown parchment paper. The parchment paper is inside the silver metal baking sheet. The baking sheet rests on a light-colored surface.",
     "parse_success": true,
     "chunk_idx": 48,
     "video_id": "MDrxVQjHmcU"
   },
   {
     "time": [
-      98,
-      100
+      49,
+      50
     ],
     "visible_entities": [
+      {
+        "desc": "silver metal baking sheet lined with brown parchment paper, holding roasted orange cubed vegetables",
+        "action": "static",
+        "position": "foreground"
+      },
       {
         "desc": "woman with shoulder-length blonde hair, wearing a long-sleeved top with a blue, green, and white abstract pattern",
         "action": "standing and speaking",
         "position": "center"
       },
       {
-        "desc": "silver refrigerator with a green and white 'Food Evolution' magnet",
+        "desc": "silver refrigerator with a green and white 'Food Evolution' logo magnet",
         "action": "static",
         "position": "left"
       },
       {
-        "desc": "wooden kitchen cabinets with silver handles",
+        "desc": "wooden kitchen cabinets, light brown finish",
         "action": "static",
         "position": "background"
       },
       {
-        "desc": "stainless steel kitchen sink with a faucet",
-        "action": "static",
-        "position": "right"
-      },
-      {
-        "desc": "white paper towel roll",
+        "desc": "stainless steel kitchen sink with faucet",
         "action": "static",
         "position": "right"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A woman with blonde hair is standing in a kitchen.",
+        "fact": "The woman is standing in the kitchen and speaking.",
         "confidence": 1.0
       },
       {
-        "fact": "The woman is speaking.",
+        "fact": "Roasted orange vegetable cubes are arranged on a parchment-lined baking sheet.",
         "confidence": 1.0
       },
       {
-        "fact": "A refrigerator is visible to the left of the woman.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "A magnet reading 'Food Evolution' is attached to the refrigerator.",
+        "fact": "The 'Food Evolution' logo is visible on the refrigerator door.",
         "confidence": 1.0
       }
     ],
     "ocr": [
       "Food EVOLUTION"
     ],
-    "spatial": "The woman is standing in the center of the frame. To her left is a silver refrigerator. Behind her and to her right are wooden cabinets and a stainless steel sink. A paper towel roll is mounted under the cabinets above the sink.",
+    "spatial": "The woman is standing in the center of the kitchen, positioned between the refrigerator on the left and the sink on the right. The baking sheet with food is in the foreground, in front of the woman. The wooden cabinets are mounted on the wall above the counter and behind the woman.",
     "parse_success": true,
     "chunk_idx": 49,
     "video_id": "MDrxVQjHmcU"
   },
   {
     "time": [
-      100,
-      102
+      50,
+      51
     ],
     "visible_entities": [
       {
-        "desc": "woman with shoulder-length blonde hair, wearing a long-sleeved top with a blue, white, and green abstract geometric pattern, and dangling earrings",
-        "action": "gesturing with open palms",
+        "desc": "woman with shoulder-length blonde hair, wearing a long-sleeved top with a blue, white, and grey abstract geometric pattern, and dangling earrings",
+        "action": "standing with arms extended and palms up",
         "position": "center"
       },
       {
-        "desc": "stainless steel refrigerator with a white magnet featuring green text",
+        "desc": "stainless steel refrigerator with a green and white 'Food Evolution' magnet",
         "action": "static",
         "position": "left"
       },
       {
-        "desc": "wooden kitchen cabinets with silver handles",
+        "desc": "wooden kitchen cabinets",
         "action": "static",
         "position": "background"
       },
       {
-        "desc": "kitchen sink with a silver faucet",
+        "desc": "kitchen sink with a faucet",
         "action": "static",
         "position": "right"
       },
       {
-        "desc": "roll of white paper towels",
+        "desc": "yellow cup",
         "action": "static",
-        "position": "right"
+        "position": "bottom left"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "The woman stands in the center of the kitchen gesturing with her hands.",
+        "fact": "A woman stands in a kitchen with her arms extended outwards.",
         "confidence": 1.0
       },
       {
-        "fact": "The refrigerator is located to the left of the woman.",
+        "fact": "The refrigerator is to the left of the woman.",
         "confidence": 1.0
       },
       {
-        "fact": "The kitchen sink is located to the right of the woman.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The paper towels are mounted on the wall above the sink.",
+        "fact": "The text 'Food Evolution' is visible on a magnet on the refrigerator.",
         "confidence": 1.0
       }
     ],
     "ocr": [
-      "food EVOLUTION"
+      "Food",
+      "EVOLUTION"
     ],
-    "spatial": "The woman is standing in the center of the frame, positioned between the refrigerator on the left and the sink area on the right. The wooden cabinets are mounted on the wall above the counter and sink. The paper towel holder is attached to the wall to the right of the woman, above the sink.",
+    "spatial": "The woman is standing in the center of the kitchen, in front of the wooden cabinets. The stainless steel refrigerator is to her left. The kitchen sink is to her right, behind her. A yellow cup is on the counter in the bottom left foreground.",
     "parse_success": true,
     "chunk_idx": 50,
     "video_id": "MDrxVQjHmcU"
   },
   {
     "time": [
-      102,
-      104
+      51,
+      52
     ],
     "visible_entities": [
       {
         "desc": "woman with shoulder-length blonde hair, wearing a long-sleeved top with a blue, green, and white abstract pattern, and dangling earrings",
-        "action": "standing and speaking",
+        "action": "standing with hands clasped",
         "position": "center"
       },
       {
-        "desc": "stainless steel refrigerator with a green and white logo magnet",
-        "action": "static",
-        "position": "left"
-      },
-      {
-        "desc": "wooden kitchen cabinets, medium brown finish",
-        "action": "static",
-        "position": "background"
-      },
-      {
-        "desc": "kitchen sink with a faucet and a tiled backsplash",
-        "action": "static",
-        "position": "right background"
-      },
-      {
-        "desc": "yellow cup or container",
-        "action": "static",
-        "position": "bottom left foreground"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "A woman with blonde hair is standing in a kitchen.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The woman is speaking.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The refrigerator has a magnet that says 'The Food EVOLUTION'.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The kitchen has wooden cabinets and a tiled backsplash.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [
-      "The Food EVOLUTION"
-    ],
-    "spatial": "The woman is standing in the center of the kitchen. To her left is a stainless steel refrigerator. Behind her are wooden cabinets and a tiled backsplash. A yellow cup is in the foreground at the bottom left of the frame.",
-    "parse_success": true,
-    "chunk_idx": 51,
-    "video_id": "MDrxVQjHmcU"
-  },
-  {
-    "time": [
-      104,
-      106
-    ],
-    "visible_entities": [
-      {
-        "desc": "woman with shoulder-length blonde hair, wearing a long-sleeved top with a blue, white, and purple abstract pattern, and dangling earrings",
-        "action": "gesturing with hands while holding a piece of paper",
-        "position": "center"
-      },
-      {
-        "desc": "stainless steel refrigerator with a green and white logo magnet",
+        "desc": "stainless steel refrigerator with a green and white sign attached to the door",
         "action": "static",
         "position": "left"
       },
@@ -3400,53 +3411,93 @@
         "position": "background"
       },
       {
-        "desc": "mosaic tile backsplash in beige and brown tones",
-        "action": "static",
-        "position": "background"
-      },
-      {
-        "desc": "kitchen sink with a chrome faucet",
+        "desc": "kitchen sink with a faucet and a tiled backsplash",
         "action": "static",
         "position": "right"
       },
       {
-        "desc": "red graphic background with white text",
+        "desc": "yellow cup on a countertop",
+        "action": "static",
+        "position": "bottom left"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A woman is standing in a kitchen.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The woman has her hands clasped in front of her.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A sign on the refrigerator reads 'The Food EVOLUTION'.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "The Food EVOLUTION"
+    ],
+    "spatial": "The woman is standing in the center of the frame. To her left is a stainless steel refrigerator. Behind her are wooden kitchen cabinets and a tiled backsplash. To her right is a kitchen sink. A yellow cup is on the counter in the bottom left foreground.",
+    "parse_success": true,
+    "chunk_idx": 51,
+    "video_id": "MDrxVQjHmcU"
+  },
+  {
+    "time": [
+      52,
+      53
+    ],
+    "visible_entities": [
+      {
+        "desc": "woman with shoulder-length blonde hair, wearing a long-sleeved top with a blue, green, and white abstract pattern, and dangling earrings",
+        "action": "holding a white paper and gesturing with hands",
+        "position": "center"
+      },
+      {
+        "desc": "stainless steel refrigerator with a green and white 'The Food Revolution' magnet",
+        "action": "static",
+        "position": "left"
+      },
+      {
+        "desc": "wooden kitchen cabinets with silver handles",
+        "action": "static",
+        "position": "background"
+      },
+      {
+        "desc": "red background with white text 'food' and a white sticky note with green text 'eHow'",
         "action": "static",
         "position": "foreground"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A woman stands in a kitchen holding a piece of paper.",
+        "fact": "A woman is holding a white paper in her hands.",
         "confidence": 1.0
       },
       {
-        "fact": "The woman gestures with her hands as if speaking.",
+        "fact": "The refrigerator is to the left of the woman.",
         "confidence": 1.0
       },
       {
-        "fact": "A refrigerator with a logo is visible on the left side of the kitchen.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The video cuts to a red title card with text.",
+        "fact": "The 'eHow food' graphic is displayed on a red background.",
         "confidence": 1.0
       }
     ],
     "ocr": [
-      "the food EVOLUTION",
+      "The Food REVOLUTION",
       "eHow",
       "food"
     ],
-    "spatial": "The woman is standing in the center of the kitchen, in front of the wooden cabinets and backsplash. To her left is a stainless steel refrigerator. To her right is a kitchen sink. The red graphic screen appears as a separate frame.",
+    "spatial": "The woman is standing in the center of the kitchen, to the right of the refrigerator. The wooden cabinets are behind her and above the counter. The 'eHow food' graphic appears as a separate overlay or title card.",
     "parse_success": true,
     "chunk_idx": 52,
     "video_id": "MDrxVQjHmcU"
   },
   {
     "time": [
-      106,
-      108
+      53,
+      54
     ],
     "visible_entities": [
       {
@@ -3455,36 +3506,23 @@
         "position": "background"
       },
       {
-        "desc": "white rectangular tag with green text",
-        "action": "static",
-        "position": "top center"
-      },
-      {
-        "desc": "white text in lowercase sans-serif font",
+        "desc": "white text 'food' in lowercase sans-serif font",
         "action": "static",
         "position": "center"
       },
       {
-        "desc": "green text logo with stylized ribbon font",
+        "desc": "white rectangular tag with green 'eHow' logo",
         "action": "static",
-        "position": "center"
+        "position": "top"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "The video transitions from a red screen to a white screen.",
+        "fact": "The word 'food' is displayed in the center of the screen.",
         "confidence": 1.0
       },
       {
-        "fact": "The text 'food' is displayed in the center of the red background.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The 'eHow' logo is displayed on a white tag above the word 'food'.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The 'eHow' logo appears in green on a white background.",
+        "fact": "The 'eHow' logo is visible on a tag above the text.",
         "confidence": 1.0
       }
     ],
@@ -3492,30 +3530,30 @@
       "eHow",
       "food"
     ],
-    "spatial": "The white tag containing the 'eHow' logo is positioned above the word 'food'. The word 'food' is centered on the red background. The red background is behind the text elements.",
+    "spatial": "The 'eHow' logo tag is located above the word 'food'. The word 'food' is centered on the red background.",
     "parse_success": true,
     "chunk_idx": 53,
     "video_id": "MDrxVQjHmcU"
   },
   {
     "time": [
-      108,
-      110
+      54,
+      55
     ],
     "visible_entities": [
       {
-        "desc": "green text logo 'eHow' with a 3D ribbon-style font",
+        "desc": "green stylized text logo reading 'eHow' with a folded ribbon effect on the letters",
         "action": "static",
         "position": "center"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "The text 'eHow' is displayed in the center of the screen.",
+        "fact": "The green text 'eHow' is displayed in the center of the screen.",
         "confidence": 1.0
       },
       {
-        "fact": "The logo features a stylized green font with folded ribbon effects.",
+        "fact": "The logo remains static against a white background.",
         "confidence": 1.0
       }
     ],
@@ -3529,61 +3567,30 @@
   },
   {
     "time": [
-      110,
-      112
+      55,
+      56
     ],
     "visible_entities": [],
     "atomic_facts": [
       {
-        "fact": "The video frame is completely white, indicating a blank screen or a transition effect.",
+        "fact": "The video frame is a solid, uniform light gray color with no visible content.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The frame is entirely filled with a uniform white color, containing no distinct entities or spatial relationships.",
+    "spatial": "There are no entities to describe spatial relations for.",
     "parse_success": true,
     "chunk_idx": 55,
     "video_id": "MDrxVQjHmcU"
   },
   {
     "time": [
-      112,
-      114
+      56,
+      57
     ],
     "visible_entities": [
       {
-        "desc": "white sans-serif text reading 'video filmed by Brandon Somerton'",
-        "action": "static",
-        "position": "center"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "White text credits appear on a black background.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The text identifies the videographer as Brandon Somerton.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [
-      "video filmed by",
-      "Brandon Somerton"
-    ],
-    "spatial": "The text 'video filmed by' is positioned directly above the text 'Brandon Somerton'. Both lines of text are centered horizontally and vertically within the black frame.",
-    "parse_success": true,
-    "chunk_idx": 56,
-    "video_id": "MDrxVQjHmcU"
-  },
-  {
-    "time": [
-      114,
-      116
-    ],
-    "visible_entities": [
-      {
-        "desc": "white sans-serif text reading 'video filmed by Brandon Somerton'",
+        "desc": "white text in a sans-serif font",
         "action": "static",
         "position": "center"
       }
@@ -3592,9 +3599,36 @@
       {
         "fact": "The text 'video filmed by Brandon Somerton' is displayed on the screen.",
         "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "video filmed by",
+      "Brandon Somerton"
+    ],
+    "spatial": "The text 'video filmed by' is positioned directly above the text 'Brandon Somerton'. Both lines of text are centered horizontally and vertically against the black background.",
+    "parse_success": true,
+    "chunk_idx": 56,
+    "video_id": "MDrxVQjHmcU"
+  },
+  {
+    "time": [
+      57,
+      58
+    ],
+    "visible_entities": [
+      {
+        "desc": "white text on a black background reading 'video filmed by Brandon Somerton'",
+        "action": "static",
+        "position": "center-right"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The text 'video filmed by Brandon Somerton' is displayed on the screen.",
+        "confidence": 1.0
       },
       {
-        "fact": "The background is completely black.",
+        "fact": "The credit indicates the video was filmed by Brandon Somerton.",
         "confidence": 1.0
       }
     ],
@@ -3602,7 +3636,7 @@
       "video filmed by",
       "Brandon Somerton"
     ],
-    "spatial": "The white text is centered on the black background.",
+    "spatial": "The text 'video filmed by' is positioned above the text 'Brandon Somerton'. Both lines of text are located in the center-right area of the black background.",
     "parse_success": true,
     "chunk_idx": 57,
     "video_id": "MDrxVQjHmcU"

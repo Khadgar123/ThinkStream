@@ -2,18 +2,19 @@
   {
     "time": [
       0,
-      2
+      1
     ],
     "visible_entities": [
       {
-        "desc": "Text graphic reading 'BE A BETTER/ COOK' in teal color, with the top line in a sans-serif font and the bottom line in a serif font",
+        "desc": "teal text graphic reading 'BE A BETTER/ COOK' in a sans-serif font, with a forward slash after 'BETTER'",
         "action": "static",
-        "id": "text_logo_better_cook"
+        "position": "center",
+        "id": "text_logo_main_1"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "The text 'BE A BETTER/ COOK' appears on a white background.",
+        "fact": "The text 'BE A BETTER/ COOK' is displayed on a white background.",
         "confidence": 1.0
       },
       {
@@ -22,10 +23,9 @@
       }
     ],
     "ocr": [
-      "BE A BETTER/",
-      "COOK"
+      "BE A BETTER/ COOK"
     ],
-    "spatial": "The text 'BE A BETTER/' is positioned above the word 'COOK'. The entire text graphic is centered on the white background.",
+    "spatial": "The text 'BE A BETTER/ COOK' is centered on the white background.",
     "parse_success": true,
     "chunk_idx": 0,
     "video_id": "1KmwQZ4wshY",
@@ -33,39 +33,39 @@
   },
   {
     "time": [
-      2,
-      4
+      1,
+      2
     ],
     "visible_entities": [
       {
-        "desc": "Text graphic reading 'delicious' in lowercase teal serif font with a small pink dot over the 'i'",
+        "desc": "Text 'BE A BETTER/ COOK' in teal color, with 'BE A BETTER/' in a sans-serif font and 'COOK' in a large serif font",
         "action": "static",
-        "position": "top/center",
-        "id": "text_logo_delicious"
+        "position": "center",
+        "id": "text_logo_main_1"
       },
       {
-        "desc": "Text graphic reading 'BE A BETTER/COOK' in uppercase teal sans-serif font",
+        "desc": "Text 'delicious' in teal lowercase serif font with a small pink dot above the 'i'",
         "action": "static",
-        "position": "bottom/center",
-        "id": "text_logo_better_cook"
+        "position": "top",
+        "id": "text_logo_delicious_1"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "The text 'delicious' appears at the top of the screen.",
+        "fact": "The text 'delicious' appears above the text 'BE A BETTER COOK'.",
         "confidence": 1.0
       },
       {
-        "fact": "The phrase 'BE A BETTER/COOK' is displayed below the word 'delicious'.",
+        "fact": "The phrase 'BE A BETTER COOK' is displayed in teal letters.",
         "confidence": 1.0
       }
     ],
     "ocr": [
+      "BE A BETTER/ COOK",
       "delicious",
-      "BE A BETTER/",
-      "COOK"
+      "BE A BETTER COOK"
     ],
-    "spatial": "The word 'delicious' is positioned above the text block 'BE A BETTER/COOK'. The slash in 'BETTER/' is located to the right of the word 'BETTER' and above the letter 'K' in 'COOK'.",
+    "spatial": "The word 'delicious' is positioned above the phrase 'BE A BETTER COOK'. The text 'BE A BETTER/' is located directly above the word 'COOK'.",
     "parse_success": true,
     "chunk_idx": 1,
     "video_id": "1KmwQZ4wshY",
@@ -73,30 +73,30 @@
   },
   {
     "time": [
-      4,
-      6
+      2,
+      3
     ],
     "visible_entities": [
       {
-        "desc": "ball of yellow dough, smooth texture with surface cracks",
+        "desc": "text logo 'delicious' in lowercase teal serif font with a red dot over the 'u', and text 'BE A BETTER COOK' in uppercase teal sans-serif font below it",
         "action": "static",
         "position": "center",
-        "id": "dough_ball_yellow"
+        "id": "text_logo_main_1"
       },
       {
-        "desc": "text logo 'delicious' in teal serif font with a pink dot, and text 'BE A BETTER COOK' in teal sans-serif font",
+        "desc": "ball of pale yellow dough with a smooth but slightly cracked surface texture",
         "action": "static",
         "position": "center",
-        "id": "text_logo_better_cook"
+        "id": "dough_ball_1"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A ball of yellow dough sits on a white surface.",
+        "fact": "The video displays a title card with the text 'delicious' and 'BE A BETTER COOK'.",
         "confidence": 1.0
       },
       {
-        "fact": "The text 'delicious' is displayed above the phrase 'BE A BETTER COOK'.",
+        "fact": "A ball of yellow dough is shown resting on a white surface.",
         "confidence": 1.0
       }
     ],
@@ -105,106 +105,102 @@
       "BE A BETTER",
       "COOK"
     ],
-    "spatial": "The text logo is positioned above the ball of yellow dough. The dough is centered on the white background.",
+    "spatial": "The text 'delicious' is above the text 'BE A BETTER COOK'. The ball of dough is positioned below the text elements.",
     "parse_success": true,
     "chunk_idx": 2,
-    "video_id": "1KmwQZ4wshY",
-    "state_changes": [
-      "dough ball appears on screen with logo"
-    ]
-  },
-  {
-    "time": [
-      6,
-      8
-    ],
-    "visible_entities": [
-      {
-        "desc": "ball of yellow dough, smooth with surface cracks",
-        "action": "static",
-        "position": "center",
-        "id": "dough_ball_yellow"
-      },
-      {
-        "desc": "clear glass mixing bowl with pouring spouts",
-        "action": "static",
-        "position": "center",
-        "id": "glass_bowl_mixing"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "A ball of yellow dough is shown resting on a white surface.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "A clear glass mixing bowl is shown resting on a white surface.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The dough has a cracked texture on its surface.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [],
-    "spatial": "The ball of yellow dough is positioned in the center of the frame. The clear glass mixing bowl is positioned in the center of the frame. The dough is shown in a separate shot from the bowl.",
-    "parse_success": true,
-    "chunk_idx": 3,
     "video_id": "1KmwQZ4wshY",
     "state_changes": []
   },
   {
     "time": [
-      8,
-      10
+      3,
+      4
+    ],
+    "visible_entities": [
+      {
+        "desc": "ball of pale yellow dough, smooth texture with surface cracks",
+        "action": "static",
+        "position": "center",
+        "id": "dough_ball_1"
+      },
+      {
+        "desc": "clear glass mixing bowl with pouring spouts",
+        "action": "static",
+        "position": "center",
+        "id": "mixing_bowl_glass_1"
+      },
+      {
+        "desc": "person's hands and torso, wearing a dark shirt",
+        "action": "holding the bowl",
+        "position": "top/background",
+        "id": "person_chef_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A ball of yellow dough is resting on a white surface.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A person is holding a clear glass bowl.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The glass bowl is empty.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The ball of dough is on the white surface. The glass bowl is positioned in front of the person's torso. The person's hands are holding the rim of the glass bowl.",
+    "parse_success": true,
+    "chunk_idx": 3,
+    "video_id": "1KmwQZ4wshY",
+    "state_changes": [
+      "Transition from static dough shot to active scene with person holding a mixing bowl"
+    ]
+  },
+  {
+    "time": [
+      4,
+      5
     ],
     "visible_entities": [
       {
         "desc": "clear glass mixing bowl with pouring spouts",
         "action": "static",
         "position": "center",
-        "id": "glass_bowl_mixing"
+        "id": "mixing_bowl_glass_1"
       },
       {
-        "desc": "white powdery substance",
-        "action": "falling into bowl",
+        "desc": "white powdery substance, likely flour",
+        "action": "falling into the bowl",
         "position": "center",
-        "id": "flour_white"
-      },
-      {
-        "desc": "white countertop",
-        "action": "static",
-        "position": "bottom",
-        "id": "countertop_white"
+        "id": "ingredient_flour_1"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A white powdery substance is being poured into the glass bowl.",
+        "fact": "A white powdery substance is being poured into a glass bowl.",
         "confidence": 1.0
       },
       {
-        "fact": "The glass bowl is sitting on a white countertop.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The powder accumulates at the bottom of the bowl.",
+        "fact": "The glass bowl is sitting on a white surface.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The glass bowl is centered on the white countertop. The white powder is falling from above into the interior of the bowl.",
+    "spatial": "The glass bowl is centered on the white surface. The white powder is falling from above into the inside of the bowl.",
     "parse_success": true,
     "chunk_idx": 4,
     "video_id": "1KmwQZ4wshY",
     "state_changes": [
-      "flour begins falling into bowl"
+      "Action started: Flour begins falling into the bowl"
     ]
   },
   {
     "time": [
-      10,
-      12
+      5,
+      6
     ],
     "visible_entities": [
       {
@@ -216,69 +212,66 @@
       {
         "desc": "white bowl containing white flour and yellow butter cubes",
         "action": "static",
-        "position": "center/bottom"
+        "position": "center/bottom",
+        "id": "mixing_bowl_white_1"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A hand is sprinkling a granular substance from above into a bowl.",
+        "fact": "A hand is sprinkling a granular substance into a bowl.",
         "confidence": 1.0
       },
       {
-        "fact": "The bowl contains a mound of white flour.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "Several cubes of yellow butter are resting on top of the flour.",
+        "fact": "The bowl contains a mixture of white flour and chunks of yellow butter.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The hand is positioned above the white bowl. The yellow butter cubes are on top of the white flour inside the bowl.",
+    "spatial": "The hand is positioned above the bowl. The butter cubes are resting on top of the flour inside the bowl.",
     "parse_success": true,
     "chunk_idx": 5,
     "video_id": "1KmwQZ4wshY",
     "state_changes": [
-      "hand appears, starts sprinkling ingredients"
+      "Action change: Hand sprinkling granular substance; new entity (bowl with butter cubes) appears"
     ]
   },
   {
     "time": [
-      12,
-      14
+      6,
+      7
     ],
     "visible_entities": [
       {
         "desc": "pale yellow butter cubes, solid, cut into rectangular chunks",
-        "action": "static",
-        "position": "left",
-        "id": "butter_cubes"
+        "action": "resting on flour",
+        "position": "left and top",
+        "id": "ingredient_butter_1"
       },
       {
-        "desc": "fine white flour powder, powdery texture",
+        "desc": "white flour, powdery texture, piled in a mound",
         "action": "static",
-        "position": "right",
-        "id": "flour_white"
+        "position": "center and right",
+        "id": "ingredient_flour_1"
       },
       {
-        "desc": "clear glass bowl, transparent, curved rim",
+        "desc": "white mixing bowl, smooth interior surface",
         "action": "static",
         "position": "background",
-        "id": "glass_bowl_mixing"
+        "id": "mixing_bowl_white_1"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "Butter cubes are resting on top of the flour.",
+        "fact": "Cubes of butter are placed on top of a pile of flour.",
         "confidence": 1.0
       },
       {
-        "fact": "The ingredients are contained inside a glass bowl.",
+        "fact": "The ingredients are contained within a white bowl.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The pile of pale yellow butter cubes is positioned to the left of the mound of white flour. Both ingredients are situated inside the clear glass bowl.",
+    "spatial": "The butter cubes are positioned on top of the flour pile. The flour is located in the center and right side of the bowl, while the butter is scattered on the left and top sections of the flour.",
     "parse_success": true,
     "chunk_idx": 6,
     "video_id": "1KmwQZ4wshY",
@@ -286,13 +279,13 @@
   },
   {
     "time": [
-      14,
-      16
+      7,
+      8
     ],
     "visible_entities": [
       {
-        "desc": "pair of hands with fair skin",
-        "action": "mixing ingredients in a bowl",
+        "desc": "pair of hands with light skin tone",
+        "action": "mixing ingredients",
         "position": "center",
         "id": "person_chef_1"
       },
@@ -300,197 +293,194 @@
         "desc": "clear glass mixing bowl with pouring spouts",
         "action": "static",
         "position": "center",
-        "id": "glass_bowl_mixing"
+        "id": "mixing_bowl_glass_1"
       },
       {
-        "desc": "mixture of white flour, brown crumbs, and yellow liquid",
+        "desc": "mixture of pale yellow liquid and dry beige powder",
         "action": "being mixed",
-        "position": "inside the bowl",
-        "id": "dough_mixture_crumbly"
+        "position": "inside bowl"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A pair of hands is actively mixing ingredients inside a glass bowl.",
+        "fact": "The hands are actively mixing the ingredients together.",
         "confidence": 1.0
       },
       {
-        "fact": "The mixture consists of dry white and brown powders combined with a yellow liquid.",
+        "fact": "The mixture consists of a yellow liquid and a dry, crumbly substance.",
         "confidence": 1.0
       },
       {
-        "fact": "The hands are pressing down into the mixture to combine the components.",
+        "fact": "The hands are pressing down into the mixture within the bowl.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The glass bowl is centered in the frame. The hands are positioned inside the bowl, directly above the mixture of flour and liquid. The mixture is contained within the bottom of the bowl.",
+    "spatial": "The hands are positioned inside the clear glass bowl. The mixture is located at the bottom of the bowl, underneath the hands. The bowl is resting on a flat, light-colored surface.",
     "parse_success": true,
     "chunk_idx": 7,
     "video_id": "1KmwQZ4wshY",
     "state_changes": [
-      "mixing action begins with hands in bowl"
+      "Action started: Hands begin mixing ingredients in the bowl"
     ]
   },
   {
     "time": [
-      16,
-      18
+      8,
+      9
     ],
     "visible_entities": [
       {
-        "desc": "pair of hands with fair skin tone, fingers coated in flour",
+        "desc": "pair of hands with light skin tone",
         "action": "mixing and kneading dough",
         "position": "center",
         "id": "person_chef_1"
       },
       {
-        "desc": "shaggy, pale beige dough mixture with loose flour",
+        "desc": "pale yellow crumbly dough mixture",
         "action": "being manipulated",
-        "position": "bottom",
-        "id": "dough_mixture_crumbly"
+        "position": "center",
+        "id": "ingredient_mixture_crumbly_1"
       },
       {
-        "desc": "transparent glass bowl rim",
+        "desc": "clear glass bowl",
         "action": "static",
         "position": "bottom",
-        "id": "glass_bowl_mixing"
+        "id": "mixing_bowl_glass_1"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "Hands are actively pressing into and turning the dough mixture.",
+        "fact": "hands are actively pressing fingers into the flour mixture",
         "confidence": 1.0
       },
       {
-        "fact": "The dough is contained within a clear glass bowl.",
+        "fact": "the dough is being combined inside a glass bowl",
         "confidence": 1.0
       },
       {
-        "fact": "Flour dust covers the fingers and parts of the dough.",
+        "fact": "the mixture has a crumbly texture",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The hands are positioned above the dough mixture inside the glass bowl. The fingers are pressing down into the center of the ingredients. The rim of the glass bowl is visible at the bottom edge of the frame.",
+    "spatial": "The hands are positioned above and inside the clear glass bowl. The dough mixture is located inside the bowl, underneath the hands.",
     "parse_success": true,
     "chunk_idx": 8,
     "video_id": "1KmwQZ4wshY",
     "state_changes": [
-      "dough becomes shaggy, kneading starts"
+      "Action progression: Mixing transitions to kneading/manipulating the dough"
     ]
   },
   {
     "time": [
-      18,
-      20
+      9,
+      10
     ],
     "visible_entities": [
       {
-        "desc": "hands with light skin tone",
-        "action": "holding and shaking the bowl",
-        "position": "left and right",
+        "desc": "hands with light skin tone, slightly blurred due to motion",
+        "action": "shaking a bowl",
+        "position": "left and right sides",
         "id": "person_chef_1"
       },
       {
-        "desc": "clear glass bowl",
+        "desc": "clear glass bowl containing a mixture of pale yellow flour and solid chunks of butter",
         "action": "being shaken",
         "position": "center",
-        "id": "glass_bowl_mixing"
-      },
-      {
-        "desc": "pale yellow crumbly mixture with floury texture",
-        "action": "tumbling inside the bowl",
-        "position": "inside the bowl",
-        "id": "dough_mixture_crumbly"
+        "id": "mixing_bowl_glass_1"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "Hands are holding the sides of a glass bowl.",
+        "fact": "Hands are shaking a glass bowl containing dry ingredients.",
         "confidence": 1.0
       },
       {
-        "fact": "The bowl is being shaken to mix the contents.",
+        "fact": "The mixture inside the bowl consists of flour and chunks of butter.",
         "confidence": 1.0
       },
       {
-        "fact": "A crumbly, flour-like mixture is tumbling inside the bowl.",
+        "fact": "The motion blur indicates rapid movement of the bowl.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The hands are positioned on the left and right sides of the clear glass bowl. The pale yellow crumbly mixture is inside the bowl.",
+    "spatial": "The hands are holding the clear glass bowl on the left and right sides. The flour and butter mixture is inside the bowl.",
     "parse_success": true,
     "chunk_idx": 9,
     "video_id": "1KmwQZ4wshY",
-    "state_changes": []
+    "state_changes": [
+      "Action change: Hands shaking the bowl containing flour and butter chunks"
+    ]
   },
   {
     "time": [
-      20,
-      22
+      10,
+      11
     ],
     "visible_entities": [
       {
         "desc": "hands with light skin tone",
-        "action": "pressing and mixing the yellow crumbs",
+        "action": "pressing into the mixture",
         "position": "foreground",
         "id": "person_chef_1"
       },
       {
-        "desc": "yellow crumbly mixture, fine-grained texture",
-        "action": "being manipulated",
+        "desc": "yellow crumbly mixture with a granular texture",
+        "action": "being pressed",
         "position": "center",
-        "id": "dough_mixture_crumbly"
+        "id": "ingredient_mixture_crumbly_1"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "hands are pressing down into the yellow crumbly mixture",
+        "fact": "hands are pressing down on the yellow mixture",
         "confidence": 1.0
       },
       {
-        "fact": "the mixture has a fine-grained, sandy appearance",
+        "fact": "the yellow mixture has a crumbly, granular texture",
         "confidence": 1.0
       },
       {
-        "fact": "the hands move to mix the ingredients together",
+        "fact": "the mixture is being compacted into a container",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The hands are in the foreground, positioned above and pressing into the yellow crumbly mixture which fills the center of the frame.",
+    "spatial": "The hands are in the foreground, positioned above and pressing into the yellow crumbly mixture. The mixture fills the container below the hands.",
     "parse_success": true,
     "chunk_idx": 10,
     "video_id": "1KmwQZ4wshY",
-    "state_changes": []
+    "state_changes": [
+      "Action change: Hands pressing into the mixture"
+    ]
   },
   {
     "time": [
-      22,
-      24
+      11,
+      12
     ],
     "visible_entities": [
       {
-        "desc": "pale yellow, crumbly, granular mixture with a sandy texture",
+        "desc": "pale yellow crumbly mixture with a fine-grained, sandy texture and small irregular clumps",
         "action": "static",
         "position": "center",
-        "id": "dough_mixture_crumbly"
+        "id": "ingredient_mixture_crumbly_1"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A pile of pale yellow, crumbly mixture fills the frame.",
+        "fact": "A pale yellow crumbly mixture fills the frame.",
         "confidence": 1.0
       },
       {
-        "fact": "The mixture has a granular, sandy texture.",
+        "fact": "The mixture has a fine-grained, sandy texture with small irregular clumps.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The pale yellow, crumbly mixture is in the center of the frame, filling the view. A white surface is visible in the background, behind the mixture.",
+    "spatial": "The pale yellow crumbly mixture fills the center of the frame. The mixture is inside a container, with the edge of the container visible in the bottom right corner of the first frame.",
     "parse_success": true,
     "chunk_idx": 11,
     "video_id": "1KmwQZ4wshY",
@@ -498,158 +488,153 @@
   },
   {
     "time": [
-      24,
-      26
+      12,
+      13
     ],
     "visible_entities": [
       {
-        "desc": "bright yellow, glossy, spherical egg yolk",
-        "action": "being struck by a spoon",
+        "desc": "pale yellow, crumbly, granular dry mixture",
+        "action": "static",
         "position": "center",
-        "id": "egg_yolk"
+        "id": "ingredient_mixture_crumbly_1"
       },
       {
-        "desc": "pale yellow, crumbly, granular flour mixture",
+        "desc": "bright yellow, glossy, intact egg yolk",
+        "action": "static",
+        "position": "center",
+        "id": "ingredient_egg_yolk_1"
+      },
+      {
+        "desc": "clear glass mixing bowl with pouring spouts",
         "action": "static",
         "position": "background",
-        "id": "dough_mixture_crumbly"
+        "id": "mixing_bowl_glass_1"
       },
       {
-        "desc": "silver metal spoon",
-        "action": "hitting the egg yolk",
-        "position": "center",
-        "id": "spoon_metal"
-      },
-      {
-        "desc": "transparent glass mixing bowl",
-        "action": "static",
-        "position": "foreground",
-        "id": "glass_bowl_mixing"
-      },
-      {
-        "desc": "human hand",
-        "action": "holding the spoon",
+        "desc": "hand holding a metal measuring spoon",
+        "action": "pouring liquid",
         "position": "top",
-        "id": "person_chef_1"
+        "id": "utensil_spoon_spatula_1"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A hand holds a metal spoon and strikes the egg yolk.",
+        "fact": "A hand is pouring a clear liquid from a metal measuring spoon onto the dry mixture.",
         "confidence": 1.0
       },
       {
-        "fact": "The egg yolk breaks upon impact with the spoon.",
+        "fact": "The liquid is being poured to the right of the egg yolk.",
         "confidence": 1.0
       },
       {
-        "fact": "The ingredients are contained within a glass bowl.",
+        "fact": "The egg yolk sits in a depression in the center of the dry mixture.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The egg yolk is in the center of the bowl, surrounded by the flour mixture. The hand is positioned above the bowl, holding the spoon which is in contact with the yolk.",
+    "spatial": "The clear glass mixing bowl is in the background, containing the pale yellow dry mixture. The bright yellow egg yolk is positioned in the center of the dry mixture. A hand holding a metal spoon is above the bowl, pouring liquid onto the mixture next to the yolk.",
     "parse_success": true,
     "chunk_idx": 12,
     "video_id": "1KmwQZ4wshY",
     "state_changes": [
-      "egg yolk appears, spoon strikes it"
+      "New entity appears: Egg yolk and measuring spoon introduced"
     ]
   },
   {
     "time": [
-      26,
-      28
+      13,
+      14
     ],
     "visible_entities": [
       {
-        "desc": "pale yellow crumbly mixture, granular texture",
+        "desc": "pale yellow, crumbly, granular mixture resembling almond flour or ground nuts",
         "action": "being mixed",
         "position": "center",
-        "id": "dough_mixture_crumbly"
+        "id": "ingredient_mixture_crumbly_1"
       },
       {
-        "desc": "bright yellow egg yolk, glossy, viscous",
+        "desc": "bright yellow, glossy egg yolk",
         "action": "being incorporated",
         "position": "center",
-        "id": "egg_yolk"
+        "id": "ingredient_egg_yolk_1"
       },
       {
-        "desc": "black spatula, flat, smooth",
+        "desc": "dark, blurred utensil, likely a spatula or spoon",
         "action": "stirring the mixture",
         "position": "left",
-        "id": "spatula_black"
+        "id": "utensil_spoon_spatula_1"
       },
       {
-        "desc": "transparent glass bowl, curved rim",
+        "desc": "transparent glass bowl",
         "action": "static",
         "position": "foreground",
-        "id": "glass_bowl_mixing"
+        "id": "mixing_bowl_glass_1"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A black spatula is stirring a pale yellow crumbly mixture.",
+        "fact": "A dark utensil is stirring the crumbly mixture and egg yolk together.",
         "confidence": 1.0
       },
       {
-        "fact": "A bright yellow egg yolk is being incorporated into the dry ingredients.",
+        "fact": "The egg yolk is breaking apart and blending into the dry ingredients.",
         "confidence": 1.0
       },
       {
-        "fact": "The mixture is contained inside a transparent glass bowl.",
+        "fact": "The mixture is contained within a clear glass bowl.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The black spatula is on the left side of the bowl, moving through the pale yellow crumbly mixture. The bright yellow egg yolk is in the center of the mixture, partially covered by the crumbs. The glass bowl surrounds the ingredients.",
+    "spatial": "The crumbly mixture and egg yolk are inside the transparent glass bowl. The dark utensil is on the left side of the bowl, moving through the center of the mixture. The egg yolk is initially in the center of the dry ingredients before being stirred.",
     "parse_success": true,
     "chunk_idx": 13,
     "video_id": "1KmwQZ4wshY",
     "state_changes": [
-      "spatula introduced, mixing egg into dough"
+      "Action started: Utensil stirring mixture while incorporating egg yolk"
     ]
   },
   {
     "time": [
-      28,
-      30
+      14,
+      15
     ],
     "visible_entities": [
       {
-        "desc": "yellowish, crumbly, granular mixture",
+        "desc": "crumbly, pale yellow mixture with a coarse, granular texture",
         "action": "being stirred",
         "position": "center",
-        "id": "dough_mixture_crumbly"
+        "id": "ingredient_mixture_crumbly_1"
       },
       {
-        "desc": "clear glass bowl",
+        "desc": "transparent glass bowl with a curved rim",
         "action": "static",
         "position": "bottom",
-        "id": "glass_bowl_mixing"
+        "id": "mixing_bowl_glass_1"
       },
       {
-        "desc": "blurred utensil",
-        "action": "mixing",
-        "position": "center"
+        "desc": "blurred utensil, likely a spoon or spatula",
+        "action": "mixing the mixture",
+        "position": "center",
+        "id": "utensil_spoon_spatula_1"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A blurred utensil is actively stirring a yellowish, crumbly mixture.",
+        "fact": "A utensil is actively stirring the crumbly yellow mixture.",
         "confidence": 1.0
       },
       {
-        "fact": "The mixture is contained inside a clear glass bowl.",
+        "fact": "The mixture is contained inside a glass bowl.",
         "confidence": 1.0
       },
       {
-        "fact": "The texture of the mixture appears granular and loose.",
+        "fact": "The mixture has a loose, sandy consistency.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The yellowish, crumbly mixture is inside the clear glass bowl. The blurred utensil is in the center of the mixture, moving through it. The glass bowl is at the bottom of the frame, holding the mixture.",
+    "spatial": "The crumbly yellow mixture is inside the glass bowl. The utensil is in the center of the mixture, moving through it. The rim of the glass bowl is visible at the bottom of the frame.",
     "parse_success": true,
     "chunk_idx": 14,
     "video_id": "1KmwQZ4wshY",
@@ -657,36 +642,26 @@
   },
   {
     "time": [
-      30,
-      32
+      15,
+      16
     ],
     "visible_entities": [
       {
-        "desc": "pale yellow, crumbly food mixture with a coarse, granular texture",
+        "desc": "yellow crumbly mixture with a coarse, granular texture",
         "action": "being mixed",
         "position": "center",
-        "id": "dough_mixture_crumbly"
+        "id": "ingredient_mixture_crumbly_1"
       },
       {
         "desc": "transparent glass bowl",
         "action": "static",
-        "position": "bottom",
-        "id": "glass_bowl_mixing"
-      },
-      {
-        "desc": "hand",
-        "action": "mixing the food",
-        "position": "left",
-        "id": "person_chef_1"
+        "position": "foreground",
+        "id": "mixing_bowl_glass_1"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A hand is mixing a pale yellow, crumbly food mixture.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The food mixture is contained within a glass bowl.",
+        "fact": "A yellow crumbly mixture is being mixed inside a glass bowl.",
         "confidence": 1.0
       },
       {
@@ -695,7 +670,7 @@
       }
     ],
     "ocr": [],
-    "spatial": "The hand is on the left side of the frame, reaching into the glass bowl. The crumbly food mixture is inside the bowl, filling the center of the view.",
+    "spatial": "The yellow crumbly mixture is inside the transparent glass bowl. The bowl is positioned in the center of the frame.",
     "parse_success": true,
     "chunk_idx": 15,
     "video_id": "1KmwQZ4wshY",
@@ -703,136 +678,131 @@
   },
   {
     "time": [
-      32,
-      34
+      16,
+      17
     ],
     "visible_entities": [
       {
-        "desc": "hands with light skin tone",
-        "action": "kneading and mixing yellow dough",
+        "desc": "hands with light skin tone, fingers spread",
+        "action": "kneading dough",
         "position": "center",
         "id": "person_chef_1"
       },
       {
-        "desc": "yellow crumbly dough mixture",
+        "desc": "yellow crumbly dough mixture, textured and moist",
         "action": "being manipulated",
         "position": "center",
-        "id": "dough_mixture_crumbly"
+        "id": "ingredient_mixture_crumbly_1"
       },
       {
-        "desc": "clear glass bowl",
+        "desc": "clear glass mixing bowl, smooth surface",
         "action": "static",
         "position": "bottom",
-        "id": "glass_bowl_mixing"
+        "id": "mixing_bowl_glass_1"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "Hands are kneading a yellow, crumbly dough mixture.",
+        "fact": "hands are kneading the yellow dough mixture",
         "confidence": 1.0
       },
       {
-        "fact": "The dough is contained inside a clear glass bowl.",
+        "fact": "the dough is contained inside the glass bowl",
         "confidence": 1.0
       },
       {
-        "fact": "The hands are pressing down into the mixture to combine it.",
+        "fact": "the dough has a crumbly texture",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The hands are positioned above and inside the clear glass bowl. The yellow dough mixture is below the hands and fills the bottom of the bowl.",
+    "spatial": "The hands are positioned above and pressing into the yellow dough mixture. The dough mixture is inside the clear glass mixing bowl. The bowl is located at the bottom of the frame.",
     "parse_success": true,
     "chunk_idx": 16,
+    "video_id": "1KmwQZ4wshY",
+    "state_changes": [
+      "Action started: Hands kneading the dough mixture"
+    ]
+  },
+  {
+    "time": [
+      17,
+      18
+    ],
+    "visible_entities": [
+      {
+        "desc": "hands with fair skin, short fingernails",
+        "action": "kneading and shaping dough",
+        "position": "center",
+        "id": "person_chef_1"
+      },
+      {
+        "desc": "pale yellow dough, crumbly texture, round shape",
+        "action": "being manipulated",
+        "position": "center"
+      },
+      {
+        "desc": "clear glass mixing bowl",
+        "action": "static",
+        "position": "center",
+        "id": "mixing_bowl_glass_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "Hands are kneading a ball of pale yellow dough inside a glass bowl.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The dough is being pressed and shaped into a round form.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The dough is contained within the glass bowl.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The hands are inside the glass bowl, pressing down on the dough. The dough is centered within the bowl.",
+    "parse_success": true,
+    "chunk_idx": 17,
     "video_id": "1KmwQZ4wshY",
     "state_changes": []
   },
   {
     "time": [
-      34,
-      36
-    ],
-    "visible_entities": [
-      {
-        "desc": "person's hands with fair skin and short fingernails",
-        "action": "kneading dough and holding bowl",
-        "position": "center",
-        "id": "person_chef_1"
-      },
-      {
-        "desc": "large clear glass mixing bowl with a pouring spout",
-        "action": "static",
-        "position": "center",
-        "id": "glass_bowl_mixing"
-      },
-      {
-        "desc": "yellowish crumbly dough mixture",
-        "action": "being pressed",
-        "position": "inside bowl",
-        "id": "dough_mixture_crumbly"
-      },
-      {
-        "desc": "solid pale yellow dough disc",
-        "action": "being shaped",
-        "position": "foreground"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "A person's hand is pressing and kneading a yellowish dough mixture inside a glass bowl.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The person's other hand is holding the rim of the glass bowl steady.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The dough is formed into a thick, round disc shape on a flat surface.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [],
-    "spatial": "The person's hands are positioned around the glass bowl, with one hand inside kneading the dough and the other holding the rim. The dough is inside the bowl in the first view and then appears on a surface in the foreground in the second view.",
-    "parse_success": true,
-    "chunk_idx": 17,
-    "video_id": "1KmwQZ4wshY",
-    "state_changes": [
-      "dough formed into solid disc shape"
-    ]
-  },
-  {
-    "time": [
-      36,
-      38
+      18,
+      19
     ],
     "visible_entities": [
       {
         "desc": "hands with fair skin and short fingernails",
-        "action": "kneading dough then wrapping it in plastic",
-        "position": "center",
+        "action": "kneading dough then wrapping it",
+        "position": "center/foreground",
         "id": "person_chef_1"
       },
       {
-        "desc": "pale yellow dough ball, crumbly texture",
+        "desc": "yellowish dough ball, crumbly texture initially then smooth",
         "action": "being manipulated",
-        "position": "center"
+        "position": "center",
+        "id": "dough_ball_1"
       },
       {
         "desc": "clear plastic wrap",
-        "action": "being wrapped around dough",
+        "action": "being applied to dough",
         "position": "center",
-        "id": "plastic_wrap"
+        "id": "plastic_wrap_1"
       },
       {
         "desc": "white flat surface",
         "action": "static",
         "position": "background",
-        "id": "countertop_white"
+        "id": "surface_counter_1"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "Hands are pressing and kneading the yellow dough on a white surface.",
+        "fact": "Hands are pressing down on a ball of yellow dough.",
         "confidence": 1.0
       },
       {
@@ -845,54 +815,54 @@
       }
     ],
     "ocr": [],
-    "spatial": "The hands are positioned above and around the dough ball. The dough is resting on the white surface. Small crumbs are scattered near the dough on the surface.",
+    "spatial": "The hands are positioned above and around the dough ball. The dough is resting on the white surface. The plastic wrap is being placed over the dough by the hands.",
     "parse_success": true,
     "chunk_idx": 18,
     "video_id": "1KmwQZ4wshY",
     "state_changes": [
-      "plastic wrap introduced, dough wrapping begins"
+      "Action progression: Kneading transitions to wrapping dough in plastic wrap"
     ]
   },
   {
     "time": [
-      38,
-      40
+      19,
+      20
     ],
     "visible_entities": [
       {
         "desc": "person with fair skin, wearing a white sleeveless top",
-        "action": "holding a wrapped dough ball",
+        "action": "holding a wrapped object",
         "position": "center",
         "id": "person_chef_1"
       },
       {
-        "desc": "pale yellow dough ball wrapped in clear plastic film",
+        "desc": "yellowish-green cylindrical object wrapped in clear plastic film",
         "action": "being held",
         "position": "center",
-        "id": "dough_wrapped"
+        "id": "dough_wrapped_1"
       },
       {
-        "desc": "empty food processor bowl, clear plastic with a black central blade assembly",
+        "desc": "empty food processor bowl with clear plastic container and black central blade assembly",
         "action": "static",
         "position": "foreground",
-        "id": "food_processor_bowl"
+        "id": "food_processor_bowl_1"
       },
       {
-        "desc": "white kitchen countertop",
+        "desc": "white kitchen countertop with scattered crumbs",
         "action": "static",
         "position": "bottom",
-        "id": "countertop_white"
+        "id": "surface_counter_1"
       },
       {
         "desc": "white kitchen cabinets with silver handles",
         "action": "static",
         "position": "background",
-        "id": "kitchen_cabinets"
+        "id": "kitchen_cabinets_1"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A person is holding a ball of dough wrapped in plastic film.",
+        "fact": "A person is holding a yellowish-green cylindrical object wrapped in plastic film with both hands.",
         "confidence": 1.0
       },
       {
@@ -900,44 +870,45 @@
         "confidence": 1.0
       },
       {
-        "fact": "The person is standing behind the food processor.",
+        "fact": "Small crumbs are scattered on the white countertop surface.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The person is holding the wrapped dough in the center of the frame, positioned above the white countertop. The empty food processor bowl is in the foreground, to the right of where the dough was held. The white kitchen cabinets are in the background behind the person and the counter.",
+    "spatial": "The person is positioned behind the food processor bowl, holding the wrapped object above the white countertop. The food processor bowl is in the foreground, while the white cabinets are visible in the background behind the person.",
     "parse_success": true,
     "chunk_idx": 19,
     "video_id": "1KmwQZ4wshY",
     "state_changes": [
-      "scene transitions to food processor area"
+      "Scene transition: Person holding wrapped object; food processor bowl introduced"
     ]
   },
   {
     "time": [
-      40,
-      42
+      20,
+      21
     ],
     "visible_entities": [
       {
-        "desc": "white powdery substance, fine-grained, piled in a mound",
-        "action": "static",
-        "position": "bottom/center"
-      },
-      {
-        "desc": "transparent cylindrical container, smooth, glass or plastic",
+        "desc": "white powdery substance, fine-grained texture, piled in a mound",
         "action": "static",
         "position": "center",
-        "id": "food_processor_bowl"
+        "id": "ingredient_flour_1"
       },
       {
-        "desc": "black vertical blade assembly, central column",
+        "desc": "transparent cylindrical container, smooth material, likely glass or plastic",
         "action": "static",
         "position": "center",
-        "id": "food_processor_blade"
+        "id": "food_processor_bowl_1"
       },
       {
-        "desc": "human hand, fingers, light skin tone",
+        "desc": "black vertical object, cylindrical shape, central column",
+        "action": "static",
+        "position": "center",
+        "id": "food_processor_blade_1"
+      },
+      {
+        "desc": "human hand, light skin tone, fingers extended",
         "action": "reaching into container",
         "position": "top",
         "id": "person_chef_1"
@@ -945,20 +916,20 @@
     ],
     "atomic_facts": [
       {
-        "fact": "A hand reaches into the transparent container from above.",
+        "fact": "A hand reaches into the top of the transparent container.",
         "confidence": 1.0
       },
       {
-        "fact": "The white powder is piled around the central black blade.",
+        "fact": "The white powder is piled in a mound inside the container.",
         "confidence": 1.0
       },
       {
-        "fact": "The container sits on a white surface.",
+        "fact": "The black column stands vertically in the center of the powder.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The hand is positioned above the transparent container and reaches down towards the white powder. The white powder is located inside the container, surrounding the black vertical blade assembly. The container rests on a white base.",
+    "spatial": "The white powdery substance is inside the transparent cylindrical container. The black vertical object is in the center of the powder pile. The human hand is positioned above the container, reaching down towards the powder.",
     "parse_success": true,
     "chunk_idx": 20,
     "video_id": "1KmwQZ4wshY",
@@ -966,42 +937,42 @@
   },
   {
     "time": [
-      42,
-      44
+      21,
+      22
     ],
     "visible_entities": [
       {
-        "desc": "white powdery flour, fine-grained texture, piled up",
+        "desc": "white powdery flour with a fine, dusty texture",
         "action": "static",
         "position": "left/foreground",
-        "id": "flour_white"
+        "id": "ingredient_flour_1"
       },
       {
-        "desc": "yellow butter cubes, solid, rectangular chunks",
+        "desc": "cubed yellow butter, solid and smooth",
         "action": "falling into the container",
         "position": "center/right",
-        "id": "butter_cubes"
+        "id": "ingredient_butter_1"
       },
       {
-        "desc": "transparent food processor bowl, clear plastic or glass material",
+        "desc": "transparent cylindrical food processor bowl",
         "action": "static",
         "position": "center",
-        "id": "food_processor_bowl"
+        "id": "food_processor_bowl_1"
       },
       {
-        "desc": "black central blade assembly, vertical",
+        "desc": "black vertical blade assembly",
         "action": "static",
         "position": "center/background",
-        "id": "food_processor_blade"
+        "id": "food_processor_blade_1"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "Yellow butter cubes are falling into the food processor bowl.",
+        "fact": "Cubed yellow butter is falling into the food processor bowl.",
         "confidence": 1.0
       },
       {
-        "fact": "The butter cubes land on top of a pile of white flour.",
+        "fact": "The butter lands on top of a pile of white flour.",
         "confidence": 1.0
       },
       {
@@ -1010,54 +981,55 @@
       }
     ],
     "ocr": [],
-    "spatial": "The pile of white flour is located on the left side of the transparent bowl. The yellow butter cubes are falling from above into the center and right side of the bowl. The black blade assembly stands vertically in the center, behind the falling butter.",
+    "spatial": "The pile of white flour is located on the left side of the transparent bowl. The black blade assembly stands vertically in the center, behind the falling butter. The yellow butter cubes are falling from the top right area into the bowl, landing next to the flour.",
     "parse_success": true,
     "chunk_idx": 21,
     "video_id": "1KmwQZ4wshY",
     "state_changes": [
-      "butter cubes fall into food processor"
+      "Action started: Butter cubes falling into the food processor bowl"
     ]
   },
   {
     "time": [
-      44,
-      46
+      22,
+      23
     ],
     "visible_entities": [
       {
-        "desc": "white powdery substance, fine-grained texture, piled in a mound",
+        "desc": "white granular substance, powdery and clumpy texture, resembling flour or snow",
         "action": "static",
-        "position": "bottom/foreground",
-        "id": "flour_white"
+        "position": "bottom",
+        "id": "ingredient_flour_1"
       },
       {
         "desc": "translucent container wall, smooth surface, slightly reflective",
         "action": "static",
-        "position": "center/background"
+        "position": "foreground",
+        "id": "container_storage_1"
       },
       {
-        "desc": "dark rectangular object, solid, black or dark brown",
+        "desc": "dark rectangular shape, solid black, indistinct edges",
         "action": "static",
-        "position": "center/middle",
-        "id": "food_processor_blade"
+        "position": "center",
+        "id": "background_dark_1"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "The camera pans upwards from the white powder to the container wall.",
+        "fact": "The white granular substance is settled at the bottom of the container.",
         "confidence": 1.0
       },
       {
-        "fact": "A dark rectangular object is visible behind the translucent container wall.",
+        "fact": "The dark rectangular shape is positioned behind the translucent container wall.",
         "confidence": 1.0
       },
       {
-        "fact": "The white powdery substance is piled at the bottom of the container.",
+        "fact": "The scene is viewed through a clear, possibly plastic or glass, surface.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The white powdery substance is at the bottom of the frame, below the dark rectangular object. The translucent container wall is in front of the dark rectangular object.",
+    "spatial": "The white granular substance is located at the bottom of the frame, below the dark rectangular shape. The dark rectangular shape is in the center, behind the translucent container wall which is in the foreground.",
     "parse_success": true,
     "chunk_idx": 22,
     "video_id": "1KmwQZ4wshY",
@@ -1065,202 +1037,191 @@
   },
   {
     "time": [
-      46,
-      48
+      23,
+      24
     ],
     "visible_entities": [
       {
-        "desc": "black cylindrical food processor blade hub, glossy plastic, centered",
+        "desc": "fine-grained white flour with a powdery texture",
         "action": "static",
-        "id": "food_processor_blade"
+        "position": "center",
+        "id": "ingredient_flour_1"
       },
       {
-        "desc": "white flour, powdery and clumpy texture, piled in a mound",
+        "desc": "black cylindrical food processor blade attachment",
         "action": "static",
-        "id": "flour_white"
+        "position": "center",
+        "id": "food_processor_blade_1"
       },
       {
-        "desc": "raw egg yolk, bright yellow-orange, spherical and glossy",
-        "action": "resting",
-        "id": "egg_yolk"
+        "desc": "raw egg yolk, bright yellow and spherical",
+        "action": "appearing",
+        "position": "right",
+        "id": "ingredient_egg_yolk_1"
       },
       {
-        "desc": "transparent food processor bowl, glass or plastic, curved rim",
+        "desc": "transparent food processor bowl",
         "action": "static",
-        "id": "food_processor_bowl"
+        "position": "background",
+        "id": "food_processor_bowl_1"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A raw egg yolk is added to the flour mixture.",
+        "fact": "A raw egg yolk appears in the food processor bowl next to the flour.",
         "confidence": 1.0
       },
       {
-        "fact": "The egg yolk rests on top of the white flour.",
+        "fact": "The flour surrounds the central black blade attachment.",
         "confidence": 1.0
       },
       {
-        "fact": "The flour surrounds the central black blade hub.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The ingredients are contained inside the transparent bowl.",
+        "fact": "The ingredients are contained within a transparent bowl.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The black blade hub is in the center of the bowl. The white flour is piled around the hub. The yellow egg yolk is to the right of the black hub and rests on top of the flour. All ingredients are inside the transparent bowl.",
+    "spatial": "The black blade attachment is in the center of the transparent bowl. The white flour is spread around the base of the blade. The yellow egg yolk is positioned to the right of the black blade and rests on top of the flour.",
     "parse_success": true,
     "chunk_idx": 23,
     "video_id": "1KmwQZ4wshY",
-    "state_changes": []
+    "state_changes": [
+      "New entity appears: Raw egg yolk added to food processor"
+    ]
   },
   {
     "time": [
-      48,
-      50
+      24,
+      25
     ],
     "visible_entities": [
       {
-        "desc": "black cylindrical food processor blade hub, glossy plastic",
-        "action": "static",
-        "position": "center-left",
-        "id": "food_processor_blade"
-      },
-      {
-        "desc": "white flour, powdery texture",
+        "desc": "white flour, powdery texture, piled in a mound",
         "action": "static",
         "position": "background",
-        "id": "flour_white"
+        "id": "ingredient_flour_1"
       },
       {
-        "desc": "yellow egg yolk, round, glossy",
+        "desc": "bright yellow egg yolk, round, glossy",
         "action": "static",
-        "position": "bottom-right",
-        "id": "egg_yolk"
+        "position": "center",
+        "id": "ingredient_egg_yolk_1"
       },
       {
-        "desc": "clear liquid, transparent stream",
-        "action": "pouring",
-        "position": "center"
+        "desc": "black plastic central spindle, cylindrical, shiny",
+        "action": "static",
+        "position": "center",
+        "id": "food_processor_blade_1"
       },
       {
-        "desc": "transparent food processor bowl, glass or plastic",
+        "desc": "clear glass bowl, transparent, curved rim",
         "action": "static",
         "position": "foreground",
-        "id": "food_processor_bowl"
+        "id": "mixing_bowl_glass_1"
+      },
+      {
+        "desc": "white granular substance, crystalline texture, falling in a stream",
+        "action": "pouring into the bowl",
+        "position": "center",
+        "id": "ingredient_flour_1"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A stream of clear liquid is being poured into the bowl.",
+        "fact": "A white granular substance is being poured into the bowl.",
         "confidence": 1.0
       },
       {
-        "fact": "The liquid falls onto the flour and near the egg yolk.",
+        "fact": "The substance falls onto the flour and near the egg yolk.",
         "confidence": 1.0
       },
       {
-        "fact": "The ingredients are contained within a food processor bowl.",
+        "fact": "The ingredients are inside a food processor bowl.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The black blade hub is in the center of the bowl, surrounded by white flour. The yellow egg yolk is located to the right of the blade hub. The stream of clear liquid is pouring from above into the space between the blade and the flour.",
+    "spatial": "The black plastic spindle is in the center of the clear glass bowl. The white flour is piled around the spindle. The yellow egg yolk is situated next to the spindle. The stream of white granular substance is falling from above into the mixture.",
     "parse_success": true,
     "chunk_idx": 24,
     "video_id": "1KmwQZ4wshY",
     "state_changes": [
-      "clear liquid pours into food processor"
+      "Action started: Granular substance pouring into a glass bowl"
     ]
   },
   {
     "time": [
-      50,
-      52
+      25,
+      26
     ],
     "visible_entities": [
       {
-        "desc": "thick, pale yellow creamy mixture with a smooth, whipped texture",
-        "action": "swirling rapidly inside the container",
-        "position": "center"
+        "desc": "thick, pale yellow creamy mixture with green flecks",
+        "action": "swirling rapidly",
+        "position": "center",
+        "id": "ingredient_mixture_processed_1"
       },
       {
-        "desc": "transparent cylindrical container, likely a food processor bowl",
+        "desc": "transparent cylindrical container with a black vertical component",
         "action": "static",
         "position": "center",
-        "id": "food_processor_bowl"
-      },
-      {
-        "desc": "dark rectangular object, likely the central drive shaft or blade assembly",
-        "action": "static",
-        "position": "center",
-        "id": "food_processor_blade"
+        "id": "food_processor_bowl_1"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A pale yellow creamy mixture is being processed inside a transparent container.",
+        "fact": "The pale yellow mixture is being processed or blended inside the container.",
         "confidence": 1.0
       },
       {
-        "fact": "The mixture swirls rapidly around a central dark component.",
+        "fact": "The mixture swirls rapidly, creating a vortex-like motion.",
         "confidence": 1.0
       },
       {
-        "fact": "The substance appears to be thickening or emulsifying.",
+        "fact": "Small green pieces are suspended within the creamy yellow substance.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The pale yellow mixture is inside the transparent cylindrical container. The dark rectangular object is located in the center of the container, surrounded by the swirling mixture.",
+    "spatial": "The pale yellow mixture is inside the transparent cylindrical container. A black vertical component is positioned in the center of the container, surrounded by the swirling mixture.",
     "parse_success": true,
     "chunk_idx": 25,
     "video_id": "1KmwQZ4wshY",
     "state_changes": [
-      "food processor activates, mixture swirls rapidly"
+      "Action started: Mixture swirling rapidly inside the container (processing)"
     ]
   },
   {
     "time": [
-      52,
-      54
+      26,
+      27
     ],
     "visible_entities": [
       {
-        "desc": "pale yellow, creamy, semi-liquid mixture with visible green flecks",
+        "desc": "yellowish-green food mixture with a pulpy, shredded texture",
         "action": "spinning rapidly",
-        "position": "center"
+        "position": "center",
+        "id": "ingredient_mixture_processed_1"
       },
       {
         "desc": "transparent cylindrical container with a black rim",
         "action": "static",
         "position": "foreground",
-        "id": "food_processor_bowl"
-      },
-      {
-        "desc": "dark rectangular central blade assembly",
-        "action": "spinning rapidly",
-        "position": "center",
-        "id": "food_processor_blade"
+        "id": "food_processor_bowl_1"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A pale yellow mixture is spinning rapidly inside a container.",
+        "fact": "The yellowish-green food mixture is spinning rapidly inside the container.",
         "confidence": 1.0
       },
       {
-        "fact": "The mixture contains visible green flecks.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The mixture is being processed by a central blade assembly.",
+        "fact": "The mixture has a pulpy, shredded texture.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The pale yellow mixture is inside the transparent cylindrical container. The dark rectangular blade assembly is in the center of the mixture.",
+    "spatial": "The yellowish-green food mixture is inside the transparent cylindrical container. The container is in the foreground of the shot.",
     "parse_success": true,
     "chunk_idx": 26,
     "video_id": "1KmwQZ4wshY",
@@ -1268,21 +1229,21 @@
   },
   {
     "time": [
-      54,
-      56
+      27,
+      28
     ],
     "visible_entities": [
       {
-        "desc": "yellow, crumbly, dough-like mixture with a moist, textured appearance",
+        "desc": "yellow, crumbly, dough-like mixture with a coarse texture",
         "action": "being processed inside a container",
         "position": "center",
-        "id": "dough_mixture_crumbly"
+        "id": "ingredient_mixture_crumbly_1"
       },
       {
-        "desc": "transparent, cylindrical container, likely a food processor bowl",
+        "desc": "transparent container wall",
         "action": "static",
         "position": "foreground",
-        "id": "food_processor_bowl"
+        "id": "container_storage_1"
       }
     ],
     "atomic_facts": [
@@ -1291,12 +1252,12 @@
         "confidence": 1.0
       },
       {
-        "fact": "The mixture has a moist, textured appearance.",
+        "fact": "The mixture appears to be in motion, suggesting it is being blended or mixed.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The yellow, crumbly mixture is inside the transparent container. The container is in the foreground of the shot.",
+    "spatial": "The yellow mixture is inside the transparent container. The container wall is in front of the mixture from the viewer's perspective.",
     "parse_success": true,
     "chunk_idx": 27,
     "video_id": "1KmwQZ4wshY",
@@ -1304,21 +1265,21 @@
   },
   {
     "time": [
-      56,
-      58
+      28,
+      29
     ],
     "visible_entities": [
       {
-        "desc": "yellow, crumbly, dough-like mixture with a moist and lumpy texture",
+        "desc": "yellow, crumbly, dough-like mixture with a coarse texture",
         "action": "being processed inside a container",
-        "position": "left/center",
-        "id": "dough_mixture_crumbly"
+        "position": "left",
+        "id": "ingredient_mixture_crumbly_1"
       },
       {
-        "desc": "transparent, curved container wall, likely glass or plastic",
+        "desc": "transparent container wall",
         "action": "static",
-        "position": "right/foreground",
-        "id": "food_processor_bowl"
+        "position": "right",
+        "id": "container_storage_1"
       }
     ],
     "atomic_facts": [
@@ -1327,12 +1288,12 @@
         "confidence": 1.0
       },
       {
-        "fact": "The mixture has a moist, lumpy texture.",
+        "fact": "The mixture has a coarse, dough-like texture.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The yellow mixture is inside the transparent container. The curved wall of the container is to the right of the mixture.",
+    "spatial": "The yellow, crumbly mixture is inside the transparent container. The container wall is to the right of the mixture.",
     "parse_success": true,
     "chunk_idx": 28,
     "video_id": "1KmwQZ4wshY",
@@ -1340,51 +1301,61 @@
   },
   {
     "time": [
-      58,
-      60
+      29,
+      30
     ],
     "visible_entities": [
       {
-        "desc": "yellow dough, crumbly texture",
-        "action": "being poured from a glass bowl",
-        "position": "center"
-      },
-      {
-        "desc": "glass bowl, transparent",
-        "action": "being tilted",
-        "position": "left",
-        "id": "glass_bowl_mixing"
-      },
-      {
-        "desc": "hands, bare skin",
+        "desc": "hands with light skin tone",
         "action": "kneading dough",
         "position": "center",
         "id": "person_chef_1"
+      },
+      {
+        "desc": "yellow dough, crumbly texture",
+        "action": "being kneaded",
+        "position": "center"
+      },
+      {
+        "desc": "clear glass bowl",
+        "action": "being tipped",
+        "position": "left",
+        "id": "mixing_bowl_glass_1"
+      },
+      {
+        "desc": "white surface",
+        "action": "static",
+        "position": "background",
+        "id": "surface_counter_1"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A person pours yellow dough from a glass bowl onto a white surface.",
+        "fact": "A person is kneading a ball of yellow dough with both hands.",
         "confidence": 1.0
       },
       {
-        "fact": "Hands are kneading the yellow dough on the white surface.",
+        "fact": "A clear glass bowl is being tipped over to the left.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "Small crumbs of yellow dough are scattered on the white surface.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The glass bowl is to the left of the dough. The hands are on top of the dough. The dough is on the white surface.",
+    "spatial": "The hands are in the center of the frame, holding the yellow dough. The clear glass bowl is to the left of the hands and is positioned above the white surface. Small pieces of dough are scattered on the white surface below the hands.",
     "parse_success": true,
     "chunk_idx": 29,
     "video_id": "1KmwQZ4wshY",
     "state_changes": [
-      "dough transferred from food processor to glass bowl"
+      "Scene transition: Dough removed from processor; hands kneading in glass bowl"
     ]
   },
   {
     "time": [
-      60,
-      62
+      30,
+      31
     ],
     "visible_entities": [
       {
@@ -1397,12 +1368,18 @@
         "desc": "yellow, crumbly dough mixture",
         "action": "being manipulated",
         "position": "center",
-        "id": "dough_mixture_crumbly"
+        "id": "ingredient_mixture_crumbly_1"
+      },
+      {
+        "desc": "white, smooth surface",
+        "action": "static",
+        "position": "background",
+        "id": "surface_counter_1"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "Hands are pressing and kneading a mass of yellow dough.",
+        "fact": "Hands are pressing and kneading a ball of yellow dough.",
         "confidence": 1.0
       },
       {
@@ -1410,12 +1387,12 @@
         "confidence": 1.0
       },
       {
-        "fact": "The dough appears crumbly and is being gathered together.",
+        "fact": "The dough appears to be in a crumbly, unformed state.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The hands are positioned above and around the yellow dough in the center of the frame. The dough is on a white surface. Small crumbs of dough are scattered near the main mass.",
+    "spatial": "The hands are positioned above the white surface, holding and manipulating the yellow dough in the center. Small pieces of dough are scattered on the surface below and around the main mass of dough.",
     "parse_success": true,
     "chunk_idx": 30,
     "video_id": "1KmwQZ4wshY",
@@ -1423,97 +1400,103 @@
   },
   {
     "time": [
-      62,
-      64
+      31,
+      32
     ],
     "visible_entities": [
       {
-        "desc": "hands with fair skin and short, natural fingernails",
-        "action": "kneading dough",
-        "position": "center/foreground",
+        "desc": "pair of hands with fair skin and short, natural fingernails",
+        "action": "pressing down on dough",
+        "position": "center",
         "id": "person_chef_1"
       },
       {
-        "desc": "yellow dough, smooth and pliable texture, round shape",
+        "desc": "round ball of yellow dough with a smooth, matte texture",
         "action": "being pressed",
         "position": "center",
-        "id": "dough_ball_yellow"
+        "id": "dough_ball_1"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "hands are pressing down on the yellow dough",
+        "fact": "Hands are pressing down on the yellow dough.",
         "confidence": 1.0
       },
       {
-        "fact": "the dough is being manipulated on a white surface",
+        "fact": "The dough is being flattened by the pressure of the hands.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The dough is resting on a white surface.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The hands are positioned above and around the yellow dough. The dough is resting on a white surface below the hands.",
+    "spatial": "The hands are positioned on top of the yellow dough. The dough is located in the center of the frame, resting on a white surface.",
     "parse_success": true,
     "chunk_idx": 31,
     "video_id": "1KmwQZ4wshY",
-    "state_changes": []
-  },
-  {
-    "time": [
-      64,
-      66
-    ],
-    "visible_entities": [
-      {
-        "desc": "yellow dough ball, smooth with surface cracks",
-        "action": "being wrapped",
-        "position": "center",
-        "id": "dough_ball_yellow"
-      },
-      {
-        "desc": "hands with light skin tone",
-        "action": "wrapping dough",
-        "position": "center",
-        "id": "person_chef_1"
-      },
-      {
-        "desc": "clear plastic wrap",
-        "action": "being pulled around dough",
-        "position": "center",
-        "id": "plastic_wrap"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "Hands are wrapping the yellow dough ball in clear plastic wrap.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The dough ball has visible cracks on its surface.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The plastic wrap is being pulled taut around the dough.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [],
-    "spatial": "The hands are holding the yellow dough ball in the center of the frame. The clear plastic wrap is being pulled around the dough by the hands.",
-    "parse_success": true,
-    "chunk_idx": 32,
-    "video_id": "1KmwQZ4wshY",
     "state_changes": [
-      "dough wrapping begins again with plastic wrap"
+      "Action progression: Kneading transitions to pressing dough into a ball"
     ]
   },
   {
     "time": [
-      66,
-      68
+      32,
+      33
+    ],
+    "visible_entities": [
+      {
+        "desc": "yellow dough ball, round shape, cracked surface texture",
+        "action": "being wrapped in plastic wrap",
+        "position": "center",
+        "id": "dough_ball_1"
+      },
+      {
+        "desc": "hands, light skin tone",
+        "action": "wrapping the dough",
+        "position": "center",
+        "id": "person_chef_1"
+      },
+      {
+        "desc": "clear plastic wrap, transparent, crinkled",
+        "action": "being pulled around the dough",
+        "position": "center",
+        "id": "plastic_wrap_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "Hands are wrapping a ball of yellow dough in clear plastic wrap.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The dough has a cracked surface texture.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The plastic wrap is being pulled from the left side.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The hands are holding the yellow dough ball in the center of the frame. The clear plastic wrap is being pulled around the dough from the left side.",
+    "parse_success": true,
+    "chunk_idx": 32,
+    "video_id": "1KmwQZ4wshY",
+    "state_changes": [
+      "Action started: Wrapping the dough ball in plastic wrap"
+    ]
+  },
+  {
+    "time": [
+      33,
+      34
     ],
     "visible_entities": [
       {
         "desc": "person with fair skin, wearing a white top",
-        "action": "wrapping dough",
+        "action": "wrapping dough in plastic film",
         "position": "center",
         "id": "person_chef_1"
       },
@@ -1521,37 +1504,37 @@
         "desc": "yellowish-green dough ball, smooth texture",
         "action": "being wrapped",
         "position": "center",
-        "id": "dough_ball_yellow"
+        "id": "dough_ball_1"
       },
       {
-        "desc": "clear plastic wrap, crinkled texture",
+        "desc": "transparent plastic wrap",
         "action": "being manipulated",
         "position": "center",
-        "id": "plastic_wrap"
+        "id": "plastic_wrap_1"
       },
       {
-        "desc": "white flat surface, smooth",
+        "desc": "white flat surface",
         "action": "static",
         "position": "bottom",
-        "id": "countertop_white"
+        "id": "surface_counter_1"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A person is wrapping a ball of yellowish-green dough in clear plastic wrap.",
+        "fact": "A person is wrapping a ball of yellowish-green dough in transparent plastic wrap.",
         "confidence": 1.0
       },
       {
-        "fact": "The person's hands are holding and folding the plastic wrap around the dough.",
+        "fact": "The person's hands are holding the dough and pulling the plastic film around it.",
         "confidence": 1.0
       },
       {
-        "fact": "The dough is positioned in the center of the frame, above the white surface.",
+        "fact": "The dough is resting in the person's hands above a white surface.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The person's hands are holding the dough in the center of the frame. The dough is wrapped in plastic wrap and is positioned above the white surface. The person is behind the dough.",
+    "spatial": "The person is holding the dough in their hands, which are positioned above the white surface. The transparent plastic wrap is being pulled around the dough by the person's fingers.",
     "parse_success": true,
     "chunk_idx": 33,
     "video_id": "1KmwQZ4wshY",
@@ -1559,8 +1542,8 @@
   },
   {
     "time": [
-      68,
-      70
+      34,
+      35
     ],
     "visible_entities": [
       {
@@ -1570,147 +1553,130 @@
         "id": "person_chef_1"
       },
       {
-        "desc": "white countertop, smooth surface",
-        "action": "static",
-        "position": "foreground",
-        "id": "countertop_white"
-      },
-      {
         "desc": "hand with light skin tone",
-        "action": "reaching for a wrapped food item",
-        "position": "right"
+        "action": "reaching into a refrigerator",
+        "position": "right",
+        "id": "person_chef_1"
       },
       {
-        "desc": "yellow food item wrapped in clear plastic, cylindrical shape",
+        "desc": "yellow dough log wrapped in clear plastic",
         "action": "being touched by a hand",
         "position": "center",
-        "id": "dough_wrapped"
+        "id": "dough_wrapped_1"
       },
       {
         "desc": "white wire refrigerator shelf",
         "action": "static",
         "position": "center",
-        "id": "refrigerator_interior"
+        "id": "refrigerator_shelf_1"
       },
       {
         "desc": "red container with a white lid",
         "action": "static",
         "position": "right",
-        "id": "storage_containers"
-      },
-      {
-        "desc": "white tub with black text label",
-        "action": "static",
-        "position": "right",
-        "id": "storage_containers"
+        "id": "container_storage_1"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A person in a white apron stands behind a white counter.",
+        "fact": "A hand reaches into a refrigerator to touch a wrapped log of yellow dough.",
         "confidence": 1.0
       },
       {
-        "fact": "A hand reaches into a refrigerator to touch a yellow, plastic-wrapped food item.",
+        "fact": "The dough is resting on a white wire shelf.",
         "confidence": 1.0
       },
       {
-        "fact": "The yellow food item rests on a white wire shelf.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "A red container and a white tub are visible on the right side of the shelf.",
+        "fact": "A person in a white apron stands behind a white counter in the previous frame.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The person in the white apron is behind the white countertop. The hand is reaching towards the yellow food item which is on the wire shelf. The red container and white tub are to the right of the yellow food item.",
+    "spatial": "The hand is reaching from the right side of the frame towards the yellow dough. The dough is positioned on top of the white wire shelf. The red container is to the right of the dough on the same shelf.",
     "parse_success": true,
     "chunk_idx": 34,
     "video_id": "1KmwQZ4wshY",
     "state_changes": [
-      "scene moves to refrigerator, wrapped dough handled"
+      "Scene transition: Person placing wrapped dough into refrigerator"
     ]
   },
   {
     "time": [
-      70,
-      72
+      35,
+      36
     ],
     "visible_entities": [
       {
-        "desc": "round, yellow dough ball wrapped in clear plastic film, smooth texture",
+        "desc": "round, yellow dough ball wrapped in clear plastic wrap, appearing smooth and slightly flattened",
         "action": "static",
         "position": "center",
-        "id": "dough_ball_yellow"
+        "id": "dough_wrapped_1"
       },
       {
-        "desc": "white wire refrigerator shelf, grid pattern",
+        "desc": "white wire refrigerator shelf with a grid pattern",
         "action": "static",
         "position": "bottom",
-        "id": "refrigerator_interior"
+        "id": "refrigerator_shelf_1"
       },
       {
-        "desc": "stacked plastic food containers, top one translucent with red stains, bottom one opaque red",
+        "desc": "stack of translucent plastic food storage containers with reddish residue inside",
         "action": "static",
         "position": "right",
-        "id": "storage_containers"
+        "id": "container_storage_1"
       },
       {
-        "desc": "white interior wall of the refrigerator",
+        "desc": "white cylindrical container with a label",
         "action": "static",
-        "position": "background",
-        "id": "refrigerator_interior"
+        "position": "right",
+        "id": "container_storage_1"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A yellow dough ball wrapped in plastic sits on a wire shelf.",
+        "fact": "The lighting inside the refrigerator dims significantly, transitioning from bright to dark.",
         "confidence": 1.0
       },
       {
-        "fact": "The lighting in the refrigerator dims significantly, casting the scene into shadow.",
+        "fact": "The yellow dough ball remains stationary on the wire shelf.",
         "confidence": 1.0
       },
       {
-        "fact": "Plastic containers are stacked on the right side of the shelf.",
+        "fact": "The plastic containers are stacked on the right side of the shelf.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The yellow dough ball is in the center of the white wire shelf. The stacked plastic containers are to the right of the dough ball. The white refrigerator wall is behind the dough ball and the containers.",
+    "spatial": "The yellow dough ball is in the center of the white wire shelf. The stack of plastic containers is to the right of the dough ball. The white cylindrical container is next to the stacked containers on the far right.",
     "parse_success": true,
     "chunk_idx": 35,
     "video_id": "1KmwQZ4wshY",
-    "state_changes": [
-      "wrapped dough placed in refrigerator"
-    ]
+    "state_changes": []
   },
   {
     "time": [
-      72,
-      74
+      36,
+      37
     ],
     "visible_entities": [
       {
-        "desc": "round, yellowish-green dough ball with a cracked, matte surface texture",
+        "desc": "large, round ball of pale yellow dough with a matte finish and visible surface cracks",
         "action": "static",
         "position": "center",
-        "id": "dough_ball_yellow"
+        "id": "dough_ball_1"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A ball of dough rests statically on a white surface.",
+        "fact": "A ball of yellow dough sits motionless on a white surface.",
         "confidence": 1.0
       },
       {
-        "fact": "The dough has visible cracks on its upper surface.",
+        "fact": "The dough has a cracked texture on its upper surface.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The dough ball is positioned in the center of the frame on top of a plain white background.",
+    "spatial": "The ball of yellow dough is centered in the frame and rests on top of a plain white background.",
     "parse_success": true,
     "chunk_idx": 36,
     "video_id": "1KmwQZ4wshY",
@@ -1718,20 +1684,20 @@
   },
   {
     "time": [
-      74,
-      76
+      37,
+      38
     ],
     "visible_entities": [
       {
-        "desc": "Text graphic reading 'BE A BETTER/ COOK' in teal color. The top line 'BE A BETTER/' is in a sans-serif font, and the bottom line 'COOK' is in a large serif font.",
+        "desc": "Text graphic reading 'BE A BETTER COOK' in teal color, sans-serif font, with 'BE A BETTER/' on the top line and 'COOK' in a larger font size on the bottom line",
         "action": "static",
         "position": "center",
-        "id": "text_logo_better_cook"
+        "id": "text_logo_main_1"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "The text 'BE A BETTER/ COOK' is displayed on a white background.",
+        "fact": "The text 'BE A BETTER COOK' is displayed on a white background.",
         "confidence": 1.0
       },
       {
@@ -1743,50 +1709,44 @@
       "BE A BETTER/",
       "COOK"
     ],
-    "spatial": "The text 'BE A BETTER/' is located above the word 'COOK'. The entire text graphic is centered on the white background.",
+    "spatial": "The phrase 'BE A BETTER/' is located above the word 'COOK'. The entire text block is centered on the white background.",
     "parse_success": true,
     "chunk_idx": 37,
     "video_id": "1KmwQZ4wshY",
     "state_changes": [
-      "closing text graphic appears"
+      "Scene transition: Return to static text graphic outro"
     ]
   },
   {
     "time": [
-      76,
-      78
+      38,
+      39
     ],
     "visible_entities": [
       {
-        "desc": "The word 'delicious' in a lowercase, teal serif font with a small red dot over the 'i'.",
+        "desc": "text graphic reading 'delicious' in lowercase teal serif font with a red dot over the 'i'",
         "action": "static",
         "position": "top/center",
-        "id": "text_logo_delicious"
+        "id": "text_logo_delicious_1"
       },
       {
-        "desc": "The text 'BE A BETTER' in uppercase, teal sans-serif font.",
-        "action": "static",
-        "position": "center",
-        "id": "text_logo_better_cook"
-      },
-      {
-        "desc": "The word 'COOK' in a large, uppercase, teal serif font with a small red dot near the top right of the 'R' in 'BETTER'.",
+        "desc": "text graphic reading 'BE A BETTER COOK' in uppercase teal sans-serif font, with a small red triangle accent on the 'R'",
         "action": "static",
         "position": "bottom/center",
-        "id": "text_logo_better_cook"
+        "id": "text_logo_main_1"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "The text 'delicious' appears above the phrase 'BE A BETTER COOK'.",
+        "fact": "The text 'delicious' appears above the text 'BE A BETTER COOK'.",
         "confidence": 1.0
       },
       {
-        "fact": "The phrase 'BE A BETTER COOK' is displayed in two lines.",
+        "fact": "The word 'delicious' is styled in lowercase letters.",
         "confidence": 1.0
       },
       {
-        "fact": "The text 'delicious' is written in a serif font, while 'BE A BETTER' is in a sans-serif font.",
+        "fact": "The phrase 'BE A BETTER COOK' is styled in uppercase letters.",
         "confidence": 1.0
       }
     ],
@@ -1795,7 +1755,7 @@
       "BE A BETTER",
       "COOK"
     ],
-    "spatial": "The word 'delicious' is positioned above the phrase 'BE A BETTER COOK'. The text 'BE A BETTER' is directly above the word 'COOK'. The entire graphic is centered on a white background.",
+    "spatial": "The word 'delicious' is positioned above the phrase 'BE A BETTER COOK'. Both text elements are centered horizontally on the white background.",
     "parse_success": true,
     "chunk_idx": 38,
     "video_id": "1KmwQZ4wshY",

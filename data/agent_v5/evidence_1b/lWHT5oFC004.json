@@ -2,33 +2,37 @@
   {
     "time": [
       0,
-      2
+      1
     ],
     "visible_entities": [
       {
-        "desc": "person with curly light brown hair, wearing a black t-shirt with white text",
-        "action": "holding a can",
-        "position": "background",
+        "desc": "person with curly light brown hair, wearing a black t-shirt with white text graphics",
+        "action": "holding a soda can",
+        "position": "center",
         "id": "person_main_1"
       },
       {
-        "desc": "black aluminum can with silver top, featuring white cursive logo and red text",
+        "desc": "black aluminum soda can with silver top, featuring white cursive logo and red text",
         "action": "being held horizontally",
         "position": "foreground",
-        "id": "can_black_logo_1"
+        "id": "can_coke_zero_1"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A person is holding a can of Coca-Cola Zero horizontally in front of their face.",
+        "fact": "A person holds a Coca-Cola Zero can horizontally in front of their face.",
         "confidence": 1.0
       },
       {
-        "fact": "The can features the text 'Coca-Cola' in white script and 'zero' in red lowercase letters.",
+        "fact": "The can is positioned between the person's hand and the camera.",
         "confidence": 1.0
       },
       {
-        "fact": "The person is wearing a black shirt with visible white lettering.",
+        "fact": "The text 'Coca-Cola' is written in white script on the black can.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The text 'zero' is written in red lowercase letters below the main logo.",
         "confidence": 1.0
       }
     ],
@@ -36,7 +40,7 @@
       "Coca-Cola",
       "zero"
     ],
-    "spatial": "The black Coca-Cola can is in the foreground, held horizontally by a hand. The person with curly hair is positioned behind the can. The can is located in front of the person's face.",
+    "spatial": "The person is behind the soda can. The can is held in the person's hand in the foreground. The text on the can is centered on the black background.",
     "parse_success": true,
     "chunk_idx": 0,
     "video_id": "lWHT5oFC004",
@@ -44,34 +48,34 @@
   },
   {
     "time": [
-      2,
-      4
+      1,
+      2
     ],
     "visible_entities": [
       {
-        "desc": "person with messy light-colored hair, wearing a black t-shirt with white text",
-        "action": "holding a can",
+        "desc": "person with messy light brown hair, wearing a black t-shirt with white text",
+        "action": "holding a soda can",
         "position": "center",
         "id": "person_main_1"
       },
       {
-        "desc": "black aluminum can with white script logo and red text",
-        "action": "being held up to the camera",
+        "desc": "black aluminum soda can with red and silver graphics",
+        "action": "being held and moved",
         "position": "foreground",
-        "id": "can_black_logo_1"
+        "id": "can_coke_zero_1"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A person holds a can of Coca-Cola Zero directly in front of their face.",
+        "fact": "The person holds a Coca-Cola Zero can horizontally in front of their face.",
         "confidence": 1.0
       },
       {
-        "fact": "The can is moved quickly, causing motion blur in the second frame.",
+        "fact": "The person moves the can rapidly, causing motion blur in the second frame.",
         "confidence": 1.0
       },
       {
-        "fact": "The person is wearing a black t-shirt with visible white lettering.",
+        "fact": "The can features the brand name in white script and the word 'zero' in red.",
         "confidence": 1.0
       }
     ],
@@ -79,34 +83,32 @@
       "Coca-Cola",
       "zero"
     ],
-    "spatial": "The person is positioned behind the can. The can is held in the foreground, obscuring the person's face. The text on the can is centered on the label.",
+    "spatial": "The person is positioned behind the soda can. The can is held in the foreground, directly in front of the person's face. The white text on the person's shirt is visible below the can.",
     "parse_success": true,
     "chunk_idx": 1,
     "video_id": "lWHT5oFC004",
-    "state_changes": [
-      "black can moved from horizontal position to held up to camera"
-    ]
+    "state_changes": []
   },
   {
     "time": [
-      4,
-      6
+      2,
+      3
     ],
     "visible_entities": [
       {
-        "desc": "person with short, messy grey hair, wearing a black t-shirt with white text graphics",
-        "action": "speaking",
+        "desc": "person with messy grey hair, wearing a black t-shirt with white text",
+        "action": "opening mouth",
         "position": "center",
         "id": "person_main_1"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "The person is speaking with their mouth open.",
+        "fact": "The person opens their mouth wide.",
         "confidence": 1.0
       },
       {
-        "fact": "The t-shirt displays the text 'DOUG PECK' and 'SUNDAY 10TH'.",
+        "fact": "The person is wearing a black t-shirt with white text.",
         "confidence": 1.0
       }
     ],
@@ -114,44 +116,48 @@
       "DOUG PECK",
       "SUNDAY 10TH"
     ],
-    "spatial": "The person is in the foreground, centered in the frame. A dark framed picture is visible on the wall in the background to the right of the person.",
+    "spatial": "The person is in the center of the frame. The text 'DOUG PECK' is on the chest of the person's t-shirt. The text 'SUNDAY 10TH' is below the 'DOUG PECK' text.",
     "parse_success": true,
     "chunk_idx": 2,
     "video_id": "lWHT5oFC004",
-    "state_changes": [
-      "can no longer visible, person begins speaking"
-    ]
+    "state_changes": []
   },
   {
     "time": [
-      6,
-      8
+      3,
+      4
     ],
     "visible_entities": [
       {
-        "desc": "person with short, messy, light-colored hair, wearing a black t-shirt with white text graphics",
+        "desc": "person with short, light-colored hair, wearing a black t-shirt with white text graphics",
         "action": "touching face with right hand",
-        "position": "center/foreground",
+        "position": "center",
         "id": "person_main_1"
+      },
+      {
+        "desc": "black t-shirt with white text graphics",
+        "action": "static",
+        "position": "center",
+        "id": "tshirt_black_1"
       },
       {
         "desc": "dark rectangular picture frame on the wall",
         "action": "static",
-        "position": "right/background",
-        "id": "picture_frame_wall_1"
+        "position": "right background",
+        "id": "picture_frame_1"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "The person raises their right hand to touch their face near the eye.",
+        "fact": "person is touching their face with their right hand",
         "confidence": 1.0
       },
       {
-        "fact": "The person is wearing a black t-shirt with white text that reads 'DOUG PECK SUNDAY 10th'.",
+        "fact": "the t-shirt displays the text 'DOUG PECK' and 'SUNDAY 10th'",
         "confidence": 1.0
       },
       {
-        "fact": "A picture frame hangs on the wall in the background.",
+        "fact": "a picture frame is hanging on the wall in the background",
         "confidence": 1.0
       }
     ],
@@ -159,28 +165,26 @@
       "DOUG PECK",
       "SUNDAY 10th"
     ],
-    "spatial": "The person is in the foreground, centered in the frame. The picture frame is on the wall behind the person and to the right.",
+    "spatial": "The person is in the center of the frame, in front of the background wall. The picture frame is to the right of the person and behind them.",
     "parse_success": true,
     "chunk_idx": 3,
     "video_id": "lWHT5oFC004",
-    "state_changes": [
-      "person touches face with right hand, framed picture becomes visible"
-    ]
+    "state_changes": []
   },
   {
     "time": [
-      8,
-      10
+      4,
+      5
     ],
     "visible_entities": [
       {
-        "desc": "person with short, messy grey hair, wearing a black t-shirt with white text graphics",
-        "action": "holding a silver can",
-        "position": "center/foreground",
+        "desc": "person with short, messy grey hair, wearing a black t-shirt with white text",
+        "action": "holding a can",
+        "position": "center",
         "id": "person_main_1"
       },
       {
-        "desc": "silver aluminum beverage can",
+        "desc": "silver and blue aluminum beverage can",
         "action": "being held",
         "position": "bottom right",
         "id": "can_silver_1"
@@ -188,550 +192,7 @@
     ],
     "atomic_facts": [
       {
-        "fact": "A person is holding a silver can in their hand.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The person is wearing a black t-shirt with the text 'DOUG PECK' visible on the front.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The person is looking slightly downwards.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [
-      "DOUG PECK",
-      "SUNDAY 10TH"
-    ],
-    "spatial": "The person is in the center of the frame, holding the silver can in their hand which is positioned in the bottom right foreground. The text on the shirt is located on the person's chest.",
-    "parse_success": true,
-    "chunk_idx": 4,
-    "video_id": "lWHT5oFC004",
-    "state_changes": [
-      "silver can appears, replacing previous object"
-    ]
-  },
-  {
-    "time": [
-      10,
-      12
-    ],
-    "visible_entities": [
-      {
-        "desc": "man with short, messy grey hair, wearing a black t-shirt with white text",
-        "action": "holding and manipulating a small object",
-        "position": "center/foreground",
-        "id": "person_main_1"
-      },
-      {
-        "desc": "small rectangular object with blue and silver packaging",
-        "action": "being held in hands",
-        "position": "center/bottom",
-        "id": "small_object_rectangular_1"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "The man is holding a small packaged item in his hands.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The man is looking down at the object he is holding.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The text on the shirt reads 'DOUG PECK SUNDAY 10th'.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [
-      "DOUG PECK",
-      "SUNDAY 10th"
-    ],
-    "spatial": "The man is in the center of the frame, holding the small object in front of his chest. The object is below the man's face. A framed picture is visible on the wall in the background to the right of the man.",
-    "parse_success": true,
-    "chunk_idx": 5,
-    "video_id": "lWHT5oFC004",
-    "state_changes": [
-      "small rectangular object with blue/silver packaging replaces can"
-    ]
-  },
-  {
-    "time": [
-      12,
-      14
-    ],
-    "visible_entities": [
-      {
-        "desc": "person with short, messy grey hair, wearing a black t-shirt with white text",
-        "action": "holding a can",
-        "position": "center"
-      },
-      {
-        "desc": "red aluminum soda can with white cursive logo",
-        "action": "being held",
-        "position": "foreground",
-        "id": "can_red_1"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "person holds a red soda can in front of their chest",
-        "confidence": 1.0
-      },
-      {
-        "fact": "the can is tilted slightly towards the camera",
-        "confidence": 1.0
-      },
-      {
-        "fact": "the text 'Coca-Cola' is visible on the can",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [
-      "DOUG PEN",
-      "Coca-Cola"
-    ],
-    "spatial": "The person is centered in the frame. The red soda can is held in the person's hand in the foreground, positioned in front of the person's chest. The text 'DOUG PEN' is located on the front of the person's black t-shirt.",
-    "parse_success": true,
-    "chunk_idx": 6,
-    "video_id": "lWHT5oFC004",
-    "state_changes": [
-      "red aluminum can appears, replacing small object"
-    ]
-  },
-  {
-    "time": [
-      14,
-      16
-    ],
-    "visible_entities": [
-      {
-        "desc": "black aluminum can with white script logo and red text",
-        "action": "being held",
-        "position": "center",
-        "id": "can_black_logo_1"
-      },
-      {
-        "desc": "human hand with light skin tone",
-        "action": "holding the can",
-        "position": "right",
-        "id": "hand_main_1"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "A hand is holding a black soda can.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The can displays the text 'Coca-Cola' in white script.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The text 'zero' is visible in red below the main logo.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [
-      "Coca-Cola",
-      "zero"
-    ],
-    "spatial": "The black can is held in the center of the frame by a hand positioned to its right. The white 'Coca-Cola' text is above the red 'zero' text on the can's surface.",
-    "parse_success": true,
-    "chunk_idx": 7,
-    "video_id": "lWHT5oFC004",
-    "state_changes": []
-  },
-  {
-    "time": [
-      16,
-      18
-    ],
-    "visible_entities": [
-      {
-        "desc": "person with short, messy grey hair, wearing a black t-shirt with white text",
-        "action": "holding a small object",
-        "position": "center"
-      },
-      {
-        "desc": "small rectangular object with a blue and white patterned surface",
-        "action": "being held",
-        "position": "foreground",
-        "id": "small_object_rectangular_1"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "person holds a small object in their right hand",
-        "confidence": 1.0
-      },
-      {
-        "fact": "the object is positioned close to the camera lens",
-        "confidence": 1.0
-      },
-      {
-        "fact": "the person is wearing a black t-shirt with white text",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [
-      "DOUG PECK",
-      "SUNDAY"
-    ],
-    "spatial": "The person is centered in the frame. The small object is in the foreground, held in front of the person's chest. The text on the t-shirt is located on the person's torso.",
-    "parse_success": true,
-    "chunk_idx": 8,
-    "video_id": "lWHT5oFC004",
-    "state_changes": [
-      "small rectangular object with blue/white pattern appears"
-    ]
-  },
-  {
-    "time": [
-      18,
-      20
-    ],
-    "visible_entities": [
-      {
-        "desc": "person with short, messy grey hair, wearing a black t-shirt with white text and graphics",
-        "action": "talking",
-        "position": "center"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "person is talking",
-        "confidence": 1.0
-      },
-      {
-        "fact": "the t-shirt has text that reads 'DOUG PECK'",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [
-      "DOUG PECK"
-    ],
-    "spatial": "The person is in the foreground, centered in the frame. The text 'DOUG PECK' is on the front of the person's t-shirt. A lamp is visible in the background to the right of the person.",
-    "parse_success": true,
-    "chunk_idx": 9,
-    "video_id": "lWHT5oFC004",
-    "state_changes": [
-      "object put down, person begins talking"
-    ]
-  },
-  {
-    "time": [
-      20,
-      22
-    ],
-    "visible_entities": [
-      {
-        "desc": "man with short, messy grey hair, wearing a black t-shirt with white text",
-        "action": "gesturing with hands",
-        "position": "center",
-        "id": "person_main_1"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "The man is moving his hands in front of his chest.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The text on the shirt reads 'DOUG PECK' and 'SUNDAY'.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [
-      "DOUG PECK",
-      "SUNDAY"
-    ],
-    "spatial": "The man is in the foreground, centered in the frame. A dark framed picture is visible on the wall to the right of the man.",
-    "parse_success": true,
-    "chunk_idx": 10,
-    "video_id": "lWHT5oFC004",
-    "state_changes": []
-  },
-  {
-    "time": [
-      22,
-      24
-    ],
-    "visible_entities": [
-      {
-        "desc": "person with short, messy grey hair, wearing a black t-shirt with white text",
-        "action": "gesturing with hands",
-        "position": "center/foreground"
-      },
-      {
-        "desc": "lamp with a light-colored shade",
-        "action": "static",
-        "position": "right/background",
-        "id": "lamp_shade_1"
-      },
-      {
-        "desc": "dark framed picture or object on the wall",
-        "action": "static",
-        "position": "right/background",
-        "id": "picture_frame_wall_1"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "person gestures with hands raised",
-        "confidence": 1.0
-      },
-      {
-        "fact": "the t-shirt reads 'DOUG PECK SUNDAY 10th'",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [
-      "DOUG PECK",
-      "SUNDAY 10th"
-    ],
-    "spatial": "The person is in the center of the frame, in front of the background wall. A lamp is to the right of the person in the background. A framed object is on the wall to the right of the person.",
-    "parse_success": true,
-    "chunk_idx": 11,
-    "video_id": "lWHT5oFC004",
-    "state_changes": []
-  },
-  {
-    "time": [
-      24,
-      26
-    ],
-    "visible_entities": [
-      {
-        "desc": "person with short, messy grey hair, wearing a black t-shirt with white text",
-        "action": "gesturing with hands",
-        "position": "center"
-      },
-      {
-        "desc": "lamp with a white shade",
-        "action": "static",
-        "position": "right",
-        "id": "lamp_shade_1"
-      },
-      {
-        "desc": "dark framed picture or object on the wall",
-        "action": "static",
-        "position": "right",
-        "id": "picture_frame_wall_1"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "The person is gesturing with their hands in front of their chest.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The person is wearing a black t-shirt with white text.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The text on the shirt reads 'DOUG PECK SUNDAY 10th'.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [
-      "DOUG PECK",
-      "SUNDAY 10th"
-    ],
-    "spatial": "The person is in the center of the frame, in front of a dimly lit background. A lamp and a framed object are visible on the wall to the right of the person.",
-    "parse_success": true,
-    "chunk_idx": 12,
-    "video_id": "lWHT5oFC004",
-    "state_changes": []
-  },
-  {
-    "time": [
-      26,
-      28
-    ],
-    "visible_entities": [
-      {
-        "desc": "person with messy gray hair, wearing a black t-shirt with white text",
-        "action": "moving right hand",
-        "position": "center",
-        "id": "person_main_1"
-      },
-      {
-        "desc": "lamp with a light-colored shade",
-        "action": "static",
-        "position": "right",
-        "id": "lamp_shade_1"
-      },
-      {
-        "desc": "framed picture on the wall",
-        "action": "static",
-        "position": "right background",
-        "id": "picture_frame_wall_1"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "person moves their right hand",
-        "confidence": 1.0
-      },
-      {
-        "fact": "the t-shirt reads 'DOUG PECK SUNDAY 10th'",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [
-      "DOUG PECK",
-      "SUNDAY 10th"
-    ],
-    "spatial": "The person is in the center of the frame. The lamp is to the right of the person. The framed picture is on the wall behind the lamp.",
-    "parse_success": true,
-    "chunk_idx": 13,
-    "video_id": "lWHT5oFC004",
-    "state_changes": []
-  },
-  {
-    "time": [
-      28,
-      30
-    ],
-    "visible_entities": [
-      {
-        "desc": "person with messy gray hair, wearing a black t-shirt with white text",
-        "action": "rubbing right eye with hand",
-        "position": "center",
-        "id": "person_main_1"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "person rubs right eye with right hand",
-        "confidence": 1.0
-      },
-      {
-        "fact": "text on shirt reads 'DOUG PECK SUNDAY @ 10'",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [
-      "DOUG PECK",
-      "SUNDAY @ 10"
-    ],
-    "spatial": "The person is in the center foreground. The text is on the front of the person's shirt. A lamp is visible in the background to the right of the person.",
-    "parse_success": true,
-    "chunk_idx": 14,
-    "video_id": "lWHT5oFC004",
-    "state_changes": [
-      "person rubs right eye with hand"
-    ]
-  },
-  {
-    "time": [
-      30,
-      32
-    ],
-    "visible_entities": [
-      {
-        "desc": "person with short, messy, light-colored (grey or blonde) hair, wearing a black t-shirt with white text and graphics",
-        "action": "looking down",
-        "position": "center",
-        "id": "person_main_1"
-      },
-      {
-        "desc": "white text and graphics on a black t-shirt",
-        "action": "static",
-        "position": "center",
-        "id": "tshirt_text_1"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "person looks down",
-        "confidence": 1.0
-      },
-      {
-        "fact": "the t-shirt displays the text 'DOUG PECK' and 'SUNDAY 10TH'",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [
-      "DOUG PECK",
-      "SUNDAY 10TH",
-      "THE NEW ERA"
-    ],
-    "spatial": "The person is in the center of the frame. The white text is on the front of the black t-shirt worn by the person.",
-    "parse_success": true,
-    "chunk_idx": 15,
-    "video_id": "lWHT5oFC004",
-    "state_changes": [
-      "person looks down, t-shirt text becomes visible"
-    ]
-  },
-  {
-    "time": [
-      32,
-      34
-    ],
-    "visible_entities": [
-      {
-        "desc": "person with short, messy grey hair, wearing a black t-shirt with white text",
-        "action": "speaking and gesturing with right hand",
-        "position": "center"
-      },
-      {
-        "desc": "lamp with a light-colored shade",
-        "action": "static",
-        "position": "background right",
-        "id": "lamp_shade_1"
-      },
-      {
-        "desc": "dark framed object or furniture",
-        "action": "static",
-        "position": "background right",
-        "id": "picture_frame_wall_1"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "The person is speaking to the camera.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The person raises their right hand in a gesture.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The text on the shirt reads 'DOUG PECK' and 'SUNDAY 10th'.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [
-      "DOUG PECK",
-      "SUNDAY 10th"
-    ],
-    "spatial": "The person is in the foreground, centered in the frame. The lamp and dark furniture are in the background to the right of the person.",
-    "parse_success": true,
-    "chunk_idx": 16,
-    "video_id": "lWHT5oFC004",
-    "state_changes": []
-  },
-  {
-    "time": [
-      34,
-      36
-    ],
-    "visible_entities": [
-      {
-        "desc": "person with messy grey hair, wearing a black t-shirt with white text",
-        "action": "moving hand in front of chest",
-        "position": "center",
-        "id": "person_main_1"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "person moves hand in front of chest",
+        "fact": "person holds a silver and blue can in their hand",
         "confidence": 1.0
       },
       {
@@ -743,380 +204,340 @@
       "DOUG PECK",
       "SUNDAY 10th"
     ],
-    "spatial": "The person is centered in the frame. The text on the t-shirt is located on the chest area of the person. The person is in front of a dimly lit background.",
+    "spatial": "The person is centered in the frame. The can is held in the person's hand in the bottom right foreground. The text on the shirt is located on the chest area of the person.",
     "parse_success": true,
-    "chunk_idx": 17,
+    "chunk_idx": 4,
     "video_id": "lWHT5oFC004",
-    "state_changes": []
+    "state_changes": [
+      "Person switches from holding a black can to holding a silver/blue can."
+    ]
   },
   {
     "time": [
-      36,
-      38
+      5,
+      6
     ],
     "visible_entities": [
       {
-        "desc": "man with short, wavy grey hair, wearing a black t-shirt with white text graphics",
-        "action": "speaking and gesturing with hand",
+        "desc": "man with short, messy grey hair, wearing a black t-shirt with white text",
+        "action": "holding a small object",
         "position": "center",
         "id": "person_main_1"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "The man is speaking.",
-        "confidence": 1.0
       },
       {
-        "fact": "The man gestures with his right hand.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The text 'DOUG PECK' is visible on the man's shirt.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [
-      "DOUG PECK",
-      "BERT BUSHNELL"
-    ],
-    "spatial": "The man is in the foreground, centered in the frame. A dark object is visible to the right of the man in the background.",
-    "parse_success": true,
-    "chunk_idx": 18,
-    "video_id": "lWHT5oFC004",
-    "state_changes": []
-  },
-  {
-    "time": [
-      38,
-      40
-    ],
-    "visible_entities": [
-      {
-        "desc": "person with short, messy grey hair, wearing a black t-shirt with white text",
-        "action": "holding a silver can",
-        "position": "center"
-      },
-      {
-        "desc": "silver aluminum can",
+        "desc": "small rectangular object, appearing to be a card or small package with blue and white coloring",
         "action": "being held",
-        "position": "bottom right",
-        "id": "can_silver_1"
+        "position": "center foreground",
+        "id": "package_small_1"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "The person is holding a silver can in their hand.",
+        "fact": "The man is holding a small object in his hands.",
         "confidence": 1.0
       },
       {
-        "fact": "The person is wearing a black t-shirt with white text on the front.",
+        "fact": "The man is looking down at the object he is holding.",
         "confidence": 1.0
       },
       {
-        "fact": "The person has short, messy grey hair.",
+        "fact": "The man's t-shirt displays the text 'DOUG PECK' and 'SUNDAY 10AM'.",
         "confidence": 1.0
       }
     ],
     "ocr": [
       "DOUG PECK",
-      "SUNDAY 10PM",
-      "JERRY BUSH"
+      "SUNDAY 10AM"
     ],
-    "spatial": "The person is in the center of the frame. The silver can is held in the person's hand, positioned in the bottom right foreground. The text on the t-shirt is located on the person's chest.",
+    "spatial": "The man is positioned in the center of the frame. He is holding a small object in front of his chest. The text on his shirt is located on the front of his torso.",
     "parse_success": true,
-    "chunk_idx": 19,
+    "chunk_idx": 5,
     "video_id": "lWHT5oFC004",
     "state_changes": [
-      "silver can appears in hand"
+      "Person switches from holding a can to holding a small rectangular package/card."
     ]
   },
   {
     "time": [
-      40,
-      42
+      6,
+      7
     ],
     "visible_entities": [
       {
-        "desc": "person with short, messy grey hair, wearing a black t-shirt with white text",
+        "desc": "man with messy grey hair, wearing a black t-shirt with white text",
         "action": "holding a can",
-        "position": "center"
-      },
-      {
-        "desc": "dark blue soda can with red and white graphics",
-        "action": "being held and rotated",
-        "position": "foreground",
-        "id": "can_dark_blue_1"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "The person is holding a dark blue soda can in front of their chest.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The person rotates the can to reveal the label.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The text 'Reindeer' is visible on the can.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [
-      "DOUG",
-      "Reindeer"
-    ],
-    "spatial": "The person is positioned in the center of the frame, holding the soda can in front of their torso. The text 'DOUG' is visible on the person's shirt, located below their neck.",
-    "parse_success": true,
-    "chunk_idx": 20,
-    "video_id": "lWHT5oFC004",
-    "state_changes": [
-      "dark blue soda can replaces silver can"
-    ]
-  },
-  {
-    "time": [
-      42,
-      44
-    ],
-    "visible_entities": [
-      {
-        "desc": "person with short grey hair, wearing a black t-shirt with white text",
-        "action": "holding a can",
-        "position": "left",
+        "position": "center",
         "id": "person_main_1"
       },
       {
-        "desc": "black soda can with a blue snowflake pattern and red swoosh design",
-        "action": "being held up to the camera",
-        "position": "center",
-        "id": "can_black_holiday_1"
+        "desc": "black soda can with white cursive logo",
+        "action": "being held up",
+        "position": "foreground",
+        "id": "can_coke_zero_1"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "person holds a can in front of the camera",
+        "fact": "The man holds a soda can up to the camera.",
         "confidence": 1.0
       },
       {
-        "fact": "the can displays the text 'Share a Coke zero with a Reindeer'",
+        "fact": "The can is identified as Coca-Cola by the logo.",
         "confidence": 1.0
       },
       {
-        "fact": "the can features a blue snowflake pattern",
+        "fact": "The man is wearing a shirt with the text 'DOUG PE' visible.",
         "confidence": 1.0
       }
     ],
     "ocr": [
-      "Share a Coke zero with a",
-      "Reindeer"
+      "DOUG PE",
+      "Coca-Cola"
     ],
-    "spatial": "The person is positioned to the left of the frame, holding the can in the center foreground. The can is in front of the person's torso.",
+    "spatial": "The man is positioned in the center of the frame, holding the can in front of his chest. The can is in the foreground, closer to the camera than the man's face.",
     "parse_success": true,
-    "chunk_idx": 21,
+    "chunk_idx": 6,
     "video_id": "lWHT5oFC004",
     "state_changes": [
-      "black holiday-themed can with snowflake pattern appears"
+      "Person switches back to holding a black soda can."
     ]
   },
   {
     "time": [
-      44,
-      46
+      7,
+      8
     ],
     "visible_entities": [
       {
-        "desc": "black soda can with a red ribbon graphic and white snowflake patterns",
-        "action": "being held and rotated",
+        "desc": "black aluminum can with white cursive 'Coca-Cola' logo, red 'zero' text, and a red ribbon graphic",
+        "action": "being held",
         "position": "center",
-        "id": "can_black_holiday_1"
+        "id": "can_coke_zero_1"
       },
       {
-        "desc": "hand with light skin tone",
+        "desc": "human hand with fingers wrapped around the can",
         "action": "holding the can",
         "position": "right",
-        "id": "hand_main_1"
+        "id": "person_main_1"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A hand is holding a black soda can.",
+        "fact": "A hand is holding a can of Coca-Cola Zero.",
         "confidence": 1.0
       },
       {
-        "fact": "The can is being rotated, causing motion blur in the second frame.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The text on the can reads 'Share a Coke zero with a Reindeer'.",
+        "fact": "The can features the brand name 'Coca-Cola' in white script and 'zero' in red letters.",
         "confidence": 1.0
       }
     ],
     "ocr": [
-      "Share a Coke zero with a",
-      "Reindeer"
+      "Coca-Cola",
+      "zero"
     ],
-    "spatial": "The hand is positioned to the right of the can, gripping it. The text 'Reindeer' is located below the phrase 'Share a Coke zero with a' on the surface of the can.",
+    "spatial": "The Coca-Cola Zero can is positioned in the center of the frame, held by a hand that is visible on the right side of the image.",
     "parse_success": true,
-    "chunk_idx": 22,
+    "chunk_idx": 7,
     "video_id": "lWHT5oFC004",
     "state_changes": []
   },
   {
     "time": [
-      46,
-      48
+      8,
+      9
     ],
     "visible_entities": [
       {
-        "desc": "person with short, light-colored hair, wearing a black t-shirt with white lettering",
-        "action": "holding a can",
+        "desc": "man with messy grey hair, wearing a black t-shirt with white text",
+        "action": "holding a blue object",
         "position": "center",
         "id": "person_main_1"
       },
       {
-        "desc": "dark-colored can with a label featuring white text",
+        "desc": "blue object with white text",
         "action": "being held",
         "position": "foreground",
-        "id": "can_dark_generic_1"
+        "id": "object_blue_1"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A person is holding a can in front of them.",
+        "fact": "The man holds a blue object up to the camera.",
         "confidence": 1.0
       },
       {
-        "fact": "The label on the can reads 'Reindeer'.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [
-      "Reindeer"
-    ],
-    "spatial": "The person is holding the can in front of their chest. The can is positioned in the foreground, closer to the camera than the person's torso.",
-    "parse_success": true,
-    "chunk_idx": 23,
-    "video_id": "lWHT5oFC004",
-    "state_changes": []
-  },
-  {
-    "time": [
-      48,
-      50
-    ],
-    "visible_entities": [
-      {
-        "desc": "person with messy grey hair, wearing a black t-shirt with white text",
-        "action": "holding and manipulating a small object",
-        "position": "center",
-        "id": "person_main_1"
-      },
-      {
-        "desc": "small dark object with a label, possibly a shoe or case",
-        "action": "being held and opened",
-        "position": "foreground",
-        "id": "small_object_dark_1"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "The person is holding a small dark object with both hands.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The person is manipulating the object, appearing to open it or examine it.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The object has a label with white text on it.",
+        "fact": "The man is wearing a black t-shirt with white text.",
         "confidence": 1.0
       }
     ],
     "ocr": [
       "DOUG PECK",
-      "Kera"
+      "SUNDAY"
     ],
-    "spatial": "The person is in the center of the frame. The small dark object is held in the person's hands in the foreground. The text 'DOUG PECK' is on the person's t-shirt. The text 'Kera' is on the label of the object being held.",
+    "spatial": "The man is in the center of the frame. The blue object is in front of the man, held in his hand.",
     "parse_success": true,
-    "chunk_idx": 24,
+    "chunk_idx": 8,
     "video_id": "lWHT5oFC004",
     "state_changes": [
-      "small dark object with label appears, being opened"
+      "Person switches from holding a can to holding a blue object."
     ]
   },
   {
     "time": [
-      50,
-      52
+      9,
+      10
     ],
     "visible_entities": [
       {
-        "desc": "person with short, messy grey hair, wearing a black t-shirt with white text",
-        "action": "looking down and holding a small object",
-        "position": "center"
-      },
-      {
-        "desc": "small, shiny, metallic-looking object",
-        "action": "being held",
-        "position": "bottom right",
-        "id": "small_object_metallic_1"
+        "desc": "person with short, messy grey hair, wearing a black t-shirt with white text and graphics",
+        "action": "talking",
+        "position": "center",
+        "id": "person_main_1"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "The person is looking down towards their hands.",
+        "fact": "person is talking",
         "confidence": 1.0
       },
       {
-        "fact": "The person is holding a small object in their right hand.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The text 'DOUG PECK' is visible on the person's shirt.",
+        "fact": "the t-shirt has text reading 'DOUG PECK'",
         "confidence": 1.0
       }
     ],
     "ocr": [
       "DOUG PECK"
     ],
-    "spatial": "The person is in the center of the frame. The small object is held in the person's hand, located in the bottom right of the frame. The text on the shirt is on the person's chest.",
+    "spatial": "The person is in the foreground, centered in the frame. The text 'DOUG PECK' is on the front of the person's t-shirt.",
     "parse_success": true,
-    "chunk_idx": 25,
+    "chunk_idx": 9,
     "video_id": "lWHT5oFC004",
     "state_changes": []
   },
   {
     "time": [
-      52,
-      54
+      10,
+      11
     ],
     "visible_entities": [
       {
-        "desc": "man with wavy grey hair, wearing a black t-shirt with white text",
-        "action": "holding and examining a small object",
+        "desc": "person with short, messy grey hair, wearing a black t-shirt with white text",
+        "action": "gesturing with hands",
         "position": "center",
         "id": "person_main_1"
-      },
-      {
-        "desc": "small dark object, possibly a bottle or container",
-        "action": "being held",
-        "position": "right foreground",
-        "id": "small_object_dark_1"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "The man is holding a small object in his right hand.",
+        "fact": "person is gesturing with hands in front of chest",
         "confidence": 1.0
       },
       {
-        "fact": "The man is looking at the object he is holding.",
+        "fact": "text on shirt reads 'DOUG PECK' and 'SUNDAY'",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "DOUG PECK",
+      "SUNDAY"
+    ],
+    "spatial": "The person is in the center of the frame. The text 'DOUG PECK' is on the front of the person's black t-shirt. The person's hands are in front of their chest.",
+    "parse_success": true,
+    "chunk_idx": 10,
+    "video_id": "lWHT5oFC004",
+    "state_changes": []
+  },
+  {
+    "time": [
+      11,
+      12
+    ],
+    "visible_entities": [
+      {
+        "desc": "person with short, messy grey hair, wearing a black t-shirt with white text",
+        "action": "gesturing with hands",
+        "position": "center",
+        "id": "person_main_1"
+      },
+      {
+        "desc": "white text on black t-shirt",
+        "action": "static",
+        "position": "center",
+        "id": "tshirt_black_1"
+      },
+      {
+        "desc": "dark framed picture on wall",
+        "action": "static",
+        "position": "right background",
+        "id": "picture_frame_1"
+      },
+      {
+        "desc": "lamp with light shade",
+        "action": "static",
+        "position": "right background",
+        "id": "lamp_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "person is gesturing with hands raised",
         "confidence": 1.0
       },
       {
-        "fact": "The t-shirt has text that reads 'DOUG PECK' and 'SUNDAY 10th'.",
+        "fact": "the t-shirt reads 'DOUG PECK SUNDAY 10TH'",
+        "confidence": 1.0
+      },
+      {
+        "fact": "a framed picture is on the wall in the background",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "DOUG PECK",
+      "SUNDAY 10TH"
+    ],
+    "spatial": "The person is in the center foreground. The framed picture is on the wall to the right of the person. The lamp is below the framed picture on the right side.",
+    "parse_success": true,
+    "chunk_idx": 11,
+    "video_id": "lWHT5oFC004",
+    "state_changes": []
+  },
+  {
+    "time": [
+      12,
+      13
+    ],
+    "visible_entities": [
+      {
+        "desc": "person with short, messy, light-colored hair, wearing a black t-shirt with white text",
+        "action": "speaking and gesturing with hands",
+        "position": "center",
+        "id": "person_main_1"
+      },
+      {
+        "desc": "white text on black t-shirt",
+        "action": "static",
+        "position": "center",
+        "id": "tshirt_black_1"
+      },
+      {
+        "desc": "dark wall with a framed picture",
+        "action": "static",
+        "position": "background",
+        "id": "picture_frame_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "person is speaking and gesturing with hands",
+        "confidence": 1.0
+      },
+      {
+        "fact": "the t-shirt has white text that reads 'DOUG PECK SUNDAY 10th'",
+        "confidence": 1.0
+      },
+      {
+        "fact": "the person is in the foreground of the shot",
         "confidence": 1.0
       }
     ],
@@ -1124,370 +545,73 @@
       "DOUG PECK",
       "SUNDAY 10th"
     ],
-    "spatial": "The man is in the center of the frame. He is holding the small object in his right hand, which is positioned to the right of his face. The text on his shirt is on the front of his torso.",
+    "spatial": "The person is in the center of the frame, in front of a dark wall. A framed picture is on the wall to the right of the person. The text on the t-shirt is on the person's chest.",
     "parse_success": true,
-    "chunk_idx": 26,
+    "chunk_idx": 12,
     "video_id": "lWHT5oFC004",
     "state_changes": []
   },
   {
     "time": [
-      54,
-      56
+      13,
+      14
     ],
     "visible_entities": [
       {
-        "desc": "man with messy gray hair, wearing a black t-shirt with white text graphics",
-        "action": "looking down and manipulating an object with hands",
+        "desc": "person with short, messy grey hair, wearing a black t-shirt with white text graphics",
+        "action": "moving right hand",
         "position": "center/foreground",
         "id": "person_main_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "person moves right hand in front of chest",
+        "confidence": 1.0
       },
       {
-        "desc": "small dark object, possibly a bottle cap or small tool",
-        "action": "being held and manipulated",
-        "position": "bottom center",
-        "id": "small_object_dark_1"
+        "fact": "the t-shirt displays the text 'DOUG PECK' and 'SUNDAY 10th'",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "DOUG PECK",
+      "SUNDAY 10th"
+    ],
+    "spatial": "The person is in the center of the frame. A lamp is visible to the right of the person in the background. The text on the shirt is located on the chest area of the person.",
+    "parse_success": true,
+    "chunk_idx": 13,
+    "video_id": "lWHT5oFC004",
+    "state_changes": []
+  },
+  {
+    "time": [
+      14,
+      15
+    ],
+    "visible_entities": [
+      {
+        "desc": "person with short, wavy gray hair, wearing a black t-shirt with white text",
+        "action": "rubbing right eye with hand",
+        "position": "center",
+        "id": "person_main_1"
       },
       {
         "desc": "lamp with a light-colored shade",
         "action": "static",
-        "position": "right background",
-        "id": "lamp_shade_1"
+        "position": "right",
+        "id": "lamp_1"
       },
       {
-        "desc": "framed picture on a wall",
+        "desc": "dark framed picture or object",
         "action": "static",
-        "position": "right background",
-        "id": "picture_frame_wall_1"
+        "position": "background right",
+        "id": "picture_frame_1"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "The man is looking down at his hands.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The man is manipulating a small object in his hands.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The t-shirt has the text 'DOUG PECK' printed on it.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [
-      "DOUG PECK"
-    ],
-    "spatial": "The man is in the center of the frame. The lamp and framed picture are to the right of the man in the background. The man is holding the small object in front of his chest.",
-    "parse_success": true,
-    "chunk_idx": 27,
-    "video_id": "lWHT5oFC004",
-    "state_changes": []
-  },
-  {
-    "time": [
-      56,
-      58
-    ],
-    "visible_entities": [
-      {
-        "desc": "man with short, messy grey hair, wearing a black t-shirt with white text graphics",
-        "action": "drinking from a glass",
-        "position": "center",
-        "id": "person_main_1"
-      },
-      {
-        "desc": "small clear glass containing dark liquid",
-        "action": "being held and raised to mouth",
-        "position": "center foreground",
-        "id": "glass_drink_1"
-      },
-      {
-        "desc": "lamp with a beige shade",
-        "action": "static",
-        "position": "right background",
-        "id": "lamp_shade_1"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "The man raises a glass to his lips.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The man tilts the glass to drink the dark liquid inside.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The t-shirt displays the text 'DOUG' and 'SUNDAY' in white block letters.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [
-      "DOUG",
-      "SUNDAY"
-    ],
-    "spatial": "The man is positioned in the center of the frame, holding the glass in front of his chest. The lamp is located in the background to the right of the man.",
-    "parse_success": true,
-    "chunk_idx": 28,
-    "video_id": "lWHT5oFC004",
-    "state_changes": [
-      "person begins drinking from clear glass"
-    ]
-  },
-  {
-    "time": [
-      58,
-      60
-    ],
-    "visible_entities": [
-      {
-        "desc": "man with messy grey hair, wearing a black t-shirt with white text",
-        "action": "bringing a small object to his mouth",
-        "position": "center",
-        "id": "person_main_1"
-      },
-      {
-        "desc": "small dark object, possibly a pipe or vape",
-        "action": "being held",
-        "position": "foreground",
-        "id": "small_object_dark_1"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "The man raises his hand to his mouth.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The man is holding a small object.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The text on the shirt reads 'DOUG PECK SUNDAY 10'.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [
-      "DOUG PECK",
-      "SUNDAY 10"
-    ],
-    "spatial": "The man is in the center of the frame. He is holding the small object in front of his chest and mouth. The text on the shirt is located on the front of the man's torso.",
-    "parse_success": true,
-    "chunk_idx": 29,
-    "video_id": "lWHT5oFC004",
-    "state_changes": [
-      "small dark object (possibly vape/pipe) brought to mouth"
-    ]
-  },
-  {
-    "time": [
-      60,
-      62
-    ],
-    "visible_entities": [
-      {
-        "desc": "person with short, wavy, graying hair, wearing a black t-shirt with white text graphics",
-        "action": "drinking from a silver can",
-        "position": "center",
-        "id": "person_main_1"
-      },
-      {
-        "desc": "silver aluminum beverage can",
-        "action": "being held to mouth",
-        "position": "center",
-        "id": "can_silver_1"
-      },
-      {
-        "desc": "dark background with a framed picture or window visible on the right",
-        "action": "static",
-        "position": "background",
-        "id": "picture_frame_wall_1"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "A person is holding a silver can to their mouth.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The person is tilting the can upwards to drink.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The t-shirt features the text 'DOUG PECK' and 'SUNDAY 10TH'.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [
-      "DOUG PECK",
-      "SUNDAY 10TH",
-      "COMEDY CLUB"
-    ],
-    "spatial": "The person is in the foreground, centered in the frame. The silver can is held in the person's hand, positioned in front of their face. The background elements are behind the person.",
-    "parse_success": true,
-    "chunk_idx": 30,
-    "video_id": "lWHT5oFC004",
-    "state_changes": [
-      "person drinking from silver can"
-    ]
-  },
-  {
-    "time": [
-      62,
-      64
-    ],
-    "visible_entities": [
-      {
-        "desc": "person with short, messy blonde hair, wearing a black t-shirt with white text",
-        "action": "drinking from a silver can",
-        "position": "center",
-        "id": "person_main_1"
-      },
-      {
-        "desc": "silver aluminum beverage can",
-        "action": "being held to mouth",
-        "position": "center",
-        "id": "can_silver_1"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "The person is tilting a silver can to their mouth to drink.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The person is wearing a black t-shirt with white text on the front.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The text on the shirt reads 'DOUG PECK SUNDAY 10th' and 'CONCERT SERIES'.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [
-      "DOUG PECK",
-      "SUNDAY 10th",
-      "CONCERT SERIES"
-    ],
-    "spatial": "The person is in the center of the frame, holding the silver can in front of their face. The text on the t-shirt is located on the person's chest, below their neck.",
-    "parse_success": true,
-    "chunk_idx": 31,
-    "video_id": "lWHT5oFC004",
-    "state_changes": []
-  },
-  {
-    "time": [
-      64,
-      66
-    ],
-    "visible_entities": [
-      {
-        "desc": "person with short, messy, light-colored hair, wearing a black t-shirt with white block text",
-        "action": "drinking from a can and then lowering it",
-        "position": "center"
-      },
-      {
-        "desc": "silver beverage can",
-        "action": "being held and lowered",
-        "position": "center/right",
-        "id": "can_silver_1"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "The person is drinking from a silver can in the first frame.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The person lowers the can away from their mouth in the second frame.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The person is wearing a black t-shirt with white text on the front.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [
-      "DOUG PECK",
-      "SUNDAY 10TH",
-      "CONCERT"
-    ],
-    "spatial": "The person is in the center of the frame, holding the silver can in front of their face. The text on the t-shirt is located on the chest area of the person.",
-    "parse_success": true,
-    "chunk_idx": 32,
-    "video_id": "lWHT5oFC004",
-    "state_changes": [
-      "can lowered after drinking"
-    ]
-  },
-  {
-    "time": [
-      66,
-      68
-    ],
-    "visible_entities": [
-      {
-        "desc": "person with short, wavy, graying hair, wearing a black t-shirt with white text graphics",
-        "action": "holding a can",
-        "position": "center",
-        "id": "person_main_1"
-      },
-      {
-        "desc": "dark-colored beverage can with a silver top rim",
-        "action": "being held",
-        "position": "right foreground",
-        "id": "can_dark_generic_1"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "The person is holding a can in their right hand.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The person is looking down at the can.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The t-shirt displays the text 'DOUG PECK' and 'SUNDAY 10th'.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [
-      "DOUG PECK",
-      "SUNDAY 10th",
-      "CONCERT"
-    ],
-    "spatial": "The person is centered in the frame. The can is held in the person's right hand, positioned to the right of the person's torso. The text on the shirt is located on the chest area of the person.",
-    "parse_success": true,
-    "chunk_idx": 33,
-    "video_id": "lWHT5oFC004",
-    "state_changes": [
-      "dark-colored can with silver rim appears"
-    ]
-  },
-  {
-    "time": [
-      68,
-      70
-    ],
-    "visible_entities": [
-      {
-        "desc": "person with short, messy grey hair, wearing a black t-shirt with white text",
-        "action": "holding a can",
-        "position": "center"
-      },
-      {
-        "desc": "silver and blue aluminum beverage can",
-        "action": "being held",
-        "position": "right foreground",
-        "id": "can_silver_1"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "The person is holding a beverage can in their right hand.",
+        "fact": "The person is rubbing their right eye with their right hand.",
         "confidence": 1.0
       },
       {
@@ -1495,41 +619,97 @@
         "confidence": 1.0
       },
       {
-        "fact": "The text on the shirt reads 'DOUG PECK SUNDAY 10th'.",
+        "fact": "The text on the shirt reads 'DOUG PECK' and 'SUNDAY @ 10:00'.",
         "confidence": 1.0
       }
     ],
     "ocr": [
       "DOUG PECK",
-      "SUNDAY 10th"
+      "SUNDAY @ 10:00"
     ],
-    "spatial": "The person is centered in the frame. The beverage can is held in the person's right hand, positioned in the lower right foreground. The text on the t-shirt is located on the chest area of the person.",
+    "spatial": "The person is in the center of the frame. The lamp is to the right of the person. The framed object is on the wall behind the lamp.",
     "parse_success": true,
-    "chunk_idx": 34,
+    "chunk_idx": 14,
     "video_id": "lWHT5oFC004",
     "state_changes": []
   },
   {
     "time": [
-      70,
-      72
+      15,
+      16
     ],
     "visible_entities": [
       {
-        "desc": "person with short, messy, graying hair, wearing a black t-shirt with white text",
-        "action": "holding a small object",
-        "position": "center"
+        "desc": "person with short, messy grey hair, wearing a black t-shirt with white text graphics",
+        "action": "looking down",
+        "position": "center",
+        "id": "person_main_1"
       },
       {
-        "desc": "small, light-colored object, possibly a bottle or container",
-        "action": "being held",
-        "position": "foreground",
-        "id": "small_object_light_1"
+        "desc": "black t-shirt with white text 'DOUG PECK' and 'SUNDAY 10TH' in a blocky font",
+        "action": "static",
+        "position": "center",
+        "id": "tshirt_black_1"
+      },
+      {
+        "desc": "dark framed picture or object on the wall",
+        "action": "static",
+        "position": "right",
+        "id": "picture_frame_1"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A person is holding a small object in their hand.",
+        "fact": "The person is looking downwards.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The person is wearing a black t-shirt with white text.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The text on the shirt reads 'DOUG PECK' and 'SUNDAY 10TH'.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "DOUG PECK",
+      "SUNDAY 10TH"
+    ],
+    "spatial": "The person is in the center of the frame. The framed object is on the wall to the right of the person. The text is on the front of the person's t-shirt.",
+    "parse_success": true,
+    "chunk_idx": 15,
+    "video_id": "lWHT5oFC004",
+    "state_changes": []
+  },
+  {
+    "time": [
+      16,
+      17
+    ],
+    "visible_entities": [
+      {
+        "desc": "person with short, messy grey hair, wearing a black t-shirt with white text and graphics",
+        "action": "moving right hand",
+        "position": "center",
+        "id": "person_main_1"
+      },
+      {
+        "desc": "lamp with a light-colored shade",
+        "action": "static",
+        "position": "right background",
+        "id": "lamp_1"
+      },
+      {
+        "desc": "dark rectangular object on the wall",
+        "action": "static",
+        "position": "right background",
+        "id": "picture_frame_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The person is moving their right hand in front of their chest.",
         "confidence": 1.0
       },
       {
@@ -1545,44 +725,471 @@
       "DOUG PECK",
       "SUNDAY 10th"
     ],
-    "spatial": "The person is in the center of the frame. The small object is held in the person's right hand, which is in the foreground. The text on the t-shirt is on the person's chest.",
+    "spatial": "The person is in the center of the frame, in front of the background wall. The lamp is to the right of the person and behind them. The dark rectangular object is on the wall to the right of the person.",
     "parse_success": true,
-    "chunk_idx": 35,
+    "chunk_idx": 16,
     "video_id": "lWHT5oFC004",
-    "state_changes": [
-      "small light-colored object appears"
-    ]
+    "state_changes": []
   },
   {
     "time": [
-      72,
-      74
+      17,
+      18
     ],
     "visible_entities": [
       {
-        "desc": "person with short, wavy gray hair, wearing a black t-shirt with white text",
-        "action": "drinking from a silver can",
+        "desc": "person with short, messy grey hair, wearing a black t-shirt with white text",
+        "action": "moving hand in front of chest",
+        "position": "center/foreground",
+        "id": "person_main_1"
+      },
+      {
+        "desc": "lamp with a light-colored shade",
+        "action": "static",
+        "position": "right/background",
+        "id": "lamp_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The person moves their hand in front of their chest, creating a blur.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The text on the shirt reads 'DOUG PECK SUNDAY 10TH'.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The person is wearing a black t-shirt.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "DOUG PECK",
+      "SUNDAY 10TH"
+    ],
+    "spatial": "The person is in the center of the frame, positioned in front of a dimly lit background. A lamp is visible to the right of the person.",
+    "parse_success": true,
+    "chunk_idx": 17,
+    "video_id": "lWHT5oFC004",
+    "state_changes": []
+  },
+  {
+    "time": [
+      18,
+      19
+    ],
+    "visible_entities": [
+      {
+        "desc": "person with short, messy grey hair, wearing a black t-shirt with white text",
+        "action": "moving head and hand",
         "position": "center",
         "id": "person_main_1"
       },
       {
-        "desc": "silver aluminum beverage can",
-        "action": "being held to mouth",
+        "desc": "lamp with a light-colored shade",
+        "action": "static",
+        "position": "right",
+        "id": "lamp_1"
+      },
+      {
+        "desc": "dark patterned wall hanging or tapestry",
+        "action": "static",
+        "position": "background right",
+        "id": "curtain_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "person moves their head and hand during the clip",
+        "confidence": 1.0
+      },
+      {
+        "fact": "the t-shirt displays the text 'DOUG PECK' and 'ROBERT BUSH'",
+        "confidence": 1.0
+      },
+      {
+        "fact": "a lamp is illuminated in the background",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "DOUG PECK",
+      "ROBERT BUSH"
+    ],
+    "spatial": "The person is in the foreground, positioned centrally. The lamp is to the right of the person. The dark patterned wall hanging is behind the person and to the right.",
+    "parse_success": true,
+    "chunk_idx": 18,
+    "video_id": "lWHT5oFC004",
+    "state_changes": []
+  },
+  {
+    "time": [
+      19,
+      20
+    ],
+    "visible_entities": [
+      {
+        "desc": "person with short, messy grey hair, wearing a black t-shirt with white text",
+        "action": "holding a silver can",
         "position": "center",
+        "id": "person_main_1"
+      },
+      {
+        "desc": "silver aluminum can",
+        "action": "being held",
+        "position": "bottom right",
         "id": "can_silver_1"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "person lifts a silver can to their mouth",
+        "fact": "person holds a silver can in their hand",
         "confidence": 1.0
       },
       {
-        "fact": "person tilts head back to drink from the can",
+        "fact": "the person is wearing a black t-shirt with white text",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "DOUG PECK",
+      "SUNDAY 10TH",
+      "VERY DISH"
+    ],
+    "spatial": "The person is in the center of the frame. The silver can is held in the person's hand, positioned to the right of the person's torso.",
+    "parse_success": true,
+    "chunk_idx": 19,
+    "video_id": "lWHT5oFC004",
+    "state_changes": [
+      "Person switches from gesturing empty-handed to holding a silver can."
+    ]
+  },
+  {
+    "time": [
+      20,
+      21
+    ],
+    "visible_entities": [
+      {
+        "desc": "person with wavy grey hair, wearing a black t-shirt with white text",
+        "action": "holding a can",
+        "position": "center",
+        "id": "person_main_1"
+      },
+      {
+        "desc": "dark-colored can with a label featuring white text and a graphic",
+        "action": "being held and tilted",
+        "position": "foreground",
+        "id": "can_coke_zero_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The person is holding a can in their hands.",
         "confidence": 1.0
       },
       {
-        "fact": "the t-shirt displays the text 'DOUG PECK SUNDAY 10th'",
+        "fact": "The person tilts the can towards the camera.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The text 'Reindeer' is visible on the can's label.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "DOUG",
+      "Reindeer"
+    ],
+    "spatial": "The person is in the center of the frame, holding the can in front of their chest. The can is positioned below the person's face. The text 'DOUG' is on the person's shirt, located below their neck.",
+    "parse_success": true,
+    "chunk_idx": 20,
+    "video_id": "lWHT5oFC004",
+    "state_changes": []
+  },
+  {
+    "time": [
+      21,
+      22
+    ],
+    "visible_entities": [
+      {
+        "desc": "person with short, light-colored hair, wearing a black shirt with white text",
+        "action": "holding a can",
+        "position": "left/center",
+        "id": "person_main_1"
+      },
+      {
+        "desc": "black can with white and red text, featuring snowflake patterns",
+        "action": "being held up to the camera",
+        "position": "foreground/center",
+        "id": "can_coke_zero_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The person holds the can up to the camera.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The can is a 'Share a Coke zero' product.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The text on the can reads 'Reindeer'.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "Share a Coke zero with a",
+      "Reindeer"
+    ],
+    "spatial": "The person is behind the can. The can is in front of the person and is being held by their hand.",
+    "parse_success": true,
+    "chunk_idx": 21,
+    "video_id": "lWHT5oFC004",
+    "state_changes": [
+      "Person switches to holding a black can with snowflake patterns."
+    ]
+  },
+  {
+    "time": [
+      22,
+      23
+    ],
+    "visible_entities": [
+      {
+        "desc": "black Coca-Cola Zero bottle with a red ribbon graphic at the bottom and white snowflake patterns",
+        "action": "being held and rotated",
+        "position": "center/foreground",
+        "id": "can_coke_zero_1"
+      },
+      {
+        "desc": "hand with light skin tone",
+        "action": "holding the bottle",
+        "position": "top/right",
+        "id": "person_main_1"
+      },
+      {
+        "desc": "person with short hair and glasses",
+        "action": "holding the bottle",
+        "position": "left/background",
+        "id": "person_main_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A hand is holding a Coca-Cola Zero bottle.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The bottle is being rotated, causing motion blur in the second frame.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The text on the bottle reads 'Share a Coke zero with a Reindeer'.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "Share a Coke zero with a",
+      "Reindeer"
+    ],
+    "spatial": "The hand is holding the bottle in the center of the frame. The person's face is visible to the left of the bottle. The text 'Reindeer' is below the text 'Share a Coke zero with a'.",
+    "parse_success": true,
+    "chunk_idx": 22,
+    "video_id": "lWHT5oFC004",
+    "state_changes": [
+      "Person switches to holding a black Coca-Cola Zero bottle."
+    ]
+  },
+  {
+    "time": [
+      23,
+      24
+    ],
+    "visible_entities": [
+      {
+        "desc": "person with short, light-colored hair, wearing a black t-shirt with white graphic text on the chest",
+        "action": "holding and manipulating a can",
+        "position": "center/foreground",
+        "id": "person_main_1"
+      },
+      {
+        "desc": "dark-colored aluminum can with a red and white label",
+        "action": "being held",
+        "position": "center/foreground",
+        "id": "can_coke_zero_1"
+      },
+      {
+        "desc": "dimly lit room with a beige wall and a dark framed picture in the background",
+        "action": "static",
+        "position": "background"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "person holds a can with both hands",
+        "confidence": 1.0
+      },
+      {
+        "fact": "the person is manipulating the can",
+        "confidence": 1.0
+      },
+      {
+        "fact": "the label on the can reads 'Peindewer'",
+        "confidence": 1.0
+      },
+      {
+        "fact": "the person is wearing a black t-shirt",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "Peindewer"
+    ],
+    "spatial": "The person is in the foreground, holding the can in front of their chest. The can is positioned between the person's hands. The framed picture is on the wall behind the person to the right.",
+    "parse_success": true,
+    "chunk_idx": 23,
+    "video_id": "lWHT5oFC004",
+    "state_changes": []
+  },
+  {
+    "time": [
+      24,
+      25
+    ],
+    "visible_entities": [
+      {
+        "desc": "person with messy grey hair, wearing a black t-shirt with white text",
+        "action": "holding and manipulating a small package",
+        "position": "center/foreground",
+        "id": "person_main_1"
+      },
+      {
+        "desc": "small rectangular package, dark with white text and red accents",
+        "action": "being held",
+        "position": "center/foreground",
+        "id": "package_small_1"
+      },
+      {
+        "desc": "lamp with a beige shade",
+        "action": "static",
+        "position": "right/background",
+        "id": "lamp_1"
+      },
+      {
+        "desc": "framed picture on the wall",
+        "action": "static",
+        "position": "right/background",
+        "id": "picture_frame_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The person is holding a small package with both hands.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The person is looking down at the package.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The package has the word 'KENT' visible on it.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The person's t-shirt has white text that reads 'DOUG PECK'.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "KENT",
+      "DOUG PECK"
+    ],
+    "spatial": "The person is in the center of the frame, holding the package in front of their chest. The lamp and framed picture are in the background to the right of the person.",
+    "parse_success": true,
+    "chunk_idx": 24,
+    "video_id": "lWHT5oFC004",
+    "state_changes": [
+      "Person switches to holding and manipulating a small dark package."
+    ]
+  },
+  {
+    "time": [
+      25,
+      26
+    ],
+    "visible_entities": [
+      {
+        "desc": "man with wavy grey hair, wearing a black t-shirt with white text",
+        "action": "looking down and holding a small object",
+        "position": "center",
+        "id": "person_main_1"
+      },
+      {
+        "desc": "small shiny object, possibly a cup or container",
+        "action": "being held",
+        "position": "bottom right",
+        "id": "object_shiny_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The man looks down towards his hands.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The man is holding a small object in his hand.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The text on the shirt reads 'DOUG PECK'.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "DOUG PECK"
+    ],
+    "spatial": "The man is in the center of the frame. The small object is held in his hand, positioned in the bottom right area of the frame. The text 'DOUG PECK' is on the front of the man's t-shirt.",
+    "parse_success": true,
+    "chunk_idx": 25,
+    "video_id": "lWHT5oFC004",
+    "state_changes": [
+      "Person switches to holding a small shiny object (cup/container)."
+    ]
+  },
+  {
+    "time": [
+      26,
+      27
+    ],
+    "visible_entities": [
+      {
+        "desc": "man with wavy grey hair, wearing a black t-shirt with white text",
+        "action": "holding and shaking a can",
+        "position": "center",
+        "id": "person_main_1"
+      },
+      {
+        "desc": "silver and blue beverage can",
+        "action": "being shaken",
+        "position": "right foreground",
+        "id": "can_silver_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The man is shaking a can in his right hand.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The man is wearing a black t-shirt with white text.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The text on the shirt reads 'DOUG PECK' and 'SUNDAY 10th'.",
         "confidence": 1.0
       }
     ],
@@ -1590,22 +1197,168 @@
       "DOUG PECK",
       "SUNDAY 10th"
     ],
-    "spatial": "The person is in the center of the frame, holding the silver can in front of their face. The white text on the black t-shirt is located on the person's chest.",
+    "spatial": "The man is in the center of the frame. He is holding the can in his right hand, which is positioned to the right of his body and in the foreground. The text on his shirt is located on his chest.",
     "parse_success": true,
-    "chunk_idx": 36,
+    "chunk_idx": 26,
     "video_id": "lWHT5oFC004",
     "state_changes": [
-      "person drinking from silver can again"
+      "Person switches to holding and shaking a silver/blue can."
     ]
   },
   {
     "time": [
-      74,
-      76
+      27,
+      28
     ],
     "visible_entities": [
       {
-        "desc": "person with short, wavy, light-colored hair, wearing a black t-shirt with white text graphics",
+        "desc": "man with messy gray hair, wearing a black t-shirt with white text",
+        "action": "holding a dark object",
+        "position": "center",
+        "id": "person_main_1"
+      },
+      {
+        "desc": "dark object, possibly a bottle or container",
+        "action": "being held",
+        "position": "foreground",
+        "id": "object_dark_cylindrical_1"
+      },
+      {
+        "desc": "lamp with a light-colored shade",
+        "action": "static",
+        "position": "right",
+        "id": "lamp_1"
+      },
+      {
+        "desc": "framed picture on the wall",
+        "action": "static",
+        "position": "background right",
+        "id": "picture_frame_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The man is holding a dark object in his hands.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The man is wearing a black t-shirt with white text.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A lamp is visible on the right side of the frame.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "DOUG PECK"
+    ],
+    "spatial": "The man is in the center of the frame, holding a dark object in front of his chest. The lamp is to the right of the man. The framed picture is on the wall behind the lamp.",
+    "parse_success": true,
+    "chunk_idx": 27,
+    "video_id": "lWHT5oFC004",
+    "state_changes": [
+      "Person switches to holding a dark object (bottle/container)."
+    ]
+  },
+  {
+    "time": [
+      28,
+      29
+    ],
+    "visible_entities": [
+      {
+        "desc": "person with messy grey hair, wearing a black t-shirt with white text graphics",
+        "action": "drinking from a glass",
+        "position": "center",
+        "id": "person_main_1"
+      },
+      {
+        "desc": "small clear glass containing dark liquid",
+        "action": "being held to mouth",
+        "position": "center foreground",
+        "id": "glass_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "person lifts a glass to their mouth",
+        "confidence": 1.0
+      },
+      {
+        "fact": "person is drinking from the glass",
+        "confidence": 1.0
+      },
+      {
+        "fact": "the t-shirt displays the text 'DOUG SUNDAY'",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "DOUG",
+      "SUNDAY"
+    ],
+    "spatial": "The person is in the center of the frame, holding the glass in front of their chest. The glass is positioned directly in front of the person's mouth. A lamp is visible in the background to the right of the person.",
+    "parse_success": true,
+    "chunk_idx": 28,
+    "video_id": "lWHT5oFC004",
+    "state_changes": [
+      "Person starts drinking from a clear glass containing dark liquid."
+    ]
+  },
+  {
+    "time": [
+      29,
+      30
+    ],
+    "visible_entities": [
+      {
+        "desc": "person with short, messy grey hair, wearing a black t-shirt with white text graphics",
+        "action": "lifting a small object to mouth",
+        "position": "center",
+        "id": "person_main_1"
+      },
+      {
+        "desc": "small, dark, cylindrical object",
+        "action": "being held and lifted",
+        "position": "center foreground",
+        "id": "object_dark_cylindrical_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The person lifts a small object towards their mouth.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The person's hand is raised in front of their chest.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The t-shirt displays the text 'DOUG PECK' and 'SUNDAY'.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "DOUG PECK",
+      "SUNDAY"
+    ],
+    "spatial": "The person is centered in the frame. The small object is held in the person's hand, positioned in front of their chest and mouth. The text on the t-shirt is located on the front of the person's torso.",
+    "parse_success": true,
+    "chunk_idx": 29,
+    "video_id": "lWHT5oFC004",
+    "state_changes": [
+      "Person switches to lifting a small dark cylindrical object to mouth."
+    ]
+  },
+  {
+    "time": [
+      30,
+      31
+    ],
+    "visible_entities": [
+      {
+        "desc": "person with short, wavy, graying hair, wearing a black t-shirt with white text graphics",
         "action": "drinking from a can",
         "position": "center"
       },
@@ -1618,7 +1371,753 @@
     ],
     "atomic_facts": [
       {
-        "fact": "A person is tilting a silver can to their mouth to drink.",
+        "fact": "The person is holding a silver can to their mouth.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The person is tilting the can to drink.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The t-shirt displays the text 'DOUG PECK' and 'SUNDAY 10TH'.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "DOUG PECK",
+      "SUNDAY 10TH",
+      "COMEDY CLUB"
+    ],
+    "spatial": "The person is in the center of the frame, holding the silver can in front of their face. The white text on the black t-shirt is located on the person's chest.",
+    "parse_success": true,
+    "chunk_idx": 30,
+    "video_id": "lWHT5oFC004",
+    "state_changes": [
+      "Person starts drinking from a silver aluminum can."
+    ]
+  },
+  {
+    "time": [
+      31,
+      32
+    ],
+    "visible_entities": [
+      {
+        "desc": "person with light brown wavy hair, wearing a black t-shirt with white text graphics",
+        "action": "drinking from a silver can",
+        "position": "center",
+        "id": "person_main_1"
+      },
+      {
+        "desc": "silver aluminum beverage can",
+        "action": "being held to mouth",
+        "position": "center",
+        "id": "can_silver_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The person is holding a silver can to their mouth.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The person is drinking from the can.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The t-shirt features text that reads 'DOUG PECK SUNDAY 10th' and 'CONCERT SERIES'.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "DOUG PECK",
+      "SUNDAY 10th",
+      "CONCERT SERIES"
+    ],
+    "spatial": "The person is in the center of the frame, holding the silver can in front of their face. The white text on the black t-shirt is located on the person's chest.",
+    "parse_success": true,
+    "chunk_idx": 31,
+    "video_id": "lWHT5oFC004",
+    "state_changes": []
+  },
+  {
+    "time": [
+      32,
+      33
+    ],
+    "visible_entities": [
+      {
+        "desc": "person with short, light-colored hair, wearing a black t-shirt with white text graphics",
+        "action": "drinking from a can",
+        "position": "center",
+        "id": "person_main_1"
+      },
+      {
+        "desc": "silver aluminum beverage can",
+        "action": "being held and tilted",
+        "position": "center/right",
+        "id": "can_silver_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "person is drinking from a silver can",
+        "confidence": 1.0
+      },
+      {
+        "fact": "person is wearing a black t-shirt with white text",
+        "confidence": 1.0
+      },
+      {
+        "fact": "the text on the shirt reads 'DOUG PECK SUNDAY 10TH'",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "DOUG PECK",
+      "SUNDAY 10TH"
+    ],
+    "spatial": "The person is in the center of the frame, holding the silver can in front of their mouth. The text on the t-shirt is located on the person's chest.",
+    "parse_success": true,
+    "chunk_idx": 32,
+    "video_id": "lWHT5oFC004",
+    "state_changes": []
+  },
+  {
+    "time": [
+      33,
+      34
+    ],
+    "visible_entities": [
+      {
+        "desc": "person with short, wavy, graying hair, wearing a black t-shirt with white text graphics",
+        "action": "holding a silver can",
+        "position": "center"
+      },
+      {
+        "desc": "silver aluminum beverage can",
+        "action": "being held",
+        "position": "right foreground",
+        "id": "can_silver_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The person holds a silver can in their right hand.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The person is looking down at the can.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The t-shirt features text reading 'DOUG PECK' and 'SUNDAY 10th'.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "DOUG PECK",
+      "SUNDAY 10th",
+      "CONCERTS",
+      "MAYHEM"
+    ],
+    "spatial": "The person is positioned in the center of the frame, holding the silver can in front of their chest on the right side. The background is dimly lit and located behind the person.",
+    "parse_success": true,
+    "chunk_idx": 33,
+    "video_id": "lWHT5oFC004",
+    "state_changes": []
+  },
+  {
+    "time": [
+      34,
+      35
+    ],
+    "visible_entities": [
+      {
+        "desc": "person with short, messy grey hair, wearing a black t-shirt with white text graphics",
+        "action": "holding a can",
+        "position": "center",
+        "id": "person_main_1"
+      },
+      {
+        "desc": "silver aluminum beverage can",
+        "action": "being held",
+        "position": "right foreground",
+        "id": "can_silver_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The person holds a silver can in their right hand.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The person's t-shirt displays the text 'DOUG PECK SUNDAY 10th'.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "DOUG PECK",
+      "SUNDAY 10th"
+    ],
+    "spatial": "The person is positioned in the center of the frame. The silver can is held in the person's hand on the right side of the image, in front of the person's torso.",
+    "parse_success": true,
+    "chunk_idx": 34,
+    "video_id": "lWHT5oFC004",
+    "state_changes": []
+  },
+  {
+    "time": [
+      35,
+      36
+    ],
+    "visible_entities": [
+      {
+        "desc": "person with short, messy gray hair, wearing a black t-shirt with white text",
+        "action": "holding a small object",
+        "position": "center",
+        "id": "person_main_1"
+      },
+      {
+        "desc": "small, blurry object, possibly a pen or tool, held in hand",
+        "action": "being held",
+        "position": "foreground",
+        "id": "tool_pen_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The person is holding a small object in their right hand.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The person is wearing a black t-shirt with white text.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The text on the shirt reads 'DOUG PECK' and 'SUNDAY 10th'.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "DOUG PECK",
+      "SUNDAY 10th"
+    ],
+    "spatial": "The person is in the center of the frame. The small object is in the person's right hand, which is in the foreground. The text on the t-shirt is on the person's chest.",
+    "parse_success": true,
+    "chunk_idx": 35,
+    "video_id": "lWHT5oFC004",
+    "state_changes": [
+      "Person switches from holding a can to holding a small blurry object (pen/tool)."
+    ]
+  },
+  {
+    "time": [
+      36,
+      37
+    ],
+    "visible_entities": [
+      {
+        "desc": "person with wavy gray hair, wearing a black t-shirt with white text graphics",
+        "action": "drinking from a silver can",
+        "position": "center",
+        "id": "person_main_1"
+      },
+      {
+        "desc": "silver aluminum beverage can",
+        "action": "being held to mouth",
+        "position": "center",
+        "id": "can_silver_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The person lifts a silver can to their mouth and drinks from it.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The person is wearing a black t-shirt with white text.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "DOUG PECK",
+      "SUNDAY 10th",
+      "CONCERT",
+      "VENUE"
+    ],
+    "spatial": "The person is in the center of the frame, holding the silver can in front of their face. The text on the t-shirt is located on the chest area of the person.",
+    "parse_success": true,
+    "chunk_idx": 36,
+    "video_id": "lWHT5oFC004",
+    "state_changes": [
+      "Person resumes drinking from a silver can."
+    ]
+  },
+  {
+    "time": [
+      37,
+      38
+    ],
+    "visible_entities": [
+      {
+        "desc": "person with short curly grey hair, wearing a black t-shirt with white text graphics",
+        "action": "drinking from a silver can",
+        "position": "center",
+        "id": "person_main_1"
+      },
+      {
+        "desc": "silver aluminum beverage can",
+        "action": "being held to mouth",
+        "position": "center",
+        "id": "can_silver_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "person is drinking from a silver can",
+        "confidence": 1.0
+      },
+      {
+        "fact": "person is holding the can with their right hand",
+        "confidence": 1.0
+      },
+      {
+        "fact": "the t-shirt displays the text 'DOUG PECK SUNDAY 10th CONCERT'",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "DOUG PECK",
+      "SUNDAY 10th",
+      "CONCERT"
+    ],
+    "spatial": "The person is in the center of the frame, holding the silver can in front of their face. The white text on the black t-shirt is located on the person's chest.",
+    "parse_success": true,
+    "chunk_idx": 37,
+    "video_id": "lWHT5oFC004",
+    "state_changes": []
+  },
+  {
+    "time": [
+      38,
+      39
+    ],
+    "visible_entities": [
+      {
+        "desc": "man with messy grey hair, wearing a black t-shirt with white text",
+        "action": "holding a glass and moving it",
+        "position": "center",
+        "id": "person_main_1"
+      },
+      {
+        "desc": "clear glass containing dark liquid",
+        "action": "being held and moved",
+        "position": "right foreground",
+        "id": "glass_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The man holds a glass in his hand.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The man moves the glass towards the camera.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The t-shirt displays the text 'DOUG PECK SUNDAY 10PM'.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "DOUG PECK",
+      "SUNDAY 10PM"
+    ],
+    "spatial": "The man is centered in the frame. The glass is held in his hand to the right of his torso. The white text is printed on the front of the black t-shirt.",
+    "parse_success": true,
+    "chunk_idx": 38,
+    "video_id": "lWHT5oFC004",
+    "state_changes": [
+      "Person switches to holding and moving a clear glass."
+    ]
+  },
+  {
+    "time": [
+      39,
+      40
+    ],
+    "visible_entities": [
+      {
+        "desc": "man with wavy grey hair, wearing a black t-shirt with white text",
+        "action": "looking down",
+        "position": "center/foreground",
+        "id": "person_main_1"
+      },
+      {
+        "desc": "white text on black t-shirt",
+        "action": "static",
+        "position": "center/bottom",
+        "id": "tshirt_black_1"
+      },
+      {
+        "desc": "dark framed picture on wall",
+        "action": "static",
+        "position": "right/background",
+        "id": "picture_frame_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The man is looking downwards.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The man is wearing a black t-shirt with white text.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The text on the shirt reads 'DOUG PECK' and 'ERI BASH'.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "DOUG PECK",
+      "ERI BASH"
+    ],
+    "spatial": "The man is in the foreground, positioned centrally. The text on his shirt is located on his chest. The framed picture is in the background to the right of the man.",
+    "parse_success": true,
+    "chunk_idx": 39,
+    "video_id": "lWHT5oFC004",
+    "state_changes": []
+  },
+  {
+    "time": [
+      40,
+      41
+    ],
+    "visible_entities": [
+      {
+        "desc": "person with short, messy grey hair, wearing a black t-shirt with white text",
+        "action": "speaking and gesturing with right hand",
+        "position": "center",
+        "id": "person_main_1"
+      },
+      {
+        "desc": "black t-shirt with white block lettering",
+        "action": "static",
+        "position": "center",
+        "id": "tshirt_black_1"
+      },
+      {
+        "desc": "dark framed picture or object on wall",
+        "action": "static",
+        "position": "right background"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The person is speaking.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The person raises their right hand in a gesture.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The t-shirt displays the text 'DOUG PECK' and 'SUNDAY 10TH'.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "DOUG PECK",
+      "SUNDAY 10TH"
+    ],
+    "spatial": "The person is in the center of the frame, in front of a dimly lit background. The framed object is to the right of the person in the background. The text is on the front of the person's t-shirt.",
+    "parse_success": true,
+    "chunk_idx": 40,
+    "video_id": "lWHT5oFC004",
+    "state_changes": []
+  },
+  {
+    "time": [
+      41,
+      42
+    ],
+    "visible_entities": [
+      {
+        "desc": "person with short, messy grey hair, wearing a black t-shirt with white text graphics",
+        "action": "moving hands and head",
+        "position": "center",
+        "id": "person_main_1"
+      },
+      {
+        "desc": "dark framed picture or window",
+        "action": "static",
+        "position": "background right",
+        "id": "picture_frame_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "person moves their hands in front of their chest",
+        "confidence": 1.0
+      },
+      {
+        "fact": "person turns their head slightly",
+        "confidence": 1.0
+      },
+      {
+        "fact": "the t-shirt displays the text 'DOUG PECK' and 'SUNDAY 10th'",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "DOUG PECK",
+      "SUNDAY 10th"
+    ],
+    "spatial": "The person is in the center of the frame, positioned in front of a dimly lit background. A dark framed object is visible on the wall to the right of the person.",
+    "parse_success": true,
+    "chunk_idx": 41,
+    "video_id": "lWHT5oFC004",
+    "state_changes": []
+  },
+  {
+    "time": [
+      42,
+      43
+    ],
+    "visible_entities": [
+      {
+        "desc": "person with short wavy gray hair, wearing a black t-shirt with white text graphics",
+        "action": "moving mouth and head",
+        "position": "center/foreground"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "person moves mouth and head slightly",
+        "confidence": 1.0
+      },
+      {
+        "fact": "the t-shirt displays the text 'DOUG PECK' and 'SUNDAY'",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "DOUG PECK",
+      "SUNDAY"
+    ],
+    "spatial": "The person is in the foreground, centered in the frame. A framed picture is visible on the wall in the background to the right of the person.",
+    "parse_success": true,
+    "chunk_idx": 42,
+    "video_id": "lWHT5oFC004",
+    "state_changes": []
+  },
+  {
+    "time": [
+      43,
+      44
+    ],
+    "visible_entities": [
+      {
+        "desc": "man with messy grey hair, wearing a black t-shirt with white text",
+        "action": "gesturing with right hand",
+        "position": "center/foreground",
+        "id": "person_main_1"
+      },
+      {
+        "desc": "dark framed picture or object",
+        "action": "static",
+        "position": "background right",
+        "id": "picture_frame_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The man is moving his right hand in a blurred motion.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The man is wearing a shirt that reads 'DOUG PECK SUNDAY 10th'.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The scene is dimly lit with warm lighting.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "DOUG PECK",
+      "SUNDAY 10th",
+      "CONCERT"
+    ],
+    "spatial": "The man is in the center foreground of the frame. A dark framed object is visible in the background to the right of the man.",
+    "parse_success": true,
+    "chunk_idx": 43,
+    "video_id": "lWHT5oFC004",
+    "state_changes": []
+  },
+  {
+    "time": [
+      44,
+      45
+    ],
+    "visible_entities": [
+      {
+        "desc": "person with short, messy gray hair, wearing a black t-shirt with white text",
+        "action": "moving head slightly",
+        "position": "center/foreground",
+        "id": "person_main_1"
+      },
+      {
+        "desc": "dark patterned curtain or fabric",
+        "action": "static",
+        "position": "right/background",
+        "id": "curtain_1"
+      },
+      {
+        "desc": "ceiling light fixture",
+        "action": "static",
+        "position": "left/background",
+        "id": "light_ceiling_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "person moves head slightly between frames",
+        "confidence": 1.0
+      },
+      {
+        "fact": "the t-shirt displays the text 'DOUG PECK SUNDAY 10th'",
+        "confidence": 1.0
+      },
+      {
+        "fact": "a light fixture is visible on the ceiling in the background",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "DOUG PECK",
+      "SUNDAY 10th"
+    ],
+    "spatial": "The person is in the foreground, centered in the frame. The ceiling light is to the left and behind the person. The dark patterned curtain is to the right and behind the person.",
+    "parse_success": true,
+    "chunk_idx": 44,
+    "video_id": "lWHT5oFC004",
+    "state_changes": []
+  },
+  {
+    "time": [
+      45,
+      46
+    ],
+    "visible_entities": [
+      {
+        "desc": "person with messy, light-colored curly hair, wearing a black t-shirt with white graphic text",
+        "action": "moving right hand",
+        "position": "center",
+        "id": "person_main_1"
+      },
+      {
+        "desc": "dark patterned curtain or fabric",
+        "action": "static",
+        "position": "right",
+        "id": "curtain_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "person moves right hand in a waving or gesturing motion",
+        "confidence": 1.0
+      },
+      {
+        "fact": "the t-shirt displays the text 'DOUG PECK' and 'SUNDAY 10th'",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "DOUG PECK",
+      "SUNDAY 10th",
+      "CONCERT"
+    ],
+    "spatial": "The person is in the center of the frame, positioned in front of a dimly lit background. The dark patterned curtain is to the right of the person.",
+    "parse_success": true,
+    "chunk_idx": 45,
+    "video_id": "lWHT5oFC004",
+    "state_changes": []
+  },
+  {
+    "time": [
+      46,
+      47
+    ],
+    "visible_entities": [
+      {
+        "desc": "man with wavy grey hair, wearing a black t-shirt with white text and graphics",
+        "action": "gesturing with hands",
+        "position": "center",
+        "id": "person_main_1"
+      },
+      {
+        "desc": "dark framed picture or window on the wall",
+        "action": "static",
+        "position": "background right",
+        "id": "picture_frame_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The man is gesturing with his hands raised.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The man is wearing a black t-shirt with white text.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The text on the shirt reads 'DOUG PECK SUNDAY TOUR'.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "DOUG PECK",
+      "SUNDAY TOUR"
+    ],
+    "spatial": "The man is in the center of the frame, in front of a dimly lit wall. A dark framed object is visible on the wall to the right of the man.",
+    "parse_success": true,
+    "chunk_idx": 46,
+    "video_id": "lWHT5oFC004",
+    "state_changes": []
+  },
+  {
+    "time": [
+      47,
+      48
+    ],
+    "visible_entities": [
+      {
+        "desc": "person with short, messy grey hair, wearing a black t-shirt with white text graphics",
+        "action": "moving hand in foreground",
+        "position": "center",
+        "id": "person_main_1"
+      },
+      {
+        "desc": "lamp with a light-colored shade",
+        "action": "static",
+        "position": "right background",
+        "id": "lamp_1"
+      },
+      {
+        "desc": "dark framed picture or object on wall",
+        "action": "static",
+        "position": "right background"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The person moves their hand rapidly in front of the camera, causing motion blur.",
         "confidence": 1.0
       },
       {
@@ -1635,459 +2134,7 @@
       "SUNDAY 10th",
       "CONCERT"
     ],
-    "spatial": "The person is in the center of the frame, holding the silver can in front of their face. The text on the t-shirt is located on the chest area of the person.",
-    "parse_success": true,
-    "chunk_idx": 37,
-    "video_id": "lWHT5oFC004",
-    "state_changes": []
-  },
-  {
-    "time": [
-      76,
-      78
-    ],
-    "visible_entities": [
-      {
-        "desc": "person with short, messy gray hair, wearing a black t-shirt with white text",
-        "action": "moving right hand",
-        "position": "center",
-        "id": "person_main_1"
-      },
-      {
-        "desc": "white text on black t-shirt",
-        "action": "static",
-        "position": "center",
-        "id": "tshirt_text_1"
-      },
-      {
-        "desc": "lamp with light-colored shade",
-        "action": "static",
-        "position": "right",
-        "id": "lamp_shade_1"
-      },
-      {
-        "desc": "dark framed picture or window",
-        "action": "static",
-        "position": "right",
-        "id": "picture_frame_wall_1"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "person is moving their right hand in front of their chest",
-        "confidence": 1.0
-      },
-      {
-        "fact": "the t-shirt reads 'DOUG PECK' and 'SUNDAY 10th'",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [
-      "DOUG PECK",
-      "SUNDAY 10th"
-    ],
-    "spatial": "The person is in the center of the frame. The lamp and framed picture are to the right of the person. The text is on the front of the person's t-shirt.",
-    "parse_success": true,
-    "chunk_idx": 38,
-    "video_id": "lWHT5oFC004",
-    "state_changes": []
-  },
-  {
-    "time": [
-      78,
-      80
-    ],
-    "visible_entities": [
-      {
-        "desc": "person with short, wavy, graying hair, wearing a black t-shirt with white text",
-        "action": "speaking or moving mouth",
-        "position": "center"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "The person is moving their mouth, suggesting they are speaking.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The person is wearing a black t-shirt with white text on the front.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The text on the shirt reads 'DOUG PECK' and 'ERI BASH'.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [
-      "DOUG PECK",
-      "ERI BASH"
-    ],
-    "spatial": "The person is in the center of the frame. A framed picture is visible on the wall behind the person and to their right. A lamp is visible in the background to the left of the person.",
-    "parse_success": true,
-    "chunk_idx": 39,
-    "video_id": "lWHT5oFC004",
-    "state_changes": []
-  },
-  {
-    "time": [
-      80,
-      82
-    ],
-    "visible_entities": [
-      {
-        "desc": "person with short, messy grey hair, wearing a black t-shirt with white text",
-        "action": "gesturing with right hand",
-        "position": "center"
-      },
-      {
-        "desc": "dark rectangular object, possibly a phone or remote",
-        "action": "being held",
-        "position": "right",
-        "id": "object_phone_remote_1"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "person is gesturing with their right hand",
-        "confidence": 1.0
-      },
-      {
-        "fact": "person is holding a dark object in their right hand",
-        "confidence": 1.0
-      },
-      {
-        "fact": "the t-shirt displays the text 'DOUG PECK' and 'SUNDAY 10TH'",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [
-      "DOUG PECK",
-      "SUNDAY 10TH"
-    ],
-    "spatial": "The person is in the center of the frame. The dark object is held in the person's right hand, which is raised to the right of their chest. The white text is on the front of the black t-shirt.",
-    "parse_success": true,
-    "chunk_idx": 40,
-    "video_id": "lWHT5oFC004",
-    "state_changes": [
-      "dark rectangular object (phone/remote) appears in hand"
-    ]
-  },
-  {
-    "time": [
-      82,
-      84
-    ],
-    "visible_entities": [
-      {
-        "desc": "person with short, messy grey hair, wearing a black t-shirt with white text graphics",
-        "action": "moving head and speaking",
-        "position": "center/foreground",
-        "id": "person_main_1"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "The person is moving their head and mouth, appearing to speak.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The text on the shirt reads 'DOUG PECK' and 'SUNDAY 10th'.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [
-      "DOUG PECK",
-      "SUNDAY 10th"
-    ],
-    "spatial": "The person is in the center of the frame. The text 'DOUG PECK' is located on the chest area of the person's shirt, above the text 'SUNDAY 10th'.",
-    "parse_success": true,
-    "chunk_idx": 41,
-    "video_id": "lWHT5oFC004",
-    "state_changes": []
-  },
-  {
-    "time": [
-      84,
-      86
-    ],
-    "visible_entities": [
-      {
-        "desc": "person with short, wavy grey hair, wearing a black t-shirt with white text",
-        "action": "moving head and mouth",
-        "position": "center"
-      },
-      {
-        "desc": "black t-shirt with white text 'DOUG PECK SUNDAY' and a vertical graphic",
-        "action": "static",
-        "position": "center",
-        "id": "tshirt_text_1"
-      },
-      {
-        "desc": "dark framed picture on the wall",
-        "action": "static",
-        "position": "background right",
-        "id": "picture_frame_wall_1"
-      },
-      {
-        "desc": "lamp with a light-colored shade",
-        "action": "static",
-        "position": "background right",
-        "id": "lamp_shade_1"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "The person is moving their head and mouth, suggesting they are speaking.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The t-shirt displays the text 'DOUG PECK SUNDAY'.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "A framed picture is visible on the wall in the background.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [
-      "DOUG PECK",
-      "SUNDAY"
-    ],
-    "spatial": "The person is in the center foreground of the frame. The framed picture and lamp are to the right of the person in the background. The text on the t-shirt is on the person's chest.",
-    "parse_success": true,
-    "chunk_idx": 42,
-    "video_id": "lWHT5oFC004",
-    "state_changes": []
-  },
-  {
-    "time": [
-      86,
-      88
-    ],
-    "visible_entities": [
-      {
-        "desc": "man with messy grey hair, wearing a black t-shirt with white text",
-        "action": "gesturing with right hand",
-        "position": "center/foreground",
-        "id": "person_main_1"
-      },
-      {
-        "desc": "lamp with a light-colored shade",
-        "action": "static",
-        "position": "right/background",
-        "id": "lamp_shade_1"
-      },
-      {
-        "desc": "dark framed object on the wall",
-        "action": "static",
-        "position": "right/background",
-        "id": "picture_frame_wall_1"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "The man is gesturing with his right hand near his chest.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The man is wearing a black t-shirt with white text.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The text on the shirt reads 'DOUG PECK SUNDAY 10th'.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [
-      "DOUG PECK",
-      "SUNDAY 10th",
-      "CONCERT"
-    ],
-    "spatial": "The man is in the center of the frame, in front of the background elements. The lamp is to the right of the man and slightly behind him. The framed object is on the wall to the right of the man.",
-    "parse_success": true,
-    "chunk_idx": 43,
-    "video_id": "lWHT5oFC004",
-    "state_changes": []
-  },
-  {
-    "time": [
-      88,
-      90
-    ],
-    "visible_entities": [
-      {
-        "desc": "person with short, messy grey hair, wearing a black t-shirt with white text",
-        "action": "looking slightly upward",
-        "position": "center"
-      },
-      {
-        "desc": "white text on black t-shirt",
-        "action": "static",
-        "position": "center",
-        "id": "tshirt_text_1"
-      },
-      {
-        "desc": "dark framed picture on wall",
-        "action": "static",
-        "position": "right background",
-        "id": "picture_frame_wall_1"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "person looks slightly upward",
-        "confidence": 1.0
-      },
-      {
-        "fact": "the t-shirt reads 'DOUG PECK SUNDAY 10th'",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [
-      "DOUG PECK",
-      "SUNDAY 10th"
-    ],
-    "spatial": "The person is in the center foreground. The framed picture is on the wall to the right of the person. The text is printed on the front of the person's t-shirt.",
-    "parse_success": true,
-    "chunk_idx": 44,
-    "video_id": "lWHT5oFC004",
-    "state_changes": []
-  },
-  {
-    "time": [
-      90,
-      92
-    ],
-    "visible_entities": [
-      {
-        "desc": "man with curly grey hair and a beard, wearing a black t-shirt with white text and graphics",
-        "action": "raising right hand",
-        "position": "center",
-        "id": "person_main_1"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "The man raises his right hand in the foreground.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The man is wearing a black t-shirt with white text.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The text on the shirt reads 'DOUG PECK' and 'SUNDAY 10PM'.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [
-      "DOUG PECK",
-      "SUNDAY 10PM",
-      "CONCERT",
-      "RHYTHM"
-    ],
-    "spatial": "The man is in the center of the frame. His raised right hand is to the left of his head. The text on his shirt is located on his chest.",
-    "parse_success": true,
-    "chunk_idx": 45,
-    "video_id": "lWHT5oFC004",
-    "state_changes": [
-      "person raises right hand"
-    ]
-  },
-  {
-    "time": [
-      92,
-      94
-    ],
-    "visible_entities": [
-      {
-        "desc": "person with short, wavy, light-colored hair, wearing a black t-shirt with white graphic text",
-        "action": "gesturing with hands",
-        "position": "center",
-        "id": "person_main_1"
-      },
-      {
-        "desc": "dark patterned curtain or fabric",
-        "action": "static",
-        "position": "right background",
-        "id": "curtain_fabric_1"
-      },
-      {
-        "desc": "lamp with a light-colored shade",
-        "action": "static",
-        "position": "bottom right",
-        "id": "lamp_shade_1"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "person is gesturing with hands raised",
-        "confidence": 1.0
-      },
-      {
-        "fact": "the t-shirt displays the text 'DOUG PECK SUNDAY TOUR'",
-        "confidence": 1.0
-      },
-      {
-        "fact": "a lamp is visible in the lower right corner",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [
-      "DOUG PECK",
-      "SUNDAY TOUR"
-    ],
-    "spatial": "The person is in the center foreground, positioned in front of a dark curtain on the right. A lamp is located below the curtain in the bottom right corner.",
-    "parse_success": true,
-    "chunk_idx": 46,
-    "video_id": "lWHT5oFC004",
-    "state_changes": []
-  },
-  {
-    "time": [
-      94,
-      96
-    ],
-    "visible_entities": [
-      {
-        "desc": "person with short, messy grey hair, wearing a black t-shirt with white text graphics",
-        "action": "moving right hand",
-        "position": "center/foreground",
-        "id": "person_main_1"
-      },
-      {
-        "desc": "lamp with a light-colored shade",
-        "action": "static",
-        "position": "right/background",
-        "id": "lamp_shade_1"
-      },
-      {
-        "desc": "dark rectangular object, possibly a picture frame",
-        "action": "static",
-        "position": "right/background",
-        "id": "picture_frame_wall_1"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "person moves their right hand in a waving or gesturing motion",
-        "confidence": 1.0
-      },
-      {
-        "fact": "the t-shirt displays the text 'DOUG PECK' and 'SUNDAY 10th'",
-        "confidence": 1.0
-      },
-      {
-        "fact": "a lamp is illuminated in the background",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [
-      "DOUG PECK",
-      "SUNDAY 10th",
-      "CONCERT"
-    ],
-    "spatial": "The person is in the center foreground, positioned in front of the background elements. To the right of the person, a lamp and a dark rectangular object are visible in the background.",
+    "spatial": "The person is in the center of the frame. The lamp is to the right of the person in the background. The framed object is above the lamp.",
     "parse_success": true,
     "chunk_idx": 47,
     "video_id": "lWHT5oFC004",
@@ -2095,47 +2142,41 @@
   },
   {
     "time": [
-      96,
-      98
+      48,
+      49
     ],
     "visible_entities": [
       {
-        "desc": "person with short, wavy gray hair, wearing a black t-shirt with white text and graphics",
+        "desc": "person with short, wavy, graying hair, wearing a black t-shirt with white text and graphics",
         "action": "speaking",
-        "position": "center/foreground"
+        "position": "center",
+        "id": "person_main_1"
       },
       {
-        "desc": "dark framed picture on the wall",
+        "desc": "dark framed picture or object",
         "action": "static",
-        "position": "background/right",
-        "id": "picture_frame_wall_1"
-      },
-      {
-        "desc": "lamp with a light-colored shade",
-        "action": "static",
-        "position": "background/right",
-        "id": "lamp_shade_1"
+        "position": "background right",
+        "id": "picture_frame_1"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "person is speaking",
+        "fact": "The person is speaking with their mouth open.",
         "confidence": 1.0
       },
       {
-        "fact": "the t-shirt displays the text 'DOUG PECK' and 'SUNDAY 10AM'",
+        "fact": "The t-shirt displays the text 'DOUG PECK' in large white letters.",
         "confidence": 1.0
       },
       {
-        "fact": "a framed picture hangs on the wall behind the person",
+        "fact": "The person is positioned in the foreground of a dimly lit room.",
         "confidence": 1.0
       }
     ],
     "ocr": [
-      "DOUG PECK",
-      "SUNDAY 10AM"
+      "DOUG PECK"
     ],
-    "spatial": "The person is in the foreground, centered in the frame. The framed picture and lamp are in the background to the right of the person.",
+    "spatial": "The person is in the center foreground, positioned in front of a wall. A dark framed object is visible on the wall to the right of the person.",
     "parse_success": true,
     "chunk_idx": 48,
     "video_id": "lWHT5oFC004",
@@ -2143,29 +2184,30 @@
   },
   {
     "time": [
-      98,
-      100
+      49,
+      50
     ],
     "visible_entities": [
       {
-        "desc": "person with short, wavy grey hair, wearing a black t-shirt with white text",
-        "action": "holding a silver can",
-        "position": "center"
+        "desc": "person with short, curly grey hair, wearing a black t-shirt with white text",
+        "action": "holding a can",
+        "position": "center",
+        "id": "person_main_1"
       },
       {
         "desc": "silver and black beverage can",
-        "action": "being held up",
+        "action": "being held",
         "position": "foreground",
         "id": "can_silver_1"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "The person holds a silver can in their hand.",
+        "fact": "The person is holding a silver and black can in their hand.",
         "confidence": 1.0
       },
       {
-        "fact": "The person is wearing a black t-shirt with the text 'DOUG PECK' visible.",
+        "fact": "The person is wearing a black t-shirt with white text.",
         "confidence": 1.0
       }
     ],
@@ -2173,67 +2215,67 @@
       "DOUG PECK",
       "SUNDAY 10th"
     ],
-    "spatial": "The person is in the center of the frame, holding the silver can in front of their chest. The can is to the right of the person's face from the viewer's perspective.",
+    "spatial": "The person is in the center of the frame. The can is held in the person's hand in the foreground, positioned in front of their chest. The text on the t-shirt is located on the person's torso.",
     "parse_success": true,
     "chunk_idx": 49,
     "video_id": "lWHT5oFC004",
     "state_changes": [
-      "silver can appears again"
+      "Person switches to holding a silver/black can."
     ]
   },
   {
     "time": [
-      100,
-      102
+      50,
+      51
     ],
     "visible_entities": [
       {
-        "desc": "person with short, messy grey hair, wearing a black t-shirt with white text graphics",
+        "desc": "person with short, messy grey hair, wearing a black t-shirt with white text",
         "action": "holding a beverage can",
-        "position": "center/foreground",
+        "position": "center",
         "id": "person_main_1"
       },
       {
-        "desc": "dark-colored aluminum beverage can with red and silver branding",
-        "action": "being held up",
-        "position": "center/right",
-        "id": "can_dark_generic_1"
+        "desc": "aluminum beverage can, dark colored with red and silver graphics",
+        "action": "being held",
+        "position": "center-right",
+        "id": "can_coke_zero_1"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "person holds a beverage can up near their face",
+        "fact": "The person is holding an aluminum can in their right hand.",
         "confidence": 1.0
       },
       {
-        "fact": "the t-shirt displays the text 'DOUG PECK' and 'SUNDAY 1010'",
+        "fact": "The person is looking at the can.",
         "confidence": 1.0
       },
       {
-        "fact": "the can has a visible logo with red and silver colors",
+        "fact": "The text 'DOUG PECK' is visible on the person's shirt.",
         "confidence": 1.0
       }
     ],
     "ocr": [
       "DOUG PECK",
-      "SUNDAY 1010"
+      "SUNDAY"
     ],
-    "spatial": "The person is in the foreground, holding the beverage can in their right hand. The can is positioned to the right of the person's face and slightly in front of their shoulder. The text on the t-shirt is located on the person's chest.",
+    "spatial": "The person is in the center of the frame, holding the can in front of their chest. The can is to the right of the person's face. The text on the shirt is located on the person's torso.",
     "parse_success": true,
     "chunk_idx": 50,
     "video_id": "lWHT5oFC004",
     "state_changes": [
-      "dark-colored can with red/silver branding appears"
+      "Person switches to holding a dark can with red/silver graphics."
     ]
   },
   {
     "time": [
-      102,
-      104
+      51,
+      52
     ],
     "visible_entities": [
       {
-        "desc": "man with messy grey hair, wearing a black t-shirt with white text",
+        "desc": "man with short, messy gray hair, wearing a black t-shirt with white text",
         "action": "drinking from a can",
         "position": "center",
         "id": "person_main_1"
@@ -2255,36 +2297,37 @@
         "confidence": 1.0
       },
       {
-        "fact": "The t-shirt displays the text 'DOUG PECK' and 'SUNDAY TOUR'.",
+        "fact": "The t-shirt displays text reading 'DOUG PECK SUNDAY TOUR'.",
         "confidence": 1.0
       }
     ],
     "ocr": [
       "DOUG PECK",
       "SUNDAY TOUR",
-      "CONCERT"
+      "I CONCERT"
     ],
-    "spatial": "The man is in the center of the frame, holding the silver can in front of his face. The white text on the black t-shirt is located on the man's chest, below his chin.",
+    "spatial": "The man is in the center of the frame, holding the silver can in front of his face. The white text on his black t-shirt is located on his chest, below his chin.",
     "parse_success": true,
     "chunk_idx": 51,
     "video_id": "lWHT5oFC004",
     "state_changes": [
-      "person begins drinking from can"
+      "Person starts drinking from a silver can."
     ]
   },
   {
     "time": [
-      104,
-      106
+      52,
+      53
     ],
     "visible_entities": [
       {
         "desc": "person with short, light-colored hair, wearing a black t-shirt with white text graphics",
         "action": "drinking from a can",
-        "position": "center"
+        "position": "center",
+        "id": "person_main_1"
       },
       {
-        "desc": "silver aluminum beverage can",
+        "desc": "silver and black beverage can",
         "action": "being held to mouth",
         "position": "center",
         "id": "can_silver_1"
@@ -2292,7 +2335,7 @@
     ],
     "atomic_facts": [
       {
-        "fact": "The person is tilting a silver can to their mouth to drink.",
+        "fact": "A person is tilting a can to drink from it.",
         "confidence": 1.0
       },
       {
@@ -2300,118 +2343,172 @@
         "confidence": 1.0
       },
       {
-        "fact": "The text on the shirt reads 'DOUG PECK SUNDAY 10TH' and 'CONCERT PASS'.",
+        "fact": "The text on the shirt reads 'DOUG PECK SUNDAY 10TH' and 'CONCERT EASY'.",
         "confidence": 1.0
       }
     ],
     "ocr": [
       "DOUG PECK",
       "SUNDAY 10TH",
-      "CONCERT PASS"
-    ],
-    "spatial": "The person is in the center of the frame, holding the silver can in front of their face. The white text on the black t-shirt is located on the person's chest.",
-    "parse_success": true,
-    "chunk_idx": 52,
-    "video_id": "lWHT5oFC004",
-    "state_changes": []
-  },
-  {
-    "time": [
-      106,
-      108
-    ],
-    "visible_entities": [
-      {
-        "desc": "person with wavy light-colored hair, wearing a black t-shirt with white text graphics",
-        "action": "drinking from a can",
-        "position": "center",
-        "id": "person_main_1"
-      },
-      {
-        "desc": "dark-colored aluminum beverage can",
-        "action": "being held and tilted to mouth",
-        "position": "center",
-        "id": "can_dark_generic_1"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "person tilts a dark can to their mouth to drink",
-        "confidence": 1.0
-      },
-      {
-        "fact": "person holds the can with their right hand",
-        "confidence": 1.0
-      },
-      {
-        "fact": "the t-shirt displays text reading 'DOUG PECK SUNDAY TOUR'",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [
-      "DOUG PECK",
-      "SUNDAY TOUR",
-      "CONCERT"
+      "CONCERT EASY"
     ],
     "spatial": "The person is in the center of the frame, holding the can in front of their face. The text on the t-shirt is located on the person's chest, below their chin.",
     "parse_success": true,
-    "chunk_idx": 53,
+    "chunk_idx": 52,
     "video_id": "lWHT5oFC004",
     "state_changes": [
-      "dark-colored can tilted to mouth for drinking"
+      "Person switches to drinking from a silver/black can."
     ]
   },
   {
     "time": [
-      108,
-      110
+      53,
+      54
     ],
     "visible_entities": [
       {
-        "desc": "person with short, wavy grey hair, wearing a black t-shirt with white text",
-        "action": "holding a can",
-        "position": "center"
+        "desc": "person with short, wavy grey hair, wearing a black t-shirt with white text graphics",
+        "action": "drinking from a can then lowering it",
+        "position": "center",
+        "id": "person_main_1"
       },
       {
-        "desc": "dark-colored aluminum beverage can with white text",
-        "action": "being held",
-        "position": "right",
-        "id": "can_dark_generic_1"
+        "desc": "dark-colored beverage can with silver top and white label details",
+        "action": "being held and lowered",
+        "position": "center",
+        "id": "can_silver_1"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "person holds a dark-colored can in their left hand",
+        "fact": "The person tilts a can to their mouth to drink in the first frame.",
         "confidence": 1.0
       },
       {
-        "fact": "the person is wearing a black t-shirt with white text",
+        "fact": "The person lowers the can away from their face in the second frame.",
         "confidence": 1.0
       },
       {
-        "fact": "the text on the shirt reads 'DOUG PECK SUNDAY 10/10 CONCERT'",
+        "fact": "The person is wearing a black t-shirt with white text.",
         "confidence": 1.0
       }
     ],
     "ocr": [
       "DOUG PECK",
-      "SUNDAY 10/10",
+      "SUNDAY 10TH",
       "CONCERT"
     ],
-    "spatial": "The person is in the center of the frame. The person is holding the can to their right side. The text on the shirt is on the person's chest.",
+    "spatial": "The person is in the center of the frame, holding the beverage can in front of their face. The white text on the t-shirt is located on the person's chest, below their chin.",
+    "parse_success": true,
+    "chunk_idx": 53,
+    "video_id": "lWHT5oFC004",
+    "state_changes": [
+      "Person switches to drinking from a dark can with silver top, then lowers it."
+    ]
+  },
+  {
+    "time": [
+      54,
+      55
+    ],
+    "visible_entities": [
+      {
+        "desc": "person with short, wavy gray hair, wearing a black t-shirt with white text",
+        "action": "holding a dark can",
+        "position": "center",
+        "id": "person_main_1"
+      },
+      {
+        "desc": "dark-colored aluminum beverage can with a silver top",
+        "action": "being held up",
+        "position": "right",
+        "id": "can_silver_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The person is holding a dark can in their right hand.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The person is wearing a black t-shirt with white text.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The text on the shirt reads 'DOUG PECK' and 'SUNDAY 10'.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "DOUG PECK",
+      "SUNDAY 10",
+      "CONCERT"
+    ],
+    "spatial": "The person is in the center of the frame. The dark can is held in the person's right hand, positioned to the right of their torso. The text on the t-shirt is located on the front of the person's chest.",
     "parse_success": true,
     "chunk_idx": 54,
+    "video_id": "lWHT5oFC004",
+    "state_changes": [
+      "Person switches to holding up a dark can with silver top."
+    ]
+  },
+  {
+    "time": [
+      55,
+      56
+    ],
+    "visible_entities": [
+      {
+        "desc": "man with short, wavy grey hair, wearing a black t-shirt with white text",
+        "action": "speaking",
+        "position": "center",
+        "id": "person_main_1"
+      },
+      {
+        "desc": "white text on the t-shirt",
+        "action": "static",
+        "position": "center",
+        "id": "tshirt_black_1"
+      },
+      {
+        "desc": "dark patterned curtain",
+        "action": "static",
+        "position": "right",
+        "id": "curtain_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The man is speaking, with his mouth open in the second frame.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The text on the shirt reads 'DOUG PECK' and 'BERT BASH'.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The man is positioned in the center of the frame.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "DOUG PECK",
+      "BERT BASH"
+    ],
+    "spatial": "The man is in the center of the frame. The text is on the front of his t-shirt. The curtain is to the right of the man.",
+    "parse_success": true,
+    "chunk_idx": 55,
     "video_id": "lWHT5oFC004",
     "state_changes": []
   },
   {
     "time": [
-      110,
-      112
+      56,
+      57
     ],
     "visible_entities": [
       {
-        "desc": "person with short, messy grey hair, wearing a black t-shirt with white text",
+        "desc": "person with short, wavy, graying hair, wearing a black t-shirt with white text graphics",
         "action": "talking",
         "position": "center"
       }
@@ -2419,6 +2516,45 @@
     "atomic_facts": [
       {
         "fact": "person is talking",
+        "confidence": 1.0
+      },
+      {
+        "fact": "the t-shirt displays the text 'DOUG PECK' and 'BERT BASH'",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "DOUG PECK",
+      "BERT BASH"
+    ],
+    "spatial": "The person is centered in the foreground. The text 'DOUG PECK' is located on the chest area of the t-shirt, with 'BERT BASH' positioned to the right of it.",
+    "parse_success": true,
+    "chunk_idx": 56,
+    "video_id": "lWHT5oFC004",
+    "state_changes": []
+  },
+  {
+    "time": [
+      57,
+      58
+    ],
+    "visible_entities": [
+      {
+        "desc": "person with short, messy grey hair, wearing a black t-shirt with white text",
+        "action": "holding a blue object",
+        "position": "center",
+        "id": "person_main_1"
+      },
+      {
+        "desc": "blue object, blurry",
+        "action": "being held",
+        "position": "bottom left",
+        "id": "object_blue_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "person holds a blue object in their left hand",
         "confidence": 1.0
       },
       {
@@ -2430,106 +2566,36 @@
       "DOUG PECK",
       "BERT BASH"
     ],
-    "spatial": "The person is in the center of the frame. The text 'DOUG PECK' is above the text 'BERT BASH' on the person's t-shirt. A lamp is to the right of the person in the background.",
-    "parse_success": true,
-    "chunk_idx": 55,
-    "video_id": "lWHT5oFC004",
-    "state_changes": []
-  },
-  {
-    "time": [
-      112,
-      114
-    ],
-    "visible_entities": [
-      {
-        "desc": "person with short, wavy, light-colored hair, wearing a black t-shirt with white text graphics",
-        "action": "talking",
-        "position": "center"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "person is talking",
-        "confidence": 1.0
-      },
-      {
-        "fact": "the text on the shirt reads 'DOUG PECK' and 'BERT BASH'",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [
-      "DOUG PECK",
-      "BERT BASH"
-    ],
-    "spatial": "The person is in the foreground, centered in the frame. The text 'DOUG PECK' is above the text 'BERT BASH' on the person's shirt.",
-    "parse_success": true,
-    "chunk_idx": 56,
-    "video_id": "lWHT5oFC004",
-    "state_changes": []
-  },
-  {
-    "time": [
-      114,
-      116
-    ],
-    "visible_entities": [
-      {
-        "desc": "person with short, messy grey hair, wearing a black t-shirt with white text",
-        "action": "holding a blue object",
-        "position": "center"
-      },
-      {
-        "desc": "blue object, blurry, held in hand",
-        "action": "being held",
-        "position": "bottom left",
-        "id": "object_blue_blurry_1"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "The person is holding a blue object in their hand.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The person is wearing a black t-shirt with white text that reads 'DOUG PECK' and 'ERI BASH'.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [
-      "DOUG PECK",
-      "ERI BASH"
-    ],
-    "spatial": "The person is in the center of the frame. The blue object is in the person's hand, located at the bottom left of the frame. The text on the t-shirt is on the person's chest.",
+    "spatial": "The person is centered in the frame. The blue object is held in the bottom left corner, in front of the person's torso. The text 'DOUG PECK' is printed on the front of the black t-shirt.",
     "parse_success": true,
     "chunk_idx": 57,
     "video_id": "lWHT5oFC004",
     "state_changes": [
-      "blue blurry object appears in hand"
+      "Person switches to holding a blurry blue object."
     ]
   },
   {
     "time": [
-      116,
-      118
+      58,
+      59
     ],
     "visible_entities": [
       {
         "desc": "person with short, messy grey hair, wearing a black t-shirt with white text graphics",
-        "action": "holding a soda can in the first frame, then lowering it out of view",
+        "action": "holding a can up to the camera then lowering it",
         "position": "center/foreground",
         "id": "person_main_1"
       },
       {
-        "desc": "black aluminum soda can with white cursive logo and orange vertical stripe",
-        "action": "being held up to the camera, then moved down",
+        "desc": "black aluminum soda can with white cursive logo and orange stripe",
+        "action": "being held in hand",
         "position": "left/foreground",
-        "id": "can_black_logo_1"
+        "id": "can_coke_zero_1"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "The person holds a soda can up to the camera in the first frame.",
+        "fact": "The person holds a soda can close to the camera lens in the first frame.",
         "confidence": 1.0
       },
       {
@@ -2537,50 +2603,48 @@
         "confidence": 1.0
       },
       {
-        "fact": "The soda can features the text 'Coca-Cola' in white script.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The person's t-shirt displays the text 'DOUG PECK' and 'CERT BASH'.",
+        "fact": "The can features the Coca-Cola logo.",
         "confidence": 1.0
       }
     ],
     "ocr": [
       "Coca-Cola",
       "DOUG PECK",
+      "SUNDAY 10th",
       "CERT BASH"
     ],
-    "spatial": "The person is positioned in the center of the frame. In the first frame, the person is holding the soda can in their right hand, placing the can to the left of their face and in the immediate foreground. In the second frame, the can is no longer visible, leaving the person as the sole subject.",
+    "spatial": "The person is positioned in the center of the frame, holding the can in their left hand to the left side of the screen. The can is in front of the person's face in the first frame. The white text on the person's shirt is located on their chest.",
     "parse_success": true,
     "chunk_idx": 58,
     "video_id": "lWHT5oFC004",
     "state_changes": [
-      "black soda can held up then lowered out of view"
+      "Person switches to holding a black can with an orange stripe up to the camera."
     ]
   },
   {
     "time": [
-      118,
-      120
+      59,
+      60
     ],
     "visible_entities": [
       {
-        "desc": "person with short, messy, light-colored hair, wearing a black t-shirt with white text",
-        "action": "raising both hands to face and forming a frame shape with fingers",
-        "position": "center/foreground"
+        "desc": "person with short, messy grey hair, wearing a black t-shirt with white text graphics",
+        "action": "raising both hands to face and making a 'rock on' gesture",
+        "position": "center",
+        "id": "person_main_1"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "person raises both hands to face level",
+        "fact": "person raises both hands to their face",
         "confidence": 1.0
       },
       {
-        "fact": "person forms a rectangular frame shape with index fingers and thumbs",
+        "fact": "person forms a 'rock on' or 'devil horns' hand gesture with both hands",
         "confidence": 1.0
       },
       {
-        "fact": "t-shirt displays text reading 'DOUG PECK' and 'CONCERT BASH'",
+        "fact": "the t-shirt displays text reading 'DOUG PECK' and 'CONCERT BASH'",
         "confidence": 1.0
       }
     ],
@@ -2589,75 +2653,78 @@
       "SUNDAY 10th",
       "CONCERT BASH"
     ],
-    "spatial": "The person is centered in the foreground. The text on the t-shirt is located on the chest area, below the person's chin.",
+    "spatial": "The person is in the center of the frame, positioned in front of a dimly lit background. The white text on the black t-shirt is located on the person's chest.",
     "parse_success": true,
     "chunk_idx": 59,
     "video_id": "lWHT5oFC004",
     "state_changes": [
-      "person raises both hands forming frame shape with fingers"
+      "Person puts down the can and makes a 'rock on' gesture with both hands."
     ]
   },
   {
     "time": [
-      120,
-      122
+      60,
+      61
     ],
     "visible_entities": [
       {
         "desc": "man with messy grey hair, wearing a black t-shirt with white text",
-        "action": "giving two thumbs up then clapping hands",
+        "action": "giving two thumbs up then lowering hands",
         "position": "center",
         "id": "person_main_1"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "The man gives a double thumbs-up gesture.",
+        "fact": "The man holds both hands up in a double thumbs-up gesture in the first frame.",
         "confidence": 1.0
       },
       {
-        "fact": "The man claps his hands together.",
+        "fact": "The man lowers his hands and looks down in the second frame.",
         "confidence": 1.0
       },
       {
-        "fact": "The t-shirt displays text reading 'DOUG PECK' and 'SUNDAY 10th'.",
+        "fact": "The text on the shirt reads 'DOUG PECK SUNDAY 10th CONCERT PASS'.",
         "confidence": 1.0
       }
     ],
     "ocr": [
       "DOUG PECK",
-      "SUNDAY",
-      "10th",
-      "CONCERT"
+      "SUNDAY 10th",
+      "CONCERT PASS"
     ],
-    "spatial": "The man is centered in the foreground. The text on his shirt is located on his chest, below his neck.",
+    "spatial": "The man is centered in the foreground. The white text is printed on the front of his black t-shirt, located below his neck.",
     "parse_success": true,
     "chunk_idx": 60,
     "video_id": "lWHT5oFC004",
     "state_changes": [
-      "person gives two thumbs up then claps"
+      "Person changes gesture from 'rock on' to giving two thumbs up."
     ]
   },
   {
     "time": [
-      122,
-      124
+      61,
+      62
     ],
     "visible_entities": [
       {
-        "desc": "man with messy curly blonde hair, wearing a black t-shirt with white text",
+        "desc": "person with curly blonde hair, wearing a black t-shirt with white text",
         "action": "pointing fingers at the camera",
         "position": "center",
-        "id": "person_main_1"
+        "id": "person_secondary_1"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "the man points both index fingers directly at the camera",
+        "fact": "The person points both index fingers directly at the camera.",
         "confidence": 1.0
       },
       {
-        "fact": "the man is wearing a black t-shirt with white lettering",
+        "fact": "The person is wearing a black t-shirt with white text.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The text on the shirt reads 'DOUG PECK' and 'BASH'.",
         "confidence": 1.0
       }
     ],
@@ -2665,12 +2732,12 @@
       "DOUG PECK",
       "BASH"
     ],
-    "spatial": "The man is centered in the frame. The text 'DOUG PECK' is located on the front of his black t-shirt, below his neck.",
+    "spatial": "The person is in the center of the frame. The text on the t-shirt is located on the person's chest, below their face.",
     "parse_success": true,
     "chunk_idx": 61,
     "video_id": "lWHT5oFC004",
     "state_changes": [
-      "person points fingers at camera"
+      "New person (curly blonde hair) appears pointing at the camera."
     ]
   }
 ]

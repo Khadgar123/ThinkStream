@@ -2,16 +2,59 @@
   {
     "time": [
       0,
-      2
+      1
     ],
     "visible_entities": [
       {
-        "desc": "rectangular cardboard box, red and blue packaging, featuring an image of a golden-brown pastry bar with red filling",
+        "desc": "rectangular cardboard box, multicolored with blue, red, and white sections, featuring product branding and images of fruit bars",
         "action": "static",
         "position": "center"
       },
       {
-        "desc": "plaid fabric surface, pattern of intersecting red and green lines",
+        "desc": "woven fabric surface with a plaid pattern consisting of intersecting red and green squares",
+        "action": "static",
+        "position": "background"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A box of Mrs. Freshley's Delicious Deals Fruit & Grain bars is resting on a plaid surface.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The box indicates it contains 6 individually wrapped bars.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The flavor of the bars is identified as Strawberry.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "Mrs. Freshley's",
+      "Delicious Deals",
+      "Fruit & Grain",
+      "STRAWBERRY",
+      "6 INDIVIDUALLY WRAPPED BARS"
+    ],
+    "spatial": "The box of fruit bars is positioned in the center of the frame, resting on top of the plaid fabric surface.",
+    "parse_success": true,
+    "chunk_idx": 0,
+    "video_id": "pTpFqu6Hjfk"
+  },
+  {
+    "time": [
+      1,
+      2
+    ],
+    "visible_entities": [
+      {
+        "desc": "rectangular cardboard box, red and blue packaging, featuring 'Freshley's Delicious Deals' branding and an image of a pastry bar",
+        "action": "static",
+        "position": "center"
+      },
+      {
+        "desc": "plaid fabric surface, pattern of red, green, and blue intersecting lines",
         "action": "static",
         "position": "background"
       }
@@ -22,11 +65,11 @@
         "confidence": 1.0
       },
       {
-        "fact": "The packaging indicates the flavor is Strawberry.",
+        "fact": "The box indicates it contains 6 individually wrapped bars.",
         "confidence": 1.0
       },
       {
-        "fact": "The box contains 6 individually wrapped bars.",
+        "fact": "The flavor of the bars is Strawberry.",
         "confidence": 1.0
       }
     ],
@@ -35,119 +78,77 @@
       "Delicious Deals",
       "Fruit & Grain",
       "STRAWBERRY",
-      "6 INDIVIDUALLY WRAPPED BARS"
+      "6",
+      "INDIVIDUALLY WRAPPED BARS"
     ],
-    "spatial": "The box of Freshley's Delicious Deals is positioned in the center of the frame, resting on top of the red and green plaid fabric surface.",
-    "parse_success": true,
-    "chunk_idx": 0,
-    "video_id": "pTpFqu6Hjfk"
-  },
-  {
-    "time": [
-      2,
-      4
-    ],
-    "visible_entities": [
-      {
-        "desc": "rectangular cardboard box with red, blue, and white packaging, featuring a picture of a golden-brown pastry bar",
-        "action": "static",
-        "position": "center"
-      },
-      {
-        "desc": "plaid fabric surface with a pattern of intersecting red, green, and yellow lines",
-        "action": "static",
-        "position": "background"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "A box of 'Freshley's Delicious Deals' is resting on a plaid surface.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The box is labeled as 'Fruit & Grain' and 'Strawberry' flavor.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The packaging indicates there are '6 Individually Wrapped Bars' inside.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [
-      "Freshley's",
-      "Delicious Deals",
-      "Fruit & Grain",
-      "STRAWBERRY",
-      "6 INDIVIDUALLY WRAPPED BARS"
-    ],
-    "spatial": "The 'Freshley's Delicious Deals' box is positioned in the center of the frame, resting on top of the plaid fabric surface.",
+    "spatial": "The Freshley's Delicious Deals box is centered on top of the plaid fabric surface. The image of the pastry bar is located on the right side of the box front, next to the product name text.",
     "parse_success": true,
     "chunk_idx": 1,
     "video_id": "pTpFqu6Hjfk"
   },
   {
     "time": [
-      4,
-      6
+      2,
+      3
     ],
     "visible_entities": [
       {
-        "desc": "rectangular cardboard box, red and blue packaging with white text, featuring an image of a pastry bar",
+        "desc": "rectangular cardboard box, red and blue packaging with white text and images of pastries",
         "action": "being held by hands",
         "position": "center"
       },
       {
-        "desc": "pair of hands with light skin tone",
+        "desc": "pair of hands, light skin tone",
         "action": "holding the sides of the box",
         "position": "foreground"
       },
       {
-        "desc": "plaid fabric surface with a grid pattern of red, green, and yellow lines",
+        "desc": "plaid fabric surface, red and green pattern with yellow stitching",
         "action": "static",
         "position": "background"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A pair of hands is holding a box of cereal bars.",
+        "fact": "A pair of hands holds a box of 'Frischley's Delicious Deals' fruit and grain bars.",
         "confidence": 1.0
       },
       {
-        "fact": "The box is resting above a plaid tablecloth.",
+        "fact": "The box is positioned centrally on a plaid tablecloth.",
         "confidence": 1.0
       },
       {
-        "fact": "The packaging identifies the product as 'Fruit & Grain' bars in 'Strawberry' flavor.",
+        "fact": "The text on the box indicates the flavor is 'Strawberry' and contains '6 individually wrapped bars'.",
         "confidence": 1.0
       }
     ],
     "ocr": [
-      "Freshley's",
+      "Frischley's",
       "Delicious Deals",
       "Fruit & Grain",
       "STRAWBERRY",
       "6 INDIVIDUALLY WRAPPED BARS"
     ],
-    "spatial": "The hands are positioned on the left and right sides of the box, holding it in the center of the frame. The box is situated directly above the plaid fabric surface which fills the background.",
+    "spatial": "The box is in the center of the frame, resting on the plaid fabric. Two hands are holding the left and right sides of the box in the foreground. The text 'Delicious Deals' is located above the text 'Fruit & Grain' on the box front.",
     "parse_success": true,
     "chunk_idx": 2,
     "video_id": "pTpFqu6Hjfk"
   },
   {
     "time": [
-      6,
-      8
+      3,
+      4
     ],
     "visible_entities": [
       {
-        "desc": "hands with light skin tone",
-        "action": "holding a box",
-        "position": "bottom left and right"
-      },
-      {
-        "desc": "rectangular box with blue, white, and red color scheme, featuring an image of a fruit and grain bar",
+        "desc": "rectangular cardboard box, blue top half and red bottom half, featuring 'Mrs. Freshley's' logo, 'Delicious Deals' text, and an image of a fruit and grain bar",
         "action": "being held",
         "position": "center"
+      },
+      {
+        "desc": "pair of hands, light skin tone",
+        "action": "holding the box",
+        "position": "bottom left and right"
       },
       {
         "desc": "tablecloth with a red and green plaid pattern",
@@ -157,157 +158,7 @@
     ],
     "atomic_facts": [
       {
-        "fact": "A person is holding a box of Mrs. Freshley's Delicious Deals.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The box is labeled 'Fruit & Grain' and 'Strawberry'.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The box indicates it contains 6 individually wrapped bars.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The background is a plaid tablecloth.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [
-      "Mrs. Freshley's",
-      "Delicious Deals",
-      "Fruit & Grain",
-      "STRAWBERRY",
-      "6 INDIVIDUALLY WRAPPED"
-    ],
-    "spatial": "The hands are holding the box in the center of the frame. The box is in front of the plaid tablecloth background. The text 'Delicious Deals' is above the text 'Fruit & Grain' on the box.",
-    "parse_success": true,
-    "chunk_idx": 3,
-    "video_id": "pTpFqu6Hjfk"
-  },
-  {
-    "time": [
-      8,
-      10
-    ],
-    "visible_entities": [
-      {
-        "desc": "hands with light skin tone holding a box",
-        "action": "holding a box",
-        "position": "bottom left and bottom right"
-      },
-      {
-        "desc": "rectangular cardboard box, blue and red gradient, featuring an image of a fruit and grain bar with a red filling",
-        "action": "being held",
-        "position": "center"
-      },
-      {
-        "desc": "plaid tablecloth with a grid pattern of red, green, and white lines",
-        "action": "static",
-        "position": "background"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "A pair of hands is holding a box of Mrs. Freshley's Delicious Deals Fruit & Grain bars.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The box features the flavor 'STRAWBERRY' at the bottom.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The background is a red and green plaid surface.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [
-      "Mrs. Freshley's",
-      "Delicious Deals",
-      "Fruit & Grain",
-      "STRAWBERRY",
-      "6 INDIVIDUALLY WRAPPED BARS"
-    ],
-    "spatial": "The hands are holding the box in the center of the frame. The box is positioned in front of the plaid tablecloth background.",
-    "parse_success": true,
-    "chunk_idx": 4,
-    "video_id": "pTpFqu6Hjfk"
-  },
-  {
-    "time": [
-      10,
-      12
-    ],
-    "visible_entities": [
-      {
-        "desc": "rectangular cardboard box, blue top half and red bottom half, featuring product photography of a fruit bar",
-        "action": "being held",
-        "position": "center"
-      },
-      {
-        "desc": "pair of hands, light skin tone, short fingernails",
-        "action": "holding the box",
-        "position": "bottom left and right"
-      },
-      {
-        "desc": "plaid tablecloth, pattern of red, green, and white intersecting lines",
-        "action": "static",
-        "position": "background"
-      }
-    ],
-    "atomic_facts": [
-      {
         "fact": "A person is holding a box of Mrs. Freshley's Delicious Deals Fruit & Grain bars.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The box is positioned centrally in the frame against a plaid background.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The text on the box identifies the flavor as Strawberry.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [
-      "Mrs. Freshley's",
-      "Delicious Deals",
-      "At a Delicious Price!",
-      "MADE WITH WHOLE GRAIN OATS",
-      "Fruit & Grain",
-      "STRAWBERRY",
-      "6 INDIVIDUALLY WRAPPED BARS"
-    ],
-    "spatial": "The hands are holding the box from the bottom left and right corners. The box is in front of the plaid tablecloth background. The text 'Mrs. Freshley's' is at the top of the box, above the 'Delicious Deals' logo.",
-    "parse_success": true,
-    "chunk_idx": 5,
-    "video_id": "pTpFqu6Hjfk"
-  },
-  {
-    "time": [
-      12,
-      14
-    ],
-    "visible_entities": [
-      {
-        "desc": "rectangular box with blue top half and red bottom half, featuring 'Mrs Freshley's' logo, 'Delicious Deals' script, and an image of a strawberry fruit and grain bar",
-        "action": "being held",
-        "position": "center"
-      },
-      {
-        "desc": "pair of hands with light skin tone",
-        "action": "holding the box",
-        "position": "bottom left and bottom right"
-      },
-      {
-        "desc": "tablecloth with a plaid pattern in red, green, and yellow lines",
-        "action": "static",
-        "position": "background"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "A person is holding a box of Mrs Freshley's Delicious Deals Fruit & Grain bars.",
         "confidence": 1.0
       },
       {
@@ -324,33 +175,82 @@
       }
     ],
     "ocr": [
-      "Mrs Freshley's",
+      "Mrs. Freshley's",
       "Delicious Deals",
       "At a Delicious Price!",
       "MADE WITH WHOLE GRAIN OATS",
       "Fruit & Grain",
       "STRAWBERRY",
-      "6",
-      "INDIVIDUALLY WRAPPED BARS"
+      "6 INDIVIDUALLY WRAPPED"
     ],
-    "spatial": "The box is held in the center of the frame by two hands. The hands are positioned at the bottom left and bottom right corners of the box. The plaid tablecloth is behind the box and hands.",
+    "spatial": "The hands are holding the box in the center of the frame. The box is positioned in front of the plaid tablecloth background.",
     "parse_success": true,
-    "chunk_idx": 6,
+    "chunk_idx": 3,
     "video_id": "pTpFqu6Hjfk"
   },
   {
     "time": [
-      14,
-      16
+      4,
+      5
     ],
     "visible_entities": [
       {
-        "desc": "hands with light skin tone",
-        "action": "holding a box",
-        "position": "bottom left and bottom right"
+        "desc": "rectangular cardboard box, blue top half and red bottom half, featuring product photography of a fruit bar",
+        "action": "being held",
+        "position": "center"
       },
       {
-        "desc": "rectangular box with blue, red, and cream packaging, featuring an image of a fruit and grain bar",
+        "desc": "human hands, light skin tone",
+        "action": "holding the box",
+        "position": "bottom left and right"
+      },
+      {
+        "desc": "plaid tablecloth with a grid pattern of red, green, and blue squares",
+        "action": "static",
+        "position": "background"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A pair of hands is holding a box of Mrs. Freshley's Delicious Deals.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The box features the text 'Fruit & Grain' and 'Strawberry'.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The background is a multi-colored plaid surface.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "Mrs. Freshley's",
+      "Delicious Deals",
+      "At a Delicious Price!",
+      "MADE WITH WHOLE GRAINS",
+      "Fruit & Grain",
+      "STRAWBERRY",
+      "6 INDIVIDUALLY WRAPPED BARS"
+    ],
+    "spatial": "The hands are holding the box in the center of the frame. The box is positioned in front of the plaid tablecloth background. The text 'Delicious Deals' is located above the text 'Fruit & Grain' on the box packaging.",
+    "parse_success": true,
+    "chunk_idx": 4,
+    "video_id": "pTpFqu6Hjfk"
+  },
+  {
+    "time": [
+      5,
+      6
+    ],
+    "visible_entities": [
+      {
+        "desc": "hands with light skin tone holding a box",
+        "action": "holding a box",
+        "position": "bottom/foreground"
+      },
+      {
+        "desc": "rectangular cardboard box, blue and red gradient background, featuring an image of a strawberry fruit and grain bar",
         "action": "being held",
         "position": "center"
       },
@@ -366,71 +266,166 @@
         "confidence": 1.0
       },
       {
-        "fact": "The box is strawberry flavored.",
+        "fact": "The box is positioned centrally in the frame.",
         "confidence": 1.0
       },
       {
-        "fact": "The box contains 6 individually wrapped bars.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The background is a plaid tablecloth.",
+        "fact": "The background is a red and green plaid surface.",
         "confidence": 1.0
       }
     ],
     "ocr": [
       "Mrs. Freshley's",
       "Delicious Deals",
-      "at a Discount Price",
-      "MADE WITH WHOLE GRAINS",
+      "At a Delicious Price!",
+      "MADE WITH WHOLE GRAIN OATS",
       "Fruit & Grain",
-      "LOW IN FAT CEREAL BARS",
       "STRAWBERRY",
-      "6",
-      "INDIVIDUALLY WRAPPED BARS"
+      "6 INDIVIDUALLY WRAPPED BARS"
     ],
-    "spatial": "The hands are holding the box from the bottom corners. The box is in the center of the frame, positioned in front of the plaid tablecloth. The text 'Mrs. Freshley's' is at the top of the box, above the 'Delicious Deals' text.",
+    "spatial": "The hands are at the bottom of the frame, holding the box in the center. The box is in front of the plaid tablecloth background.",
     "parse_success": true,
-    "chunk_idx": 7,
+    "chunk_idx": 5,
     "video_id": "pTpFqu6Hjfk"
   },
   {
     "time": [
-      16,
-      18
+      6,
+      7
     ],
     "visible_entities": [
       {
-        "desc": "rectangular box with blue, red, and cream packaging featuring product photography of a fruit bar",
-        "action": "being held and rotated",
+        "desc": "hands with light skin tone holding a box",
+        "action": "holding a box",
+        "position": "bottom/foreground"
+      },
+      {
+        "desc": "rectangular box with blue, red, and yellow design, featuring text and images of fruit bars",
+        "action": "static",
         "position": "center"
       },
       {
-        "desc": "pair of hands with light skin tone",
-        "action": "holding and manipulating the box",
-        "position": "foreground"
-      },
-      {
-        "desc": "plaid tablecloth with a grid pattern of red, green, and yellow lines",
+        "desc": "tablecloth with a red and green plaid pattern",
         "action": "static",
         "position": "background"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A person is holding a box of Mrs. Freshley's Delicious Deals Fruit & Grain bars.",
+        "fact": "A pair of hands is holding a box of Mrs. Freshley's Delicious Deals Fruit & Grain bars.",
         "confidence": 1.0
       },
       {
-        "fact": "The box is rotated to show its side profile.",
+        "fact": "The box is labeled 'STRAWBERRY' flavor.",
         "confidence": 1.0
       },
       {
-        "fact": "The packaging indicates the flavor is Strawberry.",
+        "fact": "The box indicates it contains '6 INDIVIDUALLY WRAPPED BARS'.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "Mrs. Freshley's",
+      "Delicious Deals",
+      "At a Delicious Price!",
+      "MADE WITH WHOLE GRAIN OATS",
+      "Fruit & Grain",
+      "STRAWBERRY",
+      "6 INDIVIDUALLY WRAPPED BARS"
+    ],
+    "spatial": "The hands are in the foreground, holding the box in the center of the frame. The box is positioned in front of the plaid tablecloth, which serves as the background.",
+    "parse_success": true,
+    "chunk_idx": 6,
+    "video_id": "pTpFqu6Hjfk"
+  },
+  {
+    "time": [
+      7,
+      8
+    ],
+    "visible_entities": [
+      {
+        "desc": "Mrs. Freshley's Delicious Deals Fruit & Grain bar box, rectangular cardboard packaging with a blue top half and red bottom half, featuring an image of a strawberry fruit bar and text in white and blue fonts.",
+        "action": "being held",
+        "position": "center"
+      },
+      {
+        "desc": "Two hands with light skin tone, visible fingers and thumbs gripping the sides of the box.",
+        "action": "holding the box",
+        "position": "foreground"
+      },
+      {
+        "desc": "Plaid tablecloth with a grid pattern of red, green, and yellow lines.",
+        "action": "static",
+        "position": "background"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A pair of hands is holding a box of Mrs. Freshley's Delicious Deals Fruit & Grain bars.",
         "confidence": 1.0
       },
       {
-        "fact": "The box contains 6 individually wrapped bars.",
+        "fact": "The box features the flavor 'STRAWBERRY' and indicates it contains '6 INDIVIDUALLY WRAPPED BARS'.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The box is positioned centrally over a plaid tablecloth.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "Mrs. Freshley's",
+      "Delicious Deals",
+      "At a Discount Price",
+      "MADE WITH WHOLE GRAINS",
+      "Fruit & Grain",
+      "LOW IN FAT CEREAL BARS",
+      "STRAWBERRY",
+      "6 INDIVIDUALLY WRAPPED BARS"
+    ],
+    "spatial": "The box of fruit bars is held in the center of the frame by two hands. The hands are in the foreground, gripping the sides of the box. The plaid tablecloth is visible in the background, underneath and behind the box.",
+    "parse_success": true,
+    "chunk_idx": 7,
+    "video_id": "pTpFqu6Hjfk"
+  },
+  {
+    "time": [
+      8,
+      9
+    ],
+    "visible_entities": [
+      {
+        "desc": "rectangular cardboard box, red bottom half, blue top half, cream center panel, featuring 'Mrs. Freshley's' logo, 'Delicious Deals' text, and an image of a strawberry fruit bar",
+        "action": "being rotated by hands",
+        "position": "center"
+      },
+      {
+        "desc": "pair of hands with light skin tone",
+        "action": "holding and turning the box",
+        "position": "foreground"
+      },
+      {
+        "desc": "plaid fabric surface with a grid pattern of red, green, and yellow lines",
+        "action": "static",
+        "position": "background"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A person is holding a box of Mrs. Freshley's Delicious Deals bars.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The person rotates the box to show its side profile.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The box flavor is identified as Strawberry.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The package contains 6 individually wrapped bars.",
         "confidence": 1.0
       }
     ],
@@ -443,15 +438,15 @@
       "STRAWBERRY",
       "6 INDIVIDUALLY WRAPPED BARS"
     ],
-    "spatial": "The hands are in the foreground holding the box in the center of the frame. The box is positioned above the plaid tablecloth which serves as the background.",
+    "spatial": "The hands are in the foreground holding the box in the center of the frame. The box is positioned above the plaid fabric background. The text 'Mrs. Freshley's' is located at the top of the box front.",
     "parse_success": true,
     "chunk_idx": 8,
     "video_id": "pTpFqu6Hjfk"
   },
   {
     "time": [
-      18,
-      20
+      9,
+      10
     ],
     "visible_entities": [
       {
@@ -460,12 +455,12 @@
         "position": "foreground"
       },
       {
-        "desc": "rectangular card with blue and white background, featuring text, a website URL, and a nutrition facts label",
+        "desc": "rectangular card with blue gradient background, white text, and a nutrition facts table",
         "action": "being held",
         "position": "center"
       },
       {
-        "desc": "red and green plaid tablecloth",
+        "desc": "red and green plaid patterned surface",
         "action": "static",
         "position": "background"
       }
@@ -486,12 +481,22 @@
       {
         "fact": "The website 'www.mrsfreshleys.com' is printed on the card.",
         "confidence": 1.0
+      },
+      {
+        "fact": "The card is positioned above a plaid surface.",
+        "confidence": 1.0
       }
     ],
     "ocr": [
       "FOR EVERY TASTE WE HAVE",
       "THE PERFECT SNACK!",
       "www.mrsfreshleys.com",
+      "Naturally wholesome and always delicious, our snacks are",
+      "made with you in mind. Everyday we make a wide",
+      "variety of products. Our bakers use only quality ingredients",
+      "to make a delicious line of snack foods for you",
+      "and your family to enjoy.",
+      "SnackAway",
       "Nutrition Facts",
       "Serving Size 1 Cereal Bar (28g/1oz)",
       "Servings Per Container 6",
@@ -508,47 +513,133 @@
       "Total Carbohydrate 20g 7%",
       "Dietary Fiber Less than 1g 3%",
       "Sugars 10g",
-      "Protein 1g",
-      "SnackAway"
+      "Protein 1g"
     ],
-    "spatial": "The hands are in the foreground, holding the card in the center of the frame. The card is positioned in front of the red and green plaid tablecloth. The 'Nutrition Facts' label is on the right side of the card, while the promotional text is on the left.",
+    "spatial": "The hands are in the foreground holding the card. The card is centered in the frame and is positioned above the red and green plaid background. The 'Nutrition Facts' section is on the right side of the card, while the promotional text and logo are on the left side.",
     "parse_success": true,
     "chunk_idx": 9,
     "video_id": "pTpFqu6Hjfk"
   },
   {
     "time": [
-      20,
-      22
+      10,
+      11
     ],
     "visible_entities": [
       {
-        "desc": "A rectangular snack box with a light blue background, featuring bold dark blue text and a white 'Nutrition Facts' panel.",
+        "desc": "red and white cardboard box with blue text and a nutrition facts label",
         "action": "being held",
         "position": "center"
       },
       {
-        "desc": "A human hand with light skin tone, specifically the thumb and fingers.",
+        "desc": "human hand with light skin tone",
         "action": "holding the box",
         "position": "right"
       },
       {
-        "desc": "A textured surface with a red and green plaid or checkered pattern.",
+        "desc": "plaid tablecloth with a pattern of red, green, and white stripes",
         "action": "static",
         "position": "background"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A hand is holding a snack box in front of a plaid background.",
+        "fact": "A hand is holding a box of snacks.",
         "confidence": 1.0
       },
       {
-        "fact": "The box displays the website 'www.mrsfreshleys.com'.",
+        "fact": "The box displays a 'Nutrition Facts' label.",
         "confidence": 1.0
       },
       {
-        "fact": "The Nutrition Facts panel indicates a serving size of 1 Cereal Bar.",
+        "fact": "The text 'EVERY TASTE WE HAVE THE PERFECT SNACK!' is visible on the box.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The website 'www.mrsfreshleys.com' is printed on the box.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The box is positioned in front of a plaid tablecloth.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "EVERY TASTE WE HAVE",
+      "THE PERFECT SNACK!",
+      "www.mrsfreshleys.com",
+      "Nutrition Facts",
+      "Serving Size 1 Cereal Bar (28g/1oz)",
+      "Servings Per Container 6",
+      "Amount Per Serving",
+      "Calories 100",
+      "Calories from Fat 15",
+      "% Daily Value*",
+      "Total Fat 2g",
+      "3%",
+      "Saturated Fat 1g",
+      "4%",
+      "Trans Fat 0g",
+      "Polyunsaturated Fat 0g",
+      "Monounsaturated Fat 0.5g",
+      "Cholesterol 0mg",
+      "0%",
+      "Sodium 60mg",
+      "3%",
+      "Total Carbohydrate 20g",
+      "7%",
+      "Dietary Fiber Less than 1g",
+      "3%",
+      "Sugars 10g",
+      "Protein 1g",
+      "Vitamin A 10%",
+      "Vitamin C 4%",
+      "Calcium 15%",
+      "Iron 15%",
+      "wholesome and always delicious, our snacks are",
+      "red with you in mind. Everyday we make a wide",
+      "of products. Our bakers use only quality ingredients",
+      "to make a delicious line of snack foods for you",
+      "and your family to enjoy.",
+      "Away"
+    ],
+    "spatial": "The red and white box is in the center of the frame, held by a hand on the right side. The plaid tablecloth is in the background behind the box and hand. The nutrition facts label is on the right side of the box's visible face.",
+    "parse_success": true,
+    "chunk_idx": 10,
+    "video_id": "pTpFqu6Hjfk"
+  },
+  {
+    "time": [
+      11,
+      12
+    ],
+    "visible_entities": [
+      {
+        "desc": "rectangular snack box with a white background, blue text, and a nutrition facts label",
+        "action": "static",
+        "position": "center"
+      },
+      {
+        "desc": "human hand with light skin tone",
+        "action": "holding the box",
+        "position": "right"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A hand is holding a snack box.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The box displays a 'Nutrition Facts' label.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The text 'www.mrsfreshleys.com' is visible on the box.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The box indicates 'Calories 100' per serving.",
         "confidence": 1.0
       }
     ],
@@ -561,67 +652,74 @@
       "of products. Our bakers use only quality ingredients",
       "to make a delicious line of snack foods for you",
       "and your family to enjoy.",
-      "Away",
+      "kAway",
       "Nutrition Facts",
-      "Serving Size 1 Cereal Bar (28g/1oz)",
+      "Serving Size 1 Cereal Bar (35g/1oz)",
       "Servings Per Container 6",
       "Amount Per Serving",
-      "Calories 100 Calories from Fat 15",
+      "Calories 100",
+      "Calories from Fat 15",
       "% Daily Value*",
-      "Total Fat 2g 3%",
-      "Saturated Fat 1g 4%",
+      "Total Fat 2g",
+      "3%",
+      "Saturated Fat 1g",
+      "4%",
       "Trans Fat 0g",
       "Polyunsaturated Fat 0g",
       "Monounsaturated Fat 0.5g",
-      "Cholesterol 0mg 0%",
-      "Sodium 60mg 3%",
-      "Total Carbohydrate 20g 7%",
-      "Dietary Fiber Less than 1g 3%",
+      "Cholesterol 0mg",
+      "0%",
+      "Sodium 60mg",
+      "3%",
+      "Total Carbohydrate 20g",
+      "7%",
+      "Dietary Fiber Less than 1g",
+      "3%",
       "Sugars 10g",
-      "Protein 1g"
+      "Protein 1g",
+      "Vitamin A 15%",
+      "Vitamin C 4%",
+      "Calcium 15%",
+      "Iron 15%"
     ],
-    "spatial": "The snack box is held in the center of the frame, positioned in front of the red and green plaid background. A hand is visible on the right side, gripping the edge of the box. The text and nutrition label are printed on the face of the box.",
+    "spatial": "The hand is holding the right edge of the snack box. The 'Nutrition Facts' label is located on the right side of the box's visible face. The promotional text and website URL are positioned to the left of the nutrition label.",
     "parse_success": true,
-    "chunk_idx": 10,
+    "chunk_idx": 11,
     "video_id": "pTpFqu6Hjfk"
   },
   {
     "time": [
-      22,
-      24
+      12,
+      13
     ],
     "visible_entities": [
       {
-        "desc": "white rectangular snack box with blue and red text, featuring a 'Nutrition Facts' panel and promotional text",
-        "action": "static",
+        "desc": "red and white cardboard snack box with blue text and a nutrition facts label",
+        "action": "being held",
         "position": "center"
       },
       {
-        "desc": "human hand with light skin tone, fingers visible",
+        "desc": "hand with light skin tone",
         "action": "holding the box",
         "position": "right"
       },
       {
-        "desc": "woven placemat with a grid pattern of red and green squares",
+        "desc": "green and red woven placemat",
         "action": "static",
         "position": "background"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A hand is holding a white snack box.",
+        "fact": "A hand is holding a snack box.",
         "confidence": 1.0
       },
       {
-        "fact": "The box displays a 'Nutrition Facts' label on the right side.",
+        "fact": "The box displays the website 'www.mrsfreshleys.com'.",
         "confidence": 1.0
       },
       {
-        "fact": "The text 'www.mrsfreshleys.com' is visible on the box.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The box is positioned over a red and green checkered placemat.",
+        "fact": "The nutrition facts label is visible on the right side of the box.",
         "confidence": 1.0
       }
     ],
@@ -632,78 +730,98 @@
       "Nutrition Facts",
       "Serving Size 1 Cereal Bar (30g/1oz)",
       "Servings Per Container 6",
+      "Amount Per Serving",
       "Calories 100",
+      "Calories from Fat 15",
+      "% Daily Value*",
       "Total Fat 2g",
+      "3%",
       "Saturated Fat 1g",
+      "4%",
       "Trans Fat 0g",
       "Polyunsaturated Fat 0g",
       "Monounsaturated Fat 0.5g",
       "Cholesterol 0mg",
+      "0%",
       "Sodium 60mg",
+      "3%",
       "Total Carbohydrate 20g",
+      "7%",
       "Dietary Fiber Less than 1g",
+      "3%",
       "Sugars 10g",
       "Protein 1g",
       "Vitamin A 15%",
       "Vitamin C 4%",
       "Calcium 15%",
       "Iron 15%",
-      "wholesome and always delicious, our snacks are",
-      "red with you in mind. Everyday we make a wide",
-      "products. Our bakers use only quality ingredients",
-      "make a delicious line of snack foods for you",
-      "and your family to enjoy.",
-      "Away"
+      "SnackAway",
+      "Quality"
     ],
-    "spatial": "The hand is holding the right edge of the white snack box. The 'Nutrition Facts' panel is located on the right side of the box, while the promotional text is on the left. The entire scene is set against a red and green woven placemat in the background.",
+    "spatial": "The hand is on the right side of the frame, holding the snack box. The text 'EVERY TASTE WE HAVE' is above the website URL on the left side of the box. The Nutrition Facts panel is to the right of the promotional text. The box is positioned in front of the green and red placemat.",
     "parse_success": true,
-    "chunk_idx": 11,
+    "chunk_idx": 12,
     "video_id": "pTpFqu6Hjfk"
   },
   {
     "time": [
-      24,
-      26
+      13,
+      14
     ],
     "visible_entities": [
       {
-        "desc": "rectangular snack package with a white background, blue text, and a red border, featuring a 'Nutrition Facts' table and promotional text",
+        "desc": "white cardboard box with blue and red text, featuring a 'Nutrition Facts' label and product images",
         "action": "static",
         "position": "center"
       },
       {
-        "desc": "human hand with light skin tone, fingers curled around the edge of the package",
-        "action": "holding the package",
+        "desc": "human hand with light skin tone",
+        "action": "holding the box",
         "position": "right"
       },
       {
-        "desc": "textured surface with a grid pattern in shades of green and red",
+        "desc": "dark brown chocolate-covered snack bar with white filling",
+        "action": "static",
+        "position": "bottom"
+      },
+      {
+        "desc": "green and red plaid tablecloth",
         "action": "static",
         "position": "background"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A hand is holding a snack package steady.",
+        "fact": "A hand is holding a white snack box.",
         "confidence": 1.0
       },
       {
-        "fact": "The package displays a 'Nutrition Facts' label on the right side.",
+        "fact": "The box displays a 'Nutrition Facts' panel on the right side.",
         "confidence": 1.0
       },
       {
-        "fact": "The text 'THE PERFECT SNACK!' is printed in blue capital letters.",
+        "fact": "The text 'THE PERFECT SNACK!' is visible in blue capital letters.",
         "confidence": 1.0
       },
       {
-        "fact": "The website 'www.mrsfreshleys.com' is visible on the package.",
+        "fact": "The website 'www.mrsfreshleys.com' is printed on the box.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The nutrition label indicates 100 calories per serving.",
         "confidence": 1.0
       }
     ],
     "ocr": [
-      "EVERY TASTE WE HAVE",
+      "R EVERY TASTE WE HAVE",
       "THE PERFECT SNACK!",
       "www.mrsfreshleys.com",
+      "oist, wholesome and always delicious, our snacks are",
+      "repared with you in mind. Everyday we make a wide",
+      "ety of products. Our bakers use only quality ingredients",
+      "to make a delicious line of snack foods for you",
+      "and your family to enjoy.",
+      "SnackAway",
       "Nutrition Facts",
       "Serving Size 1 Cereal Bar (28g/1oz)",
       "Servings Per Container 8",
@@ -731,139 +849,50 @@
       "Vitamin A 15%",
       "Vitamin C 4%",
       "Calcium 15%",
-      "Iron 15%",
-      "ckAway",
-      "Quality"
+      "Iron 15%"
     ],
-    "spatial": "The hand is on the right side of the frame, holding the snack package. The 'Nutrition Facts' table is located on the right side of the package, while the promotional text is on the left. The package is positioned in front of a textured green and red background.",
-    "parse_success": true,
-    "chunk_idx": 12,
-    "video_id": "pTpFqu6Hjfk"
-  },
-  {
-    "time": [
-      26,
-      28
-    ],
-    "visible_entities": [
-      {
-        "desc": "white cardboard box with blue and red text, featuring a nutrition facts panel and product description",
-        "action": "static",
-        "position": "center"
-      },
-      {
-        "desc": "human thumb with light skin tone",
-        "action": "holding the box",
-        "position": "right"
-      },
-      {
-        "desc": "image of chocolate-covered snack cakes with white cream filling",
-        "action": "static",
-        "position": "bottom"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "A person is holding a Mrs. Freshley's snack box.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The box displays a nutrition facts label on the right side.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The text 'THE PERFECT SNACK!' is visible in blue capital letters.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The website 'www.mrsfreshleys.com' is printed on the box.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [
-      "R EVERY TASTE WE HAVE",
-      "THE PERFECT SNACK!",
-      "www.mrsfreshleys.com",
-      "Nutrition Facts",
-      "Serving Size 1 Cereal Bar (28g/1oz)",
-      "Servings Per Container 8",
-      "Amount Per Serving",
-      "Calories 100 Calories from Fat 15",
-      "% Daily Value*",
-      "Total Fat 2g 3%",
-      "Saturated Fat 1g 4%",
-      "Trans Fat 0g",
-      "Polyunsaturated Fat 0g",
-      "Monounsaturated Fat 0.5g",
-      "Cholesterol 0mg 0%",
-      "Sodium 60mg 3%",
-      "Total Carbohydrate 20g 7%",
-      "Dietary Fiber Less than 1g 3%",
-      "Sugars 10g",
-      "Protein 1g",
-      "Vitamin A 15% Vitamin C 4%",
-      "Calcium 15% Iron 15%",
-      "SnackAway",
-      "Quality",
-      "To",
-      "with"
-    ],
-    "spatial": "The thumb is on the right edge of the box, holding it in place. The nutrition facts panel is located on the right side of the box, while the marketing text is on the left. The image of the snack cakes is positioned at the bottom of the box, below the text.",
+    "spatial": "The hand is holding the right edge of the box. The 'Nutrition Facts' panel is located on the right side of the box, while the promotional text is on the left. The image of the chocolate snack is at the bottom of the box. The box is positioned in front of a plaid tablecloth background.",
     "parse_success": true,
     "chunk_idx": 13,
     "video_id": "pTpFqu6Hjfk"
   },
   {
     "time": [
-      28,
-      30
+      14,
+      15
     ],
     "visible_entities": [
       {
-        "desc": "rectangular product packaging box, primarily white with a blue gradient background on the left side, featuring printed text and images of chocolate-covered snack cakes",
-        "action": "static",
-        "position": "center"
-      },
-      {
-        "desc": "human thumb with light skin tone, short fingernail",
+        "desc": "hand with light skin tone holding the right edge of a box",
         "action": "holding the box",
         "position": "right"
       },
       {
-        "desc": "Nutrition Facts table, black text on white background with horizontal lines",
+        "desc": "rectangular snack box with a blue background, white text, and a nutrition facts label",
         "action": "static",
-        "position": "right"
+        "position": "center"
       },
       {
-        "desc": "promotional text block, bold dark blue font",
+        "desc": "red and green patterned surface, likely a tablecloth",
         "action": "static",
-        "position": "left"
-      },
-      {
-        "desc": "SnackAway logo, stylized red and orange font",
-        "action": "static",
-        "position": "bottom left"
+        "position": "background"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A hand is holding the back of a snack food box.",
+        "fact": "A hand is holding the right side of the snack box.",
         "confidence": 1.0
       },
       {
-        "fact": "The box displays the website 'www.mrsfreshleys.com'.",
+        "fact": "The box features a 'Nutrition Facts' label on the right side.",
         "confidence": 1.0
       },
       {
-        "fact": "The Nutrition Facts panel indicates a serving size of 1 Cereal Bar (28g/1oz).",
+        "fact": "The box displays the website 'www.mrsfreshleys.com' in the center.",
         "confidence": 1.0
       },
       {
         "fact": "The text 'FOR EVERY TASTE WE HAVE THE PERFECT SNACK!' is visible at the top left.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The box lists 'Total Fat 2g' and 'Sodium 60mg'.",
         "confidence": 1.0
       }
     ],
@@ -889,42 +918,48 @@
       "Total Carbohydrate 20g",
       "Dietary Fiber Less than 1g",
       "Sugars 10g",
-      "Protein 1g",
-      "Vitamin A 15%",
-      "Vitamin C 4%",
-      "Calcium 15%",
-      "Iron 15%"
+      "Protein 1g"
     ],
-    "spatial": "The promotional text block is located on the left side of the box, above the SnackAway logo. The Nutrition Facts table is positioned to the right of the promotional text. A thumb is visible on the far right edge, holding the box.",
+    "spatial": "The hand is on the right edge of the snack box. The 'Nutrition Facts' label is to the right of the promotional text. The snack box is in front of the red and green patterned background.",
     "parse_success": true,
     "chunk_idx": 14,
     "video_id": "pTpFqu6Hjfk"
   },
   {
     "time": [
-      30,
-      32
+      15,
+      16
     ],
     "visible_entities": [
       {
-        "desc": "hand with light skin tone holding the box",
+        "desc": "hand with light skin tone holding a box",
         "action": "holding the box",
-        "position": "right"
+        "position": "right/foreground"
       },
       {
-        "desc": "white cardboard snack box with blue text and images of chocolate-covered snacks",
+        "desc": "white cardboard box with blue text and images of snack cakes",
         "action": "being held",
         "position": "center"
       },
       {
-        "desc": "red and green patterned surface",
+        "desc": "Nutrition Facts label with black text on white background",
         "action": "static",
-        "position": "background"
+        "position": "right side of box"
+      },
+      {
+        "desc": "SnackAway logo in red and orange text",
+        "action": "static",
+        "position": "bottom left of box"
+      },
+      {
+        "desc": "images of chocolate and vanilla snack cakes",
+        "action": "static",
+        "position": "bottom left of box"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A hand is holding a snack box.",
+        "fact": "A hand is holding a white box.",
         "confidence": 1.0
       },
       {
@@ -936,11 +971,27 @@
         "confidence": 1.0
       },
       {
-        "fact": "The Nutrition Facts panel is visible on the right side of the box.",
+        "fact": "The Nutrition Facts label shows 100 Calories per serving.",
         "confidence": 1.0
       },
       {
-        "fact": "The box features images of chocolate-covered treats, including one shaped like a football.",
+        "fact": "The Nutrition Facts label lists Total Fat as 2g.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The Nutrition Facts label lists Sodium as 60mg.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The Nutrition Facts label lists Total Carbohydrate as 20g.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The Nutrition Facts label lists Protein as 1g.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The brand name 'SnackAway' is visible on the box.",
         "confidence": 1.0
       }
     ],
@@ -962,8 +1013,8 @@
       "Saturated Fat 1g",
       "4%",
       "Trans Fat 0g",
-      "Polyunsaturated Fat",
-      "Monounsaturated Fat",
+      "Polyunsaturated Fat 0g",
+      "Monounsaturated Fat 0.5g",
       "Cholesterol 0mg",
       "0%",
       "Sodium 60mg",
@@ -978,66 +1029,62 @@
       "Calcium 15%",
       "Iron 15%"
     ],
-    "spatial": "The hand is on the right side of the frame, holding the white snack box. The box is in the center foreground, positioned in front of a red and green patterned surface. The text 'FOR EVERY TASTE WE HAVE THE PERFECT SNACK!' is above the website address on the box.",
+    "spatial": "The hand is on the right side of the frame, holding the white box. The Nutrition Facts label is on the right side of the box, next to the promotional text. The 'SnackAway' logo and images of snack cakes are at the bottom left of the box, below the website address.",
     "parse_success": true,
     "chunk_idx": 15,
     "video_id": "pTpFqu6Hjfk"
   },
   {
     "time": [
-      32,
-      34
+      16,
+      17
     ],
     "visible_entities": [
       {
-        "desc": "rectangular snack box, red top, white side panel with blue text and nutrition label",
-        "action": "being held and rotated",
-        "position": "center"
-      },
-      {
-        "desc": "hands with light skin tone",
-        "action": "holding the box",
+        "desc": "hands with light skin tone holding a box",
+        "action": "holding and tilting the box",
         "position": "foreground"
       },
       {
-        "desc": "plaid tablecloth with green, red, and white grid pattern",
+        "desc": "rectangular cardboard box with red top, white side panel, and blue text",
+        "action": "being held and tilted",
+        "position": "center"
+      },
+      {
+        "desc": "plaid tablecloth with red, green, and white grid pattern",
         "action": "static",
         "position": "background"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "hands are holding and rotating a snack box",
+        "fact": "Hands are holding a box and tilting it to show the side panel.",
         "confidence": 1.0
       },
       {
-        "fact": "the box displays a nutrition facts label",
+        "fact": "The box has a red top and a white side panel with text.",
         "confidence": 1.0
       },
       {
-        "fact": "the box has a red top and white side panel",
-        "confidence": 1.0
-      },
-      {
-        "fact": "the tablecloth has a green and red plaid pattern",
+        "fact": "The box is positioned above a plaid tablecloth.",
         "confidence": 1.0
       }
     ],
     "ocr": [
       "TASTE WE HAVE",
       "PERFECT SNACK!",
-      "www.mystrawberrys.com",
+      "www.nystevia.com",
       "Nutrition Facts"
     ],
-    "spatial": "The hands are in the foreground holding the snack box. The snack box is positioned above the plaid tablecloth. The nutrition facts label is on the right side of the box's visible face.",
+    "spatial": "The hands are in the foreground, holding the box. The box is positioned above the plaid tablecloth, which is in the background. The text 'Nutrition Facts' is visible on the right side of the box's white panel.",
     "parse_success": true,
     "chunk_idx": 16,
     "video_id": "pTpFqu6Hjfk"
   },
   {
     "time": [
-      34,
-      36
+      17,
+      18
     ],
     "visible_entities": [
       {
@@ -1051,26 +1098,22 @@
         "position": "center"
       },
       {
-        "desc": "red and green plaid tablecloth",
+        "desc": "green and red plaid tablecloth with gold grid lines",
         "action": "static",
         "position": "background"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "hands are opening the top flap of the box",
+        "fact": "A person is using their hands to open the top flap of a red and blue box.",
         "confidence": 1.0
       },
       {
-        "fact": "the box has a 'Nutrition Facts' label",
+        "fact": "The box features a 'Nutrition Facts' label on its side.",
         "confidence": 1.0
       },
       {
-        "fact": "the box has a 'Delicious Deals' logo",
-        "confidence": 1.0
-      },
-      {
-        "fact": "the box is red with blue accents",
+        "fact": "The box has a yellow section with the text 'Delicious Deals'.",
         "confidence": 1.0
       }
     ],
@@ -1078,74 +1121,71 @@
       "Delicious Deals",
       "Nutrition Facts"
     ],
-    "spatial": "The hands are in the foreground, holding the box. The box is in the center of the frame, positioned above the plaid tablecloth. The 'Delicious Deals' logo is on the top flap of the box, while the 'Nutrition Facts' label is on the side panel.",
+    "spatial": "The hands are in the foreground, holding and manipulating the box which is positioned in the center. The box is situated above the plaid tablecloth that serves as the background.",
     "parse_success": true,
     "chunk_idx": 17,
     "video_id": "pTpFqu6Hjfk"
   },
   {
     "time": [
-      36,
-      38
+      18,
+      19
     ],
     "visible_entities": [
       {
         "desc": "hands with light skin tone",
-        "action": "holding and opening a box",
-        "position": "center/foreground"
+        "action": "manipulating and opening a box",
+        "position": "foreground"
       },
       {
-        "desc": "rectangular cardboard box, red and blue packaging with white text and images of pastries",
+        "desc": "rectangular cardboard box, red and white with blue gradient, featuring images of pastries and text",
         "action": "being opened",
         "position": "center"
       },
       {
-        "desc": "plastic-wrapped food item, light brown/beige color",
-        "action": "being pulled out",
-        "position": "inside box"
-      },
-      {
-        "desc": "plaid tablecloth, pattern of red, green, and yellow lines",
+        "desc": "multicolored plaid tablecloth with green, red, and yellow squares",
         "action": "static",
-        "position": "background/bottom"
+        "position": "background"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A person is opening a red and blue box.",
+        "fact": "A person is using their hands to open a red and white box.",
         "confidence": 1.0
       },
       {
-        "fact": "The person is pulling a plastic-wrapped food item out of the box.",
+        "fact": "The box features the text 'DELICIOUS BY DESIGN' and 'THE PERFECT SNACK!'.",
         "confidence": 1.0
       },
       {
-        "fact": "The box features text that reads 'WHEN WE HAVE THE PERFECT SNACK!' and a website URL.",
+        "fact": "The website 'www.freshleys.com' is printed on the side of the box.",
         "confidence": 1.0
       },
       {
-        "fact": "The box displays images of chocolate-covered and plain pastries.",
+        "fact": "Images of chocolate-covered and glazed pastries are visible on the packaging.",
         "confidence": 1.0
       },
       {
-        "fact": "The action takes place over a plaid tablecloth.",
+        "fact": "The box is positioned over a plaid tablecloth.",
         "confidence": 1.0
       }
     ],
     "ocr": [
-      "WHEN WE HAVE THE PERFECT SNACK!",
+      "DELICIOUS BY DESIGN",
+      "WE HAVE",
+      "THE PERFECT SNACK!",
       "www.freshleys.com",
       "Nutrition Facts"
     ],
-    "spatial": "The hands are holding the box in the center of the frame. The plastic-wrapped food item is inside the box and is being pulled out by the hands. The box is positioned above the plaid tablecloth which is visible in the background.",
+    "spatial": "The hands are in the foreground, holding and manipulating the box. The box is positioned above the multicolored plaid tablecloth. The text and pastry images are printed on the surface of the box.",
     "parse_success": true,
     "chunk_idx": 18,
     "video_id": "pTpFqu6Hjfk"
   },
   {
     "time": [
-      38,
-      40
+      19,
+      20
     ],
     "visible_entities": [
       {
@@ -1154,12 +1194,12 @@
         "position": "foreground"
       },
       {
-        "desc": "rectangular cardboard box, red top flap, white body with blue and pink graphics, featuring an image of a chocolate bar",
-        "action": "being held and opened",
+        "desc": "rectangular cardboard box, red top section, white bottom section with blue and pink accents, featuring product images",
+        "action": "being folded",
         "position": "center"
       },
       {
-        "desc": "plaid tablecloth with green, red, and beige stripes",
+        "desc": "plaid tablecloth with green, red, and white pattern",
         "action": "static",
         "position": "background"
       }
@@ -1170,47 +1210,7 @@
         "confidence": 1.0
       },
       {
-        "fact": "The person is using their thumbs to pull apart the top flap of the box.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The box features a logo with the text 'Delicious Deals'.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [
-      "Delicious Deals"
-    ],
-    "spatial": "The hands are in the foreground, holding the box in the center of the frame. The box is positioned above the plaid tablecloth background.",
-    "parse_success": true,
-    "chunk_idx": 19,
-    "video_id": "pTpFqu6Hjfk"
-  },
-  {
-    "time": [
-      40,
-      42
-    ],
-    "visible_entities": [
-      {
-        "desc": "hands with light skin tone",
-        "action": "manipulating a box",
-        "position": "center/foreground"
-      },
-      {
-        "desc": "rectangular cardboard box, red, white, and blue, with 'Delicious Deals' text and cookie images",
-        "action": "being opened",
-        "position": "center"
-      },
-      {
-        "desc": "plaid tablecloth with red, green, and beige grid pattern",
-        "action": "static",
-        "position": "background"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "A person is opening the top flap of a cardboard box.",
+        "fact": "The person is folding the top flap of the box.",
         "confidence": 1.0
       },
       {
@@ -1218,7 +1218,95 @@
         "confidence": 1.0
       },
       {
+        "fact": "The box displays images of chocolate-covered ice cream bars.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "Delicious Deals"
+    ],
+    "spatial": "The hands are in the foreground, holding the box in the center. The box is positioned above the plaid tablecloth which serves as the background.",
+    "parse_success": true,
+    "chunk_idx": 19,
+    "video_id": "pTpFqu6Hjfk"
+  },
+  {
+    "time": [
+      20,
+      21
+    ],
+    "visible_entities": [
+      {
+        "desc": "hands with light skin tone",
+        "action": "manipulating a box",
+        "position": "foreground"
+      },
+      {
+        "desc": "rectangular cardboard box, red and white with blue accents, featuring images of cookies and text",
+        "action": "being opened",
+        "position": "center"
+      },
+      {
+        "desc": "red and green plaid tablecloth",
+        "action": "static",
+        "position": "background"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A person is using their hands to pull open the top flap of a cardboard box.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The box features the text 'Delicious Deals' on a yellow background.",
+        "confidence": 1.0
+      },
+      {
         "fact": "The box displays images of chocolate-covered cookies.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "Delicious Deals"
+    ],
+    "spatial": "The hands are in the foreground, holding and manipulating the box which is positioned in the center. The box is situated above the red and green plaid tablecloth that serves as the background.",
+    "parse_success": true,
+    "chunk_idx": 20,
+    "video_id": "pTpFqu6Hjfk"
+  },
+  {
+    "time": [
+      21,
+      22
+    ],
+    "visible_entities": [
+      {
+        "desc": "person's hand with light skin tone",
+        "action": "opening the package",
+        "position": "left/foreground"
+      },
+      {
+        "desc": "rectangular food package with red, blue, and white design, featuring images of biscuits and a barcode",
+        "action": "being held and opened",
+        "position": "right/center"
+      },
+      {
+        "desc": "plaid tablecloth with a grid pattern of red, green, and yellow lines",
+        "action": "static",
+        "position": "background"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A person's hand is manipulating the top edge of a food package.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The package is being opened or torn at the top.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The package features a barcode and images of biscuits on the front.",
         "confidence": 1.0
       },
       {
@@ -1226,71 +1314,27 @@
         "confidence": 1.0
       }
     ],
-    "ocr": [
-      "Delicious Deals"
-    ],
-    "spatial": "The hands are in the foreground, holding and manipulating the box. The box is positioned above the plaid tablecloth. The text 'Delicious Deals' is visible on the upper right side of the box.",
-    "parse_success": true,
-    "chunk_idx": 20,
-    "video_id": "pTpFqu6Hjfk"
-  },
-  {
-    "time": [
-      42,
-      44
-    ],
-    "visible_entities": [
-      {
-        "desc": "hand with light skin tone",
-        "action": "opening the package",
-        "position": "left/foreground"
-      },
-      {
-        "desc": "rectangular package with red, white, and blue design, featuring images of wafer cookies",
-        "action": "being opened",
-        "position": "right/center"
-      },
-      {
-        "desc": "plaid tablecloth with red, green, and gold grid pattern",
-        "action": "static",
-        "position": "background"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "A hand is opening the top flap of a rectangular package.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The package has images of wafer cookies on the front.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The package is resting on a plaid tablecloth.",
-        "confidence": 1.0
-      }
-    ],
     "ocr": [],
-    "spatial": "The hand is to the left of the package and is holding its top flap. The package is on the plaid tablecloth.",
+    "spatial": "The person's hand is to the left of the food package and is holding it. The package is positioned above the plaid tablecloth.",
     "parse_success": true,
     "chunk_idx": 21,
     "video_id": "pTpFqu6Hjfk"
   },
   {
     "time": [
-      44,
-      46
+      22,
+      23
     ],
     "visible_entities": [
       {
-        "desc": "person's hand and forearm with light skin tone",
-        "action": "reaching into a box",
-        "position": "left/center"
+        "desc": "person's arm with light skin tone",
+        "action": "reaching into the box",
+        "position": "center"
       },
       {
-        "desc": "rectangular cardboard box with red top rim, blue and white sides featuring images of chocolate-covered cookies",
+        "desc": "rectangular cardboard box, red and white with blue accents, featuring images of chocolate-covered cookies",
         "action": "being held open",
-        "position": "center/right"
+        "position": "right"
       },
       {
         "desc": "red and green plaid tablecloth with a grid pattern",
@@ -1300,7 +1344,7 @@
     ],
     "atomic_facts": [
       {
-        "fact": "A person's hand reaches inside the open cardboard box.",
+        "fact": "A person is reaching their hand inside a red and white box.",
         "confidence": 1.0
       },
       {
@@ -1308,20 +1352,20 @@
         "confidence": 1.0
       },
       {
-        "fact": "The box has a distinct red rim along the top edge.",
+        "fact": "The scene takes place on a plaid surface.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The person's hand is reaching into the center of the box. The box is positioned above the plaid tablecloth. The box is to the right of the person's forearm.",
+    "spatial": "The person's arm is reaching into the box from the left side. The box is held in the right foreground, positioned above the plaid tablecloth.",
     "parse_success": true,
     "chunk_idx": 22,
     "video_id": "pTpFqu6Hjfk"
   },
   {
     "time": [
-      46,
-      48
+      23,
+      24
     ],
     "visible_entities": [
       {
@@ -1330,8 +1374,8 @@
         "position": "center/foreground"
       },
       {
-        "desc": "blue wrapper with yellow and white text, crinkled texture",
-        "action": "being torn open",
+        "desc": "blue wrapper with yellow and white text, partially torn open",
+        "action": "being held and opened",
         "position": "center"
       },
       {
@@ -1347,1062 +1391,150 @@
     ],
     "atomic_facts": [
       {
-        "fact": "Hands are tearing open the top of a blue wrapper.",
+        "fact": "A person's hands are tearing open the top of a blue wrapper.",
         "confidence": 1.0
       },
       {
-        "fact": "The wrapper is labeled 'Delicious Deals'.",
+        "fact": "The wrapper has the text 'Delicious Deals' and 'Fruit & Grain' visible.",
         "confidence": 1.0
       },
       {
-        "fact": "The wrapper is labeled 'Fruit & Grain'.",
+        "fact": "The flavor 'STRAWBERRY' is printed on the wrapper.",
         "confidence": 1.0
       },
       {
-        "fact": "The wrapper is labeled 'STRAWBERRY'.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "A box is sitting on the table in the background.",
+        "fact": "A box of pastries sits on the table in the background.",
         "confidence": 1.0
       }
     ],
     "ocr": [
       "Delicious Deals",
       "Fruit & Grain",
-      "STRAWBERRY"
+      "STRAWBERRY",
+      "DELICIOUSLY LIGHT & FLUFFY",
+      "MADE WITH WHOLE GRAIN"
     ],
-    "spatial": "The hands are in the foreground, holding the blue wrapper in the center of the frame. The wrapper is positioned in front of the white and blue box, which sits on the plaid tablecloth to the right.",
+    "spatial": "The hands are in the foreground holding the blue wrapper. The wrapper is positioned in front of the white and blue box. The box is to the right of the wrapper and rests on the plaid tablecloth.",
     "parse_success": true,
     "chunk_idx": 23,
     "video_id": "pTpFqu6Hjfk"
   },
   {
     "time": [
-      48,
-      50
+      24,
+      25
     ],
     "visible_entities": [
       {
-        "desc": "hand with light skin tone, short fingernails",
-        "action": "holding a blue tube",
+        "desc": "hand with light skin tone and short fingernails",
+        "action": "holding a blue wrapper",
         "position": "left/foreground"
       },
       {
-        "desc": "light blue plastic tube, crimped at the end, with black text",
-        "action": "being held",
+        "desc": "bright blue plastic wrapper with black text",
+        "action": "being held horizontally",
         "position": "center/foreground"
       },
       {
-        "desc": "rectangular cardboard box, white with blue and pink accents, featuring an image of a dessert",
+        "desc": "rectangular cardboard box with white, blue, and pink colors, featuring images of ice cream",
         "action": "static",
         "position": "right/background"
       },
       {
-        "desc": "plaid tablecloth with a grid pattern of green, pink, and white lines",
+        "desc": "plaid tablecloth with a grid pattern of green, pink, and yellow lines",
         "action": "static",
         "position": "background"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A hand is holding a light blue tube horizontally.",
+        "fact": "A hand is holding a blue wrapper horizontally.",
         "confidence": 1.0
       },
       {
-        "fact": "The tube has the text 'STRAWBERRY 2B' printed on it.",
+        "fact": "The wrapper has the text 'STRAWBERRY 2B' printed on it.",
         "confidence": 1.0
       },
       {
-        "fact": "A box with a dessert image is resting on the tablecloth.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The tablecloth has a green and pink plaid pattern.",
+        "fact": "A box of ice cream is sitting on the tablecloth in the background.",
         "confidence": 1.0
       }
     ],
     "ocr": [
       "STRAWBERRY 2B"
     ],
-    "spatial": "The hand is in the foreground on the left, holding the blue tube. The blue tube is positioned in front of the box. The box is on the right side of the frame, resting on the plaid tablecloth which covers the surface below all other entities.",
+    "spatial": "The hand is in the foreground on the left, holding the blue wrapper which extends towards the right. The ice cream box is positioned in the background to the right of the wrapper. Both the hand and the box are situated above the plaid tablecloth.",
     "parse_success": true,
     "chunk_idx": 24,
     "video_id": "pTpFqu6Hjfk"
   },
   {
     "time": [
-      50,
-      52
+      25,
+      26
     ],
     "visible_entities": [
       {
-        "desc": "human hand with light skin tone and short fingernails",
+        "desc": "hand with light skin tone and short fingernails",
         "action": "holding a blue packet",
         "position": "foreground"
       },
       {
-        "desc": "long, narrow, light blue packet with a glossy wrapper",
+        "desc": "long, narrow, light blue packet with a smooth, glossy surface and white crimped edges",
         "action": "being held horizontally",
         "position": "center"
       },
       {
-        "desc": "rectangular cardboard box with white, blue, and red colors, featuring an image of a dessert",
+        "desc": "rectangular cardboard box, primarily white with blue and red accents, featuring an image of a dessert and nutritional information text",
         "action": "static",
         "position": "background right"
       },
       {
-        "desc": "woven tablecloth with a plaid pattern in red, green, and white",
+        "desc": "tablecloth with a woven texture and a plaid pattern of red, green, and white lines",
         "action": "static",
         "position": "background"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A hand is holding a blue packet horizontally in the foreground.",
+        "fact": "A hand is holding a blue packet horizontally.",
         "confidence": 1.0
       },
       {
-        "fact": "The text 'STRAWBERRY 2B' is printed in black on the blue packet.",
+        "fact": "The blue packet has the text 'STRAWBERRY 2B' printed on it.",
         "confidence": 1.0
       },
       {
-        "fact": "A dessert box is sitting on the tablecloth in the background.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The tablecloth has a red and green plaid pattern.",
+        "fact": "A box of dessert mix is sitting on the tablecloth in the background.",
         "confidence": 1.0
       }
     ],
     "ocr": [
       "STRAWBERRY 2B"
     ],
-    "spatial": "The hand holding the blue packet is in the foreground, positioned to the left of the dessert box. The dessert box is on the plaid tablecloth in the background on the right side. The blue packet is held horizontally in front of the tablecloth.",
+    "spatial": "The hand is in the foreground, holding the blue packet. The blue packet is positioned in front of the tablecloth and below the box. The box is to the right of the hand and rests on the tablecloth.",
     "parse_success": true,
     "chunk_idx": 25,
     "video_id": "pTpFqu6Hjfk"
   },
   {
     "time": [
-      52,
-      54
+      26,
+      27
     ],
     "visible_entities": [
       {
-        "desc": "hands with light skin tone and short fingernails",
-        "action": "holding and rotating a blue wrapper",
+        "desc": "hands with light skin tone holding a blue wrapper",
+        "action": "holding and rotating the wrapper",
         "position": "foreground"
       },
       {
-        "desc": "long, cylindrical, bright blue wrapper with a smooth, slightly crinkled texture",
-        "action": "being rotated by hands",
-        "position": "center"
-      },
-      {
-        "desc": "rectangular cardboard box, white with blue and red accents, featuring an image of a dessert",
-        "action": "static",
-        "position": "background right"
-      },
-      {
-        "desc": "tablecloth with a plaid pattern consisting of intersecting red, green, and white lines",
-        "action": "static",
-        "position": "background"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "A pair of hands is holding a long, blue wrapper.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The hands rotate the wrapper to reveal text on its surface.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The text 'STRAWBERRY 76' is printed in black on the blue wrapper.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "A product box is resting on the plaid tablecloth in the background.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [
-      "STRAWBERRY 76"
-    ],
-    "spatial": "The hands are in the foreground, holding the blue wrapper in the center of the frame. The wrapper is positioned in front of the plaid tablecloth. The product box is to the right of the wrapper and sits on the tablecloth in the background.",
-    "parse_success": true,
-    "chunk_idx": 26,
-    "video_id": "pTpFqu6Hjfk"
-  },
-  {
-    "time": [
-      54,
-      56
-    ],
-    "visible_entities": [
-      {
-        "desc": "light blue rectangular snack wrapper with 'Freshley's Delicious Deals' branding in script font and an image of a biscuit",
-        "action": "being held and rotated",
-        "position": "center"
-      },
-      {
-        "desc": "human hands with visible fingers and fingernails",
-        "action": "holding the snack wrapper",
-        "position": "foreground"
-      },
-      {
-        "desc": "plaid tablecloth with a grid pattern of red, green, and white lines",
-        "action": "static",
-        "position": "background"
-      },
-      {
-        "desc": "white and blue cardboard box corner with barcode and text",
-        "action": "static",
-        "position": "top right"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "A person is holding a blue snack wrapper with both hands.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The wrapper is being rotated slightly to show the front label.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The text 'Freshley's Delicious Deals' is visible on the wrapper.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The text 'Fruit & Grain' is visible on the wrapper.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The background surface is a red and green plaid tablecloth.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [
-      "Freshley's",
-      "Delicious Deals",
-      "Fruit & Grain",
-      "Sultana"
-    ],
-    "spatial": "The hands are in the foreground holding the blue snack wrapper. The wrapper is positioned in the center of the frame, in front of the plaid tablecloth. A white box is located in the top right corner, behind the wrapper.",
-    "parse_success": true,
-    "chunk_idx": 27,
-    "video_id": "pTpFqu6Hjfk"
-  },
-  {
-    "time": [
-      56,
-      58
-    ],
-    "visible_entities": [
-      {
-        "desc": "hands with light skin tone",
-        "action": "holding and rotating a snack bar",
-        "position": "foreground"
-      },
-      {
-        "desc": "blue rectangular snack wrapper with a beige logo area and an image of a biscuit",
-        "action": "being manipulated",
-        "position": "center"
-      },
-      {
-        "desc": "white and blue cardboard box with text and a barcode",
-        "action": "static",
-        "position": "background right"
-      },
-      {
-        "desc": "red and green plaid tablecloth with a grid pattern",
-        "action": "static",
-        "position": "background"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "A person is holding a blue snack wrapper with both hands.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The hands are rotating the wrapper to show the front label.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The wrapper features the text 'Delicious Deals' and 'Fruit & Grain'.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "A box is resting on the tablecloth in the background.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [
-      "Delicious Deals",
-      "Fruit & Grain",
-      "CHOCOLATE WHOLE",
-      "GRAIN SNACK",
-      "WITH FRUIT FILLING"
-    ],
-    "spatial": "The hands are in the foreground holding the blue snack wrapper. The wrapper is positioned in front of the white and blue box. The box is to the right of the wrapper and rests on the plaid tablecloth.",
-    "parse_success": true,
-    "chunk_idx": 28,
-    "video_id": "pTpFqu6Hjfk"
-  },
-  {
-    "time": [
-      58,
-      60
-    ],
-    "visible_entities": [
-      {
-        "desc": "hands with light skin tone",
-        "action": "holding a snack package",
-        "position": "foreground"
-      },
-      {
-        "desc": "blue snack wrapper with a yellow label, featuring an image of a rectangular biscuit",
-        "action": "being held",
-        "position": "center"
-      },
-      {
-        "desc": "red, green, and yellow plaid patterned tablecloth",
-        "action": "static",
-        "position": "background"
-      },
-      {
-        "desc": "white and blue box with a barcode",
-        "action": "static",
-        "position": "background"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "A person is holding a blue snack package horizontally with both hands.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The package has the text 'Delicious Deals' and 'Fruit & Grain' printed on it.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The background consists of a plaid tablecloth.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [
-      "Delicious Deals",
-      "Fruit & Grain"
-    ],
-    "spatial": "The hands are in the foreground holding the blue snack package. The package is positioned above the plaid tablecloth. A white box is visible in the background to the right of the snack package.",
-    "parse_success": true,
-    "chunk_idx": 29,
-    "video_id": "pTpFqu6Hjfk"
-  },
-  {
-    "time": [
-      60,
-      62
-    ],
-    "visible_entities": [
-      {
-        "desc": "hands with light skin tone and short fingernails",
-        "action": "holding and manipulating a snack wrapper",
-        "position": "foreground"
-      },
-      {
-        "desc": "blue snack wrapper with a beige label featuring red and blue text, and an image of a biscuit",
-        "action": "being held and turned",
-        "position": "center"
-      },
-      {
-        "desc": "red, green, and yellow plaid tablecloth",
-        "action": "static",
-        "position": "background"
-      },
-      {
-        "desc": "white and blue box with a barcode and text",
-        "action": "static",
-        "position": "background right"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "A person is holding a blue snack wrapper with both hands.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The wrapper is being turned over, revealing the back side in the second frame.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The text 'Delicious Deals' is visible on the front of the wrapper.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The text 'Fruits & Grains' is visible on the front of the wrapper.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The text 'Bickley's' is visible in a red logo on the wrapper.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [
-      "Bickley's",
-      "Delicious Deals",
-      "Fruits & Grains"
-    ],
-    "spatial": "The hands are in the foreground, holding the blue snack wrapper. The wrapper is positioned in front of the plaid tablecloth. A white and blue box is visible in the background, to the right of the wrapper.",
-    "parse_success": true,
-    "chunk_idx": 30,
-    "video_id": "pTpFqu6Hjfk"
-  },
-  {
-    "time": [
-      62,
-      64
-    ],
-    "visible_entities": [
-      {
-        "desc": "hands with light skin tone",
-        "action": "holding a blue snack wrapper",
-        "position": "foreground"
-      },
-      {
-        "desc": "blue rectangular snack wrapper with a yellow label",
-        "action": "being held and manipulated",
-        "position": "center"
-      },
-      {
-        "desc": "white and blue box with product imagery",
-        "action": "static",
-        "position": "background right"
-      },
-      {
-        "desc": "green and pink plaid tablecloth",
-        "action": "static",
-        "position": "background"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "A pair of hands is holding a blue snack wrapper labeled 'Frischley's Delicious Deals'.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The wrapper is being held horizontally in the center of the frame.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "A box is visible in the background to the right of the wrapper.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The scene takes place on a green and pink plaid surface.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [
-      "Frischley's",
-      "Delicious Deals"
-    ],
-    "spatial": "The hands are in the foreground holding the blue wrapper. The wrapper is positioned in front of the green and pink plaid tablecloth. A white and blue box is located to the right of the wrapper in the background.",
-    "parse_success": true,
-    "chunk_idx": 31,
-    "video_id": "pTpFqu6Hjfk"
-  },
-  {
-    "time": [
-      64,
-      66
-    ],
-    "visible_entities": [
-      {
-        "desc": "hands with light skin tone",
-        "action": "tearing open a wrapper",
-        "position": "foreground"
-      },
-      {
-        "desc": "teal and white foil wrapper",
-        "action": "being torn open",
-        "position": "center"
-      },
-      {
-        "desc": "rectangular box with red, white, and blue packaging featuring a picture of a cinnamon roll",
-        "action": "static",
-        "position": "background right"
-      },
-      {
-        "desc": "red and green plaid tablecloth",
-        "action": "static",
-        "position": "background"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "A pair of hands is tearing open a teal and white foil wrapper.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The wrapper is being pulled apart to reveal the contents.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "A box of snack cakes is sitting on the table next to the hands.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The box features an image of a cinnamon roll.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [
-      "BREAKFAST ON THE GO!",
-      "SNACK",
-      "Nutrition Facts"
-    ],
-    "spatial": "The hands are in the foreground, holding the teal wrapper in the center of the frame. The box is to the right of the hands and wrapper, resting on the plaid tablecloth which covers the surface below.",
-    "parse_success": true,
-    "chunk_idx": 32,
-    "video_id": "pTpFqu6Hjfk"
-  },
-  {
-    "time": [
-      66,
-      68
-    ],
-    "visible_entities": [
-      {
-        "desc": "hands with light skin tone",
-        "action": "manipulating a small blue object",
-        "position": "foreground/center"
-      },
-      {
-        "desc": "small blue object, possibly a wrapper or tool",
-        "action": "being held and manipulated",
-        "position": "center/foreground"
-      },
-      {
-        "desc": "red and green plaid tablecloth",
-        "action": "static",
-        "position": "background"
-      },
-      {
-        "desc": "packaged food item with blue and white packaging",
-        "action": "static",
-        "position": "right/background"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "hands are manipulating a small blue object",
-        "confidence": 1.0
-      },
-      {
-        "fact": "a packaged food item is on the tablecloth",
-        "confidence": 1.0
-      },
-      {
-        "fact": "the tablecloth has a red and green plaid pattern",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [
-      "Snickers",
-      "PEANUTS",
-      "NUTS",
-      "SNACK"
-    ],
-    "spatial": "The hands are in the foreground, holding the blue object. The packaged food item is to the right of the hands and rests on the plaid tablecloth, which covers the entire background surface.",
-    "parse_success": true,
-    "chunk_idx": 33,
-    "video_id": "pTpFqu6Hjfk"
-  },
-  {
-    "time": [
-      68,
-      70
-    ],
-    "visible_entities": [
-      {
-        "desc": "pair of hands with light skin tone",
-        "action": "peeling open a blue and white plastic wrapper",
-        "position": "foreground"
-      },
-      {
-        "desc": "blue and white plastic wrapper",
-        "action": "being opened",
-        "position": "center"
-      },
-      {
-        "desc": "red and green plaid tablecloth",
-        "action": "static",
-        "position": "background"
-      },
-      {
-        "desc": "small rectangular box with blue and white packaging",
-        "action": "static",
-        "position": "top right"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "The hands are peeling open a blue and white plastic wrapper.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The wrapper is being held in the center of the frame.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "A small box is resting on the tablecloth in the background.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [
-      "Snickers",
-      "SNACK SIZE",
-      "NET WT 11.5 OZ (326g)"
-    ],
-    "spatial": "The hands are in the foreground, holding the blue and white wrapper. The wrapper is positioned in the center of the frame, in front of the tablecloth. The small box is to the right of the hands and behind the wrapper, resting on the tablecloth.",
-    "parse_success": true,
-    "chunk_idx": 34,
-    "video_id": "pTpFqu6Hjfk"
-  },
-  {
-    "time": [
-      70,
-      72
-    ],
-    "visible_entities": [
-      {
-        "desc": "hands with light skin tone",
-        "action": "manipulating a wrapper",
-        "position": "foreground"
-      },
-      {
-        "desc": "blue and white wrapper, crinkled, partially opened",
-        "action": "being held and opened",
-        "position": "center"
-      },
-      {
-        "desc": "rectangular cardboard box, white with blue text and images of chocolate-covered treats",
-        "action": "static",
-        "position": "background right"
-      },
-      {
-        "desc": "red and green plaid tablecloth with a grid pattern",
-        "action": "static",
-        "position": "background"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "Hands are holding and opening a blue and white wrapper.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The wrapper is being peeled back to reveal the contents.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "A box of chocolate-covered treats is sitting on the table.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [
-      "CHOCOLATE COVERED",
-      "CREME CAKE SNACKS",
-      "SHELLEY"
-    ],
-    "spatial": "The hands are in the foreground, holding the blue and white wrapper. The wrapper is positioned in the center of the frame, in front of the tablecloth. The box of snacks is to the right of the wrapper and sits on the red and green plaid tablecloth.",
-    "parse_success": true,
-    "chunk_idx": 35,
-    "video_id": "pTpFqu6Hjfk"
-  },
-  {
-    "time": [
-      72,
-      74
-    ],
-    "visible_entities": [
-      {
-        "desc": "hands with light skin tone",
-        "action": "manipulating a blue wrapper",
-        "position": "foreground"
-      },
-      {
-        "desc": "blue and white wrapper",
-        "action": "being opened",
-        "position": "center"
-      },
-      {
-        "desc": "plaid tablecloth with red, green, and grey squares",
-        "action": "static",
-        "position": "background"
-      },
-      {
-        "desc": "book with a blue cover featuring an image of a dessert",
-        "action": "static",
-        "position": "top right"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "hands are opening a blue wrapper",
-        "confidence": 1.0
-      },
-      {
-        "fact": "a book is lying on the tablecloth",
-        "confidence": 1.0
-      },
-      {
-        "fact": "the tablecloth has a plaid pattern",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [
-      "JERSEY",
-      "FOODS YOU CAN MAKE",
-      "YOU'LL LOVE SNACK",
-      "F"
-    ],
-    "spatial": "The hands are in the foreground, holding and manipulating the blue wrapper. The wrapper is positioned above the plaid tablecloth. The book is to the right of the hands and rests on the tablecloth.",
-    "parse_success": true,
-    "chunk_idx": 36,
-    "video_id": "pTpFqu6Hjfk"
-  },
-  {
-    "time": [
-      74,
-      76
-    ],
-    "visible_entities": [
-      {
-        "desc": "hands with light skin tone",
-        "action": "tearing open a blue wrapper",
-        "position": "foreground/center"
-      },
-      {
-        "desc": "shiny blue wrapper",
-        "action": "being torn open",
-        "position": "center"
-      },
-      {
-        "desc": "red and green plaid tablecloth",
-        "action": "static",
-        "position": "background"
-      },
-      {
-        "desc": "white box with text and images",
-        "action": "static",
-        "position": "top right"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "Hands are tearing open a shiny blue wrapper.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The wrapper is being pulled apart in the center.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "A box is sitting on the tablecloth in the background.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [
-      "FOOD FOR YOUR PET, NOT A HUMAN",
-      "TOY & TREAT SNACK",
-      "Made in USA"
-    ],
-    "spatial": "The hands are in the foreground, holding and manipulating the blue wrapper. The red and green plaid tablecloth is beneath the hands and the box. The white box is to the right of the hands and sits on the tablecloth.",
-    "parse_success": true,
-    "chunk_idx": 37,
-    "video_id": "pTpFqu6Hjfk"
-  },
-  {
-    "time": [
-      76,
-      78
-    ],
-    "visible_entities": [
-      {
-        "desc": "hands with light skin tone",
-        "action": "tearing open a wrapper",
-        "position": "foreground"
-      },
-      {
-        "desc": "small wrapper, blue and white with red accents, crinkled foil material",
-        "action": "being torn open",
-        "position": "center"
-      },
-      {
-        "desc": "red and green plaid tablecloth with gold grid lines",
-        "action": "static",
-        "position": "background"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "Hands are tearing the top edge of a blue and white wrapper.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The wrapper is positioned over a plaid tablecloth.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The wrapper has a blue section on the left and white section on the right.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [
-      "10"
-    ],
-    "spatial": "The hands are in the foreground, holding the wrapper in the center of the frame. The wrapper is positioned above the red and green plaid tablecloth. The text '10' is visible on the blue section of the wrapper.",
-    "parse_success": true,
-    "chunk_idx": 38,
-    "video_id": "pTpFqu6Hjfk"
-  },
-  {
-    "time": [
-      78,
-      80
-    ],
-    "visible_entities": [
-      {
-        "desc": "hands with light skin tone",
-        "action": "manipulating a small object",
-        "position": "foreground"
-      },
-      {
-        "desc": "small, crumpled, shiny silver object",
-        "action": "being held and manipulated",
-        "position": "center"
-      },
-      {
-        "desc": "blue and white wrapper with text and images",
-        "action": "being held and moved",
-        "position": "center"
-      },
-      {
-        "desc": "red and green plaid tablecloth with a grid pattern",
-        "action": "static",
-        "position": "background"
-      },
-      {
-        "desc": "white and blue box with a barcode",
-        "action": "static",
-        "position": "background"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "A person's hands are manipulating a small, crumpled silver object.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The hands then pick up and hold a blue and white wrapper.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The wrapper has the text 'Sponge' and 'Dough' on it.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The scene takes place on a red and green plaid tablecloth.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [
-      "Sponge",
-      "Dough"
-    ],
-    "spatial": "The hands are in the foreground, holding the small silver object and then the wrapper. The wrapper is in front of the white and blue box. The box is on the plaid tablecloth in the background.",
-    "parse_success": true,
-    "chunk_idx": 39,
-    "video_id": "pTpFqu6Hjfk"
-  },
-  {
-    "time": [
-      80,
-      82
-    ],
-    "visible_entities": [
-      {
-        "desc": "hands with light skin tone",
-        "action": "unwrapping a snack",
-        "position": "foreground"
-      },
-      {
-        "desc": "cylindrical snack, light brown, wrapped in blue foil packaging",
-        "action": "being unwrapped",
-        "position": "center"
-      },
-      {
-        "desc": "rectangular box, white with blue and pink accents, featuring images of cookies",
-        "action": "static",
-        "position": "background right"
-      },
-      {
-        "desc": "tablecloth with a red and green plaid pattern",
-        "action": "static",
-        "position": "background"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "A person is using their hands to peel back the blue wrapper of a cylindrical snack.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The snack is revealed to be a light brown baked good.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "A box of cookies is resting on the table in the background.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [
-      "BISCUITS"
-    ],
-    "spatial": "The hands are in the foreground holding the snack. The snack is positioned in front of the tablecloth. The box of cookies is to the right of the hands and behind the snack.",
-    "parse_success": true,
-    "chunk_idx": 40,
-    "video_id": "pTpFqu6Hjfk"
-  },
-  {
-    "time": [
-      82,
-      84
-    ],
-    "visible_entities": [
-      {
-        "desc": "hands with light skin tone",
-        "action": "holding and rotating a biscuit",
-        "position": "foreground"
-      },
-      {
-        "desc": "rectangular biscuit, light brown, textured surface",
+        "desc": "bright blue, glossy, cylindrical wrapper with printed text",
         "action": "being rotated",
         "position": "center"
       },
       {
-        "desc": "product box, white with blue and red accents, featuring images of chocolate and caramel treats",
-        "action": "static",
-        "position": "background right"
-      },
-      {
-        "desc": "plaid tablecloth, red and green checkered pattern",
-        "action": "static",
-        "position": "background"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "A pair of hands is holding a rectangular biscuit.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The hands rotate the biscuit to show its side profile.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "A product box is lying on the table in the background.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The table is covered with a red and green plaid tablecloth.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [
-      "ASSORTED TASTE IN MATE",
-      "CHOCOLATE SNACK"
-    ],
-    "spatial": "The hands are in the foreground holding the biscuit. The biscuit is positioned in front of the product box. The product box is to the right of the hands and rests on the plaid tablecloth.",
-    "parse_success": true,
-    "chunk_idx": 41,
-    "video_id": "pTpFqu6Hjfk"
-  },
-  {
-    "time": [
-      84,
-      86
-    ],
-    "visible_entities": [
-      {
-        "desc": "hands with light skin tone",
-        "action": "holding and rotating a biscuit",
-        "position": "foreground"
-      },
-      {
-        "desc": "small rectangular biscuit, golden-brown, baked texture",
-        "action": "being held and rotated",
-        "position": "center"
-      },
-      {
-        "desc": "red and green plaid tablecloth with gold grid lines",
-        "action": "static",
-        "position": "background"
-      },
-      {
-        "desc": "blue and white cardboard box with product images",
-        "action": "static",
-        "position": "top right"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "Hands are holding a small golden-brown biscuit.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The biscuit is being rotated to show its side profile.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "A blue and white box is resting on the tablecloth.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [
-      "www.schar.com",
-      "SANS GLUTEN",
-      "SANS LACTOSE"
-    ],
-    "spatial": "The hands are in the foreground holding the biscuit in the center. The biscuit is in front of the blue and white box. The box is located in the top right corner, resting on the red and green plaid tablecloth.",
-    "parse_success": true,
-    "chunk_idx": 42,
-    "video_id": "pTpFqu6Hjfk"
-  },
-  {
-    "time": [
-      86,
-      88
-    ],
-    "visible_entities": [
-      {
-        "desc": "hands with light skin tone",
-        "action": "holding and rotating a pastry",
-        "position": "foreground"
-      },
-      {
-        "desc": "golden-brown pastry, crescent-shaped, baked texture",
-        "action": "being held",
-        "position": "center"
-      },
-      {
-        "desc": "rectangular box, white with blue and pink accents, featuring images of pastries and text",
+        "desc": "rectangular cardboard box with white background, blue text, and images of ice cream bars",
         "action": "static",
         "position": "background right"
       },
@@ -2414,49 +1546,731 @@
     ],
     "atomic_facts": [
       {
-        "fact": "hands are holding and turning a golden-brown pastry",
+        "fact": "A person is holding a blue wrapper horizontally in the foreground.",
         "confidence": 1.0
       },
       {
-        "fact": "the pastry is crescent-shaped",
+        "fact": "The person rotates the blue wrapper to reveal the top side.",
         "confidence": 1.0
       },
       {
-        "fact": "a box of pastries is visible in the background",
+        "fact": "The text 'STRAWBERRY 75' is visible on the side of the blue wrapper.",
         "confidence": 1.0
       },
       {
-        "fact": "the tablecloth has a plaid pattern",
+        "fact": "A box of ice cream bars is resting on the table in the background.",
         "confidence": 1.0
       }
     ],
     "ocr": [
-      "ASSORTED PASTRY SNACK",
-      "SNACK DE PÂTISSERIE ASSORTIE"
+      "STRAWBERRY 75",
+      "STRAWBERRY",
+      "75"
     ],
-    "spatial": "The hands are in the foreground holding the pastry. The pastry is in front of the box. The box is to the right of the hands and rests on the plaid tablecloth.",
+    "spatial": "The hands are in the foreground holding the blue wrapper. The blue wrapper is positioned in front of the plaid tablecloth. The ice cream box is to the right of the wrapper and sits on the tablecloth in the background.",
     "parse_success": true,
-    "chunk_idx": 43,
+    "chunk_idx": 26,
     "video_id": "pTpFqu6Hjfk"
   },
   {
     "time": [
-      88,
-      90
+      27,
+      28
     ],
     "visible_entities": [
       {
         "desc": "hands with light skin tone",
-        "action": "holding a biscuit",
+        "action": "holding a snack bar",
         "position": "foreground"
       },
       {
-        "desc": "round, light-brown biscuit with a textured surface",
+        "desc": "blue plastic wrapper with 'Delicious Deals' branding and a picture of a pastry",
         "action": "being held",
         "position": "center"
       },
       {
-        "desc": "rectangular box with blue, white, and pink colors, featuring an image of a pastry",
+        "desc": "red, green, and white plaid tablecloth",
+        "action": "static",
+        "position": "background"
+      },
+      {
+        "desc": "white and blue box with text",
+        "action": "static",
+        "position": "background right"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A person is holding a blue packaged snack bar in front of the camera.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The snack bar wrapper features the text 'Delicious Deals' and 'Fruit & Grain'.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The background consists of a plaid patterned surface.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "Freishley's",
+      "Delicious Deals",
+      "Fruit & Grain",
+      "Sainsbury's",
+      "CHOCOLATE CHIP",
+      "MUFFINS"
+    ],
+    "spatial": "The hands are in the foreground holding the blue snack wrapper. The wrapper is positioned centrally in front of the plaid tablecloth. A box is visible in the background to the right of the wrapper.",
+    "parse_success": true,
+    "chunk_idx": 27,
+    "video_id": "pTpFqu6Hjfk"
+  },
+  {
+    "time": [
+      28,
+      29
+    ],
+    "visible_entities": [
+      {
+        "desc": "hands with light skin tone holding a snack bar",
+        "action": "holding and rotating the snack bar",
+        "position": "foreground"
+      },
+      {
+        "desc": "blue rectangular snack wrapper with a beige label reading 'Delicious Deals' and an image of a cracker",
+        "action": "being held and rotated",
+        "position": "center"
+      },
+      {
+        "desc": "white and blue box with a barcode and text 'CHOCOLATE WHOLE GRAIN SNACK', featuring an image of chocolate-covered treats",
+        "action": "static",
+        "position": "background right"
+      },
+      {
+        "desc": "plaid tablecloth with a pattern of red, green, and white squares",
+        "action": "static",
+        "position": "background"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A person is holding a blue snack wrapper labeled 'Delicious Deals' with both hands.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The person rotates the snack bar slightly between the two frames.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A box labeled 'CHOCOLATE WHOLE GRAIN SNACK' is visible in the background.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The scene takes place on a red and green plaid tablecloth.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "Delicious Deals",
+      "Fruit & Grain",
+      "CHOCOLATE WHOLE GRAIN SNACK",
+      "Sainsbury's"
+    ],
+    "spatial": "The hands are in the foreground holding the blue snack wrapper. The snack wrapper is positioned in front of the plaid tablecloth. The white and blue box is to the right of the snack wrapper and sits on the tablecloth in the background.",
+    "parse_success": true,
+    "chunk_idx": 28,
+    "video_id": "pTpFqu6Hjfk"
+  },
+  {
+    "time": [
+      29,
+      30
+    ],
+    "visible_entities": [
+      {
+        "desc": "hands with light skin tone holding a snack package",
+        "action": "holding a blue snack package",
+        "position": "foreground"
+      },
+      {
+        "desc": "blue snack package wrapper with a yellow logo area, showing an image of a rectangular biscuit",
+        "action": "being held horizontally",
+        "position": "center"
+      },
+      {
+        "desc": "red, green, and white plaid patterned tablecloth",
+        "action": "static",
+        "position": "background"
+      },
+      {
+        "desc": "white and blue cardboard box corner with a barcode",
+        "action": "static",
+        "position": "top right"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A person is holding a blue snack package horizontally with both hands.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The package features the text 'Delicious Deals' and 'Fruit & Grain'.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The background surface is a plaid tablecloth.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "Delicious Deals",
+      "Fruit & Grain"
+    ],
+    "spatial": "The hands are in the foreground holding the blue snack package. The package is positioned in front of the plaid tablecloth. A white box is visible in the background to the right of the package.",
+    "parse_success": true,
+    "chunk_idx": 29,
+    "video_id": "pTpFqu6Hjfk"
+  },
+  {
+    "time": [
+      30,
+      31
+    ],
+    "visible_entities": [
+      {
+        "desc": "hands with light skin tone",
+        "action": "holding and manipulating a snack package",
+        "position": "foreground"
+      },
+      {
+        "desc": "blue snack wrapper with a yellow label, featuring an image of a biscuit",
+        "action": "being squeezed and turned",
+        "position": "center"
+      },
+      {
+        "desc": "red and green plaid patterned surface",
+        "action": "static",
+        "position": "background"
+      },
+      {
+        "desc": "white and blue box with a barcode",
+        "action": "static",
+        "position": "background right"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A person is holding a blue snack package with both hands.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The package is being squeezed and rotated, causing motion blur in the second frame.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The text 'Delicious Deals' is visible on the yellow label of the package.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The text 'Fruits & Grains' is visible below the main logo.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The background is a red and green plaid tablecloth.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "Bickley's",
+      "Delicious Deals",
+      "Fruits & Grains"
+    ],
+    "spatial": "The hands are in the foreground, holding the blue snack package in the center of the frame. The package is positioned in front of the red and green plaid surface. A white and blue box is visible in the background to the right of the snack package.",
+    "parse_success": true,
+    "chunk_idx": 30,
+    "video_id": "pTpFqu6Hjfk"
+  },
+  {
+    "time": [
+      31,
+      32
+    ],
+    "visible_entities": [
+      {
+        "desc": "hands with light skin tone",
+        "action": "holding and manipulating a blue snack wrapper",
+        "position": "foreground"
+      },
+      {
+        "desc": "blue snack wrapper with a beige label featuring red and dark blue text",
+        "action": "being held and turned",
+        "position": "center"
+      },
+      {
+        "desc": "white and blue box with images of pastries and text",
+        "action": "static",
+        "position": "background right"
+      },
+      {
+        "desc": "red and green plaid tablecloth",
+        "action": "static",
+        "position": "background"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A person is holding a blue snack wrapper with both hands.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The wrapper is being turned or manipulated to show the label.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The label on the wrapper reads 'Freshley's Delicious Deals'.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A box of snacks is visible in the background.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "Freshley's",
+      "Delicious Deals",
+      "Freshley's",
+      "DELICIOUSLY SIMPLE",
+      "YOU'LL LOVE A SNACK"
+    ],
+    "spatial": "The hands are in the foreground holding the blue wrapper. The wrapper is positioned in the center of the frame. The white and blue box is to the right of the wrapper and slightly behind it. The plaid tablecloth is underneath all the objects.",
+    "parse_success": true,
+    "chunk_idx": 31,
+    "video_id": "pTpFqu6Hjfk"
+  },
+  {
+    "time": [
+      32,
+      33
+    ],
+    "visible_entities": [
+      {
+        "desc": "hands with light skin tone",
+        "action": "tearing open a wrapper",
+        "position": "foreground"
+      },
+      {
+        "desc": "teal and white plastic wrapper",
+        "action": "being torn",
+        "position": "center"
+      },
+      {
+        "desc": "red and green plaid tablecloth",
+        "action": "static",
+        "position": "background"
+      },
+      {
+        "desc": "rectangular box with white and blue packaging featuring images of pastries",
+        "action": "static",
+        "position": "right"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "Hands are tearing open a teal and white wrapper.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A box of pastries sits on the table to the right.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The table is covered with a red and green plaid cloth.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "BREAKFAST ON THE GO!",
+      "YOU'VE GOT A SNACK",
+      "Nutrition Facts"
+    ],
+    "spatial": "The hands are in the foreground, holding and tearing the teal wrapper. The wrapper is positioned centrally, slightly to the left of the pastry box. The pastry box is resting on the plaid tablecloth in the background on the right side.",
+    "parse_success": true,
+    "chunk_idx": 32,
+    "video_id": "pTpFqu6Hjfk"
+  },
+  {
+    "time": [
+      33,
+      34
+    ],
+    "visible_entities": [
+      {
+        "desc": "hands with light skin tone",
+        "action": "manipulating a small blue object",
+        "position": "foreground"
+      },
+      {
+        "desc": "small blue object, possibly a wrapper or tool",
+        "action": "being held and manipulated",
+        "position": "center"
+      },
+      {
+        "desc": "red and green plaid tablecloth",
+        "action": "static",
+        "position": "background"
+      },
+      {
+        "desc": "white box with blue text and images of pastries",
+        "action": "static",
+        "position": "right"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "hands are manipulating a small blue object in the center of the frame",
+        "confidence": 1.0
+      },
+      {
+        "fact": "a box with images of pastries is on the right side of the frame",
+        "confidence": 1.0
+      },
+      {
+        "fact": "the background is a red and green plaid tablecloth",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "BREAKFAST IN A HOLE",
+      "YOU'VE GOT A SNACK"
+    ],
+    "spatial": "The hands are in the foreground, holding and manipulating a small blue object. The box with pastry images is to the right of the hands and the blue object. The entire scene is set on a red and green plaid tablecloth.",
+    "parse_success": true,
+    "chunk_idx": 33,
+    "video_id": "pTpFqu6Hjfk"
+  },
+  {
+    "time": [
+      34,
+      35
+    ],
+    "visible_entities": [
+      {
+        "desc": "hands with light skin tone",
+        "action": "manipulating a blue and white object",
+        "position": "foreground"
+      },
+      {
+        "desc": "blue and white plastic object, rectangular shape with a slot",
+        "action": "being held and opened",
+        "position": "center"
+      },
+      {
+        "desc": "red and green plaid tablecloth",
+        "action": "static",
+        "position": "background"
+      },
+      {
+        "desc": "product packaging box with text and barcode",
+        "action": "static",
+        "position": "top right"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "hands are holding a blue and white plastic object",
+        "confidence": 1.0
+      },
+      {
+        "fact": "the object is being opened or manipulated",
+        "confidence": 1.0
+      },
+      {
+        "fact": "a product box is visible in the background",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "SHELF LIFE",
+      "12 MONTHS",
+      "BEST BEFORE END",
+      "LOT"
+    ],
+    "spatial": "The hands are in the foreground, holding the blue and white object in the center. The product packaging box is to the right of the hands and above the plaid tablecloth. The tablecloth covers the entire background surface.",
+    "parse_success": true,
+    "chunk_idx": 34,
+    "video_id": "pTpFqu6Hjfk"
+  },
+  {
+    "time": [
+      35,
+      36
+    ],
+    "visible_entities": [
+      {
+        "desc": "hands with light skin tone",
+        "action": "unwrapping a blue and white wrapper",
+        "position": "foreground"
+      },
+      {
+        "desc": "blue and white wrapper, crinkled texture",
+        "action": "being peeled open",
+        "position": "center"
+      },
+      {
+        "desc": "rectangular box with red, white, and blue packaging, featuring an image of a chocolate dessert",
+        "action": "static",
+        "position": "background right"
+      },
+      {
+        "desc": "red and green plaid tablecloth with a grid pattern",
+        "action": "static",
+        "position": "background"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A person is using both hands to peel back the blue and white wrapper of an item.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A box of 'Scharffen Berger' chocolate is resting on the table.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The text 'CHOCOLATE' is visible on the packaging in the background.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "Scharffen Berger",
+      "CHOCOLATE",
+      "SNACK"
+    ],
+    "spatial": "The hands are in the foreground, holding and manipulating the wrapper. The wrapper is positioned centrally in front of the hands. The chocolate box is located to the right of the hands and slightly behind them on the table. The plaid tablecloth is underneath all the objects.",
+    "parse_success": true,
+    "chunk_idx": 35,
+    "video_id": "pTpFqu6Hjfk"
+  },
+  {
+    "time": [
+      36,
+      37
+    ],
+    "visible_entities": [
+      {
+        "desc": "hands with light skin tone",
+        "action": "manipulating a small blue wrapper",
+        "position": "foreground"
+      },
+      {
+        "desc": "small blue wrapper, crinkled, partially opened",
+        "action": "being pulled apart",
+        "position": "center"
+      },
+      {
+        "desc": "red and green plaid tablecloth with yellow grid lines",
+        "action": "static",
+        "position": "background"
+      },
+      {
+        "desc": "rectangular snack box, white with blue top, featuring images of chocolate and caramel treats",
+        "action": "static",
+        "position": "right"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A pair of hands is actively pulling apart a small blue wrapper.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The wrapper is being opened in the center of the frame.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A snack box is resting on the tablecloth in the background.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "SHELLEY",
+      "CHOCOLATE CARAMEL",
+      "TOFFEE CRUNCH",
+      "SNACK"
+    ],
+    "spatial": "The hands are in the foreground, holding the blue wrapper. The wrapper is positioned centrally, in front of the plaid tablecloth. The snack box is to the right of the hands and rests on the tablecloth.",
+    "parse_success": true,
+    "chunk_idx": 36,
+    "video_id": "pTpFqu6Hjfk"
+  },
+  {
+    "time": [
+      37,
+      38
+    ],
+    "visible_entities": [
+      {
+        "desc": "hands with light skin tone",
+        "action": "tearing open a blue wrapper",
+        "position": "foreground"
+      },
+      {
+        "desc": "blue wrapper, shiny and crinkled",
+        "action": "being torn",
+        "position": "center"
+      },
+      {
+        "desc": "box with white and blue packaging, featuring images of pastries",
+        "action": "static",
+        "position": "top right"
+      },
+      {
+        "desc": "tablecloth with a red and green plaid pattern",
+        "action": "static",
+        "position": "background"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The hands are tearing open the blue wrapper.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The wrapper is being pulled apart at the top edge.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The box is resting on the plaid tablecloth.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "Sainsbury's",
+      "FOUR INDIVIDUAL MINIATURE",
+      "TOFFEE APPLE SNACK",
+      "PIES"
+    ],
+    "spatial": "The hands are in the foreground, holding and tearing the blue wrapper. The wrapper is positioned centrally between the hands. The box is located to the right of the hands and above the tablecloth. The tablecloth serves as the background surface for the entire scene.",
+    "parse_success": true,
+    "chunk_idx": 37,
+    "video_id": "pTpFqu6Hjfk"
+  },
+  {
+    "time": [
+      38,
+      39
+    ],
+    "visible_entities": [
+      {
+        "desc": "hands with light skin tone",
+        "action": "manipulating a wrapper",
+        "position": "foreground"
+      },
+      {
+        "desc": "small crumpled wrapper, blue and white with red accents, metallic texture",
+        "action": "being held and opened",
+        "position": "center"
+      },
+      {
+        "desc": "plaid tablecloth with red, green, and yellow grid pattern",
+        "action": "static",
+        "position": "background"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A pair of hands is holding and manipulating a small blue and white wrapper.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The wrapper is being pulled apart or opened.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The background is a red and green plaid surface.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The hands are in the foreground, holding the wrapper in the center of the frame. The wrapper is positioned above the plaid tablecloth.",
+    "parse_success": true,
+    "chunk_idx": 38,
+    "video_id": "pTpFqu6Hjfk"
+  },
+  {
+    "time": [
+      39,
+      40
+    ],
+    "visible_entities": [
+      {
+        "desc": "hands with fair skin, holding a small object",
+        "action": "manipulating a small item",
+        "position": "center/foreground"
+      },
+      {
+        "desc": "blue and white wrapper, crinkled, with text",
+        "action": "being held and moved",
+        "position": "center/right"
+      },
+      {
+        "desc": "red and green plaid tablecloth with gold grid lines",
+        "action": "static",
+        "position": "background"
+      },
+      {
+        "desc": "white rectangular box with barcode",
+        "action": "static",
+        "position": "background/right"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "Hands are manipulating a small object in the center of the frame.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A blue and white wrapper is being held and moved by the hands.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The wrapper has text that reads 'SUGAR' and 'SLOW'.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "SUGAR",
+      "SLOW"
+    ],
+    "spatial": "The hands are in the foreground, holding the blue wrapper. The wrapper is in front of the white box. The white box is to the right of the hands and rests on the plaid tablecloth. The tablecloth is the background surface for all objects.",
+    "parse_success": true,
+    "chunk_idx": 39,
+    "video_id": "pTpFqu6Hjfk"
+  },
+  {
+    "time": [
+      40,
+      41
+    ],
+    "visible_entities": [
+      {
+        "desc": "hands with light skin tone",
+        "action": "peeling blue wrapper off a biscuit",
+        "position": "foreground"
+      },
+      {
+        "desc": "golden-brown rectangular biscuit, textured surface",
+        "action": "being unwrapped",
+        "position": "center"
+      },
+      {
+        "desc": "bright blue plastic wrapper with printed images of biscuits",
+        "action": "being pulled away",
+        "position": "center"
+      },
+      {
+        "desc": "rectangular cardboard box with red, white, and blue design, featuring images of biscuits and a barcode",
         "action": "static",
         "position": "background right"
       },
@@ -2468,36 +2282,247 @@
     ],
     "atomic_facts": [
       {
-        "fact": "A pair of hands is holding a round, light-brown biscuit.",
+        "fact": "A person is peeling a blue wrapper off a golden-brown biscuit.",
         "confidence": 1.0
       },
       {
-        "fact": "The biscuit is positioned horizontally in the center of the frame.",
+        "fact": "The biscuit is rectangular in shape.",
         "confidence": 1.0
       },
       {
-        "fact": "A box with a pastry image is resting on the tablecloth in the background.",
+        "fact": "A box of biscuits is sitting on the table in the background.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The table is covered with a red and green plaid tablecloth.",
         "confidence": 1.0
       }
     ],
     "ocr": [
-      "BREAKFAST IN A HOLE",
+      "BISCUITS",
+      "F"
+    ],
+    "spatial": "The hands are in the foreground holding the biscuit and wrapper. The biscuit is in the center of the frame, being revealed as the wrapper is pulled to the right. The cardboard box is located in the upper right background, resting on the plaid tablecloth which covers the entire surface.",
+    "parse_success": true,
+    "chunk_idx": 40,
+    "video_id": "pTpFqu6Hjfk"
+  },
+  {
+    "time": [
+      41,
+      42
+    ],
+    "visible_entities": [
+      {
+        "desc": "hands with light skin tone",
+        "action": "holding and rotating a biscuit",
+        "position": "foreground"
+      },
+      {
+        "desc": "rectangular biscuit, light brown, flat, with small dark specks",
+        "action": "being rotated",
+        "position": "center"
+      },
+      {
+        "desc": "blue and white snack box with images of pastries",
+        "action": "static",
+        "position": "background right"
+      },
+      {
+        "desc": "red and green plaid tablecloth",
+        "action": "static",
+        "position": "background"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "hands are holding a rectangular biscuit",
+        "confidence": 1.0
+      },
+      {
+        "fact": "the biscuit is being rotated to show its side profile",
+        "confidence": 1.0
+      },
+      {
+        "fact": "the snack box is resting on the tablecloth",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "ASSORTED MINIATURE",
+      "BISCUIT SELECTION"
+    ],
+    "spatial": "The hands are in the foreground holding the biscuit. The biscuit is in front of the blue and white snack box. The snack box is to the right of the hands and rests on the red and green plaid tablecloth.",
+    "parse_success": true,
+    "chunk_idx": 41,
+    "video_id": "pTpFqu6Hjfk"
+  },
+  {
+    "time": [
+      42,
+      43
+    ],
+    "visible_entities": [
+      {
+        "desc": "hands with light skin tone holding a small, golden-brown, rectangular baked snack with a textured surface",
+        "action": "holding and manipulating the snack",
+        "position": "foreground"
+      },
+      {
+        "desc": "rectangular box with blue and white packaging, featuring a barcode and images of chocolate-covered treats",
+        "action": "static",
+        "position": "background right"
+      },
+      {
+        "desc": "tablecloth with a red and green plaid pattern featuring thin gold or yellow intersecting lines",
+        "action": "static",
+        "position": "background"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A person is holding a small baked snack between their thumb and fingers.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The snack is positioned in front of a blue and white box.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The box is resting on a plaid tablecloth.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "www.schar.com"
+    ],
+    "spatial": "The hands holding the snack are in the foreground, positioned centrally. The blue and white box is to the right of the hands and slightly behind them in the background. The plaid tablecloth is underneath the box and extends across the rest of the background.",
+    "parse_success": true,
+    "chunk_idx": 42,
+    "video_id": "pTpFqu6Hjfk"
+  },
+  {
+    "time": [
+      43,
+      44
+    ],
+    "visible_entities": [
+      {
+        "desc": "hands with light skin tone",
+        "action": "holding and manipulating a small pastry",
+        "position": "foreground"
+      },
+      {
+        "desc": "small, golden-brown, crescent-shaped pastry",
+        "action": "being held and turned",
+        "position": "center"
+      },
+      {
+        "desc": "rectangular box with a white label featuring a picture of a pastry and text",
+        "action": "static",
+        "position": "background right"
+      },
+      {
+        "desc": "tablecloth with a red, green, and white plaid pattern",
+        "action": "static",
+        "position": "background"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A person is holding a small pastry with both hands.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The person turns the pastry to show its side profile.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The pastry is golden-brown and crescent-shaped.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The box in the background has a picture of a similar pastry on it.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "BISCUITS À LA CRÈME",
+      "SANDWICHES À LA CRÈME"
+    ],
+    "spatial": "The hands are in the foreground, holding the pastry. The pastry is in the center of the frame. The box is to the right of the hands and is in the background. The plaid tablecloth is below all the other objects.",
+    "parse_success": true,
+    "chunk_idx": 43,
+    "video_id": "pTpFqu6Hjfk"
+  },
+  {
+    "time": [
+      44,
+      45
+    ],
+    "visible_entities": [
+      {
+        "desc": "hands with light skin tone, short fingernails",
+        "action": "holding and pressing a biscuit",
+        "position": "foreground"
+      },
+      {
+        "desc": "round, light-brown biscuit with a smooth, baked texture",
+        "action": "being held and pressed",
+        "position": "center"
+      },
+      {
+        "desc": "white cardboard box with blue and red accents, featuring a barcode and images of pastries",
+        "action": "static",
+        "position": "background right"
+      },
+      {
+        "desc": "red, green, and white plaid tablecloth with a woven texture",
+        "action": "static",
+        "position": "background"
+      },
+      {
+        "desc": "small, crumpled wrapper with blue and gold foil",
+        "action": "static",
+        "position": "center background"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A pair of hands is holding a round, light-brown biscuit.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The hands are pressing the biscuit, causing it to flex slightly.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A white box with images of pastries is sitting on the table.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The table is covered with a red and green plaid tablecloth.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "BISCUITS",
       "SNACK"
     ],
-    "spatial": "The hands are in the foreground, holding the biscuit in front of the tablecloth. The box is to the right of the hands and behind the biscuit, resting on the tablecloth.",
+    "spatial": "The hands holding the biscuit are in the foreground, positioned centrally. The biscuit is held between the thumbs and fingers of both hands. The white box is to the right of the hands and slightly behind them. The crumpled wrapper is on the table, located between the hands and the box. The plaid tablecloth is underneath all the objects.",
     "parse_success": true,
     "chunk_idx": 44,
     "video_id": "pTpFqu6Hjfk"
   },
   {
     "time": [
-      90,
-      92
+      45,
+      46
     ],
     "visible_entities": [
       {
-        "desc": "hands with light skin tone holding a pastry",
-        "action": "pulling the pastry apart",
+        "desc": "hands with light skin tone",
+        "action": "holding and pulling apart a pastry",
         "position": "foreground"
       },
       {
@@ -2506,179 +2531,252 @@
         "position": "center"
       },
       {
-        "desc": "blue and white cardboard box with text and images of pastries",
+        "desc": "product box with blue, white, and red design featuring a chocolate swirl image",
         "action": "static",
         "position": "background right"
       },
       {
-        "desc": "red and green plaid tablecloth with gold threads",
+        "desc": "red and green plaid tablecloth",
         "action": "static",
         "position": "background"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A person is pulling a pastry apart with both hands to reveal the filling.",
+        "fact": "A pair of hands is breaking a small pastry in half.",
         "confidence": 1.0
       },
       {
-        "fact": "The pastry has a red jam-like filling inside.",
+        "fact": "The pastry reveals a red jam filling inside.",
         "confidence": 1.0
       },
       {
-        "fact": "The box in the background displays text describing the snack.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The pastry is broken into two distinct halves.",
+        "fact": "The product box is resting on the tablecloth.",
         "confidence": 1.0
       }
     ],
     "ocr": [
-      "PASSIONATELY MADE",
-      "TO BE A SNACK",
-      "YOU CAN BE PROUD OF"
+      "CHOCOLATE",
+      "SNACK",
+      "BISCUIT"
     ],
-    "spatial": "The hands holding the pastry are in the foreground, positioned centrally. The pastry is being held above the plaid tablecloth. The blue and white box is to the right of the hands and slightly behind them.",
+    "spatial": "The hands are in the foreground holding the pastry. The pastry is positioned in front of the product box. The product box is to the right of the hands and rests on the plaid tablecloth.",
     "parse_success": true,
     "chunk_idx": 45,
     "video_id": "pTpFqu6Hjfk"
   },
   {
     "time": [
-      92,
-      94
+      46,
+      47
     ],
     "visible_entities": [
       {
-        "desc": "two hands holding broken pastry pieces, light skin tone",
-        "action": "holding pastry pieces",
-        "position": "foreground"
+        "desc": "left hand holding a small, cylindrical pastry with a light-brown baked crust and a red jam-like filling",
+        "action": "holding pastry",
+        "position": "left foreground"
       },
       {
-        "desc": "broken pastry pieces with beige crumbly dough and red jam filling",
-        "action": "being held",
-        "position": "center"
+        "desc": "right hand holding a similar small pastry with a light-brown crust and red filling",
+        "action": "holding pastry",
+        "position": "right foreground"
       },
       {
-        "desc": "rectangular snack box with blue and white packaging, featuring images of chocolate and caramel snacks",
+        "desc": "product box with a blue and white design, featuring an image of a chocolate-covered pastry and text",
         "action": "static",
         "position": "background right"
       },
       {
-        "desc": "green and red plaid tablecloth with a grid pattern",
+        "desc": "tablecloth with a red, green, and white plaid pattern",
         "action": "static",
         "position": "background"
+      },
+      {
+        "desc": "small, crumpled wrapper with blue and gold coloring",
+        "action": "static",
+        "position": "center background"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A person is holding two halves of a broken pastry to display the interior.",
+        "fact": "Two hands are holding two halves of a pastry, displaying the red filling inside.",
         "confidence": 1.0
       },
       {
-        "fact": "The pastry has a red jam or jelly filling inside a beige crust.",
+        "fact": "The pastry has a light-brown, baked crust.",
         "confidence": 1.0
       },
       {
-        "fact": "A snack box is lying on the table in the background.",
+        "fact": "The filling of the pastry is red and appears to be jam-like.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A product box is visible in the background.",
         "confidence": 1.0
       }
     ],
     "ocr": [
-      "PASSION FRUIT & WHITE",
-      "CHOCOLATE SNACK"
+      "PASSION FRUIT & WHITE CHOCOLATE SNACK",
+      "B"
     ],
-    "spatial": "The hands holding the pastry pieces are in the foreground, positioned centrally. The snack box is to the right of the hands and lies on the plaid tablecloth in the background. The tablecloth is underneath all the objects.",
+    "spatial": "The two hands holding the pastry halves are in the foreground. The left hand is to the left of the right hand. The product box is in the background, to the right of the hands. The small wrapper is on the tablecloth, between the hands and the product box. The entire scene is set on a plaid tablecloth.",
     "parse_success": true,
     "chunk_idx": 46,
     "video_id": "pTpFqu6Hjfk"
   },
   {
     "time": [
-      94,
-      96
+      47,
+      48
     ],
     "visible_entities": [
       {
-        "desc": "left hand with light skin tone, holding a small piece of pastry",
-        "action": "holding pastry piece",
-        "position": "left"
+        "desc": "left hand with light skin tone holding a small, broken piece of a pastry",
+        "action": "holding the pastry piece",
+        "position": "left foreground"
       },
       {
-        "desc": "right hand with light skin tone, holding a larger piece of pastry",
-        "action": "holding pastry piece",
-        "position": "right"
+        "desc": "right hand with light skin tone holding a larger, broken piece of a pastry",
+        "action": "holding the pastry piece",
+        "position": "right foreground"
       },
       {
-        "desc": "small piece of baked pastry, golden-brown crust, red jam filling",
+        "desc": "broken pastry pieces with a light golden-brown, flaky crust and a red jam-like filling",
         "action": "being held",
-        "position": "left"
+        "position": "center foreground"
       },
       {
-        "desc": "larger piece of baked pastry, golden-brown crust, red jam filling",
-        "action": "being held",
-        "position": "right"
-      },
-      {
-        "desc": "blue and white cardboard packaging box with product image",
+        "desc": "blue and white cardboard box with text and a barcode",
         "action": "static",
         "position": "background"
       },
       {
-        "desc": "red, green, and gold plaid tablecloth",
+        "desc": "red and green plaid tablecloth with thin gold lines",
         "action": "static",
         "position": "background"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A person is holding two pieces of a broken pastry filled with red jam.",
+        "fact": "A person is holding two pieces of a broken pastry, revealing the red filling inside.",
         "confidence": 1.0
       },
       {
-        "fact": "The pastry pieces are held up close to the camera to show the cross-section.",
+        "fact": "The pastry has a flaky, layered crust.",
         "confidence": 1.0
       },
       {
-        "fact": "The packaging box is lying on the table in the background.",
+        "fact": "The box in the background has the brand name 'Pepperidge Farm' and the product name 'Puff Pastry Shells' visible.",
         "confidence": 1.0
       }
     ],
     "ocr": [
-      "Dessert",
-      "Oven"
+      "Pepperidge Farm",
+      "Puff Pastry Shells"
     ],
-    "spatial": "The left hand holding the smaller pastry piece is to the left of the right hand holding the larger pastry piece. The pastry pieces are in front of the blue packaging box. The packaging box is resting on the plaid tablecloth.",
+    "spatial": "The two hands are in the foreground, holding the broken pastry pieces. The left hand is to the left of the right hand. The blue and white box is in the background, behind the hands and the pastry. The plaid tablecloth is underneath all the objects.",
     "parse_success": true,
     "chunk_idx": 47,
     "video_id": "pTpFqu6Hjfk"
   },
   {
     "time": [
-      96,
-      98
+      48,
+      49
     ],
     "visible_entities": [
       {
-        "desc": "human hand with light skin tone",
-        "action": "holding a snack bar",
+        "desc": "hand with light skin tone, holding a pastry",
+        "action": "holding and breaking open a pastry",
         "position": "foreground"
       },
       {
-        "desc": "cylindrical snack bar with light brown textured pastry shell and red filling",
-        "action": "being held and displayed",
+        "desc": "small pastry roll, golden-brown crust, red jam filling, white cream filling",
+        "action": "being broken open",
         "position": "center"
       },
       {
-        "desc": "blue wrapper with white text and graphics",
-        "action": "static",
-        "position": "center-right"
-      },
-      {
-        "desc": "white and blue cardboard box with product images and text",
+        "desc": "blue and white cardboard box, featuring a picture of a cinnamon roll",
         "action": "static",
         "position": "background right"
+      },
+      {
+        "desc": "blue wrapper with gold lettering",
+        "action": "static",
+        "position": "background center"
+      },
+      {
+        "desc": "plaid tablecloth, green and red pattern",
+        "action": "static",
+        "position": "background"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A hand breaks open a pastry to reveal red jam and white cream filling.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The pastry has a golden-brown crust.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A blue box with a picture of a cinnamon roll sits on the table.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The tablecloth has a green and red plaid pattern.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "Cinnamon",
+      "ROLLS",
+      "READY TO EAT",
+      "WHOLE",
+      "GRAIN",
+      "SNACK"
+    ],
+    "spatial": "The hand is in the foreground, holding the pastry in the center of the frame. The pastry is being broken open by the fingers. The blue box is to the right of the hand and behind it. The blue wrapper is below the box and behind the hand. All items are on top of the plaid tablecloth.",
+    "parse_success": true,
+    "chunk_idx": 48,
+    "video_id": "pTpFqu6Hjfk"
+  },
+  {
+    "time": [
+      49,
+      50
+    ],
+    "visible_entities": [
+      {
+        "desc": "hand with light skin tone",
+        "action": "holding a piece of pastry",
+        "position": "left/foreground"
+      },
+      {
+        "desc": "hand with light skin tone",
+        "action": "holding a piece of pastry",
+        "position": "right/foreground"
+      },
+      {
+        "desc": "pastry piece with golden-brown crust and red jam filling",
+        "action": "being held",
+        "position": "left/center"
+      },
+      {
+        "desc": "pastry piece with golden-brown crust and red jam filling",
+        "action": "being held",
+        "position": "right/center"
+      },
+      {
+        "desc": "blue and white snack wrapper",
+        "action": "static",
+        "position": "center/background"
+      },
+      {
+        "desc": "blue and white snack box with product image and text",
+        "action": "static",
+        "position": "right/background"
       },
       {
         "desc": "plaid tablecloth with red, green, and yellow grid pattern",
@@ -2688,110 +2786,96 @@
     ],
     "atomic_facts": [
       {
-        "fact": "A hand is holding a broken snack bar to show the cross-section.",
+        "fact": "A hand on the left holds a piece of pastry with red filling.",
         "confidence": 1.0
       },
       {
-        "fact": "The snack bar has a red filling inside a light brown pastry shell.",
+        "fact": "A hand on the right holds a second piece of pastry with red filling.",
         "confidence": 1.0
       },
       {
-        "fact": "The blue wrapper is lying on the tablecloth.",
+        "fact": "The pastry pieces appear to be broken or bitten, revealing the interior.",
         "confidence": 1.0
       },
       {
-        "fact": "The box is positioned behind the wrapper.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [
-      "BREAKFAST ON THE GO",
-      "SNACK",
-      "NUTRITION FACTS"
-    ],
-    "spatial": "The hand holding the snack bar is in the foreground, positioned to the left of the blue wrapper. The blue wrapper lies on the plaid tablecloth, which is below the white and blue box in the background.",
-    "parse_success": true,
-    "chunk_idx": 48,
-    "video_id": "pTpFqu6Hjfk"
-  },
-  {
-    "time": [
-      98,
-      100
-    ],
-    "visible_entities": [
-      {
-        "desc": "hand with light skin tone",
-        "action": "holding a broken snack bar",
-        "position": "left/foreground"
-      },
-      {
-        "desc": "broken snack bar with beige crumbly texture and red jam filling",
-        "action": "being held",
-        "position": "center/foreground"
-      },
-      {
-        "desc": "second piece of broken snack bar",
-        "action": "being held",
-        "position": "right/foreground"
-      },
-      {
-        "desc": "blue and gold wrapper with 'Quaker' logo",
-        "action": "static",
-        "position": "center/background"
-      },
-      {
-        "desc": "white and blue box with 'PASSIONATELY WHOLE' text and image of cinnamon rolls",
-        "action": "static",
-        "position": "right/background"
-      },
-      {
-        "desc": "plaid tablecloth with green, red, and yellow grid pattern",
-        "action": "static",
-        "position": "background"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "A person is holding two pieces of a broken snack bar, revealing a red filling inside.",
+        "fact": "A snack box is positioned on the tablecloth in the background.",
         "confidence": 1.0
       },
       {
-        "fact": "The snack bar has a beige, crumbly texture.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "A blue wrapper lies on the tablecloth below the hands.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "A box labeled 'PASSIONATELY WHOLE' sits on the table to the right.",
+        "fact": "The text 'PASSIONATELY WHOLE' is visible on the snack box.",
         "confidence": 1.0
       }
     ],
     "ocr": [
       "PASSIONATELY WHOLE",
       "SNACK",
-      "Quaker"
+      "Dessert",
+      "Bars"
     ],
-    "spatial": "The hands holding the snack pieces are in the foreground, positioned above the plaid tablecloth. The blue wrapper is lying on the tablecloth below the hands and to the left of the box. The box is situated in the background on the right side of the frame.",
+    "spatial": "The two hands holding the pastry pieces are in the foreground, positioned in front of the tablecloth. The blue snack wrapper lies on the tablecloth between the hands and the snack box. The snack box is to the right of the wrapper and behind the hands.",
     "parse_success": true,
     "chunk_idx": 49,
     "video_id": "pTpFqu6Hjfk"
   },
   {
     "time": [
-      100,
-      102
+      50,
+      51
     ],
     "visible_entities": [
       {
-        "desc": "rectangular cardboard box, white with blue and pink accents, featuring an image of a chocolate-frosted donut",
+        "desc": "rectangular cardboard box, white and blue packaging with red trim, featuring an image of a chocolate-covered donut and nutritional information text",
         "action": "static",
         "position": "right"
       },
       {
-        "desc": "small blue wrapper with gold foil accents and white text",
+        "desc": "small blue foil-wrapped snack bar with a gold wrapper section and 'Chips Ahoy!' branding",
+        "action": "static",
+        "position": "center"
+      },
+      {
+        "desc": "woven fabric surface with a plaid pattern consisting of intersecting red, green, and yellow lines",
+        "action": "static",
+        "position": "background"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A box of donuts and a snack bar are resting on a plaid surface.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The snack bar is positioned diagonally relative to the box.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The box displays an image of a chocolate donut.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "Chips Ahoy!",
+      "NUTRITION FACTS",
+      "INGREDIENTS"
+    ],
+    "spatial": "The blue snack bar is to the left of the donut box. The donut box is positioned on the right side of the frame. Both items are resting on top of the plaid fabric surface.",
+    "parse_success": true,
+    "chunk_idx": 50,
+    "video_id": "pTpFqu6Hjfk"
+  },
+  {
+    "time": [
+      51,
+      52
+    ],
+    "visible_entities": [
+      {
+        "desc": "rectangular cardboard box, white with blue and pink accents, featuring an image of a cinnamon roll and nutritional facts panel",
+        "action": "static",
+        "position": "right"
+      },
+      {
+        "desc": "small blue wrapper with gold foil accents and 'Dunkin' Donuts' branding",
         "action": "static",
         "position": "center"
       },
@@ -2803,471 +2887,155 @@
     ],
     "atomic_facts": [
       {
-        "fact": "A box of donuts and a small blue wrapper are resting on a plaid surface.",
+        "fact": "A box of cinnamon rolls and a small blue wrapper are resting on a plaid fabric surface.",
         "confidence": 1.0
       },
       {
-        "fact": "The wrapper displays the text 'Dunkin' Donuts'.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [
-      "Dunkin' Donuts",
-      "CHOCOLATE ICED WITH SPRINKLES"
-    ],
-    "spatial": "The blue wrapper is to the left of the donut box. Both items are resting on top of the plaid fabric surface.",
-    "parse_success": true,
-    "chunk_idx": 50,
-    "video_id": "pTpFqu6Hjfk"
-  },
-  {
-    "time": [
-      102,
-      104
-    ],
-    "visible_entities": [
-      {
-        "desc": "rectangular cardboard box, white with blue and pink accents, featuring an image of a cinnamon roll and nutritional text",
-        "action": "static",
-        "position": "right"
-      },
-      {
-        "desc": "small blue foil-wrapped snack bar with gold and white text",
-        "action": "static",
-        "position": "center-right"
-      },
-      {
-        "desc": "plaid fabric surface with a grid pattern of red, green, and yellow lines",
-        "action": "static",
-        "position": "background"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "A box of cinnamon rolls and a snack bar are resting on a plaid surface.",
+        "fact": "The box displays a picture of a cinnamon roll with icing.",
         "confidence": 1.0
       },
       {
-        "fact": "The snack bar is positioned in front of the box.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The text 'Cinnamon Rolls' is visible on the snack bar wrapper.",
+        "fact": "The blue wrapper features the text 'Dunkin' Donuts'.",
         "confidence": 1.0
       }
     ],
     "ocr": [
-      "Cinnamon Rolls",
-      "NUTRITION FACTS"
+      "Dunkin' Donuts"
     ],
-    "spatial": "The blue snack bar is in front of and slightly to the left of the white and blue box. Both items are resting on top of the red and green plaid fabric surface.",
+    "spatial": "The blue wrapper is to the left of the cardboard box. Both items are resting on top of the plaid fabric surface.",
     "parse_success": true,
     "chunk_idx": 51,
     "video_id": "pTpFqu6Hjfk"
   },
   {
     "time": [
-      104,
-      106
+      52,
+      53
     ],
     "visible_entities": [
       {
         "desc": "hand with light skin tone",
-        "action": "holding a pastry",
+        "action": "holding and rotating a pastry",
         "position": "left foreground"
       },
       {
-        "desc": "small crescent-shaped pastry, golden-brown crust, red jam filling",
+        "desc": "small baked pastry, golden-brown crust, rectangular shape, filled with red jam",
         "action": "being held and rotated",
         "position": "left foreground"
       },
       {
-        "desc": "blue and gold foil wrapper, crinkled texture",
+        "desc": "blue foil wrapper with gold and white text",
         "action": "static",
         "position": "center"
       },
       {
-        "desc": "rectangular cardboard box, white with blue and pink accents, product image of chocolate pastry",
+        "desc": "rectangular cardboard box, white with blue and pink accents, featuring images of pastries",
         "action": "static",
         "position": "right background"
       },
       {
-        "desc": "tablecloth with red, green, and white plaid pattern",
+        "desc": "plaid tablecloth with a grid pattern of red, green, and white lines",
         "action": "static",
         "position": "background"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A hand is holding a small pastry filled with red jam.",
+        "fact": "A hand is holding a small pastry.",
         "confidence": 1.0
       },
       {
-        "fact": "The hand rotates the pastry to show the filling.",
+        "fact": "The hand rotates the pastry to show the red jam filling inside.",
         "confidence": 1.0
       },
       {
-        "fact": "The pastry wrapper lies on the tablecloth.",
+        "fact": "A blue wrapper lies on the tablecloth next to the pastry box.",
         "confidence": 1.0
       },
       {
-        "fact": "The product box sits on the tablecloth.",
+        "fact": "The box displays the text 'Fruitables' and 'Strawberry'.",
         "confidence": 1.0
       }
     ],
     "ocr": [
-      "SNACK",
-      "SNACKS",
-      "F"
+      "Fruitables",
+      "Strawberry",
+      "FRUIT & NUT SNACK"
     ],
-    "spatial": "The hand holding the pastry is in the left foreground. The blue wrapper is to the right of the hand and in front of the box. The box is to the right of the wrapper and behind it. All items are on the plaid tablecloth.",
+    "spatial": "The hand holding the pastry is in the left foreground. The blue wrapper is to the right of the hand and in front of the box. The box is positioned on the right side of the frame, resting on the plaid tablecloth.",
     "parse_success": true,
     "chunk_idx": 52,
     "video_id": "pTpFqu6Hjfk"
   },
   {
     "time": [
-      106,
-      108
+      53,
+      54
     ],
     "visible_entities": [
       {
         "desc": "hands with light skin tone",
-        "action": "holding and displaying broken biscuit pieces",
+        "action": "holding and separating a broken biscuit",
         "position": "foreground"
       },
       {
-        "desc": "broken golden-brown biscuit with red jam filling",
-        "action": "being held",
+        "desc": "broken biscuit with golden-brown crust and red jam filling",
+        "action": "being held and displayed",
         "position": "center"
       },
       {
-        "desc": "blue and white cardboard box with product images",
+        "desc": "blue and white snack box with product image",
         "action": "static",
         "position": "background right"
       },
       {
-        "desc": "red, green, and grey plaid tablecloth",
+        "desc": "red and green plaid tablecloth",
         "action": "static",
         "position": "background"
-      },
-      {
-        "desc": "small blue wrapper with gold foil",
-        "action": "static",
-        "position": "center background"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "The person is holding two halves of a broken biscuit to display the interior.",
+        "fact": "A person is holding two halves of a broken biscuit to reveal the red filling inside.",
         "confidence": 1.0
       },
       {
-        "fact": "The biscuit has a visible red jam filling inside.",
+        "fact": "The biscuit has a golden-brown texture and a red jam center.",
         "confidence": 1.0
       },
       {
-        "fact": "The box in the background displays text reading 'BREAKFAST ON THE GO' and 'SNACK'.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The scene takes place on a plaid patterned surface.",
+        "fact": "A blue and white box is resting on the table in the background.",
         "confidence": 1.0
       }
     ],
     "ocr": [
-      "BREAKFAST ON THE GO",
-      "SNACK"
+      "ORGANIC WHOLE",
+      "GRAIN RICE SNACK",
+      "with Cinnamon"
     ],
-    "spatial": "The hands holding the biscuit pieces are in the foreground, positioned in front of the plaid tablecloth. The blue and white box is to the right of the hands and slightly behind them. The small blue wrapper lies on the tablecloth between the hands and the box.",
+    "spatial": "The hands holding the broken biscuit are in the foreground, positioned centrally. The blue and white snack box is to the right of the hands and sits on the plaid tablecloth in the background.",
     "parse_success": true,
     "chunk_idx": 53,
     "video_id": "pTpFqu6Hjfk"
   },
   {
     "time": [
-      108,
-      110
+      54,
+      55
     ],
     "visible_entities": [
       {
-        "desc": "Left hand holding a piece of golden-brown biscuit with a visible red jam filling",
-        "action": "holding biscuit",
-        "position": "left foreground"
-      },
-      {
-        "desc": "Right hand holding a piece of golden-brown biscuit with a visible red jam filling",
-        "action": "holding biscuit",
-        "position": "right foreground"
-      },
-      {
-        "desc": "Blue and white cardboard box with text and images of biscuits",
-        "action": "static",
-        "position": "background right"
-      },
-      {
-        "desc": "Red and green plaid tablecloth with gold grid lines",
-        "action": "static",
-        "position": "background"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "A person is holding two pieces of a broken biscuit, one in each hand.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The biscuit pieces reveal a red jam filling inside.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The box in the background displays the text 'BISCUITS WITH JAM'.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [
-      "BISCUITS WITH JAM"
-    ],
-    "spatial": "The left hand holding a biscuit piece is to the left of the right hand holding the other piece. Both hands are in front of the plaid tablecloth. The blue and white box is behind the right hand and to the right of the left hand.",
-    "parse_success": true,
-    "chunk_idx": 54,
-    "video_id": "pTpFqu6Hjfk"
-  },
-  {
-    "time": [
-      110,
-      112
-    ],
-    "visible_entities": [
-      {
-        "desc": "broken biscuit piece, golden-brown crust, crumbly texture, red jam filling",
-        "action": "being held",
-        "position": "left"
-      },
-      {
-        "desc": "broken biscuit piece, golden-brown crust, crumbly texture, red jam filling",
-        "action": "being held",
-        "position": "right"
-      },
-      {
-        "desc": "human hands, light skin tone",
+        "desc": "two hands with light skin tone holding broken pieces of a biscuit",
         "action": "holding broken biscuit pieces",
         "position": "foreground"
       },
       {
-        "desc": "plaid tablecloth, red and green grid pattern",
-        "action": "static",
-        "position": "background"
-      },
-      {
-        "desc": "product box, white with blue and orange graphics, text visible",
-        "action": "static",
-        "position": "top right"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "A person is holding two broken pieces of a biscuit.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The biscuit pieces reveal a red jam filling inside.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The product box in the background reads 'READY TO EAT WHOLE GRAIN OATMEAL SNACK'.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [
-      "READY TO EAT WHOLE GRAIN OATMEAL SNACK"
-    ],
-    "spatial": "The hands holding the broken biscuit pieces are in the foreground, positioned above the red and green plaid tablecloth. The product box is located in the top right corner, behind the hand on the right.",
-    "parse_success": true,
-    "chunk_idx": 55,
-    "video_id": "pTpFqu6Hjfk"
-  },
-  {
-    "time": [
-      112,
-      114
-    ],
-    "visible_entities": [
-      {
-        "desc": "pair of hands with light skin tone, short fingernails",
-        "action": "holding broken biscuit pieces",
-        "position": "foreground"
-      },
-      {
-        "desc": "broken rectangular biscuit, light golden-brown, crumbly texture, red jam filling",
+        "desc": "broken biscuit pieces, golden-brown color, crumbly texture, with a red jam filling visible in the cross-section",
         "action": "being held",
         "position": "center"
       },
       {
-        "desc": "product box, white with blue and red text, barcode visible",
-        "action": "static",
-        "position": "background right"
-      },
-      {
-        "desc": "red and green plaid tablecloth with gold grid lines",
-        "action": "static",
-        "position": "background"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "A person is holding two halves of a broken biscuit.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The biscuit reveals a red jam filling inside.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The hands are positioned over a plaid tablecloth.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [
-      "RASPBERRY JAM",
-      "JAM",
-      "SNACK"
-    ],
-    "spatial": "The hands holding the biscuit pieces are in the foreground, centered in the frame. The broken biscuit is positioned between the hands. The product box is located in the upper right background, resting on the red and green plaid tablecloth which covers the surface below the hands.",
-    "parse_success": true,
-    "chunk_idx": 56,
-    "video_id": "pTpFqu6Hjfk"
-  },
-  {
-    "time": [
-      114,
-      116
-    ],
-    "visible_entities": [
-      {
-        "desc": "left hand holding a rectangular piece of golden-brown pastry with a dark red jam filling",
-        "action": "holding pastry",
-        "position": "left"
-      },
-      {
-        "desc": "right hand holding a rectangular piece of golden-brown pastry with a visible cross-section showing a light-colored nutty filling",
-        "action": "holding pastry",
-        "position": "right"
-      },
-      {
-        "desc": "small rectangular cardboard box with blue, white, and red packaging design",
-        "action": "static",
-        "position": "background right"
-      },
-      {
-        "desc": "tablecloth with a red and green plaid pattern featuring thin gold lines",
-        "action": "static",
-        "position": "background"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "A person is holding two separate pieces of a broken pastry bar, one in each hand.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The pastry piece in the right hand is held up to display its internal texture and filling.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The pastry piece in the left hand is held lower, showing its side profile.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "A product box is resting on the table surface in the background.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [
-      "Sainsbury's",
-      "ASDA SMART PRICE",
-      "TOFFEE & PECAN",
-      "SHORTBREAD"
-    ],
-    "spatial": "The left hand holding a piece of pastry is positioned to the left of the right hand, which is also holding a piece of pastry. Both hands are in the foreground, positioned above the red and green plaid tablecloth. The product box is located in the background, to the right of the hands and resting on the tablecloth.",
-    "parse_success": true,
-    "chunk_idx": 57,
-    "video_id": "pTpFqu6Hjfk"
-  },
-  {
-    "time": [
-      116,
-      118
-    ],
-    "visible_entities": [
-      {
-        "desc": "hand with light skin tone holding a piece of golden-brown baked good with a crumbly texture and visible filling",
-        "action": "holding food",
-        "position": "right foreground"
-      },
-      {
-        "desc": "hand with light skin tone holding a piece of golden-brown baked good with a crumbly texture and visible filling",
-        "action": "holding food",
-        "position": "left foreground"
-      },
-      {
-        "desc": "rectangular box with a white top surface featuring a barcode and blue side panel with text",
-        "action": "static",
-        "position": "background right"
-      },
-      {
-        "desc": "red and green plaid tablecloth with a woven texture",
-        "action": "static",
-        "position": "background"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "Two hands are holding pieces of a broken baked snack.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "A box with a barcode is lying on the table in the background.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The table is covered with a red and green checkered cloth.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [
-      "Milkbar",
-      "BARRE DE LAIT",
-      "MILK BAR"
-    ],
-    "spatial": "The hands holding the food are in the foreground, positioned to the left and right of the center. The box is behind the right hand and rests on the plaid tablecloth which covers the entire surface.",
-    "parse_success": true,
-    "chunk_idx": 58,
-    "video_id": "pTpFqu6Hjfk"
-  },
-  {
-    "time": [
-      118,
-      120
-    ],
-    "visible_entities": [
-      {
-        "desc": "hand with light skin tone, holding a small piece of food",
-        "action": "holding a pastry",
-        "position": "right foreground"
-      },
-      {
-        "desc": "small piece of pastry, golden-brown crust, flaky texture, red jam filling visible inside",
-        "action": "being held",
-        "position": "center foreground"
-      },
-      {
-        "desc": "second piece of pastry, golden-brown crust, red jam filling",
-        "action": "static",
-        "position": "left foreground"
-      },
-      {
-        "desc": "rectangular cardboard box, white with blue and red text and graphics, featuring a barcode and images of pastries",
+        "desc": "product box, white with blue and orange graphics, featuring a barcode and text",
         "action": "static",
         "position": "background right"
       },
@@ -3279,58 +3047,347 @@
     ],
     "atomic_facts": [
       {
-        "fact": "A hand is holding a piece of pastry with red filling.",
+        "fact": "A person is holding two halves of a broken biscuit.",
         "confidence": 1.0
       },
       {
-        "fact": "Another piece of pastry sits on the table to the left.",
+        "fact": "The biscuit has a red jam filling.",
         "confidence": 1.0
       },
       {
-        "fact": "A box of pastries is visible in the background.",
+        "fact": "The product box is resting on the tablecloth.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The text 'BREAKFAST WHOLE' is visible on the box.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "BREAKFAST WHOLE",
+      "SNACK"
+    ],
+    "spatial": "The hands holding the biscuit pieces are in the foreground, positioned in front of the plaid tablecloth. The product box is located to the right of the hands and behind them on the tablecloth.",
+    "parse_success": true,
+    "chunk_idx": 54,
+    "video_id": "pTpFqu6Hjfk"
+  },
+  {
+    "time": [
+      55,
+      56
+    ],
+    "visible_entities": [
+      {
+        "desc": "pair of hands with light skin tone, holding broken food items",
+        "action": "holding broken cookie pieces",
+        "position": "foreground"
+      },
+      {
+        "desc": "broken cookie pieces, golden-brown baked texture with red jam filling",
+        "action": "being held",
+        "position": "center"
+      },
+      {
+        "desc": "rectangular cardboard box, white with blue and red graphics, featuring a barcode and images of cookies",
+        "action": "static",
+        "position": "background right"
+      },
+      {
+        "desc": "tablecloth with a red and green plaid pattern",
+        "action": "static",
+        "position": "background"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A person is holding two broken halves of a jam-filled cookie.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The cookie has a golden-brown crust and a visible red filling.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A product box is resting on the table in the background.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The text 'PEANUT BUTTER JAMMIE' is visible on the box.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "PEANUT BUTTER JAMMIE",
+      "DOUBLE CHOCOLATE SNACK"
+    ],
+    "spatial": "The hands holding the cookie pieces are in the foreground, positioned centrally. The broken cookie pieces are held next to each other. The product box is to the right of the hands and behind them, resting on the plaid tablecloth.",
+    "parse_success": true,
+    "chunk_idx": 55,
+    "video_id": "pTpFqu6Hjfk"
+  },
+  {
+    "time": [
+      56,
+      57
+    ],
+    "visible_entities": [
+      {
+        "desc": "pair of hands with light skin tone",
+        "action": "holding broken biscuit pieces",
+        "position": "foreground"
+      },
+      {
+        "desc": "broken biscuit pieces, golden-brown crust, light porous interior, red jam filling",
+        "action": "being held",
+        "position": "center"
+      },
+      {
+        "desc": "rectangular cardboard box, white with blue top section, featuring barcode and food imagery",
+        "action": "static",
+        "position": "background right"
+      },
+      {
+        "desc": "tablecloth with red and green plaid pattern",
+        "action": "static",
+        "position": "background"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A pair of hands is holding two halves of a broken biscuit.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The biscuit reveals a red jam filling inside.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A product box is resting on the table in the background.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "BISCUIT",
+      "SNACK",
+      "SWEET"
+    ],
+    "spatial": "The hands holding the biscuit pieces are in the foreground, positioned centrally. The broken biscuit pieces are held next to each other. The product box is to the right of the hands and lies on the plaid tablecloth in the background.",
+    "parse_success": true,
+    "chunk_idx": 56,
+    "video_id": "pTpFqu6Hjfk"
+  },
+  {
+    "time": [
+      57,
+      58
+    ],
+    "visible_entities": [
+      {
+        "desc": "left hand holding a rectangular biscuit with a golden-brown crust and a dark reddish filling",
+        "action": "holding a biscuit",
+        "position": "left foreground"
+      },
+      {
+        "desc": "right hand holding a broken piece of a rectangular biscuit with a golden-brown crust and a dark reddish filling",
+        "action": "holding a biscuit piece",
+        "position": "right foreground"
+      },
+      {
+        "desc": "rectangular box with a blue top section, white middle section, and a barcode visible on the side",
+        "action": "static",
+        "position": "background right"
+      },
+      {
+        "desc": "tablecloth with a red and green plaid pattern featuring thin gold lines",
+        "action": "static",
+        "position": "background"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A person is holding a biscuit that has been broken into two pieces.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The left hand holds one half of the biscuit, and the right hand holds the other half.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The biscuit has a visible dark filling between two layers of pastry.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The box in the background has a barcode on its side.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "Sainsbury's",
+      "RASPBERRY & ALMOND FRUIT FLAPJACKS",
+      "100g"
+    ],
+    "spatial": "The two hands holding the biscuit pieces are in the foreground, positioned in front of the plaid tablecloth. The box is in the background to the right of the hands. The left hand is to the left of the right hand.",
+    "parse_success": true,
+    "chunk_idx": 57,
+    "video_id": "pTpFqu6Hjfk"
+  },
+  {
+    "time": [
+      58,
+      59
+    ],
+    "visible_entities": [
+      {
+        "desc": "hand with light skin holding a broken piece of golden-brown baked good with a crumbly texture",
+        "action": "holding a piece of food",
+        "position": "right foreground"
+      },
+      {
+        "desc": "hand with light skin holding a broken piece of golden-brown baked good with a reddish filling",
+        "action": "holding a piece of food",
+        "position": "left foreground"
+      },
+      {
+        "desc": "blue and white wrapper with gold text",
+        "action": "static",
+        "position": "center background"
+      },
+      {
+        "desc": "white box with blue and red text and images of cookies",
+        "action": "static",
+        "position": "top right background"
+      },
+      {
+        "desc": "tablecloth with a red, green, and white plaid pattern",
+        "action": "static",
+        "position": "background"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "Two hands are holding broken pieces of a baked good.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The piece of food in the right hand has a crumbly, light-colored interior.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The piece of food in the left hand has a reddish filling.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A white box with the text 'Sainsbury's' is on the table.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "Sainsbury's",
+      "Sainsbury's",
+      "TASTE THE DIFFERENCE",
+      "SHORTBREAD",
+      "SALTED CARAMEL"
+    ],
+    "spatial": "The two hands holding pieces of food are in the foreground, positioned in front of the tablecloth. The blue wrapper is on the tablecloth, below the white box. The white box is to the right of the center of the frame.",
+    "parse_success": true,
+    "chunk_idx": 58,
+    "video_id": "pTpFqu6Hjfk"
+  },
+  {
+    "time": [
+      59,
+      60
+    ],
+    "visible_entities": [
+      {
+        "desc": "hand with light skin tone, holding a piece of food",
+        "action": "holding a piece of food",
+        "position": "right foreground"
+      },
+      {
+        "desc": "piece of food with golden-brown crust and red filling",
+        "action": "being held",
+        "position": "center foreground"
+      },
+      {
+        "desc": "second piece of food with golden-brown crust and red filling",
+        "action": "static",
+        "position": "left foreground"
+      },
+      {
+        "desc": "box with blue and white packaging, featuring text and images of food",
+        "action": "static",
+        "position": "right background"
+      },
+      {
+        "desc": "tablecloth with a red and green plaid pattern",
+        "action": "static",
+        "position": "background"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A hand is holding a piece of food in the center of the frame.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "Another piece of food is visible on the left side of the frame.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The food appears to be a pastry or cookie with a red filling.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A box with text is in the background on the right.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The scene is set on a red and green plaid tablecloth.",
         "confidence": 1.0
       }
     ],
     "ocr": [
       "Schar",
       "ASSORTED MINIATURE",
-      "TOFFEE & JAM SNACKS"
+      "COOKIES & SNACKS"
     ],
-    "spatial": "The hand holding the pastry is in the right foreground. The second piece of pastry is to the left of the hand. The box is behind the hand and to the right. The plaid tablecloth is underneath all the objects.",
+    "spatial": "The hand holding the food is in the right foreground. The second piece of food is to the left of the hand. The box is behind the hand and to the right. The plaid tablecloth is underneath all the objects.",
     "parse_success": true,
     "chunk_idx": 59,
     "video_id": "pTpFqu6Hjfk"
   },
   {
     "time": [
-      120,
-      122
+      60,
+      61
     ],
     "visible_entities": [
       {
-        "desc": "hand with light skin tone holding a small, rectangular, golden-brown pastry with visible red filling",
+        "desc": "hand with light skin tone holding a small, rectangular, golden-brown pastry with a visible red filling",
         "action": "holding the pastry",
-        "position": "right/foreground"
+        "position": "right foreground"
       },
       {
-        "desc": "second piece of golden-brown pastry with red filling",
+        "desc": "broken piece of the same golden-brown pastry with red filling",
         "action": "static",
-        "position": "left/foreground"
+        "position": "left foreground"
       },
       {
-        "desc": "red and green plaid tablecloth with a grid pattern",
+        "desc": "red, green, and yellow plaid tablecloth",
         "action": "static",
         "position": "background"
       },
       {
-        "desc": "blue and white cardboard box with text and graphics",
+        "desc": "blue and white snack wrapper with text",
         "action": "static",
-        "position": "right/background"
+        "position": "right background"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A hand is holding a piece of pastry in the foreground.",
+        "fact": "A hand is holding a piece of a pastry.",
         "confidence": 1.0
       },
       {
@@ -3338,42 +3395,42 @@
         "confidence": 1.0
       },
       {
-        "fact": "The background surface is a red and green plaid tablecloth.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "A blue and white box is visible in the background.",
+        "fact": "The wrapper in the background has text that reads 'ENERGY BOOSTING SNACK' and '100% NATURAL'.",
         "confidence": 1.0
       }
     ],
     "ocr": [
-      "SUN-MIST",
-      "RASPBERRY JAM",
-      "FILLED SNACK"
+      "ENERGY BOOSTING SNACK",
+      "100% NATURAL"
     ],
-    "spatial": "The hand holding the pastry is in the foreground on the right side of the frame. Another piece of pastry is visible in the foreground on the left. The red and green plaid tablecloth is underneath all the objects. The blue and white box is in the background, to the right of the hand.",
+    "spatial": "The hand holding the pastry is in the right foreground. A broken piece of the pastry is to the left of the hand. The plaid tablecloth is underneath all the objects. The snack wrapper is in the background, behind the hand and to the right.",
     "parse_success": true,
     "chunk_idx": 60,
     "video_id": "pTpFqu6Hjfk"
   },
   {
     "time": [
-      122,
-      124
+      61,
+      62
     ],
     "visible_entities": [
       {
-        "desc": "hand with light skin tone holding a small, rectangular, golden-brown baked snack bar with a visible reddish filling",
-        "action": "holding the snack bar",
+        "desc": "human hand with light skin tone",
+        "action": "holding a piece of food",
         "position": "right foreground"
       },
       {
-        "desc": "second piece of the same golden-brown baked snack bar with reddish filling",
-        "action": "static",
-        "position": "bottom left foreground"
+        "desc": "small rectangular piece of golden-brown baked snack with a reddish filling layer",
+        "action": "being held",
+        "position": "center right"
       },
       {
-        "desc": "red and green plaid tablecloth with a grid pattern",
+        "desc": "larger piece of golden-brown baked snack with reddish filling",
+        "action": "static",
+        "position": "bottom left"
+      },
+      {
+        "desc": "red and green plaid tablecloth with thin yellow grid lines",
         "action": "static",
         "position": "background"
       },
@@ -3385,196 +3442,199 @@
     ],
     "atomic_facts": [
       {
-        "fact": "A hand is holding a piece of a baked snack bar.",
+        "fact": "A hand is holding a small piece of a baked snack bar.",
         "confidence": 1.0
       },
       {
-        "fact": "The snack bar has a golden-brown crust and a reddish filling.",
+        "fact": "The snack bar has a golden-brown crust and a visible red filling.",
         "confidence": 1.0
       },
       {
-        "fact": "A second piece of the snack bar rests on the tablecloth.",
+        "fact": "A larger portion of the same snack rests on the tablecloth in the lower left.",
         "confidence": 1.0
       },
       {
-        "fact": "The tablecloth features a red and green plaid pattern.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "A product box is visible in the background.",
+        "fact": "The background surface is a red and green checkered tablecloth.",
         "confidence": 1.0
       }
     ],
     "ocr": [
-      "SNACK",
-      "BAR"
+      "PACKED WITH",
+      "VITAMINS",
+      "100% DV",
+      "SNACK"
     ],
-    "spatial": "The hand holding the snack bar is positioned to the right of the second piece of the snack bar. Both pieces of the snack bar are in front of the red and green plaid tablecloth. The white product box is located in the background, to the right of the hand.",
+    "spatial": "The hand holding the small piece of snack is positioned to the right of the larger piece of snack resting on the table. The white box is located in the upper right background, behind the hand and the snack being held. Both snack pieces are situated above the plaid tablecloth.",
     "parse_success": true,
     "chunk_idx": 61,
     "video_id": "pTpFqu6Hjfk"
   },
   {
     "time": [
-      124,
-      126
+      62,
+      63
     ],
     "visible_entities": [
       {
-        "desc": "hand with light skin tone, holding a broken piece of biscuit",
-        "action": "holding and moving a biscuit piece",
-        "position": "right foreground"
+        "desc": "hand with light skin tone holding a piece of food",
+        "action": "holding and manipulating a biscuit",
+        "position": "right/foreground"
       },
       {
-        "desc": "broken piece of golden-brown biscuit with a rough, crumbly texture and visible filling",
-        "action": "being held and moved",
-        "position": "right foreground"
+        "desc": "rectangular piece of light-brown biscuit with a rough, crumbly texture and visible filling",
+        "action": "being held and turned",
+        "position": "center/foreground"
       },
       {
-        "desc": "broken piece of golden-brown biscuit with a red filling",
-        "action": "being held",
-        "position": "left foreground"
+        "desc": "second piece of biscuit with a reddish filling visible",
+        "action": "static",
+        "position": "left/foreground"
       },
       {
-        "desc": "red and green plaid tablecloth with a grid pattern",
+        "desc": "red and green plaid tablecloth with a woven texture",
         "action": "static",
         "position": "background"
       },
       {
-        "desc": "white and blue cardboard box with text and a barcode",
+        "desc": "white and blue product packaging box with printed text and a barcode",
         "action": "static",
-        "position": "right background"
+        "position": "right/background"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A hand is holding a broken piece of biscuit.",
+        "fact": "A hand is holding a piece of a biscuit.",
         "confidence": 1.0
       },
       {
-        "fact": "The biscuit piece in the right hand is moved and rotated.",
+        "fact": "The hand rotates the biscuit piece, revealing its texture.",
         "confidence": 1.0
       },
       {
-        "fact": "A second piece of biscuit with red filling is held in the left hand.",
+        "fact": "A second piece of biscuit is held in the other hand.",
         "confidence": 1.0
       },
       {
-        "fact": "The biscuit pieces are positioned over a plaid tablecloth.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "A product box is visible in the background.",
+        "fact": "The packaging box rests on the plaid tablecloth.",
         "confidence": 1.0
       }
     ],
     "ocr": [
       "SUN-MAY",
-      "POMEGRANATE & BANANA",
-      "YOGURT CEREAL SNACK"
+      "FOR A COMPLETE VITAMIN",
+      "SNACK"
     ],
-    "spatial": "The hand holding a biscuit piece is in the right foreground. Another piece of biscuit is held in the left foreground. Both biscuit pieces are positioned above the plaid tablecloth. The product box is in the background, to the right of the center.",
+    "spatial": "The hand holding the biscuit is in the foreground, positioned to the right of the second biscuit piece. The plaid tablecloth is underneath all the objects. The product packaging box is behind the hand and to the right of the center.",
     "parse_success": true,
     "chunk_idx": 62,
     "video_id": "pTpFqu6Hjfk"
   },
   {
     "time": [
-      126,
-      128
+      63,
+      64
     ],
     "visible_entities": [
       {
-        "desc": "left hand with light skin tone",
+        "desc": "person's left hand with fair skin",
         "action": "pointing index finger",
         "position": "left"
       },
       {
-        "desc": "right hand with light skin tone",
-        "action": "holding a chocolate bar",
+        "desc": "person's right hand with fair skin",
+        "action": "holding chocolate bar",
         "position": "right"
       },
       {
-        "desc": "small chocolate bar with blue wrapper and gold foil",
+        "desc": "blue foil-wrapped chocolate bar with gold and white label",
         "action": "being held",
-        "position": "center-right"
+        "position": "center"
       },
       {
-        "desc": "white and blue cardboard box with barcode",
+        "desc": "white and blue cardboard box with barcode and orange graphic",
         "action": "static",
         "position": "right"
       },
       {
-        "desc": "plaid tablecloth with red, green, and white grid pattern",
+        "desc": "plaid tablecloth with red, green, and yellow grid pattern",
         "action": "static",
         "position": "background"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A right hand holds a small chocolate bar wrapped in blue foil.",
+        "fact": "The person's right hand is holding a blue chocolate bar.",
         "confidence": 1.0
       },
       {
-        "fact": "A left hand points an index finger towards the chocolate bar.",
+        "fact": "The person's left hand is pointing a finger towards the chocolate bar.",
         "confidence": 1.0
       },
       {
-        "fact": "The chocolate bar wrapper displays the text 'Dessert' and 'Desserts'.",
+        "fact": "The chocolate bar wrapper has the text 'Dessert' and 'Drops' visible.",
         "confidence": 1.0
       },
       {
-        "fact": "A white box with a barcode sits on the tablecloth near the hands.",
+        "fact": "A cardboard box sits on the tablecloth next to the hands.",
         "confidence": 1.0
       }
     ],
     "ocr": [
       "Dessert",
-      "Desserts"
+      "Drops"
     ],
-    "spatial": "The right hand is holding the blue chocolate bar in the center-right of the frame. The left hand is positioned to the left of the chocolate bar, with the index finger pointing towards it. A white box is located behind and to the right of the chocolate bar. All items are resting on or above the plaid tablecloth.",
+    "spatial": "The person's right hand is holding the blue chocolate bar in the center of the frame. The left hand is positioned to the left of the chocolate bar, pointing towards it. The white and blue box is located to the right of the chocolate bar, resting on the plaid tablecloth.",
     "parse_success": true,
     "chunk_idx": 63,
     "video_id": "pTpFqu6Hjfk"
   },
   {
     "time": [
-      128,
-      130
+      64,
+      65
     ],
     "visible_entities": [
       {
-        "desc": "person's hands with light skin tone",
-        "action": "holding a small candy wrapper",
-        "position": "foreground"
+        "desc": "left hand with fair skin",
+        "action": "static",
+        "position": "left"
       },
       {
-        "desc": "small blue and gold foil candy wrapper",
+        "desc": "right hand with fair skin",
+        "action": "holding a small blue wrapper",
+        "position": "right"
+      },
+      {
+        "desc": "small blue foil wrapper with gold and white text",
         "action": "being held",
         "position": "center"
       },
       {
-        "desc": "white and blue cardboard box with red text",
+        "desc": "white and blue cardboard box with product imagery",
         "action": "static",
-        "position": "right"
+        "position": "top right"
       },
       {
-        "desc": "red and green plaid tablecloth",
+        "desc": "red, green, and grey plaid tablecloth",
         "action": "static",
         "position": "background"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A person is holding a small blue and gold wrapper between their thumb and index finger.",
+        "fact": "A right hand is holding a small blue wrapper between the thumb and index finger.",
         "confidence": 1.0
       },
       {
-        "fact": "A white and blue box is resting on the table to the right of the hands.",
+        "fact": "A left hand is positioned to the left of the wrapper.",
         "confidence": 1.0
       },
       {
-        "fact": "The scene takes place on a red and green plaid tablecloth.",
+        "fact": "A cardboard box sits on the tablecloth in the background.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The wrapper has the text 'Drops' and 'Orange' visible on it.",
         "confidence": 1.0
       }
     ],
@@ -3582,36 +3642,36 @@
       "Drops",
       "Orange"
     ],
-    "spatial": "The person's hands are in the foreground, holding the small wrapper in the center of the frame. The white and blue box is positioned to the right of the hands and the wrapper. All objects are situated on top of the red and green plaid tablecloth.",
+    "spatial": "The right hand is holding the blue wrapper in the center of the frame. The left hand is positioned to the left of the wrapper. The cardboard box is located in the top right corner, behind the hands and wrapper. All objects are situated on top of the plaid tablecloth.",
     "parse_success": true,
     "chunk_idx": 64,
     "video_id": "pTpFqu6Hjfk"
   },
   {
     "time": [
-      130,
-      132
+      65,
+      66
     ],
     "visible_entities": [
       {
-        "desc": "person's left hand with light skin tone",
-        "action": "pointing index finger towards center",
+        "desc": "left hand with fair skin",
+        "action": "pointing index finger",
         "position": "left"
       },
       {
-        "desc": "person's right hand with light skin tone",
-        "action": "holding a small blue wrapper",
+        "desc": "right hand with fair skin",
+        "action": "holding blue wrapper",
         "position": "right"
       },
       {
-        "desc": "small blue rectangular wrapper with yellow label",
+        "desc": "small blue foil wrapper with yellow label",
         "action": "being held",
-        "position": "center-right"
+        "position": "center"
       },
       {
-        "desc": "white and blue cardboard box with barcode",
+        "desc": "white and blue cardboard box",
         "action": "static",
-        "position": "top-right"
+        "position": "top right"
       },
       {
         "desc": "red and green plaid tablecloth",
@@ -3633,155 +3693,70 @@
         "confidence": 1.0
       },
       {
-        "fact": "A white box is resting on the tablecloth.",
+        "fact": "A white box sits on the table in the background.",
         "confidence": 1.0
       }
     ],
     "ocr": [
-      "Dessert",
-      "Desserts"
+      "D'licious",
+      "SWEETS"
     ],
-    "spatial": "The right hand is to the right of the left hand. The small blue wrapper is held by the right hand and is positioned in front of the white box. The white box is located in the top-right corner of the frame, resting on the plaid tablecloth.",
+    "spatial": "The right hand is to the right of the left hand. The blue wrapper is held between the hands, positioned above the plaid tablecloth. The white box is located behind and to the right of the wrapper.",
     "parse_success": true,
     "chunk_idx": 65,
     "video_id": "pTpFqu6Hjfk"
   },
   {
     "time": [
-      132,
-      134
+      66,
+      67
     ],
     "visible_entities": [
       {
-        "desc": "pair of hands with light skin tone",
-        "action": "holding thumbs up in a gesture",
-        "position": "foreground"
+        "desc": "left hand with light skin tone, fingers curled inward",
+        "action": "holding a small yellow object",
+        "position": "left"
       },
       {
-        "desc": "blue rectangular chocolate bar wrapper with gold and white text",
-        "action": "static",
-        "position": "center"
-      },
-      {
-        "desc": "white and blue cardboard box with barcode",
-        "action": "static",
+        "desc": "right hand with light skin tone, thumb and index finger extended",
+        "action": "reaching towards the blue wrapper",
         "position": "right"
       },
       {
-        "desc": "tablecloth with red and green plaid pattern",
-        "action": "static",
-        "position": "background"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "Two hands are positioned in the foreground making a thumbs-up gesture.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The thumbs of the two hands are pointing towards each other.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "A blue wrapper labeled 'Daim' is lying on the tablecloth.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "A white box is positioned to the right of the blue wrapper.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [
-      "Daim",
-      "milk chocolate"
-    ],
-    "spatial": "The hands are in the foreground, positioned above the tablecloth. The blue wrapper is in the center of the frame, lying on the tablecloth. The white box is to the right of the blue wrapper.",
-    "parse_success": true,
-    "chunk_idx": 66,
-    "video_id": "pTpFqu6Hjfk"
-  },
-  {
-    "time": [
-      134,
-      136
-    ],
-    "visible_entities": [
-      {
-        "desc": "hands with light skin tone, short fingernails",
-        "action": "holding thumbs up in a gesture",
-        "position": "foreground"
-      },
-      {
-        "desc": "blue and yellow chocolate bar wrapper with white text",
+        "desc": "blue rectangular wrapper with yellow and white text and graphics",
         "action": "static",
         "position": "center-right"
       },
       {
-        "desc": "red and green plaid tablecloth with yellow grid lines",
-        "action": "static",
-        "position": "background"
-      },
-      {
-        "desc": "white and pink cardboard box corner",
+        "desc": "white box with blue and red accents and a barcode",
         "action": "static",
         "position": "top-right"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "Two hands are holding a thumbs-up gesture.",
-        "confidence": 1.0
       },
       {
-        "fact": "A blue wrapper with the text 'Choco' is lying on the table.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The tablecloth has a red and green plaid pattern.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [
-      "Choco"
-    ],
-    "spatial": "The hands are in the foreground, positioned above the tablecloth. The blue wrapper is lying on the tablecloth to the right of the left hand. The white box is located in the top right corner, behind the right hand.",
-    "parse_success": true,
-    "chunk_idx": 67,
-    "video_id": "pTpFqu6Hjfk"
-  },
-  {
-    "time": [
-      136,
-      138
-    ],
-    "visible_entities": [
-      {
-        "desc": "pair of hands with light skin tone",
-        "action": "holding a small object",
-        "position": "foreground"
-      },
-      {
-        "desc": "small rectangular object wrapped in blue and white packaging with gold accents",
-        "action": "being held",
-        "position": "center-right"
-      },
-      {
-        "desc": "tablecloth with a red and green plaid pattern",
+        "desc": "tablecloth with a red, green, and white plaid pattern",
         "action": "static",
         "position": "background"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A pair of hands is holding a small wrapped object.",
+        "fact": "The left hand is holding a small, yellow, cylindrical object.",
         "confidence": 1.0
       },
       {
-        "fact": "The object has visible text on its blue wrapper.",
+        "fact": "The right hand is positioned near the blue wrapper.",
         "confidence": 1.0
       },
       {
-        "fact": "The hands are positioned over a plaid tablecloth.",
+        "fact": "The blue wrapper is lying on the plaid tablecloth.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The white box is located behind the blue wrapper.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The text on the blue wrapper includes 'Doritos' and 'NACHO CHEESE'.",
         "confidence": 1.0
       }
     ],
@@ -3789,7 +3764,102 @@
       "Doritos",
       "NACHO CHEESE"
     ],
-    "spatial": "The hands are in the foreground, holding the small wrapped object. The object is positioned above the plaid tablecloth, which serves as the background surface.",
+    "spatial": "The left hand is to the left of the blue wrapper. The right hand is to the right of the blue wrapper and is reaching towards it. The white box is behind the blue wrapper. All items are on the plaid tablecloth.",
+    "parse_success": true,
+    "chunk_idx": 66,
+    "video_id": "pTpFqu6Hjfk"
+  },
+  {
+    "time": [
+      67,
+      68
+    ],
+    "visible_entities": [
+      {
+        "desc": "left hand with fair skin, fingers curled inward",
+        "action": "holding a small wooden stick",
+        "position": "left foreground"
+      },
+      {
+        "desc": "right hand with fair skin, thumb extended",
+        "action": "resting near the chocolate bar",
+        "position": "right foreground"
+      },
+      {
+        "desc": "blue wrapper with yellow and white text, crinkled texture",
+        "action": "static",
+        "position": "center right"
+      },
+      {
+        "desc": "red, green, and white plaid tablecloth with a woven texture",
+        "action": "static",
+        "position": "background"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A left hand holds a small wooden stick between the thumb and fingers.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A blue chocolate wrapper lies on the plaid tablecloth.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The wrapper displays the text 'Choco Snack'.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "Choco Snack"
+    ],
+    "spatial": "The left hand is positioned to the left of the blue wrapper, while the right hand is to the right of the wrapper. The wrapper lies on top of the plaid tablecloth. The wooden stick is held inside the grasp of the left hand.",
+    "parse_success": true,
+    "chunk_idx": 67,
+    "video_id": "pTpFqu6Hjfk"
+  },
+  {
+    "time": [
+      68,
+      69
+    ],
+    "visible_entities": [
+      {
+        "desc": "two hands with light skin tone",
+        "action": "holding a small blue wrapper and a white box",
+        "position": "foreground"
+      },
+      {
+        "desc": "small blue wrapper with yellow and white text",
+        "action": "static",
+        "position": "center"
+      },
+      {
+        "desc": "white box with blue and red accents",
+        "action": "static",
+        "position": "right"
+      },
+      {
+        "desc": "plaid tablecloth with red, green, and white grid pattern",
+        "action": "static",
+        "position": "background"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A person is holding a small blue wrapper in their right hand.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The wrapper has text that reads 'Dessert' and 'Almond'.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "Dessert",
+      "Almond"
+    ],
+    "spatial": "The hands are in the foreground, positioned above the plaid tablecloth. The blue wrapper is held between the fingers of the right hand, which is to the right of the left hand. The white box is partially visible behind the right hand.",
     "parse_success": true,
     "chunk_idx": 68,
     "video_id": "pTpFqu6Hjfk"

@@ -2,79 +2,84 @@
   {
     "time": [
       0,
-      2
+      1
     ],
     "visible_entities": [
       {
-        "desc": "stainless steel inner pot, shiny, reflective, with brownish residue at the bottom",
+        "desc": "stainless steel Instant Pot inner pot, shiny, reflective, with visible residue or browning at the bottom",
         "action": "static",
         "position": "center"
       },
       {
-        "desc": "black Instant Pot base unit, plastic handles",
+        "desc": "Instant Pot lid, black and silver, resting on the surface",
         "action": "static",
-        "position": "center"
+        "position": "bottom left",
+        "id": "lid_instant_1"
       },
       {
-        "desc": "Instant Pot lid, black and silver, partially visible",
+        "desc": "wooden table surface, light brown, smooth texture",
         "action": "static",
-        "position": "left"
+        "position": "background",
+        "id": "surface_table_1"
       },
       {
-        "desc": "wooden surface, light brown, wood grain texture",
-        "action": "static",
-        "position": "background"
-      },
-      {
-        "desc": "white text overlay, sans-serif font",
+        "desc": "white text overlay reading '- Set the Instant Pot to Sauté'",
         "action": "static",
         "position": "top"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "The Instant Pot is set to Sauté mode according to the on-screen text.",
+        "fact": "The Instant Pot is set to the Sauté function as indicated by the on-screen text.",
         "confidence": 1.0
       },
       {
-        "fact": "The stainless steel pot is sitting inside the black base unit.",
+        "fact": "The inner pot is empty except for some residue at the bottom.",
         "confidence": 1.0
       },
       {
-        "fact": "The lid is resting on the wooden surface to the left of the pot.",
+        "fact": "The lid is placed next to the Instant Pot on the table.",
         "confidence": 1.0
       }
     ],
     "ocr": [
       "- Set the Instant Pot to Sauté"
     ],
-    "spatial": "The stainless steel pot is inside the black Instant Pot base unit. The lid is to the left of the base unit. The text overlay is above the pot.",
+    "spatial": "The stainless steel inner pot is centered in the frame, sitting inside the Instant Pot base. The lid is to the left of the Instant Pot. The text overlay is positioned at the top of the frame, above the pot.",
     "parse_success": true,
     "chunk_idx": 0,
     "video_id": "Instant_pot_spaghetti",
-    "state_changes": [],
-    "_rescued": "parse"
+    "state_changes": []
   },
   {
     "time": [
-      2,
-      4
+      1,
+      2
     ],
     "visible_entities": [
       {
-        "desc": "person's finger with light skin tone",
-        "action": "pressing the Sauté button",
-        "position": "bottom left foreground"
+        "desc": "Stainless steel Instant Pot control panel with various labeled buttons and a digital display screen",
+        "action": "static",
+        "position": "center",
+        "id": "pot_instant_1"
       },
       {
-        "desc": "silver stainless steel Instant Pot control panel with black digital display and various labeled buttons",
-        "action": "static",
-        "position": "center"
+        "desc": "Human finger with light skin tone",
+        "action": "pressing the 'Sauté' button",
+        "position": "bottom left",
+        "id": "person_chef_1"
       },
       {
-        "desc": "white sans-serif text overlay",
+        "desc": "White text overlay with black outline",
         "action": "static",
-        "position": "top"
+        "position": "top",
+        "id": "text_overlay_1"
+      },
+      {
+        "desc": "Red indicator light",
+        "action": "illuminating",
+        "position": "center",
+        "id": "display_led_1"
       }
     ],
     "atomic_facts": [
@@ -83,20 +88,20 @@
         "confidence": 1.0
       },
       {
-        "fact": "The red indicator light next to the 'Sauté' button is illuminated.",
+        "fact": "The 'Sauté' button is located in the bottom left section of the control panel.",
         "confidence": 1.0
       },
       {
-        "fact": "The digital display shows a red bar indicating the 'Normal' heat setting.",
+        "fact": "A red indicator light turns on next to the 'Sauté' label.",
         "confidence": 1.0
       },
       {
-        "fact": "The text overlay reads '- Set the Instant Pot to Saute'.",
+        "fact": "The text overlay reads '- Set the Instant Pot to Sauté'.",
         "confidence": 1.0
       }
     ],
     "ocr": [
-      "- Set the Instant Pot to Saute",
+      "- Set the Instant Pot to Sauté",
       "Stew",
       "Bean Chili",
       "Poultry",
@@ -106,46 +111,110 @@
       "Delay Start",
       "Keep Warm",
       "Cancel",
-      "Yogurt",
-      "Pressure Cook",
-      "Steam",
       "Less",
       "Normal",
       "More",
-      "High Pressure"
+      "Steam",
+      "Yogurt",
+      "Pressure Cook"
     ],
-    "spatial": "The finger is in the foreground, positioned at the bottom left of the Instant Pot control panel. The text overlay is located at the top of the frame, above the control panel. The 'Sauté' button is located below the 'Slow Cook' button and to the left of the 'Delay Start' button.",
+    "spatial": "The finger is positioned at the bottom left, pressing the 'Sauté' button which is below the 'Slow Cook' button. The text overlay is located at the top of the frame, above the control panel. The red indicator light is immediately to the left of the 'Sauté' button label.",
     "parse_success": true,
     "chunk_idx": 1,
     "video_id": "Instant_pot_spaghetti",
-    "state_changes": [],
-    "_rescued": "parse"
+    "state_changes": [
+      "User presses the 'Sauté' button on the control panel, illuminating the indicator light."
+    ]
   },
   {
     "time": [
-      4,
-      6
+      2,
+      3
     ],
     "visible_entities": [
       {
-        "desc": "stainless steel inner pot of a pressure cooker, shiny, reflective, with brown residue at the bottom",
-        "action": "static",
-        "position": "center"
-      },
-      {
-        "desc": "hand with light skin tone, wearing a light grey long-sleeved shirt",
+        "desc": "hand with light skin, wearing a light grey long-sleeved shirt",
         "action": "holding a package of meat",
-        "position": "center"
+        "position": "center",
+        "id": "person_chef_1"
       },
       {
-        "desc": "package of raw ground meat, wrapped in clear plastic with a blue and white label",
-        "action": "being held over the pot",
-        "position": "center"
-      },
-      {
-        "desc": "black plastic lid of the pressure cooker, with a silver metallic center",
+        "desc": "stainless steel inner pot of a pressure cooker, shiny and reflective",
         "action": "static",
-        "position": "left"
+        "position": "center",
+        "id": "pot_instant_1"
+      },
+      {
+        "desc": "vacuum-sealed package of raw meat with blue and white labeling",
+        "action": "being held",
+        "position": "center",
+        "id": "meat_raw_1"
+      },
+      {
+        "desc": "black pressure cooker lid with silver accents",
+        "action": "static",
+        "position": "left",
+        "id": "lid_instant_1"
+      },
+      {
+        "desc": "wooden surface with visible grain",
+        "action": "static",
+        "position": "background",
+        "id": "surface_table_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A hand holds a package of raw meat over the pressure cooker.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The text '- 1lb lean ground beef (or Italian sausage)' is displayed at the top of the frame.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The pressure cooker lid is resting on the table to the left of the pot.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "- 1lb lean ground beef (or Italian sausage)"
+    ],
+    "spatial": "The hand holding the meat package is positioned directly above the stainless steel pot. The pressure cooker lid is to the left of the pot. The text overlay is located at the top of the frame, above the cooking equipment.",
+    "parse_success": true,
+    "chunk_idx": 2,
+    "video_id": "Instant_pot_spaghetti",
+    "state_changes": []
+  },
+  {
+    "time": [
+      3,
+      4
+    ],
+    "visible_entities": [
+      {
+        "desc": "person's hand and forearm wearing a light grey long-sleeved shirt",
+        "action": "dropping meat into pot",
+        "position": "center",
+        "id": "person_chef_1"
+      },
+      {
+        "desc": "rectangular block of raw red ground beef",
+        "action": "falling into pot",
+        "position": "center",
+        "id": "meat_raw_1"
+      },
+      {
+        "desc": "stainless steel inner pot of a pressure cooker",
+        "action": "static",
+        "position": "center",
+        "id": "pot_instant_1"
+      },
+      {
+        "desc": "black pressure cooker lid",
+        "action": "static",
+        "position": "bottom left",
+        "id": "lid_instant_1"
       },
       {
         "desc": "white text overlay",
@@ -155,274 +224,259 @@
     ],
     "atomic_facts": [
       {
-        "fact": "A hand is holding a package of ground meat over the pressure cooker pot.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The text overlay specifies the ingredient as '1lb lean ground beef (or Italian sausage)'.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [
-      "- 1lb lean ground beef (or Italian sausage)"
-    ],
-    "spatial": "The stainless steel pot is in the center of the frame. The hand holding the package of meat is positioned above the pot. The pressure cooker lid is to the left of the pot. The text overlay is at the top of the frame.",
-    "parse_success": true,
-    "chunk_idx": 2,
-    "video_id": "Instant_pot_spaghetti",
-    "state_changes": [],
-    "_rescued": "parse"
-  },
-  {
-    "time": [
-      6,
-      8
-    ],
-    "visible_entities": [
-      {
-        "desc": "hand with light skin tone, wearing a light grey long-sleeved sweater",
-        "action": "dropping a block of meat",
-        "position": "center"
-      },
-      {
-        "desc": "rectangular block of raw lean ground beef, pinkish-red in color",
-        "action": "falling into the pot",
-        "position": "center"
-      },
-      {
-        "desc": "stainless steel inner pot of a pressure cooker, shiny and metallic",
-        "action": "static",
-        "position": "center"
-      },
-      {
-        "desc": "black pressure cooker base with side handles",
-        "action": "static",
-        "position": "center"
-      },
-      {
-        "desc": "white text overlay with black outline",
-        "action": "static",
-        "position": "top"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "A hand drops a block of raw ground beef into the stainless steel pot.",
+        "fact": "A person drops a block of raw ground beef into a stainless steel pot.",
         "confidence": 1.0
       },
       {
         "fact": "The text overlay reads '- 1lb lean ground beef (or Italian sausage)'.",
         "confidence": 1.0
-      },
-      {
-        "fact": "The meat falls from the hand into the center of the pot.",
-        "confidence": 1.0
       }
     ],
     "ocr": [
       "- 1lb lean ground beef (or Italian sausage)"
     ],
-    "spatial": "The hand is positioned above the stainless steel pot, dropping the meat inside. The text overlay is located at the top of the frame, above the cooking appliance. The black base of the cooker is underneath the silver pot.",
+    "spatial": "The person's hand is positioned above the stainless steel pot, dropping the meat inside. The black lid rests on the surface to the left of the pot. The text overlay is located at the top of the frame, above the cooking vessel.",
     "parse_success": true,
     "chunk_idx": 3,
     "video_id": "Instant_pot_spaghetti",
-    "state_changes": [],
-    "_rescued": "parse"
+    "state_changes": [
+      "Raw ground beef is dropped into the stainless steel inner pot."
+    ]
   },
   {
     "time": [
-      8,
-      10
+      4,
+      5
     ],
     "visible_entities": [
       {
-        "desc": "rectangular block of raw lean ground beef, pinkish-red color, textured surface",
+        "desc": "rectangular block of raw red ground beef",
         "action": "static",
-        "position": "center"
-      },
-      {
-        "desc": "stainless steel inner pot of an electric pressure cooker, shiny metallic surface",
-        "action": "static",
-        "position": "center"
-      },
-      {
-        "desc": "wooden spatula, light brown, flat head",
-        "action": "entering from top right",
-        "position": "top right"
-      },
-      {
-        "desc": "lid of the pressure cooker, black plastic with silver metallic accents",
-        "action": "static",
-        "position": "bottom left"
-      },
-      {
-        "desc": "white text overlay with black outline",
-        "action": "static",
-        "position": "top"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "A block of raw ground beef is sitting inside the stainless steel pot.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "A wooden spatula enters the frame from the top right, moving towards the meat.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The text overlay reads '- 1lb lean ground beef (or Italian sausage)'.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [
-      "- 1lb lean ground beef (or Italian sausage)"
-    ],
-    "spatial": "The block of ground beef is inside the stainless steel pot. The wooden spatula is positioned above and to the right of the meat. The pressure cooker lid is resting on the table to the bottom left of the pot.",
-    "parse_success": true,
-    "chunk_idx": 4,
-    "video_id": "Instant_pot_spaghetti",
-    "state_changes": [],
-    "_rescued": "parse"
-  },
-  {
-    "time": [
-      10,
-      12
-    ],
-    "visible_entities": [
-      {
-        "desc": "person's arm wearing a light grey long-sleeved shirt",
-        "action": "stirring ground meat with a wooden spatula",
-        "position": "right"
-      },
-      {
-        "desc": "raw pink ground meat",
-        "action": "being broken up inside the pot",
-        "position": "center"
+        "position": "center",
+        "id": "meat_raw_1"
       },
       {
         "desc": "stainless steel inner pot of a pressure cooker",
         "action": "static",
-        "position": "center"
+        "position": "center",
+        "id": "pot_instant_1"
       },
       {
-        "desc": "light brown wooden spatula",
-        "action": "being held by the person",
-        "position": "center"
+        "desc": "wooden spatula, light brown",
+        "action": "entering frame from top right",
+        "position": "top right",
+        "id": "utensil_spoon_1"
       },
       {
-        "desc": "black pressure cooker lid",
+        "desc": "pressure cooker lid, black and silver",
         "action": "static",
-        "position": "left"
+        "position": "bottom left",
+        "id": "lid_instant_1"
+      },
+      {
+        "desc": "white text overlay",
+        "action": "static",
+        "position": "top"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A person is using a wooden spatula to break up a block of raw ground meat.",
+        "fact": "A block of raw ground beef sits inside the stainless steel pot.",
         "confidence": 1.0
       },
       {
-        "fact": "The meat is inside a stainless steel pot.",
+        "fact": "A wooden spatula enters the frame from the top right corner.",
         "confidence": 1.0
       },
       {
-        "fact": "The pressure cooker lid is resting on the table to the left of the pot.",
+        "fact": "The text overlay reads '- 1lb lean ground beef (or Italian sausage)'.",
         "confidence": 1.0
       }
     ],
-    "ocr": [],
-    "spatial": "The person's arm is reaching into the pot from the right side. The wooden spatula is inside the pot, pressing down on the ground meat. The black lid is positioned to the left of the pressure cooker on the wooden surface.",
+    "ocr": [
+      "- 1lb lean ground beef (or Italian sausage)"
+    ],
+    "spatial": "The block of ground beef is inside the stainless steel pot. The wooden spatula is positioned above and to the right of the beef. The pressure cooker lid is to the left of the pot. The text overlay is above the pot.",
     "parse_success": true,
-    "chunk_idx": 5,
+    "chunk_idx": 4,
     "video_id": "Instant_pot_spaghetti",
-    "state_changes": [],
-    "_rescued": "parse"
+    "state_changes": []
   },
   {
     "time": [
-      12,
-      14
+      5,
+      6
     ],
     "visible_entities": [
       {
-        "desc": "person's hand and forearm, wearing a light grey long-sleeved shirt",
-        "action": "stirring ground meat",
-        "position": "top right"
+        "desc": "person's arm wearing a light grey long-sleeved shirt",
+        "action": "breaking up ground meat with a wooden spatula",
+        "position": "right",
+        "id": "person_chef_1"
       },
       {
-        "desc": "yellow wooden spatula",
-        "action": "breaking up meat",
-        "position": "center"
+        "desc": "raw pink ground meat",
+        "action": "being broken apart and stirred",
+        "position": "center",
+        "id": "meat_raw_1"
+      },
+      {
+        "desc": "wooden spatula with a flat, wide head",
+        "action": "being used to stir meat",
+        "position": "center",
+        "id": "utensil_spoon_1"
       },
       {
         "desc": "stainless steel inner pot of an electric pressure cooker",
         "action": "static",
-        "position": "center"
+        "position": "center",
+        "id": "pot_instant_1"
       },
       {
-        "desc": "ground meat, mixture of pink raw and brown cooked portions",
-        "action": "being stirred",
-        "position": "inside pot"
-      },
-      {
-        "desc": "black electric pressure cooker lid with silver accents",
+        "desc": "black electric pressure cooker base with side handles",
         "action": "static",
-        "position": "bottom left"
+        "position": "center",
+        "id": "pot_instant_1"
+      },
+      {
+        "desc": "black pressure cooker lid with a silver metallic center",
+        "action": "static",
+        "position": "left",
+        "id": "lid_instant_1"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A person is using a yellow wooden spatula to stir and break up ground meat inside a stainless steel pot.",
+        "fact": "A person is using a wooden spatula to break up a block of raw ground meat inside a stainless steel pot.",
         "confidence": 1.0
       },
       {
-        "fact": "The ground meat is in the process of browning, showing both pink and brown textures.",
+        "fact": "The ground meat is being stirred and separated into smaller pieces.",
         "confidence": 1.0
       },
       {
-        "fact": "The lid of the pressure cooker is resting on the table to the left of the main unit.",
+        "fact": "The pressure cooker lid is resting on the table to the left of the cooker base.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The stainless steel pot is situated in the center of the frame, containing the ground meat. The person's hand is positioned above the pot, holding the yellow spatula which is inside the pot. The black lid is located to the left of the pressure cooker base on the wooden surface.",
+    "spatial": "The person's arm is reaching into the stainless steel pot from the right side. The wooden spatula is inside the pot, pressing down on the ground meat. The pressure cooker lid is positioned to the left of the main cooker unit on the wooden surface.",
     "parse_success": true,
-    "chunk_idx": 6,
+    "chunk_idx": 5,
     "video_id": "Instant_pot_spaghetti",
-    "state_changes": [],
-    "_rescued": "parse"
+    "state_changes": [
+      "User begins breaking up and stirring the raw meat with a wooden spatula."
+    ]
   },
   {
     "time": [
-      14,
-      16
+      6,
+      7
+    ],
+    "visible_entities": [
+      {
+        "desc": "hand with fair skin, wearing a light grey long-sleeved shirt",
+        "action": "stirring ground meat",
+        "position": "top right",
+        "id": "person_chef_1"
+      },
+      {
+        "desc": "wooden spatula, yellow-brown, flat",
+        "action": "breaking up meat",
+        "position": "center",
+        "id": "utensil_spoon_1"
+      },
+      {
+        "desc": "ground meat, pink and brown mixture, crumbly texture",
+        "action": "being cooked",
+        "position": "center",
+        "id": "meat_cooked_1"
+      },
+      {
+        "desc": "stainless steel inner pot, round, shiny",
+        "action": "static",
+        "position": "center",
+        "id": "pot_instant_1"
+      },
+      {
+        "desc": "electric pressure cooker base, black plastic, with side handles",
+        "action": "static",
+        "position": "center",
+        "id": "pot_instant_1"
+      },
+      {
+        "desc": "pressure cooker lid, black and silver, detached",
+        "action": "static",
+        "position": "bottom left",
+        "id": "lid_instant_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A hand is stirring ground meat inside a metal pot.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The meat is changing color from pink to brown as it cooks.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The wooden spatula is being used to break up the meat chunks.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The pressure cooker lid is resting on the table next to the cooker.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The hand is above the pot, holding the wooden spatula inside. The ground meat is inside the stainless steel pot, which sits within the black pressure cooker base. The detached lid is to the left of the pressure cooker on the wooden surface.",
+    "parse_success": true,
+    "chunk_idx": 6,
+    "video_id": "Instant_pot_spaghetti",
+    "state_changes": []
+  },
+  {
+    "time": [
+      7,
+      8
     ],
     "visible_entities": [
       {
         "desc": "hand with light skin tone",
         "action": "holding a wooden spoon",
-        "position": "bottom center"
+        "position": "bottom center",
+        "id": "person_chef_1"
       },
       {
-        "desc": "wooden spoon, light brown, smooth texture",
+        "desc": "wooden spoon, light brown, smooth",
         "action": "stirring ground meat",
-        "position": "center"
+        "position": "center",
+        "id": "utensil_spoon_1"
       },
       {
-        "desc": "stainless steel pot containing browned ground meat",
+        "desc": "stainless steel pot containing cooked ground meat",
         "action": "static",
-        "position": "center"
+        "position": "center",
+        "id": "pot_instant_1"
       },
       {
         "desc": "black electric pressure cooker base",
         "action": "static",
-        "position": "center"
+        "position": "center",
+        "id": "pot_instant_1"
+      },
+      {
+        "desc": "hand with light skin tone",
+        "action": "holding a small glass bowl",
+        "position": "top right",
+        "id": "person_chef_1"
       },
       {
         "desc": "small glass bowl containing yellow powder",
-        "action": "being held above the pot",
-        "position": "top right"
+        "action": "being tilted",
+        "position": "top right",
+        "id": "bowl_seasoning_1"
       },
       {
         "desc": "white text overlay listing ingredients",
@@ -432,11 +486,11 @@
     ],
     "atomic_facts": [
       {
-        "fact": "A hand is stirring browned ground meat inside a stainless steel pot with a wooden spoon.",
+        "fact": "A hand is stirring ground meat in a pot with a wooden spoon.",
         "confidence": 1.0
       },
       {
-        "fact": "A second hand holds a small glass bowl containing yellow powder above the pot.",
+        "fact": "Another hand is holding a small glass bowl containing yellow powder above the pot.",
         "confidence": 1.0
       },
       {
@@ -450,38 +504,43 @@
       "- 1/2 teaspoon onion powder",
       "- 2 teaspoons Italian seasoning"
     ],
-    "spatial": "The stainless steel pot is situated inside the black pressure cooker base. The hand holding the wooden spoon is positioned at the bottom center, reaching into the pot. The small glass bowl is held above the pot on the right side. The ingredient text overlay is positioned above the pot in the upper portion of the frame.",
+    "spatial": "The stainless steel pot is inside the black pressure cooker base. A hand holding a wooden spoon is inside the pot, stirring the meat. Another hand holding a small glass bowl is positioned above the pot on the right side. The text overlay is located above the pot.",
     "parse_success": true,
     "chunk_idx": 7,
     "video_id": "Instant_pot_spaghetti",
-    "state_changes": [],
-    "_rescued": "parse"
+    "state_changes": [
+      "User adds yellow powdered seasoning from a small glass bowl to the cooking meat."
+    ]
   },
   {
     "time": [
-      16,
-      18
+      8,
+      9
     ],
     "visible_entities": [
       {
         "desc": "hands with light skin tone",
         "action": "sprinkling seasoning and holding a wooden spoon",
-        "position": "center/foreground"
+        "position": "center/foreground",
+        "id": "person_chef_1"
       },
       {
         "desc": "wooden spoon, light brown, smooth texture",
         "action": "being held",
-        "position": "center"
+        "position": "center",
+        "id": "utensil_spoon_1"
       },
       {
-        "desc": "stainless steel pot containing browned ground meat and spices",
+        "desc": "stainless steel pot containing browned ground meat",
         "action": "static",
-        "position": "center"
+        "position": "center",
+        "id": "pot_instant_1"
       },
       {
         "desc": "black electric pressure cooker base",
         "action": "static",
-        "position": "center"
+        "position": "center",
+        "id": "pot_instant_1"
       },
       {
         "desc": "white text overlay listing ingredients",
@@ -491,7 +550,7 @@
     ],
     "atomic_facts": [
       {
-        "fact": "A person is sprinkling yellow powder seasoning onto ground meat inside a pot.",
+        "fact": "A person is sprinkling yellow powder seasoning onto ground meat in a pot.",
         "confidence": 1.0
       },
       {
@@ -501,10 +560,6 @@
       {
         "fact": "The text overlay lists specific measurements for salt, garlic powder, onion powder, and Italian seasoning.",
         "confidence": 1.0
-      },
-      {
-        "fact": "The pot is sitting inside a black pressure cooker base.",
-        "confidence": 1.0
       }
     ],
     "ocr": [
@@ -513,28 +568,35 @@
       "- 1/2 teaspoon onion powder",
       "- 2 teaspoons Italian seasoning"
     ],
-    "spatial": "The stainless steel pot is positioned inside the black pressure cooker base. The person's hands are above the pot, sprinkling seasoning into it. The wooden spoon is held in the left hand, hovering over the meat. The text overlay is located at the top of the frame, above the cooking action.",
+    "spatial": "The stainless steel pot is sitting inside the black pressure cooker base. The hands are positioned above the pot, sprinkling seasoning into it. The wooden spoon is held in the left hand, hovering over the meat. The text overlay is located at the top of the frame, above the cooking action.",
     "parse_success": true,
     "chunk_idx": 8,
     "video_id": "Instant_pot_spaghetti",
-    "state_changes": [],
-    "_rescued": "parse"
+    "state_changes": []
   },
   {
     "time": [
-      18,
-      20
+      9,
+      10
     ],
     "visible_entities": [
       {
-        "desc": "black electric pressure cooker with a stainless steel inner pot containing raw ground meat and piles of yellow, white, and green seasonings",
+        "desc": "black electric pressure cooker with a stainless steel inner pot",
         "action": "static",
-        "position": "center"
+        "position": "center",
+        "id": "pot_instant_1"
       },
       {
-        "desc": "wooden spoon with a smooth, light-brown finish",
-        "action": "resting inside the pot",
-        "position": "center"
+        "desc": "raw ground meat mixed with yellow and green powdered seasonings",
+        "action": "static",
+        "position": "inside the pot",
+        "id": "meat_raw_1"
+      },
+      {
+        "desc": "wooden spoon with a light brown handle",
+        "action": "resting in the pot",
+        "position": "inside the pot",
+        "id": "utensil_spoon_1"
       },
       {
         "desc": "white text overlay listing ingredients",
@@ -542,27 +604,37 @@
         "position": "top"
       },
       {
-        "desc": "wooden surface with a light brown grain pattern",
+        "desc": "wooden surface with a light brown finish",
         "action": "static",
-        "position": "background"
+        "position": "background",
+        "id": "surface_table_1"
       },
       {
-        "desc": "black lid of the pressure cooker with a silver metallic section",
+        "desc": "black lid of the pressure cooker",
         "action": "static",
-        "position": "left"
+        "position": "bottom left",
+        "id": "lid_instant_1"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A wooden spoon is resting inside the pressure cooker pot.",
+        "fact": "The pressure cooker is sitting on a wooden surface.",
         "confidence": 1.0
       },
       {
-        "fact": "The pot contains raw ground meat topped with unmixed seasonings.",
+        "fact": "Raw ground meat is inside the stainless steel pot.",
         "confidence": 1.0
       },
       {
-        "fact": "The on-screen text lists the ingredients: 1 teaspoon salt, 1 teaspoon garlic powder, 1/2 teaspoon onion powder, and 2 teaspoons Italian seasoning.",
+        "fact": "Seasonings are sprinkled on top of the ground meat.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A wooden spoon is resting inside the pot against the meat.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The text overlay lists ingredients including salt, garlic powder, onion powder, and Italian seasoning.",
         "confidence": 1.0
       }
     ],
@@ -572,48 +644,47 @@
       "- 1/2 teaspoon onion powder",
       "- 2 teaspoons Italian seasoning"
     ],
-    "spatial": "The pressure cooker is positioned in the center of the frame on a wooden surface. The wooden spoon is inside the pot, resting against the meat and seasonings. The lid of the cooker is located to the left of the main pot. The ingredient list text is overlaid at the top of the image, above the pot.",
+    "spatial": "The pressure cooker is in the center of the frame on a wooden surface. The ground meat and seasonings are inside the pot. The wooden spoon is resting inside the pot, leaning against the meat. The black lid is to the bottom left of the pressure cooker. The ingredient text is above the pressure cooker.",
     "parse_success": true,
     "chunk_idx": 9,
     "video_id": "Instant_pot_spaghetti",
-    "state_changes": [],
-    "_rescued": "parse"
+    "state_changes": []
   },
   {
     "time": [
-      20,
-      22
+      10,
+      11
     ],
     "visible_entities": [
       {
         "desc": "hand with light skin tone",
-        "action": "holding a wooden spoon",
-        "position": "top right"
+        "action": "holding wooden spoon",
+        "position": "top right",
+        "id": "person_chef_1"
       },
       {
-        "desc": "wooden spoon, light brown, smooth",
+        "desc": "wooden spoon, light brown, smooth texture",
         "action": "stirring ground meat",
-        "position": "center"
+        "position": "center",
+        "id": "utensil_spoon_1"
       },
       {
-        "desc": "cooked ground meat, brown, crumbly texture",
-        "action": "being stirred",
-        "position": "center"
-      },
-      {
-        "desc": "stainless steel inner pot",
+        "desc": "stainless steel inner pot containing cooked brown ground meat",
         "action": "static",
-        "position": "center"
+        "position": "center",
+        "id": "pot_instant_1"
       },
       {
-        "desc": "black electric pressure cooker base",
+        "desc": "black electric pressure cooker base with side handles",
         "action": "static",
-        "position": "center"
+        "position": "center",
+        "id": "pot_instant_1"
       },
       {
-        "desc": "pressure cooker lid, black and silver",
+        "desc": "black pressure cooker lid with silver accents",
         "action": "static",
-        "position": "left"
+        "position": "bottom left",
+        "id": "lid_instant_1"
       },
       {
         "desc": "white text overlay listing ingredients",
@@ -623,11 +694,11 @@
     ],
     "atomic_facts": [
       {
-        "fact": "A hand is stirring cooked ground meat inside a stainless steel pot with a wooden spoon.",
+        "fact": "A hand is stirring cooked ground meat inside a pot with a wooden spoon.",
         "confidence": 1.0
       },
       {
-        "fact": "The text overlay lists the following ingredients: 1 teaspoon salt, 1 teaspoon garlic powder, 1/2 teaspoon onion powder, and 2 teaspoons Italian seasoning.",
+        "fact": "The text overlay lists ingredients: 1 teaspoon salt, 1 teaspoon garlic powder, 1/2 teaspoon onion powder, and 2 teaspoons Italian seasoning.",
         "confidence": 1.0
       },
       {
@@ -641,370 +712,391 @@
       "- 1/2 teaspoon onion powder",
       "- 2 teaspoons Italian seasoning"
     ],
-    "spatial": "The hand is positioned above the pot, holding the wooden spoon which is inside the pot mixing the meat. The pot is situated inside the black pressure cooker base. The lid is to the left of the pressure cooker base. The text overlay is superimposed above the pot.",
+    "spatial": "The hand is positioned above the wooden spoon, holding it inside the stainless steel pot. The pot is situated inside the black pressure cooker base. The text overlay is located above the pot and spoon. The pressure cooker lid is to the left of the main cooker unit.",
     "parse_success": true,
     "chunk_idx": 10,
     "video_id": "Instant_pot_spaghetti",
-    "state_changes": [],
-    "_rescued": "parse"
+    "state_changes": []
   },
   {
     "time": [
-      22,
-      24
+      11,
+      12
     ],
     "visible_entities": [
       {
-        "desc": "brown crumbled ground meat, cooked and textured",
+        "desc": "brown crumbled ground meat",
         "action": "static",
-        "position": "center"
+        "position": "center",
+        "id": "meat_cooked_1"
       },
       {
-        "desc": "light-brown wooden spoon, smooth, flat head",
+        "desc": "wooden spoon, light brown, smooth",
         "action": "static",
-        "position": "center"
+        "position": "center",
+        "id": "utensil_spoon_1"
       },
       {
-        "desc": "silver stainless steel inner pot, round, reflective",
+        "desc": "stainless steel inner pot",
         "action": "static",
-        "position": "center"
+        "position": "center",
+        "id": "pot_instant_1"
       },
       {
-        "desc": "black electric pressure cooker base, matte plastic, with side handles",
+        "desc": "black electric pressure cooker base",
         "action": "static",
-        "position": "center"
+        "position": "center",
+        "id": "pot_instant_1"
       },
       {
-        "desc": "black pressure cooker lid, partially visible with silver accents",
+        "desc": "black power cord",
         "action": "static",
-        "position": "left"
+        "position": "top left",
+        "id": "cord_power_1"
       },
       {
-        "desc": "dark brown wooden floor, smooth surface",
+        "desc": "pressure cooker lid, black and silver",
         "action": "static",
-        "position": "background"
+        "position": "bottom left",
+        "id": "lid_instant_1"
+      },
+      {
+        "desc": "wooden surface, dark brown",
+        "action": "static",
+        "position": "background",
+        "id": "surface_table_1"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "The wooden spoon is resting on top of the cooked ground meat.",
+        "fact": "A wooden spoon rests on top of the brown crumbled ground meat.",
         "confidence": 1.0
       },
       {
-        "fact": "The stainless steel pot is inserted inside the black pressure cooker base.",
+        "fact": "The ground meat is inside the stainless steel inner pot.",
         "confidence": 1.0
       },
       {
-        "fact": "The pressure cooker lid is placed on the floor to the left of the cooker.",
+        "fact": "The stainless steel inner pot is placed inside the black pressure cooker base.",
         "confidence": 1.0
       },
       {
-        "fact": "The pressure cooker is sitting on a wooden floor.",
+        "fact": "The pressure cooker lid is resting on the wooden surface to the left of the cooker.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The stainless steel pot containing the meat is inside the black pressure cooker base. The wooden spoon is on top of the meat in the center of the pot. The pressure cooker lid is to the left of the main cooker unit. The entire setup is on a wooden floor.",
+    "spatial": "The stainless steel inner pot containing the ground meat is centered inside the black pressure cooker base. The wooden spoon is on top of the meat. The pressure cooker lid is to the left of the main cooker unit. The black power cord extends from the back of the cooker towards the top left.",
     "parse_success": true,
     "chunk_idx": 11,
     "video_id": "Instant_pot_spaghetti",
-    "state_changes": [],
-    "_rescued": "parse"
+    "state_changes": []
   },
   {
     "time": [
-      24,
-      26
+      12,
+      13
     ],
     "visible_entities": [
       {
-        "desc": "person's hands, light skin tone, wearing a white long-sleeved shirt",
-        "action": "reaching for the wooden spoon",
-        "position": "right"
-      },
-      {
-        "desc": "wooden spoon, light brown, flat head, smooth texture",
-        "action": "resting on the ground meat",
-        "position": "center"
-      },
-      {
-        "desc": "cooked ground meat, brown, crumbled texture",
+        "desc": "cooked ground meat, brown, crumbly texture",
         "action": "static",
-        "position": "center"
+        "position": "center",
+        "id": "meat_cooked_1"
       },
       {
-        "desc": "Instant Pot inner pot, stainless steel, cylindrical",
+        "desc": "wooden spoon, light brown, smooth handle",
+        "action": "being held",
+        "position": "center",
+        "id": "utensil_spoon_1"
+      },
+      {
+        "desc": "Instant Pot, stainless steel inner pot, black exterior handles",
         "action": "static",
-        "position": "center"
+        "position": "center",
+        "id": "pot_instant_1"
       },
       {
-        "desc": "Instant Pot lid, black and silver, partially visible",
+        "desc": "person's hand, fair skin, white long sleeve cuff visible",
+        "action": "holding spoon",
+        "position": "right",
+        "id": "person_chef_1"
+      },
+      {
+        "desc": "Instant Pot lid, black and silver, detached",
         "action": "static",
-        "position": "left"
+        "position": "left",
+        "id": "lid_instant_1"
       },
       {
-        "desc": "text overlay, white font with black outline",
+        "desc": "white text overlay with black outline",
         "action": "static",
         "position": "top"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A person's hands enter the frame from the right side.",
+        "fact": "A person's hand is holding a wooden spoon inside the Instant Pot.",
         "confidence": 1.0
       },
       {
-        "fact": "The person reaches for the wooden spoon resting on the meat.",
+        "fact": "The spoon is resting on top of the cooked ground meat.",
         "confidence": 1.0
       },
       {
-        "fact": "The text overlay reads '- Turn the Instant Pot off & drain excess grease'.",
+        "fact": "The Instant Pot lid is placed on the table to the left of the pot.",
         "confidence": 1.0
       },
       {
-        "fact": "The ground meat is inside the stainless steel pot.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The Instant Pot lid is sitting on the table to the left of the pot.",
+        "fact": "The text overlay instructs to turn the Instant Pot off and drain excess grease.",
         "confidence": 1.0
       }
     ],
     "ocr": [
       "- Turn the Instant Pot off & drain excess grease"
     ],
-    "spatial": "The stainless steel pot containing ground meat is in the center of the frame. The wooden spoon is resting inside the pot on top of the meat. The Instant Pot lid is to the left of the pot on the wooden surface. The text overlay is positioned at the top of the screen above the pot.",
+    "spatial": "The Instant Pot is centered on a wooden surface. The lid is to the left of the pot. The person's hand enters from the right side, holding the wooden spoon which is inside the pot above the meat. The text overlay is positioned at the top of the frame.",
     "parse_success": true,
     "chunk_idx": 12,
     "video_id": "Instant_pot_spaghetti",
-    "state_changes": [],
-    "_rescued": "parse"
+    "state_changes": []
   },
   {
     "time": [
-      26,
-      28
+      13,
+      14
     ],
     "visible_entities": [
       {
-        "desc": "person with fair skin, wearing a white long-sleeved garment",
-        "action": "stirring ground meat with a wooden spoon",
-        "position": "right/foreground"
+        "desc": "person with fair skin, wearing a light grey long-sleeved top",
+        "action": "stirring ground meat",
+        "position": "right",
+        "id": "person_chef_1"
       },
       {
-        "desc": "silver metal inner pot containing brown cooked ground meat and liquid grease",
+        "desc": "wooden spoon, light brown, smooth",
+        "action": "stirring",
+        "position": "center",
+        "id": "utensil_spoon_1"
+      },
+      {
+        "desc": "cooked ground meat, brown, crumbly texture",
         "action": "static",
-        "position": "center"
+        "position": "center",
+        "id": "meat_cooked_1"
       },
       {
-        "desc": "black Instant Pot base unit with side handles",
+        "desc": "Instant Pot, black exterior with silver stainless steel inner pot",
         "action": "static",
-        "position": "center"
+        "position": "center",
+        "id": "pot_instant_1"
       },
       {
-        "desc": "light brown wooden spoon",
-        "action": "being used to stir",
-        "position": "center"
-      },
-      {
-        "desc": "black Instant Pot lid with silver accents",
+        "desc": "Instant Pot lid, black and silver, resting on surface",
         "action": "static",
-        "position": "bottom left"
+        "position": "left",
+        "id": "lid_instant_1"
+      },
+      {
+        "desc": "white text overlay with black outline",
+        "action": "static",
+        "position": "top"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A person is stirring cooked ground meat inside a metal pot.",
+        "fact": "A person is stirring cooked ground meat inside the Instant Pot with a wooden spoon.",
         "confidence": 1.0
       },
       {
-        "fact": "The text overlay reads '- Turn the Instant Pot off & drain excess grease'.",
+        "fact": "The Instant Pot lid is removed and placed on the table to the left.",
         "confidence": 1.0
       },
       {
-        "fact": "Liquid grease is visible pooling around the meat in the pot.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The Instant Pot lid is resting on the table surface to the left of the cooker.",
+        "fact": "The text overlay instructs to turn the Instant Pot off and drain excess grease.",
         "confidence": 1.0
       }
     ],
     "ocr": [
       "- Turn the Instant Pot off & drain excess grease"
     ],
-    "spatial": "The metal pot is inside the black Instant Pot base. The person's hands are positioned over the pot, holding the wooden spoon inside it. The Instant Pot lid is to the left of the main cooking unit. The instructional text is located at the top of the frame, above the pot.",
+    "spatial": "The Instant Pot is in the center of the frame. The person's hands are on the right side, holding a wooden spoon inside the pot. The lid of the Instant Pot is to the left of the main unit. The instructional text is located at the top of the frame.",
     "parse_success": true,
     "chunk_idx": 13,
     "video_id": "Instant_pot_spaghetti",
-    "state_changes": [],
-    "_rescued": "parse"
+    "state_changes": []
   },
   {
     "time": [
-      28,
-      30
+      14,
+      15
     ],
     "visible_entities": [
       {
-        "desc": "person's hands, light skin tone, wearing a white long-sleeved shirt",
-        "action": "stirring ground meat with a wooden spoon",
-        "position": "right/foreground"
-      },
-      {
-        "desc": "wooden spoon, light brown, smooth texture",
-        "action": "stirring inside the pot",
-        "position": "center"
+        "desc": "person's hands and arms, wearing a light grey long-sleeved shirt",
+        "action": "stirring meat with a wooden spoon",
+        "position": "right",
+        "id": "person_chef_1"
       },
       {
         "desc": "brown ground meat, crumbly texture",
-        "action": "being stirred",
-        "position": "center/inside pot"
+        "action": "being stirred inside the pot",
+        "position": "center",
+        "id": "meat_cooked_1"
       },
       {
-        "desc": "electric pressure cooker, black exterior, stainless steel inner pot",
+        "desc": "wooden spoon, light brown, smooth, flat head",
+        "action": "mixing the meat",
+        "position": "center",
+        "id": "utensil_spoon_1"
+      },
+      {
+        "desc": "electric pressure cooker, stainless steel inner pot, black plastic exterior handles",
         "action": "static",
-        "position": "center"
+        "position": "center",
+        "id": "pot_instant_1"
       },
       {
-        "desc": "pressure cooker lid, black and silver",
+        "desc": "pressure cooker lid, black and silver, detached",
         "action": "static",
-        "position": "left"
+        "position": "left",
+        "id": "lid_instant_1"
       },
       {
-        "desc": "white cloth or paper towel",
-        "action": "held by the person",
-        "position": "right"
+        "desc": "white paper towel, crumpled",
+        "action": "held in hand",
+        "position": "right",
+        "id": "towel_paper_1"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A person is stirring brown ground meat inside a stainless steel pot.",
+        "fact": "A person is stirring brown ground meat inside a stainless steel pot using a wooden spoon.",
         "confidence": 1.0
       },
       {
-        "fact": "The person is holding a wooden spoon in their right hand.",
+        "fact": "The person is holding a white paper towel in their right hand while stirring.",
         "confidence": 1.0
       },
       {
-        "fact": "The person is holding a white cloth in their left hand.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The pressure cooker lid is resting on the table to the left of the cooker.",
+        "fact": "The pressure cooker lid is sitting on the table to the left of the cooker base.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The electric pressure cooker is in the center of the frame. The person's hands are on the right side, reaching into the pot. The wooden spoon is inside the pot, mixing the meat. The pressure cooker lid is to the left of the main unit on the wooden surface.",
+    "spatial": "The electric pressure cooker is in the center of the frame. The detached lid is to the left of the cooker. The person's hands are on the right side, reaching into the pot to stir the meat.",
     "parse_success": true,
     "chunk_idx": 14,
     "video_id": "Instant_pot_spaghetti",
-    "state_changes": [],
-    "_rescued": "parse"
+    "state_changes": []
   },
   {
     "time": [
-      30,
-      32
+      15,
+      16
     ],
     "visible_entities": [
       {
         "desc": "person's hands and arms, wearing a light grey long-sleeved top",
-        "action": "stirring food and wiping the pot",
-        "position": "right/foreground"
+        "action": "wiping the pot with a paper towel",
+        "position": "right",
+        "id": "person_chef_1"
       },
       {
-        "desc": "silver metal inner pot of a pressure cooker",
+        "desc": "black electric pressure cooker with a stainless steel inner pot",
         "action": "static",
-        "position": "center"
+        "position": "center",
+        "id": "pot_instant_1"
       },
       {
         "desc": "cooked brown ground meat",
-        "action": "being stirred",
-        "position": "inside the pot"
+        "action": "static",
+        "position": "inside the pot",
+        "id": "meat_cooked_1"
       },
       {
-        "desc": "wooden spoon with a light brown handle and flat head",
-        "action": "being used to stir",
-        "position": "inside the pot"
+        "desc": "wooden spoon, light brown, flat head",
+        "action": "resting in the pot",
+        "position": "inside the pot",
+        "id": "utensil_spoon_1"
       },
       {
         "desc": "white paper towel",
         "action": "being used to wipe the pot",
-        "position": "inside the pot"
+        "position": "in the person's hand",
+        "id": "towel_paper_1"
       },
       {
-        "desc": "black pressure cooker lid",
+        "desc": "black pressure cooker lid with a silver vent",
         "action": "static",
-        "position": "left"
+        "position": "left",
+        "id": "lid_instant_1"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A person is stirring cooked ground meat inside a pressure cooker pot with a wooden spoon.",
+        "fact": "A person is using a white paper towel to wipe the inside of the stainless steel pot.",
         "confidence": 1.0
       },
       {
-        "fact": "The person uses a white paper towel to wipe the inside wall of the pot.",
+        "fact": "The pot contains cooked ground meat and a wooden spoon.",
         "confidence": 1.0
       },
       {
-        "fact": "The pressure cooker lid is placed on the table to the left of the pot.",
+        "fact": "The pressure cooker lid is sitting on the table to the left of the main unit.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The silver pot is in the center of the frame, containing ground meat and a wooden spoon. The person's hands are on the right side, reaching into the pot. The black lid is to the left of the pot on the wooden surface.",
+    "spatial": "The pressure cooker is in the center of the frame. The person's hands are on the right side, reaching into the pot. The lid is to the left of the pressure cooker. The wooden spoon is inside the pot, resting on the ground meat.",
     "parse_success": true,
     "chunk_idx": 15,
     "video_id": "Instant_pot_spaghetti",
-    "state_changes": [],
-    "_rescued": "parse"
+    "state_changes": [
+      "User wipes the inside rim of the pot with a paper towel."
+    ]
   },
   {
     "time": [
-      32,
-      34
+      16,
+      17
     ],
     "visible_entities": [
       {
         "desc": "person's right hand with light skin tone",
         "action": "holding a blue spaghetti box",
-        "position": "right"
+        "position": "right",
+        "id": "person_chef_1"
       },
       {
-        "desc": "blue rectangular cardboard box labeled 'Great Value Spaghetti' with images of pasta and tomatoes",
+        "desc": "blue rectangular cardboard box with 'Great Value' logo, 'Spaghetti' text, and images of pasta and tomatoes",
         "action": "being held horizontally",
-        "position": "center"
+        "position": "center",
+        "id": "box_spaghetti_1"
       },
       {
-        "desc": "stainless steel inner pot of a pressure cooker containing cooked brown ground meat",
+        "desc": "stainless steel inner pot of an electric pressure cooker containing brown cooked ground meat",
         "action": "static",
-        "position": "center"
+        "position": "center",
+        "id": "pot_instant_1"
       },
       {
-        "desc": "black pressure cooker base unit",
-        "action": "static",
-        "position": "center"
-      },
-      {
-        "desc": "white sans-serif text overlay",
+        "desc": "white text overlay with a black outline",
         "action": "static",
         "position": "top"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A person is holding a box of spaghetti over an open pressure cooker.",
+        "fact": "A hand is holding a box of spaghetti over the pressure cooker.",
         "confidence": 1.0
       },
       {
-        "fact": "The pressure cooker contains cooked ground meat.",
+        "fact": "The pressure cooker pot contains cooked brown ground meat.",
         "confidence": 1.0
       },
       {
-        "fact": "The text overlay instructs to 'Add 16oz of regular spaghetti pasta'.",
+        "fact": "The on-screen text instructs to add 16oz of regular spaghetti pasta.",
         "confidence": 1.0
       }
     ],
@@ -1014,57 +1106,57 @@
       "Spaghetti",
       "NET WT 16 OZ (1 LB) 454g"
     ],
-    "spatial": "The hand is on the right side of the frame, holding the blue spaghetti box. The box is positioned horizontally above the stainless steel pot. The pot is inside the black pressure cooker base. The instructional text is located at the top of the image, above the box.",
+    "spatial": "The hand is on the right side of the frame, holding the blue spaghetti box horizontally. The box is positioned directly above the open pressure cooker pot, which sits in the center of the view. The instructional text is located at the top of the screen, above the box and the pot.",
     "parse_success": true,
     "chunk_idx": 16,
     "video_id": "Instant_pot_spaghetti",
-    "state_changes": [],
-    "_rescued": "parse"
+    "state_changes": []
   },
   {
     "time": [
-      34,
-      36
+      17,
+      18
     ],
     "visible_entities": [
       {
-        "desc": "person's arm wearing a grey long-sleeved shirt",
+        "desc": "stainless steel inner pot containing brown crumbled ground meat",
+        "action": "static",
+        "position": "center",
+        "id": "pot_instant_1"
+      },
+      {
+        "desc": "person's arm wearing a grey long-sleeved sweatshirt",
         "action": "placing spaghetti into the pot",
-        "position": "right"
+        "position": "right",
+        "id": "person_chef_1"
       },
       {
-        "desc": "black electric pressure cooker with a stainless steel inner pot",
+        "desc": "bundle of long, dry, yellow spaghetti noodles",
+        "action": "being placed into the pot",
+        "position": "center",
+        "id": "spaghetti_dry_1"
+      },
+      {
+        "desc": "white plate with a blue geometric pattern on the rim",
         "action": "static",
-        "position": "center"
+        "position": "bottom right",
+        "id": "plate_paper_1"
       },
       {
-        "desc": "cooked brown ground meat",
+        "desc": "black electric pressure cooker base",
         "action": "static",
-        "position": "inside the pot"
+        "position": "center",
+        "id": "pot_instant_1"
       },
       {
-        "desc": "dry yellow spaghetti noodles",
-        "action": "being placed",
-        "position": "inside the pot"
-      },
-      {
-        "desc": "white plate with a blue geometric pattern",
+        "desc": "white text overlay with a black outline",
         "action": "static",
-        "position": "bottom right"
-      },
-      {
-        "desc": "black pressure cooker lid",
-        "action": "static",
-        "position": "bottom left"
+        "position": "top"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A person's hand is placing a bundle of yellow spaghetti noodles into the pressure cooker.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The spaghetti is being placed on top of the cooked ground meat.",
+        "fact": "A person's hand is placing a bundle of dry spaghetti noodles into the pot on top of the cooked ground meat.",
         "confidence": 1.0
       },
       {
@@ -1072,233 +1164,189 @@
         "confidence": 1.0
       },
       {
-        "fact": "The text overlay reads 'Break the spaghetti in half'.",
+        "fact": "The spaghetti is being broken or arranged to fit inside the pot.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A plate with more spaghetti is visible in the bottom right corner.",
         "confidence": 1.0
       }
     ],
     "ocr": [
-      "- Add 16oz of regular spaghetti pasta",
-      "Break the spaghetti in half"
+      "- Add 16oz of regular spaghetti pasta"
     ],
-    "spatial": "The pressure cooker is in the center of the frame. The person's arm enters from the right side to place spaghetti inside the pot. The plate of spaghetti is to the right of the pressure cooker. The lid is to the left of the pressure cooker.",
+    "spatial": "The stainless steel pot is centered inside the black pressure cooker base. The person's arm enters from the right side to place the spaghetti inside the pot. The plate with the remaining spaghetti is located to the right of the pressure cooker. The instructional text is positioned at the top of the frame, above the pot.",
     "parse_success": true,
     "chunk_idx": 17,
     "video_id": "Instant_pot_spaghetti",
-    "state_changes": [],
-    "_rescued": "parse"
+    "state_changes": [
+      "User begins placing dry spaghetti noodles into the pot over the cooked meat."
+    ]
   },
   {
     "time": [
-      36,
-      38
+      18,
+      19
     ],
     "visible_entities": [
       {
-        "desc": "person's arm wearing a grey long-sleeved shirt with a textured, heathered fabric",
+        "desc": "person wearing a light grey long-sleeved shirt",
         "action": "placing spaghetti into the pot",
-        "position": "top right"
+        "position": "top right",
+        "id": "person_chef_1"
       },
       {
-        "desc": "stainless steel inner pot of an electric pressure cooker containing cooked brown ground meat",
+        "desc": "stainless steel inner pot containing brown ground meat and yellow spaghetti",
         "action": "static",
-        "position": "center"
+        "position": "center",
+        "id": "pot_instant_1"
       },
       {
-        "desc": "bundles of dry, yellow spaghetti noodles, broken in half",
-        "action": "being placed into the pot",
-        "position": "center"
-      },
-      {
-        "desc": "white paper plate with a blue geometric pattern on the rim, holding more spaghetti",
+        "desc": "black and silver pressure cooker base",
         "action": "static",
-        "position": "bottom right"
+        "position": "center",
+        "id": "pot_instant_1"
       },
       {
-        "desc": "black lid of the pressure cooker with a silver vent",
+        "desc": "white plate with a blue geometric pattern holding yellow spaghetti",
         "action": "static",
-        "position": "bottom left"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "A person is breaking spaghetti in half and placing it into a pot.",
-        "confidence": 1.0
+        "position": "bottom right",
+        "id": "plate_paper_1"
       },
       {
-        "fact": "The pot contains a layer of cooked ground meat.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The text '- Break the spaghetti in half' is displayed at the top of the screen.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [
-      "- Break the spaghetti in half"
-    ],
-    "spatial": "The person's arm is reaching into the center of the frame from the top right, placing spaghetti inside the stainless steel pot. The pot is positioned in the center, sitting on a wooden surface. To the bottom right of the pot is a plate with more spaghetti, and to the bottom left is the black lid of the cooker.",
-    "parse_success": true,
-    "chunk_idx": 18,
-    "video_id": "Instant_pot_spaghetti",
-    "state_changes": [],
-    "_rescued": "parse"
-  },
-  {
-    "time": [
-      38,
-      40
-    ],
-    "visible_entities": [
-      {
-        "desc": "person's arm wearing a light grey long-sleeved shirt",
-        "action": "placing spaghetti into the pot",
-        "position": "right"
-      },
-      {
-        "desc": "stainless steel inner pot of an electric pressure cooker",
+        "desc": "black power cord",
         "action": "static",
-        "position": "center"
-      },
-      {
-        "desc": "cooked brown ground meat",
-        "action": "static",
-        "position": "inside the pot"
-      },
-      {
-        "desc": "dry yellow spaghetti noodles",
-        "action": "being placed into the pot",
-        "position": "inside the pot"
-      },
-      {
-        "desc": "white paper plate with a blue geometric pattern",
-        "action": "static",
-        "position": "bottom right"
-      },
-      {
-        "desc": "black lid of the pressure cooker",
-        "action": "static",
-        "position": "bottom left"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "A person is placing broken yellow spaghetti noodles into a stainless steel pot.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The pot contains cooked brown ground meat at the bottom.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The spaghetti is being layered on top of the meat.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The text '- Break the spaghetti in half' is displayed at the top of the screen.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [
-      "- Break the spaghetti in half"
-    ],
-    "spatial": "The person's arm is reaching from the right side into the center of the frame to place spaghetti inside the pot. The pot is in the center, containing meat at the bottom and spaghetti on top. The pressure cooker lid is to the left of the pot, and the paper plate is to the right of the pot.",
-    "parse_success": true,
-    "chunk_idx": 19,
-    "video_id": "Instant_pot_spaghetti",
-    "state_changes": [],
-    "_rescued": "parse"
-  },
-  {
-    "time": [
-      40,
-      42
-    ],
-    "visible_entities": [
-      {
-        "desc": "hand with light skin tone",
-        "action": "picking up pasta",
-        "position": "right"
-      },
-      {
-        "desc": "yellow uncooked spaghetti noodles",
-        "action": "being placed in pot",
-        "position": "center"
-      },
-      {
-        "desc": "stainless steel inner pot of a pressure cooker",
-        "action": "static",
-        "position": "center"
-      },
-      {
-        "desc": "brown cooked ground meat",
-        "action": "static",
-        "position": "center"
-      },
-      {
-        "desc": "white bowl with blue geometric pattern",
-        "action": "static",
-        "position": "bottom right"
-      },
-      {
-        "desc": "black pressure cooker lid",
-        "action": "static",
-        "position": "bottom left"
+        "position": "top left",
+        "id": "cord_power_1"
       },
       {
         "desc": "white text overlay",
         "action": "static",
-        "position": "top"
+        "position": "top center"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A hand reaches into the bowl to grab a bundle of spaghetti.",
+        "fact": "A person is breaking dry spaghetti noodles in half and placing them into a pot.",
         "confidence": 1.0
       },
       {
-        "fact": "The spaghetti is being layered crisscross over the ground meat inside the pot.",
+        "fact": "The pot contains cooked brown ground meat.",
         "confidence": 1.0
       },
       {
-        "fact": "The text overlay instructs to 'Crisscross the pasta to minimize clumping'.",
+        "fact": "The text '- Break the spaghetti in half' is displayed at the top of the screen.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A plate of uncooked spaghetti sits on the table next to the cooker.",
         "confidence": 1.0
       }
     ],
     "ocr": [
-      "- Crisscross the pasta to minimize clumping"
+      "- Break the spaghetti in half"
     ],
-    "spatial": "The stainless steel pot is in the center of the frame, containing ground meat at the bottom and spaghetti on top. The patterned bowl holding more pasta is to the right of the pot. The black lid is to the left of the pot. The instructional text is positioned above the pot.",
+    "spatial": "The person's arm is reaching into the center of the frame, placing spaghetti inside the stainless steel pot. The pot is situated inside the black pressure cooker base. To the right of the cooker, a patterned plate holds more spaghetti. The text overlay is positioned above the pot.",
     "parse_success": true,
-    "chunk_idx": 20,
+    "chunk_idx": 18,
     "video_id": "Instant_pot_spaghetti",
-    "state_changes": [],
-    "_rescued": "parse"
+    "state_changes": []
   },
   {
     "time": [
-      42,
-      44
+      19,
+      20
     ],
     "visible_entities": [
       {
-        "desc": "hand with light skin tone",
-        "action": "placing yellow spaghetti into the pot",
-        "position": "top/center"
+        "desc": "person's arm wearing a grey long-sleeved sweatshirt",
+        "action": "placing spaghetti into the pot",
+        "position": "right",
+        "id": "person_chef_1"
       },
       {
-        "desc": "yellow uncooked spaghetti strands",
-        "action": "being arranged in a crisscross pattern",
-        "position": "center"
+        "desc": "yellow dry spaghetti noodles, broken in half",
+        "action": "being placed into the pot",
+        "position": "center",
+        "id": "spaghetti_dry_1"
       },
       {
         "desc": "stainless steel inner pot of a pressure cooker",
         "action": "static",
-        "position": "center"
+        "position": "center",
+        "id": "pot_instant_1"
       },
       {
         "desc": "cooked brown ground meat",
         "action": "static",
-        "position": "bottom/inside pot"
+        "position": "inside the pot",
+        "id": "meat_cooked_1"
+      },
+      {
+        "desc": "white paper plate with a blue geometric pattern",
+        "action": "static",
+        "position": "bottom right",
+        "id": "plate_paper_1"
+      },
+      {
+        "desc": "black pressure cooker lid",
+        "action": "static",
+        "position": "left",
+        "id": "lid_instant_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A person is breaking and placing yellow spaghetti noodles into a pot.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The pot contains cooked ground meat at the bottom.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The text '- Break the spaghetti in half' is displayed at the top of the screen.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "- Break the spaghetti in half"
+    ],
+    "spatial": "The person's arm is reaching from the right side into the center of the frame to place spaghetti inside the pot. The pot sits in the center, containing ground meat below the spaghetti. To the left of the pot is the black lid, and to the bottom right is a plate with more spaghetti.",
+    "parse_success": true,
+    "chunk_idx": 19,
+    "video_id": "Instant_pot_spaghetti",
+    "state_changes": []
+  },
+  {
+    "time": [
+      20,
+      21
+    ],
+    "visible_entities": [
+      {
+        "desc": "person's hand with light skin tone",
+        "action": "picking up pasta",
+        "position": "right",
+        "id": "person_chef_1"
+      },
+      {
+        "desc": "stainless steel pressure cooker pot with black handles",
+        "action": "static",
+        "position": "center",
+        "id": "pot_instant_1"
+      },
+      {
+        "desc": "cooked ground meat, brown and crumbly",
+        "action": "static",
+        "position": "inside pot",
+        "id": "meat_cooked_1"
+      },
+      {
+        "desc": "dry yellow spaghetti noodles",
+        "action": "being placed in pot",
+        "position": "center and right",
+        "id": "spaghetti_dry_1"
       },
       {
         "desc": "white plate with blue geometric pattern",
@@ -1308,16 +1356,92 @@
       {
         "desc": "black pressure cooker lid",
         "action": "static",
-        "position": "bottom left"
+        "position": "left",
+        "id": "lid_instant_1"
+      },
+      {
+        "desc": "white text overlay",
+        "action": "static",
+        "position": "top"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A hand places a bundle of yellow spaghetti into the pressure cooker.",
+        "fact": "A hand is picking up a bundle of dry spaghetti from a patterned plate.",
         "confidence": 1.0
       },
       {
-        "fact": "The spaghetti is being layered over cooked ground meat.",
+        "fact": "Yellow spaghetti noodles are crisscrossed on top of cooked ground meat inside the pressure cooker pot.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The text overlay reads '- Crisscross the pasta to minimize clumping'.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "- Crisscross the pasta to minimize clumping"
+    ],
+    "spatial": "The pressure cooker pot is in the center of the frame, containing ground meat and spaghetti. To the right of the pot, a hand is reaching for spaghetti on a plate. To the left of the pot, the black lid rests on the table. The instructional text is positioned above the pot.",
+    "parse_success": true,
+    "chunk_idx": 20,
+    "video_id": "Instant_pot_spaghetti",
+    "state_changes": []
+  },
+  {
+    "time": [
+      21,
+      22
+    ],
+    "visible_entities": [
+      {
+        "desc": "hand with light skin tone",
+        "action": "placing yellow spaghetti into the pot",
+        "position": "top center",
+        "id": "person_chef_1"
+      },
+      {
+        "desc": "yellow uncooked spaghetti strands",
+        "action": "being crisscrossed inside the pot",
+        "position": "center",
+        "id": "spaghetti_dry_1"
+      },
+      {
+        "desc": "stainless steel inner pot of an electric pressure cooker",
+        "action": "static",
+        "position": "center",
+        "id": "pot_instant_1"
+      },
+      {
+        "desc": "cooked brown ground meat",
+        "action": "static",
+        "position": "inside the pot",
+        "id": "meat_cooked_1"
+      },
+      {
+        "desc": "white plate with blue geometric pattern",
+        "action": "static",
+        "position": "bottom right"
+      },
+      {
+        "desc": "black electric pressure cooker lid",
+        "action": "static",
+        "position": "bottom left",
+        "id": "lid_instant_1"
+      },
+      {
+        "desc": "white text overlay",
+        "action": "static",
+        "position": "top"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A hand is adding a bundle of yellow spaghetti to the pot.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The spaghetti is being placed in a crisscross pattern over the ground meat.",
         "confidence": 1.0
       },
       {
@@ -1325,59 +1449,79 @@
         "confidence": 1.0
       },
       {
-        "fact": "A plate with more pasta sits next to the cooker.",
+        "fact": "A plate with more uncooked pasta sits on the table next to the cooker.",
         "confidence": 1.0
       }
     ],
     "ocr": [
       "- Crisscross the pasta to minimize clumping"
     ],
-    "spatial": "The stainless steel pot is in the center of the frame, containing ground meat at the bottom and spaghetti on top. A hand is positioned above the pot, dropping pasta into it. To the right of the pot is a patterned plate holding more spaghetti. To the left of the pot is the black lid of the pressure cooker.",
+    "spatial": "The stainless steel pot is in the center of the frame, containing ground meat and spaghetti. The hand is positioned above the pot, dropping pasta into it. The pressure cooker lid is to the left of the pot, and the plate of pasta is to the right of the pot. The instructional text is located at the top of the screen.",
     "parse_success": true,
     "chunk_idx": 21,
     "video_id": "Instant_pot_spaghetti",
-    "state_changes": [],
-    "_rescued": "parse"
+    "state_changes": []
   },
   {
     "time": [
-      44,
-      46
+      22,
+      23
     ],
     "visible_entities": [
       {
-        "desc": "person's hand and forearm, wearing a light grey long-sleeved sweatshirt",
-        "action": "placing and arranging pasta",
-        "position": "center"
+        "desc": "person's hand and forearm, wearing a light grey long-sleeved shirt",
+        "action": "placing and arranging spaghetti strands",
+        "position": "center",
+        "id": "person_chef_1"
       },
       {
-        "desc": "dry yellow spaghetti noodles, long and thin",
-        "action": "being placed into the pot",
-        "position": "center"
-      },
-      {
-        "desc": "stainless steel inner pot of a pressure cooker containing browned ground meat",
+        "desc": "electric pressure cooker with a stainless steel inner pot and black exterior handles",
         "action": "static",
-        "position": "center"
+        "position": "center",
+        "id": "pot_instant_1"
+      },
+      {
+        "desc": "dry yellow spaghetti strands",
+        "action": "being placed into the pot",
+        "position": "center",
+        "id": "spaghetti_dry_1"
+      },
+      {
+        "desc": "cooked brown ground meat",
+        "action": "static",
+        "position": "center",
+        "id": "meat_cooked_1"
       },
       {
         "desc": "white paper plate with a blue geometric pattern on the rim",
         "action": "static",
-        "position": "bottom right"
+        "position": "bottom right",
+        "id": "plate_paper_1"
       },
       {
-        "desc": "black pressure cooker lid",
+        "desc": "black power cord",
         "action": "static",
-        "position": "bottom left"
+        "position": "top left",
+        "id": "cord_power_1"
+      },
+      {
+        "desc": "wooden floor",
+        "action": "static",
+        "position": "background",
+        "id": "surface_table_1"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A person is placing handfuls of dry spaghetti into a pressure cooker pot.",
+        "fact": "A person is placing dry spaghetti into a pressure cooker.",
         "confidence": 1.0
       },
       {
-        "fact": "The spaghetti is being arranged in a crisscross pattern over browned ground meat.",
+        "fact": "The spaghetti is being arranged in a crisscross pattern.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "There is cooked ground meat at the bottom of the pot.",
         "confidence": 1.0
       },
       {
@@ -1385,59 +1529,62 @@
         "confidence": 1.0
       },
       {
-        "fact": "A plate with more uncooked pasta sits on the table to the right.",
+        "fact": "A plate with more spaghetti is next to the pressure cooker.",
         "confidence": 1.0
       }
     ],
     "ocr": [
       "- Crisscross the pasta to minimize clumping"
     ],
-    "spatial": "The person's hand is positioned above the stainless steel pot, holding the pasta. The pot is in the center of the frame, sitting on a wooden surface. The pressure cooker lid is to the left of the pot, and the plate of pasta is to the right of the pot.",
+    "spatial": "The pressure cooker is in the center of the frame. The person's hand is inside the pot, arranging the spaghetti. The plate with more spaghetti is to the right of the pressure cooker. The power cord is in the top left background.",
     "parse_success": true,
     "chunk_idx": 22,
     "video_id": "Instant_pot_spaghetti",
-    "state_changes": [],
-    "_rescued": "parse"
+    "state_changes": []
   },
   {
     "time": [
-      46,
-      48
+      23,
+      24
     ],
     "visible_entities": [
       {
-        "desc": "yellow dry spaghetti noodles, thin and long strands, crisscrossed",
+        "desc": "black electric pressure cooker with a stainless steel inner pot",
         "action": "static",
-        "position": "center"
+        "position": "center",
+        "id": "pot_instant_1"
       },
       {
-        "desc": "black electric pressure cooker with silver inner pot",
-        "action": "static",
-        "position": "center"
+        "desc": "dry yellow spaghetti noodles",
+        "action": "being crisscrossed",
+        "position": "inside the pot",
+        "id": "spaghetti_dry_1"
       },
       {
-        "desc": "glass jar of red pasta sauce with white label",
-        "action": "entering frame from right",
-        "position": "right"
+        "desc": "hand holding a glass jar of red pasta sauce",
+        "action": "entering the frame",
+        "position": "right",
+        "id": "jar_sauce_1"
       },
       {
-        "desc": "black pressure cooker lid with silver valve",
-        "action": "static",
-        "position": "bottom left"
-      },
-      {
-        "desc": "white text overlay with black outline",
+        "desc": "white text overlay with a black outline",
         "action": "static",
         "position": "top"
+      },
+      {
+        "desc": "black pressure cooker lid",
+        "action": "static",
+        "position": "left",
+        "id": "lid_instant_1"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A hand holds a jar of Prego pasta sauce and moves it into the frame on the right side.",
+        "fact": "A hand enters the frame from the right holding a jar of red sauce.",
         "confidence": 1.0
       },
       {
-        "fact": "Yellow spaghetti noodles are arranged in a crisscross pattern inside the pressure cooker pot.",
+        "fact": "Yellow spaghetti noodles are arranged in a crisscross pattern inside the pot.",
         "confidence": 1.0
       },
       {
@@ -1445,7 +1592,7 @@
         "confidence": 1.0
       },
       {
-        "fact": "The pressure cooker lid is resting on the table to the left of the cooker.",
+        "fact": "The pressure cooker lid is resting on the table to the left of the pot.",
         "confidence": 1.0
       }
     ],
@@ -1453,57 +1600,56 @@
       "- Crisscross the pasta to minimize clumping",
       "Pre"
     ],
-    "spatial": "The pressure cooker is in the center of the frame. The spaghetti is inside the pressure cooker. The jar of sauce is to the right of the pressure cooker. The pressure cooker lid is to the left of the pressure cooker. The text overlay is above the pressure cooker.",
+    "spatial": "The pressure cooker is in the center of the frame with the spaghetti inside it. The lid is to the left of the pressure cooker. A hand holding a jar of sauce is to the right of the pressure cooker. The text overlay is above the pressure cooker.",
     "parse_success": true,
     "chunk_idx": 23,
     "video_id": "Instant_pot_spaghetti",
-    "state_changes": [],
-    "_rescued": "parse"
+    "state_changes": [
+      "User introduces a glass jar of red pasta sauce to the frame."
+    ]
   },
   {
     "time": [
-      48,
-      50
+      24,
+      25
     ],
     "visible_entities": [
       {
-        "desc": "black electric pressure cooker with a stainless steel inner pot",
+        "desc": "stainless steel inner pot of a pressure cooker containing dry yellow spaghetti noodles",
         "action": "static",
-        "position": "center"
+        "position": "center",
+        "id": "pot_instant_1"
       },
       {
-        "desc": "bundle of dry yellow spaghetti noodles",
-        "action": "static",
-        "position": "inside the pot"
-      },
-      {
-        "desc": "glass jar of red spaghetti sauce with a white label featuring red and green graphics",
+        "desc": "hand wearing a white long-sleeved garment holding a glass jar of red sauce",
         "action": "pouring sauce",
         "position": "right"
       },
       {
-        "desc": "hand with light skin tone wearing a white long-sleeved garment",
-        "action": "holding the jar",
-        "position": "right"
-      },
-      {
-        "desc": "black lid of the pressure cooker with a silver rim",
+        "desc": "black pressure cooker lid resting on the surface",
         "action": "static",
-        "position": "left"
+        "position": "left",
+        "id": "lid_instant_1"
       },
       {
-        "desc": "white sans-serif text overlay",
+        "desc": "glass jar with red sauce and a label featuring red and green colors",
+        "action": "being tilted",
+        "position": "right",
+        "id": "sauce_tomato_1"
+      },
+      {
+        "desc": "white text overlay with a black outline",
         "action": "static",
         "position": "top"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A hand is pouring red spaghetti sauce from a jar onto the dry spaghetti noodles.",
+        "fact": "A hand is pouring red spaghetti sauce from a jar into the pot.",
         "confidence": 1.0
       },
       {
-        "fact": "The spaghetti noodles are arranged inside the stainless steel pot of the pressure cooker.",
+        "fact": "The pot contains dry yellow spaghetti noodles.",
         "confidence": 1.0
       },
       {
@@ -1511,59 +1657,59 @@
         "confidence": 1.0
       },
       {
-        "fact": "The pressure cooker lid is resting on the surface to the left of the pot.",
+        "fact": "The pressure cooker lid is placed on the table to the left of the pot.",
         "confidence": 1.0
       }
     ],
     "ocr": [
       "- Add 24oz of spaghetti sauce"
     ],
-    "spatial": "The pressure cooker is in the center of the frame with the spaghetti noodles inside it. A hand holding a jar of sauce is to the right of the pot, pouring the sauce into the center. The text overlay is positioned above the pot. The pressure cooker lid is to the left of the main unit.",
+    "spatial": "The stainless steel pot is in the center of the frame. The hand holding the sauce jar is to the right of the pot, tilting the jar so the sauce pours into the center. The black lid is to the left of the pot. The text overlay is positioned above the pot.",
     "parse_success": true,
     "chunk_idx": 24,
     "video_id": "Instant_pot_spaghetti",
-    "state_changes": [],
-    "_rescued": "parse"
+    "state_changes": [
+      "User pours red sauce from the glass jar onto the spaghetti."
+    ]
   },
   {
     "time": [
-      50,
-      52
+      25,
+      26
     ],
     "visible_entities": [
       {
         "desc": "hand holding a glass jar containing red sauce",
-        "action": "pouring sauce into the pot",
-        "position": "top right"
+        "action": "pouring sauce",
+        "position": "top right",
+        "id": "jar_sauce_1"
       },
       {
-        "desc": "electric pressure cooker with a stainless steel inner pot",
+        "desc": "black electric pressure cooker pot containing yellow spaghetti noodles and red sauce",
         "action": "static",
-        "position": "center"
+        "position": "center",
+        "id": "pot_instant_1"
       },
       {
-        "desc": "uncooked yellow spaghetti noodles",
+        "desc": "wooden surface",
         "action": "static",
-        "position": "inside the pot"
+        "position": "background",
+        "id": "surface_table_1"
       },
       {
-        "desc": "thick red spaghetti sauce",
-        "action": "being poured",
-        "position": "center"
-      },
-      {
-        "desc": "white text overlay with black outline",
+        "desc": "lid of the pressure cooker",
         "action": "static",
-        "position": "top"
+        "position": "bottom left",
+        "id": "lid_instant_1"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A hand is pouring red sauce from a jar into a pot.",
+        "fact": "A hand is pouring red sauce from a jar into the pressure cooker.",
         "confidence": 1.0
       },
       {
-        "fact": "The pot contains uncooked spaghetti noodles.",
+        "fact": "The pressure cooker contains uncooked yellow spaghetti noodles.",
         "confidence": 1.0
       },
       {
@@ -1579,123 +1725,129 @@
       "- Add 24oz of spaghetti sauce",
       "- Add 36 fluid ounces of water"
     ],
-    "spatial": "The electric pressure cooker is in the center of the frame. Inside the cooker, red sauce is being poured on top of the yellow spaghetti noodles. A hand holding the jar is positioned above and to the right of the pot. The instructional text is located at the top of the screen, above the cooking vessel.",
+    "spatial": "The pressure cooker is in the center of the frame on a wooden surface. A hand holding a jar is positioned above the pot, pouring sauce onto the spaghetti inside. The lid of the cooker is visible to the bottom left of the pot.",
     "parse_success": true,
     "chunk_idx": 25,
     "video_id": "Instant_pot_spaghetti",
-    "state_changes": [],
-    "_rescued": "parse"
+    "state_changes": []
   },
   {
     "time": [
-      52,
-      54
+      26,
+      27
     ],
     "visible_entities": [
       {
-        "desc": "hand with light skin tone, wearing a white long-sleeved garment",
+        "desc": "hand with light skin tone, wearing a grey long-sleeved shirt",
         "action": "pouring liquid",
-        "position": "top right"
+        "position": "top right",
+        "id": "person_chef_1"
       },
       {
-        "desc": "glass jar containing red tomato sauce with a white label featuring a green leaf and red tomato illustration",
-        "action": "being tilted to pour contents",
-        "position": "top right"
+        "desc": "glass jar with a white label featuring red tomato graphics, containing red sauce",
+        "action": "being tilted",
+        "position": "top right",
+        "id": "sauce_tomato_1"
       },
       {
         "desc": "black electric pressure cooker with a stainless steel inner pot",
         "action": "static",
-        "position": "center"
+        "position": "center",
+        "id": "pot_instant_1"
       },
       {
         "desc": "uncooked yellow spaghetti noodles",
         "action": "static",
-        "position": "inside the pot"
+        "position": "inside the pot",
+        "id": "spaghetti_dry_1"
       },
       {
         "desc": "thick red tomato sauce",
-        "action": "flowing into the pot",
-        "position": "center"
+        "action": "being poured",
+        "position": "inside the pot",
+        "id": "sauce_tomato_1"
       },
       {
-        "desc": "black pressure cooker lid with a silver metallic top",
+        "desc": "orange-brown liquid",
+        "action": "flowing",
+        "position": "inside the pot",
+        "id": "sauce_tomato_1"
+      },
+      {
+        "desc": "white text overlay with a black outline",
         "action": "static",
-        "position": "bottom left"
+        "position": "top center"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A hand is pouring a red liquid from a glass jar into the pressure cooker.",
+        "fact": "A hand is pouring contents from a glass jar into a pressure cooker.",
         "confidence": 1.0
       },
       {
-        "fact": "The pressure cooker contains dry yellow spaghetti noodles.",
+        "fact": "Red sauce and an orange-brown liquid are flowing over uncooked spaghetti.",
         "confidence": 1.0
       },
       {
-        "fact": "The text overlay instructs to add 36 fluid ounces of water.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The red sauce is being poured over the spaghetti.",
+        "fact": "The text overlay instructs to 'Add 36 fluid ounces of water'.",
         "confidence": 1.0
       }
     ],
     "ocr": [
       "- Add 36 fluid ounces of water"
     ],
-    "spatial": "The hand is holding the glass jar above the pressure cooker. The pressure cooker is in the center of the frame, sitting on a wooden surface. The lid of the pressure cooker is resting on the table to the left of the main unit. The text overlay is positioned at the top center of the screen.",
+    "spatial": "The pressure cooker is centered in the frame, containing spaghetti and sauce. A hand holding a jar is positioned above and to the right of the cooker, pouring liquid into it. The instructional text is located at the top of the frame, above the cooking action.",
     "parse_success": true,
     "chunk_idx": 26,
     "video_id": "Instant_pot_spaghetti",
-    "state_changes": [],
-    "_rescued": "parse"
+    "state_changes": []
   },
   {
     "time": [
-      54,
-      56
+      27,
+      28
     ],
     "visible_entities": [
       {
-        "desc": "hand with light skin tone, wearing a grey long-sleeved garment with a textured, fuzzy surface",
-        "action": "pouring water from a glass jar",
-        "position": "top right"
+        "desc": "person's hand and arm wearing a grey long-sleeved sweater",
+        "action": "pouring liquid from a jar",
+        "position": "top right",
+        "id": "person_chef_1"
       },
       {
-        "desc": "clear glass jar containing liquid",
-        "action": "being tilted by a hand",
-        "position": "center"
+        "desc": "glass jar containing clear liquid",
+        "action": "being held and tilted",
+        "position": "center",
+        "id": "jar_sauce_1"
       },
       {
-        "desc": "stainless steel inner pot of an electric pressure cooker",
+        "desc": "silver and black electric pressure cooker pot",
         "action": "static",
-        "position": "center"
+        "position": "center",
+        "id": "pot_instant_1"
       },
       {
         "desc": "uncooked yellow spaghetti noodles",
         "action": "static",
-        "position": "inside the pot"
+        "position": "inside pot",
+        "id": "spaghetti_dry_1"
       },
       {
-        "desc": "thick red tomato sauce",
+        "desc": "red tomato sauce",
         "action": "static",
-        "position": "inside the pot"
+        "position": "inside pot",
+        "id": "sauce_tomato_1"
       },
       {
-        "desc": "electric pressure cooker base, silver and black",
+        "desc": "pressure cooker lid, silver and black",
         "action": "static",
-        "position": "center"
-      },
-      {
-        "desc": "pressure cooker lid, silver and black, resting on the surface",
-        "action": "static",
-        "position": "bottom left"
+        "position": "bottom left",
+        "id": "lid_instant_1"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A person pours water from a glass jar into the pressure cooker.",
+        "fact": "A person is pouring clear liquid from a glass jar into the pressure cooker.",
         "confidence": 1.0
       },
       {
@@ -1703,199 +1855,148 @@
         "confidence": 1.0
       },
       {
-        "fact": "The on-screen text instructs to add 36 fluid ounces of water.",
+        "fact": "The text overlay reads '- Add 36 fluid ounces of water'.",
         "confidence": 1.0
       },
       {
-        "fact": "The pressure cooker lid is removed and placed on the table to the left.",
+        "fact": "The pressure cooker lid is resting on the table to the left of the pot.",
         "confidence": 1.0
       }
     ],
     "ocr": [
       "- Add 36 fluid ounces of water"
     ],
-    "spatial": "The hand holding the glass jar is positioned above the center of the pressure cooker pot. The red sauce is on top of the yellow spaghetti inside the pot. The pressure cooker lid is to the left of the main cooker unit.",
+    "spatial": "The pressure cooker is in the center of the frame on a wooden surface. The person's hand is above the pot, holding a jar and pouring liquid into it. The spaghetti and sauce are inside the pot. The lid is to the left of the pot.",
     "parse_success": true,
     "chunk_idx": 27,
     "video_id": "Instant_pot_spaghetti",
-    "state_changes": [],
-    "_rescued": "parse"
+    "state_changes": [
+      "User pours clear liquid from a glass jar into the pot."
+    ]
   },
   {
     "time": [
-      56,
-      58
+      28,
+      29
     ],
     "visible_entities": [
       {
-        "desc": "hand wearing a light grey long-sleeved sweater",
-        "action": "pouring liquid",
-        "position": "top right"
+        "desc": "hand wearing a white long-sleeved garment",
+        "action": "pouring liquid from a bottle",
+        "position": "right"
       },
       {
-        "desc": "clear glass jar containing orange liquid",
-        "action": "being tilted",
-        "position": "top right"
+        "desc": "clear plastic bottle containing orange-red liquid",
+        "action": "being tilted to pour contents",
+        "position": "right",
+        "id": "bottle_liquid_1"
       },
       {
-        "desc": "black electric pressure cooker pot",
+        "desc": "stainless steel pot containing yellow spaghetti and red sauce",
+        "action": "receiving liquid",
+        "position": "center",
+        "id": "pot_instant_1"
+      },
+      {
+        "desc": "black electric pressure cooker base",
         "action": "static",
-        "position": "center"
+        "position": "center",
+        "id": "pot_instant_1"
       },
       {
-        "desc": "bundle of dry yellow spaghetti noodles",
+        "desc": "white text overlay with drop shadow",
         "action": "static",
-        "position": "inside pot"
+        "position": "top"
       },
       {
-        "desc": "thick red tomato sauce",
+        "desc": "grey pressure cooker lid with black handle",
         "action": "static",
-        "position": "inside pot"
-      },
-      {
-        "desc": "white text overlay",
-        "action": "static",
-        "position": "top center"
+        "position": "bottom left",
+        "id": "lid_instant_1"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A hand pours orange liquid from a glass jar into the pressure cooker.",
+        "fact": "A hand is pouring orange-red liquid from a bottle into the pot.",
         "confidence": 1.0
       },
       {
-        "fact": "The pressure cooker contains dry spaghetti and red sauce.",
+        "fact": "The pot contains uncooked spaghetti noodles and red sauce.",
         "confidence": 1.0
       },
       {
-        "fact": "The on-screen text instructs to add 36 fluid ounces of water.",
+        "fact": "The text overlay reads '- Add 36 fluid ounces of water'.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The pressure cooker lid is resting on the table to the left of the cooker.",
         "confidence": 1.0
       }
     ],
     "ocr": [
       "- Add 36 fluid ounces of water"
     ],
-    "spatial": "The hand holding the jar is positioned above and to the right of the pressure cooker. The spaghetti and red sauce are inside the pot. The instructional text is located at the top of the frame, above the cooking scene.",
+    "spatial": "The hand holding the bottle is positioned to the right of the pressure cooker. The bottle is tilted above the pot, pouring liquid into the mixture of spaghetti and sauce inside. The text overlay is located at the top of the frame, above the cooking vessel. The detached lid is resting on the wooden surface to the left of the pressure cooker base.",
     "parse_success": true,
     "chunk_idx": 28,
     "video_id": "Instant_pot_spaghetti",
-    "state_changes": [],
-    "_rescued": "parse"
+    "state_changes": [
+      "User pours orange-red liquid from a plastic bottle into the pot."
+    ]
   },
   {
     "time": [
-      58,
-      60
+      29,
+      30
     ],
     "visible_entities": [
       {
-        "desc": "person's hand and forearm, wearing a grey long-sleeved garment",
-        "action": "pouring red sauce",
-        "position": "top right"
+        "desc": "person's hand and arm wearing a grey long-sleeved garment",
+        "action": "pouring red sauce from a can",
+        "position": "right",
+        "id": "person_chef_1"
       },
       {
-        "desc": "metal can with red and white label",
-        "action": "being tilted to pour contents",
-        "position": "top right"
-      },
-      {
-        "desc": "black electric pressure cooker pot",
+        "desc": "stainless steel inner pot containing uncooked yellow spaghetti and red tomato sauce",
         "action": "static",
-        "position": "center"
+        "position": "center",
+        "id": "pot_instant_1"
       },
       {
-        "desc": "uncooked yellow spaghetti noodles",
+        "desc": "black electric pressure cooker base",
         "action": "static",
-        "position": "inside pot"
+        "position": "center",
+        "id": "pot_instant_1"
       },
       {
-        "desc": "thick red tomato sauce",
-        "action": "being poured",
-        "position": "inside pot"
-      },
-      {
-        "desc": "black pressure cooker lid",
-        "action": "static",
-        "position": "bottom left"
-      },
-      {
-        "desc": "wooden surface",
-        "action": "static",
-        "position": "background"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "A person is pouring red sauce from a can into a pressure cooker.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The pressure cooker contains uncooked spaghetti noodles.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The text overlay instructs to add 14.5oz of diced tomatoes or tomato sauce.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [
-      "- Add 14.5oz of diced tomatoes (or tomato sauce)"
-    ],
-    "spatial": "The pressure cooker is in the center of the frame, sitting on a wooden surface. The person's hand is positioned above the pot, holding a can and pouring sauce onto the spaghetti inside. The pressure cooker lid is resting on the table to the left of the pot.",
-    "parse_success": true,
-    "chunk_idx": 29,
-    "video_id": "Instant_pot_spaghetti",
-    "state_changes": [],
-    "_rescued": "parse"
-  },
-  {
-    "time": [
-      60,
-      62
-    ],
-    "visible_entities": [
-      {
-        "desc": "person's hand and arm wearing a grey long-sleeved top",
-        "action": "pouring diced tomatoes from a can",
-        "position": "top right"
-      },
-      {
-        "desc": "black electric pressure cooker with a stainless steel inner pot",
-        "action": "static",
-        "position": "center"
-      },
-      {
-        "desc": "uncooked yellow spaghetti noodles",
-        "action": "static",
-        "position": "inside the pot"
-      },
-      {
-        "desc": "red diced tomatoes",
-        "action": "being poured",
-        "position": "inside the pot"
-      },
-      {
-        "desc": "metal can with a white and blue label",
+        "desc": "can with red, white, and blue label",
         "action": "being held and tilted",
-        "position": "top center"
+        "position": "right",
+        "id": "can_sauce_1"
       },
       {
-        "desc": "grey pressure cooker lid",
+        "desc": "white text overlay with black outline",
         "action": "static",
-        "position": "bottom left"
+        "position": "top"
+      },
+      {
+        "desc": "grey pressure cooker lid with black handle",
+        "action": "static",
+        "position": "left",
+        "id": "lid_instant_1"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A person is pouring diced tomatoes from a can into a pressure cooker.",
+        "fact": "A person is pouring red tomato sauce from a can into the pressure cooker.",
         "confidence": 1.0
       },
       {
-        "fact": "The pressure cooker contains uncooked spaghetti noodles.",
+        "fact": "Uncooked spaghetti noodles are visible inside the pot underneath the sauce.",
         "confidence": 1.0
       },
       {
-        "fact": "The text on the screen instructs to add 14.5oz of diced tomatoes or tomato sauce.",
+        "fact": "The on-screen text instructs to add 14.5oz of diced tomatoes or tomato sauce.",
         "confidence": 1.0
       },
       {
@@ -1906,57 +2007,133 @@
     "ocr": [
       "- Add 14.5oz of diced tomatoes (or tomato sauce)"
     ],
-    "spatial": "The pressure cooker is in the center of the frame. The person's hand is above the cooker, pouring tomatoes from a can into it. The spaghetti is inside the pot, underneath the tomatoes being added. The pressure cooker lid is to the left of the main cooker unit.",
+    "spatial": "The stainless steel pot is inside the black pressure cooker base. The person's hand is to the right of the pot, holding the can above it. The text overlay is at the top of the frame. The pressure cooker lid is on the table to the left of the main unit.",
     "parse_success": true,
-    "chunk_idx": 30,
+    "chunk_idx": 29,
     "video_id": "Instant_pot_spaghetti",
-    "state_changes": [],
-    "_rescued": "parse"
+    "state_changes": [
+      "User pours red sauce from a metal can into the pot."
+    ]
   },
   {
     "time": [
-      62,
-      64
+      30,
+      31
     ],
     "visible_entities": [
       {
-        "desc": "person's hand and arm, wearing a light grey long-sleeved shirt",
-        "action": "pouring diced tomatoes from a can",
-        "position": "top right"
+        "desc": "hand with light skin, wearing a grey long-sleeved sweater",
+        "action": "pouring red sauce from a can",
+        "position": "top right",
+        "id": "person_chef_1"
       },
       {
-        "desc": "metallic can with blue and white label",
+        "desc": "metal can with a white and blue label",
         "action": "being tilted to pour contents",
-        "position": "center"
+        "position": "center",
+        "id": "can_sauce_1"
       },
       {
-        "desc": "red diced tomatoes",
-        "action": "falling from can into pot",
-        "position": "center"
-      },
-      {
-        "desc": "black electric pressure cooker pot containing uncooked spaghetti and red sauce",
+        "desc": "black electric pressure cooker with a silver inner pot",
         "action": "static",
-        "position": "center"
+        "position": "center",
+        "id": "pot_instant_1"
       },
       {
-        "desc": "pressure cooker lid, grey and black",
+        "desc": "uncooked yellow spaghetti noodles",
         "action": "static",
-        "position": "bottom left"
+        "position": "inside the pot",
+        "id": "spaghetti_dry_1"
       },
       {
-        "desc": "white text overlay",
+        "desc": "thick red tomato sauce",
+        "action": "being poured onto the pasta",
+        "position": "inside the pot",
+        "id": "sauce_tomato_1"
+      },
+      {
+        "desc": "grey pressure cooker lid with a black handle",
         "action": "static",
-        "position": "top"
+        "position": "bottom left",
+        "id": "lid_instant_1"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A person is pouring diced tomatoes from a can into a pressure cooker.",
+        "fact": "A person is pouring red tomato sauce from a can into the pressure cooker.",
         "confidence": 1.0
       },
       {
-        "fact": "The pressure cooker contains uncooked spaghetti noodles.",
+        "fact": "The sauce is being poured over a layer of uncooked spaghetti noodles.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The pressure cooker lid is resting on the table next to the pot.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The text on the screen instructs to add 14.5oz of diced tomatoes or tomato sauce.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "- Add 14.5oz of diced tomatoes (or tomato sauce)"
+    ],
+    "spatial": "The pressure cooker is in the center of the frame. The person's hand is above the pot, holding the can and pouring sauce into it. The spaghetti and sauce are inside the pot. The lid is to the left of the pressure cooker on the wooden surface.",
+    "parse_success": true,
+    "chunk_idx": 30,
+    "video_id": "Instant_pot_spaghetti",
+    "state_changes": []
+  },
+  {
+    "time": [
+      31,
+      32
+    ],
+    "visible_entities": [
+      {
+        "desc": "hand wearing a grey long-sleeved garment",
+        "action": "pouring red sauce from a can",
+        "position": "top right"
+      },
+      {
+        "desc": "silver and blue metal can",
+        "action": "being tilted to pour contents",
+        "position": "center",
+        "id": "can_sauce_1"
+      },
+      {
+        "desc": "black electric pressure cooker pot with stainless steel inner liner",
+        "action": "static",
+        "position": "center",
+        "id": "pot_instant_1"
+      },
+      {
+        "desc": "uncooked yellow spaghetti noodles",
+        "action": "static",
+        "position": "inside the pot",
+        "id": "spaghetti_dry_1"
+      },
+      {
+        "desc": "thick red tomato sauce",
+        "action": "being poured onto the noodles",
+        "position": "inside the pot",
+        "id": "sauce_tomato_1"
+      },
+      {
+        "desc": "black pressure cooker lid",
+        "action": "static",
+        "position": "bottom left",
+        "id": "lid_instant_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A hand is pouring red tomato sauce from a can into the pressure cooker.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The sauce is being poured over a layer of uncooked spaghetti noodles.",
         "confidence": 1.0
       },
       {
@@ -1967,161 +2144,179 @@
     "ocr": [
       "- Add 14.5oz of diced tomatoes (or tomato sauce)"
     ],
-    "spatial": "The person's hand is above the pressure cooker, holding the can. The diced tomatoes are falling from the can into the pot. The pressure cooker lid is to the left of the pot. The text overlay is at the top of the frame.",
+    "spatial": "The pressure cooker is in the center of the frame. The hand holding the can is above the pot, pouring the sauce inside. The spaghetti noodles are at the bottom of the pot, underneath the accumulating sauce. The pressure cooker lid is to the left of the pot.",
     "parse_success": true,
     "chunk_idx": 31,
     "video_id": "Instant_pot_spaghetti",
-    "state_changes": [],
-    "_rescued": "parse"
+    "state_changes": []
   },
   {
     "time": [
-      64,
-      66
+      32,
+      33
     ],
     "visible_entities": [
       {
-        "desc": "black electric pressure cooker with a stainless steel inner pot",
+        "desc": "wooden spatula, light brown, flat head, smooth texture",
+        "action": "stirring ingredients",
+        "position": "center",
+        "id": "utensil_spoon_1"
+      },
+      {
+        "desc": "uncooked spaghetti noodles, yellow, thin, cylindrical",
         "action": "static",
-        "position": "center"
+        "position": "inside pot",
+        "id": "spaghetti_dry_1"
       },
       {
-        "desc": "uncooked yellow spaghetti noodles",
-        "action": "being stirred",
-        "position": "inside the pot"
+        "desc": "red tomato sauce, chunky, wet, bright red",
+        "action": "being mixed",
+        "position": "inside pot",
+        "id": "sauce_tomato_1"
       },
       {
-        "desc": "chunky red tomato sauce",
-        "action": "being stirred",
-        "position": "inside the pot"
-      },
-      {
-        "desc": "light brown wooden spoon",
-        "action": "stirring the food",
-        "position": "center"
-      },
-      {
-        "desc": "person's hand",
-        "action": "holding the spoon",
-        "position": "top right"
-      },
-      {
-        "desc": "black pressure cooker lid with silver accents",
+        "desc": "stainless steel inner pot, shiny, metallic, round",
         "action": "static",
-        "position": "bottom left"
+        "position": "center",
+        "id": "pot_instant_1"
+      },
+      {
+        "desc": "black electric pressure cooker base, matte plastic, with side handles",
+        "action": "static",
+        "position": "center",
+        "id": "pot_instant_1"
+      },
+      {
+        "desc": "pressure cooker lid, black and silver, detached",
+        "action": "static",
+        "position": "bottom left",
+        "id": "lid_instant_1"
+      },
+      {
+        "desc": "human hand, light skin tone",
+        "action": "holding spatula",
+        "position": "top right",
+        "id": "person_chef_1"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A person is stirring spaghetti and red sauce inside a pressure cooker.",
+        "fact": "A hand is using a wooden spatula to stir red sauce and spaghetti noodles inside a pot.",
         "confidence": 1.0
       },
       {
-        "fact": "The wooden spoon is mixing the ingredients together.",
+        "fact": "The spaghetti noodles are uncooked and yellow.",
         "confidence": 1.0
       },
       {
-        "fact": "The pressure cooker lid is resting on the table next to the pot.",
+        "fact": "The pressure cooker lid is resting on the table to the left of the cooker base.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The pressure cooker is in the center of the frame. The wooden spoon is inside the pot, mixing the spaghetti and sauce. The lid is to the left of the pressure cooker.",
+    "spatial": "The stainless steel pot is inside the black pressure cooker base. The wooden spatula is inside the pot, mixing the red sauce and yellow spaghetti. The detached lid is to the left of the pressure cooker base on the wooden surface.",
     "parse_success": true,
     "chunk_idx": 32,
     "video_id": "Instant_pot_spaghetti",
-    "state_changes": [],
-    "_rescued": "parse"
+    "state_changes": [
+      "User stirs all ingredients (meat, pasta, sauces) together with a wooden spatula."
+    ]
   },
   {
     "time": [
-      66,
-      68
+      33,
+      34
     ],
     "visible_entities": [
       {
         "desc": "hand with light skin tone, holding a wooden spoon",
-        "action": "stirring ingredients",
-        "position": "right"
+        "action": "stirring red sauce",
+        "position": "right",
+        "id": "person_chef_1"
       },
       {
         "desc": "wooden spoon, light brown, flat head",
-        "action": "stirring red sauce",
-        "position": "center"
+        "action": "mixing ingredients",
+        "position": "center",
+        "id": "utensil_spoon_1"
       },
       {
-        "desc": "stainless steel pot insert containing red sauce and yellow strands",
-        "action": "static",
-        "position": "center"
+        "desc": "red tomato sauce with chunks and yellow strands",
+        "action": "being stirred",
+        "position": "center",
+        "id": "sauce_tomato_1"
       },
       {
-        "desc": "black electric pressure cooker base with handles",
+        "desc": "stainless steel inner pot of a pressure cooker",
         "action": "static",
-        "position": "center"
+        "position": "center",
+        "id": "pot_instant_1"
       },
       {
-        "desc": "black lid with silver accents",
+        "desc": "black electric pressure cooker base with side handles",
         "action": "static",
-        "position": "left"
+        "position": "center",
+        "id": "pot_instant_1"
       },
       {
-        "desc": "dark wood-grain surface",
+        "desc": "black pressure cooker lid with silver accents",
         "action": "static",
-        "position": "background"
+        "position": "left",
+        "id": "lid_instant_1"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A hand is stirring the red sauce and yellow strands inside the pot with a wooden spoon.",
+        "fact": "A hand is stirring a red sauce inside a metal pot.",
         "confidence": 1.0
       },
       {
-        "fact": "The pot insert is sitting inside the black pressure cooker base.",
+        "fact": "The sauce contains visible chunks of tomatoes and thin yellow strands.",
         "confidence": 1.0
       },
       {
-        "fact": "The lid is resting on the table to the left of the cooker.",
+        "fact": "The pot is sitting inside a black electric pressure cooker base.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The lid of the pressure cooker is resting on the table to the left.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The stainless steel pot is inside the black pressure cooker base in the center of the frame. The wooden spoon is inside the pot, being held by a hand on the right side. The black lid is on the table to the left of the pressure cooker.",
+    "spatial": "The metal pot is inside the black pressure cooker base. The hand is to the right of the pot, holding the wooden spoon which is inside the sauce. The pressure cooker lid is to the left of the cooker base.",
     "parse_success": true,
     "chunk_idx": 33,
     "video_id": "Instant_pot_spaghetti",
-    "state_changes": [],
-    "_rescued": "parse"
+    "state_changes": []
   },
   {
     "time": [
-      68,
-      70
+      34,
+      35
     ],
     "visible_entities": [
       {
-        "desc": "person's hand and forearm wearing a grey heathered long-sleeve shirt",
+        "desc": "person wearing a grey heathered long-sleeve shirt",
         "action": "adjusting the vent knob on the pressure cooker lid",
-        "position": "left"
+        "position": "top left",
+        "id": "person_chef_1"
       },
       {
-        "desc": "black and stainless steel pressure cooker lid with a black handle and a silver instruction label",
+        "desc": "black and silver electric pressure cooker lid with a vent knob and handle",
         "action": "static",
-        "position": "center"
+        "position": "center",
+        "id": "lid_instant_1"
       },
       {
-        "desc": "white text overlay with a drop shadow",
+        "desc": "white sans-serif text overlay",
         "action": "static",
-        "position": "top"
-      },
-      {
-        "desc": "dark brown wooden surface",
-        "action": "static",
-        "position": "background"
+        "position": "top center"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A person's hand is turning the vent knob on the pressure cooker lid.",
+        "fact": "A person's hand is turning the vent knob on the pressure cooker.",
         "confidence": 1.0
       },
       {
@@ -2129,57 +2324,62 @@
         "confidence": 1.0
       },
       {
-        "fact": "The pressure cooker lid is resting on a wooden surface.",
+        "fact": "The pressure cooker lid is closed.",
         "confidence": 1.0
       }
     ],
     "ocr": [
       "- Set the vent knob to the 'Sealing Position'"
     ],
-    "spatial": "The person's hand is positioned on the top left of the pressure cooker lid. The instruction label is located on the front face of the lid, below the handle. The text overlay is displayed at the top of the frame, above the pressure cooker.",
+    "spatial": "The person's hand is above the pressure cooker lid, manipulating the vent knob. The instructional text is positioned above the lid in the upper portion of the frame.",
     "parse_success": true,
     "chunk_idx": 34,
     "video_id": "Instant_pot_spaghetti",
-    "state_changes": [],
-    "_rescued": "parse"
+    "state_changes": [
+      "User adjusts the vent knob on the pressure cooker lid."
+    ]
   },
   {
     "time": [
-      70,
-      72
+      35,
+      36
     ],
     "visible_entities": [
       {
-        "desc": "black electric pressure cooker with a stainless steel lid, featuring a black handle and a vent knob on top",
-        "action": "being adjusted",
-        "position": "center"
+        "desc": "person's hand and arm wearing a white long-sleeved shirt",
+        "action": "adjusting the vent knob",
+        "position": "top left",
+        "id": "person_chef_1"
       },
       {
-        "desc": "hand with light skin tone and a white long-sleeved cuff",
-        "action": "turning the vent knob",
-        "position": "top left"
-      },
-      {
-        "desc": "wooden surface with a visible grain pattern",
+        "desc": "black and silver pressure cooker with a glossy lid, side handles, and a control panel area",
         "action": "static",
-        "position": "background"
+        "position": "center",
+        "id": "pot_instant_1"
+      },
+      {
+        "desc": "black vent knob on the top of the pressure cooker lid",
+        "action": "being turned",
+        "position": "top center",
+        "id": "lid_instant_1"
+      },
+      {
+        "desc": "white text overlay with a slight shadow",
+        "action": "static",
+        "position": "top"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A hand turns the vent knob on the pressure cooker lid.",
+        "fact": "A person's hand is turning the vent knob on the pressure cooker.",
         "confidence": 1.0
       },
       {
-        "fact": "The pressure cooker is sitting on a wooden table.",
+        "fact": "The pressure cooker is sitting on a wooden surface.",
         "confidence": 1.0
       },
       {
-        "fact": "The text 'Set the vent knob to the 'Sealing Position'' is displayed at the top of the screen.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The words 'Close' and 'Open' are embossed on the front of the lid.",
+        "fact": "The text overlay instructs to 'Set the vent knob to the 'Sealing Position''.",
         "confidence": 1.0
       }
     ],
@@ -2188,46 +2388,49 @@
       "Close",
       "Open"
     ],
-    "spatial": "The pressure cooker is centered on the wooden table. The hand is positioned above and to the left of the cooker, manipulating the vent knob. The instructional text is located above the pressure cooker.",
+    "spatial": "The pressure cooker is centered on a wooden table. The person's hand is above and to the left of the cooker, manipulating the vent knob located at the top center of the lid. The instructional text is positioned above the entire scene.",
     "parse_success": true,
     "chunk_idx": 35,
     "video_id": "Instant_pot_spaghetti",
-    "state_changes": [],
-    "_rescued": "parse"
+    "state_changes": []
   },
   {
     "time": [
-      72,
-      74
+      36,
+      37
     ],
     "visible_entities": [
       {
-        "desc": "stainless steel Instant Pot pressure cooker with black control panel and red LED display",
+        "desc": "Stainless steel Instant Pot control panel with black digital display and multiple labeled buttons",
         "action": "static",
-        "position": "center"
+        "position": "center",
+        "id": "pot_instant_1"
       },
       {
-        "desc": "person's hand with light skin tone and short fingernails",
-        "action": "pressing buttons on the control panel",
-        "position": "bottom right"
+        "desc": "Human finger with light skin tone",
+        "action": "pressing buttons",
+        "position": "bottom right",
+        "id": "person_chef_1"
       },
       {
-        "desc": "white text overlay with black outline",
+        "desc": "Red LED digital display showing text and numbers",
+        "action": "changing content",
+        "position": "center",
+        "id": "display_led_1"
+      },
+      {
+        "desc": "White sans-serif text overlay with black outline",
         "action": "static",
         "position": "top"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "The Instant Pot display initially reads 'OFF' in red letters.",
+        "fact": "A finger presses the 'Manual' button on the Instant Pot.",
         "confidence": 1.0
       },
       {
-        "fact": "A finger presses the 'Manual' button on the control panel.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The display changes to show '00:10' in red digits.",
+        "fact": "The digital display changes from 'OFF' to '00:10'.",
         "confidence": 1.0
       },
       {
@@ -2242,59 +2445,70 @@
       "OFF",
       "00:10",
       "Soup Broth",
-      "Meat Stew",
-      "Bean Chili",
+      "Meat/Stew",
+      "Bean/Chili",
       "Poultry",
       "Rice",
       "Multigrain",
       "Porridge",
       "Steam",
+      "Low Pressure",
+      "High Pressure",
       "Less",
       "Normal",
       "More",
+      "Adjust",
+      "Manual",
       "Pressure Level",
       "Keep Warm",
-      "Adjust",
+      "Timer",
       "Delay Start",
-      "Cancel",
-      "Manual"
+      "Cancel"
     ],
-    "spatial": "The text overlay is positioned above the Instant Pot. The person's hand is in front of the control panel at the bottom right. The red LED display is in the center of the control panel, surrounded by various function buttons.",
+    "spatial": "The text overlay is positioned above the Instant Pot control panel. The digital display is located in the center of the control panel, surrounded by various function buttons. The finger is pressing the 'Manual' button located at the bottom right of the button array.",
     "parse_success": true,
     "chunk_idx": 36,
     "video_id": "Instant_pot_spaghetti",
-    "state_changes": [],
-    "_rescued": "parse"
+    "state_changes": [
+      "User presses buttons on the control panel, changing the digital display settings."
+    ]
   },
   {
     "time": [
-      74,
-      76
+      37,
+      38
     ],
     "visible_entities": [
       {
-        "desc": "Stainless steel Instant Pot with a digital control panel and red LED display",
+        "desc": "Instant Pot Duo control panel with stainless steel finish, black digital display showing red LED numbers, and various function buttons",
         "action": "static",
-        "position": "center"
+        "position": "center",
+        "id": "pot_instant_1"
       },
       {
         "desc": "Finger with light skin tone",
-        "action": "pressing the 'Less' button",
-        "position": "bottom center"
+        "action": "pressing the 'Normal' button",
+        "position": "bottom center",
+        "id": "person_chef_1"
       },
       {
         "desc": "White text overlay with black outline",
         "action": "static",
-        "position": "top"
+        "position": "top",
+        "id": "text_overlay_1"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A finger presses the 'Less' button on the Instant Pot control panel.",
+        "fact": "A finger is pressing the 'Normal' button on the Instant Pot control panel.",
         "confidence": 1.0
       },
       {
-        "fact": "The red LED display shows the time changing from '00:10' to '00:08'.",
+        "fact": "The digital display shows the time changing from '00:10' to '00:08'.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The 'High Pressure' indicator light is illuminated on the panel.",
         "confidence": 1.0
       },
       {
@@ -2305,6 +2519,7 @@
     "ocr": [
       "- Manually cook on 'High Pressure' for 8 minutes",
       "Instant Pot",
+      "DUO",
       "www.InstantPot.com",
       "00:10",
       "00:08",
@@ -2324,40 +2539,38 @@
       "Adjust",
       "Delay Start",
       "Keep Warm",
-      "Cancel"
+      "Cancel",
+      "Yogurt"
     ],
-    "spatial": "The text overlay is located at the top of the frame, above the Instant Pot. The finger is positioned at the bottom center, pressing a button on the front of the appliance. The digital display is in the center of the control panel, showing the cooking time.",
+    "spatial": "The finger is positioned below the digital display and is pressing the 'Normal' button. The text overlay is located at the top of the frame, above the Instant Pot. The 'High Pressure' indicator is to the right of the 'Low Pressure' indicator on the display panel.",
     "parse_success": true,
     "chunk_idx": 37,
     "video_id": "Instant_pot_spaghetti",
-    "state_changes": [],
-    "_rescued": "parse"
+    "state_changes": []
   },
   {
     "time": [
-      76,
-      78
+      38,
+      39
     ],
     "visible_entities": [
       {
-        "desc": "person's hand with fair skin, wearing a light grey long-sleeved shirt",
-        "action": "holding a wooden stick and pressing a valve",
-        "position": "left"
+        "desc": "hand with light skin tone, wearing a light grey long-sleeved shirt, holding a wooden utensil",
+        "action": "using a wooden utensil to manipulate the pressure release valve",
+        "position": "left",
+        "id": "person_chef_1"
       },
       {
-        "desc": "light brown wooden stick, smooth, flat, rectangular",
-        "action": "being used to press the valve",
-        "position": "left/center"
-      },
-      {
-        "desc": "black and silver electric pressure cooker with a glossy lid, black handle, and a silver metallic front panel",
+        "desc": "electric pressure cooker with a black plastic lid, stainless steel accents, and a black pressure release valve",
         "action": "static",
-        "position": "center"
+        "position": "center",
+        "id": "pot_instant_1"
       },
       {
-        "desc": "black circular pressure release valve on top of the lid",
-        "action": "being pressed",
-        "position": "top center"
+        "desc": "wooden utensil, light brown, flat handle",
+        "action": "being used to push the valve",
+        "position": "left",
+        "id": "utensil_spoon_1"
       },
       {
         "desc": "white text overlay with a black outline",
@@ -2367,64 +2580,58 @@
     ],
     "atomic_facts": [
       {
-        "fact": "A person is using a wooden stick to safely press the pressure release valve on the cooker.",
+        "fact": "A hand is using a wooden utensil to push the pressure release valve on the lid of the pressure cooker.",
         "confidence": 1.0
       },
       {
-        "fact": "The text overlay instructs to 'Safely do a 'Quick Pressure Release''.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The pressure cooker lid has 'Close' and 'Open' indicators with an arrow.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "A warning label is visible on the silver front panel of the pressure cooker.",
+        "fact": "The text overlay reads '- Safely do a 'Quick Pressure Release''.",
         "confidence": 1.0
       }
     ],
     "ocr": [
-      "- Safely do a 'Quick Pressure Release'",
-      "Close",
-      "Open"
+      "- Safely do a 'Quick Pressure Release'"
     ],
-    "spatial": "The person's hand is to the left of the pressure cooker, holding the wooden stick. The stick is positioned above the pressure release valve on the lid. The text overlay is located at the top of the frame, above the pressure cooker.",
+    "spatial": "The hand holding the wooden utensil is to the left of the pressure cooker. The wooden utensil is positioned above the pressure release valve on the lid. The text overlay is located at the top of the frame, above the pressure cooker.",
     "parse_success": true,
     "chunk_idx": 38,
     "video_id": "Instant_pot_spaghetti",
-    "state_changes": [],
-    "_rescued": "parse"
+    "state_changes": [
+      "User uses a wooden utensil to manipulate the pressure release valve."
+    ]
   },
   {
     "time": [
-      78,
-      80
+      39,
+      40
     ],
     "visible_entities": [
       {
-        "desc": "electric pressure cooker with a black lid, silver metallic front panel, and a black steam release valve on top",
+        "desc": "electric pressure cooker with a black lid, silver metallic body, and a black handle on top",
         "action": "static",
-        "position": "center"
+        "position": "center",
+        "id": "pot_instant_1"
       },
       {
-        "desc": "wooden utensil handle, light brown, smooth, cylindrical",
-        "action": "moving into frame from the left",
-        "position": "left"
+        "desc": "wooden stick, light brown, cylindrical",
+        "action": "moving left",
+        "position": "left",
+        "id": "utensil_spoon_1"
       },
       {
         "desc": "wooden surface, brown, smooth texture",
         "action": "static",
-        "position": "background"
+        "position": "background",
+        "id": "surface_table_1"
       },
       {
-        "desc": "white text overlay with a black outline",
+        "desc": "white text overlay with black outline",
         "action": "static",
         "position": "top"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A wooden utensil handle moves into the frame from the left side.",
+        "fact": "A wooden stick moves from the right side towards the left side of the frame.",
         "confidence": 1.0
       },
       {
@@ -2441,43 +2648,41 @@
       "Close",
       "Open"
     ],
-    "spatial": "The pressure cooker is centered on the wooden surface. The wooden utensil handle is to the left of the pressure cooker. The instructional text is positioned above the pressure cooker.",
+    "spatial": "The pressure cooker is centered on the wooden surface. The wooden stick is to the left of the pressure cooker. The text overlay is above the pressure cooker.",
     "parse_success": true,
     "chunk_idx": 39,
     "video_id": "Instant_pot_spaghetti",
-    "state_changes": [],
-    "_rescued": "parse"
+    "state_changes": []
   },
   {
     "time": [
-      80,
-      82
+      40,
+      41
     ],
     "visible_entities": [
       {
-        "desc": "electric pressure cooker with a stainless steel body, black plastic lid and handles, and a yellow inner rim",
+        "desc": "electric pressure cooker with a stainless steel body, a dark grey plastic lid and handle, and a black power cord",
         "action": "static",
-        "position": "center"
+        "position": "center",
+        "id": "pot_instant_1"
       },
       {
-        "desc": "black pressure release valve on the lid",
+        "desc": "pressure release valve on the lid, featuring a black knob and a small circular metal vent hole",
         "action": "static",
-        "position": "top"
+        "position": "top",
+        "id": "lid_instant_1"
       },
       {
-        "desc": "red circle graphic highlighting the valve",
+        "desc": "red circle graphic highlighting the vent hole on the pressure release valve",
         "action": "static",
-        "position": "top"
+        "position": "top",
+        "id": "graphic_highlight_1"
       },
       {
-        "desc": "silver warning label with black text on the lid",
+        "desc": "wooden floor surface with a light brown finish and visible wood grain",
         "action": "static",
-        "position": "center"
-      },
-      {
-        "desc": "wooden floor with vertical grain pattern",
-        "action": "static",
-        "position": "background"
+        "position": "background",
+        "id": "surface_table_1"
       }
     ],
     "atomic_facts": [
@@ -2486,15 +2691,15 @@
         "confidence": 1.0
       },
       {
-        "fact": "A red circle highlights the pressure release valve on the lid.",
+        "fact": "A red circle highlights the vent hole on the pressure release valve.",
         "confidence": 1.0
       },
       {
-        "fact": "The lid features a silver label with safety instructions.",
+        "fact": "The pressure release valve is located on the top of the lid.",
         "confidence": 1.0
       },
       {
-        "fact": "The words 'Close' and 'Open' are visible on the front of the lid.",
+        "fact": "The lid has 'Close' and 'Open' indicators near the handle.",
         "confidence": 1.0
       }
     ],
@@ -2502,33 +2707,35 @@
       "Close",
       "Open"
     ],
-    "spatial": "The pressure cooker is centered in the frame, resting on the wooden floor. The red circle is positioned directly above the black pressure release valve. The silver warning label is located on the front face of the lid, below the handle.",
+    "spatial": "The electric pressure cooker is in the center of the frame, resting on the wooden floor. The pressure release valve is on top of the lid. The red circle is around the vent hole of the pressure release valve. The black power cord extends from the left side of the pressure cooker.",
     "parse_success": true,
     "chunk_idx": 40,
     "video_id": "Instant_pot_spaghetti",
-    "state_changes": [],
-    "_rescued": "parse"
+    "state_changes": []
   },
   {
     "time": [
-      82,
-      84
+      41,
+      42
     ],
     "visible_entities": [
       {
-        "desc": "person's left hand and forearm, wearing a light grey heathered long-sleeve sweatshirt",
-        "action": "gripping the handle of the pressure cooker lid",
-        "position": "left/center"
+        "desc": "person's hand and arm wearing a light grey heathered long-sleeve shirt",
+        "action": "gripping the lid handle",
+        "position": "left/center/foreground",
+        "id": "person_chef_1"
       },
       {
-        "desc": "black and stainless steel electric pressure cooker with a glossy black lid and a silver metallic center plate",
+        "desc": "stainless steel and black plastic pressure cooker with a silver instructional sticker on the lid",
         "action": "static",
-        "position": "center"
+        "position": "center",
+        "id": "pot_instant_1"
       },
       {
-        "desc": "dark brown wooden surface with visible grain",
+        "desc": "dark brown wooden surface",
         "action": "static",
-        "position": "background"
+        "position": "background",
+        "id": "surface_table_1"
       }
     ],
     "atomic_facts": [
@@ -2537,11 +2744,11 @@
         "confidence": 1.0
       },
       {
-        "fact": "The pressure cooker is sitting on a wooden surface.",
+        "fact": "The pressure cooker is resting on a wooden surface.",
         "confidence": 1.0
       },
       {
-        "fact": "The lid has directional indicators for 'Close' and 'Open'.",
+        "fact": "The lid features a silver sticker with instructional text.",
         "confidence": 1.0
       }
     ],
@@ -2549,162 +2756,171 @@
       "Close",
       "Open"
     ],
-    "spatial": "The person's hand is positioned on top of the pressure cooker lid, gripping the handle. The pressure cooker is centered in the frame, resting on the wooden surface which serves as the background.",
+    "spatial": "The person's arm extends from the left side of the frame, with the hand positioned on top of the pressure cooker lid. The pressure cooker is centered on the wooden surface. The text 'Close' is visible on the lower left part of the lid rim, while 'Open' is on the right.",
     "parse_success": true,
     "chunk_idx": 41,
     "video_id": "Instant_pot_spaghetti",
-    "state_changes": [],
-    "_rescued": "parse"
+    "state_changes": []
   },
   {
     "time": [
-      84,
-      86
+      42,
+      43
     ],
     "visible_entities": [
       {
-        "desc": "hand wearing a light grey long-sleeved shirt",
-        "action": "lifting the lid of the pot",
+        "desc": "hand wearing a light grey long-sleeved garment",
+        "action": "lifting the lid",
         "position": "left"
       },
       {
-        "desc": "black and silver electric pressure cooker with a stainless steel inner pot",
-        "action": "static",
+        "desc": "pressure cooker lid with a black handle and silver metallic rim",
+        "action": "being lifted off",
         "position": "center"
       },
       {
-        "desc": "thick red-orange stew with visible chunks of vegetables or meat",
+        "desc": "stainless steel inner pot containing a chunky red-orange stew",
         "action": "static",
-        "position": "inside the pot"
+        "position": "center",
+        "id": "pot_instant_1"
       },
       {
-        "desc": "black and white pressure cooker lid with a metallic rim",
-        "action": "being lifted away",
-        "position": "top left"
+        "desc": "electric pressure cooker base with black side handles",
+        "action": "static",
+        "position": "bottom",
+        "id": "pot_instant_1"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A person is lifting the lid off an electric pressure cooker.",
+        "fact": "A hand lifts the lid off the pressure cooker.",
         "confidence": 1.0
       },
       {
-        "fact": "The pot contains a simmering red-orange stew.",
+        "fact": "The lid is tilted upwards, revealing the contents inside.",
         "confidence": 1.0
       },
       {
-        "fact": "The lid is being moved to the left side of the frame.",
+        "fact": "The pot contains a red-orange liquid with visible chunks of food.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The electric pressure cooker is centered on a wooden surface. The hand wearing a grey sleeve is to the left of the cooker, holding the lid. The lid is positioned above and to the left of the pot's opening. The red stew is inside the inner pot of the cooker.",
+    "spatial": "The hand is on the left side, holding the black handle of the lid. The lid is positioned above and slightly to the left of the inner pot. The inner pot is inside the pressure cooker base.",
     "parse_success": true,
     "chunk_idx": 42,
     "video_id": "Instant_pot_spaghetti",
-    "state_changes": [],
-    "_rescued": "parse"
+    "state_changes": [
+      "User lifts the lid off the pressure cooker, revealing the cooked stew."
+    ]
   },
   {
     "time": [
-      86,
-      88
+      43,
+      44
     ],
     "visible_entities": [
       {
         "desc": "hand with light skin tone, wearing a white long-sleeved garment",
-        "action": "stirring spaghetti",
-        "position": "top right"
+        "action": "stirring spaghetti with a wooden spoon",
+        "position": "top right",
+        "id": "person_chef_1"
       },
       {
         "desc": "wooden spoon, light brown, smooth texture",
-        "action": "mixing ingredients",
-        "position": "center"
+        "action": "being used to stir",
+        "position": "center",
+        "id": "utensil_spoon_1"
       },
       {
-        "desc": "electric pressure cooker, black exterior, silver interior pot",
-        "action": "static",
-        "position": "center"
-      },
-      {
-        "desc": "spaghetti noodles, yellow, submerged in red tomato sauce",
+        "desc": "spaghetti noodles mixed with red tomato sauce and chunks of tomatoes",
         "action": "being stirred",
-        "position": "inside the pot"
+        "position": "center",
+        "id": "spaghetti_cooked_1"
       },
       {
-        "desc": "pressure cooker lid, silver metal with black handle",
+        "desc": "electric pressure cooker, black exterior, stainless steel inner pot",
         "action": "static",
-        "position": "left"
+        "position": "center",
+        "id": "pot_instant_1"
       },
       {
-        "desc": "white text overlay with black outline",
+        "desc": "pressure cooker lid, stainless steel, reflective surface",
         "action": "static",
-        "position": "top"
+        "position": "left",
+        "id": "lid_instant_1"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A hand is using a wooden spoon to stir spaghetti and sauce inside a pressure cooker.",
+        "fact": "A hand is stirring spaghetti and sauce inside the pressure cooker.",
         "confidence": 1.0
       },
       {
-        "fact": "The spaghetti is being mixed to incorporate the liquid sauce.",
+        "fact": "The wooden spoon is submerged in the liquid and pasta mixture.",
         "confidence": 1.0
       },
       {
-        "fact": "The pressure cooker lid is resting on the table to the left of the appliance.",
+        "fact": "The pressure cooker lid is resting on the table to the left of the pot.",
         "confidence": 1.0
       },
       {
-        "fact": "The text on the screen instructs to 'Stir the spaghetti really well to incorporate liquid'.",
+        "fact": "The text overlay instructs to stir the spaghetti to incorporate liquid.",
         "confidence": 1.0
       }
     ],
     "ocr": [
       "- Stir the spaghetti really well to incorporate liquid"
     ],
-    "spatial": "The pressure cooker is in the center of the frame, containing the spaghetti and sauce. The hand holding the wooden spoon is positioned above and to the right of the pot, reaching inside to stir. The lid of the pressure cooker is lying on the wooden surface to the left of the main unit. The instructional text is located at the top of the frame, above the cooking scene.",
+    "spatial": "The pressure cooker is in the center of the frame containing the spaghetti. The lid is to the left of the pressure cooker on the wooden surface. The hand holding the wooden spoon is positioned above and inside the pot, mixing the ingredients.",
     "parse_success": true,
     "chunk_idx": 43,
     "video_id": "Instant_pot_spaghetti",
-    "state_changes": [],
-    "_rescued": "parse"
+    "state_changes": [
+      "User stirs the finished spaghetti dish with a wooden spoon."
+    ]
   },
   {
     "time": [
-      88,
-      90
+      44,
+      45
     ],
     "visible_entities": [
       {
-        "desc": "hand with light skin tone, wearing a white long-sleeved garment",
+        "desc": "person's hand with light skin, wearing a white long-sleeved garment",
         "action": "stirring spaghetti",
-        "position": "top right"
+        "position": "top right",
+        "id": "person_chef_1"
       },
       {
         "desc": "wooden spoon, light brown, smooth texture",
         "action": "mixing ingredients",
-        "position": "center"
+        "position": "center",
+        "id": "utensil_spoon_1"
+      },
+      {
+        "desc": "electric pressure cooker, black exterior, silver stainless steel inner pot",
+        "action": "static",
+        "position": "center",
+        "id": "pot_instant_1"
       },
       {
         "desc": "spaghetti noodles coated in red tomato sauce with visible chunks of red vegetables",
         "action": "being stirred",
-        "position": "center"
-      },
-      {
-        "desc": "black electric pressure cooker with a stainless steel inner pot",
-        "action": "static",
-        "position": "center"
+        "position": "inside the pot",
+        "id": "spaghetti_cooked_1"
       },
       {
         "desc": "silver metallic pressure cooker lid with a black handle",
         "action": "static",
-        "position": "left"
+        "position": "left",
+        "id": "lid_instant_1"
       },
       {
         "desc": "dark brown wooden surface",
         "action": "static",
-        "position": "background"
+        "position": "background",
+        "id": "surface_table_1"
       }
     ],
     "atomic_facts": [
@@ -2713,11 +2929,11 @@
         "confidence": 1.0
       },
       {
-        "fact": "The spaghetti is being mixed with a red sauce and vegetable chunks.",
+        "fact": "The spaghetti is mixed with red sauce and vegetable chunks.",
         "confidence": 1.0
       },
       {
-        "fact": "The lid of the pressure cooker is resting on the table to the left of the pot.",
+        "fact": "The pressure cooker lid is resting on the table to the left of the pot.",
         "confidence": 1.0
       },
       {
@@ -2728,69 +2944,67 @@
     "ocr": [
       "- Stir the spaghetti really well to incorporate liquid"
     ],
-    "spatial": "The pressure cooker containing the spaghetti is in the center of the frame. To the left of the cooker, the silver lid rests on the wooden surface. A hand enters from the top right, holding a wooden spoon that is inside the pot, mixing the food.",
+    "spatial": "The pressure cooker is in the center of the frame, sitting on a wooden surface. The lid is placed to the left of the cooker. A hand enters from the top right, holding a wooden spoon inside the pot to stir the spaghetti.",
     "parse_success": true,
     "chunk_idx": 44,
     "video_id": "Instant_pot_spaghetti",
-    "state_changes": [],
-    "_rescued": "parse"
+    "state_changes": []
   },
   {
     "time": [
-      90,
-      92
+      45,
+      46
     ],
     "visible_entities": [
       {
-        "desc": "person's hand and forearm, light skin tone, wearing a white long-sleeved shirt",
-        "action": "stirring spaghetti with a wooden spoon",
-        "position": "right"
-      },
-      {
-        "desc": "wooden spoon, light brown, smooth texture, flat head",
-        "action": "stirring food",
+        "desc": "hand holding a wooden spoon",
+        "action": "stirring spaghetti",
         "position": "center"
       },
       {
-        "desc": "spaghetti dish, long yellow noodles mixed with red sauce and chunks of red tomato",
+        "desc": "spaghetti with red sauce and chunks of tomato",
         "action": "being stirred",
-        "position": "center"
+        "position": "center",
+        "id": "spaghetti_cooked_1"
       },
       {
-        "desc": "electric pressure cooker, black exterior, silver stainless steel inner pot",
+        "desc": "black electric pressure cooker with a stainless steel inner pot",
         "action": "static",
-        "position": "center"
+        "position": "center",
+        "id": "pot_instant_1"
       },
       {
-        "desc": "pressure cooker lid, silver stainless steel, detached",
+        "desc": "stainless steel pressure cooker lid",
         "action": "static",
-        "position": "left"
+        "position": "left",
+        "id": "lid_instant_1"
       },
       {
-        "desc": "white paper towel, crumpled",
-        "action": "held by hand",
-        "position": "bottom center"
+        "desc": "hand holding a white paper towel",
+        "action": "holding",
+        "position": "bottom"
+      },
+      {
+        "desc": "white text overlay",
+        "action": "static",
+        "position": "top"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A hand stirs spaghetti in a pot using a wooden spoon.",
+        "fact": "A hand stirs spaghetti in a pot with a wooden spoon.",
         "confidence": 1.0
       },
       {
-        "fact": "The text 'Stir the spaghetti really well to incorporate liquid' is displayed at the top.",
+        "fact": "A hand holds a white paper towel near the pot.",
         "confidence": 1.0
       },
       {
-        "fact": "The text 'Give it a few minutes to thicken' is displayed at the top.",
+        "fact": "The text 'Stir the spaghetti really well to incorporate liquid' is visible.",
         "confidence": 1.0
       },
       {
-        "fact": "A hand holds a white paper towel near the rim of the pot.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The pressure cooker lid is resting on the table to the left of the pot.",
+        "fact": "The text 'Give it a few minutes to thicken' is visible.",
         "confidence": 1.0
       }
     ],
@@ -2798,172 +3012,179 @@
       "- Stir the spaghetti really well to incorporate liquid",
       "- Give it a few minutes to thicken"
     ],
-    "spatial": "The electric pressure cooker is in the center of the frame. The detached silver lid is to the left of the cooker. A hand holding a wooden spoon is inside the pot stirring the spaghetti. Another hand holding a white paper towel is positioned at the bottom edge of the pot.",
+    "spatial": "The pressure cooker is in the center of the frame, with its lid resting to the left. The spaghetti is inside the pot. A hand holding a wooden spoon is stirring the spaghetti from the top right. Another hand holding a paper towel is visible at the bottom left of the pot. The text overlays are positioned at the top of the screen.",
     "parse_success": true,
     "chunk_idx": 45,
     "video_id": "Instant_pot_spaghetti",
-    "state_changes": [],
-    "_rescued": "parse"
+    "state_changes": []
   },
   {
     "time": [
-      92,
-      94
+      46,
+      47
     ],
     "visible_entities": [
       {
         "desc": "spaghetti noodles mixed with red tomato sauce and ground meat",
         "action": "static",
-        "position": "center"
+        "position": "center",
+        "id": "spaghetti_cooked_1"
       },
       {
         "desc": "wooden spoon, light brown, flat head",
-        "action": "resting in the pot",
-        "position": "center"
+        "action": "resting in food",
+        "position": "center",
+        "id": "utensil_spoon_1"
       },
       {
         "desc": "stainless steel inner pot",
         "action": "static",
-        "position": "center"
+        "position": "center",
+        "id": "pot_instant_1"
       },
       {
-        "desc": "black electric pressure cooker base",
+        "desc": "black electric pressure cooker base with handles",
         "action": "static",
-        "position": "center"
+        "position": "center",
+        "id": "pot_instant_1"
       },
       {
-        "desc": "silver pressure cooker lid",
+        "desc": "silver pressure cooker lid with black rim",
         "action": "static",
-        "position": "left"
+        "position": "left",
+        "id": "lid_instant_1"
       },
       {
-        "desc": "dark wood grain surface",
+        "desc": "white text overlay",
         "action": "static",
-        "position": "background"
+        "position": "top"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A wooden spoon is resting inside the pot of spaghetti.",
+        "fact": "A wooden spoon rests inside the pot of spaghetti.",
         "confidence": 1.0
       },
       {
-        "fact": "The pressure cooker lid is removed and placed to the left of the cooker.",
+        "fact": "The text '- Give it a few minutes to thicken' is displayed at the top of the screen.",
         "confidence": 1.0
       },
       {
-        "fact": "The text 'Give it a few minutes to thicken' is displayed at the top of the screen.",
+        "fact": "The pressure cooker lid is placed on the table to the left of the cooker base.",
         "confidence": 1.0
       }
     ],
     "ocr": [
       "- Give it a few minutes to thicken"
     ],
-    "spatial": "The stainless steel pot containing spaghetti is inside the black pressure cooker base in the center of the frame. The wooden spoon is resting inside the pot. The silver lid is to the left of the pressure cooker. The text is above the pressure cooker.",
+    "spatial": "The stainless steel pot containing the spaghetti is inside the black pressure cooker base. The wooden spoon is resting inside the pot. The silver lid is to the left of the pressure cooker. The white text is above the pressure cooker.",
     "parse_success": true,
     "chunk_idx": 46,
     "video_id": "Instant_pot_spaghetti",
-    "state_changes": [],
-    "_rescued": "parse"
+    "state_changes": []
   },
   {
     "time": [
-      94,
-      96
+      47,
+      48
     ],
     "visible_entities": [
       {
-        "desc": "person's hand with fair skin, wearing a grey long-sleeved garment",
+        "desc": "person's hand and wrist, wearing a grey long-sleeved garment",
         "action": "stirring spaghetti with a wooden spoon",
-        "position": "top right"
+        "position": "top right",
+        "id": "person_chef_1"
       },
       {
-        "desc": "wooden spoon, light brown, flat head, smooth handle",
-        "action": "being used to mix food",
-        "position": "center"
+        "desc": "wooden spoon, light brown, flat head",
+        "action": "being used to stir food",
+        "position": "center",
+        "id": "utensil_spoon_1"
       },
       {
-        "desc": "spaghetti pasta mixed with red tomato sauce and chunks of red tomato",
-        "action": "being stirred inside the pot",
-        "position": "center"
+        "desc": "spaghetti with red tomato sauce and chunks of tomato",
+        "action": "being mixed",
+        "position": "center inside pot",
+        "id": "spaghetti_cooked_1"
       },
       {
-        "desc": "electric pressure cooker, black exterior, stainless steel inner pot",
+        "desc": "black electric pressure cooker with stainless steel inner pot",
         "action": "static",
-        "position": "center"
+        "position": "center",
+        "id": "pot_instant_1"
       },
       {
-        "desc": "pressure cooker lid, stainless steel, detached",
+        "desc": "silver metal pressure cooker lid",
         "action": "static",
-        "position": "left"
-      },
-      {
-        "desc": "dark brown wooden surface",
-        "action": "static",
-        "position": "background"
+        "position": "left",
+        "id": "lid_instant_1"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A person is stirring spaghetti and tomato sauce inside a pressure cooker.",
+        "fact": "A person is stirring spaghetti in a pressure cooker.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The spaghetti is mixed with a red sauce containing visible tomato chunks.",
         "confidence": 1.0
       },
       {
         "fact": "The pressure cooker lid is resting on the table to the left of the pot.",
         "confidence": 1.0
-      },
-      {
-        "fact": "The wooden spoon is submerged in the pasta mixture.",
-        "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The electric pressure cooker is in the center of the frame, sitting on a dark wooden surface. The detached stainless steel lid is to the left of the cooker. A person's hand enters from the top right, holding a wooden spoon inside the pot to stir the spaghetti.",
+    "spatial": "The black pressure cooker is in the center of the frame. The silver lid is to the left of the pressure cooker. The person's hand is above the pot, holding the wooden spoon which is inside the pot mixing the spaghetti.",
     "parse_success": true,
     "chunk_idx": 47,
     "video_id": "Instant_pot_spaghetti",
-    "state_changes": [],
-    "_rescued": "parse"
+    "state_changes": []
   },
   {
     "time": [
-      96,
-      98
+      48,
+      49
     ],
     "visible_entities": [
       {
-        "desc": "hand with light skin tone",
+        "desc": "person's hand with light skin tone",
         "action": "holding a wooden spoon",
-        "position": "top right"
+        "position": "top right",
+        "id": "person_chef_1"
       },
       {
         "desc": "wooden spoon, light brown, smooth, flat head",
         "action": "stirring spaghetti",
-        "position": "center"
+        "position": "center",
+        "id": "utensil_spoon_1"
       },
       {
         "desc": "spaghetti with red sauce and diced red peppers",
         "action": "being stirred",
-        "position": "center"
+        "position": "center",
+        "id": "spaghetti_cooked_1"
       },
       {
         "desc": "black electric pressure cooker with stainless steel inner pot",
         "action": "static",
-        "position": "center"
+        "position": "center",
+        "id": "pot_instant_1"
       },
       {
-        "desc": "silver lid with black handle",
+        "desc": "stainless steel lid with black handle",
         "action": "static",
-        "position": "left"
+        "position": "left",
+        "id": "lid_instant_1"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A hand is stirring spaghetti inside a pressure cooker.",
+        "fact": "A person is stirring spaghetti in a pressure cooker with a wooden spoon.",
         "confidence": 1.0
       },
       {
-        "fact": "The spaghetti is mixed with red sauce and diced red peppers.",
+        "fact": "The spaghetti is mixed with red sauce and red peppers.",
         "confidence": 1.0
       },
       {
@@ -2972,70 +3193,78 @@
       }
     ],
     "ocr": [],
-    "spatial": "The black pressure cooker is in the center of the frame containing the spaghetti. The silver lid is to the left of the pressure cooker. A hand is above the pot, holding a wooden spoon that is inside the pot.",
+    "spatial": "The pressure cooker is in the center of the frame. The lid is to the left of the pressure cooker. The hand is above the pressure cooker, holding the wooden spoon which is inside the pot.",
     "parse_success": true,
     "chunk_idx": 48,
     "video_id": "Instant_pot_spaghetti",
-    "state_changes": [],
-    "_rescued": "parse"
+    "state_changes": []
   },
   {
     "time": [
-      98,
-      100
+      49,
+      50
     ],
     "visible_entities": [
       {
-        "desc": "hand with fair skin, wearing a grey long-sleeved garment",
+        "desc": "hand with light skin tone and short fingernails, wearing a light grey long-sleeved garment",
         "action": "holding a wooden spoon",
-        "position": "top right"
+        "position": "right",
+        "id": "person_chef_1"
       },
       {
-        "desc": "light brown wooden spoon, flat head",
-        "action": "stirring spaghetti",
-        "position": "center"
+        "desc": "light brown wooden spoon with a flat, wide head",
+        "action": "lifting spaghetti",
+        "position": "center",
+        "id": "utensil_spoon_1"
       },
       {
-        "desc": "cooked spaghetti mixed with red tomato sauce and small red chunks",
-        "action": "being stirred",
-        "position": "center"
+        "desc": "cooked spaghetti noodles coated in a red tomato-based sauce with visible chunks of tomato",
+        "action": "being stirred and lifted",
+        "position": "center",
+        "id": "spaghetti_cooked_1"
       },
       {
         "desc": "black electric pressure cooker with a stainless steel inner pot",
         "action": "static",
-        "position": "center"
+        "position": "center",
+        "id": "pot_instant_1"
       },
       {
-        "desc": "silver metal lid with a black handle and rim",
+        "desc": "silver metallic lid of the pressure cooker with a black handle",
         "action": "static",
-        "position": "left"
+        "position": "left",
+        "id": "lid_instant_1"
       },
       {
-        "desc": "dark brown wooden table surface",
+        "desc": "dark brown wooden table surface with a visible wood grain pattern",
         "action": "static",
-        "position": "background"
+        "position": "background",
+        "id": "surface_table_1"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A hand is stirring spaghetti inside a pressure cooker.",
+        "fact": "A hand is lifting a portion of spaghetti out of the pot using a wooden spoon.",
         "confidence": 1.0
       },
       {
-        "fact": "The spaghetti is coated in a red sauce.",
+        "fact": "The spaghetti is mixed with a red sauce containing visible pieces of tomato.",
         "confidence": 1.0
       },
       {
-        "fact": "The lid of the pressure cooker is resting on the table to the left.",
+        "fact": "The pressure cooker lid is resting on the table to the left of the main unit.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The inner pot of the pressure cooker is made of stainless steel.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The pressure cooker is in the center of the frame on a wooden table. The lid is to the left of the pressure cooker. The hand is above the pot, holding the wooden spoon which is inside the pot mixing the spaghetti.",
+    "spatial": "The hand is positioned on the right side of the frame, holding the wooden spoon which extends into the center of the pressure cooker. The pressure cooker sits in the center of the view on a wooden table. The detached lid is located to the left of the pressure cooker.",
     "parse_success": true,
     "chunk_idx": 49,
     "video_id": "Instant_pot_spaghetti",
-    "state_changes": [],
-    "_rescued": "parse"
+    "state_changes": []
   }
 ]

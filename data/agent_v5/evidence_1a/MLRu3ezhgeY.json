@@ -2,144 +2,149 @@
   {
     "time": [
       0,
-      2
+      1
     ],
     "visible_entities": [
       {
-        "desc": "white ceramic bowl filled with chunky chili containing red kidney beans, brown ground meat, and diced tomatoes in a thick reddish-brown sauce",
+        "desc": "white ceramic bowl, round, filled with chili",
         "action": "static",
         "position": "center"
       },
       {
-        "desc": "triangular yellow tortilla chip with a textured surface",
+        "desc": "chili with red kidney beans, brown ground meat, and reddish-brown sauce",
+        "action": "static",
+        "position": "inside bowl"
+      },
+      {
+        "desc": "yellow tortilla chip, triangular, textured surface",
         "action": "static",
         "position": "right"
       },
       {
-        "desc": "light-colored wooden surface with visible knots and grain patterns",
+        "desc": "light-colored wooden surface with visible knots and grain",
         "action": "static",
         "position": "background"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A white bowl containing chili sits on a wooden table.",
+        "fact": "A white bowl contains chili.",
         "confidence": 1.0
       },
       {
-        "fact": "A yellow tortilla chip is inserted into the chili on the right side.",
+        "fact": "A yellow tortilla chip is inserted into the chili.",
         "confidence": 1.0
       },
       {
-        "fact": "The chili consists of red kidney beans and ground meat in a sauce.",
+        "fact": "The bowl sits on a wooden surface.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The white bowl of chili is centered on the wooden surface. The yellow tortilla chip is positioned on the right side of the bowl, partially submerged in the chili.",
+    "spatial": "The white bowl is in the center of the frame, resting on the wooden surface. The chili is inside the bowl. The yellow tortilla chip is positioned on the right side of the bowl, partially submerged in the chili.",
     "parse_success": true,
     "chunk_idx": 0,
     "video_id": "MLRu3ezhgeY"
   },
   {
     "time": [
-      2,
-      4
+      1,
+      2
     ],
     "visible_entities": [
       {
-        "desc": "white ceramic bowl filled with chili containing red kidney beans, ground meat, and a thick reddish-brown sauce",
-        "action": "static",
-        "position": "right"
-      },
-      {
-        "desc": "yellow corn tortilla chip, triangular shape, textured surface",
-        "action": "static",
-        "position": "right"
-      },
-      {
-        "desc": "brown earthenware plate with spaghetti noodles topped with meat sauce, shredded white cheese, and fresh green basil leaves",
+        "desc": "white ceramic bowl filled with chili containing red kidney beans, ground meat, and a reddish-brown sauce, with a yellow tortilla chip inserted",
         "action": "static",
         "position": "center"
       },
       {
-        "desc": "block of pale yellow hard cheese, likely parmesan",
+        "desc": "light-colored wooden surface with visible grain and knots",
         "action": "static",
         "position": "background"
       },
       {
-        "desc": "rolled food item with a yellow cornmeal crust and dark meat filling",
+        "desc": "brown earthenware plate holding spaghetti noodles topped with meat sauce, shredded white cheese, and fresh green basil leaves",
+        "action": "static",
+        "position": "center"
+      },
+      {
+        "desc": "block of pale yellow cheese",
+        "action": "static",
+        "position": "background"
+      },
+      {
+        "desc": "rolled food item with a yellow textured shell and dark meat filling",
         "action": "static",
         "position": "top"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A collage of food images is displayed on screen.",
+        "fact": "The video displays a montage of different food dishes.",
         "confidence": 1.0
       },
       {
-        "fact": "A white bowl containing chili sits on a wooden surface.",
+        "fact": "A white bowl of chili sits on a wooden table.",
         "confidence": 1.0
       },
       {
-        "fact": "A plate of spaghetti bolognese is garnished with basil and cheese.",
+        "fact": "A plate of spaghetti with meat sauce is presented in the center frame.",
         "confidence": 1.0
       },
       {
-        "fact": "A tortilla chip is dipped into the bowl of chili.",
+        "fact": "A rolled food item is visible at the top of the screen.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The plate of spaghetti is positioned in the center of the frame, to the left of the white bowl of chili. The block of cheese is located behind the spaghetti plate. The rolled food item is positioned above the spaghetti dish. The tortilla chip is inside the bowl of chili on the right side.",
+    "spatial": "The white bowl of chili is positioned on the right side of the screen in the first frame, while the plate of spaghetti is centered in the second frame. The block of cheese is located behind the plate of spaghetti. The rolled food item is positioned above the plate of spaghetti.",
     "parse_success": true,
     "chunk_idx": 1,
     "video_id": "MLRu3ezhgeY"
   },
   {
     "time": [
-      4,
-      6
+      2,
+      3
     ],
     "visible_entities": [
       {
-        "desc": "hard-shell taco with yellow textured shell, ground beef, red tomato chunks, and shredded cheese",
+        "desc": "hard-shell taco with yellow corn shell, filled with ground beef, diced tomatoes, and shredded cheese",
         "action": "static",
-        "position": "top right"
+        "position": "top center"
       },
       {
-        "desc": "double cheeseburger with sesame seed bun, green lettuce, red tomato slice, and melted yellow cheese",
-        "action": "static",
-        "position": "center left"
-      },
-      {
-        "desc": "spaghetti pasta with red meat sauce, topped with shredded white cheese and fresh green basil leaves",
+        "desc": "plate of spaghetti bolognese topped with grated parmesan cheese and fresh basil leaves",
         "action": "static",
         "position": "bottom center"
       },
       {
-        "desc": "baked lasagna with layers of pasta, red sauce, and melted cheese in a metal tray",
+        "desc": "double-decker hamburger with sesame seed bun, lettuce, tomato, cheese, and two beef patties",
         "action": "static",
-        "position": "bottom right"
+        "position": "center left"
       },
       {
-        "desc": "brown meatball with sauce and a sprig of parsley",
+        "desc": "meatballs covered in brown sauce with a parsley garnish",
         "action": "static",
-        "position": "right"
+        "position": "center right"
+      },
+      {
+        "desc": "baked lasagna with layers of pasta, meat sauce, and melted cheese",
+        "action": "static",
+        "position": "bottom right"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A collage of various food items is displayed in a grid layout.",
+        "fact": "The video displays a montage of various prepared food dishes.",
         "confidence": 1.0
       },
       {
-        "fact": "A double cheeseburger is positioned to the left of a hard-shell taco.",
+        "fact": "A taco is positioned above a plate of spaghetti.",
         "confidence": 1.0
       },
       {
-        "fact": "A plate of spaghetti is located below the cheeseburger.",
+        "fact": "A hamburger is located to the left of the meatballs.",
         "confidence": 1.0
       },
       {
@@ -147,163 +152,163 @@
         "confidence": 1.0
       },
       {
-        "fact": "A meatball is positioned to the right of the taco.",
+        "fact": "The images are arranged in a grid-like collage format.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The double cheeseburger is to the left of the hard-shell taco. The plate of spaghetti is below the cheeseburger and to the left of the lasagna tray. The meatball is to the right of the taco.",
+    "spatial": "The taco is positioned above the plate of spaghetti. The hamburger is to the left of the meatballs. The lasagna is located below the meatballs and to the right of the spaghetti.",
     "parse_success": true,
     "chunk_idx": 2,
     "video_id": "MLRu3ezhgeY"
   },
   {
     "time": [
-      6,
-      8
+      3,
+      4
     ],
     "visible_entities": [
       {
-        "desc": "grid of food images including meatballs with sauce, lasagna, spaghetti with meat sauce, chili in a bowl, a hamburger with lettuce and tomato, and a hard-shell taco",
-        "action": "static",
-        "position": "center"
+        "desc": "grid of food images including meatballs with parsley, lasagna, spaghetti with meat sauce, chili beans, a hamburger with lettuce and tomato, and a taco",
+        "action": "static"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A grid of various food dishes is displayed on the screen.",
+        "fact": "A grid of food images is displayed on the screen.",
         "confidence": 1.0
       },
       {
-        "fact": "The images include meatballs, pasta dishes, a burger, and a taco.",
+        "fact": "The food images include meatballs, lasagna, pasta, and a hamburger.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The screen is filled with a grid of food images. The hamburger is located in the bottom-left area, while the taco is positioned to its right. Images of meatballs and lasagna are visible in the upper sections of the grid.",
+    "spatial": "The images are arranged in a grid pattern. The hamburger is located below the meatballs. The taco is positioned to the right of the hamburger. The lasagna is visible in the top row.",
     "parse_success": true,
     "chunk_idx": 3,
     "video_id": "MLRu3ezhgeY"
   },
   {
     "time": [
-      8,
-      10
+      4,
+      5
     ],
     "visible_entities": [
       {
-        "desc": "bowl of dark red chili with kidney beans and a tortilla chip",
+        "desc": "white ceramic bowl filled with dark red chili con carne, accompanied by a triangular yellow tortilla chip",
         "action": "static",
         "position": "left"
       },
       {
-        "desc": "plate of spaghetti with meat sauce, grated cheese, and basil",
+        "desc": "terracotta bowl containing spaghetti pasta topped with brown meat sauce, shredded white cheese, and a fresh green basil leaf",
         "action": "static",
-        "position": "center"
+        "position": "top"
       },
       {
-        "desc": "double cheeseburger with sesame seed bun, lettuce, tomato, and cheese",
+        "desc": "double-decker hamburger with a sesame seed bun, green lettuce, red tomato slices, and yellow cheese",
         "action": "static",
         "position": "right"
       },
       {
-        "desc": "three brown meatballs with parsley garnish",
+        "desc": "hard-shell yellow corn taco filled with ground meat, shredded yellow cheese, and diced vegetables",
         "action": "static",
-        "position": "bottom-center"
+        "position": "bottom left"
       },
       {
-        "desc": "hard shell taco with ground meat, cheese, and lettuce",
+        "desc": "three brown meatballs served on a white plate with a sprig of green parsley",
         "action": "static",
-        "position": "bottom-left"
+        "position": "bottom center"
       },
       {
-        "desc": "baking dish of lasagna with melted cheese",
+        "desc": "baked dish with a golden-brown crust and red sauce, likely lasagna or enchiladas",
         "action": "static",
-        "position": "top-left"
+        "position": "top left"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "The video displays a grid of various food dishes.",
+        "fact": "The video displays a collage of various food items arranged in a grid pattern.",
         "confidence": 1.0
       },
       {
-        "fact": "A bowl of chili is positioned to the left of the spaghetti.",
+        "fact": "A bowl of chili is positioned to the left of the spaghetti dish.",
         "confidence": 1.0
       },
       {
-        "fact": "A double cheeseburger is positioned to the right of the spaghetti.",
+        "fact": "A hamburger is located to the right of the meatballs.",
         "confidence": 1.0
       },
       {
-        "fact": "Three meatballs are arranged below the spaghetti dish.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "A taco is visible in the bottom left corner.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "A tray of lasagna is visible in the top left corner.",
+        "fact": "A taco is visible in the bottom left corner of the frame.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The bowl of chili is to the left of the spaghetti with meat sauce. The double cheeseburger is to the right of the spaghetti. The plate of meatballs is below the spaghetti. The taco is in the bottom left corner, below the chili. The lasagna is in the top left corner, above the chili.",
+    "spatial": "The bowl of chili is on the left side of the screen, while the plate of spaghetti is positioned above the hamburger. The hamburger is to the right of the meatballs, which are in the bottom center. A taco is located in the bottom left corner, below the chili.",
     "parse_success": true,
     "chunk_idx": 4,
     "video_id": "MLRu3ezhgeY"
   },
   {
     "time": [
-      10,
-      12
+      5,
+      6
     ],
     "visible_entities": [
       {
-        "desc": "hard yellow corn taco shell filled with browned ground meat, topped with shredded yellow cheese, diced red tomatoes, and shredded lettuce",
+        "desc": "hard-shell taco with yellow corn shell, filled with brown ground meat, shredded yellow cheese, diced red tomatoes, and shredded lettuce",
         "action": "static",
         "position": "left"
       },
       {
-        "desc": "rectangular metal baking pan containing a baked layered casserole with a browned, bubbly top layer of melted cheese and red sauce",
+        "desc": "rectangular metal baking pan containing a baked casserole with layers of pasta, red meat sauce, and melted cheese",
         "action": "static",
         "position": "right"
       },
       {
-        "desc": "orange ceramic bowl containing pasta or noodles with sauce",
+        "desc": "orange ceramic bowl containing pasta dish with noodles and sauce",
         "action": "static",
         "position": "top"
+      },
+      {
+        "desc": "silver fork with green vegetable piece",
+        "action": "static",
+        "position": "right"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A hard shell taco filled with meat and toppings is displayed on the left side of the screen.",
+        "fact": "A hard-shell taco filled with meat and toppings is displayed on the left side of the frame.",
         "confidence": 1.0
       },
       {
-        "fact": "A baked casserole dish sits in a metal pan on the right side of the screen.",
+        "fact": "A baked pasta casserole sits inside a metal baking pan on the right side.",
         "confidence": 1.0
       },
       {
-        "fact": "A bowl of pasta is visible at the top of the frame.",
+        "fact": "A bowl of pasta is visible in the top section of the collage.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A fork rests on a plate next to the casserole pan.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The taco is positioned to the left of the casserole dish. The orange bowl of pasta is located above both the taco and the casserole dish.",
+    "spatial": "The taco is positioned to the left of the metal baking pan containing the casserole. The orange bowl of pasta is located above the casserole pan. The fork is situated to the right of the casserole pan.",
     "parse_success": true,
     "chunk_idx": 5,
     "video_id": "MLRu3ezhgeY"
   },
   {
     "time": [
-      12,
-      14
+      6,
+      7
     ],
     "visible_entities": [
       {
-        "desc": "hard-shell taco with a textured, yellow corn tortilla shell, filled with brown ground meat, shredded yellow cheese, diced red tomatoes, and shredded green lettuce",
+        "desc": "hard-shell taco with a textured yellow corn tortilla, filled with browned ground meat, shredded yellow cheese, diced red tomatoes, and shredded green lettuce",
         "action": "static",
         "position": "center"
       }
@@ -314,711 +319,83 @@
         "confidence": 1.0
       },
       {
-        "fact": "The taco shell is filled with ground meat, cheese, lettuce, and tomatoes.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The taco is positioned diagonally across the frame.",
+        "fact": "The taco contains fillings including ground meat, cheese, lettuce, and tomatoes.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The hard-shell taco is centered in the frame. The fillings, including meat, cheese, and vegetables, are contained inside the yellow tortilla shell.",
+    "spatial": "The taco is positioned in the center of the frame. The shredded cheese and diced tomatoes are on top of the ground meat inside the shell.",
     "parse_success": true,
     "chunk_idx": 6,
     "video_id": "MLRu3ezhgeY"
   },
   {
     "time": [
-      14,
-      16
+      7,
+      8
     ],
     "visible_entities": [
       {
-        "desc": "hard-shell taco with a yellow, textured corn tortilla shell, filled with brown ground meat, shredded yellow cheese, diced red tomatoes, and shredded green lettuce",
+        "desc": "hard yellow corn taco shell with a textured, porous surface",
         "action": "static",
-        "position": "center"
+        "position": "foreground"
+      },
+      {
+        "desc": "seasoned brown ground meat filling",
+        "action": "static",
+        "position": "inside"
+      },
+      {
+        "desc": "shredded yellow cheese strips",
+        "action": "static",
+        "position": "top"
+      },
+      {
+        "desc": "diced red tomatoes",
+        "action": "static",
+        "position": "top"
+      },
+      {
+        "desc": "shredded green lettuce",
+        "action": "static",
+        "position": "top"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A hard-shell taco is presented against a white background.",
+        "fact": "A hard shell taco is presented against a white background.",
         "confidence": 1.0
       },
       {
-        "fact": "The taco shell is yellow with a porous, textured surface.",
+        "fact": "The taco is filled with ground meat, lettuce, tomatoes, and cheese.",
         "confidence": 1.0
       },
       {
-        "fact": "The filling includes brown ground meat topped with shredded cheese, diced tomatoes, and lettuce.",
+        "fact": "The yellow cheese is shredded into strips and placed on top of the other ingredients.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The taco is positioned in the center of the frame. The fillings are inside the taco shell. The shredded cheese is on top of the ground meat and vegetables.",
+    "spatial": "The hard yellow taco shell forms the base and is in the foreground. The brown ground meat is inside the shell. The shredded lettuce, diced tomatoes, and yellow cheese strips are layered on top of the meat filling.",
     "parse_success": true,
     "chunk_idx": 7,
     "video_id": "MLRu3ezhgeY"
   },
   {
     "time": [
-      16,
-      18
+      8,
+      9
     ],
     "visible_entities": [
+      {
+        "desc": "hard-shell taco with a yellow, textured corn tortilla shell, filled with brown ground meat, shredded green lettuce, diced red tomatoes, and shredded yellow cheese",
+        "action": "static",
+        "position": "foreground"
+      },
       {
         "desc": "man with short spiky grey hair, wearing a white chef's coat",
         "action": "talking",
         "position": "center"
-      },
-      {
-        "desc": "hard-shell taco with yellow corn shell, ground beef, shredded lettuce, diced tomatoes, and shredded yellow cheese",
-        "action": "static",
-        "position": "left"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "The man in the white chef's coat is talking.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "A hard-shell taco is displayed on the left side of the screen.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [],
-    "spatial": "The taco is positioned to the left of the man. The man is in the center foreground, with kitchen equipment visible behind him.",
-    "parse_success": true,
-    "chunk_idx": 8,
-    "video_id": "MLRu3ezhgeY"
-  },
-  {
-    "time": [
-      18,
-      20
-    ],
-    "visible_entities": [
-      {
-        "desc": "man with short curly grey hair, wearing a white chef's coat",
-        "action": "speaking",
-        "position": "center"
-      },
-      {
-        "desc": "green rectangular plastic cutting board",
-        "action": "static",
-        "position": "center"
-      },
-      {
-        "desc": "pile of finely chopped white mushrooms",
-        "action": "being chopped",
-        "position": "center"
-      },
-      {
-        "desc": "metal chef's knife",
-        "action": "chopping",
-        "position": "center"
-      },
-      {
-        "desc": "stainless steel kitchen counter",
-        "action": "static",
-        "position": "bottom"
-      },
-      {
-        "desc": "metal shelving unit with bowls",
-        "action": "static",
-        "position": "background"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "A man with short curly grey hair is speaking in a kitchen.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "A person is chopping a pile of white mushrooms on a green cutting board.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The person is holding a metal knife and using it to mince the food.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The green cutting board is placed on a stainless steel counter.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [],
-    "spatial": "The man is standing behind the stainless steel counter. The green cutting board is on the counter in front of the man. The pile of chopped mushrooms is on top of the green cutting board. The metal knife is being held by the person's hands over the mushrooms.",
-    "parse_success": true,
-    "chunk_idx": 9,
-    "video_id": "MLRu3ezhgeY"
-  },
-  {
-    "time": [
-      20,
-      22
-    ],
-    "visible_entities": [
-      {
-        "desc": "man with short, spiky, salt-and-pepper hair, wearing a white double-breasted chef's coat",
-        "action": "talking",
-        "position": "center/foreground"
-      },
-      {
-        "desc": "large stainless steel ventilation hood",
-        "action": "static",
-        "position": "top/foreground"
-      },
-      {
-        "desc": "stainless steel commercial kitchen equipment",
-        "action": "static",
-        "position": "background"
-      },
-      {
-        "desc": "white tiled wall",
-        "action": "static",
-        "position": "background/right"
-      },
-      {
-        "desc": "blue painted wall section",
-        "action": "static",
-        "position": "background/left"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "The man in the white chef's coat is talking.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The man's mouth is open and moving.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The man is standing in a commercial kitchen.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [],
-    "spatial": "The man in the white chef's coat is in the foreground, positioned below the large stainless steel ventilation hood. The stainless steel kitchen equipment and white tiled wall are behind the man. The blue wall section is to the left of the man.",
-    "parse_success": true,
-    "chunk_idx": 10,
-    "video_id": "MLRu3ezhgeY"
-  },
-  {
-    "time": [
-      22,
-      24
-    ],
-    "visible_entities": [
-      {
-        "desc": "man with short, messy, salt-and-pepper hair, wearing a white double-breasted chef's coat",
-        "action": "speaking",
-        "position": "center/foreground"
-      },
-      {
-        "desc": "large, metallic, stainless steel ventilation hood",
-        "action": "static",
-        "position": "top/above"
-      },
-      {
-        "desc": "white square-tiled wall",
-        "action": "static",
-        "position": "background/right"
-      },
-      {
-        "desc": "stainless steel shelving unit",
-        "action": "static",
-        "position": "background/right"
-      },
-      {
-        "desc": "blue painted wall section",
-        "action": "static",
-        "position": "background/left"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "The man in the white chef's coat is speaking.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The man is positioned in the center of the frame.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "A large metal ventilation hood is located above the man.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The background consists of a commercial kitchen environment.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [],
-    "spatial": "The man is in the foreground, centered in the frame. The large metal ventilation hood is directly above him. To the right of the man, there is a white tiled wall and stainless steel shelving. To the left of the man, a blue wall is visible in the background.",
-    "parse_success": true,
-    "chunk_idx": 11,
-    "video_id": "MLRu3ezhgeY"
-  },
-  {
-    "time": [
-      24,
-      26
-    ],
-    "visible_entities": [
-      {
-        "desc": "man with short, messy grey hair, wearing a white double-breasted chef's coat",
-        "action": "speaking and gesturing with right hand",
-        "position": "center/foreground"
-      },
-      {
-        "desc": "large stainless steel ventilation hood",
-        "action": "static",
-        "position": "top"
-      },
-      {
-        "desc": "stainless steel commercial kitchen equipment",
-        "action": "static",
-        "position": "background"
-      },
-      {
-        "desc": "white tiled wall",
-        "action": "static",
-        "position": "background"
-      },
-      {
-        "desc": "small white hexagonal tag with blue text",
-        "action": "static",
-        "position": "background"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "The man in the white chef's coat is speaking.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The man is gesturing with his right hand.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The stainless steel hood is above the man.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "A tag with the text 'ZANUSSI' is visible on the equipment behind the man.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [
-      "ZANUSSI"
-    ],
-    "spatial": "The man is in the center foreground, positioned below the large stainless steel ventilation hood. The stainless steel kitchen equipment and white tiled wall are behind the man. A small white tag is hanging on the equipment to the right of the man's head.",
-    "parse_success": true,
-    "chunk_idx": 12,
-    "video_id": "MLRu3ezhgeY"
-  },
-  {
-    "time": [
-      26,
-      28
-    ],
-    "visible_entities": [
-      {
-        "desc": "man with short grey hair, wearing a white chef's coat",
-        "action": "speaking",
-        "position": "foreground"
-      },
-      {
-        "desc": "stainless steel commercial oven with a control panel",
-        "action": "static",
-        "position": "background right"
-      },
-      {
-        "desc": "metal ventilation hood with hooks",
-        "action": "static",
-        "position": "top"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "The man is speaking to the camera.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The man's facial expression changes from a smile to a speaking mouth shape.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The word 'STAINLESS' is visible on the appliance in the background.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [
-      "STAINLESS"
-    ],
-    "spatial": "The man is in the foreground, positioned to the left of the stainless steel oven. The metal ventilation hood is located above the man and the oven.",
-    "parse_success": true,
-    "chunk_idx": 13,
-    "video_id": "MLRu3ezhgeY"
-  },
-  {
-    "time": [
-      28,
-      30
-    ],
-    "visible_entities": [
-      {
-        "desc": "man with short grey hair, wearing a white chef's coat",
-        "action": "static",
-        "position": "foreground"
-      },
-      {
-        "desc": "clear glass bowl containing raw pink ground meat",
-        "action": "static",
-        "position": "center"
-      },
-      {
-        "desc": "hand with visible fingers",
-        "action": "touching the meat",
-        "position": "top"
-      },
-      {
-        "desc": "stainless steel kitchen equipment",
-        "action": "static",
-        "position": "background"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "A hand is touching the raw ground meat inside the glass bowl.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The man is looking towards the camera.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The meat is pink and has a ground texture.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [],
-    "spatial": "The man is in the foreground, positioned to the left of the frame. The glass bowl containing the meat is in the center, below the hand that is touching it. Stainless steel equipment is visible in the background behind the bowl.",
-    "parse_success": true,
-    "chunk_idx": 14,
-    "video_id": "MLRu3ezhgeY"
-  },
-  {
-    "time": [
-      30,
-      32
-    ],
-    "visible_entities": [
-      {
-        "desc": "raw ground meat, pink, minced texture",
-        "action": "static",
-        "position": "bottom/center"
-      },
-      {
-        "desc": "clear glass bowl, transparent, smooth",
-        "action": "static",
-        "position": "center/foreground"
-      },
-      {
-        "desc": "human finger, skin tone",
-        "action": "pointing downwards",
-        "position": "top/center"
-      },
-      {
-        "desc": "white paper label with black text",
-        "action": "static",
-        "position": "background/top"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "A finger points down towards the meat inside the bowl.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "Raw ground meat is sitting at the bottom of a glass bowl.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "A white label with text is visible in the background behind the bowl.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [
-      "up to 5% ground"
-    ],
-    "spatial": "The raw ground meat is inside the clear glass bowl at the bottom. The finger is positioned above the meat, pointing down into the bowl. The white paper label is behind the upper rim of the bowl.",
-    "parse_success": true,
-    "chunk_idx": 15,
-    "video_id": "MLRu3ezhgeY"
-  },
-  {
-    "time": [
-      32,
-      34
-    ],
-    "visible_entities": [
-      {
-        "desc": "hand with light skin tone",
-        "action": "hovering above meat",
-        "position": "top left"
-      },
-      {
-        "desc": "raw ground meat, pink, textured, rectangular block",
-        "action": "static",
-        "position": "center bottom"
-      },
-      {
-        "desc": "clear glass mixing bowl, round, transparent",
-        "action": "static",
-        "position": "center"
-      },
-      {
-        "desc": "white paper package with black text",
-        "action": "static",
-        "position": "background"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "A hand is hovering over the ground meat inside the bowl.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "A block of raw pink ground meat sits at the bottom of a clear glass bowl.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "A white package with text is visible in the background behind the bowl.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [],
-    "spatial": "The block of raw ground meat is inside the clear glass bowl. The hand is positioned above the meat. The white paper package is behind the glass bowl.",
-    "parse_success": true,
-    "chunk_idx": 16,
-    "video_id": "MLRu3ezhgeY"
-  },
-  {
-    "time": [
-      34,
-      36
-    ],
-    "visible_entities": [
-      {
-        "desc": "hand with fair skin",
-        "action": "reaching into the bowl",
-        "position": "top left"
-      },
-      {
-        "desc": "white button mushrooms, whole, raw",
-        "action": "static",
-        "position": "center"
-      },
-      {
-        "desc": "clear glass bowl",
-        "action": "static",
-        "position": "center"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "A hand reaches into a glass bowl filled with white mushrooms.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The mushrooms are whole and white.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [],
-    "spatial": "The hand is reaching into the clear glass bowl from the top left. The white mushrooms are inside the bowl, filling the bottom and center.",
-    "parse_success": true,
-    "chunk_idx": 17,
-    "video_id": "MLRu3ezhgeY"
-  },
-  {
-    "time": [
-      36,
-      38
-    ],
-    "visible_entities": [
-      {
-        "desc": "person with short, wavy, graying hair, wearing a white chef's coat",
-        "action": "looking down",
-        "position": "center"
-      },
-      {
-        "desc": "hand with light skin tone",
-        "action": "touching mushrooms",
-        "position": "left"
-      },
-      {
-        "desc": "white button mushrooms, round, smooth, white caps with stems",
-        "action": "being touched",
-        "position": "foreground"
-      },
-      {
-        "desc": "clear glass bowl, transparent, round",
-        "action": "holding mushrooms",
-        "position": "foreground"
-      },
-      {
-        "desc": "kitchen background with white tiled walls, stainless steel shelves, and equipment",
-        "action": "static",
-        "position": "background"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "A hand reaches into a clear glass bowl filled with white mushrooms.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The hand touches the mushrooms inside the bowl.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "A person with graying hair is looking down at the bowl.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The mushrooms are contained within the glass bowl.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [],
-    "spatial": "The hand is reaching into the glass bowl from the left side. The mushrooms are inside the bowl in the foreground. The person is positioned behind the bowl, looking down at it. The kitchen equipment and shelves are in the background behind the person.",
-    "parse_success": true,
-    "chunk_idx": 18,
-    "video_id": "MLRu3ezhgeY"
-  },
-  {
-    "time": [
-      38,
-      40
-    ],
-    "visible_entities": [
-      {
-        "desc": "man with short spiky blonde hair, wearing a white double-breasted chef's coat",
-        "action": "speaking",
-        "position": "center"
-      },
-      {
-        "desc": "large silver metal ventilation hood",
-        "action": "static",
-        "position": "top"
-      },
-      {
-        "desc": "white tiled wall",
-        "action": "static",
-        "position": "background"
-      },
-      {
-        "desc": "metal shelving unit with white containers",
-        "action": "static",
-        "position": "right"
-      },
-      {
-        "desc": "colorful cutting boards (green, yellow, red)",
-        "action": "static",
-        "position": "bottom right"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "The man in the white chef's coat is speaking.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The man is standing in a commercial kitchen environment.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "A metal ventilation hood is positioned above the man.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [],
-    "spatial": "The man is in the center foreground, standing below the large silver ventilation hood. The white tiled wall is behind him. To his right, there is a metal shelving unit holding white containers. The colorful cutting boards are located on a surface in the bottom right corner.",
-    "parse_success": true,
-    "chunk_idx": 19,
-    "video_id": "MLRu3ezhgeY"
-  },
-  {
-    "time": [
-      40,
-      42
-    ],
-    "visible_entities": [
-      {
-        "desc": "man with short, spiky, light-brown hair, wearing a white chef's coat",
-        "action": "speaking",
-        "position": "center"
-      },
-      {
-        "desc": "large silver metal ventilation hood",
-        "action": "static",
-        "position": "top"
-      },
-      {
-        "desc": "white tiled wall",
-        "action": "static",
-        "position": "background"
-      },
-      {
-        "desc": "colorful cutting boards (green, yellow, red)",
-        "action": "static",
-        "position": "bottom right"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "The man in the white chef's coat is speaking.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The man is standing in a commercial kitchen.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "A metal ventilation hood is positioned above the man.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "Colorful cutting boards are visible on a surface in the background.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [],
-    "spatial": "The man in the white chef's coat is in the center foreground. The large silver ventilation hood is above the man. The white tiled wall is behind the man. The colorful cutting boards are to the right of the man and below the shelves.",
-    "parse_success": true,
-    "chunk_idx": 20,
-    "video_id": "MLRu3ezhgeY"
-  },
-  {
-    "time": [
-      42,
-      44
-    ],
-    "visible_entities": [
-      {
-        "desc": "man with short spiky blonde hair, wearing a white double-breasted chef's coat",
-        "action": "speaking",
-        "position": "left/center"
-      },
-      {
-        "desc": "large brown meatballs with charred spots, frying in bubbling oil",
-        "action": "frying",
-        "position": "right/foreground"
       },
       {
         "desc": "stainless steel ventilation hood",
@@ -1033,32 +410,643 @@
     ],
     "atomic_facts": [
       {
-        "fact": "A man in a white chef's coat is speaking.",
+        "fact": "A hard-shell taco filled with meat, lettuce, tomatoes, and cheese is displayed.",
         "confidence": 1.0
       },
       {
-        "fact": "Meatballs are frying in a pan with bubbling oil.",
+        "fact": "A man in a white chef's coat is talking to the camera.",
         "confidence": 1.0
       },
       {
-        "fact": "The meatballs have browned and charred surfaces.",
+        "fact": "The man is standing in a kitchen with stainless steel equipment.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The man in the white chef's coat is positioned to the left of the frame, while the frying meatballs are shown in a close-up view to the right. The stainless steel ventilation hood is located above the man's head.",
+    "spatial": "The taco is in the foreground, appearing in front of the man. The man is centered in the frame, positioned below the stainless steel ventilation hood. The white tiled wall is behind the man.",
+    "parse_success": true,
+    "chunk_idx": 8,
+    "video_id": "MLRu3ezhgeY"
+  },
+  {
+    "time": [
+      9,
+      10
+    ],
+    "visible_entities": [
+      {
+        "desc": "man with short curly grey hair, wearing a white chef's coat",
+        "action": "speaking",
+        "position": "center"
+      },
+      {
+        "desc": "green rectangular cutting board",
+        "action": "static",
+        "position": "foreground"
+      },
+      {
+        "desc": "pile of finely chopped white mushrooms",
+        "action": "being chopped",
+        "position": "center"
+      },
+      {
+        "desc": "silver knife",
+        "action": "chopping",
+        "position": "center"
+      },
+      {
+        "desc": "stainless steel ventilation hood",
+        "action": "static",
+        "position": "top"
+      },
+      {
+        "desc": "white tiled wall",
+        "action": "static",
+        "position": "background"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A man in a white chef's coat is speaking to the camera.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A person is using a knife to chop mushrooms on a green cutting board.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The mushrooms are finely diced into small white pieces.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The cutting board is placed on a stainless steel counter.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The man is in the center of the frame, standing under a stainless steel ventilation hood. The green cutting board is on the counter in front of the person. The chopped mushrooms are piled in the center of the cutting board. The white tiled wall is behind the cutting board and the person.",
+    "parse_success": true,
+    "chunk_idx": 9,
+    "video_id": "MLRu3ezhgeY"
+  },
+  {
+    "time": [
+      10,
+      11
+    ],
+    "visible_entities": [
+      {
+        "desc": "man with short, messy grey hair and blue eyes, wearing a white chef's coat",
+        "action": "speaking",
+        "position": "center/foreground"
+      },
+      {
+        "desc": "large silver metal ventilation hood",
+        "action": "static",
+        "position": "top"
+      },
+      {
+        "desc": "stainless steel kitchen equipment and shelves",
+        "action": "static",
+        "position": "background"
+      },
+      {
+        "desc": "white tiled wall",
+        "action": "static",
+        "position": "background"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The man is speaking with his mouth open.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The man is wearing a white chef's coat.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A large metal ventilation hood is positioned above the man.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "Stainless steel kitchen equipment is visible behind the man.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The man is in the center foreground, positioned below the large metal ventilation hood. The stainless steel kitchen equipment and white tiled wall are behind the man.",
+    "parse_success": true,
+    "chunk_idx": 10,
+    "video_id": "MLRu3ezhgeY"
+  },
+  {
+    "time": [
+      11,
+      12
+    ],
+    "visible_entities": [
+      {
+        "desc": "man with short, messy grey hair, wearing a white chef's jacket",
+        "action": "talking",
+        "position": "center/foreground"
+      },
+      {
+        "desc": "large silver metal ventilation hood",
+        "action": "static",
+        "position": "top"
+      },
+      {
+        "desc": "white tiled wall",
+        "action": "static",
+        "position": "background"
+      },
+      {
+        "desc": "stainless steel kitchen equipment",
+        "action": "static",
+        "position": "background"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The man in the white chef's jacket is talking.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A large silver ventilation hood is positioned above the man.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The man is standing in a commercial kitchen setting.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The man is in the foreground, centered in the frame. The large silver ventilation hood is directly above him. Stainless steel equipment and a white tiled wall are behind him.",
+    "parse_success": true,
+    "chunk_idx": 11,
+    "video_id": "MLRu3ezhgeY"
+  },
+  {
+    "time": [
+      12,
+      13
+    ],
+    "visible_entities": [
+      {
+        "desc": "man with short, spiky, light brown hair, wearing a white double-breasted chef's coat",
+        "action": "speaking and gesturing with his right hand",
+        "position": "center"
+      },
+      {
+        "desc": "large, metallic, rectangular ventilation hood",
+        "action": "static",
+        "position": "top"
+      },
+      {
+        "desc": "stainless steel commercial kitchen equipment",
+        "action": "static",
+        "position": "background"
+      },
+      {
+        "desc": "white tiled wall",
+        "action": "static",
+        "position": "background"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The man in the white chef's coat is speaking.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The man is gesturing with his right hand.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The man is standing in a commercial kitchen.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The man is in the foreground, positioned below the large metallic ventilation hood. The stainless steel equipment and white tiled wall are behind the man.",
+    "parse_success": true,
+    "chunk_idx": 12,
+    "video_id": "MLRu3ezhgeY"
+  },
+  {
+    "time": [
+      13,
+      14
+    ],
+    "visible_entities": [
+      {
+        "desc": "man with short grey hair, light skin, wearing a white collared shirt",
+        "action": "speaking",
+        "position": "foreground"
+      },
+      {
+        "desc": "stainless steel commercial kitchen equipment",
+        "action": "static",
+        "position": "background"
+      },
+      {
+        "desc": "metal hooks hanging from a rack",
+        "action": "static",
+        "position": "top right"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The man is speaking to the camera.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The man's mouth is open in the second frame.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "Stainless steel equipment is visible behind the man.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "STAINLESS"
+    ],
+    "spatial": "The man is in the foreground, positioned in front of the stainless steel kitchen equipment. The metal hooks are hanging above the equipment to the right of the man.",
+    "parse_success": true,
+    "chunk_idx": 13,
+    "video_id": "MLRu3ezhgeY"
+  },
+  {
+    "time": [
+      14,
+      15
+    ],
+    "visible_entities": [
+      {
+        "desc": "man with short grey hair, light skin, wearing a white chef's coat",
+        "action": "static",
+        "position": "left/foreground"
+      },
+      {
+        "desc": "clear glass bowl containing a block of raw pink ground meat",
+        "action": "static",
+        "position": "center/foreground"
+      },
+      {
+        "desc": "human hand with light skin",
+        "action": "touching the meat",
+        "position": "top/center"
+      },
+      {
+        "desc": "stainless steel kitchen equipment with a digital display",
+        "action": "static",
+        "position": "right/background"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A hand is touching the raw ground meat inside the glass bowl.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The man in the white coat is positioned in the foreground.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The glass bowl is placed on a surface in front of the stainless steel equipment.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The man in the white coat is to the left of the frame. The glass bowl containing the meat is in the center, with a hand reaching down from above to touch the meat. The stainless steel kitchen equipment is to the right of the bowl and behind it.",
+    "parse_success": true,
+    "chunk_idx": 14,
+    "video_id": "MLRu3ezhgeY"
+  },
+  {
+    "time": [
+      15,
+      16
+    ],
+    "visible_entities": [
+      {
+        "desc": "raw ground meat, pink, minced texture, rectangular block shape",
+        "action": "static",
+        "position": "bottom/center"
+      },
+      {
+        "desc": "clear glass bowl, smooth, transparent, round",
+        "action": "static",
+        "position": "center/foreground"
+      },
+      {
+        "desc": "human finger, skin tone, pointing downwards",
+        "action": "pointing at meat",
+        "position": "top/center"
+      },
+      {
+        "desc": "white paper label, printed text, partially visible",
+        "action": "static",
+        "position": "top/background"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A finger points towards the raw ground meat inside the bowl.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The ground meat is resting at the bottom of the glass bowl.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A white label with text is attached to the upper rim of the bowl.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "up to 9% fat",
+      "up to 9% fat"
+    ],
+    "spatial": "The raw ground meat is inside the clear glass bowl. The human finger is positioned above the meat, pointing down towards it. The white paper label is attached to the rim of the bowl, located above and behind the meat.",
+    "parse_success": true,
+    "chunk_idx": 15,
+    "video_id": "MLRu3ezhgeY"
+  },
+  {
+    "time": [
+      16,
+      17
+    ],
+    "visible_entities": [
+      {
+        "desc": "hand with light skin tone, short fingernails",
+        "action": "pointing at the meat",
+        "position": "top left"
+      },
+      {
+        "desc": "raw ground meat, pink, minced texture, rectangular block shape",
+        "action": "static",
+        "position": "center bottom"
+      },
+      {
+        "desc": "clear glass mixing bowl, round, transparent",
+        "action": "static",
+        "position": "foreground"
+      },
+      {
+        "desc": "white paper or packaging wrapper with printed text",
+        "action": "static",
+        "position": "background"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A hand points a finger towards the raw ground meat.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The ground meat is placed inside the clear glass bowl.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A piece of paper with text is visible behind the bowl.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The hand is positioned above the glass bowl and points down towards the meat. The block of raw ground meat is inside the glass bowl at the bottom. The white paper with text is behind the glass bowl.",
+    "parse_success": true,
+    "chunk_idx": 16,
+    "video_id": "MLRu3ezhgeY"
+  },
+  {
+    "time": [
+      17,
+      18
+    ],
+    "visible_entities": [
+      {
+        "desc": "hand with light skin tone, fingers extended",
+        "action": "touching and moving mushrooms",
+        "position": "top left"
+      },
+      {
+        "desc": "white button mushrooms, round caps, smooth texture, varying sizes",
+        "action": "being manipulated",
+        "position": "center"
+      },
+      {
+        "desc": "clear glass bowl, transparent, curved rim",
+        "action": "static",
+        "position": "foreground"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A hand reaches into a glass bowl filled with white mushrooms.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The fingers are touching and slightly moving the mushrooms around.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The mushrooms are piled inside the clear container.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The hand is positioned above and reaching into the glass bowl. The white mushrooms are inside the bowl, filling the bottom and center area. The glass bowl is in the foreground, containing the mushrooms.",
+    "parse_success": true,
+    "chunk_idx": 17,
+    "video_id": "MLRu3ezhgeY"
+  },
+  {
+    "time": [
+      18,
+      19
+    ],
+    "visible_entities": [
+      {
+        "desc": "person with short, wavy, salt-and-pepper hair, wearing a white chef's coat",
+        "action": "looking down and smiling",
+        "position": "center"
+      },
+      {
+        "desc": "hand with fair skin",
+        "action": "touching mushrooms",
+        "position": "left"
+      },
+      {
+        "desc": "clear glass bowl filled with water and white button mushrooms",
+        "action": "static",
+        "position": "foreground"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A hand reaches into a glass bowl of water to touch the white mushrooms.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The man in the white chef's coat looks down and smiles.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The hand is reaching into the glass bowl which is in the foreground. The man in the white chef's coat is positioned behind the bowl, looking down towards it.",
+    "parse_success": true,
+    "chunk_idx": 18,
+    "video_id": "MLRu3ezhgeY"
+  },
+  {
+    "time": [
+      19,
+      20
+    ],
+    "visible_entities": [
+      {
+        "desc": "man with short spiky blonde hair, wearing a white double-breasted chef's coat",
+        "action": "talking",
+        "position": "center/foreground"
+      },
+      {
+        "desc": "large silver metal ventilation hood",
+        "action": "static",
+        "position": "top/left"
+      },
+      {
+        "desc": "white tiled wall",
+        "action": "static",
+        "position": "background"
+      },
+      {
+        "desc": "metal shelving unit with white containers",
+        "action": "static",
+        "position": "right/background"
+      },
+      {
+        "desc": "colorful cutting boards (yellow, green, red)",
+        "action": "static",
+        "position": "bottom right"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The man in the white chef's coat is talking.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The man is standing in a commercial kitchen.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A metal ventilation hood is positioned above the man.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "Colorful cutting boards are visible on a shelf in the background.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The man in the white chef's coat is in the center foreground. The silver ventilation hood is above and to the left of the man. The white tiled wall and metal shelving are behind the man. The colorful cutting boards are on a shelf to the right of the man.",
+    "parse_success": true,
+    "chunk_idx": 19,
+    "video_id": "MLRu3ezhgeY"
+  },
+  {
+    "time": [
+      20,
+      21
+    ],
+    "visible_entities": [
+      {
+        "desc": "man with short, spiky, light brown hair, wearing a white double-breasted chef's jacket",
+        "action": "speaking",
+        "position": "center/foreground"
+      },
+      {
+        "desc": "large, metallic, silver ventilation hood",
+        "action": "static",
+        "position": "top/left"
+      },
+      {
+        "desc": "white tiled wall",
+        "action": "static",
+        "position": "background/right"
+      },
+      {
+        "desc": "metal shelving unit",
+        "action": "static",
+        "position": "background/right"
+      },
+      {
+        "desc": "colorful cutting boards (green, yellow, red)",
+        "action": "static",
+        "position": "bottom/right"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The man in the white chef's jacket is speaking.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The man is standing in a commercial kitchen.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The man is in the foreground, positioned centrally. The large metallic ventilation hood is above and to the left of the man. The white tiled wall and metal shelving unit are behind the man to the right. The colorful cutting boards are on a surface below the shelving unit.",
+    "parse_success": true,
+    "chunk_idx": 20,
+    "video_id": "MLRu3ezhgeY"
+  },
+  {
+    "time": [
+      21,
+      22
+    ],
+    "visible_entities": [
+      {
+        "desc": "man with short spiky blonde hair, wearing a white chef's coat",
+        "action": "static",
+        "position": "center"
+      },
+      {
+        "desc": "round brown meatballs with charred spots, frying in bubbling oil",
+        "action": "frying",
+        "position": "foreground"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The man in the white chef's coat is standing in a kitchen.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The meatballs are frying in a pan with bubbling oil.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The man in the white chef's coat is in the center of the frame. The meatballs are in the foreground, below the man's position in the sequence of shots.",
     "parse_success": true,
     "chunk_idx": 21,
     "video_id": "MLRu3ezhgeY"
   },
   {
     "time": [
-      44,
-      46
+      22,
+      23
     ],
     "visible_entities": [
       {
-        "desc": "man with short messy grey hair, wearing a white chef's coat",
+        "desc": "man with short spiky grey hair, wearing a white chef's coat",
         "action": "static",
         "position": "center"
       },
@@ -1068,76 +1056,28 @@
         "position": "center"
       },
       {
-        "desc": "green plastic cutting board",
+        "desc": "green cutting board",
         "action": "static",
         "position": "bottom"
       },
       {
         "desc": "white button mushrooms, sliced and whole",
-        "action": "being cut",
+        "action": "static",
         "position": "center"
       },
       {
-        "desc": "stainless steel kitchen shelves and ventilation hood",
+        "desc": "stainless steel kitchen equipment and white tiled walls",
         "action": "static",
         "position": "background"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "The man is slicing white mushrooms on a green cutting board.",
+        "fact": "A man with short grey hair is looking at the camera.",
         "confidence": 1.0
       },
       {
-        "fact": "A pile of sliced mushrooms is accumulating on the left side of the board.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "Whole mushrooms are waiting to be cut on the right side of the board.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [],
-    "spatial": "The man is positioned behind the green cutting board. The sliced mushrooms are to the left of the whole mushrooms on the board. The stainless steel shelves are behind the man.",
-    "parse_success": true,
-    "chunk_idx": 22,
-    "video_id": "MLRu3ezhgeY"
-  },
-  {
-    "time": [
-      46,
-      48
-    ],
-    "visible_entities": [
-      {
-        "desc": "person wearing a white chef's coat and black apron with white vertical stripes",
-        "action": "slicing mushrooms",
-        "position": "center"
-      },
-      {
-        "desc": "large silver kitchen knife with a black handle",
-        "action": "being used to cut mushrooms",
-        "position": "center"
-      },
-      {
-        "desc": "green rectangular plastic cutting board",
-        "action": "static",
-        "position": "foreground"
-      },
-      {
-        "desc": "pile of sliced white button mushrooms",
-        "action": "static",
-        "position": "center"
-      },
-      {
-        "desc": "cluster of whole white button mushrooms",
-        "action": "static",
-        "position": "right"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "The person is slicing a white mushroom with a knife.",
+        "fact": "Hands are using a knife to slice white mushrooms on a green cutting board.",
         "confidence": 1.0
       },
       {
@@ -1150,50 +1090,55 @@
       }
     ],
     "ocr": [],
-    "spatial": "The person is positioned behind the green cutting board. The pile of sliced mushrooms is in the center of the board, while the whole mushrooms are to the right of the sliced pile. The person is holding the knife in their right hand above the board.",
+    "spatial": "The man in the white chef's coat is in the foreground. The green cutting board is below the man's hands. The sliced mushrooms are to the left of the whole mushrooms on the cutting board. The stainless steel kitchen equipment is behind the man.",
     "parse_success": true,
-    "chunk_idx": 23,
+    "chunk_idx": 22,
     "video_id": "MLRu3ezhgeY"
   },
   {
     "time": [
-      48,
-      50
+      23,
+      24
     ],
     "visible_entities": [
       {
-        "desc": "person wearing a white chef's coat and black-and-white striped apron",
+        "desc": "person wearing a white chef's coat and black and white striped apron",
         "action": "slicing mushrooms",
-        "position": "top/center"
+        "position": "center"
       },
       {
-        "desc": "green rectangular plastic cutting board",
+        "desc": "large silver chef's knife with a black handle",
+        "action": "being held and used to cut",
+        "position": "center"
+      },
+      {
+        "desc": "green plastic cutting board",
         "action": "static",
         "position": "foreground"
       },
       {
         "desc": "pile of sliced white mushrooms",
         "action": "static",
-        "position": "center"
+        "position": "center-left"
       },
       {
-        "desc": "group of whole white mushrooms",
+        "desc": "whole white button mushrooms",
         "action": "static",
         "position": "right"
       },
       {
-        "desc": "silver knife with a black handle",
-        "action": "cutting",
-        "position": "center"
+        "desc": "stainless steel counter and pot",
+        "action": "static",
+        "position": "background"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A person is using a knife to slice mushrooms on a green cutting board.",
+        "fact": "The person is slicing a white mushroom with a knife.",
         "confidence": 1.0
       },
       {
-        "fact": "A pile of sliced mushrooms sits in the center of the board.",
+        "fact": "Sliced mushrooms are accumulating in a pile on the cutting board.",
         "confidence": 1.0
       },
       {
@@ -1202,24 +1147,24 @@
       }
     ],
     "ocr": [],
-    "spatial": "The person is positioned behind the green cutting board. The pile of sliced mushrooms is in the center of the board, while the whole mushrooms are to the right of the sliced pile. The knife is held by the person above the cutting board.",
+    "spatial": "The person is standing behind the green cutting board. The knife is held in the person's hands, positioned above the pile of sliced mushrooms. The whole mushrooms are to the right of the sliced mushroom pile.",
     "parse_success": true,
-    "chunk_idx": 24,
+    "chunk_idx": 23,
     "video_id": "MLRu3ezhgeY"
   },
   {
     "time": [
-      50,
-      52
+      24,
+      25
     ],
     "visible_entities": [
       {
-        "desc": "person wearing a white chef's coat and black and white striped apron",
+        "desc": "person wearing a white chef's coat and dark trousers with thin vertical stripes",
         "action": "slicing mushrooms",
         "position": "background"
       },
       {
-        "desc": "green cutting board",
+        "desc": "green plastic cutting board",
         "action": "static",
         "position": "foreground"
       },
@@ -1241,33 +1186,85 @@
     ],
     "atomic_facts": [
       {
-        "fact": "A person is slicing mushrooms on a green cutting board.",
+        "fact": "A person is slicing mushrooms with a knife.",
         "confidence": 1.0
       },
       {
-        "fact": "There is a pile of sliced mushrooms in the center of the board.",
+        "fact": "A pile of sliced mushrooms is accumulating on the cutting board.",
         "confidence": 1.0
       },
       {
-        "fact": "Whole mushrooms are waiting to be cut on the right side.",
+        "fact": "Whole mushrooms are waiting to be cut on the right side of the board.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The person is standing behind the green cutting board. The pile of sliced mushrooms is in the center of the board, to the left of the whole mushrooms. The knife is being held by the person above the sliced mushrooms.",
+    "spatial": "The green cutting board is in the foreground. The pile of sliced mushrooms is in the center of the board, while the whole mushrooms are to the right of the pile. The person is behind the cutting board, holding the knife above the sliced mushrooms.",
+    "parse_success": true,
+    "chunk_idx": 24,
+    "video_id": "MLRu3ezhgeY"
+  },
+  {
+    "time": [
+      25,
+      26
+    ],
+    "visible_entities": [
+      {
+        "desc": "person wearing a white chef's coat and black and white striped apron",
+        "action": "slicing mushrooms",
+        "position": "background"
+      },
+      {
+        "desc": "large green cutting board",
+        "action": "static",
+        "position": "foreground"
+      },
+      {
+        "desc": "pile of sliced white mushrooms",
+        "action": "static",
+        "position": "center"
+      },
+      {
+        "desc": "group of whole white button mushrooms",
+        "action": "static",
+        "position": "right"
+      },
+      {
+        "desc": "silver knife blade",
+        "action": "cutting",
+        "position": "center"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The person is slicing white mushrooms on a green cutting board.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A pile of sliced mushrooms is accumulating in the center of the board.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "Whole mushrooms are waiting to be sliced on the right side of the board.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The person is standing behind the green cutting board. The pile of sliced mushrooms is in the center of the board, to the left of the whole mushrooms. The knife is positioned above the sliced mushrooms.",
     "parse_success": true,
     "chunk_idx": 25,
     "video_id": "MLRu3ezhgeY"
   },
   {
     "time": [
-      52,
-      54
+      26,
+      27
     ],
     "visible_entities": [
       {
-        "desc": "person wearing a white chef's coat and black-and-white striped apron",
-        "action": "slicing mushrooms and gathering them",
+        "desc": "person wearing a white chef's coat and dark striped apron",
+        "action": "slicing mushrooms",
         "position": "center"
       },
       {
@@ -1276,8 +1273,8 @@
         "position": "foreground"
       },
       {
-        "desc": "sliced white button mushrooms",
-        "action": "being gathered",
+        "desc": "sliced white mushrooms",
+        "action": "being arranged",
         "position": "center"
       },
       {
@@ -1287,7 +1284,7 @@
       },
       {
         "desc": "silver knife",
-        "action": "slicing",
+        "action": "cutting",
         "position": "left"
       }
     ],
@@ -1297,28 +1294,24 @@
         "confidence": 1.0
       },
       {
-        "fact": "The person gathers the sliced mushrooms with their hand.",
+        "fact": "The person uses their hand to arrange the pile of sliced mushrooms.",
         "confidence": 1.0
       },
       {
-        "fact": "A pile of sliced mushrooms is in the center of the board.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "Whole mushrooms are waiting to be cut on the right side.",
+        "fact": "Whole mushrooms are waiting to be cut on the right side of the board.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The person is standing behind the green cutting board. The pile of sliced mushrooms is in the center of the board, while the whole mushrooms are to the right of the sliced pile. The person is holding a knife in their left hand.",
+    "spatial": "The person is positioned behind the green cutting board. A pile of sliced mushrooms is in the center of the board, while whole mushrooms are to the right of the sliced pile. The person is holding a silver knife in their left hand near the mushrooms.",
     "parse_success": true,
     "chunk_idx": 26,
     "video_id": "MLRu3ezhgeY"
   },
   {
     "time": [
-      54,
-      56
+      27,
+      28
     ],
     "visible_entities": [
       {
@@ -1332,12 +1325,59 @@
         "position": "foreground"
       },
       {
-        "desc": "silver chef's knife",
-        "action": "chopping mushrooms",
-        "position": "left"
+        "desc": "white button mushrooms, whole and sliced",
+        "action": "being cut",
+        "position": "center"
       },
       {
-        "desc": "white button mushrooms, some whole and some sliced",
+        "desc": "silver kitchen knife",
+        "action": "chopping",
+        "position": "center"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A person is slicing white mushrooms on a green cutting board.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The knife is moving downwards to cut the mushrooms.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "There is a pile of sliced mushrooms accumulating on the board.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The person is positioned behind the green cutting board. The sliced mushrooms are in the center of the board, while whole mushrooms are to the right of the sliced pile. The knife is held in the person's hand above the mushrooms.",
+    "parse_success": true,
+    "chunk_idx": 27,
+    "video_id": "MLRu3ezhgeY"
+  },
+  {
+    "time": [
+      28,
+      29
+    ],
+    "visible_entities": [
+      {
+        "desc": "person with fair skin, wearing a white t-shirt",
+        "action": "slicing mushrooms with a knife",
+        "position": "center"
+      },
+      {
+        "desc": "silver kitchen knife with a serrated blade",
+        "action": "cutting through mushrooms",
+        "position": "center"
+      },
+      {
+        "desc": "bright green rectangular plastic cutting board",
+        "action": "static",
+        "position": "foreground"
+      },
+      {
+        "desc": "white button mushrooms, some whole and some sliced into thin rounds",
         "action": "being cut",
         "position": "center"
       }
@@ -1348,87 +1388,39 @@
         "confidence": 1.0
       },
       {
-        "fact": "The knife is moving in a chopping motion.",
+        "fact": "The knife is moving downwards through a mushroom.",
         "confidence": 1.0
       },
       {
-        "fact": "There is a pile of sliced mushrooms accumulating on the board.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [],
-    "spatial": "The green cutting board is in the foreground, covering the bottom portion of the frame. The person is positioned behind the cutting board. The knife is held in the person's hand on the left side, positioned above the mushrooms. The pile of sliced mushrooms is in the center of the board, with whole mushrooms to the right.",
-    "parse_success": true,
-    "chunk_idx": 27,
-    "video_id": "MLRu3ezhgeY"
-  },
-  {
-    "time": [
-      56,
-      58
-    ],
-    "visible_entities": [
-      {
-        "desc": "person with fair skin, wearing a white t-shirt",
-        "action": "slicing mushrooms",
-        "position": "center"
-      },
-      {
-        "desc": "silver chef's knife with a serrated blade",
-        "action": "cutting mushrooms",
-        "position": "center"
-      },
-      {
-        "desc": "bright green rectangular cutting board",
-        "action": "static",
-        "position": "foreground"
-      },
-      {
-        "desc": "white button mushrooms, some whole and some sliced",
-        "action": "being sliced",
-        "position": "center"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "A person is using a serrated knife to slice white mushrooms on a green cutting board.",
+        "fact": "A pile of sliced mushrooms is accumulating on the board.",
         "confidence": 1.0
       },
       {
-        "fact": "The sliced mushrooms are accumulating in a pile on the cutting board.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "Whole mushrooms are positioned to the right of the sliced pile.",
+        "fact": "Whole mushrooms are waiting to be cut on the right side of the board.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The person is positioned behind the green cutting board. The knife is held in the person's hand and is located above the mushrooms. The pile of sliced mushrooms is to the left of the whole mushrooms.",
+    "spatial": "The person is positioned behind the green cutting board. The knife is held in the person's hands, positioned above the mushrooms. The pile of sliced mushrooms is to the right of the knife's current cutting position, while whole mushrooms are further to the right.",
     "parse_success": true,
     "chunk_idx": 28,
     "video_id": "MLRu3ezhgeY"
   },
   {
     "time": [
-      58,
-      60
+      29,
+      30
     ],
     "visible_entities": [
       {
-        "desc": "person with short light brown hair, wearing a white chef's coat",
+        "desc": "person with short grey hair, wearing a white chef's coat",
         "action": "speaking",
         "position": "center"
       },
       {
-        "desc": "hands holding a silver knife",
-        "action": "slicing mushrooms",
-        "position": "center"
-      },
-      {
-        "desc": "green plastic cutting board",
-        "action": "static",
-        "position": "bottom"
+        "desc": "hands holding a knife, slicing mushrooms",
+        "action": "chopping mushrooms",
+        "position": "foreground"
       },
       {
         "desc": "white mushrooms, some whole and some sliced",
@@ -1436,9 +1428,9 @@
         "position": "center"
       },
       {
-        "desc": "stainless steel kitchen equipment and white tiled wall",
+        "desc": "green cutting board, plastic surface",
         "action": "static",
-        "position": "background"
+        "position": "bottom"
       }
     ],
     "atomic_facts": [
@@ -1447,40 +1439,49 @@
         "confidence": 1.0
       },
       {
-        "fact": "A chef is speaking to the camera in a commercial kitchen.",
+        "fact": "The person is wearing a white chef's coat.",
         "confidence": 1.0
       },
       {
-        "fact": "Sliced mushroom pieces are accumulating on the cutting board.",
+        "fact": "The person has short grey hair.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The person is speaking to the camera.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The hands holding the knife are positioned over the green cutting board. The sliced mushrooms are on the cutting board, while the whole mushrooms are to the right of the sliced ones. The chef is in front of the stainless steel kitchen equipment.",
+    "spatial": "The hands are above the green cutting board. The sliced mushrooms are on the cutting board. The person in the chef's coat is behind the cutting board.",
     "parse_success": true,
     "chunk_idx": 29,
     "video_id": "MLRu3ezhgeY"
   },
   {
     "time": [
-      60,
-      62
+      30,
+      31
     ],
     "visible_entities": [
       {
         "desc": "man with short, messy grey hair, wearing a white double-breasted chef's coat",
         "action": "speaking",
-        "position": "center"
+        "position": "center/foreground"
       },
       {
-        "desc": "large stainless steel ventilation hood",
+        "desc": "large silver metal ventilation hood",
         "action": "static",
-        "position": "top"
+        "position": "top/left"
       },
       {
-        "desc": "stainless steel shelving unit with white tiled wall background",
+        "desc": "stainless steel commercial refrigerator",
         "action": "static",
-        "position": "right"
+        "position": "right/background"
+      },
+      {
+        "desc": "white tiled wall",
+        "action": "static",
+        "position": "right/background"
       }
     ],
     "atomic_facts": [
@@ -1489,81 +1490,81 @@
         "confidence": 1.0
       },
       {
-        "fact": "The man is positioned in the center of the frame.",
+        "fact": "A large metal ventilation hood is positioned above the man.",
         "confidence": 1.0
       },
       {
-        "fact": "A stainless steel ventilation hood is visible above the man.",
+        "fact": "A stainless steel refrigerator stands behind the man to the right.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The man is in the center of the frame, positioned below the large stainless steel ventilation hood. To the right of the man, there is a stainless steel shelving unit against a white tiled wall.",
+    "spatial": "The man is in the center foreground, positioned below the large metal ventilation hood. The stainless steel refrigerator is behind him to the right, next to the white tiled wall.",
     "parse_success": true,
     "chunk_idx": 30,
     "video_id": "MLRu3ezhgeY"
   },
   {
     "time": [
-      62,
-      64
+      31,
+      32
     ],
     "visible_entities": [
       {
-        "desc": "man with short grey hair, wearing a white chef's coat",
+        "desc": "man with short spiky grey hair, wearing a white chef's coat",
         "action": "static",
-        "position": "center/foreground"
+        "position": "center"
       },
       {
         "desc": "black non-stick frying pan with a black handle",
         "action": "static",
-        "position": "center/foreground"
+        "position": "center"
       },
       {
         "desc": "clear cooking oil",
         "action": "static",
-        "position": "inside pan"
+        "position": "center"
       },
       {
-        "desc": "black gas stove grate",
+        "desc": "black metal gas stove grate",
         "action": "static",
-        "position": "below pan"
+        "position": "bottom"
       },
       {
-        "desc": "stainless steel ventilation hood",
+        "desc": "stainless steel commercial kitchen ventilation hood",
         "action": "static",
-        "position": "top/background"
+        "position": "top"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A man in a white chef's coat is shown in a kitchen setting.",
+        "fact": "A man with short spiky grey hair is wearing a white chef's coat.",
         "confidence": 1.0
       },
       {
-        "fact": "A black frying pan sits on a gas stove burner.",
+        "fact": "A black frying pan is sitting on a gas stove burner.",
         "confidence": 1.0
       },
       {
-        "fact": "Cooking oil is visible inside the frying pan.",
+        "fact": "Cooking oil is pooled inside the frying pan.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The man is in the foreground, positioned in front of the stainless steel ventilation hood. The black frying pan is on the gas stove grate, which is below the pan. The cooking oil is inside the frying pan.",
+    "spatial": "The man is in the foreground, positioned in front of the stainless steel ventilation hood. The black frying pan is on the stove grate, which is below the pan. The cooking oil is inside the frying pan.",
     "parse_success": true,
     "chunk_idx": 31,
     "video_id": "MLRu3ezhgeY"
   },
   {
     "time": [
-      64,
-      66
+      32,
+      33
     ],
     "visible_entities": [
       {
-        "desc": "person with fair skin, wearing a light blue shirt and a black apron with white vertical stripes, wearing a silver ring on the left ring finger",
-        "action": "sprinkling chopped food into the pan",
+        "desc": "person wearing a light blue long-sleeved shirt and a black apron with thin white vertical stripes, wearing a silver ring on the left ring finger",
+        "action": "sprinkling chopped food into a pan",
         "position": "top"
       },
       {
@@ -1572,55 +1573,8 @@
         "position": "center"
       },
       {
-        "desc": "finely chopped white and pinkish food pieces, likely shallots or onions",
-        "action": "falling into the pan",
-        "position": "center"
-      },
-      {
-        "desc": "black metal gas stove grate",
-        "action": "static",
-        "position": "bottom"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "A person is sprinkling chopped food into a frying pan.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The chopped food is falling from the person's hands into the pan.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The frying pan is sitting on a gas stove grate.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [],
-    "spatial": "The person is positioned above the frying pan. The chopped food is inside the frying pan. The frying pan is on top of the black stove grate.",
-    "parse_success": true,
-    "chunk_idx": 32,
-    "video_id": "MLRu3ezhgeY"
-  },
-  {
-    "time": [
-      66,
-      68
-    ],
-    "visible_entities": [
-      {
-        "desc": "person wearing a white chef's coat and black trousers with thin white vertical stripes",
-        "action": "sprinkling chopped mushrooms into the pan",
-        "position": "top"
-      },
-      {
-        "desc": "black non-stick frying pan with a black handle",
-        "action": "resting on the stove",
-        "position": "center"
-      },
-      {
-        "desc": "small, chopped pieces of light-brown and white mushrooms",
-        "action": "being added to the pan",
+        "desc": "pile of finely chopped white and pinkish food, likely shallots or onions",
+        "action": "being sprinkled",
         "position": "center"
       },
       {
@@ -1630,6 +1584,58 @@
       },
       {
         "desc": "stainless steel countertop surface",
+        "action": "static",
+        "position": "left"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A person is sprinkling chopped food from their hands into a frying pan.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The frying pan is sitting on a gas stove grate.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The chopped food is accumulating in the center of the pan.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The person is positioned above the frying pan. The frying pan is on top of the black stove grate. The stainless steel countertop is to the left of the stove.",
+    "parse_success": true,
+    "chunk_idx": 32,
+    "video_id": "MLRu3ezhgeY"
+  },
+  {
+    "time": [
+      33,
+      34
+    ],
+    "visible_entities": [
+      {
+        "desc": "person wearing a white chef's coat and black apron with white vertical stripes",
+        "action": "sprinkling chopped mushrooms into the pan",
+        "position": "top"
+      },
+      {
+        "desc": "black non-stick frying pan with a handle",
+        "action": "static",
+        "position": "center"
+      },
+      {
+        "desc": "finely chopped white and brown mushrooms",
+        "action": "being sprinkled into the pan",
+        "position": "center"
+      },
+      {
+        "desc": "black gas stove grate",
+        "action": "static",
+        "position": "bottom"
+      },
+      {
+        "desc": "silver stainless steel counter surface",
         "action": "static",
         "position": "left"
       }
@@ -1644,51 +1650,51 @@
         "confidence": 1.0
       },
       {
-        "fact": "The person is wearing black trousers with white pinstripes.",
+        "fact": "The chopped mushrooms are accumulating in the center of the pan.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The person is positioned above the frying pan. The frying pan is resting on the black stove grate. The stainless steel countertop is to the left of the stove.",
+    "spatial": "The person is positioned above the frying pan. The frying pan is on top of the black stove grate. The stainless steel counter is to the left of the stove.",
     "parse_success": true,
     "chunk_idx": 33,
     "video_id": "MLRu3ezhgeY"
   },
   {
     "time": [
-      68,
-      70
+      34,
+      35
     ],
     "visible_entities": [
       {
-        "desc": "person wearing a black apron with thin vertical white stripes",
+        "desc": "person wearing a black apron with thin white vertical stripes",
         "action": "holding the handle of a frying pan",
-        "position": "left"
+        "position": "top left"
       },
       {
-        "desc": "black non-stick frying pan with a black handle",
+        "desc": "black frying pan with a black handle, containing chopped light-brown food",
         "action": "resting on a gas stove burner",
         "position": "center"
       },
       {
-        "desc": "pile of chopped white and light-brown mushrooms",
-        "action": "static",
+        "desc": "chopped light-brown food, likely mushrooms or onions, in small irregular pieces",
+        "action": "static inside the pan",
         "position": "center"
       },
       {
-        "desc": "stainless steel gas stove with black metal grates",
+        "desc": "black metal gas stove grate",
         "action": "static",
-        "position": "right"
+        "position": "center bottom"
       },
       {
-        "desc": "stainless steel countertop",
+        "desc": "stainless steel countertop, smooth and reflective",
         "action": "static",
         "position": "left"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A person is holding the handle of a frying pan.",
+        "fact": "A person is holding the handle of a black frying pan.",
         "confidence": 1.0
       },
       {
@@ -1696,29 +1702,28 @@
         "confidence": 1.0
       },
       {
-        "fact": "Chopped mushrooms are inside the frying pan.",
+        "fact": "Chopped light-brown food is inside the frying pan.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The person is wearing a black apron with white stripes.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The person is to the left of the frying pan. The frying pan is on top of the gas stove. The stainless steel countertop is to the left of the stove.",
+    "spatial": "The person is to the left of the frying pan and is holding its handle. The frying pan is on top of the black metal gas stove grate. The stainless steel countertop is to the left of the stove.",
     "parse_success": true,
     "chunk_idx": 34,
     "video_id": "MLRu3ezhgeY"
   },
   {
     "time": [
-      70,
-      72
+      35,
+      36
     ],
     "visible_entities": [
       {
-        "desc": "finely chopped white and light-brown mushrooms",
-        "action": "static",
-        "position": "center"
-      },
-      {
-        "desc": "black non-stick frying pan with a black handle",
+        "desc": "black non-stick frying pan with a black handle, containing chopped white and brown mushrooms",
         "action": "static",
         "position": "center"
       },
@@ -1728,54 +1733,7 @@
         "position": "center"
       },
       {
-        "desc": "stainless steel countertop surface",
-        "action": "static",
-        "position": "left"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "Chopped mushrooms are sitting inside a frying pan.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The frying pan is resting on a gas stove grate.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The stove grate is positioned next to a stainless steel countertop.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [],
-    "spatial": "The chopped mushrooms are inside the black frying pan. The frying pan is on top of the black metal stove grate. The stainless steel countertop is to the left of the stove grate.",
-    "parse_success": true,
-    "chunk_idx": 35,
-    "video_id": "MLRu3ezhgeY"
-  },
-  {
-    "time": [
-      72,
-      74
-    ],
-    "visible_entities": [
-      {
-        "desc": "black non-stick frying pan with a long handle",
-        "action": "static",
-        "position": "center"
-      },
-      {
-        "desc": "finely chopped white and light-brown mushrooms",
-        "action": "static",
-        "position": "center"
-      },
-      {
-        "desc": "black metal gas stove grate",
-        "action": "static",
-        "position": "bottom"
-      },
-      {
-        "desc": "stainless steel counter surface",
+        "desc": "stainless steel countertop",
         "action": "static",
         "position": "left"
       }
@@ -1786,33 +1744,76 @@
         "confidence": 1.0
       },
       {
-        "fact": "The frying pan is sitting on the stove grate.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The stove grate is positioned over the burner area.",
+        "fact": "The frying pan is positioned on the stove grate.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The frying pan is in the center of the frame, resting on top of the black metal stove grate. The chopped mushrooms are inside the pan, covering the bottom surface. To the left of the stove, there is a stainless steel counter surface.",
+    "spatial": "The frying pan containing mushrooms is centered on top of the black stove grate. The stainless steel countertop is located to the left of the stove.",
+    "parse_success": true,
+    "chunk_idx": 35,
+    "video_id": "MLRu3ezhgeY"
+  },
+  {
+    "time": [
+      36,
+      37
+    ],
+    "visible_entities": [
+      {
+        "desc": "black non-stick frying pan with a long handle, containing chopped white and light-brown mushrooms",
+        "action": "static",
+        "position": "center"
+      },
+      {
+        "desc": "stainless steel gas stovetop with black metal grates",
+        "action": "static",
+        "position": "background"
+      },
+      {
+        "desc": "stainless steel counter surface",
+        "action": "static",
+        "position": "left"
+      },
+      {
+        "desc": "silver metal tray",
+        "action": "static",
+        "position": "background"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A black frying pan is sitting on a gas stovetop.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "Chopped mushrooms are inside the frying pan.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The mushrooms are not moving.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The frying pan is on the gas stovetop. The stainless steel counter is to the left of the stovetop. The silver tray is in the background, behind the counter.",
     "parse_success": true,
     "chunk_idx": 36,
     "video_id": "MLRu3ezhgeY"
   },
   {
     "time": [
-      74,
-      76
+      37,
+      38
     ],
     "visible_entities": [
       {
-        "desc": "man with short graying hair, wearing a white chef's coat",
+        "desc": "man with short grey hair, white chef coat",
         "action": "static",
         "position": "center"
       },
       {
-        "desc": "black frying pan with a long handle",
+        "desc": "black frying pan with black handle",
         "action": "static",
         "position": "center"
       },
@@ -1822,74 +1823,61 @@
         "position": "center"
       },
       {
-        "desc": "black metal gas stove grate",
+        "desc": "black metal stove grate",
         "action": "static",
         "position": "bottom"
+      },
+      {
+        "desc": "silver metal counter surface",
+        "action": "static",
+        "position": "left"
       },
       {
         "desc": "silver metal tray",
         "action": "static",
         "position": "background"
-      },
-      {
-        "desc": "silver metal kitchen equipment with a digital display",
-        "action": "static",
-        "position": "left"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A man in a white chef's coat is looking at the camera.",
+        "fact": "chopped mushrooms are inside the black frying pan",
         "confidence": 1.0
       },
       {
-        "fact": "Chopped mushrooms are inside a black frying pan.",
+        "fact": "the frying pan is on the stove grate",
         "confidence": 1.0
       },
       {
-        "fact": "The frying pan is resting on a gas stove grate.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "A silver tray is visible on a shelf in the background.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The digital display on the silver equipment shows red numbers.",
+        "fact": "the man is wearing a white chef coat",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The man in the white chef's coat is in the foreground. The black frying pan containing chopped mushrooms is in front of him, resting on the stove grate. The silver metal equipment is to the left of the stove. The silver tray is on a shelf in the background, behind the frying pan.",
+    "spatial": "The man in the white chef coat is in the foreground. The black frying pan containing chopped mushrooms is on the black metal stove grate. The silver metal counter surface is to the left of the stove.",
     "parse_success": true,
     "chunk_idx": 37,
     "video_id": "MLRu3ezhgeY"
   },
   {
     "time": [
-      76,
-      78
+      38,
+      39
     ],
     "visible_entities": [
       {
-        "desc": "man with short, messy grey hair and light stubble, wearing a white chef's coat",
+        "desc": "man with short, messy grey hair, wearing a white chef's coat",
         "action": "speaking",
-        "position": "center"
+        "position": "center/foreground"
       },
       {
-        "desc": "silver metal kitchen appliance with a digital display showing red numbers",
+        "desc": "silver metal appliance with a digital display showing red numbers",
         "action": "static",
-        "position": "left"
+        "position": "left/background"
       },
       {
-        "desc": "metal whisk attachment hanging from a mixer",
+        "desc": "metal whisk hanging from a rack",
         "action": "static",
         "position": "top left"
-      },
-      {
-        "desc": "pink brick wall",
-        "action": "static",
-        "position": "background"
       }
     ],
     "atomic_facts": [
@@ -1898,7 +1886,7 @@
         "confidence": 1.0
       },
       {
-        "fact": "A silver appliance with a digital display is visible on the left.",
+        "fact": "The man's eyes are open and looking forward.",
         "confidence": 1.0
       },
       {
@@ -1907,72 +1895,20 @@
       }
     ],
     "ocr": [],
-    "spatial": "The man is in the center foreground. To his left is a silver kitchen appliance. Above and behind the man on the left, a metal whisk hangs from a mixer. The pink brick wall is in the background behind the man and the equipment.",
+    "spatial": "The man in the white chef's coat is in the center foreground. To his left, a silver metal appliance is visible in the background. Above the appliance, a metal whisk hangs from a rack.",
     "parse_success": true,
     "chunk_idx": 38,
     "video_id": "MLRu3ezhgeY"
   },
   {
     "time": [
-      78,
-      80
+      39,
+      40
     ],
     "visible_entities": [
       {
-        "desc": "black frying pan with a dark non-stick interior surface and a silver metallic rim",
+        "desc": "black frying pan with a silver rim, containing chopped white onions",
         "action": "static",
-        "position": "center"
-      },
-      {
-        "desc": "large quantity of finely chopped, pale beige food ingredients, likely onions or mushrooms, with a moist texture",
-        "action": "static",
-        "position": "center"
-      },
-      {
-        "desc": "person wearing a black apron with thin, vertical white pinstripes",
-        "action": "static",
-        "position": "background"
-      },
-      {
-        "desc": "industrial-style gas stovetop with black metal grates and a stainless steel surface",
-        "action": "static",
-        "position": "foreground"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "A black frying pan rests on the grates of a gas stovetop.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The pan contains a layer of chopped, pale ingredients.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "A person wearing a striped apron stands behind the stovetop.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [],
-    "spatial": "The black frying pan is positioned in the center of the frame, resting on top of the black metal grates of the stovetop. The chopped food ingredients are inside the pan, covering its bottom surface. The person wearing the striped apron is located in the background, behind the pan and stovetop.",
-    "parse_success": true,
-    "chunk_idx": 39,
-    "video_id": "MLRu3ezhgeY"
-  },
-  {
-    "time": [
-      80,
-      82
-    ],
-    "visible_entities": [
-      {
-        "desc": "black frying pan with a non-stick interior surface and a silver metal rim",
-        "action": "static",
-        "position": "center"
-      },
-      {
-        "desc": "finely chopped white and beige food mixture, likely onions or mushrooms, with a moist texture",
-        "action": "cooking",
         "position": "center"
       },
       {
@@ -1981,49 +1917,44 @@
         "position": "background"
       },
       {
-        "desc": "industrial stainless steel stovetop with black metal grates",
+        "desc": "stainless steel stovetop with black metal grates",
         "action": "static",
-        "position": "bottom"
+        "position": "foreground"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A person wearing a striped apron stands behind the stove.",
+        "fact": "A black frying pan sits on a stovetop burner.",
         "confidence": 1.0
       },
       {
-        "fact": "Chopped ingredients are cooking inside the black frying pan.",
+        "fact": "The pan contains a layer of chopped white onions.",
         "confidence": 1.0
       },
       {
-        "fact": "The frying pan rests on the metal grates of the stovetop.",
+        "fact": "A person in a striped apron stands behind the stove.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The black frying pan is centered on the stovetop grates. The chopped food mixture is inside the frying pan. The person in the striped apron is standing behind the pan and stovetop.",
+    "spatial": "The black frying pan is on top of the stainless steel stovetop. The chopped onions are inside the frying pan. The person wearing the striped apron is behind the frying pan.",
     "parse_success": true,
-    "chunk_idx": 40,
+    "chunk_idx": 39,
     "video_id": "MLRu3ezhgeY"
   },
   {
     "time": [
-      82,
-      84
+      40,
+      41
     ],
     "visible_entities": [
       {
-        "desc": "black frying pan with a non-stick interior surface",
+        "desc": "black frying pan containing chopped light-brown food",
         "action": "static",
         "position": "center"
       },
       {
-        "desc": "finely chopped light-brown and white food mixture, likely mushrooms or onions",
-        "action": "static",
-        "position": "center"
-      },
-      {
-        "desc": "person wearing a black apron with thin white vertical stripes",
+        "desc": "person wearing black apron with white vertical stripes",
         "action": "static",
         "position": "background"
       }
@@ -2034,7 +1965,7 @@
         "confidence": 1.0
       },
       {
-        "fact": "The pan contains a large quantity of finely chopped food ingredients.",
+        "fact": "The pan contains a layer of chopped, light-colored food ingredients.",
         "confidence": 1.0
       },
       {
@@ -2043,113 +1974,24 @@
       }
     ],
     "ocr": [],
-    "spatial": "The black frying pan is in the center of the frame, resting on the stovetop. The chopped food mixture is inside the pan. The person in the striped apron is behind the pan.",
+    "spatial": "The black frying pan is in the foreground, centered on the stovetop. The person in the striped apron is standing behind the pan.",
     "parse_success": true,
-    "chunk_idx": 41,
+    "chunk_idx": 40,
     "video_id": "MLRu3ezhgeY"
   },
   {
     "time": [
-      84,
-      86
+      41,
+      42
     ],
     "visible_entities": [
       {
-        "desc": "person wearing a black apron with thin white vertical stripes",
-        "action": "sprinkling seasoning",
-        "position": "top"
-      },
-      {
-        "desc": "black non-stick frying pan containing chopped light-brown food",
+        "desc": "black frying pan containing chopped white and brown food",
         "action": "static",
         "position": "center"
       },
       {
-        "desc": "chopped light-brown food pieces, likely mushrooms or nuts",
-        "action": "static",
-        "position": "center"
-      },
-      {
-        "desc": "black gas stove grate",
-        "action": "static",
-        "position": "right"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "A person is sprinkling seasoning from their hand into the frying pan.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The frying pan is sitting on a stove grate.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The pan contains a layer of chopped, light-brown food.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [],
-    "spatial": "The person is positioned above the frying pan. The frying pan is on top of the stove grate. The chopped food is inside the frying pan.",
-    "parse_success": true,
-    "chunk_idx": 42,
-    "video_id": "MLRu3ezhgeY"
-  },
-  {
-    "time": [
-      86,
-      88
-    ],
-    "visible_entities": [
-      {
-        "desc": "person wearing a black apron with thin white vertical stripes",
-        "action": "sprinkling seasoning",
-        "position": "top"
-      },
-      {
-        "desc": "black frying pan with a silver rim containing chopped beige food",
-        "action": "static",
-        "position": "center"
-      },
-      {
-        "desc": "stainless steel gas stove with black grates",
-        "action": "static",
-        "position": "background"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "A person is sprinkling seasoning from above into the pan.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The pan contains a layer of chopped, beige-colored food items.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The pan is resting on the stove grates.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [],
-    "spatial": "The person is positioned above the frying pan. The frying pan is on top of the gas stove. The chopped food is inside the frying pan.",
-    "parse_success": true,
-    "chunk_idx": 43,
-    "video_id": "MLRu3ezhgeY"
-  },
-  {
-    "time": [
-      88,
-      90
-    ],
-    "visible_entities": [
-      {
-        "desc": "black frying pan with a silver rim containing chopped, light-brown food ingredients",
-        "action": "static",
-        "position": "center"
-      },
-      {
-        "desc": "person wearing a black apron with thin vertical white stripes",
+        "desc": "person wearing black and white vertical striped apron",
         "action": "static",
         "position": "background"
       },
@@ -2165,7 +2007,7 @@
         "confidence": 1.0
       },
       {
-        "fact": "The pan contains a large quantity of chopped, light-colored food ingredients.",
+        "fact": "The pan contains a mixture of finely chopped white and brown ingredients.",
         "confidence": 1.0
       },
       {
@@ -2174,78 +2016,191 @@
       }
     ],
     "ocr": [],
-    "spatial": "The frying pan is in the center foreground, resting on the stove. The stove grate is to the right of the pan. The person in the striped apron is behind the pan.",
+    "spatial": "The black frying pan is in the center foreground, resting on top of the stove grate. The person in the striped apron is behind the frying pan.",
+    "parse_success": true,
+    "chunk_idx": 41,
+    "video_id": "MLRu3ezhgeY"
+  },
+  {
+    "time": [
+      42,
+      43
+    ],
+    "visible_entities": [
+      {
+        "desc": "person wearing a black apron with thin white vertical stripes",
+        "action": "sprinkling seasoning",
+        "position": "background"
+      },
+      {
+        "desc": "black non-stick frying pan containing chopped light-brown mushrooms",
+        "action": "static",
+        "position": "center"
+      },
+      {
+        "desc": "silver gas stove burner grate",
+        "action": "static",
+        "position": "right"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A person is sprinkling seasoning from their hand into the pan.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The frying pan is filled with chopped mushrooms.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The person wearing the striped apron is behind the frying pan. The frying pan is centered on the stove, with the silver burner grate visible to its right.",
+    "parse_success": true,
+    "chunk_idx": 42,
+    "video_id": "MLRu3ezhgeY"
+  },
+  {
+    "time": [
+      43,
+      44
+    ],
+    "visible_entities": [
+      {
+        "desc": "person wearing a black apron with thin white vertical stripes",
+        "action": "sprinkling seasoning",
+        "position": "background"
+      },
+      {
+        "desc": "black non-stick frying pan containing chopped light-brown food",
+        "action": "static",
+        "position": "center"
+      },
+      {
+        "desc": "stainless steel gas stove grate",
+        "action": "static",
+        "position": "right"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A person is sprinkling seasoning into the pan.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The pan contains chopped food, likely mushrooms or onions.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The pan is sitting on a stove.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The frying pan is in the center of the frame, resting on the stove. The person is positioned behind the pan. The stove grate is visible to the right of the pan.",
+    "parse_success": true,
+    "chunk_idx": 43,
+    "video_id": "MLRu3ezhgeY"
+  },
+  {
+    "time": [
+      44,
+      45
+    ],
+    "visible_entities": [
+      {
+        "desc": "black non-stick frying pan containing chopped light-brown food ingredients",
+        "action": "static",
+        "position": "center"
+      },
+      {
+        "desc": "person wearing a black apron with white vertical stripes",
+        "action": "static",
+        "position": "background"
+      },
+      {
+        "desc": "black metal gas stove grate",
+        "action": "static",
+        "position": "right"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A frying pan filled with chopped food is resting on a stove.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A person in a striped apron stands behind the pan.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The frying pan is in the center foreground, resting on the stove. The black metal grate is to the right of the pan. The person wearing the striped apron is standing behind the pan.",
     "parse_success": true,
     "chunk_idx": 44,
     "video_id": "MLRu3ezhgeY"
   },
   {
     "time": [
-      90,
-      92
+      45,
+      46
     ],
     "visible_entities": [
       {
-        "desc": "large, round, silver metal wok filled with cooked white rice",
-        "action": "being tossed and shaken over the burner",
-        "position": "center/foreground"
+        "desc": "silver metal wok containing white rice grains",
+        "action": "being tossed and stirred over a flame",
+        "position": "center"
       },
       {
-        "desc": "stainless steel gas stovetop with black metal grates",
-        "action": "static",
-        "position": "background"
-      },
-      {
-        "desc": "blue gas flame",
+        "desc": "gas stove burner with a blue flame",
         "action": "burning",
-        "position": "center/bottom"
+        "position": "bottom"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A person is tossing white rice in a wok over a gas flame.",
+        "fact": "A person is tossing white rice in a silver wok.",
         "confidence": 1.0
       },
       {
-        "fact": "The blue flame is active under the wok.",
+        "fact": "The wok is positioned directly over a lit gas burner.",
         "confidence": 1.0
       },
       {
-        "fact": "The wok is being lifted and tilted to mix the rice.",
+        "fact": "The blue flame is visible underneath the wok.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The wok filled with rice is positioned directly above the blue gas flame. The gas flame is centered on the stainless steel stovetop. The black metal grates of the stove are visible around the burner.",
+    "spatial": "The silver wok is positioned above the gas stove burner. The blue flame is directly underneath the wok. The rice is inside the wok.",
     "parse_success": true,
     "chunk_idx": 45,
     "video_id": "MLRu3ezhgeY"
   },
   {
     "time": [
-      92,
-      94
+      46,
+      47
     ],
     "visible_entities": [
+      {
+        "desc": "hand with light skin tone",
+        "action": "holding the rim of a glass bowl",
+        "position": "top"
+      },
       {
         "desc": "large clear glass mixing bowl",
         "action": "static",
         "position": "center"
       },
       {
-        "desc": "hand with light skin tone",
-        "action": "holding the rim of the bowl",
-        "position": "top"
-      },
-      {
-        "desc": "mixture of chopped brownish-grey ingredients and orange powder",
+        "desc": "mixture of chopped ingredients including brownish-grey chunks and orange powder",
         "action": "static",
         "position": "inside the bowl"
       },
       {
         "desc": "green cutting board",
         "action": "static",
-        "position": "center"
+        "position": "below the bowl"
       },
       {
         "desc": "knife with black handle and silver blade",
@@ -2253,9 +2208,9 @@
         "position": "left"
       },
       {
-        "desc": "person wearing white clothing",
+        "desc": "person wearing a white chef's coat",
         "action": "static",
-        "position": "background"
+        "position": "right"
       }
     ],
     "atomic_facts": [
@@ -2264,32 +2219,32 @@
         "confidence": 1.0
       },
       {
-        "fact": "The bowl contains a mixture of chopped ingredients and orange powder.",
+        "fact": "The bowl contains a mixture of chopped food ingredients.",
         "confidence": 1.0
       },
       {
-        "fact": "The bowl is placed on a green cutting board.",
+        "fact": "The bowl is resting on a green cutting board.",
         "confidence": 1.0
       },
       {
-        "fact": "A knife is lying on the surface to the left of the bowl.",
+        "fact": "A knife is lying on the counter to the left of the cutting board.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The glass bowl is on top of the green cutting board. The hand is holding the rim of the bowl from above. The knife is to the left of the cutting board. The person in white clothing is behind the bowl.",
+    "spatial": "The glass bowl is centered on top of the green cutting board. The hand is positioned above the bowl, gripping its rim. The knife is to the left of the cutting board. The person in the white coat is to the right of the bowl.",
     "parse_success": true,
     "chunk_idx": 46,
     "video_id": "MLRu3ezhgeY"
   },
   {
     "time": [
-      94,
-      96
+      47,
+      48
     ],
     "visible_entities": [
       {
-        "desc": "man with short graying hair, wearing a white chef's coat",
+        "desc": "man with short grey hair, wearing a white chef's coat",
         "action": "looking down",
         "position": "center"
       },
@@ -2304,14 +2259,9 @@
         "position": "center"
       },
       {
-        "desc": "knife with black handle and silver blade",
+        "desc": "knife with black handle",
         "action": "static",
         "position": "left"
-      },
-      {
-        "desc": "hand",
-        "action": "resting near bowl",
-        "position": "top"
       }
     ],
     "atomic_facts": [
@@ -2320,7 +2270,7 @@
         "confidence": 1.0
       },
       {
-        "fact": "A glass bowl sits on a green cutting board.",
+        "fact": "A clear glass bowl sits on a green cutting board.",
         "confidence": 1.0
       },
       {
@@ -2328,30 +2278,30 @@
         "confidence": 1.0
       },
       {
-        "fact": "A knife is placed to the left of the cutting board.",
+        "fact": "A knife is lying on the counter to the left of the cutting board.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The man is positioned behind the glass bowl. The glass bowl is resting on top of the green cutting board. The knife is to the left of the green cutting board. A hand is visible near the top edge of the bowl.",
+    "spatial": "The man is positioned behind the clear glass bowl. The bowl is resting on top of the green cutting board. The knife is to the left of the cutting board.",
     "parse_success": true,
     "chunk_idx": 47,
     "video_id": "MLRu3ezhgeY"
   },
   {
     "time": [
-      96,
-      98
+      48,
+      49
     ],
     "visible_entities": [
       {
-        "desc": "man with short spiky grey hair, wearing a white chef's coat",
+        "desc": "man with short grey hair, white chef's coat",
         "action": "looking down",
         "position": "center"
       },
       {
-        "desc": "hands mixing food",
-        "action": "mixing ingredients",
+        "desc": "hands",
+        "action": "mixing pink ground meat",
         "position": "center"
       },
       {
@@ -2360,7 +2310,54 @@
         "position": "center"
       },
       {
-        "desc": "pink ground meat mixture",
+        "desc": "green cutting board",
+        "action": "static",
+        "position": "bottom"
+      },
+      {
+        "desc": "stainless steel kitchen equipment",
+        "action": "static",
+        "position": "background"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The man is looking down at his work.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "Hands are mixing pink ground meat inside a clear glass bowl.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The glass bowl is resting on a green cutting board.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The man is positioned above the green cutting board. The clear glass bowl is on top of the green cutting board. The hands are inside the bowl, mixing the meat. Stainless steel kitchen equipment is visible in the background behind the man.",
+    "parse_success": true,
+    "chunk_idx": 48,
+    "video_id": "MLRu3ezhgeY"
+  },
+  {
+    "time": [
+      49,
+      50
+    ],
+    "visible_entities": [
+      {
+        "desc": "person with fair skin, wearing a white short-sleeved shirt",
+        "action": "mixing ground meat",
+        "position": "center"
+      },
+      {
+        "desc": "clear glass bowl",
+        "action": "static",
+        "position": "center"
+      },
+      {
+        "desc": "raw ground meat mixture with pink and white textures",
         "action": "being mixed",
         "position": "inside bowl"
       },
@@ -2377,131 +2374,83 @@
     ],
     "atomic_facts": [
       {
-        "fact": "The man is looking down at the food preparation.",
+        "fact": "The person is using their right hand to mix the ground meat inside the glass bowl.",
         "confidence": 1.0
       },
       {
-        "fact": "Hands are mixing a pink ground meat mixture inside a clear glass bowl.",
+        "fact": "The person's left hand is holding the rim of the glass bowl to steady it.",
         "confidence": 1.0
       },
       {
-        "fact": "The glass bowl is resting on a green cutting board.",
+        "fact": "The glass bowl is resting on top of a green cutting board.",
         "confidence": 1.0
       },
       {
-        "fact": "Stainless steel equipment is visible in the background.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [],
-    "spatial": "The man is positioned above the green cutting board. The clear glass bowl is on top of the cutting board. The hands are inside the bowl, mixing the meat. Stainless steel kitchen equipment is behind the man and the bowl.",
-    "parse_success": true,
-    "chunk_idx": 48,
-    "video_id": "MLRu3ezhgeY"
-  },
-  {
-    "time": [
-      98,
-      100
-    ],
-    "visible_entities": [
-      {
-        "desc": "person wearing a white chef's coat",
-        "action": "mixing ground meat",
-        "position": "center"
-      },
-      {
-        "desc": "clear glass bowl containing raw ground meat and chopped vegetables",
-        "action": "being held",
-        "position": "center"
-      },
-      {
-        "desc": "green cutting board",
-        "action": "static",
-        "position": "bottom"
-      },
-      {
-        "desc": "stainless steel kitchen equipment",
-        "action": "static",
-        "position": "background"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "A person is mixing raw ground meat and chopped vegetables in a glass bowl with their hand.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The person is holding the glass bowl steady with their left hand.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The glass bowl is resting on a green cutting board.",
+        "fact": "Stainless steel bowls are visible on a shelf in the background.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The person is standing behind the green cutting board. The glass bowl is on top of the green cutting board. The stainless steel kitchen equipment is in the background behind the person.",
+    "spatial": "The person is standing behind the green cutting board. The clear glass bowl is on top of the green cutting board. The raw meat mixture is inside the glass bowl. The stainless steel kitchen equipment is to the left of the person in the background.",
     "parse_success": true,
     "chunk_idx": 49,
     "video_id": "MLRu3ezhgeY"
   },
   {
     "time": [
-      100,
-      102
+      50,
+      51
     ],
     "visible_entities": [
       {
-        "desc": "man with short, spiky, light brown hair, wearing a white chef's coat",
+        "desc": "man with short spiky grey hair, wearing a white chef's coat",
         "action": "looking down",
-        "position": "center/foreground"
+        "position": "center"
       },
       {
-        "desc": "metal whisk",
+        "desc": "metal whisk hanging from a rack",
         "action": "static",
-        "position": "top left"
+        "position": "background left"
       },
       {
-        "desc": "white papers",
+        "desc": "stainless steel kitchen equipment",
         "action": "static",
-        "position": "left"
-      },
-      {
-        "desc": "stainless steel refrigerator",
-        "action": "static",
-        "position": "right"
+        "position": "background right"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "The man in the white chef's coat is looking down.",
+        "fact": "A man with short grey hair is looking downwards.",
         "confidence": 1.0
       },
       {
-        "fact": "A metal whisk is hanging from the ceiling.",
+        "fact": "The man is wearing a white chef's coat.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A metal whisk is hanging in the background.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The man is in the center of the frame. The metal whisk is hanging above and to the left of the man. The white papers are on the wall to the left of the man. The stainless steel refrigerator is to the right of the man.",
+    "spatial": "The man is in the center foreground. The hanging whisk is to the left of the man in the background. The stainless steel kitchen equipment is to the right of the man in the background.",
     "parse_success": true,
     "chunk_idx": 50,
     "video_id": "MLRu3ezhgeY"
   },
   {
     "time": [
-      102,
-      104
+      51,
+      52
     ],
     "visible_entities": [
       {
-        "desc": "person with fair skin, wearing a white apron and black-and-white striped pants",
-        "action": "rolling meat mixture into a ball",
+        "desc": "person wearing a white chef's coat and black apron with white vertical stripes",
+        "action": "shaping meat mixture into a ball",
         "position": "center"
       },
       {
-        "desc": "large clear glass bowl containing raw ground meat mixture",
+        "desc": "clear glass bowl containing raw ground meat mixture",
         "action": "static",
         "position": "center"
       },
@@ -2511,7 +2460,7 @@
         "position": "bottom"
       },
       {
-        "desc": "stainless steel mixing bowls",
+        "desc": "stainless steel bowls",
         "action": "static",
         "position": "background"
       }
@@ -2522,38 +2471,38 @@
         "confidence": 1.0
       },
       {
-        "fact": "The glass bowl sits on top of the green cutting board.",
+        "fact": "The glass bowl is resting on the green cutting board.",
         "confidence": 1.0
       },
       {
-        "fact": "The meat mixture inside the bowl is pink and textured.",
+        "fact": "The meat mixture is pink and textured.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The person is standing behind the green cutting board. The glass bowl is on the cutting board in front of the person. The stainless steel bowls are on a shelf in the background to the left of the person.",
+    "spatial": "The person is standing behind the glass bowl. The glass bowl is placed on top of the green cutting board. The stainless steel bowls are on a shelf in the background to the left of the person.",
     "parse_success": true,
     "chunk_idx": 51,
     "video_id": "MLRu3ezhgeY"
   },
   {
     "time": [
-      104,
-      106
+      52,
+      53
     ],
     "visible_entities": [
       {
-        "desc": "person wearing a white chef's coat and black apron with thin white vertical stripes",
+        "desc": "person wearing a white chef's coat and black apron with white vertical stripes, with a gold ring on their left hand",
         "action": "rolling meat mixture into a ball",
         "position": "center"
       },
       {
-        "desc": "large clear glass bowl containing raw pink ground meat mixture",
+        "desc": "large clear glass bowl containing pink ground meat mixture",
         "action": "static",
         "position": "center"
       },
       {
-        "desc": "green plastic cutting board",
+        "desc": "green cutting board",
         "action": "static",
         "position": "bottom"
       },
@@ -2570,32 +2519,32 @@
     ],
     "atomic_facts": [
       {
-        "fact": "person is rolling a portion of raw ground meat mixture between their palms to form a ball",
+        "fact": "The person is using both hands to shape a portion of the meat mixture into a round ball.",
         "confidence": 1.0
       },
       {
-        "fact": "the glass bowl sits on the green cutting board",
+        "fact": "The glass bowl sits on top of the green cutting board.",
         "confidence": 1.0
       },
       {
-        "fact": "a knife is lying on the white surface to the left of the green cutting board",
+        "fact": "A knife is lying on the counter to the left of the cutting board.",
         "confidence": 1.0
       },
       {
-        "fact": "metal bowls are stacked on a shelf in the background",
+        "fact": "Metal bowls are stacked on a shelf in the background.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The person is standing behind the green cutting board. The large glass bowl is on top of the green cutting board in front of the person. The stainless steel shelf is behind the person. The knife is to the left of the green cutting board.",
+    "spatial": "The person is standing behind the glass bowl, which is placed on the green cutting board. The knife is to the left of the cutting board. The stainless steel shelf with metal bowls is behind the person and the bowl.",
     "parse_success": true,
     "chunk_idx": 52,
     "video_id": "MLRu3ezhgeY"
   },
   {
     "time": [
-      106,
-      108
+      53,
+      54
     ],
     "visible_entities": [
       {
@@ -2604,54 +2553,54 @@
         "position": "center"
       },
       {
-        "desc": "bright green cutting board, flat, plastic surface",
+        "desc": "green cutting board, flat surface",
         "action": "static",
         "position": "background"
       },
       {
-        "desc": "human hand, blurred, light skin tone",
-        "action": "moving near the meatballs",
+        "desc": "human hand, blurry, light skin tone",
+        "action": "moving in upper left",
         "position": "top left"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A hand moves near the top left corner of the frame.",
-        "confidence": 1.0
-      },
-      {
         "fact": "Eight raw meatballs are arranged on a green cutting board.",
         "confidence": 1.0
       },
       {
-        "fact": "The meatballs contain visible white pieces of onion or fat.",
+        "fact": "A blurry hand moves in the upper left corner of the frame.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The meatballs contain visible white pieces mixed with the ground meat.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The raw meatballs are arranged on top of the bright green cutting board. A blurred hand is visible in the top left corner, near the meatballs.",
+    "spatial": "The meatballs are scattered across the center of the green cutting board. The blurry hand is positioned above and to the left of the meatballs.",
     "parse_success": true,
     "chunk_idx": 53,
     "video_id": "MLRu3ezhgeY"
   },
   {
     "time": [
-      108,
-      110
+      54,
+      55
     ],
     "visible_entities": [
       {
-        "desc": "raw meatballs, round, pinkish-brown with visible white specks of fat or onion",
+        "desc": "raw meatballs, pinkish-brown with visible white specks of onion or fat, round shape, textured surface",
         "action": "static",
         "position": "center"
       },
       {
-        "desc": "green cutting board, flat, rectangular",
+        "desc": "green cutting board, smooth plastic surface, rectangular",
         "action": "static",
         "position": "background"
       },
       {
-        "desc": "hand, partially visible, light skin tone",
+        "desc": "hand, light skin tone, partially visible",
         "action": "resting near meatballs",
         "position": "top right"
       }
@@ -2662,93 +2611,97 @@
         "confidence": 1.0
       },
       {
-        "fact": "A hand is visible at the top right edge of the frame.",
+        "fact": "A hand is visible in the top right corner near the meatballs.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The meatballs appear to be freshly formed with visible chunks of ingredients.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The raw meatballs are scattered across the surface of the green cutting board. The hand is positioned at the top right corner, near the uppermost meatballs.",
+    "spatial": "The raw meatballs are scattered across the center of the green cutting board. A hand is positioned at the top right edge of the board, near the uppermost meatballs.",
     "parse_success": true,
     "chunk_idx": 54,
     "video_id": "MLRu3ezhgeY"
   },
   {
     "time": [
-      110,
-      112
+      55,
+      56
     ],
     "visible_entities": [
       {
-        "desc": "raw meatball, pinkish-brown color with visible white chunks of onion or fat, roughly spherical shape",
-        "action": "being placed into the pan",
+        "desc": "raw meatballs, pinkish-brown with visible white chunks of onion or fat, round shape",
+        "action": "being placed into pan",
         "position": "center"
       },
       {
-        "desc": "black non-stick frying pan containing bubbling hot oil and butter",
+        "desc": "black frying pan with bubbling oil and butter",
         "action": "static",
         "position": "center"
       },
       {
         "desc": "human hand, light skin tone",
-        "action": "placing the meatball",
+        "action": "placing meatball",
         "position": "top right"
       },
       {
-        "desc": "green cutting board with multiple raw meatballs",
+        "desc": "green cutting board",
         "action": "static",
         "position": "background"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A hand places a raw meatball into a hot frying pan.",
+        "fact": "A hand is placing a raw meatball into a hot frying pan.",
         "confidence": 1.0
       },
       {
-        "fact": "The frying pan contains bubbling oil and melted butter.",
+        "fact": "The frying pan contains bubbling oil or melted butter.",
         "confidence": 1.0
       },
       {
-        "fact": "Multiple raw meatballs are resting on a green cutting board in the background.",
+        "fact": "Multiple raw meatballs are resting on a green cutting board.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The hand is positioned above the frying pan, placing the meatball inside it. The frying pan is in the foreground, while the green cutting board with other meatballs is visible in the background.",
+    "spatial": "The hand is positioned above the frying pan, lowering a meatball into the hot oil. The frying pan is in the foreground, while the green cutting board with other meatballs is visible in the background.",
     "parse_success": true,
     "chunk_idx": 55,
     "video_id": "MLRu3ezhgeY"
   },
   {
     "time": [
-      112,
-      114
+      56,
+      57
     ],
     "visible_entities": [
       {
         "desc": "hand with fair skin",
-        "action": "placing a meatball into the pan",
+        "action": "placing meatball into pan",
+        "position": "top/center"
+      },
+      {
+        "desc": "black frying pan with bubbling oil",
+        "action": "static",
         "position": "center"
       },
       {
-        "desc": "raw pink meatball with visible white fat specks",
-        "action": "being placed into the pan",
+        "desc": "raw pink meatball with visible white fat chunks",
+        "action": "being placed",
         "position": "center"
       },
       {
-        "desc": "raw pink meatball with visible white fat specks",
-        "action": "sizzling in oil",
+        "desc": "raw pink meatball with visible white fat chunks",
+        "action": "static",
         "position": "bottom right"
       },
       {
-        "desc": "black non-stick frying pan",
-        "action": "containing hot oil",
-        "position": "center"
-      },
-      {
-        "desc": "person wearing a black apron with thin white vertical stripes",
+        "desc": "person wearing black and white striped apron",
         "action": "static",
-        "position": "background"
+        "position": "background left"
       }
     ],
     "atomic_facts": [
@@ -2765,83 +2718,46 @@
         "confidence": 1.0
       },
       {
-        "fact": "A person wearing a striped apron stands behind the stove.",
+        "fact": "A person wearing a striped apron stands in the background.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The frying pan is in the center of the frame, resting on a stove. The hand is positioned above the pan, lowering a meatball into it. One meatball is already sizzling in the bottom right of the pan, while the second is being placed to its left. The person in the striped apron is visible in the background, behind the pan.",
+    "spatial": "The hand is positioned above the frying pan, lowering a meatball into the oil. One meatball is already sitting in the bottom right of the pan, while the second is being placed to its left. The person in the striped apron is standing behind and to the left of the stove.",
     "parse_success": true,
     "chunk_idx": 56,
     "video_id": "MLRu3ezhgeY"
   },
   {
     "time": [
-      114,
-      116
+      57,
+      58
     ],
     "visible_entities": [
       {
-        "desc": "raw meatballs, pinkish-red, round, with visible white chunks of onion or garlic",
+        "desc": "raw pink meatballs with visible white chunks of onion or fat",
         "action": "frying in oil",
         "position": "foreground"
       },
       {
-        "desc": "clear cooking oil, bubbling vigorously",
+        "desc": "clear bubbling oil",
         "action": "boiling",
         "position": "center"
       },
       {
-        "desc": "black non-stick frying pan, round, metallic rim",
+        "desc": "black non-stick frying pan",
         "action": "static",
         "position": "center"
       },
       {
-        "desc": "person wearing a black apron with thin white vertical stripes",
+        "desc": "person wearing a black apron with white vertical stripes",
         "action": "static",
-        "position": "background left"
+        "position": "background"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "Raw meatballs are frying in hot oil inside a black pan.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The oil is bubbling around the meatballs.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "A person wearing a striped apron is standing near the stove.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [],
-    "spatial": "The meatballs are inside the black frying pan. The bubbling oil surrounds the meatballs. The person in the striped apron is to the left of the frying pan.",
-    "parse_success": true,
-    "chunk_idx": 57,
-    "video_id": "MLRu3ezhgeY"
-  },
-  {
-    "time": [
-      116,
-      118
-    ],
-    "visible_entities": [
-      {
-        "desc": "raw meatballs, pinkish-red color, textured surface with visible white chunks of onion or garlic",
-        "action": "simmering in oil",
-        "position": "foreground"
-      },
-      {
-        "desc": "bubbling cooking oil, golden-yellow, foamy",
-        "action": "bubbling",
-        "position": "center"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "Raw meatballs are cooking in a pan.",
+        "fact": "Raw meatballs are frying in hot oil inside a pan.",
         "confidence": 1.0
       },
       {
@@ -2849,25 +2765,62 @@
         "confidence": 1.0
       },
       {
-        "fact": "The meatballs contain visible white ingredients.",
+        "fact": "A person in a striped apron stands behind the stove.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The meatballs are clustered together in the foreground. The bubbling oil is located in the gaps between the meatballs and surrounds them.",
+    "spatial": "The meatballs are inside the black frying pan. The bubbling oil surrounds the meatballs. The person in the striped apron is behind the frying pan.",
+    "parse_success": true,
+    "chunk_idx": 57,
+    "video_id": "MLRu3ezhgeY"
+  },
+  {
+    "time": [
+      58,
+      59
+    ],
+    "visible_entities": [
+      {
+        "desc": "raw meatballs, pinkish-red color, textured surface with visible white chunks of onion or garlic",
+        "action": "sizzling in hot oil",
+        "position": "foreground"
+      },
+      {
+        "desc": "hot cooking oil, clear and bubbling",
+        "action": "bubbling",
+        "position": "center"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "Raw meatballs are frying in hot oil.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The oil is bubbling vigorously around the meatballs.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The meatballs contain visible white pieces of chopped onion or garlic.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "Three meatballs are positioned in the foreground, with one on the left, one on the right, and one at the bottom. The bubbling hot oil is in the center, surrounding the meatballs.",
     "parse_success": true,
     "chunk_idx": 58,
     "video_id": "MLRu3ezhgeY"
   },
   {
     "time": [
-      118,
-      120
+      59,
+      60
     ],
     "visible_entities": [
       {
-        "desc": "round, browned meat patties with a textured, ground-meat surface, sizzling in oil",
-        "action": "frying in a pan",
+        "desc": "round, browned meat patties with a textured surface, sizzling in bubbling oil",
+        "action": "frying",
         "position": "center"
       },
       {
@@ -2876,51 +2829,9 @@
         "position": "center"
       },
       {
-        "desc": "bubbling, golden-brown cooking oil",
-        "action": "boiling",
-        "position": "center"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "Multiple round meat patties are frying in a pan.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The oil is bubbling around the edges of the meat patties.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The meat patties are arranged in a circular pattern inside the pan.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [],
-    "spatial": "The meat patties are inside the black frying pan. The bubbling oil is underneath and surrounding the meat patties. The frying pan is on a stovetop.",
-    "parse_success": true,
-    "chunk_idx": 59,
-    "video_id": "MLRu3ezhgeY"
-  },
-  {
-    "time": [
-      120,
-      122
-    ],
-    "visible_entities": [
-      {
-        "desc": "round meat patties, browned with dark charred spots on top, textured surface with visible white flecks",
-        "action": "frying in oil",
-        "position": "center"
-      },
-      {
-        "desc": "dark non-stick frying pan, circular shape",
+        "desc": "stainless steel kitchen counter and stove surface",
         "action": "static",
         "position": "background"
-      },
-      {
-        "desc": "bubbling hot oil and rendered fat, yellowish-white liquid",
-        "action": "bubbling",
-        "position": "bottom"
       }
     ],
     "atomic_facts": [
@@ -2929,68 +2840,141 @@
         "confidence": 1.0
       },
       {
-        "fact": "The oil is bubbling around the base of the patties.",
+        "fact": "The oil is bubbling around the edges of the meat patties.",
         "confidence": 1.0
       },
       {
-        "fact": "The tops of the patties show signs of browning and charring.",
+        "fact": "The meat patties are arranged in a circular pattern within the pan.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The meat patties are arranged in a circle inside the frying pan. The bubbling oil is underneath and surrounding the patties.",
+    "spatial": "The meat patties are inside the black frying pan. The frying pan is on top of the stove surface. The stainless steel counter is behind the frying pan.",
+    "parse_success": true,
+    "chunk_idx": 59,
+    "video_id": "MLRu3ezhgeY"
+  },
+  {
+    "time": [
+      60,
+      61
+    ],
+    "visible_entities": [
+      {
+        "desc": "round meat patties, browned with dark charred spots on top, textured surface with visible white flecks of fat or onion",
+        "action": "frying in oil",
+        "position": "center"
+      },
+      {
+        "desc": "black non-stick frying pan with a silver metal rim",
+        "action": "static",
+        "position": "background"
+      },
+      {
+        "desc": "bubbling yellowish oil and cooking juices",
+        "action": "bubbling",
+        "position": "center"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "Meat patties are frying in hot oil inside a pan.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The oil is bubbling around the edges of the meat.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The patties have developed a dark brown crust on their upper surfaces.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The meat patties are arranged in a circular pattern inside the black frying pan. The bubbling oil surrounds the patties and fills the gaps between them. The silver rim of the pan is visible along the left edge of the frame.",
     "parse_success": true,
     "chunk_idx": 60,
     "video_id": "MLRu3ezhgeY"
   },
   {
     "time": [
-      122,
-      124
+      61,
+      62
     ],
     "visible_entities": [
       {
-        "desc": "round meat patties, browned and seared with dark char marks, sizzling in bubbling oil",
-        "action": "frying",
+        "desc": "round meat patties, browned with dark charred spots, sizzling in oil",
+        "action": "frying in a pan",
         "position": "foreground"
       },
       {
         "desc": "man with short spiky blonde hair, wearing a white chef's coat",
-        "action": "static",
-        "position": "center"
-      },
-      {
-        "desc": "stainless steel kitchen hood and equipment",
         "action": "static",
         "position": "background"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "Round meat patties are frying in hot oil.",
+        "fact": "The meat patties are frying in hot oil.",
         "confidence": 1.0
       },
       {
-        "fact": "A man in a white chef's coat is looking at the camera.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The text 'ZANUSSI' is visible on the kitchen equipment.",
+        "fact": "A man in a white chef's coat is visible in the background.",
         "confidence": 1.0
       }
     ],
-    "ocr": [
-      "ZANUSSI"
-    ],
-    "spatial": "The frying meat patties are in the foreground. The man in the white chef's coat is behind the pan of food. The stainless steel kitchen hood is above the man.",
+    "ocr": [],
+    "spatial": "The frying meat patties are in the foreground. The man in the white chef's coat is behind the food.",
     "parse_success": true,
     "chunk_idx": 61,
     "video_id": "MLRu3ezhgeY"
   },
   {
     "time": [
-      124,
-      126
+      62,
+      63
+    ],
+    "visible_entities": [
+      {
+        "desc": "man with short, spiky greyish-blonde hair, wearing a white chef's jacket",
+        "action": "speaking",
+        "position": "center/foreground"
+      },
+      {
+        "desc": "large silver metal ventilation hood",
+        "action": "static",
+        "position": "background/top"
+      },
+      {
+        "desc": "stainless steel commercial kitchen equipment",
+        "action": "static",
+        "position": "background/right"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The man in the white chef's jacket is speaking.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A silver ventilation hood is mounted above the man.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "Stainless steel equipment is visible in the background.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The man is in the foreground, centered in the frame. The large silver ventilation hood is above and behind him. The stainless steel equipment is to the right of the man in the background.",
+    "parse_success": true,
+    "chunk_idx": 62,
+    "video_id": "MLRu3ezhgeY"
+  },
+  {
+    "time": [
+      63,
+      64
     ],
     "visible_entities": [
       {
@@ -2999,14 +2983,14 @@
         "position": "center/foreground"
       },
       {
-        "desc": "stainless steel ventilation hood",
+        "desc": "silver metal ventilation hood",
         "action": "static",
-        "position": "top/background"
+        "position": "background/top"
       },
       {
-        "desc": "silver commercial kitchen appliance with a black control panel",
+        "desc": "stainless steel kitchen equipment with a label",
         "action": "static",
-        "position": "right/background"
+        "position": "background/right"
       }
     ],
     "atomic_facts": [
@@ -3015,70 +2999,26 @@
         "confidence": 1.0
       },
       {
-        "fact": "The man is positioned in front of the kitchen equipment.",
+        "fact": "The man's mouth is open in both frames.",
         "confidence": 1.0
       },
       {
-        "fact": "The ventilation hood is located above the man.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [
-      "ZANUSSI"
-    ],
-    "spatial": "The man with blonde hair is in the center foreground, positioned in front of the stainless steel ventilation hood. To the right of the man, a silver Zanussi appliance is visible in the background.",
-    "parse_success": true,
-    "chunk_idx": 62,
-    "video_id": "MLRu3ezhgeY"
-  },
-  {
-    "time": [
-      126,
-      128
-    ],
-    "visible_entities": [
-      {
-        "desc": "man with short spiky blonde hair, wearing a white chef's coat",
-        "action": "speaking",
-        "position": "center"
-      },
-      {
-        "desc": "metal ventilation hood, silver, industrial",
-        "action": "static",
-        "position": "background"
-      },
-      {
-        "desc": "stainless steel kitchen equipment",
-        "action": "static",
-        "position": "right"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "man with short spiky blonde hair is speaking",
-        "confidence": 1.0
-      },
-      {
-        "fact": "the man is wearing a white chef's coat",
-        "confidence": 1.0
-      },
-      {
-        "fact": "a metal ventilation hood is visible in the background",
+        "fact": "The stainless steel equipment has a label reading 'ZAMPINO'.",
         "confidence": 1.0
       }
     ],
     "ocr": [
-      "ZAMPIRO"
+      "ZAMPINO"
     ],
-    "spatial": "The man with short spiky blonde hair is in the center foreground. The metal ventilation hood is above and behind him. The stainless steel kitchen equipment is to the right of the man.",
+    "spatial": "The man is in the foreground, positioned in front of the silver ventilation hood. The stainless steel equipment is to the right of the man and behind him.",
     "parse_success": true,
     "chunk_idx": 63,
     "video_id": "MLRu3ezhgeY"
   },
   {
     "time": [
-      128,
-      130
+      64,
+      65
     ],
     "visible_entities": [
       {
@@ -3087,22 +3027,18 @@
         "position": "center/foreground"
       },
       {
-        "desc": "red circular logo with white text and a mushroom icon",
+        "desc": "red circular logo with white text and a stylized mushroom icon",
         "action": "static",
-        "position": "right/foreground"
+        "position": "center"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "man with short spiky blonde hair looks at the camera",
+        "fact": "A man in a white chef's coat is looking at the camera.",
         "confidence": 1.0
       },
       {
-        "fact": "red circular logo is displayed on the right side of the screen",
-        "confidence": 1.0
-      },
-      {
-        "fact": "the logo contains the text 'De groente die alles kan!' and 'champignonidee.nl'",
+        "fact": "A red logo displays the text 'De groente die alles kan!' and 'champignonidee.nl'.",
         "confidence": 1.0
       }
     ],
@@ -3110,19 +3046,19 @@
       "De groente die alles kan!",
       "champignonidee.nl"
     ],
-    "spatial": "The man is positioned in the center of the frame, while the red circular logo is to his right.",
+    "spatial": "The man in the white chef's coat is in the foreground of the first frame. The red circular logo is centered in the second frame.",
     "parse_success": true,
     "chunk_idx": 64,
     "video_id": "MLRu3ezhgeY"
   },
   {
     "time": [
-      130,
-      132
+      65,
+      66
     ],
     "visible_entities": [
       {
-        "desc": "Red circular logo containing a white stylized mushroom icon with radiating lines, surrounded by white text in a handwritten-style font.",
+        "desc": "red circular logo with a white stylized mushroom icon in the center, surrounded by radiating white lines resembling a lightbulb, with white text curved along the top and bottom edges",
         "action": "static",
         "position": "center"
       }
@@ -3133,11 +3069,11 @@
         "confidence": 1.0
       },
       {
-        "fact": "The text 'De groente die alles kan!' is curved along the top edge of the logo.",
+        "fact": "The text 'De groente die alles kan!' is visible along the top curve of the logo.",
         "confidence": 1.0
       },
       {
-        "fact": "The text 'champignonidee.nl' is curved along the bottom edge of the logo.",
+        "fact": "The text 'champignonidee.nl' is visible along the bottom curve of the logo.",
         "confidence": 1.0
       }
     ],
@@ -3145,47 +3081,43 @@
       "De groente die alles kan!",
       "champignonidee.nl"
     ],
-    "spatial": "The white mushroom icon is in the center of the red circle. The text 'De groente die alles kan!' is above the mushroom icon. The text 'champignonidee.nl' is below the mushroom icon.",
+    "spatial": "The white mushroom icon is in the center of the red circle. The text 'De groente die alles kan!' is above the mushroom icon, and the text 'champignonidee.nl' is below it.",
     "parse_success": true,
     "chunk_idx": 65,
     "video_id": "MLRu3ezhgeY"
   },
   {
     "time": [
-      132,
-      134
+      66,
+      67
     ],
     "visible_entities": [
       {
-        "desc": "Red circular logo containing a white stylized mushroom icon with radiating lines, white text 'De groente die alles kan!' arched at the top, and white text 'champignonidee.nl' arched at the bottom.",
+        "desc": "red circular logo containing a white stylized mushroom icon with radiating lines, surrounded by white text",
         "action": "static",
         "position": "center"
       },
       {
-        "desc": "Rectangular banner with a blue background featuring a circle of yellow stars (European Union flag) on the left side and a white text box on the right side.",
+        "desc": "rectangular banner with the European Union flag (blue background with yellow stars) on the left and a white text box on the right",
         "action": "static",
         "position": "center"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A red circular logo with a white mushroom icon and Dutch text is displayed.",
+        "fact": "A red circular logo with a white mushroom icon is displayed.",
         "confidence": 1.0
       },
       {
-        "fact": "A banner indicating co-financing by the European Community is displayed.",
+        "fact": "A banner stating the campaign is co-financed by the European Community is displayed.",
         "confidence": 1.0
       },
       {
-        "fact": "The text 'De groente die alles kan!' is visible on the red logo.",
+        "fact": "The text 'De groente die alles kan!' is visible on the logo.",
         "confidence": 1.0
       },
       {
-        "fact": "The text 'champignonidee.nl' is visible on the red logo.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The text 'Door de Europese Gemeenschap medegefinancierde campagne.' is visible on the banner.",
+        "fact": "The text 'champignonidee.nl' is visible on the logo.",
         "confidence": 1.0
       }
     ],
@@ -3194,29 +3126,35 @@
       "champignonidee.nl",
       "Door de Europese Gemeenschap medegefinancierde campagne."
     ],
-    "spatial": "The red circular logo is positioned above the rectangular European Community banner. The text 'De groente die alles kan!' is located above the mushroom icon within the red circle. The text 'champignonidee.nl' is located below the mushroom icon within the red circle.",
+    "spatial": "The red circular logo is positioned above the rectangular European Community banner. The EU flag symbol is to the left of the text within the banner.",
     "parse_success": true,
     "chunk_idx": 66,
     "video_id": "MLRu3ezhgeY"
   },
   {
     "time": [
-      134,
-      136
+      67,
+      68
     ],
     "visible_entities": [
       {
-        "desc": "European Union flag symbol (blue rectangle with a circle of twelve yellow stars) and a white rectangular text box with black sans-serif text",
-        "action": "static"
+        "desc": "European Union flag symbol, consisting of a blue rectangle with a circle of twelve yellow stars",
+        "action": "static",
+        "position": "left"
+      },
+      {
+        "desc": "Black text on a white background inside a rectangular border",
+        "action": "static",
+        "position": "right"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "The European Union flag and text box are static on the screen.",
+        "fact": "The European Union flag is displayed on the left side of the frame.",
         "confidence": 1.0
       },
       {
-        "fact": "The text reads 'Door de Europese Gemeenschap medegefinancierde campagne.'.",
+        "fact": "The text 'Door de Europese Gemeenschap medegefinancierde campagne.' is displayed to the right of the flag.",
         "confidence": 1.0
       }
     ],
@@ -3224,44 +3162,44 @@
       "Door de Europese Gemeenschap",
       "medegefinancierde campagne."
     ],
-    "spatial": "The blue European Union flag symbol is located on the left side of the frame. The white text box containing the Dutch text is positioned immediately to the right of the flag symbol.",
+    "spatial": "The European Union flag is to the left of the text box. The text is contained within a rectangular border that is adjacent to the flag.",
     "parse_success": true,
     "chunk_idx": 67,
     "video_id": "MLRu3ezhgeY"
   },
   {
     "time": [
-      136,
-      138
+      68,
+      69
     ],
     "visible_entities": [
       {
-        "desc": "European Union flag logo, rectangular shape with a blue background and a circle of twelve yellow stars",
+        "desc": "European Union flag logo, blue rectangle with circle of yellow stars",
         "action": "static",
         "position": "left"
       },
       {
-        "desc": "Text block containing the phrase 'Door de Europese Gemeenschap medegefinancierde campagne.' in black sans-serif font",
+        "desc": "Dutch text in black sans-serif font",
         "action": "static",
-        "position": "center"
+        "position": "center-right"
       },
       {
-        "desc": "Facebook logo icon, a blue square with a white lowercase 'f'",
-        "action": "static",
-        "position": "left"
-      },
-      {
-        "desc": "Twitter logo icon, a light blue square with a white bird silhouette",
+        "desc": "Facebook logo, blue square with white 'f'",
         "action": "static",
         "position": "left"
       },
       {
-        "desc": "Facebook URL text 'www.facebook.com/champignonidee' in red font",
+        "desc": "Twitter logo, light blue square with white 't'",
+        "action": "static",
+        "position": "left"
+      },
+      {
+        "desc": "Facebook URL text in red font",
         "action": "static",
         "position": "right"
       },
       {
-        "desc": "Twitter URL text 'www.twitter.com/champignonidee' in red font",
+        "desc": "Twitter URL text in red font",
         "action": "static",
         "position": "right"
       }
@@ -3276,70 +3214,63 @@
         "confidence": 1.0
       },
       {
-        "fact": "The Facebook URL is displayed to the right of the Facebook logo.",
+        "fact": "The text 'www.facebook.com/champignonidee' is displayed next to the Facebook logo.",
         "confidence": 1.0
       },
       {
-        "fact": "The Twitter URL is displayed to the right of the Twitter logo.",
+        "fact": "The text 'www.twitter.com/champignonidee' is displayed next to the Twitter logo.",
         "confidence": 1.0
       }
     ],
     "ocr": [
-      "Door de Europese Gemeenschap medegefinancierde campagne.",
+      "Door de Europese Gemeenschap",
+      "medegefinancierde campagne.",
       "www.facebook.com/champignonidee",
       "www.twitter.com/champignonidee"
     ],
-    "spatial": "The European Union flag is to the left of the text 'Door de Europese Gemeenschap medegefinancierde campagne.'. The Facebook logo is above the Twitter logo. The Facebook URL is to the right of the Facebook logo, and the Twitter URL is to the right of the Twitter logo.",
+    "spatial": "The European Union flag is to the left of the Dutch text. The Facebook logo is above the Twitter logo. The Facebook URL is to the right of the Facebook logo, and the Twitter URL is to the right of the Twitter logo.",
     "parse_success": true,
     "chunk_idx": 68,
     "video_id": "MLRu3ezhgeY"
   },
   {
     "time": [
-      138,
-      140
+      69,
+      70
     ],
     "visible_entities": [
       {
-        "desc": "blue square icon with rounded corners containing a white lowercase 'f'",
+        "desc": "glossy blue square icon with rounded corners containing a white lowercase 'f'",
         "action": "static",
         "position": "left"
       },
       {
-        "desc": "light blue square icon with rounded corners containing a white lowercase 't'",
+        "desc": "glossy light blue square icon with rounded corners containing a white lowercase 't'",
         "action": "static",
         "position": "left"
       },
       {
-        "desc": "red text reading 'www.facebook.com/champignonidee'",
+        "desc": "maroon text reading 'www.facebook.com/champignonidee' in a sans-serif font",
         "action": "static",
-        "position": "center"
+        "position": "center-right"
       },
       {
-        "desc": "red text reading 'www.twitter.com/champignonidee'",
+        "desc": "maroon text reading 'www.twitter.com/champignonidee' in a sans-serif font",
         "action": "static",
-        "position": "center"
+        "position": "center-right"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "The Facebook icon is positioned above the Twitter icon.",
+        "fact": "The Facebook logo is positioned above the Twitter logo.",
         "confidence": 1.0
       },
       {
-        "fact": "The Facebook URL text is positioned to the right of the Facebook icon.",
+        "fact": "The text 'www.facebook.com/champignonidee' is displayed to the right of the Facebook logo.",
         "confidence": 1.0
       },
       {
-        "fact": "The Twitter URL text is positioned to the right of the Twitter icon.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The text 'www.facebook.com/champignonidee' is visible.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The text 'www.twitter.com/champignonidee' is visible.",
+        "fact": "The text 'www.twitter.com/champignonidee' is displayed to the right of the Twitter logo.",
         "confidence": 1.0
       }
     ],
@@ -3347,49 +3278,53 @@
       "www.facebook.com/champignonidee",
       "www.twitter.com/champignonidee"
     ],
-    "spatial": "The blue Facebook icon is located on the left side of the screen, above the light blue Twitter icon. The red Facebook URL text is to the right of the Facebook icon. The red Twitter URL text is to the right of the Twitter icon.",
+    "spatial": "The Facebook logo is above the Twitter logo on the left side of the screen. The Facebook URL text is to the right of the Facebook logo, and the Twitter URL text is to the right of the Twitter logo.",
     "parse_success": true,
     "chunk_idx": 69,
     "video_id": "MLRu3ezhgeY"
   },
   {
     "time": [
-      140,
-      142
+      70,
+      71
     ],
     "visible_entities": [
       {
-        "desc": "blue glossy square icon with a white lowercase 'f' logo",
+        "desc": "blue glossy square icon with rounded corners featuring a white lowercase 'f' logo",
         "action": "static",
-        "position": "left"
+        "position": "top left"
       },
       {
-        "desc": "light blue glossy square icon with a white lowercase 't' logo",
+        "desc": "light blue glossy square icon with rounded corners featuring a white lowercase 't' logo",
         "action": "static",
-        "position": "left"
+        "position": "bottom left"
       },
       {
-        "desc": "red text URL string",
+        "desc": "red text string displaying a Facebook URL",
         "action": "static",
-        "position": "right"
+        "position": "center right"
       },
       {
-        "desc": "red text URL string",
+        "desc": "red text string displaying a Twitter URL",
         "action": "static",
-        "position": "right"
+        "position": "center right"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "The Facebook icon is displayed above the Twitter icon.",
+        "fact": "The image displays social media contact information.",
         "confidence": 1.0
       },
       {
-        "fact": "The text 'www.facebook.com/champignonidee' is displayed next to the Facebook icon.",
+        "fact": "The Facebook URL is 'www.facebook.com/champignonidee'.",
         "confidence": 1.0
       },
       {
-        "fact": "The text 'www.twitter.com/champignonidee' is displayed next to the Twitter icon.",
+        "fact": "The Twitter URL is 'www.twitter.com/champignonidee'.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The Facebook icon is positioned above the Twitter icon.",
         "confidence": 1.0
       }
     ],
@@ -3397,15 +3332,15 @@
       "www.facebook.com/champignonidee",
       "www.twitter.com/champignonidee"
     ],
-    "spatial": "The Facebook icon is positioned on the left side of the screen, above the Twitter icon. The Facebook URL text is to the right of the Facebook icon, and the Twitter URL text is to the right of the Twitter icon.",
+    "spatial": "The blue Facebook icon is located in the top left, directly above the light blue Twitter icon. The red text containing the Facebook URL is to the right of the Facebook icon. The red text containing the Twitter URL is to the right of the Twitter icon and below the Facebook URL text.",
     "parse_success": true,
     "chunk_idx": 70,
     "video_id": "MLRu3ezhgeY"
   },
   {
     "time": [
-      142,
-      144
+      71,
+      72
     ],
     "visible_entities": [
       {
@@ -3419,12 +3354,12 @@
         "position": "left"
       },
       {
-        "desc": "red text displaying a Facebook URL",
+        "desc": "red text reading 'www.facebook.com/champignonidee'",
         "action": "static",
         "position": "center-right"
       },
       {
-        "desc": "red text displaying a Twitter URL",
+        "desc": "red text reading 'www.twitter.com/champignonidee'",
         "action": "static",
         "position": "center-right"
       }
@@ -3444,12 +3379,10 @@
       }
     ],
     "ocr": [
-      "f",
       "www.facebook.com/champignonidee",
-      "t",
       "www.twitter.com/champignonidee"
     ],
-    "spatial": "The Facebook icon is located in the upper left portion of the screen, while the Twitter icon is directly below it. To the right of the Facebook icon is the text 'www.facebook.com/champignonidee'. To the right of the Twitter icon is the text 'www.twitter.com/champignonidee'.",
+    "spatial": "The Facebook icon is located in the upper left area, directly above the Twitter icon. The Facebook URL text is positioned to the right of the Facebook icon. The Twitter URL text is positioned to the right of the Twitter icon, below the Facebook URL.",
     "parse_success": true,
     "chunk_idx": 71,
     "video_id": "MLRu3ezhgeY"

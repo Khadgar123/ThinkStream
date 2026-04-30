@@ -2,13 +2,13 @@
   {
     "time": [
       0,
-      2
+      1
     ],
     "visible_entities": [
       {
         "desc": "young person with short black hair, dark skin, wearing a light grey hooded sweatshirt",
-        "action": "looking at the camera",
-        "position": "center"
+        "action": "looking at the camera and turning head to the right",
+        "position": "center/foreground"
       },
       {
         "desc": "white kitchen cabinets with a smooth finish",
@@ -16,9 +16,9 @@
         "position": "background"
       },
       {
-        "desc": "white microwave oven with black vents",
+        "desc": "white microwave oven with a black window and control panel",
         "action": "static",
-        "position": "right"
+        "position": "right/background"
       },
       {
         "desc": "white tiled backsplash with small decorative patterns",
@@ -28,110 +28,84 @@
     ],
     "atomic_facts": [
       {
-        "fact": "The person is looking directly at the camera.",
+        "fact": "The person in the grey hoodie turns their head from facing forward to facing the right side of the frame.",
         "confidence": 1.0
       },
       {
-        "fact": "The person is standing in front of white kitchen cabinets.",
+        "fact": "The person is positioned in front of the white kitchen cabinets.",
         "confidence": 1.0
       },
       {
-        "fact": "A white microwave is visible on the right side of the frame.",
+        "fact": "A white microwave is mounted under the cabinets on the right side of the frame.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The person is in the foreground, centered in the frame. The white kitchen cabinets are behind the person. The white microwave is to the right of the person and mounted above the tiled backsplash.",
+    "spatial": "The person is in the foreground, positioned in front of the white kitchen cabinets. The microwave is to the right of the person and mounted under the cabinets. The tiled backsplash is below the cabinets and behind the person.",
     "parse_success": true,
     "chunk_idx": 0,
     "video_id": "v_4ivePL3RW0Q"
   },
   {
     "time": [
-      2,
-      4
+      1,
+      2
     ],
     "visible_entities": [
       {
-        "desc": "young person with short dark hair, dark eyebrows, wearing a red collared shirt",
-        "action": "touching chin with fingers",
-        "position": "center/foreground"
+        "desc": "young male with short dark hair, wearing a red collared shirt",
+        "action": "touching chin with hand",
+        "position": "center foreground"
       },
       {
-        "desc": "white microwave oven with a digital keypad and a dark display window",
+        "desc": "white microwave oven with a digital keypad and black vents",
         "action": "static",
-        "position": "background/upper right"
+        "position": "background right"
       },
       {
         "desc": "white kitchen cabinets",
         "action": "static",
-        "position": "background/left"
+        "position": "background left"
       },
       {
-        "desc": "white tiled backsplash with small orange floral patterns",
+        "desc": "white tiled backsplash with faint orange floral patterns",
         "action": "static",
-        "position": "background/bottom"
+        "position": "background bottom"
+      },
+      {
+        "desc": "translucent plastic container",
+        "action": "static",
+        "position": "bottom left"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "The person is touching their chin with their right hand.",
+        "fact": "The young male is touching his chin with his left hand.",
         "confidence": 1.0
       },
       {
-        "fact": "The person is looking slightly downwards and to the right.",
+        "fact": "A white microwave is mounted above the counter.",
         "confidence": 1.0
       },
       {
-        "fact": "A white microwave is mounted above the counter behind the person.",
+        "fact": "A translucent container sits on the counter to the left.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The person is in the foreground, positioned in front of the white microwave and cabinets. The microwave is to the right of the cabinets and above the tiled backsplash.",
+    "spatial": "The young male is in the foreground, positioned in front of the white microwave and kitchen cabinets. The microwave is to the right of the cabinets and above the tiled backsplash. The translucent container is on the counter to the left of the male.",
     "parse_success": true,
     "chunk_idx": 1,
     "video_id": "v_4ivePL3RW0Q"
   },
   {
     "time": [
-      4,
-      6
+      2,
+      3
     ],
     "visible_entities": [
       {
-        "desc": "white text in a stylized, bold serif font with irregular capitalization",
-        "action": "static",
-        "position": "center"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "The text 'Epic Baking: Cookies' is displayed on the screen.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The text remains static throughout the duration.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [
-      "Epic Baking:",
-      "Cookies"
-    ],
-    "spatial": "The text 'Epic Baking:' is positioned above the text 'Cookies'. Both lines of text are centered horizontally and vertically against a black background.",
-    "parse_success": true,
-    "chunk_idx": 2,
-    "video_id": "v_4ivePL3RW0Q"
-  },
-  {
-    "time": [
-      6,
-      8
-    ],
-    "visible_entities": [
-      {
-        "desc": "white text on a black background reading 'Epic Baking: Cookies', with 'Epic Baking:' on the top line and 'Cookies' on the bottom line",
+        "desc": "White text reading 'Epic Baking:' on the top line and 'Cookies' on the bottom line, displayed in a stylized serif font with varying capitalization against a solid black background.",
         "action": "static"
       }
     ],
@@ -141,7 +115,7 @@
         "confidence": 1.0
       },
       {
-        "fact": "The text is white and the background is black.",
+        "fact": "The text remains static throughout the clip.",
         "confidence": 1.0
       }
     ],
@@ -149,21 +123,20 @@
       "Epic Baking:",
       "Cookies"
     ],
-    "spatial": "The text 'Epic Baking:' is above the text 'Cookies'. Both lines of text are centered on the black background.",
+    "spatial": "The text 'Epic Baking:' is positioned above the text 'Cookies'. Both lines of text are centered horizontally and vertically within the black background.",
     "parse_success": true,
-    "chunk_idx": 3,
+    "chunk_idx": 2,
     "video_id": "v_4ivePL3RW0Q"
   },
   {
     "time": [
-      8,
-      10
+      3,
+      4
     ],
     "visible_entities": [
       {
-        "desc": "White text reading 'Epic Baking: Cookies' in a serif font on a black background",
-        "action": "static",
-        "position": "center"
+        "desc": "White text on a black background. The top line reads 'Epic Baking:' in a serif font with mixed capitalization (Title Case). The bottom line reads 'Cookies' in a serif font with Title Case.",
+        "action": "static"
       }
     ],
     "atomic_facts": [
@@ -172,7 +145,11 @@
         "confidence": 1.0
       },
       {
-        "fact": "The text is white against a black background.",
+        "fact": "The text is white against a solid black background.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The text is arranged in two centered lines.",
         "confidence": 1.0
       }
     ],
@@ -180,34 +157,60 @@
       "Epic Baking:",
       "Cookies"
     ],
-    "spatial": "The text 'Epic Baking:' is positioned above the word 'Cookies'. Both lines of text are centered horizontally on the black background.",
+    "spatial": "The text 'Epic Baking:' is positioned above the text 'Cookies'. Both lines of text are centered horizontally and vertically on the black background.",
+    "parse_success": true,
+    "chunk_idx": 3,
+    "video_id": "v_4ivePL3RW0Q"
+  },
+  {
+    "time": [
+      4,
+      5
+    ],
+    "visible_entities": [
+      {
+        "desc": "White text reading 'Epic Baking: Cookies' in a serif font, centered on a black background.",
+        "action": "static"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The text 'Epic Baking: Cookies' is displayed on the screen.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "Epic Baking:",
+      "Cookies"
+    ],
+    "spatial": "The text 'Epic Baking:' is positioned above the word 'Cookies'. Both lines of text are centered horizontally and vertically within the frame.",
     "parse_success": true,
     "chunk_idx": 4,
     "video_id": "v_4ivePL3RW0Q"
   },
   {
     "time": [
-      10,
-      12
+      5,
+      6
     ],
     "visible_entities": [
       {
-        "desc": "yellow and white striped bag of ShopRite Enriched All Purpose Flour with red 'BLEACHED' label",
+        "desc": "yellow and white striped bag of ShopRite Enriched All Purpose Flour with red and black text",
         "action": "static",
         "position": "left"
       },
       {
-        "desc": "white bag of sugar with blue line-drawing illustrations of baskets",
+        "desc": "white bag of sugar with blue and black illustrations of baskets",
         "action": "static",
         "position": "center"
       },
       {
-        "desc": "yellow and clear plastic bag containing brown sugar",
+        "desc": "yellow bag of brown sugar with clear window showing brown contents",
         "action": "static",
         "position": "right"
       },
       {
-        "desc": "white text overlay with ingredient measurements",
+        "desc": "white text overlay indicating ingredient measurements",
         "action": "static",
         "position": "foreground"
       }
@@ -218,15 +221,15 @@
         "confidence": 1.0
       },
       {
-        "fact": "Text overlay indicates '3 cups All-Purpose Flour'.",
+        "fact": "Text overlay specifies '3 cups All-Purpose Flour'.",
         "confidence": 1.0
       },
       {
-        "fact": "Text overlay indicates '1 cup white sugar'.",
+        "fact": "Text overlay specifies '1 cup white sugar'.",
         "confidence": 1.0
       },
       {
-        "fact": "Text overlay indicates '1 cup brown sugar'.",
+        "fact": "Text overlay specifies '1 cup brown sugar'.",
         "confidence": 1.0
       }
     ],
@@ -236,67 +239,62 @@
       "All Purpose",
       "Flour",
       "BLEACHED",
-      "3 cups All-Purpose",
-      "Flour",
+      "3 cups All-Purpose Flour",
       "1 cup white sugar",
       "1 cup brown sugar"
     ],
-    "spatial": "The bag of flour is positioned on the left side of the frame. The bag of white sugar is in the center, to the right of the flour. The bag of brown sugar is on the far right, next to the white sugar. The text overlays are superimposed on top of the corresponding ingredient bags.",
+    "spatial": "The bag of flour is positioned on the left side of the frame. The bag of white sugar is located in the center, to the right of the flour. The bag of brown sugar is on the far right, next to the white sugar. Text overlays appear in the foreground, superimposed over the respective ingredient bags.",
     "parse_success": true,
     "chunk_idx": 5,
     "video_id": "v_4ivePL3RW0Q"
   },
   {
     "time": [
-      12,
-      14
+      6,
+      7
     ],
     "visible_entities": [
       {
-        "desc": "clear glass jar with a yellow label featuring red and orange text and an image of ginger root",
+        "desc": "clear glass jar with a yellow label featuring the red 'SWAD' logo and the text 'GINGER PASTE', containing a beige paste",
         "action": "static",
         "position": "left"
       },
       {
-        "desc": "orange cardboard box with a red circular logo containing an arm holding a hammer",
+        "desc": "orange cardboard box with the 'ARM & HAMMER' logo and the text 'Pure Baking Soda'",
         "action": "static",
         "position": "center-left"
       },
       {
-        "desc": "dark brown glass bottle with a label",
+        "desc": "yellow and red plastic bag of 'Chocolate CHIPS' labeled 'SEMI-SWEET'",
         "action": "static",
-        "position": "center-right"
+        "position": "foreground"
       },
       {
-        "desc": "yellow plastic bag with red and black text and a red oval logo",
+        "desc": "dark brown bottle with a label, partially obscured",
         "action": "static",
-        "position": "right"
+        "position": "background"
       },
       {
-        "desc": "white and blue patterned packaging, partially visible",
+        "desc": "white bag with blue and black text, partially visible",
         "action": "static",
         "position": "far left"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "The camera pans from left to right across a collection of baking ingredients.",
+        "fact": "The camera pans from left to right, revealing a collection of baking ingredients.",
         "confidence": 1.0
       },
       {
-        "fact": "A jar of ginger paste is positioned on the left side of the frame.",
+        "fact": "A jar of Swad Ginger Paste is positioned to the left of the Arm & Hammer Baking Soda box.",
         "confidence": 1.0
       },
       {
-        "fact": "A box of Arm & Hammer baking soda is positioned in the center.",
+        "fact": "A bag of semi-sweet chocolate chips lies horizontally in the foreground.",
         "confidence": 1.0
       },
       {
-        "fact": "A bag of chocolate chips is lying horizontally in the foreground on the right.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "A dark bottle is standing behind the bag of chocolate chips.",
+        "fact": "A dark bottle stands behind the baking soda and chocolate chips.",
         "confidence": 1.0
       }
     ],
@@ -308,58 +306,50 @@
       "Chocolate CHIPS",
       "SEMI-SWEET"
     ],
-    "spatial": "The jar of ginger paste is to the left of the orange baking soda box. The dark brown bottle is behind the yellow bag of chocolate chips. The bag of chocolate chips is in the foreground to the right of the baking soda box.",
+    "spatial": "The jar of ginger paste is to the left of the orange baking soda box. The bag of chocolate chips is in front of the baking soda box and the dark bottle. The dark bottle is behind the bag of chocolate chips.",
     "parse_success": true,
     "chunk_idx": 6,
     "video_id": "v_4ivePL3RW0Q"
   },
   {
     "time": [
-      14,
-      16
+      7,
+      8
     ],
     "visible_entities": [
       {
-        "desc": "clear glass jar with a yellow label featuring the red 'SWAD' logo and text 'GINGER PASTE'",
+        "desc": "glass jar with yellow label reading 'SWAD Ginger Paste'",
         "action": "static",
         "position": "left"
       },
       {
-        "desc": "orange cardboard box with the 'ARM & HAMMER' logo and text 'Pure Baking Soda'",
+        "desc": "orange box of Arm & Hammer Pure Baking Soda",
         "action": "static",
         "position": "center-left"
       },
       {
-        "desc": "dark brown bottle with a label reading 'SPICE CLASSICS'",
+        "desc": "dark brown bottle of Spice Classics vanilla extract",
         "action": "static",
         "position": "center-right"
       },
       {
-        "desc": "yellow and red plastic bag labeled 'SEMI-SWEET' chocolate chips",
+        "desc": "yellow and red bag of semi-sweet chocolate chips",
         "action": "static",
         "position": "foreground"
       },
       {
-        "desc": "white text overlay listing recipe ingredients and measurements",
+        "desc": "white text overlays listing ingredient quantities",
         "action": "static",
         "position": "overlay"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "The video displays a collection of baking ingredients arranged on a surface.",
+        "fact": "Ingredients are arranged on a white surface.",
         "confidence": 1.0
       },
       {
-        "fact": "Text overlays identify the ingredients as 1 teaspoon baking soda, 1/2 teaspoon salt, 2 teaspoons hot water, 2 teaspoons vanilla extract, and 2 cups semi-sweet chocolate chips.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The Arm & Hammer baking soda box is positioned behind the bag of chocolate chips.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The Swad ginger paste jar is located to the left of the baking soda box.",
+        "fact": "Text overlays specify '1 teaspoon baking soda', '1/2 teaspoon salt', '2 teaspoons hot water', '2 teaspoons vanilla extract', and '2 cups semi-sweet chocolate chips'.",
         "confidence": 1.0
       }
     ],
@@ -377,40 +367,64 @@
       "SEMI-SWEET",
       "NET WT 12-OZ (340g)"
     ],
-    "spatial": "The jar of ginger paste is to the left of the orange baking soda box. The bag of chocolate chips lies in the foreground, partially obscuring the bottom of the baking soda box and the vanilla extract bottle. The dark vanilla extract bottle stands to the right of the baking soda box and behind the chocolate chips.",
+    "spatial": "The jar of ginger paste is to the left of the baking soda box. The vanilla extract bottle is behind the bag of chocolate chips. The bag of chocolate chips is in the foreground, lying horizontally across the bottom of the frame. The text overlays are superimposed over the ingredients.",
     "parse_success": true,
     "chunk_idx": 7,
     "video_id": "v_4ivePL3RW0Q"
   },
   {
     "time": [
-      16,
-      18
+      8,
+      9
     ],
     "visible_entities": [
       {
-        "desc": "young person with short dark hair, wearing a grey hooded sweatshirt with an orange letter 'C' logo on the chest",
+        "desc": "young person with short black hair, wearing a grey hooded sweatshirt with an orange letter 'C' on the chest",
         "action": "looking into the refrigerator",
         "position": "right"
       },
       {
-        "desc": "refrigerator interior with glass shelves, containing various jars with colorful lids (green, orange, white) and a red bottle",
+        "desc": "open refrigerator interior with white shelves and various food jars",
         "action": "static",
         "position": "left"
       },
       {
-        "desc": "rectangular label with white text on a dark background",
+        "desc": "white rectangular label with black text",
         "action": "static",
         "position": "top left"
+      },
+      {
+        "desc": "glass jar with a white lid containing brown food",
+        "action": "static",
+        "position": "left"
+      },
+      {
+        "desc": "glass jar with a green lid",
+        "action": "static",
+        "position": "center"
+      },
+      {
+        "desc": "glass jar with an orange lid",
+        "action": "static",
+        "position": "center"
+      },
+      {
+        "desc": "red bottle, likely ketchup or sauce",
+        "action": "static",
+        "position": "center right"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A young person is standing in front of an open refrigerator.",
+        "fact": "The person is standing to the right of the open refrigerator.",
         "confidence": 1.0
       },
       {
-        "fact": "The refrigerator shelves are stocked with jars and bottles.",
+        "fact": "The person is looking inside the refrigerator.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The refrigerator door is open, revealing shelves stocked with jars and bottles.",
         "confidence": 1.0
       },
       {
@@ -421,30 +435,30 @@
     "ocr": [
       "CREAM CHEESE"
     ],
-    "spatial": "The young person is positioned to the right of the open refrigerator. Inside the refrigerator, the 'CREAM CHEESE' label is located on the top shelf, above the jars and bottles arranged on the lower shelf.",
+    "spatial": "The person is to the right of the open refrigerator. The 'CREAM CHEESE' label is on the top shelf, above the jars with green and orange lids. The red bottle is to the right of the jars and to the left of the person.",
     "parse_success": true,
     "chunk_idx": 8,
     "video_id": "v_4ivePL3RW0Q"
   },
   {
     "time": [
-      18,
-      20
+      9,
+      10
     ],
     "visible_entities": [
       {
-        "desc": "person with short dark hair, wearing a grey hooded sweatshirt with an orange letter 'C' logo on the chest",
+        "desc": "person with short dark hair, dark skin, wearing a light grey hooded sweatshirt with an orange letter 'C' on the chest",
         "action": "reaching into the refrigerator",
         "position": "right"
       },
       {
-        "desc": "open white refrigerator door with clear plastic shelves holding various glass jars and condiment bottles",
+        "desc": "open refrigerator door with white plastic shelves holding various glass jars and bottles",
         "action": "static",
         "position": "left"
       },
       {
-        "desc": "arm covered in grey sweatshirt sleeve",
-        "action": "reaching into the refrigerator",
+        "desc": "hand and forearm covered by a light grey sleeve",
+        "action": "reaching inside",
         "position": "center"
       }
     ],
@@ -458,38 +472,33 @@
         "confidence": 1.0
       },
       {
-        "fact": "Various jars and bottles are stored on the refrigerator door shelves.",
+        "fact": "The person is wearing a grey hoodie with an orange 'C' logo.",
         "confidence": 1.0
       }
     ],
     "ocr": [
       "C"
     ],
-    "spatial": "The person is standing to the right of the open refrigerator. The person's arm is reaching inside the refrigerator, which is positioned to the left of the person. The jars and bottles are on the shelves of the refrigerator door.",
+    "spatial": "The person is standing to the right of the open refrigerator. The person's hand is reaching inside the refrigerator, which is positioned on the left side of the frame.",
     "parse_success": true,
     "chunk_idx": 9,
     "video_id": "v_4ivePL3RW0Q"
   },
   {
     "time": [
-      20,
-      22
+      10,
+      11
     ],
     "visible_entities": [
       {
-        "desc": "person's hand and forearm, light skin tone",
-        "action": "manipulating a white object",
-        "position": "left/foreground"
+        "desc": "human hand with light skin tone, fingers curled",
+        "action": "holding a white object",
+        "position": "foreground"
       },
       {
-        "desc": "white cylindrical object, smooth texture",
+        "desc": "white cylindrical object, smooth surface",
         "action": "being held",
-        "position": "left/center"
-      },
-      {
-        "desc": "clear plastic bowl, transparent material",
-        "action": "static",
-        "position": "right/foreground"
+        "position": "center"
       },
       {
         "desc": "yellow packaging with black text",
@@ -499,61 +508,62 @@
     ],
     "atomic_facts": [
       {
-        "fact": "A person's hand is holding a white cylindrical object.",
+        "fact": "A hand is holding a white cylindrical object in the foreground.",
         "confidence": 1.0
       },
       {
-        "fact": "The hand moves the white object towards a clear plastic bowl.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "Yellow packaging is visible in the background.",
+        "fact": "The background features a yellow package with visible text.",
         "confidence": 1.0
       }
     ],
     "ocr": [
       "mino"
     ],
-    "spatial": "The person's hand is to the left of the clear plastic bowl. The white object is held in front of the yellow packaging. The yellow packaging is behind the bowl.",
+    "spatial": "The hand is in the foreground, positioned to the left of the center. The white cylindrical object is held by the hand in the center of the frame. The yellow packaging is located in the background, to the right of the hand.",
     "parse_success": true,
     "chunk_idx": 10,
     "video_id": "v_4ivePL3RW0Q"
   },
   {
     "time": [
-      22,
-      24
+      11,
+      12
     ],
     "visible_entities": [
       {
+        "desc": "clear glass bowl with a fluted, textured rim",
+        "action": "static",
+        "position": "center"
+      },
+      {
         "desc": "two white eggs",
         "action": "static",
-        "position": "center"
+        "position": "inside the bowl"
       },
       {
-        "desc": "clear glass bowl with a textured, ribbed pattern",
+        "desc": "white text overlay",
         "action": "static",
         "position": "center"
       },
       {
-        "desc": "hand with light skin tone",
-        "action": "reaching into refrigerator",
-        "position": "bottom left"
-      },
-      {
-        "desc": "white Toblerone chocolate box with red text",
+        "desc": "yellow and white Toblerone chocolate box",
         "action": "being held",
-        "position": "center"
+        "position": "foreground"
       },
       {
-        "desc": "yellow butter package",
+        "desc": "yellow package of butter",
         "action": "static",
-        "position": "background right"
+        "position": "background"
+      },
+      {
+        "desc": "hand",
+        "action": "holding the chocolate box",
+        "position": "bottom left"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A hand reaches into a refrigerator and picks up a box of Toblerone chocolate.",
+        "fact": "A hand is holding a Toblerone chocolate box.",
         "confidence": 1.0
       },
       {
@@ -561,11 +571,7 @@
         "confidence": 1.0
       },
       {
-        "fact": "The text '2 eggs' is overlaid on the screen.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The Toblerone box has red lettering.",
+        "fact": "The text '2 eggs' is displayed on the screen.",
         "confidence": 1.0
       }
     ],
@@ -574,36 +580,36 @@
       "TOBLERONE",
       "BUTTER"
     ],
-    "spatial": "The two white eggs are inside the clear glass bowl. The hand is holding the Toblerone box, which is positioned in front of the yellow butter package in the background.",
+    "spatial": "The clear glass bowl containing the eggs is in the center of the first frame. The Toblerone box is held in the foreground of the second frame, positioned in front of the yellow butter package which is in the background.",
     "parse_success": true,
     "chunk_idx": 11,
     "video_id": "v_4ivePL3RW0Q"
   },
   {
     "time": [
-      24,
-      26
+      12,
+      13
     ],
     "visible_entities": [
       {
-        "desc": "person's hand with light skin tone",
-        "action": "reaching for and grabbing a box",
-        "position": "foreground right"
+        "desc": "hand with light skin tone",
+        "action": "reaching into the refrigerator",
+        "position": "foreground"
       },
       {
-        "desc": "yellow and green box of Kirkland Signature butter",
-        "action": "being picked up",
+        "desc": "yellow rectangular box of Kirkland Signature butter",
+        "action": "being grabbed",
         "position": "right"
       },
       {
-        "desc": "white Toblerone chocolate box with red text",
+        "desc": "white box with red lettering, partially visible",
         "action": "static",
-        "position": "center left"
+        "position": "center"
       },
       {
-        "desc": "brown bottle wrapped in silver foil",
+        "desc": "brown foil-wrapped package",
         "action": "static",
-        "position": "center background"
+        "position": "background"
       }
     ],
     "atomic_facts": [
@@ -616,58 +622,59 @@
         "confidence": 1.0
       },
       {
-        "fact": "The butter box is lifted from the shelf.",
+        "fact": "The butter box is labeled 'Kirkland Signature'.",
         "confidence": 1.0
       },
       {
-        "fact": "The Toblerone box sits on the shelf below the bottle.",
+        "fact": "A white box with red text sits on the shelf below the butter.",
         "confidence": 1.0
       }
     ],
     "ocr": [
       "KIRKLAND",
-      "UNSALTED SWEET CREAM",
       "BUTTER",
-      "TBLERONE"
+      "UNSALTED SWEET CREAM",
+      "40 STICKS",
+      "BLERONE"
     ],
-    "spatial": "The hand is in the foreground on the right side, reaching towards the butter box. The butter box is located to the right of the Toblerone box. The foil-wrapped bottle is positioned behind and slightly above the Toblerone box.",
+    "spatial": "The hand is in the foreground, reaching towards the right side of the frame where the yellow butter box is located. The butter box is positioned to the right of a white box with red text. The foil-wrapped package is behind the white box in the background.",
     "parse_success": true,
     "chunk_idx": 12,
     "video_id": "v_4ivePL3RW0Q"
   },
   {
     "time": [
-      26,
-      28
+      13,
+      14
     ],
     "visible_entities": [
       {
-        "desc": "yellow box of Kirkland Signature Unsalted Sweet Cream Butter with green borders, red USDA shield logo, and black text",
+        "desc": "yellow cardboard box of Kirkland Signature Unsalted Sweet Cream Butter with green and red text and a red barn illustration",
         "action": "static",
         "position": "center"
       },
       {
-        "desc": "yellow bag of chips with red oval logo and black text",
+        "desc": "yellow bag of chips with red and black text",
         "action": "static",
         "position": "right"
       },
       {
         "desc": "white text overlay reading '2 sticks (1/2 Cups) Butter'",
         "action": "static",
-        "position": "bottom-left"
+        "position": "bottom left"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A box of butter is sitting on a white surface.",
+        "fact": "A box of Kirkland Signature butter is sitting on a white surface.",
         "confidence": 1.0
       },
       {
-        "fact": "The text overlay indicates the recipe calls for '2 sticks (1/2 Cups) Butter'.",
+        "fact": "The text overlay indicates the recipe requires 2 sticks (1/2 Cups) of Butter.",
         "confidence": 1.0
       },
       {
-        "fact": "A bag of chips is visible in the background to the right of the butter.",
+        "fact": "A bag of chips is visible in the background.",
         "confidence": 1.0
       }
     ],
@@ -677,131 +684,103 @@
       "UNSALTED SWEET CREAM",
       "BUTTER",
       "FOUR 4-OZ STICKS",
-      "USDA",
-      "AA",
-      "OFFICIALLY GRADED",
-      "U D",
+      "USDA AA",
       "KEEP REFRIGERATED",
-      "NET WT 16 OZ",
-      "CHIPS",
-      "SEMI-SWEET",
       "2 sticks (1/2 Cups)",
-      "Butter"
+      "Butter",
+      "CHIPS",
+      "SEMI-SWEET"
     ],
-    "spatial": "The box of butter is in the center of the frame, resting on a white surface. The bag of chips is to the right of the butter box. The text overlay is located in the bottom-left corner of the screen.",
+    "spatial": "The box of butter is in the center foreground, positioned to the left of the bag of chips. The white text overlay is located in the bottom left corner of the frame, superimposed over the white surface.",
     "parse_success": true,
     "chunk_idx": 13,
     "video_id": "v_4ivePL3RW0Q"
   },
   {
     "time": [
-      28,
-      30
+      14,
+      15
     ],
     "visible_entities": [
       {
-        "desc": "young person with short dark hair, wearing a grey hooded sweatshirt with an orange letter 'C' on the chest",
-        "action": "standing in front of an open refrigerator",
+        "desc": "young person with short black hair, wearing a grey hooded sweatshirt with a large orange letter 'C' on the chest",
+        "action": "standing and looking forward",
         "position": "right"
       },
       {
-        "desc": "open refrigerator door with a clear plastic shelf holding various glass jars and bottles",
+        "desc": "open refrigerator door with shelves containing various glass jars with colorful lids (green, orange, black) and a red squeeze bottle",
         "action": "static",
         "position": "left"
-      },
-      {
-        "desc": "glass jar with a black lid and a label containing orange and white text",
-        "action": "static",
-        "position": "left"
-      },
-      {
-        "desc": "glass jar with a white lid containing a brown substance",
-        "action": "static",
-        "position": "left"
-      },
-      {
-        "desc": "red squeeze bottle with a white cap",
-        "action": "static",
-        "position": "center"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A person is standing next to an open refrigerator.",
+        "fact": "A person in a grey hoodie stands next to an open refrigerator.",
         "confidence": 1.0
       },
       {
-        "fact": "The refrigerator door contains a shelf filled with condiments.",
+        "fact": "The refrigerator door is filled with condiments and jars.",
         "confidence": 1.0
       },
       {
-        "fact": "The person is wearing a grey hoodie with an orange 'C' logo.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "A jar with a black lid is visible on the refrigerator shelf.",
+        "fact": "The person is looking towards the camera.",
         "confidence": 1.0
       }
     ],
     "ocr": [
       "C"
     ],
-    "spatial": "The person is standing to the right of the open refrigerator door. The refrigerator door is on the left side of the frame and contains a shelf with jars and bottles. The red squeeze bottle is positioned near the center of the shelf, next to the glass jars.",
+    "spatial": "The person is standing to the right of the open refrigerator door. The jars and bottles are arranged on the shelves inside the refrigerator door, which is to the left of the person.",
     "parse_success": true,
     "chunk_idx": 14,
     "video_id": "v_4ivePL3RW0Q"
   },
   {
     "time": [
-      30,
-      32
+      15,
+      16
     ],
     "visible_entities": [
       {
-        "desc": "person wearing a white long-sleeved shirt with dark stripes on the cuff and blue shorts",
-        "action": "pulling out the bottom drawer",
+        "desc": "person wearing a white long-sleeved shirt with dark stripes on the cuff and light blue shorts",
+        "action": "reaching into the bottom drawer",
         "position": "left"
       },
       {
-        "desc": "white wooden cabinet with two drawers",
+        "desc": "white cabinet with two open drawers",
         "action": "static",
         "position": "center"
       },
       {
         "desc": "shiny metal pots and pans with lids",
         "action": "static",
-        "position": "inside the top drawer"
-      },
-      {
-        "desc": "dark pots and pans",
-        "action": "static",
-        "position": "inside the bottom drawer"
+        "position": "center"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A person pulls the bottom drawer of a white cabinet open.",
+        "fact": "A person reaches their hand into the bottom drawer of a white cabinet.",
         "confidence": 1.0
       },
       {
-        "fact": "The top drawer contains shiny metal cookware.",
+        "fact": "The top drawer contains stacked metal pots and pans.",
         "confidence": 1.0
       },
       {
-        "fact": "The bottom drawer contains dark cookware.",
+        "fact": "The bottom drawer contains additional cookware.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The person is to the left of the white cabinet. The top drawer is above the bottom drawer. The metal pots are inside the top drawer, while the dark pots are inside the bottom drawer.",
+    "spatial": "The person is positioned to the left of the white cabinet. The top drawer is located above the bottom drawer. The metal pots and pans are inside the drawers.",
     "parse_success": true,
     "chunk_idx": 15,
     "video_id": "v_4ivePL3RW0Q"
   },
   {
     "time": [
-      32,
-      34
+      16,
+      17
     ],
     "visible_entities": [
       {
@@ -810,208 +789,196 @@
         "position": "left"
       },
       {
-        "desc": "open wooden kitchen cabinet with two shelves",
+        "desc": "open wooden kitchen cabinet containing various stainless steel pots, pans, and glass lids",
         "action": "static",
         "position": "center"
       },
       {
-        "desc": "assorted stainless steel pots, pans, and glass lids",
-        "action": "static",
-        "position": "center"
-      },
-      {
-        "desc": "small stainless steel pot with a black handle",
+        "desc": "stainless steel pot with a black handle",
         "action": "being moved",
         "position": "foreground"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A person reaches into the lower shelf of the cabinet.",
+        "fact": "A person is reaching into the lower section of an open kitchen cabinet.",
         "confidence": 1.0
       },
       {
-        "fact": "The person is moving a stainless steel pot.",
+        "fact": "The person is holding a stainless steel pot.",
         "confidence": 1.0
       },
       {
-        "fact": "The cabinet contains stacked cookware on two levels.",
+        "fact": "The cabinet contains a disorganized collection of cookware.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The person is positioned to the left of the open cabinet. The cabinet has an upper shelf located above the lower shelf. Various pots and pans are stored inside the cabinet, with some items resting on the bottom surface and others on the shelf above.",
+    "spatial": "The person is positioned to the left of the open cabinet. The cabinet has an upper shelf containing lids and a lower shelf containing pots. The person is reaching into the lower shelf area.",
     "parse_success": true,
     "chunk_idx": 16,
     "video_id": "v_4ivePL3RW0Q"
   },
   {
     "time": [
-      34,
-      36
+      17,
+      18
     ],
     "visible_entities": [
       {
-        "desc": "person wearing a light blue short-sleeved shirt",
+        "desc": "person wearing a light blue shirt",
         "action": "closing the drawer",
-        "position": "left/foreground"
+        "position": "left"
       },
       {
-        "desc": "white kitchen drawer containing stacked metal pots and pans",
-        "action": "being pushed closed",
+        "desc": "white kitchen cabinet with open drawers",
+        "action": "static",
         "position": "center"
       },
       {
-        "desc": "white cabinet doors",
+        "desc": "metal pots and pans, silver, stacked",
         "action": "static",
-        "position": "right/background"
+        "position": "center"
       },
       {
-        "desc": "light brown wooden floor",
+        "desc": "wooden floor, light brown",
         "action": "static",
         "position": "bottom"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A person in a blue shirt is pushing a white drawer closed.",
+        "fact": "person closes the bottom drawer of the white cabinet",
         "confidence": 1.0
       },
       {
-        "fact": "The drawer contains various metal cookware items.",
+        "fact": "metal pots and pans are stored inside the cabinet drawers",
         "confidence": 1.0
       },
       {
-        "fact": "The drawer slides shut to align with the adjacent cabinet doors.",
+        "fact": "the cabinet is situated on a wooden floor",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The person is to the left of the drawer. The drawer is below the upper cabinet section and above the wooden floor. The pots and pans are inside the drawer.",
+    "spatial": "The person in the light blue shirt is to the left of the white cabinet. The metal pots and pans are inside the cabinet drawers. The cabinet is on the wooden floor.",
     "parse_success": true,
     "chunk_idx": 17,
     "video_id": "v_4ivePL3RW0Q"
   },
   {
     "time": [
-      36,
-      38
+      18,
+      19
     ],
     "visible_entities": [
       {
-        "desc": "hands with dark skin tone",
-        "action": "holding the handles of a pot",
-        "position": "left and right sides of the pot"
-      },
-      {
-        "desc": "large stainless steel stockpot, shiny, silver, cylindrical, with two side handles",
-        "action": "being held",
+        "desc": "large stainless steel stockpot with a shiny metallic finish and two side handles",
+        "action": "being held by hands",
         "position": "center"
       },
       {
-        "desc": "white countertop surface, smooth",
-        "action": "static",
-        "position": "background"
+        "desc": "pair of hands with dark skin tone",
+        "action": "gripping the handles of the pot",
+        "position": "left and right"
       },
       {
-        "desc": "black oven control panel with knobs and red indicator lights",
-        "action": "being adjusted",
+        "desc": "black oven control panel with a large rotary dial and a red indicator light",
+        "action": "being adjusted by a hand",
         "position": "center"
       },
       {
-        "desc": "hand with light skin tone",
-        "action": "turning a knob",
+        "desc": "hand with fair skin tone",
+        "action": "turning the oven dial",
         "position": "right"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A person is holding a large stainless steel pot by its handles.",
+        "fact": "A pair of hands holds a large stainless steel pot over a white surface.",
         "confidence": 1.0
       },
       {
-        "fact": "A hand is turning a knob on a black oven control panel.",
+        "fact": "A hand turns a dial on a black oven control panel.",
         "confidence": 1.0
       },
       {
-        "fact": "The red indicator light labeled 'CLEAN' is illuminated on the oven.",
+        "fact": "The red 'HEAT' indicator light is illuminated on the oven panel.",
         "confidence": 1.0
       }
     ],
     "ocr": [
       "Thermador",
-      "CLEAN",
-      "BAKE",
-      "TIMED BAKE"
+      "HEAT",
+      "BAKE"
     ],
-    "spatial": "The stainless steel pot is held in the center of the frame, positioned above the white countertop. The oven control panel is shown in a separate shot, with the hand to the right of the panel turning the knob.",
+    "spatial": "The stainless steel pot is positioned centrally in the frame, held by hands on either side. The oven control panel is shown in a separate shot, with a hand reaching from the right side to turn the dial. The brand name 'Thermador' is located to the left of the dial.",
     "parse_success": true,
     "chunk_idx": 18,
     "video_id": "v_4ivePL3RW0Q"
   },
   {
     "time": [
-      38,
-      40
+      19,
+      20
     ],
     "visible_entities": [
       {
-        "desc": "hand with light skin tone",
-        "action": "turning a black knob",
+        "desc": "hand with light skin tone, fingers gripping a black circular knob",
+        "action": "turning the knob",
         "position": "right foreground"
       },
       {
-        "desc": "black oven control panel with a circular knob and blue illuminated temperature markings",
+        "desc": "black oven control panel with a glowing blue digital temperature display and a large black rotary dial",
         "action": "static",
-        "position": "center left"
+        "position": "center"
       },
       {
-        "desc": "white text logo",
+        "desc": "white text logo reading 'Thermador' in a serif font",
         "action": "static",
-        "position": "bottom left"
+        "position": "left center"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A hand is turning a black knob on an oven.",
+        "fact": "A hand is turning the black rotary dial on the oven control panel.",
         "confidence": 1.0
       },
       {
-        "fact": "The knob is being adjusted to the 350 degree setting.",
+        "fact": "The digital display shows the number '350' in blue light.",
         "confidence": 1.0
       },
       {
-        "fact": "The brand name Thermador is visible on the appliance.",
+        "fact": "The brand name 'Thermador' is visible on the appliance.",
         "confidence": 1.0
       }
     ],
     "ocr": [
       "Thermador",
+      "350",
       "UPPER OVEN",
-      "BROIL",
-      "BAKE",
-      "10 350"
+      "BAKE"
     ],
-    "spatial": "The hand is in the foreground on the right, holding and turning the black knob. The 'Thermador' logo is located below the knob on the left side of the panel. The 'UPPER OVEN' text is positioned above the knob.",
+    "spatial": "The hand is to the right of the 'Thermador' logo and is holding the black knob. The blue digital display is above the knob being turned. The 'UPPER OVEN' text is above the digital display.",
     "parse_success": true,
     "chunk_idx": 19,
     "video_id": "v_4ivePL3RW0Q"
   },
   {
     "time": [
-      40,
-      42
+      20,
+      21
     ],
     "visible_entities": [
       {
         "desc": "hand with light skin tone",
-        "action": "turning a black knob",
-        "position": "right foreground"
+        "action": "turning a knob",
+        "position": "right/foreground"
       },
       {
-        "desc": "black oven control panel with a digital display showing blue numbers",
+        "desc": "black oven control panel with a circular knob and a blue digital display",
         "action": "static",
-        "position": "center"
+        "position": "left/center"
       },
       {
         "desc": "two knives with black handles and silver blades",
@@ -1019,85 +986,77 @@
         "position": "left"
       },
       {
-        "desc": "two rectangular blocks of pale yellow butter",
+        "desc": "block of pale yellow butter",
         "action": "static",
         "position": "center"
       },
       {
-        "desc": "white cutting board surface",
+        "desc": "white cutting board",
         "action": "static",
-        "position": "background"
+        "position": "center"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A hand is turning a black knob on the oven control panel.",
+        "fact": "A hand is turning the circular knob on the black oven control panel.",
         "confidence": 1.0
       },
       {
-        "fact": "The digital display on the oven reads '00 350'.",
+        "fact": "The oven display shows the number '00 350' in blue.",
         "confidence": 1.0
       },
       {
-        "fact": "The brand name 'Thermador' is printed on the oven.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "Two knives are lying on a white cutting board.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "Two blocks of butter are sitting on the cutting board.",
+        "fact": "Two knives and a block of butter are resting on a white cutting board.",
         "confidence": 1.0
       }
     ],
     "ocr": [
-      "Thermador",
-      "00 350",
-      "UPPER OVEN",
       "BAKE",
-      "BROIL"
+      "BROIL",
+      "UPPER OVEN",
+      "00 350",
+      "Thermador"
     ],
-    "spatial": "The hand is in front of the black oven control panel, manipulating the knob. The oven panel is to the left of the cutting board scene. On the cutting board, the two knives are to the left of the blocks of butter.",
+    "spatial": "The hand is positioned to the right of the oven control panel and is holding the knob. The 'Thermador' logo is located below the digital display on the oven. The knives are to the left of the block of butter on the cutting board.",
     "parse_success": true,
     "chunk_idx": 20,
     "video_id": "v_4ivePL3RW0Q"
   },
   {
     "time": [
-      42,
-      44
+      21,
+      22
     ],
     "visible_entities": [
       {
-        "desc": "person's hand with light skin tone",
-        "action": "holding a knife and cutting butter",
+        "desc": "person's hands with light skin tone",
+        "action": "cutting butter",
         "position": "top center"
       },
       {
-        "desc": "stick of unsalted butter, yellow, wrapped in paper with blue text",
+        "desc": "stick of unsalted butter, pale yellow, wrapped in paper with blue text",
         "action": "being cut",
-        "position": "center"
+        "position": "top center"
       },
       {
-        "desc": "knife with a black handle and a silver blade",
-        "action": "slicing through butter",
-        "position": "center"
-      },
-      {
-        "desc": "second stick of unsalted butter, yellow, wrapped in paper",
+        "desc": "stick of unsalted butter, pale yellow, wrapped in paper with blue text",
         "action": "static",
         "position": "right"
       },
       {
-        "desc": "white cutting board or parchment paper surface",
+        "desc": "knife with a black handle and a long, thin silver blade",
         "action": "static",
-        "position": "background"
+        "position": "left foreground"
+      },
+      {
+        "desc": "white cutting board",
+        "action": "static",
+        "position": "center"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A person is using a knife to slice a piece of butter.",
+        "fact": "A person is cutting a stick of butter with a knife.",
         "confidence": 1.0
       },
       {
@@ -1105,7 +1064,7 @@
         "confidence": 1.0
       },
       {
-        "fact": "A second stick of butter sits on the right side of the cutting surface.",
+        "fact": "A knife with a black handle is lying on the cutting board.",
         "confidence": 1.0
       }
     ],
@@ -1113,153 +1072,157 @@
       "UNSALTED",
       "BUTTER"
     ],
-    "spatial": "The person's hand is positioned above the cutting board, holding a knife that is slicing into the butter stick in the center. The second stick of butter is to the right of the active cutting area. The knife is in front of the person's hand.",
+    "spatial": "The person's hands are above the stick of butter being cut. The knife with the black handle is to the left of the butter. The second stick of butter is to the right of the cutting area. All items are on the white cutting board.",
     "parse_success": true,
     "chunk_idx": 21,
     "video_id": "v_4ivePL3RW0Q"
   },
   {
     "time": [
-      44,
-      46
+      22,
+      23
     ],
     "visible_entities": [
       {
         "desc": "person wearing a red short-sleeved polo shirt",
-        "action": "cutting a piece of paper with scissors",
+        "action": "manipulating a small object",
         "position": "center"
       },
       {
-        "desc": "scissors with black handles",
-        "action": "being used to cut paper",
+        "desc": "small dark thin object, possibly a tool or wire",
+        "action": "being held",
         "position": "center"
-      },
-      {
-        "desc": "white paper",
-        "action": "being cut",
-        "position": "bottom"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A person is cutting a piece of white paper with scissors.",
+        "fact": "person wearing a red polo shirt is manipulating a small dark object with both hands",
         "confidence": 1.0
       },
       {
-        "fact": "The person is wearing a red polo shirt.",
+        "fact": "the person's mouth is open in the second frame",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The person is centered in the frame. The scissors are held in the person's hands, positioned above the white paper. The white paper is on a surface below the person's hands.",
+    "spatial": "The person in the red shirt is centered in the frame. Their hands are holding the small dark object in front of their torso. The object is positioned above a light-colored surface.",
     "parse_success": true,
     "chunk_idx": 22,
     "video_id": "v_4ivePL3RW0Q"
   },
   {
     "time": [
-      46,
-      48
+      23,
+      24
     ],
     "visible_entities": [
       {
-        "desc": "person with short dark hair, wearing a red polo shirt",
+        "desc": "person with short black hair, dark skin, wearing a red collared shirt",
         "action": "speaking with an intense facial expression",
         "position": "center"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "The person is speaking with their mouth open and teeth visible.",
+        "fact": "The person is speaking or shouting with their mouth open.",
         "confidence": 1.0
       },
       {
-        "fact": "The subtitle text 'Then microwave them.' is displayed at the bottom of the screen.",
+        "fact": "The subtitle text reads 'Then microwave them.'",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The person's eyes are wide open.",
         "confidence": 1.0
       }
     ],
     "ocr": [
       "Then microwave them."
     ],
-    "spatial": "The person is centered in the frame. The subtitle text is located below the person's chin. The person is in front of a blurred background.",
+    "spatial": "The person is in the center of the frame. The text is located at the bottom of the screen, below the person's chin. A doorway is visible in the background behind the person.",
     "parse_success": true,
     "chunk_idx": 23,
     "video_id": "v_4ivePL3RW0Q"
   },
   {
     "time": [
-      48,
-      50
+      24,
+      25
     ],
     "visible_entities": [
       {
         "desc": "person with short dark hair, wearing a white hooded sweatshirt",
-        "action": "moving arm and head",
-        "position": "right foreground"
+        "action": "raising right arm and hand",
+        "position": "right/foreground"
       },
       {
-        "desc": "person with short dark hair, wearing a grey shirt",
+        "desc": "person with short dark hair, wearing a light grey shirt",
         "action": "looking down",
-        "position": "left background"
+        "position": "left/background"
       },
       {
-        "desc": "white microwave oven",
+        "desc": "white microwave oven with control panel",
         "action": "static",
-        "position": "background left"
+        "position": "left/background"
+      },
+      {
+        "desc": "white window air conditioning unit with horizontal vents",
+        "action": "static",
+        "position": "center/background"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "person in the foreground raises their arm",
+        "fact": "The person in the white hoodie raises their right arm and hand.",
         "confidence": 1.0
       },
       {
-        "fact": "person in the background looks downwards",
+        "fact": "The person in the grey shirt is positioned to the left of the person in the hoodie.",
         "confidence": 1.0
       },
       {
-        "fact": "a white microwave is visible in the background",
+        "fact": "A white microwave is visible in the background on the left side.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A window air conditioning unit is mounted in the wall behind the people.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The person in the white hooded sweatshirt is in the foreground to the right of the person in the grey shirt. The person in the grey shirt is positioned to the left of the frame. The white microwave is located in the background behind the person in the grey shirt.",
+    "spatial": "The person in the white hoodie is in the foreground on the right side of the frame. The person in the grey shirt is to the left of the person in the hoodie. The microwave is behind the person in the grey shirt. The air conditioning unit is above and behind the people.",
     "parse_success": true,
     "chunk_idx": 24,
     "video_id": "v_4ivePL3RW0Q"
   },
   {
     "time": [
-      50,
-      52
+      25,
+      26
     ],
     "visible_entities": [
       {
-        "desc": "person with short black hair, dark skin, wearing a grey hoodie with a large orange letter 'C' on the chest",
+        "desc": "person with short dark hair, wearing a grey hoodie with an orange letter 'C' on the chest",
         "action": "looking down",
         "position": "left"
       },
       {
-        "desc": "person with short black hair, dark skin, wearing a white hooded sweatshirt",
-        "action": "leaning forward and looking at the camera",
+        "desc": "person with short dark hair, wearing a white hoodie",
+        "action": "leaning forward with arm raised",
         "position": "right"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "The person on the left is looking down.",
+        "fact": "The person in the grey hoodie is looking down.",
         "confidence": 1.0
       },
       {
-        "fact": "The person on the right is leaning forward.",
+        "fact": "The person in the white hoodie is leaning forward.",
         "confidence": 1.0
       },
       {
-        "fact": "The person on the right is looking at the camera.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The person on the left is wearing a grey hoodie with an orange 'C'.",
+        "fact": "The person in the white hoodie has their arm raised.",
         "confidence": 1.0
       }
     ],
@@ -1273,23 +1236,23 @@
   },
   {
     "time": [
-      52,
-      54
+      26,
+      27
     ],
     "visible_entities": [
       {
-        "desc": "person wearing a grey hoodie with a large orange letter 'C' on the chest",
+        "desc": "person wearing a grey hoodie with a red 'C' logo on the chest",
         "action": "standing and looking down",
         "position": "center"
       },
       {
-        "desc": "small yellow cubes of butter on a white surface",
-        "action": "static",
+        "desc": "pale yellow butter cubes, cut into small squares",
+        "action": "resting on parchment paper",
         "position": "foreground"
       },
       {
-        "desc": "hand with dark skin resting on a white surface",
-        "action": "static",
+        "desc": "hand with dark skin tone",
+        "action": "resting on the table",
         "position": "right"
       }
     ],
@@ -1299,26 +1262,26 @@
         "confidence": 1.0
       },
       {
-        "fact": "Cubes of butter are arranged on a white cutting board or paper.",
+        "fact": "Cubed pieces of butter are arranged on a sheet of parchment paper.",
         "confidence": 1.0
       },
       {
-        "fact": "A hand is resting on the table to the right of the butter.",
+        "fact": "A hand is resting on the table surface to the right of the butter.",
         "confidence": 1.0
       }
     ],
     "ocr": [
       "C"
     ],
-    "spatial": "The person in the grey hoodie is standing behind the table. The cubes of butter are on the white surface in the foreground, in front of the person. The hand is to the right of the butter cubes.",
+    "spatial": "The person in the grey hoodie is standing behind the table. The butter cubes are on the table in the foreground, positioned in front of the person. The hand is to the right of the butter cubes.",
     "parse_success": true,
     "chunk_idx": 26,
     "video_id": "v_4ivePL3RW0Q"
   },
   {
     "time": [
-      54,
-      56
+      27,
+      28
     ],
     "visible_entities": [
       {
@@ -1327,14 +1290,19 @@
         "position": "right"
       },
       {
-        "desc": "person wearing a grey long-sleeved shirt",
+        "desc": "person wearing a grey sweatshirt",
         "action": "static",
-        "position": "background"
+        "position": "left"
       },
       {
-        "desc": "pale yellow butter cubes, smooth texture, cut into small squares",
-        "action": "being cut and scattered",
+        "desc": "pale yellow butter cubes, rectangular shape",
+        "action": "being cut",
         "position": "center"
+      },
+      {
+        "desc": "black-handled knife",
+        "action": "slicing",
+        "position": "right"
       },
       {
         "desc": "white parchment paper",
@@ -1342,19 +1310,14 @@
         "position": "center"
       },
       {
-        "desc": "wooden cutting board, light brown",
+        "desc": "light brown wooden table",
         "action": "static",
-        "position": "center"
-      },
-      {
-        "desc": "knife with a black handle",
-        "action": "slicing",
-        "position": "right"
+        "position": "background"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A person is using a knife to cut butter into cubes.",
+        "fact": "A person is using a knife to cut a block of butter into cubes.",
         "confidence": 1.0
       },
       {
@@ -1362,49 +1325,123 @@
         "confidence": 1.0
       },
       {
-        "fact": "The cut butter cubes are scattered on a sheet of white parchment paper.",
+        "fact": "Multiple cut butter cubes are scattered on the parchment paper.",
         "confidence": 1.0
       },
       {
-        "fact": "The parchment paper rests on a wooden cutting board.",
+        "fact": "The person in the grey sweatshirt is standing next to the person cutting the butter.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The person in the white shirt is to the right of the wooden cutting board. The butter cubes are on top of the white parchment paper, which is placed on the cutting board. The person in the grey shirt is behind the cutting board.",
+    "spatial": "The person in the white shirt is to the right of the person in the grey sweatshirt. The butter cubes are on top of the white parchment paper, which is placed on the wooden table. The knife is held in the right hand of the person cutting the butter, positioned above the paper.",
     "parse_success": true,
     "chunk_idx": 27,
     "video_id": "v_4ivePL3RW0Q"
   },
   {
     "time": [
-      56,
-      58
+      28,
+      29
     ],
     "visible_entities": [
       {
-        "desc": "person with dark skin, wearing a grey long-sleeved shirt",
-        "action": "holding parchment paper and pouring contents",
-        "position": "left"
-      },
-      {
-        "desc": "pale yellow butter cubes, cut into small squares",
-        "action": "being poured into a bowl",
+        "desc": "person with dark skin, wearing a grey long-sleeved top",
+        "action": "pouring butter cubes",
         "position": "center"
       },
       {
-        "desc": "silver metal mixing bowl",
-        "action": "receiving butter cubes",
+        "desc": "yellow butter cubes, rectangular, solid",
+        "action": "falling into bowl",
+        "position": "center"
+      },
+      {
+        "desc": "silver metal mixing bowl, round, reflective",
+        "action": "static",
         "position": "center"
       },
       {
         "desc": "metal wire whisk",
-        "action": "static inside bowl",
-        "position": "center"
+        "action": "static",
+        "position": "inside bowl"
       },
       {
         "desc": "white parchment paper",
-        "action": "being tilted",
+        "action": "being held",
+        "position": "center"
+      },
+      {
+        "desc": "white tub with green label and cow illustration",
+        "action": "static",
+        "position": "right"
+      },
+      {
+        "desc": "yellow and white striped package",
+        "action": "static",
+        "position": "top right"
+      },
+      {
+        "desc": "light brown wooden cutting board",
+        "action": "static",
+        "position": "bottom"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A person is pouring yellow butter cubes from parchment paper into a metal bowl.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The butter cubes are falling into the bowl which contains a whisk.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A white tub with a green label is sitting on the counter to the right of the bowl.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A yellow and white striped package is visible in the background.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "F",
+      "RAL"
+    ],
+    "spatial": "The person is holding the parchment paper above the metal mixing bowl. The butter cubes are falling from the paper into the bowl. The whisk is inside the bowl. The white tub with the green label is to the right of the bowl. The yellow striped package is behind the white tub.",
+    "parse_success": true,
+    "chunk_idx": 28,
+    "video_id": "v_4ivePL3RW0Q"
+  },
+  {
+    "time": [
+      29,
+      30
+    ],
+    "visible_entities": [
+      {
+        "desc": "person's hands with light skin tone",
+        "action": "manipulating white powder",
+        "position": "left"
+      },
+      {
+        "desc": "metal sieve with mesh screen",
+        "action": "being held over a bowl",
+        "position": "center"
+      },
+      {
+        "desc": "white powder",
+        "action": "falling through sieve",
+        "position": "center"
+      },
+      {
+        "desc": "metal bowl containing yellow butter cubes",
+        "action": "static",
+        "position": "center"
+      },
+      {
+        "desc": "glass measuring cup with red measurement markings",
+        "action": "static",
         "position": "center"
       },
       {
@@ -1420,87 +1457,15 @@
     ],
     "atomic_facts": [
       {
-        "fact": "A person is pouring pale yellow butter cubes from a sheet of parchment paper into a silver metal mixing bowl.",
+        "fact": "A person is sifting white powder through a metal sieve into a bowl containing butter cubes.",
         "confidence": 1.0
       },
       {
-        "fact": "A metal wire whisk is resting inside the mixing bowl.",
+        "fact": "The measuring cup has red markings indicating volume in cups and milliliters.",
         "confidence": 1.0
       },
       {
-        "fact": "A white tub with a green label is sitting on the counter to the right of the bowl.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "A yellow and white striped package is visible on the counter.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [
-      "RURAL"
-    ],
-    "spatial": "The person is to the left of the mixing bowl, holding the parchment paper above it. The butter cubes are falling from the paper into the bowl, which contains a whisk. To the right of the bowl, a white tub and a yellow package are sitting on the counter surface.",
-    "parse_success": true,
-    "chunk_idx": 28,
-    "video_id": "v_4ivePL3RW0Q"
-  },
-  {
-    "time": [
-      58,
-      60
-    ],
-    "visible_entities": [
-      {
-        "desc": "hands with light skin tone",
-        "action": "holding and manipulating a white cloth",
-        "position": "left/center"
-      },
-      {
-        "desc": "white cloth or cheesecloth",
-        "action": "being draped over a metal bowl",
-        "position": "center"
-      },
-      {
-        "desc": "metal bowl containing yellow butter cubes",
-        "action": "static",
-        "position": "center"
-      },
-      {
-        "desc": "clear glass measuring cup with red markings",
-        "action": "static",
-        "position": "center"
-      },
-      {
-        "desc": "white powder",
-        "action": "falling into the measuring cup",
-        "position": "center"
-      },
-      {
-        "desc": "white container with green label featuring a cow illustration",
-        "action": "static",
-        "position": "right"
-      },
-      {
-        "desc": "yellow and white striped package",
-        "action": "static",
-        "position": "right"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "Hands are draping a white cloth over a metal bowl containing butter cubes.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "White powder is being poured into a glass measuring cup.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The measuring cup has red measurement lines for cups and milliliters.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "A container with a cow illustration sits on the counter.",
+        "fact": "The tub on the right features a drawing of a black and white cow.",
         "confidence": 1.0
       }
     ],
@@ -1524,27 +1489,27 @@
       "200",
       "100",
       "anchor",
-      "F&",
-      "RAI"
+      "KRAI",
+      "F&"
     ],
-    "spatial": "The hands are holding the white cloth over the metal bowl in the center of the frame. The glass measuring cup is positioned on the counter, receiving the falling white powder. To the right of the measuring cup, there is a white container with a green label and a yellow package.",
+    "spatial": "The person's hands are on the left, holding the sieve above the metal bowl. The glass measuring cup is positioned centrally on the counter. To the right of the measuring cup, there is a white tub and a yellow package.",
     "parse_success": true,
     "chunk_idx": 29,
     "video_id": "v_4ivePL3RW0Q"
   },
   {
     "time": [
-      60,
-      62
+      30,
+      31
     ],
     "visible_entities": [
       {
-        "desc": "transparent glass measuring cup with red measurement markings and a handle",
+        "desc": "clear glass measuring cup with red measurement markings and a handle",
         "action": "being filled with white powder",
         "position": "center"
       },
       {
-        "desc": "fine white powder",
+        "desc": "white granular powder",
         "action": "pouring into the cup",
         "position": "inside the cup"
       }
@@ -1555,11 +1520,11 @@
         "confidence": 1.0
       },
       {
-        "fact": "The measuring cup has red markings for cups and milliliters.",
+        "fact": "The powder level rises inside the cup.",
         "confidence": 1.0
       },
       {
-        "fact": "The cup is sitting on a white countertop.",
+        "fact": "The measuring cup has red text indicating volume measurements.",
         "confidence": 1.0
       }
     ],
@@ -1584,39 +1549,39 @@
       "100",
       "anchor"
     ],
-    "spatial": "The glass measuring cup is in the center of the frame, resting on a white surface. The white powder is falling from above into the interior of the cup.",
+    "spatial": "The glass measuring cup is in the center of the frame. The white powder is inside the cup. The red measurement text is printed on the side of the cup.",
     "parse_success": true,
     "chunk_idx": 30,
     "video_id": "v_4ivePL3RW0Q"
   },
   {
     "time": [
-      62,
-      64
+      31,
+      32
     ],
     "visible_entities": [
       {
-        "desc": "clear glass measuring cup with a handle on the left, featuring red measurement markings for cups and milliliters",
+        "desc": "clear glass measuring cup with a handle and a pouring spout, featuring red measurement markings for cups and milliliters",
         "action": "static",
         "position": "center"
       },
       {
-        "desc": "white powdery substance, likely flour or sugar",
+        "desc": "white granular substance, likely sugar or flour",
         "action": "being poured into the cup",
-        "position": "inside the cup"
+        "position": "inside the measuring cup"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A white powdery substance is being poured into the glass measuring cup.",
+        "fact": "A white granular substance is being poured into the glass measuring cup.",
         "confidence": 1.0
       },
       {
-        "fact": "The measuring cup contains red text and measurement lines.",
+        "fact": "The measuring cup sits on a white surface.",
         "confidence": 1.0
       },
       {
-        "fact": "The cup is sitting on a white surface.",
+        "fact": "The red text on the cup indicates measurements up to 4 cups and 1 litre.",
         "confidence": 1.0
       }
     ],
@@ -1641,62 +1606,81 @@
       "100",
       "anchor"
     ],
-    "spatial": "The glass measuring cup is in the center of the frame. The handle of the cup is on the left side. The red measurement markings are on the front surface of the cup. The white powder is inside the cup.",
+    "spatial": "The glass measuring cup is in the center of the frame, resting on a white countertop. The white granular substance is inside the cup, accumulating at the bottom. The red measurement text is printed on the side of the cup, to the right of the handle.",
     "parse_success": true,
     "chunk_idx": 31,
     "video_id": "v_4ivePL3RW0Q"
   },
   {
     "time": [
-      64,
-      66
+      32,
+      33
     ],
     "visible_entities": [
       {
-        "desc": "clear glass measuring cup with red measurement markings and a handle",
+        "desc": "glass measuring cup with red measurement markings (cups and ml), containing white powder",
         "action": "being tilted to pour contents",
         "position": "foreground"
       },
       {
         "desc": "white powdery substance",
-        "action": "pouring out of the cup",
+        "action": "falling out of the cup",
         "position": "inside the cup"
       },
       {
-        "desc": "blurry white and green object",
+        "desc": "metallic bowl or container",
+        "action": "static",
+        "position": "bottom right"
+      },
+      {
+        "desc": "blurred white object with green label",
         "action": "static",
         "position": "background"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A glass measuring cup is tilted to pour a white powder.",
+        "fact": "A person is tilting a glass measuring cup to pour white powder into a container.",
         "confidence": 1.0
       },
       {
-        "fact": "The measuring cup has red markings for cups and milliliters.",
+        "fact": "The measuring cup has red markings indicating volume in cups and milliliters.",
         "confidence": 1.0
       },
       {
-        "fact": "The text '1 LITRE' is visible on the side of the cup.",
+        "fact": "The text '1 LITRE' is visible near the top of the measurement scale.",
         "confidence": 1.0
       }
     ],
     "ocr": [
+      "4 CUPS",
+      "3 1/2",
+      "3 CUPS",
+      "2 1/2",
+      "2 CUPS",
+      "1 1/2",
+      "1 CUP",
+      "1/2",
       "1 LITRE",
       "900",
       "800",
-      "700"
+      "700",
+      "600",
+      "500ml",
+      "400",
+      "300",
+      "200",
+      "100"
     ],
-    "spatial": "The glass measuring cup is in the foreground, tilted towards the right. The white powder is inside the cup and pouring out. A blurry white and green object is in the background to the right of the cup.",
+    "spatial": "The glass measuring cup is in the foreground, tilted downwards towards the right. The white powder is inside the cup and falling out of it. A metallic container is positioned below and to the right of the measuring cup to catch the powder. A blurred white object with a green label is in the background to the right of the cup.",
     "parse_success": true,
     "chunk_idx": 32,
     "video_id": "v_4ivePL3RW0Q"
   },
   {
     "time": [
-      66,
-      68
+      33,
+      34
     ],
     "visible_entities": [
       {
@@ -1705,32 +1689,32 @@
         "position": "left/foreground"
       },
       {
-        "desc": "white liquid",
-        "action": "flowing into a container",
+        "desc": "white liquid stream",
+        "action": "flowing downwards",
         "position": "center"
       },
       {
         "desc": "metallic bowl",
-        "action": "receiving liquid",
+        "action": "static",
         "position": "bottom"
       },
       {
-        "desc": "blurred white container with green label",
+        "desc": "white container with green label",
         "action": "static",
         "position": "background"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A person is pouring a white liquid from a glass measuring jug into a metallic bowl.",
+        "fact": "A hand is holding a glass measuring jug and tilting it to pour liquid.",
         "confidence": 1.0
       },
       {
-        "fact": "The measuring jug has red markings indicating volume measurements.",
+        "fact": "White liquid is flowing from the jug into a metal bowl below.",
         "confidence": 1.0
       },
       {
-        "fact": "The liquid flows in a steady stream from the spout of the jug.",
+        "fact": "The measuring jug has red text indicating volume measurements.",
         "confidence": 1.0
       }
     ],
@@ -1739,39 +1723,44 @@
       "900",
       "800"
     ],
-    "spatial": "The glass measuring jug is held above the metallic bowl, pouring liquid into it. The blurred white container with a green label is in the background, to the right of the pouring action.",
+    "spatial": "The glass measuring jug is held above the metallic bowl on the left side of the frame. The stream of white liquid flows from the jug down into the bowl. A blurry white container with a green label is visible in the background to the right of the pouring action.",
     "parse_success": true,
     "chunk_idx": 33,
     "video_id": "v_4ivePL3RW0Q"
   },
   {
     "time": [
-      68,
-      70
+      34,
+      35
     ],
     "visible_entities": [
       {
-        "desc": "clear glass measuring cup with red measurement markings and a handle",
+        "desc": "clear glass measuring cup with a handle, featuring red measurement markings for cups and milliliters",
         "action": "static",
         "position": "center"
       },
       {
-        "desc": "brown granular substance, likely brown sugar",
-        "action": "being poured into the cup",
+        "desc": "brown, crumbly food substance, likely brown sugar",
+        "action": "being placed inside the cup",
         "position": "inside the cup"
+      },
+      {
+        "desc": "white surface, likely a countertop",
+        "action": "static",
+        "position": "bottom"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A brown granular substance is poured into the glass measuring cup.",
+        "fact": "A glass measuring cup is sitting on a white surface.",
         "confidence": 1.0
       },
       {
-        "fact": "The substance accumulates at the bottom of the cup.",
+        "fact": "Brown, crumbly food substance is added to the measuring cup between the two frames.",
         "confidence": 1.0
       },
       {
-        "fact": "The measuring cup has red markings for cups and milliliters.",
+        "fact": "The measuring cup has red text markings for volume measurement.",
         "confidence": 1.0
       }
     ],
@@ -1797,185 +1786,171 @@
       "anchor logo",
       "ar"
     ],
-    "spatial": "The glass measuring cup is centered in the frame. The brown granular substance is inside the cup, resting at the bottom. The red measurement markings are printed on the side of the cup.",
+    "spatial": "The glass measuring cup is in the center of the frame, resting on a white surface. The brown food substance is inside the bottom of the cup. The red measurement markings are printed on the side of the glass cup.",
     "parse_success": true,
     "chunk_idx": 34,
     "video_id": "v_4ivePL3RW0Q"
   },
   {
     "time": [
-      70,
-      72
+      35,
+      36
     ],
     "visible_entities": [
       {
-        "desc": "person wearing a red polo shirt with a collar",
-        "action": "standing in the kitchen",
+        "desc": "person wearing a red polo shirt",
+        "action": "static",
         "position": "center"
       },
       {
-        "desc": "large stainless steel mixing bowl",
-        "action": "containing ingredients",
+        "desc": "large stainless steel mixing bowl containing brown sugar, white sugar, and butter",
+        "action": "static",
         "position": "center"
       },
       {
-        "desc": "glass jar being held by a hand",
-        "action": "pouring brown granular contents",
-        "position": "center/foreground"
+        "desc": "clear glass jar being held by a hand",
+        "action": "pouring contents",
+        "position": "center"
       },
       {
-        "desc": "white bag with blue text and line drawings of cupcakes",
+        "desc": "white bag with blue text and line drawings of pasta",
         "action": "static",
         "position": "left"
       },
       {
-        "desc": "blocks of yellow butter and brown sugar",
+        "desc": "white ceramic plate with eggs",
         "action": "static",
-        "position": "inside the bowl"
-      },
-      {
-        "desc": "white kitchen cabinets and microwave",
-        "action": "static",
-        "position": "background"
+        "position": "right"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A person is pouring brown granular ingredients from a glass jar into a metal mixing bowl.",
+        "fact": "A person is pouring ingredients from a glass jar into a metal mixing bowl.",
         "confidence": 1.0
       },
       {
-        "fact": "The mixing bowl contains blocks of yellow butter and brown sugar.",
+        "fact": "The mixing bowl contains chunks of butter and brown sugar.",
         "confidence": 1.0
       },
       {
-        "fact": "A bag of sugar with cupcake illustrations is sitting on the counter to the left of the bowl.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The person is wearing a red collared shirt.",
+        "fact": "A bag of pasta is sitting on the counter to the left of the bowl.",
         "confidence": 1.0
       }
     ],
     "ocr": [
       "AR",
-      "ATED"
+      "TED"
     ],
-    "spatial": "The person in the red shirt is standing behind the stainless steel mixing bowl. The glass jar is positioned directly above the bowl, pouring ingredients into it. To the left of the bowl is a white bag of sugar. The kitchen cabinets and microwave are located in the background behind the person.",
+    "spatial": "The person in the red shirt is positioned behind the mixing bowl. The glass jar is held directly above the bowl, pouring ingredients into it. The bag of pasta is to the left of the bowl, and the plate of eggs is to the right of the bowl.",
     "parse_success": true,
     "chunk_idx": 35,
     "video_id": "v_4ivePL3RW0Q"
   },
   {
     "time": [
-      72,
-      74
+      36,
+      37
     ],
     "visible_entities": [
       {
-        "desc": "person wearing a red polo shirt with a visible button placket",
-        "action": "leaning over a sink",
+        "desc": "person wearing a bright red polo shirt with a visible button on the placket",
+        "action": "moving arm over a bowl",
         "position": "center"
       },
       {
-        "desc": "arm with light skin tone",
-        "action": "reaching into a basin",
-        "position": "foreground"
-      },
-      {
-        "desc": "metallic basin or sink bowl",
+        "desc": "silver metal bowl, partially visible",
         "action": "static",
         "position": "bottom"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A person wearing a red polo shirt is leaning forward.",
+        "fact": "A person wearing a red polo shirt is moving their arm over a metal bowl.",
         "confidence": 1.0
       },
       {
-        "fact": "An arm reaches down into a metallic basin.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The scene is blurry, suggesting motion or close proximity to the camera.",
+        "fact": "The camera focuses on the torso of the person in the red shirt.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The person in the red polo shirt is positioned above the metallic basin. The arm extends from the upper part of the frame downwards into the basin located at the bottom.",
+    "spatial": "The person in the red polo shirt is positioned above and behind the silver metal bowl. The bowl is located at the bottom of the frame, partially obscured by the person's arm.",
     "parse_success": true,
     "chunk_idx": 36,
     "video_id": "v_4ivePL3RW0Q"
   },
   {
     "time": [
-      74,
-      76
+      37,
+      38
     ],
     "visible_entities": [
       {
-        "desc": "light-colored, lumpy food mixture with a soft, mashed texture",
+        "desc": "lumpy, off-white and beige food mixture with a soft, mashed texture",
         "action": "being stirred",
-        "position": "bottom/foreground"
+        "position": "center/foreground"
       },
       {
-        "desc": "dark, blurry stirring implement or utensil",
-        "action": "mixing the food",
+        "desc": "dark, curved metal stirring implement",
+        "action": "moving through the mixture",
         "position": "center"
+      },
+      {
+        "desc": "metallic container interior with a warm, brownish tint",
+        "action": "static",
+        "position": "background"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A dark utensil is actively mixing a light-colored, lumpy substance.",
+        "fact": "A dark stirring implement is moving through the lumpy food mixture.",
         "confidence": 1.0
       },
       {
-        "fact": "The food mixture is being agitated in a circular motion.",
+        "fact": "The food mixture is being agitated inside a metallic container.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The scene is blurry, indicating rapid motion of the stirring action.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The dark stirring implement is in the center of the frame, submerged in the light-colored food mixture which fills the bottom foreground. The mixture is inside a container with brownish walls visible in the background.",
+    "spatial": "The lumpy food mixture is inside the metallic container. The dark stirring implement is in the center of the mixture, moving through it. The container walls are behind and surrounding the food.",
     "parse_success": true,
     "chunk_idx": 37,
     "video_id": "v_4ivePL3RW0Q"
   },
   {
     "time": [
-      76,
-      78
+      38,
+      39
     ],
     "visible_entities": [
       {
         "desc": "hands with light skin tone",
-        "action": "cracking an egg into a pot",
+        "action": "cracking an egg and mixing dough",
         "position": "center"
       },
       {
-        "desc": "silver metal pot with two handles",
-        "action": "static",
-        "position": "center"
-      },
-      {
-        "desc": "white egg",
+        "desc": "white eggshell",
         "action": "being cracked",
         "position": "center"
       },
       {
-        "desc": "brown crumbly dough mixture",
+        "desc": "silver metal pot with handles",
         "action": "static",
+        "position": "center"
+      },
+      {
+        "desc": "brown crumbly dough mixture",
+        "action": "being mixed",
         "position": "inside pot"
       },
       {
         "desc": "white powder",
         "action": "static",
         "position": "inside pot"
-      },
-      {
-        "desc": "white countertop",
-        "action": "static",
-        "position": "background"
       }
     ],
     "atomic_facts": [
@@ -1984,141 +1959,136 @@
         "confidence": 1.0
       },
       {
-        "fact": "The pot contains a brown crumbly mixture and white powder.",
+        "fact": "The pot contains a brown, crumbly dough mixture.",
         "confidence": 1.0
       },
       {
-        "fact": "Hands are holding the egg over the pot.",
+        "fact": "White powder is visible at the bottom of the pot.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "Hands are actively mixing the ingredients inside the pot.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The hands are positioned above the silver metal pot. The egg is being held by the hands directly over the brown dough mixture inside the pot. The pot is resting on a white countertop.",
+    "spatial": "The metal pot is in the center of the frame. The hands are positioned above the pot, holding the egg and mixing the contents. The brown dough mixture is inside the pot, resting on top of the white powder.",
     "parse_success": true,
     "chunk_idx": 38,
     "video_id": "v_4ivePL3RW0Q"
   },
   {
     "time": [
-      78,
-      80
+      39,
+      40
     ],
     "visible_entities": [
       {
-        "desc": "person with tan skin, bare arms, hands",
-        "action": "mashing food",
+        "desc": "person's hands with light skin tone",
+        "action": "mixing and kneading dough",
         "position": "center"
       },
       {
-        "desc": "silver metal pot with two side handles",
+        "desc": "silver metal cooking pot with two side handles",
         "action": "static",
         "position": "center"
       },
       {
-        "desc": "mashed yellowish-brown food substance",
-        "action": "being mashed",
+        "desc": "lumpy, beige-colored dough mixture",
+        "action": "being manipulated",
         "position": "inside pot"
+      },
+      {
+        "desc": "white countertop surface",
+        "action": "static",
+        "position": "background"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A person is using their hands to mash food inside a metal pot.",
+        "fact": "A person is using their hands to mix a beige dough-like substance inside a metal pot.",
         "confidence": 1.0
       },
       {
-        "fact": "The food substance is yellowish-brown and chunky.",
+        "fact": "The left hand is actively kneading the mixture while the right hand holds the pot handle.",
         "confidence": 1.0
       },
       {
-        "fact": "The pot is sitting on a white surface.",
+        "fact": "The pot is resting on a white surface.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The person's hands are inside the silver metal pot, manipulating the food. The pot is centered on a white surface. The food is at the bottom of the pot.",
+    "spatial": "The person's hands are positioned inside the silver metal pot, which is sitting on top of a white countertop. The beige dough is located at the bottom of the pot, directly beneath the hands.",
     "parse_success": true,
     "chunk_idx": 39,
     "video_id": "v_4ivePL3RW0Q"
   },
   {
     "time": [
-      80,
-      82
+      40,
+      41
     ],
     "visible_entities": [
       {
-        "desc": "hands with tan skin tone",
+        "desc": "person with tan skin, bare arms, no visible clothing on arms",
         "action": "mixing ingredients in a pot",
-        "position": "center"
+        "position": "center/foreground"
       },
       {
-        "desc": "silver metal cooking pot with two handles",
+        "desc": "silver metal cooking pot with two side handles",
         "action": "static",
         "position": "center"
       },
       {
-        "desc": "thick beige dough mixture",
-        "action": "being stirred",
+        "desc": "thick beige dough mixture with a raw yellow egg yolk",
+        "action": "being mixed",
         "position": "inside the pot"
       },
       {
-        "desc": "raw egg with bright yellow yolk",
-        "action": "being incorporated into the mixture",
-        "position": "center of the pot"
-      },
-      {
-        "desc": "white instructional text overlay",
+        "desc": "white text overlay with asterisk",
         "action": "static",
         "position": "bottom"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A person is vigorously mixing a thick dough mixture inside a metal pot.",
+        "fact": "A person is using their hand to mix a raw egg into a dough mixture inside a metal pot.",
         "confidence": 1.0
       },
       {
-        "fact": "A raw egg with a distinct yellow yolk is visible within the mixture.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The text overlay instructs to mix water and baking soda and add the liquid after adding the eggs.",
+        "fact": "The text overlay provides instructions to mix water and baking soda and add the liquid after adding eggs.",
         "confidence": 1.0
       }
     ],
     "ocr": [
       "*Mix the water and baking soda and add the new liquid right after adding the eggs."
     ],
-    "spatial": "The metal pot is centered in the frame on a white surface. The hands are positioned over the pot, reaching inside to mix the contents. The raw egg is located in the center of the dough mixture inside the pot. The instructional text is positioned at the bottom of the screen, below the pot.",
+    "spatial": "The person's hands are positioned over the center of the frame, reaching inside the silver metal pot. The dough and egg mixture is contained inside the pot. The instructional text is located at the bottom of the screen, below the pot.",
     "parse_success": true,
     "chunk_idx": 40,
     "video_id": "v_4ivePL3RW0Q"
   },
   {
     "time": [
-      82,
-      84
+      41,
+      42
     ],
     "visible_entities": [
       {
-        "desc": "silver metal pot with two side handles",
+        "desc": "hand with light skin tone, fingers gripping a utensil",
+        "action": "mixing ingredients in a pot",
+        "position": "center"
+      },
+      {
+        "desc": "silver metal cooking pot with two side handles",
         "action": "static",
         "position": "center"
       },
       {
-        "desc": "thick beige dough mixture",
+        "desc": "thick beige dough mixture with a raw yellow egg yolk",
         "action": "being stirred",
         "position": "inside the pot"
-      },
-      {
-        "desc": "bright yellow egg yolk",
-        "action": "being mixed into dough",
-        "position": "center of the pot"
-      },
-      {
-        "desc": "hand with tan skin",
-        "action": "stirring the mixture",
-        "position": "top center"
       },
       {
         "desc": "white instructional text overlay",
@@ -2128,155 +2098,104 @@
     ],
     "atomic_facts": [
       {
-        "fact": "A hand is stirring a beige dough mixture inside a metal pot.",
+        "fact": "A hand is vigorously mixing a beige dough mixture inside a metal pot.",
         "confidence": 1.0
       },
       {
-        "fact": "A raw egg yolk is visible on top of the dough.",
+        "fact": "A raw egg yolk is visible on top of the dough before being fully incorporated.",
         "confidence": 1.0
       },
       {
-        "fact": "The text overlay instructs to mix water and baking soda and add liquid after eggs.",
+        "fact": "The text overlay instructs to mix water and baking soda and add the liquid after the eggs.",
         "confidence": 1.0
       }
     ],
     "ocr": [
-      "*Mix the water and baking soda and add the",
-      "new liquid right after adding the eggs."
+      "*Mix the water and baking soda and add the new liquid right after adding the eggs."
     ],
-    "spatial": "The metal pot is centered on a white surface. The beige dough and yellow egg yolk are inside the pot. A hand is positioned above the pot, reaching in to stir the contents. The white text is located at the bottom of the frame, below the pot.",
+    "spatial": "The metal pot is centered on a white surface. The hand is positioned above the pot, reaching inside to mix the dough. The text overlay is located at the bottom of the frame, below the pot.",
     "parse_success": true,
     "chunk_idx": 41,
     "video_id": "v_4ivePL3RW0Q"
   },
   {
     "time": [
-      84,
-      86
+      42,
+      43
     ],
     "visible_entities": [
       {
-        "desc": "person with medium skin tone, wearing a white long-sleeved shirt",
-        "action": "mixing ingredients",
+        "desc": "person with tan skin, wearing a white long-sleeved shirt",
+        "action": "mixing ingredients with hand",
         "position": "center"
       },
       {
-        "desc": "large silver metal pot with two handles",
+        "desc": "silver metal pot with two handles",
         "action": "static",
         "position": "center"
       },
       {
-        "desc": "lumpy beige dough mixture",
+        "desc": "thick beige dough mixture with yellow liquid",
         "action": "being mixed",
         "position": "inside pot"
       },
       {
-        "desc": "yellow liquid, likely beaten eggs",
-        "action": "being incorporated",
-        "position": "inside pot"
-      },
-      {
-        "desc": "white text overlay with instructional steps",
+        "desc": "white text overlay with asterisk",
         "action": "static",
         "position": "bottom"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A person is using their hand to mix dough and yellow liquid inside a metal pot.",
+        "fact": "A person is mixing a beige dough mixture inside a metal pot using their hand.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "Yellow liquid, likely eggs, is visible on top of the dough.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The person's hand is submerged in the mixture, kneading the ingredients together.",
         "confidence": 1.0
       },
       {
         "fact": "The text overlay instructs to mix water and baking soda and add the liquid after adding eggs.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The pot is sitting on a white surface.",
         "confidence": 1.0
       }
     ],
     "ocr": [
       "*Mix the water and baking soda and add the new liquid right after adding the eggs."
     ],
-    "spatial": "The person's hand is inside the metal pot, mixing the beige dough and yellow liquid. The pot is centered on a white table surface. The instructional text is positioned at the bottom of the frame, below the pot.",
+    "spatial": "The person's hand is inside the silver metal pot, mixing the beige dough. The yellow liquid is on top of the dough mixture. The white text overlay is positioned at the bottom of the frame, below the pot.",
     "parse_success": true,
     "chunk_idx": 42,
     "video_id": "v_4ivePL3RW0Q"
   },
   {
     "time": [
-      86,
-      88
+      43,
+      44
     ],
     "visible_entities": [
       {
-        "desc": "person's hands with light skin tone, wearing a red garment",
-        "action": "holding a metal whisk and stirring inside a bowl",
+        "desc": "hands with light skin tone",
+        "action": "stirring inside the bowl",
         "position": "center"
       },
       {
-        "desc": "silver metal mixing bowl, shiny surface",
+        "desc": "silver metal mixing bowl",
         "action": "static",
         "position": "center"
       },
       {
-        "desc": "white text overlay with an asterisk",
+        "desc": "white text overlay",
         "action": "static",
         "position": "bottom"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A person is using a metal whisk to mix ingredients inside a silver bowl.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The on-screen text provides instructions to mix water and baking soda and add liquid after eggs.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [
-      "*Mix the water and baking soda and add the new liquid right after adding the eggs."
-    ],
-    "spatial": "The person's hands are positioned above the silver metal mixing bowl. The whisk is held inside the bowl. The instructional text is located at the bottom of the frame, below the bowl.",
-    "parse_success": true,
-    "chunk_idx": 43,
-    "video_id": "v_4ivePL3RW0Q"
-  },
-  {
-    "time": [
-      88,
-      90
-    ],
-    "visible_entities": [
-      {
-        "desc": "person with fair skin, wearing a grey short-sleeved shirt",
-        "action": "cracking an egg into a pot",
-        "position": "center"
-      },
-      {
-        "desc": "large stainless steel pot with a shiny metallic finish and a handle on the left",
-        "action": "static",
-        "position": "foreground"
-      },
-      {
-        "desc": "egg with a clear, viscous liquid stream falling from the shell",
-        "action": "falling into the pot",
-        "position": "center"
-      },
-      {
-        "desc": "white sans-serif instructional text overlay",
-        "action": "static",
-        "position": "bottom"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "A person is cracking an egg, causing a stream of liquid to fall into a pot.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The pot is made of stainless steel.",
+        "fact": "Hands are stirring a mixture inside a metal bowl.",
         "confidence": 1.0
       },
       {
@@ -2287,76 +2206,107 @@
     "ocr": [
       "*Mix the water and baking soda and add the new liquid right after adding the eggs."
     ],
-    "spatial": "The person is positioned behind the large stainless steel pot. The stream of egg liquid is falling from the person's hands into the center of the pot. The instructional text is located at the bottom of the frame, overlaying the lower portion of the pot.",
+    "spatial": "The hands are positioned above and inside the metal mixing bowl. The white text overlay is located at the bottom of the frame, below the bowl and hands.",
+    "parse_success": true,
+    "chunk_idx": 43,
+    "video_id": "v_4ivePL3RW0Q"
+  },
+  {
+    "time": [
+      44,
+      45
+    ],
+    "visible_entities": [
+      {
+        "desc": "person's hands and forearms, light skin tone, wearing a grey short-sleeved shirt",
+        "action": "cracking an egg into a pot",
+        "position": "center/foreground"
+      },
+      {
+        "desc": "large stainless steel pot, shiny metallic surface, with a handle on the left",
+        "action": "static",
+        "position": "bottom/center"
+      },
+      {
+        "desc": "raw egg, clear viscous liquid and yellow yolk",
+        "action": "falling into the pot",
+        "position": "center"
+      },
+      {
+        "desc": "white instructional text with a black outline",
+        "action": "static",
+        "position": "bottom"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A person is cracking an egg, causing the liquid contents to fall into a pot.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The text overlay instructs to mix water and baking soda and add the new liquid right after adding the eggs.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "*Mix the water and baking soda and add the new liquid right after adding the eggs."
+    ],
+    "spatial": "The person's hands are positioned above the large stainless steel pot. The egg contents are falling from the hands into the center of the pot. The instructional text is located at the bottom of the frame, overlaying the lower portion of the pot.",
     "parse_success": true,
     "chunk_idx": 44,
     "video_id": "v_4ivePL3RW0Q"
   },
   {
     "time": [
-      90,
-      92
+      45,
+      46
     ],
     "visible_entities": [
       {
-        "desc": "hand with tan skin tone holding a metal spoon with a blue and silver handle",
-        "action": "holding spoon steady",
-        "position": "left"
+        "desc": "hand with light skin tone holding a metal spoon with a blue handle",
+        "action": "holding spoon under bottle",
+        "position": "left/foreground"
       },
       {
-        "desc": "hand with tan skin tone holding a dark glass bottle",
-        "action": "tilting bottle to pour",
-        "position": "right"
-      },
-      {
-        "desc": "silver metal spoon bowl, reflective surface",
-        "action": "receiving dark liquid",
-        "position": "center"
-      },
-      {
-        "desc": "dark glass bottle neck, shiny surface",
+        "desc": "dark glass bottle with a narrow neck",
         "action": "pouring dark liquid",
+        "position": "center/right"
+      },
+      {
+        "desc": "dark viscous liquid",
+        "action": "flowing into spoon",
         "position": "center"
       },
       {
-        "desc": "dark viscous liquid, black or dark brown",
-        "action": "flowing from bottle to spoon",
-        "position": "center"
-      },
-      {
-        "desc": "blurred light-colored chunks, possibly food ingredients",
+        "desc": "blurred light-colored food chunks",
         "action": "static",
-        "position": "background"
+        "position": "bottom/background"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A hand on the right tilts a dark bottle to pour a dark liquid.",
+        "fact": "A hand is holding a spoon directly beneath the opening of a bottle.",
         "confidence": 1.0
       },
       {
-        "fact": "The dark liquid flows from the bottle neck into the bowl of a spoon.",
+        "fact": "Dark liquid is being poured from the bottle into the spoon.",
         "confidence": 1.0
       },
       {
-        "fact": "A hand on the left holds the spoon steady underneath the bottle.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The spoon is positioned to catch the pouring liquid.",
+        "fact": "The spoon is positioned to catch the falling liquid.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The hand holding the bottle is to the right of the hand holding the spoon. The bottle is positioned above the spoon. The spoon is in front of the blurred background chunks.",
+    "spatial": "The hand holding the spoon is to the left of the bottle. The bottle is positioned above the spoon, pouring liquid into it. The spoon is in front of the blurred food chunks in the background.",
     "parse_success": true,
     "chunk_idx": 45,
     "video_id": "v_4ivePL3RW0Q"
   },
   {
     "time": [
-      92,
-      94
+      46,
+      47
     ],
     "visible_entities": [
       {
@@ -2365,56 +2315,71 @@
         "position": "left"
       },
       {
-        "desc": "metal spoon with a blue and teal handle, containing dark viscous liquid",
-        "action": "being held over a bowl",
+        "desc": "metal spoon with a blue and green handle, filled with dark liquid",
+        "action": "being held",
         "position": "center"
       },
       {
-        "desc": "dark bowl containing light-colored food chunks",
+        "desc": "dark bottle neck",
+        "action": "pouring liquid",
+        "position": "right"
+      },
+      {
+        "desc": "dark, viscous liquid",
+        "action": "filling the spoon",
+        "position": "center"
+      },
+      {
+        "desc": "dark cooking pot",
         "action": "static",
         "position": "background"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A hand holds a spoon filled with a dark liquid.",
+        "fact": "A hand is holding a spoon over a dark pot.",
         "confidence": 1.0
       },
       {
-        "fact": "The spoon is positioned above a bowl.",
+        "fact": "Dark liquid is being poured from a bottle into the spoon.",
         "confidence": 1.0
       },
       {
-        "fact": "The bowl contains chunks of light-colored food.",
+        "fact": "The spoon is filled with the dark liquid.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The hand is on the left side of the frame, holding the spoon. The spoon is in the center, positioned directly above the dark bowl. The bowl is in the background, below the spoon.",
+    "spatial": "The hand is to the left of the spoon and is holding it. The bottle neck is to the right of the spoon and is positioned above it. The spoon is located in front of the dark pot.",
     "parse_success": true,
     "chunk_idx": 46,
     "video_id": "v_4ivePL3RW0Q"
   },
   {
     "time": [
-      94,
-      96
+      47,
+      48
     ],
     "visible_entities": [
       {
-        "desc": "hand with dark skin tone",
+        "desc": "hand with medium skin tone",
         "action": "holding a spoon",
-        "position": "left/foreground"
+        "position": "top left"
       },
       {
         "desc": "metal spoon with a blue handle",
-        "action": "being lifted out of the pot",
+        "action": "being lifted from the pot",
         "position": "center"
       },
       {
-        "desc": "large dark metal pot containing yellowish food chunks",
+        "desc": "dark metal cooking pot",
         "action": "static",
-        "position": "center/background"
+        "position": "background"
+      },
+      {
+        "desc": "yellowish lumpy food mixture",
+        "action": "static",
+        "position": "bottom"
       }
     ],
     "atomic_facts": [
@@ -2423,29 +2388,29 @@
         "confidence": 1.0
       },
       {
-        "fact": "The spoon is being lifted out of a large pot.",
+        "fact": "The spoon is being lifted out of the pot.",
         "confidence": 1.0
       },
       {
-        "fact": "The pot contains yellowish chunks of food.",
+        "fact": "There is a yellowish food mixture at the bottom of the pot.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The hand is positioned to the left of the spoon and is holding it. The spoon is located inside the pot, hovering above the yellowish food chunks. The pot occupies the majority of the background and center space.",
+    "spatial": "The hand is positioned at the top left, holding the spoon which is in the center of the frame. The spoon is above the yellowish food mixture inside the dark metal pot.",
     "parse_success": true,
     "chunk_idx": 47,
     "video_id": "v_4ivePL3RW0Q"
   },
   {
     "time": [
-      96,
-      98
+      48,
+      49
     ],
     "visible_entities": [
       {
         "desc": "silver metal spoon with a blue handle",
-        "action": "holding liquid",
+        "action": "being held under a bottle",
         "position": "center"
       },
       {
@@ -2454,138 +2419,199 @@
         "position": "top right"
       },
       {
-        "desc": "dark brown bowl containing light-colored food chunks",
-        "action": "static",
-        "position": "bottom"
+        "desc": "human hands with light skin tone",
+        "action": "holding spoon and bottle",
+        "position": "top"
       },
       {
-        "desc": "human hand",
-        "action": "holding spoon",
-        "position": "top left"
+        "desc": "dark cooking pot containing light-colored food chunks",
+        "action": "static",
+        "position": "bottom"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A hand is holding a spoon over a bowl.",
+        "fact": "A person is pouring a dark liquid from a bottle into a spoon.",
         "confidence": 1.0
       },
       {
-        "fact": "Dark liquid is being poured from a bottle into the spoon.",
+        "fact": "The spoon is positioned directly over a pot of food.",
         "confidence": 1.0
       },
       {
-        "fact": "The spoon contains a small amount of dark liquid.",
+        "fact": "The liquid in the spoon reflects the ambient light.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The hand is holding the spoon in the center of the frame. The bottle is positioned above and to the right of the spoon, pouring liquid into it. The bowl is located below the spoon.",
+    "spatial": "The hands are holding the spoon and the bottle above the dark cooking pot. The bottle is positioned to the right of the spoon, tilting to pour liquid into it. The spoon is suspended in the center of the frame, directly over the food chunks inside the pot.",
     "parse_success": true,
     "chunk_idx": 48,
     "video_id": "v_4ivePL3RW0Q"
   },
   {
     "time": [
-      98,
-      100
+      49,
+      50
     ],
     "visible_entities": [
       {
-        "desc": "hand holding a metal spoon with a blue and green handle",
-        "action": "holding spoon",
-        "position": "left"
+        "desc": "hand with light skin tone holding a metal spoon with a blue handle",
+        "action": "holding spoon under bottle",
+        "position": "left/center"
       },
       {
         "desc": "dark glass bottle with a narrow neck",
         "action": "pouring dark liquid",
-        "position": "right"
+        "position": "right/center"
       },
       {
-        "desc": "dark viscous liquid",
-        "action": "filling spoon",
+        "desc": "metal spoon containing dark brown liquid",
+        "action": "receiving liquid",
         "position": "center"
       },
       {
-        "desc": "blurred light-colored food chunks",
+        "desc": "blurred yellowish food chunks in a dark container",
         "action": "static",
-        "position": "background"
+        "position": "background/bottom"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A hand pours dark liquid from a bottle into a spoon.",
+        "fact": "A hand pours a dark brown liquid from a bottle into a spoon.",
         "confidence": 1.0
       },
       {
-        "fact": "The spoon is held over a pot containing food chunks.",
+        "fact": "The spoon is positioned directly under the mouth of the bottle.",
         "confidence": 1.0
       },
       {
-        "fact": "The liquid fills the bowl of the spoon.",
+        "fact": "The spoon is held over a container containing food chunks.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The hand holding the spoon is to the left of the bottle. The bottle is positioned above the spoon, pouring liquid into it. The spoon is held in front of the blurred food chunks in the background.",
+    "spatial": "The hand holding the spoon is to the left of the bottle. The bottle is positioned above the spoon. The spoon is located above the blurred food chunks in the background.",
     "parse_success": true,
     "chunk_idx": 49,
     "video_id": "v_4ivePL3RW0Q"
   },
   {
     "time": [
-      100,
-      102
+      50,
+      51
     ],
     "visible_entities": [
       {
         "desc": "hand with light skin tone",
         "action": "holding a spoon",
-        "position": "top left"
+        "position": "left"
       },
       {
-        "desc": "metal spoon with a blue handle",
-        "action": "tilting to pour liquid",
+        "desc": "metal spoon with a blue handle, containing a small amount of dark brown liquid",
+        "action": "being tilted to pour",
         "position": "center"
       },
       {
-        "desc": "dark brown viscous liquid",
-        "action": "being poured",
-        "position": "center"
-      },
-      {
-        "desc": "large dark metal pot containing light-colored food",
+        "desc": "large dark metal pot containing light-colored, lumpy food",
         "action": "static",
         "position": "background"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A hand is holding a spoon with a blue handle.",
+        "fact": "A hand is holding a spoon over a pot.",
         "confidence": 1.0
       },
       {
-        "fact": "The spoon contains a dark brown liquid.",
+        "fact": "The spoon is being tilted to pour a dark liquid into the food.",
         "confidence": 1.0
       },
       {
-        "fact": "The spoon is being tilted to pour the liquid into the pot.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The pot contains a light-colored, textured food substance.",
+        "fact": "The pot contains a light-colored, lumpy mixture.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The hand is in the top left corner, holding the spoon which is positioned in the center of the frame. The spoon is located above the large dark pot. The dark brown liquid is inside the bowl of the spoon.",
+    "spatial": "The hand is on the left side of the frame, holding the spoon. The spoon is positioned above the pot in the center. The pot is in the background, below the spoon.",
     "parse_success": true,
     "chunk_idx": 50,
     "video_id": "v_4ivePL3RW0Q"
   },
   {
     "time": [
-      102,
-      104
+      51,
+      52
+    ],
+    "visible_entities": [
+      {
+        "desc": "clear glass measuring cup with red measurement markings and a glass handle",
+        "action": "static",
+        "position": "center"
+      },
+      {
+        "desc": "white powdery substance filling the cup",
+        "action": "static",
+        "position": "inside"
+      },
+      {
+        "desc": "yellow and white patterned object, possibly a cloth or paper towel",
+        "action": "static",
+        "position": "top"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A glass measuring cup is filled with a white powdery substance.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The substance level is near the 3-cup mark.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A yellow and white object rests on top of the powder.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "4 CUPS",
+      "3 1/2",
+      "3 CUPS",
+      "2 1/2",
+      "2 CUPS",
+      "1 1/2",
+      "1 CUP",
+      "1/2",
+      "32oz",
+      "28oz",
+      "24oz",
+      "20oz",
+      "16oz",
+      "12oz",
+      "8oz",
+      "4oz",
+      "1 Quart",
+      "3 2/3",
+      "3 1/3",
+      "3 CUPS",
+      "2 2/3",
+      "2 1/3",
+      "2 CUPS",
+      "1 2/3",
+      "1 1/3",
+      "1 CUP",
+      "2/3"
+    ],
+    "spatial": "The glass measuring cup is in the center of the frame. The white powder is inside the cup. The yellow and white patterned object is on top of the powder. The red measurement text is on the side of the glass cup.",
+    "parse_success": true,
+    "chunk_idx": 51,
+    "video_id": "v_4ivePL3RW0Q"
+  },
+  {
+    "time": [
+      52,
+      53
     ],
     "visible_entities": [
       {
@@ -2601,80 +2627,15 @@
     ],
     "atomic_facts": [
       {
-        "fact": "A clear glass measuring cup sits on a surface.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The measuring cup contains a white powdery substance.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The substance level is near the 3 cup mark.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [
-      "4 CUPS",
-      "3 1/2",
-      "3 CUPS",
-      "2 1/2",
-      "2 CUPS",
-      "1 1/2",
-      "1 CUP",
-      "1/2",
-      "32oz",
-      "28oz",
-      "24oz",
-      "20oz",
-      "16oz",
-      "12oz",
-      "8oz",
-      "4oz",
-      "1 Quart",
-      "3 2/3",
-      "3 1/3",
-      "3 CUPS",
-      "2 2/3",
-      "2 1/3",
-      "2 CUPS",
-      "1 2/3",
-      "1 1/3",
-      "1 CUP",
-      "2/3"
-    ],
-    "spatial": "The glass measuring cup is in the center of the frame. The white powder is inside the measuring cup. The red measurement markings are on the side of the glass cup.",
-    "parse_success": true,
-    "chunk_idx": 51,
-    "video_id": "v_4ivePL3RW0Q"
-  },
-  {
-    "time": [
-      104,
-      106
-    ],
-    "visible_entities": [
-      {
-        "desc": "clear glass measuring cup with red measurement markings",
-        "action": "static",
-        "position": "center"
-      },
-      {
-        "desc": "white powdery substance inside the cup",
-        "action": "static",
-        "position": "inside"
-      }
-    ],
-    "atomic_facts": [
-      {
         "fact": "A glass measuring cup sits on a white surface.",
         "confidence": 1.0
       },
       {
-        "fact": "The cup contains a white powder filled to the 2 cup / 16oz mark.",
+        "fact": "The measuring cup contains a white powder filled to the 2 cup / 16oz level.",
         "confidence": 1.0
       },
       {
-        "fact": "The red text on the cup indicates measurements in cups, ounces, and quarts.",
+        "fact": "The text '2 CUPS' and '16oz' is visible on the side of the cup.",
         "confidence": 1.0
       }
     ],
@@ -2682,151 +2643,162 @@
       "4 CUPS",
       "32oz",
       "1 Quart",
+      "3 2/3",
       "3 1/2",
       "28oz",
-      "3 2/3",
+      "3 1/3",
       "3 CUPS",
       "24oz",
-      "3 1/3",
+      "3 CUPS",
+      "2 2/3",
       "2 1/2",
       "20oz",
-      "2 2/3",
+      "2 1/3",
       "2 CUPS",
       "16oz",
-      "2 1/3",
+      "2 CUPS",
+      "1 2/3",
       "1 1/2",
       "12oz",
-      "1 2/3",
+      "1 1/3",
       "1 CUP",
       "8oz",
-      "1 1/3",
+      "1 CUP",
+      "2/3",
       "1/2",
-      "4oz",
-      "2/3"
+      "4oz"
     ],
-    "spatial": "The glass measuring cup is in the center of the frame, resting on a white countertop. The white powder is inside the cup, filling it up to the middle measurement lines. A blurred dark object is visible in the background to the right of the cup.",
+    "spatial": "The glass measuring cup is in the center of the frame, resting on a white countertop. The white powder is inside the measuring cup. The red measurement markings are printed on the exterior surface of the glass.",
     "parse_success": true,
     "chunk_idx": 52,
     "video_id": "v_4ivePL3RW0Q"
   },
   {
     "time": [
-      106,
-      108
+      53,
+      54
     ],
     "visible_entities": [
       {
-        "desc": "clear glass measuring cup with red measurement markings",
+        "desc": "glass measuring cup with red measurement markings",
         "action": "static",
         "position": "center"
       },
       {
-        "desc": "white powdery substance, likely flour",
+        "desc": "white powdery substance",
         "action": "static",
         "position": "inside"
+      },
+      {
+        "desc": "white countertop",
+        "action": "static",
+        "position": "bottom"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A glass measuring cup sits on a white surface.",
+        "fact": "A glass measuring cup sits on a white countertop.",
         "confidence": 1.0
       },
       {
-        "fact": "The cup contains a white powder filled to the 3-cup mark.",
+        "fact": "The cup contains a white powdery substance filled to the 3 cup mark.",
         "confidence": 1.0
       },
       {
-        "fact": "The red text on the cup indicates measurements in cups and ounces.",
+        "fact": "Red text on the cup indicates measurements in cups and ounces.",
         "confidence": 1.0
       }
     ],
     "ocr": [
       "4 CUPS",
-      "32oz",
-      "1 Quart",
       "3 1/2",
-      "28oz",
-      "3 2/3",
       "3 CUPS",
-      "24oz",
-      "3 1/3",
       "2 1/2",
-      "20oz",
-      "2 2/3",
       "2 CUPS",
-      "16oz",
-      "2 1/3",
       "1 1/2",
-      "12oz",
-      "1 2/3",
       "1 CUP",
-      "8oz",
-      "1 1/3",
       "1/2",
+      "32oz",
+      "28oz",
+      "24oz",
+      "20oz",
+      "16oz",
+      "12oz",
+      "8oz",
       "4oz",
+      "1 Quart",
+      "3 2/3",
+      "3 1/3",
+      "3 CUPS",
+      "2 2/3",
+      "2 1/3",
+      "2 CUPS",
+      "1 2/3",
+      "1 1/3",
+      "1 CUP",
       "2/3"
     ],
-    "spatial": "The glass measuring cup is in the center of the frame, resting on a white countertop. The white powder is inside the cup, filling it up to the level marked '3 CUPS' on the side.",
+    "spatial": "The glass measuring cup is positioned in the center of the frame, resting on top of the white countertop. The white powdery substance is inside the measuring cup, filling it up to the level marked '3 CUPS'.",
     "parse_success": true,
     "chunk_idx": 53,
     "video_id": "v_4ivePL3RW0Q"
   },
   {
     "time": [
-      108,
-      110
+      54,
+      55
     ],
     "visible_entities": [
       {
-        "desc": "thick, beige-colored dough mixture with a sticky texture",
+        "desc": "thick, beige-colored dough or batter with a sticky, textured consistency",
         "action": "being stirred",
         "position": "center"
       },
       {
-        "desc": "metal wire whisk",
+        "desc": "metal wire whisk with a handle",
         "action": "mixing the dough",
         "position": "center"
       },
       {
-        "desc": "large stainless steel mixing bowl",
+        "desc": "large, silver-colored metal pot with side handles",
         "action": "static",
         "position": "center"
       },
       {
-        "desc": "hand holding the whisk",
-        "action": "stirring",
-        "position": "right"
+        "desc": "clear glass bowl containing white powder",
+        "action": "being tilted",
+        "position": "top left"
       },
       {
-        "desc": "glass measuring cup containing white powder",
-        "action": "pouring",
-        "position": "top left"
+        "desc": "human hands with visible skin tone",
+        "action": "holding the whisk and pot",
+        "position": "right"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A hand is vigorously stirring a thick beige dough inside a metal bowl using a wire whisk.",
+        "fact": "A person is vigorously stirring a thick beige mixture inside a metal pot using a wire whisk.",
         "confidence": 1.0
       },
       {
-        "fact": "A glass measuring cup is positioned above the bowl, pouring a white powdery ingredient into the mixture.",
+        "fact": "A clear glass bowl is being tilted over the pot, pouring a white powdery substance into the mixture.",
         "confidence": 1.0
       },
       {
-        "fact": "The dough appears sticky and clings to the sides of the bowl.",
+        "fact": "The dough appears sticky and clings to the sides of the pot and the whisk.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The metal mixing bowl is in the center of the frame containing the beige dough. The hand holding the whisk is on the right side, reaching into the bowl. The glass measuring cup is located at the top left, positioned above the bowl to pour ingredients into it.",
+    "spatial": "The metal pot is positioned in the center of the frame, containing the beige dough. A hand is holding the whisk inside the pot, mixing the contents. Above and to the left of the pot, a glass bowl is tilted, pouring white powder into the mixture. Another hand is visible on the right side, holding the pot handle.",
     "parse_success": true,
     "chunk_idx": 54,
     "video_id": "v_4ivePL3RW0Q"
   },
   {
     "time": [
-      110,
-      112
+      55,
+      56
     ],
     "visible_entities": [
       {
@@ -2835,7 +2807,7 @@
         "position": "center"
       },
       {
-        "desc": "silver metal pot with handles",
+        "desc": "large silver metal pot with handles",
         "action": "static",
         "position": "center"
       },
@@ -2846,530 +2818,488 @@
       },
       {
         "desc": "white powdery substance",
-        "action": "being poured",
-        "position": "top left"
-      },
-      {
-        "desc": "clear glass container",
-        "action": "pouring",
+        "action": "being added",
         "position": "top left"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A hand is mixing a thick beige dough inside a metal pot.",
+        "fact": "A hand is actively mixing a thick beige dough inside a metal pot.",
         "confidence": 1.0
       },
       {
-        "fact": "White powder is being poured from a glass container into the pot.",
+        "fact": "White powder is being poured into the pot from the top left.",
         "confidence": 1.0
       },
       {
-        "fact": "The mixture is being stirred vigorously.",
+        "fact": "The mixture is being stirred with a utensil.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The hand is inside the metal pot, mixing the beige dough. The glass container is positioned above the pot, pouring white powder into the mixture. The dough is located at the bottom of the pot.",
+    "spatial": "The hand is inside the metal pot, mixing the beige dough. The white powder is being poured from above into the pot. The pot is centered in the frame.",
     "parse_success": true,
     "chunk_idx": 55,
     "video_id": "v_4ivePL3RW0Q"
   },
   {
     "time": [
-      112,
-      114
+      56,
+      57
     ],
     "visible_entities": [
       {
-        "desc": "hand with light skin tone, wearing a silver ring on the ring finger",
-        "action": "holding a whisk and stirring",
+        "desc": "hands with medium skin tone, one wearing a silver ring",
+        "action": "whisking ingredients",
         "position": "center"
       },
       {
-        "desc": "large stainless steel pot with a shiny metallic finish",
+        "desc": "metal whisk",
+        "action": "being moved in circular motion",
+        "position": "center"
+      },
+      {
+        "desc": "silver metal pot",
         "action": "static",
         "position": "center"
       },
       {
-        "desc": "thick, lumpy, beige-colored mixture",
-        "action": "being stirred",
-        "position": "inside the pot"
+        "desc": "white powdery substance",
+        "action": "being mixed",
+        "position": "inside pot"
       },
       {
-        "desc": "white powdery substance, likely flour or sugar",
-        "action": "being mixed in",
-        "position": "inside the pot"
-      },
-      {
-        "desc": "metal whisk with wire loops",
-        "action": "stirring the mixture",
-        "position": "inside the pot"
+        "desc": "brownish mixture",
+        "action": "being mixed",
+        "position": "inside pot"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A hand is vigorously stirring a mixture inside a pot.",
+        "fact": "A person is whisking ingredients inside a pot.",
         "confidence": 1.0
       },
       {
-        "fact": "A white powder is being incorporated into a beige batter.",
+        "fact": "White powder is being incorporated into a brown mixture.",
         "confidence": 1.0
       },
       {
-        "fact": "The mixture is thick and lumpy in texture.",
+        "fact": "The whisk is moving rapidly, creating motion blur.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The hand is positioned above the pot, holding the whisk which is inside the pot. The beige mixture and white powder are inside the pot, being mixed together by the whisk.",
+    "spatial": "The hands are positioned above the pot, holding the whisk. The whisk is inside the pot, submerged in the mixture. The white powder is on top of the brownish mixture before being stirred in.",
     "parse_success": true,
     "chunk_idx": 56,
     "video_id": "v_4ivePL3RW0Q"
   },
   {
     "time": [
-      114,
-      116
+      57,
+      58
     ],
     "visible_entities": [
       {
-        "desc": "hand with medium-dark skin tone",
-        "action": "holding a whisk and stirring",
-        "position": "right"
-      },
-      {
-        "desc": "metal whisk",
-        "action": "mixing ingredients",
+        "desc": "dark-skinned hand",
+        "action": "whisking ingredients",
         "position": "center"
       },
       {
-        "desc": "large silver metal pot",
+        "desc": "silver metal pot with handles",
         "action": "static",
         "position": "center"
       },
       {
         "desc": "mixture of white powder and brown paste",
-        "action": "being stirred",
+        "action": "being mixed",
         "position": "inside pot"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A hand is vigorously stirring a mixture inside a pot.",
+        "fact": "A hand is vigorously whisking ingredients inside a metal pot.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The mixture consists of a white powdery substance and a brown paste.",
         "confidence": 1.0
       },
       {
         "fact": "The whisk is moving rapidly, creating motion blur.",
         "confidence": 1.0
-      },
-      {
-        "fact": "White powder is being incorporated into a brown substance.",
-        "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The hand is positioned on the right side, holding the whisk which is inside the large silver pot. The mixture of white and brown ingredients is at the bottom of the pot, being manipulated by the whisk.",
+    "spatial": "The hand is inside the metal pot, holding a whisk. The mixture of ingredients is at the bottom of the pot, beneath the hand and whisk.",
     "parse_success": true,
     "chunk_idx": 57,
     "video_id": "v_4ivePL3RW0Q"
   },
   {
     "time": [
-      116,
-      118
+      58,
+      59
     ],
     "visible_entities": [
       {
-        "desc": "hand with medium skin tone",
+        "desc": "hand with medium skin tone gripping a metal handle",
         "action": "whisking ingredients",
-        "position": "center"
+        "position": "center/right"
       },
       {
-        "desc": "metal whisk",
-        "action": "being moved",
-        "position": "center"
-      },
-      {
-        "desc": "large metal pot",
+        "desc": "large silver metal pot with side handles",
         "action": "static",
         "position": "center"
       },
       {
-        "desc": "mixture of white powder and brown chunks",
+        "desc": "mixture of white powder and yellowish dough",
         "action": "being mixed",
+        "position": "inside pot"
+      },
+      {
+        "desc": "metal whisk with wire loops",
+        "action": "stirring",
         "position": "inside pot"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A hand is holding a metal whisk.",
+        "fact": "A hand is vigorously whisking ingredients inside a pot.",
         "confidence": 1.0
       },
       {
-        "fact": "The whisk is stirring a mixture inside the pot.",
+        "fact": "White powder is being incorporated into a yellowish mixture.",
         "confidence": 1.0
       },
       {
-        "fact": "The mixture contains white powder and brown chunks.",
+        "fact": "The whisk is moving rapidly, creating motion blur.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The hand is positioned above the pot, holding the whisk which is inside the pot. The mixture is at the bottom of the pot, underneath the whisk.",
+    "spatial": "The hand is holding the whisk inside the metal pot. The mixture is at the bottom of the pot, underneath the whisk. The pot is positioned centrally in the frame.",
     "parse_success": true,
     "chunk_idx": 58,
     "video_id": "v_4ivePL3RW0Q"
   },
   {
     "time": [
-      118,
-      120
+      59,
+      60
     ],
     "visible_entities": [
       {
-        "desc": "hand with light skin tone, holding a utensil",
-        "action": "stirring mixture",
-        "position": "center"
+        "desc": "person's hands with light skin tone",
+        "action": "stirring mixture and pouring powder",
+        "position": "center/foreground"
       },
       {
-        "desc": "metal measuring cup containing white powder",
-        "action": "pouring contents",
-        "position": "left"
-      },
-      {
-        "desc": "large metal mixing bowl",
+        "desc": "silver metal mixing bowl",
         "action": "static",
         "position": "center"
       },
       {
-        "desc": "thick beige batter with white powder",
+        "desc": "thick beige batter",
         "action": "being mixed",
         "position": "inside bowl"
+      },
+      {
+        "desc": "white powder",
+        "action": "being poured",
+        "position": "top left"
+      },
+      {
+        "desc": "metal spoon handle",
+        "action": "being held",
+        "position": "right"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A hand is stirring a thick beige batter inside a metal bowl.",
+        "fact": "A person is stirring a thick beige batter inside a metal bowl.",
         "confidence": 1.0
       },
       {
-        "fact": "White powder is being poured from a metal cup into the bowl.",
+        "fact": "White powder is being poured from a container into the mixture.",
         "confidence": 1.0
       },
       {
-        "fact": "The batter is being mixed with a utensil.",
+        "fact": "The person's right hand is holding a utensil to mix the ingredients.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The metal measuring cup is positioned to the left of the mixing bowl, pouring white powder into it. The hand is in the center of the frame, holding a utensil inside the bowl to stir the batter. The batter is located at the bottom of the bowl.",
+    "spatial": "The metal mixing bowl is in the center of the frame containing the beige batter. The person's hands are positioned above and inside the bowl, manipulating the ingredients. The white powder is being poured from the top left area into the center of the bowl.",
     "parse_success": true,
     "chunk_idx": 59,
     "video_id": "v_4ivePL3RW0Q"
   },
   {
     "time": [
-      120,
-      122
+      60,
+      61
     ],
     "visible_entities": [
       {
-        "desc": "hand with dark skin tone",
-        "action": "whisking mixture",
+        "desc": "dark-skinned hand",
+        "action": "holding a whisk",
         "position": "right"
       },
       {
         "desc": "metal whisk",
-        "action": "stirring inside pot",
+        "action": "stirring mixture",
         "position": "center"
       },
       {
-        "desc": "large metal pot",
-        "action": "static",
+        "desc": "metal pot",
+        "action": "containing mixture",
         "position": "center"
       },
       {
-        "desc": "white powdery substance",
+        "desc": "white powder",
         "action": "being poured",
         "position": "left"
       },
       {
-        "desc": "brown liquid mixture",
+        "desc": "brown thick mixture",
         "action": "being mixed",
         "position": "inside pot"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A hand is holding a metal whisk and stirring the contents of a pot.",
+        "fact": "A hand is holding a metal whisk inside a pot.",
         "confidence": 1.0
       },
       {
-        "fact": "A white powdery substance is being poured into the pot from the left.",
+        "fact": "White powder is being poured from a container into the pot.",
         "confidence": 1.0
       },
       {
-        "fact": "The pot contains a brown liquid mixture.",
+        "fact": "The whisk is stirring the brown mixture and white powder together.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The hand is on the right side of the frame, holding the whisk which is inside the metal pot. The white powder is entering the pot from the left side, falling onto the brown mixture below.",
+    "spatial": "The hand is on the right side of the frame, holding the whisk which is inside the metal pot. The white powder is being poured from the left side into the center of the pot, landing on top of the brown mixture.",
     "parse_success": true,
     "chunk_idx": 60,
     "video_id": "v_4ivePL3RW0Q"
   },
   {
     "time": [
-      122,
-      124
+      61,
+      62
     ],
     "visible_entities": [
       {
-        "desc": "clumpy, light-brown dough mixture",
+        "desc": "clumpy, light-brown dough mixture with a rough, uneven texture",
         "action": "static",
         "position": "center"
       },
       {
-        "desc": "dark brown chocolate chunks",
+        "desc": "dark brown chocolate chips, small and irregular in shape",
         "action": "being added",
-        "position": "bottom"
+        "position": "bottom-center"
       },
       {
-        "desc": "blue spatula tip",
+        "desc": "blue silicone spatula tip, smooth and flexible",
         "action": "static",
         "position": "bottom-left"
       },
       {
-        "desc": "metal mixing bowl",
+        "desc": "metallic mixing bowl interior, reflective surface with dough residue on sides",
         "action": "static",
         "position": "background"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "Dark brown chocolate chunks are added to the light-brown dough mixture.",
+        "fact": "Chocolate chips are added to the dough mixture.",
         "confidence": 1.0
       },
       {
-        "fact": "The dough mixture is clumpy and sits inside a metal bowl.",
+        "fact": "The dough is clumped together inside the mixing bowl.",
         "confidence": 1.0
       },
       {
-        "fact": "A blue spatula tip is visible at the bottom left of the bowl.",
+        "fact": "A blue spatula is resting in the bowl near the dough.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The light-brown dough mixture is inside the metal mixing bowl. The dark brown chocolate chunks are located at the bottom of the bowl, near the blue spatula tip. The spatula tip is to the left of the chocolate chunks.",
+    "spatial": "The clumpy dough mixture is in the center of the metallic mixing bowl. The dark chocolate chips are located at the bottom center, appearing to be poured onto or near the dough. The blue spatula tip is visible at the bottom left, positioned next to the dough.",
     "parse_success": true,
     "chunk_idx": 61,
     "video_id": "v_4ivePL3RW0Q"
   },
   {
     "time": [
-      124,
-      126
+      62,
+      63
     ],
     "visible_entities": [
       {
-        "desc": "thick, yellowish-brown cookie dough with a lumpy, textured surface",
+        "desc": "thick, light-brown cookie dough with a crumbly texture",
         "action": "static",
-        "position": "left and right sides of the bowl"
+        "position": "left and right"
       },
       {
         "desc": "dark brown chocolate chips, small and irregular in shape",
-        "action": "being added to the bowl",
+        "action": "being added",
         "position": "center"
       },
       {
-        "desc": "silver metal mixing bowl, reflective interior surface",
+        "desc": "silver metal mixing bowl, reflective surface",
         "action": "static",
         "position": "foreground"
       },
       {
         "desc": "blue spatula tip, partially visible",
         "action": "static",
-        "position": "bottom center"
+        "position": "bottom left"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "Chocolate chips are being poured into the center of the mixing bowl.",
+        "fact": "Chocolate chips are being added to the cookie dough in the mixing bowl.",
         "confidence": 1.0
       },
       {
-        "fact": "The chocolate chips land on top of the existing cookie dough.",
+        "fact": "The cookie dough is clumped on the sides of the metal bowl.",
         "confidence": 1.0
       },
       {
-        "fact": "A blue spatula is resting inside the bowl near the bottom edge.",
+        "fact": "A blue spatula is resting inside the bowl.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The silver metal mixing bowl contains the yellowish-brown cookie dough and the dark brown chocolate chips. The chocolate chips are located in the center of the bowl, between two mounds of dough. The blue spatula tip is visible at the bottom center, partially underneath the ingredients.",
+    "spatial": "The silver metal mixing bowl is in the foreground containing the ingredients. The light-brown cookie dough is positioned on the left and right sides of the bowl. The dark brown chocolate chips are in the center of the bowl, sitting on top of the dough. The blue spatula tip is visible at the bottom left, near the dough.",
     "parse_success": true,
     "chunk_idx": 62,
     "video_id": "v_4ivePL3RW0Q"
   },
   {
     "time": [
-      126,
-      128
+      63,
+      64
     ],
     "visible_entities": [
       {
-        "desc": "thick, beige cookie dough with a rough, clumpy texture",
+        "desc": "thick, light-brown cookie dough with a lumpy, sticky texture",
         "action": "static",
-        "position": "background"
+        "position": "left/center/background"
       },
       {
-        "desc": "dark brown chocolate chips, small and irregular in shape",
+        "desc": "pile of dark brown chocolate chips",
         "action": "static",
-        "position": "foreground"
+        "position": "right/foreground"
       },
       {
-        "desc": "large, silver metal mixing bowl with a reflective interior surface",
+        "desc": "large, silver metal mixing bowl with a reflective surface",
         "action": "static",
-        "position": "center"
+        "position": "center/foreground"
       },
       {
-        "desc": "blue spatula tip, partially visible",
+        "desc": "blue spatula tip",
         "action": "static",
-        "position": "bottom"
+        "position": "bottom/center"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "Chocolate chips are resting on top of the cookie dough.",
+        "fact": "Chocolate chips are sitting on top of the cookie dough inside the bowl.",
         "confidence": 1.0
       },
       {
-        "fact": "The ingredients are contained inside a metal mixing bowl.",
+        "fact": "The mixture is contained within a large metal bowl.",
         "confidence": 1.0
       },
       {
-        "fact": "A blue spatula is positioned at the bottom of the bowl.",
+        "fact": "A blue spatula is resting at the bottom of the bowl.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The pile of dark brown chocolate chips is in the foreground, resting on top of the beige cookie dough. The dough is spread along the bottom and sides of the large silver metal mixing bowl. A blue spatula tip is visible at the bottom edge, near the chocolate chips.",
+    "spatial": "The pile of dark brown chocolate chips is positioned to the right of the light-brown cookie dough. Both ingredients are inside the large silver metal mixing bowl. A blue spatula tip is visible at the bottom center, partially underneath the chocolate chips.",
     "parse_success": true,
     "chunk_idx": 63,
     "video_id": "v_4ivePL3RW0Q"
   },
   {
     "time": [
-      128,
-      130
+      64,
+      65
     ],
     "visible_entities": [
       {
-        "desc": "crumpled, shiny silver aluminum foil",
+        "desc": "crinkled, shiny silver aluminum foil lining a surface",
         "action": "static",
         "position": "background"
       },
       {
-        "desc": "hand with dark skin tone",
+        "desc": "dark-skinned hand",
         "action": "placing a piece of food",
         "position": "right"
       },
       {
-        "desc": "irregular piece of yellowish food with dark spots",
-        "action": "being placed on the foil",
+        "desc": "chunk of yellowish, textured food with dark spots",
+        "action": "being placed",
         "position": "right"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A hand places a piece of yellowish food onto a sheet of aluminum foil.",
+        "fact": "A hand enters the frame from the right side.",
         "confidence": 1.0
       },
       {
-        "fact": "The food item has visible dark spots or inclusions.",
+        "fact": "The hand is placing a piece of food onto the aluminum foil.",
         "confidence": 1.0
       },
       {
-        "fact": "The aluminum foil is crumpled and reflects light.",
+        "fact": "The food appears to be a chunk of cooked meat or dough with dark inclusions.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The hand is positioned on the right side of the frame, holding the piece of food. The food is being placed onto the aluminum foil which covers the surface below it.",
+    "spatial": "The aluminum foil covers the majority of the frame, serving as the background surface. The hand is positioned on the right side, reaching in from the edge. The piece of food is held by the hand and is being placed onto the foil on the right side.",
     "parse_success": true,
     "chunk_idx": 64,
     "video_id": "v_4ivePL3RW0Q"
   },
   {
     "time": [
-      130,
-      132
+      65,
+      66
     ],
     "visible_entities": [
       {
-        "desc": "dark-skinned hands",
-        "action": "shaping cookie dough",
+        "desc": "hands with dark skin tone, fingers manipulating dough",
+        "action": "pressing and shaping cookie dough",
         "position": "center"
       },
       {
-        "desc": "lumpy, beige cookie dough with dark chocolate chips",
-        "action": "being manipulated",
+        "desc": "lumpy, light-brown cookie dough with visible dark chocolate chips",
+        "action": "being pressed onto foil",
         "position": "center"
       },
       {
-        "desc": "crinkled aluminum foil sheet",
+        "desc": "crinkled, shiny silver aluminum foil",
         "action": "static",
         "position": "background"
+      },
+      {
+        "desc": "formed mound of cookie dough",
+        "action": "static",
+        "position": "right"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "Hands are pressing and shaping a mound of raw cookie dough.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The dough is resting on a sheet of aluminum foil.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "A second portion of dough is visible to the right.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [],
-    "spatial": "The hands are positioned above the aluminum foil, actively pressing down on the central mound of dough. A separate piece of dough sits to the right of the hands on the foil surface.",
-    "parse_success": true,
-    "chunk_idx": 65,
-    "video_id": "v_4ivePL3RW0Q"
-  },
-  {
-    "time": [
-      132,
-      134
-    ],
-    "visible_entities": [
-      {
-        "desc": "hands with dark skin tone, fingers coated in sticky dough",
-        "action": "placing and shaping cookie dough",
-        "position": "center"
-      },
-      {
-        "desc": "lumpy, light-brown cookie dough with dark chocolate chips",
-        "action": "being manipulated",
-        "position": "center"
-      },
-      {
-        "desc": "crinkled silver aluminum foil sheet",
-        "action": "static",
-        "position": "background"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "Hands are placing a portion of cookie dough onto the aluminum foil.",
+        "fact": "Hands are pressing a clump of cookie dough onto a sheet of aluminum foil.",
         "confidence": 1.0
       },
       {
@@ -3377,25 +3307,25 @@
         "confidence": 1.0
       },
       {
-        "fact": "The foil is spread out on a flat surface.",
+        "fact": "A separate mound of dough sits to the right of the active area.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The hands are positioned above the aluminum foil, manipulating the cookie dough which rests on top of the foil. The dough is in the center of the frame, surrounded by the crinkled texture of the silver foil.",
+    "spatial": "The hands are positioned above the aluminum foil, pressing the dough into it. The active clump of dough is in the center, while a formed mound of dough is located to the right of the hands.",
     "parse_success": true,
-    "chunk_idx": 66,
+    "chunk_idx": 65,
     "video_id": "v_4ivePL3RW0Q"
   },
   {
     "time": [
-      134,
-      136
+      66,
+      67
     ],
     "visible_entities": [
       {
-        "desc": "hand with medium skin tone",
-        "action": "placing dough onto foil",
+        "desc": "dark-skinned hands",
+        "action": "placing cookie dough",
         "position": "center"
       },
       {
@@ -3411,11 +3341,11 @@
     ],
     "atomic_facts": [
       {
-        "fact": "A hand is placing a portion of cookie dough onto a baking sheet.",
+        "fact": "Hands are placing a clump of cookie dough onto a baking sheet.",
         "confidence": 1.0
       },
       {
-        "fact": "The cookie dough contains visible dark chocolate chips.",
+        "fact": "The dough contains visible dark chocolate chips.",
         "confidence": 1.0
       },
       {
@@ -3424,280 +3354,328 @@
       }
     ],
     "ocr": [],
-    "spatial": "The hand is positioned above the aluminum foil. The cookie dough is being placed in the center of the foil, directly under the hand. Another portion of dough is visible to the right of the central dough.",
+    "spatial": "The hands are positioned above the aluminum foil. The cookie dough is being placed in the center of the foil, held by the hands.",
+    "parse_success": true,
+    "chunk_idx": 66,
+    "video_id": "v_4ivePL3RW0Q"
+  },
+  {
+    "time": [
+      67,
+      68
+    ],
+    "visible_entities": [
+      {
+        "desc": "hand with dark skin tone",
+        "action": "placing cookie dough",
+        "position": "center"
+      },
+      {
+        "desc": "lump of raw cookie dough, beige color with dark chocolate chips",
+        "action": "being placed on foil",
+        "position": "center"
+      },
+      {
+        "desc": "crinkled aluminum foil sheet, silver and reflective",
+        "action": "static",
+        "position": "background"
+      },
+      {
+        "desc": "second lump of raw cookie dough, beige with chocolate chips",
+        "action": "static",
+        "position": "bottom right"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A hand is placing a lump of cookie dough onto a sheet of aluminum foil.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The cookie dough contains visible dark chocolate chips.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "Another portion of cookie dough sits stationary on the foil to the right.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The hand is positioned above the central lump of cookie dough. The central dough is to the left of the second lump of dough. Both lumps of dough are resting on top of the aluminum foil sheet.",
     "parse_success": true,
     "chunk_idx": 67,
     "video_id": "v_4ivePL3RW0Q"
   },
   {
     "time": [
-      136,
-      138
+      68,
+      69
     ],
     "visible_entities": [
       {
-        "desc": "dark-skinned hand",
+        "desc": "hand with dark skin tone",
         "action": "placing cookie dough",
         "position": "top/center"
       },
       {
-        "desc": "chocolate chip cookie dough, yellowish-brown, lumpy texture with dark chocolate chips",
+        "desc": "lumpy cookie dough with dark chocolate chips",
         "action": "being placed on tray",
-        "position": "center/foreground"
+        "position": "center"
       },
       {
         "desc": "baking sheet lined with crinkled aluminum foil",
         "action": "static",
-        "position": "center/background"
+        "position": "background"
       },
       {
-        "desc": "baked cookies, golden-brown",
-        "action": "static",
-        "position": "left/center/right"
+        "desc": "baking sheet filled with rows of cookie dough",
+        "action": "being held",
+        "position": "center"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A hand is placing a scoop of raw cookie dough onto a foil-lined baking sheet.",
+        "fact": "A hand places a scoop of cookie dough onto a foil-lined baking sheet.",
         "confidence": 1.0
       },
       {
-        "fact": "The baking sheet contains multiple scoops of unbaked cookie dough arranged in rows.",
+        "fact": "The baking sheet is filled with multiple scoops of unbaked cookie dough arranged in rows.",
         "confidence": 1.0
       },
       {
-        "fact": "The baking sheet also contains several baked cookies.",
+        "fact": "A person is holding the baking sheet.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The hand is positioned above the baking sheet, placing the raw dough in the center. The raw dough scoops are arranged in rows on the foil, with baked cookies visible to the left and right of the raw dough.",
+    "spatial": "The hand is positioned above the baking sheet, placing a piece of cookie dough onto the aluminum foil. The baking sheet is filled with other scoops of dough arranged in rows. The person holding the tray is positioned to the right of the frame.",
     "parse_success": true,
     "chunk_idx": 68,
     "video_id": "v_4ivePL3RW0Q"
   },
   {
     "time": [
-      138,
-      140
+      69,
+      70
     ],
     "visible_entities": [
       {
-        "desc": "light-colored wooden kitchen cabinet with a horizontal handle",
+        "desc": "dark, blurry silhouette of a hand or arm",
+        "action": "moving across the frame",
+        "position": "foreground"
+      },
+      {
+        "desc": "light-colored wooden kitchen cabinet",
         "action": "static",
         "position": "center"
       },
       {
-        "desc": "dark-colored frying pan",
+        "desc": "white kitchen countertop",
+        "action": "static",
+        "position": "center"
+      },
+      {
+        "desc": "dark stovetop with a frying pan",
         "action": "static",
         "position": "background"
       },
       {
-        "desc": "white kitchen countertop",
+        "desc": "blurred packaged food items",
         "action": "static",
         "position": "left"
-      },
-      {
-        "desc": "dark, blurry object",
-        "action": "moving across frame",
-        "position": "foreground"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A dark, blurry object moves across the foreground, partially obscuring the view.",
+        "fact": "A dark, blurry object, likely a hand or arm, moves across the foreground of the shot.",
         "confidence": 1.0
       },
       {
-        "fact": "A frying pan is sitting on a stovetop in the background.",
+        "fact": "The camera pans or moves, revealing a kitchen counter and stovetop.",
         "confidence": 1.0
       },
       {
-        "fact": "A wooden cabinet is situated below the countertop.",
+        "fact": "A frying pan is sitting on the stovetop in the background.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The wooden cabinet is below the white countertop. The frying pan is on the stovetop, which is behind the countertop. The dark, blurry object is in front of the cabinet and countertop.",
+    "spatial": "The dark silhouette is in the foreground, moving in front of the light-colored wooden cabinet. The white countertop is below the stovetop, which is in the background. The blurred food items are on the left side of the countertop.",
     "parse_success": true,
     "chunk_idx": 69,
     "video_id": "v_4ivePL3RW0Q"
   },
   {
     "time": [
-      140,
-      142
+      70,
+      71
     ],
     "visible_entities": [
       {
-        "desc": "golden-brown baked cookies, chunky texture, irregular shapes",
-        "action": "resting on foil",
+        "desc": "golden-brown baked food items, lumpy and textured, resting on a shiny silver aluminum foil-lined tray",
+        "action": "being removed from the oven",
         "position": "foreground"
       },
       {
-        "desc": "crinkled aluminum foil sheet, silver, reflective",
-        "action": "lining the tray",
-        "position": "foreground"
-      },
-      {
-        "desc": "tan quilted oven mitt, padded texture, fabric material",
-        "action": "holding the tray",
+        "desc": "thick, tan-colored quilted oven mitt with a diamond-stitched pattern",
+        "action": "grasping the baking tray",
         "position": "right"
       },
       {
-        "desc": "dark speckled appliance surface, black with grey flecks, glossy",
+        "desc": "dark, speckled granite countertop surface",
         "action": "static",
         "position": "left"
       },
       {
-        "desc": "blurred stovetop area, dark cookware, light countertop",
+        "desc": "blurred background kitchen area with a stovetop and pans",
         "action": "static",
         "position": "background"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A hand wearing a tan oven mitt holds a baking tray.",
+        "fact": "A hand wearing a tan quilted oven mitt is pulling a baking tray out of an oven.",
         "confidence": 1.0
       },
       {
-        "fact": "The tray is lined with aluminum foil.",
+        "fact": "The tray contains several pieces of golden-brown baked food.",
         "confidence": 1.0
       },
       {
-        "fact": "Several golden-brown cookies are arranged on the foil.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The tray is positioned in front of a dark, speckled appliance.",
+        "fact": "The food is resting on a sheet of aluminum foil.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The tan oven mitt is on the right side of the frame, holding the tray of cookies. The cookies are in the foreground, resting on top of the aluminum foil. To the left of the tray is a dark, speckled appliance surface. The blurred stovetop is in the background behind the tray.",
+    "spatial": "The tan oven mitt is on the right side of the frame, holding the baking tray which is in the foreground. The dark granite countertop is to the left of the tray. The blurred stovetop is in the background behind the tray.",
     "parse_success": true,
     "chunk_idx": 70,
     "video_id": "v_4ivePL3RW0Q"
   },
   {
     "time": [
-      142,
-      144
+      71,
+      72
     ],
     "visible_entities": [
       {
-        "desc": "baking sheet lined with aluminum foil, holding round mounds of light-brown cookie dough with dark chocolate chips",
+        "desc": "baking sheet lined with aluminum foil, holding multiple scoops of raw cookie dough",
+        "action": "being placed into the oven",
+        "position": "center/foreground"
+      },
+      {
+        "desc": "hand wearing a thick, tan-colored oven mitt",
+        "action": "holding the baking sheet",
+        "position": "right"
+      },
+      {
+        "desc": "dark oven interior with metal racks",
         "action": "static",
         "position": "background"
-      },
-      {
-        "desc": "thick, tan-colored fabric oven mitt",
-        "action": "moving into the frame",
-        "position": "foreground"
-      },
-      {
-        "desc": "arm wearing a red sleeve",
-        "action": "moving into the frame",
-        "position": "right"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A hand wearing a tan oven mitt enters the frame from the right.",
+        "fact": "A hand wearing an oven mitt is placing a baking sheet into an oven.",
         "confidence": 1.0
       },
       {
-        "fact": "The hand reaches towards the baking sheet of cookie dough.",
+        "fact": "The baking sheet is covered in aluminum foil.",
         "confidence": 1.0
       },
       {
-        "fact": "The baking sheet is filled with unbaked chocolate chip cookies.",
+        "fact": "There are several scoops of cookie dough arranged on the baking sheet.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The tan oven mitt is in the foreground, positioned in front of the baking sheet. The baking sheet is in the background, resting on a surface. The arm with the red sleeve is to the right of the oven mitt.",
+    "spatial": "The baking sheet is in front of the oven interior. The hand wearing the oven mitt is on the right side of the baking sheet, holding it. The cookie dough scoops are on top of the aluminum foil.",
     "parse_success": true,
     "chunk_idx": 71,
     "video_id": "v_4ivePL3RW0Q"
   },
   {
     "time": [
-      144,
-      146
+      72,
+      73
     ],
     "visible_entities": [
       {
         "desc": "golden-brown cookies, round and textured, arranged on a baking sheet",
         "action": "baking inside the oven",
-        "position": "center/background"
+        "position": "center"
       },
       {
-        "desc": "metal baking tray lined with silver aluminum foil",
+        "desc": "metal baking sheet lined with crinkled aluminum foil",
         "action": "static",
-        "position": "center/background"
+        "position": "center"
       },
       {
-        "desc": "human hand with light skin tone",
-        "action": "knocking on the oven door window",
-        "position": "foreground"
+        "desc": "dark metal oven rack with a grid pattern",
+        "action": "static",
+        "position": "left"
+      },
+      {
+        "desc": "hand with light skin tone",
+        "action": "reaching towards the oven door window",
+        "position": "right"
       },
       {
         "desc": "dark rectangular oven door window",
         "action": "static",
-        "position": "center"
+        "position": "right"
       }
     ],
     "atomic_facts": [
-      {
-        "fact": "A hand knocks on the glass window of an oven door.",
-        "confidence": 1.0
-      },
       {
         "fact": "Cookies are baking on a foil-lined tray inside the oven.",
         "confidence": 1.0
       },
       {
-        "fact": "The oven interior is illuminated by a light.",
+        "fact": "A hand reaches towards the oven door window.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The oven interior is illuminated by a light source.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The hand is in the foreground, positioned in front of the dark oven door window. The baking tray with cookies is inside the oven, visible behind the glass window. The oven light is located at the top left of the interior.",
+    "spatial": "The baking sheet with cookies is positioned in the center of the oven, resting on a rack. The metal oven rack is visible to the left of the baking sheet. The hand is reaching towards the oven door window, which is located on the right side of the frame.",
     "parse_success": true,
     "chunk_idx": 72,
     "video_id": "v_4ivePL3RW0Q"
   },
   {
     "time": [
-      146,
-      148
+      73,
+      74
     ],
     "visible_entities": [
       {
-        "desc": "golden-brown chocolate chip cookies, round shape with visible dark chocolate chunks, resting on aluminum foil",
+        "desc": "golden-brown chocolate chip cookies, round and textured, resting on aluminum foil",
         "action": "baking inside the oven",
         "position": "center"
       },
       {
-        "desc": "silver aluminum foil, crinkled texture, lining the baking tray",
+        "desc": "silver aluminum foil, crinkled and reflective, lining the baking sheet",
         "action": "static",
         "position": "center"
       },
       {
-        "desc": "dark speckled oven interior wall, black and white pattern",
+        "desc": "dark speckled oven interior wall, black with white dots",
         "action": "static",
         "position": "background"
       },
       {
-        "desc": "blurred brown object, likely an oven mitt or hand",
+        "desc": "blurred brown object, likely a hand or oven mitt",
         "action": "entering from the left",
         "position": "left"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "Cookies are baking inside a lit oven.",
+        "fact": "Cookies are baking on a foil-lined tray inside an oven.",
         "confidence": 1.0
       },
       {
@@ -3705,34 +3683,34 @@
         "confidence": 1.0
       },
       {
-        "fact": "The baking tray is lined with aluminum foil.",
+        "fact": "The oven light illuminates the cookies and the foil.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The cookies are arranged on the aluminum foil in the center of the frame. The foil is on top of a baking tray. The speckled oven wall is behind the tray. The blurred brown object is to the left of the tray.",
+    "spatial": "The cookies are on top of the aluminum foil in the center of the frame. The speckled oven wall is behind the baking tray. The blurred brown object is to the left of the cookies.",
     "parse_success": true,
     "chunk_idx": 73,
     "video_id": "v_4ivePL3RW0Q"
   },
   {
     "time": [
-      148,
-      150
+      74,
+      75
     ],
     "visible_entities": [
       {
-        "desc": "golden-brown chocolate chip cookies, round, baked texture, resting on aluminum foil",
+        "desc": "golden-brown chocolate chip cookies, round, baked texture with visible dark chocolate chips",
         "action": "baking inside the oven",
         "position": "center"
       },
       {
-        "desc": "crinkled silver aluminum foil lining the baking sheet",
+        "desc": "crinkled aluminum foil, shiny silver, lining the baking sheet",
         "action": "static",
-        "position": "center"
+        "position": "under the cookies"
       },
       {
-        "desc": "dark speckled interior wall of the oven",
+        "desc": "dark speckled oven interior, black and white pattern, metal rack",
         "action": "static",
         "position": "background"
       },
@@ -3744,127 +3722,143 @@
     ],
     "atomic_facts": [
       {
-        "fact": "Cookies are baking inside the oven.",
+        "fact": "A tray of chocolate chip cookies is baking inside an oven.",
         "confidence": 1.0
       },
       {
-        "fact": "A hand or mitt is reaching towards the baking sheet from the left.",
+        "fact": "The cookies are resting on a sheet of aluminum foil.",
         "confidence": 1.0
       },
       {
-        "fact": "The baking sheet is lined with aluminum foil.",
+        "fact": "A blurred hand or mitt is visible on the left side, suggesting interaction with the oven.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The cookies are arranged on the aluminum foil in the center of the frame. The foil is on top of a baking sheet. The speckled oven wall is behind the cookies. The blurred hand is to the left of the baking sheet.",
+    "spatial": "The chocolate chip cookies are arranged in rows on top of the aluminum foil. The foil lines the baking tray which is positioned on a rack inside the oven. The blurred hand is in the foreground on the left, reaching towards the tray.",
     "parse_success": true,
     "chunk_idx": 74,
     "video_id": "v_4ivePL3RW0Q"
   },
   {
     "time": [
-      150,
-      152
+      75,
+      76
     ],
     "visible_entities": [
       {
-        "desc": "golden-brown cookies with dark chocolate chips, round shape",
-        "action": "being placed into the oven",
-        "position": "foreground"
+        "desc": "dark speckled oven interior walls",
+        "action": "static",
+        "position": "background"
       },
       {
-        "desc": "human hand, skin tone visible, fingers gripping",
-        "action": "holding the baking tray",
+        "desc": "metal wire oven rack",
+        "action": "static",
         "position": "center"
       },
       {
-        "desc": "metal baking tray, silver rim, containing cookies",
-        "action": "being moved",
+        "desc": "baking sheet with golden-brown cookies",
+        "action": "being pulled out",
         "position": "foreground"
       },
       {
-        "desc": "oven interior, dark speckled walls, metal wire racks",
-        "action": "static",
-        "position": "background"
+        "desc": "human hand",
+        "action": "grasping baking sheet",
+        "position": "foreground"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A hand is holding a metal baking tray filled with cookies.",
+        "fact": "A hand is grasping the edge of a baking sheet.",
         "confidence": 1.0
       },
       {
-        "fact": "The tray is being moved into the dark interior of an oven.",
+        "fact": "The baking sheet containing cookies is being pulled out of the oven.",
         "confidence": 1.0
       },
       {
-        "fact": "The cookies appear to be chocolate chip cookies.",
+        "fact": "The oven interior features dark walls with a speckled pattern.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The hand is holding the metal baking tray in the foreground. The tray is positioned in front of the oven's metal wire racks. The speckled oven walls are behind the racks and the tray.",
+    "spatial": "The hand is in the foreground, holding the baking sheet which is positioned in front of the metal wire rack. The metal rack is inside the oven, situated below the speckled oven walls.",
     "parse_success": true,
     "chunk_idx": 75,
     "video_id": "v_4ivePL3RW0Q"
   },
   {
     "time": [
-      152,
-      154
+      76,
+      77
     ],
     "visible_entities": [
       {
-        "desc": "hand with warm skin tone",
-        "action": "picking up a cookie",
+        "desc": "human hand, light skin tone, holding a cookie",
+        "action": "holding a cookie",
         "position": "foreground"
       },
       {
-        "desc": "golden-brown chocolate chip cookies, textured surface with dark chocolate chunks",
-        "action": "resting on foil",
+        "desc": "baked chocolate chip cookie, golden-brown, textured surface, dark chocolate chunks",
+        "action": "being held",
         "position": "center"
       },
       {
-        "desc": "silver aluminum foil, crinkled texture",
-        "action": "lining the tray",
+        "desc": "baking sheet lined with crinkled aluminum foil",
+        "action": "static",
+        "position": "background"
+      },
+      {
+        "desc": "multiple baked chocolate chip cookies, golden-brown, scattered arrangement",
+        "action": "static",
         "position": "background"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A hand picks up a chocolate chip cookie from a baking sheet.",
+        "fact": "A hand is holding a chocolate chip cookie in the foreground.",
         "confidence": 1.0
       },
       {
-        "fact": "Several cookies are resting on a sheet of aluminum foil.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The cookies appear to be freshly baked with a golden-brown color.",
+        "fact": "Several other cookies are resting on a foil-lined baking sheet in the background.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The hand is in the foreground, positioned in front of the baking sheet. The cookies are arranged on top of the aluminum foil which lines the tray. One cookie is being held by the hand while the others remain static on the tray.",
+    "spatial": "The hand holding a cookie is in the foreground, positioned in front of the baking sheet. The baking sheet is below the hand and contains multiple other cookies scattered across its surface.",
     "parse_success": true,
     "chunk_idx": 76,
     "video_id": "v_4ivePL3RW0Q"
   },
   {
     "time": [
-      154,
-      156
+      77,
+      78
     ],
     "visible_entities": [
       {
-        "desc": "person with short black hair, wearing a grey hoodie and black headphones with red wires",
+        "desc": "hand with medium skin tone",
+        "action": "reaching for a cookie",
+        "position": "foreground"
+      },
+      {
+        "desc": "chocolate chip cookies, golden-brown, baked",
+        "action": "resting on foil",
+        "position": "center"
+      },
+      {
+        "desc": "aluminum foil, crinkled, silver",
+        "action": "static",
+        "position": "center"
+      },
+      {
+        "desc": "person with short black hair, wearing a grey hoodie and black headphones with red cord",
         "action": "eating a cookie",
         "position": "left"
       },
       {
         "desc": "person with short black hair, wearing a red polo shirt",
-        "action": "holding a cookie and looking forward",
+        "action": "holding a cookie and looking at the camera",
         "position": "center"
       },
       {
@@ -3873,9 +3867,60 @@
         "position": "right"
       },
       {
-        "desc": "golden-brown chocolate chip cookies",
-        "action": "being eaten",
-        "position": "held by people"
+        "desc": "black flat-screen television",
+        "action": "static",
+        "position": "background"
+      },
+      {
+        "desc": "light wooden table",
+        "action": "static",
+        "position": "bottom"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A hand reaches into the foreground to pick up a chocolate chip cookie from a foil-lined tray.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "Three people are sitting at a table eating cookies.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The person on the left is wearing headphones while eating.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The person in the center is looking directly at the camera with wide eyes.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The hand is in the foreground, reaching towards the cookies which are on the aluminum foil. The three people are seated behind the table, with the person in the grey hoodie on the left, the person in the red shirt in the center, and the person in the white hoodie on the right. The television is in the background behind the person in the red shirt.",
+    "parse_success": true,
+    "chunk_idx": 77,
+    "video_id": "v_4ivePL3RW0Q"
+  },
+  {
+    "time": [
+      78,
+      79
+    ],
+    "visible_entities": [
+      {
+        "desc": "person with short black hair, wearing a grey hoodie and black over-ear headphones with a red cord",
+        "action": "eating a piece of food",
+        "position": "left"
+      },
+      {
+        "desc": "person with short black hair, wearing a red polo shirt",
+        "action": "holding food and looking surprised",
+        "position": "center"
+      },
+      {
+        "desc": "person with short black hair, wearing a white hoodie",
+        "action": "eating a piece of food",
+        "position": "right"
       },
       {
         "desc": "light-colored wooden table",
@@ -3888,84 +3933,9 @@
         "position": "background"
       },
       {
-        "desc": "white kitchen cabinets",
-        "action": "static",
-        "position": "background"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "The person on the left is eating a cookie.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The person in the center is holding a cookie up.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The person on the right is holding a cookie.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "Three people are sitting at a table.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "A television is visible in the background behind the people.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [],
-    "spatial": "The person in the grey hoodie is to the left of the person in the red polo shirt. The person in the white hoodie is to the right of the person in the red polo shirt. The wooden table is in front of the three people. The black television is behind the person in the grey hoodie and the person in the red polo shirt.",
-    "parse_success": true,
-    "chunk_idx": 77,
-    "video_id": "v_4ivePL3RW0Q"
-  },
-  {
-    "time": [
-      156,
-      158
-    ],
-    "visible_entities": [
-      {
-        "desc": "person with short black hair, wearing a grey hoodie and black headphones with a red cord",
-        "action": "eating a piece of food",
-        "position": "left"
-      },
-      {
-        "desc": "person with short black hair, wearing a red polo shirt",
-        "action": "holding a piece of food and looking forward with a surprised expression",
-        "position": "center"
-      },
-      {
-        "desc": "person with short black hair, wearing a white hoodie with black stripes on the sleeve",
-        "action": "eating a piece of food",
-        "position": "right"
-      },
-      {
-        "desc": "light brown wooden table",
-        "action": "static",
-        "position": "foreground"
-      },
-      {
         "desc": "white remote control",
-        "action": "being held",
+        "action": "static",
         "position": "foreground"
-      },
-      {
-        "desc": "black flat-screen television",
-        "action": "static",
-        "position": "background"
-      },
-      {
-        "desc": "white kitchen cabinets",
-        "action": "static",
-        "position": "background"
-      },
-      {
-        "desc": "white chair back",
-        "action": "static",
-        "position": "background"
       }
     ],
     "atomic_facts": [
@@ -3974,7 +3944,7 @@
         "confidence": 1.0
       },
       {
-        "fact": "The person in the center is holding a piece of food and has a surprised facial expression.",
+        "fact": "The person in the center is holding a piece of food and looking at the person on the right with a surprised expression.",
         "confidence": 1.0
       },
       {
@@ -3982,39 +3952,35 @@
         "confidence": 1.0
       },
       {
-        "fact": "The three people are sitting at a wooden table.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "A black television is visible in the background behind the people.",
+        "fact": "Three people are sitting around a wooden table.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The person in the grey hoodie is to the left of the person in the red shirt. The person in the white hoodie is to the right of the person in the red shirt. The wooden table is in front of the three people. The black television is behind the person in the red shirt and on a white surface. The white chair back is behind the person in the white hoodie.",
+    "spatial": "The person in the grey hoodie is to the left of the person in the red shirt. The person in the white hoodie is to the right of the person in the red shirt. The wooden table is in front of all three people. The black television is behind the person in the red shirt.",
     "parse_success": true,
     "chunk_idx": 78,
     "video_id": "v_4ivePL3RW0Q"
   },
   {
     "time": [
-      158,
-      160
+      79,
+      80
     ],
     "visible_entities": [
       {
-        "desc": "person with short dark hair, wearing a grey hoodie with an orange 'C' logo on the chest and black over-ear headphones with a red cord",
-        "action": "holding a cookie in left hand and a white smartphone in right hand",
+        "desc": "person with short black hair, wearing a grey hoodie with an orange 'C' logo and black headphones with red wires",
+        "action": "holding a cookie and a white remote",
         "position": "left"
       },
       {
-        "desc": "person with short dark hair, wearing a red polo shirt",
-        "action": "eating a cookie with mouth open",
+        "desc": "person with short black hair, wearing a red polo shirt",
+        "action": "eating a cookie with an open mouth",
         "position": "center"
       },
       {
-        "desc": "person with short dark hair, wearing a white or light grey hoodie",
-        "action": "holding a cookie in right hand",
+        "desc": "person with short black hair, wearing a white hoodie",
+        "action": "holding a cookie",
         "position": "right"
       },
       {
@@ -4033,60 +3999,61 @@
         "position": "background"
       },
       {
-        "desc": "cookies with chocolate chips",
-        "action": "being held and eaten",
-        "position": "foreground"
+        "desc": "white box with red text reading 'FRESH'",
+        "action": "static",
+        "position": "background"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "The person in the center is eating a cookie.",
+        "fact": "The person in the center is putting a cookie into their mouth.",
         "confidence": 1.0
       },
       {
-        "fact": "The person on the left is holding a smartphone.",
+        "fact": "The person on the left is holding a white remote control in their right hand.",
         "confidence": 1.0
       },
       {
-        "fact": "The person on the right is holding a cookie.",
+        "fact": "The person on the right is holding a cookie in their left hand.",
         "confidence": 1.0
       },
       {
-        "fact": "Three people are sitting at a wooden table.",
+        "fact": "Three people are sitting around a wooden table.",
         "confidence": 1.0
       }
     ],
     "ocr": [
-      "C"
+      "C",
+      "FRESH"
     ],
-    "spatial": "The person in the grey hoodie is to the left of the person in the red shirt. The person in the white hoodie is to the right of the person in the red shirt. The black television is behind the person in the red shirt. The cookies are in the hands of the people, positioned above the table.",
+    "spatial": "The person in the grey hoodie is to the left of the person in the red shirt. The person in the white hoodie is to the right of the person in the red shirt. The black television is behind the person in the red shirt. The white box with 'FRESH' text is on a counter in the background, behind the person on the right.",
     "parse_success": true,
     "chunk_idx": 79,
     "video_id": "v_4ivePL3RW0Q"
   },
   {
     "time": [
-      160,
-      162
+      80,
+      81
     ],
     "visible_entities": [
       {
-        "desc": "person with short black hair, wearing a grey hoodie with an orange 'C' logo on the chest and black over-ear headphones with red cables",
-        "action": "holding a piece of food",
+        "desc": "person with short dark hair, wearing a grey hoodie with an orange 'C' logo and black headphones with red wires",
+        "action": "holding food and looking down",
         "position": "left"
       },
       {
-        "desc": "person with short black hair, wearing a red polo shirt",
-        "action": "holding a piece of food and looking upwards with an open mouth",
+        "desc": "person with short dark hair, wearing a red polo shirt",
+        "action": "holding food and looking up with mouth open",
         "position": "center"
       },
       {
-        "desc": "person with short black hair, wearing a white hoodie",
-        "action": "holding a piece of food",
+        "desc": "person with short dark hair, wearing a white hoodie",
+        "action": "holding food and looking down",
         "position": "right"
       },
       {
-        "desc": "light-colored wooden table",
+        "desc": "light brown wooden table",
         "action": "static",
         "position": "foreground"
       },
@@ -4099,51 +4066,42 @@
         "desc": "white kitchen cabinets",
         "action": "static",
         "position": "background"
-      },
-      {
-        "desc": "white plastic chair",
-        "action": "static",
-        "position": "background"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "The person in the grey hoodie is holding a piece of food in their left hand.",
+        "fact": "Three people are sitting at a wooden table eating food.",
         "confidence": 1.0
       },
       {
-        "fact": "The person in the red shirt is holding a piece of food in their right hand.",
+        "fact": "The person in the center is looking up with their mouth open.",
         "confidence": 1.0
       },
       {
-        "fact": "The person in the white hoodie is holding a piece of food in their left hand.",
+        "fact": "The person on the left is wearing headphones.",
         "confidence": 1.0
       },
       {
-        "fact": "The person in the red shirt is looking upwards with their mouth open.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "A black television is positioned behind the person in the grey hoodie.",
+        "fact": "The person on the left is holding a white object in their other hand.",
         "confidence": 1.0
       }
     ],
     "ocr": [
       "C"
     ],
-    "spatial": "The person in the grey hoodie is to the left of the person in the red shirt. The person in the white hoodie is to the right of the person in the red shirt. All three people are sitting at a wooden table. The black television is behind the person in the grey hoodie and to the left of the person in the red shirt. The white kitchen cabinets are behind the people.",
+    "spatial": "The person in the grey hoodie is to the left of the person in the red polo shirt. The person in the white hoodie is to the right of the person in the red polo shirt. The black television is behind the people, sitting on a counter in front of the white kitchen cabinets.",
     "parse_success": true,
     "chunk_idx": 80,
     "video_id": "v_4ivePL3RW0Q"
   },
   {
     "time": [
-      162,
-      164
+      81,
+      82
     ],
     "visible_entities": [
       {
-        "desc": "person with short black hair, wearing a grey hoodie with an orange letter 'C' on the chest and black headphones with red cords",
+        "desc": "person with short black hair, wearing a grey hoodie with an orange 'C' logo and black headphones with red cords",
         "action": "holding a cookie",
         "position": "left"
       },
@@ -4171,11 +4129,6 @@
         "desc": "white kitchen cabinets",
         "action": "static",
         "position": "background"
-      },
-      {
-        "desc": "white box with red text",
-        "action": "static",
-        "position": "background"
       }
     ],
     "atomic_facts": [
@@ -4192,19 +4145,14 @@
         "confidence": 1.0
       },
       {
-        "fact": "The person on the left is wearing headphones.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The person on the left is holding a white object on the table.",
+        "fact": "The three people are sitting at a wooden table.",
         "confidence": 1.0
       }
     ],
     "ocr": [
-      "C",
-      "FRESH START"
+      "C"
     ],
-    "spatial": "The person in the grey hoodie is to the left of the person in the red shirt. The person in the white shirt is to the right of the person in the red shirt. All three people are sitting at the wooden table. The television is behind the person in the red shirt. The white box is on a counter behind the person on the right.",
+    "spatial": "The person in the grey hoodie is to the left of the person in the red shirt. The person in the white shirt is to the right of the person in the red shirt. The television is behind the people in the background.",
     "parse_success": true,
     "chunk_idx": 81,
     "video_id": "v_4ivePL3RW0Q"

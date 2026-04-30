@@ -2,26 +2,26 @@
   {
     "time": [
       0,
-      2
+      1
     ],
     "visible_entities": [
       {
-        "desc": "hand with light skin tone, short fingernails with silver polish",
-        "action": "holding a cupcake",
-        "position": "right foreground"
+        "desc": "hand with light skin tone holding a cupcake",
+        "action": "holding a decorated cupcake",
+        "position": "foreground right"
       },
       {
-        "desc": "cupcake with white paper liner, pink frosting base, green frosting grass, pastel purple frosting roses, yellow frosting flowers, and pastel candy eggs (pink, blue, yellow)",
+        "desc": "cupcake with pink frosting, green piped grass, pastel purple frosting roses, a yellow flower, and pastel candy eggs (pink, blue, yellow)",
         "action": "being held",
-        "position": "center foreground"
+        "position": "foreground center"
       },
       {
-        "desc": "multiple cupcakes with similar pastel Easter decorations",
+        "desc": "multiple similar cupcakes with pastel decorations arranged in rows",
         "action": "static",
         "position": "background"
       },
       {
-        "desc": "dark grey flat surface",
+        "desc": "dark grey or black flat surface",
         "action": "static",
         "position": "background"
       }
@@ -36,44 +36,93 @@
         "confidence": 1.0
       },
       {
-        "fact": "Several other cupcakes are arranged on the dark surface in the background.",
+        "fact": "Several other cupcakes are arranged in rows on the dark surface behind the held cupcake.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The hand is on the right side of the frame, holding the cupcake in the center foreground. The held cupcake is in front of the other cupcakes which are scattered on the dark surface in the background.",
+    "spatial": "The hand holding the cupcake is in the foreground on the right side of the frame. The held cupcake is positioned centrally in the foreground, in front of the other cupcakes. The background cupcakes are arranged in rows on the dark surface behind the hand.",
     "parse_success": true,
     "chunk_idx": 0,
     "video_id": "NtqEBe6iEoY"
   },
   {
     "time": [
-      2,
-      4
+      1,
+      2
     ],
     "visible_entities": [
       {
-        "desc": "cupcake with white paper liner, pink frosting, green frosting grass, pastel purple roses, yellow and blue flowers, and pastel pink, blue, and yellow eggs",
+        "desc": "cupcake with white paper liner, pink frosting base, green frosting grass, pastel purple frosting roses, yellow and blue frosting flowers, and pastel-colored candy eggs",
         "action": "being held",
         "position": "center/foreground"
       },
       {
         "desc": "hand with light skin tone",
-        "action": "holding the cupcake",
+        "action": "holding cupcake",
         "position": "right/foreground"
       },
       {
-        "desc": "seven cupcakes with similar pastel decorations arranged on a surface",
+        "desc": "seven similar cupcakes arranged in rows",
         "action": "static",
         "position": "background"
       },
       {
-        "desc": "dark grey or black flat surface",
+        "desc": "text 'Easy Easter Cupcakes' in purple font with white outline",
+        "action": "static",
+        "position": "bottom"
+      },
+      {
+        "desc": "dark gray surface",
+        "action": "static",
+        "position": "background"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A hand is holding a decorated Easter cupcake in the foreground.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "Seven other cupcakes are arranged on the dark surface in the background.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The text 'Easy Easter Cupcakes' is displayed at the bottom of the screen.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "Easy Easter Cupcakes"
+    ],
+    "spatial": "The hand holding the cupcake is in the foreground on the right side of the frame. The held cupcake is positioned centrally, slightly to the left of the hand. The seven background cupcakes are arranged behind the held cupcake on the dark surface. The text 'Easy Easter Cupcakes' is located at the bottom of the frame, below the cupcakes.",
+    "parse_success": true,
+    "chunk_idx": 1,
+    "video_id": "NtqEBe6iEoY"
+  },
+  {
+    "time": [
+      2,
+      3
+    ],
+    "visible_entities": [
+      {
+        "desc": "hand with light skin tone",
+        "action": "holding a cupcake",
+        "position": "foreground right"
+      },
+      {
+        "desc": "cupcake with pink frosting, green piped grass, purple frosting roses, yellow flowers, and pastel candy eggs",
+        "action": "being held",
+        "position": "center foreground"
+      },
+      {
+        "desc": "seven similar cupcakes arranged in rows",
         "action": "static",
         "position": "background"
       },
       {
-        "desc": "purple text with white outline",
+        "desc": "purple text overlay reading 'Easy Easter Cupcakes'",
         "action": "static",
         "position": "bottom"
       }
@@ -84,7 +133,11 @@
         "confidence": 1.0
       },
       {
-        "fact": "Seven other cupcakes are arranged in the background.",
+        "fact": "The cupcake features pastel-colored decorations including eggs and flowers.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "Seven other cupcakes are visible in the background on a dark surface.",
         "confidence": 1.0
       },
       {
@@ -95,166 +148,52 @@
     "ocr": [
       "Easy Easter Cupcakes"
     ],
-    "spatial": "The hand is on the right side of the frame, holding the cupcake in the center foreground. The other cupcakes are behind the held cupcake, scattered on the dark surface. The text is below the held cupcake.",
-    "parse_success": true,
-    "chunk_idx": 1,
-    "video_id": "NtqEBe6iEoY"
-  },
-  {
-    "time": [
-      4,
-      6
-    ],
-    "visible_entities": [
-      {
-        "desc": "hand with light skin tone",
-        "action": "holding a cupcake",
-        "position": "foreground right"
-      },
-      {
-        "desc": "cupcake with yellow cake base in a white fluted paper liner, topped with pink frosting, green piped frosting resembling grass, purple frosting roses, and pastel-colored candy eggs",
-        "action": "being held",
-        "position": "foreground center"
-      },
-      {
-        "desc": "seven similar cupcakes arranged in rows",
-        "action": "static",
-        "position": "background"
-      },
-      {
-        "desc": "purple text with white outline reading 'Easy Easter Cupcakes'",
-        "action": "static",
-        "position": "bottom center"
-      },
-      {
-        "desc": "dark gray flat surface",
-        "action": "static",
-        "position": "background"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "A hand is holding a decorated cupcake up to the camera.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The cupcake features pastel-colored decorations including purple roses and candy eggs.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "Seven other cupcakes are arranged on the surface behind the held cupcake.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The text 'Easy Easter Cupcakes' is displayed at the bottom of the screen.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [
-      "Easy Easter Cupcakes"
-    ],
-    "spatial": "The hand is holding the cupcake in the foreground, positioning it centrally in the frame. The held cupcake is in front of the other seven cupcakes which are arranged on the dark surface in the background. The text 'Easy Easter Cupcakes' is located below the held cupcake and the background cupcakes.",
+    "spatial": "The hand is in the foreground on the right side, holding the cupcake which is positioned centrally. The seven background cupcakes are arranged behind the main cupcake. The text overlay is located at the bottom of the frame, below the cupcakes.",
     "parse_success": true,
     "chunk_idx": 2,
     "video_id": "NtqEBe6iEoY"
   },
   {
     "time": [
-      6,
-      8
+      3,
+      4
     ],
     "visible_entities": [
       {
-        "desc": "hand with light skin tone and silver metallic nail polish",
-        "action": "holding a decorated cupcake",
-        "position": "foreground right"
-      },
-      {
-        "desc": "cupcake with pink frosting, green piped grass, pastel purple and yellow flowers, and pastel egg-shaped candies",
-        "action": "being held",
-        "position": "foreground center"
-      },
-      {
-        "desc": "plain yellow cupcakes in white paper liners",
-        "action": "static",
-        "position": "background"
-      },
-      {
-        "desc": "hand holding a piping bag with pink frosting",
-        "action": "piping frosting onto a cupcake",
+        "desc": "hand with light skin tone and silver nail polish",
+        "action": "piping pink frosting onto a cupcake",
         "position": "top left"
+      },
+      {
+        "desc": "twelve plain yellow cupcakes in white paper liners",
+        "action": "static",
+        "position": "center"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A hand is holding a fully decorated Easter-themed cupcake in the foreground.",
+        "fact": "A hand is piping pink frosting onto the top-left cupcake.",
         "confidence": 1.0
       },
       {
-        "fact": "A hand is piping pink frosting onto a plain cupcake in the background.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "There are multiple plain cupcakes arranged in rows on a dark surface.",
+        "fact": "The cupcakes are arranged in a grid of three rows and four columns.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The hand holding the decorated cupcake is in the foreground, positioned to the right of the center. The plain cupcakes are arranged in rows in the background, behind the held cupcake. The hand piping frosting is located in the top left corner, above the rows of plain cupcakes.",
+    "spatial": "The hand is positioned above the top-left cupcake. The cupcakes are arranged in a grid on a dark surface.",
     "parse_success": true,
     "chunk_idx": 3,
     "video_id": "NtqEBe6iEoY"
   },
   {
     "time": [
-      8,
-      10
+      4,
+      5
     ],
     "visible_entities": [
       {
-        "desc": "hand with silver nail polish holding a piping bag with pink frosting",
-        "action": "piping frosting onto a cupcake",
-        "position": "top left"
-      },
-      {
-        "desc": "twelve plain yellow cupcakes in white fluted paper liners",
-        "action": "static",
-        "position": "center"
-      },
-      {
-        "desc": "dark grey flat surface",
-        "action": "static",
-        "position": "background"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "A hand is piping pink frosting onto the top left cupcake.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "There are twelve cupcakes arranged in a 3x4 grid.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The cupcakes are plain yellow with no frosting except the one being decorated.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [],
-    "spatial": "The hand holding the piping bag is positioned above the top left cupcake. The twelve cupcakes are arranged in three rows and four columns on the dark grey surface.",
-    "parse_success": true,
-    "chunk_idx": 4,
-    "video_id": "NtqEBe6iEoY"
-  },
-  {
-    "time": [
-      10,
-      12
-    ],
-    "visible_entities": [
-      {
-        "desc": "hand holding a piping bag with a metal tip, filled with pink frosting",
+        "desc": "hand with silver metallic nail polish holding a pink piping bag with a metal tip",
         "action": "piping pink frosting onto a cupcake",
         "position": "top left"
       },
@@ -262,6 +201,44 @@
         "desc": "twelve plain yellow cupcakes in white fluted paper liners",
         "action": "static",
         "position": "center"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A hand is piping pink frosting onto the top-left cupcake.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "Twelve cupcakes are arranged in a 3x4 grid on a dark surface.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The hand holding the piping bag is positioned above and to the left of the grid of cupcakes. The cupcakes are arranged in three rows and four columns on a dark background.",
+    "parse_success": true,
+    "chunk_idx": 4,
+    "video_id": "NtqEBe6iEoY"
+  },
+  {
+    "time": [
+      5,
+      6
+    ],
+    "visible_entities": [
+      {
+        "desc": "hand holding a piping bag filled with pink frosting",
+        "action": "piping frosting onto a cupcake",
+        "position": "top left"
+      },
+      {
+        "desc": "plain yellow cupcakes in white paper liners",
+        "action": "static",
+        "position": "center"
+      },
+      {
+        "desc": "dark blue surface",
+        "action": "static",
+        "position": "background"
       }
     ],
     "atomic_facts": [
@@ -279,29 +256,24 @@
       }
     ],
     "ocr": [],
-    "spatial": "The hand holding the piping bag is positioned above the top-left cupcake. The twelve cupcakes are arranged in three rows and four columns on a dark surface.",
+    "spatial": "The hand holding the piping bag is in the top-left corner, positioned above the first cupcake. The cupcakes are arranged in three rows and four columns on the dark blue surface. The first cupcake in the top row is being frosted, while the others remain plain.",
     "parse_success": true,
     "chunk_idx": 5,
     "video_id": "NtqEBe6iEoY"
   },
   {
     "time": [
-      12,
-      14
+      6,
+      7
     ],
     "visible_entities": [
       {
-        "desc": "hand with light skin tone and silver nail polish",
+        "desc": "hand with light skin tone, holding a piping bag with a metal tip",
         "action": "piping pink frosting onto a cupcake",
         "position": "top left"
       },
       {
-        "desc": "piping bag with a metal tip",
-        "action": "being held by the hand",
-        "position": "top left"
-      },
-      {
-        "desc": "cupcake with a swirl of pink frosting",
+        "desc": "cupcake with a pink frosting rose swirl on top",
         "action": "static",
         "position": "top left"
       },
@@ -311,22 +283,27 @@
         "position": "top row, second from left"
       },
       {
-        "desc": "ten plain yellow cupcakes in white paper liners",
+        "desc": "eleven plain yellow cupcakes in white paper liners",
         "action": "static",
-        "position": "center and right"
+        "position": "arranged in a grid on a dark surface"
+      },
+      {
+        "desc": "dark, matte surface",
+        "action": "static",
+        "position": "background"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A hand is piping pink frosting onto a cupcake.",
+        "fact": "A hand is piping pink frosting onto a plain yellow cupcake.",
         "confidence": 1.0
       },
       {
-        "fact": "The cupcake in the top left corner has a completed pink frosting swirl.",
+        "fact": "The cupcake in the top-left corner is already decorated with a pink frosting rose.",
         "confidence": 1.0
       },
       {
-        "fact": "There are twelve cupcakes arranged in a 3x4 grid.",
+        "fact": "There are twelve cupcakes arranged in three rows of four.",
         "confidence": 1.0
       },
       {
@@ -335,15 +312,15 @@
       }
     ],
     "ocr": [],
-    "spatial": "The hand holding the piping bag is positioned above the cupcake in the top row, second from the left. The cupcake with pink frosting is to the left of the cupcake being frosted. The remaining ten plain cupcakes are arranged in a grid to the right of and below the cupcakes in the top row.",
+    "spatial": "The hand is above the cupcake it is frosting. The frosted cupcake is to the left of the cupcake being frosted. The cupcakes are arranged in a grid on the dark surface.",
     "parse_success": true,
     "chunk_idx": 6,
     "video_id": "NtqEBe6iEoY"
   },
   {
     "time": [
-      14,
-      16
+      7,
+      8
     ],
     "visible_entities": [
       {
@@ -352,170 +329,114 @@
         "position": "top left"
       },
       {
-        "desc": "twelve vanilla cupcakes in white paper liners arranged in a grid",
-        "action": "being decorated",
-        "position": "center"
-      },
-      {
-        "desc": "pink frosting",
-        "action": "being applied to cupcakes",
+        "desc": "piping bag with pink frosting",
+        "action": "being squeezed",
         "position": "top left"
       },
       {
-        "desc": "dark grey background surface",
+        "desc": "cupcakes in white paper liners",
+        "action": "being frosted or static",
+        "position": "center"
+      },
+      {
+        "desc": "dark flat surface",
         "action": "static",
         "position": "background"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A hand is piping pink frosting onto the top-left cupcake.",
+        "fact": "A hand is piping pink frosting onto a cupcake.",
         "confidence": 1.0
       },
       {
-        "fact": "The second cupcake in the top row is already frosted with pink frosting.",
+        "fact": "There are twelve cupcakes arranged in a grid on a dark surface.",
         "confidence": 1.0
       },
       {
-        "fact": "Ten cupcakes in the grid are plain and unfrosted.",
+        "fact": "Two cupcakes in the top row have pink frosting on them.",
         "confidence": 1.0
       },
       {
-        "fact": "The cupcakes are arranged in three rows of four.",
+        "fact": "The remaining ten cupcakes are plain without frosting.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The hand holding the piping bag is positioned above the top-left cupcake. The frosted cupcakes are to the left of the unfrosted cupcakes in the top row. The grid of cupcakes is centered on the dark grey background surface.",
+    "spatial": "The hand holding the piping bag is above the cupcakes in the top row. The cupcakes are arranged in three rows of four on the dark surface. The frosted cupcakes are to the left of the unfrosted cupcakes in the top row.",
     "parse_success": true,
     "chunk_idx": 7,
     "video_id": "NtqEBe6iEoY"
   },
   {
     "time": [
-      16,
-      18
+      8,
+      9
     ],
     "visible_entities": [
       {
-        "desc": "hand with light skin tone holding a piping bag with pink frosting",
-        "action": "piping frosting onto a cupcake",
+        "desc": "hand holding a piping bag with a metal star tip",
+        "action": "piping pink frosting onto a cupcake",
         "position": "top right"
       },
       {
-        "desc": "twelve vanilla cupcakes in white fluted paper liners arranged in a 3x4 grid",
+        "desc": "cupcakes in white paper liners, pale yellow sponge, some topped with pink frosting swirls",
         "action": "static",
         "position": "center"
       },
       {
-        "desc": "dark grey matte surface",
+        "desc": "dark grey flat surface",
         "action": "static",
         "position": "background"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A hand is piping pink frosting onto the third cupcake in the top row.",
+        "fact": "A hand is piping pink frosting onto a cupcake.",
         "confidence": 1.0
       },
       {
-        "fact": "Two cupcakes in the top left are already frosted with pink swirls.",
+        "fact": "There are twelve cupcakes arranged in a 3x4 grid.",
         "confidence": 1.0
       },
       {
-        "fact": "Ten cupcakes are plain and unfrosted.",
+        "fact": "Two cupcakes in the top row are already frosted with pink swirls.",
         "confidence": 1.0
       },
       {
-        "fact": "The cupcakes are arranged in three rows of four.",
+        "fact": "The remaining ten cupcakes are plain without frosting.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The hand is positioned above the third cupcake in the top row. The frosted cupcakes are to the left of the unfrosted cupcakes in the top row. The grid of cupcakes is centered on the dark grey surface.",
+    "spatial": "The hand holding the piping bag is positioned above the third cupcake in the top row. The cupcakes are arranged in three rows on the dark grey surface. The frosted cupcakes are to the left of the plain cupcakes in the top row.",
     "parse_success": true,
     "chunk_idx": 8,
     "video_id": "NtqEBe6iEoY"
   },
   {
     "time": [
-      18,
-      20
+      9,
+      10
     ],
     "visible_entities": [
       {
-        "desc": "hand with light skin tone and purple nail polish, holding a piping bag with a metal tip",
+        "desc": "hand with light skin and purple nail polish, holding a piping bag with a metal tip",
         "action": "piping pink frosting onto a cupcake",
         "position": "top center"
       },
       {
-        "desc": "twelve vanilla cupcakes in white fluted paper liners arranged in a 3x4 grid",
+        "desc": "unfrosted vanilla cupcakes in white fluted paper liners",
         "action": "static",
-        "position": "center"
+        "position": "center and bottom"
       },
       {
-        "desc": "pink frosting swirls, creamy texture",
-        "action": "being applied",
-        "position": "top row"
+        "desc": "cupcakes topped with swirled pink frosting",
+        "action": "static",
+        "position": "top left"
       },
       {
         "desc": "dark gray flat surface",
-        "action": "static",
-        "position": "background"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "A hand is piping pink frosting onto the third cupcake in the top row.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The first two cupcakes in the top row are already decorated with pink frosting swirls.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The remaining nine cupcakes are undecorated vanilla cakes.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The cupcakes are arranged in three rows of four on a dark surface.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [],
-    "spatial": "The hand is positioned above the third cupcake in the top row, actively applying frosting. The decorated cupcakes are to the left of the one currently being frosted. The undecorated cupcakes are located below and to the right of the active piping area.",
-    "parse_success": true,
-    "chunk_idx": 9,
-    "video_id": "NtqEBe6iEoY"
-  },
-  {
-    "time": [
-      20,
-      22
-    ],
-    "visible_entities": [
-      {
-        "desc": "hand with silver nail polish",
-        "action": "squeezing a piping bag",
-        "position": "left"
-      },
-      {
-        "desc": "piping bag with pink frosting",
-        "action": "being squeezed",
-        "position": "left"
-      },
-      {
-        "desc": "cupcakes with pink rose-shaped frosting",
-        "action": "static",
-        "position": "top"
-      },
-      {
-        "desc": "plain yellow cupcakes in white paper liners",
-        "action": "static",
-        "position": "bottom"
-      },
-      {
-        "desc": "dark grey surface",
         "action": "static",
         "position": "background"
       }
@@ -526,100 +447,39 @@
         "confidence": 1.0
       },
       {
-        "fact": "The cupcakes are arranged in a grid pattern on a dark surface.",
+        "fact": "The cupcakes are arranged in a 3x4 grid on a dark surface.",
         "confidence": 1.0
       },
       {
-        "fact": "Some cupcakes are already decorated with pink frosting swirls.",
+        "fact": "Two cupcakes in the top left corner are already fully frosted with pink swirls.",
         "confidence": 1.0
       },
       {
-        "fact": "The remaining cupcakes are plain yellow sponge cakes.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [],
-    "spatial": "The hand holding the piping bag is positioned on the left side of the frame, above the cupcakes. The decorated cupcakes with pink frosting are located in the top row, while the plain yellow cupcakes are arranged in the middle and bottom rows. The entire arrangement is set against a dark grey background.",
-    "parse_success": true,
-    "chunk_idx": 10,
-    "video_id": "NtqEBe6iEoY"
-  },
-  {
-    "time": [
-      22,
-      24
-    ],
-    "visible_entities": [
-      {
-        "desc": "person's arm and hand with light skin tone and purple nail polish, holding a piping bag",
-        "action": "piping pink frosting onto cupcakes",
-        "position": "center/foreground"
-      },
-      {
-        "desc": "cupcakes with pale yellow sponge cake in white paper liners",
-        "action": "being decorated or waiting to be decorated",
-        "position": "arranged in a grid on a black surface"
-      },
-      {
-        "desc": "pink frosting swirled into a rose shape",
-        "action": "being applied to cupcakes",
-        "position": "on top of the cupcakes"
-      },
-      {
-        "desc": "piping bag filled with pink frosting",
-        "action": "being squeezed by the hand",
-        "position": "in the person's hand"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "A person is using a piping bag to apply pink frosting to cupcakes.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The cupcakes are arranged in three rows on a black surface.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The frosting is being piped in a swirling motion to create a rose shape.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "Some cupcakes are already frosted while others are plain yellow sponge.",
+        "fact": "The piping bag has a metal star-shaped tip.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The person's hand is positioned above the cupcakes, piping frosting onto them. The frosted cupcakes are to the left and top of the plain cupcakes. The plain cupcakes are arranged in the bottom row and the middle right of the grid.",
+    "spatial": "The hand holding the piping bag is positioned above the top row of cupcakes. The frosted cupcakes are to the left of the cupcake currently being decorated. The unfrosted cupcakes are arranged in rows below and to the right of the decorated ones.",
     "parse_success": true,
-    "chunk_idx": 11,
+    "chunk_idx": 9,
     "video_id": "NtqEBe6iEoY"
   },
   {
     "time": [
-      24,
-      26
+      10,
+      11
     ],
     "visible_entities": [
       {
-        "desc": "person's arm and hand with light skin tone and silver nail polish",
-        "action": "piping pink frosting onto cupcakes",
-        "position": "center"
+        "desc": "hand with silver nail polish holding a piping bag with a metal star tip",
+        "action": "piping pink frosting onto a cupcake",
+        "position": "left/center"
       },
       {
-        "desc": "piping bag filled with pink frosting",
-        "action": "being squeezed by hand",
-        "position": "center"
-      },
-      {
-        "desc": "cupcakes with pale yellow cake in white paper liners",
-        "action": "being decorated",
-        "position": "background"
-      },
-      {
-        "desc": "pink frosting swirls",
+        "desc": "cupcakes in white paper liners, some topped with pink frosting swirls, others plain yellow sponge",
         "action": "static",
-        "position": "on cupcakes"
+        "position": "center/right"
       }
     ],
     "atomic_facts": [
@@ -632,43 +492,137 @@
         "confidence": 1.0
       },
       {
-        "fact": "Most cupcakes already have a pink rose-shaped frosting swirl on top.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "One cupcake in the bottom right corner is plain without frosting.",
+        "fact": "Some cupcakes are already decorated with pink rosettes.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The hand holding the piping bag is in the center of the frame, positioned above the grid of cupcakes. The plain cupcake is located to the right of the cupcake currently being decorated. The decorated cupcakes are arranged in rows and columns on the black background.",
+    "spatial": "The hand holding the piping bag is positioned above the cupcake being decorated. The decorated cupcakes are located in the top row and the middle row on the left, while the plain cupcakes are in the middle row on the right and the entire bottom row.",
+    "parse_success": true,
+    "chunk_idx": 10,
+    "video_id": "NtqEBe6iEoY"
+  },
+  {
+    "time": [
+      11,
+      12
+    ],
+    "visible_entities": [
+      {
+        "desc": "hand with metallic purple nail polish holding a piping bag with a star tip",
+        "action": "piping pink frosting onto cupcakes",
+        "position": "center/foreground"
+      },
+      {
+        "desc": "cupcakes with pale yellow sponge and white paper liners",
+        "action": "being decorated or waiting to be decorated",
+        "position": "arranged in a grid on the surface"
+      },
+      {
+        "desc": "pink frosting swirls",
+        "action": "being formed on top of the cupcakes",
+        "position": "on top of the cupcakes"
+      },
+      {
+        "desc": "dark matte surface",
+        "action": "static",
+        "position": "background"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A hand is squeezing a piping bag to dispense pink frosting.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The frosting is being applied in a swirling motion to create a rose shape.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "Several cupcakes in the top and middle rows already have pink frosting.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The bottom row of cupcakes is currently unfrosted.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The hand holding the piping bag is positioned in the center, hovering over the grid of cupcakes. The frosted cupcakes are located above and to the left of the unfrosted ones in the bottom row. The entire arrangement sits on a dark surface.",
+    "parse_success": true,
+    "chunk_idx": 11,
+    "video_id": "NtqEBe6iEoY"
+  },
+  {
+    "time": [
+      12,
+      13
+    ],
+    "visible_entities": [
+      {
+        "desc": "person's arm and hand with light skin and silver nail polish",
+        "action": "piping pink frosting onto a cupcake",
+        "position": "center/foreground"
+      },
+      {
+        "desc": "cupcakes with pale yellow cake and pink rose-shaped frosting",
+        "action": "static",
+        "position": "left/center/background"
+      },
+      {
+        "desc": "unfrosted pale yellow cupcake in a white paper liner",
+        "action": "static",
+        "position": "bottom right"
+      },
+      {
+        "desc": "piping bag filled with pink frosting",
+        "action": "being held and squeezed",
+        "position": "center/foreground"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A person is piping pink frosting onto a cupcake in a rose pattern.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "There are multiple cupcakes with pink frosting arranged on a black surface.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "One cupcake in the bottom right corner is currently unfrosted.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The hand holding the piping bag is positioned in the center foreground, directly above the cupcake being decorated. The frosted cupcakes are arranged in rows to the left and above the unfrosted cupcake, which sits in the bottom right corner.",
     "parse_success": true,
     "chunk_idx": 12,
     "video_id": "NtqEBe6iEoY"
   },
   {
     "time": [
-      26,
-      28
+      13,
+      14
     ],
     "visible_entities": [
       {
-        "desc": "person's arm and hand with light skin tone and metallic purple nail polish",
+        "desc": "person's arm and hand with silver nail polish",
         "action": "holding a piping bag",
-        "position": "right foreground"
+        "position": "right"
       },
       {
-        "desc": "translucent white piping bag",
-        "action": "being held",
-        "position": "right foreground"
-      },
-      {
-        "desc": "cupcakes with light green paper liners and swirled pink frosting",
+        "desc": "cupcakes with pink rose-shaped frosting in white paper liners",
         "action": "static",
-        "position": "center and left"
+        "position": "center"
       },
       {
-        "desc": "dark gray flat surface",
+        "desc": "piping bag with white tip",
+        "action": "being held",
+        "position": "right"
+      },
+      {
+        "desc": "black flat surface",
         "action": "static",
         "position": "background"
       }
@@ -679,33 +633,79 @@
         "confidence": 1.0
       },
       {
-        "fact": "Eleven cupcakes with pink frosting are arranged on the surface.",
+        "fact": "Nine cupcakes with pink frosting are arranged on the black surface.",
         "confidence": 1.0
       },
       {
-        "fact": "The cupcakes are arranged in three rows.",
+        "fact": "The cupcakes are arranged in three rows of three.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The person's hand is to the right of the cupcakes. The cupcakes are arranged in a grid pattern on the dark gray surface. The piping bag is held in the person's hand.",
+    "spatial": "The person's arm and hand are on the right side of the frame. The hand is holding a piping bag. The nine cupcakes are arranged in a grid in the center and to the left of the hand. The cupcakes are on the black surface.",
     "parse_success": true,
     "chunk_idx": 13,
     "video_id": "NtqEBe6iEoY"
   },
   {
     "time": [
-      28,
-      30
+      14,
+      15
     ],
     "visible_entities": [
       {
         "desc": "person's arm and hand holding a piping bag with pink frosting",
-        "action": "decorating cupcakes",
-        "position": "right"
+        "action": "piping frosting onto a cupcake",
+        "position": "right/foreground"
       },
       {
         "desc": "cupcakes with pink rose-shaped frosting in green paper liners",
+        "action": "static",
+        "position": "center/left"
+      },
+      {
+        "desc": "dark flat surface",
+        "action": "static",
+        "position": "background"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A person is piping pink frosting onto a cupcake.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "There are twelve cupcakes arranged in a 3x4 grid.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The cupcakes have pink frosting piped in a rose shape.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The cupcakes are in green paper liners.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The person's arm and hand are on the right side of the frame, holding a piping bag over a cupcake. The cupcakes are arranged in a grid on the dark surface. The hand is in front of the cupcakes on the right.",
+    "parse_success": true,
+    "chunk_idx": 14,
+    "video_id": "NtqEBe6iEoY"
+  },
+  {
+    "time": [
+      15,
+      16
+    ],
+    "visible_entities": [
+      {
+        "desc": "hand with silver nail polish holding a green piping bag",
+        "action": "piping pink frosting onto a cupcake",
+        "position": "top left"
+      },
+      {
+        "desc": "cupcakes with light green paper liners and pink rose-shaped frosting",
         "action": "static",
         "position": "center"
       },
@@ -717,79 +717,28 @@
     ],
     "atomic_facts": [
       {
-        "fact": "A person's hand is holding a piping bag and applying pink frosting to a cupcake.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "There are twelve cupcakes arranged in a grid pattern on the surface.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The cupcakes are topped with pink frosting piped into a rose shape.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [],
-    "spatial": "The person's hand is positioned on the right side of the frame, holding a piping bag over a cupcake. The cupcakes are arranged in a grid on the dark surface, which serves as the background for the scene.",
-    "parse_success": true,
-    "chunk_idx": 14,
-    "video_id": "NtqEBe6iEoY"
-  },
-  {
-    "time": [
-      30,
-      32
-    ],
-    "visible_entities": [
-      {
-        "desc": "hand with silver ring on ring finger, holding a green piping bag",
-        "action": "piping pink frosting onto a cupcake",
-        "position": "top left"
-      },
-      {
-        "desc": "cupcakes with pale yellow cake base in white paper liners, topped with swirled pink frosting",
-        "action": "static",
-        "position": "center"
-      },
-      {
-        "desc": "green piping bag with a metal star tip",
-        "action": "being squeezed",
-        "position": "top left"
-      },
-      {
-        "desc": "dark gray or black flat surface",
-        "action": "static",
-        "position": "background"
-      }
-    ],
-    "atomic_facts": [
-      {
         "fact": "A hand is squeezing a green piping bag to add frosting to a cupcake.",
         "confidence": 1.0
       },
       {
-        "fact": "There are twelve cupcakes arranged in a grid of three rows and four columns.",
+        "fact": "Twelve cupcakes are arranged in a 3x4 grid.",
         "confidence": 1.0
       },
       {
         "fact": "The cupcakes have pink frosting piped in a rose swirl pattern.",
         "confidence": 1.0
-      },
-      {
-        "fact": "The cupcakes are sitting on a dark surface.",
-        "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The hand holding the green piping bag is positioned in the top left corner, above the first cupcake in the top row. The twelve cupcakes are arranged in a grid in the center of the frame, resting on the dark surface.",
+    "spatial": "The hand holding the piping bag is positioned above the top-left cupcake. The cupcakes are arranged in rows and columns on the dark surface.",
     "parse_success": true,
     "chunk_idx": 15,
     "video_id": "NtqEBe6iEoY"
   },
   {
     "time": [
-      32,
-      34
+      16,
+      17
     ],
     "visible_entities": [
       {
@@ -798,18 +747,18 @@
         "position": "top left"
       },
       {
-        "desc": "cupcake with pink swirled frosting and green wrapper",
-        "action": "being topped",
+        "desc": "cupcake with pink rose-shaped frosting and green paper liner",
+        "action": "being decorated",
         "position": "top left"
       },
       {
-        "desc": "eleven cupcakes with pink swirled frosting and green wrappers",
+        "desc": "eleven cupcakes with pink rose-shaped frosting and green paper liners",
         "action": "static",
         "position": "center"
       },
       {
         "desc": "green sprinkles",
-        "action": "falling",
+        "action": "falling onto cupcake",
         "position": "top left"
       },
       {
@@ -820,71 +769,7 @@
     ],
     "atomic_facts": [
       {
-        "fact": "A hand is sprinkling green toppings onto a cupcake.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The cupcake being topped is located in the top left corner of the grid.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "There are twelve cupcakes arranged in three rows of four.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The cupcakes have pink frosting piped in a rose swirl pattern.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The cupcakes are sitting on a black surface.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [],
-    "spatial": "The hand is positioned above the cupcake in the top left corner. This specific cupcake is to the left of the other cupcakes in the top row. The grid of cupcakes is centered on the black surface.",
-    "parse_success": true,
-    "chunk_idx": 16,
-    "video_id": "NtqEBe6iEoY"
-  },
-  {
-    "time": [
-      34,
-      36
-    ],
-    "visible_entities": [
-      {
-        "desc": "hand with light skin tone",
-        "action": "sprinkling green crumbs",
-        "position": "top left"
-      },
-      {
-        "desc": "cupcake with pink frosting swirl in a white paper liner",
-        "action": "static",
-        "position": "top left"
-      },
-      {
-        "desc": "bright green crumbs",
-        "action": "being sprinkled",
-        "position": "top left"
-      },
-      {
-        "desc": "eleven cupcakes with pink frosting swirls in white paper liners",
-        "action": "static",
-        "position": "center and right"
-      },
-      {
-        "desc": "black surface",
-        "action": "static",
-        "position": "background"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "A hand is sprinkling green crumbs onto the top-left cupcake.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The green crumbs are covering the pink frosting of the top-left cupcake.",
+        "fact": "A hand is sprinkling green toppings onto the top-left cupcake.",
         "confidence": 1.0
       },
       {
@@ -892,142 +777,88 @@
         "confidence": 1.0
       },
       {
-        "fact": "Eleven cupcakes have pink frosting, while one has green topping.",
+        "fact": "The cupcakes feature pink frosting piped in a rose swirl pattern.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The hand is positioned above the top-left cupcake. The cupcake with green crumbs is to the left of the other pink-frosted cupcakes in the top row. The grid of cupcakes is centered on the black surface.",
+    "spatial": "The hand is positioned above the top-left cupcake. The cupcakes are arranged in three rows and four columns on the black surface. The green sprinkles are falling from the hand onto the frosting of the cupcake.",
     "parse_success": true,
-    "chunk_idx": 17,
+    "chunk_idx": 16,
     "video_id": "NtqEBe6iEoY"
   },
   {
     "time": [
-      36,
-      38
+      17,
+      18
     ],
     "visible_entities": [
       {
-        "desc": "hand holding a piping bag with a green nozzle",
-        "action": "piping green frosting onto a cupcake",
-        "position": "top center"
+        "desc": "hand with light skin tone, fingers holding a piping tool",
+        "action": "applying green frosting",
+        "position": "top left"
       },
       {
-        "desc": "cupcakes with light yellow cake base and white paper liners",
-        "action": "being decorated or static",
+        "desc": "cupcake with bright green sprinkles on top",
+        "action": "static",
+        "position": "top left"
+      },
+      {
+        "desc": "eleven cupcakes with pink swirled frosting",
+        "action": "static",
         "position": "center"
       },
       {
-        "desc": "green frosting with a grass-like texture",
-        "action": "being applied",
-        "position": "top row"
-      },
-      {
-        "desc": "pink frosting swirled into a rose shape",
-        "action": "static",
-        "position": "middle and bottom rows"
-      },
-      {
-        "desc": "dark grey flat surface",
+        "desc": "dark flat surface",
         "action": "static",
         "position": "background"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A hand is piping green frosting onto the third cupcake in the top row.",
+        "fact": "A hand is applying green sprinkles to a cupcake.",
         "confidence": 1.0
       },
       {
-        "fact": "There are twelve cupcakes arranged in a 3x4 grid.",
+        "fact": "There are twelve cupcakes arranged in three rows of four.",
         "confidence": 1.0
       },
       {
-        "fact": "The cupcakes in the middle and bottom rows are topped with pink rose-shaped frosting.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The first two cupcakes in the top row already have green grass-like frosting.",
+        "fact": "One cupcake has green toppings while the others have pink frosting.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The hand holding the piping bag is positioned above the cupcakes in the top row. The cupcakes with green frosting are to the left of the cupcakes with pink frosting in the top row. The rows of cupcakes are arranged one below the other on the dark surface.",
+    "spatial": "The hand is positioned above the cupcake with green sprinkles. The cupcake with green sprinkles is to the left of the cupcake with pink frosting in the top row. The cupcakes are arranged on a dark surface.",
     "parse_success": true,
-    "chunk_idx": 18,
+    "chunk_idx": 17,
     "video_id": "NtqEBe6iEoY"
   },
   {
     "time": [
-      38,
-      40
+      18,
+      19
     ],
     "visible_entities": [
       {
-        "desc": "hand holding a piping bag with a green star-shaped nozzle",
+        "desc": "hand holding a piping bag with a green nozzle",
         "action": "piping green frosting",
         "position": "top center"
       },
       {
-        "desc": "cupcake with a white paper liner and green grass-like frosting",
+        "desc": "cupcakes with pink rose-shaped frosting",
+        "action": "static",
+        "position": "center and right"
+      },
+      {
+        "desc": "cupcakes with green textured frosting",
         "action": "static",
         "position": "top left"
       },
       {
-        "desc": "cupcake with a white paper liner and green grass-like frosting",
+        "desc": "black surface",
         "action": "static",
-        "position": "top center-left"
-      },
-      {
-        "desc": "cupcake with a white paper liner and green grass-like frosting",
-        "action": "static",
-        "position": "top center-right"
-      },
-      {
-        "desc": "cupcake with a white paper liner and pink swirled frosting",
-        "action": "static",
-        "position": "top right"
-      },
-      {
-        "desc": "cupcake with a white paper liner and pink swirled frosting",
-        "action": "static",
-        "position": "middle left"
-      },
-      {
-        "desc": "cupcake with a white paper liner and pink swirled frosting",
-        "action": "static",
-        "position": "middle center-left"
-      },
-      {
-        "desc": "cupcake with a white paper liner and pink swirled frosting",
-        "action": "static",
-        "position": "middle center-right"
-      },
-      {
-        "desc": "cupcake with a white paper liner and pink swirled frosting",
-        "action": "static",
-        "position": "middle right"
-      },
-      {
-        "desc": "cupcake with a white paper liner and pink swirled frosting",
-        "action": "static",
-        "position": "bottom left"
-      },
-      {
-        "desc": "cupcake with a white paper liner and pink swirled frosting",
-        "action": "static",
-        "position": "bottom center-left"
-      },
-      {
-        "desc": "cupcake with a white paper liner and pink swirled frosting",
-        "action": "static",
-        "position": "bottom center-right"
-      },
-      {
-        "desc": "cupcake with a white paper liner and pink swirled frosting",
-        "action": "static",
-        "position": "bottom right"
+        "position": "background"
       }
     ],
     "atomic_facts": [
@@ -1036,46 +867,129 @@
         "confidence": 1.0
       },
       {
-        "fact": "The green frosting has a grass-like texture.",
-        "confidence": 1.0
-      },
-      {
         "fact": "There are twelve cupcakes arranged in a 3x4 grid.",
         "confidence": 1.0
       },
       {
-        "fact": "Nine cupcakes have pink swirled frosting.",
+        "fact": "The cupcakes are topped with either pink or green frosting.",
         "confidence": 1.0
       },
       {
-        "fact": "Three cupcakes have green grass-like frosting.",
+        "fact": "The pink frosting is piped in a rose swirl pattern.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The green frosting has a textured, grass-like appearance.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The cupcakes are arranged in three rows and four columns on a black surface. The hand with the piping bag is above the cupcake in the top row, third from the left. The cupcakes with green frosting are in the top row, to the left of the cupcake with pink frosting in the same row.",
+    "spatial": "The hand holding the piping bag is positioned above the cupcakes in the top row. The cupcakes with green frosting are to the left of the cupcakes with pink frosting. All cupcakes are arranged on a black surface.",
+    "parse_success": true,
+    "chunk_idx": 18,
+    "video_id": "NtqEBe6iEoY"
+  },
+  {
+    "time": [
+      19,
+      20
+    ],
+    "visible_entities": [
+      {
+        "desc": "hand holding a green piping bag with a star-shaped nozzle",
+        "action": "piping green frosting onto a cupcake",
+        "position": "top center"
+      },
+      {
+        "desc": "cupcakes arranged in a 3x4 grid, with pink rose-swirl frosting and green textured frosting",
+        "action": "static",
+        "position": "center"
+      },
+      {
+        "desc": "dark, flat surface",
+        "action": "static",
+        "position": "background"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A hand is piping green frosting onto a cupcake.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The cupcakes are arranged in three rows of four.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The top row contains three cupcakes with green frosting and one with pink frosting.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The middle and bottom rows contain cupcakes with pink rose-swirl frosting.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The hand holding the piping bag is above the cupcake in the top row, third from the left. The cupcakes are arranged in a grid on the dark surface. The cupcakes with green frosting are to the left of the cupcake with pink frosting in the top row.",
     "parse_success": true,
     "chunk_idx": 19,
     "video_id": "NtqEBe6iEoY"
   },
   {
     "time": [
-      40,
-      42
+      20,
+      21
     ],
     "visible_entities": [
       {
-        "desc": "hand holding a clear plastic piping bag with a green nozzle",
+        "desc": "hand holding a clear plastic piping bag with a green tip",
+        "action": "piping green frosting onto a cupcake",
+        "position": "top right"
+      },
+      {
+        "desc": "cupcakes with pink frosting, some topped with green grass-like frosting",
+        "action": "static",
+        "position": "center"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A hand is piping green frosting onto the cupcake in the middle row, far right position.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The cupcakes are arranged in three rows on a black surface.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The bottom row of cupcakes has pink rose-shaped frosting without green topping.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The hand holding the piping bag is in the top right, positioned above the cupcakes. The cupcakes are arranged in a grid in the center of the frame, with the bottom row below the middle row.",
+    "parse_success": true,
+    "chunk_idx": 20,
+    "video_id": "NtqEBe6iEoY"
+  },
+  {
+    "time": [
+      21,
+      22
+    ],
+    "visible_entities": [
+      {
+        "desc": "hand with light skin tone holding a green piping bag",
         "action": "piping green frosting onto a cupcake",
         "position": "right"
       },
       {
-        "desc": "cupcakes with pink swirled frosting and green grass-like topping",
+        "desc": "cupcakes with pink frosting, some topped with green textured frosting resembling grass",
         "action": "static",
         "position": "center"
       },
       {
-        "desc": "cupcakes with pink swirled frosting only",
+        "desc": "cupcakes with pink frosting piped in a rose swirl pattern",
         "action": "static",
         "position": "bottom"
       },
@@ -1087,97 +1001,46 @@
     ],
     "atomic_facts": [
       {
-        "fact": "A hand is piping green frosting onto a cupcake in the top right position.",
+        "fact": "A hand is piping green frosting onto a cupcake in the second row.",
         "confidence": 1.0
       },
       {
-        "fact": "There are twelve cupcakes arranged in a grid of three rows and four columns.",
+        "fact": "Twelve cupcakes are arranged in a 3x4 grid on a dark surface.",
         "confidence": 1.0
       },
       {
-        "fact": "The cupcakes in the bottom row have pink frosting without green topping.",
+        "fact": "The top two rows of cupcakes feature green grass-like frosting on top of pink frosting.",
         "confidence": 1.0
       },
       {
-        "fact": "The cupcakes in the top two rows have green grass-like frosting on top of pink frosting.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [],
-    "spatial": "The hand holding the piping bag is to the right of the grid of cupcakes. The cupcakes with green frosting are above the cupcakes with only pink frosting. The cupcakes are arranged on a dark flat surface.",
-    "parse_success": true,
-    "chunk_idx": 20,
-    "video_id": "NtqEBe6iEoY"
-  },
-  {
-    "time": [
-      42,
-      44
-    ],
-    "visible_entities": [
-      {
-        "desc": "hand holding a green piping bag",
-        "action": "piping green frosting onto a cupcake",
-        "position": "right"
-      },
-      {
-        "desc": "cupcakes with pink frosting and green textured topping",
-        "action": "static",
-        "position": "top and middle rows"
-      },
-      {
-        "desc": "cupcakes with pink swirled frosting",
-        "action": "static",
-        "position": "bottom row"
-      },
-      {
-        "desc": "black surface",
-        "action": "static",
-        "position": "background"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "A hand is piping green frosting onto a cupcake in the middle row.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "There are twelve cupcakes arranged in three rows of four.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The top two rows of cupcakes have green textured frosting on top of pink frosting.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The bottom row of cupcakes has pink swirled frosting.",
+        "fact": "The bottom row of cupcakes features pink rose swirl frosting.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The hand is to the right of the cupcakes. The cupcakes with green topping are above the cupcakes with pink swirls. All cupcakes are on a black surface.",
+    "spatial": "The hand holding the piping bag is to the right of the grid of cupcakes. The cupcakes with green frosting are above the cupcakes with pink rose swirls. The cupcakes are arranged on the dark surface.",
     "parse_success": true,
     "chunk_idx": 21,
     "video_id": "NtqEBe6iEoY"
   },
   {
     "time": [
-      44,
-      46
+      22,
+      23
     ],
     "visible_entities": [
       {
-        "desc": "hand with dark nail polish holding a piping bag with a metal tip",
-        "action": "piping green frosting onto a cupcake",
-        "position": "right"
-      },
-      {
-        "desc": "twelve cupcakes in white paper liners with white base frosting and green textured topping",
+        "desc": "twelve cupcakes in white paper liners, topped with white frosting and textured bright green sprinkles",
         "action": "static",
         "position": "center"
       },
       {
-        "desc": "dark gray flat surface",
+        "desc": "hand with dark nail polish holding a piping bag with a green tip",
+        "action": "piping green frosting",
+        "position": "right"
+      },
+      {
+        "desc": "dark grey smooth surface",
         "action": "static",
         "position": "background"
       }
@@ -1188,71 +1051,76 @@
         "confidence": 1.0
       },
       {
-        "fact": "Twelve cupcakes are arranged in a 3x4 grid on a dark surface.",
+        "fact": "Twelve cupcakes are arranged in a 3x4 grid.",
         "confidence": 1.0
       },
       {
-        "fact": "The cupcakes have a white base layer of frosting underneath the green topping.",
+        "fact": "The cupcakes have a textured green topping.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The hand holding the piping bag is to the right of the grid of cupcakes. The cupcakes are arranged in three rows on the dark gray surface. The piping bag is positioned over the bottom-right cupcake.",
+    "spatial": "The cupcakes are arranged in three rows of four on the dark grey surface. The hand holding the piping bag is positioned to the right of the bottom row of cupcakes, applying frosting to the rightmost cupcake in that row.",
     "parse_success": true,
     "chunk_idx": 22,
     "video_id": "NtqEBe6iEoY"
   },
   {
     "time": [
-      46,
-      48
+      23,
+      24
     ],
     "visible_entities": [
       {
-        "desc": "hand with light skin tone and dark nail polish",
-        "action": "holding piping bag",
-        "position": "bottom right"
-      },
-      {
-        "desc": "translucent piping bag with green frosting",
-        "action": "being squeezed",
-        "position": "bottom right"
-      },
-      {
-        "desc": "cupcakes with white paper liners, pink frosting base, and green shredded topping",
+        "desc": "cupcakes with white paper liners, pink frosting base, and bright green sprinkles",
         "action": "static",
         "position": "center"
+      },
+      {
+        "desc": "hand holding a piping bag with green frosting",
+        "action": "piping frosting",
+        "position": "bottom right"
+      },
+      {
+        "desc": "hand sprinkling green toppings",
+        "action": "sprinkling toppings",
+        "position": "top right"
+      },
+      {
+        "desc": "dark gray surface",
+        "action": "static",
+        "position": "background"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A hand is holding a piping bag filled with green frosting.",
+        "fact": "A hand is piping green frosting onto a cupcake in the bottom right corner.",
         "confidence": 1.0
       },
       {
-        "fact": "The hand is squeezing the piping bag to apply green frosting to a cupcake.",
+        "fact": "A hand is sprinkling green toppings onto a cupcake in the top right corner.",
         "confidence": 1.0
       },
       {
-        "fact": "Twelve cupcakes are arranged in a grid on a dark surface.",
+        "fact": "Twelve cupcakes are arranged in three rows of four on a dark surface.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The hand is in the bottom right foreground, holding the piping bag. The piping bag is positioned over the bottom-right cupcake. The other eleven cupcakes are arranged in rows to the left and above the cupcake being decorated.",
+    "spatial": "The cupcakes are arranged in a grid on the dark gray surface. The hand piping frosting is in the bottom right, near the bottom row of cupcakes. The hand sprinkling toppings is in the top right, above the top row of cupcakes.",
     "parse_success": true,
     "chunk_idx": 23,
     "video_id": "NtqEBe6iEoY"
   },
   {
     "time": [
-      48,
-      50
+      24,
+      25
     ],
     "visible_entities": [
       {
-        "desc": "hand with light skin tone",
-        "action": "placing blue candies on cupcakes",
+        "desc": "person's hand with light skin tone",
+        "action": "placing blue candy on cupcake",
         "position": "top right"
       },
       {
@@ -1261,264 +1129,55 @@
         "position": "center"
       },
       {
-        "desc": "small blue oval candies",
-        "action": "being placed on cupcakes",
-        "position": "on top of cupcakes"
+        "desc": "small blue round candies",
+        "action": "being placed",
+        "position": "on cupcakes"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A hand places small blue candies onto the green-topped cupcakes.",
+        "fact": "A hand places a blue candy onto a cupcake in the top right.",
         "confidence": 1.0
       },
       {
-        "fact": "The cupcakes are arranged in a grid pattern on a dark surface.",
+        "fact": "There are twelve cupcakes arranged in three rows of four.",
         "confidence": 1.0
       },
       {
-        "fact": "The green topping resembles shredded coconut or grass.",
+        "fact": "The cupcakes are topped with green shredded coconut resembling grass.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "Blue candies are placed on top of the green coconut on several cupcakes.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The hand is positioned above the cupcakes on the right side of the frame. The cupcakes are arranged in three rows and four columns on a dark background. The blue candies are placed on top of the green frosting.",
+    "spatial": "The cupcakes are arranged in a grid on a dark surface. The hand is positioned above the cupcakes on the right side. The blue candies are placed on top of the green coconut topping.",
     "parse_success": true,
     "chunk_idx": 24,
     "video_id": "NtqEBe6iEoY"
   },
   {
     "time": [
-      50,
-      52
+      25,
+      26
     ],
     "visible_entities": [
       {
         "desc": "hands with light skin and pink nail polish",
-        "action": "placing candies on cupcakes",
+        "action": "placing blue candies on cupcakes",
         "position": "top"
       },
       {
-        "desc": "cupcakes with white paper liners, white frosting, and green shredded coconut topping",
+        "desc": "cupcakes with white paper liners, white frosting base, and green shredded coconut topping",
         "action": "static",
         "position": "center"
       },
       {
-        "desc": "small pastel-colored candy eggs (blue, yellow, pink)",
+        "desc": "small blue and yellow egg-shaped candies",
         "action": "being placed",
         "position": "on top of cupcakes"
-      },
-      {
-        "desc": "dark gray flat surface",
-        "action": "static",
-        "position": "background"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "Hands are placing pastel-colored candy eggs onto the green coconut topping of the cupcakes.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "Twelve cupcakes are arranged in a 3x4 grid on a dark surface.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The cupcakes are decorated with green shredded coconut resembling grass.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [],
-    "spatial": "The hands are positioned above the cupcakes, reaching down to place the candy eggs. The cupcakes are arranged in rows on the dark gray surface, with the top row being actively decorated.",
-    "parse_success": true,
-    "chunk_idx": 25,
-    "video_id": "NtqEBe6iEoY"
-  },
-  {
-    "time": [
-      52,
-      54
-    ],
-    "visible_entities": [
-      {
-        "desc": "hand with light skin tone",
-        "action": "placing candy eggs on cupcakes",
-        "position": "center"
-      },
-      {
-        "desc": "cupcakes with white paper liners, pink frosting base, green shredded coconut topping, and pastel candy eggs",
-        "action": "static",
-        "position": "background"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "A hand places pastel-colored candy eggs onto the green coconut topping of the cupcakes.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The cupcakes are arranged in a grid pattern on a dark surface.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The green topping resembles grass.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [],
-    "spatial": "The hand is positioned above the center cupcakes, reaching down to place the candy. The cupcakes are arranged in three rows and four columns on a dark surface.",
-    "parse_success": true,
-    "chunk_idx": 26,
-    "video_id": "NtqEBe6iEoY"
-  },
-  {
-    "time": [
-      54,
-      56
-    ],
-    "visible_entities": [
-      {
-        "desc": "hand holding a piping bag with yellow frosting",
-        "action": "piping green frosting onto a cupcake",
-        "position": "top right"
-      },
-      {
-        "desc": "cupcakes with white base frosting, green grass-like topping, and pastel candy eggs",
-        "action": "static",
-        "position": "center"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "A hand is piping green frosting onto the top right cupcake.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The cupcakes are arranged in a grid pattern on a dark surface.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The green frosting is textured to resemble grass.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "Pastel colored candy eggs are placed on top of the green frosting.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [],
-    "spatial": "The hand holding the piping bag is positioned above and to the right of the grid of cupcakes. The cupcakes are arranged in three rows and four columns on a dark background surface.",
-    "parse_success": true,
-    "chunk_idx": 27,
-    "video_id": "NtqEBe6iEoY"
-  },
-  {
-    "time": [
-      56,
-      58
-    ],
-    "visible_entities": [
-      {
-        "desc": "hand holding a piping bag filled with yellow-green frosting",
-        "action": "piping frosting onto a cupcake",
-        "position": "top right"
-      },
-      {
-        "desc": "cupcakes with pink frosting, green grass-like sprinkles, and pastel candy eggs",
-        "action": "static",
-        "position": "center"
-      },
-      {
-        "desc": "dark gray flat surface",
-        "action": "static",
-        "position": "background"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "A hand is piping green frosting onto a cupcake in the top right corner.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "Twelve cupcakes are arranged in a 3x4 grid on a dark surface.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The cupcakes are decorated with green sprinkles resembling grass and small pastel-colored candy eggs.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [],
-    "spatial": "The hand holding the piping bag is positioned above and to the right of the grid of cupcakes. The cupcakes are arranged in three rows and four columns on the dark surface.",
-    "parse_success": true,
-    "chunk_idx": 28,
-    "video_id": "NtqEBe6iEoY"
-  },
-  {
-    "time": [
-      58,
-      60
-    ],
-    "visible_entities": [
-      {
-        "desc": "hand holding a piping bag with yellow frosting",
-        "action": "piping yellow frosting onto cupcakes",
-        "position": "top right"
-      },
-      {
-        "desc": "twelve cupcakes with pink frosting, green grass sprinkles, and pastel candy eggs",
-        "action": "static",
-        "position": "center"
-      },
-      {
-        "desc": "dark grey surface",
-        "action": "static",
-        "position": "background"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "A hand is piping yellow frosting onto the cupcakes.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The cupcakes are arranged in three rows of four.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "Each cupcake has pink frosting topped with green sprinkles resembling grass.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "Pastel colored candy eggs are placed on top of the green sprinkles.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [],
-    "spatial": "The hand holding the piping bag is positioned above the top right cupcake. The twelve cupcakes are arranged in a grid on the dark grey surface.",
-    "parse_success": true,
-    "chunk_idx": 29,
-    "video_id": "NtqEBe6iEoY"
-  },
-  {
-    "time": [
-      60,
-      62
-    ],
-    "visible_entities": [
-      {
-        "desc": "person's left arm and hand with light skin tone and purple nail polish",
-        "action": "holding a piping bag",
-        "position": "left foreground"
-      },
-      {
-        "desc": "piping bag filled with yellow frosting",
-        "action": "being held",
-        "position": "left foreground"
-      },
-      {
-        "desc": "nine cupcakes with pink frosting, green sprinkles, and colorful candy eggs",
-        "action": "static",
-        "position": "center and right"
       },
       {
         "desc": "dark grey flat surface",
@@ -1528,111 +1187,79 @@
     ],
     "atomic_facts": [
       {
-        "fact": "A person is holding a piping bag in the left foreground.",
+        "fact": "A pair of hands is placing blue egg-shaped candies onto the green coconut topping of the cupcakes.",
         "confidence": 1.0
       },
       {
-        "fact": "Nine decorated cupcakes are arranged on a dark surface.",
+        "fact": "The cupcakes are arranged in a grid pattern on a dark surface.",
         "confidence": 1.0
       },
       {
-        "fact": "The cupcakes feature green sprinkles resembling grass and pastel-colored candy eggs.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [],
-    "spatial": "The person's hand holding the piping bag is positioned to the left of the grid of cupcakes. The cupcakes are arranged in rows on top of the dark grey surface.",
-    "parse_success": true,
-    "chunk_idx": 30,
-    "video_id": "NtqEBe6iEoY"
-  },
-  {
-    "time": [
-      62,
-      64
-    ],
-    "visible_entities": [
-      {
-        "desc": "cupcakes with pink frosting, green coconut shreds resembling grass, colorful candy eggs, and small yellow flowers",
-        "action": "static",
-        "position": "center"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "Twelve cupcakes are arranged in a grid pattern on a dark surface.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The cupcakes are decorated with green toppings to look like grass.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "Colorful candy eggs are placed on top of the green coconut shreds.",
+        "fact": "Some cupcakes already have blue or yellow candies placed on them.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The cupcakes are arranged in three rows and four columns. The top row of cupcakes is above the middle row, and the middle row is above the bottom row. The cupcakes are next to each other horizontally.",
+    "spatial": "The hands are positioned above the cupcakes in the top center of the frame. The cupcakes are arranged in three rows on the dark grey surface. The blue candies are being placed on top of the green coconut nests.",
     "parse_success": true,
-    "chunk_idx": 31,
+    "chunk_idx": 25,
     "video_id": "NtqEBe6iEoY"
   },
   {
     "time": [
-      64,
-      66
+      26,
+      27
     ],
     "visible_entities": [
       {
-        "desc": "hand with fair skin and a silver ring on the ring finger",
-        "action": "reaching for a cupcake",
-        "position": "top center"
-      },
-      {
-        "desc": "cupcakes with pink frosting, green shredded coconut grass, pastel candy eggs, and yellow flower sprinkles",
-        "action": "static",
+        "desc": "hand with light skin tone, fingers extended",
+        "action": "placing candy eggs on cupcakes",
         "position": "center"
       },
       {
-        "desc": "black surface",
+        "desc": "cupcakes with white paper liners, pink frosting base, green shredded coconut topping resembling grass, and small pastel-colored candy eggs",
+        "action": "static",
+        "position": "background"
+      },
+      {
+        "desc": "dark gray flat surface",
         "action": "static",
         "position": "background"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A hand reaches down towards the top row of cupcakes.",
+        "fact": "A hand is placing small candy eggs onto the green coconut topping of the cupcakes.",
         "confidence": 1.0
       },
       {
-        "fact": "Eleven cupcakes are arranged in a grid pattern on a black surface.",
+        "fact": "Twelve cupcakes are arranged in a grid of three rows and four columns.",
         "confidence": 1.0
       },
       {
-        "fact": "The cupcakes are decorated with green coconut shavings to resemble grass.",
+        "fact": "The cupcakes are decorated with green shredded coconut to look like grass.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The hand is positioned above the cupcakes in the top row. The cupcakes are arranged in three rows on the black surface. The hand is reaching for the cupcake located in the top row, second from the left.",
+    "spatial": "The hand is positioned in the center of the frame, hovering above the middle row of cupcakes. The cupcakes are arranged in a grid pattern on the dark gray surface. The hand is placing candies on the cupcake located in the center-right of the grid.",
     "parse_success": true,
-    "chunk_idx": 32,
+    "chunk_idx": 26,
     "video_id": "NtqEBe6iEoY"
   },
   {
     "time": [
-      66,
-      68
+      27,
+      28
     ],
     "visible_entities": [
       {
-        "desc": "hand with a silver ring on the ring finger",
-        "action": "placing a candy egg on a cupcake",
-        "position": "top center"
+        "desc": "hand holding a piping bag filled with green frosting",
+        "action": "piping green frosting onto a cupcake",
+        "position": "top right"
       },
       {
-        "desc": "cupcakes with pink frosting, green sprinkles, and pastel candy eggs",
+        "desc": "twelve cupcakes with pink frosting, green grass-like frosting, and pastel candy eggs",
         "action": "static",
         "position": "center"
       },
@@ -1644,7 +1271,250 @@
     ],
     "atomic_facts": [
       {
-        "fact": "A hand is placing a pastel-colored candy egg onto a cupcake.",
+        "fact": "A hand is piping green frosting onto the top right cupcake.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "There are twelve cupcakes arranged in three rows of four.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The cupcakes are decorated with pink frosting, green grass-like frosting, and pastel candy eggs.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The hand holding the piping bag is in the top right corner of the frame, above the top row of cupcakes. The twelve cupcakes are arranged in a grid on the dark gray surface. The cupcake being decorated is to the right of the other cupcakes in the top row.",
+    "parse_success": true,
+    "chunk_idx": 27,
+    "video_id": "NtqEBe6iEoY"
+  },
+  {
+    "time": [
+      28,
+      29
+    ],
+    "visible_entities": [
+      {
+        "desc": "hand holding a clear piping bag filled with green frosting",
+        "action": "piping green frosting onto a cupcake",
+        "position": "top right"
+      },
+      {
+        "desc": "twelve cupcakes with pink frosting, topped with green grass-like sprinkles and three pastel-colored candy eggs",
+        "action": "static",
+        "position": "center"
+      },
+      {
+        "desc": "dark flat surface",
+        "action": "static",
+        "position": "background"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A hand is piping green frosting onto the cupcake in the top right corner.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "There are twelve cupcakes arranged in a 3x4 grid on the dark surface.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "Each cupcake is decorated with green sprinkles resembling grass and three small candy eggs in pastel colors.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The hand holding the piping bag is positioned above and to the right of the grid of cupcakes. The cupcakes are arranged in three rows and four columns on the dark surface. The cupcake being decorated is in the top right position of the grid.",
+    "parse_success": true,
+    "chunk_idx": 28,
+    "video_id": "NtqEBe6iEoY"
+  },
+  {
+    "time": [
+      29,
+      30
+    ],
+    "visible_entities": [
+      {
+        "desc": "hand holding a piping bag with a yellow tip",
+        "action": "piping yellow frosting onto a cupcake",
+        "position": "right/foreground"
+      },
+      {
+        "desc": "cupcakes with pink frosting, green grass-like sprinkles, and colorful candy eggs",
+        "action": "static",
+        "position": "center"
+      },
+      {
+        "desc": "dark flat surface",
+        "action": "static",
+        "position": "background"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A hand is piping yellow frosting onto a cupcake.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "There are twelve cupcakes arranged in a grid on a dark surface.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The cupcakes are decorated with green sprinkles resembling grass and pastel-colored candy eggs.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The hand holding the piping bag is positioned over the cupcake in the top right corner. The cupcakes are arranged in three rows and four columns on the dark surface.",
+    "parse_success": true,
+    "chunk_idx": 29,
+    "video_id": "NtqEBe6iEoY"
+  },
+  {
+    "time": [
+      30,
+      31
+    ],
+    "visible_entities": [
+      {
+        "desc": "person's left arm and hand with purple nail polish, holding a piping bag with a yellow tip",
+        "action": "holding a piping bag",
+        "position": "left foreground"
+      },
+      {
+        "desc": "nine cupcakes with pink frosting, green shredded coconut 'grass', and pastel candy eggs",
+        "action": "static",
+        "position": "center and right"
+      },
+      {
+        "desc": "dark, flat surface",
+        "action": "static",
+        "position": "background"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A person's hand is holding a piping bag with a yellow tip.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "Nine cupcakes are arranged in a grid pattern on a dark surface.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The cupcakes are decorated with green coconut shreds and colorful candy eggs.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The person's hand holding the piping bag is on the left side of the frame. The nine cupcakes are arranged in a 3x3 grid to the right of the hand. The cupcakes are on top of the dark surface.",
+    "parse_success": true,
+    "chunk_idx": 30,
+    "video_id": "NtqEBe6iEoY"
+  },
+  {
+    "time": [
+      31,
+      32
+    ],
+    "visible_entities": [
+      {
+        "desc": "cupcakes with pink frosting, green coconut sprinkles, pastel candy eggs, and yellow flower sprinkles",
+        "action": "static",
+        "position": "center"
+      },
+      {
+        "desc": "purple flower sprinkle",
+        "action": "static",
+        "position": "top-left"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "Twelve cupcakes are arranged in a 3x4 grid on a black surface.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A purple flower sprinkle appears on the top-left cupcake in the second frame.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The cupcakes are arranged in three rows and four columns. The top-left cupcake is to the left of the top-center cupcake. The purple flower sprinkle is on top of the green sprinkles on the top-left cupcake.",
+    "parse_success": true,
+    "chunk_idx": 31,
+    "video_id": "NtqEBe6iEoY"
+  },
+  {
+    "time": [
+      32,
+      33
+    ],
+    "visible_entities": [
+      {
+        "desc": "hand with fair skin and a silver ring on the ring finger",
+        "action": "placing a cupcake into the grid",
+        "position": "top center"
+      },
+      {
+        "desc": "cupcakes with pink frosting, green shredded coconut grass, pastel candy eggs, and yellow flower sprinkles",
+        "action": "arranged in rows",
+        "position": "center"
+      },
+      {
+        "desc": "dark grey flat surface",
+        "action": "static",
+        "position": "background"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A hand is placing a cupcake into an empty spot in the top row of the grid.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The cupcakes are decorated with green coconut shreds to resemble grass.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "There are pastel-colored candy eggs and yellow flower sprinkles on top of the cupcakes.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The hand is positioned above the grid of cupcakes, reaching down to place a cupcake. The cupcakes are arranged in three rows on the dark surface. The newly placed cupcake is located between two other cupcakes in the top row.",
+    "parse_success": true,
+    "chunk_idx": 32,
+    "video_id": "NtqEBe6iEoY"
+  },
+  {
+    "time": [
+      33,
+      34
+    ],
+    "visible_entities": [
+      {
+        "desc": "hand with fair skin, wearing a silver ring on the ring finger",
+        "action": "placing a white candy egg onto a cupcake",
+        "position": "top center"
+      },
+      {
+        "desc": "cupcakes with pink frosting, green sprinkles, and colorful candy eggs",
+        "action": "static",
+        "position": "center"
+      },
+      {
+        "desc": "dark grey surface",
+        "action": "static",
+        "position": "background"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A hand is placing a white candy egg onto a cupcake.",
         "confidence": 1.0
       },
       {
@@ -1652,29 +1522,159 @@
         "confidence": 1.0
       },
       {
-        "fact": "The cupcakes are decorated with green sprinkles resembling grass and small candy flowers.",
+        "fact": "The cupcakes are decorated with green sprinkles and pastel-colored candy eggs.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The hand is positioned above the cupcakes in the top row. The cupcakes are arranged in three rows of four on the dark gray surface. The hand is placing a candy egg on the second cupcake from the left in the top row.",
+    "spatial": "The hand is positioned above the cupcakes in the top row. The cupcakes are arranged in three rows of four on the dark grey surface.",
     "parse_success": true,
     "chunk_idx": 33,
     "video_id": "NtqEBe6iEoY"
   },
   {
     "time": [
-      68,
-      70
+      34,
+      35
     ],
     "visible_entities": [
       {
         "desc": "hand with fair skin, wearing a silver ring on the ring finger",
-        "action": "placing a candy egg on a cupcake",
+        "action": "placing a cupcake",
         "position": "top right"
       },
       {
-        "desc": "twelve cupcakes with white paper liners, pink frosting, green shredded coconut grass, and pastel candy eggs",
+        "desc": "Easter-themed cupcakes with pink frosting, green shredded coconut grass, pastel candy eggs, and yellow flower sprinkles",
+        "action": "arranged in rows",
+        "position": "center"
+      },
+      {
+        "desc": "dark gray surface",
+        "action": "static",
+        "position": "background"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A hand places a decorated cupcake into the top right position of a grid.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "Twelve cupcakes are arranged in three rows of four.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The cupcakes feature green coconut shreds resembling grass.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The hand is positioned above the top row of cupcakes, specifically interacting with the cupcake on the far right. The cupcakes are arranged in a grid pattern on the dark gray surface, with three rows stacked vertically.",
+    "parse_success": true,
+    "chunk_idx": 34,
+    "video_id": "NtqEBe6iEoY"
+  },
+  {
+    "time": [
+      35,
+      36
+    ],
+    "visible_entities": [
+      {
+        "desc": "hand with fair skin and a silver ring on the ring finger",
+        "action": "placing a purple candy egg onto a cupcake",
+        "position": "center"
+      },
+      {
+        "desc": "cupcakes with pink frosting, green shredded coconut grass, pastel candy eggs, and yellow flower sprinkles",
+        "action": "static",
+        "position": "background"
+      },
+      {
+        "desc": "dark gray flat surface",
+        "action": "static",
+        "position": "background"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A hand places a purple candy egg onto a cupcake in the bottom row.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The cupcakes are arranged in a grid pattern on a dark surface.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The cupcakes are decorated with green coconut shavings to resemble grass.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The hand is positioned in the center of the frame, hovering over the bottom row of cupcakes. The cupcakes are arranged in three rows on the dark gray surface. The hand is placing a candy egg on the cupcake located in the bottom row, second from the left.",
+    "parse_success": true,
+    "chunk_idx": 35,
+    "video_id": "NtqEBe6iEoY"
+  },
+  {
+    "time": [
+      36,
+      37
+    ],
+    "visible_entities": [
+      {
+        "desc": "hand with fair skin and a silver ring on the ring finger",
+        "action": "placing a cupcake into a grid formation",
+        "position": "center"
+      },
+      {
+        "desc": "cupcakes with pink frosting, green shredded coconut 'grass', pastel candy eggs, and small flower sprinkles",
+        "action": "arranged in rows on a black surface",
+        "position": "background"
+      },
+      {
+        "desc": "black surface",
+        "action": "static",
+        "position": "background"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A hand places a cupcake into an empty spot in a grid of cupcakes.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The cupcakes are decorated with green coconut shreds resembling grass.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The cupcakes feature pastel-colored candy eggs and flower sprinkles.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "There are twelve cupcakes arranged in a 3x4 grid by the end of the clip.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The hand is positioned in the center, placing a cupcake into the grid. The cupcakes are arranged in three rows and four columns on the black surface. The hand is above the cupcakes as it places one into the formation.",
+    "parse_success": true,
+    "chunk_idx": 36,
+    "video_id": "NtqEBe6iEoY"
+  },
+  {
+    "time": [
+      37,
+      38
+    ],
+    "visible_entities": [
+      {
+        "desc": "person with fair skin, wearing a silver ring on the right ring finger",
+        "action": "placing a purple frosting rose onto a cupcake",
+        "position": "foreground"
+      },
+      {
+        "desc": "cupcakes with white paper liners, pink frosting, green grass piping, purple roses, yellow flowers, and pastel candy eggs",
         "action": "static",
         "position": "center"
       },
@@ -1686,79 +1686,79 @@
     ],
     "atomic_facts": [
       {
-        "fact": "A hand places a pastel-colored candy egg onto the green coconut topping of a cupcake.",
+        "fact": "A person's hand is placing a purple frosting rose onto a cupcake in the bottom row.",
         "confidence": 1.0
       },
       {
-        "fact": "The cupcakes are arranged in three rows of four.",
+        "fact": "There are ten cupcakes arranged in rows on the surface.",
         "confidence": 1.0
       },
       {
-        "fact": "Each cupcake is decorated with green shredded coconut resembling grass and small yellow and purple flowers.",
+        "fact": "The cupcakes are decorated with pastel-colored candy eggs and frosting flowers.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The hand is positioned above the top-right cupcake. The cupcakes are arranged in a grid on the dark gray surface. The top row of cupcakes is above the middle row, which is above the bottom row.",
+    "spatial": "The person's hands are positioned above the cupcakes in the foreground. The cupcakes are arranged in rows on the dark gray surface. The hand with the ring is to the right of the hand placing the frosting.",
     "parse_success": true,
-    "chunk_idx": 34,
+    "chunk_idx": 37,
     "video_id": "NtqEBe6iEoY"
   },
   {
     "time": [
-      70,
-      72
+      38,
+      39
     ],
     "visible_entities": [
       {
-        "desc": "person's hand with fair skin, wearing a silver ring on the ring finger",
-        "action": "adjusting decorations on a cupcake",
-        "position": "center"
+        "desc": "person's left hand and forearm with light skin tone",
+        "action": "reaching for a cupcake",
+        "position": "left/foreground"
       },
       {
-        "desc": "cupcakes with pink frosting, green sprinkles resembling grass, pastel-colored candy eggs, and small flower decorations",
+        "desc": "cupcakes with white paper liners, pink frosting, green piped grass, purple roses, yellow flowers, and pastel candy eggs",
         "action": "static",
-        "position": "background"
+        "position": "center/right"
       },
       {
-        "desc": "dark grey surface",
+        "desc": "dark gray flat surface",
         "action": "static",
         "position": "background"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A hand is adjusting the decorations on a cupcake in the bottom row.",
+        "fact": "A person's hand is reaching towards the bottom row of cupcakes.",
         "confidence": 1.0
       },
       {
-        "fact": "Eleven cupcakes are arranged on a dark surface.",
+        "fact": "The cupcakes are decorated with Easter-themed toppings including pastel eggs and flowers.",
         "confidence": 1.0
       },
       {
-        "fact": "The cupcakes are decorated with Easter-themed toppings.",
+        "fact": "The cupcakes are arranged in rows on a dark surface.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The hand is positioned in the center of the frame, hovering over the cupcakes. The cupcakes are arranged in rows on the dark surface, with the hand interacting with one in the bottom row.",
+    "spatial": "The person's hand is in the foreground on the left side, reaching towards the cupcakes. The cupcakes are arranged in a grid pattern on the dark surface, with some positioned to the right of the hand and others below the top row.",
     "parse_success": true,
-    "chunk_idx": 35,
+    "chunk_idx": 38,
     "video_id": "NtqEBe6iEoY"
   },
   {
     "time": [
-      72,
-      74
+      39,
+      40
     ],
     "visible_entities": [
       {
-        "desc": "hand with fair skin and a silver ring on the ring finger",
-        "action": "placing a cupcake into a grid formation",
+        "desc": "hand wearing a clear disposable plastic glove",
+        "action": "piping green frosting onto a cupcake",
         "position": "center"
       },
       {
-        "desc": "cupcakes with pink frosting, green shredded coconut grass, pastel candy eggs, and small yellow and purple flowers",
+        "desc": "cupcakes with white paper liners, pink frosting base, green piped grass, pastel purple and yellow flowers, and small pastel candy eggs",
         "action": "static",
         "position": "background"
       },
@@ -1770,39 +1770,39 @@
     ],
     "atomic_facts": [
       {
-        "fact": "A hand places a decorated cupcake into an empty spot in a 3x4 grid.",
+        "fact": "A hand wearing a clear plastic glove is piping green frosting onto a cupcake.",
         "confidence": 1.0
       },
       {
-        "fact": "The cupcakes are arranged in three rows and four columns.",
+        "fact": "The cupcakes are arranged in rows on a dark surface.",
         "confidence": 1.0
       },
       {
-        "fact": "The cupcakes feature green coconut shavings resembling grass.",
+        "fact": "The cupcakes are decorated with pastel-colored eggs and flowers.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The hand is positioned in the center of the frame, hovering over the dark surface. The cupcakes are arranged in a grid pattern on the surface, with the hand placing one cupcake into the middle row, second from the left.",
+    "spatial": "The hand wearing the glove is positioned in the center, hovering over the cupcakes. The cupcakes are arranged in a grid pattern on the dark surface below the hand.",
     "parse_success": true,
-    "chunk_idx": 36,
+    "chunk_idx": 39,
     "video_id": "NtqEBe6iEoY"
   },
   {
     "time": [
-      74,
-      76
+      40,
+      41
     ],
     "visible_entities": [
       {
-        "desc": "hands with light skin tone, wearing a silver ring on the right ring finger",
-        "action": "placing purple frosting rosettes onto cupcakes",
-        "position": "center/foreground"
+        "desc": "hand with light purple nail polish holding a clear piping bag filled with light green frosting",
+        "action": "piping green frosting onto a cupcake",
+        "position": "center"
       },
       {
-        "desc": "cupcakes with white paper liners, pink frosting base, green shredded coconut grass, pastel candy eggs, and yellow flower sprinkles",
-        "action": "being decorated",
-        "position": "center"
+        "desc": "cupcakes with pink frosting, decorated with purple frosting roses, yellow frosting flowers, green frosting grass, and pastel-colored candy eggs",
+        "action": "static",
+        "position": "background"
       },
       {
         "desc": "dark gray flat surface",
@@ -1812,43 +1812,161 @@
     ],
     "atomic_facts": [
       {
-        "fact": "A person is decorating cupcakes with Easter-themed toppings.",
+        "fact": "A hand is piping green frosting onto a cupcake.",
         "confidence": 1.0
       },
       {
-        "fact": "The hands are placing purple frosting rosettes onto the cupcakes.",
+        "fact": "The cupcakes are arranged in a grid pattern on a dark surface.",
         "confidence": 1.0
       },
       {
-        "fact": "The cupcakes are arranged in rows on a dark surface.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The cupcakes feature green coconut shreds resembling grass.",
+        "fact": "The cupcakes are decorated with pastel-colored candy eggs and frosting flowers.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The hands are positioned above the cupcakes, reaching down to place decorations. The cupcakes are arranged in a grid pattern on the dark gray surface. The decorated cupcakes are next to each other in rows.",
+    "spatial": "The hand holding the piping bag is positioned above the center cupcake. The decorated cupcakes are arranged in rows on the dark gray surface, with some located to the left and right of the hand.",
     "parse_success": true,
-    "chunk_idx": 37,
+    "chunk_idx": 40,
     "video_id": "NtqEBe6iEoY"
   },
   {
     "time": [
-      76,
-      78
+      41,
+      42
     ],
     "visible_entities": [
       {
-        "desc": "person's left hand and forearm, light skin tone",
-        "action": "reaching for and picking up a cupcake",
-        "position": "left/foreground"
+        "desc": "person's hand with light pink nail polish, wearing a clear disposable plastic glove",
+        "action": "piping frosting onto a cupcake",
+        "position": "center"
       },
       {
-        "desc": "cupcakes with pink frosting, green piped grass, purple and yellow flowers, and pastel colored eggs",
+        "desc": "cupcakes with pink frosting, decorated with purple and yellow piped flowers, green grass, and pastel-colored candy eggs",
         "action": "static",
-        "position": "center/right"
+        "position": "background"
+      },
+      {
+        "desc": "clear plastic piping bag filled with light green frosting",
+        "action": "being held",
+        "position": "center"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A person is piping green frosting onto a cupcake using a piping bag.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The cupcakes are arranged in rows on a black surface.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The cupcakes are decorated with Easter-themed elements like eggs and flowers.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The hand holding the piping bag is in the center of the frame, positioned above the cupcakes. The decorated cupcakes are arranged in a grid pattern on the black surface, surrounding the area where the person is working.",
+    "parse_success": true,
+    "chunk_idx": 41,
+    "video_id": "NtqEBe6iEoY"
+  },
+  {
+    "time": [
+      42,
+      43
+    ],
+    "visible_entities": [
+      {
+        "desc": "human arm with fair skin, holding a piping bag filled with light green frosting",
+        "action": "moving out of frame to the left",
+        "position": "left foreground"
+      },
+      {
+        "desc": "twelve cupcakes with white paper liners, topped with pink frosting, green grass piping, purple roses, yellow flowers, and pastel candy eggs",
+        "action": "static",
+        "position": "center and right"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A person's arm holding a piping bag is visible on the left side of the frame.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The arm moves out of the frame, revealing the full arrangement of cupcakes.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "Twelve decorated cupcakes are arranged in a grid on a black surface.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The human arm is in the foreground on the left side, partially obscuring the cupcakes initially. The twelve cupcakes are arranged in three rows on the black background, positioned to the right of the arm.",
+    "parse_success": true,
+    "chunk_idx": 42,
+    "video_id": "NtqEBe6iEoY"
+  },
+  {
+    "time": [
+      43,
+      44
+    ],
+    "visible_entities": [
+      {
+        "desc": "hand with silver nail polish",
+        "action": "holding a cupcake",
+        "position": "foreground right"
+      },
+      {
+        "desc": "cupcake with white frosting, pastel purple and yellow piped flowers, green frosting grass, and pastel egg-shaped candies",
+        "action": "being held",
+        "position": "foreground center"
+      },
+      {
+        "desc": "multiple similar decorated cupcakes",
+        "action": "static",
+        "position": "background"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A hand is holding a decorated cupcake up to the camera.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The cupcake features pastel-colored frosting flowers and candy eggs.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The hand is in the foreground on the right side, holding the cupcake in the center. Several other cupcakes are arranged on the black surface in the background, behind the hand and the held cupcake.",
+    "parse_success": true,
+    "chunk_idx": 43,
+    "video_id": "NtqEBe6iEoY"
+  },
+  {
+    "time": [
+      44,
+      45
+    ],
+    "visible_entities": [
+      {
+        "desc": "hand with light skin tone",
+        "action": "holding a cupcake",
+        "position": "foreground center"
+      },
+      {
+        "desc": "cupcake with white paper liner, pink frosting base, green frosting grass, purple frosting roses, yellow frosting flowers, and pastel colored egg-shaped candies (pink, blue, yellow)",
+        "action": "being held",
+        "position": "foreground center"
+      },
+      {
+        "desc": "array of 11 similarly decorated cupcakes",
+        "action": "static",
+        "position": "background"
       },
       {
         "desc": "dark grey flat surface",
@@ -1858,338 +1976,67 @@
     ],
     "atomic_facts": [
       {
-        "fact": "A hand reaches into the frame from the left side.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The hand picks up a cupcake from the bottom left position.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The cupcakes are decorated with Easter-themed fondant pieces.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "There are multiple rows of cupcakes arranged on the surface.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [],
-    "spatial": "The hand is in the foreground on the left, reaching towards the cupcakes. The cupcakes are arranged in rows on the dark surface, with some to the right of the hand and others below the top row.",
-    "parse_success": true,
-    "chunk_idx": 38,
-    "video_id": "NtqEBe6iEoY"
-  },
-  {
-    "time": [
-      78,
-      80
-    ],
-    "visible_entities": [
-      {
-        "desc": "hand wearing a clear, crinkled plastic glove",
-        "action": "piping green frosting onto a cupcake",
-        "position": "center"
-      },
-      {
-        "desc": "cupcakes with white paper liners, pink frosting, green grass piping, purple roses, yellow flowers, and pastel candy eggs",
-        "action": "static",
-        "position": "background"
-      },
-      {
-        "desc": "dark, flat surface",
-        "action": "static",
-        "position": "background"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "A hand wearing a clear plastic glove is piping green frosting onto a cupcake.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The cupcakes are arranged in a grid pattern on a dark surface.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The cupcakes are decorated with pastel-colored candy eggs and purple frosting roses.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [],
-    "spatial": "The hand wearing the glove is positioned in the center of the frame, above the cupcakes. The cupcakes are arranged in rows on the dark surface, with some located to the left and right of the hand.",
-    "parse_success": true,
-    "chunk_idx": 39,
-    "video_id": "NtqEBe6iEoY"
-  },
-  {
-    "time": [
-      80,
-      82
-    ],
-    "visible_entities": [
-      {
-        "desc": "hand holding a piping bag filled with light green frosting",
-        "action": "decorating cupcakes",
-        "position": "top-left"
-      },
-      {
-        "desc": "cupcakes with pink frosting, green piped grass, purple and yellow flowers, and pastel candy eggs",
-        "action": "static",
-        "position": "center"
-      },
-      {
-        "desc": "dark gray flat surface",
-        "action": "static",
-        "position": "background"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "A hand is squeezing a piping bag to apply green frosting to a cupcake.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The cupcakes are arranged in a grid pattern on the surface.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The cupcakes are decorated with pastel-colored candy eggs resembling Easter eggs.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [],
-    "spatial": "The hand holding the piping bag is positioned above the cupcakes on the left side. The cupcakes are arranged in rows on the dark gray surface, with some located below and to the right of the hand.",
-    "parse_success": true,
-    "chunk_idx": 40,
-    "video_id": "NtqEBe6iEoY"
-  },
-  {
-    "time": [
-      82,
-      84
-    ],
-    "visible_entities": [
-      {
-        "desc": "hand wearing a clear plastic piping bag, holding a piping tip",
-        "action": "piping green frosting onto a cupcake",
-        "position": "center"
-      },
-      {
-        "desc": "cupcakes with pink frosting, decorated with purple, yellow, and green frosting flowers and pastel candy eggs",
-        "action": "static",
-        "position": "background"
-      },
-      {
-        "desc": "dark gray flat surface",
-        "action": "static",
-        "position": "background"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "A hand wearing a clear plastic piping bag is piping green frosting onto a cupcake.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The cupcakes are arranged in rows on a dark gray surface.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The decorated cupcakes feature pastel-colored candy eggs and frosting flowers.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [],
-    "spatial": "The hand with the piping bag is in the center of the frame, positioned above the cupcakes. The decorated cupcakes are arranged in rows on the dark gray surface, surrounding the area where the hand is working.",
-    "parse_success": true,
-    "chunk_idx": 41,
-    "video_id": "NtqEBe6iEoY"
-  },
-  {
-    "time": [
-      84,
-      86
-    ],
-    "visible_entities": [
-      {
-        "desc": "person's arm with light skin tone, holding a clear piping bag filled with pastel-colored frosting",
-        "action": "moving out of the frame to the left",
-        "position": "left foreground"
-      },
-      {
-        "desc": "twelve cupcakes arranged in a grid, featuring pink frosting, green piped grass, pastel-colored candy eggs, and purple and yellow fondant flowers",
-        "action": "static",
-        "position": "center and right background"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "A person's arm holding a piping bag moves out of the frame to the left.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "Twelve decorated cupcakes are arranged in three rows of four on a black surface.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [],
-    "spatial": "The person's arm holding the piping bag is in the foreground on the left side of the frame. The cupcakes are arranged in a grid pattern to the right of the arm and behind it on the black surface.",
-    "parse_success": true,
-    "chunk_idx": 42,
-    "video_id": "NtqEBe6iEoY"
-  },
-  {
-    "time": [
-      86,
-      88
-    ],
-    "visible_entities": [
-      {
-        "desc": "hand with silver nail polish",
-        "action": "holding a cupcake",
-        "position": "foreground"
-      },
-      {
-        "desc": "cupcake with white frosting, green piped grass, pastel purple roses, yellow flowers, and pastel candy eggs",
-        "action": "being held",
-        "position": "center"
-      },
-      {
-        "desc": "multiple similar cupcakes with pastel decorations",
-        "action": "static",
-        "position": "background"
-      },
-      {
-        "desc": "dark grey surface",
-        "action": "static",
-        "position": "background"
-      }
-    ],
-    "atomic_facts": [
-      {
         "fact": "A hand is holding a decorated cupcake in the foreground.",
         "confidence": 1.0
       },
       {
-        "fact": "The cupcake features green frosting resembling grass and pastel-colored candy eggs.",
+        "fact": "Eleven other cupcakes are arranged in rows on the dark surface in the background.",
         "confidence": 1.0
       },
       {
-        "fact": "Several other cupcakes are arranged on the dark surface in the background.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [],
-    "spatial": "The hand holding the cupcake is in the foreground, positioned centrally. The held cupcake is in front of the other cupcakes, which are arranged on the dark grey surface in the background.",
-    "parse_success": true,
-    "chunk_idx": 43,
-    "video_id": "NtqEBe6iEoY"
-  },
-  {
-    "time": [
-      88,
-      90
-    ],
-    "visible_entities": [
-      {
-        "desc": "hand with light skin tone",
-        "action": "holding a cupcake",
-        "position": "foreground right"
-      },
-      {
-        "desc": "cupcake with white paper liner, pink frosting base, green frosting grass, pastel purple frosting roses, yellow frosting flowers, and pastel colored candy eggs (pink, blue, yellow)",
-        "action": "being held",
-        "position": "foreground center"
-      },
-      {
-        "desc": "twelve similarly decorated cupcakes arranged in rows",
-        "action": "static",
-        "position": "background"
-      },
-      {
-        "desc": "dark matte surface",
-        "action": "static",
-        "position": "background"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "A hand is holding a decorated cupcake in the foreground.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The cupcake features pastel-colored frosting flowers and candy eggs.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "Twelve other cupcakes are arranged on the dark surface behind the held cupcake.",
+        "fact": "The cupcakes are decorated with pastel-colored frosting and candy eggs.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The hand is in the foreground on the right, holding a cupcake near the center. The held cupcake is in front of the other twelve cupcakes, which are arranged in rows on the dark surface in the background.",
+    "spatial": "The hand is in the foreground, holding a single cupcake. This cupcake is positioned in front of the array of eleven other cupcakes, which are arranged on the dark surface in the background.",
     "parse_success": true,
     "chunk_idx": 44,
     "video_id": "NtqEBe6iEoY"
   },
   {
     "time": [
-      90,
-      92
+      45,
+      46
     ],
     "visible_entities": [
       {
-        "desc": "cupcakes with light pink frosting, decorated with purple frosting roses, green frosting grass, yellow and blue frosting flowers, and pastel-colored candy eggs",
+        "desc": "cupcakes with light pink frosting, decorated with green piped grass, pastel-colored eggs (blue, pink, yellow, white), and purple and yellow frosting flowers",
         "action": "static",
-        "position": "center"
+        "position": "foreground"
       },
       {
-        "desc": "black background surface",
+        "desc": "black surface",
         "action": "static",
         "position": "background"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "The camera pans slowly across rows of decorated cupcakes.",
-        "confidence": 1.0
-      },
-      {
         "fact": "The cupcakes are arranged in a grid pattern on a black surface.",
         "confidence": 1.0
       },
       {
-        "fact": "Each cupcake features purple rosettes and pastel candy eggs.",
+        "fact": "The cupcakes are decorated with Easter-themed toppings including eggs and flowers.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The cupcakes are arranged in rows and columns on the black background. The camera moves from left to right, showing the cupcakes next to each other.",
+    "spatial": "The cupcakes are arranged in rows and columns on the black surface. The cupcakes in the top row are above the cupcakes in the middle row, which are above the cupcakes in the bottom row. The cupcakes in the left column are to the left of the cupcakes in the center column.",
     "parse_success": true,
     "chunk_idx": 45,
     "video_id": "NtqEBe6iEoY"
   },
   {
     "time": [
-      92,
-      94
+      46,
+      47
     ],
     "visible_entities": [
       {
-        "desc": "cupcakes with pink frosting, decorated with green grass-like piping, pastel-colored eggs (blue, yellow, pink), purple frosting roses, and yellow flowers",
+        "desc": "cupcakes with pink frosting, green piped grass, purple rosettes, yellow flowers, and pastel-colored candy eggs (blue, yellow, pink, light blue)",
         "action": "static",
-        "position": "center"
-      },
-      {
-        "desc": "cupcakes with pink frosting, decorated with green grass-like piping, pastel-colored eggs (blue, yellow, pink), purple frosting roses, and yellow flowers",
-        "action": "static",
-        "position": "left"
-      },
-      {
-        "desc": "cupcakes with pink frosting, decorated with green grass-like piping, pastel-colored eggs (blue, yellow, pink), purple frosting roses, and yellow flowers",
-        "action": "static",
-        "position": "right"
+        "position": "foreground"
       },
       {
         "desc": "black background surface",
@@ -2205,28 +2052,39 @@
       {
         "fact": "The cupcakes remain stationary throughout the clip.",
         "confidence": 1.0
-      },
-      {
-        "fact": "The cupcakes are decorated with Easter-themed toppings like eggs and flowers.",
-        "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The cupcakes are arranged in rows and columns on the black background. The central cupcake is flanked by other cupcakes to its left and right. The cupcakes in the bottom row are below the cupcakes in the middle row.",
+    "spatial": "The cupcakes are arranged in rows and columns on the black background. The cupcakes in the center row are flanked by cupcakes on the left and right. The cupcakes in the bottom row are below the cupcakes in the center row.",
     "parse_success": true,
     "chunk_idx": 46,
     "video_id": "NtqEBe6iEoY"
   },
   {
     "time": [
-      94,
-      96
+      47,
+      48
     ],
     "visible_entities": [
       {
-        "desc": "cupcakes with pink frosting, decorated with green frosting grass, pastel colored candy eggs (blue, yellow, pink), purple frosting rosettes, and yellow frosting flowers",
+        "desc": "cupcakes with light pink frosting, decorated with green grass-like sprinkles, pastel-colored candy eggs (blue, yellow, pink, light green), purple frosting roses, and yellow flowers",
         "action": "static",
-        "position": "foreground"
+        "position": "center"
+      },
+      {
+        "desc": "cupcakes with light pink frosting, decorated with green grass-like sprinkles and pastel-colored candy eggs (blue, yellow, pink)",
+        "action": "static",
+        "position": "bottom"
+      },
+      {
+        "desc": "cupcakes with light pink frosting, decorated with green grass-like sprinkles, purple frosting roses, and yellow flowers",
+        "action": "static",
+        "position": "right"
+      },
+      {
+        "desc": "white fluted paper cupcake liners",
+        "action": "static",
+        "position": "background"
       },
       {
         "desc": "black surface",
@@ -2236,49 +2094,53 @@
     ],
     "atomic_facts": [
       {
-        "fact": "Cupcakes decorated with Easter-themed frosting designs are arranged in a grid pattern.",
+        "fact": "The cupcakes are arranged in a grid pattern on a black surface.",
         "confidence": 1.0
       },
       {
-        "fact": "The cupcakes remain stationary on the black surface.",
+        "fact": "The cupcakes remain static throughout the clip.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The cupcakes feature pastel-colored decorations including eggs and flowers.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The cupcakes are arranged in rows and columns on the black surface. One cupcake is to the left of another cupcake in the same row. A cupcake in the top row is above a cupcake in the bottom row.",
+    "spatial": "The cupcakes are arranged in rows and columns on a black surface. The cupcakes with purple roses are to the right of the cupcakes with only eggs. The cupcakes with only eggs are below the cupcakes with flowers and roses.",
     "parse_success": true,
     "chunk_idx": 47,
     "video_id": "NtqEBe6iEoY"
   },
   {
     "time": [
-      96,
-      98
+      48,
+      49
     ],
     "visible_entities": [
       {
-        "desc": "cupcakes with light pink frosting, decorated with purple fondant roses, green grass piping, yellow and blue flowers, and pastel-colored candy eggs",
+        "desc": "cupcakes with pink frosting, decorated with purple frosting roses, green frosting grass, yellow and blue frosting flowers, and pastel-colored candy eggs",
         "action": "static",
         "position": "center"
       },
       {
-        "desc": "black background surface",
+        "desc": "black surface",
         "action": "static",
         "position": "background"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "The cupcakes are arranged in a grid pattern on the black surface.",
+        "fact": "Twelve decorated cupcakes are arranged in a grid pattern on a black surface.",
         "confidence": 1.0
       },
       {
-        "fact": "The camera angle shifts slightly to reveal more cupcakes in the bottom row.",
+        "fact": "The cupcakes feature Easter-themed decorations including candy eggs and frosting flowers.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The cupcakes are arranged in rows and columns on the black background. The cupcakes in the top row are above the cupcakes in the middle row, which are above the cupcakes in the bottom row.",
+    "spatial": "The cupcakes are arranged in three rows and four columns on the black surface. The cupcakes in the top row are above the cupcakes in the middle row. The cupcakes in the middle row are above the cupcakes in the bottom row.",
     "parse_success": true,
     "chunk_idx": 48,
     "video_id": "NtqEBe6iEoY"

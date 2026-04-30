@@ -2,46 +2,57 @@
   {
     "time": [
       0,
-      2
+      1
     ],
     "visible_entities": [
       {
         "desc": "gray stone block with a redstone repeater on top, featuring red dust and torches",
-        "action": "static",
-        "position": "center"
+        "action": "emitting redstone signal",
+        "position": "center",
+        "id": "redstone_repeater_1"
       },
       {
-        "desc": "redstone dust trail, bright red, connecting to the repeater",
-        "action": "static",
-        "position": "center"
+        "desc": "redstone dust trail, glowing red, connecting to the repeater",
+        "action": "transmitting power",
+        "position": "center",
+        "id": "redstone_dust_1"
       },
       {
-        "desc": "glass blocks containing water and small white sprout-like plants",
+        "desc": "glass blocks arranged in a grid pattern, containing water and small white particles",
         "action": "static",
-        "position": "bottom-left"
+        "position": "bottom-left",
+        "id": "glass_block_1"
+      },
+      {
+        "desc": "wooden pressure plate, light brown",
+        "action": "static",
+        "position": "bottom-left",
+        "id": "pressure_plate_wood_1"
       },
       {
         "desc": "hotbar UI element, dark gray background with item slots",
         "action": "static",
-        "position": "bottom"
+        "position": "bottom",
+        "id": "water_bucket_1"
       },
       {
         "desc": "green number '13' text",
         "action": "static",
-        "position": "bottom-center"
+        "position": "bottom-center",
+        "id": "xp_level_13_1"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A redstone repeater is placed on a gray block.",
+        "fact": "A redstone repeater is placed on a stone block and is powered.",
         "confidence": 1.0
       },
       {
-        "fact": "Redstone dust connects to the repeater.",
+        "fact": "Redstone dust connects to the repeater, indicating an active circuit.",
         "confidence": 1.0
       },
       {
-        "fact": "Water flows inside glass blocks.",
+        "fact": "The player is looking at the redstone mechanism.",
         "confidence": 1.0
       },
       {
@@ -52,7 +63,7 @@
     "ocr": [
       "13"
     ],
-    "spatial": "The gray block with the repeater is in the center of the view. The redstone dust trail extends from the repeater towards the right. The glass water channels are located to the left and below the repeater setup. The green number 13 is positioned above the hotbar at the bottom of the screen.",
+    "spatial": "The redstone repeater is in the center of the view, with redstone dust extending to its left and right. The glass water structure is located below and to the left of the redstone mechanism. The wooden pressure plate is situated near the glass blocks.",
     "parse_success": true,
     "chunk_idx": 0,
     "video_id": "EqaqD08ohBk",
@@ -60,206 +71,248 @@
   },
   {
     "time": [
-      2,
-      4
+      1,
+      2
     ],
     "visible_entities": [
       {
-        "desc": "blocky tree with brown trunk and green leafy canopy",
+        "desc": "blocky tree with a brown trunk and green leafy canopy",
         "action": "static",
-        "position": "center"
+        "position": "center",
+        "id": "tree_1"
       },
       {
-        "desc": "tall white rectangular pillar structure",
+        "desc": "tall, thin white pillar structure",
         "action": "static",
-        "position": "center-left background"
+        "position": "center-left",
+        "id": "white_pillar_1"
       },
       {
-        "desc": "black blocky structure resembling a vehicle or machinery",
+        "desc": "black pixelated text structure resembling the word 'APRIL'",
         "action": "static",
-        "position": "left"
+        "position": "left",
+        "id": "april_text_1"
       },
       {
-        "desc": "complex grey and brown blocky structure",
+        "desc": "beige sand ground surface",
         "action": "static",
-        "position": "right background"
+        "position": "foreground",
+        "id": "sand_blocks_1"
       },
       {
         "desc": "green number '13' text overlay",
         "action": "static",
-        "position": "bottom center"
+        "position": "bottom-center",
+        "id": "xp_level_13_1"
       },
       {
-        "desc": "inventory bar with item slots",
+        "desc": "game inventory hotbar with a water bucket and a block item",
         "action": "static",
-        "position": "bottom"
+        "position": "bottom",
+        "id": "water_bucket_1"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "The camera view is static, showing a sandy landscape with various blocky structures.",
+        "fact": "The camera view is static, showing a desert-like landscape.",
         "confidence": 1.0
       },
       {
-        "fact": "The number '13' is displayed in green text above the inventory bar.",
+        "fact": "The number '13' is displayed in green above the inventory bar.",
         "confidence": 1.0
       },
       {
-        "fact": "A tree is positioned in front of a tall white pillar.",
+        "fact": "A tall white pillar stands behind a blocky tree.",
         "confidence": 1.0
       }
     ],
     "ocr": [
       "13"
     ],
-    "spatial": "The tree is to the right of the tall white pillar. The black blocky structure is to the left of the tree. The complex grey structure is to the right of the tree. The green number '13' is above the inventory bar at the bottom of the screen.",
+    "spatial": "The blocky tree is positioned in front of the tall white pillar. The black text structure is to the left of the tree. The green number '13' is located above the inventory bar at the bottom of the screen.",
     "parse_success": true,
     "chunk_idx": 1,
     "video_id": "EqaqD08ohBk",
-    "state_changes": [
-      "Scene transitioned from redstone setup to outdoor area with trees and pillars"
-    ]
+    "state_changes": []
   },
   {
     "time": [
-      4,
-      6
+      2,
+      3
     ],
     "visible_entities": [
       {
-        "desc": "red and white particle explosion resembling fireworks",
-        "action": "expanding in the sky",
-        "position": "top center"
+        "desc": "firework explosion, spherical shape, composed of red and white particles",
+        "action": "exploding in the sky",
+        "position": "top/center",
+        "id": "firework_rockets_1"
       },
       {
-        "desc": "tall white vertical pillar",
+        "desc": "tall white pillar, vertical structure, smooth texture",
         "action": "static",
-        "position": "center background"
+        "position": "left/center",
+        "id": "white_pillar_1"
       },
       {
-        "desc": "tree with brown trunk and green leafy canopy",
+        "desc": "tree with green leafy canopy and brown trunk",
         "action": "static",
-        "position": "center left"
+        "position": "center",
+        "id": "tree_1"
       },
       {
-        "desc": "glass block structure",
+        "desc": "glass structure, transparent blocks forming a cage-like shape",
         "action": "static",
-        "position": "center foreground"
+        "position": "center",
+        "id": "glass_block_1"
       },
       {
-        "desc": "sand block",
+        "desc": "sand block, beige, cubic",
         "action": "static",
-        "position": "center foreground"
+        "position": "center",
+        "id": "sand_blocks_1"
       },
       {
-        "desc": "green number '13'",
-        "action": "static",
-        "position": "bottom center"
-      },
-      {
-        "desc": "hotbar inventory interface",
+        "desc": "hotbar UI, dark grey background with item slots",
         "action": "static",
         "position": "bottom"
       },
       {
-        "desc": "bucket item icon",
+        "desc": "water bucket icon, blue liquid in a grey bucket",
         "action": "static",
-        "position": "bottom left"
+        "position": "bottom/left",
+        "id": "water_bucket_1"
       },
       {
-        "desc": "glass block item icon",
+        "desc": "glass block icon, transparent block texture",
         "action": "static",
-        "position": "bottom left"
+        "position": "bottom/left",
+        "id": "glass_block_1"
+      },
+      {
+        "desc": "green number '13', digital font",
+        "action": "static",
+        "position": "bottom/center",
+        "id": "xp_level_13_1"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A red and white particle explosion is expanding in the sky.",
+        "fact": "A firework explodes in the sky, creating a sphere of red and white particles.",
         "confidence": 1.0
       },
       {
-        "fact": "The number '13' is displayed in green text above the hotbar.",
+        "fact": "The number '13' is displayed in green above the hotbar.",
         "confidence": 1.0
       },
       {
-        "fact": "A glass block is selected in the player's inventory hotbar.",
+        "fact": "A water bucket is selected in the first slot of the hotbar.",
         "confidence": 1.0
       },
       {
-        "fact": "A bucket is present in the first slot of the hotbar.",
+        "fact": "A glass block is selected in the second slot of the hotbar.",
         "confidence": 1.0
       }
     ],
     "ocr": [
       "13"
     ],
-    "spatial": "The glass block structure is in front of the tree. The tall white pillar is behind the tree and the glass structure. The red and white particle explosion is above the glass structure. The green number '13' is above the hotbar at the bottom of the screen.",
+    "spatial": "The firework explosion is above the tree and the glass structure. The tall white pillar is to the left of the tree. The hotbar is at the bottom of the screen, below the sand ground and all other structures.",
     "parse_success": true,
     "chunk_idx": 2,
     "video_id": "EqaqD08ohBk",
     "state_changes": [
-      "Firework explosion began in the sky"
+      "Firework explosion occurs in the sky"
     ]
   },
   {
     "time": [
-      6,
-      8
+      3,
+      4
     ],
     "visible_entities": [
       {
-        "desc": "beige sandstone block with a rough, speckled texture",
+        "desc": "sandstone block, beige, textured surface",
         "action": "static",
-        "position": "center"
+        "position": "center",
+        "id": "sandstone_blocks_1"
       },
       {
-        "desc": "transparent glass pane structure forming a grid pattern",
+        "desc": "glass pane, transparent, grid pattern",
         "action": "static",
-        "position": "center"
+        "position": "center",
+        "id": "glass_block_1"
       },
       {
-        "desc": "grey stone block with a carved face texture (dispenser)",
+        "desc": "dispenser block, grey stone texture, wooden button on side",
         "action": "static",
-        "position": "right"
+        "position": "right",
+        "id": "dispenser_block_1"
       },
       {
-        "desc": "wooden sign with dark text attached to a block",
+        "desc": "sand block, beige, granular texture",
         "action": "static",
-        "position": "left"
+        "position": "left",
+        "id": "sand_blocks_1"
       },
       {
-        "desc": "green number '13' displayed in the center of the screen",
+        "desc": "sign, wooden, rectangular",
+        "action": "static",
+        "position": "left",
+        "id": "wooden_signs_1"
+      },
+      {
+        "desc": "hotbar UI, dark grey background, item slots",
         "action": "static",
         "position": "bottom"
       },
       {
-        "desc": "inventory bar containing a water bucket and a glass pane",
+        "desc": "water bucket icon, blue liquid in grey bucket",
         "action": "static",
         "position": "bottom"
+      },
+      {
+        "desc": "glass pane icon, transparent grid",
+        "action": "static",
+        "position": "bottom",
+        "id": "glass_block_1"
+      },
+      {
+        "desc": "number '13', green, pixelated font",
+        "action": "static",
+        "position": "bottom",
+        "id": "xp_level_13_1"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "The camera view shifts from a glass structure to a redstone mechanism setup.",
+        "fact": "The scene transitions from a view of a glass pane structure to a view of redstone machinery.",
         "confidence": 1.0
       },
       {
-        "fact": "A dispenser is positioned next to a sandstone block.",
+        "fact": "A dispenser block is positioned on the right side of the screen.",
         "confidence": 1.0
       },
       {
-        "fact": "A wooden sign is attached to the side of a sandstone block.",
+        "fact": "A sandstone block is placed in the center of the view.",
         "confidence": 1.0
       },
       {
-        "fact": "The number 13 is displayed on the screen.",
+        "fact": "A sign is attached to the side of a sand block on the left.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The player is holding a glass pane, indicated by the selected slot in the hotbar.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The number '13' is displayed in green above the hotbar.",
         "confidence": 1.0
       }
     ],
     "ocr": [
       "13"
     ],
-    "spatial": "The transparent glass pane structure is in front of the beige sandstone block. The dispenser is to the right of the sandstone block. The wooden sign is attached to the left side of another sandstone block. The inventory bar is at the bottom of the screen.",
+    "spatial": "The dispenser block is to the right of the central sandstone block. The sand block with the sign is to the left of the central sandstone block. The hotbar UI is at the bottom of the screen, below the game world view. The number '13' is above the hotbar.",
     "parse_success": true,
     "chunk_idx": 3,
     "video_id": "EqaqD08ohBk",
@@ -267,64 +320,53 @@
   },
   {
     "time": [
-      8,
-      10
+      4,
+      5
     ],
     "visible_entities": [
       {
-        "desc": "grey stone block with a wooden button on the front face and a dark circular hole on the side",
+        "desc": "grey stone block with a wooden lever attached to the side",
         "action": "static",
-        "position": "center"
+        "position": "center",
+        "id": "dispenser_block_1"
       },
       {
-        "desc": "wooden sign with black text attached to a sandstone block",
+        "desc": "wooden sign attached to a sandstone block",
         "action": "static",
-        "position": "left"
+        "position": "left",
+        "id": "wooden_signs_1"
       },
       {
-        "desc": "redstone dust trail connecting blocks",
+        "desc": "redstone dust trail on the sand",
         "action": "static",
-        "position": "center"
+        "position": "center",
+        "id": "redstone_dust_1"
       },
       {
-        "desc": "sandstone block with a hole in the ground next to it",
+        "desc": "hotbar UI element with a water bucket and a cobweb selected",
         "action": "static",
-        "position": "center"
-      },
-      {
-        "desc": "white crosshair cursor",
-        "action": "static",
-        "position": "center"
-      },
-      {
-        "desc": "green number '13' text overlay",
-        "action": "static",
-        "position": "bottom"
+        "position": "bottom",
+        "id": "water_bucket_1"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A grey stone block with a wooden button is placed on top of a sandstone block.",
+        "fact": "A redstone dust trail connects the wooden sign on the left to the stone block with the lever in the center.",
         "confidence": 1.0
       },
       {
-        "fact": "A redstone dust trail connects the block with the button to a sandstone block on the left.",
+        "fact": "The player has a cobweb selected in the hotbar.",
         "confidence": 1.0
       },
       {
-        "fact": "The wooden sign on the left reads 'Button'.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The green number '13' is displayed above the hotbar.",
+        "fact": "The number 13 is displayed in green above the hotbar.",
         "confidence": 1.0
       }
     ],
     "ocr": [
-      "Button",
       "13"
     ],
-    "spatial": "The grey stone block with the button is to the right of the sandstone block holding the wooden sign. The redstone dust trail lies on the ground between these two blocks. The green number '13' is below the main scene elements, positioned above the player's hotbar.",
+    "spatial": "The wooden sign is to the left of the stone block with the lever. The redstone dust trail is on the ground between the sign and the stone block. The hotbar is at the bottom of the screen, below the game world.",
     "parse_success": true,
     "chunk_idx": 4,
     "video_id": "EqaqD08ohBk",
@@ -332,49 +374,39 @@
   },
   {
     "time": [
-      10,
-      12
+      5,
+      6
     ],
     "visible_entities": [
       {
-        "desc": "gray stone dispenser block with a wooden plank top and a black cross-shaped nozzle on the front face",
+        "desc": "Minecraft dispenser block with a grey stone texture, a black circular opening on the front face, and a wooden plank top",
         "action": "static",
-        "position": "center"
+        "position": "center",
+        "id": "dispenser_block_1"
       },
       {
-        "desc": "gray stone lever with a redstone torch on top, attached to a sandstone block",
-        "action": "static",
-        "position": "left"
+        "desc": "Minecraft GUI interface with a light grey background, a 3x3 grid labeled 'Dispenser', and a player inventory grid below",
+        "action": "displayed",
+        "position": "center",
+        "id": "dispenser_gui_1"
       },
       {
-        "desc": "redstone dust trail on the sand",
-        "action": "static",
-        "position": "left"
+        "desc": "Firework Rocket item with a tooltip showing 'Flight Duration: 3', 'Small Ball', and 'Light Gray, Red'",
+        "action": "hovered",
+        "position": "center",
+        "id": "firework_rockets_1"
       },
       {
-        "desc": "firework rocket with a red and white striped pattern",
+        "desc": "Redstone dust trail on the sand",
         "action": "static",
-        "position": "center"
+        "position": "left",
+        "id": "redstone_dust_1"
       },
       {
-        "desc": "graphical user interface window with a light gray background and a 3x3 grid",
+        "desc": "Sandstone blocks forming a small pit",
         "action": "static",
-        "position": "center"
-      },
-      {
-        "desc": "purple tooltip box with white text",
-        "action": "static",
-        "position": "center"
-      },
-      {
-        "desc": "green number '13' floating above the dispenser",
-        "action": "static",
-        "position": "center"
-      },
-      {
-        "desc": "player hotbar with item slots at the bottom of the screen",
-        "action": "static",
-        "position": "bottom"
+        "position": "foreground",
+        "id": "sandstone_blocks_1"
       }
     ],
     "atomic_facts": [
@@ -383,27 +415,19 @@
         "confidence": 1.0
       },
       {
-        "fact": "The dispenser contains firework rockets.",
+        "fact": "The mouse cursor hovers over a Firework Rocket inside the dispenser.",
         "confidence": 1.0
       },
       {
-        "fact": "The tooltip displays the item name 'Firework Rocket'.",
+        "fact": "The tooltip reveals the firework rocket has a flight duration of 3 and creates a small ball explosion.",
         "confidence": 1.0
       },
       {
-        "fact": "The tooltip displays the flight duration as '3'.",
+        "fact": "The dispenser is placed on top of sandstone blocks.",
         "confidence": 1.0
       },
       {
-        "fact": "The tooltip displays the explosion shape as 'Small Ball'.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The tooltip displays the colors as 'Light Gray, Red'.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The number '13' is visible above the dispenser.",
+        "fact": "A redstone dust trail is visible on the ground to the left of the dispenser.",
         "confidence": 1.0
       }
     ],
@@ -416,66 +440,66 @@
       "Inventory",
       "13"
     ],
-    "spatial": "The dispenser is in the center of the frame. The lever is to the left of the dispenser. The redstone dust trail is on the ground to the left of the lever. The GUI window is centered on the screen, obscuring the background. The tooltip is to the right of the firework rocket icon inside the GUI. The number '13' is below the dispenser. The hotbar is at the bottom of the screen.",
+    "spatial": "The dispenser block is situated in the center of the view, resting on sandstone blocks. The inventory GUI is displayed in the center of the screen, overlaying the game world. The redstone dust trail is located to the left of the dispenser on the sandy ground.",
     "parse_success": true,
     "chunk_idx": 5,
     "video_id": "EqaqD08ohBk",
     "state_changes": [
-      "Dispenser GUI opened showing 3x3 grid interface"
+      "Dispenser GUI opens and Firework Rocket tooltip appears"
     ]
   },
   {
     "time": [
-      12,
-      14
+      6,
+      7
     ],
     "visible_entities": [
       {
-        "desc": "Minecraft dispenser GUI, light gray background with a 3x3 grid",
-        "action": "displaying items",
+        "desc": "Minecraft dispenser GUI, gray rectangular interface with a 3x3 grid labeled 'Dispenser' and a player inventory grid below labeled 'Inventory'",
+        "action": "static",
         "position": "center",
-        "id": "dispenser_gui"
+        "id": "dispenser_gui_1"
       },
       {
-        "desc": "Firework rockets, red and white striped with a star pattern",
-        "action": "placed in the dispenser slots",
-        "position": "top-center",
-        "id": "firework_rockets"
+        "desc": "Firework rockets, red and white striped cylindrical items with a quantity of 64",
+        "action": "static",
+        "position": "top",
+        "id": "firework_rockets_1"
       },
       {
-        "desc": "Purple tooltip box with white text",
-        "action": "hovering over an item",
-        "position": "top-right",
-        "id": "purple_tooltip"
+        "desc": "Tooltip box, dark purple rectangle with white text",
+        "action": "appearing",
+        "position": "top",
+        "id": "tooltip_box_1"
       },
       {
-        "desc": "Water bucket, blue liquid in a gray bucket",
+        "desc": "Water bucket, silver bucket containing blue water",
         "action": "static",
         "position": "bottom-left",
-        "id": "water_bucket_held"
+        "id": "water_bucket_1"
       },
       {
-        "desc": "Cobblestone block, gray textured square",
+        "desc": "Cobblestone block, gray textured square item",
         "action": "static",
         "position": "bottom-left",
-        "id": "cobblestone_block"
+        "id": "cobblestone_1"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "The player hovers the cursor over a firework rocket to reveal its details.",
+        "fact": "The player hovers the cursor over a firework rocket in the dispenser interface.",
         "confidence": 1.0
       },
       {
-        "fact": "The tooltip displays 'Flight Duration: 3' and 'Small Ball' effects.",
+        "fact": "A tooltip appears displaying the item name 'Firework Rocket' and its properties.",
         "confidence": 1.0
       },
       {
-        "fact": "The dispenser contains three stacks of firework rockets.",
+        "fact": "The dispenser contains three stacks of 64 firework rockets in the top row.",
         "confidence": 1.0
       },
       {
-        "fact": "The player's inventory contains a water bucket and a cobblestone block.",
+        "fact": "The tooltip text reads 'Flight Duration: 3', 'Small Ball', and 'Red, Light Gray'.",
         "confidence": 1.0
       }
     ],
@@ -485,59 +509,121 @@
       "Firework Rocket",
       "Flight Duration: 3",
       "Small Ball",
-      "Red, Light Gray"
+      "Red, Light Gray",
+      "13"
     ],
-    "spatial": "The dispenser interface is centered on the screen. The firework rockets are located in the top row of the dispenser grid. The tooltip appears to the right of the hovered rocket. The player's inventory grid is positioned below the dispenser grid.",
+    "spatial": "The dispenser grid is located above the player inventory grid. The tooltip box appears directly to the right of the firework rocket being hovered over. The water bucket is positioned to the left of the cobblestone block in the player's hotbar.",
     "parse_success": true,
     "chunk_idx": 6,
     "video_id": "EqaqD08ohBk",
     "state_changes": [
-      "Items (firework rockets) placed into dispenser slots"
+      "Tooltip box appears over firework rockets"
     ]
   },
   {
     "time": [
-      14,
-      16
+      7,
+      8
     ],
     "visible_entities": [
       {
-        "desc": "grey dispenser block with a wooden plank texture on top and a black crosshair symbol on the front face",
+        "desc": "grey stone block with a wooden plank top and a wooden lever on the side",
         "action": "static",
-        "position": "center"
+        "position": "center",
+        "id": "dispenser_block_1"
       },
       {
-        "desc": "redstone dust trail, appearing as a line of red particles",
+        "desc": "redstone dust trail",
         "action": "static",
-        "position": "left"
+        "position": "left",
+        "id": "redstone_dust_1"
       },
       {
-        "desc": "sandstone blocks forming a pit or hole in the ground",
+        "desc": "sandstone blocks forming a pit",
         "action": "static",
-        "position": "bottom"
+        "position": "foreground",
+        "id": "sandstone_blocks_1"
       },
       {
-        "desc": "game HUD hotbar containing a water bucket icon and a cobblestone block icon",
+        "desc": "hotbar with a water bucket and a cobblestone block",
         "action": "static",
-        "position": "bottom"
+        "position": "bottom",
+        "id": "water_bucket_1"
       },
       {
-        "desc": "green number '13' text",
+        "desc": "green number '13'",
         "action": "static",
-        "position": "bottom"
+        "position": "center-bottom",
+        "id": "xp_level_13_1"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A grey dispenser block is positioned on the edge of a sandstone pit.",
+        "fact": "A grey stone block with a wooden top is placed on the edge of a sandstone pit.",
         "confidence": 1.0
       },
       {
-        "fact": "A trail of redstone dust extends from the left side of the screen towards the dispenser.",
+        "fact": "A redstone dust trail extends from the left side of the screen towards the central block.",
         "confidence": 1.0
       },
       {
-        "fact": "The player's hotbar shows a water bucket selected in the first slot.",
+        "fact": "The number '13' is displayed in green above the player's hotbar.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "13"
+    ],
+    "spatial": "The grey stone block is on the edge of the sandstone pit. The redstone dust trail is to the left of the grey stone block. The hotbar is at the bottom of the screen, below the pit.",
+    "parse_success": true,
+    "chunk_idx": 7,
+    "video_id": "EqaqD08ohBk",
+    "state_changes": []
+  },
+  {
+    "time": [
+      8,
+      9
+    ],
+    "visible_entities": [
+      {
+        "desc": "gray dispenser block with a black circular opening on the front face and a wooden lever on the side",
+        "action": "static",
+        "position": "center",
+        "id": "dispenser_block_1"
+      },
+      {
+        "desc": "redstone dust trail on the sand",
+        "action": "static",
+        "position": "left",
+        "id": "redstone_dust_1"
+      },
+      {
+        "desc": "square hole in the sand lined with stone bricks",
+        "action": "static",
+        "position": "center",
+        "id": "sandstone_blocks_1"
+      },
+      {
+        "desc": "green number '13' overlay",
+        "action": "static",
+        "position": "bottom",
+        "id": "xp_level_13_1"
+      },
+      {
+        "desc": "hotbar UI with a water bucket and a glass block",
+        "action": "static",
+        "position": "bottom",
+        "id": "water_bucket_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A dispenser block is positioned on the edge of a hole in the ground.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A trail of redstone dust leads from the left towards the dispenser.",
         "confidence": 1.0
       },
       {
@@ -548,71 +634,7 @@
     "ocr": [
       "13"
     ],
-    "spatial": "The grey dispenser block is positioned on the edge of the sandstone pit. The redstone dust trail is to the left of the dispenser. The game HUD hotbar is at the bottom of the screen, below the pit.",
-    "parse_success": true,
-    "chunk_idx": 7,
-    "video_id": "EqaqD08ohBk",
-    "state_changes": []
-  },
-  {
-    "time": [
-      16,
-      18
-    ],
-    "visible_entities": [
-      {
-        "desc": "gray dispenser block with a black circular opening on the front face and a wooden lever on the side",
-        "action": "static",
-        "position": "center"
-      },
-      {
-        "desc": "gray stone block with a red lever on top",
-        "action": "static",
-        "position": "center-left"
-      },
-      {
-        "desc": "redstone dust trail",
-        "action": "static",
-        "position": "left"
-      },
-      {
-        "desc": "cross-shaped hole in the sand",
-        "action": "static",
-        "position": "center-bottom"
-      },
-      {
-        "desc": "green number '13'",
-        "action": "static",
-        "position": "bottom-center"
-      },
-      {
-        "desc": "hotbar with a water bucket and a glass block",
-        "action": "static",
-        "position": "bottom"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "A dispenser block is positioned next to a stone block with a red lever.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "A trail of redstone dust connects to the stone block.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The number '13' is displayed in green above the hotbar.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "A cross-shaped hole is dug into the sand in front of the dispenser.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [
-      "13"
-    ],
-    "spatial": "The dispenser is to the right of the stone block with the red lever. The redstone trail is to the left of the stone block. The cross-shaped hole is in front of and below the dispenser. The green number '13' is above the hotbar at the bottom of the screen.",
+    "spatial": "The dispenser is located at the edge of the square hole in the sand. The redstone dust trail is to the left of the dispenser. The green number '13' is positioned above the hotbar at the bottom of the screen.",
     "parse_success": true,
     "chunk_idx": 8,
     "video_id": "EqaqD08ohBk",
@@ -620,98 +642,38 @@
   },
   {
     "time": [
-      18,
-      20
+      9,
+      10
     ],
     "visible_entities": [
       {
-        "desc": "pixelated water bucket with blue liquid and grey metal rim",
-        "action": "held in foreground",
-        "position": "bottom-right"
+        "desc": "pixelated water bucket with blue water inside a silver metal container",
+        "action": "held in the player's hand",
+        "position": "bottom right foreground",
+        "id": "water_bucket_1"
       },
       {
-        "desc": "grey stone block with black square center and grey pixelated face pattern",
+        "desc": "grey stone block with a black square face and a redstone torch on top",
         "action": "static",
-        "position": "top-right"
+        "position": "top right"
       },
       {
-        "desc": "sandstone block with beige texture",
+        "desc": "square hole in the ground lined with light beige sandstone blocks",
         "action": "static",
-        "position": "center"
+        "position": "center",
+        "id": "sandstone_blocks_1"
       },
       {
-        "desc": "rectangular hole in the ground lined with sandstone",
+        "desc": "green number '13' text overlay",
         "action": "static",
-        "position": "center"
+        "position": "bottom center",
+        "id": "xp_level_13_1"
       },
       {
-        "desc": "hotbar interface with grey slots and green number",
+        "desc": "hotbar inventory interface with a water bucket icon selected in the first slot",
         "action": "static",
-        "position": "bottom"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "The player holds a water bucket in the bottom-right corner of the screen.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "A grey stone block with a face pattern is positioned on the ground.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The hotbar displays the number '13' in green text above the inventory slots.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The camera view shifts slightly, revealing a hole in the sandstone ground.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [
-      "13"
-    ],
-    "spatial": "The water bucket is held in the foreground at the bottom-right, partially obscuring the view. The grey stone block is to the right of the central sandstone block and above the water bucket. The rectangular hole is to the left of the central sandstone block. The hotbar is located at the bottom of the screen, below the game world.",
-    "parse_success": true,
-    "chunk_idx": 9,
-    "video_id": "EqaqD08ohBk",
-    "state_changes": []
-  },
-  {
-    "time": [
-      20,
-      22
-    ],
-    "visible_entities": [
-      {
-        "desc": "grey dispenser block with a black face and a redstone torch on top",
-        "action": "static",
-        "position": "right"
-      },
-      {
-        "desc": "water bucket with a silver handle and blue water",
-        "action": "being held",
-        "position": "bottom right"
-      },
-      {
-        "desc": "sandstone blocks forming a square hole in the ground",
-        "action": "static",
-        "position": "center"
-      },
-      {
-        "desc": "redstone dust line on the sand",
-        "action": "static",
-        "position": "top left"
-      },
-      {
-        "desc": "wooden sign with black text",
-        "action": "static",
-        "position": "top left"
-      },
-      {
-        "desc": "hotbar UI element with a water bucket icon selected",
-        "action": "static",
-        "position": "bottom"
+        "position": "bottom",
+        "id": "water_bucket_1"
       }
     ],
     "atomic_facts": [
@@ -720,15 +682,145 @@
         "confidence": 1.0
       },
       {
-        "fact": "A dispenser block is placed next to a square hole in the sand.",
+        "fact": "A redstone torch is placed on top of a grey block.",
         "confidence": 1.0
       },
       {
-        "fact": "A redstone torch is placed on top of the dispenser block.",
+        "fact": "The number 13 is displayed in green text above the hotbar.",
         "confidence": 1.0
       },
       {
-        "fact": "A line of redstone dust connects to the dispenser.",
+        "fact": "The player is looking down at a square hole in the sand.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "13"
+    ],
+    "spatial": "The water bucket is held in the foreground at the bottom right, near the grey block which is positioned at the top right. The square hole is located in the center of the view, below the grey block. The green number '13' is situated above the hotbar at the bottom center of the screen.",
+    "parse_success": true,
+    "chunk_idx": 9,
+    "video_id": "EqaqD08ohBk",
+    "state_changes": []
+  },
+  {
+    "time": [
+      10,
+      11
+    ],
+    "visible_entities": [
+      {
+        "desc": "grey dispenser block with a black circular opening",
+        "action": "static",
+        "position": "right",
+        "id": "dispenser_block_1"
+      },
+      {
+        "desc": "redstone dust line",
+        "action": "static",
+        "position": "top",
+        "id": "redstone_dust_1"
+      },
+      {
+        "desc": "sandstone blocks forming a pit",
+        "action": "static",
+        "position": "center",
+        "id": "sandstone_blocks_1"
+      },
+      {
+        "desc": "water bucket held in hand",
+        "action": "being held",
+        "position": "bottom right",
+        "id": "water_bucket_1"
+      },
+      {
+        "desc": "sand block",
+        "action": "being placed",
+        "position": "center",
+        "id": "sand_blocks_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The player places a sand block into the center of a square pit.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A redstone line is connected to the back of a dispenser.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The player is holding a water bucket in their hand.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The number 13 is displayed in green text above the hotbar.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "13"
+    ],
+    "spatial": "The dispenser is to the right of the sandstone pit. The redstone line is behind the dispenser and extends to the left. The water bucket is held in the foreground at the bottom right. The sand block is placed inside the pit.",
+    "parse_success": true,
+    "chunk_idx": 10,
+    "video_id": "EqaqD08ohBk",
+    "state_changes": []
+  },
+  {
+    "time": [
+      11,
+      12
+    ],
+    "visible_entities": [
+      {
+        "desc": "grey stone dispenser block with a wooden top and a lever attached to the side",
+        "action": "static",
+        "position": "center",
+        "id": "dispenser_block_1"
+      },
+      {
+        "desc": "blue water bucket held in the player's hand",
+        "action": "static",
+        "position": "right foreground",
+        "id": "water_bucket_1"
+      },
+      {
+        "desc": "sandstone blocks forming a cross-shaped hole in the ground",
+        "action": "static",
+        "position": "center",
+        "id": "sandstone_blocks_1"
+      },
+      {
+        "desc": "redstone dust trail on the sand",
+        "action": "static",
+        "position": "left",
+        "id": "redstone_dust_1"
+      },
+      {
+        "desc": "sand block with a wooden sign attached",
+        "action": "static",
+        "position": "left",
+        "id": "sand_blocks_1"
+      },
+      {
+        "desc": "blue water block",
+        "action": "appearing",
+        "position": "center",
+        "id": "water_block_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The player is holding a water bucket.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A dispenser is placed on the edge of a hole.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "Water appears in the hole next to the dispenser.",
         "confidence": 1.0
       },
       {
@@ -738,117 +830,347 @@
     ],
     "ocr": [
       "13",
-      "25 BLO"
+      "25 Block"
     ],
-    "spatial": "The dispenser block is to the right of the square hole in the sand. The redstone dust line is behind and to the left of the dispenser. The wooden sign is in the top left corner, above the redstone line. The player's hand holding the water bucket is in the bottom right foreground.",
+    "spatial": "The dispenser is positioned on the edge of the sandstone hole. The redstone dust trail is to the left of the dispenser. The water bucket is in the foreground on the right side of the screen. The sand block with the sign is to the left of the water stream.",
     "parse_success": true,
-    "chunk_idx": 10,
+    "chunk_idx": 11,
+    "video_id": "EqaqD08ohBk",
+    "state_changes": [
+      "Blue water block appears in the cross-shaped hole"
+    ]
+  },
+  {
+    "time": [
+      12,
+      13
+    ],
+    "visible_entities": [
+      {
+        "desc": "wooden pressure plate, light brown, rectangular, placed on top of a block",
+        "action": "static",
+        "position": "center",
+        "id": "pressure_plate_wood_1"
+      },
+      {
+        "desc": "stone block, grey, textured, supporting the pressure plate",
+        "action": "static",
+        "position": "center"
+      },
+      {
+        "desc": "water, blue, liquid, flowing in a small pool",
+        "action": "static",
+        "position": "left",
+        "id": "water_block_1"
+      },
+      {
+        "desc": "redstone dust, red, granular, forming a line on the sand",
+        "action": "static",
+        "position": "right",
+        "id": "redstone_dust_1"
+      },
+      {
+        "desc": "sand block, beige, granular, forming the ground surface",
+        "action": "static",
+        "position": "background",
+        "id": "sand_blocks_1"
+      },
+      {
+        "desc": "sign, wooden, rectangular, attached to a block",
+        "action": "static",
+        "position": "background",
+        "id": "wooden_signs_1"
+      },
+      {
+        "desc": "water bucket, metallic, filled with blue water, held in hand",
+        "action": "held",
+        "position": "foreground",
+        "id": "water_bucket_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A wooden pressure plate is placed on top of a stone block.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "Blue water is flowing next to the stone block.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A line of redstone dust extends across the sand.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The player is holding a water bucket.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A sign with text is visible in the background.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "25 Blocks"
+    ],
+    "spatial": "The wooden pressure plate is on top of the stone block. The blue water is to the left of the stone block. The redstone dust is to the right of the stone block. The sign is in the background, behind the water and stone block.",
+    "parse_success": true,
+    "chunk_idx": 12,
     "video_id": "EqaqD08ohBk",
     "state_changes": []
   },
   {
     "time": [
-      22,
-      24
+      13,
+      14
     ],
     "visible_entities": [
       {
-        "desc": "grey stone block with a wooden top and a black circular opening on the front face",
-        "action": "static",
-        "position": "center"
+        "desc": "blue water bucket held in hand, pixelated texture",
+        "action": "holding",
+        "position": "right/foreground",
+        "id": "water_bucket_1"
       },
       {
-        "desc": "blue water source block",
-        "action": "appearing",
-        "position": "center"
+        "desc": "stone block with wooden top surface, gray stone texture, light brown wood pattern",
+        "action": "static",
+        "position": "center/foreground"
       },
       {
-        "desc": "sandstone blocks forming a cross-shaped pit",
+        "desc": "blue water block, translucent blue texture",
         "action": "static",
-        "position": "center"
+        "position": "left/center",
+        "id": "water_block_1"
       },
       {
-        "desc": "redstone dust trail",
+        "desc": "sand block, beige granular texture",
         "action": "static",
-        "position": "left"
+        "position": "background",
+        "id": "sand_blocks_1"
       },
       {
-        "desc": "bucket of water held in hand",
+        "desc": "wooden sign with black text",
         "action": "static",
-        "position": "right"
+        "position": "background",
+        "id": "wooden_signs_1"
       },
       {
-        "desc": "sandstone block with a wooden sign attached",
+        "desc": "redstone dust trail, red line pattern",
         "action": "static",
-        "position": "left"
+        "position": "background",
+        "id": "redstone_dust_1"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A block of blue water appears in the sandstone pit next to the grey stone block.",
+        "fact": "The player is holding a blue water bucket in the right hand.",
         "confidence": 1.0
       },
       {
-        "fact": "The grey stone block is positioned on the edge of the pit.",
+        "fact": "A stone block with a wooden top is placed next to a blue water block.",
         "confidence": 1.0
       },
       {
-        "fact": "The player is holding a bucket of water in the foreground.",
+        "fact": "The number '13' is displayed in green text above the hotbar.",
         "confidence": 1.0
       },
       {
-        "fact": "A redstone trail connects to the mechanism on the left side.",
+        "fact": "A wooden sign in the background reads '25 Blocks'.",
         "confidence": 1.0
       }
     ],
     "ocr": [
       "13",
-      "25 Block"
+      "25 Blocks"
     ],
-    "spatial": "The grey stone block is positioned on the edge of the sandstone pit. The blue water block appears in the center of the pit, next to the grey stone block. The redstone trail is to the left of the pit. The player's hand holding the bucket is in the bottom right foreground.",
+    "spatial": "The player's hand holding the blue water bucket is in the bottom right foreground. The stone block with the wooden top is positioned to the right of the blue water block. The blue water block is to the left of the stone block. In the background, a wooden sign is placed on a sand block, and a redstone dust trail extends across the sand.",
     "parse_success": true,
-    "chunk_idx": 11,
+    "chunk_idx": 13,
     "video_id": "EqaqD08ohBk",
-    "state_changes": [
-      "Water source block appeared on the ground"
-    ]
+    "state_changes": []
   },
   {
     "time": [
-      24,
-      26
+      14,
+      15
     ],
     "visible_entities": [
       {
-        "desc": "Minecraft piston block with a grey stone base and a light brown wooden top featuring a plank texture",
+        "desc": "grey metal bucket containing blue water",
+        "action": "being held in the foreground",
+        "position": "right",
+        "id": "water_bucket_1"
+      },
+      {
+        "desc": "line of beige blocks with wooden signs attached",
         "action": "static",
         "position": "center",
-        "id": "piston_block"
+        "id": "sandstone_blocks_1"
       },
       {
-        "desc": "blue water block with a flat, liquid surface texture",
+        "desc": "flat sandy terrain",
         "action": "static",
-        "position": "left"
+        "position": "bottom",
+        "id": "sand_blocks_1"
       },
       {
-        "desc": "sandstone block with a wooden sign attached, displaying text",
+        "desc": "green number '13'",
         "action": "static",
-        "position": "background"
+        "position": "bottom",
+        "id": "xp_level_13_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The player is holding a bucket of water in their right hand.",
+        "confidence": 1.0
       },
       {
-        "desc": "redstone dust trail with a dark red, pixelated line pattern",
+        "fact": "A line of beige blocks with signs extends from the foreground into the distance.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The number '13' is displayed in green text above the hotbar.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The camera tilts upwards from the ground to the sky.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "13"
+    ],
+    "spatial": "The bucket of water is held in the foreground on the right side of the screen. The line of beige blocks is positioned in the center, extending away from the player on the sandy ground. The green number '13' is located at the bottom center, just above the inventory bar.",
+    "parse_success": true,
+    "chunk_idx": 14,
+    "video_id": "EqaqD08ohBk",
+    "state_changes": []
+  },
+  {
+    "time": [
+      15,
+      16
+    ],
+    "visible_entities": [
+      {
+        "desc": "pixelated hand holding a blue and grey water bucket",
+        "action": "held in foreground",
+        "position": "right foreground",
+        "id": "water_bucket_1"
+      },
+      {
+        "desc": "row of sandstone blocks with wooden signs attached",
         "action": "static",
-        "position": "right"
+        "position": "center ground",
+        "id": "sandstone_blocks_1"
       },
       {
-        "desc": "water bucket item held in the player's hand, showing a silver bucket rim and blue water contents",
-        "action": "being held",
-        "position": "foreground"
-      },
-      {
-        "desc": "wooden sign with black text on a light brown background",
+        "desc": "tall white rectangular tower",
         "action": "static",
-        "position": "background"
+        "position": "left background",
+        "id": "white_pillar_1"
+      },
+      {
+        "desc": "green leafy tree with brown trunk",
+        "action": "static",
+        "position": "center background",
+        "id": "tree_1"
+      },
+      {
+        "desc": "floating grey layered structure",
+        "action": "static",
+        "position": "right background",
+        "id": "floating_structure_grey_1"
+      },
+      {
+        "desc": "green number '13'",
+        "action": "static",
+        "position": "bottom center",
+        "id": "xp_level_13_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The player holds a water bucket in the right hand.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A row of sandstone blocks with signs extends from the foreground into the middle distance.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The number '13' is displayed in green at the bottom center of the screen.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A tall white tower stands to the left of a green tree.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "13",
+      "25 Blocks"
+    ],
+    "spatial": "The player's hand holding the bucket is in the right foreground. The row of sandstone blocks is in front of the player and leads towards the background. The tall white tower is to the left of the green tree. The floating grey structure is to the right of the tree and above the ground level.",
+    "parse_success": true,
+    "chunk_idx": 15,
+    "video_id": "EqaqD08ohBk",
+    "state_changes": []
+  },
+  {
+    "time": [
+      16,
+      17
+    ],
+    "visible_entities": [
+      {
+        "desc": "blue and grey pixelated water bucket",
+        "action": "being held in the right hand",
+        "position": "foreground right",
+        "id": "water_bucket_1"
+      },
+      {
+        "desc": "sandstone block with a wooden sign attached",
+        "action": "static",
+        "position": "center",
+        "id": "sandstone_blocks_1"
+      },
+      {
+        "desc": "dispenser block with a wooden button on the front",
+        "action": "static",
+        "position": "center right",
+        "id": "dispenser_block_1"
+      },
+      {
+        "desc": "flowing blue water stream",
+        "action": "flowing out of the dispenser",
+        "position": "center right",
+        "id": "water_block_1"
+      },
+      {
+        "desc": "redstone dust trail",
+        "action": "static",
+        "position": "center",
+        "id": "redstone_dust_1"
+      },
+      {
+        "desc": "green number '13'",
+        "action": "static",
+        "position": "bottom center",
+        "id": "xp_level_13_1"
+      },
+      {
+        "desc": "tall white pillar structure",
+        "action": "static",
+        "position": "background left",
+        "id": "white_pillar_1"
+      },
+      {
+        "desc": "tree with a brown trunk and green leaves",
+        "action": "static",
+        "position": "background left",
+        "id": "tree_1"
       }
     ],
     "atomic_facts": [
@@ -857,357 +1179,104 @@
         "confidence": 1.0
       },
       {
-        "fact": "A piston block is positioned next to a block of blue water.",
+        "fact": "Water is flowing out of a dispenser block onto the sand.",
         "confidence": 1.0
       },
       {
-        "fact": "A trail of redstone dust extends across the sand to the right of the piston.",
+        "fact": "A redstone trail connects a line of sandstone blocks with signs.",
         "confidence": 1.0
       },
       {
-        "fact": "A wooden sign in the background displays the text '25 Blocks'.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [
-      "25 Blocks"
-    ],
-    "spatial": "The piston block is in the center, positioned to the right of the blue water block. The redstone dust trail is to the right of the piston. The sandstone block with the sign is in the background, behind the water and piston.",
-    "parse_success": true,
-    "chunk_idx": 12,
-    "video_id": "EqaqD08ohBk",
-    "state_changes": []
-  },
-  {
-    "time": [
-      26,
-      28
-    ],
-    "visible_entities": [
-      {
-        "desc": "First-person view of a player holding a water bucket with a blue and grey pixelated texture",
-        "action": "aiming at a block",
-        "position": "bottom right",
-        "id": "water_bucket_held"
-      },
-      {
-        "desc": "A dispenser block with a grey stone texture and a wooden top surface",
-        "action": "static",
-        "position": "center foreground",
-        "id": "dispenser_block"
-      },
-      {
-        "desc": "A wooden sign with black text reading '25 Blocks'",
-        "action": "static",
-        "position": "center background",
-        "id": "wooden_signs"
-      },
-      {
-        "desc": "A pool of blue water",
-        "action": "static",
-        "position": "center left",
-        "id": "water_blocks_pools"
-      },
-      {
-        "desc": "A line of redstone dust on the sand",
-        "action": "static",
-        "position": "background",
-        "id": "redstone_dust_trail"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "The player is holding a water bucket and aiming the crosshair at a dispenser block.",
+        "fact": "The number 13 is displayed in green at the bottom center of the screen.",
         "confidence": 1.0
       },
       {
-        "fact": "The dispenser block is placed next to a pool of water.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "A wooden sign in the distance displays the text '25 Blocks'.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "Redstone dust trails across the sand in the background.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [
-      "25 Blocks"
-    ],
-    "spatial": "The dispenser block is to the right of the water pool. The player is holding the water bucket in the bottom right corner, aiming towards the dispenser. The wooden sign is behind the dispenser block in the distance.",
-    "parse_success": true,
-    "chunk_idx": 13,
-    "video_id": "EqaqD08ohBk",
-    "state_changes": []
-  },
-  {
-    "time": [
-      28,
-      30
-    ],
-    "visible_entities": [
-      {
-        "desc": "First-person view of a hand holding a grey metal bucket filled with blue water",
-        "action": "tilting upwards",
-        "position": "foreground",
-        "id": "water_bucket_held"
-      },
-      {
-        "desc": "Row of light-colored wooden blocks with attached wooden signs",
-        "action": "static",
-        "position": "center",
-        "id": "wooden_signs"
-      },
-      {
-        "desc": "Large brown tree with a thick trunk and green leafy canopy",
-        "action": "static",
-        "position": "left background",
-        "id": "trees"
-      },
-      {
-        "desc": "Tall white rectangular tower structure",
-        "action": "static",
-        "position": "far left background",
-        "id": "white_tower_pillar"
-      },
-      {
-        "desc": "Floating dark blocky structure in the sky",
-        "action": "static",
-        "position": "top right background",
-        "id": "floating_pink_purple_structure"
-      },
-      {
-        "desc": "Green number '13' text overlay",
-        "action": "static",
-        "position": "bottom center",
-        "id": "green_number_13_overlay"
-      },
-      {
-        "desc": "Hotbar inventory interface with item slots",
-        "action": "static",
-        "position": "bottom",
-        "id": "hotbar_ui"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "The player tilts the camera view upwards from the ground to the sky.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "A row of wooden blocks with signs is arranged on the sandy ground.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The green number '13' is displayed above the hotbar.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The player is holding a water bucket in the right hand.",
+        "fact": "A tall white pillar stands in the background to the left.",
         "confidence": 1.0
       }
     ],
     "ocr": [
       "13"
     ],
-    "spatial": "The water bucket is in the foreground, held by the player. The row of wooden blocks is in front of the player on the ground. The large tree is to the left of the wooden blocks. The white tower is behind the tree. The floating structure is above the ground in the sky. The number '13' is above the hotbar at the bottom of the screen.",
-    "parse_success": true,
-    "chunk_idx": 14,
-    "video_id": "EqaqD08ohBk",
-    "state_changes": []
-  },
-  {
-    "time": [
-      30,
-      32
-    ],
-    "visible_entities": [
-      {
-        "desc": "blue and grey pixelated bucket held in the player's hand",
-        "action": "held in foreground",
-        "position": "right/foreground"
-      },
-      {
-        "desc": "row of light-colored sandstone blocks with wooden signs attached",
-        "action": "static",
-        "position": "center/ground"
-      },
-      {
-        "desc": "tall, thin white tower made of blocks",
-        "action": "static",
-        "position": "left/background"
-      },
-      {
-        "desc": "large tree with a thick brown trunk and green leafy canopy",
-        "action": "static",
-        "position": "center-left/middle-ground"
-      },
-      {
-        "desc": "floating structure made of stacked grey blocks",
-        "action": "static",
-        "position": "right/sky"
-      },
-      {
-        "desc": "green number '13' displayed on the screen",
-        "action": "static",
-        "position": "center/bottom"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "The player is holding a blue and grey bucket in the right foreground.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "A row of sandstone blocks with signs is placed on the sandy ground.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The number '13' is displayed in green text near the bottom center of the screen.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "A tall white tower stands in the background to the left of a large tree.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [
-      "13"
-    ],
-    "spatial": "The player's hand holding the bucket is in the bottom right foreground. The row of sandstone blocks is in front of the player, extending towards the center. The large tree is to the left of the sandstone blocks and in front of the tall white tower. The floating grey structure is in the sky to the right of the tree.",
-    "parse_success": true,
-    "chunk_idx": 15,
-    "video_id": "EqaqD08ohBk",
-    "state_changes": []
-  },
-  {
-    "time": [
-      32,
-      34
-    ],
-    "visible_entities": [
-      {
-        "desc": "blue and grey pixelated bucket held in the player's hand",
-        "action": "being held in the foreground",
-        "position": "right/foreground"
-      },
-      {
-        "desc": "sandstone blocks with attached wooden signs arranged in a line",
-        "action": "static",
-        "position": "center/middle-ground"
-      },
-      {
-        "desc": "blue water block placed on the sand",
-        "action": "being placed",
-        "position": "center/middle-ground"
-      },
-      {
-        "desc": "grey dispenser block with a wooden button",
-        "action": "static",
-        "position": "center/middle-ground"
-      },
-      {
-        "desc": "green number '13' displayed on the screen",
-        "action": "static",
-        "position": "bottom/center"
-      },
-      {
-        "desc": "tall white pillar structure",
-        "action": "static",
-        "position": "left/background"
-      },
-      {
-        "desc": "tree with a brown trunk and green leaves",
-        "action": "static",
-        "position": "left/middle-ground"
-      },
-      {
-        "desc": "floating grey block structure",
-        "action": "static",
-        "position": "right/background"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "The player places a block of blue water on the sand next to a dispenser.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The player is holding a bucket in their right hand.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "A line of sandstone blocks with signs extends across the desert floor.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The number 13 is visible in green text at the bottom center of the screen.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [
-      "13"
-    ],
-    "spatial": "The player's hand holding the bucket is in the right foreground. The blue water block is placed on the sand in front of the line of sandstone blocks. The dispenser is to the right of the newly placed water block. The tall white pillar is in the background to the left of the tree.",
+    "spatial": "The water bucket is held in the foreground to the right of the center. The flowing water is emerging from the dispenser block, which is positioned to the right of the sandstone blocks. The redstone trail runs along the ground connecting the blocks. The tall white pillar is located in the background to the left of the tree.",
     "parse_success": true,
     "chunk_idx": 16,
     "video_id": "EqaqD08ohBk",
     "state_changes": [
-      "Water block being placed on sand"
+      "Water begins flowing out of the dispenser"
     ]
   },
   {
     "time": [
-      34,
-      36
+      17,
+      18
     ],
     "visible_entities": [
       {
-        "desc": "blue water block with a low-poly, faceted surface texture",
-        "action": "expanding in volume",
-        "position": "center"
-      },
-      {
-        "desc": "grey stone block with a wooden lever attached to its side",
+        "desc": "blue water block, translucent, cubic",
         "action": "static",
-        "position": "right"
+        "position": "center",
+        "id": "water_block_1"
       },
       {
-        "desc": "beige sand block with a speckled texture",
+        "desc": "piston, grey metal body with wooden top face",
         "action": "static",
-        "position": "left"
+        "position": "center-right",
+        "id": "piston_1"
       },
       {
-        "desc": "bucket filled with blue water, held in the player's hand",
-        "action": "held in foreground",
-        "position": "bottom-right"
-      },
-      {
-        "desc": "green number '13' displayed on the screen",
+        "desc": "sand block, beige, textured",
         "action": "static",
-        "position": "bottom-center"
+        "position": "center-left",
+        "id": "sand_blocks_1"
+      },
+      {
+        "desc": "water bucket, silver metal with blue water inside",
+        "action": "held in hand",
+        "position": "bottom-right",
+        "id": "water_bucket_1"
+      },
+      {
+        "desc": "redstone dust, red, line pattern",
+        "action": "static",
+        "position": "center-left",
+        "id": "redstone_dust_1"
+      },
+      {
+        "desc": "green number '13', digital font",
+        "action": "static",
+        "position": "bottom-center",
+        "id": "xp_level_13_1"
+      },
+      {
+        "desc": "purple and blue structure, blocky, floating",
+        "action": "static",
+        "position": "top-left",
+        "id": "floating_structure_purple_1"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "The blue water block expands from a single block into a larger, irregular shape.",
+        "fact": "The player is holding a water bucket in the bottom right corner.",
         "confidence": 1.0
       },
       {
-        "fact": "The player is holding a water bucket in their right hand.",
+        "fact": "A line of redstone dust connects a sand block to a piston.",
         "confidence": 1.0
       },
       {
-        "fact": "The number '13' is visible above the hotbar.",
+        "fact": "The number '13' is displayed in green above the hotbar.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A blue water block is positioned directly in front of the piston.",
         "confidence": 1.0
       }
     ],
     "ocr": [
       "13"
     ],
-    "spatial": "The blue water block is located in the center of the scene, positioned between the beige sand block on the left and the grey stone block with a lever on the right. The player's hand holding the water bucket is in the bottom-right foreground, partially obscuring the view. The green number '13' is displayed above the hotbar at the bottom center of the screen.",
+    "spatial": "The player's hand holding the water bucket is in the bottom right foreground. The blue water block is in the center, positioned in front of the piston. The sand block is to the left of the water block. The redstone dust line is on the ground, running between the sand block and the piston. The green number '13' is located above the hotbar at the bottom center of the screen.",
     "parse_success": true,
     "chunk_idx": 17,
     "video_id": "EqaqD08ohBk",
@@ -1215,64 +1284,75 @@
   },
   {
     "time": [
-      36,
-      38
+      18,
+      19
     ],
     "visible_entities": [
       {
-        "desc": "irregularly shaped, low-poly blue water mass with a faceted, crystalline texture",
+        "desc": "blue, low-poly, irregularly shaped water structure with a faceted surface",
         "action": "static",
-        "position": "center"
+        "position": "center",
+        "id": "water_block_1"
       },
       {
-        "desc": "wooden block with a dark grey base and a lighter brown top surface, resembling a crafting table or piston head",
+        "desc": "wooden crafting table block with a grid pattern on top",
         "action": "static",
-        "position": "center"
+        "position": "center",
+        "id": "crafting_table_1"
       },
       {
-        "desc": "flat, beige sandy ground surface",
-        "action": "static",
-        "position": "background"
+        "desc": "pixelated hand holding a bucket filled with blue water",
+        "action": "holding bucket",
+        "position": "bottom right",
+        "id": "water_bucket_1"
       },
       {
-        "desc": "grey stone block with a pixelated texture",
+        "desc": "sand block with a beige, grainy texture",
         "action": "static",
-        "position": "left"
+        "position": "left",
+        "id": "sand_blocks_1"
       },
       {
-        "desc": "first-person view of a hand holding a water bucket with a blue and grey pixelated texture",
+        "desc": "redstone dust trail on the sand",
         "action": "static",
-        "position": "bottom-right"
+        "position": "left",
+        "id": "redstone_dust_1"
       },
       {
-        "desc": "wooden structure with vertical plank texture and a window with a dark frame",
+        "desc": "wooden house structure with a window in the background",
         "action": "static",
-        "position": "right"
+        "position": "background right",
+        "id": "wooden_house_1"
+      },
+      {
+        "desc": "green number '13' indicating item count",
+        "action": "static",
+        "position": "bottom center",
+        "id": "xp_level_13_1"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "The player is holding a water bucket in the bottom-right corner of the screen.",
+        "fact": "The player is holding a water bucket in their hand.",
         "confidence": 1.0
       },
       {
-        "fact": "A blue, low-poly water mass is situated on the sandy ground.",
+        "fact": "A blue, low-poly water structure is on the sand next to a crafting table.",
         "confidence": 1.0
       },
       {
-        "fact": "The text 'Glass' and the number '13' are displayed above the hotbar.",
+        "fact": "The number '13' is displayed above the hotbar, indicating the quantity of the selected item.",
         "confidence": 1.0
       },
       {
-        "fact": "A wooden block is positioned behind the blue water mass.",
+        "fact": "A trail of redstone dust is visible on the sand to the left of the water.",
         "confidence": 1.0
       }
     ],
     "ocr": [
-      "Glass",
       "13"
     ],
-    "spatial": "The blue water mass is in the center of the frame, resting on the sandy ground. The wooden block is located directly behind the blue water mass. The grey stone block is to the left of the water mass. The wooden structure is to the right of the water mass. The player's hand holding the bucket is in the bottom-right foreground.",
+    "spatial": "The blue water structure is in front of the crafting table. The player's hand holding the bucket is in the bottom right corner of the screen. The sand block is to the left of the water structure. The wooden house is in the background, to the right of the crafting table.",
     "parse_success": true,
     "chunk_idx": 18,
     "video_id": "EqaqD08ohBk",
@@ -1280,56 +1360,52 @@
   },
   {
     "time": [
-      38,
-      40
+      19,
+      20
     ],
     "visible_entities": [
       {
-        "desc": "blue water block, translucent, cubic",
+        "desc": "blue water block",
         "action": "static",
-        "position": "foreground"
+        "position": "foreground",
+        "id": "water_block_1"
       },
       {
-        "desc": "piston, grey stone sides, wooden top with plank texture",
+        "desc": "piston with wooden top and stone sides",
         "action": "static",
-        "position": "center"
+        "position": "center",
+        "id": "piston_1"
       },
       {
-        "desc": "sand, beige, flat terrain",
+        "desc": "glass block",
         "action": "static",
-        "position": "background"
+        "position": "right",
+        "id": "glass_block_1"
       },
       {
-        "desc": "redstone dust, red, linear trail",
+        "desc": "hotbar UI element",
         "action": "static",
-        "position": "left"
+        "position": "bottom",
+        "id": "water_bucket_1"
       },
       {
-        "desc": "hotbar UI, dark grey slots, item icons",
+        "desc": "sand terrain",
         "action": "static",
-        "position": "bottom"
-      },
-      {
-        "desc": "crosshair, white plus sign",
-        "action": "static",
-        "position": "center"
+        "position": "background",
+        "id": "sand_blocks_1"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "The player is looking at a piston placed on top of a blue water block.",
+        "fact": "The player is holding a glass block.",
         "confidence": 1.0
       },
       {
-        "fact": "The text 'Glass 13' is displayed above the hotbar.",
+        "fact": "The hotbar displays the text 'Glass' and the number '13'.",
         "confidence": 1.0
       },
       {
-        "fact": "A trail of redstone dust lies on the sand to the left of the water block.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The hotbar shows a water bucket selected in the first slot.",
+        "fact": "A piston is positioned next to a water block.",
         "confidence": 1.0
       }
     ],
@@ -1337,7 +1413,7 @@
       "Glass",
       "13"
     ],
-    "spatial": "The piston is positioned directly on top of the blue water block. The redstone dust trail is to the left of the water block. The hotbar UI is located at the bottom of the screen, below the game world view. The crosshair is centered on the screen, aiming at the piston.",
+    "spatial": "The blue water block is in the immediate foreground, positioned to the left of the piston. The piston is located in the center of the view, adjacent to the water. The glass block is visible in the player's hand on the right side of the screen. The hotbar is situated at the bottom of the screen.",
     "parse_success": true,
     "chunk_idx": 19,
     "video_id": "EqaqD08ohBk",
@@ -1345,452 +1421,58 @@
   },
   {
     "time": [
-      40,
-      42
+      20,
+      21
     ],
     "visible_entities": [
       {
-        "desc": "transparent glass block with light blue water texture inside",
+        "desc": "transparent glass block with light blue reflections",
         "action": "static",
-        "position": "center"
+        "position": "center",
+        "id": "glass_block_1"
       },
       {
-        "desc": "blue water pool with geometric surface patterns",
+        "desc": "blue water block with geometric texture",
         "action": "static",
-        "position": "bottom"
+        "position": "center",
+        "id": "water_block_1"
       },
       {
-        "desc": "green number '13' text overlay",
+        "desc": "stone pressure plate, grey and textured",
         "action": "static",
-        "position": "bottom"
+        "position": "center",
+        "id": "pressure_plate_stone_1"
       },
       {
-        "desc": "wooden house structure with brown planks",
+        "desc": "redstone dust trail, red and linear",
         "action": "static",
-        "position": "right"
+        "position": "left",
+        "id": "redstone_dust_1"
       },
       {
-        "desc": "stone and sandstone block structure",
+        "desc": "wooden building with brown plank texture",
         "action": "static",
-        "position": "left"
+        "position": "right",
+        "id": "wooden_house_1"
       },
       {
-        "desc": "redstone dust line on sand",
+        "desc": "green number '13' overlay",
         "action": "static",
-        "position": "left"
+        "position": "bottom",
+        "id": "xp_level_13_1"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "The camera view shifts slightly to the right between the frames.",
+        "fact": "A transparent glass block is positioned directly on top of a blue water block.",
         "confidence": 1.0
       },
       {
-        "fact": "A transparent glass block containing water is positioned above a blue water pool.",
+        "fact": "A stone pressure plate is located underneath the glass block.",
         "confidence": 1.0
       },
       {
-        "fact": "The number '13' is displayed in green text near the bottom center of the screen.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "A wooden house is visible on the right side of the sandy landscape.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [
-      "13"
-    ],
-    "spatial": "The transparent glass block is in the center, positioned directly above the blue water pool. The wooden house is to the right of the glass block. The stone structure is to the left of the glass block. The redstone dust line is on the ground to the left of the water pool.",
-    "parse_success": true,
-    "chunk_idx": 20,
-    "video_id": "EqaqD08ohBk",
-    "state_changes": []
-  },
-  {
-    "time": [
-      42,
-      44
-    ],
-    "visible_entities": [
-      {
-        "desc": "blue water source block",
-        "action": "static",
-        "position": "center"
-      },
-      {
-        "desc": "glass block",
-        "action": "being placed",
-        "position": "center"
-      },
-      {
-        "desc": "wooden house with glass pane windows",
-        "action": "static",
-        "position": "right"
-      },
-      {
-        "desc": "sand ground",
-        "action": "static",
-        "position": "background"
-      },
-      {
-        "desc": "hotbar UI element",
-        "action": "static",
-        "position": "bottom"
-      },
-      {
-        "desc": "green number '13'",
-        "action": "static",
-        "position": "center"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "A glass block is being placed on top of a water source block.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The number 13 is displayed in green text above the water block.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "A wooden house stands to the right of the water block.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The player's hotbar shows a water bucket and a glass block selected.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [
-      "13"
-    ],
-    "spatial": "The glass block is being placed directly above the blue water source block. The wooden house is located to the right of the water block. The green number 13 is positioned just above the water block.",
-    "parse_success": true,
-    "chunk_idx": 21,
-    "video_id": "EqaqD08ohBk",
-    "state_changes": [
-      "Glass block being placed"
-    ]
-  },
-  {
-    "time": [
-      44,
-      46
-    ],
-    "visible_entities": [
-      {
-        "desc": "irregular pool of blue water, translucent, spreading on the ground",
-        "action": "expanding on the sand",
-        "position": "center foreground"
-      },
-      {
-        "desc": "transparent glass block structure, cubic, containing a brown and white cow",
-        "action": "static",
-        "position": "center middle-ground"
-      },
-      {
-        "desc": "brown and white cow, pixelated texture",
-        "action": "static",
-        "position": "inside the glass block"
-      },
-      {
-        "desc": "wooden house, brown planks, glass pane windows",
-        "action": "static",
-        "position": "right background"
-      },
-      {
-        "desc": "redstone dust trail, dark red, linear pattern",
-        "action": "static",
-        "position": "left foreground"
-      },
-      {
-        "desc": "hotbar UI, grey background with item slots",
-        "action": "static",
-        "position": "bottom"
-      },
-      {
-        "desc": "green number '13', pixelated font",
-        "action": "static",
-        "position": "center bottom"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "A pool of blue water is expanding on the sandy ground.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "A cow is trapped inside a transparent glass block.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The number '13' is displayed in green text above the hotbar.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "A trail of redstone dust lies on the sand to the left of the water.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [
-      "13"
-    ],
-    "spatial": "The pool of blue water is in front of the glass block containing the cow. The wooden house is to the right of the glass block. The redstone dust trail is to the left of the water pool. The number '13' is above the hotbar at the bottom of the screen.",
-    "parse_success": true,
-    "chunk_idx": 22,
-    "video_id": "EqaqD08ohBk",
-    "state_changes": [
-      "Cow appeared inside glass enclosure, water pool expanding"
-    ]
-  },
-  {
-    "time": [
-      46,
-      48
-    ],
-    "visible_entities": [
-      {
-        "desc": "blue water block, translucent, cubic shape",
-        "action": "flowing and expanding",
-        "position": "center"
-      },
-      {
-        "desc": "glass block, transparent, cubic",
-        "action": "being placed",
-        "position": "center"
-      },
-      {
-        "desc": "wooden house, brown planks, glass windows",
-        "action": "static",
-        "position": "right"
-      },
-      {
-        "desc": "hotbar UI, dark grey background, item slots",
-        "action": "static",
-        "position": "bottom"
-      },
-      {
-        "desc": "green number '13', pixelated font",
-        "action": "static",
-        "position": "center"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "A player places a glass block on top of a water source block.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The water flows outwards from the central block.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The number 13 is displayed in green text above the water.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "A wooden house is visible in the background.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [
-      "13"
-    ],
-    "spatial": "The blue water block is in the center of the foreground. The glass block is placed directly above the water block. The wooden house is to the right of the water block in the background. The green number '13' is floating just above the water block.",
-    "parse_success": true,
-    "chunk_idx": 23,
-    "video_id": "EqaqD08ohBk",
-    "state_changes": []
-  },
-  {
-    "time": [
-      48,
-      50
-    ],
-    "visible_entities": [
-      {
-        "desc": "large wooden house, brown plank texture, glass pane windows",
-        "action": "static",
-        "position": "right"
-      },
-      {
-        "desc": "glass enclosure structure, transparent blocks, containing water and a villager",
-        "action": "static",
-        "position": "center"
-      },
-      {
-        "desc": "sandstone block, beige texture, supporting a redstone repeater",
-        "action": "static",
-        "position": "foreground"
-      },
-      {
-        "desc": "redstone dust trail, red glowing line on the ground",
-        "action": "static",
-        "position": "left"
-      },
-      {
-        "desc": "blue water stream, flowing liquid",
-        "action": "static",
-        "position": "center"
-      },
-      {
-        "desc": "green number '13', digital font",
-        "action": "static",
-        "position": "bottom"
-      },
-      {
-        "desc": "pink and purple structure, blocky, floating in the sky",
-        "action": "static",
-        "position": "top left"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "A redstone repeater is placed on a sandstone block in the foreground.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "A trail of redstone dust connects the foreground block to the central glass structure.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "Water is flowing out of the glass enclosure onto the sand.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The number '13' is displayed in green above the hotbar.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [
-      "13"
-    ],
-    "spatial": "The wooden house is to the right of the glass enclosure. The sandstone block with the redstone repeater is in front of the glass structure. The pink and purple structure is floating above the ground in the top left area.",
-    "parse_success": true,
-    "chunk_idx": 24,
-    "video_id": "EqaqD08ohBk",
-    "state_changes": [
-      "Villager appeared inside glass enclosure with water"
-    ]
-  },
-  {
-    "time": [
-      50,
-      52
-    ],
-    "visible_entities": [
-      {
-        "desc": "large floating structure, pink and purple horizontal stripes with a brown brick base",
-        "action": "static",
-        "position": "top left"
-      },
-      {
-        "desc": "wooden house, brown plank texture with a glass window",
-        "action": "static",
-        "position": "right"
-      },
-      {
-        "desc": "redstone contraption, glass walls enclosing redstone components and pistons",
-        "action": "static",
-        "position": "center"
-      },
-      {
-        "desc": "blue water puddle, irregular shape on the ground",
-        "action": "static",
-        "position": "center right"
-      },
-      {
-        "desc": "sand block, beige, textured",
-        "action": "static",
-        "position": "foreground left"
-      },
-      {
-        "desc": "hotbar, dark grey background with item slots",
-        "action": "static",
-        "position": "bottom"
-      },
-      {
-        "desc": "green number '13', digital font",
-        "action": "static",
-        "position": "bottom center"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "The camera view shifts slightly, showing the redstone contraption and blue water puddle from a closer perspective.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "A large pink and purple striped structure floats in the sky.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The number 13 is displayed in green above the hotbar.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "A wooden house stands on the right side of the sandy terrain.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [
-      "13"
-    ],
-    "spatial": "The wooden house is to the right of the redstone contraption. The blue water puddle is in front of the wooden house and to the right of the redstone contraption. The large pink and purple structure is floating above the redstone contraption and the sandy ground. The sand block is in the foreground, to the left of the redstone contraption.",
-    "parse_success": true,
-    "chunk_idx": 25,
-    "video_id": "EqaqD08ohBk",
-    "state_changes": []
-  },
-  {
-    "time": [
-      52,
-      54
-    ],
-    "visible_entities": [
-      {
-        "desc": "large floating structure, pink and purple horizontal stripes, rectangular shape",
-        "action": "static",
-        "position": "top/center"
-      },
-      {
-        "desc": "glass pane enclosure, transparent, rectangular, containing a mechanism",
-        "action": "static",
-        "position": "center"
-      },
-      {
-        "desc": "blue water block, liquid texture, irregular shape",
-        "action": "static",
-        "position": "foreground/center"
-      },
-      {
-        "desc": "dispenser block, grey stone texture, wooden button on front",
-        "action": "static",
-        "position": "foreground/right"
-      },
-      {
-        "desc": "sand blocks, beige, granular texture",
-        "action": "static",
-        "position": "background/ground"
-      },
-      {
-        "desc": "green number '13', digital font",
-        "action": "static",
-        "position": "bottom/center"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "A large pink and purple striped structure is floating in the sky.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "A glass enclosure sits on the sandy ground.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "A dispenser block with a wooden button is positioned next to a blue water block.",
+        "fact": "A redstone dust trail extends across the sand towards the glass structure.",
         "confidence": 1.0
       },
       {
@@ -1801,303 +1483,141 @@
     "ocr": [
       "13"
     ],
-    "spatial": "The large pink and purple striped structure is above the glass pane enclosure. The dispenser block is to the right of the blue water block. The glass enclosure is on the sandy ground.",
+    "spatial": "The transparent glass block is directly above the blue water block and the stone pressure plate. The redstone dust trail is to the left of the glass structure. The wooden building is to the right of the glass structure in the background.",
     "parse_success": true,
-    "chunk_idx": 26,
+    "chunk_idx": 20,
     "video_id": "EqaqD08ohBk",
     "state_changes": []
   },
   {
     "time": [
-      54,
-      56
+      21,
+      22
     ],
     "visible_entities": [
       {
-        "desc": "First-person view of a player holding a glass block in the right hand, with a hotbar showing a water bucket in the first slot and a glass block in the second slot.",
-        "action": "moving forward",
-        "position": "foreground"
+        "desc": "blue water block, translucent, cubic shape",
+        "action": "static",
+        "position": "center/foreground",
+        "id": "water_block_1"
       },
       {
-        "desc": "A row of sandstone blocks with wooden signs attached to their sides, arranged linearly on the ground.",
+        "desc": "glass block, transparent, cubic shape",
         "action": "static",
-        "position": "center"
+        "position": "center/foreground",
+        "id": "glass_block_1"
       },
       {
-        "desc": "A large, blocky structure floating in the sky, composed of pink horizontal layers with a blue underside and a brown vertical section.",
+        "desc": "wooden house, brown planks, glass pane windows",
         "action": "static",
-        "position": "top right"
+        "position": "right/background",
+        "id": "wooden_house_1"
       },
       {
-        "desc": "A large, dark brown tree with a thick trunk and leafy canopy.",
+        "desc": "sand ground, beige, flat texture",
         "action": "static",
-        "position": "left"
+        "position": "bottom/background",
+        "id": "sand_blocks_1"
       },
       {
-        "desc": "A large, irregular blue blocky structure on the ground, resembling a pool or a large object.",
+        "desc": "redstone dust trail, red, linear pattern",
         "action": "static",
-        "position": "right foreground"
+        "position": "left/center",
+        "id": "redstone_dust_1"
       },
       {
-        "desc": "A smaller, grey blocky structure floating in the sky.",
+        "desc": "hotbar UI, dark grey background with item slots",
         "action": "static",
-        "position": "top center"
-      },
-      {
-        "desc": "A green number '13' displayed on the screen.",
-        "action": "static",
-        "position": "bottom center",
-        "id": "green_number_13_overlay"
+        "position": "bottom"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "The player is moving forward across a sandy landscape.",
+        "fact": "A glass block is placed directly on top of a blue water block.",
         "confidence": 1.0
       },
       {
-        "fact": "The player is holding a glass block in their hand.",
+        "fact": "The number '13' is displayed in green text above the water block.",
         "confidence": 1.0
       },
       {
-        "fact": "A row of sandstone blocks with signs is arranged on the ground.",
+        "fact": "A redstone dust trail extends from the left side towards the center of the scene.",
         "confidence": 1.0
       },
       {
-        "fact": "A large pink and blue structure is floating in the sky.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The number '13' is displayed on the screen.",
+        "fact": "A wooden house stands to the right of the central water structure.",
         "confidence": 1.0
       }
     ],
     "ocr": [
       "13"
     ],
-    "spatial": "The player is in the foreground, moving towards a row of sandstone blocks with signs. To the player's left is a large tree. To the player's right is a large blue structure on the ground. Above and to the right of the player is a large pink and blue floating structure. A smaller grey structure is floating in the sky above the center of the scene.",
+    "spatial": "The glass block is positioned on top of the blue water block in the center foreground. The wooden house is located to the right of the water block. The redstone dust trail is to the left of the water block and extends towards it. The hotbar UI is at the bottom of the screen, below the game world.",
     "parse_success": true,
-    "chunk_idx": 27,
+    "chunk_idx": 21,
     "video_id": "EqaqD08ohBk",
     "state_changes": []
   },
   {
     "time": [
-      56,
-      58
+      22,
+      23
     ],
     "visible_entities": [
       {
-        "desc": "transparent glass block structure, cubic shape, clear material",
+        "desc": "blue water structure, blocky and geometric, resembling a fountain or splash",
         "action": "static",
-        "position": "center"
+        "position": "center/foreground",
+        "id": "water_block_1"
       },
       {
-        "desc": "sandstone block, beige color, textured surface",
+        "desc": "transparent glass cube containing a villager mob",
         "action": "static",
-        "position": "center"
+        "position": "center",
+        "id": "villager_1"
       },
       {
-        "desc": "wooden sign, rectangular, light brown wood texture",
+        "desc": "villager mob, wearing brown robes and a hood",
         "action": "static",
-        "position": "center"
+        "position": "inside glass cube",
+        "id": "villager_1"
       },
       {
-        "desc": "redstone repeater, grey stone base with red torches",
+        "desc": "wooden house, brown planks, with glass pane windows",
         "action": "static",
-        "position": "right"
+        "position": "right/background",
+        "id": "wooden_house_1"
       },
       {
-        "desc": "redstone dust, red line on sand",
+        "desc": "redstone dust trail, dark red, laid out on the sand",
         "action": "static",
-        "position": "right"
+        "position": "left/ground",
+        "id": "redstone_dust_1"
       },
       {
-        "desc": "water bucket, metal bucket with blue water",
+        "desc": "hotbar UI element, dark grey background with item slots",
         "action": "static",
-        "position": "bottom"
-      },
-      {
-        "desc": "glass pane item, grid icon in hotbar",
-        "action": "static",
-        "position": "bottom"
+        "position": "bottom",
+        "id": "water_bucket_1"
       },
       {
         "desc": "green number '13', digital font",
         "action": "static",
-        "position": "bottom"
-      },
-      {
-        "desc": "purple structure, large blocky building",
-        "action": "static",
-        "position": "background"
-      },
-      {
-        "desc": "tree, brown trunk with green leafy canopy",
-        "action": "static",
-        "position": "left"
+        "position": "center/bottom",
+        "id": "xp_level_13_1"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "The player is holding a glass pane item in the selected hotbar slot.",
+        "fact": "A villager is trapped inside a transparent glass cube.",
         "confidence": 1.0
       },
       {
-        "fact": "A redstone circuit is laid out on the sand connecting to a glass structure.",
+        "fact": "The glass cube is positioned directly above a blue water structure.",
         "confidence": 1.0
       },
       {
-        "fact": "The number '13' is displayed in green above the hotbar.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "A water bucket is visible in the first slot of the hotbar.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [
-      "13"
-    ],
-    "spatial": "The glass block structure is in the center of the view, positioned in front of the sandstone block. The redstone repeater and dust are to the right of the glass structure. The large purple building is in the background to the right, while the tree is in the background to the left.",
-    "parse_success": true,
-    "chunk_idx": 28,
-    "video_id": "EqaqD08ohBk",
-    "state_changes": []
-  },
-  {
-    "time": [
-      58,
-      60
-    ],
-    "visible_entities": [
-      {
-        "desc": "glass pane block, transparent with light blue pixelated texture",
-        "action": "static",
-        "position": "foreground"
-      },
-      {
-        "desc": "sandstone block, beige with speckled texture, supporting a wooden sign",
-        "action": "static",
-        "position": "center"
-      },
-      {
-        "desc": "wooden sign, brown, rectangular, attached to sandstone block",
-        "action": "static",
-        "position": "center"
-      },
-      {
-        "desc": "redstone dust trail, red, linear, connecting components on the ground",
-        "action": "static",
-        "position": "center"
-      },
-      {
-        "desc": "redstone repeater, gray stone base with red torches",
-        "action": "static",
-        "position": "center-right"
-      },
-      {
-        "desc": "large tree, brown trunk, green leafy canopy",
-        "action": "static",
-        "position": "left"
-      },
-      {
-        "desc": "large purple structure, blocky, multi-layered",
-        "action": "static",
-        "position": "right"
-      },
-      {
-        "desc": "green number '13', pixelated font",
-        "action": "static",
-        "position": "bottom-center"
-      },
-      {
-        "desc": "hotbar inventory slot, containing a glass block icon",
-        "action": "static",
-        "position": "bottom"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "The player is holding a glass block in the active inventory slot.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "A redstone circuit is constructed on the sandy ground.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The number 13 is displayed in green text above the hotbar.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "A wooden sign is mounted on a sandstone block.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [
-      "13"
-    ],
-    "spatial": "The glass pane is in the immediate foreground, partially obscuring the view of the sandstone block and wooden sign behind it. The redstone dust trail runs along the ground, connecting the sandstone block setup to the redstone repeater on the right. The large tree is situated to the far left of the scene, while the large purple structure is located to the far right. The green number '13' is positioned centrally above the player's hotbar at the bottom of the screen.",
-    "parse_success": true,
-    "chunk_idx": 29,
-    "video_id": "EqaqD08ohBk",
-    "state_changes": []
-  },
-  {
-    "time": [
-      60,
-      62
-    ],
-    "visible_entities": [
-      {
-        "desc": "wooden sign block with text",
-        "action": "static",
-        "position": "right foreground"
-      },
-      {
-        "desc": "wooden sign block with text",
-        "action": "static",
-        "position": "center foreground"
-      },
-      {
-        "desc": "redstone repeater and redstone dust trail",
-        "action": "static",
-        "position": "right foreground"
-      },
-      {
-        "desc": "large green leafy tree",
-        "action": "static",
-        "position": "center background"
-      },
-      {
-        "desc": "tall white rectangular tower",
-        "action": "static",
-        "position": "left background"
-      },
-      {
-        "desc": "floating multi-layered structure",
-        "action": "static",
-        "position": "top right background"
-      },
-      {
-        "desc": "green number '13' overlay",
-        "action": "static",
-        "position": "bottom center"
-      },
-      {
-        "desc": "inventory hotbar with water bucket and cobblestone",
-        "action": "static",
-        "position": "bottom center"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "The player is standing in a sandy desert biome.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "A redstone circuit consisting of a repeater and dust is placed on the ground.",
+        "fact": "A redstone dust trail lies on the sand to the left of the water structure.",
         "confidence": 1.0
       },
       {
@@ -2105,136 +1625,847 @@
         "confidence": 1.0
       },
       {
-        "fact": "The text '51 Blocks' is visible on a wooden sign.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "Various player-built structures are visible in the distance.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [
-      "13",
-      "51 Blocks"
-    ],
-    "spatial": "The wooden sign reading '51 Blocks' is to the right of the center wooden sign. The redstone repeater is next to the rightmost wooden sign. The large green tree is in the background behind the signs. The tall white tower is to the left of the tree. The floating structure is above the buildings in the far right background.",
-    "parse_success": true,
-    "chunk_idx": 30,
-    "video_id": "EqaqD08ohBk",
-    "state_changes": []
-  },
-  {
-    "time": [
-      62,
-      64
-    ],
-    "visible_entities": [
-      {
-        "desc": "transparent glass block, cubic, clear material",
-        "action": "being placed",
-        "position": "center"
-      },
-      {
-        "desc": "wooden house, brown planks, pitched roof, signs on wall",
-        "action": "static",
-        "position": "right"
-      },
-      {
-        "desc": "sand blocks, beige, granular texture",
-        "action": "static",
-        "position": "foreground"
-      },
-      {
-        "desc": "redstone dust, red, line formation",
-        "action": "static",
-        "position": "center-left"
-      },
-      {
-        "desc": "hotbar UI, dark grey background, item slots",
-        "action": "static",
-        "position": "bottom"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "The player places a transparent glass block on top of a sand block in the center of the view.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "A wooden house with signs is visible to the right of the glass block.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "Redstone dust is laid out on the sand to the left of the glass block.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The number '13' is displayed in green above the hotbar.",
+        "fact": "A wooden house stands in the background to the right.",
         "confidence": 1.0
       }
     ],
     "ocr": [
       "13"
     ],
-    "spatial": "The transparent glass block is in the center of the screen, placed on top of a sand block. The wooden house is to the right of the glass block. The redstone dust line is to the left of the glass block. The hotbar is at the bottom of the screen.",
+    "spatial": "The blue water structure is in the center foreground, with a glass cube containing a villager positioned directly on top of it. To the right of the water structure is a wooden house. To the left of the water structure, a redstone trail extends across the sand. The green number '13' is located above the hotbar at the bottom of the screen.",
     "parse_success": true,
-    "chunk_idx": 31,
+    "chunk_idx": 22,
     "video_id": "EqaqD08ohBk",
     "state_changes": []
   },
   {
     "time": [
-      64,
-      66
+      23,
+      24
     ],
     "visible_entities": [
       {
-        "desc": "sandstone block, beige, cubic, textured",
-        "action": "static",
-        "position": "foreground left"
+        "desc": "blue water blocks, translucent, forming a flowing shape",
+        "action": "flowing and changing shape",
+        "position": "center foreground",
+        "id": "water_block_1"
       },
       {
-        "desc": "glass block, transparent, cubic",
+        "desc": "dispenser block, grey stone texture with a wooden front panel",
         "action": "static",
-        "position": "center"
+        "position": "center",
+        "id": "dispenser_block_1"
       },
       {
-        "desc": "redstone dust, red, granular, line formation",
+        "desc": "glass blocks, transparent, forming a partial enclosure",
         "action": "static",
-        "position": "center"
+        "position": "center",
+        "id": "glass_block_1"
       },
       {
-        "desc": "wooden house, brown, blocky, with windows",
+        "desc": "redstone dust trail, dark red, on the sand",
         "action": "static",
-        "position": "right background"
+        "position": "left",
+        "id": "redstone_dust_1"
       },
       {
-        "desc": "pink structure, large, floating, blocky",
+        "desc": "wooden house, brown planks with glass pane windows",
         "action": "static",
-        "position": "top left background"
+        "position": "right background",
+        "id": "wooden_house_1"
       },
       {
-        "desc": "hotbar UI, dark grey, rectangular, with item slots",
+        "desc": "hotbar UI, dark grey background with item slots",
         "action": "static",
-        "position": "bottom center"
+        "position": "bottom"
       },
       {
         "desc": "green number '13', digital font",
         "action": "static",
-        "position": "bottom center"
+        "position": "bottom center",
+        "id": "xp_level_13_1"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "The player is holding a glass block in the active hotbar slot.",
+        "fact": "Water flows out of the dispenser block and spreads across the sand.",
         "confidence": 1.0
       },
       {
-        "fact": "A line of redstone dust connects components on the sand.",
+        "fact": "The water changes shape between the two frames.",
         "confidence": 1.0
       },
       {
-        "fact": "A wooden house stands in the background to the right.",
+        "fact": "A redstone dust trail is connected to the dispenser.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The number '13' is displayed in green above the hotbar.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The player is holding a water bucket in the first slot of the hotbar.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "13"
+    ],
+    "spatial": "The flowing water is in front of the dispenser block. The dispenser is to the left of the wooden house. The redstone dust trail is to the left of the water and dispenser. The glass blocks are above and around the dispenser. The hotbar is at the bottom of the screen, below all other entities.",
+    "parse_success": true,
+    "chunk_idx": 23,
+    "video_id": "EqaqD08ohBk",
+    "state_changes": [
+      "Water blocks change shape to form a flowing pattern"
+    ]
+  },
+  {
+    "time": [
+      24,
+      25
+    ],
+    "visible_entities": [
+      {
+        "desc": "glass block structure, transparent, cubic, containing water and a villager",
+        "action": "static",
+        "position": "center",
+        "id": "villager_1"
+      },
+      {
+        "desc": "wooden house, brown, blocky, with glass pane windows",
+        "action": "static",
+        "position": "right",
+        "id": "wooden_house_1"
+      },
+      {
+        "desc": "sandstone block, beige, textured, supporting the glass structure",
+        "action": "static",
+        "position": "center",
+        "id": "sandstone_blocks_1"
+      },
+      {
+        "desc": "redstone dust trail, red, linear, on the ground",
+        "action": "static",
+        "position": "left",
+        "id": "redstone_dust_1"
+      },
+      {
+        "desc": "hotbar UI, dark background, displaying a water bucket and glass block",
+        "action": "static",
+        "position": "bottom",
+        "id": "water_bucket_1"
+      },
+      {
+        "desc": "green number '13', digital font, floating",
+        "action": "static",
+        "position": "bottom-center",
+        "id": "xp_level_13_1"
+      },
+      {
+        "desc": "pink and white structure, blocky, floating in the sky",
+        "action": "static",
+        "position": "top-left",
+        "id": "floating_structure_purple_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The player is holding a glass block in the hotbar.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A villager is trapped inside the glass structure.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The number '13' is displayed in green text above the hotbar.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "Redstone dust connects to a mechanism on the left side of the screen.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "13"
+    ],
+    "spatial": "The glass block structure is in the center of the view, resting on a sandstone block. The wooden house is to the right of the glass structure. The redstone dust trail is on the ground to the left of the central structure. The pink and white structure is floating in the sky above the left side of the scene.",
+    "parse_success": true,
+    "chunk_idx": 24,
+    "video_id": "EqaqD08ohBk",
+    "state_changes": []
+  },
+  {
+    "time": [
+      25,
+      26
+    ],
+    "visible_entities": [
+      {
+        "desc": "large, blocky, purple and pink structure with a brown end, resembling a floating ship or platform",
+        "action": "static",
+        "position": "top left",
+        "id": "floating_structure_purple_1"
+      },
+      {
+        "desc": "complex redstone contraption made of glass blocks, pistons, redstone dust, and repeaters",
+        "action": "static",
+        "position": "center",
+        "id": "redstone_contraption_1"
+      },
+      {
+        "desc": "irregularly shaped pool of blue water on the sand",
+        "action": "static",
+        "position": "center",
+        "id": "sand_blocks_1"
+      },
+      {
+        "desc": "wooden house with a sloped roof and glass pane windows",
+        "action": "static",
+        "position": "right",
+        "id": "wooden_house_1"
+      },
+      {
+        "desc": "hotbar UI element showing a water bucket and a block of glass selected",
+        "action": "static",
+        "position": "bottom",
+        "id": "water_bucket_1"
+      },
+      {
+        "desc": "green number '13' displayed on the screen",
+        "action": "static",
+        "position": "bottom center",
+        "id": "xp_level_13_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The player is looking at a redstone contraption in a desert biome.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A large purple structure floats in the sky to the left.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The number 13 is displayed in green above the hotbar.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The player has a water bucket and a glass block in their inventory.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "13"
+    ],
+    "spatial": "The redstone contraption is in the center of the view, with a pool of water to its right. The wooden house is on the far right side of the scene. The large purple structure is floating in the sky above and to the left of the contraption. The hotbar is at the bottom of the screen, below all other elements.",
+    "parse_success": true,
+    "chunk_idx": 25,
+    "video_id": "EqaqD08ohBk",
+    "state_changes": []
+  },
+  {
+    "time": [
+      26,
+      27
+    ],
+    "visible_entities": [
+      {
+        "desc": "transparent glass block structure forming a rectangular enclosure",
+        "action": "static",
+        "position": "center",
+        "id": "glass_block_1"
+      },
+      {
+        "desc": "blue water block with a flat, liquid surface",
+        "action": "static",
+        "position": "foreground",
+        "id": "water_block_1"
+      },
+      {
+        "desc": "dispenser block with a grey stone texture and a wooden button on its front face",
+        "action": "static",
+        "position": "right",
+        "id": "dispenser_block_1"
+      },
+      {
+        "desc": "sand block with a beige, granular texture",
+        "action": "static",
+        "position": "background",
+        "id": "sand_blocks_1"
+      },
+      {
+        "desc": "pink and brown block structure floating in the air",
+        "action": "static",
+        "position": "top",
+        "id": "floating_structure_purple_1"
+      },
+      {
+        "desc": "wooden sign with black text attached to a sand block",
+        "action": "static",
+        "position": "left",
+        "id": "wooden_signs_1"
+      },
+      {
+        "desc": "green number '13' displayed on the screen",
+        "action": "static",
+        "position": "bottom",
+        "id": "xp_level_13_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The player is looking at a glass enclosure in a sandy environment.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A dispenser block is positioned to the right of the glass structure.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The number '13' is visible on the screen, likely indicating an item count or level.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A wooden sign is attached to a sand block on the left side of the scene.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "13"
+    ],
+    "spatial": "The blue water block is in the foreground, in front of the central glass block structure. The dispenser block is to the right of the glass structure. The pink and brown block structure is floating above the glass enclosure. The wooden sign is to the left of the glass structure. The green number '13' is displayed at the bottom center of the screen.",
+    "parse_success": true,
+    "chunk_idx": 26,
+    "video_id": "EqaqD08ohBk",
+    "state_changes": []
+  },
+  {
+    "time": [
+      27,
+      28
+    ],
+    "visible_entities": [
+      {
+        "desc": "large, blocky, purple and pink structure floating in the sky, resembling a ship or platform",
+        "action": "static",
+        "position": "top right",
+        "id": "floating_structure_purple_1"
+      },
+      {
+        "desc": "small, grey, blocky structure floating in the sky",
+        "action": "static",
+        "position": "top center",
+        "id": "floating_structure_grey_1"
+      },
+      {
+        "desc": "blue, blocky, irregularly shaped object on the ground",
+        "action": "static",
+        "position": "foreground right",
+        "id": "water_block_1"
+      },
+      {
+        "desc": "several sand-colored blocks with signs on them, arranged in a line",
+        "action": "static",
+        "position": "center",
+        "id": "sand_blocks_1"
+      },
+      {
+        "desc": "glass panes forming a transparent barrier",
+        "action": "static",
+        "position": "center",
+        "id": "glass_block_1"
+      },
+      {
+        "desc": "large, blocky tree with a brown trunk and green leaves",
+        "action": "static",
+        "position": "left",
+        "id": "tree_1"
+      },
+      {
+        "desc": "player's hotbar UI element at the bottom of the screen",
+        "action": "static",
+        "position": "bottom",
+        "id": "water_bucket_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The camera pans to the left, revealing more of the sandy landscape and a large tree.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A large, purple, blocky structure is floating in the sky.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "Several sand blocks with signs are arranged in a line on the ground.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The number '13' is displayed in green above the player's hotbar.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "13"
+    ],
+    "spatial": "The large purple structure is floating in the sky above the sandy ground. The line of sand blocks with signs is in the center of the view, with glass panes behind them. The blue blocky object is in the foreground to the right of the sand blocks. The large tree is to the left of the other structures in the background.",
+    "parse_success": true,
+    "chunk_idx": 27,
+    "video_id": "EqaqD08ohBk",
+    "state_changes": []
+  },
+  {
+    "time": [
+      28,
+      29
+    ],
+    "visible_entities": [
+      {
+        "desc": "sand block, beige, cubic, textured",
+        "action": "static",
+        "position": "center",
+        "id": "sand_blocks_1"
+      },
+      {
+        "desc": "glass block, transparent, cubic",
+        "action": "static",
+        "position": "center",
+        "id": "glass_block_1"
+      },
+      {
+        "desc": "redstone repeater, grey stone base, red torches",
+        "action": "static",
+        "position": "right",
+        "id": "redstone_repeater_1"
+      },
+      {
+        "desc": "redstone dust, red line",
+        "action": "static",
+        "position": "right",
+        "id": "redstone_dust_1"
+      },
+      {
+        "desc": "hotbar UI, dark grey background",
+        "action": "static",
+        "position": "bottom",
+        "id": "water_bucket_1"
+      },
+      {
+        "desc": "water bucket icon, blue liquid in grey bucket",
+        "action": "static",
+        "position": "bottom"
+      },
+      {
+        "desc": "glass block icon, transparent cube",
+        "action": "static",
+        "position": "bottom",
+        "id": "glass_block_1"
+      },
+      {
+        "desc": "number 13, green text",
+        "action": "static",
+        "position": "bottom",
+        "id": "xp_level_13_1"
+      },
+      {
+        "desc": "purple structure, blocky, large",
+        "action": "static",
+        "position": "background",
+        "id": "floating_structure_purple_1"
+      },
+      {
+        "desc": "tree, brown trunk, green leaves",
+        "action": "static",
+        "position": "left",
+        "id": "tree_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The player places a glass block on top of a sand block.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The sand block is positioned in the center of the view.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A redstone circuit with a repeater is visible on the ground to the right.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The number 13 is displayed in green above the hotbar.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The hotbar shows a water bucket selected in the first slot and a glass block in the second slot.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "13"
+    ],
+    "spatial": "The sand block is in the center of the screen, with a glass block placed directly on top of it. To the right of the sand block, a redstone repeater sits on the ground connected to redstone dust. In the background, a large purple structure is visible to the right, and a tree stands on the far left.",
+    "parse_success": true,
+    "chunk_idx": 28,
+    "video_id": "EqaqD08ohBk",
+    "state_changes": []
+  },
+  {
+    "time": [
+      29,
+      30
+    ],
+    "visible_entities": [
+      {
+        "desc": "glass block, transparent, light blue tint, cubic",
+        "action": "static",
+        "position": "foreground",
+        "id": "glass_block_1"
+      },
+      {
+        "desc": "sandstone block, beige, cubic, with wooden sign attached",
+        "action": "static",
+        "position": "center",
+        "id": "sandstone_blocks_1"
+      },
+      {
+        "desc": "redstone repeater, grey base with red torches",
+        "action": "static",
+        "position": "center-right",
+        "id": "redstone_repeater_1"
+      },
+      {
+        "desc": "redstone dust, red powder trail",
+        "action": "static",
+        "position": "center-right",
+        "id": "redstone_dust_1"
+      },
+      {
+        "desc": "large tree, brown trunk, green leafy canopy",
+        "action": "static",
+        "position": "background-left",
+        "id": "tree_1"
+      },
+      {
+        "desc": "purple structure, blocky, multi-layered",
+        "action": "static",
+        "position": "background-right",
+        "id": "floating_structure_purple_1"
+      },
+      {
+        "desc": "hotbar UI, dark grey background with item slots",
+        "action": "static",
+        "position": "bottom"
+      },
+      {
+        "desc": "green number '13', digital font",
+        "action": "static",
+        "position": "bottom-center",
+        "id": "xp_level_13_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The player is holding a glass block in the foreground.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A redstone circuit is set up on the sand with repeaters and dust.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The number 13 is displayed in green above the hotbar.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "Wooden signs are attached to sandstone blocks in the middle ground.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "13"
+    ],
+    "spatial": "The glass block is in the immediate foreground, held by the player. The sandstone blocks with signs are to the left of the redstone repeater. The redstone dust trail connects components on the sand surface. The large tree is in the background to the left of the purple structure.",
+    "parse_success": true,
+    "chunk_idx": 29,
+    "video_id": "EqaqD08ohBk",
+    "state_changes": []
+  },
+  {
+    "time": [
+      30,
+      31
+    ],
+    "visible_entities": [
+      {
+        "desc": "First-person view of a Minecraft player holding a glass block in the main hand and a water bucket in the off-hand",
+        "action": "placing a glass block",
+        "position": "bottom center",
+        "id": "water_bucket_1"
+      },
+      {
+        "desc": "Light brown sand blocks forming a flat desert terrain",
+        "action": "static",
+        "position": "background",
+        "id": "sand_blocks_1"
+      },
+      {
+        "desc": "Wooden sign with black text reading '51 Blocks'",
+        "action": "static",
+        "position": "center right",
+        "id": "wooden_signs_1"
+      },
+      {
+        "desc": "Redstone repeaters and redstone dust circuitry",
+        "action": "static",
+        "position": "right",
+        "id": "redstone_dust_1"
+      },
+      {
+        "desc": "Large tree with a thick brown trunk and green leafy canopy",
+        "action": "static",
+        "position": "center left",
+        "id": "tree_1"
+      },
+      {
+        "desc": "Tall, thin white tower structure",
+        "action": "static",
+        "position": "background left",
+        "id": "white_pillar_1"
+      },
+      {
+        "desc": "Floating rectangular structure made of wood and glass",
+        "action": "static",
+        "position": "top right",
+        "id": "floating_structure_wood_1"
+      },
+      {
+        "desc": "Green number '13' overlay",
+        "action": "static",
+        "position": "bottom center",
+        "id": "xp_level_13_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The player places a glass block on the sand in front of the wooden sign.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The wooden sign displays the text '51 Blocks'.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The number '13' is visible in green above the hotbar.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "Redstone dust connects to redstone repeaters on the ground.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "51 Blocks",
+      "13"
+    ],
+    "spatial": "The player is in the foreground, placing a glass block on the sand. The wooden sign reading '51 Blocks' is to the right of the player's view. The redstone circuitry is located to the right of the sign. The large tree is to the left of the sign in the middle distance. The tall white tower is behind the tree in the background.",
+    "parse_success": true,
+    "chunk_idx": 30,
+    "video_id": "EqaqD08ohBk",
+    "state_changes": [
+      "Player places a glass block while holding water bucket"
+    ]
+  },
+  {
+    "time": [
+      31,
+      32
+    ],
+    "visible_entities": [
+      {
+        "desc": "transparent glass block with light blue edges",
+        "action": "being placed on a sand block",
+        "position": "center",
+        "id": "glass_block_1"
+      },
+      {
+        "desc": "wooden house with a gabled roof and signs on the wall",
+        "action": "static",
+        "position": "right",
+        "id": "wooden_house_1"
+      },
+      {
+        "desc": "sand block, beige and textured",
+        "action": "static",
+        "position": "center",
+        "id": "sand_blocks_1"
+      },
+      {
+        "desc": "Minecraft hotbar with a water bucket and glass block selected",
+        "action": "static",
+        "position": "bottom",
+        "id": "water_bucket_1"
+      },
+      {
+        "desc": "green number '13' text",
+        "action": "static",
+        "position": "bottom-center",
+        "id": "xp_level_13_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A transparent glass block is placed on top of a sand block in the center of the scene.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The player's inventory shows a water bucket in the first slot and a glass block in the second slot.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The number 13 is displayed in green text above the hotbar.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "13"
+    ],
+    "spatial": "The glass block is placed on top of the sand block in the center of the view. The wooden house is to the right of the glass block. The hotbar is at the bottom of the screen, below the green number 13.",
+    "parse_success": true,
+    "chunk_idx": 31,
+    "video_id": "EqaqD08ohBk",
+    "state_changes": [
+      "Glass block is placed on sand block"
+    ]
+  },
+  {
+    "time": [
+      32,
+      33
+    ],
+    "visible_entities": [
+      {
+        "desc": "glass block structure with redstone components and sandstone base",
+        "action": "static",
+        "position": "center",
+        "id": "glass_block_1"
+      },
+      {
+        "desc": "large pink and purple blocky structure floating in the sky",
+        "action": "static",
+        "position": "top left",
+        "id": "floating_structure_purple_1"
+      },
+      {
+        "desc": "wooden house with a sloped roof and windows",
+        "action": "static",
+        "position": "right",
+        "id": "wooden_house_1"
+      },
+      {
+        "desc": "sand block held in the player's hand",
+        "action": "static",
+        "position": "bottom left",
+        "id": "sand_blocks_1"
+      },
+      {
+        "desc": "hotbar interface with a water bucket and a glass block selected",
+        "action": "static",
+        "position": "bottom",
+        "id": "water_bucket_1"
+      },
+      {
+        "desc": "green number '13' displayed on screen",
+        "action": "static",
+        "position": "bottom center",
+        "id": "xp_level_13_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The player is holding a sand block in their hand.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A glass block structure is built on the sandy ground.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The number '13' is displayed in green text above the hotbar.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A large pink structure is floating in the sky.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "13"
+    ],
+    "spatial": "The glass block structure is in the center of the scene, to the left of the wooden house. The large pink structure is floating in the sky above and to the left of the glass structure. The player's hand holding a sand block is visible in the bottom left foreground.",
+    "parse_success": true,
+    "chunk_idx": 32,
+    "video_id": "EqaqD08ohBk",
+    "state_changes": []
+  },
+  {
+    "time": [
+      33,
+      34
+    ],
+    "visible_entities": [
+      {
+        "desc": "long glass tunnel structure composed of transparent glass blocks, containing water and sand blocks inside",
+        "action": "static",
+        "position": "center",
+        "id": "glass_block_1"
+      },
+      {
+        "desc": "redstone dust trail, dark red, connecting to the glass structure",
+        "action": "static",
+        "position": "center",
+        "id": "redstone_dust_1"
+      },
+      {
+        "desc": "blue water block, cubic, flowing",
+        "action": "static",
+        "position": "right",
+        "id": "water_block_1"
+      },
+      {
+        "desc": "sand ground, beige, flat",
+        "action": "static",
+        "position": "background",
+        "id": "sand_blocks_1"
+      },
+      {
+        "desc": "hotbar UI element, dark grey, containing a water bucket and glass block",
+        "action": "static",
+        "position": "bottom",
+        "id": "water_bucket_1"
+      },
+      {
+        "desc": "green number '13', digital font",
+        "action": "static",
+        "position": "bottom",
+        "id": "xp_level_13_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A long glass tunnel structure is built on the sand.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "Redstone dust connects to the glass structure.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "Water is visible at the right end of the glass tunnel.",
         "confidence": 1.0
       },
       {
@@ -2245,152 +2476,81 @@
     "ocr": [
       "13"
     ],
-    "spatial": "The sandstone block is in the foreground to the left of the glass block. The glass block is positioned above the redstone dust line. The wooden house is to the right of the glass structure in the background. The pink structure is floating above the ground in the top left.",
+    "spatial": "The glass tunnel structure is in the center of the sandy ground. The redstone dust trail is behind and connected to the glass tunnel. The blue water block is at the right end of the glass tunnel. The hotbar UI is at the bottom of the screen, below the game world.",
     "parse_success": true,
-    "chunk_idx": 32,
+    "chunk_idx": 33,
     "video_id": "EqaqD08ohBk",
     "state_changes": []
   },
   {
     "time": [
-      66,
-      68
+      34,
+      35
     ],
     "visible_entities": [
       {
-        "desc": "long transparent glass tube structure",
-        "action": "static",
-        "position": "center"
-      },
-      {
-        "desc": "blue water source block",
-        "action": "flowing",
-        "position": "right"
-      },
-      {
-        "desc": "redstone dust trail",
-        "action": "static",
-        "position": "center"
-      },
-      {
-        "desc": "redstone repeaters",
-        "action": "static",
-        "position": "center"
-      },
-      {
-        "desc": "green number '13'",
-        "action": "static",
-        "position": "bottom"
-      },
-      {
-        "desc": "hotbar with water bucket and glass icons",
-        "action": "static",
-        "position": "bottom"
-      },
-      {
-        "desc": "tall redstone torch tower",
-        "action": "static",
-        "position": "left"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "The player is looking at a long glass tube mechanism.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "Water is flowing from a source block into the glass tube.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "A redstone circuit connects to the glass tube structure.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The number 13 is displayed in green text on the screen.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [
-      "13"
-    ],
-    "spatial": "The long transparent glass tube is in the center of the view. The blue water source block is to the right of the glass tube. The redstone dust trail runs along the ground next to the glass tube. The green number '13' is at the bottom center of the screen, above the hotbar.",
-    "parse_success": true,
-    "chunk_idx": 33,
-    "video_id": "EqaqD08ohBk",
-    "state_changes": [
-      "Water source block began flowing"
-    ]
-  },
-  {
-    "time": [
-      68,
-      70
-    ],
-    "visible_entities": [
-      {
-        "desc": "stone block with a wooden button on its side, part of a mechanism",
+        "desc": "grey stone block with a wooden button on its side and a lever on top",
         "action": "static",
         "position": "right foreground"
       },
       {
-        "desc": "blue wool blocks arranged in a stepped, ramp-like shape",
+        "desc": "blue water block",
         "action": "static",
-        "position": "right foreground"
+        "position": "right foreground",
+        "id": "water_block_1"
       },
       {
-        "desc": "glass pane block held in the player's hand",
-        "action": "being held",
-        "position": "bottom right"
-      },
-      {
-        "desc": "water bucket icon in the hotbar",
+        "desc": "green number '13' text",
         "action": "static",
-        "position": "bottom left"
+        "position": "bottom center",
+        "id": "xp_level_13_1"
       },
       {
-        "desc": "green number '13' displayed on the screen",
+        "desc": "hotbar UI with a water bucket and a glass block selected",
         "action": "static",
         "position": "bottom center"
       },
       {
-        "desc": "large tree with a brown trunk and green leafy canopy",
+        "desc": "sand blocks",
         "action": "static",
-        "position": "left background"
+        "position": "ground",
+        "id": "sand_blocks_1"
       },
       {
-        "desc": "tall, thin white pillar structure",
+        "desc": "glass panes",
         "action": "static",
-        "position": "far left background"
+        "position": "mid-ground",
+        "id": "glass_block_1"
       },
       {
-        "desc": "floating structure made of pink and purple blocks",
+        "desc": "floating pink and purple block structure",
         "action": "static",
-        "position": "top right"
+        "position": "top right",
+        "id": "floating_structure_purple_1"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "The player is holding a glass pane block.",
+        "fact": "The camera view shifts slightly to the right.",
         "confidence": 1.0
       },
       {
-        "fact": "The number '13' is displayed in green text on the screen.",
+        "fact": "A grey stone block with a button is positioned next to a blue water block.",
         "confidence": 1.0
       },
       {
-        "fact": "A stone block with a button is positioned next to a blue wool ramp.",
+        "fact": "The number '13' is displayed in green above the hotbar.",
         "confidence": 1.0
       },
       {
-        "fact": "A tree stands in the sandy landscape to the left.",
+        "fact": "Glass panes are arranged in a line on the sand.",
         "confidence": 1.0
       }
     ],
     "ocr": [
       "13"
     ],
-    "spatial": "The player is holding a glass pane in the bottom right of the view. To the right, a stone block with a button is next to a blue wool ramp. In the distance to the left, a large tree is visible, and further left is a tall white pillar. A floating pink and purple structure is in the sky on the right.",
+    "spatial": "The grey stone block with a button is to the right of the blue water block. The green number '13' is above the hotbar at the bottom of the screen. The floating pink structure is above the sand ground in the background.",
     "parse_success": true,
     "chunk_idx": 34,
     "video_id": "EqaqD08ohBk",
@@ -2398,63 +2558,75 @@
   },
   {
     "time": [
-      70,
-      72
+      35,
+      36
     ],
     "visible_entities": [
       {
-        "desc": "blue, low-poly, geometric blocky shape resembling a stylized car or vehicle",
+        "desc": "blue, low-poly, geometric water block",
         "action": "static",
-        "position": "center/foreground"
+        "position": "center",
+        "id": "water_block_1"
       },
       {
-        "desc": "grey stone block with a wooden top and a lever on the side",
+        "desc": "grey stone dispenser block with wooden top and side lever",
         "action": "static",
-        "position": "center/foreground"
+        "position": "center",
+        "id": "dispenser_block_1"
       },
       {
         "desc": "transparent glass blocks forming a structure",
         "action": "static",
-        "position": "center/foreground"
+        "position": "foreground",
+        "id": "glass_block_1"
       },
       {
-        "desc": "sand blocks forming the ground",
+        "desc": "green number '13' overlay",
         "action": "static",
-        "position": "background/ground"
+        "position": "bottom",
+        "id": "xp_level_13_1"
       },
       {
-        "desc": "hotbar UI element with a water bucket icon and a glass block icon",
+        "desc": "tall white pillar structure",
         "action": "static",
-        "position": "bottom"
+        "position": "background",
+        "id": "white_pillar_1"
       },
       {
-        "desc": "green number '13'",
+        "desc": "tree with green leaves and brown trunk",
         "action": "static",
-        "position": "bottom/center"
+        "position": "background",
+        "id": "tree_1"
+      },
+      {
+        "desc": "inventory bar with water bucket and glass icons",
+        "action": "static",
+        "position": "bottom",
+        "id": "water_bucket_1"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "The camera pans to the left, revealing more of the sandy landscape.",
+        "fact": "The camera pans to the left, revealing a wider view of the sandy landscape.",
         "confidence": 1.0
       },
       {
-        "fact": "A blue geometric object is positioned next to a stone block with a lever.",
+        "fact": "A blue water block is positioned directly in front of a grey dispenser.",
         "confidence": 1.0
       },
       {
-        "fact": "The number '13' is displayed in green above the hotbar.",
+        "fact": "The number 13 is displayed in green text at the bottom center of the screen.",
         "confidence": 1.0
       },
       {
-        "fact": "The player is holding a glass block in the second slot of the hotbar.",
+        "fact": "A tall white tower stands in the distance behind the foreground objects.",
         "confidence": 1.0
       }
     ],
     "ocr": [
       "13"
     ],
-    "spatial": "The blue geometric object is to the left of the stone block with a lever. The transparent glass blocks are behind the blue object and the stone block. The hotbar is at the bottom of the screen, below the green number '13'.",
+    "spatial": "The blue water block is in front of the grey dispenser. The transparent glass blocks are to the right of the dispenser in the foreground. The tall white pillar and tree are in the background, to the left of the center.",
     "parse_success": true,
     "chunk_idx": 35,
     "video_id": "EqaqD08ohBk",
@@ -2462,56 +2634,56 @@
   },
   {
     "time": [
-      72,
-      74
+      36,
+      37
     ],
     "visible_entities": [
       {
-        "desc": "First-person view of a player's hand holding a transparent glass block with blue water inside",
+        "desc": "blue water bucket, pixelated texture, held in the player's hand",
         "action": "static",
-        "position": "foreground right",
-        "id": "glass_blocks_panes"
+        "position": "bottom right foreground",
+        "id": "water_bucket_1"
       },
       {
-        "desc": "Hotbar UI with 9 slots, the second slot selected showing a glass block icon, and the number '13' in green text above it",
-        "action": "static",
-        "position": "bottom center",
-        "id": "hotbar_ui"
-      },
-      {
-        "desc": "A single tree with a dark brown trunk and a rounded canopy of green leaves",
+        "desc": "single tree with a thick brown trunk and a rounded canopy of green leaves",
         "action": "static",
         "position": "center background",
-        "id": "trees"
+        "id": "tree_1"
       },
       {
-        "desc": "A tall, thin, white rectangular tower made of blocks",
+        "desc": "tall, thin, white rectangular pillar made of blocks",
         "action": "static",
         "position": "left background",
-        "id": "white_tower_pillar"
+        "id": "white_pillar_1"
       },
       {
-        "desc": "A flat, sandy desert terrain with light yellow sand blocks",
+        "desc": "green number '13' in a pixelated font",
         "action": "static",
-        "position": "center",
-        "id": "sand_sandstone_blocks"
+        "position": "bottom center",
+        "id": "xp_level_13_1"
       },
       {
-        "desc": "A floating structure made of brown wooden planks in the sky",
+        "desc": "hotbar inventory interface with grey slots and item icons",
         "action": "static",
-        "position": "right background",
-        "id": "wooden_house"
+        "position": "bottom",
+        "id": "water_bucket_1"
       },
       {
-        "desc": "A black crosshair symbol",
+        "desc": "glass panes and wooden planks forming a structure",
         "action": "static",
-        "position": "center",
-        "id": "crosshair"
+        "position": "right foreground",
+        "id": "glass_block_1"
+      },
+      {
+        "desc": "floating rectangular platform made of brown blocks",
+        "action": "static",
+        "position": "top right background",
+        "id": "floating_structure_wood_1"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "The player is holding a glass block containing water in the foreground.",
+        "fact": "The player is holding a blue water bucket in the bottom right of the screen.",
         "confidence": 1.0
       },
       {
@@ -2519,22 +2691,18 @@
         "confidence": 1.0
       },
       {
-        "fact": "A tree stands in the middle of a sandy desert landscape.",
+        "fact": "A tall white pillar stands in the distance to the left of a green tree.",
         "confidence": 1.0
       },
       {
-        "fact": "A tall white tower is visible in the distance to the left.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "A wooden structure is floating in the sky on the right side.",
+        "fact": "A floating platform is visible in the sky on the right side.",
         "confidence": 1.0
       }
     ],
     "ocr": [
       "13"
     ],
-    "spatial": "The player's hand holding the glass block is in the foreground on the right. The hotbar is located at the bottom center of the screen, below the crosshair. The tree is in the center background, to the right of the tall white tower. The floating wooden structure is in the upper right background, above the sandy ground.",
+    "spatial": "The player's hand holding the blue bucket is in the bottom right foreground, partially obscuring the view. The green number '13' is centered at the bottom of the screen, positioned above the hotbar. In the background, the tall white pillar is to the left of the solitary green tree. To the right, a structure made of glass and wood is situated in front of the sandy terrain.",
     "parse_success": true,
     "chunk_idx": 36,
     "video_id": "EqaqD08ohBk",
@@ -2542,19 +2710,20 @@
   },
   {
     "time": [
-      74,
-      76
+      37,
+      38
     ],
     "visible_entities": [
       {
-        "desc": "blue and grey pixelated item held in the player's hand",
+        "desc": "blue and black pixelated item held in the player's hand, resembling a bucket or tool",
         "action": "being held in the foreground",
         "position": "bottom right"
       },
       {
-        "desc": "row of sandstone blocks with wooden signs attached",
+        "desc": "row of sandstone blocks with wooden signs attached to their front faces",
         "action": "static",
-        "position": "center"
+        "position": "center",
+        "id": "sandstone_blocks_1"
       },
       {
         "desc": "large tree with a brown trunk and green leafy canopy",
@@ -2562,48 +2731,52 @@
         "position": "left"
       },
       {
-        "desc": "floating structure made of grey blocks",
+        "desc": "glass pane fence structure",
         "action": "static",
-        "position": "top center"
+        "position": "right",
+        "id": "glass_block_1"
       },
       {
-        "desc": "large purple and pink structure",
+        "desc": "floating multi-layered structure made of grey blocks",
         "action": "static",
-        "position": "top right"
+        "position": "background top",
+        "id": "floating_structure_grey_1"
       },
       {
-        "desc": "green number '13' on the screen",
+        "desc": "green number '13' displayed above the hotbar",
         "action": "static",
-        "position": "bottom center"
+        "position": "bottom center",
+        "id": "xp_level_13_1"
       },
       {
-        "desc": "hotbar with a bucket of water and a block selected",
+        "desc": "hotbar interface with a water bucket in the first slot and a glass block in the second",
         "action": "static",
-        "position": "bottom"
+        "position": "bottom",
+        "id": "water_bucket_1"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "The player is holding a blue and grey item in the bottom right corner.",
+        "fact": "The player is holding a blue and black item in their right hand.",
         "confidence": 1.0
       },
       {
-        "fact": "A row of sandstone blocks with signs extends from the foreground into the distance.",
+        "fact": "A row of sandstone blocks with signs is arranged on the sandy ground.",
         "confidence": 1.0
       },
       {
-        "fact": "The number '13' is displayed in green above the hotbar.",
+        "fact": "The number 13 is displayed in green text above the inventory hotbar.",
         "confidence": 1.0
       },
       {
-        "fact": "A large tree is visible on the left side of the sandy landscape.",
+        "fact": "A glass fence runs parallel to the row of sandstone blocks.",
         "confidence": 1.0
       }
     ],
     "ocr": [
       "13"
     ],
-    "spatial": "The player's hand holding an item is in the bottom right foreground. The row of sandstone blocks is in front of the player and to the right of the large tree. The floating grey structure is above the distant buildings in the background.",
+    "spatial": "The player's hand holding the blue item is in the bottom right foreground. The row of sandstone blocks is in the center of the view, extending into the distance. The large tree is to the left of the sandstone blocks. The glass fence is to the right of the sandstone blocks. The floating grey structure is in the sky above the background buildings.",
     "parse_success": true,
     "chunk_idx": 37,
     "video_id": "EqaqD08ohBk",
@@ -2611,59 +2784,72 @@
   },
   {
     "time": [
-      76,
-      78
+      38,
+      39
     ],
     "visible_entities": [
       {
         "desc": "Game menu overlay with grey rectangular buttons and white pixelated text",
         "action": "appearing on screen",
         "position": "center",
-        "id": "game_menu_overlay"
+        "id": "game_menu_1"
       },
       {
-        "desc": "First-person view of a hand holding a bucket filled with blue water",
-        "action": "static",
-        "position": "bottom right",
-        "id": "water_bucket_held"
-      },
-      {
-        "desc": "Wooden house structure with glass windows",
-        "action": "static",
-        "position": "right background",
-        "id": "wooden_house"
-      },
-      {
-        "desc": "Sand blocks and glass pane structures",
-        "action": "static",
-        "position": "left and center"
-      },
-      {
-        "desc": "Hotbar interface with item slots",
+        "desc": "Minecraft hotbar with a water bucket in the first slot and a glass block in the second",
         "action": "static",
         "position": "bottom",
-        "id": "hotbar_ui"
+        "id": "water_bucket_1"
+      },
+      {
+        "desc": "Water bucket held in the player's hand, showing blue water and grey metal",
+        "action": "static",
+        "position": "right foreground",
+        "id": "water_bucket_1"
+      },
+      {
+        "desc": "Sand blocks arranged in a line with glass panes on top",
+        "action": "static",
+        "position": "left",
+        "id": "sand_blocks_1"
+      },
+      {
+        "desc": "Wooden house with glass pane windows",
+        "action": "static",
+        "position": "right background",
+        "id": "wooden_house_1"
+      },
+      {
+        "desc": "Blue water puddle on the sand",
+        "action": "static",
+        "position": "center",
+        "id": "sand_blocks_1"
+      },
+      {
+        "desc": "Green number '13' indicating experience level",
+        "action": "static",
+        "position": "bottom center",
+        "id": "xp_level_13_1"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "The player opens the game menu, overlaying the gameplay view.",
+        "fact": "The game menu overlay appears, obscuring the gameplay view.",
         "confidence": 1.0
       },
       {
-        "fact": "The text 'Game menu' is displayed at the top of the menu.",
+        "fact": "The menu displays options including 'Back to Game', 'Achievements', 'Statistics', 'Options...', 'Open to LAN', and 'Save and Quit to Title'.",
         "confidence": 1.0
       },
       {
-        "fact": "The menu contains buttons labeled 'Back to Game', 'Achievements', 'Statistics', 'Options...', 'Open to LAN', and 'Save and Quit to Title'.",
+        "fact": "The player is holding a water bucket in their right hand.",
         "confidence": 1.0
       },
       {
-        "fact": "The player is holding a water bucket in the bottom right corner of the screen.",
+        "fact": "The hotbar shows a water bucket selected in the first slot.",
         "confidence": 1.0
       },
       {
-        "fact": "The number '13' is visible in green above the hotbar.",
+        "fact": "The experience level indicator shows the number 13.",
         "confidence": 1.0
       }
     ],
@@ -2677,54 +2863,61 @@
       "Save and Quit to Title",
       "13"
     ],
-    "spatial": "The game menu is centered on the screen, obscuring the background view of the sandy terrain. The wooden house is to the right of the menu in the background. The player's hand holding the water bucket is in the bottom right foreground, partially visible behind the menu overlay. The hotbar is located at the bottom of the screen, below the menu options.",
+    "spatial": "The game menu is centered on the screen, overlaying the game world. The player's hand holding the water bucket is in the bottom right foreground. The hotbar is located at the bottom of the screen, below the menu. The wooden house is to the right of the sand and glass structure in the background.",
     "parse_success": true,
     "chunk_idx": 38,
     "video_id": "EqaqD08ohBk",
     "state_changes": [
-      "Game menu overlay appeared on screen"
+      "Game menu overlay appears on screen"
     ]
   },
   {
     "time": [
-      78,
-      80
+      39,
+      40
     ],
     "visible_entities": [
       {
-        "desc": "wooden background with horizontal grain texture",
+        "desc": "wooden background texture with horizontal grain",
         "action": "static",
-        "position": "background"
+        "position": "background",
+        "id": "end_screen_bg_1"
       },
       {
-        "desc": "framed thumbnail showing a Minecraft firework launcher with text 'THE BEST FIREWORK LAUNCHER'",
+        "desc": "text reading 'Thank You For Watching' in a dark brown, serif font with a 3D shadow effect",
         "action": "static",
-        "position": "top-left"
+        "position": "center",
+        "id": "end_screen_text_thanks_1"
       },
       {
-        "desc": "framed thumbnail showing Minecraft TNT explosion with text 'REMOTE DETONATING TNT!'",
+        "desc": "text reading 'Subscribe' in a dark brown, serif font with a 3D shadow effect",
         "action": "static",
-        "position": "top-right"
+        "position": "bottom left",
+        "id": "end_screen_text_subscribe_1"
       },
       {
-        "desc": "dark brown carved wooden arrow pointing right",
+        "desc": "text reading 'More Videos' in a dark brown, serif font with a 3D shadow effect",
         "action": "static",
-        "position": "center"
+        "position": "bottom right",
+        "id": "end_screen_text_more_videos_1"
       },
       {
-        "desc": "dark brown 3D text reading 'Thank You For Watching'",
+        "desc": "framed thumbnail image showing a Minecraft firework launcher mechanism",
         "action": "static",
-        "position": "center"
+        "position": "top left",
+        "id": "thumbnail_firework_1"
       },
       {
-        "desc": "dark brown 3D text reading 'Subscribe'",
+        "desc": "framed thumbnail image showing a Minecraft TNT explosion scene",
         "action": "static",
-        "position": "bottom-left"
+        "position": "top right",
+        "id": "thumbnail_tnt_1"
       },
       {
-        "desc": "dark brown 3D text reading 'More Videos'",
+        "desc": "wooden arrow graphic pointing right",
         "action": "static",
-        "position": "bottom-right"
+        "position": "center top",
+        "id": "end_screen_arrow_1"
       }
     ],
     "atomic_facts": [
@@ -2737,15 +2930,11 @@
         "confidence": 1.0
       },
       {
-        "fact": "Two video thumbnails are positioned at the top of the screen.",
+        "fact": "The text 'Subscribe' is positioned below the left thumbnail.",
         "confidence": 1.0
       },
       {
-        "fact": "The text 'Subscribe' is located in the bottom-left corner.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The text 'More Videos' is located in the bottom-right corner.",
+        "fact": "The text 'More Videos' is positioned below the right thumbnail.",
         "confidence": 1.0
       }
     ],
@@ -2758,54 +2947,61 @@
       "Subscribe",
       "More Videos"
     ],
-    "spatial": "The 'Thank You For Watching' text is centered below the two video thumbnails. The 'Subscribe' text is to the left of the 'More Videos' text at the bottom of the screen. The wooden arrow is positioned between the two top thumbnails.",
+    "spatial": "The 'Thank You For Watching' text is centered in the middle of the screen. The 'Subscribe' text is to the left of the 'More Videos' text. The 'THE BEST FIREWORK LAUNCHER' thumbnail is to the left of the 'REMOTE DETONATING TNT!' thumbnail. The wooden arrow graphic is between the two thumbnails.",
     "parse_success": true,
     "chunk_idx": 39,
     "video_id": "EqaqD08ohBk",
     "state_changes": [
-      "Transitioned to end screen with thumbnails and text"
+      "Scene transitions to end screen with thumbnails and text"
     ]
   },
   {
     "time": [
-      80,
-      82
+      40,
+      41
     ],
     "visible_entities": [
       {
-        "desc": "wooden textured background with horizontal grain pattern",
+        "desc": "wooden textured background with dark brown grain pattern",
         "action": "static",
-        "position": "background"
+        "position": "background",
+        "id": "end_screen_bg_1"
       },
       {
-        "desc": "left framed thumbnail showing a Minecraft firework launcher structure with text 'THE BEST FIREWORK LAUNCHER'",
+        "desc": "left video thumbnail showing a Minecraft firework launcher structure with red text 'THE BEST FIREWORK LAUNCHER'",
         "action": "static",
-        "position": "top left"
+        "position": "left",
+        "id": "thumbnail_firework_1"
       },
       {
-        "desc": "right framed thumbnail showing a Minecraft TNT explosion scene with text 'REMOTE DETONATING TNT!'",
+        "desc": "right video thumbnail showing a Minecraft TNT scene with red text 'REMOTE DETONATING TNT!' and 'MINECRAFT TNT C4'",
         "action": "static",
-        "position": "top right"
+        "position": "right",
+        "id": "thumbnail_tnt_1"
       },
       {
-        "desc": "dark brown wooden arrow pointing right",
+        "desc": "dark brown carved wooden arrow pointing right",
         "action": "static",
-        "position": "top center"
+        "position": "center",
+        "id": "end_screen_arrow_1"
       },
       {
-        "desc": "text 'Thank You For Watching' in dark brown serif font",
+        "desc": "dark brown 3D text reading 'Thank You For Watching'",
         "action": "static",
-        "position": "center"
+        "position": "center",
+        "id": "end_screen_text_thanks_1"
       },
       {
-        "desc": "text 'Subscribe' in dark brown serif font",
+        "desc": "dark brown 3D text reading 'Subscribe'",
         "action": "static",
-        "position": "bottom left"
+        "position": "bottom-left",
+        "id": "end_screen_text_subscribe_1"
       },
       {
-        "desc": "text 'More Videos' in dark brown serif font",
+        "desc": "dark brown 3D text reading 'More Videos'",
         "action": "static",
-        "position": "bottom right"
+        "position": "bottom-right",
+        "id": "end_screen_text_more_videos_1"
       }
     ],
     "atomic_facts": [
@@ -2822,11 +3018,11 @@
         "confidence": 1.0
       },
       {
-        "fact": "The text 'Subscribe' is located in the bottom left corner.",
+        "fact": "The text 'Subscribe' appears in the bottom left corner.",
         "confidence": 1.0
       },
       {
-        "fact": "The text 'More Videos' is located in the bottom right corner.",
+        "fact": "The text 'More Videos' appears in the bottom right corner.",
         "confidence": 1.0
       }
     ],
@@ -2839,7 +3035,7 @@
       "Subscribe",
       "More Videos"
     ],
-    "spatial": "The wooden arrow is positioned between the left and right framed thumbnails. The 'Thank You For Watching' text is below the thumbnails and arrow. The 'Subscribe' text is to the left of the 'More Videos' text, and both are below the central message.",
+    "spatial": "The left video thumbnail is to the left of the right video thumbnail. A wooden arrow is located between the two thumbnails. The 'Thank You For Watching' text is below the thumbnails and arrow. The 'Subscribe' text is to the left of the 'More Videos' text at the bottom of the screen.",
     "parse_success": true,
     "chunk_idx": 40,
     "video_id": "EqaqD08ohBk",
@@ -2847,44 +3043,137 @@
   },
   {
     "time": [
-      82,
-      84
+      41,
+      42
     ],
     "visible_entities": [
       {
-        "desc": "wooden background with horizontal grain texture, medium brown color",
+        "desc": "wooden background texture with horizontal grain pattern",
         "action": "static",
-        "position": "background"
+        "position": "background",
+        "id": "end_screen_bg_1"
       },
       {
-        "desc": "left video thumbnail framed in wood, showing a Minecraft firework launcher structure with text 'THE BEST FIREWORK LAUNCHER'",
+        "desc": "left video thumbnail with wooden frame showing a Minecraft firework launcher structure",
         "action": "static",
-        "position": "left"
+        "position": "left",
+        "id": "thumbnail_firework_1"
       },
       {
-        "desc": "right video thumbnail framed in wood, showing Minecraft TNT explosion scene with text 'REMOTE DETONATING TNT!'",
+        "desc": "right video thumbnail with wooden frame showing a Minecraft TNT explosion scene",
         "action": "static",
-        "position": "right"
+        "position": "right",
+        "id": "thumbnail_tnt_1"
       },
       {
-        "desc": "dark brown wooden arrow graphic pointing right",
+        "desc": "dark brown wooden arrow pointing right",
         "action": "static",
-        "position": "center"
+        "position": "center",
+        "id": "end_screen_arrow_1"
       },
       {
         "desc": "text 'Thank You For Watching' in dark brown serif font",
         "action": "static",
-        "position": "center"
+        "position": "center",
+        "id": "end_screen_text_thanks_1"
       },
       {
         "desc": "text 'Subscribe' in dark brown serif font",
         "action": "static",
-        "position": "bottom-left"
+        "position": "bottom left",
+        "id": "end_screen_text_subscribe_1"
       },
       {
         "desc": "text 'More Videos' in dark brown serif font",
         "action": "static",
-        "position": "bottom-right"
+        "position": "bottom right",
+        "id": "end_screen_text_more_videos_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The video displays a static end screen layout.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "Two video thumbnails are positioned side-by-side at the top.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The text 'Thank You For Watching' is centered below the thumbnails.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The text 'Subscribe' is located at the bottom left.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The text 'More Videos' is located at the bottom right.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "THE BEST FIREWORK LAUNCHER",
+      "REMOTE DETONATING TNT!",
+      "MINECRAFT",
+      "TNT C4",
+      "Thank You For Watching",
+      "Subscribe",
+      "More Videos"
+    ],
+    "spatial": "The left video thumbnail is to the left of the right video thumbnail. A wooden arrow is positioned between the two thumbnails. The text 'Thank You For Watching' is below the thumbnails and arrow. The text 'Subscribe' is to the left of the text 'More Videos' at the bottom of the screen.",
+    "parse_success": true,
+    "chunk_idx": 41,
+    "video_id": "EqaqD08ohBk",
+    "state_changes": []
+  },
+  {
+    "time": [
+      42,
+      43
+    ],
+    "visible_entities": [
+      {
+        "desc": "wooden background texture, brown with horizontal grain pattern",
+        "action": "static",
+        "position": "background",
+        "id": "end_screen_bg_1"
+      },
+      {
+        "desc": "left video thumbnail with wooden frame, showing a Minecraft firework launcher structure and red text",
+        "action": "static",
+        "position": "top-left",
+        "id": "thumbnail_firework_1"
+      },
+      {
+        "desc": "right video thumbnail with wooden frame, showing Minecraft TNT explosion scene and red text",
+        "action": "static",
+        "position": "top-right",
+        "id": "thumbnail_tnt_1"
+      },
+      {
+        "desc": "dark brown carved wooden arrow pointing right",
+        "action": "static",
+        "position": "center-top",
+        "id": "end_screen_arrow_1"
+      },
+      {
+        "desc": "text 'Thank You For Watching' in dark brown serif font",
+        "action": "static",
+        "position": "center",
+        "id": "end_screen_text_thanks_1"
+      },
+      {
+        "desc": "text 'Subscribe' in dark brown serif font",
+        "action": "static",
+        "position": "bottom-left",
+        "id": "end_screen_text_subscribe_1"
+      },
+      {
+        "desc": "text 'More Videos' in dark brown serif font",
+        "action": "static",
+        "position": "bottom-right",
+        "id": "end_screen_text_more_videos_1"
       }
     ],
     "atomic_facts": [
@@ -2893,19 +3182,23 @@
         "confidence": 1.0
       },
       {
-        "fact": "The text 'Thank You For Watching' is centered below the video thumbnails.",
+        "fact": "The text 'Thank You For Watching' is centered on the screen.",
         "confidence": 1.0
       },
       {
-        "fact": "The 'Subscribe' text is positioned to the left of the 'More Videos' text.",
+        "fact": "The text 'Subscribe' is positioned below the 'Thank You For Watching' text on the left.",
         "confidence": 1.0
       },
       {
-        "fact": "The left thumbnail features the text 'THE BEST FIREWORK LAUNCHER'.",
+        "fact": "The text 'More Videos' is positioned below the 'Thank You For Watching' text on the right.",
         "confidence": 1.0
       },
       {
-        "fact": "The right thumbnail features the text 'REMOTE DETONATING TNT!' and 'MINECRAFT TNT C4'.",
+        "fact": "The left thumbnail contains the text 'THE BEST FIREWORK LAUNCHER'.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The right thumbnail contains the text 'REMOTE DETONATING TNT!' and 'MINECRAFT TNT C4'.",
         "confidence": 1.0
       }
     ],
@@ -2918,52 +3211,153 @@
       "Subscribe",
       "More Videos"
     ],
-    "spatial": "The left video thumbnail is to the left of the right video thumbnail. A wooden arrow is positioned between the two thumbnails. The text 'Thank You For Watching' is below the thumbnails and arrow. The text 'Subscribe' is below and to the left of the center text, while 'More Videos' is below and to the right.",
+    "spatial": "The left video thumbnail is to the left of the right video thumbnail. A wooden arrow is positioned between the two thumbnails. The 'Thank You For Watching' text is below the thumbnails and centered. The 'Subscribe' text is to the left of the 'More Videos' text, and both are below the 'Thank You For Watching' text.",
     "parse_success": true,
-    "chunk_idx": 41,
+    "chunk_idx": 42,
     "video_id": "EqaqD08ohBk",
     "state_changes": []
   },
   {
     "time": [
-      84,
-      86
+      43,
+      44
     ],
     "visible_entities": [
       {
-        "desc": "wooden textured background with horizontal grain pattern, medium brown color",
+        "desc": "wooden background with horizontal plank texture",
         "action": "static",
-        "position": "background"
+        "position": "background",
+        "id": "end_screen_bg_1"
       },
       {
-        "desc": "framed thumbnail image showing a Minecraft firework launcher structure with grey blocks and a character",
+        "desc": "left video thumbnail showing a grey blocky firework launcher structure and a character",
         "action": "static",
-        "position": "top-left"
+        "position": "left",
+        "id": "thumbnail_firework_1"
       },
       {
-        "desc": "framed thumbnail image showing a Minecraft TNT explosion scene with red text",
+        "desc": "right video thumbnail showing a Minecraft scene with TNT blocks and an explosion",
         "action": "static",
-        "position": "top-right"
+        "position": "right",
+        "id": "thumbnail_tnt_1"
+      },
+      {
+        "desc": "dark brown carved wooden arrow pointing right",
+        "action": "static",
+        "position": "center",
+        "id": "end_screen_arrow_1"
+      },
+      {
+        "desc": "text 'Thank You For Watching' in dark brown serif font",
+        "action": "static",
+        "position": "center",
+        "id": "end_screen_text_thanks_1"
+      },
+      {
+        "desc": "text 'Subscribe' in dark brown serif font",
+        "action": "static",
+        "position": "bottom-left",
+        "id": "end_screen_text_subscribe_1"
+      },
+      {
+        "desc": "text 'More Videos' in dark brown serif font",
+        "action": "static",
+        "position": "bottom-right",
+        "id": "end_screen_text_more_videos_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The screen displays a YouTube end card layout with two video thumbnails.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The left thumbnail is titled 'THE BEST FIREWORK LAUNCHER'.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The right thumbnail is titled 'REMOTE DETONATING TNT!' and 'MINECRAFT TNT C4'.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A wooden arrow points from the left thumbnail towards the right thumbnail.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The text 'Thank You For Watching' is centered below the thumbnails.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The text 'Subscribe' is located at the bottom left.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The text 'More Videos' is located at the bottom right.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "THE BEST FIREWORK LAUNCHER",
+      "REMOTE DETONATING TNT!",
+      "MINECRAFT",
+      "TNT C4",
+      "Thank You For Watching",
+      "Subscribe",
+      "More Videos"
+    ],
+    "spatial": "The left video thumbnail is to the left of the right video thumbnail. A wooden arrow is positioned between the two thumbnails, pointing to the right. The text 'Thank You For Watching' is below the thumbnails and the arrow. The text 'Subscribe' is below the left side of the screen, and 'More Videos' is below the right side.",
+    "parse_success": true,
+    "chunk_idx": 43,
+    "video_id": "EqaqD08ohBk",
+    "state_changes": []
+  },
+  {
+    "time": [
+      44,
+      45
+    ],
+    "visible_entities": [
+      {
+        "desc": "wooden background texture with horizontal grain pattern",
+        "action": "static",
+        "position": "background",
+        "id": "end_screen_bg_1"
+      },
+      {
+        "desc": "framed thumbnail image showing a Minecraft firework launcher structure",
+        "action": "static",
+        "position": "top left",
+        "id": "thumbnail_firework_1"
+      },
+      {
+        "desc": "framed thumbnail image showing a Minecraft TNT C4 remote detonator setup",
+        "action": "static",
+        "position": "top right",
+        "id": "thumbnail_tnt_1"
       },
       {
         "desc": "dark brown wooden arrow graphic pointing right",
         "action": "static",
-        "position": "center-top"
+        "position": "center",
+        "id": "end_screen_arrow_1"
       },
       {
-        "desc": "text 'Thank You For Watching' in dark brown, serif font with shadow effect",
+        "desc": "text 'Thank You For Watching' in dark brown serif font",
         "action": "static",
-        "position": "center"
+        "position": "center",
+        "id": "end_screen_text_thanks_1"
       },
       {
-        "desc": "text 'Subscribe' in dark brown, serif font with shadow effect",
+        "desc": "text 'Subscribe' in dark brown serif font",
         "action": "static",
-        "position": "bottom-left"
+        "position": "bottom left",
+        "id": "end_screen_text_subscribe_1"
       },
       {
-        "desc": "text 'More Videos' in dark brown, serif font with shadow effect",
+        "desc": "text 'More Videos' in dark brown serif font",
         "action": "static",
-        "position": "bottom-right"
+        "position": "bottom right",
+        "id": "end_screen_text_more_videos_1"
       }
     ],
     "atomic_facts": [
@@ -2976,7 +3370,97 @@
         "confidence": 1.0
       },
       {
-        "fact": "Two video thumbnails are positioned at the top of the screen.",
+        "fact": "The text 'Subscribe' is positioned below the left thumbnail.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The text 'More Videos' is positioned below the right thumbnail.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "THE BEST FIREWORK LAUNCHER",
+      "REMOTE DETONATING TNT!",
+      "MINECRAFT",
+      "TNT C4",
+      "Thank You For Watching",
+      "Subscribe",
+      "More Videos"
+    ],
+    "spatial": "The 'Thank You For Watching' text is centered horizontally between the two video thumbnails. The 'Subscribe' text is located below the left thumbnail, while the 'More Videos' text is located below the right thumbnail. A wooden arrow graphic is positioned in the center, between the two thumbnails.",
+    "parse_success": true,
+    "chunk_idx": 44,
+    "video_id": "EqaqD08ohBk",
+    "state_changes": []
+  },
+  {
+    "time": [
+      45,
+      46
+    ],
+    "visible_entities": [
+      {
+        "desc": "wooden background texture with horizontal grain pattern",
+        "action": "static",
+        "position": "background",
+        "id": "end_screen_bg_1"
+      },
+      {
+        "desc": "left video thumbnail showing a Minecraft firework launcher structure with text 'THE BEST FIREWORK LAUNCHER'",
+        "action": "static",
+        "position": "top-left",
+        "id": "thumbnail_firework_1"
+      },
+      {
+        "desc": "right video thumbnail showing Minecraft TNT blocks and a redstone circuit with text 'REMOTE DETONATING TNT!'",
+        "action": "static",
+        "position": "top-right",
+        "id": "thumbnail_tnt_1"
+      },
+      {
+        "desc": "dark brown wooden arrow graphic pointing right",
+        "action": "static",
+        "position": "center-top",
+        "id": "end_screen_arrow_1"
+      },
+      {
+        "desc": "text 'Thank You For Watching' in dark brown serif font",
+        "action": "static",
+        "position": "center",
+        "id": "end_screen_text_thanks_1"
+      },
+      {
+        "desc": "text 'Subscribe' in dark brown serif font",
+        "action": "static",
+        "position": "bottom-left",
+        "id": "end_screen_text_subscribe_1"
+      },
+      {
+        "desc": "text 'More Videos' in dark brown serif font",
+        "action": "static",
+        "position": "bottom-right",
+        "id": "end_screen_text_more_videos_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The screen displays a static YouTube end card layout.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The text 'Thank You For Watching' is centered on the screen.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "Two video thumbnails are positioned side-by-side at the top.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The left thumbnail features the text 'THE BEST FIREWORK LAUNCHER'.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The right thumbnail features the text 'REMOTE DETONATING TNT!' and 'MINECRAFT TNT C4'.",
         "confidence": 1.0
       },
       {
@@ -2997,240 +3481,7 @@
       "Subscribe",
       "More Videos"
     ],
-    "spatial": "The wooden background covers the entire frame. The two framed thumbnails are positioned side-by-side at the top, with the 'THE BEST FIREWORK LAUNCHER' thumbnail on the left and the 'REMOTE DETONATING TNT!' thumbnail on the right. A wooden arrow graphic is situated between the two thumbnails. The text 'Thank You For Watching' is centered below the thumbnails. The text 'Subscribe' is to the left of 'More Videos' at the bottom of the screen.",
-    "parse_success": true,
-    "chunk_idx": 42,
-    "video_id": "EqaqD08ohBk",
-    "state_changes": []
-  },
-  {
-    "time": [
-      86,
-      88
-    ],
-    "visible_entities": [
-      {
-        "desc": "wooden background with horizontal grain texture",
-        "action": "static",
-        "position": "background"
-      },
-      {
-        "desc": "left framed thumbnail showing a Minecraft firework launcher with red text 'THE BEST FIREWORK LAUNCHER'",
-        "action": "static",
-        "position": "top left"
-      },
-      {
-        "desc": "right framed thumbnail showing Minecraft TNT blocks with red text 'REMOTE DETONATING TNT!'",
-        "action": "static",
-        "position": "top right"
-      },
-      {
-        "desc": "dark brown carved wooden arrow pointing right",
-        "action": "static",
-        "position": "center"
-      },
-      {
-        "desc": "dark brown text 'Thank You For Watching' with a 3D shadow effect",
-        "action": "static",
-        "position": "center"
-      },
-      {
-        "desc": "dark brown text 'Subscribe' with a 3D shadow effect",
-        "action": "static",
-        "position": "bottom left"
-      },
-      {
-        "desc": "dark brown text 'More Videos' with a 3D shadow effect",
-        "action": "static",
-        "position": "bottom right"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "The video displays a static YouTube end screen layout.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The text 'Thank You For Watching' is centered on the screen.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The text 'Subscribe' is positioned below the 'Thank You For Watching' text on the left.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The text 'More Videos' is positioned below the 'Thank You For Watching' text on the right.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "Two video thumbnails are displayed side-by-side at the top of the screen.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [
-      "THE BEST FIREWORK LAUNCHER",
-      "REMOTE DETONATING TNT!",
-      "MINECRAFT",
-      "TNT C4",
-      "Thank You For Watching",
-      "Subscribe",
-      "More Videos"
-    ],
-    "spatial": "The left thumbnail is to the left of the right thumbnail. A wooden arrow is positioned between the two thumbnails. The text 'Thank You For Watching' is below the thumbnails and arrow. The text 'Subscribe' is to the left of the text 'More Videos' at the bottom of the screen.",
-    "parse_success": true,
-    "chunk_idx": 43,
-    "video_id": "EqaqD08ohBk",
-    "state_changes": []
-  },
-  {
-    "time": [
-      88,
-      90
-    ],
-    "visible_entities": [
-      {
-        "desc": "wooden background texture with horizontal grain pattern",
-        "action": "static",
-        "position": "background"
-      },
-      {
-        "desc": "left thumbnail image showing a Minecraft firework launcher mechanism with grey blocks and a character, text 'THE BEST FIREWORK LAUNCHER' in red",
-        "action": "static",
-        "position": "top-left"
-      },
-      {
-        "desc": "right thumbnail image showing a Minecraft TNT scene with explosions and red text 'REMOTE DETONATING TNT!', 'MINECRAFT TNT C4'",
-        "action": "static",
-        "position": "top-right"
-      },
-      {
-        "desc": "dark brown wooden arrow graphic pointing to the right",
-        "action": "static",
-        "position": "center"
-      },
-      {
-        "desc": "text 'Thank You For Watching' in dark brown serif font",
-        "action": "static",
-        "position": "center"
-      },
-      {
-        "desc": "text 'Subscribe' in dark brown serif font",
-        "action": "static",
-        "position": "bottom-left"
-      },
-      {
-        "desc": "text 'More Videos' in dark brown serif font",
-        "action": "static",
-        "position": "bottom-right"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "The video displays a static YouTube end screen layout.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The text 'Thank You For Watching' is centered horizontally.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The 'Subscribe' text is positioned below the left thumbnail.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The 'More Videos' text is positioned below the right thumbnail.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [
-      "THE BEST FIREWORK LAUNCHER",
-      "REMOTE DETONATING TNT!",
-      "MINECRAFT",
-      "TNT C4",
-      "Thank You For Watching",
-      "Subscribe",
-      "More Videos"
-    ],
-    "spatial": "The left thumbnail is to the left of the right thumbnail. A wooden arrow is positioned between the two thumbnails. The 'Thank You For Watching' text is below the thumbnails and arrow. The 'Subscribe' text is below the 'Thank You For Watching' text on the left side, and the 'More Videos' text is below it on the right side.",
-    "parse_success": true,
-    "chunk_idx": 44,
-    "video_id": "EqaqD08ohBk",
-    "state_changes": []
-  },
-  {
-    "time": [
-      90,
-      92
-    ],
-    "visible_entities": [
-      {
-        "desc": "wooden textured background with horizontal grain pattern",
-        "action": "static",
-        "position": "background"
-      },
-      {
-        "desc": "left video thumbnail showing a Minecraft firework launcher with red text 'THE BEST FIREWORK LAUNCHER'",
-        "action": "static",
-        "position": "top-left"
-      },
-      {
-        "desc": "right video thumbnail showing Minecraft TNT blocks and red text 'REMOTE DETONATING TNT!'",
-        "action": "static",
-        "position": "top-right"
-      },
-      {
-        "desc": "dark brown carved wooden arrow pointing right",
-        "action": "static",
-        "position": "center"
-      },
-      {
-        "desc": "dark brown embossed text 'Thank You For Watching'",
-        "action": "static",
-        "position": "center"
-      },
-      {
-        "desc": "dark brown embossed text 'Subscribe'",
-        "action": "static",
-        "position": "bottom-left"
-      },
-      {
-        "desc": "dark brown embossed text 'More Videos'",
-        "action": "static",
-        "position": "bottom-right"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "The screen displays a static YouTube end card layout.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The text 'Thank You For Watching' is positioned in the center of the screen.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The text 'Subscribe' is located at the bottom left.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The text 'More Videos' is located at the bottom right.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "Two video thumbnails are displayed at the top of the screen.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [
-      "THE BEST FIREWORK LAUNCHER",
-      "REMOTE DETONATING TNT!",
-      "MINECRAFT",
-      "TNT C4",
-      "Thank You For Watching",
-      "Subscribe",
-      "More Videos"
-    ],
-    "spatial": "The left video thumbnail is to the left of the right video thumbnail. A wooden arrow is positioned between the two thumbnails. The text 'Thank You For Watching' is below the thumbnails and arrow. The text 'Subscribe' is below and to the left of the central text, while 'More Videos' is below and to the right.",
+    "spatial": "The left video thumbnail is to the left of the right video thumbnail. A wooden arrow graphic is positioned between the two thumbnails. The text 'Thank You For Watching' is below the thumbnails and centered horizontally. The text 'Subscribe' is below the 'Thank You For Watching' text and to the left. The text 'More Videos' is below the 'Thank You For Watching' text and to the right.",
     "parse_success": true,
     "chunk_idx": 45,
     "video_id": "EqaqD08ohBk",

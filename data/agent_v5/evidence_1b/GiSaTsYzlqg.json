@@ -2,42 +2,46 @@
   {
     "time": [
       0,
-      2
+      1
     ],
     "visible_entities": [
       {
-        "desc": "man with short dark brown hair, full dark beard, wearing a light mint green short-sleeved t-shirt with a chest pocket",
-        "action": "speaking to the camera",
+        "desc": "man with short dark hair, full beard, wearing a light mint green t-shirt with a left chest pocket",
+        "action": "smiling and talking",
         "position": "center",
         "id": "person_chef_1"
       },
       {
         "desc": "small black lavalier microphone",
         "action": "clipped to shirt",
-        "position": "center"
+        "position": "center",
+        "id": "mic_lavalier"
       },
       {
         "desc": "stainless steel pots and pans",
-        "action": "hanging from a rack",
-        "position": "left",
-        "id": "pots_hanging_1"
+        "action": "hanging",
+        "position": "left"
       },
       {
-        "desc": "glass jars and bottles",
-        "action": "sitting on a white shelf",
+        "desc": "white wall-mounted shelf with glass jars",
+        "action": "static",
         "position": "right",
-        "id": "shelf_white_1"
+        "id": "shelf_wall"
       },
       {
         "desc": "black countertop",
         "action": "static",
         "position": "bottom",
-        "id": "countertop_black_1"
+        "id": "countertop_black"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "The man is facing forward and speaking.",
+        "fact": "The man is smiling with his mouth open in the first frame.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The man's mouth is closed in the second frame.",
         "confidence": 1.0
       },
       {
@@ -45,16 +49,16 @@
         "confidence": 1.0
       },
       {
-        "fact": "Pots and pans are hanging on a rack to the left of the man.",
+        "fact": "Pots and pans are hanging from a rack on the left side of the kitchen.",
         "confidence": 1.0
       },
       {
-        "fact": "Glass jars are arranged on a shelf to the right of the man.",
+        "fact": "Glass jars containing ingredients are sitting on a shelf on the right side.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The man is standing in the center of the kitchen, positioned in front of a window. To his left, a rack of metal pots hangs above the counter. To his right, a white shelf holding glass jars is mounted on the wall above a wooden cutting board.",
+    "spatial": "The man is standing in the center of the kitchen, in front of a window. To his left, pots and pans are hanging above a black countertop. To his right, a white shelf with glass jars is mounted on the wall above a wooden cutting board.",
     "parse_success": true,
     "chunk_idx": 0,
     "video_id": "GiSaTsYzlqg",
@@ -62,128 +66,148 @@
   },
   {
     "time": [
-      2,
-      4
+      1,
+      2
     ],
     "visible_entities": [
       {
-        "desc": "golden-brown, textured, round cookies with visible oats",
-        "action": "static",
-        "position": "foreground",
-        "id": "cookies_baked_1"
+        "desc": "man with short dark hair, beard, wearing a light green t-shirt with a pocket and a lapel microphone",
+        "action": "standing in kitchen",
+        "position": "center",
+        "id": "person_chef_1"
       },
       {
-        "desc": "silver metal wire cooling rack",
+        "desc": "golden-brown textured cookies",
+        "action": "resting on wire rack",
+        "position": "foreground",
+        "id": "cookies_oatmeal_baked"
+      },
+      {
+        "desc": "metal wire cooling rack",
         "action": "static",
-        "position": "center",
-        "id": "rack_cooling_1"
+        "position": "foreground",
+        "id": "rack_cooling_wire"
+      },
+      {
+        "desc": "kitchen background with hanging pots, shelves with jars, and a window",
+        "action": "static",
+        "position": "background",
+        "id": "background_kitchen"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "Cookies are resting on a metal wire rack.",
+        "fact": "The video cuts from a man standing in a kitchen to a close-up of cookies.",
         "confidence": 1.0
       },
       {
-        "fact": "The cookies have a rough, textured surface.",
+        "fact": "The man is wearing a light green t-shirt.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The cookies are resting on a metal wire rack.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The cookies appear golden-brown and textured.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The golden-brown cookies are arranged on top of the silver wire cooling rack. The rack is positioned over a dark surface.",
+    "spatial": "The man is standing in the center of the kitchen. The cookies are shown in a close-up view, resting on top of the wire rack. The kitchen background is behind the man.",
     "parse_success": true,
     "chunk_idx": 1,
     "video_id": "GiSaTsYzlqg",
     "state_changes": [
-      "cut to finished cookies on cooling rack (intro flash-forward)"
+      "Scene transition from intro to finished cookies on rack"
     ]
   },
   {
     "time": [
-      4,
-      6
+      2,
+      3
     ],
     "visible_entities": [
       {
-        "desc": "golden-brown oatmeal cookie with a rough, textured surface",
+        "desc": "golden-brown oatmeal cookies with a rough, textured surface and visible oat flakes",
+        "action": "resting on a wire rack",
+        "position": "background",
+        "id": "cookies_oatmeal_baked"
+      },
+      {
+        "desc": "golden-brown oatmeal cookies with a rough, textured surface and visible oat flakes",
         "action": "being picked up",
-        "position": "center",
-        "id": "cookies_baked_1"
+        "position": "foreground",
+        "id": "cookies_oatmeal_baked"
+      },
+      {
+        "desc": "silver metal wire cooling rack with a grid pattern",
+        "action": "static",
+        "position": "background",
+        "id": "rack_cooling_wire"
+      },
+      {
+        "desc": "woven wicker basket lined with a white cloth napkin",
+        "action": "static",
+        "position": "foreground",
+        "id": "basket_wicker"
       },
       {
         "desc": "hand with fair skin",
-        "action": "picking up the cookie",
-        "position": "right",
+        "action": "picking up a cookie",
+        "position": "foreground",
         "id": "person_chef_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A hand picks up a golden-brown oatmeal cookie from a white cloth napkin.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "Several oatmeal cookies are cooling on a silver wire rack in the background.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The cookies have a rough texture with visible oat flakes.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The hand is in the foreground, reaching into the wicker basket to pick up a cookie. The wicker basket is in front of the wire cooling rack. The wire cooling rack is behind the basket and holds several other cookies.",
+    "parse_success": true,
+    "chunk_idx": 2,
+    "video_id": "GiSaTsYzlqg",
+    "state_changes": [
+      "Hand picks up a cookie from the rack"
+    ]
+  },
+  {
+    "time": [
+      3,
+      4
+    ],
+    "visible_entities": [
+      {
+        "desc": "golden-brown oatmeal cookies with a rough, textured surface",
+        "action": "static",
+        "position": "foreground",
+        "id": "cookies_oatmeal_baked"
+      },
+      {
+        "desc": "dark brown woven basket",
+        "action": "static",
+        "position": "foreground",
+        "id": "basket_wicker"
       },
       {
         "desc": "white cloth napkin",
         "action": "static",
         "position": "center",
-        "id": "napkin_white_1"
+        "id": "napkin_white"
       },
       {
-        "desc": "woven basket",
-        "action": "static",
-        "position": "bottom",
-        "id": "basket_woven_1"
-      },
-      {
-        "desc": "metal cooling rack",
-        "action": "static",
-        "position": "background",
-        "id": "rack_cooling_1"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "A hand picks up a golden-brown oatmeal cookie from a white cloth.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The cookies are resting on a white cloth inside a woven basket.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "A metal cooling rack is visible in the background.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [],
-    "spatial": "The hand is to the right of the cookie it is holding. The cookie is on top of the white cloth. The white cloth is inside the woven basket. The metal cooling rack is behind the basket.",
-    "parse_success": true,
-    "chunk_idx": 2,
-    "video_id": "GiSaTsYzlqg",
-    "state_changes": [
-      "hand picks up cookie (first action)"
-    ]
-  },
-  {
-    "time": [
-      6,
-      8
-    ],
-    "visible_entities": [
-      {
-        "desc": "golden-brown oatmeal cookies, textured with visible oats, round shape",
-        "action": "static",
-        "position": "foreground",
-        "id": "cookies_baked_1"
-      },
-      {
-        "desc": "woven wicker basket, dark brown",
-        "action": "static",
-        "position": "bottom",
-        "id": "basket_woven_1"
-      },
-      {
-        "desc": "white cloth napkin, fabric texture",
-        "action": "static",
-        "position": "center",
-        "id": "napkin_white_1"
-      },
-      {
-        "desc": "man with short dark hair, beard, wearing a light green t-shirt with a pocket, small black microphone",
+        "desc": "man with short dark hair, beard, wearing a light green t-shirt with a pocket and a lapel microphone",
         "action": "static",
         "position": "background",
         "id": "person_chef_1"
@@ -191,127 +215,122 @@
     ],
     "atomic_facts": [
       {
-        "fact": "The video cuts from a close-up of cookies to a man standing in a kitchen.",
+        "fact": "A pile of oatmeal cookies rests on a white cloth inside a basket.",
         "confidence": 1.0
       },
       {
-        "fact": "The cookies are resting on a white cloth inside a basket.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The man is wearing a lavalier microphone.",
+        "fact": "A man in a green shirt stands in a kitchen setting.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The oatmeal cookies are on top of the white cloth napkin. The napkin is inside the woven basket. The man is in the background, behind the shot of the cookies.",
+    "spatial": "The oatmeal cookies are on top of the white cloth napkin. The white cloth napkin is inside the woven basket. The man is in the background, behind the basket of cookies.",
     "parse_success": true,
     "chunk_idx": 3,
     "video_id": "GiSaTsYzlqg",
-    "state_changes": [
-      "cut back to chef speaking"
-    ]
+    "state_changes": []
   },
   {
     "time": [
-      8,
-      10
+      4,
+      5
     ],
     "visible_entities": [
       {
-        "desc": "man with short dark hair and beard, wearing a light green t-shirt with a chest pocket and a black lavalier microphone",
-        "action": "standing and talking",
+        "desc": "man with short dark hair, beard, wearing a light green t-shirt with a pocket, black lavalier microphone",
+        "action": "standing and smiling",
         "position": "center",
         "id": "person_chef_1"
       },
       {
-        "desc": "clear glass bowl containing chunks of yellow butter",
+        "desc": "clear glass bowl containing yellow chunks of butter",
         "action": "static",
-        "position": "foreground",
-        "id": "butter_1"
+        "position": "center foreground",
+        "id": "bowl_glass_mixing"
       },
       {
-        "desc": "black countertop surface",
+        "desc": "black kitchen countertop",
         "action": "static",
         "position": "bottom",
-        "id": "countertop_black_1"
+        "id": "countertop_black"
       },
       {
-        "desc": "hanging metal pots and pans",
+        "desc": "white bowl",
         "action": "static",
         "position": "left",
-        "id": "pots_hanging_1"
+        "id": "bowl_white_ceramic"
       },
       {
-        "desc": "white shelf with glass jars and bottles",
+        "desc": "digital kitchen scale",
         "action": "static",
         "position": "right",
-        "id": "shelf_white_1"
+        "id": "scale_kitchen"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "The man in the light green t-shirt is standing in the center of the kitchen.",
+        "fact": "The man is standing in the kitchen facing the camera.",
         "confidence": 1.0
       },
       {
-        "fact": "A glass bowl with butter is sitting on the black countertop.",
+        "fact": "Chunks of butter are inside a clear glass bowl.",
         "confidence": 1.0
       },
       {
-        "fact": "The camera angle shifts from the man to a close-up of the ingredients on the counter.",
+        "fact": "The glass bowl is sitting on the black countertop.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A digital scale is placed on the counter to the right of the bowl.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The man is standing in the center of the frame, positioned in front of a window. To his left, metal pots are hanging on the wall. To his right, a white shelf holding jars is mounted above the counter. The glass bowl containing butter is on the black countertop in the foreground.",
+    "spatial": "The man is standing behind the black countertop. The glass bowl with butter is in the center of the counter, to the right of a white bowl and to the left of a digital scale.",
     "parse_success": true,
     "chunk_idx": 4,
     "video_id": "GiSaTsYzlqg",
-    "state_changes": [
-      "ingredients appear - butter in bowl (prep begins)"
-    ]
+    "state_changes": []
   },
   {
     "time": [
-      10,
-      12
+      5,
+      6
     ],
     "visible_entities": [
       {
-        "desc": "clear glass mixing bowl, round, transparent",
+        "desc": "clear glass mixing bowl, round, transparent, empty",
         "action": "static",
         "position": "center",
-        "id": "bowl_glass_mixing_1"
+        "id": "bowl_glass_mixing"
       },
       {
-        "desc": "human hand, fair skin",
-        "action": "pointing at the bowl",
-        "position": "right",
-        "id": "person_chef_1"
+        "desc": "human hand with fair skin, fingers extended",
+        "action": "gesturing near the bowl",
+        "position": "right"
       },
       {
-        "desc": "small glass jar with white powder",
+        "desc": "small glass jar containing white granular substance",
         "action": "static",
         "position": "left",
-        "id": "flour_white_1"
+        "id": "jar_small_white"
       },
       {
-        "desc": "YouTube interface overlay, white background with black text and red button",
+        "desc": "small glass dish with yellow chunks",
+        "action": "static",
+        "position": "background",
+        "id": "dish_small_glass"
+      },
+      {
+        "desc": "YouTube interface overlay with white background, black text, and red button",
         "action": "static",
         "position": "top-left",
-        "id": "youtube_overlay_1"
-      },
-      {
-        "desc": "black computer cursor arrow",
-        "action": "static",
-        "position": "left",
-        "id": "cursor_black_1"
+        "id": "overlay_youtube_interface"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A hand points towards the clear glass bowl.",
+        "fact": "A hand is gesturing near the rim of the glass bowl.",
         "confidence": 1.0
       },
       {
@@ -319,11 +338,11 @@
         "confidence": 1.0
       },
       {
-        "fact": "The text 'Warren Nash' and '18K subscribers' is displayed on the overlay.",
+        "fact": "The glass bowl is sitting on a dark countertop.",
         "confidence": 1.0
       },
       {
-        "fact": "A cursor arrow is positioned near the small jar on the left.",
+        "fact": "The text 'Warren Nash' and 'SUBSCRIBE' is visible on the overlay.",
         "confidence": 1.0
       }
     ],
@@ -336,21 +355,23 @@
       "18K subscribers",
       "SUBSCRIBE"
     ],
-    "spatial": "The clear glass bowl is in the center of the frame. A hand is to the right of the bowl, pointing at it. A small jar is to the left of the bowl. The YouTube overlay is above the jar in the top-left corner.",
+    "spatial": "The clear glass bowl is in the center of the frame. The hand is to the right of the bowl. The small jar with white powder is to the left of the bowl. The YouTube overlay is above the jar on the left side.",
     "parse_success": true,
     "chunk_idx": 5,
     "video_id": "GiSaTsYzlqg",
-    "state_changes": []
+    "state_changes": [
+      "Start of recipe demonstration with empty bowl"
+    ]
   },
   {
     "time": [
-      12,
-      14
+      6,
+      7
     ],
     "visible_entities": [
       {
         "desc": "hand with light skin tone",
-        "action": "pouring white grains",
+        "action": "pouring white rice",
         "position": "top center",
         "id": "person_chef_1"
       },
@@ -358,54 +379,50 @@
         "desc": "clear glass bowl with fluted rim and radial pattern",
         "action": "being tilted",
         "position": "center",
-        "id": "bowl_glass_mixing_1"
+        "id": "bowl_glass_mixing"
       },
       {
-        "desc": "white granular substance (rice or sugar)",
-        "action": "falling into bowl",
+        "desc": "white rice grains",
+        "action": "falling",
         "position": "center",
-        "id": "flour_white_1"
+        "id": "ingredient_flour_sugar"
       },
       {
         "desc": "large clear glass mixing bowl",
         "action": "static",
         "position": "bottom center",
-        "id": "bowl_glass_mixing_1"
+        "id": "bowl_glass_mixing"
       },
       {
         "desc": "green glass bottle",
         "action": "static",
         "position": "left",
-        "id": "bottle_green_1"
+        "id": "bottle_oil_green"
       },
       {
         "desc": "YouTube interface overlay",
         "action": "static",
         "position": "top left",
-        "id": "youtube_overlay_1"
+        "id": "overlay_youtube_interface"
       },
       {
-        "desc": "black cursor arrow",
+        "desc": "black mouse cursor arrow",
         "action": "clicking bell icon",
         "position": "top left",
-        "id": "cursor_black_1"
+        "id": "cursor_mouse"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A hand tilts a small glass bowl to pour white grains into a larger bowl.",
+        "fact": "A hand is pouring white rice from a small glass bowl into a larger glass bowl.",
         "confidence": 1.0
       },
       {
-        "fact": "The cursor clicks the notification bell icon on the YouTube interface.",
+        "fact": "The YouTube interface shows the channel name 'Warren Nash' with 18K subscribers.",
         "confidence": 1.0
       },
       {
-        "fact": "The YouTube channel name is Warren Nash with 18K subscribers.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The subscribe button status changes to 'SUBSCRIBED'.",
+        "fact": "The mouse cursor clicks the notification bell icon next to the 'SUBSCRIBED' button.",
         "confidence": 1.0
       }
     ],
@@ -418,43 +435,37 @@
       "18K subscribers",
       "SUBSCRIBED"
     ],
-    "spatial": "The hand is above the large glass bowl, holding the smaller glass bowl. The green bottle is to the left of the large bowl. The YouTube interface overlay is in the top left corner of the screen, obscuring part of the background.",
+    "spatial": "The hand is above the large glass bowl, holding the smaller glass bowl. The white rice is falling from the small bowl into the large bowl. The green bottle is to the left of the large bowl. The YouTube interface overlay is in the top left corner of the screen.",
     "parse_success": true,
     "chunk_idx": 6,
     "video_id": "GiSaTsYzlqg",
     "state_changes": [
-      "pouring white grains into bowl starts (first ingredient addition)"
+      "Pouring rice grains into bowl"
     ]
   },
   {
     "time": [
-      14,
-      16
+      7,
+      8
     ],
     "visible_entities": [
       {
         "desc": "clear glass bowl, round, transparent",
         "action": "static",
         "position": "center",
-        "id": "bowl_glass_mixing_1"
+        "id": "bowl_glass_mixing"
       },
       {
         "desc": "white granular powder, fine texture",
-        "action": "falling into bowl",
+        "action": "being poured",
         "position": "center",
-        "id": "flour_white_1"
+        "id": "ingredient_flour_sugar"
       },
       {
         "desc": "YouTube interface overlay, white background, black text",
         "action": "static",
         "position": "top-left",
-        "id": "youtube_overlay_1"
-      },
-      {
-        "desc": "dark countertop, smooth surface",
-        "action": "static",
-        "position": "background",
-        "id": "countertop_black_1"
+        "id": "overlay_youtube_interface"
       }
     ],
     "atomic_facts": [
@@ -463,156 +474,138 @@
         "confidence": 1.0
       },
       {
-        "fact": "The pile of powder inside the bowl increases in size.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The YouTube overlay displays the channel name 'Warren Nash' and '18K subscribers'.",
+        "fact": "The YouTube overlay shows the channel name 'Warren Nash' and 'SUBSCRIBED' status.",
         "confidence": 1.0
       }
     ],
     "ocr": [
+      "Warren Nash",
+      "18K subscribers",
+      "SUBSCRIBED",
       "73",
       "1",
       "Share",
-      "Add to",
-      "Warren Nash",
-      "18K subscribers",
-      "SUBSCRIBED"
+      "Add to"
     ],
-    "spatial": "The clear glass bowl is centered on the dark countertop. The white granular powder is falling from above into the bowl. The YouTube interface overlay is positioned in the top-left corner, partially obscuring the background.",
+    "spatial": "The clear glass bowl is in the center of the frame. The white powder is falling from above into the bowl. The YouTube interface overlay is located in the top-left corner, floating above the scene.",
     "parse_success": true,
     "chunk_idx": 7,
     "video_id": "GiSaTsYzlqg",
-    "state_changes": []
-  },
-  {
-    "time": [
-      16,
-      18
-    ],
-    "visible_entities": [
-      {
-        "desc": "clear glass bowl containing a mound of fine white powder",
-        "action": "static",
-        "position": "center",
-        "id": "bowl_glass_mixing_1"
-      },
-      {
-        "desc": "clear glass jar with a metal clasp lid, filled with rolled oats",
-        "action": "being tilted to pour contents",
-        "position": "top right",
-        "id": "rolled_oats_1"
-      },
-      {
-        "desc": "hands holding the glass jar",
-        "action": "pouring oats",
-        "position": "top right",
-        "id": "person_chef_1"
-      },
-      {
-        "desc": "stream of beige rolled oats",
-        "action": "falling from jar",
-        "position": "center",
-        "id": "rolled_oats_1"
-      },
-      {
-        "desc": "dark green bottle with a label",
-        "action": "static",
-        "position": "left",
-        "id": "bottle_green_1"
-      },
-      {
-        "desc": "small glass container with white granules",
-        "action": "static",
-        "position": "top left",
-        "id": "flour_white_1"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "A person is pouring rolled oats from a glass jar into a bowl.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "A mound of white powder sits inside a clear glass bowl.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "A stream of oats is falling between the jar and the bowl.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [
-      "ge"
-    ],
-    "spatial": "The clear glass bowl containing white powder is in the center of the frame. A pair of hands holding a glass jar filled with oats is positioned above and to the right of the bowl, pouring the oats into it. A dark green bottle is visible to the left of the bowl, and a small container of white granules is behind the bowl.",
-    "parse_success": true,
-    "chunk_idx": 8,
-    "video_id": "GiSaTsYzlqg",
     "state_changes": [
-      "oats pouring from jar begins (new ingredient)"
+      "Pouring white granular powder into bowl"
     ]
   },
   {
     "time": [
-      18,
-      20
+      8,
+      9
     ],
     "visible_entities": [
       {
-        "desc": "hands holding a glass jar",
+        "desc": "clear glass bowl containing white flour",
+        "action": "static",
+        "position": "center",
+        "id": "bowl_glass_mixing"
+      },
+      {
+        "desc": "glass jar with metal clasp lid containing rolled oats",
         "action": "pouring oats",
+        "position": "top right",
+        "id": "jar_oats_glass"
+      },
+      {
+        "desc": "hands holding the glass jar",
+        "action": "tilting jar",
         "position": "top right",
         "id": "person_chef_1"
       },
       {
-        "desc": "glass jar with metal clasp lid",
-        "action": "being tilted",
-        "position": "top right",
-        "id": "jar_oats_clasp_1"
+        "desc": "dark green bottle with label",
+        "action": "static",
+        "position": "left",
+        "id": "bottle_oil_green"
       },
       {
-        "desc": "dry rolled oats, beige, flaky texture",
+        "desc": "white cylindrical container",
+        "action": "static",
+        "position": "background left",
+        "id": "container_white_cylindrical"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "Hands are tilting a glass jar to pour rolled oats.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "Rolled oats are falling from the jar into a bowl.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A clear glass bowl with white flour sits on the counter.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A dark green bottle is positioned to the left of the bowl.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The glass jar containing oats is held above the bowl. The bowl with flour is in the center foreground. The dark green bottle is to the left of the bowl. The white container is behind the green bottle.",
+    "parse_success": true,
+    "chunk_idx": 8,
+    "video_id": "GiSaTsYzlqg",
+    "state_changes": [
+      "Pouring rolled oats from jar into bowl"
+    ]
+  },
+  {
+    "time": [
+      9,
+      10
+    ],
+    "visible_entities": [
+      {
+        "desc": "hands holding a clear glass jar with a metal clasp lid",
+        "action": "pouring oats",
+        "position": "top/center",
+        "id": "person_chef_1"
+      },
+      {
+        "desc": "light-brown rolled oats, flaky texture",
         "action": "falling",
         "position": "center",
-        "id": "rolled_oats_1"
+        "id": "ingredient_oats"
       },
       {
         "desc": "white bowl",
         "action": "static",
         "position": "bottom",
-        "id": "bowl_small_white_1"
+        "id": "bowl_white_ceramic"
       },
       {
-        "desc": "black electric kettle",
+        "desc": "glass bowl containing a yellow substance",
         "action": "static",
-        "position": "background right",
-        "id": "kettle_black_1"
-      },
-      {
-        "desc": "glass mixing bowl",
-        "action": "static",
-        "position": "background center",
-        "id": "bowl_glass_mixing_1"
+        "position": "background",
+        "id": "bowl_glass_mixing"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A person is pouring dry rolled oats from a glass jar.",
+        "fact": "A person is pouring rolled oats from a glass jar.",
         "confidence": 1.0
       },
       {
-        "fact": "The oats are falling into a white bowl below.",
+        "fact": "The oats are falling into a white bowl.",
         "confidence": 1.0
       },
       {
-        "fact": "A black kettle is visible in the background.",
+        "fact": "A glass bowl with a yellow substance sits in the background.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The hands holding the glass jar are positioned above the white bowl. The stream of oats falls from the jar in the center of the frame into the bowl at the bottom. The black kettle is behind the pouring action to the right.",
+    "spatial": "The hands holding the jar are above the white bowl. The stream of oats is falling between the jar and the bowl. The glass bowl with the yellow substance is behind the white bowl and to the right of the falling oats.",
     "parse_success": true,
     "chunk_idx": 9,
     "video_id": "GiSaTsYzlqg",
@@ -620,108 +613,105 @@
   },
   {
     "time": [
-      20,
-      22
+      10,
+      11
     ],
     "visible_entities": [
       {
-        "desc": "clear glass bowl, transparent, round",
+        "desc": "clear glass bowl, transparent, round, containing dry ingredients",
         "action": "static",
         "position": "center",
-        "id": "bowl_glass_mixing_1"
+        "id": "bowl_glass_mixing"
       },
       {
-        "desc": "dry rolled oats, beige, flaky texture",
+        "desc": "rolled oats, beige, flaky texture, dry",
         "action": "being covered",
         "position": "bottom",
-        "id": "rolled_oats_1"
+        "id": "ingredient_oats"
       },
       {
-        "desc": "white liquid stream, opaque, pouring",
+        "desc": "white granular powder, likely sugar, pouring stream",
         "action": "pouring into bowl",
-        "position": "center"
+        "position": "center",
+        "id": "ingredient_flour_sugar"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A stream of white liquid is being poured into the glass bowl.",
+        "fact": "A stream of white granular powder is being poured into the glass bowl.",
         "confidence": 1.0
       },
       {
-        "fact": "The liquid covers the dry oats at the bottom of the bowl.",
+        "fact": "The powder falls onto a bed of rolled oats.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The bowl is sitting on a dark surface.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The clear glass bowl is in the center of the frame. The dry rolled oats are at the bottom inside the bowl. The white liquid stream is pouring from the top into the center of the bowl, landing on top of the oats.",
+    "spatial": "The clear glass bowl is in the center of the frame. Inside the bowl, the rolled oats are at the bottom, and the white powder is falling from above onto the oats.",
     "parse_success": true,
     "chunk_idx": 10,
     "video_id": "GiSaTsYzlqg",
     "state_changes": [
-      "white liquid pouring into bowl (new ingredient)"
+      "Pouring sugar stream into bowl"
     ]
   },
   {
     "time": [
-      22,
-      24
+      11,
+      12
     ],
     "visible_entities": [
       {
-        "desc": "clear glass mixing bowl",
+        "desc": "clear glass bowl, round, transparent, containing dry ingredients",
         "action": "static",
-        "position": "foreground",
-        "id": "bowl_glass_mixing_1"
+        "position": "foreground/center",
+        "id": "bowl_glass_mixing"
       },
       {
-        "desc": "white granulated sugar",
+        "desc": "rolled oats, beige, flaky texture",
         "action": "static",
-        "position": "center",
-        "id": "flour_white_1"
+        "position": "inside bowl",
+        "id": "ingredient_oats"
       },
       {
-        "desc": "rolled oats",
+        "desc": "white granulated sugar, crystalline texture, piled in center",
         "action": "static",
-        "position": "left",
-        "id": "rolled_oats_1"
+        "position": "inside bowl",
+        "id": "ingredient_flour_sugar"
       },
       {
-        "desc": "glass jar with clasp lid",
+        "desc": "glass jar with metal clasp, containing beige dry ingredients",
         "action": "static",
-        "position": "background",
-        "id": "jar_oats_clasp_1"
+        "position": "background/left",
+        "id": "jar_oats_glass"
       },
       {
-        "desc": "yellow butter chunks",
+        "desc": "yellow butter chunks, solid",
         "action": "static",
-        "position": "background",
-        "id": "butter_1"
+        "position": "background/right",
+        "id": "ingredient_butter"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A clear glass bowl sits on a dark surface containing dry ingredients.",
+        "fact": "The camera focus shifts from the foreground bowl to the background jar.",
         "confidence": 1.0
       },
       {
-        "fact": "White granulated sugar is piled in the center of the bowl.",
+        "fact": "Rolled oats and white sugar are sitting unmixed inside the glass bowl.",
         "confidence": 1.0
       },
       {
-        "fact": "Rolled oats are visible on the left side of the bowl next to the sugar.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "A glass jar filled with oats is visible in the blurred background.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "Chunks of yellow butter are visible in the background to the right.",
+        "fact": "A glass jar filled with dry ingredients is visible in the background.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The clear glass mixing bowl is in the foreground. Inside the bowl, the white sugar is in the center and the rolled oats are to the left of the sugar. The glass jar is behind the mixing bowl. The butter chunks are to the right of the glass jar in the background.",
+    "spatial": "The clear glass bowl containing oats and sugar is in the foreground. The glass jar is located in the background to the left of the bowl. The yellow butter chunks are in the background to the right of the bowl.",
     "parse_success": true,
     "chunk_idx": 11,
     "video_id": "GiSaTsYzlqg",
@@ -729,46 +719,51 @@
   },
   {
     "time": [
-      24,
-      26
+      12,
+      13
     ],
     "visible_entities": [
       {
-        "desc": "hand with fair skin holding a metal measuring spoon",
+        "desc": "hand with fair skin, holding a metal measuring spoon",
         "action": "holding a measuring spoon",
-        "position": "right/foreground",
-        "id": "spoon_measuring_1"
+        "position": "right/foreground"
       },
       {
-        "desc": "silver metal measuring spoon with engraved text",
+        "desc": "silver metal measuring spoon, shiny, engraved with text",
         "action": "being held",
         "position": "center/foreground",
-        "id": "spoon_measuring_1"
+        "id": "spoon_measuring_metal"
       },
       {
-        "desc": "clear glass bowl containing yellow chunks",
+        "desc": "clear glass bowl, transparent",
         "action": "static",
         "position": "bottom/foreground",
-        "id": "butter_1"
+        "id": "bowl_glass_mixing"
       },
       {
-        "desc": "glass jar containing beige granular substance",
+        "desc": "yellowish chunks of food, possibly butter or cheese",
         "action": "static",
-        "position": "left/background",
-        "id": "jar_oats_clasp_1"
+        "position": "inside the bowl",
+        "id": "ingredient_butter"
+      },
+      {
+        "desc": "glass jar with a metal clasp, containing beige granular contents",
+        "action": "static",
+        "position": "background/left",
+        "id": "jar_oats_glass"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A hand is holding a silver measuring spoon over a glass bowl.",
+        "fact": "A hand is holding a silver metal measuring spoon over a glass bowl.",
         "confidence": 1.0
       },
       {
-        "fact": "The measuring spoon has '1/2 TSP' and '2.5ml' engraved on the handle.",
+        "fact": "The measuring spoon is engraved with the text '1/2 TSP' and '2.5ml'.",
         "confidence": 1.0
       },
       {
-        "fact": "Yellow chunks are visible inside the glass bowl.",
+        "fact": "Yellowish chunks of food are visible inside the glass bowl.",
         "confidence": 1.0
       }
     ],
@@ -776,7 +771,7 @@
       "1/2 TSP",
       "2.5ml"
     ],
-    "spatial": "The hand is on the right side of the frame, holding the metal measuring spoon in the center. The spoon is positioned above the glass bowl at the bottom. The glass jar is in the background to the left of the spoon.",
+    "spatial": "The hand is to the right of the frame, holding the metal measuring spoon in the center. The spoon is positioned above the clear glass bowl at the bottom. Inside the bowl, yellowish chunks are visible. A glass jar is in the background to the left.",
     "parse_success": true,
     "chunk_idx": 12,
     "video_id": "GiSaTsYzlqg",
@@ -784,117 +779,100 @@
   },
   {
     "time": [
-      26,
-      28
+      13,
+      14
     ],
     "visible_entities": [
       {
-        "desc": "clear glass bowl, round, transparent",
+        "desc": "clear glass bowl",
         "action": "static",
         "position": "center",
-        "id": "bowl_glass_mixing_1"
+        "id": "bowl_glass_mixing"
       },
       {
-        "desc": "dry ingredients mixture, beige and white, granular texture with flakes",
+        "desc": "dry mixture of oats and white powder",
         "action": "being stirred",
-        "position": "inside the bowl",
-        "id": "mixture_dry_1"
+        "position": "inside bowl",
+        "id": "ingredient_oats"
       },
       {
-        "desc": "wooden spoon, light brown, smooth handle",
-        "action": "stirring the mixture",
+        "desc": "wooden spoon",
+        "action": "stirring mixture",
         "position": "center",
-        "id": "spoon_wooden_1"
+        "id": "spoon_wooden"
       },
       {
-        "desc": "hand, light skin tone",
-        "action": "holding the spoon",
-        "position": "top right",
-        "id": "person_chef_1"
+        "desc": "hand",
+        "action": "holding spoon",
+        "position": "top right"
       },
       {
-        "desc": "dark countertop, black, speckled texture",
+        "desc": "dark countertop",
         "action": "static",
         "position": "background",
-        "id": "countertop_black_1"
-      },
-      {
-        "desc": "green jar, partially visible",
-        "action": "static",
-        "position": "top left",
-        "id": "bottle_green_1"
+        "id": "countertop_black"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A hand is holding a wooden spoon and stirring dry ingredients inside a glass bowl.",
+        "fact": "A hand holds a wooden spoon and stirs dry ingredients inside a glass bowl.",
         "confidence": 1.0
       },
       {
-        "fact": "The mixture consists of beige flakes and white powder.",
+        "fact": "The mixture consists of oats and a white powder.",
         "confidence": 1.0
       },
       {
-        "fact": "The ingredients are being combined into a uniform texture.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "A green jar with a label is visible in the background.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [
-      "500g e"
-    ],
-    "spatial": "The glass bowl is in the center of the frame, resting on a dark countertop. A hand is holding a wooden spoon inside the bowl, mixing the ingredients. A green jar is located to the top left of the bowl.",
-    "parse_success": true,
-    "chunk_idx": 13,
-    "video_id": "GiSaTsYzlqg",
-    "state_changes": [
-      "stirring mixture begins (mixing action starts)"
-    ]
-  },
-  {
-    "time": [
-      28,
-      30
-    ],
-    "visible_entities": [
-      {
-        "desc": "light beige, flaky, granular mixture resembling oats or breadcrumbs",
-        "action": "being stirred",
-        "position": "center",
-        "id": "mixture_dry_1"
-      },
-      {
-        "desc": "transparent glass bowl",
-        "action": "static",
-        "position": "foreground",
-        "id": "bowl_glass_mixing_1"
-      },
-      {
-        "desc": "brown wooden spoon",
-        "action": "stirring the mixture",
-        "position": "right",
-        "id": "spoon_wooden_1"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "A wooden spoon is stirring a granular mixture inside a glass bowl.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The mixture is light beige and has a flaky texture.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The bowl is transparent and contains the mixture.",
+        "fact": "The ingredients are being combined into a uniform blend.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The granular mixture is inside the transparent glass bowl. The wooden spoon is on the right side of the bowl, partially submerged in the mixture.",
+    "spatial": "The glass bowl is in the center of the frame, resting on a dark countertop. A hand is positioned at the top right, holding a wooden spoon that extends down into the bowl. The dry mixture is inside the bowl.",
+    "parse_success": true,
+    "chunk_idx": 13,
+    "video_id": "GiSaTsYzlqg",
+    "state_changes": [
+      "Stirring dry mixture with wooden spoon begins"
+    ]
+  },
+  {
+    "time": [
+      14,
+      15
+    ],
+    "visible_entities": [
+      {
+        "desc": "white, flaky, granular mixture resembling oats or flour",
+        "action": "being stirred",
+        "position": "center",
+        "id": "ingredient_oats"
+      },
+      {
+        "desc": "transparent glass bowl",
+        "action": "static",
+        "position": "background",
+        "id": "bowl_glass_mixing"
+      },
+      {
+        "desc": "wooden spoon",
+        "action": "stirring the mixture",
+        "position": "right",
+        "id": "spoon_wooden"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A wooden spoon is stirring a white, flaky mixture inside a glass bowl.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The mixture is being moved in a circular motion.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The wooden spoon is on the right side of the bowl, interacting with the white mixture. The mixture fills the center of the transparent glass bowl.",
     "parse_success": true,
     "chunk_idx": 14,
     "video_id": "GiSaTsYzlqg",
@@ -902,51 +880,51 @@
   },
   {
     "time": [
-      30,
-      32
+      15,
+      16
     ],
     "visible_entities": [
       {
-        "desc": "clear glass bowl containing white powdery substance",
-        "action": "static",
-        "position": "foreground left",
-        "id": "flour_white_1"
-      },
-      {
-        "desc": "wooden spoon with light brown handle and rounded head",
-        "action": "stirring or scooping",
+        "desc": "wooden spoon, light brown, blurred from motion",
+        "action": "stirring ingredients",
         "position": "center",
-        "id": "spoon_wooden_1"
+        "id": "spoon_wooden"
       },
       {
-        "desc": "small white ceramic bowl with ridged exterior",
+        "desc": "clear glass bowl, round, containing white powdery substance",
         "action": "static",
-        "position": "right",
-        "id": "bowl_small_white_1"
+        "position": "foreground",
+        "id": "bowl_glass_mixing"
       },
       {
-        "desc": "glass jar filled with beige granular contents",
+        "desc": "glass jar with metal clasp, filled with beige flakes",
         "action": "static",
         "position": "background left",
-        "id": "jar_oats_clasp_1"
+        "id": "jar_oats_glass"
+      },
+      {
+        "desc": "small white ceramic bowl, ribbed texture",
+        "action": "static",
+        "position": "background right",
+        "id": "bowl_white_ceramic"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A wooden spoon is being used to stir or scoop the white powder in the glass bowl.",
+        "fact": "A wooden spoon is stirring the white powdery substance inside the glass bowl.",
         "confidence": 1.0
       },
       {
-        "fact": "The glass bowl is filled with a white, fine-grained substance.",
+        "fact": "The glass bowl is filled with a white, fine-grained powder.",
         "confidence": 1.0
       },
       {
-        "fact": "A small white bowl sits on the counter to the right of the glass bowl.",
+        "fact": "A jar of beige flakes sits behind the mixing bowl.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The clear glass bowl is in the foreground on the left. The wooden spoon is positioned above the glass bowl, interacting with its contents. To the right of the glass bowl is a small white ceramic bowl. Behind the glass bowl is a glass jar filled with beige granules.",
+    "spatial": "The clear glass bowl is in the foreground, positioned in front of the jar of flakes and the small white bowl. The wooden spoon is inside the glass bowl, interacting with the powder. The jar is to the left of the small white bowl in the background.",
     "parse_success": true,
     "chunk_idx": 15,
     "video_id": "GiSaTsYzlqg",
@@ -954,126 +932,131 @@
   },
   {
     "time": [
-      32,
-      34
-    ],
-    "visible_entities": [
-      {
-        "desc": "clear glass bowl containing white powdery substance",
-        "action": "static",
-        "position": "foreground center",
-        "id": "flour_white_1"
-      },
-      {
-        "desc": "stainless steel saucepan with handle",
-        "action": "being placed on a cloth",
-        "position": "left background",
-        "id": "pot_stainless_1"
-      },
-      {
-        "desc": "white kitchen towel with pink stripes",
-        "action": "static",
-        "position": "left",
-        "id": "cloth_pink_striped_1"
-      },
-      {
-        "desc": "glass jar with metal clasp filled with oats",
-        "action": "static",
-        "position": "right background",
-        "id": "rolled_oats_1"
-      },
-      {
-        "desc": "red rotating tray with bottles",
-        "action": "static",
-        "position": "background",
-        "id": "tray_red_rotating_1"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "A stainless steel saucepan is placed onto the striped kitchen towel.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "A glass bowl filled with white flour sits in the foreground.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "A jar of oats is visible on the right side of the counter.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [],
-    "spatial": "The glass bowl with flour is in the foreground, positioned in front of the other items. To the left, a stainless steel saucepan is placed on top of a white towel with pink stripes. To the right of the bowl, a glass jar filled with oats sits on the counter. Behind the bowl, a red tray holding bottles is visible.",
-    "parse_success": true,
-    "chunk_idx": 16,
-    "video_id": "GiSaTsYzlqg",
-    "state_changes": [
-      "saucepan placed on cloth (new vessel introduced)"
-    ]
-  },
-  {
-    "time": [
-      34,
-      36
+      16,
+      17
     ],
     "visible_entities": [
       {
         "desc": "clear glass bowl containing white flour",
         "action": "static",
-        "position": "foreground/center",
-        "id": "flour_white_1"
-      },
-      {
-        "desc": "stainless steel saucepan",
-        "action": "static",
-        "position": "left",
-        "id": "pot_stainless_1"
+        "position": "foreground",
+        "id": "bowl_glass_mixing"
       },
       {
         "desc": "white kitchen towel with pink stripes",
         "action": "static",
         "position": "left",
-        "id": "cloth_pink_striped_1"
+        "id": "towel_striped"
       },
       {
-        "desc": "glass jar filled with rolled oats",
+        "desc": "stainless steel saucepan",
+        "action": "placed on towel",
+        "position": "left",
+        "id": "pot_silver_saucepan"
+      },
+      {
+        "desc": "glass jar filled with oats",
         "action": "static",
         "position": "right",
-        "id": "rolled_oats_1"
+        "id": "jar_oats_glass"
       },
       {
-        "desc": "small bottle with dark liquid and blue cap",
+        "desc": "black countertop",
         "action": "static",
-        "position": "background/center"
-      },
-      {
-        "desc": "bottles of yellow oil on a red tray",
-        "action": "static",
-        "position": "background",
-        "id": "bottles_oil_1"
+        "position": "bottom",
+        "id": "countertop_black"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A glass bowl filled with flour sits on the counter.",
+        "fact": "A stainless steel saucepan is placed on top of a white and pink striped towel.",
         "confidence": 1.0
       },
       {
-        "fact": "A metal saucepan rests on a striped towel.",
+        "fact": "A clear glass bowl filled with white flour sits on the black countertop.",
         "confidence": 1.0
       },
       {
-        "fact": "A jar of oats is positioned to the right of the bowl.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "Bottles of oil are visible in the background.",
+        "fact": "A glass jar containing oats is positioned to the right of the bowl.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The glass bowl of flour is in the foreground, centered on the counter. To the left of the bowl, a stainless steel saucepan sits on top of a white towel with pink stripes. To the right of the bowl, a glass jar filled with oats is visible. Behind the bowl, a small bottle stands near a red tray holding bottles of oil.",
+    "spatial": "The clear glass bowl filled with flour is in the foreground on the black countertop. To the left of the bowl, a stainless steel saucepan rests on a white towel with pink stripes. To the right of the bowl, a glass jar filled with oats is visible.",
+    "parse_success": true,
+    "chunk_idx": 16,
+    "video_id": "GiSaTsYzlqg",
+    "state_changes": [
+      "Saucepan placed on towel; scene shift to heating station"
+    ]
+  },
+  {
+    "time": [
+      17,
+      18
+    ],
+    "visible_entities": [
+      {
+        "desc": "clear glass bowl containing white flour",
+        "action": "static",
+        "position": "foreground center",
+        "id": "bowl_glass_mixing"
+      },
+      {
+        "desc": "silver metal saucepan with handle",
+        "action": "static",
+        "position": "left",
+        "id": "pot_silver_saucepan"
+      },
+      {
+        "desc": "white kitchen towel with pink stripes",
+        "action": "static",
+        "position": "left",
+        "id": "towel_striped"
+      },
+      {
+        "desc": "large glass jar filled with oats",
+        "action": "static",
+        "position": "right",
+        "id": "jar_oats_glass"
+      },
+      {
+        "desc": "small glass bottle with dark liquid and blue cap",
+        "action": "static",
+        "position": "center background",
+        "id": "bottle_small_dark"
+      },
+      {
+        "desc": "red rotating tray with oil bottles",
+        "action": "static",
+        "position": "background",
+        "id": "tray_lazy_susan"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A clear glass bowl filled with white flour sits in the foreground.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A silver saucepan rests on a white towel with pink stripes to the left.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A large glass jar containing oats is positioned on the right side.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A small bottle of dark liquid stands behind the flour bowl.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "Bottles of cooking oil are arranged on a red tray in the background.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The glass bowl of flour is in the foreground center, positioned in front of the small dark bottle. To the left of the bowl, a silver saucepan sits on top of a white towel with pink stripes. To the right of the bowl, a large glass jar filled with oats is visible. Behind the central items, a red tray holding oil bottles is situated against the wall.",
     "parse_success": true,
     "chunk_idx": 17,
     "video_id": "GiSaTsYzlqg",
@@ -1081,52 +1064,52 @@
   },
   {
     "time": [
-      36,
-      38
+      18,
+      19
     ],
     "visible_entities": [
       {
-        "desc": "stainless steel saucepan with a black handle, containing a yellow liquid mixture with white specks",
-        "action": "receiving liquid",
+        "desc": "silver metal saucepan with a black handle grip",
+        "action": "static",
         "position": "center",
-        "id": "liquid_yellow_1"
+        "id": "pot_silver_saucepan"
       },
       {
         "desc": "golden-yellow oil",
-        "action": "pouring from a spoon",
+        "action": "pouring into the saucepan",
         "position": "center",
-        "id": "liquid_yellow_1"
+        "id": "ingredient_oil_liquid"
+      },
+      {
+        "desc": "white and pink striped kitchen towel",
+        "action": "static",
+        "position": "bottom left",
+        "id": "towel_striped"
+      },
+      {
+        "desc": "clear glass bowl containing white flour",
+        "action": "static",
+        "position": "top right",
+        "id": "bowl_glass_mixing"
       },
       {
         "desc": "metal spoon",
         "action": "pouring oil",
         "position": "top center",
-        "id": "spoon_measuring_1"
-      },
-      {
-        "desc": "white kitchen towel with pink stripes",
-        "action": "static",
-        "position": "bottom left",
-        "id": "cloth_pink_striped_1"
-      },
-      {
-        "desc": "glass bowl containing white flour",
-        "action": "static",
-        "position": "right",
-        "id": "flour_white_1"
+        "id": "spoon_measuring_metal"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A metal spoon is pouring golden-yellow oil into a stainless steel saucepan.",
+        "fact": "A metal spoon is pouring a stream of golden-yellow oil into a silver saucepan.",
         "confidence": 1.0
       },
       {
-        "fact": "The saucepan contains a yellow liquid mixture with white specks.",
+        "fact": "The saucepan contains a mixture of melted butter and oil.",
         "confidence": 1.0
       },
       {
-        "fact": "A glass bowl filled with white flour is positioned to the right of the saucepan.",
+        "fact": "A glass bowl filled with white flour sits to the right of the saucepan.",
         "confidence": 1.0
       },
       {
@@ -1135,42 +1118,48 @@
       }
     ],
     "ocr": [],
-    "spatial": "The stainless steel saucepan is in the center of the frame, resting on a white towel with pink stripes. A metal spoon is positioned above the saucepan, pouring oil into it. To the right of the saucepan, a glass bowl containing white flour is visible.",
+    "spatial": "The silver saucepan is positioned in the center of the frame, resting on top of a white and pink striped towel. A metal spoon is held above the saucepan, pouring oil into it. To the right of the saucepan, a glass bowl containing flour is visible.",
     "parse_success": true,
     "chunk_idx": 18,
     "video_id": "GiSaTsYzlqg",
     "state_changes": [
-      "oil pouring into saucepan (heating step begins)"
+      "Pouring oil into saucepan"
     ]
   },
   {
     "time": [
-      38,
-      40
+      19,
+      20
     ],
     "visible_entities": [
       {
-        "desc": "stainless steel pot with a shiny metallic finish, containing a yellow-green liquid mixture with white solid particles",
-        "action": "being filled with a thin stream of oil",
+        "desc": "stainless steel pot with a shiny metallic finish, containing a yellow-green liquid mixture with white solidified specks",
+        "action": "receiving a stream of liquid",
         "position": "center",
-        "id": "liquid_yellow_1"
+        "id": "pot_silver_saucepan"
+      },
+      {
+        "desc": "thin stream of translucent golden-yellow oil",
+        "action": "pouring into the pot",
+        "position": "center",
+        "id": "ingredient_oil_liquid"
       },
       {
         "desc": "glass bowl containing white flour",
         "action": "static",
         "position": "top right",
-        "id": "flour_white_1"
+        "id": "bowl_glass_mixing"
       },
       {
-        "desc": "white kitchen towel with pink horizontal stripes",
+        "desc": "white kitchen towel with pink stripes",
         "action": "static",
         "position": "bottom left",
-        "id": "cloth_pink_striped_1"
+        "id": "towel_striped"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A thin stream of oil is being poured into the pot.",
+        "fact": "A thin stream of oil is being poured into the stainless steel pot.",
         "confidence": 1.0
       },
       {
@@ -1178,55 +1167,57 @@
         "confidence": 1.0
       },
       {
-        "fact": "The pot is resting on a striped towel.",
+        "fact": "A glass bowl of flour is positioned next to the pot.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The stainless steel pot is in the center of the frame. The glass bowl of flour is to the right of the pot. The striped towel is underneath the pot.",
+    "spatial": "The stainless steel pot is in the center of the frame, resting on a white and pink striped towel. A stream of oil is pouring from above into the center of the pot. A glass bowl containing flour is located to the top right of the pot.",
     "parse_success": true,
     "chunk_idx": 19,
     "video_id": "GiSaTsYzlqg",
-    "state_changes": []
+    "state_changes": [
+      "Pouring liquid stream into pot containing yellow-green mixture"
+    ]
   },
   {
     "time": [
-      40,
-      42
+      20,
+      21
     ],
     "visible_entities": [
       {
         "desc": "pink silicone spatula",
-        "action": "stirring yellow liquid",
+        "action": "stirring the liquid",
         "position": "center",
-        "id": "spatula_pink_1"
+        "id": "spatula_pink"
       },
       {
         "desc": "stainless steel pot",
         "action": "static",
         "position": "center",
-        "id": "pot_stainless_1"
+        "id": "pot_silver_saucepan"
       },
       {
-        "desc": "yellow liquid with white particles",
+        "desc": "yellow-green liquid with white particles",
         "action": "being stirred",
-        "position": "inside pot",
-        "id": "liquid_yellow_1"
+        "position": "inside the pot",
+        "id": "ingredient_oil_liquid"
       },
       {
         "desc": "pink and white striped cloth",
         "action": "static",
         "position": "bottom left",
-        "id": "cloth_pink_striped_1"
+        "id": "towel_striped"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A pink silicone spatula is stirring a yellow liquid inside a stainless steel pot.",
+        "fact": "A pink silicone spatula is stirring a yellow-green liquid inside a metal pot.",
         "confidence": 1.0
       },
       {
-        "fact": "The yellow liquid contains small white particles.",
+        "fact": "The liquid contains small white particles that are being mixed.",
         "confidence": 1.0
       },
       {
@@ -1235,82 +1226,73 @@
       }
     ],
     "ocr": [],
-    "spatial": "The pink silicone spatula is inside the stainless steel pot, stirring the yellow liquid. The pot is on top of the pink and white striped cloth.",
+    "spatial": "The pink silicone spatula is inside the stainless steel pot, moving through the yellow-green liquid. The pot is positioned on top of the pink and white striped cloth.",
     "parse_success": true,
     "chunk_idx": 20,
     "video_id": "GiSaTsYzlqg",
     "state_changes": [
-      "spatula stirring liquid in pot (new action)"
+      "Stirring liquid mixture with pink spatula begins"
     ]
   },
   {
     "time": [
-      42,
-      44
+      21,
+      22
     ],
     "visible_entities": [
       {
-        "desc": "yellow-green viscous liquid with small white chunks",
+        "desc": "pink spatula, smooth texture",
+        "action": "stirring yellow mixture",
+        "position": "center",
+        "id": "spatula_pink"
+      },
+      {
+        "desc": "yellow-green viscous mixture, glossy texture",
         "action": "being stirred",
         "position": "center",
-        "id": "liquid_yellow_1"
+        "id": "ingredient_oil_liquid"
       },
       {
-        "desc": "pink spatula",
-        "action": "stirring the liquid",
-        "position": "center",
-        "id": "spatula_pink_1"
-      },
-      {
-        "desc": "silver metal pot",
+        "desc": "metal pot, shiny interior",
         "action": "static",
         "position": "center",
-        "id": "pot_stainless_1"
+        "id": "pot_silver_saucepan"
       },
       {
-        "desc": "white granular substance",
+        "desc": "white granular substance, dry texture",
         "action": "static",
-        "position": "foreground"
+        "position": "bottom",
+        "id": "ingredient_flour_sugar"
       },
       {
-        "desc": "clear glass bowl",
+        "desc": "clear glass bowl, transparent",
         "action": "static",
-        "position": "foreground",
-        "id": "bowl_glass_mixing_1"
+        "position": "bottom",
+        "id": "bowl_glass_mixing"
       },
       {
-        "desc": "jar containing beige flakes",
+        "desc": "jar with beige contents, glass material",
         "action": "static",
         "position": "background",
-        "id": "jar_oats_clasp_1"
-      },
-      {
-        "desc": "pink and white striped cloth",
-        "action": "static",
-        "position": "bottom left",
-        "id": "cloth_pink_striped_1"
+        "id": "jar_oats_glass"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A pink spatula is stirring a yellow-green viscous liquid inside a silver pot.",
+        "fact": "A pink spatula is stirring a yellow-green mixture inside a metal pot.",
         "confidence": 1.0
       },
       {
-        "fact": "A clear glass bowl containing a white granular substance sits in the foreground.",
+        "fact": "A clear glass bowl containing a white granular substance is visible in the foreground.",
         "confidence": 1.0
       },
       {
-        "fact": "A jar filled with beige flakes is visible in the background behind the glass bowl.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The silver pot rests on a pink and white striped cloth.",
+        "fact": "A jar filled with beige contents sits in the background behind the glass bowl.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The silver pot containing the yellow-green liquid is in the center of the frame. The pink spatula is inside the pot, interacting with the liquid. In the foreground, a clear glass bowl with white granules is positioned in front of a jar containing beige flakes. The pot sits on top of a pink and white striped cloth at the bottom left.",
+    "spatial": "The pink spatula is inside the metal pot, mixing the yellow-green substance. The glass bowl containing the white granular substance is in the foreground, positioned below the metal pot. The jar with beige contents is behind the glass bowl.",
     "parse_success": true,
     "chunk_idx": 21,
     "video_id": "GiSaTsYzlqg",
@@ -1318,127 +1300,115 @@
   },
   {
     "time": [
-      44,
-      46
+      22,
+      23
     ],
     "visible_entities": [
       {
-        "desc": "metal bowl, shiny, silver, tilted",
-        "action": "pouring liquid",
-        "position": "top right",
-        "id": "bowl_metal_1"
+        "desc": "metal pot, silver, shiny, containing yellow liquid",
+        "action": "pouring yellow liquid",
+        "position": "top/center",
+        "id": "pot_silver_saucepan"
       },
       {
-        "desc": "yellow-green liquid, viscous, translucent",
-        "action": "flowing downwards",
+        "desc": "yellow liquid, viscous, translucent, flowing stream",
+        "action": "falling into bowl",
         "position": "center",
-        "id": "liquid_yellow_1"
+        "id": "ingredient_oil_liquid"
       },
       {
-        "desc": "glass bowl, transparent, round",
+        "desc": "glass bowl, transparent, round, containing white granular substance",
         "action": "static",
-        "position": "bottom center",
-        "id": "bowl_glass_mixing_1"
+        "position": "bottom/foreground",
+        "id": "bowl_glass_mixing"
       },
       {
-        "desc": "white granular substance, textured, piled",
+        "desc": "white granular substance, dry, textured, resembling rice or oats",
         "action": "static",
-        "position": "bottom center",
-        "id": "flour_white_1"
+        "position": "bottom/inside bowl",
+        "id": "ingredient_flour_sugar"
       },
       {
-        "desc": "jar with beige contents, blurred",
+        "desc": "jar, transparent, containing beige granular substance",
         "action": "static",
-        "position": "background left",
-        "id": "jar_oats_clasp_1"
+        "position": "background/left",
+        "id": "jar_oats_glass"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A metal bowl is pouring a yellow-green liquid into a glass bowl.",
+        "fact": "A metal pot is pouring a stream of yellow liquid.",
         "confidence": 1.0
       },
       {
-        "fact": "The liquid flows in a continuous stream onto the white granular substance.",
+        "fact": "The yellow liquid is falling into a glass bowl.",
         "confidence": 1.0
       },
       {
-        "fact": "The glass bowl contains a pile of white granular material.",
+        "fact": "The glass bowl contains a white granular substance.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A jar with beige contents sits in the background.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The metal bowl is positioned above the glass bowl. The yellow-green liquid flows from the metal bowl down into the glass bowl. The white granular substance is inside the glass bowl, underneath the falling liquid. A jar with beige contents is visible in the background to the left of the glass bowl.",
+    "spatial": "The metal pot is positioned above the glass bowl. The yellow liquid flows from the pot down into the bowl, landing on the white granular substance inside. A jar containing a beige substance is located in the background to the left of the bowl.",
     "parse_success": true,
     "chunk_idx": 22,
     "video_id": "GiSaTsYzlqg",
     "state_changes": [
-      "pouring liquid from metal bowl (transfer step)"
+      "Pouring yellow liquid from pot into bowl with dry ingredients"
     ]
   },
   {
     "time": [
-      46,
-      48
+      23,
+      24
     ],
     "visible_entities": [
       {
-        "desc": "clear glass bowl, round, transparent",
-        "action": "static",
+        "desc": "clear glass bowl containing white flour",
+        "action": "receiving liquid",
         "position": "center/foreground",
-        "id": "bowl_glass_mixing_1"
+        "id": "bowl_glass_mixing"
       },
       {
-        "desc": "white powdery substance, fine-grained, piled in center",
-        "action": "static",
-        "position": "center/inside bowl",
-        "id": "flour_white_1"
-      },
-      {
-        "desc": "yellow-green liquid, viscous, oily texture",
+        "desc": "yellow-green liquid stream",
         "action": "pouring into bowl",
-        "position": "center/top",
-        "id": "liquid_yellow_1"
+        "position": "center",
+        "id": "ingredient_oil_liquid"
       },
       {
-        "desc": "metal strainer, silver, mesh bottom",
-        "action": "held above bowl",
-        "position": "top",
-        "id": "strainer_metal_1"
+        "desc": "metal strainer",
+        "action": "pouring liquid",
+        "position": "top/center",
+        "id": "strainer_metal"
       },
       {
-        "desc": "large glass jar, filled with beige granular contents",
+        "desc": "glass jar with beige granular contents",
         "action": "static",
         "position": "left/background",
-        "id": "jar_oats_clasp_1"
-      },
-      {
-        "desc": "small white bowl, round",
-        "action": "static",
-        "position": "right/background",
-        "id": "bowl_small_white_1"
+        "id": "jar_oats_glass"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A yellow-green liquid is being poured from a metal strainer into a glass bowl.",
+        "fact": "A metal strainer is pouring a yellow-green liquid into a glass bowl.",
         "confidence": 1.0
       },
       {
-        "fact": "The liquid lands on a pile of white powder inside the bowl.",
+        "fact": "The liquid lands on a pile of white flour inside the bowl.",
         "confidence": 1.0
       },
       {
-        "fact": "The liquid pools on top of the powder.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "A large jar of ingredients sits in the background.",
+        "fact": "A glass jar filled with beige grains sits in the background.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The metal strainer is positioned above the clear glass bowl. The white powder is inside the bowl, and the yellow-green liquid is being poured onto it. The large jar is to the left and behind the main bowl, while the small white bowl is to the right and behind.",
+    "spatial": "The metal strainer is positioned above the clear glass bowl. The yellow-green liquid flows from the strainer down into the center of the bowl. The glass jar with beige contents is to the left of the bowl and slightly behind it.",
     "parse_success": true,
     "chunk_idx": 23,
     "video_id": "GiSaTsYzlqg",
@@ -1446,51 +1416,45 @@
   },
   {
     "time": [
-      48,
-      50
+      24,
+      25
     ],
     "visible_entities": [
       {
         "desc": "hand holding a metal measuring spoon",
         "action": "pouring liquid",
         "position": "top right",
-        "id": "spoon_measuring_1"
+        "id": "person_chef_1"
       },
       {
-        "desc": "clear glass bowl",
+        "desc": "clear glass bowl containing white flour and yellow liquid",
         "action": "static",
         "position": "center",
-        "id": "bowl_glass_mixing_1"
-      },
-      {
-        "desc": "white powdery flour",
-        "action": "static",
-        "position": "inside bowl",
-        "id": "flour_white_1"
+        "id": "bowl_glass_mixing"
       },
       {
         "desc": "golden-yellow liquid",
         "action": "flowing",
-        "position": "center of bowl",
-        "id": "liquid_yellow_1"
+        "position": "center",
+        "id": "ingredient_oil_liquid"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A hand is pouring a golden liquid from a metal measuring spoon into a bowl.",
+        "fact": "A hand is pouring a golden-yellow liquid from a metal measuring spoon into a bowl.",
         "confidence": 1.0
       },
       {
-        "fact": "The bowl contains a mound of white flour.",
+        "fact": "The liquid is being added to a mound of white flour inside a clear glass bowl.",
         "confidence": 1.0
       },
       {
-        "fact": "The liquid is pooling on top of the flour.",
+        "fact": "The liquid pools on top of the flour.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The hand holding the spoon is positioned above the glass bowl. The spoon is tilted to pour liquid onto the flour, which is inside the bowl.",
+    "spatial": "The hand holding the spoon is positioned above the glass bowl. The spoon is tilted, allowing the liquid to flow from it into the center of the bowl where the flour is located.",
     "parse_success": true,
     "chunk_idx": 24,
     "video_id": "GiSaTsYzlqg",
@@ -1498,105 +1462,89 @@
   },
   {
     "time": [
-      50,
-      52
+      25,
+      26
     ],
     "visible_entities": [
       {
-        "desc": "clear glass mixing bowl",
-        "action": "static",
-        "position": "center",
-        "id": "bowl_glass_mixing_1"
-      },
-      {
-        "desc": "white powdery flour",
-        "action": "being mixed",
-        "position": "inside bowl",
-        "id": "flour_white_1"
-      },
-      {
-        "desc": "yellow liquid mixture",
-        "action": "being mixed",
-        "position": "inside bowl",
-        "id": "liquid_yellow_1"
-      },
-      {
-        "desc": "wooden spoon",
+        "desc": "wooden spoon, light brown, smooth texture",
         "action": "stirring ingredients",
         "position": "center",
-        "id": "spoon_wooden_1"
+        "id": "spoon_wooden"
+      },
+      {
+        "desc": "white flour, powdery texture",
+        "action": "being mixed",
+        "position": "surrounding the liquid",
+        "id": "ingredient_flour_sugar"
+      },
+      {
+        "desc": "yellow liquid, viscous, glossy",
+        "action": "being incorporated",
+        "position": "center-right",
+        "id": "ingredient_oil_liquid"
+      },
+      {
+        "desc": "clear glass bowl, transparent, round",
+        "action": "static",
+        "position": "foreground",
+        "id": "bowl_glass_mixing"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A wooden spoon is stirring ingredients inside a glass bowl.",
+        "fact": "A wooden spoon is stirring the mixture.",
         "confidence": 1.0
       },
       {
-        "fact": "Yellow liquid is being incorporated into white flour.",
+        "fact": "The yellow liquid is being mixed into the white flour.",
         "confidence": 1.0
       },
       {
-        "fact": "The mixture is located inside the clear glass bowl.",
+        "fact": "The ingredients are contained inside a clear glass bowl.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The wooden spoon is inside the clear glass bowl. The white flour and yellow liquid are inside the bowl, being mixed together by the spoon.",
+    "spatial": "The wooden spoon is inside the clear glass bowl. The yellow liquid is in the center of the bowl, surrounded by the white flour. The spoon is moving through the liquid and flour mixture.",
     "parse_success": true,
     "chunk_idx": 25,
     "video_id": "GiSaTsYzlqg",
     "state_changes": [
-      "mixing flour and liquid together (dough formation)"
+      "Stirring wet and dry ingredients together with wooden spoon"
     ]
   },
   {
     "time": [
-      52,
-      54
+      26,
+      27
     ],
     "visible_entities": [
       {
-        "desc": "clear glass bowl, round, transparent",
-        "action": "static",
-        "position": "center",
-        "id": "bowl_glass_mixing_1"
-      },
-      {
-        "desc": "white powdery mixture, granular, flour-like texture",
-        "action": "being mixed",
-        "position": "inside bowl",
-        "id": "flour_white_1"
-      },
-      {
-        "desc": "yellowish wet mixture, chunky, moist texture",
-        "action": "being mixed",
-        "position": "center of bowl",
-        "id": "liquid_yellow_1"
-      },
-      {
-        "desc": "wooden spoon, light brown, flat handle",
+        "desc": "wooden spoon, light brown, smooth texture",
         "action": "stirring ingredients",
         "position": "right",
-        "id": "spoon_wooden_1"
+        "id": "spoon_wooden"
+      },
+      {
+        "desc": "glass bowl, transparent, containing dry white flour and wet yellow mixture",
+        "action": "static",
+        "position": "center",
+        "id": "bowl_glass_mixing"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A wooden spoon is stirring a mixture of white powder and yellow chunks inside a glass bowl.",
+        "fact": "A wooden spoon is stirring a mixture of flour and wet ingredients inside a glass bowl.",
         "confidence": 1.0
       },
       {
-        "fact": "The yellow mixture is being incorporated into the white dry ingredients.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The bowl is resting on a dark surface.",
+        "fact": "The wet ingredients appear yellow and are being incorporated into the white dry ingredients.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The wooden spoon is positioned on the right side of the bowl, extending into the mixture. The yellow wet ingredients are located in the center, surrounded by the white dry ingredients. The entire mixture is contained inside the clear glass bowl.",
+    "spatial": "The wooden spoon is positioned on the right side of the glass bowl, partially submerged in the mixture. The dry white flour is located to the left of the wet yellow ingredients within the bowl.",
     "parse_success": true,
     "chunk_idx": 26,
     "video_id": "GiSaTsYzlqg",
@@ -1604,50 +1552,49 @@
   },
   {
     "time": [
-      54,
-      56
+      27,
+      28
     ],
     "visible_entities": [
       {
-        "desc": "clear glass bowl",
+        "desc": "clear glass bowl, round, transparent",
         "action": "static",
         "position": "center",
-        "id": "bowl_glass_mixing_1"
+        "id": "bowl_glass_mixing"
       },
       {
-        "desc": "light-brown granular mixture",
+        "desc": "light-brown granular mixture, moist, textured, resembling oatmeal or breadcrumbs",
         "action": "being stirred",
-        "position": "inside bowl",
-        "id": "mixture_dry_1"
+        "position": "inside the bowl"
       },
       {
-        "desc": "wooden spoon",
-        "action": "stirring mixture",
-        "position": "left",
-        "id": "spoon_wooden_1"
+        "desc": "wooden spoon, light-brown, smooth",
+        "action": "stirring the mixture",
+        "position": "left/center",
+        "id": "spoon_wooden"
       },
       {
-        "desc": "hand",
-        "action": "holding bowl",
+        "desc": "human hand, fair skin",
+        "action": "holding the bowl",
         "position": "right"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A hand holds the glass bowl steady on the right side.",
+        "fact": "A hand is holding the clear glass bowl on the right side.",
         "confidence": 1.0
       },
       {
-        "fact": "A wooden spoon stirs the granular mixture inside the bowl.",
+        "fact": "A wooden spoon is stirring the light-brown granular mixture inside the bowl.",
         "confidence": 1.0
       },
       {
-        "fact": "The mixture is being agitated in a circular motion.",
+        "fact": "The mixture is being mixed in a circular motion.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The hand is to the right of the glass bowl, holding it in place. The wooden spoon is inside the bowl, positioned to the left of the center. The granular mixture is contained within the bowl.",
+    "spatial": "The clear glass bowl is in the center of the frame. The light-brown granular mixture is inside the bowl. A wooden spoon is inserted into the mixture on the left side. A human hand is holding the right edge of the bowl.",
     "parse_success": true,
     "chunk_idx": 27,
     "video_id": "GiSaTsYzlqg",
@@ -1655,59 +1602,57 @@
   },
   {
     "time": [
-      56,
-      58
+      28,
+      29
     ],
     "visible_entities": [
       {
-        "desc": "glass bowl containing beige, crumbly mixture",
+        "desc": "glass bowl containing beige, crumbly food mixture with a wooden spoon inside",
         "action": "static",
         "position": "right",
-        "id": "mixture_dry_1"
+        "id": "bowl_glass_mixing"
       },
       {
-        "desc": "wooden spoon",
-        "action": "resting inside bowl",
-        "position": "right",
-        "id": "spoon_wooden_1"
+        "desc": "red circular tray holding bottles of oil",
+        "action": "static",
+        "position": "left",
+        "id": "tray_lazy_susan"
       },
       {
-        "desc": "stainless steel bowl",
+        "desc": "stainless steel bowl with utensils",
         "action": "static",
         "position": "center",
-        "id": "bowl_metal_1"
+        "id": "bowl_stainless_steel"
       },
       {
-        "desc": "red circular tray",
+        "desc": "black countertop surface",
         "action": "static",
-        "position": "left",
-        "id": "tray_red_rotating_1"
-      },
-      {
-        "desc": "bottles of oil",
-        "action": "static",
-        "position": "left",
-        "id": "bottles_oil_1"
+        "position": "background",
+        "id": "countertop_black"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A wooden spoon is resting inside the glass bowl.",
+        "fact": "A glass bowl filled with a beige, crumbly mixture sits on the counter.",
         "confidence": 1.0
       },
       {
-        "fact": "The glass bowl is filled with a beige, crumbly mixture.",
+        "fact": "A wooden spoon rests inside the glass bowl.",
         "confidence": 1.0
       },
       {
-        "fact": "Bottles of oil are placed on a red tray.",
+        "fact": "Bottles of oil are arranged on a red tray.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A metal bowl is positioned between the oil tray and the glass bowl.",
         "confidence": 1.0
       }
     ],
     "ocr": [
       "OLIVE OIL"
     ],
-    "spatial": "The glass bowl containing the mixture is on the right side of the black countertop. The stainless steel bowl is to the left of the glass bowl. The red tray with oil bottles is on the far left, next to the stainless steel bowl.",
+    "spatial": "The red tray with oil bottles is to the left of the stainless steel bowl. The glass bowl containing the food mixture is to the right of the stainless steel bowl. All items are resting on the black countertop.",
     "parse_success": true,
     "chunk_idx": 28,
     "video_id": "GiSaTsYzlqg",
@@ -1715,375 +1660,390 @@
   },
   {
     "time": [
-      58,
-      60
+      29,
+      30
     ],
     "visible_entities": [
       {
-        "desc": "dark grey metal baking sheet lined with white parchment paper",
+        "desc": "dark grey rectangular metal baking tray with a rim",
         "action": "being held by a hand",
         "position": "center/foreground",
-        "id": "parchment_paper_1"
+        "id": "tray_baking_black"
       },
       {
-        "desc": "person's hand",
-        "action": "holding the right edge of the baking sheet",
+        "desc": "white rectangular sheet of parchment paper",
+        "action": "static",
+        "position": "inside the tray",
+        "id": "paper_parchment"
+      },
+      {
+        "desc": "human hand with light skin tone",
+        "action": "holding the right edge of the tray",
         "position": "right",
         "id": "person_chef_1"
       },
       {
-        "desc": "clear glass bowl containing a crumbly beige mixture with a wooden spoon",
+        "desc": "clear glass bowl containing a beige crumbly mixture",
         "action": "static",
-        "position": "top right",
-        "id": "spoon_wooden_1"
+        "position": "top right background",
+        "id": "bowl_glass_mixing"
       },
       {
-        "desc": "stainless steel mixing bowl with utensils",
-        "action": "static",
-        "position": "top center",
-        "id": "bowl_metal_1"
+        "desc": "wooden spoon with a flat handle",
+        "action": "resting in the glass bowl",
+        "position": "top right background",
+        "id": "spoon_wooden"
       },
       {
-        "desc": "red rotating tray holding bottles of oil",
+        "desc": "stainless steel mixing bowl",
         "action": "static",
-        "position": "top left",
-        "id": "tray_red_rotating_1"
+        "position": "top center background",
+        "id": "bowl_stainless_steel"
       },
       {
-        "desc": "bottle with an orange label",
+        "desc": "red plastic rotating tray (lazy susan)",
         "action": "static",
-        "position": "top left",
-        "id": "bottles_oil_1"
+        "position": "top left background",
+        "id": "tray_lazy_susan"
+      },
+      {
+        "desc": "glass bottle of olive oil with a white label",
+        "action": "static",
+        "position": "top left background",
+        "id": "bottle_oil_green"
+      },
+      {
+        "desc": "glass bottle of yellow cooking oil",
+        "action": "static",
+        "position": "top left background",
+        "id": "bottle_oil_yellow"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A person's hand is holding the right edge of a baking sheet.",
+        "fact": "A hand is holding the right edge of a baking tray lined with parchment paper.",
         "confidence": 1.0
       },
       {
-        "fact": "The baking sheet is lined with a sheet of white parchment paper.",
+        "fact": "The parchment paper covers the bottom surface of the baking tray.",
         "confidence": 1.0
       },
       {
-        "fact": "A glass bowl with a crumbly mixture sits on the counter behind the baking sheet.",
+        "fact": "A wooden spoon rests inside a glass bowl filled with a crumbly mixture.",
         "confidence": 1.0
       },
       {
-        "fact": "The bottle on the red tray has text reading 'OLIVE OIL'.",
+        "fact": "Bottles of oil are placed on a red rotating tray in the background.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The label on the leftmost bottle reads 'OLIVE OIL'.",
         "confidence": 1.0
       }
     ],
     "ocr": [
-      "OLIVE",
-      "OIL"
+      "OLIVE OIL"
     ],
-    "spatial": "The baking sheet is in the foreground, held by a hand on the right side. Behind the baking sheet, a glass bowl is to the right of a metal bowl. To the left of the metal bowl is a red tray holding bottles of oil.",
+    "spatial": "The baking tray is in the foreground, positioned centrally on a black countertop. A hand is holding the right edge of the tray. Behind the tray, a glass bowl with a wooden spoon is to the right, and a metal bowl is in the center. To the left in the background, bottles of oil sit on a red tray.",
     "parse_success": true,
     "chunk_idx": 29,
     "video_id": "GiSaTsYzlqg",
     "state_changes": [
-      "baking sheet introduced (shaping step begins)"
+      "Preparing baking tray with parchment paper"
     ]
   },
   {
     "time": [
-      60,
-      62
+      30,
+      31
     ],
     "visible_entities": [
       {
-        "desc": "person's hands and hairy forearms",
-        "action": "mixing crumbs with fingers",
+        "desc": "person with hairy arms and fair skin",
+        "action": "mixing crumbs in a bowl",
         "position": "center",
         "id": "person_chef_1"
       },
       {
-        "desc": "clear glass bowl",
+        "desc": "clear glass bowl containing beige crumbly mixture",
         "action": "static",
         "position": "center",
-        "id": "bowl_glass_mixing_1"
+        "id": "bowl_glass_mixing"
       },
       {
-        "desc": "light-brown crumbly mixture",
-        "action": "being mixed",
-        "position": "inside the glass bowl",
-        "id": "mixture_dry_1"
-      },
-      {
-        "desc": "black baking tray with white parchment paper",
+        "desc": "black metal baking tray lined with white parchment paper",
         "action": "static",
         "position": "right",
-        "id": "parchment_paper_1"
+        "id": "tray_baking_black"
       },
       {
-        "desc": "stainless steel pot with utensils",
+        "desc": "stainless steel bowl with utensils",
         "action": "static",
         "position": "left",
-        "id": "pot_stainless_1"
+        "id": "bowl_stainless_steel"
+      },
+      {
+        "desc": "plastic bottle of yellow oil",
+        "action": "static",
+        "position": "left",
+        "id": "bottle_oil_yellow"
+      },
+      {
+        "desc": "glass jar with metal clasp containing oats",
+        "action": "static",
+        "position": "background",
+        "id": "jar_oats_glass"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A person is using both hands to mix a beige crumbly mixture inside a glass bowl.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The baking tray is positioned to the right of the glass bowl.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A stainless steel bowl sits to the left of the glass bowl.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The glass jar containing oats is behind the glass bowl.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The person's hands are inside the glass bowl, which is in the center of the black countertop. To the right of the bowl is a baking tray lined with parchment paper. To the left of the bowl is a stainless steel bowl and a bottle of oil. Behind the glass bowl is a glass jar filled with oats.",
+    "parse_success": true,
+    "chunk_idx": 30,
+    "video_id": "GiSaTsYzlqg",
+    "state_changes": []
+  },
+  {
+    "time": [
+      31,
+      32
+    ],
+    "visible_entities": [
+      {
+        "desc": "person with hairy arms, wearing a gold ring on the left ring finger",
+        "action": "mixing ingredients in a bowl",
+        "position": "center/foreground",
+        "id": "person_chef_1"
+      },
+      {
+        "desc": "clear glass bowl containing crumbly beige mixture",
+        "action": "static",
+        "position": "center",
+        "id": "bowl_glass_mixing"
+      },
+      {
+        "desc": "stainless steel bowl with pink spatula and metal tongs",
+        "action": "static",
+        "position": "left/background",
+        "id": "bowl_stainless_steel"
       },
       {
         "desc": "plastic bottle of yellow oil",
         "action": "static",
         "position": "far left",
-        "id": "bottles_oil_1"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "A person is using both hands to mix a crumbly mixture inside a glass bowl.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The mixture consists of light-brown crumbs.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The baking tray is positioned to the right of the bowl.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "A metal pot containing utensils sits to the left of the bowl.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [],
-    "spatial": "The glass bowl containing the mixture is in the center of the black countertop. The person's hands are inside the bowl, manipulating the crumbs. To the right of the bowl is a baking tray lined with white paper. To the left of the bowl is a stainless steel pot and a bottle of oil.",
-    "parse_success": true,
-    "chunk_idx": 30,
-    "video_id": "GiSaTsYzlqg",
-    "state_changes": [
-      "mixing crumbs with hands (coating preparation)"
-    ]
-  },
-  {
-    "time": [
-      62,
-      64
-    ],
-    "visible_entities": [
-      {
-        "desc": "person with hairy arms, wearing a silver ring on the left ring finger",
-        "action": "rolling food mixture into a ball",
-        "position": "center",
-        "id": "person_chef_1"
-      },
-      {
-        "desc": "clear glass bowl containing beige crumbly food mixture",
-        "action": "static",
-        "position": "center",
-        "id": "mixture_dry_1"
-      },
-      {
-        "desc": "plastic bottle of yellow cooking oil with a red base",
-        "action": "static",
-        "position": "left",
-        "id": "bottles_oil_1"
-      },
-      {
-        "desc": "stainless steel bowl with tongs and a pink spatula",
-        "action": "static",
-        "position": "left background",
-        "id": "bowl_metal_1"
+        "id": "bottle_oil_yellow"
       },
       {
         "desc": "black baking tray lined with white parchment paper",
         "action": "static",
         "position": "right",
-        "id": "parchment_paper_1"
+        "id": "tray_baking_black"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "The person is using both hands to roll the beige mixture into a ball shape.",
+        "fact": "The person is using both hands to mix or press the crumbly mixture inside the glass bowl.",
         "confidence": 1.0
       },
       {
-        "fact": "The person is wearing a silver ring on their left ring finger.",
+        "fact": "A gold ring is visible on the ring finger of the person's left hand.",
         "confidence": 1.0
       },
       {
-        "fact": "The glass bowl is sitting on a black countertop.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The oil bottle is positioned to the left of the glass bowl.",
+        "fact": "The mixture in the bowl appears to be a coarse, beige crumb texture.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The person's hands are positioned directly above the clear glass bowl in the center. The bottle of oil is to the left of the bowl, while the baking tray is to the right. The stainless steel bowl is behind and to the left of the glass bowl.",
+    "spatial": "The glass bowl is positioned in the center of the black countertop, directly in front of the person's hands. To the left of the glass bowl is a stainless steel bowl containing utensils. To the right of the glass bowl is a baking tray lined with parchment paper. The oil bottle is located on the far left edge of the scene.",
     "parse_success": true,
     "chunk_idx": 31,
     "video_id": "GiSaTsYzlqg",
-    "state_changes": [
-      "rolling mixture into balls (shaping action)"
-    ]
+    "state_changes": []
   },
   {
     "time": [
-      64,
-      66
+      32,
+      33
     ],
     "visible_entities": [
       {
-        "desc": "person's hands with fair skin and visible arm hair",
+        "desc": "person's hands with light skin tone and visible arm hair",
         "action": "coating a food item in crumbs",
-        "position": "center/foreground",
-        "id": "person_chef_1"
+        "position": "center"
       },
       {
-        "desc": "clear glass bowl filled with light-brown breadcrumbs",
+        "desc": "clear glass bowl containing light-brown, coarse breadcrumbs",
         "action": "static",
         "position": "center",
-        "id": "bowl_glass_mixing_1"
+        "id": "bowl_glass_mixing"
       },
       {
-        "desc": "small, pale, rectangular food item being held",
-        "action": "being coated",
-        "position": "center"
+        "desc": "small, rectangular, pale food item covered in crumbs",
+        "action": "being held",
+        "position": "center",
+        "id": "dough_cookie_raw"
       },
       {
         "desc": "metal baking tray lined with white parchment paper",
         "action": "static",
         "position": "right",
-        "id": "parchment_paper_1"
+        "id": "tray_baking_black"
       },
       {
-        "desc": "stainless steel mixing bowl with utensils",
+        "desc": "stainless steel bowl with tongs inside",
         "action": "static",
-        "position": "left/background",
-        "id": "bowl_metal_1"
+        "position": "left",
+        "id": "bowl_stainless_steel"
       },
       {
         "desc": "plastic bottle of yellow cooking oil",
         "action": "static",
-        "position": "far left",
-        "id": "bottles_oil_1"
+        "position": "left",
+        "id": "bottle_oil_yellow"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A person is using both hands to press breadcrumbs onto a small food item.",
+        "fact": "A person is holding a breaded food item above a bowl of breadcrumbs.",
         "confidence": 1.0
       },
       {
-        "fact": "The food item is being lifted out of the glass bowl.",
+        "fact": "The person is using both hands to coat the food item.",
         "confidence": 1.0
       },
       {
-        "fact": "The glass bowl sits on a black countertop.",
+        "fact": "A baking tray with parchment paper is positioned to the right of the bowl.",
         "confidence": 1.0
       },
       {
-        "fact": "A baking tray is positioned to the right of the bowl.",
+        "fact": "A metal bowl containing tongs sits to the left of the glass bowl.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The glass bowl containing breadcrumbs is in the center of the frame on a black countertop. The person's hands are positioned directly above the bowl, holding a food item. To the right of the bowl is a baking tray lined with white paper. To the left and slightly behind the bowl is a metal mixing bowl and a bottle of oil.",
+    "spatial": "The glass bowl filled with breadcrumbs is in the center of the frame. The person's hands are holding a food item directly above the bowl. To the right of the bowl is a baking tray lined with white paper. To the left of the bowl is a metal bowl and a bottle of oil.",
     "parse_success": true,
     "chunk_idx": 32,
     "video_id": "GiSaTsYzlqg",
     "state_changes": [
-      "coating food items in crumbs (breading step)"
+      "Coating food item in crumbs"
     ]
   },
   {
     "time": [
-      66,
-      68
+      33,
+      34
     ],
     "visible_entities": [
       {
-        "desc": "human hand with light skin tone",
-        "action": "placing and pressing dough",
-        "position": "center/right/foreground",
+        "desc": "hand with light skin tone",
+        "action": "pressing down on a cookie dough ball",
+        "position": "center/right",
         "id": "person_chef_1"
       },
       {
-        "desc": "lumpy, beige oatmeal cookie dough mounds",
+        "desc": "dark metal baking sheet",
         "action": "static",
-        "position": "scattered across the tray",
-        "id": "cookie_dough_unbaked_1"
+        "position": "background",
+        "id": "tray_baking_black"
       },
       {
-        "desc": "dark metal baking sheet lined with white parchment paper",
+        "desc": "white parchment paper",
         "action": "static",
-        "position": "center/foreground",
-        "id": "parchment_paper_1"
+        "position": "center",
+        "id": "paper_parchment"
+      },
+      {
+        "desc": "lumpy oatmeal cookie dough balls, beige color with visible oats",
+        "action": "being flattened",
+        "position": "scattered on paper",
+        "id": "dough_cookie_raw"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A hand places a mound of dough onto the baking sheet.",
+        "fact": "A hand is pressing down on a ball of cookie dough to flatten it.",
         "confidence": 1.0
       },
       {
-        "fact": "The hand presses down on the dough mound to flatten it slightly.",
+        "fact": "Several other mounds of cookie dough are arranged on the parchment paper.",
         "confidence": 1.0
       },
       {
-        "fact": "Several other mounds of dough are already arranged on the parchment paper.",
+        "fact": "The baking sheet is lined with white parchment paper.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The hand is positioned above the baking sheet, interacting with a specific mound of dough in the center. The dough mounds are scattered across the surface of the white parchment paper, which lies on top of the dark metal tray.",
+    "spatial": "The hand is positioned above the parchment paper and is pressing down on one of the cookie dough balls. The other dough balls are scattered to the left and right of the hand on the baking sheet.",
     "parse_success": true,
     "chunk_idx": 33,
     "video_id": "GiSaTsYzlqg",
     "state_changes": [
-      "placing dough on baking sheet (pre-bake arrangement)"
+      "Flattening cookie dough balls on tray"
     ]
   },
   {
     "time": [
-      68,
-      70
+      34,
+      35
     ],
     "visible_entities": [
       {
-        "desc": "lumpy, beige oatmeal cookie dough mounds with visible rolled oat texture",
+        "desc": "lumpy, pale beige oatmeal cookie dough mounds with a rough, textured surface",
         "action": "static",
         "position": "center",
-        "id": "cookie_dough_unbaked_1"
+        "id": "dough_cookie_raw"
       },
       {
         "desc": "dark grey metal baking sheet with a raised rim",
         "action": "static",
         "position": "center",
-        "id": "baking_tray_1"
+        "id": "tray_baking_black"
       },
       {
         "desc": "white parchment paper lining the baking sheet",
         "action": "static",
         "position": "center",
-        "id": "parchment_paper_1"
+        "id": "paper_parchment"
       },
       {
-        "desc": "scattered loose oat flakes on the parchment paper",
+        "desc": "scattered loose oat flakes",
         "action": "static",
         "position": "center",
-        "id": "rolled_oats_1"
+        "id": "ingredient_oats"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "Unbaked cookie dough mounds are arranged on a baking sheet.",
+        "fact": "Unbaked cookie dough mounds are arranged in rows on the baking sheet.",
         "confidence": 1.0
       },
       {
-        "fact": "The parchment paper lines the surface of the baking sheet.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "Loose oat flakes are scattered around the dough mounds.",
+        "fact": "Loose oat flakes are scattered on the parchment paper around the dough mounds.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The cookie dough mounds are arranged on top of the white parchment paper. The parchment paper is inside the dark grey baking sheet. The loose oat flakes are scattered on the parchment paper near the dough mounds.",
+    "spatial": "The oatmeal cookie dough mounds are arranged on top of the white parchment paper. The parchment paper lines the dark grey baking sheet. The loose oat flakes are scattered near the dough mounds on the paper.",
     "parse_success": true,
     "chunk_idx": 34,
     "video_id": "GiSaTsYzlqg",
@@ -2091,99 +2051,85 @@
   },
   {
     "time": [
-      70,
-      72
+      35,
+      36
     ],
     "visible_entities": [
       {
-        "desc": "rectangular metal baking sheet, dark grey, lined with white parchment paper",
-        "action": "being held",
+        "desc": "dark grey metal baking sheet lined with white parchment paper, holding approximately nine mounds of pale yellow, lumpy cookie dough",
+        "action": "being held by a hand",
         "position": "foreground",
-        "id": "parchment_paper_1"
+        "id": "tray_baking_black"
       },
       {
-        "desc": "unbaked cookie dough mounds, pale yellow, lumpy texture, irregular round shapes",
-        "action": "resting on parchment paper",
-        "position": "center",
-        "id": "cookie_dough_unbaked_1"
-      },
-      {
-        "desc": "oven interior, dark grey metal walls, metal wire rack, back fan vent",
+        "desc": "empty oven interior with metal wire racks and a dark back wall featuring a fan vent",
         "action": "static",
         "position": "background",
-        "id": "oven_1"
+        "id": "oven_interior"
       },
       {
-        "desc": "human finger, skin tone",
-        "action": "holding baking sheet",
+        "desc": "human hand with light skin tone",
+        "action": "holding the baking sheet",
         "position": "right",
         "id": "person_chef_1"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A person is holding a baking sheet filled with unbaked cookie dough.",
+        "fact": "A hand is holding a baking sheet filled with unbaked cookie dough.",
         "confidence": 1.0
       },
       {
-        "fact": "The baking sheet is lined with white parchment paper.",
+        "fact": "The baking sheet is positioned in front of an open oven.",
         "confidence": 1.0
       },
       {
-        "fact": "The cookie dough mounds are arranged in rows on the tray.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The scene transitions to show the interior of an oven with a wire rack.",
+        "fact": "The oven interior is empty and ready for baking.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The baking sheet with cookie dough is in the foreground, held by a finger visible on the right edge. The unbaked dough mounds are resting on top of the parchment paper which lines the baking sheet. The oven interior with its wire rack is visible in the background, positioned behind the baking sheet.",
+    "spatial": "The baking sheet with cookie dough is in the foreground, held by a hand on the right side. The empty oven interior is located behind the baking sheet.",
     "parse_success": true,
     "chunk_idx": 35,
     "video_id": "GiSaTsYzlqg",
-    "state_changes": []
+    "state_changes": [
+      "Holding tray ready to enter oven"
+    ]
   },
   {
     "time": [
-      72,
-      74
+      36,
+      37
     ],
     "visible_entities": [
       {
-        "desc": "hand with pale skin",
-        "action": "pushing baking sheet into oven",
-        "position": "left/foreground",
-        "id": "person_chef_1"
-      },
-      {
-        "desc": "metal baking sheet with parchment paper",
-        "action": "being pushed onto rack",
+        "desc": "metal baking sheet with a light brown parchment paper liner",
+        "action": "being pushed into the oven",
         "position": "center/foreground",
-        "id": "parchment_paper_1"
+        "id": "tray_baking_black"
       },
       {
-        "desc": "uncooked food balls, light brown, textured",
+        "desc": "irregularly shaped, pale beige food items with a rough, crumbly texture",
         "action": "static",
-        "position": "on baking sheet",
-        "id": "cookie_dough_unbaked_1"
+        "position": "on the baking sheet",
+        "id": "cookies_oatmeal_baked"
       },
       {
-        "desc": "metal oven rack",
-        "action": "static",
-        "position": "center/background"
-      },
-      {
-        "desc": "oven interior, dark walls with heating elements",
+        "desc": "dark oven interior with horizontal metal racks",
         "action": "static",
         "position": "background",
-        "id": "oven_1"
+        "id": "oven_interior"
+      },
+      {
+        "desc": "person's hand with pale skin",
+        "action": "pushing the baking sheet",
+        "position": "left/foreground"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A hand is pushing a baking sheet into the oven.",
+        "fact": "A person's hand is pushing a baking sheet into an oven.",
         "confidence": 1.0
       },
       {
@@ -2191,63 +2137,70 @@
         "confidence": 1.0
       },
       {
-        "fact": "There are several uncooked food balls on the baking sheet.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The baking sheet is being placed onto the metal oven rack.",
+        "fact": "Several pieces of uncooked food are arranged on the baking sheet.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The hand is to the left of the baking sheet and is pushing it. The baking sheet is in front of the oven interior and is being placed on top of the metal oven rack. The food balls are on the baking sheet.",
+    "spatial": "The person's hand is on the left side of the baking sheet, pushing it forward. The baking sheet is inside the oven, positioned below the metal racks. The food items are on top of the parchment paper.",
     "parse_success": true,
     "chunk_idx": 36,
     "video_id": "GiSaTsYzlqg",
     "state_changes": [
-      "baking sheet pushed into oven (baking begins)"
+      "Pushing baking sheet into the oven"
     ]
   },
   {
     "time": [
-      74,
-      76
+      37,
+      38
     ],
     "visible_entities": [
       {
-        "desc": "rough-textured, light-brown food balls (meatballs or cookies) with crumbs",
+        "desc": "irregularly shaped, light-brown food items with a rough, crumbly texture, resembling meatballs or cookies",
         "action": "baking inside the oven",
         "position": "center",
-        "id": "cookie_dough_unbaked_1"
+        "id": "cookies_oatmeal_baked"
       },
       {
-        "desc": "metal baking sheet lined with white parchment paper",
+        "desc": "rectangular metal baking sheet with a rim",
         "action": "static",
         "position": "center",
-        "id": "parchment_paper_1"
+        "id": "tray_baking_black"
       },
       {
-        "desc": "black and orange checkered floor pattern",
+        "desc": "white parchment paper lining the baking sheet",
         "action": "static",
-        "position": "background"
+        "position": "center",
+        "id": "paper_parchment"
+      },
+      {
+        "desc": "dark interior of an oven with horizontal metal racks",
+        "action": "static",
+        "position": "background",
+        "id": "oven_interior"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "The food balls are baking inside the oven.",
+        "fact": "The food items are baking inside the oven.",
         "confidence": 1.0
       },
       {
-        "fact": "The baking sheet is resting on an oven rack.",
+        "fact": "The food items are arranged in rows on the parchment paper.",
         "confidence": 1.0
       },
       {
-        "fact": "The checkered floor is visible through the oven door glass.",
+        "fact": "The baking sheet is resting on a metal rack inside the oven.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The oven light illuminates the food items from above.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The food balls are arranged on top of the parchment paper, which is on the baking sheet. The baking sheet is inside the oven. The checkered floor pattern is visible below the baking sheet through the glass.",
+    "spatial": "The food items are on top of the parchment paper, which is inside the baking sheet. The baking sheet is on a metal rack inside the oven. The metal racks are above and below the baking sheet.",
     "parse_success": true,
     "chunk_idx": 37,
     "video_id": "GiSaTsYzlqg",
@@ -2255,187 +2208,201 @@
   },
   {
     "time": [
-      76,
-      78
+      38,
+      39
     ],
     "visible_entities": [
       {
-        "desc": "golden-brown, textured, round baked goods (cookies or macaroons)",
-        "action": "baking",
+        "desc": "golden-brown, textured, round baked goods (likely cookies or macaroons) with a rough, crumbly surface",
+        "action": "baking inside the oven",
         "position": "center",
-        "id": "cookies_baked_1"
+        "id": "cookies_oatmeal_baked"
       },
       {
-        "desc": "metal baking sheet with light-colored parchment paper",
+        "desc": "rectangular metal baking sheet with a rim",
         "action": "static",
         "position": "center",
-        "id": "parchment_paper_1"
+        "id": "tray_baking_black"
       },
       {
-        "desc": "dark oven interior with metal racks",
+        "desc": "white parchment paper lining the baking sheet",
         "action": "static",
-        "position": "background",
-        "id": "oven_1"
+        "position": "center",
+        "id": "paper_parchment"
       },
       {
-        "desc": "white cloth or oven mitt",
-        "action": "entering from left",
+        "desc": "dark metal oven rack with parallel bars",
+        "action": "static",
+        "position": "bottom",
+        "id": "rack_oven metal"
+      },
+      {
+        "desc": "white oven mitt or cloth",
+        "action": "entering from the left",
         "position": "left foreground",
-        "id": "oven_mitt_1"
+        "id": "mitt_oven"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A white cloth or oven mitt enters the frame from the left side.",
+        "fact": "A white oven mitt or cloth enters the frame from the left side in the second frame.",
         "confidence": 1.0
       },
       {
-        "fact": "The baked goods are arranged on a baking sheet inside the oven.",
+        "fact": "Nine golden-brown baked goods are arranged on a parchment-lined baking sheet.",
         "confidence": 1.0
       },
       {
-        "fact": "The oven light illuminates the baking sheet and food.",
+        "fact": "The baking sheet is resting on a metal rack inside an illuminated oven.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "Small crumbs are scattered on the parchment paper around the baked goods.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The baking sheet is positioned on a metal rack inside the oven. The baked goods are arranged on top of the parchment paper on the baking sheet. The white cloth is to the left of the baking sheet in the foreground.",
+    "spatial": "The baked goods are on top of the parchment paper, which lines the baking sheet. The baking sheet is positioned above the metal oven rack. The white oven mitt appears to the left of the baking sheet in the foreground.",
     "parse_success": true,
     "chunk_idx": 38,
     "video_id": "GiSaTsYzlqg",
-    "state_changes": []
+    "state_changes": [
+      "Oven mitt appears, indicating removal soon"
+    ]
   },
   {
     "time": [
-      78,
-      80
+      39,
+      40
     ],
     "visible_entities": [
       {
-        "desc": "golden-brown baked cookies, round and textured, arranged on a baking sheet",
-        "action": "being removed from the oven",
+        "desc": "baking tray with parchment paper holding golden-brown, round baked goods",
+        "action": "being pulled out of the oven",
         "position": "foreground",
-        "id": "cookies_baked_1"
+        "id": "tray_baking_black"
       },
       {
-        "desc": "metal baking sheet lined with white parchment paper",
-        "action": "being pulled out",
-        "position": "center",
-        "id": "parchment_paper_1"
-      },
-      {
-        "desc": "dark oven interior with metal racks",
+        "desc": "empty metal oven rack",
         "action": "static",
         "position": "background",
-        "id": "oven_1"
+        "id": "rack_oven metal"
       },
       {
-        "desc": "hand wearing a blue and white striped oven mitt",
-        "action": "holding the baking sheet",
-        "position": "bottom left",
-        "id": "oven_mitt_1"
-      },
-      {
-        "desc": "YouTube interface overlay with channel name and buttons",
+        "desc": "YouTube interface overlay with 'Warren Nash' channel name, '13K subscribers', and a red 'SUBSCRIBE' button",
         "action": "static",
-        "position": "top left",
-        "id": "youtube_overlay_1"
+        "position": "top-left",
+        "id": "overlay_youtube_interface"
+      },
+      {
+        "desc": "computer cursor arrow",
+        "action": "clicking the subscribe button",
+        "position": "top-left",
+        "id": "cursor_mouse"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A hand wearing a blue and white striped oven mitt pulls a baking sheet out of the oven.",
+        "fact": "A hand wearing a blue and white striped oven mitt pulls a baking tray out of the oven.",
         "confidence": 1.0
       },
       {
-        "fact": "The baking sheet contains several golden-brown cookies.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The YouTube overlay shows the channel name 'Warren Nash' and a 'SUBSCRIBE' button.",
+        "fact": "The baking tray contains several golden-brown, round baked items.",
         "confidence": 1.0
       },
       {
         "fact": "The cursor clicks the 'SUBSCRIBE' button, changing it to 'SUBSCRIBED'.",
         "confidence": 1.0
+      },
+      {
+        "fact": "The oven interior is dark with visible heating elements or rack supports.",
+        "confidence": 1.0
       }
     ],
     "ocr": [
-      "73",
-      "1",
-      "Share",
-      "Add to",
       "Warren Nash",
       "13K subscribers",
       "SUBSCRIBE",
-      "SUBSCRIBED"
+      "SUBSCRIBED",
+      "Share",
+      "Add to"
     ],
-    "spatial": "The baking sheet with cookies is in the foreground, being pulled out of the dark oven interior in the background. The hand with the blue and white striped oven mitt is at the bottom left, holding the baking sheet. The YouTube interface overlay is positioned at the top left corner of the screen, above the oven interior.",
+    "spatial": "The baking tray with food is in the foreground, being pulled out from the oven. The empty metal rack is inside the oven, behind the tray. The YouTube overlay is positioned in the top-left corner of the screen, above the oven interior.",
     "parse_success": true,
     "chunk_idx": 39,
     "video_id": "GiSaTsYzlqg",
     "state_changes": [
-      "cookies removed from oven (baking complete)"
+      "Pulling baked goods out of the oven"
     ]
   },
   {
     "time": [
-      80,
-      82
+      40,
+      41
     ],
     "visible_entities": [
       {
-        "desc": "golden-brown oatmeal cookies with a rough, textured surface containing visible oats",
+        "desc": "golden-brown oatmeal cookies with a rough, textured surface",
         "action": "static",
         "position": "center",
-        "id": "cookies_baked_1"
+        "id": "cookies_oatmeal_baked"
       },
       {
         "desc": "dark grey metal baking tray",
         "action": "static",
         "position": "center",
-        "id": "baking_tray_1"
+        "id": "tray_baking_black"
       },
       {
         "desc": "white parchment paper",
         "action": "static",
         "position": "center",
-        "id": "parchment_paper_1"
+        "id": "paper_parchment"
       },
       {
         "desc": "light-colored wooden cutting board",
         "action": "static",
         "position": "bottom",
-        "id": "cutting_board_1"
+        "id": "cutting_board"
       },
       {
-        "desc": "glass jar with a metal clasp lid filled with white oats",
+        "desc": "glass jar with metal clasp containing oats",
         "action": "static",
         "position": "right",
-        "id": "jar_oats_clasp_1"
+        "id": "jar_oats_glass"
       },
       {
-        "desc": "YouTube interface overlay showing channel name 'Warren Nash', 'SUBSCRIBED' button, and a bell icon",
+        "desc": "YouTube interface overlay with 'Warren Nash' channel name and 'SUBSCRIBED' button",
         "action": "static",
         "position": "top-left",
-        "id": "youtube_overlay_1"
+        "id": "overlay_youtube_interface"
+      },
+      {
+        "desc": "computer mouse cursor arrow",
+        "action": "hovering over bell icon",
+        "position": "top-left",
+        "id": "cursor_mouse"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A mouse cursor hovers over the notification bell icon in the YouTube interface overlay.",
+        "fact": "The baking tray is lined with white parchment paper.",
         "confidence": 1.0
       },
       {
-        "fact": "The cookies are arranged on a sheet of parchment paper inside the baking tray.",
+        "fact": "There are approximately nine oatmeal cookies arranged on the tray.",
         "confidence": 1.0
       },
       {
-        "fact": "The baking tray is resting on top of a wooden cutting board.",
+        "fact": "The tray rests on a wooden cutting board.",
         "confidence": 1.0
       },
       {
-        "fact": "The jar of oats is positioned to the right of the baking tray.",
+        "fact": "A mouse cursor is positioned over the notification bell icon in the YouTube overlay.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The text 'SUBSCRIBED' is visible next to the channel name.",
         "confidence": 1.0
       }
     ],
@@ -2448,7 +2415,7 @@
       "13K subscribers",
       "SUBSCRIBED"
     ],
-    "spatial": "The baking tray containing the cookies is positioned in the center, resting on top of a wooden cutting board. A glass jar filled with oats is located to the right of the tray in the background. The YouTube interface overlay is visible in the top-left corner of the frame, with the mouse cursor hovering near the bell icon.",
+    "spatial": "The baking tray is placed on top of the wooden cutting board. The cookies are arranged on the parchment paper which is inside the tray. The glass jar of oats is to the right of the baking tray. The YouTube interface overlay is in the top-left corner of the frame, partially obscuring the background.",
     "parse_success": true,
     "chunk_idx": 40,
     "video_id": "GiSaTsYzlqg",
@@ -2456,65 +2423,65 @@
   },
   {
     "time": [
-      82,
-      84
+      41,
+      42
     ],
     "visible_entities": [
       {
-        "desc": "golden-brown oatmeal cookies with visible oats and chocolate chips",
-        "action": "being lifted by a spatula",
-        "position": "center",
-        "id": "cookies_baked_1"
+        "desc": "golden-brown oatmeal cookies with a rough, textured surface",
+        "action": "resting on parchment paper",
+        "position": "center/foreground",
+        "id": "cookies_oatmeal_baked"
       },
       {
-        "desc": "dark grey baking tray",
+        "desc": "dark grey metal baking tray",
         "action": "static",
-        "position": "background",
-        "id": "baking_tray_1"
+        "position": "center",
+        "id": "tray_baking_black"
       },
       {
         "desc": "white parchment paper",
         "action": "static",
         "position": "center",
-        "id": "parchment_paper_1"
+        "id": "paper_parchment"
       },
       {
-        "desc": "hand with light skin tone",
-        "action": "holding a spatula",
-        "position": "center",
-        "id": "person_chef_1"
+        "desc": "person's hand with fair skin",
+        "action": "picking up a cookie",
+        "position": "center"
       },
       {
-        "desc": "orange and white text overlay",
+        "desc": "orange rectangular logo with white text",
         "action": "static",
-        "position": "top left"
+        "position": "top left",
+        "id": "logo_warren_nash"
       },
       {
-        "desc": "orange sidebar with white text and arrow",
+        "desc": "orange sidebar with white text and graphics",
         "action": "static",
         "position": "right",
-        "id": "sidebar_orange_1"
+        "id": "sidebar_orange_end"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A hand uses a spatula to lift a baked oatmeal cookie from the parchment paper.",
+        "fact": "A hand reaches into the frame and picks up one of the oatmeal cookies from the baking tray.",
         "confidence": 1.0
       },
       {
-        "fact": "Several other cookies remain on the baking tray.",
+        "fact": "The text 'WARREN NASH' is displayed in a logo in the top left corner.",
         "confidence": 1.0
       },
       {
-        "fact": "The text 'WARREN NASH' is visible in the top left corner.",
+        "fact": "The text 'MORE VIDEOS YOU'LL LOVE...' appears at the top of the right sidebar.",
         "confidence": 1.0
       },
       {
-        "fact": "The text 'MORE VIDEOS YOU'LL LOVE...' is visible on the right sidebar.",
+        "fact": "The text 'CLICK TO SUBSCRIBE' is visible below a white placeholder box.",
         "confidence": 1.0
       },
       {
-        "fact": "The text 'CLICK TO SUBSCRIBE' is visible on the right sidebar.",
+        "fact": "A white curved arrow points downwards below the subscription text.",
         "confidence": 1.0
       }
     ],
@@ -2523,147 +2490,58 @@
       "MORE VIDEOS YOU'LL LOVE...",
       "CLICK TO SUBSCRIBE"
     ],
-    "spatial": "The hand holding the spatula is positioned above the baking tray in the center. The cookies are arranged on the parchment paper which lines the tray. The 'WARREN NASH' text is to the left of the orange sidebar containing the subscription text.",
+    "spatial": "The baking tray containing the cookies is positioned in the center of the frame. The person's hand is reaching down from the top to pick up a cookie located in the middle of the tray. The 'WARREN NASH' logo is situated in the top left corner, above the video content. The orange sidebar containing the 'CLICK TO SUBSCRIBE' text is located to the right of the video footage.",
     "parse_success": true,
     "chunk_idx": 41,
     "video_id": "GiSaTsYzlqg",
     "state_changes": [
-      "cookie lifted with spatula (serving begins)"
+      "Hand picks up a baked cookie; end screen elements appear"
     ]
   },
   {
     "time": [
-      84,
-      86
+      42,
+      43
     ],
     "visible_entities": [
       {
-        "desc": "golden-brown, textured, round food items (likely cookies or fritters) with a crispy appearance",
+        "desc": "golden-brown, breaded, round food items with a textured surface",
         "action": "resting on a wire rack",
         "position": "left",
-        "id": "cookies_baked_1"
+        "id": "cookies_oatmeal_baked"
       },
       {
-        "desc": "metal wire cooling rack with parallel bars",
+        "desc": "metal wire cooling rack with a grid pattern",
         "action": "static",
         "position": "left",
-        "id": "rack_cooling_1"
+        "id": "rack_cooling_wire"
       },
       {
         "desc": "human hand with fair skin",
-        "action": "reaching in to touch or adjust a food item",
-        "position": "center-left",
+        "action": "reaching towards the food items",
+        "position": "left",
         "id": "person_chef_1"
       },
       {
-        "desc": "orange rectangular graphic with white text",
-        "action": "static",
-        "position": "top-left"
-      },
-      {
-        "desc": "large orange sidebar panel",
-        "action": "static",
-        "position": "right",
-        "id": "sidebar_orange_1"
-      },
-      {
-        "desc": "white rectangular placeholder box",
-        "action": "static",
-        "position": "right",
-        "id": "placeholder_box_white_1"
-      },
-      {
-        "desc": "white curved arrow graphic",
-        "action": "static",
-        "position": "bottom-right",
-        "id": "arrow_curved_white_1"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "A hand enters the frame to touch one of the baked food items on the rack.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The food items are arranged on a metal wire cooling rack.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The text 'WARREN NASH' is displayed in a logo at the top left.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The text 'MORE VIDEOS YOU'LL LOVE...' appears above a white box on the right.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The text 'CLICK TO SUBSCRIBE' is visible below the white box.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [
-      "WARREN NASH",
-      "MORE VIDEOS YOU'LL LOVE...",
-      "CLICK TO SUBSCRIBE"
-    ],
-    "spatial": "The video footage of the food is on the left side of the screen, while a large orange sidebar is on the right. Inside the sidebar, a white rectangular box is positioned above the 'CLICK TO SUBSCRIBE' text. The hand is reaching towards the food items which are resting on the wire rack.",
-    "parse_success": true,
-    "chunk_idx": 42,
-    "video_id": "GiSaTsYzlqg",
-    "state_changes": [
-      "cookies on cooling rack (final presentation)"
-    ]
-  },
-  {
-    "time": [
-      86,
-      88
-    ],
-    "visible_entities": [
-      {
-        "desc": "golden-brown, textured, round cookies with visible oats or nuts",
-        "action": "static",
-        "position": "left",
-        "id": "cookies_baked_1"
-      },
-      {
-        "desc": "black wire cooling rack with a grid pattern",
-        "action": "static",
-        "position": "left",
-        "id": "rack_cooling_1"
-      },
-      {
-        "desc": "orange rectangular logo with white text 'WARREN NASH'",
+        "desc": "orange rectangular logo with white text",
         "action": "static",
         "position": "top left",
-        "id": "logo_warren_nash_1"
+        "id": "logo_warren_nash"
       },
       {
-        "desc": "solid orange vertical sidebar",
+        "desc": "orange sidebar with white text and graphics",
         "action": "static",
         "position": "right",
-        "id": "sidebar_orange_1"
-      },
-      {
-        "desc": "white text 'MORE VIDEOS YOU'LL LOVE...' and 'CLICK TO SUBSCRIBE' with a curved arrow",
-        "action": "static",
-        "position": "right",
-        "id": "text_more_videos_1"
-      },
-      {
-        "desc": "white rectangular placeholder box",
-        "action": "static",
-        "position": "right",
-        "id": "placeholder_box_white_1"
+        "id": "sidebar_orange_end"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "The video displays a static end screen layout.",
+        "fact": "A hand reaches into the frame from the right side towards the food items.",
         "confidence": 1.0
       },
       {
-        "fact": "Golden-brown cookies are resting on a black wire cooling rack.",
+        "fact": "The food items are arranged on a metal wire rack.",
         "confidence": 1.0
       },
       {
@@ -2671,7 +2549,11 @@
         "confidence": 1.0
       },
       {
-        "fact": "The text 'CLICK TO SUBSCRIBE' is displayed on the right side with an arrow pointing downwards.",
+        "fact": "The text 'MORE VIDEOS YOU'LL LOVE...' is visible at the top of the right sidebar.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The text 'CLICK TO SUBSCRIBE' is visible below a white rectangle on the right.",
         "confidence": 1.0
       }
     ],
@@ -2680,67 +2562,58 @@
       "MORE VIDEOS YOU'LL LOVE...",
       "CLICK TO SUBSCRIBE"
     ],
-    "spatial": "The image of the cookies on the cooling rack is to the left of the orange sidebar. The 'WARREN NASH' logo is above the image of the cookies. The white rectangular placeholder is above the 'CLICK TO SUBSCRIBE' text on the right side.",
+    "spatial": "The food items are on the wire rack on the left side of the screen. The hand is to the right of the food items, reaching towards them. The 'WARREN NASH' logo is above the video of the food. The orange sidebar is to the right of the video content.",
     "parse_success": true,
-    "chunk_idx": 43,
+    "chunk_idx": 42,
     "video_id": "GiSaTsYzlqg",
     "state_changes": []
   },
   {
     "time": [
-      88,
-      90
+      43,
+      44
     ],
     "visible_entities": [
       {
-        "desc": "golden-brown oatmeal cookies with a textured, lumpy surface",
-        "action": "resting on a wire rack",
-        "position": "left",
-        "id": "cookies_baked_1"
-      },
-      {
-        "desc": "silver metal wire cooling rack with a grid pattern",
+        "desc": "golden-brown, textured, round baked cookies",
         "action": "static",
         "position": "left",
-        "id": "rack_cooling_1"
+        "id": "cookies_oatmeal_baked"
       },
       {
-        "desc": "human hand with fingers",
-        "action": "reaching towards the cookies",
-        "position": "center-left",
-        "id": "person_chef_1"
-      },
-      {
-        "desc": "orange rectangular banner with white text",
+        "desc": "black metal wire cooling rack",
         "action": "static",
-        "position": "top-left"
+        "position": "left",
+        "id": "rack_cooling_wire"
+      },
+      {
+        "desc": "orange rectangular logo with white text",
+        "action": "static",
+        "position": "top left",
+        "id": "logo_warren_nash"
       },
       {
         "desc": "orange sidebar panel with white text and graphics",
         "action": "static",
         "position": "right",
-        "id": "sidebar_orange_1"
+        "id": "sidebar_orange_end"
       },
       {
         "desc": "white rectangular placeholder box",
         "action": "static",
         "position": "right",
-        "id": "placeholder_box_white_1"
+        "id": "placeholder_box_white"
       },
       {
         "desc": "white curved arrow icon",
         "action": "static",
-        "position": "bottom-right",
-        "id": "arrow_curved_white_1"
+        "position": "bottom right",
+        "id": "arrow_subscribe_white"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A hand reaches into the frame to touch or pick up a cookie.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The cookies are arranged on a metal cooling rack.",
+        "fact": "Golden-brown cookies are resting on a black wire rack.",
         "confidence": 1.0
       },
       {
@@ -2748,11 +2621,11 @@
         "confidence": 1.0
       },
       {
-        "fact": "The text 'MORE VIDEOS YOU'LL LOVE...' is displayed above a white box.",
+        "fact": "The text 'MORE VIDEOS YOU'LL LOVE...' appears above a white box.",
         "confidence": 1.0
       },
       {
-        "fact": "The text 'CLICK TO SUBSCRIBE' is displayed below the white box.",
+        "fact": "The text 'CLICK TO SUBSCRIBE' is positioned above a curved arrow.",
         "confidence": 1.0
       }
     ],
@@ -2761,7 +2634,91 @@
       "MORE VIDEOS YOU'LL LOVE...",
       "CLICK TO SUBSCRIBE"
     ],
-    "spatial": "The video content showing cookies on a rack is on the left side of the screen. The orange sidebar containing the 'MORE VIDEOS' section and 'CLICK TO SUBSCRIBE' text is to the right of the video content. The 'WARREN NASH' banner is above the video of the cookies.",
+    "spatial": "The cookies on the wire rack are located to the left of the orange sidebar panel. The 'WARREN NASH' logo is positioned above the cookies. Inside the orange panel, the white placeholder box is below the 'MORE VIDEOS YOU'LL LOVE...' text and above the 'CLICK TO SUBSCRIBE' text.",
+    "parse_success": true,
+    "chunk_idx": 43,
+    "video_id": "GiSaTsYzlqg",
+    "state_changes": []
+  },
+  {
+    "time": [
+      44,
+      45
+    ],
+    "visible_entities": [
+      {
+        "desc": "golden-brown oatmeal cookies with a bumpy, textured surface",
+        "action": "resting on a wire rack",
+        "position": "left",
+        "id": "cookies_oatmeal_baked"
+      },
+      {
+        "desc": "silver metal wire cooling rack with a grid pattern",
+        "action": "static",
+        "position": "left",
+        "id": "rack_cooling_wire"
+      },
+      {
+        "desc": "human fingers with light skin tone",
+        "action": "reaching towards the cookies",
+        "position": "left",
+        "id": "person_chef_1"
+      },
+      {
+        "desc": "orange rectangular logo with white text",
+        "action": "static",
+        "position": "top left",
+        "id": "logo_warren_nash"
+      },
+      {
+        "desc": "large orange sidebar panel",
+        "action": "static",
+        "position": "right",
+        "id": "sidebar_orange_end"
+      },
+      {
+        "desc": "white text reading 'MORE VIDEOS YOU'LL LOVE...'",
+        "action": "static",
+        "position": "top right",
+        "id": "text_more_videos_prompt"
+      },
+      {
+        "desc": "white rectangular placeholder box",
+        "action": "static",
+        "position": "right",
+        "id": "placeholder_box_white"
+      },
+      {
+        "desc": "white text reading 'CLICK TO SUBSCRIBE' with a curved arrow",
+        "action": "static",
+        "position": "bottom right",
+        "id": "arrow_subscribe_white"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "Human fingers are reaching towards the cookies on the cooling rack.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The cookies are resting on a metal wire rack.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The text 'WARREN NASH' is displayed in the top left corner.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The text 'CLICK TO SUBSCRIBE' is displayed on the orange panel.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "WARREN NASH",
+      "MORE VIDEOS YOU'LL LOVE...",
+      "CLICK TO SUBSCRIBE"
+    ],
+    "spatial": "The video frame is split into two sections. The left section contains a video of cookies on a rack, with the 'WARREN NASH' logo positioned above it. The right section is a solid orange panel containing a white placeholder box, which is located below the 'MORE VIDEOS YOU'LL LOVE...' text and above the 'CLICK TO SUBSCRIBE' text.",
     "parse_success": true,
     "chunk_idx": 44,
     "video_id": "GiSaTsYzlqg",
@@ -2769,45 +2726,45 @@
   },
   {
     "time": [
-      90,
-      92
+      45,
+      46
     ],
     "visible_entities": [
       {
-        "desc": "orange rectangular logo with white text 'WARREN NASH' and a faint reflection effect below",
+        "desc": "orange rectangular logo with white text 'WARREN NASH' and a reflection effect",
         "action": "static",
         "position": "top left",
-        "id": "logo_warren_nash_1"
+        "id": "logo_warren_nash"
       },
       {
         "desc": "solid orange vertical sidebar",
         "action": "static",
         "position": "right",
-        "id": "sidebar_orange_1"
+        "id": "sidebar_orange_end"
       },
       {
-        "desc": "white text 'MORE VIDEOS YOU'LL LOVE...' in uppercase sans-serif font",
+        "desc": "white text 'MORE VIDEOS YOU'LL LOVE...' in sans-serif font",
         "action": "static",
         "position": "top right",
-        "id": "text_more_videos_1"
+        "id": "text_more_videos_prompt"
       },
       {
         "desc": "large white rectangular placeholder box",
         "action": "static",
         "position": "center right",
-        "id": "placeholder_box_white_1"
+        "id": "placeholder_box_white"
       },
       {
-        "desc": "white text 'CLICK TO SUBSCRIBE' in uppercase sans-serif font",
+        "desc": "white text 'CLICK TO SUBSCRIBE' in sans-serif font",
         "action": "static",
         "position": "bottom right",
-        "id": "text_subscribe_1"
+        "id": "text_subscribe_prompt"
       },
       {
-        "desc": "white curved arrow icon pointing downwards and to the right",
+        "desc": "white curved arrow icon pointing right",
         "action": "static",
         "position": "bottom right",
-        "id": "arrow_curved_white_1"
+        "id": "arrow_subscribe_white"
       }
     ],
     "atomic_facts": [
@@ -2833,203 +2790,46 @@
       "MORE VIDEOS YOU'LL LOVE...",
       "CLICK TO SUBSCRIBE"
     ],
-    "spatial": "The 'WARREN NASH' logo is located in the top left corner of the screen. The orange sidebar occupies the right side of the frame. Inside the sidebar, the text 'MORE VIDEOS YOU'LL LOVE...' is above the white rectangular placeholder, which is above the 'CLICK TO SUBSCRIBE' text and the curved arrow.",
+    "spatial": "The 'WARREN NASH' logo is located in the top left corner of the screen. The orange sidebar occupies the right side of the frame. Inside the sidebar, the text 'MORE VIDEOS YOU'LL LOVE...' is above the white rectangular placeholder, which is above the text 'CLICK TO SUBSCRIBE'. The curved arrow is below the 'CLICK TO SUBSCRIBE' text.",
     "parse_success": true,
     "chunk_idx": 45,
     "video_id": "GiSaTsYzlqg",
-    "state_changes": [
-      "end screen graphics appear (video conclusion)"
-    ]
+    "state_changes": []
   },
   {
     "time": [
-      92,
-      94
+      46,
+      47
     ],
     "visible_entities": [
       {
-        "desc": "orange rectangular logo containing the text 'WARREN NASH' in white sans-serif font, with a faint reflection effect below it",
+        "desc": "orange rectangular logo with white text 'WARREN NASH' and a faint reflection below it",
         "action": "static",
         "position": "top left",
-        "id": "logo_warren_nash_1"
+        "id": "logo_warren_nash"
       },
       {
-        "desc": "solid orange vertical sidebar occupying the right side of the screen",
+        "desc": "solid orange vertical sidebar",
         "action": "static",
         "position": "right",
-        "id": "sidebar_orange_1"
+        "id": "sidebar_orange_end"
       },
       {
-        "desc": "white text 'MORE VIDEOS YOU'LL LOVE...' in uppercase sans-serif font",
+        "desc": "white text 'MORE VIDEOS YOU'LL LOVE...'",
         "action": "static",
-        "position": "top right",
-        "id": "text_more_videos_1"
+        "position": "top right"
       },
       {
         "desc": "large white rectangular placeholder box",
         "action": "static",
         "position": "center right",
-        "id": "placeholder_box_white_1"
+        "id": "placeholder_box_white"
       },
       {
-        "desc": "white text 'CLICK TO SUBSCRIBE' in uppercase sans-serif font",
+        "desc": "white text 'CLICK TO SUBSCRIBE' with a curved white arrow pointing right",
         "action": "static",
         "position": "bottom right",
-        "id": "text_subscribe_1"
-      },
-      {
-        "desc": "white curved arrow graphic pointing downwards and to the right",
-        "action": "static",
-        "position": "bottom right",
-        "id": "arrow_curved_white_1"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "The video displays a static end screen layout.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The text 'MORE VIDEOS YOU'LL LOVE...' is positioned above a white rectangular placeholder.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The text 'CLICK TO SUBSCRIBE' is positioned below the white rectangular placeholder.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "A curved arrow points towards the bottom right area of the screen.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [
-      "WARREN NASH",
-      "MORE VIDEOS YOU'LL LOVE...",
-      "CLICK TO SUBSCRIBE"
-    ],
-    "spatial": "The 'WARREN NASH' logo is located in the top left corner of the white background. The orange sidebar is positioned to the right of the white background area. Inside the sidebar, the 'MORE VIDEOS YOU'LL LOVE...' text is above the white rectangular placeholder, and the 'CLICK TO SUBSCRIBE' text is below it.",
-    "parse_success": true,
-    "chunk_idx": 46,
-    "video_id": "GiSaTsYzlqg",
-    "state_changes": []
-  },
-  {
-    "time": [
-      94,
-      96
-    ],
-    "visible_entities": [
-      {
-        "desc": "orange rectangular logo with white text 'WARREN NASH' and a faint reflection effect below",
-        "action": "static",
-        "position": "top left",
-        "id": "logo_warren_nash_1"
-      },
-      {
-        "desc": "solid orange vertical sidebar occupying the right side of the screen",
-        "action": "static",
-        "position": "right",
-        "id": "sidebar_orange_1"
-      },
-      {
-        "desc": "white text 'MORE VIDEOS YOU'LL LOVE...' in uppercase sans-serif font",
-        "action": "static",
-        "position": "top right",
-        "id": "text_more_videos_1"
-      },
-      {
-        "desc": "large white rectangular placeholder box",
-        "action": "static",
-        "position": "center right",
-        "id": "placeholder_box_white_1"
-      },
-      {
-        "desc": "white text 'CLICK TO SUBSCRIBE' in uppercase sans-serif font",
-        "action": "static",
-        "position": "bottom right",
-        "id": "text_subscribe_1"
-      },
-      {
-        "desc": "white curved arrow icon pointing downwards and to the right",
-        "action": "static",
-        "position": "bottom right",
-        "id": "arrow_curved_white_1"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "The video displays a static end screen layout.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The text 'WARREN NASH' is visible in the top left corner.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The text 'MORE VIDEOS YOU'LL LOVE...' is positioned above a white rectangle.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The text 'CLICK TO SUBSCRIBE' is located below the white rectangle.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "A curved arrow points towards the bottom right area of the screen.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [
-      "WARREN NASH",
-      "MORE VIDEOS YOU'LL LOVE...",
-      "CLICK TO SUBSCRIBE"
-    ],
-    "spatial": "The 'WARREN NASH' logo is located in the top left corner, to the left of the orange sidebar. The orange sidebar occupies the right side of the screen. Inside the sidebar, the text 'MORE VIDEOS YOU'LL LOVE...' is above the white rectangular box, and the text 'CLICK TO SUBSCRIBE' is below the white rectangular box.",
-    "parse_success": true,
-    "chunk_idx": 47,
-    "video_id": "GiSaTsYzlqg",
-    "state_changes": []
-  },
-  {
-    "time": [
-      96,
-      98
-    ],
-    "visible_entities": [
-      {
-        "desc": "Orange rectangular logo with white text 'WARREN NASH' and a faint reflection below it",
-        "action": "static",
-        "position": "top left",
-        "id": "logo_warren_nash_1"
-      },
-      {
-        "desc": "Solid orange vertical sidebar occupying the right side of the screen",
-        "action": "static",
-        "position": "right",
-        "id": "sidebar_orange_1"
-      },
-      {
-        "desc": "White text 'MORE VIDEOS YOU'LL LOVE...' in uppercase sans-serif font",
-        "action": "static",
-        "position": "top right",
-        "id": "text_more_videos_1"
-      },
-      {
-        "desc": "Large white rectangular placeholder box",
-        "action": "static",
-        "position": "center right",
-        "id": "placeholder_box_white_1"
-      },
-      {
-        "desc": "White text 'CLICK TO SUBSCRIBE' in uppercase sans-serif font",
-        "action": "static",
-        "position": "bottom right",
-        "id": "text_subscribe_1"
-      },
-      {
-        "desc": "White curved arrow icon pointing downwards and to the right",
-        "action": "static",
-        "position": "bottom right",
-        "id": "arrow_curved_white_1"
+        "id": "arrow_subscribe_white"
       }
     ],
     "atomic_facts": [
@@ -3048,9 +2848,71 @@
       {
         "fact": "The text 'CLICK TO SUBSCRIBE' is displayed below the white rectangle.",
         "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "WARREN NASH",
+      "MORE VIDEOS YOU'LL LOVE...",
+      "CLICK TO SUBSCRIBE"
+    ],
+    "spatial": "The 'WARREN NASH' logo is located in the top left corner of the white background. The orange sidebar is positioned on the right side of the screen. Inside the sidebar, the 'MORE VIDEOS YOU'LL LOVE...' text is above the white rectangular box, and the 'CLICK TO SUBSCRIBE' text is below the box.",
+    "parse_success": true,
+    "chunk_idx": 46,
+    "video_id": "GiSaTsYzlqg",
+    "state_changes": []
+  },
+  {
+    "time": [
+      47,
+      48
+    ],
+    "visible_entities": [
+      {
+        "desc": "orange rectangular logo with white text reading 'WARREN NASH' and a faint reflection below",
+        "action": "static",
+        "position": "top left",
+        "id": "logo_warren_nash"
       },
       {
-        "fact": "A curved arrow points towards the bottom right area.",
+        "desc": "large solid orange vertical panel",
+        "action": "static",
+        "position": "right",
+        "id": "sidebar_orange_end"
+      },
+      {
+        "desc": "white text reading 'MORE VIDEOS YOU'LL LOVE...'",
+        "action": "static",
+        "position": "top right",
+        "id": "text_more_videos_prompt"
+      },
+      {
+        "desc": "large white rectangular placeholder box",
+        "action": "static",
+        "position": "center right",
+        "id": "placeholder_box_white"
+      },
+      {
+        "desc": "white text reading 'CLICK TO SUBSCRIBE' with a curved white arrow pointing right",
+        "action": "static",
+        "position": "bottom right",
+        "id": "arrow_subscribe_white"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The screen displays a static end card layout.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The text 'WARREN NASH' is visible in the top left corner.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The text 'MORE VIDEOS YOU'LL LOVE...' is displayed above a white rectangle.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The text 'CLICK TO SUBSCRIBE' is displayed below the white rectangle.",
         "confidence": 1.0
       }
     ],
@@ -3059,7 +2921,83 @@
       "MORE VIDEOS YOU'LL LOVE...",
       "CLICK TO SUBSCRIBE"
     ],
-    "spatial": "The 'WARREN NASH' logo is located in the top left corner of the white background. The orange sidebar is positioned to the right of the logo. Inside the sidebar, the 'MORE VIDEOS YOU'LL LOVE...' text is above the white rectangular box, and the 'CLICK TO SUBSCRIBE' text is below the white rectangular box.",
+    "spatial": "The 'WARREN NASH' logo is located in the top left corner of the white background. The orange panel is positioned to the right of the logo. Inside the orange panel, the 'MORE VIDEOS YOU'LL LOVE...' text is above the white rectangular box, and the 'CLICK TO SUBSCRIBE' text is below the box.",
+    "parse_success": true,
+    "chunk_idx": 47,
+    "video_id": "GiSaTsYzlqg",
+    "state_changes": []
+  },
+  {
+    "time": [
+      48,
+      49
+    ],
+    "visible_entities": [
+      {
+        "desc": "Orange rectangular logo with white text 'WARREN NASH' in a sans-serif font, featuring a faint reflection effect below the text",
+        "action": "static",
+        "position": "top left",
+        "id": "logo_warren_nash"
+      },
+      {
+        "desc": "Solid orange vertical sidebar occupying the right side of the frame",
+        "action": "static",
+        "position": "right",
+        "id": "sidebar_orange_end"
+      },
+      {
+        "desc": "White text 'MORE VIDEOS YOU'LL LOVE...' in uppercase sans-serif font",
+        "action": "static",
+        "position": "top right",
+        "id": "text_more_videos_prompt"
+      },
+      {
+        "desc": "Large white rectangular placeholder box",
+        "action": "static",
+        "position": "center right",
+        "id": "placeholder_box_white"
+      },
+      {
+        "desc": "White text 'CLICK TO SUBSCRIBE' in uppercase sans-serif font",
+        "action": "static",
+        "position": "bottom right",
+        "id": "text_subscribe_prompt"
+      },
+      {
+        "desc": "White curved arrow icon pointing downwards and to the right",
+        "action": "static",
+        "position": "bottom right",
+        "id": "arrow_subscribe_white"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The video displays a static end screen layout with no movement.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The text 'WARREN NASH' is visible inside an orange rectangle in the top left corner.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The text 'MORE VIDEOS YOU'LL LOVE...' is positioned above a white rectangular box.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The text 'CLICK TO SUBSCRIBE' is located below the white rectangular box.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A curved arrow points towards the bottom right area of the screen.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "WARREN NASH",
+      "MORE VIDEOS YOU'LL LOVE...",
+      "CLICK TO SUBSCRIBE"
+    ],
+    "spatial": "The orange 'WARREN NASH' logo is located in the top left corner, separated from the orange sidebar on the right by a large white background space. Within the right sidebar, the 'MORE VIDEOS YOU'LL LOVE...' text is above the white rectangular box, and the 'CLICK TO SUBSCRIBE' text is below it, with a curved arrow pointing further down.",
     "parse_success": true,
     "chunk_idx": 48,
     "video_id": "GiSaTsYzlqg",
@@ -3067,45 +3005,44 @@
   },
   {
     "time": [
-      98,
-      100
+      49,
+      50
     ],
     "visible_entities": [
       {
         "desc": "orange rectangular logo containing the text 'WARREN NASH' in white sans-serif font, with a faint reflection effect below it",
         "action": "static",
         "position": "top left",
-        "id": "logo_warren_nash_1"
+        "id": "logo_warren_nash"
       },
       {
-        "desc": "large solid orange vertical panel occupying the right side of the screen",
+        "desc": "large vertical orange sidebar panel",
         "action": "static",
         "position": "right",
-        "id": "sidebar_orange_1"
+        "id": "sidebar_orange_end"
       },
       {
         "desc": "white text reading 'MORE VIDEOS YOU'LL LOVE...' in uppercase sans-serif font",
         "action": "static",
         "position": "top right",
-        "id": "text_more_videos_1"
+        "id": "text_more_videos_prompt"
       },
       {
         "desc": "large white rectangular placeholder box",
         "action": "static",
         "position": "center right",
-        "id": "placeholder_box_white_1"
+        "id": "placeholder_box_white"
       },
       {
         "desc": "white text reading 'CLICK TO SUBSCRIBE' in uppercase sans-serif font",
         "action": "static",
         "position": "bottom right",
-        "id": "text_subscribe_1"
+        "id": "text_subscribe_prompt"
       },
       {
         "desc": "white curved arrow icon pointing downwards and to the right",
         "action": "static",
-        "position": "bottom right",
-        "id": "arrow_curved_white_1"
+        "position": "bottom right"
       }
     ],
     "atomic_facts": [
@@ -3131,7 +3068,7 @@
       "MORE VIDEOS YOU'LL LOVE...",
       "CLICK TO SUBSCRIBE"
     ],
-    "spatial": "The 'WARREN NASH' logo is located in the top left corner, to the left of the large orange panel. The orange panel occupies the entire right side of the frame. Inside the orange panel, the 'MORE VIDEOS YOU'LL LOVE...' text is above the white rectangular box, and the 'CLICK TO SUBSCRIBE' text is below the white rectangular box. The curved arrow is below the 'CLICK TO SUBSCRIBE' text.",
+    "spatial": "The 'WARREN NASH' logo is located in the top left corner of the screen. The large orange sidebar is positioned to the right of the white background area. Inside the sidebar, the 'MORE VIDEOS YOU'LL LOVE...' text is above the white rectangular placeholder, and the 'CLICK TO SUBSCRIBE' text is below the placeholder.",
     "parse_success": true,
     "chunk_idx": 49,
     "video_id": "GiSaTsYzlqg",
@@ -3139,45 +3076,42 @@
   },
   {
     "time": [
-      100,
-      102
+      50,
+      51
     ],
     "visible_entities": [
       {
         "desc": "orange rectangular logo with white text 'WARREN NASH' and a faint reflection effect below",
         "action": "static",
         "position": "top left",
-        "id": "logo_warren_nash_1"
+        "id": "logo_warren_nash"
       },
       {
         "desc": "solid orange vertical sidebar occupying the right side of the screen",
         "action": "static",
         "position": "right",
-        "id": "sidebar_orange_1"
+        "id": "sidebar_orange_end"
       },
       {
         "desc": "white text 'MORE VIDEOS YOU'LL LOVE...' in uppercase sans-serif font",
         "action": "static",
-        "position": "top right",
-        "id": "text_more_videos_1"
+        "position": "top right"
       },
       {
         "desc": "large white rectangular placeholder box",
         "action": "static",
         "position": "center right",
-        "id": "placeholder_box_white_1"
+        "id": "placeholder_box_white"
       },
       {
         "desc": "white text 'CLICK TO SUBSCRIBE' in uppercase sans-serif font",
         "action": "static",
-        "position": "bottom right",
-        "id": "text_subscribe_1"
+        "position": "bottom right"
       },
       {
         "desc": "white curved arrow icon pointing downwards and to the right",
         "action": "static",
-        "position": "bottom right",
-        "id": "arrow_curved_white_1"
+        "position": "bottom right"
       }
     ],
     "atomic_facts": [
@@ -3186,11 +3120,11 @@
         "confidence": 1.0
       },
       {
-        "fact": "The text 'MORE VIDEOS YOU'LL LOVE...' is positioned above a white rectangular box.",
+        "fact": "The text 'MORE VIDEOS YOU'LL LOVE...' is positioned above a white rectangle.",
         "confidence": 1.0
       },
       {
-        "fact": "The text 'CLICK TO SUBSCRIBE' is positioned below the white rectangular box.",
+        "fact": "The text 'CLICK TO SUBSCRIBE' is positioned below the white rectangle.",
         "confidence": 1.0
       },
       {
@@ -3203,7 +3137,7 @@
       "MORE VIDEOS YOU'LL LOVE...",
       "CLICK TO SUBSCRIBE"
     ],
-    "spatial": "The orange 'WARREN NASH' logo is located in the top left corner of the screen. The orange sidebar is on the right side, containing the text 'MORE VIDEOS YOU'LL LOVE...' at the top, a white rectangle in the middle, and the text 'CLICK TO SUBSCRIBE' with an arrow at the bottom.",
+    "spatial": "The 'WARREN NASH' logo is located in the top left corner, to the left of the orange sidebar. The orange sidebar occupies the right portion of the screen. Inside the sidebar, the text 'MORE VIDEOS YOU'LL LOVE...' is above the white rectangular placeholder, which is above the 'CLICK TO SUBSCRIBE' text and the curved arrow.",
     "parse_success": true,
     "chunk_idx": 50,
     "video_id": "GiSaTsYzlqg",

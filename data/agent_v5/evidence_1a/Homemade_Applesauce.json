@@ -2,86 +2,51 @@
   {
     "time": [
       0,
-      2
+      1
     ],
     "visible_entities": [
       {
-        "desc": "glass jar, transparent, containing yellow semi-solid food with visible texture",
+        "desc": "glass jar, transparent, cylindrical, filled with yellow semi-solid food",
         "action": "static",
         "position": "center"
       },
       {
-        "desc": "silver metal fork, shiny, with tines",
-        "action": "stirring inside the jar",
+        "desc": "silver metal fork, shiny, four tines",
+        "action": "stirring the yellow food",
         "position": "center"
       },
       {
-        "desc": "person's hand, light skin tone",
+        "desc": "yellow semi-solid food, chunky texture, moist",
+        "action": "being stirred",
+        "position": "inside the jar"
+      },
+      {
+        "desc": "person's hand, fair skin, holding the jar",
         "action": "holding the jar",
         "position": "right"
       },
       {
-        "desc": "white ceramic object, curved handle, partially visible",
+        "desc": "white ceramic pitcher, curved handle, smooth surface",
         "action": "static",
         "position": "left"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "A person is holding a glass jar with their right hand.",
-        "confidence": 1.0
       },
       {
-        "fact": "A silver fork is being used to stir the yellow contents inside the jar.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The jar contains a thick, yellow substance.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [
-      "inspiredtaste.net"
-    ],
-    "spatial": "The glass jar is in the center of the frame. The person's hand is on the right side, holding the jar. The silver fork is inserted into the jar from the top. The white ceramic object is to the left of the jar.",
-    "parse_success": true,
-    "chunk_idx": 0,
-    "video_id": "Homemade_Applesauce"
-  },
-  {
-    "time": [
-      2,
-      4
-    ],
-    "visible_entities": [
-      {
-        "desc": "clear glass jar containing yellow, textured, semi-solid food",
-        "action": "being held",
-        "position": "center"
-      },
-      {
-        "desc": "silver metal fork",
-        "action": "lifting food",
-        "position": "center"
-      },
-      {
-        "desc": "person's hands and arms with fair skin, wearing a black sleeve",
-        "action": "holding jar and fork",
-        "position": "foreground"
-      },
-      {
-        "desc": "white text watermark 'inspiredtaste.net'",
+        "desc": "white text watermark 'inspiredtaste.net', sans-serif font",
         "action": "static",
         "position": "bottom right"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A person is holding a glass jar filled with a yellow substance.",
+        "fact": "A silver fork is inserted into the yellow food inside the glass jar.",
         "confidence": 1.0
       },
       {
-        "fact": "A silver fork is lifting a portion of the yellow food out of the jar.",
+        "fact": "The fork is stirring the yellow mixture.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A hand is holding the glass jar steady on the right side.",
         "confidence": 1.0
       },
       {
@@ -92,69 +57,122 @@
     "ocr": [
       "inspiredtaste.net"
     ],
-    "spatial": "The glass jar is in the center of the frame, held by a person's hands. The silver fork is inserted into the jar, lifting the yellow food substance above the rest of the contents. The watermark text is located below the jar in the bottom right corner.",
+    "spatial": "The glass jar containing yellow food is in the center of the frame. A silver fork is inside the jar, stirring the food. A hand is holding the jar from the right side. A white ceramic pitcher is positioned to the left of the jar. The text 'inspiredtaste.net' is located in the bottom right corner of the image.",
     "parse_success": true,
-    "chunk_idx": 1,
+    "chunk_idx": 0,
     "video_id": "Homemade_Applesauce"
   },
   {
     "time": [
-      4,
-      6
+      1,
+      2
     ],
     "visible_entities": [
       {
-        "desc": "glass jar, clear, filled with chunky yellow applesauce",
-        "action": "being held",
+        "desc": "silver metal fork",
+        "action": "lifting yellow substance",
         "position": "center"
       },
       {
-        "desc": "red metal apple peeler/corer machine with a threaded rod",
+        "desc": "clear glass jar filled with yellow semi-solid substance",
         "action": "static",
-        "position": "left"
+        "position": "center"
       },
       {
-        "desc": "red and yellow apples, round, fresh",
-        "action": "static",
-        "position": "left"
-      },
-      {
-        "desc": "person's hand and forearm, light skin",
-        "action": "holding the jar",
+        "desc": "person's hand with fair skin",
+        "action": "holding jar",
         "position": "right"
       },
       {
-        "desc": "white text watermark 'inspiredtaste.net'",
+        "desc": "white text watermark",
         "action": "static",
         "position": "bottom right"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A person is holding a glass jar filled with chunky yellow applesauce.",
+        "fact": "A fork is lifting a scoop of yellow substance out of the jar.",
         "confidence": 1.0
       },
       {
-        "fact": "A red mechanical apple peeler is positioned on the counter with an apple attached to its prongs.",
+        "fact": "A hand is holding the glass jar steady.",
         "confidence": 1.0
       },
       {
-        "fact": "The text 'inspiredtaste.net' is visible in the bottom right corner of the frame.",
+        "fact": "The text 'inspiredtaste.net' is visible in the bottom right corner.",
         "confidence": 1.0
       }
     ],
     "ocr": [
       "inspiredtaste.net"
     ],
-    "spatial": "The jar of applesauce is held in the center foreground by a hand. To the left of the jar, a red apple peeler sits on the counter with apples behind it. The watermark text is located in the bottom right corner of the screen.",
+    "spatial": "The fork is positioned inside the glass jar, lifting the yellow substance. The hand is holding the jar from the right side. The watermark text is located below the jar in the bottom right corner.",
+    "parse_success": true,
+    "chunk_idx": 1,
+    "video_id": "Homemade_Applesauce"
+  },
+  {
+    "time": [
+      2,
+      3
+    ],
+    "visible_entities": [
+      {
+        "desc": "glass jar filled with chunky yellow applesauce",
+        "action": "being held",
+        "position": "center/foreground"
+      },
+      {
+        "desc": "red metal apple peeler/corer/slicer tool",
+        "action": "static",
+        "position": "center"
+      },
+      {
+        "desc": "red and yellow apples",
+        "action": "static",
+        "position": "background"
+      },
+      {
+        "desc": "person's hand and arm",
+        "action": "holding jar",
+        "position": "right"
+      },
+      {
+        "desc": "white text 'inspiredtaste.net'",
+        "action": "static",
+        "position": "bottom right"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A hand is holding a glass jar containing yellow applesauce.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A red apple peeler tool is positioned on a dark countertop.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "Several red and yellow apples are visible in the background.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The text 'inspiredtaste.net' is displayed in the bottom right corner.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "inspiredtaste.net"
+    ],
+    "spatial": "The jar of applesauce is in the foreground, held by a hand on the right side of the frame. The red apple peeler tool is located behind the jar on the countertop. The pile of apples is situated behind the peeler tool.",
     "parse_success": true,
     "chunk_idx": 2,
     "video_id": "Homemade_Applesauce"
   },
   {
     "time": [
-      6,
-      8
+      3,
+      4
     ],
     "visible_entities": [
       {
@@ -164,18 +182,18 @@
       },
       {
         "desc": "red and yellow apple with a long strip of peel being removed",
-        "action": "rotating on the peeler",
+        "action": "being peeled",
         "position": "center"
-      },
-      {
-        "desc": "long, thin, continuous strip of apple peel",
-        "action": "hanging down",
-        "position": "left"
       },
       {
         "desc": "pile of red and yellow apples",
         "action": "static",
         "position": "background"
+      },
+      {
+        "desc": "long, thin, curled strip of apple peel",
+        "action": "hanging down",
+        "position": "left"
       },
       {
         "desc": "dark countertop surface",
@@ -185,11 +203,11 @@
     ],
     "atomic_facts": [
       {
-        "fact": "A red mechanical device is peeling an apple.",
+        "fact": "A red mechanical apple peeler is actively removing the skin from an apple.",
         "confidence": 1.0
       },
       {
-        "fact": "A long strip of apple skin is curling off the fruit.",
+        "fact": "A long, continuous strip of apple peel hangs from the peeling blade.",
         "confidence": 1.0
       },
       {
@@ -198,46 +216,46 @@
       }
     ],
     "ocr": [],
-    "spatial": "The red apple peeler is in the center of the frame, holding an apple. A pile of whole apples is behind the peeler. A long strip of peel hangs to the left of the device on the dark countertop.",
+    "spatial": "The red apple peeler is in the center foreground, holding an apple. A pile of apples is behind the peeler. A long strip of peel hangs to the left of the peeler. The entire setup rests on a dark countertop.",
     "parse_success": true,
     "chunk_idx": 3,
     "video_id": "Homemade_Applesauce"
   },
   {
     "time": [
-      8,
-      10
+      4,
+      5
     ],
     "visible_entities": [
       {
-        "desc": "red metal apple peeler with a silver threaded rod and a suction cup base",
+        "desc": "red metal apple peeler with a spiral threaded rod and a suction base",
         "action": "static",
         "position": "foreground"
       },
       {
-        "desc": "red and yellow apple being peeled",
-        "action": "rotating on the peeler",
+        "desc": "red and yellow apple with skin being removed",
+        "action": "being peeled",
         "position": "center"
       },
       {
-        "desc": "long, continuous, thin strip of apple peel, yellow and red in color",
+        "desc": "long, continuous strip of apple peel",
         "action": "curling downwards",
         "position": "center"
       },
       {
-        "desc": "pile of discarded apple peels",
+        "desc": "pile of apple peels",
         "action": "static",
         "position": "bottom left"
       },
       {
-        "desc": "fully peeled white apple",
+        "desc": "peeled white apple",
         "action": "static",
-        "position": "left"
+        "position": "background left"
       },
       {
-        "desc": "group of whole red and yellow apples",
+        "desc": "group of whole red apples",
         "action": "static",
-        "position": "background"
+        "position": "background right"
       },
       {
         "desc": "dark textured surface",
@@ -247,23 +265,19 @@
     ],
     "atomic_facts": [
       {
-        "fact": "A red metal apple peeler is actively peeling an apple.",
+        "fact": "A red mechanical peeler is removing the skin from an apple.",
         "confidence": 1.0
       },
       {
-        "fact": "The apple rotates on the threaded rod of the peeler.",
+        "fact": "A long, continuous strip of peel is curling down from the apple.",
         "confidence": 1.0
       },
       {
-        "fact": "A long, continuous strip of peel is being removed from the apple.",
+        "fact": "A pile of peels is accumulating below the peeler.",
         "confidence": 1.0
       },
       {
-        "fact": "A pile of apple peels has accumulated below the peeler.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "A fully peeled apple sits to the left of the peeler.",
+        "fact": "A peeled apple sits to the left of the active peeler.",
         "confidence": 1.0
       },
       {
@@ -278,19 +292,19 @@
     "ocr": [
       "inspiredtaste.net"
     ],
-    "spatial": "The red apple peeler is in the foreground, with an apple mounted on its rod. A long strip of peel curls down from the apple towards a pile of peels located below and to the left. A fully peeled apple is to the left of the peeler, while a group of whole apples is in the background behind the peeler.",
+    "spatial": "The red apple peeler is in the foreground, holding an apple in the center. A long strip of peel hangs from the apple, curling down towards a pile of peels located below and to the left. A peeled apple is positioned to the left of the peeler, while a group of whole apples sits in the background to the right.",
     "parse_success": true,
     "chunk_idx": 4,
     "video_id": "Homemade_Applesauce"
   },
   {
     "time": [
-      10,
-      12
+      5,
+      6
     ],
     "visible_entities": [
       {
-        "desc": "red metal apple peeler with a silver threaded rod and a clear plastic knob",
+        "desc": "red metal apple peeler with a silver threaded screw rod and a clear plastic knob",
         "action": "static",
         "position": "foreground"
       },
@@ -305,7 +319,7 @@
         "position": "left"
       },
       {
-        "desc": "pile of apple peels and cores",
+        "desc": "pile of red and yellow apple peels",
         "action": "static",
         "position": "bottom left"
       },
@@ -322,38 +336,34 @@
     ],
     "atomic_facts": [
       {
-        "fact": "A mechanical apple peeler is actively removing the skin from an apple.",
+        "fact": "The apple peeler is removing the skin from the apple in a continuous spiral strip.",
         "confidence": 1.0
       },
       {
-        "fact": "The apple is rotating on a threaded rod as the peeling blade moves along its surface.",
+        "fact": "The apple peel curls downwards onto a pile of existing peels.",
         "confidence": 1.0
       },
       {
-        "fact": "A long, continuous strip of peel is curling away from the apple.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "Several whole apples are sitting on the counter in the background.",
+        "fact": "The text 'inspiredtaste.net' is visible in the bottom right corner.",
         "confidence": 1.0
       }
     ],
     "ocr": [
       "inspiredtaste.net"
     ],
-    "spatial": "The red apple peeler is in the foreground, holding the apple in the center. The pile of peels is below and to the left of the peeler. The group of whole apples is behind the peeler in the background. The text 'inspiredtaste.net' is in the bottom right corner of the frame.",
+    "spatial": "The red apple peeler is in the foreground, holding the apple in the center. The pile of peels is below and to the left of the apple being peeled. The group of whole apples is behind the peeler in the background. The text 'inspiredtaste.net' is to the right of the peeler's base.",
     "parse_success": true,
     "chunk_idx": 5,
     "video_id": "Homemade_Applesauce"
   },
   {
     "time": [
-      12,
-      14
+      6,
+      7
     ],
     "visible_entities": [
       {
-        "desc": "red metal apple peeler with a silver threaded rod and a peeling blade",
+        "desc": "red metal apple peeler with a silver threaded rod and a suction base",
         "action": "peeling an apple",
         "position": "foreground"
       },
@@ -363,12 +373,12 @@
         "position": "center"
       },
       {
-        "desc": "long, continuous strip of apple peel, red and white in color",
+        "desc": "long, continuous strip of apple peel, red and white",
         "action": "curling downwards",
-        "position": "left"
+        "position": "bottom left"
       },
       {
-        "desc": "pile of apple peels on the surface",
+        "desc": "pile of apple peels on the counter",
         "action": "static",
         "position": "bottom left"
       },
@@ -381,149 +391,24 @@
         "desc": "peeled white apples",
         "action": "static",
         "position": "background left"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "A red mechanical device is peeling an apple.",
-        "confidence": 1.0
       },
       {
-        "fact": "The apple skin is coming off in a long, continuous spiral.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "Several whole apples sit in the background behind the peeler.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "A pile of discarded apple peels is accumulating on the table.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [
-      "inspiredtaste.net"
-    ],
-    "spatial": "The red apple peeler is in the foreground, holding an apple in the center. A long strip of peel hangs to the left of the apple, falling onto a pile of peels below. Several whole apples are positioned in the background behind the peeler, while peeled apples are visible to the left in the background.",
-    "parse_success": true,
-    "chunk_idx": 6,
-    "video_id": "Homemade_Applesauce"
-  },
-  {
-    "time": [
-      14,
-      16
-    ],
-    "visible_entities": [
-      {
-        "desc": "red mechanical apple peeler with a metal spiral rod and a peeling blade",
-        "action": "peeling an apple",
-        "position": "center/foreground"
-      },
-      {
-        "desc": "yellow apple with red skin patches, mounted on the peeler",
-        "action": "being peeled",
-        "position": "center"
-      },
-      {
-        "desc": "long, continuous strip of apple peel, yellow and red",
-        "action": "curling downwards",
-        "position": "center/bottom"
-      },
-      {
-        "desc": "pile of apple peels, yellow and red strips",
-        "action": "static",
-        "position": "bottom left"
-      },
-      {
-        "desc": "group of peeled apples, pale yellow flesh visible",
-        "action": "static",
-        "position": "left background"
-      },
-      {
-        "desc": "whole red apples, shiny skin",
-        "action": "static",
-        "position": "right background"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "A mechanical peeler is actively removing the skin from a yellow apple.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "A long strip of peel is curling off the apple as it rotates.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "Several already peeled apples are sitting on the counter to the left.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "Whole red apples are visible in the background on the right.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "A pile of discarded apple peels is accumulating below the peeler.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [
-      "inspiredtaste.net"
-    ],
-    "spatial": "The mechanical peeler is in the center foreground, holding an apple. To the left of the peeler, there is a group of peeled apples and a pile of peels below them. To the right of the peeler, whole red apples are sitting on the surface. The text 'inspiredtaste.net' is in the bottom right corner.",
-    "parse_success": true,
-    "chunk_idx": 7,
-    "video_id": "Homemade_Applesauce"
-  },
-  {
-    "time": [
-      16,
-      18
-    ],
-    "visible_entities": [
-      {
-        "desc": "person wearing a black long-sleeved shirt and a white apron with thin black vertical stripes",
-        "action": "peeling an apple",
-        "position": "left"
-      },
-      {
-        "desc": "red and yellow apple being held",
-        "action": "being peeled",
-        "position": "left"
-      },
-      {
-        "desc": "silver metal apple peeler tool",
-        "action": "removing apple skin",
-        "position": "left"
-      },
-      {
-        "desc": "group of six peeled apples with pale yellow flesh and spiral texture",
-        "action": "static",
-        "position": "right"
-      },
-      {
-        "desc": "white cutting board",
-        "action": "static",
-        "position": "center"
-      },
-      {
-        "desc": "white text watermark",
+        "desc": "white text 'inspiredtaste.net'",
         "action": "static",
         "position": "bottom right"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "The person is using a metal tool to peel the skin off a red apple.",
+        "fact": "A red mechanical peeler is actively removing the skin from an apple.",
         "confidence": 1.0
       },
       {
-        "fact": "Six peeled apples are arranged in two rows on the right side of the cutting board.",
+        "fact": "A long, continuous strip of peel is curling away from the apple.",
         "confidence": 1.0
       },
       {
-        "fact": "The peeled apples show a spiral pattern from the peeling process.",
+        "fact": "Several peeled apples are sitting on the counter in the background.",
         "confidence": 1.0
       },
       {
@@ -534,30 +419,169 @@
     "ocr": [
       "inspiredtaste.net"
     ],
-    "spatial": "The person is positioned on the left side of the frame, holding an apple over a white cutting board. To the right of the person's hands, a group of six peeled apples sits on the cutting board. The watermark text is located in the bottom right corner of the screen.",
+    "spatial": "The red apple peeler is in the foreground, positioned centrally. The apple being peeled is mounted on the peeler's rod. A pile of peels is accumulating below and to the left of the peeler. In the background, whole apples are to the right of the peeled apples.",
+    "parse_success": true,
+    "chunk_idx": 6,
+    "video_id": "Homemade_Applesauce"
+  },
+  {
+    "time": [
+      7,
+      8
+    ],
+    "visible_entities": [
+      {
+        "desc": "red metal apple peeler with a silver threaded rod and clamping mechanism",
+        "action": "peeling an apple",
+        "position": "center"
+      },
+      {
+        "desc": "pale yellow apple with a small patch of red skin remaining",
+        "action": "being peeled",
+        "position": "center"
+      },
+      {
+        "desc": "long, thin, continuous strip of apple peel, pale yellow with red edges",
+        "action": "curling downwards",
+        "position": "center foreground"
+      },
+      {
+        "desc": "pile of discarded apple peels, yellow and red strips",
+        "action": "static",
+        "position": "bottom left"
+      },
+      {
+        "desc": "group of four peeled apples, pale yellow with red centers",
+        "action": "static",
+        "position": "left background"
+      },
+      {
+        "desc": "group of three unpeeled red apples",
+        "action": "static",
+        "position": "right background"
+      },
+      {
+        "desc": "white text watermark reading 'inspiredtaste.net'",
+        "action": "static",
+        "position": "bottom right"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A red mechanical device is peeling an apple.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A continuous strip of peel is being removed from the apple.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The peeled apple is mounted on a threaded metal rod.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A pile of apple peels sits on the counter.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "Several peeled apples are waiting in the background.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The text 'inspiredtaste.net' is visible in the corner.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "inspiredtaste.net"
+    ],
+    "spatial": "The red apple peeler is in the center of the frame, holding an apple. A pile of peels is below and to the left of the peeler. Several peeled apples are to the left of the active peeler, while unpeeled red apples are to the right. The watermark text is in the bottom right corner.",
+    "parse_success": true,
+    "chunk_idx": 7,
+    "video_id": "Homemade_Applesauce"
+  },
+  {
+    "time": [
+      8,
+      9
+    ],
+    "visible_entities": [
+      {
+        "desc": "person wearing a black long-sleeved shirt and a white apron with thin vertical black stripes",
+        "action": "peeling an apple",
+        "position": "left"
+      },
+      {
+        "desc": "red and yellow apple being peeled",
+        "action": "being peeled",
+        "position": "left"
+      },
+      {
+        "desc": "silver metal apple peeler tool",
+        "action": "being used",
+        "position": "left"
+      },
+      {
+        "desc": "white rectangular cutting board",
+        "action": "static",
+        "position": "center"
+      },
+      {
+        "desc": "group of six peeled apples with red skin remaining at the top and bottom",
+        "action": "static",
+        "position": "right"
+      },
+      {
+        "desc": "white text watermark reading 'inspiredtaste.net'",
+        "action": "static",
+        "position": "bottom right"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "person is using a silver tool to peel the skin off a red and yellow apple",
+        "confidence": 1.0
+      },
+      {
+        "fact": "six peeled apples are arranged in two rows on the cutting board",
+        "confidence": 1.0
+      },
+      {
+        "fact": "the peeled apples have a spiral texture from the peeling process",
+        "confidence": 1.0
+      },
+      {
+        "fact": "the person is holding the apple in their left hand and the peeler in their right hand",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "inspiredtaste.net"
+    ],
+    "spatial": "The person is positioned to the left of the cutting board. The peeled apples are on the right side of the cutting board, next to the apple currently being peeled. The watermark text is located in the bottom right corner of the frame.",
     "parse_success": true,
     "chunk_idx": 8,
     "video_id": "Homemade_Applesauce"
   },
   {
     "time": [
-      18,
-      20
+      9,
+      10
     ],
     "visible_entities": [
       {
-        "desc": "person wearing a black long-sleeved top and a black-and-white striped apron",
+        "desc": "person wearing a black long-sleeved shirt and a black-and-white striped apron",
         "action": "peeling an apple",
         "position": "center"
       },
       {
-        "desc": "red and yellow apple with partially removed skin",
-        "action": "being held and peeled",
+        "desc": "red apple with yellow flesh, partially peeled",
+        "action": "being held",
         "position": "center"
       },
       {
         "desc": "silver metal vegetable peeler",
-        "action": "being used to peel apple",
+        "action": "being used",
         "position": "center"
       },
       {
@@ -571,14 +595,14 @@
         "position": "foreground"
       },
       {
-        "desc": "white text watermark reading 'inspiredtaste.net'",
+        "desc": "white text 'inspiredtaste.net'",
         "action": "static",
         "position": "bottom-right"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A person is using a silver peeler to remove the skin from a red and yellow apple.",
+        "fact": "A person is using a silver peeler to remove the skin from a red apple.",
         "confidence": 1.0
       },
       {
@@ -586,11 +610,7 @@
         "confidence": 1.0
       },
       {
-        "fact": "Six peeled apples are sitting on the cutting board to the right of the person's hands.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The apples on the right have been peeled in a spiral pattern, leaving the top skin intact.",
+        "fact": "A group of six already peeled apples sits on the cutting board to the right.",
         "confidence": 1.0
       },
       {
@@ -601,15 +621,15 @@
     "ocr": [
       "inspiredtaste.net"
     ],
-    "spatial": "The person is positioned behind the white cutting board. The person is holding the apple and peeler in the center of the frame. The group of peeled apples is to the right of the apple currently being peeled. The watermark text is below the group of peeled apples.",
+    "spatial": "The person is positioned behind the white cutting board. The apple being peeled is held in the center, while the group of peeled apples is to the right of the active apple. The text watermark is located below the group of apples in the bottom right corner.",
     "parse_success": true,
     "chunk_idx": 9,
     "video_id": "Homemade_Applesauce"
   },
   {
     "time": [
-      20,
-      22
+      10,
+      11
     ],
     "visible_entities": [
       {
@@ -618,13 +638,13 @@
         "position": "center"
       },
       {
-        "desc": "yellow apple with red skin patches",
+        "desc": "yellow apple with a small patch of red skin remaining at the top",
         "action": "being peeled",
         "position": "center"
       },
       {
-        "desc": "metal apple peeler tool with a silver handle and blade",
-        "action": "being held",
+        "desc": "metal peeler with a silver blade and handle",
+        "action": "removing apple skin",
         "position": "center"
       },
       {
@@ -638,94 +658,23 @@
         "position": "foreground"
       },
       {
-        "desc": "group of peeled yellow apples with red tops",
+        "desc": "group of peeled yellow apples with red skin around the stem area",
         "action": "static",
         "position": "right"
       },
       {
         "desc": "wooden table surface",
         "action": "static",
-        "position": "bottom"
+        "position": "background"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A person is using a metal tool to peel the skin off a yellow apple.",
+        "fact": "A person is using a metal peeler to remove the skin from a yellow apple.",
         "confidence": 1.0
       },
       {
-        "fact": "The apple peel is coming off in a single long strip.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The peeled apple skin is curling downwards onto the cutting board.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "Several other peeled apples are sitting on the table to the right.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The text 'inspiredtaste.net' is visible in the bottom right corner.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [
-      "inspiredtaste.net"
-    ],
-    "spatial": "The person is standing behind the wooden table. The white cutting board is on the table in front of the person. The person is holding the apple and the peeler in the center of the frame. The group of peeled apples is to the right of the apple currently being peeled.",
-    "parse_success": true,
-    "chunk_idx": 10,
-    "video_id": "Homemade_Applesauce"
-  },
-  {
-    "time": [
-      22,
-      24
-    ],
-    "visible_entities": [
-      {
-        "desc": "person wearing a black long-sleeved shirt and a white apron with thin black vertical stripes",
-        "action": "peeling an apple with a tool",
-        "position": "left"
-      },
-      {
-        "desc": "yellow apple with red skin being peeled",
-        "action": "being held and peeled",
-        "position": "center"
-      },
-      {
-        "desc": "long, continuous strip of red apple peel",
-        "action": "hanging down from the apple",
-        "position": "center"
-      },
-      {
-        "desc": "white cutting board with a dark grey border",
-        "action": "static",
-        "position": "center"
-      },
-      {
-        "desc": "group of peeled yellow apples with red tops",
-        "action": "static",
-        "position": "right"
-      },
-      {
-        "desc": "silver metal apple corer/slicer tool with a handle",
-        "action": "being pressed into an apple",
-        "position": "center"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "A person is using a peeler to remove the skin from a yellow apple.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "A long strip of red apple peel is falling onto the cutting board.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The person presses a metal apple corer tool down over a peeled apple.",
+        "fact": "A long, continuous strip of apple peel hangs from the apple being peeled.",
         "confidence": 1.0
       },
       {
@@ -740,30 +689,35 @@
     "ocr": [
       "inspiredtaste.net"
     ],
-    "spatial": "The person is positioned to the left of the cutting board, holding the apple in the center. The group of peeled apples is located to the right of the apple currently being worked on. The apple corer tool is placed directly on top of the apple in the second frame.",
+    "spatial": "The person is holding the apple and peeler in the center of the frame, directly above the white cutting board. The long apple peel hangs down from the apple towards the cutting board. To the right of the apple being peeled, a group of other peeled apples rests on the cutting board. The entire scene is set on a wooden table.",
     "parse_success": true,
-    "chunk_idx": 11,
+    "chunk_idx": 10,
     "video_id": "Homemade_Applesauce"
   },
   {
     "time": [
-      24,
-      26
+      11,
+      12
     ],
     "visible_entities": [
       {
-        "desc": "person with fair skin, wearing a ring on the right ring finger",
-        "action": "pressing down on the apple corer",
+        "desc": "person wearing a black long-sleeved shirt and a black-and-white striped apron",
+        "action": "peeling an apple",
+        "position": "left"
+      },
+      {
+        "desc": "yellow apple with red skin being peeled",
+        "action": "being peeled",
         "position": "center"
       },
       {
-        "desc": "silver metal apple corer/slicer with circular blades",
-        "action": "cutting the apple into wedges",
+        "desc": "metal apple corer/slicer tool",
+        "action": "being pressed into an apple",
         "position": "center"
       },
       {
-        "desc": "peeled yellow apple",
-        "action": "being sliced",
+        "desc": "white cutting board",
+        "action": "static",
         "position": "center"
       },
       {
@@ -772,22 +726,26 @@
         "position": "right"
       },
       {
-        "desc": "white cutting board",
+        "desc": "wooden table surface",
         "action": "static",
-        "position": "center"
+        "position": "bottom"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "The person uses both hands to push the metal corer down through the center of the apple.",
+        "fact": "A person is using a peeler to remove the red skin from a yellow apple.",
         "confidence": 1.0
       },
       {
-        "fact": "The apple is sliced into wedges by the tool.",
+        "fact": "The person is pressing a metal apple corer tool down onto a peeled apple.",
         "confidence": 1.0
       },
       {
-        "fact": "The apple corer separates the core from the fruit slices.",
+        "fact": "A long strip of red apple peel hangs from the apple being peeled.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "Several peeled apples are sitting on the right side of the cutting board.",
         "confidence": 1.0
       },
       {
@@ -798,15 +756,74 @@
     "ocr": [
       "inspiredtaste.net"
     ],
-    "spatial": "The person's hands are holding the handles of the apple corer, which is positioned directly above the apple on the white cutting board. The group of other peeled apples is located to the right of the apple being sliced.",
+    "spatial": "The person is positioned on the left side of the frame, holding an apple over a white cutting board. The group of peeled apples is to the right of the apple currently being processed. The cutting board rests on top of a wooden table.",
+    "parse_success": true,
+    "chunk_idx": 11,
+    "video_id": "Homemade_Applesauce"
+  },
+  {
+    "time": [
+      12,
+      13
+    ],
+    "visible_entities": [
+      {
+        "desc": "person with fair skin, wearing a ring on the right ring finger",
+        "action": "pressing down on the apple corer",
+        "position": "center"
+      },
+      {
+        "desc": "silver metal apple corer/slicer tool with circular blades",
+        "action": "cutting through the apple",
+        "position": "center"
+      },
+      {
+        "desc": "peeled yellow apple",
+        "action": "being sliced into wedges",
+        "position": "center"
+      },
+      {
+        "desc": "white cutting board",
+        "action": "static",
+        "position": "center"
+      },
+      {
+        "desc": "pile of peeled yellow apples",
+        "action": "static",
+        "position": "right"
+      },
+      {
+        "desc": "white text 'inspiredtaste.net'",
+        "action": "static",
+        "position": "bottom right"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The person presses the metal apple corer down onto the peeled apple.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The apple is sliced into wedges by the tool.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The apple corer separates the core from the fruit.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "inspiredtaste.net"
+    ],
+    "spatial": "The person's hands are holding the apple corer, which is positioned directly above the apple. The apple sits on the white cutting board. A pile of other peeled apples is visible to the right of the cutting board.",
     "parse_success": true,
     "chunk_idx": 12,
     "video_id": "Homemade_Applesauce"
   },
   {
     "time": [
-      26,
-      28
+      13,
+      14
     ],
     "visible_entities": [
       {
@@ -816,28 +833,23 @@
       },
       {
         "desc": "silver metal apple corer/slicer tool",
-        "action": "being held by the person",
+        "action": "being held by hands",
         "position": "center"
       },
       {
         "desc": "pale yellow apple slices",
-        "action": "being removed and placed on the board",
-        "position": "center/foreground"
+        "action": "being placed on the cutting board",
+        "position": "center"
       },
       {
-        "desc": "white cutting board",
+        "desc": "white plastic cutting board",
         "action": "static",
-        "position": "foreground"
+        "position": "bottom"
       },
       {
         "desc": "wooden countertop",
         "action": "static",
-        "position": "background"
-      },
-      {
-        "desc": "white text watermark 'inspiredtaste.net'",
-        "action": "static",
-        "position": "bottom right"
+        "position": "left"
       }
     ],
     "atomic_facts": [
@@ -846,11 +858,11 @@
         "confidence": 1.0
       },
       {
-        "fact": "The person places the removed apple slices onto the white cutting board.",
+        "fact": "Apple slices are being placed onto a white cutting board.",
         "confidence": 1.0
       },
       {
-        "fact": "The cutting board rests on a wooden surface.",
+        "fact": "The person is wearing a striped apron.",
         "confidence": 1.0
       },
       {
@@ -861,25 +873,25 @@
     "ocr": [
       "inspiredtaste.net"
     ],
-    "spatial": "The person is positioned behind the white cutting board. The metal corer is held by the person above the cutting board. The apple slices are being moved from inside the corer to the surface of the cutting board. The wooden countertop is visible to the left of the cutting board.",
+    "spatial": "The person is positioned behind the cutting board and is holding the metal tool in the center of the frame. The apple slices are inside the tool and are being moved onto the surface of the cutting board below. The wooden countertop is to the left of the cutting board.",
     "parse_success": true,
     "chunk_idx": 13,
     "video_id": "Homemade_Applesauce"
   },
   {
     "time": [
-      28,
-      30
+      14,
+      15
     ],
     "visible_entities": [
       {
-        "desc": "person wearing a black and white striped apron",
-        "action": "pressing an apple corer down onto an apple",
+        "desc": "person wearing a black and white vertical striped apron",
+        "action": "using a metal apple slicer to cut an apple",
         "position": "center"
       },
       {
-        "desc": "metal apple corer/slicer with a handle",
-        "action": "being pressed into the apple",
+        "desc": "metal apple slicer with a handle",
+        "action": "being pressed into an apple",
         "position": "center"
       },
       {
@@ -888,32 +900,27 @@
         "position": "center"
       },
       {
-        "desc": "cut apple wedges, yellow flesh",
+        "desc": "white cutting board with a dark grey rim",
         "action": "static",
         "position": "bottom"
       },
       {
-        "desc": "white cutting board",
+        "desc": "sliced apple wedges",
         "action": "static",
-        "position": "bottom"
-      },
-      {
-        "desc": "wooden countertop",
-        "action": "static",
-        "position": "left"
+        "position": "bottom left"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A person is using a metal apple corer to slice a peeled apple.",
+        "fact": "The person is pressing the metal apple slicer down onto the peeled apple.",
         "confidence": 1.0
       },
       {
-        "fact": "The apple is being pressed down onto a white cutting board.",
+        "fact": "The apple is being cut into wedges by the slicer.",
         "confidence": 1.0
       },
       {
-        "fact": "Several cut apple wedges are lying on the cutting board.",
+        "fact": "Several apple wedges are already lying on the cutting board.",
         "confidence": 1.0
       },
       {
@@ -924,31 +931,36 @@
     "ocr": [
       "inspiredtaste.net"
     ],
-    "spatial": "The person is positioned above the white cutting board, pressing the metal corer into the apple. The cut apple wedges are scattered on the cutting board, below the corer. The wooden countertop is to the left of the cutting board.",
+    "spatial": "The person is positioned above the white cutting board. The metal apple slicer is in the person's hands and is on top of the apple in the center of the board. The sliced apple wedges are to the left of the apple being cut.",
     "parse_success": true,
     "chunk_idx": 14,
     "video_id": "Homemade_Applesauce"
   },
   {
     "time": [
-      30,
-      32
+      15,
+      16
     ],
     "visible_entities": [
       {
-        "desc": "person wearing a black long-sleeved shirt and a black-and-white striped apron",
-        "action": "slicing apples",
+        "desc": "person wearing a black long-sleeved shirt and a white apron with thin vertical black stripes",
+        "action": "slicing an apple",
         "position": "center"
       },
       {
         "desc": "large silver chef's knife with a wide blade",
-        "action": "cutting apple",
+        "action": "cutting through apple",
         "position": "center"
       },
       {
-        "desc": "peeled yellow apples, some whole and some sliced into wedges",
-        "action": "being cut",
-        "position": "center"
+        "desc": "pile of sliced yellow apple wedges",
+        "action": "static",
+        "position": "left"
+      },
+      {
+        "desc": "whole peeled yellow apples",
+        "action": "static",
+        "position": "right"
       },
       {
         "desc": "white cutting board",
@@ -956,27 +968,80 @@
         "position": "bottom"
       },
       {
-        "desc": "silver metal apple corer/slicer tool",
+        "desc": "silver metal apple corer tool",
         "action": "static",
         "position": "left"
-      },
-      {
-        "desc": "stainless steel oven in the background",
-        "action": "static",
-        "position": "background"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A person is using a large knife to slice a peeled apple into wedges on a white cutting board.",
+        "fact": "person is slicing a peeled apple into wedges using a knife",
         "confidence": 1.0
       },
       {
-        "fact": "A pile of sliced apple wedges is accumulating on the left side of the cutting board.",
+        "fact": "a pile of cut apple slices is accumulating on the left side of the board",
         "confidence": 1.0
       },
       {
-        "fact": "Three whole peeled apples are sitting on the right side of the cutting board.",
+        "fact": "three whole peeled apples are sitting on the right side of the cutting board",
+        "confidence": 1.0
+      },
+      {
+        "fact": "the text 'inspiredtaste.net' is visible in the bottom right corner",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "inspiredtaste.net"
+    ],
+    "spatial": "The person is standing behind the white cutting board. The pile of sliced apples is to the left of the apple currently being cut. The whole peeled apples are to the right of the cutting area. The metal corer tool is resting on the left edge of the cutting board.",
+    "parse_success": true,
+    "chunk_idx": 15,
+    "video_id": "Homemade_Applesauce"
+  },
+  {
+    "time": [
+      16,
+      17
+    ],
+    "visible_entities": [
+      {
+        "desc": "person wearing a black long-sleeved shirt and a white apron with thin vertical black stripes",
+        "action": "cutting an apple",
+        "position": "center"
+      },
+      {
+        "desc": "large silver chef's knife with a wide blade",
+        "action": "slicing apple",
+        "position": "center"
+      },
+      {
+        "desc": "pile of sliced yellow apple chunks",
+        "action": "static",
+        "position": "left"
+      },
+      {
+        "desc": "whole peeled yellow apples",
+        "action": "static",
+        "position": "right"
+      },
+      {
+        "desc": "white cutting board",
+        "action": "static",
+        "position": "foreground"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A person is slicing a peeled apple with a knife.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A pile of cut apple slices sits on the left side of the cutting board.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "Three whole peeled apples are positioned on the right side of the board.",
         "confidence": 1.0
       },
       {
@@ -987,29 +1052,29 @@
     "ocr": [
       "inspiredtaste.net"
     ],
-    "spatial": "The person is standing behind the white cutting board. The pile of sliced apples is to the left of the apple currently being cut. The whole peeled apples are to the right of the cutting area. The metal apple corer is to the left of the sliced apples.",
+    "spatial": "The person is standing behind the white cutting board. The pile of sliced apples is to the left of the apple currently being cut. The whole peeled apples are to the right of the cutting action. The knife is held in the person's hand above the apple.",
     "parse_success": true,
-    "chunk_idx": 15,
+    "chunk_idx": 16,
     "video_id": "Homemade_Applesauce"
   },
   {
     "time": [
-      32,
-      34
+      17,
+      18
     ],
     "visible_entities": [
       {
-        "desc": "person wearing a black and white vertically striped apron over a black long-sleeved shirt, with a ring on their finger",
-        "action": "slicing a peeled apple with a knife",
+        "desc": "person with fair skin, wearing a white and grey vertical striped apron and a silver ring on the right ring finger",
+        "action": "slicing apple",
         "position": "center"
       },
       {
-        "desc": "large silver chef's knife with a wide blade",
-        "action": "cutting through apple flesh",
+        "desc": "large silver kitchen knife with a wide blade",
+        "action": "cutting apple",
         "position": "center"
       },
       {
-        "desc": "pale yellow peeled apple",
+        "desc": "peeled yellow apple wedge with red skin remnants",
         "action": "being sliced",
         "position": "center"
       },
@@ -1019,7 +1084,7 @@
         "position": "left"
       },
       {
-        "desc": "group of whole peeled yellow apples",
+        "desc": "whole peeled yellow apples with red blush near the stem",
         "action": "static",
         "position": "right"
       },
@@ -1029,137 +1094,18 @@
         "position": "bottom"
       },
       {
-        "desc": "text 'inspiredtaste.net' in white font",
+        "desc": "text 'www.taste.net' in white font",
         "action": "static",
         "position": "bottom right"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A person is using a large knife to slice a peeled apple on a white cutting board.",
+        "fact": "The person is slicing a peeled apple wedge with a knife.",
         "confidence": 1.0
       },
       {
-        "fact": "A pile of sliced apple wedges is accumulating on the left side of the board.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "Several whole peeled apples are sitting on the right side of the board.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The text 'inspiredtaste.net' is visible in the bottom right corner.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [
-      "inspiredtaste.net"
-    ],
-    "spatial": "The person is positioned behind the white cutting board, holding the knife in the center. The pile of sliced apples is to the left of the apple currently being cut. The group of whole apples is to the right of the cutting area. The text 'inspiredtaste.net' is located in the bottom right corner of the frame.",
-    "parse_success": true,
-    "chunk_idx": 16,
-    "video_id": "Homemade_Applesauce"
-  },
-  {
-    "time": [
-      34,
-      36
-    ],
-    "visible_entities": [
-      {
-        "desc": "person wearing a white and black striped apron, with a silver ring on their finger",
-        "action": "cutting an apple",
-        "position": "center"
-      },
-      {
-        "desc": "large silver kitchen knife with a sharp blade",
-        "action": "slicing through apple",
-        "position": "center"
-      },
-      {
-        "desc": "pale yellow apple wedges, peeled, with some red skin visible on edges",
-        "action": "being cut",
-        "position": "center"
-      },
-      {
-        "desc": "pile of sliced apple wedges, pale yellow",
-        "action": "static",
-        "position": "left"
-      },
-      {
-        "desc": "whole peeled apples, pale yellow with green and red stems",
-        "action": "static",
-        "position": "right"
-      },
-      {
-        "desc": "white cutting board, smooth surface",
-        "action": "static",
-        "position": "bottom"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "The person is using a large knife to slice a peeled apple wedge.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The knife is positioned vertically, cutting downwards into the fruit.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "A pile of already sliced apple wedges sits on the left side of the cutting board.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "Whole peeled apples are resting on the right side of the cutting board.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [],
-    "spatial": "The person's hands are in the center of the frame, holding the knife and the apple wedge. The pile of sliced apples is to the left of the apple being cut. The whole peeled apples are to the right of the cutting action. The cutting board is underneath all the apples and the knife.",
-    "parse_success": true,
-    "chunk_idx": 17,
-    "video_id": "Homemade_Applesauce"
-  },
-  {
-    "time": [
-      36,
-      38
-    ],
-    "visible_entities": [
-      {
-        "desc": "person wearing a striped apron with vertical black and white stripes",
-        "action": "slicing apple wedges",
-        "position": "center"
-      },
-      {
-        "desc": "silver kitchen knife with a long, thin blade",
-        "action": "cutting through apple",
-        "position": "center"
-      },
-      {
-        "desc": "pale yellow apple wedges, peeled, some with red skin remnants",
-        "action": "being sliced and piled",
-        "position": "left and center"
-      },
-      {
-        "desc": "whole peeled apples, pale yellow with green stems",
-        "action": "static",
-        "position": "right"
-      },
-      {
-        "desc": "white cutting board",
-        "action": "static",
-        "position": "center"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "A person is slicing apple wedges into smaller pieces using a knife.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "A pile of cut apple slices is accumulating on the left side of the cutting board.",
+        "fact": "A pile of sliced apples is on the left side of the cutting board.",
         "confidence": 1.0
       },
       {
@@ -1167,6 +1113,73 @@
         "confidence": 1.0
       },
       {
+        "fact": "The text 'www.taste.net' is visible in the bottom right corner.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "www.taste.net"
+    ],
+    "spatial": "The person is positioned behind the white cutting board. The knife is held in the person's hand above the apple wedge in the center. The pile of sliced apples is to the left of the apple being cut, while the whole peeled apples are to the right.",
+    "parse_success": true,
+    "chunk_idx": 17,
+    "video_id": "Homemade_Applesauce"
+  },
+  {
+    "time": [
+      18,
+      19
+    ],
+    "visible_entities": [
+      {
+        "desc": "person with fair skin, wearing a white apron with thin vertical black stripes",
+        "action": "slicing apple",
+        "position": "top/center"
+      },
+      {
+        "desc": "large silver chef's knife with a sharp, reflective blade",
+        "action": "cutting apple",
+        "position": "center"
+      },
+      {
+        "desc": "pale yellow apple wedges with some red skin visible",
+        "action": "being cut",
+        "position": "center"
+      },
+      {
+        "desc": "pile of sliced apple chunks",
+        "action": "static",
+        "position": "left"
+      },
+      {
+        "desc": "whole peeled yellow apples",
+        "action": "static",
+        "position": "right"
+      },
+      {
+        "desc": "white cutting board",
+        "action": "static",
+        "position": "bottom"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The person is using a knife to slice a peeled apple into wedges.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The person's left hand holds the apple steady while the right hand operates the knife.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A pile of already cut apple pieces sits on the left side of the board.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "Whole peeled apples are resting on the right side of the board.",
+        "confidence": 1.0
+      },
+      {
         "fact": "The text 'inspiredtaste.net' is visible in the bottom right corner.",
         "confidence": 1.0
       }
@@ -1174,51 +1187,51 @@
     "ocr": [
       "inspiredtaste.net"
     ],
-    "spatial": "The person is positioned behind the white cutting board, holding the knife in their right hand. The knife is in the center, cutting through an apple wedge. A pile of sliced apples is to the left of the knife, while whole peeled apples are to the right of the knife.",
+    "spatial": "The person is positioned behind the white cutting board. The knife is in the center, cutting an apple wedge that is to the right of a pile of sliced apples. Whole peeled apples are located to the right of the apple being cut.",
     "parse_success": true,
     "chunk_idx": 18,
     "video_id": "Homemade_Applesauce"
   },
   {
     "time": [
-      38,
-      40
+      19,
+      20
     ],
     "visible_entities": [
       {
         "desc": "person wearing a black and white striped apron",
-        "action": "chopping apples and gathering them",
+        "action": "chopping apples and gathering slices",
         "position": "center"
       },
       {
-        "desc": "large silver chef's knife with a wide blade",
-        "action": "slicing apple wedges",
+        "desc": "large silver knife with a wide blade",
+        "action": "cutting apple slices",
         "position": "center"
       },
       {
-        "desc": "pale yellow apple wedges with red skin edges",
-        "action": "being cut and piled",
+        "desc": "pale yellow apple slices with red skin edges",
+        "action": "being cut and gathered",
         "position": "center"
       },
       {
-        "desc": "whole peeled apples, pale yellow with red tops",
+        "desc": "whole peeled apples with red skin at the top",
         "action": "static",
         "position": "right"
       },
       {
-        "desc": "white rectangular cutting board",
+        "desc": "white cutting board",
         "action": "static",
         "position": "center"
       },
       {
-        "desc": "cream-colored pot with handles",
+        "desc": "cream-colored pot",
         "action": "static",
         "position": "left"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A person is using a knife to slice apple wedges on a cutting board.",
+        "fact": "A person is using a large knife to slice peeled apples on a white cutting board.",
         "confidence": 1.0
       },
       {
@@ -1226,7 +1239,7 @@
         "confidence": 1.0
       },
       {
-        "fact": "Whole peeled apples are sitting on the cutting board.",
+        "fact": "Whole peeled apples are sitting on the right side of the cutting board.",
         "confidence": 1.0
       },
       {
@@ -1237,49 +1250,54 @@
     "ocr": [
       "inspiredtaste.net"
     ],
-    "spatial": "The person is standing behind the white cutting board. The pile of sliced apples is in the center of the board, while whole peeled apples are to the right. The cream-colored pot is to the left of the cutting board.",
+    "spatial": "The person is standing behind the white cutting board. The pile of sliced apples is in the center of the board, while the whole peeled apples are to the right. The cream-colored pot is to the left of the cutting board.",
     "parse_success": true,
     "chunk_idx": 19,
     "video_id": "Homemade_Applesauce"
   },
   {
     "time": [
-      40,
-      42
+      20,
+      21
     ],
     "visible_entities": [
       {
-        "desc": "person wearing a black long-sleeved shirt and a black-and-white striped apron",
-        "action": "transferring apple slices into a pot",
-        "position": "center/background"
+        "desc": "person wearing a black long-sleeved shirt and a black-and-white vertically striped apron",
+        "action": "transferring apple slices into the pot",
+        "position": "center"
       },
       {
-        "desc": "pale yellow apple slices, cut into wedges with some red skin visible",
-        "action": "being moved from cutting board to pot",
-        "position": "center/foreground"
-      },
-      {
-        "desc": "large cream-colored pot with a handle",
+        "desc": "large cream-colored pot with a smooth matte finish and side handles",
         "action": "static",
         "position": "left"
       },
       {
-        "desc": "white rectangular cutting board",
+        "desc": "white rectangular cutting board with a pile of sliced yellow apples, some with red skin visible",
         "action": "static",
-        "position": "center/right"
+        "position": "right"
+      },
+      {
+        "desc": "dark brown wooden countertop",
+        "action": "static",
+        "position": "bottom"
+      },
+      {
+        "desc": "white text watermark reading 'inspiredtaste.net'",
+        "action": "static",
+        "position": "bottom-right"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A person is picking up a handful of sliced apples from the cutting board.",
+        "fact": "The person is holding a handful of apple slices and placing them into the cream-colored pot.",
         "confidence": 1.0
       },
       {
-        "fact": "The person drops the apple slices into the cream-colored pot.",
+        "fact": "A pile of sliced apples sits on the white cutting board.",
         "confidence": 1.0
       },
       {
-        "fact": "The cutting board is covered with remaining apple slices.",
+        "fact": "The pot is positioned on the wooden countertop to the left of the cutting board.",
         "confidence": 1.0
       },
       {
@@ -1290,41 +1308,109 @@
     "ocr": [
       "inspiredtaste.net"
     ],
-    "spatial": "The cream-colored pot is to the left of the white cutting board. The person is standing behind the cutting board, reaching over it to move the apple slices. The apple slices are on top of the cutting board and are being placed inside the pot.",
+    "spatial": "The cream-colored pot is to the left of the white cutting board. The person is standing behind the cutting board and the pot. The pile of apple slices is on top of the cutting board. The watermark text is located in the bottom right corner of the frame.",
     "parse_success": true,
     "chunk_idx": 20,
     "video_id": "Homemade_Applesauce"
   },
   {
     "time": [
-      42,
-      44
+      21,
+      22
     ],
     "visible_entities": [
       {
-        "desc": "woman with shoulder-length blonde hair, wearing a black long-sleeved top and a white apron with thin vertical black stripes",
-        "action": "chopping yellow vegetables and looking at the camera",
+        "desc": "woman with shoulder-length blonde hair, wearing a black long-sleeved top and a white apron with thin black vertical stripes",
+        "action": "cutting yellow fruit",
         "position": "center"
       },
       {
-        "desc": "yellow vegetables, cut into chunks",
-        "action": "being chopped",
-        "position": "foreground"
+        "desc": "yellow fruit chunks, cut into wedges",
+        "action": "being sliced",
+        "position": "center foreground"
       },
       {
-        "desc": "large beige pot with handles",
+        "desc": "white cutting board, rectangular, plastic or composite material",
         "action": "static",
-        "position": "foreground"
+        "position": "center foreground"
+      },
+      {
+        "desc": "beige pot, round, ceramic or enameled metal",
+        "action": "static",
+        "position": "bottom center"
       },
       {
         "desc": "stainless steel gas stove with silver knobs",
         "action": "static",
-        "position": "background"
+        "position": "left background"
       },
       {
         "desc": "dark grey marble backsplash with white veining",
         "action": "static",
         "position": "background"
+      },
+      {
+        "desc": "wooden countertop, light brown, smooth finish",
+        "action": "static",
+        "position": "foreground"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The woman is using a knife to slice yellow fruit on a white cutting board.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A beige pot sits on the wooden counter in front of the woman.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The stove is located to the left of the woman.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The text 'inspiredtaste.net' is visible in the bottom right corner.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "inspiredtaste.net"
+    ],
+    "spatial": "The woman is standing behind the wooden countertop. The cutting board with fruit is on the counter in front of her. The beige pot is to the left of the cutting board. The gas stove is to the left of the woman and behind the counter. The dark marble backsplash is behind the stove.",
+    "parse_success": true,
+    "chunk_idx": 21,
+    "video_id": "Homemade_Applesauce"
+  },
+  {
+    "time": [
+      22,
+      23
+    ],
+    "visible_entities": [
+      {
+        "desc": "woman with long blonde hair, wearing a black long-sleeved top and a black and white striped apron",
+        "action": "placing sliced apples into a pot",
+        "position": "center"
+      },
+      {
+        "desc": "large cream-colored enameled cast iron pot with handles",
+        "action": "static",
+        "position": "foreground left"
+      },
+      {
+        "desc": "sliced yellow apples",
+        "action": "being moved",
+        "position": "center and right"
+      },
+      {
+        "desc": "grey cutting board",
+        "action": "static",
+        "position": "right"
+      },
+      {
+        "desc": "stainless steel gas stove with black backsplash",
+        "action": "static",
+        "position": "background left"
       },
       {
         "desc": "white text watermark",
@@ -1334,65 +1420,7 @@
     ],
     "atomic_facts": [
       {
-        "fact": "The woman is chopping yellow vegetables on a cutting board.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The woman looks up and smiles at the camera.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "A beige pot sits on the counter in front of the woman.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The text 'inspiredtaste.net' is visible in the bottom right corner.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [
-      "inspiredtaste.net"
-    ],
-    "spatial": "The woman is standing behind the wooden counter. The beige pot is in front of the woman on the counter. The chopped vegetables are on a cutting board to the right of the pot. The gas stove is behind the woman to her left.",
-    "parse_success": true,
-    "chunk_idx": 21,
-    "video_id": "Homemade_Applesauce"
-  },
-  {
-    "time": [
-      44,
-      46
-    ],
-    "visible_entities": [
-      {
-        "desc": "woman with long blonde hair, wearing a black long-sleeved top and a black-and-white striped apron",
-        "action": "placing sliced apples into a pot",
-        "position": "center"
-      },
-      {
-        "desc": "large beige enameled cast iron pot with white handles",
-        "action": "static",
-        "position": "foreground left"
-      },
-      {
-        "desc": "sliced yellow apples",
-        "action": "being moved",
-        "position": "foreground"
-      },
-      {
-        "desc": "white cutting board",
-        "action": "static",
-        "position": "foreground right"
-      },
-      {
-        "desc": "stainless steel stove with black marble backsplash",
-        "action": "static",
-        "position": "background left"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "The woman is transferring sliced apples from the cutting board into the pot.",
+        "fact": "The woman is transferring sliced apples from a cutting board into a pot.",
         "confidence": 1.0
       },
       {
@@ -1407,26 +1435,21 @@
     "ocr": [
       "inspiredtaste.net"
     ],
-    "spatial": "The woman is standing behind the wooden counter. The beige pot is to the left of the white cutting board. The sliced apples are inside the pot and on the cutting board. The stove is behind the woman.",
+    "spatial": "The woman is standing behind the wooden counter. The cream-colored pot is on the counter to the left of the grey cutting board. The sliced apples are inside the pot and on top of the cutting board. The stove is behind the woman to the left.",
     "parse_success": true,
     "chunk_idx": 22,
     "video_id": "Homemade_Applesauce"
   },
   {
     "time": [
-      46,
-      48
+      23,
+      24
     ],
     "visible_entities": [
       {
-        "desc": "person with fair skin and red nail polish",
-        "action": "transferring apple slices into the pot",
+        "desc": "hands with light skin tone and red nail polish",
+        "action": "picking up apple slices and dropping them into the pot",
         "position": "right"
-      },
-      {
-        "desc": "pale yellow apple slices, peeled and cut into wedges",
-        "action": "being placed into the pot",
-        "position": "center"
       },
       {
         "desc": "large cream-colored pot with a handle",
@@ -1434,14 +1457,24 @@
         "position": "left"
       },
       {
-        "desc": "grey cutting board",
+        "desc": "pale yellow sliced apples",
+        "action": "being moved into the pot",
+        "position": "inside the pot"
+      },
+      {
+        "desc": "white cutting board",
         "action": "static",
         "position": "right"
+      },
+      {
+        "desc": "wooden table surface",
+        "action": "static",
+        "position": "background"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A person is transferring a handful of apple slices from a cutting board into a pot.",
+        "fact": "A person is transferring sliced apples from a cutting board into a pot.",
         "confidence": 1.0
       },
       {
@@ -1449,26 +1482,30 @@
         "confidence": 1.0
       },
       {
-        "fact": "The cutting board is mostly empty after the transfer.",
+        "fact": "The cutting board is white and placed on a wooden surface.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The text 'inspiredtaste.net' is visible in the bottom right corner.",
         "confidence": 1.0
       }
     ],
     "ocr": [
       "inspiredtaste.net"
     ],
-    "spatial": "The cream-colored pot is positioned to the left of the grey cutting board. The person's hands are located above the pot, dropping the apple slices inside. The cutting board is situated on the right side of the frame.",
+    "spatial": "The cream-colored pot is on the left side of the frame, sitting on a wooden table. The white cutting board is to the right of the pot. The person's hands are positioned over the cutting board and the pot, moving apple slices from the board into the pot.",
     "parse_success": true,
     "chunk_idx": 23,
     "video_id": "Homemade_Applesauce"
   },
   {
     "time": [
-      48,
-      50
+      24,
+      25
     ],
     "visible_entities": [
       {
-        "desc": "person wearing a black and white vertically striped apron",
+        "desc": "person wearing a black and white striped apron",
         "action": "pouring water",
         "position": "left"
       },
@@ -1478,7 +1515,7 @@
         "position": "center"
       },
       {
-        "desc": "sliced yellow apples",
+        "desc": "sliced pale yellow apples",
         "action": "static",
         "position": "inside pot"
       },
@@ -1488,8 +1525,8 @@
         "position": "center"
       },
       {
-        "desc": "clear liquid stream",
-        "action": "pouring into pot",
+        "desc": "clear liquid (water)",
+        "action": "flowing into pot",
         "position": "center"
       },
       {
@@ -1503,12 +1540,12 @@
         "position": "on cutting board"
       },
       {
-        "desc": "silver kitchen knife with textured handle",
+        "desc": "silver knife with textured handle",
         "action": "static",
         "position": "on cutting board"
       },
       {
-        "desc": "black stovetop with metal grates",
+        "desc": "black gas stovetop grate",
         "action": "static",
         "position": "bottom"
       }
@@ -1519,11 +1556,11 @@
         "confidence": 1.0
       },
       {
-        "fact": "The white pot contains sliced yellow apples.",
+        "fact": "The white pot contains sliced apples.",
         "confidence": 1.0
       },
       {
-        "fact": "The pot is sitting on a black stovetop.",
+        "fact": "The pot is sitting on a black stovetop grate.",
         "confidence": 1.0
       },
       {
@@ -1538,29 +1575,29 @@
     "ocr": [
       "inspiredtaste.net"
     ],
-    "spatial": "The person in the striped apron is on the left side of the frame, holding a measuring cup over the white pot in the center. The pot is on the stovetop and contains sliced apples. To the left of the pot, a wooden cutting board holds two lemon halves and a knife.",
+    "spatial": "The white pot is centered on the stovetop grate. The person is to the left of the pot, holding the measuring cup above it. The cutting board is to the left of the pot. The lemon halves and knife are on top of the cutting board.",
     "parse_success": true,
     "chunk_idx": 24,
     "video_id": "Homemade_Applesauce"
   },
   {
     "time": [
-      50,
-      52
+      25,
+      26
     ],
     "visible_entities": [
       {
-        "desc": "person wearing a black long-sleeved top and a striped apron",
+        "desc": "person with fair skin, wearing a black long-sleeved top and a striped apron",
         "action": "squeezing a lemon",
         "position": "left"
       },
       {
-        "desc": "large cream-colored enameled cast iron pot with side handles",
+        "desc": "large cream-colored enameled cast iron pot with handles",
         "action": "static",
         "position": "center"
       },
       {
-        "desc": "yellow lemon half",
+        "desc": "yellow lemon wedge",
         "action": "being squeezed",
         "position": "center"
       },
@@ -1575,18 +1612,23 @@
         "position": "background"
       },
       {
-        "desc": "black stovetop grate",
+        "desc": "dark grey textured backsplash",
+        "action": "static",
+        "position": "background"
+      },
+      {
+        "desc": "stainless steel gas stovetop grate",
         "action": "static",
         "position": "bottom right"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A person is squeezing a lemon half with both hands.",
+        "fact": "The person squeezes a lemon wedge with both hands.",
         "confidence": 1.0
       },
       {
-        "fact": "Lemon juice is dripping from the lemon into the pot.",
+        "fact": "Juice from the lemon is dripping into the pot.",
         "confidence": 1.0
       },
       {
@@ -1594,51 +1636,51 @@
         "confidence": 1.0
       },
       {
-        "fact": "The pot is sitting on a stovetop.",
+        "fact": "The pot is sitting on a gas stovetop.",
         "confidence": 1.0
       }
     ],
     "ocr": [
       "inspiredtaste.net"
     ],
-    "spatial": "The person is to the left of the pot. The pot is on top of the black stovetop grate. The sliced apples are inside the pot. The green bottle is in the background behind the person's arm.",
+    "spatial": "The person is to the left of the pot, holding the lemon over it. The sliced apples are inside the pot. The pot is on the stovetop. The dark green bottle is in the background behind the person.",
     "parse_success": true,
     "chunk_idx": 25,
     "video_id": "Homemade_Applesauce"
   },
   {
     "time": [
-      52,
-      54
+      26,
+      27
     ],
     "visible_entities": [
       {
-        "desc": "person wearing a black long-sleeved top and a striped apron",
-        "action": "squeezing a lemon",
+        "desc": "person with fair skin, wearing a black long-sleeved shirt and a striped apron",
+        "action": "squeezing liquid into the pot",
         "position": "left"
       },
       {
-        "desc": "large white enameled pot with handles",
+        "desc": "large white enameled cast iron pot with handles",
         "action": "static",
         "position": "center"
       },
       {
-        "desc": "sliced yellow apples",
+        "desc": "sliced yellow apples with red skin edges",
         "action": "static",
-        "position": "inside pot"
+        "position": "inside the pot"
       },
       {
-        "desc": "hand with a ring",
+        "desc": "hand with fair skin",
         "action": "dropping spices",
         "position": "center"
       },
       {
-        "desc": "whole spices including a cinnamon stick and star anise",
+        "desc": "whole cinnamon stick and star anise",
         "action": "being dropped",
         "position": "center"
       },
       {
-        "desc": "stainless steel gas stovetop",
+        "desc": "stainless steel gas stovetop grate",
         "action": "static",
         "position": "bottom"
       },
@@ -1650,79 +1692,15 @@
     ],
     "atomic_facts": [
       {
-        "fact": "A person is squeezing a lemon over a pot of sliced apples.",
+        "fact": "A person is squeezing liquid from their hands into a pot of sliced apples.",
         "confidence": 1.0
       },
       {
-        "fact": "A hand is dropping whole spices, including a cinnamon stick and star anise, into the pot.",
+        "fact": "A hand is dropping a cinnamon stick and star anise into the pot.",
         "confidence": 1.0
       },
       {
-        "fact": "The pot is sitting on a gas stovetop.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The watermark 'inspiredtaste.net' is visible in the bottom right corner.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [
-      "inspiredtaste.net"
-    ],
-    "spatial": "The person is to the left of the pot. The pot is on the stovetop. The sliced apples are inside the pot. The hand is above the pot, dropping spices into it. The watermark is in the bottom right corner of the frame.",
-    "parse_success": true,
-    "chunk_idx": 26,
-    "video_id": "Homemade_Applesauce"
-  },
-  {
-    "time": [
-      54,
-      56
-    ],
-    "visible_entities": [
-      {
-        "desc": "white enameled cast iron pot with handles",
-        "action": "static",
-        "position": "center"
-      },
-      {
-        "desc": "sliced pale yellow apples with red skins",
-        "action": "being stirred",
-        "position": "inside pot"
-      },
-      {
-        "desc": "brown cinnamon stick",
-        "action": "being stirred",
-        "position": "inside pot"
-      },
-      {
-        "desc": "dark brown star anise",
-        "action": "being stirred",
-        "position": "inside pot"
-      },
-      {
-        "desc": "wooden spoon",
-        "action": "stirring apples",
-        "position": "center"
-      },
-      {
-        "desc": "person's hand",
-        "action": "holding wooden spoon",
-        "position": "top left"
-      },
-      {
-        "desc": "stainless steel gas stovetop with black grates",
-        "action": "static",
-        "position": "background"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "A person's hand is stirring sliced apples, a cinnamon stick, and star anise in a white pot using a wooden spoon.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The pot is sitting on a gas stovetop.",
+        "fact": "The pot contains sliced apples.",
         "confidence": 1.0
       },
       {
@@ -1733,15 +1711,88 @@
     "ocr": [
       "inspiredtaste.net"
     ],
-    "spatial": "The white pot is centered on the gas stovetop. The sliced apples, cinnamon stick, and star anise are inside the pot. The person's hand is above the pot, holding the wooden spoon which is inside the pot. The 'inspiredtaste.net' text is in the bottom right corner of the frame.",
+    "spatial": "The person is standing to the left of the white pot. The sliced apples are inside the pot. The hand is positioned above the pot, dropping spices onto the apples. The pot is sitting on the stovetop grate.",
+    "parse_success": true,
+    "chunk_idx": 26,
+    "video_id": "Homemade_Applesauce"
+  },
+  {
+    "time": [
+      27,
+      28
+    ],
+    "visible_entities": [
+      {
+        "desc": "white enameled cast iron pot with two side handles",
+        "action": "static",
+        "position": "center"
+      },
+      {
+        "desc": "pale yellow sliced apples with red skin edges",
+        "action": "being stirred",
+        "position": "inside the pot"
+      },
+      {
+        "desc": "dark brown cinnamon stick",
+        "action": "static",
+        "position": "inside the pot"
+      },
+      {
+        "desc": "dark brown star anise",
+        "action": "static",
+        "position": "inside the pot"
+      },
+      {
+        "desc": "wooden spoon with a smooth handle",
+        "action": "stirring the apples",
+        "position": "center"
+      },
+      {
+        "desc": "hand with light skin tone",
+        "action": "holding the wooden spoon",
+        "position": "top left"
+      },
+      {
+        "desc": "black metal stove grate",
+        "action": "static",
+        "position": "background"
+      },
+      {
+        "desc": "white text 'inspiredtaste.net' in a sans-serif font",
+        "action": "static",
+        "position": "bottom right"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A hand is holding a wooden spoon and stirring sliced apples inside a white pot.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The pot contains sliced apples, a cinnamon stick, and star anise.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The pot is sitting on a black metal stove grate.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The text 'inspiredtaste.net' is visible in the bottom right corner.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "inspiredtaste.net"
+    ],
+    "spatial": "The white pot is centered on the stove grate. Inside the pot, the sliced apples are mixed with a cinnamon stick and star anise. A hand is positioned above the pot, holding a wooden spoon that is inserted into the apples. The text 'inspiredtaste.net' is located in the bottom right corner of the frame.",
     "parse_success": true,
     "chunk_idx": 27,
     "video_id": "Homemade_Applesauce"
   },
   {
     "time": [
-      56,
-      58
+      28,
+      29
     ],
     "visible_entities": [
       {
@@ -1750,87 +1801,33 @@
         "position": "center"
       },
       {
-        "desc": "apple slices, pale yellow flesh with red skin edges, cut into wedges",
+        "desc": "white enameled cast iron pot with side handles",
+        "action": "static",
+        "position": "center"
+      },
+      {
+        "desc": "sliced apples, pale yellow flesh with red skin edges",
         "action": "being stirred",
         "position": "inside pot"
       },
       {
-        "desc": "white enameled cast iron pot, round, with two side handles",
-        "action": "static",
-        "position": "center"
-      },
-      {
-        "desc": "gas stovetop, stainless steel surface with black metal grates",
+        "desc": "stainless steel gas stovetop with black grates",
         "action": "static",
         "position": "background"
       },
       {
-        "desc": "person's hand, light skin tone",
-        "action": "holding wooden spoon",
-        "position": "top"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "A person is stirring sliced apples in a pot with a wooden spoon.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The pot is sitting on a gas stovetop.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The apple slices have red skin visible on the edges.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [
-      "inspiredtaste.net"
-    ],
-    "spatial": "The white pot is on the gas stovetop. The apple slices are inside the pot. The wooden spoon is inside the pot, mixing the apples. The person's hand is above the pot, holding the spoon.",
-    "parse_success": true,
-    "chunk_idx": 28,
-    "video_id": "Homemade_Applesauce"
-  },
-  {
-    "time": [
-      58,
-      60
-    ],
-    "visible_entities": [
-      {
-        "desc": "person wearing a black long-sleeved shirt and a striped apron",
-        "action": "closing the pot lid",
-        "position": "left"
-      },
-      {
-        "desc": "large cream-colored enameled cast iron pot",
-        "action": "being closed",
-        "position": "center"
-      },
-      {
-        "desc": "yellow potato wedges",
-        "action": "static",
-        "position": "inside the pot"
-      },
-      {
-        "desc": "wooden cutting board",
-        "action": "static",
-        "position": "background"
-      },
-      {
-        "desc": "white text watermark",
+        "desc": "text 'inspiredtaste.net' in white sans-serif font",
         "action": "static",
         "position": "bottom right"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A person places the lid onto the cream-colored pot.",
+        "fact": "A wooden spoon is stirring sliced apples inside a white pot.",
         "confidence": 1.0
       },
       {
-        "fact": "The pot contains yellow potato wedges.",
+        "fact": "The pot is sitting on a gas stovetop.",
         "confidence": 1.0
       },
       {
@@ -1841,39 +1838,92 @@
     "ocr": [
       "inspiredtaste.net"
     ],
-    "spatial": "The person is standing to the left of the pot. The potato wedges are inside the pot. The wooden cutting board is behind the pot. The watermark is below the pot handle.",
+    "spatial": "The white pot is on top of the stainless steel stovetop. The sliced apples are inside the pot. The wooden spoon is inside the pot, mixing the apples. The text watermark is located in the bottom right corner of the frame.",
     "parse_success": true,
-    "chunk_idx": 29,
+    "chunk_idx": 28,
     "video_id": "Homemade_Applesauce"
   },
   {
     "time": [
-      60,
-      62
+      29,
+      30
     ],
     "visible_entities": [
       {
-        "desc": "large white enameled cast iron pot with concentric ridges on the lid and a gold-colored knob",
-        "action": "being opened",
-        "position": "center/foreground"
+        "desc": "person wearing a black long-sleeved shirt and a striped apron",
+        "action": "placing a lid on a pot",
+        "position": "left"
       },
       {
-        "desc": "hand wearing a dark grey oven mitt",
-        "action": "lifting the pot lid",
-        "position": "left/foreground"
+        "desc": "large cream-colored enameled cast iron pot",
+        "action": "static",
+        "position": "center"
       },
       {
-        "desc": "yellow potato chunks",
+        "desc": "sliced yellow potatoes",
         "action": "static",
         "position": "inside pot"
       },
       {
         "desc": "wooden cutting board",
         "action": "static",
-        "position": "left/background"
+        "position": "background left"
       },
       {
-        "desc": "lemon wedge",
+        "desc": "white electrical outlet",
+        "action": "static",
+        "position": "background right"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A person is placing a lid onto a cream-colored pot.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The pot contains sliced yellow potatoes.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The pot is sitting on a stovetop.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The text 'inspiredtaste.net' is visible in the bottom right corner.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "inspiredtaste.net"
+    ],
+    "spatial": "The person is to the left of the pot. The sliced potatoes are inside the pot. The wooden cutting board is behind and to the left of the pot. The electrical outlet is on the wall in the background, to the right of the pot.",
+    "parse_success": true,
+    "chunk_idx": 29,
+    "video_id": "Homemade_Applesauce"
+  },
+  {
+    "time": [
+      30,
+      31
+    ],
+    "visible_entities": [
+      {
+        "desc": "white enameled cast iron Dutch oven with a gold-colored knob on the lid",
+        "action": "being uncovered",
+        "position": "center/foreground"
+      },
+      {
+        "desc": "hand wearing a dark grey oven mitt",
+        "action": "lifting the lid",
+        "position": "left/center"
+      },
+      {
+        "desc": "yellow cut potatoes",
+        "action": "static",
+        "position": "inside pot"
+      },
+      {
+        "desc": "wooden cutting board",
         "action": "static",
         "position": "left/background"
       },
@@ -1889,110 +1939,110 @@
         "confidence": 1.0
       },
       {
-        "fact": "The pot contains yellow chunks of food, likely potatoes.",
+        "fact": "Yellow cut potatoes are visible inside the pot.",
         "confidence": 1.0
       },
       {
         "fact": "The pot is sitting on a stovetop burner.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "A wooden cutting board with a lemon wedge is visible in the background.",
         "confidence": 1.0
       }
     ],
     "ocr": [
       "inspiredtaste.net"
     ],
-    "spatial": "The white pot is in the center foreground on the stovetop. The hand with the oven mitt is to the left of the pot, reaching over to lift the lid. The wooden cutting board is behind and to the left of the pot. The lemon wedge is on the cutting board.",
+    "spatial": "The white pot is in the center foreground on the stove. The hand with the oven mitt is to the left of the pot, reaching over to lift the lid. The wooden cutting board is to the left of the pot in the background. The dark glass bottle is behind the pot.",
     "parse_success": true,
     "chunk_idx": 30,
     "video_id": "Homemade_Applesauce"
   },
   {
     "time": [
-      62,
-      64
+      31,
+      32
     ],
     "visible_entities": [
       {
-        "desc": "white enameled cast iron pot with a handle",
+        "desc": "large white pot with a smooth, matte finish and a curved handle on the left side",
         "action": "static",
         "position": "center"
       },
       {
-        "desc": "sliced yellow apples",
+        "desc": "pale yellow apple slices, cut into wedges with some skin visible",
         "action": "being stirred",
         "position": "inside the pot"
       },
       {
-        "desc": "wooden spoon",
+        "desc": "wooden spoon with a light brown, smooth handle and a flat, rounded head",
         "action": "stirring the apples",
         "position": "right"
       },
       {
-        "desc": "thick wooden cutting board",
+        "desc": "thick wooden cutting board with a dark brown, textured surface",
         "action": "static",
         "position": "background left"
       },
       {
-        "desc": "striped kitchen towel",
-        "action": "static",
-        "position": "far left"
-      },
-      {
-        "desc": "stainless steel stovetop grate",
+        "desc": "stainless steel stovetop grate with parallel bars",
         "action": "static",
         "position": "bottom"
+      },
+      {
+        "desc": "white text watermark reading 'inspiredtaste.net'",
+        "action": "static",
+        "position": "bottom right"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A wooden spoon is stirring sliced yellow apples inside a white pot.",
+        "fact": "A wooden spoon is stirring the apple slices inside the white pot.",
         "confidence": 1.0
       },
       {
-        "fact": "The pot is sitting on a stovetop grate.",
+        "fact": "The pot is sitting on a metal stovetop grate.",
         "confidence": 1.0
       },
       {
-        "fact": "A wooden cutting board is visible in the background.",
+        "fact": "The apple slices fill the bottom of the pot.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The text 'inspiredtaste.net' is visible in the bottom right corner.",
         "confidence": 1.0
       }
     ],
     "ocr": [
       "inspiredtaste.net"
     ],
-    "spatial": "The white pot is centered on the stovetop grate. The sliced apples are inside the pot. The wooden spoon is on the right side, reaching into the pot to stir the apples. The wooden cutting board is behind and to the left of the pot. The striped towel is to the far left of the cutting board.",
+    "spatial": "The white pot is centered on the stovetop grate. The wooden spoon is inside the pot on the right side, interacting with the apple slices. The wooden cutting board is positioned to the left of and behind the pot. The watermark text is located in the bottom right corner of the frame.",
     "parse_success": true,
     "chunk_idx": 31,
     "video_id": "Homemade_Applesauce"
   },
   {
     "time": [
-      64,
-      66
+      32,
+      33
     ],
     "visible_entities": [
       {
-        "desc": "pale yellow apple slices, peeled, cut into wedges, moist",
+        "desc": "pale yellow apple slices, cut into wedges, appearing soft and cooked",
         "action": "being stirred",
         "position": "center"
       },
       {
-        "desc": "light-colored wooden spoon, smooth texture, long handle",
+        "desc": "wooden spoon, light brown, smooth texture",
         "action": "stirring the apples",
         "position": "center"
       },
       {
-        "desc": "large white enameled pot, round interior, black rim",
+        "desc": "white enameled pot, round, with a handle visible on the left",
         "action": "static",
-        "position": "center"
+        "position": "background"
       },
       {
         "desc": "black metal stove grate",
         "action": "static",
-        "position": "background"
+        "position": "bottom"
       }
     ],
     "atomic_facts": [
@@ -2001,47 +2051,51 @@
         "confidence": 1.0
       },
       {
-        "fact": "The apple slices are being moved around the bottom of the pot.",
+        "fact": "The apple slices are being moved around by the spoon.",
         "confidence": 1.0
       },
       {
-        "fact": "The pot is sitting on a black stove grate.",
+        "fact": "The pot is sitting on top of the stove grate.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The text 'inspiredtaste.net' is visible in the bottom right corner.",
         "confidence": 1.0
       }
     ],
     "ocr": [
       "inspiredtaste.net"
     ],
-    "spatial": "The apple slices are inside the white pot. The wooden spoon is positioned in the center of the pot, amidst the apples. The pot rests on top of the black stove grate.",
+    "spatial": "The wooden spoon is inside the white pot, positioned in the center of the apple slices. The pot is resting on the black stove grate. The apple slices fill the bottom of the pot.",
     "parse_success": true,
     "chunk_idx": 32,
     "video_id": "Homemade_Applesauce"
   },
   {
     "time": [
-      66,
-      68
+      33,
+      34
     ],
     "visible_entities": [
       {
-        "desc": "white enameled cast iron pot with two side handles",
+        "desc": "white enameled cast iron Dutch oven with side handles",
         "action": "static",
         "position": "center"
       },
       {
-        "desc": "pale yellow sliced apples, peeled and cut into wedges",
+        "desc": "pale yellow sliced apple wedges",
         "action": "being stirred",
-        "position": "inside pot"
+        "position": "inside the pot"
       },
       {
-        "desc": "wooden spoon, light brown, smooth handle",
+        "desc": "wooden spoon",
         "action": "stirring apples",
         "position": "center"
       },
       {
-        "desc": "black gas stovetop grate",
+        "desc": "black metal gas stove grate",
         "action": "static",
-        "position": "below pot"
+        "position": "below the pot"
       },
       {
         "desc": "white text watermark",
@@ -2055,49 +2109,45 @@
         "confidence": 1.0
       },
       {
-        "fact": "The pot is sitting on a black gas stovetop grate.",
+        "fact": "The pot is sitting on a gas stove burner.",
         "confidence": 1.0
       },
       {
-        "fact": "The apples are pale yellow and appear to be cooking in liquid.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The text 'inspiredtaste.net' is visible in the bottom right corner.",
+        "fact": "The apples are cut into wedges and appear to be cooking.",
         "confidence": 1.0
       }
     ],
     "ocr": [
       "inspiredtaste.net"
     ],
-    "spatial": "The white pot is centered on top of the black stovetop grate. Inside the pot, the wooden spoon is mixing the sliced apples. The watermark text is located in the bottom right corner of the frame.",
+    "spatial": "The white pot is placed on top of the black stove grate. Inside the pot, the wooden spoon is mixing the sliced apples. The watermark text is located in the bottom right corner of the frame.",
     "parse_success": true,
     "chunk_idx": 33,
     "video_id": "Homemade_Applesauce"
   },
   {
     "time": [
-      68,
-      70
+      34,
+      35
     ],
     "visible_entities": [
       {
-        "desc": "person's hands, wearing a striped apron",
+        "desc": "person with fair skin, wearing a striped apron",
         "action": "pouring liquid",
-        "position": "left"
+        "position": "left/foreground"
       },
       {
         "desc": "small brown glass bottle",
         "action": "being held",
-        "position": "left"
+        "position": "center/foreground"
       },
       {
-        "desc": "metal measuring spoon",
+        "desc": "silver metal measuring spoon",
         "action": "being held",
         "position": "center"
       },
       {
-        "desc": "white enameled cast iron pot",
+        "desc": "large white enameled cast iron pot",
         "action": "static",
         "position": "center"
       },
@@ -2110,48 +2160,38 @@
         "desc": "black gas stovetop grate",
         "action": "static",
         "position": "background"
-      },
-      {
-        "desc": "black oven mitt",
-        "action": "lifting lid",
-        "position": "top"
-      },
-      {
-        "desc": "white pot lid",
-        "action": "being lifted",
-        "position": "top"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A person pours a dark liquid from a small brown bottle into a metal measuring spoon.",
+        "fact": "A person is pouring a dark liquid from a small brown bottle into a silver measuring spoon.",
         "confidence": 1.0
       },
       {
-        "fact": "The spoon is held over a pot containing sliced yellow apples.",
+        "fact": "The measuring spoon is held directly over the pot of sliced apples.",
         "confidence": 1.0
       },
       {
-        "fact": "A black oven mitt lifts the white lid off the pot.",
+        "fact": "The pot contains sliced yellow fruit.",
         "confidence": 1.0
       },
       {
-        "fact": "The pot is sitting on a gas stovetop.",
+        "fact": "The pot is sitting on a black stovetop grate.",
         "confidence": 1.0
       }
     ],
     "ocr": [
       "inspiredtaste.net"
     ],
-    "spatial": "The person's hands are to the left of the white pot, holding a brown bottle and a metal spoon. The spoon is positioned above the sliced apples inside the pot. The black oven mitt is above the white lid, lifting it off the pot. The pot is on top of the black stovetop grate.",
+    "spatial": "The person is to the left of the pot, holding the brown bottle and silver spoon above the sliced apples inside the pot. The pot is resting on the black stovetop grate.",
     "parse_success": true,
     "chunk_idx": 34,
     "video_id": "Homemade_Applesauce"
   },
   {
     "time": [
-      70,
-      72
+      35,
+      36
     ],
     "visible_entities": [
       {
@@ -2166,23 +2206,28 @@
       },
       {
         "desc": "metal measuring spoon",
-        "action": "holding dark liquid",
+        "action": "being held over the pot",
         "position": "center"
       },
       {
-        "desc": "large cream-colored pot with handles",
+        "desc": "large cream-colored enameled pot",
         "action": "static",
         "position": "center"
       },
       {
-        "desc": "sliced yellow fruit, likely apples",
-        "action": "simmering in liquid",
-        "position": "inside pot"
+        "desc": "sliced yellow apples",
+        "action": "static",
+        "position": "inside the pot"
       },
       {
         "desc": "dark brown liquid",
         "action": "being poured",
-        "position": "in spoon"
+        "position": "center"
+      },
+      {
+        "desc": "stainless steel stovetop grate",
+        "action": "static",
+        "position": "background"
       }
     ],
     "atomic_facts": [
@@ -2191,7 +2236,7 @@
         "confidence": 1.0
       },
       {
-        "fact": "The spoon is held over a pot containing sliced yellow fruit.",
+        "fact": "The spoon is held directly over a pot containing sliced yellow apples.",
         "confidence": 1.0
       },
       {
@@ -2206,97 +2251,93 @@
     "ocr": [
       "inspiredtaste.net"
     ],
-    "spatial": "The person is to the left of the pot, holding the brown bottle and spoon over the center of the pot. The spoon is positioned directly above the sliced yellow fruit inside the pot. The text 'inspiredtaste.net' is in the bottom right corner of the frame.",
+    "spatial": "The person is on the left side of the frame, holding the brown bottle and spoon over the center. The pot containing the apples is in the center, below the spoon. The stovetop grate is in the background, behind and to the right of the pot.",
     "parse_success": true,
     "chunk_idx": 35,
     "video_id": "Homemade_Applesauce"
   },
   {
     "time": [
-      72,
-      74
+      36,
+      37
     ],
     "visible_entities": [
       {
-        "desc": "person wearing a striped apron",
-        "action": "stirring apples with a wooden spoon",
+        "desc": "person with fair skin, wearing a black and white striped apron",
+        "action": "adding ingredients and stirring",
         "position": "left"
       },
       {
-        "desc": "white enameled cast iron pot",
+        "desc": "large white enameled cast iron pot with handles",
         "action": "static",
         "position": "center"
       },
       {
         "desc": "sliced yellow apples",
         "action": "being stirred",
-        "position": "inside pot"
+        "position": "inside the pot"
       },
       {
-        "desc": "wooden spoon",
-        "action": "stirring apples",
-        "position": "inside pot"
+        "desc": "silver metal measuring spoon",
+        "action": "being held",
+        "position": "center"
       },
       {
-        "desc": "silver measuring spoon",
-        "action": "held above pot",
-        "position": "top center"
-      },
-      {
-        "desc": "brown glass bottle",
-        "action": "held by person",
+        "desc": "small dark brown glass bottle",
+        "action": "being held",
         "position": "bottom foreground"
       },
       {
-        "desc": "stainless steel gas stovetop",
+        "desc": "wooden spoon",
+        "action": "stirring",
+        "position": "center"
+      },
+      {
+        "desc": "stainless steel gas stovetop with black grates",
         "action": "static",
         "position": "background"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "person stirs sliced apples in a white pot with a wooden spoon",
+        "fact": "A person is holding a silver measuring spoon over the pot of apples.",
         "confidence": 1.0
       },
       {
-        "fact": "person holds a silver measuring spoon above the pot",
+        "fact": "A person is holding a small brown bottle near the pot.",
         "confidence": 1.0
       },
       {
-        "fact": "person holds a brown glass bottle near the pot",
+        "fact": "The person uses a wooden spoon to stir the sliced apples inside the white pot.",
         "confidence": 1.0
       },
       {
-        "fact": "sliced apples are cooking inside the white pot",
-        "confidence": 1.0
-      },
-      {
-        "fact": "the text 'inspiredtaste.net' is visible in the bottom right corner",
+        "fact": "The pot is sitting on a gas stovetop.",
         "confidence": 1.0
       }
     ],
     "ocr": [
       "inspiredtaste.net"
     ],
-    "spatial": "The white pot is centered on the stainless steel gas stovetop. The person wearing a striped apron is to the left of the pot. The sliced yellow apples are inside the pot. The wooden spoon is inside the pot, stirring the apples. The silver measuring spoon is held above the pot. The brown glass bottle is held in the foreground, near the bottom of the frame.",
+    "spatial": "The white pot is centered on the gas stovetop. The person is positioned to the left of the pot. The silver spoon is held above the apples inside the pot. The brown bottle is held in the foreground, below the spoon.",
     "parse_success": true,
     "chunk_idx": 36,
     "video_id": "Homemade_Applesauce"
   },
   {
     "time": [
-      74,
-      76
+      37,
+      38
     ],
     "visible_entities": [
       {
-        "desc": "person's hand and forearm, wearing a black and white vertically striped shirt",
+        "desc": "person's hand and forearm, wearing a black and white vertically striped sleeve",
         "action": "stirring sliced apples",
-        "position": "left"
+        "position": "left/foreground"
       },
       {
-        "desc": "light-colored wooden spoon",
-        "action": "mixing ingredients",
+        "desc": "wooden spoon, light brown, smooth texture",
+        "action": "mixing apples",
         "position": "center"
       },
       {
@@ -2305,7 +2346,7 @@
         "position": "center"
       },
       {
-        "desc": "sliced yellow apples and liquid",
+        "desc": "sliced yellow apples in liquid",
         "action": "being stirred",
         "position": "inside pot"
       },
@@ -2325,6 +2366,10 @@
         "confidence": 1.0
       },
       {
+        "fact": "The person is wearing a black and white striped shirt.",
+        "confidence": 1.0
+      },
+      {
         "fact": "The text 'inspiredtaste.net' is visible in the bottom right corner.",
         "confidence": 1.0
       }
@@ -2332,34 +2377,39 @@
     "ocr": [
       "inspiredtaste.net"
     ],
-    "spatial": "The person's hand is to the left of the pot, holding a wooden spoon that is inside the pot. The pot is on top of the gas stovetop. The sliced apples are inside the pot.",
+    "spatial": "The person's hand is holding the wooden spoon inside the white pot. The pot is placed on top of the stainless steel stovetop grates. The sliced apples are inside the pot, being moved by the spoon.",
     "parse_success": true,
     "chunk_idx": 37,
     "video_id": "Homemade_Applesauce"
   },
   {
     "time": [
-      76,
-      78
+      38,
+      39
     ],
     "visible_entities": [
       {
-        "desc": "black silicone oven mitt with textured grip dots",
+        "desc": "black silicone oven mitt with a textured, dimpled surface",
         "action": "lifting the lid",
-        "position": "left"
+        "position": "left/foreground"
       },
       {
         "desc": "white enameled cast iron pot with side handles",
-        "action": "containing cooked apples",
+        "action": "being opened",
         "position": "center"
       },
       {
-        "desc": "cooked apple slices in syrup with a star anise",
-        "action": "steaming inside the pot",
+        "desc": "cooked yellow apple chunks in a light syrup with a whole star anise",
+        "action": "static",
         "position": "inside the pot"
       },
       {
-        "desc": "metal potato masher with a black handle",
+        "desc": "white ceramic pot lid with concentric circular ridges",
+        "action": "being lifted",
+        "position": "center"
+      },
+      {
+        "desc": "metal potato masher with a black plastic handle",
         "action": "static",
         "position": "right"
       },
@@ -2375,11 +2425,7 @@
         "confidence": 1.0
       },
       {
-        "fact": "The pot contains cooked apple slices and a star anise.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "Steam rises from the hot apples in the pot.",
+        "fact": "The pot contains cooked yellow apple chunks and a star anise.",
         "confidence": 1.0
       },
       {
@@ -2390,40 +2436,40 @@
     "ocr": [
       "inspiredtaste.net"
     ],
-    "spatial": "The white pot is in the center of the frame. The black oven mitt is on the left, lifting the lid off the pot. To the right of the pot, a potato masher lies on a white cutting board.",
+    "spatial": "The black oven mitt is positioned on top of the white lid, lifting it upwards. The cooked apples are inside the white pot. The potato masher is lying on the white cutting board, which is to the right of the pot.",
     "parse_success": true,
     "chunk_idx": 38,
     "video_id": "Homemade_Applesauce"
   },
   {
     "time": [
-      78,
-      80
+      39,
+      40
     ],
     "visible_entities": [
       {
-        "desc": "white enameled cast iron pot with two handles",
+        "desc": "hands with fair skin, one wearing a ring",
+        "action": "removing star anise",
+        "position": "center"
+      },
+      {
+        "desc": "silver fork",
+        "action": "being used to lift spice",
+        "position": "center"
+      },
+      {
+        "desc": "white enameled pot with handles",
         "action": "static",
         "position": "center"
       },
       {
-        "desc": "cooked yellow apple slices in liquid",
-        "action": "being stirred",
-        "position": "inside the pot"
+        "desc": "cooked yellow apple chunks in liquid",
+        "action": "static",
+        "position": "inside pot"
       },
       {
         "desc": "dark brown star anise spice",
-        "action": "being removed",
-        "position": "inside the pot"
-      },
-      {
-        "desc": "silver metal fork",
-        "action": "lifting star anise",
-        "position": "center"
-      },
-      {
-        "desc": "person's hands with fair skin",
-        "action": "removing spice",
+        "action": "being lifted",
         "position": "center"
       },
       {
@@ -2432,31 +2478,18 @@
         "position": "right"
       },
       {
-        "desc": "black handled kitchen tool",
+        "desc": "black-handled tool",
         "action": "static",
         "position": "right"
-      },
-      {
-        "desc": "wooden table surface",
-        "action": "static",
-        "position": "background"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A person uses a silver fork to lift a star anise out of the pot.",
+        "fact": "A person uses a fork to lift a star anise out of the pot.",
         "confidence": 1.0
       },
       {
-        "fact": "The pot contains cooked yellow apple slices and liquid.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The pot sits on a wooden table.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "A white cutting board is to the right of the pot.",
+        "fact": "The pot contains cooked yellow apple chunks.",
         "confidence": 1.0
       },
       {
@@ -2467,15 +2500,15 @@
     "ocr": [
       "inspiredtaste.net"
     ],
-    "spatial": "The white pot is in the center of the frame, sitting on a wooden table. Inside the pot are cooked apple slices and a star anise. A person's hands are above the pot, using a fork to remove the star anise. To the right of the pot is a white cutting board with a black-handled tool on it.",
+    "spatial": "The white pot is centered on the wooden surface. The hands are positioned above the pot, holding a fork. The white cutting board is to the right of the pot, with a black-handled tool resting on it.",
     "parse_success": true,
     "chunk_idx": 39,
     "video_id": "Homemade_Applesauce"
   },
   {
     "time": [
-      80,
-      82
+      40,
+      41
     ],
     "visible_entities": [
       {
@@ -2484,18 +2517,18 @@
         "position": "center"
       },
       {
-        "desc": "large cream-colored enameled cast iron pot with handles",
-        "action": "containing sliced apples and spices",
+        "desc": "large beige enameled cast iron pot with two handles",
+        "action": "static",
         "position": "center"
       },
       {
-        "desc": "silver metal spoon",
-        "action": "being used to stir the contents of the pot",
-        "position": "center"
+        "desc": "yellow sliced fruit chunks, likely apples",
+        "action": "being stirred",
+        "position": "inside the pot"
       },
       {
         "desc": "dark brown star anise spice",
-        "action": "being placed into the pot by hand",
+        "action": "being placed into the pot",
         "position": "center"
       },
       {
@@ -2506,118 +2539,142 @@
       {
         "desc": "brown cinnamon stick",
         "action": "static",
-        "position": "left"
+        "position": "inside the small bowl"
       },
       {
-        "desc": "dark brown wooden countertop",
+        "desc": "silver metal spoon",
+        "action": "stirring",
+        "position": "center"
+      },
+      {
+        "desc": "wooden countertop with visible grain",
         "action": "static",
         "position": "bottom"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A person is stirring sliced yellow apples inside a large pot with a spoon.",
+        "fact": "A person is stirring sliced yellow fruit in a large beige pot with a spoon.",
         "confidence": 1.0
       },
       {
-        "fact": "The person is using their left hand to place a star anise spice into the pot.",
+        "fact": "The person uses their right hand to place a star anise spice into the pot.",
         "confidence": 1.0
       },
       {
-        "fact": "A cinnamon stick is resting inside a small white bowl on the table.",
+        "fact": "A cinnamon stick rests inside a small white bowl to the left of the pot.",
         "confidence": 1.0
       },
       {
-        "fact": "The pot is sitting on a wooden surface.",
+        "fact": "The pot sits on a wooden surface.",
         "confidence": 1.0
       }
     ],
     "ocr": [
       "inspiredtaste.net"
     ],
-    "spatial": "The large cream-colored pot is in the center of the frame, resting on the wooden countertop. To the left of the pot is a small white bowl containing a cinnamon stick. The person is standing behind the pot, reaching into it with a spoon and a spice.",
+    "spatial": "The large beige pot is in the center of the wooden countertop. To the left of the pot is a small white bowl containing a cinnamon stick. The person stands behind the pot, reaching in with a spoon and a spice. The text 'inspiredtaste.net' is in the bottom right corner of the frame.",
     "parse_success": true,
     "chunk_idx": 40,
     "video_id": "Homemade_Applesauce"
   },
   {
     "time": [
-      82,
-      84
+      41,
+      42
     ],
     "visible_entities": [
       {
-        "desc": "person wearing a black long-sleeved top and a white apron with vertical black stripes",
-        "action": "holding a black spoon over a food mill",
+        "desc": "person wearing a black long-sleeved top and a black and white striped apron",
+        "action": "holding a spoon over a pot",
+        "position": "background"
+      },
+      {
+        "desc": "large cream-colored enameled cast iron pot with handles",
+        "action": "containing cooked yellow apple chunks",
         "position": "center"
       },
       {
-        "desc": "white food mill with a stainless steel hopper and black handle",
-        "action": "static",
-        "position": "center"
-      },
-      {
-        "desc": "silver metal immersion blender",
-        "action": "static",
-        "position": "right"
-      },
-      {
-        "desc": "silver metal potato masher with a black handle",
+        "desc": "small white flower-shaped bowl",
         "action": "static",
         "position": "left"
       },
       {
+        "desc": "dark brown cinnamon stick",
+        "action": "static",
+        "position": "inside the small bowl"
+      },
+      {
+        "desc": "white plastic food mill with metal sieve and black handle",
+        "action": "static",
+        "position": "center foreground"
+      },
+      {
+        "desc": "silver metal potato masher with black handle",
+        "action": "static",
+        "position": "left foreground"
+      },
+      {
+        "desc": "silver metal immersion blender",
+        "action": "static",
+        "position": "right foreground"
+      },
+      {
         "desc": "white cutting board",
         "action": "static",
-        "position": "center"
+        "position": "foreground"
       },
       {
         "desc": "wooden countertop",
         "action": "static",
         "position": "bottom"
-      },
-      {
-        "desc": "large cream-colored enameled pot",
-        "action": "static",
-        "position": "left"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A person is holding a spoon over a food mill.",
+        "fact": "A person is holding a spoon over the pot of cooked apples.",
         "confidence": 1.0
       },
       {
-        "fact": "The food mill, immersion blender, and potato masher are resting on a white cutting board.",
+        "fact": "The pot contains chunks of cooked yellow fruit.",
         "confidence": 1.0
       },
       {
-        "fact": "The cutting board is placed on a wooden countertop.",
+        "fact": "A cinnamon stick is resting inside the small white bowl.",
         "confidence": 1.0
       },
       {
-        "fact": "A large cream-colored pot is visible to the left of the cutting board.",
+        "fact": "A food mill, potato masher, and immersion blender are arranged on a white cutting board.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The text 'inspiredtaste.net' is visible in the bottom right corner.",
         "confidence": 1.0
       }
     ],
     "ocr": [
       "inspiredtaste.net"
     ],
-    "spatial": "The person is standing behind the wooden countertop. The white cutting board is in front of the person on the counter. The food mill is in the center of the cutting board, with the potato masher to its left and the immersion blender to its right. The large cream-colored pot is to the left of the cutting board.",
+    "spatial": "The large cream-colored pot is positioned to the right of the small white bowl on the wooden countertop. In the foreground, a white cutting board holds a food mill in the center, a potato masher to its left, and an immersion blender to its right. The person is standing behind the countertop, reaching over the pot.",
     "parse_success": true,
     "chunk_idx": 41,
     "video_id": "Homemade_Applesauce"
   },
   {
     "time": [
-      84,
-      86
+      42,
+      43
     ],
     "visible_entities": [
       {
-        "desc": "person wearing a black long-sleeved top and a white apron with thin vertical black stripes",
-        "action": "holding a metal potato masher",
-        "position": "background"
+        "desc": "person wearing a black long-sleeved top and a black-and-white striped apron",
+        "action": "holding a metal masher",
+        "position": "center"
+      },
+      {
+        "desc": "silver metal potato masher with a black handle",
+        "action": "being held",
+        "position": "center"
       },
       {
         "desc": "white collapsible food mill with a stainless steel bowl and black handle",
@@ -2625,75 +2682,70 @@
         "position": "center"
       },
       {
-        "desc": "silver metal immersion blender",
+        "desc": "silver immersion blender",
         "action": "static",
         "position": "right"
       },
       {
-        "desc": "metal potato masher with a black handle",
-        "action": "being held and moved",
-        "position": "left"
-      },
-      {
-        "desc": "light cream-colored pot",
-        "action": "static",
-        "position": "left"
-      },
-      {
-        "desc": "white cutting board on a wooden surface",
+        "desc": "white cutting board",
         "action": "static",
         "position": "foreground"
+      },
+      {
+        "desc": "cream-colored pot",
+        "action": "static",
+        "position": "left"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "The person is holding a metal potato masher in their left hand.",
+        "fact": "person holds a metal masher in their hands",
         "confidence": 1.0
       },
       {
-        "fact": "The person moves the potato masher slightly between frames.",
+        "fact": "a food mill sits on a white cutting board",
         "confidence": 1.0
       },
       {
-        "fact": "A food mill sits on the white cutting board.",
+        "fact": "an immersion blender lies on the cutting board",
         "confidence": 1.0
       },
       {
-        "fact": "An immersion blender lies on the cutting board to the right of the food mill.",
+        "fact": "the text 'inspiredtaste.net' is visible in the bottom right corner",
         "confidence": 1.0
       }
     ],
     "ocr": [
       "inspiredtaste.net"
     ],
-    "spatial": "The person is standing behind the wooden counter. The white cutting board is on the counter in the foreground. The food mill is in the center of the cutting board. The immersion blender is to the right of the food mill. The cream-colored pot is to the left of the cutting board.",
+    "spatial": "The person is standing behind the white cutting board. The food mill is in the center of the board, with the immersion blender to its right. The cream-colored pot is to the left of the cutting board.",
     "parse_success": true,
     "chunk_idx": 42,
     "video_id": "Homemade_Applesauce"
   },
   {
     "time": [
-      86,
-      88
+      43,
+      44
     ],
     "visible_entities": [
       {
-        "desc": "woman with shoulder-length light brown hair, wearing a black long-sleeved top and a black and white striped apron",
-        "action": "holding a black-handled tool and pressing it into a pot",
+        "desc": "woman with shoulder-length blonde hair, wearing a black long-sleeved top and a grey-and-white striped apron",
+        "action": "holding a black-handled tool over a pot",
         "position": "center"
       },
       {
-        "desc": "large cream-colored enameled cast iron pot with handles",
+        "desc": "large cream-colored enameled pot with side handles",
         "action": "static",
         "position": "left"
       },
       {
-        "desc": "white and stainless steel food mill with a black crank handle",
+        "desc": "white and stainless steel food mill with a black handle",
         "action": "static",
         "position": "center"
       },
       {
-        "desc": "silver immersion blender with a black handle",
+        "desc": "silver immersion blender with a black grip",
         "action": "static",
         "position": "right"
       },
@@ -2703,48 +2755,53 @@
         "position": "foreground"
       },
       {
-        "desc": "kitchen background with a stainless steel stove, dark backsplash, and wooden shelves",
+        "desc": "white text watermark",
         "action": "static",
-        "position": "background"
+        "position": "bottom-right"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "The woman is using a black-handled tool to mash or blend contents inside the cream-colored pot.",
+        "fact": "The woman is holding a black-handled tool inside the cream-colored pot.",
         "confidence": 1.0
       },
       {
-        "fact": "A food mill and an immersion blender are placed on the cutting board, ready for use.",
+        "fact": "A food mill and an immersion blender are resting on the white cutting board.",
         "confidence": 1.0
       },
       {
-        "fact": "The text 'inspiredtaste.net' is visible in the bottom right corner of the frame.",
+        "fact": "The text 'inspiredtaste.net' is visible in the bottom right corner.",
         "confidence": 1.0
       }
     ],
     "ocr": [
       "inspiredtaste.net"
     ],
-    "spatial": "The woman is standing behind the wooden countertop. The cream-colored pot is to her left. The food mill and the immersion blender are on the white cutting board in front of her, with the food mill to the left of the immersion blender.",
+    "spatial": "The woman stands behind the wooden countertop. The cream-colored pot is to the left of the food mill. The immersion blender is to the right of the food mill. The food mill and blender are sitting on top of the white cutting board.",
     "parse_success": true,
     "chunk_idx": 43,
     "video_id": "Homemade_Applesauce"
   },
   {
     "time": [
-      88,
-      90
+      44,
+      45
     ],
     "visible_entities": [
       {
         "desc": "woman with shoulder-length light brown hair, wearing a black long-sleeved top and a black-and-white striped apron",
-        "action": "turning a black knob on a pot lid",
+        "action": "holding a pot lid handle and looking down",
         "position": "center"
       },
       {
-        "desc": "stainless steel pot with a glass lid and a black knob",
+        "desc": "beige pot with a black knob on the lid",
         "action": "static",
         "position": "foreground"
+      },
+      {
+        "desc": "stainless steel stove with silver knobs",
+        "action": "static",
+        "position": "background"
       },
       {
         "desc": "dark grey marble backsplash with white veining",
@@ -2752,66 +2809,66 @@
         "position": "background"
       },
       {
-        "desc": "stainless steel gas range stove",
+        "desc": "wooden shelves with bowls and kitchen items",
         "action": "static",
-        "position": "left"
-      },
-      {
-        "desc": "wooden shelves with bowls and a wooden range hood",
-        "action": "static",
-        "position": "top"
+        "position": "background"
       },
       {
         "desc": "silver bowl with a black utensil inside",
+        "action": "static",
+        "position": "right"
+      },
+      {
+        "desc": "white text watermark reading 'inspiredtaste.net'",
         "action": "static",
         "position": "bottom right"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "The woman turns the black knob on the pot lid with her right hand.",
+        "fact": "The woman holds the handle of a pot lid with her right hand.",
         "confidence": 1.0
       },
       {
-        "fact": "The woman looks down at the pot in the second frame.",
+        "fact": "The woman looks down towards the pot.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A silver bowl sits on the counter to the right of the woman.",
         "confidence": 1.0
       },
       {
         "fact": "The text 'inspiredtaste.net' is visible in the bottom right corner.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The stove is located to the left of the woman.",
         "confidence": 1.0
       }
     ],
     "ocr": [
       "inspiredtaste.net"
     ],
-    "spatial": "The woman is standing in the center of the kitchen, in front of the dark marble backsplash. To her left is the stainless steel stove. The pot she is interacting with is in the foreground, and a silver bowl is positioned to her right on the counter.",
+    "spatial": "The woman is standing in front of the stove and the dark grey marble backsplash. The wooden shelves are mounted on the wall above the counter to the left of the woman. The silver bowl is on the counter to the right of the woman.",
     "parse_success": true,
     "chunk_idx": 44,
     "video_id": "Homemade_Applesauce"
   },
   {
     "time": [
-      90,
-      92
+      45,
+      46
     ],
     "visible_entities": [
       {
-        "desc": "woman with shoulder-length blonde hair, wearing a black long-sleeved top and a black-and-white striped apron",
-        "action": "mashing food in a pot",
+        "desc": "woman with shoulder-length blonde hair, wearing a black long-sleeved top and a black-and-white vertically striped apron",
+        "action": "mashing food",
         "position": "center"
       },
       {
-        "desc": "cream-colored enameled cast iron pot with dual handles",
+        "desc": "cream-colored enameled cast iron pot with two handles",
         "action": "static",
         "position": "foreground"
       },
       {
         "desc": "metal potato masher with a black handle",
-        "action": "being pressed into food",
+        "action": "being pressed down",
         "position": "center"
       },
       {
@@ -2820,7 +2877,7 @@
         "position": "inside pot"
       },
       {
-        "desc": "stainless steel gas stove with knobs",
+        "desc": "stainless steel gas stove",
         "action": "static",
         "position": "background left"
       },
@@ -2833,6 +2890,11 @@
         "desc": "wooden range hood",
         "action": "static",
         "position": "top background"
+      },
+      {
+        "desc": "silver mixing bowl",
+        "action": "static",
+        "position": "bottom right"
       }
     ],
     "atomic_facts": [
@@ -2845,26 +2907,26 @@
         "confidence": 1.0
       },
       {
-        "fact": "The text 'inspiredtaste.net' is visible in the bottom right corner.",
+        "fact": "The text 'inspiredtaste.net' is visible in the bottom right corner of the frame.",
         "confidence": 1.0
       },
       {
-        "fact": "The woman is wearing a striped apron over a black shirt.",
+        "fact": "A stainless steel stove is located behind the woman to the left.",
         "confidence": 1.0
       }
     ],
     "ocr": [
       "inspiredtaste.net"
     ],
-    "spatial": "The woman is standing behind the cream-colored pot which is in the foreground. The potato masher is inside the pot, pressing down on the yellow apple chunks. The gas stove is to the left of the woman in the background, and the marble backsplash is behind the stove.",
+    "spatial": "The woman is standing behind the cream-colored pot, which is in the foreground. The pot is on a wooden surface. The potato masher is inside the pot, pressing down on the yellow apple chunks. The silver bowl is to the right of the pot. The stove and backsplash are in the background behind the woman.",
     "parse_success": true,
     "chunk_idx": 45,
     "video_id": "Homemade_Applesauce"
   },
   {
     "time": [
-      92,
-      94
+      46,
+      47
     ],
     "visible_entities": [
       {
@@ -2878,19 +2940,14 @@
         "position": "center"
       },
       {
-        "desc": "person's hand holding the masher handle",
-        "action": "holding",
+        "desc": "person's hand and striped shirt sleeve",
+        "action": "holding masher",
         "position": "top right"
       },
       {
-        "desc": "wooden surface with visible grain",
+        "desc": "wooden countertop surface",
         "action": "static",
         "position": "background"
-      },
-      {
-        "desc": "white text watermark 'inspiredtaste.net'",
-        "action": "static",
-        "position": "bottom right"
       }
     ],
     "atomic_facts": [
@@ -2903,7 +2960,57 @@
         "confidence": 1.0
       },
       {
-        "fact": "The pot is sitting on a wooden table surface.",
+        "fact": "The text 'inspiredtaste.net' is visible in the bottom right corner.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "inspiredtaste.net"
+    ],
+    "spatial": "The white pot is centered on the wooden countertop. The potato masher is inside the pot, pressing down on the apples. The person's hand is holding the handle of the masher from the top right.",
+    "parse_success": true,
+    "chunk_idx": 46,
+    "video_id": "Homemade_Applesauce"
+  },
+  {
+    "time": [
+      47,
+      48
+    ],
+    "visible_entities": [
+      {
+        "desc": "hands with light skin tone",
+        "action": "mashing food",
+        "position": "left and top right"
+      },
+      {
+        "desc": "metal potato masher with black handle",
+        "action": "being pressed into food",
+        "position": "left"
+      },
+      {
+        "desc": "large white enameled pot with handles",
+        "action": "static",
+        "position": "center"
+      },
+      {
+        "desc": "yellowish chunky cooked fruit mixture",
+        "action": "being mashed",
+        "position": "inside pot"
+      },
+      {
+        "desc": "white text 'inspiredtaste.net'",
+        "action": "static",
+        "position": "bottom right"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A person is using a metal potato masher to crush the yellowish fruit mixture inside the white pot.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The mixture has a chunky, pulpy texture.",
         "confidence": 1.0
       },
       {
@@ -2914,30 +3021,25 @@
     "ocr": [
       "inspiredtaste.net"
     ],
-    "spatial": "The white pot is centered on the wooden surface. The potato masher is inside the pot, pressing down on the apples. The person's hand is holding the masher handle from the top right. The watermark text is located in the bottom right corner of the frame.",
+    "spatial": "The hands are positioned above the white pot, holding the masher which is inside the pot. The yellowish fruit mixture is inside the pot, filling the bottom. The text 'inspiredtaste.net' is located in the bottom right corner of the frame, below the pot.",
     "parse_success": true,
-    "chunk_idx": 46,
+    "chunk_idx": 47,
     "video_id": "Homemade_Applesauce"
   },
   {
     "time": [
-      94,
-      96
+      48,
+      49
     ],
     "visible_entities": [
       {
-        "desc": "hands with light skin tone",
-        "action": "mashing food",
-        "position": "left"
-      },
-      {
-        "desc": "metal potato masher with black handle",
-        "action": "being pressed into food",
+        "desc": "yellowish cooked fruit mixture, chunky and pulpy texture",
+        "action": "being mashed",
         "position": "center"
       },
       {
-        "desc": "chunky yellow cooked fruit mixture",
-        "action": "being mashed",
+        "desc": "metal potato masher with black handle",
+        "action": "pressing down",
         "position": "center"
       },
       {
@@ -2948,16 +3050,16 @@
       {
         "desc": "white text 'inspiredtaste.net'",
         "action": "static",
-        "position": "bottom right"
+        "position": "bottom-right"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A person is using a potato masher to crush yellow fruit chunks inside a pot.",
+        "fact": "A hand is using a metal potato masher to press down on the yellow fruit mixture.",
         "confidence": 1.0
       },
       {
-        "fact": "The mixture is becoming smoother as the tool is pressed down.",
+        "fact": "The mixture is being crushed inside the white pot.",
         "confidence": 1.0
       },
       {
@@ -2968,79 +3070,30 @@
     "ocr": [
       "inspiredtaste.net"
     ],
-    "spatial": "The hands are holding the masher which is positioned inside the white pot. The yellow fruit mixture fills the bottom of the pot. The text watermark is located in the bottom right corner of the frame, outside the pot area.",
-    "parse_success": true,
-    "chunk_idx": 47,
-    "video_id": "Homemade_Applesauce"
-  },
-  {
-    "time": [
-      96,
-      98
-    ],
-    "visible_entities": [
-      {
-        "desc": "thick, yellowish, chunky food mixture",
-        "action": "being mashed",
-        "position": "center"
-      },
-      {
-        "desc": "white enameled pot with handles",
-        "action": "static",
-        "position": "center"
-      },
-      {
-        "desc": "metal potato masher with black handle",
-        "action": "mashing food",
-        "position": "center"
-      },
-      {
-        "desc": "hand holding the masher",
-        "action": "mashing food",
-        "position": "top"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "A hand is using a metal potato masher to mash a yellowish food mixture.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The food mixture is inside a white pot.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The masher is pressing down into the food.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [
-      "inspiredtaste.net"
-    ],
-    "spatial": "The yellowish food mixture is inside the white pot. The metal potato masher is in the center of the pot, pressing down into the food. A hand is holding the handle of the masher from above. The text 'inspiredtaste.net' is in the bottom right corner of the frame.",
+    "spatial": "The yellowish fruit mixture is inside the white pot. The metal masher is positioned above and pressing into the mixture. The text 'inspiredtaste.net' is located in the bottom right corner of the frame, outside the pot.",
     "parse_success": true,
     "chunk_idx": 48,
     "video_id": "Homemade_Applesauce"
   },
   {
     "time": [
-      98,
-      100
+      49,
+      50
     ],
     "visible_entities": [
       {
         "desc": "person wearing a black long-sleeved top and a white apron with thin vertical black stripes",
-        "action": "transferring yellow food from pot to jar",
+        "action": "transferring yellow food from a pot to a jar",
         "position": "center"
       },
       {
-        "desc": "large cream-colored enameled cast iron pot with two side handles",
+        "desc": "large cream-colored enameled cast iron pot with two handles",
         "action": "static",
         "position": "left"
       },
       {
         "desc": "clear glass mason jar filled with yellow chunky food",
-        "action": "being filled",
+        "action": "static",
         "position": "right"
       },
       {
@@ -3049,17 +3102,12 @@
         "position": "center"
       },
       {
-        "desc": "white cutting board",
-        "action": "static",
-        "position": "right"
+        "desc": "yellow chunky food substance",
+        "action": "being moved",
+        "position": "center"
       },
       {
-        "desc": "dark wooden countertop",
-        "action": "static",
-        "position": "bottom"
-      },
-      {
-        "desc": "white text watermark",
+        "desc": "white text reading 'inspiredtaste.net'",
         "action": "static",
         "position": "bottom right"
       }
@@ -3070,15 +3118,15 @@
         "confidence": 1.0
       },
       {
-        "fact": "The person places the spoonful of food into a glass jar.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The jar is sitting on a white cutting board.",
+        "fact": "The person transfers the spoonful of yellow food into a glass jar.",
         "confidence": 1.0
       },
       {
         "fact": "The pot is sitting on a wooden surface.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The jar is sitting on a white cutting board.",
         "confidence": 1.0
       },
       {
@@ -3089,39 +3137,39 @@
     "ocr": [
       "inspiredtaste.net"
     ],
-    "spatial": "The cream-colored pot is on the left side of the frame, resting on the wooden countertop. The glass jar is to the right of the pot, sitting on top of a white cutting board. The person stands behind the counter, holding a spoon between the pot and the jar.",
+    "spatial": "The cream-colored pot is on the left side of the frame, while the glass jar is on the right side. The person stands behind the counter, reaching over the pot to move food into the jar. The jar rests on a white board which is next to the wooden surface holding the pot.",
     "parse_success": true,
     "chunk_idx": 49,
     "video_id": "Homemade_Applesauce"
   },
   {
     "time": [
-      100,
-      102
+      50,
+      51
     ],
     "visible_entities": [
       {
-        "desc": "person wearing a black long-sleeved shirt and a white apron with thin vertical black stripes",
-        "action": "stirring yellow substance",
-        "position": "center"
+        "desc": "person wearing a black long-sleeved shirt and a white apron with thin vertical dark stripes",
+        "action": "stirring yellow mixture",
+        "position": "background"
       },
       {
-        "desc": "large, round, cream-colored enameled cast iron pot with two handles",
+        "desc": "large cream-colored enameled cast iron pot with two side handles",
         "action": "static",
         "position": "left"
       },
       {
-        "desc": "clear glass mason jar filled with yellow liquid",
+        "desc": "clear glass mason jar filled with yellow semi-solid mixture",
         "action": "being stirred",
         "position": "right"
       },
       {
         "desc": "silver metal fork",
-        "action": "stirring inside jar",
-        "position": "center"
+        "action": "stirring mixture",
+        "position": "center-right"
       },
       {
-        "desc": "white cutting board or mat",
+        "desc": "white cutting board",
         "action": "static",
         "position": "right"
       },
@@ -3133,15 +3181,15 @@
     ],
     "atomic_facts": [
       {
-        "fact": "A person is using a fork to stir a yellow liquid inside a glass jar.",
+        "fact": "A person is using a fork to stir a yellow mixture inside a glass jar.",
         "confidence": 1.0
       },
       {
-        "fact": "The glass jar is sitting on a white board.",
+        "fact": "The glass jar is sitting on a white cutting board.",
         "confidence": 1.0
       },
       {
-        "fact": "A large cream-colored pot is sitting on the wooden counter to the left of the jar.",
+        "fact": "A large cream-colored pot sits on the wooden counter to the left of the jar.",
         "confidence": 1.0
       },
       {
@@ -3152,221 +3200,154 @@
     "ocr": [
       "inspiredtaste.net"
     ],
-    "spatial": "The person is standing behind the counter, positioned between the pot and the jar. The cream-colored pot is to the left of the glass jar. The glass jar is resting on top of a white board, which is on the wooden countertop. The fork is inside the jar, being held by the person.",
+    "spatial": "The person is standing behind the wooden countertop. The cream-colored pot is to the left of the glass jar. The glass jar is resting on top of the white cutting board. The fork is inside the jar, interacting with the yellow mixture.",
     "parse_success": true,
     "chunk_idx": 50,
     "video_id": "Homemade_Applesauce"
   },
   {
     "time": [
-      102,
-      104
+      51,
+      52
     ],
     "visible_entities": [
       {
-        "desc": "glass jar filled with thick, yellow, textured puree",
-        "action": "being held and stirred",
-        "position": "center"
-      },
-      {
-        "desc": "silver metal fork",
-        "action": "stirring the puree",
-        "position": "center"
-      },
-      {
-        "desc": "person's hands and forearms, wearing a black long-sleeved shirt",
-        "action": "holding the jar and fork",
-        "position": "right"
-      },
-      {
-        "desc": "white ceramic pitcher or container",
-        "action": "static",
-        "position": "left"
-      },
-      {
-        "desc": "white text 'inspiredtaste.net'",
-        "action": "static",
-        "position": "bottom-right"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "A person is holding a glass jar containing a yellow puree.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "A silver fork is being used to stir the contents of the jar.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The puree has a thick, chunky texture.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The text 'inspiredtaste.net' is visible in the bottom right corner.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [
-      "inspiredtaste.net"
-    ],
-    "spatial": "The glass jar is in the center of the frame, held by a person's hands on the right. A silver fork is inside the jar, stirring the yellow puree. To the left of the jar, a white ceramic container is partially visible. The text 'inspiredtaste.net' is located in the bottom right corner of the screen.",
-    "parse_success": true,
-    "chunk_idx": 51,
-    "video_id": "Homemade_Applesauce"
-  },
-  {
-    "time": [
-      104,
-      106
-    ],
-    "visible_entities": [
-      {
-        "desc": "hand with fair skin holding a glass jar",
-        "action": "holding jar",
-        "position": "right"
-      },
-      {
-        "desc": "clear glass jar filled with yellow chunky puree",
-        "action": "static",
-        "position": "center"
-      },
-      {
-        "desc": "silver metal fork",
-        "action": "lifting puree",
-        "position": "center"
-      },
-      {
-        "desc": "yellow chunky puree",
-        "action": "being lifted",
-        "position": "center"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "A hand holds a glass jar filled with yellow puree.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "A fork lifts a scoop of yellow puree from the jar.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The text 'inspiredtaste.net' is visible in the bottom right corner.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [
-      "inspiredtaste.net"
-    ],
-    "spatial": "The hand is to the right of the jar, holding it. The fork is above the jar, lifting a portion of the yellow puree. The text 'inspiredtaste.net' is below the jar in the bottom right corner.",
-    "parse_success": true,
-    "chunk_idx": 52,
-    "video_id": "Homemade_Applesauce"
-  },
-  {
-    "time": [
-      106,
-      108
-    ],
-    "visible_entities": [
-      {
-        "desc": "woman with shoulder-length blonde hair, wearing a black long-sleeved top and a black-and-white striped apron",
-        "action": "eating food from a fork",
-        "position": "center"
-      },
-      {
-        "desc": "silver fork holding a piece of yellow food",
-        "action": "being lifted to mouth",
-        "position": "center"
-      },
-      {
-        "desc": "stainless steel gas stove with multiple knobs and grates",
-        "action": "static",
-        "position": "left"
-      },
-      {
-        "desc": "dark marble backsplash",
-        "action": "static",
-        "position": "left background"
-      },
-      {
-        "desc": "wooden shelf with metal pans",
-        "action": "static",
-        "position": "top background"
-      },
-      {
-        "desc": "two framed pictures on a white wall",
-        "action": "static",
-        "position": "right background"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "The woman lifts a fork with yellow food to her mouth.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The woman puts the food into her mouth.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The stove is located to the left of the woman.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The text 'inspiredtaste.net' is visible in the bottom right corner.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [
-      "inspiredtaste.net"
-    ],
-    "spatial": "The woman is positioned in the center of the frame, standing in front of a white wall. To her left is a stainless steel stove and a dark backsplash. Above the stove area, a wooden shelf holds metal pans. To the right of the woman, two framed pictures hang vertically on the wall.",
-    "parse_success": true,
-    "chunk_idx": 53,
-    "video_id": "Homemade_Applesauce"
-  },
-  {
-    "time": [
-      108,
-      110
-    ],
-    "visible_entities": [
-      {
-        "desc": "woman with long blonde hair, wearing a black long-sleeved top and a black-and-white striped apron",
-        "action": "holding a fork and chewing",
-        "position": "center"
-      },
-      {
-        "desc": "silver fork",
+        "desc": "clear glass jar, cylindrical, filled with yellow semi-solid substance",
         "action": "being held",
         "position": "center"
       },
       {
-        "desc": "stainless steel gas stove with multiple burners and knobs",
-        "action": "static",
-        "position": "left"
+        "desc": "silver metal fork, shiny, with tines",
+        "action": "stirring inside jar",
+        "position": "center"
       },
       {
-        "desc": "dark marble backsplash",
-        "action": "static",
-        "position": "left background"
+        "desc": "person's hand, light skin tone, holding jar",
+        "action": "holding jar",
+        "position": "right"
       },
       {
-        "desc": "two framed pictures on a white wall",
-        "action": "static",
-        "position": "right background"
-      },
-      {
-        "desc": "text 'inspiredtaste.net' in white font",
+        "desc": "white text watermark 'inspiredtaste.net'",
         "action": "static",
         "position": "bottom right"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "The woman is holding a fork in her right hand.",
+        "fact": "A person is holding a glass jar containing a yellow substance.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A silver fork is being used to stir the yellow substance inside the jar.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The text 'inspiredtaste.net' is visible in the bottom right corner.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "inspiredtaste.net"
+    ],
+    "spatial": "The glass jar is in the center of the frame, held by a hand on the right side. A silver fork is inserted into the jar from the top, mixing the contents. The watermark text is located below and to the right of the jar.",
+    "parse_success": true,
+    "chunk_idx": 51,
+    "video_id": "Homemade_Applesauce"
+  },
+  {
+    "time": [
+      52,
+      53
+    ],
+    "visible_entities": [
+      {
+        "desc": "yellow, chunky, semi-translucent puree with a moist texture",
+        "action": "being scooped",
+        "position": "center"
+      },
+      {
+        "desc": "silver metal fork with four tines",
+        "action": "lifting puree",
+        "position": "center"
+      },
+      {
+        "desc": "clear glass jar with a threaded rim",
+        "action": "static",
+        "position": "center"
+      },
+      {
+        "desc": "person's hand with light skin tone",
+        "action": "holding jar",
+        "position": "right"
+      },
+      {
+        "desc": "white text watermark reading 'inspiredtaste.net'",
+        "action": "static",
+        "position": "bottom right"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A silver fork lifts a scoop of yellow puree out of a glass jar.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A hand holds the glass jar steady while the fork scoops.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The jar is filled with a yellow, chunky substance.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "inspiredtaste.net"
+    ],
+    "spatial": "The glass jar is held by a hand on the right side of the frame. The silver fork is positioned above the jar, lifting a portion of the yellow puree. The watermark text is located in the bottom right corner, below the hand.",
+    "parse_success": true,
+    "chunk_idx": 52,
+    "video_id": "Homemade_Applesauce"
+  },
+  {
+    "time": [
+      53,
+      54
+    ],
+    "visible_entities": [
+      {
+        "desc": "woman with long blonde hair, wearing a black long-sleeved top and a black-and-white striped apron",
+        "action": "eating food from a fork",
+        "position": "center"
+      },
+      {
+        "desc": "silver fork holding a yellow piece of food",
+        "action": "being moved to mouth",
+        "position": "center"
+      },
+      {
+        "desc": "stainless steel gas stove with silver knobs",
+        "action": "static",
+        "position": "left"
+      },
+      {
+        "desc": "dark marble backsplash",
+        "action": "static",
+        "position": "background left"
+      },
+      {
+        "desc": "wooden shelf with metal pans",
+        "action": "static",
+        "position": "background top"
+      },
+      {
+        "desc": "two framed pictures on a white wall",
+        "action": "static",
+        "position": "background right"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The woman brings a fork with yellow food to her mouth.",
         "confidence": 1.0
       },
       {
@@ -3385,36 +3366,46 @@
     "ocr": [
       "inspiredtaste.net"
     ],
-    "spatial": "The woman is standing in the center of the frame, to the right of the stainless steel stove. The dark backsplash is behind the stove on the left. Two framed pictures are hanging on the wall to the right of the woman. The watermark text is in the bottom right corner.",
+    "spatial": "The woman is standing in the center of the frame, to the right of the stainless steel stove. The dark marble backsplash is behind the stove on the left. The wooden shelf with pans is above the stove area. The framed pictures are on the wall to the right of the woman.",
     "parse_success": true,
-    "chunk_idx": 54,
+    "chunk_idx": 53,
     "video_id": "Homemade_Applesauce"
   },
   {
     "time": [
-      110,
-      112
+      54,
+      55
     ],
     "visible_entities": [
       {
-        "desc": "woman with shoulder-length blonde hair, wearing a black long-sleeved top and a black-and-white vertically striped apron",
+        "desc": "woman with long blonde hair, wearing a black long-sleeved top and a black-and-white striped apron",
         "action": "holding a fork and chewing",
         "position": "center"
       },
       {
-        "desc": "silver fork",
-        "action": "held in right hand",
-        "position": "left"
-      },
-      {
-        "desc": "stainless steel stove with gas burners",
-        "action": "static",
-        "position": "left"
-      },
-      {
-        "desc": "logo with 'inspired taste' in teal cursive font and a green tag reading 'COOK + INSPIRE'",
-        "action": "static",
+        "desc": "silver metal fork",
+        "action": "being held",
         "position": "center"
+      },
+      {
+        "desc": "stainless steel gas stove with multiple burners and control knobs",
+        "action": "static",
+        "position": "left"
+      },
+      {
+        "desc": "dark marble backsplash with white veining",
+        "action": "static",
+        "position": "left"
+      },
+      {
+        "desc": "wooden shelf with stainless steel pans",
+        "action": "static",
+        "position": "background"
+      },
+      {
+        "desc": "two framed pictures on a white wall",
+        "action": "static",
+        "position": "right"
       }
     ],
     "atomic_facts": [
@@ -3427,11 +3418,64 @@
         "confidence": 1.0
       },
       {
-        "fact": "The text 'inspired taste' is displayed in a teal script font.",
+        "fact": "The stove is located to the left of the woman.",
         "confidence": 1.0
       },
       {
-        "fact": "A green tag with the text 'COOK + INSPIRE' is attached to the logo.",
+        "fact": "The text 'inspiredtaste.net' is visible in the bottom right corner.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "inspiredtaste.net"
+    ],
+    "spatial": "The woman is standing in the center of the frame, to the right of the stainless steel stove. The dark marble backsplash is behind the stove on the left. A wooden shelf with pans is mounted on the wall above the counter in the background. Two framed pictures are hanging on the wall to the right of the woman.",
+    "parse_success": true,
+    "chunk_idx": 54,
+    "video_id": "Homemade_Applesauce"
+  },
+  {
+    "time": [
+      55,
+      56
+    ],
+    "visible_entities": [
+      {
+        "desc": "woman with shoulder-length blonde hair, wearing a black long-sleeved top and a black-and-white vertically striped apron",
+        "action": "holding a fork",
+        "position": "center"
+      },
+      {
+        "desc": "silver fork",
+        "action": "being held",
+        "position": "left"
+      },
+      {
+        "desc": "stainless steel gas stove with knobs",
+        "action": "static",
+        "position": "left"
+      },
+      {
+        "desc": "logo text 'inspired taste' in teal cursive font with a green tag reading 'COOK + INSPIRE'",
+        "action": "static",
+        "position": "center"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The woman holds a fork in her right hand.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The woman is standing in a kitchen.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The text 'inspired taste' is displayed in teal script.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The tag 'COOK + INSPIRE' is attached to the logo.",
         "confidence": 1.0
       }
     ],
@@ -3439,78 +3483,68 @@
       "inspired taste",
       "COOK + INSPIRE"
     ],
-    "spatial": "The woman is positioned in the center of the frame, standing in front of a stainless steel stove which is to her left. The 'inspired taste' logo appears on a white background, likely as an overlay or transition screen.",
+    "spatial": "The woman is standing in the center of the frame, holding a fork in her right hand. To her left is a stainless steel gas stove. The logo text 'inspired taste' appears on a white background in the second frame.",
     "parse_success": true,
     "chunk_idx": 55,
     "video_id": "Homemade_Applesauce"
   },
   {
     "time": [
-      112,
-      114
+      56,
+      57
     ],
     "visible_entities": [
       {
-        "desc": "golden-brown crab cakes with visible white meat chunks and green herbs",
-        "action": "static",
+        "desc": "golden-brown crab cakes with visible chunks of white meat and green herbs, textured surface",
+        "action": "sitting in a pan",
         "position": "background"
       },
       {
-        "desc": "thick dark chocolate batter",
+        "desc": "thick, glossy dark chocolate batter",
         "action": "being poured",
         "position": "center"
       },
       {
-        "desc": "rectangular baking pan lined with crinkled silver aluminum foil",
+        "desc": "rectangular baking pan lined with silver aluminum foil",
         "action": "static",
         "position": "center"
       },
       {
-        "desc": "red rectangular button with white text and play icon",
+        "desc": "red rectangular button with white play icon and text",
         "action": "static",
         "position": "center"
       },
       {
-        "desc": "teal cursive text logo",
+        "desc": "teal cursive text logo 'inspired taste'",
         "action": "static",
         "position": "top"
       },
       {
-        "desc": "blue bird icon",
+        "desc": "small green square tag with white text",
         "action": "static",
-        "position": "bottom-left"
+        "position": "top right"
       },
       {
-        "desc": "gradient camera icon",
+        "desc": "blue bird icon, gradient camera icon, blue square 'f' icon",
         "action": "static",
-        "position": "bottom-center"
-      },
-      {
-        "desc": "blue square icon with white 'f'",
-        "action": "static",
-        "position": "bottom-right"
-      },
-      {
-        "desc": "green rectangular tag",
-        "action": "static",
-        "position": "top-right"
+        "position": "bottom"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "Thick dark chocolate batter is being poured into a foil-lined baking pan.",
+        "fact": "Dark chocolate batter is being poured into a foil-lined pan.",
         "confidence": 1.0
       },
       {
-        "fact": "The red 'SUBSCRIBE' button is overlaid in the center of the screen.",
+        "fact": "The scene transitions from cooked crab cakes to baking preparation.",
         "confidence": 1.0
       },
       {
-        "fact": "The text 'inspired taste' is written in teal cursive at the top.",
+        "fact": "The text 'inspired taste' is displayed at the top of the screen.",
         "confidence": 1.0
       },
       {
-        "fact": "Social media icons for Twitter, Instagram, and Facebook are visible at the bottom.",
+        "fact": "A red 'SUBSCRIBE' button overlays the center of the video.",
         "confidence": 1.0
       }
     ],
@@ -3520,66 +3554,51 @@
       "SUBSCRIBE",
       "f"
     ],
-    "spatial": "The dark chocolate batter is being poured into the center of the foil-lined pan. The red 'SUBSCRIBE' button is overlaid in front of the pouring batter. The 'inspired taste' text is above the batter. The social media icons are below the batter and the subscribe button.",
+    "spatial": "The red 'SUBSCRIBE' button is centered over the food items. The 'inspired taste' logo is above the main action. The social media icons are arranged horizontally at the bottom of the frame. The chocolate batter is being poured into the pan which is positioned centrally.",
     "parse_success": true,
     "chunk_idx": 56,
     "video_id": "Homemade_Applesauce"
   },
   {
     "time": [
-      114,
-      116
+      57,
+      58
     ],
     "visible_entities": [
       {
-        "desc": "woman with shoulder-length light brown hair wearing a dark grey t-shirt",
+        "desc": "woman with shoulder-length light brown hair, wearing a dark grey t-shirt",
         "action": "static",
         "position": "left"
       },
       {
-        "desc": "man with short dark hair wearing a light blue jacket with a checkered collar and a white logo on the chest",
+        "desc": "man with short dark hair, wearing a light blue jacket with white logos over a checkered shirt",
         "action": "static",
         "position": "right"
       },
       {
-        "desc": "red rectangular YouTube subscribe button with a white play icon and white text",
-        "action": "static",
-        "position": "center"
-      },
-      {
-        "desc": "glass bowl containing diced red and yellow vegetables",
+        "desc": "glass bowl containing diced red tomatoes and yellow peppers",
         "action": "static",
         "position": "right foreground"
       },
       {
-        "desc": "white plate with toasted bread slices topped with the vegetable mixture",
+        "desc": "grilled bread slices on a white plate",
         "action": "static",
         "position": "left foreground"
       },
       {
-        "desc": "teal cursive text logo reading 'inspired taste'",
+        "desc": "red rectangular button with white text and icon",
         "action": "static",
-        "position": "top center"
+        "position": "center"
       },
       {
-        "desc": "green square sticker with white text 'COOK + INSPIRE'",
+        "desc": "teal cursive text 'inspired taste' with a green 'COOK + INSPIRE' tag",
         "action": "static",
-        "position": "top right"
+        "position": "top"
       },
       {
-        "desc": "blue Twitter bird logo",
+        "desc": "social media icons (Twitter, Instagram, Facebook)",
         "action": "static",
-        "position": "bottom left"
-      },
-      {
-        "desc": "gradient Instagram camera logo",
-        "action": "static",
-        "position": "bottom center"
-      },
-      {
-        "desc": "blue Facebook 'f' logo",
-        "action": "static",
-        "position": "bottom right"
+        "position": "bottom"
       }
     ],
     "atomic_facts": [
@@ -3588,15 +3607,15 @@
         "confidence": 1.0
       },
       {
-        "fact": "A red 'SUBSCRIBE' button overlays the center of the screen.",
+        "fact": "A red 'SUBSCRIBE' button overlays the center of the screen in both frames.",
         "confidence": 1.0
       },
       {
-        "fact": "The bowl contains a mixture of diced tomatoes and yellow peppers.",
+        "fact": "The food shot features a glass bowl of chopped vegetables next to grilled bread.",
         "confidence": 1.0
       },
       {
-        "fact": "The text 'inspired taste' appears in teal cursive at the top.",
+        "fact": "The text 'inspired taste' is visible at the top of the screen.",
         "confidence": 1.0
       }
     ],
@@ -3604,21 +3623,21 @@
       "inspired taste",
       "COOK + INSPIRE",
       "SUBSCRIBE",
-      "f"
+      "canterbury"
     ],
-    "spatial": "The woman is to the left of the man. The red subscribe button is centered in front of both people. In the second frame, the glass bowl of vegetables is to the right of the plate with bruschetta. The social media icons are arranged horizontally at the bottom of the screen.",
+    "spatial": "The woman is to the left of the man in the first frame. In the second frame, the bowl of chopped vegetables is to the right of the grilled bread. The 'SUBSCRIBE' button is in the center, overlaying the main subjects in both shots. The social media icons are arranged horizontally at the bottom of the screen.",
     "parse_success": true,
     "chunk_idx": 57,
     "video_id": "Homemade_Applesauce"
   },
   {
     "time": [
-      116,
-      118
+      58,
+      59
     ],
     "visible_entities": [
       {
-        "desc": "golden-brown chicken thighs with crispy skin, covered in a creamy yellow sauce and sprinkled with black pepper",
+        "desc": "cooked chicken thighs with golden-brown skin, black pepper seasoning, and a creamy yellow sauce",
         "action": "static",
         "position": "foreground"
       },
@@ -3633,7 +3652,7 @@
         "position": "left"
       },
       {
-        "desc": "man with short dark hair, wearing a blue and white checkered button-down shirt over a grey t-shirt",
+        "desc": "man with short dark hair, wearing a blue and white checkered button-down shirt over a dark t-shirt",
         "action": "static",
         "position": "right"
       },
@@ -3648,34 +3667,14 @@
         "position": "top"
       },
       {
-        "desc": "green square logo with white text 'COOK + INSPIRE'",
+        "desc": "social media icons (blue Twitter bird, gradient Instagram camera, blue Facebook 'f')",
         "action": "static",
-        "position": "top-right"
-      },
-      {
-        "desc": "blue Twitter bird icon",
-        "action": "static",
-        "position": "bottom-left"
-      },
-      {
-        "desc": "gradient Instagram camera icon",
-        "action": "static",
-        "position": "bottom-center"
-      },
-      {
-        "desc": "blue Facebook 'f' icon",
-        "action": "static",
-        "position": "bottom-right"
-      },
-      {
-        "desc": "kitchen background with dark cabinets and a microwave",
-        "action": "static",
-        "position": "background"
+        "position": "bottom"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "The video transitions from a close-up of cooked chicken in a pan to a shot of a man and a woman in a kitchen.",
+        "fact": "The video transitions from a close-up of cooked chicken in a pan to a shot of two people in a kitchen.",
         "confidence": 1.0
       },
       {
@@ -3683,11 +3682,11 @@
         "confidence": 1.0
       },
       {
-        "fact": "The woman is standing to the left of the man.",
+        "fact": "A red 'SUBSCRIBE' button is overlaid in the center of the screen.",
         "confidence": 1.0
       },
       {
-        "fact": "The 'SUBSCRIBE' button is overlaid in the center of the screen.",
+        "fact": "The text 'inspired taste' appears at the top of the screen.",
         "confidence": 1.0
       },
       {
@@ -3698,22 +3697,21 @@
     "ocr": [
       "inspired taste",
       "COOK + INSPIRE",
-      "SUBSCRIBE",
-      "f"
+      "SUBSCRIBE"
     ],
-    "spatial": "The woman is to the left of the man in the kitchen setting. The 'inspired taste' logo is above the 'SUBSCRIBE' button. The social media icons are arranged horizontally at the bottom of the frame, with the Twitter icon on the left, the Instagram icon in the center, and the Facebook icon on the right.",
+    "spatial": "The spoon is positioned in the center of the pan, surrounded by chicken pieces. In the second frame, the woman is to the left of the man. The red 'SUBSCRIBE' button is overlaid in front of both people. The 'inspired taste' text is above the people, and the social media icons are below them.",
     "parse_success": true,
     "chunk_idx": 58,
     "video_id": "Homemade_Applesauce"
   },
   {
     "time": [
-      118,
-      120
+      59,
+      60
     ],
     "visible_entities": [
       {
-        "desc": "person with brown hair pulled back, wearing a grey scoop-neck top and a silver pendant necklace",
+        "desc": "person with brown hair pulled back, wearing a grey t-shirt and a silver necklace",
         "action": "static",
         "position": "left"
       },
@@ -3723,55 +3721,37 @@
         "position": "right"
       },
       {
-        "desc": "white bowl containing red sauce",
+        "desc": "red rectangular button with white text and a play icon",
         "action": "static",
         "position": "center"
       },
       {
-        "desc": "hand holding a fried potato wedge",
-        "action": "dipping into sauce",
-        "position": "center"
+        "desc": "teal cursive text logo reading 'inspired taste'",
+        "action": "static",
+        "position": "top"
       },
       {
-        "desc": "white plate with fried potato wedges",
+        "desc": "small green square logo with white text",
         "action": "static",
         "position": "top right"
       },
       {
-        "desc": "red rectangular button with white text and icon",
-        "action": "static",
-        "position": "center"
-      },
-      {
-        "desc": "teal cursive text logo",
-        "action": "static",
-        "position": "top center"
-      },
-      {
-        "desc": "social media icons (Twitter, Instagram, Facebook)",
+        "desc": "social media icons for Twitter, Instagram, and Facebook",
         "action": "static",
         "position": "bottom"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A hand is dipping a fried potato wedge into a bowl of red sauce.",
+        "fact": "A person on the right is gesturing with both hands raised.",
         "confidence": 1.0
       },
       {
-        "fact": "Two people are standing in a kitchen setting.",
+        "fact": "A large red 'SUBSCRIBE' button is overlaid in the center of the screen.",
         "confidence": 1.0
       },
       {
-        "fact": "The text 'inspired taste' is displayed at the top of the screen.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "A red 'SUBSCRIBE' button overlays the center of the video.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "Social media icons for Twitter, Instagram, and Facebook are visible at the bottom.",
+        "fact": "The text 'inspired taste' is visible at the top of the frame.",
         "confidence": 1.0
       }
     ],
@@ -3780,15 +3760,15 @@
       "COOK + INSPIRE",
       "SUBSCRIBE"
     ],
-    "spatial": "The person in the grey top is to the left of the person in the checkered shirt. The bowl of sauce is in the foreground, positioned below the 'SUBSCRIBE' button. The plate of fries is in the background to the right of the bowl. The 'inspired taste' text is above the people and the subscribe button.",
+    "spatial": "The person in the grey shirt is to the left of the person in the checkered shirt. The red 'SUBSCRIBE' button is in front of both people, centered in the frame. The 'inspired taste' text is above the people and the button.",
     "parse_success": true,
     "chunk_idx": 59,
     "video_id": "Homemade_Applesauce"
   },
   {
     "time": [
-      120,
-      122
+      60,
+      61
     ],
     "visible_entities": [
       {
@@ -3798,16 +3778,26 @@
       },
       {
         "desc": "man with short brown hair, wearing a blue and white checkered button-down shirt over a dark grey t-shirt",
-        "action": "speaking",
+        "action": "talking",
         "position": "right"
       },
       {
-        "desc": "white rectangular ceramic baking dish containing breaded chicken cutlets topped with red tomato sauce and fresh green basil leaves",
+        "desc": "white rectangular ceramic baking dish",
         "action": "static",
         "position": "center"
       },
       {
-        "desc": "large red rectangular button with a white play icon and white text",
+        "desc": "breaded chicken cutlets covered in red tomato sauce and topped with fresh green basil leaves",
+        "action": "static",
+        "position": "center"
+      },
+      {
+        "desc": "hand sprinkling green herbs",
+        "action": "sprinkling herbs",
+        "position": "top left"
+      },
+      {
+        "desc": "red rectangular YouTube subscribe button overlay with white text and play icon",
         "action": "static",
         "position": "center"
       },
@@ -3817,64 +3807,48 @@
         "position": "top"
       },
       {
-        "desc": "green square logo with white text 'COOK + INSPIRE'",
+        "desc": "small green square logo with white text 'COOK + INSPIRE'",
         "action": "static",
         "position": "top right"
       },
       {
-        "desc": "blue Twitter bird logo",
+        "desc": "social media icons for Twitter, Instagram, and Facebook",
         "action": "static",
-        "position": "bottom left"
-      },
-      {
-        "desc": "gradient Instagram camera logo",
-        "action": "static",
-        "position": "bottom center"
-      },
-      {
-        "desc": "blue Facebook 'f' logo",
-        "action": "static",
-        "position": "bottom right"
-      },
-      {
-        "desc": "hand sprinkling green herbs",
-        "action": "sprinkling herbs",
-        "position": "top left"
+        "position": "bottom"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "The woman on the left claps her hands together.",
+        "fact": "A woman in a grey shirt claps her hands.",
         "confidence": 1.0
       },
       {
-        "fact": "The man on the right is speaking.",
+        "fact": "A man in a checkered shirt speaks to the camera.",
         "confidence": 1.0
       },
       {
-        "fact": "A hand sprinkles green herbs onto the chicken dish.",
+        "fact": "A hand sprinkles herbs onto chicken cutlets in a baking dish.",
         "confidence": 1.0
       },
       {
-        "fact": "The red 'SUBSCRIBE' button overlays the center of the screen.",
+        "fact": "The chicken cutlets are covered in red sauce and basil leaves.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A red 'SUBSCRIBE' button is overlaid on the center of the screen.",
         "confidence": 1.0
       },
       {
         "fact": "The text 'inspired taste' is visible at the top of the screen.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "Social media icons for Twitter, Instagram, and Facebook are displayed at the bottom.",
         "confidence": 1.0
       }
     ],
     "ocr": [
       "inspired taste",
       "COOK + INSPIRE",
-      "SUBSCRIBE",
-      "f"
+      "SUBSCRIBE"
     ],
-    "spatial": "The woman is to the left of the man. The red 'SUBSCRIBE' button is centered in front of both people. The 'inspired taste' text is above the people and the button. The social media icons are arranged horizontally below the main subjects. The chicken dish is shown in a close-up shot, filling the frame.",
+    "spatial": "The woman is to the left of the man. The red 'SUBSCRIBE' button is in front of both people and the food. The 'inspired taste' text is above the people. The chicken cutlets are inside the white baking dish. The social media icons are below the subscribe button.",
     "parse_success": true,
     "chunk_idx": 60,
     "video_id": "Homemade_Applesauce"

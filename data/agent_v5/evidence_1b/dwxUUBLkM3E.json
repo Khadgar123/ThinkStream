@@ -2,19 +2,19 @@
   {
     "time": [
       0,
-      2
+      1
     ],
     "visible_entities": [
       {
-        "desc": "large tree trunk with rough, dark grey bark and thick branches extending upwards",
+        "desc": "large tree trunk with rough, textured grey bark",
         "action": "static",
-        "position": "center",
+        "position": "left",
         "id": "tree_trunk_main_1"
       },
       {
-        "desc": "large tree trunk with rough, dark grey bark",
+        "desc": "large tree trunk with rough, textured grey bark",
         "action": "static",
-        "position": "left",
+        "position": "right",
         "id": "tree_trunk_main_1"
       },
       {
@@ -24,27 +24,21 @@
         "id": "snow_ground_1"
       },
       {
-        "desc": "bare trees with thin branches in the distance",
-        "action": "static",
-        "position": "background",
-        "id": "tree_branches_1"
-      },
-      {
-        "desc": "clear blue sky",
+        "desc": "bare tree branches",
         "action": "static",
         "position": "top",
-        "id": "sky_blue_1"
+        "id": "tree_branches_bare_1"
       },
       {
-        "desc": "green and white object partially visible on the ground",
+        "desc": "green and white object",
         "action": "static",
         "position": "bottom right",
-        "id": "container_green_1"
+        "id": "container_green_misc_1"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "The scene is static with no movement.",
+        "fact": "Two large trees stand in a snowy landscape.",
         "confidence": 1.0
       },
       {
@@ -52,16 +46,16 @@
         "confidence": 1.0
       },
       {
-        "fact": "The trees are bare, indicating a winter season.",
+        "fact": "The trees are bare of leaves.",
         "confidence": 1.0
       },
       {
-        "fact": "The sky is clear and blue.",
+        "fact": "A green and white object rests on the snow in the bottom right corner.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The large tree trunk in the center is to the right of the other large tree trunk. The snow is on the ground below the trees. The bare trees are in the background behind the main trees. The green and white object is on the snow in the bottom right corner.",
+    "spatial": "The tree on the left is next to the tree on the right. The snow is below the trees and covers the ground. The bare branches are above the tree trunks. The green and white object is in front of the tree on the right.",
     "parse_success": true,
     "chunk_idx": 0,
     "video_id": "dwxUUBLkM3E",
@@ -69,27 +63,20 @@
   },
   {
     "time": [
-      2,
-      4
+      1,
+      2
     ],
     "visible_entities": [
       {
-        "desc": "large tree trunk with rough, dark grey bark",
+        "desc": "large tree trunk with rough, textured gray bark",
         "action": "static",
         "position": "left",
         "id": "tree_trunk_main_1"
       },
       {
-        "desc": "large tree trunk with rough, dark grey bark",
+        "desc": "thick tree trunk with dark, deeply furrowed bark",
         "action": "static",
-        "position": "center",
-        "id": "tree_trunk_main_1"
-      },
-      {
-        "desc": "bare tree branches, dark brown, extending across the top",
-        "action": "static",
-        "position": "top",
-        "id": "tree_branches_1"
+        "position": "center-right"
       },
       {
         "desc": "white snow covering the ground",
@@ -98,34 +85,34 @@
         "id": "snow_ground_1"
       },
       {
-        "desc": "green plastic tub or container",
+        "desc": "green plastic container or tub",
         "action": "static",
-        "position": "bottom right",
-        "id": "container_green_1"
+        "position": "bottom-right",
+        "id": "container_green_misc_1"
       },
       {
-        "desc": "clear blue sky",
+        "desc": "bare tree branches against a blue sky",
         "action": "static",
-        "position": "background",
-        "id": "sky_blue_1"
+        "position": "top",
+        "id": "tree_branches_bare_1"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "The camera remains static, capturing a winter scene.",
+        "fact": "Snow covers the ground beneath the trees.",
         "confidence": 1.0
       },
       {
-        "fact": "Snow covers the ground in the foreground and background.",
+        "fact": "A green container sits on the ground in the bottom right corner.",
         "confidence": 1.0
       },
       {
-        "fact": "A green plastic tub sits on the ground in the bottom right corner.",
+        "fact": "The trees are bare, indicating a winter season.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The large tree trunk on the left is positioned to the left of the central tree trunk. The green plastic tub is located in the bottom right corner, near the base of the central tree. The bare branches are above the snowy ground and extend across the top of the frame against the blue sky.",
+    "spatial": "The large tree trunk on the left is positioned next to the thick tree trunk in the center-right. The green container is on the ground in front of the center-right tree. The bare branches extend above the tree trunks against the blue sky.",
     "parse_success": true,
     "chunk_idx": 1,
     "video_id": "dwxUUBLkM3E",
@@ -133,27 +120,21 @@
   },
   {
     "time": [
-      4,
-      6
+      2,
+      3
     ],
     "visible_entities": [
       {
-        "desc": "large tree trunk with rough, dark grey bark",
+        "desc": "large tree with thick, textured gray bark and bare branches",
         "action": "static",
         "position": "left",
         "id": "tree_trunk_main_1"
       },
       {
-        "desc": "large tree trunk with rough, dark grey bark",
+        "desc": "large tree with thick, textured gray bark and bare branches",
         "action": "static",
         "position": "right",
         "id": "tree_trunk_main_1"
-      },
-      {
-        "desc": "thick, dark, leafless tree branch",
-        "action": "static",
-        "position": "top",
-        "id": "tree_branches_1"
       },
       {
         "desc": "white snow covering the ground",
@@ -162,28 +143,34 @@
         "id": "snow_ground_1"
       },
       {
-        "desc": "teal-colored object, possibly a tarp or plastic sheet",
+        "desc": "green object, possibly a tarp or bag, partially buried in snow",
         "action": "static",
         "position": "bottom right",
-        "id": "sled_teal_1"
+        "id": "container_green_misc_1"
+      },
+      {
+        "desc": "bare trees in the background",
+        "action": "static",
+        "position": "background",
+        "id": "tree_branches_bare_1"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A thick, dark branch extends horizontally across the top of the frame, connecting the two main tree trunks.",
+        "fact": "The scene is a snowy landscape with several large, bare trees.",
         "confidence": 1.0
       },
       {
-        "fact": "The ground is covered in white snow.",
+        "fact": "The ground is covered in a thick layer of white snow.",
         "confidence": 1.0
       },
       {
-        "fact": "A teal-colored object lies on the snow in the bottom right corner.",
+        "fact": "A green object is partially visible in the snow at the bottom right of the frame.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The large tree trunk on the left is next to the large tree trunk on the right. A thick branch is above the snow-covered ground and connects the two trees. The teal object is on the snow in the bottom right, near the base of the right tree.",
+    "spatial": "Two large, bare trees are in the foreground, with one on the left and one on the right. The ground below them is covered in snow. A green object is partially buried in the snow to the right of the rightmost tree. More bare trees are visible in the background behind the foreground trees.",
     "parse_success": true,
     "chunk_idx": 2,
     "video_id": "dwxUUBLkM3E",
@@ -191,50 +178,38 @@
   },
   {
     "time": [
-      6,
-      8
+      3,
+      4
     ],
     "visible_entities": [
       {
-        "desc": "large tree trunk with rough, dark grey bark",
+        "desc": "large tree with rough, dark grey bark and thick, gnarled branches extending upwards and outwards",
         "action": "static",
-        "position": "left",
+        "position": "foreground",
         "id": "tree_trunk_main_1"
       },
       {
-        "desc": "large tree trunk with rough, dark grey bark",
-        "action": "static",
-        "position": "right",
-        "id": "tree_trunk_main_1"
-      },
-      {
-        "desc": "thick, gnarled tree branch connecting the two trunks",
-        "action": "static",
-        "position": "center",
-        "id": "tree_branches_1"
-      },
-      {
-        "desc": "white snow covering the ground",
+        "desc": "white snow covering the ground with uneven mounds and shadows",
         "action": "static",
         "position": "bottom",
         "id": "snow_ground_1"
       },
       {
-        "desc": "green plastic container or bin",
-        "action": "static",
-        "position": "bottom right",
-        "id": "container_green_1"
-      },
-      {
-        "desc": "bare trees in the background",
+        "desc": "dense forest of bare trees with thin trunks and branches against a blue sky",
         "action": "static",
         "position": "background",
-        "id": "tree_branches_1"
+        "id": "tree_branches_bare_1"
+      },
+      {
+        "desc": "green plastic bin or container partially visible",
+        "action": "static",
+        "position": "bottom right",
+        "id": "container_green_misc_1"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A thick tree branch extends horizontally between two large tree trunks.",
+        "fact": "The camera remains static, showing a winter forest scene.",
         "confidence": 1.0
       },
       {
@@ -242,12 +217,12 @@
         "confidence": 1.0
       },
       {
-        "fact": "A green container sits on the snow in the bottom right corner.",
+        "fact": "A green container sits on the ground in the bottom right corner.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The large tree trunk on the left is next to the large tree trunk on the right. A thick branch connects the two trunks above the snowy ground. The green container is in front of the right tree trunk and on top of the snow.",
+    "spatial": "The large tree with rough bark is in the foreground, positioned to the left of the green container. The green container is located in the bottom right corner, resting on the snow. The dense forest of bare trees is behind the large foreground tree.",
     "parse_success": true,
     "chunk_idx": 3,
     "video_id": "dwxUUBLkM3E",
@@ -255,14 +230,15 @@
   },
   {
     "time": [
-      8,
-      10
+      4,
+      5
     ],
     "visible_entities": [
       {
-        "desc": "large tree with thick, rough, dark grey bark and bare branches",
+        "desc": "large tree with thick, rough, grey-brown bark and bare branches",
         "action": "static",
-        "position": "foreground"
+        "position": "foreground",
+        "id": "tree_trunk_main_1"
       },
       {
         "desc": "white snow covering the ground",
@@ -274,18 +250,24 @@
         "desc": "bare trees in the background",
         "action": "static",
         "position": "background",
-        "id": "tree_branches_1"
+        "id": "tree_branches_bare_1"
       },
       {
         "desc": "clear blue sky",
         "action": "static",
         "position": "top",
         "id": "sky_blue_1"
+      },
+      {
+        "desc": "green object partially visible",
+        "action": "static",
+        "position": "bottom right",
+        "id": "container_green_misc_1"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "The camera is static, capturing a winter scene.",
+        "fact": "The camera is static, showing a winter landscape.",
         "confidence": 1.0
       },
       {
@@ -293,12 +275,16 @@
         "confidence": 1.0
       },
       {
-        "fact": "The trees are leafless, indicating a winter season.",
+        "fact": "The trees are leafless, indicating winter season.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A green object is partially visible in the bottom right corner.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The large tree with rough bark is in the foreground, positioned centrally and to the left. The white snow is below the tree branches and covers the ground. The bare trees in the background are behind the main foreground tree. The clear blue sky is above all the trees.",
+    "spatial": "The large tree with rough bark is in the foreground, positioned to the left and center. The white snow is below the trees, covering the ground. The bare trees are in the background, behind the main foreground tree. The clear blue sky is above all the trees. A green object is in the bottom right corner, near the base of the tree.",
     "parse_success": true,
     "chunk_idx": 4,
     "video_id": "dwxUUBLkM3E",
@@ -306,12 +292,12 @@
   },
   {
     "time": [
-      10,
-      12
+      5,
+      6
     ],
     "visible_entities": [
       {
-        "desc": "large tree trunk with rough, dark brown bark and thick branches extending upwards",
+        "desc": "large tree trunk with rough, textured grey-brown bark and thick branches extending upwards",
         "action": "static",
         "position": "center/foreground",
         "id": "tree_trunk_main_1"
@@ -326,7 +312,7 @@
         "desc": "bare trees with thin branches in the distance",
         "action": "static",
         "position": "background",
-        "id": "tree_branches_1"
+        "id": "tree_branches_bare_1"
       },
       {
         "desc": "clear blue sky",
@@ -337,20 +323,20 @@
     ],
     "atomic_facts": [
       {
-        "fact": "The camera focuses on a large tree trunk in a snowy landscape.",
+        "fact": "A large tree stands in the center of the frame.",
         "confidence": 1.0
       },
       {
-        "fact": "Snow covers the ground around the base of the tree.",
+        "fact": "Snow covers the ground in the background.",
         "confidence": 1.0
       },
       {
-        "fact": "Bare trees are visible in the background against a blue sky.",
+        "fact": "The camera angle is low, looking up at the tree branches against the sky.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The large tree trunk is in the center foreground. The snow is below the tree trunk and covers the ground. The bare trees are behind the main tree trunk. The blue sky is above the trees and the snow.",
+    "spatial": "The large tree trunk is in the center foreground. The snow is below the tree and extends into the background. The bare trees are behind the main tree. The blue sky is above all the trees.",
     "parse_success": true,
     "chunk_idx": 5,
     "video_id": "dwxUUBLkM3E",
@@ -358,8 +344,8 @@
   },
   {
     "time": [
-      12,
-      14
+      6,
+      7
     ],
     "visible_entities": [
       {
@@ -375,10 +361,10 @@
         "id": "snow_ground_1"
       },
       {
-        "desc": "bare trees with thin branches in the background",
+        "desc": "bare trees with thin branches in the distance",
         "action": "static",
         "position": "background",
-        "id": "tree_branches_1"
+        "id": "tree_branches_bare_1"
       },
       {
         "desc": "clear blue sky",
@@ -402,7 +388,7 @@
       }
     ],
     "ocr": [],
-    "spatial": "The large tree trunk is in the foreground, with its branch extending to the left. The snow is on the ground below the trees. The bare trees are in the background behind the main tree trunk. The blue sky is above all the trees.",
+    "spatial": "The large tree trunk is in the foreground, positioned in front of the bare trees in the background. The snow is below the tree trunk and covers the ground. The blue sky is above the trees.",
     "parse_success": true,
     "chunk_idx": 6,
     "video_id": "dwxUUBLkM3E",
@@ -410,12 +396,12 @@
   },
   {
     "time": [
-      14,
-      16
+      7,
+      8
     ],
     "visible_entities": [
       {
-        "desc": "thick tree trunk with rough, textured brown bark, featuring a large vertical hollow and a thick branch extending to the left",
+        "desc": "large tree trunk with rough, textured gray-brown bark, featuring a prominent horizontal branch extending to the left and a vertical hollow or cavity on the right side",
         "action": "static",
         "position": "center",
         "id": "tree_trunk_main_1"
@@ -430,7 +416,7 @@
         "desc": "bare trees with thin branches in the background",
         "action": "static",
         "position": "background",
-        "id": "tree_branches_1"
+        "id": "tree_branches_bare_1"
       },
       {
         "desc": "clear blue sky",
@@ -441,20 +427,20 @@
     ],
     "atomic_facts": [
       {
-        "fact": "The camera pans slightly to the left, revealing more of the tree's trunk and a second tree on the left side.",
+        "fact": "A large tree trunk stands in the center of the frame.",
         "confidence": 1.0
       },
       {
-        "fact": "The tree trunk has a large, dark hollow running vertically down its center.",
+        "fact": "Snow covers the ground below the tree.",
         "confidence": 1.0
       },
       {
-        "fact": "Snow covers the ground in the foreground and background.",
+        "fact": "A horizontal branch extends from the main trunk to the left.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The main tree trunk is in the center foreground. A second tree trunk is to the left of the main tree. The snow is below the trees, covering the ground. The bare trees are behind the main tree in the background. The blue sky is above the trees.",
+    "spatial": "The large tree trunk is in the center of the frame. The snow is below the tree trunk. The bare trees are behind the main tree trunk. The blue sky is above the tree and the snow.",
     "parse_success": true,
     "chunk_idx": 7,
     "video_id": "dwxUUBLkM3E",
@@ -462,57 +448,57 @@
   },
   {
     "time": [
-      16,
-      18
+      8,
+      9
     ],
     "visible_entities": [
       {
-        "desc": "large tree trunk with rough, grey-brown bark and a hollowed-out section revealing light-colored wood",
+        "desc": "thick tree trunk with rough, textured gray-brown bark and a large, jagged vertical cavity exposing light-colored wood",
         "action": "static",
-        "position": "center",
+        "position": "center/foreground",
         "id": "tree_trunk_main_1"
       },
       {
-        "desc": "thick tree branch extending horizontally to the left",
+        "desc": "thick tree branch extending horizontally to the left with snow accumulation on its top surface",
         "action": "static",
-        "position": "left",
-        "id": "tree_branches_1"
+        "position": "left/center",
+        "id": "tree_branches_bare_1"
       },
       {
         "desc": "white snow covering the ground",
         "action": "static",
-        "position": "bottom",
+        "position": "bottom/background",
         "id": "snow_ground_1"
       },
       {
-        "desc": "dark rectangular structure, possibly a shed or vehicle, in the distance",
+        "desc": "bare trees with thin branches in the distance",
         "action": "static",
         "position": "background",
-        "id": "vehicle_dark_1"
+        "id": "tree_branches_bare_1"
       },
       {
-        "desc": "bare trees in the distance",
+        "desc": "dark structure, possibly a shed or vehicle, partially covered in snow",
         "action": "static",
-        "position": "background",
-        "id": "tree_branches_1"
+        "position": "left/background",
+        "id": "structure_dark_shed_1"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "The camera remains static on the tree trunk.",
+        "fact": "A large tree trunk with a prominent vertical cavity stands in the foreground.",
         "confidence": 1.0
       },
       {
-        "fact": "The tree trunk has a large, jagged hole or hollow in its side.",
+        "fact": "Snow covers the ground and rests on the upper surface of a horizontal tree branch.",
         "confidence": 1.0
       },
       {
-        "fact": "Snow covers the ground in the background.",
+        "fact": "Bare trees are visible in the background against a blue sky.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The large tree trunk is in the center foreground. A thick branch extends to the left from the trunk. The snow is on the ground below the tree. The dark rectangular structure is in the background, to the left of the tree trunk.",
+    "spatial": "The thick tree trunk with the cavity is in the center foreground. A large branch extends to the left from the trunk. The snow-covered ground is below the tree. In the background to the left, a dark structure is visible behind the tree.",
     "parse_success": true,
     "chunk_idx": 8,
     "video_id": "dwxUUBLkM3E",
@@ -520,12 +506,12 @@
   },
   {
     "time": [
-      18,
-      20
+      9,
+      10
     ],
     "visible_entities": [
       {
-        "desc": "thick tree trunk with rough, grey-brown bark and large, deep, irregular holes exposing light-colored wood",
+        "desc": "thick tree trunk with rough, grey-brown bark and a large, jagged vertical cavity exposing light-colored inner wood",
         "action": "static",
         "position": "foreground",
         "id": "tree_trunk_main_1"
@@ -540,41 +526,25 @@
         "desc": "wooden house with a porch and snow-covered roof",
         "action": "static",
         "position": "background",
-        "id": "building_cabin_1"
-      },
-      {
-        "desc": "bare trees with no leaves",
-        "action": "static",
-        "position": "background",
-        "id": "tree_branches_1"
-      },
-      {
-        "desc": "blue sky",
-        "action": "static",
-        "position": "top",
-        "id": "sky_blue_1"
+        "id": "building_cabin_brown_1"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "The camera pans to the left, revealing a house in the background.",
+        "fact": "The camera pans slightly to the left, revealing a house in the background.",
         "confidence": 1.0
       },
       {
-        "fact": "The tree trunk in the foreground has significant damage with large cavities.",
+        "fact": "A large tree trunk with a deep vertical wound stands in the foreground.",
         "confidence": 1.0
       },
       {
         "fact": "The ground is covered in white snow.",
         "confidence": 1.0
-      },
-      {
-        "fact": "The sky is clear and blue.",
-        "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The thick tree trunk is in the foreground, positioned in front of the snow-covered ground. The wooden house is in the background to the left of the tree. The bare trees are behind the main tree trunk. The blue sky is above all other entities.",
+    "spatial": "The tree trunk is in the foreground, positioned to the right of the house. The house is located in the background on the left side of the frame. The snow is on the ground below the tree and the house.",
     "parse_success": true,
     "chunk_idx": 9,
     "video_id": "dwxUUBLkM3E",
@@ -582,104 +552,107 @@
   },
   {
     "time": [
-      20,
-      22
+      10,
+      11
     ],
     "visible_entities": [
       {
-        "desc": "brown squirrel with fluffy tail",
-        "action": "climbing up the tree trunk",
+        "desc": "small brown squirrel with a bushy tail",
+        "action": "climbing vertically on the tree trunk",
         "position": "center",
         "id": "squirrel_brown_1"
       },
       {
-        "desc": "thick tree trunk with rough gray bark and holes",
-        "action": "static",
-        "position": "center"
-      },
-      {
-        "desc": "white snow covering the ground",
-        "action": "static",
-        "position": "bottom",
-        "id": "snow_ground_1"
-      },
-      {
-        "desc": "wooden building with snow-covered roof",
-        "action": "static",
-        "position": "background",
-        "id": "building_cabin_1"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "A brown squirrel is climbing vertically up the center of a tree trunk.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The squirrel is positioned between two holes in the tree bark.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "Snow covers the ground in the background and foreground.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [],
-    "spatial": "The brown squirrel is on the center of the tree trunk. The tree trunk is in front of the wooden building. The snow is below the squirrel and the tree.",
-    "parse_success": true,
-    "chunk_idx": 10,
-    "video_id": "dwxUUBLkM3E",
-    "state_changes": [
-      "squirrel appears and begins climbing tree trunk"
-    ]
-  },
-  {
-    "time": [
-      22,
-      24
-    ],
-    "visible_entities": [
-      {
-        "desc": "large tree trunk with rough, textured bark and multiple dark, hollowed-out holes",
+        "desc": "thick tree trunk with rough, textured grey bark",
         "action": "static",
         "position": "center",
         "id": "tree_trunk_main_1"
       },
       {
-        "desc": "wooden cabin with brown siding and a snow-covered roof",
+        "desc": "white snow covering the ground and structures",
         "action": "static",
-        "position": "left",
-        "id": "building_cabin_1"
+        "position": "background",
+        "id": "snow_ground_1"
       },
       {
-        "desc": "thick layer of white snow covering the ground and outdoor furniture",
+        "desc": "wooden building with a snow-covered roof",
+        "action": "static",
+        "position": "background",
+        "id": "building_cabin_brown_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A small brown squirrel is climbing up the rough bark of a tree trunk.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The background features a snowy landscape with a wooden building.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The squirrel is in front of the tree trunk, positioned centrally in the frame. The tree trunk is in the foreground, while the wooden building and snow-covered ground are behind it in the background.",
+    "parse_success": true,
+    "chunk_idx": 10,
+    "video_id": "dwxUUBLkM3E",
+    "state_changes": [
+      "small brown squirrel appears and starts climbing the tree trunk"
+    ]
+  },
+  {
+    "time": [
+      11,
+      12
+    ],
+    "visible_entities": [
+      {
+        "desc": "thick tree trunk with rough, textured grey bark and a vertical row of deep, dark hollows or holes",
+        "action": "static",
+        "position": "center",
+        "id": "tree_trunk_main_1"
+      },
+      {
+        "desc": "brown wooden log cabin structure with visible horizontal logs",
+        "action": "static",
+        "position": "left",
+        "id": "building_cabin_brown_1"
+      },
+      {
+        "desc": "white snow covering the ground and piled on dark outdoor furniture",
         "action": "static",
         "position": "bottom",
         "id": "snow_ground_1"
       },
       {
+        "desc": "dark outdoor lounge chairs or furniture covered in snow",
+        "action": "static",
+        "position": "left",
+        "id": "furniture_outdoor_1"
+      },
+      {
         "desc": "bare tree branches against a blue sky",
         "action": "static",
         "position": "top",
-        "id": "tree_branches_1"
+        "id": "tree_branches_bare_1"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A large tree trunk stands in the foreground.",
+        "fact": "A tree trunk with distinct hollows stands in the foreground.",
         "confidence": 1.0
       },
       {
-        "fact": "Snow covers the ground and the roof of the cabin.",
+        "fact": "Snow covers the ground and the furniture in the background.",
         "confidence": 1.0
       },
       {
-        "fact": "The tree trunk has several distinct holes in its bark.",
+        "fact": "A wooden cabin is visible to the left of the tree.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The large tree trunk is in the center foreground. To the left of the tree is a wooden cabin. The snow is on the ground below the tree and the cabin. Bare branches are above the tree trunk against the sky.",
+    "spatial": "The tree trunk with hollows is in the center foreground. To the left of the tree, there is a wooden cabin and snow-covered furniture. The bare branches are above the tree trunk and cabin.",
     "parse_success": true,
     "chunk_idx": 11,
     "video_id": "dwxUUBLkM3E",
@@ -687,27 +660,21 @@
   },
   {
     "time": [
-      24,
-      26
+      12,
+      13
     ],
     "visible_entities": [
       {
-        "desc": "large tree trunk, rough light-brown bark with deep vertical hollows and dark holes",
+        "desc": "thick tree trunk with rough, textured bark and multiple large, dark, hollowed-out holes or cavities",
         "action": "static",
         "position": "center",
         "id": "tree_trunk_main_1"
       },
       {
-        "desc": "thick tree trunk, rough grey-brown bark",
-        "action": "static",
-        "position": "right",
-        "id": "tree_trunk_main_1"
-      },
-      {
-        "desc": "brown wooden log cabin with horizontal siding",
+        "desc": "brown wooden log cabin structure with horizontal siding",
         "action": "static",
         "position": "left",
-        "id": "building_cabin_1"
+        "id": "building_cabin_brown_1"
       },
       {
         "desc": "white snow covering the ground and piled on objects",
@@ -716,379 +683,9 @@
         "id": "snow_ground_1"
       },
       {
-        "desc": "dark rectangular object, possibly a covered vehicle or equipment, partially buried in snow",
+        "desc": "dark, rounded object partially buried in snow",
         "action": "static",
-        "position": "bottom-left",
-        "id": "vehicle_dark_1"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "The camera remains static on the winter scene.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "Snow covers the ground and the roof of the wooden cabin.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "A large tree trunk with significant hollows stands in the center foreground.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [],
-    "spatial": "The large tree trunk with hollows is in the center foreground, positioned to the right of the brown wooden cabin. Another thick tree trunk is to the right of the central tree. The dark rectangular object is in the bottom-left corner, partially covered by the snow which lies below the trees and cabin.",
-    "parse_success": true,
-    "chunk_idx": 12,
-    "video_id": "dwxUUBLkM3E",
-    "state_changes": []
-  },
-  {
-    "time": [
-      26,
-      28
-    ],
-    "visible_entities": [
-      {
-        "desc": "large tree trunk with rough, textured bark and multiple deep, dark hollows or holes",
-        "action": "static",
-        "position": "foreground/center"
-      },
-      {
-        "desc": "brown wooden log cabin with horizontal siding",
-        "action": "static",
-        "position": "background/left",
-        "id": "building_cabin_1"
-      },
-      {
-        "desc": "white snow covering the ground and furniture",
-        "action": "static",
-        "position": "bottom/foreground",
-        "id": "snow_ground_1"
-      },
-      {
-        "desc": "outdoor furniture covered in snow",
-        "action": "static",
-        "position": "left",
-        "id": "outdoor_furniture_1"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "A large tree trunk with visible hollows stands in the foreground.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "Snow covers the ground and the outdoor furniture.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "A wooden cabin is visible in the background behind the tree.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [],
-    "spatial": "The large tree trunk is in the foreground, positioned in front of the wooden cabin. The snow is on the ground below the tree and covers the furniture to the left of the tree.",
-    "parse_success": true,
-    "chunk_idx": 13,
-    "video_id": "dwxUUBLkM3E",
-    "state_changes": []
-  },
-  {
-    "time": [
-      28,
-      30
-    ],
-    "visible_entities": [
-      {
-        "desc": "thick tree trunk with rough, textured bark and a vertical row of large, dark, hollowed-out holes",
-        "action": "static",
-        "position": "foreground/center",
-        "id": "tree_trunk_main_1"
-      },
-      {
-        "desc": "brown wooden log cabin structure with horizontal siding",
-        "action": "static",
-        "position": "left/background",
-        "id": "building_cabin_1"
-      },
-      {
-        "desc": "white snow covering the ground and roof edges",
-        "action": "static",
-        "position": "bottom/background",
-        "id": "snow_ground_1"
-      },
-      {
-        "desc": "bare tree branches against a clear blue sky",
-        "action": "static",
-        "position": "top/background",
-        "id": "tree_branches_1"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "The camera captures a close-up view of a tree trunk with distinct holes.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "Snow is visible on the ground and on the roof of the cabin in the background.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The sky is clear and blue.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [],
-    "spatial": "The tree trunk with holes is in the foreground, positioned to the right of the wooden cabin. The cabin is located to the left of the tree. Snow is on the ground below the cabin and the tree. Bare branches are above the cabin and the tree against the blue sky.",
-    "parse_success": true,
-    "chunk_idx": 14,
-    "video_id": "dwxUUBLkM3E",
-    "state_changes": []
-  },
-  {
-    "time": [
-      30,
-      32
-    ],
-    "visible_entities": [
-      {
-        "desc": "thick tree trunk, light gray bark, rough texture, multiple dark oval-shaped holes",
-        "action": "static",
-        "position": "center",
-        "id": "tree_trunk_main_1"
-      },
-      {
-        "desc": "thick tree trunk, dark gray bark, rough texture",
-        "action": "static",
-        "position": "right",
-        "id": "tree_trunk_main_1"
-      },
-      {
-        "desc": "brown wooden building, horizontal siding, snow on roof",
-        "action": "static",
-        "position": "left",
-        "id": "building_cabin_1"
-      },
-      {
-        "desc": "bare tree branches, thin, dark",
-        "action": "static",
-        "position": "top",
-        "id": "tree_branches_1"
-      },
-      {
-        "desc": "white snow, piled on roof",
-        "action": "static",
-        "position": "left",
-        "id": "snow_ground_1"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "The tree trunk in the center has multiple dark, oval-shaped holes.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "Snow is piled on the roof of the wooden building.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The trees are bare with no leaves.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [],
-    "spatial": "The brown wooden building is to the left of the central tree trunk. The central tree trunk is to the left of the right tree trunk. The bare branches are above the tree trunks and the building. The snow is on top of the building's roof.",
-    "parse_success": true,
-    "chunk_idx": 15,
-    "video_id": "dwxUUBLkM3E",
-    "state_changes": []
-  },
-  {
-    "time": [
-      32,
-      34
-    ],
-    "visible_entities": [
-      {
-        "desc": "thick tree trunk with rough, textured bark and multiple dark, hollowed-out holes",
-        "action": "static",
-        "position": "center foreground",
-        "id": "tree_trunk_main_1"
-      },
-      {
-        "desc": "brown wooden house with horizontal siding and white window frames",
-        "action": "static",
-        "position": "left background",
-        "id": "building_cabin_1"
-      },
-      {
-        "desc": "white snow accumulation on the roof",
-        "action": "static",
-        "position": "left background",
-        "id": "snow_ground_1"
-      },
-      {
-        "desc": "bare tree branches extending upwards",
-        "action": "static",
-        "position": "top",
-        "id": "tree_branches_1"
-      },
-      {
-        "desc": "clear blue sky",
-        "action": "static",
-        "position": "background",
-        "id": "sky_blue_1"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "A tree trunk with visible holes stands in the foreground.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "Snow rests on the roof of the brown house in the background.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "Bare branches extend into the blue sky.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [],
-    "spatial": "The tree trunk is in front of the brown wooden house. The snow is on top of the house's roof. The bare branches are above the house and tree trunk against the blue sky.",
-    "parse_success": true,
-    "chunk_idx": 16,
-    "video_id": "dwxUUBLkM3E",
-    "state_changes": []
-  },
-  {
-    "time": [
-      34,
-      36
-    ],
-    "visible_entities": [
-      {
-        "desc": "thick tree trunk with rough, light-brown bark featuring a vertical column of deep, dark, oval-shaped holes",
-        "action": "static",
-        "position": "center/foreground",
-        "id": "tree_trunk_main_1"
-      },
-      {
-        "desc": "brown wooden cabin with horizontal siding and white-framed windows",
-        "action": "static",
-        "position": "left/background",
-        "id": "building_cabin_1"
-      },
-      {
-        "desc": "white snow covering the ground and roof structures",
-        "action": "static",
-        "position": "bottom/background",
-        "id": "snow_ground_1"
-      },
-      {
-        "desc": "bare tree branches extending into the sky",
-        "action": "static",
-        "position": "top",
-        "id": "tree_branches_1"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "A tree trunk with a vertical row of drilled holes stands in the foreground.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "A brown wooden cabin is visible in the background to the left.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "Snow covers the ground and the roof of a structure behind the tree.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [],
-    "spatial": "The tree trunk with holes is in the foreground, positioned to the right of the brown wooden cabin. The cabin is located in the background on the left side of the frame. Snow is on the ground below the cabin and the tree.",
-    "parse_success": true,
-    "chunk_idx": 17,
-    "video_id": "dwxUUBLkM3E",
-    "state_changes": []
-  },
-  {
-    "time": [
-      36,
-      38
-    ],
-    "visible_entities": [
-      {
-        "desc": "thick tree trunk with rough, textured gray bark and a vertical series of deep, dark, hollowed-out holes",
-        "action": "static",
-        "position": "foreground center",
-        "id": "tree_trunk_main_1"
-      },
-      {
-        "desc": "wooden cabin with horizontal brown siding and a snow-covered roof",
-        "action": "static",
-        "position": "background left",
-        "id": "building_cabin_1"
-      },
-      {
-        "desc": "white snow covering the ground and piled on the cabin roof",
-        "action": "static",
-        "position": "bottom",
-        "id": "snow_ground_1"
-      },
-      {
-        "desc": "bare tree branches extending upwards against a clear blue sky",
-        "action": "static",
-        "position": "top",
-        "id": "tree_branches_1"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "A tree trunk in the foreground features a distinct vertical column of large, excavated holes.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The scene depicts a snowy winter environment with a wooden cabin in the background.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The sky above the trees is clear and blue.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [],
-    "spatial": "The thick tree trunk with holes is in the foreground, positioned to the right of the wooden cabin. The cabin is located in the background on the left side of the frame. Snow covers the ground below the trees and rests on top of the cabin's roof.",
-    "parse_success": true,
-    "chunk_idx": 18,
-    "video_id": "dwxUUBLkM3E",
-    "state_changes": []
-  },
-  {
-    "time": [
-      38,
-      40
-    ],
-    "visible_entities": [
-      {
-        "desc": "thick tree trunk with rough, grey-brown bark and a vertical column of deep, dark, circular holes",
-        "action": "static",
-        "position": "center",
-        "id": "tree_trunk_main_1"
-      },
-      {
-        "desc": "wooden cabin with horizontal brown siding and a snow-covered roof",
-        "action": "static",
-        "position": "left",
-        "id": "building_cabin_1"
-      },
-      {
-        "desc": "white snow covering the ground and piled on the cabin roof",
-        "action": "static",
-        "position": "bottom",
-        "id": "snow_ground_1"
+        "position": "bottom-left"
       },
       {
         "desc": "clear blue sky visible through bare tree branches",
@@ -1099,7 +696,283 @@
     ],
     "atomic_facts": [
       {
-        "fact": "A tree trunk with a vertical row of holes stands in the foreground.",
+        "fact": "A thick tree trunk with large hollows stands in the center of the frame.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "Snow covers the ground and rests on top of a dark object in the foreground.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A wooden cabin is visible to the left of the tree.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The thick tree trunk is in the center of the frame, positioned to the right of the wooden cabin. The snow is below the tree and cabin, covering the ground. A dark object is in the bottom-left foreground, partially under the snow. The blue sky is above the tree and cabin.",
+    "parse_success": true,
+    "chunk_idx": 12,
+    "video_id": "dwxUUBLkM3E",
+    "state_changes": []
+  },
+  {
+    "time": [
+      13,
+      14
+    ],
+    "visible_entities": [
+      {
+        "desc": "large tree trunk, rough textured bark, light brown and grey color, with multiple deep hollows and holes",
+        "action": "static",
+        "position": "foreground",
+        "id": "tree_trunk_main_1"
+      },
+      {
+        "desc": "wooden cabin structure, horizontal log siding, dark brown color",
+        "action": "static",
+        "position": "background",
+        "id": "building_cabin_brown_1"
+      },
+      {
+        "desc": "white snow, covering the ground and piled on outdoor furniture",
+        "action": "static",
+        "position": "bottom",
+        "id": "snow_ground_1"
+      },
+      {
+        "desc": "outdoor furniture, dark grey or black material, partially covered in snow",
+        "action": "static",
+        "position": "left",
+        "id": "furniture_outdoor_1"
+      },
+      {
+        "desc": "bare tree branches, thin and dark, extending against the sky",
+        "action": "static",
+        "position": "top",
+        "id": "tree_branches_bare_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A large tree trunk with hollows stands in the foreground.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "Snow covers the ground and rests on top of the outdoor furniture.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A wooden cabin is visible in the background behind the tree.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The large tree trunk is in the foreground, positioned in front of the wooden cabin. The outdoor furniture is to the left of the tree trunk. The snow is below the furniture and covers the ground at the bottom of the frame.",
+    "parse_success": true,
+    "chunk_idx": 13,
+    "video_id": "dwxUUBLkM3E",
+    "state_changes": []
+  },
+  {
+    "time": [
+      14,
+      15
+    ],
+    "visible_entities": [
+      {
+        "desc": "thick tree trunk with rough, light-brown bark featuring a vertical column of deep, dark, oval-shaped cavities",
+        "action": "static",
+        "position": "center",
+        "id": "tree_trunk_main_1"
+      },
+      {
+        "desc": "large tree trunk with textured grey bark",
+        "action": "static",
+        "position": "right",
+        "id": "tree_trunk_main_1"
+      },
+      {
+        "desc": "wooden cabin with horizontal brown siding and a snow-covered roof",
+        "action": "static",
+        "position": "left",
+        "id": "building_cabin_brown_1"
+      },
+      {
+        "desc": "white snow covering the ground and roof surfaces",
+        "action": "static",
+        "position": "bottom",
+        "id": "snow_ground_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A tree trunk in the center displays a vertical series of hollowed-out holes.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "Snow covers the ground and the roof of the wooden structure.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The wooden cabin is situated to the left of the central tree.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The tree trunk with the vertical holes is in the center foreground, positioned to the right of the wooden cabin. The second large tree trunk is to the right of the central tree. The snow is on the ground below the trees and the cabin.",
+    "parse_success": true,
+    "chunk_idx": 14,
+    "video_id": "dwxUUBLkM3E",
+    "state_changes": []
+  },
+  {
+    "time": [
+      15,
+      16
+    ],
+    "visible_entities": [
+      {
+        "desc": "thick tree trunk with rough, textured bark and a vertical column of dark, hollowed-out holes",
+        "action": "static",
+        "position": "center",
+        "id": "tree_trunk_main_1"
+      },
+      {
+        "desc": "wooden cabin with horizontal brown siding and snow accumulation on the roof",
+        "action": "static",
+        "position": "left",
+        "id": "building_cabin_brown_1"
+      },
+      {
+        "desc": "large tree trunk with rough bark",
+        "action": "static",
+        "position": "right",
+        "id": "tree_trunk_main_1"
+      },
+      {
+        "desc": "bare tree branches extending upwards against a blue sky",
+        "action": "static",
+        "position": "top",
+        "id": "tree_branches_bare_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A thick tree trunk stands vertically in the center of the frame.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The central tree trunk features a series of dark, hollowed-out holes running up its length.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A wooden cabin with snow on its roof is visible in the background on the left.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "Bare branches extend from the trees against a clear blue sky.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The central tree trunk with holes is positioned in the foreground, to the right of the wooden cabin. The cabin is located on the left side of the frame, behind the tree branches. Another large tree trunk is situated to the right of the central tree. The bare branches are above the cabin and the tree trunks.",
+    "parse_success": true,
+    "chunk_idx": 15,
+    "video_id": "dwxUUBLkM3E",
+    "state_changes": []
+  },
+  {
+    "time": [
+      16,
+      17
+    ],
+    "visible_entities": [
+      {
+        "desc": "tree trunk with rough, light-colored bark and multiple dark, irregular holes",
+        "action": "static",
+        "position": "center/foreground",
+        "id": "tree_trunk_main_1"
+      },
+      {
+        "desc": "brown wooden house with horizontal siding and white window frames",
+        "action": "static",
+        "position": "left/background",
+        "id": "building_cabin_brown_1"
+      },
+      {
+        "desc": "bare tree branches extending upwards",
+        "action": "static",
+        "position": "top",
+        "id": "tree_branches_bare_1"
+      },
+      {
+        "desc": "white snow accumulation",
+        "action": "static",
+        "position": "background",
+        "id": "snow_ground_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A tree trunk with visible holes stands in the foreground.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A brown wooden house is situated behind the tree.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "Snow is visible on the roof of the house in the background.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The tree trunk is in the foreground, positioned in front of the brown wooden house. The bare branches are above the house and the tree trunk. The snow is on the roof of the house, which is to the left of the tree.",
+    "parse_success": true,
+    "chunk_idx": 16,
+    "video_id": "dwxUUBLkM3E",
+    "state_changes": []
+  },
+  {
+    "time": [
+      17,
+      18
+    ],
+    "visible_entities": [
+      {
+        "desc": "thick tree trunk with rough, light-brown bark and a vertical column of dark, oval-shaped holes",
+        "action": "static",
+        "position": "center/foreground",
+        "id": "tree_trunk_main_1"
+      },
+      {
+        "desc": "brown wooden log cabin with white window frames and a snow-covered roof",
+        "action": "static",
+        "position": "left/background",
+        "id": "building_cabin_brown_1"
+      },
+      {
+        "desc": "thick, bare tree branches extending horizontally",
+        "action": "static",
+        "position": "top",
+        "id": "tree_branches_bare_1"
+      },
+      {
+        "desc": "white snow covering the ground and roof surfaces",
+        "action": "static",
+        "position": "bottom/background",
+        "id": "snow_ground_1"
+      },
+      {
+        "desc": "bright blue sky",
+        "action": "static",
+        "position": "background",
+        "id": "sky_blue_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A tree trunk stands in the foreground featuring a distinct vertical row of holes.",
         "confidence": 1.0
       },
       {
@@ -1107,46 +980,98 @@
         "confidence": 1.0
       },
       {
-        "fact": "The wooden cabin is situated to the left of the tree.",
+        "fact": "The sky is clear and blue.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The tree trunk with holes is in the center foreground, standing in front of the wooden cabin which is to the left. The snow is below the cabin and on the ground. The blue sky is above the cabin and tree branches.",
+    "spatial": "The tree trunk with holes is in the foreground, positioned to the right of the brown wooden cabin. The cabin is located in the background on the left side of the frame. Bare tree branches extend across the top of the image above the cabin and trunk. Snow is visible on the ground below the tree and on the roof of the cabin.",
     "parse_success": true,
-    "chunk_idx": 19,
+    "chunk_idx": 17,
     "video_id": "dwxUUBLkM3E",
     "state_changes": []
   },
   {
     "time": [
-      40,
-      42
+      18,
+      19
     ],
     "visible_entities": [
       {
-        "desc": "large tree trunk with rough, light-brown bark and a vertical column of deep, dark, irregular holes",
+        "desc": "thick tree trunk with rough, textured bark and a vertical series of deep, dark, irregular holes or cavities",
+        "action": "static",
+        "position": "foreground right",
+        "id": "tree_trunk_main_1"
+      },
+      {
+        "desc": "brown wooden log cabin with horizontal siding and a snow-covered roof",
+        "action": "static",
+        "position": "background left",
+        "id": "building_cabin_brown_1"
+      },
+      {
+        "desc": "white snow covering the ground and the roof of the cabin",
+        "action": "static",
+        "position": "bottom",
+        "id": "snow_ground_1"
+      },
+      {
+        "desc": "bare tree branches extending across the top of the frame against a blue sky",
+        "action": "static",
+        "position": "top",
+        "id": "tree_branches_bare_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The tree trunk in the foreground has a distinct vertical line of deep holes.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "Snow covers the ground and the roof of the wooden cabin.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The scene is set outdoors during the day under a clear blue sky.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The tree trunk with holes is in the foreground on the right side of the frame. The wooden cabin is in the background to the left of the tree. The snow is on the ground below the cabin and tree, and also on the roof of the cabin. Bare branches are above the cabin and tree against the sky.",
+    "parse_success": true,
+    "chunk_idx": 18,
+    "video_id": "dwxUUBLkM3E",
+    "state_changes": []
+  },
+  {
+    "time": [
+      19,
+      20
+    ],
+    "visible_entities": [
+      {
+        "desc": "thick tree trunk with rough, textured bark and a vertical row of deep, dark holes",
         "action": "static",
         "position": "center/foreground",
         "id": "tree_trunk_main_1"
       },
       {
-        "desc": "brown wooden cabin with horizontal siding and a snow-covered roof",
+        "desc": "brown wooden log cabin with horizontal siding",
         "action": "static",
         "position": "left/background",
-        "id": "building_cabin_1"
+        "id": "building_cabin_brown_1"
       },
       {
-        "desc": "white snow covering the ground and the roof of the cabin",
+        "desc": "white snow covering the ground and rooftops",
         "action": "static",
         "position": "bottom/background",
         "id": "snow_ground_1"
       },
       {
-        "desc": "dark-colored car partially covered in snow",
+        "desc": "bare tree branches extending upwards",
         "action": "static",
-        "position": "bottom/left",
-        "id": "vehicle_dark_1"
+        "position": "top",
+        "id": "tree_branches_bare_1"
       },
       {
         "desc": "clear blue sky",
@@ -1157,20 +1082,71 @@
     ],
     "atomic_facts": [
       {
-        "fact": "A large tree trunk with a vertical series of holes stands in the foreground.",
+        "fact": "A tree trunk with a vertical line of holes stands in the foreground.",
         "confidence": 1.0
       },
       {
-        "fact": "Snow covers the ground, the roof of the cabin, and the top of a car.",
+        "fact": "A wooden cabin is visible in the background to the left.",
         "confidence": 1.0
       },
       {
-        "fact": "A brown wooden cabin is visible in the background to the left of the tree.",
+        "fact": "Snow covers the ground and the roof of the cabin.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The large tree trunk is in the center foreground, positioned to the right of the brown wooden cabin. The snow is on the ground below the tree and cabin, and also covers the roof of the cabin. The dark car is located in the bottom left corner, near the cabin.",
+    "spatial": "The tree trunk with holes is in the center foreground, positioned in front of the wooden cabin. The wooden cabin is to the left of the tree trunk. Snow is on the ground below the cabin and the tree.",
+    "parse_success": true,
+    "chunk_idx": 19,
+    "video_id": "dwxUUBLkM3E",
+    "state_changes": []
+  },
+  {
+    "time": [
+      20,
+      21
+    ],
+    "visible_entities": [
+      {
+        "desc": "thick tree trunk with rough, light-brown bark and a vertical column of large, dark, hollowed-out holes",
+        "action": "static",
+        "position": "center",
+        "id": "tree_trunk_main_1"
+      },
+      {
+        "desc": "brown wooden log cabin with horizontal siding and snow-covered roof",
+        "action": "static",
+        "position": "left"
+      },
+      {
+        "desc": "white snow covering the ground and surfaces",
+        "action": "static",
+        "position": "bottom",
+        "id": "snow_ground_1"
+      },
+      {
+        "desc": "dark object, possibly a vehicle roof or container, covered in snow",
+        "action": "static",
+        "position": "bottom-left",
+        "id": "structure_dark_shed_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The tree trunk features a distinct vertical series of large, dark holes.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "Snow covers the ground and the roof of the wooden cabin.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The scene is set outdoors during the day under a blue sky.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The tree trunk is in the center foreground, standing in front of the wooden cabin which is to the left. The snow is on the ground below the tree and the cabin. The dark snow-covered object is at the bottom left, near the cabin.",
     "parse_success": true,
     "chunk_idx": 20,
     "video_id": "dwxUUBLkM3E",
@@ -1178,21 +1154,21 @@
   },
   {
     "time": [
-      42,
-      44
+      21,
+      22
     ],
     "visible_entities": [
       {
-        "desc": "tree trunk with rough, light-grey bark and a vertical series of dark, hollowed-out holes",
+        "desc": "tree trunk with rough, textured gray bark and a vertical series of deep, dark, oval-shaped holes",
         "action": "static",
-        "position": "foreground right",
+        "position": "foreground",
         "id": "tree_trunk_main_1"
       },
       {
-        "desc": "brown wooden log cabin with horizontal siding and snow accumulation on the roof",
+        "desc": "brown wooden log cabin with horizontal siding and a snow-covered roof",
         "action": "static",
-        "position": "background left",
-        "id": "building_cabin_1"
+        "position": "background",
+        "id": "building_cabin_brown_1"
       },
       {
         "desc": "white snow covering the ground and roof surfaces",
@@ -1201,32 +1177,28 @@
         "id": "snow_ground_1"
       },
       {
-        "desc": "bare tree branches extending against a clear blue sky",
+        "desc": "bare tree branches against a blue sky",
         "action": "static",
         "position": "top",
-        "id": "tree_branches_1"
+        "id": "tree_branches_bare_1"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A tree trunk with a distinct vertical line of holes stands in the foreground.",
+        "fact": "A tree trunk with a vertical line of holes stands in the foreground.",
         "confidence": 1.0
       },
       {
-        "fact": "A brown log cabin is visible in the background behind the tree.",
+        "fact": "A brown log cabin is visible in the background.",
         "confidence": 1.0
       },
       {
         "fact": "Snow covers the ground and the roof of the cabin.",
         "confidence": 1.0
-      },
-      {
-        "fact": "The sky is blue and clear above the bare branches.",
-        "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The tree trunk with holes is in the foreground to the right of the brown log cabin. The log cabin is situated behind the tree trunk. Snow is on the ground below the cabin and tree. Bare branches are above the cabin and tree against the blue sky.",
+    "spatial": "The tree trunk with holes is in the foreground, positioned in front of the brown log cabin. The snow is on the ground below the tree and on the roof of the cabin. Bare branches are above the cabin against the sky.",
     "parse_success": true,
     "chunk_idx": 21,
     "video_id": "dwxUUBLkM3E",
@@ -1234,51 +1206,51 @@
   },
   {
     "time": [
-      44,
-      46
+      22,
+      23
     ],
     "visible_entities": [
       {
-        "desc": "thick tree trunk with rough, light-brown bark and a vertical series of deep, dark, oval-shaped holes",
+        "desc": "thick tree trunk with rough, textured bark featuring a vertical column of deep, dark, oval-shaped holes",
         "action": "static",
-        "position": "foreground right",
+        "position": "right foreground",
         "id": "tree_trunk_main_1"
       },
       {
-        "desc": "brown wooden log cabin with horizontal siding and white-framed windows",
+        "desc": "brown wooden cabin with horizontal log siding and white window frames",
         "action": "static",
-        "position": "background left",
-        "id": "building_cabin_1"
-      },
-      {
-        "desc": "thick, bare tree branch extending horizontally",
-        "action": "static",
-        "position": "center",
-        "id": "tree_branches_1"
+        "position": "left background",
+        "id": "building_cabin_brown_1"
       },
       {
         "desc": "white snow covering the ground and roof surfaces",
         "action": "static",
         "position": "bottom",
         "id": "snow_ground_1"
+      },
+      {
+        "desc": "bare tree branches extending horizontally across the upper frame",
+        "action": "static",
+        "position": "top",
+        "id": "tree_branches_bare_1"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A tree trunk in the foreground features a vertical column of large, excavated holes.",
+        "fact": "The tree trunk in the foreground displays a distinct vertical pattern of deep holes.",
         "confidence": 1.0
       },
       {
-        "fact": "A bare tree branch extends horizontally across the frame, positioned in front of the cabin.",
+        "fact": "Snow covers the ground and the roof of the cabin.",
         "confidence": 1.0
       },
       {
-        "fact": "Snow covers the ground and the roof of the wooden cabin.",
+        "fact": "The cabin is situated behind the tree trunk.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The tree trunk with holes is in the foreground on the right side of the frame. The brown wooden cabin is located in the background to the left of the tree trunk. A large bare branch extends from the left side towards the center, positioned in front of the cabin.",
+    "spatial": "The tree trunk with holes is in the right foreground, standing in front of the brown wooden cabin which is on the left. Snow is on the ground below the cabin and tree. Bare branches are above the cabin and tree trunk.",
     "parse_success": true,
     "chunk_idx": 22,
     "video_id": "dwxUUBLkM3E",
@@ -1286,61 +1258,45 @@
   },
   {
     "time": [
-      46,
-      48
+      23,
+      24
     ],
     "visible_entities": [
       {
-        "desc": "large tree trunk with rough, light-colored bark and dark, hollowed-out holes",
+        "desc": "large tree trunk, thick, light-colored bark with dark hollows, bare branches",
         "action": "static",
         "position": "right foreground",
         "id": "tree_trunk_main_1"
       },
       {
-        "desc": "thick, bare tree branch extending horizontally",
-        "action": "static",
-        "position": "center",
-        "id": "tree_branches_1"
-      },
-      {
-        "desc": "brown wooden cabin with horizontal siding and white-framed windows",
+        "desc": "brown wooden building, log cabin style, horizontal siding, white-framed windows",
         "action": "static",
         "position": "left background",
-        "id": "building_cabin_1"
+        "id": "building_cabin_brown_1"
       },
       {
-        "desc": "white snow accumulation on the cabin roof",
+        "desc": "white awning or tarp structure",
         "action": "static",
-        "position": "top left",
-        "id": "snow_ground_1"
-      },
-      {
-        "desc": "clear blue sky",
-        "action": "static",
-        "position": "background",
-        "id": "sky_blue_1"
+        "position": "center background",
+        "id": "awning_white_1"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A large tree branch extends horizontally across the frame.",
+        "fact": "A large tree trunk stands in the foreground on the right.",
         "confidence": 1.0
       },
       {
-        "fact": "The branch is positioned in front of the brown wooden cabin.",
+        "fact": "A brown wooden building is visible in the background on the left.",
         "confidence": 1.0
       },
       {
-        "fact": "Snow covers the roof of the cabin.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The tree trunk features distinct dark holes in its bark.",
+        "fact": "Bare tree branches extend across the top of the frame against a blue sky.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The large tree trunk is in the right foreground, with a thick branch extending from it towards the left. The branch is positioned in front of the brown wooden cabin, which is located in the left background. The white snow is on top of the cabin's roof, below the blue sky.",
+    "spatial": "The large tree trunk is in the foreground on the right side of the frame. The brown wooden building is to the left of the tree trunk and behind it. The white awning is below the tree branches and to the right of the building.",
     "parse_success": true,
     "chunk_idx": 23,
     "video_id": "dwxUUBLkM3E",
@@ -1348,45 +1304,45 @@
   },
   {
     "time": [
-      48,
-      50
+      24,
+      25
     ],
     "visible_entities": [
       {
-        "desc": "large tree with thick, textured grey-brown bark and numerous bare, leafless branches spreading across the sky",
+        "desc": "large tree with thick, textured, light-brown bark and numerous bare, leafless branches spreading across the frame",
         "action": "static",
-        "position": "foreground",
+        "position": "foreground/right",
         "id": "tree_trunk_main_1"
       },
       {
         "desc": "brown wooden house with horizontal siding and white-framed rectangular windows",
         "action": "static",
-        "position": "background",
-        "id": "building_cabin_1"
+        "position": "background/left",
+        "id": "building_cabin_brown_1"
       },
       {
         "desc": "clear, bright blue sky",
         "action": "static",
-        "position": "background",
+        "position": "background/top",
         "id": "sky_blue_1"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A large tree with bare branches stands in the foreground.",
+        "fact": "The tree branches extend horizontally across the upper portion of the frame.",
         "confidence": 1.0
       },
       {
-        "fact": "The tree branches extend in front of the brown house.",
+        "fact": "The tree is positioned in front of the brown house.",
         "confidence": 1.0
       },
       {
-        "fact": "The house is situated behind the tree.",
+        "fact": "The house features white window frames contrasting with the brown siding.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The large tree is in the foreground, positioned in front of the brown wooden house. The bare branches of the tree extend across the frame, partially obscuring the view of the house and the blue sky behind it. The house is located in the background, below the upper branches.",
+    "spatial": "The large tree is in the foreground on the right side, with its branches extending leftward above the brown house. The house is situated in the background on the left, below the tree branches and against the blue sky.",
     "parse_success": true,
     "chunk_idx": 24,
     "video_id": "dwxUUBLkM3E",
@@ -1394,12 +1350,12 @@
   },
   {
     "time": [
-      50,
-      52
+      25,
+      26
     ],
     "visible_entities": [
       {
-        "desc": "large tree with thick, light-brown branches and numerous bare twigs",
+        "desc": "large tree with bare, light-brown branches and a thick trunk",
         "action": "static",
         "position": "foreground/top",
         "id": "tree_trunk_main_1"
@@ -1408,53 +1364,7 @@
         "desc": "brown wooden building with horizontal siding and white-framed windows",
         "action": "static",
         "position": "background/bottom",
-        "id": "building_cabin_1"
-      },
-      {
-        "desc": "clear blue sky",
-        "action": "static",
-        "position": "background",
-        "id": "sky_blue_1"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "The camera captures a low-angle view of a building and tree.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "Bare tree branches extend across the upper portion of the frame.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The building features white-framed windows set into brown siding.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [],
-    "spatial": "The large tree with bare branches is in the foreground, positioned above the brown wooden building. The building is located below the tree branches and against the blue sky background.",
-    "parse_success": true,
-    "chunk_idx": 25,
-    "video_id": "dwxUUBLkM3E",
-    "state_changes": []
-  },
-  {
-    "time": [
-      52,
-      54
-    ],
-    "visible_entities": [
-      {
-        "desc": "large tree with thick, light-brown bark and numerous bare, spreading branches",
-        "action": "static",
-        "position": "foreground/top/right",
-        "id": "tree_trunk_main_1"
-      },
-      {
-        "desc": "brown wooden house with horizontal siding and white-framed windows",
-        "action": "static",
-        "position": "background/bottom",
-        "id": "building_cabin_1"
+        "id": "building_cabin_brown_1"
       },
       {
         "desc": "clear blue sky",
@@ -1465,11 +1375,57 @@
     ],
     "atomic_facts": [
       {
-        "fact": "The camera pans slightly to the right, revealing more of the tree trunk.",
+        "fact": "The camera is angled upwards towards the sky.",
         "confidence": 1.0
       },
       {
-        "fact": "The bare branches of the tree extend across the top of the frame.",
+        "fact": "Tree branches extend across the top of the frame.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The building is situated behind the tree branches.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The bare tree branches are in the foreground, positioned above and in front of the brown wooden building. The building is located at the bottom of the frame, below the tree branches. The clear blue sky is visible in the background behind the branches and above the building.",
+    "parse_success": true,
+    "chunk_idx": 25,
+    "video_id": "dwxUUBLkM3E",
+    "state_changes": []
+  },
+  {
+    "time": [
+      26,
+      27
+    ],
+    "visible_entities": [
+      {
+        "desc": "large tree with thick, light-brown bark and numerous bare, leafless branches",
+        "action": "static",
+        "position": "foreground/top/right",
+        "id": "tree_trunk_main_1"
+      },
+      {
+        "desc": "two-story house with horizontal brown wooden siding and white-framed windows",
+        "action": "static",
+        "position": "background/bottom",
+        "id": "building_cabin_brown_1"
+      },
+      {
+        "desc": "clear blue sky",
+        "action": "static",
+        "position": "background/top",
+        "id": "sky_blue_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The camera pans slightly to the right, revealing the trunk of the tree.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "Bare tree branches extend across the upper portion of the frame.",
         "confidence": 1.0
       },
       {
@@ -1478,7 +1434,7 @@
       }
     ],
     "ocr": [],
-    "spatial": "The large tree with bare branches is in the foreground, positioned above and in front of the brown wooden house. The blue sky is visible in the background behind the tree branches and above the roofline of the house.",
+    "spatial": "The tree branches are in front of the house and the blue sky. The house is below the tree branches. The tree trunk is on the right side of the frame.",
     "parse_success": true,
     "chunk_idx": 26,
     "video_id": "dwxUUBLkM3E",
@@ -1486,27 +1442,27 @@
   },
   {
     "time": [
-      54,
-      56
+      27,
+      28
     ],
     "visible_entities": [
       {
-        "desc": "thick tree trunk with rough, light-brown bark featuring a large, vertical patch of exposed, pale wood and several dark, hollowed-out holes",
+        "desc": "large tree trunk with rough, textured bark and multiple deep, vertical hollows or cavities",
         "action": "static",
-        "position": "right",
+        "position": "right foreground",
         "id": "tree_trunk_main_1"
       },
       {
-        "desc": "brown wooden building with horizontal siding and a white-framed window",
+        "desc": "thick, bare tree branch extending horizontally across the frame",
         "action": "static",
-        "position": "left",
-        "id": "building_cabin_1"
+        "position": "center",
+        "id": "tree_branches_bare_1"
       },
       {
-        "desc": "bare, thin tree branches extending across the sky",
+        "desc": "brown wooden house with horizontal siding and a white-framed window",
         "action": "static",
-        "position": "top",
-        "id": "tree_branches_1"
+        "position": "left background",
+        "id": "building_cabin_brown_1"
       },
       {
         "desc": "clear blue sky",
@@ -1517,20 +1473,20 @@
     ],
     "atomic_facts": [
       {
-        "fact": "A tree trunk with damaged bark stands in the foreground.",
+        "fact": "The camera remains static, capturing a low-angle view of the trees and house.",
         "confidence": 1.0
       },
       {
-        "fact": "A brown wooden building is visible on the left side of the frame.",
+        "fact": "The tree trunk on the right features distinct vertical cavities.",
         "confidence": 1.0
       },
       {
-        "fact": "Bare branches extend across the blue sky.",
+        "fact": "The house is situated behind the tree branches.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The tree trunk is to the right of the brown wooden building. The bare branches are above the building and the tree trunk. The blue sky is in the background behind the tree and the building.",
+    "spatial": "The large tree trunk with cavities is in the right foreground. The thick, bare branch extends from the left side towards the center, positioned in front of the brown wooden house. The house is located in the background on the left side, partially obscured by the tree branches. The blue sky is visible above and behind all the foreground elements.",
     "parse_success": true,
     "chunk_idx": 27,
     "video_id": "dwxUUBLkM3E",
@@ -1538,55 +1494,45 @@
   },
   {
     "time": [
-      56,
-      58
+      28,
+      29
     ],
     "visible_entities": [
       {
-        "desc": "large tree trunk with rough, textured bark, light brown and grey in color, featuring a prominent vertical section of exposed, lighter-colored wood where the bark is missing",
+        "desc": "thick tree trunk with rough, mottled grey and white bark, featuring large patches of missing bark exposing lighter wood underneath",
         "action": "static",
-        "position": "right",
+        "position": "right foreground",
         "id": "tree_trunk_main_1"
-      },
-      {
-        "desc": "numerous bare, thin tree branches extending across the frame against the sky",
-        "action": "static",
-        "position": "top",
-        "id": "tree_branches_1"
-      },
-      {
-        "desc": "clear, bright blue sky",
-        "action": "static",
-        "position": "background",
-        "id": "sky_blue_1"
       },
       {
         "desc": "brown wooden siding of a building with a white-framed window",
         "action": "static",
         "position": "bottom left",
-        "id": "building_cabin_1"
+        "id": "building_cabin_brown_1"
+      },
+      {
+        "desc": "bare tree branches extending across the frame",
+        "action": "static",
+        "position": "top center",
+        "id": "tree_branches_bare_1"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "The camera is angled upwards, looking at the trees and sky.",
+        "fact": "The camera is positioned at a low angle looking up at the trees.",
         "confidence": 1.0
       },
       {
-        "fact": "A large tree trunk with damaged bark stands on the right side of the frame.",
+        "fact": "The tree trunk on the right shows signs of damage or decay with exposed wood.",
         "confidence": 1.0
       },
       {
-        "fact": "Bare branches from the trees spread across the top of the view.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "A portion of a brown building with a window is visible in the bottom left corner.",
+        "fact": "A building with brown siding is visible in the lower left corner.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The large tree trunk with damaged bark is on the right side of the frame. The bare tree branches are above the brown building. The brown building with the white-framed window is in the bottom left corner, below the tree branches.",
+    "spatial": "The thick tree trunk is in the right foreground, extending vertically. The brown building is below the tree branches and to the left of the main tree trunk. The bare branches are above the building and spread across the top of the frame against the blue sky.",
     "parse_success": true,
     "chunk_idx": 28,
     "video_id": "dwxUUBLkM3E",
@@ -1594,12 +1540,12 @@
   },
   {
     "time": [
-      58,
-      60
+      29,
+      30
     ],
     "visible_entities": [
       {
-        "desc": "large tree trunk with rough, textured bark featuring distinct patches of missing bark that reveal lighter, yellowish inner wood",
+        "desc": "large tree trunk with rough, textured bark featuring prominent vertical holes and patches of exposed light-colored wood",
         "action": "static",
         "position": "right foreground",
         "id": "tree_trunk_main_1"
@@ -1608,471 +1554,13 @@
         "desc": "brown wooden house with horizontal siding and a white-framed window",
         "action": "static",
         "position": "left background",
-        "id": "building_cabin_1"
+        "id": "building_cabin_brown_1"
       },
       {
-        "desc": "bare tree branches extending upwards against a clear blue sky",
+        "desc": "bare tree branches extending across the sky",
         "action": "static",
-        "position": "top",
-        "id": "tree_branches_1"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "A large tree trunk stands in the foreground with visible damage where the bark has peeled away.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "A brown house is situated in the background to the left of the tree.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The sky is clear and blue, visible through the network of bare branches.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [],
-    "spatial": "The large tree trunk is in the foreground on the right side of the frame. The brown wooden house is to the left of the tree trunk and positioned in the background. The bare branches are above the house and extend across the top of the frame.",
-    "parse_success": true,
-    "chunk_idx": 29,
-    "video_id": "dwxUUBLkM3E",
-    "state_changes": []
-  },
-  {
-    "time": [
-      60,
-      62
-    ],
-    "visible_entities": [
-      {
-        "desc": "tree trunk, rough grey bark, vertical column of large irregular holes",
-        "action": "static",
-        "position": "center",
-        "id": "tree_trunk_main_1"
-      },
-      {
-        "desc": "tree trunk, rough grey bark, single large hole",
-        "action": "static",
-        "position": "right",
-        "id": "tree_trunk_main_1"
-      },
-      {
-        "desc": "wooden building, brown siding, snow-covered roof",
-        "action": "static",
-        "position": "left",
-        "id": "building_cabin_1"
-      },
-      {
-        "desc": "bare tree branches, dark, leafless",
-        "action": "static",
-        "position": "top",
-        "id": "tree_branches_1"
-      },
-      {
-        "desc": "snow, white, covering ground and roof",
-        "action": "static",
-        "position": "bottom",
-        "id": "snow_ground_1"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "A tree trunk in the center features a vertical column of large, irregular holes.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "A wooden building with a snow-covered roof is visible to the left.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "Bare tree branches extend across the top of the frame against a blue sky.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [],
-    "spatial": "The tree trunk with the vertical column of holes is in the center foreground. To the right of this tree is another tree trunk with a single hole. To the left of the central tree is a wooden building. The bare branches are above the tree trunks and the building.",
-    "parse_success": true,
-    "chunk_idx": 30,
-    "video_id": "dwxUUBLkM3E",
-    "state_changes": []
-  },
-  {
-    "time": [
-      62,
-      64
-    ],
-    "visible_entities": [
-      {
-        "desc": "thick tree trunk with rough, textured gray bark and multiple large, dark, hollowed-out holes",
-        "action": "static",
-        "position": "center",
-        "id": "tree_trunk_main_1"
-      },
-      {
-        "desc": "second tree trunk with rough bark and a large knot, positioned to the right",
-        "action": "static",
-        "position": "right",
-        "id": "tree_trunk_main_1"
-      },
-      {
-        "desc": "brown wooden cabin with a snow-covered roof and a visible ladder leaning against it",
-        "action": "static",
-        "position": "left background",
-        "id": "building_cabin_1"
-      },
-      {
-        "desc": "white snow covering the ground and parts of the cabin roof",
-        "action": "static",
-        "position": "bottom",
-        "id": "snow_ground_1"
-      },
-      {
-        "desc": "bright blue sky visible through the tree branches",
-        "action": "static",
-        "position": "top background",
-        "id": "sky_blue_1"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "The camera pans slightly to the right, shifting the view of the trees.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The tree trunk in the center has several large, dark holes in its bark.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "Snow is present on the ground and on the roof of the cabin in the background.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "A ladder is leaning against the side of the wooden cabin.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [],
-    "spatial": "The tree with the large holes is in the center foreground. To its right is another tree trunk. Behind the trees, on the left side, is a wooden cabin. The snow is on the ground below the trees and on the roof of the cabin.",
-    "parse_success": true,
-    "chunk_idx": 31,
-    "video_id": "dwxUUBLkM3E",
-    "state_changes": []
-  },
-  {
-    "time": [
-      64,
-      66
-    ],
-    "visible_entities": [
-      {
-        "desc": "thick, rough-barked tree trunk with large, dark, hollowed-out cavities and knobby texture",
-        "action": "static",
-        "position": "foreground",
-        "id": "tree_trunk_main_1"
-      },
-      {
-        "desc": "modern building with flat rooflines and large windows, partially covered in snow",
-        "action": "static",
-        "position": "background",
-        "id": "building_cabin_1"
-      },
-      {
-        "desc": "white snow covering the ground and building roofs",
-        "action": "static",
-        "position": "bottom",
-        "id": "snow_ground_1"
-      },
-      {
-        "desc": "bare deciduous trees with thin branches against a blue sky",
-        "action": "static",
-        "position": "background",
-        "id": "tree_branches_1"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "A large tree trunk with hollowed-out holes stands in the foreground.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "Snow covers the ground and the roofs of the buildings in the background.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The camera remains static on the scene.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [],
-    "spatial": "The thick tree trunk is in the foreground, positioned to the left of the center. The modern building is behind the tree trunk in the background. The snow is below the tree trunk and on top of the building roofs.",
-    "parse_success": true,
-    "chunk_idx": 32,
-    "video_id": "dwxUUBLkM3E",
-    "state_changes": []
-  },
-  {
-    "time": [
-      66,
-      68
-    ],
-    "visible_entities": [
-      {
-        "desc": "thick tree trunk with rough, light-brown bark and multiple large, deep, hollowed-out holes",
-        "action": "static",
-        "position": "foreground",
-        "id": "tree_trunk_main_1"
-      },
-      {
-        "desc": "thick tree trunk with rough, greyish-brown bark and a large hollow cavity",
-        "action": "static",
-        "position": "right",
-        "id": "tree_trunk_main_1"
-      },
-      {
-        "desc": "brown wooden cabin with horizontal siding and a snow-covered roof",
-        "action": "static",
-        "position": "background",
-        "id": "building_cabin_1"
-      },
-      {
-        "desc": "white snow covering the ground and roof surfaces",
-        "action": "static",
-        "position": "bottom",
-        "id": "snow_ground_1"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "The camera remains static, focused on the tree trunks.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The tree trunks in the foreground obscure the view of the cabin behind them.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "Snow covers the ground and the roof of the wooden cabin.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [],
-    "spatial": "The tree trunks are in the foreground, positioned in front of the wooden cabin. The cabin is located to the left in the background. Snow is on the ground below the trees and on the roof of the cabin.",
-    "parse_success": true,
-    "chunk_idx": 33,
-    "video_id": "dwxUUBLkM3E",
-    "state_changes": []
-  },
-  {
-    "time": [
-      68,
-      70
-    ],
-    "visible_entities": [
-      {
-        "desc": "thick tree trunk with rough, grey-brown bark and large, dark, hollowed-out holes",
-        "action": "static",
-        "position": "foreground",
-        "id": "tree_trunk_main_1"
-      },
-      {
-        "desc": "two-story house with brown siding, white trim, and a snow-covered roof",
-        "action": "static",
-        "position": "background",
-        "id": "building_cabin_1"
-      },
-      {
-        "desc": "white snow covering the ground and roof",
-        "action": "static",
-        "position": "bottom",
-        "id": "snow_ground_1"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "The camera pans slightly to the right, shifting the perspective of the foreground tree trunk.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "A house is visible in the background behind the trees.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "Snow covers the ground and the roof of the house.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [],
-    "spatial": "The thick tree trunk is in the foreground, partially obscuring the house behind it. The house is situated in the background, positioned between the tree trunks. The snow is on the ground below the trees and on top of the house's roof.",
-    "parse_success": true,
-    "chunk_idx": 34,
-    "video_id": "dwxUUBLkM3E",
-    "state_changes": []
-  },
-  {
-    "time": [
-      70,
-      72
-    ],
-    "visible_entities": [
-      {
-        "desc": "tree trunk with rough, grey-brown bark and multiple large, dark, hollowed-out holes",
-        "action": "static",
-        "position": "left",
-        "id": "tree_trunk_main_1"
-      },
-      {
-        "desc": "thick, gnarled tree trunk with rough, textured bark and a large hole near the top",
-        "action": "static",
-        "position": "right",
-        "id": "tree_trunk_main_1"
-      },
-      {
-        "desc": "brown wooden building with horizontal siding and a sloped roof",
-        "action": "static",
-        "position": "background",
-        "id": "building_cabin_1"
-      },
-      {
-        "desc": "white snow covering the ground",
-        "action": "static",
-        "position": "bottom",
-        "id": "snow_ground_1"
-      },
-      {
-        "desc": "bare, thin tree branches against a blue sky",
-        "action": "static",
-        "position": "top",
-        "id": "tree_branches_1"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "Two large, weathered tree trunks stand in the foreground.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The tree on the left has several distinct, dark holes in its trunk.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "A brown wooden building is visible behind the trees.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The ground is covered in white snow.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "Bare branches are visible against the blue sky above the trees.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [],
-    "spatial": "The tree trunk with multiple holes is to the left of the gnarled tree trunk. Both trees are in front of the brown wooden building. The bare branches are above the trees and the building. The snow is on the ground below the trees.",
-    "parse_success": true,
-    "chunk_idx": 35,
-    "video_id": "dwxUUBLkM3E",
-    "state_changes": []
-  },
-  {
-    "time": [
-      72,
-      74
-    ],
-    "visible_entities": [
-      {
-        "desc": "thick tree trunk with rough, textured grey-brown bark and a prominent hollow knot",
-        "action": "static",
-        "position": "center foreground",
-        "id": "tree_trunk_main_1"
-      },
-      {
-        "desc": "tree trunk with rough bark and visible holes",
-        "action": "static",
-        "position": "left foreground",
-        "id": "tree_trunk_main_1"
-      },
-      {
-        "desc": "tree trunk with rough bark",
-        "action": "static",
-        "position": "right foreground",
-        "id": "tree_trunk_main_1"
-      },
-      {
-        "desc": "brown wooden log cabin with horizontal logs and a white-framed window",
-        "action": "static",
-        "position": "background",
-        "id": "building_cabin_1"
-      },
-      {
-        "desc": "white snow covering the ground and roof",
-        "action": "static",
-        "position": "bottom background",
-        "id": "snow_ground_1"
-      },
-      {
-        "desc": "bare tree branches against a blue sky",
-        "action": "static",
-        "position": "top background",
-        "id": "tree_branches_1"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "The camera is positioned behind a cluster of tree trunks, looking towards a wooden cabin.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "Snow is visible on the ground and on the roof of the cabin in the background.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "A window with a white frame is visible on the side of the brown wooden cabin.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [],
-    "spatial": "The central tree trunk is in front of the brown wooden cabin. The left tree trunk is to the left of the central trunk, and the right tree trunk is to the right. The bare branches are above the cabin and the tree trunks. The snow is on the ground below the cabin and trees.",
-    "parse_success": true,
-    "chunk_idx": 36,
-    "video_id": "dwxUUBLkM3E",
-    "state_changes": []
-  },
-  {
-    "time": [
-      74,
-      76
-    ],
-    "visible_entities": [
-      {
-        "desc": "large tree trunk with rough, deeply textured grey bark and a hollowed-out section on the left side",
-        "action": "static",
-        "position": "left",
-        "id": "tree_trunk_main_1"
-      },
-      {
-        "desc": "large tree trunk with rough, deeply textured grey bark, appearing to split or fork near the top",
-        "action": "static",
-        "position": "center",
-        "id": "tree_trunk_main_1"
-      },
-      {
-        "desc": "large tree trunk with rough, deeply textured grey bark, leaning slightly to the right",
-        "action": "static",
-        "position": "right",
-        "id": "tree_trunk_main_1"
-      },
-      {
-        "desc": "wooden building with vertical brown siding and a visible roofline",
-        "action": "static",
-        "position": "background",
-        "id": "building_cabin_1"
-      },
-      {
-        "desc": "bare tree branches, thin and dark, spreading across the sky",
-        "action": "static",
-        "position": "top",
-        "id": "tree_branches_1"
+        "position": "top center",
+        "id": "tree_branches_bare_1"
       },
       {
         "desc": "clear blue sky",
@@ -2083,417 +1571,7 @@
     ],
     "atomic_facts": [
       {
-        "fact": "Three large tree trunks stand in the foreground, obscuring parts of the background.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "A wooden building with vertical siding is visible behind the trees.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "Bare branches extend from the tree trunks against the blue sky.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [],
-    "spatial": "The three large tree trunks are in the foreground, positioned to the left, center, and right of the frame. The wooden building is behind the tree trunks. The bare branches are above the tree trunks and extend across the top of the frame against the blue sky.",
-    "parse_success": true,
-    "chunk_idx": 37,
-    "video_id": "dwxUUBLkM3E",
-    "state_changes": []
-  },
-  {
-    "time": [
-      76,
-      78
-    ],
-    "visible_entities": [
-      {
-        "desc": "large, gnarled tree trunk with rough, dark grey bark and a prominent V-shaped split, bare branches extending upwards",
-        "action": "static",
-        "position": "foreground",
-        "id": "tree_trunk_main_1"
-      },
-      {
-        "desc": "wooden cabin with horizontal brown siding and a snow-covered roof",
-        "action": "static",
-        "position": "background",
-        "id": "building_cabin_1"
-      },
-      {
-        "desc": "white snow covering the ground and rooftops",
-        "action": "static",
-        "position": "background",
-        "id": "snow_ground_1"
-      },
-      {
-        "desc": "clear blue sky",
-        "action": "static",
-        "position": "top",
-        "id": "sky_blue_1"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "The camera pans slightly to the right, revealing more of the background scenery.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "A large tree trunk with a split stands in the foreground.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "A wooden cabin is visible behind the tree.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "Snow covers the ground and the roof of the cabin.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [],
-    "spatial": "The large tree trunk is in the foreground, positioned in front of the wooden cabin. The cabin is located behind the tree and to the right of the leftmost part of the trunk. The snow is on the ground below the cabin and on top of the cabin's roof. The blue sky is above the tree and the cabin.",
-    "parse_success": true,
-    "chunk_idx": 38,
-    "video_id": "dwxUUBLkM3E",
-    "state_changes": []
-  },
-  {
-    "time": [
-      78,
-      80
-    ],
-    "visible_entities": [
-      {
-        "desc": "large tree trunk with rough, textured grey-brown bark, leaning diagonally",
-        "action": "static",
-        "position": "foreground center",
-        "id": "tree_trunk_main_1"
-      },
-      {
-        "desc": "wooden building with horizontal brown siding and a snow-covered roof",
-        "action": "static",
-        "position": "background left",
-        "id": "building_cabin_1"
-      },
-      {
-        "desc": "white snow covering the ground and building roofs",
-        "action": "static",
-        "position": "bottom",
-        "id": "snow_ground_1"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "A large tree trunk stands in the foreground, partially obscuring the view of the buildings behind it.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "Snow covers the ground and the roofs of the wooden structures in the background.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [],
-    "spatial": "The large tree trunk is in front of the wooden building on the left. The snow is below the buildings and surrounds the base of the tree.",
-    "parse_success": true,
-    "chunk_idx": 39,
-    "video_id": "dwxUUBLkM3E",
-    "state_changes": []
-  },
-  {
-    "time": [
-      80,
-      82
-    ],
-    "visible_entities": [
-      {
-        "desc": "large tree trunk with rough, textured grey-brown bark, split into two main sections",
-        "action": "static",
-        "position": "foreground",
-        "id": "tree_trunk_main_1"
-      },
-      {
-        "desc": "brown wooden cabin with horizontal log siding and a snow-covered roof",
-        "action": "static",
-        "position": "background",
-        "id": "building_cabin_1"
-      },
-      {
-        "desc": "white snow covering the ground and rooftops",
-        "action": "static",
-        "position": "bottom/background",
-        "id": "snow_ground_1"
-      },
-      {
-        "desc": "bare tree branches against a blue sky",
-        "action": "static",
-        "position": "top/background",
-        "id": "tree_branches_1"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "The camera remains static on a winter scene.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "Snow covers the ground and the roof of the cabin.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "A large tree trunk stands in the foreground.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [],
-    "spatial": "The large tree trunk is in the foreground, positioned in front of the brown wooden cabin. The cabin is located in the background behind the tree. Snow is on the ground below the cabin and on the roof above the cabin walls.",
-    "parse_success": true,
-    "chunk_idx": 40,
-    "video_id": "dwxUUBLkM3E",
-    "state_changes": []
-  },
-  {
-    "time": [
-      82,
-      84
-    ],
-    "visible_entities": [
-      {
-        "desc": "large tree trunk with rough, textured grey-brown bark",
-        "action": "static",
-        "position": "foreground",
-        "id": "tree_trunk_main_1"
-      },
-      {
-        "desc": "wooden cabin with brown horizontal siding and snow-covered roof",
-        "action": "static",
-        "position": "background",
-        "id": "building_cabin_1"
-      },
-      {
-        "desc": "white snow covering the ground and rooftops",
-        "action": "static",
-        "position": "bottom/background",
-        "id": "snow_ground_1"
-      },
-      {
-        "desc": "bare tree branches against a blue sky",
-        "action": "static",
-        "position": "top/background",
-        "id": "tree_branches_1"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "A large tree trunk stands in the foreground, partially obscuring the view of the background.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "A wooden cabin is visible behind the tree trunk.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "Snow covers the ground and the roof of the cabin.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The sky is blue with bare tree branches visible above the cabin.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [],
-    "spatial": "The large tree trunk is in the foreground, positioned in front of the wooden cabin. The cabin is in the background, with snow on its roof and on the ground below it. Bare tree branches are above the cabin against the blue sky.",
-    "parse_success": true,
-    "chunk_idx": 41,
-    "video_id": "dwxUUBLkM3E",
-    "state_changes": []
-  },
-  {
-    "time": [
-      84,
-      86
-    ],
-    "visible_entities": [
-      {
-        "desc": "large tree trunk with rough, textured gray bark and a prominent knot, split into two main branches forming a V-shape",
-        "action": "static",
-        "position": "foreground",
-        "id": "tree_trunk_main_1"
-      },
-      {
-        "desc": "wooden cabin with brown siding, covered in snow on the roof and porch",
-        "action": "static",
-        "position": "background",
-        "id": "building_cabin_1"
-      },
-      {
-        "desc": "white snow covering the ground and building roofs",
-        "action": "static",
-        "position": "bottom",
-        "id": "snow_ground_1"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "The camera pans slightly to the left, revealing more of the tree trunk and the cabin behind it.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "A large tree trunk stands in the foreground, partially obscuring the view of the cabin.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "Snow covers the roof of the wooden cabin and the ground around it.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [],
-    "spatial": "The large tree trunk is in the foreground, in front of the wooden cabin. The cabin is located behind the tree. Snow is on the ground below the cabin and on the roof of the cabin.",
-    "parse_success": true,
-    "chunk_idx": 42,
-    "video_id": "dwxUUBLkM3E",
-    "state_changes": []
-  },
-  {
-    "time": [
-      86,
-      88
-    ],
-    "visible_entities": [
-      {
-        "desc": "large, gnarled tree trunk with rough, textured bark, split into two main branches forming a V-shape, featuring a dark hollow knot in the center",
-        "action": "static",
-        "position": "center/foreground",
-        "id": "tree_trunk_main_1"
-      },
-      {
-        "desc": "brown wooden house with white-framed windows and snow on the roof",
-        "action": "static",
-        "position": "background",
-        "id": "building_cabin_1"
-      },
-      {
-        "desc": "clear blue sky with bare tree branches",
-        "action": "static",
-        "position": "top/background",
-        "id": "sky_blue_1"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "A large, split tree trunk stands in the foreground.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "A brown house is visible behind the tree.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "Snow covers the roof of the house in the background.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [],
-    "spatial": "The large, gnarled tree trunk is in the foreground, positioned centrally. The brown wooden house is behind the tree trunk. The blue sky is above the tree and the house.",
-    "parse_success": true,
-    "chunk_idx": 43,
-    "video_id": "dwxUUBLkM3E",
-    "state_changes": []
-  },
-  {
-    "time": [
-      88,
-      90
-    ],
-    "visible_entities": [
-      {
-        "desc": "large tree trunk with rough, textured grey-brown bark and a prominent vertical row of deep, hollowed-out holes or cavities",
-        "action": "static",
-        "position": "foreground",
-        "id": "tree_trunk_main_1"
-      },
-      {
-        "desc": "brown wooden house with horizontal siding and white-framed windows",
-        "action": "static",
-        "position": "background",
-        "id": "building_cabin_1"
-      },
-      {
-        "desc": "bare tree branches extending upwards against a clear blue sky",
-        "action": "static",
-        "position": "top",
-        "id": "tree_branches_1"
-      },
-      {
-        "desc": "white snow covering the ground",
-        "action": "static",
-        "position": "bottom",
-        "id": "snow_ground_1"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "A large tree trunk with a series of vertical cavities stands in the foreground.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "A brown house with white windows is visible behind the tree.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "Bare branches are silhouetted against the blue sky above the house.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "Snow covers the ground at the base of the tree.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [],
-    "spatial": "The tree trunk with holes is in the foreground, positioned in front of the brown house. The bare branches are above the house and the tree trunk. The snow is below the tree and the house.",
-    "parse_success": true,
-    "chunk_idx": 44,
-    "video_id": "dwxUUBLkM3E",
-    "state_changes": []
-  },
-  {
-    "time": [
-      90,
-      92
-    ],
-    "visible_entities": [
-      {
-        "desc": "thick tree trunk with rough, grey-brown bark and a large, vertical hollow containing multiple dark, round holes",
-        "action": "static",
-        "position": "center/foreground",
-        "id": "tree_trunk_main_1"
-      },
-      {
-        "desc": "brown wooden house with horizontal siding and white-framed windows",
-        "action": "static",
-        "position": "left/background",
-        "id": "building_cabin_1"
-      },
-      {
-        "desc": "white snow covering the ground and the roof of a dark vehicle",
-        "action": "static",
-        "position": "bottom/foreground",
-        "id": "snow_ground_1"
-      },
-      {
-        "desc": "dark vehicle, partially visible, covered in snow",
-        "action": "static",
-        "position": "bottom/left",
-        "id": "vehicle_dark_1"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "A tree trunk with a large hollow stands in the foreground.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "Snow covers the ground and the roof of a vehicle.",
+        "fact": "A large tree trunk with visible holes stands in the foreground.",
         "confidence": 1.0
       },
       {
@@ -2502,7 +1580,829 @@
       }
     ],
     "ocr": [],
-    "spatial": "The tree trunk is in the foreground, positioned to the right of the brown wooden house. The dark vehicle is located below the house and to the left of the tree trunk. Snow is on the ground below all other entities.",
+    "spatial": "The large tree trunk is in the right foreground, positioned in front of the brown wooden house which is on the left side of the frame. The bare tree branches are above the house and extend across the top of the frame against the blue sky.",
+    "parse_success": true,
+    "chunk_idx": 29,
+    "video_id": "dwxUUBLkM3E",
+    "state_changes": []
+  },
+  {
+    "time": [
+      30,
+      31
+    ],
+    "visible_entities": [
+      {
+        "desc": "tree trunk with rough, textured gray bark and a vertical column of large, irregular, dark brown holes",
+        "action": "static",
+        "position": "center",
+        "id": "tree_trunk_main_1"
+      },
+      {
+        "desc": "thick tree trunk with gray, deeply furrowed bark",
+        "action": "static",
+        "position": "right",
+        "id": "tree_trunk_main_1"
+      },
+      {
+        "desc": "wooden building with horizontal log siding and a snow-covered roof",
+        "action": "static",
+        "position": "left",
+        "id": "building_cabin_brown_1"
+      },
+      {
+        "desc": "clear blue sky",
+        "action": "static",
+        "position": "background",
+        "id": "sky_blue_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A tree trunk in the center features a vertical series of large, hollowed-out holes.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "Snow covers the roof of the wooden building on the left.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "Bare tree branches extend across the blue sky in the background.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The tree trunk with holes is in the center foreground, positioned to the left of the thick, furrowed tree trunk. The wooden building is to the left of the central tree. The blue sky is above all the trees and the building.",
+    "parse_success": true,
+    "chunk_idx": 30,
+    "video_id": "dwxUUBLkM3E",
+    "state_changes": []
+  },
+  {
+    "time": [
+      31,
+      32
+    ],
+    "visible_entities": [
+      {
+        "desc": "thick tree trunk with rough, textured grey-brown bark and a vertical column of deep, oval-shaped holes",
+        "action": "static",
+        "position": "center",
+        "id": "tree_trunk_main_1"
+      },
+      {
+        "desc": "thick tree trunk with rough, textured grey-brown bark and a large, dark knot",
+        "action": "static",
+        "position": "right",
+        "id": "tree_trunk_main_1"
+      },
+      {
+        "desc": "wooden cabin with brown siding and a snow-covered roof",
+        "action": "static",
+        "position": "background",
+        "id": "building_cabin_brown_1"
+      },
+      {
+        "desc": "white snow covering the ground and outdoor furniture",
+        "action": "static",
+        "position": "bottom",
+        "id": "snow_ground_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A tree trunk in the center features a vertical series of drilled holes.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "Snow covers the ground and the roof of the cabin in the background.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "Two large tree trunks stand in the foreground.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The tree trunk with the vertical holes is to the left of the tree trunk with the large knot. The wooden cabin is behind the trees in the background. The snow is below the trees and on the roof of the cabin.",
+    "parse_success": true,
+    "chunk_idx": 31,
+    "video_id": "dwxUUBLkM3E",
+    "state_changes": []
+  },
+  {
+    "time": [
+      32,
+      33
+    ],
+    "visible_entities": [
+      {
+        "desc": "large tree trunk with rough, textured grey bark and multiple dark, hollowed-out holes",
+        "action": "static",
+        "position": "foreground",
+        "id": "tree_trunk_main_1"
+      },
+      {
+        "desc": "white snow covering the ground and building roofs",
+        "action": "static",
+        "position": "bottom",
+        "id": "snow_ground_1"
+      },
+      {
+        "desc": "modern building with flat white roofs and dark windows",
+        "action": "static",
+        "position": "background",
+        "id": "building_cabin_brown_1"
+      },
+      {
+        "desc": "bare trees with thin branches against a blue sky",
+        "action": "static",
+        "position": "background",
+        "id": "tree_branches_bare_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A large tree trunk with hollowed holes stands in the foreground.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "Snow covers the ground and the roofs of the buildings in the background.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The sky is clear and blue.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The large tree trunk is in the foreground, positioned in front of the modern building. The building is behind the tree and has snow on its roof. The bare trees are in the background to the right of the main tree trunk.",
+    "parse_success": true,
+    "chunk_idx": 32,
+    "video_id": "dwxUUBLkM3E",
+    "state_changes": []
+  },
+  {
+    "time": [
+      33,
+      34
+    ],
+    "visible_entities": [
+      {
+        "desc": "tree trunk with rough, textured bark and multiple dark, hollowed-out holes",
+        "action": "static",
+        "position": "foreground",
+        "id": "tree_trunk_main_1"
+      },
+      {
+        "desc": "brown wooden log cabin structure",
+        "action": "static",
+        "position": "background left",
+        "id": "building_cabin_brown_1"
+      },
+      {
+        "desc": "white snow covering the ground and building roofs",
+        "action": "static",
+        "position": "bottom/background",
+        "id": "snow_ground_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A tree trunk with visible holes stands in the foreground.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "Snow covers the ground and the roofs of the buildings in the background.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The tree trunk with holes is in the foreground, positioned in front of the brown wooden cabin. The cabin is located to the left of the tree trunk. The snow is on the ground below the tree and on the roof of the cabin.",
+    "parse_success": true,
+    "chunk_idx": 33,
+    "video_id": "dwxUUBLkM3E",
+    "state_changes": []
+  },
+  {
+    "time": [
+      34,
+      35
+    ],
+    "visible_entities": [
+      {
+        "desc": "large tree trunk with rough, greyish-brown bark and multiple dark, hollowed-out holes",
+        "action": "static",
+        "position": "foreground",
+        "id": "tree_trunk_main_1"
+      },
+      {
+        "desc": "two-story house with brown siding and snow-covered roof",
+        "action": "static",
+        "position": "background",
+        "id": "building_cabin_brown_1"
+      },
+      {
+        "desc": "white snow covering the ground and roof",
+        "action": "static",
+        "position": "background",
+        "id": "snow_ground_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The camera angle shifts slightly to the right, changing the perspective of the foreground tree.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A large tree trunk with distinct holes stands in the foreground.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A house is visible in the background behind the tree.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "Snow covers the ground and the roof of the house.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The large tree trunk is in the foreground, positioned in front of the house. The house is in the background, situated behind the tree. The snow is on the ground below the house and on the roof above the house's walls.",
+    "parse_success": true,
+    "chunk_idx": 34,
+    "video_id": "dwxUUBLkM3E",
+    "state_changes": []
+  },
+  {
+    "time": [
+      35,
+      36
+    ],
+    "visible_entities": [
+      {
+        "desc": "large tree trunk with rough, grey-brown bark and multiple dark, hollowed-out holes",
+        "action": "static",
+        "position": "left",
+        "id": "tree_trunk_main_1"
+      },
+      {
+        "desc": "thick, curved tree trunk with textured bark and visible cavities",
+        "action": "static",
+        "position": "right",
+        "id": "tree_trunk_main_1"
+      },
+      {
+        "desc": "brown wooden building with horizontal siding and a visible window",
+        "action": "static",
+        "position": "background",
+        "id": "building_cabin_brown_1"
+      },
+      {
+        "desc": "white snow covering the ground",
+        "action": "static",
+        "position": "bottom",
+        "id": "snow_ground_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "Two large tree trunks stand in the foreground.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A brown wooden building is visible in the background behind the trees.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "Snow covers the ground at the base of the trees.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The tree trunk with multiple holes is to the left of the curved tree trunk. Both trees are in front of the brown wooden building. The snow is below the trees and the building.",
+    "parse_success": true,
+    "chunk_idx": 35,
+    "video_id": "dwxUUBLkM3E",
+    "state_changes": []
+  },
+  {
+    "time": [
+      36,
+      37
+    ],
+    "visible_entities": [
+      {
+        "desc": "three large tree trunks with rough, textured gray bark and visible knots",
+        "action": "static",
+        "position": "foreground",
+        "id": "tree_trunk_main_1"
+      },
+      {
+        "desc": "brown wooden cabin with horizontal siding and a white-framed window",
+        "action": "static",
+        "position": "background",
+        "id": "building_cabin_brown_1"
+      },
+      {
+        "desc": "white snow covering the ground",
+        "action": "static",
+        "position": "bottom",
+        "id": "snow_ground_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The camera is positioned behind three large tree trunks.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A brown wooden cabin is visible in the background.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "Snow is on the ground near the base of the trees.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The three tree trunks are in the foreground, positioned in front of the brown wooden cabin. The cabin is located behind the trees. The snow is on the ground below the trees and the cabin.",
+    "parse_success": true,
+    "chunk_idx": 36,
+    "video_id": "dwxUUBLkM3E",
+    "state_changes": []
+  },
+  {
+    "time": [
+      37,
+      38
+    ],
+    "visible_entities": [
+      {
+        "desc": "large tree trunk with rough, textured bark and a large hollow cavity on the left side",
+        "action": "static",
+        "position": "left",
+        "id": "tree_trunk_main_1"
+      },
+      {
+        "desc": "large tree trunk with rough bark, splitting into a V-shape near the top",
+        "action": "static",
+        "position": "center",
+        "id": "tree_trunk_main_1"
+      },
+      {
+        "desc": "large tree trunk with rough bark, leaning towards the right",
+        "action": "static",
+        "position": "right",
+        "id": "tree_trunk_main_1"
+      },
+      {
+        "desc": "wooden building with vertical siding and a sloped roof",
+        "action": "static",
+        "position": "background",
+        "id": "building_cabin_brown_1"
+      },
+      {
+        "desc": "bare tree branches against a blue sky",
+        "action": "static",
+        "position": "top",
+        "id": "tree_branches_bare_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The camera is positioned low, looking up at the trees and the sky.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The trees are in the foreground, obscuring parts of the building behind them.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The sky is blue and clear, with no clouds visible.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The three large tree trunks are in the foreground, with the leftmost trunk to the left of the central trunk, and the rightmost trunk to the right of the central trunk. The wooden building is in the background, behind the tree trunks. The bare tree branches are above the trunks and the building, set against the blue sky.",
+    "parse_success": true,
+    "chunk_idx": 37,
+    "video_id": "dwxUUBLkM3E",
+    "state_changes": []
+  },
+  {
+    "time": [
+      38,
+      39
+    ],
+    "visible_entities": [
+      {
+        "desc": "large tree trunk with rough, deeply grooved grey-brown bark, featuring a prominent forked branch structure",
+        "action": "static",
+        "position": "foreground",
+        "id": "tree_trunk_main_1"
+      },
+      {
+        "desc": "wooden log cabin with horizontal brown siding and a snow-covered roof",
+        "action": "static",
+        "position": "background",
+        "id": "building_cabin_brown_1"
+      },
+      {
+        "desc": "white snow covering the ground and rooftops",
+        "action": "static",
+        "position": "bottom",
+        "id": "snow_ground_1"
+      },
+      {
+        "desc": "bare tree branches against a blue sky",
+        "action": "static",
+        "position": "top",
+        "id": "tree_branches_bare_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A large tree trunk stands in the foreground, obscuring parts of the background.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "Snow covers the ground and the roof of the wooden cabin.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The camera angle is low, looking up at the tree and the sky.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The large tree trunk is in the foreground, positioned in front of the wooden log cabin. The snow is on the ground below the tree and on the roof of the cabin. The bare branches are above the tree trunk and against the blue sky.",
+    "parse_success": true,
+    "chunk_idx": 38,
+    "video_id": "dwxUUBLkM3E",
+    "state_changes": []
+  },
+  {
+    "time": [
+      39,
+      40
+    ],
+    "visible_entities": [
+      {
+        "desc": "large tree trunk, rough textured gray-brown bark, thick, leaning diagonally",
+        "action": "static",
+        "position": "foreground",
+        "id": "tree_trunk_main_1"
+      },
+      {
+        "desc": "wooden cabin, horizontal brown log siding, snow-covered roof",
+        "action": "static",
+        "position": "background",
+        "id": "building_cabin_brown_1"
+      },
+      {
+        "desc": "white snow, covering the ground and rooftops",
+        "action": "static",
+        "position": "bottom",
+        "id": "snow_ground_1"
+      },
+      {
+        "desc": "bare tree branches, thin, dark, leafless",
+        "action": "static",
+        "position": "top",
+        "id": "tree_branches_bare_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A large tree trunk stands in the foreground, partially obscuring the view of the cabin.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "Snow covers the ground and the roofs of the wooden buildings.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The wooden cabin features horizontal log siding.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The large tree trunk is in front of the wooden cabin. The snow is below the cabin and on top of its roof. The bare tree branches are above the cabin against the blue sky.",
+    "parse_success": true,
+    "chunk_idx": 39,
+    "video_id": "dwxUUBLkM3E",
+    "state_changes": []
+  },
+  {
+    "time": [
+      40,
+      41
+    ],
+    "visible_entities": [
+      {
+        "desc": "large tree trunk with rough, dark brown bark, split into two main sections",
+        "action": "static",
+        "position": "foreground",
+        "id": "tree_trunk_main_1"
+      },
+      {
+        "desc": "brown wooden cabin with horizontal log siding",
+        "action": "static",
+        "position": "background",
+        "id": "building_cabin_brown_1"
+      },
+      {
+        "desc": "white snow covering the ground and roof surfaces",
+        "action": "static",
+        "position": "bottom/background",
+        "id": "snow_ground_1"
+      },
+      {
+        "desc": "bare tree branches against a blue sky",
+        "action": "static",
+        "position": "top",
+        "id": "tree_branches_bare_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A large tree trunk stands in the foreground, partially obscuring the view of a cabin.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "Snow covers the ground and the roof of the wooden cabin.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The cabin is constructed from brown horizontal logs.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The large tree trunk is in front of the brown wooden cabin. The snow is below the cabin and on its roof. The bare tree branches are above the cabin and behind the main tree trunk.",
+    "parse_success": true,
+    "chunk_idx": 40,
+    "video_id": "dwxUUBLkM3E",
+    "state_changes": []
+  },
+  {
+    "time": [
+      41,
+      42
+    ],
+    "visible_entities": [
+      {
+        "desc": "two large, thick tree trunks with rough, textured gray-brown bark",
+        "action": "static",
+        "position": "foreground",
+        "id": "tree_trunk_main_1"
+      },
+      {
+        "desc": "brown wooden cabin with horizontal siding and snow-covered roof",
+        "action": "static",
+        "position": "background",
+        "id": "building_cabin_brown_1"
+      },
+      {
+        "desc": "white snow covering the ground and rooftops",
+        "action": "static",
+        "position": "background",
+        "id": "snow_ground_1"
+      },
+      {
+        "desc": "bare tree branches against a blue sky",
+        "action": "static",
+        "position": "top",
+        "id": "tree_branches_bare_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The camera remains static, framing a view through two large tree trunks.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "Snow covers the ground and the roof of the wooden cabin in the background.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The scene depicts a winter setting with bare trees and a blue sky.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "Two large tree trunks are in the foreground, framing the view. A brown wooden cabin is behind the trees in the background. Snow is on the ground below the cabin and on its roof. Bare branches are above the cabin against the sky.",
+    "parse_success": true,
+    "chunk_idx": 41,
+    "video_id": "dwxUUBLkM3E",
+    "state_changes": []
+  },
+  {
+    "time": [
+      42,
+      43
+    ],
+    "visible_entities": [
+      {
+        "desc": "large tree trunk with rough, textured grey-brown bark and a prominent knot, appearing in the foreground",
+        "action": "static",
+        "id": "tree_trunk_main_1"
+      },
+      {
+        "desc": "wooden cabin with horizontal brown siding and snow-covered roofs",
+        "action": "static",
+        "id": "building_cabin_brown_1"
+      },
+      {
+        "desc": "white snow covering the ground and building roofs",
+        "action": "static",
+        "id": "snow_ground_1"
+      },
+      {
+        "desc": "bare tree branches against a blue sky",
+        "action": "static",
+        "id": "tree_branches_bare_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The camera pans slightly to the left, revealing more of the tree trunk and the cabin behind it.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "Snow covers the roofs of the wooden cabin and the ground.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A large tree trunk stands in the foreground, partially obscuring the view of the cabin.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The large tree trunk is in the foreground, positioned in front of the wooden cabin. The cabin is in the background, behind the tree. Snow is on the roofs of the cabin and on the ground below it.",
+    "parse_success": true,
+    "chunk_idx": 42,
+    "video_id": "dwxUUBLkM3E",
+    "state_changes": []
+  },
+  {
+    "time": [
+      43,
+      44
+    ],
+    "visible_entities": [
+      {
+        "desc": "large, weathered tree trunk with rough, textured gray bark, featuring a prominent hollow knot or hole and a split in the wood",
+        "action": "static",
+        "position": "foreground/center",
+        "id": "tree_trunk_main_1"
+      },
+      {
+        "desc": "brown wooden building with horizontal siding and a white-framed window",
+        "action": "static",
+        "position": "background/left",
+        "id": "building_cabin_brown_1"
+      },
+      {
+        "desc": "bare tree branches against a blue sky",
+        "action": "static",
+        "position": "top/background",
+        "id": "tree_branches_bare_1"
+      },
+      {
+        "desc": "white snow accumulation on a roof",
+        "action": "static",
+        "position": "background/right",
+        "id": "snow_ground_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The camera is positioned close to a large tree trunk, looking slightly upward.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A brown wooden building is visible in the background behind the tree.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "Snow is resting on the roof of a structure in the background.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The large tree trunk is in the foreground, positioned in front of the brown wooden building. The bare tree branches are above the building and the tree trunk. The snow is on the roof of a structure to the right of the main tree trunk.",
+    "parse_success": true,
+    "chunk_idx": 43,
+    "video_id": "dwxUUBLkM3E",
+    "state_changes": []
+  },
+  {
+    "time": [
+      44,
+      45
+    ],
+    "visible_entities": [
+      {
+        "desc": "tree trunk with rough, textured bark and a vertical series of deep, hollowed-out holes",
+        "action": "static",
+        "position": "foreground",
+        "id": "tree_trunk_main_1"
+      },
+      {
+        "desc": "brown wooden building with horizontal siding and white-framed windows",
+        "action": "static",
+        "position": "background",
+        "id": "building_cabin_brown_1"
+      },
+      {
+        "desc": "bare tree branches against a blue sky",
+        "action": "static",
+        "position": "top",
+        "id": "tree_branches_bare_1"
+      },
+      {
+        "desc": "white snow on the ground",
+        "action": "static",
+        "position": "bottom",
+        "id": "snow_ground_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The camera remains static, focusing on the damaged tree trunk.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The tree trunk features a distinct vertical column of large, excavated holes.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A brown wooden building is visible behind the tree.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The damaged tree trunk is in the foreground, positioned in front of the brown wooden building. The bare branches are above the trunk, extending across the top of the frame. The white snow is below the tree and the building.",
+    "parse_success": true,
+    "chunk_idx": 44,
+    "video_id": "dwxUUBLkM3E",
+    "state_changes": []
+  },
+  {
+    "time": [
+      45,
+      46
+    ],
+    "visible_entities": [
+      {
+        "desc": "thick tree trunk with rough, textured bark and a large, irregular vertical cavity exposing the inner wood",
+        "action": "static",
+        "position": "center foreground",
+        "id": "tree_trunk_main_1"
+      },
+      {
+        "desc": "brown wooden house with horizontal siding and white-framed windows",
+        "action": "static",
+        "position": "left background",
+        "id": "building_cabin_brown_1"
+      },
+      {
+        "desc": "white snow covering the ground and rooftops",
+        "action": "static",
+        "position": "bottom",
+        "id": "snow_ground_1"
+      },
+      {
+        "desc": "dark-colored vehicle partially covered in snow",
+        "action": "static",
+        "position": "bottom left",
+        "id": "structure_dark_shed_1"
+      },
+      {
+        "desc": "thick tree trunk with rough bark",
+        "action": "static",
+        "position": "right foreground",
+        "id": "tree_trunk_main_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A tree trunk with a large hole stands in the foreground.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "Snow covers the ground and the roof of the house.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A brown wooden house is visible in the background.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The tree trunk with the large cavity is in the center foreground, positioned in front of the brown wooden house. Another tree trunk is to the right of the central tree. The snow-covered ground is below the trees and the house.",
     "parse_success": true,
     "chunk_idx": 45,
     "video_id": "dwxUUBLkM3E",
@@ -2510,51 +2410,51 @@
   },
   {
     "time": [
-      92,
-      94
+      46,
+      47
     ],
     "visible_entities": [
       {
-        "desc": "thick tree trunk with rough, light-brown bark and a vertical row of deep, dark, circular holes",
+        "desc": "thick tree trunk with rough, light-brown bark and a large, dark, hollowed-out section in the center",
         "action": "static",
         "position": "center",
         "id": "tree_trunk_main_1"
       },
       {
-        "desc": "brown wooden house with horizontal siding and white-trimmed windows",
+        "desc": "brown wooden building with horizontal siding and white-framed windows",
         "action": "static",
-        "position": "background",
-        "id": "building_cabin_1"
+        "position": "left",
+        "id": "building_cabin_brown_1"
       },
       {
-        "desc": "white snow covering the ground and piled on objects",
+        "desc": "white snow covering the ground and piled on surfaces",
         "action": "static",
         "position": "bottom",
         "id": "snow_ground_1"
       },
       {
-        "desc": "dark-colored vehicle roof covered in snow",
+        "desc": "dark-colored vehicle partially covered in snow",
         "action": "static",
-        "position": "left",
-        "id": "vehicle_dark_1"
+        "position": "bottom left",
+        "id": "structure_dark_shed_1"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A tree trunk with a distinct pattern of holes stands in the foreground.",
+        "fact": "The camera pans slightly to the right, revealing more of the tree trunk.",
         "confidence": 1.0
       },
       {
-        "fact": "Snow covers the ground and the roof of a car in the background.",
+        "fact": "A large tree trunk stands in the foreground.",
         "confidence": 1.0
       },
       {
-        "fact": "A brown wooden house is visible behind the tree.",
+        "fact": "Snow covers the ground and the roof of a nearby building.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The tree trunk is in the center foreground, positioned in front of the brown wooden house. The snow-covered vehicle is to the left of the tree trunk. The snow is on the ground below the tree and the house.",
+    "spatial": "The tree trunk is in the center foreground, positioned to the right of the brown wooden building. The snow is on the ground below the tree and the building. A dark vehicle is partially visible under the snow in the bottom left corner, next to the building.",
     "parse_success": true,
     "chunk_idx": 46,
     "video_id": "dwxUUBLkM3E",
@@ -2562,61 +2462,53 @@
   },
   {
     "time": [
-      94,
-      96
+      47,
+      48
     ],
     "visible_entities": [
       {
-        "desc": "large tree trunk with rough, dark brown bark and a deep vertical hollow",
+        "desc": "large tree trunk with rough, dark brown bark and a deep, hollowed-out cavity in the center",
         "action": "static",
         "position": "center",
         "id": "tree_trunk_main_1"
       },
       {
-        "desc": "snow-covered ground",
+        "desc": "white snow covering the ground and piled on top of objects",
         "action": "static",
-        "position": "bottom",
+        "position": "foreground",
         "id": "snow_ground_1"
       },
       {
-        "desc": "dark green object, possibly a sled or container, partially buried in snow",
+        "desc": "dark green plastic object, possibly a sled or container, partially buried in snow",
         "action": "static",
-        "position": "foreground",
+        "position": "bottom",
         "id": "sled_teal_1"
       },
       {
-        "desc": "wooden fence covered in snow",
+        "desc": "black rectangular object, possibly a case or box, covered in snow",
         "action": "static",
-        "position": "background",
-        "id": "building_cabin_1"
+        "position": "left",
+        "id": "structure_dark_shed_1"
       },
       {
-        "desc": "building with snow on the roof",
+        "desc": "wooden fence and building structure in the background",
         "action": "static",
         "position": "background",
-        "id": "building_cabin_1"
+        "id": "fence_wood_1"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "The camera pans slightly to the right, revealing more of the tree trunk and the snowy background.",
+        "fact": "The camera remains focused on the tree trunk and snowy foreground.",
         "confidence": 1.0
       },
       {
-        "fact": "A large tree trunk stands vertically in the center of the frame.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The ground is covered in a thick layer of white snow.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "A dark green object rests on the snow in the foreground.",
+        "fact": "Snow is piled on top of the black object and the green object.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The large tree trunk is in the center of the frame, with the snow-covered ground below it. The dark green object is in the foreground, in front of the tree. The wooden fence and building are in the background, behind the tree.",
+    "spatial": "The large tree trunk is in the center of the frame. The green plastic object is at the bottom, in front of the tree. The black object is to the left of the green object. The wooden fence and building are in the background, behind the tree.",
     "parse_success": true,
     "chunk_idx": 47,
     "video_id": "dwxUUBLkM3E",
@@ -2624,51 +2516,50 @@
   },
   {
     "time": [
-      96,
-      98
+      48,
+      49
     ],
     "visible_entities": [
       {
-        "desc": "large tree trunk with rough, dark brown bark and a deep vertical crevice",
+        "desc": "large tree trunk with rough, dark brown bark, split into a V-shape at the base",
         "action": "static",
         "position": "center",
         "id": "tree_trunk_main_1"
       },
       {
-        "desc": "thick white snow covering the ground and objects",
-        "action": "static",
-        "position": "foreground/background",
-        "id": "snow_ground_1"
-      },
-      {
-        "desc": "teal-colored object, possibly a sled or plastic container, partially buried in snow",
+        "desc": "green object, possibly a sled or container, partially buried in snow",
         "action": "static",
         "position": "bottom left",
         "id": "sled_teal_1"
       },
       {
-        "desc": "wooden structure or box edge, light brown",
+        "desc": "thick white snow covering the ground and piled on objects",
         "action": "static",
-        "position": "bottom right",
-        "id": "building_cabin_1"
+        "position": "foreground",
+        "id": "snow_ground_1"
+      },
+      {
+        "desc": "wooden structure or box edge, light brown, partially visible",
+        "action": "static",
+        "position": "bottom right"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "Snow covers the ground and rests on top of the teal object.",
+        "fact": "A large tree trunk stands vertically in the center of the frame.",
         "confidence": 1.0
       },
       {
-        "fact": "The tree trunk stands vertically in the center of the frame.",
+        "fact": "Snow covers the ground and rests on top of the green object.",
         "confidence": 1.0
       },
       {
-        "fact": "The teal object is positioned at the base of the tree.",
+        "fact": "The green object is positioned at the base of the tree.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The large tree trunk is in the center of the frame. The teal object is to the left of the tree trunk and is partially under the snow. The wooden structure is to the right of the tree trunk. The snow is on the ground and on top of the teal object.",
+    "spatial": "The large tree trunk is in the center of the frame. The green object is to the left of the tree trunk and is partially covered by snow. A wooden structure is to the right of the tree trunk. Snow is on the ground in the foreground and background.",
     "parse_success": true,
     "chunk_idx": 48,
     "video_id": "dwxUUBLkM3E",
@@ -2676,8 +2567,8 @@
   },
   {
     "time": [
-      98,
-      100
+      49,
+      50
     ],
     "visible_entities": [
       {
@@ -2701,11 +2592,11 @@
     ],
     "atomic_facts": [
       {
-        "fact": "A teal sled is resting on the ground.",
+        "fact": "A teal sled is resting on the snow.",
         "confidence": 1.0
       },
       {
-        "fact": "Snow is piled on top of the sled.",
+        "fact": "Snow is piled on top of the sled and the surrounding ground.",
         "confidence": 1.0
       },
       {
@@ -2718,14 +2609,12 @@
     "parse_success": true,
     "chunk_idx": 49,
     "video_id": "dwxUUBLkM3E",
-    "state_changes": [
-      "teal sled becomes clearly visible"
-    ]
+    "state_changes": []
   },
   {
     "time": [
-      100,
-      102
+      50,
+      51
     ],
     "visible_entities": [
       {
@@ -2735,7 +2624,7 @@
         "id": "sled_teal_1"
       },
       {
-        "desc": "human hand with a ring on the ring finger",
+        "desc": "human hand with light skin tone and a ring on the ring finger",
         "action": "touching the sled handle",
         "position": "bottom right",
         "id": "person_hand_1"
@@ -2745,11 +2634,17 @@
         "action": "static",
         "position": "background",
         "id": "tree_trunk_main_1"
+      },
+      {
+        "desc": "white snow",
+        "action": "static",
+        "position": "foreground",
+        "id": "snow_ground_1"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A hand reaches out and touches the black handle of the sled.",
+        "fact": "A hand reaches into the frame and touches the black handle of the sled.",
         "confidence": 1.0
       },
       {
@@ -2762,34 +2657,34 @@
       }
     ],
     "ocr": [],
-    "spatial": "The teal sled is positioned in front of the tree trunk. The hand is located at the bottom right, touching the handle of the sled. Snow is on top of the sled and surrounds it on the ground.",
+    "spatial": "The teal sled is positioned in front of the tree trunk. The hand is located at the bottom right, touching the sled's handle. Snow is on top of the sled and surrounds it on the ground.",
     "parse_success": true,
     "chunk_idx": 50,
     "video_id": "dwxUUBLkM3E",
     "state_changes": [
-      "human hand appears, begins interacting with sled handle"
+      "human hand appears and touches the sled handle"
     ]
   },
   {
     "time": [
-      102,
-      104
+      51,
+      52
     ],
     "visible_entities": [
       {
-        "desc": "hand with fair skin and a ring on the ring finger, attached to an arm with a red sleeve",
+        "desc": "person's hand and forearm with light skin tone, wearing a red sleeve",
         "action": "gripping a black handle",
         "position": "foreground",
         "id": "person_hand_1"
       },
       {
-        "desc": "black plastic handle with a smooth, curved, D-shaped loop design",
+        "desc": "black plastic handle with a smooth, oval-shaped grip",
         "action": "being held",
         "position": "center",
-        "id": "sled_teal_1"
+        "id": "handle_black_1"
       },
       {
-        "desc": "teal plastic sled body with a curved front section",
+        "desc": "teal plastic sled body with a curved front",
         "action": "static",
         "position": "background",
         "id": "sled_teal_1"
@@ -2803,7 +2698,7 @@
     ],
     "atomic_facts": [
       {
-        "fact": "A hand grips the black handle of a sled.",
+        "fact": "A person's hand is gripping the black handle of a sled.",
         "confidence": 1.0
       },
       {
@@ -2811,169 +2706,225 @@
         "confidence": 1.0
       },
       {
-        "fact": "The person is wearing a red long-sleeved garment.",
+        "fact": "Snow is piled on top of the teal body of the sled.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The hand is in the foreground, holding the black handle. The handle is attached to the teal sled, which is positioned behind the hand. The sled and the hand are situated on top of the white snow.",
+    "spatial": "The person's hand is in the foreground, holding the black handle which is attached to the teal sled. The teal sled is positioned behind the handle and is partially covered by white snow. The snow is located on the ground and on top of the sled.",
     "parse_success": true,
     "chunk_idx": 51,
     "video_id": "dwxUUBLkM3E",
     "state_changes": [
-      "hand gripping sled handle, arm with red sleeve visible"
+      "hand grips the black handle of the sled"
     ]
   },
   {
     "time": [
-      104,
-      106
+      52,
+      53
     ],
     "visible_entities": [
       {
-        "desc": "human hand with light skin tone",
-        "action": "holding birdseed",
-        "position": "foreground",
+        "desc": "human hand with light skin tone, holding a pile of small, flat, light-brown seeds",
+        "action": "holding seeds",
+        "position": "foreground right",
         "id": "person_hand_1"
       },
       {
-        "desc": "mixture of sunflower seeds and other grains",
-        "action": "resting in palm",
-        "position": "foreground",
-        "id": "birdseed_1"
-      },
-      {
-        "desc": "teal plastic bird feeder scoop with black handle",
+        "desc": "teal plastic sled with a black handle, partially covered in snow",
         "action": "static",
-        "position": "center",
-        "id": "birdseed_1"
+        "position": "center left",
+        "id": "sled_teal_1"
       },
       {
-        "desc": "thick white snow",
-        "action": "covering feeder",
-        "position": "center",
+        "desc": "white snow, piled on the sled and covering the ground",
+        "action": "static",
+        "position": "center and background",
         "id": "snow_ground_1"
       },
       {
-        "desc": "rough brown tree bark",
+        "desc": "dark brown tree trunk with rough bark texture",
         "action": "static",
-        "position": "background"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "A hand is holding a pile of birdseed in the foreground.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The teal bird feeder scoop is partially buried under a layer of snow.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The scene takes place outdoors near the base of a tree.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [],
-    "spatial": "The hand holding the birdseed is in the foreground, positioned in front of the teal bird feeder scoop. The scoop is located below the tree trunk and is covered by a mound of snow. The tree bark is visible in the background behind the snow-covered feeder.",
-    "parse_success": true,
-    "chunk_idx": 52,
-    "video_id": "dwxUUBLkM3E",
-    "state_changes": [
-      "hand now holding birdseed mixture instead of sled"
-    ]
-  },
-  {
-    "time": [
-      106,
-      108
-    ],
-    "visible_entities": [
-      {
-        "desc": "human hand with light skin tone, palm facing up, wearing a silver ring on the ring finger",
-        "action": "holding wood shavings",
-        "position": "foreground",
-        "id": "person_hand_1"
-      },
-      {
-        "desc": "small pile of light-brown wood shavings, thin and flaky texture",
-        "action": "resting in palm",
-        "position": "center",
-        "id": "wood_shavings_1"
-      },
-      {
-        "desc": "white snow, textured and piled up",
-        "action": "static",
-        "position": "background",
-        "id": "snow_ground_1"
-      },
-      {
-        "desc": "dark tree trunk or log, rough bark texture",
-        "action": "static",
-        "position": "left background",
+        "position": "background left",
         "id": "tree_trunk_main_1"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A hand is holding a small amount of wood shavings in the palm.",
+        "fact": "A hand is holding a cluster of seeds in the foreground.",
         "confidence": 1.0
       },
       {
-        "fact": "The hand is positioned in front of a snowy background.",
+        "fact": "The teal sled is resting on the snow-covered ground.",
         "confidence": 1.0
       },
       {
-        "fact": "A silver ring is visible on the ring finger of the hand.",
+        "fact": "A layer of snow covers the top surface of the sled.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The hand holding the wood shavings is in the foreground, positioned in front of the white snow and the dark tree trunk. The wood shavings are resting inside the palm of the hand. The snow is to the right of the tree trunk.",
+    "spatial": "The hand holding seeds is in the foreground to the right of the teal sled. The sled is positioned in front of the tree trunk. Snow is piled on top of the sled and surrounds the base of the tree.",
     "parse_success": true,
-    "chunk_idx": 53,
+    "chunk_idx": 52,
     "video_id": "dwxUUBLkM3E",
     "state_changes": [
-      "hand now holding wood shavings instead of birdseed"
+      "hand is now holding a pile of seeds instead of the handle"
     ]
   },
   {
     "time": [
-      108,
-      110
+      53,
+      54
     ],
     "visible_entities": [
       {
-        "desc": "human hand with light skin tone, palm facing upwards",
-        "action": "holding and then dropping seeds",
-        "position": "center/foreground",
+        "desc": "human hand with light skin tone, palm facing upwards, holding small debris",
+        "action": "holding debris",
+        "position": "foreground",
         "id": "person_hand_1"
       },
       {
-        "desc": "small pile of flat, beige/tan seeds or grains",
-        "action": "resting on palm then falling",
+        "desc": "small pile of light brown, fibrous wood shavings or sawdust",
+        "action": "resting in palm",
         "position": "center",
-        "id": "birdseed_1"
+        "id": "seeds_debris_1"
+      },
+      {
+        "desc": "silver metal ring worn on the ring finger",
+        "action": "static",
+        "position": "left",
+        "id": "ring_silver_1"
+      },
+      {
+        "desc": "thick white snow bank with rough texture",
+        "action": "static",
+        "position": "background",
+        "id": "snow_ground_1"
+      },
+      {
+        "desc": "dark, rough-textured tree bark",
+        "action": "static",
+        "position": "left background",
+        "id": "tree_trunk_main_1"
+      },
+      {
+        "desc": "weathered wooden plank or log",
+        "action": "static",
+        "position": "right background",
+        "id": "planks_wood_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A person is holding a handful of wood shavings in their open palm.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The hand is positioned in front of a snowy outdoor background.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A silver ring is visible on the person's finger.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The hand holding the wood shavings is in the foreground, positioned in front of the snow bank and wooden plank. The tree bark is to the left of the hand, while the wooden plank is to the right.",
+    "parse_success": true,
+    "chunk_idx": 53,
+    "video_id": "dwxUUBLkM3E",
+    "state_changes": [
+      "hand holds wood shavings/debris; silver ring becomes visible"
+    ]
+  },
+  {
+    "time": [
+      54,
+      55
+    ],
+    "visible_entities": [
+      {
+        "desc": "human hand with light skin tone",
+        "action": "holding and dropping seeds",
+        "position": "foreground",
+        "id": "person_hand_1"
+      },
+      {
+        "desc": "small, flat, beige-colored seeds or flakes",
+        "action": "falling from hand",
+        "position": "center",
+        "id": "seeds_debris_1"
       },
       {
         "desc": "white snow covering the ground",
         "action": "static",
         "position": "background",
         "id": "snow_ground_1"
-      },
-      {
-        "desc": "dark, blurry vertical object, possibly a tree trunk or rock",
-        "action": "static",
-        "position": "left/background"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A hand is holding a small amount of beige seeds in its palm.",
+        "fact": "A hand holds a small pile of beige seeds.",
         "confidence": 1.0
       },
       {
-        "fact": "The hand tilts or opens, causing the seeds to fall out of view.",
+        "fact": "The hand opens and tilts, causing the seeds to fall out.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The seeds drop towards the snowy ground.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The hand is in the foreground, positioned above the white snow in the background. The seeds are held inside the palm of the hand before falling downwards.",
+    "parse_success": true,
+    "chunk_idx": 54,
+    "video_id": "dwxUUBLkM3E",
+    "state_changes": [
+      "hand drops seeds/flakes"
+    ]
+  },
+  {
+    "time": [
+      55,
+      56
+    ],
+    "visible_entities": [
+      {
+        "desc": "human hand with light skin tone, palm open",
+        "action": "holding a small object",
+        "position": "foreground",
+        "id": "person_hand_1"
+      },
+      {
+        "desc": "small, irregular, light-colored object with dark speckles, possibly a piece of food or rock",
+        "action": "resting in palm",
+        "position": "center",
+        "id": "seeds_debris_1"
+      },
+      {
+        "desc": "white snow bank, textured surface",
+        "action": "static",
+        "position": "background",
+        "id": "snow_ground_1"
+      },
+      {
+        "desc": "dark, rough-textured rock or ground surface",
+        "action": "static",
+        "position": "left background",
+        "id": "ground_rock_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A hand is holding a small, light-colored object in its palm.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The object rests on the open palm of the hand.",
         "confidence": 1.0
       },
       {
@@ -2982,157 +2933,106 @@
       }
     ],
     "ocr": [],
-    "spatial": "The hand is in the foreground, positioned centrally in the frame. The seeds are resting on the palm of the hand. The snowy ground is behind and below the hand. The dark vertical object is to the left of the hand.",
-    "parse_success": true,
-    "chunk_idx": 54,
-    "video_id": "dwxUUBLkM3E",
-    "state_changes": [
-      "hand drops seeds from palm"
-    ]
-  },
-  {
-    "time": [
-      110,
-      112
-    ],
-    "visible_entities": [
-      {
-        "desc": "human hand with light skin tone, palm facing upwards",
-        "action": "holding a small object",
-        "position": "foreground",
-        "id": "person_hand_1"
-      },
-      {
-        "desc": "small, irregular, pale yellowish-white object, possibly a piece of food or crumb",
-        "action": "resting in palm",
-        "position": "center"
-      },
-      {
-        "desc": "large white snowbank with uneven surface texture",
-        "action": "static",
-        "position": "background",
-        "id": "snow_ground_1"
-      },
-      {
-        "desc": "dark, rough-textured surface, likely a rock or tree trunk",
-        "action": "static",
-        "position": "left background"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "A hand is holding a small, pale object in its open palm.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The hand is positioned in front of a large snowbank.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The object rests centrally on the palm of the hand.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [],
-    "spatial": "The human hand is in the foreground, positioned to the left of the large white snowbank. The small pale object is resting inside the palm of the hand. The dark, rough surface is located to the left of the hand and behind it.",
+    "spatial": "The human hand is in the foreground, positioned in front of the white snow bank. The small object is resting inside the palm of the hand. The dark rock surface is to the left of the snow bank in the background.",
     "parse_success": true,
     "chunk_idx": 55,
     "video_id": "dwxUUBLkM3E",
     "state_changes": [
-      "hand now holding small food object/crumb"
+      "hand holds a small irregular object (food/rock)"
     ]
   },
   {
     "time": [
-      112,
-      114
+      56,
+      57
     ],
     "visible_entities": [
       {
         "desc": "hand with fair skin, wearing a dark long-sleeved garment",
-        "action": "holding a wooden plank",
-        "position": "right",
+        "action": "holding wooden planks",
+        "position": "right foreground",
         "id": "person_hand_1"
       },
       {
-        "desc": "rough wooden plank, light brown, weathered texture",
+        "desc": "stack of rough, light-brown wooden planks",
         "action": "being held",
-        "position": "right",
-        "id": "wood_planks_1"
+        "position": "right center",
+        "id": "planks_wood_1"
       },
       {
-        "desc": "white snow, textured surface",
+        "desc": "white snow covering the ground",
         "action": "static",
-        "position": "background",
+        "position": "background and left",
         "id": "snow_ground_1"
       },
       {
-        "desc": "dark wet ground or water, reflective surface",
-        "action": "static",
-        "position": "center"
-      },
-      {
-        "desc": "teal or green object, partially visible",
+        "desc": "teal-colored object, possibly a container or tool",
         "action": "static",
         "position": "left",
         "id": "sled_teal_1"
+      },
+      {
+        "desc": "dark, wet ground surface",
+        "action": "static",
+        "position": "center",
+        "id": "ground_rock_1"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A hand is holding a wooden plank over a dark, wet surface.",
+        "fact": "A hand is holding a stack of wooden planks.",
         "confidence": 1.0
       },
       {
-        "fact": "The wooden plank is positioned near a patch of white snow.",
+        "fact": "The wooden planks are positioned over a patch of dark, wet ground.",
         "confidence": 1.0
       },
       {
-        "fact": "A teal object is visible on the left side of the frame.",
+        "fact": "Snow surrounds the dark ground area.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The hand holding the wooden plank is on the right side of the frame. The plank is positioned above the dark wet ground and next to the white snow. The teal object is located to the left of the dark ground area.",
+    "spatial": "The hand is in the right foreground, holding the wooden planks. The planks are positioned above the dark, wet ground in the center. The teal object is to the left of the dark ground area. Snow is visible in the background and to the left of the scene.",
     "parse_success": true,
     "chunk_idx": 56,
     "video_id": "dwxUUBLkM3E",
     "state_changes": [
-      "hand now holding wooden plank, wearing dark sleeve"
+      "hand (now with dark sleeve) holds a stack of wooden planks"
     ]
   },
   {
     "time": [
-      114,
-      116
+      57,
+      58
     ],
     "visible_entities": [
       {
-        "desc": "teal-colored curved object, possibly a plastic container or part of a machine, partially covered in snow",
+        "desc": "teal-colored plastic object, curved shape, partially buried in snow",
         "action": "static",
         "position": "left",
         "id": "sled_teal_1"
       },
       {
-        "desc": "stack of weathered wooden planks, light brown with dark grain and rough texture, appearing damaged or broken",
+        "desc": "stack of weathered wooden planks, rough texture, light brown color",
         "action": "static",
         "position": "right",
-        "id": "wood_planks_1"
+        "id": "planks_wood_1"
       },
       {
-        "desc": "white snow covering the ground and surrounding objects",
+        "desc": "white snow covering the ground",
         "action": "static",
-        "position": "background",
+        "position": "foreground",
         "id": "snow_ground_1"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A teal object sits partially buried in the snow on the left side of the frame.",
+        "fact": "A teal plastic object is partially buried in the snow on the left side.",
         "confidence": 1.0
       },
       {
-        "fact": "A stack of wooden planks rests on the snowy ground on the right side.",
+        "fact": "A stack of wooden planks rests on the snow on the right side.",
         "confidence": 1.0
       },
       {
@@ -3141,7 +3041,7 @@
       }
     ],
     "ocr": [],
-    "spatial": "The teal object is to the left of the wooden planks. The wooden planks are resting on top of the snow. The snow surrounds both the teal object and the wooden planks.",
+    "spatial": "The teal plastic object is to the left of the stack of wooden planks. Both objects are resting on top of the snow. The wooden planks are positioned to the right of the teal object.",
     "parse_success": true,
     "chunk_idx": 57,
     "video_id": "dwxUUBLkM3E",
@@ -3149,27 +3049,26 @@
   },
   {
     "time": [
-      116,
-      118
+      58,
+      59
     ],
     "visible_entities": [
       {
-        "desc": "teal plastic object, possibly a sled or container, partially covered in snow",
+        "desc": "teal-colored plastic object, possibly a sled or container, partially covered in snow",
         "action": "static",
         "position": "left",
         "id": "sled_teal_1"
       },
       {
-        "desc": "stack of wooden planks, rough texture, light brown color, covered with snow on top",
+        "desc": "stack of weathered wooden planks or boards",
         "action": "static",
         "position": "right",
-        "id": "wood_planks_1"
+        "id": "planks_wood_1"
       },
       {
-        "desc": "dark tree trunk, rough bark texture",
+        "desc": "thick tree trunk with rough, dark bark",
         "action": "static",
-        "position": "center",
-        "id": "tree_trunk_main_1"
+        "position": "center"
       },
       {
         "desc": "white snow covering the ground and objects",
@@ -3180,20 +3079,20 @@
     ],
     "atomic_facts": [
       {
-        "fact": "A teal plastic object is partially buried in snow on the left side.",
+        "fact": "A teal plastic object sits on the snow to the left of the tree.",
         "confidence": 1.0
       },
       {
-        "fact": "A stack of wooden planks sits on the right side with snow on top.",
+        "fact": "A stack of wooden planks is positioned to the right of the tree.",
         "confidence": 1.0
       },
       {
-        "fact": "A tree trunk stands in the center background.",
+        "fact": "Snow covers the top of the teal object and the wooden planks.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The teal plastic object is to the left of the tree trunk. The stack of wooden planks is to the right of the tree trunk. Snow is on top of the wooden planks and the teal object.",
+    "spatial": "The teal plastic object is to the left of the tree trunk. The stack of wooden planks is to the right of the tree trunk. Snow is on top of the teal object and the wooden planks, and the ground is covered in snow.",
     "parse_success": true,
     "chunk_idx": 58,
     "video_id": "dwxUUBLkM3E",
@@ -3201,38 +3100,37 @@
   },
   {
     "time": [
-      118,
-      120
+      59,
+      60
     ],
     "visible_entities": [
       {
-        "desc": "thick tree trunk with rough, dark brown bark and a large, jagged hollow cavity in the center",
+        "desc": "thick tree trunk with rough, dark brown bark and a large, jagged hollow in the center",
         "action": "static",
-        "position": "center",
-        "id": "tree_trunk_main_1"
+        "position": "center"
       },
       {
-        "desc": "thick layer of white snow covering the ground and a teal-colored object",
+        "desc": "white snow covering the ground and piled on top of a teal-colored object",
         "action": "static",
         "position": "foreground",
         "id": "snow_ground_1"
       },
       {
-        "desc": "teal-colored object, possibly a tarp or plastic sheet, partially buried under snow",
+        "desc": "teal-colored object, possibly a tarp or container, partially buried in snow",
         "action": "static",
         "position": "bottom-left",
         "id": "sled_teal_1"
       },
       {
-        "desc": "small, dark wooden shed or outbuilding in the distance",
+        "desc": "small, dark wooden shed or outbuilding",
         "action": "static",
-        "position": "background-left",
-        "id": "shed_small_1"
+        "position": "background",
+        "id": "structure_dark_shed_1"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A large tree trunk stands centrally in a snowy landscape.",
+        "fact": "A large tree trunk stands in the center of the frame.",
         "confidence": 1.0
       },
       {
@@ -3240,12 +3138,12 @@
         "confidence": 1.0
       },
       {
-        "fact": "A small wooden shed is visible in the background to the left of the tree.",
+        "fact": "A small wooden shed is visible in the background to the left.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The tree trunk is in the center of the frame, with a large hollow cavity visible. The teal object is below and to the left of the tree trunk, partially covered by snow. The wooden shed is in the background, to the left of the tree.",
+    "spatial": "The thick tree trunk is in the center of the frame. The teal object is in the bottom-left foreground, positioned in front of the tree. The wooden shed is in the background, to the left of the tree trunk.",
     "parse_success": true,
     "chunk_idx": 59,
     "video_id": "dwxUUBLkM3E",
@@ -3253,27 +3151,14 @@
   },
   {
     "time": [
-      120,
-      122
+      60,
+      61
     ],
     "visible_entities": [
       {
-        "desc": "thick tree trunk with rough, textured grey-brown bark and a large vertical strip of exposed, light-colored inner wood",
+        "desc": "thick tree trunk with rough, textured grey-brown bark and a large vertical strip of missing bark exposing pale, splintered wood underneath",
         "action": "static",
-        "position": "center",
-        "id": "tree_trunk_main_1"
-      },
-      {
-        "desc": "thick tree trunk with rough bark",
-        "action": "static",
-        "position": "right",
-        "id": "tree_trunk_main_1"
-      },
-      {
-        "desc": "bare tree branches extending from the central trunk",
-        "action": "static",
-        "position": "top",
-        "id": "tree_branches_1"
+        "position": "center"
       },
       {
         "desc": "white snow covering the ground",
@@ -3282,28 +3167,34 @@
         "id": "snow_ground_1"
       },
       {
-        "desc": "dark, box-like structure in the distance",
+        "desc": "bare trees with thin branches in the distance",
         "action": "static",
         "position": "background",
-        "id": "vehicle_dark_1"
+        "id": "tree_branches_bare_1"
+      },
+      {
+        "desc": "dark structure, possibly a shed or vehicle, partially visible",
+        "action": "static",
+        "position": "left background",
+        "id": "structure_dark_shed_1"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "The camera holds a static shot of the trees.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "A large section of bark is missing from the central tree trunk, revealing the lighter wood underneath.",
+        "fact": "A large tree trunk stands in the foreground with significant bark damage.",
         "confidence": 1.0
       },
       {
         "fact": "The ground is covered in a layer of white snow.",
         "confidence": 1.0
+      },
+      {
+        "fact": "The sky is clear and blue.",
+        "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The central tree trunk is to the left of the second tree trunk. The bare branches extend from the top of the central trunk. The snow is below the trees and covers the ground in the foreground and background. The dark structure is in the background, behind the central tree.",
+    "spatial": "The damaged tree trunk is in the center foreground. The snow is below the tree trunk and covers the ground. The bare trees and dark structure are behind the main tree trunk in the background.",
     "parse_success": true,
     "chunk_idx": 60,
     "video_id": "dwxUUBLkM3E",
@@ -3311,27 +3202,27 @@
   },
   {
     "time": [
-      122,
-      124
+      61,
+      62
     ],
     "visible_entities": [
       {
-        "desc": "thick tree trunk with rough, greyish-brown bark and a vertical column of large, shelf-like, light-brown fungal growths",
+        "desc": "large tree trunk with rough, grey-brown bark and a vertical column of light-tan, shelf-like fungal growths",
         "action": "static",
         "position": "center",
         "id": "tree_trunk_main_1"
       },
       {
-        "desc": "thinner tree trunk with rough bark and a dark hollow cavity",
+        "desc": "second tree trunk with rough, dark grey bark and a hollow cavity",
         "action": "static",
         "position": "right",
         "id": "tree_trunk_main_1"
       },
       {
-        "desc": "bare, thin tree branches extending from the trunks",
+        "desc": "bare, thin branches extending from the tree trunks",
         "action": "static",
         "position": "top",
-        "id": "tree_branches_1"
+        "id": "tree_branches_bare_1"
       },
       {
         "desc": "clear, bright blue sky",
@@ -3342,20 +3233,24 @@
     ],
     "atomic_facts": [
       {
-        "fact": "A vertical column of light-brown, shelf-like fungi grows on the central tree trunk.",
+        "fact": "A large tree trunk stands in the center of the frame.",
         "confidence": 1.0
       },
       {
-        "fact": "The trees are bare with no leaves on their branches.",
+        "fact": "A vertical column of light-tan, shelf-like fungal growths is attached to the center tree trunk.",
         "confidence": 1.0
       },
       {
-        "fact": "A dark hollow cavity is visible on the trunk of the tree to the right.",
+        "fact": "A second tree trunk with a hollow cavity is positioned to the right of the center tree.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "Bare branches extend from the trees against a clear blue sky.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The central tree trunk with fungal growths is to the left of the thinner tree trunk with a hollow. The bare branches are above the trunks and extend in front of the blue sky background.",
+    "spatial": "The large tree trunk with fungal growths is in the center of the frame. To its right is a second tree trunk with a hollow cavity. Bare branches extend from the tops of both trees, positioned in front of the clear blue sky in the background.",
     "parse_success": true,
     "chunk_idx": 61,
     "video_id": "dwxUUBLkM3E",
@@ -3363,24 +3258,24 @@
   },
   {
     "time": [
-      124,
-      126
+      62,
+      63
     ],
     "visible_entities": [
       {
-        "desc": "thick tree trunk with rough, dark grey bark and a large, vertical strip of exposed light-colored wood where the bark is missing",
+        "desc": "large tree trunk with rough, dark grey bark and a vertical column of light-colored, exposed wood where bark has been stripped away",
         "action": "static",
         "position": "left",
         "id": "tree_trunk_main_1"
       },
       {
-        "desc": "thinner tree trunk with rough, dark grey bark and a dark hollow knot",
+        "desc": "thinner tree trunk with rough, dark bark and a hollowed-out knot near the base",
         "action": "static",
         "position": "right",
         "id": "tree_trunk_main_1"
       },
       {
-        "desc": "clear blue sky",
+        "desc": "clear, bright blue sky",
         "action": "static",
         "position": "background",
         "id": "sky_blue_1"
@@ -3388,20 +3283,20 @@
     ],
     "atomic_facts": [
       {
-        "fact": "A large tree trunk stands on the left side of the frame.",
+        "fact": "A large tree trunk on the left has a significant vertical section of bark missing, revealing pale wood underneath.",
         "confidence": 1.0
       },
       {
-        "fact": "A second tree trunk stands to the right of the first tree.",
+        "fact": "A second, thinner tree trunk stands to the right of the damaged tree.",
         "confidence": 1.0
       },
       {
-        "fact": "The left tree has a significant vertical wound exposing the inner wood.",
+        "fact": "The trees are bare of leaves, indicating a winter or early spring setting.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The thick tree trunk with the exposed wood is on the left side of the frame. The thinner tree trunk with the hollow knot is to the right of the thick tree. Both trees are in the foreground against the blue sky background.",
+    "spatial": "The large, damaged tree trunk is to the left of the thinner tree trunk. The thinner tree trunk is to the right of the large tree trunk. Both trees are in front of the clear blue sky.",
     "parse_success": true,
     "chunk_idx": 62,
     "video_id": "dwxUUBLkM3E",
@@ -3409,24 +3304,24 @@
   },
   {
     "time": [
-      126,
-      128
+      63,
+      64
     ],
     "visible_entities": [
       {
-        "desc": "large tree trunk with rough, textured gray-brown bark and a vertical strip of exposed, light-colored wood",
+        "desc": "large tree trunk with rough, greyish-brown bark and a significant vertical strip of missing bark exposing light-colored, smooth wood underneath",
         "action": "static",
         "position": "left",
         "id": "tree_trunk_main_1"
       },
       {
-        "desc": "large tree trunk with rough, textured gray-brown bark and a dark hollow or knot",
+        "desc": "thick tree trunk with rough, textured grey bark and a dark, hollowed-out knot or cavity",
         "action": "static",
         "position": "right",
         "id": "tree_trunk_main_1"
       },
       {
-        "desc": "clear blue sky",
+        "desc": "clear, bright blue sky",
         "action": "static",
         "position": "background",
         "id": "sky_blue_1"
@@ -3435,7 +3330,7 @@
         "desc": "thin, bare tree branches",
         "action": "static",
         "position": "top",
-        "id": "tree_branches_1"
+        "id": "tree_branches_bare_1"
       }
     ],
     "atomic_facts": [
@@ -3444,20 +3339,20 @@
         "confidence": 1.0
       },
       {
-        "fact": "The tree on the left has a long vertical section where the bark is missing, exposing the lighter wood underneath.",
+        "fact": "The tree on the left has a large section of bark stripped away, revealing the inner wood.",
         "confidence": 1.0
       },
       {
-        "fact": "The tree on the right has a dark, hollowed-out area on its trunk.",
+        "fact": "The tree on the right features a dark, hollow cavity in its trunk.",
         "confidence": 1.0
       },
       {
-        "fact": "Thin, leafless branches extend from the tops of the trees.",
+        "fact": "Bare branches extend from the tops of the trees.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The tree with the exposed wood is to the left of the tree with the hollow. Both trees are in the foreground, with the clear blue sky behind them. Bare branches are above the main trunks.",
+    "spatial": "The tree with the exposed inner wood is to the left of the tree with the dark cavity. The bare branches are above the main trunks. The blue sky is behind the trees.",
     "parse_success": true,
     "chunk_idx": 63,
     "video_id": "dwxUUBLkM3E",
@@ -3465,55 +3360,51 @@
   },
   {
     "time": [
-      128,
-      130
+      64,
+      65
     ],
     "visible_entities": [
       {
-        "desc": "thick tree trunk with rough, textured grey-brown bark and a large, deep vertical cavity exposing light-colored inner wood",
+        "desc": "thick tree trunk with rough, textured gray-brown bark and a large, jagged vertical wound exposing pale, splintered inner wood",
         "action": "static",
-        "position": "center",
+        "position": "center/foreground",
         "id": "tree_trunk_main_1"
       },
       {
         "desc": "white snow covering the ground",
         "action": "static",
-        "position": "bottom",
+        "position": "bottom/background",
         "id": "snow_ground_1"
       },
       {
-        "desc": "bare trees with thin branches in the background",
+        "desc": "bare trees with thin branches in the distance",
         "action": "static",
         "position": "background",
-        "id": "tree_branches_1"
+        "id": "tree_branches_bare_1"
       },
       {
-        "desc": "dark structure or vehicle partially visible",
+        "desc": "dark rectangular structure, possibly a shed or vehicle",
         "action": "static",
-        "position": "left background",
-        "id": "vehicle_dark_1"
+        "position": "left/background",
+        "id": "structure_dark_shed_1"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A large tree trunk stands vertically in the center of the frame.",
+        "fact": "A large tree trunk with a significant vertical wound stands in the foreground.",
         "confidence": 1.0
       },
       {
-        "fact": "The tree features a significant vertical hollow or wound on its left side.",
+        "fact": "The ground is covered in white snow.",
         "confidence": 1.0
       },
       {
-        "fact": "Snow covers the ground in the foreground and background.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "Bare trees are visible in the distance against a blue sky.",
+        "fact": "Bare trees are visible in the background against a blue sky.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The thick tree trunk is in the center foreground, rising from the snow-covered ground. A dark structure is located to the left of the tree in the background. Bare trees are positioned behind the main tree trunk.",
+    "spatial": "The thick tree trunk with the jagged wound is in the center foreground. The snow is on the ground below the tree and extends into the background. A dark structure is to the left of the main tree trunk in the background.",
     "parse_success": true,
     "chunk_idx": 64,
     "video_id": "dwxUUBLkM3E",

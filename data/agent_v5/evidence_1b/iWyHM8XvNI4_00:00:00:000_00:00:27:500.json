@@ -2,70 +2,79 @@
   {
     "time": [
       0,
-      2
+      1
     ],
     "visible_entities": [
       {
-        "desc": "woman with dark hair tied back, wearing a black short-sleeved top, dark purple leggings, and red shoes",
+        "desc": "woman with dark hair tied back, wearing a black short-sleeved top and dark pants",
         "action": "standing on a circular platform",
-        "position": "center"
+        "position": "center-left",
+        "id": "person_instructor_black_top_1"
       },
       {
-        "desc": "woman with short dark hair, wearing a white lab coat over a dark outfit",
-        "action": "standing",
-        "position": "left"
+        "desc": "woman with short dark hair, wearing a white lab coat over a dark top and skirt",
+        "action": "standing on the left side of the platform",
+        "position": "left",
+        "id": "person_expert_lab_coat_1"
       },
       {
-        "desc": "woman with short blonde hair, wearing a patterned beige blouse and dark pants",
-        "action": "standing",
-        "position": "left"
+        "desc": "woman with short blonde hair, wearing a patterned beige top and dark pants",
+        "action": "standing on the platform",
+        "position": "center-left",
+        "id": "person_participant_beige_brooch_1"
       },
       {
-        "desc": "woman with dark hair, wearing a purple top and a patterned skirt",
-        "action": "standing",
-        "position": "center"
+        "desc": "woman in a purple top and patterned skirt",
+        "action": "standing behind the main group",
+        "position": "background",
+        "id": "person_participant_purple_top_1"
       },
       {
-        "desc": "audience members sitting on tiered white benches",
-        "action": "sitting",
-        "position": "right"
+        "desc": "audience members seated on tiered benches",
+        "action": "watching the stage",
+        "position": "right",
+        "id": "stage_platform_1"
       },
       {
-        "desc": "circular platform with red, white, yellow, and blue sections",
+        "desc": "circular stage platform with red, yellow, and blue sections",
         "action": "static",
-        "position": "center"
+        "position": "foreground",
+        "id": "stage_platform_1"
       },
       {
-        "desc": "large screen displaying a logo with Korean text",
+        "desc": "large screen displaying a blue logo with text",
         "action": "static",
-        "position": "background"
+        "position": "background",
+        "id": "logo_tv_chosun_1"
       },
       {
-        "desc": "TV studio set with hexagonal decorations and a starry background",
+        "desc": "hexagonal wall decorations in yellow and white",
         "action": "static",
-        "position": "background"
+        "position": "background",
+        "id": "studio_set_hex_walls_1"
       },
       {
-        "desc": "on-screen text overlay in Korean",
+        "desc": "orange banner with white Korean text at the top left",
         "action": "static",
-        "position": "top"
+        "position": "top-left",
+        "id": "graphic_overlay_korean_text_various"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A woman in a black top and purple leggings is standing on a circular platform.",
+        "fact": "A woman in a black top stands on a colorful circular platform.",
         "confidence": 1.0
       },
       {
-        "fact": "Three other women are standing to the left of the platform.",
+        "fact": "A woman in a white lab coat stands to the left of the woman in black.",
         "confidence": 1.0
       },
       {
-        "fact": "An audience is seated on tiered benches to the right of the stage.",
+        "fact": "An audience sits on tiered benches to the right of the stage.",
         "confidence": 1.0
       },
       {
-        "fact": "The on-screen text reads '내몸' and '몸속 쓰레기 정화주 <림프>'.",
+        "fact": "The orange banner at the top reads '몸속 쓰레기 정화주 <림프> 림프 순환 돕는 <30초 림프 마사지>'.",
         "confidence": 1.0
       }
     ],
@@ -76,7 +85,7 @@
       "림프 순환 돕는 <30초 림프 마사지>",
       "내 몸 사용설명서"
     ],
-    "spatial": "The woman in the black top is standing on the circular platform in the center of the stage. To her left, three other women are standing. To the right of the stage, an audience is seated on tiered benches. A large screen is located in the background, behind the central platform.",
+    "spatial": "The woman in the black top is standing on the circular platform, which is in the foreground. To her left stands the woman in the white lab coat. The audience is seated on benches to the right of the stage area. The large screen is located in the background, behind the people on the platform.",
     "parse_success": true,
     "chunk_idx": 0,
     "video_id": "iWyHM8XvNI4_00:00:00:000_00:00:27:500",
@@ -84,49 +93,62 @@
   },
   {
     "time": [
-      2,
-      4
+      1,
+      2
     ],
     "visible_entities": [
       {
-        "desc": "woman with short dark hair, wearing a white lab coat over a dark dress and white shoes",
-        "action": "standing on the left side of the stage",
-        "position": "left"
+        "desc": "woman with short dark hair, wearing a white lab coat over a dark dress, holding a clipboard",
+        "action": "standing",
+        "position": "left",
+        "id": "person_expert_lab_coat_1"
       },
       {
         "desc": "woman with short brown hair, wearing a white floral patterned blouse and blue jeans",
-        "action": "standing next to the woman in the black top",
-        "position": "center-left"
+        "action": "standing",
+        "position": "center-left",
+        "id": "person_participant_white_floral_1"
       },
       {
-        "desc": "woman with long dark hair, wearing a black off-the-shoulder top and maroon leggings",
-        "action": "standing in the center of the group",
-        "position": "center"
+        "desc": "woman with long dark hair, wearing a black off-shoulder top and maroon leggings",
+        "action": "standing",
+        "position": "center",
+        "id": "person_instructor_black_top_1"
       },
       {
-        "desc": "woman with short dark hair, wearing a beige long-sleeved top and beige pants",
-        "action": "standing next to the woman in the purple top",
-        "position": "center-right"
+        "desc": "woman with short curly dark hair, wearing a beige long-sleeved top and beige pants",
+        "action": "standing",
+        "position": "center-right",
+        "id": "person_participant_beige_brooch_1"
       },
       {
         "desc": "woman with long brown hair, wearing a purple long-sleeved top and a patterned skirt, holding an orange card",
-        "action": "standing on the right side of the group",
-        "position": "right"
+        "action": "standing",
+        "position": "right",
+        "id": "person_participant_purple_top_1"
       },
       {
-        "desc": "large Korean text overlay reading '림프 순환 30초 운동' and '1단계 <아침 릠프 마사지>'",
+        "desc": "large screen displaying a logo with a hand and Korean text",
         "action": "static",
-        "position": "bottom"
+        "position": "background",
+        "id": "logo_tv_chosun_1"
       },
       {
-        "desc": "TV studio set with hexagonal decorations, a large screen, and audience seating",
+        "desc": "studio audience seated on tiered benches",
+        "action": "sitting",
+        "position": "background right",
+        "id": "stage_platform_1"
+      },
+      {
+        "desc": "large on-screen text overlay with white and pink Korean characters",
         "action": "static",
-        "position": "background"
+        "position": "bottom",
+        "id": "graphic_overlay_korean_text_various"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "Five women are standing in a line on a colorful stage platform.",
+        "fact": "A group of five women are standing on a colorful stage set.",
         "confidence": 1.0
       },
       {
@@ -134,71 +156,80 @@
         "confidence": 1.0
       },
       {
-        "fact": "The on-screen text indicates the segment is about a '30-second lymph circulation exercise' and 'Stage 1 <Morning Lymph Massage>'.",
+        "fact": "The text overlay at the bottom reads '림프 순환 30초 운동' and '1단계 <아침 림프 마사지>'.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The audience is seated in the background watching the women on stage.",
         "confidence": 1.0
       }
     ],
     "ocr": [
-      "내몸 사용설명서",
+      "내 몸 사용설명서",
       "물속 쓰레기 정화조 <림프>",
       "림프 순환 돕는 <30초 림프 마사지>",
       "TV조선",
       "림프 순환 30초 운동",
       "1단계 <아침 림프 마사지>"
     ],
-    "spatial": "The five women are standing next to each other in a line on a circular stage platform. The woman in the white lab coat is to the left of the woman in the floral blouse. The woman in the purple top is to the right of the woman in the beige outfit. The large text overlay is below the group of women.",
+    "spatial": "The five women are standing in a line on the stage. The woman in the white lab coat is on the far left, next to the woman in the floral blouse. The woman in the black top is in the center, to the right of the woman in the floral blouse. The woman in the purple top is on the far right. The large screen is behind the women in the center. The audience is seated to the right of the stage area.",
     "parse_success": true,
     "chunk_idx": 1,
     "video_id": "iWyHM8XvNI4_00:00:00:000_00:00:27:500",
-    "state_changes": [
-      "Exercise title overlay appears introducing Step 1 lymph massage"
-    ]
+    "state_changes": []
   },
   {
     "time": [
-      4,
-      6
+      2,
+      3
     ],
     "visible_entities": [
       {
-        "desc": "woman with short dark hair, wearing a white lab coat over a dark top and skirt, holding a pointer stick",
+        "desc": "woman with short dark hair, wearing a white lab coat over a black top and black skirt, holding a pointer stick",
         "action": "static",
-        "position": "left"
+        "position": "left",
+        "id": "person_expert_lab_coat_1"
       },
       {
         "desc": "woman with short brown hair, wearing a white short-sleeved blouse with a floral pattern and blue jeans",
         "action": "static",
-        "position": "center-left"
+        "position": "center-left",
+        "id": "person_participant_white_floral_1"
       },
       {
-        "desc": "woman with dark hair tied back, wearing a black sleeveless top, maroon leggings, and pink sneakers",
+        "desc": "woman with dark hair tied back, wearing a black tank top with a pink name tag and maroon leggings",
         "action": "static",
-        "position": "center"
+        "position": "center",
+        "id": "person_instructor_black_top_1"
       },
       {
-        "desc": "woman with short curly dark hair, wearing a beige long-sleeved top and beige pants",
+        "desc": "woman with short dark hair, wearing a beige long-sleeved top and beige pants",
         "action": "static",
-        "position": "center-right"
+        "position": "center-right",
+        "id": "person_participant_beige_brooch_1"
       },
       {
         "desc": "woman with long brown hair, wearing a purple long-sleeved top and a patterned skirt, holding an orange card",
         "action": "static",
-        "position": "right"
+        "position": "right",
+        "id": "person_participant_purple_top_1"
       },
       {
         "desc": "blue rectangular yoga mat on the floor",
         "action": "static",
-        "position": "center foreground"
+        "position": "center foreground",
+        "id": "yoga_mat_blue_1"
       },
       {
-        "desc": "Korean text overlay at the bottom of the screen",
+        "desc": "Korean text overlay in white and orange fonts",
         "action": "static",
-        "position": "bottom"
+        "position": "bottom",
+        "id": "graphic_overlay_korean_text_various"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "Five women are standing in a line on a television studio set.",
+        "fact": "Five women are standing in a line on a stage.",
         "confidence": 1.0
       },
       {
@@ -226,64 +257,68 @@
       "림프 순환 30초 운동",
       "1단계 <아침 림프 마사지>"
     ],
-    "spatial": "The woman in the white lab coat is to the left of the woman in the floral blouse. The woman in the black top is standing in the center on top of the blue yoga mat. The woman in the purple top is to the right of the woman in the beige outfit. The text overlay is located below the group of women.",
+    "spatial": "The woman in the white lab coat is to the left of the woman in the floral blouse. The woman in the black tank top is standing on the blue mat in the center of the group. The woman in the purple top is to the right of the woman in the beige outfit. The text overlay is at the bottom of the screen, below the women.",
     "parse_success": true,
     "chunk_idx": 2,
     "video_id": "iWyHM8XvNI4_00:00:00:000_00:00:27:500",
-    "state_changes": [
-      "Yoga mat appears on floor for exercise demonstration"
-    ]
+    "state_changes": []
   },
   {
     "time": [
-      6,
-      8
+      3,
+      4
     ],
     "visible_entities": [
       {
-        "desc": "woman with short dark hair, wearing a white lab coat over a black top and black skirt, holding a clipboard",
+        "desc": "woman with short dark hair, wearing a white lab coat over a dark top and black skirt, holding a clipboard",
         "action": "standing still",
-        "position": "left"
+        "position": "left",
+        "id": "person_expert_lab_coat_1"
       },
       {
-        "desc": "woman with short brown hair, wearing a white floral patterned blouse and blue jeans",
+        "desc": "woman with short brown hair, wearing a white short-sleeved blouse with a floral pattern and blue jeans",
         "action": "standing still",
-        "position": "center-left"
+        "position": "center-left",
+        "id": "person_participant_white_floral_1"
       },
       {
-        "desc": "woman with long dark hair, wearing a black tank top with a pink name tag and maroon leggings",
+        "desc": "woman with dark hair tied back, wearing a black tank top, purple leggings, and pink sneakers",
         "action": "standing still",
-        "position": "center"
+        "position": "center",
+        "id": "person_instructor_black_top_1"
       },
       {
         "desc": "woman with short dark hair, wearing a beige long-sleeved top and beige pants",
         "action": "standing still",
-        "position": "center-right"
+        "position": "center-right",
+        "id": "person_participant_beige_brooch_1"
       },
       {
-        "desc": "woman with long brown hair, wearing a purple long-sleeved top and a patterned skirt, holding an orange card",
+        "desc": "woman with long brown hair, wearing a purple long-sleeved top and a patterned skirt, holding a small orange object",
         "action": "standing still",
-        "position": "right"
+        "position": "right",
+        "id": "person_participant_purple_top_1"
       },
       {
-        "desc": "blue and yellow yoga mat on the floor",
+        "desc": "blue yoga mat on a raised platform",
         "action": "static",
-        "position": "foreground"
+        "position": "foreground",
+        "id": "yoga_mat_blue_1"
       },
       {
-        "desc": "TV studio set with hexagonal wall patterns and blue neon lights",
+        "desc": "TV studio set with hexagonal wall panels and a large screen",
         "action": "static",
-        "position": "background"
-      },
-      {
-        "desc": "on-screen text overlay in Korean",
-        "action": "static",
-        "position": "top"
+        "position": "background",
+        "id": "studio_set_hex_walls_1"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "Five women are standing in a line on a stage.",
+        "fact": "Five women are standing on a raised platform in a TV studio.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The woman in the center is standing on a blue yoga mat.",
         "confidence": 1.0
       },
       {
@@ -291,25 +326,23 @@
         "confidence": 1.0
       },
       {
-        "fact": "The woman on the far right is holding an orange card.",
+        "fact": "The woman on the far right is holding a small orange object.",
         "confidence": 1.0
       },
       {
-        "fact": "The woman in the center is wearing a pink name tag.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The on-screen text reads '몸속 쓰레기 정화조 <림프>' and '림프 순환 돕는 <30초 림프 마사지>'.",
+        "fact": "The screen in the background displays Korean text.",
         "confidence": 1.0
       }
     ],
     "ocr": [
-      "내 몸 사용설명서",
-      "TV조선",
+      "내몸",
+      "사냥꾼",
       "몸속 쓰레기 정화조 <림프>",
-      "림프 순환 돕는 <30초 림프 마사지>"
+      "림프 순환 돕는 <30초 림프 마사지>",
+      "내 몸 사용설명서",
+      "TV조선"
     ],
-    "spatial": "The five women are standing next to each other in a horizontal line on a raised platform. The woman in the white lab coat is to the left of the woman in the floral blouse. The woman in the black tank top is in the center, between the woman in the floral blouse and the woman in the beige top. The woman in the purple top is to the right of the woman in the beige top. The yoga mat is on the floor in front of the women. The on-screen text is above the women.",
+    "spatial": "The woman in the white lab coat is to the left of the woman in the floral blouse. The woman in the black tank top is in the center, standing on a blue mat that is on a raised platform. The woman in the beige outfit is to the right of the woman in the black tank top. The woman in the purple top is on the far right of the group. The large screen is behind all the women.",
     "parse_success": true,
     "chunk_idx": 3,
     "video_id": "iWyHM8XvNI4_00:00:00:000_00:00:27:500",
@@ -317,46 +350,48 @@
   },
   {
     "time": [
-      8,
-      10
+      4,
+      5
     ],
     "visible_entities": [
       {
-        "desc": "woman with dark hair pulled back, wearing a black off-the-shoulder top with thin straps and a pink oval name tag on her chest",
-        "action": "touching her neck with her right hand",
+        "desc": "woman with dark hair pulled back, wearing a black off-the-shoulder top with spaghetti straps and a pink oval name tag",
+        "action": "touching her neck",
         "position": "center"
       },
       {
-        "desc": "woman with brown hair styled in an updo, wearing a white short-sleeved shirt with a red floral pattern",
+        "desc": "woman with brown hair in an updo, wearing a white short-sleeved shirt with a red floral pattern",
         "action": "static",
         "position": "right"
       },
       {
-        "desc": "woman with short dark hair, wearing a white jacket over a grey top and a pink oval name tag",
+        "desc": "woman with short dark hair, wearing a white lab coat over a grey top",
         "action": "static",
-        "position": "left"
+        "position": "left",
+        "id": "person_expert_lab_coat_1"
       },
       {
-        "desc": "on-screen text overlay in the bottom left corner",
+        "desc": "on-screen text graphics in Korean",
         "action": "static",
-        "position": "bottom"
+        "position": "top",
+        "id": "graphic_overlay_korean_text_various"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "The woman in the center raises her right hand to touch the side of her neck.",
+        "fact": "The woman in the center places her hand on her neck.",
         "confidence": 1.0
       },
       {
-        "fact": "The woman in the center is wearing a name tag that reads '김선우'.",
+        "fact": "The woman on the right looks towards the woman in the center.",
         "confidence": 1.0
       },
       {
-        "fact": "The text overlay '<목> 마사지!' appears on the screen.",
+        "fact": "The woman on the left stands slightly behind the woman in the center.",
         "confidence": 1.0
       },
       {
-        "fact": "The woman on the right is looking towards the woman in the center.",
+        "fact": "The text '<목> 마사지!' appears at the bottom left of the screen.",
         "confidence": 1.0
       }
     ],
@@ -365,79 +400,88 @@
       "몸속 쓰레기 정화조 <림프>",
       "림프 순환 돕는 <30초 림프 마사지>",
       "TV조선",
-      "운동처방사",
+      "운동+방사",
       "김선우",
       "<목> 마사지!"
     ],
-    "spatial": "The woman in the black top is positioned in the center, standing in front of the woman in the floral shirt who is to her right. The woman in the white jacket is to the left of the central woman. The text overlay '<목> 마사지!' is located in the bottom left corner of the screen, below the woman in the white jacket.",
+    "spatial": "The woman in the black top is in the center, standing in front of the woman in the floral shirt who is to her right. The woman in the white lab coat is to the left of the woman in the black top. The Korean text graphics are located at the top and bottom of the frame, above and below the people.",
     "parse_success": true,
     "chunk_idx": 4,
     "video_id": "iWyHM8XvNI4_00:00:00:000_00:00:27:500",
     "state_changes": [
-      "First neck self-massage demonstration begins"
+      "Transition from group introduction to specific demonstration; woman in black top begins touching her neck."
     ]
   },
   {
     "time": [
-      10,
-      12
+      5,
+      6
     ],
     "visible_entities": [
       {
-        "desc": "woman with dark hair tied back, wearing a black off-shoulder top with spaghetti straps, maroon leggings, and black sneakers with pink laces",
-        "action": "touching her neck with her right hand",
-        "position": "center"
+        "desc": "woman with dark hair tied back, wearing a black off-shoulder top, maroon leggings, and a pink name tag",
+        "action": "standing and touching her neck",
+        "position": "center",
+        "id": "person_instructor_black_top_1"
       },
       {
-        "desc": "woman with short dark hair, wearing a white lab coat over a blue top",
-        "action": "static",
-        "position": "left"
+        "desc": "woman with short brown hair, wearing a white floral patterned shirt and blue jeans",
+        "action": "standing and touching her neck",
+        "position": "right of center",
+        "id": "person_participant_white_floral_1"
       },
       {
-        "desc": "woman with light brown hair, wearing a white short-sleeved shirt with a red floral pattern and blue jeans",
-        "action": "static",
-        "position": "center-left"
+        "desc": "woman with short dark hair, wearing a white lab coat",
+        "action": "standing and touching her neck",
+        "position": "left",
+        "id": "person_expert_lab_coat_1"
       },
       {
         "desc": "woman with short dark hair, wearing a beige long-sleeved top and beige pants",
-        "action": "static",
-        "position": "center-right"
+        "action": "standing and touching her neck",
+        "position": "right background",
+        "id": "person_participant_beige_brooch_1"
       },
       {
         "desc": "woman with shoulder-length brown hair, wearing a purple long-sleeved top and a patterned skirt",
-        "action": "static",
-        "position": "right"
+        "action": "standing and touching her neck",
+        "position": "far right"
       },
       {
-        "desc": "large green and white text overlay",
+        "desc": "green and white text graphic overlay",
         "action": "static",
-        "position": "bottom-left"
+        "position": "bottom left",
+        "id": "graphic_overlay_korean_text_various"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "The woman in the center touches her neck with her right hand.",
+        "fact": "Five women are standing on a stage set.",
         "confidence": 1.0
       },
       {
-        "fact": "The other four women on stage are standing still.",
+        "fact": "All five women are simultaneously touching their necks with their hands.",
         "confidence": 1.0
       },
       {
-        "fact": "The text '<목> 마사지!' is displayed in the bottom-left corner.",
+        "fact": "The text '<목> 마사지!' is displayed in the bottom left corner.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The woman in the center is wearing a pink name tag.",
         "confidence": 1.0
       }
     ],
     "ocr": [
       "내몸 사용설명서",
-      "몸속 쓰레기 정화조 <림프>",
+      "몸속 쓰레기 정화주 <림프>",
       "림프 순환 돕는 <30초 림프 마사지>",
       "TV조선",
       "운동처방사",
       "김선우",
       "<목> 마사지!"
     ],
-    "spatial": "The woman in the black top is in the center of the group. The woman in the white lab coat is to the left of the woman in the floral shirt. The woman in the purple top is on the far right of the group. The text '<목> 마사지!' is below the people on the stage.",
+    "spatial": "The woman in the black top is in the center foreground. To her left is the woman in the white lab coat. To her right is the woman in the floral shirt. Behind the woman in the floral shirt are two other women, one in beige and one in purple. The text graphic is in the bottom left corner of the screen.",
     "parse_success": true,
     "chunk_idx": 5,
     "video_id": "iWyHM8XvNI4_00:00:00:000_00:00:27:500",
@@ -445,65 +489,71 @@
   },
   {
     "time": [
-      12,
-      14
+      6,
+      7
     ],
     "visible_entities": [
       {
-        "desc": "woman with dark hair, wearing a black tank top, purple leggings, and pink sneakers",
-        "action": "raising right arm and pointing upwards",
-        "position": "center"
+        "desc": "woman with dark hair tied back, wearing a black tank top, purple leggings, and pink sneakers",
+        "action": "standing with right arm raised pointing upwards",
+        "position": "center",
+        "id": "person_instructor_black_top_1"
       },
       {
         "desc": "woman with short dark hair, wearing a white lab coat over a black dress",
         "action": "standing with hand near mouth",
-        "position": "left"
+        "position": "left",
+        "id": "person_expert_lab_coat_1"
       },
       {
-        "desc": "woman with short brown hair, wearing a floral patterned top and blue jeans",
-        "action": "standing and looking at the center woman",
+        "desc": "woman with short brown hair, wearing a white floral blouse and blue jeans",
+        "action": "standing with hands raised near chest",
         "position": "center-left"
       },
       {
-        "desc": "woman with short dark hair, wearing a beige top and matching pants",
-        "action": "clapping hands",
-        "position": "center-right"
+        "desc": "woman with short dark hair, wearing a beige top and beige pants",
+        "action": "standing with hands raised near chest",
+        "position": "center-right",
+        "id": "person_participant_beige_brooch_1"
       },
       {
         "desc": "woman with shoulder-length brown hair, wearing a purple long-sleeve top and a patterned skirt",
-        "action": "raising right hand",
-        "position": "right"
+        "action": "standing with right hand raised",
+        "position": "right",
+        "id": "person_participant_purple_top_1"
       },
       {
-        "desc": "orange text box with white Korean text",
+        "desc": "orange rectangular graphic overlay with white text",
         "action": "static",
-        "position": "bottom-left"
+        "position": "bottom-left",
+        "id": "graphic_overlay_korean_text_various"
       },
       {
-        "desc": "TV studio set with blue and yellow hexagonal wall panels",
+        "desc": "blue hexagonal graphic on the background wall",
         "action": "static",
-        "position": "background"
+        "position": "right background",
+        "id": "studio_set_hex_walls_1"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "The woman in the center raises her right arm and points upwards.",
+        "fact": "The woman in the center raises her right arm and points her index finger upward.",
         "confidence": 1.0
       },
       {
-        "fact": "The woman in the beige outfit claps her hands.",
+        "fact": "The woman in the white lab coat stands to the left of the central figure.",
         "confidence": 1.0
       },
       {
-        "fact": "The woman on the far right raises her right hand.",
+        "fact": "The woman in the purple top stands to the right of the woman in the beige outfit.",
         "confidence": 1.0
       },
       {
-        "fact": "An orange text box appears in the bottom-left corner with Korean text.",
+        "fact": "An orange text box appears in the lower-left corner of the screen.",
         "confidence": 1.0
       },
       {
-        "fact": "The text in the orange box reads '관절을 꺾어 엄지와 검지로 V자를 만든다'.",
+        "fact": "The women are standing on a multi-colored circular platform.",
         "confidence": 1.0
       }
     ],
@@ -515,152 +565,163 @@
       "관절을 꺾어",
       "엄지와 검지로 V자를 만든다"
     ],
-    "spatial": "The woman in the black tank top is in the center of the group. To her left stands the woman in the floral top, and to her right stands the woman in the beige outfit. The woman in the white lab coat is on the far left, and the woman in the purple top is on the far right. The orange text box is located in the bottom-left corner of the screen, below the woman in the lab coat.",
+    "spatial": "The woman in the black tank top is in the center of the group, standing on a colorful circular platform. To her left are the woman in the white lab coat and the woman in the floral blouse. To her right are the woman in the beige outfit and the woman in the purple top. The orange text box is located in the bottom-left corner, below the woman in the lab coat. A blue hexagonal decoration is visible on the wall behind the woman in the purple top.",
     "parse_success": true,
     "chunk_idx": 6,
     "video_id": "iWyHM8XvNI4_00:00:00:000_00:00:27:500",
-    "state_changes": []
+    "state_changes": [
+      "Participants change pose from standing to raising hands/arms in preparation."
+    ]
   },
   {
     "time": [
-      14,
-      16
+      7,
+      8
     ],
     "visible_entities": [
       {
-        "desc": "woman with dark hair pulled back, wearing a black cold-shoulder tank top and purple leggings",
-        "action": "demonstrating a hand gesture with mouth open",
-        "position": "center foreground"
+        "desc": "woman with black hair pulled back, wearing a black off-shoulder tank top and maroon leggings",
+        "action": "demonstrating a neck massage technique with her right hand",
+        "position": "center",
+        "id": "person_instructor_black_top_1"
       },
       {
-        "desc": "woman with short brown hair, wearing a white floral patterned top and blue jeans",
-        "action": "giving a thumbs up gesture",
-        "position": "left of center"
+        "desc": "woman with short brown hair, wearing a white patterned blouse and blue jeans",
+        "action": "standing and watching the demonstration",
+        "position": "left of center",
+        "id": "person_participant_white_floral_1"
       },
       {
-        "desc": "woman with short dark hair, wearing a white lab coat",
-        "action": "static",
-        "position": "far left"
+        "desc": "woman with short dark hair, wearing a white lab coat over a dark top",
+        "action": "standing and watching the demonstration",
+        "position": "far left",
+        "id": "person_expert_lab_coat_1"
       },
       {
-        "desc": "woman with short dark hair, wearing a beige top and beige pants",
-        "action": "static",
-        "position": "right of center"
+        "desc": "woman with short dark hair, wearing a beige long-sleeved top and light-colored pants",
+        "action": "standing and watching the demonstration",
+        "position": "right of center",
+        "id": "person_participant_beige_brooch_1"
       },
       {
         "desc": "woman with brown hair, wearing a purple long-sleeved top and a patterned skirt",
-        "action": "static",
-        "position": "far right"
+        "action": "standing and watching the demonstration",
+        "position": "far right",
+        "id": "person_participant_purple_top_1"
       },
       {
         "desc": "pink oval name tag with white text",
         "action": "static",
-        "position": "on the chest of the center woman"
+        "position": "on the chest of the woman in the black top",
+        "id": "graphic_overlay_korean_text_various"
       },
       {
         "desc": "orange text box with white text",
         "action": "static",
-        "position": "bottom left"
+        "position": "bottom left",
+        "id": "graphic_overlay_korean_text_various"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "The woman in the black top is demonstrating a hand gesture where she folds her fingers to form a V shape.",
+        "fact": "The woman in the black top is demonstrating a neck massage technique.",
         "confidence": 1.0
       },
       {
-        "fact": "The woman in the floral top is giving a thumbs up.",
+        "fact": "The text on the orange box reads '목 림프 마사지 01' and '엄지와 검지로 V자를 만든다'.",
         "confidence": 1.0
       },
       {
-        "fact": "The name tag on the center woman reads '운동처방사 김선우'.",
+        "fact": "The name tag on the woman in the black top reads '운동처방사 김선우'.",
         "confidence": 1.0
       },
       {
-        "fact": "The orange text box displays the text '목 림프마사지 01' and instructions.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "Five women are standing on a stage with a colorful floor.",
+        "fact": "Four other women are standing on the stage watching the demonstration.",
         "confidence": 1.0
       }
     ],
     "ocr": [
-      "내 몸 사용설명서",
-      "TV조선",
-      "몸속 쓰레기 정화조 <림프>",
+      "내몸",
+      "목속 쓰레기 정화조 <림프>",
       "림프 순환 돕는 <30초 림프 마사지>",
-      "목 림프마사지",
+      "TV조선",
+      "목 림프 마사지",
       "01",
       "엄지와 검지로 V자를 만든다",
       "운동처방사",
       "김선우"
     ],
-    "spatial": "The woman in the black tank top is in the center foreground, standing to the right of the woman in the floral top. The woman in the white lab coat is on the far left of the group. The woman in the beige outfit is to the right of the center woman, and the woman in the purple top is on the far right. The pink name tag is attached to the chest of the center woman. The orange text box is located in the bottom left corner of the screen, below the people.",
+    "spatial": "The woman in the black top is in the center of the group, demonstrating a technique. The woman in the white lab coat is on the far left, next to the woman in the patterned blouse. The woman in the beige top is to the right of the demonstrator, and the woman in the purple top is on the far right. The orange text box is located in the bottom-left corner of the screen, below the women.",
     "parse_success": true,
     "chunk_idx": 7,
     "video_id": "iWyHM8XvNI4_00:00:00:000_00:00:27:500",
-    "state_changes": []
+    "state_changes": [
+      "Instructor begins demonstrating the neck massage technique; others switch to watching."
+    ]
   },
   {
     "time": [
-      16,
-      18
+      8,
+      9
     ],
     "visible_entities": [
       {
-        "desc": "woman with dark hair pulled back, wearing a black sleeveless top and a thin necklace",
-        "action": "gesturing with right hand",
-        "position": "foreground right"
+        "desc": "woman with dark hair pulled back, wearing a black sleeveless top and a necklace",
+        "action": "demonstrating a hand gesture",
+        "position": "right foreground",
+        "id": "person_instructor_black_top_1"
       },
       {
-        "desc": "woman with brown hair styled up, wearing a white top with a floral pattern",
-        "action": "pointing with right index finger",
-        "position": "background left"
+        "desc": "woman with brown hair styled in an updo, wearing a white floral patterned top",
+        "action": "watching and pointing",
+        "position": "left background",
+        "id": "person_participant_white_floral_1"
       },
       {
         "desc": "pink oval name tag with white text",
         "action": "static",
-        "position": "foreground right"
+        "position": "bottom right",
+        "id": "graphic_overlay_korean_text_various"
       },
       {
-        "desc": "orange text box with white and black text",
+        "desc": "orange text box with white Korean text",
         "action": "static",
-        "position": "bottom left"
+        "position": "bottom left",
+        "id": "graphic_overlay_korean_text_various"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "The woman in the foreground raises her right hand and points her index finger.",
+        "fact": "The woman in the black top raises her right hand and forms a V-shape with her index and middle fingers.",
         "confidence": 1.0
       },
       {
-        "fact": "The woman in the background points her right index finger upwards.",
+        "fact": "The woman in the floral top points her index finger upwards.",
         "confidence": 1.0
       },
       {
-        "fact": "The pink name tag on the foreground woman reads '김선우' and '운동처방사'.",
+        "fact": "The name tag identifies the woman in black as '김선우' (Kim Seon-woo).",
         "confidence": 1.0
       },
       {
-        "fact": "The orange text box displays instructions for a neck lymph massage.",
+        "fact": "The on-screen text describes the action as 'Making a V shape with the thumb and index finger'.",
         "confidence": 1.0
       }
     ],
     "ocr": [
       "내몸 사용설명서",
-      "목속 쓰레기 정화조 <림프>",
+      "목욕 쓰레기 정화조 <림프>",
       "림프 순환 돕는 <30초 림프 마사지>",
       "TV조선",
       "목 림프마사지",
       "01",
-      "관자를 접어",
-      "엄지와 관자로 V자를 만든다",
+      "엄지와 검지로 V자를 만든다",
+      "엄지",
       "운동처방사",
       "김선우",
       "manual"
     ],
-    "spatial": "The woman in the black top is in the foreground to the right of the woman in the floral top. The pink name tag is attached to the black top of the woman in the foreground. The orange text box is located at the bottom left of the screen, below the women.",
+    "spatial": "The woman in the black top is in the foreground on the right side of the frame. The woman in the floral top is behind her and to the left. The orange text box is located in the bottom left corner, while the pink name tag is on the chest of the woman in the black top.",
     "parse_success": true,
     "chunk_idx": 8,
     "video_id": "iWyHM8XvNI4_00:00:00:000_00:00:27:500",
@@ -668,134 +729,135 @@
   },
   {
     "time": [
-      18,
-      20
+      9,
+      10
     ],
     "visible_entities": [
       {
-        "desc": "woman with black hair pulled back, wearing a black off-the-shoulder top with thin straps and a small necklace",
-        "action": "demonstrating a neck massage with her right hand",
-        "position": "center"
+        "desc": "woman with dark hair pulled back, wearing a black off-the-shoulder top and a thin necklace",
+        "action": "demonstrating a massage technique on her neck",
+        "position": "center",
+        "id": "person_instructor_black_top_1"
       },
       {
         "desc": "woman with brown hair in an updo, wearing a white floral top and dangling earrings",
         "action": "watching the demonstration",
-        "position": "left"
+        "position": "left",
+        "id": "person_participant_white_floral_1"
       },
       {
-        "desc": "orange on-screen graphic with white text",
+        "desc": "on-screen graphics with Korean text, including a title box and a numbered step overlay",
         "action": "static",
-        "position": "bottom"
-      },
-      {
-        "desc": "pink oval name tag with white text",
-        "action": "static",
-        "position": "bottom right"
+        "position": "top and bottom",
+        "id": "graphic_overlay_korean_text_various"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "The woman in the black top is touching the side of her neck with her fingers.",
+        "fact": "The woman in the center is using her fingers to massage the side of her neck.",
         "confidence": 1.0
       },
       {
-        "fact": "The woman in the white floral top is looking at the woman in black.",
+        "fact": "The woman on the left is observing the demonstration.",
         "confidence": 1.0
       },
       {
-        "fact": "The orange graphic displays the text '목 림프마사지 01' and instructions.",
+        "fact": "The on-screen text identifies the action as '목 림프 마사지' (Neck Lymph Massage).",
         "confidence": 1.0
       },
       {
-        "fact": "The pink name tag identifies the woman in black as '김선우' (Kim Seon-woo).",
+        "fact": "The text '01' indicates this is the first step of the process.",
         "confidence": 1.0
       }
     ],
     "ocr": [
-      "내몸",
-      "사용설명서",
-      "목속 쓰레기 정화조 <림프>",
+      "내몸 사용설명서",
+      "목욕 쓰레기 정화조 <림프>",
       "림프 순환 돕는 <30초 림프 마사지>",
       "TV조선",
-      "목 림프마사지",
+      "목 림프 마사지",
       "01",
-      "관자를 접어",
-      "엄지와 관자로 V자를 만든다",
+      "관자를 접어 엄지와 검지로 V자를 만든다",
       "운동처방사",
       "김선우"
     ],
-    "spatial": "The woman in the black top is to the right of the woman in the white floral top. The orange instruction graphic is below both women. The pink name tag is to the right of the orange graphic and below the woman in black.",
+    "spatial": "The woman in the black top is positioned in the center of the frame, while the woman in the floral top is to her left. The main title graphic is at the top of the screen, and the instructional text overlay is at the bottom.",
     "parse_success": true,
     "chunk_idx": 9,
     "video_id": "iWyHM8XvNI4_00:00:00:000_00:00:27:500",
-    "state_changes": [
-      "Detailed neck massage technique demonstration starts"
-    ]
+    "state_changes": []
   },
   {
     "time": [
-      20,
-      22
+      10,
+      11
     ],
     "visible_entities": [
       {
-        "desc": "woman with black hair pulled back, wearing a black off-shoulder top with thin straps and a necklace",
-        "action": "pinching skin on neck",
-        "position": "center"
+        "desc": "woman with black hair pulled back, wearing a black off-the-shoulder top with thin straps and a gold necklace",
+        "action": "touching her neck with her right hand",
+        "position": "right foreground",
+        "id": "person_instructor_black_top_1"
       },
       {
         "desc": "woman with light brown hair tied up, wearing a white floral patterned top",
-        "action": "demonstrating massage technique",
-        "position": "left"
+        "action": "static",
+        "position": "left background"
       },
       {
         "desc": "yellow graphic arrows",
         "action": "static",
-        "position": "center"
+        "position": "center",
+        "id": "graphic_arrows_yellow_1"
       },
       {
         "desc": "pink oval name tag with white text",
         "action": "static",
-        "position": "bottom right"
+        "position": "bottom right",
+        "id": "graphic_overlay_korean_text_various"
       },
       {
-        "desc": "orange text box with white text",
+        "desc": "orange text box with white and black text",
         "action": "static",
-        "position": "bottom left"
+        "position": "bottom left",
+        "id": "graphic_overlay_korean_text_various"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "The woman in the black top uses her thumb and index finger to pinch the skin on the side of her neck.",
+        "fact": "The woman in the black top is performing a massage motion on her neck.",
         "confidence": 1.0
       },
       {
-        "fact": "Yellow graphic arrows point to the area being massaged on the woman's neck.",
+        "fact": "Yellow graphic arrows point to the area of the woman's neck being touched.",
         "confidence": 1.0
       },
       {
-        "fact": "The woman on the left gestures with her hand while looking at the woman in black.",
+        "fact": "The name tag identifies the woman in black as '김선우' (Kim Seon-woo) and '운동처방나' (Exercise Prescription Na).",
         "confidence": 1.0
       },
       {
-        "fact": "The text on the screen indicates the action is a 'Neck Lymph Massage'.",
+        "fact": "The orange text box provides instructions for '목 림프 마사지' (Neck Lymph Massage) step 01.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The text instructs to 'fold the fingers' and 'make a V shape with the thumb and index finger'.",
         "confidence": 1.0
       }
     ],
     "ocr": [
-      "내몸",
-      "사용설명서",
+      "내몸 사용설명서",
       "목속 쓰레기 정화조 <림프>",
       "림프 순환 돕는 <30초 림프 마사지>",
       "TV조선",
-      "목 림프마사지",
+      "목 림프 마사지",
       "01",
-      "관자를 접어",
-      "엄지와 검지로 V자를 만든다",
+      "관지를 접어",
+      "엄지와 관지로 V자를 만든다",
       "운동처방나",
       "김선우"
     ],
-    "spatial": "The woman in the black top is positioned to the right of the woman in the floral top. The yellow graphic arrows are located near the neck of the woman in the black top. The orange text box is below the woman in the floral top, and the pink name tag is below the woman in the black top.",
+    "spatial": "The woman in the black top is in the foreground on the right, while the woman in the floral top is behind her and to the left. The yellow graphic arrows are positioned next to the right side of the first woman's neck. The pink name tag is below the woman in black, and the orange instruction box is to the left of the name tag at the bottom of the screen.",
     "parse_success": true,
     "chunk_idx": 10,
     "video_id": "iWyHM8XvNI4_00:00:00:000_00:00:27:500",
@@ -803,61 +865,71 @@
   },
   {
     "time": [
-      22,
-      24
+      11,
+      12
     ],
     "visible_entities": [
       {
-        "desc": "woman with black hair pulled back, wearing a black off-shoulder top with spaghetti straps and a small necklace",
-        "action": "massaging her neck with her hand",
-        "position": "center"
+        "desc": "woman with black hair pulled back, wearing a black off-shoulder top with thin straps and a small necklace",
+        "action": "demonstrating a neck massage technique",
+        "position": "center/foreground",
+        "id": "person_instructor_black_top_1"
       },
       {
         "desc": "woman with brown hair and bangs, wearing a white floral patterned top",
         "action": "static",
-        "position": "left"
+        "position": "left/background",
+        "id": "person_participant_white_floral_1"
       },
       {
         "desc": "yellow graphic arrows pointing to the neck area",
         "action": "static",
-        "position": "center"
+        "position": "center",
+        "id": "graphic_arrows_yellow_1"
       },
       {
-        "desc": "orange and pink text boxes with Korean text",
+        "desc": "on-screen text graphics in Korean with orange and pink backgrounds",
         "action": "static",
-        "position": "bottom"
+        "position": "bottom",
+        "id": "graphic_overlay_korean_text_various"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "The woman in the black top is using her fingers to massage the side of her neck.",
+        "fact": "The woman in the black top is performing a massage on her neck.",
         "confidence": 1.0
       },
       {
-        "fact": "Yellow graphic arrows are overlaid on the screen to indicate the massage area.",
+        "fact": "Yellow arrows indicate the direction of the massage movement.",
         "confidence": 1.0
       },
       {
-        "fact": "The text box identifies the action as '목 림프 마사지' (Neck Lymph Massage).",
+        "fact": "The text '01' is visible in an orange box.",
         "confidence": 1.0
       },
       {
-        "fact": "The text box instructs to 'Make a V shape with the thumb and index finger'.",
+        "fact": "The text '목 림프 마사지' (Neck Lymph Massage) is visible.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The text '김선우' (Kim Seon-woo) is visible in a pink oval.",
         "confidence": 1.0
       }
     ],
     "ocr": [
-      "내몸 사용설명서",
-      "TV조선",
-      "목욕 쓰레기 정화조 <림프>",
+      "내몸",
+      "사용설명서",
+      "목속 쓰레기 정화조 <림프>",
       "림프 순환 돕는 <30초 림프 마사지>",
-      "목 림프마사지",
+      "TV조선",
+      "목 림프 마사지",
       "01",
+      "관자를 접어",
       "엄지와 검지로 V자를 만든다",
       "운동처방사",
       "김선우"
     ],
-    "spatial": "The woman in the black top is in the center foreground, while the woman in the floral top is to her left and slightly behind. The yellow graphic arrows are positioned near the neck of the central woman. The text boxes are located at the bottom of the screen, below the people.",
+    "spatial": "The woman in the black top is in the center foreground, while the woman in the floral top is to her left and slightly behind her. The yellow graphic arrows are positioned next to the neck of the woman in the black top. The on-screen text graphics are located at the bottom of the frame, below the people.",
     "parse_success": true,
     "chunk_idx": 11,
     "video_id": "iWyHM8XvNI4_00:00:00:000_00:00:27:500",
@@ -865,33 +937,35 @@
   },
   {
     "time": [
-      24,
-      26
+      12,
+      13
     ],
     "visible_entities": [
       {
-        "desc": "person with dark hair pulled back, wearing a silver hoop earring, with red and white manicured fingernails",
-        "action": "pinching the muscle below the ear",
+        "desc": "person with dark hair pulled back, wearing a silver hoop earring, with red and white gradient fingernails",
+        "action": "pinching the skin behind the ear",
         "position": "center"
       },
       {
-        "desc": "orange graphic overlay with white text and a heartbeat icon",
+        "desc": "orange text box with white text and a heartbeat icon",
         "action": "static",
-        "position": "bottom left"
+        "position": "bottom left",
+        "id": "graphic_overlay_korean_text_various"
       },
       {
-        "desc": "brown and yellow graphic overlay with white Korean text",
+        "desc": "brown text box with white and yellow text",
         "action": "static",
-        "position": "top left"
+        "position": "top left",
+        "id": "graphic_overlay_korean_text_various"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "The person is using their thumb and index finger to pinch the protruding muscle below the ear.",
+        "fact": "A hand is pinching the skin and muscle behind the ear.",
         "confidence": 1.0
       },
       {
-        "fact": "The on-screen text identifies the action as step 02 of a neck lymph massage.",
+        "fact": "The on-screen text identifies the action as 'Neck Lymph Massage' step 02.",
         "confidence": 1.0
       },
       {
@@ -901,7 +975,7 @@
     ],
     "ocr": [
       "내몸 사용설명서",
-      "몸속 쓰레기 청마조 <림프>",
+      "뭉속 쓰레기 정파조 <림프>",
       "림프 순환 돕는 <30초 림프 마사지>",
       "TV조선",
       "목 림프 마사지",
@@ -909,57 +983,55 @@
       "귀 아래",
       "튀어나온 근육을 잡아준다"
     ],
-    "spatial": "The person's hand is in the foreground, positioned in front of their neck and ear. The orange instructional graphic is located at the bottom left of the screen, below the person's hand. The brown title graphic is located at the top left of the screen, above the person's shoulder.",
+    "spatial": "The person's hand is in the foreground, positioned in front of their neck and ear. The orange text box is located at the bottom left of the screen, below the person's hand. The brown text box is located at the top left of the screen, above the person's head.",
     "parse_success": true,
     "chunk_idx": 12,
     "video_id": "iWyHM8XvNI4_00:00:00:000_00:00:27:500",
     "state_changes": [
-      "Close-up technique demonstration begins (pinching muscle below ear)"
+      "Camera cuts to extreme close-up of hand pinching skin behind the ear; action becomes detailed manipulation."
     ]
   },
   {
     "time": [
-      26,
-      28
+      13,
+      14
     ],
     "visible_entities": [
       {
-        "desc": "person with dark hair pulled back, wearing a silver hoop earring, with red and white painted fingernails",
-        "action": "pinching the skin and muscle behind the ear",
+        "desc": "person with dark hair tied back, wearing a gold hoop earring, with red and white gradient nail polish",
+        "action": "massaging neck",
         "position": "center"
       },
       {
-        "desc": "orange text box with white Korean text and a heartbeat line graphic",
+        "desc": "orange text box with white text and a heartbeat line icon",
         "action": "static",
-        "position": "bottom left"
+        "position": "bottom left",
+        "id": "graphic_overlay_korean_text_various"
       },
       {
-        "desc": "brown text box with white Korean text",
+        "desc": "orange text box with white text",
         "action": "static",
-        "position": "top left"
+        "position": "top left",
+        "id": "graphic_overlay_korean_text_various"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A hand with red and white nail polish is pinching the area behind the ear.",
+        "fact": "The person is using their fingers to pinch and massage the muscle area below their ear.",
         "confidence": 1.0
       },
       {
-        "fact": "The person is wearing a silver hoop earring.",
+        "fact": "The on-screen text identifies the action as 'Neck Lymph Massage' (목 림프 마사지).",
         "confidence": 1.0
       },
       {
-        "fact": "The on-screen text identifies the action as 'Neck Lymph Massage' step 02.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The text instructs to 'Grab the muscle protruding below the ear'.",
+        "fact": "The instruction text reads '02 Grab the protruding muscle below the ear' (귀 아래 튀어나온 근육을 잡아준다).",
         "confidence": 1.0
       }
     ],
     "ocr": [
       "내몸 사용설명서",
-      "몸속 쓰레기 청파조 <림프>",
+      "몸속 쓰레기 정화조 <림프>",
       "림프 순환 돕는 <30초 림프 마사지>",
       "TV조선",
       "목 림프 마사지",
@@ -967,7 +1039,7 @@
       "귀 아래",
       "튀어나온 근육을 잡아준다"
     ],
-    "spatial": "The hand is in the foreground, positioned to the right of the person's neck. The silver hoop earring is located above the hand. The orange text box is in the bottom left corner, below the person's neck.",
+    "spatial": "The person's hand is in the foreground, positioned in front of their neck and jawline. The instructional text box is located in the bottom left corner, below the person's hand. The title text box is in the top left corner, above the instructional text.",
     "parse_success": true,
     "chunk_idx": 13,
     "video_id": "iWyHM8XvNI4_00:00:00:000_00:00:27:500",
@@ -975,41 +1047,37 @@
   },
   {
     "time": [
-      28,
-      30
+      14,
+      15
     ],
     "visible_entities": [
       {
-        "desc": "person with dark hair, wearing a gold hoop earring, with orange and white gradient fingernails",
-        "action": "massaging neck",
+        "desc": "person with dark hair pulled back, wearing a small gold hoop earring, with manicured fingernails painted in a red-to-white gradient",
+        "action": "massaging the neck area",
         "position": "center"
       },
       {
-        "desc": "orange text box with white text '02' and '03'",
+        "desc": "on-screen text overlay with orange and white graphics",
         "action": "static",
-        "position": "bottom left"
-      },
-      {
-        "desc": "brown text box with white Korean text",
-        "action": "static",
-        "position": "top left"
+        "position": "top left and bottom left",
+        "id": "graphic_overlay_korean_text_various"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "The person is pinching the muscle below their ear with their thumb and index finger.",
+        "fact": "The person is using their thumb and index finger to pinch the skin and muscle behind their ear.",
         "confidence": 1.0
       },
       {
-        "fact": "The person is pressing down and moving their hand downwards along the neck.",
+        "fact": "The hand moves downwards along the side of the neck.",
         "confidence": 1.0
       },
       {
-        "fact": "The on-screen text indicates step 02 is 'Grab the protruding muscle below the ear'.",
+        "fact": "The text overlay indicates this is step 02 and 03 of a neck lymph massage.",
         "confidence": 1.0
       },
       {
-        "fact": "The on-screen text indicates step 03 is 'Press firmly and move down'.",
+        "fact": "The text instructs to grab the protruding muscle below the ear and press down.",
         "confidence": 1.0
       }
     ],
@@ -1021,7 +1089,7 @@
       "03 꾹꾹 누르면서 아래로 내려온다",
       "TV조선"
     ],
-    "spatial": "The person's hand is in the foreground, positioned in front of their neck and jawline. The orange step indicator box is located in the bottom left corner, below the person's hand. The brown title box is located in the top left corner, above the person's shoulder.",
+    "spatial": "The hand is positioned in front of the person's neck, with fingers pinching the skin below the ear. The text overlay is located in the bottom left corner of the screen, below the person's hand.",
     "parse_success": true,
     "chunk_idx": 14,
     "video_id": "iWyHM8XvNI4_00:00:00:000_00:00:27:500",
@@ -1029,105 +1097,45 @@
   },
   {
     "time": [
-      30,
-      32
+      15,
+      16
     ],
     "visible_entities": [
       {
-        "desc": "person with dark hair pulled back, wearing a gold hoop earring, and having manicured nails with a red and white gradient design",
-        "action": "pressing fingers into the neck",
+        "desc": "person with fair skin, dark hair pulled back, wearing a gold hoop earring, and having manicured nails with orange and white polish",
+        "action": "massaging neck",
         "position": "center"
       },
       {
-        "desc": "orange text box with white Korean text",
+        "desc": "orange text box with white Korean text and a heartbeat icon",
         "action": "static",
-        "position": "bottom left"
+        "position": "bottom left",
+        "id": "graphic_overlay_korean_text_various"
       },
       {
-        "desc": "brown text box with white Korean text",
+        "desc": "brown banner with white and yellow Korean text",
         "action": "static",
-        "position": "top left"
+        "position": "top left",
+        "id": "graphic_overlay_korean_text_various"
+      },
+      {
+        "desc": "white text logo 'TV조선'",
+        "action": "static",
+        "position": "top right",
+        "id": "logo_tv_chosun_1"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A person is performing a massage on their neck.",
+        "fact": "The person presses their fingers into the side of their neck.",
         "confidence": 1.0
       },
       {
-        "fact": "The fingers are pressing firmly into the skin below the ear.",
+        "fact": "The fingers move downwards along the neck.",
         "confidence": 1.0
       },
       {
-        "fact": "The on-screen text indicates this is step 03 of a neck lymph massage.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The text instructs to press firmly and move downwards.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [
-      "내몸 사용설명서",
-      "TV조선",
-      "목속 쓰레기 정화조 <림프>",
-      "림프 순환 돕는 <30초 림프 마사지>",
-      "목 림프 마사지",
-      "03 꾹꾹 누르면서 아래로 내려온다"
-    ],
-    "spatial": "The person's hand is in the foreground, pressing against the neck which is positioned centrally. The orange text box is located below the hand in the bottom left corner. The brown text box is positioned above the hand in the top left corner.",
-    "parse_success": true,
-    "chunk_idx": 15,
-    "video_id": "iWyHM8XvNI4_00:00:00:000_00:00:27:500",
-    "state_changes": []
-  },
-  {
-    "time": [
-      32,
-      34
-    ],
-    "visible_entities": [
-      {
-        "desc": "person with dark hair, wearing a black off-the-shoulder top and purple pants",
-        "action": "demonstrating neck massage",
-        "position": "left"
-      },
-      {
-        "desc": "person with short dark hair, wearing a beige long-sleeved top with a green brooch and beige pants",
-        "action": "static",
-        "position": "center"
-      },
-      {
-        "desc": "person with brown hair, wearing a purple long-sleeved top and a colorful patterned skirt, holding an orange card",
-        "action": "demonstrating neck massage",
-        "position": "right"
-      },
-      {
-        "desc": "close-up of a hand with orange nail polish touching a neck",
-        "action": "pressing and sliding down the neck",
-        "position": "foreground"
-      },
-      {
-        "desc": "orange text box with white Korean text",
-        "action": "static",
-        "position": "bottom-left"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "A close-up shot shows a hand with orange nail polish pressing and sliding down the side of a neck.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "Two women on stage are simultaneously performing a neck massage gesture with their hands.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The on-screen text '03 꼭꾹 누르면서 아래로 내려온다' provides instructions for the massage step.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The woman on the right is holding an orange card with the text '내몸' on it.",
+        "fact": "The text on the screen indicates step 03 of a neck lymph massage.",
         "confidence": 1.0
       }
     ],
@@ -1137,12 +1145,82 @@
       "몸속 쓰레기 정화조 <림프>",
       "림프 순환 돕는 <30초 림프 마사지>",
       "TV조선",
-      "목 림프 마사지",
+      "목 림프마사지",
       "03",
-      "꼭꾹 누르면서 아래로 내려온다",
-      "내몸"
+      "꾹꾹 누르면서 아래로 내려온다"
     ],
-    "spatial": "The close-up of the hand massaging the neck is in the foreground, while the three women on the studio set are in the background. The woman in the black top is to the left of the woman in the beige top, who is to the left of the woman in the purple top. The instructional text box is located in the bottom-left corner of the screen, below the main action.",
+    "spatial": "The person's hand is in front of their neck. The orange text box is below the brown banner. The TV logo is to the right of the brown banner.",
+    "parse_success": true,
+    "chunk_idx": 15,
+    "video_id": "iWyHM8XvNI4_00:00:00:000_00:00:27:500",
+    "state_changes": []
+  },
+  {
+    "time": [
+      16,
+      17
+    ],
+    "visible_entities": [
+      {
+        "desc": "close-up of a hand with manicured nails (orange/red polish) pressing into the side of a neck",
+        "action": "massaging the neck",
+        "position": "foreground",
+        "id": "hand_massage_generic"
+      },
+      {
+        "desc": "woman with dark hair wearing a black off-shoulder top and maroon pants",
+        "action": "demonstrating a neck massage",
+        "position": "left",
+        "id": "person_instructor_black_top_1"
+      },
+      {
+        "desc": "woman with short dark hair wearing a beige long-sleeved top with a green brooch",
+        "action": "static",
+        "position": "center",
+        "id": "person_participant_beige_brooch_1"
+      },
+      {
+        "desc": "woman with shoulder-length brown hair wearing a purple long-sleeved top and a patterned skirt",
+        "action": "touching her neck",
+        "position": "right",
+        "id": "person_participant_purple_top_1"
+      },
+      {
+        "desc": "orange on-screen text box with white Korean text",
+        "action": "static",
+        "position": "bottom-left",
+        "id": "graphic_overlay_korean_text_various"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A hand is pressing firmly into the side of a person's neck.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "Three women are standing on a stage set.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The woman on the left is demonstrating a massage technique on herself.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The text on screen instructs to press firmly and move downwards.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "내몸 사용설명서",
+      "목속 쓰레기 정파조 <림프>",
+      "림프 순환 돕는 <30초 림프 마사지>",
+      "TV조선",
+      "목 림프 마사지",
+      "03 꼭꼭 누르면서 아래로 내려온다",
+      "내몸",
+      "중고차여왕 김선우"
+    ],
+    "spatial": "The close-up of the hand massaging the neck is in the foreground. In the background, the woman in the black top is to the left of the woman in the beige top, who is to the left of the woman in the purple top. The orange instruction text box is located in the bottom-left corner of the screen, below the women.",
     "parse_success": true,
     "chunk_idx": 16,
     "video_id": "iWyHM8XvNI4_00:00:00:000_00:00:27:500",
@@ -1150,75 +1228,69 @@
   },
   {
     "time": [
-      34,
-      36
+      17,
+      18
     ],
     "visible_entities": [
       {
-        "desc": "woman with dark hair tied back, wearing a black off-shoulder top and maroon leggings, with a pink name tag on her chest",
+        "desc": "woman with dark hair tied back, wearing a black off-shoulder top and maroon pants, with a pink name tag",
         "action": "demonstrating a neck massage",
-        "position": "center-left"
+        "position": "left-center",
+        "id": "person_instructor_black_top_1"
       },
       {
         "desc": "woman with short dark hair, wearing a beige long-sleeved top with a green brooch and beige pants",
         "action": "standing and watching",
-        "position": "center"
+        "position": "center",
+        "id": "person_participant_beige_brooch_1"
       },
       {
-        "desc": "woman with shoulder-length brown hair, wearing a purple long-sleeved top and a patterned skirt, holding an orange card",
+        "desc": "woman with brown hair, wearing a purple long-sleeved top and a patterned skirt, holding an orange card",
         "action": "touching her neck",
         "position": "right"
       },
       {
         "desc": "woman with brown hair, wearing a white floral blouse and blue jeans",
-        "action": "touching her neck",
-        "position": "left"
+        "action": "standing and watching",
+        "position": "far left"
       },
       {
-        "desc": "orange rectangular card with white text",
-        "action": "being held",
-        "position": "right"
-      },
-      {
-        "desc": "on-screen graphics with Korean text and numbers",
+        "desc": "on-screen text overlay with Korean characters and numbers",
         "action": "static",
-        "position": "top-left and bottom-left"
+        "position": "top and bottom left",
+        "id": "graphic_overlay_korean_text_various"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "The woman in the black top is demonstrating a massage technique on her neck.",
+        "fact": "The woman in the black top is rubbing her neck with her right hand.",
         "confidence": 1.0
       },
       {
-        "fact": "The woman in the purple top is holding an orange card.",
+        "fact": "The woman in the purple top is holding an orange card with the text '내몸' on it.",
         "confidence": 1.0
       },
       {
-        "fact": "The woman in the floral blouse is touching her neck.",
+        "fact": "The on-screen text displays '03' and instructions for a neck lymph massage.",
         "confidence": 1.0
       },
       {
-        "fact": "The on-screen text identifies the action as '목 림프 마사지' (Neck Lymph Massage).",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The number '03' is displayed in an orange box on the screen.",
+        "fact": "The woman in the beige top is standing between the woman in black and the woman in purple.",
         "confidence": 1.0
       }
     ],
     "ocr": [
-      "내몸 사용설명서",
-      "목욕 쓰레기 정파즈 <림프>",
-      "림프 순환 돕는 <30초 림프 마사지>",
+      "내몸",
       "TV조선",
-      "목 림프 마사지",
+      "골속 쓰레기 정파즈 <림프>",
+      "림프 순환 돕는 <30초 림프 마사지>",
+      "김선우",
+      "목 림프마사지",
       "03",
       "꾹꾹 누르면서 아래로 내려온다",
-      "김선우",
       "내몸"
     ],
-    "spatial": "The woman in the black top is to the left of the woman in the beige top. The woman in the purple top is to the right of the woman in the beige top. The woman in the floral blouse is to the left of the woman in the black top. The orange card is held by the woman in the purple top. The on-screen text is located in the top-left and bottom-left corners of the frame.",
+    "spatial": "The woman in the black top is to the left of the woman in the beige top. The woman in the purple top is to the right of the woman in the beige top. The woman in the floral blouse is on the far left, next to the woman in the black top. The orange card is held in the hands of the woman in the purple top.",
     "parse_success": true,
     "chunk_idx": 17,
     "video_id": "iWyHM8XvNI4_00:00:00:000_00:00:27:500",
@@ -1226,44 +1298,48 @@
   },
   {
     "time": [
-      36,
-      38
+      18,
+      19
     ],
     "visible_entities": [
       {
-        "desc": "woman with dark hair in a bun, wearing a black off-the-shoulder top and purple pants",
-        "action": "massaging the neck of the woman in beige",
+        "desc": "woman with short dark hair, wearing a black off-shoulder top and purple pants",
+        "action": "massaging the neck of the woman in the beige top",
         "position": "center-left"
       },
       {
         "desc": "woman with short curly dark hair, wearing a beige long-sleeved top with a green flower brooch and beige pants",
         "action": "smiling while being massaged",
-        "position": "center"
+        "position": "center-right"
       },
       {
-        "desc": "woman with short brown hair, wearing a purple long-sleeved top and a colorful patterned skirt, holding an orange card",
-        "action": "standing and watching",
-        "position": "right"
+        "desc": "woman with short brown hair, wearing a purple long-sleeved top and a patterned skirt",
+        "action": "holding an orange card and standing",
+        "position": "right",
+        "id": "person_participant_purple_top_1"
       },
       {
-        "desc": "woman with short brown hair, wearing a white floral blouse and blue jeans",
-        "action": "standing and watching",
-        "position": "left"
+        "desc": "woman with short brown hair, wearing a white floral shirt and blue jeans",
+        "action": "standing with hand near mouth",
+        "position": "left",
+        "id": "person_participant_white_floral_1"
       },
       {
-        "desc": "orange card with white text",
+        "desc": "orange card with black text",
         "action": "being held",
-        "position": "right"
+        "position": "right",
+        "id": "graphic_overlay_korean_text_various"
       },
       {
-        "desc": "on-screen text overlay with white and yellow text on a dark background",
+        "desc": "on-screen text overlay in Korean",
         "action": "static",
-        "position": "top-left"
+        "position": "top-left",
+        "id": "graphic_overlay_korean_text_various"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "The woman in the black top is massaging the neck of the woman in the beige top.",
+        "fact": "The woman in the black off-shoulder top is massaging the neck of the woman in the beige top.",
         "confidence": 1.0
       },
       {
@@ -1271,7 +1347,71 @@
         "confidence": 1.0
       },
       {
-        "fact": "The on-screen text reads '몸속 쓰레기 정화주 <림프>' and '림프 순환 돕는 <30초 림프 마사지>'.",
+        "fact": "The woman in the floral shirt is standing on the far left.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The on-screen text reads '내몸 사용설명서' and '림프 순환 돕는 <30초 림프 마사지>'.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "내몸",
+      "사용설명서",
+      "몸속 쓰레기 정화조 <림프>",
+      "림프 순환 돕는 <30초 림프 마사지>",
+      "TV조선"
+    ],
+    "spatial": "The woman in the black top is to the left of the woman in the beige top. The woman in the purple top is to the right of the woman in the beige top. The woman in the floral shirt is to the left of the woman in the black top. The orange card is held in the hands of the woman in the purple top.",
+    "parse_success": true,
+    "chunk_idx": 18,
+    "video_id": "iWyHM8XvNI4_00:00:00:000_00:00:27:500",
+    "state_changes": [
+      "Physical interaction begins; instructor starts massaging the neck of the participant in the beige top."
+    ]
+  },
+  {
+    "time": [
+      19,
+      20
+    ],
+    "visible_entities": [
+      {
+        "desc": "woman with dark hair pulled back, wearing a black off-the-shoulder top with thin straps and a pink name tag",
+        "action": "massaging the neck of the woman in the center",
+        "position": "left",
+        "id": "person_instructor_black_top_1"
+      },
+      {
+        "desc": "woman with short dark curly hair, wearing a beige long-sleeved top with a green leaf-shaped brooch",
+        "action": "tilting head back and smiling",
+        "position": "center",
+        "id": "person_participant_beige_brooch_1"
+      },
+      {
+        "desc": "woman with long brown hair, wearing a purple long-sleeved top",
+        "action": "static",
+        "position": "right",
+        "id": "person_participant_purple_top_1"
+      },
+      {
+        "desc": "green Korean text overlay with white outline",
+        "action": "static",
+        "position": "bottom",
+        "id": "graphic_overlay_korean_text_various"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The woman in the black top is using both hands to massage the neck of the woman in the beige top.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The woman in the beige top tilts her head back while receiving the massage.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "Green Korean text appears at the bottom of the screen in the second frame.",
         "confidence": 1.0
       }
     ],
@@ -1280,50 +1420,56 @@
       "사생활",
       "몸속 쓰레기 정화주 <림프>",
       "림프 순환 돕는 <30초 림프 마사지>",
-      "TV조선"
+      "TV조선",
+      "목",
+      "목",
+      "목을 돌리면 튀어나오는 근육",
+      "내"
     ],
-    "spatial": "The woman in the black top is to the left of the woman in the beige top. The woman in the purple top is to the right of the woman in the beige top. The woman in the floral blouse is on the far left of the group. The orange card is in the hand of the woman in the purple top.",
+    "spatial": "The woman in the black top is standing to the left of the woman in the beige top. The woman in the purple top is standing to the right of the woman in the beige top. The green text overlay is located at the bottom of the screen, below the women.",
     "parse_success": true,
-    "chunk_idx": 18,
+    "chunk_idx": 19,
     "video_id": "iWyHM8XvNI4_00:00:00:000_00:00:27:500",
-    "state_changes": [
-      "Partner massage begins - instructor massaging recipient's neck"
-    ]
+    "state_changes": []
   },
   {
     "time": [
-      38,
-      40
+      20,
+      21
     ],
     "visible_entities": [
       {
-        "desc": "woman with dark hair tied back, wearing a black off-the-shoulder top with thin straps and a pink name tag",
+        "desc": "woman with dark hair tied back, wearing a black off-the-shoulder top with thin straps",
         "action": "massaging the neck of the woman in the center",
-        "position": "left"
+        "position": "left",
+        "id": "person_instructor_black_top_1"
       },
       {
-        "desc": "woman with short dark wavy hair, wearing a beige long-sleeved top with a green clover brooch",
-        "action": "tilting head back and smiling",
-        "position": "center"
+        "desc": "woman with short dark curly hair, wearing a beige lace top with a green clover brooch",
+        "action": "tilting head back while being massaged",
+        "position": "center",
+        "id": "person_participant_beige_brooch_1"
       },
       {
-        "desc": "woman with dark hair, wearing a purple long-sleeved top",
+        "desc": "person wearing a purple long-sleeved top",
         "action": "static",
-        "position": "right"
+        "position": "right",
+        "id": "person_participant_purple_top_1"
       },
       {
-        "desc": "green Korean text overlay with white outline",
+        "desc": "Korean text overlay in white and green font",
         "action": "static",
-        "position": "bottom"
+        "position": "bottom",
+        "id": "graphic_overlay_korean_text_various"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "The woman on the left uses both hands to massage the neck of the woman in the center.",
+        "fact": "The woman on the left is using her fingers to massage the neck of the woman in the center.",
         "confidence": 1.0
       },
       {
-        "fact": "The woman in the center tilts her head back while being massaged.",
+        "fact": "The woman in the center tilts her head back and looks upward.",
         "confidence": 1.0
       },
       {
@@ -1334,66 +1480,13 @@
     "ocr": [
       "내몸",
       "사용설명서",
-      "몸속 쓰레기 정화조 <림프>",
-      "림프 순환 돕는 <30초 림프 마사지>",
-      "TV조선",
-      "목을 돌리면 튀어나오는 근육"
-    ],
-    "spatial": "The woman in the black top is to the left of the woman in the beige top. The woman in the purple top is to the right of the woman in the beige top. The green text overlay is below the women.",
-    "parse_success": true,
-    "chunk_idx": 19,
-    "video_id": "iWyHM8XvNI4_00:00:00:000_00:00:27:500",
-    "state_changes": []
-  },
-  {
-    "time": [
-      40,
-      42
-    ],
-    "visible_entities": [
-      {
-        "desc": "woman with dark hair tied in a bun, wearing a black off-shoulder top with thin straps",
-        "action": "touching the neck of the woman in the center",
-        "position": "left"
-      },
-      {
-        "desc": "woman with short dark wavy hair, wearing a beige long-sleeved top with a green clover brooch",
-        "action": "tilting head back and to the side",
-        "position": "center"
-      },
-      {
-        "desc": "person wearing a purple long-sleeved top",
-        "action": "static",
-        "position": "right"
-      },
-      {
-        "desc": "Korean text overlay in white and green font",
-        "action": "static",
-        "position": "bottom"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "The woman on the left is using her hands to massage or point to the neck area of the woman in the center.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The woman in the center tilts her head back and to the right to expose her neck muscles.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The text overlay reads '목을 돌리면 튀어나오는 근육' (Muscles that pop out when turning the neck).",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [
-      "내몸 사용설명서",
-      "물속 쓰레기 정화조 <펌프>",
+      "뭉쳐진 근육",
+      "목욕 쓰레기 정화조 <펌프>",
       "펌프 순환 돕는 <30초 펌프 마사지>",
       "TV조선",
       "목을 돌리면 튀어나오는 근육"
     ],
-    "spatial": "The woman in the black top is standing to the left of the woman in the beige top. The woman in the purple top is partially visible to the right of the woman in the beige top. The Korean text overlay is positioned at the bottom of the screen, below the people.",
+    "spatial": "The woman in the black top is to the left of the woman in the beige top. The woman in the purple top is to the right of the woman in the beige top. The text overlay is below the women.",
     "parse_success": true,
     "chunk_idx": 20,
     "video_id": "iWyHM8XvNI4_00:00:00:000_00:00:27:500",
@@ -1401,42 +1494,40 @@
   },
   {
     "time": [
-      42,
-      44
+      21,
+      22
     ],
     "visible_entities": [
       {
-        "desc": "woman with short black hair, wearing a black off-the-shoulder top with thin straps and a necklace",
+        "desc": "woman with short black hair, wearing a black off-shoulder top with spaghetti straps",
         "action": "touching the neck of the woman in beige",
-        "position": "left"
+        "position": "left",
+        "id": "person_instructor_black_top_1"
       },
       {
-        "desc": "woman with short dark curly hair, wearing a beige lace top with a green leaf brooch and a green drop earring",
+        "desc": "woman with short dark curly hair, wearing a beige lace top with a green leaf brooch and large green earrings",
         "action": "tilting head back",
-        "position": "center"
-      },
-      {
-        "desc": "arm in a purple sleeve",
-        "action": "touching the neck of the woman in beige",
-        "position": "right"
+        "position": "center",
+        "id": "person_participant_beige_brooch_1"
       },
       {
         "desc": "Korean text overlay in green and white font",
         "action": "static",
-        "position": "bottom"
+        "position": "bottom",
+        "id": "graphic_overlay_korean_text_various"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "The woman in the black top places her hand on the neck of the woman in the beige top.",
+        "fact": "The woman in the black top places her hands on the neck of the woman in the beige top.",
         "confidence": 1.0
       },
       {
-        "fact": "The woman in the beige top tilts her head back to expose her neck.",
+        "fact": "The woman in the beige top tilts her head back to expose her neck muscles.",
         "confidence": 1.0
       },
       {
-        "fact": "The text overlay reads '목을 돌리면 튀어나오는 근육'.",
+        "fact": "The on-screen text reads '목을 돌리면 튀어나오는 근육'.",
         "confidence": 1.0
       }
     ],
@@ -1447,7 +1538,7 @@
       "TV조선",
       "목을 돌리면 튀어나오는 근육"
     ],
-    "spatial": "The woman in the black top is to the left of the woman in the beige top. The arm in the purple sleeve is to the right of the woman in the beige top. The green and white text is below the women.",
+    "spatial": "The woman in the black top is to the left of the woman in the beige top. The woman in the black top is touching the neck of the woman in the beige top. The text overlay is below the women.",
     "parse_success": true,
     "chunk_idx": 21,
     "video_id": "iWyHM8XvNI4_00:00:00:000_00:00:27:500",
@@ -1455,34 +1546,38 @@
   },
   {
     "time": [
-      44,
-      46
+      22,
+      23
     ],
     "visible_entities": [
       {
-        "desc": "woman with short curly black hair, wearing a beige lace top and a green teardrop-shaped earring",
+        "desc": "woman with short black hair, wearing a beige lace top and a green teardrop-shaped earring",
         "action": "tilting head back",
-        "position": "center"
+        "position": "center",
+        "id": "person_participant_beige_brooch_1"
       },
       {
         "desc": "hand with fingers pinching skin",
         "action": "massaging neck",
-        "position": "center"
+        "position": "center",
+        "id": "hand_massage_generic"
       },
       {
-        "desc": "black lavalier microphone",
+        "desc": "text overlay with orange and white background",
         "action": "static",
-        "position": "bottom"
+        "position": "top left",
+        "id": "graphic_overlay_korean_text_various"
       },
       {
-        "desc": "orange and white text overlay with Korean characters",
+        "desc": "text overlay with white font and red highlights",
         "action": "static",
-        "position": "top"
+        "position": "bottom",
+        "id": "graphic_overlay_korean_text_various"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A hand is pinching and pulling down the skin on the side of the woman's neck.",
+        "fact": "A hand is pinching the skin on the woman's neck with two fingers.",
         "confidence": 1.0
       },
       {
@@ -1490,11 +1585,11 @@
         "confidence": 1.0
       },
       {
-        "fact": "The on-screen text reads '두 손가락으로 꼬집듯이 잡아 내린다' (Pinch and pull down with two fingers).",
+        "fact": "The text overlay reads '두 손가락으로 꼬집듯이 잡아 내린다' (Pinch and pull down with two fingers).",
         "confidence": 1.0
       },
       {
-        "fact": "The woman is wearing a green earring.",
+        "fact": "The text overlay reads '림프 순환 돕는 <30초 림프 마사지>' (Lymph circulation helping <30 second lymph massage>).",
         "confidence": 1.0
       }
     ],
@@ -1505,41 +1600,52 @@
       "TV조선",
       "두 손가락으로 꼬집듯이 잡아 내린다"
     ],
-    "spatial": "The hand is in front of the woman's neck, manipulating the skin. The microphone is clipped to the woman's top, below her chin. The text overlay is positioned at the top of the screen, above the woman's head.",
+    "spatial": "The hand is in front of the woman's neck, performing a massage action. The text overlay at the bottom is below the woman's chin. The logo 'TV조선' is in the top right corner, above the woman's head.",
     "parse_success": true,
     "chunk_idx": 22,
     "video_id": "iWyHM8XvNI4_00:00:00:000_00:00:27:500",
-    "state_changes": []
+    "state_changes": [
+      "Focus shifts entirely to the participant in the beige top tilting head back while being massaged."
+    ]
   },
   {
     "time": [
-      46,
-      48
+      23,
+      24
     ],
     "visible_entities": [
       {
-        "desc": "woman with short dark hair, wearing a beige lace top and a green teardrop earring",
+        "desc": "person with short black hair, wearing a beige lace top and a green teardrop earring",
         "action": "tilting head back",
-        "position": "center"
+        "position": "center",
+        "id": "person_participant_beige_brooch_1"
       },
       {
         "desc": "hand with fingers",
-        "action": "pinching the woman's neck",
-        "position": "center"
+        "action": "pinching the neck",
+        "position": "center",
+        "id": "hand_massage_generic"
       },
       {
         "desc": "Korean text overlay with white and red font",
         "action": "static",
-        "position": "bottom"
+        "position": "bottom",
+        "id": "graphic_overlay_korean_text_various"
+      },
+      {
+        "desc": "TV logo text 'TV조선'",
+        "action": "static",
+        "position": "top right",
+        "id": "logo_tv_chosun_1"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A hand is pinching the skin on the side of the woman's neck.",
+        "fact": "A hand is pinching the skin on the side of a person's neck.",
         "confidence": 1.0
       },
       {
-        "fact": "The woman tilts her head back to expose her neck.",
+        "fact": "The person receiving the massage tilts their head back.",
         "confidence": 1.0
       },
       {
@@ -1548,14 +1654,13 @@
       }
     ],
     "ocr": [
-      "내몸",
-      "사용설명서",
+      "내몸 사용설명서",
       "몸속 쓰레기 정화조 <림프>",
       "림프 순환 돕는 <30초 림프 마사지>",
-      "TV조선",
-      "두 손가락으로 꼬집듯이 잡아 내린다"
+      "두 손가락으로 꼬집듯이 잡아 내린다",
+      "TV조선"
     ],
-    "spatial": "The hand is positioned in front of the woman's neck, grasping the skin. The text overlay is located below the woman's chin and neck area.",
+    "spatial": "The hand is positioned in front of the person's neck, pinching the skin. The text overlay is located below the person's chin. The TV logo is in the top right corner of the frame.",
     "parse_success": true,
     "chunk_idx": 23,
     "video_id": "iWyHM8XvNI4_00:00:00:000_00:00:27:500",
@@ -1563,56 +1668,51 @@
   },
   {
     "time": [
-      48,
-      50
+      24,
+      25
     ],
     "visible_entities": [
       {
-        "desc": "person with black hair styled in a bun, wearing a beige lace top and a green teardrop-shaped earring",
+        "desc": "person with black hair styled in a bun, wearing a beige lace top and a green teardrop earring",
         "action": "tilting head back",
-        "position": "center"
+        "position": "center",
+        "id": "person_participant_beige_brooch_1"
       },
       {
-        "desc": "hand with pink nail polish",
-        "action": "pinching and pulling down the neck skin",
-        "position": "center"
-      },
-      {
-        "desc": "green jade-like pendant",
-        "action": "static",
-        "position": "bottom right"
+        "desc": "hand with fingers pinching skin",
+        "action": "massaging neck",
+        "position": "center",
+        "id": "hand_massage_generic"
       },
       {
         "desc": "Korean text overlay with white and red font",
         "action": "static",
-        "position": "bottom"
+        "position": "bottom",
+        "id": "graphic_overlay_korean_text_various"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A hand with pink nail polish is pinching the skin on the side of a person's neck.",
+        "fact": "A hand is pinching the skin on the side of a person's neck.",
         "confidence": 1.0
       },
       {
-        "fact": "The hand pulls the pinched skin downwards.",
+        "fact": "The person receiving the massage tilts their head back.",
         "confidence": 1.0
       },
       {
-        "fact": "The person receiving the massage tilts their head back to expose the neck.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The on-screen text reads '두 손가락으로 꼬집듯이 잡아 내린다' (Pinch with two fingers and pull down).",
+        "fact": "The on-screen text instructs to 'pinch and pull down with two fingers'.",
         "confidence": 1.0
       }
     ],
     "ocr": [
       "내몸 사용설명서",
-      "뭉친 근육 풀어주는 <30초 림프 마사지>",
+      "몸속 쓰레기 정화조 <림프>",
+      "림프 순환 돕는 <30초 림프 마사지>",
       "TV조선",
       "두 손가락으로 꼬집듯이 잡아 내린다"
     ],
-    "spatial": "The hand is positioned in front of the person's neck, manipulating the skin. The green pendant is located below the hand on the person's chest. The text overlay is situated at the bottom of the screen, below the person's chin.",
+    "spatial": "The hand is positioned on the neck of the person in the beige lace top. The text overlay is located at the bottom of the screen, below the person's chin.",
     "parse_success": true,
     "chunk_idx": 24,
     "video_id": "iWyHM8XvNI4_00:00:00:000_00:00:27:500",
@@ -1620,19 +1720,21 @@
   },
   {
     "time": [
-      50,
-      52
+      25,
+      26
     ],
     "visible_entities": [
       {
-        "desc": "person with short black hair, wearing a beige lace top and a green teardrop-shaped earring",
+        "desc": "person with short black hair, wearing a beige lace top and a large green teardrop earring",
         "action": "tilting head back",
-        "position": "center"
+        "position": "center",
+        "id": "person_participant_beige_brooch_1"
       },
       {
         "desc": "hand with fair skin",
         "action": "massaging the neck",
-        "position": "center"
+        "position": "center",
+        "id": "hand_massage_generic"
       },
       {
         "desc": "small black lavalier microphone",
@@ -1642,12 +1744,14 @@
       {
         "desc": "green leaf-shaped brooch",
         "action": "static",
-        "position": "bottom right"
+        "position": "bottom right",
+        "id": "accessory_brooch_green_1"
       },
       {
-        "desc": "on-screen text overlay with Korean characters",
+        "desc": "Korean text overlay with white and orange fonts",
         "action": "static",
-        "position": "top left"
+        "position": "top left",
+        "id": "graphic_overlay_korean_text_various"
       }
     ],
     "atomic_facts": [
@@ -1656,29 +1760,28 @@
         "confidence": 1.0
       },
       {
-        "fact": "The person tilts their head back to expose the neck area.",
+        "fact": "The person is tilting their head back to expose the neck area.",
         "confidence": 1.0
       },
       {
-        "fact": "The text '목 림프 순환을 돕는 마사지' (Neck lymph circulation massage) appears on screen.",
+        "fact": "A small black microphone is clipped to the lace collar of the person's top.",
         "confidence": 1.0
       },
       {
-        "fact": "A small microphone is clipped to the collar of the person's top.",
+        "fact": "The text overlay reads '목 림프 순환을 돕는 마사지' (Neck lymph circulation massage).",
         "confidence": 1.0
       }
     ],
     "ocr": [
       "내몸",
       "사용설명서",
-      "뭉친 림프",
-      "목속 쓰레기 정화조 <림프>",
+      "몸속 쓰레기 정화조 <림프>",
       "림프 순환 돕는 <30초 림프 마사지>",
       "TV조선",
       "목 림프",
       "순환을 돕는 마사지"
     ],
-    "spatial": "The hand is positioned on the left side of the person's neck, performing a massage. The microphone is clipped to the front of the beige lace top, below the neck. The green brooch is located on the right side of the chest, below the microphone. The text overlay is situated in the top left corner of the frame, above the person's head.",
+    "spatial": "The hand is positioned on the neck of the person in the beige top. The microphone is clipped to the top, just below the hand. The green brooch is located on the lower right side of the person's chest. The text overlay is situated in the upper left corner of the screen.",
     "parse_success": true,
     "chunk_idx": 25,
     "video_id": "iWyHM8XvNI4_00:00:00:000_00:00:27:500",
@@ -1686,49 +1789,52 @@
   },
   {
     "time": [
-      52,
-      54
+      26,
+      27
     ],
     "visible_entities": [
       {
-        "desc": "person with short black hair, wearing a beige lace top and a green brooch",
-        "action": "receiving a neck massage",
-        "position": "center"
+        "desc": "woman with short dark hair, wearing a beige lace top and a green brooch",
+        "action": "tilting head back",
+        "position": "center",
+        "id": "person_participant_beige_brooch_1"
       },
       {
         "desc": "hand with fair skin",
         "action": "massaging the neck",
-        "position": "center"
+        "position": "center",
+        "id": "hand_massage_generic"
       },
       {
-        "desc": "Korean text overlay with white and orange fonts",
+        "desc": "on-screen text graphics with Korean text and icons",
         "action": "static",
-        "position": "top-left and bottom-center"
+        "position": "top left and bottom center",
+        "id": "graphic_overlay_korean_text_various"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A hand is pressing into the side of a person's neck.",
+        "fact": "A hand is massaging the side of a woman's neck.",
         "confidence": 1.0
       },
       {
-        "fact": "The person receiving the massage is tilting their head back.",
+        "fact": "The woman is tilting her head back to expose her neck.",
         "confidence": 1.0
       },
       {
-        "fact": "The text overlay reads '목 림프 순환을 돕는 마사지' (Massage to help neck lymph circulation).",
+        "fact": "The on-screen text includes '목 림프 순환을 돕는 마사지' (Neck lymph circulation massage).",
         "confidence": 1.0
       }
     ],
     "ocr": [
       "내몸 사용설명서",
-      "뭉속 쓰레기 정파조 <림프>",
+      "뭉속 쓰레기 정파즈 <림프>",
       "림프 순환 돕는 <30초 림프 마사지>",
       "TV조선",
       "목 림프",
       "순환을 돕는 마사지"
     ],
-    "spatial": "The hand is positioned on the right side of the person's neck. The text overlay is located at the bottom center of the screen, below the person's chin. The green brooch is pinned to the left side of the person's beige lace top.",
+    "spatial": "The hand is positioned on the left side of the woman's neck. The woman is in the center of the frame, wearing a beige top. The text graphics are located at the top left and bottom center of the screen, overlaying the scene.",
     "parse_success": true,
     "chunk_idx": 26,
     "video_id": "iWyHM8XvNI4_00:00:00:000_00:00:27:500",
@@ -1736,105 +1842,122 @@
   },
   {
     "time": [
-      54,
-      56
+      27,
+      28
     ],
     "visible_entities": [
       {
-        "desc": "person with dark hair pulled back, wearing a white top with a green floral pattern and a thin silver chain earring",
-        "action": "pinching the skin behind their ear with their right hand",
-        "position": "center"
+        "desc": "person with dark hair tied up, wearing a white top with a green and black floral pattern, and a silver chain earring",
+        "action": "massaging neck",
+        "position": "center",
+        "id": "person_participant_white_shirt_massage_1"
       },
       {
-        "desc": "orange and white text box with Korean text '목속 쓰레기 정화조 <림프>' and '림프 순환 돕는 <30초 림프 마사지>'",
-        "action": "static",
-        "position": "top left"
+        "desc": "hand with fair skin",
+        "action": "pinching neck skin",
+        "position": "center-right",
+        "id": "hand_massage_generic"
       },
       {
-        "desc": "white and orange text overlay with a lymph node icon and Korean text '목 림프 순환을 돕는 마사지'",
+        "desc": "orange and white text box with Korean text",
         "action": "static",
-        "position": "bottom center"
+        "position": "top-left",
+        "id": "graphic_overlay_korean_text_various"
+      },
+      {
+        "desc": "white and orange text graphic with Korean text and a lymph node icon",
+        "action": "static",
+        "position": "bottom-center",
+        "id": "graphic_overlay_korean_text_various"
+      },
+      {
+        "desc": "white text logo 'TV조선'",
+        "action": "static",
+        "position": "top-right",
+        "id": "logo_tv_chosun_1"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A person is using their thumb and index finger to pinch the skin behind their ear.",
+        "fact": "A hand is pinching the skin on the back of a person's neck.",
         "confidence": 1.0
       },
       {
-        "fact": "The on-screen text identifies the action as a '30-second lymph massage' to help lymph circulation.",
+        "fact": "The person is wearing a white top with a floral pattern.",
         "confidence": 1.0
       },
       {
-        "fact": "The person is wearing a white top with a green floral pattern.",
+        "fact": "The on-screen text identifies the action as a 'Neck Lymph Circulation Massage'.",
         "confidence": 1.0
       }
     ],
     "ocr": [
       "내몸 사용설명서",
-      "목속 쓰레기 정화조 <림프>",
+      "뭉속 쓰레기 정화조 <림프>",
       "림프 순환 돕는 <30초 림프 마사지>",
       "TV조선",
       "목 림프",
       "순환을 돕는 마사지"
     ],
-    "spatial": "The person's hand is in front of their neck, pinching the skin behind their ear. The orange text box is in the top left corner of the screen, while the white text overlay is at the bottom center.",
+    "spatial": "The hand is on the right side of the person's neck. The orange text box is in the top-left corner, above the person's head. The white and orange graphic is below the hand and neck area.",
     "parse_success": true,
     "chunk_idx": 27,
     "video_id": "iWyHM8XvNI4_00:00:00:000_00:00:27:500",
-    "state_changes": [
-      "Different participant demonstrates self-massage technique"
-    ]
+    "state_changes": []
   },
   {
     "time": [
-      56,
-      58
+      28,
+      29
     ],
     "visible_entities": [
       {
-        "desc": "person with dark hair tied back, wearing a white shirt with a green floral pattern and a dangling silver earring",
-        "action": "static",
-        "position": "center"
+        "desc": "person with dark hair pulled back, wearing a white collared shirt with a green leaf pattern and a dangling silver earring",
+        "action": "being massaged on the neck",
+        "position": "center",
+        "id": "person_participant_white_shirt_massage_1"
       },
       {
         "desc": "hand with fair skin",
-        "action": "pressing fingers into the neck",
-        "position": "right"
+        "action": "pressing the neck",
+        "position": "right",
+        "id": "hand_massage_generic"
       },
       {
-        "desc": "orange and white text box with Korean characters",
+        "desc": "green rectangular text box with white Korean text",
         "action": "static",
-        "position": "top left"
+        "position": "bottom",
+        "id": "graphic_overlay_korean_text_various"
       },
       {
-        "desc": "green text box with Korean characters",
+        "desc": "orange and white text banner with Korean text",
         "action": "static",
-        "position": "bottom center"
+        "position": "top left",
+        "id": "graphic_overlay_korean_text_various"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A hand is pressing fingers into the side of a person's neck, just below the ear.",
+        "fact": "A hand is pressing its thumb into the side of a person's neck.",
         "confidence": 1.0
       },
       {
-        "fact": "The person receiving the touch is wearing a white shirt with a green floral pattern.",
+        "fact": "The person receiving the massage is wearing a white shirt with a green leaf pattern.",
         "confidence": 1.0
       },
       {
-        "fact": "A green subtitle box appears at the bottom of the screen in the second frame.",
+        "fact": "A green subtitle box appears at the bottom of the screen with Korean text.",
         "confidence": 1.0
       }
     ],
     "ocr": [
       "내몸 사용설명서",
-      "몸속 쓰레기 정화조 <림프>",
+      "뭉속 쓰레기 정화조 <림프>",
       "림프 순환 돕는 <30초 림프 마사지>",
       "TV조선",
-      "설수현: 아프게 눌러야 하나요?"
+      "설수현 아프게 눌러야 하나요?"
     ],
-    "spatial": "The hand is positioned to the right of the person's head and is touching the neck area. The orange text box is located in the top left corner, above the person's head. The green text box is located at the bottom center, below the person's neck.",
+    "spatial": "The hand is positioned to the right of the person's neck, pressing against it. The green text box is located below the hand and the person's neck. The orange banner is in the top left corner, above the person's head.",
     "parse_success": true,
     "chunk_idx": 28,
     "video_id": "iWyHM8XvNI4_00:00:00:000_00:00:27:500",
@@ -1842,44 +1965,50 @@
   },
   {
     "time": [
-      58,
-      60
+      29,
+      30
     ],
     "visible_entities": [
       {
         "desc": "person with dark hair pulled back, wearing a white shirt with a green leaf pattern and a long silver chain earring",
-        "action": "touching their neck with their right hand",
-        "position": "foreground"
+        "action": "touching the area behind their ear with their right hand",
+        "position": "right foreground",
+        "id": "person_participant_white_shirt_massage_1"
       },
       {
-        "desc": "woman with long black hair wearing a white long-sleeved shirt",
+        "desc": "woman with long dark hair wearing a white long-sleeved shirt",
         "action": "touching her neck with her right hand",
-        "position": "left"
+        "position": "left background",
+        "id": "person_participant_white_shirt_massage_1"
       },
       {
         "desc": "woman with dark hair tied back wearing a beige blazer",
         "action": "touching her neck with her right hand",
-        "position": "center"
+        "position": "center background",
+        "id": "person_participant_white_shirt_massage_1"
       },
       {
         "desc": "woman with dark hair tied back wearing a white shirt",
         "action": "touching her neck with her right hand",
-        "position": "right"
+        "position": "right background",
+        "id": "person_participant_white_shirt_massage_1"
       },
       {
         "desc": "green rectangular text box with white Korean text",
         "action": "static",
-        "position": "bottom"
+        "position": "bottom center",
+        "id": "graphic_overlay_korean_text_various"
       },
       {
-        "desc": "orange and white graphic overlay with Korean text",
+        "desc": "orange and white banner with Korean text",
         "action": "static",
-        "position": "top"
+        "position": "top left",
+        "id": "graphic_overlay_korean_text_various"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A person in the foreground is pressing their fingers into the side of their neck.",
+        "fact": "A person in the foreground is pressing their fingers into the area behind their ear.",
         "confidence": 1.0
       },
       {
@@ -1887,11 +2016,11 @@
         "confidence": 1.0
       },
       {
-        "fact": "The on-screen text includes the phrase '30초 림프 마사지' (30-second lymph massage).",
+        "fact": "The on-screen text in the green box reads '설수현: 아프게 눌러야 하나요?' (Seol Su-hyun: Should I press hard?).",
         "confidence": 1.0
       },
       {
-        "fact": "The green subtitle box displays the question '아프게 눌러야 하나요?' (Do I have to press hard?).",
+        "fact": "The banner text mentions '30초 림프 마사지' (30-second lymph massage).",
         "confidence": 1.0
       }
     ],
@@ -1900,138 +2029,58 @@
       "몸속 쓰레기 정화주 <림프>",
       "림프 순환 돕는 <30초 림프 마사지>",
       "TV조선",
-      "설수현: 아프게 눌러야 하나요?"
+      "설수현: 아프게 눌러야 하나요?",
+      "김민",
+      "코딩"
     ],
-    "spatial": "The person in the foreground is positioned in front of the three women seated in the background. The green text box is located at the bottom of the screen, below the people. The orange graphic overlay is positioned at the top of the screen, above the people.",
+    "spatial": "The person in the foreground is positioned to the right of the group of women in the background. The green text box is located below the people and above the bottom edge of the frame. The orange banner is situated in the top left corner, above the people.",
     "parse_success": true,
     "chunk_idx": 29,
     "video_id": "iWyHM8XvNI4_00:00:00:000_00:00:27:500",
-    "state_changes": []
+    "state_changes": [
+      "Demonstration ends; multiple participants begin self-massaging their own necks."
+    ]
   },
   {
     "time": [
-      60,
-      62
+      30,
+      31
     ],
     "visible_entities": [
       {
         "desc": "woman with long black hair, wearing a white long-sleeved shirt",
         "action": "touching her neck with her right hand",
-        "position": "left"
+        "position": "left",
+        "id": "person_participant_white_shirt_massage_1"
       },
       {
         "desc": "woman with dark hair tied back, wearing a beige blazer over a white shirt",
         "action": "touching her neck with her right hand",
-        "position": "center"
+        "position": "center",
+        "id": "person_participant_white_shirt_massage_1"
       },
       {
         "desc": "woman with dark hair tied back, wearing a white long-sleeved shirt",
         "action": "touching her neck with her right hand",
-        "position": "right"
-      },
-      {
-        "desc": "pink rectangular graphic box with Korean text",
-        "action": "static",
-        "position": "bottom-left"
-      },
-      {
-        "desc": "orange rectangular graphic box with Korean text",
-        "action": "static",
-        "position": "top-left"
-      },
-      {
-        "desc": "white logo text 'TV조선'",
-        "action": "static",
-        "position": "top-right"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "Three women are seated in a row, simultaneously performing a neck massage gesture.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The women are touching the sides of their necks with their hands.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The pink text box at the bottom left contains instructions for a 'Neck Lymph Massage' (목 림프 마사지).",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The orange text box at the top left displays the title 'Neck Stretching Technique <Pump>' (목욕 쓰레기 정화조 <펌프>).",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [
-      "내몸 사용설명서",
-      "목욕 쓰레기 정화조 <펌프>",
-      "림프 순환 돕는 <30초 림프 마사지>",
-      "TV조선",
-      "목 림프 마사지",
-      "강한 자극 금물",
-      "살짝 꼬집는 정도의 강도"
-    ],
-    "spatial": "The woman in the white shirt is to the left of the woman in the beige blazer. The woman in the beige blazer is to the left of the woman in the white shirt on the right. The pink text box is located in the bottom-left corner, below the woman on the left. The orange text box is located in the top-left corner, above the woman on the left.",
-    "parse_success": true,
-    "chunk_idx": 30,
-    "video_id": "iWyHM8XvNI4_00:00:00:000_00:00:27:500",
-    "state_changes": []
-  },
-  {
-    "time": [
-      62,
-      64
-    ],
-    "visible_entities": [
-      {
-        "desc": "woman with long black hair, wearing a white long-sleeved shirt",
-        "action": "touching her neck with her right hand",
-        "position": "left"
-      },
-      {
-        "desc": "woman with dark hair tied back, wearing a beige blazer over a white shirt",
-        "action": "touching her neck with her right hand",
-        "position": "center-left"
-      },
-      {
-        "desc": "woman with dark hair tied back, wearing a white long-sleeved shirt",
-        "action": "touching her neck with her right hand",
-        "position": "center-right"
-      },
-      {
-        "desc": "woman with short dark hair, wearing a black top and purple leggings",
-        "action": "touching her neck with her right hand",
-        "position": "center"
-      },
-      {
-        "desc": "woman with short dark hair, wearing a beige sweater and beige pants",
-        "action": "touching her neck with her right hand",
-        "position": "center-right"
-      },
-      {
-        "desc": "woman with short brown hair, wearing a purple long-sleeved top and a patterned skirt",
-        "action": "touching her neck with her right hand",
-        "position": "right"
+        "position": "right",
+        "id": "person_participant_white_shirt_massage_1"
       },
       {
         "desc": "pink and white text box with Korean text",
         "action": "static",
-        "position": "bottom-left"
+        "position": "bottom left",
+        "id": "graphic_overlay_korean_text_various"
       },
       {
-        "desc": "yellow and white text box with Korean text",
+        "desc": "orange and white text box with Korean text",
         "action": "static",
-        "position": "top-left"
+        "position": "top left",
+        "id": "graphic_overlay_korean_text_various"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "Multiple women are simultaneously touching the sides of their necks with their hands.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The women are standing in a line on a colorful studio set.",
+        "fact": "Three women are sitting in a row and simultaneously touching their necks with their right hands.",
         "confidence": 1.0
       },
       {
@@ -2044,15 +2093,97 @@
       }
     ],
     "ocr": [
-      "내몸 사용설명서",
-      "몸속 쓰레기 정화조 <림프>",
+      "내몸",
+      "사용설명서",
+      "블록 쓰레기 정화조 <펌프>",
       "림프 순환 돕는 <30초 림프 마사지>",
       "TV조선",
       "목 림프 마사지",
       "강한 자극 금물",
       "살짝 꼬집는 정도의 강도"
     ],
-    "spatial": "The women are standing next to each other in a horizontal line. The pink text box is in the bottom-left corner of the screen, below the women. The yellow text box is in the top-left corner, above the women.",
+    "spatial": "The woman in the white shirt is to the left of the woman in the beige blazer. The woman in the beige blazer is to the left of the woman in the white shirt on the right. The pink text box is in the bottom left corner, below the women. The orange text box is in the top left corner, above the women.",
+    "parse_success": true,
+    "chunk_idx": 30,
+    "video_id": "iWyHM8XvNI4_00:00:00:000_00:00:27:500",
+    "state_changes": []
+  },
+  {
+    "time": [
+      31,
+      32
+    ],
+    "visible_entities": [
+      {
+        "desc": "woman with long black hair, wearing a white long-sleeved shirt",
+        "action": "massaging her neck with her right hand",
+        "position": "left",
+        "id": "person_participant_white_shirt_massage_1"
+      },
+      {
+        "desc": "woman with dark hair tied back, wearing a beige blazer over a white shirt",
+        "action": "massaging her neck with her right hand",
+        "position": "center",
+        "id": "person_participant_white_shirt_massage_1"
+      },
+      {
+        "desc": "woman with dark hair tied back, wearing a white long-sleeved shirt",
+        "action": "massaging her neck with her right hand",
+        "position": "right",
+        "id": "person_participant_white_shirt_massage_1"
+      },
+      {
+        "desc": "woman with short dark hair, wearing a black tank top and purple leggings",
+        "action": "standing and massaging her neck",
+        "position": "center"
+      },
+      {
+        "desc": "woman with short dark hair, wearing a beige sweater and beige pants",
+        "action": "standing and massaging her neck",
+        "position": "right",
+        "id": "person_participant_beige_brooch_1"
+      },
+      {
+        "desc": "woman with short brown hair, wearing a purple long-sleeved top and a patterned skirt",
+        "action": "standing and massaging her neck",
+        "position": "right",
+        "id": "person_participant_purple_top_1"
+      },
+      {
+        "desc": "pink and white graphic overlay with Korean text",
+        "action": "static",
+        "position": "bottom left",
+        "id": "graphic_overlay_korean_text_various"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A group of women are shown massaging their necks with their hands.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The women are seated in the first frame and standing in the second frame.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The on-screen text '목 림프 마사지' (Neck Lymph Massage) is visible in a graphic at the bottom left.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The text '강한 자극 금물' (Strong stimulation forbidden) is displayed on the graphic.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "내몸 사용설명서",
+      "TV조선",
+      "목욕 쓰레기 정체는 <림프>",
+      "림프 순환 돕는 <30초 림프 마사지>",
+      "목 림프 마사지",
+      "강한 자극 금물",
+      "실쭉 꼬집는 정도의 강도"
+    ],
+    "spatial": "In the first frame, three women are seated next to each other. In the second frame, five women are standing on a colorful stage floor. The pink graphic overlay is located in the bottom left corner of the screen in both frames.",
     "parse_success": true,
     "chunk_idx": 31,
     "video_id": "iWyHM8XvNI4_00:00:00:000_00:00:27:500",
@@ -2060,68 +2191,72 @@
   },
   {
     "time": [
-      64,
-      66
+      32,
+      33
     ],
     "visible_entities": [
       {
-        "desc": "woman with short dark hair, wearing a white lab coat over a black dress",
-        "action": "touching her neck",
-        "position": "left"
-      },
-      {
-        "desc": "woman with short brown hair, wearing a white floral blouse and blue jeans",
-        "action": "touching her neck",
-        "position": "center-left"
-      },
-      {
-        "desc": "woman with dark hair tied back, wearing a black tank top and maroon leggings",
-        "action": "demonstrating a neck massage",
+        "desc": "woman with dark hair in a ponytail, wearing a black tank top, maroon leggings, and red sneakers",
+        "action": "massaging her neck with her right hand",
         "position": "center"
       },
       {
+        "desc": "woman with short dark hair, wearing a white lab coat over a black dress",
+        "action": "static",
+        "position": "left",
+        "id": "person_expert_lab_coat_1"
+      },
+      {
+        "desc": "woman with short brown hair, wearing a floral patterned blouse and blue jeans",
+        "action": "static",
+        "position": "left-center",
+        "id": "person_participant_white_floral_1"
+      },
+      {
         "desc": "woman with short dark hair, wearing a beige long-sleeved top and beige pants",
-        "action": "touching her neck",
-        "position": "center-right"
+        "action": "massaging her neck with her right hand",
+        "position": "right-center",
+        "id": "person_participant_beige_brooch_1"
       },
       {
         "desc": "woman with shoulder-length brown hair, wearing a purple long-sleeved top and a patterned skirt",
-        "action": "touching her neck",
+        "action": "static",
         "position": "right"
       },
       {
-        "desc": "red and white graphic overlay with Korean text",
+        "desc": "red and white text box with Korean text",
         "action": "static",
-        "position": "bottom-left"
+        "position": "bottom-left",
+        "id": "graphic_overlay_korean_text_various"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "Five women are standing on a colorful stage.",
+        "fact": "The woman in the center is massaging her neck with her right hand.",
         "confidence": 1.0
       },
       {
-        "fact": "Four women are simultaneously touching the side of their necks with their fingers.",
+        "fact": "The woman in the beige outfit is massaging her neck with her right hand.",
         "confidence": 1.0
       },
       {
-        "fact": "The woman in the center is actively demonstrating a massage motion on her neck.",
+        "fact": "The text box in the bottom-left corner displays Korean text about neck lymph massage.",
         "confidence": 1.0
       },
       {
-        "fact": "A graphic overlay in the bottom left corner displays Korean text about 'Neck Lymph Massage'.",
+        "fact": "Four women are standing on a stage with a colorful floor.",
         "confidence": 1.0
       }
     ],
     "ocr": [
-      "내몸",
-      "TV조선",
+      "내몸 사용설명서",
       "림프 순환 돕는 <30초 림프 마사지>",
       "목 림프 마사지",
       "강한 자극 금물",
-      "살짝 꼬집는 정도의 강도"
+      "살짝 꼬집는 정도의 강도",
+      "TV조선"
     ],
-    "spatial": "The woman in the black tank top is in the center of the group, demonstrating an action. The other four women are arranged around her, two to her left and two to her right. The red and white text box is located in the bottom-left corner of the screen, below the woman in the white coat.",
+    "spatial": "The woman in the black tank top is in the center of the group. To her left are the woman in the white lab coat and the woman in the floral blouse. To her right are the woman in the beige outfit and the woman in the purple top. The red and white text box is located in the bottom-left corner of the screen, below the women.",
     "parse_success": true,
     "chunk_idx": 32,
     "video_id": "iWyHM8XvNI4_00:00:00:000_00:00:27:500",
@@ -2129,46 +2264,53 @@
   },
   {
     "time": [
-      66,
-      68
+      33,
+      34
     ],
     "visible_entities": [
       {
-        "desc": "woman with black hair pulled back, wearing a black off-the-shoulder top with thin straps and a gold necklace",
-        "action": "standing still",
-        "position": "center foreground"
+        "desc": "woman with dark hair pulled back, wearing a black off-the-shoulder top with thin straps and a pink oval name tag",
+        "action": "static",
+        "position": "center"
       },
       {
-        "desc": "woman with brown hair tied up, wearing a white top with a black pattern",
+        "desc": "woman with brown hair in a bun, wearing a white top with a floral pattern",
         "action": "massaging the neck of the woman in black",
-        "position": "left background"
+        "position": "left",
+        "id": "person_participant_white_floral_1"
       },
       {
         "desc": "pink oval name tag with white text",
         "action": "static",
-        "position": "bottom center"
+        "position": "center",
+        "id": "graphic_overlay_korean_text_various"
       },
       {
-        "desc": "TV studio set with light blue vertical panels and beige walls with circular patterns",
+        "desc": "on-screen text graphics with Korean characters in various colors (white, yellow, pink) and fonts",
         "action": "static",
-        "position": "background"
+        "position": "top and bottom",
+        "id": "graphic_overlay_korean_text_various"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "The woman in the patterned top is using her hand to massage the neck of the woman in the black top.",
+        "fact": "A woman with brown hair is massaging the neck of a woman in a black top.",
         "confidence": 1.0
       },
       {
-        "fact": "The woman in the black top is standing still while being massaged.",
+        "fact": "The woman in the black top is sitting still while being massaged.",
         "confidence": 1.0
       },
       {
-        "fact": "The pink name tag reads '운동처방사 김선우' (Exercise Prescription Specialist Kim Seon-woo).",
+        "fact": "The on-screen text includes the phrase '양쪽 30초씩 마사지' (Massage both sides for 30 seconds).",
         "confidence": 1.0
       },
       {
-        "fact": "The on-screen text includes '양쪽 30초씩 마사지' (Massage both sides for 30 seconds each) and '림프 순환에 도움' (Helps lymph circulation).",
+        "fact": "The on-screen text includes the phrase '림프 순환에 도움' (Helps with lymph circulation).",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The name tag on the woman in black reads '운동처방사 김선우' (Exercise Specialist Kim Seon-woo).",
         "confidence": 1.0
       }
     ],
@@ -2182,55 +2324,60 @@
       "운동처방사",
       "김선우"
     ],
-    "spatial": "The woman in the black top is in the center foreground, in front of the woman in the patterned top. The woman in the patterned top is to the left of the woman in black and is behind her. The pink name tag is on the chest of the woman in black. The TV studio set is behind both women.",
+    "spatial": "The woman with brown hair is to the left of the woman in the black top. The woman in black is in the center of the frame. The pink name tag is on the chest of the woman in black. The on-screen text graphics are located at the top and bottom of the frame, surrounding the two women.",
     "parse_success": true,
     "chunk_idx": 33,
     "video_id": "iWyHM8XvNI4_00:00:00:000_00:00:27:500",
     "state_changes": [
-      "Role reversal - white floral top woman massages instructor's neck"
+      "New pairing forms; woman in white floral top begins massaging the neck of the woman in the black top."
     ]
   },
   {
     "time": [
-      68,
-      70
+      34,
+      35
     ],
     "visible_entities": [
       {
-        "desc": "woman with black hair pulled back, wearing a black off-shoulder top with thin straps, a small gold necklace, and a pink name tag reading '운동처방사 김선우'",
-        "action": "receiving a neck massage",
-        "position": "center"
+        "desc": "woman with black hair tied back, wearing a black off-shoulder top with thin straps and a gold necklace",
+        "action": "touching her neck",
+        "position": "center",
+        "id": "person_instructor_black_top_1"
       },
       {
-        "desc": "woman with brown hair tied up, wearing a white sleeveless top with a floral pattern and dangling earrings",
+        "desc": "woman with brown hair tied up, wearing a white sleeveless top with a floral pattern",
         "action": "massaging the neck of the woman in black",
-        "position": "left"
+        "position": "left",
+        "id": "person_participant_white_floral_1"
       },
       {
-        "desc": "on-screen graphics with Korean text in various colors (yellow, white, pink) and fonts",
+        "desc": "pink oval name tag with white text",
         "action": "static",
-        "position": "top and bottom"
+        "position": "bottom center",
+        "id": "graphic_overlay_korean_text_various"
+      },
+      {
+        "desc": "TV studio set with yellow horizontal bar and blue vertical light panels",
+        "action": "static",
+        "position": "background",
+        "id": "studio_set_hex_walls_1"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "The woman on the left uses her hand to massage the neck of the woman in the center.",
+        "fact": "The woman in the white floral top is massaging the neck of the woman in the black top.",
         "confidence": 1.0
       },
       {
-        "fact": "The woman in the center tilts her head to the side while being massaged.",
+        "fact": "The woman in the black top is touching her own neck with her left hand.",
         "confidence": 1.0
       },
       {
-        "fact": "The text '양쪽 30초씩 마사지' (Massage both sides for 30 seconds) is visible at the bottom left.",
+        "fact": "The pink name tag identifies the woman in black as '김선우' (Kim Seon-woo) and her title as '운동처방사' (Exercise Specialist).",
         "confidence": 1.0
       },
       {
-        "fact": "The text '림프 순환에 도움' (Helps lymph circulation) is displayed in large letters.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The name tag on the woman in black identifies her as '운동처방사 김선우' (Exercise Prescription Specialist Kim Seon-woo).",
+        "fact": "On-screen text in the bottom left corner reads '양쪽 30초씩 마사지' (30 seconds each side massage) and '림프 순환에 도움' (Helps lymph circulation).",
         "confidence": 1.0
       }
     ],
@@ -2244,7 +2391,7 @@
       "운동처방사",
       "김선우"
     ],
-    "spatial": "The woman with brown hair is to the left of the woman with black hair. The woman with brown hair is behind the woman with black hair, reaching around to touch her neck. The on-screen text graphics are located above and below the two women.",
+    "spatial": "The woman in the white floral top is to the left of the woman in the black top. The pink name tag is on the chest of the woman in the black top. The yellow bar is behind both women and below the blue light panels.",
     "parse_success": true,
     "chunk_idx": 34,
     "video_id": "iWyHM8XvNI4_00:00:00:000_00:00:27:500",
@@ -2252,29 +2399,27 @@
   },
   {
     "time": [
-      70,
-      72
+      35,
+      36
     ],
     "visible_entities": [
       {
-        "desc": "woman with dark hair tied back, wearing a black off-shoulder top with thin straps and a necklace",
+        "desc": "woman with dark hair tied back, wearing a black off-the-shoulder top, a necklace, and a watch",
         "action": "touching her neck with her left hand",
-        "position": "center foreground"
+        "position": "center",
+        "id": "person_instructor_black_top_1"
       },
       {
-        "desc": "woman with light brown hair in an updo, wearing a white floral patterned shirt and a necklace",
+        "desc": "woman with light brown hair in an updo, wearing a white floral patterned shirt and dangling earrings",
         "action": "touching her neck with both hands",
-        "position": "left background"
+        "position": "left",
+        "id": "person_participant_white_floral_1"
       },
       {
-        "desc": "pink oval name tag with white text",
+        "desc": "on-screen graphics with Korean text and logos",
         "action": "static",
-        "position": "bottom center"
-      },
-      {
-        "desc": "yellow and white graphic overlay with Korean text",
-        "action": "static",
-        "position": "bottom left"
+        "position": "top and bottom",
+        "id": "graphic_overlay_korean_text_various"
       }
     ],
     "atomic_facts": [
@@ -2287,11 +2432,7 @@
         "confidence": 1.0
       },
       {
-        "fact": "The pink name tag reads '운동처방사 김선우'.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The graphic overlay text includes '양쪽 30초씩 마사지' and '림프 순환에 도움'.",
+        "fact": "The on-screen text identifies the topic as '30-second lymph massage'.",
         "confidence": 1.0
       }
     ],
@@ -2305,7 +2446,7 @@
       "운동처방사",
       "김선우"
     ],
-    "spatial": "The woman in the black top is in the center foreground, to the right of the woman in the floral shirt. The woman in the floral shirt is behind and to the left of the woman in the black top. The pink name tag is on the chest of the woman in the black top. The yellow and white graphic overlay is in the bottom left corner of the screen.",
+    "spatial": "The woman in the black top is to the right of the woman in the floral shirt. The woman in the floral shirt is behind the woman in the black top. The on-screen graphics are above and below the women.",
     "parse_success": true,
     "chunk_idx": 35,
     "video_id": "iWyHM8XvNI4_00:00:00:000_00:00:27:500",
@@ -2313,125 +2454,27 @@
   },
   {
     "time": [
-      72,
-      74
+      36,
+      37
     ],
     "visible_entities": [
       {
-        "desc": "woman with brown hair styled in a bun, wearing a white collared shirt with a red and green floral pattern, a necklace, and dangling earrings",
+        "desc": "woman with brown hair styled in an updo, wearing a white short-sleeved shirt with a red and green floral pattern, a thin necklace, and dangling earrings",
         "action": "touching her neck with her right hand",
-        "position": "center"
+        "position": "center",
+        "id": "person_participant_white_floral_1"
       },
       {
-        "desc": "graphic overlay with Korean text and a small inset photo of a woman's face",
+        "desc": "graphic overlay with a pink header and a white text box containing Korean text",
         "action": "static",
-        "position": "bottom left"
+        "position": "bottom left",
+        "id": "graphic_overlay_korean_text_various"
       },
       {
-        "desc": "wall decoration with a honeycomb pattern in yellow, blue, and black",
+        "desc": "yellow and white hexagonal wall panel",
         "action": "static",
-        "position": "right"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "A woman is touching the right side of her neck with her right hand.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The woman is wearing a white shirt with a floral pattern.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "A graphic overlay with Korean text is visible in the bottom left corner of the screen.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The TV channel logo 'TV조선' is in the top right corner.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [
-      "내몸 사용설명서",
-      "목속 쓰레기 정화조 <림프>",
-      "림프 순환 돕는 <30초 림프 마사지>",
-      "TV조선",
-      "수현 생각",
-      "목 마사지 거꾸로 올라가야",
-      "독소가 배출된다?!"
-    ],
-    "spatial": "The woman is in the center of the frame, in front of a background that includes a yellow and white paneled wall. To her right is a wall decoration with a honeycomb pattern. A graphic overlay containing text and a small photo is positioned in the bottom left corner, partially covering the lower part of the woman's shirt.",
-    "parse_success": true,
-    "chunk_idx": 36,
-    "video_id": "iWyHM8XvNI4_00:00:00:000_00:00:27:500",
-    "state_changes": []
-  },
-  {
-    "time": [
-      74,
-      76
-    ],
-    "visible_entities": [
-      {
-        "desc": "woman with brown hair styled in an updo, wearing a white collared shirt with a red and green floral pattern, and long dangling earrings",
-        "action": "touching the side of her neck with her right hand",
-        "position": "center"
-      },
-      {
-        "desc": "on-screen graphic overlay with a small circular photo of a woman's face, a red banner, and a grey text box",
-        "action": "static",
-        "position": "bottom-left"
-      },
-      {
-        "desc": "wall decoration with a honeycomb pattern of yellow, blue, and black hexagons",
-        "action": "static",
-        "position": "right"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "The woman is touching the side of her neck with her right hand.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The on-screen text in the bottom-left corner reads '목 마사지 거꾸로 올라가야 독소가 배출된다?!'.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [
-      "내몸 사용설명서",
-      "목속 쓰레기 정화주 <림프>",
-      "림프 순환 돕는 <30초 림프 마사지>",
-      "TV조선",
-      "수현 생각",
-      "목 마사지 거꾸로 올라가야 독소가 배출된다?!"
-    ],
-    "spatial": "The woman is in the center of the frame, positioned to the left of the honeycomb-patterned wall decoration. The graphic overlay containing text and a small photo is located in the bottom-left corner, below the woman's shoulder.",
-    "parse_success": true,
-    "chunk_idx": 37,
-    "video_id": "iWyHM8XvNI4_00:00:00:000_00:00:27:500",
-    "state_changes": []
-  },
-  {
-    "time": [
-      76,
-      78
-    ],
-    "visible_entities": [
-      {
-        "desc": "woman with brown hair styled in an updo with bangs, wearing a white collared shirt with a red and pink floral pattern, and a silver earring",
-        "action": "touching her neck with her right hand",
-        "position": "center"
-      },
-      {
-        "desc": "on-screen graphic overlay with a pink header and a grey text box containing Korean text",
-        "action": "static",
-        "position": "bottom left"
-      },
-      {
-        "desc": "yellow and white hexagonal wall decoration",
-        "action": "static",
-        "position": "right"
+        "position": "right",
+        "id": "studio_set_hex_walls_1"
       }
     ],
     "atomic_facts": [
@@ -2444,20 +2487,136 @@
         "confidence": 1.0
       },
       {
-        "fact": "The woman is wearing a white shirt with a floral pattern.",
+        "fact": "The woman is wearing a floral patterned shirt.",
         "confidence": 1.0
       }
     ],
     "ocr": [
       "내몸 사용설명서",
-      "목속 쓰레기 정화조 <림프>",
+      "몸속 쓰레기 정화주 <림프>",
       "림프 순환 돕는 <30초 림프 마사지>",
       "TV조선",
       "수현 생각",
       "목 마사지 거꾸로 올라가야",
       "독소가 배출된다?!"
     ],
-    "spatial": "The woman is in the center of the frame. The on-screen graphic is in the bottom left corner, below the woman's face. The hexagonal wall decoration is to the right of the woman.",
+    "spatial": "The woman is positioned in the center of the frame, in front of a background that includes a yellow and white hexagonal wall panel to her right. The graphic overlay with Korean text is located in the bottom left corner, below the woman's shoulder.",
+    "parse_success": true,
+    "chunk_idx": 36,
+    "video_id": "iWyHM8XvNI4_00:00:00:000_00:00:27:500",
+    "state_changes": []
+  },
+  {
+    "time": [
+      37,
+      38
+    ],
+    "visible_entities": [
+      {
+        "desc": "woman with brown hair styled in an updo, wearing a white collared shirt with a red and green floral pattern, and long dangling earrings",
+        "action": "touching her neck with her right hand",
+        "position": "center",
+        "id": "person_participant_white_floral_1"
+      },
+      {
+        "desc": "graphic overlay with a small photo of a woman's face and Korean text",
+        "action": "static",
+        "position": "bottom left",
+        "id": "graphic_overlay_korean_text_various"
+      },
+      {
+        "desc": "yellow and black hexagonal wall decoration",
+        "action": "static",
+        "position": "right",
+        "id": "studio_set_hex_walls_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A woman is touching the right side of her neck with her right hand.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The woman is wearing a white shirt with a floral pattern.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A graphic overlay with Korean text is visible in the bottom left corner.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The TV channel logo 'TV조선' is visible in the top right corner.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "내몸 사용설명서",
+      "몸속 쓰레기 정화주 <림프>",
+      "림프 순환 돕는 <30초 림프 마사지>",
+      "TV조선",
+      "수현 생각",
+      "목 마사지 거꾸로 올라가야",
+      "독소가 배출된다?!"
+    ],
+    "spatial": "The woman is in the center of the frame, to the left of the hexagonal wall decoration. The graphic overlay is in the bottom left corner, below the woman's face. The TV channel logo is in the top right corner, above the wall decoration.",
+    "parse_success": true,
+    "chunk_idx": 37,
+    "video_id": "iWyHM8XvNI4_00:00:00:000_00:00:27:500",
+    "state_changes": []
+  },
+  {
+    "time": [
+      38,
+      39
+    ],
+    "visible_entities": [
+      {
+        "desc": "woman with light brown hair styled in an updo with bangs, wearing a white short-sleeved shirt with a red floral pattern, silver dangling earrings, and a necklace",
+        "action": "touching the right side of her neck with her right hand",
+        "position": "center",
+        "id": "person_participant_white_floral_1"
+      },
+      {
+        "desc": "graphic overlay with a pink background, a small circular portrait of the woman, and Korean text",
+        "action": "static",
+        "position": "bottom left",
+        "id": "graphic_overlay_korean_text_various"
+      },
+      {
+        "desc": "background wall decoration featuring a honeycomb pattern with yellow, blue, and black hexagons",
+        "action": "static",
+        "position": "right",
+        "id": "studio_set_hex_walls_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The woman is touching the right side of her neck with her right hand.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A graphic overlay in the bottom left corner displays Korean text.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The text in the overlay reads '수현 생각' and '목 마사지 거꾸로 올라가야 독소가 배출된다?!'.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The woman is wearing a white shirt with a red floral print.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "내몸 사용설명서",
+      "TV조선",
+      "목속 쓰레기 정화조 <림프>",
+      "림프 순환 돕는 <30초 림프 마사지>",
+      "수현 생각",
+      "목 마사지 거꾸로 올라가야",
+      "독소가 배출된다?!"
+    ],
+    "spatial": "The woman is positioned in the center of the frame. The honeycomb-patterned wall decoration is to her right. The graphic overlay containing text is located in the bottom left corner, below the woman's shoulder.",
     "parse_success": true,
     "chunk_idx": 38,
     "video_id": "iWyHM8XvNI4_00:00:00:000_00:00:27:500",
@@ -2465,24 +2624,27 @@
   },
   {
     "time": [
-      78,
-      80
+      39,
+      40
     ],
     "visible_entities": [
       {
-        "desc": "woman with light brown hair in an updo, wearing a white collared shirt with a red and green floral pattern",
+        "desc": "woman with light brown hair in an updo, wearing a white short-sleeved shirt with a red and green floral pattern",
         "action": "touching her neck with her right hand",
-        "position": "left"
+        "position": "left",
+        "id": "person_participant_white_floral_1"
       },
       {
-        "desc": "woman with black hair pulled back, wearing a black spaghetti strap tank top and a pink oval name tag",
+        "desc": "woman with dark hair pulled back, wearing a black sleeveless top and a pink oval name tag",
         "action": "gesturing with both hands near her chest",
-        "position": "right"
+        "position": "right",
+        "id": "person_instructor_black_top_1"
       },
       {
-        "desc": "on-screen text overlay with a small photo of the woman on the left",
+        "desc": "on-screen text graphics with Korean characters in white and yellow fonts on colored backgrounds",
         "action": "static",
-        "position": "bottom left"
+        "position": "top and bottom",
+        "id": "graphic_overlay_korean_text_various"
       }
     ],
     "atomic_facts": [
@@ -2495,7 +2657,7 @@
         "confidence": 1.0
       },
       {
-        "fact": "The text overlay reads '목 마사지 거꾸로 올라가야 독소가 배출된다?!'.",
+        "fact": "The woman on the right wears a pink name tag with the text '운동처방사 김선우'.",
         "confidence": 1.0
       }
     ],
@@ -2505,11 +2667,12 @@
       "림프 순환 돕는 <30초 림프 마사지>",
       "TV조선",
       "수현 생각",
-      "목 마사지 거꾸로 올라가야 독소가 배출된다?!",
+      "목 마사지 거꾸로 올라가야",
+      "독소가 배출된다?!",
       "운동처방사",
       "김선우"
     ],
-    "spatial": "The woman in the floral shirt is to the left of the woman in the black tank top. The text overlay is below the woman in the floral shirt.",
+    "spatial": "The woman in the floral shirt is to the left of the woman in the black top. The woman in the black top is in front of the woman in the floral shirt. The on-screen text graphics are located at the top and bottom of the frame, surrounding the two women.",
     "parse_success": true,
     "chunk_idx": 39,
     "video_id": "iWyHM8XvNI4_00:00:00:000_00:00:27:500",
@@ -2517,38 +2680,35 @@
   },
   {
     "time": [
-      80,
-      82
+      40,
+      41
     ],
     "visible_entities": [
       {
-        "desc": "woman with short black hair, wearing a black spaghetti strap top, a thin necklace, and a watch on her left wrist",
-        "action": "massaging her neck with both hands",
-        "position": "center foreground"
+        "desc": "woman with short black hair, wearing a black spaghetti-strap top, a thin necklace, and a watch on her left wrist",
+        "action": "gesturing with both hands raised near her neck and speaking",
+        "position": "center foreground",
+        "id": "person_instructor_black_top_1"
       },
       {
-        "desc": "woman with light brown hair, wearing a white floral patterned top",
+        "desc": "woman with light brown hair tied back, wearing a white top with a floral pattern",
         "action": "touching her neck with her right hand",
         "position": "left background"
       },
       {
-        "desc": "green and orange text overlay with Korean characters",
+        "desc": "on-screen text overlay with Korean characters in various colors (orange, white, green) and a logo 'TV조선'",
         "action": "static",
-        "position": "bottom center"
-      },
-      {
-        "desc": "orange and white text overlay with Korean characters",
-        "action": "static",
-        "position": "top left"
+        "position": "top and bottom",
+        "id": "graphic_overlay_korean_text_various"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "The woman in the center is massaging her neck from bottom to top with both hands.",
+        "fact": "The woman in the center raises both hands with palms facing forward while speaking.",
         "confidence": 1.0
       },
       {
-        "fact": "The woman on the left is touching the side of her neck.",
+        "fact": "The woman on the left touches the side of her neck with her right hand.",
         "confidence": 1.0
       },
       {
@@ -2556,20 +2716,19 @@
         "confidence": 1.0
       },
       {
-        "fact": "A name tag below the center woman reads '김선우'.",
+        "fact": "A name tag identifies the central woman as '김선우'.",
         "confidence": 1.0
       }
     ],
     "ocr": [
       "내몸 사용설명서",
-      "목속 쓰레기 정화조 <림프>",
-      "림프 순환 돕는 <30초 림프 마사지>",
+      "뭉친 근육 풀어주는 <30초 림프 마사지>",
       "TV조선",
       "흔히 피부 처짐 방지",
       "아래서 위로 마사지하는 목",
       "김선우"
     ],
-    "spatial": "The woman in the black top is in the center foreground, while the woman in the floral top is to her left and slightly behind her. The text overlay describing the massage technique is located below the woman in the black top.",
+    "spatial": "The woman in the black top is in the center foreground, positioned in front of the woman in the floral top who is on the left. The text overlays are located above and below the women.",
     "parse_success": true,
     "chunk_idx": 40,
     "video_id": "iWyHM8XvNI4_00:00:00:000_00:00:27:500",
@@ -2577,110 +2736,105 @@
   },
   {
     "time": [
-      82,
-      84
+      41,
+      42
     ],
     "visible_entities": [
       {
-        "desc": "woman with short black hair, wearing a black sleeveless top and a black elbow brace on her left arm",
-        "action": "demonstrating a neck massage motion with both hands moving upwards",
-        "position": "center/foreground"
+        "desc": "woman with short dark hair, wearing a black sleeveless top and a black arm band on her left arm",
+        "action": "massaging her neck with both hands",
+        "position": "center",
+        "id": "person_instructor_black_top_1"
       },
       {
         "desc": "woman with light brown hair tied back, wearing a white floral patterned top",
-        "action": "watching with an open mouth expression",
-        "position": "left/background"
+        "action": "watching with a surprised expression",
+        "position": "left",
+        "id": "person_participant_white_floral_1"
       },
       {
-        "desc": "green rectangular graphic with white text and a cactus icon",
+        "desc": "on-screen text graphics in Korean with green and pink highlights",
         "action": "static",
-        "position": "bottom center"
-      },
-      {
-        "desc": "large orange and white Korean text overlay",
-        "action": "static",
-        "position": "bottom center"
+        "position": "bottom",
+        "id": "graphic_overlay_korean_text_various"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "The woman in the black top is rubbing her neck with both hands in an upward motion.",
+        "fact": "The woman in the center is massaging her neck with an upward motion.",
         "confidence": 1.0
       },
       {
-        "fact": "The text overlay reads '흔히 피부 처짐 방지' (Commonly prevents skin sagging).",
+        "fact": "The woman on the left is observing the demonstration.",
         "confidence": 1.0
       },
       {
-        "fact": "The text overlay reads '아래서 위로 마사지하는 목' (Neck massaging from bottom to top).",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The woman in the floral top is observing the demonstration.",
+        "fact": "The on-screen text reads '흔히 피부 처짐 방지' and '아래서 위로 마사지하는 목'.",
         "confidence": 1.0
       }
     ],
     "ocr": [
       "내몸 사용설명서",
-      "몸속 쓰레기 정화주 <림프>",
+      "물속 쓰레기 정화조 <림프>",
       "림프 순환 돕는 <30초 림프 마사지>",
       "TV조선",
       "흔히 피부 처짐 방지",
       "아래서 위로 마사지하는 목"
     ],
-    "spatial": "The woman in the black top is in the center foreground, positioned in front of the woman in the floral top who is on the left. The text overlays are located at the bottom of the screen, below the women.",
+    "spatial": "The woman in the black top is positioned to the right of the woman in the floral top. The on-screen text graphics are located below the two women.",
     "parse_success": true,
     "chunk_idx": 41,
     "video_id": "iWyHM8XvNI4_00:00:00:000_00:00:27:500",
-    "state_changes": []
+    "state_changes": [
+      "Woman in black sleeveless top begins massaging her own neck with both hands."
+    ]
   },
   {
     "time": [
-      84,
-      86
+      42,
+      43
     ],
     "visible_entities": [
       {
-        "desc": "woman with dark hair pulled back, wearing a black spaghetti strap top and a silver necklace",
-        "action": "massaging her neck with her hand",
-        "position": "center"
+        "desc": "woman with dark hair pulled back, wearing a black spaghetti strap top, a necklace, and a watch on her left wrist",
+        "action": "massaging her neck",
+        "position": "center",
+        "id": "person_instructor_black_top_1"
       },
       {
         "desc": "woman with light brown hair, wearing a white floral patterned top",
-        "action": "static",
-        "position": "left"
+        "action": "gesturing with her hand",
+        "position": "left",
+        "id": "person_participant_white_floral_1"
       },
       {
         "desc": "hand with red nail polish and a silver hoop earring",
-        "action": "pinching the skin behind the ear",
-        "position": "center"
+        "action": "pinching the neck",
+        "position": "right",
+        "id": "hand_massage_generic"
       },
       {
-        "desc": "green text box with white Korean text",
+        "desc": "on-screen text graphics in Korean with orange, green, and white colors",
         "action": "static",
-        "position": "bottom"
-      },
-      {
-        "desc": "orange text box with white Korean text",
-        "action": "static",
-        "position": "top left"
+        "position": "top and bottom",
+        "id": "graphic_overlay_korean_text_various"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A woman in a black top is massaging her neck with her hand.",
+        "fact": "The woman in the center is massaging her neck with both hands.",
         "confidence": 1.0
       },
       {
-        "fact": "A close-up shot shows a hand with red nail polish pinching the skin behind an ear.",
+        "fact": "The woman on the left is gesturing with her right hand.",
         "confidence": 1.0
       },
       {
-        "fact": "The on-screen text '흔히 피부 처짐 방지' is visible in a green box.",
+        "fact": "A close-up shot shows a hand with red nail polish pinching the skin on the side of a neck.",
         "confidence": 1.0
       },
       {
-        "fact": "The on-screen text '아래서 위로 마사지하는 목' is visible below the green box.",
+        "fact": "The text on the screen includes '내몸 사용설명서' and '흔히 피부 처짐 방지'.",
         "confidence": 1.0
       }
     ],
@@ -2690,9 +2844,10 @@
       "림프 순환 돕는 <30초 림프 마사지>",
       "TV조선",
       "흔히 피부 처짐 방지",
-      "아래서 위로 마사지하는 목"
+      "아래서 위로 마사지하는 목",
+      "김진주"
     ],
-    "spatial": "The woman in the black top is in the center of the frame, with the woman in the floral top to her left. The green text box is below the woman in the black top. The close-up shot of the hand is positioned to show the area behind the ear of the woman in the center.",
+    "spatial": "The woman in the black top is in the center of the frame, with the woman in the floral top to her left. The on-screen text is located at the top and bottom of the screen. The close-up shot of the hand and neck is a separate view, likely showing a detail of the action performed by the central woman.",
     "parse_success": true,
     "chunk_idx": 42,
     "video_id": "iWyHM8XvNI4_00:00:00:000_00:00:27:500",
@@ -2700,50 +2855,55 @@
   },
   {
     "time": [
-      86,
-      88
+      43,
+      44
     ],
     "visible_entities": [
       {
-        "desc": "person with fair skin, dark hair pulled back, wearing a silver hoop earring",
-        "action": "massaging neck",
-        "position": "center"
-      },
-      {
-        "desc": "hand with manicured nails featuring red polish and a white tip design",
-        "action": "pressing fingers into neck",
+        "desc": "person with dark hair tied back, wearing a silver hoop earring, and having red and white painted fingernails",
+        "action": "massaging the neck",
         "position": "center"
       },
       {
         "desc": "Korean text overlay with pink and white fonts",
         "action": "static",
-        "position": "bottom"
+        "position": "bottom",
+        "id": "graphic_overlay_korean_text_various"
+      },
+      {
+        "desc": "TV logo graphic in the top right corner",
+        "action": "static",
+        "position": "top right",
+        "id": "logo_tv_chosun_1"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A person is massaging the side of their neck with their fingers.",
+        "fact": "A person is using their hand to massage the side of their neck.",
         "confidence": 1.0
       },
       {
-        "fact": "The hand is positioned behind the ear and pressing downwards.",
+        "fact": "The massage motion is directed downwards from the ear.",
         "confidence": 1.0
       },
       {
-        "fact": "The text overlay indicates the correct direction for the massage is 'from top to bottom'.",
+        "fact": "The text overlay states that the correct way to massage is from top to bottom.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The person has a silver hoop earring in their ear.",
         "confidence": 1.0
       }
     ],
     "ocr": [
-      "내용",
-      "사용법",
-      "뭉쳐 쓰레기 정화조 <림프>",
+      "내몸 사용설명서",
+      "목속 쓰레기 정화조 <림프>",
       "림프 순환 돕는 <30초 림프 마사지>",
+      "TV조선",
       "목 림프 순환 마사지",
-      "위에서 아래로 하는 것이 정답",
-      "TV조선"
+      "위에서 아래로 하는 것이 정답"
     ],
-    "spatial": "The hand is in front of the person's neck, with fingers pressing into the skin below the ear. The silver hoop earring is located above the hand on the person's earlobe. The Korean text overlay is positioned at the bottom of the screen, below the person's neck.",
+    "spatial": "The person's hand is in front of their neck. The earring is on the person's ear, which is above the hand. The text overlay is below the person's neck.",
     "parse_success": true,
     "chunk_idx": 43,
     "video_id": "iWyHM8XvNI4_00:00:00:000_00:00:27:500",
@@ -2751,52 +2911,50 @@
   },
   {
     "time": [
-      88,
-      90
+      44,
+      45
     ],
     "visible_entities": [
       {
-        "desc": "person with dark hair, wearing a gold hoop earring, with red and silver manicured fingernails",
-        "action": "massaging neck",
+        "desc": "person with dark hair, wearing a gold hoop earring, with manicured fingernails painted in red and white",
+        "action": "massaging the neck area",
         "position": "center"
       },
       {
-        "desc": "red 3D geometric shape with a cutout, casting a shadow on a white background",
+        "desc": "red 3D abstract geometric shape with a glossy finish",
         "action": "static",
-        "position": "center"
+        "position": "center",
+        "id": "shape_abstract_red_1"
       },
       {
-        "desc": "Korean text overlay in pink, white, and yellow fonts",
+        "desc": "Korean text overlay with pink and white fonts",
         "action": "static",
-        "position": "top and bottom"
+        "position": "bottom",
+        "id": "graphic_overlay_korean_text_various"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A person is massaging their neck with their hand.",
+        "fact": "A person is using their fingers to massage the side of their neck.",
         "confidence": 1.0
       },
       {
-        "fact": "The fingers are pressing into the area behind the ear and jawline.",
+        "fact": "The on-screen text instructs that the correct way to massage is from top to bottom.",
         "confidence": 1.0
       },
       {
-        "fact": "The on-screen text instructs that the massage should be done from top to bottom.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "A red abstract 3D shape is displayed against a white background.",
+        "fact": "The video transitions to a red abstract 3D graphic.",
         "confidence": 1.0
       }
     ],
     "ocr": [
       "내몸 사용설명서",
-      "뭉쳐진 림프를 풀어주는 <30초 림프 마사지>",
+      "뭉친 림프 순환 돕는 <30초 림프 마사지>",
       "목 림프 순환 마사지",
       "위에서 아래로 하는 것이 정답",
       "TV조선"
     ],
-    "spatial": "The person's hand is positioned on the right side of their neck, just below the ear. The instructional text is located at the bottom of the screen, below the person's neck. The red geometric shape is centered in the frame.",
+    "spatial": "The person's hand is positioned on the neck, below the gold hoop earring. The Korean text overlay is located at the bottom of the frame, below the person's head. The red geometric shape appears in the center of the screen in the second frame.",
     "parse_success": true,
     "chunk_idx": 44,
     "video_id": "iWyHM8XvNI4_00:00:00:000_00:00:27:500",
@@ -2804,28 +2962,34 @@
   },
   {
     "time": [
-      90,
-      92
+      45,
+      46
     ],
     "visible_entities": [
       {
-        "desc": "A red square logo with rounded corners containing a white crescent shape.",
+        "desc": "3D logo featuring a red rounded square with a white crescent shape, accompanied by orange and silver text",
         "action": "static",
-        "position": "center-left"
+        "position": "center",
+        "id": "logo_tv_chosun_1"
       },
       {
-        "desc": "3D Korean text in orange and silver colors.",
+        "desc": "Gradient background transitioning from white to light purple and green",
         "action": "static",
-        "position": "center-right"
+        "position": "background",
+        "id": "background_gradient_intro"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "The logo and text remain static on the screen.",
+        "fact": "The logo remains static in the center of the frame.",
         "confidence": 1.0
       },
       {
-        "fact": "The text reads '온가족 행복채널 TV조선'.",
+        "fact": "The text '온가족 행복채널' is displayed in orange above the logo.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The text 'TV조선' is displayed in silver to the right of the red square.",
         "confidence": 1.0
       }
     ],
@@ -2834,29 +2998,36 @@
       "TV",
       "조선"
     ],
-    "spatial": "The red square logo is to the left of the silver 'TV' and '조선' text. The orange text '온가족 행복채널' is positioned above the logo and the silver text.",
+    "spatial": "The orange text '온가족 행복채널' is positioned above the red square logo. The silver text 'TV조선' is located to the right of the red square. The entire logo assembly is centered against the gradient background.",
     "parse_success": true,
     "chunk_idx": 45,
     "video_id": "iWyHM8XvNI4_00:00:00:000_00:00:27:500",
     "state_changes": [
-      "Outro logo screen appears ending the demonstration"
+      "Scene transitions to outro graphics; live action ends."
     ]
   },
   {
     "time": [
-      92,
-      94
+      46,
+      47
     ],
     "visible_entities": [
       {
-        "desc": "A logo graphic featuring a red rounded square with a white crescent shape, accompanied by Korean text '온가족 행복채널' in orange and 'TV 조선' in silver 3D lettering.",
+        "desc": "Logo consisting of a red rounded square containing a white crescent shape, accompanied by Korean text '온가족 행복채널' in orange with a white outline above, and 'TV' in grey next to '조선' in grey below.",
         "action": "static",
-        "position": "center"
+        "position": "center",
+        "id": "logo_tv_chosun_1"
+      },
+      {
+        "desc": "Background with a soft, out-of-focus gradient transitioning from pale yellow and white in the top left to light purple and blue in the bottom right.",
+        "action": "static",
+        "position": "background",
+        "id": "background_gradient_intro"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "The logo graphic remains static in the center of the screen.",
+        "fact": "A logo for 'TV 조선' (TV Chosun) is displayed in the center of the screen.",
         "confidence": 1.0
       },
       {
@@ -2864,7 +3035,7 @@
         "confidence": 1.0
       },
       {
-        "fact": "The text 'TV 조선' is positioned to the right of the red square icon.",
+        "fact": "The background features a static, multi-colored gradient.",
         "confidence": 1.0
       }
     ],
@@ -2873,7 +3044,7 @@
       "TV",
       "조선"
     ],
-    "spatial": "The orange text '온가족 행복채널' is located above the red square icon and the silver text 'TV 조선'. The red square icon is to the left of the silver text 'TV 조선'. The entire logo assembly is centered against a soft, gradient background.",
+    "spatial": "The text '온가족 행복채널' is positioned above the red square logo. The text 'TV' is to the right of the red square logo and above the text '조선'. The entire logo assembly is centered on the gradient background.",
     "parse_success": true,
     "chunk_idx": 46,
     "video_id": "iWyHM8XvNI4_00:00:00:000_00:00:27:500",

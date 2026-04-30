@@ -2,6 +2,25 @@
   {
     "time": [
       0,
+      1
+    ],
+    "visible_entities": [],
+    "atomic_facts": [
+      {
+        "fact": "The video frame is completely black with no visible content.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "There are no visible entities to describe spatial relationships.",
+    "parse_success": true,
+    "chunk_idx": 0,
+    "video_id": "gbyYDQf94w8",
+    "state_changes": []
+  },
+  {
+    "time": [
+      1,
       2
     ],
     "visible_entities": [],
@@ -12,26 +31,7 @@
       }
     ],
     "ocr": [],
-    "spatial": "There are no visible entities to describe spatial relations for.",
-    "parse_success": true,
-    "chunk_idx": 0,
-    "video_id": "gbyYDQf94w8",
-    "state_changes": []
-  },
-  {
-    "time": [
-      2,
-      4
-    ],
-    "visible_entities": [],
-    "atomic_facts": [
-      {
-        "fact": "The video frame is completely black with no visible content.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [],
-    "spatial": "There are no visible entities to describe spatial relations for.",
+    "spatial": "There are no visible entities to describe spatial relationships between.",
     "parse_success": true,
     "chunk_idx": 1,
     "video_id": "gbyYDQf94w8",
@@ -39,93 +39,91 @@
   },
   {
     "time": [
-      4,
-      6
+      2,
+      3
     ],
     "visible_entities": [
       {
-        "desc": "red velvet curtain with gold horizontal stripes at the bottom hem",
-        "action": "opening to reveal background",
-        "position": "left and right foreground"
+        "desc": "red velvet curtains with gold horizontal stripes at the bottom hem",
+        "action": "opening to reveal the background",
+        "position": "left and right foreground",
+        "id": "curtains_red_velvet"
       },
       {
-        "desc": "silver and black machine with a glass lid, control panel with buttons, and a roller mechanism",
+        "desc": "silver and black machine labeled 'BIG 12' with a transparent lid and control panel",
         "action": "static",
         "position": "center background",
-        "id": "grill_roller_1"
+        "id": "grill_big12"
       },
       {
-        "desc": "black text 'BIG 12' on the machine's control panel",
+        "desc": "silver and black machine labeled 'BIG 12' with a transparent lid and control panel",
         "action": "static",
-        "position": "center background"
-      },
-      {
-        "desc": "black text 'HOT ROLLER' in a curved orientation",
-        "action": "static",
-        "position": "top right"
+        "position": "center background",
+        "id": "grill_big12"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "The red curtains are opening to reveal the machines behind them.",
+        "fact": "The red curtains are opening to reveal two machines.",
         "confidence": 1.0
       },
       {
-        "fact": "Two identical machines are sitting side-by-side in the center.",
+        "fact": "Two identical machines labeled 'BIG 12' are sitting side-by-side.",
         "confidence": 1.0
       },
       {
-        "fact": "The text 'BIG 12' is visible on the front of the machines.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The text 'HOT ROLLER' appears in the upper right corner.",
+        "fact": "The machines feature a transparent lid and a control panel with buttons.",
         "confidence": 1.0
       }
     ],
     "ocr": [
       "BIG 12",
-      "HOT ROLLER"
+      "BIG 12"
     ],
-    "spatial": "The red curtains are in the foreground on the left and right sides, framing the view. The two silver machines are positioned next to each other in the center background, behind the opening curtains. The text 'HOT ROLLER' is located above and to the right of the machines.",
+    "spatial": "The red curtains are in the foreground on the left and right sides of the frame. The two machines are positioned in the center background, behind the opening curtains. The machines are next to each other.",
     "parse_success": true,
     "chunk_idx": 2,
     "video_id": "gbyYDQf94w8",
     "state_changes": [
-      "Curtain opens to reveal the machine"
+      "Scene opens with red velvet curtains parting to reveal a machine."
     ]
   },
   {
     "time": [
-      6,
-      8
+      3,
+      4
     ],
     "visible_entities": [
       {
-        "desc": "stainless steel hot dog roller grill with a flat rectangular glass sneeze guard, silver rollers, and a black control panel with red and green indicator lights",
+        "desc": "Stainless steel hot dog roller grill with a black control panel, silver rollers, and a flat rectangular glass sneeze guard",
         "action": "static",
-        "position": "left"
+        "position": "left",
+        "id": "grill_roller_dog_big24"
       },
       {
-        "desc": "stainless steel hot dog roller grill with a curved glass sneeze guard, silver rollers, and a black control panel with red and green indicator lights",
+        "desc": "Stainless steel hot dog roller grill with a black control panel, silver rollers, and a curved glass sneeze guard",
         "action": "static",
         "position": "right",
-        "id": "grill_roller_1"
+        "id": "grill_roller_dog_big24"
       },
       {
-        "desc": "circular logo featuring a cartoon white dog holding a hot dog in its mouth, with text 'ROLLER DOG' above and 'HOT DOG ROLLER' below",
+        "desc": "Circular logo featuring a cartoon white dog holding a hot dog in its mouth, with text 'ROLLER DOG' and 'HOT DOG ROLLER'",
         "action": "static",
         "position": "top right",
-        "id": "logo_roller_dog_1"
+        "id": "logo_roller_dog_main"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "Two stainless steel hot dog roller grills are displayed side-by-side.",
+        "fact": "Two stainless steel hot dog roller grills are displayed side-by-side against a white background.",
         "confidence": 1.0
       },
       {
-        "fact": "The grill on the left features a flat glass cover, while the grill on the right features a curved glass cover.",
+        "fact": "The grill on the left features a flat glass sneeze guard.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The grill on the right features a curved glass sneeze guard.",
         "confidence": 1.0
       },
       {
@@ -142,7 +140,7 @@
       "HOT DOG ROLLER",
       "BIG 12"
     ],
-    "spatial": "The flat-top roller grill is to the left of the curved-top roller grill. The 'ROLLER DOG' logo is above and to the right of the curved-top grill. Both grills are positioned on a white background.",
+    "spatial": "The flat-guard roller grill is to the left of the curved-guard roller grill. The 'ROLLER DOG' logo is above and to the right of the curved-guard grill. Both grills are positioned in the foreground on a white surface.",
     "parse_success": true,
     "chunk_idx": 3,
     "video_id": "gbyYDQf94w8",
@@ -150,206 +148,235 @@
   },
   {
     "time": [
-      8,
-      10
+      4,
+      5
     ],
     "visible_entities": [
       {
         "desc": "man with short dark hair and beard, wearing a dark grey short-sleeved polo shirt",
-        "action": "operating a vacuum sealer",
+        "action": "adjusting knobs on a machine",
         "position": "center",
-        "id": "person_chef_1"
+        "id": "person_chef_dark_polo"
       },
       {
-        "desc": "silver and black vacuum sealer machine with control panel",
+        "desc": "silver and black rectangular machine with control knobs and text 'BIG 24'",
         "action": "static",
-        "position": "foreground"
+        "position": "center foreground",
+        "id": "grill_big24_unit"
       },
       {
         "desc": "hand holding a black power cord",
-        "action": "plugging into outlet",
-        "position": "right"
-      },
-      {
-        "desc": "black electrical outlet mounted on wood",
-        "action": "static",
-        "position": "right"
-      },
-      {
-        "desc": "dark granite countertop with speckled pattern",
-        "action": "static",
-        "position": "bottom",
-        "id": "countertop_granite_1"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "A man is operating a vacuum sealer on a kitchen counter.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "A hand is plugging a black power cord into a wall outlet.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The vacuum sealer has the text 'BIG 24' printed on it.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [
-      "BIG 24"
-    ],
-    "spatial": "The man is standing behind the vacuum sealer machine. The vacuum sealer is on the granite countertop. The hand is to the right of the man, plugging the cord into the outlet which is mounted on the wooden cabinet below the counter.",
-    "parse_success": true,
-    "chunk_idx": 4,
-    "video_id": "gbyYDQf94w8",
-    "state_changes": [
-      "Man begins operating vacuum sealer and plugging in cord"
-    ]
-  },
-  {
-    "time": [
-      10,
-      12
-    ],
-    "visible_entities": [
-      {
-        "desc": "man with short dark hair and beard, wearing a dark grey polo shirt",
-        "action": "pouring hot dogs",
-        "position": "left",
-        "id": "person_chef_1"
-      },
-      {
-        "desc": "silver foil tray filled with pink hot dogs",
-        "action": "being tilted",
-        "position": "center",
-        "id": "hot_dogs_1"
-      },
-      {
-        "desc": "silver and black hot dog roller machine with control panel",
-        "action": "static",
-        "position": "right"
+        "action": "plugging into a wall outlet",
+        "position": "foreground",
+        "id": "utensil_power_cord"
       },
       {
         "desc": "dark brown wooden kitchen cabinets with silver handles",
         "action": "static",
         "position": "background",
-        "id": "cabinets_kitchen_1"
+        "id": "kitchen_cabinets_dark"
       },
       {
-        "desc": "beige tiled backsplash with black diamond pattern",
+        "desc": "stainless steel double wall oven",
         "action": "static",
-        "position": "background",
-        "id": "backsplash_tile_1"
+        "position": "left background",
+        "id": "double_oven"
       },
       {
-        "desc": "small silver foil tray with two hot dogs",
+        "desc": "black electrical outlet on a wooden surface",
         "action": "static",
-        "position": "foreground"
+        "position": "right",
+        "id": "outlet_black"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "The man is tilting a foil tray to pour hot dogs into a machine.",
+        "fact": "A man is adjusting the knobs on a silver and black machine labeled 'BIG 24'.",
         "confidence": 1.0
       },
       {
-        "fact": "The machine has the text 'BIG 24' printed on the front right.",
+        "fact": "A hand is plugging a black power cord into an electrical outlet.",
         "confidence": 1.0
       },
       {
-        "fact": "The machine has a row of indicator lights and buttons on the front panel.",
+        "fact": "The machine is sitting on a dark granite countertop.",
         "confidence": 1.0
       },
       {
-        "fact": "A small tray of hot dogs sits on the counter in front of the machine.",
+        "fact": "The text 'BIG 24' is visible on the front of the machine.",
         "confidence": 1.0
       }
     ],
     "ocr": [
       "BIG 24"
     ],
-    "spatial": "The man is standing to the left of the hot dog machine. He is holding the tray of hot dogs above the machine's opening. The machine is sitting on the countertop to the right of the man. The small tray of hot dogs is in front of the machine.",
+    "spatial": "The man is standing behind the silver machine which is on the countertop. The stainless steel oven is to the left of the man. The hand plugging in the cord is in the foreground, near the wooden cabinet.",
     "parse_success": true,
-    "chunk_idx": 5,
+    "chunk_idx": 4,
     "video_id": "gbyYDQf94w8",
     "state_changes": [
-      "Man pours hot dogs from foil tray"
+      "Man begins adjusting knobs and plugs in a power cord."
     ]
   },
   {
     "time": [
-      12,
-      14
+      5,
+      6
     ],
     "visible_entities": [
       {
-        "desc": "silver and black commercial hot dog roller grill with metal rollers and control knobs",
+        "desc": "man with short dark hair and beard, wearing a dark blue polo shirt",
+        "action": "pouring hot dogs from a package",
+        "position": "left",
+        "id": "person_chef_dark_polo"
+      },
+      {
+        "desc": "silver and black vacuum sealer machine with control buttons and a digital display",
+        "action": "static",
+        "position": "right",
+        "id": "vacuum_sealer"
+      },
+      {
+        "desc": "rectangular aluminum foil tray containing hot dogs",
+        "action": "being filled",
+        "position": "center foreground",
+        "id": "hot_dogs_package"
+      },
+      {
+        "desc": "package of hot dogs in clear plastic with red and white labeling",
+        "action": "being held and tilted",
+        "position": "center",
+        "id": "hot_dogs_package"
+      },
+      {
+        "desc": "dark brown wooden kitchen cabinets with silver handles",
         "action": "static",
         "position": "background",
-        "id": "grill_roller_1"
+        "id": "kitchen_cabinets_dark"
       },
       {
-        "desc": "six hot dogs in white buns with brown sausages",
+        "desc": "beige tiled backsplash with a horizontal band of black diamond-shaped tiles",
         "action": "static",
-        "position": "foreground",
-        "id": "hot_dogs_1"
+        "position": "background",
+        "id": "backsplash_beige_diamond"
       },
       {
-        "desc": "clear plastic serving tray",
+        "desc": "dark granite countertop with a glossy, reflective surface",
         "action": "static",
-        "position": "foreground"
-      },
-      {
-        "desc": "red illuminated power switch",
-        "action": "static",
-        "position": "center"
-      },
-      {
-        "desc": "two green indicator lights",
-        "action": "static",
-        "position": "center"
-      },
-      {
-        "desc": "two silver control knobs with black markings",
-        "action": "static",
-        "position": "center"
-      },
-      {
-        "desc": "logo featuring a cartoon dog head",
-        "action": "static",
-        "position": "left",
-        "id": "logo_roller_dog_1"
-      },
-      {
-        "desc": "uncooked hot dogs on the metal rollers",
-        "action": "static",
-        "position": "background"
+        "position": "bottom",
+        "id": "countertop_granite_dark"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "The hot dog roller grill is operating with the red power switch illuminated.",
+        "fact": "The man is pouring hot dogs from a package into an aluminum tray.",
         "confidence": 1.0
       },
       {
-        "fact": "Six prepared hot dogs are arranged in a row on a clear tray in front of the machine.",
+        "fact": "The vacuum sealer machine has the text 'BIG24' printed on its front panel.",
         "confidence": 1.0
       },
       {
-        "fact": "Uncooked hot dogs are resting on the rotating metal rollers of the grill.",
+        "fact": "The aluminum tray is sitting on the dark granite countertop.",
         "confidence": 1.0
       },
       {
-        "fact": "The text 'ROLLER DOG' is visible above the dog logo.",
+        "fact": "The man is standing to the left of the vacuum sealer machine.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "BIG24"
+    ],
+    "spatial": "The man is standing to the left of the vacuum sealer machine. The aluminum tray is on the countertop, positioned between the man and the machine. The tiled backsplash is on the wall behind the countertop and the machine.",
+    "parse_success": true,
+    "chunk_idx": 5,
+    "video_id": "gbyYDQf94w8",
+    "state_changes": [
+      "Man starts pouring hot dogs from a package into a tray."
+    ]
+  },
+  {
+    "time": [
+      6,
+      7
+    ],
+    "visible_entities": [
+      {
+        "desc": "stainless steel hot dog roller grill with black control panel, silver rollers, and red power switch",
+        "action": "static",
+        "position": "center/background",
+        "id": "grill_roller_dog_generic"
+      },
+      {
+        "desc": "cooked reddish-brown hot dogs rotating on the metal rollers",
+        "action": "rotating",
+        "position": "center",
+        "id": "hot_dogs_cooking"
+      },
+      {
+        "desc": "white oval serving tray holding six hot dogs in buns",
+        "action": "static",
+        "position": "foreground",
+        "id": "hot_dogs_bunned_plain"
+      },
+      {
+        "desc": "hot dogs in white buns arranged in a row",
+        "action": "static",
+        "position": "foreground",
+        "id": "hot_dogs_bunned_plain"
+      },
+      {
+        "desc": "logo featuring a cartoon white dog head with a red collar",
+        "action": "static",
+        "position": "left",
+        "id": "logo_roller_dog_main"
+      },
+      {
+        "desc": "text 'ROLLER DOG' in white font",
+        "action": "static",
+        "position": "left"
+      },
+      {
+        "desc": "text 'BIG24' in large white and red font",
+        "action": "static",
+        "position": "right"
+      },
+      {
+        "desc": "control knobs labeled 'FRONT ROLLERS' and 'REAR ROLLERS'",
+        "action": "static",
+        "position": "center"
+      },
+      {
+        "desc": "dark speckled countertop surface",
+        "action": "static",
+        "position": "bottom",
+        "id": "countertop_granite_dark"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The hot dogs on the upper rollers are rotating.",
         "confidence": 1.0
       },
       {
-        "fact": "The text 'BIG24' is printed on the right side of the machine panel.",
+        "fact": "The roller grill is positioned behind the tray of prepared hot dogs.",
         "confidence": 1.0
       },
       {
-        "fact": "Labels 'FRONT ROLLERS' and 'REAR ROLLERS' are visible below the control knobs.",
+        "fact": "The text 'ROLLER DOG' is visible above the cartoon dog logo.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The text 'BIG24' is printed on the right side of the machine's front panel.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "There are six hot dogs in buns arranged on the serving tray.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The machine has a red power switch and green indicator lights.",
         "confidence": 1.0
       }
     ],
@@ -362,57 +389,70 @@
       "REAR ROLLERS",
       "BIG24"
     ],
-    "spatial": "The clear tray holding the six hot dogs is in front of the hot dog roller grill. The control panel with knobs and lights is located on the front face of the grill, below the metal rollers. The 'ROLLER DOG' logo is to the left of the power switch, and the 'BIG24' text is to the right of the rear roller knob.",
+    "spatial": "The stainless steel roller grill is located in the background, sitting on a dark speckled countertop. In the foreground, a white tray containing hot dogs in buns is placed in front of the machine. The 'ROLLER DOG' logo is on the left side of the control panel, while the 'BIG24' text is on the right side.",
     "parse_success": true,
     "chunk_idx": 6,
     "video_id": "gbyYDQf94w8",
-    "state_changes": []
+    "state_changes": [
+      "Hot dogs are now rotating on the grill rollers; scene shifts to serving tray."
+    ]
   },
   {
     "time": [
-      14,
-      16
+      7,
+      8
     ],
     "visible_entities": [
       {
-        "desc": "silver and black commercial hot dog roller grill with metal rollers, control panel with red and green lights, and a cartoon dog logo",
+        "desc": "silver stainless steel hot dog roller grill with black control panel, labeled 'BIG24' and 'ROLLER DOG', featuring metal rollers and a glass sneeze guard",
         "action": "static",
-        "position": "center"
+        "position": "center",
+        "id": "grill_roller_dog_big24"
       },
       {
-        "desc": "rows of reddish-brown hot dogs, uncooked or warming",
+        "desc": "rows of reddish-brown hot dogs arranged on the metal rollers",
         "action": "static",
         "position": "top",
-        "id": "hot_dogs_1"
+        "id": "hot_dogs_cooking"
       },
       {
         "desc": "dark speckled granite countertop",
         "action": "static",
         "position": "bottom",
-        "id": "countertop_granite_1"
+        "id": "countertop_granite_dark"
       },
       {
-        "desc": "dark wooden kitchen cabinets",
+        "desc": "dark brown wooden kitchen cabinets",
         "action": "static",
         "position": "background",
-        "id": "cabinets_kitchen_1"
+        "id": "kitchen_cabinets_dark"
+      },
+      {
+        "desc": "red illuminated power switch",
+        "action": "static",
+        "position": "left"
+      },
+      {
+        "desc": "silver rotary control knobs",
+        "action": "static",
+        "position": "center"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "The hot dog roller grill sits on a dark granite countertop.",
+        "fact": "The hot dog roller grill is sitting on a dark granite countertop.",
         "confidence": 1.0
       },
       {
-        "fact": "Rows of hot dogs are arranged on the metal rollers of the machine.",
+        "fact": "Rows of hot dogs are resting on the rotating metal rollers of the machine.",
         "confidence": 1.0
       },
       {
-        "fact": "The control panel features a red power light and green indicator lights.",
+        "fact": "The red power light on the control panel is illuminated.",
         "confidence": 1.0
       },
       {
-        "fact": "The text 'BIG24' is printed on the front right of the machine.",
+        "fact": "The text 'ROLLER DOG' is visible on the left side of the control panel.",
         "confidence": 1.0
       }
     ],
@@ -424,7 +464,7 @@
       "REAR ROLLERS",
       "BIG24"
     ],
-    "spatial": "The hot dog roller grill is placed on top of the dark granite countertop. The hot dogs are located on the upper rollers of the grill. The wooden cabinets are visible in the background behind the grill.",
+    "spatial": "The hot dog roller grill is positioned on top of the dark granite countertop. The rows of hot dogs are located above the metal rollers. The control panel is situated on the front face of the grill, below the cooking surface. The wooden cabinets are visible in the background behind the grill.",
     "parse_success": true,
     "chunk_idx": 7,
     "video_id": "gbyYDQf94w8",
@@ -432,151 +472,167 @@
   },
   {
     "time": [
-      16,
-      18
+      8,
+      9
     ],
     "visible_entities": [
       {
-        "desc": "woman with blonde hair, wearing a white short-sleeved dress and sunglasses on her head",
-        "action": "sitting at the table",
+        "desc": "woman with blonde hair, white short-sleeved top, sunglasses on head",
+        "action": "sitting at table",
         "position": "left",
-        "id": "person_family_woman_1"
+        "id": "person_woman_blonde_sunglasses"
       },
       {
-        "desc": "girl with blonde hair, wearing a white t-shirt and blue denim overalls",
-        "action": "eating with a fork",
+        "desc": "girl with blonde hair, white t-shirt, blue denim overalls",
+        "action": "eating",
         "position": "right",
-        "id": "person_family_girl_1"
+        "id": "person_girl_blonde_overalls"
       },
       {
-        "desc": "girl with blonde hair, wearing a pink sleeveless top and a pink headband",
-        "action": "laughing with hand near face",
-        "position": "top"
+        "desc": "girl with blonde hair, pink headband, white sleeveless top",
+        "action": "laughing",
+        "position": "top",
+        "id": "person_girl_blonde_white_sleeveless"
       },
       {
-        "desc": "girl with blonde hair, wearing a light green t-shirt",
-        "action": "smiling at the camera",
-        "position": "bottom"
-      },
-      {
-        "desc": "man with short hair and glasses",
-        "action": "eating at the table",
+        "desc": "girl with blonde hair, light green top",
+        "action": "smiling",
         "position": "bottom",
-        "id": "person_family_man_1"
+        "id": "person_girl_blonde_green"
       },
       {
-        "desc": "rectangular table covered with a blue and white checkered tablecloth",
+        "desc": "man with short brown hair, glasses",
+        "action": "eating",
+        "position": "bottom",
+        "id": "person_man_glasses_dark"
+      },
+      {
+        "desc": "blue and white checkered tablecloth",
         "action": "static",
         "position": "center",
-        "id": "table_dining_1"
+        "id": "tablecloth_checkered"
       },
       {
-        "desc": "white plate with grilled sausages",
+        "desc": "white plates with food",
         "action": "static",
-        "position": "center"
+        "position": "center",
+        "id": "plates_white"
       },
       {
-        "desc": "woven basket containing bread rolls",
+        "desc": "baskets of bread",
         "action": "static",
-        "position": "center"
+        "position": "center",
+        "id": "bread_baskets"
       },
       {
         "desc": "glass of orange juice",
         "action": "static",
-        "position": "center"
+        "position": "center",
+        "id": "orange_juice"
       },
       {
-        "desc": "blue plastic chair",
+        "desc": "bowl of salad",
         "action": "static",
-        "position": "left"
+        "position": "center",
+        "id": "salad_bowl"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A group of people are gathered around a table for an outdoor meal.",
+        "fact": "A group of people are eating a meal outdoors.",
         "confidence": 1.0
       },
       {
-        "fact": "The girl on the right is holding a fork and eating food from her plate.",
+        "fact": "The table is covered with a blue and white checkered tablecloth.",
         "confidence": 1.0
       },
       {
-        "fact": "The table is set with plates of food, including sausages, salad, and bread.",
+        "fact": "There are plates of food, including sausages and salad, on the table.",
         "confidence": 1.0
       },
       {
-        "fact": "The woman on the left is holding a fork and looking towards the center of the table.",
+        "fact": "The girl on the right is holding a fork and eating.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The woman on the left is looking towards the camera.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The woman in the white dress is seated to the left of the table. The girl in denim overalls is to the right of the table, next to the girl in the pink top. The man and the girl in the green shirt are at the bottom of the frame, in front of the table. The plate of sausages is in the center of the table, near the basket of bread.",
+    "spatial": "The woman in the white top is on the left side of the table. The girl in overalls is on the right side of the table. The girl with the pink headband is at the top of the table. The man and the other girl are at the bottom of the table. The food and drinks are on the table in the center.",
     "parse_success": true,
     "chunk_idx": 8,
     "video_id": "gbyYDQf94w8",
     "state_changes": [
-      "Scene shifts to family eating at dining table"
+      "Scene transitions to a family dining at a table; people are eating."
     ]
   },
   {
     "time": [
-      18,
-      20
+      9,
+      10
     ],
     "visible_entities": [
       {
-        "desc": "woman with blonde hair, wearing a white short-sleeved dress and sunglasses on her head",
-        "action": "sitting at the table",
+        "desc": "woman with blonde hair, wearing sunglasses on head and a white dress",
+        "action": "sitting at table",
         "position": "left",
-        "id": "person_family_woman_1"
+        "id": "person_woman_blonde_sunglasses"
       },
       {
-        "desc": "child with blonde hair, wearing a white t-shirt and blue denim overalls",
+        "desc": "girl with blonde hair, wearing a white top and blue patterned overalls",
         "action": "eating with a fork",
         "position": "top right",
-        "id": "person_family_girl_1"
+        "id": "person_girl_blonde_overalls"
       },
       {
         "desc": "child with blonde hair, wearing a white sleeveless top",
-        "action": "sitting at the table",
-        "position": "top center"
+        "action": "sitting at table",
+        "position": "top center",
+        "id": "person_girl_blonde_white_sleeveless"
       },
       {
-        "desc": "child with blonde hair, wearing a light green long-sleeved shirt",
-        "action": "smiling",
-        "position": "bottom left"
+        "desc": "girl with blonde hair, wearing a light green shirt",
+        "action": "smiling at camera",
+        "position": "bottom left",
+        "id": "person_girl_blonde_green"
       },
       {
-        "desc": "man with short brown hair and glasses, wearing a dark shirt",
+        "desc": "man with short hair and glasses, wearing a dark shirt",
         "action": "eating",
         "position": "bottom center",
-        "id": "person_family_man_1"
+        "id": "person_man_glasses_dark"
       },
       {
-        "desc": "rectangular table covered with a blue and white checkered tablecloth",
+        "desc": "table covered with a blue and white checkered tablecloth",
         "action": "static",
         "position": "center",
-        "id": "table_dining_1"
+        "id": "tablecloth_checkered"
       },
       {
-        "desc": "white plates containing food such as sausages, salad, and bread",
+        "desc": "white plates with food including sausages and salad",
         "action": "static",
-        "position": "on the table"
+        "position": "on table",
+        "id": "plates_white"
+      },
+      {
+        "desc": "baskets containing bread rolls",
+        "action": "static",
+        "position": "on table",
+        "id": "bread_baskets"
       },
       {
         "desc": "glasses of orange juice",
         "action": "static",
-        "position": "on the table"
+        "position": "on table",
+        "id": "orange_juice"
       },
       {
         "desc": "blue plastic chairs",
         "action": "static",
-        "position": "around the table"
-      },
-      {
-        "desc": "gravel ground surface",
-        "action": "static",
-        "position": "background"
+        "position": "around table",
+        "id": "chairs_blue"
       }
     ],
     "atomic_facts": [
@@ -585,20 +641,24 @@
         "confidence": 1.0
       },
       {
-        "fact": "The child in the top right is holding a fork and eating.",
+        "fact": "The table is set with a blue and white checkered tablecloth.",
         "confidence": 1.0
       },
       {
-        "fact": "The table is set with plates of sausages, salad, and bread.",
+        "fact": "The girl in the top right is holding a fork and eating.",
         "confidence": 1.0
       },
       {
-        "fact": "Glasses of orange juice are placed on the table.",
+        "fact": "Plates of food, including sausages and salad, are placed on the table.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "Baskets of bread and glasses of orange juice are on the table.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The woman in the white dress is seated on the left side of the table. The child in overalls is at the top right corner of the table, next to the child in the white top. The man with glasses is at the bottom of the table, to the right of the child in the green shirt. The plates of food and drinks are arranged on the blue and white checkered tablecloth in the center.",
+    "spatial": "The woman in the white dress is on the left side of the table. The girl in overalls is on the right side of the table, next to the child in the white top. The man with glasses is at the bottom of the frame, in front of the table. The plates of food and baskets of bread are on the table, between the people.",
     "parse_success": true,
     "chunk_idx": 9,
     "video_id": "gbyYDQf94w8",
@@ -606,127 +666,146 @@
   },
   {
     "time": [
-      20,
-      22
+      10,
+      11
     ],
     "visible_entities": [
       {
-        "desc": "young girl with light brown hair in pigtails, wearing an orange polo shirt, khaki shorts, white socks, and purple sneakers",
-        "action": "sitting in the trunk with arms raised",
-        "position": "center/foreground"
+        "desc": "young girl with light brown hair in pigtails, wearing an orange short-sleeved polo shirt, khaki shorts, white socks, and purple hiking shoes",
+        "action": "sitting in the trunk of a car with arms raised",
+        "position": "foreground center",
+        "id": "person_girl_hiker"
       },
       {
-        "desc": "rolled-up blue yoga mat",
-        "action": "static",
-        "position": "center/foreground"
+        "desc": "rolled-up light blue yoga or sleeping mat",
+        "action": "held in the girl's left hand",
+        "position": "center",
+        "id": "mat_yoga_blue"
       },
       {
-        "desc": "black and grey hiking backpack",
+        "desc": "black and grey hiking backpack with red accents",
         "action": "static",
-        "position": "left/foreground"
+        "position": "left",
+        "id": "backpack_hiking"
       },
       {
-        "desc": "red and white car trunk",
+        "desc": "silver car trunk interior",
         "action": "static",
-        "position": "left/foreground"
+        "position": "foreground",
+        "id": "car_trunk"
       },
       {
-        "desc": "person in a red shirt",
-        "action": "static",
-        "position": "background"
+        "desc": "person wearing a red t-shirt",
+        "action": "sitting",
+        "position": "background right"
       },
       {
-        "desc": "person in a yellow shirt",
-        "action": "static",
-        "position": "background"
+        "desc": "person with blonde hair wearing a yellow shirt",
+        "action": "sitting",
+        "position": "background right"
       },
       {
         "desc": "blue camping tent",
         "action": "static",
-        "position": "background"
-      },
-      {
-        "desc": "white dog",
-        "action": "static",
-        "position": "background"
+        "position": "background center",
+        "id": "tent_camping"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A young girl sits in the open trunk of a car with her arms raised in the air.",
+        "fact": "A young girl sits in the open trunk of a car.",
         "confidence": 1.0
       },
       {
-        "fact": "The girl is holding a rolled-up blue yoga mat.",
+        "fact": "The girl raises both arms in the air.",
         "confidence": 1.0
       },
       {
-        "fact": "A black backpack is packed inside the trunk next to the girl.",
+        "fact": "The girl holds a rolled-up blue mat.",
         "confidence": 1.0
       },
       {
-        "fact": "Two people and a white dog are sitting on the grass in the background near a blue tent.",
+        "fact": "Two people are sitting on the grass in the background.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A blue tent is pitched in the background.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The girl is sitting inside the open trunk of the car in the foreground. The black backpack is to the left of the girl. The blue yoga mat is held by the girl. In the background, the blue tent is behind the girl and the car. The two people and the dog are sitting on the grass to the right of the tent.",
+    "spatial": "The girl is sitting inside the trunk of the car in the foreground. To her left is a large hiking backpack. In the background, behind the car, a blue tent is set up on the grass. To the right of the tent, two people are sitting on the ground.",
     "parse_success": true,
     "chunk_idx": 10,
     "video_id": "gbyYDQf94w8",
     "state_changes": [
-      "Scene shifts to children playing in car trunk/camping setting"
+      "Scene changes to outdoors/car trunk; girl is sitting with camping gear."
     ]
   },
   {
     "time": [
-      22,
-      24
+      11,
+      12
     ],
     "visible_entities": [
       {
-        "desc": "six hot dogs with various toppings including mustard, cheese, relish, and pickles, plus a large close-up hot dog with red peppers and a green pepper",
+        "desc": "row of six hot dogs with various toppings including mustard, cheese, onions, relish, pickles, and ketchup",
         "action": "static",
-        "position": "top and bottom-right"
+        "position": "top",
+        "id": "hot_dogs_bunned_topped"
       },
       {
-        "desc": "cartoon logo of a white dog with black ears holding a hot dog in its mouth, encircled by text",
+        "desc": "circular logo featuring a cartoon white dog with a red collar holding a hot dog in its mouth",
         "action": "static",
-        "position": "bottom-left"
+        "position": "bottom left",
+        "id": "logo_roller_dog_main"
       },
       {
-        "desc": "man with short brown hair, green button-down shirt, blue jeans",
-        "action": "sitting and looking forward",
+        "desc": "large close-up of a hot dog with a sausage, yellow mustard, green relish, white onions, and a pickle spear on a bun",
+        "action": "static",
+        "position": "bottom right",
+        "id": "hot_dogs_bunned_topped"
+      },
+      {
+        "desc": "man with short brown hair wearing a green button-down shirt and blue jeans",
+        "action": "sitting and looking forward with mouth open",
         "position": "left",
-        "id": "person_tv_group_1"
+        "id": "person_man_green_shirt"
       },
       {
-        "desc": "woman with long dark hair, green tank top, holding a glass of orange juice",
-        "action": "sitting and looking forward",
-        "position": "center-left",
-        "id": "person_tv_group_1"
+        "desc": "woman with long dark hair wearing a green tank top",
+        "action": "sitting and holding a glass of orange juice",
+        "position": "center left",
+        "id": "person_woman_dark_green_tank"
       },
       {
-        "desc": "woman with short reddish hair, red strapless top",
-        "action": "sitting and looking forward",
-        "position": "center-right",
-        "id": "person_tv_group_1"
+        "desc": "woman with short reddish-brown hair wearing a red strapless top",
+        "action": "sitting and looking forward with mouth open",
+        "position": "center right",
+        "id": "person_woman_red_strapless"
       },
       {
-        "desc": "man with short brown hair, yellow button-down shirt",
-        "action": "sitting and looking forward",
+        "desc": "man with short brown hair and beard wearing a yellow button-down shirt",
+        "action": "sitting and looking forward with mouth open",
         "position": "right",
-        "id": "person_tv_group_1"
+        "id": "person_man_yellow_shirt"
       },
       {
         "desc": "glass bowl filled with potato chips",
         "action": "static",
-        "position": "bottom-left foreground"
+        "position": "bottom left foreground",
+        "id": "chips_bowl"
+      },
+      {
+        "desc": "glass of orange juice",
+        "action": "being held",
+        "position": "center left",
+        "id": "orange_juice"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "The video displays a split screen with hot dog graphics on top and a group of people on the bottom.",
+        "fact": "The video displays a split screen with hot dog imagery on the top half and a group of people on the bottom half.",
         "confidence": 1.0
       },
       {
@@ -734,15 +813,15 @@
         "confidence": 1.0
       },
       {
-        "fact": "The text 'ROLLER DOG' appears above the dog logo.",
+        "fact": "The text 'ROLLER DOG' appears in an arc above the dog logo.",
         "confidence": 1.0
       },
       {
-        "fact": "The text 'HOT DOG ROLLER' appears below the dog logo.",
+        "fact": "The text 'HOT DOG ROLLER' appears in an arc below the dog logo.",
         "confidence": 1.0
       },
       {
-        "fact": "A bowl of chips sits on a surface in front of the people.",
+        "fact": "A bowl of chips sits on a surface in front of the group of people.",
         "confidence": 1.0
       }
     ],
@@ -750,233 +829,247 @@
       "ROLLER DOG",
       "HOT DOG ROLLER"
     ],
-    "spatial": "The hot dog graphics and logo are positioned above the group of four people. The bowl of chips is in the foreground, in front of the man in the green shirt and the woman in the green tank top. The man in the yellow shirt is to the right of the woman in the red top.",
+    "spatial": "The row of six hot dogs is positioned above the logo and the large close-up hot dog. The logo is to the left of the large close-up hot dog. The group of four people is situated below the hot dog imagery. The bowl of chips is in the foreground, in front of the people.",
     "parse_success": true,
     "chunk_idx": 11,
     "video_id": "gbyYDQf94w8",
     "state_changes": [
-      "Scene shifts to family watching TV in living room"
+      "Close-up of topped hot dogs; people at table react (mouths open)."
     ]
   },
   {
     "time": [
-      24,
-      26
+      12,
+      13
     ],
     "visible_entities": [
       {
-        "desc": "person with short brown hair, wearing a green patterned button-down shirt and blue jeans",
-        "action": "sitting and watching",
-        "position": "left"
+        "desc": "hand holding a black remote control with white, grey, and yellow buttons",
+        "action": "holding remote",
+        "position": "foreground",
+        "id": "utensil_remote"
       },
       {
-        "desc": "woman with long dark hair, wearing a light green tank top",
+        "desc": "television screen displaying a soccer match on a green field with stadium seating",
+        "action": "displaying soccer match",
+        "position": "background",
+        "id": "tv_soccer"
+      },
+      {
+        "desc": "man with short brown hair, wearing a green patterned button-down shirt and blue jeans",
+        "action": "sitting and smiling",
+        "position": "left",
+        "id": "person_man_green_shirt"
+      },
+      {
+        "desc": "woman with long dark hair, wearing a green tank top",
         "action": "holding a glass of orange juice",
-        "position": "center-left"
+        "position": "center-left",
+        "id": "person_woman_dark_green_tank"
       },
       {
-        "desc": "woman with short reddish-brown hair, wearing a red strapless top",
-        "action": "sitting and watching",
-        "position": "center-right"
+        "desc": "woman with short reddish-blonde hair, wearing a red strapless top",
+        "action": "sitting and smiling",
+        "position": "center-right",
+        "id": "person_woman_red_strapless"
       },
       {
-        "desc": "man with short brown hair, wearing a yellow button-down shirt",
-        "action": "sitting and watching",
-        "position": "right"
+        "desc": "man with brown hair and beard, wearing a yellow button-down shirt",
+        "action": "sitting and smiling",
+        "position": "right",
+        "id": "person_man_yellow_shirt"
       },
       {
-        "desc": "large clear glass bowl filled with potato chips",
+        "desc": "glass bowl filled with potato chips",
         "action": "static",
-        "position": "bottom-left foreground"
+        "position": "bottom-left",
+        "id": "chips_bowl"
       },
       {
-        "desc": "tall glass filled with orange juice",
+        "desc": "glass of orange juice",
         "action": "being held",
-        "position": "center-left"
-      },
-      {
-        "desc": "hand holding a black remote control with white and colored buttons",
-        "action": "pointing at the TV",
-        "position": "foreground"
-      },
-      {
-        "desc": "flat-screen television displaying a soccer match on a green field",
-        "action": "displaying video",
-        "position": "background"
+        "position": "center-left",
+        "id": "orange_juice"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A hand holds a remote control pointed at a television screen.",
+        "fact": "A hand holds a remote control pointed at a television.",
         "confidence": 1.0
       },
       {
-        "fact": "The television displays a soccer match with a green field.",
+        "fact": "The television displays a soccer game.",
         "confidence": 1.0
       },
       {
-        "fact": "Four people are sitting together watching the television.",
+        "fact": "A group of four friends sits together watching the game.",
         "confidence": 1.0
       },
       {
-        "fact": "A woman holds a glass of orange juice.",
+        "fact": "The woman in the green top holds a glass of orange juice.",
         "confidence": 1.0
       },
       {
-        "fact": "A bowl of chips sits in the foreground.",
+        "fact": "A bowl of chips sits in front of the group.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The hand holding the remote control is in the foreground, positioned in front of the television screen. The group of four people is seated behind the bowl of chips and to the left of the remote control view. The woman with the green tank top is sitting between the man in the green shirt and the woman in the red top.",
+    "spatial": "The hand holding the remote is in the foreground, positioned in front of the television screen. The television is in the background. The group of friends is seated on a sofa, with the man in the green shirt on the left and the man in the yellow shirt on the right. The bowl of chips is located in the bottom left corner, near the man in the green shirt.",
     "parse_success": true,
     "chunk_idx": 12,
     "video_id": "gbyYDQf94w8",
-    "state_changes": []
+    "state_changes": [
+      "People at table begin smiling; remote control is used."
+    ]
   },
   {
     "time": [
-      26,
-      28
+      13,
+      14
     ],
     "visible_entities": [
       {
-        "desc": "man with short dark hair, beard, wearing a dark blue polo shirt and a red apron",
+        "desc": "man with short dark hair, beard, wearing a red apron over a dark blue polo shirt",
         "action": "holding a grill grate and a cleaning tool",
         "position": "center",
-        "id": "person_chef_1"
+        "id": "person_chef_dark_polo"
       },
       {
-        "desc": "metal grill grate, rectangular, black, vertical bars",
+        "desc": "metal grill grate, rectangular, black",
         "action": "being held",
-        "position": "center"
+        "position": "center",
+        "id": "utensil_grill_grate"
       },
       {
-        "desc": "black cleaning tool, handheld, cylindrical handle",
+        "desc": "black cylindrical cleaning tool",
         "action": "being held",
-        "position": "left"
+        "position": "center",
+        "id": "utensil_cleaning_tool"
       },
       {
-        "desc": "tall patio heater, black pole, silver top with mesh",
+        "desc": "tall black outdoor heater, metal, cylindrical",
         "action": "static",
         "position": "right",
-        "id": "patio_heater_1"
+        "id": "outdoor_heater"
       },
       {
-        "desc": "green trees, dense foliage",
+        "desc": "green trees",
         "action": "static",
-        "position": "background"
+        "position": "background",
+        "id": "trees_green"
       },
       {
         "desc": "wooden railing, light brown",
         "action": "static",
-        "position": "bottom"
+        "position": "foreground",
+        "id": "railing_wood"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "The man is holding a metal grill grate in his left hand.",
+        "fact": "The man holds a metal grill grate in his left hand.",
         "confidence": 1.0
       },
       {
-        "fact": "The man is holding a black cleaning tool in his right hand.",
+        "fact": "The man holds a black cylindrical tool in his right hand.",
         "confidence": 1.0
       },
       {
-        "fact": "The man is looking at the cleaning tool.",
+        "fact": "The man is standing on a wooden deck.",
         "confidence": 1.0
       },
       {
-        "fact": "The man is standing on a patio or deck.",
+        "fact": "The man looks at the tool in his right hand.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The man is in the center of the frame, standing in front of a wooden railing. He is holding the grill grate in his left hand and the cleaning tool in his right hand. To the man's right is a tall patio heater. The background consists of green trees.",
+    "spatial": "The man is in the center of the frame, holding the grill grate in his left hand and the tool in his right hand. The outdoor heater is to the right of the man. The wooden railing is in front of the man and below the heater. The green trees are in the background behind the man.",
     "parse_success": true,
     "chunk_idx": 13,
     "video_id": "gbyYDQf94w8",
     "state_changes": [
-      "Man begins cleaning grill grate outdoors"
+      "Scene shifts to outdoor patio; man holds grill grate and cleaning tool."
     ]
   },
   {
     "time": [
-      28,
-      30
+      14,
+      15
     ],
     "visible_entities": [
       {
         "desc": "man with short dark hair and beard, wearing a dark polo shirt and a dark apron",
         "action": "holding a grill grate",
         "position": "center",
-        "id": "person_chef_1"
+        "id": "person_chef_dark_polo"
       },
       {
-        "desc": "metal grill grate with parallel bars",
-        "action": "being held",
-        "position": "center"
+        "desc": "black metal grill grate with parallel bars",
+        "action": "being held by the man",
+        "position": "center",
+        "id": "utensil_grill_grate"
       },
       {
-        "desc": "tall black patio heater with a silver metal head",
+        "desc": "tall black outdoor patio heater with a silver metal top",
         "action": "static",
         "position": "right",
-        "id": "patio_heater_1"
+        "id": "outdoor_heater"
       },
       {
-        "desc": "large bright orange and yellow flames",
-        "action": "burning",
-        "position": "foreground"
+        "desc": "large, bright orange and yellow flames",
+        "action": "burning intensely",
+        "position": "foreground",
+        "id": "patio_heater_flames"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A man is holding a metal grill grate with both hands.",
+        "fact": "The man holds a grill grate in front of him.",
         "confidence": 1.0
       },
       {
-        "fact": "Large flames are visible in the foreground, obscuring the view.",
+        "fact": "Large flames fill the foreground, obscuring the view of the man and the grill grate.",
         "confidence": 1.0
       },
       {
-        "fact": "The man is standing next to a tall patio heater.",
+        "fact": "The patio heater stands to the right of the man.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The man is positioned in the center of the frame, holding the grill grate in front of his torso. To the right of the man stands a tall patio heater. The large flames are in the foreground, appearing in front of the man and the heater.",
+    "spatial": "The man is in the center of the frame, holding the grill grate. The patio heater is to the right of the man. The flames are in the foreground, in front of the man and the grill grate.",
     "parse_success": true,
     "chunk_idx": 14,
     "video_id": "gbyYDQf94w8",
-    "state_changes": []
+    "state_changes": [
+      "Large flames ignite on the outdoor heater."
+    ]
   },
   {
     "time": [
-      30,
-      32
+      15,
+      16
     ],
     "visible_entities": [
       {
-        "desc": "silver and black electric hot dog roller grill with a control panel featuring a red power switch, green indicator lights, and silver rotary knobs",
+        "desc": "silver and black electric hot dog roller grill with metal rollers, control panel featuring a red power switch, green indicator lights, and two silver control knobs",
         "action": "static",
         "position": "center",
-        "id": "grill_roller_1"
+        "id": "grill_roller_dog_generic"
       },
       {
-        "desc": "multiple rows of reddish-brown hot dogs arranged on the metal rollers",
+        "desc": "rows of reddish-brown hot dogs arranged on the rollers",
         "action": "static",
-        "position": "top"
+        "position": "top",
+        "id": "hot_dogs_cooking"
       },
       {
         "desc": "dark speckled countertop surface",
         "action": "static",
-        "position": "bottom"
-      },
-      {
-        "desc": "dark wooden cabinetry in the background",
-        "action": "static",
-        "position": "background",
-        "id": "cabinets_kitchen_1"
+        "position": "bottom",
+        "id": "countertop_granite_dark"
       }
     ],
     "atomic_facts": [
@@ -985,7 +1078,7 @@
         "confidence": 1.0
       },
       {
-        "fact": "Rows of hot dogs are placed on the rotating metal rollers of the machine.",
+        "fact": "Rows of hot dogs are resting on the metal rollers of the machine.",
         "confidence": 1.0
       },
       {
@@ -1002,7 +1095,7 @@
       "REAR ROLLERS",
       "BIG24"
     ],
-    "spatial": "The hot dog roller grill is positioned on top of the dark speckled countertop. The rows of hot dogs are located above the control panel on the machine. The wooden cabinetry is visible behind the roller grill.",
+    "spatial": "The hot dog roller grill is positioned on top of the dark speckled countertop. The rows of hot dogs are located above the control panel on the rollers. The 'ROLLER DOG' logo is to the left of the control switches, while the 'BIG24' text is to the right of the control knobs.",
     "parse_success": true,
     "chunk_idx": 15,
     "video_id": "gbyYDQf94w8",
@@ -1010,28 +1103,42 @@
   },
   {
     "time": [
-      32,
-      34
+      16,
+      17
     ],
     "visible_entities": [
       {
-        "desc": "silver and black hot dog roller grill with metal rollers, control panel featuring red and green lights, silver knobs, and a logo of a dog holding a hot dog",
+        "desc": "silver and black hot dog roller grill with metal rollers, control knobs, and indicator lights",
         "action": "static",
-        "position": "center"
+        "position": "center",
+        "id": "grill_roller_dog_generic"
       },
       {
-        "desc": "rows of reddish-brown hot dogs arranged on the metal rollers",
+        "desc": "rows of reddish-brown hot dogs",
         "action": "static",
-        "position": "center"
+        "position": "center",
+        "id": "hot_dogs_cooking"
+      },
+      {
+        "desc": "dark wooden cabinets in the background",
+        "action": "static",
+        "position": "background",
+        "id": "kitchen_cabinets_dark"
+      },
+      {
+        "desc": "dark speckled countertop",
+        "action": "static",
+        "position": "bottom",
+        "id": "countertop_granite_dark"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "The hot dog roller grill is sitting on a dark countertop.",
+        "fact": "The hot dog roller grill is sitting on a countertop.",
         "confidence": 1.0
       },
       {
-        "fact": "Multiple hot dogs are resting on the rotating metal rollers.",
+        "fact": "Rows of hot dogs are placed on the metal rollers of the grill.",
         "confidence": 1.0
       },
       {
@@ -1048,7 +1155,7 @@
       "REAR ROLLERS",
       "BIG24"
     ],
-    "spatial": "The hot dogs are positioned on top of the metal rollers. The control panel is located on the front face of the grill, below the rollers. The 'ROLLER DOG' logo is to the left of the control knobs, and the 'BIG24' text is to the right of the knobs.",
+    "spatial": "The hot dog roller grill is on top of the dark speckled countertop. The hot dogs are arranged on the rollers above the control panel. The wooden cabinets are behind the grill.",
     "parse_success": true,
     "chunk_idx": 16,
     "video_id": "gbyYDQf94w8",
@@ -1056,43 +1163,41 @@
   },
   {
     "time": [
-      34,
-      36
+      17,
+      18
     ],
     "visible_entities": [
       {
-        "desc": "rows of reddish-brown hot dogs, cylindrical shape, smooth skin texture",
+        "desc": "reddish-brown hot dogs, cylindrical, smooth skin, arranged in parallel rows",
         "action": "static",
-        "position": "center"
+        "position": "center",
+        "id": "hot_dogs_cooking"
       },
       {
-        "desc": "silver metal roller grill with parallel rotating rods",
+        "desc": "silver metal roller grill with rotating cylindrical rods",
         "action": "static",
-        "position": "center"
+        "position": "foreground",
+        "id": "grill_roller_dog_generic"
       },
       {
-        "desc": "dark brown wooden kitchen cabinets with vertical handles",
+        "desc": "dark brown wooden kitchen cabinets with silver handles",
         "action": "static",
         "position": "background",
-        "id": "cabinets_kitchen_1"
+        "id": "kitchen_cabinets_dark"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "Hot dogs are arranged in three distinct groups on the roller grill.",
+        "fact": "Hot dogs are resting on the metal rollers of the grill.",
         "confidence": 1.0
       },
       {
-        "fact": "The hot dogs are resting on the metal rollers of the cooking appliance.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The roller grill is positioned in front of the wooden cabinets.",
+        "fact": "The hot dogs are arranged in three distinct groups.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The hot dogs are on top of the metal roller grill. The roller grill is in the foreground, while the dark wooden cabinets are in the background behind the appliance.",
+    "spatial": "The hot dogs are on top of the metal roller grill. The grill is in the foreground, positioned in front of the dark wooden cabinets.",
     "parse_success": true,
     "chunk_idx": 17,
     "video_id": "gbyYDQf94w8",
@@ -1100,41 +1205,39 @@
   },
   {
     "time": [
-      36,
-      38
+      18,
+      19
     ],
     "visible_entities": [
       {
-        "desc": "rows of reddish-brown hot dogs, cylindrical, smooth texture, arranged in three groups",
+        "desc": "rows of reddish-brown hot dogs, cylindrical, cooked, arranged in parallel",
         "action": "static",
-        "position": "top"
+        "position": "top",
+        "id": "hot_dogs_cooking"
       },
       {
-        "desc": "black control panel with a red power switch, green indicator lights, and a silver rotary dial",
+        "desc": "black control panel with red power switch, green indicator lights, silver rotary dial, and a logo featuring a white dog head with a hot dog",
         "action": "static",
-        "position": "bottom"
+        "position": "bottom",
+        "id": "control_panel_generic"
       },
       {
-        "desc": "logo featuring a white cartoon dog head inside a red circle holding a hot dog",
+        "desc": "silver metal rollers, cylindrical, shiny, supporting the hot dogs",
         "action": "static",
-        "position": "left"
+        "position": "center"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "The hot dogs are resting on the upper rollers of the machine.",
+        "fact": "The hot dogs are resting on the metal rollers.",
         "confidence": 1.0
       },
       {
-        "fact": "The control panel is located below the cooking surface.",
+        "fact": "The control panel is located below the rollers.",
         "confidence": 1.0
       },
       {
-        "fact": "The text 'ROLLER DOG' is printed above the dog logo.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The dial is labeled 'FRONT ROLLERS'.",
+        "fact": "The text 'ROLLER DOG' is visible on the control panel.",
         "confidence": 1.0
       }
     ],
@@ -1142,10 +1245,9 @@
       "ROLLER DOG",
       "POWER",
       "HEATING",
-      "FRONT ROLLERS",
-      "HEATING"
+      "FRONT ROLLERS"
     ],
-    "spatial": "The rows of hot dogs are positioned above the black control panel. The 'ROLLER DOG' logo is to the left of the red power switch. The silver dial is to the right of the power switch and between two green heating lights.",
+    "spatial": "The rows of hot dogs are positioned on top of the silver metal rollers. The black control panel is situated directly below the rollers and hot dogs. The 'ROLLER DOG' logo is to the left of the power switch on the control panel.",
     "parse_success": true,
     "chunk_idx": 18,
     "video_id": "gbyYDQf94w8",
@@ -1153,54 +1255,56 @@
   },
   {
     "time": [
-      38,
-      40
+      19,
+      20
     ],
     "visible_entities": [
       {
-        "desc": "silver and black hot dog roller grill with a glass sneeze guard, featuring a control panel with red and green indicator lights and silver knobs",
-        "action": "static",
-        "position": "center"
-      },
-      {
-        "desc": "multiple reddish-brown hot dogs arranged in rows on the rotating metal rollers",
+        "desc": "silver and black hot dog roller grill with a glass sneeze guard, featuring a control panel with a red power switch, green indicator lights, and two silver rotary knobs",
         "action": "static",
         "position": "center",
-        "id": "hot_dogs_1"
+        "id": "grill_roller_dog_big24"
       },
       {
-        "desc": "hand with light skin tone, partially visible on the left side",
-        "action": "resting near the machine",
+        "desc": "multiple reddish-brown hot dogs arranged in rows on the metal rollers",
+        "action": "static",
+        "position": "center",
+        "id": "hot_dogs_cooking"
+      },
+      {
+        "desc": "person's hand with light skin tone, partially visible on the left edge",
+        "action": "static",
         "position": "left",
-        "id": "person_operator_hands_1"
+        "id": "hand_generic_light"
       },
       {
-        "desc": "dark speckled countertop surface, likely granite or stone",
+        "desc": "dark polished countertop with a marbled pattern",
         "action": "static",
         "position": "bottom",
-        "id": "countertop_granite_1"
+        "id": "countertop_granite_dark"
       },
       {
-        "desc": "logo featuring a cartoon white dog holding a hot dog in its mouth",
+        "desc": "tiled wall background with beige and dark diamond-shaped tiles",
         "action": "static",
-        "position": "left"
+        "position": "background",
+        "id": "backsplash_beige_diamond"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A hand is resting near the left side of the hot dog roller grill.",
+        "fact": "The hot dog roller grill is sitting on a dark countertop.",
         "confidence": 1.0
       },
       {
-        "fact": "The hot dogs are lying horizontally across the metal rollers.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The machine is sitting on a dark countertop.",
+        "fact": "Hot dogs are resting on the rotating metal rollers of the machine.",
         "confidence": 1.0
       },
       {
         "fact": "The control panel displays the text 'ROLLER DOG' and 'BIG 18'.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The machine has controls labeled 'FRONT ROLLERS' and 'REAR ROLLERS'.",
         "confidence": 1.0
       }
     ],
@@ -1213,7 +1317,7 @@
       "REAR ROLLERS",
       "BIG 18"
     ],
-    "spatial": "The hot dog roller grill is positioned in the center of the frame, resting on top of a dark speckled countertop. The hot dogs are located on the rollers inside the machine. A hand is visible to the left of the machine. The 'ROLLER DOG' logo is on the left side of the control panel, while the 'BIG 18' text is on the right side.",
+    "spatial": "The hot dog roller grill is positioned on top of the dark countertop. The hot dogs are located on the rollers above the control panel. The person's hand is visible to the left of the grill. The tiled wall is behind the grill.",
     "parse_success": true,
     "chunk_idx": 19,
     "video_id": "gbyYDQf94w8",
@@ -1221,39 +1325,34 @@
   },
   {
     "time": [
-      40,
-      42
+      20,
+      21
     ],
     "visible_entities": [
       {
-        "desc": "black control panel with silver knobs, red and green indicator lights, and a logo of a dog holding a hot dog",
+        "desc": "black control panel with a 'Roller Dog' logo, red power switch, green indicator lights, and silver rotary dials",
         "action": "static",
-        "position": "center"
+        "position": "center",
+        "id": "control_panel_generic"
       },
       {
-        "desc": "person's hand with light skin tone",
-        "action": "turning the 'FRONT ROLLERS' knob",
+        "desc": "person's hand with light skin tone and visible arm hair",
+        "action": "turning the front rollers dial",
         "position": "left",
-        "id": "person_operator_hands_1"
-      },
-      {
-        "desc": "dark, glossy, reflective countertop surface",
-        "action": "static",
-        "position": "bottom",
-        "id": "countertop_granite_1"
+        "id": "hand_chef_hairy"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A person's hand turns the 'FRONT ROLLERS' knob on the control panel.",
+        "fact": "A hand is turning the 'FRONT ROLLERS' dial on the control panel.",
         "confidence": 1.0
       },
       {
-        "fact": "The control panel features a 'ROLLER DOG' logo on the left side.",
+        "fact": "The 'Roller Dog' logo features a cartoon dog holding a hot dog.",
         "confidence": 1.0
       },
       {
-        "fact": "The reflection of the control panel is visible on the countertop below.",
+        "fact": "The control panel displays text labels for 'POWER', 'HEATING', 'FRONT ROLLERS', and 'REAR ROLLERS'.",
         "confidence": 1.0
       }
     ],
@@ -1266,58 +1365,61 @@
       "REAR ROLLERS",
       "BIG"
     ],
-    "spatial": "The control panel is positioned above the dark, reflective countertop. The person's hand is on the left side of the panel, interacting with the front knob. The 'ROLLER DOG' logo is to the left of the power switch.",
+    "spatial": "The hand is positioned to the left of the center of the control panel, grasping the 'FRONT ROLLERS' dial. The 'Roller Dog' logo is on the far left side of the panel, while the 'REAR ROLLERS' dial is to the right of the 'FRONT ROLLERS' dial.",
     "parse_success": true,
     "chunk_idx": 20,
     "video_id": "gbyYDQf94w8",
     "state_changes": [
-      "Hand begins adjusting control knob on grill"
+      "Hand begins turning the front rollers dial on the control panel."
     ]
   },
   {
     "time": [
-      42,
-      44
+      21,
+      22
     ],
     "visible_entities": [
       {
-        "desc": "person's arm and hand, light skin tone, hairy forearm, fingers curled",
-        "action": "turning the right control knob",
-        "position": "center",
-        "id": "person_operator_hands_1"
+        "desc": "person's hand and forearm, light skin tone, hairy arm",
+        "action": "adjusting the front rollers dial",
+        "position": "left/foreground",
+        "id": "hand_chef_hairy"
       },
       {
-        "desc": "black appliance control panel, matte finish, with two silver rotary dials and a green indicator light",
+        "desc": "black appliance control panel with silver dials and a green indicator light",
         "action": "static",
-        "position": "background"
+        "position": "center/background",
+        "id": "control_panel_generic"
       },
       {
-        "desc": "dark reflective countertop surface, glossy",
+        "desc": "dark, glossy, reflective countertop surface",
         "action": "static",
-        "position": "bottom"
+        "position": "bottom",
+        "id": "countertop_granite_dark"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "person's hand is turning the right control knob clockwise",
+        "fact": "A hand is turning the left dial labeled 'FRONT ROLLERS'.",
         "confidence": 1.0
       },
       {
-        "fact": "green 'HEATING' indicator light is illuminated",
+        "fact": "The green 'HEATING' light is illuminated.",
         "confidence": 1.0
       },
       {
-        "fact": "reflection of the appliance and hand is visible on the countertop below",
+        "fact": "The appliance is sitting on a reflective surface.",
         "confidence": 1.0
       }
     ],
     "ocr": [
+      "ROLLER DOG",
       "FRONT ROLLERS",
       "HEATING",
       "REAR ROLLERS",
       "BIG"
     ],
-    "spatial": "The person's hand is in front of the black appliance control panel. The hand is positioned over the right knob labeled 'REAR ROLLERS'. The green light is located between the two knobs. The appliance sits on top of the dark reflective countertop.",
+    "spatial": "The hand is in front of the black control panel, manipulating the dial on the left. The green heating light is positioned between the two dials. The appliance rests on top of the dark, reflective countertop, which shows a reflection of the panel below it.",
     "parse_success": true,
     "chunk_idx": 21,
     "video_id": "gbyYDQf94w8",
@@ -1325,30 +1427,32 @@
   },
   {
     "time": [
-      44,
-      46
+      22,
+      23
     ],
     "visible_entities": [
       {
-        "desc": "person's arm with light skin tone and visible hair",
+        "desc": "person's arm and hand with light skin tone and visible hair",
         "action": "adjusting the control knob",
-        "position": "left/foreground",
-        "id": "person_operator_hands_1"
+        "position": "left/center",
+        "id": "hand_chef_hairy"
       },
       {
-        "desc": "black control panel with silver rotary knobs, red power switch, and green indicator lights",
+        "desc": "black appliance control panel with silver rotary knobs, red power switch, and green indicator lights",
         "action": "static",
-        "position": "center"
+        "position": "center",
+        "id": "control_panel_generic"
       },
       {
-        "desc": "dark, reflective countertop surface",
+        "desc": "dark reflective countertop surface",
         "action": "static",
-        "position": "bottom"
+        "position": "bottom",
+        "id": "countertop_granite_dark"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A person's hand is turning the silver knob on the right side of the control panel.",
+        "fact": "A hand is turning a silver dial on the appliance.",
         "confidence": 1.0
       },
       {
@@ -1356,11 +1460,11 @@
         "confidence": 1.0
       },
       {
-        "fact": "Green lights labeled 'HEATING' are illuminated next to the knobs.",
+        "fact": "Green lights labeled 'HEATING' are lit next to the roller controls.",
         "confidence": 1.0
       },
       {
-        "fact": "The control panel features labels for 'FRONT ROLLERS' and 'REAR ROLLERS'.",
+        "fact": "The text 'ROLLER DOG' is visible on the left side of the panel.",
         "confidence": 1.0
       }
     ],
@@ -1372,7 +1476,7 @@
       "REAR ROLLERS",
       "BIG"
     ],
-    "spatial": "The person's arm is positioned to the left of the control panel, reaching towards the right side. The control panel is situated above the dark reflective countertop. The text 'ROLLER DOG' is visible on the far left of the panel, while 'BIG' is on the far right.",
+    "spatial": "The person's arm extends from the left side of the frame towards the center to manipulate the control knob. The control panel is situated above the dark reflective countertop. The 'POWER' switch is to the left of the 'FRONT ROLLERS' dial.",
     "parse_success": true,
     "chunk_idx": 22,
     "video_id": "gbyYDQf94w8",
@@ -1380,31 +1484,39 @@
   },
   {
     "time": [
-      46,
-      48
+      23,
+      24
     ],
     "visible_entities": [
       {
-        "desc": "person's hand with fair skin, holding a pair of metal tongs with a red handle",
-        "action": "adjusting hot dogs on the grill",
+        "desc": "person's hand with light skin tone, holding a knife with a wooden handle and silver blade",
+        "action": "using tongs to adjust hot dogs",
         "position": "left/foreground",
-        "id": "person_operator_hands_1"
+        "id": "utensil_knife_wood"
       },
       {
-        "desc": "silver and black electric roller grill with white rollers and a control panel",
+        "desc": "silver and black electric hot dog roller grill with metal rollers and a control panel",
         "action": "static",
-        "position": "center"
-      },
-      {
-        "desc": "red hot dogs, cylindrical shape, arranged in rows",
-        "action": "being cooked",
         "position": "center",
-        "id": "hot_dogs_1"
+        "id": "grill_roller_dog_generic"
       },
       {
-        "desc": "dark speckled countertop, likely granite",
+        "desc": "multiple reddish-brown hot dogs arranged in rows on the rollers",
+        "action": "being cooked",
+        "position": "center/top",
+        "id": "hot_dogs_cooking"
+      },
+      {
+        "desc": "dark speckled countertop surface",
         "action": "static",
-        "position": "bottom"
+        "position": "bottom",
+        "id": "countertop_granite_dark"
+      },
+      {
+        "desc": "dark wooden cabinets in the background",
+        "action": "static",
+        "position": "background",
+        "id": "kitchen_cabinets_dark"
       }
     ],
     "atomic_facts": [
@@ -1413,15 +1525,19 @@
         "confidence": 1.0
       },
       {
-        "fact": "The grill is cooking multiple hot dogs simultaneously.",
+        "fact": "The roller grill has two control knobs labeled 'FRONT ROLLERS' and 'REAR ROLLERS'.",
         "confidence": 1.0
       },
       {
-        "fact": "The control panel shows the brand name 'ROLLER DOG' and model 'BIG24'.",
+        "fact": "The brand name 'ROLLER DOG' is visible on the left side of the control panel.",
         "confidence": 1.0
       },
       {
-        "fact": "The grill has separate controls for front and rear rollers.",
+        "fact": "The model name 'BIG24' is printed on the right side of the control panel.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "Red and green indicator lights are illuminated on the control panel.",
         "confidence": 1.0
       }
     ],
@@ -1434,69 +1550,70 @@
       "REAR ROLLERS",
       "BIG24"
     ],
-    "spatial": "The person's hand is to the left of the grill, holding tongs that are positioned over the hot dogs. The hot dogs are on top of the white rollers inside the grill. The control panel is located on the front face of the grill, below the rollers.",
+    "spatial": "The person's hand is to the left of the hot dog roller grill. The hot dogs are on top of the metal rollers. The control panel is on the front of the grill, below the rollers. The wooden cabinets are behind the grill.",
     "parse_success": true,
     "chunk_idx": 23,
     "video_id": "gbyYDQf94w8",
     "state_changes": [
-      "Hand uses tongs to adjust hot dogs on grill"
+      "Hand uses a knife/tongs to adjust hot dogs on the grill."
     ]
   },
   {
     "time": [
-      48,
-      50
+      24,
+      25
     ],
     "visible_entities": [
       {
-        "desc": "person's hands and forearms, light skin tone, holding metal tongs",
+        "desc": "person's hand with light skin tone, holding metal tongs with a red handle",
         "action": "using tongs to adjust hot dogs",
         "position": "left",
-        "id": "person_operator_hands_1"
+        "id": "utensil_tongs_red"
       },
       {
-        "desc": "silver metal tongs with a red handle grip",
-        "action": "grasping a hot dog",
-        "position": "left"
-      },
-      {
-        "desc": "silver and black electric hot dog roller grill with metal rollers",
+        "desc": "silver and black hot dog roller grill machine with metal rollers, control knobs, and indicator lights",
         "action": "static",
-        "position": "center"
+        "position": "center",
+        "id": "grill_roller_dog_generic"
       },
       {
         "desc": "rows of reddish-brown hot dogs cooking on the rollers",
         "action": "cooking",
-        "position": "center"
+        "position": "center",
+        "id": "hot_dogs_cooking"
       },
       {
         "desc": "dark speckled granite countertop",
         "action": "static",
         "position": "bottom",
-        "id": "countertop_granite_1"
+        "id": "countertop_granite_dark"
       },
       {
-        "desc": "dark wooden kitchen cabinets",
+        "desc": "dark brown wooden kitchen cabinets",
         "action": "static",
         "position": "background",
-        "id": "cabinets_kitchen_1"
+        "id": "kitchen_cabinets_dark"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A person is using tongs to turn or adjust a hot dog on the left side of the grill.",
+        "fact": "A person is using tongs to move a hot dog on the roller grill.",
         "confidence": 1.0
       },
       {
-        "fact": "The hot dog grill has three distinct sections of rollers.",
+        "fact": "The machine has a 'ROLLER DOG' logo featuring a cartoon dog.",
         "confidence": 1.0
       },
       {
-        "fact": "The grill features a control panel with knobs and indicator lights.",
+        "fact": "The model name 'BIG24' is printed on the front right of the machine.",
         "confidence": 1.0
       },
       {
-        "fact": "The text 'BIG24' is visible on the right side of the control panel.",
+        "fact": "There are two control knobs labeled 'FRONT ROLLERS' and 'REAR ROLLERS'.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "Green indicator lights are illuminated next to the control knobs.",
         "confidence": 1.0
       }
     ],
@@ -1509,54 +1626,54 @@
       "REAR ROLLERS",
       "BIG24"
     ],
-    "spatial": "The person's hands are on the left side of the frame, holding tongs that are positioned over the hot dogs. The hot dogs are arranged on top of the metal rollers of the grill. The control panel is located on the front face of the grill, below the rollers. The grill sits on top of the dark countertop, with wooden cabinets visible in the background.",
+    "spatial": "The person's hand is on the left side of the frame, holding tongs over the hot dogs. The hot dogs are arranged in rows on top of the metal rollers of the grill. The control panel with knobs and text is located on the front face of the machine, below the rollers. The machine sits on a dark countertop, with wooden cabinets visible in the background behind it.",
     "parse_success": true,
     "chunk_idx": 24,
     "video_id": "gbyYDQf94w8",
-    "state_changes": []
+    "state_changes": [
+      "Hand switches to using metal tongs with a red handle to adjust cooking hot dogs."
+    ]
   },
   {
     "time": [
-      50,
-      52
+      25,
+      26
     ],
     "visible_entities": [
       {
-        "desc": "silver and black hot dog roller grill with metal rollers, control panel with knobs and lights",
-        "action": "static",
-        "position": "center"
+        "desc": "silver and black hot dog roller grill with metal rollers, control panel featuring red and green lights and knobs, and a logo of a cartoon dog",
+        "action": "cooking hot dogs",
+        "position": "center",
+        "id": "grill_roller_dog_generic"
       },
       {
-        "desc": "reddish-brown hot dogs arranged in rows on the rollers",
-        "action": "being cooked",
-        "position": "center"
+        "desc": "multiple reddish-brown hot dogs arranged in rows",
+        "action": "rotating on rollers",
+        "position": "center",
+        "id": "hot_dogs_cooking"
       },
       {
         "desc": "person's hand and arm with light skin tone",
         "action": "using tongs to move hot dogs",
         "position": "left",
-        "id": "person_operator_hands_1"
+        "id": "hand_generic_light"
       },
       {
-        "desc": "dark speckled granite countertop",
+        "desc": "dark speckled countertop surface",
         "action": "static",
         "position": "bottom",
-        "id": "countertop_granite_1"
+        "id": "countertop_granite_dark"
       },
       {
-        "desc": "dark wooden cabinets with silver handles",
+        "desc": "dark wooden cabinets",
         "action": "static",
-        "position": "background"
-      },
-      {
-        "desc": "gold frame with red lights border",
-        "action": "static",
-        "position": "foreground"
+        "position": "background",
+        "id": "kitchen_cabinets_dark"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A person is using tongs to place or adjust hot dogs on the roller grill.",
+        "fact": "A person is using tongs to adjust hot dogs on a roller grill.",
         "confidence": 1.0
       },
       {
@@ -1568,24 +1685,18 @@
         "confidence": 1.0
       },
       {
-        "fact": "The machine has green indicator lights illuminated next to the knobs.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The scene is framed by a decorative border with red lights.",
+        "fact": "The machine has a red 'POWER' light and green indicator lights that are illuminated.",
         "confidence": 1.0
       }
     ],
     "ocr": [
       "ROLLER DOG",
       "POWER",
-      "HEATING",
       "FRONT ROLLERS",
       "REAR ROLLERS",
-      "BIG 24",
-      "BIG 12"
+      "BIG 24"
     ],
-    "spatial": "The hot dog roller grill is positioned on top of the dark granite countertop. The person's hand is to the left of the grill, holding tongs over the hot dogs. The wooden cabinets are located behind the grill. The text 'BIG 24' is on the right side of the control panel, while the 'ROLLER DOG' logo is on the left side.",
+    "spatial": "The hot dog roller grill is sitting on top of the dark speckled countertop. The person's hand is to the left of the grill, reaching over the hot dogs. The wooden cabinets are behind the grill.",
     "parse_success": true,
     "chunk_idx": 25,
     "video_id": "gbyYDQf94w8",
@@ -1593,64 +1704,65 @@
   },
   {
     "time": [
-      52,
-      54
+      26,
+      27
     ],
     "visible_entities": [
       {
-        "desc": "black rectangular machine with silver metal rollers, labeled 'BIG 12' in white and red text, featuring a 'Roller Dog' logo with a cartoon dog, and a control panel with red and green lights and silver knobs",
+        "desc": "black rectangular heat press machine with silver metal heating plates, featuring a logo of a cartoon dog, red and green indicator lights, and silver control knobs",
         "action": "static",
-        "position": "foreground right"
+        "position": "foreground left",
+        "id": "heat_press_machine"
       },
       {
-        "desc": "black rectangular machine with silver metal rollers, labeled 'BIG 18' in white and red text, featuring a 'Roller Dog' logo and control panel lights",
+        "desc": "black rectangular heat press machine with silver metal heating plates, featuring silver control knobs and green indicator lights",
         "action": "static",
-        "position": "foreground left"
+        "position": "foreground right",
+        "id": "heat_press_machine"
       },
       {
-        "desc": "black rectangular machine with silver metal rollers, labeled 'BIG 24' in white and red text, featuring a control panel with silver knobs",
+        "desc": "black rectangular heat press machine with silver metal heating plates, positioned further back",
         "action": "static",
-        "position": "background right"
+        "position": "background",
+        "id": "heat_press_machine"
       },
       {
-        "desc": "dark polished countertop with a marble-like pattern",
+        "desc": "dark, glossy, reflective countertop surface",
         "action": "static",
         "position": "bottom",
-        "id": "countertop_granite_1"
+        "id": "countertop_granite_dark"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "Three industrial machines are arranged on a countertop.",
+        "fact": "Three heat press machines are arranged on a countertop.",
         "confidence": 1.0
       },
       {
-        "fact": "The machine labeled 'BIG 12' is positioned in the front right.",
+        "fact": "The machine in the foreground left is labeled 'BIG 12'.",
         "confidence": 1.0
       },
       {
-        "fact": "The machine labeled 'BIG 18' is positioned in the front left.",
+        "fact": "The machine in the foreground right is labeled 'BIG 24'.",
         "confidence": 1.0
       },
       {
-        "fact": "The machine labeled 'BIG 24' is positioned in the back right.",
+        "fact": "The machines are resting on a reflective surface that shows their inverted reflections.",
         "confidence": 1.0
       },
       {
-        "fact": "The machines are reflecting on the shiny surface of the countertop.",
+        "fact": "The machines are stationary.",
         "confidence": 1.0
       }
     ],
     "ocr": [
       "BIG 12",
-      "BIG 18",
       "BIG 24",
-      "ROLLER DOG",
       "POWER",
-      "MOTOR REVERSE",
-      "FORWARD"
+      "HEAT READY",
+      "HEAT ON/OFF"
     ],
-    "spatial": "The machine labeled 'BIG 12' is in the foreground to the right of the machine labeled 'BIG 18'. The machine labeled 'BIG 24' is behind the 'BIG 12' machine. All three machines are resting on top of a dark, reflective countertop.",
+    "spatial": "The machine labeled 'BIG 12' is to the left of the machine labeled 'BIG 24' in the foreground. A third machine is positioned behind the front two machines. All three machines are sitting on top of a dark, reflective countertop.",
     "parse_success": true,
     "chunk_idx": 26,
     "video_id": "gbyYDQf94w8",
@@ -1658,40 +1770,47 @@
   },
   {
     "time": [
-      54,
-      56
+      27,
+      28
     ],
     "visible_entities": [
       {
-        "desc": "silver and black hot dog roller grill with a ribbed metal cooking surface, black control panel featuring a red power switch, green indicator lights, and temperature control knobs",
+        "desc": "silver and black countertop appliance with a ribbed metal roller top, featuring a black control panel with red and green indicator lights and control knobs",
         "action": "static",
-        "position": "left/center"
+        "position": "center",
+        "id": "grill_roller_dog_generic"
       },
       {
-        "desc": "dark reddish-brown polished countertop with a granite-like texture",
+        "desc": "dark reddish-brown polished granite countertop with speckled texture",
         "action": "static",
-        "position": "bottom/foreground",
-        "id": "countertop_granite_1"
+        "position": "bottom",
+        "id": "countertop_granite_dark"
+      },
+      {
+        "desc": "dark wooden cabinetry with horizontal handles",
+        "action": "static",
+        "position": "background",
+        "id": "kitchen_cabinets_dark"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A silver and black hot dog roller grill sits on a dark countertop.",
+        "fact": "The silver and black appliance sits on the dark granite countertop.",
         "confidence": 1.0
       },
       {
-        "fact": "The grill is labeled 'BIG 30' on the front panel.",
+        "fact": "The appliance is labeled 'BIG 30' on the front panel.",
         "confidence": 1.0
       },
       {
-        "fact": "The reflection of the grill is visible on the polished surface of the countertop.",
+        "fact": "The appliance is static and not currently in operation.",
         "confidence": 1.0
       }
     ],
     "ocr": [
       "BIG 30"
     ],
-    "spatial": "The hot dog roller grill is positioned on top of the dark reddish-brown countertop. The grill is located to the left of a vertical white structure and a dark metal gate visible in the background.",
+    "spatial": "The silver and black appliance is positioned in the center of the frame, resting on top of the dark granite countertop. The wooden cabinetry is located behind the appliance.",
     "parse_success": true,
     "chunk_idx": 27,
     "video_id": "gbyYDQf94w8",
@@ -1699,184 +1818,210 @@
   },
   {
     "time": [
-      56,
-      58
+      28,
+      29
     ],
     "visible_entities": [
       {
-        "desc": "person with light skin, wearing a dark grey short-sleeved shirt",
-        "action": "placing a hot dog into a bun",
-        "position": "left/center",
-        "id": "person_chef_1"
+        "desc": "person's arm and hand, light skin tone, wearing a dark grey short-sleeved shirt",
+        "action": "holding a metal spatula and placing a hot dog",
+        "position": "center/foreground",
+        "id": "hand_chef_dark_grey"
       },
       {
-        "desc": "metal wire cooling rack with a wooden handle",
-        "action": "being held",
-        "position": "center"
-      },
-      {
-        "desc": "white hot dog buns, sliced open",
-        "action": "static",
-        "position": "center"
-      },
-      {
-        "desc": "cooked reddish-brown hot dog",
-        "action": "being placed",
+        "desc": "metal spatula with a red wooden handle and a perforated metal blade",
+        "action": "being held and used to transfer food",
         "position": "center",
-        "id": "hot_dogs_1"
+        "id": "utensil_spatula_red"
       },
       {
-        "desc": "stainless steel hot dog roller grill with rotating metal rods",
+        "desc": "three hot dogs in white buns, arranged in a row",
+        "action": "being held on the spatula",
+        "position": "center",
+        "id": "hot_dogs_bunned_plain"
+      },
+      {
+        "desc": "cooked hot dog, reddish-brown, cylindrical",
+        "action": "being placed into a bun",
+        "position": "center",
+        "id": "hot_dogs_cooking"
+      },
+      {
+        "desc": "hot dog roller grill with rotating metal rods and multiple cooking hot dogs",
         "action": "static",
         "position": "bottom/foreground"
       },
       {
-        "desc": "multiple cooked reddish-brown hot dogs",
-        "action": "cooking",
-        "position": "bottom/foreground"
+        "desc": "kitchen backsplash with beige square tiles and a black diamond accent tile",
+        "action": "static",
+        "position": "background",
+        "id": "backsplash_beige_diamond"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A person is using a metal rack to transfer a hot dog.",
+        "fact": "A person is using a spatula to place a cooked hot dog into a bun.",
         "confidence": 1.0
       },
       {
-        "fact": "The person places the hot dog into a sliced bun.",
+        "fact": "The spatula is holding three prepared hot dogs in buns.",
         "confidence": 1.0
       },
       {
-        "fact": "The bun is resting on the wire rack.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "Several hot dogs are cooking on a roller grill below the rack.",
+        "fact": "A roller grill with cooking hot dogs is visible below the spatula.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The person is holding the metal rack in front of the tiled wall. The hot dog buns are on top of the wire rack. The person is placing a hot dog inside one of the buns. The roller grill is below the rack and buns.",
+    "spatial": "The person's hand is holding the spatula in the center of the frame. The hot dogs in buns are on top of the spatula. The roller grill is below the spatula and the person's hand. The tiled backsplash is behind the person and the food preparation area.",
     "parse_success": true,
     "chunk_idx": 28,
     "video_id": "gbyYDQf94w8",
     "state_changes": [
-      "Cooked hot dog placed into bun"
+      "Man uses a spatula to place a cooked hot dog into a bun."
     ]
   },
   {
     "time": [
-      58,
-      60
+      29,
+      30
     ],
     "visible_entities": [
       {
-        "desc": "man with short dark hair and beard, wearing a dark blue short-sleeved polo shirt",
-        "action": "using tongs to arrange hot dogs",
+        "desc": "man with short dark hair and beard, wearing a dark blue polo shirt",
+        "action": "using tongs to place hot dogs into buns",
         "position": "left",
-        "id": "person_chef_1"
+        "id": "person_chef_dark_polo"
       },
       {
-        "desc": "silver and black electric grill with a red heating element and control panel",
+        "desc": "silver and black countertop hot dog roller grill with a red cooking surface",
         "action": "static",
-        "position": "center"
+        "position": "center",
+        "id": "grill_roller_dog_generic"
       },
       {
-        "desc": "metal tray filled with hot dogs in buns",
+        "desc": "metal tray filled with hot dog buns",
         "action": "being held",
-        "position": "center foreground"
+        "position": "center",
+        "id": "buns_tray"
       },
       {
-        "desc": "red-handled metal tongs",
-        "action": "being used to hold food",
-        "position": "center"
+        "desc": "man with short brown hair, wearing a white short-sleeved shirt with a blue pattern",
+        "action": "holding tongs and smiling",
+        "position": "right",
+        "id": "person_chef_white_pattern_shirt"
       },
       {
-        "desc": "dark brown wooden kitchen cabinets with silver handles",
+        "desc": "woman with shoulder-length brown hair, wearing a red top",
+        "action": "smiling",
+        "position": "left",
+        "id": "person_woman_red_top"
+      },
+      {
+        "desc": "young boy with short brown hair, wearing a yellow t-shirt",
+        "action": "smiling",
+        "position": "center",
+        "id": "person_boy_yellow"
+      },
+      {
+        "desc": "young girl with long blonde hair, wearing a white top",
+        "action": "smiling",
+        "position": "left",
+        "id": "person_girl_blonde_white_top"
+      },
+      {
+        "desc": "dark brown wooden kitchen cabinets",
         "action": "static",
         "position": "background",
-        "id": "cabinets_kitchen_1"
+        "id": "kitchen_cabinets_dark"
       },
       {
-        "desc": "beige tiled backsplash with a horizontal band of black diamond accents",
+        "desc": "black granite countertop",
         "action": "static",
-        "position": "background",
-        "id": "backsplash_tile_1"
-      },
-      {
-        "desc": "dark granite countertop",
-        "action": "static",
-        "position": "bottom"
+        "position": "bottom",
+        "id": "countertop_granite_dark"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A man is using red-handled tongs to place hot dogs in buns onto a metal tray.",
+        "fact": "A man in a dark blue polo shirt is using tongs to place hot dogs into buns on a tray.",
         "confidence": 1.0
       },
       {
-        "fact": "The electric grill is sitting on the dark granite countertop.",
+        "fact": "The hot dog roller grill has the text 'BIG 24' printed on the front.",
         "confidence": 1.0
       },
       {
-        "fact": "The text 'BIG 24' is visible on the front of the grill.",
+        "fact": "A family of four is gathered outdoors under a blue sky.",
         "confidence": 1.0
       },
       {
-        "fact": "The kitchen features dark wood cabinets and a tiled backsplash.",
+        "fact": "The man in the patterned shirt is holding tongs over a grill.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The hot dog roller grill is sitting on a black granite countertop.",
         "confidence": 1.0
       }
     ],
     "ocr": [
       "BIG 24"
     ],
-    "spatial": "The man is standing to the left of the electric grill. The tray of hot dogs is in front of the grill on the countertop. The tiled backsplash is behind the grill and below the upper cabinets.",
+    "spatial": "In the first scene, the man is to the left of the hot dog roller grill, which is on the countertop. In the second scene, the man in the patterned shirt is to the right of the boy, and the woman is to the left of the boy. The girl is in front of the woman.",
     "parse_success": true,
     "chunk_idx": 29,
     "video_id": "gbyYDQf94w8",
-    "state_changes": []
+    "state_changes": [
+      "Man uses tongs to place hot dogs into buns; family members appear smiling."
+    ]
   },
   {
     "time": [
-      60,
-      62
+      30,
+      31
     ],
     "visible_entities": [
       {
-        "desc": "person with short brown hair, wearing a white short-sleeved shirt with a blue pattern and dark green cargo shorts",
+        "desc": "person with short brown hair, wearing a white short-sleeved button-up shirt with a blue pattern",
         "action": "holding metal tongs",
-        "position": "right"
+        "position": "right",
+        "id": "person_chef_white_pattern_shirt"
       },
       {
         "desc": "woman with shoulder-length brown hair, wearing a red short-sleeved top",
-        "action": "standing",
-        "position": "left"
+        "action": "smiling",
+        "position": "left",
+        "id": "person_woman_red_top"
       },
       {
-        "desc": "young girl with long blonde hair, wearing a white sleeveless top",
-        "action": "standing",
-        "position": "bottom left"
+        "desc": "young girl with long blonde hair, wearing a white top",
+        "action": "smiling",
+        "position": "bottom left",
+        "id": "person_girl_blonde_white_top"
       },
       {
         "desc": "young boy with short brown hair, wearing a yellow t-shirt",
-        "action": "standing",
-        "position": "center"
+        "action": "smiling",
+        "position": "center",
+        "id": "person_boy_yellow"
+      },
+      {
+        "desc": "black hot dog roller grill with silver knobs and green/red indicator lights",
+        "action": "static",
+        "position": "background",
+        "id": "grill_roller_dog_generic"
+      },
+      {
+        "desc": "six hot dogs in white buns on a clear plastic tray",
+        "action": "being topped with relish",
+        "position": "foreground",
+        "id": "hot_dogs_bunned_plain"
       },
       {
         "desc": "hand holding a white spoon",
-        "action": "scooping relish",
-        "position": "center"
-      },
-      {
-        "desc": "six hot dogs in buns with yellow mustard",
-        "action": "static",
-        "position": "bottom",
-        "id": "hot_dogs_1"
-      },
-      {
-        "desc": "black hot dog roller grill with silver knobs",
-        "action": "static",
-        "position": "background",
-        "id": "grill_roller_1"
+        "action": "scooping green relish onto a hot dog",
+        "position": "center",
+        "id": "utensil_spoon_white"
       }
     ],
     "atomic_facts": [
@@ -1885,63 +2030,74 @@
         "confidence": 1.0
       },
       {
-        "fact": "The hot dogs are arranged in a row on a clear tray.",
+        "fact": "Six hot dogs are arranged in a row on a clear plastic tray.",
         "confidence": 1.0
       },
       {
-        "fact": "A family is standing outdoors under a blue sky.",
+        "fact": "The hot dogs are topped with yellow mustard.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The roller grill has labels for 'FRONT ROLLERS' and 'REAR'.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A family of four is gathered outdoors under a blue sky.",
         "confidence": 1.0
       }
     ],
     "ocr": [
-      "POWER",
       "FRONT ROLLERS",
-      "HEATING",
       "REAR",
-      "BI"
+      "POWER",
+      "HEATING"
     ],
-    "spatial": "The family is standing outdoors with the man on the right and the woman and children on the left. The hot dogs are in the foreground below the family. The black roller grill is behind the hot dogs. The text 'FRONT ROLLERS' is located between two silver knobs on the grill.",
+    "spatial": "The family members are standing behind the hot dog roller grill. The boy in the yellow shirt is to the right of the woman in the red top. The man in the patterned shirt is to the right of the boy. The hot dogs on the tray are in front of the roller grill controls. The hand with the spoon is above the hot dogs.",
     "parse_success": true,
     "chunk_idx": 30,
     "video_id": "gbyYDQf94w8",
     "state_changes": [
-      "People serving hot dogs with condiments at party"
+      "Hand uses a spoon to scoop relish onto hot dogs."
     ]
   },
   {
     "time": [
-      62,
-      64
+      31,
+      32
     ],
     "visible_entities": [
       {
-        "desc": "silver and black electric hot dog roller grill with metal rollers and control panel",
+        "desc": "silver and black hot dog roller grill with stainless steel rollers and a black control panel",
         "action": "static",
-        "position": "center"
+        "position": "center",
+        "id": "grill_roller_dog_generic"
       },
       {
-        "desc": "rows of reddish-brown hot dogs",
+        "desc": "rows of reddish-brown hot dogs arranged on the rollers",
         "action": "static",
-        "position": "center"
+        "position": "center",
+        "id": "hot_dogs_cooking"
       },
       {
-        "desc": "dark speckled countertop",
+        "desc": "dark speckled countertop surface",
         "action": "static",
-        "position": "bottom"
+        "position": "bottom",
+        "id": "countertop_granite_dark"
       },
       {
-        "desc": "dark brown wooden kitchen cabinets",
+        "desc": "dark wooden cabinetry with silver handles",
         "action": "static",
-        "position": "background"
+        "position": "background",
+        "id": "kitchen_cabinets_dark"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "The hot dog roller grill is sitting on a dark countertop.",
+        "fact": "A hot dog roller grill is sitting on a countertop.",
         "confidence": 1.0
       },
       {
-        "fact": "Rows of hot dogs are placed on the metal rollers of the machine.",
+        "fact": "The grill is loaded with multiple rows of hot dogs.",
         "confidence": 1.0
       },
       {
@@ -1962,7 +2118,7 @@
       "REAR ROLLERS",
       "BIG24"
     ],
-    "spatial": "The hot dog roller grill is centered on the dark speckled countertop. The hot dogs are arranged on top of the grill's rollers. The wooden cabinets are located in the background behind the grill.",
+    "spatial": "The hot dog roller grill is on top of the dark speckled countertop. The wooden cabinetry is behind the grill. The hot dogs are on top of the metal rollers.",
     "parse_success": true,
     "chunk_idx": 31,
     "video_id": "gbyYDQf94w8",
@@ -1970,217 +2126,94 @@
   },
   {
     "time": [
-      64,
-      66
+      32,
+      33
     ],
     "visible_entities": [
       {
-        "desc": "rows of reddish-brown hot dogs, cylindrical, smooth skin, arranged in neat parallel lines",
+        "desc": "rows of reddish-brown hot dogs, smooth skin, cylindrical shape",
         "action": "static",
-        "position": "center"
+        "position": "center",
+        "id": "hot_dogs_cooking"
       },
       {
-        "desc": "metallic baking sheet with a raised rim, silver-grey color",
+        "desc": "silver metal baking sheet, rectangular, reflective surface",
         "action": "static",
-        "position": "bottom"
+        "position": "bottom",
+        "id": "baking_sheet"
       },
       {
-        "desc": "dark oven interior, shadowy background",
+        "desc": "dark oven interior, dimly lit background",
         "action": "static",
-        "position": "background"
+        "position": "background",
+        "id": "oven_interior"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "Rows of hot dogs are arranged on a baking sheet.",
+        "fact": "Hot dogs are arranged in three distinct groups on the baking sheet.",
         "confidence": 1.0
       },
       {
-        "fact": "The baking sheet is positioned inside an oven.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The hot dogs remain static during the clip.",
+        "fact": "The baking sheet is positioned inside the oven.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The rows of hot dogs are arranged on top of the metallic baking sheet. The baking sheet is positioned inside the dark oven interior.",
+    "spatial": "The rows of hot dogs are on top of the silver metal baking sheet. The baking sheet is inside the dark oven interior.",
     "parse_success": true,
     "chunk_idx": 32,
-    "video_id": "gbyYDQf94w8",
-    "state_changes": [
-      "Hot dogs shown in oven context with baking sheet"
-    ]
-  },
-  {
-    "time": [
-      66,
-      68
-    ],
-    "visible_entities": [
-      {
-        "desc": "person's left hand with light skin tone",
-        "action": "pressing a button on the machine",
-        "position": "left foreground",
-        "id": "person_operator_hands_1"
-      },
-      {
-        "desc": "silver and black hot dog roller grill machine with metal rollers and a black control panel",
-        "action": "static",
-        "position": "center"
-      },
-      {
-        "desc": "rows of reddish-brown hot dogs",
-        "action": "static",
-        "position": "center"
-      },
-      {
-        "desc": "dark speckled granite countertop",
-        "action": "static",
-        "position": "bottom",
-        "id": "countertop_granite_1"
-      },
-      {
-        "desc": "dark wood kitchen cabinets in the background",
-        "action": "static",
-        "position": "background",
-        "id": "cabinets_kitchen_1"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "A person's hand presses the red power button on the control panel.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The machine has a label reading 'BIG 24' on the right side of the control panel.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "Rows of hot dogs are arranged on the metal rollers of the grill.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The grill is sitting on a dark countertop.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [
-      "BIG 24"
-    ],
-    "spatial": "The person's hand is to the left of the control panel, pressing a button. The hot dogs are on top of the metal rollers, which are part of the grill machine. The grill machine is on top of the dark countertop. The wooden cabinets are behind the grill machine.",
-    "parse_success": true,
-    "chunk_idx": 33,
     "video_id": "gbyYDQf94w8",
     "state_changes": []
   },
   {
     "time": [
-      68,
-      70
+      33,
+      34
     ],
     "visible_entities": [
       {
-        "desc": "person's left hand and forearm, light skin tone, wearing a dark blue short-sleeved shirt",
-        "action": "pulling out a tray",
+        "desc": "silver and black hot dog roller grill with metal rollers and a black control panel",
+        "action": "static",
+        "position": "center",
+        "id": "grill_roller_dog_generic"
+      },
+      {
+        "desc": "reddish-brown hot dogs arranged in rows",
+        "action": "cooking",
+        "position": "center",
+        "id": "hot_dogs_cooking"
+      },
+      {
+        "desc": "person's hand and forearm with light skin",
+        "action": "pressing a button",
         "position": "bottom left",
-        "id": "person_operator_hands_1"
-      },
-      {
-        "desc": "silver metallic hot dog roller grill with rotating metal rods",
-        "action": "static",
-        "position": "center"
-      },
-      {
-        "desc": "rows of reddish-brown hot dogs",
-        "action": "static",
-        "position": "center"
-      },
-      {
-        "desc": "rectangular silver metal drip tray",
-        "action": "being pulled out",
-        "position": "bottom center"
-      },
-      {
-        "desc": "dark speckled granite countertop",
-        "action": "static",
-        "position": "background",
-        "id": "countertop_granite_1"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "A person is pulling a metal drip tray out from underneath the hot dog roller grill.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The drip tray has visible grease stains and liquid residue on its surface.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "Three groups of hot dogs are arranged on the rotating rollers of the grill.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The grill is sitting on a dark granite countertop.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [],
-    "spatial": "The person's hand is holding the front edge of the drip tray, which is located below the hot dogs. The hot dogs are resting on the rollers above the tray. The entire grill assembly is positioned on top of the dark countertop.",
-    "parse_success": true,
-    "chunk_idx": 34,
-    "video_id": "gbyYDQf94w8",
-    "state_changes": [
-      "Hand removes drip tray from grill"
-    ]
-  },
-  {
-    "time": [
-      70,
-      72
-    ],
-    "visible_entities": [
-      {
-        "desc": "person's hand and forearm, light skin tone, wearing a light blue short-sleeved shirt",
-        "action": "pointing at the control panel",
-        "position": "left foreground",
-        "id": "person_operator_hands_1"
-      },
-      {
-        "desc": "stainless steel hot dog roller grill with silver rollers, black control panel, and glass sneeze guard",
-        "action": "static",
-        "position": "center"
-      },
-      {
-        "desc": "red hot dogs, cylindrical, cooked, arranged in rows on the rollers",
-        "action": "static",
-        "position": "center on the grill"
+        "id": "hand_generic_light"
       },
       {
         "desc": "dark granite countertop with speckled pattern",
         "action": "static",
         "position": "bottom",
-        "id": "countertop_granite_1"
+        "id": "countertop_granite_dark"
       },
       {
-        "desc": "dark brown wooden kitchen cabinets",
+        "desc": "dark brown wooden kitchen cabinets with silver handles",
         "action": "static",
-        "position": "background"
+        "position": "background",
+        "id": "kitchen_cabinets_dark"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A person's hand is pointing at the control panel of the hot dog roller grill.",
+        "fact": "A person's hand is pressing a red button on the control panel of the grill.",
         "confidence": 1.0
       },
       {
-        "fact": "The grill is loaded with rows of red hot dogs.",
+        "fact": "The grill is cooking multiple rows of hot dogs.",
         "confidence": 1.0
       },
       {
-        "fact": "The text 'BIG 24' is visible on the front of the machine.",
+        "fact": "The text 'BIG24' is visible on the right side of the control panel.",
         "confidence": 1.0
       },
       {
@@ -2189,35 +2222,172 @@
       }
     ],
     "ocr": [
-      "BIG 24"
+      "BIG24"
     ],
-    "spatial": "The person's hand is in the foreground to the left of the hot dog roller grill. The hot dogs are on top of the rollers inside the grill. The grill is on the granite countertop. The wooden cabinets are in the background behind the grill.",
+    "spatial": "The hot dog roller grill is on top of the dark granite countertop. The rows of hot dogs are on the rollers of the grill. The person's hand is in front of the control panel on the left side of the grill. The wooden cabinets are behind the grill.",
     "parse_success": true,
-    "chunk_idx": 35,
+    "chunk_idx": 33,
     "video_id": "gbyYDQf94w8",
-    "state_changes": []
+    "state_changes": [
+      "Hand presses a button on the control panel."
+    ]
   },
   {
     "time": [
-      72,
-      74
+      34,
+      35
     ],
     "visible_entities": [
       {
-        "desc": "stainless steel hot dog roller grill with a black control panel, silver rollers, and a curved glass sneeze guard",
-        "action": "static",
-        "position": "left"
+        "desc": "person's left hand and forearm, light skin tone, wearing a blue short-sleeved shirt",
+        "action": "pulling out a tray",
+        "position": "bottom left",
+        "id": "hand_chef_blue_sleeve"
       },
       {
-        "desc": "stainless steel hot dog roller grill with a black control panel, silver rollers, and a curved glass sneeze guard",
+        "desc": "silver metallic hot dog roller grill with rotating metal rods and a pull-out drip tray",
         "action": "static",
-        "position": "right"
+        "position": "center",
+        "id": "grill_roller_dog_generic"
       },
       {
-        "desc": "circular logo featuring a cartoon dog head biting a hot dog with text",
+        "desc": "rows of reddish-brown hot dogs",
+        "action": "static",
+        "position": "center",
+        "id": "hot_dogs_cooking"
+      },
+      {
+        "desc": "dark speckled granite countertop",
+        "action": "static",
+        "position": "bottom",
+        "id": "countertop_granite_dark"
+      },
+      {
+        "desc": "dark brown wooden kitchen cabinets",
+        "action": "static",
+        "position": "background",
+        "id": "kitchen_cabinets_dark"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A person's hand is pulling out the bottom drip tray of the hot dog roller grill.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "Rows of hot dogs are cooking on the rotating rollers of the machine.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The appliance is sitting on a dark granite countertop.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The person's hand is in the foreground, holding the edge of the drip tray which is located below the hot dogs. The hot dogs are arranged in rows on the rollers in the center of the machine. The entire appliance rests on the countertop, with wooden cabinets visible in the background behind the machine.",
+    "parse_success": true,
+    "chunk_idx": 34,
+    "video_id": "gbyYDQf94w8",
+    "state_changes": [
+      "Hand pulls out the drip tray from the grill."
+    ]
+  },
+  {
+    "time": [
+      35,
+      36
+    ],
+    "visible_entities": [
+      {
+        "desc": "person's left hand and forearm with fair skin, wearing a blue sleeve",
+        "action": "pointing at the control panel",
+        "position": "left foreground",
+        "id": "hand_chef_blue_sleeve"
+      },
+      {
+        "desc": "stainless steel hot dog roller grill with silver rollers, black control panel, and glass sneeze guard",
+        "action": "static",
+        "position": "center",
+        "id": "grill_roller_dog_generic"
+      },
+      {
+        "desc": "red hot dogs, cylindrical and cooked",
+        "action": "static",
+        "position": "on the rollers",
+        "id": "hot_dogs_cooking"
+      },
+      {
+        "desc": "dark granite countertop with speckled pattern",
+        "action": "static",
+        "position": "bottom",
+        "id": "countertop_granite_dark"
+      },
+      {
+        "desc": "dark brown wooden kitchen cabinets",
+        "action": "static",
+        "position": "background",
+        "id": "kitchen_cabinets_dark"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A person's hand points towards the control panel of the hot dog roller grill.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The grill is cooking multiple rows of red hot dogs on rotating silver rollers.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The control panel features a red power light, green indicator lights, and silver control knobs.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The text 'BIG 24' is visible on the right side of the control panel.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The machine sits on a dark, speckled countertop.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "BIG 24",
+      "POWER",
+      "ROLLER",
+      "HEAT"
+    ],
+    "spatial": "The person's hand is to the left of the hot dog grill and is pointing at the control panel. The hot dogs are on top of the rollers inside the machine. The grill is on the countertop, and the wooden cabinets are behind the grill.",
+    "parse_success": true,
+    "chunk_idx": 35,
+    "video_id": "gbyYDQf94w8",
+    "state_changes": [
+      "Hand points at the control panel."
+    ]
+  },
+  {
+    "time": [
+      36,
+      37
+    ],
+    "visible_entities": [
+      {
+        "desc": "stainless steel hot dog roller grill with a black control panel, silver rollers, and a clear glass sneeze guard",
+        "action": "static",
+        "position": "left",
+        "id": "grill_roller_dog_big24"
+      },
+      {
+        "desc": "stainless steel hot dog roller grill with a black control panel, silver rollers, and a curved clear glass sneeze guard",
+        "action": "static",
+        "position": "right",
+        "id": "grill_roller_dog_big24"
+      },
+      {
+        "desc": "cartoon logo featuring a white dog holding a hot dog in its mouth, encircled by text",
         "action": "static",
         "position": "bottom right",
-        "id": "logo_roller_dog_1"
+        "id": "logo_roller_dog_main"
       }
     ],
     "atomic_facts": [
@@ -2226,11 +2396,19 @@
         "confidence": 1.0
       },
       {
-        "fact": "The text 'BIG 12' is printed in red and white on the control panel of the machines.",
+        "fact": "The grill on the left features a flat glass sneeze guard.",
         "confidence": 1.0
       },
       {
-        "fact": "A logo with the text 'ROLLER DOG' and 'HOT DOG ROLLER' is visible in the bottom right corner.",
+        "fact": "The grill on the right features a curved glass sneeze guard.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The text 'BIG 12' is visible on the control panel of both machines.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A logo for 'ROLLER DOG HOT DOG ROLLER' is visible in the bottom right corner.",
         "confidence": 1.0
       }
     ],
@@ -2239,7 +2417,7 @@
       "ROLLER DOG",
       "HOT DOG ROLLER"
     ],
-    "spatial": "One hot dog roller grill is positioned to the left of the other identical grill. The 'ROLLER DOG' logo is located in the bottom right corner of the frame, below and to the right of the right-hand grill.",
+    "spatial": "The hot dog roller grill with the flat glass guard is to the left of the grill with the curved glass guard. The 'ROLLER DOG' logo is located below and to the right of the second grill.",
     "parse_success": true,
     "chunk_idx": 36,
     "video_id": "gbyYDQf94w8",
@@ -2247,53 +2425,52 @@
   },
   {
     "time": [
-      74,
-      76
+      37,
+      38
     ],
     "visible_entities": [
       {
-        "desc": "stainless steel hot dog roller grill with a glass sneeze guard, black control panel, and silver rollers",
+        "desc": "silver stainless steel hot dog roller grill with a glass sneeze guard, black control panel featuring a 'ROLLER DOG' logo with a cartoon dog, red power switch, green indicator lights, and two silver control knobs",
         "action": "static",
-        "position": "center"
+        "position": "center",
+        "id": "grill_roller_dog_big24"
       },
       {
-        "desc": "red hot dogs, cylindrical, arranged in rows",
+        "desc": "red hot dogs arranged in rows on the metal rollers",
         "action": "static",
-        "position": "center"
+        "position": "center",
+        "id": "hot_dogs_cooking"
       },
       {
-        "desc": "kitchen counter with dark speckled granite surface",
+        "desc": "dark granite countertop with speckled texture",
         "action": "static",
         "position": "bottom",
-        "id": "countertop_granite_1"
+        "id": "countertop_granite_dark"
       },
       {
-        "desc": "tiled backsplash with beige square tiles and a decorative border of black diamond shapes",
+        "desc": "beige tiled backsplash with a decorative horizontal band of black diamond shapes",
         "action": "static",
         "position": "background",
-        "id": "backsplash_tile_1"
+        "id": "backsplash_beige_diamond"
       },
       {
-        "desc": "stainless steel refrigerator, partially visible",
+        "desc": "silver refrigerator door with a handle",
         "action": "static",
-        "position": "left"
+        "position": "left",
+        "id": "refrigerator_silver"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "The hot dog roller grill is sitting on the kitchen counter.",
+        "fact": "The hot dog roller grill is sitting on a dark granite countertop.",
         "confidence": 1.0
       },
       {
-        "fact": "Red hot dogs are resting on the rotating metal rollers of the machine.",
+        "fact": "Red hot dogs are resting on the rotating metal rollers inside the machine.",
         "confidence": 1.0
       },
       {
-        "fact": "The control panel features a red power switch and two silver rotary knobs.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The text 'BIG 18' is printed on the front of the grill.",
+        "fact": "The text 'BIG 18' is printed in white and red on the front panel of the grill.",
         "confidence": 1.0
       }
     ],
@@ -2304,7 +2481,7 @@
       "REAR ROLLERS",
       "BIG 18"
     ],
-    "spatial": "The hot dog roller grill is positioned in the center of the frame, resting on top of the dark granite countertop. The tiled backsplash is located directly behind the grill. To the left of the grill, a stainless steel refrigerator is partially visible.",
+    "spatial": "The hot dog roller grill is centered on the countertop. The refrigerator is to the left of the grill. The tiled backsplash is behind the grill. The hot dogs are inside the grill, resting on the rollers.",
     "parse_success": true,
     "chunk_idx": 37,
     "video_id": "gbyYDQf94w8",
@@ -2312,30 +2489,32 @@
   },
   {
     "time": [
-      76,
-      78
+      38,
+      39
     ],
     "visible_entities": [
       {
-        "desc": "curved glass sneeze guard with a brushed metal top trim and four grey plastic feet",
+        "desc": "curved glass sneeze guard with a brushed stainless steel top trim and four grey plastic mounting feet",
         "action": "static",
-        "position": "center"
+        "position": "center",
+        "id": "sneeze_guard_curved"
       },
       {
-        "desc": "cartoon logo featuring a white dog holding a hot dog in a bun, with text 'ROLLER DOG' and 'HOT DOG ROLLER'",
+        "desc": "cartoon logo featuring a white dog holding a hot dog inside a circular border",
         "action": "static",
         "position": "bottom right",
-        "id": "logo_roller_dog_1"
+        "id": "logo_roller_dog_main"
       },
       {
         "desc": "black sans-serif text reading 'Sold Separately'",
         "action": "static",
-        "position": "right"
+        "position": "right",
+        "id": "text_sold_separately"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "The text 'Sold Separately' appears on the screen next to the glass guard.",
+        "fact": "The text 'Sold Separately' appears on the screen in the second frame.",
         "confidence": 1.0
       },
       {
@@ -2352,7 +2531,7 @@
       "ROLLER DOG",
       "HOT DOG ROLLER"
     ],
-    "spatial": "The curved glass sneeze guard is positioned in the center of the frame. The text 'Sold Separately' is to the right of the glass guard. The Roller Dog logo is located in the bottom right corner, below the text.",
+    "spatial": "The curved glass sneeze guard is positioned in the center of the frame. The text 'Sold Separately' appears to the right of the sneeze guard in the second frame. The Roller Dog logo is located in the bottom right corner, below the text.",
     "parse_success": true,
     "chunk_idx": 38,
     "video_id": "gbyYDQf94w8",
@@ -2360,46 +2539,58 @@
   },
   {
     "time": [
-      78,
-      80
+      39,
+      40
     ],
     "visible_entities": [
       {
-        "desc": "curved transparent glass sneeze guard with a silver metal top trim and four grey mounting feet",
+        "desc": "curved transparent glass sneeze guard with a silver metal top trim and four grey plastic feet",
         "action": "static",
-        "position": "center"
+        "position": "center",
+        "id": "sneeze_guard_curved"
       },
       {
-        "desc": "two hot dogs in white buns topped with yellow mustard and green relish, served on a blue star-shaped tray",
+        "desc": "two hot dogs in white buns topped with yellow mustard and green relish",
         "action": "static",
-        "position": "center"
+        "position": "center",
+        "id": "hot_dogs_bunned_topped"
       },
       {
-        "desc": "cartoon graphic of a row of children holding balloons",
+        "desc": "blue star-shaped plastic tray",
         "action": "static",
-        "position": "bottom"
+        "position": "center",
+        "id": "tray_blue_star"
       },
       {
-        "desc": "cartoon logo of a white dog holding a hot dog",
+        "desc": "text 'Sold Separately' in black sans-serif font",
         "action": "static",
-        "position": "bottom-right"
+        "position": "right",
+        "id": "text_sold_separately"
+      },
+      {
+        "desc": "Roller Dog logo featuring a cartoon dog holding a hot dog",
+        "action": "static",
+        "position": "bottom right",
+        "id": "logo_roller_dog_main"
+      },
+      {
+        "desc": "cartoon graphic of children holding balloons",
+        "action": "static",
+        "position": "bottom",
+        "id": "graphic_balloon_kids"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "The video displays a product image of a glass sneeze guard.",
+        "fact": "The text 'Sold Separately' is displayed next to the glass sneeze guard.",
         "confidence": 1.0
       },
       {
-        "fact": "The text 'Sold Separately' is visible next to the sneeze guard.",
+        "fact": "Two hot dogs are served on a blue star-shaped tray.",
         "confidence": 1.0
       },
       {
-        "fact": "The video cuts to a close-up of two hot dogs on a blue tray.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The hot dogs are garnished with mustard and relish.",
+        "fact": "The Roller Dog logo is visible in the bottom right corner.",
         "confidence": 1.0
       }
     ],
@@ -2408,7 +2599,7 @@
       "ROLLER DOG",
       "HOT DOG ROLLER"
     ],
-    "spatial": "The sneeze guard is shown in the center of the frame with text to its right. The hot dogs are placed inside the blue tray. The cartoon children graphic is positioned below the hot dogs. The 'Roller Dog' logo is located in the bottom right corner of the screen.",
+    "spatial": "The glass sneeze guard is positioned to the left of the 'Sold Separately' text. The hot dogs are inside the blue star-shaped tray. The Roller Dog logo is located below the 'Sold Separately' text.",
     "parse_success": true,
     "chunk_idx": 39,
     "video_id": "gbyYDQf94w8",
@@ -2416,56 +2607,61 @@
   },
   {
     "time": [
-      80,
-      82
+      40,
+      41
     ],
     "visible_entities": [
       {
-        "desc": "blue star-shaped plastic tray",
+        "desc": "two hot dogs in white buns topped with yellow mustard and green relish",
         "action": "static",
-        "position": "center"
+        "position": "center",
+        "id": "hot_dogs_bunned_topped"
       },
       {
-        "desc": "two hot dogs in white buns with yellow mustard and green relish",
+        "desc": "blue star-shaped plastic tray",
         "action": "static",
-        "position": "center"
+        "position": "center",
+        "id": "tray_blue_star"
       },
       {
         "desc": "pile of pale yellow potato chips",
         "action": "static",
-        "position": "right"
+        "position": "right",
+        "id": "chips_bowl"
       },
       {
-        "desc": "blue tablecloth with white stars and red stripes",
+        "desc": "tablecloth with blue background, white stars, and red and white stripes",
         "action": "static",
-        "position": "background"
+        "position": "background",
+        "id": "tablecloth_stars_stripes"
       },
       {
-        "desc": "digital overlay of cartoon characters holding balloons",
+        "desc": "digital overlay of cartoon characters holding colorful balloons",
         "action": "static",
-        "position": "bottom"
+        "position": "bottom",
+        "id": "graphic_balloon_kids"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "Two hot dogs are served on a blue star-shaped tray.",
+        "fact": "Two hot dogs are served inside a blue star-shaped tray.",
         "confidence": 1.0
       },
       {
-        "fact": "The hot dogs are topped with yellow mustard and green relish.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "Potato chips are placed next to the hot dogs on the tray.",
+        "fact": "Potato chips are placed to the right of the hot dogs.",
         "confidence": 1.0
       },
       {
         "fact": "The tray rests on a patriotic-themed tablecloth.",
         "confidence": 1.0
+      },
+      {
+        "fact": "A cartoon graphic overlay is visible at the bottom of the frame.",
+        "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The blue star-shaped tray is in the center of the frame, resting on a blue tablecloth with white stars. Two hot dogs are arranged diagonally inside the tray, with a pile of potato chips to their right. A digital overlay of cartoon characters is positioned at the bottom of the screen, partially obscuring the front edge of the tray.",
+    "spatial": "The blue star-shaped tray is in the center of the frame, containing the hot dogs and chips. The hot dogs are to the left of the pile of potato chips within the tray. The tray sits on top of a tablecloth patterned with stars and stripes. A digital graphic of cartoon characters is superimposed at the bottom of the screen, in front of the tray.",
     "parse_success": true,
     "chunk_idx": 40,
     "video_id": "gbyYDQf94w8",
@@ -2473,99 +2669,104 @@
   },
   {
     "time": [
-      82,
-      84
+      41,
+      42
     ],
     "visible_entities": [
       {
         "desc": "oval black sign with a red and white striped circus tent graphic and white text",
         "action": "static",
         "position": "right",
-        "id": "logo_funtime_1"
+        "id": "logo_funtime_popcorn"
       },
       {
-        "desc": "dark brown building number '1069' attached to the wall",
+        "desc": "dark brown building address number '1069'",
         "action": "static",
-        "position": "left"
+        "position": "left",
+        "id": "building_facade"
       },
       {
-        "desc": "white building exterior with a brown roof trim",
+        "desc": "white building facade with a dark brown roof trim",
         "action": "static",
-        "position": "background"
+        "position": "center",
+        "id": "building_facade"
       },
       {
-        "desc": "recessed storefront windows with warm interior lighting",
+        "desc": "recessed ceiling lights emitting warm yellow glow",
         "action": "static",
-        "position": "bottom"
+        "position": "bottom",
+        "id": "lights_ceiling"
       },
       {
         "desc": "thin bare tree branches",
         "action": "static",
-        "position": "foreground"
+        "position": "foreground",
+        "id": "branches_bare"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "The building number '1069' is mounted on the upper left corner of the wall.",
+        "fact": "The building address number '1069' is mounted on the upper left wall.",
         "confidence": 1.0
       },
       {
-        "fact": "The 'FUNTIME COMPANY' sign is mounted on the upper right side of the wall.",
+        "fact": "The 'FUNTIME FOR YOUR COMPANY' sign is mounted on the upper right wall.",
         "confidence": 1.0
       },
       {
-        "fact": "Warm lights are illuminated inside the storefront windows.",
+        "fact": "The sign features a red and white striped circus tent graphic.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "Recessed lights are illuminated inside the storefront windows.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "Bare tree branches are visible in the foreground against the building.",
         "confidence": 1.0
       }
     ],
     "ocr": [
       "1069",
       "FUNTIME",
+      "FOR YOUR",
       "COMPANY"
     ],
-    "spatial": "The building number '1069' is to the left of the 'FUNTIME COMPANY' sign. The sign and number are both located above the illuminated storefront windows. The bare tree branches are in front of the lower portion of the building.",
+    "spatial": "The address number '1069' is to the left of the oval company sign. The sign is mounted on the upper right section of the white building facade. The bare tree branches are in the foreground, partially obscuring the lower windows which are below the sign and address number.",
     "parse_success": true,
     "chunk_idx": 41,
     "video_id": "gbyYDQf94w8",
-    "state_changes": [
-      "Scene shifts to exterior storefront"
-    ]
+    "state_changes": []
   },
   {
     "time": [
-      84,
-      86
+      42,
+      43
     ],
     "visible_entities": [
       {
-        "desc": "stainless steel hot dog roller grill with a black control panel, silver rollers, and a metallic drip tray",
+        "desc": "Stainless steel hot dog roller grill with a black control panel, silver rollers, and a brushed metal finish",
         "action": "static",
-        "position": "center"
+        "position": "center",
+        "id": "grill_roller_dog_generic"
       },
       {
-        "desc": "six cooked hot dogs with brownish-orange skin arranged in rows",
+        "desc": "Six cooked hot dogs, reddish-brown in color, arranged in two rows on the rollers",
         "action": "static",
-        "position": "center"
+        "position": "center",
+        "id": "hot_dogs_cooking"
       },
       {
-        "desc": "circular logo featuring a cartoon white dog holding a hot dog in its mouth, with text 'ROLLER DOG' and 'HOT DOG ROLLER'",
+        "desc": "Circular logo featuring a cartoon dog holding a hot dog, with text 'ROLLER DOG' and 'HOT DOG ROLLER'",
         "action": "static",
-        "position": "top right"
+        "position": "top right",
+        "id": "logo_roller_dog_main"
       },
       {
-        "desc": "red rectangular power switch on the control panel",
+        "desc": "Control panel with red power switch, green indicator lights, and silver rotary knobs",
         "action": "static",
-        "position": "center"
-      },
-      {
-        "desc": "two black rotary control knobs with white indicator lines",
-        "action": "static",
-        "position": "center"
-      },
-      {
-        "desc": "two small green circular indicator lights",
-        "action": "static",
-        "position": "center"
+        "position": "bottom center",
+        "id": "control_panel_generic"
       }
     ],
     "atomic_facts": [
@@ -2578,11 +2779,11 @@
         "confidence": 1.0
       },
       {
-        "fact": "The text 'BIG 12' is visible on the right side of the control panel.",
+        "fact": "The text 'BIG 12' is printed in white and red on the right side of the control panel.",
         "confidence": 1.0
       },
       {
-        "fact": "The 'ROLLER DOG' logo is positioned in the top right corner of the frame.",
+        "fact": "The logo in the top right corner displays a cartoon dog mascot.",
         "confidence": 1.0
       }
     ],
@@ -2590,13 +2791,12 @@
       "ROLLER DOG",
       "HOT DOG ROLLER",
       "ROLLER DOG",
+      "BIG 12",
       "POWER",
-      "HEATING",
-      "FRONT ROLLERS",
       "REAR ROLLERS",
-      "BIG 12"
+      "FRONT ROLLERS"
     ],
-    "spatial": "The hot dog roller grill is centered in the frame with the hot dogs resting on top of the rollers. The 'ROLLER DOG' logo is located above and to the right of the grill. The control panel is situated at the front bottom of the machine, below the rollers and hot dogs.",
+    "spatial": "The hot dog roller grill is positioned in the center of the frame. The hot dogs are on top of the rollers, which are located above the control panel. The 'BIG 12' text is to the right of the control knobs. The circular logo is located in the top right corner, above the grill.",
     "parse_success": true,
     "chunk_idx": 42,
     "video_id": "gbyYDQf94w8",
@@ -2604,178 +2804,222 @@
   },
   {
     "time": [
-      86,
-      88
+      43,
+      44
     ],
     "visible_entities": [
       {
-        "desc": "stainless steel hot dog roller grill with a black control panel, featuring a row of silver rollers holding six brown hot dogs",
+        "desc": "stainless steel hot dog roller grill with a black control panel, featuring metal rollers, a drip tray, and control knobs",
         "action": "static",
         "position": "center",
-        "id": "grill_roller_1"
+        "id": "grill_roller_dog_generic"
       },
       {
-        "desc": "circular logo featuring a cartoon white dog holding a hot dog, with text 'ROLLER DOG' and 'HOT DOG ROLLER'",
+        "desc": "brown hot dogs arranged in rows on the rollers",
         "action": "static",
-        "position": "top right"
+        "position": "center",
+        "id": "hot_dogs_cooking"
       },
       {
-        "desc": "black oval logo with a red and white striped circus tent and text 'FUNTIME POPCORN COMPANY'",
+        "desc": "cartoon dog logo with a hot dog in its mouth, encircled by text",
+        "action": "static",
+        "position": "top right",
+        "id": "logo_roller_dog_main"
+      },
+      {
+        "desc": "red and white striped circus tent logo inside a black oval",
         "action": "static",
         "position": "top center",
-        "id": "logo_funtime_1"
+        "id": "logo_funtime_popcorn"
       },
       {
-        "desc": "strip of five small rectangular images showing office workers, a man in a warehouse, a white truck, and a delivery person",
+        "desc": "person with short dark hair wearing a white t-shirt",
+        "action": "standing",
+        "position": "center",
+        "id": "person_office_white_tee"
+      },
+      {
+        "desc": "white semi-truck with a trailer",
         "action": "static",
-        "position": "bottom"
+        "position": "center right",
+        "id": "truck_semi_white"
+      },
+      {
+        "desc": "person wearing a purple t-shirt and a grey baseball cap",
+        "action": "walking",
+        "position": "right",
+        "id": "person_office_purple"
+      },
+      {
+        "desc": "woman with long brown hair wearing a black blazer and a headset",
+        "action": "static",
+        "position": "center left",
+        "id": "person_office_blazer"
+      },
+      {
+        "desc": "person sitting at a desk facing a computer monitor",
+        "action": "sitting",
+        "position": "left"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "The video displays a stainless steel hot dog roller grill with six hot dogs resting on the rollers.",
+        "fact": "A stainless steel hot dog roller grill is displayed with hot dogs on the rollers.",
         "confidence": 1.0
       },
       {
-        "fact": "The control panel on the grill features the text 'BIG 12' in white and red letters.",
+        "fact": "The text 'ROLLER DOG' and 'HOT DOG ROLLER' appears in a circular logo.",
         "confidence": 1.0
       },
       {
-        "fact": "A logo for 'ROLLER DOG' is visible in the top right corner.",
+        "fact": "The text 'BIG12' is printed on the control panel of the grill.",
         "confidence": 1.0
       },
       {
-        "fact": "A logo for 'FUNTIME POPCORN COMPANY' is displayed at the top center.",
+        "fact": "The text 'FUNTIME POPCORN COMPANY' is displayed under a circus tent graphic.",
         "confidence": 1.0
       },
       {
-        "fact": "A collage of five images depicting business operations is shown at the bottom of the screen.",
+        "fact": "A montage of images shows various people and a delivery truck.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A person in a purple shirt is walking towards a door.",
         "confidence": 1.0
       }
     ],
     "ocr": [
       "ROLLER DOG",
       "HOT DOG ROLLER",
-      "FUNTIME",
-      "POPCORN",
-      "COMPANY",
+      "FUNTIME POPCORN COMPANY",
       "ROLLER DOG",
       "POWER",
       "HEAT",
-      "ROLLER",
-      "BIG 12"
+      "SPEED",
+      "BIG12"
     ],
-    "spatial": "The 'FUNTIME POPCORN COMPANY' logo is positioned at the top center, while the 'ROLLER DOG' logo is in the top right corner. The hot dog roller grill is centered in the frame below the logos. A strip of five small images runs along the bottom edge of the screen, underneath the main product image.",
+    "spatial": "The hot dog roller grill is positioned in the center of the frame. The 'ROLLER DOG' logo is located in the top right corner, above the grill. The 'FUNTIME POPCORN COMPANY' logo is positioned at the top center. Below the logos, a horizontal strip of images displays various scenes, including a person at a computer on the left and a truck on the right.",
     "parse_success": true,
     "chunk_idx": 43,
     "video_id": "gbyYDQf94w8",
-    "state_changes": []
-  },
-  {
-    "time": [
-      88,
-      90
-    ],
-    "visible_entities": [
-      {
-        "desc": "oval logo with a black background, featuring a red and white striped circus tent with three flags, and white text reading 'FUNTIME POPCORN COMPANY'",
-        "action": "static",
-        "position": "top/center",
-        "id": "logo_funtime_1"
-      },
-      {
-        "desc": "black serif text reading 'Anytime is FunTime.'",
-        "action": "static",
-        "position": "bottom/center",
-        "id": "text_slogan_1"
-      },
-      {
-        "desc": "circular stamp graphic with a thin black outline and text reading 'HOT DOG ROLLER' arranged in a circle",
-        "action": "static",
-        "position": "right"
-      },
-      {
-        "desc": "man with short dark hair wearing a white t-shirt",
-        "action": "standing and holding a small object",
-        "position": "center (inset)"
-      },
-      {
-        "desc": "white FedEx delivery truck with purple and orange logo",
-        "action": "static",
-        "position": "center-right (inset)"
-      },
-      {
-        "desc": "man wearing a dark blue t-shirt and dark pants",
-        "action": "walking through a doorway",
-        "position": "right (inset)"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "The text 'Anytime is FunTime.' is displayed below the company logo.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "A man in a white t-shirt is standing in a warehouse setting.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "A FedEx truck is parked outside a building.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "A man in a blue shirt is walking into a house through an open door.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [
-      "FUNTIME POPCORN COMPANY",
-      "Anytime is FunTime.",
-      "HOT DOG ROLLER",
-      "FedEx"
-    ],
-    "spatial": "The 'FUNTIME POPCORN COMPANY' logo is positioned above the text 'Anytime is FunTime.'. The 'HOT DOG ROLLER' stamp is to the right of the logo. A strip of video clips is located at the bottom of the screen, showing a man in a white shirt to the left of a FedEx truck, which is to the left of a man entering a door.",
-    "parse_success": true,
-    "chunk_idx": 44,
-    "video_id": "gbyYDQf94w8",
     "state_changes": [
-      "Delivery truck and personnel shown"
+      "Scene shifts to office setting; people standing/walking, semi-truck visible."
     ]
   },
   {
     "time": [
-      90,
-      92
+      44,
+      45
     ],
     "visible_entities": [
       {
-        "desc": "black oval logo containing a red and white striped circus tent graphic with three flags on top",
+        "desc": "Funtime Popcorn Company logo featuring a red and white striped circus tent on a black oval background",
         "action": "static",
-        "position": "top center"
+        "position": "top center",
+        "id": "logo_funtime_popcorn"
       },
       {
-        "desc": "circular logo featuring a cartoon white dog wearing a red collar and holding a yellow hot dog in its mouth",
+        "desc": "Black serif text reading 'Anytime is FunTime.'",
         "action": "static",
-        "position": "middle right"
+        "position": "bottom left",
+        "id": "text_anytime_funtime"
       },
       {
-        "desc": "black serif text reading 'Anytime is FunTime.'",
+        "desc": "Circular stamp graphic with text 'ROLLER DOG HOT DOG SHOW'",
         "action": "static",
-        "position": "bottom center",
-        "id": "text_slogan_1"
+        "position": "right",
+        "id": "stamp_roller_dog_show"
+      },
+      {
+        "desc": "Man with short dark hair wearing a white t-shirt",
+        "action": "standing and holding a small object",
+        "position": "bottom center (inset)",
+        "id": "person_office_white_tee"
+      },
+      {
+        "desc": "White FedEx delivery truck with purple and orange logo",
+        "action": "static",
+        "position": "bottom center-right (inset)",
+        "id": "truck_fedex"
+      },
+      {
+        "desc": "Person in a dark blue shirt standing at a doorway",
+        "action": "standing",
+        "position": "bottom right (inset)",
+        "id": "person_doorway_blue"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "The 'FUNTIME POPCORN COMPANY' logo is displayed at the top center of the screen.",
+        "fact": "The text 'Anytime is FunTime.' is displayed below the logo.",
         "confidence": 1.0
       },
       {
-        "fact": "The 'ROLLER DOG HOT DOG KIOSK' logo is positioned to the right of the popcorn company logo.",
+        "fact": "A man in a white t-shirt is holding a small item in his hands.",
         "confidence": 1.0
       },
       {
-        "fact": "The slogan 'Anytime is FunTime.' is written in black text at the bottom of the frame.",
+        "fact": "A FedEx truck is visible in the background of the scene.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A person in a blue shirt is standing at the entrance of a brick building.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "FUNTIME",
+      "POPCORN",
+      "COMPANY",
+      "Anytime is FunTime.",
+      "ROLLER DOG",
+      "HOT DOG SHOW",
+      "FedEx"
+    ],
+    "spatial": "The Funtime Popcorn Company logo is positioned above the text 'Anytime is FunTime.'. To the right of the main text, there is a circular stamp graphic. Below the logo and text, a horizontal strip contains three smaller images: a man in a white shirt on the left, a FedEx truck in the middle, and a person at a door on the right.",
+    "parse_success": true,
+    "chunk_idx": 44,
+    "video_id": "gbyYDQf94w8",
+    "state_changes": [
+      "Man holds a small object; FedEx truck appears; person stands in doorway."
+    ]
+  },
+  {
+    "time": [
+      45,
+      46
+    ],
+    "visible_entities": [
+      {
+        "desc": "Funtime Popcorn Company logo featuring a red and white striped circus tent on a black oval background",
+        "action": "static",
+        "position": "center",
+        "id": "logo_funtime_popcorn"
+      },
+      {
+        "desc": "Roller Dog Hot Dog House logo featuring a cartoon dog head with a hot dog in its mouth",
+        "action": "static",
+        "position": "right",
+        "id": "logo_roller_dog_main"
+      },
+      {
+        "desc": "Text reading 'Anytime is FunTime.' in a black serif font",
+        "action": "static",
+        "position": "bottom",
+        "id": "text_anytime_funtime"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The Funtime Popcorn Company logo is displayed in the center of the screen.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The Roller Dog logo is positioned to the right of the popcorn logo.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The slogan 'Anytime is FunTime.' appears below the logos.",
         "confidence": 1.0
       }
     ],
@@ -2784,10 +3028,10 @@
       "POPCORN",
       "COMPANY",
       "ROLLER DOG",
-      "HOT DOG KIOSK",
+      "HOT DOG HOUSE",
       "Anytime is FunTime."
     ],
-    "spatial": "The 'FUNTIME POPCORN COMPANY' logo is located at the top center of the white background. The 'ROLLER DOG' logo is positioned to the right of the popcorn logo. The text 'Anytime is FunTime.' is situated below both logos at the bottom of the image.",
+    "spatial": "The Funtime Popcorn Company logo is in the center of the frame. The Roller Dog logo is to the right of the Funtime Popcorn Company logo. The text 'Anytime is FunTime.' is below both logos.",
     "parse_success": true,
     "chunk_idx": 45,
     "video_id": "gbyYDQf94w8",
@@ -2795,18 +3039,18 @@
   },
   {
     "time": [
-      92,
-      94
+      46,
+      47
     ],
     "visible_entities": [],
     "atomic_facts": [
       {
-        "fact": "The video frame is completely black, showing no visible content.",
+        "fact": "The video frame is completely black, indicating a lack of visible light or a transition to a black screen.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "There are no visible entities to describe spatial relations for.",
+    "spatial": "No spatial relationships can be determined as the frame is entirely black.",
     "parse_success": true,
     "chunk_idx": 46,
     "video_id": "gbyYDQf94w8",
@@ -2814,18 +3058,18 @@
   },
   {
     "time": [
-      94,
-      96
+      47,
+      48
     ],
     "visible_entities": [],
     "atomic_facts": [
       {
-        "fact": "The video frame is completely black, indicating a lack of visible light or a transition.",
+        "fact": "The video frame is completely black, indicating a lack of visual content or a transition.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "No entities are visible to describe spatial relationships.",
+    "spatial": "The frame is entirely black with no visible entities to describe spatial relationships.",
     "parse_success": true,
     "chunk_idx": 47,
     "video_id": "gbyYDQf94w8",

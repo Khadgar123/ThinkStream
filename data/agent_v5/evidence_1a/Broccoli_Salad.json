@@ -2,7 +2,7 @@
   {
     "time": [
       0,
-      2
+      1
     ],
     "visible_entities": [
       {
@@ -11,7 +11,7 @@
         "position": "center"
       },
       {
-        "desc": "black bowl with a patterned rim",
+        "desc": "black bowl with a decorative patterned rim",
         "action": "static",
         "position": "center"
       },
@@ -26,7 +26,7 @@
         "position": "center"
       },
       {
-        "desc": "logo 'The Cooking FOODIE' with a chef hat icon",
+        "desc": "white logo 'The Cooking Foodie' with a chef hat icon",
         "action": "static",
         "position": "top-left"
       }
@@ -37,7 +37,62 @@
         "confidence": 1.0
       },
       {
-        "fact": "The salad is served in a black bowl.",
+        "fact": "The salad is contained inside the black bowl.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The 'The Cooking Foodie' logo is visible in the top-left corner.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "The Cooking FOODIE",
+      "BROCCOLI",
+      "SALAD"
+    ],
+    "spatial": "The broccoli salad fills the black bowl which is centered in the frame. The text 'BROCCOLI' is positioned above the text 'SALAD' in the center of the screen. The 'The Cooking Foodie' logo is located in the top-left corner, above the bowl.",
+    "parse_success": true,
+    "chunk_idx": 0,
+    "video_id": "Broccoli_Salad"
+  },
+  {
+    "time": [
+      1,
+      2
+    ],
+    "visible_entities": [
+      {
+        "desc": "broccoli salad mixture with green broccoli florets, chopped white stems, dark red dried cranberries, and a creamy white dressing",
+        "action": "static",
+        "position": "background"
+      },
+      {
+        "desc": "text 'BROCCOLI' in a bold, bright green, sans-serif font",
+        "action": "static",
+        "position": "center"
+      },
+      {
+        "desc": "text 'SALAD' in a white, sans-serif font",
+        "action": "static",
+        "position": "center"
+      },
+      {
+        "desc": "logo 'The Cooking FOODIE' in white script and block letters",
+        "action": "static",
+        "position": "top-left"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The video displays a close-up shot of a prepared broccoli salad.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The text 'BROCCOLI SALAD' is overlaid on the center of the food.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The word 'BROCCOLI' is positioned above the word 'SALAD'.",
         "confidence": 1.0
       },
       {
@@ -50,123 +105,15 @@
       "BROCCOLI",
       "SALAD"
     ],
-    "spatial": "The broccoli salad fills the black bowl which is centered in the frame. The text 'BROCCOLI' is positioned above the text 'SALAD' in the center of the screen. The logo is located in the top-left corner, above the bowl.",
-    "parse_success": true,
-    "chunk_idx": 0,
-    "video_id": "Broccoli_Salad"
-  },
-  {
-    "time": [
-      2,
-      4
-    ],
-    "visible_entities": [
-      {
-        "desc": "broccoli salad with green florets, creamy white dressing, red onion pieces, and dark raisins",
-        "action": "static",
-        "position": "background"
-      },
-      {
-        "desc": "green text 'BROCCOLI' in bold sans-serif font",
-        "action": "static",
-        "position": "center"
-      },
-      {
-        "desc": "white text 'SALAD' in sans-serif font",
-        "action": "static",
-        "position": "center"
-      },
-      {
-        "desc": "logo with text 'The Cooking FOODIE' in white script and block fonts",
-        "action": "static",
-        "position": "top left"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "The video displays a close-up of a broccoli salad.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The text 'BROCCOLI' is overlaid in green on the salad.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The text 'SALAD' is overlaid in white below the green text.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The logo 'The Cooking FOODIE' is visible in the top left corner.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [
-      "The Cooking FOODIE",
-      "BROCCOLI",
-      "SALAD"
-    ],
-    "spatial": "The text 'BROCCOLI' is above the text 'SALAD' in the center of the frame. The logo 'The Cooking FOODIE' is in the top left corner, above the salad. The salad fills the entire background behind the text.",
+    "spatial": "The text 'BROCCOLI' is above the text 'SALAD' in the center of the frame. The 'The Cooking FOODIE' logo is to the top-left of the central text. All text elements are superimposed in front of the broccoli salad background.",
     "parse_success": true,
     "chunk_idx": 1,
     "video_id": "Broccoli_Salad"
   },
   {
     "time": [
-      4,
-      6
-    ],
-    "visible_entities": [
-      {
-        "desc": "broccoli salad with green florets, dark red dried cranberries, and white creamy dressing",
-        "action": "static",
-        "position": "center"
-      },
-      {
-        "desc": "white ceramic plate, round, smooth surface",
-        "action": "static",
-        "position": "foreground"
-      },
-      {
-        "desc": "wooden surface, light brown, grain texture",
-        "action": "static",
-        "position": "left"
-      },
-      {
-        "desc": "white logo text 'The Cooking FOODIE' with a chef hat icon",
-        "action": "static",
-        "position": "top-left"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "A serving of broccoli salad sits on a white plate.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The salad contains visible green broccoli florets and dark red dried fruit.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The ingredients are coated in a thick white creamy dressing.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The logo 'The Cooking FOODIE' is displayed in the top-left corner.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [
-      "The Cooking FOODIE"
-    ],
-    "spatial": "The broccoli salad is piled in the center of the white plate. The plate rests on a wooden surface visible to the left. The logo text is positioned above the plate in the top-left corner of the frame.",
-    "parse_success": true,
-    "chunk_idx": 2,
-    "video_id": "Broccoli_Salad"
-  },
-  {
-    "time": [
-      6,
-      8
+      2,
+      3
     ],
     "visible_entities": [
       {
@@ -175,23 +122,28 @@
         "position": "center"
       },
       {
-        "desc": "white plate with a smooth, glossy surface",
+        "desc": "white ceramic plate with a smooth, glossy surface",
+        "action": "static",
+        "position": "foreground"
+      },
+      {
+        "desc": "wooden surface with visible grain pattern",
         "action": "static",
         "position": "background"
       },
       {
-        "desc": "white logo text reading 'The Cooking FOODIE' with a chef's hat icon",
+        "desc": "logo text 'The Cooking FOODIE' in white script and sans-serif fonts",
         "action": "static",
         "position": "top-left"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A broccoli salad is presented on a white plate.",
+        "fact": "The broccoli salad is served on a white plate.",
         "confidence": 1.0
       },
       {
-        "fact": "The salad is coated in a creamy dressing.",
+        "fact": "The plate rests on a wooden surface.",
         "confidence": 1.0
       },
       {
@@ -202,15 +154,15 @@
     "ocr": [
       "The Cooking FOODIE"
     ],
-    "spatial": "The broccoli salad is in the center of the frame, resting on the white plate. The 'The Cooking FOODIE' logo is positioned in the top-left corner, above and to the left of the salad.",
+    "spatial": "The broccoli salad is piled in the center of the white plate. The plate is positioned on top of the wooden surface. The logo text is located in the top-left corner of the frame, above the plate.",
     "parse_success": true,
-    "chunk_idx": 3,
+    "chunk_idx": 2,
     "video_id": "Broccoli_Salad"
   },
   {
     "time": [
-      8,
-      10
+      3,
+      4
     ],
     "visible_entities": [
       {
@@ -219,75 +171,120 @@
         "position": "center"
       },
       {
-        "desc": "white plate, smooth ceramic surface",
+        "desc": "white ceramic plate",
         "action": "static",
         "position": "background"
       },
       {
-        "desc": "white text logo with cursive 'Cooking' and block 'FOODIE'",
+        "desc": "white logo text with a chef hat icon",
         "action": "static",
         "position": "top-left"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A serving of broccoli salad sits on a white plate.",
+        "fact": "The broccoli salad is piled in the center of the white plate.",
         "confidence": 1.0
       },
       {
-        "fact": "The salad is coated in a thick white creamy dressing.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The logo 'The Cooking FOODIE' is visible in the top-left corner.",
+        "fact": "The text 'The Cooking FOODIE' is visible in the top-left corner.",
         "confidence": 1.0
       }
     ],
     "ocr": [
       "The Cooking FOODIE"
     ],
-    "spatial": "The broccoli salad is piled in the center of the white plate. The 'The Cooking FOODIE' logo is positioned in the top-left corner, above the salad.",
+    "spatial": "The broccoli salad is centered on the white plate. The logo is located in the top-left corner, above the salad.",
+    "parse_success": true,
+    "chunk_idx": 3,
+    "video_id": "Broccoli_Salad"
+  },
+  {
+    "time": [
+      4,
+      5
+    ],
+    "visible_entities": [
+      {
+        "desc": "broccoli salad with green florets, dark red dried cranberries, and white creamy dressing",
+        "action": "static",
+        "position": "center"
+      },
+      {
+        "desc": "white plate",
+        "action": "static",
+        "position": "background"
+      },
+      {
+        "desc": "logo with white text 'The Cooking FOODIE' and a chef hat icon",
+        "action": "static",
+        "position": "top-left"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A broccoli salad is served on a white plate.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The salad contains green broccoli florets and dark red dried cranberries.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The ingredients are coated in a white creamy dressing.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The text 'The Cooking FOODIE' is visible in the top-left corner.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "The Cooking FOODIE"
+    ],
+    "spatial": "The broccoli salad is in the center of the frame and sits on top of the white plate. The 'The Cooking FOODIE' logo is located in the top-left corner, above the salad.",
     "parse_success": true,
     "chunk_idx": 4,
     "video_id": "Broccoli_Salad"
   },
   {
     "time": [
-      10,
-      12
+      5,
+      6
     ],
     "visible_entities": [
       {
-        "desc": "Black text logo reading 'The Cookir' in a stylized, bold cursive font on a white background.",
+        "desc": "Black cursive text logo reading 'The Coo' in the first frame and 'The Cookir' in the second frame, set against a white background.",
         "action": "static"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "The text 'The Cookir' is displayed in the center of the screen.",
+        "fact": "The text 'The Coo' is visible in the first frame.",
         "confidence": 1.0
       },
       {
-        "fact": "The text is black against a white background.",
+        "fact": "The text 'The Cookir' is visible in the second frame.",
         "confidence": 1.0
       }
     ],
     "ocr": [
+      "The Coo",
       "The Cookir"
     ],
-    "spatial": "The text 'The Cookir' is centered in the frame.",
+    "spatial": "The text logo is centered in the frame. The word 'The' is positioned above the main word 'Coo' or 'Cookir'.",
     "parse_success": true,
     "chunk_idx": 5,
     "video_id": "Broccoli_Salad"
   },
   {
     "time": [
-      12,
-      14
+      6,
+      7
     ],
     "visible_entities": [
       {
-        "desc": "black text logo reading 'The Cooking' in a cursive script font",
+        "desc": "black text logo reading 'The Cooking' in a stylized script font",
         "action": "static",
         "position": "center"
       },
@@ -304,7 +301,7 @@
     ],
     "atomic_facts": [
       {
-        "fact": "The text 'The Cooking' is displayed in the center of the screen.",
+        "fact": "The text 'The Cooking' is displayed in the center of the frame.",
         "confidence": 1.0
       },
       {
@@ -312,26 +309,26 @@
         "confidence": 1.0
       },
       {
-        "fact": "A banner containing a spoon and fork appears below the text.",
+        "fact": "A banner containing cutlery icons appears below the text.",
         "confidence": 1.0
       }
     ],
     "ocr": [
       "The Cooking"
     ],
-    "spatial": "The chef's hat is positioned above and to the left of the text 'The Cooking'. The curved banner with the spoon and fork is located directly below the text.",
+    "spatial": "The chef's hat is positioned above the left side of the text 'The Cooking'. The curved banner with the spoon and fork is located directly below the text.",
     "parse_success": true,
     "chunk_idx": 6,
     "video_id": "Broccoli_Salad"
   },
   {
     "time": [
-      14,
-      16
+      7,
+      8
     ],
     "visible_entities": [
       {
-        "desc": "logo with black chef hat icon, 'The Cooking' in black script font, and 'FOODIE' in white block letters on a black ribbon banner",
+        "desc": "black logo with 'The Cooking' in script font, 'FOODIE' in a banner, and a chef hat icon",
         "action": "static",
         "position": "center"
       },
@@ -341,27 +338,27 @@
         "position": "center"
       },
       {
-        "desc": "hand holding a silver knife blade",
+        "desc": "person's hand holding a silver knife",
         "action": "chopping broccoli",
         "position": "center"
       },
       {
-        "desc": "white text overlay reading 'Broccoli' and '2 heads, chop'",
+        "desc": "white text overlay reading 'Broccoli 2 heads, chop'",
         "action": "static",
         "position": "bottom-left"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A hand is using a knife to chop green broccoli on a wooden cutting board.",
+        "fact": "A person is chopping green broccoli on a wooden cutting board.",
         "confidence": 1.0
       },
       {
-        "fact": "The text overlay indicates the ingredient is 'Broccoli' and the instruction is '2 heads, chop'.",
+        "fact": "The text 'Broccoli 2 heads, chop' appears in the bottom left corner.",
         "confidence": 1.0
       },
       {
-        "fact": "The logo 'The Cooking FOODIE' is superimposed over the center of the video.",
+        "fact": "The logo 'The Cooking FOODIE' is overlaid in the center of the screen.",
         "confidence": 1.0
       }
     ],
@@ -370,41 +367,92 @@
       "Broccoli",
       "2 heads, chop"
     ],
-    "spatial": "The hand holding the knife is positioned above the broccoli on the cutting board. The logo is centered in the foreground, partially obscuring the chopping action. The ingredient text is located in the bottom-left corner of the frame.",
+    "spatial": "The person's hand is holding the knife above the broccoli. The broccoli is on the wooden cutting board. The text 'Broccoli 2 heads, chop' is below the main action and to the left of the central logo.",
     "parse_success": true,
     "chunk_idx": 7,
     "video_id": "Broccoli_Salad"
   },
   {
     "time": [
-      16,
-      18
+      8,
+      9
     ],
     "visible_entities": [
       {
-        "desc": "hand with light skin tone and short fingernails",
-        "action": "holding broccoli florets steady",
+        "desc": "hands with light skin tone and short, natural fingernails",
+        "action": "holding broccoli florets",
         "position": "center"
       },
       {
-        "desc": "silver kitchen knife with a sharp blade",
+        "desc": "large silver chef's knife with a metallic blade",
+        "action": "chopping broccoli",
+        "position": "left/center"
+      },
+      {
+        "desc": "fresh green broccoli florets with thick pale green stalks",
+        "action": "being cut",
+        "position": "center/right"
+      },
+      {
+        "desc": "light-colored wooden cutting board with a handle cutout on the left",
+        "action": "static",
+        "position": "background"
+      },
+      {
+        "desc": "white text overlay with a logo",
+        "action": "static",
+        "position": "top-left/bottom-left"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A person is using a knife to chop broccoli florets on a wooden board.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The text 'Broccoli 2 heads, chop' is displayed in the bottom left corner.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The logo 'The Cooking Foodie' is visible in the top left corner.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "The Cooking FOODIE",
+      "Broccoli",
+      "2 heads, chop"
+    ],
+    "spatial": "The hands are positioned above the wooden cutting board, holding the broccoli florets. The knife is to the left of the hands, slicing through the vegetable stems. The text overlay is located in the bottom left corner, below the cutting action.",
+    "parse_success": true,
+    "chunk_idx": 8,
+    "video_id": "Broccoli_Salad"
+  },
+  {
+    "time": [
+      9,
+      10
+    ],
+    "visible_entities": [
+      {
+        "desc": "person's hand with light skin tone",
         "action": "chopping broccoli",
         "position": "left"
       },
       {
-        "desc": "green broccoli florets and stems, fresh texture",
-        "action": "being cut",
+        "desc": "large silver kitchen knife with a wide blade",
+        "action": "cutting broccoli",
         "position": "center"
       },
       {
-        "desc": "large green broccoli head, uncut",
-        "action": "static",
-        "position": "right"
+        "desc": "green broccoli florets, chopped into small pieces",
+        "action": "being chopped",
+        "position": "center"
       },
       {
-        "desc": "light brown wooden cutting board with a handle cutout",
+        "desc": "light-colored wooden cutting board",
         "action": "static",
-        "position": "background"
+        "position": "bottom"
       },
       {
         "desc": "white text overlay with logo",
@@ -414,80 +462,15 @@
     ],
     "atomic_facts": [
       {
-        "fact": "A hand is holding a piece of broccoli on a wooden cutting board.",
+        "fact": "A person is using a large knife to chop green broccoli florets on a wooden cutting board.",
         "confidence": 1.0
       },
       {
-        "fact": "A silver knife is slicing through the stem of a broccoli floret.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The text 'The Cooking FOODIE' is visible in the top left corner.",
+        "fact": "The broccoli is being cut into smaller, finer pieces.",
         "confidence": 1.0
       },
       {
         "fact": "The text 'Broccoli 2 heads, chop' is displayed at the bottom left.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [
-      "The Cooking FOODIE",
-      "Broccoli",
-      "2 heads, chop"
-    ],
-    "spatial": "The hand is positioned in the center, holding the broccoli which is on top of the wooden cutting board. The knife is to the left of the hand, actively cutting the vegetable. A large head of broccoli sits to the right of the chopped pieces. The text overlays are located in the top-left and bottom-left corners of the frame.",
-    "parse_success": true,
-    "chunk_idx": 8,
-    "video_id": "Broccoli_Salad"
-  },
-  {
-    "time": [
-      18,
-      20
-    ],
-    "visible_entities": [
-      {
-        "desc": "person's hands with light skin tone",
-        "action": "chopping broccoli with a knife",
-        "position": "left/center"
-      },
-      {
-        "desc": "large silver kitchen knife with a wide blade",
-        "action": "slicing through broccoli florets",
-        "position": "center"
-      },
-      {
-        "desc": "green broccoli florets, chopped into small pieces",
-        "action": "being cut and accumulating on the board",
-        "position": "center/right"
-      },
-      {
-        "desc": "light-colored wooden cutting board",
-        "action": "static",
-        "position": "bottom/foreground"
-      },
-      {
-        "desc": "white text overlay 'The Cooking FOODIE' logo",
-        "action": "static",
-        "position": "top-left"
-      },
-      {
-        "desc": "white text overlay 'Broccoli 2 heads, chop'",
-        "action": "static",
-        "position": "bottom-left"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "A person is using a large knife to chop green broccoli florets into smaller pieces.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The chopped broccoli is accumulating on the wooden cutting board.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The text 'Broccoli 2 heads, chop' is displayed in the bottom left corner.",
         "confidence": 1.0
       },
       {
@@ -500,31 +483,31 @@
       "Broccoli",
       "2 heads, chop"
     ],
-    "spatial": "The person's hands are holding the knife above the wooden cutting board. The chopped broccoli pieces are scattered across the center and right side of the board. The text overlay is located in the bottom-left corner, below the cutting action.",
+    "spatial": "The person's hand is holding the knife above the broccoli florets. The chopped broccoli is scattered across the center of the wooden cutting board. The text overlay is positioned below the main action on the cutting board.",
     "parse_success": true,
     "chunk_idx": 9,
     "video_id": "Broccoli_Salad"
   },
   {
     "time": [
-      20,
-      22
+      10,
+      11
     ],
     "visible_entities": [
       {
-        "desc": "person's hands with light skin tone",
+        "desc": "hands with light skin tone",
         "action": "chopping broccoli",
         "position": "center"
       },
       {
         "desc": "large silver chef's knife with a wide blade",
-        "action": "slicing through vegetables",
+        "action": "cutting vegetables",
         "position": "center"
       },
       {
-        "desc": "green broccoli florets, chopped into small irregular pieces",
+        "desc": "green broccoli florets, chopped into small pieces",
         "action": "being cut",
-        "position": "center"
+        "position": "center/right"
       },
       {
         "desc": "light-colored wooden cutting board",
@@ -532,9 +515,9 @@
         "position": "bottom"
       },
       {
-        "desc": "white logo text reading 'The Cooking FOODIE' with a chef hat icon",
+        "desc": "white logo with stylized text 'The Cooking FOODIE' and a chef's hat icon",
         "action": "static",
-        "position": "top-left"
+        "position": "top left"
       }
     ],
     "atomic_facts": [
@@ -547,38 +530,38 @@
         "confidence": 1.0
       },
       {
-        "fact": "The logo 'The Cooking FOODIE' is visible in the top left corner.",
+        "fact": "The text 'The Cooking FOODIE' is visible in the top left corner.",
         "confidence": 1.0
       }
     ],
     "ocr": [
       "The Cooking FOODIE"
     ],
-    "spatial": "The person's hands are holding the knife and broccoli in the center of the frame. The chopped broccoli pieces are scattered on top of the wooden cutting board. The logo is located in the top-left corner, above the cutting action.",
+    "spatial": "The hands are holding the knife above the broccoli on the cutting board. The chopped broccoli pieces are scattered on the right side of the board, while the knife is positioned towards the left and center. The logo is located in the top left corner, above the cutting action.",
     "parse_success": true,
     "chunk_idx": 10,
     "video_id": "Broccoli_Salad"
   },
   {
     "time": [
-      22,
-      24
+      11,
+      12
     ],
     "visible_entities": [
       {
-        "desc": "hand with light skin tone, fingers curled in a claw grip",
-        "action": "holding broccoli steady",
+        "desc": "person's hand with light skin tone, fingers curled in a claw grip",
+        "action": "holding broccoli florets steady",
         "position": "center"
       },
       {
-        "desc": "large silver kitchen knife with a textured, hammered metal blade",
+        "desc": "large silver chef's knife with a textured or hammered blade finish",
         "action": "chopping broccoli",
         "position": "left"
       },
       {
-        "desc": "green broccoli florets, chopped into small, irregular pieces",
+        "desc": "green broccoli florets, chopped into small, irregular bite-sized pieces",
         "action": "being cut",
-        "position": "center"
+        "position": "foreground"
       },
       {
         "desc": "light-colored wooden cutting board with visible grain",
@@ -588,58 +571,54 @@
       {
         "desc": "white logo text 'The Cooking FOODIE' with a chef's hat icon",
         "action": "static",
-        "position": "top-left"
+        "position": "top left"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A hand holds a piece of broccoli steady on a cutting board.",
+        "fact": "A hand is holding a cluster of broccoli florets on a wooden board.",
         "confidence": 1.0
       },
       {
-        "fact": "A knife with a textured blade is chopping the broccoli into smaller florets.",
+        "fact": "A knife is slicing through the broccoli florets.",
         "confidence": 1.0
       },
       {
-        "fact": "The cutting board is covered in chopped green broccoli pieces.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The logo 'The Cooking FOODIE' is visible in the top-left corner.",
+        "fact": "Small green crumbs of broccoli are scattered on the cutting board.",
         "confidence": 1.0
       }
     ],
     "ocr": [
       "The Cooking FOODIE"
     ],
-    "spatial": "The hand is positioned in the center, holding the broccoli on top of the wooden cutting board. The knife is to the left of the hand, actively cutting through the vegetable. The logo is located in the top-left corner, above the chopping action.",
+    "spatial": "The hand is positioned in the center, holding the broccoli florets which are on top of the wooden cutting board. The knife is to the left of the hand, actively cutting into the vegetables. The logo is in the top left corner, above the chopping action.",
     "parse_success": true,
     "chunk_idx": 11,
     "video_id": "Broccoli_Salad"
   },
   {
     "time": [
-      24,
-      26
+      12,
+      13
     ],
     "visible_entities": [
       {
-        "desc": "clear glass bowl, round, transparent, empty",
+        "desc": "chopped green broccoli florets, small pieces",
+        "action": "sliding off the cutting board",
+        "position": "right/foreground"
+      },
+      {
+        "desc": "light-colored wooden cutting board, rectangular",
+        "action": "tilting",
+        "position": "right/center"
+      },
+      {
+        "desc": "clear glass mixing bowl, round, empty",
         "action": "static",
         "position": "left/center"
       },
       {
-        "desc": "light-colored wooden cutting board, rectangular, flat",
-        "action": "tilting",
-        "position": "right/foreground"
-      },
-      {
-        "desc": "chopped green broccoli florets, small pieces, fresh",
-        "action": "sliding off the board",
-        "position": "right/foreground"
-      },
-      {
-        "desc": "wooden surface, brown, wood grain texture",
+        "desc": "wooden table surface, brown with grain pattern",
         "action": "static",
         "position": "background"
       },
@@ -651,110 +630,110 @@
     ],
     "atomic_facts": [
       {
-        "fact": "A wooden cutting board is being tilted over a glass bowl.",
+        "fact": "Chopped broccoli is being pushed from the wooden cutting board into the glass bowl.",
         "confidence": 1.0
       },
       {
-        "fact": "Chopped broccoli pieces are sliding from the cutting board into the bowl.",
+        "fact": "The glass bowl is sitting on the wooden table.",
         "confidence": 1.0
       },
       {
-        "fact": "The glass bowl is sitting on a wooden table.",
+        "fact": "The logo 'The Cooking FOODIE' is visible in the top left corner.",
         "confidence": 1.0
       }
     ],
     "ocr": [
       "The Cooking FOODIE"
     ],
-    "spatial": "The clear glass bowl is positioned on the left side of the frame, resting on a wooden surface. The wooden cutting board is held above and to the right of the bowl. The chopped broccoli is on top of the cutting board, moving downwards into the bowl.",
+    "spatial": "The clear glass bowl is positioned to the left of the wooden cutting board. The chopped broccoli is on top of the cutting board and is moving into the bowl. The logo is located in the top left corner, above the bowl.",
     "parse_success": true,
     "chunk_idx": 12,
     "video_id": "Broccoli_Salad"
   },
   {
     "time": [
-      26,
-      28
+      13,
+      14
     ],
     "visible_entities": [
       {
-        "desc": "chopped green broccoli florets",
-        "action": "sliding off a board",
+        "desc": "chopped green broccoli florets, raw texture",
+        "action": "sliding off cutting board",
         "position": "center"
       },
       {
-        "desc": "light brown wooden cutting board",
+        "desc": "light brown wooden cutting board, flat surface",
         "action": "tilting",
         "position": "right"
       },
       {
-        "desc": "clear glass mixing bowl",
+        "desc": "clear glass mixing bowl, round shape",
         "action": "static",
         "position": "left"
       },
       {
-        "desc": "white logo with text 'The Cooking FOODIE'",
+        "desc": "white logo with cursive 'The Cooking' and block 'FOODIE' text",
         "action": "static",
-        "position": "top left"
+        "position": "top-left"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "Chopped broccoli is being slid from the wooden cutting board into the glass bowl.",
+        "fact": "Chopped broccoli is being transferred from the wooden cutting board into the glass bowl.",
         "confidence": 1.0
       },
       {
-        "fact": "The wooden cutting board is tilted to pour the vegetables.",
+        "fact": "The cutting board is tilted to slide the vegetables.",
         "confidence": 1.0
       },
       {
-        "fact": "The glass bowl is partially filled with broccoli.",
+        "fact": "The bowl is partially filled with broccoli.",
         "confidence": 1.0
       }
     ],
     "ocr": [
       "The Cooking FOODIE"
     ],
-    "spatial": "The wooden cutting board is positioned to the right of the glass bowl. The chopped broccoli is on top of the cutting board and is moving into the bowl. The logo is in the top left corner, above the bowl.",
+    "spatial": "The wooden cutting board is positioned to the right of the glass bowl and is tilted over it. The chopped broccoli is on top of the cutting board and falling into the bowl. The logo is in the top-left corner of the frame, above the bowl.",
     "parse_success": true,
     "chunk_idx": 13,
     "video_id": "Broccoli_Salad"
   },
   {
     "time": [
-      28,
-      30
+      14,
+      15
     ],
     "visible_entities": [
       {
-        "desc": "hands with light skin tone",
-        "action": "chopping onion",
+        "desc": "hands with light skin tone, fingers curled in a claw grip to hold the vegetable",
+        "action": "holding and guiding the onion",
         "position": "top/center"
       },
       {
-        "desc": "large silver chef's knife with a broad blade",
-        "action": "slicing downwards",
+        "desc": "large chef's knife with a wide, silver metallic blade",
+        "action": "chopping the onion",
         "position": "center"
       },
       {
-        "desc": "red onion, purple skin with white interior layers",
-        "action": "being chopped",
+        "desc": "red onion, cut in half, showing purple and white concentric layers",
+        "action": "being chopped into small pieces",
         "position": "center"
       },
       {
         "desc": "light-colored wooden cutting board with visible grain",
         "action": "static",
-        "position": "bottom/foreground"
+        "position": "background/bottom"
       },
       {
-        "desc": "white text overlay",
+        "desc": "white text overlay in sans-serif font",
         "action": "static",
-        "position": "bottom-left"
+        "position": "bottom left"
       },
       {
-        "desc": "white logo graphic with text 'The Cooking FOODIE'",
+        "desc": "white logo graphic with text 'The Cooking Foodie' and a chef's hat icon",
         "action": "static",
-        "position": "top-left"
+        "position": "top left"
       }
     ],
     "atomic_facts": [
@@ -764,6 +743,66 @@
       },
       {
         "fact": "The onion is being cut into small, diced pieces.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The text 'Red onion' and '1/2, chop' is displayed on the screen.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The logo 'The Cooking Foodie' is visible in the top left corner.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "The Cooking FOODIE",
+      "Red onion",
+      "1/2, chop"
+    ],
+    "spatial": "The hands are positioned above the red onion, holding it steady on the wooden cutting board. The knife is located between the hands and the onion, actively slicing through the vegetable. The text overlay is situated in the bottom left corner, below the chopping action, while the logo is in the top left corner.",
+    "parse_success": true,
+    "chunk_idx": 14,
+    "video_id": "Broccoli_Salad"
+  },
+  {
+    "time": [
+      15,
+      16
+    ],
+    "visible_entities": [
+      {
+        "desc": "red onion, purple and white concentric rings, being chopped",
+        "action": "being sliced into small pieces",
+        "position": "center"
+      },
+      {
+        "desc": "large metal chef's knife, silver blade",
+        "action": "chopping the onion",
+        "position": "center"
+      },
+      {
+        "desc": "light-colored wooden cutting board, smooth surface",
+        "action": "static",
+        "position": "bottom"
+      },
+      {
+        "desc": "white text overlay",
+        "action": "static",
+        "position": "bottom-left"
+      },
+      {
+        "desc": "white logo with chef hat icon",
+        "action": "static",
+        "position": "top-left"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A large knife is chopping a red onion on a wooden board.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The red onion is being diced into small, fine pieces.",
         "confidence": 1.0
       },
       {
@@ -780,66 +819,15 @@
       "Red onion",
       "1/2, chop"
     ],
-    "spatial": "The hands are positioned above the red onion, holding the knife. The knife is cutting through the onion which rests on the wooden cutting board. The text overlay is located below the chopping action in the bottom left corner, while the logo is in the top left corner.",
-    "parse_success": true,
-    "chunk_idx": 14,
-    "video_id": "Broccoli_Salad"
-  },
-  {
-    "time": [
-      30,
-      32
-    ],
-    "visible_entities": [
-      {
-        "desc": "red onion with purple and white concentric rings, being chopped into small pieces",
-        "action": "being chopped",
-        "position": "center"
-      },
-      {
-        "desc": "large silver chef's knife with a wide blade",
-        "action": "chopping the onion",
-        "position": "center"
-      },
-      {
-        "desc": "light-colored wooden cutting board with visible grain",
-        "action": "static",
-        "position": "bottom"
-      },
-      {
-        "desc": "white text overlay reading 'Red onion' and '1/2, chop' with a logo in the top left",
-        "action": "static",
-        "position": "bottom left"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "A knife is chopping a red onion on a wooden cutting board.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The red onion is being diced into small, fine pieces.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The text 'Red onion' and '1/2, chop' is displayed on the screen.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [
-      "The Cooking FOODIE",
-      "Red onion",
-      "1/2, chop"
-    ],
-    "spatial": "The red onion is positioned in the center of the wooden cutting board. The knife is above the onion, moving downwards to chop it. The text overlay is located in the bottom left corner of the frame, below the chopping action.",
+    "spatial": "The red onion is in the center of the wooden cutting board. The knife is positioned above the onion, actively chopping it. The text overlay is located below the onion in the bottom-left corner. The logo is situated in the top-left corner, above the chopping action.",
     "parse_success": true,
     "chunk_idx": 15,
     "video_id": "Broccoli_Salad"
   },
   {
     "time": [
-      32,
-      34
+      16,
+      17
     ],
     "visible_entities": [
       {
@@ -848,12 +836,12 @@
         "position": "center"
       },
       {
-        "desc": "red onion, diced into small purple and white pieces",
+        "desc": "red onion, chopped into small purple and white pieces",
         "action": "being chopped",
         "position": "center"
       },
       {
-        "desc": "wooden cutting board, light brown, smooth surface",
+        "desc": "wooden cutting board, light brown, rectangular",
         "action": "static",
         "position": "bottom"
       },
@@ -863,17 +851,17 @@
         "position": "center"
       },
       {
-        "desc": "broccoli florets, green, raw, cut into bite-sized pieces",
+        "desc": "broccoli florets, green, cut into bite-sized pieces",
         "action": "static",
         "position": "inside bowl"
       },
       {
-        "desc": "small white bowl, ceramic or plastic",
-        "action": "being tipped",
+        "desc": "white ceramic bowl, small, round",
+        "action": "being held",
         "position": "top right"
       },
       {
-        "desc": "logo text 'The Cooking FOODIE', white font with chef hat icon",
+        "desc": "logo, white text with chef hat icon",
         "action": "static",
         "position": "top left"
       }
@@ -884,15 +872,11 @@
         "confidence": 1.0
       },
       {
-        "fact": "The chopped red onions are purple and white in color.",
+        "fact": "The chopped red onions are being poured from a small white bowl into a glass bowl.",
         "confidence": 1.0
       },
       {
-        "fact": "A glass bowl is filled with green broccoli florets.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "A hand is tipping a small white bowl to pour chopped red onions into the glass bowl.",
+        "fact": "The glass bowl contains green broccoli florets.",
         "confidence": 1.0
       },
       {
@@ -903,80 +887,208 @@
     "ocr": [
       "The Cooking FOODIE"
     ],
-    "spatial": "The person's hands are above the wooden cutting board, chopping the red onion. The glass bowl containing broccoli is positioned on the table. The small white bowl is held above the glass bowl, pouring the chopped onions into it. The logo is in the top left corner of the frame.",
+    "spatial": "In the first frame, the person's hands are above the wooden cutting board, chopping the red onion. In the second frame, the small white bowl is held above the glass bowl, pouring the chopped onions onto the broccoli florets which are inside the glass bowl. The logo is in the top left corner of both frames.",
     "parse_success": true,
     "chunk_idx": 16,
     "video_id": "Broccoli_Salad"
   },
   {
     "time": [
-      34,
-      36
+      17,
+      18
     ],
     "visible_entities": [
       {
-        "desc": "clear glass bowl containing chopped green broccoli florets and diced purple onions",
-        "action": "static",
+        "desc": "hands with light skin tone",
+        "action": "chopping apple",
         "position": "center"
       },
       {
-        "desc": "hands holding a red apple and a large metal knife",
+        "desc": "red apple, sliced into rounds, pale yellow flesh",
+        "action": "being chopped",
+        "position": "center"
+      },
+      {
+        "desc": "large chef's knife with silver blade and dark handle",
         "action": "slicing apple",
         "position": "center"
       },
       {
-        "desc": "light-colored wooden cutting board",
+        "desc": "light-colored wooden cutting board, smooth surface",
         "action": "static",
         "position": "background"
       },
       {
-        "desc": "white text overlay reading 'Apple 1, chop'",
+        "desc": "white text overlay",
         "action": "static",
         "position": "bottom-left"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "Hands are slicing a red apple with a knife on a wooden board.",
+        "fact": "A person is chopping a red apple on a wooden cutting board.",
         "confidence": 1.0
       },
       {
-        "fact": "A glass bowl contains chopped broccoli and red onions.",
+        "fact": "The knife is slicing through the apple to create round pieces.",
         "confidence": 1.0
       },
       {
-        "fact": "The text 'Apple 1, chop' appears on the screen.",
+        "fact": "The text 'Apple 1, chop' is displayed in the bottom left corner.",
         "confidence": 1.0
       }
     ],
     "ocr": [
+      "Cooking",
+      "FOODIE",
       "Apple",
       "1, chop"
     ],
-    "spatial": "The glass bowl with vegetables is in the foreground. The hands slicing the apple are positioned above the wooden cutting board. The text overlay is located in the bottom-left corner of the frame.",
+    "spatial": "The hands are holding the knife and the apple in the center of the frame. The apple slices are resting on the wooden cutting board. The text overlay is located in the bottom-left corner, below the cutting action.",
     "parse_success": true,
     "chunk_idx": 17,
     "video_id": "Broccoli_Salad"
   },
   {
     "time": [
-      36,
-      38
+      18,
+      19
     ],
     "visible_entities": [
       {
-        "desc": "hand with light skin tone, fingers holding a red apple",
-        "action": "holding the apple steady",
+        "desc": "hand with light skin tone",
+        "action": "holding apple",
+        "position": "center"
+      },
+      {
+        "desc": "red apple, partially sliced",
+        "action": "being cut",
+        "position": "center"
+      },
+      {
+        "desc": "silver knife blade",
+        "action": "slicing apple",
+        "position": "center"
+      },
+      {
+        "desc": "wooden cutting board, light brown",
+        "action": "static",
+        "position": "bottom"
+      },
+      {
+        "desc": "white text overlay",
+        "action": "static",
+        "position": "bottom-left"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A hand is holding a red apple steady on a wooden cutting board.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A silver knife is slicing through the apple.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The text 'Apple 1, chop' is displayed in the bottom left corner.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "The Cooking FOODIE",
+      "Apple",
+      "1, chop"
+    ],
+    "spatial": "The hand is positioned above the apple, holding it against the wooden cutting board. The knife blade is in front of the apple, cutting through it. The text overlay is located in the bottom left corner of the frame, below the cutting action.",
+    "parse_success": true,
+    "chunk_idx": 18,
+    "video_id": "Broccoli_Salad"
+  },
+  {
+    "time": [
+      19,
+      20
+    ],
+    "visible_entities": [
+      {
+        "desc": "person's hand with light skin tone, fingers curled to hold food",
+        "action": "holding apple slice",
         "position": "center"
       },
       {
         "desc": "large silver chef's knife with a metallic blade",
-        "action": "slicing through the apple",
+        "action": "slicing apple",
         "position": "center"
       },
       {
-        "desc": "red apple with yellow flesh, being cut into slices",
-        "action": "being sliced",
+        "desc": "red apple slice with pale yellow flesh and red skin",
+        "action": "being cut",
+        "position": "center"
+      },
+      {
+        "desc": "light-colored wooden cutting board with visible grain",
+        "action": "static",
+        "position": "background"
+      },
+      {
+        "desc": "white text overlay with a chef hat icon",
+        "action": "static",
+        "position": "top-left"
+      },
+      {
+        "desc": "white text overlay",
+        "action": "static",
+        "position": "bottom-left"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A person is slicing a red apple slice on a wooden cutting board.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The knife is cutting through the apple slice held by the hand.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The text 'The Cooking FOODIE' is visible in the top left corner.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The text 'Apple 1, chop' is visible in the bottom left corner.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "The Cooking FOODIE",
+      "Apple",
+      "1, chop"
+    ],
+    "spatial": "The hand is holding the apple slice on top of the wooden cutting board. The knife is positioned above the apple slice, cutting downwards. The 'The Cooking FOODIE' logo is in the top left corner, while the ingredient text is in the bottom left corner.",
+    "parse_success": true,
+    "chunk_idx": 19,
+    "video_id": "Broccoli_Salad"
+  },
+  {
+    "time": [
+      20,
+      21
+    ],
+    "visible_entities": [
+      {
+        "desc": "hand with light skin tone, fingers gripping knife handle",
+        "action": "chopping apple",
+        "position": "top left"
+      },
+      {
+        "desc": "large metal chef's knife with a shiny silver blade",
+        "action": "slicing downwards",
+        "position": "center left"
+      },
+      {
+        "desc": "red apple with yellow flesh, cut into small cubes and wedges",
+        "action": "being chopped",
         "position": "center"
       },
       {
@@ -985,152 +1097,35 @@
         "position": "bottom"
       },
       {
-        "desc": "white text overlay in sans-serif font",
-        "action": "static",
-        "position": "bottom-left"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "A hand is holding a red apple on a wooden cutting board.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "A knife is slicing the apple into wedges.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The text 'Apple 1, chop' is displayed in the bottom left corner.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "Sliced apple pieces are resting on the right side of the board.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [
-      "The Cooking FOODIE",
-      "Apple",
-      "1, chop"
-    ],
-    "spatial": "The hand is positioned above the apple, holding it against the wooden cutting board. The knife blade is cutting through the center of the apple. The text overlay is located in the bottom-left corner of the frame, below the cutting action.",
-    "parse_success": true,
-    "chunk_idx": 18,
-    "video_id": "Broccoli_Salad"
-  },
-  {
-    "time": [
-      38,
-      40
-    ],
-    "visible_entities": [
-      {
-        "desc": "hand with light skin tone",
-        "action": "holding apple slice",
-        "position": "center"
-      },
-      {
-        "desc": "large silver kitchen knife with a sharp blade",
-        "action": "slicing apple",
-        "position": "center"
-      },
-      {
-        "desc": "red apple slice with pale yellow flesh",
-        "action": "being cut",
-        "position": "center"
-      },
-      {
-        "desc": "light-colored wooden cutting board",
-        "action": "static",
-        "position": "background"
-      },
-      {
-        "desc": "white text logo 'The Cooking FOODIE' with a chef hat icon",
-        "action": "static",
-        "position": "top-left"
-      },
-      {
-        "desc": "white text overlay 'Apple 1, chop'",
-        "action": "static",
-        "position": "bottom-left"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "A hand is holding a slice of apple steady on a wooden cutting board.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "A knife is slicing through the apple slice.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The text 'Apple 1, chop' is displayed in the bottom left corner.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [
-      "The Cooking FOODIE",
-      "Apple",
-      "1, chop"
-    ],
-    "spatial": "The hand is positioned above the apple slice, holding it against the wooden cutting board. The knife is to the left of the hand and is cutting into the apple. The text overlay is located in the bottom-left corner of the frame, below the cutting action.",
-    "parse_success": true,
-    "chunk_idx": 19,
-    "video_id": "Broccoli_Salad"
-  },
-  {
-    "time": [
-      40,
-      42
-    ],
-    "visible_entities": [
-      {
-        "desc": "hand with light skin tone",
-        "action": "holding knife",
-        "position": "top/center"
-      },
-      {
-        "desc": "large silver metal chef's knife",
-        "action": "chopping apple",
-        "position": "center"
-      },
-      {
-        "desc": "red apple with yellow flesh, cut into slices and small cubes",
-        "action": "being chopped",
-        "position": "center/right"
-      },
-      {
-        "desc": "light brown wooden cutting board",
-        "action": "static",
-        "position": "bottom/foreground"
-      },
-      {
-        "desc": "white text 'The Cooking FOODIE' with a chef hat icon",
+        "desc": "white text overlay with a chef hat icon",
         "action": "static",
         "position": "top left"
       },
       {
-        "desc": "white text 'Apple 1, chop'",
+        "desc": "white sans-serif text overlay",
         "action": "static",
         "position": "bottom left"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A hand is using a knife to chop a red apple into small cubes.",
+        "fact": "A hand is using a knife to chop an apple into small pieces.",
         "confidence": 1.0
       },
       {
-        "fact": "The chopped apple pieces are accumulating on the right side of the cutting board.",
+        "fact": "The knife blade is moving downwards through a slice of apple.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A pile of diced apple pieces is accumulating on the right side of the board.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The text 'The Cooking FOODIE' is visible in the top left corner.",
         "confidence": 1.0
       },
       {
         "fact": "The text 'Apple 1, chop' is displayed in the bottom left corner.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The logo 'The Cooking FOODIE' is visible in the top left corner.",
         "confidence": 1.0
       }
     ],
@@ -1139,41 +1134,41 @@
       "Apple",
       "1, chop"
     ],
-    "spatial": "The hand is positioned above the knife, holding it to chop the apple slices on the wooden cutting board. The pile of chopped apple cubes is to the right of the knife blade. The text 'Apple 1, chop' is located in the bottom left corner, below the cutting action.",
+    "spatial": "The hand is positioned above the knife, holding it as it cuts into the apple. The apple slices are located in the center of the wooden cutting board, while the pile of chopped apple pieces is to the right of the active cutting area. The text overlays are positioned in the corners of the frame, with the logo above the ingredient instructions.",
     "parse_success": true,
     "chunk_idx": 20,
     "video_id": "Broccoli_Salad"
   },
   {
     "time": [
-      42,
-      44
+      21,
+      22
     ],
     "visible_entities": [
       {
-        "desc": "hand holding a large silver kitchen knife",
-        "action": "chopping red apple",
+        "desc": "hand holding a silver knife with a wooden handle",
+        "action": "chopping red apple into cubes",
         "position": "left"
       },
       {
-        "desc": "red apple with pale yellow flesh, cut into small cubes",
-        "action": "being chopped",
-        "position": "center"
+        "desc": "red apple with yellow flesh, cut into cubes",
+        "action": "being chopped and piled",
+        "position": "left and right"
       },
       {
         "desc": "light-colored wooden cutting board",
         "action": "static",
-        "position": "bottom"
+        "position": "center"
       },
       {
-        "desc": "clear glass bowl containing green broccoli florets and chopped purple onion",
+        "desc": "clear glass bowl containing green broccoli florets and chopped red onion",
         "action": "static",
         "position": "right"
       },
       {
-        "desc": "white logo with cursive text 'The Cooking FOODIE'",
+        "desc": "white logo text 'The Cooking FOODIE' with a chef hat icon",
         "action": "static",
-        "position": "top left"
+        "position": "top-left"
       }
     ],
     "atomic_facts": [
@@ -1182,11 +1177,11 @@
         "confidence": 1.0
       },
       {
-        "fact": "The diced apple pieces are being added to a glass bowl.",
+        "fact": "A pile of diced apple cubes is accumulating on the right side of the cutting board.",
         "confidence": 1.0
       },
       {
-        "fact": "The glass bowl contains a mixture of green broccoli and purple onions.",
+        "fact": "A glass bowl filled with broccoli and red onion sits next to the cutting board.",
         "confidence": 1.0
       },
       {
@@ -1197,70 +1192,80 @@
     "ocr": [
       "The Cooking FOODIE"
     ],
-    "spatial": "The hand holding the knife is positioned on the left side of the frame, chopping the apple on the wooden cutting board. The glass bowl filled with broccoli and onions is located to the right of the cutting board. The logo is situated in the top left corner, above the chopping action.",
+    "spatial": "The hand holding the knife is positioned on the left side of the frame, chopping the apple on the wooden cutting board. The pile of chopped apple cubes is to the right of the knife on the board. The glass bowl containing broccoli is located to the right of the cutting board.",
     "parse_success": true,
     "chunk_idx": 21,
     "video_id": "Broccoli_Salad"
   },
   {
     "time": [
-      44,
-      46
+      22,
+      23
     ],
     "visible_entities": [
       {
-        "desc": "clear glass bowl containing chopped green broccoli, diced red onions, and cubed apples with red skin",
+        "desc": "clear glass bowl containing salad ingredients",
         "action": "static",
         "position": "center"
       },
       {
-        "desc": "dried cranberries, dark red and shriveled",
-        "action": "being added to the bowl",
+        "desc": "green broccoli florets",
+        "action": "static",
+        "position": "bottom"
+      },
+      {
+        "desc": "diced red onion pieces",
+        "action": "static",
         "position": "center"
       },
       {
-        "desc": "white text overlay reading 'Dried cranberries 1/2 cup (65g)'",
+        "desc": "diced apples with red skin and pale yellow flesh",
         "action": "static",
-        "position": "bottom left"
+        "position": "center"
       },
       {
-        "desc": "white logo 'the Cooking FOODIE' with a chef hat icon",
+        "desc": "dark red dried cranberries",
+        "action": "being added",
+        "position": "top"
+      },
+      {
+        "desc": "white text overlay with ingredient details",
         "action": "static",
-        "position": "top left"
+        "position": "bottom-left"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "Dried cranberries are being added to the salad bowl.",
+        "fact": "Dried cranberries are being added to the top of the salad mixture.",
         "confidence": 1.0
       },
       {
-        "fact": "The bowl contains chopped broccoli, red onion, and apples.",
+        "fact": "The bowl contains a base of broccoli, red onion, and diced apples.",
         "confidence": 1.0
       },
       {
-        "fact": "The text overlay indicates the ingredient is 'Dried cranberries' and the quantity is '1/2 cup (65g)'.",
+        "fact": "The text overlay identifies the ingredient as 'Dried cranberries' and the quantity as '1/2 cup (65g)'.",
         "confidence": 1.0
       }
     ],
     "ocr": [
-      "the Cooking FOODIE",
+      "The Cooking FOODIE",
       "Dried cranberries",
       "1/2 cup (65g)"
     ],
-    "spatial": "The glass bowl is in the center of the frame. The dried cranberries are being placed on top of the other ingredients inside the bowl. The text overlay is located at the bottom left of the screen, below the bowl. The logo is positioned in the top left corner.",
+    "spatial": "The clear glass bowl is centered in the frame. Inside the bowl, the dried cranberries are positioned on top of the diced apples, which are layered over the red onions and broccoli florets at the bottom. The text overlay is located in the bottom-left corner of the screen, below the bowl.",
     "parse_success": true,
     "chunk_idx": 22,
     "video_id": "Broccoli_Salad"
   },
   {
     "time": [
-      46,
-      48
+      23,
+      24
     ],
     "visible_entities": [
       {
-        "desc": "glass bowl containing chopped broccoli, diced apples, red onions, and dried cranberries",
+        "desc": "clear glass bowl containing chopped broccoli, diced apples, red onions, and dried cranberries",
         "action": "static",
         "position": "center"
       },
@@ -1270,7 +1275,7 @@
         "position": "center"
       },
       {
-        "desc": "sunflower seeds",
+        "desc": "grey sunflower seeds",
         "action": "being poured",
         "position": "center"
       },
@@ -1291,11 +1296,11 @@
         "confidence": 1.0
       },
       {
-        "fact": "The bowl contains a salad mixture with broccoli, apples, and cranberries.",
+        "fact": "The text overlay identifies the ingredient as 'Dried cranberries' with a quantity of '1/2 cup (65g)' in the first frame.",
         "confidence": 1.0
       },
       {
-        "fact": "Text on screen identifies the ingredient as 'Dried cranberries' and then 'Sunflower seeds'.",
+        "fact": "The text overlay changes to 'Sunflower seeds' with a quantity of '1/3 cup (45g)' in the second frame.",
         "confidence": 1.0
       }
     ],
@@ -1306,15 +1311,15 @@
       "Sunflower seeds",
       "1/3 cup (45g)"
     ],
-    "spatial": "The glass bowl is in the center of the frame. The sunflower seeds are being poured from above into the center of the bowl, landing on top of the dried cranberries and other ingredients. The text overlay is located at the bottom left of the screen, below the bowl.",
+    "spatial": "The glass bowl is in the center of the frame. The sunflower seeds are being poured from above into the center of the bowl, landing on top of the dried cranberries and other salad ingredients. The text overlay is located in the bottom left corner, below the bowl.",
     "parse_success": true,
     "chunk_idx": 23,
     "video_id": "Broccoli_Salad"
   },
   {
     "time": [
-      48,
-      50
+      24,
+      25
     ],
     "visible_entities": [
       {
@@ -1323,14 +1328,14 @@
         "position": "center"
       },
       {
-        "desc": "black non-stick frying pan with a speckled interior surface",
+        "desc": "black non-stick frying pan with speckled interior",
         "action": "static",
         "position": "center"
       },
       {
         "desc": "white bowl holding brown pecan halves",
-        "action": "being tilted",
-        "position": "top right"
+        "action": "being held and tilted",
+        "position": "right"
       },
       {
         "desc": "hand holding the white bowl",
@@ -1338,26 +1343,26 @@
         "position": "right"
       },
       {
-        "desc": "white text overlay with 'The Cooking Foodie' logo",
+        "desc": "white text overlay",
         "action": "static",
-        "position": "top left"
+        "position": "bottom-left"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "Sunflower seeds are shown in a glass bowl with other salad ingredients.",
+        "fact": "A hand tilts a white bowl to pour pecans into a black frying pan.",
         "confidence": 1.0
       },
       {
-        "fact": "A hand pours pecans from a white bowl into a black frying pan.",
+        "fact": "The text 'Sunflower seeds 1/3 cup (45g)' is displayed over a bowl of salad ingredients.",
         "confidence": 1.0
       },
       {
-        "fact": "The text 'Sunflower seeds 1/3 cup (45g)' is displayed on the screen.",
+        "fact": "The text 'Pecans 3/4 cup (90g)' is displayed over the frying pan scene.",
         "confidence": 1.0
       },
       {
-        "fact": "The text 'Pecans 3/4 cup (90g)' is displayed on the screen.",
+        "fact": "The logo 'The Cooking Foodie' is visible in the top left corner.",
         "confidence": 1.0
       }
     ],
@@ -1368,36 +1373,31 @@
       "Pecans",
       "3/4 cup (90g)"
     ],
-    "spatial": "The glass bowl of salad is centered in the first frame. In the second frame, the black frying pan is centered on the stove, and the hand holding the white bowl of pecans is positioned above and to the right of the pan, pouring the nuts into it.",
+    "spatial": "The glass bowl of salad is in the center of the first frame. In the second frame, the black frying pan is in the center, and the white bowl of pecans is held above and to the right of the pan. The text overlays are located in the bottom-left corner of their respective frames.",
     "parse_success": true,
     "chunk_idx": 24,
     "video_id": "Broccoli_Salad"
   },
   {
     "time": [
-      50,
-      52
+      25,
+      26
     ],
     "visible_entities": [
       {
-        "desc": "black speckled non-stick frying pan",
+        "desc": "black speckled non-stick frying pan with a handle",
         "action": "static",
         "position": "center"
       },
       {
-        "desc": "brown pecan halves",
+        "desc": "brown pecan nuts",
         "action": "being toasted",
         "position": "center"
       },
       {
         "desc": "white text overlay",
         "action": "static",
-        "position": "bottom-left"
-      },
-      {
-        "desc": "white logo graphic",
-        "action": "static",
-        "position": "top-left"
+        "position": "bottom left"
       }
     ],
     "atomic_facts": [
@@ -1406,15 +1406,11 @@
         "confidence": 1.0
       },
       {
-        "fact": "The text 'Pecans 3/4 cup (90g)' is displayed in the bottom left corner.",
+        "fact": "The text overlay indicates the ingredient is 'Pecans' and the quantity is '3/4 cup (90g)'.",
         "confidence": 1.0
       },
       {
-        "fact": "The text 'toast' appears in the bottom left corner in the second frame.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The 'The Cooking Foodie' logo is visible in the top left corner.",
+        "fact": "The text overlay indicates the action is 'toast'.",
         "confidence": 1.0
       }
     ],
@@ -1424,54 +1420,50 @@
       "3/4 cup (90g)",
       "toast"
     ],
-    "spatial": "The pecans are inside the black speckled frying pan. The frying pan is on top of a stovetop grate. The text overlays are located in the bottom-left corner of the screen, below the pan. The logo is in the top-left corner, above the pan.",
+    "spatial": "The pecans are inside the black frying pan. The frying pan is on a stovetop. The text overlays are located in the bottom left corner of the frame.",
     "parse_success": true,
     "chunk_idx": 25,
     "video_id": "Broccoli_Salad"
   },
   {
     "time": [
-      52,
-      54
+      26,
+      27
     ],
     "visible_entities": [
       {
-        "desc": "brown pecan halves, toasted, scattered",
+        "desc": "pecan halves, reddish-brown, textured surface, scattered",
         "action": "toasting in pan",
         "position": "center"
       },
       {
-        "desc": "black non-stick frying pan, round, speckled texture",
+        "desc": "black non-stick frying pan, round, speckled interior",
         "action": "static",
         "position": "center"
       },
       {
-        "desc": "gas stove burner, metal grate, blue flame",
-        "action": "burning",
-        "position": "bottom"
+        "desc": "gas stove burner, black metal grate",
+        "action": "static",
+        "position": "background"
       },
       {
-        "desc": "white text logo 'The Cooking FOODIE' with chef hat icon",
+        "desc": "white text logo 'The Cooking FOODIE' with script font",
         "action": "static",
         "position": "top-left"
       },
       {
-        "desc": "white text 'toast'",
+        "desc": "white text 'toast' in sans-serif font",
         "action": "static",
         "position": "bottom-left"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "Pecan halves are being toasted in a frying pan.",
+        "fact": "Pecan halves are being toasted in a black frying pan.",
         "confidence": 1.0
       },
       {
-        "fact": "The pan is placed on a gas stove burner.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "A blue flame is visible under the pan.",
+        "fact": "The frying pan is resting on a gas stove burner.",
         "confidence": 1.0
       },
       {
@@ -1487,36 +1479,36 @@
       "The Cooking FOODIE",
       "toast"
     ],
-    "spatial": "The pecans are inside the black frying pan. The frying pan is on top of the gas stove burner. The 'The Cooking FOODIE' logo is above the frying pan in the top-left corner. The text 'toast' is below the frying pan in the bottom-left corner.",
+    "spatial": "The pecans are scattered inside the black frying pan. The frying pan is positioned on top of the gas stove burner. The 'The Cooking FOODIE' logo is in the top-left corner, above the 'toast' text which is in the bottom-left corner.",
     "parse_success": true,
     "chunk_idx": 26,
     "video_id": "Broccoli_Salad"
   },
   {
     "time": [
-      54,
-      56
+      27,
+      28
     ],
     "visible_entities": [
       {
         "desc": "pecan halves, reddish-brown, textured surface, scattered",
-        "action": "toasting",
+        "action": "toasting in pan",
         "position": "center"
       },
       {
-        "desc": "dark grey non-stick frying pan, speckled interior",
+        "desc": "dark non-stick frying pan, speckled interior",
         "action": "static",
         "position": "background"
       },
       {
         "desc": "white logo text 'The Cooking FOODIE' with chef hat icon",
         "action": "static",
-        "position": "top left"
+        "position": "top-left"
       },
       {
         "desc": "white lowercase text 'toast'",
         "action": "static",
-        "position": "bottom left"
+        "position": "bottom-left"
       }
     ],
     "atomic_facts": [
@@ -1525,11 +1517,7 @@
         "confidence": 1.0
       },
       {
-        "fact": "The text 'toast' appears in the bottom left corner.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The logo 'The Cooking FOODIE' is visible in the top left corner.",
+        "fact": "The text 'toast' is displayed in the bottom-left corner.",
         "confidence": 1.0
       }
     ],
@@ -1537,63 +1525,54 @@
       "The Cooking FOODIE",
       "toast"
     ],
-    "spatial": "The pecan halves are scattered inside the frying pan. The 'The Cooking FOODIE' logo is in the top left corner, above the pecans. The text 'toast' is in the bottom left corner, below the pecans.",
+    "spatial": "The pecan halves are scattered inside the dark frying pan. The logo is located in the top-left corner, above the scattered nuts. The word 'toast' is positioned in the bottom-left corner of the frame.",
     "parse_success": true,
     "chunk_idx": 27,
     "video_id": "Broccoli_Salad"
   },
   {
     "time": [
-      56,
-      58
+      28,
+      29
     ],
     "visible_entities": [
       {
-        "desc": "dark grey speckled non-stick frying pan with a handle extending to the right",
+        "desc": "dark speckled non-stick frying pan with a handle",
         "action": "static",
         "position": "center"
       },
       {
-        "desc": "brown toasted pecan nuts, clustered together",
+        "desc": "brown toasted pecan nuts",
         "action": "being tossed",
-        "position": "left"
+        "position": "center"
       },
       {
-        "desc": "blue gas flame",
-        "action": "burning",
-        "position": "bottom"
-      },
-      {
-        "desc": "white circular overlay with a black thumbs-up icon and the text 'LIKE'",
+        "desc": "white circular icon with a black thumbs-up symbol and the word 'LIKE' in black text",
         "action": "static",
         "position": "center"
       },
       {
-        "desc": "white circular overlay with a red notification bell icon",
+        "desc": "red and white animated notification bell icon with sparkles",
         "action": "appearing",
         "position": "center"
       },
       {
-        "desc": "white 'The Cooking Foodie' logo with a chef hat icon",
+        "desc": "white cursive logo reading 'The Cooking FOODIE'",
         "action": "static",
         "position": "top-left"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "Pecan nuts are being tossed inside the frying pan.",
+        "fact": "The pecan nuts are being tossed or stirred inside the frying pan.",
         "confidence": 1.0
       },
       {
-        "fact": "The frying pan is positioned over a lit blue gas flame.",
+        "fact": "A 'LIKE' button overlay is visible in the center of the screen.",
         "confidence": 1.0
       },
       {
-        "fact": "A 'LIKE' graphic overlay appears on the screen.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "A notification bell graphic overlay appears on the screen.",
+        "fact": "A notification bell animation appears over the nuts in the second frame.",
         "confidence": 1.0
       }
     ],
@@ -1601,19 +1580,19 @@
       "The Cooking FOODIE",
       "LIKE"
     ],
-    "spatial": "The cluster of pecan nuts is on the left side inside the frying pan. The frying pan is positioned above the blue gas flame. The 'LIKE' and bell graphic overlays are superimposed in the center of the frame, in front of the pan. The 'The Cooking Foodie' logo is located in the top-left corner of the screen.",
+    "spatial": "The frying pan is centered in the frame, resting on a gas stove burner. The toasted pecan nuts are inside the pan. The 'LIKE' icon and notification bell graphic are superimposed in the center, directly over the nuts. The 'The Cooking FOODIE' logo is positioned in the top-left corner of the screen.",
     "parse_success": true,
     "chunk_idx": 28,
     "video_id": "Broccoli_Salad"
   },
   {
     "time": [
-      58,
-      60
+      29,
+      30
     ],
     "visible_entities": [
       {
-        "desc": "dark grey speckled non-stick frying pan",
+        "desc": "dark grey non-stick frying pan with speckled texture",
         "action": "static",
         "position": "center"
       },
@@ -1623,7 +1602,7 @@
         "position": "center"
       },
       {
-        "desc": "red circular icon with a white thumbs-up symbol",
+        "desc": "red circular graphic with white thumbs-up icon",
         "action": "static",
         "position": "center"
       },
@@ -1633,26 +1612,22 @@
         "position": "center"
       },
       {
-        "desc": "white text logo reading 'The Cooking FOODIE'",
+        "desc": "white logo with cursive text",
         "action": "static",
         "position": "top left"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "Pecan halves are being poured into a frying pan.",
+        "fact": "Pecan halves are being poured into the frying pan.",
         "confidence": 1.0
       },
       {
-        "fact": "A red 'Like' button overlay appears on the screen.",
+        "fact": "The 'The Cooking FOODIE' logo is visible in the top left corner.",
         "confidence": 1.0
       },
       {
-        "fact": "A red 'SUBSCRIBE' button overlay appears on the screen.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The pecans are scattered across the bottom of the pan.",
+        "fact": "A red 'SUBSCRIBE' button graphic appears over the food.",
         "confidence": 1.0
       }
     ],
@@ -1660,54 +1635,45 @@
       "The Cooking FOODIE",
       "SUBSCRIBE"
     ],
-    "spatial": "The frying pan is in the center of the frame. The pecans are inside the frying pan. The 'The Cooking FOODIE' logo is in the top left corner. The 'Like' icon and 'SUBSCRIBE' button are overlaid in the center, in front of the pecans.",
+    "spatial": "The pecans are inside the frying pan. The 'The Cooking FOODIE' logo is in the top left corner, above the pan. The red 'SUBSCRIBE' button is overlaid in the center of the screen, on top of the pecans.",
     "parse_success": true,
     "chunk_idx": 29,
     "video_id": "Broccoli_Salad"
   },
   {
     "time": [
-      60,
-      62
+      30,
+      31
     ],
     "visible_entities": [
       {
-        "desc": "pecan halves, reddish-brown color with white interior flesh, textured surface, scattered in a pan",
+        "desc": "pecan halves, reddish-brown with white interiors, scattered",
         "action": "being toasted in a pan",
         "position": "center"
       },
       {
-        "desc": "dark grey non-stick frying pan with white speckles",
+        "desc": "black speckled non-stick frying pan",
         "action": "static",
         "position": "background"
       },
       {
-        "desc": "white rectangular button with black text 'SUBSCRIBED' and a hand cursor icon",
+        "desc": "white rectangular button with black text and a bell icon",
         "action": "static",
         "position": "center"
       },
       {
-        "desc": "white notification bell icon",
-        "action": "static",
-        "position": "center"
-      },
-      {
-        "desc": "logo with text 'The Cooking FOODIE' and a chef hat icon",
+        "desc": "white logo with stylized text",
         "action": "static",
         "position": "top left"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "Pecan halves are being toasted in a dark grey speckled pan.",
+        "fact": "Pecan halves are being toasted in a black speckled frying pan.",
         "confidence": 1.0
       },
       {
-        "fact": "A 'SUBSCRIBED' button overlay is visible in the center of the screen.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "A notification bell icon is displayed next to the subscribe button.",
+        "fact": "The text 'SUBSCRIBED' is visible on a white button overlay.",
         "confidence": 1.0
       },
       {
@@ -1719,15 +1685,15 @@
       "The Cooking FOODIE",
       "SUBSCRIBED"
     ],
-    "spatial": "The pecans are inside the frying pan. The 'SUBSCRIBED' button and bell icon are superimposed over the center of the pan. The 'The Cooking FOODIE' logo is in the top left corner, above the pan.",
+    "spatial": "The pecans are scattered inside the black frying pan. The 'SUBSCRIBED' button overlay is positioned in the center of the frame, on top of the pecans. The 'The Cooking FOODIE' logo is located in the top left corner of the screen.",
     "parse_success": true,
     "chunk_idx": 30,
     "video_id": "Broccoli_Salad"
   },
   {
     "time": [
-      62,
-      64
+      31,
+      32
     ],
     "visible_entities": [
       {
@@ -1751,30 +1717,26 @@
         "position": "center-right"
       },
       {
-        "desc": "white logo with cursive text",
+        "desc": "white logo with cursive text 'The Cooking FOODIE'",
         "action": "static",
         "position": "top-left"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "Pecan halves are scattered across a dark, textured surface.",
+        "fact": "Pecan halves are spread across a dark surface.",
         "confidence": 1.0
       },
       {
-        "fact": "A blue button labeled 'NOTIFICATIONS ENABLED' is displayed in the center.",
+        "fact": "A blue button labeled 'NOTIFICATIONS ENABLED' is displayed.",
         "confidence": 1.0
       },
       {
-        "fact": "A white button labeled 'SUBSCRIBED' is positioned below the blue button.",
+        "fact": "A white button labeled 'SUBSCRIBED' is displayed.",
         "confidence": 1.0
       },
       {
-        "fact": "A yellow bell icon is located to the right of the subscription buttons.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The logo 'The Cooking FOODIE' is visible in the top-left corner.",
+        "fact": "A hand cursor icon is positioned next to a yellow bell icon.",
         "confidence": 1.0
       }
     ],
@@ -1783,29 +1745,29 @@
       "NOTIFICATIONS ENABLED",
       "SUBSCRIBED"
     ],
-    "spatial": "The pecans are spread out in the background, covering most of the frame. The 'NOTIFICATIONS ENABLED' button is above the 'SUBSCRIBED' button in the center of the screen. The yellow bell icon is to the right of the 'SUBSCRIBED' button. The logo is in the top-left corner, above the scattered nuts.",
+    "spatial": "The pecan halves are scattered in the background, covering most of the frame. The 'NOTIFICATIONS ENABLED' button is positioned above the 'SUBSCRIBED' button in the center. The yellow bell icon is to the right of the 'SUBSCRIBED' button. The 'The Cooking FOODIE' logo is in the top-left corner.",
     "parse_success": true,
     "chunk_idx": 31,
     "video_id": "Broccoli_Salad"
   },
   {
     "time": [
-      64,
-      66
+      32,
+      33
     ],
     "visible_entities": [
       {
-        "desc": "roasted pecan halves, dark brown with lighter tan interiors, textured surface",
-        "action": "being poured from pan",
+        "desc": "roasted pecan halves, dark brown with textured ridges and creamy white interiors",
+        "action": "being poured",
         "position": "center"
       },
       {
-        "desc": "black non-stick frying pan with a handle",
-        "action": "tilting to pour contents",
-        "position": "center"
+        "desc": "black non-stick frying pan with a speckled interior surface",
+        "action": "tilting",
+        "position": "top"
       },
       {
-        "desc": "light-colored wooden cutting board with a handle cutout",
+        "desc": "light-colored wooden cutting board with visible grain and a handle cutout",
         "action": "static",
         "position": "bottom"
       },
@@ -1817,49 +1779,49 @@
     ],
     "atomic_facts": [
       {
-        "fact": "A person tilts a black frying pan to pour roasted pecans onto a wooden cutting board.",
+        "fact": "A black frying pan is tilted to pour roasted pecans onto a wooden cutting board.",
         "confidence": 1.0
       },
       {
-        "fact": "The pecans slide out of the pan and scatter onto the board.",
+        "fact": "The pecans are sliding out of the pan due to gravity.",
         "confidence": 1.0
       },
       {
-        "fact": "The logo 'The Cooking FOODIE' is visible in the top left corner.",
+        "fact": "The cutting board is positioned underneath the pan to catch the nuts.",
         "confidence": 1.0
       }
     ],
     "ocr": [
       "The Cooking FOODIE"
     ],
-    "spatial": "The black frying pan is positioned above the wooden cutting board. The roasted pecans are inside the pan initially and then move onto the surface of the cutting board. The logo is located in the top-left corner of the frame, above the action.",
+    "spatial": "The black frying pan is positioned above the wooden cutting board. The roasted pecans are inside the pan in the first frame and are falling onto the board in the second frame. The logo is located in the top-left corner of the screen, overlaying the scene.",
     "parse_success": true,
     "chunk_idx": 32,
     "video_id": "Broccoli_Salad"
   },
   {
     "time": [
-      66,
-      68
+      33,
+      34
     ],
     "visible_entities": [
       {
-        "desc": "black frying pan with speckled texture",
-        "action": "tilting to pour",
-        "position": "top/center"
+        "desc": "black frying pan with speckled interior texture",
+        "action": "tilting to pour contents",
+        "position": "top right"
       },
       {
         "desc": "dark brown roasted pecan nuts",
-        "action": "falling onto the board",
+        "action": "falling and scattering",
         "position": "center"
       },
       {
         "desc": "light-colored wooden cutting board with handle cutout",
         "action": "static",
-        "position": "bottom/foreground"
+        "position": "bottom"
       },
       {
-        "desc": "white logo with chef hat icon",
+        "desc": "white logo text 'The Cooking FOODIE' with chef hat icon",
         "action": "static",
         "position": "top left"
       }
@@ -1870,7 +1832,7 @@
         "confidence": 1.0
       },
       {
-        "fact": "The pecans are falling from the pan onto the wooden cutting board.",
+        "fact": "The pecans are falling from the pan onto a wooden cutting board.",
         "confidence": 1.0
       },
       {
@@ -1881,89 +1843,29 @@
     "ocr": [
       "The Cooking FOODIE"
     ],
-    "spatial": "The black frying pan is positioned above the wooden cutting board. The roasted pecans are falling from the pan onto the center of the board. The logo is located in the top left corner of the frame, above the cutting board.",
+    "spatial": "The black frying pan is positioned above the wooden cutting board. The roasted pecans are falling from the pan onto the surface of the board. The logo is located in the top left corner of the frame, above the cutting board.",
     "parse_success": true,
     "chunk_idx": 33,
     "video_id": "Broccoli_Salad"
   },
   {
     "time": [
-      68,
-      70
+      34,
+      35
     ],
     "visible_entities": [
       {
-        "desc": "hands with light skin tone",
+        "desc": "hands with light skin tone and short, clean fingernails",
         "action": "chopping pecans",
         "position": "center"
       },
       {
         "desc": "large silver chef's knife with a wide blade",
-        "action": "being used to chop",
+        "action": "cutting through nuts",
         "position": "center"
       },
       {
-        "desc": "brown pecan halves and pieces",
-        "action": "being chopped",
-        "position": "center"
-      },
-      {
-        "desc": "light-colored wooden cutting board",
-        "action": "static",
-        "position": "bottom"
-      },
-      {
-        "desc": "white text 'roughly chop' in lowercase sans-serif font",
-        "action": "static",
-        "position": "bottom left"
-      },
-      {
-        "desc": "white logo 'The Cooking FOODIE' with a chef hat icon",
-        "action": "static",
-        "position": "top left"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "A person is using a large knife to roughly chop pecans on a wooden cutting board.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The text 'roughly chop' is displayed in the bottom left corner.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The logo 'The Cooking FOODIE' is visible in the top left corner.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [
-      "The Cooking FOODIE",
-      "roughly chop"
-    ],
-    "spatial": "The hands are holding the knife and are positioned above the pile of pecans on the cutting board. The pecans are in the center of the frame, below the hands. The text 'roughly chop' is to the left of the pecans and below the hands. The logo is in the top left corner, above the hands.",
-    "parse_success": true,
-    "chunk_idx": 34,
-    "video_id": "Broccoli_Salad"
-  },
-  {
-    "time": [
-      70,
-      72
-    ],
-    "visible_entities": [
-      {
-        "desc": "hands with fair skin and short, clean fingernails",
-        "action": "chopping pecans",
-        "position": "center"
-      },
-      {
-        "desc": "large chef's knife with a silver metal blade and a black handle",
-        "action": "being used to chop",
-        "position": "center"
-      },
-      {
-        "desc": "brown pecan halves and pieces with a textured surface",
+        "desc": "pile of brown pecan halves and pieces",
         "action": "being chopped",
         "position": "center"
       },
@@ -1973,14 +1875,78 @@
         "position": "background"
       },
       {
-        "desc": "white text reading 'roughly chop' in a sans-serif font",
+        "desc": "white text 'roughly chop' in lowercase sans-serif font",
         "action": "static",
-        "position": "bottom left"
+        "position": "bottom-left"
       },
       {
-        "desc": "white logo reading 'The Cooking FOODIE' with a chef's hat icon",
+        "desc": "white logo 'the Cooking FOODIE' with a chef hat icon",
         "action": "static",
-        "position": "top left"
+        "position": "top-left"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A person is using a large knife to roughly chop a pile of pecans.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The knife blade is positioned horizontally over the nuts.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The text 'roughly chop' is displayed in the bottom left corner.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The 'the Cooking FOODIE' logo is visible in the top left corner.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "the Cooking FOODIE",
+      "roughly chop"
+    ],
+    "spatial": "The hands are holding the knife above the pile of pecans on the wooden cutting board. The text 'roughly chop' is below the pile of nuts in the bottom left corner. The logo is above the hands in the top left corner.",
+    "parse_success": true,
+    "chunk_idx": 34,
+    "video_id": "Broccoli_Salad"
+  },
+  {
+    "time": [
+      35,
+      36
+    ],
+    "visible_entities": [
+      {
+        "desc": "hands with light skin tone and short, natural fingernails",
+        "action": "holding knife and steadying food",
+        "position": "center"
+      },
+      {
+        "desc": "large chef's knife with a silver metal blade and black handle",
+        "action": "chopping pecans",
+        "position": "center"
+      },
+      {
+        "desc": "pile of brown pecan halves and pieces with textured shells",
+        "action": "being chopped",
+        "position": "center"
+      },
+      {
+        "desc": "light-colored wooden cutting board with visible grain",
+        "action": "static",
+        "position": "background"
+      },
+      {
+        "desc": "white text logo 'The Cooking FOODIE' with a chef hat icon",
+        "action": "static",
+        "position": "top-left"
+      },
+      {
+        "desc": "white lowercase text 'roughly chop'",
+        "action": "static",
+        "position": "bottom-left"
       }
     ],
     "atomic_facts": [
@@ -1989,15 +1955,11 @@
         "confidence": 1.0
       },
       {
-        "fact": "The knife blade is moving up and down over the pile of nuts.",
+        "fact": "The left hand grips the handle of the knife while the right hand rests on the blade to guide the chopping motion.",
         "confidence": 1.0
       },
       {
-        "fact": "The text 'roughly chop' is displayed in the bottom left corner.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The logo 'The Cooking FOODIE' is visible in the top left corner.",
+        "fact": "The text 'roughly chop' appears in the bottom left corner of the screen.",
         "confidence": 1.0
       }
     ],
@@ -2005,29 +1967,29 @@
       "The Cooking FOODIE",
       "roughly chop"
     ],
-    "spatial": "The hands are holding the knife and are positioned above the pile of pecans. The pecans are scattered on the wooden cutting board. The text 'roughly chop' is located below the chopping action in the bottom left corner. The logo is situated in the top left corner, above the hands.",
+    "spatial": "The hands are positioned above the wooden cutting board, holding the knife directly over the pile of pecans. The logo is located in the top-left corner, while the instruction text is in the bottom-left corner.",
     "parse_success": true,
     "chunk_idx": 35,
     "video_id": "Broccoli_Salad"
   },
   {
     "time": [
-      72,
-      74
+      36,
+      37
     ],
     "visible_entities": [
       {
         "desc": "hands with light skin tone",
         "action": "chopping pecans",
+        "position": "top/foreground"
+      },
+      {
+        "desc": "large metal chef's knife with a wooden handle",
+        "action": "chopping pecans",
         "position": "center"
       },
       {
-        "desc": "large metal chef's knife with a silver blade",
-        "action": "being used to chop",
-        "position": "center"
-      },
-      {
-        "desc": "brown pecan halves and pieces",
+        "desc": "chopped pecans, dark brown with white interiors",
         "action": "being chopped",
         "position": "center"
       },
@@ -2037,81 +1999,91 @@
         "position": "bottom"
       },
       {
-        "desc": "clear glass bowl",
+        "desc": "glass bowl containing broccoli, diced apples, red onions, and dried cranberries",
         "action": "static",
         "position": "center"
       },
       {
-        "desc": "salad mixture containing green broccoli florets, diced red apples, dried cranberries, and sunflower seeds",
-        "action": "receiving ingredients",
+        "desc": "sunflower seeds, grey and white striped",
+        "action": "being poured",
         "position": "center"
       },
       {
-        "desc": "white logo text 'The Cooking FOODIE' with a chef hat icon",
-        "action": "static",
-        "position": "top-left"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "A person is chopping pecans on a wooden cutting board with a knife.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "Sunflower seeds are being poured into a glass bowl.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The bowl contains a salad with broccoli, apples, and cranberries.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The chopped pecans are added to the salad mixture.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [
-      "The Cooking FOODIE"
-    ],
-    "spatial": "The hands are holding the knife above the pecans on the cutting board. The glass bowl containing the salad is positioned centrally in the frame. The sunflower seeds are falling from above into the bowl. The logo is located in the top-left corner of the screen.",
-    "parse_success": true,
-    "chunk_idx": 36,
-    "video_id": "Broccoli_Salad"
-  },
-  {
-    "time": [
-      74,
-      76
-    ],
-    "visible_entities": [
-      {
-        "desc": "chopped pecans, dark brown with cream-colored interiors, rough texture",
-        "action": "falling onto the salad",
-        "position": "center/foreground"
-      },
-      {
-        "desc": "salad mixture containing green broccoli florets, red dried cranberries, and diced white onions",
-        "action": "static",
-        "position": "bottom/background"
-      },
-      {
-        "desc": "clear glass bowl, transparent, round",
-        "action": "static",
-        "position": "center"
-      },
-      {
-        "desc": "white logo text 'The Cooking Foodie' with a chef's hat icon",
+        "desc": "logo with white text 'The Cooking FOODIE' and a chef hat icon",
         "action": "static",
         "position": "top left"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "Chopped pecans are being poured onto the salad mixture.",
+        "fact": "A person is using a large knife to chop pecans on a wooden cutting board.",
         "confidence": 1.0
       },
       {
-        "fact": "The salad contains broccoli, cranberries, and onions.",
+        "fact": "Sunflower seeds are being poured into a glass bowl filled with salad ingredients.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The salad bowl contains broccoli, diced apples, red onions, and dried cranberries.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The logo 'The Cooking FOODIE' is visible in the top left corner.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "The Cooking FOODIE"
+    ],
+    "spatial": "The hands are above the knife, which is positioned over the chopped pecans on the cutting board. The glass bowl is below the falling sunflower seeds. The logo is in the top left corner of the frame.",
+    "parse_success": true,
+    "chunk_idx": 36,
+    "video_id": "Broccoli_Salad"
+  },
+  {
+    "time": [
+      37,
+      38
+    ],
+    "visible_entities": [
+      {
+        "desc": "chopped pecans, brown skin with white interior, irregular shapes",
+        "action": "falling onto the salad",
+        "position": "center/foreground"
+      },
+      {
+        "desc": "green broccoli florets, chopped",
+        "action": "static",
+        "position": "bottom/left"
+      },
+      {
+        "desc": "dried cranberries, dark red, shriveled",
+        "action": "static",
+        "position": "center"
+      },
+      {
+        "desc": "chopped white onions or apples",
+        "action": "static",
+        "position": "center"
+      },
+      {
+        "desc": "clear glass bowl",
+        "action": "static",
+        "position": "center"
+      },
+      {
+        "desc": "logo text 'The Cooking FOODIE' in white script and sans-serif fonts",
+        "action": "static",
+        "position": "top left"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "Chopped pecans are falling onto a pile of salad ingredients.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The salad contains broccoli, cranberries, and white chunks.",
         "confidence": 1.0
       },
       {
@@ -2122,15 +2094,15 @@
     "ocr": [
       "The Cooking FOODIE"
     ],
-    "spatial": "The chopped pecans are falling from above onto the salad mixture. The salad mixture is inside the clear glass bowl. The logo is located in the top left corner of the frame, above the bowl.",
+    "spatial": "The pile of chopped pecans is in the center of the bowl, resting on top of the broccoli and other ingredients. The logo text is located in the top left corner of the frame, above the bowl.",
     "parse_success": true,
     "chunk_idx": 37,
     "video_id": "Broccoli_Salad"
   },
   {
     "time": [
-      76,
-      78
+      38,
+      39
     ],
     "visible_entities": [
       {
@@ -2149,7 +2121,7 @@
         "position": "center"
       },
       {
-        "desc": "wooden surface, light brown, wood grain texture",
+        "desc": "wooden surface, light brown, visible grain pattern",
         "action": "static",
         "position": "background"
       },
@@ -2159,7 +2131,7 @@
         "position": "bottom left"
       },
       {
-        "desc": "white logo with chef hat icon",
+        "desc": "white logo graphic with text 'The Cooking Foodie'",
         "action": "static",
         "position": "top left"
       }
@@ -2170,15 +2142,15 @@
         "confidence": 1.0
       },
       {
-        "fact": "The text 'Mayonnaise' and '1/2 cup (115g)' is displayed in the bottom left corner.",
+        "fact": "The mayonnaise is falling from a container held by the hand.",
         "confidence": 1.0
       },
       {
-        "fact": "The bowl is resting on a wooden surface.",
+        "fact": "The glass bowl is sitting on a wooden surface.",
         "confidence": 1.0
       },
       {
-        "fact": "The logo 'The Cooking Foodie' is visible in the top left corner.",
+        "fact": "Text on the screen identifies the ingredient as 'Mayonnaise' and the quantity as '1/2 cup (115g)'.",
         "confidence": 1.0
       }
     ],
@@ -2187,15 +2159,15 @@
       "Mayonnaise",
       "1/2 cup (115g)"
     ],
-    "spatial": "The hand is positioned above the clear glass bowl, pouring the mayonnaise into it. The bowl sits on top of the wooden surface. The text overlay is located below the bowl in the bottom left area of the frame.",
+    "spatial": "The hand is positioned above the clear glass bowl, pouring the mayonnaise into it. The bowl is centered on the wooden surface. The text overlay is located in the bottom left corner of the frame, below the bowl. The logo is in the top left corner.",
     "parse_success": true,
     "chunk_idx": 38,
     "video_id": "Broccoli_Salad"
   },
   {
     "time": [
-      78,
-      80
+      39,
+      40
     ],
     "visible_entities": [
       {
@@ -2204,129 +2176,9 @@
         "position": "top/foreground"
       },
       {
-        "desc": "thick, creamy white mayonnaise",
-        "action": "falling into bowl",
-        "position": "center"
-      },
-      {
-        "desc": "small, clear glass bowl",
-        "action": "static",
-        "position": "center/bottom"
-      },
-      {
-        "desc": "light brown wooden surface with grain pattern",
-        "action": "static",
-        "position": "background"
-      },
-      {
-        "desc": "white text overlay",
-        "action": "static",
-        "position": "bottom left"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "A hand is pouring a dollop of white mayonnaise into a glass bowl.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The mayonnaise is thick and creamy in texture.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The bowl is sitting on a wooden table.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "Text on the screen identifies the ingredient as Mayonnaise and the quantity as 1/2 cup (115g).",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [
-      "The Cooking FOODIE",
-      "Mayonnaise",
-      "1/2 cup (115g)"
-    ],
-    "spatial": "The hand is positioned above the clear glass bowl, pouring the mayonnaise into it. The bowl rests on the wooden surface. The text overlay is located in the bottom left corner of the frame, below the bowl.",
-    "parse_success": true,
-    "chunk_idx": 39,
-    "video_id": "Broccoli_Salad"
-  },
-  {
-    "time": [
-      80,
-      82
-    ],
-    "visible_entities": [
-      {
-        "desc": "clear glass bowl, round, containing white creamy substance",
-        "action": "static",
-        "position": "center"
-      },
-      {
-        "desc": "white creamy substance, thick texture, dollop shape",
+        "desc": "white creamy mayonnaise",
         "action": "being poured into bowl",
-        "position": "inside bowl"
-      },
-      {
-        "desc": "silver metal spoon, holding white powder",
-        "action": "held above bowl",
-        "position": "top right"
-      },
-      {
-        "desc": "wooden surface, light brown, grain texture",
-        "action": "static",
-        "position": "background"
-      },
-      {
-        "desc": "white text overlay, sans-serif font",
-        "action": "static",
-        "position": "bottom left"
-      },
-      {
-        "desc": "logo graphic, white text with chef hat icon",
-        "action": "static",
-        "position": "top left"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "A white creamy substance is being poured from a container into a clear glass bowl.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "A silver spoon holding white powder is positioned above the bowl.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The text 'Mayonnaise' and '1/2 cup (115g)' is displayed on the screen.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The bowl sits on a wooden surface.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [
-      "The Cooking FOODIE",
-      "Mayonnaise",
-      "1/2 cup (115g)"
-    ],
-    "spatial": "The clear glass bowl is in the center of the frame, resting on a wooden surface. The white creamy substance is inside the bowl. A silver spoon is held above the bowl to the right. The text overlay is located in the bottom left corner, and the logo is in the top left corner.",
-    "parse_success": true,
-    "chunk_idx": 40,
-    "video_id": "Broccoli_Salad"
-  },
-  {
-    "time": [
-      82,
-      84
-    ],
-    "visible_entities": [
-      {
-        "desc": "hand with light skin tone",
-        "action": "pouring sour cream",
-        "position": "top right"
+        "position": "center"
       },
       {
         "desc": "clear glass bowl",
@@ -2334,12 +2186,7 @@
         "position": "center"
       },
       {
-        "desc": "white creamy sour cream",
-        "action": "being poured",
-        "position": "inside bowl"
-      },
-      {
-        "desc": "wooden surface with light brown grain",
+        "desc": "wooden table surface with light brown grain",
         "action": "static",
         "position": "background"
       },
@@ -2356,57 +2203,48 @@
     ],
     "atomic_facts": [
       {
-        "fact": "A hand is pouring sour cream into a clear glass bowl.",
+        "fact": "A hand is pouring white mayonnaise from a container into a clear glass bowl.",
         "confidence": 1.0
       },
       {
-        "fact": "The text overlay reads 'Sour cream 1/2 cup (120g)'.",
+        "fact": "The text 'Mayonnaise 1/2 cup (115g)' is displayed in the bottom left corner.",
         "confidence": 1.0
       },
       {
-        "fact": "The logo 'The Cooking FOODIE' is visible in the top left corner.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The bowl is placed on a wooden surface.",
+        "fact": "The bowl is resting on a wooden surface.",
         "confidence": 1.0
       }
     ],
     "ocr": [
       "The Cooking FOODIE",
-      "Sour cream",
-      "1/2 cup (120g)"
+      "Mayonnaise",
+      "1/2 cup (115g)"
     ],
-    "spatial": "The hand is above the glass bowl, pouring the sour cream into it. The glass bowl is centered on the wooden surface. The text overlay is located at the bottom left of the frame, below the bowl. The logo is positioned at the top left corner of the frame.",
+    "spatial": "The hand is positioned above the clear glass bowl, pouring the mayonnaise into it. The bowl is centered on the wooden table surface. The text overlay is located in the bottom left corner of the frame, below the bowl.",
     "parse_success": true,
-    "chunk_idx": 41,
+    "chunk_idx": 39,
     "video_id": "Broccoli_Salad"
   },
   {
     "time": [
-      84,
-      86
+      40,
+      41
     ],
     "visible_entities": [
       {
-        "desc": "golden viscous liquid (honey)",
-        "action": "pouring from a spoon",
-        "position": "center"
-      },
-      {
-        "desc": "metal spoon",
-        "action": "tilting to pour liquid",
-        "position": "top"
-      },
-      {
-        "desc": "clear glass bowl",
+        "desc": "clear glass bowl containing white creamy substance",
         "action": "static",
         "position": "center"
       },
       {
-        "desc": "white creamy substance",
-        "action": "static",
+        "desc": "white creamy substance (mayonnaise)",
+        "action": "being poured and scooped",
         "position": "inside the bowl"
+      },
+      {
+        "desc": "silver spoon",
+        "action": "scooping substance",
+        "position": "above the bowl"
       },
       {
         "desc": "wooden surface",
@@ -2421,51 +2259,55 @@
     ],
     "atomic_facts": [
       {
-        "fact": "A spoon is pouring golden honey onto a white creamy substance.",
+        "fact": "A person pours a white creamy substance from a small container into a glass bowl.",
         "confidence": 1.0
       },
       {
-        "fact": "The honey is dripping from the spoon into the bowl.",
+        "fact": "A spoon scoops the white creamy substance inside the bowl.",
         "confidence": 1.0
       },
       {
-        "fact": "The text overlay indicates the ingredient is 'Honey' and the quantity is '2 tablespoons (optional)'.",
+        "fact": "The text 'Mayonnaise 1/2 cup (115g)' is displayed on the screen.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The bowl sits on a wooden surface.",
         "confidence": 1.0
       }
     ],
     "ocr": [
       "The Cooking FOODIE",
-      "Honey",
-      "2 tablespoons (optional)"
+      "Mayonnaise",
+      "1/2 cup (115g)"
     ],
-    "spatial": "The metal spoon is positioned above the clear glass bowl. The golden honey is flowing from the spoon into the bowl, landing on top of the white creamy substance. The text overlay is located in the bottom left corner of the frame, superimposed over the wooden surface.",
+    "spatial": "The glass bowl is in the center of the frame, resting on a wooden surface. The spoon is held above the bowl, interacting with the mayonnaise inside. The text overlay is located in the bottom left corner, below the bowl.",
     "parse_success": true,
-    "chunk_idx": 42,
+    "chunk_idx": 40,
     "video_id": "Broccoli_Salad"
   },
   {
     "time": [
-      86,
-      88
+      41,
+      42
     ],
     "visible_entities": [
+      {
+        "desc": "hand with light skin tone",
+        "action": "pouring white creamy substance",
+        "position": "top right"
+      },
       {
         "desc": "clear glass bowl, round, transparent",
         "action": "static",
         "position": "center"
       },
       {
-        "desc": "white creamy substance, thick texture, dollops",
-        "action": "static",
+        "desc": "white creamy substance, thick, smooth texture",
+        "action": "accumulating in bowl",
         "position": "inside bowl"
       },
       {
-        "desc": "golden-yellow honey, viscous liquid",
-        "action": "pouring into bowl",
-        "position": "center"
-      },
-      {
-        "desc": "wooden surface, light brown, wood grain texture",
+        "desc": "wooden surface, light brown, wood grain pattern",
         "action": "static",
         "position": "background"
       },
@@ -2482,19 +2324,83 @@
     ],
     "atomic_facts": [
       {
-        "fact": "Honey is being poured from above into the clear glass bowl.",
+        "fact": "A hand is pouring a white creamy substance into a clear glass bowl.",
         "confidence": 1.0
       },
       {
-        "fact": "The honey lands on top of the white creamy substance already in the bowl.",
+        "fact": "The bowl contains a mound of white creamy substance.",
         "confidence": 1.0
       },
       {
-        "fact": "The text overlay identifies the ingredient as 'Honey' and specifies '2 tablespoons (optional)'.",
+        "fact": "The text 'Sour cream' is displayed on the screen.",
         "confidence": 1.0
       },
       {
-        "fact": "The bowl rests on a wooden table surface.",
+        "fact": "The text '1/2 cup (120g)' is displayed on the screen.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The logo 'The Cooking FOODIE' is visible in the top left corner.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "The Cooking FOODIE",
+      "Sour cream",
+      "1/2 cup (120g)"
+    ],
+    "spatial": "The hand is positioned above and to the right of the clear glass bowl. The white creamy substance is inside the bowl. The text overlay is located at the bottom left of the frame, below the bowl. The logo is in the top left corner, above the bowl.",
+    "parse_success": true,
+    "chunk_idx": 41,
+    "video_id": "Broccoli_Salad"
+  },
+  {
+    "time": [
+      42,
+      43
+    ],
+    "visible_entities": [
+      {
+        "desc": "clear glass bowl, round, containing white creamy substance",
+        "action": "static",
+        "position": "center"
+      },
+      {
+        "desc": "metal spoon, silver, holding golden viscous liquid",
+        "action": "pouring honey",
+        "position": "top center"
+      },
+      {
+        "desc": "golden honey, viscous liquid, dripping in a stream",
+        "action": "falling into bowl",
+        "position": "center"
+      },
+      {
+        "desc": "wooden surface, light brown, grain texture",
+        "action": "static",
+        "position": "background"
+      },
+      {
+        "desc": "white text overlay, sans-serif font",
+        "action": "static",
+        "position": "bottom left"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A metal spoon is pouring golden honey into a clear glass bowl.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The honey is dripping onto a white creamy substance inside the bowl.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The bowl is resting on a wooden surface.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "Text on screen indicates the ingredient is 'Honey' and the quantity is '2 tablespoons (optional)'.",
         "confidence": 1.0
       }
     ],
@@ -2503,15 +2409,15 @@
       "Honey",
       "2 tablespoons (optional)"
     ],
-    "spatial": "The clear glass bowl is centered on the wooden surface. The white creamy substance is inside the bowl. The honey is being poured from above into the bowl, landing on the white substance. The text overlay is located at the bottom left of the frame, below the bowl. The logo is positioned in the top left corner.",
+    "spatial": "The clear glass bowl is centered on the wooden surface. The metal spoon is positioned above the bowl, pouring honey into it. The white text overlay is located in the bottom left corner of the frame, below the bowl.",
     "parse_success": true,
-    "chunk_idx": 43,
+    "chunk_idx": 42,
     "video_id": "Broccoli_Salad"
   },
   {
     "time": [
-      88,
-      90
+      43,
+      44
     ],
     "visible_entities": [
       {
@@ -2520,22 +2426,17 @@
         "position": "center"
       },
       {
-        "desc": "white creamy substance, thick, dollops",
+        "desc": "white creamy substance, thick, opaque",
         "action": "static",
         "position": "inside bowl"
       },
       {
-        "desc": "golden viscous liquid, honey",
+        "desc": "golden viscous liquid, translucent, dripping",
         "action": "being poured",
         "position": "center"
       },
       {
-        "desc": "metal spoon, silver, shiny",
-        "action": "pouring honey",
-        "position": "top"
-      },
-      {
-        "desc": "wooden surface, light brown, wood grain texture",
+        "desc": "wooden surface, light brown, textured",
         "action": "static",
         "position": "background"
       },
@@ -2545,26 +2446,22 @@
         "position": "bottom left"
       },
       {
-        "desc": "logo graphic, white text 'The Cooking FOODIE' with chef hat icon",
+        "desc": "white logo graphic with text 'The Cooking FOODIE'",
         "action": "static",
         "position": "top left"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A metal spoon is pouring golden honey into a clear glass bowl.",
+        "fact": "Golden liquid is being poured into the bowl.",
         "confidence": 1.0
       },
       {
-        "fact": "The honey flows over white dollops of a creamy substance inside the bowl.",
+        "fact": "The liquid lands on top of the white creamy substance.",
         "confidence": 1.0
       },
       {
-        "fact": "The text 'Honey 2 tablespoons (optional)' is displayed in the bottom left corner.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The bowl rests on a wooden surface.",
+        "fact": "The text overlay reads 'Honey 2 tablespoons (optional)'.",
         "confidence": 1.0
       }
     ],
@@ -2573,19 +2470,19 @@
       "Honey",
       "2 tablespoons (optional)"
     ],
-    "spatial": "The clear glass bowl is centered on the wooden surface. The spoon is positioned above the bowl, pouring honey onto the white creamy substance inside. The text overlay is located below and to the left of the bowl, while the logo is in the top left corner of the frame.",
+    "spatial": "The clear glass bowl is sitting on the wooden surface. The white creamy substance is inside the bowl. The golden liquid is falling from above into the bowl. The text overlay is located at the bottom left of the frame, below the bowl.",
     "parse_success": true,
-    "chunk_idx": 44,
+    "chunk_idx": 43,
     "video_id": "Broccoli_Salad"
   },
   {
     "time": [
-      90,
-      92
+      44,
+      45
     ],
     "visible_entities": [
       {
-        "desc": "clear glass bowl",
+        "desc": "transparent glass bowl",
         "action": "static",
         "position": "center"
       },
@@ -2595,19 +2492,14 @@
         "position": "inside bowl"
       },
       {
-        "desc": "golden viscous liquid (honey)",
+        "desc": "golden viscous honey",
         "action": "being poured",
-        "position": "center"
+        "position": "inside bowl"
       },
       {
-        "desc": "pale yellow liquid (lemon juice)",
-        "action": "being poured",
-        "position": "center"
-      },
-      {
-        "desc": "hand",
-        "action": "pouring liquid",
-        "position": "top right"
+        "desc": "metal spoon",
+        "action": "pouring honey",
+        "position": "top"
       },
       {
         "desc": "wooden surface",
@@ -2620,30 +2512,115 @@
         "position": "bottom left"
       },
       {
-        "desc": "logo 'The Cooking Foodie'",
+        "desc": "white logo graphic",
         "action": "static",
         "position": "top left"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A hand pours golden honey into a glass bowl containing a white creamy substance.",
+        "fact": "A metal spoon is pouring golden honey into a glass bowl.",
         "confidence": 1.0
       },
       {
-        "fact": "A hand pours pale yellow lemon juice into the same glass bowl.",
+        "fact": "The bowl contains a white creamy substance.",
         "confidence": 1.0
       },
       {
-        "fact": "The text overlay identifies the first ingredient as 'Honey' and the second as 'Lemon juice'.",
+        "fact": "The text 'Honey 2 tablespoons (optional)' is displayed on the screen.",
         "confidence": 1.0
       },
       {
-        "fact": "The text specifies '2 tablespoons' for both ingredients.",
+        "fact": "The logo 'The Cooking FOODIE' is visible in the top left corner.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "The Cooking FOODIE",
+      "Honey",
+      "2 tablespoons (optional)"
+    ],
+    "spatial": "The glass bowl is centered on the wooden surface. The spoon is positioned above the bowl, pouring honey onto the white creamy substance inside. The text overlay is located in the bottom left corner, below the bowl. The logo is in the top left corner, above the bowl.",
+    "parse_success": true,
+    "chunk_idx": 44,
+    "video_id": "Broccoli_Salad"
+  },
+  {
+    "time": [
+      45,
+      46
+    ],
+    "visible_entities": [
+      {
+        "desc": "clear glass bowl, round, transparent",
+        "action": "static",
+        "position": "center"
+      },
+      {
+        "desc": "white creamy substance, thick, dollop",
+        "action": "static",
+        "position": "inside the bowl"
+      },
+      {
+        "desc": "golden viscous liquid, honey",
+        "action": "being poured",
+        "position": "inside the bowl"
+      },
+      {
+        "desc": "pale yellow translucent liquid, lemon juice",
+        "action": "being poured",
+        "position": "inside the bowl"
+      },
+      {
+        "desc": "hand, light skin tone",
+        "action": "holding a spoon",
+        "position": "top right"
+      },
+      {
+        "desc": "metal spoon, silver, holding honey",
+        "action": "pouring honey",
+        "position": "top center"
+      },
+      {
+        "desc": "small white bowl, holding lemon juice",
+        "action": "being tilted",
+        "position": "top right"
+      },
+      {
+        "desc": "wooden surface, light brown, wood grain pattern",
+        "action": "static",
+        "position": "background"
+      },
+      {
+        "desc": "white text overlay, sans-serif font",
+        "action": "static",
+        "position": "bottom left"
+      },
+      {
+        "desc": "white logo graphic with text 'The Cooking Foodie'",
+        "action": "static",
+        "position": "top left"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A hand pours honey from a spoon into a glass bowl containing a white creamy substance.",
         "confidence": 1.0
       },
       {
-        "fact": "The text notes that the honey is '(optional)'.",
+        "fact": "A hand pours lemon juice from a small white bowl into the glass bowl.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The text 'Honey 2 tablespoons (optional)' is displayed on the screen.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The text 'Lemon juice 2 tablespoons' is displayed on the screen.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The bowl sits on a wooden surface.",
         "confidence": 1.0
       }
     ],
@@ -2654,53 +2631,54 @@
       "Lemon juice",
       "2 tablespoons"
     ],
-    "spatial": "The clear glass bowl is in the center of the frame, resting on a wooden surface. The hand is above the bowl, pouring liquids into it. The white text overlay is in the bottom left corner, below the bowl. The logo is in the top left corner.",
+    "spatial": "The clear glass bowl is in the center of the frame, resting on a wooden surface. The white creamy substance is inside the bowl. The honey is being poured from a spoon above the bowl into the mixture. The lemon juice is being poured from a small white bowl held by a hand to the right of the main bowl. The text overlays are located in the bottom left corner, below the bowl. The logo is in the top left corner.",
     "parse_success": true,
     "chunk_idx": 45,
     "video_id": "Broccoli_Salad"
   },
   {
     "time": [
-      92,
-      94
+      46,
+      47
     ],
     "visible_entities": [
       {
-        "desc": "clear glass bowl, round, containing white creamy substance and yellow liquid",
+        "desc": "clear glass bowl containing white creamy substance and yellow liquid",
         "action": "static",
         "position": "center"
       },
       {
-        "desc": "white liquid stream",
-        "action": "pouring into bowl",
-        "position": "top/center"
+        "desc": "white opaque container",
+        "action": "pouring liquid",
+        "position": "top"
       },
       {
-        "desc": "wooden surface, light brown, wood grain texture",
+        "desc": "wooden surface with visible grain",
         "action": "static",
         "position": "background"
       },
       {
-        "desc": "white text overlay, sans-serif font",
+        "desc": "white text overlay reading 'Lemon juice 2 tablespoons'",
         "action": "static",
         "position": "bottom left"
+      },
+      {
+        "desc": "white logo reading 'The Cooking FOODIE'",
+        "action": "static",
+        "position": "top left"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A stream of white liquid is being poured from above into a glass bowl.",
+        "fact": "A hand holds a white container and pours a clear liquid into a glass bowl.",
         "confidence": 1.0
       },
       {
-        "fact": "The bowl contains a mixture of white creamy substance and yellow liquid.",
+        "fact": "The bowl contains a mixture of white cream and yellow liquid.",
         "confidence": 1.0
       },
       {
-        "fact": "The text 'Lemon juice 2 tablespoons' is displayed in the bottom left corner.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The bowl is resting on a wooden surface.",
+        "fact": "The text overlay indicates that 2 tablespoons of lemon juice are being added.",
         "confidence": 1.0
       }
     ],
@@ -2709,54 +2687,58 @@
       "Lemon juice",
       "2 tablespoons"
     ],
-    "spatial": "The glass bowl is in the center of the frame, resting on a wooden surface. The white liquid stream is pouring from the top into the bowl. The text overlay is located in the bottom left corner of the screen.",
+    "spatial": "The glass bowl is centered on the wooden surface. The white container is positioned above the bowl, pouring liquid into it. The text overlay is located in the bottom left corner of the frame, while the logo is in the top left corner.",
     "parse_success": true,
     "chunk_idx": 46,
     "video_id": "Broccoli_Salad"
   },
   {
     "time": [
-      94,
-      96
+      47,
+      48
     ],
     "visible_entities": [
       {
-        "desc": "transparent glass bowl containing white creamy substance and yellow liquid",
+        "desc": "clear glass bowl, round, containing white creamy substance and yellow liquid",
         "action": "static",
         "position": "center"
       },
       {
-        "desc": "white granular salt",
-        "action": "being poured",
-        "position": "center"
+        "desc": "white granular salt, falling from above",
+        "action": "falling into bowl",
+        "position": "top/center"
       },
       {
-        "desc": "white text reading 'The Cooking FOODIE' with a chef hat icon",
-        "action": "static",
-        "position": "top-left"
-      },
-      {
-        "desc": "white text reading 'Salt to taste'",
+        "desc": "white text overlay, sans-serif font",
         "action": "static",
         "position": "bottom-left"
       },
       {
-        "desc": "wooden surface with visible grain",
+        "desc": "logo with chef hat icon and text 'The Cooking Foodie'",
+        "action": "static",
+        "position": "top-left"
+      },
+      {
+        "desc": "wooden surface, light brown, textured",
         "action": "static",
         "position": "background"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "Salt is being poured into the bowl.",
+        "fact": "Salt is being poured into the glass bowl.",
         "confidence": 1.0
       },
       {
-        "fact": "The bowl contains a mixture of white and yellow ingredients.",
+        "fact": "The bowl contains a mixture of white cream and yellow liquid.",
         "confidence": 1.0
       },
       {
         "fact": "The text 'Salt to taste' is displayed on the screen.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The logo 'The Cooking Foodie' is visible in the top-left corner.",
         "confidence": 1.0
       }
     ],
@@ -2765,53 +2747,68 @@
       "Salt",
       "to taste"
     ],
-    "spatial": "The glass bowl is centered on the wooden surface. The salt is falling from above into the bowl. The logo is in the top-left corner, and the instructional text is in the bottom-left corner.",
+    "spatial": "The glass bowl is centered on the wooden surface. The falling salt is above the bowl, moving downwards into it. The text 'Salt to taste' is below and to the left of the bowl. The logo is in the top-left corner of the frame.",
     "parse_success": true,
     "chunk_idx": 47,
     "video_id": "Broccoli_Salad"
   },
   {
     "time": [
-      96,
-      98
+      48,
+      49
     ],
     "visible_entities": [
       {
-        "desc": "clear glass bowl containing white creamy substance, yellow liquid, and dark speckled seasoning",
+        "desc": "clear glass bowl containing white creamy substance, yellow liquid, and dark speckles",
         "action": "static",
         "position": "center"
       },
       {
-        "desc": "metal wire whisk",
-        "action": "whisking ingredients",
+        "desc": "metal whisk",
+        "action": "mixing ingredients",
         "position": "center"
       },
       {
         "desc": "hands with fair skin",
-        "action": "holding and moving whisk",
+        "action": "holding whisk",
         "position": "top"
       },
       {
-        "desc": "wooden surface with light brown grain pattern",
+        "desc": "wooden surface with light brown grain",
         "action": "static",
         "position": "background"
+      },
+      {
+        "desc": "white text 'Black pepper to taste'",
+        "action": "static",
+        "position": "bottom left"
+      },
+      {
+        "desc": "white text 'whisk'",
+        "action": "static",
+        "position": "bottom left"
+      },
+      {
+        "desc": "white logo 'The Cooking FOODIE' with chef hat icon",
+        "action": "static",
+        "position": "top left"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A person is whisking ingredients inside a glass bowl.",
+        "fact": "A person is whisking ingredients in a glass bowl.",
         "confidence": 1.0
       },
       {
-        "fact": "The bowl contains a mixture of white cream, yellow liquid, and black pepper.",
+        "fact": "The bowl contains a white creamy substance, a yellow liquid, and black pepper.",
         "confidence": 1.0
       },
       {
-        "fact": "The text 'whisk' appears in the bottom left corner.",
+        "fact": "The text 'Black pepper to taste' is displayed on the screen.",
         "confidence": 1.0
       },
       {
-        "fact": "The text 'Black pepper to taste' is visible in the first frame.",
+        "fact": "The text 'whisk' is displayed on the screen.",
         "confidence": 1.0
       }
     ],
@@ -2821,25 +2818,25 @@
       "to taste",
       "whisk"
     ],
-    "spatial": "The glass bowl is centered on the wooden surface. The hands are positioned above the bowl, holding the whisk which is inside the bowl. The text 'whisk' is located below the bowl in the bottom left corner.",
+    "spatial": "The glass bowl is in the center of the frame, resting on a wooden surface. Hands are positioned above the bowl, holding a whisk inside it. The text 'Black pepper to taste' and 'whisk' are located at the bottom left of the frame. The 'The Cooking FOODIE' logo is in the top left corner.",
     "parse_success": true,
     "chunk_idx": 48,
     "video_id": "Broccoli_Salad"
   },
   {
     "time": [
-      98,
-      100
+      49,
+      50
     ],
     "visible_entities": [
       {
-        "desc": "hands with light skin tone",
-        "action": "whisking ingredients",
+        "desc": "hand with fair skin",
+        "action": "holding whisk and bowl",
         "position": "center"
       },
       {
         "desc": "metal wire whisk",
-        "action": "mixing contents",
+        "action": "mixing ingredients",
         "position": "center"
       },
       {
@@ -2849,16 +2846,16 @@
       },
       {
         "desc": "creamy white mixture with yellow liquid and dark specks",
-        "action": "being stirred",
+        "action": "being whisked",
         "position": "inside bowl"
       },
       {
-        "desc": "wooden surface",
+        "desc": "wooden surface with visible grain",
         "action": "static",
         "position": "background"
       },
       {
-        "desc": "white text logo 'The Cooking FOODIE' with chef hat icon",
+        "desc": "white text 'The Cooking FOODIE' with chef hat icon",
         "action": "static",
         "position": "top left"
       },
@@ -2870,19 +2867,23 @@
     ],
     "atomic_facts": [
       {
-        "fact": "A person is whisking a mixture in a glass bowl.",
+        "fact": "A hand is vigorously whisking a mixture in a glass bowl.",
         "confidence": 1.0
       },
       {
-        "fact": "The mixture inside the bowl consists of a creamy white substance, a yellow liquid, and small dark specks.",
+        "fact": "The mixture contains a creamy white substance, a yellow liquid, and dark specks.",
         "confidence": 1.0
       },
       {
-        "fact": "The bowl rests on a wooden surface.",
+        "fact": "The bowl is resting on a wooden table.",
         "confidence": 1.0
       },
       {
-        "fact": "The text 'whisk' is displayed in the bottom left corner.",
+        "fact": "The text 'The Cooking FOODIE' is visible in the top left corner.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The text 'whisk' is visible in the bottom left corner.",
         "confidence": 1.0
       }
     ],
@@ -2890,30 +2891,94 @@
       "The Cooking FOODIE",
       "whisk"
     ],
-    "spatial": "The clear glass bowl is centered on the wooden surface. The metal whisk is inside the bowl, being held by hands that are positioned above and around the bowl. The 'The Cooking FOODIE' logo is in the top left corner, while the word 'whisk' is in the bottom left corner.",
+    "spatial": "The glass bowl is in the center of the frame, resting on the wooden surface. The hand is holding the whisk inside the bowl, mixing the ingredients. The logo text is above and to the left of the bowl, while the instruction text is below and to the left of the bowl.",
     "parse_success": true,
     "chunk_idx": 49,
     "video_id": "Broccoli_Salad"
   },
   {
     "time": [
-      100,
-      102
+      50,
+      51
     ],
     "visible_entities": [
       {
-        "desc": "hands with light skin tone and short, natural nails",
-        "action": "holding a bowl and whisking",
+        "desc": "hands with light skin tone and short, clean fingernails",
+        "action": "whisking mixture",
+        "position": "center"
+      },
+      {
+        "desc": "clear glass bowl, round shape",
+        "action": "holding",
+        "position": "center"
+      },
+      {
+        "desc": "metal wire whisk",
+        "action": "stirring",
+        "position": "inside bowl"
+      },
+      {
+        "desc": "thick white creamy mixture",
+        "action": "being mixed",
+        "position": "inside bowl"
+      },
+      {
+        "desc": "wooden surface with visible grain, light brown color",
+        "action": "static",
+        "position": "background"
+      },
+      {
+        "desc": "white text 'The Cooking FOODIE' with chef hat icon",
+        "action": "static",
+        "position": "top left"
+      },
+      {
+        "desc": "white text 'whisk' in lowercase sans-serif font",
+        "action": "static",
+        "position": "bottom left"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A person is whisking a white creamy mixture inside a clear glass bowl.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The bowl is placed on a wooden surface.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The text 'The Cooking FOODIE' is visible in the top left corner.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The word 'whisk' appears in the bottom left corner.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "The Cooking FOODIE",
+      "whisk"
+    ],
+    "spatial": "The hands are holding the clear glass bowl which is centered on the wooden surface. The metal whisk is inside the bowl, submerged in the white mixture. The logo text is above the bowl in the top left, and the instruction text is below the bowl in the bottom left.",
+    "parse_success": true,
+    "chunk_idx": 50,
+    "video_id": "Broccoli_Salad"
+  },
+  {
+    "time": [
+      51,
+      52
+    ],
+    "visible_entities": [
+      {
+        "desc": "hands with light skin tone and short, natural fingernails",
+        "action": "whisking a mixture",
         "position": "center"
       },
       {
         "desc": "clear glass bowl containing a thick, white, creamy mixture",
         "action": "being held and stirred",
-        "position": "center"
-      },
-      {
-        "desc": "metal wire whisk",
-        "action": "mixing the contents of the bowl",
         "position": "center"
       },
       {
@@ -2938,65 +3003,6 @@
         "confidence": 1.0
       },
       {
-        "fact": "The mixture appears thick and creamy as it is being stirred.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The bowl rests on a wooden surface.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The text 'whisk' is displayed in the bottom-left corner.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [
-      "The Cooking FOODIE",
-      "whisk"
-    ],
-    "spatial": "The glass bowl is in the center of the frame, resting on a wooden surface. The hands are holding the bowl and the whisk, with the whisk positioned inside the bowl. The logo is in the top-left corner, and the word 'whisk' is in the bottom-left corner.",
-    "parse_success": true,
-    "chunk_idx": 50,
-    "video_id": "Broccoli_Salad"
-  },
-  {
-    "time": [
-      102,
-      104
-    ],
-    "visible_entities": [
-      {
-        "desc": "person's hands with light skin tone and short fingernails",
-        "action": "whisking mixture",
-        "position": "center"
-      },
-      {
-        "desc": "clear glass bowl containing a thick, white creamy mixture",
-        "action": "being held",
-        "position": "center"
-      },
-      {
-        "desc": "wooden surface with visible grain pattern",
-        "action": "static",
-        "position": "background"
-      },
-      {
-        "desc": "white text 'whisk' in lowercase sans-serif font",
-        "action": "static",
-        "position": "bottom left"
-      },
-      {
-        "desc": "white logo 'The Cooking FOODIE' with a chef hat icon",
-        "action": "static",
-        "position": "top left"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "A person is whisking a white mixture inside a glass bowl.",
-        "confidence": 1.0
-      },
-      {
         "fact": "The mixture appears thick and creamy.",
         "confidence": 1.0
       },
@@ -3013,58 +3019,59 @@
       "The Cooking FOODIE",
       "whisk"
     ],
-    "spatial": "The glass bowl is in the center of the frame, resting on a wooden surface. The person's hands are holding the bowl and whisking the mixture inside it. The logo is in the top left corner, and the text 'whisk' is in the bottom left corner.",
+    "spatial": "The glass bowl is centered on the wooden surface. The hands are holding the bowl and whisking the mixture inside it. The logo is in the top-left corner, above the bowl. The word 'whisk' is in the bottom-left corner, below the bowl.",
     "parse_success": true,
     "chunk_idx": 51,
     "video_id": "Broccoli_Salad"
   },
   {
     "time": [
-      104,
-      106
+      52,
+      53
     ],
     "visible_entities": [
       {
-        "desc": "hand with light skin tone and short fingernails",
-        "action": "holding the bowl",
-        "position": "right"
-      },
-      {
-        "desc": "clear glass bowl containing thick, creamy white mixture",
-        "action": "being held",
+        "desc": "thick white creamy mixture with a smooth, glossy texture",
+        "action": "being whisked",
         "position": "center"
       },
       {
-        "desc": "metal whisk with wire loops",
+        "desc": "clear glass bowl, round shape",
+        "action": "static",
+        "position": "center"
+      },
+      {
+        "desc": "metal wire whisk",
         "action": "stirring the mixture",
         "position": "center"
       },
       {
-        "desc": "wooden surface with visible grain",
+        "desc": "human hand with light skin tone and short fingernails",
+        "action": "holding the bowl",
+        "position": "right"
+      },
+      {
+        "desc": "wooden surface with visible grain pattern",
         "action": "static",
         "position": "background"
       },
       {
-        "desc": "white logo with text 'The Cooking FOODIE' and a chef hat icon",
+        "desc": "white logo with chef hat icon and text 'The Cooking FOODIE'",
         "action": "static",
         "position": "top left"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A hand is holding a clear glass bowl on the right side.",
+        "fact": "A hand is holding a glass bowl steady on a wooden surface.",
         "confidence": 1.0
       },
       {
-        "fact": "A metal whisk is actively stirring a thick white mixture inside the bowl.",
+        "fact": "A metal whisk is being used to stir a thick white mixture inside the bowl.",
         "confidence": 1.0
       },
       {
-        "fact": "The mixture has a creamy, smooth texture.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The bowl is resting on a wooden surface.",
+        "fact": "The mixture appears smooth and glossy as it is being agitated.",
         "confidence": 1.0
       },
       {
@@ -3075,68 +3082,64 @@
     "ocr": [
       "The Cooking FOODIE"
     ],
-    "spatial": "The hand is to the right of the glass bowl, holding its rim. The metal whisk is inside the bowl, submerged in the white mixture. The bowl is on top of the wooden surface. The logo is in the top left corner of the frame, above the bowl.",
+    "spatial": "The glass bowl containing the white mixture is in the center of the frame, resting on a wooden surface. A hand is positioned to the right of the bowl, holding its rim. The metal whisk is inside the bowl, submerged in the mixture. The logo is located in the top left corner, above the bowl.",
     "parse_success": true,
     "chunk_idx": 52,
     "video_id": "Broccoli_Salad"
   },
   {
     "time": [
-      106,
-      108
+      53,
+      54
     ],
     "visible_entities": [
       {
-        "desc": "glass bowl, transparent, round",
+        "desc": "clear glass bowl",
         "action": "static",
         "position": "center"
       },
       {
-        "desc": "salad mixture, containing green broccoli florets, chopped red apples, dark red dried cranberries, and topped with brown pecan halves and white sunflower seeds",
+        "desc": "salad mixture with green broccoli florets, red dried cranberries, chopped white onions, and topped with brown pecan halves",
         "action": "static",
         "position": "inside the bowl"
       },
       {
-        "desc": "hand, light skin tone",
-        "action": "pouring dressing",
-        "position": "top right"
-      },
-      {
-        "desc": "white creamy dressing, thick texture",
+        "desc": "thick white creamy dressing",
         "action": "being poured onto the salad",
         "position": "center"
       },
       {
-        "desc": "wooden surface, light brown, wood grain texture",
+        "desc": "hand",
+        "action": "holding a container and pouring dressing",
+        "position": "top right"
+      },
+      {
+        "desc": "wooden surface",
         "action": "static",
         "position": "background"
       },
       {
-        "desc": "text 'The Cooking FOODIE' logo, white font with a chef's hat icon",
-        "action": "static",
-        "position": "top left"
-      },
-      {
-        "desc": "text 'add the dressing', white lowercase sans-serif font",
+        "desc": "white text 'add the dressing'",
         "action": "static",
         "position": "bottom left"
+      },
+      {
+        "desc": "white logo 'The Cooking FOODIE'",
+        "action": "static",
+        "position": "top left"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A hand pours a dollop of thick white dressing onto the center of the salad.",
+        "fact": "A hand is pouring thick white dressing from a container onto a salad.",
         "confidence": 1.0
       },
       {
-        "fact": "The salad is contained within a clear glass bowl.",
+        "fact": "The salad contains broccoli, cranberries, onions, and pecans.",
         "confidence": 1.0
       },
       {
         "fact": "The text 'add the dressing' is displayed at the bottom left of the screen.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The bowl rests on a wooden table surface.",
         "confidence": 1.0
       }
     ],
@@ -3144,19 +3147,19 @@
       "The Cooking FOODIE",
       "add the dressing"
     ],
-    "spatial": "The glass bowl is centered on the wooden surface. The salad mixture is inside the bowl. The hand is positioned above and to the right of the bowl, pouring the dressing into the center of the salad. The logo is in the top left corner, and the instruction text is in the bottom left corner.",
+    "spatial": "The clear glass bowl containing the salad is centered on a wooden surface. A hand is positioned above and to the right of the bowl, pouring white dressing onto the salad mixture. The text 'add the dressing' is located below the bowl on the left side, while the logo is in the top left corner.",
     "parse_success": true,
     "chunk_idx": 53,
     "video_id": "Broccoli_Salad"
   },
   {
     "time": [
-      108,
-      110
+      54,
+      55
     ],
     "visible_entities": [
       {
-        "desc": "clear glass bowl containing chopped green broccoli, dark brown pecans, and white diced ingredients",
+        "desc": "clear glass bowl containing chopped green broccoli, red dried cranberries, and brown pecans",
         "action": "static",
         "position": "center"
       },
@@ -3166,40 +3169,31 @@
         "position": "center"
       },
       {
-        "desc": "wooden spoon with a smooth, light-brown handle",
-        "action": "resting in the bowl",
+        "desc": "light brown wooden spoon",
+        "action": "static",
         "position": "left"
       },
       {
-        "desc": "white text in a sans-serif font",
+        "desc": "white text overlay reading 'add the dressing' and 'toss to combine'",
         "action": "static",
-        "position": "bottom-left"
-      },
-      {
-        "desc": "white logo graphic with text 'The Cooking FOODIE'",
-        "action": "static",
-        "position": "top-left"
+        "position": "bottom"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A thick white dressing is being poured onto a salad mixture in a glass bowl.",
+        "fact": "A thick white dressing is being poured from above onto a salad mixture in a glass bowl.",
         "confidence": 1.0
       },
       {
-        "fact": "The salad mixture consists of chopped broccoli, pecans, and other diced ingredients.",
+        "fact": "The salad mixture contains visible green broccoli florets, red dried cranberries, and brown pecans.",
         "confidence": 1.0
       },
       {
-        "fact": "A wooden spoon is placed inside the bowl, ready to mix the ingredients.",
+        "fact": "A wooden spoon is resting inside the bowl on the left side.",
         "confidence": 1.0
       },
       {
-        "fact": "The text 'add the dressing' is visible on the screen.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The text 'toss to combine' is visible on the screen.",
+        "fact": "The text 'add the dressing' appears on screen, followed by 'toss to combine'.",
         "confidence": 1.0
       }
     ],
@@ -3208,20 +3202,20 @@
       "add the dressing",
       "toss to combine"
     ],
-    "spatial": "The glass bowl is centered on a wooden surface. The white dressing is being poured from above into the center of the bowl, covering the salad ingredients. The wooden spoon is resting inside the bowl on the left side. The logo is in the top-left corner, and the instructional text is in the bottom-left corner.",
+    "spatial": "The glass bowl is centered on a wooden surface. The white dressing is being poured on top of the salad ingredients inside the bowl. The wooden spoon is positioned inside the bowl to the left of the dressing pile. The text overlays are located at the bottom of the frame.",
     "parse_success": true,
     "chunk_idx": 54,
     "video_id": "Broccoli_Salad"
   },
   {
     "time": [
-      110,
-      112
+      55,
+      56
     ],
     "visible_entities": [
       {
         "desc": "wooden spoon, light brown, smooth texture",
-        "action": "mixing ingredients",
+        "action": "tossing salad ingredients",
         "position": "left"
       },
       {
@@ -3230,60 +3224,41 @@
         "position": "center"
       },
       {
-        "desc": "white creamy dressing, thick consistency",
-        "action": "being mixed",
-        "position": "center"
+        "desc": "salad mixture containing chopped pecans, green broccoli florets, diced apples, and a dollop of white creamy dressing",
+        "action": "being tossed",
+        "position": "inside bowl"
       },
       {
-        "desc": "chopped pecans, dark brown, textured",
-        "action": "static",
-        "position": "center"
-      },
-      {
-        "desc": "green broccoli florets, chopped",
-        "action": "static",
-        "position": "center"
-      },
-      {
-        "desc": "chopped red onions, purple and white",
-        "action": "static",
-        "position": "center"
-      },
-      {
-        "desc": "person's hand, light skin tone",
+        "desc": "human hand, light skin tone",
         "action": "holding bowl",
         "position": "right"
       },
       {
-        "desc": "white text logo 'The Cooking Foodie' with chef hat icon",
+        "desc": "white text logo 'The Cooking FOODIE' with a chef hat icon",
         "action": "static",
         "position": "top left"
       },
       {
-        "desc": "white text 'toss to combine' in lowercase sans-serif font",
+        "desc": "white text overlay 'toss to combine'",
         "action": "static",
         "position": "bottom left"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A wooden spoon is used to toss salad ingredients in a glass bowl.",
+        "fact": "A wooden spoon is used to toss the salad ingredients inside the glass bowl.",
         "confidence": 1.0
       },
       {
-        "fact": "The salad contains pecans, broccoli, and red onions.",
+        "fact": "The salad contains pecans, broccoli, and a white creamy dressing.",
         "confidence": 1.0
       },
       {
-        "fact": "A dollop of white dressing sits on top of the salad ingredients.",
+        "fact": "A hand holds the glass bowl steady on the right side.",
         "confidence": 1.0
       },
       {
-        "fact": "A hand holds the side of the glass bowl steady.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The text 'toss to combine' appears at the bottom of the screen.",
+        "fact": "The text 'toss to combine' appears at the bottom left of the screen.",
         "confidence": 1.0
       }
     ],
@@ -3291,41 +3266,36 @@
       "The Cooking FOODIE",
       "toss to combine"
     ],
-    "spatial": "The wooden spoon is inside the clear glass bowl, positioned to the left of the white dressing. The chopped pecans, broccoli, and red onions are underneath the dressing inside the bowl. A hand is holding the right side of the bowl. The logo is in the top left corner, and the instruction text is in the bottom left corner.",
+    "spatial": "The wooden spoon is on the left side, mixing the salad ingredients which are inside the clear glass bowl. A hand is holding the right side of the bowl. The logo is in the top left corner, while the instruction text is in the bottom left corner.",
     "parse_success": true,
     "chunk_idx": 55,
     "video_id": "Broccoli_Salad"
   },
   {
     "time": [
-      112,
-      114
+      56,
+      57
     ],
     "visible_entities": [
       {
-        "desc": "clear glass bowl",
+        "desc": "person's hands with light skin tone",
+        "action": "holding the bowl and stirring",
+        "position": "right/center"
+      },
+      {
+        "desc": "clear glass bowl containing salad",
         "action": "static",
         "position": "center"
       },
       {
-        "desc": "salad mixture containing green broccoli florets, chopped red onions, diced apples, dark dried cranberries, and brown pecan nuts",
+        "desc": "wooden spoon, light brown, smooth texture",
+        "action": "mixing ingredients",
+        "position": "left/center"
+      },
+      {
+        "desc": "salad mixture with green broccoli florets, chopped red onions, pecan nuts, diced apples, dried cranberries, and white creamy dressing",
         "action": "being mixed",
         "position": "inside bowl"
-      },
-      {
-        "desc": "thick white creamy dressing",
-        "action": "being incorporated",
-        "position": "on top of salad"
-      },
-      {
-        "desc": "wooden spoon",
-        "action": "stirring the salad",
-        "position": "left side"
-      },
-      {
-        "desc": "person's hands",
-        "action": "holding the bowl",
-        "position": "right side"
       },
       {
         "desc": "white logo text 'The Cooking FOODIE' with a chef hat icon",
@@ -3335,15 +3305,11 @@
     ],
     "atomic_facts": [
       {
-        "fact": "A wooden spoon is stirring the salad ingredients inside the glass bowl.",
+        "fact": "A person is mixing a salad in a glass bowl using a wooden spoon.",
         "confidence": 1.0
       },
       {
-        "fact": "The salad consists of broccoli, nuts, fruit, and a white dressing.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "A person's hands are holding the glass bowl steady while mixing.",
+        "fact": "The salad contains broccoli, nuts, fruit, and a white dressing.",
         "confidence": 1.0
       },
       {
@@ -3354,58 +3320,49 @@
     "ocr": [
       "The Cooking FOODIE"
     ],
-    "spatial": "The glass bowl is in the center of the frame, containing the salad mixture. The wooden spoon is inserted into the salad on the left side. The person's hands are holding the right side of the bowl. The white dressing is on top of the broccoli and nuts. The logo is in the top left corner, above the bowl.",
+    "spatial": "The glass bowl is in the center of the frame, resting on a wooden surface. The person's hands are holding the bowl from the right side. The wooden spoon is inside the bowl on the left, actively stirring the salad ingredients. The white dressing is on top of the vegetables and nuts. The logo is positioned above the bowl in the top left corner.",
     "parse_success": true,
     "chunk_idx": 56,
     "video_id": "Broccoli_Salad"
   },
   {
     "time": [
-      114,
-      116
+      57,
+      58
     ],
     "visible_entities": [
-      {
-        "desc": "broccoli salad with green florets, creamy white dressing, dark red dried cranberries, and light brown nuts",
-        "action": "being tossed",
-        "position": "center"
-      },
-      {
-        "desc": "clear glass bowl",
-        "action": "being held",
-        "position": "center"
-      },
       {
         "desc": "person's hand with light skin tone",
         "action": "holding the bowl",
         "position": "right"
       },
       {
-        "desc": "wooden table surface with visible grain",
+        "desc": "clear glass bowl containing broccoli salad with green florets, red onion pieces, dried cranberries, and creamy white dressing",
+        "action": "being tossed",
+        "position": "center"
+      },
+      {
+        "desc": "wooden surface with visible grain pattern",
         "action": "static",
         "position": "background"
       },
       {
         "desc": "white logo text 'The Cooking FOODIE' with a chef hat icon",
         "action": "static",
-        "position": "top left"
+        "position": "top-left"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A person is tossing a broccoli salad in a clear glass bowl.",
+        "fact": "A hand is holding a glass bowl filled with broccoli salad.",
         "confidence": 1.0
       },
       {
-        "fact": "The salad contains green broccoli, white dressing, red cranberries, and nuts.",
+        "fact": "The salad is being tossed or mixed, causing motion blur in the second frame.",
         "confidence": 1.0
       },
       {
-        "fact": "A hand is holding the side of the bowl to stabilize it during mixing.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The bowl rests on a wooden surface.",
+        "fact": "The salad contains green broccoli, red onions, and a creamy dressing.",
         "confidence": 1.0
       },
       {
@@ -3416,72 +3373,68 @@
     "ocr": [
       "The Cooking FOODIE"
     ],
-    "spatial": "The broccoli salad is inside the clear glass bowl. The person's hand is to the right of the bowl, holding it. The bowl is on top of the wooden table. The logo is in the top left corner, above the salad.",
+    "spatial": "The glass bowl is in the center of the frame, held by a hand on the right side. The wooden surface is below and behind the bowl. The logo is in the top left corner, above the bowl.",
     "parse_success": true,
     "chunk_idx": 57,
     "video_id": "Broccoli_Salad"
   },
   {
     "time": [
-      116,
-      118
+      58,
+      59
     ],
     "visible_entities": [
       {
-        "desc": "glass bowl containing broccoli salad with green florets, red onion pieces, and creamy white dressing",
+        "desc": "green broccoli florets mixed with a creamy white dressing and small pieces of red onion",
         "action": "being stirred",
         "position": "center"
       },
       {
+        "desc": "clear glass bowl",
+        "action": "static",
+        "position": "center"
+      },
+      {
         "desc": "wooden spoon",
-        "action": "mixing the salad",
+        "action": "stirring",
         "position": "left"
       },
       {
-        "desc": "hand",
-        "action": "holding the bowl",
-        "position": "top right"
-      },
-      {
-        "desc": "white logo text 'The Cooking FOODIE' with a chef hat icon",
+        "desc": "white logo with a chef's hat icon",
         "action": "static",
-        "position": "top left"
+        "position": "top-left"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A wooden spoon is actively stirring broccoli salad in a glass bowl.",
+        "fact": "A wooden spoon is stirring the broccoli salad inside the glass bowl.",
         "confidence": 1.0
       },
       {
-        "fact": "The salad consists of green broccoli florets mixed with a creamy white dressing.",
+        "fact": "The salad consists of broccoli florets coated in a white creamy sauce.",
         "confidence": 1.0
       },
       {
-        "fact": "A hand is holding the rim of the glass bowl to steady it.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The logo 'The Cooking FOODIE' is visible in the top left corner.",
+        "fact": "The logo 'The Cooking Foodie' is visible in the top left corner.",
         "confidence": 1.0
       }
     ],
     "ocr": [
       "The Cooking FOODIE"
     ],
-    "spatial": "The glass bowl filled with salad is in the center of the frame. A wooden spoon is inside the bowl on the left side, mixing the contents. A hand is visible at the top right, holding the edge of the bowl. The logo is located in the top left corner, above the bowl.",
+    "spatial": "The wooden spoon is inside the clear glass bowl, mixing the broccoli salad. The logo is located in the top-left corner of the frame, above the bowl.",
     "parse_success": true,
     "chunk_idx": 58,
     "video_id": "Broccoli_Salad"
   },
   {
     "time": [
-      118,
-      120
+      59,
+      60
     ],
     "visible_entities": [
       {
-        "desc": "glass bowl containing chopped green broccoli, purple onion, and creamy white dressing",
+        "desc": "glass bowl containing broccoli salad with green florets, purple onion pieces, and creamy white dressing",
         "action": "being held and mixed",
         "position": "center"
       },
@@ -3492,13 +3445,13 @@
       },
       {
         "desc": "wooden spoon",
-        "action": "stirring the salad",
+        "action": "stirring",
         "position": "left"
       },
       {
-        "desc": "white logo with cursive text 'The Cooking FOODIE' and a chef hat icon",
+        "desc": "white logo text 'The Cooking FOODIE' with a chef hat icon",
         "action": "static",
-        "position": "top left"
+        "position": "top-left"
       }
     ],
     "atomic_facts": [
@@ -3507,7 +3460,7 @@
         "confidence": 1.0
       },
       {
-        "fact": "The salad consists of green broccoli florets, purple onions, and a creamy white sauce.",
+        "fact": "The salad consists of broccoli florets, red onions, and a creamy dressing.",
         "confidence": 1.0
       },
       {
@@ -3515,42 +3468,50 @@
         "confidence": 1.0
       },
       {
-        "fact": "The 'The Cooking FOODIE' logo is visible in the top left corner.",
+        "fact": "The logo 'The Cooking FOODIE' is visible in the top left corner.",
         "confidence": 1.0
       }
     ],
     "ocr": [
       "The Cooking FOODIE"
     ],
-    "spatial": "The glass bowl is in the center of the frame, held by a hand on the right side. A wooden spoon is inserted into the salad on the left side. The logo is positioned above and to the left of the bowl.",
+    "spatial": "The glass bowl is in the center of the frame, resting on a wooden surface. A hand is holding the right side of the bowl. A wooden spoon is inserted into the salad on the left side. The logo is positioned above and to the left of the bowl.",
     "parse_success": true,
     "chunk_idx": 59,
     "video_id": "Broccoli_Salad"
   },
   {
     "time": [
-      120,
-      122
+      60,
+      61
     ],
     "visible_entities": [
       {
-        "desc": "broccoli salad mixture containing green broccoli florets, chopped white stems, dark red dried cranberries, and brown pecan nuts, all coated in a thick, creamy white dressing",
+        "desc": "broccoli salad with green florets, chopped red onion, pecans, and white cheese cubes in creamy dressing",
         "action": "static",
         "position": "center"
       },
       {
-        "desc": "white logo with cursive 'Cooking' text and block 'FOODIE' text",
+        "desc": "white logo text reading 'Cooking FOODIE' with a chef hat icon",
         "action": "static",
         "position": "top-left"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "The broccoli salad is fully mixed with a creamy dressing.",
+        "fact": "A close-up view shows a broccoli salad mixture.",
         "confidence": 1.0
       },
       {
-        "fact": "The 'Cooking Foodie' logo is visible in the top-left corner.",
+        "fact": "The salad contains visible green broccoli florets, chopped red onions, pecans, and white cheese cubes.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The ingredients are coated in a creamy white dressing.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The 'Cooking FOODIE' logo is displayed in the top-left corner.",
         "confidence": 1.0
       }
     ],
@@ -3558,19 +3519,19 @@
       "Cooking",
       "FOODIE"
     ],
-    "spatial": "The broccoli salad fills the majority of the frame. The 'Cooking Foodie' logo is located in the top-left corner, positioned above the salad mixture.",
+    "spatial": "The broccoli salad fills the majority of the frame. The 'Cooking FOODIE' logo is positioned in the top-left corner, above the salad mixture.",
     "parse_success": true,
     "chunk_idx": 60,
     "video_id": "Broccoli_Salad"
   },
   {
     "time": [
-      122,
-      124
+      61,
+      62
     ],
     "visible_entities": [
       {
-        "desc": "broccoli salad with green florets, creamy white dressing, dark red dried cranberries, and light-colored diced pieces",
+        "desc": "broccoli salad with green florets, creamy white dressing, dark red dried cranberries, and light-colored chopped nuts",
         "action": "static",
         "position": "center"
       },
@@ -3582,7 +3543,7 @@
       {
         "desc": "dark bowl with a patterned rim",
         "action": "static",
-        "position": "bottom"
+        "position": "bottom-right"
       }
     ],
     "atomic_facts": [
@@ -3591,46 +3552,46 @@
         "confidence": 1.0
       },
       {
-        "fact": "The salad contains green broccoli florets, dark red dried fruit, and diced light-colored ingredients.",
+        "fact": "The salad contains visible pieces of dark red dried cranberries.",
         "confidence": 1.0
       },
       {
-        "fact": "The salad is served inside a dark bowl with a patterned rim.",
+        "fact": "Chopped light-colored nuts are mixed into the salad.",
         "confidence": 1.0
       },
       {
-        "fact": "The 'The Cooking FOODIE' logo is visible in the top-left corner.",
+        "fact": "The logo 'The Cooking FOODIE' is visible in the top-left corner.",
         "confidence": 1.0
       }
     ],
     "ocr": [
       "The Cooking FOODIE"
     ],
-    "spatial": "The broccoli salad fills the center of the frame and is inside the dark bowl. The bowl's patterned rim is visible at the bottom of the frame. The 'The Cooking FOODIE' logo is in the top-left corner, above the salad.",
+    "spatial": "The broccoli salad fills the center of the frame and is inside the dark bowl. The bowl's rim is visible at the bottom right. The 'The Cooking FOODIE' logo is positioned in the top-left corner, above the salad.",
     "parse_success": true,
     "chunk_idx": 61,
     "video_id": "Broccoli_Salad"
   },
   {
     "time": [
-      124,
-      126
+      62,
+      63
     ],
     "visible_entities": [
       {
-        "desc": "broccoli salad with green florets, white cheese cubes, dark red dried cranberries, and creamy white dressing",
+        "desc": "broccoli salad with green florets, white cheese cubes, dark red dried cranberries, and bacon bits in a creamy white dressing",
         "action": "static",
         "position": "center"
       },
       {
-        "desc": "black bowl rim",
+        "desc": "black bowl with a glossy rim",
         "action": "static",
-        "position": "right"
+        "position": "foreground"
       },
       {
         "desc": "white text logo 'The Cooking FOODIE' with a chef hat icon",
         "action": "static",
-        "position": "top left"
+        "position": "top-left"
       }
     ],
     "atomic_facts": [
@@ -3643,38 +3604,38 @@
         "confidence": 1.0
       },
       {
-        "fact": "The logo 'The Cooking FOODIE' is visible in the top left corner.",
+        "fact": "The 'The Cooking FOODIE' logo is displayed in the top-left corner.",
         "confidence": 1.0
       }
     ],
     "ocr": [
       "The Cooking FOODIE"
     ],
-    "spatial": "The broccoli salad fills the center of the frame and is contained inside the black bowl, the rim of which is visible on the right side. The 'The Cooking FOODIE' logo is positioned in the top left corner, above the salad.",
+    "spatial": "The broccoli salad fills the black bowl. The logo is located in the top-left corner of the frame, above the salad.",
     "parse_success": true,
     "chunk_idx": 62,
     "video_id": "Broccoli_Salad"
   },
   {
     "time": [
-      126,
-      128
+      63,
+      64
     ],
     "visible_entities": [
       {
-        "desc": "broccoli salad with green florets, pale yellow cheese cubes, red onion pieces, and dark dried cranberries in a creamy white dressing",
+        "desc": "broccoli salad with green florets, white cheese cubes, red onion pieces, and dried cranberries in a creamy white dressing",
         "action": "static",
         "position": "center"
       },
       {
-        "desc": "dark blue or black bowl with a glossy rim",
+        "desc": "dark blue bowl rim",
         "action": "static",
-        "position": "bottom"
+        "position": "bottom left"
       },
       {
-        "desc": "white logo with cursive 'Cooking' and block 'FOODIE' text",
+        "desc": "white logo text 'the Cooking FOODIE' with a chef hat icon",
         "action": "static",
-        "position": "top-left"
+        "position": "top left"
       }
     ],
     "atomic_facts": [
@@ -3683,32 +3644,31 @@
         "confidence": 1.0
       },
       {
-        "fact": "The salad is contained within a dark-colored bowl.",
+        "fact": "The salad contains visible chunks of cheese and red onion.",
         "confidence": 1.0
       },
       {
-        "fact": "The 'Cooking Foodie' logo is visible in the top-left corner.",
+        "fact": "The logo 'the Cooking FOODIE' is visible in the top left corner.",
         "confidence": 1.0
       }
     ],
     "ocr": [
-      "Cooking",
-      "FOODIE"
+      "the Cooking FOODIE"
     ],
-    "spatial": "The broccoli salad fills the center of the frame and is inside the dark bowl. The 'Cooking Foodie' logo is positioned in the top-left corner, above the salad.",
+    "spatial": "The broccoli salad fills the majority of the frame and is contained inside the dark blue bowl. The bowl's rim is visible along the bottom left edge. The logo text is positioned above the salad in the top left corner.",
     "parse_success": true,
     "chunk_idx": 63,
     "video_id": "Broccoli_Salad"
   },
   {
     "time": [
-      128,
-      130
+      64,
+      65
     ],
     "visible_entities": [
       {
-        "desc": "broccoli salad with green florets, dark dried cranberries, and creamy white dressing",
-        "action": "being served onto plate",
+        "desc": "broccoli salad with green florets, dark dried cranberries, and a creamy white dressing",
+        "action": "being plated onto a dish",
         "position": "center"
       },
       {
@@ -3717,219 +3677,23 @@
         "position": "center"
       },
       {
-        "desc": "grey serving tongs",
-        "action": "depositing salad",
+        "desc": "metal serving spoon",
+        "action": "depositing food",
         "position": "top"
       },
       {
-        "desc": "wooden table surface",
-        "action": "static",
-        "position": "background"
-      },
-      {
-        "desc": "white logo with text 'The Cooking FOODIE' and a chef hat icon",
+        "desc": "'The Cooking Foodie' logo with a chef hat icon",
         "action": "static",
         "position": "top-left"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A serving utensil is depositing a mound of broccoli salad onto a white plate.",
+        "fact": "A serving spoon is depositing a scoop of broccoli salad onto a white plate.",
         "confidence": 1.0
       },
       {
-        "fact": "The salad consists of broccoli florets, dried cranberries, and a creamy dressing.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The logo 'The Cooking FOODIE' is visible in the top left corner.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [
-      "The Cooking FOODIE"
-    ],
-    "spatial": "The broccoli salad is in the center of the white round plate. The grey serving tongs are positioned above the salad, depositing it. The plate rests on a wooden table surface. The 'The Cooking FOODIE' logo is located in the top-left corner of the frame.",
-    "parse_success": true,
-    "chunk_idx": 64,
-    "video_id": "Broccoli_Salad"
-  },
-  {
-    "time": [
-      130,
-      132
-    ],
-    "visible_entities": [
-      {
-        "desc": "broccoli salad with green florets, dark red dried cranberries, and diced pinkish meat coated in creamy white dressing",
-        "action": "static",
-        "position": "center"
-      },
-      {
-        "desc": "white ceramic plate",
-        "action": "static",
-        "position": "left"
-      },
-      {
-        "desc": "wooden surface with visible grain",
-        "action": "static",
-        "position": "bottom"
-      },
-      {
-        "desc": "white logo text 'The Cooking Foodie' with a chef hat icon",
-        "action": "static",
-        "position": "top-left"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "The broccoli salad sits on a white plate.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The plate rests on a wooden surface.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The 'The Cooking Foodie' logo is visible in the top-left corner.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [
-      "The Cooking FOODIE"
-    ],
-    "spatial": "The broccoli salad is piled on the right side of the white plate. The plate is positioned on top of a wooden surface. The 'The Cooking Foodie' logo is located in the top-left corner of the frame, above the plate.",
-    "parse_success": true,
-    "chunk_idx": 65,
-    "video_id": "Broccoli_Salad"
-  },
-  {
-    "time": [
-      132,
-      134
-    ],
-    "visible_entities": [
-      {
-        "desc": "broccoli salad with green florets, dark red dried cranberries, and creamy white dressing",
-        "action": "static",
-        "position": "center"
-      },
-      {
-        "desc": "white ceramic plate",
-        "action": "static",
-        "position": "foreground"
-      },
-      {
-        "desc": "white text logo 'Cooking with FOODIE' with a chef hat icon",
-        "action": "static",
-        "position": "top-left"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "A broccoli salad is served on a white plate.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The salad contains green broccoli florets, dark red dried cranberries, and a creamy white dressing.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The 'Cooking with FOODIE' logo is visible in the top-left corner.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [
-      "Cooking with FOODIE"
-    ],
-    "spatial": "The broccoli salad is in the center of the white plate. The 'Cooking with FOODIE' logo is located in the top-left corner of the frame, above the plate.",
-    "parse_success": true,
-    "chunk_idx": 66,
-    "video_id": "Broccoli_Salad"
-  },
-  {
-    "time": [
-      134,
-      136
-    ],
-    "visible_entities": [
-      {
-        "desc": "broccoli salad with green florets, dark red dried cranberries, and white chopped pieces in a creamy dressing",
-        "action": "static",
-        "position": "center"
-      },
-      {
-        "desc": "silver metal fork",
-        "action": "piercing the salad",
-        "position": "right"
-      },
-      {
-        "desc": "white round plate",
-        "action": "static",
-        "position": "center"
-      },
-      {
-        "desc": "logo with text 'The Cooking FOODIE' in white script and block font",
-        "action": "static",
-        "position": "top-left"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "A silver fork pierces the broccoli salad on the plate.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The salad consists of broccoli, cranberries, and a creamy dressing.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The food is served on a white plate.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [
-      "The Cooking FOODIE"
-    ],
-    "spatial": "The broccoli salad is piled in the center of the white plate. The silver fork is positioned on the right side of the salad, with its tines inserted into the food. The logo is located in the top-left corner of the frame, above the plate.",
-    "parse_success": true,
-    "chunk_idx": 67,
-    "video_id": "Broccoli_Salad"
-  },
-  {
-    "time": [
-      136,
-      138
-    ],
-    "visible_entities": [
-      {
-        "desc": "broccoli salad with green florets, red dried cranberries, and chopped nuts in a creamy white dressing",
-        "action": "being lifted by a fork",
-        "position": "center"
-      },
-      {
-        "desc": "silver metal fork",
-        "action": "lifting food",
-        "position": "right"
-      },
-      {
-        "desc": "white round plate",
-        "action": "static",
-        "position": "center"
-      },
-      {
-        "desc": "white logo with text 'The Cooking Foodie' and a chef hat icon",
-        "action": "static",
-        "position": "top left"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "A fork lifts a portion of broccoli salad from the plate.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The salad contains visible green broccoli florets, red cranberries, and nuts.",
+        "fact": "The salad consists of broccoli florets, dried fruit, and a creamy dressing.",
         "confidence": 1.0
       },
       {
@@ -3940,7 +3704,204 @@
     "ocr": [
       "The Cooking FOODIE"
     ],
-    "spatial": "The broccoli salad is in the center of the white plate. The fork is to the right of the salad, lifting a portion of it. The logo is above and to the left of the plate.",
+    "spatial": "The serving spoon is positioned above the broccoli salad, actively placing it onto the white plate. The salad is centered on the plate. The logo is located in the top-left corner of the frame, above the plate.",
+    "parse_success": true,
+    "chunk_idx": 64,
+    "video_id": "Broccoli_Salad"
+  },
+  {
+    "time": [
+      65,
+      66
+    ],
+    "visible_entities": [
+      {
+        "desc": "broccoli salad with green florets, dark red dried cranberries, and chopped nuts coated in creamy white dressing",
+        "action": "static",
+        "position": "center/right"
+      },
+      {
+        "desc": "white ceramic plate with a smooth, glossy finish",
+        "action": "static",
+        "position": "left/center"
+      },
+      {
+        "desc": "wooden surface with visible grain texture",
+        "action": "static",
+        "position": "bottom left"
+      },
+      {
+        "desc": "logo text 'The Cooking FOODIE' in white script and sans-serif fonts",
+        "action": "static",
+        "position": "top left"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The broccoli salad is piled on the white plate.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The plate rests on a wooden surface.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The 'The Cooking FOODIE' logo is visible in the top left corner.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "The Cooking FOODIE"
+    ],
+    "spatial": "The broccoli salad is positioned on the right side of the white plate. The plate is situated on a wooden surface visible in the bottom left. The logo text is located above the plate in the top left corner.",
+    "parse_success": true,
+    "chunk_idx": 65,
+    "video_id": "Broccoli_Salad"
+  },
+  {
+    "time": [
+      66,
+      67
+    ],
+    "visible_entities": [
+      {
+        "desc": "broccoli salad with green florets, dark red dried cranberries, and white creamy dressing",
+        "action": "static",
+        "position": "center"
+      },
+      {
+        "desc": "white ceramic plate",
+        "action": "static",
+        "position": "background"
+      },
+      {
+        "desc": "white logo text 'Cooking with a FOODIE' with a chef hat icon",
+        "action": "static",
+        "position": "top-left"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A serving of broccoli salad sits on a white plate.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The salad contains green broccoli florets and dark red dried fruit pieces.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The ingredients are coated in a thick white creamy dressing.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The text 'Cooking with a FOODIE' is visible in the top left corner.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "Cooking",
+      "with a",
+      "FOODIE"
+    ],
+    "spatial": "The broccoli salad is piled in the center of the white plate. The 'Cooking with a FOODIE' logo is located in the top-left corner of the frame, above the salad.",
+    "parse_success": true,
+    "chunk_idx": 66,
+    "video_id": "Broccoli_Salad"
+  },
+  {
+    "time": [
+      67,
+      68
+    ],
+    "visible_entities": [
+      {
+        "desc": "broccoli salad with green florets, dark red dried cranberries, and white shredded cheese coated in creamy white dressing",
+        "action": "static",
+        "position": "center"
+      },
+      {
+        "desc": "white round ceramic plate",
+        "action": "static",
+        "position": "center"
+      },
+      {
+        "desc": "silver metal fork",
+        "action": "piercing the salad",
+        "position": "right"
+      },
+      {
+        "desc": "white text logo 'The Cooking FOODIE' with a chef hat icon",
+        "action": "static",
+        "position": "top-left"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A fork pierces the broccoli salad on the right side.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The salad is served on a white plate.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The logo 'The Cooking FOODIE' is visible in the top left corner.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "The Cooking FOODIE"
+    ],
+    "spatial": "The broccoli salad is piled in the center of the white plate. The silver fork is positioned on the right side of the salad, with its tines inserted into the food. The 'The Cooking FOODIE' logo is located in the top-left corner of the frame, above the plate.",
+    "parse_success": true,
+    "chunk_idx": 67,
+    "video_id": "Broccoli_Salad"
+  },
+  {
+    "time": [
+      68,
+      69
+    ],
+    "visible_entities": [
+      {
+        "desc": "broccoli salad with green florets, purple cabbage, and white diced pieces in a creamy dressing",
+        "action": "being lifted by a fork",
+        "position": "center"
+      },
+      {
+        "desc": "silver metal fork",
+        "action": "lifting salad",
+        "position": "right"
+      },
+      {
+        "desc": "white round ceramic plate",
+        "action": "static",
+        "position": "center"
+      },
+      {
+        "desc": "white text logo 'The Cooking FOODIE' with a chef hat icon",
+        "action": "static",
+        "position": "top left"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A fork lifts a portion of broccoli salad from the plate.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The salad consists of broccoli, purple cabbage, and white diced ingredients mixed with a creamy sauce.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The logo 'The Cooking FOODIE' is visible in the top left corner.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "The Cooking FOODIE"
+    ],
+    "spatial": "The broccoli salad is in the center of the white plate. The fork is on the right side of the plate, lifting a portion of the salad. The logo is above the plate in the top left corner.",
     "parse_success": true,
     "chunk_idx": 68,
     "video_id": "Broccoli_Salad"

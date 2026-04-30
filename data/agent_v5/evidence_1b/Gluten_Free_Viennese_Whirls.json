@@ -2,44 +2,47 @@
   {
     "time": [
       0,
-      2
+      1
     ],
     "visible_entities": [
       {
-        "desc": "white text overlay with sans-serif font, centered on screen",
+        "desc": "white sans-serif text overlay",
         "action": "static",
-        "id": "text_overlay_purple_1"
+        "position": "center",
+        "id": "bg_purple_text_1"
       },
       {
-        "desc": "bright white lens flare with starburst effect",
+        "desc": "bright white lens flare with vertical streaks",
         "action": "static",
-        "id": "lens_flare_1"
+        "position": "center",
+        "id": "lens_flare_white_1"
       },
       {
-        "desc": "purple background gradient",
+        "desc": "purple gradient background",
         "action": "static",
-        "id": "text_overlay_purple_1"
+        "position": "background",
+        "id": "bg_purple_text_1"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "The video displays a title card with white text on a purple background.",
+        "fact": "White text appears on the screen over a purple background.",
         "confidence": 1.0
       },
       {
-        "fact": "The text describes a baking journey involving four attempts at making gluten-free Viennese Whirls.",
+        "fact": "The text describes a 4th attempt at making gluten-free Viennese Whirls.",
         "confidence": 1.0
       },
       {
-        "fact": "The text states that the first two attempts tasted great but looked awful.",
+        "fact": "The text states the first two attempts tasted great but looked awful.",
         "confidence": 1.0
       },
       {
-        "fact": "The text states that the third attempt looked great but tasted awful.",
+        "fact": "The text states the third attempt looked great but tasted awful.",
         "confidence": 1.0
       },
       {
-        "fact": "The text concludes that the 4th attempt conquered everything.",
+        "fact": "The text states the 4th attempt conquered everything.",
         "confidence": 1.0
       }
     ],
@@ -51,7 +54,7 @@
       "The third attempt looked great (but tasted awful).",
       "And then the 4th attempt conquered everything..."
     ],
-    "spatial": "The white text is centered in the middle of the frame, positioned above the bright lens flare. The lens flare is located in the lower center of the screen. The purple background fills the entire area behind the text and flare.",
+    "spatial": "The white text is centered in the frame and appears in front of the purple gradient background. A bright white lens flare is positioned behind the text in the center of the screen.",
     "parse_success": true,
     "chunk_idx": 0,
     "video_id": "Gluten_Free_Viennese_Whirls",
@@ -59,23 +62,23 @@
   },
   {
     "time": [
-      2,
-      4
+      1,
+      2
     ],
     "visible_entities": [
       {
-        "desc": "Purple background with bokeh light effects and white text overlay",
+        "desc": "Purple background with soft, out-of-focus light circles (bokeh effect) and faint, large, semi-transparent text in the background.",
         "action": "static",
-        "id": "text_overlay_purple_1"
+        "id": "bg_purple_text_1"
+      },
+      {
+        "desc": "Centered white text in a sans-serif font.",
+        "action": "static"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "The text 'FOR ALL THOSE WHO'VE BEEN FOLLOWING....' is displayed at the top of the screen.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The text explains that this is the 4th attempt at making gluten-free Viennese Whirls.",
+        "fact": "The text on the screen describes a series of attempts at making gluten-free Viennese Whirls.",
         "confidence": 1.0
       },
       {
@@ -87,7 +90,7 @@
         "confidence": 1.0
       },
       {
-        "fact": "The text concludes that the 4th attempt conquered everything.",
+        "fact": "The text states that the 4th attempt conquered everything.",
         "confidence": 1.0
       }
     ],
@@ -99,7 +102,7 @@
       "The third attempt looked great (but tasted awful).",
       "And then the 4th attempt conquered everything..."
     ],
-    "spatial": "The text is centered on the screen against a purple background. The phrase 'FOR ALL THOSE WHO'VE BEEN FOLLOWING....' is positioned above the main paragraph describing the baking attempts.",
+    "spatial": "The main block of white text is centered on the screen. The faint, larger text is positioned behind the main text block. The bokeh light circles are scattered across the purple background.",
     "parse_success": true,
     "chunk_idx": 1,
     "video_id": "Gluten_Free_Viennese_Whirls",
@@ -107,28 +110,23 @@
   },
   {
     "time": [
-      4,
-      6
+      2,
+      3
     ],
     "visible_entities": [
       {
-        "desc": "Purple background with faint, large, semi-transparent text overlay and bokeh light effects",
+        "desc": "Text overlay in white sans-serif font on a dark purple background with bokeh effects",
         "action": "static",
-        "id": "text_overlay_purple_1"
-      },
-      {
-        "desc": "White, sans-serif text centered on the screen",
-        "action": "static",
-        "id": "text_overlay_purple_1"
+        "id": "bg_purple_text_1"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "The video displays a static title card with white text on a purple background.",
+        "fact": "Text appears on screen describing a baking journey.",
         "confidence": 1.0
       },
       {
-        "fact": "The text states that this is the creator's 4th attempt at making gluten-free Viennese Whirls.",
+        "fact": "The text states this is the 4th attempt at making gluten-free Viennese Whirls.",
         "confidence": 1.0
       },
       {
@@ -145,14 +143,14 @@
       }
     ],
     "ocr": [
-      "FOR ALL THOSE WHO'VE BEEN FOLLOWING...",
+      "FOR ALL THOSE WHO'VE BEEN FOLLOWING....",
       "You'll know this is my 4th attempt at making gluten-free",
       "Viennese Whirls.",
       "The first two attempts tasted great (but looked awful).",
       "The third attempt looked great (but tasted awful).",
       "And then the 4th attempt conquered everything..."
     ],
-    "spatial": "The white text is centered on the screen, positioned in front of the purple background which features faint, larger text and bokeh lights.",
+    "spatial": "The white text is centered on the screen. The text is positioned in front of a dark purple background that features faint, out-of-focus circular light patterns.",
     "parse_success": true,
     "chunk_idx": 2,
     "video_id": "Gluten_Free_Viennese_Whirls",
@@ -160,35 +158,31 @@
   },
   {
     "time": [
-      6,
-      8
+      3,
+      4
     ],
     "visible_entities": [
       {
-        "desc": "Text overlay in white sans-serif font on a purple gradient background",
+        "desc": "Text overlay with white sans-serif font on a solid purple background",
         "action": "static",
-        "id": "text_overlay_purple_1"
+        "id": "bg_purple_text_1"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "Text appears on screen stating 'FOR ALL THOSE WHO'VE BEEN FOLLOWING....'",
+        "fact": "The text overlay displays a narrative about the creator's four attempts at making gluten-free Viennese Whirls.",
         "confidence": 1.0
       },
       {
-        "fact": "Text describes a 4th attempt at making gluten-free Viennese Whirls",
+        "fact": "The text explains that the first two attempts tasted great but looked awful.",
         "confidence": 1.0
       },
       {
-        "fact": "Text mentions that the first two attempts tasted great but looked awful",
+        "fact": "The text explains that the third attempt looked great but tasted awful.",
         "confidence": 1.0
       },
       {
-        "fact": "Text mentions that the third attempt looked great but tasted awful",
-        "confidence": 1.0
-      },
-      {
-        "fact": "Text states that the 4th attempt conquered everything",
+        "fact": "The text states that the fourth attempt conquered everything.",
         "confidence": 1.0
       }
     ],
@@ -200,7 +194,7 @@
       "The third attempt looked great (but tasted awful).",
       "And then the 4th attempt conquered everything..."
     ],
-    "spatial": "The text block is centered on the screen against a purple background. The introductory line 'FOR ALL THOSE WHO'VE BEEN FOLLOWING....' is positioned above the main paragraph describing the baking attempts.",
+    "spatial": "The text block is centered on the screen against a purple background. The introductory line is positioned above the main paragraph of text.",
     "parse_success": true,
     "chunk_idx": 3,
     "video_id": "Gluten_Free_Viennese_Whirls",
@@ -208,104 +202,99 @@
   },
   {
     "time": [
-      8,
-      10
+      4,
+      5
     ],
     "visible_entities": [
       {
         "desc": "white text overlay reading 'How To Make Gluten-Free Viennese Whirls' in a sans-serif font",
         "action": "static",
-        "position": "center",
-        "id": "text_overlay_purple_1"
+        "position": "center"
       },
       {
-        "desc": "swirled, light-brown pastry with a textured surface, likely a Viennese whirl",
+        "desc": "swirled, light-brown pastry with a ridged texture, likely a Viennese whirl",
         "action": "static",
-        "position": "left",
+        "position": "center-left",
         "id": "pastry_viennese_1"
       },
       {
-        "desc": "white ceramic plate with a smooth, glossy surface",
+        "desc": "white ceramic plate, round, glossy",
         "action": "static",
-        "position": "left",
-        "id": "plate_white_1"
+        "position": "center-left"
       },
       {
-        "desc": "white mug with a logo featuring a heart shape and text",
+        "desc": "white ceramic mug with a logo featuring a heart and text",
         "action": "static",
-        "position": "right",
-        "id": "mug_white_1"
+        "position": "top-right",
+        "id": "mug_ceramic_white_1"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "The video displays a title card for a recipe.",
+        "fact": "The text 'How To Make Gluten-Free Viennese Whirls' is displayed on the screen.",
         "confidence": 1.0
       },
       {
-        "fact": "The text 'How To Make Gluten-Free Viennese Whirls' is visible on the screen.",
+        "fact": "A swirled pastry sits on a white plate.",
         "confidence": 1.0
       },
       {
-        "fact": "A pastry sits on a white plate in the background.",
+        "fact": "A white mug is placed on the surface next to the plate.",
         "confidence": 1.0
       }
     ],
     "ocr": [
       "How To Make",
       "Gluten-Free",
-      "Viennese Whirls"
+      "Viennese Whirls",
+      "THE LOCAL BAKERY"
     ],
-    "spatial": "The text overlay is centered in the foreground, obscuring parts of the background scene. The white plate with the pastry is positioned to the left of the frame, while the white mug is positioned to the right. The pastry is resting on top of the plate.",
+    "spatial": "The white text overlay is centered on the screen, appearing in front of the background scene. The white plate holding the pastry is positioned to the left of the white mug. The mug is located in the upper right portion of the frame, behind the text overlay.",
     "parse_success": true,
     "chunk_idx": 4,
     "video_id": "Gluten_Free_Viennese_Whirls",
     "state_changes": [
-      "transition from intro graphics to actual content - first food items appear (pastry, plate, mug)"
+      "Scene transitions from intro graphics to the first shot of the finished Viennese whirl pastry and mug."
     ]
   },
   {
     "time": [
-      10,
-      12
+      5,
+      6
     ],
     "visible_entities": [
       {
-        "desc": "small pastry with a golden-brown crust base, red jam filling, and a large swirl of pale yellow cream on top",
+        "desc": "small pastry with a golden-brown crust base, a layer of red jam, and a large swirl of pale yellow cream on top",
         "action": "static",
         "position": "center",
         "id": "pastry_viennese_1"
       },
       {
-        "desc": "white ceramic plate, round, glossy",
+        "desc": "white ceramic plate, round and glossy",
         "action": "static",
         "position": "center",
-        "id": "plate_white_1"
+        "id": "plate_ceramic_white_1"
       },
       {
         "desc": "white ceramic mug with a handle and a logo featuring two slices of bread",
         "action": "static",
         "position": "right",
-        "id": "mug_white_1"
+        "id": "mug_ceramic_white_1"
       },
       {
-        "desc": "dark speckled countertop surface",
+        "desc": "dark, speckled countertop surface",
         "action": "static",
         "position": "background",
-        "id": "countertop_dark_1"
+        "id": "countertop_black_speckled_1"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A pastry sits on a white plate.",
+        "fact": "The pastry sits on the white plate.",
         "confidence": 1.0
       },
       {
-        "fact": "The plate is placed on a dark speckled countertop.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "A mug is positioned to the right of the plate.",
+        "fact": "The mug is placed to the right of the plate.",
         "confidence": 1.0
       },
       {
@@ -322,91 +311,39 @@
     "parse_success": true,
     "chunk_idx": 5,
     "video_id": "Gluten_Free_Viennese_Whirls",
-    "state_changes": []
+    "state_changes": [
+      "Close-up view of the pastry changes slightly; mug logo description updates."
+    ]
   },
   {
     "time": [
-      12,
-      14
+      6,
+      7
     ],
     "visible_entities": [
       {
-        "desc": "small pastry with a golden-brown crust, filled with red jam and white cream, topped with a swirl of pale yellow buttercream frosting",
-        "action": "static",
-        "position": "left",
-        "id": "pastry_viennese_1"
-      },
-      {
-        "desc": "white ceramic plate, round, glossy",
+        "desc": "small pastry with a golden-brown crust base, a layer of red jam and white cream filling, topped with a swirl of pale yellow frosting",
         "action": "static",
         "position": "center",
-        "id": "plate_white_1"
+        "id": "pastry_viennese_1"
       },
       {
         "desc": "white ceramic mug with a logo featuring two slices of bread and text",
         "action": "static",
         "position": "right",
-        "id": "mug_white_1"
+        "id": "mug_ceramic_white_1"
       },
       {
-        "desc": "dark grey speckled countertop, glossy surface",
-        "action": "static",
-        "position": "background",
-        "id": "countertop_dark_1"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "A pastry sits on a white plate.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "A mug is placed on the countertop.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The mug displays the text 'THE LOCAL BAKERY'.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [
-      "THE LOCAL BAKERY"
-    ],
-    "spatial": "The white plate holding the pastry is to the left of the white mug. Both the plate and the mug are resting on the dark speckled countertop.",
-    "parse_success": true,
-    "chunk_idx": 6,
-    "video_id": "Gluten_Free_Viennese_Whirls",
-    "state_changes": []
-  },
-  {
-    "time": [
-      14,
-      16
-    ],
-    "visible_entities": [
-      {
-        "desc": "small pastry with a golden-brown crust base, a layer of red jam, and a large swirl of pale yellow piped cream on top",
-        "action": "static",
-        "position": "left/center",
-        "id": "pastry_viennese_1"
-      },
-      {
-        "desc": "white ceramic plate, round and glossy",
+        "desc": "white round plate with a smooth, glossy surface",
         "action": "static",
         "position": "center",
-        "id": "plate_white_1"
+        "id": "plate_ceramic_white_1"
       },
       {
-        "desc": "white ceramic mug with a graphic of two slices of cake and red text",
-        "action": "static",
-        "position": "right",
-        "id": "mug_white_1"
-      },
-      {
-        "desc": "dark speckled countertop surface",
+        "desc": "dark countertop with a speckled, granite-like texture",
         "action": "static",
         "position": "background",
-        "id": "countertop_dark_1"
+        "id": "countertop_black_speckled_1"
       }
     ],
     "atomic_facts": [
@@ -415,7 +352,61 @@
         "confidence": 1.0
       },
       {
-        "fact": "The mug is positioned to the right of the plate.",
+        "fact": "The mug is placed on the countertop.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The text on the mug reads 'THE LOCAL BAKERY'.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "THE LOCAL BAKERY"
+    ],
+    "spatial": "The pastry is on the white plate, which is in the center of the frame. The mug is to the right of the plate. The plate and mug are on the dark countertop.",
+    "parse_success": true,
+    "chunk_idx": 6,
+    "video_id": "Gluten_Free_Viennese_Whirls",
+    "state_changes": []
+  },
+  {
+    "time": [
+      7,
+      8
+    ],
+    "visible_entities": [
+      {
+        "desc": "small pastry with a golden-brown crust base, a layer of red jam, and a large swirl of pale yellow piped cream on top",
+        "action": "static",
+        "position": "left",
+        "id": "pastry_viennese_1"
+      },
+      {
+        "desc": "white ceramic plate, round and glossy",
+        "action": "static",
+        "position": "center",
+        "id": "plate_ceramic_white_1"
+      },
+      {
+        "desc": "white ceramic mug with a graphic of two slices of cake and text",
+        "action": "static",
+        "position": "right",
+        "id": "mug_ceramic_white_1"
+      },
+      {
+        "desc": "dark, speckled countertop surface",
+        "action": "static",
+        "position": "background",
+        "id": "countertop_black_speckled_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The pastry sits on the white plate.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The mug is placed to the right of the plate.",
         "confidence": 1.0
       },
       {
@@ -424,11 +415,9 @@
       }
     ],
     "ocr": [
-      "THE",
-      "LOCA",
-      "BAKERY"
+      "THE LOCAL BAKERY"
     ],
-    "spatial": "The white plate holding the pastry is in the center-left of the frame. The white mug is to the right of the plate. Both items are resting on a dark speckled countertop.",
+    "spatial": "The pastry is on the white plate. The plate is to the left of the mug. The mug is to the right of the plate. The plate and mug are on the dark countertop.",
     "parse_success": true,
     "chunk_idx": 7,
     "video_id": "Gluten_Free_Viennese_Whirls",
@@ -436,70 +425,73 @@
   },
   {
     "time": [
-      16,
-      18
+      8,
+      9
     ],
     "visible_entities": [
       {
-        "desc": "white plastic tub with 'Pure' branding and fruit imagery",
+        "desc": "white plastic tub with 'Pure' logo and fruit imagery",
         "action": "static",
         "position": "left",
-        "id": "tub_pure_1"
+        "id": "tub_pure_white_1"
       },
       {
-        "desc": "rectangular block of unsalted English butter in gold and green foil wrapper",
+        "desc": "rectangular block of butter in gold and green foil wrapper",
         "action": "static",
         "position": "left foreground",
-        "id": "butter_1"
+        "id": "butter_block_gold_1"
       },
       {
-        "desc": "white paper bag of flour tied with string",
+        "desc": "white paper bag of flour with blue branding",
         "action": "static",
-        "position": "center background",
-        "id": "flour_bag_1"
+        "position": "center left",
+        "id": "bag_flour_white_1"
       },
       {
-        "desc": "pink and white paper bag tied with string",
+        "desc": "pink and white bag of sugar",
         "action": "static",
         "position": "center",
-        "id": "icing_bag_pink_1"
+        "id": "bag_sugar_pink_1"
       },
       {
         "desc": "blue box labeled 'cornflour by Sainsbury's'",
         "action": "static",
         "position": "center background",
-        "id": "cornflour_box_1"
+        "id": "box_cornflour_blue_1"
       },
       {
-        "desc": "tall bottle of Nielsen-Massey Madagascar Bourbon Vanilla Extract",
+        "desc": "dark glass bottle with 'Nielsen-Massey' label",
         "action": "static",
         "position": "right",
-        "id": "vanilla_extract_1"
+        "id": "bottle_vanilla_nielsen_1"
       },
       {
-        "desc": "small pink handwritten note with ingredient list",
+        "desc": "small white handwritten note with ingredient list",
         "action": "static",
-        "position": "center foreground",
-        "id": "sticky_note_1"
+        "position": "center foreground"
       },
       {
-        "desc": "dark speckled countertop surface",
+        "desc": "black speckled granite countertop",
         "action": "static",
         "position": "bottom",
-        "id": "countertop_dark_1"
+        "id": "countertop_black_speckled_1"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A collection of baking ingredients is arranged on a dark countertop.",
+        "fact": "A collection of baking ingredients is arranged on a black countertop.",
         "confidence": 1.0
       },
       {
-        "fact": "The handwritten note lists specific measurements for ingredients like butter, sugar, and flour.",
+        "fact": "A handwritten note lists specific measurements for ingredients.",
         "confidence": 1.0
       },
       {
-        "fact": "The vanilla extract bottle is positioned to the right of the other ingredients.",
+        "fact": "The note is placed in front of the bags of flour and sugar.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The butter is positioned to the left of the handwritten note.",
         "confidence": 1.0
       }
     ],
@@ -510,143 +502,53 @@
       "cornflour by Sainsbury's",
       "NIELSEN-MASSEY",
       "MADAGASCAR BOURBON VANILLA EXTRACT",
-      "80g unsalted butter",
+      "80g unsalted",
+      "35g butter",
       "35g icing sugar",
       "112g plain flour",
       "30g cornflour",
       "1/2 tspn vanilla"
     ],
-    "spatial": "The butter is in front of the 'Pure' tub on the left side. The handwritten note is in the center foreground, below the pink bag and the flour bag. The vanilla extract bottle stands to the right of the pink bag and the blue cornflour box.",
+    "spatial": "The handwritten note is in the center foreground, lying on the black countertop. To the left of the note is a block of butter and a tub of spread. Behind the note are bags of flour and sugar, with a blue box of cornflour standing behind the sugar. To the right of the note stands a bottle of vanilla extract.",
     "parse_success": true,
     "chunk_idx": 8,
     "video_id": "Gluten_Free_Viennese_Whirls",
     "state_changes": [
-      "scene change from finished pastry to ingredient display layout"
+      "Scene cuts to a display of all baking ingredients laid out on the counter."
     ]
   },
   {
     "time": [
-      18,
-      20
+      9,
+      10
     ],
     "visible_entities": [
       {
-        "desc": "pink rectangular sticky note with handwritten text in black ink",
-        "action": "static",
-        "position": "center",
-        "id": "sticky_note_1"
-      },
-      {
-        "desc": "rectangular cardboard box of unsalted butter with yellow, white, and green packaging",
+        "desc": "rectangular package of unsalted English butter with a white label, green grass graphic, and red/blue text",
         "action": "static",
         "position": "left",
-        "id": "butter_1"
+        "id": "butter_block_gold_1"
       },
       {
-        "desc": "dark, speckled granite countertop surface",
-        "action": "static",
-        "position": "background",
-        "id": "countertop_dark_1"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "A pink sticky note with a handwritten recipe list rests on the countertop.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "A box of Sainsbury's unsalted English butter sits to the left of the note.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The handwritten text on the note lists ingredients including 60g unsalted butter, 60g margarine, 35g icing sugar, 112g slr g/f flour, 30g cornflour, and 1/4 tspn vanilla.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [
-      "60g unsalted",
-      "butter",
-      "60g margarine",
-      "35g icing sugar",
-      "112g slr g/f flour",
-      "30g cornflour",
-      "1/4 tspn vanilla",
-      "unsalted",
-      "English butter",
-      "by Sainsbury's"
-    ],
-    "spatial": "The pink sticky note is positioned in the center of the frame, resting on the dark granite countertop. The box of unsalted butter is located to the left of the sticky note. The countertop serves as the background surface for both the note and the butter box.",
-    "parse_success": true,
-    "chunk_idx": 9,
-    "video_id": "Gluten_Free_Viennese_Whirls",
-    "state_changes": []
-  },
-  {
-    "time": [
-      20,
-      22
-    ],
-    "visible_entities": [
-      {
-        "desc": "pink rectangular paper note with handwritten black text listing ingredients",
+        "desc": "small square piece of pink paper with handwritten text in black ink",
         "action": "static",
         "position": "center",
-        "id": "sticky_note_1"
+        "id": "note_ingredient_pink_1"
       },
       {
-        "desc": "dark speckled countertop surface",
+        "desc": "dark, speckled, reflective countertop surface",
         "action": "static",
         "position": "background",
-        "id": "countertop_dark_1"
+        "id": "countertop_black_speckled_1"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "The pink note is resting on the dark countertop.",
+        "fact": "The camera zooms in on the handwritten note.",
         "confidence": 1.0
       },
       {
-        "fact": "The note lists ingredients including 60g unsalted butter, 60g margarine, 35g icing sugar, 112g slr g/f flour, 30g cornflour, and 1/4 tspn vanilla.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [
-      "60g unsalted",
-      "butter",
-      "60g margarine",
-      "35g icing sugar",
-      "112g slr g/f flour",
-      "30g cornflour",
-      "1/4 tspn vanilla"
-    ],
-    "spatial": "The pink note is centered in the frame, resting on top of the dark speckled countertop.",
-    "parse_success": true,
-    "chunk_idx": 10,
-    "video_id": "Gluten_Free_Viennese_Whirls",
-    "state_changes": []
-  },
-  {
-    "time": [
-      22,
-      24
-    ],
-    "visible_entities": [
-      {
-        "desc": "pink rectangular paper note with handwritten black text listing ingredients",
-        "action": "static",
-        "position": "center",
-        "id": "sticky_note_1"
-      },
-      {
-        "desc": "dark speckled countertop surface",
-        "action": "static",
-        "position": "background",
-        "id": "countertop_dark_1"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "The pink note is resting on the dark countertop.",
+        "fact": "A package of butter sits on the countertop.",
         "confidence": 1.0
       },
       {
@@ -659,6 +561,9 @@
       }
     ],
     "ocr": [
+      "unsalted",
+      "English butter",
+      "by Sainsbury's",
       "60g unsalted",
       "butter",
       "60g margarine",
@@ -667,7 +572,101 @@
       "30g cornflour",
       "1/4 tspn vanilla"
     ],
-    "spatial": "The pink paper note is centered on top of the dark speckled countertop. The text is written in black ink across the surface of the note.",
+    "spatial": "The package of butter is to the left of the pink handwritten note. The note is placed in the center of the dark countertop. The butter package is slightly behind the note relative to the camera angle.",
+    "parse_success": true,
+    "chunk_idx": 9,
+    "video_id": "Gluten_Free_Viennese_Whirls",
+    "state_changes": [
+      "Camera pans/zooms to focus on butter and a handwritten pink note."
+    ]
+  },
+  {
+    "time": [
+      10,
+      11
+    ],
+    "visible_entities": [
+      {
+        "desc": "pink rectangular piece of paper with handwritten text in black ink",
+        "action": "static",
+        "position": "center",
+        "id": "note_ingredient_pink_1"
+      },
+      {
+        "desc": "dark speckled countertop surface",
+        "action": "static",
+        "position": "background",
+        "id": "countertop_black_speckled_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A handwritten recipe list is displayed on a pink piece of paper.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The paper rests on a dark, speckled countertop.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The text lists ingredients including '60g unsalted butter', '60g margarine', '35g icing sugar', '112g slr g/f flour', '30g cornflour', and '1/4 tspn vanilla'.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "60g unsalted",
+      "butter",
+      "60g margarine",
+      "35g icing sugar",
+      "112g slr g/f flour",
+      "30g cornflour",
+      "1/4 tspn vanilla"
+    ],
+    "spatial": "The pink piece of paper is centered on the dark speckled countertop. The handwritten text is arranged in a vertical list on the paper.",
+    "parse_success": true,
+    "chunk_idx": 10,
+    "video_id": "Gluten_Free_Viennese_Whirls",
+    "state_changes": []
+  },
+  {
+    "time": [
+      11,
+      12
+    ],
+    "visible_entities": [
+      {
+        "desc": "pink rectangular sticky note with handwritten black text listing ingredients",
+        "action": "static",
+        "position": "center",
+        "id": "note_ingredient_pink_1"
+      },
+      {
+        "desc": "dark, mottled, reflective countertop surface",
+        "action": "static",
+        "position": "background",
+        "id": "countertop_black_speckled_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A pink sticky note is resting on a dark countertop.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The note lists ingredients including 60g unsalted butter, 60g margarine, 35g icing sugar, 112g slr glf flour, 30g cornflour, and 1/4 tspn vanilla.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "60g unsalted",
+      "butter",
+      "60g margarine",
+      "35g icing sugar",
+      "112g slr glf flour",
+      "30g cornflour",
+      "1/4 tspn vanilla"
+    ],
+    "spatial": "The pink sticky note is centered in the frame and lies on top of the dark, mottled countertop.",
     "parse_success": true,
     "chunk_idx": 11,
     "video_id": "Gluten_Free_Viennese_Whirls",
@@ -675,34 +674,40 @@
   },
   {
     "time": [
-      24,
-      26
+      12,
+      13
     ],
     "visible_entities": [
       {
-        "desc": "pink square sticky note with handwritten black ink text listing ingredients",
+        "desc": "rectangular pink paper note with handwritten text in black ink",
         "action": "static",
         "position": "bottom right",
-        "id": "sticky_note_1"
+        "id": "note_ingredient_pink_1"
       },
       {
-        "desc": "rectangular block of unsalted butter in yellow and white packaging with green branding",
+        "desc": "rectangular block of unsalted butter in yellow and white packaging with green accents",
         "action": "static",
         "position": "top left",
-        "id": "butter_1"
+        "id": "butter_block_gold_1"
+      },
+      {
+        "desc": "dark speckled countertop surface",
+        "action": "static",
+        "position": "background",
+        "id": "countertop_black_speckled_1"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A pink sticky note lists ingredients for a recipe.",
+        "fact": "A handwritten note lists ingredients including '60g unsalted butter', '60g margarine', '35g icing sugar', '112g slv glf flour', '30g cornflour', and '1/4 tspn vanilla'.",
         "confidence": 1.0
       },
       {
-        "fact": "A package of butter sits on the counter next to the note.",
+        "fact": "A package of 'unsalted English butter by Sainsbury's' is visible on the counter.",
         "confidence": 1.0
       },
       {
-        "fact": "The note specifies '60g unsalted butter' and '60g margarine'.",
+        "fact": "The butter package is positioned to the left of the handwritten note.",
         "confidence": 1.0
       }
     ],
@@ -718,7 +723,7 @@
       "English butter",
       "by Sainsbury's"
     ],
-    "spatial": "The package of butter is positioned to the left of the pink sticky note. The sticky note is located in the bottom right area of the frame, while the butter is in the upper left. Both items are resting on a dark, speckled countertop surface.",
+    "spatial": "The block of butter is positioned to the left of the pink handwritten note. Both items are resting on a dark speckled countertop. The butter is slightly behind the note in the foreground.",
     "parse_success": true,
     "chunk_idx": 12,
     "video_id": "Gluten_Free_Viennese_Whirls",
@@ -726,60 +731,60 @@
   },
   {
     "time": [
-      26,
-      28
+      13,
+      14
     ],
     "visible_entities": [
       {
         "desc": "white rectangular plastic tub with 'Pure' branding and images of food",
         "action": "static",
         "position": "left",
-        "id": "tub_pure_1"
+        "id": "tub_pure_white_1"
       },
       {
-        "desc": "white paper bag of self-raising white flour with a rubber band around it",
+        "desc": "gold foil-wrapped rectangular block, likely butter or margarine",
+        "action": "static",
+        "position": "bottom center",
+        "id": "butter_block_gold_1"
+      },
+      {
+        "desc": "white paper bag with blue text and cake illustrations",
         "action": "static",
         "position": "center",
-        "id": "flour_bag_1"
+        "id": "bag_flour_white_1"
       },
       {
-        "desc": "gold foil-wrapped rectangular block of butter",
-        "action": "static",
-        "position": "foreground",
-        "id": "butter_1"
-      },
-      {
-        "desc": "pink and white bag of creamy icing",
+        "desc": "pink and white bag with 'butter cream' text",
         "action": "static",
         "position": "right",
-        "id": "icing_bag_pink_1"
+        "id": "bag_buttercream_pink_1"
       },
       {
         "desc": "dark speckled countertop surface",
         "action": "static",
         "position": "background",
-        "id": "countertop_dark_1"
+        "id": "countertop_black_speckled_1"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "The camera pans from left to right across the ingredients.",
+        "fact": "A white tub of Pure Sunflower Spread sits on the left side of the counter.",
         "confidence": 1.0
       },
       {
-        "fact": "A tub of sunflower spread is positioned on the left side of the counter.",
+        "fact": "A gold-wrapped block is positioned in the foreground below the tub.",
         "confidence": 1.0
       },
       {
-        "fact": "A bag of flour is positioned in the center of the counter.",
+        "fact": "A white bag of self-raising white flour stands in the center.",
         "confidence": 1.0
       },
       {
-        "fact": "A block of butter is positioned in the foreground.",
+        "fact": "A pink bag of butter cream icing is visible on the right side.",
         "confidence": 1.0
       },
       {
-        "fact": "A bag of icing is positioned on the right side of the counter.",
+        "fact": "The items are arranged on a dark, reflective countertop.",
         "confidence": 1.0
       }
     ],
@@ -787,11 +792,10 @@
       "Pure",
       "DAIRY & GLUTEN FREE",
       "Sunflower Spread",
-      "SELF RAISING white flour",
-      "butter creamy icing",
-      "250g"
+      "self raising white flour",
+      "butter cream icing"
     ],
-    "spatial": "The tub of sunflower spread is to the left of the bag of flour. The block of butter is in front of the tub and the bag of flour. The bag of icing is to the right of the bag of flour. All items are resting on a dark countertop.",
+    "spatial": "The white tub of spread is to the left of the white flour bag. The gold-wrapped block is in front of the tub and the flour bag. The pink bag is to the right of the flour bag. All items are resting on the dark countertop.",
     "parse_success": true,
     "chunk_idx": 13,
     "video_id": "Gluten_Free_Viennese_Whirls",
@@ -799,45 +803,45 @@
   },
   {
     "time": [
-      28,
-      30
+      14,
+      15
     ],
     "visible_entities": [
       {
-        "desc": "white paper bag of self raising white flour with blue text and a cake illustration, secured with a blue rubber band",
+        "desc": "white paper bag of self raising white flour with blue text and cake illustrations",
         "action": "static",
         "position": "left",
-        "id": "flour_bag_1"
+        "id": "bag_flour_white_1"
       },
       {
-        "desc": "pink and white paper bag of butter cream icing with white text, secured with a rubber band",
+        "desc": "pink and white paper bag of buttercream icing with white text",
         "action": "static",
-        "position": "center-right",
-        "id": "icing_bag_pink_1"
+        "position": "center",
+        "id": "bag_buttercream_pink_1"
       },
       {
-        "desc": "blue cardboard box of cornflour by Sainsbury's with white text",
+        "desc": "blue box of cornflour with white text",
         "action": "static",
-        "position": "right background",
-        "id": "cornflour_box_1"
+        "position": "top right",
+        "id": "box_cornflour_blue_1"
       },
       {
-        "desc": "white plastic bottle of vanilla extract with a black label",
+        "desc": "white bottle of vanilla extract with black label",
         "action": "static",
-        "position": "far right",
-        "id": "vanilla_extract_1"
+        "position": "right",
+        "id": "bottle_vanilla_nielsen_1"
       },
       {
-        "desc": "white plastic tub with a lid",
+        "desc": "white plastic tub with lid",
         "action": "static",
         "position": "far left",
-        "id": "tub_pure_1"
+        "id": "tub_pure_white_1"
       },
       {
-        "desc": "dark speckled countertop surface",
+        "desc": "black speckled countertop surface",
         "action": "static",
-        "position": "bottom",
-        "id": "countertop_dark_1"
+        "position": "background",
+        "id": "countertop_black_speckled_1"
       }
     ],
     "atomic_facts": [
@@ -846,33 +850,28 @@
         "confidence": 1.0
       },
       {
-        "fact": "A bag of flour is sitting on the countertop.",
+        "fact": "A bag of self raising white flour sits on the countertop.",
         "confidence": 1.0
       },
       {
-        "fact": "A bag of icing is sitting next to the flour.",
+        "fact": "A bag of buttercream icing is positioned next to the flour.",
         "confidence": 1.0
       },
       {
-        "fact": "The text 'self raising white flour' is visible on the white bag.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The text 'butter cream icing' is visible on the pink bag.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The text 'Cornflour by Sainsbury's' is visible on the blue box.",
+        "fact": "A box of cornflour is visible in the background.",
         "confidence": 1.0
       }
     ],
     "ocr": [
       "self raising white flour",
-      "Cornflour by Sainsbury's",
+      "FREE FROM GLUTEN",
+      "Sainsbury's",
       "butter cream icing",
+      "Cornflour by Sains",
+      "thicken",
       "MADAGASCAR VANILLA"
     ],
-    "spatial": "The bag of flour is to the left of the bag of icing. The bag of icing is in front of the blue cornflour box. The bottle of vanilla extract is to the right of the bag of icing. All items are resting on the dark countertop.",
+    "spatial": "The bag of flour is to the left of the bag of buttercream icing. The blue box of cornflour is behind the icing bag. The bottle of vanilla extract is to the right of the icing bag. All items are resting on the black speckled countertop.",
     "parse_success": true,
     "chunk_idx": 14,
     "video_id": "Gluten_Free_Viennese_Whirls",
@@ -880,67 +879,57 @@
   },
   {
     "time": [
-      30,
-      32
+      15,
+      16
     ],
     "visible_entities": [
       {
-        "desc": "blue cardboard box with white text 'cornflour by Sainsbury's' and a white graphic of a gravy boat",
+        "desc": "blue cardboard box with white text and a white graphic of a gravy boat",
         "action": "static",
         "position": "center/background",
-        "id": "cornflour_box_1"
+        "id": "box_cornflour_blue_1"
       },
       {
-        "desc": "pink and white paper packet, crumpled, with partial text 'butter' and 'by Sainsbury's'",
+        "desc": "pink and white crumpled paper package tied with a rubber band",
         "action": "static",
-        "position": "foreground/left",
-        "id": "icing_bag_pink_1"
+        "position": "left/foreground",
+        "id": "bag_sugar_pink_1"
       },
       {
-        "desc": "white cylindrical bottle with a beige label featuring dark text 'WINE VINEGAR' and a line drawing of a pig",
+        "desc": "white plastic bottle with a beige label featuring dark brown text",
         "action": "static",
         "position": "right/foreground",
-        "id": "bottle_vinegar_1"
+        "id": "bottle_vanilla_white_1"
       },
       {
-        "desc": "white paper bag with brown text 'FLOUR' and an image of chocolate cake",
+        "desc": "white paper bag with brown text and a picture of chocolate cake",
         "action": "static",
         "position": "far left",
-        "id": "flour_bag_1"
-      },
-      {
-        "desc": "dark speckled countertop surface",
-        "action": "static",
-        "position": "bottom",
-        "id": "countertop_dark_1"
+        "id": "bag_flour_white_1"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "The camera pans slightly to the right, bringing the vinegar bottle into focus.",
+        "fact": "A blue box labeled 'cornflour by Sainsbury's' is sitting on a dark surface.",
         "confidence": 1.0
       },
       {
-        "fact": "A blue box of cornflour sits behind a pink packet of butter.",
+        "fact": "A white bottle with a label reading 'WINE VINEGAR' is positioned to the right of the other items.",
         "confidence": 1.0
       },
       {
-        "fact": "A bottle of wine vinegar is positioned to the right of the other ingredients.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The label on the vinegar bottle features an illustration of a pig.",
+        "fact": "A pink package is placed in front of the blue box.",
         "confidence": 1.0
       }
     ],
     "ocr": [
       "cornflour",
       "by Sainsbury's",
-      "chicken gravies",
-      "butter",
-      "WINE VINEGAR"
+      "thicken gravies",
+      "WINE VINEGAR",
+      "butter"
     ],
-    "spatial": "The pink butter packet is in front of the blue cornflour box. The wine vinegar bottle is to the right of the butter packet. The flour bag is to the left of the butter packet. All items are resting on a dark countertop.",
+    "spatial": "The blue cornflour box is in the center background, behind the pink package. The pink package is to the left of the white vinegar bottle. The white paper bag is on the far left edge of the frame, next to the pink package.",
     "parse_success": true,
     "chunk_idx": 15,
     "video_id": "Gluten_Free_Viennese_Whirls",
@@ -948,40 +937,40 @@
   },
   {
     "time": [
-      32,
-      34
+      16,
+      17
     ],
     "visible_entities": [
       {
-        "desc": "large bottle with a cream label featuring black text and a crest logo, containing dark liquid",
+        "desc": "Nielsen-Massey vanilla extract bottle, dark glass, cream label with black text and crest logo",
         "action": "static",
         "position": "right",
-        "id": "vanilla_extract_1"
+        "id": "bottle_vanilla_nielsen_1"
       },
       {
-        "desc": "pink and white paper bag with a green and red traffic light nutrition label, tied with string",
+        "desc": "Pink and white paper bag, crumpled, tied with string, featuring a traffic light nutrition label",
         "action": "static",
         "position": "left",
-        "id": "icing_bag_pink_1"
+        "id": "bag_sugar_pink_1"
       },
       {
-        "desc": "dark, speckled countertop surface",
+        "desc": "Dark speckled countertop, glossy surface",
         "action": "static",
         "position": "bottom",
-        "id": "countertop_dark_1"
+        "id": "countertop_black_speckled_1"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A bottle of Nielsen-Massey Madagascar Bourbon Vanilla Extract is sitting on a countertop.",
+        "fact": "A bottle of Nielsen-Massey Madagascar Bourbon Vanilla Extract sits on a countertop.",
         "confidence": 1.0
       },
       {
-        "fact": "A pink and white bag is placed next to the vanilla extract bottle.",
+        "fact": "A pink and white bag is positioned to the left of the vanilla bottle.",
         "confidence": 1.0
       },
       {
-        "fact": "The bottle label indicates a volume of 1 Litre.",
+        "fact": "The label on the bottle reads '1 Litre'.",
         "confidence": 1.0
       }
     ],
@@ -992,7 +981,7 @@
       "VANILLA EXTRACT",
       "1 Litre"
     ],
-    "spatial": "The pink and white bag is to the left of the vanilla extract bottle. Both items are resting on top of the dark, speckled countertop.",
+    "spatial": "The pink and white paper bag is to the left of the Nielsen-Massey vanilla extract bottle. Both items are resting on a dark speckled countertop.",
     "parse_success": true,
     "chunk_idx": 16,
     "video_id": "Gluten_Free_Viennese_Whirls",
@@ -1000,72 +989,56 @@
   },
   {
     "time": [
-      34,
-      36
+      17,
+      18
     ],
     "visible_entities": [
       {
-        "desc": "woman with brown hair tied back, wearing a green t-shirt with a 'BEANSLAND' logo and text",
-        "action": "standing behind a counter",
+        "desc": "person with brown hair tied back, wearing a green t-shirt with a white 'BEANSLAND' logo and text",
+        "action": "standing behind a kitchen counter",
         "position": "center",
         "id": "person_chef_1"
       },
       {
-        "desc": "large bottle of Nielsen-Massey Madagascar Bourbon Vanilla Extract, dark liquid, beige label with black text",
+        "desc": "large bottle with a white label, black text, and dark liquid inside",
         "action": "static",
-        "position": "right foreground",
-        "id": "vanilla_extract_1"
+        "position": "foreground right",
+        "id": "bottle_johnsons_1"
       },
       {
-        "desc": "pink and white paper bag with 'bun bean ring' text and a green traffic light nutrition label",
+        "desc": "pink and white paper bag tied with string",
         "action": "static",
-        "position": "left foreground",
-        "id": "icing_bag_pink_1"
+        "position": "foreground left",
+        "id": "bag_sugar_pink_1"
       },
       {
         "desc": "small yellow cake slice on a white plate",
         "action": "static",
-        "position": "center foreground",
-        "id": "cake_slice_1"
+        "position": "center on counter",
+        "id": "cake_slice_yellow_1"
       },
       {
         "desc": "three-tiered white cake with pink flowers on a stand",
         "action": "static",
-        "position": "background",
-        "id": "cake_three_tier_1"
-      },
-      {
-        "desc": "white mug with a graphic design",
-        "action": "static",
-        "position": "center foreground",
-        "id": "mug_white_1"
-      },
-      {
-        "desc": "black glossy countertop",
-        "action": "static",
-        "position": "bottom",
-        "id": "countertop_dark_1"
+        "position": "background right",
+        "id": "cake_tiered_pink_1"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A woman in a green t-shirt stands behind a kitchen counter.",
+        "fact": "A person stands behind a kitchen counter with various baking ingredients.",
         "confidence": 1.0
       },
       {
-        "fact": "A bottle of Nielsen-Massey vanilla extract is on the counter.",
+        "fact": "A large bottle of Nielsen-Massey Madagascar Bourbon Vanilla Extract sits on the counter.",
         "confidence": 1.0
       },
       {
-        "fact": "A pink and white bag is on the counter.",
+        "fact": "A pink and white bag is positioned to the left of the vanilla bottle.",
         "confidence": 1.0
       },
       {
-        "fact": "A slice of yellow cake is on a white plate.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "A three-tiered cake is visible in the background.",
+        "fact": "A slice of cake rests on a plate in front of the person.",
         "confidence": 1.0
       }
     ],
@@ -1075,27 +1048,26 @@
       "MADAGASCAR BOURBON",
       "VANILLA EXTRACT",
       "1 Litre",
-      "bun bean ring",
       "BEANSLAND",
       "SINGLE BEAN"
     ],
-    "spatial": "The woman is standing behind the black countertop. The vanilla extract bottle is to the right of the pink and white bag. The plate with the cake slice is in front of the woman. The three-tiered cake is in the background, behind the woman.",
+    "spatial": "The person is standing behind the kitchen counter. The large vanilla bottle is to the right of the pink and white bag in the foreground. The slice of cake on the plate is in front of the person. The tiered cake is in the background to the right of the person.",
     "parse_success": true,
     "chunk_idx": 17,
     "video_id": "Gluten_Free_Viennese_Whirls",
     "state_changes": [
-      "chef/person appears on screen for first time with cake presentation"
+      "Scene cuts to the chef standing behind the counter with the cake and ingredients visible."
     ]
   },
   {
     "time": [
-      36,
-      38
+      18,
+      19
     ],
     "visible_entities": [
       {
-        "desc": "woman with dark hair pulled back, wearing a light green t-shirt with a black 'BEARSLAND SINGLE BEAR' graphic print",
-        "action": "standing behind a kitchen island and gesturing with both hands",
+        "desc": "woman with dark hair pulled back, wearing a green t-shirt with a black 'BEARSLAND SINGLE BEAR' graphic print",
+        "action": "gesturing with hands",
         "position": "center",
         "id": "person_chef_1"
       },
@@ -1103,114 +1075,115 @@
         "desc": "slice of yellow cake on a white plate",
         "action": "static",
         "position": "foreground",
-        "id": "plate_white_1"
+        "id": "cake_slice_yellow_1"
       },
       {
-        "desc": "white mug with a graphic design",
+        "desc": "white mug with a colorful design",
         "action": "static",
         "position": "foreground",
-        "id": "mug_white_1"
+        "id": "mug_ceramic_white_1"
       },
       {
-        "desc": "tall white bottle with a black label reading 'WHISMASTER'",
+        "desc": "bottle of milk with a blue label",
         "action": "static",
-        "position": "foreground",
-        "id": "bottle_whismaster_1"
+        "position": "right",
+        "id": "ingredients_baking_misc_1"
       },
       {
-        "desc": "three-tiered wedding cake with pink flowers",
+        "desc": "three-tiered cake with pink flowers",
         "action": "static",
         "position": "background",
-        "id": "cake_three_tier_1"
+        "id": "cake_tiered_pink_1"
       },
       {
-        "desc": "silver stand mixer",
+        "desc": "silver range hood",
         "action": "static",
-        "position": "left",
-        "id": "stand_mixer_1"
+        "position": "background",
+        "id": "hood_range_silver_1"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "The woman in the green t-shirt is standing behind a black kitchen island.",
+        "fact": "The woman in the green t-shirt is gesturing with her hands.",
         "confidence": 1.0
       },
       {
-        "fact": "The woman is gesturing with her hands open.",
+        "fact": "A slice of yellow cake is on a white plate on the counter.",
         "confidence": 1.0
       },
       {
-        "fact": "A slice of cake sits on a white plate on the counter.",
+        "fact": "A bottle of milk is on the counter to the right of the woman.",
         "confidence": 1.0
       },
       {
-        "fact": "A bottle labeled 'WHISMASTER' is on the counter.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "A tiered cake is displayed on a stand in the background.",
+        "fact": "A three-tiered cake is on a stand in the background.",
         "confidence": 1.0
       }
     ],
     "ocr": [
       "BEARSLAND",
-      "SINGLE BEAR",
-      "WHISMASTER"
+      "SINGLE BEAR"
     ],
-    "spatial": "The woman is standing behind the kitchen island, which is in the foreground. On the island, the slice of cake is to the left of the mug, and the 'WHISMASTER' bottle is to the right of the other ingredients. The tiered cake is in the background, positioned behind the woman and to her right.",
+    "spatial": "The woman is standing behind the kitchen counter. The slice of cake on the plate is in front of her. The mug is to the right of the plate. The bottle of milk is on the right side of the counter. The three-tiered cake is in the background, behind the woman and under the range hood.",
     "parse_success": true,
     "chunk_idx": 18,
     "video_id": "Gluten_Free_Viennese_Whirls",
-    "state_changes": []
+    "state_changes": [
+      "Chef begins gesturing with hands; milk bottle appears in the scene."
+    ]
   },
   {
     "time": [
-      38,
-      40
+      19,
+      20
     ],
     "visible_entities": [
       {
-        "desc": "woman with brown hair pulled back, wearing a green short-sleeved t-shirt with a 'BEARSLAND JUNGLE' graphic print",
+        "desc": "woman with brown hair pulled back, wearing a light green t-shirt with a dark green 'BEARSLAND JUNGLE' graphic print",
         "action": "picking up a piece of cake",
         "position": "center",
         "id": "person_chef_1"
       },
       {
-        "desc": "slice of yellow sponge cake with white frosting on a white plate",
+        "desc": "small piece of yellow cake on a white round plate",
         "action": "being picked up",
         "position": "foreground",
-        "id": "plate_white_1"
+        "id": "cake_slice_yellow_1"
       },
       {
-        "desc": "three-tiered white cake with pink flowers on a stand",
+        "desc": "three-tiered white cake with pink decorations",
         "action": "static",
         "position": "background",
-        "id": "cake_three_tier_1"
+        "id": "cake_tiered_pink_1"
       },
       {
-        "desc": "white mug with a graphic design",
+        "desc": "white mug with a graphic print",
         "action": "static",
         "position": "foreground",
-        "id": "mug_white_1"
+        "id": "mug_ceramic_white_1"
       },
       {
-        "desc": "kitchen with mint green walls, white cabinets, and a stainless steel range hood",
+        "desc": "white kitchen cabinets and stainless steel range hood",
         "action": "static",
         "position": "background",
-        "id": "cabinets_white_1"
+        "id": "cabinets_kitchen_white_1"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "The woman reaches out with her right hand to pick up the slice of cake from the plate.",
+        "fact": "The woman reaches out with her right hand to pick up the piece of cake from the plate.",
         "confidence": 1.0
       },
       {
-        "fact": "The woman is standing behind a black countertop.",
+        "fact": "The woman is standing behind a dark countertop.",
         "confidence": 1.0
       },
       {
-        "fact": "A large tiered cake sits on a stand behind the woman.",
+        "fact": "A tiered cake is displayed on a stand in the background.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The text 'BEARSLAND JUNGLE' is visible on the woman's t-shirt.",
         "confidence": 1.0
       }
     ],
@@ -1218,232 +1191,81 @@
       "BEARSLAND",
       "JUNGLE"
     ],
-    "spatial": "The woman is standing in the center of the kitchen, behind the black countertop. The plate with the cake slice is on the counter in front of her, to the left of a white mug. The tiered cake is on a stand behind the woman, near the stainless steel range hood.",
+    "spatial": "The woman is standing in the center of the kitchen, behind the dark countertop. The plate with the cake is on the countertop in front of her, to the left of a white mug. The tiered cake is in the background, positioned behind the woman and to her right.",
     "parse_success": true,
     "chunk_idx": 19,
     "video_id": "Gluten_Free_Viennese_Whirls",
     "state_changes": [
-      "chef begins interacting with cake - picking up piece"
+      "Chef picks up a piece of cake; action shifts from static presentation to interaction."
     ]
   },
   {
     "time": [
-      40,
-      42
+      20,
+      21
     ],
     "visible_entities": [
       {
-        "desc": "person with brown hair pulled back, wearing a green t-shirt with a white graphic print featuring a bear and text",
-        "action": "eating a piece of food",
+        "desc": "person with dark hair pulled back, wearing a green t-shirt with a black graphic print featuring a bear and the text 'BEARSLAY', eating a small baked good",
+        "action": "eating a pastry",
         "position": "center",
         "id": "person_chef_1"
       },
       {
-        "desc": "small piece of yellowish food, possibly cake or bread",
-        "action": "being held and eaten",
+        "desc": "small round pastry, golden-brown crust, held in hands",
+        "action": "being eaten",
         "position": "center",
-        "id": "cake_slice_1"
+        "id": "pastry_viennese_1"
+      },
+      {
+        "desc": "three-tiered cake with white frosting and pink flowers, on a silver stand",
+        "action": "static",
+        "position": "background right"
       },
       {
         "desc": "white ceramic plate, round, empty",
         "action": "static",
-        "position": "foreground",
-        "id": "plate_white_1"
+        "position": "foreground center",
+        "id": "plate_ceramic_white_1"
       },
       {
         "desc": "white mug with a graphic print",
         "action": "static",
-        "position": "foreground",
-        "id": "mug_white_1"
+        "position": "foreground center",
+        "id": "mug_ceramic_white_1"
       },
       {
-        "desc": "three-tiered cake with pink and white frosting and floral decorations",
+        "desc": "clear plastic bottle with a pump dispenser and blue liquid",
+        "action": "static",
+        "position": "foreground right",
+        "id": "bottle_liquid_blue_1"
+      },
+      {
+        "desc": "large white bottle with a black label reading 'JOHNSON'S'",
+        "action": "static",
+        "position": "foreground right",
+        "id": "bottle_johnsons_1"
+      },
+      {
+        "desc": "stainless steel range hood, vertical",
+        "action": "static",
+        "position": "background center",
+        "id": "hood_range_silver_1"
+      },
+      {
+        "desc": "white kitchen cabinets",
         "action": "static",
         "position": "background",
-        "id": "cake_three_tier_1"
-      },
-      {
-        "desc": "stainless steel range hood, modern design",
-        "action": "static",
-        "position": "background",
-        "id": "range_hood_1"
-      },
-      {
-        "desc": "white kitchen cabinets, flat-panel style",
-        "action": "static",
-        "position": "background",
-        "id": "cabinets_white_1"
-      },
-      {
-        "desc": "black countertop, glossy surface",
-        "action": "static",
-        "position": "foreground",
-        "id": "countertop_dark_1"
-      },
-      {
-        "desc": "large window with white frames",
-        "action": "static",
-        "position": "left",
-        "id": "window_1"
-      },
-      {
-        "desc": "white stand mixer",
-        "action": "static",
-        "position": "left",
-        "id": "stand_mixer_1"
-      },
-      {
-        "desc": "clear plastic bottle with a pump dispenser, containing clear liquid",
-        "action": "static",
-        "position": "center-right",
-        "id": "bottle_white_1"
-      },
-      {
-        "desc": "white bottle with a black label reading 'JOHNSON'S'",
-        "action": "static",
-        "position": "right",
-        "id": "bottle_white_1"
-      },
-      {
-        "desc": "white box with blue and green text, labeled 'FONDANT'",
-        "action": "static",
-        "position": "right",
-        "id": "box_fondant_1"
-      },
-      {
-        "desc": "pink bag, possibly containing ingredients",
-        "action": "static",
-        "position": "right",
-        "id": "icing_bag_pink_1"
-      },
-      {
-        "desc": "white bowl, round",
-        "action": "static",
-        "position": "left",
-        "id": "bowl_white_1"
-      },
-      {
-        "desc": "beige high chair",
-        "action": "static",
-        "position": "right",
-        "id": "highchair_1"
+        "id": "cabinets_kitchen_white_1"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "The person is eating a piece of food.",
+        "fact": "The person is holding a pastry with both hands and taking a bite.",
         "confidence": 1.0
       },
       {
-        "fact": "The person is holding the food with both hands.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The person is wearing a green t-shirt with a bear graphic.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "A three-tiered cake is on a stand in the background.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "A white plate is on the black countertop in front of the person.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "A bottle of Johnson's product is on the counter to the right.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "A box of fondant is on the counter to the right.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [
-      "BEARSL",
-      "JOHNSON'S",
-      "FONDANT"
-    ],
-    "spatial": "The person is in the center of the frame, sitting at a black countertop. In front of the person is a white plate and a mug. To the person's right on the counter are various baking supplies, including a bottle of Johnson's product and a box of fondant. Behind the person, a three-tiered cake sits on a stand under a stainless steel range hood. To the left of the person is a large window and a white stand mixer on the counter.",
-    "parse_success": true,
-    "chunk_idx": 20,
-    "video_id": "Gluten_Free_Viennese_Whirls",
-    "state_changes": [
-      "chef transitions from presentation to eating action"
-    ]
-  },
-  {
-    "time": [
-      42,
-      44
-    ],
-    "visible_entities": [
-      {
-        "desc": "woman with short dark hair, wearing a green t-shirt with a 'BEARSLAND' graphic print",
-        "action": "eating a yellow pastry and wiping her mouth",
-        "position": "center",
-        "id": "person_chef_1"
-      },
-      {
-        "desc": "yellow pastry, round, textured surface",
-        "action": "being held and eaten",
-        "position": "center foreground",
-        "id": "pastry_viennese_1"
-      },
-      {
-        "desc": "white plate, round, ceramic",
-        "action": "static",
-        "position": "center foreground",
-        "id": "plate_white_1"
-      },
-      {
-        "desc": "three-tiered cake with pink and white frosting and floral decorations",
-        "action": "static",
-        "position": "background right",
-        "id": "cake_three_tier_1"
-      },
-      {
-        "desc": "white kitchen cabinets, flat-panel style",
-        "action": "static",
-        "position": "background",
-        "id": "cabinets_white_1"
-      },
-      {
-        "desc": "stainless steel range hood, metallic, rectangular",
-        "action": "static",
-        "position": "background right",
-        "id": "range_hood_1"
-      },
-      {
-        "desc": "black countertop, glossy surface",
-        "action": "static",
-        "position": "foreground",
-        "id": "countertop_dark_1"
-      },
-      {
-        "desc": "white stand mixer, kitchen appliance",
-        "action": "static",
-        "position": "left background",
-        "id": "stand_mixer_1"
-      },
-      {
-        "desc": "bottle of liquid, white with black label text",
-        "action": "static",
-        "position": "right foreground",
-        "id": "vanilla_extract_1"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "The woman holds a yellow pastry in her right hand.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The woman brings her left hand to her mouth, wiping it.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The woman is chewing food.",
+        "fact": "The person is wearing a green t-shirt with the text 'BEARSLAY' visible.",
         "confidence": 1.0
       },
       {
@@ -1451,28 +1273,115 @@
         "confidence": 1.0
       },
       {
-        "fact": "The text 'BEARSLAND' is visible on the woman's shirt.",
+        "fact": "A bottle labeled 'JOHNSON'S' is on the table in the foreground.",
         "confidence": 1.0
       },
       {
-        "fact": "The text 'PENNEYS' is visible on a bottle label on the counter.",
+        "fact": "An empty white plate is on the table in front of the person.",
         "confidence": 1.0
       }
     ],
     "ocr": [
-      "BEARSLAND",
-      "PENNEYS"
+      "BEARSLAY",
+      "JOHNSON'S"
     ],
-    "spatial": "The woman is standing behind the black countertop in the center of the room. The yellow pastry is on a white plate in front of her. To her right in the background, a tiered cake is displayed on a stand below a stainless steel range hood. To her left, a white stand mixer sits on the counter near the window.",
+    "spatial": "The person is sitting at a table in the center of the room. The white plate and mug are on the table in front of the person. The bottle of Johnson's product is to the right of the mug. Behind the person, a tiered cake is displayed on a stand near the white kitchen cabinets and stainless steel range hood.",
     "parse_success": true,
-    "chunk_idx": 21,
+    "chunk_idx": 20,
     "video_id": "Gluten_Free_Viennese_Whirls",
-    "state_changes": []
+    "state_changes": [
+      "Chef is now eating the pastry; cleaning supplies (Johnson's bottle, pump bottle) appear on the counter."
+    ]
   },
   {
     "time": [
-      44,
-      46
+      21,
+      22
+    ],
+    "visible_entities": [
+      {
+        "desc": "woman with short dark hair, wearing a green t-shirt with a black 'BEARSLAY' graphic print",
+        "action": "eating a piece of yellow cake",
+        "position": "center",
+        "id": "person_chef_1"
+      },
+      {
+        "desc": "small piece of yellow cake with white frosting",
+        "action": "being held and eaten",
+        "position": "center foreground",
+        "id": "cake_slice_yellow_1"
+      },
+      {
+        "desc": "white ceramic plate",
+        "action": "static",
+        "position": "center foreground",
+        "id": "plate_ceramic_white_1"
+      },
+      {
+        "desc": "three-tiered white cake with pink flowers",
+        "action": "static",
+        "position": "background right",
+        "id": "cake_tiered_pink_1"
+      },
+      {
+        "desc": "white kitchen cabinets",
+        "action": "static",
+        "position": "background",
+        "id": "cabinets_kitchen_white_1"
+      },
+      {
+        "desc": "stainless steel range hood",
+        "action": "static",
+        "position": "background center",
+        "id": "hood_range_silver_1"
+      },
+      {
+        "desc": "white stand mixer",
+        "action": "static",
+        "position": "left",
+        "id": "mixer_stand_white_1"
+      },
+      {
+        "desc": "bottle of Pinksberry liquid",
+        "action": "static",
+        "position": "bottom right",
+        "id": "bottle_liquid_blue_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The woman is holding a piece of yellow cake in her right hand.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The woman brings the cake to her mouth to eat it.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The woman is wearing a green t-shirt with the text 'BEARSLAY' printed on the front.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A tiered cake sits on a stand in the background.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "BEARSLAY",
+      "PINKSBERRY"
+    ],
+    "spatial": "The woman is standing in the center of the kitchen, behind a dark countertop. The white plate with the cake piece is on the countertop in front of her. To her left is a white stand mixer, and to her right are various baking ingredients including a bottle labeled 'PINKSBERRY'. Behind her, a tiered cake is displayed on a stand near the white cabinets and stainless steel range hood.",
+    "parse_success": true,
+    "chunk_idx": 21,
+    "video_id": "Gluten_Free_Viennese_Whirls",
+    "state_changes": [
+      "Chef continues eating; a white stand mixer appears in the background."
+    ]
+  },
+  {
+    "time": [
+      22,
+      23
     ],
     "visible_entities": [
       {
@@ -1482,47 +1391,51 @@
         "id": "person_chef_1"
       },
       {
-        "desc": "small yellow cake slice on a white round plate",
+        "desc": "small yellow cake or pastry on a white plate",
         "action": "static",
         "position": "foreground",
-        "id": "cake_slice_1"
+        "id": "cake_slice_yellow_1"
       },
       {
-        "desc": "three-tiered white wedding cake with pink floral decorations on a silver stand",
+        "desc": "tiered cake stand with a pink and white cake",
         "action": "static",
         "position": "background",
-        "id": "cake_three_tier_1"
+        "id": "cake_tiered_pink_1"
       },
       {
         "desc": "white mug with a picture on it",
         "action": "static",
         "position": "foreground",
-        "id": "mug_white_1"
+        "id": "mug_ceramic_white_1"
       },
       {
-        "desc": "large bottle of vanilla extract",
+        "desc": "bottle of vanilla extract",
         "action": "static",
         "position": "foreground",
-        "id": "vanilla_extract_1"
+        "id": "bottle_vanilla_nielsen_1"
       },
       {
-        "desc": "white kitchen cabinets and a stainless steel range hood",
+        "desc": "kitchen counter with black surface",
         "action": "static",
-        "position": "background",
-        "id": "cabinets_white_1"
+        "position": "foreground",
+        "id": "countertop_black_speckled_1"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "The woman in the green t-shirt is gesturing with her hands in front of her chest.",
+        "fact": "The woman is gesturing with her hands in front of her chest.",
         "confidence": 1.0
       },
       {
-        "fact": "A slice of yellow cake sits on a white plate on the black countertop.",
+        "fact": "A small yellow pastry sits on a white plate on the counter.",
         "confidence": 1.0
       },
       {
-        "fact": "A tiered cake is displayed on a stand in the background.",
+        "fact": "A tiered cake is visible on a stand in the background.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "Various baking ingredients, including a bottle of vanilla, are on the counter.",
         "confidence": 1.0
       }
     ],
@@ -1531,21 +1444,23 @@
       "JUNGLE BEAT",
       "VANILLA"
     ],
-    "spatial": "The woman is standing in the center of the kitchen, behind the black countertop. The plate with the cake slice is on the countertop in front of her. The mug and vanilla bottle are to the right of the plate. The tiered cake on the stand is behind the woman and to her right.",
+    "spatial": "The woman is standing behind the kitchen counter. The plate with the pastry is on the counter in front of her. The mug and vanilla bottle are to the right of the plate. The tiered cake stand is behind the woman and to her right.",
     "parse_success": true,
     "chunk_idx": 22,
     "video_id": "Gluten_Free_Viennese_Whirls",
-    "state_changes": []
+    "state_changes": [
+      "Chef stops eating and resumes gesturing/speaking; scene composition changes slightly."
+    ]
   },
   {
     "time": [
-      46,
-      48
+      23,
+      24
     ],
     "visible_entities": [
       {
-        "desc": "woman with brown hair tied back, wearing a green t-shirt with a black 'BEARSLAND SINGLE BEAR' graphic print",
-        "action": "gesturing with hands and touching face",
+        "desc": "woman with brown hair pulled back, wearing a green t-shirt with a black graphic print and text 'BEARSLAND SINGLE BEAR'",
+        "action": "gesturing with hands and eating",
         "position": "center",
         "id": "person_chef_1"
       },
@@ -1553,267 +1468,36 @@
         "desc": "small yellow cupcake on a white plate",
         "action": "static",
         "position": "foreground",
-        "id": "cake_slice_1"
-      },
-      {
-        "desc": "three-tiered cake with white and pink frosting",
-        "action": "static",
-        "position": "background",
-        "id": "cake_three_tier_1"
+        "id": "cake_slice_yellow_1"
       },
       {
         "desc": "white mug with a picture on it",
         "action": "static",
         "position": "foreground",
-        "id": "mug_white_1"
+        "id": "mug_ceramic_white_1"
       },
       {
-        "desc": "kitchen counter with various baking ingredients and tools",
-        "action": "static",
-        "position": "foreground"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "The woman is standing in a kitchen.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The woman gestures with her hands while speaking.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The woman touches her face with her left hand.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "A cupcake sits on a plate on the counter in front of the woman.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "A tiered cake is displayed on a stand in the background.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [
-      "BEARSLAND",
-      "SINGLE BEAR"
-    ],
-    "spatial": "The woman is standing behind the kitchen counter. The cupcake on the plate is in front of the woman. The tiered cake is behind the woman and to her right. The mug is on the counter to the right of the cupcake.",
-    "parse_success": true,
-    "chunk_idx": 23,
-    "video_id": "Gluten_Free_Viennese_Whirls",
-    "state_changes": []
-  },
-  {
-    "time": [
-      48,
-      50
-    ],
-    "visible_entities": [
-      {
-        "desc": "woman with brown hair tied back, wearing a green t-shirt with a black 'BEARSLAND SINGLE BEAR' graphic print",
-        "action": "gesturing with both hands open",
-        "position": "center",
-        "id": "person_chef_1"
-      },
-      {
-        "desc": "small yellow cupcake on a white round plate",
-        "action": "static",
-        "position": "foreground",
-        "id": "cake_slice_1"
-      },
-      {
-        "desc": "three-tiered white cake with pink decorations on a silver stand",
-        "action": "static",
-        "position": "background right",
-        "id": "cake_three_tier_1"
-      },
-      {
-        "desc": "white mug with a graphic print",
-        "action": "static",
-        "position": "foreground right",
-        "id": "mug_white_1"
-      },
-      {
-        "desc": "white box of baking ingredients",
-        "action": "static",
-        "position": "foreground right"
-      },
-      {
-        "desc": "white bottle with a black label",
-        "action": "static",
-        "position": "foreground right",
-        "id": "bottle_white_1"
-      },
-      {
-        "desc": "stainless steel range hood",
-        "action": "static",
-        "position": "background center",
-        "id": "range_hood_1"
-      },
-      {
-        "desc": "white kitchen cabinets",
+        "desc": "three-tiered cake with white frosting and pink flowers",
         "action": "static",
         "position": "background",
-        "id": "cabinets_white_1"
-      },
-      {
-        "desc": "black countertop",
-        "action": "static",
-        "position": "foreground",
-        "id": "countertop_dark_1"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "The woman is standing behind a black countertop.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The woman is gesturing with her hands open above a plate.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "A yellow cupcake sits on a white plate in front of the woman.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "A three-tiered cake is visible on a stand in the background.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "Baking ingredients including a mug, box, and bottle are arranged on the counter.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The text 'BEARSLAND' is visible on the woman's shirt.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [
-      "BEARSLAND",
-      "SINGLE BEAR"
-    ],
-    "spatial": "The woman is standing in the center of the kitchen, behind a black countertop. The cupcake on the plate is in front of her on the counter. To her right on the counter are a mug, a box, and a bottle. Behind her and to the right is a tiered cake on a stand, which is positioned below a stainless steel range hood.",
-    "parse_success": true,
-    "chunk_idx": 24,
-    "video_id": "Gluten_Free_Viennese_Whirls",
-    "state_changes": []
-  },
-  {
-    "time": [
-      50,
-      52
-    ],
-    "visible_entities": [
-      {
-        "desc": "woman with brown hair pulled back, wearing a light green t-shirt with a black 'BEARSLAND SINGLE BEAR' graphic print",
-        "action": "gesturing with hands and touching face",
-        "position": "center",
-        "id": "person_chef_1"
-      },
-      {
-        "desc": "small yellow cupcake on a white round plate",
-        "action": "static",
-        "position": "foreground",
-        "id": "cake_slice_1"
-      },
-      {
-        "desc": "three-tiered white cake with pink decorations on a silver stand",
-        "action": "static",
-        "position": "background",
-        "id": "cake_three_tier_1"
-      },
-      {
-        "desc": "white mug with a graphic design",
-        "action": "static",
-        "position": "foreground",
-        "id": "mug_white_1"
+        "id": "cake_tiered_pink_1"
       },
       {
         "desc": "white kitchen cabinets and a stainless steel range hood",
         "action": "static",
         "position": "background",
-        "id": "cabinets_white_1"
+        "id": "cabinets_kitchen_white_1"
+      },
+      {
+        "desc": "baking ingredients including a carton of milk and bags of flour",
+        "action": "static",
+        "position": "foreground right",
+        "id": "ingredients_baking_misc_1"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "The woman raises her left hand to touch her mouth.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "A cupcake sits on a white plate on the black countertop.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The woman is wearing a green t-shirt with a bear logo.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [
-      "BEARSLAND",
-      "SINGLE BEAR"
-    ],
-    "spatial": "The woman is standing behind the black countertop. The cupcake on the plate is in front of the woman. The tiered cake is behind the woman and to her right. The white mug is to the right of the cupcake.",
-    "parse_success": true,
-    "chunk_idx": 25,
-    "video_id": "Gluten_Free_Viennese_Whirls",
-    "state_changes": []
-  },
-  {
-    "time": [
-      52,
-      54
-    ],
-    "visible_entities": [
-      {
-        "desc": "woman with brown hair pulled back, wearing a green t-shirt with a black 'BEARSLAND SINGLE BEAT' graphic print",
-        "action": "standing and gesturing with hands",
-        "position": "center",
-        "id": "person_chef_1"
-      },
-      {
-        "desc": "white ceramic plate with a single yellow muffin",
-        "action": "static",
-        "position": "foreground",
-        "id": "plate_white_1"
-      },
-      {
-        "desc": "white mug with a graphic print",
-        "action": "static",
-        "position": "foreground",
-        "id": "mug_white_1"
-      },
-      {
-        "desc": "three-tiered cake with white and pink frosting",
-        "action": "static",
-        "position": "background",
-        "id": "cake_three_tier_1"
-      },
-      {
-        "desc": "silver stainless steel range hood",
-        "action": "static",
-        "position": "background",
-        "id": "range_hood_1"
-      },
-      {
-        "desc": "white kitchen cabinets",
-        "action": "static",
-        "position": "background",
-        "id": "cabinets_white_1"
-      },
-      {
-        "desc": "black countertop",
-        "action": "static",
-        "position": "foreground",
-        "id": "countertop_dark_1"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "The woman is standing behind a black countertop.",
+        "fact": "The woman is eating a piece of food.",
         "confidence": 1.0
       },
       {
@@ -1821,90 +1505,11 @@
         "confidence": 1.0
       },
       {
-        "fact": "A muffin sits on a white plate on the counter.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "A mug is placed next to the plate.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "A tiered cake is visible on a stand in the background.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [
-      "BEARSLAND",
-      "SINGLE BEAT"
-    ],
-    "spatial": "The woman is standing in the center of the kitchen, behind the black countertop. On the countertop in front of her, a plate with a muffin is to the left of a mug. Behind the woman, a tiered cake is positioned under a silver range hood.",
-    "parse_success": true,
-    "chunk_idx": 26,
-    "video_id": "Gluten_Free_Viennese_Whirls",
-    "state_changes": []
-  },
-  {
-    "time": [
-      54,
-      56
-    ],
-    "visible_entities": [
-      {
-        "desc": "woman with brown hair pulled back, wearing a green short-sleeved t-shirt with a black 'BEARSLAND SINGLE BEAR' graphic print",
-        "action": "gesturing with both hands raised",
-        "position": "center",
-        "id": "person_chef_1"
-      },
-      {
-        "desc": "small yellow muffin or cake on a white plate",
-        "action": "static",
-        "position": "foreground",
-        "id": "cake_slice_1"
-      },
-      {
-        "desc": "three-tiered wedding cake with white frosting and pink flowers",
-        "action": "static",
-        "position": "background",
-        "id": "cake_three_tier_1"
-      },
-      {
-        "desc": "stainless steel range hood",
-        "action": "static",
-        "position": "background",
-        "id": "range_hood_1"
-      },
-      {
-        "desc": "white mug with a picture on it",
-        "action": "static",
-        "position": "foreground",
-        "id": "mug_white_1"
-      },
-      {
-        "desc": "box of baking ingredients",
-        "action": "static",
-        "position": "foreground"
-      },
-      {
-        "desc": "bottle of milk",
-        "action": "static",
-        "position": "foreground"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "The woman raises her hands and gestures while speaking.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "A small yellow cake sits on a white plate on the counter.",
+        "fact": "A cupcake sits on a white plate on the counter.",
         "confidence": 1.0
       },
       {
         "fact": "A tiered cake is displayed on a stand in the background.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "Baking ingredients including a box and milk are on the counter.",
         "confidence": 1.0
       }
     ],
@@ -1912,70 +1517,240 @@
       "BEARSLAND",
       "SINGLE BEAR"
     ],
-    "spatial": "The woman is standing in the center of the kitchen, behind a counter. On the counter in front of her, a plate with a muffin is to her left, and a mug and baking ingredients are to her right. Behind the woman, a tiered cake is positioned under a stainless steel range hood.",
+    "spatial": "The woman is standing behind a kitchen island. The cupcake on the plate is in front of the woman. The mug is to the right of the plate. The tiered cake is behind the woman on a stand. The baking ingredients are on the counter to the right of the mug.",
     "parse_success": true,
-    "chunk_idx": 27,
+    "chunk_idx": 23,
     "video_id": "Gluten_Free_Viennese_Whirls",
-    "state_changes": []
+    "state_changes": [
+      "Chef gestures and eats again; baking ingredients (milk/flour) reappear in the shot."
+    ]
   },
   {
     "time": [
-      56,
-      58
+      24,
+      25
     ],
     "visible_entities": [
       {
-        "desc": "woman with brown hair pulled back, wearing a green t-shirt with a black 'BEARSLAND SINGLE BEAT' graphic print",
-        "action": "gesturing with hands while speaking",
+        "desc": "woman with brown hair pulled back, wearing a green short-sleeved t-shirt with a black 'BEARSLAND' graphic print",
+        "action": "gesturing with both hands raised",
         "position": "center",
         "id": "person_chef_1"
       },
       {
-        "desc": "small yellow cupcake on a white plate",
+        "desc": "small yellow cupcake on a white round plate",
         "action": "static",
         "position": "foreground",
-        "id": "cake_slice_1"
+        "id": "cake_slice_yellow_1"
       },
       {
         "desc": "three-tiered white cake with pink flowers on a silver stand",
         "action": "static",
         "position": "background",
-        "id": "cake_three_tier_1"
+        "id": "cake_tiered_pink_1"
       },
       {
         "desc": "white mug with a brown design",
         "action": "static",
         "position": "foreground",
-        "id": "mug_white_1"
+        "id": "mug_ceramic_white_1"
       },
       {
-        "desc": "box of butter and bag of flour",
+        "desc": "white rectangular box with blue text",
         "action": "static",
         "position": "foreground",
-        "id": "flour_bag_1"
+        "id": "box_white_blue_1"
+      },
+      {
+        "desc": "white bottle with a black label",
+        "action": "static",
+        "position": "foreground",
+        "id": "bottle_vanilla_white_1"
       },
       {
         "desc": "stainless steel range hood",
         "action": "static",
         "position": "background",
-        "id": "range_hood_1"
+        "id": "hood_range_silver_1"
+      },
+      {
+        "desc": "white kitchen cabinets",
+        "action": "static",
+        "position": "background",
+        "id": "cabinets_kitchen_white_1"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "The woman is gesturing with her hands over a table.",
+        "fact": "The woman raises both hands in front of her chest while looking down.",
         "confidence": 1.0
       },
       {
-        "fact": "A cupcake sits on a white plate in front of the woman.",
+        "fact": "A yellow cupcake sits on a white plate on the black countertop.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A tiered cake is displayed on a stand behind the woman.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The text 'BEARSLAND' is visible on the woman's shirt.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A white mug and a white box are placed on the counter in front of the woman.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "BEARSLAND",
+      "SINGLE BEA"
+    ],
+    "spatial": "The woman is standing in the center of the kitchen, behind a black countertop. On the countertop in front of her are a plate with a cupcake, a mug, and various boxes. Behind the woman, a tiered cake is positioned on a stand, and a stainless steel range hood is mounted on the wall above the stove area.",
+    "parse_success": true,
+    "chunk_idx": 24,
+    "video_id": "Gluten_Free_Viennese_Whirls",
+    "state_changes": [
+      "Chef raises both hands while gesturing; white rectangular box appears."
+    ]
+  },
+  {
+    "time": [
+      25,
+      26
+    ],
+    "visible_entities": [
+      {
+        "desc": "woman with brown hair pulled back, wearing a light green t-shirt with a black 'BEARSLAND SINGLE BEAR' graphic print",
+        "action": "gesturing with hands",
+        "position": "center",
+        "id": "person_chef_1"
+      },
+      {
+        "desc": "white plate with a small yellow pastry",
+        "action": "static",
+        "position": "foreground",
+        "id": "plate_ceramic_white_1"
+      },
+      {
+        "desc": "three-tiered white cake with pink flowers",
+        "action": "static",
+        "position": "background",
+        "id": "cake_tiered_pink_1"
+      },
+      {
+        "desc": "white mug with a design",
+        "action": "static",
+        "position": "foreground",
+        "id": "mug_ceramic_white_1"
+      },
+      {
+        "desc": "carton of milk",
+        "action": "static",
+        "position": "foreground",
+        "id": "ingredients_baking_misc_1"
+      },
+      {
+        "desc": "silver range hood",
+        "action": "static",
+        "position": "background",
+        "id": "hood_range_silver_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The woman is standing in a kitchen and gesturing with her hands.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A small yellow pastry sits on a white plate on the counter.",
         "confidence": 1.0
       },
       {
         "fact": "A tiered cake is displayed on a stand in the background.",
         "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "BEARSLAND",
+      "SINGLE BEAR"
+    ],
+    "spatial": "The woman is standing behind the kitchen counter. The plate with the pastry is on the counter in front of her. The tiered cake is on a stand behind her and to her right. The milk carton and mug are on the counter to the right of the plate.",
+    "parse_success": true,
+    "chunk_idx": 25,
+    "video_id": "Gluten_Free_Viennese_Whirls",
+    "state_changes": []
+  },
+  {
+    "time": [
+      26,
+      27
+    ],
+    "visible_entities": [
+      {
+        "desc": "woman with brown hair pulled back, wearing a light green t-shirt with a black 'BEARSLAND SINGLE BEAT' graphic print",
+        "action": "standing and gesturing with hands",
+        "position": "center",
+        "id": "person_chef_1"
       },
       {
-        "fact": "Baking ingredients including butter and flour are on the table.",
+        "desc": "small yellow muffin on a white round plate",
+        "action": "static",
+        "position": "foreground",
+        "id": "cake_slice_yellow_1"
+      },
+      {
+        "desc": "white mug with a colorful design",
+        "action": "static",
+        "position": "foreground",
+        "id": "mug_ceramic_white_1"
+      },
+      {
+        "desc": "three-tiered cake with pink and white frosting and pink flowers",
+        "action": "static",
+        "position": "background",
+        "id": "cake_tiered_pink_1"
+      },
+      {
+        "desc": "silver metal range hood",
+        "action": "static",
+        "position": "background",
+        "id": "hood_range_silver_1"
+      },
+      {
+        "desc": "white kitchen cabinets",
+        "action": "static",
+        "position": "background",
+        "id": "cabinets_kitchen_white_1"
+      },
+      {
+        "desc": "black countertop",
+        "action": "static",
+        "position": "foreground",
+        "id": "countertop_black_speckled_1"
+      },
+      {
+        "desc": "carton of milk",
+        "action": "static",
+        "position": "foreground",
+        "id": "ingredients_baking_misc_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A woman stands in a kitchen gesturing with her hands.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A muffin sits on a white plate on the counter.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A three-tiered cake is displayed on a stand in the background.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The text 'BEARSLAND SINGLE BEAT' is printed on the woman's shirt.",
         "confidence": 1.0
       }
     ],
@@ -1983,72 +1758,139 @@
       "BEARSLAND",
       "SINGLE BEAT"
     ],
-    "spatial": "The woman is standing behind a table in the center of the room. On the table in front of her are a cupcake on a plate, a mug, and various baking ingredients. Behind the woman, a tiered cake sits on a stand to her right, and a stainless steel range hood is mounted on the wall above the counter.",
+    "spatial": "The woman is standing behind a black countertop. On the countertop in front of her, a plate with a muffin is to the left of a white mug. In the background, a tiered cake is positioned below a silver range hood and to the right of the woman.",
     "parse_success": true,
-    "chunk_idx": 28,
+    "chunk_idx": 26,
     "video_id": "Gluten_Free_Viennese_Whirls",
     "state_changes": []
   },
   {
     "time": [
-      58,
-      60
+      27,
+      28
     ],
     "visible_entities": [
       {
-        "desc": "woman with dark hair pulled back, wearing a green t-shirt with a black 'BEARSLAND JUNGLE BEAT' graphic print",
-        "action": "eating a piece of food and then gesturing with her hands",
+        "desc": "woman with brown hair pulled back, wearing a green t-shirt with a black 'BEARSLAND SINGLE BEAR' graphic print",
+        "action": "gesturing with both hands",
         "position": "center",
         "id": "person_chef_1"
       },
       {
-        "desc": "small piece of yellow cake",
-        "action": "being eaten",
-        "position": "center foreground",
-        "id": "cake_slice_1"
+        "desc": "small yellow cupcake on a white plate",
+        "action": "static",
+        "position": "foreground",
+        "id": "cake_slice_yellow_1"
       },
       {
-        "desc": "white plate",
+        "desc": "three-tiered cake with pink and white frosting on a stand",
         "action": "static",
-        "position": "center foreground",
-        "id": "plate_white_1"
+        "position": "background",
+        "id": "cake_tiered_pink_1"
       },
       {
-        "desc": "three-tiered cake with white frosting and pink flowers",
+        "desc": "white mug with a picture on it",
         "action": "static",
-        "position": "background right",
-        "id": "cake_three_tier_1"
-      },
-      {
-        "desc": "white mug with a design",
-        "action": "static",
-        "position": "center foreground",
-        "id": "mug_white_1"
-      },
-      {
-        "desc": "stainless steel range hood",
-        "action": "static",
-        "position": "background center",
-        "id": "range_hood_1"
+        "position": "foreground",
+        "id": "mug_ceramic_white_1"
       },
       {
         "desc": "white kitchen cabinets",
         "action": "static",
         "position": "background",
-        "id": "cabinets_white_1"
+        "id": "cabinets_kitchen_white_1"
+      },
+      {
+        "desc": "stainless steel range hood",
+        "action": "static",
+        "position": "background",
+        "id": "hood_range_silver_1"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "The woman puts a piece of yellow cake into her mouth with her right hand.",
+        "fact": "The woman is gesturing with her hands while standing in a kitchen.",
         "confidence": 1.0
       },
       {
-        "fact": "The woman chews the food.",
+        "fact": "A cupcake sits on a white plate on the counter in front of the woman.",
         "confidence": 1.0
       },
       {
-        "fact": "The woman gestures with both hands while speaking.",
+        "fact": "A tiered cake is displayed on a stand in the background.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The woman's shirt displays the text 'BEARSLAND SINGLE BEAR'.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "BEARSLAND",
+      "SINGLE BEAR"
+    ],
+    "spatial": "The woman is standing in the center of the kitchen, behind a counter. On the counter in front of her is a plate with a cupcake and a mug. Behind the woman, a tiered cake is positioned on a stand near the white cabinets and stainless steel range hood.",
+    "parse_success": true,
+    "chunk_idx": 27,
+    "video_id": "Gluten_Free_Viennese_Whirls",
+    "state_changes": []
+  },
+  {
+    "time": [
+      28,
+      29
+    ],
+    "visible_entities": [
+      {
+        "desc": "woman with brown hair pulled back, wearing a green t-shirt with a black graphic print reading 'BEARSLAND SINGLE BEAT'",
+        "action": "gesturing with hands over a plate",
+        "position": "center",
+        "id": "person_chef_1"
+      },
+      {
+        "desc": "small yellow cupcake on a white round plate",
+        "action": "static",
+        "position": "foreground",
+        "id": "cake_slice_yellow_1"
+      },
+      {
+        "desc": "white mug with a brown graphic design",
+        "action": "static",
+        "position": "foreground",
+        "id": "mug_ceramic_white_1"
+      },
+      {
+        "desc": "three-tiered white cake with pink flowers on a silver stand",
+        "action": "static",
+        "position": "background",
+        "id": "cake_tiered_pink_1"
+      },
+      {
+        "desc": "stainless steel range hood",
+        "action": "static",
+        "position": "background",
+        "id": "hood_range_silver_1"
+      },
+      {
+        "desc": "white kitchen cabinets",
+        "action": "static",
+        "position": "background",
+        "id": "cabinets_kitchen_white_1"
+      },
+      {
+        "desc": "blue box of cornstarch",
+        "action": "static",
+        "position": "foreground right",
+        "id": "box_cornflour_blue_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The woman is standing in a kitchen with mint green walls.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "She is gesturing with her hands over a plate containing a cupcake.",
         "confidence": 1.0
       },
       {
@@ -2056,7 +1898,105 @@
         "confidence": 1.0
       },
       {
-        "fact": "The text 'BEARSLAND' is printed on the woman's shirt.",
+        "fact": "The text 'BEARSLAND SINGLE BEAT' is visible on the woman's shirt.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A box of cornstarch is on the counter to the right.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "BEARSLAND",
+      "SINGLE BEAT",
+      "CORNSTARCH"
+    ],
+    "spatial": "The woman is standing in the center of the kitchen, behind a counter. On the counter in front of her is a plate with a cupcake and a mug. To her right on the counter are various baking ingredients including a box of cornstarch. Behind her is a stove with a tiered cake on a stand, and above the stove is a stainless steel range hood.",
+    "parse_success": true,
+    "chunk_idx": 28,
+    "video_id": "Gluten_Free_Viennese_Whirls",
+    "state_changes": []
+  },
+  {
+    "time": [
+      29,
+      30
+    ],
+    "visible_entities": [
+      {
+        "desc": "woman with dark hair pulled back, wearing a green t-shirt with a black 'BEARSLAND JUNGLE BEAT' graphic print",
+        "action": "eating a piece of food and then gesturing with her right hand",
+        "position": "center",
+        "id": "person_chef_1"
+      },
+      {
+        "desc": "small yellow piece of food, likely cake or pastry",
+        "action": "being eaten",
+        "position": "foreground",
+        "id": "cake_slice_yellow_1"
+      },
+      {
+        "desc": "white plate",
+        "action": "static",
+        "position": "foreground",
+        "id": "plate_ceramic_white_1"
+      },
+      {
+        "desc": "white mug with a brown design",
+        "action": "static",
+        "position": "foreground",
+        "id": "mug_ceramic_white_1"
+      },
+      {
+        "desc": "three-tiered cake with white frosting and pink flowers",
+        "action": "static",
+        "position": "background",
+        "id": "cake_tiered_pink_1"
+      },
+      {
+        "desc": "silver range hood",
+        "action": "static",
+        "position": "background",
+        "id": "hood_range_silver_1"
+      },
+      {
+        "desc": "white kitchen cabinets",
+        "action": "static",
+        "position": "background",
+        "id": "cabinets_kitchen_white_1"
+      },
+      {
+        "desc": "black countertop",
+        "action": "static",
+        "position": "background",
+        "id": "countertop_black_speckled_1"
+      },
+      {
+        "desc": "clear bottle with blue liquid",
+        "action": "static",
+        "position": "background",
+        "id": "bottle_liquid_blue_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The woman puts a piece of food into her mouth with her right hand.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The woman gestures with her right hand while speaking.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A piece of food rests on a white plate on the table.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A three-tiered cake is displayed on a stand in the background.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The text 'BEARSLAND' and 'JUNGLE BEAT' is visible on the woman's t-shirt.",
         "confidence": 1.0
       }
     ],
@@ -2064,59 +2004,67 @@
       "BEARSLAND",
       "JUNGLE BEAT"
     ],
-    "spatial": "The woman is standing in the center of the kitchen, in front of the white cabinets and range hood. The plate with the cake is on the counter in front of her. The tiered cake is to the right of the woman in the background.",
+    "spatial": "The woman is standing in the center of the kitchen, behind a table. On the table in front of her are a plate with food, a mug, and other items. To her right, in the background, a tiered cake sits on a stand on the counter. The range hood is mounted on the wall above the counter behind her.",
     "parse_success": true,
     "chunk_idx": 29,
     "video_id": "Gluten_Free_Viennese_Whirls",
-    "state_changes": []
+    "state_changes": [
+      "Chef eats a piece of food and then gestures with right hand; clear bottle with blue liquid appears."
+    ]
   },
   {
     "time": [
-      60,
-      62
+      30,
+      31
     ],
     "visible_entities": [
       {
-        "desc": "woman with dark hair pulled back, wearing a green t-shirt with 'BEARSLAND' and 'JUNGLE BEAT' text and a graphic print",
+        "desc": "woman with brown hair pulled back, wearing a green t-shirt with a white graphic print reading 'BEARSLAND SINGLE BEAT'",
         "action": "eating a small piece of food",
         "position": "center",
         "id": "person_chef_1"
       },
       {
-        "desc": "tiered white cake with pink decorations",
-        "action": "static",
-        "position": "background right",
-        "id": "cake_three_tier_1"
+        "desc": "small yellowish piece of food, possibly a cake crumb or cookie",
+        "action": "being held and eaten",
+        "position": "center",
+        "id": "cake_slice_yellow_1"
       },
       {
-        "desc": "white plate with a yellow pastry",
+        "desc": "white ceramic plate",
         "action": "static",
-        "position": "foreground center",
-        "id": "plate_white_1"
+        "position": "foreground",
+        "id": "plate_ceramic_white_1"
       },
       {
-        "desc": "white mug with a graphic",
+        "desc": "three-tiered white cake with pink floral decorations",
         "action": "static",
-        "position": "foreground center",
-        "id": "mug_white_1"
+        "position": "background",
+        "id": "cake_tiered_pink_1"
       },
       {
-        "desc": "stainless steel range hood",
+        "desc": "white mug with a graphic design",
         "action": "static",
-        "position": "background center",
-        "id": "range_hood_1"
+        "position": "foreground",
+        "id": "mug_ceramic_white_1"
+      },
+      {
+        "desc": "silver range hood",
+        "action": "static",
+        "position": "background",
+        "id": "hood_range_silver_1"
       },
       {
         "desc": "white kitchen cabinets",
         "action": "static",
-        "position": "background right",
-        "id": "cabinets_white_1"
+        "position": "background",
+        "id": "cabinets_kitchen_white_1"
       },
       {
-        "desc": "window with white frame",
+        "desc": "black countertop",
         "action": "static",
-        "position": "left",
-        "id": "window_1"
+        "position": "foreground",
+        "id": "countertop_black_speckled_1"
       }
     ],
     "atomic_facts": [
@@ -2125,49 +2073,51 @@
         "confidence": 1.0
       },
       {
-        "fact": "The woman is wearing a green t-shirt with text.",
+        "fact": "The woman is holding a piece of food in her right hand.",
         "confidence": 1.0
       },
       {
-        "fact": "A tiered cake is on a stand in the background.",
+        "fact": "A white plate with a piece of food sits on the counter.",
         "confidence": 1.0
       },
       {
-        "fact": "A yellow pastry is on a white plate on the table.",
+        "fact": "The text 'BEARSLAND SINGLE BEAT' is visible on the woman's shirt.",
         "confidence": 1.0
       },
       {
-        "fact": "The text 'BEARSLAND' is visible on the woman's shirt.",
+        "fact": "A three-tiered cake is displayed on a stand in the background.",
         "confidence": 1.0
       }
     ],
     "ocr": [
       "BEARSLAND",
-      "JUNGLE BEAT"
+      "SINGLE BEAT"
     ],
-    "spatial": "The woman is standing in the center of the kitchen, in front of the stainless steel range hood. To her right, in the background, is a tiered cake on a stand. On the table in front of her is a white plate with a pastry and a white mug.",
+    "spatial": "The woman is standing in the center of the kitchen, in front of the counter. The white plate is on the black countertop in front of her. The three-tiered cake is on a stand behind the woman and to her right. The white mug is on the counter to the right of the plate.",
     "parse_success": true,
     "chunk_idx": 30,
     "video_id": "Gluten_Free_Viennese_Whirls",
-    "state_changes": []
+    "state_changes": [
+      "Chef eats a small crumb; continuous action but distinct bite."
+    ]
   },
   {
     "time": [
-      62,
-      64
+      31,
+      32
     ],
     "visible_entities": [
       {
         "desc": "person with dark hair tied back, wearing a light-colored t-shirt",
-        "action": "standing in a kitchen",
+        "action": "standing in the kitchen",
         "position": "center",
         "id": "person_chef_1"
       },
       {
-        "desc": "purple background with white sans-serif text listing ingredients",
+        "desc": "white text on a purple background listing ingredients",
         "action": "static",
-        "position": "full-screen",
-        "id": "text_overlay_purple_1"
+        "position": "center",
+        "id": "bg_purple_text_1"
       }
     ],
     "atomic_facts": [
@@ -2176,7 +2126,7 @@
         "confidence": 1.0
       },
       {
-        "fact": "A list of ingredients is displayed on a purple screen.",
+        "fact": "A list of ingredients is displayed on the screen.",
         "confidence": 1.0
       },
       {
@@ -2193,24 +2143,61 @@
       "30g cornflour",
       "1/4 teaspoon vanilla extract"
     ],
-    "spatial": "The person is centered in the frame, standing in front of kitchen counters and cabinets. The ingredient list text is overlaid on the screen, appearing in front of the person and the kitchen background.",
+    "spatial": "The person is standing in the background of the kitchen scene. The text listing the ingredients is overlaid in the foreground, centered on the screen.",
     "parse_success": true,
     "chunk_idx": 31,
     "video_id": "Gluten_Free_Viennese_Whirls",
     "state_changes": [
-      "transition from content to outro - purple background returns with ingredient text"
+      "Scene cuts away from the kitchen to a purple background with ingredient text list."
     ]
   },
   {
     "time": [
-      64,
-      66
+      32,
+      33
     ],
     "visible_entities": [
       {
         "desc": "purple background with white sans-serif text listing ingredients",
         "action": "static",
-        "id": "text_overlay_purple_1"
+        "id": "bg_purple_text_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The screen displays a list of ingredients for a recipe.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The text lists 60g unsalted butter, 60g margarine, 35g icing sugar, 112g self-raising gluten-free flour, 30g cornflour, and 1/4 teaspoon vanilla extract.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "INGREDIENTS",
+      "60g unsalted butter",
+      "60g margarine",
+      "35g icing sugar",
+      "112g self-raising gluten-free flour",
+      "30g cornflour",
+      "1/4 teaspoon vanilla extract"
+    ],
+    "spatial": "The heading 'INGREDIENTS' is at the top of the screen. The list of ingredients is positioned below the heading, aligned to the left side of the purple background.",
+    "parse_success": true,
+    "chunk_idx": 32,
+    "video_id": "Gluten_Free_Viennese_Whirls",
+    "state_changes": []
+  },
+  {
+    "time": [
+      33,
+      34
+    ],
+    "visible_entities": [
+      {
+        "desc": "purple background with white sans-serif text listing ingredients",
+        "action": "static",
+        "id": "bg_purple_text_1"
       }
     ],
     "atomic_facts": [
@@ -2232,51 +2219,7 @@
       "30g cornflour",
       "1/4 teaspoon vanilla extract"
     ],
-    "spatial": "The heading 'INGREDIENTS' is positioned at the top left of the screen. The list of ingredients is located below the heading, aligned to the left side of the purple background.",
-    "parse_success": true,
-    "chunk_idx": 32,
-    "video_id": "Gluten_Free_Viennese_Whirls",
-    "state_changes": []
-  },
-  {
-    "time": [
-      66,
-      68
-    ],
-    "visible_entities": [
-      {
-        "desc": "solid purple background",
-        "action": "static",
-        "position": "background",
-        "id": "text_overlay_purple_1"
-      },
-      {
-        "desc": "white sans-serif text listing ingredients",
-        "action": "static",
-        "position": "left",
-        "id": "text_overlay_purple_1"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "The screen displays a static list of ingredients on a purple background.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The text lists quantities for butter, margarine, icing sugar, flour, cornflour, and vanilla extract.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [
-      "INGREDIENTS",
-      "60g unsalted butter",
-      "60g margarine",
-      "35g icing sugar",
-      "112g self-raising gluten-free flour",
-      "30g cornflour",
-      "1/4 teaspoon vanilla extract"
-    ],
-    "spatial": "The white text listing ingredients is positioned on the left side of the frame against the solid purple background.",
+    "spatial": "The title 'INGREDIENTS' is positioned at the top left of the screen. The list of ingredients is located below the title, aligned to the left side of the purple background.",
     "parse_success": true,
     "chunk_idx": 33,
     "video_id": "Gluten_Free_Viennese_Whirls",
@@ -2284,40 +2227,30 @@
   },
   {
     "time": [
-      68,
-      70
+      34,
+      35
     ],
     "visible_entities": [
       {
-        "desc": "solid purple background screen",
+        "desc": "solid purple background",
         "action": "static",
-        "id": "text_overlay_purple_1"
+        "position": "background",
+        "id": "bg_purple_text_1"
       },
       {
         "desc": "white sans-serif text listing ingredients",
         "action": "static",
-        "id": "text_overlay_purple_1"
+        "position": "left",
+        "id": "bg_purple_text_1"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "The screen displays a list of ingredients for a recipe.",
+        "fact": "The screen displays a list of ingredients on a purple background.",
         "confidence": 1.0
       },
       {
-        "fact": "The text specifies '112g self-raising gluten-free flour'.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The text specifies '60g unsalted butter' and '60g margarine'.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The text specifies '35g icing sugar' and '30g cornflour'.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The text specifies '1/4 teaspoon vanilla extract'.",
+        "fact": "The text lists specific quantities for butter, margarine, icing sugar, gluten-free flour, cornflour, and vanilla extract.",
         "confidence": 1.0
       }
     ],
@@ -2330,7 +2263,7 @@
       "30g cornflour",
       "1/4 teaspoon vanilla extract"
     ],
-    "spatial": "The heading 'INGREDIENTS' is at the top left of the screen. The list of ingredients is positioned below the heading, aligned to the left side of the purple background.",
+    "spatial": "The white text block containing the ingredient list is positioned on the left side of the screen, set against the solid purple background.",
     "parse_success": true,
     "chunk_idx": 34,
     "video_id": "Gluten_Free_Viennese_Whirls",
@@ -2338,34 +2271,30 @@
   },
   {
     "time": [
-      70,
-      72
+      35,
+      36
     ],
     "visible_entities": [
       {
-        "desc": "solid purple background",
+        "desc": "solid purple background screen",
         "action": "static",
         "position": "background",
-        "id": "text_overlay_purple_1"
+        "id": "bg_purple_text_1"
       },
       {
-        "desc": "white text listing cooking instructions",
+        "desc": "white text listing recipe steps",
         "action": "static",
         "position": "center",
-        "id": "text_overlay_purple_1"
+        "id": "bg_purple_text_1"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "The text 'METHOD' is displayed at the top of the screen.",
+        "fact": "The screen displays a recipe method titled 'METHOD'.",
         "confidence": 1.0
       },
       {
-        "fact": "A numbered list of six cooking steps is visible.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "Step 1 instructs to cream butter, marge, vanilla & sugar together.",
+        "fact": "The text lists six steps for preparing a baked good.",
         "confidence": 1.0
       },
       {
@@ -2382,35 +2311,37 @@
       "5. Allow to cool.",
       "6. Fill with jam & buttercream."
     ],
-    "spatial": "The heading 'METHOD' is positioned above the numbered list of instructions. The text is centered on the purple background.",
+    "spatial": "The title 'METHOD' is located at the top of the screen. The numbered list of instructions is positioned below the title in the center of the purple background.",
     "parse_success": true,
     "chunk_idx": 35,
     "video_id": "Gluten_Free_Viennese_Whirls",
-    "state_changes": []
+    "state_changes": [
+      "Text content changes from ingredient list to recipe steps/method."
+    ]
   },
   {
     "time": [
-      72,
-      74
+      36,
+      37
     ],
     "visible_entities": [
       {
-        "desc": "Purple background with white sans-serif text listing a recipe method",
+        "desc": "Purple background with white sans-serif text",
         "action": "static",
-        "id": "text_overlay_purple_1"
+        "id": "bg_purple_text_1"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "The screen displays a static list of cooking instructions titled 'METHOD'.",
+        "fact": "The screen displays a recipe method titled 'METHOD'.",
         "confidence": 1.0
       },
       {
-        "fact": "The text instructs to bake for 15 minutes in a 190 Celsius oven.",
+        "fact": "The text lists 6 steps for preparing a baked good.",
         "confidence": 1.0
       },
       {
-        "fact": "The text instructs to pipe 2 inch circles onto baking parchment.",
+        "fact": "Step 4 instructs to bake for 15 mins in a 190 Celsius oven.",
         "confidence": 1.0
       }
     ],
@@ -2423,7 +2354,7 @@
       "5. Allow to cool.",
       "6. Fill with jam & buttercream."
     ],
-    "spatial": "The title 'METHOD' is positioned at the top of the purple background. The numbered list of instructions is located below the title, centered on the screen.",
+    "spatial": "The title 'METHOD' is at the top of the screen. The numbered list of instructions is positioned below the title, centered on the purple background.",
     "parse_success": true,
     "chunk_idx": 36,
     "video_id": "Gluten_Free_Viennese_Whirls",
@@ -2431,23 +2362,39 @@
   },
   {
     "time": [
-      74,
-      76
+      37,
+      38
     ],
     "visible_entities": [
       {
         "desc": "Purple background with white text listing a recipe method",
         "action": "static",
-        "position": "center"
+        "id": "bg_purple_text_1"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "The text lists 6 steps for a baking method.",
+        "fact": "The text displays a 6-step method for a recipe.",
         "confidence": 1.0
       },
       {
-        "fact": "Step 4 instructs to bake for 15 minutes in a 190 Celsius oven.",
+        "fact": "Step 1 instructs to cream butter, marge, vanilla, and sugar together.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "Step 2 instructs to add flours and mix in well.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "Step 3 instructs to pipe 2 inch circles onto baking parchment.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "Step 4 instructs to bake for 15 mins in a 190 Celsius oven.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "Step 5 instructs to allow to cool.",
         "confidence": 1.0
       },
       {
@@ -2464,7 +2411,7 @@
       "5. Allow to cool.",
       "6. Fill with jam & buttercream."
     ],
-    "spatial": "The heading 'METHOD' is at the top of the screen. The numbered steps 1 through 6 are listed vertically below the heading.",
+    "spatial": "The title 'METHOD' is located at the top left of the purple background. The numbered list of instructions is positioned below the title, aligned to the left side of the screen.",
     "parse_success": true,
     "chunk_idx": 37,
     "video_id": "Gluten_Free_Viennese_Whirls",
@@ -2472,68 +2419,29 @@
   },
   {
     "time": [
-      76,
-      78
+      38,
+      39
     ],
     "visible_entities": [
       {
-        "desc": "Purple background with a curved light gray/white graphic on the right side and a central lens flare effect.",
-        "action": "static"
+        "desc": "purple background with a white curved graphic element on the right side",
+        "action": "static",
+        "id": "bg_purple_text_1"
       },
       {
-        "desc": "White text in a sans-serif font displaying a message and a website URL.",
-        "action": "static"
+        "desc": "white sans-serif text displaying a message and website URL",
+        "action": "static",
+        "id": "bg_purple_text_1"
+      },
+      {
+        "desc": "bright white lens flare effect",
+        "action": "static",
+        "id": "lens_flare_white_1"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "The video displays a static end screen with a purple background.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The text 'To see how to make the biscuits, look at my other videos on YouTube.' is visible at the top.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The text 'Thanks for visiting!' is visible in the middle.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The text 'www.thelocalbakehouse.com' is visible at the bottom.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [
-      "To see how to make the biscuits, look at my other videos on YouTube.",
-      "Thanks for visiting!",
-      "www.thelocalbakehouse.com"
-    ],
-    "spatial": "The text 'To see how to make the biscuits...' is above the text 'Thanks for visiting!'. The website URL 'www.thelocalbakehouse.com' is below the 'Thanks for visiting!' text. A curved gray graphic is positioned to the right of the text.",
-    "parse_success": true,
-    "chunk_idx": 38,
-    "video_id": "Gluten_Free_Viennese_Whirls",
-    "state_changes": []
-  },
-  {
-    "time": [
-      78,
-      80
-    ],
-    "visible_entities": [
-      {
-        "desc": "purple background with a lighter purple curved shape on the right side",
-        "action": "static",
-        "id": "text_overlay_purple_1"
-      },
-      {
-        "desc": "white text in a sans-serif font",
-        "action": "static",
-        "id": "text_overlay_purple_1"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "The video displays a static end screen.",
+        "fact": "The screen displays a static end card with a purple background.",
         "confidence": 1.0
       },
       {
@@ -2541,11 +2449,11 @@
         "confidence": 1.0
       },
       {
-        "fact": "The text thanks the viewer for visiting.",
+        "fact": "The text 'Thanks for visiting!' is displayed in the center.",
         "confidence": 1.0
       },
       {
-        "fact": "The website address www.thelocalbakehouse.com is displayed at the bottom.",
+        "fact": "The website 'www.thelocalbakehouse.com' is shown at the bottom.",
         "confidence": 1.0
       }
     ],
@@ -2554,7 +2462,52 @@
       "Thanks for visiting!",
       "www.thelocalbakehouse.com"
     ],
-    "spatial": "The text 'To see how to make the biscuits...' is at the top of the screen. The text 'Thanks for visiting!' is below the first line of text. The website URL is at the bottom of the screen, below the 'Thanks for visiting!' text. The lighter purple curved shape is to the right of the main text area.",
+    "spatial": "The instructional text is located at the top of the screen. The phrase 'Thanks for visiting!' is positioned below the instructional text in the center. The website URL is located at the bottom of the screen, below the thank you message. A lens flare is visible near the center of the screen, overlapping the text.",
+    "parse_success": true,
+    "chunk_idx": 38,
+    "video_id": "Gluten_Free_Viennese_Whirls",
+    "state_changes": [
+      "Final screen appears with website URL and lens flare effect."
+    ]
+  },
+  {
+    "time": [
+      39,
+      40
+    ],
+    "visible_entities": [
+      {
+        "desc": "purple background with a curved grey gradient shape on the right side",
+        "action": "static",
+        "id": "bg_purple_text_1"
+      },
+      {
+        "desc": "white sans-serif text",
+        "action": "static",
+        "id": "bg_purple_text_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The video displays a static end screen with white text on a purple background.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The text instructs viewers to look at other videos on YouTube to see how to make biscuits.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The website address 'www.thelocalbakehouse.com' is displayed at the bottom of the screen.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "To see how to make the biscuits, look at my",
+      "other videos on YouTube.",
+      "Thanks for visiting!",
+      "www.thelocalbakehouse.com"
+    ],
+    "spatial": "The text 'To see how to make the biscuits...' is located at the top of the screen. The phrase 'Thanks for visiting!' is positioned below the top text and above the website URL. The website URL is at the bottom of the screen. A grey curved graphic is situated to the right of the text.",
     "parse_success": true,
     "chunk_idx": 39,
     "video_id": "Gluten_Free_Viennese_Whirls",

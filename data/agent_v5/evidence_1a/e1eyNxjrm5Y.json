@@ -2,31 +2,27 @@
   {
     "time": [
       0,
-      2
+      1
     ],
     "visible_entities": [
       {
-        "desc": "Solid dark blue background",
+        "desc": "solid dark blue background",
         "action": "static",
         "position": "background"
       },
       {
-        "desc": "White sans-serif text reading 'Funny accidents :P'",
+        "desc": "white sans-serif text reading 'Funny accidents :P'",
         "action": "static",
         "position": "center"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "The text 'Funny accidents :P' is displayed in the center of the screen.",
+        "fact": "The text 'Funny accidents :P' is displayed on the screen.",
         "confidence": 1.0
       },
       {
-        "fact": "The background is a solid dark blue color.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The text is white.",
+        "fact": "The background remains a static solid blue color.",
         "confidence": 1.0
       }
     ],
@@ -34,15 +30,15 @@
       "Funny",
       "accidents :P"
     ],
-    "spatial": "The text 'Funny accidents :P' is centered on the solid dark blue background.",
+    "spatial": "The text 'Funny accidents :P' is centered on the blue background. The word 'Funny' is above the phrase 'accidents :P'.",
     "parse_success": true,
     "chunk_idx": 0,
     "video_id": "e1eyNxjrm5Y"
   },
   {
     "time": [
-      2,
-      4
+      1,
+      2
     ],
     "visible_entities": [
       {
@@ -58,11 +54,11 @@
     ],
     "atomic_facts": [
       {
-        "fact": "The text 'Funny accidents :P' is displayed on the screen.",
+        "fact": "The text 'Funny accidents :P' is displayed in the center of the screen.",
         "confidence": 1.0
       },
       {
-        "fact": "The background is a solid blue color.",
+        "fact": "The background remains a static solid blue color.",
         "confidence": 1.0
       }
     ],
@@ -70,88 +66,97 @@
       "Funny",
       "accidents :P"
     ],
-    "spatial": "The white text 'Funny accidents :P' is centered on the blue background.",
+    "spatial": "The white text 'Funny accidents :P' is centered on the screen. The text is positioned in front of the solid dark blue background.",
     "parse_success": true,
     "chunk_idx": 1,
     "video_id": "e1eyNxjrm5Y"
   },
   {
     "time": [
-      4,
-      6
+      2,
+      3
     ],
     "visible_entities": [
       {
         "desc": "person with short dark hair, wearing a light-colored t-shirt",
-        "action": "bending forward and moving in the foreground",
+        "action": "bending forward and reaching down",
         "position": "center/foreground"
       },
       {
-        "desc": "bed with a dark patterned blanket featuring colorful shapes and a white pillow",
+        "desc": "bed with a red sheet and a dark patterned blanket",
         "action": "static",
         "position": "right"
       },
       {
-        "desc": "beige CRT computer monitor",
+        "desc": "white pillow",
+        "action": "static",
+        "position": "right/background"
+      },
+      {
+        "desc": "beige CRT monitor",
         "action": "static",
         "position": "background"
       },
       {
         "desc": "black microphone stand",
         "action": "static",
-        "position": "background"
-      },
-      {
-        "desc": "wooden desk with shelves and items",
-        "action": "static",
-        "position": "left"
+        "position": "center/background"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A person with short dark hair is bending forward in the center of the room.",
+        "fact": "A person with short dark hair bends forward at the waist.",
         "confidence": 1.0
       },
       {
-        "fact": "The person is positioned in front of the bed and the computer desk.",
+        "fact": "The person reaches their hands down towards the floor.",
         "confidence": 1.0
       },
       {
-        "fact": "A CRT monitor sits on a desk in the background.",
+        "fact": "A bed with a red sheet is located to the right of the person.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A beige CRT monitor sits on a surface in the background.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The person is in the foreground, positioned between the wooden desk on the left and the bed on the right. The CRT monitor is on the desk in the background, behind the person. The microphone stand is located near the bed and the computer desk.",
+    "spatial": "The person is in the center foreground, positioned to the left of the bed. The bed is on the right side of the frame, with a white pillow resting on it near the headboard. Behind the person, a beige CRT monitor and a black microphone stand are visible in the background.",
     "parse_success": true,
     "chunk_idx": 2,
     "video_id": "e1eyNxjrm5Y"
   },
   {
     "time": [
-      6,
-      8
+      3,
+      4
     ],
     "visible_entities": [
       {
         "desc": "person with short dark hair, wearing a light-colored long-sleeved shirt",
-        "action": "playing guitar",
+        "action": "playing a guitar",
         "position": "center"
       },
       {
-        "desc": "acoustic guitar with a wooden body",
-        "action": "being played",
+        "desc": "acoustic guitar with a dark wooden body",
+        "action": "being held and played",
         "position": "center"
       },
       {
-        "desc": "electronic drum pads, circular and white",
+        "desc": "electronic drum kit with circular white pads",
         "action": "static",
         "position": "left"
       },
       {
-        "desc": "bed with dark patterned bedding",
+        "desc": "bed with a dark patterned blanket",
         "action": "static",
         "position": "right"
+      },
+      {
+        "desc": "wooden shelving unit",
+        "action": "static",
+        "position": "background left"
       }
     ],
     "atomic_facts": [
@@ -160,24 +165,28 @@
         "confidence": 1.0
       },
       {
-        "fact": "The person's hands are positioned on the guitar strings and fretboard.",
+        "fact": "The person's hands are positioned on the guitar neck and body.",
         "confidence": 1.0
       },
       {
-        "fact": "Electronic drum pads are visible to the left of the person.",
+        "fact": "An electronic drum kit is visible to the left of the person.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A bed is situated to the right of the person.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The person is in the center of the frame, holding the guitar. To the left of the person are the electronic drum pads. To the right of the person is the bed.",
+    "spatial": "The person is sitting in the center of the room, holding the guitar. To the left of the person is an electronic drum kit. To the right of the person is a bed with a patterned blanket. Behind the person and the drum kit is a wooden shelving unit.",
     "parse_success": true,
     "chunk_idx": 3,
     "video_id": "e1eyNxjrm5Y"
   },
   {
     "time": [
-      8,
-      10
+      4,
+      5
     ],
     "visible_entities": [
       {
@@ -191,64 +200,17 @@
         "position": "center"
       },
       {
-        "desc": "electronic drum pads with white circular surfaces",
+        "desc": "electronic drum kit with circular pads",
         "action": "static",
         "position": "left"
       },
       {
-        "desc": "dark patterned blanket with circular motifs",
-        "action": "static",
-        "position": "right"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "A person is strumming an acoustic guitar.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The person is seated in a dimly lit room.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "Electronic drum pads are visible to the left of the person.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [],
-    "spatial": "The person is in the center of the frame, holding the guitar. To the left of the person, there are electronic drum pads. To the right of the person, a patterned blanket is draped over a surface.",
-    "parse_success": true,
-    "chunk_idx": 4,
-    "video_id": "e1eyNxjrm5Y"
-  },
-  {
-    "time": [
-      10,
-      12
-    ],
-    "visible_entities": [
-      {
-        "desc": "person with dark hair, wearing a light-colored long-sleeved shirt",
-        "action": "playing guitar",
-        "position": "center"
-      },
-      {
-        "desc": "acoustic guitar, dark wood body",
-        "action": "being played",
-        "position": "center"
-      },
-      {
-        "desc": "electronic drum pad with three circular pads",
-        "action": "static",
-        "position": "left"
-      },
-      {
-        "desc": "bed with dark patterned blanket and red sheets",
+        "desc": "bed with a dark patterned blanket",
         "action": "static",
         "position": "right"
       },
       {
-        "desc": "white computer monitor",
+        "desc": "white box-like object",
         "action": "static",
         "position": "background"
       }
@@ -259,7 +221,7 @@
         "confidence": 1.0
       },
       {
-        "fact": "An electronic drum pad is positioned to the left of the person.",
+        "fact": "An electronic drum kit is positioned to the left of the person.",
         "confidence": 1.0
       },
       {
@@ -268,180 +230,29 @@
       }
     ],
     "ocr": [],
-    "spatial": "The person is in the center of the frame, holding a guitar. To the left of the person is an electronic drum pad. To the right of the person is a bed with a patterned blanket. A computer monitor is in the background behind the person.",
+    "spatial": "The person is in the center of the frame, holding the guitar. To the left of the person is the electronic drum kit. To the right of the person is the bed. Behind the person, a white box-like object is visible.",
     "parse_success": true,
-    "chunk_idx": 5,
+    "chunk_idx": 4,
     "video_id": "e1eyNxjrm5Y"
   },
   {
     "time": [
-      12,
-      14
+      5,
+      6
     ],
     "visible_entities": [
       {
         "desc": "person with dark hair, wearing a light-colored long-sleeved shirt",
-        "action": "playing a guitar",
+        "action": "playing guitar",
         "position": "center"
       },
       {
-        "desc": "acoustic guitar with a wooden body",
+        "desc": "acoustic guitar, wooden body",
         "action": "being played",
         "position": "center"
       },
       {
-        "desc": "electronic drum kit with circular pads",
-        "action": "static",
-        "position": "left"
-      },
-      {
-        "desc": "bed with a patterned blanket",
-        "action": "static",
-        "position": "right"
-      },
-      {
-        "desc": "CRT computer monitor",
-        "action": "static",
-        "position": "background"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "A person is playing an acoustic guitar.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "An electronic drum kit is positioned to the left of the person.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "A bed is located to the right of the person.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [],
-    "spatial": "The person is in the center of the frame, holding a guitar. To the left of the person is an electronic drum kit. To the right of the person is a bed. In the background, behind the person, is a CRT monitor.",
-    "parse_success": true,
-    "chunk_idx": 6,
-    "video_id": "e1eyNxjrm5Y"
-  },
-  {
-    "time": [
-      14,
-      16
-    ],
-    "visible_entities": [
-      {
-        "desc": "person with dark hair, wearing a light-colored long-sleeved top",
-        "action": "playing electronic drums",
-        "position": "center"
-      },
-      {
-        "desc": "electronic drum kit with round pads",
-        "action": "being played",
-        "position": "foreground"
-      },
-      {
-        "desc": "bed with a patterned blanket",
-        "action": "static",
-        "position": "right"
-      },
-      {
-        "desc": "old beige CRT monitor",
-        "action": "static",
-        "position": "background"
-      },
-      {
-        "desc": "wooden shelving unit",
-        "action": "static",
-        "position": "left"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "person is playing an electronic drum kit",
-        "confidence": 1.0
-      },
-      {
-        "fact": "the person is sitting in a bedroom",
-        "confidence": 1.0
-      },
-      {
-        "fact": "a CRT monitor is on a desk in the background",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [],
-    "spatial": "The person is in the center of the frame, sitting in front of the electronic drum kit. To the right of the person is a bed with a patterned blanket. Behind the person is a desk with an old CRT monitor. To the left of the person is a wooden shelving unit.",
-    "parse_success": true,
-    "chunk_idx": 7,
-    "video_id": "e1eyNxjrm5Y"
-  },
-  {
-    "time": [
-      16,
-      18
-    ],
-    "visible_entities": [
-      {
-        "desc": "person with short dark hair, wearing a light-colored t-shirt",
-        "action": "playing electronic drums",
-        "position": "center"
-      },
-      {
-        "desc": "electronic drum kit with circular grey pads",
-        "action": "static",
-        "position": "left"
-      },
-      {
-        "desc": "bed with a dark patterned duvet and a pillow",
-        "action": "static",
-        "position": "right"
-      },
-      {
-        "desc": "white box-shaped appliance",
-        "action": "static",
-        "position": "background"
-      },
-      {
-        "desc": "wooden shelving unit",
-        "action": "static",
-        "position": "left"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "person is playing electronic drums",
-        "confidence": 1.0
-      },
-      {
-        "fact": "the person is seated in front of the drum kit",
-        "confidence": 1.0
-      },
-      {
-        "fact": "the bed is located to the right of the person",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [],
-    "spatial": "The person is seated in the center of the room, positioned between the electronic drum kit on the left and the bed on the right. The white appliance is located in the background behind the person.",
-    "parse_success": true,
-    "chunk_idx": 8,
-    "video_id": "e1eyNxjrm5Y"
-  },
-  {
-    "time": [
-      18,
-      20
-    ],
-    "visible_entities": [
-      {
-        "desc": "person with dark hair, wearing a light-colored long-sleeved shirt",
-        "action": "playing electronic drums",
-        "position": "center"
-      },
-      {
-        "desc": "electronic drum kit with circular pads",
+        "desc": "electronic drum pads, circular, grey",
         "action": "static",
         "position": "left"
       },
@@ -451,18 +262,18 @@
         "position": "right"
       },
       {
-        "desc": "white CRT monitor",
+        "desc": "white boxy object, possibly a monitor or appliance",
         "action": "static",
         "position": "background"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "person is playing electronic drums",
+        "fact": "person is playing a guitar",
         "confidence": 1.0
       },
       {
-        "fact": "person is sitting on a chair",
+        "fact": "electronic drum pads are on the floor to the left",
         "confidence": 1.0
       },
       {
@@ -471,75 +282,188 @@
       }
     ],
     "ocr": [],
-    "spatial": "The person is in the center of the frame, sitting in front of the electronic drum kit which is to their left. The bed with the patterned blanket is to the right of the person. The white CRT monitor is in the background behind the person.",
+    "spatial": "The person is in the center of the frame, holding a guitar. To the left of the person are electronic drum pads on the floor. To the right of the person is a bed with a patterned blanket. Behind the person is a white boxy object.",
     "parse_success": true,
-    "chunk_idx": 9,
+    "chunk_idx": 5,
     "video_id": "e1eyNxjrm5Y"
   },
   {
     "time": [
-      20,
-      22
+      6,
+      7
     ],
     "visible_entities": [
       {
-        "desc": "person with short dark hair, wearing a light-colored long-sleeved shirt with dark horizontal stripes",
-        "action": "playing electronic drums",
+        "desc": "person with dark hair, wearing a light-colored long-sleeved shirt with horizontal stripes",
+        "action": "playing a guitar",
         "position": "center"
       },
       {
-        "desc": "electronic drum kit with black pads and grey rims",
+        "desc": "acoustic guitar with a wooden body",
         "action": "being played",
-        "position": "center-left"
+        "position": "center"
       },
       {
-        "desc": "bed with a patterned blanket featuring dark and light colors",
+        "desc": "electronic drum kit with black pads and white rims",
+        "action": "static",
+        "position": "left"
+      },
+      {
+        "desc": "bed with a wooden headboard and a dark patterned blanket",
         "action": "static",
         "position": "right"
       },
       {
-        "desc": "white CRT television or monitor",
+        "desc": "old beige CRT computer monitor",
         "action": "static",
         "position": "background"
       },
       {
-        "desc": "wooden shelving unit with items on it",
+        "desc": "wooden shelving unit",
         "action": "static",
         "position": "left"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "person is playing electronic drums",
+        "fact": "A person is sitting and playing an acoustic guitar.",
         "confidence": 1.0
       },
       {
-        "fact": "person is sitting in front of the drum kit",
+        "fact": "An electronic drum kit is positioned to the left of the person.",
         "confidence": 1.0
       },
       {
-        "fact": "bed is to the right of the person",
+        "fact": "A bed is located to the right of the person.",
         "confidence": 1.0
       },
       {
-        "fact": "television is behind the person",
+        "fact": "A CRT monitor is visible in the background behind the person.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The person is in the center of the frame, sitting in front of the electronic drum kit. The bed is to the right of the person. The television is in the background, behind the person. The shelving unit is to the left of the drum kit.",
+    "spatial": "The person playing the guitar is in the center of the room. To the left of the person is an electronic drum kit and a wooden shelving unit. To the right of the person is a bed with a patterned blanket. Behind the person, a CRT monitor sits on a surface.",
     "parse_success": true,
-    "chunk_idx": 10,
+    "chunk_idx": 6,
     "video_id": "e1eyNxjrm5Y"
   },
   {
     "time": [
-      22,
-      24
+      7,
+      8
     ],
     "visible_entities": [
       {
-        "desc": "person with dark hair, wearing a light-colored t-shirt over a long-sleeved striped shirt",
+        "desc": "person with dark hair, wearing a light-colored long-sleeved shirt",
+        "action": "playing drums",
+        "position": "center"
+      },
+      {
+        "desc": "electronic drum kit with circular pads",
+        "action": "being played",
+        "position": "foreground"
+      },
+      {
+        "desc": "bed with a patterned dark blue blanket",
+        "action": "static",
+        "position": "right"
+      },
+      {
+        "desc": "wooden shelving unit",
+        "action": "static",
+        "position": "left"
+      },
+      {
+        "desc": "beige CRT monitor",
+        "action": "static",
+        "position": "background"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A person is playing an electronic drum kit.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The person is seated in front of the drum pads.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A bed with a patterned blanket is located to the right of the person.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A wooden shelf is located to the left of the person.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The person is in the center of the room, sitting in front of the electronic drum kit. To the right of the person is a bed with a patterned blanket. To the left of the person is a wooden shelving unit. In the background, behind the person, is a beige CRT monitor.",
+    "parse_success": true,
+    "chunk_idx": 7,
+    "video_id": "e1eyNxjrm5Y"
+  },
+  {
+    "time": [
+      8,
+      9
+    ],
+    "visible_entities": [
+      {
+        "desc": "person with short dark hair, wearing a light-colored t-shirt",
+        "action": "playing a drum kit",
+        "position": "center"
+      },
+      {
+        "desc": "electronic drum kit with circular pads",
+        "action": "being played",
+        "position": "foreground"
+      },
+      {
+        "desc": "bed with a dark patterned blanket",
+        "action": "static",
+        "position": "right"
+      },
+      {
+        "desc": "white computer monitor",
+        "action": "static",
+        "position": "background"
+      },
+      {
+        "desc": "wooden shelving unit",
+        "action": "static",
+        "position": "left"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "person is playing the electronic drum kit",
+        "confidence": 1.0
+      },
+      {
+        "fact": "the person is seated in front of the drum pads",
+        "confidence": 1.0
+      },
+      {
+        "fact": "a bed is located to the right of the drummer",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The person is in the center of the frame, positioned in front of the electronic drum kit. To the right of the person is a bed with a patterned blanket. To the left of the person is a wooden shelving unit. In the background, behind the person, sits a white computer monitor.",
+    "parse_success": true,
+    "chunk_idx": 8,
+    "video_id": "e1eyNxjrm5Y"
+  },
+  {
+    "time": [
+      9,
+      10
+    ],
+    "visible_entities": [
+      {
+        "desc": "person with short dark hair, wearing a light-colored long-sleeved shirt",
         "action": "playing electronic drums",
         "position": "center"
       },
@@ -549,17 +473,115 @@
         "position": "left"
       },
       {
-        "desc": "wooden bed frame with patterned bedding",
+        "desc": "bed with a dark patterned blanket",
         "action": "static",
         "position": "right"
       },
       {
-        "desc": "white CRT monitor",
+        "desc": "old beige CRT computer monitor",
         "action": "static",
         "position": "background"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A person is playing an electronic drum kit.",
+        "confidence": 1.0
       },
       {
-        "desc": "wooden shelving unit with items",
+        "fact": "The person is seated in a dimly lit room.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A bed is positioned to the right of the drummer.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The person is in the center of the frame, sitting in front of the electronic drum kit which is on the left. The bed with the patterned blanket is to the right of the person. The CRT monitor is in the background behind the person.",
+    "parse_success": true,
+    "chunk_idx": 9,
+    "video_id": "e1eyNxjrm5Y"
+  },
+  {
+    "time": [
+      10,
+      11
+    ],
+    "visible_entities": [
+      {
+        "desc": "person with dark hair, wearing a light-colored long-sleeved shirt with dark stripes on the sleeves",
+        "action": "playing electronic drums",
+        "position": "center"
+      },
+      {
+        "desc": "electronic drum kit with round pads and black rims",
+        "action": "static",
+        "position": "left"
+      },
+      {
+        "desc": "bed with a patterned dark blue blanket featuring circular designs",
+        "action": "static",
+        "position": "right"
+      },
+      {
+        "desc": "wooden shelving unit with various items",
+        "action": "static",
+        "position": "left"
+      },
+      {
+        "desc": "white box-like object, possibly a computer tower or speaker",
+        "action": "static",
+        "position": "background"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "person is playing electronic drums",
+        "confidence": 1.0
+      },
+      {
+        "fact": "the drum pads are being struck by the person's hands",
+        "confidence": 1.0
+      },
+      {
+        "fact": "the bed is to the right of the person",
+        "confidence": 1.0
+      },
+      {
+        "fact": "the shelving unit is to the left of the drum kit",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The person is in the center of the frame, sitting in front of the electronic drum kit which is positioned to their left. To the right of the person is a bed with a patterned blanket. Behind the person and to the left is a wooden shelving unit. In the background, above and behind the person, is a white box-like object.",
+    "parse_success": true,
+    "chunk_idx": 10,
+    "video_id": "e1eyNxjrm5Y"
+  },
+  {
+    "time": [
+      11,
+      12
+    ],
+    "visible_entities": [
+      {
+        "desc": "person with short dark hair, wearing a light-colored t-shirt over a long-sleeved striped shirt",
+        "action": "playing electronic drums",
+        "position": "center"
+      },
+      {
+        "desc": "electronic drum kit with circular mesh pads",
+        "action": "being played",
+        "position": "left"
+      },
+      {
+        "desc": "bed with patterned bedding",
+        "action": "static",
+        "position": "right"
+      },
+      {
+        "desc": "wooden shelving unit",
         "action": "static",
         "position": "left"
       }
@@ -570,147 +592,45 @@
         "confidence": 1.0
       },
       {
-        "fact": "person is sitting in front of the drum kit",
+        "fact": "the drum kit is positioned in front of the person",
         "confidence": 1.0
       },
       {
-        "fact": "electronic drum kit is on the floor",
-        "confidence": 1.0
-      },
-      {
-        "fact": "bed is to the right of the person",
-        "confidence": 1.0
-      },
-      {
-        "fact": "CRT monitor is behind the person",
+        "fact": "the bed is to the right of the person",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The person is in the center of the frame, sitting in front of the electronic drum kit which is to their left. The wooden bed frame is to the right of the person. The CRT monitor is in the background, behind the person and the drum kit. The shelving unit is on the far left side of the room.",
+    "spatial": "The person is in the center of the frame, sitting in front of the electronic drum kit. The drum kit is to the left of the person. The bed is to the right of the person. The wooden shelving unit is to the left of the drum kit.",
     "parse_success": true,
     "chunk_idx": 11,
     "video_id": "e1eyNxjrm5Y"
   },
   {
     "time": [
-      24,
-      26
+      12,
+      13
     ],
     "visible_entities": [
       {
-        "desc": "person with short dark hair, wearing a light-colored t-shirt",
-        "action": "playing electronic drum pads",
-        "position": "center"
-      },
-      {
-        "desc": "electronic drum kit with round pads",
-        "action": "static",
-        "position": "left"
-      },
-      {
-        "desc": "wooden chair",
-        "action": "static",
-        "position": "right"
-      },
-      {
-        "desc": "white appliance",
-        "action": "static",
-        "position": "background"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "person is hitting the electronic drum pads with their hands",
-        "confidence": 1.0
-      },
-      {
-        "fact": "the person is sitting on a wooden chair",
-        "confidence": 1.0
-      },
-      {
-        "fact": "the electronic drum kit is positioned to the left of the person",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [],
-    "spatial": "The person is sitting on a wooden chair in the center of the frame. To the left of the person is an electronic drum kit. Behind the person, a white appliance is visible in the background.",
-    "parse_success": true,
-    "chunk_idx": 12,
-    "video_id": "e1eyNxjrm5Y"
-  },
-  {
-    "time": [
-      26,
-      28
-    ],
-    "visible_entities": [
-      {
-        "desc": "person with short dark hair, wearing a light-colored long-sleeved shirt",
-        "action": "playing drums",
-        "position": "center"
-      },
-      {
-        "desc": "electronic drum kit with circular grey pads and black rims",
-        "action": "static",
-        "position": "left"
-      },
-      {
-        "desc": "bed with a dark patterned blanket featuring light-colored designs",
-        "action": "static",
-        "position": "right"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "person is playing the electronic drum kit",
-        "confidence": 1.0
-      },
-      {
-        "fact": "the drum kit is positioned to the left of the person",
-        "confidence": 1.0
-      },
-      {
-        "fact": "the bed is positioned to the right of the person",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [],
-    "spatial": "The person is in the center of the frame, positioned between the electronic drum kit on the left and the bed on the right. The person is holding drumsticks and interacting with the drum pads.",
-    "parse_success": true,
-    "chunk_idx": 13,
-    "video_id": "e1eyNxjrm5Y"
-  },
-  {
-    "time": [
-      28,
-      30
-    ],
-    "visible_entities": [
-      {
-        "desc": "person with dark hair, wearing a light-colored long-sleeved shirt",
+        "desc": "person with short dark hair, wearing a light-colored t-shirt and a white long-sleeved garment underneath",
         "action": "playing electronic drums",
         "position": "center"
       },
       {
-        "desc": "electronic drum kit with circular grey pads and black rims",
+        "desc": "electronic drum kit with circular grey pads and black frame",
         "action": "static",
         "position": "left"
       },
       {
-        "desc": "wooden bed frame with a patterned blanket",
+        "desc": "wooden chair with vertical slats",
         "action": "static",
         "position": "right"
       },
       {
-        "desc": "white CRT monitor",
+        "desc": "white rectangular appliance, possibly a dehumidifier or air purifier",
         "action": "static",
         "position": "background"
-      },
-      {
-        "desc": "wooden shelving unit with various items",
-        "action": "static",
-        "position": "left"
       }
     ],
     "atomic_facts": [
@@ -719,7 +639,7 @@
         "confidence": 1.0
       },
       {
-        "fact": "person's hands are moving over the drum pads",
+        "fact": "person is sitting on a wooden chair",
         "confidence": 1.0
       },
       {
@@ -727,24 +647,131 @@
         "confidence": 1.0
       },
       {
-        "fact": "bed is to the right of the person",
+        "fact": "white appliance is in the background behind the person",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The person is in the center of the room, sitting in front of the electronic drum kit. The drum kit is to the left of the person. The wooden bed frame with a patterned blanket is to the right of the person. The white CRT monitor is in the background, behind the person. The wooden shelving unit is to the left of the drum kit.",
+    "spatial": "The person is sitting on the wooden chair in the center of the frame. The electronic drum kit is to the left of the person and in front of them. The white appliance is in the background, behind the person and to the right of the drum kit.",
+    "parse_success": true,
+    "chunk_idx": 12,
+    "video_id": "e1eyNxjrm5Y"
+  },
+  {
+    "time": [
+      13,
+      14
+    ],
+    "visible_entities": [
+      {
+        "desc": "person with short dark hair, wearing a light-colored long-sleeved shirt",
+        "action": "playing electronic drums",
+        "position": "center"
+      },
+      {
+        "desc": "electronic drum set with circular pads",
+        "action": "being played",
+        "position": "left"
+      },
+      {
+        "desc": "bed with a dark patterned blanket",
+        "action": "static",
+        "position": "right"
+      },
+      {
+        "desc": "wooden furniture structure",
+        "action": "static",
+        "position": "background"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "person is playing electronic drums",
+        "confidence": 1.0
+      },
+      {
+        "fact": "the drum pads are circular",
+        "confidence": 1.0
+      },
+      {
+        "fact": "the room is dimly lit with a yellowish hue",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The person is in the center of the frame, sitting in front of the electronic drum set which is to their left. The bed with the patterned blanket is to the right of the person. The wooden furniture structure is behind the person.",
+    "parse_success": true,
+    "chunk_idx": 13,
+    "video_id": "e1eyNxjrm5Y"
+  },
+  {
+    "time": [
+      14,
+      15
+    ],
+    "visible_entities": [
+      {
+        "desc": "person with dark hair, wearing a light-colored long-sleeved shirt",
+        "action": "playing electronic drum pads",
+        "position": "center"
+      },
+      {
+        "desc": "electronic drum kit with circular pads",
+        "action": "static",
+        "position": "left"
+      },
+      {
+        "desc": "wooden shelving unit with items on top",
+        "action": "static",
+        "position": "left"
+      },
+      {
+        "desc": "bed with patterned blanket",
+        "action": "static",
+        "position": "right"
+      },
+      {
+        "desc": "white box-like object",
+        "action": "static",
+        "position": "background"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "person is playing electronic drum pads",
+        "confidence": 1.0
+      },
+      {
+        "fact": "electronic drum kit is positioned in front of the person",
+        "confidence": 1.0
+      },
+      {
+        "fact": "wooden shelving unit is to the left of the person",
+        "confidence": 1.0
+      },
+      {
+        "fact": "bed with patterned blanket is to the right of the person",
+        "confidence": 1.0
+      },
+      {
+        "fact": "white box-like object is in the background behind the person",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The person is in the center of the frame, playing electronic drum pads that are in front of them. To the left of the person is a wooden shelving unit with items on top. To the right of the person is a bed with a patterned blanket. In the background, behind the person, there is a white box-like object.",
     "parse_success": true,
     "chunk_idx": 14,
     "video_id": "e1eyNxjrm5Y"
   },
   {
     "time": [
-      30,
-      32
+      15,
+      16
     ],
     "visible_entities": [
       {
-        "desc": "person with short dark hair, wearing a light-colored long-sleeved shirt",
+        "desc": "person with dark hair, wearing a light-colored long-sleeved shirt",
         "action": "playing an acoustic guitar",
         "position": "center"
       },
@@ -759,14 +786,14 @@
         "position": "left"
       },
       {
-        "desc": "bed with a dark patterned blanket featuring circular designs",
+        "desc": "bed with a dark patterned blanket",
         "action": "static",
         "position": "right"
       },
       {
-        "desc": "old CRT computer monitor",
+        "desc": "white lamp with a rectangular shade",
         "action": "static",
-        "position": "background"
+        "position": "left"
       }
     ],
     "atomic_facts": [
@@ -785,43 +812,39 @@
       {
         "fact": "A bed with a patterned blanket is to the right of the person.",
         "confidence": 1.0
-      },
-      {
-        "fact": "A CRT monitor is visible in the background behind the person.",
-        "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The person playing the guitar is in the center of the frame. To the left of the person is an electronic drum kit. To the right of the person is a bed with a patterned blanket. Behind the person, a CRT monitor sits on a surface.",
+    "spatial": "The person playing the guitar is in the center of the frame. To the left of the person is an electronic drum kit and a white lamp. To the right of the person is a bed with a dark patterned blanket.",
     "parse_success": true,
     "chunk_idx": 15,
     "video_id": "e1eyNxjrm5Y"
   },
   {
     "time": [
-      32,
-      34
+      16,
+      17
     ],
     "visible_entities": [
       {
         "desc": "person with short dark hair, wearing a light-colored long-sleeved shirt and dark pants",
-        "action": "falling backward onto the bed",
+        "action": "falling backwards onto a bed",
         "position": "center"
       },
       {
-        "desc": "light-colored acoustic guitar",
-        "action": "being held and moved by the person",
+        "desc": "acoustic guitar with a light wood finish",
+        "action": "being held and then dropped",
         "position": "center"
       },
       {
-        "desc": "electronic drum kit with circular pads",
-        "action": "static",
-        "position": "left"
-      },
-      {
-        "desc": "bed with a dark patterned blanket",
+        "desc": "bed with a dark blue blanket featuring a white circular pattern",
         "action": "static",
         "position": "right"
+      },
+      {
+        "desc": "electronic drum kit with black pads and silver rims",
+        "action": "static",
+        "position": "left"
       },
       {
         "desc": "old beige CRT television",
@@ -831,11 +854,11 @@
     ],
     "atomic_facts": [
       {
-        "fact": "The person is falling backward onto the bed.",
+        "fact": "A person falls backwards onto a bed.",
         "confidence": 1.0
       },
       {
-        "fact": "The person is holding an acoustic guitar while falling.",
+        "fact": "The person is holding an acoustic guitar before falling.",
         "confidence": 1.0
       },
       {
@@ -855,38 +878,34 @@
   },
   {
     "time": [
-      34,
-      36
+      17,
+      18
     ],
     "visible_entities": [
       {
-        "desc": "person with dark hair, wearing a yellow long-sleeved shirt and dark pants",
-        "action": "bending over and reaching towards the floor",
+        "desc": "person with dark hair, wearing a light yellow long-sleeved shirt and dark pants",
+        "action": "leaning forward over a low surface",
         "position": "center"
       },
       {
-        "desc": "dark drum kit with circular pads",
+        "desc": "dark drum kit with visible cymbals and drum shells",
         "action": "static",
         "position": "left"
       },
       {
-        "desc": "dark patterned fabric or object",
+        "desc": "dark patterned sofa with light-colored circular motifs",
         "action": "static",
         "position": "right"
       },
       {
-        "desc": "wooden furniture or stand",
+        "desc": "cluttered low table with various small objects",
         "action": "static",
-        "position": "background"
+        "position": "foreground"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A person in a yellow shirt is bending forward in the center of the room.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The person's hands are reaching down towards the floor or a low object.",
+        "fact": "A person in a yellow shirt is leaning forward over a table.",
         "confidence": 1.0
       },
       {
@@ -894,34 +913,34 @@
         "confidence": 1.0
       },
       {
-        "fact": "The scene is dimly lit with a warm, reddish hue.",
+        "fact": "A patterned sofa is located behind the person.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The person in the yellow shirt is in the center of the frame, bending over. To the left of the person is a drum kit. Behind the person is a piece of wooden furniture. To the right of the person is a dark, patterned object.",
+    "spatial": "The person in the yellow shirt is in the center of the frame, leaning over a low table in the foreground. To the left of the person is a drum kit. Behind the person and to the right is a dark patterned sofa.",
     "parse_success": true,
     "chunk_idx": 17,
     "video_id": "e1eyNxjrm5Y"
   },
   {
     "time": [
-      36,
-      38
+      18,
+      19
     ],
     "visible_entities": [
       {
-        "desc": "person wearing a light yellow long-sleeved shirt and dark pants",
+        "desc": "person with dark hair, wearing a light yellow long-sleeved shirt and dark pants",
         "action": "sitting on the floor",
         "position": "center"
       },
       {
-        "desc": "red bed with a dark blue blanket featuring a white and yellow circular pattern",
+        "desc": "red bed with a dark blanket featuring a light-colored circular pattern",
         "action": "static",
         "position": "background"
       },
       {
-        "desc": "low wooden table with various small items on it",
+        "desc": "low wooden table with various small objects on top",
         "action": "static",
         "position": "foreground"
       }
@@ -936,114 +955,118 @@
         "confidence": 1.0
       },
       {
-        "fact": "A patterned blanket is draped over the red bed.",
+        "fact": "The bed has a dark blanket with a pattern of light circles.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The person in the yellow shirt is sitting on the floor in front of the red bed. The low wooden table is in the foreground, positioned in front of the person. The patterned blanket is on top of the bed.",
+    "spatial": "The person is sitting on the floor in front of the red bed. The low wooden table is in the foreground, in front of the person. The dark patterned blanket is on top of the red bed.",
     "parse_success": true,
     "chunk_idx": 18,
     "video_id": "e1eyNxjrm5Y"
   },
   {
     "time": [
-      38,
-      40
+      19,
+      20
     ],
     "visible_entities": [
       {
-        "desc": "dark wooden furniture, possibly a cabinet or table, with a flat surface",
+        "desc": "dark wooden furniture structure, likely a table or shelf, with a reddish-brown hue",
         "action": "static",
         "position": "center"
       },
       {
-        "desc": "small rectangular object with a glowing yellow-green screen, likely a mobile phone",
-        "action": "resting on surface",
+        "desc": "small rectangular object with a glowing yellow-green screen, resembling a mobile phone",
+        "action": "resting",
         "position": "bottom"
       },
       {
-        "desc": "hand with light skin tone, holding a thin tool or stick",
-        "action": "manipulating items on surface",
+        "desc": "indistinct blurry shapes with hints of red and yellow, possibly hands or small items",
+        "action": "moving",
         "position": "top"
-      },
-      {
-        "desc": "small red glowing light, possibly an LED indicator or laser pointer dot",
-        "action": "static",
-        "position": "center-right"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A hand is manipulating small items on a dark wooden surface.",
+        "fact": "A small rectangular object with a glowing yellow-green screen is resting on a surface.",
         "confidence": 1.0
       },
       {
-        "fact": "A mobile phone with a glowing screen is resting on the furniture.",
+        "fact": "Blurry shapes are moving in the upper portion of the frame.",
         "confidence": 1.0
       },
       {
-        "fact": "A small red light is visible on the surface near the hand.",
+        "fact": "The scene is extremely dark and out of focus, obscuring fine details.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The hand is positioned above the dark wooden furniture surface. The mobile phone is resting on the bottom edge of the furniture, below the area where the hand is working. The red light is to the right of the hand's activity area.",
+    "spatial": "The small rectangular object with the glowing screen is located at the bottom of the frame, resting on the dark wooden furniture structure. The indistinct blurry shapes are positioned above the wooden structure.",
     "parse_success": true,
     "chunk_idx": 19,
     "video_id": "e1eyNxjrm5Y"
   },
   {
     "time": [
-      40,
-      42
+      20,
+      21
     ],
     "visible_entities": [
       {
-        "desc": "person with dark hair, wearing a light-colored long-sleeved shirt and dark patterned pants",
-        "action": "moving rapidly on the floor",
-        "position": "right"
+        "desc": "person with dark hair, wearing a light-colored sleeveless top and dark patterned shorts",
+        "action": "moving on the floor",
+        "position": "center"
       },
       {
-        "desc": "electronic drum kit with black circular pads",
+        "desc": "electronic drum kit with round pads",
         "action": "static",
         "position": "left"
       },
       {
-        "desc": "beige CRT television set",
+        "desc": "stack of electronic equipment including a CRT monitor and a silver stereo receiver",
         "action": "static",
         "position": "background"
       },
       {
-        "desc": "bed with red sheets and a pillow",
+        "desc": "bed with red sheets and a dark patterned blanket",
         "action": "static",
-        "position": "background"
+        "position": "right"
+      },
+      {
+        "desc": "dark wooden furniture leg",
+        "action": "static",
+        "position": "foreground"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A person is moving quickly on the floor to the right of the drum kit.",
+        "fact": "A person is moving on the floor in the center of the room.",
         "confidence": 1.0
       },
       {
-        "fact": "The drum kit is positioned on the left side of the room.",
+        "fact": "An electronic drum kit is positioned on the left side of the room.",
         "confidence": 1.0
       },
       {
-        "fact": "A television is sitting on a stand in the background.",
+        "fact": "A CRT monitor sits on top of a silver stereo receiver in the background.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A bed with red bedding is located to the right of the person.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The electronic drum kit is on the left side of the frame. The person is to the right of the drum kit, moving on the floor. The television is in the background, behind the drum kit and to the left of the bed.",
+    "spatial": "The person is in the center of the room, positioned between the electronic drum kit on the left and the bed on the right. The stack of electronic equipment is behind the person. A dark wooden furniture leg is in the foreground, partially obscuring the view.",
     "parse_success": true,
     "chunk_idx": 20,
     "video_id": "e1eyNxjrm5Y"
   },
   {
     "time": [
-      42,
-      44
+      21,
+      22
     ],
     "visible_entities": [
       {
@@ -1053,88 +1076,78 @@
       },
       {
         "desc": "light-colored acoustic guitar",
-        "action": "being played",
+        "action": "being held and played",
         "position": "center"
       },
       {
-        "desc": "electronic drum kit with circular pads",
+        "desc": "electronic drum kit with three visible circular pads",
         "action": "static",
         "position": "left"
       },
       {
-        "desc": "dark patterned sofa or bed",
-        "action": "static",
-        "position": "right"
-      },
-      {
-        "desc": "old beige CRT monitor",
+        "desc": "beige CRT television set",
         "action": "static",
         "position": "background"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A person is sitting and strumming an acoustic guitar.",
+        "fact": "A person is sitting and playing an acoustic guitar.",
         "confidence": 1.0
       },
       {
-        "fact": "The person is positioned between an electronic drum kit and a sofa.",
+        "fact": "The person's hands are positioned on the guitar strings and body.",
         "confidence": 1.0
       },
       {
-        "fact": "A CRT monitor is visible in the background behind the person.",
+        "fact": "An electronic drum kit is positioned to the left of the person.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A CRT television is located in the background behind the person.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The person playing the guitar is in the center of the frame. To the left of the person is an electronic drum kit. To the right of the person is a dark patterned sofa. Behind the person, a beige CRT monitor sits on a surface.",
+    "spatial": "The person is sitting in the center of the frame, holding the acoustic guitar. To the left of the person is an electronic drum kit. Behind the person and the guitar is a CRT television set resting on a stand.",
     "parse_success": true,
     "chunk_idx": 21,
     "video_id": "e1eyNxjrm5Y"
   },
   {
     "time": [
-      44,
-      46
+      22,
+      23
     ],
     "visible_entities": [
       {
         "desc": "person with dark hair, wearing a light-colored long-sleeved shirt and dark pants",
-        "action": "falling backward onto the bed",
+        "action": "falling backward",
         "position": "center"
       },
       {
-        "desc": "red acoustic guitar",
-        "action": "being held and then dropped",
-        "position": "center"
-      },
-      {
-        "desc": "electronic drum kit with black pads and silver rims",
+        "desc": "electronic drum kit with circular pads",
         "action": "static",
         "position": "left"
       },
       {
-        "desc": "bed with a dark blue patterned blanket featuring white circular designs",
+        "desc": "bed with a dark blanket featuring a repeating circular pattern",
         "action": "static",
         "position": "right"
       },
       {
-        "desc": "old beige CRT television",
+        "desc": "bulky beige CRT monitor or television",
         "action": "static",
         "position": "background"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "The person is holding a red guitar while sitting on the edge of the bed.",
+        "fact": "The person in the light-colored shirt is falling backward onto the bed.",
         "confidence": 1.0
       },
       {
-        "fact": "The person leans back and falls onto the mattress.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The guitar is dropped or laid down as the person falls.",
+        "fact": "The person is holding a red object, likely a guitar controller, while falling.",
         "confidence": 1.0
       },
       {
@@ -1143,31 +1156,26 @@
       }
     ],
     "ocr": [],
-    "spatial": "The person is sitting on the edge of the bed, which is to the right of the electronic drum kit. The television is in the background behind the drum kit. The person falls backward onto the bed.",
+    "spatial": "The person is in the center of the room, positioned between the electronic drum kit on the left and the bed on the right. The person is falling backward onto the bed. The CRT monitor is in the background, behind the person and the drum kit.",
     "parse_success": true,
     "chunk_idx": 22,
     "video_id": "e1eyNxjrm5Y"
   },
   {
     "time": [
-      46,
-      48
+      23,
+      24
     ],
     "visible_entities": [
       {
         "desc": "person with dark hair, wearing a light-colored long-sleeved shirt and dark pants",
-        "action": "falling backward onto the bed",
+        "action": "falling backwards onto the floor",
         "position": "center"
       },
       {
-        "desc": "acoustic guitar with a light wood body and dark fretboard",
-        "action": "being dropped or falling",
+        "desc": "acoustic guitar with a light wood finish and dark soundhole",
+        "action": "being dropped",
         "position": "center"
-      },
-      {
-        "desc": "bed with red sheets and a dark blanket with a circular pattern",
-        "action": "static",
-        "position": "right"
       },
       {
         "desc": "electronic drum kit with circular pads",
@@ -1175,96 +1183,101 @@
         "position": "left"
       },
       {
-        "desc": "old beige CRT computer monitor",
+        "desc": "bed with red sheets and a dark patterned blanket",
+        "action": "static",
+        "position": "right"
+      },
+      {
+        "desc": "CRT television on a stand",
         "action": "static",
         "position": "background"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "The person falls backward onto the bed.",
+        "fact": "The person falls backwards onto the floor.",
         "confidence": 1.0
       },
       {
-        "fact": "The acoustic guitar is dropped and falls towards the floor.",
+        "fact": "The acoustic guitar is dropped by the person.",
         "confidence": 1.0
       },
       {
-        "fact": "The person is holding the guitar in the first frame before letting go.",
+        "fact": "The electronic drum kit is positioned to the left of the person.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The person is in the center of the room, falling onto the bed which is to their right. The electronic drum kit is to the left of the person. The CRT monitor is in the background, behind the person and the guitar.",
+    "spatial": "The person is in the center of the room, falling backwards towards the floor. The electronic drum kit is to the left of the person. The bed is to the right of the person. The television is in the background, behind the person.",
     "parse_success": true,
     "chunk_idx": 23,
     "video_id": "e1eyNxjrm5Y"
   },
   {
     "time": [
-      48,
-      50
+      24,
+      25
     ],
     "visible_entities": [
       {
-        "desc": "person with dark hair, wearing a light-colored long-sleeved shirt",
-        "action": "holding and moving an acoustic guitar",
+        "desc": "person with short dark hair, wearing a light-colored long-sleeved shirt and dark pants",
+        "action": "holding a guitar",
         "position": "center"
       },
       {
-        "desc": "acoustic guitar with a light wood finish and dark fretboard",
-        "action": "being manipulated",
+        "desc": "acoustic guitar with a light wood body and dark neck",
+        "action": "being held and moved",
         "position": "center"
       },
       {
-        "desc": "electronic drum kit with circular pads",
+        "desc": "electronic drum kit with round, dark pads",
         "action": "static",
         "position": "left"
       },
       {
-        "desc": "couch with a dark patterned cover",
-        "action": "static",
-        "position": "right"
-      },
-      {
-        "desc": "CRT television",
+        "desc": "old beige CRT television",
         "action": "static",
         "position": "background"
+      },
+      {
+        "desc": "bed with a dark patterned comforter",
+        "action": "static",
+        "position": "right"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A person is holding an acoustic guitar.",
+        "fact": "person is holding an acoustic guitar",
         "confidence": 1.0
       },
       {
-        "fact": "The person is moving the guitar in a strumming or playing motion.",
+        "fact": "the guitar is being moved or adjusted",
         "confidence": 1.0
       },
       {
-        "fact": "An electronic drum kit is positioned to the left of the person.",
+        "fact": "an electronic drum kit is to the left of the person",
         "confidence": 1.0
       },
       {
-        "fact": "A television is visible in the background.",
+        "fact": "a CRT television is in the background behind the person",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The person is sitting in the center of the frame, holding the guitar. To the left of the person is an electronic drum kit. Behind the person and to the right is a couch. In the background, a television is visible.",
+    "spatial": "The person is sitting in the center of the frame, holding a guitar. To the left of the person is an electronic drum kit. Behind the person and to the right is a bed with a patterned comforter. In the background, above and behind the person, is a CRT television.",
     "parse_success": true,
     "chunk_idx": 24,
     "video_id": "e1eyNxjrm5Y"
   },
   {
     "time": [
-      50,
-      52
+      25,
+      26
     ],
     "visible_entities": [
       {
         "desc": "person with dark hair, wearing a light-colored long-sleeved shirt and dark pants",
-        "action": "falling backwards onto the bed",
+        "action": "falling backward onto the bed",
         "position": "center"
       },
       {
@@ -1278,7 +1291,7 @@
         "position": "right"
       },
       {
-        "desc": "electronic drum kit with black pads",
+        "desc": "electronic drum kit with round pads",
         "action": "static",
         "position": "left"
       },
@@ -1290,71 +1303,57 @@
     ],
     "atomic_facts": [
       {
-        "fact": "The person leans back and falls onto the bed.",
+        "fact": "The person is falling backward onto the bed.",
         "confidence": 1.0
       },
       {
-        "fact": "The acoustic guitar slips from the person's grasp.",
+        "fact": "The person is holding a guitar before letting go of it.",
         "confidence": 1.0
       },
       {
-        "fact": "The guitar falls towards the floor as the person falls.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The person is lying on the bed in the second frame.",
+        "fact": "The guitar is falling towards the floor.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The person is in the center of the room, positioned between the electronic drum kit on the left and the bed on the right. The CRT monitor is in the background, sitting on a stand behind the drum kit. The person falls from a seated position onto the bed.",
+    "spatial": "The person is in the center of the room, positioned between the electronic drum kit on the left and the bed on the right. The CRT monitor is in the background, behind the person and the drum kit.",
     "parse_success": true,
     "chunk_idx": 25,
     "video_id": "e1eyNxjrm5Y"
   },
   {
     "time": [
-      52,
-      54
+      26,
+      27
     ],
     "visible_entities": [
       {
         "desc": "person with short dark hair, wearing a light-colored long-sleeved shirt and dark pants",
         "action": "lying on the floor",
-        "position": "center/foreground"
+        "position": "center"
       },
       {
-        "desc": "bed with red sheets and a dark blue blanket featuring a white circular pattern",
+        "desc": "bed with a red sheet and a dark blue blanket featuring a white circular pattern",
         "action": "static",
-        "position": "right/background"
+        "position": "right"
       },
       {
         "desc": "electronic drum kit with black pads and silver rims",
         "action": "static",
-        "position": "left/foreground"
+        "position": "left"
       },
       {
-        "desc": "beige CRT computer monitor",
-        "action": "static",
-        "position": "left/background"
-      },
-      {
-        "desc": "boy with short brown hair, wearing a dark blue sweater, black pants, and white sneakers",
-        "action": "standing on grass",
-        "position": "right/foreground"
-      },
-      {
-        "desc": "green grassy lawn with scattered brown leaves",
-        "action": "static",
-        "position": "center/foreground"
-      },
-      {
-        "desc": "white building with a dark roof",
+        "desc": "stack of vintage electronics including a beige CRT monitor and a silver stereo receiver",
         "action": "static",
         "position": "background"
       },
       {
-        "desc": "two green dumpsters",
+        "desc": "boy with brown hair, wearing a black long-sleeved top, black pants, and white sneakers",
+        "action": "standing on grass",
+        "position": "right"
+      },
+      {
+        "desc": "white rectangular sign on a metal post",
         "action": "static",
         "position": "background"
       }
@@ -1369,163 +1368,107 @@
         "confidence": 1.0
       },
       {
-        "fact": "An electronic drum kit is positioned to the left of the person lying on the floor.",
+        "fact": "An electronic drum kit is positioned to the left of the person on the floor.",
         "confidence": 1.0
       },
       {
-        "fact": "A bed with a patterned blanket is to the right of the person lying on the floor.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "Two green dumpsters are visible in the background near a white building.",
+        "fact": "A bed with a patterned blanket is to the right of the person on the floor.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "In the indoor scene, the person lying on the floor is in front of the bed and to the right of the electronic drum kit. The CRT monitor is on a stand behind the drum kit. In the outdoor scene, the boy is standing on the right side of the grassy area, with the white building and green dumpsters located in the background behind him.",
+    "spatial": "In the first frame, the person is lying on the floor in front of a stack of electronics and next to a bed. The electronic drum kit is to the left of the person. In the second frame, the boy is standing on the grass to the right of the frame, with a signpost behind him and a road in the background.",
     "parse_success": true,
     "chunk_idx": 26,
     "video_id": "e1eyNxjrm5Y"
   },
   {
     "time": [
-      54,
-      56
+      27,
+      28
     ],
     "visible_entities": [
       {
-        "desc": "person with short brown hair, wearing a dark blue sweater with a white collar and a small white emblem on the chest, black trousers, and white shoes",
-        "action": "turning around",
-        "position": "center"
+        "desc": "person with short brown hair, wearing a dark blue sweater with a white collar and a small white logo on the left chest, black trousers, and white shoes",
+        "action": "turning body to the right",
+        "position": "center/foreground"
       },
       {
-        "desc": "wooden post-and-rail fence",
+        "desc": "wooden fence made of vertical posts and horizontal rails",
         "action": "static",
         "position": "right"
       },
       {
         "desc": "white building with a dark roof",
         "action": "static",
-        "position": "background"
+        "position": "background/left"
       },
       {
         "desc": "white rectangular sign on a post",
         "action": "static",
-        "position": "background"
+        "position": "background/center"
       },
       {
-        "desc": "blue car",
+        "desc": "green grassy area",
         "action": "static",
-        "position": "background"
+        "position": "ground"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "The person turns their body from facing the camera to facing away from the camera.",
+        "fact": "The person turns their body away from the camera, revealing their back.",
         "confidence": 1.0
       },
       {
-        "fact": "The person raises their right hand to the side of their head in the first frame.",
+        "fact": "The person is standing on a grassy area next to a wooden fence.",
         "confidence": 1.0
       },
       {
-        "fact": "A blue car is parked in the background on the right side.",
+        "fact": "A white building is visible in the background to the left.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The person is standing on the grass to the left of the wooden fence. The white building and sign are in the background behind the person.",
+    "spatial": "The person is standing on the grass, positioned to the left of the wooden fence. The white building and sign are in the background, behind the person.",
     "parse_success": true,
     "chunk_idx": 27,
     "video_id": "e1eyNxjrm5Y"
   },
   {
     "time": [
-      56,
-      58
+      28,
+      29
     ],
     "visible_entities": [
       {
         "desc": "person with short dark hair, wearing a dark blue or black jacket with a white collar, black pants, and white sneakers",
-        "action": "walking away from the camera",
-        "position": "center"
-      },
-      {
-        "desc": "wooden fence with vertical posts and horizontal rails, weathered brown wood",
-        "action": "static",
-        "position": "right"
-      },
-      {
-        "desc": "green grassy lawn with scattered brown leaves",
-        "action": "static",
-        "position": "foreground"
-      },
-      {
-        "desc": "blue car, partially visible",
-        "action": "static",
-        "position": "background"
-      },
-      {
-        "desc": "white building with a dark roof",
-        "action": "static",
-        "position": "background"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "A person is walking away from the camera on a grassy lawn.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The person is moving towards a road and a white building in the background.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "A wooden fence runs along the right side of the frame.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [],
-    "spatial": "The person is in the center of the frame, walking on the grass. The wooden fence is to the right of the person. The blue car is in the background, to the right of the person's path. The white building is in the background, behind the person.",
-    "parse_success": true,
-    "chunk_idx": 28,
-    "video_id": "e1eyNxjrm5Y"
-  },
-  {
-    "time": [
-      58,
-      60
-    ],
-    "visible_entities": [
-      {
-        "desc": "person with short dark hair, wearing a black jacket, black pants, and white shoes",
         "action": "walking away on the grass",
         "position": "center"
       },
       {
-        "desc": "white rectangular sign on two grey posts",
+        "desc": "wooden fence with wire mesh, brown and weathered",
+        "action": "static",
+        "position": "right foreground"
+      },
+      {
+        "desc": "blue car",
         "action": "static",
         "position": "background right"
       },
       {
-        "desc": "white building with a grey roof",
+        "desc": "white building with a dark roof",
         "action": "static",
         "position": "background left"
       },
       {
-        "desc": "green grassy lawn with scattered brown leaves",
+        "desc": "green grassy area",
         "action": "static",
         "position": "foreground"
-      },
-      {
-        "desc": "green dumpster",
-        "action": "static",
-        "position": "background left"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A person in a black jacket and black pants is walking away from the camera across a green lawn.",
+        "fact": "A person is walking away from the camera on a grassy area.",
         "confidence": 1.0
       },
       {
@@ -1533,39 +1476,95 @@
         "confidence": 1.0
       },
       {
-        "fact": "A white sign stands near a tree to the right of the person.",
+        "fact": "A wooden fence runs along the right side of the frame.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A blue car is parked in the distance on the right.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The person is in the center of the frame, walking on the grass which is in the foreground. The white building and green dumpster are in the background to the left of the person. The white sign is in the background to the right of the person.",
+    "spatial": "The person is in the center of the frame, walking on the green grass. The wooden fence is to the right of the person. The white building is in the background to the left of the person. The blue car is in the background to the right of the person.",
+    "parse_success": true,
+    "chunk_idx": 28,
+    "video_id": "e1eyNxjrm5Y"
+  },
+  {
+    "time": [
+      29,
+      30
+    ],
+    "visible_entities": [
+      {
+        "desc": "person with short dark hair, wearing a black jacket, black pants, and white shoes",
+        "action": "walking away from the camera across the grass",
+        "position": "center"
+      },
+      {
+        "desc": "green grassy lawn with scattered brown leaves",
+        "action": "static",
+        "position": "foreground"
+      },
+      {
+        "desc": "white rectangular sign on two metal posts",
+        "action": "static",
+        "position": "background"
+      },
+      {
+        "desc": "large green waste bins",
+        "action": "static",
+        "position": "background left"
+      },
+      {
+        "desc": "white building with a dark roof",
+        "action": "static",
+        "position": "background"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A person in black clothing is walking away from the camera on a grassy area.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The person is moving towards a paved road in the background.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "Green waste bins are situated to the left of the white building.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The person is in the center of the frame, walking on the grass which is in the foreground. The white sign is to the right of the person in the background. The green waste bins are to the left of the white building in the background.",
     "parse_success": true,
     "chunk_idx": 29,
     "video_id": "e1eyNxjrm5Y"
   },
   {
     "time": [
-      60,
-      62
+      30,
+      31
     ],
     "visible_entities": [
       {
         "desc": "person with short dark hair, wearing a black jacket, black trousers, and white shoes",
-        "action": "standing on grass",
+        "action": "bending forward on the grass",
         "position": "right/foreground"
       },
       {
-        "desc": "white rectangular sign on metal posts",
+        "desc": "white rectangular sign on two metal posts",
         "action": "static",
         "position": "right/background"
       },
       {
-        "desc": "green waste bins",
+        "desc": "green rectangular dumpster",
         "action": "static",
-        "position": "center/background"
+        "position": "left/background"
       },
       {
-        "desc": "white building with a dark roof",
+        "desc": "single-story building with light-colored walls and a grey roof",
         "action": "static",
         "position": "background"
       },
@@ -1577,33 +1576,37 @@
     ],
     "atomic_facts": [
       {
-        "fact": "A person in black clothing is standing on a grassy area.",
+        "fact": "The person bends forward at the waist while standing on the grass.",
         "confidence": 1.0
       },
       {
-        "fact": "The person is positioned near a white sign.",
+        "fact": "The person is wearing white shoes.",
         "confidence": 1.0
       },
       {
-        "fact": "Green waste bins are located in front of the white building.",
+        "fact": "A green dumpster is parked near the building.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A white sign stands on the grass to the right of the person.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The person is standing on the grass to the right of the paved path. The white sign is behind and to the right of the person. The green waste bins are to the left of the person and in front of the white building in the background.",
+    "spatial": "The person is standing on the grass in the foreground, positioned to the right of the paved path. Behind the person and to the right is a white sign. To the left of the path, in the background, a green dumpster is situated in front of a light-colored building.",
     "parse_success": true,
     "chunk_idx": 30,
     "video_id": "e1eyNxjrm5Y"
   },
   {
     "time": [
-      62,
-      64
+      31,
+      32
     ],
     "visible_entities": [
       {
-        "desc": "person with short brown hair, wearing a dark blue long-sleeved sweater, black trousers, and white sneakers",
-        "action": "running towards a tree and hugging it",
+        "desc": "child with short brown hair, wearing a dark blue long-sleeved sweater, dark trousers, and white sneakers",
+        "action": "hugging a tree",
         "position": "center"
       },
       {
@@ -1612,17 +1615,12 @@
         "position": "center"
       },
       {
-        "desc": "green grass with scattered fallen leaves",
+        "desc": "green grassy lawn",
         "action": "static",
         "position": "foreground"
       },
       {
-        "desc": "paved road",
-        "action": "static",
-        "position": "background"
-      },
-      {
-        "desc": "parked cars",
+        "desc": "paved driveway",
         "action": "static",
         "position": "background"
       },
@@ -1634,43 +1632,44 @@
     ],
     "atomic_facts": [
       {
-        "fact": "The person runs across the grass towards the tree.",
+        "fact": "A child is wrapping their arms around a tree trunk.",
         "confidence": 1.0
       },
       {
-        "fact": "The person wraps their arms around the tree trunk.",
+        "fact": "The child is leaning their body against the tree.",
         "confidence": 1.0
       },
       {
-        "fact": "The person presses their face against the tree bark.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The person is wearing white sneakers.",
+        "fact": "The child is standing on a green lawn.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The person is in front of the tree trunk. The tree is to the right of the paved road. The parked cars are behind the road.",
+    "spatial": "The child is in front of the tree trunk, hugging it. The tree is situated on the grassy lawn. The paved driveway and a white house are behind the child and the tree.",
     "parse_success": true,
     "chunk_idx": 31,
     "video_id": "e1eyNxjrm5Y"
   },
   {
     "time": [
-      64,
-      66
+      32,
+      33
     ],
     "visible_entities": [
       {
-        "desc": "person with short brown hair, wearing a dark blue sweater with a white collar, black trousers, and white sneakers",
-        "action": "bending forward and swinging arms",
-        "position": "center"
+        "desc": "person with short brown hair, wearing a dark blue long-sleeved sweater, black trousers, and white sneakers",
+        "action": "bending forward at the waist",
+        "position": "center/foreground"
       },
       {
-        "desc": "tree trunk with rough grey bark",
+        "desc": "tree trunk with rough, textured grey-brown bark",
         "action": "static",
         "position": "left"
+      },
+      {
+        "desc": "green grassy lawn with scattered fallen leaves",
+        "action": "static",
+        "position": "bottom/foreground"
       },
       {
         "desc": "white houses with dark roofs",
@@ -1680,120 +1679,120 @@
     ],
     "atomic_facts": [
       {
-        "fact": "The person bends forward at the waist.",
+        "fact": "The person bends forward at the waist, lowering their head towards the ground.",
         "confidence": 1.0
       },
       {
-        "fact": "The person swings their arms while bending.",
+        "fact": "The person's right arm is extended outward to the side.",
         "confidence": 1.0
       },
       {
-        "fact": "The person is standing on a grassy lawn.",
+        "fact": "The person is standing on a patch of green grass.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The person is to the right of the tree trunk. The tree trunk is in the foreground on the left side. The white houses are in the background behind the person and the grass.",
+    "spatial": "The person is positioned to the right of the tree trunk. The tree trunk is on the left side of the frame. The grass is below the person's feet. The white houses are in the background behind the person and the grass.",
     "parse_success": true,
     "chunk_idx": 32,
     "video_id": "e1eyNxjrm5Y"
   },
   {
     "time": [
-      66,
-      68
+      33,
+      34
     ],
     "visible_entities": [
       {
-        "desc": "person with short brown hair, wearing a black jacket, black trousers, and white sneakers",
+        "desc": "person with short brown hair, wearing a dark navy or black jacket, black trousers, and white sneakers",
         "action": "running across the grass",
-        "position": "center"
+        "position": "center/foreground"
       },
       {
-        "desc": "green grassy lawn",
+        "desc": "green grassy lawn with scattered brown leaves",
         "action": "static",
-        "position": "foreground"
+        "position": "foreground/bottom"
       },
       {
-        "desc": "grey paved road",
+        "desc": "paved grey driveway or road",
         "action": "static",
         "position": "middle ground"
       },
       {
-        "desc": "trees with green leaves",
-        "action": "static",
-        "position": "background"
-      },
-      {
         "desc": "white building with a grey roof",
         "action": "static",
-        "position": "background"
+        "position": "background/right"
       },
       {
-        "desc": "green dumpster",
+        "desc": "green waste container",
         "action": "static",
-        "position": "background"
+        "position": "background/right"
+      },
+      {
+        "desc": "parked cars including a red car and a white car",
+        "action": "static",
+        "position": "background/left"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A person is running across a grassy area.",
+        "fact": "A person is running from the left side of the frame towards the right side.",
         "confidence": 1.0
       },
       {
-        "fact": "The person is moving from the left side of the frame towards the right.",
+        "fact": "The person is running on a grassy lawn.",
         "confidence": 1.0
       },
       {
-        "fact": "The person is wearing white sneakers.",
+        "fact": "The person is moving away from the camera's perspective.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "There are parked cars visible in the background near the trees.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The person is in the center of the frame, running on the green grass. The paved road is behind the person. The white building and green dumpster are in the background, to the right of the trees.",
+    "spatial": "The person is in the foreground, running on the green grass which is in front of the paved driveway. The white building and green waste container are in the background to the right of the person. The parked cars are in the background to the left of the person.",
     "parse_success": true,
     "chunk_idx": 33,
     "video_id": "e1eyNxjrm5Y"
   },
   {
     "time": [
-      68,
-      70
+      34,
+      35
     ],
     "visible_entities": [
       {
-        "desc": "person wearing dark jacket, dark pants, and white shoes",
+        "desc": "person wearing a dark jacket, dark pants, and white shoes",
         "action": "running across the grass",
         "position": "right"
       },
       {
-        "desc": "green grassy lawn with scattered leaves",
+        "desc": "green grassy lawn with scattered yellow leaves",
         "action": "static",
         "position": "foreground"
       },
       {
-        "desc": "paved road",
+        "desc": "grey paved path",
         "action": "static",
         "position": "background"
       },
       {
-        "desc": "white house with dark trim",
+        "desc": "white house with a dark roof",
         "action": "static",
         "position": "background"
       },
       {
-        "desc": "green trash bins",
+        "desc": "green waste bins",
         "action": "static",
         "position": "background"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A person is running across a green lawn.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The person is moving from the right side of the frame towards the left.",
+        "fact": "A person in dark clothing is running on the grass.",
         "confidence": 1.0
       },
       {
@@ -1802,26 +1801,26 @@
       }
     ],
     "ocr": [],
-    "spatial": "The person is on the grassy lawn in the foreground. The paved road is behind the person. The white house and green trash bins are in the background, situated near the road.",
+    "spatial": "The person is on the right side of the frame, moving across the green grassy lawn. The paved path is behind the person and the lawn. The white house and green bins are in the background, situated beyond the path.",
     "parse_success": true,
     "chunk_idx": 34,
     "video_id": "e1eyNxjrm5Y"
   },
   {
     "time": [
-      70,
-      72
+      35,
+      36
     ],
     "visible_entities": [
       {
-        "desc": "person with short dark hair, wearing a black jacket, black pants, and white shoes",
+        "desc": "person with dark hair, wearing a black jacket, black pants, and white shoes",
         "action": "walking across the grass",
         "position": "center"
       },
       {
-        "desc": "green grassy lawn with scattered fallen leaves",
+        "desc": "green dumpsters",
         "action": "static",
-        "position": "foreground"
+        "position": "background left"
       },
       {
         "desc": "white building with a grey roof",
@@ -1829,57 +1828,249 @@
         "position": "background"
       },
       {
-        "desc": "large green dumpster",
-        "action": "static",
-        "position": "background left"
-      },
-      {
-        "desc": "white rectangular sign on a post",
+        "desc": "white rectangular sign",
         "action": "static",
         "position": "background right"
+      },
+      {
+        "desc": "green grassy lawn",
+        "action": "static",
+        "position": "foreground"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A person in black clothing is walking across a grassy area.",
+        "fact": "A person in black clothing is walking across a grassy lawn.",
         "confidence": 1.0
       },
       {
-        "fact": "The person is moving from the right side of the frame towards the left.",
+        "fact": "Green dumpsters are parked near a building in the background.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A white sign stands on a post near a tree.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The person is walking on the green grass in the foreground. The white building and the green dumpster are located in the background behind the person. The white sign is positioned to the right of the person in the background.",
+    "spatial": "The person is walking on the green grass in the foreground. The green dumpsters are to the left of the person in the background. The white building is behind the dumpsters and the person. The white sign is to the right of the person, near a tree.",
     "parse_success": true,
     "chunk_idx": 35,
     "video_id": "e1eyNxjrm5Y"
   },
   {
     "time": [
-      72,
-      74
+      36,
+      37
     ],
     "visible_entities": [
       {
-        "desc": "person with short dark hair, wearing a black long-sleeved top, black pants, and white shoes",
+        "desc": "child with short dark hair, wearing a black long-sleeved top, black pants, and white shoes",
         "action": "running across the grass",
-        "position": "foreground"
+        "position": "right foreground"
       },
       {
-        "desc": "large tree with green leaves",
+        "desc": "large tree with a thick trunk and dense green foliage",
         "action": "static",
-        "position": "background"
+        "position": "center background"
       },
       {
-        "desc": "white house with a dark roof",
+        "desc": "white house with a dark roof and visible windows",
         "action": "static",
-        "position": "background"
+        "position": "left background"
       },
       {
         "desc": "grey paved road",
         "action": "static",
-        "position": "middle ground"
+        "position": "center"
+      },
+      {
+        "desc": "green grassy lawn",
+        "action": "static",
+        "position": "foreground"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A child is running across the green lawn from the right side of the frame.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The child is wearing a black outfit with white shoes.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A large tree stands in the center background behind the road.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A white house is visible in the background to the left of the tree.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The child is in the foreground on the right, running on the green grass. The paved road is behind the child and in front of the large tree. The white house is to the left of the large tree in the background.",
+    "parse_success": true,
+    "chunk_idx": 36,
+    "video_id": "e1eyNxjrm5Y"
+  },
+  {
+    "time": [
+      37,
+      38
+    ],
+    "visible_entities": [
+      {
+        "desc": "person wearing a dark suit jacket, dark trousers, white shoes, and a dark bear-like mask",
+        "action": "walking on the grass",
+        "position": "center"
+      },
+      {
+        "desc": "green grassy lawn with scattered brown leaves",
+        "action": "static",
+        "position": "background"
+      },
+      {
+        "desc": "grey paved path",
+        "action": "static",
+        "position": "background"
+      },
+      {
+        "desc": "brownish bush or shrubbery",
+        "action": "static",
+        "position": "right"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A person wearing a bear mask and a dark suit is walking across a green lawn.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The person is moving from the left side of the frame towards the right.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "There is a paved path behind the person.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The person in the bear mask is in the center of the frame, walking on the green grass. The grey paved path is behind the person. A brownish bush is visible on the right side of the frame.",
+    "parse_success": true,
+    "chunk_idx": 37,
+    "video_id": "e1eyNxjrm5Y"
+  },
+  {
+    "time": [
+      38,
+      39
+    ],
+    "visible_entities": [
+      {
+        "desc": "blurry green foliage and brown ground cover",
+        "action": "moving rapidly",
+        "position": "center"
+      },
+      {
+        "desc": "thin dark stick or branch",
+        "action": "moving diagonally",
+        "position": "right"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The camera moves rapidly, causing significant motion blur of the green foliage.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A thin stick or branch is visible on the right side of the frame.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The blurry green foliage and brown ground cover occupy the center and left of the frame. The thin dark stick is positioned to the right of the foliage.",
+    "parse_success": true,
+    "chunk_idx": 38,
+    "video_id": "e1eyNxjrm5Y"
+  },
+  {
+    "time": [
+      39,
+      40
+    ],
+    "visible_entities": [
+      {
+        "desc": "small brown dog with shaggy fur, wearing a collar",
+        "action": "walking on grass",
+        "position": "center"
+      },
+      {
+        "desc": "thin silver leash",
+        "action": "static",
+        "position": "center"
+      },
+      {
+        "desc": "green grass lawn",
+        "action": "static",
+        "position": "background"
+      },
+      {
+        "desc": "pile of brown dried leaves",
+        "action": "static",
+        "position": "right"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The brown dog is walking forward on the grass.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The dog is attached to a leash.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "There is a pile of leaves to the right of the dog.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The brown dog is in the center of the frame, walking on the green grass. The pile of brown leaves is to the right of the dog. The silver leash is attached to the dog and extends towards the bottom of the frame.",
+    "parse_success": true,
+    "chunk_idx": 39,
+    "video_id": "e1eyNxjrm5Y"
+  },
+  {
+    "time": [
+      40,
+      41
+    ],
+    "visible_entities": [
+      {
+        "desc": "person with short brown hair, wearing a dark navy blue sweater with a white collar and a small white logo on the left chest, black trousers, and white sneakers",
+        "action": "running across the grass",
+        "position": "center/foreground"
+      },
+      {
+        "desc": "green grassy lawn",
+        "action": "static",
+        "position": "foreground"
+      },
+      {
+        "desc": "paved grey pathway",
+        "action": "static",
+        "position": "background"
+      },
+      {
+        "desc": "white building with a grey roof",
+        "action": "static",
+        "position": "background"
+      },
+      {
+        "desc": "green tree trunk",
+        "action": "static",
+        "position": "right"
       }
     ],
     "atomic_facts": [
@@ -1888,295 +2079,131 @@
         "confidence": 1.0
       },
       {
-        "fact": "The person is moving from the right side of the frame towards the left.",
+        "fact": "The person is wearing a dark sweater with a white collar.",
         "confidence": 1.0
       },
       {
-        "fact": "A paved road runs horizontally behind the person.",
+        "fact": "The person is wearing white sneakers.",
         "confidence": 1.0
       },
       {
-        "fact": "A large tree stands in the background near the road.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [],
-    "spatial": "The person is in the foreground, running on the grass. The paved road is behind the person. The large tree and the white house are in the background, situated behind the road.",
-    "parse_success": true,
-    "chunk_idx": 36,
-    "video_id": "e1eyNxjrm5Y"
-  },
-  {
-    "time": [
-      74,
-      76
-    ],
-    "visible_entities": [
-      {
-        "desc": "person wearing a dark suit jacket, dark trousers, white shoes, and a brown bear mask",
-        "action": "walking on the grass",
-        "position": "center"
-      },
-      {
-        "desc": "green grass lawn with scattered leaves",
-        "action": "static",
-        "position": "foreground"
-      },
-      {
-        "desc": "paved driveway",
-        "action": "static",
-        "position": "background"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "A person in a bear mask and suit is walking across a grassy lawn.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The person is moving from the paved driveway towards the grass.",
+        "fact": "A paved path is visible behind the person.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The person in the bear mask is walking on the green grass. The paved driveway is behind the person. The grass is in the foreground of the scene.",
-    "parse_success": true,
-    "chunk_idx": 37,
-    "video_id": "e1eyNxjrm5Y"
-  },
-  {
-    "time": [
-      76,
-      78
-    ],
-    "visible_entities": [
-      {
-        "desc": "blurry green foliage and brown leaves, likely a bush or tree branch",
-        "action": "moving rapidly",
-        "position": "center"
-      },
-      {
-        "desc": "green grassy ground",
-        "action": "static",
-        "position": "background"
-      },
-      {
-        "desc": "dark, blurry object, possibly a shoe or shadow",
-        "action": "static",
-        "position": "bottom right"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "The camera moves rapidly, causing the green foliage to blur.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The view shifts from a close-up of leaves to a wider view of the grassy ground.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [],
-    "spatial": "The blurry green foliage is in the center of the frame, in front of the green grassy ground. A dark, blurry object is visible at the bottom right of the frame, near the grass.",
-    "parse_success": true,
-    "chunk_idx": 38,
-    "video_id": "e1eyNxjrm5Y"
-  },
-  {
-    "time": [
-      78,
-      80
-    ],
-    "visible_entities": [
-      {
-        "desc": "small brown dog with wiry fur and a dark collar",
-        "action": "walking forward on a leash",
-        "position": "center"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "A small brown dog is walking forward on a grassy surface.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The dog is being led by a thin leash.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [],
-    "spatial": "The dog is in the center of the frame, walking on the green grass. A dark mulch bed is to the right of the dog. The leash extends from the dog's collar towards the bottom of the frame.",
-    "parse_success": true,
-    "chunk_idx": 39,
-    "video_id": "e1eyNxjrm5Y"
-  },
-  {
-    "time": [
-      80,
-      82
-    ],
-    "visible_entities": [
-      {
-        "desc": "person with short brown hair, wearing a black long-sleeved top with a white collar and a small white logo on the chest, black pants, and white shoes",
-        "action": "running across the grass",
-        "position": "center"
-      },
-      {
-        "desc": "green grassy lawn",
-        "action": "static",
-        "position": "foreground"
-      },
-      {
-        "desc": "paved path",
-        "action": "static",
-        "position": "background"
-      },
-      {
-        "desc": "white building with a dark roof",
-        "action": "static",
-        "position": "background"
-      },
-      {
-        "desc": "tree trunk",
-        "action": "static",
-        "position": "right"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "A person is running across the grass from the background towards the foreground.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The person is wearing a black top with a white collar.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "There is a paved path behind the person.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "A white building is visible in the background.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [],
-    "spatial": "The person is in the center of the frame, running on the green grass. The paved path is behind the person. The white building is in the background, behind the path. A tree trunk is to the right of the person.",
+    "spatial": "The person is in the center foreground, running on the green grass. The paved pathway is behind the person. The white building is in the background, further behind the pathway. A tree trunk is to the right of the person.",
     "parse_success": true,
     "chunk_idx": 40,
     "video_id": "e1eyNxjrm5Y"
   },
   {
     "time": [
-      82,
-      84
+      41,
+      42
     ],
     "visible_entities": [
       {
-        "desc": "person with short dark hair, wearing a dark blue or black long-sleeved top, dark trousers, and white sneakers",
+        "desc": "person with short brown hair, wearing a dark blue or black hooded jacket, black trousers, and white sneakers",
         "action": "falling backwards onto the grass",
         "position": "left/foreground"
       },
       {
         "desc": "small brown dog with short fur",
         "action": "standing on the grass",
-        "position": "bottom/foreground"
+        "position": "bottom right/foreground"
       },
       {
-        "desc": "grey asphalt road",
+        "desc": "thick tree trunk with rough, greyish-brown bark",
         "action": "static",
-        "position": "center/middle-ground"
+        "position": "left/foreground"
       },
       {
-        "desc": "white house with a dark roof",
+        "desc": "white two-story house with a dark roof",
         "action": "static",
         "position": "background"
       },
       {
-        "desc": "green grassy lawn",
+        "desc": "paved asphalt road",
         "action": "static",
-        "position": "foreground/background"
+        "position": "center/middle-ground"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A person falls backwards onto the green lawn.",
+        "fact": "A person is falling backwards onto the grass.",
         "confidence": 1.0
       },
       {
-        "fact": "The person lands on their back with their legs raised in the air.",
+        "fact": "The person is positioned next to a tree trunk.",
         "confidence": 1.0
       },
       {
-        "fact": "A small brown dog stands on the grass near the fallen person.",
+        "fact": "A small brown dog is standing in the foreground.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The person is lying on the grass in the foreground, to the left of the frame. The small brown dog is in the bottom right foreground, near the person. The grey road runs horizontally behind the person and the dog. The white house is in the background, situated behind the road and the lawn.",
+    "spatial": "The person is to the left of the frame, falling on the grass next to the tree trunk. The small brown dog is in the bottom right foreground, in front of the paved road. The white house is in the background, behind the road and the grassy area.",
     "parse_success": true,
     "chunk_idx": 41,
     "video_id": "e1eyNxjrm5Y"
   },
   {
     "time": [
-      84,
-      86
+      42,
+      43
     ],
     "visible_entities": [
       {
-        "desc": "light-colored dog with tan and white fur, blurry due to motion",
-        "action": "running rapidly across the grass",
+        "desc": "light brown and white dog, blurry due to motion",
+        "action": "running on grass",
         "position": "right"
       },
       {
-        "desc": "long, thin, brown wooden stick",
-        "action": "lying on the grass",
+        "desc": "long thin stick, light brown",
+        "action": "lying on grass",
         "position": "center"
       },
       {
-        "desc": "green grass lawn with scattered brown leaves",
+        "desc": "green grass with scattered brown leaves",
         "action": "static",
         "position": "background"
       },
       {
-        "desc": "black object, likely a shoe or foot",
+        "desc": "black shoe tip",
         "action": "static",
         "position": "bottom"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A light-colored dog is running rapidly across the grass.",
+        "fact": "A light brown and white dog is running rapidly on the grass.",
         "confidence": 1.0
       },
       {
-        "fact": "The dog's movement causes significant motion blur in the frame.",
+        "fact": "A long thin stick is lying on the ground.",
         "confidence": 1.0
       },
       {
-        "fact": "A long wooden stick is lying on the grass near the dog.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The camera angle is high, looking down at the ground.",
+        "fact": "The camera movement causes significant motion blur in the scene.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The running dog is to the right of the wooden stick. The stick is lying on the green grass. The black object is at the bottom of the frame, below the stick and the dog.",
+    "spatial": "The dog is to the right of the stick. The stick is lying on the green grass. The black shoe tip is at the bottom of the frame, below the stick.",
     "parse_success": true,
     "chunk_idx": 42,
     "video_id": "e1eyNxjrm5Y"
   },
   {
     "time": [
-      86,
-      88
+      43,
+      44
     ],
     "visible_entities": [
       {
-        "desc": "person with dark hair, wearing a dark blue long-sleeved top, black pants, and white shoes",
+        "desc": "person with dark hair, wearing a dark blue long-sleeved top, black pants, and white sneakers",
         "action": "lying on the grass",
         "position": "background"
       },
@@ -2186,7 +2213,7 @@
         "position": "foreground"
       },
       {
-        "desc": "tree trunk with grey bark",
+        "desc": "large tree trunk with grey bark",
         "action": "static",
         "position": "background"
       },
@@ -2202,7 +2229,7 @@
         "confidence": 1.0
       },
       {
-        "fact": "A person is lying face down on the grass in the background.",
+        "fact": "A person is lying motionless on the grass in the background.",
         "confidence": 1.0
       },
       {
@@ -2211,29 +2238,29 @@
       }
     ],
     "ocr": [],
-    "spatial": "The dog is in the foreground, positioned to the left of the person lying on the grass. The person is lying near the base of a tree trunk. A wooden fence is visible in the background behind the tree.",
+    "spatial": "The light brown dog is in the foreground, positioned to the left of the person lying on the grass. The person is lying near the base of a large tree trunk in the background. A wooden fence is visible behind the tree and the person.",
     "parse_success": true,
     "chunk_idx": 43,
     "video_id": "e1eyNxjrm5Y"
   },
   {
     "time": [
-      88,
-      90
+      44,
+      45
     ],
     "visible_entities": [
       {
-        "desc": "person wearing a dark blue long-sleeved top, dark pants, and white sneakers",
+        "desc": "person wearing a dark blue long-sleeved top, dark trousers, and white sneakers",
         "action": "lying on the grass",
         "position": "left"
       },
       {
-        "desc": "medium-sized brown dog with a leash attached",
-        "action": "standing on hind legs near the person",
+        "desc": "light brown dog with a white-tipped tail",
+        "action": "standing on hind legs and pawing at the person",
         "position": "center"
       },
       {
-        "desc": "green grassy lawn",
+        "desc": "green grassy area",
         "action": "static",
         "position": "background"
       },
@@ -2245,93 +2272,78 @@
     ],
     "atomic_facts": [
       {
-        "fact": "A person is lying on the grass next to a paved path.",
+        "fact": "A person is lying on their side on the grass.",
         "confidence": 1.0
       },
       {
-        "fact": "A brown dog is standing on its hind legs next to the person.",
+        "fact": "A light brown dog is standing on its hind legs.",
         "confidence": 1.0
       },
       {
-        "fact": "The dog is pulling on a leash attached to the person.",
+        "fact": "The dog is placing its front paws on the person's torso.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The person is wearing white sneakers.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The person is lying on the grass to the left of the paved path. The dog is next to the person, positioned between the person and the path. The grass is below the person and the dog.",
+    "spatial": "The person is lying on the grass to the left of the paved path. The dog is next to the person, positioned between the person and the path. The dog is interacting with the person by placing its paws on them.",
     "parse_success": true,
     "chunk_idx": 44,
     "video_id": "e1eyNxjrm5Y"
   },
   {
     "time": [
-      90,
-      92
+      45,
+      46
     ],
     "visible_entities": [
       {
-        "desc": "person with short dark hair, wearing a dark blue or black jacket, dark trousers, and white shoes",
-        "action": "running to the left",
+        "desc": "person with short dark hair, wearing a dark blue or black long-sleeved top and dark trousers with white shoes",
+        "action": "running away to the left",
         "position": "left/center"
       },
       {
-        "desc": "green grass with scattered yellow and brown leaves",
-        "action": "static",
-        "position": "foreground/background"
-      },
-      {
-        "desc": "paved driveway or road",
-        "action": "static",
-        "position": "background"
-      },
-      {
-        "desc": "white house with a dark roof",
-        "action": "static",
-        "position": "background"
-      },
-      {
-        "desc": "green trees",
-        "action": "static",
-        "position": "background"
+        "desc": "brown dog with a long tail",
+        "action": "running on the grass",
+        "position": "bottom/foreground"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A person is running across the grass from right to left.",
+        "fact": "The person is running away from the camera towards the left side of the frame.",
         "confidence": 1.0
       },
       {
-        "fact": "The person is wearing white shoes.",
+        "fact": "The brown dog is running on the grass in the foreground.",
         "confidence": 1.0
       },
       {
-        "fact": "There are fallen leaves scattered on the green grass.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "A white house is visible in the background behind the trees.",
+        "fact": "The scene takes place on a green lawn with scattered yellow leaves.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The person is on the green grass. The paved driveway is behind the person. The white house and trees are in the background, behind the driveway.",
+    "spatial": "The person is to the left of the dog. The dog is in the foreground, closer to the bottom edge of the frame, while the person is further back in the center. The person is running away from the area where the dog is located.",
     "parse_success": true,
     "chunk_idx": 45,
     "video_id": "e1eyNxjrm5Y"
   },
   {
     "time": [
-      92,
-      94
+      46,
+      47
     ],
     "visible_entities": [
       {
-        "desc": "person with short brown hair, wearing a dark blue long-sleeved top, black trousers, and white sneakers",
+        "desc": "person with short brown hair, wearing a dark blue long-sleeved top, black pants, and white shoes",
         "action": "lying on the grass then sitting up against a tree",
         "position": "foreground"
       },
       {
-        "desc": "tree trunk with rough, textured grey-brown bark",
+        "desc": "large tree trunk with rough, textured bark",
         "action": "static",
         "position": "left"
       },
@@ -2341,7 +2353,7 @@
         "position": "background"
       },
       {
-        "desc": "green grass",
+        "desc": "green grassy lawn",
         "action": "static",
         "position": "foreground"
       },
@@ -2353,44 +2365,86 @@
     ],
     "atomic_facts": [
       {
-        "fact": "The person is initially lying on their back on the grass.",
+        "fact": "The person is lying on their back on the grass in the first frame.",
         "confidence": 1.0
       },
       {
-        "fact": "The person sits up and leans against the tree trunk.",
+        "fact": "The person sits up and leans against the tree trunk in the second frame.",
         "confidence": 1.0
       },
       {
-        "fact": "The person is holding a yellowish object in their hand.",
+        "fact": "The person is holding a light-colored object in their hand while sitting.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The person is lying on the green grass in the foreground. A tree trunk is to the left of the person. The paved road is behind the person and the grass. The white house is in the background, behind the road.",
+    "spatial": "The person is on the grass in the foreground. In the second frame, the person is next to the tree trunk on the left. The paved road is behind the person and the grass. The white house is in the background, behind the road and trees.",
     "parse_success": true,
     "chunk_idx": 46,
     "video_id": "e1eyNxjrm5Y"
   },
   {
     "time": [
-      94,
-      96
+      47,
+      48
     ],
     "visible_entities": [
       {
-        "desc": "person wearing a dark blue or black long-sleeved top, black trousers, and white sneakers",
+        "desc": "person wearing a dark blue long-sleeved top, dark trousers, and white sneakers",
         "action": "falling onto the grass",
         "position": "left/foreground"
       },
       {
         "desc": "green grassy lawn",
         "action": "static",
-        "position": "foreground"
+        "position": "bottom/foreground"
       },
       {
-        "desc": "grey paved road",
+        "desc": "paved driveway",
         "action": "static",
-        "position": "center"
+        "position": "center/midground"
+      },
+      {
+        "desc": "white house with a dark roof",
+        "action": "static",
+        "position": "background"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A person in dark clothing falls onto the grass.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The person lands on their back with legs raised.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The scene takes place outdoors on a lawn near a driveway.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The person is lying on the green grass in the foreground. The paved driveway is behind the person. The white house is in the background, situated behind the driveway and a tree.",
+    "parse_success": true,
+    "chunk_idx": 47,
+    "video_id": "e1eyNxjrm5Y"
+  },
+  {
+    "time": [
+      48,
+      49
+    ],
+    "visible_entities": [
+      {
+        "desc": "person wearing a dark blue long-sleeved top, black pants, and white sneakers",
+        "action": "falling onto the grass",
+        "position": "left/foreground"
+      },
+      {
+        "desc": "tree trunk with rough, textured bark",
+        "action": "static",
+        "position": "left/foreground"
       },
       {
         "desc": "white house with a dark roof",
@@ -2398,82 +2452,31 @@
         "position": "background"
       },
       {
-        "desc": "green trees",
+        "desc": "paved road",
         "action": "static",
-        "position": "background"
+        "position": "center/middle-ground"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A person in dark clothing is falling backwards onto the grass.",
+        "fact": "The person in the dark blue top falls backwards onto the grass.",
         "confidence": 1.0
       },
       {
-        "fact": "The person's legs are lifted in the air as they hit the ground.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The person is lying on their back on the lawn.",
+        "fact": "The person is positioned next to the tree trunk.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The person is on the grass in the foreground, to the left of the frame. The paved road is behind the person. The white house and trees are in the background, behind the road.",
-    "parse_success": true,
-    "chunk_idx": 47,
-    "video_id": "e1eyNxjrm5Y"
-  },
-  {
-    "time": [
-      96,
-      98
-    ],
-    "visible_entities": [
-      {
-        "desc": "person with short brown hair, wearing a dark blue long-sleeved top, black trousers, and white sneakers",
-        "action": "falling backwards onto the grass",
-        "position": "left/foreground"
-      },
-      {
-        "desc": "tree trunk with rough, textured grey bark",
-        "action": "static",
-        "position": "left/foreground"
-      },
-      {
-        "desc": "white house with a dark roof and visible windows",
-        "action": "static",
-        "position": "background"
-      },
-      {
-        "desc": "green grass lawn",
-        "action": "static",
-        "position": "foreground/background"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "The person falls backwards onto the grass next to the tree.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The person is wearing white sneakers.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The tree trunk is positioned on the left side of the frame.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [],
-    "spatial": "The person is lying on the grass to the right of the tree trunk. The tree trunk is in the foreground on the left. The white house is in the background, behind the grass and the road.",
+    "spatial": "The person is to the right of the tree trunk and is falling onto the grass. The paved road is behind the person and the tree. The white house is in the background, behind the road.",
     "parse_success": true,
     "chunk_idx": 48,
     "video_id": "e1eyNxjrm5Y"
   },
   {
     "time": [
-      98,
-      100
+      49,
+      50
     ],
     "visible_entities": [
       {
@@ -2487,14 +2490,14 @@
         "position": "bottom center"
       },
       {
-        "desc": "green grassy lawn with scattered brown leaves",
+        "desc": "green grass with scattered brown leaves",
         "action": "static",
         "position": "foreground"
       },
       {
-        "desc": "grey paved driveway",
+        "desc": "grey paved road",
         "action": "static",
-        "position": "middle ground"
+        "position": "background"
       },
       {
         "desc": "white house with a dark roof",
@@ -2504,7 +2507,7 @@
     ],
     "atomic_facts": [
       {
-        "fact": "A person is lying on their back on the grass.",
+        "fact": "A person in a dark blue top is lying on their back on the grass.",
         "confidence": 1.0
       },
       {
@@ -2512,55 +2515,55 @@
         "confidence": 1.0
       },
       {
-        "fact": "The scene takes place outdoors on a lawn next to a driveway.",
+        "fact": "The person is positioned to the left of the dog.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The person is lying on the grass to the left of the frame. The dog is in the foreground, positioned near the person. The paved driveway is behind the person and the dog, separating them from the white house in the background.",
+    "spatial": "The person is lying on the grass to the left of the small brown dog. The dog is standing on the grass in the foreground. The paved road is behind the person and the dog, with a white house visible in the background.",
     "parse_success": true,
     "chunk_idx": 49,
     "video_id": "e1eyNxjrm5Y"
   },
   {
     "time": [
-      100,
-      102
+      50,
+      51
     ],
     "visible_entities": [
       {
         "desc": "person with short brown hair, wearing a dark blue long-sleeved top, black trousers, and white sneakers",
-        "action": "sliding down a tree trunk",
-        "position": "left"
+        "action": "falling backwards onto the grass",
+        "position": "left/foreground"
       },
       {
-        "desc": "thick tree trunk with rough, textured bark",
+        "desc": "tree trunk with rough, textured greyish-brown bark",
         "action": "static",
         "position": "left"
       },
       {
-        "desc": "green grassy lawn",
+        "desc": "white house with a dark roof and visible windows",
         "action": "static",
-        "position": "foreground"
+        "position": "background"
       },
       {
-        "desc": "paved road",
+        "desc": "paved road, grey in color",
         "action": "static",
         "position": "center"
       },
       {
-        "desc": "white houses with dark roofs",
+        "desc": "green grass lawn",
         "action": "static",
-        "position": "background"
+        "position": "foreground/background"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A person slides down the trunk of a tree.",
+        "fact": "A person is falling backwards onto the grass.",
         "confidence": 1.0
       },
       {
-        "fact": "The person lands on the grass at the base of the tree.",
+        "fact": "The person is positioned next to a tree trunk.",
         "confidence": 1.0
       },
       {
@@ -2569,21 +2572,21 @@
       }
     ],
     "ocr": [],
-    "spatial": "The person is positioned to the left of the frame, sliding down the tree trunk. The tree is located on the grassy lawn, which is in front of the paved road. The white houses are visible in the background, behind the road and the trees.",
+    "spatial": "The person is to the right of the tree trunk and is falling onto the green grass. The paved road is behind the person and the tree. The white house is in the background, situated behind the road and the grass.",
     "parse_success": true,
     "chunk_idx": 50,
     "video_id": "e1eyNxjrm5Y"
   },
   {
     "time": [
-      102,
-      104
+      51,
+      52
     ],
     "visible_entities": [
       {
         "desc": "person with short dark hair, wearing a dark blue long-sleeved top, black trousers, and white sneakers",
         "action": "rolling on the grass",
-        "position": "bottom left"
+        "position": "foreground"
       },
       {
         "desc": "tree trunk with rough bark",
@@ -2596,47 +2599,56 @@
         "position": "background"
       },
       {
-        "desc": "paved road",
+        "desc": "green grass lawn",
         "action": "static",
-        "position": "center"
+        "position": "foreground"
+      },
+      {
+        "desc": "grey paved road",
+        "action": "static",
+        "position": "middle ground"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "The person is rolling on the grass near the base of a tree.",
+        "fact": "A person is rolling on the grass near a tree trunk.",
         "confidence": 1.0
       },
       {
         "fact": "The person is wearing white sneakers.",
         "confidence": 1.0
+      },
+      {
+        "fact": "A white house is visible in the background across the road.",
+        "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The person is lying on the grass in front of the paved road. The tree trunk is to the left of the person. The white house is in the background behind the road.",
+    "spatial": "The person is lying on the green grass in the foreground, positioned to the right of the tree trunk. The grey paved road is behind the person, separating the foreground from the white house in the background.",
     "parse_success": true,
     "chunk_idx": 51,
     "video_id": "e1eyNxjrm5Y"
   },
   {
     "time": [
-      104,
-      106
+      52,
+      53
     ],
     "visible_entities": [
       {
-        "desc": "brown dog with a leash attached",
-        "action": "sitting on the grass",
-        "position": "center/foreground"
+        "desc": "brown dog with a collar and a leash attached",
+        "action": "standing on grass",
+        "position": "center"
       },
       {
-        "desc": "person with short dark hair, wearing a black long-sleeved top, black pants, and white shoes",
-        "action": "running across the grass",
-        "position": "center/right"
+        "desc": "person with short brown hair, wearing a black long-sleeved top, black pants, and white shoes",
+        "action": "running to the right",
+        "position": "center"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A brown dog is sitting on the grass.",
+        "fact": "A brown dog is standing on a grassy area.",
         "confidence": 1.0
       },
       {
@@ -2645,7 +2657,7 @@
       }
     ],
     "ocr": [],
-    "spatial": "The brown dog is in the foreground on the grass. The person is running on the grass behind and to the right of the dog. A paved path is visible behind the running person.",
+    "spatial": "The person is to the right of the dog. The dog is on the grass. The person is running on the grass.",
     "parse_success": true,
     "chunk_idx": 52,
     "video_id": "e1eyNxjrm5Y"

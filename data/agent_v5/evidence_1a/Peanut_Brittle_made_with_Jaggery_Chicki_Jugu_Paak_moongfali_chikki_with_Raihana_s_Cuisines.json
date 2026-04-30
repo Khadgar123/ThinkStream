@@ -2,16 +2,16 @@
   {
     "time": [
       0,
-      2
+      1
     ],
     "visible_entities": [
       {
-        "desc": "blue smartphone with a rounded rectangular screen displaying a YouTube channel interface",
+        "desc": "blue smartphone with a black bezel displaying a YouTube channel interface",
         "action": "static",
         "position": "center"
       },
       {
-        "desc": "wooden background with vertical planks of varying brown shades",
+        "desc": "wooden surface with vertical planks and visible grain texture",
         "action": "static",
         "position": "background"
       },
@@ -21,19 +21,19 @@
         "position": "bottom left"
       },
       {
-        "desc": "three red tomatoes, two whole with green stems and one sliced in half revealing the interior",
+        "desc": "two whole red tomatoes and one sliced red tomato showing the interior",
         "action": "static",
         "position": "bottom right"
       },
       {
-        "desc": "human hand with light skin tone, fingers extended",
-        "action": "tapping the phone screen",
-        "position": "center foreground"
+        "desc": "human hand with light skin tone",
+        "action": "tapping the smartphone screen",
+        "position": "center"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A hand appears and taps the smartphone screen over the 'Uploads' section.",
+        "fact": "A hand appears and taps the smartphone screen on the video thumbnail.",
         "confidence": 1.0
       },
       {
@@ -45,11 +45,11 @@
         "confidence": 1.0
       },
       {
-        "fact": "A red 'SUBSCRIBE' button is visible on the phone screen.",
+        "fact": "A red 'SUBSCRIBE' button is visible in the bottom left corner.",
         "confidence": 1.0
       },
       {
-        "fact": "A red 'SUBSCRIBE' graphic is overlaid in the bottom left corner of the video frame.",
+        "fact": "Fresh tomatoes are placed on the wooden surface to the right of the phone.",
         "confidence": 1.0
       }
     ],
@@ -63,95 +63,87 @@
       "SUBSCRIBE",
       "51 subscribers",
       "Uploads",
-      "Fry_Gobhi_D..._Kitchen_wit...h_Rehana",
-      "18 hours ago",
-      "Namkeen_Ja...al..._by_Kitch...",
-      "Home",
-      "Trending",
-      "Subscriptions",
-      "Library",
+      "Fry_Gobhi_b...",
+      "Namkeen_Ja...",
       "SUBSCRIBE"
     ],
-    "spatial": "The smartphone is centered against the wooden background. The red 'SUBSCRIBE' button is in the bottom left corner, while the tomatoes are in the bottom right corner. The hand is positioned in front of the smartphone screen.",
+    "spatial": "The blue smartphone is positioned in the center of the frame against a wooden background. The red 'SUBSCRIBE' button is located in the bottom left corner, while the tomatoes are in the bottom right corner. The hand enters the frame to interact with the center of the smartphone screen.",
     "parse_success": true,
     "chunk_idx": 0,
     "video_id": "Peanut_Brittle_made_with_Jaggery_Chicki_Jugu_Paak_moongfali_chikki_with_Raihana_s_Cuisines"
   },
   {
     "time": [
-      2,
-      4
+      1,
+      2
     ],
     "visible_entities": [
       {
-        "desc": "blue smartphone displaying a YouTube channel page titled 'Kitchen with Rehana', showing video thumbnails and a 'SUBSCRIBED' status",
+        "desc": "blue smartphone displaying a YouTube channel page titled 'Kitchen with Rehana' with video thumbnails",
         "action": "static",
         "position": "center"
       },
       {
-        "desc": "human hand with light skin tone and manicured nails",
-        "action": "tapping the smartphone screen",
-        "position": "center-right"
-      },
-      {
-        "desc": "red notification bell icon",
+        "desc": "red rectangular button with a white play icon and white text 'SUBSCRIBE'",
         "action": "static",
-        "position": "right"
+        "position": "bottom left"
       },
       {
-        "desc": "three red tomatoes, one of which is sliced in half revealing the interior",
-        "action": "static",
-        "position": "bottom-right"
-      },
-      {
-        "desc": "red rounded rectangular button with white text",
+        "desc": "red rounded button with white text 'Subscribe Now'",
         "action": "static",
         "position": "left"
       },
       {
-        "desc": "red rectangular banner with a white play icon and white text",
+        "desc": "cluster of red tomatoes, including two whole tomatoes and one sliced tomato showing the interior",
         "action": "static",
-        "position": "bottom-left"
+        "position": "bottom right"
       },
       {
-        "desc": "brown wooden plank background",
+        "desc": "black silhouette of a notification bell",
+        "action": "static",
+        "position": "right"
+      },
+      {
+        "desc": "human hand with light skin tone",
+        "action": "tapping the smartphone screen",
+        "position": "center"
+      },
+      {
+        "desc": "wooden plank background with vertical grain pattern",
         "action": "static",
         "position": "background"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A hand taps the smartphone screen near the 'SUBSCRIBED' button.",
+        "fact": "A hand appears and taps the smartphone screen.",
         "confidence": 1.0
       },
       {
-        "fact": "The smartphone displays the YouTube channel 'Kitchen with Rehana' with 51 subscribers.",
+        "fact": "A black notification bell icon is visible on the right side.",
         "confidence": 1.0
       },
       {
-        "fact": "A red notification bell icon appears to the right of the phone.",
+        "fact": "The smartphone screen displays a YouTube channel with 51 subscribers.",
         "confidence": 1.0
       },
       {
-        "fact": "Fresh red tomatoes are placed in the bottom right corner.",
+        "fact": "The text 'Kitchen with Rehana' is visible on the phone screen.",
         "confidence": 1.0
       },
       {
-        "fact": "The text 'Subscribe Now' is visible on a button on the left side.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The text 'SUBSCRIBE' is visible on a banner at the bottom left.",
+        "fact": "A sliced tomato is positioned in front of two whole tomatoes.",
         "confidence": 1.0
       }
     ],
     "ocr": [
+      "Subscribe Now",
+      "SUBSCRIBE",
       "Kitchen with Reha...",
       "HOME",
       "VIDEOS",
       "PLAYLISTS",
-      "with",
-      "Rehana",
+      "with Rehana",
       "Kitchen with Rehana",
       "SUBSCRIBED",
       "51 subscribers",
@@ -161,61 +153,32 @@
       "h_Rehana",
       "18 hours ago",
       "Namkeen_Ja",
-      "ali__by_Kitche",
-      "Subscribe Now",
-      "SUBSCRIBE",
+      "all_by_Kitche",
       "Home",
       "Trending",
       "Subscriptions",
       "Library"
     ],
-    "spatial": "The smartphone is positioned in the center of the frame against a wooden background. The hand is in front of the smartphone screen on the right side. The red notification bell is to the right of the phone. The tomatoes are located in the bottom right corner, below the bell. The 'Subscribe Now' button is to the left of the phone, and the 'SUBSCRIBE' banner is in the bottom left corner.",
+    "spatial": "The smartphone is positioned in the center of the frame against a wooden background. The 'Subscribe Now' button is to the left of the phone, while the 'SUBSCRIBE' button is in the bottom left corner. The cluster of tomatoes is to the right of the phone in the bottom right corner. The hand is in front of the phone, interacting with the screen.",
     "parse_success": true,
     "chunk_idx": 1,
     "video_id": "Peanut_Brittle_made_with_Jaggery_Chicki_Jugu_Paak_moongfali_chikki_with_Raihana_s_Cuisines"
   },
   {
     "time": [
-      4,
-      6
+      2,
+      3
     ],
     "visible_entities": [
       {
-        "desc": "black cooking pot with a textured, dimpled circular pattern on the interior bottom surface",
+        "desc": "black wok with a circular textured pattern of raised dots on the bottom surface, showing signs of wear and white residue",
         "action": "static",
         "position": "center"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A black pot with a textured bottom is shown in a close-up view.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The interior of the pot features a distinct circular pattern of raised dots.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [],
-    "spatial": "The black pot occupies the center of the frame, with its textured bottom surface clearly visible.",
-    "parse_success": true,
-    "chunk_idx": 2,
-    "video_id": "Peanut_Brittle_made_with_Jaggery_Chicki_Jugu_Paak_moongfali_chikki_with_Raihana_s_Cuisines"
-  },
-  {
-    "time": [
-      6,
-      8
-    ],
-    "visible_entities": [
-      {
-        "desc": "black wok with a textured, dimpled circular pattern on the bottom surface and a central raised disc, showing white residue or oil streaks",
-        "action": "static"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "The black wok is static on the stove.",
+        "fact": "A black wok is shown from a top-down perspective.",
         "confidence": 1.0
       },
       {
@@ -223,116 +186,106 @@
         "confidence": 1.0
       },
       {
-        "fact": "There is a white, hazy residue or oil film visible on the bottom surface of the wok.",
+        "fact": "White residue or seasoning is visible on the textured surface of the wok.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The black wok is centered in the frame. The textured circular pattern is located at the bottom center of the wok's interior.",
+    "spatial": "The black wok is centered in the frame, with its textured bottom surface clearly visible.",
+    "parse_success": true,
+    "chunk_idx": 2,
+    "video_id": "Peanut_Brittle_made_with_Jaggery_Chicki_Jugu_Paak_moongfali_chikki_with_Raihana_s_Cuisines"
+  },
+  {
+    "time": [
+      3,
+      4
+    ],
+    "visible_entities": [
+      {
+        "desc": "black non-stick wok with a textured, dimpled circular pattern in the center and white residue on the bottom surface",
+        "action": "static",
+        "position": "center"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A black wok is sitting on a stove.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The wok contains white residue or powder on its bottom surface.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The black wok is centered in the frame. The white residue is inside the wok, concentrated in a circular pattern on the bottom.",
     "parse_success": true,
     "chunk_idx": 3,
     "video_id": "Peanut_Brittle_made_with_Jaggery_Chicki_Jugu_Paak_moongfali_chikki_with_Raihana_s_Cuisines"
   },
   {
     "time": [
-      8,
-      10
+      4,
+      5
     ],
     "visible_entities": [
       {
-        "desc": "black wok with a textured, dimpled circular pattern on the bottom center and white residue or seasoning marks on the inner surface",
-        "action": "static",
-        "position": "center"
+        "desc": "black non-stick wok with a textured, dimpled circular pattern on the bottom center and white residue or scratches on the surface",
+        "action": "static"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A black wok is sitting on a stove.",
+        "fact": "The camera remains static, focusing on the interior of the black wok.",
         "confidence": 1.0
       },
       {
-        "fact": "The bottom of the wok features a distinct pattern of raised dots arranged in concentric circles.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "White residue or seasoning is visible on the interior surface of the wok.",
+        "fact": "The wok features a distinct circular pattern of raised dots in the center of its base.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The black wok is centered in the frame. The dimpled pattern is located at the bottom center of the wok's interior. The white residue is spread across the inner surface, surrounding the central pattern.",
+    "spatial": "The textured circular pattern is located in the center of the wok's bottom surface. The wok is positioned on a stove, with parts of the burner visible at the bottom edges.",
     "parse_success": true,
     "chunk_idx": 4,
     "video_id": "Peanut_Brittle_made_with_Jaggery_Chicki_Jugu_Paak_moongfali_chikki_with_Raihana_s_Cuisines"
   },
   {
     "time": [
-      10,
-      12
+      5,
+      6
     ],
     "visible_entities": [
       {
-        "desc": "black wok with a textured, dimpled circular pattern on the bottom interior surface and white residue or seasoning marks",
-        "action": "static",
-        "position": "center"
+        "desc": "black wok with a textured, dimpled circular pattern on the bottom surface and a white, chalky residue ring around the center",
+        "action": "static"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "The black wok is sitting stationary on a stove.",
+        "fact": "The black wok remains stationary on the stovetop.",
         "confidence": 1.0
       },
       {
-        "fact": "The interior bottom of the wok features a distinct pattern of raised dots or dimples.",
+        "fact": "A white residue is visible in a circular pattern on the bottom of the wok.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The black wok is centered in the frame, resting on top of a stove burner. The textured pattern is located at the bottom center inside the wok.",
+    "spatial": "The black wok is centered in the frame. The textured circular pattern is located at the bottom center of the wok's interior. The white residue ring surrounds the central textured area.",
     "parse_success": true,
     "chunk_idx": 5,
     "video_id": "Peanut_Brittle_made_with_Jaggery_Chicki_Jugu_Paak_moongfali_chikki_with_Raihana_s_Cuisines"
   },
   {
     "time": [
-      12,
-      14
+      6,
+      7
     ],
     "visible_entities": [
       {
-        "desc": "black non-stick frying pan with a circular textured bottom pattern and white residue",
-        "action": "static",
-        "position": "center"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "A black frying pan sits on a stovetop.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The bottom of the pan features a distinct circular pattern of raised dots.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "White, chalky residue is visible in a ring around the textured center of the pan.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [],
-    "spatial": "The black frying pan is centered in the frame. The textured circular pattern is located at the bottom center of the pan's interior. The white residue surrounds the central pattern.",
-    "parse_success": true,
-    "chunk_idx": 6,
-    "video_id": "Peanut_Brittle_made_with_Jaggery_Chicki_Jugu_Paak_moongfali_chikki_with_Raihana_s_Cuisines"
-  },
-  {
-    "time": [
-      14,
-      16
-    ],
-    "visible_entities": [
-      {
-        "desc": "black wok with a textured, circular dimpled pattern on the bottom and white residue on the surface",
+        "desc": "black wok with a textured, dimpled circular pattern on the bottom and white residue or seasoning marks",
         "action": "static",
         "position": "center"
       }
@@ -343,34 +296,67 @@
         "confidence": 1.0
       },
       {
-        "fact": "The bottom of the wok features a distinct pattern of raised dots arranged in concentric circles.",
+        "fact": "The bottom of the wok features a circular pattern of raised dots.",
         "confidence": 1.0
       },
       {
-        "fact": "There is a white, powdery residue coating the bottom surface of the wok.",
+        "fact": "There are white, chalky-looking marks or residue on the interior surface of the wok.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The black wok is centered in the frame and is positioned on top of a stove burner.",
+    "spatial": "The black wok is centered in the frame. The dimpled pattern is located at the bottom center of the wok. The white residue is distributed around the dimpled area and along the sides of the wok.",
+    "parse_success": true,
+    "chunk_idx": 6,
+    "video_id": "Peanut_Brittle_made_with_Jaggery_Chicki_Jugu_Paak_moongfali_chikki_with_Raihana_s_Cuisines"
+  },
+  {
+    "time": [
+      7,
+      8
+    ],
+    "visible_entities": [
+      {
+        "desc": "black wok with a textured, dimpled circular pattern at the bottom center, showing white residue or wear marks",
+        "action": "static",
+        "position": "center"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The camera holds a static shot of the interior of a black wok.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The bottom of the wok features a distinct circular pattern of raised dots.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The textured circular pattern is located in the center of the wok's bottom surface. The wok is positioned on a stove, with a burner visible at the bottom left.",
     "parse_success": true,
     "chunk_idx": 7,
     "video_id": "Peanut_Brittle_made_with_Jaggery_Chicki_Jugu_Paak_moongfali_chikki_with_Raihana_s_Cuisines"
   },
   {
     "time": [
-      16,
-      18
+      8,
+      9
     ],
     "visible_entities": [
       {
-        "desc": "black metal wok or deep pan",
+        "desc": "golden-brown, irregular, chunky food pieces, appearing crispy or fried",
+        "action": "being poured from a smaller pan into a larger pan",
+        "position": "center"
+      },
+      {
+        "desc": "large, black, round cooking pan (wok or kadhai)",
         "action": "static",
         "position": "center"
       },
       {
-        "desc": "golden-brown fried food chunks, crispy texture",
-        "action": "being poured",
+        "desc": "smaller, black, round cooking pan",
+        "action": "being tilted to pour contents",
         "position": "center"
       },
       {
@@ -381,15 +367,11 @@
     ],
     "atomic_facts": [
       {
-        "fact": "A person is pouring golden-brown fried food chunks from a smaller pan into a larger black wok.",
+        "fact": "A person is pouring golden-brown food chunks from a smaller pan into a larger black pan.",
         "confidence": 1.0
       },
       {
-        "fact": "The text 'Gurh 150 gm' is visible in the bottom left corner.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The food appears to be falling into the center of the wok.",
+        "fact": "The text 'Gurh 150 gm' is visible in the bottom-left corner of the screen.",
         "confidence": 1.0
       }
     ],
@@ -397,25 +379,25 @@
       "Gurh",
       "150 gm"
     ],
-    "spatial": "The fried food chunks are falling from above into the center of the black wok. The text overlay is located in the bottom-left corner of the frame, below the wok.",
+    "spatial": "The smaller pan is positioned above and inside the rim of the larger pan. The food chunks are falling from the smaller pan into the larger pan. The text overlay is located in the bottom-left corner, below the cooking action.",
     "parse_success": true,
     "chunk_idx": 8,
     "video_id": "Peanut_Brittle_made_with_Jaggery_Chicki_Jugu_Paak_moongfali_chikki_with_Raihana_s_Cuisines"
   },
   {
     "time": [
-      18,
-      20
+      9,
+      10
     ],
     "visible_entities": [
       {
-        "desc": "black non-stick frying pan",
-        "action": "static",
+        "desc": "irregular chunks of golden-brown jaggery (Gurh), rough texture, solid state",
+        "action": "being poured into the pan",
         "position": "center"
       },
       {
-        "desc": "golden-brown crumbled jaggery pieces, irregular texture",
-        "action": "being poured into the pan",
+        "desc": "black non-stick frying pan, round shape, smooth interior surface",
+        "action": "static",
         "position": "center"
       },
       {
@@ -426,11 +408,15 @@
     ],
     "atomic_facts": [
       {
-        "fact": "Golden-brown crumbled jaggery pieces are being poured into the black frying pan.",
+        "fact": "Chunks of jaggery are falling from above into the frying pan.",
         "confidence": 1.0
       },
       {
-        "fact": "The text overlay reads 'Gurh 150 gm'.",
+        "fact": "The text 'Gurh 150 gm' is visible in the bottom-left corner.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The pan is sitting on a stove.",
         "confidence": 1.0
       }
     ],
@@ -438,36 +424,91 @@
       "Gurh",
       "150 gm"
     ],
-    "spatial": "The golden-brown jaggery pieces are inside the black frying pan. The white text overlay is located in the bottom-left corner of the frame, below the pan.",
+    "spatial": "The chunks of jaggery are inside the black frying pan. The text overlay is located in the bottom-left corner of the frame, below the pan.",
     "parse_success": true,
     "chunk_idx": 9,
     "video_id": "Peanut_Brittle_made_with_Jaggery_Chicki_Jugu_Paak_moongfali_chikki_with_Raihana_s_Cuisines"
   },
   {
     "time": [
-      20,
-      22
+      10,
+      11
     ],
     "visible_entities": [
       {
-        "desc": "black wok with a matte, slightly textured surface",
+        "desc": "black round cooking pan with a textured surface",
         "action": "static",
         "position": "center"
       },
       {
-        "desc": "brown, crumbly, irregular chunks of food",
+        "desc": "brown crumbly chunks of food, likely jaggery",
         "action": "static",
         "position": "center"
       },
       {
-        "desc": "metal spoon with a curved bowl",
+        "desc": "silver metal spoon",
         "action": "adding ghee",
         "position": "center"
       },
       {
-        "desc": "pale yellow, semi-solid dollop of Desi Ghee",
+        "desc": "pale yellow semi-solid substance, identified as Desi Ghee",
         "action": "being added",
         "position": "center"
+      },
+      {
+        "desc": "white text overlay reading 'Desi Ghee 1 tsp'",
+        "action": "static",
+        "position": "bottom-left"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A spoon is adding a dollop of pale yellow ghee onto the brown chunks in the pan.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The text overlay indicates that 1 tsp of Desi Ghee is being used.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "Brown crumbly food chunks are sitting at the bottom of the black pan.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "Desi Ghee",
+      "1 tsp"
+    ],
+    "spatial": "The brown food chunks are inside the black cooking pan. The silver spoon is positioned above the chunks, depositing the yellow ghee onto them. The text overlay is located in the bottom-left corner of the frame, below the pan's contents.",
+    "parse_success": true,
+    "chunk_idx": 10,
+    "video_id": "Peanut_Brittle_made_with_Jaggery_Chicki_Jugu_Paak_moongfali_chikki_with_Raihana_s_Cuisines"
+  },
+  {
+    "time": [
+      11,
+      12
+    ],
+    "visible_entities": [
+      {
+        "desc": "black wok with a textured, matte surface",
+        "action": "static",
+        "position": "center"
+      },
+      {
+        "desc": "brown, crumbly chunks of food, appearing dry and irregular in shape",
+        "action": "static",
+        "position": "center"
+      },
+      {
+        "desc": "solid, pale yellow dollop of Desi Ghee, smooth and slightly glossy",
+        "action": "being added",
+        "position": "center"
+      },
+      {
+        "desc": "metal utensil, partially visible, with a reflective surface",
+        "action": "adding ghee",
+        "position": "top-center"
       },
       {
         "desc": "white text overlay in a sans-serif font",
@@ -477,70 +518,15 @@
     ],
     "atomic_facts": [
       {
-        "fact": "A spoon is adding a dollop of Desi Ghee to the brown chunks in the wok.",
+        "fact": "A dollop of Desi Ghee is being added to the brown, crumbly food in the wok.",
         "confidence": 1.0
       },
       {
-        "fact": "The text 'Desi Ghee 1 tsp' is visible on the screen.",
+        "fact": "The text 'Desi Ghee 1 tsp' is displayed in the bottom-left corner of the frame.",
         "confidence": 1.0
       },
       {
-        "fact": "The brown food chunks are piled in the center of the black wok.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [
-      "Desi Ghee",
-      "1 tsp"
-    ],
-    "spatial": "The brown food chunks are inside the black wok. The spoon is positioned above the chunks, depositing the ghee onto them. The text overlay is in the bottom-left corner of the frame, below the wok.",
-    "parse_success": true,
-    "chunk_idx": 10,
-    "video_id": "Peanut_Brittle_made_with_Jaggery_Chicki_Jugu_Paak_moongfali_chikki_with_Raihana_s_Cuisines"
-  },
-  {
-    "time": [
-      22,
-      24
-    ],
-    "visible_entities": [
-      {
-        "desc": "black cooking pan, round, matte finish",
-        "action": "static",
-        "position": "center"
-      },
-      {
-        "desc": "brown crumbly chunks, irregular shapes, dry texture",
-        "action": "being stirred",
-        "position": "center"
-      },
-      {
-        "desc": "white dollop of Desi Ghee, solid, creamy texture",
-        "action": "being added",
-        "position": "center"
-      },
-      {
-        "desc": "metal spoon, silver, reflective",
-        "action": "stirring",
-        "position": "center"
-      },
-      {
-        "desc": "white text overlay, sans-serif font",
-        "action": "static",
-        "position": "bottom-left"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "A metal spoon is stirring brown crumbly chunks in a black pan.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "A dollop of white Desi Ghee is being added to the pan.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The text 'Desi Ghee 1 tsp' is visible in the bottom-left corner.",
+        "fact": "The brown food chunks are scattered in the center of the black wok.",
         "confidence": 1.0
       }
     ],
@@ -548,45 +534,50 @@
       "Desi Ghee",
       "1 tsp"
     ],
-    "spatial": "The brown crumbly chunks are inside the black cooking pan. The white dollop of Desi Ghee is placed on top of the brown chunks. The metal spoon is positioned above the ingredients, interacting with them. The text overlay is located at the bottom-left of the frame, outside the pan.",
+    "spatial": "The brown, crumbly food is in the center of the black wok. The pale yellow dollop of Desi Ghee is on top of the brown food. The metal utensil is above the ghee, appearing to have just deposited it. The white text overlay is in the bottom-left corner of the frame, below the wok.",
     "parse_success": true,
     "chunk_idx": 11,
     "video_id": "Peanut_Brittle_made_with_Jaggery_Chicki_Jugu_Paak_moongfali_chikki_with_Raihana_s_Cuisines"
   },
   {
     "time": [
-      24,
-      26
+      12,
+      13
     ],
     "visible_entities": [
       {
-        "desc": "wooden spatula, light-brown, flat, smooth",
-        "action": "stirring ingredients",
-        "position": "right"
+        "desc": "black wok with a matte, slightly textured interior surface",
+        "action": "static",
+        "position": "center"
       },
       {
-        "desc": "brown crumbly chunks, irregular shape, textured, dry",
+        "desc": "golden-brown, crumbly food mixture with a granular texture",
         "action": "being stirred",
         "position": "center"
       },
       {
-        "desc": "white solid lump, smooth, oval-shaped, creamy",
+        "desc": "solid white dollop of ghee, smooth and opaque",
         "action": "melting",
         "position": "center"
       },
       {
-        "desc": "black wok, round, matte finish, cooking vessel",
+        "desc": "wooden spatula, light brown, flat and wide",
+        "action": "stirring the mixture",
+        "position": "top right"
+      },
+      {
+        "desc": "text overlay in a semi-transparent, sans-serif font",
         "action": "static",
-        "position": "background"
+        "position": "bottom left"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A wooden spatula is stirring brown crumbly chunks in a black wok.",
+        "fact": "A wooden spatula is actively stirring the golden-brown mixture in the wok.",
         "confidence": 1.0
       },
       {
-        "fact": "A white solid lump is melting amongst the brown chunks.",
+        "fact": "A dollop of white ghee is placed on top of the crumbly mixture.",
         "confidence": 1.0
       },
       {
@@ -598,345 +589,340 @@
       "Desi Ghee",
       "1 tsp"
     ],
-    "spatial": "The wooden spatula is to the right of the brown crumbly chunks and the white solid lump. The ingredients are inside the black wok. The white solid lump is in the center of the brown chunks.",
+    "spatial": "The wooden spatula is positioned above and to the right of the food mixture, pressing down into it. The white dollop of ghee is in the center of the wok, surrounded by the golden-brown crumbs. The text overlay is located in the bottom left corner of the frame, below the wok.",
     "parse_success": true,
     "chunk_idx": 12,
     "video_id": "Peanut_Brittle_made_with_Jaggery_Chicki_Jugu_Paak_moongfali_chikki_with_Raihana_s_Cuisines"
   },
   {
     "time": [
-      26,
-      28
+      13,
+      14
     ],
     "visible_entities": [
       {
-        "desc": "black wok with a matte, slightly textured interior surface",
+        "desc": "black frying pan with a textured, non-stick interior surface",
         "action": "static",
         "position": "center"
       },
       {
-        "desc": "crumbly, golden-brown food mixture with irregular chunks and fine crumbs",
+        "desc": "brown, crumbly, textured food chunks resembling scrambled eggs or tofu",
         "action": "being stirred",
         "position": "center"
       },
       {
-        "desc": "wooden spatula, light-brown, flat, smooth surface",
-        "action": "stirring the food",
+        "desc": "wooden spatula, light brown, flat head",
+        "action": "stirring food",
         "position": "center"
       },
       {
-        "desc": "pale yellow, solid, rectangular chunk of butter",
-        "action": "melting",
+        "desc": "solid white chunk, likely onion or garlic",
+        "action": "static",
         "position": "center"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A wooden spatula is actively stirring the crumbly food mixture inside the wok.",
+        "fact": "A wooden spatula is stirring brown, crumbly food chunks inside a black frying pan.",
         "confidence": 1.0
       },
       {
-        "fact": "A solid chunk of butter is melting into the hot food mixture.",
+        "fact": "A solid white chunk is visible among the brown food pieces.",
         "confidence": 1.0
       },
       {
-        "fact": "The food mixture consists of both larger chunks and fine crumbs.",
+        "fact": "The food is being cooked in the center of the pan.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The crumbly food mixture is inside the black wok. The wooden spatula is on top of the food mixture, moving it around. The chunk of butter is in the center of the food mixture.",
+    "spatial": "The wooden spatula is positioned above the brown food chunks and the white chunk inside the black frying pan. The food is located in the center of the pan.",
     "parse_success": true,
     "chunk_idx": 13,
     "video_id": "Peanut_Brittle_made_with_Jaggery_Chicki_Jugu_Paak_moongfali_chikki_with_Raihana_s_Cuisines"
   },
   {
     "time": [
-      28,
-      30
+      14,
+      15
     ],
     "visible_entities": [
       {
-        "desc": "wooden spatula, light-brown, smooth, flat",
-        "action": "stirring ingredients",
+        "desc": "wooden spatula, light brown, flat",
+        "action": "stirring food",
         "position": "center"
       },
       {
-        "desc": "crumbled food chunks, golden-brown, irregular shape, textured",
+        "desc": "golden-brown crumbled food chunks, irregular shape, textured",
         "action": "being stirred",
         "position": "center"
       },
       {
-        "desc": "white garlic clove, smooth, oblong",
+        "desc": "pale white garlic clove, smooth, oblong",
         "action": "static",
         "position": "center"
       },
       {
-        "desc": "black wok, round, metallic rim",
+        "desc": "black frying pan, round, non-stick surface",
         "action": "static",
         "position": "background"
       },
       {
         "desc": "human hand, fingers visible",
-        "action": "holding wok",
-        "position": "right"
+        "action": "holding pan handle",
+        "position": "bottom right"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A wooden spatula is stirring crumbled food chunks inside a black wok.",
+        "fact": "A wooden spatula is stirring golden-brown food chunks in a pan.",
         "confidence": 1.0
       },
       {
-        "fact": "A single white garlic clove sits among the brown food pieces.",
+        "fact": "A single garlic clove rests among the food pieces.",
         "confidence": 1.0
       },
       {
-        "fact": "A hand is holding the rim of the wok on the right side.",
+        "fact": "A hand is holding the handle of the black frying pan.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The wooden spatula is above the crumbled food chunks and the garlic clove. The garlic clove is near the center of the wok, surrounded by the food. The hand is to the right of the wok, holding its edge.",
+    "spatial": "The wooden spatula is above the golden-brown food chunks in the center of the pan. The garlic clove is next to the food chunks. The hand is to the right of the pan, holding the handle.",
     "parse_success": true,
     "chunk_idx": 14,
     "video_id": "Peanut_Brittle_made_with_Jaggery_Chicki_Jugu_Paak_moongfali_chikki_with_Raihana_s_Cuisines"
   },
   {
     "time": [
-      30,
-      32
+      15,
+      16
     ],
     "visible_entities": [
       {
-        "desc": "golden-brown, irregularly shaped, textured food chunks",
+        "desc": "black frying pan with a speckled rim",
+        "action": "static",
+        "position": "center"
+      },
+      {
+        "desc": "golden-brown crumbled food chunks",
         "action": "being stirred",
         "position": "center"
       },
       {
-        "desc": "pale yellow, smooth, cylindrical food piece",
-        "action": "being stirred",
+        "desc": "pale yellow rectangular chunk of butter",
+        "action": "melting",
         "position": "bottom-center"
       },
       {
-        "desc": "wooden spatula, light-brown, flat head",
+        "desc": "wooden spatula",
         "action": "stirring food",
         "position": "right"
       },
       {
-        "desc": "black, round, non-stick frying pan",
-        "action": "static",
-        "position": "background"
-      },
-      {
-        "desc": "hand with brown skin tone",
-        "action": "holding pan",
+        "desc": "hand with dark skin tone",
+        "action": "holding pan handle",
         "position": "bottom-right"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A wooden spatula is stirring golden-brown food chunks and a pale yellow piece inside a black frying pan.",
+        "fact": "A wooden spatula is stirring golden-brown crumbled food chunks in a black frying pan.",
         "confidence": 1.0
       },
       {
-        "fact": "A hand is holding the handle of the frying pan at the bottom right.",
+        "fact": "A rectangular chunk of butter is melting among the food pieces.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A hand is holding the handle of the pan on the right side.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The wooden spatula is to the right of the food chunks and is moving them around. The pale yellow piece is below the main pile of golden-brown chunks. The hand is holding the frying pan from the bottom right.",
+    "spatial": "The wooden spatula is on the right side of the pan, positioned above the golden-brown food chunks. The melting butter is located near the bottom center of the pan, surrounded by the food. The hand is visible at the bottom right, holding the pan handle.",
     "parse_success": true,
     "chunk_idx": 15,
     "video_id": "Peanut_Brittle_made_with_Jaggery_Chicki_Jugu_Paak_moongfali_chikki_with_Raihana_s_Cuisines"
   },
   {
     "time": [
-      32,
-      34
+      16,
+      17
     ],
     "visible_entities": [
       {
-        "desc": "black frying pan with a metallic handle and silver rivets",
+        "desc": "black frying pan with a silver rivet on the handle",
         "action": "static",
         "position": "center"
       },
       {
-        "desc": "thick, glossy, yellow-orange sauce with visible chunks of ingredients",
+        "desc": "thick yellow-orange sauce with small chunks and a purple piece",
         "action": "being stirred",
-        "position": "inside the pan"
-      },
-      {
-        "desc": "light-colored wooden spatula with a green silicone tip",
-        "action": "stirring the sauce",
         "position": "center"
       },
       {
-        "desc": "small purple vegetable pieces",
-        "action": "being mixed",
-        "position": "inside the sauce"
+        "desc": "wooden spatula with a light green handle tip",
+        "action": "stirring the sauce",
+        "position": "top"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A wooden spatula is stirring a thick yellow-orange sauce inside a black frying pan.",
+        "fact": "A wooden spatula is stirring a thick yellow-orange sauce in a black frying pan.",
         "confidence": 1.0
       },
       {
-        "fact": "The sauce contains visible chunks and small purple vegetable pieces.",
+        "fact": "The sauce contains small chunks and a visible purple piece.",
         "confidence": 1.0
       },
       {
-        "fact": "The sauce coats the bottom of the pan as it is being moved.",
+        "fact": "The frying pan is sitting on a stove.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The black frying pan is centered in the frame. The yellow-orange sauce is inside the pan. The wooden spatula is positioned above the sauce, mixing it. The purple vegetable pieces are embedded within the sauce.",
+    "spatial": "The wooden spatula is inside the black frying pan, moving through the yellow-orange sauce. The sauce is spread across the bottom of the pan.",
     "parse_success": true,
     "chunk_idx": 16,
     "video_id": "Peanut_Brittle_made_with_Jaggery_Chicki_Jugu_Paak_moongfali_chikki_with_Raihana_s_Cuisines"
   },
   {
     "time": [
-      34,
-      36
+      17,
+      18
     ],
     "visible_entities": [
       {
-        "desc": "yellow liquid mixture with solid chunks, viscous and glossy texture",
+        "desc": "yellow viscous liquid with lumpy texture",
         "action": "being stirred",
         "position": "center"
       },
       {
-        "desc": "light-brown wooden spatula, smooth surface, flat head",
-        "action": "stirring the mixture",
-        "position": "center/right"
+        "desc": "light brown wooden spatula",
+        "action": "stirring",
+        "position": "center"
       },
       {
-        "desc": "black frying pan, non-stick surface, round shape, metal handle attachment visible",
+        "desc": "black frying pan",
         "action": "static",
         "position": "background"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A wooden spatula is stirring a yellow mixture in a pan.",
+        "fact": "A wooden spatula is stirring a yellow liquid mixture inside a black pan.",
         "confidence": 1.0
       },
       {
-        "fact": "The yellow mixture contains visible solid chunks.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The mixture is spread across the bottom of the black pan.",
+        "fact": "The yellow mixture is bubbling slightly as it is being moved.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The wooden spatula is inside the black frying pan, positioned above the yellow mixture. The yellow mixture is located in the center of the pan. The pan is situated on a stove surface.",
+    "spatial": "The wooden spatula is inside the black frying pan. The yellow liquid is below the spatula and contained within the pan.",
     "parse_success": true,
     "chunk_idx": 17,
     "video_id": "Peanut_Brittle_made_with_Jaggery_Chicki_Jugu_Paak_moongfali_chikki_with_Raihana_s_Cuisines"
   },
   {
     "time": [
-      36,
-      38
+      18,
+      19
     ],
     "visible_entities": [
       {
-        "desc": "yellow liquid mixture, viscous, lumpy texture, glossy surface",
+        "desc": "yellow liquid egg mixture, viscous and partially coagulated with lumpy texture",
         "action": "being stirred",
         "position": "center"
       },
       {
-        "desc": "wooden spatula, light brown, flat handle",
-        "action": "stirring the mixture",
-        "position": "center"
-      },
-      {
-        "desc": "black frying pan, round, non-stick surface, metallic rivets",
-        "action": "static",
-        "position": "background"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "A wooden spatula is stirring a yellow liquid mixture inside a black frying pan.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The yellow mixture has a lumpy, viscous consistency and coats the bottom of the pan.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [],
-    "spatial": "The yellow liquid mixture is inside the black frying pan. The wooden spatula is in the center of the pan, interacting with the mixture.",
-    "parse_success": true,
-    "chunk_idx": 18,
-    "video_id": "Peanut_Brittle_made_with_Jaggery_Chicki_Jugu_Paak_moongfali_chikki_with_Raihana_s_Cuisines"
-  },
-  {
-    "time": [
-      38,
-      40
-    ],
-    "visible_entities": [
-      {
-        "desc": "yellow liquid egg mixture, viscous and partially coagulated with bubbles",
-        "action": "being stirred and spread",
-        "position": "center"
-      },
-      {
-        "desc": "light-colored wooden spatula, flat and smooth",
+        "desc": "wooden spatula, light brown, flat head",
         "action": "stirring the eggs",
-        "position": "center"
-      },
-      {
-        "desc": "black non-stick frying pan, round with a metallic handle attachment",
-        "action": "static",
-        "position": "background"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "A wooden spatula is stirring the yellow egg mixture in the pan.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The egg mixture is spreading out to cover the bottom of the pan.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The eggs are cooking and beginning to solidify.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [],
-    "spatial": "The wooden spatula is inside the black frying pan, moving through the yellow egg mixture. The egg mixture is spread across the bottom surface of the pan.",
-    "parse_success": true,
-    "chunk_idx": 19,
-    "video_id": "Peanut_Brittle_made_with_Jaggery_Chicki_Jugu_Paak_moongfali_chikki_with_Raihana_s_Cuisines"
-  },
-  {
-    "time": [
-      40,
-      42
-    ],
-    "visible_entities": [
-      {
-        "desc": "yellow liquid egg mixture, viscous and bubbling, with solidifying curds",
-        "action": "being stirred",
         "position": "center"
       },
       {
         "desc": "black frying pan, non-stick surface, round",
         "action": "static",
         "position": "background"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A wooden spatula is actively stirring the yellow egg mixture inside the pan.",
+        "confidence": 1.0
       },
       {
-        "desc": "wooden spatula, light brown, flat head",
+        "fact": "The egg mixture is in the process of cooking and coagulating.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The frying pan is sitting on a stovetop.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The yellow egg mixture is inside the black frying pan. The wooden spatula is in contact with the eggs, moving through the center of the mixture. The frying pan is positioned on the stovetop surface.",
+    "parse_success": true,
+    "chunk_idx": 18,
+    "video_id": "Peanut_Brittle_made_with_Jaggery_Chicki_Jugu_Paak_moongfali_chikki_with_Raihana_s_Cuisines"
+  },
+  {
+    "time": [
+      19,
+      20
+    ],
+    "visible_entities": [
+      {
+        "desc": "black non-stick frying pan",
+        "action": "static",
+        "position": "center"
+      },
+      {
+        "desc": "yellow liquid egg mixture",
+        "action": "being stirred",
+        "position": "inside the pan"
+      },
+      {
+        "desc": "light-colored wooden spatula",
+        "action": "stirring the eggs",
+        "position": "center"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A wooden spatula is stirring yellow egg mixture inside a black frying pan.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The egg mixture is being spread across the bottom of the pan.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The wooden spatula is inside the black frying pan, moving through the yellow egg mixture. The egg mixture covers the bottom surface of the pan.",
+    "parse_success": true,
+    "chunk_idx": 19,
+    "video_id": "Peanut_Brittle_made_with_Jaggery_Chicki_Jugu_Paak_moongfali_chikki_with_Raihana_s_Cuisines"
+  },
+  {
+    "time": [
+      20,
+      21
+    ],
+    "visible_entities": [
+      {
+        "desc": "yellow liquid egg mixture, viscous and bubbling",
+        "action": "being stirred",
+        "position": "center"
+      },
+      {
+        "desc": "black frying pan, round, non-stick surface",
+        "action": "static",
+        "position": "center"
+      },
+      {
+        "desc": "wooden spatula, light brown, flat",
         "action": "stirring the eggs",
         "position": "right"
       }
@@ -947,80 +933,38 @@
         "confidence": 1.0
       },
       {
-        "fact": "The eggs are cooking and forming solid curds.",
+        "fact": "The egg mixture is bubbling and cooking in the hot pan.",
         "confidence": 1.0
       },
       {
-        "fact": "Bubbles are visible on the surface of the cooking eggs.",
+        "fact": "The black frying pan is sitting on a stovetop.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The yellow egg mixture is inside the black frying pan. The wooden spatula is to the right of the center, partially submerged in the eggs. The pan is situated on a stovetop surface.",
+    "spatial": "The yellow egg mixture is inside the black frying pan. The wooden spatula is on the right side, partially submerged in the eggs. The frying pan is centered in the frame.",
     "parse_success": true,
     "chunk_idx": 20,
     "video_id": "Peanut_Brittle_made_with_Jaggery_Chicki_Jugu_Paak_moongfali_chikki_with_Raihana_s_Cuisines"
   },
   {
     "time": [
-      42,
-      44
+      21,
+      22
     ],
     "visible_entities": [
       {
         "desc": "wooden spatula, light brown, smooth texture, flat head",
-        "action": "stirring the liquid",
+        "action": "stirring yellow liquid",
         "position": "center"
       },
       {
-        "desc": "yellow liquid mixture, bubbling, viscous, frothy texture",
-        "action": "simmering in the pan",
-        "position": "center"
-      },
-      {
-        "desc": "black frying pan, non-stick surface, round shape",
-        "action": "static",
-        "position": "background"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "A wooden spatula is stirring a yellow liquid mixture.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The yellow liquid is bubbling and simmering in the pan.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The mixture is contained within a black frying pan.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [],
-    "spatial": "The wooden spatula is positioned above and inside the black frying pan. The yellow liquid mixture is inside the pan, surrounding the head of the spatula.",
-    "parse_success": true,
-    "chunk_idx": 21,
-    "video_id": "Peanut_Brittle_made_with_Jaggery_Chicki_Jugu_Paak_moongfali_chikki_with_Raihana_s_Cuisines"
-  },
-  {
-    "time": [
-      44,
-      46
-    ],
-    "visible_entities": [
-      {
-        "desc": "yellow liquid mixture, viscous, bubbling, transforming into a solidifying mass",
+        "desc": "yellow liquid mixture, bubbling, viscous texture",
         "action": "being stirred",
         "position": "center"
       },
       {
-        "desc": "wooden spatula, light-brown, flat",
-        "action": "stirring the mixture",
-        "position": "center"
-      },
-      {
-        "desc": "black frying pan, non-stick surface, round",
+        "desc": "black frying pan, round, non-stick surface",
         "action": "static",
         "position": "background"
       }
@@ -1031,91 +975,133 @@
         "confidence": 1.0
       },
       {
-        "fact": "The yellow mixture is bubbling and thickening as it is stirred.",
+        "fact": "The yellow mixture is bubbling as it is being cooked.",
         "confidence": 1.0
       },
       {
-        "fact": "The mixture is changing from a liquid state to a more solid, scrambled texture.",
+        "fact": "The spatula lifts slightly, allowing the liquid to drip back into the pan.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The wooden spatula is inside the black frying pan, moving through the yellow mixture. The mixture is located in the center of the pan.",
+    "spatial": "The wooden spatula is positioned above the yellow liquid mixture in the center of the black frying pan. The liquid is contained inside the pan.",
+    "parse_success": true,
+    "chunk_idx": 21,
+    "video_id": "Peanut_Brittle_made_with_Jaggery_Chicki_Jugu_Paak_moongfali_chikki_with_Raihana_s_Cuisines"
+  },
+  {
+    "time": [
+      22,
+      23
+    ],
+    "visible_entities": [
+      {
+        "desc": "yellow liquid mixture with bubbles, viscous texture",
+        "action": "being stirred",
+        "position": "center"
+      },
+      {
+        "desc": "black frying pan, non-stick surface",
+        "action": "static",
+        "position": "center"
+      },
+      {
+        "desc": "wooden spatula, light brown, flat",
+        "action": "stirring mixture",
+        "position": "center"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A wooden spatula is stirring a yellow liquid mixture inside a black frying pan.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The yellow mixture is bubbling and spreading across the bottom of the pan.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The mixture transitions from a thin liquid state to a thicker, more cohesive consistency as it is stirred.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The yellow liquid mixture is inside the black frying pan. The wooden spatula is in contact with the mixture, moving through it to stir. The pan is positioned on a surface, likely a stove.",
     "parse_success": true,
     "chunk_idx": 22,
     "video_id": "Peanut_Brittle_made_with_Jaggery_Chicki_Jugu_Paak_moongfali_chikki_with_Raihana_s_Cuisines"
   },
   {
     "time": [
-      46,
-      48
+      23,
+      24
     ],
     "visible_entities": [
       {
-        "desc": "thick, glossy, golden-brown sauce with a smooth, creamy texture",
-        "action": "being stirred in a pan",
+        "desc": "thick, glossy, light-brown viscous mixture",
+        "action": "being stirred",
         "position": "center"
       },
       {
-        "desc": "black frying pan with a speckled white rim",
-        "action": "static",
-        "position": "background"
+        "desc": "wooden spatula, light-brown, flat",
+        "action": "stirring mixture",
+        "position": "top"
       },
       {
-        "desc": "wooden spatula with a flat, broad head",
-        "action": "lifting and stirring the sauce",
-        "position": "top/center"
+        "desc": "black frying pan, non-stick surface",
+        "action": "static",
+        "position": "background"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A wooden spatula is stirring a thick, golden-brown sauce inside a black frying pan.",
+        "fact": "A wooden spatula is stirring a thick, light-brown mixture inside a black pan.",
         "confidence": 1.0
       },
       {
-        "fact": "The sauce has a glossy and creamy consistency.",
+        "fact": "The mixture has a glossy, viscous texture and coats the spatula.",
         "confidence": 1.0
       },
       {
-        "fact": "The spatula lifts a portion of the sauce, showing its viscosity.",
+        "fact": "Residue of the brown mixture is visible on the inner walls of the pan.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The wooden spatula is positioned above and partially inside the black frying pan. The golden-brown sauce is contained within the pan and is being manipulated by the spatula.",
+    "spatial": "The wooden spatula is positioned above the light-brown mixture, dipping into it to stir. The mixture is located inside the black frying pan, filling the bottom center. The pan surrounds the mixture and sits on a surface.",
     "parse_success": true,
     "chunk_idx": 23,
     "video_id": "Peanut_Brittle_made_with_Jaggery_Chicki_Jugu_Paak_moongfali_chikki_with_Raihana_s_Cuisines"
   },
   {
     "time": [
-      48,
-      50
+      24,
+      25
     ],
     "visible_entities": [
       {
-        "desc": "thick, creamy, yellow-orange sauce with a glossy texture",
+        "desc": "thick, creamy, orange-yellow sauce with a glossy texture",
         "action": "being stirred",
         "position": "center"
       },
       {
-        "desc": "black frying pan with a silver rim and visible rivets",
+        "desc": "black non-stick frying pan with silver rivets",
         "action": "static",
         "position": "background"
       },
       {
-        "desc": "light-colored wooden spoon",
+        "desc": "light-colored wooden spatula",
         "action": "stirring the sauce",
         "position": "right"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A wooden spoon is stirring the yellow-orange sauce in the pan.",
+        "fact": "A wooden spatula is stirring the thick orange sauce in the pan.",
         "confidence": 1.0
       },
       {
-        "fact": "The sauce has a thick, creamy consistency.",
+        "fact": "The sauce has a glossy, viscous consistency.",
         "confidence": 1.0
       },
       {
@@ -1124,36 +1110,36 @@
       }
     ],
     "ocr": [],
-    "spatial": "The yellow-orange sauce is inside the black frying pan. The wooden spoon is on the right side of the pan, partially submerged in the sauce.",
+    "spatial": "The orange sauce is inside the black frying pan. The wooden spatula is on the right side of the pan, partially submerged in the sauce.",
     "parse_success": true,
     "chunk_idx": 24,
     "video_id": "Peanut_Brittle_made_with_Jaggery_Chicki_Jugu_Paak_moongfali_chikki_with_Raihana_s_Cuisines"
   },
   {
     "time": [
-      50,
-      52
+      25,
+      26
     ],
     "visible_entities": [
       {
-        "desc": "person's hand and forearm with dark skin, wearing a magenta long-sleeved top and a gold bracelet",
-        "action": "reaching into the bowl",
-        "position": "right"
-      },
-      {
-        "desc": "black bowl with a silver rim, containing dark liquid and small food particles",
+        "desc": "black round bowl with a silver rim, containing dark liquid and small food particles",
         "action": "static",
         "position": "center"
       },
       {
         "desc": "silver metal fork with four tines",
-        "action": "static",
+        "action": "resting in the bowl",
         "position": "center"
       },
       {
-        "desc": "white flat surface, likely a table",
+        "desc": "person's right hand with dark skin tone, wearing a gold bracelet and a magenta long-sleeved top",
+        "action": "reaching into the bowl",
+        "position": "right"
+      },
+      {
+        "desc": "black rectangular object with a glossy surface",
         "action": "static",
-        "position": "background"
+        "position": "bottom left"
       }
     ],
     "atomic_facts": [
@@ -1162,28 +1148,28 @@
         "confidence": 1.0
       },
       {
-        "fact": "The fork is resting inside the bowl.",
+        "fact": "The hand is wearing a gold bracelet.",
         "confidence": 1.0
       },
       {
-        "fact": "The bowl is placed on a white surface.",
+        "fact": "The fork is resting inside the bowl.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The black bowl is in the center of the frame, resting on the white surface. The silver fork is inside the bowl. The person's hand enters from the right side and is positioned above the bowl.",
+    "spatial": "The black bowl is in the center of the frame. The person's hand is to the right of the bowl and reaches inside it. The black rectangular object is to the bottom left of the bowl.",
     "parse_success": true,
     "chunk_idx": 25,
     "video_id": "Peanut_Brittle_made_with_Jaggery_Chicki_Jugu_Paak_moongfali_chikki_with_Raihana_s_Cuisines"
   },
   {
     "time": [
-      52,
-      54
+      26,
+      27
     ],
     "visible_entities": [
       {
-        "desc": "dark-skinned hand with short fingernails",
+        "desc": "dark-skinned hand",
         "action": "holding a small piece of food",
         "position": "right"
       },
@@ -1198,12 +1184,7 @@
         "position": "center"
       },
       {
-        "desc": "small brownish food particle",
-        "action": "being held",
-        "position": "right"
-      },
-      {
-        "desc": "white surface",
+        "desc": "white table surface",
         "action": "static",
         "position": "background"
       },
@@ -1215,331 +1196,280 @@
     ],
     "atomic_facts": [
       {
-        "fact": "A hand is holding a small piece of food above a plate.",
+        "fact": "A hand is holding a small piece of food over a plate.",
         "confidence": 1.0
       },
       {
-        "fact": "A fork rests inside the black plate.",
+        "fact": "A metal fork rests inside the black plate.",
         "confidence": 1.0
       },
       {
-        "fact": "The plate contains small food crumbs.",
+        "fact": "The plate contains food residue.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The black plate is in the center of the white surface. The hand is to the right of the plate, holding the food particle above it. The fork is inside the plate. The black rectangular object is at the bottom left of the frame.",
+    "spatial": "The black round plate is in the center of the frame, resting on a white table surface. A metal fork is inside the plate. A dark-skinned hand is positioned to the right of the plate, holding a small piece of food. A black rectangular object is visible in the bottom left corner.",
     "parse_success": true,
     "chunk_idx": 26,
     "video_id": "Peanut_Brittle_made_with_Jaggery_Chicki_Jugu_Paak_moongfali_chikki_with_Raihana_s_Cuisines"
   },
   {
     "time": [
-      54,
-      56
+      27,
+      28
     ],
     "visible_entities": [
       {
-        "desc": "hand with light skin tone",
-        "action": "holding a small piece of food",
-        "position": "top right"
-      },
-      {
-        "desc": "black bowl with a silver rim",
-        "action": "static",
-        "position": "center"
-      },
-      {
-        "desc": "silver metal fork",
-        "action": "static",
-        "position": "inside the bowl"
-      },
-      {
-        "desc": "black frying pan",
-        "action": "static",
-        "position": "center"
-      },
-      {
         "desc": "thick, glossy, light-brown viscous mixture",
         "action": "being stirred",
-        "position": "inside the pan"
+        "position": "center"
       },
       {
-        "desc": "light-colored wooden spatula",
+        "desc": "wooden spatula, light-colored, flat",
         "action": "stirring the mixture",
-        "position": "inside the pan"
+        "position": "center"
+      },
+      {
+        "desc": "black frying pan, round, non-stick surface",
+        "action": "static",
+        "position": "center"
+      },
+      {
+        "desc": "silver stovetop, metallic surface",
+        "action": "static",
+        "position": "left"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A hand is holding a small piece of food over a black bowl.",
+        "fact": "A wooden spatula is stirring a thick, glossy, light-brown viscous mixture inside a black frying pan.",
         "confidence": 1.0
       },
       {
-        "fact": "A wooden spatula is stirring a thick, light-brown mixture in a black frying pan.",
+        "fact": "The mixture coats the bottom and sides of the pan as it is moved.",
         "confidence": 1.0
       },
       {
-        "fact": "The black bowl contains a silver fork and some food residue.",
+        "fact": "The black frying pan is resting on a silver stovetop.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The hand is positioned above and to the right of the black bowl. The silver fork is resting inside the black bowl. The wooden spatula is inside the black frying pan, mixing the brown substance.",
+    "spatial": "The black frying pan is positioned on the silver stovetop. The wooden spatula is inside the pan, actively mixing the light-brown viscous mixture. The mixture is spread across the bottom surface of the pan.",
     "parse_success": true,
     "chunk_idx": 27,
     "video_id": "Peanut_Brittle_made_with_Jaggery_Chicki_Jugu_Paak_moongfali_chikki_with_Raihana_s_Cuisines"
   },
   {
     "time": [
-      56,
-      58
+      28,
+      29
     ],
     "visible_entities": [
       {
-        "desc": "thick, glossy, light-brown paste mixture",
+        "desc": "thick, glossy, light-brown paste with a smooth texture",
         "action": "being stirred",
         "position": "center"
       },
       {
-        "desc": "white, fine-grained powder",
+        "desc": "fine, white powder",
         "action": "being poured",
         "position": "center"
       },
       {
-        "desc": "wooden spatula, light-brown, smooth",
-        "action": "stirring the mixture",
-        "position": "center"
-      },
-      {
-        "desc": "black frying pan, round, non-stick surface",
+        "desc": "black frying pan with a speckled interior surface",
         "action": "static",
         "position": "background"
       },
       {
-        "desc": "pink plastic measuring cup, bright pink, blurred due to motion",
+        "desc": "bright pink silicone spatula",
         "action": "pouring powder",
         "position": "top right"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "A pink measuring cup is pouring white powder into the pan.",
-        "confidence": 1.0
       },
       {
-        "fact": "The wooden spatula is stirring the brown paste mixture.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The text overlay reads 'Coconut powder 2 tsp'.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [
-      "Coconut powder",
-      "2 tsp"
-    ],
-    "spatial": "The black frying pan is in the background containing the brown paste mixture. The wooden spatula is inside the pan, mixing the ingredients. The pink measuring cup is positioned above the pan, pouring the white powder into the center of the mixture.",
-    "parse_success": true,
-    "chunk_idx": 28,
-    "video_id": "Peanut_Brittle_made_with_Jaggery_Chicki_Jugu_Paak_moongfali_chikki_with_Raihana_s_Cuisines"
-  },
-  {
-    "time": [
-      58,
-      60
-    ],
-    "visible_entities": [
-      {
-        "desc": "white granular powder, fine texture, piled in a mound",
-        "action": "static",
+        "desc": "light-colored wooden spoon",
+        "action": "stirring",
         "position": "center"
       },
       {
-        "desc": "thick orange-brown paste, glossy texture, smeared on pan surface",
-        "action": "static",
-        "position": "background"
-      },
-      {
-        "desc": "light-colored wooden spatula, smooth handle, flat head",
-        "action": "resting",
-        "position": "right"
-      },
-      {
-        "desc": "black frying pan, round, non-stick surface",
-        "action": "static",
-        "position": "background"
-      },
-      {
-        "desc": "white text overlay, sans-serif font",
-        "action": "static",
-        "position": "bottom-left"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "A pile of white powder sits on top of the orange paste.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "A wooden spatula rests in the pan to the right of the powder.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The text overlay reads 'Coconut powder 2 tsp'.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [
-      "Coconut powder",
-      "2 tsp"
-    ],
-    "spatial": "The white powder is in the center of the pan, resting on top of the orange paste. The wooden spatula is to the right of the powder, partially submerged in the paste. The text overlay is located in the bottom-left corner of the frame, below the pan's contents.",
-    "parse_success": true,
-    "chunk_idx": 29,
-    "video_id": "Peanut_Brittle_made_with_Jaggery_Chicki_Jugu_Paak_moongfali_chikki_with_Raihana_s_Cuisines"
-  },
-  {
-    "time": [
-      60,
-      62
-    ],
-    "visible_entities": [
-      {
-        "desc": "wooden spatula, light brown, flat head",
-        "action": "resting in mixture",
-        "position": "right"
-      },
-      {
-        "desc": "white granular powder, piled in a mound",
-        "action": "static",
-        "position": "center"
-      },
-      {
-        "desc": "thick orange-brown paste, glossy texture",
-        "action": "static",
-        "position": "background"
-      },
-      {
-        "desc": "black frying pan, round",
-        "action": "static",
-        "position": "background"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "A pile of white granular powder sits on top of the orange-brown paste.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "A wooden spatula rests in the mixture on the right side of the pan.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The mixture is contained within a black frying pan.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [],
-    "spatial": "The pile of white granular powder is in the center of the pan, resting on top of the orange-brown paste. The wooden spatula is to the right of the powder, partially submerged in the paste. The paste fills the bottom of the black frying pan.",
-    "parse_success": true,
-    "chunk_idx": 30,
-    "video_id": "Peanut_Brittle_made_with_Jaggery_Chicki_Jugu_Paak_moongfali_chikki_with_Raihana_s_Cuisines"
-  },
-  {
-    "time": [
-      62,
-      64
-    ],
-    "visible_entities": [
-      {
-        "desc": "pink plastic bowl filled with split, skinless peanuts",
-        "action": "pouring contents into the pan",
-        "position": "top center"
-      },
-      {
-        "desc": "black frying pan containing a thick, glossy, golden-brown syrup mixture",
-        "action": "static",
-        "position": "center"
-      },
-      {
-        "desc": "light-colored wooden spatula",
-        "action": "resting in the mixture",
-        "position": "right"
-      },
-      {
-        "desc": "white granular powder",
-        "action": "sitting on top of the syrup",
-        "position": "center"
-      },
-      {
-        "desc": "white text overlay reading 'Moongfali 200 gm'",
+        "desc": "white text overlay with a slight shadow",
         "action": "static",
         "position": "bottom left"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A person pours peanuts from a pink bowl into a pan containing a caramel-like mixture.",
+        "fact": "A pink spatula is pouring white powder into the pan.",
         "confidence": 1.0
       },
       {
-        "fact": "The peanuts fall onto a pile of white powder that is resting on the golden-brown syrup.",
+        "fact": "A wooden spoon is stirring the brown paste.",
         "confidence": 1.0
       },
       {
-        "fact": "The text 'Moongfali 200 gm' is visible in the bottom left corner, indicating the ingredient and quantity.",
+        "fact": "The text overlay reads 'Coconut powder 2 tsp'.",
         "confidence": 1.0
       }
     ],
     "ocr": [
-      "Moongfali",
-      "200 gm"
+      "Coconut powder",
+      "2 tsp"
     ],
-    "spatial": "The pink bowl is positioned above the black pan, pouring peanuts into it. The wooden spatula rests inside the pan to the right of the white powder. The white powder is located in the center of the pan, on top of the golden-brown mixture. The text overlay is in the bottom left corner of the frame.",
+    "spatial": "The black frying pan contains the brown paste. The pink spatula is positioned above the pan, pouring white powder onto the paste. The wooden spoon is inside the pan, mixing the ingredients. The text overlay is located in the bottom left corner of the frame.",
     "parse_success": true,
-    "chunk_idx": 31,
+    "chunk_idx": 28,
     "video_id": "Peanut_Brittle_made_with_Jaggery_Chicki_Jugu_Paak_moongfali_chikki_with_Raihana_s_Cuisines"
   },
   {
     "time": [
-      64,
-      66
+      29,
+      30
     ],
     "visible_entities": [
       {
-        "desc": "black frying pan with a thick, glossy, caramel-colored paste",
+        "desc": "thick, glossy, orange-brown paste",
         "action": "static",
         "position": "center"
       },
       {
-        "desc": "light-beige, split, skinless peanuts (Moongfali)",
-        "action": "being stirred into the mixture",
+        "desc": "pile of fine, white granular powder",
+        "action": "static",
         "position": "center"
       },
       {
-        "desc": "wooden spatula, light brown, flat",
-        "action": "stirring the peanuts and paste",
+        "desc": "light-brown wooden spoon with a flat, wide head",
+        "action": "static",
         "position": "right"
       },
       {
-        "desc": "white text overlay, sans-serif font",
+        "desc": "black, non-stick frying pan",
+        "action": "static",
+        "position": "background"
+      },
+      {
+        "desc": "white text with a black outline",
         "action": "static",
         "position": "bottom-left"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A wooden spatula is actively stirring light-beige peanuts into a thick, caramel-colored paste inside a black pan.",
+        "fact": "A pile of white powder is sitting on top of the orange-brown paste.",
         "confidence": 1.0
       },
       {
-        "fact": "The peanuts are being mixed into the sticky substance.",
+        "fact": "A wooden spoon is resting in the pan next to the powder.",
         "confidence": 1.0
       },
       {
-        "fact": "Text on the screen identifies the ingredient as 'Moongfali' with a quantity of '200 gm'.",
+        "fact": "The text overlay reads 'Coconut powder 2 tsp'.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "Coconut powder",
+      "2 tsp"
+    ],
+    "spatial": "The pile of white powder is in the center of the pan, resting on top of the orange-brown paste. The wooden spoon is positioned to the right of the powder, with its head partially submerged in the paste. The text overlay is located in the bottom-left corner of the frame, below the contents of the pan.",
+    "parse_success": true,
+    "chunk_idx": 29,
+    "video_id": "Peanut_Brittle_made_with_Jaggery_Chicki_Jugu_Paak_moongfali_chikki_with_Raihana_s_Cuisines"
+  },
+  {
+    "time": [
+      30,
+      31
+    ],
+    "visible_entities": [
+      {
+        "desc": "black frying pan with a worn, textured rim",
+        "action": "static",
+        "position": "center"
+      },
+      {
+        "desc": "thick, glossy, orange-brown sauce",
+        "action": "static",
+        "position": "inside pan"
+      },
+      {
+        "desc": "mound of white granular powder",
+        "action": "static",
+        "position": "center"
+      },
+      {
+        "desc": "light-colored wooden spatula with visible grain",
+        "action": "static",
+        "position": "right"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A wooden spatula rests in the pan.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A pile of white powder sits on top of the orange sauce.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The sauce coats the bottom of the black pan.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The wooden spatula is positioned on the right side of the pan, partially submerged in the orange-brown sauce. The mound of white powder is located in the center of the pan, resting on top of the sauce. The sauce fills the bottom of the black frying pan.",
+    "parse_success": true,
+    "chunk_idx": 30,
+    "video_id": "Peanut_Brittle_made_with_Jaggery_Chicki_Jugu_Paak_moongfali_chikki_with_Raihana_s_Cuisines"
+  },
+  {
+    "time": [
+      31,
+      32
+    ],
+    "visible_entities": [
+      {
+        "desc": "black frying pan containing a thick, glossy, golden-brown caramel mixture",
+        "action": "static",
+        "position": "center"
+      },
+      {
+        "desc": "pink plastic bowl filled with split, skinless peanuts (moongfali)",
+        "action": "being poured",
+        "position": "top center"
+      },
+      {
+        "desc": "light-colored wooden spatula",
+        "action": "resting in mixture",
+        "position": "right"
+      },
+      {
+        "desc": "white granulated sugar powder",
+        "action": "static",
+        "position": "center"
+      },
+      {
+        "desc": "white text overlay 'Moongfali 200 gm'",
+        "action": "static",
+        "position": "bottom left"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A pink bowl is being tipped to pour peanuts into the pan.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The peanuts fall from the bowl onto a pile of white sugar and the caramel mixture.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The text 'Moongfali 200 gm' is visible in the bottom left corner.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A wooden spatula rests inside the pan, partially submerged in the caramel.",
         "confidence": 1.0
       }
     ],
@@ -1547,221 +1477,249 @@
       "Moongfali",
       "200 gm"
     ],
-    "spatial": "The wooden spatula is on the right side of the pan, mixing the peanuts which are located in the center of the caramel-colored paste. The text overlay is positioned in the bottom-left corner of the frame, below the pan.",
+    "spatial": "The pink bowl is positioned above the center of the black frying pan. The peanuts are falling from the bowl onto the white sugar, which sits on top of the golden-brown caramel mixture. The wooden spatula is to the right of the sugar pile, resting inside the pan. The text overlay is located in the bottom left corner of the frame.",
+    "parse_success": true,
+    "chunk_idx": 31,
+    "video_id": "Peanut_Brittle_made_with_Jaggery_Chicki_Jugu_Paak_moongfali_chikki_with_Raihana_s_Cuisines"
+  },
+  {
+    "time": [
+      32,
+      33
+    ],
+    "visible_entities": [
+      {
+        "desc": "black frying pan containing a thick, glossy, light-brown caramel-like mixture",
+        "action": "static",
+        "position": "center"
+      },
+      {
+        "desc": "pile of pale beige, split peanuts (Moongfali), dry and textured",
+        "action": "being stirred into mixture",
+        "position": "center"
+      },
+      {
+        "desc": "wooden spatula, light brown, flat head, partially blurred from motion",
+        "action": "stirring ingredients",
+        "position": "right"
+      },
+      {
+        "desc": "white text overlay in sans-serif font",
+        "action": "static",
+        "position": "bottom-left"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A wooden spatula is actively stirring a pile of peanuts into a thick brown mixture inside a pan.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The text 'Moongfali 200 gm' is displayed in the bottom-left corner.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The mixture in the pan appears viscous and glossy.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "Moongfali",
+      "200 gm"
+    ],
+    "spatial": "The wooden spatula is on the right side of the pan, mixing the peanuts which are located in the center of the brown mixture. The text overlay is positioned in the bottom-left corner of the frame, outside the pan area.",
     "parse_success": true,
     "chunk_idx": 32,
     "video_id": "Peanut_Brittle_made_with_Jaggery_Chicki_Jugu_Paak_moongfali_chikki_with_Raihana_s_Cuisines"
   },
   {
     "time": [
-      66,
-      68
+      33,
+      34
     ],
     "visible_entities": [
       {
-        "desc": "light-brown wooden spoon",
-        "action": "stirring ingredients",
-        "position": "center"
-      },
-      {
-        "desc": "thick, glossy, orange-brown paste",
-        "action": "being mixed",
-        "position": "center"
-      },
-      {
-        "desc": "chopped, pale nuts",
-        "action": "being incorporated",
-        "position": "center"
-      },
-      {
-        "desc": "white granular powder",
-        "action": "being stirred in",
-        "position": "center"
-      },
-      {
-        "desc": "black cooking pan",
+        "desc": "black frying pan containing a thick, glossy, caramel-colored sauce",
         "action": "static",
-        "position": "background"
+        "position": "center"
+      },
+      {
+        "desc": "light-brown, chopped nuts, irregularly shaped and dry",
+        "action": "being stirred into the sauce",
+        "position": "center"
+      },
+      {
+        "desc": "wooden cooking utensil, light-brown, smooth texture",
+        "action": "stirring the mixture",
+        "position": "center"
+      },
+      {
+        "desc": "white granular powder, likely sugar or salt",
+        "action": "being mixed into the sauce",
+        "position": "center"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A wooden spoon is vigorously stirring a mixture in a pan.",
+        "fact": "A wooden utensil is actively stirring a mixture of caramel-colored sauce, chopped nuts, and white powder.",
         "confidence": 1.0
       },
       {
-        "fact": "Chopped nuts are being folded into a thick, orange-brown paste.",
+        "fact": "The chopped nuts are being incorporated into the thick sauce.",
         "confidence": 1.0
       },
       {
-        "fact": "White granular powder is visible on top of the mixture.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The mixture is contained within a black pan.",
+        "fact": "White granular powder is visible on top of the sauce and nuts.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The wooden spoon is inside the black pan, mixing the orange-brown paste with the chopped nuts and white powder. The nuts are scattered on top of and within the paste.",
+    "spatial": "The black frying pan is centered in the frame. The wooden utensil is inside the pan, positioned above the sauce and nuts. The chopped nuts and white powder are inside the pan, surrounded by the caramel-colored sauce.",
     "parse_success": true,
     "chunk_idx": 33,
     "video_id": "Peanut_Brittle_made_with_Jaggery_Chicki_Jugu_Paak_moongfali_chikki_with_Raihana_s_Cuisines"
   },
   {
     "time": [
-      68,
-      70
+      34,
+      35
     ],
     "visible_entities": [
       {
-        "desc": "black frying pan containing a thick, glossy, golden-brown caramel-like mixture with chopped nuts",
+        "desc": "black frying pan containing a thick, glossy, caramel-colored mixture with chopped nuts and white powder",
         "action": "being stirred",
         "position": "center"
       },
       {
-        "desc": "round silver metal plate with a greasy, swirled residue pattern",
+        "desc": "silver metal plate with a greased, swirled surface",
         "action": "static",
         "position": "center"
       },
       {
-        "desc": "blue cloth with a yellow floral pattern",
+        "desc": "blue cloth with a green floral pattern",
         "action": "static",
         "position": "background"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A utensil is stirring the nut and caramel mixture inside the black pan.",
+        "fact": "A utensil is stirring a mixture of caramel, nuts, and white powder in a pan.",
         "confidence": 1.0
       },
       {
-        "fact": "The silver plate is resting on top of the blue patterned cloth.",
+        "fact": "A silver plate is prepared with a layer of grease or butter.",
         "confidence": 1.0
       },
       {
-        "fact": "The mixture in the pan appears sticky and viscous.",
+        "fact": "The cooking pan is positioned on a stovetop.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The black frying pan is positioned on the left side of the scene, while the silver plate is shown in a separate view on the right. The blue cloth is located underneath the silver plate.",
+    "spatial": "The black frying pan is in the foreground, containing the mixture. The silver plate is shown in a separate view, resting on top of the blue patterned cloth.",
     "parse_success": true,
     "chunk_idx": 34,
     "video_id": "Peanut_Brittle_made_with_Jaggery_Chicki_Jugu_Paak_moongfali_chikki_with_Raihana_s_Cuisines"
   },
   {
     "time": [
-      70,
-      72
+      35,
+      36
     ],
     "visible_entities": [
       {
-        "desc": "round silver metal plate with a shiny, reflective surface",
+        "desc": "round silver metal plate with a raised rim",
         "action": "static",
         "position": "center"
       },
       {
-        "desc": "thick, creamy white paste with a glossy texture and visible swirl marks",
+        "desc": "thick creamy white paste smeared in a swirl pattern",
         "action": "static",
         "position": "center"
       },
       {
-        "desc": "blue fabric surface with a green and yellow floral or leaf pattern",
+        "desc": "blue cloth with a green leaf-like pattern",
         "action": "static",
         "position": "background"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A round silver metal plate is resting on a blue patterned cloth.",
+        "fact": "A creamy white paste is smeared in a circular swirl pattern on the surface of the metal plate.",
         "confidence": 1.0
       },
       {
-        "fact": "A thick, creamy white paste is smeared in a circular pattern on the surface of the plate.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The paste has a glossy texture with visible swirl marks.",
+        "fact": "The metal plate is resting on top of a blue patterned cloth.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The round silver metal plate is centered in the frame and rests on top of the blue patterned fabric. The creamy white paste is spread across the center of the plate's surface.",
+    "spatial": "The round silver metal plate is centered in the frame and rests on top of the blue patterned cloth. The creamy white paste is spread across the inner surface of the plate.",
     "parse_success": true,
     "chunk_idx": 35,
     "video_id": "Peanut_Brittle_made_with_Jaggery_Chicki_Jugu_Paak_moongfali_chikki_with_Raihana_s_Cuisines"
   },
   {
     "time": [
-      72,
-      74
+      36,
+      37
     ],
     "visible_entities": [
       {
-        "desc": "round silver metal plate with a greasy, swirled white residue coating the center",
+        "desc": "silver metal plate with greased surface",
         "action": "static",
         "position": "center"
       },
       {
-        "desc": "light brown wooden spatula with a flat, wide head",
-        "action": "resting on the plate",
+        "desc": "brown sticky mixture with white puffed grains",
+        "action": "being placed",
         "position": "center"
       },
       {
-        "desc": "clump of brown, sticky, nutty mixture (likely peanut brittle or caramel corn) with visible white nut pieces",
-        "action": "being spread",
-        "position": "center"
+        "desc": "wooden spatula with flat handle",
+        "action": "holding mixture",
+        "position": "left"
       },
       {
-        "desc": "teal blue cloth with a yellow-green floral or leaf pattern",
+        "desc": "blue cloth with green patterns",
         "action": "static",
         "position": "background"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A wooden spatula is resting on top of a brown, nutty mixture.",
+        "fact": "A wooden spatula places a brown sticky mixture containing white puffed grains onto the center of a greased metal plate.",
         "confidence": 1.0
       },
       {
-        "fact": "The mixture is being spread onto the surface of a silver metal plate.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The plate has a greasy, white residue smeared across its center.",
+        "fact": "The metal plate is resting on a blue patterned cloth.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The silver metal plate is centered on top of the teal blue patterned cloth. The wooden spatula is resting on top of the brown nutty mixture in the center of the plate.",
+    "spatial": "The wooden spatula is positioned on the left side of the frame, holding the brown mixture above the center of the silver metal plate. The metal plate is placed on top of the blue cloth with green patterns.",
     "parse_success": true,
     "chunk_idx": 36,
     "video_id": "Peanut_Brittle_made_with_Jaggery_Chicki_Jugu_Paak_moongfali_chikki_with_Raihana_s_Cuisines"
   },
   {
     "time": [
-      74,
-      76
+      37,
+      38
     ],
     "visible_entities": [
       {
-        "desc": "dark-skinned hand",
-        "action": "holding wooden spatula",
-        "position": "top"
-      },
-      {
-        "desc": "light-brown wooden spatula",
-        "action": "stirring mixture",
-        "position": "center"
-      },
-      {
-        "desc": "sticky brown mixture with white nuts",
+        "desc": "brown sticky mixture with white nuts",
         "action": "being stirred",
         "position": "center"
       },
       {
-        "desc": "silver metal plate",
+        "desc": "wooden spatula, light-brown",
+        "action": "stirring the mixture",
+        "position": "center"
+      },
+      {
+        "desc": "silver metal plate, round, reflective",
         "action": "static",
         "position": "center"
       },
@@ -1769,11 +1727,20 @@
         "desc": "blue cloth with gold pattern",
         "action": "static",
         "position": "background"
+      },
+      {
+        "desc": "hand with dark skin",
+        "action": "holding the spatula",
+        "position": "top"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A hand holds a wooden spatula and stirs a sticky brown mixture containing white nuts.",
+        "fact": "A hand is holding a wooden spatula.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The spatula is stirring a brown mixture containing white nuts.",
         "confidence": 1.0
       },
       {
@@ -1781,34 +1748,34 @@
         "confidence": 1.0
       },
       {
-        "fact": "The plate rests on a blue cloth with a gold pattern.",
+        "fact": "The plate is resting on a blue cloth with a gold pattern.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The hand is above the wooden spatula, which is inside the silver metal plate. The sticky brown mixture is in the center of the plate. The plate is on top of the blue cloth.",
+    "spatial": "The hand is above the wooden spatula, holding it. The spatula is in the center of the silver metal plate, interacting with the brown mixture. The silver plate is on top of the blue cloth with a gold pattern.",
     "parse_success": true,
     "chunk_idx": 37,
     "video_id": "Peanut_Brittle_made_with_Jaggery_Chicki_Jugu_Paak_moongfali_chikki_with_Raihana_s_Cuisines"
   },
   {
     "time": [
-      76,
-      78
+      38,
+      39
     ],
     "visible_entities": [
       {
-        "desc": "wooden spatula, light-brown, flat",
-        "action": "stirring the mixture",
-        "position": "center"
-      },
-      {
-        "desc": "brown sticky mixture with white chunks, glossy, viscous",
+        "desc": "brown sticky mixture with white nuts",
         "action": "being stirred",
         "position": "center"
       },
       {
-        "desc": "silver metal plate, round, reflective",
+        "desc": "wooden spatula",
+        "action": "stirring",
+        "position": "center"
+      },
+      {
+        "desc": "silver metal plate",
         "action": "static",
         "position": "center"
       },
@@ -1820,11 +1787,11 @@
     ],
     "atomic_facts": [
       {
-        "fact": "A wooden spatula is stirring a brown, sticky mixture containing white chunks.",
+        "fact": "A wooden spatula is stirring a brown mixture containing white nuts.",
         "confidence": 1.0
       },
       {
-        "fact": "The mixture is being spread across the surface of a silver metal plate.",
+        "fact": "The mixture is being spread on a silver metal plate.",
         "confidence": 1.0
       },
       {
@@ -1833,50 +1800,50 @@
       }
     ],
     "ocr": [],
-    "spatial": "The brown mixture is in the center of the silver metal plate. The wooden spatula is on top of the mixture, actively stirring it. The silver plate is placed on top of the blue cloth.",
+    "spatial": "The brown nut mixture is in the center of the silver metal plate. The wooden spatula is on top of the mixture, actively stirring it. The silver plate is placed on top of the blue cloth with gold patterns.",
     "parse_success": true,
     "chunk_idx": 38,
     "video_id": "Peanut_Brittle_made_with_Jaggery_Chicki_Jugu_Paak_moongfali_chikki_with_Raihana_s_Cuisines"
   },
   {
     "time": [
-      78,
-      80
+      39,
+      40
     ],
     "visible_entities": [
       {
-        "desc": "reddish-brown peanut brittle mixture with visible whole peanuts",
+        "desc": "brown, glossy, peanut-filled brittle mixture",
         "action": "being spread",
         "position": "center"
       },
       {
-        "desc": "silver metal plate",
+        "desc": "silver metal knife",
+        "action": "spreading mixture",
+        "position": "center"
+      },
+      {
+        "desc": "round silver metal plate",
         "action": "static",
         "position": "center"
       },
       {
-        "desc": "metal knife",
-        "action": "spreading the mixture",
-        "position": "center"
-      },
-      {
-        "desc": "hand with dark skin",
-        "action": "holding the knife",
-        "position": "left"
-      },
-      {
-        "desc": "blue cloth with yellow floral pattern",
+        "desc": "blue cloth with yellow floral patterns",
         "action": "static",
         "position": "background"
+      },
+      {
+        "desc": "dark-skinned hands",
+        "action": "holding knife and plate",
+        "position": "top"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A hand is using a metal knife to spread a peanut brittle mixture.",
+        "fact": "A person is using a knife to spread a peanut brittle mixture on a metal plate.",
         "confidence": 1.0
       },
       {
-        "fact": "The mixture is being flattened on a silver metal plate.",
+        "fact": "The brittle mixture is glossy and brown with visible peanuts.",
         "confidence": 1.0
       },
       {
@@ -1885,29 +1852,29 @@
       }
     ],
     "ocr": [],
-    "spatial": "The peanut brittle mixture is in the center of the silver metal plate. The hand holding the knife is to the left of the mixture. The knife is on top of the mixture. The plate is on top of the blue cloth.",
+    "spatial": "The peanut brittle mixture is in the center of the silver metal plate. The knife is on top of the mixture, being used to spread it. The plate is on top of the blue cloth with yellow patterns. Hands are holding the knife and the edge of the plate.",
     "parse_success": true,
     "chunk_idx": 39,
     "video_id": "Peanut_Brittle_made_with_Jaggery_Chicki_Jugu_Paak_moongfali_chikki_with_Raihana_s_Cuisines"
   },
   {
     "time": [
-      80,
-      82
+      40,
+      41
     ],
     "visible_entities": [
       {
         "desc": "hand with dark skin tone",
-        "action": "cutting the mixture",
+        "action": "cutting the peanut brittle",
         "position": "center"
       },
       {
-        "desc": "silver knife",
-        "action": "slicing through food",
+        "desc": "silver knife with black handle",
+        "action": "slicing through the brittle",
         "position": "center"
       },
       {
-        "desc": "brown peanut brittle mixture with visible peanuts",
+        "desc": "brown peanut brittle with visible nuts",
         "action": "being cut",
         "position": "center"
       },
@@ -1917,82 +1884,87 @@
         "position": "center"
       },
       {
-        "desc": "blue tablecloth with gold floral pattern",
+        "desc": "blue tablecloth with gold pattern",
         "action": "static",
         "position": "background"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A hand is holding a knife and cutting a brown, nutty mixture.",
+        "fact": "A hand is holding a knife and cutting a piece of peanut brittle.",
         "confidence": 1.0
       },
       {
-        "fact": "The mixture is spread on a round silver plate.",
+        "fact": "The peanut brittle is resting on a silver metal plate.",
         "confidence": 1.0
       },
       {
-        "fact": "The knife is slicing the brittle into smaller pieces.",
+        "fact": "The plate is placed on a blue patterned tablecloth.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The hand is above the silver plate, holding the knife which is pressing into the peanut brittle. The brittle is on the plate. The plate is on top of the blue tablecloth.",
+    "spatial": "The hand is above the knife, which is positioned on top of the peanut brittle. The brittle is in the center of the silver plate. The plate is on top of the blue tablecloth.",
     "parse_success": true,
     "chunk_idx": 40,
     "video_id": "Peanut_Brittle_made_with_Jaggery_Chicki_Jugu_Paak_moongfali_chikki_with_Raihana_s_Cuisines"
   },
   {
     "time": [
-      82,
-      84
+      41,
+      42
     ],
     "visible_entities": [
       {
-        "desc": "brown peanut brittle mixture with visible nuts",
+        "desc": "dark-skinned hands",
+        "action": "spreading mixture",
+        "position": "top"
+      },
+      {
+        "desc": "silver metal knife",
+        "action": "spreading mixture",
+        "position": "center"
+      },
+      {
+        "desc": "reddish-brown peanut brittle mixture with visible nuts",
         "action": "being spread",
         "position": "center"
       },
       {
-        "desc": "silver metal plate",
+        "desc": "large round silver metal tray",
         "action": "static",
         "position": "center"
       },
       {
-        "desc": "hand holding a white knife",
-        "action": "spreading the mixture",
-        "position": "left"
-      },
-      {
-        "desc": "blue cloth with gold patterns",
+        "desc": "blue tablecloth with yellow floral patterns",
         "action": "static",
         "position": "background"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A hand is using a white knife to spread a brown peanut brittle mixture.",
+        "fact": "A person is using a silver knife to spread a sticky, nut-filled mixture.",
         "confidence": 1.0
       },
       {
-        "fact": "The mixture is being flattened on a silver metal plate.",
+        "fact": "The mixture is being flattened onto a large metal tray.",
         "confidence": 1.0
       },
       {
-        "fact": "The plate is resting on a blue cloth with gold patterns.",
+        "fact": "The tray rests on a blue patterned surface.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The hand holding the knife is to the left of the peanut brittle mixture. The mixture is in the center of the silver metal plate. The silver metal plate is on top of the blue cloth with gold patterns.",
+    "spatial": "The reddish-brown peanut mixture is in the center of the silver metal tray. The hands are positioned above the tray, holding the knife which is in contact with the mixture. The tray is placed on top of the blue tablecloth.",
     "parse_success": true,
     "chunk_idx": 41,
     "video_id": "Peanut_Brittle_made_with_Jaggery_Chicki_Jugu_Paak_moongfali_chikki_with_Raihana_s_Cuisines"
   },
   {
     "time": [
-      84,
-      86
+      42,
+      43
     ],
     "visible_entities": [
       {
@@ -2001,64 +1973,167 @@
         "position": "center"
       },
       {
-        "desc": "silver metal plate",
+        "desc": "large round silver metal plate",
         "action": "static",
         "position": "center"
       },
       {
-        "desc": "metal knife",
-        "action": "spreading mixture",
+        "desc": "metal spatula",
+        "action": "spreading the mixture",
         "position": "center"
       },
       {
-        "desc": "blue tablecloth with yellow floral patterns",
+        "desc": "hand with dark skin tone",
+        "action": "holding the plate",
+        "position": "top right"
+      },
+      {
+        "desc": "blue cloth with yellow floral patterns",
         "action": "static",
         "position": "background"
-      },
-      {
-        "desc": "hand with dark skin",
-        "action": "holding plate",
-        "position": "top right"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A hand is holding the edge of the silver plate.",
+        "fact": "A hand is holding the edge of a silver plate.",
         "confidence": 1.0
       },
       {
-        "fact": "A knife is spreading the peanut mixture on the plate.",
+        "fact": "A metal spatula is spreading a peanut mixture on the plate.",
         "confidence": 1.0
       },
       {
-        "fact": "The peanut mixture is on the silver plate.",
+        "fact": "The peanut mixture is reddish-brown and contains whole peanuts.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The plate is resting on a blue patterned cloth.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The peanut mixture is in the center of the silver plate. The knife is on top of the peanut mixture. The hand is at the top right edge of the plate. The plate is on the blue tablecloth.",
+    "spatial": "The peanut mixture is in the center of the silver plate. The metal spatula is on top of the mixture. The hand is at the top right edge of the plate. The plate is on top of the blue cloth.",
     "parse_success": true,
     "chunk_idx": 42,
     "video_id": "Peanut_Brittle_made_with_Jaggery_Chicki_Jugu_Paak_moongfali_chikki_with_Raihana_s_Cuisines"
   },
   {
     "time": [
-      86,
-      88
+      43,
+      44
     ],
     "visible_entities": [
       {
         "desc": "hands with dark skin tone",
         "action": "pressing and spreading mixture",
-        "position": "top center"
+        "position": "top/center"
       },
       {
-        "desc": "peanut brittle mixture, reddish-brown, sticky, chunky texture with visible nuts",
+        "desc": "reddish-brown peanut brittle mixture with visible whole peanuts",
         "action": "being flattened",
         "position": "center"
       },
       {
-        "desc": "silver metal plate, round, reflective surface",
+        "desc": "large round silver metal plate",
+        "action": "static",
+        "position": "center"
+      },
+      {
+        "desc": "blue cloth with yellow paisley patterns",
+        "action": "static",
+        "position": "background"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "Hands are pressing down on the peanut mixture to flatten it.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The peanut brittle mixture is spread across the center of the metal plate.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The metal plate rests on a blue patterned cloth.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The hands are positioned above the peanut mixture in the center of the frame. The reddish-brown mixture is spread on top of the silver metal plate. The metal plate is resting on a blue cloth with yellow patterns.",
+    "parse_success": true,
+    "chunk_idx": 43,
+    "video_id": "Peanut_Brittle_made_with_Jaggery_Chicki_Jugu_Paak_moongfali_chikki_with_Raihana_s_Cuisines"
+  },
+  {
+    "time": [
+      44,
+      45
+    ],
+    "visible_entities": [
+      {
+        "desc": "hands with dark skin tone",
+        "action": "cutting the mixture",
+        "position": "center"
+      },
+      {
+        "desc": "silver metal knife",
+        "action": "slicing through the mixture",
+        "position": "center"
+      },
+      {
+        "desc": "brown sticky mixture with yellow peanuts",
+        "action": "being cut",
+        "position": "center"
+      },
+      {
+        "desc": "round silver metal plate",
+        "action": "static",
+        "position": "center"
+      },
+      {
+        "desc": "blue cloth with yellow patterns",
+        "action": "static",
+        "position": "background"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A person is using a knife to slice a peanut mixture on a plate.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The mixture is brown and contains visible yellow peanuts.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The plate is resting on a blue patterned cloth.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The peanut mixture is in the center of the silver metal plate. The hands are holding the knife above the mixture. The silver plate is placed on top of the blue cloth.",
+    "parse_success": true,
+    "chunk_idx": 44,
+    "video_id": "Peanut_Brittle_made_with_Jaggery_Chicki_Jugu_Paak_moongfali_chikki_with_Raihana_s_Cuisines"
+  },
+  {
+    "time": [
+      45,
+      46
+    ],
+    "visible_entities": [
+      {
+        "desc": "hand with dark skin and short fingernails",
+        "action": "pressing down on the mixture",
+        "position": "center"
+      },
+      {
+        "desc": "reddish-brown sticky mixture containing white peanuts",
+        "action": "being flattened",
+        "position": "center"
+      },
+      {
+        "desc": "round silver metal plate",
         "action": "static",
         "position": "center"
       },
@@ -2070,192 +2145,89 @@
     ],
     "atomic_facts": [
       {
-        "fact": "Hands are pressing down on the peanut brittle mixture to flatten it.",
+        "fact": "A hand is pressing down on a peanut mixture to flatten it.",
         "confidence": 1.0
       },
       {
-        "fact": "The sticky mixture is being spread across the surface of the metal plate.",
+        "fact": "The peanut mixture is spread out on a silver metal plate.",
         "confidence": 1.0
       },
       {
-        "fact": "The metal plate rests on top of a blue patterned cloth.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [],
-    "spatial": "The hands are positioned above the peanut brittle mixture in the center of the frame. The mixture is spread on top of the silver metal plate. The metal plate is resting on the blue cloth which is visible in the background.",
-    "parse_success": true,
-    "chunk_idx": 43,
-    "video_id": "Peanut_Brittle_made_with_Jaggery_Chicki_Jugu_Paak_moongfali_chikki_with_Raihana_s_Cuisines"
-  },
-  {
-    "time": [
-      88,
-      90
-    ],
-    "visible_entities": [
-      {
-        "desc": "hands with dark skin tone",
-        "action": "spreading mixture",
-        "position": "center"
-      },
-      {
-        "desc": "brown sticky mixture with white nuts",
-        "action": "being flattened",
-        "position": "center"
-      },
-      {
-        "desc": "silver metal plate",
-        "action": "static",
-        "position": "center"
-      },
-      {
-        "desc": "blue cloth with gold patterns",
-        "action": "static",
-        "position": "background"
-      },
-      {
-        "desc": "metal spatula",
-        "action": "pressing down",
-        "position": "center"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "A person is using a metal spatula to press and flatten a nut mixture.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The mixture is spread into a circular shape on a silver plate.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The plate rests on a blue patterned cloth.",
+        "fact": "The plate is resting on a blue patterned cloth.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The hands are above the silver plate, holding the spatula. The brown nut mixture is inside the plate, resting on its surface. The plate is on top of the blue cloth.",
-    "parse_success": true,
-    "chunk_idx": 44,
-    "video_id": "Peanut_Brittle_made_with_Jaggery_Chicki_Jugu_Paak_moongfali_chikki_with_Raihana_s_Cuisines"
-  },
-  {
-    "time": [
-      90,
-      92
-    ],
-    "visible_entities": [
-      {
-        "desc": "hands with dark skin tone and manicured nails, wearing a maroon long-sleeved garment",
-        "action": "pressing and flattening a mixture",
-        "position": "center"
-      },
-      {
-        "desc": "reddish-brown sticky mixture containing light-colored nuts, spread in a circular shape",
-        "action": "being flattened",
-        "position": "center"
-      },
-      {
-        "desc": "round silver metal plate with a raised rim",
-        "action": "static",
-        "position": "center"
-      },
-      {
-        "desc": "blue cloth with yellow floral or geometric patterns",
-        "action": "static",
-        "position": "background"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "A person is using their hands to press down on a nut mixture.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The mixture is being flattened into a disc shape on a metal plate.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The metal plate rests on a patterned blue cloth.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [],
-    "spatial": "The hands are positioned above the reddish-brown nut mixture, pressing it against the surface of the silver metal plate. The metal plate is centered on top of the blue patterned cloth.",
+    "spatial": "The hand is positioned above the peanut mixture in the center of the frame. The mixture is spread on top of the silver metal plate. The plate is resting on the blue cloth which is visible underneath and around the edges of the plate.",
     "parse_success": true,
     "chunk_idx": 45,
     "video_id": "Peanut_Brittle_made_with_Jaggery_Chicki_Jugu_Paak_moongfali_chikki_with_Raihana_s_Cuisines"
   },
   {
     "time": [
-      92,
-      94
+      46,
+      47
     ],
     "visible_entities": [
       {
-        "desc": "hands with dark skin tone and light pink nail polish",
-        "action": "pressing and flattening a peanut mixture",
+        "desc": "hands with dark skin and manicured fingernails",
+        "action": "pressing down on the mixture",
         "position": "center"
       },
       {
-        "desc": "sticky peanut mixture with a glossy, amber-colored coating",
+        "desc": "brown sticky mixture with embedded light-colored nuts",
         "action": "being flattened",
         "position": "center"
       },
       {
-        "desc": "round silver metal plate",
+        "desc": "silver metal plate, round, reflective",
         "action": "static",
         "position": "center"
       },
       {
-        "desc": "blue cloth with a yellow floral pattern",
+        "desc": "blue cloth with yellow floral patterns",
         "action": "static",
         "position": "background"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A person is using their hands to press down on a sticky peanut mixture.",
+        "fact": "A pair of hands is pressing down on a brown, nut-filled mixture.",
         "confidence": 1.0
       },
       {
-        "fact": "The mixture is being flattened into a thin, circular shape.",
+        "fact": "The mixture is being flattened into a circular shape on a metal plate.",
         "confidence": 1.0
       },
       {
-        "fact": "The mixture rests on a silver metal plate.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The plate is placed on top of a blue patterned cloth.",
+        "fact": "The metal plate rests on a blue patterned cloth.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The hands are positioned above the peanut mixture, pressing it down. The peanut mixture is in the center of the silver metal plate. The silver plate is on top of the blue cloth.",
+    "spatial": "The hands are positioned above the brown nut mixture, pressing it onto the silver metal plate. The metal plate is situated on top of the blue cloth with yellow patterns.",
     "parse_success": true,
     "chunk_idx": 46,
     "video_id": "Peanut_Brittle_made_with_Jaggery_Chicki_Jugu_Paak_moongfali_chikki_with_Raihana_s_Cuisines"
   },
   {
     "time": [
-      94,
-      96
+      47,
+      48
     ],
     "visible_entities": [
       {
-        "desc": "hands with dark skin tone and short fingernails",
-        "action": "pressing and spreading the mixture",
-        "position": "top/center"
-      },
-      {
-        "desc": "peanut brittle mixture, glossy, amber-colored, with visible whole peanuts",
-        "action": "being flattened",
+        "desc": "brown, glossy, peanut-filled brittle mixture",
+        "action": "being pressed flat",
         "position": "center"
       },
       {
-        "desc": "round silver metal plate, reflective surface",
+        "desc": "person's hands with dark skin tone",
+        "action": "pressing and spreading the mixture",
+        "position": "center"
+      },
+      {
+        "desc": "round, silver-colored metal plate",
         "action": "static",
         "position": "center"
       },
@@ -2267,42 +2239,42 @@
     ],
     "atomic_facts": [
       {
-        "fact": "Hands are pressing down on the peanut brittle mixture.",
+        "fact": "A person is using their hands to press and spread a peanut brittle mixture.",
         "confidence": 1.0
       },
       {
-        "fact": "The mixture is being spread out on the metal plate.",
+        "fact": "The mixture is being flattened onto a round metal plate.",
         "confidence": 1.0
       },
       {
-        "fact": "The metal plate rests on a blue patterned cloth.",
+        "fact": "The metal plate is resting on a blue patterned cloth.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The peanut brittle mixture is in the center of the round silver metal plate. The hands are positioned above the mixture, pressing down on it. The metal plate is placed on top of the blue cloth with gold patterns.",
+    "spatial": "The peanut brittle mixture is in the center of the metal plate. The person's hands are on top of the mixture, pressing it down. The metal plate is on top of the blue cloth.",
     "parse_success": true,
     "chunk_idx": 47,
     "video_id": "Peanut_Brittle_made_with_Jaggery_Chicki_Jugu_Paak_moongfali_chikki_with_Raihana_s_Cuisines"
   },
   {
     "time": [
-      96,
-      98
+      48,
+      49
     ],
     "visible_entities": [
       {
-        "desc": "person with dark skin, wearing a purple long-sleeved garment and a gold-colored bracelet",
+        "desc": "person with dark skin, wearing a purple long-sleeved garment and a gold bracelet",
         "action": "flattening the mixture",
-        "position": "left"
+        "position": "left/foreground"
       },
       {
-        "desc": "sticky, amber-colored peanut brittle mixture",
-        "action": "being flattened",
+        "desc": "brown sticky mixture containing whole peanuts",
+        "action": "being spread",
         "position": "center"
       },
       {
-        "desc": "large, round, silver metal tray",
+        "desc": "round silver metal tray",
         "action": "static",
         "position": "center"
       },
@@ -2314,119 +2286,15 @@
     ],
     "atomic_facts": [
       {
-        "fact": "A person is using their hands to flatten a sticky peanut mixture on a metal tray.",
+        "fact": "A person is using their hands to flatten a peanut mixture on a tray.",
         "confidence": 1.0
       },
       {
-        "fact": "The mixture consists of peanuts suspended in a glossy, amber-colored syrup.",
+        "fact": "The mixture consists of peanuts coated in a brown, glossy syrup.",
         "confidence": 1.0
       },
       {
-        "fact": "The metal tray rests on a blue patterned surface.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [],
-    "spatial": "The person is positioned to the left of the metal tray. The peanut brittle mixture is inside the tray. The tray is placed on top of the blue cloth.",
-    "parse_success": true,
-    "chunk_idx": 48,
-    "video_id": "Peanut_Brittle_made_with_Jaggery_Chicki_Jugu_Paak_moongfali_chikki_with_Raihana_s_Cuisines"
-  },
-  {
-    "time": [
-      98,
-      100
-    ],
-    "visible_entities": [
-      {
-        "desc": "dark-skinned hands",
-        "action": "cutting the peanut brittle",
-        "position": "top right"
-      },
-      {
-        "desc": "brown peanut brittle with visible nuts",
-        "action": "being cut",
-        "position": "center"
-      },
-      {
-        "desc": "silver metal plate",
-        "action": "static",
-        "position": "center"
-      },
-      {
-        "desc": "blue tablecloth with gold patterns",
-        "action": "static",
-        "position": "background"
-      },
-      {
-        "desc": "knife blade",
-        "action": "slicing",
-        "position": "center"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "A person is cutting a slab of peanut brittle on a metal plate.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The hands are pressing down on the brittle while slicing.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The peanut brittle is resting on a silver plate.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [],
-    "spatial": "The hands are positioned above the peanut brittle, holding a knife to cut it. The peanut brittle is located in the center of the silver metal plate. The plate is resting on top of a blue tablecloth with gold patterns.",
-    "parse_success": true,
-    "chunk_idx": 49,
-    "video_id": "Peanut_Brittle_made_with_Jaggery_Chicki_Jugu_Paak_moongfali_chikki_with_Raihana_s_Cuisines"
-  },
-  {
-    "time": [
-      100,
-      102
-    ],
-    "visible_entities": [
-      {
-        "desc": "hands with dark skin tone, short fingernails, and shiny/oily skin texture",
-        "action": "pressing and cutting the mixture",
-        "position": "top right"
-      },
-      {
-        "desc": "large round silver metal tray with a raised rim",
-        "action": "static",
-        "position": "center"
-      },
-      {
-        "desc": "brown sticky peanut brittle mixture with visible whole peanuts",
-        "action": "being cut",
-        "position": "center"
-      },
-      {
-        "desc": "small thin metal knife blade",
-        "action": "slicing through the brittle",
-        "position": "center"
-      },
-      {
-        "desc": "blue tablecloth with yellow/gold ornate patterns",
-        "action": "static",
-        "position": "background"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "A person is using a knife to cut a slab of peanut brittle.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The hands are pressing down on the mixture to flatten or hold it steady.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The peanut brittle is spread out on a large metal tray.",
+        "fact": "The person is wearing a gold bracelet on their left wrist.",
         "confidence": 1.0
       },
       {
@@ -2435,67 +2303,124 @@
       }
     ],
     "ocr": [],
-    "spatial": "The hands are positioned above the peanut brittle mixture, holding a knife that is inserted into the center of the food. The peanut brittle is spread across the center of the silver metal tray. The tray is placed on top of a blue tablecloth with yellow designs.",
+    "spatial": "The person's hands are positioned above the peanut mixture in the center of the silver tray. The tray is placed on top of a blue cloth with gold designs.",
     "parse_success": true,
-    "chunk_idx": 50,
+    "chunk_idx": 48,
     "video_id": "Peanut_Brittle_made_with_Jaggery_Chicki_Jugu_Paak_moongfali_chikki_with_Raihana_s_Cuisines"
   },
   {
     "time": [
-      102,
-      104
+      49,
+      50
     ],
     "visible_entities": [
       {
-        "desc": "dark-skinned hand with short fingernails",
-        "action": "pressing down on the food",
+        "desc": "dark-skinned hands",
+        "action": "cutting the mixture",
         "position": "top right"
       },
       {
-        "desc": "brown peanut brittle with visible peanuts",
-        "action": "being flattened",
+        "desc": "peanut brittle mixture, golden-brown, sticky, nut-filled",
+        "action": "being cut",
         "position": "center"
       },
       {
-        "desc": "round silver metal tray",
+        "desc": "silver metal tray, round, reflective",
         "action": "static",
         "position": "center"
       },
       {
-        "desc": "blue tablecloth with gold patterns",
+        "desc": "blue cloth with gold patterns",
         "action": "static",
         "position": "background"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A hand is pressing down on a sheet of peanut brittle.",
+        "fact": "Hands are using a knife to cut the peanut brittle mixture.",
         "confidence": 1.0
       },
       {
-        "fact": "The peanut brittle is spread out on a silver metal tray.",
+        "fact": "The mixture is spread out on a silver metal tray.",
         "confidence": 1.0
       },
       {
-        "fact": "The tray is resting on a blue patterned tablecloth.",
+        "fact": "The tray is resting on a blue patterned cloth.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The hand is positioned above the peanut brittle, pressing it against the silver tray. The tray is centered on the blue tablecloth.",
+    "spatial": "The hands are positioned above the peanut brittle mixture. The mixture is inside the silver metal tray. The tray is on top of the blue cloth.",
     "parse_success": true,
-    "chunk_idx": 51,
+    "chunk_idx": 49,
     "video_id": "Peanut_Brittle_made_with_Jaggery_Chicki_Jugu_Paak_moongfali_chikki_with_Raihana_s_Cuisines"
   },
   {
     "time": [
-      104,
-      106
+      50,
+      51
     ],
     "visible_entities": [
       {
-        "desc": "golden-brown peanut brittle with visible whole peanuts",
-        "action": "being pressed and cut",
+        "desc": "dark-skinned hands",
+        "action": "cutting the peanut brittle",
+        "position": "center"
+      },
+      {
+        "desc": "peanut brittle, golden-brown, glossy, embedded with peanuts",
+        "action": "being cut",
+        "position": "center"
+      },
+      {
+        "desc": "silver metal plate, round",
+        "action": "static",
+        "position": "center"
+      },
+      {
+        "desc": "knife blade, metallic",
+        "action": "cutting",
+        "position": "center"
+      },
+      {
+        "desc": "blue tablecloth with gold pattern",
+        "action": "static",
+        "position": "background"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A person is cutting a sheet of peanut brittle on a metal plate.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The peanut brittle is golden-brown and glossy.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The hands are pressing down on the brittle while cutting.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The peanut brittle is on the silver metal plate. The hands are above the peanut brittle. The knife is in the hands and cutting through the brittle. The metal plate is on the blue tablecloth.",
+    "parse_success": true,
+    "chunk_idx": 50,
+    "video_id": "Peanut_Brittle_made_with_Jaggery_Chicki_Jugu_Paak_moongfali_chikki_with_Raihana_s_Cuisines"
+  },
+  {
+    "time": [
+      51,
+      52
+    ],
+    "visible_entities": [
+      {
+        "desc": "dark-skinned hand with short fingernails",
+        "action": "pressing down on the mixture",
+        "position": "top right"
+      },
+      {
+        "desc": "brown peanut brittle mixture with visible whole peanuts",
+        "action": "being flattened",
         "position": "center"
       },
       {
@@ -2504,70 +2429,116 @@
         "position": "center"
       },
       {
-        "desc": "person's hands with dark skin",
-        "action": "pressing and cutting the brittle",
-        "position": "top right"
-      },
-      {
-        "desc": "blue tablecloth with gold patterns",
+        "desc": "blue cloth with gold pattern",
         "action": "static",
         "position": "background"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A person's hands are pressing down on the peanut brittle.",
+        "fact": "A hand is pressing down on a sticky peanut mixture.",
         "confidence": 1.0
       },
       {
-        "fact": "A knife is being used to cut the brittle into pieces.",
+        "fact": "The mixture is being spread onto a metal tray.",
         "confidence": 1.0
       },
       {
-        "fact": "The peanut brittle is resting on a silver tray.",
+        "fact": "The tray is resting on a blue patterned cloth.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The peanut brittle is in the center of the silver tray. The person's hands are above the brittle, pressing and cutting it. The silver tray is on top of the blue tablecloth.",
+    "spatial": "The peanut mixture is in the center of the silver metal tray. The hand is positioned above the mixture, pressing down on it. The tray is placed on top of a blue cloth with gold designs.",
+    "parse_success": true,
+    "chunk_idx": 51,
+    "video_id": "Peanut_Brittle_made_with_Jaggery_Chicki_Jugu_Paak_moongfali_chikki_with_Raihana_s_Cuisines"
+  },
+  {
+    "time": [
+      52,
+      53
+    ],
+    "visible_entities": [
+      {
+        "desc": "hands with dark skin tone, fingers pressing and cutting into the food",
+        "action": "manipulating the peanut brittle",
+        "position": "top right"
+      },
+      {
+        "desc": "large, flat, irregular mass of peanut brittle with a glossy, amber-colored caramel coating and visible whole peanuts",
+        "action": "being flattened and cut",
+        "position": "center"
+      },
+      {
+        "desc": "round, silver-colored metal tray with a raised rim",
+        "action": "holding the peanut brittle",
+        "position": "background"
+      },
+      {
+        "desc": "blue tablecloth with a gold or yellow floral pattern",
+        "action": "static",
+        "position": "background"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A person's hands are pressing down on a mass of peanut brittle on a metal tray.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A finger is being used to cut or score the edge of the peanut brittle.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The peanut brittle is spread out in a thin layer on the tray.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The metal tray is placed on a blue patterned tablecloth.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The hands are above the peanut brittle, pressing down on its surface. The peanut brittle is on the silver metal tray. The tray is on top of the blue tablecloth.",
     "parse_success": true,
     "chunk_idx": 52,
     "video_id": "Peanut_Brittle_made_with_Jaggery_Chicki_Jugu_Paak_moongfali_chikki_with_Raihana_s_Cuisines"
   },
   {
     "time": [
-      106,
-      108
+      53,
+      54
     ],
     "visible_entities": [
       {
-        "desc": "hands with dark skin tone and short fingernails",
+        "desc": "person's hands with dark skin tone",
         "action": "pressing and cutting the mixture",
+        "position": "center/foreground"
+      },
+      {
+        "desc": "peanut brittle mixture, golden-brown, sticky, glossy, with visible whole peanuts",
+        "action": "being pressed and cut",
         "position": "center"
       },
       {
-        "desc": "peanut brittle mixture, amber-brown, glossy, sticky texture with visible whole peanuts",
-        "action": "being cut",
-        "position": "center"
-      },
-      {
-        "desc": "round silver metal tray, reflective surface",
+        "desc": "silver metal tray, round, reflective",
         "action": "static",
-        "position": "center"
+        "position": "center/background"
       },
       {
-        "desc": "blue tablecloth with gold floral patterns",
+        "desc": "blue tablecloth with gold paisley patterns",
         "action": "static",
         "position": "background"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A person is using their hands to manipulate a sticky peanut mixture.",
+        "fact": "A person is using their hands to press down on a sticky peanut mixture.",
         "confidence": 1.0
       },
       {
-        "fact": "The index finger of the left hand is pressing into the mixture to create a cut or separation.",
+        "fact": "A knife is being used to cut a line into the peanut brittle.",
         "confidence": 1.0
       },
       {
@@ -2580,70 +2551,136 @@
       }
     ],
     "ocr": [],
-    "spatial": "The hands are positioned above the peanut brittle mixture in the center of the frame. The mixture is inside the round silver metal tray. The tray is resting on top of the blue tablecloth.",
+    "spatial": "The person's hands are positioned above the peanut brittle mixture. The mixture is inside the silver metal tray. The tray is on top of the blue tablecloth.",
     "parse_success": true,
     "chunk_idx": 53,
     "video_id": "Peanut_Brittle_made_with_Jaggery_Chicki_Jugu_Paak_moongfali_chikki_with_Raihana_s_Cuisines"
   },
   {
     "time": [
-      108,
-      110
+      54,
+      55
     ],
     "visible_entities": [
       {
-        "desc": "dark-skinned hand with short, natural fingernails",
-        "action": "pressing down on the peanut brittle",
-        "position": "top/center"
+        "desc": "dark-skinned hand with short fingernails",
+        "action": "pressing down on the food mixture",
+        "position": "top center"
       },
       {
-        "desc": "large, irregularly shaped slab of peanut brittle with a glossy, amber-colored caramel coating and embedded light-brown peanuts",
-        "action": "being cut",
+        "desc": "peanut brittle mixture, glossy, amber-colored, with visible whole peanuts",
+        "action": "being flattened",
         "position": "center"
       },
       {
-        "desc": "round, silver-colored metal tray with a raised rim",
+        "desc": "silver metal plate, round, reflective",
         "action": "static",
-        "position": "background"
+        "position": "center"
       },
       {
-        "desc": "bright blue tablecloth with a repeating gold paisley pattern",
+        "desc": "blue cloth with gold paisley patterns",
         "action": "static",
         "position": "background"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A hand is pressing down on a slab of peanut brittle.",
+        "fact": "A hand is pressing down on a peanut brittle mixture.",
         "confidence": 1.0
       },
       {
-        "fact": "The peanut brittle is being cut into sections.",
+        "fact": "The peanut brittle is spread out on a silver metal plate.",
         "confidence": 1.0
       },
       {
-        "fact": "The peanut brittle rests on a silver metal tray.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The tray is placed on a blue patterned tablecloth.",
+        "fact": "The plate rests on a blue patterned cloth.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The hand is positioned above the peanut brittle, pressing down on its surface. The peanut brittle is in the center of the silver tray. The tray is on top of the blue tablecloth.",
+    "spatial": "The hand is above the peanut brittle mixture. The mixture is inside the silver metal plate. The plate is on top of the blue cloth.",
     "parse_success": true,
     "chunk_idx": 54,
     "video_id": "Peanut_Brittle_made_with_Jaggery_Chicki_Jugu_Paak_moongfali_chikki_with_Raihana_s_Cuisines"
   },
   {
     "time": [
-      110,
-      112
+      55,
+      56
     ],
     "visible_entities": [
       {
-        "desc": "golden-brown peanut brittle pieces, glossy caramelized texture, embedded with whole peanuts",
+        "desc": "golden-brown peanut brittle pieces with a glossy, caramelized texture and embedded whole peanuts",
+        "action": "static",
+        "position": "center"
+      },
+      {
+        "desc": "white ceramic plate with a decorative pattern of thin red and grey curved lines",
+        "action": "static",
+        "position": "center"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "Pieces of peanut brittle are piled on the plate.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The brittle has a shiny, sugary coating.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The peanut brittle pieces are piled in the center of the white plate. The decorative red and grey lines are visible on the rim of the plate, surrounding the food.",
+    "parse_success": true,
+    "chunk_idx": 55,
+    "video_id": "Peanut_Brittle_made_with_Jaggery_Chicki_Jugu_Paak_moongfali_chikki_with_Raihana_s_Cuisines"
+  },
+  {
+    "time": [
+      56,
+      57
+    ],
+    "visible_entities": [
+      {
+        "desc": "golden-brown peanut brittle pieces with a glossy, caramelized sugar coating and visible whole peanuts",
+        "action": "static",
+        "position": "center"
+      },
+      {
+        "desc": "white ceramic plate with red and grey curved line patterns on the rim",
+        "action": "static",
+        "position": "center"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "Several pieces of peanut brittle are piled in the center of the plate.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The brittle has a shiny, sticky texture from the hardened sugar syrup.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The plate rests on a plain white surface.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The peanut brittle pieces are piled on top of the white ceramic plate. The plate is centered in the frame, resting on a white surface.",
+    "parse_success": true,
+    "chunk_idx": 56,
+    "video_id": "Peanut_Brittle_made_with_Jaggery_Chicki_Jugu_Paak_moongfali_chikki_with_Raihana_s_Cuisines"
+  },
+  {
+    "time": [
+      57,
+      58
+    ],
+    "visible_entities": [
+      {
+        "desc": "golden-brown peanut brittle chunks with visible whole peanuts embedded in a glossy, hardened caramel matrix",
         "action": "static",
         "position": "center"
       },
@@ -2655,28 +2692,193 @@
     ],
     "atomic_facts": [
       {
-        "fact": "A pile of peanut brittle pieces rests on a white plate.",
+        "fact": "Pieces of peanut brittle are arranged in a pile on the plate.",
         "confidence": 1.0
       },
       {
-        "fact": "The brittle has a shiny, hardened sugar coating.",
+        "fact": "The brittle has a shiny, glazed surface indicating a sugar-based coating.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The peanut brittle chunks are piled in the center of the white plate. The decorative red and black lines are located on the rim of the plate, surrounding the food.",
+    "parse_success": true,
+    "chunk_idx": 57,
+    "video_id": "Peanut_Brittle_made_with_Jaggery_Chicki_Jugu_Paak_moongfali_chikki_with_Raihana_s_Cuisines"
+  },
+  {
+    "time": [
+      58,
+      59
+    ],
+    "visible_entities": [
+      {
+        "desc": "golden-brown peanut brittle pieces with a glossy, caramelized texture and visible whole peanuts",
+        "action": "static",
+        "position": "center"
+      },
+      {
+        "desc": "white ceramic plate with red and black curved line patterns on the rim",
+        "action": "static",
+        "position": "background"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "Pieces of peanut brittle are arranged on a white plate.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The brittle has a shiny, sugary coating.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
     "spatial": "The peanut brittle pieces are piled in the center of the white plate. The plate is positioned on a white surface.",
     "parse_success": true,
-    "chunk_idx": 55,
+    "chunk_idx": 58,
     "video_id": "Peanut_Brittle_made_with_Jaggery_Chicki_Jugu_Paak_moongfali_chikki_with_Raihana_s_Cuisines"
   },
   {
     "time": [
-      112,
-      114
+      59,
+      60
     ],
     "visible_entities": [
       {
-        "desc": "golden-brown peanut brittle pieces with a glossy, caramelized sugar coating and embedded whole peanuts",
+        "desc": "golden-brown peanut brittle chunks with glossy texture and visible whole peanuts",
+        "action": "static",
+        "position": "center"
+      },
+      {
+        "desc": "white ceramic plate with red and black curved line patterns on the rim",
+        "action": "static",
+        "position": "background"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The peanut brittle chunks are piled in the center of the plate.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The plate rests on a white surface.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The peanut brittle chunks are piled in the center of the white plate. The plate is positioned on a white surface.",
+    "parse_success": true,
+    "chunk_idx": 59,
+    "video_id": "Peanut_Brittle_made_with_Jaggery_Chicki_Jugu_Paak_moongfali_chikki_with_Raihana_s_Cuisines"
+  },
+  {
+    "time": [
+      60,
+      61
+    ],
+    "visible_entities": [
+      {
+        "desc": "irregular chunks of peanut brittle with a glossy, amber-colored caramelized sugar coating and embedded light-brown peanuts",
+        "action": "static",
+        "position": "center"
+      },
+      {
+        "desc": "white ceramic plate with a minimalist design featuring thin red and black curved lines",
+        "action": "static",
+        "position": "center"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The peanut brittle chunks are resting on the white plate.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The plate features a decorative pattern of red and black lines.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The peanut brittle is piled in the center of the white plate. The decorative red and black lines are visible on the rim of the plate, surrounding the food.",
+    "parse_success": true,
+    "chunk_idx": 60,
+    "video_id": "Peanut_Brittle_made_with_Jaggery_Chicki_Jugu_Paak_moongfali_chikki_with_Raihana_s_Cuisines"
+  },
+  {
+    "time": [
+      61,
+      62
+    ],
+    "visible_entities": [
+      {
+        "desc": "golden-brown peanut brittle chunks, glossy caramelized sugar coating, embedded with whole and halved light-brown peanuts",
+        "action": "static",
+        "position": "center"
+      },
+      {
+        "desc": "white ceramic plate with thin red and grey curved line patterns on the rim",
+        "action": "static",
+        "position": "background"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "Several pieces of peanut brittle are piled on the plate.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The brittle has a shiny, sticky appearance due to the sugar coating.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The peanut brittle chunks are stacked in the center of the white plate. The decorative red and grey lines are visible on the rim of the plate, surrounding the food.",
+    "parse_success": true,
+    "chunk_idx": 61,
+    "video_id": "Peanut_Brittle_made_with_Jaggery_Chicki_Jugu_Paak_moongfali_chikki_with_Raihana_s_Cuisines"
+  },
+  {
+    "time": [
+      62,
+      63
+    ],
+    "visible_entities": [
+      {
+        "desc": "golden-brown peanut brittle pieces with a glossy caramelized sugar coating and visible whole peanuts",
+        "action": "static",
+        "position": "center"
+      },
+      {
+        "desc": "white ceramic plate with thin red and black curved line patterns on the rim",
+        "action": "static",
+        "position": "background"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The peanut brittle pieces are piled in the center of the plate.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The plate is resting on a white surface.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The peanut brittle pieces are piled in the center of the white plate. The plate is positioned on a white surface.",
+    "parse_success": true,
+    "chunk_idx": 62,
+    "video_id": "Peanut_Brittle_made_with_Jaggery_Chicki_Jugu_Paak_moongfali_chikki_with_Raihana_s_Cuisines"
+  },
+  {
+    "time": [
+      63,
+      64
+    ],
+    "visible_entities": [
+      {
+        "desc": "golden-brown peanut brittle pieces with a glossy caramelized sugar coating and visible whole peanuts",
         "action": "static",
         "position": "center"
       },
@@ -2688,57 +2890,98 @@
     ],
     "atomic_facts": [
       {
-        "fact": "Pieces of peanut brittle are piled on a white plate.",
+        "fact": "The peanut brittle pieces are piled in the center of the plate.",
         "confidence": 1.0
       },
       {
-        "fact": "The brittle has a shiny, glazed surface texture.",
+        "fact": "The plate features decorative red and grey lines along its edge.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The peanut brittle pieces are piled in the center of the white plate. The plate is positioned on a light-colored surface.",
+    "spatial": "The peanut brittle pieces are arranged in a pile in the center of the white plate. The decorative red and grey lines are located on the rim of the plate, surrounding the food.",
     "parse_success": true,
-    "chunk_idx": 56,
+    "chunk_idx": 63,
     "video_id": "Peanut_Brittle_made_with_Jaggery_Chicki_Jugu_Paak_moongfali_chikki_with_Raihana_s_Cuisines"
   },
   {
     "time": [
-      114,
-      116
+      64,
+      65
     ],
     "visible_entities": [
       {
-        "desc": "rectangular pieces of peanut brittle, featuring a glossy amber-colored caramelized sugar coating with numerous embedded light-brown peanuts",
+        "desc": "irregular chunks of peanut brittle with a glossy, amber-colored caramelized sugar coating and embedded whole peanuts",
         "action": "static",
         "position": "center"
       },
       {
-        "desc": "white ceramic plate with a decorative pattern of thin red and black curved lines along the rim",
+        "desc": "white ceramic plate with a decorative pattern of thin red and black curved lines on the rim",
         "action": "static",
         "position": "background"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "Several pieces of peanut brittle are arranged in a pile on the plate.",
+        "fact": "Chunks of peanut brittle are piled in the center of the plate.",
         "confidence": 1.0
       },
       {
-        "fact": "The peanut brittle pieces are static and do not move during the clip.",
+        "fact": "The peanut brittle has a shiny, glazed surface indicating a hard sugar texture.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The plate features a minimalist design with red and black strokes.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The peanut brittle pieces are piled in the center of the white plate. The decorative red and black lines are located on the rim of the plate, surrounding the food.",
+    "spatial": "The peanut brittle chunks are piled on top of the white ceramic plate. The decorative red and black lines are located on the rim of the plate, surrounding the food.",
     "parse_success": true,
-    "chunk_idx": 57,
+    "chunk_idx": 64,
     "video_id": "Peanut_Brittle_made_with_Jaggery_Chicki_Jugu_Paak_moongfali_chikki_with_Raihana_s_Cuisines"
   },
   {
     "time": [
-      116,
-      118
+      65,
+      66
+    ],
+    "visible_entities": [
+      {
+        "desc": "white ceramic plate with red and black curved line patterns on the rim",
+        "action": "static",
+        "position": "center"
+      },
+      {
+        "desc": "irregular chunks of peanut brittle with a glossy amber caramel coating and embedded light-brown peanuts",
+        "action": "static",
+        "position": "center"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A pile of peanut brittle pieces rests on a white plate.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The brittle pieces are coated in a shiny, golden-brown caramelized sugar glaze.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "Whole and split peanuts are visibly embedded throughout the candy chunks.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The peanut brittle chunks are piled in the center of the white plate. The decorative red and black lines are located on the rim of the plate, surrounding the food.",
+    "parse_success": true,
+    "chunk_idx": 65,
+    "video_id": "Peanut_Brittle_made_with_Jaggery_Chicki_Jugu_Paak_moongfali_chikki_with_Raihana_s_Cuisines"
+  },
+  {
+    "time": [
+      66,
+      67
     ],
     "visible_entities": [
       {
@@ -2758,280 +3001,12 @@
         "confidence": 1.0
       },
       {
-        "fact": "The plate is stationary on a surface.",
+        "fact": "The plate is resting on a white surface.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The peanut brittle chunks are piled on top of the white plate. The decorative red and black lines are located on the rim of the plate, surrounding the food.",
-    "parse_success": true,
-    "chunk_idx": 58,
-    "video_id": "Peanut_Brittle_made_with_Jaggery_Chicki_Jugu_Paak_moongfali_chikki_with_Raihana_s_Cuisines"
-  },
-  {
-    "time": [
-      118,
-      120
-    ],
-    "visible_entities": [
-      {
-        "desc": "golden-brown peanut brittle pieces, glossy texture, embedded with whole peanuts",
-        "action": "static",
-        "position": "center"
-      },
-      {
-        "desc": "white ceramic plate with red and grey curved line patterns on the rim",
-        "action": "static",
-        "position": "background"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "Pieces of peanut brittle are arranged in a pile on the plate.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The brittle has a shiny, caramelized surface.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [],
-    "spatial": "The peanut brittle pieces are piled in the center of the white plate. The plate is positioned on a white surface.",
-    "parse_success": true,
-    "chunk_idx": 59,
-    "video_id": "Peanut_Brittle_made_with_Jaggery_Chicki_Jugu_Paak_moongfali_chikki_with_Raihana_s_Cuisines"
-  },
-  {
-    "time": [
-      120,
-      122
-    ],
-    "visible_entities": [
-      {
-        "desc": "irregular chunks of peanut brittle with a glossy, amber-colored caramel coating and embedded light-brown peanuts",
-        "action": "static",
-        "position": "center"
-      },
-      {
-        "desc": "white ceramic plate with red and grey curved line patterns on the rim",
-        "action": "static",
-        "position": "background"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "Chunks of peanut brittle are piled in the center of the plate.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The peanut brittle has a shiny, glazed surface indicating a sugar-based coating.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The plate features a decorative pattern of thin red and grey lines.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [],
-    "spatial": "The peanut brittle chunks are piled on top of the white ceramic plate. The decorative red and grey lines are located on the rim of the plate, surrounding the food.",
-    "parse_success": true,
-    "chunk_idx": 60,
-    "video_id": "Peanut_Brittle_made_with_Jaggery_Chicki_Jugu_Paak_moongfali_chikki_with_Raihana_s_Cuisines"
-  },
-  {
-    "time": [
-      122,
-      124
-    ],
-    "visible_entities": [
-      {
-        "desc": "irregular chunks of peanut brittle, golden-brown caramelized sugar matrix with embedded light-colored peanuts",
-        "action": "static",
-        "position": "center"
-      },
-      {
-        "desc": "white ceramic plate with abstract red and grey curved line patterns on the rim",
-        "action": "static",
-        "position": "background"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "The peanut brittle chunks are piled in the center of the plate.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The plate rests on a white surface.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [],
-    "spatial": "The peanut brittle chunks are on top of the white ceramic plate. The plate is centered in the frame.",
-    "parse_success": true,
-    "chunk_idx": 61,
-    "video_id": "Peanut_Brittle_made_with_Jaggery_Chicki_Jugu_Paak_moongfali_chikki_with_Raihana_s_Cuisines"
-  },
-  {
-    "time": [
-      124,
-      126
-    ],
-    "visible_entities": [
-      {
-        "desc": "irregular chunks of peanut brittle, golden-brown caramelized sugar coating, embedded with whole roasted peanuts",
-        "action": "static",
-        "position": "center"
-      },
-      {
-        "desc": "white ceramic plate with thin red and grey curved line patterns on the rim",
-        "action": "static",
-        "position": "background"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "Chunks of peanut brittle are piled in the center of the plate.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The plate features a decorative pattern of thin red and grey lines.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [],
-    "spatial": "The peanut brittle chunks are piled on top of the white ceramic plate. The decorative red and grey lines are located on the rim of the plate, surrounding the food.",
-    "parse_success": true,
-    "chunk_idx": 62,
-    "video_id": "Peanut_Brittle_made_with_Jaggery_Chicki_Jugu_Paak_moongfali_chikki_with_Raihana_s_Cuisines"
-  },
-  {
-    "time": [
-      126,
-      128
-    ],
-    "visible_entities": [
-      {
-        "desc": "golden-brown peanut brittle chunks, glossy caramelized sugar coating, embedded with whole and split peanuts",
-        "action": "static",
-        "position": "center"
-      },
-      {
-        "desc": "white ceramic plate with red and grey curved line patterns on the rim",
-        "action": "static",
-        "position": "background"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "The peanut brittle chunks are piled in the center of the plate.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The plate remains stationary on the surface.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [],
-    "spatial": "The peanut brittle chunks are piled on top of the white ceramic plate. The plate is centered in the frame.",
-    "parse_success": true,
-    "chunk_idx": 63,
-    "video_id": "Peanut_Brittle_made_with_Jaggery_Chicki_Jugu_Paak_moongfali_chikki_with_Raihana_s_Cuisines"
-  },
-  {
-    "time": [
-      128,
-      130
-    ],
-    "visible_entities": [
-      {
-        "desc": "irregularly shaped pieces of peanut brittle with a glossy, amber-colored caramelized sugar coating and embedded whole peanuts",
-        "action": "static",
-        "position": "center"
-      },
-      {
-        "desc": "white ceramic plate with a decorative pattern of thin red and grey curved lines on the rim",
-        "action": "static",
-        "position": "background"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "Pieces of peanut brittle are arranged in a pile on the plate.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The peanut brittle has a shiny, glazed surface.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [],
-    "spatial": "The peanut brittle is piled in the center of the white plate. The decorative red and grey lines are visible on the rim of the plate, surrounding the food.",
-    "parse_success": true,
-    "chunk_idx": 64,
-    "video_id": "Peanut_Brittle_made_with_Jaggery_Chicki_Jugu_Paak_moongfali_chikki_with_Raihana_s_Cuisines"
-  },
-  {
-    "time": [
-      130,
-      132
-    ],
-    "visible_entities": [
-      {
-        "desc": "irregular chunks of peanut brittle, glossy amber caramel texture with embedded light-brown peanuts",
-        "action": "static",
-        "position": "center"
-      },
-      {
-        "desc": "white ceramic plate with red and grey curved line patterns on the rim",
-        "action": "static",
-        "position": "background"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "Chunks of peanut brittle are piled in the center of the plate.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The peanut brittle has a shiny, glazed surface indicating a hard candy texture.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [],
-    "spatial": "The peanut brittle chunks are piled on top of the white ceramic plate. The plate is positioned centrally in the frame.",
-    "parse_success": true,
-    "chunk_idx": 65,
-    "video_id": "Peanut_Brittle_made_with_Jaggery_Chicki_Jugu_Paak_moongfali_chikki_with_Raihana_s_Cuisines"
-  },
-  {
-    "time": [
-      132,
-      134
-    ],
-    "visible_entities": [
-      {
-        "desc": "golden-brown peanut brittle pieces with a glossy, caramelized texture and embedded whole peanuts",
-        "action": "static",
-        "position": "center"
-      },
-      {
-        "desc": "white plate with a red and black curved line pattern on the rim",
-        "action": "static",
-        "position": "background"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "Pieces of peanut brittle are arranged on a white plate.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The brittle has a shiny, glazed surface indicating a sugar coating.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [],
-    "spatial": "The peanut brittle pieces are piled in the center of the white plate. The plate is positioned on a white surface.",
+    "spatial": "The peanut brittle is in the center of the white plate. The decorative lines are on the rim of the plate, surrounding the brittle.",
     "parse_success": true,
     "chunk_idx": 66,
     "video_id": "Peanut_Brittle_made_with_Jaggery_Chicki_Jugu_Paak_moongfali_chikki_with_Raihana_s_Cuisines"

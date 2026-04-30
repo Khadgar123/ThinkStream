@@ -2,16 +2,11 @@
   {
     "time": [
       0,
-      2
+      1
     ],
     "visible_entities": [
       {
-        "desc": "cooked chicken pieces with charred, browned skin and visible green herb seasoning",
-        "action": "static",
-        "position": "center"
-      },
-      {
-        "desc": "white oval plate",
+        "desc": "white oval plate holding roasted chicken pieces with charred skin and green herb seasoning",
         "action": "static",
         "position": "center"
       },
@@ -23,32 +18,28 @@
     ],
     "atomic_facts": [
       {
-        "fact": "cooked chicken pieces are piled on a white plate",
+        "fact": "A white plate containing cooked chicken is resting on a black stovetop.",
         "confidence": 1.0
       },
       {
-        "fact": "the plate is resting on a black stovetop surface",
-        "confidence": 1.0
-      },
-      {
-        "fact": "the chicken has char marks and green herbs on the skin",
+        "fact": "The chicken pieces have visible char marks and green seasoning.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The cooked chicken pieces are piled on top of the white oval plate. The plate is resting on the black stovetop surface. The metal grates of the stovetop are visible behind and to the right of the plate.",
+    "spatial": "The white plate with chicken is in the foreground, centered in the frame. The black stovetop grates are visible behind and underneath the plate.",
     "parse_success": true,
     "chunk_idx": 0,
     "video_id": "-4gJTsIM_E4"
   },
   {
     "time": [
-      2,
-      4
+      1,
+      2
     ],
     "visible_entities": [
       {
-        "desc": "pile of roasted chicken pieces with golden-brown skin, charred edges, and visible green herbs",
+        "desc": "cooked chicken pieces with golden-brown skin and charred edges, piled on a plate",
         "action": "static",
         "position": "center"
       },
@@ -58,48 +49,52 @@
         "position": "center"
       },
       {
-        "desc": "text overlay reading 'Rough Diamond Recipes' in a white, bold, sans-serif font with a slight drop shadow",
+        "desc": "white text with a drop shadow reading 'Rough Diamond Recipes'",
         "action": "static",
         "position": "center"
+      },
+      {
+        "desc": "dark stovetop with metal grates",
+        "action": "static",
+        "position": "background"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A pile of roasted chicken pieces sits on a white plate.",
+        "fact": "A plate of cooked chicken is presented on a stovetop.",
         "confidence": 1.0
       },
       {
-        "fact": "The text 'Rough Diamond Recipes' is superimposed over the image of the food.",
+        "fact": "The text 'Rough Diamond Recipes' is overlaid on the image.",
         "confidence": 1.0
       }
     ],
     "ocr": [
-      "Rough Diamond",
-      "Recipes"
+      "Rough Diamond Recipes"
     ],
-    "spatial": "The roasted chicken pieces are piled in the center of the white plate. The text overlay is positioned in the center of the frame, appearing in front of the chicken.",
+    "spatial": "The cooked chicken pieces are piled on top of the white plate. The text 'Rough Diamond Recipes' is superimposed over the center of the chicken and plate. The plate is positioned in front of the dark stovetop grates.",
     "parse_success": true,
     "chunk_idx": 1,
     "video_id": "-4gJTsIM_E4"
   },
   {
     "time": [
-      4,
-      6
+      2,
+      3
     ],
     "visible_entities": [
       {
-        "desc": "cooked chicken pieces with golden-brown, charred skin and visible green herb seasoning",
+        "desc": "roasted chicken pieces with golden-brown skin and charred edges, seasoned with visible herbs",
         "action": "static",
         "position": "center"
       },
       {
-        "desc": "white plate holding the food",
+        "desc": "white round plate",
         "action": "static",
         "position": "center"
       },
       {
-        "desc": "semi-transparent white text overlay reading 'ough Diamond Recipes'",
+        "desc": "large semi-transparent white text overlay reading 'ough Diamond Recipes'",
         "action": "static",
         "position": "foreground"
       },
@@ -111,27 +106,30 @@
     ],
     "atomic_facts": [
       {
-        "fact": "A plate of cooked chicken pieces sits on a stovetop.",
+        "fact": "Roasted chicken pieces are piled on a white plate.",
         "confidence": 1.0
       },
       {
-        "fact": "The text 'ough Diamond Recipes' is overlaid on the video.",
+        "fact": "The text 'ough Diamond Recipes' is superimposed over the food.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The plate is resting on a black stovetop.",
         "confidence": 1.0
       }
     ],
     "ocr": [
-      "ough Diamond",
-      "Recipes"
+      "ough Diamond Recipes"
     ],
-    "spatial": "The cooked chicken pieces are piled on top of the white plate. The plate is positioned in front of the black stovetop burner grate. The text overlay is in the foreground, covering the center of the chicken and plate.",
+    "spatial": "The roasted chicken pieces are piled in the center of the white plate. The plate is resting on a black stovetop burner grate. The text overlay is in the foreground, covering the center of the chicken and plate.",
     "parse_success": true,
     "chunk_idx": 2,
     "video_id": "-4gJTsIM_E4"
   },
   {
     "time": [
-      6,
-      8
+      3,
+      4
     ],
     "visible_entities": [
       {
@@ -145,7 +143,7 @@
         "position": "center"
       },
       {
-        "desc": "text overlay reading 'Chicken Mojo' in white sans-serif font",
+        "desc": "white text overlay reading 'Chicken Mojo' in a sans-serif font",
         "action": "static",
         "position": "center"
       }
@@ -160,26 +158,26 @@
         "confidence": 1.0
       },
       {
-        "fact": "The chicken skin shows signs of roasting with browned and blackened spots.",
+        "fact": "The chicken appears to be cooked with a marinade containing herbs.",
         "confidence": 1.0
       }
     ],
     "ocr": [
       "Chicken Mojo"
     ],
-    "spatial": "The roasted chicken pieces are piled in the center of the white rectangular plate. The text 'Chicken Mojo' is superimposed directly over the chicken pieces in the middle of the frame.",
+    "spatial": "The roasted chicken pieces are piled on top of the white plate. The text 'Chicken Mojo' is superimposed over the center of the chicken and plate. The plate rests on a dark surface.",
     "parse_success": true,
     "chunk_idx": 3,
     "video_id": "-4gJTsIM_E4"
   },
   {
     "time": [
-      8,
-      10
+      4,
+      5
     ],
     "visible_entities": [
       {
-        "desc": "golden-brown roasted chicken pieces with charred spots and visible seasoning",
+        "desc": "roasted chicken pieces with golden-brown skin, charred spots, and visible seasoning",
         "action": "static",
         "position": "center"
       },
@@ -189,53 +187,58 @@
         "position": "center"
       },
       {
-        "desc": "white text overlay reading 'Chicken Mojo'",
+        "desc": "text 'Chicken Mojo' in white sans-serif font with a slight drop shadow",
         "action": "static",
         "position": "center"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "The chicken pieces are arranged in a pile on the plate.",
+        "fact": "The text 'Chicken Mojo' is overlaid on the image of the food.",
         "confidence": 1.0
       },
       {
-        "fact": "The text 'Chicken Mojo' is superimposed over the image of the food.",
+        "fact": "The roasted chicken pieces are arranged on the white plate.",
         "confidence": 1.0
       },
       {
-        "fact": "The chicken has a crispy, textured skin with dark grill marks.",
+        "fact": "The plate rests on a dark surface.",
         "confidence": 1.0
       }
     ],
     "ocr": [
       "Chicken Mojo"
     ],
-    "spatial": "The roasted chicken pieces are piled on top of the white plate. The text overlay is centered in front of the chicken.",
+    "spatial": "The roasted chicken pieces are piled in the center of the white plate. The text 'Chicken Mojo' is superimposed over the center of the chicken pieces. The plate is positioned on a dark table surface.",
     "parse_success": true,
     "chunk_idx": 4,
     "video_id": "-4gJTsIM_E4"
   },
   {
     "time": [
-      10,
-      12
+      5,
+      6
     ],
     "visible_entities": [
       {
-        "desc": "cooked chicken pieces with golden-brown, crispy skin and visible seasoning",
+        "desc": "cooked chicken pieces with golden-brown, glazed skin and charred edges",
         "action": "static",
         "position": "center"
       },
       {
-        "desc": "white round plate",
+        "desc": "white plate",
         "action": "static",
         "position": "center"
       },
       {
-        "desc": "red text with white outline reading 'First lets make the Mojo marinade'",
+        "desc": "red text with white outline",
         "action": "static",
         "position": "center"
+      },
+      {
+        "desc": "vertical black bars overlay",
+        "action": "static",
+        "position": "foreground"
       }
     ],
     "atomic_facts": [
@@ -244,11 +247,15 @@
         "confidence": 1.0
       },
       {
-        "fact": "Text on the screen instructs to make the Mojo marinade.",
+        "fact": "Text appears on screen reading 'First lets make the Mojo marinade'.",
         "confidence": 1.0
       },
       {
         "fact": "The chicken is resting on a white plate.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The scene transitions from a food shot to a black background with text.",
         "confidence": 1.0
       }
     ],
@@ -256,19 +263,19 @@
       "First lets make the",
       "Mojo marinade"
     ],
-    "spatial": "The cooked chicken pieces are arranged on the white plate in the center of the frame. The red instructional text is superimposed over the center of the chicken and plate.",
+    "spatial": "The cooked chicken pieces are arranged on the white plate in the center of the frame. The red text is overlaid in the center, appearing in front of the chicken. Vertical black bars are superimposed over the entire image in the foreground.",
     "parse_success": true,
     "chunk_idx": 5,
     "video_id": "-4gJTsIM_E4"
   },
   {
     "time": [
-      12,
-      14
+      6,
+      7
     ],
     "visible_entities": [
       {
-        "desc": "Text reading 'First lets make the Mojo marinade' in red font with a white outline",
+        "desc": "Red text with a white outline reading 'First lets make the Mojo marinade' in a sans-serif font",
         "action": "static",
         "position": "center"
       }
@@ -279,12 +286,13 @@
         "confidence": 1.0
       },
       {
-        "fact": "The text is centered against a black background.",
+        "fact": "The text is red with a white outline.",
         "confidence": 1.0
       }
     ],
     "ocr": [
-      "First lets make the Mojo marinade"
+      "First lets make the",
+      "Mojo marinade"
     ],
     "spatial": "The red text is centered on the black background.",
     "parse_success": true,
@@ -293,22 +301,12 @@
   },
   {
     "time": [
-      14,
-      16
+      7,
+      8
     ],
     "visible_entities": [
       {
-        "desc": "white text overlay listing ingredients",
-        "action": "static",
-        "position": "left"
-      },
-      {
-        "desc": "white bowl containing three whole oranges, two green limes, and a bunch of fresh green coriander",
-        "action": "static",
-        "position": "top center"
-      },
-      {
-        "desc": "white bowl containing yellow liquid",
+        "desc": "white bowl containing yellow liquid (orange juice)",
         "action": "static",
         "position": "left"
       },
@@ -318,17 +316,104 @@
         "position": "bottom left"
       },
       {
-        "desc": "white bowl containing brown powder",
+        "desc": "white bowl containing brown powder (ground cumin)",
         "action": "static",
-        "position": "center"
+        "position": "center bottom"
       },
       {
-        "desc": "white bowl containing dried green herbs",
+        "desc": "white bowl containing dried green herbs (oregano)",
         "action": "static",
         "position": "bottom right"
       },
       {
         "desc": "white bowl containing salt and pepper",
+        "action": "static",
+        "position": "right"
+      },
+      {
+        "desc": "white bowl containing oranges, limes, and fresh coriander",
+        "action": "static",
+        "position": "top center"
+      },
+      {
+        "desc": "wooden surface",
+        "action": "static",
+        "position": "background"
+      },
+      {
+        "desc": "white text overlay listing ingredients",
+        "action": "static",
+        "position": "left"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The video displays a static arrangement of ingredients on a wooden surface.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A list of ingredients is overlaid on the left side of the screen.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The text lists 'Juice of 3 oranges', 'juice of 2 limes', 'small bunch of fresh coriander (chopped)', '10 cloves of garlic', '4 tsp salt', '1 tsp ground pepper', '1 tsp ground cumin', and '2 tsp dried oregano'.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "Ingredients",
+      "Juice of 3 oranges",
+      "juice of 2 limes",
+      "small bunch of fresh coriander (chopped)",
+      "10 cloves of garlic",
+      "4 tsp salt",
+      "1 tsp ground pepper",
+      "1 tsp ground cumin",
+      "2 tsp dried oregano"
+    ],
+    "spatial": "The bowl of oranges and limes is positioned at the top center, above the smaller bowls of spices and garlic. The bowl of orange juice is to the left of the spice bowls. The text overlay is situated on the left side of the frame, partially obscuring the bowl of juice and the wooden background.",
+    "parse_success": true,
+    "chunk_idx": 7,
+    "video_id": "-4gJTsIM_E4"
+  },
+  {
+    "time": [
+      8,
+      9
+    ],
+    "visible_entities": [
+      {
+        "desc": "white text overlay listing ingredients",
+        "action": "static",
+        "position": "left"
+      },
+      {
+        "desc": "white bowl containing three oranges, two green limes, and fresh green coriander",
+        "action": "static",
+        "position": "center"
+      },
+      {
+        "desc": "small white bowl filled with yellow olive oil",
+        "action": "static",
+        "position": "left"
+      },
+      {
+        "desc": "small white bowl containing peeled garlic cloves",
+        "action": "static",
+        "position": "bottom left"
+      },
+      {
+        "desc": "small white bowl containing brown ground cumin",
+        "action": "static",
+        "position": "bottom center"
+      },
+      {
+        "desc": "small white bowl containing dried green oregano",
+        "action": "static",
+        "position": "bottom right"
+      },
+      {
+        "desc": "small white bowl containing ground pepper",
         "action": "static",
         "position": "right"
       },
@@ -340,15 +425,15 @@
     ],
     "atomic_facts": [
       {
-        "fact": "The ingredients for a recipe are arranged on a wooden surface.",
+        "fact": "The ingredients are arranged on a wooden surface.",
         "confidence": 1.0
       },
       {
-        "fact": "Text overlay lists the ingredients including juice of 3 oranges, juice of 2 limes, coriander, garlic, salt, pepper, cumin, and oregano.",
+        "fact": "A text overlay lists the recipe components including 'Juice of 3 oranges' and '10 cloves garlic'.",
         "confidence": 1.0
       },
       {
-        "fact": "A bowl of citrus fruits and herbs is placed above the bowls of spices and garlic.",
+        "fact": "The bowl of fruit is positioned behind the bowls of spices and oil.",
         "confidence": 1.0
       }
     ],
@@ -356,23 +441,23 @@
       "Ingredients",
       "Juice of 3 oranges",
       "juice of 2 limes",
-      "small bunch of fresh coriander (chopped)",
+      "small bunch of fresh corriander (chopped)",
       "10 cloves garlic",
       "4 tbsp olive oil",
-      "salt",
-      "pepper",
-      "1 tsp ground cumin",
+      "1 tsp salt",
+      "1 tsp ground pepper",
+      "2 tsp ground cumin",
       "2 tsp dried oregano"
     ],
-    "spatial": "The bowl of oranges, limes, and coriander is at the top center of the frame. The bowl of yellow liquid is to the left of the center. The bowl of garlic is below the bowl of yellow liquid. The bowl of brown powder is in the center, below the fruit bowl. The bowl of dried herbs is to the right of the brown powder. The bowl of salt and pepper is to the right of the brown powder and above the dried herbs. The text overlay is on the left side of the frame, superimposed over the ingredients.",
+    "spatial": "The text overlay is on the left side of the frame. The large bowl of fruit and herbs is in the center, positioned behind the smaller bowls. The bowl of olive oil is to the left of the fruit bowl. The bowls of garlic, cumin, and oregano are arranged in a row at the bottom, while the bowl of pepper is to the right of the fruit bowl.",
     "parse_success": true,
-    "chunk_idx": 7,
+    "chunk_idx": 8,
     "video_id": "-4gJTsIM_E4"
   },
   {
     "time": [
-      16,
-      18
+      9,
+      10
     ],
     "visible_entities": [
       {
@@ -381,12 +466,12 @@
         "position": "left"
       },
       {
-        "desc": "white bowl containing three whole oranges, two whole green limes, and a bunch of fresh green coriander",
+        "desc": "large white bowl containing three whole oranges, two green limes, and a bunch of fresh green coriander",
         "action": "static",
         "position": "center"
       },
       {
-        "desc": "small white bowl containing yellow olive oil",
+        "desc": "small white bowl filled with yellow olive oil",
         "action": "static",
         "position": "left"
       },
@@ -401,12 +486,12 @@
         "position": "bottom-center"
       },
       {
-        "desc": "small white bowl containing dried oregano",
+        "desc": "small white bowl containing dried green oregano",
         "action": "static",
         "position": "bottom-right"
       },
       {
-        "desc": "small white bowl containing ground pepper",
+        "desc": "small white bowl containing salt and ground pepper",
         "action": "static",
         "position": "right"
       },
@@ -418,23 +503,23 @@
     ],
     "atomic_facts": [
       {
+        "fact": "The text overlay lists ingredients for a recipe.",
+        "confidence": 1.0
+      },
+      {
         "fact": "The ingredients are arranged on a wooden surface.",
         "confidence": 1.0
       },
       {
-        "fact": "A text overlay lists the ingredients for a recipe.",
+        "fact": "The text specifies 'Juice of 3 oranges' and 'juice of 2 limes'.",
         "confidence": 1.0
       },
       {
-        "fact": "The list includes 'Juice of 3 oranges' and 'juice of 2 limes'.",
+        "fact": "The text specifies '10 cloves garlic' and '4 tbsp olive oil'.",
         "confidence": 1.0
       },
       {
-        "fact": "The list specifies '10 cloves garlic' and '4 tbsp olive oil'.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The list specifies '1 tsp salt', '1 tsp ground pepper', '2 tsp ground cumin', and '2 tsp dried oregano'.",
+        "fact": "The text specifies '1 tsp salt', '1 tsp ground pepper', '2 tsp ground cumin', and '2 tsp dried oregano'.",
         "confidence": 1.0
       }
     ],
@@ -450,140 +535,68 @@
       "2 tsp ground cumin",
       "2 tsp dried oregano"
     ],
-    "spatial": "The text overlay is positioned on the left side of the frame, next to the bowl of olive oil. The large bowl containing citrus fruits and herbs is in the center, above the smaller bowls of spices and garlic. The bowl of garlic is to the left of the bowl of cumin, which is to the left of the bowl of oregano. The bowl of pepper is located to the right of the central fruit bowl.",
-    "parse_success": true,
-    "chunk_idx": 8,
-    "video_id": "-4gJTsIM_E4"
-  },
-  {
-    "time": [
-      18,
-      20
-    ],
-    "visible_entities": [
-      {
-        "desc": "white text overlay listing ingredients including 'Juice of 3 oranges', 'juice of 2 limes', 'small bunch of fresh corriander (chopped)', '10 cloves garlic', '4 tbsp olive oil', '1 tsp salt', '1 tsp ground pepper', '2 tsp ground cumin', and '2 tsp dried oregano'",
-        "action": "static",
-        "position": "left"
-      },
-      {
-        "desc": "white bowl containing three whole oranges, two whole limes, and a bunch of fresh green coriander",
-        "action": "static",
-        "position": "center"
-      },
-      {
-        "desc": "small white bowl filled with yellow olive oil",
-        "action": "static",
-        "position": "left foreground"
-      },
-      {
-        "desc": "small white bowl containing peeled white garlic cloves",
-        "action": "static",
-        "position": "bottom left"
-      },
-      {
-        "desc": "small white bowl containing brown ground cumin powder",
-        "action": "static",
-        "position": "bottom center"
-      },
-      {
-        "desc": "small white bowl containing greenish-brown dried oregano",
-        "action": "static",
-        "position": "bottom right"
-      },
-      {
-        "desc": "small white bowl containing salt and ground pepper",
-        "action": "static",
-        "position": "right"
-      },
-      {
-        "desc": "wooden surface with visible grain pattern",
-        "action": "static",
-        "position": "background"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "Ingredients for a recipe are displayed on a wooden table.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The text overlay lists specific quantities for spices and liquids.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "Fresh citrus fruits and herbs are arranged in a central bowl.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "Spices are separated into individual small white bowls.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [
-      "Ingredients",
-      "Juice of 3 oranges",
-      "juice of 2 limes",
-      "small bunch of fresh corriander (chopped)",
-      "10 cloves garlic",
-      "4 tbsp olive oil",
-      "1 tsp salt",
-      "1 tsp ground pepper",
-      "2 tsp ground cumin",
-      "2 tsp dried oregano"
-    ],
-    "spatial": "The text listing ingredients is positioned on the left side of the frame. The large bowl containing oranges, limes, and coriander is in the center, slightly behind the smaller bowls. The bowl of olive oil is to the left of the central fruit bowl. The bowls of garlic, cumin, and oregano are arranged in an arc at the bottom, while the bowl with salt and pepper is to the right of the central bowl. All items rest on a wooden surface.",
+    "spatial": "The text overlay is positioned on the left side of the frame. The large bowl of fruit and herbs is in the center, slightly above the smaller bowls. The bowl of olive oil is to the left of the central bowl. The bowls of garlic, cumin, and oregano are arranged in a row below the central bowl. The bowl with salt and pepper is to the right of the central bowl.",
     "parse_success": true,
     "chunk_idx": 9,
     "video_id": "-4gJTsIM_E4"
   },
   {
     "time": [
-      20,
-      22
+      10,
+      11
     ],
     "visible_entities": [
-      {
-        "desc": "white rectangular cutting board, smooth plastic surface",
-        "action": "static",
-        "position": "center"
-      },
-      {
-        "desc": "white bowl containing yellow liquid (olive oil)",
-        "action": "static",
-        "position": "left"
-      },
-      {
-        "desc": "white bowl containing whole oranges and limes",
-        "action": "static",
-        "position": "top left"
-      },
-      {
-        "desc": "small white bowls containing brown spices (cumin, oregano, pepper)",
-        "action": "static",
-        "position": "bottom right"
-      },
       {
         "desc": "white text overlay listing ingredients",
         "action": "static",
         "position": "left"
+      },
+      {
+        "desc": "white bowl containing oranges, limes, and green herbs",
+        "action": "static",
+        "position": "top center"
+      },
+      {
+        "desc": "white bowl containing yellow liquid",
+        "action": "static",
+        "position": "center left"
+      },
+      {
+        "desc": "white bowl containing white paste",
+        "action": "static",
+        "position": "bottom center"
+      },
+      {
+        "desc": "three small white bowls containing brown spices",
+        "action": "static",
+        "position": "bottom right"
+      },
+      {
+        "desc": "white rectangular cutting board",
+        "action": "static",
+        "position": "center"
+      },
+      {
+        "desc": "wooden surface",
+        "action": "static",
+        "position": "background"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A white cutting board is placed on a wooden table.",
+        "fact": "The video displays a list of ingredients for a recipe on the left side of the screen.",
         "confidence": 1.0
       },
       {
-        "fact": "A bowl of yellow liquid is positioned to the left of the cutting board.",
+        "fact": "A white bowl containing citrus fruits and herbs sits at the top of the arrangement.",
         "confidence": 1.0
       },
       {
-        "fact": "Small bowls of spices are arranged near the bottom right of the cutting board.",
+        "fact": "A white cutting board is placed centrally on the wooden surface.",
         "confidence": 1.0
       },
       {
-        "fact": "The on-screen text lists ingredients including 'Juice of 3 oranges' and '10 cloves garlic'.",
+        "fact": "Several small bowls containing liquids, pastes, and spices are arranged around the cutting board.",
         "confidence": 1.0
       }
     ],
@@ -599,82 +612,82 @@
       "2 tsp ground cumin",
       "2 tsp dried oregano"
     ],
-    "spatial": "The white cutting board is in the center of the wooden table. The bowl of yellow liquid is to the left of the cutting board. The bowl of citrus fruits is above the cutting board. The small spice bowls are below and to the right of the cutting board. The ingredient list text is overlaid on the left side of the screen.",
+    "spatial": "The text overlay is positioned to the left of the ingredients. The bowl of fruit is above the cutting board. The bowl of yellow liquid is to the left of the cutting board. The bowls of spices are to the right of the cutting board and below the fruit bowl.",
     "parse_success": true,
     "chunk_idx": 10,
     "video_id": "-4gJTsIM_E4"
   },
   {
     "time": [
-      22,
-      24
+      11,
+      12
     ],
     "visible_entities": [
       {
         "desc": "person's hands with light skin tone",
-        "action": "squeezing an orange half",
+        "action": "squeezing orange half",
         "position": "center"
       },
       {
-        "desc": "orange half, bright orange rind with visible pulp",
+        "desc": "orange half, cut side up, bright orange rind, juicy pulp",
         "action": "being squeezed",
         "position": "center"
       },
       {
-        "desc": "small white ceramic bowl",
+        "desc": "white ceramic bowl, round, containing juice",
         "action": "collecting juice",
         "position": "center"
       },
       {
-        "desc": "white plastic cutting board, rectangular with handle cutout",
+        "desc": "white plastic cutting board, rectangular, with handle cutout",
         "action": "static",
         "position": "center"
       },
       {
-        "desc": "wooden table surface, light brown with wood grain",
+        "desc": "wooden table surface, light brown, wood grain texture",
         "action": "static",
         "position": "background"
       },
       {
-        "desc": "white bowl containing citrus fruits (oranges and limes)",
+        "desc": "white bowl, containing sliced oranges and limes",
         "action": "static",
-        "position": "top left"
+        "position": "top"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A person is squeezing an orange half over a small white bowl.",
+        "fact": "person's hands are squeezing an orange half over a white bowl",
         "confidence": 1.0
       },
       {
-        "fact": "Juice is dripping from the orange into the bowl.",
+        "fact": "juice is dripping from the orange into the bowl",
         "confidence": 1.0
       },
       {
-        "fact": "The small bowl is placed on top of a white cutting board.",
+        "fact": "the white bowl is placed on top of the white cutting board",
         "confidence": 1.0
       },
       {
-        "fact": "A bowl of whole citrus fruits sits in the background.",
+        "fact": "a bowl of sliced citrus fruit is visible in the background",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The person's hands are holding the orange half directly above the small white bowl. The small bowl is resting on the white cutting board, which is positioned on the wooden table. The bowl of fruit is located to the top left of the cutting board.",
+    "spatial": "The person's hands are holding the orange half directly above the small white bowl. The small white bowl is resting on the white cutting board. The cutting board is on the wooden table. The bowl of sliced fruit is behind the cutting board.",
     "parse_success": true,
     "chunk_idx": 11,
     "video_id": "-4gJTsIM_E4"
   },
   {
     "time": [
-      24,
-      26
+      12,
+      13
     ],
     "visible_entities": [
       {
         "desc": "person's hands with light skin tone",
-        "action": "squeezing orange with a wooden tool",
-        "position": "left/center"
+        "action": "squeezing an orange",
+        "position": "foreground"
       },
       {
         "desc": "orange half, bright orange peel, juicy interior",
@@ -682,61 +695,61 @@
         "position": "center"
       },
       {
-        "desc": "wooden reamer tool, light brown, smooth texture",
-        "action": "twisting inside orange",
+        "desc": "wooden citrus reamer, light brown, smooth texture",
+        "action": "twisting into orange",
         "position": "center"
       },
       {
         "desc": "white ceramic bowl, round, containing orange juice",
-        "action": "collecting juice",
-        "position": "center/bottom"
+        "action": "static",
+        "position": "center"
       },
       {
-        "desc": "white cutting board, rectangular, plastic",
+        "desc": "white cutting board, flat, rectangular",
         "action": "static",
-        "position": "center/bottom"
+        "position": "center"
       },
       {
-        "desc": "wooden countertop, light brown, visible grain",
+        "desc": "wooden table surface, light brown, visible wood grain",
         "action": "static",
-        "position": "background/right"
+        "position": "background"
       },
       {
-        "desc": "second white bowl with orange slices",
+        "desc": "white bowl with orange slices and lime wedges",
         "action": "static",
-        "position": "top/left"
+        "position": "top left"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A person is using a wooden reamer to extract juice from an orange half.",
+        "fact": "A person is using a wooden reamer to juice an orange half.",
         "confidence": 1.0
       },
       {
-        "fact": "Orange juice is accumulating in the white bowl below the fruit.",
+        "fact": "Orange juice is collecting in the white bowl below the fruit.",
         "confidence": 1.0
       },
       {
-        "fact": "The bowl sits on top of a white cutting board.",
+        "fact": "The bowl rests on a white cutting board.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The person's hands are holding the orange half directly above the white bowl. The wooden reamer is inserted into the center of the orange. The white bowl rests on a white cutting board, which is placed on a wooden countertop. Another bowl containing orange slices is visible in the background to the left.",
+    "spatial": "The person's hands are holding the orange half and the wooden reamer in the center of the frame. The white bowl is positioned directly below the orange to catch the juice. The bowl sits on top of a white cutting board, which is placed on a wooden table. Another bowl containing fruit slices is visible in the upper left background.",
     "parse_success": true,
     "chunk_idx": 12,
     "video_id": "-4gJTsIM_E4"
   },
   {
     "time": [
-      26,
-      28
+      13,
+      14
     ],
     "visible_entities": [
       {
-        "desc": "person's hands with light skin tone",
-        "action": "squeezing an orange half",
-        "position": "center"
+        "desc": "person with light skin, hands visible",
+        "action": "squeezing an orange half with a wooden reamer",
+        "position": "left/center/foreground"
       },
       {
         "desc": "orange half, bright orange peel, juicy interior",
@@ -744,14 +757,14 @@
         "position": "center"
       },
       {
-        "desc": "wooden citrus reamer, light brown, tapered handle, ribbed cone",
-        "action": "pressing into orange",
+        "desc": "wooden citrus reamer, light brown, smooth, tapered",
+        "action": "being held and twisted",
         "position": "center"
       },
       {
-        "desc": "white ceramic bowl, round, containing orange juice",
+        "desc": "white ceramic bowl, round, containing yellow-orange juice",
         "action": "static",
-        "position": "center"
+        "position": "center/bottom"
       },
       {
         "desc": "white cutting board, rectangular, flat",
@@ -759,225 +772,182 @@
         "position": "bottom"
       },
       {
-        "desc": "wooden countertop, light brown, planked surface",
+        "desc": "wooden surface, light brown, wood grain pattern",
         "action": "static",
-        "position": "background"
+        "position": "right/background"
       },
       {
-        "desc": "white bowl with limes and orange halves",
+        "desc": "white bowl containing lime halves and orange halves",
         "action": "static",
-        "position": "top"
+        "position": "top/background"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A person is squeezing an orange half using a wooden reamer.",
+        "fact": "person is squeezing an orange half using a wooden reamer",
         "confidence": 1.0
       },
       {
-        "fact": "Orange juice is dripping from the fruit into the white bowl below.",
+        "fact": "orange juice is dripping into a white bowl",
         "confidence": 1.0
       },
       {
-        "fact": "The wooden reamer is inserted into the orange half.",
+        "fact": "the white bowl sits on a white cutting board",
         "confidence": 1.0
       },
       {
-        "fact": "A bowl of limes and oranges sits in the background.",
+        "fact": "a second bowl with citrus fruits is visible in the background",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The person's hands are holding the orange half and the wooden reamer in the center of the frame. The white bowl containing the juice is directly below the orange being squeezed. The white cutting board is underneath the bowl. A second bowl with limes is positioned above and behind the main action area.",
+    "spatial": "The person's hands are holding the orange and reamer above the white bowl. The white bowl is on top of the white cutting board. The cutting board is on the wooden surface. The bowl with limes is behind and above the main bowl.",
     "parse_success": true,
     "chunk_idx": 13,
     "video_id": "-4gJTsIM_E4"
   },
   {
     "time": [
-      28,
-      30
+      14,
+      15
     ],
     "visible_entities": [
       {
-        "desc": "person's hands with light skin tone",
-        "action": "squeezing orange",
-        "position": "center"
+        "desc": "person with light skin, hands holding a citrus fruit and a tool",
+        "action": "squeezing juice from the fruit",
+        "position": "left/center"
       },
       {
-        "desc": "half orange, bright orange peel, juicy pulp",
+        "desc": "half of an orange citrus fruit, hollowed out with visible pulp and rind",
         "action": "being squeezed",
         "position": "center"
       },
       {
-        "desc": "white ceramic bowl, round, containing orange juice",
+        "desc": "white ceramic bowl containing yellow liquid",
         "action": "static",
         "position": "center/bottom"
       },
       {
-        "desc": "white cutting board, flat, rectangular",
+        "desc": "white cutting board, smooth surface",
         "action": "static",
         "position": "center/bottom"
       },
       {
-        "desc": "wooden surface, light brown, planked texture",
+        "desc": "wooden countertop, light brown with visible grain pattern",
         "action": "static",
         "position": "right/background"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A person is squeezing a half orange with their hands.",
+        "fact": "A person is squeezing a hollowed-out orange half over a white bowl.",
         "confidence": 1.0
       },
       {
-        "fact": "Orange juice is dripping from the fruit into the white bowl below.",
+        "fact": "Yellow juice is dripping from the fruit into the bowl below.",
         "confidence": 1.0
       },
       {
         "fact": "The bowl is resting on a white cutting board.",
         "confidence": 1.0
+      },
+      {
+        "fact": "The cutting board is placed on a wooden countertop.",
+        "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The person's hands are holding the orange directly above the white bowl. The bowl is placed on top of the white cutting board. The wooden surface is to the right of the cutting board.",
+    "spatial": "The person's hands are holding the orange fruit directly above the white bowl. The bowl is positioned on top of the white cutting board. The wooden countertop is to the right of the cutting board and bowl.",
     "parse_success": true,
     "chunk_idx": 14,
     "video_id": "-4gJTsIM_E4"
   },
   {
     "time": [
-      30,
-      32
+      15,
+      16
     ],
     "visible_entities": [
       {
-        "desc": "person's hands with light skin tone",
-        "action": "squeezing a lime half over a bowl",
-        "position": "foreground"
+        "desc": "person's hands and forearms, light skin tone, wearing a dark grey long-sleeved shirt",
+        "action": "squeezing a lime using a wooden reamer",
+        "position": "foreground/center"
       },
       {
-        "desc": "white ceramic bowl containing yellow liquid",
+        "desc": "white ceramic bowl containing bright yellow citrus juice",
         "action": "static",
         "position": "center"
       },
       {
-        "desc": "wooden citrus reamer tool with ridged cone",
-        "action": "being held and used",
+        "desc": "wooden citrus reamer with a handle and a ribbed, cone-shaped head",
+        "action": "being rotated inside a lime half",
         "position": "center"
       },
       {
-        "desc": "white cutting board",
+        "desc": "white cutting board, rectangular, plastic or composite material",
         "action": "static",
         "position": "center"
       },
       {
-        "desc": "white bowl containing green limes and orange peels",
+        "desc": "white bowl containing green limes and orange halves",
         "action": "static",
-        "position": "background"
+        "position": "background/top"
       },
       {
-        "desc": "wooden countertop with light brown grain",
+        "desc": "wooden countertop, light brown with visible wood grain",
         "action": "static",
         "position": "background"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A person is squeezing a lime half using a wooden reamer tool.",
+        "fact": "A person is using a wooden reamer to extract juice from a lime.",
         "confidence": 1.0
       },
       {
-        "fact": "Yellow juice is dripping from the lime into the white bowl.",
+        "fact": "The juice is being collected in a white bowl placed on a cutting board.",
         "confidence": 1.0
       },
       {
-        "fact": "The white bowl is resting on a white cutting board.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "A second bowl with whole limes and orange peels is visible in the background.",
+        "fact": "A second bowl with more citrus fruits sits in the background.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The person's hands are in the foreground, holding the wooden reamer and lime directly above the white bowl. The white bowl is positioned on top of the white cutting board. The cutting board is on the wooden countertop. The bowl containing whole limes is behind the bowl with the juice.",
+    "spatial": "The person's hands are in the foreground, holding the wooden reamer inside the white bowl of juice. The white bowl is positioned on top of the white cutting board. The cutting board rests on the wooden countertop. The second bowl of fruit is located above and behind the bowl of juice.",
     "parse_success": true,
     "chunk_idx": 15,
     "video_id": "-4gJTsIM_E4"
   },
   {
     "time": [
-      32,
-      34
+      16,
+      17
     ],
     "visible_entities": [
       {
-        "desc": "hand holding a wooden citrus reamer with orange residue",
-        "action": "squeezing citrus fruit",
+        "desc": "hand with light skin tone",
+        "action": "holding a wooden citrus reamer",
         "position": "left"
       },
       {
-        "desc": "white ceramic bowl containing yellow liquid",
-        "action": "static",
+        "desc": "wooden citrus reamer, light brown, smooth texture",
+        "action": "being held over a bowl",
         "position": "center"
       },
       {
-        "desc": "clear plastic blender jug with blue rim and handle",
-        "action": "static",
+        "desc": "white ceramic bowl, round",
+        "action": "containing yellow liquid",
         "position": "center"
       },
       {
-        "desc": "small white bowl containing brown granular powder",
+        "desc": "yellow liquid, translucent with pulp",
         "action": "static",
-        "position": "right"
+        "position": "inside the white bowl"
       },
       {
-        "desc": "white cutting board",
+        "desc": "clear plastic blender jug, cylindrical with a handle",
         "action": "static",
-        "position": "right"
-      },
-      {
-        "desc": "wooden countertop surface",
-        "action": "static",
-        "position": "background"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "A hand is squeezing a citrus fruit using a wooden reamer into a white bowl.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "Yellow liquid is being poured from a white bowl into a clear blender jug.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The blender jug has the text 'KENWOOD' printed on it.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "A small bowl of brown powder sits next to the blender jug.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [
-      "KENWOOD"
-    ],
-    "spatial": "The hand holding the reamer is to the left of the white bowl. The white bowl is positioned above the wooden countertop. The blender jug is in the center of the frame, to the left of the small bowl containing brown powder. The white cutting board is to the right of the blender jug.",
-    "parse_success": true,
-    "chunk_idx": 16,
-    "video_id": "-4gJTsIM_E4"
-  },
-  {
-    "time": [
-      34,
-      36
-    ],
-    "visible_entities": [
-      {
-        "desc": "transparent plastic blender pitcher with a handle, containing brown granular spices and liquid at the bottom",
-        "action": "receiving ingredients",
         "position": "center"
       },
       {
@@ -986,97 +956,145 @@
         "position": "right"
       },
       {
-        "desc": "white cutting board",
+        "desc": "wooden surface, light brown with grain pattern",
         "action": "static",
-        "position": "right"
-      },
-      {
-        "desc": "white bowl containing yellow liquid",
-        "action": "static",
-        "position": "top"
-      },
-      {
-        "desc": "hand holding a small bowl",
-        "action": "pouring white granular substance",
-        "position": "top"
+        "position": "background"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A hand pours a white granular substance from a small bowl into the blender pitcher.",
+        "fact": "A hand is holding a wooden citrus reamer over a white bowl filled with yellow juice.",
         "confidence": 1.0
       },
       {
-        "fact": "The blender pitcher sits on a wooden surface.",
+        "fact": "The yellow liquid is being poured from the white bowl into the clear blender jug.",
         "confidence": 1.0
       },
       {
-        "fact": "Brown spices are visible at the bottom of the blender pitcher.",
+        "fact": "The blender jug sits on a wooden surface next to a small bowl of brown powder.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "KENWOOD"
+    ],
+    "spatial": "The hand holding the wooden reamer is positioned above the white bowl containing yellow liquid. The white bowl is located to the left of the clear blender jug. The small bowl with brown powder is to the right of the blender jug. The blender jug is sitting on the wooden surface.",
+    "parse_success": true,
+    "chunk_idx": 16,
+    "video_id": "-4gJTsIM_E4"
+  },
+  {
+    "time": [
+      17,
+      18
+    ],
+    "visible_entities": [
+      {
+        "desc": "transparent plastic blender pitcher with a handle and blue rim",
+        "action": "static",
+        "position": "center"
+      },
+      {
+        "desc": "brown granular spice mixture",
+        "action": "static",
+        "position": "bottom"
+      },
+      {
+        "desc": "white bowl containing yellow liquid",
+        "action": "being poured",
+        "position": "top"
+      },
+      {
+        "desc": "small white bowl with brown powder",
+        "action": "static",
+        "position": "right"
+      },
+      {
+        "desc": "wooden surface",
+        "action": "static",
+        "position": "background"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A person is pouring yellow liquid from a white bowl into the blender pitcher.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The blender pitcher contains a layer of brown granular spices at the bottom.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A small white bowl with brown powder sits on the wooden surface to the right.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The blender pitcher is in the center of the wooden table. To the right of the pitcher is a small white bowl with brown powder and a white cutting board. Above the pitcher is a bowl with yellow liquid. A hand is positioned above the pitcher, pouring ingredients into it.",
+    "spatial": "The transparent blender pitcher is in the center of the wooden surface. The small white bowl with brown powder is to the right of the pitcher. The white bowl containing yellow liquid is positioned above the pitcher, pouring its contents inside.",
     "parse_success": true,
     "chunk_idx": 17,
     "video_id": "-4gJTsIM_E4"
   },
   {
     "time": [
-      36,
-      38
+      18,
+      19
     ],
     "visible_entities": [
       {
-        "desc": "transparent plastic blender jar with a handle and a grey base",
+        "desc": "transparent plastic blender jar with a handle and a dark grey base",
         "action": "static",
         "position": "center"
       },
       {
         "desc": "brown granular substance",
         "action": "static",
-        "position": "inside blender jar"
+        "position": "inside the blender jar"
       },
       {
-        "desc": "green leafy herbs",
-        "action": "being added",
-        "position": "inside blender jar"
+        "desc": "fresh green leafy herbs",
+        "action": "being added to the blender jar",
+        "position": "inside the blender jar"
       },
       {
-        "desc": "wooden countertop",
+        "desc": "small white ceramic bowl",
         "action": "static",
         "position": "background"
       },
       {
-        "desc": "small white bowl",
+        "desc": "wooden countertop",
         "action": "static",
         "position": "background"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "Green leafy herbs are added to the blender jar containing a brown granular substance.",
+        "fact": "Green leafy herbs are added to the blender jar on top of the brown granular substance.",
         "confidence": 1.0
       },
       {
-        "fact": "The blender jar sits on a wooden surface.",
+        "fact": "The blender jar is sitting on a wooden countertop.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A small white bowl is visible in the background.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The transparent blender jar is in the center of the wooden countertop. The brown granular substance is at the bottom inside the jar. The green leafy herbs are placed on top of the brown substance inside the jar. A small white bowl is visible in the background to the right of the jar.",
+    "spatial": "The transparent blender jar is in the center of the frame, resting on a wooden countertop. Inside the jar, the green herbs are on top of the brown granular substance. A small white bowl is located behind and to the right of the blender jar.",
     "parse_success": true,
     "chunk_idx": 18,
     "video_id": "-4gJTsIM_E4"
   },
   {
     "time": [
-      38,
-      40
+      19,
+      20
     ],
     "visible_entities": [
       {
-        "desc": "transparent plastic blender cup with a handle and a grey base, containing green leafy herbs",
+        "desc": "transparent plastic blender cup with a handle, containing green leafy herbs",
         "action": "static",
         "position": "center"
       },
@@ -1086,14 +1104,14 @@
         "position": "background"
       },
       {
-        "desc": "small white ceramic bowl containing a yellow liquid",
+        "desc": "small white ceramic bowl containing yellow liquid",
         "action": "static",
         "position": "top"
       },
       {
-        "desc": "small white ceramic bowl containing a white substance",
+        "desc": "small white ceramic bowl containing white powder",
         "action": "static",
-        "position": "right"
+        "position": "center-right"
       },
       {
         "desc": "white cutting board",
@@ -1103,7 +1121,7 @@
       {
         "desc": "human hand",
         "action": "chopping herbs",
-        "position": "top right"
+        "position": "top-right"
       }
     ],
     "atomic_facts": [
@@ -1112,44 +1130,35 @@
         "confidence": 1.0
       },
       {
-        "fact": "The blender cup contains green leafy herbs.",
+        "fact": "The blender cup is sitting on the wooden table.",
         "confidence": 1.0
       },
       {
-        "fact": "The blender cup is sitting on a wooden table.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "Small bowls are placed near the blender cup.",
+        "fact": "Green herbs are inside the blender cup.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The blender cup is in the center of the wooden table. To the right of the blender cup is a small white bowl and a white cutting board where a hand is chopping herbs. Above the blender cup is another small bowl containing yellow liquid.",
+    "spatial": "The blender cup is in the center of the wooden table. To the right of the blender cup is a small white bowl with white powder. Above the blender cup is another small white bowl containing yellow liquid. The white cutting board is to the right of the bowls, where a hand is chopping herbs.",
     "parse_success": true,
     "chunk_idx": 19,
     "video_id": "-4gJTsIM_E4"
   },
   {
     "time": [
-      40,
-      42
+      20,
+      21
     ],
     "visible_entities": [
       {
-        "desc": "clear plastic blender pitcher with a handle and measurement markings",
-        "action": "receiving liquid",
+        "desc": "clear plastic blender cup with a handle, containing green leafy herbs and liquid",
+        "action": "being filled with liquid",
         "position": "center"
       },
       {
-        "desc": "green leafy herbs",
-        "action": "static",
-        "position": "inside blender pitcher"
-      },
-      {
-        "desc": "bright yellow liquid",
-        "action": "being poured",
-        "position": "top/center"
+        "desc": "white bowl containing bright yellow liquid",
+        "action": "pouring liquid into the blender cup",
+        "position": "top right"
       },
       {
         "desc": "wooden surface with visible grain",
@@ -1157,122 +1166,117 @@
         "position": "background"
       },
       {
-        "desc": "small white bowl",
+        "desc": "small white dish",
         "action": "static",
         "position": "right"
       },
       {
         "desc": "white cutting board",
         "action": "static",
-        "position": "right"
+        "position": "far right"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A person is pouring bright yellow liquid from a container into a blender pitcher.",
+        "fact": "A person is pouring yellow liquid from a white bowl into a blender cup.",
         "confidence": 1.0
       },
       {
-        "fact": "The blender pitcher contains green leafy herbs.",
+        "fact": "The blender cup contains green herbs at the bottom.",
         "confidence": 1.0
       },
       {
-        "fact": "The liquid is being poured over the herbs.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The blender pitcher is sitting on a wooden surface.",
+        "fact": "The pouring action creates a visible stream of yellow liquid.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The blender pitcher is in the center of the wooden surface. The green herbs are inside the pitcher. The yellow liquid is being poured from above into the pitcher. A small white bowl is to the right of the pitcher. A white cutting board is on the far right of the frame.",
+    "spatial": "The blender cup is in the center of the wooden surface. The white bowl is positioned above and to the right of the blender cup, pouring liquid into it. A small white dish is to the right of the blender cup, and a white cutting board is on the far right edge of the frame.",
     "parse_success": true,
     "chunk_idx": 20,
     "video_id": "-4gJTsIM_E4"
   },
   {
     "time": [
-      42,
-      44
+      21,
+      22
     ],
     "visible_entities": [
       {
-        "desc": "person's hand and forearm with light skin tone",
-        "action": "holding the immersion blender and stabilizing the container",
+        "desc": "person's hands and arms, light skin tone",
+        "action": "holding and operating immersion blender",
         "position": "top/center"
       },
       {
-        "desc": "white immersion blender with a silver metal shaft and a grey power cord",
-        "action": "blending the liquid mixture",
+        "desc": "immersion blender, white motor housing, silver metal shaft, grey power cord",
+        "action": "blending liquid mixture",
         "position": "center"
       },
       {
-        "desc": "transparent plastic blending cup with a handle, containing a yellow-green liquid",
-        "action": "being held and blended",
+        "desc": "clear plastic blending beaker with handle, containing yellow-green liquid mixture",
+        "action": "static",
         "position": "center"
       },
       {
-        "desc": "wooden surface with visible grain",
+        "desc": "wooden countertop, light brown, wood grain texture",
         "action": "static",
-        "position": "background"
+        "position": "background/bottom"
       },
       {
-        "desc": "small white ceramic bowl",
+        "desc": "small white ceramic bowls",
         "action": "static",
-        "position": "right"
+        "position": "background/right"
       },
       {
-        "desc": "white cutting board",
+        "desc": "white cutting board, plastic",
         "action": "static",
         "position": "right"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "The person is using an immersion blender to mix ingredients inside a clear cup.",
+        "fact": "person is using an immersion blender to mix ingredients in a beaker",
         "confidence": 1.0
       },
       {
-        "fact": "The liquid inside the cup is turning into a frothy, pale yellow-green emulsion.",
+        "fact": "the liquid mixture is yellow-green and becomes frothy",
         "confidence": 1.0
       },
       {
-        "fact": "The blender is submerged in the liquid.",
+        "fact": "the beaker is sitting on a wooden countertop",
+        "confidence": 1.0
+      },
+      {
+        "fact": "small white bowls are visible in the background",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The person's hand is holding the white immersion blender, which is inserted into the transparent cup. The cup is resting on the wooden surface. To the right of the cup, there is a small white bowl and a white cutting board.",
+    "spatial": "The person's hands are holding the immersion blender inside the clear plastic beaker. The beaker is on the wooden countertop. To the right of the beaker are small white bowls and a white cutting board.",
     "parse_success": true,
     "chunk_idx": 21,
     "video_id": "-4gJTsIM_E4"
   },
   {
     "time": [
-      44,
-      46
+      22,
+      23
     ],
     "visible_entities": [
       {
-        "desc": "hand with light skin tone",
-        "action": "holding the rim of the blender jug",
-        "position": "top center"
-      },
-      {
-        "desc": "immersion blender with white motor housing and silver metal shaft",
-        "action": "blending the liquid",
+        "desc": "immersion blender with a white motor housing and a silver metal shaft",
+        "action": "blending yellow liquid",
         "position": "center"
       },
       {
-        "desc": "transparent plastic blender jug with a handle and grey base",
-        "action": "containing the mixture",
+        "desc": "transparent plastic blending beaker with a handle and a grey base",
+        "action": "static",
         "position": "center"
       },
       {
-        "desc": "greenish-yellow liquid mixture with foam",
+        "desc": "yellow-green liquid mixture",
         "action": "being blended",
-        "position": "inside the jug"
+        "position": "inside beaker"
       },
       {
         "desc": "wooden table surface with visible grain",
@@ -1287,57 +1291,59 @@
       {
         "desc": "small white bowl",
         "action": "static",
-        "position": "background right"
+        "position": "right"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A hand holds the rim of a transparent blender jug.",
+        "fact": "A person is using an immersion blender to mix a yellow-green liquid inside a beaker.",
         "confidence": 1.0
       },
       {
-        "fact": "An immersion blender is inserted into the jug and actively mixing the contents.",
+        "fact": "The liquid is swirling inside the container due to the blending action.",
         "confidence": 1.0
       },
       {
-        "fact": "The liquid inside the jug is greenish-yellow and frothy.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The blender jug sits on a wooden table.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "A white cutting board is visible to the right of the blender.",
+        "fact": "The text 'KENWOOD' is visible on the side of the blending beaker.",
         "confidence": 1.0
       }
     ],
     "ocr": [
-      "KENW"
+      "KENWOOD"
     ],
-    "spatial": "The blender jug is in the center of the frame, resting on a wooden table. A hand is holding the top rim of the jug. The immersion blender is inserted vertically inside the jug. To the right of the jug, a white cutting board is visible. A small white bowl is located behind the jug.",
+    "spatial": "The immersion blender is positioned inside the transparent beaker, which sits on a wooden table. To the right of the beaker, a white cutting board and a small white bowl are placed on the table surface.",
     "parse_success": true,
     "chunk_idx": 22,
     "video_id": "-4gJTsIM_E4"
   },
   {
     "time": [
-      46,
-      48
+      23,
+      24
     ],
     "visible_entities": [
       {
-        "desc": "transparent plastic blender jug with a handle and blue base, containing a light green liquid with dark green speckles",
-        "action": "being blended",
+        "desc": "transparent plastic Kenwood blending cup with a handle and a blue base ring",
+        "action": "containing green liquid",
         "position": "center"
       },
       {
-        "desc": "silver metal immersion blender shaft",
-        "action": "mixing liquid",
-        "position": "inside jug"
+        "desc": "frothy green liquid with visible dark specks",
+        "action": "being blended",
+        "position": "inside the cup"
       },
       {
-        "desc": "light brown wooden surface with visible grain",
+        "desc": "silver metal immersion blender shaft",
+        "action": "mixing the liquid",
+        "position": "inside the cup"
+      },
+      {
+        "desc": "person's hands and forearms",
+        "action": "holding the blender",
+        "position": "top/center"
+      },
+      {
+        "desc": "wooden surface with visible grain",
         "action": "static",
         "position": "background"
       },
@@ -1349,43 +1355,43 @@
     ],
     "atomic_facts": [
       {
-        "fact": "A person is using an immersion blender to mix a green liquid inside a plastic jug.",
+        "fact": "A person is using an immersion blender to mix a green liquid inside a plastic cup.",
         "confidence": 1.0
       },
       {
-        "fact": "The liquid inside the jug is light green with dark green speckles.",
+        "fact": "The green liquid is frothy and contains small dark particles.",
         "confidence": 1.0
       },
       {
-        "fact": "The blender jug is sitting on a wooden surface.",
+        "fact": "The blending cup is sitting on a wooden table.",
         "confidence": 1.0
       },
       {
-        "fact": "The text 'KENWOOD' is visible on the side of the blender jug.",
+        "fact": "The brand name 'KENWOOD' is visible on the side of the cup.",
         "confidence": 1.0
       }
     ],
     "ocr": [
       "KENWOOD"
     ],
-    "spatial": "The blender jug is in the center of the frame, resting on the wooden surface. The immersion blender shaft is inside the jug. The white cutting board is to the right of the blender jug.",
+    "spatial": "The blending cup is in the center of the frame, resting on the wooden surface. The person's hands are holding the immersion blender, which is inserted into the cup from the top. The white cutting board is located to the right of the blending cup.",
     "parse_success": true,
     "chunk_idx": 23,
     "video_id": "-4gJTsIM_E4"
   },
   {
     "time": [
-      48,
-      50
+      24,
+      25
     ],
     "visible_entities": [
       {
-        "desc": "transparent plastic blender cup with a blue base, containing a light green liquid with dark speckles",
+        "desc": "transparent plastic blender cup with a blue base, containing a light green liquid with dark green speckles",
         "action": "static",
         "position": "center"
       },
       {
-        "desc": "wooden surface with a visible grain pattern",
+        "desc": "wooden surface with a light brown grain pattern",
         "action": "static",
         "position": "background"
       },
@@ -1397,57 +1403,60 @@
     ],
     "atomic_facts": [
       {
-        "fact": "A blender cup containing a green liquid sits on a wooden surface.",
+        "fact": "The video transitions from a shot of a blender cup to a black screen with text.",
         "confidence": 1.0
       },
       {
-        "fact": "A title card appears with the text 'Now for the Chicken Mojo'.",
+        "fact": "The blender cup contains a light green liquid with dark green speckles.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The text on the screen reads 'Now for the Chicken Mojo'.",
         "confidence": 1.0
       }
     ],
     "ocr": [
-      "KENW",
       "Now for the",
       "Chicken Mojo"
     ],
-    "spatial": "The blender cup is centered on the wooden surface. The text 'Now for the Chicken Mojo' is centered on a black screen that replaces the previous scene.",
+    "spatial": "The blender cup is in the center of the frame, resting on the wooden surface. The text 'Now for the Chicken Mojo' is centered on the black background in the second frame.",
     "parse_success": true,
     "chunk_idx": 24,
     "video_id": "-4gJTsIM_E4"
   },
   {
     "time": [
-      50,
-      52
+      25,
+      26
     ],
     "visible_entities": [
       {
-        "desc": "Text reading 'Now for the Chicken Mojo' in red font with a white outline",
+        "desc": "red text with white outline reading 'Now for the Chicken Mojo'",
         "action": "static",
         "position": "center"
       },
       {
-        "desc": "A blurry, light-colored object with pinkish tones, possibly a hand or food item",
-        "action": "static",
-        "position": "top-left"
-      },
-      {
-        "desc": "A red letter 'C' with a white outline",
+        "desc": "red letter 'C' with white outline",
         "action": "static",
         "position": "right"
+      },
+      {
+        "desc": "blurred, light-brown and pinkish object, likely food",
+        "action": "static",
+        "position": "top-left"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "The text 'Now for the Chicken Mojo' is displayed on the screen.",
+        "fact": "The text 'Now for the Chicken Mojo' is displayed on a black background.",
         "confidence": 1.0
       },
       {
-        "fact": "A blurry object is partially visible in the top-left corner.",
+        "fact": "A red letter 'C' is visible on the right side of the screen.",
         "confidence": 1.0
       },
       {
-        "fact": "The letter 'C' appears on the right side of the screen.",
+        "fact": "A blurred object is partially visible in the top-left corner.",
         "confidence": 1.0
       }
     ],
@@ -1456,70 +1465,20 @@
       "Chicken Mojo",
       "C"
     ],
-    "spatial": "The text 'Now for the Chicken Mojo' is centered on the black background. The blurry object is located in the top-left corner, above and to the left of the center text. The letter 'C' is positioned on the far right edge of the frame.",
+    "spatial": "The text 'Now for the Chicken Mojo' is centered on the black background. The red letter 'C' is to the right of the main text. The blurred object is in the top-left corner, above the center of the screen.",
     "parse_success": true,
     "chunk_idx": 25,
     "video_id": "-4gJTsIM_E4"
   },
   {
     "time": [
-      52,
-      54
+      26,
+      27
     ],
     "visible_entities": [
       {
-        "desc": "raw skinless chicken thighs, pinkish-red meat with white fat, moist texture",
+        "desc": "eight raw, pink, skinless chicken thighs with a moist texture",
         "action": "static",
-        "position": "center"
-      },
-      {
-        "desc": "white plastic cutting board, rectangular, smooth surface",
-        "action": "static",
-        "position": "center"
-      },
-      {
-        "desc": "wooden surface, light brown, visible grain pattern",
-        "action": "static",
-        "position": "background"
-      },
-      {
-        "desc": "red text overlay with white outline, sans-serif font",
-        "action": "static",
-        "position": "center"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "Eight pieces of raw chicken are arranged on the cutting board.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The text '8 Skinless Chicken Thighs' is displayed over the chicken.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The cutting board rests on a wooden surface.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [
-      "8 Skinless",
-      "Chicken Thighs"
-    ],
-    "spatial": "The raw chicken thighs are arranged in two columns on top of the white cutting board. The red text overlay is positioned directly above the chicken pieces in the center of the frame. The white cutting board is placed on a wooden surface that is visible on the left and right sides.",
-    "parse_success": true,
-    "chunk_idx": 26,
-    "video_id": "-4gJTsIM_E4"
-  },
-  {
-    "time": [
-      54,
-      56
-    ],
-    "visible_entities": [
-      {
-        "desc": "raw, pink, skinless chicken thighs",
-        "action": "being placed into a container",
         "position": "center"
       },
       {
@@ -1528,32 +1487,23 @@
         "position": "center"
       },
       {
-        "desc": "clear rectangular glass dish",
-        "action": "static",
-        "position": "center"
-      },
-      {
-        "desc": "wooden surface",
+        "desc": "wooden surface with visible grain",
         "action": "static",
         "position": "background"
       },
       {
-        "desc": "red text overlay",
+        "desc": "red text overlay with white outline",
         "action": "static",
         "position": "center"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "Raw chicken thighs are being transferred from a white cutting board into a clear glass dish.",
+        "fact": "Eight skinless chicken thighs are arranged on a white cutting board.",
         "confidence": 1.0
       },
       {
-        "fact": "The text '8 Skinless Chicken Thighs' is displayed in red font over the food.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The cutting board is resting on a wooden table.",
+        "fact": "The text '8 Skinless Chicken Thighs' is overlaid on the image.",
         "confidence": 1.0
       }
     ],
@@ -1561,19 +1511,24 @@
       "8 Skinless",
       "Chicken Thighs"
     ],
-    "spatial": "The clear glass dish is positioned to the right of the white cutting board. The raw chicken thighs are located on top of the cutting board and inside the glass dish. The red text overlay is centered above the chicken thighs.",
+    "spatial": "The raw chicken thighs are arranged on top of the white cutting board. The cutting board is placed on a wooden surface. The red text overlay is positioned in the center, superimposed over the chicken thighs.",
     "parse_success": true,
-    "chunk_idx": 27,
+    "chunk_idx": 26,
     "video_id": "-4gJTsIM_E4"
   },
   {
     "time": [
-      56,
-      58
+      27,
+      28
     ],
     "visible_entities": [
       {
-        "desc": "raw, pink chicken pieces, moist and glistening",
+        "desc": "raw skinless chicken thighs, pink and moist, arranged in two rows",
+        "action": "being placed into a container",
+        "position": "center"
+      },
+      {
+        "desc": "white plastic cutting board, rectangular",
         "action": "static",
         "position": "center"
       },
@@ -1583,55 +1538,105 @@
         "position": "center"
       },
       {
-        "desc": "green liquid marinade with visible herb specks",
+        "desc": "wooden surface, light brown, visible grain",
+        "action": "static",
+        "position": "background"
+      },
+      {
+        "desc": "red text overlay with white outline",
+        "action": "static",
+        "position": "center"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The video shows raw chicken thighs being transferred from a cutting board to a glass dish.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The text on the screen identifies the food as '8 Skinless Chicken Thighs'.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The chicken pieces are pink and appear to be boneless.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "8 Skinless",
+      "Chicken Thighs"
+    ],
+    "spatial": "The white cutting board is on the wooden surface. The glass baking dish is placed on top of the cutting board. The chicken thighs are inside the glass dish. The red text is overlaid in the center of the screen, above the chicken.",
+    "parse_success": true,
+    "chunk_idx": 27,
+    "video_id": "-4gJTsIM_E4"
+  },
+  {
+    "time": [
+      28,
+      29
+    ],
+    "visible_entities": [
+      {
+        "desc": "raw pink chicken pieces, moist and fleshy",
+        "action": "being covered with marinade",
+        "position": "center"
+      },
+      {
+        "desc": "clear glass baking dish, rectangular",
+        "action": "static",
+        "position": "center"
+      },
+      {
+        "desc": "green liquid marinade with visible herbs",
         "action": "being poured",
         "position": "center"
       },
       {
         "desc": "clear glass container, cylindrical",
-        "action": "tilting",
-        "position": "center"
+        "action": "tilting to pour",
+        "position": "top center"
       },
       {
-        "desc": "wooden surface, light brown, grain texture",
+        "desc": "wooden surface, light brown with grain pattern",
         "action": "static",
         "position": "background"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A clear glass container is tilting to pour green liquid marinade onto the raw chicken pieces.",
+        "fact": "Green marinade is being poured from a glass container onto the raw chicken.",
         "confidence": 1.0
       },
       {
-        "fact": "The chicken pieces are arranged inside a rectangular glass baking dish.",
+        "fact": "The chicken pieces are arranged inside the glass baking dish.",
         "confidence": 1.0
       },
       {
-        "fact": "The glass dish is resting on a wooden surface.",
+        "fact": "The glass dish is resting on a wooden table.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The raw chicken pieces are inside the clear glass baking dish. The glass container holding the marinade is positioned above the chicken, pouring the green liquid onto it. The glass dish is on top of the wooden surface.",
+    "spatial": "The raw chicken pieces are inside the clear glass baking dish. The glass container holding the green marinade is positioned above the chicken, pouring the liquid down onto it. The baking dish is centered on the wooden surface.",
     "parse_success": true,
     "chunk_idx": 28,
     "video_id": "-4gJTsIM_E4"
   },
   {
     "time": [
-      58,
-      60
+      29,
+      30
     ],
     "visible_entities": [
       {
-        "desc": "raw pink chicken pieces, skinless, arranged in a row",
+        "desc": "raw pink chicken pieces",
         "action": "being coated with sauce",
         "position": "center"
       },
       {
-        "desc": "green herb marinade sauce, liquid consistency with visible specks",
-        "action": "being poured and spread",
+        "desc": "green speckled liquid marinade",
+        "action": "being poured and rubbed",
         "position": "center"
       },
       {
@@ -1640,141 +1645,145 @@
         "position": "center"
       },
       {
-        "desc": "human hand with fair skin and a silver ring on the ring finger",
-        "action": "rubbing sauce into chicken",
+        "desc": "human hand with a silver ring on the ring finger",
+        "action": "rubbing marinade into chicken",
         "position": "center"
       },
       {
-        "desc": "wooden surface, light brown with visible grain",
+        "desc": "wooden surface",
         "action": "static",
         "position": "background"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "Green herb marinade is poured over raw chicken pieces.",
+        "fact": "Green speckled liquid is being poured from a bowl onto the raw chicken.",
         "confidence": 1.0
       },
       {
-        "fact": "A hand rubs the green sauce into the chicken to coat it evenly.",
+        "fact": "A hand is rubbing the green marinade into the chicken pieces.",
         "confidence": 1.0
       },
       {
-        "fact": "The chicken is placed inside a clear glass baking dish.",
+        "fact": "The chicken pieces are arranged inside a clear glass dish.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The glass dish is resting on a wooden surface.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The raw chicken pieces are inside the clear glass baking dish. The green marinade is on top of and surrounding the chicken. The hand is above the chicken, touching it to spread the sauce. The glass dish is on a wooden surface.",
+    "spatial": "The raw chicken pieces are inside the clear glass baking dish. The green marinade is on top of and surrounding the chicken. The hand is above the chicken, touching the meat to spread the sauce. The glass dish is on the wooden surface.",
     "parse_success": true,
     "chunk_idx": 29,
     "video_id": "-4gJTsIM_E4"
   },
   {
     "time": [
-      60,
-      62
+      30,
+      31
     ],
     "visible_entities": [
       {
-        "desc": "hand holding silver metal tongs",
-        "action": "placing raw meat into container",
+        "desc": "person's hand and arm, light skin tone",
+        "action": "holding metal tongs",
+        "position": "top right"
+      },
+      {
+        "desc": "metal tongs, silver, shiny",
+        "action": "lifting raw meat",
         "position": "center"
       },
       {
-        "desc": "raw meat fillets, pinkish-white, marinated",
-        "action": "being dropped into liquid",
+        "desc": "raw meat, pinkish-white, elongated strips",
+        "action": "being lifted",
         "position": "center"
       },
       {
-        "desc": "clear glass rectangular container with green liquid",
+        "desc": "glass container, transparent, rectangular",
+        "action": "holding meat",
+        "position": "bottom"
+      },
+      {
+        "desc": "black kettle grill, round, metal grate",
         "action": "static",
-        "position": "center"
+        "position": "background"
       },
       {
-        "desc": "black round charcoal grill with metal grate and white ash",
-        "action": "static",
-        "position": "center"
-      },
-      {
-        "desc": "round slice of food, yellowish-green, on grill grate",
-        "action": "static",
-        "position": "center"
-      },
-      {
-        "desc": "person wearing dark blue shorts, black socks, black sneakers with white laces",
+        "desc": "person's legs, wearing dark blue shorts, black socks, black sneakers with white laces",
         "action": "standing",
         "position": "right"
       },
       {
-        "desc": "wooden deck planks",
+        "desc": "wooden deck, light brown, planked",
         "action": "static",
         "position": "background"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A hand uses tongs to drop raw meat fillets into a glass container filled with green liquid.",
+        "fact": "A hand is using metal tongs to lift raw meat strips out of a glass container.",
         "confidence": 1.0
       },
       {
-        "fact": "A slice of food sits on the metal grate of a charcoal grill.",
+        "fact": "The meat is pinkish-white and appears to be marinating.",
         "confidence": 1.0
       },
       {
-        "fact": "The grill contains white ash and black charcoal briquettes.",
+        "fact": "A black kettle grill with a metal grate is positioned behind the glass container.",
         "confidence": 1.0
       },
       {
-        "fact": "A person stands to the right of the grill.",
+        "fact": "A person wearing dark blue shorts and black sneakers is standing to the right of the grill.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The glass container is positioned in front of the black charcoal grill. The hand holding the tongs is above the glass container, dropping the meat inside. The slice of food is on top of the grill grate. The person is standing to the right of the grill.",
+    "spatial": "The glass container with meat is in the foreground. The black kettle grill is behind the glass container. The person's hand holding the tongs is above the glass container. The person's legs are to the right of the grill.",
     "parse_success": true,
     "chunk_idx": 30,
     "video_id": "-4gJTsIM_E4"
   },
   {
     "time": [
-      62,
-      64
+      31,
+      32
     ],
     "visible_entities": [
       {
-        "desc": "black kettle-style charcoal grill with a white handle and metal grate",
+        "desc": "black round charcoal grill with white side handle and metal grate",
         "action": "static",
         "position": "center"
       },
       {
-        "desc": "three pieces of raw chicken coated in a yellowish-green marinade",
-        "action": "being placed on the grill",
+        "desc": "three pieces of raw chicken coated in yellowish-green marinade",
+        "action": "being placed on grill",
         "position": "center"
       },
       {
         "desc": "person wearing dark blue shorts, black socks, and black sneakers with white laces",
-        "action": "standing next to the grill",
+        "action": "standing next to grill",
         "position": "right"
       },
       {
-        "desc": "wooden deck surface",
+        "desc": "light-colored wooden deck planks",
         "action": "static",
         "position": "left"
       },
       {
-        "desc": "metal chair with light blue slats",
+        "desc": "silver metal chair with slatted seat",
         "action": "static",
-        "position": "background"
+        "position": "background left"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A person is placing a piece of marinated chicken onto the grill grate.",
+        "fact": "A person is adding a third piece of marinated chicken to the grill.",
         "confidence": 1.0
       },
       {
-        "fact": "There are three pieces of chicken cooking on the grill.",
+        "fact": "There are three pieces of chicken cooking on the grill grate.",
         "confidence": 1.0
       },
       {
@@ -1782,20 +1791,20 @@
         "confidence": 1.0
       },
       {
-        "fact": "The chicken pieces appear to be coated in a greenish-yellow sauce.",
+        "fact": "The chicken pieces are coated in a greenish-yellow sauce.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The black charcoal grill is in the center of the frame, resting on a wooden deck. A person is standing to the right of the grill. A metal chair is visible in the background to the left of the grill.",
+    "spatial": "The black charcoal grill is in the center of the frame, resting on a wooden deck. The person is standing to the right of the grill. A silver chair is visible in the background to the left of the grill.",
     "parse_success": true,
     "chunk_idx": 31,
     "video_id": "-4gJTsIM_E4"
   },
   {
     "time": [
-      64,
-      66
+      32,
+      33
     ],
     "visible_entities": [
       {
@@ -1814,27 +1823,98 @@
         "position": "center"
       },
       {
-        "desc": "white folding chair with metal legs",
-        "action": "static",
-        "position": "background left"
+        "desc": "grey ash and charcoal briquettes",
+        "action": "burning under the grate",
+        "position": "center"
       },
       {
-        "desc": "green grass",
+        "desc": "wooden decking planks",
         "action": "static",
-        "position": "background right"
+        "position": "left"
+      },
+      {
+        "desc": "metal chair with light blue slats",
+        "action": "static",
+        "position": "background left"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A person is standing to the right of a black charcoal grill.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "Four pieces of marinated chicken are cooking on the grill grate.",
+        "fact": "Four pieces of marinated chicken are cooking on the metal grate of a charcoal grill.",
         "confidence": 1.0
       },
       {
         "fact": "Smoke is rising from the chicken and coals.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The person is standing to the right of the grill.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The grill is positioned on a wooden deck.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The black charcoal grill is in the center of the frame, resting on a wooden deck. Four pieces of chicken are on top of the grill grate, directly above the hot coals. A person wearing dark shorts and black sneakers is standing to the right of the grill. A metal chair is visible in the background to the left of the grill.",
+    "parse_success": true,
+    "chunk_idx": 32,
+    "video_id": "-4gJTsIM_E4"
+  },
+  {
+    "time": [
+      33,
+      34
+    ],
+    "visible_entities": [
+      {
+        "desc": "person wearing dark blue shorts, black socks, and black sneakers with white laces",
+        "action": "holding a yellow container and using tongs",
+        "position": "right"
+      },
+      {
+        "desc": "black round charcoal grill with a metal grate and white handle",
+        "action": "static",
+        "position": "center"
+      },
+      {
+        "desc": "raw chicken pieces coated in a greenish-yellow marinade",
+        "action": "being placed on the grill",
+        "position": "center"
+      },
+      {
+        "desc": "metal tongs",
+        "action": "holding a piece of chicken",
+        "position": "center"
+      },
+      {
+        "desc": "yellow plastic container",
+        "action": "being held",
+        "position": "top right"
+      },
+      {
+        "desc": "wooden deck planks",
+        "action": "static",
+        "position": "left"
+      },
+      {
+        "desc": "white metal chair legs",
+        "action": "static",
+        "position": "top left"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A person is using metal tongs to place a piece of marinated chicken onto the grill grate.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The person is holding a yellow container in their other hand.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "There are six pieces of marinated chicken on the grill.",
         "confidence": 1.0
       },
       {
@@ -1843,137 +1923,80 @@
       }
     ],
     "ocr": [],
-    "spatial": "The person is standing to the right of the black grill. The chicken pieces are arranged on the metal grate inside the grill. The white folding chair is located in the background to the left of the grill, while the green grass is visible to the right of the person.",
-    "parse_success": true,
-    "chunk_idx": 32,
-    "video_id": "-4gJTsIM_E4"
-  },
-  {
-    "time": [
-      66,
-      68
-    ],
-    "visible_entities": [
-      {
-        "desc": "person wearing dark blue shorts, black socks, and black sneakers with white laces",
-        "action": "using tongs to adjust food",
-        "position": "right"
-      },
-      {
-        "desc": "black kettle-style charcoal grill with a metal grate and white handle",
-        "action": "static",
-        "position": "center"
-      },
-      {
-        "desc": "pieces of raw chicken coated in a yellow-green marinade",
-        "action": "being placed on the grill",
-        "position": "center"
-      },
-      {
-        "desc": "metal tongs",
-        "action": "holding chicken",
-        "position": "center"
-      },
-      {
-        "desc": "light green plastic container",
-        "action": "being held",
-        "position": "top right"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "A person is using metal tongs to place a piece of marinated chicken onto the grill grate.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The grill contains several pieces of raw chicken covered in a yellow-green sauce.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The person is holding a light green container above the grill.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [],
-    "spatial": "The black charcoal grill is in the center of the frame. The person is standing to the right of the grill. The metal tongs are positioned above the grill grate, holding a piece of chicken. The light green container is held above the grill, to the right of the tongs.",
+    "spatial": "The person is standing to the right of the black charcoal grill. The grill is situated on a paved area, which is next to a wooden deck on the left. The person is holding a yellow container above the grill while using tongs to manipulate the chicken pieces on the grate.",
     "parse_success": true,
     "chunk_idx": 33,
     "video_id": "-4gJTsIM_E4"
   },
   {
     "time": [
-      68,
-      70
+      34,
+      35
     ],
     "visible_entities": [
       {
-        "desc": "person wearing dark blue shorts, dark socks, and black sneakers with white laces",
+        "desc": "person wearing dark blue shorts, black socks, and black sneakers with white laces",
         "action": "standing next to the grill",
         "position": "right"
       },
       {
-        "desc": "black round charcoal grill with metal grate and white handle",
+        "desc": "black round charcoal grill with metal grate",
         "action": "static",
         "position": "center"
       },
       {
-        "desc": "pieces of raw chicken coated in yellow-green marinade",
-        "action": "being placed on the grill",
+        "desc": "pieces of raw chicken coated in green marinade",
+        "action": "cooking on the grill",
         "position": "center"
       },
       {
         "desc": "metal tongs",
-        "action": "holding chicken",
+        "action": "adjusting chicken",
         "position": "top center"
       },
       {
-        "desc": "wooden deck surface",
-        "action": "static",
-        "position": "left"
-      },
-      {
-        "desc": "green grass",
-        "action": "static",
-        "position": "right background"
+        "desc": "yellow container",
+        "action": "held above the grill",
+        "position": "top right"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A person is using metal tongs to place a piece of marinated chicken onto the grill grate.",
+        "fact": "A person is standing to the right of the grill.",
         "confidence": 1.0
       },
       {
-        "fact": "Seven pieces of chicken are visible on the grill.",
+        "fact": "Pieces of chicken are cooking on the grill grate.",
         "confidence": 1.0
       },
       {
-        "fact": "The grill is situated on a paved surface next to a wooden deck.",
+        "fact": "Tongs are being used to adjust the chicken pieces.",
         "confidence": 1.0
       },
       {
-        "fact": "The chicken pieces are coated in a thick yellow-green marinade.",
+        "fact": "A yellow container is held above the grill.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The black charcoal grill is in the center of the frame. The person is standing to the right of the grill. The metal tongs are above the grill, holding a piece of chicken. The wooden deck is to the left of the grill, and the grass is behind the person.",
+    "spatial": "The black charcoal grill is in the center of the frame. Pieces of chicken are on the grill grate. A person is standing to the right of the grill. Metal tongs are above the chicken. A yellow container is held above the grill by the person.",
     "parse_success": true,
     "chunk_idx": 34,
     "video_id": "-4gJTsIM_E4"
   },
   {
     "time": [
-      70,
-      72
+      35,
+      36
     ],
     "visible_entities": [
       {
-        "desc": "person wearing dark blue shorts, black socks, and dark blue sneakers with white laces",
-        "action": "using tongs to flip food",
+        "desc": "person wearing dark blue shorts, black socks, and black sneakers with white laces",
+        "action": "grilling chicken",
         "position": "right"
       },
       {
-        "desc": "black kettle-style charcoal grill with metal grate",
+        "desc": "black kettle-style charcoal grill with a metal grate",
         "action": "static",
         "position": "center"
       },
@@ -1984,7 +2007,7 @@
       },
       {
         "desc": "silver metal tongs",
-        "action": "grasping chicken",
+        "action": "holding chicken",
         "position": "center"
       },
       {
@@ -1995,105 +2018,111 @@
       {
         "desc": "white metal chair with slats",
         "action": "static",
-        "position": "background left"
+        "position": "background"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A person is using silver tongs to flip a piece of marinated chicken on the grill.",
+        "fact": "A person is using silver tongs to flip pieces of green-marinated chicken on a grill.",
         "confidence": 1.0
       },
       {
-        "fact": "The chicken pieces are coated in a green sauce or marinade.",
+        "fact": "The chicken pieces are arranged on the metal grate of a black kettle grill.",
         "confidence": 1.0
       },
       {
-        "fact": "The grill is positioned on a paved surface next to a wooden deck.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The person is wearing dark blue sneakers with white laces.",
+        "fact": "The grill is situated on a paved surface next to a wooden deck.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The person is standing to the right of the black kettle grill. The grill is positioned on a paved surface that is next to a wooden deck on the left. A white metal chair is visible in the background behind the grill.",
+    "spatial": "The person is standing to the right of the black grill. The pieces of chicken are on the grill grate in the center. The wooden deck is to the left of the grill, and a white chair is behind the grill.",
     "parse_success": true,
     "chunk_idx": 35,
     "video_id": "-4gJTsIM_E4"
   },
   {
     "time": [
-      72,
-      74
+      36,
+      37
     ],
     "visible_entities": [
       {
         "desc": "person wearing dark blue shorts, black socks, and black sneakers with white laces",
-        "action": "using tongs to turn chicken",
+        "action": "standing next to the grill",
         "position": "right"
       },
       {
-        "desc": "black kettle-style charcoal grill with a white handle on the left side",
+        "desc": "hand holding silver metal tongs",
+        "action": "manipulating food on the grill",
+        "position": "top center"
+      },
+      {
+        "desc": "black kettle-style charcoal grill with white handle",
         "action": "static",
         "position": "center"
       },
       {
-        "desc": "pieces of chicken with yellow marinade and grill marks",
-        "action": "being cooked",
-        "position": "center"
-      },
-      {
-        "desc": "silver metal tongs",
-        "action": "holding chicken",
-        "position": "center"
-      },
-      {
-        "desc": "metal wire grill grate",
-        "action": "static",
+        "desc": "pieces of chicken with yellow marinade",
+        "action": "cooking on the grate",
         "position": "center"
       },
       {
         "desc": "wooden deck planks",
         "action": "static",
         "position": "left"
+      },
+      {
+        "desc": "white folding chair",
+        "action": "static",
+        "position": "background left"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A person is using silver tongs to flip a piece of chicken on the grill.",
+        "fact": "A hand uses silver tongs to turn or adjust a piece of chicken on the grill grate.",
         "confidence": 1.0
       },
       {
-        "fact": "Pieces of yellow-marinated chicken are cooking on the metal grate.",
+        "fact": "Pieces of marinated chicken are cooking on the metal grate of a charcoal grill.",
         "confidence": 1.0
       },
       {
-        "fact": "The grill is situated on a wooden deck.",
+        "fact": "The grill is positioned on a wooden deck surface.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The person is standing to the right of the black grill. The chicken pieces are on top of the metal grate inside the grill. The wooden deck is to the left of the grill.",
+    "spatial": "The person is standing to the right of the black grill. The hand holding the tongs is positioned above the chicken pieces on the grill grate. The white chair is located in the background to the left of the grill.",
     "parse_success": true,
     "chunk_idx": 36,
     "video_id": "-4gJTsIM_E4"
   },
   {
     "time": [
-      74,
-      76
+      37,
+      38
     ],
     "visible_entities": [
-      {
-        "desc": "cooked chicken wings with golden-brown skin, charred spots, and visible green herb seasoning",
-        "action": "static",
-        "position": "center"
-      },
       {
         "desc": "white rectangular plate with rounded corners",
         "action": "static",
         "position": "center"
+      },
+      {
+        "desc": "cooked chicken wings with golden-brown skin, charred spots, and green herb seasoning",
+        "action": "static",
+        "position": "center"
+      },
+      {
+        "desc": "dark surface, likely a table or countertop",
+        "action": "static",
+        "position": "bottom"
+      },
+      {
+        "desc": "wooden background with horizontal grain",
+        "action": "static",
+        "position": "background"
       }
     ],
     "atomic_facts": [
@@ -2102,113 +2131,113 @@
         "confidence": 1.0
       },
       {
-        "fact": "The chicken wings have charred areas and green seasoning on their surface.",
+        "fact": "The chicken wings have visible char marks and green seasoning.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The plate is placed on a dark surface.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The cooked chicken wings are piled in the center of the white rectangular plate. The plate is positioned on a dark surface in the foreground.",
+    "spatial": "The pile of chicken wings is on top of the white plate. The white plate is on the dark surface. The wooden background is behind the plate and wings.",
     "parse_success": true,
     "chunk_idx": 37,
     "video_id": "-4gJTsIM_E4"
   },
   {
     "time": [
-      76,
-      78
+      38,
+      39
     ],
     "visible_entities": [
       {
-        "desc": "roasted chicken pieces with golden-brown skin, charred edges, and visible green herbs",
+        "desc": "roasted chicken pieces with golden-brown, crispy skin, dark charred spots, and visible green herb seasoning",
         "action": "static",
         "position": "center"
       },
       {
-        "desc": "white rectangular plate with rounded corners",
+        "desc": "white rectangular serving plate with rounded corners",
         "action": "static",
         "position": "center"
       },
       {
-        "desc": "dark stovetop surface with metal grates",
+        "desc": "dark, smooth surface, likely a countertop or table",
         "action": "static",
         "position": "background"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A plate of roasted chicken is resting on a dark surface.",
+        "fact": "Roasted chicken pieces are piled on a white plate.",
         "confidence": 1.0
       },
       {
-        "fact": "The chicken pieces have charred spots and are seasoned with herbs.",
+        "fact": "The chicken has a crispy texture with visible char marks.",
         "confidence": 1.0
       },
       {
-        "fact": "The camera angle shifts slightly, revealing more of the stovetop in the background.",
+        "fact": "Green herbs are sprinkled over the chicken pieces.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The roasted chicken pieces are piled on top of the white rectangular plate. The plate is positioned in the center of the frame, resting on a dark stovetop surface. Metal grates of the stovetop are visible behind and to the right of the plate.",
+    "spatial": "The roasted chicken pieces are piled on top of the white rectangular plate. The plate is resting on a dark, smooth surface.",
     "parse_success": true,
     "chunk_idx": 38,
     "video_id": "-4gJTsIM_E4"
   },
   {
     "time": [
-      78,
-      80
+      39,
+      40
     ],
     "visible_entities": [
       {
-        "desc": "roasted chicken pieces with golden-brown skin, charred edges, and visible green herb seasoning",
+        "desc": "cooked chicken pieces, golden-brown with charred edges, coated in green herb marinade",
         "action": "static",
         "position": "center"
       },
       {
-        "desc": "white oval plate",
+        "desc": "white rectangular plate",
         "action": "static",
         "position": "center"
       },
       {
-        "desc": "black stovetop burner grate",
+        "desc": "black stovetop grate",
         "action": "static",
         "position": "background"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "The chicken pieces are piled on the white plate.",
+        "fact": "The cooked chicken pieces are resting on the white plate.",
         "confidence": 1.0
       },
       {
-        "fact": "The plate is positioned on a stovetop.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The chicken has visible char marks and green herbs on the surface.",
+        "fact": "The plate is positioned on a black stovetop surface.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The roasted chicken pieces are piled in the center of the white plate. The white plate is resting on a black stovetop surface. The metal burner grate is visible in the background to the right of the plate.",
+    "spatial": "The pile of cooked chicken is on top of the white plate. The white plate is in front of the black stovetop grate.",
     "parse_success": true,
     "chunk_idx": 39,
     "video_id": "-4gJTsIM_E4"
   },
   {
     "time": [
-      80,
-      82
+      40,
+      41
     ],
     "visible_entities": [
       {
-        "desc": "grilled chicken pieces with golden-brown skin, charred edges, and visible green herb seasoning",
+        "desc": "grilled chicken pieces with charred, browned skin and visible green herbs",
         "action": "static",
         "position": "center"
       },
       {
-        "desc": "white ceramic plate",
+        "desc": "white oval plate",
         "action": "static",
         "position": "center"
       },
@@ -2224,28 +2253,28 @@
         "confidence": 1.0
       },
       {
-        "fact": "The chicken has charred spots and is seasoned with green herbs.",
+        "fact": "The chicken has charred spots and green seasoning visible on the surface.",
         "confidence": 1.0
       },
       {
-        "fact": "The plate is resting on a black stovetop.",
+        "fact": "The plate is resting on a stovetop next to a burner grate.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The grilled chicken pieces are piled in the center of the white plate. The white plate is positioned to the left of the black stovetop burner grate.",
+    "spatial": "The pile of grilled chicken is on top of the white plate. The plate is positioned to the left of the black stovetop burner grate.",
     "parse_success": true,
     "chunk_idx": 40,
     "video_id": "-4gJTsIM_E4"
   },
   {
     "time": [
-      82,
-      84
+      41,
+      42
     ],
     "visible_entities": [
       {
-        "desc": "cooked chicken pieces with charred, browned skin and visible green herbs",
+        "desc": "cooked chicken pieces with charred, golden-brown skin and visible seasoning",
         "action": "static",
         "position": "center"
       },
@@ -2255,54 +2284,31 @@
         "position": "center"
       },
       {
-        "desc": "black stovetop burner grate",
-        "action": "static",
-        "position": "right"
-      },
-      {
-        "desc": "album art featuring a person diving upside down into water with hands reaching up, set against a starry sky with a moon and sun",
+        "desc": "album cover art featuring a person diving upside down towards hands reaching up from water, with a starry sky and celestial bodies in the background",
         "action": "static",
         "position": "center"
       },
       {
-        "desc": "white text 'Music by' in sans-serif font",
+        "desc": "black stove burner",
         "action": "static",
-        "position": "top-left"
-      },
-      {
-        "desc": "white text 'THE CREATED' in large sans-serif font",
-        "action": "static",
-        "position": "top-center"
-      },
-      {
-        "desc": "white text 'THE NEXT SUBLIME' in small sans-serif font",
-        "action": "static",
-        "position": "top-right"
+        "position": "background"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "The video transitions from a shot of cooked chicken on a plate to an album cover.",
+        "fact": "The video cuts from a shot of cooked chicken on a plate to an album cover.",
         "confidence": 1.0
       },
       {
-        "fact": "The chicken pieces are arranged on a white plate.",
+        "fact": "The chicken pieces are piled on a white plate.",
         "confidence": 1.0
       },
       {
-        "fact": "The plate is sitting on a black stovetop.",
+        "fact": "The album cover displays the text 'THE CREATED' and 'THE NEXT SUBLIME'.",
         "confidence": 1.0
       },
       {
-        "fact": "The album art shows a person diving into water.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The text 'Music by' is visible in the top left corner.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The text 'THE CREATED' is displayed prominently at the top of the album art.",
+        "fact": "The text 'Music by' is visible in the top left corner of the screen.",
         "confidence": 1.0
       }
     ],
@@ -2311,48 +2317,54 @@
       "THE CREATED",
       "THE NEXT SUBLIME"
     ],
-    "spatial": "The cooked chicken is on the white plate, which is on the stovetop. The stovetop burner is to the right of the plate. The text 'Music by' is to the left of the main title 'THE CREATED' on the album cover.",
+    "spatial": "The chicken pieces are piled on top of the white plate. The plate is positioned in front of a black stove burner. The album cover art appears in the center of the frame, replacing the food scene. The text 'Music by' is located in the top left corner, above the main visual content.",
     "parse_success": true,
     "chunk_idx": 41,
     "video_id": "-4gJTsIM_E4"
   },
   {
     "time": [
-      84,
-      86
+      42,
+      43
     ],
     "visible_entities": [
       {
-        "desc": "surreal album art featuring a shirtless person with long dark hair and a bracelet hanging upside down from a starry sky, reaching towards two hands rising from a blue ocean surface, with a yellow planet and a grey moon in the background",
+        "desc": "Album art featuring a shirtless person with dark hair hanging upside down, reaching towards two hands rising from a blue ocean surface, with a yellow planet and a grey moon in a starry background",
         "action": "static",
         "position": "center"
       },
       {
-        "desc": "white text reading 'Music by THE CREATED THE NEXT SUBLIME'",
+        "desc": "White text reading 'Music by' in a standard sans-serif font",
         "action": "static",
-        "position": "top"
+        "position": "top left"
       },
       {
-        "desc": "vertical glitch distortion effect with black and colored bars",
+        "desc": "Large white text reading 'THE CREATED' in a bold sans-serif font",
+        "action": "static",
+        "position": "top center"
+      },
+      {
+        "desc": "Smaller white text reading 'THE NEXT SUBLIME' in a sans-serif font",
+        "action": "static",
+        "position": "top right"
+      },
+      {
+        "desc": "Vertical black and white digital glitch bars",
         "action": "appearing",
-        "position": "center"
+        "position": "foreground"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "The video displays a static image of an album cover.",
+        "fact": "The text 'Music by THE CREATED THE NEXT SUBLIME' is displayed at the top of the screen.",
         "confidence": 1.0
       },
       {
-        "fact": "A vertical glitch effect appears over the center of the image in the second frame.",
+        "fact": "Vertical glitch bars appear over the album art in the second frame.",
         "confidence": 1.0
       },
       {
-        "fact": "The text 'Music by THE CREATED' is visible at the top left.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The text 'THE NEXT SUBLIME' is visible below the main title.",
+        "fact": "The central image depicts a surreal scene of a person falling towards the earth.",
         "confidence": 1.0
       }
     ],
@@ -2361,74 +2373,74 @@
       "THE CREATED",
       "THE NEXT SUBLIME"
     ],
-    "spatial": "The text 'Music by' is to the left of the main title 'THE CREATED'. The subtitle 'THE NEXT SUBLIME' is below the main title. The upside-down person is in the center, reaching down towards the hands rising from the water below.",
+    "spatial": "The text 'Music by' is to the left of the large text 'THE CREATED'. The text 'THE NEXT SUBLIME' is below 'THE CREATED' and to the right. The album art is centered below the text. Vertical glitch bars are superimposed in front of the album art.",
     "parse_success": true,
     "chunk_idx": 42,
     "video_id": "-4gJTsIM_E4"
   },
   {
     "time": [
-      86,
-      88
+      43,
+      44
     ],
     "visible_entities": [
       {
-        "desc": "Nine-panel grid of food dishes including curries, roasted meats, rice dishes, and savory pastries",
+        "desc": "grid of nine food images including curries, roasted meats, and rice dishes",
         "action": "static",
         "position": "background"
       },
       {
-        "desc": "White sans-serif text overlay",
+        "desc": "white text with drop shadow",
         "action": "static",
         "position": "center"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "The text 'Do you have a recipe that might suit our channel?' is displayed over the food images.",
+        "fact": "The text 'Do you have a recipe that might suit our channel?' is overlaid on the center of the screen.",
         "confidence": 1.0
       },
       {
-        "fact": "The background consists of a 3x3 grid of various prepared meals.",
+        "fact": "The background consists of a 3x3 grid of various cooked meals.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The text fades out between the two frames.",
         "confidence": 1.0
       }
     ],
     "ocr": [
       "Do you have a recipe that might suit our channel?"
     ],
-    "spatial": "The white text is centered in the foreground, overlaid on top of the 3x3 grid of food images which fills the background.",
+    "spatial": "The white text is centered in the foreground, overlaying the grid of food images. The food images are arranged in three rows and three columns behind the text.",
     "parse_success": true,
     "chunk_idx": 43,
     "video_id": "-4gJTsIM_E4"
   },
   {
     "time": [
-      88,
-      90
+      44,
+      45
     ],
     "visible_entities": [
       {
-        "desc": "3x3 grid of food images showing various dishes including curries, rice, roasted meat, and pastries",
+        "desc": "Nine-panel grid of food images including curries, rice dishes, roasted meat, and pastries",
         "action": "static",
         "position": "background"
       },
       {
-        "desc": "white text with black outline in sans-serif font",
+        "desc": "White sans-serif text with a drop shadow",
         "action": "static",
         "position": "center"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "The screen displays a static collage of nine food photographs.",
+        "fact": "The screen displays a static graphic with a 3x3 grid of food photography.",
         "confidence": 1.0
       },
       {
-        "fact": "Text overlay asks for original music to suit a recipe soundtrack.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The text is centered over the grid of food images.",
+        "fact": "Text overlaid on the images asks for original music to suit a recipe soundtrack.",
         "confidence": 1.0
       }
     ],
@@ -2437,129 +2449,133 @@
       "to suit a recipe soundtrack?",
       "Let us know."
     ],
-    "spatial": "The white text is centered in the foreground, overlaying the 3x3 grid of food images which fills the background.",
+    "spatial": "The text is centered in the foreground, overlaid on top of the nine-panel food grid. The food images are arranged in three rows and three columns, filling the entire background of the frame.",
     "parse_success": true,
     "chunk_idx": 44,
     "video_id": "-4gJTsIM_E4"
   },
   {
     "time": [
-      90,
-      92
+      45,
+      46
     ],
     "visible_entities": [
       {
-        "desc": "Nine-panel grid of food dishes including fried chicken, yellow rice with shrimp, orange curry, rolled meat slices, roasted chicken with lime, stew, stuffing, yellow soup, and stuffed bread bowls.",
+        "desc": "grid of nine food images featuring various dishes including curries, roasted meats, rice, and stuffed vegetables",
         "action": "static",
         "position": "background"
       },
       {
-        "desc": "White text with a drop shadow reading 'Thank you for watching'.",
+        "desc": "white text with a drop shadow reading 'Thank you for watching'",
         "action": "static",
         "position": "center"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A grid of nine different food dishes is displayed on the screen.",
+        "fact": "The video displays a collage of nine different food dishes.",
         "confidence": 1.0
       },
       {
-        "fact": "The text 'Thank you for watching' is overlaid on the center of the video.",
+        "fact": "The text 'Thank you for watching' is overlaid on the center of the screen.",
         "confidence": 1.0
       },
       {
-        "fact": "The video clip serves as an outro or closing screen.",
+        "fact": "The text appears in the second frame but is not present in the first frame.",
         "confidence": 1.0
       }
     ],
     "ocr": [
       "Thank you for watching"
     ],
-    "spatial": "The text 'Thank you for watching' is centered on the screen, overlaying the grid of food images. The food images are arranged in three rows and three columns, filling the background.",
+    "spatial": "The text 'Thank you for watching' is centered in the foreground, overlaying the grid of food images. The food images are arranged in a 3x3 grid pattern behind the text.",
     "parse_success": true,
     "chunk_idx": 45,
     "video_id": "-4gJTsIM_E4"
   },
   {
     "time": [
-      92,
-      94
+      46,
+      47
     ],
     "visible_entities": [
       {
-        "desc": "3x3 grid of food images showing various dishes including meat rolls, rice with shrimp, curries, and pastries",
+        "desc": "grid of nine food images including meat dishes, curries, and pastries",
         "action": "static",
         "position": "top"
       },
       {
-        "desc": "white text reading 'Subscribe for further recipes' in a sans-serif font",
+        "desc": "white text reading 'Subscribe for further recipes' in a bold sans-serif font",
         "action": "static",
-        "position": "top-center"
+        "position": "top"
       },
       {
-        "desc": "book cover with a gold star and text 'WELL... I LIKE THEM Recipes and Things from a Culinary Miscreant Greg Ellis'",
-        "action": "static",
-        "position": "center-left"
-      },
-      {
-        "desc": "book cover with a wooden background and text '40 Recipes from Rough Diamond Recipes YouTube Channel Greg and Jackie Ellis'",
-        "action": "static",
-        "position": "center-right"
-      },
-      {
-        "desc": "blue and white Facebook logo with text 'Find us on: facebook'",
-        "action": "static",
-        "position": "right"
-      },
-      {
-        "desc": "white text reading 'Check out our e-books' in a sans-serif font",
+        "desc": "white text reading 'Check out our e-books' in a bold sans-serif font",
         "action": "static",
         "position": "bottom"
       },
       {
-        "desc": "black 'Available at amazon' logos",
+        "desc": "book cover with a gold star and text 'Well... I LIKE THEM'",
         "action": "static",
-        "position": "top-left and top-right of book covers"
+        "position": "center-left"
+      },
+      {
+        "desc": "book cover with a wooden texture background and text 'Rough Diamond Recipes'",
+        "action": "static",
+        "position": "center-right"
+      },
+      {
+        "desc": "black 'Available at amazon' logo",
+        "action": "static",
+        "position": "top-left and top-right"
+      },
+      {
+        "desc": "blue 'Find us on: facebook' logo",
+        "action": "static",
+        "position": "right"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "The video displays a promotional end screen for a cooking channel.",
+        "fact": "The screen displays a promotional end card for a cooking channel.",
         "confidence": 1.0
       },
       {
-        "fact": "The text 'Subscribe for further recipes' is displayed at the top of the screen.",
+        "fact": "The text 'Subscribe for further recipes' is positioned at the top of the frame.",
         "confidence": 1.0
       },
       {
-        "fact": "Two e-book covers are shown side-by-side in the center.",
+        "fact": "The text 'Check out our e-books' is positioned at the bottom of the frame.",
         "confidence": 1.0
       },
       {
-        "fact": "The text 'Check out our e-books' is displayed at the bottom of the screen.",
+        "fact": "Two book covers are displayed side-by-side in the center.",
         "confidence": 1.0
       },
       {
-        "fact": "A Facebook logo is visible on the right side of the screen.",
+        "fact": "Amazon logos indicate the books are available on that platform.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A Facebook logo is visible on the right side.",
         "confidence": 1.0
       }
     ],
     "ocr": [
       "Subscribe for further recipes",
       "Available at amazon",
-      "WELL... I LIKE THEM",
-      "RECIPES AND THINGS FROM A CULINARY MISCREANT",
+      "Well... I LIKE THEM",
+      "RECIPES AND TRIVIA FROM A CULINARY MISCREANT",
       "GREG ELLIS",
       "40 Recipes from",
       "Rough Diamond Recipes",
-      "YouTube CHANNEL",
+      "You Tube CHANNEL",
       "Greg and Jackie Ellis",
       "Available at amazon",
       "Find us on: facebook",
       "Check out our e-books"
     ],
-    "spatial": "The grid of food images is positioned at the top of the screen. The text 'Subscribe for further recipes' is located below the food grid and above the book covers. The two book covers are placed side-by-side in the center, with the 'WELL... I LIKE THEM' book to the left of the 'Rough Diamond Recipes' book. The Facebook logo is to the right of the book covers. The text 'Check out our e-books' is at the bottom of the screen, below the books and logo.",
+    "spatial": "The grid of food images is located at the top of the screen, above the text 'Subscribe for further recipes'. The two book covers are positioned in the center, between the Amazon logos and the Facebook logo. The text 'Check out our e-books' is located at the very bottom of the screen, below all other elements.",
     "parse_success": true,
     "chunk_idx": 46,
     "video_id": "-4gJTsIM_E4"

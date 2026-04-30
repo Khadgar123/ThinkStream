@@ -2,111 +2,125 @@
   {
     "time": [
       0,
-      2
+      1
     ],
     "visible_entities": [
       {
-        "desc": "green 3D text logo reading 'eHov' with a folded ribbon style and drop shadow",
+        "desc": "green text logo reading 'eHov' in a bold, sans-serif font with a 3D folded paper effect and drop shadows",
         "action": "appearing on screen",
         "position": "center"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "The text 'eHov' appears in the center of the screen.",
+        "fact": "The text 'eHov' appears in the center of the frame.",
         "confidence": 1.0
       },
       {
-        "fact": "The logo features a stylized, folded ribbon design.",
+        "fact": "The logo features a stylized design where the letters appear to be made of folded green paper.",
         "confidence": 1.0
       }
     ],
     "ocr": [
       "eHov"
     ],
-    "spatial": "The green 'eHov' logo is centered on a plain white background.",
+    "spatial": "The green 'eHov' text logo is centered on a plain white background.",
     "parse_success": true,
     "chunk_idx": 0,
     "video_id": "gpHND4vZKwg"
   },
   {
     "time": [
-      2,
-      4
+      1,
+      2
     ],
     "visible_entities": [
       {
-        "desc": "green text logo reading 'eHow' with a stylized, folded ribbon appearance",
+        "desc": "Green text logo 'eHow' with a 3D folded ribbon effect",
         "action": "static",
         "position": "center"
       },
       {
-        "desc": "white text reading 'style' in a serif font",
-        "action": "static",
-        "position": "center"
-      },
-      {
-        "desc": "magenta background with a white corner peel effect",
+        "desc": "Purple background with a white page-curl effect in the top right corner",
         "action": "static",
         "position": "background"
+      },
+      {
+        "desc": "White cursive text 'yle'",
+        "action": "static",
+        "position": "center"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "The green 'eHow' logo is displayed on a white background.",
+        "fact": "The video displays the 'eHow' logo in green text on a white background.",
         "confidence": 1.0
       },
       {
-        "fact": "The word 'style' appears in white text on a magenta background.",
+        "fact": "The scene transitions to a purple background with a white page-curl effect.",
         "confidence": 1.0
       },
       {
-        "fact": "A page-peel transition effect reveals the magenta background.",
+        "fact": "The text 'yle' is visible in white cursive font on the purple background.",
         "confidence": 1.0
       }
     ],
     "ocr": [
       "eHow",
-      "style"
+      "yle"
     ],
-    "spatial": "The 'eHow' logo is centered on a white background. The 'style' text is centered on a magenta background that appears to be peeling away from the top right corner.",
+    "spatial": "The 'eHow' logo is centered on the white background. The purple background is behind the white page-curl effect. The text 'yle' is centered on the purple background.",
     "parse_success": true,
     "chunk_idx": 1,
     "video_id": "gpHND4vZKwg"
   },
   {
     "time": [
-      4,
-      6
+      2,
+      3
     ],
     "visible_entities": [
       {
-        "desc": "woman with shoulder-length blonde hair, wearing a dark green short-sleeved top and a necklace with a pendant",
-        "action": "standing and speaking",
+        "desc": "woman with shoulder-length blonde hair, wearing a dark green short-sleeved top and a beaded necklace with a pendant",
+        "action": "speaking",
         "position": "right"
       },
       {
-        "desc": "long dark grey dress with a v-neckline hanging on a hanger",
+        "desc": "dark grey sleeveless dress on a hanger",
         "action": "static",
         "position": "left"
       },
       {
-        "desc": "purple background with a white sticky note graphic at the top center",
+        "desc": "white sticky note with green 'eHow' logo",
+        "action": "static",
+        "position": "top"
+      },
+      {
+        "desc": "large white cursive text 'style'",
+        "action": "static",
+        "position": "center"
+      },
+      {
+        "desc": "beige curtains",
         "action": "static",
         "position": "background"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "The video displays a title card with the text 'eHow style' on a purple background.",
+        "fact": "The woman is speaking.",
         "confidence": 1.0
       },
       {
-        "fact": "A woman in a green top stands in a room with clothing racks.",
+        "fact": "The text 'eHow' is visible on a white note at the top.",
         "confidence": 1.0
       },
       {
-        "fact": "A grey dress is hanging on the wall to the left of the woman.",
+        "fact": "The word 'style' is written in large white letters in the center.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A dark grey dress is hanging on the left side of the frame.",
         "confidence": 1.0
       }
     ],
@@ -114,250 +128,36 @@
       "eHow",
       "style"
     ],
-    "spatial": "The woman is positioned on the right side of the frame, while the hanging grey dress is on the left side. The 'eHow' logo is located above the word 'style' on the title card.",
+    "spatial": "The woman is positioned to the right of the hanging dress. The 'eHow' logo is above the word 'style'. The beige curtains are behind the woman.",
     "parse_success": true,
     "chunk_idx": 2,
     "video_id": "gpHND4vZKwg"
   },
   {
     "time": [
-      6,
-      8
+      3,
+      4
     ],
     "visible_entities": [
       {
-        "desc": "woman with shoulder-length reddish-blonde hair, wearing a dark green short-sleeved top and a silver necklace with a light blue pendant",
-        "action": "talking",
-        "position": "right"
-      },
-      {
-        "desc": "dark grey sleeveless dress with a v-neck hanging on a hanger",
-        "action": "static",
-        "position": "left"
-      },
-      {
-        "desc": "white rectangular logo with green text 'eHow'",
-        "action": "static",
-        "position": "bottom left"
-      },
-      {
-        "desc": "beige curtains hanging on a black rod",
-        "action": "static",
-        "position": "background"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "The woman is talking.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The 'eHow' logo is visible in the bottom left corner.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "A grey dress is hanging on the wall.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [
-      "eHow"
-    ],
-    "spatial": "The woman is positioned to the right of the hanging grey dress. The beige curtains are behind the woman. The 'eHow' logo is in the bottom left corner of the frame, below the dress.",
-    "parse_success": true,
-    "chunk_idx": 3,
-    "video_id": "gpHND4vZKwg"
-  },
-  {
-    "time": [
-      8,
-      10
-    ],
-    "visible_entities": [
-      {
-        "desc": "woman with shoulder-length blonde hair, wearing a dark green short-sleeved top and a layered necklace with a pendant",
+        "desc": "woman with shoulder-length reddish-blonde hair, wearing a dark green short-sleeved top and a silver necklace with a pendant",
         "action": "speaking",
         "position": "right"
       },
       {
-        "desc": "dark grey sleeveless dress with a V-neckline",
+        "desc": "dark grey sleeveless dress with a v-neck",
         "action": "static",
         "position": "left"
       },
       {
-        "desc": "white and green eHow logo with text",
+        "desc": "eHow logo, white text on a green background",
         "action": "static",
         "position": "bottom left"
       },
       {
-        "desc": "text overlay identifying 'Orene Kearn Fashion Stylist'",
-        "action": "static",
-        "position": "bottom left"
-      },
-      {
-        "desc": "clothing rack with beige curtains",
+        "desc": "black metal clothing rack with hanging garments",
         "action": "static",
         "position": "background"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "The woman is speaking to the camera.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "A grey dress is hanging on a hanger to the left of the woman.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The text 'eHow' is visible in the bottom left corner.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The text 'Orene Kearn Fashion Stylist' is displayed on the screen.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [
-      "eHow",
-      "Orene Kearn",
-      "Fashion Stylist"
-    ],
-    "spatial": "The woman is positioned to the right of the hanging grey dress. The eHow logo and the stylist's name text are located in the bottom left corner of the frame, below the dress. The clothing rack with curtains is behind the woman.",
-    "parse_success": true,
-    "chunk_idx": 4,
-    "video_id": "gpHND4vZKwg"
-  },
-  {
-    "time": [
-      10,
-      12
-    ],
-    "visible_entities": [
-      {
-        "desc": "woman with shoulder-length blonde hair, wearing a dark green sleeveless top and a layered necklace with a turquoise pendant",
-        "action": "talking",
-        "position": "right"
-      },
-      {
-        "desc": "dark grey sleeveless dress with a v-neck hanging on a hanger",
-        "action": "static",
-        "position": "left"
-      },
-      {
-        "desc": "black metal clothing rack with beige curtains",
-        "action": "static",
-        "position": "background"
-      },
-      {
-        "desc": "grey lower-third graphic with white text and the eHow logo",
-        "action": "static",
-        "position": "bottom left"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "The woman is talking.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "A grey dress is hanging on the wall to the left of the woman.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The text on the screen identifies the woman as 'Orene Kearn' and her title as 'Fashion Stylist'.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [
-      "eHow",
-      "Orene Kearn",
-      "Fashion Stylist"
-    ],
-    "spatial": "The woman is positioned to the right of the hanging grey dress. The clothing rack with curtains is behind the woman. The text graphic is located in the bottom left corner of the frame, overlaying the scene.",
-    "parse_success": true,
-    "chunk_idx": 5,
-    "video_id": "gpHND4vZKwg"
-  },
-  {
-    "time": [
-      12,
-      14
-    ],
-    "visible_entities": [
-      {
-        "desc": "woman with shoulder-length blonde hair, wearing a dark green short-sleeved top and a layered necklace with a turquoise pendant",
-        "action": "talking",
-        "position": "right"
-      },
-      {
-        "desc": "dark grey sleeveless dress with a v-neck hanging on a hanger",
-        "action": "static",
-        "position": "left"
-      },
-      {
-        "desc": "white eHow logo on a green background",
-        "action": "static",
-        "position": "bottom left"
-      },
-      {
-        "desc": "beige curtain",
-        "action": "static",
-        "position": "background"
-      },
-      {
-        "desc": "black clothing rack with garments",
-        "action": "static",
-        "position": "far right"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "The woman is talking.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The eHow logo is visible in the bottom left corner.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "A dark grey dress is hanging on the wall to the left of the woman.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [
-      "eHow"
-    ],
-    "spatial": "The woman is to the right of the hanging grey dress. The eHow logo is in the bottom left corner of the frame, below the dress. The beige curtain is behind the woman.",
-    "parse_success": true,
-    "chunk_idx": 6,
-    "video_id": "gpHND4vZKwg"
-  },
-  {
-    "time": [
-      14,
-      16
-    ],
-    "visible_entities": [
-      {
-        "desc": "woman with shoulder-length blonde hair, wearing a dark green short-sleeved top and a layered necklace with a light blue pendant",
-        "action": "speaking",
-        "position": "right"
-      },
-      {
-        "desc": "dark grey V-neck dress hanging on a hanger",
-        "action": "static",
-        "position": "left"
-      },
-      {
-        "desc": "beige fabric curtains hanging on a black rod",
-        "action": "static",
-        "position": "background"
-      },
-      {
-        "desc": "light-colored stone pillar",
-        "action": "static",
-        "position": "center"
       }
     ],
     "atomic_facts": [
@@ -370,29 +170,142 @@
         "confidence": 1.0
       },
       {
-        "fact": "The woman is wearing a necklace with a blue pendant.",
+        "fact": "The eHow logo is visible in the bottom left corner.",
         "confidence": 1.0
       }
     ],
-    "ocr": [],
-    "spatial": "The woman is positioned to the right of the stone pillar. The dark grey dress is hanging on the wall to the left of the stone pillar. The beige curtains are behind the woman.",
+    "ocr": [
+      "eHow"
+    ],
+    "spatial": "The woman is standing to the right of the hanging grey dress. The clothing rack is behind the woman. The eHow logo is in the bottom left corner of the frame.",
     "parse_success": true,
-    "chunk_idx": 7,
+    "chunk_idx": 3,
     "video_id": "gpHND4vZKwg"
   },
   {
     "time": [
-      16,
-      18
+      4,
+      5
     ],
     "visible_entities": [
       {
-        "desc": "woman with shoulder-length blonde hair, wearing a dark green short-sleeved top and a layered necklace with a light blue pendant",
+        "desc": "woman with shoulder-length blonde hair, wearing a green short-sleeved top and a layered necklace with a pendant",
         "action": "speaking",
         "position": "right"
       },
       {
-        "desc": "dark grey sleeveless dress with a V-neckline",
+        "desc": "dark grey sleeveless dress with a V-neck hanging on a hanger",
+        "action": "static",
+        "position": "left"
+      },
+      {
+        "desc": "black clothing rack with beige curtains and hanging garments",
+        "action": "static",
+        "position": "background"
+      },
+      {
+        "desc": "eHow logo and text overlay",
+        "action": "static",
+        "position": "bottom left"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The woman is speaking.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A dark grey dress is hanging on the wall to the left.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The text overlay identifies the speaker as 'Orene Kearn, Fashion Stylist'.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "eHow",
+      "Orene Kearn",
+      "Fashion Stylist"
+    ],
+    "spatial": "The woman is positioned to the right of the hanging grey dress. The clothing rack is behind the woman. The text overlay is located at the bottom left of the screen, below the hanging dress.",
+    "parse_success": true,
+    "chunk_idx": 4,
+    "video_id": "gpHND4vZKwg"
+  },
+  {
+    "time": [
+      5,
+      6
+    ],
+    "visible_entities": [
+      {
+        "desc": "woman with shoulder-length blonde hair, wearing a dark green sleeveless top and a layered necklace with a turquoise pendant",
+        "action": "speaking",
+        "position": "right"
+      },
+      {
+        "desc": "dark grey sleeveless dress with a v-neck hanging on a hanger",
+        "action": "static",
+        "position": "left"
+      },
+      {
+        "desc": "beige fabric curtain",
+        "action": "static",
+        "position": "background"
+      },
+      {
+        "desc": "white eHow logo on a green background",
+        "action": "static",
+        "position": "bottom left"
+      },
+      {
+        "desc": "text overlay with white text on a semi-transparent dark background",
+        "action": "static",
+        "position": "bottom left"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The woman is speaking.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The text overlay identifies the woman as 'Orene Kearn, Fashion Stylist'.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The eHow logo is visible in the bottom left corner.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A dark grey dress is hanging on the wall to the left of the woman.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "eHow",
+      "Orene Kearn",
+      "Fashion Stylist"
+    ],
+    "spatial": "The woman is positioned to the right of the hanging grey dress. The beige curtain is behind the woman. The text overlay and eHow logo are in the bottom left corner of the frame, below the hanging dress.",
+    "parse_success": true,
+    "chunk_idx": 5,
+    "video_id": "gpHND4vZKwg"
+  },
+  {
+    "time": [
+      6,
+      7
+    ],
+    "visible_entities": [
+      {
+        "desc": "woman with shoulder-length blonde hair, wearing a dark green short-sleeved top and a layered necklace with a turquoise pendant",
+        "action": "speaking",
+        "position": "right"
+      },
+      {
+        "desc": "long dark grey dress with a v-neck hanging on a hanger",
         "action": "static",
         "position": "left"
       },
@@ -402,9 +315,9 @@
         "position": "background"
       },
       {
-        "desc": "light-colored stone wall section",
+        "desc": "white rectangular logo with green text reading 'eHow'",
         "action": "static",
-        "position": "center"
+        "position": "bottom left"
       }
     ],
     "atomic_facts": [
@@ -413,33 +326,115 @@
         "confidence": 1.0
       },
       {
-        "fact": "A grey dress is hanging on the wall to the left.",
+        "fact": "A grey dress is hanging on the wall.",
         "confidence": 1.0
       },
       {
-        "fact": "The woman is wearing a layered necklace.",
+        "fact": "The eHow logo is visible in the bottom left corner.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "eHow"
+    ],
+    "spatial": "The woman is positioned to the right of the hanging grey dress. The beige curtains are behind the woman. The eHow logo is in the bottom left corner of the frame, below the dress.",
+    "parse_success": true,
+    "chunk_idx": 6,
+    "video_id": "gpHND4vZKwg"
+  },
+  {
+    "time": [
+      7,
+      8
+    ],
+    "visible_entities": [
+      {
+        "desc": "woman with shoulder-length reddish-blonde hair, wearing a dark green short-sleeved top and a silver necklace with a light blue pendant",
+        "action": "speaking",
+        "position": "right foreground"
+      },
+      {
+        "desc": "long dark grey dress with a v-neck and short sleeves",
+        "action": "static",
+        "position": "left background"
+      },
+      {
+        "desc": "beige fabric curtain",
+        "action": "static",
+        "position": "background"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The woman is speaking.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A dark grey dress is hanging on the wall.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The woman is positioned to the right of the stone wall section. The grey dress is hanging on the wall to the left of the stone section. The beige curtains are behind the woman.",
+    "spatial": "The woman is positioned to the right of the hanging dress. The beige curtain is behind the woman.",
+    "parse_success": true,
+    "chunk_idx": 7,
+    "video_id": "gpHND4vZKwg"
+  },
+  {
+    "time": [
+      8,
+      9
+    ],
+    "visible_entities": [
+      {
+        "desc": "woman with shoulder-length blonde hair, wearing a dark green short-sleeved top and a layered necklace with a light blue pendant",
+        "action": "speaking",
+        "position": "right"
+      },
+      {
+        "desc": "dark grey sleeveless dress with a v-neckline hanging on a hanger",
+        "action": "static",
+        "position": "left"
+      },
+      {
+        "desc": "beige curtains hanging on a black metal rack",
+        "action": "static",
+        "position": "background"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "woman speaks while looking forward",
+        "confidence": 1.0
+      },
+      {
+        "fact": "dark grey dress hangs on the wall to the left",
+        "confidence": 1.0
+      },
+      {
+        "fact": "beige curtains are behind the woman",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The woman is positioned to the right of the hanging grey dress. The beige curtains are behind the woman and to the right of the dress.",
     "parse_success": true,
     "chunk_idx": 8,
     "video_id": "gpHND4vZKwg"
   },
   {
     "time": [
-      18,
-      20
+      9,
+      10
     ],
     "visible_entities": [
       {
-        "desc": "woman with shoulder-length reddish-blonde hair, wearing a dark green short-sleeved top and a layered necklace with a turquoise pendant",
+        "desc": "woman with shoulder-length layered blonde hair, wearing a dark green short-sleeved top with a cowl neckline and a layered necklace with a light blue pendant",
         "action": "speaking",
         "position": "right"
       },
       {
-        "desc": "long dark grey dress with a V-neckline and short sleeves hanging on a hanger",
+        "desc": "long dark grey dress with a v-neck and short sleeves",
         "action": "static",
         "position": "left"
       },
@@ -455,24 +450,24 @@
         "confidence": 1.0
       },
       {
-        "fact": "A long dark grey dress is hanging on the wall to the left of the woman.",
+        "fact": "A dark grey dress is hanging on a hanger to the left of the woman.",
         "confidence": 1.0
       },
       {
-        "fact": "A beige curtain is behind the woman.",
+        "fact": "The woman is wearing a layered necklace with a light blue pendant.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The woman is positioned to the right of the hanging grey dress. The beige curtain is behind the woman. The grey dress is hanging on the wall to the left.",
+    "spatial": "The woman is positioned on the right side of the frame, in front of a beige curtain. To her left, a dark grey dress hangs on a hanger against a grey wall.",
     "parse_success": true,
     "chunk_idx": 9,
     "video_id": "gpHND4vZKwg"
   },
   {
     "time": [
-      20,
-      22
+      10,
+      11
     ],
     "visible_entities": [
       {
@@ -481,12 +476,12 @@
         "position": "right"
       },
       {
-        "desc": "dark grey sleeveless dress with a v-neckline",
+        "desc": "dark grey sleeveless dress with a V-neckline hanging on a hanger",
         "action": "static",
         "position": "left"
       },
       {
-        "desc": "beige curtain with a black valance",
+        "desc": "beige curtains hanging on a black rod",
         "action": "static",
         "position": "background"
       }
@@ -497,82 +492,78 @@
         "confidence": 1.0
       },
       {
-        "fact": "A dark grey dress hangs on the wall to the left of the woman.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "A beige curtain hangs behind the woman.",
+        "fact": "A dark grey dress is hanging on the wall to the left of the woman.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The woman is to the right of the dark grey dress. The beige curtain is behind the woman. The dress is hanging on the wall to the left of the curtain.",
+    "spatial": "The woman is positioned to the right of the hanging grey dress. The beige curtains are in the background behind the woman.",
     "parse_success": true,
     "chunk_idx": 10,
     "video_id": "gpHND4vZKwg"
   },
   {
     "time": [
-      22,
-      24
+      11,
+      12
     ],
     "visible_entities": [
       {
-        "desc": "woman with shoulder-length reddish-brown hair, wearing a dark green short-sleeved top and a layered necklace with a light blue pendant",
+        "desc": "woman with shoulder-length reddish-brown hair, wearing a dark green short-sleeved top and a layered necklace with a turquoise pendant",
         "action": "gesturing with right hand",
         "position": "right"
       },
       {
-        "desc": "dark grey sleeveless dress with a V-neckline",
+        "desc": "dark grey sleeveless dress with a v-neckline",
         "action": "static",
         "position": "left"
       },
       {
-        "desc": "beige curtains hanging on a black rod",
+        "desc": "beige curtain",
         "action": "static",
         "position": "background"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "The woman gestures with her right hand while speaking.",
+        "fact": "The woman is gesturing with her right hand.",
         "confidence": 1.0
       },
       {
-        "fact": "A dark grey dress hangs on a hanger to the left of the woman.",
+        "fact": "A dark grey dress is hanging on the left side of the frame.",
         "confidence": 1.0
       },
       {
-        "fact": "The woman wears a layered necklace with a light blue pendant.",
+        "fact": "The woman is wearing a necklace with a blue pendant.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The woman is positioned to the right of the hanging grey dress. The beige curtains are behind the woman. The necklace is on the woman's neck.",
+    "spatial": "The woman is positioned to the right of the hanging dress. The beige curtain is behind the woman. The dress is hanging on the left side of the frame.",
     "parse_success": true,
     "chunk_idx": 11,
     "video_id": "gpHND4vZKwg"
   },
   {
     "time": [
-      24,
-      26
+      12,
+      13
     ],
     "visible_entities": [
       {
-        "desc": "woman with shoulder-length reddish-blonde hair, wearing a green short-sleeved top, a layered necklace with a turquoise pendant, and a watch on her left wrist",
-        "action": "holding and examining a piece of fabric",
+        "desc": "woman with shoulder-length reddish-blonde hair, wearing a dark green short-sleeved top, a layered necklace with a light blue pendant, and a watch on her left wrist",
+        "action": "holding and examining a piece of dark fabric",
         "position": "right"
       },
       {
-        "desc": "dark grey sleeveless dress with a v-neck hanging on a hanger",
+        "desc": "long dark grey dress with a V-neckline hanging on a hanger",
         "action": "static",
         "position": "left"
       },
       {
-        "desc": "piece of dark patterned fabric",
+        "desc": "dark patterned fabric or garment",
         "action": "being held",
-        "position": "foreground"
+        "position": "foreground right"
       },
       {
         "desc": "beige curtains",
@@ -582,44 +573,49 @@
     ],
     "atomic_facts": [
       {
-        "fact": "The woman holds a piece of dark patterned fabric in her hands.",
+        "fact": "The woman is holding a piece of dark fabric with both hands.",
         "confidence": 1.0
       },
       {
-        "fact": "The woman looks down at the fabric she is holding.",
+        "fact": "She is looking down at the fabric she is holding.",
         "confidence": 1.0
       },
       {
-        "fact": "A dark grey dress hangs on the wall to the left of the woman.",
+        "fact": "A long dark grey dress is hanging on the left side of the frame.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The woman is positioned to the right of the hanging grey dress. She is holding the piece of fabric in front of her body. The beige curtains are behind the woman.",
+    "spatial": "The woman is positioned to the right of the hanging grey dress. She is holding the dark patterned fabric in front of her torso. The beige curtains are behind the woman.",
     "parse_success": true,
     "chunk_idx": 12,
     "video_id": "gpHND4vZKwg"
   },
   {
     "time": [
-      26,
-      28
+      13,
+      14
     ],
     "visible_entities": [
       {
-        "desc": "woman with shoulder-length reddish-blonde hair, wearing a dark green short-sleeved top, a silver necklace with a turquoise pendant, and a watch",
+        "desc": "woman with shoulder-length reddish-brown hair, wearing a dark green short-sleeved top, a silver necklace with a turquoise pendant, and a silver watch",
         "action": "holding and manipulating a piece of grey fabric",
         "position": "right"
       },
       {
-        "desc": "long dark grey sleeveless dress with a V-neckline",
+        "desc": "dark grey sleeveless dress with a V-neckline",
         "action": "static",
         "position": "left"
       },
       {
-        "desc": "grey fabric or garment",
+        "desc": "piece of grey fabric",
         "action": "being held",
-        "position": "center foreground"
+        "position": "center"
+      },
+      {
+        "desc": "beige curtains with black trim",
+        "action": "static",
+        "position": "background"
       }
     ],
     "atomic_facts": [
@@ -628,81 +624,171 @@
         "confidence": 1.0
       },
       {
-        "fact": "A long dark grey dress is hanging on a hanger to the left of the woman.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The woman is wearing a necklace with a turquoise pendant.",
+        "fact": "A dark grey dress is hanging on a hanger to the left of the woman.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The woman is positioned to the right of the hanging grey dress. She is holding the grey fabric in front of her torso. The hanging dress is to the left of the woman.",
+    "spatial": "The woman is to the right of the hanging grey dress. She is holding the piece of grey fabric in front of her. The beige curtains are behind the woman.",
     "parse_success": true,
     "chunk_idx": 13,
     "video_id": "gpHND4vZKwg"
   },
   {
     "time": [
-      28,
-      30
+      14,
+      15
     ],
     "visible_entities": [
       {
-        "desc": "woman with shoulder-length reddish-brown hair, wearing a dark green sleeveless top, a pearl necklace with a turquoise pendant, and a silver watch on her left wrist",
-        "action": "holding and examining a scarf",
+        "desc": "woman with shoulder-length reddish-brown hair, wearing a dark green sleeveless top, a silver watch, and a necklace with a turquoise pendant",
+        "action": "holding and examining a garment",
         "position": "right"
       },
       {
-        "desc": "dark grey patterned scarf with a tie-dye or mottled texture",
-        "action": "being held up by the woman",
+        "desc": "dark grey patterned fabric garment, appearing soft and textured",
+        "action": "being held up",
         "position": "center"
       },
       {
-        "desc": "long dark grey dress with a V-neck hanging on a hanger",
+        "desc": "long dark grey dress with a V-neckline hanging on a hanger",
         "action": "static",
         "position": "left"
       },
       {
-        "desc": "beige curtains hanging vertically",
+        "desc": "beige curtains with black trim",
         "action": "static",
         "position": "background"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "The woman holds the dark grey patterned scarf with both hands.",
+        "fact": "The woman is holding a dark grey patterned garment with both hands.",
         "confidence": 1.0
       },
       {
-        "fact": "She lifts the scarf to inspect its fabric and pattern.",
+        "fact": "She is looking down at the fabric she is holding.",
         "confidence": 1.0
       },
       {
-        "fact": "A long dark grey dress is hanging on the wall to the left of the woman.",
+        "fact": "A long dark grey dress is hanging on a hanger to the left of the woman.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The woman is positioned on the right side of the frame, holding the scarf in front of her. To her left, a long dark grey dress hangs against the wall. Beige curtains are visible in the background behind the woman.",
+    "spatial": "The woman is positioned on the right side of the frame, holding the patterned fabric in front of her. To her left, a long dark grey dress hangs vertically. The beige curtains are in the background behind the woman and the hanging dress.",
     "parse_success": true,
     "chunk_idx": 14,
     "video_id": "gpHND4vZKwg"
   },
   {
     "time": [
-      30,
-      32
+      15,
+      16
     ],
     "visible_entities": [
       {
-        "desc": "woman with shoulder-length reddish-blonde hair, wearing a dark green short-sleeved top, a silver necklace with a turquoise pendant, a watch on her left wrist, and a ring on her finger",
-        "action": "holding and examining a scarf",
+        "desc": "woman with shoulder-length reddish-blonde hair, wearing a dark green short-sleeved top, a silver necklace with a turquoise pendant, a watch, and a ring",
+        "action": "holding and examining a garment",
         "position": "right"
       },
       {
-        "desc": "grey and white patterned scarf with a tie-dye or marbled design",
+        "desc": "grey patterned fabric garment, appearing soft and textured",
         "action": "being held",
+        "position": "center"
+      },
+      {
+        "desc": "dark grey sleeveless dress on a hanger",
+        "action": "static",
+        "position": "left"
+      },
+      {
+        "desc": "beige curtains and clothing racks",
+        "action": "static",
+        "position": "background"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The woman is holding a grey patterned garment with both hands.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The woman is looking at the garment she is holding.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A dark grey dress is hanging on the wall to the left.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The woman is positioned on the right side of the frame. She is holding the grey patterned garment in front of her, near the center. To the left of the woman and the garment, a dark grey dress hangs on the wall. The beige curtains are in the background behind the woman.",
+    "parse_success": true,
+    "chunk_idx": 15,
+    "video_id": "gpHND4vZKwg"
+  },
+  {
+    "time": [
+      16,
+      17
+    ],
+    "visible_entities": [
+      {
+        "desc": "woman with shoulder-length reddish-blonde hair, wearing a dark green sleeveless top and a silver necklace",
+        "action": "holding and adjusting a dark patterned garment",
+        "position": "right"
+      },
+      {
+        "desc": "dark grey V-neck dress hanging on a hanger",
+        "action": "static",
+        "position": "left"
+      },
+      {
+        "desc": "dark patterned garment, possibly lace or sheer fabric",
+        "action": "being held",
+        "position": "center"
+      },
+      {
+        "desc": "beige curtains with dark trim",
+        "action": "static",
+        "position": "background"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The woman holds a dark patterned garment in front of her.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The woman looks towards the grey dress on the left.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The grey dress hangs on the wall to the left of the woman.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The woman is standing to the right of the hanging grey dress. She is holding the dark patterned garment in front of her body. The beige curtains are in the background behind the woman.",
+    "parse_success": true,
+    "chunk_idx": 16,
+    "video_id": "gpHND4vZKwg"
+  },
+  {
+    "time": [
+      17,
+      18
+    ],
+    "visible_entities": [
+      {
+        "desc": "woman with shoulder-length reddish-brown hair, wearing a dark green sleeveless top, a silver necklace with a pendant, and a watch on her left wrist",
+        "action": "holding and adjusting a scarf",
+        "position": "right"
+      },
+      {
+        "desc": "dark grey patterned scarf, appearing to be made of a soft, flowing fabric",
+        "action": "being held and manipulated",
         "position": "center"
       },
       {
@@ -711,101 +797,7 @@
         "position": "left"
       },
       {
-        "desc": "beige curtains hanging on a rod",
-        "action": "static",
-        "position": "background"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "The woman is holding a grey and white patterned scarf with both hands.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "She is looking at the scarf while holding it up.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "A dark grey dress is hanging on the wall to the left of the woman.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [],
-    "spatial": "The woman is positioned on the right side of the frame, holding the scarf in front of her. To her left, a dark grey dress hangs on the wall. Behind the woman, beige curtains are visible in the background.",
-    "parse_success": true,
-    "chunk_idx": 15,
-    "video_id": "gpHND4vZKwg"
-  },
-  {
-    "time": [
-      32,
-      34
-    ],
-    "visible_entities": [
-      {
-        "desc": "woman with shoulder-length reddish-blonde hair, wearing a dark green sleeveless top and a silver watch on her left wrist",
-        "action": "holding a piece of dark patterned fabric",
-        "position": "right"
-      },
-      {
-        "desc": "long dark grey dress with a V-neck hanging on a hanger",
-        "action": "static",
-        "position": "left"
-      },
-      {
-        "desc": "piece of dark fabric with a lighter floral or lace pattern",
-        "action": "being held and manipulated",
-        "position": "center"
-      },
-      {
-        "desc": "beige curtains hanging in the background",
-        "action": "static",
-        "position": "background"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "The woman holds a piece of dark patterned fabric with both hands.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "She looks at the fabric she is holding.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "A long dark grey dress hangs on a hanger to the left of the woman.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [],
-    "spatial": "The woman is to the right of the hanging grey dress. She is holding the piece of patterned fabric in front of her. The beige curtains are behind the woman.",
-    "parse_success": true,
-    "chunk_idx": 16,
-    "video_id": "gpHND4vZKwg"
-  },
-  {
-    "time": [
-      34,
-      36
-    ],
-    "visible_entities": [
-      {
-        "desc": "woman with shoulder-length reddish-brown hair, wearing a dark green sleeveless top, a silver necklace with a pendant, and a silver watch",
-        "action": "holding and manipulating a scarf",
-        "position": "right"
-      },
-      {
-        "desc": "dark grey patterned scarf, appearing to be made of a soft, lightweight fabric",
-        "action": "being held and adjusted",
-        "position": "center"
-      },
-      {
-        "desc": "dark grey sleeveless dress with a v-neck, hanging on a hanger",
-        "action": "static",
-        "position": "left"
-      },
-      {
-        "desc": "beige curtains with a black valance",
+        "desc": "beige curtains with a dark valance",
         "action": "static",
         "position": "background"
       }
@@ -816,54 +808,54 @@
         "confidence": 1.0
       },
       {
-        "fact": "She is adjusting the fabric of the scarf.",
+        "fact": "She is adjusting the scarf, moving it between her hands.",
         "confidence": 1.0
       },
       {
-        "fact": "A dark grey dress is hanging on the wall to the left of the woman.",
+        "fact": "A dark grey dress is hanging on a hanger to the left of the woman.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The woman is positioned on the right side of the frame, holding the scarf in front of her. To her left, a dark grey dress hangs on the wall. The beige curtains are in the background behind the woman.",
+    "spatial": "The woman is on the right side of the frame, holding the scarf in front of her. The hanging dress is to the left of the woman. The beige curtains are in the background, behind the woman.",
     "parse_success": true,
     "chunk_idx": 17,
     "video_id": "gpHND4vZKwg"
   },
   {
     "time": [
-      36,
-      38
+      18,
+      19
     ],
     "visible_entities": [
       {
         "desc": "woman with shoulder-length reddish-brown hair, wearing a dark green sleeveless top and a silver watch",
-        "action": "holding and adjusting a patterned garment",
+        "action": "holding and examining a grey patterned garment",
         "position": "right"
       },
       {
-        "desc": "dark grey sleeveless dress with a V-neckline",
+        "desc": "dark grey sleeveless dress on a hanger",
         "action": "static",
         "position": "left"
       },
       {
-        "desc": "grey and white patterned garment, possibly a scarf or top",
+        "desc": "grey garment with a tie-dye or mottled pattern",
         "action": "being held",
         "position": "center"
       },
       {
-        "desc": "beige curtains with a black valance",
+        "desc": "beige curtains",
         "action": "static",
         "position": "background"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "The woman is holding a grey and white patterned garment with both hands.",
+        "fact": "The woman is holding a grey patterned garment with both hands.",
         "confidence": 1.0
       },
       {
-        "fact": "A dark grey dress is hanging on a hanger to the left of the woman.",
+        "fact": "A dark grey dress hangs on the wall to the left of the woman.",
         "confidence": 1.0
       },
       {
@@ -872,29 +864,29 @@
       }
     ],
     "ocr": [],
-    "spatial": "The woman is on the right side of the frame, holding a patterned garment in front of her. To her left, a dark grey dress hangs on a hanger. The beige curtains are in the background, behind the woman.",
+    "spatial": "The woman is positioned to the right of the hanging dark grey dress. She is holding the grey patterned garment in front of her body. The beige curtains are in the background behind the woman.",
     "parse_success": true,
     "chunk_idx": 18,
     "video_id": "gpHND4vZKwg"
   },
   {
     "time": [
-      38,
-      40
+      19,
+      20
     ],
     "visible_entities": [
       {
-        "desc": "woman with shoulder-length reddish-brown hair, wearing a dark green sleeveless top, silver watch, and necklace",
-        "action": "holding and adjusting a patterned scarf",
-        "position": "center"
+        "desc": "woman with shoulder-length reddish-brown hair, wearing a dark green sleeveless top, a silver watch on her left wrist, and a necklace",
+        "action": "holding and adjusting a patterned garment",
+        "position": "right"
       },
       {
-        "desc": "grey and black patterned scarf with wavy stripes",
+        "desc": "grey and black patterned garment, appearing to be a scarf or shawl with a wavy design",
         "action": "being held up",
         "position": "center"
       },
       {
-        "desc": "dark grey sleeveless dress on a hanger",
+        "desc": "dark grey sleeveless dress hanging on a wooden hanger",
         "action": "static",
         "position": "left"
       },
@@ -906,94 +898,94 @@
     ],
     "atomic_facts": [
       {
-        "fact": "The woman is holding a grey and black patterned scarf with both hands.",
+        "fact": "The woman is holding a grey and black patterned garment with both hands.",
         "confidence": 1.0
       },
       {
-        "fact": "The woman is adjusting the scarf in front of a dark grey dress.",
+        "fact": "She is adjusting the garment in front of a hanging dress.",
         "confidence": 1.0
       },
       {
-        "fact": "A dark grey dress is hanging on a rack to the left of the woman.",
+        "fact": "A dark grey dress is hanging on a hanger to the left of the woman.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The woman is in the center of the frame, holding the scarf in front of her. To her left, a dark grey dress hangs on a rack. Beige curtains are visible in the background behind the woman.",
+    "spatial": "The woman is to the right of the hanging dark grey dress. She is holding the patterned garment in front of the dress. The beige curtains are in the background behind the woman.",
     "parse_success": true,
     "chunk_idx": 19,
     "video_id": "gpHND4vZKwg"
   },
   {
     "time": [
-      40,
-      42
+      20,
+      21
     ],
     "visible_entities": [
       {
-        "desc": "woman with shoulder-length reddish-brown hair, wearing a dark green sleeveless top, a silver necklace with a turquoise pendant, and a silver watch",
-        "action": "gesturing with hands while holding a grey garment",
+        "desc": "woman with shoulder-length reddish-brown hair, wearing a dark green sleeveless top, a silver necklace with a turquoise pendant, a watch on her left wrist, and rings on her fingers",
+        "action": "gesturing with hands while holding a piece of dark fabric",
         "position": "right"
       },
       {
-        "desc": "dark grey sleeveless dress with a V-neckline hanging on a hanger",
+        "desc": "dark grey sleeveless dress with a V-neckline hanging on a wooden hanger",
         "action": "static",
         "position": "left"
       },
       {
-        "desc": "grey fabric garment being held",
-        "action": "being held",
-        "position": "center"
-      },
-      {
-        "desc": "beige curtains and clothing racks in the background",
+        "desc": "beige curtains hanging on a black rod",
         "action": "static",
         "position": "background"
+      },
+      {
+        "desc": "dark patterned fabric held in the woman's hands",
+        "action": "being held",
+        "position": "center"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "The woman holds a grey garment in her hands.",
+        "fact": "The woman is holding a piece of dark patterned fabric in her hands.",
         "confidence": 1.0
       },
       {
-        "fact": "The woman gestures with her right hand towards the hanging dress.",
+        "fact": "The woman gestures with her right hand towards the dress.",
         "confidence": 1.0
       },
       {
-        "fact": "A dark grey dress hangs on a rack to the left of the woman.",
+        "fact": "A dark grey dress is hanging on a hanger to the left of the woman.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The woman is positioned to the right of the hanging dark grey dress. She is holding a grey garment in front of her body. The beige curtains are behind the woman.",
+    "spatial": "The woman is positioned to the right of the hanging dark grey dress. She is holding a piece of fabric in front of her torso. The beige curtains are in the background behind the woman.",
     "parse_success": true,
     "chunk_idx": 20,
     "video_id": "gpHND4vZKwg"
   },
   {
     "time": [
-      42,
-      44
+      21,
+      22
     ],
     "visible_entities": [
       {
         "desc": "woman with shoulder-length reddish-brown hair, wearing a dark green sleeveless top and a silver watch on her left wrist",
-        "action": "holding a dark garment and gesturing with her left hand",
-        "position": "right"
+        "action": "holding a dark garment and gesturing towards a hanging dress",
+        "position": "center"
       },
       {
-        "desc": "long dark grey sleeveless dress with a V-neck hanging on a wooden hanger",
+        "desc": "long dark grey sleeveless dress with a v-neckline",
         "action": "static",
         "position": "left"
       },
       {
-        "desc": "dark patterned fabric or garment",
+        "desc": "dark patterned garment",
         "action": "being held",
         "position": "center"
       },
       {
-        "desc": "beige curtains hanging on a black rod",
+        "desc": "beige curtains",
         "action": "static",
         "position": "background"
       }
@@ -1008,144 +1000,238 @@
         "confidence": 1.0
       },
       {
-        "fact": "A grey dress is hanging on the wall to the left of the woman.",
+        "fact": "The grey dress hangs on a hanger against the wall.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The woman is positioned to the right of the hanging grey dress. The beige curtains are in the background behind the woman. The woman is holding a dark garment in front of her body.",
+    "spatial": "The woman is standing to the right of the hanging grey dress. She is holding a dark garment in front of her torso. The beige curtains are behind the woman.",
     "parse_success": true,
     "chunk_idx": 21,
     "video_id": "gpHND4vZKwg"
   },
   {
     "time": [
-      44,
-      46
+      22,
+      23
     ],
     "visible_entities": [
       {
-        "desc": "woman with shoulder-length reddish-blonde hair, wearing a green sleeveless top and a silver watch",
-        "action": "holding and adjusting a dark grey garment",
+        "desc": "woman with shoulder-length reddish-blonde hair, wearing a sleeveless dark green top and a silver watch",
+        "action": "handling a garment",
         "position": "center"
       },
       {
-        "desc": "dark grey sleeveless garment with a V-neckline and a white tag",
-        "action": "being held by the woman",
+        "desc": "dark grey sleeveless dress with a V-neckline",
+        "action": "hanging",
         "position": "left"
       },
       {
-        "desc": "beige fabric curtains with black trim",
-        "action": "static",
-        "position": "background"
+        "desc": "dark grey fabric garment",
+        "action": "being held",
+        "position": "center"
       },
       {
-        "desc": "clothing rack with hanging garments",
+        "desc": "beige curtains with dark trim",
         "action": "static",
-        "position": "right"
+        "position": "background"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "The woman is holding a dark grey garment with both hands.",
+        "fact": "The woman is holding a piece of dark grey fabric with both hands.",
         "confidence": 1.0
       },
       {
-        "fact": "The woman is adjusting the position of the garment.",
+        "fact": "A dark grey dress is hanging on the wall to the left of the woman.",
         "confidence": 1.0
       },
       {
-        "fact": "A white tag is visible on the neckline of the grey garment.",
+        "fact": "The woman is standing in front of beige curtains.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The woman is in the center of the frame, holding the dark grey garment to her left. The beige curtains are behind the woman. The clothing rack is to the right of the curtains.",
+    "spatial": "The woman is positioned in the center of the frame, standing in front of the beige curtains. To her left, a dark grey dress hangs on the wall. She is holding a piece of dark grey fabric in front of her body.",
     "parse_success": true,
     "chunk_idx": 22,
     "video_id": "gpHND4vZKwg"
   },
   {
     "time": [
-      46,
-      48
+      23,
+      24
     ],
     "visible_entities": [
       {
-        "desc": "woman with shoulder-length reddish-brown hair, wearing a dark green sleeveless top and a silver watch",
-        "action": "holding and adjusting a dark garment",
+        "desc": "woman with shoulder-length reddish-brown hair, wearing a dark green short-sleeved top and a silver watch on her left wrist",
+        "action": "holding and adjusting a dark grey fabric item",
         "position": "right"
       },
       {
-        "desc": "dark grey V-neck dress hanging on a hanger",
+        "desc": "dark grey sleeveless dress with a V-neckline hanging on a wooden hanger",
         "action": "static",
         "position": "left"
       },
       {
-        "desc": "dark grey fabric garment, possibly a scarf or shawl",
-        "action": "being manipulated",
+        "desc": "dark grey fabric item, possibly a scarf or garment, being manipulated",
+        "action": "being held and adjusted",
         "position": "center"
       },
       {
-        "desc": "beige curtains and clothing racks in the background",
+        "desc": "beige curtains hanging on a black rod",
         "action": "static",
         "position": "background"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "The woman is holding a dark grey fabric garment with both hands.",
+        "fact": "The woman is holding a dark grey fabric item with both hands.",
         "confidence": 1.0
       },
       {
-        "fact": "She is adjusting the fabric in front of a hanging dress.",
+        "fact": "The woman is adjusting the fabric item in front of her.",
         "confidence": 1.0
       },
       {
-        "fact": "A dark grey V-neck dress is hanging on the wall to the left.",
+        "fact": "A dark grey dress is hanging on the wall to the left of the woman.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The woman is to the right of the hanging dark grey dress. She is holding the dark fabric in front of her body. The beige curtains are behind the woman.",
+    "spatial": "The woman is positioned to the right of the hanging dark grey dress. She is holding the dark grey fabric item in front of her body. The beige curtains are behind the woman.",
     "parse_success": true,
     "chunk_idx": 23,
     "video_id": "gpHND4vZKwg"
   },
   {
     "time": [
-      48,
-      50
+      24,
+      25
     ],
     "visible_entities": [
       {
         "desc": "woman with shoulder-length reddish-brown hair, wearing a green short-sleeved top and a silver watch",
         "action": "holding and adjusting a grey garment",
-        "position": "center"
+        "position": "right"
       },
       {
-        "desc": "dark grey sleeveless V-neck dress hanging on a wooden hanger",
-        "action": "static",
+        "desc": "dark grey sleeveless dress with a V-neckline and a white tag",
+        "action": "hanging",
         "position": "left"
       },
       {
-        "desc": "grey patterned fabric or garment",
-        "action": "being manipulated",
+        "desc": "grey patterned garment, possibly a scarf or shawl",
+        "action": "being held",
         "position": "center"
       },
       {
-        "desc": "beige curtains and clothing racks in the background",
+        "desc": "beige curtains and a clothing rack with hanging clothes",
         "action": "static",
         "position": "background"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "The woman is holding a grey patterned garment in front of a dark grey dress.",
+        "fact": "A woman is holding a grey patterned garment in front of a hanging dark grey dress.",
         "confidence": 1.0
       },
       {
-        "fact": "The dark grey dress is hanging on a wooden hanger.",
+        "fact": "The woman is wearing a silver watch on her left wrist.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The dark grey dress has a white tag visible at the neckline.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The woman is to the right of the hanging dark grey dress. She is holding the grey patterned garment in front of the dress. The beige curtains are behind the woman.",
+    "parse_success": true,
+    "chunk_idx": 24,
+    "video_id": "gpHND4vZKwg"
+  },
+  {
+    "time": [
+      25,
+      26
+    ],
+    "visible_entities": [
+      {
+        "desc": "woman with shoulder-length reddish-blonde hair, wearing a dark green sleeveless top and a silver bracelet",
+        "action": "holding and adjusting a garment",
+        "position": "center"
+      },
+      {
+        "desc": "dark grey sleeveless dress with a v-neck and a white tag",
+        "action": "static",
+        "position": "left"
+      },
+      {
+        "desc": "grey patterned garment, possibly a scarf or top",
+        "action": "being manipulated",
+        "position": "center"
+      },
+      {
+        "desc": "beige curtains and a clothing rack with hanging clothes",
+        "action": "static",
+        "position": "background"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The woman is holding a grey patterned garment in front of the dark grey dress.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The dark grey dress is hanging on the left side of the frame.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The woman is wearing a silver bracelet on her left wrist.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The woman is in the center of the frame, positioned to the right of the hanging grey dress. She is holding the grey patterned garment in front of the hanging dress. The beige curtains and clothing rack are in the background behind the woman.",
+    "parse_success": true,
+    "chunk_idx": 25,
+    "video_id": "gpHND4vZKwg"
+  },
+  {
+    "time": [
+      26,
+      27
+    ],
+    "visible_entities": [
+      {
+        "desc": "woman with shoulder-length reddish-blonde hair, wearing a green sleeveless top and a silver watch",
+        "action": "adjusting a grey garment",
+        "position": "center"
+      },
+      {
+        "desc": "dark grey sleeveless dress hanging on a wall hook",
+        "action": "static",
+        "position": "left"
+      },
+      {
+        "desc": "beige curtains hanging on a black rod",
+        "action": "static",
+        "position": "right"
+      },
+      {
+        "desc": "white rectangular wall panels",
+        "action": "static",
+        "position": "background"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The woman is using both hands to adjust the bottom hem of the grey dress.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The grey dress is hanging on the wall to the left of the woman.",
         "confidence": 1.0
       },
       {
@@ -1154,81 +1240,71 @@
       }
     ],
     "ocr": [],
-    "spatial": "The woman is standing to the right of the hanging dark grey dress. She is holding the grey patterned garment in front of the dress. The beige curtains are behind the woman.",
+    "spatial": "The woman is standing in the center of the frame, positioned to the right of the hanging grey dress. The beige curtains are located to the right of the woman. The white wall panels are visible in the background behind the woman.",
     "parse_success": true,
-    "chunk_idx": 24,
+    "chunk_idx": 26,
     "video_id": "gpHND4vZKwg"
   },
   {
     "time": [
-      50,
-      52
+      27,
+      28
     ],
     "visible_entities": [
       {
-        "desc": "woman with shoulder-length reddish-blonde hair, wearing a dark green sleeveless top and a silver bracelet",
-        "action": "adjusting a garment",
+        "desc": "woman with shoulder-length reddish-blonde hair, wearing a dark green sleeveless top and a silver watch on her left wrist",
+        "action": "adjusting the hem of a hanging dress",
         "position": "center"
       },
       {
-        "desc": "dark grey sleeveless dress with a v-neck and a white tag at the collar",
-        "action": "static",
+        "desc": "dark grey sleeveless dress with a v-neck and a white tag",
+        "action": "hanging",
         "position": "left"
       },
       {
-        "desc": "grey and black patterned fabric item, possibly a scarf or belt",
-        "action": "being held and moved",
-        "position": "center-left"
-      },
-      {
-        "desc": "beige curtains hanging on a rack",
+        "desc": "beige curtains and racks of hanging clothes",
         "action": "static",
         "position": "background"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "The woman is holding a grey and black patterned fabric item.",
+        "fact": "The woman uses both hands to hold and adjust the bottom hem of the hanging grey dress.",
         "confidence": 1.0
       },
       {
-        "fact": "The woman is adjusting the fabric item near the waist of the hanging dress.",
+        "fact": "The woman is wearing a silver watch on her left wrist.",
         "confidence": 1.0
       },
       {
-        "fact": "The grey dress is hanging on a hanger to the left of the woman.",
+        "fact": "The grey dress has a white tag visible near the neckline.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The woman is standing to the right of the hanging grey dress. She is holding the patterned fabric item in front of the dress. The beige curtains are in the background behind the woman.",
+    "spatial": "The woman is standing to the right of the hanging grey dress. The dress is positioned on the left side of the frame, while the woman is in the center. The beige curtains and clothing racks are in the background behind the woman.",
     "parse_success": true,
-    "chunk_idx": 25,
+    "chunk_idx": 27,
     "video_id": "gpHND4vZKwg"
   },
   {
     "time": [
-      52,
-      54
+      28,
+      29
     ],
     "visible_entities": [
       {
-        "desc": "woman with shoulder-length reddish-blonde hair, wearing a green sleeveless top and a silver watch",
-        "action": "adjusting the bottom of a hanging garment",
-        "position": "center"
+        "desc": "woman with shoulder-length reddish-brown hair, wearing a sleeveless dark green top and a silver watch on her left wrist",
+        "action": "adjusting the hem of a dress",
+        "position": "right"
       },
       {
-        "desc": "dark grey sleeveless dress hanging on a hanger",
-        "action": "static",
+        "desc": "dark grey sleeveless dress with a V-neckline and a white tag at the collar",
+        "action": "hanging",
         "position": "left"
       },
       {
-        "desc": "beige curtains with black trim",
-        "action": "static",
-        "position": "background"
-      },
-      {
-        "desc": "white rectangular wall decorations",
+        "desc": "beige curtains",
         "action": "static",
         "position": "background"
       }
@@ -1239,171 +1315,110 @@
         "confidence": 1.0
       },
       {
-        "fact": "The woman is wearing a watch on her left wrist.",
+        "fact": "The grey dress is hanging on a wall or rack to the left of the woman.",
         "confidence": 1.0
       },
       {
-        "fact": "A grey dress is hanging on a hanger against the wall.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [],
-    "spatial": "The woman is standing in front of the beige curtains and to the right of the hanging grey dress. The white rectangular decorations are on the wall behind the woman. The woman is holding the bottom part of the dress.",
-    "parse_success": true,
-    "chunk_idx": 26,
-    "video_id": "gpHND4vZKwg"
-  },
-  {
-    "time": [
-      54,
-      56
-    ],
-    "visible_entities": [
-      {
-        "desc": "woman with shoulder-length reddish-brown hair, wearing a dark green sleeveless top and a silver watch on her left wrist",
-        "action": "adjusting the bottom hem of a dress",
-        "position": "center"
-      },
-      {
-        "desc": "dark grey sleeveless dress with a v-neckline and a white tag at the collar",
-        "action": "hanging",
-        "position": "left"
-      },
-      {
-        "desc": "beige curtains hanging from a black metal rack",
-        "action": "static",
-        "position": "background"
-      },
-      {
-        "desc": "white rectangular wall-mounted storage pockets",
-        "action": "static",
-        "position": "background"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "The woman is using both hands to hold and adjust the bottom hem of the dark grey dress.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The dark grey dress is hanging on a wall hook or rack to the left of the woman.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "A white tag is visible at the neckline of the hanging dress.",
+        "fact": "A white tag is visible at the neckline of the grey dress.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The woman is standing to the right of the hanging dark grey dress. The white wall-mounted pockets are behind the dress. The beige curtains are in the background to the right of the woman.",
-    "parse_success": true,
-    "chunk_idx": 27,
-    "video_id": "gpHND4vZKwg"
-  },
-  {
-    "time": [
-      56,
-      58
-    ],
-    "visible_entities": [
-      {
-        "desc": "woman with shoulder-length reddish-brown hair, wearing a dark green sleeveless top and a silver watch on her left wrist",
-        "action": "adjusting the bottom of a dress",
-        "position": "right"
-      },
-      {
-        "desc": "dark grey sleeveless dress with a V-neckline and a white tag visible at the collar",
-        "action": "static",
-        "position": "left"
-      },
-      {
-        "desc": "beige curtains hanging vertically",
-        "action": "static",
-        "position": "background"
-      },
-      {
-        "desc": "black clothing rack holding various garments",
-        "action": "static",
-        "position": "background right"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "The woman is using both hands to touch and adjust the hem of the grey dress.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The grey dress is hanging on a display fixture on the left side of the frame.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The woman is standing to the right of the grey dress.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [],
-    "spatial": "The woman is positioned to the right of the hanging grey dress. She is reaching out with her hands to hold the bottom portion of the dress. Behind the woman and the dress, beige curtains and a clothing rack are visible in the background.",
+    "spatial": "The woman is standing to the right of the hanging grey dress. The beige curtains are in the background behind the woman.",
     "parse_success": true,
     "chunk_idx": 28,
     "video_id": "gpHND4vZKwg"
   },
   {
     "time": [
-      58,
-      60
+      29,
+      30
     ],
     "visible_entities": [
       {
         "desc": "woman with shoulder-length reddish-blonde hair, wearing a dark green short-sleeved top and a silver necklace with a turquoise pendant",
-        "action": "touching the fabric of a dress",
+        "action": "touching a garment",
         "position": "right"
       },
       {
-        "desc": "long dark grey sleeveless dress hanging on a display",
-        "action": "static",
+        "desc": "dark grey sleeveless dress with a knotted detail at the waist",
+        "action": "hanging",
         "position": "left"
       },
       {
-        "desc": "beige curtains",
-        "action": "static",
-        "position": "background"
-      },
-      {
-        "desc": "black clothing rack",
+        "desc": "light-colored clothing racks with hanging garments",
         "action": "static",
         "position": "background"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "The woman extends her right arm to touch the bottom hem of the hanging grey dress.",
+        "fact": "The woman extends her right arm to touch the knotted waist detail of the hanging dress.",
         "confidence": 1.0
       },
       {
-        "fact": "The woman is standing to the right of the grey dress.",
+        "fact": "The woman's eyes are closed in the second frame.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The woman is positioned to the right of the hanging grey dress. The beige curtains are behind the woman and the dress. The black clothing rack is to the right of the woman.",
+    "spatial": "The woman is positioned to the right of the dark grey dress. The dress is hanging on the left side of the frame. The clothing racks are behind the woman.",
     "parse_success": true,
     "chunk_idx": 29,
     "video_id": "gpHND4vZKwg"
   },
   {
     "time": [
-      60,
-      62
+      30,
+      31
     ],
     "visible_entities": [
       {
-        "desc": "woman with shoulder-length blonde hair, wearing a dark green short-sleeved top, black bottoms, and a layered necklace with a turquoise pendant",
+        "desc": "woman with shoulder-length blonde hair, wearing a dark green short-sleeved top, a black skirt, and a silver necklace with a turquoise pendant",
         "action": "touching a dress",
         "position": "right"
       },
       {
-        "desc": "dark grey sleeveless dress with a V-neckline and a knotted sash at the waist",
+        "desc": "dark grey sleeveless dress with a V-neck and a knotted belt at the waist",
         "action": "hanging",
+        "position": "left"
+      },
+      {
+        "desc": "clothing rack with hanging garments",
+        "action": "static",
+        "position": "background"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The woman extends her right arm to touch the knotted belt of the hanging dress.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The woman is speaking with her mouth open.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The woman is positioned to the right of the hanging grey dress. Her hand is touching the lower part of the dress. The clothing rack is behind the woman.",
+    "parse_success": true,
+    "chunk_idx": 30,
+    "video_id": "gpHND4vZKwg"
+  },
+  {
+    "time": [
+      31,
+      32
+    ],
+    "visible_entities": [
+      {
+        "desc": "woman with shoulder-length blonde hair, wearing a dark green short-sleeved top, a silver chain necklace with a turquoise pendant, and a black skirt",
+        "action": "holding the belt of a dress",
+        "position": "right"
+      },
+      {
+        "desc": "dark grey sleeveless V-neck dress with a knotted fabric belt at the waist",
+        "action": "static",
         "position": "left"
       },
       {
@@ -1414,75 +1429,75 @@
     ],
     "atomic_facts": [
       {
+        "fact": "The woman is holding the knotted belt of the grey dress with her right hand.",
+        "confidence": 1.0
+      },
+      {
         "fact": "The woman is standing to the right of the hanging dress.",
         "confidence": 1.0
       },
       {
-        "fact": "The woman's left hand is touching the knotted sash of the dress.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The dress is hanging on a display stand.",
+        "fact": "The woman is wearing a necklace with a turquoise pendant.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The woman is positioned to the right of the dark grey dress. Her hand is reaching out to touch the sash located at the waist of the dress. The clothing rack and curtains are in the background behind the woman.",
-    "parse_success": true,
-    "chunk_idx": 30,
-    "video_id": "gpHND4vZKwg"
-  },
-  {
-    "time": [
-      62,
-      64
-    ],
-    "visible_entities": [
-      {
-        "desc": "woman with shoulder-length blonde hair, wearing a dark green short-sleeved top, a silver necklace with a pendant, and a black skirt",
-        "action": "touching a dress",
-        "position": "right"
-      },
-      {
-        "desc": "dark grey sleeveless dress with a V-neck and a knotted belt at the waist",
-        "action": "hanging",
-        "position": "left"
-      },
-      {
-        "desc": "clothing rack with garments and beige curtains",
-        "action": "static",
-        "position": "background"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "The woman is touching the waist area of the hanging dress with her right hand.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The woman is speaking.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [],
-    "spatial": "The woman is to the right of the hanging dress. The dress is to the left of the woman. The clothing rack and curtains are behind the woman.",
+    "spatial": "The woman is standing to the right of the hanging grey dress. She is holding the belt of the dress which is positioned on the left side of the frame. The clothing rack and curtains are behind the woman.",
     "parse_success": true,
     "chunk_idx": 31,
     "video_id": "gpHND4vZKwg"
   },
   {
     "time": [
-      64,
-      66
+      32,
+      33
     ],
     "visible_entities": [
       {
         "desc": "woman with shoulder-length blonde hair, wearing a dark green short-sleeved top and a silver necklace with a turquoise pendant",
-        "action": "gesturing with hands",
+        "action": "gesturing with both hands",
         "position": "right"
       },
       {
-        "desc": "dark grey sleeveless dress with a V-neck and a knotted fabric belt at the waist",
+        "desc": "dark grey sleeveless dress with a V-neckline and a knotted fabric detail at the waist",
+        "action": "static",
+        "position": "left"
+      },
+      {
+        "desc": "clothing rack with hanging garments and beige curtains",
+        "action": "static",
+        "position": "background"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The woman is gesturing with her hands while standing next to a dress.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The dress is hanging on a display stand to the left of the woman.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The woman is positioned to the right of the dark grey dress. The dress is hanging on a stand to the left of the woman. The clothing rack and curtains are in the background behind the woman.",
+    "parse_success": true,
+    "chunk_idx": 32,
+    "video_id": "gpHND4vZKwg"
+  },
+  {
+    "time": [
+      33,
+      34
+    ],
+    "visible_entities": [
+      {
+        "desc": "woman with shoulder-length blonde hair, wearing a dark green sleeveless top, a silver necklace with a turquoise pendant, and a silver watch",
+        "action": "gesturing with hands on hips",
+        "position": "center"
+      },
+      {
+        "desc": "dark grey sleeveless dress with a tie waist",
         "action": "static",
         "position": "left"
       },
@@ -1490,122 +1505,43 @@
         "desc": "beige curtains",
         "action": "static",
         "position": "background"
+      },
+      {
+        "desc": "black clothing rack with hanging garments",
+        "action": "static",
+        "position": "right"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "The woman gestures with her hands while standing next to the dress.",
+        "fact": "The woman places her hands on her hips.",
         "confidence": 1.0
       },
       {
-        "fact": "The dress is hanging on a rack.",
+        "fact": "The woman is wearing a silver necklace with a turquoise pendant.",
         "confidence": 1.0
       },
       {
-        "fact": "The dress features a knotted belt detail at the waist.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [],
-    "spatial": "The woman is to the right of the dark grey dress. The dress is hanging in the foreground on the left side of the frame. The beige curtains are behind the woman.",
-    "parse_success": true,
-    "chunk_idx": 32,
-    "video_id": "gpHND4vZKwg"
-  },
-  {
-    "time": [
-      66,
-      68
-    ],
-    "visible_entities": [
-      {
-        "desc": "woman with shoulder-length blonde hair, wearing a dark green sleeveless top, a silver necklace with a turquoise pendant, and a watch",
-        "action": "gesturing with hands and moving hips",
-        "position": "center"
-      },
-      {
-        "desc": "dark grey sleeveless dress with a tie-waist detail",
-        "action": "static",
-        "position": "left"
-      },
-      {
-        "desc": "clothing rack with hanging garments",
-        "action": "static",
-        "position": "background"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "The woman gestures with her hands and moves her hips.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The woman is wearing a necklace with a turquoise pendant.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "A dark grey dress is hanging on the wall to the left.",
+        "fact": "A dark grey dress hangs on the wall to the left.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The woman is in the center of the frame, standing in front of a clothing rack. To her left, a dark grey dress hangs on the wall.",
+    "spatial": "The woman is in the center of the frame, standing in front of beige curtains. To her left, a dark grey dress hangs on the wall. To her right, a black clothing rack is visible.",
     "parse_success": true,
     "chunk_idx": 33,
     "video_id": "gpHND4vZKwg"
   },
   {
     "time": [
-      68,
-      70
+      34,
+      35
     ],
     "visible_entities": [
       {
-        "desc": "woman with shoulder-length blonde hair, wearing a dark green sleeveless top and a silver necklace with a turquoise pendant",
+        "desc": "woman with shoulder-length blonde hair, wearing a dark green sleeveless top, a layered necklace with a turquoise pendant, and a bracelet",
         "action": "speaking",
         "position": "center"
-      },
-      {
-        "desc": "dark grey sleeveless dress with a tied sash at the waist",
-        "action": "static",
-        "position": "left"
-      },
-      {
-        "desc": "clothing rack with hanging garments",
-        "action": "static",
-        "position": "right"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "The woman is speaking.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The woman is gesturing with her hands.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "A dark grey dress is hanging on the wall to the left.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [],
-    "spatial": "The woman is in the center of the frame, standing in front of a clothing rack on the right. To her left, a dark grey dress hangs on the wall.",
-    "parse_success": true,
-    "chunk_idx": 34,
-    "video_id": "gpHND4vZKwg"
-  },
-  {
-    "time": [
-      70,
-      72
-    ],
-    "visible_entities": [
-      {
-        "desc": "woman with shoulder-length blonde hair, wearing a dark green short-sleeved top and a necklace with a turquoise pendant",
-        "action": "gesturing with right hand",
-        "position": "right"
       },
       {
         "desc": "dark grey sleeveless dress with a knotted detail at the waist",
@@ -1615,7 +1551,54 @@
       {
         "desc": "clothing rack with hanging garments",
         "action": "static",
+        "position": "right"
+      },
+      {
+        "desc": "beige textured wall panel",
+        "action": "static",
         "position": "background"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The woman is speaking and gesturing with her hands.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A dark grey dress is hanging on the wall to the left of the woman.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The woman is wearing a necklace with a turquoise pendant.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The woman is standing in the center of the frame. To her left, a dark grey dress hangs on the wall. To her right, a clothing rack with garments is visible. The beige textured wall panel is behind the woman.",
+    "parse_success": true,
+    "chunk_idx": 34,
+    "video_id": "gpHND4vZKwg"
+  },
+  {
+    "time": [
+      35,
+      36
+    ],
+    "visible_entities": [
+      {
+        "desc": "woman with shoulder-length blonde hair, wearing a dark green short-sleeved top with a draped neckline, a layered necklace with a turquoise pendant, and a bracelet",
+        "action": "gesturing with right hand",
+        "position": "right/foreground"
+      },
+      {
+        "desc": "dark grey sleeveless dress with a V-neckline and a knotted detail at the waist",
+        "action": "static",
+        "position": "left/background"
+      },
+      {
+        "desc": "clothing rack with hanging garments",
+        "action": "static",
+        "position": "right/background"
       }
     ],
     "atomic_facts": [
@@ -1626,32 +1609,41 @@
       {
         "fact": "A dark grey dress is hanging on the wall to the left of the woman.",
         "confidence": 1.0
+      },
+      {
+        "fact": "The woman is wearing a necklace with a turquoise pendant.",
+        "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The woman is positioned to the right of the hanging grey dress. The clothing rack is in the background behind the woman.",
+    "spatial": "The woman is standing to the right of the hanging grey dress. The clothing rack is behind the woman on the right side of the frame.",
     "parse_success": true,
     "chunk_idx": 35,
     "video_id": "gpHND4vZKwg"
   },
   {
     "time": [
-      72,
-      74
+      36,
+      37
     ],
     "visible_entities": [
       {
-        "desc": "woman with shoulder-length blonde hair, wearing a dark green sleeveless top with a cowl neckline and a beaded necklace with a light blue pendant",
-        "action": "gesturing with her right hand",
+        "desc": "woman with shoulder-length blonde hair, wearing a dark green short-sleeved top and a layered necklace with a turquoise pendant",
+        "action": "gesturing with right hand",
         "position": "center"
       },
       {
-        "desc": "dark grey sleeveless dress with a V-neckline hanging on a hanger",
+        "desc": "long dark grey sleeveless dress with a V-neckline and a white tag at the collar",
         "action": "static",
         "position": "left"
       },
       {
-        "desc": "clothing rack with hanging garments in the background",
+        "desc": "clothing rack with hanging garments",
+        "action": "static",
+        "position": "right"
+      },
+      {
+        "desc": "beige textured wall panel",
         "action": "static",
         "position": "background"
       }
@@ -1662,25 +1654,29 @@
         "confidence": 1.0
       },
       {
-        "fact": "A dark grey dress is hanging on the wall to the left of the woman.",
+        "fact": "The woman is wearing a necklace with a turquoise pendant.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The dress is hanging on a hanger against the wall.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The woman is positioned in the center of the frame, to the right of the hanging dark grey dress. The dress is on the left side of the image. A clothing rack is visible in the background behind the woman.",
+    "spatial": "The woman is positioned in the center of the frame, to the right of the hanging dress. The dress is on the left side of the image, in front of the beige wall panel. The clothing rack is visible in the background on the right side.",
     "parse_success": true,
     "chunk_idx": 36,
     "video_id": "gpHND4vZKwg"
   },
   {
     "time": [
-      74,
-      76
+      37,
+      38
     ],
     "visible_entities": [
       {
-        "desc": "woman with shoulder-length blonde hair, wearing a dark green sleeveless top and a necklace with a turquoise pendant",
-        "action": "gesturing with her right hand",
+        "desc": "woman with shoulder-length blonde hair, wearing a green sleeveless top and a necklace with a turquoise pendant",
+        "action": "gesturing with right hand",
         "position": "center"
       },
       {
@@ -1689,22 +1685,18 @@
         "position": "left"
       },
       {
-        "desc": "purple background with white text",
+        "desc": "purple background with white text 'style' and a white sticky note with green text 'eHow'",
         "action": "static",
-        "position": "background"
+        "position": "center"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A woman with blonde hair is gesturing with her right hand.",
+        "fact": "The woman gestures with her right hand while standing in a room.",
         "confidence": 1.0
       },
       {
-        "fact": "The woman is wearing a green top and a necklace.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "A grey dress is hanging on a rack to the left of the woman.",
+        "fact": "A dark grey dress hangs on a rack to the left of the woman.",
         "confidence": 1.0
       },
       {
@@ -1716,45 +1708,37 @@
       "eHow",
       "style"
     ],
-    "spatial": "The woman is positioned in the center of the frame, in front of a clothing rack. A grey dress is hanging to her left. The text 'eHow' is above the word 'style' on the purple background.",
+    "spatial": "The woman is positioned in the center of the frame, standing to the right of a hanging grey dress. The 'eHow style' graphic appears as an overlay or transition screen.",
     "parse_success": true,
     "chunk_idx": 37,
     "video_id": "gpHND4vZKwg"
   },
   {
     "time": [
-      76,
-      78
+      38,
+      39
     ],
     "visible_entities": [
       {
-        "desc": "white text reading 'style' in a lowercase, italicized serif font",
-        "action": "static",
-        "position": "center"
+        "desc": "white cursive text reading 'style' on a magenta background with diagonal shadow lines",
+        "action": "static"
       },
       {
-        "desc": "magenta background with diagonal shadow lines creating a layered effect",
-        "action": "static",
-        "position": "background"
-      },
-      {
-        "desc": "green text reading 'eHow' in a sans-serif font with a folded ribbon effect",
-        "action": "static",
-        "position": "center"
-      },
-      {
-        "desc": "plain white background",
-        "action": "static",
-        "position": "background"
+        "desc": "green stylized text reading 'eHow' on a white background",
+        "action": "static"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "The video displays a title card with the word 'style' in white text on a magenta background.",
+        "fact": "The word 'style' is displayed in white cursive font.",
         "confidence": 1.0
       },
       {
-        "fact": "The scene transitions to a logo screen showing the text 'eHow' in green on a white background.",
+        "fact": "The 'eHow' logo is displayed in green text.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The video transitions from a magenta screen to a white screen.",
         "confidence": 1.0
       }
     ],
@@ -1762,89 +1746,49 @@
       "style",
       "eHow"
     ],
-    "spatial": "The text 'style' is centered on the magenta background. The text 'eHow' is centered on the white background.",
+    "spatial": "The text 'style' is centered on the magenta background in the first frame. The text 'eHow' is centered on the white background in the second frame.",
     "parse_success": true,
     "chunk_idx": 38,
     "video_id": "gpHND4vZKwg"
   },
   {
     "time": [
-      78,
-      80
+      39,
+      40
     ],
     "visible_entities": [
       {
-        "desc": "green text logo 'eHow' with a 3D folded ribbon style and gradient shading",
-        "action": "disappearing from view",
+        "desc": "green stylized text logo reading 'eHow' with a folded ribbon effect",
+        "action": "static",
         "position": "center"
-      },
-      {
-        "desc": "small green rectangular fragment of the logo",
-        "action": "falling downwards",
-        "position": "center-left"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "The green 'eHow' logo is visible in the center of the screen.",
+        "fact": "The text 'eHow' is displayed in the center of the screen.",
         "confidence": 1.0
       },
       {
-        "fact": "The logo disappears, leaving only a small green fragment.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The green fragment falls downwards.",
+        "fact": "The logo features a gradient green color scheme.",
         "confidence": 1.0
       }
     ],
     "ocr": [
       "eHow"
     ],
-    "spatial": "The 'eHow' logo is centered on the white background. A small green fragment is located below the position where the main logo was.",
+    "spatial": "The green 'eHow' logo is centered on a plain white background.",
     "parse_success": true,
     "chunk_idx": 39,
     "video_id": "gpHND4vZKwg"
   },
   {
     "time": [
-      80,
-      82
+      40,
+      41
     ],
     "visible_entities": [
       {
-        "desc": "white sans-serif text reading 'video filmed by Steven Watkins'",
-        "action": "static",
-        "position": "center-right"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "The text 'video filmed by Steven Watkins' is displayed on the screen.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The background is solid black.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [
-      "video filmed by",
-      "Steven Watkins"
-    ],
-    "spatial": "The white text is positioned to the right of the center of the black background.",
-    "parse_success": true,
-    "chunk_idx": 40,
-    "video_id": "gpHND4vZKwg"
-  },
-  {
-    "time": [
-      82,
-      84
-    ],
-    "visible_entities": [
-      {
-        "desc": "white sans-serif text",
+        "desc": "white text on a black background reading 'video filmed by Steven Watkins'",
         "action": "static",
         "position": "right"
       }
@@ -1855,7 +1799,38 @@
         "confidence": 1.0
       },
       {
-        "fact": "The text remains static throughout the duration.",
+        "fact": "The text is white and positioned on the right side of the black frame.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "video filmed by",
+      "Steven Watkins"
+    ],
+    "spatial": "The text 'video filmed by Steven Watkins' is located on the right side of the black background.",
+    "parse_success": true,
+    "chunk_idx": 40,
+    "video_id": "gpHND4vZKwg"
+  },
+  {
+    "time": [
+      41,
+      42
+    ],
+    "visible_entities": [
+      {
+        "desc": "white sans-serif text reading 'video filmed by' on the top line and 'Steven Watkins' on the bottom line",
+        "action": "static",
+        "position": "right"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The text 'video filmed by Steven Watkins' is displayed on the screen.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The text is positioned on the right side of the frame.",
         "confidence": 1.0
       }
     ],

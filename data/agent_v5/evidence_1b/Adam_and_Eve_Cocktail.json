@@ -2,28 +2,30 @@
   {
     "time": [
       0,
-      2
+      1
     ],
     "visible_entities": [
       {
-        "desc": "clear glass bottle with a textured, molded glass base, containing a clear liquid, featuring a beige rectangular label with black text",
+        "desc": "clear glass bottle with embossed lettering on the upper body and a beige rectangular label on the lower body",
         "action": "static",
-        "position": "center"
+        "position": "center",
+        "id": "bottle_tequila_cristalino_1"
       },
       {
-        "desc": "metallic surface with parallel horizontal ridges or grooves",
+        "desc": "beige label with black text reading '100% AGAVE', 'TEQUILA AÑEJO', 'CRISTALINO', 'Net Cont. 750 ml', '50% Alc. by Vol.', and a signature",
+        "action": "static",
+        "position": "center",
+        "id": "bottle_tequila_cristalino_1"
+      },
+      {
+        "desc": "metallic surface with parallel ridges or slats",
         "action": "static",
         "position": "bottom"
-      },
-      {
-        "desc": "beige rectangular label with black text in a sans-serif font, displaying product details and a signature",
-        "action": "static",
-        "position": "center"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "The glass bottle is resting on a ridged metallic surface.",
+        "fact": "A clear glass bottle is sitting on a metallic surface.",
         "confidence": 1.0
       },
       {
@@ -31,11 +33,7 @@
         "confidence": 1.0
       },
       {
-        "fact": "The bottle contains a clear liquid, identified as tequila.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The label indicates the volume is 750 ml and alcohol content is 50% Alc. by Vol.",
+        "fact": "The label indicates the contents are 'CRISTALINO' and '50% Alc. by Vol.'.",
         "confidence": 1.0
       }
     ],
@@ -45,44 +43,52 @@
       "TEQUILA AÑEJO",
       "CRISTALINO",
       "Net Cont. 750 ml",
-      "PRODUCTO HECHO EN MÉXICO",
+      "PRODUCTO HECHO EN MEXICO",
       "50% Alc. by Vol.",
       "BATCH",
-      "No. 7",
-      "09/04/21"
+      "No. 7"
     ],
-    "spatial": "The glass bottle is positioned in the center of the frame, resting on top of the metallic surface. The beige label is affixed to the front of the bottle, situated above the textured glass base.",
+    "spatial": "The glass bottle is positioned in the center of the frame, resting on top of the metallic ridged surface. The beige label is affixed to the lower front portion of the bottle, below the embossed text.",
     "parse_success": true,
     "chunk_idx": 0,
     "video_id": "Adam_and_Eve_Cocktail",
-    "state_changes": [],
-    "_rescued": "parse"
+    "state_changes": []
   },
   {
     "time": [
-      2,
-      4
+      1,
+      2
     ],
     "visible_entities": [
       {
-        "desc": "person with a tall dark mohawk hairstyle, shaved sides, wearing a red and black plaid flannel shirt",
+        "desc": "person with a tall brown mohawk hairstyle, shaved sides, wearing a red and black plaid flannel shirt",
         "action": "pouring liquid from a bottle into a glass",
-        "position": "center"
+        "position": "center",
+        "id": "person_bartender_1"
       },
       {
         "desc": "dark glass bottle with a silver pour spout",
         "action": "being held and tilted by the person",
-        "position": "center"
+        "position": "center",
+        "id": "bottle_generic_clear_1"
       },
       {
-        "desc": "clear glass bottles with labels, arranged in rows",
-        "action": "static",
-        "position": "background"
+        "desc": "clear glass tumbler",
+        "action": "receiving liquid",
+        "position": "center foreground",
+        "id": "glass_serving_1"
       },
       {
-        "desc": "blue rectangular sign with yellow and white text",
+        "desc": "shelves filled with various liquor bottles",
         "action": "static",
-        "position": "background right"
+        "position": "background",
+        "id": "shelves_liquor_1"
+      },
+      {
+        "desc": "book with 'NOW 1919' text on the cover",
+        "action": "static",
+        "position": "background right",
+        "id": "book_now_1919_1"
       }
     ],
     "atomic_facts": [
@@ -95,365 +101,397 @@
         "confidence": 1.0
       },
       {
-        "fact": "The person is smiling while pouring.",
+        "fact": "The person is holding a bar tool or glass with their left hand.",
         "confidence": 1.0
       },
       {
-        "fact": "The background shelves are stocked with various liquor bottles.",
+        "fact": "The person is smiling while pouring the drink.",
         "confidence": 1.0
       },
       {
-        "fact": "A sign on the shelf reads 'NOW 1919'.",
+        "fact": "The background shelves are stocked with numerous bottles of alcohol.",
         "confidence": 1.0
       }
     ],
     "ocr": [
       "NOW 1919"
     ],
-    "spatial": "The person is standing behind the bar counter. The shelves with bottles are behind the person. The blue sign is to the right of the person on the shelf.",
+    "spatial": "The person is standing behind the bar counter. The shelves of liquor bottles are behind the person. The book with the text 'NOW 1919' is on a shelf to the right of the person. The glass is on the counter in front of the person.",
     "parse_success": true,
     "chunk_idx": 1,
     "video_id": "Adam_and_Eve_Cocktail",
-    "state_changes": [],
-    "_rescued": "parse"
+    "state_changes": [
+      "Bartender starts pouring liquid from a bottle into a glass."
+    ]
   },
   {
     "time": [
-      4,
-      6
+      2,
+      3
     ],
     "visible_entities": [
       {
-        "desc": "man with a mohawk hairstyle, shaved sides, wearing a red and black plaid flannel shirt",
+        "desc": "man with a black mohawk hairstyle and shaved sides, wearing a red and black plaid flannel shirt",
         "action": "pouring liquid from a bottle into a jigger",
-        "position": "center"
+        "position": "center",
+        "id": "person_bartender_1"
       },
       {
         "desc": "clear glass bottle with a metal pour spout containing yellow liquid",
         "action": "being tilted to pour",
-        "position": "center"
+        "position": "center",
+        "id": "bottle_generic_yellow_1"
       },
       {
         "desc": "metal jigger",
         "action": "being held",
-        "position": "center"
+        "position": "center",
+        "id": "tool_jigger_1"
       },
       {
-        "desc": "shelves filled with various liquor bottles",
+        "desc": "glass mixing pitcher",
         "action": "static",
-        "position": "background"
+        "position": "bottom center",
+        "id": "glass_mixing_vessel_1"
       },
       {
-        "desc": "clear glass pitcher",
+        "desc": "shelves stocked with various liquor bottles",
         "action": "static",
-        "position": "foreground"
+        "position": "background",
+        "id": "shelves_liquor_1"
+      },
+      {
+        "desc": "poster with colorful text",
+        "action": "static",
+        "position": "background right",
+        "id": "poster_now_dig_1"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "The man is pouring yellow liquid from a bottle into a metal jigger.",
+        "fact": "A man with a mohawk is pouring yellow liquid from a bottle into a metal jigger.",
         "confidence": 1.0
       },
       {
-        "fact": "The man is holding the jigger in his left hand and the bottle in his right hand.",
+        "fact": "The jigger is held over a glass mixing pitcher.",
         "confidence": 1.0
       },
       {
-        "fact": "A clear glass pitcher is positioned below the jigger.",
+        "fact": "The background features shelves filled with liquor bottles.",
         "confidence": 1.0
       },
       {
-        "fact": "Shelves stocked with liquor bottles are visible behind the man.",
+        "fact": "A poster with the text 'NOW 1919' is visible on the wall.",
         "confidence": 1.0
       }
     ],
     "ocr": [
-      "NOW 1919"
+      "NOW",
+      "1919"
     ],
-    "spatial": "The man is standing in the center of the frame, in front of shelves filled with bottles. He is holding the bottle above the jigger, which is positioned over the glass pitcher in the foreground. A poster with text is visible on the wall to the right of the man.",
+    "spatial": "The man in the red plaid shirt is standing behind the bar counter. He is holding the bottle in his right hand and the jigger in his left hand, positioned above the glass pitcher. The shelves of liquor bottles are behind the man. The 'NOW 1919' poster is to the right of the man on the wall.",
     "parse_success": true,
     "chunk_idx": 2,
     "video_id": "Adam_and_Eve_Cocktail",
-    "state_changes": [],
-    "_rescued": "parse"
+    "state_changes": [
+      "Action shifts to pouring liquid from a bottle into a jigger."
+    ]
   },
   {
     "time": [
-      6,
-      8
+      3,
+      4
     ],
     "visible_entities": [
       {
-        "desc": "person with a black mohawk hairstyle, shaved sides, wearing a red and black plaid flannel shirt",
+        "desc": "person with a tall black mohawk hairstyle, shaved sides, wearing a red and black plaid flannel shirt",
         "action": "pouring liquid from a bottle into a jigger",
-        "position": "center"
+        "position": "center",
+        "id": "person_bartender_1"
       },
       {
-        "desc": "clear glass bottle containing yellowish liquid with a silver pour spout",
+        "desc": "clear glass bottle with a metal pour spout, containing a yellowish liquid",
         "action": "being held and tilted by the person",
-        "position": "center"
+        "position": "center",
+        "id": "bottle_generic_yellow_1"
       },
       {
         "desc": "metal jigger (measuring tool)",
-        "action": "being held in the left hand to catch liquid",
-        "position": "center"
+        "action": "being held in the person's left hand",
+        "position": "center",
+        "id": "tool_jigger_1"
       },
       {
         "desc": "shelves filled with various liquor bottles",
         "action": "static",
-        "position": "background"
+        "position": "background",
+        "id": "shelves_liquor_1"
       },
       {
-        "desc": "poster with colorful text and graphics",
+        "desc": "blue poster with yellow and red text",
         "action": "static",
-        "position": "background right"
-      },
-      {
-        "desc": "perforated metal bar mat",
-        "action": "static",
-        "position": "foreground"
+        "position": "background right",
+        "id": "poster_now_dig_1"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "The person is pouring a yellowish liquid from a bottle into a metal jigger.",
+        "fact": "The person is pouring a yellow liquid from a bottle into a metal jigger.",
         "confidence": 1.0
       },
       {
-        "fact": "The person is holding the bottle with their right hand and the jigger with their left hand.",
+        "fact": "The person is holding the bottle in their right hand and the jigger in their left hand.",
         "confidence": 1.0
       },
       {
-        "fact": "The liquid is flowing from the bottle's spout into the measuring tool.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The background features shelves stocked with numerous glass bottles of alcohol.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "A poster with the text 'NOW 1918' is visible on the wall.",
+        "fact": "The shelves of liquor bottles are located behind the person.",
         "confidence": 1.0
       }
     ],
     "ocr": [
       "NOW 1918"
     ],
-    "spatial": "The person in the plaid shirt is standing behind the bar counter. The shelves of liquor bottles are behind the person. The poster is to the right of the person on the wall. The metal jigger is below the bottle being poured.",
+    "spatial": "The person is in the center of the frame, standing in front of the shelves of liquor bottles. The blue poster is to the right of the person in the background. The bottle is being held above the jigger to pour liquid into it.",
     "parse_success": true,
     "chunk_idx": 3,
     "video_id": "Adam_and_Eve_Cocktail",
-    "state_changes": [],
-    "_rescued": "parse"
+    "state_changes": []
   },
   {
     "time": [
-      8,
-      10
+      4,
+      5
     ],
     "visible_entities": [
       {
-        "desc": "person wearing a red and black plaid flannel shirt",
-        "action": "pouring liquid into a glass",
-        "position": "center"
+        "desc": "person with fair skin, wearing a red and black plaid long-sleeved shirt",
+        "action": "pouring liquid from a jigger into a glass",
+        "position": "foreground",
+        "id": "person_bartender_1"
       },
       {
-        "desc": "short glass containing a pinkish-red liquid and ice",
-        "action": "receiving liquid",
-        "position": "center"
+        "desc": "clear glass containing a pinkish-red liquid",
+        "action": "being filled with liquid",
+        "position": "center",
+        "id": "glass_serving_1"
       },
       {
-        "desc": "metal jigger",
-        "action": "being held and tilted",
-        "position": "center"
+        "desc": "silver metal jigger",
+        "action": "being held and tilted by the person",
+        "position": "center",
+        "id": "tool_jigger_1"
       },
       {
-        "desc": "clear glass bottle with a metal pour spout",
+        "desc": "clear plastic pour bottle with a silver spout",
         "action": "static",
-        "position": "right"
+        "position": "top right"
       },
       {
-        "desc": "perforated metal bar mat",
+        "desc": "clear glass bottle with a black pour spout containing a yellowish liquid",
+        "action": "being held in the right hand",
+        "position": "right",
+        "id": "bottle_generic_yellow_1"
+      },
+      {
+        "desc": "silver perforated metal bar mat",
         "action": "static",
-        "position": "center"
+        "position": "center",
+        "id": "surface_bar_mat_1"
       },
       {
-        "desc": "bottle with a yellowish liquid",
-        "action": "being held",
-        "position": "right"
+        "desc": "metal container filled with ice cubes",
+        "action": "static",
+        "position": "center bottom",
+        "id": "substance_ice_1"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "The person is pouring liquid from a metal jigger into a glass.",
+        "fact": "The person is pouring liquid from a silver jigger into a glass.",
         "confidence": 1.0
       },
       {
-        "fact": "The glass contains a pinkish-red mixture.",
+        "fact": "The person is holding a bottle of yellow liquid in their right hand.",
         "confidence": 1.0
       },
       {
-        "fact": "The person is holding a bottle with yellowish liquid in their right hand.",
+        "fact": "The glass is sitting on a perforated metal bar mat.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A container of ice is located below the bar mat.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The person is positioned behind the bar counter, with their hands extending over the perforated metal mat. The glass is on the mat, directly below the jigger being poured. A clear bottle is sitting on the mat to the right of the glass.",
+    "spatial": "The person in the red plaid shirt is in the foreground, holding a jigger over a glass. The glass is positioned on top of a silver perforated metal bar mat. To the right of the glass, the person holds a bottle of yellow liquid, and a clear pour bottle sits on the mat further to the right. Below the bar mat, a container of ice is visible.",
     "parse_success": true,
     "chunk_idx": 4,
     "video_id": "Adam_and_Eve_Cocktail",
-    "state_changes": [],
-    "_rescued": "parse"
+    "state_changes": [
+      "Bartender pours measured liquid from the jigger into a glass."
+    ]
   },
   {
     "time": [
-      10,
-      12
+      5,
+      6
     ],
     "visible_entities": [
       {
         "desc": "person wearing a red and black plaid flannel shirt",
-        "action": "reaching into a compartment and handling bottles",
-        "position": "center"
+        "action": "reaching into the sink",
+        "position": "foreground",
+        "id": "person_bartender_1"
       },
       {
-        "desc": "metallic perforated bar counter with a curved edge",
+        "desc": "stainless steel sink filled with bottles and fruit",
         "action": "static",
-        "position": "top"
+        "position": "center",
+        "id": "surface_sink_1"
       },
       {
-        "desc": "assorted glass and plastic bottles with various colored caps (orange, yellow, white)",
-        "action": "being arranged",
-        "position": "center"
+        "desc": "flexible metal faucet hose",
+        "action": "static",
+        "position": "top",
+        "id": "surface_sink_1"
       },
       {
-        "desc": "beige square tiled floor",
+        "desc": "perforated metal drainboard",
+        "action": "static",
+        "position": "right",
+        "id": "surface_bar_mat_1"
+      },
+      {
+        "desc": "beige tiled floor",
         "action": "static",
         "position": "bottom"
-      },
-      {
-        "desc": "flexible metal hose with a red nozzle attachment",
-        "action": "static",
-        "position": "top left"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "The person reaches their hands into a recessed storage area below the counter.",
+        "fact": "person reaches into the sink with their left hand",
         "confidence": 1.0
       },
       {
-        "fact": "The person picks up and moves bottles within the compartment.",
+        "fact": "person holds a clear plastic bottle with their right hand",
         "confidence": 1.0
       },
       {
-        "fact": "The bottles are stored in a dark, recessed shelf underneath the metal counter.",
+        "fact": "sink contains various bottles and an orange",
         "confidence": 1.0
       },
       {
-        "fact": "A flexible hose hangs near the top left of the storage area.",
+        "fact": "faucet hose is positioned above the sink contents",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The person is positioned in front of the recessed storage area, reaching down into it. The metallic perforated counter is above the storage compartment where the bottles are kept. The tiled floor is below the person and the counter structure.",
+    "spatial": "The person in the red and black plaid shirt is standing in front of the stainless steel sink. The sink is located to the left of the perforated metal drainboard. The flexible metal faucet hose hangs above the bottles inside the sink.",
     "parse_success": true,
     "chunk_idx": 5,
     "video_id": "Adam_and_Eve_Cocktail",
-    "state_changes": [],
-    "_rescued": "parse"
+    "state_changes": [
+      "Bartender moves to the sink area and reaches in."
+    ]
   },
   {
     "time": [
-      12,
-      14
+      6,
+      7
     ],
     "visible_entities": [
       {
         "desc": "person wearing a red and black plaid flannel shirt",
-        "action": "holding a dropper and manipulating objects",
-        "position": "foreground"
-      },
-      {
-        "desc": "glass dropper with a blue rubber bulb and clear glass tube",
-        "action": "being held by the person",
-        "position": "center"
-      },
-      {
-        "desc": "small glass bowl containing a reddish-orange liquid",
-        "action": "static",
-        "position": "center"
-      },
-      {
-        "desc": "perforated metal drip tray",
-        "action": "static",
-        "position": "center"
-      },
-      {
-        "desc": "small metal jigger",
-        "action": "static",
-        "position": "left"
+        "action": "holding a dropper and manipulating a bottle",
+        "position": "foreground",
+        "id": "person_bartender_1"
       },
       {
         "desc": "small glass bottle with a blue cap",
         "action": "being held",
-        "position": "bottom"
+        "position": "right"
+      },
+      {
+        "desc": "glass dropper with a white rubber bulb",
+        "action": "being held",
+        "position": "center",
+        "id": "tool_dropper_1"
+      },
+      {
+        "desc": "small glass bowl containing red liquid",
+        "action": "static",
+        "position": "center"
+      },
+      {
+        "desc": "perforated metal bar mat",
+        "action": "static",
+        "position": "center",
+        "id": "surface_bar_mat_1"
+      },
+      {
+        "desc": "wooden bar counter",
+        "action": "static",
+        "position": "top"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "The person is holding a dropper filled with clear liquid over a bowl.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The person's left hand is reaching for a small bottle on a lower shelf.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "A small bowl of reddish liquid sits on the metal tray.",
+        "fact": "The person holds a dropper filled with clear liquid above a small glass bowl containing red liquid.",
         "confidence": 1.0
       },
       {
         "fact": "The person is wearing a red and black plaid shirt.",
         "confidence": 1.0
+      },
+      {
+        "fact": "A small glass bottle with a blue cap is held in the person's right hand.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The glass bowl sits on a perforated metal mat on the bar counter.",
+        "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The person is positioned in the foreground, holding the dropper above the metal tray. The bowl of liquid is on the tray, to the right of the metal jigger. The person's other hand is reaching below the tray level towards a shelf containing bottles.",
+    "spatial": "The person in the red and black plaid shirt is in the foreground, positioned behind the bar counter. The perforated metal mat is on the counter, with the glass bowl containing red liquid resting on it. The person's hands are holding the dropper and bottle above the mat and bowl.",
     "parse_success": true,
     "chunk_idx": 6,
     "video_id": "Adam_and_Eve_Cocktail",
-    "state_changes": [],
-    "_rescued": "parse"
+    "state_changes": [
+      "Bartender uses a dropper to add liquid to a small bowl."
+    ]
   },
   {
     "time": [
-      14,
-      16
+      7,
+      8
     ],
     "visible_entities": [
       {
-        "desc": "person wearing a red and black plaid shirt",
-        "action": "static",
-        "position": "background"
+        "desc": "person wearing a red and black plaid flannel shirt",
+        "action": "smiling",
+        "position": "background",
+        "id": "person_bartender_1"
       },
       {
-        "desc": "clear glass jar containing clear liquid and a gold-colored textured object",
+        "desc": "clear glass beaker containing clear liquid and a gold-colored textured object",
         "action": "static",
-        "position": "foreground"
+        "position": "foreground",
+        "id": "glass_beaker_1"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A clear glass jar is positioned in the foreground.",
+        "fact": "A person in a red and black plaid shirt is smiling.",
         "confidence": 1.0
       },
       {
-        "fact": "A person in a red and black plaid shirt is visible in the background.",
+        "fact": "A glass beaker sits in the foreground containing clear liquid.",
         "confidence": 1.0
       },
       {
-        "fact": "The jar contains a gold-colored textured object submerged in clear liquid.",
+        "fact": "A gold-colored object is submerged at the bottom of the beaker.",
         "confidence": 1.0
       }
     ],
@@ -461,60 +499,64 @@
       "100%",
       "Net Cont. 750 ml"
     ],
-    "spatial": "The clear glass jar is in front of the person wearing the red and black plaid shirt. The gold-colored object is inside the jar, resting at the bottom.",
+    "spatial": "The glass beaker is in the foreground, positioned in front of the person. The person is visible in the background behind the beaker. The gold object is inside the beaker at the bottom.",
     "parse_success": true,
     "chunk_idx": 7,
     "video_id": "Adam_and_Eve_Cocktail",
-    "state_changes": [],
-    "_rescued": "parse"
+    "state_changes": []
   },
   {
     "time": [
-      16,
-      18
+      8,
+      9
     ],
     "visible_entities": [
       {
         "desc": "person wearing a red and black plaid flannel shirt",
-        "action": "pouring liquid from a bottle",
-        "position": "center"
+        "action": "holding a bottle and a jigger",
+        "position": "center",
+        "id": "person_bartender_1"
       },
       {
-        "desc": "clear glass bottle with a silver pour spout, containing a clear liquid",
-        "action": "being tilted to pour",
-        "position": "left"
+        "desc": "clear glass bottle with a silver pour spout and a white label",
+        "action": "being held and tilted",
+        "position": "left",
+        "id": "bottle_generic_clear_1"
       },
       {
-        "desc": "silver metal jigger",
-        "action": "being held in hand",
-        "position": "right"
+        "desc": "metal jigger",
+        "action": "being held",
+        "position": "right",
+        "id": "tool_jigger_1"
       },
       {
-        "desc": "clear glass tumbler with a cut-glass diamond pattern at the base, containing a small amount of red liquid",
+        "desc": "cut-glass tumbler with a diamond pattern containing red liquid",
         "action": "static",
-        "position": "bottom center"
+        "position": "bottom center",
+        "id": "glass_serving_1"
       },
       {
-        "desc": "clear glass bottle with a white label featuring a gold sunburst design and black text",
-        "action": "being held up",
-        "position": "foreground"
+        "desc": "metallic perforated surface",
+        "action": "static",
+        "position": "background",
+        "id": "surface_bar_mat_1"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A person is pouring a clear liquid from a bottle into a glass tumbler.",
+        "fact": "A person in a red plaid shirt is holding a bottle and a jigger.",
         "confidence": 1.0
       },
       {
-        "fact": "The glass tumbler already contains a small amount of red liquid.",
+        "fact": "The bottle is being tilted over a glass.",
         "confidence": 1.0
       },
       {
-        "fact": "The person is holding a silver jigger in their right hand.",
+        "fact": "The glass contains a small amount of red liquid.",
         "confidence": 1.0
       },
       {
-        "fact": "The label on the bottle reads '100% AGAVE' and 'CRISTALINO'.",
+        "fact": "The bottle label reads '100% AGAVE' and 'CRISTALINO'.",
         "confidence": 1.0
       }
     ],
@@ -523,33 +565,37 @@
       "AGAVE",
       "CRISTALINO"
     ],
-    "spatial": "The person in the plaid shirt is in the center, holding a bottle in their left hand and a jigger in their right. The bottle is positioned above the glass tumbler, which sits on a surface below. The second bottle with the sunburst label is held up in the foreground, obscuring the background.",
+    "spatial": "The person in the red plaid shirt is in the center, holding a bottle in their left hand and a jigger in their right. The bottle is positioned above and to the left of the cut-glass tumbler. The tumbler is on a surface in the foreground, below the person's hands.",
     "parse_success": true,
     "chunk_idx": 8,
     "video_id": "Adam_and_Eve_Cocktail",
-    "state_changes": [],
-    "_rescued": "parse"
+    "state_changes": [
+      "Bartender resumes pouring from a bottle into a jigger."
+    ]
   },
   {
     "time": [
-      18,
-      20
+      9,
+      10
     ],
     "visible_entities": [
       {
         "desc": "person wearing a red and black plaid flannel shirt",
         "action": "pouring liquid",
-        "position": "center"
+        "position": "center",
+        "id": "person_bartender_1"
       },
       {
         "desc": "clear glass bottle with a silver metal pour spout",
         "action": "being tilted",
-        "position": "top left"
+        "position": "center",
+        "id": "bottle_generic_clear_1"
       },
       {
-        "desc": "small metal jigger (measuring cup)",
-        "action": "being filled",
-        "position": "center bottom"
+        "desc": "silver metal jigger",
+        "action": "receiving liquid",
+        "position": "center",
+        "id": "tool_jigger_1"
       },
       {
         "desc": "clear liquid",
@@ -559,424 +605,452 @@
     ],
     "atomic_facts": [
       {
-        "fact": "The person is holding the glass bottle in their left hand.",
+        "fact": "A person is pouring a clear liquid from a glass bottle into a metal jigger.",
         "confidence": 1.0
       },
       {
-        "fact": "The person is holding the metal jigger in their right hand.",
+        "fact": "The liquid flows in a steady stream from the bottle's spout.",
         "confidence": 1.0
       },
       {
-        "fact": "Clear liquid is being poured from the bottle into the jigger.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The liquid flows in a thin stream from the spout.",
+        "fact": "The person holds the bottle with their left hand and the jigger with their right hand.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The person in the red plaid shirt is positioned behind the pouring action. The glass bottle is held above the metal jigger. The liquid flows from the bottle down into the jigger.",
+    "spatial": "The person in the red and black plaid shirt is holding the glass bottle above the metal jigger. The clear liquid is flowing from the bottle into the jigger. The jigger is positioned below the bottle's spout.",
     "parse_success": true,
     "chunk_idx": 9,
     "video_id": "Adam_and_Eve_Cocktail",
-    "state_changes": [],
-    "_rescued": "parse"
+    "state_changes": []
   },
   {
     "time": [
-      20,
-      22
+      10,
+      11
     ],
     "visible_entities": [
       {
         "desc": "person wearing a red and black plaid flannel shirt",
-        "action": "pouring liquid from a bottle",
-        "position": "center"
+        "action": "pouring liquid",
+        "position": "center",
+        "id": "person_bartender_1"
       },
       {
-        "desc": "clear glass bottle with a metal pour spout",
-        "action": "being tilted to pour liquid",
-        "position": "center"
+        "desc": "clear glass bottle with a metal pour spout containing clear liquid",
+        "action": "being tilted",
+        "position": "top left",
+        "id": "bottle_generic_clear_1"
       },
       {
-        "desc": "silver metal jigger",
-        "action": "being held under the pour spout",
-        "position": "center"
+        "desc": "small metal jigger",
+        "action": "being held",
+        "position": "center",
+        "id": "tool_jigger_1"
       },
       {
-        "desc": "clear glass containing ice cubes and red liquid",
+        "desc": "short glass containing ice and red liquid",
         "action": "static",
-        "position": "center"
+        "position": "center",
+        "id": "glass_serving_1"
       },
       {
         "desc": "perforated metal bar mat",
         "action": "static",
-        "position": "center"
-      },
-      {
-        "desc": "wooden countertop surface",
-        "action": "static",
-        "position": "top"
+        "position": "center",
+        "id": "surface_bar_mat_1"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A person is pouring a clear liquid from a bottle into a silver jigger.",
+        "fact": "A person is pouring a clear liquid from a bottle into a metal jigger.",
         "confidence": 1.0
       },
       {
-        "fact": "The liquid flows from the jigger into a glass filled with ice and red liquid.",
+        "fact": "The liquid flows from the jigger into a glass containing ice and red liquid.",
         "confidence": 1.0
       },
       {
         "fact": "The glass is resting on a perforated metal mat.",
         "confidence": 1.0
-      },
-      {
-        "fact": "The person is wearing a red and black plaid shirt.",
-        "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The person is holding the bottle above the jigger. The jigger is positioned directly over the glass. The glass sits on the metal mat, which is on top of the wooden counter.",
+    "spatial": "The person is holding the glass bottle in their left hand above the metal jigger held in their right hand. The jigger is positioned directly over the short glass, which sits on the metal mat. The metal mat is located above a shelf of bottles.",
     "parse_success": true,
     "chunk_idx": 10,
     "video_id": "Adam_and_Eve_Cocktail",
-    "state_changes": [],
-    "_rescued": "parse"
+    "state_changes": []
   },
   {
     "time": [
-      22,
-      24
+      11,
+      12
     ],
     "visible_entities": [
       {
         "desc": "person wearing a red and black plaid flannel shirt",
-        "action": "pouring liquid from a bottle into a glass",
-        "position": "foreground"
+        "action": "pouring liquid into a glass",
+        "position": "center",
+        "id": "person_bartender_1"
       },
       {
-        "desc": "clear glass bottle with a silver pour spout containing clear liquid",
+        "desc": "clear glass bottle with a silver pour spout",
         "action": "being tilted to pour liquid",
-        "position": "right"
+        "position": "right",
+        "id": "bottle_generic_clear_1"
       },
       {
-        "desc": "short glass containing an orange liquid and ice",
-        "action": "being filled with liquid",
-        "position": "center"
+        "desc": "short glass containing an orange liquid",
+        "action": "being filled",
+        "position": "center",
+        "id": "glass_serving_1"
       },
       {
         "desc": "perforated metal bar mat",
         "action": "static",
-        "position": "center"
+        "position": "center",
+        "id": "surface_bar_mat_1"
       },
       {
-        "desc": "metal ice scoop",
+        "desc": "shelf with various liquor bottles",
         "action": "static",
-        "position": "left"
-      },
-      {
-        "desc": "pile of white ice cubes",
-        "action": "static",
-        "position": "bottom"
+        "position": "bottom",
+        "id": "shelves_liquor_1"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "The person is pouring a clear liquid from a bottle into a glass containing an orange drink.",
+        "fact": "The person is pouring a clear liquid from a bottle into a glass.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The glass contains an orange-colored liquid.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The person is holding the bottle in their right hand.",
         "confidence": 1.0
       },
       {
         "fact": "The glass is resting on a perforated metal bar mat.",
         "confidence": 1.0
-      },
-      {
-        "fact": "A metal ice scoop is lying on the bar mat to the left of the glass.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "A pile of ice cubes is visible below the bar mat.",
-        "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The person in the red and black plaid shirt is holding a clear bottle in their right hand and pouring it into a glass positioned in the center. The glass is on top of a perforated metal bar mat. To the left of the glass, a metal ice scoop rests on the mat. Below the bar mat, a pile of ice cubes is visible.",
+    "spatial": "The person's hands are positioned above the metal bar mat. The glass is located to the left of the bottle being poured. The shelf of bottles is situated below the bar mat.",
     "parse_success": true,
     "chunk_idx": 11,
     "video_id": "Adam_and_Eve_Cocktail",
-    "state_changes": [],
-    "_rescued": "parse"
+    "state_changes": []
   },
   {
     "time": [
-      24,
-      26
+      12,
+      13
     ],
     "visible_entities": [
       {
         "desc": "person wearing a red and black plaid flannel shirt",
         "action": "squeezing a yellow citrus fruit",
-        "position": "left"
+        "position": "left/center",
+        "id": "person_bartender_1"
       },
       {
-        "desc": "yellow citrus fruit, likely a lemon",
+        "desc": "yellow citrus fruit, small, round",
         "action": "being squeezed",
-        "position": "center"
+        "position": "center",
+        "id": "fruit_citrus_1"
       },
       {
         "desc": "glass bottle with clear liquid and a white label",
         "action": "static",
-        "position": "foreground"
+        "position": "foreground",
+        "id": "bottle_generic_clear_1"
       },
       {
-        "desc": "silver perforated metal bar mat",
+        "desc": "metal bar counter with perforated surface",
         "action": "static",
-        "position": "bottom"
+        "position": "foreground/bottom",
+        "id": "surface_bar_mat_1"
       },
       {
-        "desc": "collection of glass liquor bottles with pour spouts",
+        "desc": "collection of glass liquor bottles with various colored caps",
         "action": "static",
-        "position": "bottom right"
+        "position": "background",
+        "id": "shelves_liquor_1"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A person is squeezing a yellow citrus fruit with their hands.",
+        "fact": "A person in a red plaid shirt is squeezing a yellow fruit with their hands.",
         "confidence": 1.0
       },
       {
-        "fact": "The person is wearing a red and black plaid shirt.",
+        "fact": "The person is holding the fruit over a metal bar counter.",
         "confidence": 1.0
       },
       {
-        "fact": "A glass bottle with a label reading '100%' sits on a metal surface.",
+        "fact": "A glass bottle with a label reading '100%' is sitting on the perforated metal surface.",
         "confidence": 1.0
       },
       {
-        "fact": "Various liquor bottles are arranged on the bar counter.",
+        "fact": "Multiple liquor bottles are arranged on the counter behind the person.",
         "confidence": 1.0
       }
     ],
     "ocr": [
       "100%",
-      "750 ml"
+      "Net Cont. 750 ml"
     ],
-    "spatial": "The person in the red plaid shirt is to the left of the frame, holding the yellow fruit. The glass bottle with the '100%' label is in the foreground, sitting on top of the silver perforated metal mat. The collection of liquor bottles is located to the right of the person, near the sink area.",
+    "spatial": "The person in the red plaid shirt is positioned to the left of the frame, holding the yellow fruit in front of their torso. The glass bottle with the '100%' label is in the immediate foreground, sitting on the perforated metal counter. The collection of liquor bottles is located behind the person and the fruit, resting on the bar surface.",
     "parse_success": true,
     "chunk_idx": 12,
     "video_id": "Adam_and_Eve_Cocktail",
-    "state_changes": [],
-    "_rescued": "parse"
+    "state_changes": [
+      "Bartender begins squeezing a citrus fruit by hand."
+    ]
   },
   {
     "time": [
-      26,
-      28
+      13,
+      14
     ],
     "visible_entities": [
       {
         "desc": "person wearing a red and black plaid flannel shirt",
         "action": "squeezing a lemon",
-        "position": "foreground"
+        "position": "foreground",
+        "id": "person_bartender_1"
       },
       {
         "desc": "yellow lemon half",
         "action": "being squeezed",
-        "position": "center"
+        "position": "center",
+        "id": "fruit_citrus_1"
       },
       {
-        "desc": "metal handheld lemon squeezer",
+        "desc": "metal handheld citrus squeezer",
         "action": "being used",
-        "position": "center"
+        "position": "center",
+        "id": "tool_citrus_squeezer_1"
       },
       {
-        "desc": "bar counter with various bottles and a metal drip tray",
+        "desc": "bottles with pour spouts",
         "action": "static",
         "position": "background"
+      },
+      {
+        "desc": "perforated metal bar mat",
+        "action": "static",
+        "position": "bottom right",
+        "id": "surface_bar_mat_1"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A person is squeezing a lemon using a metal handheld squeezer.",
+        "fact": "The person is squeezing a lemon half using a metal handheld citrus squeezer.",
         "confidence": 1.0
       },
       {
-        "fact": "Lemon juice is dripping from the squeezer into a container below.",
+        "fact": "Juice is dripping from the lemon into a container below.",
         "confidence": 1.0
       },
       {
-        "fact": "The person is wearing a red and black plaid shirt.",
+        "fact": "The person is wearing a red and black plaid flannel shirt.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "Bottles with pour spouts are visible on the counter in the background.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The person in the red and black plaid shirt is in the foreground, holding the lemon squeezer. The squeezer is positioned above the bar counter. The bar counter with bottles is behind the person's hands.",
+    "spatial": "The person in the red and black plaid shirt is in the foreground, holding the metal squeezer. The yellow lemon is inside the squeezer. The perforated metal bar mat is to the right of the squeezer. The bottles are behind the person's hands.",
     "parse_success": true,
     "chunk_idx": 13,
     "video_id": "Adam_and_Eve_Cocktail",
-    "state_changes": [],
-    "_rescued": "parse"
+    "state_changes": [
+      "Bartender switches to using a metal citrus squeezer."
+    ]
   },
   {
     "time": [
-      28,
-      30
+      14,
+      15
     ],
     "visible_entities": [
       {
         "desc": "man with a tall dark mohawk hairstyle, shaved sides, wearing a red and black plaid flannel shirt",
-        "action": "shaking a cocktail shaker",
-        "position": "center"
+        "action": "manipulating a long metal bar tool",
+        "position": "center",
+        "id": "person_bartender_1"
       },
       {
-        "desc": "metal cocktail shaker",
-        "action": "being shaken",
-        "position": "center"
+        "desc": "long thin metal bar tool",
+        "action": "being held horizontally",
+        "position": "center",
+        "id": "tool_bar_spoon_1"
       },
       {
-        "desc": "glass bottles with labels on shelves",
+        "desc": "glass mixing vessel containing amber liquid",
         "action": "static",
-        "position": "background"
+        "position": "foreground",
+        "id": "glass_mixing_vessel_1"
       },
       {
-        "desc": "poster with 'NOW 1919' text",
+        "desc": "shelves stocked with various liquor bottles",
         "action": "static",
-        "position": "background right"
+        "position": "background",
+        "id": "shelves_liquor_1"
       },
       {
-        "desc": "clear glass pitcher",
+        "desc": "blue poster with yellow and red text",
         "action": "static",
-        "position": "foreground"
+        "position": "background right",
+        "id": "poster_now_dig_1"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "The man is vigorously shaking a metal cocktail shaker with both hands.",
+        "fact": "The man holds a long metal bar tool horizontally with both hands.",
         "confidence": 1.0
       },
       {
-        "fact": "The man is wearing a red and black plaid shirt.",
+        "fact": "The man is looking down at a glass mixing vessel on the counter.",
         "confidence": 1.0
       },
       {
-        "fact": "The man has a tall, dark mohawk hairstyle.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "Bottles of alcohol are arranged on shelves behind the man.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "A poster with the text 'NOW 1919' is visible on the wall.",
+        "fact": "The poster in the background reads 'NOW 1919'.",
         "confidence": 1.0
       }
     ],
     "ocr": [
       "NOW 1919"
     ],
-    "spatial": "The man is standing behind the bar counter, in front of the shelves of bottles. The 'NOW 1919' poster is on the wall to the right of the man. The glass pitcher is on the counter in front of the man.",
+    "spatial": "The man is standing behind the bar counter. The glass mixing vessel is in front of the man on the counter. The shelves of bottles are behind the man. The 'NOW 1919' poster is to the right of the man in the background.",
     "parse_success": true,
     "chunk_idx": 14,
     "video_id": "Adam_and_Eve_Cocktail",
-    "state_changes": [],
-    "_rescued": "parse"
+    "state_changes": [
+      "Bartender manipulates a long metal bar tool over a mixing vessel."
+    ]
   },
   {
     "time": [
-      30,
-      32
+      15,
+      16
     ],
     "visible_entities": [
       {
-        "desc": "person with short dark hair, wearing a red and black plaid flannel shirt",
-        "action": "holding a long metal tool",
-        "position": "background"
+        "desc": "person wearing a red and black plaid flannel shirt",
+        "action": "holding a long metal tool over a glass",
+        "position": "center",
+        "id": "person_bartender_1"
       },
       {
-        "desc": "clear glass bottle with a silver pour spout, containing a clear liquid",
+        "desc": "clear glass bottle with a silver pour spout and a black label reading 'RUTTER'",
         "action": "static",
-        "position": "left foreground"
+        "position": "left foreground",
+        "id": "bottle_rutter_1"
       },
       {
-        "desc": "short metal cylinder with a bright orange and yellow flame emerging from the top",
+        "desc": "short clear glass containing a pinkish-red liquid",
+        "action": "static",
+        "position": "center foreground",
+        "id": "glass_serving_1"
+      },
+      {
+        "desc": "long curved metal bar tool with a black handle",
+        "action": "being held by the person",
+        "position": "center",
+        "id": "tool_bar_spoon_1"
+      },
+      {
+        "desc": "metallic device with a nozzle emitting a bright yellow flame and sparks",
         "action": "burning",
-        "position": "center foreground"
-      },
-      {
-        "desc": "clear glass tumbler containing a pinkish-red liquid",
-        "action": "static",
-        "position": "center foreground"
-      },
-      {
-        "desc": "long, thin, dark metal tool with a curved end",
-        "action": "being held",
-        "position": "center foreground"
+        "position": "right foreground",
+        "id": "tool_torch_1"
       },
       {
         "desc": "perforated metal bar mat",
         "action": "static",
-        "position": "bottom foreground"
+        "position": "bottom",
+        "id": "surface_bar_mat_1"
+      },
+      {
+        "desc": "shelves filled with various liquor bottles",
+        "action": "static",
+        "position": "background",
+        "id": "shelves_liquor_1"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A bright orange and yellow flame is burning inside a small metal cylinder.",
+        "fact": "A person in a red plaid shirt is holding a long metal tool over a glass.",
         "confidence": 1.0
       },
       {
-        "fact": "The person is holding a long metal tool over the bar counter.",
+        "fact": "A metallic device on the bar counter is emitting a yellow flame and sparks.",
         "confidence": 1.0
       },
       {
-        "fact": "A clear glass bottle with a pour spout sits on the left side of the counter.",
+        "fact": "A clear bottle with a black label reading 'RUTTER' is sitting on the bar mat.",
         "confidence": 1.0
       },
       {
-        "fact": "A glass containing pink liquid is positioned next to the burning cylinder.",
+        "fact": "A glass containing pink liquid is placed on the perforated metal mat.",
         "confidence": 1.0
       }
     ],
     "ocr": [
-      "PLANTATION"
+      "RUTTER"
     ],
-    "spatial": "The person in the red plaid shirt is standing behind the bar counter. In the foreground, the clear glass bottle is to the left of the burning metal cylinder. The glass with pink liquid is to the right of the burning cylinder. The long metal tool is held by the person and extends over the counter near the glass.",
+    "spatial": "The person in the red plaid shirt is standing behind the bar counter. The clear bottle with the 'RUTTER' label is to the left of the glass containing pink liquid. The flaming metallic device is to the right of the glass. The person is holding a long metal tool that extends over the glass.",
     "parse_success": true,
     "chunk_idx": 15,
     "video_id": "Adam_and_Eve_Cocktail",
-    "state_changes": [],
-    "_rescued": "parse"
+    "state_changes": [
+      "Torch is ignited, emitting flame and sparks."
+    ]
   },
   {
     "time": [
-      32,
-      34
+      16,
+      17
     ],
     "visible_entities": [
       {
-        "desc": "clear glass bottle with a silver pour spout, containing clear liquid, featuring a black label with white text and a sunburst pattern near the base",
+        "desc": "clear glass bottle with a silver metal pour spout and a black label with white text",
         "action": "static",
-        "position": "left"
+        "position": "left",
+        "id": "bottle_rutter_1"
       },
       {
-        "desc": "silver metallic device with a funnel-shaped top",
-        "action": "emitting a large yellow and orange flame",
+        "desc": "silver metal cylindrical device with a funnel-shaped top",
+        "action": "emitting flame",
+        "position": "center",
+        "id": "tool_torch_1"
+      },
+      {
+        "desc": "bright yellow and orange flame",
+        "action": "burning upwards",
         "position": "center"
       },
       {
         "desc": "person wearing a red and black plaid shirt",
         "action": "static",
-        "position": "background"
+        "position": "background",
+        "id": "person_bartender_1"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A silver device is emitting a large yellow and orange flame.",
+        "fact": "A flame is burning upwards from the top of the silver metal device.",
         "confidence": 1.0
       },
       {
-        "fact": "Sparks are flying upwards from the flame.",
+        "fact": "Sparks are flying around the flame.",
         "confidence": 1.0
       },
       {
@@ -987,811 +1061,847 @@
     "ocr": [
       "RUM"
     ],
-    "spatial": "The glass bottle is to the left of the silver device. The silver device is in front of the person wearing the plaid shirt. The flame is rising above the silver device.",
+    "spatial": "The glass bottle is to the left of the silver metal device. The flame is rising from the top of the metal device. The person in the plaid shirt is in the background behind the bottle and the device.",
     "parse_success": true,
     "chunk_idx": 16,
     "video_id": "Adam_and_Eve_Cocktail",
-    "state_changes": [],
-    "_rescued": "parse"
+    "state_changes": []
   },
   {
     "time": [
-      34,
-      36
+      17,
+      18
     ],
     "visible_entities": [
       {
-        "desc": "man with short dark hair, wearing a red and black plaid flannel shirt",
-        "action": "holding a smoking gun and directing smoke into a glass",
-        "position": "center"
+        "desc": "person with short dark hair, wearing a red and black plaid long-sleeved shirt",
+        "action": "holding a black hose and a tool",
+        "position": "center",
+        "id": "person_bartender_1"
       },
       {
-        "desc": "smoking gun with a black hose and a brass-colored nozzle",
-        "action": "being held and manipulated by the man",
-        "position": "center/foreground"
+        "desc": "black flexible hose with a metal connector tip",
+        "action": "being inserted into a glass",
+        "position": "foreground",
+        "id": "tool_smoke_infuser_1"
       },
       {
-        "desc": "clear glass beaker or flask",
-        "action": "receiving smoke from the smoking gun",
-        "position": "center foreground"
-      },
-      {
-        "desc": "cocktail glass containing a reddish liquid and a pineapple-shaped garnish",
+        "desc": "clear glass beaker with a wide base",
         "action": "static",
-        "position": "left foreground"
+        "position": "foreground",
+        "id": "glass_beaker_1"
+      },
+      {
+        "desc": "clear glass containing a red liquid and a yellow garnish",
+        "action": "static",
+        "position": "left",
+        "id": "glass_serving_1"
       },
       {
         "desc": "shelves filled with various liquor bottles",
         "action": "static",
-        "position": "background"
+        "position": "background",
+        "id": "shelves_liquor_1"
+      },
+      {
+        "desc": "black tool with a gold-colored nozzle",
+        "action": "being held",
+        "position": "left",
+        "id": "tool_smoke_infuser_1"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "The man is holding a smoking gun device in his hands.",
+        "fact": "The person is holding a black hose in their right hand.",
         "confidence": 1.0
       },
       {
-        "fact": "The man is directing the nozzle of the smoking gun into the opening of a glass beaker.",
+        "fact": "The person is inserting the tip of the black hose into the clear glass beaker.",
         "confidence": 1.0
       },
       {
-        "fact": "Smoke is being generated and filling the glass beaker.",
+        "fact": "The person is holding a black tool with a gold nozzle in their left hand.",
         "confidence": 1.0
       },
       {
-        "fact": "A cocktail with a pineapple garnish sits on the counter to the left of the beaker.",
+        "fact": "A glass with red liquid sits on the counter to the left of the beaker.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The man in the red plaid shirt is positioned behind the bar counter. The smoking gun is held in front of him, with its nozzle inserted into the glass beaker. The cocktail glass with the pineapple garnish is to the left of the beaker. Shelves of bottles are visible in the background behind the man.",
+    "spatial": "The person is standing behind the bar counter. The clear glass beaker is in front of the person. The black hose is being held by the person and extends into the beaker. The glass with red liquid is to the left of the beaker. The shelves of bottles are behind the person.",
     "parse_success": true,
     "chunk_idx": 17,
     "video_id": "Adam_and_Eve_Cocktail",
-    "state_changes": [],
-    "_rescued": "parse"
+    "state_changes": [
+      "Bartender inserts a smoke infuser hose into a glass."
+    ]
   },
   {
     "time": [
-      36,
-      38
+      18,
+      19
     ],
     "visible_entities": [
       {
-        "desc": "clear glass with a wide base and tapered sides, containing white smoke",
+        "desc": "clear glass tumbler with a wide base and tapered sides, transparent",
+        "action": "static",
+        "position": "center",
+        "id": "glass_serving_1"
+      },
+      {
+        "desc": "thick white smoke or vapor, swirling and dense",
+        "action": "filling the glass",
+        "position": "inside the glass",
+        "id": "substance_smoke_1"
+      },
+      {
+        "desc": "metallic tube or nozzle, silver, cylindrical",
+        "action": "dispensing smoke",
+        "position": "top center",
+        "id": "tool_smoke_infuser_1"
+      },
+      {
+        "desc": "red object, blurry, likely a hand or tool",
+        "action": "holding the nozzle",
+        "position": "top left"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A metallic nozzle is dispensing thick white smoke into a clear glass.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The smoke is swirling and filling the interior of the glass tumbler.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A red object is visible in the top left corner, holding the nozzle.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The clear glass tumbler is positioned in the center of the frame. The metallic nozzle is located directly above the glass, pointing downwards into it. The white smoke is inside the glass, originating from the nozzle.",
+    "parse_success": true,
+    "chunk_idx": 18,
+    "video_id": "Adam_and_Eve_Cocktail",
+    "state_changes": [
+      "Thick white smoke begins filling the glass."
+    ]
+  },
+  {
+    "time": [
+      19,
+      20
+    ],
+    "visible_entities": [
+      {
+        "desc": "clear glass with a wide base and tapered rim, filled with a dense white cloud",
         "action": "being filled with smoke",
-        "position": "center"
+        "position": "center",
+        "id": "glass_serving_1"
+      },
+      {
+        "desc": "white smoke or vapor",
+        "action": "billowing and swirling inside the glass",
+        "position": "inside the glass",
+        "id": "substance_smoke_1"
       },
       {
         "desc": "metallic nozzle or tube",
         "action": "dispensing smoke",
-        "position": "top"
-      },
-      {
-        "desc": "dense white smoke",
-        "action": "swirling and filling the glass",
-        "position": "inside glass"
+        "position": "top center",
+        "id": "tool_smoke_infuser_1"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A metallic nozzle dispenses white smoke into a clear glass.",
+        "fact": "A metallic nozzle is dispensing white smoke into a clear glass.",
         "confidence": 1.0
       },
       {
-        "fact": "The white smoke swirls and fills the interior of the glass.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [],
-    "spatial": "The metallic nozzle is positioned above the clear glass. The white smoke is inside the glass, originating from the nozzle and filling the space.",
-    "parse_success": true,
-    "chunk_idx": 18,
-    "video_id": "Adam_and_Eve_Cocktail",
-    "state_changes": [],
-    "_rescued": "parse"
-  },
-  {
-    "time": [
-      38,
-      40
-    ],
-    "visible_entities": [
-      {
-        "desc": "clear glass with a wide, faceted base and a tapered body, filled with white smoke",
-        "action": "being filled with smoke",
-        "position": "center"
-      },
-      {
-        "desc": "metallic tube or nozzle",
-        "action": "dispensing smoke",
-        "position": "top"
-      },
-      {
-        "desc": "dense white smoke",
-        "action": "billowing and filling the glass",
-        "position": "inside glass"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "A metallic tube is dispensing white smoke into a glass.",
+        "fact": "The white smoke is billowing and filling the interior of the glass.",
         "confidence": 1.0
       },
       {
-        "fact": "The white smoke is filling the interior of the glass.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The smoke is dense and obscures the view through the glass.",
+        "fact": "The glass is sitting on a surface.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The metallic tube is positioned above the glass, directing smoke downwards into it. The white smoke is contained inside the glass, filling it from the bottom up.",
+    "spatial": "The metallic nozzle is positioned above the glass, directing smoke into it. The white smoke is contained inside the glass. The glass is centered in the frame.",
     "parse_success": true,
     "chunk_idx": 19,
     "video_id": "Adam_and_Eve_Cocktail",
-    "state_changes": [],
-    "_rescued": "parse"
+    "state_changes": []
   },
   {
     "time": [
-      40,
-      42
+      20,
+      21
     ],
     "visible_entities": [
       {
-        "desc": "man with short dark hair, wearing a red and black plaid flannel shirt",
-        "action": "holding a black hose and manipulating a smoking glass vessel",
-        "position": "center"
+        "desc": "person with short dark hair, wearing a red and black plaid flannel shirt",
+        "action": "holding a smoking tube and placing a coaster",
+        "position": "center",
+        "id": "person_bartender_1"
       },
       {
-        "desc": "clear glass vessel with a wide base, containing a white substance emitting thick white smoke",
-        "action": "sitting on a black mat",
-        "position": "center foreground"
+        "desc": "glass beaker containing white dry ice smoke",
+        "action": "emitting smoke",
+        "position": "center foreground",
+        "id": "glass_beaker_1"
       },
       {
-        "desc": "black flexible hose or tube",
-        "action": "being held by the man",
-        "position": "center left"
+        "desc": "black flexible tube",
+        "action": "being held",
+        "position": "center",
+        "id": "tool_smoke_infuser_1"
       },
       {
-        "desc": "clear drinking glass with a gold geometric pattern, containing an amber liquid",
+        "desc": "clear glass with amber liquid and ice",
         "action": "static",
-        "position": "left foreground"
+        "position": "left foreground",
+        "id": "glass_serving_1"
       },
       {
-        "desc": "metallic jigger",
-        "action": "static",
-        "position": "right foreground"
+        "desc": "dark grey square coaster",
+        "action": "being placed",
+        "position": "center foreground",
+        "id": "object_coaster_1"
       },
       {
-        "desc": "shelves stocked with numerous liquor bottles",
+        "desc": "metal jigger",
         "action": "static",
-        "position": "background"
+        "position": "right foreground",
+        "id": "tool_jigger_1"
       },
       {
-        "desc": "perforated metal bar counter",
+        "desc": "shelves filled with liquor bottles",
         "action": "static",
-        "position": "foreground"
+        "position": "background left"
+      },
+      {
+        "desc": "large windows",
+        "action": "static",
+        "position": "background right"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "The man is holding a black hose over a glass vessel.",
+        "fact": "The person is holding a black tube over a beaker of white smoke.",
         "confidence": 1.0
       },
       {
-        "fact": "Thick white smoke is billowing out of the glass vessel.",
+        "fact": "The person places a dark coaster on the bar counter.",
         "confidence": 1.0
       },
       {
-        "fact": "The glass vessel is sitting on a black mat on the counter.",
+        "fact": "White smoke is rising from the glass beaker.",
         "confidence": 1.0
       },
       {
-        "fact": "A glass with amber liquid is on the counter to the left of the smoking vessel.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "A metallic jigger is on the counter to the right of the smoking vessel.",
+        "fact": "A glass with amber liquid sits on the left side of the counter.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The man in the red plaid shirt is standing behind the perforated metal counter. The smoking glass vessel is in front of him on the counter. The glass with amber liquid is to the left of the smoking vessel, and the metallic jigger is to the right of it. The shelves of bottles are behind the man.",
+    "spatial": "The person is standing behind the bar counter. The beaker with smoke is in front of the person. The glass with amber liquid is to the left of the beaker. The metal jigger is to the right of the beaker. The shelves of bottles are behind the person on the left.",
     "parse_success": true,
     "chunk_idx": 20,
     "video_id": "Adam_and_Eve_Cocktail",
-    "state_changes": [],
-    "_rescued": "parse"
+    "state_changes": [
+      "Bartender places a coaster and handles a smoking tube."
+    ]
   },
   {
     "time": [
-      42,
-      44
+      21,
+      22
     ],
     "visible_entities": [
       {
         "desc": "man with short dark hair, wearing a red and black plaid flannel shirt",
-        "action": "pouring liquid into a glass",
-        "position": "center/background"
+        "action": "pouring liquid",
+        "position": "center",
+        "id": "person_bartender_1"
       },
       {
-        "desc": "clear glass bottle with a silver pour spout, containing clear liquid, featuring a white label with a sunburst logo and text",
+        "desc": "clear glass bottle with a silver pour spout, containing clear liquid and a label reading '100%'",
         "action": "static",
-        "position": "left/foreground"
+        "position": "left",
+        "id": "bottle_100_percent_1"
       },
       {
-        "desc": "short, clear, cut-glass mixing glass containing a red liquid and a large ice cube",
-        "action": "being filled with liquid",
-        "position": "center/foreground"
+        "desc": "cut-glass mixing glass containing a red liquid and ice",
+        "action": "being filled",
+        "position": "center",
+        "id": "glass_mixing_vessel_1"
       },
       {
-        "desc": "small, clear glass vessel with a wide base and narrow neck, containing a white, cloudy liquid",
-        "action": "static",
-        "position": "right/foreground"
+        "desc": "small white ceramic vessel with a conical shape, emitting white smoke",
+        "action": "emitting smoke",
+        "position": "center-right"
       },
       {
-        "desc": "metallic jigger, cone-shaped",
-        "action": "static",
-        "position": "right/foreground"
+        "desc": "black smoke infuser tool with a flexible hose",
+        "action": "directing smoke",
+        "position": "center",
+        "id": "tool_smoke_infuser_1"
       },
       {
         "desc": "perforated metal bar mat",
         "action": "static",
-        "position": "bottom/foreground"
+        "position": "bottom",
+        "id": "surface_bar_mat_1"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "The man in the red and black plaid shirt is pouring a clear liquid from a bottle into the cut-glass mixing glass.",
+        "fact": "The man in the red plaid shirt is pouring liquid from a black hose into a glass.",
         "confidence": 1.0
       },
       {
-        "fact": "The cut-glass mixing glass contains a red liquid and a large ice cube.",
+        "fact": "White smoke is rising from a small white vessel on the counter.",
         "confidence": 1.0
       },
       {
-        "fact": "The clear glass bottle has a label that reads '100%' and 'VODKA'.",
+        "fact": "The mixing glass contains a red liquid and ice.",
         "confidence": 1.0
       },
       {
-        "fact": "The small glass vessel on the right contains a white, cloudy liquid.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The objects are resting on a perforated metal bar mat.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [
-      "100%",
-      "VODKA"
-    ],
-    "spatial": "The man in the red and black plaid shirt is behind the bar counter. The clear glass bottle is to the left of the cut-glass mixing glass. The small glass vessel with white liquid is to the right of the mixing glass. The metallic jigger is to the right of the small glass vessel. All items are on the perforated metal bar mat.",
-    "parse_success": true,
-    "chunk_idx": 21,
-    "video_id": "Adam_and_Eve_Cocktail",
-    "state_changes": [],
-    "_rescued": "parse"
-  },
-  {
-    "time": [
-      44,
-      46
-    ],
-    "visible_entities": [
-      {
-        "desc": "man with a tall dark mohawk hairstyle, shaved sides, wearing a red and black plaid flannel shirt",
-        "action": "stirring a drink with a bar spoon",
-        "position": "center"
-      },
-      {
-        "desc": "clear glass mixing glass with cut-glass pattern, containing ice cubes, orange slices, and red liquid",
-        "action": "static",
-        "position": "center foreground"
-      },
-      {
-        "desc": "clear glass bottle with a pour spout, containing clear liquid, labeled '100% agave'",
-        "action": "static",
-        "position": "left foreground"
-      },
-      {
-        "desc": "shelves filled with various liquor bottles",
-        "action": "static",
-        "position": "background"
-      },
-      {
-        "desc": "blue poster with yellow and red text reading 'NOW 1919'",
-        "action": "static",
-        "position": "background right"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "The man is stirring the contents of the mixing glass with a long metal bar spoon.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The mixing glass contains ice cubes, orange slices, and a red liquid.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The bottle on the left has a label that reads '100% agave'.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The man is smiling while mixing the drink.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [
-      "100%",
-      "agave",
-      "NOW",
-      "1919"
-    ],
-    "spatial": "The man is standing behind the bar counter. The mixing glass is in front of the man on the counter. The bottle is to the left of the mixing glass. The shelves of liquor bottles are behind the man. The poster is on the wall to the right of the man.",
-    "parse_success": true,
-    "chunk_idx": 22,
-    "video_id": "Adam_and_Eve_Cocktail",
-    "state_changes": [],
-    "_rescued": "parse"
-  },
-  {
-    "time": [
-      46,
-      48
-    ],
-    "visible_entities": [
-      {
-        "desc": "clear glass tumbler with a cut-glass diamond lattice pattern, containing a reddish-pink liquid, large clear ice cubes, and a yellow citrus fruit slice",
-        "action": "being held and slightly tilted",
-        "position": "center"
-      },
-      {
-        "desc": "hand with light skin tone",
-        "action": "holding the glass",
-        "position": "right"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "A hand is holding a glass tumbler filled with a reddish-pink beverage.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The glass contains large ice cubes and a slice of citrus fruit.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The glass features a textured diamond pattern on its surface.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [],
-    "spatial": "The glass tumbler is in the center of the frame, held by a hand positioned to the right. Inside the glass, the ice cubes and fruit slice are submerged in the liquid.",
-    "parse_success": true,
-    "chunk_idx": 23,
-    "video_id": "Adam_and_Eve_Cocktail",
-    "state_changes": [],
-    "_rescued": "parse"
-  },
-  {
-    "time": [
-      48,
-      50
-    ],
-    "visible_entities": [
-      {
-        "desc": "person with a high black mohawk hairstyle, shaved sides, wearing a red and black plaid flannel shirt",
-        "action": "stirring a drink with a long bar spoon",
-        "position": "center"
-      },
-      {
-        "desc": "long silver metal bar spoon",
-        "action": "being used to stir liquid",
-        "position": "center foreground"
-      },
-      {
-        "desc": "clear glass mixing glass",
-        "action": "static",
-        "position": "center foreground"
-      },
-      {
-        "desc": "shelves filled with various liquor bottles",
-        "action": "static",
-        "position": "background"
-      },
-      {
-        "desc": "blue poster with yellow and red text",
-        "action": "static",
-        "position": "right background"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "The person is stirring a drink in a glass using a long bar spoon.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The person is wearing a red and black plaid shirt.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The person has a high black mohawk hairstyle.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "Liquor bottles are arranged on shelves behind the person.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "A poster with the text 'NOW 1919' is visible on the wall.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [
-      "NOW 1919"
-    ],
-    "spatial": "The person in the plaid shirt is standing behind the bar counter. The bar spoon is inside the glass mixing glass in front of the person. The shelves of liquor bottles are behind the person. The 'NOW 1919' poster is to the right of the person on the wall.",
-    "parse_success": true,
-    "chunk_idx": 24,
-    "video_id": "Adam_and_Eve_Cocktail",
-    "state_changes": [],
-    "_rescued": "parse"
-  },
-  {
-    "time": [
-      50,
-      52
-    ],
-    "visible_entities": [
-      {
-        "desc": "person with a black mohawk hairstyle, wearing a red and black plaid flannel shirt",
-        "action": "preparing drinks",
-        "position": "center"
-      },
-      {
-        "desc": "clear glass pitcher containing a red liquid",
-        "action": "being held",
-        "position": "left"
-      },
-      {
-        "desc": "clear glass pitcher containing a white liquid",
-        "action": "being held",
-        "position": "center"
-      },
-      {
-        "desc": "shelves filled with various liquor bottles",
-        "action": "static",
-        "position": "background"
-      },
-      {
-        "desc": "poster with the text 'NOW 1919'",
-        "action": "static",
-        "position": "background"
-      },
-      {
-        "desc": "metallic perforated bar counter",
-        "action": "static",
-        "position": "foreground"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "The person is holding a pitcher of red liquid in their right hand.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The person is holding a pitcher of white liquid in their left hand.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The person is standing behind a metallic bar counter.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The shelves of bottles are located behind the person.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [
-      "NOW 1919"
-    ],
-    "spatial": "The person is standing behind the metallic perforated bar counter. The pitcher with red liquid is to the left of the pitcher with white liquid. The shelves filled with bottles are behind the person, and the 'NOW 1919' poster is on the wall to the right of the person.",
-    "parse_success": true,
-    "chunk_idx": 25,
-    "video_id": "Adam_and_Eve_Cocktail",
-    "state_changes": [],
-    "_rescued": "parse"
-  },
-  {
-    "time": [
-      52,
-      54
-    ],
-    "visible_entities": [
-      {
-        "desc": "person wearing a red and black plaid long-sleeve shirt",
-        "action": "pouring liquid",
-        "position": "foreground"
-      },
-      {
-        "desc": "clear glass measuring jug with a spout containing pinkish-orange liquid",
-        "action": "being tilted to pour",
-        "position": "right"
-      },
-      {
-        "desc": "dark grey cylindrical shaker tin",
-        "action": "static",
-        "position": "left"
-      },
-      {
-        "desc": "silver perforated metal bar mat",
-        "action": "static",
-        "position": "center"
-      },
-      {
-        "desc": "small white bowl on a square coaster",
-        "action": "receiving liquid",
-        "position": "center"
-      },
-      {
-        "desc": "rectangular metal bin filled with ice cubes",
-        "action": "static",
-        "position": "center"
-      },
-      {
-        "desc": "assorted glass liquor bottles with pour spouts",
-        "action": "static",
-        "position": "bottom"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "The person is pouring pinkish-orange liquid from a glass jug into a small white bowl.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The person is holding a dark grey shaker tin in their left hand.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The ice bin is located below the perforated metal mat.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "Liquor bottles are arranged on a shelf below the main workspace.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [],
-    "spatial": "The person is positioned in the foreground, holding a shaker tin in their left hand and a glass jug in their right hand. The jug is positioned above a small white bowl, pouring liquid into it. The perforated metal mat is below the hands and jug. The ice bin is below the metal mat, and the liquor bottles are below the ice bin.",
-    "parse_success": true,
-    "chunk_idx": 26,
-    "video_id": "Adam_and_Eve_Cocktail",
-    "state_changes": [],
-    "_rescued": "parse"
-  },
-  {
-    "time": [
-      54,
-      56
-    ],
-    "visible_entities": [
-      {
-        "desc": "large, blurry, circular red object with a soft, diffuse edge",
-        "action": "static",
-        "position": "left"
-      },
-      {
-        "desc": "small, dark, elongated object with a bright white reflection on its surface",
-        "action": "static",
-        "position": "center"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "A large, blurry red circular object is visible on the left side of the frame.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "A small, dark object with a bright reflection is positioned to the right of the red object.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The background is a uniform, light-colored surface.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [],
-    "spatial": "The large, blurry red circular object is to the left of the small, dark object. The small, dark object is near the center of the frame. Both objects are on a light-colored background.",
-    "parse_success": true,
-    "chunk_idx": 27,
-    "video_id": "Adam_and_Eve_Cocktail",
-    "state_changes": [],
-    "_rescued": "parse"
-  },
-  {
-    "time": [
-      56,
-      58
-    ],
-    "visible_entities": [
-      {
-        "desc": "person with a tall dark mohawk hairstyle, shaved sides, wearing a red and black plaid button-down shirt",
-        "action": "pouring liquid from a glass",
-        "position": "center"
-      },
-      {
-        "desc": "clear glass mixing cup containing amber liquid and ice",
-        "action": "being tilted to pour",
-        "position": "center"
-      },
-      {
-        "desc": "amber liquid stream",
-        "action": "flowing downwards",
-        "position": "center"
-      },
-      {
-        "desc": "shelves filled with various liquor bottles",
-        "action": "static",
-        "position": "background"
-      },
-      {
-        "desc": "poster with yellow and blue text",
-        "action": "static",
-        "position": "right background"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "The person is pouring an amber liquid from a glass mixing cup.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The liquid is flowing in a thin stream from the cup.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The person is wearing a red and black plaid shirt.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The poster in the background displays the text 'NOW 1919'.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [
-      "NOW 1919"
-    ],
-    "spatial": "The person is standing in the center of the frame, holding the glass cup in their right hand. The stream of liquid is falling below the cup. The shelves of liquor bottles are behind the person, and the poster is to the right of the person in the background.",
-    "parse_success": true,
-    "chunk_idx": 28,
-    "video_id": "Adam_and_Eve_Cocktail",
-    "state_changes": [],
-    "_rescued": "parse"
-  },
-  {
-    "time": [
-      58,
-      60
-    ],
-    "visible_entities": [
-      {
-        "desc": "man with a tall black mohawk hairstyle, shaved sides, wearing a red and black plaid flannel shirt",
-        "action": "pouring liquid from a glass",
-        "position": "center"
-      },
-      {
-        "desc": "clear glass mixing glass containing amber liquid and an orange peel",
-        "action": "being held and tilted",
-        "position": "center"
-      },
-      {
-        "desc": "shelves filled with various liquor bottles",
-        "action": "static",
-        "position": "background"
-      },
-      {
-        "desc": "blue sign with yellow and orange text",
-        "action": "static",
-        "position": "background right"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "The man is pouring a thin stream of amber liquid from a glass.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The man is holding a glass mixing glass in his right hand.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The sign in the background reads 'I KNOW BIG'.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [
-      "I KNOW BIG"
-    ],
-    "spatial": "The man is in the center foreground, holding the glass in front of his chest. The shelves of liquor bottles are behind the man. The blue sign is to the right of the man in the background.",
-    "parse_success": true,
-    "chunk_idx": 29,
-    "video_id": "Adam_and_Eve_Cocktail",
-    "state_changes": [],
-    "_rescued": "parse"
-  },
-  {
-    "time": [
-      60,
-      62
-    ],
-    "visible_entities": [
-      {
-        "desc": "clear glass bottle with a silver sunburst logo, containing clear liquid and a red internal cylinder, featuring a white label with black text",
-        "action": "static",
-        "position": "left foreground"
-      },
-      {
-        "desc": "glass decanter with a wide base and narrow neck, containing amber liquid and emitting white vapor",
-        "action": "emitting vapor",
-        "position": "center background"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "A glass bottle sits in the foreground.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "A decanter in the background is emitting white vapor.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The bottle label displays the text '100%'.",
+        "fact": "A bottle of clear liquid sits on the left side of the bar mat.",
         "confidence": 1.0
       }
     ],
     "ocr": [
       "100%"
     ],
-    "spatial": "The clear glass bottle is positioned in the foreground to the left of the decanter. The decanter is situated behind the bottle and rests on a dark surface.",
+    "spatial": "The man is standing behind the bar counter. To his left is a clear bottle, and in front of him is a mixing glass receiving liquid. To the right of the mixing glass is a small white vessel emitting smoke. All items are resting on a perforated metal bar mat.",
     "parse_success": true,
-    "chunk_idx": 30,
+    "chunk_idx": 21,
     "video_id": "Adam_and_Eve_Cocktail",
-    "state_changes": [],
-    "_rescued": "parse"
+    "state_changes": [
+      "Bartender pours liquid into a mixing glass while smoke emits from a ceramic vessel."
+    ]
   },
   {
     "time": [
-      62,
-      64
+      22,
+      23
     ],
     "visible_entities": [
       {
-        "desc": "clear glass bottle with embossed sunburst logo, containing clear liquid and a red label, featuring a white label with black text",
-        "action": "static",
-        "position": "foreground left"
+        "desc": "man with a tall dark mohawk hairstyle, wearing a red and black plaid flannel shirt",
+        "action": "stirring a drink",
+        "position": "center",
+        "id": "person_bartender_1"
       },
       {
-        "desc": "conical glass vessel with a wide base and narrow neck, containing amber liquid and emitting white vapor",
-        "action": "emitting vapor",
+        "desc": "clear glass bottle with a silver pour spout, containing clear liquid and a label reading '100%'",
+        "action": "static",
+        "position": "left foreground",
+        "id": "bottle_100_percent_1"
+      },
+      {
+        "desc": "crystal mixing glass with a cut-glass pattern, containing ice cubes, orange peels, and red liquid",
+        "action": "being stirred",
+        "position": "center foreground",
+        "id": "glass_mixing_vessel_1"
+      },
+      {
+        "desc": "small glass container with a white substance and a black lid, sitting on a black bar mat",
+        "action": "static",
+        "position": "right foreground",
+        "id": "container_white_liquid_1"
+      },
+      {
+        "desc": "shelves filled with various liquor bottles",
+        "action": "static",
+        "position": "background",
+        "id": "shelves_liquor_1"
+      },
+      {
+        "desc": "colorful poster with yellow and red text",
+        "action": "static",
+        "position": "background right",
+        "id": "poster_now_dig_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The man in the red plaid shirt is stirring a drink in a mixing glass with a long bar spoon.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The man is smiling while looking down at the drink.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The mixing glass contains ice cubes, orange peels, and a red liquid.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A bottle labeled '100%' sits on the bar counter to the left of the mixing glass.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A poster with the text 'NOW 1919' is visible on the wall behind the man.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "100%",
+      "NOW 1919"
+    ],
+    "spatial": "The man in the red plaid shirt is positioned behind the bar counter, standing between the bottle on the left and the small glass container on the right. The mixing glass is directly in front of him on the counter. The shelves of liquor bottles are located behind the man, and the 'NOW 1919' poster is on the wall to his right.",
+    "parse_success": true,
+    "chunk_idx": 22,
+    "video_id": "Adam_and_Eve_Cocktail",
+    "state_changes": [
+      "Bartender stirs the drink in the mixing glass."
+    ]
+  },
+  {
+    "time": [
+      23,
+      24
+    ],
+    "visible_entities": [
+      {
+        "desc": "clear glass tumbler with a diamond-cut pattern, filled with a reddish-brown liquid and ice cubes",
+        "action": "being held by a hand",
+        "position": "center",
+        "id": "glass_serving_1"
+      },
+      {
+        "desc": "hand with light skin tone",
+        "action": "holding the glass",
+        "position": "right",
+        "id": "person_bartender_1"
+      },
+      {
+        "desc": "yellowish-orange citrus fruit slice",
+        "action": "floating in the liquid",
+        "position": "inside the glass",
+        "id": "fruit_citrus_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A hand holds a glass containing a reddish-brown beverage.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "Ice cubes are visible floating in the drink.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A slice of citrus fruit is inside the glass.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The hand is on the right side of the frame, holding the glass which is positioned in the center. The fruit slice and ice cubes are inside the glass.",
+    "parse_success": true,
+    "chunk_idx": 23,
+    "video_id": "Adam_and_Eve_Cocktail",
+    "state_changes": []
+  },
+  {
+    "time": [
+      24,
+      25
+    ],
+    "visible_entities": [
+      {
+        "desc": "man with a high black mohawk hairstyle, shaved sides, wearing a red and black plaid flannel shirt",
+        "action": "stirring a drink with a long spoon",
+        "position": "center",
+        "id": "person_bartender_1"
+      },
+      {
+        "desc": "long metal bar spoon",
+        "action": "being held by the man",
+        "position": "center",
+        "id": "tool_bar_spoon_1"
+      },
+      {
+        "desc": "glass bottles of alcohol",
+        "action": "static",
+        "position": "background",
+        "id": "shelves_liquor_1"
+      },
+      {
+        "desc": "blue poster with yellow and red text",
+        "action": "static",
+        "position": "background right",
+        "id": "poster_now_dig_1"
+      },
+      {
+        "desc": "stacks of clear drinking glasses",
+        "action": "static",
         "position": "background right"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A glass bottle containing clear liquid sits in the foreground.",
+        "fact": "The man is stirring a liquid in a glass with a bar spoon.",
         "confidence": 1.0
       },
       {
-        "fact": "A conical glass vessel in the background is emitting white vapor.",
+        "fact": "The man is looking down at the glass he is mixing.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The poster reads 'NOW 1919'.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "NOW 1919"
+    ],
+    "spatial": "The man in the red plaid shirt is standing in the center of the frame behind a bar counter. The shelves filled with alcohol bottles are located behind him. To the right of the man, there is a blue poster and stacks of glasses on the counter.",
+    "parse_success": true,
+    "chunk_idx": 24,
+    "video_id": "Adam_and_Eve_Cocktail",
+    "state_changes": [
+      "Bartender stirs a drink using a long bar spoon."
+    ]
+  },
+  {
+    "time": [
+      25,
+      26
+    ],
+    "visible_entities": [
+      {
+        "desc": "person with a black mohawk hairstyle, shaved sides, wearing a red and black plaid flannel shirt",
+        "action": "holding a glass and pressing a lid onto a container",
+        "position": "center",
+        "id": "person_bartender_1"
+      },
+      {
+        "desc": "clear glass containing a reddish-orange liquid",
+        "action": "being held",
+        "position": "left",
+        "id": "glass_serving_1"
+      },
+      {
+        "desc": "clear glass container with a black lid, filled with a white liquid",
+        "action": "being pressed down",
+        "position": "center foreground",
+        "id": "container_white_liquid_1"
+      },
+      {
+        "desc": "metallic perforated bar counter surface",
+        "action": "static",
+        "position": "bottom",
+        "id": "surface_bar_mat_1"
+      },
+      {
+        "desc": "shelves stocked with various liquor bottles",
+        "action": "static",
+        "position": "background",
+        "id": "shelves_liquor_1"
+      },
+      {
+        "desc": "blue framed poster with yellow and red text",
+        "action": "static",
+        "position": "background right",
+        "id": "poster_now_dig_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The person holds a glass of red liquid in their left hand.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The person uses their right hand to press a black lid onto a glass container filled with white liquid.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The glass container sits on a dark square coaster on the metal counter.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The background features shelves filled with numerous bottles of alcohol.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A poster on the wall reads 'NOW 1919'.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "NOW 1919"
+    ],
+    "spatial": "The person is standing behind the metallic perforated counter. The glass with red liquid is held to the left of the glass container with white liquid. The shelves of bottles are located behind the person. The 'NOW 1919' poster is on the wall to the right of the person.",
+    "parse_success": true,
+    "chunk_idx": 25,
+    "video_id": "Adam_and_Eve_Cocktail",
+    "state_changes": [
+      "Bartender presses a lid onto a container filled with white liquid."
+    ]
+  },
+  {
+    "time": [
+      26,
+      27
+    ],
+    "visible_entities": [
+      {
+        "desc": "person wearing a red and black plaid long-sleeve shirt",
+        "action": "pouring liquid from a glass pitcher",
+        "position": "center",
+        "id": "person_bartender_1"
+      },
+      {
+        "desc": "clear glass pitcher containing pinkish-orange liquid",
+        "action": "being held and tilted by the person",
+        "position": "right",
+        "id": "glass_pitcher_1"
+      },
+      {
+        "desc": "dark grey rectangular object, possibly a phone or tool",
+        "action": "being held in the left hand",
+        "position": "left",
+        "id": "object_phone_tool_1"
+      },
+      {
+        "desc": "silver perforated metal bar mat",
+        "action": "static",
+        "position": "center",
+        "id": "surface_bar_mat_1"
+      },
+      {
+        "desc": "white bowl with a white lid",
+        "action": "static",
+        "position": "center",
+        "id": "container_white_liquid_1"
+      },
+      {
+        "desc": "bins containing white ice cubes",
+        "action": "static",
+        "position": "bottom",
+        "id": "substance_ice_1"
+      },
+      {
+        "desc": "rows of liquor bottles with pour spouts",
+        "action": "static",
+        "position": "bottom",
+        "id": "shelves_liquor_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The person is pouring pinkish-orange liquid from a glass pitcher into a white bowl.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The person is holding a dark grey rectangular object in their left hand.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The white bowl is sitting on a silver perforated metal surface.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "Bins of ice are located below the metal surface.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The person is positioned centrally, holding a glass pitcher in their right hand and a dark object in their left. The pitcher is being tilted over a white bowl that sits on a silver perforated metal mat. Below the metal mat, there are bins of ice and rows of liquor bottles.",
+    "parse_success": true,
+    "chunk_idx": 26,
+    "video_id": "Adam_and_Eve_Cocktail",
+    "state_changes": [
+      "Bartender pours liquid from a glass pitcher."
+    ]
+  },
+  {
+    "time": [
+      27,
+      28
+    ],
+    "visible_entities": [
+      {
+        "desc": "bright red circular object with a soft, blurry edge",
+        "action": "static",
+        "position": "left"
+      },
+      {
+        "desc": "dark, elongated, curved object with a glossy surface",
+        "action": "static",
+        "position": "center"
+      },
+      {
+        "desc": "bright white light source or reflection",
+        "action": "static",
+        "position": "center"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A bright white light source is positioned next to a dark, curved object.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A blurry red circular object is located to the left of the central objects.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The bright red circular object is to the left of the dark, curved object. The bright white light source is next to the dark, curved object.",
+    "parse_success": true,
+    "chunk_idx": 27,
+    "video_id": "Adam_and_Eve_Cocktail",
+    "state_changes": []
+  },
+  {
+    "time": [
+      28,
+      29
+    ],
+    "visible_entities": [
+      {
+        "desc": "man with a tall dark mohawk hairstyle, shaved sides, wearing a red and black plaid flannel shirt",
+        "action": "pouring liquid from a glass",
+        "position": "center",
+        "id": "person_bartender_1"
+      },
+      {
+        "desc": "clear glass mixing vessel containing amber liquid and ice",
+        "action": "being held and tilted",
+        "position": "center",
+        "id": "glass_mixing_vessel_1"
+      },
+      {
+        "desc": "shelves stocked with various liquor bottles",
+        "action": "static",
+        "position": "background",
+        "id": "shelves_liquor_1"
+      },
+      {
+        "desc": "poster with colorful text reading 'I KNOW DICK'",
+        "action": "static",
+        "position": "background right",
+        "id": "poster_now_dig_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The man is pouring a thin stream of amber liquid from a glass mixing vessel.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The man is holding the glass with his right hand.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The shelves behind the man are filled with bottles of alcohol.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "I KNOW DICK"
+    ],
+    "spatial": "The man is standing in the center of the frame, in front of the shelves of liquor bottles. He is holding the glass mixing vessel in his hand, tilting it to pour liquid downwards. The poster is located on the wall to the right of the man.",
+    "parse_success": true,
+    "chunk_idx": 28,
+    "video_id": "Adam_and_Eve_Cocktail",
+    "state_changes": [
+      "Bartender pours liquid from a mixing vessel."
+    ]
+  },
+  {
+    "time": [
+      29,
+      30
+    ],
+    "visible_entities": [
+      {
+        "desc": "man with a tall black mohawk hairstyle, shaved sides, wearing a red and black plaid flannel shirt",
+        "action": "pouring a drink",
+        "position": "center",
+        "id": "person_bartender_1"
+      },
+      {
+        "desc": "clear glass mixing glass containing an amber liquid and a slice of orange",
+        "action": "being held",
+        "position": "center",
+        "id": "glass_mixing_vessel_1"
+      },
+      {
+        "desc": "shelves filled with various liquor bottles",
+        "action": "static",
+        "position": "background",
+        "id": "shelves_liquor_1"
+      },
+      {
+        "desc": "blue sign with yellow text reading 'NOW DIG'",
+        "action": "static",
+        "position": "right background",
+        "id": "poster_now_dig_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The man is pouring an amber liquid from a glass mixing glass.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A slice of orange is visible inside the mixing glass.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The liquid is being poured in a thin stream downwards.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The man is wearing a red and black plaid shirt.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "NOW DIG"
+    ],
+    "spatial": "The man is standing in the center of the frame, holding the mixing glass in his right hand. The shelves of liquor bottles are behind him. The 'NOW DIG' sign is to the right of the man in the background.",
+    "parse_success": true,
+    "chunk_idx": 29,
+    "video_id": "Adam_and_Eve_Cocktail",
+    "state_changes": []
+  },
+  {
+    "time": [
+      30,
+      31
+    ],
+    "visible_entities": [
+      {
+        "desc": "clear glass bottle with a white label featuring black text and a sunburst logo, containing amber liquid",
+        "action": "static",
+        "position": "left foreground",
+        "id": "bottle_sunburst_amber_1"
+      },
+      {
+        "desc": "glass decanter with a wide base and narrow neck, containing amber liquid",
+        "action": "static",
+        "position": "right background",
+        "id": "bottle_sunburst_amber_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A glass bottle is sitting on a surface in the foreground.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A decanter is sitting on a surface in the background.",
         "confidence": 1.0
       },
       {
@@ -1803,46 +1913,99 @@
       "100%",
       "AGAVE"
     ],
-    "spatial": "The clear glass bottle is in the foreground on the left side of the frame. The conical glass vessel is positioned to the right of the bottle and is further back in the background. The white label is attached to the lower portion of the bottle.",
+    "spatial": "The glass bottle is to the left of the decanter. The bottle is in front of the decanter. The label is on the lower portion of the bottle.",
     "parse_success": true,
-    "chunk_idx": 31,
+    "chunk_idx": 30,
     "video_id": "Adam_and_Eve_Cocktail",
-    "state_changes": [],
-    "_rescued": "parse"
+    "state_changes": []
   },
   {
     "time": [
-      64,
-      66
+      31,
+      32
     ],
     "visible_entities": [
       {
-        "desc": "clear glass bottle with a silver cap and a label featuring a sunburst design and text",
+        "desc": "clear glass bottle with embossed sunburst logo, containing clear liquid and a red label, featuring a white label with black text",
         "action": "static",
-        "position": "left"
+        "position": "left foreground",
+        "id": "bottle_sunburst_clear_1"
       },
       {
-        "desc": "stemless glass containing a red liquid topped with white foam",
-        "action": "static",
-        "position": "right"
-      },
-      {
-        "desc": "thick white smoke or fog",
-        "action": "drifting",
-        "position": "background"
+        "desc": "glass decanter with a wide base and narrow neck, containing amber liquid and emitting thick white vapor",
+        "action": "emitting vapor",
+        "position": "right background"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A bottle of Volcan de mi Tierra tequila sits on a surface.",
+        "fact": "A glass bottle containing clear liquid sits in the foreground.",
         "confidence": 1.0
       },
       {
-        "fact": "A glass filled with a red beverage and foam is positioned next to the bottle.",
+        "fact": "A decanter in the background is emitting thick white vapor.",
         "confidence": 1.0
       },
       {
-        "fact": "White smoke drifts heavily in the background behind the bottle and glass.",
+        "fact": "The label on the bottle reads '100%'.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The bottle features an embossed sunburst design near the top.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "100%"
+    ],
+    "spatial": "The clear glass bottle is positioned to the left of the glass decanter. The bottle is in the foreground, while the decanter is in the background. The white label is located on the lower portion of the bottle.",
+    "parse_success": true,
+    "chunk_idx": 31,
+    "video_id": "Adam_and_Eve_Cocktail",
+    "state_changes": [
+      "Decanter begins emitting thick white vapor."
+    ]
+  },
+  {
+    "time": [
+      32,
+      33
+    ],
+    "visible_entities": [
+      {
+        "desc": "clear glass bottle with a silver cap and a label featuring a sunburst logo and text",
+        "action": "static",
+        "position": "left",
+        "id": "bottle_sunburst_clear_1"
+      },
+      {
+        "desc": "stemless glass containing a red liquid topped with a thick white foam layer",
+        "action": "static",
+        "position": "right",
+        "id": "glass_serving_1"
+      },
+      {
+        "desc": "thick white smoke or fog",
+        "action": "swirling",
+        "position": "background",
+        "id": "substance_smoke_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A clear glass bottle labeled 'VOLCAN DE MI TIERRA' sits on a surface.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A glass filled with red liquid and white foam is positioned next to the bottle.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "White smoke swirls in the background behind the bottle and glass.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The label on the bottle displays the text '100% AGAVE' and 'TEQUILA AREAL CRISTALINO'.",
         "confidence": 1.0
       }
     ],
@@ -1851,15 +2014,15 @@
       "DE MI TIERRA",
       "100%",
       "AGAVE",
-      "TEQUILA",
+      "TEQUILA AREAL",
+      "CRISTALINO",
       "750 ml",
-      "40% ALC. by VOL."
+      "40% Alc. by Vol."
     ],
-    "spatial": "The glass bottle is to the left of the glass containing the red drink. The glass is to the right of the bottle. Both items are in front of the drifting white smoke.",
+    "spatial": "The glass bottle is to the left of the stemless glass. The glass containing the red drink is to the right of the bottle. Both items are in front of the swirling white smoke.",
     "parse_success": true,
     "chunk_idx": 32,
     "video_id": "Adam_and_Eve_Cocktail",
-    "state_changes": [],
-    "_rescued": "parse"
+    "state_changes": []
   }
 ]

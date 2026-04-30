@@ -2,33 +2,28 @@
   {
     "time": [
       0,
-      2
+      1
     ],
     "visible_entities": [
       {
-        "desc": "elderly man with short white hair, wearing a blue zip-up fleece jacket over a red collared shirt",
-        "action": "speaking",
+        "desc": "elderly man with short white hair, wearing a blue zip-up fleece jacket over a maroon collared shirt",
+        "action": "talking",
         "position": "center"
       },
       {
-        "desc": "orange pot with a lid",
+        "desc": "orange enameled pot with a lid",
         "action": "static",
         "position": "left"
       },
       {
-        "desc": "white teapot with floral pattern",
+        "desc": "white kettle with a floral pattern",
         "action": "static",
         "position": "left"
       },
       {
-        "desc": "wall clock with a white face",
+        "desc": "wooden shelves with stacked white plates and bowls",
         "action": "static",
-        "position": "background"
-      },
-      {
-        "desc": "stacks of white plates",
-        "action": "static",
-        "position": "background"
+        "position": "right"
       },
       {
         "desc": "stainless steel microwave",
@@ -36,55 +31,49 @@
         "position": "right"
       },
       {
-        "desc": "copper-colored pitcher",
+        "desc": "round wall clock with a white face",
         "action": "static",
         "position": "background"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "The man in the blue jacket is speaking.",
+        "fact": "The elderly man is talking and moving his mouth.",
         "confidence": 1.0
       },
       {
-        "fact": "An orange pot is sitting on the stove.",
+        "fact": "The man is wearing a blue jacket over a red shirt.",
         "confidence": 1.0
       },
       {
-        "fact": "A white teapot is next to the orange pot.",
+        "fact": "An orange pot sits on the stove to the left of the man.",
         "confidence": 1.0
       },
       {
-        "fact": "A clock is hanging on the wall behind the man.",
+        "fact": "A white kettle with a floral design is next to the orange pot.",
         "confidence": 1.0
       },
       {
-        "fact": "Stacks of plates are visible on shelves in the background.",
+        "fact": "Shelves filled with white dishes are visible in the background on the right.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The man is in the center of the frame, in front of the kitchen counter. To his left, an orange pot and a white teapot are on the stove. Behind him, a clock hangs on the wall, and to his right, a microwave is built into the cabinetry.",
+    "spatial": "The man is in the center foreground of the kitchen. To his left, an orange pot and a floral kettle are sitting on the stove. Behind him and to his right, wooden shelves hold stacks of white plates and bowls, with a microwave mounted below them.",
     "parse_success": true,
     "chunk_idx": 0,
-    "video_id": "How_to_Make_Kale_Chips_-_Kale_Recipe",
-    "_rescued": "parse"
+    "video_id": "How_to_Make_Kale_Chips_-_Kale_Recipe"
   },
   {
     "time": [
-      2,
-      4
+      1,
+      2
     ],
     "visible_entities": [
       {
-        "desc": "white plate with thinly sliced potatoes arranged in concentric circles, topped with yellow oil, browned seasoning, and chopped green onions",
+        "desc": "white oval plate holding thinly sliced, round, pale yellow food items topped with green herbs and oil",
         "action": "static",
         "position": "center"
-      },
-      {
-        "desc": "small inset image showing a dark stew with chunks of meat and vegetables",
-        "action": "static",
-        "position": "top right"
       },
       {
         "desc": "white text 'Jacques Pépin' in a serif font",
@@ -97,26 +86,36 @@
         "position": "center"
       },
       {
-        "desc": "solid orange background surface",
+        "desc": "small rectangular inset image showing a dark stew or sauce with vegetables",
         "action": "static",
-        "position": "background"
+        "position": "top right"
+      },
+      {
+        "desc": "white plate with a dessert featuring a glazed yellow fruit slice and a mint leaf",
+        "action": "static",
+        "position": "top"
+      },
+      {
+        "desc": "white plate with a salad featuring red tomato slices and green lettuce",
+        "action": "static",
+        "position": "bottom"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "The video displays a title card for a cooking segment.",
+        "fact": "The video displays a title card for 'Jacques Pépin Cooking at Home'.",
         "confidence": 1.0
       },
       {
-        "fact": "The text 'Jacques Pépin' is overlaid on the food image.",
+        "fact": "The background image changes from a savory dish to a split-screen of a dessert and a salad.",
         "confidence": 1.0
       },
       {
-        "fact": "The text 'Cooking at Home' appears below the name.",
+        "fact": "The text 'Jacques Pépin' is overlaid on the center of the screen.",
         "confidence": 1.0
       },
       {
-        "fact": "A plate of scalloped potatoes is the main visual focus.",
+        "fact": "The text 'Cooking at Home' appears in yellow script below the name.",
         "confidence": 1.0
       }
     ],
@@ -124,127 +123,69 @@
       "Jacques Pépin",
       "Cooking at Home"
     ],
-    "spatial": "The white plate of potatoes is centered on the orange background. The text 'Jacques Pépin' is superimposed over the center of the plate. The text 'Cooking at Home' is positioned below the name. A small inset image of a stew is located in the top right corner, partially overlapping the main plate.",
+    "spatial": "The text 'Jacques Pépin' is centered above the text 'Cooking at Home'. In the first frame, a small inset image is located in the top right corner, overlapping the main dish. In the second frame, the background is split horizontally, with a dessert plate positioned above a salad plate.",
     "parse_success": true,
     "chunk_idx": 1,
-    "video_id": "How_to_Make_Kale_Chips_-_Kale_Recipe",
-    "_rescued": "parse"
+    "video_id": "How_to_Make_Kale_Chips_-_Kale_Recipe"
   },
   {
     "time": [
-      4,
-      6
+      2,
+      3
     ],
     "visible_entities": [
       {
-        "desc": "elderly man with white hair, wearing a red and blue plaid shirt and a blue apron",
+        "desc": "older man with white hair, wearing a red and blue plaid shirt and a blue apron",
         "action": "tossing greens in a bowl",
         "position": "center"
       },
       {
         "desc": "silver metal mixing bowl filled with green leafy vegetables",
         "action": "being held and tossed",
-        "position": "center"
+        "position": "center foreground"
       },
       {
-        "desc": "wooden kitchen counter with various cooking ingredients and utensils",
+        "desc": "wooden kitchen counter with various bottles and jars",
         "action": "static",
         "position": "foreground"
       },
       {
-        "desc": "kitchen background with wooden cabinets, a microwave, and a clock",
+        "desc": "kitchen background with wooden cabinets, a microwave, and a wall clock",
         "action": "static",
         "position": "background"
-      },
-      {
-        "desc": "circular logo with text 'THE JACQUES PÉPIN FOUNDATION' and a 'JP' monogram",
-        "action": "static",
-        "position": "bottom left"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "The man is using his hands to toss the salad greens in the bowl.",
+        "fact": "A man is using his hands to toss salad greens inside a metal bowl.",
         "confidence": 1.0
       },
       {
-        "fact": "The man is standing behind a wooden kitchen counter.",
+        "fact": "The man is standing behind a wooden kitchen island.",
         "confidence": 1.0
       },
       {
-        "fact": "A microwave is visible in the background cabinets.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The logo for 'The Jacques Pépin Foundation' is displayed in the bottom left corner.",
+        "fact": "Various cooking ingredients and utensils are scattered on the counter.",
         "confidence": 1.0
       }
     ],
     "ocr": [
-      "THE JACQUES PÉPIN FOUNDATION",
-      "JP"
+      "THE JACQUES PÉPIN FOUNDATION"
     ],
-    "spatial": "The man is standing behind the wooden counter. The silver bowl is in front of the man on the counter. The kitchen cabinets and microwave are behind the man. The foundation logo is in the bottom left corner of the frame.",
+    "spatial": "The man is standing behind the wooden counter in the center of the frame. The metal bowl containing greens is on the counter directly in front of him. The kitchen cabinets and microwave are located in the background behind the man.",
     "parse_success": true,
     "chunk_idx": 2,
-    "video_id": "How_to_Make_Kale_Chips_-_Kale_Recipe",
-    "_rescued": "parse"
+    "video_id": "How_to_Make_Kale_Chips_-_Kale_Recipe"
   },
   {
     "time": [
-      6,
-      8
+      3,
+      4
     ],
     "visible_entities": [
       {
-        "desc": "elderly man with white hair, wearing a plaid shirt with orange, blue, and white stripes, and a blue apron",
-        "action": "tossing greens in a bowl",
-        "position": "center"
-      },
-      {
-        "desc": "large silver metal mixing bowl filled with green leafy vegetables",
-        "action": "static",
-        "position": "foreground"
-      },
-      {
-        "desc": "wooden kitchen counter with various cooking ingredients and utensils",
-        "action": "static",
-        "position": "foreground"
-      },
-      {
-        "desc": "kitchen background with wooden cabinets, a microwave, and shelves with dishes",
-        "action": "static",
-        "position": "background"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "The man is using his hands to toss or mix the green vegetables in the metal bowl.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "A logo in the bottom left corner reads 'THE JACQUES PEPIN FOUNDATION'.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [
-      "THE JACQUES PEPIN FOUNDATION"
-    ],
-    "spatial": "The man is standing behind the wooden counter. The metal bowl containing greens is on the counter in front of him. The kitchen cabinets and microwave are behind the man.",
-    "parse_success": true,
-    "chunk_idx": 3,
-    "video_id": "How_to_Make_Kale_Chips_-_Kale_Recipe",
-    "_rescued": "parse"
-  },
-  {
-    "time": [
-      8,
-      10
-    ],
-    "visible_entities": [
-      {
-        "desc": "elderly man with white hair, wearing a red and blue plaid shirt and a blue apron",
-        "action": "tossing salad greens in a bowl",
+        "desc": "older man with white hair, wearing a plaid shirt with orange, white, and blue stripes, and a blue apron",
+        "action": "tossing salad greens with hands",
         "position": "center"
       },
       {
@@ -255,10 +196,73 @@
       {
         "desc": "green leafy vegetables",
         "action": "being tossed",
-        "position": "inside the bowl"
+        "position": "inside bowl"
       },
       {
-        "desc": "wooden kitchen island",
+        "desc": "wooden kitchen counter",
+        "action": "static",
+        "position": "foreground"
+      },
+      {
+        "desc": "stainless steel microwave",
+        "action": "static",
+        "position": "background right"
+      },
+      {
+        "desc": "white wall clock with black numbers",
+        "action": "static",
+        "position": "background center"
+      },
+      {
+        "desc": "circular logo watermark with text 'THE JACQUES PÉPIN FOUNDATION'",
+        "action": "static",
+        "position": "bottom left"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The man is using both hands to toss the green leafy vegetables inside the silver bowl.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The man is standing behind a wooden kitchen counter.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A microwave is mounted in the wooden cabinetry in the background.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The text 'THE JACQUES PÉPIN FOUNDATION' is visible in the bottom left corner.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "THE JACQUES PÉPIN FOUNDATION"
+    ],
+    "spatial": "The man is standing behind the wooden counter, with the silver bowl of greens in front of him. The microwave is to the right of the man in the background. The clock is on the wall above the counter, behind the man.",
+    "parse_success": true,
+    "chunk_idx": 3,
+    "video_id": "How_to_Make_Kale_Chips_-_Kale_Recipe"
+  },
+  {
+    "time": [
+      4,
+      5
+    ],
+    "visible_entities": [
+      {
+        "desc": "elderly man with white hair, wearing a plaid shirt with orange, blue, and white patterns, and a dark blue apron",
+        "action": "tossing salad greens with hands",
+        "position": "center"
+      },
+      {
+        "desc": "silver metal bowl filled with green leafy vegetables",
+        "action": "static",
+        "position": "foreground"
+      },
+      {
+        "desc": "wooden kitchen island counter",
         "action": "static",
         "position": "foreground"
       },
@@ -278,19 +282,19 @@
         "position": "background"
       },
       {
-        "desc": "white wall clock",
+        "desc": "white circular wall clock",
         "action": "static",
         "position": "background"
       },
       {
-        "desc": "circular logo with text 'THE JACQUES PÉPIN FOUNDATION'",
+        "desc": "circular logo with text 'THE JACQUES PEPIN FOUNDATION' and a 'JP' monogram",
         "action": "static",
-        "position": "bottom left"
+        "position": "bottom-left"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "The man is using his hands to toss the green vegetables inside the silver bowl.",
+        "fact": "The man is using both hands to toss the salad greens inside the metal bowl.",
         "confidence": 1.0
       },
       {
@@ -298,92 +302,32 @@
         "confidence": 1.0
       },
       {
-        "fact": "A bottle of oil and a dark bottle are sitting on the counter to the right of the bowl.",
+        "fact": "Various cooking ingredients and bottles are arranged on the counter to the right of the bowl.",
         "confidence": 1.0
       },
       {
-        "fact": "The logo 'THE JACQUES PÉPIN FOUNDATION' is visible in the bottom left corner.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [
-      "THE JACQUES PÉPIN FOUNDATION"
-    ],
-    "spatial": "The man is standing behind the wooden kitchen island. The silver bowl containing greens is on the island in front of the man. To the right of the bowl, there is a clear bottle of oil and a dark bottle. The microwave is mounted in the cabinetry behind the man.",
-    "parse_success": true,
-    "chunk_idx": 4,
-    "video_id": "How_to_Make_Kale_Chips_-_Kale_Recipe",
-    "_rescued": "parse"
-  },
-  {
-    "time": [
-      10,
-      12
-    ],
-    "visible_entities": [
-      {
-        "desc": "elderly man with short grey hair, wearing a red, white, and blue plaid long-sleeved shirt and a dark blue apron",
-        "action": "gesturing with hands",
-        "position": "center"
-      },
-      {
-        "desc": "large silver metal mixing bowl filled with green leafy vegetables",
-        "action": "static",
-        "position": "foreground"
-      },
-      {
-        "desc": "wooden kitchen island counter with various cooking ingredients and tools",
-        "action": "static",
-        "position": "foreground"
-      },
-      {
-        "desc": "kitchen background with wooden cabinets, a microwave, a wall clock, and shelves with dishes",
-        "action": "static",
-        "position": "background"
-      },
-      {
-        "desc": "circular logo with text 'THE JACQUES PÉPIN FOUNDATION' and a stylized 'JP' monogram",
-        "action": "static",
-        "position": "bottom left"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "The man is gesturing with his hands while speaking.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "A large bowl of greens sits on the wooden counter in front of the man.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The logo for 'The Jacques Pépin Foundation' is visible in the bottom left corner.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "Various bottles, jars, and cooking utensils are scattered on the counter.",
+        "fact": "The text 'THE JACQUES PEPIN FOUNDATION' is visible in the bottom left corner.",
         "confidence": 1.0
       }
     ],
     "ocr": [
-      "THE JACQUES PÉPIN FOUNDATION",
+      "THE JACQUES PEPIN FOUNDATION",
       "JP"
     ],
-    "spatial": "The man is standing behind the wooden kitchen island. The bowl of greens is on the island in front of him. The kitchen cabinets and microwave are behind the man. The foundation logo is in the bottom left corner of the frame.",
+    "spatial": "The man is standing behind the wooden counter, with the metal bowl of salad in front of him. To the right of the bowl, there are bottles of oil and other ingredients. In the background, a microwave is mounted above the counter, and a clock is on the wall to the left of the microwave.",
     "parse_success": true,
-    "chunk_idx": 5,
-    "video_id": "How_to_Make_Kale_Chips_-_Kale_Recipe",
-    "_rescued": "parse"
+    "chunk_idx": 4,
+    "video_id": "How_to_Make_Kale_Chips_-_Kale_Recipe"
   },
   {
     "time": [
-      12,
-      14
+      5,
+      6
     ],
     "visible_entities": [
       {
-        "desc": "older man with white hair, wearing a red, white, and blue plaid shirt and a blue apron",
-        "action": "gesturing with hands over a bowl of greens",
+        "desc": "elderly man with short gray hair, wearing a red, white, and blue plaid button-down shirt and a dark blue apron",
+        "action": "gesturing with hands while speaking",
         "position": "center"
       },
       {
@@ -397,46 +341,36 @@
         "position": "foreground"
       },
       {
-        "desc": "clear plastic bottle with yellow liquid and a red cap",
+        "desc": "stainless steel microwave oven",
         "action": "static",
-        "position": "right"
+        "position": "background right"
       },
       {
-        "desc": "dark glass bottle",
+        "desc": "white wall clock with black numerals",
         "action": "static",
-        "position": "right"
+        "position": "background center"
       },
       {
-        "desc": "white wall clock with black numbers",
+        "desc": "circular logo with text 'THE JACQUES PÉPIN FOUNDATION' and a stylized 'JP' monogram",
         "action": "static",
-        "position": "background"
-      },
-      {
-        "desc": "stainless steel microwave",
-        "action": "static",
-        "position": "background"
-      },
-      {
-        "desc": "circular logo with text 'THE JACQUES PÉPIN FOUNDATION' and a 'JP' monogram",
-        "action": "static",
-        "position": "bottom-left"
+        "position": "bottom left"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "The man is gesturing with both hands over a bowl of salad greens.",
+        "fact": "The man is standing behind a wooden kitchen island.",
         "confidence": 1.0
       },
       {
-        "fact": "A large metal bowl containing green vegetables sits on the wooden counter.",
+        "fact": "The man is gesturing with his right hand raised and left hand near the bowl.",
         "confidence": 1.0
       },
       {
-        "fact": "The man is wearing a blue apron over a plaid shirt.",
+        "fact": "A large metal bowl containing green salad sits on the counter in front of the man.",
         "confidence": 1.0
       },
       {
-        "fact": "A bottle of oil and a dark bottle are placed on the counter to the right of the bowl.",
+        "fact": "Various cooking ingredients and bottles are scattered on the counter to the right of the bowl.",
         "confidence": 1.0
       },
       {
@@ -448,107 +382,168 @@
       "THE JACQUES PÉPIN FOUNDATION",
       "JP"
     ],
-    "spatial": "The man stands behind the wooden kitchen island. The metal bowl of greens is on the island in front of him. To the right of the bowl are a bottle of oil and a dark bottle. The microwave is mounted in the wooden cabinets behind the man to the right.",
+    "spatial": "The man is standing behind the wooden kitchen island. The metal bowl of greens is on the island in front of the man. The microwave is mounted in the wooden cabinetry to the right of the man. The clock is on the wall above the counter behind the man.",
     "parse_success": true,
-    "chunk_idx": 6,
-    "video_id": "How_to_Make_Kale_Chips_-_Kale_Recipe",
-    "_rescued": "parse"
+    "chunk_idx": 5,
+    "video_id": "How_to_Make_Kale_Chips_-_Kale_Recipe"
   },
   {
     "time": [
-      14,
-      16
+      6,
+      7
     ],
     "visible_entities": [
       {
         "desc": "elderly man with white hair, wearing a red, white, and blue plaid shirt and a blue apron",
-        "action": "preparing kale in a bowl",
+        "action": "gesturing with hands over a bowl",
         "position": "center"
       },
       {
-        "desc": "large stainless steel mixing bowl filled with chopped green kale",
-        "action": "being held and tossed",
-        "position": "center"
-      },
-      {
-        "desc": "wooden countertop with a light brown finish",
+        "desc": "large silver metal mixing bowl filled with green leafy vegetables",
         "action": "static",
-        "position": "bottom"
+        "position": "foreground"
       },
       {
-        "desc": "set of metal measuring spoons",
+        "desc": "wooden kitchen island counter",
         "action": "static",
-        "position": "bottom"
+        "position": "foreground"
       },
       {
-        "desc": "bottle of oil with yellow liquid",
-        "action": "being poured",
-        "position": "center"
-      },
-      {
-        "desc": "kitchen background with wooden cabinets, a microwave, and hanging utensils",
+        "desc": "stainless steel microwave oven",
         "action": "static",
-        "position": "background"
+        "position": "background right"
+      },
+      {
+        "desc": "white wall clock with black numbers",
+        "action": "static",
+        "position": "background center"
+      },
+      {
+        "desc": "circular logo with text 'THE JACQUES PÉPIN FOUNDATION' and a 'JP' monogram",
+        "action": "static",
+        "position": "bottom left"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "The man is tossing green kale in a metal bowl.",
+        "fact": "The man is standing behind a wooden kitchen island.",
         "confidence": 1.0
       },
       {
-        "fact": "The man is pouring oil from a bottle into the bowl.",
+        "fact": "The man gestures with his hands over a bowl of salad.",
         "confidence": 1.0
       },
       {
-        "fact": "A set of measuring spoons rests on the wooden counter.",
+        "fact": "A bowl of green vegetables sits on the counter in front of the man.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The logo 'THE JACQUES PÉPIN FOUNDATION' is visible in the bottom left corner.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "THE JACQUES PÉPIN FOUNDATION",
+      "JP"
+    ],
+    "spatial": "The man is standing behind the wooden kitchen island. The metal bowl filled with greens is on the island in front of the man. The microwave is mounted in the cabinetry to the right of the man. The clock is on the wall behind the man.",
+    "parse_success": true,
+    "chunk_idx": 6,
+    "video_id": "How_to_Make_Kale_Chips_-_Kale_Recipe"
+  },
+  {
+    "time": [
+      7,
+      8
+    ],
+    "visible_entities": [
+      {
+        "desc": "man with white hair, wearing a red, white, and blue plaid shirt and a dark blue apron",
+        "action": "preparing food",
+        "position": "center"
+      },
+      {
+        "desc": "large silver metal mixing bowl filled with chopped green leafy vegetables",
+        "action": "being touched",
+        "position": "center"
+      },
+      {
+        "desc": "wooden cutting board, light brown, rectangular",
+        "action": "static",
+        "position": "foreground"
+      },
+      {
+        "desc": "set of silver metal measuring spoons",
+        "action": "static",
+        "position": "bottom"
+      },
+      {
+        "desc": "bottle of amber liquid, likely oil or vinegar",
+        "action": "static",
+        "position": "right"
+      },
+      {
+        "desc": "dark green glass bottle",
+        "action": "static",
+        "position": "right"
+      },
+      {
+        "desc": "white text overlay",
+        "action": "static",
+        "position": "bottom right"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The man is using his hand to mix or arrange the kale inside the silver bowl.",
         "confidence": 1.0
       },
       {
         "fact": "The text '8 oz kale' appears on the screen.",
         "confidence": 1.0
+      },
+      {
+        "fact": "The measuring spoons are lying on the wooden cutting board.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The bowl of kale is placed on the wooden cutting board.",
+        "confidence": 1.0
       }
     ],
     "ocr": [
-      "8 oz kale",
-      "THE JACQUES PÉPIN FOUNDATION"
+      "8 oz kale"
     ],
-    "spatial": "The man stands behind the wooden countertop. The metal bowl containing kale is in front of the man on the counter. The measuring spoons are to the left of the bowl. The kitchen cabinets and microwave are in the background behind the man.",
+    "spatial": "The man is standing behind the wooden cutting board. The silver bowl filled with kale is on top of the cutting board. The measuring spoons are on the cutting board to the left of the bowl. The bottle of amber liquid is to the right of the bowl.",
     "parse_success": true,
     "chunk_idx": 7,
-    "video_id": "How_to_Make_Kale_Chips_-_Kale_Recipe",
-    "_rescued": "parse"
+    "video_id": "How_to_Make_Kale_Chips_-_Kale_Recipe"
   },
   {
     "time": [
-      16,
-      18
+      8,
+      9
     ],
     "visible_entities": [
       {
-        "desc": "person wearing a red, white, and blue plaid shirt with a blue apron",
-        "action": "pouring oil from a bottle",
+        "desc": "person wearing a red, white, and blue plaid shirt with a dark blue apron",
+        "action": "pouring liquid from a bottle",
         "position": "left"
       },
       {
-        "desc": "large silver metal mixing bowl filled with chopped green kale",
+        "desc": "large stainless steel mixing bowl filled with chopped green kale",
         "action": "static",
         "position": "center"
       },
       {
-        "desc": "clear plastic bottle containing yellow cooking oil",
+        "desc": "clear plastic bottle containing yellow oil",
         "action": "being tilted to pour",
         "position": "top center"
       },
       {
-        "desc": "light brown wooden cutting board",
+        "desc": "light-colored wooden cutting board",
         "action": "static",
-        "position": "background"
-      },
-      {
-        "desc": "small glass bowl containing white granular substance",
-        "action": "static",
-        "position": "top right"
+        "position": "center"
       },
       {
         "desc": "dark glass bottle",
@@ -556,14 +551,19 @@
         "position": "right"
       },
       {
-        "desc": "white text overlay reading '8 oz kale'",
+        "desc": "small clear bowl with white powder",
         "action": "static",
-        "position": "bottom right"
+        "position": "top right"
+      },
+      {
+        "desc": "metal measuring spoon",
+        "action": "held by hand",
+        "position": "bottom left"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A person is pouring yellow oil from a clear bottle into a metal bowl.",
+        "fact": "A person is pouring yellow oil from a plastic bottle into a metal bowl of kale.",
         "confidence": 1.0
       },
       {
@@ -571,27 +571,26 @@
         "confidence": 1.0
       },
       {
-        "fact": "The bowl is resting on a wooden cutting board.",
+        "fact": "The text '8 oz kale' is displayed in the bottom right corner.",
         "confidence": 1.0
       },
       {
-        "fact": "The text '8 oz kale' is displayed in the bottom right corner.",
+        "fact": "A metal measuring spoon is held in the person's left hand.",
         "confidence": 1.0
       }
     ],
     "ocr": [
       "8 oz kale"
     ],
-    "spatial": "The person in the plaid shirt is on the left side of the frame, holding an oil bottle above the metal bowl. The metal bowl filled with kale is in the center of the wooden cutting board. To the right of the bowl, there is a dark glass bottle and a small glass bowl with white contents. The text '8 oz kale' is located in the bottom right corner of the screen.",
+    "spatial": "The metal bowl filled with kale is in the center of the wooden cutting board. The person is to the left of the bowl, pouring oil from a bottle held above the bowl. A dark glass bottle is to the right of the bowl. A small bowl with white powder is behind the metal bowl.",
     "parse_success": true,
     "chunk_idx": 8,
-    "video_id": "How_to_Make_Kale_Chips_-_Kale_Recipe",
-    "_rescued": "parse"
+    "video_id": "How_to_Make_Kale_Chips_-_Kale_Recipe"
   },
   {
     "time": [
-      18,
-      20
+      9,
+      10
     ],
     "visible_entities": [
       {
@@ -600,14 +599,14 @@
         "position": "left"
       },
       {
-        "desc": "large silver metal mixing bowl filled with chopped green kale",
+        "desc": "large silver metal bowl filled with chopped green kale",
         "action": "static",
         "position": "center"
       },
       {
-        "desc": "clear plastic bottle containing yellow cooking oil",
+        "desc": "clear plastic bottle containing yellow oil",
         "action": "being tilted to pour",
-        "position": "top center"
+        "position": "center"
       },
       {
         "desc": "light brown wooden cutting board",
@@ -617,7 +616,7 @@
       {
         "desc": "small metal measuring spoon",
         "action": "static",
-        "position": "bottom center"
+        "position": "bottom"
       },
       {
         "desc": "dark glass bottle",
@@ -627,7 +626,7 @@
       {
         "desc": "small clear glass bowl with white powder",
         "action": "static",
-        "position": "top right"
+        "position": "background"
       }
     ],
     "atomic_facts": [
@@ -652,21 +651,20 @@
       "8 oz kale",
       "2 tbsp oil"
     ],
-    "spatial": "The person is standing to the left of the wooden cutting board. The metal bowl filled with kale is in the center of the board. The person is holding the oil bottle above the bowl, pouring liquid into it. The dark glass bottle is to the right of the bowl.",
+    "spatial": "The person is standing to the left of the wooden cutting board. The metal bowl filled with kale is in the center of the board. The person is holding the oil bottle above the bowl. The measuring spoon is on the board below the bowl. The dark glass bottle is to the right of the cutting board.",
     "parse_success": true,
     "chunk_idx": 9,
-    "video_id": "How_to_Make_Kale_Chips_-_Kale_Recipe",
-    "_rescued": "parse"
+    "video_id": "How_to_Make_Kale_Chips_-_Kale_Recipe"
   },
   {
     "time": [
-      20,
-      22
+      10,
+      11
     ],
     "visible_entities": [
       {
-        "desc": "person wearing a red, white, and blue plaid shirt with dark denim overalls",
-        "action": "pouring oil from a bottle",
+        "desc": "person wearing a red, white, and blue plaid shirt with a dark blue apron",
+        "action": "pouring oil from a bottle into a bowl",
         "position": "left"
       },
       {
@@ -676,21 +674,26 @@
       },
       {
         "desc": "clear plastic bottle containing yellow cooking oil",
-        "action": "being poured",
-        "position": "center"
+        "action": "being tilted to pour",
+        "position": "left"
       },
       {
-        "desc": "wooden cutting board with visible grain",
+        "desc": "light-colored wooden cutting board",
         "action": "static",
         "position": "center"
       },
       {
-        "desc": "dark green glass bottle",
+        "desc": "silver metal measuring spoon",
+        "action": "static",
+        "position": "bottom"
+      },
+      {
+        "desc": "dark glass bottle standing upright",
         "action": "static",
         "position": "right"
       },
       {
-        "desc": "small glass bowl containing white granular substance",
+        "desc": "small glass bowl containing white powder",
         "action": "static",
         "position": "top"
       },
@@ -702,199 +705,70 @@
     ],
     "atomic_facts": [
       {
-        "fact": "The person is pouring oil from the plastic bottle into the bowl of kale.",
+        "fact": "A person is pouring yellow oil from a plastic bottle into a bowl of kale.",
         "confidence": 1.0
       },
       {
-        "fact": "The text overlay indicates the quantity of oil being used is 2 tablespoons.",
+        "fact": "The bowl is filled with chopped green leafy vegetables.",
         "confidence": 1.0
       },
       {
-        "fact": "The bowl is sitting on top of a wooden cutting board.",
+        "fact": "A metal measuring spoon rests on the wooden board near the bowl.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The text '2 tbsp oil' is displayed in the bottom right corner.",
         "confidence": 1.0
       }
     ],
     "ocr": [
       "2 tbsp oil"
     ],
-    "spatial": "The metal bowl containing kale is centered on the wooden cutting board. The person is positioned to the left of the bowl, holding the oil bottle above it. To the right of the bowl, a dark glass bottle stands on the counter.",
+    "spatial": "The person is positioned to the left of the silver bowl, holding the oil bottle above it. The bowl sits in the center of the wooden cutting board. The measuring spoon is below the bowl on the board. The dark glass bottle is to the right of the cutting board. The small glass bowl with white powder is behind the main mixing bowl.",
     "parse_success": true,
     "chunk_idx": 10,
     "video_id": "How_to_Make_Kale_Chips_-_Kale_Recipe"
   },
   {
     "time": [
-      22,
-      24
+      11,
+      12
     ],
     "visible_entities": [
       {
-        "desc": "person wearing a red, white, and blue plaid long-sleeved shirt",
+        "desc": "person wearing a red, white, and blue plaid shirt",
         "action": "pouring oil from a bottle",
         "position": "left"
       },
       {
-        "desc": "large silver metal mixing bowl filled with chopped green kale",
+        "desc": "silver metal bowl filled with chopped green kale",
         "action": "static",
         "position": "center"
       },
       {
         "desc": "clear glass bottle containing yellow oil",
-        "action": "being tilted and poured",
+        "action": "being poured",
         "position": "left"
       },
       {
-        "desc": "light-colored wooden cutting board",
+        "desc": "light brown wooden cutting board",
         "action": "static",
         "position": "center"
-      },
-      {
-        "desc": "two silver metal measuring spoons",
-        "action": "static",
-        "position": "bottom"
-      },
-      {
-        "desc": "dark green glass bottle",
-        "action": "static",
-        "position": "right"
       },
       {
         "desc": "small glass bowl containing white granular substance",
         "action": "static",
-        "position": "top"
-      },
-      {
-        "desc": "white text overlay reading '2 tbsp oil'",
-        "action": "static",
-        "position": "bottom right"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "The person pours oil from a glass bottle into the bowl of kale.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The bowl of kale sits on a wooden cutting board.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "Two metal measuring spoons are placed on the cutting board below the bowl.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The text '2 tbsp oil' is visible in the bottom right corner.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [
-      "2 tbsp oil"
-    ],
-    "spatial": "The person in the plaid shirt is to the left of the silver bowl. The bowl is in the center of the wooden cutting board. The measuring spoons are below the bowl on the board. The dark green bottle is to the right of the cutting board. The small bowl of white substance is behind the main bowl.",
-    "parse_success": true,
-    "chunk_idx": 11,
-    "video_id": "How_to_Make_Kale_Chips_-_Kale_Recipe",
-    "_rescued": "parse"
-  },
-  {
-    "time": [
-      24,
-      26
-    ],
-    "visible_entities": [
-      {
-        "desc": "person with fair skin, wearing a red, white, and blue plaid shirt and a blue apron",
-        "action": "sprinkling salt onto kale",
-        "position": "left"
-      },
-      {
-        "desc": "large silver metal mixing bowl filled with chopped green curly kale",
-        "action": "static",
-        "position": "center"
-      },
-      {
-        "desc": "light-colored wooden cutting board with visible grain",
-        "action": "static",
-        "position": "center"
-      },
-      {
-        "desc": "small clear glass bowl containing white granular salt",
-        "action": "static",
         "position": "top right"
-      },
-      {
-        "desc": "dark glass bottle, likely olive oil or vinegar",
-        "action": "static",
-        "position": "right"
-      },
-      {
-        "desc": "white text overlay reading 'salt'",
-        "action": "static",
-        "position": "bottom right"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "A person is sprinkling salt from their hand onto the kale in the bowl.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The kale is chopped into bite-sized pieces inside a metal bowl.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The metal bowl sits on a wooden cutting board.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The text 'salt' is visible in the bottom right corner of the screen.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [
-      "salt"
-    ],
-    "spatial": "The person is standing to the left of the wooden cutting board. The metal bowl filled with kale is in the center of the cutting board. The small glass bowl of salt is located above and to the right of the metal bowl. The dark bottle is to the right of the cutting board.",
-    "parse_success": true,
-    "chunk_idx": 12,
-    "video_id": "How_to_Make_Kale_Chips_-_Kale_Recipe",
-    "_rescued": "parse"
-  },
-  {
-    "time": [
-      26,
-      28
-    ],
-    "visible_entities": [
-      {
-        "desc": "person with wrinkled hands, wearing a red, white, and blue plaid shirt and a blue apron",
-        "action": "pouring salt from a small glass bowl into a large metal bowl",
-        "position": "left"
-      },
-      {
-        "desc": "large silver metal bowl filled with chopped green kale",
-        "action": "static",
-        "position": "center"
-      },
-      {
-        "desc": "small clear glass bowl containing white granular salt",
-        "action": "being held and tipped",
-        "position": "center"
-      },
-      {
-        "desc": "large silver spoon",
-        "action": "static",
-        "position": "center"
-      },
-      {
-        "desc": "light-colored wooden cutting board",
-        "action": "static",
-        "position": "center"
       },
       {
         "desc": "dark glass bottle",
         "action": "static",
         "position": "right"
+      },
+      {
+        "desc": "metal measuring spoons",
+        "action": "static",
+        "position": "bottom"
       },
       {
         "desc": "white text overlay",
@@ -904,66 +778,56 @@
     ],
     "atomic_facts": [
       {
-        "fact": "person pours white salt from a small glass bowl into a large metal bowl of kale",
+        "fact": "person pours oil from a bottle into a bowl of kale",
         "confidence": 1.0
       },
       {
-        "fact": "the text 'salt' is displayed in the bottom right corner",
+        "fact": "the bowl contains chopped green kale",
         "confidence": 1.0
       },
       {
-        "fact": "a large silver spoon rests inside the bowl of kale",
+        "fact": "the text '2 tbsp oil' is displayed on the screen",
         "confidence": 1.0
       },
       {
-        "fact": "the bowl of kale sits on a wooden cutting board",
+        "fact": "measuring spoons are lying on the wooden board",
         "confidence": 1.0
       }
     ],
     "ocr": [
-      "salt"
+      "2 tbsp oil",
+      "JACQUES PÉPIN FOUNDATION"
     ],
-    "spatial": "The person is on the left side of the frame, holding a small glass bowl above a large metal bowl. The metal bowl containing kale and a spoon is in the center, resting on a wooden cutting board. A dark bottle is to the right of the cutting board. The text 'salt' is located in the bottom right corner of the screen.",
+    "spatial": "The person in the plaid shirt is to the left of the silver bowl. The bowl of kale is in the center of the wooden cutting board. The text '2 tbsp oil' is in the bottom right corner of the frame. The measuring spoons are below the bowl on the board.",
     "parse_success": true,
-    "chunk_idx": 13,
-    "video_id": "How_to_Make_Kale_Chips_-_Kale_Recipe",
-    "_rescued": "parse"
+    "chunk_idx": 11,
+    "video_id": "How_to_Make_Kale_Chips_-_Kale_Recipe"
   },
   {
     "time": [
-      28,
-      30
+      12,
+      13
     ],
     "visible_entities": [
       {
-        "desc": "person with fair skin, wearing a blue apron over a plaid shirt",
-        "action": "stirring kale in a bowl",
+        "desc": "person wearing a red, white, and blue plaid shirt with blue overalls",
+        "action": "sprinkling salt",
         "position": "left"
       },
       {
-        "desc": "large silver metal mixing bowl",
+        "desc": "large silver metal bowl filled with chopped green kale",
         "action": "static",
         "position": "center"
       },
       {
-        "desc": "green chopped kale leaves",
-        "action": "being stirred",
-        "position": "center"
-      },
-      {
-        "desc": "small clear glass bowl containing white liquid",
-        "action": "held in hand",
-        "position": "top left"
-      },
-      {
-        "desc": "silver spoon",
-        "action": "stirring",
-        "position": "center"
-      },
-      {
-        "desc": "wooden table with light brown finish",
+        "desc": "light brown wooden cutting board",
         "action": "static",
-        "position": "background"
+        "position": "center"
+      },
+      {
+        "desc": "small glass bowl containing white salt",
+        "action": "static",
+        "position": "top right"
       },
       {
         "desc": "dark glass bottle",
@@ -971,7 +835,159 @@
         "position": "right"
       },
       {
-        "desc": "clear bottle with yellow liquid",
+        "desc": "white text overlay reading 'salt'",
+        "action": "static",
+        "position": "bottom right"
+      },
+      {
+        "desc": "circular logo with text 'THE JACQUES PÉPIN FOUNDATION'",
+        "action": "static",
+        "position": "bottom left"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A person is sprinkling salt from their hand onto the kale in the bowl.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The kale is chopped and fills a large silver bowl.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The bowl sits on a wooden cutting board.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The text 'salt' is visible in the bottom right corner.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "salt",
+      "THE JACQUES PÉPIN FOUNDATION"
+    ],
+    "spatial": "The person is standing to the left of the wooden cutting board. The silver bowl filled with kale is in the center of the board. The small glass bowl of salt is located above and to the right of the main bowl. The dark bottle is to the right of the cutting board.",
+    "parse_success": true,
+    "chunk_idx": 12,
+    "video_id": "How_to_Make_Kale_Chips_-_Kale_Recipe"
+  },
+  {
+    "time": [
+      13,
+      14
+    ],
+    "visible_entities": [
+      {
+        "desc": "person with fair skin, wearing a red and white plaid shirt and a blue apron",
+        "action": "pouring salt from a small glass bowl into a large metal bowl",
+        "position": "left"
+      },
+      {
+        "desc": "large silver metal mixing bowl filled with chopped green kale",
+        "action": "static",
+        "position": "center"
+      },
+      {
+        "desc": "small clear glass bowl containing white granular salt",
+        "action": "being held and tilted",
+        "position": "center"
+      },
+      {
+        "desc": "large silver spoon resting inside the metal bowl",
+        "action": "static",
+        "position": "center"
+      },
+      {
+        "desc": "light-colored wooden cutting board with visible grain",
+        "action": "static",
+        "position": "center"
+      },
+      {
+        "desc": "dark glass bottle, likely olive oil",
+        "action": "static",
+        "position": "right"
+      },
+      {
+        "desc": "yellow plastic bottle, likely cooking oil",
+        "action": "static",
+        "position": "right"
+      },
+      {
+        "desc": "white text overlay reading 'salt'",
+        "action": "static",
+        "position": "bottom right"
+      },
+      {
+        "desc": "circular logo with text 'THE JACQUES PÉPIN FOUNDATION'",
+        "action": "static",
+        "position": "bottom left"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A person is pouring white salt from a small glass bowl into a large metal bowl of kale.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The metal bowl is sitting on a wooden cutting board.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A large spoon is resting inside the bowl of kale.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "Bottles of oil are visible on the counter to the right of the cutting board.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The text 'salt' is displayed in the bottom right corner of the screen.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "salt",
+      "THE JACQUES PÉPIN FOUNDATION"
+    ],
+    "spatial": "The person is positioned to the left of the large metal bowl, holding a small glass bowl above it. The metal bowl containing kale and a spoon sits in the center of a wooden cutting board. To the right of the cutting board, several bottles of oil are arranged on the countertop. The text 'salt' is located in the bottom right corner, while a foundation logo is in the bottom left corner.",
+    "parse_success": true,
+    "chunk_idx": 13,
+    "video_id": "How_to_Make_Kale_Chips_-_Kale_Recipe"
+  },
+  {
+    "time": [
+      14,
+      15
+    ],
+    "visible_entities": [
+      {
+        "desc": "person with hairy arms, wearing a blue apron over a plaid shirt",
+        "action": "holding a small glass bowl and a spoon",
+        "position": "left"
+      },
+      {
+        "desc": "large silver metal bowl filled with chopped green kale",
+        "action": "static",
+        "position": "center"
+      },
+      {
+        "desc": "small clear glass bowl containing white liquid",
+        "action": "being held",
+        "position": "top left"
+      },
+      {
+        "desc": "silver spoon",
+        "action": "stirring the kale",
+        "position": "center"
+      },
+      {
+        "desc": "wooden table surface",
+        "action": "static",
+        "position": "background"
+      },
+      {
+        "desc": "dark glass bottle",
         "action": "static",
         "position": "right"
       },
@@ -983,7 +999,7 @@
     ],
     "atomic_facts": [
       {
-        "fact": "The person is stirring green kale in a large metal bowl with a spoon.",
+        "fact": "The person is stirring the green kale in the metal bowl with a spoon.",
         "confidence": 1.0
       },
       {
@@ -991,11 +1007,11 @@
         "confidence": 1.0
       },
       {
-        "fact": "A logo for 'The Jacques Pépin Foundation' is visible in the bottom left corner.",
+        "fact": "The metal bowl is sitting on a wooden table.",
         "confidence": 1.0
       },
       {
-        "fact": "Bottles of oil or vinegar are sitting on the counter to the right of the wooden table.",
+        "fact": "A dark bottle is visible on the right side of the table.",
         "confidence": 1.0
       }
     ],
@@ -1003,25 +1019,24 @@
       "THE JACQUES PÉPIN FOUNDATION",
       "JP"
     ],
-    "spatial": "The person is positioned to the left of the large metal bowl. The bowl is sitting on top of the wooden table. The small glass bowl is held above the large bowl. The bottles are to the right of the wooden table.",
+    "spatial": "The person is positioned to the left of the large metal bowl. The small glass bowl is held above the metal bowl. The metal bowl is on the wooden table. The dark bottle is to the right of the metal bowl.",
     "parse_success": true,
     "chunk_idx": 14,
-    "video_id": "How_to_Make_Kale_Chips_-_Kale_Recipe",
-    "_rescued": "parse"
+    "video_id": "How_to_Make_Kale_Chips_-_Kale_Recipe"
   },
   {
     "time": [
-      30,
-      32
+      15,
+      16
     ],
     "visible_entities": [
       {
-        "desc": "person wearing a red, white, and blue plaid shirt with rolled-up sleeves",
-        "action": "sprinkling white powder into a bowl",
+        "desc": "person wearing a red, white, and blue plaid shirt with rolled-up sleeves and a blue apron",
+        "action": "sprinkling white powder onto kale",
         "position": "left"
       },
       {
-        "desc": "large silver metal mixing bowl filled with chopped green kale",
+        "desc": "large silver metal bowl filled with chopped green curly kale",
         "action": "static",
         "position": "center"
       },
@@ -1031,14 +1046,14 @@
         "position": "center"
       },
       {
-        "desc": "small clear glass bowl containing white powder",
+        "desc": "small clear glass bowl containing white granular powder",
         "action": "static",
-        "position": "top"
+        "position": "top center"
       },
       {
         "desc": "set of silver metal measuring spoons",
         "action": "static",
-        "position": "top"
+        "position": "top left"
       },
       {
         "desc": "dark glass bottle, likely olive oil",
@@ -1046,47 +1061,52 @@
         "position": "right"
       },
       {
-        "desc": "circular white logo with black text and a 'JP' monogram",
+        "desc": "clear plastic bottle with yellow liquid",
+        "action": "static",
+        "position": "right"
+      },
+      {
+        "desc": "circular logo with text 'THE JACQUES PEPIN FOUNDATION' and a stylized 'JP' monogram",
         "action": "static",
         "position": "bottom left"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A person is sprinkling white powder from their fingers into a bowl of kale.",
+        "fact": "A person is sprinkling a white substance from their fingers onto the kale in the bowl.",
         "confidence": 1.0
       },
       {
-        "fact": "The bowl is filled with chopped green leafy vegetables.",
+        "fact": "The kale is chopped into bite-sized pieces inside a metal bowl.",
         "confidence": 1.0
       },
       {
-        "fact": "Measuring spoons are resting on the wooden board.",
+        "fact": "The metal measuring spoons are resting on the wooden board near the top left.",
         "confidence": 1.0
       },
       {
-        "fact": "The logo reads 'THE JACQUES PEPIN FOUNDATION'.",
+        "fact": "The logo for 'The Jacques Pepin Foundation' is visible in the bottom left corner.",
         "confidence": 1.0
       }
     ],
     "ocr": [
-      "THE JACQUES PEPIN FOUNDATION"
+      "THE JACQUES PEPIN FOUNDATION",
+      "JP"
     ],
-    "spatial": "The person is positioned to the left of the large metal bowl. The bowl sits in the center of the wooden cutting board. The small glass bowl of powder and the measuring spoons are located above the main bowl on the board. The dark bottle is to the right of the cutting board.",
+    "spatial": "The person is positioned to the left of the large metal bowl. The bowl of kale sits in the center of the wooden cutting board. The small glass bowl of white powder is located above the metal bowl. To the right of the cutting board, there are bottles of oil and vinegar.",
     "parse_success": true,
     "chunk_idx": 15,
-    "video_id": "How_to_Make_Kale_Chips_-_Kale_Recipe",
-    "_rescued": "parse"
+    "video_id": "How_to_Make_Kale_Chips_-_Kale_Recipe"
   },
   {
     "time": [
-      32,
-      34
+      16,
+      17
     ],
     "visible_entities": [
       {
         "desc": "person wearing a red, white, and blue plaid shirt with a blue apron",
-        "action": "massaging green leafy vegetables in a bowl",
+        "action": "tossing leafy greens",
         "position": "left"
       },
       {
@@ -1097,78 +1117,15 @@
       {
         "desc": "chopped green leafy vegetables",
         "action": "being tossed",
-        "position": "inside the bowl"
+        "position": "center"
       },
       {
-        "desc": "light-colored wooden table",
+        "desc": "light-colored wooden table surface",
         "action": "static",
         "position": "background"
       },
       {
         "desc": "silver metal measuring spoons",
-        "action": "static",
-        "position": "top left"
-      },
-      {
-        "desc": "small glass bowl with white powder",
-        "action": "static",
-        "position": "top center"
-      },
-      {
-        "desc": "dark glass bottle",
-        "action": "static",
-        "position": "top right"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "The person uses both hands to toss and massage the green vegetables inside the metal bowl.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "A set of metal measuring spoons rests on the wooden table near the bowl.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "A small glass bowl containing a white substance sits behind the main mixing bowl.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [],
-    "spatial": "The person is positioned to the left of the frame, reaching into the silver bowl which sits in the center of the wooden table. The measuring spoons are to the left of the bowl, while the dark bottle is to the right of the bowl.",
-    "parse_success": true,
-    "chunk_idx": 16,
-    "video_id": "How_to_Make_Kale_Chips_-_Kale_Recipe",
-    "_rescued": "parse"
-  },
-  {
-    "time": [
-      34,
-      36
-    ],
-    "visible_entities": [
-      {
-        "desc": "person wearing a red, white, and blue plaid long-sleeved shirt with a blue apron",
-        "action": "massaging kale leaves",
-        "position": "left/foreground"
-      },
-      {
-        "desc": "silver metal mixing bowl",
-        "action": "containing kale",
-        "position": "center"
-      },
-      {
-        "desc": "green leafy kale",
-        "action": "being massaged",
-        "position": "inside the bowl"
-      },
-      {
-        "desc": "light-colored wooden table",
-        "action": "static",
-        "position": "background"
-      },
-      {
-        "desc": "set of silver metal measuring spoons",
         "action": "static",
         "position": "top left"
       },
@@ -1190,39 +1147,43 @@
     ],
     "atomic_facts": [
       {
-        "fact": "The person is using both hands to massage the kale inside the silver bowl.",
+        "fact": "A person is using both hands to toss and mix green leafy vegetables inside a silver metal bowl.",
         "confidence": 1.0
       },
       {
-        "fact": "The measuring spoons are lying on the wooden table.",
+        "fact": "The mixing bowl is placed on a wooden table.",
         "confidence": 1.0
       },
       {
-        "fact": "The small glass bowl containing white powder is placed near the measuring spoons.",
+        "fact": "Measuring spoons are lying on the table to the left of the bowl.",
         "confidence": 1.0
       },
       {
-        "fact": "The dark bottle and the bottle with yellow liquid are standing on the right side of the table.",
+        "fact": "A small glass bowl containing a white substance is positioned behind the mixing bowl.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The person is positioned to the left of the silver mixing bowl. The bowl is sitting on the wooden table. The measuring spoons and the small glass bowl are behind the mixing bowl. The dark bottle and the bottle with yellow liquid are to the right of the mixing bowl.",
+    "spatial": "The person in the plaid shirt is to the left of the silver mixing bowl. The bowl is in the center of the wooden table. The measuring spoons are to the left of the bowl, while the bottles are to the right of the bowl. The small glass bowl is behind the mixing bowl.",
     "parse_success": true,
-    "chunk_idx": 17,
-    "video_id": "How_to_Make_Kale_Chips_-_Kale_Recipe",
-    "_rescued": "parse"
+    "chunk_idx": 16,
+    "video_id": "How_to_Make_Kale_Chips_-_Kale_Recipe"
   },
   {
     "time": [
-      36,
-      38
+      17,
+      18
     ],
     "visible_entities": [
       {
-        "desc": "person wearing a red, white, and blue plaid shirt with rolled-up sleeves and a dark blue apron",
-        "action": "massaging kale leaves in a bowl",
+        "desc": "person wearing a red, white, and blue plaid shirt with rolled-up sleeves and a blue apron",
+        "action": "massaging kale",
         "position": "left"
+      },
+      {
+        "desc": "green leafy kale",
+        "action": "being massaged",
+        "position": "center"
       },
       {
         "desc": "silver metal mixing bowl",
@@ -1230,9 +1191,75 @@
         "position": "center"
       },
       {
+        "desc": "light-colored wooden cutting board",
+        "action": "static",
+        "position": "center"
+      },
+      {
+        "desc": "set of silver metal measuring spoons",
+        "action": "static",
+        "position": "top left"
+      },
+      {
+        "desc": "small glass bowl containing white powder",
+        "action": "static",
+        "position": "top center"
+      },
+      {
+        "desc": "dark glass bottle",
+        "action": "static",
+        "position": "right"
+      },
+      {
+        "desc": "bottle containing yellow liquid",
+        "action": "static",
+        "position": "top right"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The person is using both hands to massage the kale inside the metal bowl.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The metal bowl is sitting on top of the wooden cutting board.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The measuring spoons are lying on the wooden cutting board to the left of the bowl.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The small glass bowl with white powder is positioned behind the metal bowl.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The person in the plaid shirt is on the left side of the frame, reaching into the silver bowl which is centered on the wooden cutting board. The measuring spoons are to the left of the bowl, while the dark bottle and yellow liquid bottle are to the right of the bowl.",
+    "parse_success": true,
+    "chunk_idx": 17,
+    "video_id": "How_to_Make_Kale_Chips_-_Kale_Recipe"
+  },
+  {
+    "time": [
+      18,
+      19
+    ],
+    "visible_entities": [
+      {
+        "desc": "person wearing a red, white, and blue plaid shirt with rolled-up sleeves and a dark blue apron",
+        "action": "massaging kale leaves",
+        "position": "left"
+      },
+      {
+        "desc": "large silver metal mixing bowl",
+        "action": "static",
+        "position": "center"
+      },
+      {
         "desc": "green leafy kale",
         "action": "being massaged",
-        "position": "inside the bowl"
+        "position": "center"
       },
       {
         "desc": "light-colored wooden cutting board",
@@ -1240,7 +1267,139 @@
         "position": "center"
       },
       {
-        "desc": "silver metal measuring spoons",
+        "desc": "small glass bowl containing white granular substance",
+        "action": "static",
+        "position": "top right"
+      },
+      {
+        "desc": "metal measuring spoons",
+        "action": "static",
+        "position": "top left"
+      },
+      {
+        "desc": "dark glass bottle",
+        "action": "static",
+        "position": "top right"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The person is using both hands to massage and toss the green kale leaves inside the metal bowl.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The metal bowl is resting on a wooden cutting board.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "Measuring spoons are lying on the wooden board near the bowl.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A small glass bowl with white contents is positioned behind the metal bowl.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The person in the plaid shirt is positioned to the left of the metal bowl. The metal bowl containing the kale is centered on the wooden cutting board. The measuring spoons are to the left of the bowl, while the small glass bowl and dark bottle are to the right and slightly behind the main bowl.",
+    "parse_success": true,
+    "chunk_idx": 18,
+    "video_id": "How_to_Make_Kale_Chips_-_Kale_Recipe"
+  },
+  {
+    "time": [
+      19,
+      20
+    ],
+    "visible_entities": [
+      {
+        "desc": "person wearing a red, white, and blue plaid long-sleeved shirt with a dark blue apron",
+        "action": "mixing greens with hands",
+        "position": "left/center"
+      },
+      {
+        "desc": "large silver metal mixing bowl",
+        "action": "static",
+        "position": "center"
+      },
+      {
+        "desc": "chopped green leafy vegetables",
+        "action": "being mixed",
+        "position": "inside bowl"
+      },
+      {
+        "desc": "light brown wooden table surface",
+        "action": "static",
+        "position": "background"
+      },
+      {
+        "desc": "small glass bowl containing white granular substance",
+        "action": "static",
+        "position": "top right"
+      },
+      {
+        "desc": "dark glass bottle",
+        "action": "static",
+        "position": "top right"
+      },
+      {
+        "desc": "metal kitchen tool",
+        "action": "static",
+        "position": "top left"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A person is using both hands to toss and mix chopped green vegetables inside a silver bowl.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The mixing bowl is placed on a wooden table.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A small glass bowl with white contents sits near the top edge of the table.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A dark bottle is positioned to the right of the mixing bowl.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The person in the plaid shirt is positioned to the left of the silver mixing bowl. The bowl containing the greens is in the center of the wooden table. To the right of the bowl, there is a dark bottle and a small glass bowl with white contents. A metal tool lies on the table to the left of the bowl.",
+    "parse_success": true,
+    "chunk_idx": 19,
+    "video_id": "How_to_Make_Kale_Chips_-_Kale_Recipe"
+  },
+  {
+    "time": [
+      20,
+      21
+    ],
+    "visible_entities": [
+      {
+        "desc": "person wearing a red, white, and blue plaid shirt with rolled-up sleeves and a dark blue apron",
+        "action": "massaging kale leaves in a bowl",
+        "position": "left/center"
+      },
+      {
+        "desc": "large silver metal mixing bowl",
+        "action": "static",
+        "position": "center"
+      },
+      {
+        "desc": "green leafy vegetables, likely kale",
+        "action": "being tossed",
+        "position": "inside the bowl"
+      },
+      {
+        "desc": "light-colored wooden cutting board",
+        "action": "static",
+        "position": "center/right"
+      },
+      {
+        "desc": "metal measuring spoons",
         "action": "static",
         "position": "top left"
       },
@@ -1255,131 +1414,44 @@
         "position": "top right"
       },
       {
-        "desc": "clear bottle with yellow liquid",
+        "desc": "bottle of oil with yellow liquid",
         "action": "static",
         "position": "top right"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A person is using both hands to massage green kale leaves inside a silver metal bowl.",
+        "fact": "The person is using both hands to toss and massage the green leafy vegetables inside the metal bowl.",
         "confidence": 1.0
       },
       {
-        "fact": "The bowl is sitting on a wooden cutting board.",
+        "fact": "The metal bowl is sitting on top of the wooden cutting board.",
         "confidence": 1.0
       },
       {
-        "fact": "Measuring spoons are lying on the cutting board near the bowl.",
+        "fact": "Measuring spoons are placed on the wooden surface near the top left of the bowl.",
         "confidence": 1.0
       },
       {
-        "fact": "A small glass bowl with white powder is positioned behind the metal bowl.",
+        "fact": "A small glass bowl with white powder is positioned behind the main mixing bowl.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The person is positioned to the left of the frame, reaching into the silver bowl which is centered on the wooden cutting board. The measuring spoons are to the left of the bowl, while the glass bowl with white powder is behind it. The dark and clear bottles are located to the right of the cutting board.",
+    "spatial": "The person is standing to the left of the wooden cutting board. The large metal bowl containing the greens is in the center of the board. To the right of the bowl are bottles of oil and vinegar. Behind the bowl are measuring spoons and a small dish of white powder.",
     "parse_success": true,
-    "chunk_idx": 18,
-    "video_id": "How_to_Make_Kale_Chips_-_Kale_Recipe",
-    "_rescued": "parse"
-  },
-  {
-    "time": [
-      38,
-      40
-    ],
-    "visible_entities": [
-      {
-        "desc": "person wearing a red, white, and blue plaid shirt with rolled-up sleeves and a dark blue apron, showing hairy forearms",
-        "action": "massaging leafy greens in a bowl",
-        "position": "left/center"
-      },
-      {
-        "desc": "stainless steel mixing bowl, round, reflective",
-        "action": "holding chopped greens",
-        "position": "center"
-      },
-      {
-        "desc": "chopped green leafy vegetables, bright green, fresh, chopped into small pieces",
-        "action": "being massaged",
-        "position": "center/inside bowl"
-      },
-      {
-        "desc": "light wooden countertop, smooth, light brown, with visible grain",
-        "action": "static",
-        "position": "background"
-      },
-      {
-        "desc": "small glass bowl, round, clear, containing white granular substance",
-        "action": "static",
-        "position": "top center"
-      },
-      {
-        "desc": "metal ice cream scoop, silver, with a spring-loaded handle",
-        "action": "static",
-        "position": "top left"
-      },
-      {
-        "desc": "dark glass bottle, cylindrical, dark brown or black",
-        "action": "static",
-        "position": "top right"
-      },
-      {
-        "desc": "clear plastic bottle with yellow liquid, partially visible",
-        "action": "static",
-        "position": "top right"
-      },
-      {
-        "desc": "circular watermark logo, white outline, with stylized letters 'P' and 'V' inside",
-        "action": "static",
-        "position": "bottom left"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "The person is using both hands to massage and toss chopped green leafy vegetables inside a stainless steel mixing bowl.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The person's hands are actively moving the greens around within the bowl.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "A small glass bowl containing a white substance is positioned on the wooden countertop.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "A metal ice cream scoop is resting on the wooden countertop near the top left of the frame.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "Two bottles are standing on the countertop in the upper right area.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The circular logo is superimposed in the bottom left corner of the video frame.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [
-      "PV"
-    ],
-    "spatial": "The person is positioned to the left of the frame, reaching into the stainless steel bowl which sits in the center of the wooden countertop. The bowl is filled with chopped greens. Behind the bowl, towards the top of the frame, are a small glass bowl and a metal scoop. To the right of the bowl, near the edge of the counter, are two bottles. The watermark logo is in the bottom left corner, below the person's arm.",
-    "parse_success": true,
-    "chunk_idx": 19,
+    "chunk_idx": 20,
     "video_id": "How_to_Make_Kale_Chips_-_Kale_Recipe"
   },
   {
     "time": [
-      40,
-      42
+      21,
+      22
     ],
     "visible_entities": [
       {
-        "desc": "person with fair skin, wearing a red, white, and blue plaid long-sleeved shirt and a dark blue apron",
-        "action": "massaging kale with both hands",
+        "desc": "person wearing a red, white, and blue plaid shirt with a dark blue apron",
+        "action": "massaging kale leaves",
         "position": "left"
       },
       {
@@ -1388,153 +1460,80 @@
         "position": "center"
       },
       {
-        "desc": "chopped green leafy vegetables, likely kale",
+        "desc": "green leafy vegetables, likely kale",
         "action": "being massaged",
         "position": "center"
       },
       {
-        "desc": "light-colored wooden countertop",
+        "desc": "light brown wooden table surface",
         "action": "static",
         "position": "background"
       },
       {
-        "desc": "dark glass bottle",
+        "desc": "small glass bowl containing white powder",
         "action": "static",
-        "position": "right"
-      },
-      {
-        "desc": "clear plastic bottle with yellow liquid",
-        "action": "static",
-        "position": "right"
-      },
-      {
-        "desc": "small clear bowl with white powder",
-        "action": "static",
-        "position": "top"
+        "position": "top center"
       },
       {
         "desc": "metal measuring spoons",
         "action": "static",
-        "position": "top"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "A person is using both hands to massage and toss green leafy vegetables inside a metal bowl.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The person is wearing a plaid shirt and an apron.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "A dark bottle and a bottle of oil are sitting on the wooden counter to the right of the bowl.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "Measuring spoons and a small bowl of white powder are visible in the background.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [],
-    "spatial": "The person is positioned to the left of the metal bowl, reaching into it with both hands. The bowl sits in the center of the wooden countertop. To the right of the bowl are a dark glass bottle and a bottle of oil. Behind the bowl, near the top edge of the frame, are metal measuring spoons and a small bowl containing white powder.",
-    "parse_success": true,
-    "chunk_idx": 20,
-    "video_id": "How_to_Make_Kale_Chips_-_Kale_Recipe",
-    "_rescued": "parse"
-  },
-  {
-    "time": [
-      42,
-      44
-    ],
-    "visible_entities": [
-      {
-        "desc": "person wearing a red, white, and blue plaid long-sleeved shirt and a dark blue apron",
-        "action": "massaging green leafy vegetables",
-        "position": "left/foreground"
-      },
-      {
-        "desc": "large silver metal mixing bowl",
-        "action": "static",
-        "position": "center"
-      },
-      {
-        "desc": "chopped green leafy vegetables",
-        "action": "being massaged",
-        "position": "inside the bowl"
-      },
-      {
-        "desc": "light-colored wooden cutting board",
-        "action": "static",
-        "position": "center/background"
-      },
-      {
-        "desc": "small glass bowl containing white granular substance",
-        "action": "static",
-        "position": "background"
-      },
-      {
-        "desc": "metal measuring spoons",
-        "action": "static",
-        "position": "background"
+        "position": "top left"
       },
       {
         "desc": "dark glass bottle",
         "action": "static",
-        "position": "right/background"
+        "position": "top right"
       },
       {
-        "desc": "yellow bottle",
+        "desc": "clear bottle with yellow liquid",
         "action": "static",
-        "position": "right/background"
+        "position": "top right"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "The person is using both hands to massage the green leafy vegetables inside the metal bowl.",
+        "fact": "person is using both hands to massage green leafy vegetables inside a metal bowl",
         "confidence": 1.0
       },
       {
-        "fact": "The metal bowl is sitting on top of the wooden cutting board.",
+        "fact": "the metal bowl is sitting on a wooden table",
         "confidence": 1.0
       },
       {
-        "fact": "The small glass bowl is positioned behind the metal mixing bowl.",
+        "fact": "measuring spoons are placed on the table near the bowl",
         "confidence": 1.0
       },
       {
-        "fact": "The metal measuring spoons are lying on the wooden surface to the left of the bowl.",
+        "fact": "a small bowl of white powder is positioned behind the main mixing bowl",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The person in the plaid shirt is positioned to the left of the metal bowl. The metal bowl is placed on top of the wooden cutting board. The small glass bowl and metal measuring spoons are behind the metal bowl. The dark and yellow bottles are to the right of the wooden board.",
+    "spatial": "The person is positioned to the left of the large metal bowl. The bowl is in the center of the wooden table. The measuring spoons are to the left of the bowl, while the bottles are to the right. The small glass bowl is behind the large metal bowl.",
     "parse_success": true,
     "chunk_idx": 21,
-    "video_id": "How_to_Make_Kale_Chips_-_Kale_Recipe",
-    "_rescued": "parse"
+    "video_id": "How_to_Make_Kale_Chips_-_Kale_Recipe"
   },
   {
     "time": [
-      44,
-      46
+      22,
+      23
     ],
     "visible_entities": [
       {
         "desc": "elderly man with white hair, wearing a red, white, and blue plaid shirt and a blue apron",
-        "action": "tossing green leafy vegetables in a metal bowl",
+        "action": "tossing leafy greens in a bowl",
         "position": "center"
       },
       {
         "desc": "silver metal mixing bowl",
         "action": "static",
-        "position": "center foreground"
+        "position": "center"
       },
       {
         "desc": "green leafy vegetables",
         "action": "being tossed",
-        "position": "inside the bowl"
+        "position": "center"
       },
       {
         "desc": "wooden countertop",
@@ -1542,19 +1541,19 @@
         "position": "bottom"
       },
       {
-        "desc": "kitchen background with wooden cabinets, microwave, and shelves",
+        "desc": "dark glass bottle",
         "action": "static",
-        "position": "background"
+        "position": "right"
       },
       {
-        "desc": "circular logo with text 'THE JACQUES PÉPIN FOUNDATION' and a 'JP' monogram",
+        "desc": "white circular logo with text 'THE JACQUES PÉPIN FOUNDATION'",
         "action": "static",
         "position": "bottom left"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "The man is using both hands to toss the salad greens inside the metal bowl.",
+        "fact": "The man is using both hands to toss green leafy vegetables inside a silver bowl.",
         "confidence": 1.0
       },
       {
@@ -1562,57 +1561,55 @@
         "confidence": 1.0
       },
       {
-        "fact": "The man is wearing a blue apron over a plaid shirt.",
+        "fact": "A dark bottle stands to the right of the bowl.",
         "confidence": 1.0
       },
       {
-        "fact": "Various kitchen items, including bottles and jars, are scattered on the counter to the right.",
+        "fact": "The logo for 'The Jacques Pépin Foundation' is visible in the bottom left corner.",
         "confidence": 1.0
       }
     ],
     "ocr": [
-      "THE JACQUES PÉPIN FOUNDATION",
-      "JP"
+      "THE JACQUES PÉPIN FOUNDATION"
     ],
-    "spatial": "The man is standing behind the wooden countertop. The metal bowl containing the salad is in front of him on the counter. The kitchen cabinets and microwave are behind the man. The logo is located in the bottom left corner of the frame.",
+    "spatial": "The man is standing behind the wooden countertop. The silver bowl containing the greens is in front of the man on the counter. The dark bottle is to the right of the bowl. The logo is in the bottom left corner of the frame.",
     "parse_success": true,
     "chunk_idx": 22,
-    "video_id": "How_to_Make_Kale_Chips_-_Kale_Recipe",
-    "_rescued": "parse"
+    "video_id": "How_to_Make_Kale_Chips_-_Kale_Recipe"
   },
   {
     "time": [
-      46,
-      48
+      23,
+      24
     ],
     "visible_entities": [
       {
         "desc": "elderly man with white hair, wearing a red, white, and blue plaid shirt and a dark blue apron",
-        "action": "mixing green leafy vegetables in a bowl",
+        "action": "mixing greens in a bowl",
         "position": "center"
       },
       {
-        "desc": "silver metal mixing bowl",
+        "desc": "large silver metal mixing bowl",
         "action": "static",
         "position": "center foreground"
       },
       {
         "desc": "green leafy vegetables",
-        "action": "being tossed",
+        "action": "being mixed",
         "position": "inside the bowl"
       },
       {
-        "desc": "wooden cutting board",
+        "desc": "wooden countertop",
         "action": "static",
         "position": "foreground"
       },
       {
-        "desc": "kitchen counter with various bottles, jars, and cooking utensils",
+        "desc": "kitchen background with wooden cabinets, microwave, and shelves of books and dishes",
         "action": "static",
         "position": "background"
       },
       {
-        "desc": "circular logo with text 'THE JACQUES PÉPIN FOUNDATION' and a monogram",
+        "desc": "circular logo with text 'THE JACQUES PÉPIN FOUNDATION' and a stylized 'JP' monogram",
         "action": "static",
         "position": "bottom left"
       }
@@ -1627,47 +1624,43 @@
         "confidence": 1.0
       },
       {
-        "fact": "A wooden cutting board is placed on the counter in front of the man.",
+        "fact": "A microwave is visible in the background on a shelf.",
         "confidence": 1.0
       },
       {
-        "fact": "Various cooking ingredients and bottles are arranged on the counter to the right.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The logo for 'The Jacques Pépin Foundation' is visible in the bottom left corner.",
+        "fact": "The text 'THE JACQUES PÉPIN FOUNDATION' is visible in the bottom left corner.",
         "confidence": 1.0
       }
     ],
     "ocr": [
-      "THE JACQUES PÉPIN FOUNDATION"
+      "THE JACQUES PÉPIN FOUNDATION",
+      "JP"
     ],
-    "spatial": "The man is standing behind a wooden cutting board which is in the foreground. The silver bowl containing vegetables is on top of the cutting board, directly in front of the man. To the right of the man and the bowl, there are several bottles and jars on the counter. The kitchen cabinets and microwave are in the background behind the man.",
+    "spatial": "The man is standing behind the wooden countertop. The silver bowl containing greens is on the countertop in front of the man. The kitchen cabinets and microwave are behind the man.",
     "parse_success": true,
     "chunk_idx": 23,
-    "video_id": "How_to_Make_Kale_Chips_-_Kale_Recipe",
-    "_rescued": "parse"
+    "video_id": "How_to_Make_Kale_Chips_-_Kale_Recipe"
   },
   {
     "time": [
-      48,
-      50
+      24,
+      25
     ],
     "visible_entities": [
       {
-        "desc": "person wearing a red, white, and blue plaid shirt with a dark blue apron",
-        "action": "massaging kale leaves",
+        "desc": "person wearing a red, white, and blue plaid long-sleeved shirt with a dark blue apron",
+        "action": "massaging green leafy vegetables",
         "position": "left"
       },
       {
-        "desc": "silver metal mixing bowl",
+        "desc": "large silver metal mixing bowl",
         "action": "static",
         "position": "center"
       },
       {
         "desc": "chopped green leafy vegetables",
         "action": "being massaged",
-        "position": "center"
+        "position": "inside the bowl"
       },
       {
         "desc": "light-colored wooden cutting board",
@@ -1675,29 +1668,24 @@
         "position": "center"
       },
       {
-        "desc": "small glass bowl with white powder",
-        "action": "static",
-        "position": "top center"
-      },
-      {
-        "desc": "metal measuring spoons",
+        "desc": "set of silver metal measuring spoons",
         "action": "static",
         "position": "top left"
       },
       {
+        "desc": "small clear glass bowl containing white liquid",
+        "action": "static",
+        "position": "top center"
+      },
+      {
         "desc": "dark glass bottle",
         "action": "static",
-        "position": "right"
+        "position": "top right"
       },
       {
-        "desc": "clear bottle with yellow liquid",
+        "desc": "clear plastic bottle with yellow liquid",
         "action": "static",
-        "position": "right"
-      },
-      {
-        "desc": "circular logo with stylized 'G' and 'P'",
-        "action": "static",
-        "position": "bottom left"
+        "position": "top right"
       }
     ],
     "atomic_facts": [
@@ -1706,7 +1694,7 @@
         "confidence": 1.0
       },
       {
-        "fact": "The metal bowl is sitting on top of the wooden cutting board.",
+        "fact": "The metal bowl is placed on top of the wooden cutting board.",
         "confidence": 1.0
       },
       {
@@ -1714,25 +1702,20 @@
         "confidence": 1.0
       },
       {
-        "fact": "The small glass bowl containing white powder is positioned behind the metal bowl.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The dark glass bottle and the bottle with yellow liquid are standing on the counter to the right of the cutting board.",
+        "fact": "The small glass bowl with white liquid is positioned behind the metal bowl.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The person in the plaid shirt is on the left side of the frame, reaching into the silver bowl which is centered on the wooden cutting board. The measuring spoons are to the left of the bowl, and the small glass bowl is behind it. To the right of the cutting board, a dark bottle and a bottle of oil are standing on the countertop.",
+    "spatial": "The person is positioned to the left of the frame, reaching into the metal bowl which sits in the center of the wooden cutting board. The measuring spoons are to the left of the bowl on the board, while the glass bowl with white liquid is behind the metal bowl. To the right of the cutting board, on the countertop, are the dark glass bottle and the bottle with yellow liquid.",
     "parse_success": true,
     "chunk_idx": 24,
-    "video_id": "How_to_Make_Kale_Chips_-_Kale_Recipe",
-    "_rescued": "parse"
+    "video_id": "How_to_Make_Kale_Chips_-_Kale_Recipe"
   },
   {
     "time": [
-      50,
-      52
+      25,
+      26
     ],
     "visible_entities": [
       {
@@ -1741,8 +1724,13 @@
         "position": "left"
       },
       {
-        "desc": "large silver metal mixing bowl filled with chopped green kale",
-        "action": "being held and manipulated",
+        "desc": "large silver metal mixing bowl",
+        "action": "static",
+        "position": "center"
+      },
+      {
+        "desc": "chopped green leafy vegetables",
+        "action": "being tossed",
         "position": "center"
       },
       {
@@ -1751,7 +1739,12 @@
         "position": "center"
       },
       {
-        "desc": "small glass bowl containing white granular substance",
+        "desc": "set of silver metal measuring spoons",
+        "action": "static",
+        "position": "top left"
+      },
+      {
+        "desc": "small glass bowl containing white powder",
         "action": "static",
         "position": "top center"
       },
@@ -1761,61 +1754,69 @@
         "position": "right"
       },
       {
-        "desc": "metal measuring spoons",
+        "desc": "bottle of yellow cooking oil",
         "action": "static",
-        "position": "top left"
+        "position": "right"
+      },
+      {
+        "desc": "white circular logo with a stylized 'G' inside",
+        "action": "static",
+        "position": "bottom left"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "The person is using both hands to massage and toss the green kale inside the metal bowl.",
+        "fact": "The person is using both hands to toss and massage the green vegetables inside the metal bowl.",
         "confidence": 1.0
       },
       {
-        "fact": "The person lifts a handful of the kale leaves out of the bowl.",
+        "fact": "The metal bowl is sitting on top of the wooden cutting board.",
         "confidence": 1.0
       },
       {
-        "fact": "The metal bowl is resting on top of the wooden cutting board.",
+        "fact": "The measuring spoons are lying on the wooden board to the left of the bowl.",
         "confidence": 1.0
       },
       {
-        "fact": "The small glass bowl with white contents is positioned behind the metal bowl.",
+        "fact": "The small glass bowl with white powder is positioned behind the metal bowl.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The dark bottle and oil bottle are standing on the counter to the right of the cutting board.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The person in the plaid shirt is positioned to the left of the metal bowl. The metal bowl containing the kale is centered on the wooden cutting board. The small glass bowl is located above and behind the metal bowl. The dark bottle is to the right of the cutting board.",
+    "spatial": "The person in the plaid shirt is on the left side of the frame, reaching into the silver bowl which is centered on the wooden cutting board. The measuring spoons are to the left of the bowl, and the small glass bowl is behind it. To the right of the cutting board, a dark bottle and a bottle of oil are standing on the countertop.",
     "parse_success": true,
     "chunk_idx": 25,
-    "video_id": "How_to_Make_Kale_Chips_-_Kale_Recipe",
-    "_rescued": "parse"
+    "video_id": "How_to_Make_Kale_Chips_-_Kale_Recipe"
   },
   {
     "time": [
-      52,
-      54
+      26,
+      27
     ],
     "visible_entities": [
       {
-        "desc": "person wearing a red, white, and blue plaid shirt under a dark blue apron with a white logo",
-        "action": "spreading green leafy vegetables onto a wire rack",
+        "desc": "person wearing a red, white, and blue plaid shirt under a dark blue apron with a small white logo",
+        "action": "spreading green leafy vegetables",
         "position": "center"
       },
       {
         "desc": "green leafy vegetables, appearing to be kale",
-        "action": "being spread out",
+        "action": "being spread onto a wire rack",
         "position": "center"
       },
       {
-        "desc": "rectangular metal wire rack with a grid pattern",
+        "desc": "rectangular metal wire cooling rack",
         "action": "static",
         "position": "foreground"
       },
       {
         "desc": "large silver metal mixing bowl",
         "action": "static",
-        "position": "right"
+        "position": "background right"
       },
       {
         "desc": "wooden cutting board",
@@ -1823,18 +1824,14 @@
         "position": "right"
       },
       {
-        "desc": "circular logo with text 'THE JACQUES PEPIN FOUNDATION' and a stylized 'JP' monogram",
+        "desc": "circular white logo with black text and a symbol",
         "action": "static",
         "position": "bottom left"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "The person is using both hands to spread a pile of green leafy vegetables onto the wire rack.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The wire rack is placed on top of a baking sheet.",
+        "fact": "The person is using both hands to spread a pile of green leafy vegetables onto a metal wire rack.",
         "confidence": 1.0
       },
       {
@@ -1842,59 +1839,58 @@
         "confidence": 1.0
       },
       {
-        "fact": "The logo for 'The Jacques Pepin Foundation' is visible in the bottom left corner.",
+        "fact": "The text 'THE JACQUES PEPIN FOUNDATION' is visible in the bottom left corner.",
         "confidence": 1.0
       }
     ],
     "ocr": [
       "THE JACQUES PEPIN FOUNDATION"
     ],
-    "spatial": "The person is standing behind the wire rack, which is in the foreground. The person's hands are holding and spreading the green vegetables on top of the rack. To the right of the rack, a metal bowl sits on a wooden cutting board. The logo is located in the bottom left corner of the frame.",
+    "spatial": "The person is standing behind a metal wire rack that is positioned in the foreground. The person's hands are holding and spreading the green vegetables on top of the rack. To the right of the rack, a wooden cutting board supports a large metal bowl filled with more vegetables. The logo is located in the bottom left corner of the frame.",
     "parse_success": true,
     "chunk_idx": 26,
-    "video_id": "How_to_Make_Kale_Chips_-_Kale_Recipe",
-    "_rescued": "parse"
+    "video_id": "How_to_Make_Kale_Chips_-_Kale_Recipe"
   },
   {
     "time": [
-      54,
-      56
+      27,
+      28
     ],
     "visible_entities": [
       {
-        "desc": "person wearing a blue apron over a plaid shirt with red, white, and blue stripes",
-        "action": "spreading green leafy vegetables onto a wire rack",
+        "desc": "person with fair skin, wearing a red, white, and blue plaid long-sleeve shirt and a dark blue apron with a white logo on the chest",
+        "action": "arranging green leafy vegetables on a wire rack",
         "position": "center"
       },
       {
-        "desc": "green leafy vegetables, chopped and curly",
-        "action": "being arranged on a wire rack",
+        "desc": "green leafy vegetables, chopped into small pieces, appearing wet or coated",
+        "action": "being spread out",
         "position": "center"
       },
       {
-        "desc": "metal wire rack with a grid pattern",
+        "desc": "rectangular metal wire rack with a mesh grid pattern, silver in color",
         "action": "static",
-        "position": "center"
+        "position": "foreground"
       },
       {
-        "desc": "silver metal mixing bowl",
+        "desc": "large stainless steel mixing bowl, reflective surface",
         "action": "static",
         "position": "right"
       },
       {
-        "desc": "wooden cutting board, light brown",
+        "desc": "wooden cutting board, light brown, thick block",
         "action": "static",
         "position": "right"
       },
       {
-        "desc": "circular logo with text 'THE JACQUES PÉPIN FOUNDATION' and a 'JP' monogram",
+        "desc": "circular white logo with black text and a stylized 'J' symbol",
         "action": "static",
-        "position": "bottom-left"
+        "position": "bottom left"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "The person uses both hands to spread the green leafy vegetables evenly across the metal wire rack.",
+        "fact": "The person is using both hands to spread the green vegetables onto the wire rack.",
         "confidence": 1.0
       },
       {
@@ -1902,128 +1898,7 @@
         "confidence": 1.0
       },
       {
-        "fact": "A silver bowl containing more of the green vegetables sits on the wooden cutting board to the right.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The logo for 'The Jacques Pépin Foundation' is visible in the bottom left corner.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [
-      "THE JACQUES PÉPIN FOUNDATION",
-      "JP"
-    ],
-    "spatial": "The person is standing behind the wire rack, which is positioned in the center foreground. The wooden cutting board is to the right of the wire rack, and the silver bowl is sitting on top of the cutting board. The logo is in the bottom left corner of the frame.",
-    "parse_success": true,
-    "chunk_idx": 27,
-    "video_id": "How_to_Make_Kale_Chips_-_Kale_Recipe",
-    "_rescued": "parse"
-  },
-  {
-    "time": [
-      56,
-      58
-    ],
-    "visible_entities": [
-      {
-        "desc": "person wearing a red, white, and blue plaid shirt with rolled-up sleeves and a dark blue apron",
-        "action": "tossing green leafy vegetables in a bowl",
-        "position": "center"
-      },
-      {
-        "desc": "large silver metal mixing bowl",
-        "action": "being held and used for mixing",
-        "position": "right"
-      },
-      {
-        "desc": "green leafy vegetables, likely kale",
-        "action": "being tossed in the bowl and resting on a rack",
-        "position": "center and right"
-      },
-      {
-        "desc": "rectangular metal wire cooling rack on a baking sheet",
-        "action": "static",
-        "position": "foreground left"
-      },
-      {
-        "desc": "circular logo with text 'THE JACQUES PÉPIN FOUNDATION' and a 'JP' monogram",
-        "action": "static",
-        "position": "bottom left"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "The person is using both hands to toss green leafy vegetables inside a large metal bowl.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "A pile of green leafy vegetables is resting on a wire rack in the foreground.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The logo 'THE JACQUES PÉPIN FOUNDATION' is visible in the bottom left corner.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [
-      "THE JACQUES PÉPIN FOUNDATION",
-      "JP"
-    ],
-    "spatial": "The person is standing behind a wooden counter, holding the metal bowl to their right. The wire rack with vegetables is in the foreground to the left of the bowl. The logo is superimposed in the bottom left corner of the frame.",
-    "parse_success": true,
-    "chunk_idx": 28,
-    "video_id": "How_to_Make_Kale_Chips_-_Kale_Recipe",
-    "_rescued": "parse"
-  },
-  {
-    "time": [
-      58,
-      60
-    ],
-    "visible_entities": [
-      {
-        "desc": "person wearing a blue apron with a white logo over a red, white, and blue plaid shirt",
-        "action": "massaging green kale leaves",
-        "position": "left"
-      },
-      {
-        "desc": "green curly kale leaves",
-        "action": "being massaged",
-        "position": "center"
-      },
-      {
-        "desc": "silver metal wire rack",
-        "action": "static",
-        "position": "bottom"
-      },
-      {
-        "desc": "large stainless steel mixing bowl",
-        "action": "static",
-        "position": "right"
-      },
-      {
-        "desc": "wooden cutting board",
-        "action": "static",
-        "position": "right"
-      },
-      {
-        "desc": "circular white logo with black text and a stylized 'P' symbol",
-        "action": "static",
-        "position": "bottom left"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "The person is using both hands to massage and squeeze the kale leaves on the wire rack.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The kale is piled on top of the metal wire rack.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The metal bowl sits on the wooden cutting board to the right of the kale.",
+        "fact": "The metal bowl containing more vegetables sits on the wooden cutting board.",
         "confidence": 1.0
       },
       {
@@ -2034,21 +1909,20 @@
     "ocr": [
       "THE JACQUES PEPIN FOUNDATION"
     ],
-    "spatial": "The person is positioned to the left of the wooden cutting board. The pile of kale is on the wire rack in the foreground, which is in front of the person. The stainless steel bowl is on the cutting board to the right of the kale.",
+    "spatial": "The person is standing behind the wire rack, reaching forward to arrange the vegetables. The wire rack is in the foreground, positioned to the left of the wooden cutting board. The metal bowl is sitting on top of the wooden cutting board to the right of the person's hands.",
     "parse_success": true,
-    "chunk_idx": 29,
-    "video_id": "How_to_Make_Kale_Chips_-_Kale_Recipe",
-    "_rescued": "parse"
+    "chunk_idx": 27,
+    "video_id": "How_to_Make_Kale_Chips_-_Kale_Recipe"
   },
   {
     "time": [
-      60,
-      62
+      28,
+      29
     ],
     "visible_entities": [
       {
         "desc": "person wearing a red, white, and blue plaid shirt with rolled-up sleeves and a dark blue apron",
-        "action": "placing kale into a bowl",
+        "action": "mixing kale in a bowl",
         "position": "center"
       },
       {
@@ -2057,12 +1931,17 @@
         "position": "right"
       },
       {
-        "desc": "green leafy kale pieces",
-        "action": "being moved",
-        "position": "center"
+        "desc": "green leafy kale",
+        "action": "being mixed",
+        "position": "center/right"
       },
       {
-        "desc": "metal wire cooling rack on a baking sheet",
+        "desc": "rectangular metal wire cooling rack",
+        "action": "static",
+        "position": "foreground"
+      },
+      {
+        "desc": "pile of green leafy kale on the rack",
         "action": "static",
         "position": "foreground"
       },
@@ -2072,18 +1951,22 @@
         "position": "right"
       },
       {
-        "desc": "circular white logo with black text and symbol",
+        "desc": "white circular logo with black text and a 'JP' monogram",
         "action": "static",
-        "position": "bottom left"
+        "position": "bottom-left"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "The person is transferring green leafy vegetables from a wire rack into a metal bowl.",
+        "fact": "The person is using both hands to mix green leafy vegetables inside a metal bowl.",
         "confidence": 1.0
       },
       {
-        "fact": "The person's hands are actively moving the kale.",
+        "fact": "A pile of green kale is resting on a wire rack in the foreground.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The metal bowl is sitting on top of a wooden cutting board.",
         "confidence": 1.0
       },
       {
@@ -2094,98 +1977,213 @@
     "ocr": [
       "THE JACQUES PEPIN FOUNDATION"
     ],
-    "spatial": "The person is standing behind the counter, reaching over the wire rack in the foreground to place kale into the metal bowl on the right. The metal bowl sits on top of a wooden cutting board. The logo is located in the bottom left corner of the frame.",
+    "spatial": "The person is standing behind the wire rack and to the left of the metal bowl. The metal bowl is placed on top of the wooden cutting board on the right side of the frame. The wire rack with the pile of kale is in the foreground, positioned in front of the person and the bowl.",
     "parse_success": true,
-    "chunk_idx": 30,
-    "video_id": "How_to_Make_Kale_Chips_-_Kale_Recipe",
-    "_rescued": "parse"
+    "chunk_idx": 28,
+    "video_id": "How_to_Make_Kale_Chips_-_Kale_Recipe"
   },
   {
     "time": [
-      62,
-      64
+      29,
+      30
     ],
     "visible_entities": [
       {
-        "desc": "person wearing a blue apron over a plaid shirt with red, white, and grey stripes",
-        "action": "arranging green leafy vegetables on a wire rack",
+        "desc": "person wearing a plaid shirt with red, white, and blue patterns, and a dark blue apron with a white logo",
+        "action": "massaging green kale leaves",
+        "position": "left"
+      },
+      {
+        "desc": "green leafy kale, curly texture, piled on a rack",
+        "action": "being manipulated",
         "position": "center"
       },
       {
-        "desc": "green leafy vegetables, curly texture, chopped into bite-sized pieces",
-        "action": "being spread out on a wire rack",
-        "position": "foreground"
-      },
-      {
-        "desc": "rectangular metal wire rack with a mesh grid pattern",
+        "desc": "metal wire cooling rack with a grid pattern",
         "action": "static",
-        "position": "foreground"
+        "position": "center"
       },
       {
-        "desc": "large stainless steel mixing bowl, shiny surface",
+        "desc": "large silver metal mixing bowl",
         "action": "static",
         "position": "right"
       },
       {
-        "desc": "wooden cutting board, light brown, smooth surface",
+        "desc": "wooden cutting board, light brown",
         "action": "static",
         "position": "right"
       },
       {
-        "desc": "circular logo with text 'THE JACQUES PEPIN FOUNDATION' and a stylized 'JP' monogram",
+        "desc": "circular white logo with black text and a stylized symbol",
+        "action": "static",
+        "position": "bottom left"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The person is using both hands to massage and toss the kale leaves on the wire rack.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The wire rack is placed on top of a dark baking sheet.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The metal bowl sits on the wooden cutting board to the right of the kale.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The logo in the bottom left corner reads 'THE JACQUES PÉPIN FOUNDATION'.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "THE JACQUES PÉPIN FOUNDATION"
+    ],
+    "spatial": "The person is positioned to the left of the wooden cutting board. The pile of kale is on the wire rack in the center foreground, which is in front of the person. The metal bowl is on the wooden cutting board to the right of the kale.",
+    "parse_success": true,
+    "chunk_idx": 29,
+    "video_id": "How_to_Make_Kale_Chips_-_Kale_Recipe"
+  },
+  {
+    "time": [
+      30,
+      31
+    ],
+    "visible_entities": [
+      {
+        "desc": "person wearing a blue apron over a plaid shirt with red, white, and blue stripes",
+        "action": "transferring kale from a rack to a bowl",
+        "position": "center"
+      },
+      {
+        "desc": "large stainless steel mixing bowl",
+        "action": "static",
+        "position": "right"
+      },
+      {
+        "desc": "wire cooling rack filled with green leafy kale",
+        "action": "static",
+        "position": "foreground"
+      },
+      {
+        "desc": "wooden cutting board",
+        "action": "static",
+        "position": "right"
+      },
+      {
+        "desc": "white circular logo with text and a symbol",
         "action": "static",
         "position": "bottom-left"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "The person is using both hands to spread and arrange the green vegetables on the wire rack.",
+        "fact": "The person is using their hands to move kale leaves from the wire rack into the metal bowl.",
         "confidence": 1.0
       },
       {
-        "fact": "The vegetables are piled on top of the metal wire rack.",
+        "fact": "The wire rack is positioned on top of a dark baking sheet.",
         "confidence": 1.0
       },
       {
-        "fact": "The metal wire rack is placed on top of a baking sheet.",
+        "fact": "The metal bowl sits on a wooden cutting board.",
         "confidence": 1.0
       },
       {
-        "fact": "The stainless steel bowl is sitting on the wooden cutting board to the right of the vegetables.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The logo for 'The Jacques Pepin Foundation' is visible in the bottom left corner.",
+        "fact": "The logo in the bottom left corner reads 'THE JACQUES PÉPIN FOUNDATION'.",
         "confidence": 1.0
       }
     ],
     "ocr": [
-      "THE JACQUES PEPIN FOUNDATION"
+      "THE JACQUES PÉPIN FOUNDATION"
     ],
-    "spatial": "The person is standing behind the wire rack, reaching forward to arrange the vegetables. The wire rack is in the foreground, positioned to the left of the wooden cutting board. The stainless steel bowl sits on top of the wooden cutting board. The foundation logo is located in the bottom-left corner of the frame, below the person's arm.",
+    "spatial": "The person is standing behind the wire rack and the wooden cutting board. The wire rack filled with kale is in the foreground, to the left of the metal bowl. The metal bowl is placed on top of the wooden cutting board on the right side of the frame. The logo is located in the bottom-left corner of the screen.",
     "parse_success": true,
-    "chunk_idx": 31,
-    "video_id": "How_to_Make_Kale_Chips_-_Kale_Recipe",
-    "_rescued": "parse"
+    "chunk_idx": 30,
+    "video_id": "How_to_Make_Kale_Chips_-_Kale_Recipe"
   },
   {
     "time": [
-      64,
-      66
+      31,
+      32
     ],
     "visible_entities": [
       {
-        "desc": "man with white hair, wearing a red and blue plaid shirt and a dark blue apron",
-        "action": "mixing ingredients in a bowl",
+        "desc": "person wearing a red, white, and blue plaid shirt with rolled-up sleeves and a dark blue apron",
+        "action": "arranging green kale leaves on a wire rack",
         "position": "center"
       },
       {
-        "desc": "green leafy vegetables, chopped, piled on a wire rack",
+        "desc": "green leafy vegetables, likely kale, with curly edges",
+        "action": "being spread out on a rack",
+        "position": "foreground"
+      },
+      {
+        "desc": "rectangular metal wire cooling rack with a mesh grid pattern",
         "action": "static",
         "position": "foreground"
       },
       {
-        "desc": "silver metal mixing bowl",
+        "desc": "large stainless steel mixing bowl, shiny and reflective",
+        "action": "static",
+        "position": "right"
+      },
+      {
+        "desc": "thick wooden cutting board, light brown color",
+        "action": "static",
+        "position": "right"
+      },
+      {
+        "desc": "circular white logo with black text and a symbol",
+        "action": "static",
+        "position": "bottom left"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The person is using both hands to spread green leafy vegetables across a wire rack.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The wire rack is placed on top of a dark baking sheet.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A metal bowl sits on a wooden cutting board to the right of the vegetables.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The logo in the bottom left corner reads 'THE JACQUES PÉPIN FOUNDATION'.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "THE JACQUES PÉPIN FOUNDATION"
+    ],
+    "spatial": "The person is positioned behind the wire rack, reaching forward to arrange the vegetables. The wire rack is in the foreground, sitting on a baking sheet. To the right of the rack, a metal bowl rests on a wooden cutting board. The foundation logo is located in the bottom left corner of the frame.",
+    "parse_success": true,
+    "chunk_idx": 31,
+    "video_id": "How_to_Make_Kale_Chips_-_Kale_Recipe"
+  },
+  {
+    "time": [
+      32,
+      33
+    ],
+    "visible_entities": [
+      {
+        "desc": "elderly man with white hair, wearing a red and blue plaid shirt and a dark blue apron",
+        "action": "mixing ingredients in a bowl",
+        "position": "center"
+      },
+      {
+        "desc": "green leafy vegetables, chopped, piled on a metal wire rack",
+        "action": "static",
+        "position": "foreground"
+      },
+      {
+        "desc": "large silver metal mixing bowl",
         "action": "being held",
         "position": "center"
       },
@@ -2195,38 +2193,37 @@
         "position": "center"
       },
       {
-        "desc": "circular logo with text and a monogram",
+        "desc": "circular logo with text 'THE JACQUES PÉPIN FOUNDATION' and a stylized 'JP' monogram",
         "action": "static",
         "position": "bottom-left"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "The man is mixing ingredients inside a silver bowl with his hands.",
+        "fact": "The man is using his hands to mix contents inside a metal bowl.",
         "confidence": 1.0
       },
       {
-        "fact": "A pile of chopped green vegetables sits on a wire rack in the foreground.",
+        "fact": "A pile of green vegetables rests on a wire rack in the foreground.",
         "confidence": 1.0
       },
       {
-        "fact": "The logo in the corner reads 'THE JACQUES PÉPIN FOUNDATION'.",
+        "fact": "The logo 'THE JACQUES PÉPIN FOUNDATION' is visible in the bottom left corner.",
         "confidence": 1.0
       }
     ],
     "ocr": [
       "THE JACQUES PÉPIN FOUNDATION"
     ],
-    "spatial": "The man is standing behind the wooden cutting board. The wire rack with green vegetables is in front of the man and to the left of the metal bowl. The metal bowl is on the cutting board. The logo is in the bottom-left corner of the frame.",
+    "spatial": "The man is standing behind a wooden cutting board. The metal bowl is on the cutting board in front of the man. The wire rack with green vegetables is in front of the bowl and to the left. The logo is superimposed in the bottom left corner of the frame.",
     "parse_success": true,
     "chunk_idx": 32,
-    "video_id": "How_to_Make_Kale_Chips_-_Kale_Recipe",
-    "_rescued": "parse"
+    "video_id": "How_to_Make_Kale_Chips_-_Kale_Recipe"
   },
   {
     "time": [
-      66,
-      68
+      33,
+      34
     ],
     "visible_entities": [
       {
@@ -2235,88 +2232,14 @@
         "position": "center"
       },
       {
-        "desc": "green leafy vegetables, chopped, piled on a metal mesh tray",
-        "action": "being arranged",
+        "desc": "large pile of green leafy vegetables on a metal mesh tray",
+        "action": "being touched",
         "position": "foreground"
       },
       {
         "desc": "silver metal mixing bowl",
         "action": "static",
         "position": "center"
-      },
-      {
-        "desc": "wooden cutting board",
-        "action": "static",
-        "position": "center"
-      },
-      {
-        "desc": "kitchen counter with various bottles, jars, and cooking ingredients",
-        "action": "static",
-        "position": "right"
-      },
-      {
-        "desc": "kitchen sink and faucet",
-        "action": "static",
-        "position": "left"
-      },
-      {
-        "desc": "logo with text 'THE JACQUES PÉPIN FOUNDATION' and a stylized 'JP' monogram",
-        "action": "static",
-        "position": "bottom-left"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "The man is using his hands to arrange the green leafy vegetables on the metal tray.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The metal tray is placed on the wooden cutting board.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The silver mixing bowl is positioned to the right of the tray.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The man is standing behind the kitchen counter.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The logo for 'THE JACQUES PÉPIN FOUNDATION' is visible in the bottom-left corner of the screen.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [
-      "THE JACQUES PÉPIN FOUNDATION",
-      "JP"
-    ],
-    "spatial": "The man is standing behind the wooden cutting board. The metal tray with vegetables is in front of the man and to the left of the silver mixing bowl. The kitchen sink is to the left of the man. The bottles and jars are on the counter to the right of the cutting board.",
-    "parse_success": true,
-    "chunk_idx": 33,
-    "video_id": "How_to_Make_Kale_Chips_-_Kale_Recipe",
-    "_rescued": "parse"
-  },
-  {
-    "time": [
-      68,
-      70
-    ],
-    "visible_entities": [
-      {
-        "desc": "elderly man with white hair, wearing a red, white, and blue plaid shirt and a dark blue apron",
-        "action": "tearing kale leaves into a metal bowl",
-        "position": "center"
-      },
-      {
-        "desc": "large silver metal mixing bowl",
-        "action": "static",
-        "position": "center"
-      },
-      {
-        "desc": "black wire rack holding a pile of green leafy vegetables (kale)",
-        "action": "static",
-        "position": "foreground"
       },
       {
         "desc": "wooden cutting board",
@@ -2331,24 +2254,24 @@
       {
         "desc": "circular logo with text 'THE JACQUES PÉPIN FOUNDATION' and a 'JP' monogram",
         "action": "static",
-        "position": "bottom-left"
+        "position": "bottom left"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "The man is tearing pieces of kale with his hands.",
+        "fact": "The man is reaching towards the green leafy vegetables on the tray.",
         "confidence": 1.0
       },
       {
-        "fact": "The man drops the torn kale pieces into the metal bowl.",
+        "fact": "The man is standing behind a wooden cutting board.",
         "confidence": 1.0
       },
       {
-        "fact": "A large pile of kale sits on a wire rack in the foreground.",
+        "fact": "A silver mixing bowl is placed on the cutting board.",
         "confidence": 1.0
       },
       {
-        "fact": "The text 'THE JACQUES PÉPIN FOUNDATION' is visible in the bottom left corner.",
+        "fact": "The kitchen counter is cluttered with cooking ingredients and utensils.",
         "confidence": 1.0
       }
     ],
@@ -2356,16 +2279,69 @@
       "THE JACQUES PÉPIN FOUNDATION",
       "JP"
     ],
-    "spatial": "The man is standing behind the wooden cutting board. The metal bowl is on the cutting board in front of the man. The wire rack with kale is in the foreground, below the man's hands. The kitchen counter with ingredients is to the right of the cutting board.",
+    "spatial": "The man is standing behind the wooden cutting board. The metal tray with vegetables is in front of the man and to the left of the silver mixing bowl. The cutting board is on the kitchen counter, which is to the right of the sink.",
     "parse_success": true,
-    "chunk_idx": 34,
-    "video_id": "How_to_Make_Kale_Chips_-_Kale_Recipe",
-    "_rescued": "parse"
+    "chunk_idx": 33,
+    "video_id": "How_to_Make_Kale_Chips_-_Kale_Recipe"
   },
   {
     "time": [
-      70,
-      72
+      34,
+      35
+    ],
+    "visible_entities": [
+      {
+        "desc": "elderly man with white hair, wearing a red, white, and blue plaid shirt and a dark blue apron",
+        "action": "handling leafy greens and placing them into a metal bowl",
+        "position": "center"
+      },
+      {
+        "desc": "large pile of chopped green leafy vegetables, likely kale, on a dark mesh drying rack",
+        "action": "static",
+        "position": "foreground"
+      },
+      {
+        "desc": "large silver metal mixing bowl",
+        "action": "being filled with greens",
+        "position": "center"
+      },
+      {
+        "desc": "wooden kitchen counter with various items including bottles, jars, and a knife",
+        "action": "static",
+        "position": "right"
+      },
+      {
+        "desc": "kitchen background with wooden cabinets, a microwave, and a window",
+        "action": "static",
+        "position": "background"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The man is transferring chopped greens from a drying rack into a large metal bowl.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The man is wearing a blue apron over a plaid shirt.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A logo for the 'JACQUES PÉPIN FOUNDATION' is visible in the bottom left corner.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "JACQUES PÉPIN FOUNDATION"
+    ],
+    "spatial": "The man is standing behind the wooden counter. The pile of greens on the rack is in front of him and to his left. The metal bowl is to the right of the greens, and the man is placing the greens into it. The kitchen cabinets and window are behind the man.",
+    "parse_success": true,
+    "chunk_idx": 34,
+    "video_id": "How_to_Make_Kale_Chips_-_Kale_Recipe"
+  },
+  {
+    "time": [
+      35,
+      36
     ],
     "visible_entities": [
       {
@@ -2374,7 +2350,7 @@
         "position": "center"
       },
       {
-        "desc": "large silver metal mixing bowl",
+        "desc": "large stainless steel mixing bowl",
         "action": "static",
         "position": "center"
       },
@@ -2389,23 +2365,14 @@
         "position": "center"
       },
       {
-        "desc": "kitchen counter with various bottles and jars",
-        "action": "static",
-        "position": "right"
-      },
-      {
-        "desc": "logo with text 'THE JACQUES PÉPIN FOUNDATION' and a 'JP' monogram",
+        "desc": "circular logo with text 'THE JACQUES PÉPIN FOUNDATION' and a monogram",
         "action": "static",
         "position": "bottom-left"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "The man is sprinkling seasoning from his hand into the metal bowl.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "A tray of green vegetables sits on the counter in the foreground.",
+        "fact": "The man sprinkles seasoning from his hand into the metal bowl.",
         "confidence": 1.0
       },
       {
@@ -2413,7 +2380,11 @@
         "confidence": 1.0
       },
       {
-        "fact": "Various cooking ingredients and bottles are clustered on the right side of the counter.",
+        "fact": "Green leafy vegetables are placed on a wire rack in the foreground.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The logo 'THE JACQUES PÉPIN FOUNDATION' is visible in the bottom left corner.",
         "confidence": 1.0
       }
     ],
@@ -2421,85 +2392,24 @@
       "THE JACQUES PÉPIN FOUNDATION",
       "JP"
     ],
-    "spatial": "The man is standing behind the wooden cutting board. The metal bowl is on the cutting board in front of the man. The tray of green vegetables is in the foreground, to the left of the bowl. The bottles and jars are to the right of the cutting board.",
+    "spatial": "The man is standing behind the wooden cutting board which is on the counter. The metal bowl is on the cutting board in front of the man. The wire rack with green vegetables is in the foreground, in front of the bowl. The logo is in the bottom-left corner of the frame.",
     "parse_success": true,
     "chunk_idx": 35,
-    "video_id": "How_to_Make_Kale_Chips_-_Kale_Recipe",
-    "_rescued": "parse"
+    "video_id": "How_to_Make_Kale_Chips_-_Kale_Recipe"
   },
   {
     "time": [
-      72,
-      74
+      36,
+      37
     ],
     "visible_entities": [
       {
-        "desc": "person wearing a dark blue top and a white apron with green stripes and a circular logo",
+        "desc": "person with fair skin, wearing a dark blue shirt and a white apron with green stripes and a circular logo",
         "action": "holding the baking sheet",
         "position": "left"
       },
       {
-        "desc": "rectangular metal baking sheet with a wire cooling rack on top",
-        "action": "being held and tilted",
-        "position": "center"
-      },
-      {
-        "desc": "chopped green leafy vegetables, likely kale, piled on the rack",
-        "action": "resting on the rack",
-        "position": "center"
-      },
-      {
-        "desc": "wooden cutting board",
-        "action": "static",
-        "position": "background"
-      },
-      {
-        "desc": "black stovetop with metal grates",
-        "action": "static",
-        "position": "right"
-      },
-      {
-        "desc": "white text overlay with instructions",
-        "action": "static",
-        "position": "bottom right"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "A person is holding a baking sheet covered with chopped green vegetables.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The person tilts the baking sheet slightly.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The text 'bake 250°F for 30-35 mins' appears on the screen.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [
-      "bake 250°F for 30-35 mins"
-    ],
-    "spatial": "The person is to the left of the baking sheet, holding it with both hands. The chopped green vegetables are spread across the wire rack which sits on top of the baking sheet. The baking sheet is positioned above the black stovetop. The wooden cutting board is behind the baking sheet.",
-    "parse_success": true,
-    "chunk_idx": 36,
-    "video_id": "How_to_Make_Kale_Chips_-_Kale_Recipe",
-    "_rescued": "parse"
-  },
-  {
-    "time": [
-      74,
-      76
-    ],
-    "visible_entities": [
-      {
-        "desc": "man with gray hair and beard, wearing a red and blue plaid shirt and a dark blue apron",
-        "action": "holding a baking sheet",
-        "position": "center"
-      },
-      {
-        "desc": "metal baking sheet with a wire rack, covered in green leafy vegetables",
+        "desc": "silver metal baking sheet with a wire cooling rack on top, filled with chopped green kale",
         "action": "being held",
         "position": "center"
       },
@@ -2509,38 +2419,104 @@
         "position": "bottom right"
       },
       {
-        "desc": "white text overlay with black outline",
+        "desc": "light brown wooden cutting board",
         "action": "static",
-        "position": "bottom"
+        "position": "top center"
+      },
+      {
+        "desc": "white text overlay with a drop shadow",
+        "action": "static",
+        "position": "bottom right"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A man is holding a baking sheet filled with green vegetables.",
+        "fact": "A person is holding a baking sheet filled with kale.",
         "confidence": 1.0
       },
       {
-        "fact": "The text on the screen instructs to bake at 250°F for 30-35 mins.",
+        "fact": "The text 'bake 250°F for 30-35 mins' appears on the screen.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The baking sheet is positioned above the stovetop.",
         "confidence": 1.0
       }
     ],
     "ocr": [
       "bake 250°F for 30-35 mins"
     ],
-    "spatial": "The man is standing behind the baking sheet, holding it with both hands. The baking sheet is positioned above the black gas stovetop. The instructional text is located at the bottom of the frame, overlaying the stovetop and the man's apron.",
+    "spatial": "The person is on the left side of the frame, holding the baking sheet which is centered. The baking sheet is positioned above the black stovetop on the right. The wooden cutting board is behind the baking sheet.",
     "parse_success": true,
-    "chunk_idx": 37,
-    "video_id": "How_to_Make_Kale_Chips_-_Kale_Recipe",
-    "_rescued": "parse"
+    "chunk_idx": 36,
+    "video_id": "How_to_Make_Kale_Chips_-_Kale_Recipe"
   },
   {
     "time": [
-      76,
-      78
+      37,
+      38
     ],
     "visible_entities": [
       {
-        "desc": "man with white hair, wearing a red and blue plaid shirt and a blue apron",
+        "desc": "man with gray hair, wearing a plaid shirt and a dark blue apron",
+        "action": "holding a baking sheet",
+        "position": "center"
+      },
+      {
+        "desc": "rectangular metal baking sheet with a wire rack insert",
+        "action": "being held",
+        "position": "center"
+      },
+      {
+        "desc": "green leafy vegetables, chopped into small pieces",
+        "action": "static",
+        "position": "on the baking sheet"
+      },
+      {
+        "desc": "kitchen counter with a gas stovetop",
+        "action": "static",
+        "position": "background"
+      },
+      {
+        "desc": "white text overlay with a black outline",
+        "action": "static",
+        "position": "bottom"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A man is holding a baking sheet filled with chopped green vegetables.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The vegetables are spread out on a wire rack inside the baking sheet.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The man is standing in a kitchen in front of a gas stove.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The on-screen text instructs to 'bake 250°F for 30-35 mins'.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "bake 250°F for 30-35 mins"
+    ],
+    "spatial": "The man is holding the baking sheet in front of him. The baking sheet is positioned above the gas stovetop. The chopped green vegetables are on the wire rack inside the baking sheet. The text overlay is at the bottom of the frame.",
+    "parse_success": true,
+    "chunk_idx": 37,
+    "video_id": "How_to_Make_Kale_Chips_-_Kale_Recipe"
+  },
+  {
+    "time": [
+      38,
+      39
+    ],
+    "visible_entities": [
+      {
+        "desc": "older man with white hair, wearing a red and blue plaid shirt and a blue apron",
         "action": "holding a baking sheet with green vegetables",
         "position": "left"
       },
@@ -2563,45 +2539,297 @@
         "desc": "white text overlay",
         "action": "static",
         "position": "bottom"
+      },
+      {
+        "desc": "kitchen counter with various bottles and jars",
+        "action": "static",
+        "position": "right"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "The man holds a baking sheet filled with green vegetables.",
+        "fact": "The man is holding a baking sheet filled with green vegetables.",
         "confidence": 1.0
       },
       {
-        "fact": "The text 'bake 250°F for 30-35 mins' is displayed at the bottom of the screen.",
+        "fact": "The text overlay instructs to 'bake 250°F for 30-35 mins'.",
         "confidence": 1.0
       },
       {
-        "fact": "A silver bowl sits on top of a wooden cutting board.",
+        "fact": "A silver mixing bowl sits on a wooden cutting board.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The man is standing in a kitchen environment.",
         "confidence": 1.0
       }
     ],
     "ocr": [
       "bake 250°F for 30-35 mins"
     ],
-    "spatial": "The man is standing to the left of the wooden cutting board. He is holding the baking sheet in front of his torso. The silver bowl is placed on top of the cutting board in the center foreground. The instructional text is located at the bottom of the frame, below the cutting board.",
+    "spatial": "The man is standing on the left side of the frame, holding a baking sheet. To his right, in the center foreground, is a wooden cutting board with a silver mixing bowl on top of it. The text overlay is positioned at the bottom center of the screen.",
     "parse_success": true,
     "chunk_idx": 38,
-    "video_id": "How_to_Make_Kale_Chips_-_Kale_Recipe",
-    "_rescued": "parse"
+    "video_id": "How_to_Make_Kale_Chips_-_Kale_Recipe"
   },
   {
     "time": [
-      78,
-      80
+      39,
+      40
     ],
     "visible_entities": [
       {
         "desc": "hand with fair skin and visible veins",
-        "action": "reaching towards and touching the kale",
+        "action": "reaching for kale chips",
+        "position": "left/foreground"
+      },
+      {
+        "desc": "dark green cooked kale chips, crispy texture",
+        "action": "resting on wire rack",
+        "position": "center"
+      },
+      {
+        "desc": "silver metal wire cooling rack with grid pattern",
+        "action": "static",
+        "position": "center"
+      },
+      {
+        "desc": "silver metal baking sheet",
+        "action": "static",
+        "position": "center/background"
+      },
+      {
+        "desc": "circular logo with text 'THE JACQUES PEPIN FOUNDATION' and a stylized 'JP' monogram",
+        "action": "static",
+        "position": "bottom left"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A hand reaches towards the kale chips on the rack.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The kale chips are spread out on a wire cooling rack.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The wire rack is placed inside a metal baking sheet.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The logo for The Jacques Pepin Foundation is visible in the corner.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "THE JACQUES PEPIN FOUNDATION",
+      "JP"
+    ],
+    "spatial": "The hand is to the left of the kale chips. The kale chips are on top of the wire rack. The wire rack is inside the baking sheet. The logo is in the bottom left corner of the frame.",
+    "parse_success": true,
+    "chunk_idx": 39,
+    "video_id": "How_to_Make_Kale_Chips_-_Kale_Recipe"
+  },
+  {
+    "time": [
+      40,
+      41
+    ],
+    "visible_entities": [
+      {
+        "desc": "older man with white hair, wearing a red, white, and blue plaid shirt and a dark blue apron",
+        "action": "eating a piece of kale",
+        "position": "center"
+      },
+      {
+        "desc": "green kale chips on a metal wire rack",
+        "action": "static",
+        "position": "foreground"
+      },
+      {
+        "desc": "silver baking sheet",
+        "action": "static",
+        "position": "foreground"
+      },
+      {
+        "desc": "wooden cutting board",
+        "action": "static",
+        "position": "center"
+      },
+      {
+        "desc": "circular logo with text 'JACQUES PÉPIN FOUNDATION'",
+        "action": "static",
+        "position": "bottom-left"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The man is holding a piece of kale to his mouth.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The man is eating the kale.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The kale chips are spread out on a wire rack.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The wire rack is placed on top of a baking sheet.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The logo 'JACQUES PÉPIN FOUNDATION' is visible in the bottom-left corner.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "JACQUES PÉPIN FOUNDATION"
+    ],
+    "spatial": "The man is standing behind the baking sheet which is in the foreground. The wire rack with kale is on top of the baking sheet. The wooden cutting board is on the counter to the right of the baking sheet. The logo is in the bottom-left corner of the frame.",
+    "parse_success": true,
+    "chunk_idx": 40,
+    "video_id": "How_to_Make_Kale_Chips_-_Kale_Recipe"
+  },
+  {
+    "time": [
+      41,
+      42
+    ],
+    "visible_entities": [
+      {
+        "desc": "elderly man with white hair, wearing a red and blue plaid shirt and a dark blue apron",
+        "action": "tasting food",
+        "position": "center"
+      },
+      {
+        "desc": "rectangular metal baking tray filled with dark green roasted vegetables",
+        "action": "static",
+        "position": "foreground"
+      },
+      {
+        "desc": "large wooden cutting board",
+        "action": "static",
+        "position": "center"
+      },
+      {
+        "desc": "kitchen counter with various bottles, jars, and cooking utensils",
+        "action": "static",
+        "position": "right"
+      },
+      {
+        "desc": "circular logo with text 'THE JACQUES PÉPIN FOUNDATION' and a stylized 'JP' monogram",
+        "action": "static",
+        "position": "bottom left"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The man is tasting food by bringing his hand to his mouth.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A tray of roasted vegetables sits on the stovetop in the foreground.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The man is standing behind a wooden cutting board.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The kitchen counter is cluttered with various ingredients and bottles.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "THE JACQUES PÉPIN FOUNDATION",
+      "JP"
+    ],
+    "spatial": "The man is standing behind the wooden cutting board. The baking tray with vegetables is in front of the man and to his left. The cluttered kitchen counter is to the right of the cutting board. The foundation logo is in the bottom left corner of the frame.",
+    "parse_success": true,
+    "chunk_idx": 41,
+    "video_id": "How_to_Make_Kale_Chips_-_Kale_Recipe"
+  },
+  {
+    "time": [
+      42,
+      43
+    ],
+    "visible_entities": [
+      {
+        "desc": "elderly man with white hair, wearing a plaid shirt with orange, blue, and white patterns, and a dark blue apron",
+        "action": "gesturing with right hand",
+        "position": "center"
+      },
+      {
+        "desc": "rectangular metal baking tray with a wire rack insert",
+        "action": "static",
+        "position": "foreground"
+      },
+      {
+        "desc": "dark green leafy vegetables, possibly kale or spinach, spread on the wire rack",
+        "action": "static",
+        "position": "foreground"
+      },
+      {
+        "desc": "wooden cutting board, light brown, rectangular",
+        "action": "static",
+        "position": "center"
+      },
+      {
+        "desc": "kitchen counter with various bottles, jars, and cooking ingredients",
+        "action": "static",
+        "position": "right"
+      },
+      {
+        "desc": "circular logo with text 'THE JACQUES PÉPIN FOUNDATION' and a stylized 'JP' monogram",
+        "action": "static",
+        "position": "bottom left"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The man is standing behind a kitchen counter.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The man gestures with his right hand while looking at the camera.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A tray of green vegetables is placed on the stovetop in the foreground.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The logo 'THE JACQUES PÉPIN FOUNDATION' is visible in the bottom left corner.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "THE JACQUES PÉPIN FOUNDATION",
+      "JP"
+    ],
+    "spatial": "The man is standing behind the wooden cutting board. The tray of vegetables is in front of the man and to the left of the cutting board. The cluttered counter with ingredients is to the right of the cutting board.",
+    "parse_success": true,
+    "chunk_idx": 42,
+    "video_id": "How_to_Make_Kale_Chips_-_Kale_Recipe"
+  },
+  {
+    "time": [
+      43,
+      44
+    ],
+    "visible_entities": [
+      {
+        "desc": "hand with fair skin, index finger extended",
+        "action": "pointing at the kale",
         "position": "left"
       },
       {
-        "desc": "dark green leafy vegetables, likely kale, chopped into bite-sized pieces",
-        "action": "spread out on the rack",
+        "desc": "dark green leafy vegetables, chopped into bite-sized pieces, appearing roasted or dehydrated",
+        "action": "resting on the wire rack",
         "position": "center"
       },
       {
@@ -2610,60 +2838,117 @@
         "position": "center"
       },
       {
-        "desc": "silver metal baking sheet",
+        "desc": "silver metal baking sheet with a rim",
         "action": "static",
         "position": "center"
       },
       {
-        "desc": "circular white logo with black text and a stylized 'G' symbol",
+        "desc": "white circular logo with black text and a stylized 'C' symbol",
         "action": "static",
-        "position": "bottom left"
+        "position": "bottom-left"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A hand reaches into the frame from the left side.",
+        "fact": "A hand points towards the green vegetables on the rack.",
         "confidence": 1.0
       },
       {
-        "fact": "The hand touches and adjusts the green vegetables on the wire rack.",
+        "fact": "The vegetables are spread out in a single layer on the wire rack.",
         "confidence": 1.0
       },
       {
-        "fact": "The vegetables are spread in a single layer on the metal rack.",
+        "fact": "The wire rack is placed inside the baking sheet.",
         "confidence": 1.0
       },
       {
-        "fact": "The wire rack is placed inside a metal baking sheet.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The logo 'THE JACQUES PEPIN FOUNDATION' is visible in the bottom left corner.",
+        "fact": "The logo reads 'THE JACKSONS PEPPIN ROUNDUP'.",
         "confidence": 1.0
       }
     ],
     "ocr": [
-      "THE JACQUES PEPIN FOUNDATION"
+      "THE JACKSONS PEPPIN ROUNDUP"
     ],
-    "spatial": "The hand is on the left side of the frame, reaching towards the center where the green vegetables are located. The vegetables are on top of the metal wire rack, which is inside the baking sheet. The logo is in the bottom left corner, below the hand.",
+    "spatial": "The hand is to the left of the wire rack. The chopped green vegetables are on top of the wire rack. The wire rack is inside the metal baking sheet. The logo is in the bottom-left corner of the frame.",
     "parse_success": true,
-    "chunk_idx": 39,
-    "video_id": "How_to_Make_Kale_Chips_-_Kale_Recipe",
-    "_rescued": "parse"
+    "chunk_idx": 43,
+    "video_id": "How_to_Make_Kale_Chips_-_Kale_Recipe"
   },
   {
     "time": [
-      80,
-      82
+      44,
+      45
     ],
     "visible_entities": [
       {
-        "desc": "man with white hair, wearing a red and blue plaid shirt and a dark blue apron",
-        "action": "eating a piece of kale",
+        "desc": "person's hand and forearm with fair skin, visible veins, and a red, white, and blue plaid shirt cuff",
+        "action": "pointing at and touching the kale",
+        "position": "left"
+      },
+      {
+        "desc": "dark green chopped kale pieces, appearing cooked or dried, scattered on a metal wire rack",
+        "action": "static",
         "position": "center"
       },
       {
-        "desc": "green kale chips on a metal wire rack",
+        "desc": "silver metal wire cooling rack with a grid pattern",
+        "action": "static",
+        "position": "center"
+      },
+      {
+        "desc": "silver metal baking sheet tray",
+        "action": "static",
+        "position": "center"
+      },
+      {
+        "desc": "circular white logo with black text and a stylized 'T' symbol",
+        "action": "static",
+        "position": "bottom-left"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A person's hand points a finger at the kale on the rack.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The person's hand touches or adjusts the kale pieces.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The kale is spread out on a wire rack.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The wire rack is placed inside a baking sheet.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The logo text reads 'THE TACO GOURMET WITH LINDA ANDREWS'.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "THE TACO GOURMET WITH LINDA ANDREWS"
+    ],
+    "spatial": "The person's hand is on the left side of the frame, reaching towards the kale which is in the center. The kale is on top of the wire rack, which is inside the baking sheet. The logo is in the bottom-left corner, below the person's hand.",
+    "parse_success": true,
+    "chunk_idx": 44,
+    "video_id": "How_to_Make_Kale_Chips_-_Kale_Recipe"
+  },
+  {
+    "time": [
+      45,
+      46
+    ],
+    "visible_entities": [
+      {
+        "desc": "elderly man with white hair, wearing a red, white, and blue plaid shirt and a dark blue apron",
+        "action": "gesturing with right hand",
+        "position": "center"
+      },
+      {
+        "desc": "metal baking sheet with dark green cooked vegetables",
         "action": "static",
         "position": "foreground"
       },
@@ -2676,309 +2961,11 @@
         "desc": "kitchen counter with various bottles and jars",
         "action": "static",
         "position": "right"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "The man is holding a piece of kale to his mouth.",
-        "confidence": 1.0
       },
       {
-        "fact": "The man is chewing the kale.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "A tray of cooked kale chips sits on the counter.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [
-      "JACQUES PÉPIN FOUNDATION"
-    ],
-    "spatial": "The man is standing behind the wooden cutting board. The tray of kale chips is in front of the man on the counter. The kitchen counter with bottles is to the right of the man.",
-    "parse_success": true,
-    "chunk_idx": 40,
-    "video_id": "How_to_Make_Kale_Chips_-_Kale_Recipe",
-    "_rescued": "parse"
-  },
-  {
-    "time": [
-      82,
-      84
-    ],
-    "visible_entities": [
-      {
-        "desc": "elderly man with white hair, wearing a red, white, and blue plaid shirt and a dark blue apron",
-        "action": "tasting food",
-        "position": "center"
-      },
-      {
-        "desc": "rectangular metal baking tray filled with dark green cooked leafy vegetables",
-        "action": "static",
-        "position": "foreground"
-      },
-      {
-        "desc": "wooden cutting board",
-        "action": "static",
-        "position": "center"
-      },
-      {
-        "desc": "kitchen counter with various bottles, jars, and cooking ingredients",
-        "action": "static",
-        "position": "right"
-      },
-      {
-        "desc": "circular logo with text 'THE JACQUES PÉPIN FOUNDATION' and a 'JP' monogram",
-        "action": "static",
-        "position": "bottom left"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "The man is tasting food from his fingers.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The man is standing behind a wooden cutting board.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "A tray of cooked greens is on the counter in the foreground.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The logo 'THE JACQUES PÉPIN FOUNDATION' is visible in the bottom left corner.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [
-      "THE JACQUES PÉPIN FOUNDATION",
-      "JP"
-    ],
-    "spatial": "The man is standing behind the wooden cutting board. The tray of cooked greens is in front of the man on the counter. The kitchen counter with ingredients is to the right of the cutting board.",
-    "parse_success": true,
-    "chunk_idx": 41,
-    "video_id": "How_to_Make_Kale_Chips_-_Kale_Recipe",
-    "_rescued": "parse"
-  },
-  {
-    "time": [
-      84,
-      86
-    ],
-    "visible_entities": [
-      {
-        "desc": "older man with white hair, wearing a red, white, and blue plaid shirt and a dark blue apron",
-        "action": "gesturing with right hand while looking at food",
-        "position": "center"
-      },
-      {
-        "desc": "rectangular metal baking sheet with a wire rack, holding dark green roasted vegetables",
-        "action": "static",
-        "position": "foreground"
-      },
-      {
-        "desc": "wooden cutting board",
-        "action": "static",
-        "position": "center"
-      },
-      {
-        "desc": "kitchen counter with various bottles, jars, and cooking ingredients",
-        "action": "static",
-        "position": "right"
-      },
-      {
-        "desc": "white circular logo with text and a symbol",
-        "action": "static",
-        "position": "bottom left"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "The man is gesturing with his right hand while looking down at the tray of food.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The tray of roasted vegetables is sitting on the stovetop in the foreground.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The man is standing behind the wooden cutting board.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The logo in the corner reads 'THE JACQUES PÉPIN FOUNDATION'.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [
-      "THE JACQUES PÉPIN FOUNDATION"
-    ],
-    "spatial": "The man is standing behind the wooden cutting board. The baking sheet with vegetables is in front of the man and to the left of the cutting board. The collection of bottles and jars is to the right of the cutting board. The logo is in the bottom left corner of the frame.",
-    "parse_success": true,
-    "chunk_idx": 42,
-    "video_id": "How_to_Make_Kale_Chips_-_Kale_Recipe",
-    "_rescued": "parse"
-  },
-  {
-    "time": [
-      86,
-      88
-    ],
-    "visible_entities": [
-      {
-        "desc": "hand with light skin tone, index finger extended",
-        "action": "pointing at kale",
-        "position": "left"
-      },
-      {
-        "desc": "dark green leafy kale pieces, chopped, cooked",
-        "action": "static",
-        "position": "center"
-      },
-      {
-        "desc": "silver metal wire cooling rack, rectangular grid pattern",
-        "action": "static",
-        "position": "center"
-      },
-      {
-        "desc": "silver metal baking sheet, rimmed",
-        "action": "static",
-        "position": "center"
-      },
-      {
-        "desc": "white circular logo with stylized 'P' and text",
+        "desc": "logo with text 'THE JACQUES PÉPIN FOUNDATION' and a 'JP' monogram",
         "action": "static",
         "position": "bottom-left"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "A hand enters the frame from the left side.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The index finger points directly at the kale on the rack.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The kale is spread out on top of a metal wire rack.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The wire rack is placed inside a metal baking sheet.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The logo 'THE JACKIE PEPIN ROUNDUP' is visible in the bottom-left corner.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [
-      "THE JACKIE PEPIN ROUNDUP"
-    ],
-    "spatial": "The hand is to the left of the wire rack. The wire rack is inside the baking sheet. The kale is on top of the wire rack. The logo is in the bottom-left corner of the frame.",
-    "parse_success": true,
-    "chunk_idx": 43,
-    "video_id": "How_to_Make_Kale_Chips_-_Kale_Recipe"
-  },
-  {
-    "time": [
-      88,
-      90
-    ],
-    "visible_entities": [
-      {
-        "desc": "person with fair skin, visible veins on hand, wearing a red, white, and blue plaid long-sleeved shirt",
-        "action": "pointing at and touching the kale",
-        "position": "left"
-      },
-      {
-        "desc": "dark green chopped kale pieces, cooked and crispy-looking",
-        "action": "static",
-        "position": "center"
-      },
-      {
-        "desc": "silver metal wire cooling rack with a grid pattern",
-        "action": "static",
-        "position": "center"
-      },
-      {
-        "desc": "silver metal baking sheet with a raised rim",
-        "action": "static",
-        "position": "center"
-      },
-      {
-        "desc": "circular white logo with black text and a stylized 'G' symbol",
-        "action": "static",
-        "position": "bottom-left"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "A person's hand enters the frame from the left side.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The person points a finger at the kale on the rack.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The person touches the kale with their fingers.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The kale is spread out in a single layer on the wire rack.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The wire rack is placed inside the baking sheet.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The text 'THE JACKSONS KITCHEN' is visible in the logo.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [
-      "THE JACKSONS KITCHEN"
-    ],
-    "spatial": "The person's hand is to the left of the wire rack. The chopped kale is spread on top of the wire rack. The wire rack is inside the baking sheet. The logo is in the bottom-left corner of the frame, below the person's hand.",
-    "parse_success": true,
-    "chunk_idx": 44,
-    "video_id": "How_to_Make_Kale_Chips_-_Kale_Recipe",
-    "_rescued": "parse"
-  },
-  {
-    "time": [
-      90,
-      92
-    ],
-    "visible_entities": [
-      {
-        "desc": "older man with white hair, wearing a red, white, and blue plaid shirt and a dark blue apron",
-        "action": "gesturing with right hand while looking at the camera",
-        "position": "center"
-      },
-      {
-        "desc": "metal baking sheet filled with dark green cooked leafy vegetables",
-        "action": "static",
-        "position": "foreground"
-      },
-      {
-        "desc": "large wooden cutting board",
-        "action": "static",
-        "position": "center"
-      },
-      {
-        "desc": "kitchen counter with various bottles, jars, and cooking ingredients",
-        "action": "static",
-        "position": "right"
-      },
-      {
-        "desc": "circular logo with text 'THE JACQUES PÉPIN FOUNDATION'",
-        "action": "static",
-        "position": "bottom left"
       }
     ],
     "atomic_facts": [
@@ -2987,7 +2974,7 @@
         "confidence": 1.0
       },
       {
-        "fact": "A tray of cooked greens sits on the counter in the foreground.",
+        "fact": "A baking sheet with cooked vegetables is on the counter.",
         "confidence": 1.0
       },
       {
@@ -2995,66 +2982,7 @@
         "confidence": 1.0
       },
       {
-        "fact": "Various bottles and jars are clustered on the right side of the counter.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [
-      "THE JACQUES PÉPIN FOUNDATION"
-    ],
-    "spatial": "The man in the plaid shirt is standing behind the wooden cutting board. The tray of cooked greens is in front of the man and to the left of the cutting board. The cluster of bottles and jars is to the right of the cutting board.",
-    "parse_success": true,
-    "chunk_idx": 45,
-    "video_id": "How_to_Make_Kale_Chips_-_Kale_Recipe",
-    "_rescued": "parse"
-  },
-  {
-    "time": [
-      92,
-      94
-    ],
-    "visible_entities": [
-      {
-        "desc": "elderly man with white hair, wearing a red and blue plaid shirt and a dark blue apron",
-        "action": "gesturing with right hand while leaning on a counter",
-        "position": "center"
-      },
-      {
-        "desc": "metal baking sheet filled with dark green roasted vegetables",
-        "action": "static",
-        "position": "foreground"
-      },
-      {
-        "desc": "large wooden cutting board",
-        "action": "static",
-        "position": "center"
-      },
-      {
-        "desc": "kitchen counter with various bottles, jars, and cooking ingredients",
-        "action": "static",
-        "position": "right"
-      },
-      {
-        "desc": "circular logo with text 'THE JACQUES PÉPIN FOUNDATION' and a 'JP' monogram",
-        "action": "static",
-        "position": "bottom-left"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "The man in the plaid shirt is gesturing with his right hand over the baking sheet.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The man's left hand is resting on a cloth on the wooden cutting board.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The baking sheet contains roasted dark green vegetables.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The logo 'THE JACQUES PÉPIN FOUNDATION' is visible in the bottom-left corner.",
+        "fact": "The logo for 'THE JACQUES PÉPIN FOUNDATION' is visible in the bottom-left corner.",
         "confidence": 1.0
       }
     ],
@@ -3062,112 +2990,166 @@
       "THE JACQUES PÉPIN FOUNDATION",
       "JP"
     ],
-    "spatial": "The man is standing behind the kitchen counter. The baking sheet with vegetables is in front of him on the counter. To his right is a wooden cutting board and various bottles and jars. The logo is in the bottom-left corner of the frame.",
+    "spatial": "The man is standing behind the wooden cutting board. The baking sheet with vegetables is in front of the man and to the left of the cutting board. The collection of bottles and jars is on the counter to the right of the cutting board.",
     "parse_success": true,
-    "chunk_idx": 46,
-    "video_id": "How_to_Make_Kale_Chips_-_Kale_Recipe",
-    "_rescued": "parse"
+    "chunk_idx": 45,
+    "video_id": "How_to_Make_Kale_Chips_-_Kale_Recipe"
   },
   {
     "time": [
-      94,
-      96
+      46,
+      47
     ],
     "visible_entities": [
       {
-        "desc": "dark green, curly kale chips with lighter green stems, appearing crispy and seasoned",
+        "desc": "elderly man with white hair, wearing a red, white, and blue plaid shirt and a dark blue apron",
+        "action": "standing at a kitchen counter with hands on a wooden cutting board",
+        "position": "center"
+      },
+      {
+        "desc": "rectangular metal baking sheet filled with dark green roasted vegetables",
+        "action": "static",
+        "position": "foreground"
+      },
+      {
+        "desc": "large wooden cutting board with a green and white striped cloth",
         "action": "static",
         "position": "center"
       },
       {
-        "desc": "silver metal wire cooling rack with a grid pattern",
+        "desc": "kitchen counter cluttered with various bottles, jars, and cooking ingredients",
         "action": "static",
-        "position": "center"
+        "position": "right"
       },
       {
-        "desc": "silver metal baking sheet tray with a raised rim",
-        "action": "static",
-        "position": "center"
-      },
-      {
-        "desc": "light brown wooden cutting board with visible grain",
-        "action": "static",
-        "position": "top left"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "Kale chips are spread out on the wire rack.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The wire rack is placed inside the baking sheet.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The baking sheet is resting on a speckled countertop.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [],
-    "spatial": "The kale chips are on top of the metal wire rack. The wire rack is inside the metal baking sheet. The wooden cutting board is to the top left of the baking sheet.",
-    "parse_success": true,
-    "chunk_idx": 47,
-    "video_id": "How_to_Make_Kale_Chips_-_Kale_Recipe",
-    "_rescued": "parse"
-  },
-  {
-    "time": [
-      96,
-      98
-    ],
-    "visible_entities": [
-      {
-        "desc": "dark green, curly kale leaves with light green stems, appearing raw and chopped into bite-sized pieces",
-        "action": "static",
-        "position": "center"
-      },
-      {
-        "desc": "silver metal wire cooling rack with a grid pattern",
-        "action": "static",
-        "position": "center"
-      },
-      {
-        "desc": "silver metal baking sheet rim",
-        "action": "static",
-        "position": "background"
-      },
-      {
-        "desc": "circular white watermark logo with stylized text",
+        "desc": "circular logo with text 'THE JACQUES PÉPIN FOUNDATION' and a stylized 'JP' monogram",
         "action": "static",
         "position": "bottom-left"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "Chopped kale pieces are spread across the surface of a wire rack.",
+        "fact": "The man is standing in a kitchen with his hands resting on a wooden cutting board.",
         "confidence": 1.0
       },
       {
-        "fact": "The wire rack is placed on top of a metal baking sheet.",
+        "fact": "A baking sheet filled with roasted greens is positioned in the foreground.",
         "confidence": 1.0
       },
       {
-        "fact": "The kale appears to be in a raw state, likely prepared for baking or dehydrating.",
+        "fact": "The kitchen counter to the right is covered with numerous cooking ingredients and utensils.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "THE JACQUES PÉPIN FOUNDATION"
+    ],
+    "spatial": "The man is standing behind the wooden cutting board, which is on the kitchen counter. The baking sheet with roasted vegetables is in front of the cutting board. The cluttered counter with bottles and jars is to the right of the cutting board. The logo is in the bottom-left corner of the frame.",
+    "parse_success": true,
+    "chunk_idx": 46,
+    "video_id": "How_to_Make_Kale_Chips_-_Kale_Recipe"
+  },
+  {
+    "time": [
+      47,
+      48
+    ],
+    "visible_entities": [
+      {
+        "desc": "dark green, curly kale chips with light green stems, appearing crispy and seasoned",
+        "action": "static",
+        "position": "center"
+      },
+      {
+        "desc": "silver metal wire cooling rack with a grid pattern",
+        "action": "static",
+        "position": "center"
+      },
+      {
+        "desc": "silver metal baking sheet tray",
+        "action": "static",
+        "position": "center"
+      },
+      {
+        "desc": "light brown wooden cutting board",
+        "action": "static",
+        "position": "top left"
+      },
+      {
+        "desc": "grey speckled countertop",
+        "action": "static",
+        "position": "background"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "Kale chips are resting on a wire rack.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The wire rack is placed inside a baking sheet.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A wooden cutting board is visible in the upper left corner.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The chopped kale is spread on top of the metal wire rack. The wire rack is positioned inside the rim of the metal baking sheet. The watermark logo is located in the bottom-left corner of the frame.",
+    "spatial": "The kale chips are spread across the top of the metal wire rack. The wire rack is positioned inside the metal baking sheet. The wooden cutting board is located to the top left of the baking sheet.",
     "parse_success": true,
-    "chunk_idx": 48,
-    "video_id": "How_to_Make_Kale_Chips_-_Kale_Recipe",
-    "_rescued": "parse"
+    "chunk_idx": 47,
+    "video_id": "How_to_Make_Kale_Chips_-_Kale_Recipe"
   },
   {
     "time": [
-      98,
-      100
+      48,
+      49
+    ],
+    "visible_entities": [
+      {
+        "desc": "dark green leafy vegetable pieces with light green stems, appearing slightly wilted or cooked",
+        "action": "static",
+        "position": "center"
+      },
+      {
+        "desc": "silver metal wire mesh rack with a grid pattern",
+        "action": "static",
+        "position": "background"
+      },
+      {
+        "desc": "circular white watermark logo with text",
+        "action": "static",
+        "position": "bottom-left"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "Green leafy vegetables are spread across a metal wire rack.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The vegetables appear to be resting on the rack without movement.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A watermark is visible in the bottom-left corner of the frame.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "Ella",
+      "Ella's Kitchen"
+    ],
+    "spatial": "The green leafy vegetables are spread on top of the silver metal wire rack. The wire rack is positioned underneath the vegetables. The circular watermark is located in the bottom-left corner, below the vegetables.",
+    "parse_success": true,
+    "chunk_idx": 48,
+    "video_id": "How_to_Make_Kale_Chips_-_Kale_Recipe"
+  },
+  {
+    "time": [
+      49,
+      50
     ],
     "visible_entities": [
       {
@@ -3177,23 +3159,27 @@
     ],
     "atomic_facts": [
       {
-        "fact": "The text 'Director of Photography Tom Hopkins' is visible.",
+        "fact": "The text credits remain static on the screen.",
         "confidence": 1.0
       },
       {
-        "fact": "The text 'Post-Production by Tina Salter Byron W. Thompson' is visible.",
+        "fact": "The text lists 'Director of Photography Tom Hopkins'.",
         "confidence": 1.0
       },
       {
-        "fact": "The text 'Executive Producer Claudine Pépin' is visible.",
+        "fact": "The text lists 'Post-Production by Tina Salter' and 'Byron W. Thompson'.",
         "confidence": 1.0
       },
       {
-        "fact": "The text 'Produced and Presented by The Jacques Pépin Foundation' is visible.",
+        "fact": "The text lists 'Executive Producer Claudine Pépin'.",
         "confidence": 1.0
       },
       {
-        "fact": "The website URL 'www.jp.foundation' is visible at the bottom.",
+        "fact": "The text states 'Produced and Presented by The Jacques Pépin Foundation'.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The website 'www.jp.foundation' is visible at the bottom.",
         "confidence": 1.0
       }
     ],
@@ -3209,50 +3195,53 @@
       "The Jacques Pépin Foundation",
       "www.jp.foundation"
     ],
-    "spatial": "The text credits are centered on the screen. The 'Director of Photography' credit is above the 'Post-Production' credit. The 'Executive Producer' credit is above the 'Produced and Presented by' credit. The website URL is at the bottom right of the screen.",
+    "spatial": "The text credits are centered on the screen. The website URL is located at the bottom right corner, below the main block of text.",
     "parse_success": true,
     "chunk_idx": 49,
-    "video_id": "How_to_Make_Kale_Chips_-_Kale_Recipe",
-    "_rescued": "parse"
+    "video_id": "How_to_Make_Kale_Chips_-_Kale_Recipe"
   },
   {
     "time": [
-      100,
-      102
+      50,
+      51
     ],
     "visible_entities": [
       {
-        "desc": "text block listing credits including 'Director of Photography Tom Hopkins', 'Post-Production by Tina Salter Byron W. Thompson', 'Executive Producer Claudine Pépin', and 'Produced and Presented by The Jacques Pépin Foundation' in black serif font",
-        "action": "static",
-        "position": "center"
+        "desc": "Text credits in black serif font listing 'Director of Photography Tom Hopkins', 'Post-Production by Tina Salter Byron W. Thompson', 'Executive Producer Claudine Pépin', and 'Produced and Presented by The Jacques Pépin Foundation' on a textured light blue background.",
+        "action": "static"
       },
       {
-        "desc": "graphic logo featuring a dark blue circle containing a white letter 'J', surrounded by a larger light blue circle",
-        "action": "static",
-        "position": "center"
+        "desc": "A dark blue circle containing a white letter 'J' logo, centered on a light blue background.",
+        "action": "static"
       },
       {
-        "desc": "website URL 'www.jp.foundation' in white serif font",
-        "action": "static",
-        "position": "bottom"
-      },
-      {
-        "desc": "light blue textured background resembling paper",
-        "action": "static",
-        "position": "background"
+        "desc": "White serif text reading 'www.jp.foundation' at the bottom of the screen.",
+        "action": "static"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "The video transitions from a list of production credits to a logo screen.",
+        "fact": "The video displays end credits for a production.",
         "confidence": 1.0
       },
       {
-        "fact": "The text 'The Jacques Pépin Foundation' is displayed on the screen.",
+        "fact": "The text identifies the Director of Photography as Tom Hopkins.",
         "confidence": 1.0
       },
       {
-        "fact": "The logo consists of a white 'J' inside a dark blue circle.",
+        "fact": "The text identifies the Executive Producer as Claudine Pépin.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The text states the production is presented by The Jacques Pépin Foundation.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The website address 'www.jp.foundation' is displayed at the bottom.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A logo featuring the letter 'J' appears in the center of the screen.",
         "confidence": 1.0
       }
     ],
@@ -3269,20 +3258,19 @@
       "www.jp.foundation",
       "J"
     ],
-    "spatial": "The list of credits is centered on the screen in the first frame. In the second frame, the circular logo is centered on the screen. The website URL is located below the logo and below the credit list.",
+    "spatial": "The list of production credits is positioned in the upper center of the screen. The website URL is located at the bottom center, below the credits. The 'J' logo is centered in the frame, appearing after the text credits.",
     "parse_success": true,
     "chunk_idx": 50,
-    "video_id": "How_to_Make_Kale_Chips_-_Kale_Recipe",
-    "_rescued": "parse"
+    "video_id": "How_to_Make_Kale_Chips_-_Kale_Recipe"
   },
   {
     "time": [
-      102,
-      104
+      51,
+      52
     ],
     "visible_entities": [
       {
-        "desc": "dark blue circular logo containing a stylized white 'J' monogram, surrounded by a ring of text reading 'THE JACQUES PÉPIN FOUNDATION' in uppercase sans-serif font",
+        "desc": "dark blue circular logo containing a white stylized letter 'J' with a horizontal bar, surrounded by the text 'THE JACQUES PÉPIN FOUNDATION' in a circular arrangement",
         "action": "static",
         "position": "center"
       },
@@ -3290,24 +3278,19 @@
         "desc": "white serif text reading 'www.jp.foundation'",
         "action": "static",
         "position": "bottom"
-      },
-      {
-        "desc": "solid light blue background",
-        "action": "static",
-        "position": "background"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "The logo transitions from a simple monogram to a version encircled by the foundation's name.",
+        "fact": "The logo graphic transitions from a simple 'J' monogram to a complex seal with surrounding text.",
         "confidence": 1.0
       },
       {
-        "fact": "The text 'THE JACQUES PÉPIN FOUNDATION' curves around the top and sides of the central circle.",
+        "fact": "The text 'THE JACQUES PÉPIN FOUNDATION' appears in an arc above the central logo.",
         "confidence": 1.0
       },
       {
-        "fact": "The website URL 'www.jp.foundation' is displayed at the bottom of the screen.",
+        "fact": "The URL 'www.jp.foundation' is displayed at the bottom of the screen.",
         "confidence": 1.0
       }
     ],
@@ -3315,40 +3298,39 @@
       "THE JACQUES PÉPIN FOUNDATION",
       "www.jp.foundation"
     ],
-    "spatial": "The dark blue circular logo is centered in the frame. The text 'THE JACQUES PÉPIN FOUNDATION' is arranged in a circle around the logo. The website URL is positioned below the logo.",
+    "spatial": "The circular logo is positioned in the center of the light blue background. The text 'THE JACQUES PÉPIN FOUNDATION' curves around the top half of the central circle. The website URL is located below the central logo.",
     "parse_success": true,
     "chunk_idx": 51,
-    "video_id": "How_to_Make_Kale_Chips_-_Kale_Recipe",
-    "_rescued": "parse"
+    "video_id": "How_to_Make_Kale_Chips_-_Kale_Recipe"
   },
   {
     "time": [
-      104,
-      106
+      52,
+      53
     ],
     "visible_entities": [
       {
-        "desc": "A circular logo featuring a dark blue center with a white stylized monogram (intertwined 'J' and 'P') and a surrounding light blue ring containing dark blue text.",
+        "desc": "A circular logo featuring a dark blue circle with a white stylized monogram (resembling 'JP') in the center. The text 'THE JACQUES PÉPIN FOUNDATION' is written in white capital letters curving around the top half of the circle. A row of small dots curves along the bottom edge.",
         "action": "static",
         "position": "center"
       },
       {
-        "desc": "White serif text reading 'www.jp.foundation' with a slight drop shadow.",
+        "desc": "White text reading 'www.jp.foundation' in a serif font.",
         "action": "static",
         "position": "bottom"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "The video displays a static graphic of the Jacques Pépin Foundation logo.",
+        "fact": "The logo and text remain static on the screen.",
         "confidence": 1.0
       },
       {
-        "fact": "The text 'THE JACQUES PÉPIN FOUNDATION' is arranged in a circle around the central emblem.",
+        "fact": "The text 'THE JACQUES PÉPIN FOUNDATION' is displayed above the central graphic.",
         "confidence": 1.0
       },
       {
-        "fact": "The website URL 'www.jp.foundation' is displayed at the bottom of the screen.",
+        "fact": "The website address 'www.jp.foundation' is displayed below the logo.",
         "confidence": 1.0
       }
     ],
@@ -3356,10 +3338,9 @@
       "THE JACQUES PÉPIN FOUNDATION",
       "www.jp.foundation"
     ],
-    "spatial": "The circular logo is centered in the frame against a light blue background. The website text is positioned directly below the logo.",
+    "spatial": "The circular logo is centered on the light blue background. The text 'THE JACQUES PÉPIN FOUNDATION' curves above the central circle. The URL 'www.jp.foundation' is positioned below the logo.",
     "parse_success": true,
     "chunk_idx": 52,
-    "video_id": "How_to_Make_Kale_Chips_-_Kale_Recipe",
-    "_rescued": "parse"
+    "video_id": "How_to_Make_Kale_Chips_-_Kale_Recipe"
   }
 ]

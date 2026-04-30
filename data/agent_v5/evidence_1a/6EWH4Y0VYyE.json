@@ -2,55 +2,13 @@
   {
     "time": [
       0,
-      2
+      1
     ],
     "visible_entities": [
       {
-        "desc": "3D white text reading 'AQUAGUARD ENHANCE UV' with a glossy, blocky font style",
-        "action": "assembling from floating fragments into a centered logo",
+        "desc": "3D white text graphics with a glossy, metallic finish, arranged in a dynamic, floating composition",
+        "action": "floating and assembling",
         "position": "center"
-      },
-      {
-        "desc": "dark blue gradient background with a bright light source at the top center",
-        "action": "static",
-        "position": "background"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "The text fragments 'AQUAGUARD', 'ENHANCE', and 'UV' move from scattered positions to form a cohesive logo.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The text 'AQUAGUARD ENHANCE UV' is fully assembled and centered by the end of the clip.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [
-      "AQUAGUARD",
-      "ENHANCE",
-      "UV"
-    ],
-    "spatial": "The text 'AQUAGUARD' is positioned above the word 'ENHANCE'. The letters 'UV' are located to the right of 'ENHANCE' and below 'AQUAGUARD'. The entire text assembly is centered against the blue background.",
-    "parse_success": true,
-    "chunk_idx": 0,
-    "video_id": "6EWH4Y0VYyE"
-  },
-  {
-    "time": [
-      2,
-      4
-    ],
-    "visible_entities": [
-      {
-        "desc": "White 3D text logo reading 'AQUAGUARD ENHANCE UV' with a metallic sheen and a horizontal lens flare effect on the left side",
-        "action": "static",
-        "position": "center"
-      },
-      {
-        "desc": "Blue gradient background with a bright light source at the top center",
-        "action": "static",
-        "position": "background"
       }
     ],
     "atomic_facts": [
@@ -59,7 +17,11 @@
         "confidence": 1.0
       },
       {
-        "fact": "A lens flare effect is visible on the left side of the text.",
+        "fact": "The text elements are white and appear to be 3D rendered.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The background is a gradient blue with a light source at the top center.",
         "confidence": 1.0
       }
     ],
@@ -68,19 +30,56 @@
       "ENHANCE",
       "UV"
     ],
-    "spatial": "The text 'AQUAGUARD ENHANCE UV' is centered on the blue background. The word 'ENHANCE' is positioned below 'AQUAGUARD' and to the left of 'UV'. The bright light source is located above the text.",
+    "spatial": "The word 'AQUAGUARD' is positioned above the word 'ENHANCE'. The letters 'UV' are large and located to the right of 'ENHANCE'. The entire text assembly is centered against the blue background.",
+    "parse_success": true,
+    "chunk_idx": 0,
+    "video_id": "6EWH4Y0VYyE"
+  },
+  {
+    "time": [
+      1,
+      2
+    ],
+    "visible_entities": [
+      {
+        "desc": "White text logo reading 'AQUAGUARD ENHANCE UV' in a bold, sans-serif font, with 'UV' significantly larger than the other words.",
+        "action": "static",
+        "position": "center"
+      },
+      {
+        "desc": "Blue gradient background with a bright white light source at the top center.",
+        "action": "static",
+        "position": "background"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The text 'AQUAGUARD ENHANCE UV' is displayed on the screen.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A bright light shines from the top center of the frame.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "AQUAGUARD",
+      "ENHANCE",
+      "UV"
+    ],
+    "spatial": "The text 'AQUAGUARD ENHANCE UV' is centered on the blue background. The word 'ENHANCE' is below 'AQUAGUARD' and to the left of the large 'UV'. The light source is above the text.",
     "parse_success": true,
     "chunk_idx": 1,
     "video_id": "6EWH4Y0VYyE"
   },
   {
     "time": [
-      4,
-      6
+      2,
+      3
     ],
     "visible_entities": [
       {
-        "desc": "white and translucent blue water dispenser with a curved white side panel, a transparent water tank showing measurement markings, and a white dispensing tap at the bottom",
+        "desc": "white and translucent blue water dispenser with a curved white side panel and a dark blue front panel featuring measurement markings",
         "action": "static",
         "position": "center"
       }
@@ -91,137 +90,151 @@
         "confidence": 1.0
       },
       {
-        "fact": "The brand name 'ENHANCE' is visible on the upper part of the dispenser.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The water level markings are visible on the transparent tank.",
+        "fact": "The brand name 'ENHANCE' is visible on the top front of the dispenser.",
         "confidence": 1.0
       }
     ],
     "ocr": [
       "ENHANCE"
     ],
-    "spatial": "The white curved side panel is on the left side of the dispenser. The transparent water tank is located in the center of the unit, positioned above the white dispensing tap. The brand name 'ENHANCE' is printed on the upper front section of the dispenser, above the measurement markings.",
+    "spatial": "The water dispenser is centered in the frame against a solid blue background. The word 'ENHANCE' is located above the vertical measurement markings on the front of the dispenser.",
     "parse_success": true,
     "chunk_idx": 2,
     "video_id": "6EWH4Y0VYyE"
   },
   {
     "time": [
-      6,
-      8
+      3,
+      4
     ],
     "visible_entities": [
       {
-        "desc": "white and dark blue water dispenser with a transparent front tank, white side panels, and a white spigot",
+        "desc": "white and translucent blue water dispenser with a curved design, featuring a white dispensing nozzle at the bottom and measurement markings on the front panel",
         "action": "static",
         "position": "center"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "The water dispenser is static in the center of the frame.",
+        "fact": "A water dispenser is positioned centrally against a blue background.",
         "confidence": 1.0
       },
       {
-        "fact": "The brand name 'ENHANCE' is visible on the top of the unit.",
+        "fact": "The text 'ENHANCE' is printed in white capital letters on the upper front of the dispenser.",
         "confidence": 1.0
       },
       {
-        "fact": "White measurement lines are visible on the transparent water tank.",
+        "fact": "Vertical measurement lines are visible on the translucent blue section of the dispenser.",
         "confidence": 1.0
       }
     ],
     "ocr": [
       "ENHANCE"
     ],
-    "spatial": "The word 'ENHANCE' is located above the transparent water tank on the dispenser. The white spigot is positioned below the water tank.",
+    "spatial": "The water dispenser is centered in the frame. The 'ENHANCE' text is located above the measurement markings on the front of the dispenser. The white nozzle is situated at the bottom of the dispenser's front face.",
     "parse_success": true,
     "chunk_idx": 3,
     "video_id": "6EWH4Y0VYyE"
   },
   {
     "time": [
-      8,
-      10
+      4,
+      5
     ],
     "visible_entities": [
       {
-        "desc": "wall-mounted water dispenser with a white outer casing and a central translucent blue water tank featuring white horizontal measurement lines, topped with the word 'ENHANCE' in silver text, and a silver push-button tap at the bottom.",
-        "action": "static"
+        "desc": "wall-mounted water dispenser with a white outer casing and a translucent blue water tank featuring white measurement markings",
+        "action": "static",
+        "position": "center"
+      },
+      {
+        "desc": "silver cylindrical tap nozzle",
+        "action": "static",
+        "position": "center"
+      },
+      {
+        "desc": "black rectangular drip tray",
+        "action": "static",
+        "position": "center"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A wall-mounted water dispenser is shown against a blue background.",
+        "fact": "The water dispenser is mounted on a blue wall.",
         "confidence": 1.0
       },
       {
-        "fact": "The word 'ENHANCE' is printed on the top of the dispenser.",
+        "fact": "The word 'ENHANCE' is printed at the top of the water tank.",
         "confidence": 1.0
       },
       {
-        "fact": "The water tank has white horizontal lines indicating water levels.",
+        "fact": "The tap nozzle is positioned above the drip tray.",
         "confidence": 1.0
       }
     ],
     "ocr": [
       "ENHANCE"
     ],
-    "spatial": "The water dispenser is centered in the frame. The text 'ENHANCE' is located above the translucent blue water tank. The silver tap is positioned below the water tank.",
+    "spatial": "The water dispenser is centered in the frame against a blue background. The 'ENHANCE' text is located at the top of the dispenser's tank. The silver tap is positioned above the black drip tray at the bottom of the unit.",
     "parse_success": true,
     "chunk_idx": 4,
     "video_id": "6EWH4Y0VYyE"
   },
   {
     "time": [
-      10,
-      12
+      5,
+      6
     ],
     "visible_entities": [
       {
-        "desc": "white and dark grey water purification system with a transparent central tank, vertical measurement markings, and a dispensing tap",
+        "desc": "white and dark grey wall-mounted water purifier with a transparent front panel, internal cylindrical filters, and a dispensing nozzle",
         "action": "static",
         "position": "center"
       },
       {
-        "desc": "white 3D text 'WATER PURIFICATION SYSTEM' and abstract white geometric shapes",
+        "desc": "white 3D text reading 'WATER PURIFICATION SYSTEM' on a blue background",
         "action": "static",
         "position": "center"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "The video displays a water purification system.",
+        "fact": "A wall-mounted water purifier is displayed against a blue background.",
         "confidence": 1.0
       },
       {
-        "fact": "The text 'WATER PURIFICATION SYSTEM' is visible on the screen.",
+        "fact": "The text 'WATER PURIFICATION SYSTEM' appears on the screen.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The water purifier features a transparent casing revealing internal filter components.",
         "confidence": 1.0
       }
     ],
     "ocr": [
-      "WATER PURIFICATION SYSTEM"
+      "WATER PURIFICATION",
+      "SYSTEM"
     ],
-    "spatial": "The water purification system is centered in the frame against a blue background. The text 'WATER PURIFICATION SYSTEM' is positioned below the abstract white shapes.",
+    "spatial": "The water purifier is centered in the frame. The text 'WATER PURIFICATION SYSTEM' is positioned below the main body of the purifier.",
     "parse_success": true,
     "chunk_idx": 5,
     "video_id": "6EWH4Y0VYyE"
   },
   {
     "time": [
-      12,
-      14
+      6,
+      7
     ],
     "visible_entities": [
       {
-        "desc": "Large white text graphic reading '6 STAGE WATER PURIFICATION SYSTEM' with a sans-serif font, featuring a large numeral '6' on the left and stacked text on the right.",
-        "action": "static"
+        "desc": "white sans-serif text reading '6 STAGE WATER PURIFICATION SYSTEM' with a large numeral '6' on the left",
+        "action": "static",
+        "position": "center"
       },
       {
-        "desc": "Blue gradient background with a bright white light source at the top center creating a spotlight effect.",
-        "action": "static"
+        "desc": "dark blue gradient background with a bright white light source at the top center",
+        "action": "static",
+        "position": "background"
       }
     ],
     "atomic_facts": [
@@ -230,7 +243,7 @@
         "confidence": 1.0
       },
       {
-        "fact": "The background features a blue gradient with a light source at the top.",
+        "fact": "A bright light shines from the top center of the frame.",
         "confidence": 1.0
       }
     ],
@@ -239,35 +252,35 @@
       "WATER PURIFICATION",
       "SYSTEM"
     ],
-    "spatial": "The text graphic is centered in the frame against the blue background. The bright light source is positioned above the text.",
+    "spatial": "The text is centered on the screen. The bright light source is located above the text in the background.",
     "parse_success": true,
     "chunk_idx": 6,
     "video_id": "6EWH4Y0VYyE"
   },
   {
     "time": [
-      14,
-      16
+      7,
+      8
     ],
     "visible_entities": [
       {
-        "desc": "transparent glass cup, cylindrical shape, filled with clear liquid",
+        "desc": "transparent glass cup, cylindrical shape, filled with clear liquid containing small bubbles",
         "action": "static",
         "position": "right"
       },
       {
-        "desc": "white sans-serif text",
+        "desc": "white sans-serif text on a dark blue gradient background",
         "action": "appearing",
         "position": "left"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "Text reading 'ENSURES YOUR DRINKING WATER' appears on the screen.",
+        "fact": "Text reading 'ENSURES YOUR DRINKING WATER' appears on the left side of the screen.",
         "confidence": 1.0
       },
       {
-        "fact": "The glass of water remains stationary on the right side of the frame.",
+        "fact": "A glass of water is positioned on the right side of the frame.",
         "confidence": 1.0
       }
     ],
@@ -275,19 +288,19 @@
       "ENSURES",
       "YOUR DRINKING WATER"
     ],
-    "spatial": "The text 'ENSURES YOUR DRINKING WATER' is positioned to the left of the glass cup. The glass cup is situated on the right side of the frame against a blue background.",
+    "spatial": "The text 'ENSURES YOUR DRINKING WATER' is to the left of the transparent glass cup. The glass cup is positioned on the right side of the frame against a blue background.",
     "parse_success": true,
     "chunk_idx": 7,
     "video_id": "6EWH4Y0VYyE"
   },
   {
     "time": [
-      16,
-      18
+      8,
+      9
     ],
     "visible_entities": [
       {
-        "desc": "transparent glass cup filled with clear water, showing bubbles and ripples",
+        "desc": "transparent glass tumbler filled with clear water, showing bubbles rising inside",
         "action": "static",
         "position": "right"
       },
@@ -299,11 +312,15 @@
     ],
     "atomic_facts": [
       {
-        "fact": "The text 'SAFE' appears on the screen below the phrase 'ENSURES YOUR DRINKING WATER'.",
+        "fact": "The text 'ENSURES YOUR DRINKING WATER' is displayed on the screen.",
         "confidence": 1.0
       },
       {
-        "fact": "A glass of water is positioned on the right side of the frame.",
+        "fact": "The word 'SAFE' appears below the initial text.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A glass of water is positioned to the right of the text.",
         "confidence": 1.0
       }
     ],
@@ -312,15 +329,15 @@
       "YOUR DRINKING WATER",
       "SAFE"
     ],
-    "spatial": "The text 'ENSURES YOUR DRINKING WATER' and 'SAFE' is located to the left of the glass of water. The word 'SAFE' is positioned below the phrase 'ENSURES YOUR DRINKING WATER'.",
+    "spatial": "The text 'ENSURES YOUR DRINKING WATER' and 'SAFE' is located on the left side of the frame. The glass of water is positioned to the right of the text. The glass is in the foreground against a blue background.",
     "parse_success": true,
     "chunk_idx": 8,
     "video_id": "6EWH4Y0VYyE"
   },
   {
     "time": [
-      18,
-      20
+      9,
+      10
     ],
     "visible_entities": [
       {
@@ -329,37 +346,27 @@
         "position": "right"
       },
       {
-        "desc": "white text reading 'ENSURES YOUR DRINKING WATER' in sans-serif font",
+        "desc": "white sans-serif text reading 'ENSURES YOUR DRINKING WATER' and 'PURE'",
         "action": "static",
         "position": "left"
       },
       {
-        "desc": "large white text 'PURE' in sans-serif font",
+        "desc": "white sans-serif text reading 'ENSURES YOUR DRINKING WATER' and 'CRYSTAL' (mirrored)",
         "action": "static",
         "position": "left"
-      },
-      {
-        "desc": "large white text 'CRYSTAL' in sans-serif font",
-        "action": "static",
-        "position": "left"
-      },
-      {
-        "desc": "dark blue gradient background with a bright light source at the top center",
-        "action": "static",
-        "position": "background"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "The text 'PURE' is displayed on the screen.",
+        "fact": "The text 'ENSURES YOUR DRINKING WATER' is displayed above the word 'PURE'.",
         "confidence": 1.0
       },
       {
-        "fact": "The text changes to 'CRYSTAL' in the second frame.",
+        "fact": "The text 'CRYSTAL' appears mirrored horizontally.",
         "confidence": 1.0
       },
       {
-        "fact": "The glass of water remains stationary on the right side of the screen.",
+        "fact": "The glass of water is positioned to the right of the text.",
         "confidence": 1.0
       }
     ],
@@ -369,44 +376,39 @@
       "PURE",
       "CRYSTAL"
     ],
-    "spatial": "The text 'ENSURES YOUR DRINKING WATER' is positioned above the large word 'PURE' (or 'CRYSTAL'). The glass of water is located to the right of the text. The light source is above all other elements in the background.",
+    "spatial": "The text 'ENSURES YOUR DRINKING WATER' is located on the left side of the screen, positioned above the word 'PURE'. The glass of water is situated to the right of the text elements.",
     "parse_success": true,
     "chunk_idx": 9,
     "video_id": "6EWH4Y0VYyE"
   },
   {
     "time": [
-      20,
-      22
+      10,
+      11
     ],
     "visible_entities": [
       {
-        "desc": "transparent glass tumbler filled with clear water and ice cubes",
+        "desc": "transparent glass cup filled with clear water and ice cubes",
         "action": "static",
         "position": "right"
       },
       {
-        "desc": "white sans-serif text reading 'ENSURES YOUR DRINKING WATER CRYSTAL CLEAR'",
+        "desc": "white sans-serif text reading 'ENSURES YOUR DRINKING WATER' and 'CRYSTAL CLEAR'",
         "action": "static",
         "position": "left"
-      },
-      {
-        "desc": "dark blue gradient background with a bright light source at the top center",
-        "action": "static",
-        "position": "background"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "The text 'ENSURES YOUR DRINKING WATER CRYSTAL CLEAR' is displayed on the screen.",
+        "fact": "The text 'CRYSTAL CLEAR' is displayed in large, bold, white capital letters.",
         "confidence": 1.0
       },
       {
-        "fact": "A glass of water is positioned to the right of the text.",
+        "fact": "The glass of water is positioned to the right of the text.",
         "confidence": 1.0
       },
       {
-        "fact": "The background features a spotlight effect at the top.",
+        "fact": "The text 'ENSURES YOUR DRINKING WATER' is positioned above the words 'CRYSTAL CLEAR'.",
         "confidence": 1.0
       }
     ],
@@ -416,115 +418,115 @@
       "CRYSTAL",
       "CLEAR"
     ],
-    "spatial": "The text block is located to the left of the glass of water. The glass is positioned on the right side of the frame. The light source is above the text and the glass.",
+    "spatial": "The glass of water is to the right of the text. The phrase 'ENSURES YOUR DRINKING WATER' is above the words 'CRYSTAL CLEAR'. The text and the glass are set against a blue gradient background.",
     "parse_success": true,
     "chunk_idx": 10,
     "video_id": "6EWH4Y0VYyE"
   },
   {
     "time": [
-      22,
-      24
+      11,
+      12
     ],
     "visible_entities": [
       {
-        "desc": "central white spherical object with a spiky, textured surface and protruding filaments",
-        "action": "disintegrating into a cloud of particles",
-        "position": "center"
-      },
-      {
-        "desc": "text 'BACTERIA' in dark blue, uppercase, sans-serif font",
+        "desc": "large, central, spherical object composed of a dense cluster of small, light-colored particles, with several thin, spike-like protrusions extending from its surface",
         "action": "static",
         "position": "center"
       },
       {
-        "desc": "small, blurry, spherical particles in shades of white and grey",
-        "action": "floating",
+        "desc": "text 'BACTERIA' in a bold, dark blue, sans-serif font",
+        "action": "static",
+        "position": "center"
+      },
+      {
+        "desc": "multiple smaller, out-of-focus, spherical particles of varying sizes and shades of light and dark gray",
+        "action": "static",
         "position": "background"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "The central white spiky object breaks apart into a cloud of small particles.",
+        "fact": "The text 'BACTERIA' is displayed on the screen.",
         "confidence": 1.0
       },
       {
-        "fact": "The text 'BACTERIA' is displayed above the central object.",
+        "fact": "A large, particle-based object is positioned in the center of the frame.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "Smaller, blurry particles are scattered in the background.",
         "confidence": 1.0
       }
     ],
     "ocr": [
       "BACTERIA"
     ],
-    "spatial": "The text 'BACTERIA' is positioned above the central white spiky object. The central object is surrounded by smaller floating particles in the background.",
+    "spatial": "The text 'BACTERIA' is positioned above the large, central particle cluster. The large particle cluster is in the foreground, while the smaller, blurry particles are in the background, surrounding the central object.",
     "parse_success": true,
     "chunk_idx": 11,
     "video_id": "6EWH4Y0VYyE"
   },
   {
     "time": [
-      24,
-      26
+      12,
+      13
     ],
     "visible_entities": [
       {
-        "desc": "spherical, pale greenish-grey virus particles with a textured surface and protruding spike-like structures",
-        "action": "floating in the air",
-        "position": "foreground and background"
+        "desc": "large, pale green, spherical virus particle with a textured surface and multiple protruding spike proteins",
+        "action": "floating in the center foreground",
+        "position": "center"
       },
       {
-        "desc": "bold, dark blue, sans-serif text reading 'VIRUS'",
+        "desc": "multiple smaller, pale green, spherical virus particles with similar textured surfaces and spikes",
+        "action": "floating in the background",
+        "position": "background"
+      },
+      {
+        "desc": "the word 'VIRUS' in bold, dark blue, sans-serif capital letters",
         "action": "static",
         "position": "center"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "Multiple virus particles are floating in a light blue environment.",
+        "fact": "A large virus particle floats in the foreground while smaller virus particles float in the background.",
         "confidence": 1.0
       },
       {
         "fact": "The text 'VIRUS' is displayed in the center of the screen.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The virus particles vary in size and focus, creating a sense of depth.",
         "confidence": 1.0
       }
     ],
     "ocr": [
       "VIRUS"
     ],
-    "spatial": "The text 'VIRUS' is positioned in the center of the frame. A large, detailed virus particle is in the foreground, slightly to the left of the text. Other smaller, less focused virus particles are scattered in the background, surrounding the central elements.",
+    "spatial": "The large virus particle is in the center foreground. The text 'VIRUS' is positioned slightly above and behind the large virus particle. The smaller virus particles are scattered in the background, surrounding the central elements.",
     "parse_success": true,
     "chunk_idx": 12,
     "video_id": "6EWH4Y0VYyE"
   },
   {
     "time": [
-      26,
-      28
+      13,
+      14
     ],
     "visible_entities": [
       {
-        "desc": "large, pale green, bulbous microorganism with a textured surface and multiple thin stalks ending in small spheres",
-        "action": "floating",
+        "desc": "large, pale greenish-white, irregularly shaped organism with a bumpy texture and multiple thin, stalk-like protrusions ending in small spheres",
+        "action": "floating in the center",
         "position": "center"
       },
       {
-        "desc": "smaller, pale green, bulbous microorganism with a textured surface and multiple thin stalks ending in small spheres",
-        "action": "floating",
+        "desc": "smaller, pale greenish-white, irregularly shaped organism with a bumpy texture and multiple thin, stalk-like protrusions ending in small spheres",
+        "action": "floating in the background",
         "position": "left"
       },
       {
         "desc": "dark blue, bold, sans-serif text reading 'PROTOZOA'",
         "action": "static",
         "position": "top-center"
-      },
-      {
-        "desc": "small, out-of-focus, pale green spherical particles",
-        "action": "floating",
-        "position": "background"
       }
     ],
     "atomic_facts": [
@@ -533,45 +535,45 @@
         "confidence": 1.0
       },
       {
-        "fact": "A large, spiky microorganism floats in the center of the frame.",
+        "fact": "A large, spiky, pale greenish-white organism is floating in the center of the frame.",
         "confidence": 1.0
       },
       {
-        "fact": "A smaller microorganism floats to the left of the central one.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "Small, blurry particles float in the background.",
+        "fact": "A smaller, similar organism is floating to the left of the central organism.",
         "confidence": 1.0
       }
     ],
     "ocr": [
       "PROTOZOA"
     ],
-    "spatial": "The text 'PROTOZOA' is located above the central microorganism. The smaller microorganism is to the left of the large central one. The blurry particles are in the background, behind the main organisms.",
+    "spatial": "The text 'PROTOZOA' is positioned above the central organism. The large central organism is in front of the smaller organism on the left. The smaller organism on the left is to the left of the central organism.",
     "parse_success": true,
     "chunk_idx": 13,
     "video_id": "6EWH4Y0VYyE"
   },
   {
     "time": [
-      28,
-      30
+      14,
+      15
     ],
     "visible_entities": [
       {
-        "desc": "Text graphic reading 'PROTECTION FROM NEW AGE CONTAMINANTS' in white sans-serif font against a blue gradient background",
-        "action": "fading in from a blurred state to sharp focus",
+        "desc": "Text graphic with white sans-serif font on a blue gradient background",
+        "action": "transitioning from blurry to sharp focus",
         "position": "center"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "The text 'PROTECTION FROM NEW AGE CONTAMINANTS' appears on screen.",
+        "fact": "The text 'PROTECTION FROM NEW AGE' is visible at the top of the graphic.",
         "confidence": 1.0
       },
       {
-        "fact": "The text transitions from a blurry, illegible state to a sharp, readable state.",
+        "fact": "The word 'CONTAMINANTS' fades into view below the initial text.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The text changes from a blurred state to a clear, readable state.",
         "confidence": 1.0
       }
     ],
@@ -580,44 +582,41 @@
       "NEW AGE",
       "CONTAMINANTS"
     ],
-    "spatial": "The text is centered on the screen. A bright light source is positioned at the top center, above the text.",
+    "spatial": "The phrase 'PROTECTION FROM NEW AGE' is positioned above the word 'CONTAMINANTS'. The entire text block is centered on the blue background.",
     "parse_success": true,
     "chunk_idx": 14,
     "video_id": "6EWH4Y0VYyE"
   },
   {
     "time": [
-      30,
-      32
+      15,
+      16
     ],
     "visible_entities": [
       {
-        "desc": "white sans-serif text reading 'PROTECTION FROM NEW AGE CONTAMINANTS' on a blue gradient background",
-        "action": "static",
-        "position": "center"
+        "desc": "Text 'PROTECTION FROM NEW AGE CONTAMINANTS' in white, sans-serif font, centered on screen",
+        "action": "static"
       },
       {
-        "desc": "large white sans-serif text reading 'LEAD' with a faint reflection below it",
-        "action": "appearing",
-        "position": "center"
+        "desc": "Text 'LEAD' in large, white, sans-serif font, centered on screen",
+        "action": "appearing"
       },
       {
-        "desc": "dark, textured, rock-like or metallic debris fragments",
-        "action": "floating",
-        "position": "background"
+        "desc": "Blue gradient background with a bright light source at the top center",
+        "action": "static"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "The text 'PROTECTION FROM NEW AGE CONTAMINANTS' is displayed on the screen.",
+        "fact": "The text 'PROTECTION FROM NEW AGE CONTAMINANTS' is displayed on a blue background.",
         "confidence": 1.0
       },
       {
-        "fact": "The word 'LEAD' appears in large letters, replacing the previous text.",
+        "fact": "The word 'LEAD' appears on the screen, superimposed over the previous text.",
         "confidence": 1.0
       },
       {
-        "fact": "Debris fragments float in the background behind the text.",
+        "fact": "A bright light source is visible at the top of the frame.",
         "confidence": 1.0
       }
     ],
@@ -627,51 +626,46 @@
       "CONTAMINANTS",
       "LEAD"
     ],
-    "spatial": "The text 'LEAD' is in the center of the screen, appearing in front of the floating debris fragments. The debris fragments are scattered to the left and right of the text.",
+    "spatial": "The text 'PROTECTION FROM NEW AGE CONTAMINANTS' is centered on the screen. The word 'LEAD' is positioned in front of and partially obscures the previous text. The bright light source is located above all the text elements.",
     "parse_success": true,
     "chunk_idx": 15,
     "video_id": "6EWH4Y0VYyE"
   },
   {
     "time": [
-      32,
-      34
+      16,
+      17
     ],
     "visible_entities": [
       {
-        "desc": "large, white, bold, sans-serif text reading 'LEAD'",
+        "desc": "large white 3D text 'LEAD' with a glossy finish",
         "action": "static",
         "position": "foreground"
       },
       {
-        "desc": "pink and green segmented larva or caterpillar",
-        "action": "floating",
-        "position": "left"
-      },
-      {
-        "desc": "smaller pink and green larva",
-        "action": "floating",
-        "position": "right"
-      },
-      {
-        "desc": "black, pill-shaped capsule",
-        "action": "floating",
-        "position": "right"
-      },
-      {
-        "desc": "white, bold, sans-serif text reading 'PESTICIDES'",
+        "desc": "white text 'PESTICIDES' in a bold sans-serif font",
         "action": "static",
         "position": "center"
       },
       {
-        "desc": "faint, inverted reflection of the text 'PESTICIDES'",
+        "desc": "pink and green segmented caterpillar larva",
+        "action": "floating",
+        "position": "left"
+      },
+      {
+        "desc": "black pill-shaped capsule",
+        "action": "floating",
+        "position": "right"
+      },
+      {
+        "desc": "faint reflection of the word 'PESTICIDES' below the main text",
         "action": "static",
         "position": "bottom"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "The word 'LEAD' is displayed in large white letters.",
+        "fact": "The word 'LEAD' is displayed in large white letters in the foreground.",
         "confidence": 1.0
       },
       {
@@ -679,63 +673,67 @@
         "confidence": 1.0
       },
       {
-        "fact": "A pink and green larva floats to the left of the text 'PESTICIDES'.",
+        "fact": "A pink and green caterpillar is positioned to the left of the text 'PESTICIDES'.",
         "confidence": 1.0
       },
       {
-        "fact": "A black capsule floats to the right of the text 'PESTICIDES'.",
+        "fact": "A black capsule is positioned to the right of the text 'PESTICIDES'.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The text 'PESTICIDES' is reflected on the surface below it.",
         "confidence": 1.0
       }
     ],
     "ocr": [
       "LEAD",
       "PESTICIDES",
-      "SEDICITSEP"
+      "bƎƧTIƆIᗡƎƧ"
     ],
-    "spatial": "The large text 'LEAD' is in the foreground, partially obscuring the background elements. The text 'PESTICIDES' is centered in the background, with a larva to its left and a black capsule to its right. A faint reflection of the word 'PESTICIDES' is visible below the main text.",
+    "spatial": "The large text 'LEAD' is in the foreground, obscuring the background. The text 'PESTICIDES' is in the center of the background, with a caterpillar to its left and a black capsule to its right. A faint reflection of the text 'PESTICIDES' is located directly below the main text.",
     "parse_success": true,
     "chunk_idx": 16,
     "video_id": "6EWH4Y0VYyE"
   },
   {
     "time": [
-      34,
-      36
+      17,
+      18
     ],
     "visible_entities": [
       {
-        "desc": "white, bold, sans-serif text reading 'ARSENIC' with a faint reflection below",
+        "desc": "text 'ARSENIC' in bold, white, sans-serif font",
         "action": "static",
         "position": "center"
       },
       {
-        "desc": "white, bold, sans-serif text reading 'MERCURY' with a faint reflection below",
-        "action": "static",
-        "position": "center"
-      },
-      {
-        "desc": "pinkish-brown, rough, crystalline rock formation",
-        "action": "static",
+        "desc": "irregular, rough-textured rock formation, pinkish-brown color",
+        "action": "floating",
         "position": "left"
       },
       {
-        "desc": "blue-grey rock with pinkish patches",
-        "action": "static",
+        "desc": "irregular, rough-textured rock formation, blue-grey color with pinkish patches",
+        "action": "floating",
         "position": "right"
       },
       {
-        "desc": "dark grey, angular, metallic-looking rock",
+        "desc": "text 'MERCURY' in bold, white, sans-serif font",
         "action": "static",
+        "position": "center"
+      },
+      {
+        "desc": "dark grey, crystalline, jagged rock fragment",
+        "action": "floating",
         "position": "left"
       },
       {
-        "desc": "yellow, spherical, spiky object resembling a virus or pollen grain",
-        "action": "static",
+        "desc": "small, yellow, spherical object with spikes",
+        "action": "floating",
         "position": "left"
       },
       {
-        "desc": "small red teardrop-shaped object",
-        "action": "static",
+        "desc": "small, red, teardrop-shaped object",
+        "action": "floating",
         "position": "center"
       }
     ],
@@ -749,19 +747,19 @@
         "confidence": 1.0
       },
       {
-        "fact": "A pinkish-brown rock is positioned to the left of the word 'ARSENIC'.",
+        "fact": "A pinkish-brown rock floats to the left of the 'ARSENIC' text.",
         "confidence": 1.0
       },
       {
-        "fact": "A blue-grey rock is positioned to the right of the word 'ARSENIC'.",
+        "fact": "A blue-grey rock floats to the right of the 'ARSENIC' text.",
         "confidence": 1.0
       },
       {
-        "fact": "A dark grey rock is positioned to the left of the word 'MERCURY'.",
+        "fact": "A dark grey crystalline rock floats to the left of the 'MERCURY' text.",
         "confidence": 1.0
       },
       {
-        "fact": "A yellow spiky sphere is positioned to the left of the dark grey rock.",
+        "fact": "A yellow spiky sphere floats to the left of the 'MERCURY' text.",
         "confidence": 1.0
       }
     ],
@@ -769,46 +767,51 @@
       "ARSENIC",
       "MERCURY"
     ],
-    "spatial": "The word 'ARSENIC' is centered, flanked by a pinkish-brown rock on the left and a blue-grey rock on the right. The word 'MERCURY' is centered, with a dark grey rock and a yellow spiky sphere to its left. Both text elements have faint reflections directly below them.",
+    "spatial": "In the first frame, the text 'ARSENIC' is centered, with a pinkish-brown rock to its left and a blue-grey rock to its right. In the second frame, the text 'MERCURY' is centered, with a dark grey crystalline rock and a yellow spiky sphere to its left.",
     "parse_success": true,
     "chunk_idx": 17,
     "video_id": "6EWH4Y0VYyE"
   },
   {
     "time": [
-      36,
-      38
+      18,
+      19
     ],
     "visible_entities": [
       {
-        "desc": "Text 'MERCURY' in bold, white, sans-serif font",
+        "desc": "White text reading 'MERCURY' in a bold, sans-serif font with a faint reflection below it",
         "action": "static",
         "position": "center"
       },
       {
-        "desc": "Large, dark grey, jagged rock-like object with a rough texture",
+        "desc": "Large, jagged, dark grey rock with a crystalline texture",
         "action": "floating",
         "position": "left"
       },
       {
-        "desc": "Small, yellow, spherical object with spikes resembling a virus",
+        "desc": "Yellowish-green spherical object with small spikes, resembling a virus or pollen grain",
         "action": "floating",
         "position": "left"
       },
       {
-        "desc": "Small, red, irregular object",
+        "desc": "Small, irregular red rock fragment",
         "action": "floating",
-        "position": "center-left"
+        "position": "left"
       },
       {
-        "desc": "Small, dark grey, irregular object",
+        "desc": "Small, irregular dark blue rock fragment",
         "action": "floating",
         "position": "right"
       },
       {
-        "desc": "Faint reflection of the text 'MERCURY' below the main text",
+        "desc": "Small, yellowish-green spherical object",
+        "action": "floating",
+        "position": "right"
+      },
+      {
+        "desc": "Gradient blue background with a bright white light source at the top center",
         "action": "static",
-        "position": "center-bottom"
+        "position": "background"
       }
     ],
     "atomic_facts": [
@@ -817,94 +820,98 @@
         "confidence": 1.0
       },
       {
-        "fact": "A large grey rock is floating to the left of the text.",
+        "fact": "A large grey rock and a spiky yellow-green sphere are floating to the left of the text.",
         "confidence": 1.0
       },
       {
-        "fact": "A yellow spiky sphere is floating to the left of the grey rock.",
+        "fact": "Small rock fragments and a yellow sphere are floating to the right of the text.",
         "confidence": 1.0
       },
       {
-        "fact": "A faint reflection of the text is visible below the main text.",
+        "fact": "A bright light source is visible at the top of the frame.",
         "confidence": 1.0
       }
     ],
     "ocr": [
       "MERCURY"
     ],
-    "spatial": "The text 'MERCURY' is in the center of the frame. To the left of the text, a large grey rock is floating. To the left of the grey rock, a yellow spiky sphere is floating. Below the text 'MERCURY', a faint reflection of the text is visible.",
+    "spatial": "The text 'MERCURY' is centered in the frame. To the left of the text, a large grey rock and a spiky yellow-green sphere are floating. To the right of the text, a small blue rock and a yellow sphere are visible. The bright light source is located above all the floating objects.",
     "parse_success": true,
     "chunk_idx": 18,
     "video_id": "6EWH4Y0VYyE"
   },
   {
     "time": [
-      38,
-      40
+      19,
+      20
     ],
     "visible_entities": [
       {
-        "desc": "Text graphic reading 'SPECIAL FEATURES' in a white, bold, sans-serif font",
+        "desc": "white sans-serif text reading 'SPECIAL FEATURES' with a slight 3D effect",
         "action": "fading into view",
         "position": "center"
       },
       {
-        "desc": "A dark blue gradient background with a bright white spotlight effect at the top center",
+        "desc": "dark blue gradient background with a bright white light source at the top center",
         "action": "static",
         "position": "background"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "The text 'SPECIAL FEATURES' fades into visibility in the center of the screen.",
+        "fact": "The text 'SPECIAL FEATURES' appears on the screen.",
         "confidence": 1.0
       },
       {
-        "fact": "A bright light source is positioned at the top center of the frame, illuminating the background.",
+        "fact": "A bright light shines from the top center of the frame.",
         "confidence": 1.0
       }
     ],
     "ocr": [
       "SPECIAL FEATURES"
     ],
-    "spatial": "The text 'SPECIAL FEATURES' is centered on the screen. The bright light source is located above the text at the top of the frame.",
+    "spatial": "The text 'SPECIAL FEATURES' is centered on the screen. The bright light source is positioned above the text.",
     "parse_success": true,
     "chunk_idx": 19,
     "video_id": "6EWH4Y0VYyE"
   },
   {
     "time": [
-      40,
-      42
+      20,
+      21
     ],
     "visible_entities": [
       {
-        "desc": "3D text 'FEATURES' in white, sans-serif font, with a stylized white geometric logo composed of angled blocks positioned above it",
+        "desc": "3D white blocky text spelling 'FEATURES' with a metallic sheen",
         "action": "static",
         "position": "center"
       },
       {
-        "desc": "Water dispenser unit with a white outer casing and a translucent dark blue water tank featuring white measurement lines and a white spigot",
+        "desc": "white and translucent blue water dispenser with measurement markings",
         "action": "static",
         "position": "center"
       },
       {
-        "desc": "Text 'ENHANCE' in silver, stylized capital letters",
+        "desc": "silver text reading 'ENHANCE'",
         "action": "static",
         "position": "top"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "The video transitions from a title card displaying 'FEATURES' to a close-up shot of a water dispenser.",
+        "fact": "The video transitions from a title card to a product shot.",
         "confidence": 1.0
       },
       {
-        "fact": "The word 'ENHANCE' is printed on the upper front panel of the water dispenser.",
+        "fact": "The text 'FEATURES' is displayed in the center of the screen.",
         "confidence": 1.0
       },
       {
-        "fact": "The water tank has horizontal white lines indicating water levels.",
+        "fact": "A water dispenser is shown in a close-up view.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The word 'ENHANCE' is visible on the upper part of the dispenser.",
         "confidence": 1.0
       }
     ],
@@ -912,75 +919,74 @@
       "FEATURES",
       "ENHANCE"
     ],
-    "spatial": "The 'FEATURES' text is centered on the screen in the first frame. In the second frame, the water dispenser is centered, with the 'ENHANCE' text located above the translucent water tank. The white spigot is positioned below the water tank.",
+    "spatial": "The 'FEATURES' text is centered on a blue background. In the subsequent frame, the water dispenser is centered, with the 'ENHANCE' text located on the upper front panel of the dispenser.",
     "parse_success": true,
     "chunk_idx": 20,
     "video_id": "6EWH4Y0VYyE"
   },
   {
     "time": [
-      42,
-      44
+      21,
+      22
     ],
     "visible_entities": [
       {
-        "desc": "dark blue water purifier unit with a smooth, matte finish, featuring a white vertical accent strip on the right side and a glowing blue circular LED indicator light",
-        "action": "static",
-        "position": "center"
-      },
-      {
-        "desc": "cylindrical silver tap with a metallic finish",
-        "action": "static",
-        "position": "center-left"
+        "desc": "dark blue water dispenser with a white cylindrical nozzle, a glowing blue circular indicator light, and a white vertical accent strip on the right side",
+        "action": "static"
       },
       {
         "desc": "white text reading 'Aquaguard' in a sans-serif font",
-        "action": "static",
-        "position": "bottom-left"
+        "action": "static"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "The camera angle shifts slightly to reveal the 'Aquaguard' brand name printed on the lower section of the device.",
+        "fact": "The camera angle shifts slightly to reveal the text 'Aquaguard' on the lower part of the dispenser.",
         "confidence": 1.0
       },
       {
-        "fact": "A blue LED light is illuminated on the front panel of the purifier.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The silver tap is positioned above the 'Aquaguard' text.",
+        "fact": "A blue circular light is illuminated on the front panel of the dispenser.",
         "confidence": 1.0
       }
     ],
     "ocr": [
       "Aquaguard"
     ],
-    "spatial": "The silver tap is attached to the front of the dark blue purifier unit. The glowing blue LED light is located to the right of the tap. The 'Aquaguard' text is positioned below the tap on the lower part of the unit.",
+    "spatial": "The white cylindrical nozzle is located on the front of the dark blue dispenser body. The glowing blue indicator light is positioned to the right of the nozzle. The 'Aquaguard' text is printed on the lower section of the dispenser, below the nozzle.",
     "parse_success": true,
     "chunk_idx": 21,
     "video_id": "6EWH4Y0VYyE"
   },
   {
     "time": [
-      44,
-      46
+      22,
+      23
     ],
     "visible_entities": [
       {
-        "desc": "dark blue appliance panel with a cylindrical silver metallic spout and a glowing white circular indicator light",
+        "desc": "cylindrical metallic dispenser nozzle, silver, smooth surface",
+        "action": "static",
+        "position": "left"
+      },
+      {
+        "desc": "dark blue rectangular housing panel, matte finish",
         "action": "static",
         "position": "center"
       },
       {
-        "desc": "white text reading 'Aquaguard' in a sans-serif font",
+        "desc": "circular indicator light, glowing bright blue/white",
         "action": "static",
-        "position": "bottom-left"
+        "position": "center-right"
+      },
+      {
+        "desc": "white vertical structural element, smooth",
+        "action": "static",
+        "position": "right"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "The appliance panel remains static during the clip.",
+        "fact": "The metallic nozzle is attached to the dark blue housing.",
         "confidence": 1.0
       },
       {
@@ -988,126 +994,124 @@
         "confidence": 1.0
       },
       {
-        "fact": "The text 'Aquaguard' is visible on the lower section of the panel.",
+        "fact": "The text 'Aquaguard' is printed on the panel below the nozzle.",
         "confidence": 1.0
       }
     ],
     "ocr": [
       "Aquaguard"
     ],
-    "spatial": "The silver spout is positioned to the left of the glowing circular light. The 'Aquaguard' text is located below the spout on the dark blue surface.",
+    "spatial": "The metallic nozzle is positioned on the left side of the dark blue housing panel. The glowing circular light is located to the right of the nozzle on the same panel. The white vertical structure is adjacent to the right edge of the blue housing. The text 'Aquaguard' is visible below the nozzle.",
     "parse_success": true,
     "chunk_idx": 22,
     "video_id": "6EWH4Y0VYyE"
   },
   {
     "time": [
-      46,
-      48
+      23,
+      24
     ],
     "visible_entities": [
       {
-        "desc": "dark blue appliance with a matte finish, featuring a cylindrical silver metallic handle on the left and a glowing cyan ring light on the right",
-        "action": "static"
+        "desc": "dark blue appliance component with a matte finish, featuring a cylindrical silver metallic knob on the left and a glowing cyan circular indicator light on the right",
+        "action": "static",
+        "position": "center"
       },
       {
         "desc": "white text reading 'Aquaguard' in a sans-serif font",
-        "action": "static"
+        "action": "static",
+        "position": "bottom-left"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "The appliance remains stationary during the clip.",
+        "fact": "The appliance component remains static with the indicator light illuminated.",
         "confidence": 1.0
       },
       {
-        "fact": "The text 'Aquaguard' is visible on the lower left side of the device.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "A cyan ring light is illuminated on the right side of the appliance.",
+        "fact": "The text 'Aquaguard' is visible on the lower section of the device.",
         "confidence": 1.0
       }
     ],
     "ocr": [
       "Aquaguard"
     ],
-    "spatial": "The silver cylindrical handle is located on the left side of the dark blue appliance. The glowing cyan ring light is positioned to the right of the handle. The 'Aquaguard' text is situated below the handle on the lower left portion of the device.",
+    "spatial": "The silver cylindrical knob is located to the left of the glowing blue indicator light. The 'Aquaguard' text is positioned below the knob on the dark blue surface.",
     "parse_success": true,
     "chunk_idx": 23,
     "video_id": "6EWH4Y0VYyE"
   },
   {
     "time": [
-      48,
-      50
+      24,
+      25
     ],
     "visible_entities": [
       {
-        "desc": "dark blue appliance component with a silver cylindrical knob and a glowing white circular indicator light",
+        "desc": "dark blue appliance component with a silver cylindrical knob and a small circular light indicator",
         "action": "static",
         "position": "left"
       },
       {
-        "desc": "white text 'USER FRIENDLY' in sans-serif font",
+        "desc": "white text reading 'USER FRIENDLY' in a sans-serif font",
         "action": "static",
-        "position": "right"
+        "position": "center-right"
       },
       {
-        "desc": "scrambled white letters 'L E D Z R N A O N' appearing below the main text",
+        "desc": "white text reading 'Aquaguard' in a small sans-serif font",
+        "action": "static",
+        "position": "left"
+      },
+      {
+        "desc": "scattered white letters appearing below the main text",
         "action": "appearing",
-        "position": "bottom-right"
-      },
-      {
-        "desc": "white curved line graphic",
-        "action": "static",
-        "position": "center"
+        "position": "bottom-center"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "The text 'USER FRIENDLY' is displayed on the right side of the screen.",
+        "fact": "The text 'USER FRIENDLY' is displayed on the screen.",
         "confidence": 1.0
       },
       {
-        "fact": "Scrambled letters appear below the 'USER FRIENDLY' text.",
+        "fact": "The text 'Aquaguard' is visible on the appliance component.",
         "confidence": 1.0
       },
       {
-        "fact": "The appliance features a glowing indicator light.",
+        "fact": "Scattered letters appear below the 'USER FRIENDLY' text in the second frame.",
         "confidence": 1.0
       }
     ],
     "ocr": [
       "Aquaguard",
       "USER FRIENDLY",
-      "L E D Z R N A O N"
+      "LE D Z R N A ON"
     ],
-    "spatial": "The dark blue appliance component is on the left side of the frame. The text 'USER FRIENDLY' is to the right of the appliance. The scrambled letters are below the 'USER FRIENDLY' text. A white curved line separates the appliance from the text area.",
+    "spatial": "The appliance component is on the left side of the frame. The text 'USER FRIENDLY' is to the right of the appliance component. The scattered letters are below the 'USER FRIENDLY' text.",
     "parse_success": true,
     "chunk_idx": 24,
     "video_id": "6EWH4Y0VYyE"
   },
   {
     "time": [
-      50,
-      52
+      25,
+      26
     ],
     "visible_entities": [
       {
-        "desc": "dark blue and white water purifier device with a silver cylindrical knob and a glowing blue LED ring",
+        "desc": "dark blue appliance with a silver cylindrical knob and a glowing cyan circular LED indicator",
         "action": "static",
         "position": "left"
       },
       {
-        "desc": "white text reading 'USER FRIENDLY LED AND BUZZER INDICATIONS' in bold sans-serif font",
+        "desc": "white text overlay in sans-serif font",
         "action": "static",
         "position": "bottom right"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "The water purifier displays a glowing blue LED ring.",
+        "fact": "The appliance displays a glowing cyan LED light.",
         "confidence": 1.0
       },
       {
@@ -1120,179 +1124,210 @@
       "USER FRIENDLY",
       "LED AND BUZZER INDICATIONS"
     ],
-    "spatial": "The water purifier is positioned on the left side of the frame. The text 'USER FRIENDLY LED AND BUZZER INDICATIONS' is located to the right of and below the purifier device.",
+    "spatial": "The dark blue appliance is positioned on the left side of the frame. The white text overlay is located to the right of and below the appliance.",
     "parse_success": true,
     "chunk_idx": 25,
     "video_id": "6EWH4Y0VYyE"
   },
   {
     "time": [
-      52,
-      54
+      26,
+      27
     ],
     "visible_entities": [
       {
-        "desc": "white and dark grey water purifier with a transparent water tank, a dispensing tap, and a glowing blue circular LED indicator",
+        "desc": "white and dark grey water purifier with a transparent water tank, vertical measurement markings, and a glowing blue circular LED light",
         "action": "static",
         "position": "center"
       },
       {
-        "desc": "white text overlay with a curved white line graphic",
+        "desc": "white text overlay with sans-serif font",
         "action": "static",
-        "position": "foreground"
+        "position": "bottom"
+      },
+      {
+        "desc": "white curved line graphic",
+        "action": "static",
+        "position": "left"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "The video displays a water purifier with a blue LED light illuminated on the front panel.",
+        "fact": "The water purifier is displayed against a dark blue background.",
         "confidence": 1.0
       },
       {
-        "fact": "Text on the screen reads 'USER FRIENDLY LED AND BUZZER INDICATIONS'.",
+        "fact": "A glowing blue LED light is visible on the front of the device.",
         "confidence": 1.0
       },
       {
-        "fact": "The brand name 'Aquaguard' is visible on the side of the unit.",
+        "fact": "The text 'USER FRIENDLY LED AND BUZZER INDICATIONS' appears at the bottom of the screen.",
         "confidence": 1.0
       },
       {
-        "fact": "The word 'ENHANCED' is visible on the top of the water tank.",
+        "fact": "The brand name 'Aquaguard' is visible on the side of the device.",
         "confidence": 1.0
       }
     ],
     "ocr": [
       "Aquaguard",
       "USER FRIENDLY",
-      "LED AND BUZZER INDICATIONS",
-      "ENHANCED"
+      "LED AND BUZZER INDICATIONS"
     ],
-    "spatial": "The white text overlay is in the foreground, positioned in front of the water purifier. The 'Aquaguard' logo is located on the left side of the purifier's body. The 'ENHANCED' text is situated on the top surface of the transparent water tank.",
+    "spatial": "The water purifier is centered in the frame. The text 'USER FRIENDLY LED AND BUZZER INDICATIONS' is located below the main body of the purifier. The 'Aquaguard' logo is on the left side of the device.",
     "parse_success": true,
     "chunk_idx": 26,
     "video_id": "6EWH4Y0VYyE"
   },
   {
     "time": [
-      54,
-      56
+      27,
+      28
     ],
     "visible_entities": [
       {
-        "desc": "white and dark blue water purifier with a transparent tank, white measurement markings, and a white dispensing tap",
+        "desc": "white and dark blue water purifier with a transparent reservoir and a white dispensing tap",
         "action": "static",
         "position": "center"
       },
       {
-        "desc": "dark blue dispensing tray with the text 'Aquaguard' in white sans-serif font",
+        "desc": "white text reading 'Aquaguard' on a dark blue surface",
         "action": "static",
-        "position": "bottom"
+        "position": "center"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "The camera zooms in on the bottom section of the water purifier.",
+        "fact": "The camera zooms in on the water purifier.",
         "confidence": 1.0
       },
       {
-        "fact": "The text 'Aquaguard' is visible on the dispensing tray.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The water purifier has a transparent tank with white measurement lines.",
+        "fact": "The brand name 'Aquaguard' is visible on the lower part of the device.",
         "confidence": 1.0
       }
     ],
     "ocr": [
       "Aquaguard"
     ],
-    "spatial": "The dispensing tray with the text 'Aquaguard' is located at the bottom of the water purifier. The transparent tank is positioned above the dispensing tray. The white dispensing tap is situated between the tank and the tray.",
+    "spatial": "The 'Aquaguard' text is located on the lower front panel of the water purifier, below the transparent water reservoir.",
     "parse_success": true,
     "chunk_idx": 27,
     "video_id": "6EWH4Y0VYyE"
   },
   {
     "time": [
-      56,
-      58
+      28,
+      29
     ],
     "visible_entities": [
       {
-        "desc": "dark blue, smooth, plastic-like surface with a recessed rectangular panel",
-        "action": "static"
-      },
-      {
-        "desc": "white, sans-serif text reading 'Aquaguard'",
-        "action": "static"
+        "desc": "dark blue plastic appliance panel with a recessed area and white text",
+        "action": "static",
+        "position": "center"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "The text 'Aquaguard' is visible on the surface.",
+        "fact": "The appliance panel remains static during the clip.",
         "confidence": 1.0
       },
       {
-        "fact": "The scene is static with no movement.",
+        "fact": "The text 'Aquaguard' is visible on the panel.",
         "confidence": 1.0
       }
     ],
     "ocr": [
       "Aquaguard"
     ],
-    "spatial": "The text 'Aquaguard' is located on the front face of the dark blue panel. The panel appears to be part of a larger structure, with a recessed area visible above the text.",
+    "spatial": "The text 'Aquaguard' is centered on the dark blue plastic panel. The panel is positioned in the foreground.",
     "parse_success": true,
     "chunk_idx": 28,
     "video_id": "6EWH4Y0VYyE"
   },
   {
     "time": [
-      58,
-      60
+      29,
+      30
     ],
     "visible_entities": [
       {
-        "desc": "dark blue, smooth, plastic appliance panel with a recessed section and embossed white text",
-        "action": "static",
-        "position": "center"
+        "desc": "dark blue, smooth, plastic surface of a water purifier with the brand name 'Aquaguard' in white, sans-serif font",
+        "action": "static"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "The camera holds a static close-up shot of the appliance panel.",
+        "fact": "The camera focuses on the front panel of a water purifier.",
         "confidence": 1.0
       },
       {
-        "fact": "The text 'Aquaguard' is embossed on the surface of the blue panel.",
+        "fact": "The brand name 'Aquaguard' is visible on the device.",
         "confidence": 1.0
       }
     ],
     "ocr": [
       "Aquaguard"
     ],
-    "spatial": "The word 'Aquaguard' is located in the center of the dark blue panel. The panel is positioned in the foreground, filling most of the frame.",
+    "spatial": "The text 'Aquaguard' is located on the front-facing surface of the dark blue water purifier.",
     "parse_success": true,
     "chunk_idx": 29,
     "video_id": "6EWH4Y0VYyE"
   },
   {
     "time": [
-      60,
-      62
+      30,
+      31
     ],
     "visible_entities": [
       {
-        "desc": "white and blue water dispenser with a transparent tank, white side panels, and a silver spout",
+        "desc": "white and translucent blue water dispenser with a silver lever",
         "action": "static",
         "position": "center"
       },
       {
-        "desc": "white measurement markings on the transparent tank",
+        "desc": "white text reading 'ENHANCE' in a stylized font",
         "action": "static",
-        "position": "center"
+        "position": "top"
       },
       {
-        "desc": "silver cylindrical spout",
+        "desc": "white text reading 'Aquaguard' on the dispenser base",
         "action": "static",
         "position": "bottom"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The camera zooms out to reveal the full water dispenser.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The text 'ENHANCE' is visible on the upper part of the dispenser.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The text 'Aquaguard' is visible on the lower part of the dispenser.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "ENHANCE",
+      "Aquaguard"
+    ],
+    "spatial": "The text 'ENHANCE' is located above the water level indicators on the dispenser. The silver lever is positioned above the 'Aquaguard' text on the base of the unit.",
+    "parse_success": true,
+    "chunk_idx": 30,
+    "video_id": "6EWH4Y0VYyE"
+  },
+  {
+    "time": [
+      31,
+      32
+    ],
+    "visible_entities": [
+      {
+        "desc": "water dispenser with a white and dark blue body, transparent water tank, and a white spigot",
+        "action": "static",
+        "position": "center"
       }
     ],
     "atomic_facts": [
@@ -1301,62 +1336,27 @@
         "confidence": 1.0
       },
       {
-        "fact": "The text 'Aquaguard' is visible on the dispenser.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The text 'ENHANCE' is visible on the dispenser.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [
-      "Aquaguard",
-      "ENHANCE"
-    ],
-    "spatial": "The silver spout is located at the bottom of the dispenser, below the transparent tank. The 'Aquaguard' text is printed on the dark blue base directly under the spout. The 'ENHANCE' text is located on the upper part of the transparent tank, above the measurement markings.",
-    "parse_success": true,
-    "chunk_idx": 30,
-    "video_id": "6EWH4Y0VYyE"
-  },
-  {
-    "time": [
-      62,
-      64
-    ],
-    "visible_entities": [
-      {
-        "desc": "white and translucent blue water dispenser with a curved, modern design, featuring a transparent water tank with measurement markings and a white spigot at the bottom",
-        "action": "static",
-        "position": "center"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "A white and blue water dispenser is positioned centrally against a blue background.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The text 'ENHANCE' is visible on the upper part of the dispenser.",
+        "fact": "The text 'ENHANCE' is visible on the upper part of the water dispenser.",
         "confidence": 1.0
       }
     ],
     "ocr": [
       "ENHANCE"
     ],
-    "spatial": "The water dispenser is centered in the frame. The word 'ENHANCE' is located on the upper front surface of the dispenser, above the water level markings.",
+    "spatial": "The water dispenser is positioned in the center of the frame against a blue background. The text 'ENHANCE' is located on the upper front of the dispenser, above the water level indicators.",
     "parse_success": true,
     "chunk_idx": 31,
     "video_id": "6EWH4Y0VYyE"
   },
   {
     "time": [
-      64,
-      66
+      32,
+      33
     ],
     "visible_entities": [
       {
-        "desc": "wall-mounted water dispenser with a white outer casing and a dark blue translucent front panel, featuring a spigot at the bottom",
-        "action": "rotating",
+        "desc": "white and translucent blue water dispenser with 'ENHANCE' text, featuring internal filter cartridges and a measurement scale",
+        "action": "rotating clockwise",
         "position": "center"
       }
     ],
@@ -1366,43 +1366,47 @@
         "confidence": 1.0
       },
       {
-        "fact": "The text 'ENHANCE' is printed in white on the front of the dispenser.",
+        "fact": "The text 'ENHANCE' is visible on the front of the device.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The device has a white outer casing and a translucent blue inner section.",
         "confidence": 1.0
       }
     ],
     "ocr": [
       "ENHANCE"
     ],
-    "spatial": "The water dispenser is centered in the frame against a blue background. The word 'ENHANCE' is located on the upper portion of the dispenser's front panel, above the water level indicators and the spigot.",
+    "spatial": "The water dispenser is centered in the frame against a blue background. The text 'ENHANCE' is located on the upper front face of the dispenser, above the measurement markings.",
     "parse_success": true,
     "chunk_idx": 32,
     "video_id": "6EWH4Y0VYyE"
   },
   {
     "time": [
-      66,
-      68
+      33,
+      34
     ],
     "visible_entities": [
       {
-        "desc": "transparent water tank with white vertical casing, containing clear water and internal white cylindrical filter components",
-        "action": "water swirling inside",
-        "position": "center"
-      },
-      {
-        "desc": "white horizontal measurement markings on the tank",
+        "desc": "transparent water tank with white vertical frame, containing clear water and white internal filter cylinders",
         "action": "static",
         "position": "center"
       },
       {
         "desc": "silver cylindrical dispenser nozzle",
         "action": "static",
-        "position": "bottom center"
+        "position": "bottom"
+      },
+      {
+        "desc": "white horizontal measurement markings",
+        "action": "static",
+        "position": "center"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "Water inside the transparent tank is swirling vigorously, creating a vortex.",
+        "fact": "Water is visible inside the transparent tank, swirling around white filter cylinders.",
         "confidence": 1.0
       },
       {
@@ -1410,49 +1414,40 @@
         "confidence": 1.0
       },
       {
-        "fact": "White cylindrical filter structures are visible submerged inside the tank.",
+        "fact": "A silver nozzle is positioned at the bottom center of the unit.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The silver nozzle is located at the bottom center of the water tank. The white measurement markings are positioned vertically on the front surface of the tank, above the nozzle. The internal filter components are inside the tank, submerged in the water.",
+    "spatial": "The transparent water tank is in the center of the frame, flanked by white vertical frames. The silver nozzle is located below the water tank. The white measurement markings are on the front surface of the tank, above the water level.",
     "parse_success": true,
     "chunk_idx": 33,
     "video_id": "6EWH4Y0VYyE"
   },
   {
     "time": [
-      68,
-      70
+      34,
+      35
     ],
     "visible_entities": [
       {
-        "desc": "water purifier with a white outer casing, a dark blue base, and a transparent central tank filled with water",
+        "desc": "white and dark blue water purifier with a transparent tank, silver tap, and 'Aquaguard' branding",
         "action": "static",
         "position": "center"
       },
       {
-        "desc": "text reading '8 LITRES' in a white, sans-serif font",
+        "desc": "white text reading '8 LITRES' in a bold sans-serif font",
         "action": "static",
         "position": "right"
-      },
-      {
-        "desc": "text reading 'Aquaguard' in a small, white font on the dispenser tap",
-        "action": "static",
-        "position": "bottom"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "The text '8 LITRES' appears on the right side of the screen next to the water purifier.",
+        "fact": "The text '8 LITRES' appears on the screen to indicate the capacity of the water purifier.",
         "confidence": 1.0
       },
       {
         "fact": "The water purifier is displayed against a dark blue background.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The brand name 'Aquaguard' is visible on the dispenser tap.",
         "confidence": 1.0
       }
     ],
@@ -1460,19 +1455,59 @@
       "8 LITRES",
       "Aquaguard"
     ],
-    "spatial": "The water purifier is positioned in the center of the frame. The text '8 LITRES' is to the right of the water purifier. The 'Aquaguard' logo is located on the tap at the bottom of the purifier.",
+    "spatial": "The water purifier is positioned in the center of the frame. The text '8 LITRES' is located to the right of the water purifier. The 'Aquaguard' logo is visible at the bottom of the purifier's front panel.",
     "parse_success": true,
     "chunk_idx": 34,
     "video_id": "6EWH4Y0VYyE"
   },
   {
     "time": [
-      70,
-      72
+      35,
+      36
     ],
     "visible_entities": [
       {
-        "desc": "water purifier with a white and dark blue body, transparent upper tank showing water and internal components, and a silver tap",
+        "desc": "white and dark blue water purifier with a transparent tank showing water and ice, featuring a white tap",
+        "action": "static",
+        "position": "left"
+      },
+      {
+        "desc": "large white text reading '8 LITRES'",
+        "action": "static",
+        "position": "right"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The water purifier displays the text 'ENTRANCE' at the top.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The text '8 LITRES' is displayed next to the purifier.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The transparent tank contains water and ice cubes.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "ENTRANCE",
+      "8 LITRES"
+    ],
+    "spatial": "The water purifier is positioned on the left side of the frame. The text '8 LITRES' is to the right of the water purifier.",
+    "parse_success": true,
+    "chunk_idx": 35,
+    "video_id": "6EWH4Y0VYyE"
+  },
+  {
+    "time": [
+      36,
+      37
+    ],
+    "visible_entities": [
+      {
+        "desc": "water purifier with a transparent upper tank showing bubbling water and a dark blue lower body with a white dispenser tap",
         "action": "static",
         "position": "left"
       },
@@ -1484,40 +1519,35 @@
     ],
     "atomic_facts": [
       {
-        "fact": "A water purifier is displayed on the left side of the screen.",
+        "fact": "The water inside the purifier's tank is bubbling.",
         "confidence": 1.0
       },
       {
-        "fact": "The text '8 LITRES' is displayed on the right side of the screen.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The water purifier has a transparent tank filled with water.",
+        "fact": "The text '8 LITRES' is displayed on the screen.",
         "confidence": 1.0
       }
     ],
     "ocr": [
-      "ENTRANCE",
       "8 LITRES"
     ],
-    "spatial": "The water purifier is to the left of the text '8 LITRES'. The text 'ENTRANCE' is located at the top of the water purifier.",
+    "spatial": "The water purifier is positioned on the left side of the frame. The text '8 LITRES' is to the right of the water purifier.",
     "parse_success": true,
-    "chunk_idx": 35,
+    "chunk_idx": 36,
     "video_id": "6EWH4Y0VYyE"
   },
   {
     "time": [
-      72,
-      74
+      37,
+      38
     ],
     "visible_entities": [
       {
-        "desc": "water purifier with a white outer casing and a transparent inner tank filled with water, featuring a dark blue base and a silver tap",
+        "desc": "white and dark blue water purifier with a transparent water tank showing water inside",
         "action": "static",
         "position": "left"
       },
       {
-        "desc": "white text reading '8 LITRES' in a sans-serif font",
+        "desc": "white text reading '8 LITRES'",
         "action": "static",
         "position": "right"
       }
@@ -1532,141 +1562,103 @@
         "confidence": 1.0
       },
       {
-        "fact": "The transparent tank of the purifier is filled with water.",
+        "fact": "The water tank of the purifier is filled with water.",
         "confidence": 1.0
       }
     ],
     "ocr": [
       "8 LITRES"
     ],
-    "spatial": "The water purifier is positioned on the left side of the frame. The text '8 LITRES' is located to the right of the water purifier. The water is contained inside the transparent tank of the purifier.",
-    "parse_success": true,
-    "chunk_idx": 36,
-    "video_id": "6EWH4Y0VYyE"
-  },
-  {
-    "time": [
-      74,
-      76
-    ],
-    "visible_entities": [
-      {
-        "desc": "rectangular water dispenser with a white outer frame and a transparent central tank filled with water, featuring a dark blue base with a silver tap",
-        "action": "static",
-        "position": "left"
-      },
-      {
-        "desc": "large white text reading '8 LITRES' in a sans-serif font",
-        "action": "static",
-        "position": "right"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "The text '8 LITRES' is displayed on the screen.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The water dispenser is positioned on the left side of the frame.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [
-      "8 LITRES"
-    ],
-    "spatial": "The water dispenser is located on the left side of the frame. The text '8 LITRES' is positioned to the right of the water dispenser.",
+    "spatial": "The water purifier is positioned on the left side of the frame. The text '8 LITRES' is located to the right of the water purifier.",
     "parse_success": true,
     "chunk_idx": 37,
     "video_id": "6EWH4Y0VYyE"
   },
   {
     "time": [
-      76,
-      78
+      38,
+      39
     ],
     "visible_entities": [
       {
-        "desc": "water dispenser with a white and dark blue body, transparent water tank showing water level and internal mechanism, and a white dispensing lever",
+        "desc": "white and dark blue water dispenser with a transparent tank showing water and bubbles",
         "action": "static",
         "position": "right"
       },
       {
-        "desc": "white sans-serif text reading 'THE SMART AUTO FILL' and a word puzzle below it",
+        "desc": "white text on a blue background",
         "action": "static",
         "position": "left"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "The text 'THE SMART AUTO FILL' is displayed on the left side of the screen.",
+        "fact": "A water dispenser is shown on the right side of the screen.",
         "confidence": 1.0
       },
       {
-        "fact": "A word puzzle with the letters 'EN U', 'W ER I', and 'A OM ILY' appears below the main text.",
+        "fact": "The text 'THE SMART AUTO FILL' is displayed on the left.",
         "confidence": 1.0
       },
       {
-        "fact": "The water dispenser is positioned on the right side of the frame.",
+        "fact": "The text 'WATER DAILY' appears below the main headline.",
         "confidence": 1.0
       }
     ],
     "ocr": [
       "THE SMART AUTO FILL",
-      "EN U",
-      "W ER I",
-      "A OM ILY"
+      "WATER DAILY"
     ],
-    "spatial": "The text 'THE SMART AUTO FILL' is to the left of the water dispenser. The word puzzle is below the main text. The water dispenser is on the right side of the screen.",
+    "spatial": "The water dispenser is positioned on the right side of the frame. The text 'THE SMART AUTO FILL' is located to the left of the dispenser. The text 'WATER DAILY' is situated below the main headline text.",
     "parse_success": true,
     "chunk_idx": 38,
     "video_id": "6EWH4Y0VYyE"
   },
   {
     "time": [
-      78,
-      80
+      39,
+      40
     ],
     "visible_entities": [
       {
-        "desc": "white and dark blue water dispenser with a transparent tank showing water level markings and a silver spigot",
+        "desc": "white and dark blue water dispenser with a transparent water tank showing water level markings and a silver tap",
         "action": "static",
         "position": "right"
       },
       {
-        "desc": "white sans-serif text on a dark blue background",
+        "desc": "white sans-serif text on a blue background",
         "action": "static",
         "position": "left"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "The text on the screen reads 'THE SMART AUTO FILL ENSURES WATER IS FILLED AUTOMATICALLY'.",
+        "fact": "The text on the screen changes from 'THE SMART AUTO FILL ENSUR S WATER IS FI LED AUTOMATICAL Y' to 'THE SMART AUTO FILL ENSURES WATER IS FILLED AUTOMATICALLY'.",
         "confidence": 1.0
       },
       {
         "fact": "The water dispenser is positioned on the right side of the frame.",
         "confidence": 1.0
-      },
-      {
-        "fact": "The text is positioned on the left side of the frame.",
-        "confidence": 1.0
       }
     ],
     "ocr": [
       "THE SMART AUTO FILL",
+      "ENSUR S",
+      "WATER IS FI LED",
+      "AUTOMATICAL Y",
       "ENSURES",
       "WATER IS FILLED",
       "AUTOMATICALLY"
     ],
-    "spatial": "The white and dark blue water dispenser is on the right side of the frame. The white text is to the left of the water dispenser.",
+    "spatial": "The white text is to the left of the water dispenser. The water dispenser is on the right side of the screen.",
     "parse_success": true,
     "chunk_idx": 39,
     "video_id": "6EWH4Y0VYyE"
   },
   {
     "time": [
-      80,
-      82
+      40,
+      41
     ],
     "visible_entities": [
       {
@@ -1675,7 +1667,7 @@
         "position": "right"
       },
       {
-        "desc": "white sans-serif text in all capital letters",
+        "desc": "white sans-serif text on a blue background",
         "action": "static",
         "position": "left"
       }
@@ -1686,11 +1678,11 @@
         "confidence": 1.0
       },
       {
-        "fact": "The water dispenser is positioned on the right side of the frame.",
+        "fact": "The water dispenser is positioned on the right side of the screen.",
         "confidence": 1.0
       },
       {
-        "fact": "The descriptive text is positioned on the left side of the frame.",
+        "fact": "The promotional text is positioned on the left side of the screen.",
         "confidence": 1.0
       }
     ],
@@ -1700,29 +1692,29 @@
       "WATER IS FILLED",
       "AUTOMATICALLY"
     ],
-    "spatial": "The white and dark blue water dispenser is on the right side of the screen. The white text block is to the left of the water dispenser. The text is arranged in four lines stacked vertically.",
+    "spatial": "The text block is to the left of the water dispenser. The water dispenser is on the right side of the frame.",
     "parse_success": true,
     "chunk_idx": 40,
     "video_id": "6EWH4Y0VYyE"
   },
   {
     "time": [
-      82,
-      84
+      41,
+      42
     ],
     "visible_entities": [
       {
-        "desc": "white and dark blue water dispenser with a transparent water tank containing water and ice cubes",
+        "desc": "water dispenser with a white casing and a transparent water tank showing internal components, featuring a dark blue dispensing area with a white lever",
         "action": "static",
         "position": "center"
       },
       {
-        "desc": "clear glass filled with water and ice cubes",
+        "desc": "clear glass cup filled with water and ice cubes",
         "action": "static",
         "position": "left"
       },
       {
-        "desc": "clear glass filled with water and ice cubes",
+        "desc": "clear glass cup filled with water and ice cubes",
         "action": "static",
         "position": "right"
       }
@@ -1733,49 +1725,7 @@
         "confidence": 1.0
       },
       {
-        "fact": "Two glasses filled with water and ice are placed on either side of the dispenser.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The water dispenser remains static throughout the clip.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [],
-    "spatial": "The water dispenser is in the center of the frame. A glass of water is to the left of the dispenser, and another glass of water is to the right of the dispenser. The glasses are positioned in front of the dispenser's base.",
-    "parse_success": true,
-    "chunk_idx": 41,
-    "video_id": "6EWH4Y0VYyE"
-  },
-  {
-    "time": [
-      84,
-      86
-    ],
-    "visible_entities": [
-      {
-        "desc": "white and dark blue water dispenser with a transparent water tank containing water and internal components",
-        "action": "static",
-        "position": "center"
-      },
-      {
-        "desc": "clear glass filled with water and ice cubes",
-        "action": "static",
-        "position": "left"
-      },
-      {
-        "desc": "clear glass filled with water and ice cubes",
-        "action": "static",
-        "position": "right"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "A water dispenser sits centrally on a surface.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "Two glasses of water are placed next to the dispenser.",
+        "fact": "Two glasses of water are placed on the surface next to the dispenser.",
         "confidence": 1.0
       },
       {
@@ -1784,70 +1734,109 @@
       }
     ],
     "ocr": [],
-    "spatial": "The water dispenser is in the center of the frame. One glass of water is to the left of the dispenser, and the other glass is to the right of the dispenser. The dispenser is behind the glasses.",
+    "spatial": "The water dispenser is in the center of the frame. A glass cup is to the left of the dispenser, and another glass cup is to the right of the dispenser. The cups are sitting on the same surface as the dispenser.",
+    "parse_success": true,
+    "chunk_idx": 41,
+    "video_id": "6EWH4Y0VYyE"
+  },
+  {
+    "time": [
+      42,
+      43
+    ],
+    "visible_entities": [
+      {
+        "desc": "water dispenser with a white casing, a transparent water reservoir showing internal components, and a dark blue dispensing base with a white lever",
+        "action": "static",
+        "position": "center"
+      },
+      {
+        "desc": "clear glass tumbler filled with water and ice cubes",
+        "action": "static",
+        "position": "left"
+      },
+      {
+        "desc": "clear glass tumbler filled with water and ice cubes",
+        "action": "static",
+        "position": "right"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A water dispenser sits centrally in the frame.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "Two glasses filled with water and ice are placed on either side of the dispenser.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The scene is static with no movement observed.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The water dispenser is positioned in the center of the frame. A glass of water is to the left of the dispenser, and another glass of water is to the right of the dispenser. The glasses are resting on the surface in front of the dispenser's base.",
     "parse_success": true,
     "chunk_idx": 42,
     "video_id": "6EWH4Y0VYyE"
   },
   {
     "time": [
-      86,
-      88
+      43,
+      44
     ],
     "visible_entities": [
       {
-        "desc": "white and grey plastic water dispenser with a transparent water tank and a black dispensing lever",
+        "desc": "white and grey countertop water dispenser with a transparent water tank, featuring a front lever and a base with two cup holders",
         "action": "static",
         "position": "center"
       },
       {
-        "desc": "two clear glasses filled with ice cubes",
+        "desc": "clear glass filled with water and ice cubes",
         "action": "static",
-        "position": "bottom"
+        "position": "left"
       },
       {
-        "desc": "3D white text reading 'SMART AUTO SHUT-OFF'",
+        "desc": "clear glass filled with water and ice cubes",
+        "action": "static",
+        "position": "right"
+      },
+      {
+        "desc": "3D metallic text graphic reading 'SMART AUTO SHUT-OFF' in silver/white font",
         "action": "static",
         "position": "center"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "The video transitions from a shot of a water dispenser to a text graphic.",
+        "fact": "The video transitions from a shot of the water dispenser to a text graphic.",
         "confidence": 1.0
       },
       {
-        "fact": "The text 'SMART AUTO SHUT-OFF' appears on the screen.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The water dispenser is positioned between two glasses of ice.",
+        "fact": "The text 'SMART AUTO SHUT-OFF' is displayed on the screen.",
         "confidence": 1.0
       }
     ],
     "ocr": [
-      "SMART AUTO SHUT-OFF"
+      "SMART",
+      "AUTO",
+      "SHUT-OFF"
     ],
-    "spatial": "The water dispenser is in the center of the frame, flanked by a glass of ice on its left and another on its right. The text graphic appears in the center of the screen, replacing the view of the dispenser.",
+    "spatial": "In the first frame, the water dispenser is in the center, flanked by a glass on its left and a glass on its right. In the second frame, the text graphic is centered on the blue background.",
     "parse_success": true,
     "chunk_idx": 43,
     "video_id": "6EWH4Y0VYyE"
   },
   {
     "time": [
-      88,
-      90
+      44,
+      45
     ],
     "visible_entities": [
       {
-        "desc": "White sans-serif text reading 'SMART AUTO SHUT-OFF' with 'AUTO' in a smaller font size positioned to the right of 'SMART'",
-        "action": "static",
-        "position": "center"
-      },
-      {
-        "desc": "Dark blue gradient background with a bright white light source at the top center",
-        "action": "static",
-        "position": "background"
+        "desc": "white sans-serif text reading 'SMART AUTO SHUT-OFF' on a blue gradient background",
+        "action": "static"
       }
     ],
     "atomic_facts": [
@@ -1856,7 +1845,7 @@
         "confidence": 1.0
       },
       {
-        "fact": "The background features a spotlight effect at the top center.",
+        "fact": "A light source effect is visible at the top center of the blue background.",
         "confidence": 1.0
       }
     ],
@@ -1864,15 +1853,15 @@
       "SMART AUTO",
       "SHUT-OFF"
     ],
-    "spatial": "The text 'SMART AUTO SHUT-OFF' is centered in the frame. The light source is located above the text. The text is in front of the blue background.",
+    "spatial": "The text 'SMART AUTO' is positioned directly above the text 'SHUT-OFF'. Both lines of text are centered horizontally on the blue background. A bright light flare is located above the text at the top center of the frame.",
     "parse_success": true,
     "chunk_idx": 44,
     "video_id": "6EWH4Y0VYyE"
   },
   {
     "time": [
-      90,
-      92
+      45,
+      46
     ],
     "visible_entities": [
       {
@@ -1881,14 +1870,19 @@
         "position": "right"
       },
       {
-        "desc": "horizontal band of clear, rippling water texture",
+        "desc": "horizontal band of rippling water, white and translucent",
+        "action": "rippling",
+        "position": "center"
+      },
+      {
+        "desc": "white sans-serif text, fragmented and partially obscured",
         "action": "static",
         "position": "center"
       },
       {
-        "desc": "white text with varying opacity and spacing",
+        "desc": "dark blue gradient background",
         "action": "static",
-        "position": "center"
+        "position": "background"
       }
     ],
     "atomic_facts": [
@@ -1897,63 +1891,61 @@
         "confidence": 1.0
       },
       {
-        "fact": "A horizontal band of water texture spans the middle of the frame.",
+        "fact": "A horizontal band of water ripples across the center of the frame.",
         "confidence": 1.0
       },
       {
-        "fact": "Text reading 'SMART AUTO SHOTS' is visible in the background.",
+        "fact": "White text appears in a fragmented style, reading 'SMART AUTO SHOTS' and 'OFF THE WATER FLOOR'.",
         "confidence": 1.0
       },
       {
-        "fact": "Text reading 'OF THE WATER' and 'HEAT' is visible in the foreground.",
+        "fact": "The fire hydrant is partially submerged in the water band.",
         "confidence": 1.0
       }
     ],
     "ocr": [
-      "SMART",
-      "AUTO",
+      "SMART AUTO",
       "SHOTS",
-      "OF THE WATER",
-      "HEAT"
+      "OFF THE WATER FLOOR"
     ],
-    "spatial": "The fire hydrant silhouette is to the right of the center, standing on the water line. The text 'SMART AUTO SHOTS' is behind the water band, while the text 'OF THE WATER' and 'HEAT' is below the water band.",
+    "spatial": "The fire hydrant is to the right of the center text. The text is superimposed over the dark blue background. The water band runs horizontally across the middle of the screen, intersecting with the fire hydrant.",
     "parse_success": true,
     "chunk_idx": 45,
     "video_id": "6EWH4Y0VYyE"
   },
   {
     "time": [
-      92,
-      94
+      46,
+      47
     ],
     "visible_entities": [
       {
-        "desc": "white silhouette of a faucet fixture, stylized and flat",
+        "desc": "white silhouette of a faucet fixture",
         "action": "static",
         "position": "center"
       },
       {
-        "desc": "white text in sans-serif font",
-        "action": "static",
-        "position": "bottom-right"
+        "desc": "white animated water surface with ripples",
+        "action": "flowing horizontally",
+        "position": "center"
       },
       {
-        "desc": "white liquid surface with ripples",
+        "desc": "white sans-serif text",
         "action": "static",
-        "position": "center"
+        "position": "bottom right"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "The faucet silhouette is positioned at the water level line.",
+        "fact": "The water flow is depicted moving from left to right across the screen.",
         "confidence": 1.0
       },
       {
-        "fact": "The text 'AUTOMATICALLY SHUTS OFF THE WATER FLOW' is displayed on the screen.",
+        "fact": "The text 'AUTOMATICALLY SHUTS OFF THE WATER FLOW' is displayed below the water line.",
         "confidence": 1.0
       },
       {
-        "fact": "The water surface appears to be still or settling.",
+        "fact": "A white faucet silhouette stands in the center of the water stream.",
         "confidence": 1.0
       }
     ],
@@ -1961,169 +1953,155 @@
       "AUTOMATICALLY SHUTS",
       "OFF THE WATER FLOW"
     ],
-    "spatial": "The white faucet silhouette is centered on the horizontal water line. The text is located below the water line and to the right of the faucet. The water surface extends horizontally across the middle of the frame.",
+    "spatial": "The white faucet silhouette is positioned in the center of the frame, emerging from the water surface. The text is located below the water line and to the right of the center. The water flows horizontally across the middle of the screen.",
     "parse_success": true,
     "chunk_idx": 46,
     "video_id": "6EWH4Y0VYyE"
   },
   {
     "time": [
-      94,
-      96
+      47,
+      48
     ],
     "visible_entities": [
       {
-        "desc": "white rectangular water filtration device with a smooth, glossy finish and rounded edges",
-        "action": "disassembling into internal components",
+        "desc": "white rectangular device with a smooth, matte finish and rounded edges, featuring a dark grey base and internal mechanical components",
+        "action": "splitting into multiple sections",
         "position": "center"
       },
       {
-        "desc": "white cylindrical filter cartridges",
-        "action": "emerging from the device casing",
-        "position": "center"
-      },
-      {
-        "desc": "dark grey or black rectangular base unit",
-        "action": "separating from the main white unit",
-        "position": "left"
-      },
-      {
-        "desc": "white text overlay in sans-serif font",
+        "desc": "white sans-serif text in all capital letters",
         "action": "static",
-        "position": "bottom right"
+        "position": "bottom-right"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "The white water filtration device is shown in an exploded view.",
+        "fact": "The white device is shown in an exploded view, separating into distinct vertical layers.",
         "confidence": 1.0
       },
       {
-        "fact": "The device separates into a dark base, a central mechanism, and a filter housing.",
+        "fact": "The text 'AUTOMATICALLY SHUTS OFF THE WATER FLOW' is displayed on the screen.",
         "confidence": 1.0
       },
       {
-        "fact": "White cylindrical filters are revealed inside the housing.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The text 'AUTOMATICALLY SHUTS OFF THE WATER FLOW' appears on the screen.",
+        "fact": "The device has a dark grey base section and a white upper section.",
         "confidence": 1.0
       }
     ],
     "ocr": [
       "AUTOMATICALLY SHUTS OFF THE WATER FLOW"
     ],
-    "spatial": "The dark grey base unit is to the left of the central white mechanism. The filter housing containing the cylindrical cartridges is to the right of the central mechanism. The text overlay is positioned in the lower right area, in front of the blue background.",
+    "spatial": "The white device is positioned in the center of the frame. The text is located to the right of the device's base and slightly below the center line.",
     "parse_success": true,
     "chunk_idx": 47,
     "video_id": "6EWH4Y0VYyE"
   },
   {
     "time": [
-      96,
-      98
+      48,
+      49
     ],
     "visible_entities": [
       {
-        "desc": "four white cylindrical objects with horizontal ridges, resembling filter cartridges or pipe sections",
-        "action": "floating in place",
+        "desc": "four white cylindrical objects, smooth surface, arranged in two pairs",
+        "action": "static",
         "position": "center"
       },
       {
-        "desc": "dark blue background with a subtle light gradient",
+        "desc": "dark blue background",
         "action": "static",
         "position": "background"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "Four white cylindrical objects are floating in the center of the frame.",
+        "fact": "Four white cylindrical objects are displayed in the center of the frame.",
         "confidence": 1.0
       },
       {
-        "fact": "The objects are arranged in two pairs with a small gap between them.",
+        "fact": "The objects are arranged in two distinct pairs.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The four white cylindrical objects are arranged in a horizontal row in the center of the frame. They are positioned in front of the dark blue background.",
+    "spatial": "The four white cylindrical objects are positioned in the center of the frame against a dark blue background. The objects are arranged in two pairs, with a small gap separating the left pair from the right pair.",
     "parse_success": true,
     "chunk_idx": 48,
     "video_id": "6EWH4Y0VYyE"
   },
   {
     "time": [
-      98,
-      100
+      49,
+      50
     ],
     "visible_entities": [
       {
-        "desc": "white cylindrical filter cartridges with horizontal ridges",
-        "action": "floating in mid-air",
+        "desc": "white cylindrical cartridge with horizontal ridges",
+        "action": "floating in the air",
         "position": "center"
       },
       {
-        "desc": "white and translucent water dispenser unit with a black base and a white spigot",
+        "desc": "white and transparent water dispenser unit with a spout",
         "action": "static",
         "position": "center"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "White cylindrical filter cartridges are floating in the air.",
+        "fact": "A white cylindrical cartridge is floating in the center of the frame.",
         "confidence": 1.0
       },
       {
-        "fact": "The cartridges transition into a water dispenser unit.",
+        "fact": "The scene transitions to show a water dispenser unit.",
         "confidence": 1.0
       },
       {
-        "fact": "The word 'ENHANCED' is visible on the top of the dispenser.",
+        "fact": "The word 'ENHANCE' is visible on the top of the dispenser.",
         "confidence": 1.0
       }
     ],
     "ocr": [
-      "ENHANCED"
+      "ENHANCE"
     ],
-    "spatial": "The cylindrical cartridges are positioned in the center of the frame against a blue background. The water dispenser unit appears in the same central position, replacing the cartridges.",
+    "spatial": "The white cylindrical cartridge is positioned in the center of the frame against a blue background. The water dispenser unit appears in the center of the frame in the subsequent shot.",
     "parse_success": true,
     "chunk_idx": 49,
     "video_id": "6EWH4Y0VYyE"
   },
   {
     "time": [
-      100,
-      102
+      50,
+      51
     ],
     "visible_entities": [
       {
-        "desc": "white water purifier with a translucent tank, black dispensing unit, and a silver cylindrical tap",
+        "desc": "white and dark grey water purifier with a transparent water tank, measurement markings, and a metallic silver tap",
         "action": "static",
         "position": "center"
       },
       {
-        "desc": "small glowing blue circular indicator light",
-        "action": "glowing",
+        "desc": "small glowing blue circular light",
+        "action": "static",
         "position": "right"
       },
       {
-        "desc": "white cylindrical cup",
+        "desc": "white cup",
         "action": "static",
         "position": "bottom"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "The water purifier is mounted against a dark blue wall.",
+        "fact": "The water purifier is mounted against a blue wall.",
         "confidence": 1.0
       },
       {
-        "fact": "The brand name 'Aquaguard' is visible on the black dispensing unit.",
+        "fact": "The text 'Aquaguard' is visible on the lower front panel of the device.",
         "confidence": 1.0
       },
       {
-        "fact": "The word 'ENHANCED' is printed on the top of the translucent tank.",
+        "fact": "The text 'ENHANCE' is visible on the top section of the device.",
         "confidence": 1.0
       },
       {
@@ -2132,38 +2110,43 @@
       }
     ],
     "ocr": [
-      "ENHANCED",
+      "ENHANCE",
       "Aquaguard"
     ],
-    "spatial": "The water purifier is mounted on the wall in the center of the frame. The glowing blue light is located on the right side of the black dispensing unit. The white cup is positioned below the silver tap.",
+    "spatial": "The water purifier is centered in the frame. The glowing blue light is located on the right side of the purifier's body. The white cup is positioned below the metallic tap.",
     "parse_success": true,
     "chunk_idx": 50,
     "video_id": "6EWH4Y0VYyE"
   },
   {
     "time": [
-      102,
-      104
+      51,
+      52
     ],
     "visible_entities": [
       {
-        "desc": "dark blue water dispenser unit with a matte finish, featuring a cylindrical silver metallic spout and a glowing cyan circular indicator light",
+        "desc": "dark blue water dispenser unit with a cylindrical silver metallic tap and a glowing blue circular indicator light",
         "action": "static",
         "position": "center"
       },
       {
         "desc": "white text reading 'Aquaguard' in a sans-serif font",
         "action": "static",
-        "position": "bottom left"
+        "position": "bottom-left"
+      },
+      {
+        "desc": "white vertical structural element",
+        "action": "static",
+        "position": "right"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "The water dispenser unit remains static during the clip.",
+        "fact": "The water dispenser unit is static.",
         "confidence": 1.0
       },
       {
-        "fact": "The cyan indicator light on the dispenser is illuminated.",
+        "fact": "The blue indicator light is glowing.",
         "confidence": 1.0
       },
       {
@@ -2174,69 +2157,109 @@
     "ocr": [
       "Aquaguard"
     ],
-    "spatial": "The silver spout is located on the upper left side of the dark blue dispenser body. The glowing cyan light is positioned to the right of the spout. The 'Aquaguard' text is situated below the spout on the lower front panel.",
+    "spatial": "The silver tap is located on the upper left side of the dark blue dispenser unit. The glowing blue light is positioned to the right of the tap. The 'Aquaguard' text is situated below the tap on the front face of the unit. A white vertical structure runs along the right edge of the dispenser.",
     "parse_success": true,
     "chunk_idx": 51,
     "video_id": "6EWH4Y0VYyE"
   },
   {
     "time": [
-      104,
-      106
+      52,
+      53
     ],
     "visible_entities": [
       {
-        "desc": "silver cylindrical knob with a metallic finish",
+        "desc": "close-up of a dark blue water purifier component with a cylindrical silver metallic knob and a glowing white circular indicator light",
         "action": "static",
-        "position": "left"
+        "position": "foreground"
       },
       {
-        "desc": "dark blue rectangular panel with a small circular light",
+        "desc": "group of various water purifier units and accessories in white, blue, and black colors",
         "action": "static",
         "position": "center"
       },
       {
-        "desc": "white curved plastic casing",
+        "desc": "large blue text overlay reading 'Aquaguard'",
         "action": "static",
-        "position": "right"
-      },
-      {
-        "desc": "group of water purifiers in white, blue, and black colors",
-        "action": "static",
-        "position": "center"
-      },
-      {
-        "desc": "blue text reading 'Aquaguard'",
-        "action": "static",
-        "position": "center"
+        "position": "top"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "The camera zooms out from a close-up of a silver knob to reveal a lineup of water purifiers.",
+        "fact": "The video transitions from a close-up of a specific machine part to a wide shot of a product lineup.",
         "confidence": 1.0
       },
       {
-        "fact": "The text 'Aquaguard' is visible on the dark blue panel in the close-up shot.",
+        "fact": "The text 'Aquaguard' is visible on the machine casing in the first frame.",
         "confidence": 1.0
       },
       {
-        "fact": "The text 'Aquaguard' appears as a large overlay in the center of the wide shot.",
+        "fact": "The text 'Aquaguard' appears as a large overlay in the second frame.",
         "confidence": 1.0
       }
     ],
     "ocr": [
+      "Aquaguard",
       "Aquaguard"
     ],
-    "spatial": "In the close-up, the silver knob is to the left of the dark blue panel, which is next to the white casing. In the wide shot, the group of water purifiers is arranged in a row in the center, with the 'Aquaguard' text floating above them.",
+    "spatial": "In the first frame, the silver knob is on the left side of the dark blue machine body, with the glowing light to its right. In the second frame, the group of water purifiers is arranged in a row in the center, with the large 'Aquaguard' text floating above them.",
     "parse_success": true,
     "chunk_idx": 52,
     "video_id": "6EWH4Y0VYyE"
   },
   {
     "time": [
-      106,
-      108
+      53,
+      54
+    ],
+    "visible_entities": [
+      {
+        "desc": "Aquaguard brand logo in dark blue serif font",
+        "action": "static",
+        "position": "top/center"
+      },
+      {
+        "desc": "central water purifier, white and black body with a transparent water tank showing measurement markings",
+        "action": "static",
+        "position": "center/foreground"
+      },
+      {
+        "desc": "row of various white and blue water purifier models with different designs",
+        "action": "static",
+        "position": "left/right/foreground"
+      },
+      {
+        "desc": "reflective blue-grey floor surface",
+        "action": "static",
+        "position": "bottom"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The Aquaguard logo is displayed above the products.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A lineup of water purifiers is arranged on a reflective surface.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The central water purifier features a transparent tank with visible water level markings.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "Aquaguard®"
+    ],
+    "spatial": "The Aquaguard logo is positioned above the row of water purifiers. The central black and white purifier is flanked by other white and blue models on its left and right. The entire group of appliances sits on a reflective floor that mirrors their images below.",
+    "parse_success": true,
+    "chunk_idx": 53,
+    "video_id": "6EWH4Y0VYyE"
+  },
+  {
+    "time": [
+      54,
+      55
     ],
     "visible_entities": [
       {
@@ -2245,127 +2268,83 @@
         "position": "top/center"
       },
       {
-        "desc": "row of white and blue water purifiers with varying designs, some featuring transparent water tanks and digital displays",
-        "action": "static",
-        "position": "center/foreground"
-      },
-      {
-        "desc": "smooth, reflective blue-grey surface acting as the floor",
-        "action": "static",
-        "position": "bottom"
-      },
-      {
-        "desc": "gradient blue background wall",
-        "action": "static",
-        "position": "background"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "A lineup of Aquaguard water purifiers is displayed on a reflective surface.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The text 'Aquaguard' is visible above the products.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The water purifiers cast reflections on the floor below them.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [
-      "Aquaguard®"
-    ],
-    "spatial": "The 'Aquaguard' logo is positioned above the row of water purifiers. The water purifiers are arranged in a line next to each other on the reflective surface. The surface is below the water purifiers.",
-    "parse_success": true,
-    "chunk_idx": 53,
-    "video_id": "6EWH4Y0VYyE"
-  },
-  {
-    "time": [
-      108,
-      110
-    ],
-    "visible_entities": [
-      {
-        "desc": "Aquaguard brand logo in dark blue serif font with a registered trademark symbol",
-        "action": "static",
-        "position": "top/center/background"
-      },
-      {
-        "desc": "central water purifier with a transparent water tank, white body, and black base",
+        "desc": "central water purifier with a transparent water tank, black base, and white body",
         "action": "static",
         "position": "center/foreground"
       },
       {
         "desc": "row of various white and blue water purifier units of different designs",
         "action": "static",
-        "position": "left/right/foreground"
+        "position": "background"
       },
       {
-        "desc": "glossy reflective surface mirroring the water purifiers",
+        "desc": "smooth, reflective blue-grey surface",
         "action": "static",
         "position": "bottom"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A lineup of Aquaguard water purifiers is displayed on a reflective surface.",
+        "fact": "The text 'Aquaguard' is displayed above the products.",
         "confidence": 1.0
       },
       {
-        "fact": "The central water purifier features a transparent water tank.",
+        "fact": "A row of water purifiers is arranged on a reflective surface.",
         "confidence": 1.0
       },
       {
-        "fact": "The text 'Aquaguard' is visible in the background above the products.",
+        "fact": "The central water purifier features a transparent tank.",
         "confidence": 1.0
       }
     ],
     "ocr": [
       "Aquaguard®"
     ],
-    "spatial": "The 'Aquaguard' logo is positioned above the row of water purifiers. The central water purifier with the transparent tank is in the foreground, flanked by other white and blue units to its left and right. The reflections of the purifiers are visible below them on the glossy surface.",
+    "spatial": "The 'Aquaguard' logo is positioned above the row of water purifiers. The central water purifier with the transparent tank is in the foreground, while other units are arranged behind it and to its left and right. The purifiers are standing on a reflective surface.",
     "parse_success": true,
     "chunk_idx": 54,
     "video_id": "6EWH4Y0VYyE"
   },
   {
     "time": [
-      110,
-      112
+      55,
+      56
     ],
     "visible_entities": [
       {
-        "desc": "A lineup of multiple white and blue water purifiers with varying designs, including some with transparent water tanks and digital displays.",
+        "desc": "text 'Aquaguard' in blue sans-serif font",
+        "action": "static",
+        "position": "top/center"
+      },
+      {
+        "desc": "row of white and blue water purifiers with glossy finish",
         "action": "static",
         "position": "center"
       },
       {
-        "desc": "The text 'Aquaguard' written in a blue serif font with a registered trademark symbol.",
+        "desc": "dark blue gradient background with a bright light source at the top",
         "action": "static",
-        "position": "center"
+        "position": "background"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A collection of water purifiers is displayed in a row.",
+        "fact": "The text 'Aquaguard' is displayed above a lineup of water purifiers.",
         "confidence": 1.0
       },
       {
-        "fact": "The brand name 'Aquaguard' is visible above the products.",
+        "fact": "A row of white and blue water purifiers is arranged horizontally.",
         "confidence": 1.0
       },
       {
-        "fact": "The products are arranged on a reflective surface.",
+        "fact": "The water purifiers are sitting on a reflective surface.",
         "confidence": 1.0
       }
     ],
     "ocr": [
-      "Aquaguard®"
+      "Aquaguard"
     ],
-    "spatial": "The text 'Aquaguard' is positioned above the lineup of water purifiers. The water purifiers are arranged next to each other in a horizontal row. The products are standing on a reflective floor.",
+    "spatial": "The text 'Aquaguard' is positioned above the row of water purifiers. The water purifiers are arranged next to each other in a horizontal line. The bright light source is located at the top of the background, above the text.",
     "parse_success": true,
     "chunk_idx": 55,
     "video_id": "6EWH4Y0VYyE"

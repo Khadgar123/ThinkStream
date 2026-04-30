@@ -2,7 +2,7 @@
   {
     "time": [
       0,
-      2
+      1
     ],
     "visible_entities": [
       {
@@ -11,7 +11,7 @@
         "position": "center"
       },
       {
-        "desc": "red fabric with a white geometric square and circle pattern",
+        "desc": "red fabric with a white geometric diamond pattern",
         "action": "being sewn",
         "position": "left"
       },
@@ -27,33 +27,117 @@
         "confidence": 1.0
       },
       {
-        "fact": "The red fabric has a geometric pattern of white squares containing circles.",
+        "fact": "The red fabric is positioned on the left side of the frame.",
         "confidence": 1.0
       },
       {
-        "fact": "The white fabric features a pattern of small orange dots.",
+        "fact": "The white fabric is positioned on the right side of the frame.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The metallic presser foot is positioned above the fabrics, pressing them together. The red patterned fabric is to the left of the white polka-dotted fabric. The needle is located between the two pieces of fabric, joining them.",
+    "spatial": "The metallic sewing machine presser foot is positioned above the fabrics in the center of the frame. The red patterned fabric is to the left of the presser foot, while the white polka-dotted fabric is to the right and underneath the machine's shadow.",
     "parse_success": true,
     "chunk_idx": 0,
     "video_id": "e0A4yB3Eeus"
   },
   {
     "time": [
-      2,
-      4
+      1,
+      2
     ],
     "visible_entities": [
       {
-        "desc": "sewing machine presser foot assembly, metallic silver and black plastic components",
+        "desc": "sewing machine presser foot, metallic silver with black plastic components",
         "action": "stitching fabric",
         "position": "center"
       },
       {
         "desc": "red fabric with a white geometric grid pattern",
+        "action": "being sewn",
+        "position": "left"
+      },
+      {
+        "desc": "white fabric with small orange polka dots",
+        "action": "static",
+        "position": "right"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The sewing machine presser foot is stitching the red patterned fabric.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The red fabric is positioned on top of the white polka-dotted fabric.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The needle is moving up and down through the layers of fabric.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The sewing machine presser foot is positioned above the fabrics in the center of the frame. The red patterned fabric is to the left of the white polka-dotted fabric. The red fabric is partially underneath the presser foot.",
+    "parse_success": true,
+    "chunk_idx": 1,
+    "video_id": "e0A4yB3Eeus"
+  },
+  {
+    "time": [
+      2,
+      3
+    ],
+    "visible_entities": [
+      {
+        "desc": "sewing machine presser foot, metallic silver with black plastic components",
+        "action": "stitching fabric",
+        "position": "center"
+      },
+      {
+        "desc": "red fabric with a white geometric diamond pattern",
+        "action": "static",
+        "position": "left"
+      },
+      {
+        "desc": "white fabric with small orange polka dots",
+        "action": "static",
+        "position": "right"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The sewing machine presser foot is stitching the red patterned fabric to the white polka dot fabric.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The red fabric is positioned on the left side of the frame.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The white fabric is positioned on the right side of the frame.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The metallic presser foot is positioned centrally above the fabrics. The red patterned fabric is to the left of the white polka dot fabric. The presser foot is holding the edge of the red fabric against the white fabric.",
+    "parse_success": true,
+    "chunk_idx": 2,
+    "video_id": "e0A4yB3Eeus"
+  },
+  {
+    "time": [
+      3,
+      4
+    ],
+    "visible_entities": [
+      {
+        "desc": "sewing machine presser foot, metallic silver with black plastic components",
+        "action": "stitching fabric",
+        "position": "center"
+      },
+      {
+        "desc": "red fabric with a white geometric square pattern",
         "action": "static",
         "position": "left"
       },
@@ -69,23 +153,61 @@
         "confidence": 1.0
       },
       {
-        "fact": "The red fabric is positioned on the left side of the frame.",
+        "fact": "The red fabric is positioned on top of the white fabric.",
         "confidence": 1.0
       },
       {
-        "fact": "The white fabric is positioned on the right side of the frame.",
+        "fact": "The needle is actively penetrating the fabric layers.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The sewing machine presser foot is positioned in the center, directly above the seam where the two fabrics meet. The red geometric fabric is to the left of the presser foot, while the white polka-dotted fabric is to the right of the presser foot.",
+    "spatial": "The metallic presser foot is positioned centrally above the junction of the two fabrics. The red patterned fabric is to the left of the white polka-dotted fabric. The red fabric is layered on top of the white fabric.",
     "parse_success": true,
-    "chunk_idx": 1,
+    "chunk_idx": 3,
     "video_id": "e0A4yB3Eeus"
   },
   {
     "time": [
       4,
+      5
+    ],
+    "visible_entities": [
+      {
+        "desc": "sewing machine presser foot, metallic silver with black plastic components",
+        "action": "stitching fabric",
+        "position": "center"
+      },
+      {
+        "desc": "red fabric with a white geometric square and circle pattern",
+        "action": "static",
+        "position": "left"
+      },
+      {
+        "desc": "light-colored fabric with small orange polka dots",
+        "action": "static",
+        "position": "right"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The sewing machine presser foot is stitching the red patterned fabric to the polka-dotted fabric.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The needle is moving up and down through the fabric layers.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The metallic presser foot is positioned above the two pieces of fabric. The red geometric fabric is to the left of the light-colored polka-dotted fabric. The needle is located in the center of the presser foot.",
+    "parse_success": true,
+    "chunk_idx": 4,
+    "video_id": "e0A4yB3Eeus"
+  },
+  {
+    "time": [
+      5,
       6
     ],
     "visible_entities": [
@@ -95,50 +217,8 @@
         "position": "center"
       },
       {
-        "desc": "red fabric with a white geometric square pattern",
-        "action": "static",
-        "position": "left"
-      },
-      {
-        "desc": "white fabric with small orange polka dots",
-        "action": "static",
-        "position": "right"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "The sewing machine presser foot is stitching the red patterned fabric to the white polka-dotted fabric.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The red fabric is positioned on the left side of the frame.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The white fabric is positioned on the right side of the frame.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [],
-    "spatial": "The metallic presser foot is positioned centrally above the fabrics. The red patterned fabric is to the left of the white polka-dotted fabric. The presser foot is in front of the sewing machine arm.",
-    "parse_success": true,
-    "chunk_idx": 2,
-    "video_id": "e0A4yB3Eeus"
-  },
-  {
-    "time": [
-      6,
-      8
-    ],
-    "visible_entities": [
-      {
-        "desc": "sewing machine presser foot, metallic silver with black plastic components",
-        "action": "stitching fabric",
-        "position": "center"
-      },
-      {
-        "desc": "red fabric with a white geometric square pattern",
-        "action": "static",
+        "desc": "red fabric with a white geometric square and circle pattern",
+        "action": "being sewn",
         "position": "left"
       },
       {
@@ -149,87 +229,7 @@
     ],
     "atomic_facts": [
       {
-        "fact": "The sewing machine presser foot is stitching the red patterned fabric to the white polka-dotted fabric.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The needle is actively moving up and down through the fabric layers.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [],
-    "spatial": "The sewing machine presser foot is positioned above the junction of the two fabrics. The red patterned fabric is to the left of the white polka-dotted fabric.",
-    "parse_success": true,
-    "chunk_idx": 3,
-    "video_id": "e0A4yB3Eeus"
-  },
-  {
-    "time": [
-      8,
-      10
-    ],
-    "visible_entities": [
-      {
-        "desc": "sewing machine presser foot, metallic silver with black plastic components",
-        "action": "stitching fabric",
-        "position": "center"
-      },
-      {
-        "desc": "red fabric with a white geometric square and dot pattern",
-        "action": "static",
-        "position": "left"
-      },
-      {
-        "desc": "white fabric with small orange polka dots",
-        "action": "static",
-        "position": "right"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "The sewing machine presser foot is stitching the red fabric to the white fabric.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The red fabric is positioned on the left side of the sewing area.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The white fabric is positioned on the right side of the sewing area.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [],
-    "spatial": "The metallic presser foot is positioned centrally above the fabrics. The red patterned fabric is to the left of the white polka-dotted fabric. The needle is piercing the boundary where the two fabrics meet.",
-    "parse_success": true,
-    "chunk_idx": 4,
-    "video_id": "e0A4yB3Eeus"
-  },
-  {
-    "time": [
-      10,
-      12
-    ],
-    "visible_entities": [
-      {
-        "desc": "sewing machine presser foot, metallic silver with black plastic components",
-        "action": "stitching fabric",
-        "position": "center"
-      },
-      {
-        "desc": "red fabric with a white geometric grid pattern",
-        "action": "being sewn",
-        "position": "left"
-      },
-      {
-        "desc": "white fabric with small orange polka dots",
-        "action": "static",
-        "position": "right"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "The sewing machine presser foot is stitching the red patterned fabric to the white polka-dotted fabric.",
+        "fact": "The sewing machine needle is actively stitching the red patterned fabric to the white polka-dotted fabric.",
         "confidence": 1.0
       },
       {
@@ -242,109 +242,109 @@
       }
     ],
     "ocr": [],
-    "spatial": "The metallic presser foot is positioned above the fabrics in the center of the frame. The red geometric fabric is to the left of the white polka-dotted fabric. The fabrics are underneath the presser foot.",
+    "spatial": "The metallic presser foot is positioned above the junction of the two fabrics. The red patterned fabric is to the left of the white polka-dotted fabric.",
     "parse_success": true,
     "chunk_idx": 5,
     "video_id": "e0A4yB3Eeus"
   },
   {
     "time": [
-      12,
-      14
+      6,
+      7
     ],
     "visible_entities": [
       {
         "desc": "sewing machine presser foot, metallic silver with black plastic components",
-        "action": "stitching fabric",
+        "action": "sewing fabric",
         "position": "center"
       },
       {
-        "desc": "red fabric with a white geometric square and circle pattern",
-        "action": "being guided under the needle",
-        "position": "left"
-      },
-      {
-        "desc": "white fabric with small orange polka dots",
-        "action": "static",
-        "position": "right"
-      },
-      {
-        "desc": "finger with light skin tone",
-        "action": "holding fabric",
-        "position": "left"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "The sewing machine presser foot is stitching the red patterned fabric to the white polka-dotted fabric.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "A finger is visible on the left side, guiding the red fabric under the presser foot.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The needle is actively moving up and down through the layers of fabric.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [],
-    "spatial": "The metallic presser foot is positioned in the center, clamping down on the fabrics. The red patterned fabric is to the left of the needle, while the white polka-dotted fabric extends to the right. A finger is located to the left of the presser foot, holding the red fabric in place.",
-    "parse_success": true,
-    "chunk_idx": 6,
-    "video_id": "e0A4yB3Eeus"
-  },
-  {
-    "time": [
-      14,
-      16
-    ],
-    "visible_entities": [
-      {
-        "desc": "hand with fair skin, fingers guiding fabric",
-        "action": "guiding fabric under needle",
-        "position": "left"
-      },
-      {
-        "desc": "sewing machine presser foot, metallic silver with black plastic components",
-        "action": "stitching fabric",
-        "position": "center"
-      },
-      {
-        "desc": "red fabric with white geometric square pattern",
+        "desc": "red fabric with a white geometric square pattern",
         "action": "being sewn",
         "position": "left"
       },
       {
         "desc": "white fabric with small orange polka dots",
         "action": "static",
-        "position": "right"
+        "position": "bottom"
+      },
+      {
+        "desc": "human finger, light skin tone",
+        "action": "guiding fabric",
+        "position": "left"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "The sewing machine needle is actively stitching the red patterned fabric to the white polka-dotted fabric.",
+        "fact": "A sewing machine presser foot is stitching the red patterned fabric.",
         "confidence": 1.0
       },
       {
-        "fact": "A hand is holding the red fabric in place near the presser foot.",
+        "fact": "A finger is holding the red fabric in place near the needle.",
         "confidence": 1.0
       },
       {
-        "fact": "The presser foot is clamped down on the layers of fabric.",
+        "fact": "The red fabric is being sewn onto the white polka-dotted fabric.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The hand is to the left of the sewing machine presser foot. The red patterned fabric is positioned under the presser foot and is being fed from the left side. The white polka-dotted fabric lies to the right of the red fabric, extending into the background.",
+    "spatial": "The sewing machine presser foot is positioned in the center, directly above the white polka-dotted fabric. The red patterned fabric is to the left of the presser foot and is being guided by a finger. The red fabric is layered on top of the white fabric at the seam line.",
+    "parse_success": true,
+    "chunk_idx": 6,
+    "video_id": "e0A4yB3Eeus"
+  },
+  {
+    "time": [
+      7,
+      8
+    ],
+    "visible_entities": [
+      {
+        "desc": "hand with fair skin, fingers guiding fabric",
+        "action": "guiding fabric under presser foot",
+        "position": "left"
+      },
+      {
+        "desc": "sewing machine presser foot, metallic silver, attached to black and silver mechanism",
+        "action": "stitching fabric layers",
+        "position": "center"
+      },
+      {
+        "desc": "fabric piece with red background and white geometric square pattern",
+        "action": "being sewn",
+        "position": "left"
+      },
+      {
+        "desc": "fabric background with white base and small orange polka dots",
+        "action": "static",
+        "position": "bottom"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A sewing machine needle is actively stitching through the red patterned fabric and the white polka dot fabric.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A hand is holding the edge of the red fabric to guide it under the presser foot.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The presser foot is clamped down on the fabric layers.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The hand is to the left of the sewing machine presser foot. The red patterned fabric is positioned on top of the white polka dot fabric. The presser foot is above the fabric layers.",
     "parse_success": true,
     "chunk_idx": 7,
     "video_id": "e0A4yB3Eeus"
   },
   {
     "time": [
-      16,
-      18
+      8,
+      9
     ],
     "visible_entities": [
       {
@@ -353,50 +353,50 @@
         "position": "left"
       },
       {
-        "desc": "sewing machine presser foot, metallic silver with black plastic components",
-        "action": "stitching",
-        "position": "center"
-      },
-      {
-        "desc": "fabric piece with red and white geometric square pattern",
+        "desc": "red fabric with white geometric square pattern",
         "action": "being sewn",
         "position": "left"
       },
       {
-        "desc": "fabric background with white base and small orange polka dots",
+        "desc": "white fabric with small yellow polka dots",
         "action": "static",
-        "position": "background"
+        "position": "right"
+      },
+      {
+        "desc": "sewing machine presser foot, metallic silver and black plastic",
+        "action": "stitching",
+        "position": "center"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "The sewing machine needle is actively stitching the red patterned fabric onto the white polka dot fabric.",
+        "fact": "The sewing machine presser foot is stitching the red patterned fabric to the white polka-dotted fabric.",
         "confidence": 1.0
       },
       {
-        "fact": "A hand is holding and guiding the edge of the red patterned fabric under the presser foot.",
+        "fact": "A hand is holding the red fabric in place under the needle.",
         "confidence": 1.0
       },
       {
-        "fact": "The presser foot is clamped down over the layers of fabric.",
+        "fact": "The needle is moving up and down to create a seam.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The hand is positioned to the left of the sewing machine presser foot. The red patterned fabric is being fed under the presser foot, which is located in the center of the frame. The white polka dot fabric lies beneath the red fabric and extends to the right side of the frame.",
+    "spatial": "The hand is to the left of the sewing machine presser foot. The red patterned fabric is positioned under the presser foot and to the left of the white polka-dotted fabric. The sewing machine mechanism is above the fabrics.",
     "parse_success": true,
     "chunk_idx": 8,
     "video_id": "e0A4yB3Eeus"
   },
   {
     "time": [
-      18,
-      20
+      9,
+      10
     ],
     "visible_entities": [
       {
-        "desc": "hand with light skin tone, fingers guiding fabric",
-        "action": "guiding fabric under needle",
+        "desc": "hand with light skin tone",
+        "action": "guiding fabric",
         "position": "left"
       },
       {
@@ -417,32 +417,79 @@
     ],
     "atomic_facts": [
       {
-        "fact": "The sewing machine presser foot is stitching the red patterned fabric to the white polka-dotted fabric.",
+        "fact": "A hand is guiding a piece of red patterned fabric under the sewing machine needle.",
         "confidence": 1.0
       },
       {
-        "fact": "A hand is holding the red fabric in place near the needle.",
+        "fact": "The sewing machine presser foot is holding the fabric layers together.",
         "confidence": 1.0
       },
       {
-        "fact": "The needle is moving up and down to create stitches.",
+        "fact": "The needle is actively stitching the red fabric onto the white polka-dot fabric.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The hand is to the left of the sewing machine presser foot. The red patterned fabric is under the presser foot and next to the white polka-dotted fabric. The presser foot is above the fabrics.",
+    "spatial": "The hand is to the left of the sewing machine presser foot. The red patterned fabric is positioned under the presser foot and is being sewn onto the white polka-dot fabric which extends to the right.",
     "parse_success": true,
     "chunk_idx": 9,
     "video_id": "e0A4yB3Eeus"
   },
   {
     "time": [
-      20,
-      22
+      10,
+      11
     ],
     "visible_entities": [
       {
-        "desc": "hand with fair skin",
+        "desc": "hand with light skin tone",
+        "action": "guiding fabric",
+        "position": "left"
+      },
+      {
+        "desc": "sewing machine presser foot, metallic silver and black plastic",
+        "action": "stitching fabric",
+        "position": "center"
+      },
+      {
+        "desc": "red fabric with white geometric square pattern",
+        "action": "being sewn",
+        "position": "left"
+      },
+      {
+        "desc": "white fabric with small orange polka dots",
+        "action": "static",
+        "position": "right"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A hand is guiding the edge of the red patterned fabric under the sewing machine needle.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The sewing machine presser foot is pressing down on the fabric layers.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The needle is moving up and down to stitch the fabrics together.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The hand is to the left of the sewing machine presser foot. The red patterned fabric is positioned under the presser foot and is adjacent to the white polka-dotted fabric on the right.",
+    "parse_success": true,
+    "chunk_idx": 10,
+    "video_id": "e0A4yB3Eeus"
+  },
+  {
+    "time": [
+      11,
+      12
+    ],
+    "visible_entities": [
+      {
+        "desc": "hand with light skin tone",
         "action": "guiding fabric",
         "position": "left"
       },
@@ -468,76 +515,29 @@
         "confidence": 1.0
       },
       {
-        "fact": "The sewing machine is stitching the red fabric onto the white polka-dotted fabric.",
+        "fact": "The sewing machine presser foot is stitching the red fabric onto the white polka-dotted fabric.",
         "confidence": 1.0
       },
       {
-        "fact": "The needle is moving up and down rapidly.",
+        "fact": "The red fabric has a repeating pattern of white squares inside red squares.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
     "spatial": "The hand is to the left of the sewing machine presser foot. The red patterned fabric is positioned under the presser foot and is being sewn onto the white polka-dotted fabric which lies to the right.",
     "parse_success": true,
-    "chunk_idx": 10,
-    "video_id": "e0A4yB3Eeus"
-  },
-  {
-    "time": [
-      22,
-      24
-    ],
-    "visible_entities": [
-      {
-        "desc": "hand with light skin tone",
-        "action": "guiding fabric",
-        "position": "left"
-      },
-      {
-        "desc": "red fabric with white geometric square pattern",
-        "action": "being sewn",
-        "position": "left"
-      },
-      {
-        "desc": "white fabric with small orange polka dots",
-        "action": "static",
-        "position": "right"
-      },
-      {
-        "desc": "metallic sewing machine presser foot and needle assembly",
-        "action": "stitching fabric",
-        "position": "center"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "The sewing machine needle is moving up and down to stitch the fabrics together.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "A hand is holding the red patterned fabric in place near the presser foot.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The red fabric is being sewn onto the white polka-dotted fabric.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [],
-    "spatial": "The hand is to the left of the sewing machine presser foot. The red patterned fabric is under the presser foot and next to the white polka-dotted fabric. The needle is positioned directly above the fabric layers.",
-    "parse_success": true,
     "chunk_idx": 11,
     "video_id": "e0A4yB3Eeus"
   },
   {
     "time": [
-      24,
-      26
+      12,
+      13
     ],
     "visible_entities": [
       {
         "desc": "sewing machine presser foot, metallic silver with black plastic components",
-        "action": "stitching fabric",
+        "action": "sewing fabric",
         "position": "center"
       },
       {
@@ -546,59 +546,59 @@
         "position": "left"
       },
       {
-        "desc": "white fabric with small orange polka dots",
+        "desc": "light-colored fabric with small orange polka dots",
         "action": "static",
         "position": "right"
       },
       {
-        "desc": "human hand with light skin tone",
+        "desc": "human fingers, light skin tone",
         "action": "guiding fabric",
         "position": "left"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "The sewing machine presser foot is stitching the red patterned fabric to the white polka-dotted fabric.",
+        "fact": "The sewing machine needle is actively stitching the red patterned fabric to the polka dot fabric.",
         "confidence": 1.0
       },
       {
-        "fact": "A hand enters the frame from the left to guide the red fabric under the needle.",
+        "fact": "A hand enters the frame to guide the red fabric under the presser foot.",
         "confidence": 1.0
       },
       {
-        "fact": "The red fabric has a geometric pattern of white squares within red squares.",
+        "fact": "The red fabric has a curved edge being sewn.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The metallic presser foot is positioned centrally above the two pieces of fabric. The red patterned fabric is to the left of the white polka-dotted fabric, meeting at a curved seam line. The hand is located to the left of the presser foot, holding the red fabric in place.",
+    "spatial": "The metallic presser foot is positioned above the two layers of fabric. The red patterned fabric is to the left of the polka dot fabric. The fingers are to the left of the presser foot, holding the red fabric.",
     "parse_success": true,
     "chunk_idx": 12,
     "video_id": "e0A4yB3Eeus"
   },
   {
     "time": [
-      26,
-      28
+      13,
+      14
     ],
     "visible_entities": [
       {
-        "desc": "hand with light skin tone and short, natural fingernails",
+        "desc": "hand with light skin tone and short fingernails",
         "action": "guiding fabric",
         "position": "left"
       },
       {
-        "desc": "red fabric with a white geometric grid pattern",
+        "desc": "red fabric with white geometric square pattern",
         "action": "being sewn",
         "position": "left"
       },
       {
-        "desc": "white fabric with small, evenly spaced orange polka dots",
+        "desc": "white fabric with small orange polka dots",
         "action": "static",
         "position": "right"
       },
       {
-        "desc": "silver metal sewing machine presser foot and needle assembly",
+        "desc": "metal sewing machine presser foot and needle assembly",
         "action": "stitching",
         "position": "center"
       }
@@ -609,71 +609,193 @@
         "confidence": 1.0
       },
       {
-        "fact": "A hand is holding and guiding the red fabric under the presser foot.",
+        "fact": "A hand is holding the red fabric to guide it under the presser foot.",
         "confidence": 1.0
       },
       {
-        "fact": "The red fabric is layered on top of the white fabric.",
+        "fact": "The red fabric is being layered on top of the white fabric.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The hand is to the left of the sewing machine presser foot. The red patterned fabric is under the presser foot and on top of the white polka-dotted fabric. The sewing machine assembly is above the fabrics.",
+    "spatial": "The hand is to the left of the sewing machine needle. The red patterned fabric is positioned under the metal presser foot. The white polka-dotted fabric is underneath the red fabric and extends to the right.",
     "parse_success": true,
     "chunk_idx": 13,
     "video_id": "e0A4yB3Eeus"
   },
   {
     "time": [
-      28,
-      30
+      14,
+      15
     ],
     "visible_entities": [
       {
-        "desc": "hand with fair skin and short fingernails",
+        "desc": "hand with light skin tone and short, natural fingernails",
         "action": "guiding fabric",
         "position": "left"
       },
       {
         "desc": "red fabric with a white geometric square pattern",
         "action": "being sewn",
-        "position": "left"
-      },
-      {
-        "desc": "white fabric with small orange polka dots",
-        "action": "static",
-        "position": "right"
+        "position": "left/center"
       },
       {
         "desc": "silver metal sewing machine presser foot and needle assembly",
-        "action": "stitching fabric",
-        "position": "center"
+        "action": "stitching",
+        "position": "center/right"
+      },
+      {
+        "desc": "white fabric with small, faint polka dots",
+        "action": "static",
+        "position": "background/bottom"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "The sewing machine needle is moving up and down to stitch the red patterned fabric.",
+        "fact": "A hand is guiding a piece of red patterned fabric under the sewing machine needle.",
         "confidence": 1.0
       },
       {
-        "fact": "The hand is holding the red fabric in place under the presser foot.",
+        "fact": "The sewing machine needle is actively stitching the red fabric to the white fabric.",
         "confidence": 1.0
       },
       {
-        "fact": "The red fabric is being sewn onto the white polka-dotted fabric.",
+        "fact": "The presser foot is holding the fabric layers in place.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The hand is to the left of the sewing machine needle. The red patterned fabric is positioned under the metal presser foot. The white polka-dotted fabric is to the right of the red fabric and underneath the sewing mechanism.",
+    "spatial": "The hand is to the left of the sewing machine's presser foot. The red patterned fabric is positioned under the presser foot and is being fed from the left side. The white polka-dotted fabric lies beneath the red fabric and extends across the bottom of the frame.",
     "parse_success": true,
     "chunk_idx": 14,
     "video_id": "e0A4yB3Eeus"
   },
   {
     "time": [
-      30,
-      32
+      15,
+      16
+    ],
+    "visible_entities": [
+      {
+        "desc": "sewing machine presser foot, metallic silver with black plastic components",
+        "action": "stitching fabric",
+        "position": "center"
+      },
+      {
+        "desc": "fabric with red and white geometric square pattern",
+        "action": "static",
+        "position": "left"
+      },
+      {
+        "desc": "fabric with white background and small gold polka dots",
+        "action": "static",
+        "position": "right"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The sewing machine presser foot is stitching the red patterned fabric to the white polka dot fabric.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The needle is moving up and down to create a seam.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The red fabric has a geometric grid pattern of white squares.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The sewing machine presser foot is positioned above the two pieces of fabric. The red patterned fabric is to the left of the white polka dot fabric. The fabrics are joined together under the presser foot.",
+    "parse_success": true,
+    "chunk_idx": 15,
+    "video_id": "e0A4yB3Eeus"
+  },
+  {
+    "time": [
+      16,
+      17
+    ],
+    "visible_entities": [
+      {
+        "desc": "sewing machine presser foot, metallic silver with black plastic components",
+        "action": "stitching fabric",
+        "position": "center"
+      },
+      {
+        "desc": "red fabric with a white geometric grid pattern",
+        "action": "static",
+        "position": "left"
+      },
+      {
+        "desc": "white fabric with small orange polka dots",
+        "action": "static",
+        "position": "right"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The sewing machine presser foot is stitching the red patterned fabric onto the white polka-dotted fabric.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The red fabric is positioned on top of the white fabric.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The metallic presser foot is positioned above the fabrics in the center of the frame. The red patterned fabric is to the left of the white polka-dotted fabric, and the presser foot is pressing down on the seam where the two fabrics meet.",
+    "parse_success": true,
+    "chunk_idx": 16,
+    "video_id": "e0A4yB3Eeus"
+  },
+  {
+    "time": [
+      17,
+      18
+    ],
+    "visible_entities": [
+      {
+        "desc": "sewing machine presser foot assembly, metallic silver and black plastic components",
+        "action": "stitching fabric",
+        "position": "center"
+      },
+      {
+        "desc": "red fabric with white geometric square pattern",
+        "action": "static",
+        "position": "left"
+      },
+      {
+        "desc": "white fabric with small orange polka dots",
+        "action": "static",
+        "position": "right"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The sewing machine presser foot is stitching the red patterned fabric to the white polka-dotted fabric.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The needle is moving up and down to create a seam.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The red fabric is positioned on the left side of the sewing area.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The sewing machine presser foot is positioned above the two pieces of fabric. The red patterned fabric is to the left of the white polka-dotted fabric. The needle is located in the center, piercing through the layers of fabric.",
+    "parse_success": true,
+    "chunk_idx": 17,
+    "video_id": "e0A4yB3Eeus"
+  },
+  {
+    "time": [
+      18,
+      19
     ],
     "visible_entities": [
       {
@@ -687,87 +809,7 @@
         "position": "left"
       },
       {
-        "desc": "white fabric with a light-colored polka dot pattern",
-        "action": "static",
-        "position": "right"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "The sewing machine presser foot is stitching the red patterned fabric.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The red fabric is being attached to the white polka dot fabric.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The needle is moving up and down to create a seam.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [],
-    "spatial": "The metallic presser foot is positioned above the fabrics in the center of the frame. The red patterned fabric is to the left of the white polka dot fabric, meeting at a seam under the needle.",
-    "parse_success": true,
-    "chunk_idx": 15,
-    "video_id": "e0A4yB3Eeus"
-  },
-  {
-    "time": [
-      32,
-      34
-    ],
-    "visible_entities": [
-      {
-        "desc": "metal sewing machine presser foot and needle assembly, silver and black components",
-        "action": "stitching fabric",
-        "position": "center"
-      },
-      {
-        "desc": "red fabric with a white geometric grid pattern",
-        "action": "static",
-        "position": "left"
-      },
-      {
-        "desc": "white fabric with small orange polka dots",
-        "action": "static",
-        "position": "right"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "The sewing machine needle is actively stitching the red patterned fabric to the white polka-dotted fabric.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The presser foot is holding the two layers of fabric together under the needle.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [],
-    "spatial": "The metal sewing machine presser foot is positioned above the junction of the two fabrics. The red patterned fabric is to the left of the white polka-dotted fabric. The needle is penetrating the fabric layers at the center of the frame.",
-    "parse_success": true,
-    "chunk_idx": 16,
-    "video_id": "e0A4yB3Eeus"
-  },
-  {
-    "time": [
-      34,
-      36
-    ],
-    "visible_entities": [
-      {
-        "desc": "sewing machine presser foot, metallic silver with black plastic components",
-        "action": "stitching fabric",
-        "position": "center"
-      },
-      {
-        "desc": "red fabric with a white geometric grid pattern",
-        "action": "static",
-        "position": "left"
-      },
-      {
-        "desc": "white fabric with small orange polka dots",
+        "desc": "white fabric with small light-colored polka dots",
         "action": "static",
         "position": "right"
       }
@@ -778,71 +820,25 @@
         "confidence": 1.0
       },
       {
-        "fact": "The needle is moving up and down through the fabric layers.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The red fabric has a curved edge where it meets the white fabric.",
+        "fact": "The red fabric is positioned on top of the white fabric.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The metallic presser foot is positioned in the center, directly above the junction of the two fabrics. The red geometric fabric is to the left of the presser foot, while the white polka-dotted fabric is to the right and underneath the needle area.",
-    "parse_success": true,
-    "chunk_idx": 17,
-    "video_id": "e0A4yB3Eeus"
-  },
-  {
-    "time": [
-      36,
-      38
-    ],
-    "visible_entities": [
-      {
-        "desc": "sewing machine presser foot, metallic silver with black plastic components",
-        "action": "stitching fabric",
-        "position": "center"
-      },
-      {
-        "desc": "red fabric with a white geometric grid pattern",
-        "action": "being sewn",
-        "position": "left"
-      },
-      {
-        "desc": "white fabric with small orange polka dots",
-        "action": "static",
-        "position": "right"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "The sewing machine presser foot is stitching the red patterned fabric to the white polka-dotted fabric.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The red fabric is positioned on the left side of the frame.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The white fabric is positioned on the right side of the frame.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [],
-    "spatial": "The metallic presser foot is positioned above the fabrics in the center of the frame. The red geometric fabric is to the left of the white polka-dotted fabric. The two fabrics are joined together under the needle.",
+    "spatial": "The metallic presser foot is positioned in the center, clamping down on the fabrics. The red patterned fabric is to the left of the white polka-dotted fabric. The needle is located directly above the seam where the two fabrics meet.",
     "parse_success": true,
     "chunk_idx": 18,
     "video_id": "e0A4yB3Eeus"
   },
   {
     "time": [
-      38,
-      40
+      19,
+      20
     ],
     "visible_entities": [
       {
         "desc": "sewing machine presser foot, metallic silver with black plastic components",
-        "action": "stitching fabric",
+        "action": "sewing fabric",
         "position": "center"
       },
       {
@@ -863,7 +859,7 @@
     ],
     "atomic_facts": [
       {
-        "fact": "The sewing machine presser foot is stitching the red patterned fabric to the white polka-dotted fabric.",
+        "fact": "The sewing machine presser foot is stitching the red patterned fabric to the white polka dot fabric.",
         "confidence": 1.0
       },
       {
@@ -871,24 +867,212 @@
         "confidence": 1.0
       },
       {
-        "fact": "The needle is moving up and down to create stitches.",
+        "fact": "The red fabric has a white geometric grid pattern.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The metallic presser foot is in the center, positioned on top of the fabrics. The red patterned fabric is to the left of the presser foot, while the white polka-dotted fabric is to the right and underneath the red piece. A finger is located above and to the left of the presser foot, holding the fabric in place.",
+    "spatial": "The metallic presser foot is in the center of the frame, positioned above the white polka dot fabric. The red patterned fabric is to the left of the presser foot, being fed under it. A finger is visible in the top left corner, near the red fabric.",
     "parse_success": true,
     "chunk_idx": 19,
     "video_id": "e0A4yB3Eeus"
   },
   {
     "time": [
-      40,
-      42
+      20,
+      21
+    ],
+    "visible_entities": [
+      {
+        "desc": "person's hand with fair skin and short fingernails",
+        "action": "guiding fabric",
+        "position": "left"
+      },
+      {
+        "desc": "red fabric with a white geometric square pattern",
+        "action": "being sewn",
+        "position": "left"
+      },
+      {
+        "desc": "white fabric with small orange polka dots",
+        "action": "static",
+        "position": "center"
+      },
+      {
+        "desc": "silver metal sewing machine presser foot and needle assembly",
+        "action": "stitching",
+        "position": "center"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The sewing machine needle is actively stitching the red patterned fabric to the white polka-dotted fabric.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The person's hand is holding the red fabric in place near the presser foot.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The red fabric has a curved edge being sewn.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The person's hand is to the left of the sewing machine presser foot. The red patterned fabric is positioned under the presser foot and is being fed into the machine from the left. The white polka-dotted fabric lies beneath the red fabric and extends to the right.",
+    "parse_success": true,
+    "chunk_idx": 20,
+    "video_id": "e0A4yB3Eeus"
+  },
+  {
+    "time": [
+      21,
+      22
     ],
     "visible_entities": [
       {
         "desc": "hand with light skin and short fingernails",
+        "action": "guiding fabric",
+        "position": "left"
+      },
+      {
+        "desc": "red and white geometric patterned fabric piece",
+        "action": "being sewn",
+        "position": "left"
+      },
+      {
+        "desc": "white fabric with small orange polka dots",
+        "action": "static",
+        "position": "background"
+      },
+      {
+        "desc": "silver metal sewing machine presser foot and needle assembly",
+        "action": "stitching",
+        "position": "center"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A hand is guiding a piece of red and white patterned fabric under the sewing machine needle.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The sewing machine needle is moving up and down to stitch the fabric.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The red patterned fabric is placed on top of the white polka dot fabric.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The hand is to the left of the sewing machine presser foot. The red and white patterned fabric is under the presser foot and on top of the white polka dot fabric. The needle is positioned directly above the fabric being stitched.",
+    "parse_success": true,
+    "chunk_idx": 21,
+    "video_id": "e0A4yB3Eeus"
+  },
+  {
+    "time": [
+      22,
+      23
+    ],
+    "visible_entities": [
+      {
+        "desc": "fingers with light skin tone",
+        "action": "holding fabric",
+        "position": "left"
+      },
+      {
+        "desc": "red fabric with white geometric diamond pattern",
+        "action": "being sewn",
+        "position": "left"
+      },
+      {
+        "desc": "silver metal sewing machine presser foot and needle",
+        "action": "stitching",
+        "position": "center"
+      },
+      {
+        "desc": "white fabric with faint polka dot pattern",
+        "action": "static",
+        "position": "background"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The sewing machine needle is moving up and down to stitch the red fabric.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "Fingers are guiding the red patterned fabric under the presser foot.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The red fabric is layered on top of the white background fabric.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The fingers are to the left of the sewing machine presser foot. The red patterned fabric is under the presser foot and on top of the white polka dot fabric. The needle is positioned directly above the red fabric.",
+    "parse_success": true,
+    "chunk_idx": 22,
+    "video_id": "e0A4yB3Eeus"
+  },
+  {
+    "time": [
+      23,
+      24
+    ],
+    "visible_entities": [
+      {
+        "desc": "person's fingers with light skin tone",
+        "action": "guiding fabric",
+        "position": "left"
+      },
+      {
+        "desc": "red fabric with white geometric square pattern",
+        "action": "being sewn",
+        "position": "left/foreground"
+      },
+      {
+        "desc": "white fabric with small orange polka dots",
+        "action": "static",
+        "position": "right/background"
+      },
+      {
+        "desc": "silver metal sewing machine presser foot and needle assembly",
+        "action": "stitching",
+        "position": "center/right"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The sewing machine needle is moving up and down to stitch the red patterned fabric to the white polka dot fabric.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A person's fingers are holding the red fabric in place near the needle.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The presser foot is clamped down on the fabric layers.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The person's fingers are to the left of the sewing machine needle. The red patterned fabric is positioned under the silver presser foot and is adjacent to the white polka dot fabric on the right.",
+    "parse_success": true,
+    "chunk_idx": 23,
+    "video_id": "e0A4yB3Eeus"
+  },
+  {
+    "time": [
+      24,
+      25
+    ],
+    "visible_entities": [
+      {
+        "desc": "person's fingers with light skin tone",
         "action": "guiding fabric",
         "position": "left"
       },
@@ -903,103 +1087,52 @@
         "position": "right"
       },
       {
-        "desc": "silver metal sewing machine presser foot and needle assembly",
+        "desc": "silver metal sewing machine presser foot and needle",
         "action": "stitching",
         "position": "center"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "The sewing machine needle is moving up and down to stitch the red fabric.",
+        "fact": "The sewing machine needle is actively stitching the red patterned fabric to the white polka dot fabric.",
         "confidence": 1.0
       },
       {
-        "fact": "The hand is holding the red fabric against the white fabric.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The presser foot is clamping the fabric layers together.",
+        "fact": "The person's fingers are holding the red fabric in place near the presser foot.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The hand is to the left of the sewing machine needle. The red patterned fabric is positioned under the silver presser foot. The white polka-dotted fabric is to the right of the red fabric.",
+    "spatial": "The person's fingers are to the left of the sewing machine presser foot. The red patterned fabric is positioned under the presser foot and is adjacent to the white polka dot fabric on the right.",
     "parse_success": true,
-    "chunk_idx": 20,
+    "chunk_idx": 24,
     "video_id": "e0A4yB3Eeus"
   },
   {
     "time": [
-      42,
-      44
+      25,
+      26
     ],
     "visible_entities": [
       {
-        "desc": "hand with light skin and short fingernails",
+        "desc": "person's fingers with light skin tone",
         "action": "guiding fabric",
         "position": "left"
       },
       {
-        "desc": "red and white patterned fabric piece with a geometric diamond design",
-        "action": "being sewn",
-        "position": "left"
-      },
-      {
-        "desc": "white fabric with small orange polka dots",
-        "action": "static",
-        "position": "center"
-      },
-      {
-        "desc": "silver metal sewing machine presser foot and needle assembly",
+        "desc": "sewing machine presser foot, metallic silver",
         "action": "stitching",
         "position": "center"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "The sewing machine needle is moving up and down to stitch the red patterned fabric to the white polka dot fabric.",
-        "confidence": 1.0
       },
       {
-        "fact": "The hand is holding the red fabric piece in place under the presser foot.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The presser foot is pressing down on the fabric layers.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [],
-    "spatial": "The hand is to the left of the sewing machine presser foot. The red patterned fabric is positioned under the presser foot and on top of the white polka dot fabric. The needle is directly above the point where the two fabrics meet.",
-    "parse_success": true,
-    "chunk_idx": 21,
-    "video_id": "e0A4yB3Eeus"
-  },
-  {
-    "time": [
-      44,
-      46
-    ],
-    "visible_entities": [
-      {
-        "desc": "fingers with light skin tone",
-        "action": "guiding fabric",
-        "position": "left"
-      },
-      {
-        "desc": "red fabric applique with white geometric diamond pattern",
+        "desc": "red fabric with white geometric square pattern",
         "action": "being sewn",
-        "position": "left"
+        "position": "foreground"
       },
       {
         "desc": "white fabric with small orange polka dots",
         "action": "static",
         "position": "background"
-      },
-      {
-        "desc": "metal sewing machine presser foot and needle assembly",
-        "action": "stitching",
-        "position": "center"
       }
     ],
     "atomic_facts": [
@@ -1008,77 +1141,35 @@
         "confidence": 1.0
       },
       {
-        "fact": "Fingers are holding the red patterned fabric in place near the needle.",
+        "fact": "Fingers are holding the red patterned fabric in place under the presser foot.",
         "confidence": 1.0
       },
       {
-        "fact": "The red fabric is being attached to the white polka-dotted fabric.",
+        "fact": "The red fabric is being sewn onto the white polka dot fabric.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The fingers are to the left of the metal presser foot. The red patterned fabric is under the presser foot and on top of the white polka-dotted fabric. The needle is positioned directly above the edge of the red fabric.",
+    "spatial": "The person's fingers are to the left of the sewing machine presser foot. The red patterned fabric is under the presser foot and on top of the white polka dot fabric. The sewing machine needle is positioned directly above the red fabric.",
     "parse_success": true,
-    "chunk_idx": 22,
+    "chunk_idx": 25,
     "video_id": "e0A4yB3Eeus"
   },
   {
     "time": [
-      46,
-      48
+      26,
+      27
     ],
     "visible_entities": [
+      {
+        "desc": "hand with light skin tone and short fingernails",
+        "action": "guiding fabric",
+        "position": "left"
+      },
       {
         "desc": "sewing machine presser foot, metallic silver with black plastic components",
         "action": "stitching fabric",
         "position": "center"
-      },
-      {
-        "desc": "red fabric with a white geometric grid pattern",
-        "action": "being sewn",
-        "position": "left"
-      },
-      {
-        "desc": "white fabric with small orange polka dots",
-        "action": "static",
-        "position": "right"
-      },
-      {
-        "desc": "person's fingers with light skin tone",
-        "action": "guiding fabric",
-        "position": "left"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "The sewing machine needle is moving up and down to stitch the red patterned fabric.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "A person's fingers are holding the red fabric in place near the presser foot.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The red fabric is being attached to the white polka-dotted fabric.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [],
-    "spatial": "The sewing machine presser foot is positioned centrally, pressing down on the fabric. The red patterned fabric is to the left of the presser foot, while the white polka-dotted fabric is to the right and underneath the needle area. The person's fingers are on the left side, guiding the red fabric into the machine.",
-    "parse_success": true,
-    "chunk_idx": 23,
-    "video_id": "e0A4yB3Eeus"
-  },
-  {
-    "time": [
-      48,
-      50
-    ],
-    "visible_entities": [
-      {
-        "desc": "fingers with light skin tone and short fingernails",
-        "action": "guiding fabric",
-        "position": "left"
       },
       {
         "desc": "red fabric piece with a white geometric grid pattern",
@@ -1089,58 +1180,194 @@
         "desc": "white fabric background with small orange polka dots",
         "action": "static",
         "position": "background"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The sewing machine needle is moving up and down to stitch the red patterned fabric.",
+        "confidence": 1.0
       },
       {
-        "desc": "silver metal sewing machine presser foot and needle assembly",
+        "fact": "A hand is holding the red fabric in place near the presser foot.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The red fabric has a curved edge being sewn onto the white polka dot fabric.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The hand is to the left of the sewing machine presser foot. The red patterned fabric is under the presser foot and on top of the white polka dot fabric. The sewing machine needle is positioned directly above the fabric layers.",
+    "parse_success": true,
+    "chunk_idx": 26,
+    "video_id": "e0A4yB3Eeus"
+  },
+  {
+    "time": [
+      27,
+      28
+    ],
+    "visible_entities": [
+      {
+        "desc": "person's hand with light skin and short fingernails",
+        "action": "guiding fabric",
+        "position": "left"
+      },
+      {
+        "desc": "red fabric with a white geometric square pattern",
+        "action": "being sewn",
+        "position": "center"
+      },
+      {
+        "desc": "white fabric with small orange polka dots",
+        "action": "static",
+        "position": "background"
+      },
+      {
+        "desc": "silver metal sewing machine presser foot and needle",
+        "action": "stitching",
+        "position": "center-right"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The sewing machine needle is stitching the red patterned fabric to the white polka dot fabric.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A hand is holding the red fabric in place near the presser foot.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The presser foot is pressing down on the fabric layers.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The person's hand is to the left of the sewing machine presser foot. The red patterned fabric is under the presser foot and on top of the white polka dot fabric. The needle is positioned directly above the edge of the red fabric.",
+    "parse_success": true,
+    "chunk_idx": 27,
+    "video_id": "e0A4yB3Eeus"
+  },
+  {
+    "time": [
+      28,
+      29
+    ],
+    "visible_entities": [
+      {
+        "desc": "hand with light skin and short fingernails",
+        "action": "guiding fabric",
+        "position": "left"
+      },
+      {
+        "desc": "red fabric piece with a white geometric square pattern",
+        "action": "being sewn",
+        "position": "center"
+      },
+      {
+        "desc": "white fabric background with small orange polka dots",
+        "action": "static",
+        "position": "background"
+      },
+      {
+        "desc": "metal sewing machine presser foot and needle",
         "action": "stitching",
         "position": "center"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "The sewing machine needle is moving up and down to stitch the red fabric to the white fabric.",
+        "fact": "A sewing machine needle is actively stitching the red patterned fabric.",
         "confidence": 1.0
       },
       {
-        "fact": "Fingers are holding the red patterned fabric in place near the presser foot.",
+        "fact": "A hand is holding the red fabric in place under the presser foot.",
         "confidence": 1.0
       },
       {
-        "fact": "The red fabric has a repeating pattern of white squares with dots inside.",
+        "fact": "The red fabric is being sewn onto the white polka-dotted background fabric.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The fingers are to the left of the metal presser foot. The red patterned fabric is positioned under the presser foot and on top of the white polka-dotted fabric. The needle is directly above the point where the two fabrics meet.",
+    "spatial": "The hand is to the left of the sewing machine presser foot. The red patterned fabric is under the presser foot and on top of the white polka-dotted fabric.",
     "parse_success": true,
-    "chunk_idx": 24,
+    "chunk_idx": 28,
     "video_id": "e0A4yB3Eeus"
   },
   {
     "time": [
-      50,
-      52
+      29,
+      30
     ],
     "visible_entities": [
       {
-        "desc": "fingers with light skin tone",
-        "action": "guiding fabric",
-        "position": "left"
+        "desc": "sewing machine presser foot, metallic silver with black plastic components",
+        "action": "stitching fabric",
+        "position": "center"
       },
       {
-        "desc": "red fabric with white geometric square pattern",
+        "desc": "red fabric with a white geometric square pattern, cut into a curved shape",
         "action": "being sewn",
         "position": "left/center"
       },
       {
-        "desc": "white fabric with small orange polka dots",
+        "desc": "white fabric with small light-colored polka dots",
         "action": "static",
         "position": "right/background"
       },
       {
-        "desc": "silver metal sewing machine presser foot and needle",
-        "action": "stitching",
+        "desc": "person's fingers with light skin tone",
+        "action": "guiding fabric",
+        "position": "left"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The sewing machine presser foot is stitching the red patterned fabric to the white polka dot fabric.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A person's fingers are guiding the red fabric under the needle.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The red fabric has a repeating white square pattern.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The sewing machine presser foot is positioned above the red patterned fabric. The red fabric is placed on top of the white polka dot fabric. The person's fingers are to the left of the presser foot, holding the fabric in place.",
+    "parse_success": true,
+    "chunk_idx": 29,
+    "video_id": "e0A4yB3Eeus"
+  },
+  {
+    "time": [
+      30,
+      31
+    ],
+    "visible_entities": [
+      {
+        "desc": "silver metal sewing machine presser foot and needle mechanism",
+        "action": "stitching fabric",
         "position": "center"
+      },
+      {
+        "desc": "red fabric with a white geometric diamond pattern",
+        "action": "being sewn",
+        "position": "center"
+      },
+      {
+        "desc": "white fabric with small orange polka dots",
+        "action": "static",
+        "position": "background"
+      },
+      {
+        "desc": "fingers with light skin tone",
+        "action": "guiding fabric",
+        "position": "left"
       }
     ],
     "atomic_facts": [
@@ -1153,175 +1380,34 @@
         "confidence": 1.0
       },
       {
-        "fact": "The red fabric is layered on top of the white polka dot fabric.",
+        "fact": "The red patterned fabric is layered on top of the white polka dot fabric.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The fingers are to the left of the sewing machine presser foot. The red patterned fabric is under the presser foot and on top of the white polka dot fabric. The sewing machine needle is positioned directly above the red fabric.",
+    "spatial": "The sewing machine presser foot is positioned directly above the red patterned fabric. The fingers are to the left of the needle, guiding the material. The red fabric is on top of the white polka dot background fabric.",
     "parse_success": true,
-    "chunk_idx": 25,
+    "chunk_idx": 30,
     "video_id": "e0A4yB3Eeus"
   },
   {
     "time": [
-      52,
-      54
+      31,
+      32
     ],
     "visible_entities": [
       {
-        "desc": "hand with light skin tone and short fingernails",
-        "action": "guiding fabric",
-        "position": "left"
-      },
-      {
-        "desc": "red and white patterned fabric with a geometric grid design",
-        "action": "being sewn",
-        "position": "center"
-      },
-      {
-        "desc": "silver metal sewing machine presser foot and needle assembly",
+        "desc": "sewing machine presser foot, silver metal with black plastic components",
         "action": "stitching fabric",
         "position": "center"
       },
       {
-        "desc": "white fabric background with small orange polka dots",
-        "action": "static",
-        "position": "background"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "The sewing machine needle is moving up and down to stitch the red patterned fabric.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "A hand is holding the red patterned fabric in place under the presser foot.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The red patterned fabric is being sewn onto the white polka-dotted fabric.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [],
-    "spatial": "The hand is to the left of the sewing machine presser foot. The presser foot is positioned on top of the red patterned fabric. The red patterned fabric is placed on top of the white polka-dotted fabric.",
-    "parse_success": true,
-    "chunk_idx": 26,
-    "video_id": "e0A4yB3Eeus"
-  },
-  {
-    "time": [
-      54,
-      56
-    ],
-    "visible_entities": [
-      {
-        "desc": "person's hand with light skin and short fingernails",
-        "action": "guiding fabric",
-        "position": "left"
-      },
-      {
-        "desc": "sewing machine presser foot, metallic silver with a black plastic lever",
-        "action": "stitching",
-        "position": "center"
-      },
-      {
-        "desc": "red fabric piece with a white geometric square pattern and a curved edge",
+        "desc": "red fabric applique with a white geometric square pattern",
         "action": "being sewn",
-        "position": "foreground"
+        "position": "center"
       },
       {
         "desc": "white background fabric with small orange polka dots",
-        "action": "static",
-        "position": "background"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "The sewing machine presser foot is stitching the red patterned fabric onto the white polka-dotted fabric.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "A hand is holding the red fabric in place to the left of the needle.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The needle is moving up and down through the layers of fabric.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [],
-    "spatial": "The person's hand is to the left of the sewing machine presser foot. The red patterned fabric is under the presser foot and on top of the white polka-dotted background fabric. The presser foot is above the fabrics.",
-    "parse_success": true,
-    "chunk_idx": 27,
-    "video_id": "e0A4yB3Eeus"
-  },
-  {
-    "time": [
-      56,
-      58
-    ],
-    "visible_entities": [
-      {
-        "desc": "person's fingers with light skin tone and short, natural nails",
-        "action": "guiding fabric",
-        "position": "left"
-      },
-      {
-        "desc": "red fabric with a white geometric grid pattern, cut into a curved shape",
-        "action": "being sewn",
-        "position": "center"
-      },
-      {
-        "desc": "white fabric with small, faint polka dots",
-        "action": "static",
-        "position": "background"
-      },
-      {
-        "desc": "metallic sewing machine presser foot and needle assembly",
-        "action": "stitching",
-        "position": "center"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "A person is guiding a piece of red patterned fabric under a sewing machine needle.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The sewing machine is stitching the red fabric onto a white background fabric.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The presser foot is holding the fabric layers in place.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [],
-    "spatial": "The person's fingers are to the left of the sewing machine's presser foot. The red patterned fabric is positioned under the presser foot and on top of the white polka-dotted fabric. The needle is vertically aligned above the fabric layers.",
-    "parse_success": true,
-    "chunk_idx": 28,
-    "video_id": "e0A4yB3Eeus"
-  },
-  {
-    "time": [
-      58,
-      60
-    ],
-    "visible_entities": [
-      {
-        "desc": "sewing machine presser foot, metallic silver with black plastic components",
-        "action": "stitching fabric",
-        "position": "center"
-      },
-      {
-        "desc": "red fabric piece with a white geometric square pattern, cut into a curved shape",
-        "action": "being sewn",
-        "position": "left"
-      },
-      {
-        "desc": "white fabric background with small orange polka dots",
         "action": "static",
         "position": "background"
       },
@@ -1333,28 +1419,75 @@
     ],
     "atomic_facts": [
       {
-        "fact": "The sewing machine presser foot is stitching the red patterned fabric to the white polka-dot background.",
+        "fact": "The sewing machine presser foot is stitching along the edge of the red patterned fabric.",
         "confidence": 1.0
       },
       {
-        "fact": "Human fingers are visible on the left side, holding and guiding the red fabric under the needle.",
+        "fact": "Human fingers are holding and guiding the red fabric applique under the needle.",
         "confidence": 1.0
       },
       {
-        "fact": "The red fabric has a repeating pattern of white squares within red squares.",
+        "fact": "The red fabric applique is placed on top of the white polka-dotted fabric.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The metallic presser foot is positioned above the red patterned fabric. The red fabric is on top of the white polka-dot background fabric. The human fingers are to the left of the presser foot, guiding the material.",
+    "spatial": "The sewing machine presser foot is positioned above the red fabric applique. The red fabric applique is on top of the white background fabric. The human fingers are to the left of the presser foot, holding the fabric in place.",
     "parse_success": true,
-    "chunk_idx": 29,
+    "chunk_idx": 31,
     "video_id": "e0A4yB3Eeus"
   },
   {
     "time": [
-      60,
-      62
+      32,
+      33
+    ],
+    "visible_entities": [
+      {
+        "desc": "fingers with light skin tone and short, natural nails",
+        "action": "guiding fabric",
+        "position": "left"
+      },
+      {
+        "desc": "sewing machine presser foot, metallic silver with black plastic components",
+        "action": "stitching",
+        "position": "center"
+      },
+      {
+        "desc": "red fabric with a white geometric diamond pattern, cut in a curved shape",
+        "action": "being sewn",
+        "position": "center"
+      },
+      {
+        "desc": "white fabric with a faint orange dot pattern",
+        "action": "static",
+        "position": "bottom"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The sewing machine presser foot is stitching the red patterned fabric.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "Fingers are holding and guiding the red fabric under the needle.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The red fabric is being sewn onto the white dotted fabric.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The fingers are to the left of the sewing machine presser foot. The presser foot is positioned above the red patterned fabric. The red fabric is on top of the white dotted fabric.",
+    "parse_success": true,
+    "chunk_idx": 32,
+    "video_id": "e0A4yB3Eeus"
+  },
+  {
+    "time": [
+      33,
+      34
     ],
     "visible_entities": [
       {
@@ -1363,17 +1496,346 @@
         "position": "center"
       },
       {
-        "desc": "red fabric applique with a white geometric diamond grid pattern",
+        "desc": "red fabric with a white geometric pattern of circles and diamonds",
         "action": "being sewn",
         "position": "center"
       },
       {
-        "desc": "white background fabric with small orange polka dots",
-        "action": "static",
-        "position": "background"
+        "desc": "person's fingers, light skin tone",
+        "action": "guiding fabric",
+        "position": "left"
       },
       {
-        "desc": "human fingers with light skin tone",
+        "desc": "white fabric with small orange dots",
+        "action": "static",
+        "position": "bottom"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The sewing machine needle is moving up and down to stitch the red patterned fabric.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A person's fingers are holding and guiding the red fabric under the presser foot.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The red patterned fabric is layered on top of the white dotted fabric.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The sewing machine presser foot is positioned above the red patterned fabric. The person's fingers are to the left of the presser foot, holding the fabric. The red patterned fabric is on top of the white dotted fabric.",
+    "parse_success": true,
+    "chunk_idx": 33,
+    "video_id": "e0A4yB3Eeus"
+  },
+  {
+    "time": [
+      34,
+      35
+    ],
+    "visible_entities": [
+      {
+        "desc": "hand with fair skin, fingers pressing down on fabric",
+        "action": "guiding fabric under the needle",
+        "position": "left"
+      },
+      {
+        "desc": "sewing machine presser foot, metallic silver, shiny, mechanical",
+        "action": "stitching fabric",
+        "position": "center"
+      },
+      {
+        "desc": "red fabric with a white geometric square pattern",
+        "action": "being sewn",
+        "position": "center"
+      },
+      {
+        "desc": "white fabric with small orange polka dots",
+        "action": "static",
+        "position": "bottom"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The sewing machine needle is moving up and down to stitch the red patterned fabric.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A hand is holding the red fabric in place near the presser foot.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The red patterned fabric is being sewn onto the white polka-dotted fabric.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The hand is to the left of the metallic presser foot. The presser foot is on top of the red patterned fabric. The red patterned fabric is layered above the white polka-dotted fabric.",
+    "parse_success": true,
+    "chunk_idx": 34,
+    "video_id": "e0A4yB3Eeus"
+  },
+  {
+    "time": [
+      35,
+      36
+    ],
+    "visible_entities": [
+      {
+        "desc": "person's fingers with light skin tone",
+        "action": "guiding fabric",
+        "position": "left"
+      },
+      {
+        "desc": "silver metal sewing machine presser foot and needle assembly",
+        "action": "stitching fabric",
+        "position": "center"
+      },
+      {
+        "desc": "red fabric with a white geometric square pattern",
+        "action": "being sewn",
+        "position": "center"
+      },
+      {
+        "desc": "white fabric with small orange polka dots",
+        "action": "static",
+        "position": "bottom"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The sewing machine needle is moving up and down to stitch the red fabric.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The person's fingers are holding the edge of the red fabric to guide it under the presser foot.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The red patterned fabric is layered on top of the white polka-dotted fabric.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The person's fingers are to the left of the metal presser foot. The presser foot is positioned directly above the red patterned fabric. The red fabric is on top of the white polka-dotted fabric.",
+    "parse_success": true,
+    "chunk_idx": 35,
+    "video_id": "e0A4yB3Eeus"
+  },
+  {
+    "time": [
+      36,
+      37
+    ],
+    "visible_entities": [
+      {
+        "desc": "sewing machine presser foot, metallic silver with black plastic components",
+        "action": "stitching fabric",
+        "position": "center"
+      },
+      {
+        "desc": "red fabric with a white geometric square pattern",
+        "action": "being sewn",
+        "position": "center"
+      },
+      {
+        "desc": "white fabric with small orange polka dots",
+        "action": "static",
+        "position": "bottom"
+      },
+      {
+        "desc": "person's fingers, light skin tone",
+        "action": "guiding fabric",
+        "position": "left"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The sewing machine presser foot is stitching the red patterned fabric.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A person's fingers are guiding the red fabric under the needle.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The red patterned fabric is layered on top of the white polka dot fabric.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The sewing machine presser foot is positioned above the red patterned fabric. The person's fingers are to the left of the presser foot, holding the fabric. The red patterned fabric is on top of the white polka dot fabric.",
+    "parse_success": true,
+    "chunk_idx": 36,
+    "video_id": "e0A4yB3Eeus"
+  },
+  {
+    "time": [
+      37,
+      38
+    ],
+    "visible_entities": [
+      {
+        "desc": "hand with light skin tone, fingers guiding fabric",
+        "action": "guiding fabric",
+        "position": "left"
+      },
+      {
+        "desc": "metal sewing machine presser foot, silver, shiny",
+        "action": "stitching",
+        "position": "center"
+      },
+      {
+        "desc": "red fabric with white geometric square pattern",
+        "action": "being sewn",
+        "position": "center"
+      },
+      {
+        "desc": "white fabric with small orange polka dots",
+        "action": "static",
+        "position": "foreground"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A sewing machine needle is moving up and down to stitch the fabric.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A hand is holding the red patterned fabric in place near the presser foot.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The red fabric is being sewn onto the white polka-dotted fabric.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The hand is to the left of the metal presser foot. The red patterned fabric is under the presser foot and above the white polka-dotted fabric.",
+    "parse_success": true,
+    "chunk_idx": 37,
+    "video_id": "e0A4yB3Eeus"
+  },
+  {
+    "time": [
+      38,
+      39
+    ],
+    "visible_entities": [
+      {
+        "desc": "hand with fair skin and short fingernails",
+        "action": "guiding fabric",
+        "position": "left"
+      },
+      {
+        "desc": "sewing machine presser foot, metallic silver with black plastic components",
+        "action": "stitching fabric",
+        "position": "center"
+      },
+      {
+        "desc": "red fabric with a white geometric diamond pattern",
+        "action": "being sewn",
+        "position": "center"
+      },
+      {
+        "desc": "white fabric with small orange polka dots",
+        "action": "static",
+        "position": "bottom"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A sewing machine needle is actively stitching the red patterned fabric.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A hand is holding the red fabric steady near the presser foot.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The red patterned fabric is layered on top of the white polka-dotted fabric.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The sewing machine presser foot is positioned above the red patterned fabric. The hand is to the left of the presser foot, guiding the material. The red fabric is on top of the white polka-dotted fabric.",
+    "parse_success": true,
+    "chunk_idx": 38,
+    "video_id": "e0A4yB3Eeus"
+  },
+  {
+    "time": [
+      39,
+      40
+    ],
+    "visible_entities": [
+      {
+        "desc": "person's hand with light skin tone, fingers visible",
+        "action": "guiding fabric",
+        "position": "left"
+      },
+      {
+        "desc": "sewing machine presser foot, metallic silver, mechanical parts",
+        "action": "stitching fabric",
+        "position": "center"
+      },
+      {
+        "desc": "red fabric with white geometric diamond pattern",
+        "action": "being sewn",
+        "position": "center"
+      },
+      {
+        "desc": "white fabric with small orange polka dots",
+        "action": "static",
+        "position": "bottom"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A person's hand is guiding a piece of red patterned fabric under the sewing machine needle.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The sewing machine presser foot is actively stitching the red fabric onto the white polka-dot fabric.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The red fabric has a geometric pattern of white diamonds.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The person's hand is to the left of the sewing machine presser foot. The red patterned fabric is under the presser foot and on top of the white polka-dot fabric. The sewing machine mechanism is above the fabrics.",
+    "parse_success": true,
+    "chunk_idx": 39,
+    "video_id": "e0A4yB3Eeus"
+  },
+  {
+    "time": [
+      40,
+      41
+    ],
+    "visible_entities": [
+      {
+        "desc": "sewing machine presser foot, metallic silver with black plastic components",
+        "action": "stitching fabric",
+        "position": "center"
+      },
+      {
+        "desc": "red fabric with white geometric square pattern",
+        "action": "being sewn",
+        "position": "left"
+      },
+      {
+        "desc": "white fabric with small orange polka dots",
+        "action": "static",
+        "position": "bottom"
+      },
+      {
+        "desc": "person's fingers with light skin tone",
         "action": "guiding fabric",
         "position": "left"
       }
@@ -1388,135 +1850,41 @@
         "confidence": 1.0
       },
       {
-        "fact": "The red fabric is being attached to the white polka-dotted background fabric.",
+        "fact": "The red fabric is layered on top of the white polka-dotted fabric.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The metallic presser foot is positioned directly above the red patterned fabric. The human fingers are to the left of the presser foot, guiding the material. The red fabric is on top of the white polka-dotted background fabric.",
+    "spatial": "The sewing machine presser foot is positioned above the red patterned fabric. The person's fingers are to the left of the presser foot, guiding the material. The red fabric is on top of the white polka-dotted fabric.",
     "parse_success": true,
-    "chunk_idx": 30,
+    "chunk_idx": 40,
     "video_id": "e0A4yB3Eeus"
   },
   {
     "time": [
-      62,
-      64
+      41,
+      42
     ],
     "visible_entities": [
       {
-        "desc": "sewing machine presser foot, metallic silver with black plastic components",
-        "action": "stitching fabric",
-        "position": "center"
-      },
-      {
-        "desc": "red fabric appliqué with white geometric square pattern, cut in a curved shape",
-        "action": "being sewn",
-        "position": "center"
-      },
-      {
-        "desc": "white background fabric with small orange polka dots",
-        "action": "static",
-        "position": "background"
-      },
-      {
-        "desc": "human fingers, light skin tone",
-        "action": "guiding fabric",
-        "position": "left"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "The sewing machine needle is moving up and down to stitch the red patterned fabric to the white background.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "Fingers on the left side are holding and guiding the red fabric under the presser foot.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The red fabric has a repeating white square-in-square geometric pattern.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [],
-    "spatial": "The metallic presser foot is positioned directly above the red patterned fabric. The red fabric is on top of the white polka-dotted background fabric. Human fingers are to the left of the presser foot, holding the edge of the red fabric.",
-    "parse_success": true,
-    "chunk_idx": 31,
-    "video_id": "e0A4yB3Eeus"
-  },
-  {
-    "time": [
-      64,
-      66
-    ],
-    "visible_entities": [
-      {
-        "desc": "sewing machine presser foot, silver metal, attached to black and silver mechanism",
-        "action": "stitching fabric",
-        "position": "center"
-      },
-      {
-        "desc": "red fabric piece with white geometric diamond pattern, cut into a curved shape",
-        "action": "being sewn",
-        "position": "center"
-      },
-      {
-        "desc": "fingers of a hand, light skin tone",
-        "action": "guiding fabric",
+        "desc": "hand with fair skin tone, fingers guiding fabric",
+        "action": "guiding fabric under needle",
         "position": "left"
       },
       {
-        "desc": "white background fabric with faint orange polka dots",
+        "desc": "red fabric with white geometric diamond pattern",
+        "action": "being sewn",
+        "position": "left/center"
+      },
+      {
+        "desc": "white fabric with small orange polka dots",
         "action": "static",
-        "position": "bottom"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "The sewing machine needle is moving up and down to stitch the red fabric.",
-        "confidence": 1.0
+        "position": "foreground/bottom"
       },
       {
-        "fact": "A hand is guiding the red patterned fabric under the presser foot.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The red fabric is being sewn onto the white polka-dotted background fabric.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [],
-    "spatial": "The sewing machine presser foot is above the red patterned fabric. The hand is to the left of the presser foot, holding the fabric. The red fabric is on top of the white background fabric.",
-    "parse_success": true,
-    "chunk_idx": 32,
-    "video_id": "e0A4yB3Eeus"
-  },
-  {
-    "time": [
-      66,
-      68
-    ],
-    "visible_entities": [
-      {
-        "desc": "person's fingers with light skin tone and short, natural nails",
-        "action": "guiding fabric",
-        "position": "left"
-      },
-      {
-        "desc": "sewing machine presser foot, metallic silver with black plastic components",
+        "desc": "silver metal sewing machine presser foot and needle assembly",
         "action": "stitching fabric",
         "position": "center"
-      },
-      {
-        "desc": "red fabric with a white geometric pattern of interlocking circles and diamonds",
-        "action": "being sewn",
-        "position": "center"
-      },
-      {
-        "desc": "white fabric with a faint pattern of small orange dots",
-        "action": "static",
-        "position": "bottom"
       }
     ],
     "atomic_facts": [
@@ -1525,139 +1893,97 @@
         "confidence": 1.0
       },
       {
-        "fact": "A person's fingers are holding the red fabric in place under the presser foot.",
+        "fact": "A hand is holding the red fabric in place near the presser foot.",
         "confidence": 1.0
       },
       {
-        "fact": "The red patterned fabric is layered on top of the white dotted fabric.",
+        "fact": "The red fabric is layered on top of the white polka-dotted fabric.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The person's fingers are to the left of the sewing machine presser foot. The presser foot is positioned directly above the red patterned fabric. The red patterned fabric is on top of the white dotted fabric.",
+    "spatial": "The hand is to the left of the sewing machine presser foot. The red patterned fabric is under the presser foot and on top of the white polka-dotted fabric. The needle is positioned directly above the red fabric.",
     "parse_success": true,
-    "chunk_idx": 33,
+    "chunk_idx": 41,
     "video_id": "e0A4yB3Eeus"
   },
   {
     "time": [
-      68,
-      70
+      42,
+      43
     ],
     "visible_entities": [
       {
-        "desc": "person's fingers with light skin tone",
+        "desc": "hand with light skin tone",
         "action": "guiding fabric",
         "position": "left"
       },
       {
-        "desc": "red fabric with white geometric square pattern",
+        "desc": "red fabric with white geometric diamond pattern",
         "action": "being sewn",
-        "position": "center"
+        "position": "left/center"
       },
       {
-        "desc": "silver metal sewing machine presser foot and needle",
+        "desc": "white fabric with small orange polka dots",
+        "action": "static",
+        "position": "foreground/bottom"
+      },
+      {
+        "desc": "sewing machine presser foot, metallic silver",
         "action": "stitching",
         "position": "center"
       },
       {
-        "desc": "white fabric with small orange polka dots",
-        "action": "static",
-        "position": "bottom"
+        "desc": "sewing machine needle, thin metal",
+        "action": "moving up and down",
+        "position": "center"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "The sewing machine needle is moving up and down to stitch the fabric.",
+        "fact": "The sewing machine needle is actively stitching the red patterned fabric to the white polka-dotted fabric.",
         "confidence": 1.0
       },
       {
-        "fact": "The person's fingers are holding the red patterned fabric in place.",
+        "fact": "The hand is holding the red fabric in place near the presser foot.",
         "confidence": 1.0
       },
       {
-        "fact": "The red fabric is being sewn onto the white polka-dotted fabric.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [],
-    "spatial": "The person's fingers are to the left of the sewing machine needle. The red patterned fabric is under the metal presser foot and on top of the white polka-dotted fabric.",
-    "parse_success": true,
-    "chunk_idx": 34,
-    "video_id": "e0A4yB3Eeus"
-  },
-  {
-    "time": [
-      70,
-      72
-    ],
-    "visible_entities": [
-      {
-        "desc": "silver metal sewing machine presser foot and needle assembly",
-        "action": "stitching fabric",
-        "position": "center"
-      },
-      {
-        "desc": "red fabric with a white geometric square pattern",
-        "action": "being sewn",
-        "position": "center"
-      },
-      {
-        "desc": "white fabric with small orange polka dots",
-        "action": "static",
-        "position": "bottom"
-      },
-      {
-        "desc": "human fingers with light skin tone",
-        "action": "guiding fabric",
-        "position": "left"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "A sewing machine needle is actively stitching the red patterned fabric.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "Fingers are holding and guiding the red fabric under the presser foot.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The red patterned fabric is layered on top of the white polka-dotted fabric.",
+        "fact": "The red fabric is layered on top of the white fabric.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The silver presser foot is positioned directly above the red patterned fabric. The human fingers are to the left of the needle, guiding the material. The red fabric is on top of the white polka-dotted fabric.",
+    "spatial": "The hand is to the left of the sewing machine presser foot. The red patterned fabric is under the presser foot and on top of the white polka-dotted fabric. The needle is positioned directly above the fabric layers.",
     "parse_success": true,
-    "chunk_idx": 35,
+    "chunk_idx": 42,
     "video_id": "e0A4yB3Eeus"
   },
   {
     "time": [
-      72,
-      74
+      43,
+      44
     ],
     "visible_entities": [
       {
-        "desc": "hand with light skin tone and short fingernails",
+        "desc": "hand with light skin tone, fingers guiding fabric",
         "action": "guiding fabric",
         "position": "left"
-      },
-      {
-        "desc": "sewing machine presser foot, metallic silver with black plastic components",
-        "action": "stitching fabric",
-        "position": "center"
       },
       {
         "desc": "red fabric with white geometric square pattern",
         "action": "being sewn",
-        "position": "center"
+        "position": "left"
       },
       {
         "desc": "white fabric with small orange polka dots",
         "action": "static",
-        "position": "bottom"
+        "position": "foreground"
+      },
+      {
+        "desc": "silver metal sewing machine presser foot and needle assembly",
+        "action": "stitching",
+        "position": "center"
       }
     ],
     "atomic_facts": [
@@ -1666,366 +1992,33 @@
         "confidence": 1.0
       },
       {
-        "fact": "The sewing machine presser foot is pressing down on the fabric.",
+        "fact": "The sewing machine needle is actively stitching the red fabric onto the white polka-dot fabric.",
         "confidence": 1.0
       },
       {
-        "fact": "The red fabric is layered on top of the white polka-dotted fabric.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The needle is moving up and down to stitch the layers together.",
+        "fact": "The red fabric features a repeating white geometric grid pattern.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The hand is to the left of the sewing machine presser foot. The red patterned fabric is under the presser foot and on top of the white polka-dotted fabric. The sewing machine mechanism is above the fabric layers.",
-    "parse_success": true,
-    "chunk_idx": 36,
-    "video_id": "e0A4yB3Eeus"
-  },
-  {
-    "time": [
-      74,
-      76
-    ],
-    "visible_entities": [
-      {
-        "desc": "hand with light skin tone, fingers visible",
-        "action": "guiding fabric",
-        "position": "left"
-      },
-      {
-        "desc": "sewing machine presser foot, silver metal, shiny",
-        "action": "stitching fabric",
-        "position": "center"
-      },
-      {
-        "desc": "fabric piece, red background with white geometric square pattern",
-        "action": "being sewn",
-        "position": "center"
-      },
-      {
-        "desc": "fabric piece, white background with small orange polka dots",
-        "action": "static",
-        "position": "bottom"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "The sewing machine needle is moving up and down to stitch the fabric.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "A hand is holding the red patterned fabric in place under the presser foot.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The red patterned fabric is layered on top of the white polka dot fabric.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [],
-    "spatial": "The hand is to the left of the sewing machine presser foot. The red patterned fabric is under the presser foot and on top of the white polka dot fabric. The presser foot is above the fabric layers.",
-    "parse_success": true,
-    "chunk_idx": 37,
-    "video_id": "e0A4yB3Eeus"
-  },
-  {
-    "time": [
-      76,
-      78
-    ],
-    "visible_entities": [
-      {
-        "desc": "hand with light skin tone, short fingernails",
-        "action": "guiding fabric",
-        "position": "left"
-      },
-      {
-        "desc": "sewing machine presser foot, metallic silver, attached to black mechanism",
-        "action": "stitching",
-        "position": "center"
-      },
-      {
-        "desc": "red fabric piece with white geometric square pattern",
-        "action": "being sewn",
-        "position": "center"
-      },
-      {
-        "desc": "white fabric background with small orange polka dots",
-        "action": "static",
-        "position": "bottom"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "The sewing machine needle is moving up and down to stitch the red fabric.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "A hand is holding the red fabric in place near the presser foot.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The red patterned fabric is being sewn onto the white polka-dotted fabric.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [],
-    "spatial": "The hand is to the left of the sewing machine presser foot. The presser foot is positioned on top of the red fabric. The red fabric is placed on top of the white polka-dotted fabric.",
-    "parse_success": true,
-    "chunk_idx": 38,
-    "video_id": "e0A4yB3Eeus"
-  },
-  {
-    "time": [
-      78,
-      80
-    ],
-    "visible_entities": [
-      {
-        "desc": "hand with fair skin tone",
-        "action": "guiding fabric",
-        "position": "left"
-      },
-      {
-        "desc": "sewing machine presser foot, metallic silver",
-        "action": "stitching fabric",
-        "position": "center"
-      },
-      {
-        "desc": "red fabric with white geometric diamond pattern",
-        "action": "being sewn",
-        "position": "center"
-      },
-      {
-        "desc": "white fabric with small orange polka dots",
-        "action": "static",
-        "position": "bottom"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "A sewing machine presser foot is stitching the edge of the red patterned fabric.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "A hand is guiding the red fabric under the needle.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The red fabric is layered on top of the white polka-dotted fabric.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [],
-    "spatial": "The hand is to the left of the sewing machine presser foot. The red patterned fabric is under the presser foot and on top of the white polka-dotted fabric.",
-    "parse_success": true,
-    "chunk_idx": 39,
-    "video_id": "e0A4yB3Eeus"
-  },
-  {
-    "time": [
-      80,
-      82
-    ],
-    "visible_entities": [
-      {
-        "desc": "hand with light skin tone and short fingernails",
-        "action": "guiding fabric",
-        "position": "left"
-      },
-      {
-        "desc": "sewing machine presser foot, metallic silver with black plastic components",
-        "action": "stitching fabric",
-        "position": "center"
-      },
-      {
-        "desc": "red fabric with a white geometric square pattern",
-        "action": "being sewn",
-        "position": "center"
-      },
-      {
-        "desc": "white fabric with small orange polka dots",
-        "action": "static",
-        "position": "background"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "A sewing machine needle is moving up and down to stitch the red patterned fabric.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "A hand is holding and guiding the red fabric under the presser foot.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The red patterned fabric is layered on top of the white polka-dotted fabric.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [],
-    "spatial": "The hand is to the left of the sewing machine presser foot. The presser foot is pressing down on the red patterned fabric. The red patterned fabric is on top of the white polka-dotted fabric.",
-    "parse_success": true,
-    "chunk_idx": 40,
-    "video_id": "e0A4yB3Eeus"
-  },
-  {
-    "time": [
-      82,
-      84
-    ],
-    "visible_entities": [
-      {
-        "desc": "person's hand with light skin tone",
-        "action": "guiding fabric",
-        "position": "left"
-      },
-      {
-        "desc": "red fabric with white geometric diamond pattern",
-        "action": "being sewn",
-        "position": "left"
-      },
-      {
-        "desc": "white fabric with small orange polka dots",
-        "action": "static",
-        "position": "bottom"
-      },
-      {
-        "desc": "silver metal sewing machine presser foot and needle assembly",
-        "action": "stitching",
-        "position": "center"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "The sewing machine needle is moving up and down to stitch the fabric.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The person's hand is holding the red patterned fabric in place.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The red fabric is being sewn onto the white polka-dotted fabric.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [],
-    "spatial": "The person's hand is to the left of the sewing machine presser foot. The red patterned fabric is underneath the presser foot and on top of the white polka-dotted fabric. The sewing machine needle is positioned directly above the seam where the two fabrics meet.",
-    "parse_success": true,
-    "chunk_idx": 41,
-    "video_id": "e0A4yB3Eeus"
-  },
-  {
-    "time": [
-      84,
-      86
-    ],
-    "visible_entities": [
-      {
-        "desc": "human hand with light skin tone, fingers guiding fabric",
-        "action": "guiding fabric",
-        "position": "left"
-      },
-      {
-        "desc": "sewing machine presser foot, silver metal, attached to machine head",
-        "action": "stitching fabric",
-        "position": "center"
-      },
-      {
-        "desc": "red fabric with white geometric diamond pattern",
-        "action": "being sewn",
-        "position": "left"
-      },
-      {
-        "desc": "white fabric with small orange polka dots",
-        "action": "static",
-        "position": "foreground"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "A sewing machine needle is moving up and down to stitch the red patterned fabric.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "A hand is holding the red fabric in place under the presser foot.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The red fabric is being sewn onto the white polka-dotted fabric.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [],
-    "spatial": "The human hand is to the left of the sewing machine presser foot. The red patterned fabric is under the presser foot and on top of the white polka-dotted fabric. The sewing machine head is above the fabric.",
-    "parse_success": true,
-    "chunk_idx": 42,
-    "video_id": "e0A4yB3Eeus"
-  },
-  {
-    "time": [
-      86,
-      88
-    ],
-    "visible_entities": [
-      {
-        "desc": "hand with light skin tone and short fingernails",
-        "action": "guiding fabric",
-        "position": "left"
-      },
-      {
-        "desc": "red fabric with a white geometric square pattern",
-        "action": "being sewn",
-        "position": "left"
-      },
-      {
-        "desc": "white fabric with small orange polka dots",
-        "action": "static",
-        "position": "foreground"
-      },
-      {
-        "desc": "silver metal sewing machine presser foot and needle assembly",
-        "action": "stitching",
-        "position": "center"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "The sewing machine needle is moving up and down to stitch the fabric.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "A hand is holding the red patterned fabric in place under the presser foot.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The red fabric is being sewn onto the white polka-dotted fabric.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [],
-    "spatial": "The hand is to the left of the sewing machine presser foot. The red patterned fabric is positioned under the presser foot and on top of the white polka-dotted fabric. The needle is directly above the point where the two fabrics meet.",
+    "spatial": "The hand is positioned to the left of the sewing machine's presser foot. The red patterned fabric is being fed under the presser foot and lies on top of the white polka-dot fabric. The needle is located directly above the point where the two fabrics meet.",
     "parse_success": true,
     "chunk_idx": 43,
     "video_id": "e0A4yB3Eeus"
   },
   {
     "time": [
-      88,
-      90
+      44,
+      45
     ],
     "visible_entities": [
       {
-        "desc": "sewing machine presser foot, metallic silver and black plastic",
+        "desc": "sewing machine presser foot, metallic silver and black plastic components",
         "action": "sewing fabric",
         "position": "center"
       },
       {
-        "desc": "red fabric with white geometric square pattern",
+        "desc": "red fabric with a white geometric diamond pattern",
         "action": "being sewn",
         "position": "left"
       },
@@ -2035,9 +2028,14 @@
         "position": "right"
       },
       {
-        "desc": "fingers with light skin tone",
+        "desc": "human fingers with light skin tone",
         "action": "guiding fabric",
         "position": "left"
+      },
+      {
+        "desc": "blurry beige obstruction, likely a finger or hand",
+        "action": "blocking view",
+        "position": "foreground"
       }
     ],
     "atomic_facts": [
@@ -2046,34 +2044,34 @@
         "confidence": 1.0
       },
       {
-        "fact": "Fingers are holding the red fabric in place near the needle.",
+        "fact": "Human fingers are holding and guiding the red fabric under the needle.",
         "confidence": 1.0
       },
       {
-        "fact": "The needle is moving up and down to create a seam.",
+        "fact": "A blurry object moves into the foreground, obscuring the view of the sewing process.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The sewing machine presser foot is positioned above the junction of the red fabric and the white fabric. The fingers are to the left of the presser foot, holding the red fabric. The red fabric is to the left of the white fabric.",
+    "spatial": "The sewing machine presser foot is positioned centrally, pressing down on the junction of the two fabrics. The red patterned fabric is to the left of the white polka-dotted fabric. The human fingers are located to the left of the presser foot, holding the red fabric. In the second frame, a blurry obstruction is in the immediate foreground, blocking the view of the sewing machine and fabrics.",
     "parse_success": true,
     "chunk_idx": 44,
     "video_id": "e0A4yB3Eeus"
   },
   {
     "time": [
-      90,
-      92
+      45,
+      46
     ],
     "visible_entities": [
       {
-        "desc": "fingers with light skin tone and natural nails",
+        "desc": "person's fingers with light skin and manicured nails",
         "action": "guiding fabric",
         "position": "left"
       },
       {
         "desc": "sewing machine presser foot, metallic silver with black plastic components",
-        "action": "stitching",
+        "action": "stitching fabric",
         "position": "center"
       },
       {
@@ -2084,49 +2082,49 @@
       {
         "desc": "white fabric with small orange polka dots",
         "action": "static",
-        "position": "bottom"
+        "position": "foreground"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "The sewing machine presser foot is stitching the red patterned fabric to the white polka-dotted fabric.",
+        "fact": "The sewing machine needle is moving up and down to stitch the red patterned fabric.",
         "confidence": 1.0
       },
       {
-        "fact": "Fingers are holding the red fabric in place near the needle.",
+        "fact": "The person's fingers are holding the red fabric near the presser foot.",
         "confidence": 1.0
       },
       {
-        "fact": "The red fabric is positioned on top of the white fabric.",
+        "fact": "The red fabric is being sewn onto the white polka-dotted fabric.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The fingers are to the left of the sewing machine presser foot. The red patterned fabric is under the presser foot and on top of the white polka-dotted fabric. The presser foot is above the fabric layers.",
+    "spatial": "The sewing machine presser foot is in the center, positioned above the fabrics. The person's fingers are to the left of the presser foot, holding the red patterned fabric. The red fabric is on top of the white polka-dotted fabric in the foreground.",
     "parse_success": true,
     "chunk_idx": 45,
     "video_id": "e0A4yB3Eeus"
   },
   {
     "time": [
-      92,
-      94
+      46,
+      47
     ],
     "visible_entities": [
       {
         "desc": "hand with light skin tone",
         "action": "guiding fabric",
-        "position": "left"
+        "position": "left/foreground"
       },
       {
         "desc": "sewing machine presser foot, metallic silver",
-        "action": "stitching",
+        "action": "stitching fabric",
         "position": "center"
       },
       {
         "desc": "red fabric with white geometric square pattern",
         "action": "being sewn",
-        "position": "center"
+        "position": "center/foreground"
       },
       {
         "desc": "white fabric with small orange polka dots",
@@ -2140,38 +2138,42 @@
         "confidence": 1.0
       },
       {
-        "fact": "The sewing machine is stitching the red fabric onto the white polka dot fabric.",
+        "fact": "The sewing machine presser foot is actively stitching the red fabric.",
         "confidence": 1.0
       },
       {
-        "fact": "The red fabric has a repeating pattern of white squares within red squares.",
+        "fact": "The red fabric features a repeating grid of white squares.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The red fabric is placed on top of a larger piece of white fabric with orange dots.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The hand is to the left of the sewing machine presser foot. The red patterned fabric is underneath the presser foot and on top of the white polka dot fabric. The sewing machine needle is positioned above the fabric layers.",
+    "spatial": "The hand is to the left of the sewing machine presser foot. The presser foot is positioned above the red patterned fabric. The red fabric is on top of the white polka-dotted fabric.",
     "parse_success": true,
     "chunk_idx": 46,
     "video_id": "e0A4yB3Eeus"
   },
   {
     "time": [
-      94,
-      96
+      47,
+      48
     ],
     "visible_entities": [
       {
-        "desc": "sewing machine presser foot, metallic silver with gold-colored components",
+        "desc": "sewing machine presser foot, metallic silver, shiny, attached to needle bar",
         "action": "stitching fabric",
         "position": "center"
       },
       {
-        "desc": "red fabric with a white geometric pattern of squares and dots, cut into a scalloped shape",
+        "desc": "red fabric with white geometric diamond pattern, scalloped edge",
         "action": "being sewn",
-        "position": "center"
+        "position": "foreground"
       },
       {
-        "desc": "white background fabric with faint small dots",
+        "desc": "white fabric with small faint dots",
         "action": "static",
         "position": "background"
       }
@@ -2182,33 +2184,33 @@
         "confidence": 1.0
       },
       {
-        "fact": "The red fabric has a white geometric pattern consisting of squares and dots.",
+        "fact": "The red fabric is layered on top of the white fabric.",
         "confidence": 1.0
       },
       {
-        "fact": "The red fabric is cut into a scalloped or flower-like shape.",
+        "fact": "The needle is moving up and down through the fabric layers.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The metallic presser foot is positioned above the red patterned fabric. The red fabric is on top of the white background fabric. The sewing needle is moving up and down through the layers of fabric.",
+    "spatial": "The metallic presser foot is positioned directly above the red patterned fabric. The red fabric is on top of the white fabric. The sewing machine needle is in front of the presser foot mechanism.",
     "parse_success": true,
     "chunk_idx": 47,
     "video_id": "e0A4yB3Eeus"
   },
   {
     "time": [
-      96,
-      98
+      48,
+      49
     ],
     "visible_entities": [
       {
-        "desc": "silver metal sewing machine presser foot and needle assembly",
+        "desc": "sewing machine presser foot, metallic silver, shiny",
         "action": "stitching fabric",
         "position": "center"
       },
       {
-        "desc": "red fabric with a white geometric square and dot pattern",
+        "desc": "red fabric with white geometric square pattern, cut into a scalloped shape",
         "action": "being sewn",
         "position": "center"
       },
@@ -2225,37 +2227,37 @@
     ],
     "atomic_facts": [
       {
-        "fact": "The sewing machine needle is moving up and down to stitch the red patterned fabric.",
+        "fact": "The sewing machine presser foot is stitching the red patterned fabric.",
         "confidence": 1.0
       },
       {
-        "fact": "A hand enters the frame from the left to guide the fabric under the presser foot.",
+        "fact": "A hand is visible on the left side, guiding the fabric under the needle.",
         "confidence": 1.0
       },
       {
-        "fact": "The red fabric has a scalloped edge and is being attached to the background fabric.",
+        "fact": "The red fabric is layered on top of the polka-dotted fabric.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The silver sewing machine presser foot is positioned above the red patterned fabric. The red fabric is on top of the light-colored polka dot fabric. The hand is to the left of the needle, holding the edge of the red fabric.",
+    "spatial": "The metallic presser foot is positioned directly above the red patterned fabric. The red fabric is on top of the light-colored polka-dotted fabric. A hand is to the left of the presser foot, holding the edge of the fabric.",
     "parse_success": true,
     "chunk_idx": 48,
     "video_id": "e0A4yB3Eeus"
   },
   {
     "time": [
-      98,
-      100
+      49,
+      50
     ],
     "visible_entities": [
       {
-        "desc": "hand with fair skin",
+        "desc": "hand with light skin tone",
         "action": "guiding fabric",
         "position": "left"
       },
       {
-        "desc": "silver metal sewing machine presser foot and needle",
+        "desc": "silver metal sewing machine presser foot",
         "action": "stitching",
         "position": "center"
       },
@@ -2265,39 +2267,180 @@
         "position": "center"
       },
       {
-        "desc": "white fabric with small orange polka dots",
+        "desc": "white fabric with small yellow polka dots",
         "action": "static",
         "position": "background"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A sewing machine needle is stitching the red patterned fabric.",
+        "fact": "A sewing machine needle is stitching the red patterned fabric to the white polka dot fabric.",
         "confidence": 1.0
       },
       {
-        "fact": "A hand is guiding the red fabric under the presser foot.",
+        "fact": "A hand is holding the edge of the red fabric to guide it under the presser foot.",
         "confidence": 1.0
       },
       {
-        "fact": "The red fabric is placed on top of the white polka-dotted fabric.",
+        "fact": "The red fabric has a white grid pattern containing small squares.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The hand is to the left of the sewing machine presser foot. The presser foot is above the red patterned fabric. The red fabric is on top of the white polka-dotted background fabric.",
+    "spatial": "The hand is to the left of the silver presser foot. The presser foot is positioned on top of the red patterned fabric. The red fabric is layered on top of the white polka dot fabric.",
     "parse_success": true,
     "chunk_idx": 49,
     "video_id": "e0A4yB3Eeus"
   },
   {
     "time": [
-      100,
-      102
+      50,
+      51
     ],
     "visible_entities": [
       {
         "desc": "hand with light skin tone",
+        "action": "guiding fabric",
+        "position": "left"
+      },
+      {
+        "desc": "red fabric with white geometric square pattern, cut into a scalloped shape",
+        "action": "being sewn",
+        "position": "center"
+      },
+      {
+        "desc": "silver metal sewing machine presser foot and needle",
+        "action": "stitching",
+        "position": "center"
+      },
+      {
+        "desc": "white fabric with small yellow polka dots",
+        "action": "static",
+        "position": "background"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A sewing machine needle is stitching the red patterned fabric to the white polka-dotted fabric.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A hand is holding the edge of the red fabric to guide it under the presser foot.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The red fabric has a distinct scalloped edge.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The hand is to the left of the sewing machine presser foot. The red patterned fabric is under the presser foot and on top of the white polka-dotted fabric.",
+    "parse_success": true,
+    "chunk_idx": 50,
+    "video_id": "e0A4yB3Eeus"
+  },
+  {
+    "time": [
+      51,
+      52
+    ],
+    "visible_entities": [
+      {
+        "desc": "hand with light skin tone",
+        "action": "guiding fabric",
+        "position": "left"
+      },
+      {
+        "desc": "silver metal sewing machine presser foot and needle assembly",
+        "action": "stitching",
+        "position": "center"
+      },
+      {
+        "desc": "red fabric with white geometric square pattern and scalloped edges",
+        "action": "being sewn",
+        "position": "center"
+      },
+      {
+        "desc": "white fabric with yellow polka dots",
+        "action": "static",
+        "position": "background"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The sewing machine needle is actively stitching the red fabric.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A hand is holding the red fabric in place near the presser foot.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The red fabric is layered on top of the white polka-dot fabric.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The hand is to the left of the sewing machine presser foot. The presser foot is positioned directly above the red patterned fabric. The red fabric is on top of the white fabric with yellow dots.",
+    "parse_success": true,
+    "chunk_idx": 51,
+    "video_id": "e0A4yB3Eeus"
+  },
+  {
+    "time": [
+      52,
+      53
+    ],
+    "visible_entities": [
+      {
+        "desc": "hand with light skin tone",
+        "action": "guiding fabric",
+        "position": "left"
+      },
+      {
+        "desc": "silver metal sewing machine presser foot",
+        "action": "stitching",
+        "position": "center"
+      },
+      {
+        "desc": "red fabric with white geometric square pattern cut into a scalloped shape",
+        "action": "being sewn",
+        "position": "center"
+      },
+      {
+        "desc": "white background fabric with small orange polka dots",
+        "action": "static",
+        "position": "background"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A sewing machine presser foot is stitching a red patterned fabric piece.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A hand is holding the fabric steady near the needle.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The red fabric has a white grid-like geometric pattern.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The hand is to the left of the sewing machine presser foot. The red patterned fabric is under the presser foot and on top of the white polka-dotted background fabric.",
+    "parse_success": true,
+    "chunk_idx": 52,
+    "video_id": "e0A4yB3Eeus"
+  },
+  {
+    "time": [
+      53,
+      54
+    ],
+    "visible_entities": [
+      {
+        "desc": "hand with light skin tone and short fingernails",
         "action": "guiding fabric",
         "position": "left"
       },
@@ -2312,35 +2455,35 @@
         "position": "center"
       },
       {
-        "desc": "white fabric with small yellow polka dots",
+        "desc": "light-colored fabric with small yellow dots",
         "action": "static",
         "position": "background"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A sewing machine presser foot is stitching the edge of a red patterned fabric piece.",
+        "fact": "The sewing machine presser foot is stitching the red patterned fabric.",
         "confidence": 1.0
       },
       {
-        "fact": "A hand is holding and guiding the red fabric under the needle.",
+        "fact": "A hand is guiding the red fabric under the needle.",
         "confidence": 1.0
       },
       {
-        "fact": "The red fabric is being sewn onto a white polka-dotted background fabric.",
+        "fact": "The red fabric is placed on top of the yellow-dotted fabric.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The hand is to the left of the sewing machine presser foot. The presser foot is on top of the red patterned fabric. The red fabric is on top of the white polka-dotted fabric.",
+    "spatial": "The hand is to the left of the sewing machine presser foot. The presser foot is on top of the red patterned fabric. The red fabric is on top of the light-colored fabric with yellow dots.",
     "parse_success": true,
-    "chunk_idx": 50,
+    "chunk_idx": 53,
     "video_id": "e0A4yB3Eeus"
   },
   {
     "time": [
-      102,
-      104
+      54,
+      55
     ],
     "visible_entities": [
       {
@@ -2349,205 +2492,56 @@
         "position": "left"
       },
       {
-        "desc": "metal sewing machine presser foot and needle",
+        "desc": "silver metal sewing machine presser foot and needle",
         "action": "stitching",
         "position": "center"
       },
       {
-        "desc": "red fabric with white geometric square pattern, cut into a scalloped shape",
+        "desc": "red fabric with a white geometric square pattern",
         "action": "being sewn",
         "position": "center"
       },
       {
-        "desc": "light-colored fabric with small yellow polka dots",
-        "action": "static",
-        "position": "background"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "The sewing machine needle is actively stitching the red patterned fabric.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "A hand is holding the red fabric in place near the presser foot.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The red fabric is layered on top of the polka dot fabric.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [],
-    "spatial": "The sewing machine presser foot is positioned above the red patterned fabric. The person's hand is to the left of the presser foot, guiding the material. The red fabric is on top of the light-colored polka dot fabric.",
-    "parse_success": true,
-    "chunk_idx": 51,
-    "video_id": "e0A4yB3Eeus"
-  },
-  {
-    "time": [
-      104,
-      106
-    ],
-    "visible_entities": [
-      {
-        "desc": "hand with light skin tone, fingers extended",
-        "action": "guiding fabric",
-        "position": "left"
-      },
-      {
-        "desc": "sewing machine presser foot, metallic silver, shiny",
-        "action": "pressing down on fabric",
-        "position": "center"
-      },
-      {
-        "desc": "fabric piece, red background with white geometric square pattern, scalloped edges",
-        "action": "being sewn",
-        "position": "center"
-      },
-      {
-        "desc": "background fabric, cream color with small yellow polka dots",
-        "action": "static",
-        "position": "background"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "A hand is guiding a piece of red patterned fabric under the sewing machine needle.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The metallic presser foot is holding the fabric in place.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The red fabric has a scalloped edge shape.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The sewing machine is stitching the red fabric onto the cream polka-dot fabric.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [],
-    "spatial": "The hand is positioned to the left of the sewing machine presser foot. The presser foot is directly above the red patterned fabric. The red fabric is on top of the cream polka-dot background fabric.",
-    "parse_success": true,
-    "chunk_idx": 52,
-    "video_id": "e0A4yB3Eeus"
-  },
-  {
-    "time": [
-      106,
-      108
-    ],
-    "visible_entities": [
-      {
-        "desc": "hand with light skin tone, fingers extended",
-        "action": "guiding fabric",
-        "position": "left/foreground"
-      },
-      {
-        "desc": "red fabric with white geometric diamond pattern, cut into a scalloped shape",
-        "action": "being sewn",
-        "position": "center"
-      },
-      {
-        "desc": "silver metallic sewing machine presser foot and needle",
-        "action": "stitching",
-        "position": "center/top"
-      },
-      {
-        "desc": "white fabric with small yellow polka dots",
-        "action": "static",
-        "position": "bottom/background"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "A sewing machine needle is stitching the red patterned fabric to the white polka-dot fabric.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "A hand is holding and guiding the red fabric under the presser foot.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The red fabric has a distinct scalloped edge.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [],
-    "spatial": "The hand is to the left of the sewing machine presser foot. The red patterned fabric is positioned under the presser foot and on top of the white polka-dot fabric. The sewing machine needle is above the fabric layers.",
-    "parse_success": true,
-    "chunk_idx": 53,
-    "video_id": "e0A4yB3Eeus"
-  },
-  {
-    "time": [
-      108,
-      110
-    ],
-    "visible_entities": [
-      {
-        "desc": "sewing machine presser foot, metallic silver, shiny, mechanical",
-        "action": "stitching fabric",
-        "position": "center"
-      },
-      {
-        "desc": "red fabric with a white geometric grid pattern of squares and dots",
-        "action": "being sewn",
-        "position": "center"
-      },
-      {
-        "desc": "human hand, light skin tone, fingers guiding material",
-        "action": "guiding fabric",
-        "position": "left"
-      },
-      {
-        "desc": "white background fabric with small yellow polka dots",
+        "desc": "white fabric with small yellow dots",
         "action": "static",
         "position": "bottom"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A sewing machine presser foot is stitching a piece of red patterned fabric.",
+        "fact": "A sewing machine needle is stitching the red patterned fabric.",
         "confidence": 1.0
       },
       {
-        "fact": "A hand is guiding the red fabric under the needle.",
+        "fact": "A hand is guiding the red fabric under the presser foot.",
         "confidence": 1.0
       },
       {
-        "fact": "The red fabric is being sewn onto a white background fabric with yellow dots.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The presser foot is holding the fabric layers together.",
+        "fact": "The red fabric is layered on top of the white dotted fabric.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The metallic presser foot is positioned directly above the red patterned fabric. The human hand is to the left of the presser foot, holding the edge of the fabric. The red fabric is on top of the white fabric with yellow dots.",
+    "spatial": "The hand is to the left of the sewing machine presser foot. The presser foot is on top of the red patterned fabric. The red fabric is placed on top of the white fabric with yellow dots.",
     "parse_success": true,
     "chunk_idx": 54,
     "video_id": "e0A4yB3Eeus"
   },
   {
     "time": [
-      110,
-      112
+      55,
+      56
     ],
     "visible_entities": [
       {
-        "desc": "hand with light skin tone",
+        "desc": "person's hand with light skin tone",
         "action": "guiding fabric",
-        "position": "left"
+        "position": "left/foreground"
       },
       {
         "desc": "silver metal sewing machine presser foot and needle",
         "action": "stitching",
-        "position": "center"
+        "position": "center/foreground"
       },
       {
         "desc": "red fabric with a white geometric square pattern, cut into a curved shape",
@@ -2562,7 +2556,54 @@
     ],
     "atomic_facts": [
       {
-        "fact": "A sewing machine needle is actively stitching the red patterned fabric.",
+        "fact": "The sewing machine needle is actively stitching the red patterned fabric.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A hand is holding and guiding the red fabric under the presser foot.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The red fabric is layered on top of the white polka-dotted fabric.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The person's hand is to the left of the sewing machine presser foot. The presser foot is positioned above the red patterned fabric. The red fabric is on top of the white polka-dotted fabric.",
+    "parse_success": true,
+    "chunk_idx": 55,
+    "video_id": "e0A4yB3Eeus"
+  },
+  {
+    "time": [
+      56,
+      57
+    ],
+    "visible_entities": [
+      {
+        "desc": "hand with light skin tone",
+        "action": "guiding fabric",
+        "position": "left"
+      },
+      {
+        "desc": "metallic sewing machine presser foot and needle assembly",
+        "action": "stitching",
+        "position": "center"
+      },
+      {
+        "desc": "red fabric with white geometric square pattern, cut into a scalloped shape",
+        "action": "being sewn",
+        "position": "center"
+      },
+      {
+        "desc": "white background fabric with small yellow polka dots",
+        "action": "static",
+        "position": "background"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The sewing machine needle is actively stitching the red patterned fabric.",
         "confidence": 1.0
       },
       {
@@ -2575,41 +2616,41 @@
       }
     ],
     "ocr": [],
-    "spatial": "The hand is to the left of the sewing machine presser foot. The red patterned fabric is positioned under the needle and presser foot. The red fabric is on top of the white polka-dotted background fabric.",
+    "spatial": "The hand is to the left of the sewing machine presser foot. The presser foot is positioned directly above the red patterned fabric. The red fabric is on top of the white background fabric.",
     "parse_success": true,
-    "chunk_idx": 55,
+    "chunk_idx": 56,
     "video_id": "e0A4yB3Eeus"
   },
   {
     "time": [
-      112,
-      114
+      57,
+      58
     ],
     "visible_entities": [
       {
-        "desc": "hand with light skin tone",
+        "desc": "hand with light skin tone, fingers extended",
         "action": "guiding fabric",
         "position": "left"
       },
       {
-        "desc": "silver metal sewing machine presser foot",
+        "desc": "sewing machine presser foot, metallic silver, shiny",
         "action": "stitching",
         "position": "center"
       },
       {
-        "desc": "red fabric with white geometric square pattern",
+        "desc": "red fabric with white geometric diamond pattern, cut in a curved shape",
         "action": "being sewn",
         "position": "center"
       },
       {
-        "desc": "white fabric with yellow polka dots",
+        "desc": "white fabric with small yellow polka dots",
         "action": "static",
         "position": "bottom"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A sewing machine presser foot is stitching a red patterned fabric.",
+        "fact": "A sewing machine presser foot is stitching the edge of a red patterned fabric.",
         "confidence": 1.0
       },
       {
@@ -2617,67 +2658,20 @@
         "confidence": 1.0
       },
       {
-        "fact": "The red fabric is placed on top of a white polka-dotted fabric.",
+        "fact": "The red fabric is layered on top of a white polka-dotted fabric.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The hand is to the left of the sewing machine presser foot. The presser foot is pressing down on the red patterned fabric. The red fabric is on top of the white polka-dotted fabric.",
-    "parse_success": true,
-    "chunk_idx": 56,
-    "video_id": "e0A4yB3Eeus"
-  },
-  {
-    "time": [
-      114,
-      116
-    ],
-    "visible_entities": [
-      {
-        "desc": "hand with light skin tone",
-        "action": "guiding fabric",
-        "position": "left/foreground"
-      },
-      {
-        "desc": "silver metal sewing machine presser foot",
-        "action": "stitching",
-        "position": "center"
-      },
-      {
-        "desc": "red fabric with white geometric square pattern",
-        "action": "being sewn",
-        "position": "center/background"
-      },
-      {
-        "desc": "white fabric with small yellow polka dots",
-        "action": "static",
-        "position": "bottom/foreground"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "The sewing machine presser foot is stitching the red patterned fabric.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "A hand is guiding the fabric under the needle.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The red fabric is layered on top of the white polka-dotted fabric.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [],
-    "spatial": "The hand is to the left of the presser foot. The presser foot is positioned above the red patterned fabric. The red fabric is on top of the white polka-dotted fabric.",
+    "spatial": "The metallic presser foot is positioned above the red patterned fabric. The hand is to the left of the presser foot, holding the fabric. The red fabric is on top of the white polka-dotted fabric.",
     "parse_success": true,
     "chunk_idx": 57,
     "video_id": "e0A4yB3Eeus"
   },
   {
     "time": [
-      116,
-      118
+      58,
+      59
     ],
     "visible_entities": [
       {
@@ -2686,7 +2680,7 @@
         "position": "left"
       },
       {
-        "desc": "silver metal sewing machine presser foot and needle",
+        "desc": "metal sewing machine presser foot and needle",
         "action": "stitching",
         "position": "center"
       },
@@ -2703,126 +2697,122 @@
     ],
     "atomic_facts": [
       {
-        "fact": "A sewing machine needle is moving up and down to stitch the red fabric.",
+        "fact": "A sewing machine needle is actively stitching a red patterned fabric.",
         "confidence": 1.0
       },
       {
-        "fact": "A hand is holding the red fabric in place near the presser foot.",
+        "fact": "A hand is holding and guiding the red fabric under the presser foot.",
         "confidence": 1.0
       },
       {
-        "fact": "The red patterned fabric is layered on top of the white polka dot fabric.",
+        "fact": "The red fabric is placed on top of a white polka-dotted fabric.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The hand is to the left of the sewing machine presser foot. The presser foot is directly above the red patterned fabric. The red fabric is on top of the white polka dot fabric.",
+    "spatial": "The hand is to the left of the sewing machine needle. The metal presser foot is above the red patterned fabric. The red fabric is on top of the white polka-dotted background fabric.",
     "parse_success": true,
     "chunk_idx": 58,
     "video_id": "e0A4yB3Eeus"
   },
   {
     "time": [
-      118,
-      120
+      59,
+      60
     ],
     "visible_entities": [
       {
-        "desc": "hand with light skin tone, fingers visible",
+        "desc": "hand with light skin tone",
         "action": "guiding fabric",
         "position": "left"
       },
       {
         "desc": "silver metal sewing machine presser foot and needle assembly",
-        "action": "stitching fabric",
+        "action": "stitching",
         "position": "center"
       },
       {
-        "desc": "red fabric with a white geometric grid pattern, cut into a curved shape",
+        "desc": "red fabric with white geometric diamond pattern",
         "action": "being sewn",
         "position": "center"
       },
       {
-        "desc": "white fabric background with small yellow polka dots",
+        "desc": "white fabric with yellow polka dots",
         "action": "static",
-        "position": "background"
+        "position": "bottom"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A sewing machine needle is rapidly moving up and down to stitch the red patterned fabric.",
+        "fact": "A sewing machine needle is stitching the red patterned fabric.",
         "confidence": 1.0
       },
       {
-        "fact": "A hand is holding and guiding the edge of the red fabric under the presser foot.",
+        "fact": "A hand is holding the fabric near the presser foot.",
         "confidence": 1.0
       },
       {
-        "fact": "The red fabric is being attached to the white polka-dotted background fabric.",
+        "fact": "The red fabric is layered on top of the white polka-dotted fabric.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The hand is to the left of the sewing machine needle. The silver presser foot is positioned directly above the red patterned fabric. The red fabric is on top of the white polka-dotted background fabric.",
+    "spatial": "The hand is to the left of the sewing machine presser foot. The presser foot is above the red patterned fabric. The red fabric is on top of the white polka-dotted fabric.",
     "parse_success": true,
     "chunk_idx": 59,
     "video_id": "e0A4yB3Eeus"
   },
   {
     "time": [
-      120,
-      122
+      60,
+      61
     ],
     "visible_entities": [
       {
-        "desc": "hand with light skin tone, fingers visible",
-        "action": "guiding fabric",
+        "desc": "hand with light skin tone, fingers guiding fabric",
+        "action": "guiding fabric under needle",
         "position": "left"
       },
       {
         "desc": "sewing machine presser foot, metallic silver, shiny",
-        "action": "stitching",
+        "action": "pressing down on fabric",
         "position": "center"
       },
       {
-        "desc": "fabric piece, red with white geometric square pattern, cut in a curved shape",
+        "desc": "red fabric with white geometric square pattern, cut into a curved shape",
         "action": "being sewn",
         "position": "center"
       },
       {
-        "desc": "background fabric, white with small yellow polka dots",
+        "desc": "white fabric with small yellow polka dots",
         "action": "static",
-        "position": "background"
+        "position": "bottom"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A sewing machine is stitching a red patterned fabric piece.",
+        "fact": "A hand is guiding a piece of red patterned fabric under the sewing machine needle.",
         "confidence": 1.0
       },
       {
-        "fact": "A hand is holding the fabric near the needle to guide it.",
+        "fact": "The sewing machine presser foot is holding the fabric in place.",
         "confidence": 1.0
       },
       {
-        "fact": "The red fabric has a white grid pattern consisting of squares with dots inside.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The background fabric is white with yellow dots.",
+        "fact": "The red fabric is being stitched onto a white polka-dotted background fabric.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The hand is to the left of the sewing machine presser foot. The presser foot is on top of the red patterned fabric. The red fabric is placed on top of the white background fabric.",
+    "spatial": "The hand is to the left of the sewing machine presser foot. The presser foot is above the red patterned fabric. The red fabric is on top of the white polka-dotted fabric.",
     "parse_success": true,
     "chunk_idx": 60,
     "video_id": "e0A4yB3Eeus"
   },
   {
     "time": [
-      122,
-      124
+      61,
+      62
     ],
     "visible_entities": [
       {
@@ -2836,93 +2826,56 @@
         "position": "center"
       },
       {
-        "desc": "red fabric with white geometric square pattern, cut into a scalloped shape",
+        "desc": "red fabric with white geometric square pattern",
         "action": "being sewn",
         "position": "center"
       },
       {
-        "desc": "white fabric with small orange polka dots",
+        "desc": "light-colored fabric with small orange dots",
         "action": "static",
         "position": "background"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "The sewing machine presser foot is stitching the red patterned fabric.",
+        "fact": "A sewing machine needle is stitching along the edge of the red patterned fabric.",
         "confidence": 1.0
       },
       {
-        "fact": "A hand is holding the red fabric in place near the needle.",
+        "fact": "A hand is holding the red fabric in place near the presser foot.",
         "confidence": 1.0
       },
       {
-        "fact": "The red fabric is layered on top of the white polka dot fabric.",
+        "fact": "The red fabric is layered on top of the light-colored dotted fabric.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The hand is to the left of the metal presser foot. The presser foot is on top of the red patterned fabric. The red fabric is on top of the white polka dot fabric.",
+    "spatial": "The metal presser foot is positioned above the red patterned fabric. The hand is to the left of the presser foot, guiding the material. The red fabric is on top of the light-colored fabric with orange dots.",
     "parse_success": true,
     "chunk_idx": 61,
     "video_id": "e0A4yB3Eeus"
   },
   {
     "time": [
-      124,
-      126
+      62,
+      63
     ],
     "visible_entities": [
       {
-        "desc": "silver metal sewing machine presser foot and needle mechanism",
-        "action": "stitching fabric",
-        "position": "center"
-      },
-      {
-        "desc": "red fabric with a white geometric grid pattern",
+        "desc": "red fabric with a white geometric pattern of small squares containing dots, cut into a scalloped or flower shape",
         "action": "being sewn",
         "position": "center"
       },
       {
-        "desc": "human finger with light skin tone",
+        "desc": "silver metal sewing machine presser foot and needle mechanism",
+        "action": "stitching",
+        "position": "center"
+      },
+      {
+        "desc": "human fingers with light skin tone",
         "action": "guiding fabric",
         "position": "left"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "A sewing machine needle is moving up and down to stitch the red patterned fabric.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "A finger is holding the fabric in place near the presser foot.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The fabric has a repeating pattern of white squares on a red background.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [],
-    "spatial": "The sewing machine presser foot is positioned above the red patterned fabric. The human finger is to the left of the needle, holding the fabric down. The fabric is underneath the metal mechanism.",
-    "parse_success": true,
-    "chunk_idx": 62,
-    "video_id": "e0A4yB3Eeus"
-  },
-  {
-    "time": [
-      126,
-      128
-    ],
-    "visible_entities": [
-      {
-        "desc": "sewing machine presser foot, metallic silver with a gold-colored component",
-        "action": "stitching fabric",
-        "position": "center"
-      },
-      {
-        "desc": "red fabric with a white geometric pattern of squares containing circles, cut into a scalloped shape",
-        "action": "being stitched",
-        "position": "center"
       },
       {
         "desc": "light-colored background fabric with small yellow dots",
@@ -2932,20 +2885,62 @@
     ],
     "atomic_facts": [
       {
-        "fact": "The sewing machine presser foot is stitching the red patterned fabric.",
+        "fact": "A sewing machine needle is stitching along the edge of the red patterned fabric.",
         "confidence": 1.0
       },
       {
-        "fact": "The red fabric has a white geometric pattern of squares containing circles.",
+        "fact": "Fingers are holding and guiding the fabric under the presser foot.",
         "confidence": 1.0
       },
       {
-        "fact": "The red fabric is cut into a scalloped shape.",
+        "fact": "The red fabric has a distinct scalloped edge being sewn.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The metallic presser foot is positioned above the red patterned fabric. The red fabric is on top of the light-colored background fabric.",
+    "spatial": "The human fingers are to the left of the sewing machine presser foot. The presser foot is positioned directly above the red patterned fabric. The red fabric is resting on top of the light-colored background fabric.",
+    "parse_success": true,
+    "chunk_idx": 62,
+    "video_id": "e0A4yB3Eeus"
+  },
+  {
+    "time": [
+      63,
+      64
+    ],
+    "visible_entities": [
+      {
+        "desc": "sewing machine presser foot, metallic silver and gold, positioned over fabric",
+        "action": "sewing along a curved edge",
+        "position": "center"
+      },
+      {
+        "desc": "red fabric with a white geometric grid pattern, cut into a scalloped or flower shape",
+        "action": "static",
+        "position": "center"
+      },
+      {
+        "desc": "light-colored fabric background with small yellow dots",
+        "action": "static",
+        "position": "background"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The sewing machine presser foot is stitching the red patterned fabric.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The red fabric is being sewn onto the light-colored background fabric.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The stitching follows the curved edge of the red fabric shape.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The metallic presser foot is positioned above the red patterned fabric. The red fabric is on top of the light-colored background fabric. The sewing needle is located directly under the presser foot.",
     "parse_success": true,
     "chunk_idx": 63,
     "video_id": "e0A4yB3Eeus"

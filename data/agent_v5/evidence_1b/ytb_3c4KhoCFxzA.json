@@ -2,58 +2,69 @@
   {
     "time": [
       0,
-      2
+      1
     ],
     "visible_entities": [
       {
-        "desc": "man wearing a blue t-shirt with a white graphic on the back, beige shorts, and a beige and black baseball cap",
-        "action": "kneeling on the boat deck and looking forward",
-        "position": "foreground center"
+        "desc": "man wearing a blue t-shirt with a white graphic on the back, beige shorts, and a white and grey baseball cap",
+        "action": "kneeling on the boat and looking towards the water",
+        "position": "foreground right",
+        "id": "person_fisherman_1"
       },
       {
-        "desc": "calm lake water reflecting trees",
+        "desc": "small boat with a dark red or maroon gunwale",
+        "action": "floating on the water",
+        "position": "foreground",
+        "id": "boat_maroon_1"
+      },
+      {
+        "desc": "calm lake water reflecting the trees",
         "action": "static",
-        "position": "background"
+        "position": "center and background",
+        "id": "water_calm_1"
       },
       {
         "desc": "dense green forest on the far shore",
         "action": "static",
-        "position": "background"
+        "position": "background",
+        "id": "forest_green_1"
       },
       {
         "desc": "white text overlay with a drop shadow",
         "action": "static",
-        "position": "bottom center"
+        "position": "bottom center",
+        "id": "text_overlay_white_1"
       },
       {
-        "desc": "circular logo with a stylized bird head",
+        "desc": "circular logo with a bird illustration",
         "action": "static",
-        "position": "top right"
+        "position": "top right",
+        "id": "logo_dodo_1"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A man is kneeling on the deck of a boat.",
+        "fact": "A man is kneeling on a boat in a lake.",
         "confidence": 1.0
       },
       {
-        "fact": "The man is looking out over the water towards the shore.",
+        "fact": "The man is looking out at the water.",
         "confidence": 1.0
       },
       {
-        "fact": "Text on the screen reads: 'You are not gonna believe what is swimming towards our boat.'",
+        "fact": "The text overlay reads 'You are not gonna believe what is swimming towards our boat.'",
         "confidence": 1.0
       },
       {
-        "fact": "The water is calm and reflects the trees on the opposite bank.",
+        "fact": "The logo in the top right corner reads 'the dodo'.",
         "confidence": 1.0
       }
     ],
     "ocr": [
       "You are not gonna believe what is swimming towards our boat.",
-      "The Dodo"
+      "the dodo"
     ],
-    "spatial": "The man is in the foreground, kneeling on the boat. The text overlay is positioned below the man. The lake and forest are in the background, behind the man. The logo is in the top right corner of the frame.",
+    "spatial": "The man is kneeling on the boat in the foreground. The boat is on the water, which is in front of the forest in the background. The text overlay is at the bottom of the frame, below the man and the water. The logo is in the top right corner, above the forest.",
     "parse_success": true,
     "chunk_idx": 0,
     "video_id": "ytb_3c4KhoCFxzA",
@@ -61,52 +72,64 @@
   },
   {
     "time": [
-      2,
-      4
+      1,
+      2
     ],
     "visible_entities": [
       {
-        "desc": "man wearing a light grey baseball cap, a blue t-shirt with a white graphic on the back, and beige shorts",
-        "action": "kneeling on the boat deck and looking forward",
-        "position": "center foreground"
+        "desc": "man wearing a blue t-shirt with a white graphic on the back, beige shorts, and a beige baseball cap",
+        "action": "kneeling on the boat and looking forward",
+        "position": "foreground center",
+        "id": "person_fisherman_1"
       },
       {
-        "desc": "small dark object or animal head creating ripples in the water",
+        "desc": "small dark object swimming in the water",
         "action": "swimming towards the boat",
-        "position": "center middle ground"
+        "position": "center middle-ground",
+        "id": "animal_other_1"
+      },
+      {
+        "desc": "maroon boat deck",
+        "action": "static",
+        "position": "bottom foreground",
+        "id": "boat_maroon_1"
       },
       {
         "desc": "calm lake water reflecting trees",
         "action": "static",
-        "position": "background"
+        "position": "background",
+        "id": "water_calm_1"
       },
       {
-        "desc": "dense green forest on the far shore",
+        "desc": "dense green forest on the shoreline",
         "action": "static",
-        "position": "background"
+        "position": "background",
+        "id": "forest_green_1"
       },
       {
-        "desc": "white sans-serif text overlay",
+        "desc": "white text overlay",
         "action": "static",
-        "position": "bottom"
+        "position": "bottom center",
+        "id": "text_overlay_white_1"
       },
       {
-        "desc": "The Dodo logo with a dodo bird head",
+        "desc": "The Dodo logo",
         "action": "static",
-        "position": "top right"
+        "position": "top right",
+        "id": "logo_dodo_1"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A man is kneeling on the deck of a boat.",
+        "fact": "A man is kneeling on a boat looking out at the water.",
         "confidence": 1.0
       },
       {
-        "fact": "An object is swimming through the water towards the boat.",
+        "fact": "A small dark object is swimming towards the boat.",
         "confidence": 1.0
       },
       {
-        "fact": "The text overlay reads: 'You are not gonna believe what is swimming towards our boat.'",
+        "fact": "The text overlay reads 'You are not gonna believe what is swimming towards our boat.'",
         "confidence": 1.0
       },
       {
@@ -118,61 +141,62 @@
       "the dodo",
       "You are not gonna believe what is swimming towards our boat."
     ],
-    "spatial": "The man is in the foreground, positioned centrally on the boat. The swimming object is in front of the man in the middle ground. The forest is behind the water in the background. The text overlay is below the man, and the logo is above the man in the top right corner.",
+    "spatial": "The man is in the foreground, kneeling on the boat deck. The swimming object is in the water in front of the man. The forest is in the background behind the water. The text overlay is below the man. The logo is above the text in the top right corner.",
     "parse_success": true,
     "chunk_idx": 1,
     "video_id": "ytb_3c4KhoCFxzA",
     "state_changes": [
-      "animal first appears in water creating ripples"
+      "small dark object (kitten) appears swimming towards the boat"
     ]
   },
   {
     "time": [
-      4,
-      6
+      2,
+      3
     ],
     "visible_entities": [
       {
-        "desc": "man wearing a blue t-shirt with a white graphic on the back, khaki shorts, and a grey and white baseball cap",
-        "action": "kneeling on the boat deck",
-        "position": "right foreground"
+        "desc": "man with a beard, wearing a blue t-shirt with a white graphic on the back, khaki shorts, and a grey and black baseball cap",
+        "action": "kneeling on the boat deck and looking towards the water",
+        "position": "right foreground",
+        "id": "person_fisherman_1"
       },
       {
-        "desc": "small light-colored animal, identified by text as a kitten",
-        "action": "floating in the water",
-        "position": "center background"
+        "desc": "small dark animal, identified by text as a kitten, floating in the water",
+        "action": "floating",
+        "position": "center middle-ground",
+        "id": "cat_orange_tabby_1"
       },
       {
         "desc": "dark red boat hull",
         "action": "static",
-        "position": "bottom right"
+        "position": "bottom right",
+        "id": "boat_maroon_1"
       },
       {
-        "desc": "white text 'a KITTEN' with a yellow arrow pointing to the animal",
+        "desc": "yellow arrow graphic with dotted tail",
         "action": "static",
-        "position": "top left"
+        "position": "center",
+        "id": "arrow_orange_1"
       },
       {
-        "desc": "logo with a dodo bird head and text 'the dodo'",
+        "desc": "white text overlay",
         "action": "static",
-        "position": "top right"
+        "position": "top left",
+        "id": "text_overlay_white_1"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "The man is kneeling on the deck of a boat.",
+        "fact": "The man is kneeling on the boat and looking at the water.",
         "confidence": 1.0
       },
       {
-        "fact": "A small animal is floating in the water near the boat.",
+        "fact": "A small animal is floating in the lake.",
         "confidence": 1.0
       },
       {
-        "fact": "On-screen text identifies the floating animal as 'a KITTEN'.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "A yellow arrow points from the text to the kitten in the water.",
+        "fact": "The text 'a KITTEN' appears on screen with an arrow pointing to the animal.",
         "confidence": 1.0
       }
     ],
@@ -180,115 +204,49 @@
       "a KITTEN",
       "the dodo"
     ],
-    "spatial": "The man is kneeling on the boat in the foreground, positioned to the right of the frame. The kitten is floating in the water in the center of the frame, in front of the man. The text 'a KITTEN' is located in the upper left area, with an arrow pointing down towards the kitten.",
+    "spatial": "The man is kneeling on the boat in the foreground, positioned to the right of the floating kitten. The yellow arrow is above the water and points down towards the kitten. The text 'a KITTEN' is located in the upper left area, above the arrow.",
     "parse_success": true,
     "chunk_idx": 2,
     "video_id": "ytb_3c4KhoCFxzA",
     "state_changes": [
-      "animal identified as kitten with text overlay"
+      "animal identified as a kitten floating; yellow arrow graphic appears"
     ]
   },
   {
     "time": [
-      6,
-      8
+      3,
+      4
     ],
     "visible_entities": [
       {
-        "desc": "man with short brown hair and beard, wearing a blue t-shirt with a white graphic on the back, beige shorts, and a grey and black trucker hat",
+        "desc": "man wearing a blue t-shirt with a white graphic on the back, beige shorts, and a two-tone baseball cap (dark front, light mesh back)",
         "action": "kneeling on the boat deck and reaching towards the water",
-        "position": "right foreground"
+        "position": "right foreground",
+        "id": "person_fisherman_1"
       },
       {
-        "desc": "small animal, likely a dog, swimming in the water",
-        "action": "swimming",
-        "position": "center middle-ground"
-      },
-      {
-        "desc": "calm lake water reflecting the sky and trees",
+        "desc": "calm lake water with reflections of trees",
         "action": "static",
-        "position": "center background"
+        "position": "center and left background",
+        "id": "water_calm_1"
       },
       {
         "desc": "dense green forest on the far shore",
         "action": "static",
-        "position": "background"
+        "position": "background",
+        "id": "forest_green_1"
       },
       {
-        "desc": "white text with orange highlight",
+        "desc": "the dodo logo featuring a cartoon dodo bird head",
         "action": "static",
-        "position": "bottom left"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "A man in a blue shirt is kneeling on a boat.",
-        "confidence": 1.0
+        "position": "top right",
+        "id": "logo_dodo_1"
       },
       {
-        "fact": "The man is reaching his hand out towards the water.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "A small animal is swimming in the lake near the boat.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The text 'These guys were out in their boat' is displayed on the screen.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [
-      "These guys were",
-      "out in their boat",
-      "the dodo"
-    ],
-    "spatial": "The man is positioned on the right side of the frame, kneeling on the boat. The swimming animal is in the water to the left of the man and slightly in front of him. The forest is in the background behind the water.",
-    "parse_success": true,
-    "chunk_idx": 3,
-    "video_id": "ytb_3c4KhoCFxzA",
-    "state_changes": []
-  },
-  {
-    "time": [
-      8,
-      10
-    ],
-    "visible_entities": [
-      {
-        "desc": "man wearing a blue t-shirt with a white graphic on the back, beige shorts, a beige baseball cap, and sneakers",
-        "action": "kneeling on the boat deck and reaching towards the water",
-        "position": "right foreground"
-      },
-      {
-        "desc": "small brown animal, likely a beaver, floating in the water",
-        "action": "swimming",
-        "position": "center middle-ground"
-      },
-      {
-        "desc": "fishing rod with a reel",
+        "desc": "white and orange text overlay",
         "action": "static",
-        "position": "bottom right"
-      },
-      {
-        "desc": "calm lake water reflecting the sky and trees",
-        "action": "static",
-        "position": "background"
-      },
-      {
-        "desc": "dense green forest on the far shore",
-        "action": "static",
-        "position": "background"
-      },
-      {
-        "desc": "text overlay 'These guys were out in their boat' in white and orange font",
-        "action": "static",
-        "position": "bottom left"
-      },
-      {
-        "desc": "logo for 'the dodo' featuring a bird head",
-        "action": "static",
-        "position": "top right"
+        "position": "bottom left",
+        "id": "text_overlay_white_1"
       }
     ],
     "atomic_facts": [
@@ -297,15 +255,15 @@
         "confidence": 1.0
       },
       {
-        "fact": "The man is reaching his hand out towards a small animal in the water.",
+        "fact": "The man is reaching his hand out towards the water.",
         "confidence": 1.0
       },
       {
-        "fact": "The text 'These guys were out in their boat' is displayed on the screen.",
+        "fact": "The text 'These guys were out in their boat' appears on the screen.",
         "confidence": 1.0
       },
       {
-        "fact": "A fishing rod is lying on the boat floor next to the man.",
+        "fact": "The dodo logo is visible in the top right corner.",
         "confidence": 1.0
       }
     ],
@@ -314,113 +272,133 @@
       "These guys were",
       "out in their boat"
     ],
-    "spatial": "The man is positioned on the right side of the frame, kneeling on the boat. The small animal is in the water to the left of the man. The text overlay is located in the bottom left corner, below the man's arm. The forest is in the background, behind the water.",
+    "spatial": "The man is positioned on the right side of the frame, kneeling on the boat. The lake water is in front of him and extends to the left. The forest is in the background behind the water. The text overlay is located in the bottom left corner, below the man's position.",
     "parse_success": true,
-    "chunk_idx": 4,
+    "chunk_idx": 3,
     "video_id": "ytb_3c4KhoCFxzA",
     "state_changes": []
   },
   {
     "time": [
-      10,
-      12
+      4,
+      5
     ],
     "visible_entities": [
       {
-        "desc": "man wearing a light blue t-shirt with a white graphic on the back, beige shorts, a beige baseball cap, and dark sneakers",
-        "action": "kneeling on the boat deck and leaning forward over the side",
-        "position": "right foreground"
+        "desc": "man wearing a light blue t-shirt with a white graphic on the back, khaki shorts, a beige baseball cap, and sneakers",
+        "action": "kneeling on the boat deck and reaching towards the water",
+        "position": "right foreground",
+        "id": "person_fisherman_1"
       },
       {
-        "desc": "small, light-colored animal swimming in the water",
-        "action": "swimming toward the boat",
-        "position": "center middle-ground"
-      },
-      {
-        "desc": "dark-colored boat deck with fishing rods and equipment",
-        "action": "static",
-        "position": "bottom foreground"
+        "desc": "small brown animal, likely a beaver, swimming in the water",
+        "action": "swimming",
+        "position": "center",
+        "id": "animal_other_1"
       },
       {
         "desc": "calm lake water reflecting the sky and trees",
         "action": "static",
-        "position": "center background"
+        "position": "center background",
+        "id": "water_calm_1"
       },
       {
         "desc": "dense green forest on the far shore",
         "action": "static",
-        "position": "background"
+        "position": "background",
+        "id": "forest_green_1"
       },
       {
-        "desc": "The Dodo logo (dodo bird head icon with text)",
+        "desc": "white text 'These guys were' and orange text 'out in their boat' in a sans-serif font",
         "action": "static",
-        "position": "top right"
+        "position": "bottom left",
+        "id": "text_overlay_white_1"
       },
       {
-        "desc": "white and orange text overlay",
+        "desc": "logo featuring a stylized bird head with the text 'the dodo'",
         "action": "static",
-        "position": "bottom center"
+        "position": "top right",
+        "id": "logo_dodo_1"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "The man is kneeling on the boat deck.",
+        "fact": "A man is kneeling on the deck of a boat.",
         "confidence": 1.0
       },
       {
-        "fact": "The man is leaning forward over the side of the boat.",
+        "fact": "The man is reaching his hand towards a small animal swimming in the water.",
         "confidence": 1.0
       },
       {
-        "fact": "A small animal is swimming in the water towards the man.",
+        "fact": "The text overlay reads 'These guys were out in their boat'.",
         "confidence": 1.0
       },
       {
-        "fact": "The text overlay reads 'when they saw someone tiny swimming toward them'.",
+        "fact": "The logo for 'the dodo' is visible in the top right corner.",
         "confidence": 1.0
       }
     ],
     "ocr": [
       "the dodo",
-      "when they saw someone",
-      "tiny swimming toward them"
+      "These guys were",
+      "out in their boat"
     ],
-    "spatial": "The man is on the right side of the frame, kneeling on the boat deck. The small swimming animal is in the water in front of him and to his left. The text overlay is positioned at the bottom of the screen, below the man and the animal. The forest is in the background, behind the lake.",
+    "spatial": "The man in the blue shirt is in the foreground on the right side of the frame. The swimming animal is in the water in front of the man and to his left. The text overlay is located at the bottom left of the screen, below the man. The forest is in the background across the lake.",
     "parse_success": true,
-    "chunk_idx": 5,
+    "chunk_idx": 4,
     "video_id": "ytb_3c4KhoCFxzA",
-    "state_changes": []
+    "state_changes": [
+      "animal description changes to likely a beaver swimming"
+    ]
   },
   {
     "time": [
-      12,
-      14
+      5,
+      6
     ],
     "visible_entities": [
       {
-        "desc": "man wearing a blue t-shirt with a white graphic on the back, beige shorts, black and white sneakers, and a beige baseball cap",
+        "desc": "man wearing a light blue t-shirt with a white graphic on the back, beige shorts, a beige baseball cap, and sneakers",
         "action": "kneeling on the boat deck and leaning forward over the side",
-        "position": "right/foreground"
+        "position": "right foreground",
+        "id": "person_fisherman_1"
       },
       {
         "desc": "small, light-colored animal swimming in the water",
         "action": "swimming towards the boat",
-        "position": "center/left"
+        "position": "center middle-ground",
+        "id": "animal_other_1"
       },
       {
-        "desc": "fishing rod with a yellow handle",
+        "desc": "fishing rod with a reel",
         "action": "static",
-        "position": "foreground"
+        "position": "right foreground",
+        "id": "fishing_rods_yellow_1"
       },
       {
-        "desc": "text overlay in white and orange sans-serif font",
+        "desc": "calm body of water reflecting the surrounding trees",
         "action": "static",
-        "position": "bottom"
+        "position": "center background",
+        "id": "water_calm_1"
       },
       {
-        "desc": "The Dodo logo featuring a dodo bird head icon and text",
+        "desc": "dense green trees on the far shore",
         "action": "static",
-        "position": "top right"
+        "position": "background",
+        "id": "forest_green_1"
+      },
+      {
+        "desc": "white text overlay",
+        "action": "static",
+        "position": "bottom",
+        "id": "text_overlay_white_1"
+      },
+      {
+        "desc": "The Dodo logo",
+        "action": "static",
+        "position": "top right",
+        "id": "logo_dodo_1"
       }
     ],
     "atomic_facts": [
@@ -430,6 +408,76 @@
       },
       {
         "fact": "The man is leaning over the side of the boat towards the water.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A small, light-colored animal is swimming in the water.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The animal is swimming towards the man and the boat.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The text 'when they saw someone tiny swimming toward them' is displayed at the bottom of the screen.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "the dodo",
+      "when they saw someone",
+      "tiny swimming toward them"
+    ],
+    "spatial": "The man is on the right side of the frame, kneeling on the boat deck. The small swimming animal is in the water to the left of the man and in front of him. The fishing rod is on the boat deck next to the man. The text overlay is at the bottom of the screen, below the man and the water. The trees are in the background, behind the water.",
+    "parse_success": true,
+    "chunk_idx": 5,
+    "video_id": "ytb_3c4KhoCFxzA",
+    "state_changes": []
+  },
+  {
+    "time": [
+      6,
+      7
+    ],
+    "visible_entities": [
+      {
+        "desc": "man wearing a light blue t-shirt with a white graphic on the back, khaki shorts, a beige baseball cap, and sneakers",
+        "action": "kneeling on the boat deck and reaching toward the water",
+        "position": "right foreground",
+        "id": "person_fisherman_1"
+      },
+      {
+        "desc": "small brown animal swimming in the water",
+        "action": "swimming toward the boat",
+        "position": "center left",
+        "id": "animal_other_1"
+      },
+      {
+        "desc": "fishing rod with a yellow handle",
+        "action": "static",
+        "position": "bottom center",
+        "id": "fishing_rods_yellow_1"
+      },
+      {
+        "desc": "text overlay in white and orange",
+        "action": "static",
+        "position": "bottom",
+        "id": "text_overlay_white_1"
+      },
+      {
+        "desc": "The Dodo logo",
+        "action": "static",
+        "position": "top right",
+        "id": "logo_dodo_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A man is kneeling on the deck of a boat.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The man is reaching his hand out towards the water.",
         "confidence": 1.0
       },
       {
@@ -446,7 +494,7 @@
       "when they saw someone",
       "tiny swimming toward them"
     ],
-    "spatial": "The man is on the right side of the frame, kneeling on the boat deck. The small animal is in the water to the left of the man. The fishing rod is on the boat deck in front of the man. The text overlay is at the bottom of the screen, below the man and the animal.",
+    "spatial": "The man is kneeling on the right side of the boat deck. The small animal is in the water to the left of the man. The fishing rod is lying on the deck in front of the man. The text overlay is positioned at the bottom of the frame, below the man and the animal.",
     "parse_success": true,
     "chunk_idx": 6,
     "video_id": "ytb_3c4KhoCFxzA",
@@ -454,34 +502,104 @@
   },
   {
     "time": [
-      14,
-      16
+      7,
+      8
     ],
     "visible_entities": [
       {
-        "desc": "man wearing a light blue t-shirt with a white graphic on the back, beige shorts, a beige baseball cap, and grey sneakers",
+        "desc": "man wearing a blue t-shirt with a white graphic on the back, beige shorts, a beige baseball cap, and grey sneakers",
+        "action": "kneeling on the boat deck and leaning over the side to hold a fish",
+        "position": "center/foreground",
+        "id": "person_fisherman_1"
+      },
+      {
+        "desc": "fish with brownish scales",
+        "action": "being held by the man near the water surface",
+        "position": "left/center",
+        "id": "animal_other_1"
+      },
+      {
+        "desc": "maroon boat deck with fishing rods lying on it",
+        "action": "static",
+        "position": "bottom/foreground"
+      },
+      {
+        "desc": "calm water reflecting trees",
+        "action": "static",
+        "position": "background",
+        "id": "water_calm_1"
+      },
+      {
+        "desc": "logo with a dodo bird head and text 'the dodo'",
+        "action": "static",
+        "position": "top right",
+        "id": "logo_dodo_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The man is kneeling on the boat deck.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The man is holding a fish near the water.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "Fishing rods are lying on the boat deck.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The logo 'the dodo' is visible in the top right corner.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "the dodo"
+    ],
+    "spatial": "The man is kneeling on the boat deck, which is below him. The fish is in front of the man and near the water surface. The fishing rods are to the left of the man on the deck. The 'the dodo' logo is above the man in the top right corner.",
+    "parse_success": true,
+    "chunk_idx": 7,
+    "video_id": "ytb_3c4KhoCFxzA",
+    "state_changes": [
+      "man holds a fish with brownish scales"
+    ]
+  },
+  {
+    "time": [
+      8,
+      9
+    ],
+    "visible_entities": [
+      {
+        "desc": "man wearing a blue t-shirt, beige shorts, a white baseball cap, and grey sneakers",
         "action": "kneeling on the boat deck and leaning over the side",
-        "position": "center"
+        "position": "center",
+        "id": "person_fisherman_1"
       },
       {
-        "desc": "small brown animal, possibly a squirrel or chipmunk, clinging to the side of the boat",
-        "action": "clinging to the boat hull",
-        "position": "left"
-      },
-      {
-        "desc": "maroon fishing boat with a grey deck",
+        "desc": "maroon boat with a dark grey deck",
         "action": "static",
-        "position": "foreground"
+        "position": "foreground",
+        "id": "boat_maroon_1"
       },
       {
-        "desc": "two fishing rods with yellow accents",
+        "desc": "fishing rods with yellow shafts",
         "action": "static",
-        "position": "center"
+        "position": "left",
+        "id": "fishing_rods_yellow_1"
       },
       {
-        "desc": "white logo with a stylized bird head and text",
+        "desc": "calm water surface reflecting trees",
         "action": "static",
-        "position": "top right"
+        "position": "background",
+        "id": "water_calm_1"
+      },
+      {
+        "desc": "yellow subtitle text",
+        "action": "static",
+        "position": "bottom",
+        "id": "text_subtitle_yellow_1"
       }
     ],
     "atomic_facts": [
@@ -494,72 +612,11 @@
         "confidence": 1.0
       },
       {
-        "fact": "A small brown animal is clinging to the side of the boat near the water.",
+        "fact": "Fishing rods are lying on the deck next to the man.",
         "confidence": 1.0
       },
       {
-        "fact": "Fishing rods are lying on the deck of the boat.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [
-      "the dodo"
-    ],
-    "spatial": "The man is kneeling on the boat deck, positioned to the right of the small brown animal. The animal is clinging to the side of the boat, just above the water. The fishing rods are lying on the deck in front of the man. The 'the dodo' logo is in the top right corner of the frame, above the man.",
-    "parse_success": true,
-    "chunk_idx": 7,
-    "video_id": "ytb_3c4KhoCFxzA",
-    "state_changes": [
-      "animal now clinging to boat hull instead of swimming"
-    ]
-  },
-  {
-    "time": [
-      16,
-      18
-    ],
-    "visible_entities": [
-      {
-        "desc": "man wearing a light blue t-shirt, beige shorts, a white and grey baseball cap, and grey and black sneakers",
-        "action": "kneeling on the boat deck and leaning over the side towards the water",
-        "position": "center"
-      },
-      {
-        "desc": "maroon boat with a grey deck surface",
-        "action": "static",
-        "position": "foreground"
-      },
-      {
-        "desc": "fishing rods with yellow shafts and black reels",
-        "action": "static",
-        "position": "bottom left"
-      },
-      {
-        "desc": "calm water surface reflecting trees",
-        "action": "static",
-        "position": "background"
-      },
-      {
-        "desc": "yellow text subtitle",
-        "action": "static",
-        "position": "bottom center"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "The man is kneeling on the boat deck.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The man leans his upper body over the side of the boat.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The text 'This ain't real.' appears at the bottom of the screen.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "Fishing rods are lying on the deck near the man's hand.",
+        "fact": "The subtitle text reads 'This ain't real.'.",
         "confidence": 1.0
       }
     ],
@@ -567,7 +624,7 @@
       "the dodo",
       "This ain't real."
     ],
-    "spatial": "The man is positioned in the center of the boat, kneeling on the grey deck. The fishing rods are to the left of the man, resting on the deck. The water is below and to the left of the man as he leans over the side. The text 'This ain't real.' is located below the man's torso.",
+    "spatial": "The man is kneeling on the boat deck, positioned to the right of the fishing rods. The fishing rods are lying on the deck near the edge of the boat. The water is below the boat and in front of the man.",
     "parse_success": true,
     "chunk_idx": 8,
     "video_id": "ytb_3c4KhoCFxzA",
@@ -575,39 +632,39 @@
   },
   {
     "time": [
-      18,
-      20
+      9,
+      10
     ],
     "visible_entities": [
       {
-        "desc": "man wearing a blue short-sleeved t-shirt, beige shorts, and a beige and white baseball cap",
+        "desc": "man wearing a blue t-shirt, beige shorts, and a white baseball cap",
         "action": "kneeling on the boat deck and leaning over the side",
-        "position": "center"
+        "position": "center",
+        "id": "person_fisherman_1"
       },
       {
-        "desc": "maroon fishing boat with a dark grey carpeted deck",
+        "desc": "maroon boat with a dark grey deck and yellow fishing rods",
         "action": "static",
-        "position": "foreground"
+        "position": "foreground",
+        "id": "boat_maroon_1"
       },
       {
-        "desc": "fishing rods with yellow and black shafts",
+        "desc": "calm water surface reflecting trees",
         "action": "static",
-        "position": "center"
-      },
-      {
-        "desc": "calm dark water reflecting trees",
-        "action": "static",
-        "position": "background"
+        "position": "background",
+        "id": "water_calm_1"
       },
       {
         "desc": "white text with orange highlight reading 'so they pulled him up'",
         "action": "static",
-        "position": "bottom"
+        "position": "bottom",
+        "id": "text_overlay_white_1"
       },
       {
         "desc": "logo with a dodo bird head and text 'the dodo'",
         "action": "static",
-        "position": "top right"
+        "position": "top-right",
+        "id": "logo_dodo_1"
       }
     ],
     "atomic_facts": [
@@ -616,15 +673,15 @@
         "confidence": 1.0
       },
       {
-        "fact": "The man is leaning his upper body over the gunwale of the boat towards the water.",
+        "fact": "The man is leaning his upper body over the side of the boat towards the water.",
         "confidence": 1.0
       },
       {
-        "fact": "Fishing rods are lying on the boat deck next to the man.",
+        "fact": "Yellow fishing rods are lying on the boat deck near the man.",
         "confidence": 1.0
       },
       {
-        "fact": "The text 'so they pulled him up' is displayed at the bottom of the screen.",
+        "fact": "The text 'so they pulled him up' appears at the bottom of the screen.",
         "confidence": 1.0
       }
     ],
@@ -632,7 +689,7 @@
       "the dodo",
       "so they pulled him up"
     ],
-    "spatial": "The man is positioned in the center of the boat, kneeling on the deck. He is leaning over the left side of the boat, with his hands near the water. The fishing rods are lying on the deck to the left of the man's knees. The text overlay is located at the bottom of the frame, below the man.",
+    "spatial": "The man is positioned in the center of the boat, kneeling on the deck. He is leaning over the left side of the boat frame. The fishing rods are lying on the deck next to him. The text overlay is located at the bottom of the frame, below the man.",
     "parse_success": true,
     "chunk_idx": 9,
     "video_id": "ytb_3c4KhoCFxzA",
@@ -640,60 +697,76 @@
   },
   {
     "time": [
-      20,
-      22
+      10,
+      11
     ],
     "visible_entities": [
       {
-        "desc": "man wearing a blue t-shirt, beige shorts, and a white and grey baseball cap",
-        "action": "kneeling on the boat deck and pulling a cat out of the water",
-        "position": "center"
+        "desc": "man wearing a blue t-shirt, beige shorts, a white and grey baseball cap, and sneakers",
+        "action": "kneeling on a boat deck and pulling a cat out of the water",
+        "position": "center",
+        "id": "person_fisherman_1"
       },
       {
         "desc": "small orange and white cat, wet",
         "action": "being lifted by the scruff of the neck",
-        "position": "left"
+        "position": "left",
+        "id": "cat_orange_tabby_1"
       },
       {
-        "desc": "fishing rods with yellow and black shafts",
+        "desc": "dark grey boat deck with fishing rods lying on it",
         "action": "static",
-        "position": "center"
+        "position": "foreground",
+        "id": "boat_maroon_1"
       },
       {
-        "desc": "text overlay 'so they pulled him up' in white and orange font",
+        "desc": "calm water surface",
         "action": "static",
-        "position": "bottom"
+        "position": "background",
+        "id": "water_calm_1"
       },
       {
-        "desc": "text overlay 'Never in my life ...' in yellow font",
+        "desc": "white text with orange highlight",
         "action": "static",
-        "position": "bottom"
+        "position": "bottom",
+        "id": "text_overlay_white_1"
       },
       {
-        "desc": "logo for 'the dodo' featuring a bird head",
+        "desc": "yellow text",
         "action": "static",
-        "position": "top right"
+        "position": "bottom",
+        "id": "text_subtitle_yellow_1"
+      },
+      {
+        "desc": "The Dodo logo",
+        "action": "static",
+        "position": "top right",
+        "id": "logo_dodo_1"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A man is kneeling on the deck of a boat.",
+        "fact": "A man is kneeling on a boat deck.",
         "confidence": 1.0
       },
       {
-        "fact": "The man is holding a wet cat by the scruff of its neck.",
+        "fact": "The man is pulling a wet orange and white cat out of the water.",
         "confidence": 1.0
       },
       {
-        "fact": "The man lifts the cat out of the water.",
+        "fact": "The man is holding the cat by the scruff of its neck.",
         "confidence": 1.0
       },
       {
-        "fact": "The text 'so they pulled him up' appears on the screen.",
+        "fact": "Fishing rods are lying on the boat deck near the man.",
         "confidence": 1.0
       },
       {
-        "fact": "The text 'Never in my life ...' appears on the screen.",
+        "fact": "The text 'so they pulled him up' appears at the bottom of the screen.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The text 'Never in my life ...' appears at the bottom of the screen.",
         "confidence": 1.0
       }
     ],
@@ -702,66 +775,68 @@
       "so they pulled him up",
       "Never in my life ..."
     ],
-    "spatial": "The man is kneeling on the boat deck to the right of the cat. The cat is suspended in the air to the left of the man, just above the water surface. The fishing rods are lying on the deck between the man and the edge of the boat. The text overlays are located at the bottom of the frame, below the man and the cat.",
+    "spatial": "The man is kneeling on the boat deck, positioned to the right of the cat he is lifting. The cat is hanging above the water, which is to the left of the boat. The fishing rods are lying on the deck in front of the man. The text overlays are located at the bottom of the frame, below the man and the cat.",
     "parse_success": true,
     "chunk_idx": 10,
     "video_id": "ytb_3c4KhoCFxzA",
     "state_changes": [
-      "man pulling cat out of water - rescue action completed"
+      "man pulls a wet orange and white cat out of the water"
     ]
   },
   {
     "time": [
-      22,
-      24
+      11,
+      12
     ],
     "visible_entities": [
       {
-        "desc": "man wearing a blue short-sleeved t-shirt, beige shorts, and grey sneakers",
+        "desc": "person wearing a blue short-sleeved t-shirt, beige shorts, and grey sneakers",
         "action": "kneeling on the boat deck",
-        "position": "center"
+        "position": "center",
+        "id": "person_fisherman_1"
       },
       {
         "desc": "small orange and white tabby cat",
-        "action": "walking towards the camera",
-        "position": "center"
+        "action": "walking on the boat deck",
+        "position": "center",
+        "id": "cat_orange_tabby_1"
       },
       {
         "desc": "yellow fishing rods with black reels",
         "action": "static",
-        "position": "left"
+        "position": "left",
+        "id": "fishing_rods_yellow_1"
       },
       {
-        "desc": "grey carpeted boat deck with black circular tie-downs",
+        "desc": "grey boat deck with black circular tie-downs",
         "action": "static",
-        "position": "background"
+        "position": "background",
+        "id": "boat_maroon_1"
       },
       {
-        "desc": "yellow text overlay",
+        "desc": "yellow text with black outline",
         "action": "static",
-        "position": "bottom"
+        "position": "bottom",
+        "id": "text_subtitle_yellow_1"
       },
       {
-        "desc": "The Dodo logo",
+        "desc": "The Dodo logo featuring a dodo bird head",
         "action": "static",
-        "position": "top right"
+        "position": "top right",
+        "id": "logo_dodo_1"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "The man is kneeling on the boat deck.",
+        "fact": "The person is kneeling on the boat deck.",
         "confidence": 1.0
       },
       {
-        "fact": "The orange and white cat is walking on the deck.",
+        "fact": "The cat is walking on the boat deck.",
         "confidence": 1.0
       },
       {
         "fact": "The text 'Never in my life ...' is displayed at the bottom of the screen.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "Fishing rods are resting along the left side of the boat.",
         "confidence": 1.0
       }
     ],
@@ -769,121 +844,132 @@
       "the dodo",
       "Never in my life ..."
     ],
-    "spatial": "The man is kneeling behind the cat on the boat deck. The cat is in front of the man and walking towards the foreground. The fishing rods are to the left of the man and the cat. The text overlay is at the bottom of the frame.",
+    "spatial": "The person is kneeling on the boat deck to the right of the fishing rods. The cat is walking on the deck in front of the person. The text is located at the bottom of the frame, below the boat deck.",
     "parse_success": true,
     "chunk_idx": 11,
     "video_id": "ytb_3c4KhoCFxzA",
     "state_changes": [
-      "cat now on boat deck walking (out of water)"
+      "cat is now walking on the boat deck"
     ]
   },
   {
     "time": [
-      24,
-      26
+      12,
+      13
     ],
     "visible_entities": [
       {
-        "desc": "man wearing a blue t-shirt, beige shorts, grey sneakers, and a beige cap",
+        "desc": "man wearing a blue t-shirt, beige shorts, grey sneakers with black laces, and a beige baseball cap",
         "action": "kneeling on the boat deck and reaching out to pet the cat",
-        "position": "right"
+        "position": "center/right",
+        "id": "person_fisherman_1"
       },
       {
-        "desc": "small orange tabby cat with white paws",
+        "desc": "small orange tabby cat with white paws and a striped tail",
         "action": "standing on the boat deck and arching its back towards the man's hand",
-        "position": "center"
+        "position": "center",
+        "id": "cat_orange_tabby_1"
       },
       {
         "desc": "yellow fishing rods with black reels",
         "action": "static",
-        "position": "left"
+        "position": "left",
+        "id": "fishing_rods_yellow_1"
       },
       {
-        "desc": "grey boat deck with black circular tie-downs",
+        "desc": "grey boat deck with black circular tie-down rings",
         "action": "static",
-        "position": "background"
+        "position": "background",
+        "id": "boat_maroon_1"
       },
       {
-        "desc": "The Dodo logo featuring a dodo bird head and white text",
+        "desc": "The Dodo logo featuring a dodo bird head icon and white text",
         "action": "static",
-        "position": "top right"
+        "position": "top right",
+        "id": "logo_dodo_1"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "The man kneels on the boat deck and extends his hand to pet the cat.",
+        "fact": "The man in the blue t-shirt kneels down and extends his hand to pet the cat.",
         "confidence": 1.0
       },
       {
-        "fact": "The cat stands on the deck and arches its back as the man touches it.",
+        "fact": "The orange tabby cat stands on the grey deck and arches its back under the man's hand.",
         "confidence": 1.0
       },
       {
-        "fact": "The Dodo logo is visible in the top right corner of the frame.",
+        "fact": "Yellow fishing rods are resting along the left side of the boat.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The Dodo logo is visible in the top right corner of the screen.",
         "confidence": 1.0
       }
     ],
     "ocr": [
       "the dodo"
     ],
-    "spatial": "The man is positioned to the right of the cat. The fishing rods are lying on the deck to the left of the cat. The Dodo logo is located in the top right corner, above the man.",
+    "spatial": "The man in the blue t-shirt is to the right of the fishing rods. The orange tabby cat is in front of the man, standing on the boat deck. The Dodo logo is above the man's head in the top right corner.",
     "parse_success": true,
     "chunk_idx": 12,
     "video_id": "ytb_3c4KhoCFxzA",
-    "state_changes": []
+    "state_changes": [
+      "man reaches out to pet the cat; cat arches back"
+    ]
   },
   {
     "time": [
-      26,
-      28
+      13,
+      14
     ],
     "visible_entities": [
       {
-        "desc": "man wearing a blue t-shirt with a white graphic on the back, beige shorts, grey sneakers, and a beige baseball cap",
-        "action": "crouching on the boat deck",
-        "position": "center"
+        "desc": "man wearing a beige baseball cap, blue t-shirt with a white graphic on the back, beige shorts, and grey sneakers",
+        "action": "crouching and reaching down",
+        "position": "center",
+        "id": "person_fisherman_1"
       },
       {
         "desc": "small orange tabby cat",
         "action": "standing on the boat deck",
-        "position": "left"
+        "position": "center foreground",
+        "id": "cat_orange_tabby_1"
       },
       {
-        "desc": "maroon boat deck with fishing rods lying on the floor",
+        "desc": "fishing rods with yellow shafts and black reels",
         "action": "static",
-        "position": "foreground"
+        "position": "left",
+        "id": "fishing_rods_yellow_1"
       },
       {
-        "desc": "calm body of water",
+        "desc": "white text overlay",
         "action": "static",
-        "position": "background"
-      },
-      {
-        "desc": "white text reading 'Then they realized' and orange text reading 'he wasn't alone'",
-        "action": "static",
-        "position": "bottom"
+        "position": "bottom",
+        "id": "text_overlay_white_1"
       },
       {
         "desc": "The Dodo logo",
         "action": "static",
-        "position": "top right"
+        "position": "top right",
+        "id": "logo_dodo_1"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "The man is crouching down on the boat deck.",
+        "fact": "The man crouches down on the boat deck.",
         "confidence": 1.0
       },
       {
-        "fact": "The man is reaching his hand out towards the cat.",
+        "fact": "The man reaches his hand out towards the cat.",
         "confidence": 1.0
       },
       {
-        "fact": "The cat is standing near the edge of the boat.",
+        "fact": "The cat stands near the fishing rods.",
         "confidence": 1.0
       },
       {
-        "fact": "The text 'Then they realized he wasn't alone' is displayed on the screen.",
+        "fact": "The text on the screen reads 'Then they realized he wasn't alone'.",
         "confidence": 1.0
       }
     ],
@@ -892,39 +978,262 @@
       "he wasn't alone",
       "the dodo"
     ],
-    "spatial": "The man is to the right of the cat. The cat is standing on the boat deck near the fishing rods. The text is below the man and the cat.",
+    "spatial": "The man is crouching to the right of the fishing rods. The cat is in front of the man and near the fishing rods. The text overlay is at the bottom of the frame, below the man and the cat.",
     "parse_success": true,
     "chunk_idx": 13,
     "video_id": "ytb_3c4KhoCFxzA",
-    "state_changes": [
-      "text reveals 'he wasn't alone' - new information about additional animals"
-    ]
+    "state_changes": []
   },
   {
     "time": [
-      28,
-      30
+      14,
+      15
     ],
     "visible_entities": [
       {
-        "desc": "man wearing a blue t-shirt with a white graphic on the back, beige shorts, grey sneakers, and a beige baseball cap",
+        "desc": "man wearing a light blue t-shirt with a white graphic on the back, beige shorts, grey sneakers, and a beige baseball cap",
         "action": "crouching on the boat deck",
-        "position": "right"
+        "position": "center-right",
+        "id": "person_fisherman_1"
       },
       {
         "desc": "orange tabby cat with white paws",
         "action": "standing on the boat deck",
-        "position": "center"
+        "position": "center-left",
+        "id": "cat_orange_tabby_1"
+      },
+      {
+        "desc": "fishing rods with yellow shafts and black reels",
+        "action": "static",
+        "position": "left",
+        "id": "fishing_rods_yellow_1"
+      },
+      {
+        "desc": "maroon boat hull",
+        "action": "static",
+        "position": "left",
+        "id": "boat_maroon_1"
+      },
+      {
+        "desc": "white text with orange highlight",
+        "action": "static",
+        "position": "bottom-left",
+        "id": "text_overlay_white_1"
+      },
+      {
+        "desc": "yellow text",
+        "action": "static",
+        "position": "bottom-center",
+        "id": "text_subtitle_yellow_1"
+      },
+      {
+        "desc": "The Dodo logo",
+        "action": "static",
+        "position": "top-right",
+        "id": "logo_dodo_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The man is crouching on the boat deck facing the water.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The orange tabby cat is standing on the boat deck near the man.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "Fishing rods are lying on the deck to the left of the cat.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The text 'Then they realized he wasn't alone' is displayed at the bottom.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The text 'Oh there's more, Jason!' appears at the bottom.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "the dodo",
+      "Then they realized",
+      "he wasn't alone",
+      "Oh there's more, Jason!"
+    ],
+    "spatial": "The man is crouching to the right of the orange tabby cat. The fishing rods are lying on the deck to the left of the cat and the man. The boat hull is visible along the left edge of the frame. The text overlays are positioned at the bottom of the screen, below the man and the cat.",
+    "parse_success": true,
+    "chunk_idx": 14,
+    "video_id": "ytb_3c4KhoCFxzA",
+    "state_changes": []
+  },
+  {
+    "time": [
+      15,
+      16
+    ],
+    "visible_entities": [
+      {
+        "desc": "man with beard, wearing a blue t-shirt, beige shorts, grey sneakers, and a grey baseball cap with 'YETI' text",
+        "action": "crouching on the boat deck",
+        "position": "center",
+        "id": "person_fisherman_1"
+      },
+      {
+        "desc": "small orange tabby kitten with white paws",
+        "action": "walking on the boat deck",
+        "position": "center",
+        "id": "cat_orange_tabby_1"
+      },
+      {
+        "desc": "fishing rods with yellow shafts and black reels",
+        "action": "static",
+        "position": "left",
+        "id": "fishing_rods_yellow_1"
+      },
+      {
+        "desc": "maroon boat hull",
+        "action": "static",
+        "position": "left",
+        "id": "boat_maroon_1"
+      },
+      {
+        "desc": "The Dodo logo",
+        "action": "static",
+        "position": "top right",
+        "id": "logo_dodo_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A man is crouching on a boat deck.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "An orange kitten is walking on the deck near the man.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "Fishing rods are resting along the side of the boat.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The text 'Oh there's more, Jason!' appears on the screen.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The text 'I just seen a kitten jump on the ... on the ground.' appears on the screen.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "the dodo",
+      "Oh there's more, Jason!",
+      "I just seen a kitten jump on the ... on the ground.",
+      "YETI"
+    ],
+    "spatial": "The man is crouching in the center of the boat deck, slightly behind the kitten. The kitten is walking in front of the man. The fishing rods are to the left of the man and the kitten, resting against the maroon boat hull. The Dodo logo is in the top right corner of the frame.",
+    "parse_success": true,
+    "chunk_idx": 15,
+    "video_id": "ytb_3c4KhoCFxzA",
+    "state_changes": []
+  },
+  {
+    "time": [
+      16,
+      17
+    ],
+    "visible_entities": [
+      {
+        "desc": "man with beard, wearing a blue t-shirt, beige shorts, grey sneakers, and a grey and white 'YETI' cap",
+        "action": "crouching on the boat deck",
+        "position": "center",
+        "id": "person_fisherman_1"
+      },
+      {
+        "desc": "small orange tabby kitten",
+        "action": "standing on the boat deck",
+        "position": "foreground",
+        "id": "cat_orange_tabby_1"
+      },
+      {
+        "desc": "yellow subtitles with black outline",
+        "action": "static",
+        "position": "bottom",
+        "id": "text_subtitle_yellow_1"
+      },
+      {
+        "desc": "The Dodo logo featuring a dodo bird head",
+        "action": "static",
+        "position": "top right",
+        "id": "logo_dodo_1"
+      },
+      {
+        "desc": "fishing rods with yellow handles",
+        "action": "static",
+        "position": "left",
+        "id": "fishing_rods_yellow_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A man is crouching on a boat deck looking at a kitten.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "An orange tabby kitten is standing on the boat deck.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The subtitles read: 'I just seen a kitten jump on the ... on the ground.'",
+        "confidence": 1.0
+      },
+      {
+        "fact": "Fishing rods are lying on the deck to the left of the man.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "the dodo",
+      "YETI",
+      "I just seen a kitten jump on the ...",
+      "on the ground."
+    ],
+    "spatial": "The man is crouching behind the kitten. The kitten is in the foreground, standing on the boat deck. The fishing rods are to the left of the man and the kitten. The subtitles are at the bottom of the screen, below the man and the kitten.",
+    "parse_success": true,
+    "chunk_idx": 16,
+    "video_id": "ytb_3c4KhoCFxzA",
+    "state_changes": []
+  },
+  {
+    "time": [
+      17,
+      18
+    ],
+    "visible_entities": [
+      {
+        "desc": "man with beard, wearing a blue t-shirt, beige shorts, grey sneakers, and a grey and white baseball cap with 'YETI' logo",
+        "action": "crouching on the boat deck",
+        "position": "center",
+        "id": "person_fisherman_1"
+      },
+      {
+        "desc": "small orange tabby cat",
+        "action": "standing on the boat deck",
+        "position": "foreground",
+        "id": "cat_orange_tabby_1"
       },
       {
         "desc": "fishing rods with yellow shafts",
         "action": "static",
-        "position": "left"
+        "position": "left",
+        "id": "fishing_rods_yellow_1"
       },
       {
-        "desc": "maroon boat deck",
+        "desc": "yellow text overlay",
         "action": "static",
-        "position": "background"
+        "position": "bottom",
+        "id": "text_subtitle_yellow_1"
       }
     ],
     "atomic_facts": [
@@ -937,192 +1246,7 @@
         "confidence": 1.0
       },
       {
-        "fact": "The text 'Then they realized he wasn't alone' is displayed on the screen.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The text 'Oh there's more, Jason!' is displayed on the screen.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [
-      "Then they realized",
-      "he wasn't alone",
-      "Oh there's more, Jason!",
-      "the dodo"
-    ],
-    "spatial": "The man is to the right of the orange tabby cat. The fishing rods are to the left of the cat. The cat is standing on the boat deck in front of the man.",
-    "parse_success": true,
-    "chunk_idx": 14,
-    "video_id": "ytb_3c4KhoCFxzA",
-    "state_changes": []
-  },
-  {
-    "time": [
-      30,
-      32
-    ],
-    "visible_entities": [
-      {
-        "desc": "man wearing a blue t-shirt, beige shorts, grey sneakers, and a dark baseball cap with 'YETI' text",
-        "action": "crouching on the boat deck",
-        "position": "center-right"
-      },
-      {
-        "desc": "small orange tabby kitten with white paws",
-        "action": "walking on the boat deck",
-        "position": "center-left"
-      },
-      {
-        "desc": "fishing rods with yellow shafts and black reels",
-        "action": "static",
-        "position": "left"
-      },
-      {
-        "desc": "small grey action camera",
-        "action": "static",
-        "position": "bottom-right"
-      },
-      {
-        "desc": "yellow subtitle text",
-        "action": "static",
-        "position": "bottom"
-      },
-      {
-        "desc": "The Dodo logo",
-        "action": "static",
-        "position": "top-right"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "The man is crouching on the boat deck.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The orange kitten is walking on the deck.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The text 'Oh there's more, Jason!' is visible.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The text 'I just seen a kitten jump on the ... on the ground.' is visible.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "Fishing rods are resting along the side of the boat.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [
-      "the dodo",
-      "Oh there's more, Jason!",
-      "I just seen a kitten jump on the ... on the ground.",
-      "YETI"
-    ],
-    "spatial": "The man is to the right of the kitten. The fishing rods are to the left of the kitten and the man. The action camera is on the floor to the right of the kitten. The subtitle text is below the man and the kitten.",
-    "parse_success": true,
-    "chunk_idx": 15,
-    "video_id": "ytb_3c4KhoCFxzA",
-    "state_changes": []
-  },
-  {
-    "time": [
-      32,
-      34
-    ],
-    "visible_entities": [
-      {
-        "desc": "man with short brown hair and beard, wearing a grey and white trucker hat with 'YETI' text, a blue short-sleeved t-shirt, beige shorts, and grey sneakers",
-        "action": "crouching on the boat deck",
-        "position": "center"
-      },
-      {
-        "desc": "small orange tabby kitten",
-        "action": "walking on the boat deck",
-        "position": "foreground"
-      },
-      {
-        "desc": "yellow fishing rods with black reels",
-        "action": "static",
-        "position": "left"
-      },
-      {
-        "desc": "The Dodo logo featuring a dodo bird head illustration",
-        "action": "static",
-        "position": "top right"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "A man is crouching on the deck of a boat.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "An orange kitten is walking on the boat deck near the man's feet.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "Yellow fishing rods are resting on the left side of the boat.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The on-screen text reads 'I just seen a kitten jump on the ... on the ground.'",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [
-      "the dodo",
-      "YETI",
-      "I just seen a kitten jump on the ...",
-      "on the ground."
-    ],
-    "spatial": "The man is crouching in the center of the boat, positioned behind the orange kitten. The kitten is in the foreground, walking near the man's feet. The fishing rods are lying on the deck to the left of the man.",
-    "parse_success": true,
-    "chunk_idx": 16,
-    "video_id": "ytb_3c4KhoCFxzA",
-    "state_changes": []
-  },
-  {
-    "time": [
-      34,
-      36
-    ],
-    "visible_entities": [
-      {
-        "desc": "man with a beard, wearing a grey and white 'YETI' cap, a light blue short-sleeved t-shirt, beige shorts, and grey sneakers",
-        "action": "crouching on the boat deck",
-        "position": "center"
-      },
-      {
-        "desc": "small orange tabby cat",
-        "action": "walking on the boat deck",
-        "position": "foreground"
-      },
-      {
-        "desc": "fishing rods with yellow shafts and black reels",
-        "action": "static",
-        "position": "left"
-      },
-      {
-        "desc": "yellow text overlay",
-        "action": "static",
-        "position": "bottom"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "The man is crouching on the boat deck near the cat.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The orange tabby cat is walking on the boat deck.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The text overlay reads 'You hear it?' then 'I just saw it jump in the water.'",
+        "fact": "The text overlay reads 'You hear it?' and then changes to 'I just saw it jump in the water.'",
         "confidence": 1.0
       },
       {
@@ -1132,10 +1256,11 @@
     ],
     "ocr": [
       "YETI",
+      "the dodo",
       "You hear it?",
       "I just saw it jump in the water."
     ],
-    "spatial": "The man is crouching behind the orange tabby cat. The fishing rods are to the left of the man and the cat. The text overlay is at the bottom of the frame, below the cat.",
+    "spatial": "The man is crouching in the center of the boat, behind the orange tabby cat. The cat is standing in the foreground, near the man's feet. The fishing rods are lying on the deck to the left of the man and the cat. The text overlay is positioned at the bottom of the frame.",
     "parse_success": true,
     "chunk_idx": 17,
     "video_id": "ytb_3c4KhoCFxzA",
@@ -1143,83 +1268,95 @@
   },
   {
     "time": [
-      36,
-      38
+      18,
+      19
     ],
     "visible_entities": [
       {
         "desc": "man wearing a blue t-shirt with a white graphic on the back, beige shorts, grey sneakers, and a cap",
-        "action": "crouching down and then standing up",
-        "position": "center"
+        "action": "crouching then standing up",
+        "position": "center",
+        "id": "person_fisherman_1"
       },
       {
-        "desc": "orange tabby cat with white paws",
+        "desc": "small orange tabby cat",
         "action": "standing on the boat deck",
-        "position": "foreground"
+        "position": "foreground",
+        "id": "cat_orange_tabby_1"
       },
       {
-        "desc": "fishing rods with yellow shafts and black reels",
+        "desc": "fishing rods with yellow shafts and reels",
         "action": "static",
-        "position": "left"
+        "position": "left",
+        "id": "fishing_rods_yellow_1"
       },
       {
         "desc": "logo with a dodo bird head and text 'the dodo'",
         "action": "static",
-        "position": "top right"
+        "position": "top right",
+        "id": "logo_dodo_1"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "The man in the blue t-shirt crouches down towards the cat and then stands back up.",
+        "fact": "The man in the blue t-shirt is crouching in the first frame and standing in the second frame.",
         "confidence": 1.0
       },
       {
-        "fact": "The orange tabby cat stands still on the boat deck.",
+        "fact": "The orange tabby cat is standing on the deck of the boat.",
         "confidence": 1.0
       },
       {
-        "fact": "Fishing rods are lined up along the left side of the boat.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The 'the dodo' logo is visible in the top right corner.",
+        "fact": "Fishing rods are resting along the left side of the boat.",
         "confidence": 1.0
       }
     ],
     "ocr": [
       "the dodo"
     ],
-    "spatial": "The man is behind the cat. The cat is in front of the man and near the center of the boat deck. The fishing rods are to the left of the man and the cat. The 'the dodo' logo is above the man.",
+    "spatial": "The man is behind the orange tabby cat. The fishing rods are to the left of the man and the cat. The 'the dodo' logo is in the top right corner of the frame.",
     "parse_success": true,
     "chunk_idx": 18,
     "video_id": "ytb_3c4KhoCFxzA",
-    "state_changes": []
+    "state_changes": [
+      "man transitions from crouching to standing up"
+    ]
   },
   {
     "time": [
-      38,
-      40
+      19,
+      20
     ],
     "visible_entities": [
       {
-        "desc": "man with short brown hair and beard, wearing a blue t-shirt, beige shorts, and grey sneakers",
-        "action": "crouching down",
-        "position": "center"
+        "desc": "man with short brown hair and beard, wearing a blue t-shirt, beige shorts, grey sneakers with black laces, and a dark baseball cap",
+        "action": "crouching down on the boat deck",
+        "position": "center",
+        "id": "person_fisherman_1"
       },
       {
-        "desc": "orange tabby cat with white paws",
+        "desc": "small orange tabby cat with white paws and a fluffy tail",
         "action": "walking on the boat deck",
-        "position": "center"
+        "position": "center",
+        "id": "cat_orange_tabby_1"
+      },
+      {
+        "desc": "fishing boat with a maroon gunwale and grey carpeted deck",
+        "action": "static",
+        "position": "background",
+        "id": "boat_maroon_1"
       },
       {
         "desc": "fishing rods with yellow shafts and black reels",
         "action": "static",
-        "position": "left"
+        "position": "left",
+        "id": "fishing_rods_yellow_1"
       },
       {
-        "desc": "white text overlay",
+        "desc": "white text with a black outline in a sans-serif font",
         "action": "static",
-        "position": "bottom"
+        "position": "bottom",
+        "id": "text_overlay_white_1"
       }
     ],
     "atomic_facts": [
@@ -1228,18 +1365,23 @@
         "confidence": 1.0
       },
       {
-        "fact": "The orange cat walks on the boat deck.",
+        "fact": "The orange tabby cat walks across the boat deck.",
         "confidence": 1.0
       },
       {
-        "fact": "The text overlay reads: 'Oh god, I bet somebody put them out.'",
+        "fact": "The text 'Oh god, I bet somebody put them out.' appears on the screen.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "Fishing rods are lying on the left side of the boat.",
         "confidence": 1.0
       }
     ],
     "ocr": [
+      "the dodo",
       "Oh god, I bet somebody put them out."
     ],
-    "spatial": "The man is crouching behind the cat. The cat is in front of the man and walking near the fishing rods on the left. The text overlay is at the bottom of the screen.",
+    "spatial": "The man is crouching behind the cat. The cat is walking in front of the man on the boat deck. The fishing rods are to the left of the cat and the man.",
     "parse_success": true,
     "chunk_idx": 19,
     "video_id": "ytb_3c4KhoCFxzA",
@@ -1247,34 +1389,45 @@
   },
   {
     "time": [
-      40,
-      42
+      20,
+      21
     ],
     "visible_entities": [
       {
-        "desc": "man with light beard, wearing a grey and black 'YETI' baseball cap, a blue short-sleeved t-shirt, beige shorts, and dark sneakers with white soles",
+        "desc": "man with short brown hair and beard, wearing a blue t-shirt, beige shorts, black and white sneakers, and a grey and black baseball cap with 'YETI' logo",
         "action": "crouching on the boat deck",
-        "position": "center"
+        "position": "center",
+        "id": "person_fisherman_1"
       },
       {
         "desc": "small orange tabby cat",
         "action": "standing on the boat deck",
-        "position": "foreground"
+        "position": "foreground",
+        "id": "cat_orange_tabby_1"
       },
       {
-        "desc": "dark-colored boat deck with fishing rods lying on the left side",
-        "action": "static",
-        "position": "bottom"
+        "desc": "maroon fishing boat with black carpeted deck",
+        "action": "floating on water",
+        "position": "background",
+        "id": "boat_maroon_1"
       },
       {
-        "desc": "calm body of water with tree reflections",
-        "action": "static",
-        "position": "background"
+        "desc": "fishing rods with reels",
+        "action": "lying on the boat deck",
+        "position": "left",
+        "id": "fishing_rods_yellow_1"
       },
       {
-        "desc": "white text overlay with a drop shadow",
+        "desc": "white text overlay",
         "action": "static",
-        "position": "bottom"
+        "position": "bottom",
+        "id": "text_overlay_white_1"
+      },
+      {
+        "desc": "The Dodo logo",
+        "action": "static",
+        "position": "top right",
+        "id": "logo_dodo_1"
       }
     ],
     "atomic_facts": [
@@ -1283,85 +1436,7 @@
         "confidence": 1.0
       },
       {
-        "fact": "An orange tabby cat is standing in front of the man.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The text overlay reads: 'Oh god, I bet somebody put them out.'",
-        "confidence": 1.0
-      },
-      {
-        "fact": "Fishing rods are lying on the deck to the left of the man.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [
-      "Oh god, I bet somebody put them out."
-    ],
-    "spatial": "The man is crouching on the boat deck, which is below him. The orange cat is in front of the man. The fishing rods are to the left of the man. The text overlay is at the bottom of the screen, below the man and the cat.",
-    "parse_success": true,
-    "chunk_idx": 20,
-    "video_id": "ytb_3c4KhoCFxzA",
-    "state_changes": []
-  },
-  {
-    "time": [
-      42,
-      44
-    ],
-    "visible_entities": [
-      {
-        "desc": "man wearing a blue t-shirt with a white graphic on the back, beige shorts, grey sneakers, and a grey and white trucker hat",
-        "action": "bending forward",
-        "position": "center"
-      },
-      {
-        "desc": "small, light brown spotted animal, possibly a fawn or puppy",
-        "action": "standing",
-        "position": "center foreground"
-      },
-      {
-        "desc": "dark maroon boat deck",
-        "action": "static",
-        "position": "bottom"
-      },
-      {
-        "desc": "fishing rods",
-        "action": "static",
-        "position": "left"
-      },
-      {
-        "desc": "calm lake water",
-        "action": "static",
-        "position": "background"
-      },
-      {
-        "desc": "green forested shoreline",
-        "action": "static",
-        "position": "background"
-      },
-      {
-        "desc": "white text overlay",
-        "action": "static",
-        "position": "bottom center"
-      },
-      {
-        "desc": "The Dodo logo",
-        "action": "static",
-        "position": "top right"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "The man is bending forward over the boat deck.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The man is reaching his hand down towards the small spotted animal.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The small spotted animal is standing on the boat deck.",
+        "fact": "An orange cat is standing near the man's feet.",
         "confidence": 1.0
       },
       {
@@ -1369,11 +1444,92 @@
         "confidence": 1.0
       },
       {
-        "fact": "The text 'Never in my life, have I seen anything like this.' is displayed at the bottom of the screen.",
+        "fact": "The text overlay reads 'Oh god, I bet somebody put them out.'",
         "confidence": 1.0
       },
       {
-        "fact": "The Dodo logo is visible in the top right corner.",
+        "fact": "The boat is floating on a calm body of water.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "the dodo",
+      "YETI",
+      "Oh god, I bet somebody put them out."
+    ],
+    "spatial": "The man is crouching in the center of the boat, slightly behind the orange cat which is standing in the foreground. The fishing rods are lying on the deck to the left of the man. The text overlay is positioned at the bottom of the frame, below the man and the cat.",
+    "parse_success": true,
+    "chunk_idx": 20,
+    "video_id": "ytb_3c4KhoCFxzA",
+    "state_changes": []
+  },
+  {
+    "time": [
+      21,
+      22
+    ],
+    "visible_entities": [
+      {
+        "desc": "man wearing a blue t-shirt with a white graphic on the back, beige shorts, grey sneakers, and a grey and white baseball cap",
+        "action": "bending over and reaching down",
+        "position": "center",
+        "id": "person_fisherman_1"
+      },
+      {
+        "desc": "small, thin, light-brown spotted animal, appearing to be a fawn",
+        "action": "standing",
+        "position": "center foreground",
+        "id": "animal_other_1"
+      },
+      {
+        "desc": "maroon boat with fishing rods visible on the deck",
+        "action": "static",
+        "position": "foreground"
+      },
+      {
+        "desc": "calm lake water with reflections of trees",
+        "action": "static",
+        "position": "background",
+        "id": "water_calm_1"
+      },
+      {
+        "desc": "dense green forest on the far shore",
+        "action": "static",
+        "position": "background",
+        "id": "forest_green_1"
+      },
+      {
+        "desc": "white text overlay with a black outline",
+        "action": "static",
+        "position": "bottom",
+        "id": "text_overlay_white_1"
+      },
+      {
+        "desc": "The Dodo logo featuring a dodo bird head",
+        "action": "static",
+        "position": "top right",
+        "id": "logo_dodo_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A man in a blue shirt is bending over on a boat.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The man is reaching his hand down towards a small spotted animal.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The small animal is standing on the deck of the boat.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The text on the screen reads: 'Never in my life, have I seen anything like this.'",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The boat is floating on a calm body of water.",
         "confidence": 1.0
       }
     ],
@@ -1381,131 +1537,136 @@
       "the dodo",
       "Never in my life, have I seen anything like this."
     ],
-    "spatial": "The man is in the center of the frame, bending over the small spotted animal which is standing on the boat deck in front of him. The fishing rods are to the left of the man and the animal. The text overlay is below the man and the animal. The lake and forest are in the background behind the boat.",
+    "spatial": "The man is in the center of the boat, bending over the small animal which is standing on the deck in front of him. The text overlay is located at the bottom of the frame, below the man and the animal. The Dodo logo is in the top right corner, above the background scenery of the lake and forest.",
     "parse_success": true,
     "chunk_idx": 21,
     "video_id": "ytb_3c4KhoCFxzA",
     "state_changes": [
-      "different animal appears (fawn/puppy mentioned)"
+      "animal changes to a light-brown spotted fawn standing"
     ]
   },
   {
     "time": [
-      44,
-      46
+      22,
+      23
     ],
     "visible_entities": [
       {
-        "desc": "man wearing a blue t-shirt with a white graphic on the back, beige shorts, grey sneakers, and a white and maroon baseball cap",
-        "action": "bending forward and looking down",
-        "position": "center"
+        "desc": "man wearing a blue t-shirt with a white graphic on the back, beige shorts, grey sneakers, and a two-tone baseball cap (dark front, light mesh back)",
+        "action": "bending forward at the waist and looking down",
+        "position": "center",
+        "id": "person_fisherman_1"
       },
       {
-        "desc": "small light-brown squirrel",
-        "action": "standing on hind legs on the boat deck",
-        "position": "center foreground"
+        "desc": "small light-brown squirrel standing on its hind legs",
+        "action": "standing on the boat deck",
+        "position": "center foreground",
+        "id": "animal_other_1"
       },
       {
-        "desc": "fishing rods with yellow and black details",
+        "desc": "maroon boat deck with fishing rods lying on the floor",
         "action": "static",
-        "position": "bottom left"
+        "position": "bottom"
       },
       {
-        "desc": "calm lake water reflecting trees",
+        "desc": "calm lake water reflecting trees and sky",
         "action": "static",
-        "position": "background"
+        "position": "background",
+        "id": "water_calm_1"
       },
       {
-        "desc": "dense green forest on the far shore",
+        "desc": "yellow text overlay with a black outline",
         "action": "static",
-        "position": "background"
-      },
-      {
-        "desc": "yellow text overlay",
-        "action": "static",
-        "position": "bottom center"
+        "position": "bottom center",
+        "id": "text_subtitle_yellow_1"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "The man bends forward at the waist, looking down at the squirrel.",
+        "fact": "The man bends forward to look at the squirrel on the boat deck.",
         "confidence": 1.0
       },
       {
-        "fact": "The squirrel stands on its hind legs on the boat deck.",
+        "fact": "The squirrel stands upright on its hind legs near the man's feet.",
         "confidence": 1.0
       },
       {
-        "fact": "The text 'Look, it's coming out of the weeds right now.' appears on screen.",
+        "fact": "The text overlay reads 'Look, it's coming out of the weeds right now.'",
         "confidence": 1.0
       },
       {
-        "fact": "Fishing rods are lying on the deck of the boat.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [
-      "Look, it's coming out of the weeds right now."
-    ],
-    "spatial": "The man is standing in the center of the boat, bending over the squirrel which is on the deck in front of him. The fishing rods are to the left of the man and squirrel. The forest is in the background behind the lake water.",
-    "parse_success": true,
-    "chunk_idx": 22,
-    "video_id": "ytb_3c4KhoCFxzA",
-    "state_changes": [
-      "squirrel standing on boat deck"
-    ]
-  },
-  {
-    "time": [
-      46,
-      48
-    ],
-    "visible_entities": [
-      {
-        "desc": "man wearing a light-colored baseball cap, a blue t-shirt with a white graphic on the back, and beige pants",
-        "action": "leaning forward over the water",
-        "position": "left/foreground"
-      },
-      {
-        "desc": "dense green forest with tall trees",
-        "action": "static",
-        "position": "background"
-      },
-      {
-        "desc": "calm dark water reflecting the trees",
-        "action": "static",
-        "position": "center/background"
-      },
-      {
-        "desc": "yellow text overlay",
-        "action": "static",
-        "position": "bottom center"
-      },
-      {
-        "desc": "The Dodo logo",
-        "action": "static",
-        "position": "top right"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "A man in a blue shirt leans forward over the water.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The text 'See it?' appears on the screen.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The Dodo logo is visible in the top right corner.",
+        "fact": "Fishing rods are lying on the floor of the boat to the left of the man.",
         "confidence": 1.0
       }
     ],
     "ocr": [
       "the dodo",
-      "See it?"
+      "Look, it's coming out of the weeds right now."
     ],
-    "spatial": "The man is positioned in the foreground on the left side of the frame, leaning over the water. The forest is in the background across the water. The text 'See it?' is located below the man's torso. The Dodo logo is above the forest in the top right corner.",
+    "spatial": "The man is standing in the center of the boat, bending over the squirrel which is on the deck in front of him. The text overlay is positioned at the bottom of the screen, below the man and the squirrel. The fishing rods are lying on the boat floor to the left of the man's legs.",
+    "parse_success": true,
+    "chunk_idx": 22,
+    "video_id": "ytb_3c4KhoCFxzA",
+    "state_changes": [
+      "animal changes to a squirrel standing on hind legs"
+    ]
+  },
+  {
+    "time": [
+      23,
+      24
+    ],
+    "visible_entities": [
+      {
+        "desc": "man wearing a blue t-shirt with a white graphic on the back, beige pants, and a white baseball cap",
+        "action": "leaning forward over the water",
+        "position": "left foreground",
+        "id": "person_fisherman_1"
+      },
+      {
+        "desc": "calm dark water reflecting the surrounding trees",
+        "action": "static",
+        "position": "center and background",
+        "id": "water_calm_1"
+      },
+      {
+        "desc": "dense green trees on a shoreline",
+        "action": "static",
+        "position": "background",
+        "id": "forest_green_1"
+      },
+      {
+        "desc": "yellow text overlay",
+        "action": "static",
+        "position": "bottom center",
+        "id": "text_subtitle_yellow_1"
+      },
+      {
+        "desc": "The Dodo logo in the top right corner",
+        "action": "static",
+        "position": "top right",
+        "id": "logo_dodo_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The man leans forward towards the water's surface.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The text 'See it?' is displayed on the screen.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The trees are reflected clearly in the still water.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "See it?",
+      "the dodo"
+    ],
+    "spatial": "The man is in the foreground on the left side of the frame, leaning over the water. The water occupies the center and extends to the background where the trees are located. The text 'See it?' is positioned below the man's torso, near the bottom center of the screen.",
     "parse_success": true,
     "chunk_idx": 23,
     "video_id": "ytb_3c4KhoCFxzA",
@@ -1513,39 +1674,44 @@
   },
   {
     "time": [
-      48,
-      50
+      24,
+      25
     ],
     "visible_entities": [
       {
-        "desc": "small, indistinct white object or animal",
-        "action": "static",
-        "position": "center"
+        "desc": "small white object, possibly an animal, located in the center of the water",
+        "action": "floating",
+        "position": "center",
+        "id": "animal_other_1"
       },
       {
-        "desc": "dense forest with tall, thin tree trunks and green foliage",
+        "desc": "dense forest background with tall, thin tree trunks and green foliage",
         "action": "static",
-        "position": "background"
+        "position": "background",
+        "id": "forest_green_1"
       },
       {
-        "desc": "dark, reflective water surface",
+        "desc": "circular magnified overlay highlighting the white object in the water",
         "action": "static",
-        "position": "foreground"
+        "position": "center",
+        "id": "overlay_magnified_1"
       },
       {
-        "desc": "white sans-serif text",
+        "desc": "white sans-serif text caption",
         "action": "static",
-        "position": "bottom"
+        "position": "bottom",
+        "id": "text_overlay_white_1"
       },
       {
-        "desc": "The Dodo logo (cartoon dodo head in circle with text)",
+        "desc": "logo featuring a stylized dodo bird head with 'the dodo' text",
         "action": "static",
-        "position": "top-right"
+        "position": "top-right",
+        "id": "logo_dodo_1"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A small, indistinct white object is visible in the center of the frame, highlighted by a circular overlay.",
+        "fact": "A small white object is floating in the middle of a body of water.",
         "confidence": 1.0
       },
       {
@@ -1553,7 +1719,7 @@
         "confidence": 1.0
       },
       {
-        "fact": "The scene is set in a dimly lit forest environment with a body of water in the foreground.",
+        "fact": "A circular highlight focuses on the white object in the water.",
         "confidence": 1.0
       }
     ],
@@ -1561,108 +1727,113 @@
       "the dodo",
       "Oh my god."
     ],
-    "spatial": "The small white object is in the center of the frame, positioned in front of the dense forest background and above the reflective water surface. The text 'Oh my god.' is located below the central object. The Dodo logo is in the top-right corner, above the forest background.",
+    "spatial": "The small white object is in the center of the water, surrounded by the forest background. The circular highlight is directly over the white object. The text 'Oh my god.' is below the circular highlight. The 'the dodo' logo is in the top right corner, above the forest.",
     "parse_success": true,
     "chunk_idx": 24,
     "video_id": "ytb_3c4KhoCFxzA",
-    "state_changes": []
+    "state_changes": [
+      "circular magnified overlay appears highlighting a white object"
+    ]
   },
   {
     "time": [
-      50,
-      52
+      25,
+      26
     ],
     "visible_entities": [
       {
-        "desc": "small white animal, likely a dog, with a fluffy coat",
-        "action": "standing on the bank",
-        "position": "center"
+        "desc": "small, blurry, light-colored object, possibly an animal, located in the center of the scene",
+        "action": "static",
+        "position": "center",
+        "id": "animal_other_1"
       },
       {
-        "desc": "circular magnified overlay highlighting the animal",
+        "desc": "dense green foliage and trees forming a forest background",
         "action": "static",
-        "position": "center"
+        "position": "background",
+        "id": "forest_green_1"
       },
       {
-        "desc": "dense green trees and foliage",
+        "desc": "circular magnified overlay highlighting the central area",
         "action": "static",
-        "position": "background"
+        "position": "center",
+        "id": "overlay_magnified_1"
       },
       {
-        "desc": "dark water surface reflecting the trees",
+        "desc": "logo with a dodo bird head icon and text 'the dodo' in white",
         "action": "static",
-        "position": "foreground"
-      },
-      {
-        "desc": "logo with a dodo bird head icon and text 'the dodo'",
-        "action": "static",
-        "position": "top-right"
+        "position": "top-right",
+        "id": "logo_dodo_1"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A small white animal is standing on the grassy bank near the water.",
+        "fact": "A small, light-colored object is visible in the center of the frame.",
         "confidence": 1.0
       },
       {
-        "fact": "The animal is positioned within a circular magnified view.",
+        "fact": "The scene is outdoors with trees and greenery in the background.",
         "confidence": 1.0
       },
       {
-        "fact": "The background consists of a dense forest line.",
+        "fact": "A circular overlay is used to highlight the central object.",
         "confidence": 1.0
       },
       {
-        "fact": "The text 'the dodo' is visible in the top right corner.",
+        "fact": "The logo 'the dodo' is displayed in the top right corner.",
         "confidence": 1.0
       }
     ],
     "ocr": [
       "the dodo"
     ],
-    "spatial": "The small white animal is in the center of the frame, standing on the bank which is behind the dark water in the foreground. The dense trees are located behind the animal. The 'the dodo' logo is in the top right corner, above the trees.",
+    "spatial": "The small light-colored object is in the center of the frame, highlighted by a circular overlay. The dense green foliage is behind the central object. The 'the dodo' logo is in the top right corner of the frame.",
     "parse_success": true,
     "chunk_idx": 25,
     "video_id": "ytb_3c4KhoCFxzA",
-    "state_changes": [
-      "scene change to white dog on bank"
-    ]
+    "state_changes": []
   },
   {
     "time": [
-      52,
-      54
+      26,
+      27
     ],
     "visible_entities": [
       {
-        "desc": "small white cat swimming in water",
+        "desc": "small white animal, identified as a cat, swimming in the water",
         "action": "swimming towards the camera",
-        "position": "center"
+        "position": "center",
+        "id": "animal_other_1"
       },
       {
-        "desc": "calm dark water surface with reflections",
-        "action": "static",
-        "position": "background"
+        "desc": "yellow curved arrow graphic with a dotted tail",
+        "action": "pointing towards the swimming cat",
+        "position": "center-right",
+        "id": "arrow_orange_1"
       },
       {
-        "desc": "green trees and forest on the shore",
+        "desc": "white text overlay in sans-serif font",
         "action": "static",
-        "position": "background"
+        "position": "bottom",
+        "id": "text_overlay_white_1"
       },
       {
-        "desc": "yellow curved arrow graphic",
+        "desc": "The Dodo logo featuring a dodo bird head",
         "action": "static",
-        "position": "center"
+        "position": "top-right",
+        "id": "logo_dodo_1"
       },
       {
-        "desc": "white text overlay",
+        "desc": "calm body of water reflecting the background",
         "action": "static",
-        "position": "bottom"
+        "position": "background",
+        "id": "water_calm_1"
       },
       {
-        "desc": "The Dodo logo",
+        "desc": "dense green trees and foliage along the shoreline",
         "action": "static",
-        "position": "top-right"
+        "position": "background",
+        "id": "forest_green_1"
       }
     ],
     "atomic_facts": [
@@ -1671,11 +1842,11 @@
         "confidence": 1.0
       },
       {
-        "fact": "The text 'There's a damn cat swimming towards the boat 'cause,' is displayed at the bottom of the screen.",
+        "fact": "A yellow arrow graphic points from the bottom of the screen towards the swimming cat.",
         "confidence": 1.0
       },
       {
-        "fact": "A yellow arrow points from the text towards the swimming cat.",
+        "fact": "The text overlay reads 'There's a damn cat swimming towards the boat 'cause,'.",
         "confidence": 1.0
       },
       {
@@ -1687,44 +1858,48 @@
       "the dodo",
       "There's a damn cat swimming towards the boat 'cause,"
     ],
-    "spatial": "The swimming cat is in the center of the frame, surrounded by the water. The yellow arrow is positioned below the cat, pointing upwards towards it. The text overlay is located at the bottom of the screen, below the arrow. The trees are in the background, behind the water.",
+    "spatial": "The swimming cat is in the center of the frame, surrounded by the calm water. The yellow arrow is positioned to the right of the cat, curving to point at it. The text overlay is located at the bottom of the screen, below the water and the arrow. The trees are in the background, behind the water.",
     "parse_success": true,
     "chunk_idx": 26,
     "video_id": "ytb_3c4KhoCFxzA",
     "state_changes": [
-      "white cat swimming in water (different animal)"
+      "white animal (cat) swimming towards camera; yellow curved arrow points to it"
     ]
   },
   {
     "time": [
-      54,
-      56
+      27,
+      28
     ],
     "visible_entities": [
       {
-        "desc": "calm body of water, dark surface with reflections",
+        "desc": "calm, dark body of water reflecting the shoreline",
         "action": "static",
-        "position": "center"
+        "position": "center",
+        "id": "water_calm_1"
       },
       {
-        "desc": "forest shoreline with green trees and brown trunks",
+        "desc": "shoreline with green trees and a fallen log",
         "action": "static",
         "position": "background"
       },
       {
-        "desc": "small white object floating in the water",
+        "desc": "small, white, distant object floating in the water",
         "action": "floating",
-        "position": "center"
+        "position": "center",
+        "id": "animal_other_1"
       },
       {
-        "desc": "white text overlay with sans-serif font",
+        "desc": "white sans-serif text overlay",
         "action": "static",
-        "position": "bottom"
+        "position": "bottom",
+        "id": "text_overlay_white_1"
       },
       {
-        "desc": "The Dodo logo featuring a dodo bird head",
+        "desc": "The Dodo logo with a dodo bird head icon",
         "action": "static",
-        "position": "top-right"
+        "position": "top right",
+        "id": "logo_dodo_1"
       }
     ],
     "atomic_facts": [
@@ -1733,22 +1908,20 @@
         "confidence": 1.0
       },
       {
-        "fact": "The text overlay reads 'There's a damn cat swimming towards the boat 'cause, some jackass probably put them out here.'",
+        "fact": "The text overlay reads: \"There's a damn cat swimming towards the boat 'cause, some jackass probably put them out here.\"",
         "confidence": 1.0
       },
       {
-        "fact": "The trees on the shoreline are reflected in the water.",
+        "fact": "The trees on the shore are reflected in the water.",
         "confidence": 1.0
       }
     ],
     "ocr": [
       "the dodo",
-      "There's a damn cat swimming",
-      "towards the boat 'cause,",
-      "some jackass probably",
-      "put them out here."
+      "There's a damn cat swimming towards the boat 'cause,",
+      "some jackass probably put them out here."
     ],
-    "spatial": "The small white object is in the center of the water. The forest shoreline is in the background, behind the water. The text overlay is at the bottom of the frame, below the water scene. The logo is in the top-right corner, above the shoreline.",
+    "spatial": "The small white object is in the center of the water, in front of the shoreline. The shoreline with trees is in the background, behind the water. The text overlay is at the bottom of the frame, below the water. The Dodo logo is in the top right corner, above the shoreline.",
     "parse_success": true,
     "chunk_idx": 27,
     "video_id": "ytb_3c4KhoCFxzA",
@@ -1756,65 +1929,67 @@
   },
   {
     "time": [
-      56,
-      58
+      28,
+      29
     ],
     "visible_entities": [
       {
-        "desc": "calm body of water with dark, murky surface reflecting the sky and trees",
+        "desc": "calm body of water, dark and reflective surface",
         "action": "static",
-        "position": "center/foreground"
+        "position": "center",
+        "id": "water_calm_1"
       },
       {
-        "desc": "dense green forest with tall trees and foliage along the shoreline",
+        "desc": "dense green trees and foliage on the shoreline",
         "action": "static",
-        "position": "background"
+        "position": "background",
+        "id": "forest_green_1"
       },
       {
-        "desc": "fallen tree trunk or branch extending into the water from the left bank",
+        "desc": "fallen tree branch extending into the water",
         "action": "static",
-        "position": "left"
+        "position": "left",
+        "id": "animal_other_1"
       },
       {
-        "desc": "small white object floating on the water surface",
+        "desc": "small white object floating on the water",
         "action": "static",
-        "position": "center"
+        "position": "center",
+        "id": "animal_other_1"
       },
       {
-        "desc": "white sans-serif text overlay with a slight drop shadow",
+        "desc": "white sans-serif text overlay",
         "action": "static",
-        "position": "bottom"
+        "position": "bottom",
+        "id": "text_overlay_white_1"
       },
       {
-        "desc": "logo featuring a stylized dodo bird head in a circle with text 'the dodo'",
+        "desc": "The Dodo logo with a dodo bird illustration",
         "action": "static",
-        "position": "top right"
+        "position": "top right",
+        "id": "logo_dodo_1"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A small white object floats motionless on the water surface.",
+        "fact": "A small white object is floating in the middle of the water.",
         "confidence": 1.0
       },
       {
-        "fact": "The text overlay reads 'some jackass probably put them out here.'",
+        "fact": "The trees in the background are reflected clearly on the water's surface.",
         "confidence": 1.0
       },
       {
-        "fact": "The trees and sky are reflected clearly on the calm water surface.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "A fallen log extends from the shoreline into the water on the left side.",
+        "fact": "The text 'some jackass probably put them out here.' is displayed at the bottom of the screen.",
         "confidence": 1.0
       }
     ],
     "ocr": [
+      "the dodo",
       "some jackass probably",
-      "put them out here.",
-      "the dodo"
+      "put them out here."
     ],
-    "spatial": "The dense forest is in the background, behind the calm body of water. The fallen tree trunk is on the left side, extending from the shore into the water. The small white object is floating in the center of the water. The text overlay is positioned at the bottom of the frame, below the water reflection. The logo is located in the top right corner, above the forest line.",
+    "spatial": "The fallen tree branch is on the left side of the frame, extending towards the center. The small white object is floating in the center of the water, below the trees in the background. The text overlay is positioned at the bottom of the screen, below the water and the reflection of the trees.",
     "parse_success": true,
     "chunk_idx": 28,
     "video_id": "ytb_3c4KhoCFxzA",
@@ -1822,96 +1997,106 @@
   },
   {
     "time": [
-      58,
-      60
+      29,
+      30
     ],
     "visible_entities": [
       {
-        "desc": "calm, dark lake water reflecting the surrounding trees and sky",
+        "desc": "calm, dark body of water reflecting the surrounding environment",
         "action": "static",
-        "position": "center"
+        "position": "center",
+        "id": "water_calm_1"
       },
       {
         "desc": "dense green trees and bushes on the shoreline",
         "action": "static",
-        "position": "background"
+        "position": "background",
+        "id": "forest_green_1"
       },
       {
-        "desc": "fallen tree branches extending over the water",
+        "desc": "large fallen tree trunk extending into the water",
         "action": "static",
-        "position": "left"
+        "position": "left",
+        "id": "animal_other_1"
       },
       {
         "desc": "small white bird floating on the water",
         "action": "floating",
-        "position": "center"
+        "position": "center",
+        "id": "animal_other_1"
       },
       {
-        "desc": "logo with a dodo bird head and text 'the dodo' in white font",
+        "desc": "The Dodo logo featuring a dodo bird head and text",
         "action": "static",
-        "position": "top right"
+        "position": "top right",
+        "id": "logo_dodo_1"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A small white bird is floating on the calm lake water.",
+        "fact": "A small white bird is floating on the surface of the water.",
         "confidence": 1.0
       },
       {
-        "fact": "The trees on the shoreline are reflected in the water.",
+        "fact": "The water is calm enough to show clear reflections of the trees.",
         "confidence": 1.0
       },
       {
-        "fact": "The logo 'the dodo' is visible in the top right corner.",
+        "fact": "The Dodo logo is visible in the top right corner.",
         "confidence": 1.0
       }
     ],
     "ocr": [
       "the dodo"
     ],
-    "spatial": "The small white bird is in the center of the lake, floating on the water. The dense green trees are in the background, behind the water. The fallen tree branches are to the left of the bird. The 'the dodo' logo is in the top right corner of the frame.",
+    "spatial": "The small white bird is floating in the center of the water, positioned below the trees on the shoreline. The fallen tree trunk is to the left of the bird. The Dodo logo is above the trees in the top right corner of the frame.",
     "parse_success": true,
     "chunk_idx": 29,
     "video_id": "ytb_3c4KhoCFxzA",
     "state_changes": [
-      "white bird floating on water (different animal)"
+      "small white bird appears floating on the water"
     ]
   },
   {
     "time": [
-      60,
-      62
+      30,
+      31
     ],
     "visible_entities": [
       {
-        "desc": "small white bird, likely a duck or waterfowl, floating on water",
+        "desc": "small white bird, likely a duck or gull, floating on the water surface",
         "action": "floating",
-        "position": "center"
+        "position": "center",
+        "id": "animal_other_1"
       },
       {
-        "desc": "dense green trees and foliage on the shoreline",
+        "desc": "dense green forest with tall trees and bushes lining the shore",
         "action": "static",
-        "position": "background"
+        "position": "background",
+        "id": "forest_green_1"
       },
       {
-        "desc": "calm dark water reflecting the trees and sky",
+        "desc": "calm dark water surface reflecting the trees and sky",
         "action": "static",
-        "position": "foreground"
+        "position": "foreground",
+        "id": "water_calm_1"
       },
       {
         "desc": "yellow text overlay with a sans-serif font",
         "action": "static",
-        "position": "bottom"
+        "position": "bottom",
+        "id": "text_subtitle_yellow_1"
       },
       {
-        "desc": "The Dodo logo featuring a dodo bird head illustration",
+        "desc": "The Dodo logo featuring a cartoon dodo bird head in a white circle",
         "action": "static",
-        "position": "top-right"
+        "position": "top-right",
+        "id": "logo_dodo_1"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A small white bird is floating in the center of the water.",
+        "fact": "A small white bird is floating on the water.",
         "confidence": 1.0
       },
       {
@@ -1919,7 +2104,7 @@
         "confidence": 1.0
       },
       {
-        "fact": "The trees in the background are reflected in the calm water.",
+        "fact": "The trees on the shore are reflected in the water.",
         "confidence": 1.0
       }
     ],
@@ -1927,7 +2112,7 @@
       "the dodo",
       "He's rubbing up against my leg!"
     ],
-    "spatial": "The small white bird is in the center of the frame, floating on the water. The dense green trees are in the background, positioned behind the bird and above the water line. The yellow text is located at the bottom of the screen, below the bird and water. The Dodo logo is in the top-right corner, above the trees.",
+    "spatial": "The small white bird is in the center of the frame, floating on the water. The forest is in the background behind the bird. The yellow text is at the bottom of the screen, below the bird and the water reflection. The logo is in the top right corner, above the forest.",
     "parse_success": true,
     "chunk_idx": 30,
     "video_id": "ytb_3c4KhoCFxzA",
@@ -1935,43 +2120,47 @@
   },
   {
     "time": [
-      62,
-      64
+      31,
+      32
     ],
     "visible_entities": [
       {
-        "desc": "man wearing a blue t-shirt and a beige baseball cap",
-        "action": "standing on a boat",
+        "desc": "man wearing a blue t-shirt and a light-colored baseball cap",
+        "action": "standing on a boat and reaching towards the water",
         "position": "right"
       },
       {
         "desc": "small white bird floating on the water",
         "action": "floating",
-        "position": "center"
+        "position": "center",
+        "id": "animal_other_1"
       },
       {
-        "desc": "dark red boat hull with fishing rods and wires",
+        "desc": "dark-colored boat with fishing rods visible",
         "action": "static",
-        "position": "bottom right"
+        "position": "foreground",
+        "id": "boat_maroon_1"
       },
       {
-        "desc": "calm dark water reflecting trees",
+        "desc": "green trees and vegetation on the shore",
         "action": "static",
-        "position": "center"
+        "position": "background",
+        "id": "forest_green_1"
       },
       {
-        "desc": "green trees and a fallen branch on the shore",
+        "desc": "white text overlay",
         "action": "static",
-        "position": "background"
+        "position": "bottom",
+        "id": "text_overlay_white_1"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A man in a blue shirt stands on a boat looking at a bird.",
+        "fact": "A man in a blue shirt stands on a boat.",
         "confidence": 1.0
       },
       {
-        "fact": "The bird is floating in the water near the center of the frame.",
+        "fact": "The man reaches his hand out towards a bird in the water.",
         "confidence": 1.0
       },
       {
@@ -1983,7 +2172,7 @@
         "confidence": 1.0
       },
       {
-        "fact": "The boat is positioned on the right side of the water.",
+        "fact": "A small white bird floats in the water near the boat.",
         "confidence": 1.0
       }
     ],
@@ -1992,7 +2181,7 @@
       "Come on, I'mma get ya.",
       "Come here."
     ],
-    "spatial": "The man in the blue shirt is standing on the right side of the frame, on a boat. The small white bird is in the center of the water, to the left of the man. The trees are in the background behind the water.",
+    "spatial": "The man in the blue shirt is on the right side of the frame, standing on the boat which is in the foreground. The small white bird is in the center of the water, in front of the man. The trees are in the background behind the water. The text is located at the bottom of the screen.",
     "parse_success": true,
     "chunk_idx": 31,
     "video_id": "ytb_3c4KhoCFxzA",
@@ -2000,67 +2189,52 @@
   },
   {
     "time": [
-      64,
-      66
+      32,
+      33
     ],
     "visible_entities": [
       {
-        "desc": "man wearing a blue t-shirt with a white graphic on the back, beige pants, and a white baseball cap",
+        "desc": "man wearing a light grey baseball cap, a blue t-shirt with a white graphic design on the back, and beige pants",
         "action": "leaning forward over the side of the boat",
-        "position": "right foreground"
+        "position": "foreground right",
+        "id": "person_fisherman_1"
       },
       {
-        "desc": "light-colored animal, possibly a dog, swimming in the water",
-        "action": "swimming towards the boat",
-        "position": "center middle-ground"
+        "desc": "small brownish bird floating on the water surface",
+        "action": "floating",
+        "position": "center",
+        "id": "animal_other_1"
       },
       {
-        "desc": "dark-colored boat with fishing rods visible inside",
+        "desc": "dark red boat hull with fishing rods resting inside",
         "action": "static",
-        "position": "bottom right"
+        "position": "bottom"
       },
       {
-        "desc": "calm body of water reflecting trees",
+        "desc": "logo featuring a stylized dodo bird head in a circle with text",
         "action": "static",
-        "position": "background"
-      },
-      {
-        "desc": "dense green trees and foliage on the far bank",
-        "action": "static",
-        "position": "background"
-      },
-      {
-        "desc": "logo with a cartoon dodo bird head and text 'the dodo'",
-        "action": "static",
-        "position": "top right"
+        "position": "top right",
+        "id": "logo_dodo_1"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A man in a blue shirt leans over the side of a boat.",
+        "fact": "The man leans forward from the boat towards the bird.",
         "confidence": 1.0
       },
       {
-        "fact": "A light-colored animal is swimming in the water.",
+        "fact": "The bird is floating in the water in front of the boat.",
         "confidence": 1.0
       },
       {
-        "fact": "The animal is moving towards the boat.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "Fishing rods are lying on the floor of the boat.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The logo 'the dodo' is visible in the top right corner.",
+        "fact": "Fishing rods are resting on the floor of the boat.",
         "confidence": 1.0
       }
     ],
     "ocr": [
       "the dodo"
     ],
-    "spatial": "The man is in the foreground on the right side of the frame, leaning over the edge of the boat. The swimming animal is in the center of the frame, in front of the man and the boat. The trees are in the background, behind the water. The 'the dodo' logo is in the top right corner, above the man.",
+    "spatial": "The man is in the foreground on the right side of the frame, leaning over the edge of the boat. The bird is in the center of the frame, floating on the water in front of the man. The logo is positioned in the top right corner, above the man and the trees.",
     "parse_success": true,
     "chunk_idx": 32,
     "video_id": "ytb_3c4KhoCFxzA",
@@ -2068,29 +2242,45 @@
   },
   {
     "time": [
-      66,
-      68
+      33,
+      34
     ],
     "visible_entities": [
       {
-        "desc": "man wearing a blue t-shirt with a white graphic on the back, beige shorts, a white baseball cap, and dark sneakers",
+        "desc": "man wearing a blue t-shirt with a white graphic on the back, beige shorts, a white baseball cap worn backwards, and sneakers",
         "action": "kneeling on the boat deck and reaching towards the water",
-        "position": "center foreground"
+        "position": "foreground center",
+        "id": "person_fisherman_1"
       },
       {
-        "desc": "light-colored bird floating in the water",
-        "action": "floating",
-        "position": "left center"
+        "desc": "light-colored bird, possibly an eagle or hawk, swimming in the water",
+        "action": "floating and swimming",
+        "position": "center left",
+        "id": "animal_other_1"
       },
       {
-        "desc": "dark-colored boat deck with fishing equipment",
+        "desc": "dark-colored boat deck with fishing rods and equipment visible",
         "action": "static",
-        "position": "bottom right"
+        "position": "foreground bottom",
+        "id": "boat_maroon_1"
       },
       {
-        "desc": "logo with a cartoon dodo bird head and text 'the dodo'",
+        "desc": "calm river water reflecting trees",
         "action": "static",
-        "position": "top right"
+        "position": "center",
+        "id": "water_calm_1"
+      },
+      {
+        "desc": "dense green trees and vegetation on the riverbank",
+        "action": "static",
+        "position": "background",
+        "id": "forest_green_1"
+      },
+      {
+        "desc": "logo with a stylized bird head and text 'the dodo'",
+        "action": "static",
+        "position": "top right",
+        "id": "logo_dodo_1"
       }
     ],
     "atomic_facts": [
@@ -2099,11 +2289,11 @@
         "confidence": 1.0
       },
       {
-        "fact": "The man is reaching his hand towards the bird in the water.",
+        "fact": "The man is reaching his hand out towards the bird in the water.",
         "confidence": 1.0
       },
       {
-        "fact": "The bird is floating near the side of the boat.",
+        "fact": "The bird is swimming near the side of the boat.",
         "confidence": 1.0
       },
       {
@@ -2114,60 +2304,68 @@
     "ocr": [
       "the dodo"
     ],
-    "spatial": "The man is kneeling on the boat deck, positioned to the right of the bird. The bird is floating in the water to the left of the man. The 'the dodo' logo is above the man and the boat in the top right corner.",
+    "spatial": "The man is kneeling on the boat deck in the foreground. The bird is in the water to the left of the man. The trees are in the background behind the water. The logo is above the man in the top right corner.",
     "parse_success": true,
     "chunk_idx": 33,
     "video_id": "ytb_3c4KhoCFxzA",
-    "state_changes": []
+    "state_changes": [
+      "light-colored bird (eagle/hawk) appears swimming/floating"
+    ]
   },
   {
     "time": [
-      68,
-      70
+      34,
+      35
     ],
     "visible_entities": [
       {
-        "desc": "man wearing a blue t-shirt with a white graphic on the back, beige shorts, a beige and white baseball cap, and sneakers",
-        "action": "kneeling on the boat deck and reaching towards the water",
-        "position": "right/foreground"
+        "desc": "man wearing a light blue t-shirt with a white graphic on the back, beige shorts, a white baseball cap, and sneakers",
+        "action": "kneeling on the boat deck and reaching down towards the water",
+        "position": "right/foreground",
+        "id": "person_fisherman_1"
       },
       {
-        "desc": "light-colored fish, partially submerged in the water",
-        "action": "surfacing near the boat",
-        "position": "center/left"
+        "desc": "fish, light brown or golden in color, partially submerged",
+        "action": "surfacing in the water",
+        "position": "center/left",
+        "id": "animal_other_1"
       },
       {
-        "desc": "dark-colored boat deck with fishing rods and equipment",
+        "desc": "dark-colored boat deck with fishing rods and equipment visible",
         "action": "static",
-        "position": "bottom/right"
+        "position": "bottom/foreground",
+        "id": "boat_maroon_1"
       },
       {
-        "desc": "calm water reflecting trees",
+        "desc": "calm body of water reflecting the surrounding trees",
         "action": "static",
-        "position": "center/left"
+        "position": "center/background",
+        "id": "water_calm_1"
       },
       {
-        "desc": "green trees and vegetation on the shoreline",
+        "desc": "dense green trees and foliage along the shoreline",
         "action": "static",
-        "position": "background"
+        "position": "background",
+        "id": "forest_green_1"
       },
       {
-        "desc": "logo with a dodo bird head and text 'the dodo'",
+        "desc": "logo featuring a stylized dodo bird head with the text 'the dodo'",
         "action": "static",
-        "position": "top right"
+        "position": "top right",
+        "id": "logo_dodo_1"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A man in a blue shirt is kneeling on a boat deck.",
+        "fact": "A man is kneeling on a boat deck.",
         "confidence": 1.0
       },
       {
-        "fact": "The man is reaching his hand towards a fish in the water.",
+        "fact": "The man is reaching his hand down towards a fish in the water.",
         "confidence": 1.0
       },
       {
-        "fact": "A fish is surfacing near the side of the boat.",
+        "fact": "A fish is surfacing near the edge of the boat.",
         "confidence": 1.0
       },
       {
@@ -2178,110 +2376,117 @@
     "ocr": [
       "the dodo"
     ],
-    "spatial": "The man is on the right side of the frame, kneeling on the boat deck. The fish is to the left of the man, in the water. The boat deck is below the man. The trees are in the background, behind the water.",
+    "spatial": "The man is kneeling on the boat deck, which is in the foreground. The fish is in the water to the left of the man and near the edge of the boat. The shoreline with trees is in the background, behind the water. The 'the dodo' logo is in the top right corner of the frame.",
     "parse_success": true,
     "chunk_idx": 34,
     "video_id": "ytb_3c4KhoCFxzA",
-    "state_changes": []
+    "state_changes": [
+      "fish surfaces in the water"
+    ]
   },
   {
     "time": [
-      70,
-      72
+      35,
+      36
     ],
     "visible_entities": [
       {
-        "desc": "man wearing a blue t-shirt, beige shorts, a white and grey baseball cap, and grey sneakers",
+        "desc": "man wearing a light blue t-shirt, beige shorts, a white and grey baseball cap, and grey sneakers",
         "action": "kneeling on the boat deck and reaching into the water",
-        "position": "center/foreground"
+        "position": "center-right",
+        "id": "person_fisherman_1"
       },
       {
-        "desc": "small orange tabby cat",
-        "action": "standing on the boat deck",
-        "position": "right/foreground"
+        "desc": "small light-brown tabby cat",
+        "action": "walking on the boat deck",
+        "position": "bottom-right",
+        "id": "cat_orange_tabby_1"
       },
       {
-        "desc": "dark-colored boat deck with fishing rods and equipment",
+        "desc": "dark-colored boat deck with yellow stripes and fishing rods",
         "action": "static",
-        "position": "bottom/foreground"
+        "position": "bottom",
+        "id": "boat_maroon_1"
       },
       {
-        "desc": "calm water reflecting trees",
+        "desc": "calm river water reflecting trees",
         "action": "static",
-        "position": "left/background"
+        "position": "left",
+        "id": "water_calm_1"
       },
       {
-        "desc": "green trees and foliage on the riverbank",
+        "desc": "The Dodo logo with a dodo bird head illustration",
         "action": "static",
-        "position": "background"
-      },
-      {
-        "desc": "white circular logo with a dodo bird head and text",
-        "action": "static",
-        "position": "top right"
+        "position": "top-right",
+        "id": "logo_dodo_1"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "The man is kneeling on the boat deck.",
+        "fact": "The man is kneeling on the edge of the boat and reaching his hands into the water.",
         "confidence": 1.0
       },
       {
-        "fact": "The man is reaching his hands into the water.",
+        "fact": "A small cat walks onto the boat deck near the man's legs.",
         "confidence": 1.0
       },
       {
-        "fact": "An orange cat is standing on the boat deck near the man.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "Fishing rods are lying on the boat deck.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The water reflects the trees on the opposite bank.",
+        "fact": "The text 'the dodo' is visible in the top right corner of the screen.",
         "confidence": 1.0
       }
     ],
     "ocr": [
       "the dodo"
     ],
-    "spatial": "The man is kneeling on the boat deck, which is in the foreground. The orange cat is to the right of the man on the same deck. The water is to the left of the man and below the level of the trees on the far bank. The 'the dodo' logo is in the top right corner of the frame, above the scene.",
+    "spatial": "The man is kneeling on the boat deck, positioned to the right of the open water. The cat is walking on the deck behind the man. The 'the dodo' logo is located in the top right corner, above the man.",
     "parse_success": true,
     "chunk_idx": 35,
     "video_id": "ytb_3c4KhoCFxzA",
-    "state_changes": []
+    "state_changes": [
+      "light-brown tabby cat appears walking on the boat deck"
+    ]
   },
   {
     "time": [
-      72,
-      74
+      36,
+      37
     ],
     "visible_entities": [
       {
-        "desc": "man wearing a blue t-shirt, beige shorts, and a grey and black baseball cap with 'YETI' text",
+        "desc": "man with beard, wearing a blue short-sleeved t-shirt, khaki shorts, and a grey and black baseball cap with 'YETI' text",
         "action": "kneeling on the boat deck and holding a kitten",
-        "position": "center"
+        "position": "center",
+        "id": "person_fisherman_1"
       },
       {
         "desc": "small orange and white kitten",
-        "action": "being held by the man over the water",
-        "position": "left"
+        "action": "being held by the scruff of the neck over the water",
+        "position": "left",
+        "id": "cat_orange_tabby_1"
       },
       {
         "desc": "small orange and white kitten",
         "action": "standing on the boat deck",
-        "position": "center"
+        "position": "center",
+        "id": "cat_orange_tabby_1"
+      },
+      {
+        "desc": "dark red boat deck",
+        "action": "static",
+        "position": "bottom",
+        "id": "boat_maroon_1"
+      },
+      {
+        "desc": "calm water reflecting trees",
+        "action": "static",
+        "position": "background",
+        "id": "water_calm_1"
       },
       {
         "desc": "yellow text overlay",
         "action": "static",
-        "position": "bottom"
-      },
-      {
-        "desc": "The Dodo logo",
-        "action": "static",
-        "position": "top right"
+        "position": "bottom center",
+        "id": "text_subtitle_yellow_1"
       }
     ],
     "atomic_facts": [
@@ -2300,6 +2505,346 @@
       {
         "fact": "The text 'They're twins!' appears on the screen.",
         "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "YETI",
+      "They're twins!",
+      "the dodo"
+    ],
+    "spatial": "The man is kneeling on the boat deck in the center of the frame. He is holding one kitten in his right hand, positioned to the left of his body and above the water. The second kitten is standing on the deck to the right of the first kitten and in front of the man's knees. The text 'They're twins!' is located below the man's hands.",
+    "parse_success": true,
+    "chunk_idx": 36,
+    "video_id": "ytb_3c4KhoCFxzA",
+    "state_changes": [
+      "man holds a kitten by the scruff; another kitten stands on deck"
+    ]
+  },
+  {
+    "time": [
+      37,
+      38
+    ],
+    "visible_entities": [
+      {
+        "desc": "man wearing a blue t-shirt, beige shorts, and a brown and white baseball cap",
+        "action": "kneeling on the boat deck and reaching for a kitten",
+        "position": "center",
+        "id": "person_fisherman_1"
+      },
+      {
+        "desc": "small orange tabby kitten",
+        "action": "being held by the scruff of the neck by the man",
+        "position": "left",
+        "id": "cat_orange_tabby_1"
+      },
+      {
+        "desc": "small orange tabby kitten",
+        "action": "standing on the boat deck",
+        "position": "left",
+        "id": "cat_orange_tabby_1"
+      },
+      {
+        "desc": "dark grey boat deck with fishing rods lying on it",
+        "action": "static",
+        "position": "foreground",
+        "id": "boat_maroon_1"
+      },
+      {
+        "desc": "logo with a dodo bird head and text 'the dodo'",
+        "action": "static",
+        "position": "top right",
+        "id": "logo_dodo_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The man is kneeling on the boat deck.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The man is holding one orange kitten by the scruff of its neck.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A second orange kitten stands on the deck near the man's hand.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "Fishing rods are lying on the boat deck to the left of the kittens.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "the dodo"
+    ],
+    "spatial": "The man is kneeling in the center of the boat deck. The two orange kittens are to the left of the man. One kitten is being held by the man, while the other is standing on the deck next to it. The fishing rods are lying on the deck to the left of the kittens.",
+    "parse_success": true,
+    "chunk_idx": 37,
+    "video_id": "ytb_3c4KhoCFxzA",
+    "state_changes": []
+  },
+  {
+    "time": [
+      38,
+      39
+    ],
+    "visible_entities": [
+      {
+        "desc": "man with beard, wearing blue t-shirt, khaki shorts, and a dark cap with 'YETI' logo",
+        "action": "kneeling on boat deck",
+        "position": "center",
+        "id": "person_fisherman_1"
+      },
+      {
+        "desc": "two orange tabby cats",
+        "action": "standing on boat deck",
+        "position": "left",
+        "id": "cat_orange_tabby_1"
+      },
+      {
+        "desc": "fishing rods with yellow handles",
+        "action": "static",
+        "position": "left",
+        "id": "fishing_rods_yellow_1"
+      },
+      {
+        "desc": "white text overlay",
+        "action": "static",
+        "position": "bottom",
+        "id": "text_overlay_white_1"
+      },
+      {
+        "desc": "green trees and water background",
+        "action": "static",
+        "position": "background",
+        "id": "forest_green_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The man is kneeling on the boat deck.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "Two orange cats are standing on the boat deck near the fishing rods.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The text 'Are you kidding me?' is displayed at the bottom of the screen.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "Are you kidding me?",
+      "YETI",
+      "the dodo"
+    ],
+    "spatial": "The man is kneeling in the center of the boat, to the right of the two cats. The cats are standing on the left side of the boat deck, next to the fishing rods. The text overlay is located at the bottom of the frame, below the man and the cats.",
+    "parse_success": true,
+    "chunk_idx": 38,
+    "video_id": "ytb_3c4KhoCFxzA",
+    "state_changes": [
+      "two orange tabby cats appear standing on the deck"
+    ]
+  },
+  {
+    "time": [
+      39,
+      40
+    ],
+    "visible_entities": [
+      {
+        "desc": "person with short hair, wearing a blue t-shirt, beige shorts, and a dark cap",
+        "action": "kneeling on the boat deck",
+        "position": "center",
+        "id": "person_fisherman_1"
+      },
+      {
+        "desc": "small orange tabby kitten",
+        "action": "standing on the boat deck",
+        "position": "center-left",
+        "id": "cat_orange_tabby_1"
+      },
+      {
+        "desc": "small orange tabby kitten",
+        "action": "standing on the boat deck",
+        "position": "center",
+        "id": "cat_orange_tabby_1"
+      },
+      {
+        "desc": "yellow subtitles",
+        "action": "static",
+        "position": "bottom",
+        "id": "text_subtitle_yellow_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A person in a blue shirt is kneeling on the deck of a boat.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "Two orange tabby kittens are standing on the boat deck near the person.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The subtitles read 'They're twins.'.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "They're twins."
+    ],
+    "spatial": "The person is kneeling in the center of the boat deck. The two kittens are positioned in front of the person, with one to the left and one directly in front. The text is located at the bottom of the frame.",
+    "parse_success": true,
+    "chunk_idx": 39,
+    "video_id": "ytb_3c4KhoCFxzA",
+    "state_changes": []
+  },
+  {
+    "time": [
+      40,
+      41
+    ],
+    "visible_entities": [
+      {
+        "desc": "person wearing a light blue short-sleeved polo shirt and beige shorts",
+        "action": "kneeling on the boat deck",
+        "position": "center",
+        "id": "person_fisherman_1"
+      },
+      {
+        "desc": "orange tabby cat with white paws",
+        "action": "standing under the person's hand",
+        "position": "center",
+        "id": "cat_orange_tabby_1"
+      },
+      {
+        "desc": "orange tabby cat with white paws",
+        "action": "walking towards the left",
+        "position": "left",
+        "id": "cat_orange_tabby_1"
+      },
+      {
+        "desc": "yellow fishing rods with reels",
+        "action": "static",
+        "position": "left",
+        "id": "fishing_rods_yellow_1"
+      },
+      {
+        "desc": "small action camera",
+        "action": "static",
+        "position": "bottom right",
+        "id": "camera_action_1"
+      },
+      {
+        "desc": "logo with a dodo bird head and text 'the dodo'",
+        "action": "static",
+        "position": "top right",
+        "id": "logo_dodo_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A person is kneeling on the deck of a boat.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The person is petting an orange cat standing next to them.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A second orange cat is walking on the boat deck.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "Fishing rods are resting on the left side of the boat.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The logo 'the dodo' is visible in the top right corner.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "the dodo"
+    ],
+    "spatial": "The person is kneeling in the center of the boat deck. One cat is standing directly in front of the person, while the other cat is to the left of the person. The fishing rods are positioned to the left of the cats. The action camera is on the floor to the right of the cats.",
+    "parse_success": true,
+    "chunk_idx": 40,
+    "video_id": "ytb_3c4KhoCFxzA",
+    "state_changes": [
+      "person changes to wearing a polo shirt; cat walks towards left"
+    ]
+  },
+  {
+    "time": [
+      41,
+      42
+    ],
+    "visible_entities": [
+      {
+        "desc": "man with short brown hair and beard, wearing a blue t-shirt, beige shorts, and a dark baseball cap with 'YETI' text",
+        "action": "kneeling on the boat deck and petting a cat",
+        "position": "center",
+        "id": "person_fisherman_1"
+      },
+      {
+        "desc": "orange tabby cat",
+        "action": "standing on the boat deck while being petted",
+        "position": "center"
+      },
+      {
+        "desc": "orange tabby cat",
+        "action": "lying down on the boat deck",
+        "position": "left"
+      },
+      {
+        "desc": "fishing boat with a dark grey carpeted deck and maroon gunwales",
+        "action": "floating on water",
+        "position": "foreground",
+        "id": "boat_maroon_1"
+      },
+      {
+        "desc": "yellow fishing rods",
+        "action": "resting against the side of the boat",
+        "position": "left",
+        "id": "fishing_rods_yellow_1"
+      },
+      {
+        "desc": "small action camera",
+        "action": "resting on the boat deck",
+        "position": "bottom right",
+        "id": "camera_action_1"
+      },
+      {
+        "desc": "white text overlay",
+        "action": "static",
+        "position": "bottom center",
+        "id": "text_overlay_white_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A man in a blue shirt is kneeling on a boat deck.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The man is petting an orange tabby cat standing near his knees.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "Another orange tabby cat is lying on the deck to the left of the man.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "Yellow fishing rods are leaning against the left side of the boat.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The text 'There's a first time for everything, isn't there?' appears on the screen.",
+        "confidence": 1.0
       },
       {
         "fact": "The man is wearing a cap with the word 'YETI' on it.",
@@ -2309,419 +2854,87 @@
     "ocr": [
       "the dodo",
       "YETI",
-      "They're twins!"
+      "There's a first time for everything, isn't there?"
     ],
-    "spatial": "The man is kneeling in the center of the boat. He is holding one kitten in his left hand, positioned to the left of his body and above the water. The second kitten is standing on the boat deck, located between the man's legs and slightly in front of him. The text 'They're twins!' is displayed at the bottom center of the frame, below the man and the kittens.",
+    "spatial": "The man is kneeling in the center of the boat deck, positioned between the two cats. One cat is standing directly in front of the man, while the other is lying down to his left. The fishing rods are located to the left of the lying cat, resting against the boat's edge. The action camera is on the deck to the right of the man. The text overlay is positioned at the bottom of the frame, below the man and the cats.",
     "parse_success": true,
-    "chunk_idx": 36,
+    "chunk_idx": 41,
     "video_id": "ytb_3c4KhoCFxzA",
     "state_changes": [
-      "man holding kitten over water (action change)"
+      "man pets the cat; cat lies down; action camera visible on deck"
     ]
   },
   {
     "time": [
-      74,
-      76
+      42,
+      43
     ],
     "visible_entities": [
       {
-        "desc": "man wearing a blue t-shirt, beige shorts, and a two-tone baseball cap (maroon front, white mesh back)",
-        "action": "kneeling on the boat deck",
-        "position": "center"
+        "desc": "man with beard, wearing a blue short-sleeved t-shirt, khaki shorts, and a grey and white trucker hat with 'YETI' logo",
+        "action": "kneeling on boat deck and petting a cat",
+        "position": "center/foreground",
+        "id": "person_fisherman_1"
       },
       {
-        "desc": "small orange tabby kitten",
-        "action": "standing on hind legs reaching for a fishing rod",
-        "position": "left"
-      },
-      {
-        "desc": "small orange tabby kitten",
-        "action": "standing on the deck",
-        "position": "left"
-      },
-      {
-        "desc": "yellow fishing rod",
-        "action": "being held by the man",
-        "position": "left"
-      },
-      {
-        "desc": "maroon boat deck",
-        "action": "static",
-        "position": "background"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "The man is kneeling on the boat deck.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The man is holding a yellow fishing rod.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "One kitten is standing on its hind legs to interact with the fishing rod.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The second kitten is standing on all fours near the first kitten.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The logo 'the dodo' is visible in the top right corner.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [
-      "the dodo"
-    ],
-    "spatial": "The man is kneeling in the center of the boat deck. The two kittens are to the left of the man. The man is holding the fishing rod in front of the kittens. The logo is above the man in the top right corner.",
-    "parse_success": true,
-    "chunk_idx": 37,
-    "video_id": "ytb_3c4KhoCFxzA",
-    "state_changes": []
-  },
-  {
-    "time": [
-      76,
-      78
-    ],
-    "visible_entities": [
-      {
-        "desc": "man with beard, wearing a blue t-shirt, khaki shorts, and a dark cap with 'YETI' text",
-        "action": "kneeling on boat deck",
-        "position": "center"
-      },
-      {
-        "desc": "two orange tabby cats",
+        "desc": "orange tabby cat",
         "action": "standing on boat deck",
-        "position": "left"
-      },
-      {
-        "desc": "fishing rods",
-        "action": "static",
-        "position": "left"
-      },
-      {
-        "desc": "maroon boat deck",
-        "action": "static",
-        "position": "bottom"
-      },
-      {
-        "desc": "calm water and trees",
-        "action": "static",
-        "position": "background"
-      },
-      {
-        "desc": "white text overlay",
-        "action": "static",
-        "position": "bottom"
-      },
-      {
-        "desc": "The Dodo logo",
-        "action": "static",
-        "position": "top right"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "The man is kneeling on the boat deck facing the camera.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "Two orange cats are standing on the deck near the fishing rods.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The text 'Are you kidding me?' is displayed at the bottom of the screen.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The Dodo logo is visible in the top right corner.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [
-      "YETI",
-      "the dodo",
-      "Are you kidding me?"
-    ],
-    "spatial": "The man is kneeling in the center of the boat deck. The two cats are to the left of the man, near the fishing rods. The text 'Are you kidding me?' is below the man and cats. The Dodo logo is above the water in the top right corner.",
-    "parse_success": true,
-    "chunk_idx": 38,
-    "video_id": "ytb_3c4KhoCFxzA",
-    "state_changes": [
-      "two cats now on deck (number change from one to two)"
-    ]
-  },
-  {
-    "time": [
-      78,
-      80
-    ],
-    "visible_entities": [
-      {
-        "desc": "man wearing a blue t-shirt, beige shorts, and a dark baseball cap",
-        "action": "kneeling on the boat deck",
-        "position": "center"
-      },
-      {
-        "desc": "two small orange tabby kittens",
-        "action": "walking on the boat deck",
-        "position": "center"
-      },
-      {
-        "desc": "dark grey boat deck with yellow fishing rods",
-        "action": "static",
-        "position": "background"
-      },
-      {
-        "desc": "yellow text overlay",
-        "action": "static",
-        "position": "bottom"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "The man is kneeling on the boat deck.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "Two orange kittens are walking on the boat deck near the man.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The text 'They're twins.' is displayed at the bottom of the screen.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [
-      "They're twins."
-    ],
-    "spatial": "The man is kneeling in the center of the boat deck. The two kittens are in front of and to the left of the man. The yellow text is located at the bottom of the frame, below the man and kittens.",
-    "parse_success": true,
-    "chunk_idx": 39,
-    "video_id": "ytb_3c4KhoCFxzA",
-    "state_changes": []
-  },
-  {
-    "time": [
-      80,
-      82
-    ],
-    "visible_entities": [
-      {
-        "desc": "person wearing a blue short-sleeved polo shirt, beige shorts, and grey sneakers",
-        "action": "kneeling on the boat deck and petting a cat",
-        "position": "center"
-      },
-      {
-        "desc": "orange tabby cat with white paws",
-        "action": "standing still while being petted",
-        "position": "center"
-      },
-      {
-        "desc": "orange tabby cat with white paws",
-        "action": "walking towards the left side of the boat",
-        "position": "left"
-      },
-      {
-        "desc": "fishing rods with yellow shafts and black reels",
-        "action": "static",
-        "position": "left"
-      },
-      {
-        "desc": "small silver action camera",
-        "action": "static",
-        "position": "bottom right"
-      },
-      {
-        "desc": "logo with a dodo bird head and text 'the dodo'",
-        "action": "static",
-        "position": "top right"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "A person is kneeling on the deck of a boat.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The person is petting an orange tabby cat standing between their legs.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "A second orange tabby cat is walking on the deck to the left.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "Fishing rods are resting on the left side of the boat.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The logo 'the dodo' is visible in the top right corner.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [
-      "the dodo"
-    ],
-    "spatial": "The person is kneeling in the center of the boat deck. One cat is standing directly in front of the person, while the other cat is to the left of the person. The fishing rods are positioned along the left edge of the boat, next to the walking cat. The action camera is on the floor to the right of the person.",
-    "parse_success": true,
-    "chunk_idx": 40,
-    "video_id": "ytb_3c4KhoCFxzA",
-    "state_changes": []
-  },
-  {
-    "time": [
-      82,
-      84
-    ],
-    "visible_entities": [
-      {
-        "desc": "man with short brown hair and beard, wearing a blue short-sleeved t-shirt, beige shorts, and a dark baseball cap with white 'YETI' text",
-        "action": "kneeling on the boat deck",
-        "position": "center"
-      },
-      {
-        "desc": "small orange tabby cat",
-        "action": "standing on the boat deck",
-        "position": "center"
-      },
-      {
-        "desc": "small orange tabby cat",
-        "action": "lying down on the boat deck",
-        "position": "left"
+        "position": "center/foreground"
       },
       {
         "desc": "fishing rods with yellow handles",
         "action": "static",
-        "position": "left"
+        "position": "left/foreground",
+        "id": "fishing_rods_yellow_1"
       },
       {
-        "desc": "small grey action camera",
+        "desc": "calm lake water reflecting trees",
         "action": "static",
-        "position": "bottom right"
+        "position": "background",
+        "id": "water_calm_1"
+      },
+      {
+        "desc": "dense green trees on shoreline",
+        "action": "static",
+        "position": "background",
+        "id": "forest_green_1"
       },
       {
         "desc": "white text overlay",
         "action": "static",
-        "position": "bottom center"
+        "position": "bottom",
+        "id": "text_overlay_white_1"
       },
       {
         "desc": "The Dodo logo",
         "action": "static",
-        "position": "top right"
+        "position": "top right",
+        "id": "logo_dodo_1"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "The man is kneeling on the boat deck.",
+        "fact": "The man is kneeling on the deck of a boat.",
         "confidence": 1.0
       },
       {
-        "fact": "The man is petting the standing orange cat with his right hand.",
+        "fact": "The man is petting the orange tabby cat with his right hand.",
         "confidence": 1.0
       },
       {
-        "fact": "One orange cat is standing near the man's knees.",
+        "fact": "The cat is standing on the boat deck in front of the man.",
         "confidence": 1.0
       },
       {
-        "fact": "Another orange cat is lying down on the deck to the left.",
+        "fact": "Fishing rods are lying on the boat deck to the left of the man.",
         "confidence": 1.0
       },
       {
-        "fact": "Fishing rods are resting on the left side of the boat.",
+        "fact": "The text overlay reads 'There's a first time for everything, isn't there?' in the first frame.",
         "confidence": 1.0
       },
       {
-        "fact": "The text overlay reads 'There's a first time for everything, isn't there?'.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [
-      "the dodo",
-      "YETI",
-      "There's a first time for everything, isn't there?"
-    ],
-    "spatial": "The man is kneeling in the center of the boat deck. One cat is standing directly in front of the man, while the other cat is lying down to the left of the standing cat. The fishing rods are positioned along the left edge of the boat, next to the lying cat. The action camera is on the deck to the right of the man.",
-    "parse_success": true,
-    "chunk_idx": 41,
-    "video_id": "ytb_3c4KhoCFxzA",
-    "state_changes": []
-  },
-  {
-    "time": [
-      84,
-      86
-    ],
-    "visible_entities": [
-      {
-        "desc": "man with beard, wearing blue t-shirt, khaki shorts, and a grey and white 'YETI' cap",
-        "action": "kneeling on the boat deck",
-        "position": "center"
-      },
-      {
-        "desc": "small orange tabby cat",
-        "action": "standing on the boat deck",
-        "position": "center foreground"
-      },
-      {
-        "desc": "maroon boat deck",
-        "action": "static",
-        "position": "bottom"
-      },
-      {
-        "desc": "fishing rods",
-        "action": "lying on the deck",
-        "position": "left"
-      },
-      {
-        "desc": "calm water reflecting trees",
-        "action": "static",
-        "position": "background"
-      },
-      {
-        "desc": "green trees on the shore",
-        "action": "static",
-        "position": "background"
-      },
-      {
-        "desc": "white text overlay",
-        "action": "static",
-        "position": "bottom center"
-      },
-      {
-        "desc": "The Dodo logo",
-        "action": "static",
-        "position": "top right"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "The man is kneeling on the boat deck.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The man is petting the orange tabby cat.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The cat is standing on the boat deck near the man.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The text 'There's a first time for everything, isn't there?' is displayed on the screen.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The text 'Yeah.' is displayed on the screen.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "Fishing rods are lying on the deck to the left of the man.",
+        "fact": "The text overlay changes to 'Yeah.' in the second frame.",
         "confidence": 1.0
       }
     ],
@@ -2731,7 +2944,7 @@
       "There's a first time for everything, isn't there?",
       "Yeah."
     ],
-    "spatial": "The man is kneeling on the boat deck. The cat is in front of the man. The fishing rods are to the left of the man. The water and trees are behind the man. The text is at the bottom of the screen.",
+    "spatial": "The man is kneeling on the boat deck, positioned in the center of the frame. The orange tabby cat is in front of the man, who is petting it. To the left of the man, fishing rods are lying on the deck. The lake water and trees form the background behind the boat.",
     "parse_success": true,
     "chunk_idx": 42,
     "video_id": "ytb_3c4KhoCFxzA",
@@ -2739,42 +2952,68 @@
   },
   {
     "time": [
-      86,
-      88
+      43,
+      44
     ],
     "visible_entities": [
       {
-        "desc": "man wearing a blue t-shirt, beige shorts, and a white baseball cap",
+        "desc": "man wearing a blue t-shirt with white text on the back, beige shorts, and a white baseball cap worn backwards",
         "action": "kneeling on the boat deck",
-        "position": "center"
+        "position": "center",
+        "id": "person_fisherman_1"
       },
       {
         "desc": "small orange tabby cat",
         "action": "standing on the boat deck",
-        "position": "right"
+        "position": "right",
+        "id": "cat_orange_tabby_1"
       },
       {
-        "desc": "boat deck with fishing rods",
+        "desc": "dark maroon boat deck with fishing rods visible on the left",
         "action": "static",
-        "position": "bottom"
+        "position": "foreground",
+        "id": "boat_maroon_1"
       },
       {
-        "desc": "calm water reflecting trees",
+        "desc": "calm body of water reflecting trees",
         "action": "static",
-        "position": "background"
+        "position": "background",
+        "id": "water_calm_1"
+      },
+      {
+        "desc": "dense green trees and foliage on the shoreline",
+        "action": "static",
+        "position": "background",
+        "id": "forest_green_1"
+      },
+      {
+        "desc": "white text overlay with a black outline",
+        "action": "static",
+        "position": "bottom center",
+        "id": "text_overlay_white_1"
+      },
+      {
+        "desc": "The Dodo logo featuring a dodo bird head",
+        "action": "static",
+        "position": "top right",
+        "id": "logo_dodo_1"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A man in a blue shirt is kneeling on a boat deck.",
+        "fact": "A man is kneeling on a boat deck facing the water.",
         "confidence": 1.0
       },
       {
-        "fact": "A small orange cat is standing next to the man.",
+        "fact": "A small orange tabby cat is standing on the boat deck next to the man.",
         "confidence": 1.0
       },
       {
         "fact": "The text 'Oh my god.' is displayed at the bottom of the screen.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The Dodo logo is visible in the top right corner.",
         "confidence": 1.0
       },
       {
@@ -2786,7 +3025,7 @@
       "Oh my god.",
       "the dodo"
     ],
-    "spatial": "The man is kneeling in the center of the boat deck. The orange cat is to the right of the man. The fishing rods are to the left of the man. The water is in front of the boat.",
+    "spatial": "The man is kneeling in the center of the boat deck, with the orange tabby cat standing to his right. The fishing rods are on the deck to the left of the man. The water is in front of the man, and the trees are on the far shore behind the water. The text 'Oh my god.' is below the man, and 'the dodo' logo is in the top right corner of the frame.",
     "parse_success": true,
     "chunk_idx": 43,
     "video_id": "ytb_3c4KhoCFxzA",
@@ -2794,62 +3033,60 @@
   },
   {
     "time": [
-      88,
-      90
+      44,
+      45
     ],
     "visible_entities": [
       {
-        "desc": "man with short dark hair, wearing a white baseball cap backwards, a blue t-shirt with a white graphic on the back, and beige shorts",
+        "desc": "man wearing a blue t-shirt, beige shorts, and a white baseball cap",
         "action": "kneeling on the boat deck",
-        "position": "center"
+        "position": "center",
+        "id": "person_fisherman_1"
       },
       {
         "desc": "small orange tabby cat",
         "action": "standing on the boat deck",
-        "position": "right"
+        "position": "right",
+        "id": "cat_orange_tabby_1"
       },
       {
-        "desc": "dark-colored boat deck",
+        "desc": "dark-colored boat deck with a maroon rim",
         "action": "static",
-        "position": "bottom"
+        "position": "bottom",
+        "id": "boat_maroon_1"
       },
       {
         "desc": "calm water reflecting trees",
         "action": "static",
-        "position": "background"
+        "position": "background",
+        "id": "water_calm_1"
       },
       {
         "desc": "green trees on the shore",
         "action": "static",
-        "position": "background"
-      },
-      {
-        "desc": "fishing rod with yellow handle",
-        "action": "static",
-        "position": "left"
+        "position": "background",
+        "id": "forest_green_1"
       },
       {
         "desc": "white text overlay",
         "action": "static",
-        "position": "bottom"
+        "position": "bottom",
+        "id": "text_overlay_white_1"
       },
       {
-        "desc": "logo with a white circle and the text 'the dodo'",
+        "desc": "The Dodo logo",
         "action": "static",
-        "position": "top right"
+        "position": "top right",
+        "id": "logo_dodo_1"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "The man is kneeling on the boat deck.",
+        "fact": "A man in a blue shirt is kneeling on a boat.",
         "confidence": 1.0
       },
       {
-        "fact": "The orange tabby cat is standing on the boat deck.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The man is looking towards the water.",
+        "fact": "An orange cat is standing next to the man.",
         "confidence": 1.0
       },
       {
@@ -2857,11 +3094,7 @@
         "confidence": 1.0
       },
       {
-        "fact": "A fishing rod is lying on the boat deck to the left of the man.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The 'the dodo' logo is in the top right corner.",
+        "fact": "The Dodo logo is visible in the top right corner.",
         "confidence": 1.0
       }
     ],
@@ -2869,7 +3102,7 @@
       "the dodo",
       "Oh my god."
     ],
-    "spatial": "The man is in the center of the boat, kneeling on the deck. The orange tabby cat is to the right of the man. The fishing rod is to the left of the man. The water is in front of the man and the boat. The trees are in the background, behind the water. The text 'Oh my god.' is below the man. The 'the dodo' logo is above the man and to the right.",
+    "spatial": "The man is kneeling in the center of the boat deck. The orange cat is to the right of the man. The text 'Oh my god.' is below the man. The Dodo logo is in the top right corner of the frame. The water and trees are in the background behind the boat.",
     "parse_success": true,
     "chunk_idx": 44,
     "video_id": "ytb_3c4KhoCFxzA",
@@ -2877,129 +3110,319 @@
   },
   {
     "time": [
-      90,
-      92
+      45,
+      46
     ],
     "visible_entities": [
       {
-        "desc": "blue banner with a dark blue dotted pattern, featuring a jagged bottom edge",
+        "desc": "blue banner with a dark blue dotted pattern, featuring a V-shaped bottom edge",
         "action": "static",
-        "position": "top"
+        "position": "top",
+        "id": "banner_blue_dotted_1"
       },
       {
-        "desc": "white text reading 'Subscribe' in a bold sans-serif font",
+        "desc": "white text reading 'Subscribe' in a sans-serif font",
         "action": "static",
-        "position": "top center"
+        "position": "top center",
+        "id": "text_white_subscribe_1"
       },
       {
-        "desc": "white text reading 'CLICK HERE IF YOU LOVE ANIMALS!' in uppercase",
+        "desc": "white text reading 'CLICK HERE IF YOU LOVE ANIMALS!' in uppercase sans-serif font",
         "action": "static",
-        "position": "top right"
+        "position": "top right",
+        "id": "text_white_click_1"
       },
       {
-        "desc": "cartoon toucan illustration with a black body, yellow face, and a large orange and red beak",
+        "desc": "cartoon puffin illustration with a black body, yellow face, and a beak with red, orange, and yellow sections",
         "action": "static",
-        "position": "top left"
+        "position": "top left",
+        "id": "bird_illustration_1"
       },
       {
-        "desc": "pink hand-drawn style arrow pointing downwards and to the left",
+        "desc": "pinkish-orange hand-drawn arrow pointing downwards and to the left",
         "action": "static",
-        "position": "top right"
+        "position": "top right",
+        "id": "arrow_pink_1"
       },
       {
-        "desc": "red text reading 'RELATED ANIMAL VIDEOS' in uppercase",
+        "desc": "red text reading 'RELATED ANIMAL VIDEOS' in uppercase sans-serif font",
         "action": "static",
-        "position": "middle left"
+        "position": "middle left",
+        "id": "text_red_related_1"
       },
       {
-        "desc": "red text reading 'FEATURED VIDEOS' in uppercase",
+        "desc": "red text reading 'FEATURED VIDEOS' in uppercase sans-serif font",
         "action": "static",
-        "position": "middle right"
+        "position": "middle right",
+        "id": "text_red_featured_1"
       },
       {
-        "desc": "red text reading 'WHAT DID YOU THINK OF THIS STORY? TELL US IN THE COMMENTS BELOW!' in uppercase",
+        "desc": "red text reading 'WHAT DID YOU THINK OF THIS STORY? TELL US IN THE COMMENTS BELOW!' in uppercase sans-serif font",
         "action": "static",
-        "position": "bottom"
+        "position": "bottom",
+        "id": "text_red_comments_1"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "The video displays a YouTube end screen layout.",
+        "fact": "A cartoon puffin appears on the screen in the second frame.",
         "confidence": 1.0
       },
       {
-        "fact": "A cartoon toucan appears next to the 'Subscribe' text.",
+        "fact": "The text 'Subscribe' is displayed at the top center of the screen.",
         "confidence": 1.0
       },
       {
-        "fact": "An arrow points from the 'CLICK HERE IF YOU LOVE ANIMALS!' text towards the center.",
+        "fact": "The text 'CLICK HERE IF YOU LOVE ANIMALS!' is displayed in the top right corner.",
         "confidence": 1.0
       },
       {
-        "fact": "Text prompts viewers to watch 'RELATED ANIMAL VIDEOS' and 'FEATURED VIDEOS'.",
+        "fact": "A hand-drawn arrow points from the 'CLICK HERE' text towards the center of the screen.",
         "confidence": 1.0
       },
       {
-        "fact": "The bottom text asks viewers for their opinion on the story.",
+        "fact": "The text 'RELATED ANIMAL VIDEOS' is positioned on the left side of the white background.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The text 'FEATURED VIDEOS' is positioned on the right side of the white background.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The text 'WHAT DID YOU THINK OF THIS STORY? TELL US IN THE COMMENTS BELOW!' is displayed at the bottom of the screen.",
         "confidence": 1.0
       }
     ],
     "ocr": [
       "Subscribe",
-      "CLICK HERE IF YOU LOVE ANIMALS!",
+      "CLICK HERE IF",
+      "YOU LOVE ANIMALS!",
       "RELATED ANIMAL VIDEOS",
       "FEATURED VIDEOS",
       "WHAT DID YOU THINK OF THIS STORY?",
       "TELL US IN THE COMMENTS BELOW!"
     ],
-    "spatial": "The blue banner is at the top of the screen, containing the 'Subscribe' text in the center and the toucan illustration to its left. The 'CLICK HERE IF YOU LOVE ANIMALS!' text is to the right of the 'Subscribe' text, with a pink arrow pointing below it. The 'RELATED ANIMAL VIDEOS' text is on the left side of the white background, while the 'FEATURED VIDEOS' text is on the right side. The question about the story is located at the bottom of the screen.",
+    "spatial": "The blue banner is located at the top of the screen, above the white background area. The cartoon puffin is positioned to the left of the 'Subscribe' text. The 'CLICK HERE IF YOU LOVE ANIMALS!' text is to the right of the 'Subscribe' text, with an arrow pointing from it towards the center. The 'RELATED ANIMAL VIDEOS' text is on the left side of the white area, while the 'FEATURED VIDEOS' text is on the right side. The question text is located at the bottom of the screen, below the other elements.",
     "parse_success": true,
     "chunk_idx": 45,
     "video_id": "ytb_3c4KhoCFxzA",
     "state_changes": [
-      "end screen transition - scene changes to outro graphics"
+      "scene transitions to end screen with blue banner, text, and puffin illustration"
     ]
   },
   {
     "time": [
-      92,
-      94
+      46,
+      47
     ],
     "visible_entities": [
       {
-        "desc": "blue banner with a dark blue dotted pattern, featuring a stylized cartoon bird with a black body, yellow face, and orange beak",
+        "desc": "Cartoon bird illustration with black head, yellow face, orange beak, and red nose",
         "action": "static",
-        "position": "top"
+        "position": "top left",
+        "id": "bird_illustration_1"
       },
       {
-        "desc": "large white bold text reading 'Subscribe'",
+        "desc": "Blue banner with dark blue polka dots and a jagged bottom edge",
         "action": "static",
-        "position": "top center"
+        "position": "top",
+        "id": "banner_blue_dotted_1"
+      },
+      {
+        "desc": "Pink hand-drawn style arrow pointing left",
+        "action": "static",
+        "position": "top right",
+        "id": "arrow_pink_1"
+      },
+      {
+        "desc": "Red uppercase text reading 'RELATED ANIMAL VIDEOS'",
+        "action": "static",
+        "position": "middle left",
+        "id": "text_red_related_1"
+      },
+      {
+        "desc": "Red uppercase text reading 'FEATURED VIDEOS'",
+        "action": "static",
+        "position": "middle right",
+        "id": "text_red_featured_1"
+      },
+      {
+        "desc": "Red uppercase text reading 'WHAT DID YOU THINK OF THIS STORY? TELL US IN THE COMMENTS BELOW!'",
+        "action": "static",
+        "position": "bottom",
+        "id": "text_red_comments_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The video displays a static end screen layout.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The text 'Subscribe' is visible in large white letters at the top center.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The text 'CLICK HERE IF YOU LOVE ANIMALS!' is displayed next to an arrow.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "Placeholders for 'RELATED ANIMAL VIDEOS' and 'FEATURED VIDEOS' are shown in the middle section.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A call to action asking for comments is located at the bottom of the screen.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "Subscribe",
+      "CLICK HERE IF",
+      "YOU LOVE ANIMALS!",
+      "RELATED ANIMAL VIDEOS",
+      "FEATURED VIDEOS",
+      "WHAT DID YOU THINK OF THIS STORY?",
+      "TELL US IN THE COMMENTS BELOW!"
+    ],
+    "spatial": "The blue banner is at the top of the screen, containing the bird illustration on the left and the 'Subscribe' text in the center. The pink arrow is to the right of the 'Subscribe' text, pointing towards the 'CLICK HERE' text. The 'RELATED ANIMAL VIDEOS' text is on the left side of the white background, while 'FEATURED VIDEOS' is on the right side. The comment prompt text is centered at the bottom of the screen, below the video placeholders.",
+    "parse_success": true,
+    "chunk_idx": 46,
+    "video_id": "ytb_3c4KhoCFxzA",
+    "state_changes": []
+  },
+  {
+    "time": [
+      47,
+      48
+    ],
+    "visible_entities": [
+      {
+        "desc": "blue banner with a dark blue polka dot pattern and a jagged bottom edge",
+        "action": "static",
+        "position": "top",
+        "id": "banner_blue_dotted_1"
+      },
+      {
+        "desc": "large white text reading 'Subscribe'",
+        "action": "static",
+        "position": "top center",
+        "id": "text_white_subscribe_1"
       },
       {
         "desc": "smaller white text reading 'CLICK HERE IF YOU LOVE ANIMALS!'",
         "action": "static",
-        "position": "top right"
+        "position": "top right",
+        "id": "text_white_click_1"
       },
       {
-        "desc": "hand-drawn style orange arrow pointing left",
+        "desc": "orange arrow graphic",
         "action": "static",
-        "position": "top right"
+        "position": "top right",
+        "id": "arrow_orange_1"
       },
       {
-        "desc": "red uppercase text reading 'RELATED ANIMAL VIDEOS'",
+        "desc": "red text reading 'RELATED ANIMAL VIDEOS'",
         "action": "static",
-        "position": "middle left"
+        "position": "middle left",
+        "id": "text_red_related_1"
       },
       {
-        "desc": "red uppercase text reading 'FEATURED VIDEOS'",
+        "desc": "red text reading 'FEATURED VIDEOS'",
         "action": "static",
-        "position": "middle right"
+        "position": "middle right",
+        "id": "text_red_featured_1"
       },
       {
-        "desc": "large red uppercase text reading 'WHAT DID YOU THINK OF THIS STORY? TELL US IN THE COMMENTS BELOW!'",
+        "desc": "large red text reading 'WHAT DID YOU THINK OF THIS STORY? TELL US IN THE COMMENTS BELOW!'",
         "action": "static",
-        "position": "bottom"
+        "position": "bottom center",
+        "id": "text_red_comments_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The video displays a static end screen layout.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The text 'Subscribe' is positioned at the top center of the screen.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The text 'RELATED ANIMAL VIDEOS' is located on the left side.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The text 'FEATURED VIDEOS' is located on the right side.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A call to action asks viewers to comment on the story.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "Subscribe",
+      "CLICK HERE IF",
+      "YOU LOVE ANIMALS!",
+      "RELATED ANIMAL VIDEOS",
+      "FEATURED VIDEOS",
+      "WHAT DID YOU THINK OF THIS STORY?",
+      "TELL US IN THE COMMENTS BELOW!"
+    ],
+    "spatial": "The blue banner is at the top of the screen, containing the 'Subscribe' text in the center and the 'CLICK HERE IF YOU LOVE ANIMALS!' text to the right. The orange arrow is below the 'CLICK HERE' text and points towards the left. The 'RELATED ANIMAL VIDEOS' text is to the left of the 'FEATURED VIDEOS' text. The question about the story is at the bottom of the screen, below the video placeholders.",
+    "parse_success": true,
+    "chunk_idx": 47,
+    "video_id": "ytb_3c4KhoCFxzA",
+    "state_changes": []
+  },
+  {
+    "time": [
+      48,
+      49
+    ],
+    "visible_entities": [
+      {
+        "desc": "blue banner with a dotted pattern and a jagged bottom edge",
+        "action": "static",
+        "position": "top",
+        "id": "banner_blue_dotted_1"
+      },
+      {
+        "desc": "white text reading 'Subscribe'",
+        "action": "static",
+        "position": "top center",
+        "id": "text_white_subscribe_1"
+      },
+      {
+        "desc": "white text reading 'CLICK HERE IF YOU LOVE ANIMALS!'",
+        "action": "static",
+        "position": "top right",
+        "id": "text_white_click_1"
+      },
+      {
+        "desc": "orange arrow graphic",
+        "action": "static",
+        "position": "top right",
+        "id": "arrow_orange_1"
+      },
+      {
+        "desc": "red text reading 'RELATED ANIMAL VIDEOS'",
+        "action": "static",
+        "position": "middle left",
+        "id": "text_red_related_1"
+      },
+      {
+        "desc": "red text reading 'FEATURED VIDEOS'",
+        "action": "static",
+        "position": "middle right",
+        "id": "text_red_featured_1"
+      },
+      {
+        "desc": "red text reading 'WHAT DID YOU THINK OF THIS STORY? TELL US IN THE COMMENTS BELOW!'",
+        "action": "static",
+        "position": "bottom",
+        "id": "text_red_comments_1"
       }
     ],
     "atomic_facts": [
@@ -3024,90 +3447,7 @@
         "confidence": 1.0
       },
       {
-        "fact": "A call to action asking for comments is displayed at the bottom.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [
-      "Subscribe",
-      "CLICK HERE IF YOU LOVE ANIMALS!",
-      "RELATED ANIMAL VIDEOS",
-      "FEATURED VIDEOS",
-      "WHAT DID YOU THINK OF THIS STORY?",
-      "TELL US IN THE COMMENTS BELOW!"
-    ],
-    "spatial": "The blue banner containing the cartoon bird and 'Subscribe' text is at the top of the frame. The 'RELATED ANIMAL VIDEOS' text is to the left of the 'FEATURED VIDEOS' text in the middle section. The question about the story is located at the bottom of the screen, below the video placeholders.",
-    "parse_success": true,
-    "chunk_idx": 46,
-    "video_id": "ytb_3c4KhoCFxzA",
-    "state_changes": []
-  },
-  {
-    "time": [
-      94,
-      96
-    ],
-    "visible_entities": [
-      {
-        "desc": "blue banner with a dark blue dotted pattern, featuring a jagged bottom edge",
-        "action": "static",
-        "position": "top"
-      },
-      {
-        "desc": "white background with a faint light grey dotted pattern",
-        "action": "static",
-        "position": "background"
-      },
-      {
-        "desc": "large white sans-serif text reading 'Subscribe'",
-        "action": "static",
-        "position": "top center"
-      },
-      {
-        "desc": "smaller white sans-serif text reading 'CLICK HERE IF YOU LOVE ANIMALS!'",
-        "action": "static",
-        "position": "top right"
-      },
-      {
-        "desc": "orange arrow graphic pointing downwards and to the left",
-        "action": "static",
-        "position": "top right"
-      },
-      {
-        "desc": "red sans-serif text reading 'RELATED ANIMAL VIDEOS'",
-        "action": "static",
-        "position": "middle left"
-      },
-      {
-        "desc": "red sans-serif text reading 'FEATURED VIDEOS'",
-        "action": "static",
-        "position": "middle right"
-      },
-      {
-        "desc": "large red sans-serif text reading 'WHAT DID YOU THINK OF THIS STORY? TELL US IN THE COMMENTS BELOW!'",
-        "action": "static",
-        "position": "bottom"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "The video displays a static end screen layout.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The text 'Subscribe' is positioned at the top center.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The text 'RELATED ANIMAL VIDEOS' is located on the left side.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The text 'FEATURED VIDEOS' is located on the right side.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "An orange arrow points from the text 'CLICK HERE IF YOU LOVE ANIMALS!' towards the center.",
+        "fact": "A question asking for viewer feedback is displayed at the bottom.",
         "confidence": 1.0
       }
     ],
@@ -3120,98 +3460,7 @@
       "WHAT DID YOU THINK OF THIS STORY?",
       "TELL US IN THE COMMENTS BELOW!"
     ],
-    "spatial": "The blue banner is above the white background. The 'Subscribe' text is centered at the top, while the 'CLICK HERE IF YOU LOVE ANIMALS!' text is to its right. The 'RELATED ANIMAL VIDEOS' text is to the left of the 'FEATURED VIDEOS' text. The question about the story is below the related and featured video sections.",
-    "parse_success": true,
-    "chunk_idx": 47,
-    "video_id": "ytb_3c4KhoCFxzA",
-    "state_changes": []
-  },
-  {
-    "time": [
-      96,
-      98
-    ],
-    "visible_entities": [
-      {
-        "desc": "Blue banner with a dark blue dotted pattern and a jagged bottom edge",
-        "action": "static",
-        "position": "top"
-      },
-      {
-        "desc": "White text 'Subscribe' in a bold sans-serif font",
-        "action": "static",
-        "position": "top center"
-      },
-      {
-        "desc": "White text 'CLICK HERE IF YOU LOVE ANIMALS!' in a smaller sans-serif font",
-        "action": "static",
-        "position": "top right"
-      },
-      {
-        "desc": "Orange arrow graphic pointing diagonally down and to the left",
-        "action": "static",
-        "position": "top right"
-      },
-      {
-        "desc": "Red text 'RELATED ANIMAL VIDEOS' in uppercase sans-serif font",
-        "action": "static",
-        "position": "middle left"
-      },
-      {
-        "desc": "Red text 'FEATURED VIDEOS' in uppercase sans-serif font",
-        "action": "static",
-        "position": "middle right"
-      },
-      {
-        "desc": "Red text 'WHAT DID YOU THINK OF THIS STORY? TELL US IN THE COMMENTS BELOW!' in uppercase sans-serif font",
-        "action": "static",
-        "position": "bottom"
-      },
-      {
-        "desc": "White background with a faint light grey dotted pattern",
-        "action": "static",
-        "position": "background"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "The video displays a static end screen layout for a video platform.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The text 'Subscribe' is displayed at the top center.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The text 'CLICK HERE IF YOU LOVE ANIMALS!' is displayed to the right of the subscribe text.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "An orange arrow points from the 'CLICK HERE' text towards the left.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The text 'RELATED ANIMAL VIDEOS' is positioned on the middle left.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The text 'FEATURED VIDEOS' is positioned on the middle right.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The text 'WHAT DID YOU THINK OF THIS STORY? TELL US IN THE COMMENTS BELOW!' is displayed at the bottom.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [
-      "Subscribe",
-      "CLICK HERE IF YOU LOVE ANIMALS!",
-      "RELATED ANIMAL VIDEOS",
-      "FEATURED VIDEOS",
-      "WHAT DID YOU THINK OF THIS STORY?",
-      "TELL US IN THE COMMENTS BELOW!"
-    ],
-    "spatial": "The blue banner is at the top of the screen, above the white background area. The 'Subscribe' text is centered within the blue banner. The 'CLICK HERE IF YOU LOVE ANIMALS!' text and the orange arrow are to the right of the 'Subscribe' text. The 'RELATED ANIMAL VIDEOS' text is to the left of the 'FEATURED VIDEOS' text in the middle section. The question text is at the bottom of the screen, below the video placeholders.",
+    "spatial": "The blue banner is at the top of the screen, containing the 'Subscribe' text in the center and the 'CLICK HERE IF YOU LOVE ANIMALS!' text to the right. An orange arrow is positioned below the 'CLICK HERE' text, pointing left. The 'RELATED ANIMAL VIDEOS' text is on the middle left, while 'FEATURED VIDEOS' is on the middle right. The feedback question text is located at the bottom of the screen.",
     "parse_success": true,
     "chunk_idx": 48,
     "video_id": "ytb_3c4KhoCFxzA",
@@ -3219,44 +3468,56 @@
   },
   {
     "time": [
-      98,
-      100
+      49,
+      50
     ],
     "visible_entities": [
       {
-        "desc": "Blue header banner with a dark blue dotted pattern and a diagonal bottom edge",
+        "desc": "blue banner with a dark blue dotted pattern and a jagged bottom edge",
         "action": "static",
-        "position": "top"
+        "position": "top",
+        "id": "banner_blue_dotted_1"
       },
       {
-        "desc": "Large white text reading 'Subscribe'",
+        "desc": "white text reading 'Subscribe' in a large sans-serif font",
         "action": "static",
-        "position": "top/center"
+        "position": "top center",
+        "id": "text_white_subscribe_1"
       },
       {
-        "desc": "Small white text reading 'CLICK HERE IF YOU LOVE ANIMALS!'",
+        "desc": "white text reading 'CLICK HERE IF YOU LOVE ANIMALS!' in uppercase",
         "action": "static",
-        "position": "top/right"
+        "position": "top right",
+        "id": "text_white_click_1"
       },
       {
-        "desc": "Pinkish-orange arrow pointing down and to the left",
+        "desc": "orange arrow graphic pointing downwards and to the left",
         "action": "static",
-        "position": "top/right"
+        "position": "top right",
+        "id": "arrow_orange_1"
       },
       {
-        "desc": "Red uppercase text reading 'RELATED ANIMAL VIDEOS'",
+        "desc": "red text reading 'RELATED ANIMAL VIDEOS' in uppercase",
         "action": "static",
-        "position": "middle/left"
+        "position": "middle left",
+        "id": "text_red_related_1"
       },
       {
-        "desc": "Red uppercase text reading 'FEATURED VIDEOS'",
+        "desc": "red text reading 'FEATURED VIDEOS' in uppercase",
         "action": "static",
-        "position": "middle/right"
+        "position": "middle right",
+        "id": "text_red_featured_1"
       },
       {
-        "desc": "Red uppercase text reading 'WHAT DID YOU THINK OF THIS STORY? TELL US IN THE COMMENTS BELOW!'",
+        "desc": "red text reading 'WHAT DID YOU THINK OF THIS STORY? TELL US IN THE COMMENTS BELOW!' in uppercase",
         "action": "static",
-        "position": "bottom"
+        "position": "bottom center",
+        "id": "text_red_comments_1"
+      },
+      {
+        "desc": "white background with a faint light grey dotted pattern",
+        "action": "static",
+        "position": "background"
       }
     ],
     "atomic_facts": [
@@ -3269,15 +3530,11 @@
         "confidence": 1.0
       },
       {
-        "fact": "The text 'RELATED ANIMAL VIDEOS' is located on the left side.",
+        "fact": "The text 'RELATED ANIMAL VIDEOS' is located to the left of 'FEATURED VIDEOS'.",
         "confidence": 1.0
       },
       {
-        "fact": "The text 'FEATURED VIDEOS' is located on the right side.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "A call to action asking for comments is displayed at the bottom of the screen.",
+        "fact": "The prompt 'WHAT DID YOU THINK OF THIS STORY?' is displayed at the bottom of the screen.",
         "confidence": 1.0
       }
     ],
@@ -3290,7 +3547,7 @@
       "WHAT DID YOU THINK OF THIS STORY?",
       "TELL US IN THE COMMENTS BELOW!"
     ],
-    "spatial": "The blue header banner is above the white background area. The 'Subscribe' text is centered within the blue banner, while the 'CLICK HERE IF YOU LOVE ANIMALS!' text and arrow are to its right. The 'RELATED ANIMAL VIDEOS' text is to the left of the 'FEATURED VIDEOS' text. The question about the story is below both the related and featured video sections.",
+    "spatial": "The blue banner is at the top of the screen, positioned above the white background area. The 'Subscribe' text is centered within the blue banner, while the 'CLICK HERE IF YOU LOVE ANIMALS!' text and the orange arrow are to its right. The 'RELATED ANIMAL VIDEOS' text is on the left side of the white background, and the 'FEATURED VIDEOS' text is on the right side. The question text is centered at the bottom of the screen, below the video placeholders.",
     "parse_success": true,
     "chunk_idx": 49,
     "video_id": "ytb_3c4KhoCFxzA",

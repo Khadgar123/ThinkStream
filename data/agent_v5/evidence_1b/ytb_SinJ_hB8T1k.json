@@ -2,11 +2,11 @@
   {
     "time": [
       0,
-      2
+      1
     ],
     "visible_entities": [
       {
-        "desc": "man with curly dark hair, salt-and-pepper beard, wearing a black blazer over a black t-shirt",
+        "desc": "man with curly dark hair, graying beard, wearing a black jacket over a black shirt",
         "action": "speaking",
         "position": "center",
         "id": "person_neil_gaiman_1"
@@ -15,7 +15,7 @@
         "desc": "wooden bookshelves filled with books",
         "action": "static",
         "position": "background",
-        "id": "bookshelf_wooden_1"
+        "id": "prop_bookshelf_1"
       },
       {
         "desc": "white 'MASTERCLASS' logo with a stylized 'M' icon",
@@ -26,11 +26,11 @@
     ],
     "atomic_facts": [
       {
-        "fact": "The man is speaking.",
+        "fact": "The man is speaking directly to the camera.",
         "confidence": 1.0
       },
       {
-        "fact": "The man is positioned in front of the bookshelves.",
+        "fact": "The background consists of bookshelves filled with books.",
         "confidence": 1.0
       },
       {
@@ -41,7 +41,7 @@
     "ocr": [
       "MASTERCLASS"
     ],
-    "spatial": "The man is in the center of the frame, positioned in front of the bookshelves. The bookshelves are behind the man and span the background. The 'MASTERCLASS' logo is in the bottom right corner of the screen.",
+    "spatial": "The man is in the center of the frame, in front of the bookshelves. The bookshelves are behind the man and extend to the left and right sides of the frame. The 'MASTERCLASS' logo is in the bottom right corner of the screen.",
     "parse_success": true,
     "chunk_idx": 0,
     "video_id": "ytb_SinJ_hB8T1k",
@@ -49,8 +49,8 @@
   },
   {
     "time": [
-      2,
-      4
+      1,
+      2
     ],
     "visible_entities": [
       {
@@ -60,7 +60,7 @@
         "id": "text_intro_1"
       },
       {
-        "desc": "MasterClass logo consisting of a stylized 'M' with vertical stripes and the word 'MASTERCLASS' below it in white.",
+        "desc": "A stylized 'M' logo composed of vertical lines, with the word 'MASTERCLASS' underneath in small capital letters.",
         "action": "static",
         "position": "bottom right",
         "id": "logo_masterclass_1"
@@ -68,7 +68,7 @@
     ],
     "atomic_facts": [
       {
-        "fact": "The text 'MEET YOUR NEW INSTRUCTOR' is displayed on the screen.",
+        "fact": "The text 'MEET YOUR NEW INSTRUCTOR' is displayed on a black background.",
         "confidence": 1.0
       },
       {
@@ -82,22 +82,22 @@
       "M",
       "MASTERCLASS"
     ],
-    "spatial": "The text 'MEET YOUR NEW INSTRUCTOR' is centered on the black background. The MasterClass logo is located in the bottom right corner, below and to the right of the main text.",
+    "spatial": "The text 'MEET YOUR NEW INSTRUCTOR' is centered on the screen. The MasterClass logo is located in the bottom right corner, below and to the right of the central text.",
     "parse_success": true,
     "chunk_idx": 1,
     "video_id": "ytb_SinJ_hB8T1k",
     "state_changes": [
-      "transition from instructor speaking to title card 'MEET YOUR NEW INSTRUCTOR'"
+      "Scene transitions from instructor speaking to title card 'MEET YOUR NEW INSTRUCTOR'."
     ]
   },
   {
     "time": [
-      4,
-      6
+      2,
+      3
     ],
     "visible_entities": [
       {
-        "desc": "man with curly dark hair, grey beard, wearing a black blazer over a black t-shirt",
+        "desc": "man with curly dark hair, grey beard, wearing a black jacket over a black t-shirt",
         "action": "gesturing with hands",
         "position": "center",
         "id": "person_neil_gaiman_1"
@@ -106,10 +106,10 @@
         "desc": "wooden bookshelves filled with books",
         "action": "static",
         "position": "background",
-        "id": "bookshelf_wooden_1"
+        "id": "prop_bookshelf_1"
       },
       {
-        "desc": "white MasterClass logo with text",
+        "desc": "white 'MASTERCLASS' logo with a stylized 'M'",
         "action": "static",
         "position": "bottom right",
         "id": "logo_masterclass_1"
@@ -117,42 +117,38 @@
     ],
     "atomic_facts": [
       {
-        "fact": "The man is gesturing with his hands in front of his chest.",
+        "fact": "the man gestures with both hands open in front of him",
         "confidence": 1.0
       },
       {
-        "fact": "The man is speaking.",
+        "fact": "the man is speaking",
         "confidence": 1.0
       },
       {
-        "fact": "The bookshelves are filled with books.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The MasterClass logo is visible in the bottom right corner.",
+        "fact": "the 'MASTERCLASS' logo is visible in the bottom right corner",
         "confidence": 1.0
       }
     ],
     "ocr": [
       "MASTERCLASS"
     ],
-    "spatial": "The man is in the center of the frame, in front of the bookshelves. The bookshelves are behind the man and extend across the background. The MasterClass logo is in the bottom right corner of the screen.",
+    "spatial": "The man is in the center of the frame, in front of the bookshelves. The bookshelves are behind him and to his left and right. The 'MASTERCLASS' logo is in the bottom right corner of the screen.",
     "parse_success": true,
     "chunk_idx": 2,
     "video_id": "ytb_SinJ_hB8T1k",
     "state_changes": [
-      "transition from title card back to instructor in studio"
+      "Scene returns to instructor speaking; instructor begins gesturing with hands."
     ]
   },
   {
     "time": [
-      6,
-      8
+      3,
+      4
     ],
     "visible_entities": [
       {
         "desc": "man with curly dark hair and a graying beard, wearing a black blazer over a black t-shirt",
-        "action": "gesturing with hands",
+        "action": "clapping hands together",
         "position": "center",
         "id": "person_neil_gaiman_1"
       },
@@ -160,10 +156,10 @@
         "desc": "wooden bookshelves filled with books",
         "action": "static",
         "position": "background",
-        "id": "bookshelf_wooden_1"
+        "id": "prop_bookshelf_1"
       },
       {
-        "desc": "white 'MASTERCLASS' logo with a stylized 'M' symbol",
+        "desc": "white 'M' logo with 'MASTERCLASS' text below it",
         "action": "static",
         "position": "bottom right",
         "id": "logo_masterclass_1"
@@ -171,11 +167,11 @@
     ],
     "atomic_facts": [
       {
-        "fact": "The man is gesturing with his hands in front of his chest.",
+        "fact": "The man claps his hands together.",
         "confidence": 1.0
       },
       {
-        "fact": "The man is seated in a room with bookshelves in the background.",
+        "fact": "The man is seated in front of a bookshelf.",
         "confidence": 1.0
       },
       {
@@ -184,9 +180,10 @@
       }
     ],
     "ocr": [
+      "M",
       "MASTERCLASS"
     ],
-    "spatial": "The man is in the center of the frame, in front of the bookshelves. The bookshelves are behind the man and extend across the background. The 'MASTERCLASS' logo is in the bottom right corner of the screen.",
+    "spatial": "The man is in the center of the frame, positioned in front of the bookshelves. The bookshelves are behind him and extend to the left and right sides of the background. The 'MASTERCLASS' logo is in the bottom right corner of the screen.",
     "parse_success": true,
     "chunk_idx": 3,
     "video_id": "ytb_SinJ_hB8T1k",
@@ -194,70 +191,21 @@
   },
   {
     "time": [
-      8,
-      10
+      4,
+      5
     ],
     "visible_entities": [
       {
-        "desc": "man with curly dark hair, graying beard, wearing a black blazer over a black t-shirt",
-        "action": "gesturing with hands",
+        "desc": "man with curly dark hair and a graying beard, wearing a black blazer over a black t-shirt",
+        "action": "clasping hands together",
         "position": "center",
         "id": "person_neil_gaiman_1"
       },
       {
-        "desc": "wooden bookshelf filled with various books",
+        "desc": "dark wooden bookshelves filled with various books",
         "action": "static",
         "position": "background",
-        "id": "bookshelf_wooden_1"
-      },
-      {
-        "desc": "white 'M' logo with 'MASTERCLASS' text",
-        "action": "static",
-        "position": "bottom right",
-        "id": "logo_masterclass_1"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "The man is gesturing with his hands while speaking.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The man is seated in front of a bookshelf.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The MasterClass logo is visible in the bottom right corner.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [
-      "M",
-      "MASTERCLASS"
-    ],
-    "spatial": "The man is in the center foreground, seated in front of a large wooden bookshelf that spans the background. The bookshelf is behind the man and filled with books. The MasterClass logo is in the bottom right corner of the frame.",
-    "parse_success": true,
-    "chunk_idx": 4,
-    "video_id": "ytb_SinJ_hB8T1k",
-    "state_changes": []
-  },
-  {
-    "time": [
-      10,
-      12
-    ],
-    "visible_entities": [
-      {
-        "desc": "man with curly graying hair and a short beard, wearing a black t-shirt and a black blazer",
-        "action": "speaking and gesturing with hands",
-        "position": "center",
-        "id": "person_neil_gaiman_1"
-      },
-      {
-        "desc": "wooden bookshelves filled with books",
-        "action": "static",
-        "position": "background",
-        "id": "bookshelf_wooden_1"
+        "id": "prop_bookshelf_1"
       },
       {
         "desc": "white 'M' logo and 'MASTERCLASS' text",
@@ -268,7 +216,411 @@
     ],
     "atomic_facts": [
       {
-        "fact": "The man is gesturing with his hands while speaking.",
+        "fact": "The man clasps his hands together in front of his chest.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The man is seated in a chair.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "Bookshelves are visible behind the man.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The 'MASTERCLASS' logo is displayed in the bottom right corner.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "M",
+      "MASTERCLASS"
+    ],
+    "spatial": "The man is seated in the center of the frame, in front of the bookshelves. The bookshelves are behind him and to his left. The 'MASTERCLASS' logo is in the bottom right corner of the screen.",
+    "parse_success": true,
+    "chunk_idx": 4,
+    "video_id": "ytb_SinJ_hB8T1k",
+    "state_changes": []
+  },
+  {
+    "time": [
+      5,
+      6
+    ],
+    "visible_entities": [
+      {
+        "desc": "man with curly dark hair and a graying beard, wearing a black blazer over a black t-shirt",
+        "action": "speaking and gesturing with hands",
+        "position": "center",
+        "id": "person_neil_gaiman_1"
+      },
+      {
+        "desc": "wooden bookshelves filled with books",
+        "action": "static",
+        "position": "background",
+        "id": "prop_bookshelf_1"
+      },
+      {
+        "desc": "white 'MASTERCLASS' logo with a stylized 'M' icon",
+        "action": "static",
+        "position": "bottom right",
+        "id": "logo_masterclass_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The man is speaking while looking at the camera.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The man is gesturing with his hands held in front of his chest.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The 'MASTERCLASS' logo is visible in the bottom right corner.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "MASTERCLASS"
+    ],
+    "spatial": "The man is in the center of the frame, in front of the bookshelves. The bookshelves are behind the man and to his left and right. The 'MASTERCLASS' logo is in the bottom right corner of the screen.",
+    "parse_success": true,
+    "chunk_idx": 5,
+    "video_id": "ytb_SinJ_hB8T1k",
+    "state_changes": []
+  },
+  {
+    "time": [
+      6,
+      7
+    ],
+    "visible_entities": [
+      {
+        "desc": "man with curly dark hair and a beard, wearing a black jacket over a black shirt",
+        "action": "static",
+        "position": "center",
+        "id": "person_neil_gaiman_1"
+      },
+      {
+        "desc": "wooden bookshelves filled with books",
+        "action": "static",
+        "position": "background",
+        "id": "prop_bookshelf_1"
+      },
+      {
+        "desc": "white text on black background",
+        "action": "static",
+        "position": "center",
+        "id": "text_book_titles_1"
+      },
+      {
+        "desc": "MasterClass logo",
+        "action": "static",
+        "position": "bottom right",
+        "id": "logo_masterclass_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The video transitions from a shot of a man in a library to a black title card.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The title card displays the text 'WORLD-RENOWNED WRITER' and 'NEIL GAIMAN'.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The man is sitting in front of bookshelves.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "WORLD-RENOWNED WRITER",
+      "NEIL GAIMAN",
+      "M",
+      "MASTERCLASS"
+    ],
+    "spatial": "The man is centered in the frame in front of the bookshelves. The text 'WORLD-RENOWNED WRITER' is above the text 'NEIL GAIMAN'. The MasterClass logo is in the bottom right corner of the screen.",
+    "parse_success": true,
+    "chunk_idx": 6,
+    "video_id": "ytb_SinJ_hB8T1k",
+    "state_changes": []
+  },
+  {
+    "time": [
+      7,
+      8
+    ],
+    "visible_entities": [
+      {
+        "desc": "man with curly dark hair, short beard, wearing a black jacket over a black shirt",
+        "action": "speaking and gesturing with right hand",
+        "position": "center",
+        "id": "person_neil_gaiman_1"
+      },
+      {
+        "desc": "wooden bookshelves filled with books",
+        "action": "static",
+        "position": "background",
+        "id": "prop_bookshelf_1"
+      },
+      {
+        "desc": "white text on black background",
+        "action": "static",
+        "position": "center",
+        "id": "text_book_titles_1"
+      },
+      {
+        "desc": "MasterClass logo with white text",
+        "action": "static",
+        "position": "bottom right",
+        "id": "logo_masterclass_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The man is speaking and gesturing with his right hand.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The text 'WORLD-RENOWNED WRITER' is displayed above the name 'NEIL GAIMAN'.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The MasterClass logo is visible in the bottom right corner of the screen.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "WORLD-RENOWNED WRITER",
+      "NEIL GAIMAN",
+      "M",
+      "MASTERCLASS"
+    ],
+    "spatial": "The man is in the center of the frame, positioned in front of the bookshelves. The title text is centered above the man's name. The MasterClass logo is located in the bottom right corner of the screen.",
+    "parse_success": true,
+    "chunk_idx": 7,
+    "video_id": "ytb_SinJ_hB8T1k",
+    "state_changes": []
+  },
+  {
+    "time": [
+      8,
+      9
+    ],
+    "visible_entities": [
+      {
+        "desc": "man with curly dark hair, graying beard, wearing a black jacket over a black shirt",
+        "action": "gesturing with right hand",
+        "position": "center",
+        "id": "person_neil_gaiman_1"
+      },
+      {
+        "desc": "wooden bookshelves filled with books",
+        "action": "static",
+        "position": "background",
+        "id": "prop_bookshelf_1"
+      },
+      {
+        "desc": "white 'M' logo with 'MASTERCLASS' text",
+        "action": "static",
+        "position": "bottom right",
+        "id": "logo_masterclass_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The man is gesturing with his right hand raised.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The man is sitting in front of bookshelves.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The 'MASTERCLASS' logo is visible in the bottom right corner.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "M",
+      "MASTERCLASS"
+    ],
+    "spatial": "The man is in the center of the frame, in front of the bookshelves. The bookshelves are behind him and to his left and right. The 'MASTERCLASS' logo is in the bottom right corner of the screen.",
+    "parse_success": true,
+    "chunk_idx": 8,
+    "video_id": "ytb_SinJ_hB8T1k",
+    "state_changes": []
+  },
+  {
+    "time": [
+      9,
+      10
+    ],
+    "visible_entities": [
+      {
+        "desc": "person with curly hair, wearing a dark top, seen in silhouette",
+        "action": "standing still",
+        "position": "right/foreground",
+        "id": "person_neil_gaiman_1"
+      },
+      {
+        "desc": "wooden window frame with multiple panes",
+        "action": "static",
+        "position": "left/background",
+        "id": "prop_window_1"
+      },
+      {
+        "desc": "green trees and foliage outside",
+        "action": "static",
+        "position": "left/background",
+        "id": "env_forest_1"
+      },
+      {
+        "desc": "wooden railing of a deck or porch",
+        "action": "static",
+        "position": "left/background",
+        "id": "prop_railing_1"
+      },
+      {
+        "desc": "bright light source, likely the sun, creating a lens flare",
+        "action": "static",
+        "position": "right/background",
+        "id": "env_forest_1"
+      },
+      {
+        "desc": "MasterClass logo, a stylized 'M' with the word 'MASTERCLASS' below it",
+        "action": "static",
+        "position": "bottom-right",
+        "id": "logo_masterclass_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A person is standing in silhouette in a dimly lit room.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The person is positioned in front of a window.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "Bright sunlight is shining through the window from the right.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The view outside the window shows green trees and a wooden railing.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The MasterClass logo is visible in the bottom-right corner of the frame.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "M",
+      "MASTERCLASS"
+    ],
+    "spatial": "The person is in the foreground on the right side of the frame. To the left of the person is a large window. Outside the window, green trees are visible behind a wooden railing. The bright sun is located to the right of the person's head. The MasterClass logo is in the bottom-right corner, below the person's shoulder.",
+    "parse_success": true,
+    "chunk_idx": 9,
+    "video_id": "ytb_SinJ_hB8T1k",
+    "state_changes": [
+      "Scene cuts to outdoor silhouette shot with lens flare and porch setting."
+    ]
+  },
+  {
+    "time": [
+      10,
+      11
+    ],
+    "visible_entities": [
+      {
+        "desc": "man with short graying beard, wearing a black long-sleeved shirt",
+        "action": "writing in a notebook",
+        "position": "right foreground",
+        "id": "person_neil_gaiman_1"
+      },
+      {
+        "desc": "small white notebook with lined pages",
+        "action": "static",
+        "position": "center foreground",
+        "id": "prop_notebook_1"
+      },
+      {
+        "desc": "black fountain pen with gold accents",
+        "action": "being held",
+        "position": "center foreground",
+        "id": "prop_pen_1"
+      },
+      {
+        "desc": "armchair with a red and white checkered throw blanket",
+        "action": "static",
+        "position": "left background",
+        "id": "prop_armchair_1"
+      },
+      {
+        "desc": "white 'M' logo with 'MASTERCLASS' text below it",
+        "action": "static",
+        "position": "bottom right",
+        "id": "logo_masterclass_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The man is holding a fountain pen and writing in a notebook.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The notebook is open on a surface in front of the man.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The 'MASTERCLASS' logo is visible in the bottom right corner.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "M",
+      "MASTERCLASS"
+    ],
+    "spatial": "The man is positioned on the right side of the frame, holding the pen over the notebook which is in the center. The armchair with the checkered blanket is in the background to the left of the man. The 'MASTERCLASS' logo is in the bottom right corner, below the man's arm.",
+    "parse_success": true,
+    "chunk_idx": 10,
+    "video_id": "ytb_SinJ_hB8T1k",
+    "state_changes": [
+      "Scene changes to close-up of hands writing in a notebook with a fountain pen; armchair visible."
+    ]
+  },
+  {
+    "time": [
+      11,
+      12
+    ],
+    "visible_entities": [
+      {
+        "desc": "man with curly dark hair, graying beard, wearing a black blazer over a black t-shirt",
+        "action": "speaking and gesturing with right hand",
+        "position": "center",
+        "id": "person_neil_gaiman_1"
+      },
+      {
+        "desc": "wooden bookshelves filled with books",
+        "action": "static",
+        "position": "background",
+        "id": "prop_bookshelf_1"
+      },
+      {
+        "desc": "white 'MASTERCLASS' logo with a stylized 'M' icon",
+        "action": "static",
+        "position": "bottom right",
+        "id": "logo_masterclass_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The man is speaking and gesturing with his right hand.",
         "confidence": 1.0
       },
       {
@@ -281,350 +633,9 @@
       }
     ],
     "ocr": [
-      "M",
       "MASTERCLASS"
     ],
-    "spatial": "The man is in the center of the frame, positioned in front of the bookshelves. The bookshelves are behind him and to his left and right. The 'MASTERCLASS' logo is in the bottom right corner of the screen.",
-    "parse_success": true,
-    "chunk_idx": 5,
-    "video_id": "ytb_SinJ_hB8T1k",
-    "state_changes": []
-  },
-  {
-    "time": [
-      12,
-      14
-    ],
-    "visible_entities": [
-      {
-        "desc": "man with curly dark hair, grey beard, black t-shirt, black blazer",
-        "action": "sitting and speaking",
-        "position": "center",
-        "id": "person_neil_gaiman_1"
-      },
-      {
-        "desc": "wooden bookshelves filled with books",
-        "action": "static",
-        "position": "background",
-        "id": "bookshelf_wooden_1"
-      },
-      {
-        "desc": "white text on black background",
-        "action": "static",
-        "position": "center",
-        "id": "text_black_bg_1"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "The man is sitting in front of bookshelves.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The man is gesturing with his hands.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The text 'WORLD-RENOWNED WRITER' appears on screen.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The text 'NEIL GAIMAN' appears on screen.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [
-      "WORLD-RENOWNED WRITER",
-      "NEIL GAIMAN",
-      "MASTERCLASS"
-    ],
-    "spatial": "The man is in the foreground, centered in the frame. The bookshelves are behind the man, filling the background. The text 'WORLD-RENOWNED WRITER' is above the text 'NEIL GAIMAN'.",
-    "parse_success": true,
-    "chunk_idx": 6,
-    "video_id": "ytb_SinJ_hB8T1k",
-    "state_changes": []
-  },
-  {
-    "time": [
-      14,
-      16
-    ],
-    "visible_entities": [
-      {
-        "desc": "man with curly dark hair, beard, wearing a black jacket over a black shirt",
-        "action": "gesturing with right hand",
-        "position": "center",
-        "id": "person_neil_gaiman_1"
-      },
-      {
-        "desc": "wooden bookshelves filled with books",
-        "action": "static",
-        "position": "background",
-        "id": "bookshelf_wooden_1"
-      },
-      {
-        "desc": "white text on black background",
-        "action": "static",
-        "position": "center",
-        "id": "text_black_bg_1"
-      },
-      {
-        "desc": "MasterClass logo",
-        "action": "static",
-        "position": "bottom-right",
-        "id": "logo_masterclass_1"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "The man is gesturing with his right hand.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The text 'WORLD-RENOWNED WRITER' is displayed above the name 'NEIL GAIMAN'.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The man is sitting in front of bookshelves.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [
-      "WORLD-RENOWNED WRITER",
-      "NEIL GAIMAN",
-      "M",
-      "MASTERCLASS"
-    ],
-    "spatial": "The man is in the center of the frame, in front of the bookshelves. The text is centered on the screen. The MasterClass logo is in the bottom right corner.",
-    "parse_success": true,
-    "chunk_idx": 7,
-    "video_id": "ytb_SinJ_hB8T1k",
-    "state_changes": []
-  },
-  {
-    "time": [
-      16,
-      18
-    ],
-    "visible_entities": [
-      {
-        "desc": "man with curly dark hair, short beard, wearing a black blazer over a black t-shirt",
-        "action": "gesturing with right hand",
-        "position": "center",
-        "id": "person_neil_gaiman_1"
-      },
-      {
-        "desc": "wooden bookshelves filled with books",
-        "action": "static",
-        "position": "background",
-        "id": "bookshelf_wooden_1"
-      },
-      {
-        "desc": "white MasterClass logo with text",
-        "action": "static",
-        "position": "bottom right",
-        "id": "logo_masterclass_1"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "The man is gesturing with his right hand raised.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The man is speaking.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The background consists of bookshelves filled with books.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The MasterClass logo is visible in the bottom right corner.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [
-      "M",
-      "MASTERCLASS"
-    ],
-    "spatial": "The man is positioned in the center of the frame, in front of the bookshelves. The bookshelves are behind him and extend to the left and right. The MasterClass logo is in the bottom right corner of the screen.",
-    "parse_success": true,
-    "chunk_idx": 8,
-    "video_id": "ytb_SinJ_hB8T1k",
-    "state_changes": []
-  },
-  {
-    "time": [
-      18,
-      20
-    ],
-    "visible_entities": [
-      {
-        "desc": "person with curly hair, wearing a black shirt, seen in silhouette",
-        "action": "standing still",
-        "position": "center/foreground",
-        "id": "person_silhouette_1"
-      },
-      {
-        "desc": "wooden window frame with multiple panes",
-        "action": "static",
-        "position": "left/background",
-        "id": "window_frame_1"
-      },
-      {
-        "desc": "green trees and foliage outside",
-        "action": "static",
-        "position": "left/background",
-        "id": "forest_trees_1"
-      },
-      {
-        "desc": "bright sunlight creating a lens flare",
-        "action": "shining",
-        "position": "right/background",
-        "id": "sunlight_flare_1"
-      },
-      {
-        "desc": "white 'MASTERCLASS' logo with a stylized 'M'",
-        "action": "static",
-        "position": "bottom right",
-        "id": "logo_masterclass_1"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "A person stands in silhouette against a bright light source.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "Sunlight streams through a window on the right side of the frame.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The 'MASTERCLASS' logo is visible in the bottom right corner.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [
-      "MASTERCLASS"
-    ],
-    "spatial": "The person is in the foreground, positioned in front of the windows. The window with green trees outside is to the left of the person. The bright sunlight is to the right of the person. The 'MASTERCLASS' logo is below the person and to the right.",
-    "parse_success": true,
-    "chunk_idx": 9,
-    "video_id": "ytb_SinJ_hB8T1k",
-    "state_changes": [
-      "scene change to silhouette person by window with outdoor B-roll"
-    ]
-  },
-  {
-    "time": [
-      20,
-      22
-    ],
-    "visible_entities": [
-      {
-        "desc": "man with a grey beard and mustache, wearing a black long-sleeved shirt",
-        "action": "writing in a notebook",
-        "position": "right"
-      },
-      {
-        "desc": "fountain pen with a gold-colored cap and black barrel",
-        "action": "being held",
-        "position": "center",
-        "id": "pen_fountain_1"
-      },
-      {
-        "desc": "small open notebook with white pages",
-        "action": "static",
-        "position": "center",
-        "id": "notebook_white_1"
-      },
-      {
-        "desc": "green armchair with a dark checkered throw blanket",
-        "action": "static",
-        "position": "background",
-        "id": "armchair_green_1"
-      },
-      {
-        "desc": "white 'MASTERCLASS' logo with a stylized 'M' icon",
-        "action": "static",
-        "position": "bottom-right",
-        "id": "logo_masterclass_1"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "The man is writing in the notebook with a fountain pen.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The man holds the pen in his right hand.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The notebook rests on a dark surface.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The 'MASTERCLASS' logo is visible in the bottom right corner.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [
-      "MASTERCLASS"
-    ],
-    "spatial": "The man is positioned on the right side of the frame, holding the fountain pen over the open notebook. The notebook is in front of the man and rests on a dark surface. In the background to the left, a green armchair is visible.",
-    "parse_success": true,
-    "chunk_idx": 10,
-    "video_id": "ytb_SinJ_hB8T1k",
-    "state_changes": [
-      "instructor shown writing in notebook with fountain pen"
-    ]
-  },
-  {
-    "time": [
-      22,
-      24
-    ],
-    "visible_entities": [
-      {
-        "desc": "man with curly dark hair, graying beard, wearing a black blazer over a black t-shirt",
-        "action": "gesturing with right hand",
-        "position": "center",
-        "id": "person_neil_gaiman_1"
-      },
-      {
-        "desc": "wooden bookshelves filled with books",
-        "action": "static",
-        "position": "background",
-        "id": "bookshelf_wooden_1"
-      },
-      {
-        "desc": "white MasterClass logo with stylized 'M'",
-        "action": "static",
-        "position": "bottom right",
-        "id": "logo_masterclass_1"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "The man raises his right hand in a gesture.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The man is seated in front of bookshelves.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The MasterClass logo is visible in the corner.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [
-      "M",
-      "MASTERCLASS"
-    ],
-    "spatial": "The man is in the center of the frame, positioned in front of the bookshelves. The bookshelves are behind him and to his left. The MasterClass logo is in the bottom right corner of the screen.",
+    "spatial": "The man is in the center of the frame, in front of the bookshelves. The bookshelves are behind him and to his left and right. The 'MASTERCLASS' logo is in the bottom right corner of the screen.",
     "parse_success": true,
     "chunk_idx": 11,
     "video_id": "ytb_SinJ_hB8T1k",
@@ -632,18 +643,18 @@
   },
   {
     "time": [
-      24,
-      26
+      12,
+      13
     ],
     "visible_entities": [
       {
-        "desc": "White text on a black background listing book titles. The text 'AUTHOR OF' is in a bold sans-serif font, while the titles 'STARDUST', 'CORALINE', 'THE SANDMAN', 'AMERICAN GODS', 'THE GRAVEYARD BOOK', and 'NEVERWHERE' are in a thinner sans-serif font.",
-        "action": "appearing sequentially",
+        "desc": "White text on a black background listing book titles. The first frame shows 'AUTHOR OF', 'STARDUST', and 'CORALINE'. The second frame adds 'THE SANDMAN', 'AMERICAN GODS', 'THE GRAVEYARD BOOK', and 'NEVERWHERE'. The font is a clean sans-serif.",
+        "action": "appearing on screen",
         "position": "center",
         "id": "text_book_titles_1"
       },
       {
-        "desc": "A stylized 'M' logo composed of diagonal lines with the word 'MASTERCLASS' underneath, colored in white or light grey.",
+        "desc": "A white logo consisting of a stylized 'M' with vertical lines and the word 'MASTERCLASS' below it.",
         "action": "static",
         "position": "bottom right",
         "id": "logo_masterclass_1"
@@ -655,11 +666,7 @@
         "confidence": 1.0
       },
       {
-        "fact": "The title 'STARDUST' appears first, followed by 'CORALINE'.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The titles 'THE SANDMAN', 'AMERICAN GODS', 'THE GRAVEYARD BOOK', and 'NEVERWHERE' appear in sequence below the first two.",
+        "fact": "The list of titles expands from three items in the first frame to seven items in the second frame.",
         "confidence": 1.0
       },
       {
@@ -678,40 +685,34 @@
       "M",
       "MASTERCLASS"
     ],
-    "spatial": "The list of book titles is centered on the screen. The 'AUTHOR OF' header is above the list of titles. The MasterClass logo is located in the bottom right corner, separate from the central text.",
+    "spatial": "The list of book titles is centered on the screen. The 'AUTHOR OF' text is above the list of titles. The MasterClass logo is in the bottom right corner, below and to the right of the text list.",
     "parse_success": true,
     "chunk_idx": 12,
     "video_id": "ytb_SinJ_hB8T1k",
     "state_changes": [
-      "transition to book titles text overlay listing published works"
+      "Scene transitions to black background with animated text listing book titles appearing."
     ]
   },
   {
     "time": [
-      26,
-      28
+      13,
+      14
     ],
     "visible_entities": [
       {
-        "desc": "White text in a clean, sans-serif font listing book titles against a black background",
+        "desc": "White text on a black background listing book titles and a header.",
         "action": "static",
-        "position": "center",
         "id": "text_book_titles_1"
       },
       {
-        "desc": "A stylized 'M' logo composed of diagonal lines with the word 'MASTERCLASS' underneath in small white text",
+        "desc": "A stylized 'M' logo with horizontal lines and the word 'MASTERCLASS' below it.",
         "action": "static",
-        "position": "bottom right",
         "id": "logo_masterclass_1"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "The screen displays a list of book titles under the heading 'AUTHOR OF'.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The titles listed are STARDUST, CORALINE, THE SANDMAN, AMERICAN GODS, THE GRAVEYARD BOOK, and NEVERWHERE.",
+        "fact": "The screen displays a list of works under the header 'AUTHOR OF'.",
         "confidence": 1.0
       },
       {
@@ -730,7 +731,7 @@
       "M",
       "MASTERCLASS"
     ],
-    "spatial": "The list of book titles is centered on the screen. The 'AUTHOR OF' heading is above the list of titles. The MasterClass logo is located in the bottom right corner, below and to the right of the main text.",
+    "spatial": "The text 'AUTHOR OF' is at the top center of the screen. The list of book titles is centered below the header. The MasterClass logo is located in the bottom right corner of the screen.",
     "parse_success": true,
     "chunk_idx": 13,
     "video_id": "ytb_SinJ_hB8T1k",
@@ -738,12 +739,12 @@
   },
   {
     "time": [
-      28,
-      30
+      14,
+      15
     ],
     "visible_entities": [
       {
-        "desc": "man with curly dark hair, graying beard, wearing a black jacket over a black shirt",
+        "desc": "man with curly dark hair and a graying beard, wearing a black blazer over a black shirt",
         "action": "speaking and gesturing with hands",
         "position": "center",
         "id": "person_neil_gaiman_1"
@@ -752,7 +753,7 @@
         "desc": "wooden bookshelves filled with books",
         "action": "static",
         "position": "background",
-        "id": "bookshelf_wooden_1"
+        "id": "prop_bookshelf_1"
       },
       {
         "desc": "white MasterClass logo with text",
@@ -763,15 +764,15 @@
     ],
     "atomic_facts": [
       {
-        "fact": "The man is speaking.",
+        "fact": "The man is speaking directly to the camera.",
         "confidence": 1.0
       },
       {
-        "fact": "The man is gesturing with his hands.",
+        "fact": "The man is gesturing with his hands clasped together.",
         "confidence": 1.0
       },
       {
-        "fact": "The bookshelves are behind the man.",
+        "fact": "The setting is a library or study with bookshelves in the background.",
         "confidence": 1.0
       },
       {
@@ -782,34 +783,32 @@
     "ocr": [
       "MASTERCLASS"
     ],
-    "spatial": "The man is in the center of the frame. The bookshelves are behind him. The MasterClass logo is in the bottom right corner of the screen.",
+    "spatial": "The man is in the center of the frame, in front of the bookshelves. The bookshelves are behind him and to his left and right. The MasterClass logo is in the bottom right corner of the screen.",
     "parse_success": true,
     "chunk_idx": 14,
     "video_id": "ytb_SinJ_hB8T1k",
-    "state_changes": [
-      "transition from text overlay back to instructor speaking"
-    ]
+    "state_changes": []
   },
   {
     "time": [
-      30,
-      32
+      15,
+      16
     ],
     "visible_entities": [
       {
         "desc": "man with curly dark hair, grey beard, wearing a black blazer over a black t-shirt",
         "action": "gesturing with hands",
-        "position": "right/foreground",
+        "position": "center/right",
         "id": "person_neil_gaiman_1"
       },
       {
         "desc": "dark wooden bookshelf filled with various books",
         "action": "static",
-        "position": "left/background",
-        "id": "bookshelf_wooden_1"
+        "position": "background/left",
+        "id": "prop_bookshelf_1"
       },
       {
-        "desc": "white 'M' logo and 'MASTERCLASS' text",
+        "desc": "white 'M' logo with 'MASTERCLASS' text",
         "action": "static",
         "position": "bottom right",
         "id": "logo_masterclass_1"
@@ -833,7 +832,7 @@
       "M",
       "MASTERCLASS"
     ],
-    "spatial": "The man is positioned to the right of the bookshelf. The bookshelf is behind the man. The MasterClass logo is in the bottom right corner of the frame, overlaying the scene.",
+    "spatial": "The man is positioned in the foreground, sitting in front of the bookshelf which fills the background. The bookshelf is to the left and behind the man. The MasterClass logo is overlaid in the bottom right corner of the frame.",
     "parse_success": true,
     "chunk_idx": 15,
     "video_id": "ytb_SinJ_hB8T1k",
@@ -841,20 +840,21 @@
   },
   {
     "time": [
-      32,
-      34
+      16,
+      17
     ],
     "visible_entities": [
       {
-        "desc": "man with curly dark hair, graying beard, wearing a black blazer and black t-shirt",
-        "action": "speaking and gesturing with hands",
-        "position": "center"
+        "desc": "man with curly dark hair, grey beard, wearing a black blazer over a black shirt",
+        "action": "gesturing with hands",
+        "position": "center",
+        "id": "person_neil_gaiman_1"
       },
       {
         "desc": "wooden bookshelves filled with books",
         "action": "static",
         "position": "background",
-        "id": "bookshelf_wooden_1"
+        "id": "prop_bookshelf_1"
       },
       {
         "desc": "white 'M' logo and 'MASTERCLASS' text",
@@ -865,55 +865,7 @@
     ],
     "atomic_facts": [
       {
-        "fact": "The man is speaking and gesturing with his hands.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The man is wearing a black blazer over a black shirt.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The background consists of bookshelves filled with books.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [
-      "M",
-      "MASTERCLASS"
-    ],
-    "spatial": "The man is in the center of the frame, in front of the bookshelves. The 'MASTERCLASS' logo is in the bottom right corner of the screen.",
-    "parse_success": true,
-    "chunk_idx": 16,
-    "video_id": "ytb_SinJ_hB8T1k",
-    "state_changes": []
-  },
-  {
-    "time": [
-      34,
-      36
-    ],
-    "visible_entities": [
-      {
-        "desc": "man with curly dark hair, graying beard, wearing a black blazer over a black shirt",
-        "action": "speaking and gesturing with hands",
-        "position": "center"
-      },
-      {
-        "desc": "wooden bookshelves filled with books",
-        "action": "static",
-        "position": "background",
-        "id": "bookshelf_wooden_1"
-      },
-      {
-        "desc": "white 'M' logo and 'MASTERCLASS' text",
-        "action": "static",
-        "position": "bottom right",
-        "id": "logo_masterclass_1"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "The man is speaking and gesturing with his hands.",
+        "fact": "The man is gesturing with his hands in front of his chest.",
         "confidence": 1.0
       },
       {
@@ -933,32 +885,32 @@
       "M",
       "MASTERCLASS"
     ],
-    "spatial": "The man is in the center of the frame, in front of the bookshelves. The 'MASTERCLASS' logo is in the bottom right corner, below and to the right of the man.",
+    "spatial": "The man is in the center of the frame, in front of the bookshelves. The bookshelves are behind him and to his left and right. The 'MASTERCLASS' logo is in the bottom right corner of the frame.",
     "parse_success": true,
-    "chunk_idx": 17,
+    "chunk_idx": 16,
     "video_id": "ytb_SinJ_hB8T1k",
     "state_changes": []
   },
   {
     "time": [
-      36,
-      38
+      17,
+      18
     ],
     "visible_entities": [
       {
         "desc": "man with curly dark hair and a graying beard, wearing a black blazer over a black t-shirt",
-        "action": "gesturing with open hands and speaking",
+        "action": "gesturing with hands",
         "position": "center",
         "id": "person_neil_gaiman_1"
       },
       {
-        "desc": "dark wooden bookshelf filled with various books",
+        "desc": "wooden bookshelves filled with books",
         "action": "static",
         "position": "background",
-        "id": "bookshelf_wooden_1"
+        "id": "prop_bookshelf_1"
       },
       {
-        "desc": "white 'M' logo and 'MASTERCLASS' text",
+        "desc": "white 'MASTERCLASS' logo with a stylized 'M'",
         "action": "static",
         "position": "bottom right",
         "id": "logo_masterclass_1"
@@ -966,7 +918,7 @@
     ],
     "atomic_facts": [
       {
-        "fact": "The man gestures with both hands open in front of him.",
+        "fact": "The man is gesturing with his hands in front of his chest.",
         "confidence": 1.0
       },
       {
@@ -974,7 +926,59 @@
         "confidence": 1.0
       },
       {
-        "fact": "The bookshelf is located behind the man.",
+        "fact": "The background consists of bookshelves filled with books.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The 'MASTERCLASS' logo is visible in the bottom right corner.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "MASTERCLASS"
+    ],
+    "spatial": "The man is in the center of the frame, in front of the bookshelves. The bookshelves are behind him and to his left and right. The 'MASTERCLASS' logo is in the bottom right corner of the screen.",
+    "parse_success": true,
+    "chunk_idx": 17,
+    "video_id": "ytb_SinJ_hB8T1k",
+    "state_changes": []
+  },
+  {
+    "time": [
+      18,
+      19
+    ],
+    "visible_entities": [
+      {
+        "desc": "man with curly dark hair, graying beard, wearing a black blazer over a black shirt",
+        "action": "gesturing with hands and speaking",
+        "position": "center",
+        "id": "person_neil_gaiman_1"
+      },
+      {
+        "desc": "wooden bookshelf filled with various books",
+        "action": "static",
+        "position": "background",
+        "id": "prop_bookshelf_1"
+      },
+      {
+        "desc": "white 'M' logo with 'MASTERCLASS' text",
+        "action": "static",
+        "position": "bottom right",
+        "id": "logo_masterclass_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The man is gesturing with his hands open.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The man is speaking.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The man is seated in front of a bookshelf.",
         "confidence": 1.0
       },
       {
@@ -986,7 +990,7 @@
       "M",
       "MASTERCLASS"
     ],
-    "spatial": "The man is positioned in the center of the frame, sitting in front of a bookshelf that fills the background. The 'MASTERCLASS' logo is located in the bottom right corner, overlaying the scene.",
+    "spatial": "The man is positioned in the center of the frame, in front of a wooden bookshelf. The bookshelf is behind him and extends across the background. The 'MASTERCLASS' logo is in the bottom right corner of the screen.",
     "parse_success": true,
     "chunk_idx": 18,
     "video_id": "ytb_SinJ_hB8T1k",
@@ -994,12 +998,12 @@
   },
   {
     "time": [
-      38,
-      40
+      19,
+      20
     ],
     "visible_entities": [
       {
-        "desc": "man with curly dark hair and a graying beard, wearing a black jacket over a black shirt",
+        "desc": "man with curly dark hair and a graying beard, wearing a black blazer over a black t-shirt",
         "action": "speaking",
         "position": "center",
         "id": "person_neil_gaiman_1"
@@ -1008,16 +1012,16 @@
         "desc": "wooden bookshelves filled with books",
         "action": "static",
         "position": "background",
-        "id": "bookshelf_wooden_1"
+        "id": "prop_bookshelf_1"
       },
       {
         "desc": "white text on a black background",
         "action": "static",
         "position": "center",
-        "id": "text_black_bg_1"
+        "id": "text_book_titles_1"
       },
       {
-        "desc": "white 'MASTERCLASS' logo with an 'M' symbol",
+        "desc": "MasterClass logo with a stylized 'M'",
         "action": "static",
         "position": "bottom right",
         "id": "logo_masterclass_1"
@@ -1025,15 +1029,15 @@
     ],
     "atomic_facts": [
       {
-        "fact": "The man is speaking in a library setting.",
+        "fact": "The man is speaking to the camera.",
         "confidence": 1.0
       },
       {
-        "fact": "The video cuts to a black screen with white text.",
+        "fact": "The scene cuts to a black screen with white text.",
         "confidence": 1.0
       },
       {
-        "fact": "The text on the screen reads 'IN HIS FIRST EVER ONLINE CLASS'.",
+        "fact": "The text reads 'IN HIS FIRST EVER ONLINE CLASS'.",
         "confidence": 1.0
       }
     ],
@@ -1042,7 +1046,7 @@
       "ONLINE CLASS",
       "MASTERCLASS"
     ],
-    "spatial": "The man is in the center of the frame, in front of the bookshelves. The bookshelves are behind him and to his left and right. The 'MASTERCLASS' logo is in the bottom right corner of the screen. The text 'IN HIS FIRST EVER ONLINE CLASS' is centered on the black screen.",
+    "spatial": "The man is positioned in the center of the frame, in front of the bookshelves. The bookshelves are behind the man and to his left. The MasterClass logo is in the bottom right corner of the screen.",
     "parse_success": true,
     "chunk_idx": 19,
     "video_id": "ytb_SinJ_hB8T1k",
@@ -1050,12 +1054,12 @@
   },
   {
     "time": [
-      40,
-      42
+      20,
+      21
     ],
     "visible_entities": [
       {
-        "desc": "man with curly dark hair, beard, wearing a black jacket and black shirt",
+        "desc": "man with dark curly hair and a beard, wearing a black jacket over a black shirt",
         "action": "reaching for a book",
         "position": "center",
         "id": "person_neil_gaiman_1"
@@ -1064,16 +1068,16 @@
         "desc": "wooden bookshelf filled with various books",
         "action": "static",
         "position": "background",
-        "id": "bookshelf_wooden_1"
+        "id": "prop_bookshelf_1"
       },
       {
-        "desc": "white text on black background",
+        "desc": "white text on a black background",
         "action": "static",
         "position": "center",
-        "id": "text_black_bg_1"
+        "id": "text_book_titles_1"
       },
       {
-        "desc": "MasterClass logo with 'M' symbol and text",
+        "desc": "MasterClass logo with an 'M' symbol",
         "action": "static",
         "position": "bottom right",
         "id": "logo_masterclass_1"
@@ -1099,38 +1103,40 @@
       "M",
       "MASTERCLASS"
     ],
-    "spatial": "The man is positioned in front of the bookshelf. The text 'IN HIS FIRST EVER ONLINE CLASS' is centered on the screen, appearing above the man in the sequence. The MasterClass logo is located in the bottom right corner of the frame.",
+    "spatial": "The man is positioned in front of the bookshelf. The text 'IN HIS FIRST EVER ONLINE CLASS' is centered on the screen, above the man's head level. The MasterClass logo is located in the bottom right corner of the frame.",
     "parse_success": true,
     "chunk_idx": 20,
     "video_id": "ytb_SinJ_hB8T1k",
-    "state_changes": []
+    "state_changes": [
+      "Instructor reaches for a book on the shelf."
+    ]
   },
   {
     "time": [
-      42,
-      44
+      21,
+      22
     ],
     "visible_entities": [
       {
-        "desc": "man with curly dark hair, beard, and glasses, wearing a black jacket over a black shirt",
-        "action": "holding and reading a book",
+        "desc": "man with curly dark hair, beard, glasses, wearing a black jacket and black shirt",
+        "action": "holding a book and then reading it",
         "position": "center",
         "id": "person_neil_gaiman_1"
       },
       {
-        "desc": "book with a white cover and greenish design",
+        "desc": "book with a light-colored cover featuring a greenish illustration",
         "action": "being held and opened",
         "position": "center",
-        "id": "book_neil_gaiman_1"
+        "id": "prop_book_generic_1"
       },
       {
-        "desc": "wooden bookshelves filled with books",
+        "desc": "wooden bookshelves filled with various books",
         "action": "static",
         "position": "background",
-        "id": "bookshelf_wooden_1"
+        "id": "prop_bookshelf_1"
       },
       {
-        "desc": "white 'M' logo with 'MASTERCLASS' text",
+        "desc": "white 'MASTERCLASS' logo with a stylized 'M'",
         "action": "static",
         "position": "bottom right",
         "id": "logo_masterclass_1"
@@ -1138,7 +1144,7 @@
     ],
     "atomic_facts": [
       {
-        "fact": "The man holds a book in his hands.",
+        "fact": "The man holds a book up in the air.",
         "confidence": 1.0
       },
       {
@@ -1150,46 +1156,47 @@
         "confidence": 1.0
       },
       {
-        "fact": "The bookshelves are behind the man.",
+        "fact": "The bookshelves are located behind the man.",
         "confidence": 1.0
       }
     ],
     "ocr": [
-      "M",
       "MASTERCLASS"
     ],
-    "spatial": "The man is in the center of the frame, sitting in front of the wooden bookshelves. He is holding the book in his hands. The 'MASTERCLASS' logo is in the bottom right corner of the screen.",
+    "spatial": "The man is sitting in front of the bookshelves. He is holding the book in front of his chest. The Masterclass logo is in the bottom right corner of the frame.",
     "parse_success": true,
     "chunk_idx": 21,
     "video_id": "ytb_SinJ_hB8T1k",
-    "state_changes": []
+    "state_changes": [
+      "Instructor holds and opens a specific book ('Ocean at the End of the Lane')."
+    ]
   },
   {
     "time": [
-      44,
-      46
+      22,
+      23
     ],
     "visible_entities": [
       {
-        "desc": "man with curly dark hair, glasses, beard, wearing a black jacket over a black shirt",
-        "action": "reading from a book and gesturing with his right hand",
+        "desc": "man with curly dark hair, beard, glasses, wearing a black jacket over a black shirt",
+        "action": "reading a book and gesturing with his right hand",
         "position": "center",
         "id": "person_neil_gaiman_1"
       },
       {
         "desc": "open book with white pages",
-        "action": "being held open",
+        "action": "being held",
         "position": "center",
-        "id": "comic_book_1"
+        "id": "prop_book_generic_1"
       },
       {
-        "desc": "wooden bookshelves filled with books",
+        "desc": "wooden bookshelves filled with various books",
         "action": "static",
         "position": "background",
-        "id": "bookshelf_wooden_1"
+        "id": "prop_bookshelf_1"
       },
       {
-        "desc": "white 'M' logo with 'MASTERCLASS' text below it",
+        "desc": "white 'M' logo and 'MASTERCLASS' text",
         "action": "static",
         "position": "bottom right",
         "id": "logo_masterclass_1"
@@ -1197,19 +1204,15 @@
     ],
     "atomic_facts": [
       {
-        "fact": "The man is holding an open book in his hands.",
+        "fact": "The man is holding an open book in his lap.",
         "confidence": 1.0
       },
       {
-        "fact": "The man is looking down at the book's pages.",
+        "fact": "The man is looking down at the book.",
         "confidence": 1.0
       },
       {
-        "fact": "The man is gesturing with his right hand while speaking.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The bookshelves are filled with books of various colors and sizes.",
+        "fact": "The man raises his right hand while speaking.",
         "confidence": 1.0
       },
       {
@@ -1221,7 +1224,7 @@
       "M",
       "MASTERCLASS"
     ],
-    "spatial": "The man is in the center of the frame, sitting in front of the bookshelves. He is holding the open book in his lap. The bookshelves are behind him and to his left. The 'MASTERCLASS' logo is in the bottom right corner of the screen.",
+    "spatial": "The man is sitting in front of the wooden bookshelves. He is holding the open book in his hands. The 'MASTERCLASS' logo is to the right of the man.",
     "parse_success": true,
     "chunk_idx": 22,
     "video_id": "ytb_SinJ_hB8T1k",
@@ -1229,30 +1232,30 @@
   },
   {
     "time": [
-      46,
-      48
+      23,
+      24
     ],
     "visible_entities": [
       {
-        "desc": "man with curly dark hair, glasses, grey beard, wearing a black jacket and black shirt",
-        "action": "holding an open book and gesturing with his hand",
+        "desc": "man with curly dark hair, graying beard, glasses, black jacket, black shirt",
+        "action": "holding a book and gesturing with his hand",
         "position": "center",
         "id": "person_neil_gaiman_1"
       },
       {
         "desc": "open book with white pages",
-        "action": "being held",
+        "action": "static",
         "position": "foreground",
-        "id": "comic_book_1"
+        "id": "prop_book_generic_1"
       },
       {
-        "desc": "dark wooden bookshelves filled with books",
+        "desc": "wooden bookshelves filled with books",
         "action": "static",
         "position": "background",
-        "id": "bookshelf_wooden_1"
+        "id": "prop_bookshelf_1"
       },
       {
-        "desc": "white 'M' logo and 'MASTERCLASS' text",
+        "desc": "white 'M' logo with 'MASTERCLASS' text",
         "action": "static",
         "position": "bottom right",
         "id": "logo_masterclass_1"
@@ -1264,15 +1267,11 @@
         "confidence": 1.0
       },
       {
-        "fact": "The man raises his right hand to gesture while speaking.",
+        "fact": "The man raises his right hand in a gesturing motion.",
         "confidence": 1.0
       },
       {
-        "fact": "The man looks down at the book in the first frame.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The man looks forward towards the camera in the second frame.",
+        "fact": "The man looks down at the book in the first frame and up in the second frame.",
         "confidence": 1.0
       },
       {
@@ -1284,7 +1283,7 @@
       "M",
       "MASTERCLASS"
     ],
-    "spatial": "The man is sitting in front of the bookshelves. He is holding the open book in his lap. The Masterclass logo is located in the bottom right corner of the screen.",
+    "spatial": "The man is sitting in front of the wooden bookshelves. The open book is held in the man's lap. The 'MASTERCLASS' logo is located in the bottom right corner of the screen.",
     "parse_success": true,
     "chunk_idx": 23,
     "video_id": "ytb_SinJ_hB8T1k",
@@ -1292,13 +1291,13 @@
   },
   {
     "time": [
-      48,
-      50
+      24,
+      25
     ],
     "visible_entities": [
       {
-        "desc": "man with curly dark hair, graying beard, wearing black-rimmed glasses, a black blazer, and a black shirt",
-        "action": "gesturing with right hand",
+        "desc": "man with curly dark hair, beard, glasses, black jacket, black shirt",
+        "action": "gesturing with hand",
         "position": "center",
         "id": "person_neil_gaiman_1"
       },
@@ -1306,7 +1305,7 @@
         "desc": "wooden bookshelves filled with books",
         "action": "static",
         "position": "background",
-        "id": "bookshelf_wooden_1"
+        "id": "prop_bookshelf_1"
       },
       {
         "desc": "white 'M' logo and 'MASTERCLASS' text",
@@ -1317,11 +1316,238 @@
     ],
     "atomic_facts": [
       {
-        "fact": "The man gestures with his right hand while speaking.",
+        "fact": "man gestures with his right hand",
         "confidence": 1.0
       },
       {
-        "fact": "The man is wearing black-rimmed glasses.",
+        "fact": "man is speaking",
+        "confidence": 1.0
+      },
+      {
+        "fact": "books are arranged on shelves behind the man",
+        "confidence": 1.0
+      },
+      {
+        "fact": "the 'MASTERCLASS' logo is visible in the bottom right corner",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "M",
+      "MASTERCLASS"
+    ],
+    "spatial": "The man is in the center of the frame, in front of the bookshelves. The bookshelves are behind the man and extend to the left and right. The 'MASTERCLASS' logo is in the bottom right corner of the frame.",
+    "parse_success": true,
+    "chunk_idx": 24,
+    "video_id": "ytb_SinJ_hB8T1k",
+    "state_changes": []
+  },
+  {
+    "time": [
+      25,
+      26
+    ],
+    "visible_entities": [
+      {
+        "desc": "hardcover book with a dark blue cover and white text, featuring the author name 'NEIL GAIMAN' and title 'OCEAN AT THE END OF THE LANE', with a pair of dark sunglasses resting on top",
+        "action": "static",
+        "position": "top left",
+        "id": "prop_book_gaiman_1"
+      },
+      {
+        "desc": "white sheet of paper with handwritten notes in black ink and faint colored scribbles",
+        "action": "static",
+        "position": "center foreground",
+        "id": "prop_paper_notes_1"
+      },
+      {
+        "desc": "shiny black fountain pen with silver metal accents",
+        "action": "static",
+        "position": "center right",
+        "id": "prop_pen_1"
+      },
+      {
+        "desc": "silver metal paperclip",
+        "action": "static",
+        "position": "top right",
+        "id": "prop_paperclip_1"
+      },
+      {
+        "desc": "white curved object, likely a computer mouse",
+        "action": "static",
+        "position": "far left",
+        "id": "prop_mouse_1"
+      },
+      {
+        "desc": "dark brown wooden desk surface",
+        "action": "static",
+        "position": "background",
+        "id": "prop_desk_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A black fountain pen rests on a sheet of white paper.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The paper contains a handwritten list of names including 'Andrew Davies', 'Bill Nighy', and 'Piers Wenger'.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A book titled 'OCEAN AT THE END OF THE LANE' by Neil Gaiman sits on the desk.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "Sunglasses are placed on top of the book.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A silver paperclip secures the top right corner of the paper.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "OCEAN AT THE END OF THE LANE",
+      "NEIL GAIMAN",
+      "Andrew Davies.",
+      "Bill Nighy.",
+      "Piers Wenger.",
+      "MASTERCLASS"
+    ],
+    "spatial": "The book is positioned in the top left, sitting above the sheet of paper. The black pen lies on the paper in the center right area. The white mouse is to the left of the paper. The sunglasses are on top of the book.",
+    "parse_success": true,
+    "chunk_idx": 25,
+    "video_id": "ytb_SinJ_hB8T1k",
+    "state_changes": [
+      "Scene cuts to static shot of desk with book, sunglasses, pen, paper, and mouse."
+    ]
+  },
+  {
+    "time": [
+      26,
+      27
+    ],
+    "visible_entities": [
+      {
+        "desc": "man with curly dark hair and a beard, wearing a black jacket over a black shirt",
+        "action": "gesturing with his right hand",
+        "position": "center",
+        "id": "person_neil_gaiman_1"
+      },
+      {
+        "desc": "wooden bookshelves filled with books",
+        "action": "static",
+        "position": "background",
+        "id": "prop_bookshelf_1"
+      },
+      {
+        "desc": "person's hands holding a pen",
+        "action": "writing on a piece of paper",
+        "position": "foreground",
+        "id": "body_part_hands_1"
+      },
+      {
+        "desc": "white paper with handwritten text",
+        "action": "static",
+        "position": "center",
+        "id": "prop_paper_notes_1"
+      },
+      {
+        "desc": "dark wooden table surface",
+        "action": "static",
+        "position": "center",
+        "id": "prop_desk_1"
+      },
+      {
+        "desc": "white MasterClass logo with text",
+        "action": "static",
+        "position": "bottom right",
+        "id": "logo_masterclass_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A man with curly hair and a beard is gesturing with his right hand while speaking.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The man is sitting in front of bookshelves filled with books.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A person's hands are writing on a piece of paper with a pen.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The paper is resting on a dark wooden table.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The MasterClass logo is visible in the bottom right corner of the screen.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "M",
+      "MASTERCLASS"
+    ],
+    "spatial": "The man is in the center of the frame, in front of the bookshelves. The person's hands are in the foreground, writing on the paper which is on the table. The MasterClass logo is in the bottom right corner of the frame.",
+    "parse_success": true,
+    "chunk_idx": 26,
+    "video_id": "ytb_SinJ_hB8T1k",
+    "state_changes": [
+      "Scene shows hands writing on paper at a desk."
+    ]
+  },
+  {
+    "time": [
+      27,
+      28
+    ],
+    "visible_entities": [
+      {
+        "desc": "man with curly dark hair and a graying beard, wearing a black t-shirt under a black blazer",
+        "action": "speaking and gesturing with hands",
+        "position": "center",
+        "id": "person_neil_gaiman_1"
+      },
+      {
+        "desc": "hands holding a black pen with gold accents",
+        "action": "writing in a notebook",
+        "position": "foreground",
+        "id": "body_part_hands_1"
+      },
+      {
+        "desc": "open notebook with handwritten text",
+        "action": "static",
+        "position": "foreground",
+        "id": "prop_notebook_1"
+      },
+      {
+        "desc": "wooden bookshelves filled with books",
+        "action": "static",
+        "position": "background",
+        "id": "prop_bookshelf_1"
+      },
+      {
+        "desc": "white 'M' logo and 'MASTERCLASS' text",
+        "action": "static",
+        "position": "bottom right",
+        "id": "logo_masterclass_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A man with curly hair is speaking and gesturing with his hands in a library setting.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "Hands are writing in a notebook with a black pen.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The notebook rests on a dark, textured surface.",
         "confidence": 1.0
       },
       {
@@ -1333,143 +1559,107 @@
       "M",
       "MASTERCLASS"
     ],
-    "spatial": "The man is positioned in the center of the frame, in front of the wooden bookshelves. The 'MASTERCLASS' logo is located in the bottom right corner of the screen, below the man's shoulder level.",
+    "spatial": "The man is in front of the wooden bookshelves. The hands are in the foreground, writing in the notebook which is on a dark table. The 'MASTERCLASS' logo is below and to the right of the man.",
     "parse_success": true,
-    "chunk_idx": 24,
+    "chunk_idx": 27,
     "video_id": "ytb_SinJ_hB8T1k",
     "state_changes": []
   },
   {
     "time": [
-      50,
-      52
+      28,
+      29
     ],
     "visible_entities": [
       {
-        "desc": "thick hardcover book with a dark blue cover, white text reading 'NEIL GAIMAN', and a pair of eyeglasses resting on top",
-        "action": "static",
-        "position": "top left",
-        "id": "book_neil_gaiman_1"
-      },
-      {
-        "desc": "white piece of paper with handwritten names and doodles in black and green ink",
-        "action": "static",
-        "position": "center foreground",
-        "id": "paper_notes_1"
-      },
-      {
-        "desc": "shiny black fountain pen with silver rings",
-        "action": "static",
-        "position": "center right",
-        "id": "pen_fountain_1"
-      },
-      {
-        "desc": "silver metal paperclip",
-        "action": "static",
-        "position": "top right of paper",
-        "id": "paperclip_silver_1"
-      },
-      {
-        "desc": "white curved object, likely a computer mouse",
-        "action": "static",
-        "position": "far left",
-        "id": "mouse_white_1"
-      },
-      {
-        "desc": "dark wooden desk surface",
-        "action": "static",
-        "position": "background",
-        "id": "desk_wooden_1"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "A black fountain pen rests on top of a white piece of paper.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The paper contains a handwritten list of names including 'Andrew Davies' and 'Piers Wenger'.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "A book by Neil Gaiman is sitting on the desk next to the paper.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "Eyeglasses are placed on top of the book.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [
-      "NEIL GAIMAN",
-      "Andrew Davies.",
-      "Piers Wenger.",
-      "MASTERCLASS"
-    ],
-    "spatial": "The book is positioned in the top left corner, above and to the left of the white paper. The black pen lies diagonally across the right side of the paper. The white mouse is located to the left of the paper. The paperclip is attached to the top right edge of the paper.",
-    "parse_success": true,
-    "chunk_idx": 25,
-    "video_id": "ytb_SinJ_hB8T1k",
-    "state_changes": [
-      "closeup of desk with Neil Gaiman book, pen, paper, and eyeglasses"
-    ]
-  },
-  {
-    "time": [
-      52,
-      54
-    ],
-    "visible_entities": [
-      {
-        "desc": "man with curly graying hair and a beard, wearing a black t-shirt and a black jacket",
-        "action": "speaking and gesturing with his right hand",
+        "desc": "man with curly graying hair, beard, black t-shirt, black blazer",
+        "action": "gesturing with hands",
         "position": "center",
         "id": "person_neil_gaiman_1"
       },
       {
-        "desc": "wooden bookshelves filled with various books",
+        "desc": "wooden bookshelves filled with books",
         "action": "static",
         "position": "background",
-        "id": "bookshelf_wooden_1"
+        "id": "prop_bookshelf_1"
       },
       {
-        "desc": "person's hands, wearing a dark sleeve",
-        "action": "writing in a notebook with a pen",
-        "position": "foreground",
-        "id": "hand_writer_1"
-      },
-      {
-        "desc": "white notebook with handwritten text",
-        "action": "being written in",
-        "position": "center",
-        "id": "notebook_white_1"
-      },
-      {
-        "desc": "gold-colored pen",
-        "action": "being held",
-        "position": "center",
-        "id": "pen_fountain_1"
-      },
-      {
-        "desc": "dark, textured desk surface",
+        "desc": "white 'M' logo and 'MASTERCLASS' text",
         "action": "static",
-        "position": "center",
-        "id": "desk_wooden_1"
-      },
-      {
-        "desc": "white 'MASTERCLASS' logo with a stylized 'M'",
-        "action": "static",
-        "position": "bottom-right",
+        "position": "bottom right",
         "id": "logo_masterclass_1"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A man with curly hair and a beard is speaking and gesturing in a library setting.",
+        "fact": "the man gestures with his hands in front of his chest",
         "confidence": 1.0
       },
       {
-        "fact": "A person is writing in a notebook with a gold pen on a dark desk.",
+        "fact": "the man is speaking",
+        "confidence": 1.0
+      },
+      {
+        "fact": "the bookshelves are behind the man",
+        "confidence": 1.0
+      },
+      {
+        "fact": "the 'MASTERCLASS' logo is visible in the bottom right corner",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "M",
+      "MASTERCLASS"
+    ],
+    "spatial": "The man is in the center of the frame, in front of the bookshelves. The bookshelves are behind the man and span the background. The 'MASTERCLASS' logo is in the bottom right corner of the frame.",
+    "parse_success": true,
+    "chunk_idx": 28,
+    "video_id": "ytb_SinJ_hB8T1k",
+    "state_changes": []
+  },
+  {
+    "time": [
+      29,
+      30
+    ],
+    "visible_entities": [
+      {
+        "desc": "open book with comic book panels on the left page and a full-page illustration on the right page",
+        "action": "being flipped",
+        "position": "center",
+        "id": "prop_book_comic_1"
+      },
+      {
+        "desc": "hands with light skin tone",
+        "action": "turning the page of the book",
+        "position": "right",
+        "id": "body_part_hands_1"
+      },
+      {
+        "desc": "dark wooden table surface",
+        "action": "static",
+        "position": "background",
+        "id": "prop_desk_1"
+      },
+      {
+        "desc": "white 'M' logo with 'MASTERCLASS' text below it",
+        "action": "static",
+        "position": "bottom right",
+        "id": "logo_masterclass_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A person's hands are turning the page of an open book.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The book displays comic book art, including panels with speech bubbles on the left page.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The right page features a full-page illustration with the text 'A Midsummer Night's Dream'.",
         "confidence": 1.0
       },
       {
@@ -1478,97 +1668,38 @@
       }
     ],
     "ocr": [
+      "A",
+      "Midsummer",
+      "Night's",
+      "Dream",
+      "M",
       "MASTERCLASS"
     ],
-    "spatial": "The man is centered in the frame, with bookshelves behind him. The hands writing in the notebook are in the foreground, positioned over the dark desk. The 'MASTERCLASS' logo is in the bottom-right corner of the screen.",
+    "spatial": "The open book is on the dark wooden table. The hands are on the right side of the book, turning the page. The 'MASTERCLASS' logo is in the bottom right corner of the frame, below the book.",
     "parse_success": true,
-    "chunk_idx": 26,
+    "chunk_idx": 29,
     "video_id": "ytb_SinJ_hB8T1k",
     "state_changes": [
-      "instructor's hands shown writing in notebook"
+      "Hands begin flipping pages of a comic book/graphic novel."
     ]
   },
   {
     "time": [
-      54,
-      56
+      30,
+      31
     ],
     "visible_entities": [
       {
-        "desc": "man with curly dark hair and a beard, wearing a black jacket over a black shirt",
-        "action": "speaking and gesturing with hands",
-        "position": "center"
+        "desc": "hands with light skin tone",
+        "action": "holding and flipping pages",
+        "position": "center/foreground",
+        "id": "body_part_hands_1"
       },
       {
-        "desc": "wooden bookshelves filled with books",
-        "action": "static",
-        "position": "background",
-        "id": "bookshelf_wooden_1"
-      },
-      {
-        "desc": "white 'M' logo with 'MASTERCLASS' text",
-        "action": "static",
-        "position": "bottom right",
-        "id": "logo_masterclass_1"
-      },
-      {
-        "desc": "person's hands holding a pen and a notebook",
-        "action": "writing",
-        "position": "foreground",
-        "id": "hand_writer_1"
-      },
-      {
-        "desc": "dark wooden table surface",
-        "action": "static",
-        "position": "foreground",
-        "id": "desk_wooden_1"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "The man in the black jacket is speaking and gesturing with his hands.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "A person's hands are writing in a notebook with a pen.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The notebook is resting on a dark wooden table.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The 'MASTERCLASS' logo is visible in the bottom right corner.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [
-      "M",
-      "MASTERCLASS"
-    ],
-    "spatial": "The man is centered in the frame, positioned in front of the bookshelves. The bookshelves are behind him. The 'MASTERCLASS' logo is in the bottom right corner of the screen. In the other shot, the hands are in the foreground, writing in a notebook that is on the wooden table.",
-    "parse_success": true,
-    "chunk_idx": 27,
-    "video_id": "ytb_SinJ_hB8T1k",
-    "state_changes": []
-  },
-  {
-    "time": [
-      56,
-      58
-    ],
-    "visible_entities": [
-      {
-        "desc": "man with curly dark hair, graying beard, wearing a black blazer over a black t-shirt",
-        "action": "speaking and gesturing with hands",
+        "desc": "comic book or graphic novel with black and white illustrated panels",
+        "action": "being manipulated",
         "position": "center",
-        "id": "person_neil_gaiman_1"
-      },
-      {
-        "desc": "wooden bookshelves filled with books",
-        "action": "static",
-        "position": "background",
-        "id": "bookshelf_wooden_1"
+        "id": "prop_book_comic_1"
       },
       {
         "desc": "white 'M' logo and 'MASTERCLASS' text",
@@ -1579,15 +1710,15 @@
     ],
     "atomic_facts": [
       {
-        "fact": "The man is speaking to the camera.",
+        "fact": "A person is holding a comic book open with both hands.",
         "confidence": 1.0
       },
       {
-        "fact": "The man gestures with his hands, bringing them together in a steeple shape.",
+        "fact": "The person is flipping a page of the comic book from right to left.",
         "confidence": 1.0
       },
       {
-        "fact": "The background consists of bookshelves filled with books.",
+        "fact": "The comic book features black and white artwork arranged in panels.",
         "confidence": 1.0
       },
       {
@@ -1596,119 +1727,9 @@
       }
     ],
     "ocr": [
-      "M",
       "MASTERCLASS"
     ],
-    "spatial": "The man is in the center of the frame, in front of the bookshelves. The bookshelves are behind him and to his left and right. The 'MASTERCLASS' logo is in the bottom right corner of the screen.",
-    "parse_success": true,
-    "chunk_idx": 28,
-    "video_id": "ytb_SinJ_hB8T1k",
-    "state_changes": []
-  },
-  {
-    "time": [
-      58,
-      60
-    ],
-    "visible_entities": [
-      {
-        "desc": "open book with comic panels on the left page and a full-page illustration on the right page",
-        "action": "being flipped by a hand",
-        "position": "center",
-        "id": "comic_book_1"
-      },
-      {
-        "desc": "human hand with light skin tone",
-        "action": "turning the page of the book",
-        "position": "right",
-        "id": "hand_writer_1"
-      },
-      {
-        "desc": "white 'MASTERCLASS' logo with a stylized 'M' icon",
-        "action": "static",
-        "position": "bottom-right",
-        "id": "logo_masterclass_1"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "A hand is turning the page of an open book.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The right page features an illustration with the text 'A Midsummer Night's Dream'.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The left page displays a grid of comic book panels.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [
-      "A Midsummer Night's Dream",
-      "MASTERCLASS"
-    ],
-    "spatial": "The open book is centered in the frame, resting on a dark wooden surface. A hand is positioned on the right side of the book, grasping the page to turn it. The 'MASTERCLASS' logo is located in the bottom right corner of the screen, below the book.",
-    "parse_success": true,
-    "chunk_idx": 29,
-    "video_id": "ytb_SinJ_hB8T1k",
-    "state_changes": [
-      "comic book pages being flipped by hand"
-    ]
-  },
-  {
-    "time": [
-      60,
-      62
-    ],
-    "visible_entities": [
-      {
-        "desc": "hands with light skin tone, short fingernails",
-        "action": "holding and flipping a comic book page",
-        "position": "foreground",
-        "id": "hand_writer_1"
-      },
-      {
-        "desc": "comic book page with black and white ink illustrations, rectangular panels, and speech bubbles",
-        "action": "being turned over",
-        "position": "center",
-        "id": "comic_book_1"
-      },
-      {
-        "desc": "wooden table surface with dark brown grain",
-        "action": "static",
-        "position": "background",
-        "id": "desk_wooden_1"
-      },
-      {
-        "desc": "white 'MASTERCLASS' logo with a stylized 'M' icon",
-        "action": "static",
-        "position": "bottom right",
-        "id": "logo_masterclass_1"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "A person is holding a comic book page with both hands.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The person is flipping the page to reveal the artwork underneath.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The comic art is drawn in black and white ink.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The MasterClass logo is visible in the bottom right corner.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [
-      "MASTERCLASS"
-    ],
-    "spatial": "The hands are in the foreground, holding the comic book page which is positioned above the wooden table. The MasterClass logo is located in the bottom right corner of the frame, below the hands and the comic book.",
+    "spatial": "The hands are holding the comic book in the center of the frame. The comic book is positioned above a wooden surface. The 'MASTERCLASS' logo is located in the bottom right corner of the screen, overlaying the scene.",
     "parse_success": true,
     "chunk_idx": 30,
     "video_id": "ytb_SinJ_hB8T1k",
@@ -1716,35 +1737,30 @@
   },
   {
     "time": [
-      62,
-      64
+      31,
+      32
     ],
     "visible_entities": [
       {
-        "desc": "man with curly dark hair, beard, wearing a black t-shirt",
-        "action": "speaking and looking down at a book",
-        "position": "center"
+        "desc": "man with curly dark hair, grey beard, wearing a black short-sleeved t-shirt",
+        "action": "sitting at a desk and looking down at a book",
+        "position": "center",
+        "id": "person_neil_gaiman_1"
       },
       {
         "desc": "black and white comic book pages with panels and speech bubbles",
-        "action": "being held and flipped",
+        "action": "being held and flipped through by hands",
         "position": "foreground",
-        "id": "comic_book_1"
+        "id": "prop_book_comic_1"
       },
       {
-        "desc": "open book with white pages",
-        "action": "static",
-        "position": "center",
-        "id": "comic_book_1"
-      },
-      {
-        "desc": "wooden table surface",
+        "desc": "wooden desk surface",
         "action": "static",
         "position": "bottom",
-        "id": "desk_wooden_1"
+        "id": "prop_desk_1"
       },
       {
-        "desc": "white 'MASTERCLASS' logo with a stylized 'M'",
+        "desc": "white 'M' logo with 'MASTERCLASS' text underneath",
         "action": "static",
         "position": "bottom right",
         "id": "logo_masterclass_1"
@@ -1752,98 +1768,100 @@
     ],
     "atomic_facts": [
       {
-        "fact": "A man with curly hair is speaking while looking at an open book.",
+        "fact": "A man is sitting at a desk looking at an open book.",
         "confidence": 1.0
       },
       {
-        "fact": "Hands are holding up a strip of comic book panels in the foreground.",
+        "fact": "Hands are holding and flipping through black and white comic book pages.",
         "confidence": 1.0
       },
       {
-        "fact": "The comic strip features black and white illustrations and speech bubbles.",
+        "fact": "The comic pages feature multiple panels with illustrations and text bubbles.",
         "confidence": 1.0
       },
       {
-        "fact": "The MasterClass logo is visible in the bottom right corner.",
+        "fact": "The 'MASTERCLASS' logo is visible in the bottom right corner.",
         "confidence": 1.0
       }
     ],
     "ocr": [
       "MASTERCLASS"
     ],
-    "spatial": "The man is sitting behind a wooden table. The comic book pages are held in the foreground, in front of the man. The open book is on the table in front of the man. The MasterClass logo is in the bottom right corner of the screen.",
+    "spatial": "The man is sitting behind the desk. The comic book pages are in the foreground, held in front of the man. The 'MASTERCLASS' logo is in the bottom right corner of the screen.",
     "parse_success": true,
     "chunk_idx": 31,
+    "video_id": "ytb_SinJ_hB8T1k",
+    "state_changes": [
+      "Instructor shown sitting at desk looking down at comic book pages."
+    ]
+  },
+  {
+    "time": [
+      32,
+      33
+    ],
+    "visible_entities": [
+      {
+        "desc": "man with curly dark hair and a grey beard, wearing a black t-shirt",
+        "action": "sitting at a desk",
+        "position": "center",
+        "id": "person_neil_gaiman_1"
+      },
+      {
+        "desc": "open notebook with black ink sketches and handwriting",
+        "action": "resting on the desk",
+        "position": "foreground",
+        "id": "prop_notebook_1"
+      },
+      {
+        "desc": "white notepad with a black pen",
+        "action": "static",
+        "position": "left",
+        "id": "prop_pen_1"
+      },
+      {
+        "desc": "white 'MASTERCLASS' logo with a stylized 'M' icon",
+        "action": "static",
+        "position": "bottom right",
+        "id": "logo_masterclass_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The man is sitting at a desk with an open notebook in front of him.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The notebook contains rough sketches of faces and handwritten text.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A white notepad and a black pen are placed on the desk to the left of the notebook.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The 'MASTERCLASS' logo is visible in the bottom right corner of the screen.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "no but we",
+      "have had.",
+      "None dare us...",
+      "have played for such",
+      "in land here",
+      "MASTERCLASS"
+    ],
+    "spatial": "The man is sitting behind the desk. The open notebook is on the desk in front of the man. The white notepad and pen are to the left of the notebook. The 'MASTERCLASS' logo is in the bottom right corner of the frame.",
+    "parse_success": true,
+    "chunk_idx": 32,
     "video_id": "ytb_SinJ_hB8T1k",
     "state_changes": []
   },
   {
     "time": [
-      64,
-      66
-    ],
-    "visible_entities": [
-      {
-        "desc": "man with curly dark hair, graying beard, wearing a black t-shirt",
-        "action": "sitting at a desk and gesturing with hands",
-        "position": "center"
-      },
-      {
-        "desc": "open notebook with handwritten text and rough sketches",
-        "action": "lying open on a desk",
-        "position": "foreground",
-        "id": "notebook_white_1"
-      },
-      {
-        "desc": "white notepad with a black pen",
-        "action": "static",
-        "position": "left foreground",
-        "id": "notebook_white_1"
-      },
-      {
-        "desc": "Masterclass logo (white 'M' and text)",
-        "action": "static",
-        "position": "bottom right",
-        "id": "logo_masterclass_1"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "The man sits at a desk with an open notebook in front of him.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The notebook contains handwritten lyrics and rough sketches.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The visible text in the notebook reads 'no but we have god. None dare us... have played for jud in landene'.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The Masterclass logo is visible in the bottom right corner.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [
-      "no but we have god.",
-      "None dare us...",
-      "have played for jud in landene",
-      "M",
-      "MASTERCLASS"
-    ],
-    "spatial": "The man is sitting behind the desk. The open notebook is in front of the man on the desk. The white notepad and pen are to the left of the notebook. The Masterclass logo is in the bottom right corner of the screen.",
-    "parse_success": true,
-    "chunk_idx": 32,
-    "video_id": "ytb_SinJ_hB8T1k",
-    "state_changes": [
-      "transition to notebook with handwritten text and sketches on desk"
-    ]
-  },
-  {
-    "time": [
-      66,
-      68
+      33,
+      34
     ],
     "visible_entities": [
       {
@@ -1853,50 +1871,52 @@
         "id": "person_neil_gaiman_1"
       },
       {
-        "desc": "open notebook with handwritten text and sketches",
-        "action": "static",
-        "position": "foreground",
-        "id": "notebook_white_1"
-      },
-      {
         "desc": "open book with white pages",
         "action": "static",
-        "position": "left",
-        "id": "comic_book_1"
+        "position": "foreground",
+        "id": "prop_book_generic_1"
       },
       {
-        "desc": "handwritten text reading 'Father I had a strange dream... There was a woman in it. Like mother, but' and 'he but we have heard. None dare us... have played for such an audience'",
+        "desc": "handwritten notes on paper with sketches of faces and text",
         "action": "static",
-        "position": "top",
-        "id": "handwritten_text_1"
+        "position": "background",
+        "id": "prop_paper_notes_1"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "The man gestures with both hands raised in front of his chest.",
+        "fact": "A man with curly hair and glasses is sitting at a desk.",
         "confidence": 1.0
       },
       {
-        "fact": "The man is sitting at a wooden desk.",
+        "fact": "The man is gesturing with his hands raised near his chest.",
         "confidence": 1.0
       },
       {
-        "fact": "The notebook in the foreground displays sketches of faces and handwritten notes.",
+        "fact": "An open book lies on the desk in front of the man.",
         "confidence": 1.0
       },
       {
-        "fact": "The text 'MASTERCLASS' is visible in the bottom right corner.",
+        "fact": "The background features a page of handwritten notes and sketches.",
         "confidence": 1.0
       }
     ],
     "ocr": [
-      "Father I had a strange dream... There was a woman in it. Like mother, but",
-      "he but we have heard.",
+      "Father",
+      "I had a strange",
+      "dream...",
+      "There was a",
+      "woman in it.",
+      "Like mother,",
+      "but",
+      "he but we",
+      "have heard.",
       "None dare us...",
-      "have played for such an audience",
+      "have played for such",
+      "an handsome",
       "MASTERCLASS"
     ],
-    "spatial": "The man is centered in the frame, sitting behind a desk. The open notebook is in the foreground on the desk, positioned in front of the man. The open book is to the left of the notebook. The handwritten text and sketches are located on the pages of the notebook.",
+    "spatial": "The man is sitting behind the desk, with the open book positioned in front of him. The handwritten notes are visible in the background, appearing behind the man.",
     "parse_success": true,
     "chunk_idx": 33,
     "video_id": "ytb_SinJ_hB8T1k",
@@ -1904,12 +1924,12 @@
   },
   {
     "time": [
-      68,
-      70
+      34,
+      35
     ],
     "visible_entities": [
       {
-        "desc": "man with curly dark hair, beard, black-rimmed glasses, wearing a black short-sleeved t-shirt",
+        "desc": "man with curly dark hair, beard, and black-rimmed glasses, wearing a black t-shirt",
         "action": "gesturing with hands",
         "position": "center",
         "id": "person_neil_gaiman_1"
@@ -1918,16 +1938,16 @@
         "desc": "open book with white pages and black text",
         "action": "static",
         "position": "foreground",
-        "id": "comic_book_1"
+        "id": "prop_book_generic_1"
       },
       {
         "desc": "wooden table surface",
         "action": "static",
         "position": "bottom",
-        "id": "desk_wooden_1"
+        "id": "prop_desk_1"
       },
       {
-        "desc": "white 'MASTERCLASS' logo with a stylized 'M' icon",
+        "desc": "white 'M' logo with 'MASTERCLASS' text",
         "action": "static",
         "position": "bottom right",
         "id": "logo_masterclass_1"
@@ -1939,7 +1959,7 @@
         "confidence": 1.0
       },
       {
-        "fact": "An open book rests on the table in front of the man.",
+        "fact": "An open book is resting on the table in front of the man.",
         "confidence": 1.0
       },
       {
@@ -1948,9 +1968,10 @@
       }
     ],
     "ocr": [
+      "M",
       "MASTERCLASS"
     ],
-    "spatial": "The man is seated behind the wooden table. The open book is on the table in front of the man. The 'MASTERCLASS' logo is in the bottom right corner of the frame, below the man's right arm.",
+    "spatial": "The man is seated behind the wooden table. The open book is on the table in front of the man. The 'MASTERCLASS' logo is in the bottom right corner of the frame.",
     "parse_success": true,
     "chunk_idx": 34,
     "video_id": "ytb_SinJ_hB8T1k",
@@ -1958,99 +1979,45 @@
   },
   {
     "time": [
-      70,
-      72
+      35,
+      36
     ],
     "visible_entities": [
       {
-        "desc": "person's hand with fair skin",
-        "action": "lifting a piece of paper",
-        "position": "center/right",
-        "id": "hand_writer_1"
-      },
-      {
-        "desc": "small rectangular piece of paper, white, with handwritten notes and sketches",
-        "action": "being lifted by hand",
+        "desc": "hand with fair skin tone",
+        "action": "flipping through a small notepad",
         "position": "center",
-        "id": "paper_notes_1"
+        "id": "body_part_hands_1"
       },
       {
-        "desc": "open notebook with white pages",
+        "desc": "small white notepad with handwritten notes and sketches",
+        "action": "being flipped through",
+        "position": "center",
+        "id": "prop_notebook_1"
+      },
+      {
+        "desc": "large open sketchbook with white pages",
         "action": "static",
         "position": "center",
-        "id": "notebook_white_1"
-      },
-      {
-        "desc": "wooden table surface, dark brown",
-        "action": "static",
-        "position": "background/bottom",
-        "id": "desk_wooden_1"
+        "id": "prop_notebook_1"
       },
       {
         "desc": "black pen",
         "action": "static",
         "position": "top left",
-        "id": "pen_fountain_1"
+        "id": "prop_pen_1"
       },
       {
-        "desc": "storyboard sheet with sketches",
+        "desc": "wooden table surface with dark grain",
+        "action": "static",
+        "position": "background",
+        "id": "prop_desk_1"
+      },
+      {
+        "desc": "storyboard sheet with panel drawings",
         "action": "static",
         "position": "bottom left",
-        "id": "paper_notes_1"
-      },
-      {
-        "desc": "MASTERCLASS logo, white text with stylized M",
-        "action": "static",
-        "position": "bottom right",
-        "id": "logo_masterclass_1"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "A hand is lifting a small piece of paper from an open notebook.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The paper contains handwritten notes and rough sketches.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "A black pen rests on the notebook page near the top.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "A storyboard sheet is visible on the table to the left of the notebook.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [
-      "MASTERCLASS"
-    ],
-    "spatial": "The hand is positioned above the notebook and is holding the small piece of paper. The notebook is on the wooden table. The black pen is above the paper on the notebook page. The storyboard sheet is to the left of the notebook.",
-    "parse_success": true,
-    "chunk_idx": 35,
-    "video_id": "ytb_SinJ_hB8T1k",
-    "state_changes": [
-      "hand lifting storyboard sheet with sketches"
-    ]
-  },
-  {
-    "time": [
-      72,
-      74
-    ],
-    "visible_entities": [
-      {
-        "desc": "man with curly dark hair, graying beard, black-rimmed glasses, wearing a black t-shirt",
-        "action": "gesturing with hands",
-        "position": "center",
-        "id": "person_neil_gaiman_1"
-      },
-      {
-        "desc": "open book with white pages",
-        "action": "static",
-        "position": "bottom foreground",
-        "id": "comic_book_1"
+        "id": "prop_paper_notes_1"
       },
       {
         "desc": "white 'MASTERCLASS' logo with stylized 'M'",
@@ -2061,11 +2028,61 @@
     ],
     "atomic_facts": [
       {
-        "fact": "The man is gesturing with both hands raised in front of his chest.",
+        "fact": "A hand is flipping through the pages of a small notepad.",
         "confidence": 1.0
       },
       {
-        "fact": "The man is speaking.",
+        "fact": "The notepad contains handwritten text and rough sketches.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A black pen rests on the open sketchbook.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The 'MASTERCLASS' logo is visible in the bottom right corner.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "MASTERCLASS"
+    ],
+    "spatial": "The hand is positioned over the small notepad, which rests on top of a larger open sketchbook. The black pen is located above the notepad on the sketchbook's page. To the left of the sketchbook, a storyboard sheet lies on the wooden table. The 'MASTERCLASS' logo is in the bottom right corner of the frame.",
+    "parse_success": true,
+    "chunk_idx": 35,
+    "video_id": "ytb_SinJ_hB8T1k",
+    "state_changes": [
+      "Close-up of hand flipping through a small notepad/sketchbook."
+    ]
+  },
+  {
+    "time": [
+      36,
+      37
+    ],
+    "visible_entities": [
+      {
+        "desc": "man with curly dark hair, graying beard, black-rimmed glasses, wearing a black short-sleeved t-shirt",
+        "action": "gesturing with hands raised",
+        "position": "center",
+        "id": "person_neil_gaiman_1"
+      },
+      {
+        "desc": "open book with white pages",
+        "action": "static",
+        "position": "bottom foreground",
+        "id": "prop_book_generic_1"
+      },
+      {
+        "desc": "white 'M' logo and 'MASTERCLASS' text",
+        "action": "static",
+        "position": "bottom right",
+        "id": "logo_masterclass_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The man raises both hands in front of his chest with fingers spread.",
         "confidence": 1.0
       },
       {
@@ -2078,9 +2095,10 @@
       }
     ],
     "ocr": [
+      "M",
       "MASTERCLASS"
     ],
-    "spatial": "The man is positioned in the center of the frame, sitting behind an open book. The book is in the foreground at the bottom of the frame. The 'MASTERCLASS' logo is located in the bottom right corner, to the right of the book.",
+    "spatial": "The man is positioned centrally behind the open book. The book is in the foreground at the bottom of the frame. The 'MASTERCLASS' logo is located in the bottom right corner, to the right of the book.",
     "parse_success": true,
     "chunk_idx": 36,
     "video_id": "ytb_SinJ_hB8T1k",
@@ -2088,12 +2106,12 @@
   },
   {
     "time": [
-      74,
-      76
+      37,
+      38
     ],
     "visible_entities": [
       {
-        "desc": "man with curly dark hair, beard, and black-rimmed glasses, wearing a black t-shirt",
+        "desc": "man with curly dark hair, glasses, beard, wearing a black t-shirt",
         "action": "looking down at an open book",
         "position": "center",
         "id": "person_neil_gaiman_1"
@@ -2101,33 +2119,23 @@
       {
         "desc": "open book with white pages",
         "action": "static",
-        "position": "foreground",
-        "id": "comic_book_1"
+        "position": "bottom",
+        "id": "prop_book_generic_1"
       },
       {
-        "desc": "black screen with white sans-serif text listing writing topics",
+        "desc": "white text on black background listing topics",
         "action": "static",
-        "position": "full frame",
+        "position": "center",
         "id": "text_book_titles_1"
-      },
-      {
-        "desc": "white 'M' logo with 'MASTERCLASS' text",
-        "action": "static",
-        "position": "bottom right",
-        "id": "logo_masterclass_1"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "The man looks down at the open book in front of him.",
+        "fact": "The man is looking down at the open book.",
         "confidence": 1.0
       },
       {
-        "fact": "The scene cuts to a black screen displaying a list of four topics.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The text on the screen reads 'FINDING YOUR VOICE', 'DEVELOPING STORY', 'WORLDBUILDING', and 'DIALOGUE & CHARACTER'.",
+        "fact": "The text on the screen lists 'FINDING YOUR VOICE', 'DEVELOPING STORY', 'WORLDBUILDING', and 'DIALOGUE & CHARACTER'.",
         "confidence": 1.0
       }
     ],
@@ -2139,7 +2147,7 @@
       "M",
       "MASTERCLASS"
     ],
-    "spatial": "The man is centered in the frame with the open book positioned in front of him in the foreground. The text list is centered on the black background in the second frame, with the MasterClass logo located in the bottom right corner.",
+    "spatial": "The man is positioned in the center of the frame, looking down at the open book which is in front of him at the bottom of the screen. The list of topics is displayed in the center of the screen in the second frame. The MasterClass logo is in the bottom right corner.",
     "parse_success": true,
     "chunk_idx": 37,
     "video_id": "ytb_SinJ_hB8T1k",
@@ -2147,38 +2155,32 @@
   },
   {
     "time": [
-      76,
-      78
+      38,
+      39
     ],
     "visible_entities": [
       {
-        "desc": "List of writing topics in white, uppercase, sans-serif font",
+        "desc": "List of writing topics in white, uppercase, sans-serif font, centered on a black background",
         "action": "static",
-        "position": "center",
         "id": "text_book_titles_1"
       },
       {
-        "desc": "MasterClass logo consisting of a stylized 'M' and text in white",
+        "desc": "Masterclass logo consisting of a stylized 'M' and the word 'MASTERCLASS' in white text",
         "action": "static",
-        "position": "bottom right",
         "id": "logo_masterclass_1"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A list of writing topics is displayed on a black background.",
+        "fact": "The screen displays a static list of writing topics.",
         "confidence": 1.0
       },
       {
-        "fact": "The text 'FINDING YOUR VOICE' is at the top of the list.",
+        "fact": "The text 'FINDING YOUR VOICE' is the first item in the list.",
         "confidence": 1.0
       },
       {
-        "fact": "The text 'COMICS' is at the bottom of the list.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The MasterClass logo is visible in the bottom right corner.",
+        "fact": "The Masterclass logo is visible in the bottom right corner.",
         "confidence": 1.0
       }
     ],
@@ -2193,76 +2195,23 @@
       "M",
       "MASTERCLASS"
     ],
-    "spatial": "The list of writing topics is centered on the screen. The MasterClass logo is located below and to the right of the main text list.",
+    "spatial": "The list of writing topics is centered on the screen. The Masterclass logo is located in the bottom right corner, below and to the right of the main text list.",
     "parse_success": true,
     "chunk_idx": 38,
     "video_id": "ytb_SinJ_hB8T1k",
     "state_changes": [
-      "transition to writing topics text overlay"
+      "Scene transitions to black background with list of writing topics."
     ]
   },
   {
     "time": [
-      78,
-      80
+      39,
+      40
     ],
     "visible_entities": [
       {
-        "desc": "man with curly dark hair, graying beard, wearing a black blazer over a black shirt",
-        "action": "speaking and gesturing with hands",
-        "position": "center"
-      },
-      {
-        "desc": "wooden bookshelves filled with books",
-        "action": "static",
-        "position": "background",
-        "id": "bookshelf_wooden_1"
-      },
-      {
-        "desc": "white 'MASTERCLASS' logo with a stylized 'M' icon",
-        "action": "static",
-        "position": "bottom right",
-        "id": "logo_masterclass_1"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "The man is speaking while looking forward.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The man is gesturing with his hands clasped in front of him.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The background consists of blurred bookshelves.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The text 'MASTERCLASS' is visible in the bottom right corner.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [
-      "MASTERCLASS"
-    ],
-    "spatial": "The man is positioned in the center of the frame, in front of the bookshelves. The bookshelves are behind him and to his left and right. The 'MASTERCLASS' logo is in the bottom right corner, overlaying the scene.",
-    "parse_success": true,
-    "chunk_idx": 39,
-    "video_id": "ytb_SinJ_hB8T1k",
-    "state_changes": [
-      "transition from text overlay back to instructor"
-    ]
-  },
-  {
-    "time": [
-      80,
-      82
-    ],
-    "visible_entities": [
-      {
-        "desc": "man with curly dark hair, short beard, wearing a black jacket over a black shirt",
-        "action": "speaking and gesturing with hands",
+        "desc": "man with curly dark hair, graying beard, wearing a black blazer over a black t-shirt",
+        "action": "gesturing with hands",
         "position": "center",
         "id": "person_neil_gaiman_1"
       },
@@ -2270,16 +2219,10 @@
         "desc": "wooden bookshelves filled with books",
         "action": "static",
         "position": "background",
-        "id": "bookshelf_wooden_1"
+        "id": "prop_bookshelf_1"
       },
       {
-        "desc": "green tree branches with needle-like leaves",
-        "action": "static",
-        "position": "top",
-        "id": "forest_trees_1"
-      },
-      {
-        "desc": "white 'M' logo with 'MASTERCLASS' text below",
+        "desc": "white 'M' logo with 'MASTERCLASS' text below it",
         "action": "static",
         "position": "bottom right",
         "id": "logo_masterclass_1"
@@ -2287,11 +2230,127 @@
     ],
     "atomic_facts": [
       {
-        "fact": "The man in the black jacket is speaking and gesturing with his hands.",
+        "fact": "The man is gesturing with his hands in front of his chest.",
         "confidence": 1.0
       },
       {
-        "fact": "The scene cuts from the man in the library to a view of tree branches against a white sky.",
+        "fact": "The man is sitting in a room lined with bookshelves.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The MasterClass logo is visible in the bottom right corner.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "M",
+      "MASTERCLASS"
+    ],
+    "spatial": "The man is positioned in the center of the frame, sitting in front of the bookshelves. The bookshelves are behind him and to his left. The MasterClass logo is located in the bottom right corner of the screen.",
+    "parse_success": true,
+    "chunk_idx": 39,
+    "video_id": "ytb_SinJ_hB8T1k",
+    "state_changes": []
+  },
+  {
+    "time": [
+      40,
+      41
+    ],
+    "visible_entities": [
+      {
+        "desc": "man with curly dark hair, graying beard, wearing a black jacket over a black shirt",
+        "action": "gesturing with hands",
+        "position": "center",
+        "id": "person_neil_gaiman_1"
+      },
+      {
+        "desc": "wooden bookshelves filled with books",
+        "action": "static",
+        "position": "background",
+        "id": "prop_bookshelf_1"
+      },
+      {
+        "desc": "green tree branches",
+        "action": "static",
+        "position": "top",
+        "id": "env_forest_1"
+      },
+      {
+        "desc": "white 'M' logo with 'MASTERCLASS' text",
+        "action": "static",
+        "position": "bottom right",
+        "id": "logo_masterclass_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The man in the black jacket is gesturing with his hands while speaking.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The scene cuts from the man in the library to a view of the sky.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "Green tree branches frame the top of the sky shot.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "M",
+      "MASTERCLASS"
+    ],
+    "spatial": "The man is centered in the foreground with bookshelves behind him. The MasterClass logo is in the bottom right corner. In the second frame, the tree branches are above the sky.",
+    "parse_success": true,
+    "chunk_idx": 40,
+    "video_id": "ytb_SinJ_hB8T1k",
+    "state_changes": []
+  },
+  {
+    "time": [
+      41,
+      42
+    ],
+    "visible_entities": [
+      {
+        "desc": "green pine tree branches with needle-like leaves, dark green color",
+        "action": "static",
+        "position": "top",
+        "id": "env_forest_1"
+      },
+      {
+        "desc": "intricate spider web with concentric circular pattern, thin white strands",
+        "action": "static",
+        "position": "center",
+        "id": "env_forest_1"
+      },
+      {
+        "desc": "thin brown tree branch, rough texture, bare",
+        "action": "static",
+        "position": "center",
+        "id": "env_forest_1"
+      },
+      {
+        "desc": "bright green leaves, blurred background",
+        "action": "static",
+        "position": "top right",
+        "id": "env_forest_1"
+      },
+      {
+        "desc": "white 'M' logo with 'MASTERCLASS' text underneath",
+        "action": "static",
+        "position": "bottom right",
+        "id": "logo_masterclass_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The camera cuts from a view of pine trees against a white sky to a close-up of a spider web.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A spider web is attached to a thin, bare tree branch.",
         "confidence": 1.0
       },
       {
@@ -2303,86 +2362,22 @@
       "M",
       "MASTERCLASS"
     ],
-    "spatial": "The man is positioned in the center of the frame, in front of the bookshelves. The bookshelves are behind him and to his left and right. The tree branches are at the top of the frame in the second shot. The 'MASTERCLASS' logo is in the bottom right corner of both shots.",
-    "parse_success": true,
-    "chunk_idx": 40,
-    "video_id": "ytb_SinJ_hB8T1k",
-    "state_changes": []
-  },
-  {
-    "time": [
-      82,
-      84
-    ],
-    "visible_entities": [
-      {
-        "desc": "green pine tree branches with needle-like leaves",
-        "action": "static",
-        "position": "top",
-        "id": "forest_trees_1"
-      },
-      {
-        "desc": "intricate spider web with a spiral pattern",
-        "action": "static",
-        "position": "center",
-        "id": "spider_web_1"
-      },
-      {
-        "desc": "thin, dry, leafless tree branch",
-        "action": "static",
-        "position": "center",
-        "id": "forest_trees_1"
-      },
-      {
-        "desc": "blurred building facade with white window panes",
-        "action": "static",
-        "position": "background",
-        "id": "window_frame_1"
-      },
-      {
-        "desc": "white 'M' logo with 'MASTERCLASS' text",
-        "action": "static",
-        "position": "bottom-right",
-        "id": "logo_masterclass_1"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "The camera angle shifts from looking up at tree branches against a white sky to a close-up of a spider web.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The spider web is attached to a thin, dry branch in the foreground.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The background features a blurred building structure.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The 'MASTERCLASS' logo is visible in the bottom right corner.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [
-      "MASTERCLASS"
-    ],
-    "spatial": "The green pine tree branches are located at the top of the frame against the sky. The spider web is suspended on a dry branch in the center of the view. The blurred building facade is positioned behind the spider web and branch. The 'MASTERCLASS' logo is in the bottom right corner of the screen.",
+    "spatial": "The spider web is in the center of the frame, attached to a thin branch that extends diagonally. Bright green leaves are in the top right corner, above the web. The 'MASTERCLASS' logo is in the bottom right corner, below the branch.",
     "parse_success": true,
     "chunk_idx": 41,
     "video_id": "ytb_SinJ_hB8T1k",
     "state_changes": [
-      "nature B-roll with trees, spider web, and building facade"
+      "Scene cuts to nature montage (branches, spider web)."
     ]
   },
   {
     "time": [
-      84,
-      86
+      42,
+      43
     ],
     "visible_entities": [
       {
-        "desc": "man with curly dark hair, salt-and-pepper beard, wearing a black blazer over a black t-shirt",
+        "desc": "man with curly dark hair, graying beard, wearing a black blazer over a black shirt",
         "action": "speaking",
         "position": "center",
         "id": "person_neil_gaiman_1"
@@ -2391,10 +2386,16 @@
         "desc": "wooden bookshelves filled with books",
         "action": "static",
         "position": "background",
-        "id": "bookshelf_wooden_1"
+        "id": "prop_bookshelf_1"
       },
       {
-        "desc": "white 'M' logo and 'MASTERCLASS' text",
+        "desc": "thin plant stems with water droplets",
+        "action": "static",
+        "position": "foreground",
+        "id": "env_forest_1"
+      },
+      {
+        "desc": "white 'M' logo with 'MASTERCLASS' text",
         "action": "static",
         "position": "bottom right",
         "id": "logo_masterclass_1"
@@ -2402,22 +2403,23 @@
     ],
     "atomic_facts": [
       {
-        "fact": "The man in the black blazer is speaking.",
+        "fact": "The man in the black blazer is speaking to the camera.",
         "confidence": 1.0
       },
       {
-        "fact": "The man is positioned in front of bookshelves.",
+        "fact": "The scene transitions from a close-up of plant stems to a medium shot of a man.",
         "confidence": 1.0
       },
       {
-        "fact": "The MasterClass logo is visible in the bottom right corner.",
+        "fact": "The 'MASTERCLASS' logo is visible in the bottom right corner.",
         "confidence": 1.0
       }
     ],
     "ocr": [
+      "M",
       "MASTERCLASS"
     ],
-    "spatial": "The man is centered in the frame, positioned in front of the wooden bookshelves. The bookshelves are behind him and extend to the left and right edges of the background. The MasterClass logo is located in the bottom right corner of the screen.",
+    "spatial": "The man is centered in the frame, positioned in front of the bookshelves. The bookshelves are behind him and to his left and right. The 'MASTERCLASS' logo is in the bottom right corner of the screen.",
     "parse_success": true,
     "chunk_idx": 42,
     "video_id": "ytb_SinJ_hB8T1k",
@@ -2425,30 +2427,30 @@
   },
   {
     "time": [
-      86,
-      88
+      43,
+      44
     ],
     "visible_entities": [
       {
-        "desc": "tall, dark tree trunks, vertical, densely packed, appearing as silhouettes",
-        "action": "static",
-        "position": "foreground",
-        "id": "forest_trees_1"
-      },
-      {
-        "desc": "green leafy canopy, dense foliage, filtering sunlight",
+        "desc": "dense forest with tall, dark vertical tree trunks and green foliage in the canopy",
         "action": "static",
         "position": "background",
-        "id": "forest_trees_1"
+        "id": "env_forest_1"
       },
       {
-        "desc": "forest floor covered in brown leaf litter and scattered fallen branches",
+        "desc": "forest floor covered in dark soil and scattered dry leaves",
         "action": "static",
-        "position": "bottom",
-        "id": "forest_trees_1"
+        "position": "foreground",
+        "id": "env_forest_1"
       },
       {
-        "desc": "white 'M' logo composed of diagonal lines with 'MASTERCLASS' text below",
+        "desc": "fallen thin, dark tree branches lying on the ground",
+        "action": "static",
+        "position": "foreground",
+        "id": "env_forest_1"
+      },
+      {
+        "desc": "white 'M' logo with horizontal line texture and 'MASTERCLASS' text below it",
         "action": "static",
         "position": "bottom right",
         "id": "logo_masterclass_1"
@@ -2456,11 +2458,15 @@
     ],
     "atomic_facts": [
       {
-        "fact": "The camera remains static within a dense forest setting.",
+        "fact": "The scene depicts a static view of a dense forest with tall trees.",
         "confidence": 1.0
       },
       {
-        "fact": "Sunlight filters through the trees in the background, illuminating the green foliage.",
+        "fact": "Sunlight filters through the canopy, illuminating patches of green grass in the background.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "Fallen branches are scattered across the dark forest floor in the foreground.",
         "confidence": 1.0
       },
       {
@@ -2472,34 +2478,34 @@
       "M",
       "MASTERCLASS"
     ],
-    "spatial": "The dark tree trunks in the foreground stand in front of the brighter green foliage in the background. The forest floor is below the tree trunks and canopy. The 'MASTERCLASS' logo is positioned in the bottom right corner, overlaying the dark foreground trees.",
+    "spatial": "The fallen branches are on the forest floor in the foreground, situated in front of the tall, vertical tree trunks. The green foliage is above the tree trunks, forming a canopy. The 'MASTERCLASS' logo is in the bottom right corner, overlaid on top of the forest scene.",
     "parse_success": true,
     "chunk_idx": 43,
     "video_id": "ytb_SinJ_hB8T1k",
     "state_changes": [
-      "forest scene with tree trunks and foliage"
+      "Scene shifts to forest floor and tree trunks."
     ]
   },
   {
     "time": [
-      88,
-      90
+      44,
+      45
     ],
     "visible_entities": [
       {
-        "desc": "man with curly dark hair, graying beard, wearing a black blazer over a black t-shirt",
+        "desc": "man with curly dark hair, graying beard, wearing a black t-shirt and black blazer",
         "action": "gesturing with right hand",
         "position": "center",
         "id": "person_neil_gaiman_1"
       },
       {
-        "desc": "wooden bookshelves filled with books of various colors and sizes",
+        "desc": "wooden bookshelves filled with various books",
         "action": "static",
         "position": "background",
-        "id": "bookshelf_wooden_1"
+        "id": "prop_bookshelf_1"
       },
       {
-        "desc": "white 'M' logo with vertical stripes and 'MASTERCLASS' text",
+        "desc": "white 'M' logo and 'MASTERCLASS' text",
         "action": "static",
         "position": "bottom right",
         "id": "logo_masterclass_1"
@@ -2515,7 +2521,7 @@
         "confidence": 1.0
       },
       {
-        "fact": "The MasterClass logo is visible in the bottom right corner.",
+        "fact": "The 'MASTERCLASS' logo is visible in the bottom right corner.",
         "confidence": 1.0
       }
     ],
@@ -2523,7 +2529,7 @@
       "M",
       "MASTERCLASS"
     ],
-    "spatial": "The man is positioned in the center of the frame, in front of the wooden bookshelves. The bookshelves are behind him and extend to the left and right. The MasterClass logo is located in the bottom right corner, below the man's arm.",
+    "spatial": "The man is positioned in the center of the frame, in front of the bookshelves. The bookshelves are behind him and to his left. The 'MASTERCLASS' logo is in the bottom right corner of the screen.",
     "parse_success": true,
     "chunk_idx": 44,
     "video_id": "ytb_SinJ_hB8T1k",
@@ -2531,24 +2537,24 @@
   },
   {
     "time": [
-      90,
-      92
+      45,
+      46
     ],
     "visible_entities": [
       {
-        "desc": "man with curly dark hair, grey beard, wearing a black blazer over a black t-shirt",
+        "desc": "man with curly dark hair, graying beard, wearing a black blazer over a black t-shirt",
         "action": "gesturing with hands while speaking",
-        "position": "center/foreground",
+        "position": "center",
         "id": "person_neil_gaiman_1"
       },
       {
-        "desc": "wooden bookshelves filled with books of various colors and sizes",
+        "desc": "wooden bookshelf filled with various books",
         "action": "static",
         "position": "background",
-        "id": "bookshelf_wooden_1"
+        "id": "prop_bookshelf_1"
       },
       {
-        "desc": "white 'MASTERCLASS' logo with a stylized 'M' symbol",
+        "desc": "white 'M' logo and 'MASTERCLASS' text",
         "action": "static",
         "position": "bottom right",
         "id": "logo_masterclass_1"
@@ -2556,11 +2562,15 @@
     ],
     "atomic_facts": [
       {
-        "fact": "The man is gesturing with his hands while speaking.",
+        "fact": "The man is gesturing with his hands.",
         "confidence": 1.0
       },
       {
-        "fact": "The man is seated in front of a bookshelf.",
+        "fact": "The man is speaking.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The bookshelf is behind the man.",
         "confidence": 1.0
       },
       {
@@ -2569,9 +2579,10 @@
       }
     ],
     "ocr": [
+      "M",
       "MASTERCLASS"
     ],
-    "spatial": "The man is positioned in the center foreground, in front of the wooden bookshelves. The bookshelves are behind the man and span the width of the background. The 'MASTERCLASS' logo is located in the bottom right corner of the frame.",
+    "spatial": "The man is in the foreground, centered in the frame. The bookshelf is behind him, filling the background. The 'MASTERCLASS' logo is in the bottom right corner of the screen.",
     "parse_success": true,
     "chunk_idx": 45,
     "video_id": "ytb_SinJ_hB8T1k",
@@ -2579,174 +2590,13 @@
   },
   {
     "time": [
-      92,
-      94
-    ],
-    "visible_entities": [
-      {
-        "desc": "man with curly dark hair, graying beard, wearing a black jacket over a black shirt",
-        "action": "speaking",
-        "position": "center",
-        "id": "person_neil_gaiman_1"
-      },
-      {
-        "desc": "wooden bookshelves filled with books",
-        "action": "static",
-        "position": "background",
-        "id": "bookshelf_wooden_1"
-      },
-      {
-        "desc": "white 'M' logo and 'MASTERCLASS' text",
-        "action": "static",
-        "position": "bottom right",
-        "id": "logo_masterclass_1"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "The man is speaking and looking forward.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The man is positioned in front of the bookshelves.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The MasterClass logo is visible in the bottom right corner.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [
-      "M",
-      "MASTERCLASS"
-    ],
-    "spatial": "The man is centered in the foreground. The bookshelves are behind the man, filling the background. The 'MASTERCLASS' text and logo are located in the bottom right corner of the frame.",
-    "parse_success": true,
-    "chunk_idx": 46,
-    "video_id": "ytb_SinJ_hB8T1k",
-    "state_changes": []
-  },
-  {
-    "time": [
-      94,
-      96
-    ],
-    "visible_entities": [
-      {
-        "desc": "man with curly dark hair, beard, wearing a black jacket over a black shirt",
-        "action": "speaking",
-        "position": "center",
-        "id": "person_neil_gaiman_1"
-      },
-      {
-        "desc": "wooden bookshelves filled with books",
-        "action": "static",
-        "position": "background",
-        "id": "bookshelf_wooden_1"
-      },
-      {
-        "desc": "white text on black background",
-        "action": "static",
-        "position": "center",
-        "id": "text_black_bg_1"
-      },
-      {
-        "desc": "MasterClass logo",
-        "action": "static",
-        "position": "bottom right",
-        "id": "logo_masterclass_1"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "The man is speaking.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The text 'NEIL GAIMAN TEACHES THE ART OF STORYTELLING' appears on a black screen.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The MasterClass logo is visible in the bottom right corner.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [
-      "NEIL GAIMAN",
-      "TEACHES THE ART OF STORYTELLING",
-      "MASTERCLASS"
-    ],
-    "spatial": "The man is in the foreground, in front of the bookshelves. The text is centered on the screen. The MasterClass logo is below and to the right of the text.",
-    "parse_success": true,
-    "chunk_idx": 47,
-    "video_id": "ytb_SinJ_hB8T1k",
-    "state_changes": []
-  },
-  {
-    "time": [
-      96,
-      98
-    ],
-    "visible_entities": [
-      {
-        "desc": "man with curly dark hair and a graying beard, wearing a black t-shirt under a black blazer",
-        "action": "gesturing with hands",
-        "position": "center"
-      },
-      {
-        "desc": "wooden bookshelves filled with books",
-        "action": "static",
-        "position": "background",
-        "id": "bookshelf_wooden_1"
-      },
-      {
-        "desc": "white text on black background",
-        "action": "static",
-        "position": "center",
-        "id": "text_black_bg_1"
-      },
-      {
-        "desc": "MasterClass logo with a stylized 'M' and text",
-        "action": "static",
-        "position": "bottom right",
-        "id": "logo_masterclass_1"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "The man is gesturing with both hands raised in front of his chest.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The text 'NEIL GAIMAN TEACHES THE ART OF STORYTELLING' is displayed on the screen.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The man is positioned in front of bookshelves.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [
-      "NEIL GAIMAN",
-      "TEACHES THE ART OF STORYTELLING",
-      "M",
-      "MASTERCLASS"
-    ],
-    "spatial": "The man is centered in the foreground, positioned in front of the bookshelves in the background. The title text is centered above the man. The MasterClass logo is located in the bottom right corner of the frame.",
-    "parse_success": true,
-    "chunk_idx": 48,
-    "video_id": "ytb_SinJ_hB8T1k",
-    "state_changes": []
-  },
-  {
-    "time": [
-      98,
-      100
+      46,
+      47
     ],
     "visible_entities": [
       {
         "desc": "man with curly dark hair and a graying beard, wearing a black jacket over a black shirt",
-        "action": "gesturing with hands",
+        "action": "speaking",
         "position": "center",
         "id": "person_neil_gaiman_1"
       },
@@ -2754,562 +2604,7 @@
         "desc": "wooden bookshelves filled with books",
         "action": "static",
         "position": "background",
-        "id": "bookshelf_wooden_1"
-      },
-      {
-        "desc": "person in dark clothing sitting on a bench",
-        "action": "sitting",
-        "position": "center",
-        "id": "person_bench_1"
-      },
-      {
-        "desc": "wooden benches supported by concrete blocks arranged in rows",
-        "action": "static",
-        "position": "center",
-        "id": "bench_wooden_1"
-      },
-      {
-        "desc": "fallen yellow and brown leaves covering the ground",
-        "action": "static",
-        "position": "foreground",
-        "id": "forest_trees_1"
-      },
-      {
-        "desc": "trees with thin trunks",
-        "action": "static",
-        "position": "background",
-        "id": "forest_trees_1"
-      },
-      {
-        "desc": "white text logo with a stylized 'M' and the word 'MASTERCLASS'",
-        "action": "static",
-        "position": "bottom right",
-        "id": "logo_masterclass_1"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "A man with curly hair is gesturing with his hands while speaking.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The scene cuts to a person sitting alone on a wooden bench in a forest.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The ground is covered in fallen autumn leaves.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The 'MASTERCLASS' logo is visible in the bottom right corner.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [
-      "MASTERCLASS"
-    ],
-    "spatial": "The man is in front of the bookshelves. The person is sitting on one of the wooden benches. The benches are arranged in rows on the leaf-covered ground. The trees are behind and around the benches. The 'MASTERCLASS' logo is in the bottom right corner of the screen.",
-    "parse_success": true,
-    "chunk_idx": 49,
-    "video_id": "ytb_SinJ_hB8T1k",
-    "state_changes": [
-      "outdoor scene with person sitting on wooden bench"
-    ]
-  },
-  {
-    "time": [
-      100,
-      102
-    ],
-    "visible_entities": [
-      {
-        "desc": "man with curly dark hair and a beard, wearing a black jacket over a black shirt and black pants",
-        "action": "writing in a notebook",
-        "position": "center",
-        "id": "person_neil_gaiman_1"
-      },
-      {
-        "desc": "small white notebook",
-        "action": "static",
-        "position": "center",
-        "id": "notebook_white_1"
-      },
-      {
-        "desc": "black pen",
-        "action": "static",
-        "position": "center",
-        "id": "pen_fountain_1"
-      },
-      {
-        "desc": "wooden bench made of a plank resting on concrete blocks",
-        "action": "static",
-        "position": "center",
-        "id": "bench_wooden_1"
-      },
-      {
-        "desc": "forest background with trees and fallen leaves",
-        "action": "static",
-        "position": "background",
-        "id": "forest_trees_1"
-      },
-      {
-        "desc": "bookshelves filled with books",
-        "action": "static",
-        "position": "background",
-        "id": "bookshelf_wooden_1"
-      },
-      {
-        "desc": "white 'M' logo and 'MASTERCLASS' text",
-        "action": "static",
-        "position": "bottom right",
-        "id": "logo_masterclass_1"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "A man with curly dark hair and a beard is sitting on a wooden bench in a forest.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The man is holding a black pen and writing in a small white notebook.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The scene cuts to the same man speaking indoors in front of bookshelves.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The 'MASTERCLASS' logo is visible in the bottom right corner of the screen.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [
-      "M",
-      "MASTERCLASS"
-    ],
-    "spatial": "The man is sitting on the wooden bench in the center of the frame. The forest background is behind the man and the benches. The 'MASTERCLASS' logo is in the bottom right corner of the screen. In the second shot, the man is in front of the bookshelves.",
-    "parse_success": true,
-    "chunk_idx": 50,
-    "video_id": "ytb_SinJ_hB8T1k",
-    "state_changes": []
-  },
-  {
-    "time": [
-      102,
-      104
-    ],
-    "visible_entities": [
-      {
-        "desc": "man with curly dark hair and a graying beard, wearing a black blazer over a black t-shirt",
-        "action": "speaking and gesturing in the first frame, then writing in a notebook in the second frame",
-        "position": "center",
-        "id": "person_neil_gaiman_1"
-      },
-      {
-        "desc": "wooden bookshelves filled with books",
-        "action": "static",
-        "position": "background",
-        "id": "bookshelf_wooden_1"
-      },
-      {
-        "desc": "small notebook with a light-colored cover",
-        "action": "being written in",
-        "position": "foreground",
-        "id": "notebook_white_1"
-      },
-      {
-        "desc": "black pen with gold accents",
-        "action": "being held and used for writing",
-        "position": "foreground",
-        "id": "pen_fountain_1"
-      },
-      {
-        "desc": "wooden steps or bleachers",
-        "action": "static",
-        "position": "foreground",
-        "id": "bench_wooden_1"
-      },
-      {
-        "desc": "white 'M' logo and 'MASTERCLASS' text",
-        "action": "static",
-        "position": "bottom right",
-        "id": "logo_masterclass_1"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "The man is speaking and gesturing with his hand in a room with bookshelves.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The scene cuts to the man sitting outdoors on wooden steps.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The man is holding a pen and writing in a notebook.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The 'MASTERCLASS' logo is visible in the bottom right corner of the screen.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [
-      "M",
-      "MASTERCLASS"
-    ],
-    "spatial": "In the first frame, the man is in front of the bookshelves. In the second frame, the man is sitting on the wooden steps, holding the notebook in his lap and the pen in his right hand. The 'MASTERCLASS' logo is in the bottom right corner of both frames.",
-    "parse_success": true,
-    "chunk_idx": 51,
-    "video_id": "ytb_SinJ_hB8T1k",
-    "state_changes": [
-      "instructor transitions from speaking to writing in notebook"
-    ]
-  },
-  {
-    "time": [
-      104,
-      106
-    ],
-    "visible_entities": [
-      {
-        "desc": "man with curly dark hair, graying beard, wearing a black blazer over a black t-shirt",
-        "action": "writing in a notebook",
-        "position": "right/foreground",
-        "id": "person_neil_gaiman_1"
-      },
-      {
-        "desc": "black fountain pen with gold accents",
-        "action": "being held and used for writing",
-        "position": "center/foreground",
-        "id": "pen_fountain_1"
-      },
-      {
-        "desc": "open notebook with white pages",
-        "action": "static",
-        "position": "bottom/center",
-        "id": "notebook_white_1"
-      },
-      {
-        "desc": "forest background with tall trees and green foliage",
-        "action": "static",
-        "position": "background",
-        "id": "forest_trees_1"
-      },
-      {
-        "desc": "wooden bleachers or steps",
-        "action": "static",
-        "position": "bottom/background",
-        "id": "bench_wooden_1"
-      },
-      {
-        "desc": "white 'MASTERCLASS' logo with a stylized 'M'",
-        "action": "static",
-        "position": "bottom right",
-        "id": "logo_masterclass_1"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "The man is writing in a notebook with a fountain pen.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The man is holding the notebook with his left hand and the pen with his right hand.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The 'MASTERCLASS' logo is visible in the bottom right corner.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [
-      "MASTERCLASS"
-    ],
-    "spatial": "The man is in the foreground, positioned to the right of the center. He is holding the notebook in his left hand and the pen in his right hand, with the pen tip touching the notebook page. The wooden bleachers are below him, and the forest is behind him. The 'MASTERCLASS' logo is in the bottom right corner of the frame.",
-    "parse_success": true,
-    "chunk_idx": 52,
-    "video_id": "ytb_SinJ_hB8T1k",
-    "state_changes": []
-  },
-  {
-    "time": [
-      106,
-      108
-    ],
-    "visible_entities": [
-      {
-        "desc": "man with curly dark hair and a beard, wearing a black jacket over a black shirt",
-        "action": "gesturing with hands",
-        "position": "center"
-      },
-      {
-        "desc": "wooden bookshelves filled with books",
-        "action": "static",
-        "position": "background",
-        "id": "bookshelf_wooden_1"
-      },
-      {
-        "desc": "bright sunlight shining through trees",
-        "action": "static",
-        "position": "background",
-        "id": "sunlight_flare_1"
-      },
-      {
-        "desc": "white 'M' logo with 'MASTERCLASS' text",
-        "action": "static",
-        "position": "bottom right",
-        "id": "logo_masterclass_1"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "The man with curly hair is gesturing with both hands.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The scene cuts from the man in the library to a shot of sunlight in the woods.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The 'MASTERCLASS' logo is visible in the bottom right corner.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [
-      "M",
-      "MASTERCLASS"
-    ],
-    "spatial": "The man is in the center foreground, positioned in front of the bookshelves. The bookshelves are behind the man. The sunlight is visible through the trees in the background of the second shot. The 'MASTERCLASS' logo is in the bottom right corner of the screen.",
-    "parse_success": true,
-    "chunk_idx": 53,
-    "video_id": "ytb_SinJ_hB8T1k",
-    "state_changes": []
-  },
-  {
-    "time": [
-      108,
-      110
-    ],
-    "visible_entities": [
-      {
-        "desc": "tall trees with rough, textured bark and green foliage",
-        "action": "static",
-        "position": "background",
-        "id": "forest_trees_1"
-      },
-      {
-        "desc": "bright sunlight creating a large lens flare with a rainbow arc",
-        "action": "static",
-        "position": "center",
-        "id": "sunlight_flare_1"
-      },
-      {
-        "desc": "dark, out-of-focus tree trunk",
-        "action": "moving",
-        "position": "foreground",
-        "id": "forest_trees_1"
-      },
-      {
-        "desc": "white 'M' logo with horizontal lines and 'MASTERCLASS' text",
-        "action": "static",
-        "position": "bottom-right",
-        "id": "logo_masterclass_1"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "The camera pans past a dark, blurry tree trunk in the foreground.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "Bright sunlight shines through the trees in the background, creating a lens flare.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The 'MASTERCLASS' logo is visible in the bottom right corner.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [
-      "M",
-      "MASTERCLASS"
-    ],
-    "spatial": "The dark, out-of-focus tree trunk is in the foreground, moving across the frame. The tall trees with green leaves are in the background, behind the foreground trunk. The bright sunlight is positioned in the center, between the trees. The 'MASTERCLASS' logo is in the bottom right corner of the screen.",
-    "parse_success": true,
-    "chunk_idx": 54,
-    "video_id": "ytb_SinJ_hB8T1k",
-    "state_changes": [
-      "forest B-roll with sunlight lens flare"
-    ]
-  },
-  {
-    "time": [
-      110,
-      112
-    ],
-    "visible_entities": [
-      {
-        "desc": "man with curly dark hair and a graying beard, wearing a black blazer over a black t-shirt",
-        "action": "gesturing with hands while speaking",
-        "position": "center",
-        "id": "person_neil_gaiman_1"
-      },
-      {
-        "desc": "wooden bookshelves filled with various books",
-        "action": "static",
-        "position": "background",
-        "id": "bookshelf_wooden_1"
-      },
-      {
-        "desc": "white 'M' logo and 'MASTERCLASS' text",
-        "action": "static",
-        "position": "bottom right",
-        "id": "logo_masterclass_1"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "The man is gesturing with both hands in front of his chest.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The man is looking slightly to his right.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The background consists of bookshelves filled with books.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [
-      "M",
-      "MASTERCLASS"
-    ],
-    "spatial": "The man is in the foreground, centered in the frame. The bookshelves are behind him, filling the background. The 'MASTERCLASS' logo is in the bottom right corner of the screen.",
-    "parse_success": true,
-    "chunk_idx": 55,
-    "video_id": "ytb_SinJ_hB8T1k",
-    "state_changes": []
-  },
-  {
-    "time": [
-      112,
-      114
-    ],
-    "visible_entities": [
-      {
-        "desc": "man with curly dark hair, graying beard, wearing a black jacket over a black shirt",
-        "action": "gesturing with hands",
-        "position": "center",
-        "id": "person_neil_gaiman_1"
-      },
-      {
-        "desc": "wooden bookshelf filled with books",
-        "action": "static",
-        "position": "background"
-      },
-      {
-        "desc": "white 'M' logo with 'MASTERCLASS' text",
-        "action": "static",
-        "position": "bottom right",
-        "id": "logo_masterclass_1"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "The man gestures with both hands raised in front of his chest.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The man is speaking.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The background consists of bookshelves filled with books.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [
-      "M",
-      "MASTERCLASS"
-    ],
-    "spatial": "The man is in the center foreground, positioned in front of the bookshelves. The bookshelves are behind the man and extend across the background. The 'MASTERCLASS' logo is in the bottom right corner of the frame.",
-    "parse_success": true,
-    "chunk_idx": 56,
-    "video_id": "ytb_SinJ_hB8T1k",
-    "state_changes": []
-  },
-  {
-    "time": [
-      114,
-      116
-    ],
-    "visible_entities": [
-      {
-        "desc": "man with curly dark hair, graying beard, wearing a black jacket over a black shirt",
-        "action": "gesturing with hands",
-        "position": "center",
-        "id": "person_neil_gaiman_1"
-      },
-      {
-        "desc": "wooden bookshelves filled with books",
-        "action": "static",
-        "position": "background",
-        "id": "bookshelf_wooden_1"
-      },
-      {
-        "desc": "white 'M' logo and 'MASTERCLASS' text",
-        "action": "static",
-        "position": "bottom right",
-        "id": "logo_masterclass_1"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "The man in the black jacket is gesturing with his hands raised in front of his chest.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The man is speaking.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The bookshelves are filled with books behind the man.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The MasterClass logo is visible in the bottom right corner.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [
-      "M",
-      "MASTERCLASS"
-    ],
-    "spatial": "The man is in the center foreground, positioned in front of the bookshelves. The bookshelves are behind him, filling the background on the left and right. The MasterClass logo is in the bottom right corner of the frame.",
-    "parse_success": true,
-    "chunk_idx": 57,
-    "video_id": "ytb_SinJ_hB8T1k",
-    "state_changes": []
-  },
-  {
-    "time": [
-      116,
-      118
-    ],
-    "visible_entities": [
-      {
-        "desc": "man with curly graying hair and a beard, wearing a black t-shirt under a black jacket",
-        "action": "gesturing with hands",
-        "position": "center",
-        "id": "person_neil_gaiman_1"
-      },
-      {
-        "desc": "wooden bookshelves filled with books",
-        "action": "static",
-        "position": "background",
-        "id": "bookshelf_wooden_1"
+        "id": "prop_bookshelf_1"
       },
       {
         "desc": "white 'MASTERCLASS' logo with a stylized 'M' icon",
@@ -3320,11 +2615,7 @@
     ],
     "atomic_facts": [
       {
-        "fact": "The man is gesturing with both hands raised in front of his chest.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The man is facing forward towards the camera.",
+        "fact": "The man in the center is speaking.",
         "confidence": 1.0
       },
       {
@@ -3339,7 +2630,729 @@
     "ocr": [
       "MASTERCLASS"
     ],
-    "spatial": "The man is in the center of the frame, in front of the bookshelves. The bookshelves are behind the man and extend to the left and right edges of the frame. The 'MASTERCLASS' logo is in the bottom right corner, below the man's right shoulder.",
+    "spatial": "The man is in the center of the frame, in front of the bookshelves. The 'MASTERCLASS' logo is in the bottom right corner of the screen.",
+    "parse_success": true,
+    "chunk_idx": 46,
+    "video_id": "ytb_SinJ_hB8T1k",
+    "state_changes": []
+  },
+  {
+    "time": [
+      47,
+      48
+    ],
+    "visible_entities": [
+      {
+        "desc": "man with curly dark hair, short beard, black t-shirt, black jacket",
+        "action": "static",
+        "position": "center",
+        "id": "person_neil_gaiman_1"
+      },
+      {
+        "desc": "wooden bookshelves filled with books",
+        "action": "static",
+        "position": "background",
+        "id": "prop_bookshelf_1"
+      },
+      {
+        "desc": "white text on black background",
+        "action": "static",
+        "position": "center",
+        "id": "text_book_titles_1"
+      },
+      {
+        "desc": "MasterClass logo",
+        "action": "static",
+        "position": "bottom right",
+        "id": "logo_masterclass_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The video transitions from a shot of a man in a library to a title card.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The title card displays the text 'NEIL GAIMAN TEACHES THE ART OF STORYTELLING'.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The man is positioned in front of the bookshelves.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "NEIL GAIMAN",
+      "TEACHES THE ART OF STORYTELLING",
+      "MASTERCLASS"
+    ],
+    "spatial": "The man is centered in the foreground with bookshelves behind him. The title text is centered on the screen in the second frame. The MasterClass logo is located in the bottom right corner of both frames.",
+    "parse_success": true,
+    "chunk_idx": 47,
+    "video_id": "ytb_SinJ_hB8T1k",
+    "state_changes": []
+  },
+  {
+    "time": [
+      48,
+      49
+    ],
+    "visible_entities": [
+      {
+        "desc": "man with curly dark hair and a beard, wearing a black blazer over a black shirt",
+        "action": "speaking and gesturing with hands",
+        "position": "center"
+      },
+      {
+        "desc": "wooden bookshelves filled with books",
+        "action": "static",
+        "position": "background",
+        "id": "prop_bookshelf_1"
+      },
+      {
+        "desc": "white text on a black background",
+        "action": "static",
+        "position": "center",
+        "id": "text_book_titles_1"
+      },
+      {
+        "desc": "MasterClass logo",
+        "action": "static",
+        "position": "bottom right",
+        "id": "logo_masterclass_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The man is speaking and gesturing with his hands.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The text 'NEIL GAIMAN TEACHES THE ART OF STORYTELLING' is displayed on the screen.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The MasterClass logo is visible in the bottom right corner.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "NEIL GAIMAN",
+      "TEACHES THE ART OF STORYTELLING",
+      "M",
+      "MASTERCLASS"
+    ],
+    "spatial": "The man is in the center of the frame, in front of the bookshelves. The title text is centered on the screen. The MasterClass logo is in the bottom right corner.",
+    "parse_success": true,
+    "chunk_idx": 48,
+    "video_id": "ytb_SinJ_hB8T1k",
+    "state_changes": []
+  },
+  {
+    "time": [
+      49,
+      50
+    ],
+    "visible_entities": [
+      {
+        "desc": "man with curly dark hair and a graying beard, wearing a black blazer over a black shirt",
+        "action": "gesturing with hands",
+        "position": "center",
+        "id": "person_neil_gaiman_1"
+      },
+      {
+        "desc": "wooden bookshelves filled with books",
+        "action": "static",
+        "position": "background",
+        "id": "prop_bookshelf_1"
+      },
+      {
+        "desc": "man in a black suit sitting on a bench",
+        "action": "sitting",
+        "position": "center",
+        "id": "person_neil_gaiman_1"
+      },
+      {
+        "desc": "wooden benches supported by concrete blocks",
+        "action": "static",
+        "position": "center",
+        "id": "prop_bench_1"
+      },
+      {
+        "desc": "ground covered in brown and yellow fallen leaves",
+        "action": "static",
+        "position": "foreground",
+        "id": "env_forest_1"
+      },
+      {
+        "desc": "white 'MASTERCLASS' logo with a stylized 'M'",
+        "action": "static",
+        "position": "bottom right",
+        "id": "logo_masterclass_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A man with curly hair is gesturing with his hands while speaking in a library.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A man in a black suit is sitting alone on a wooden bench in a forest.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The benches are arranged in rows on a leaf-covered hillside.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The text 'MASTERCLASS' is visible in the bottom right corner of the screen.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "MASTERCLASS"
+    ],
+    "spatial": "The man in the library is centered in the frame with bookshelves behind him. The man in the forest is sitting on a bench that is surrounded by trees and fallen leaves. The benches are arranged in rows on the sloping ground. The 'MASTERCLASS' logo is located in the bottom right corner of both scenes.",
+    "parse_success": true,
+    "chunk_idx": 49,
+    "video_id": "ytb_SinJ_hB8T1k",
+    "state_changes": [
+      "Scene includes man in black suit sitting on a bench outdoors."
+    ]
+  },
+  {
+    "time": [
+      50,
+      51
+    ],
+    "visible_entities": [
+      {
+        "desc": "man with curly dark hair and a beard, wearing a black jacket over a black shirt and black pants",
+        "action": "writing in a notebook",
+        "position": "center",
+        "id": "person_neil_gaiman_1"
+      },
+      {
+        "desc": "small white notebook",
+        "action": "being held",
+        "position": "center",
+        "id": "prop_notebook_1"
+      },
+      {
+        "desc": "black pen",
+        "action": "being held",
+        "position": "center",
+        "id": "prop_pen_1"
+      },
+      {
+        "desc": "wooden benches supported by concrete blocks",
+        "action": "static",
+        "position": "background",
+        "id": "prop_bench_1"
+      },
+      {
+        "desc": "yellow fallen leaves",
+        "action": "static",
+        "position": "background",
+        "id": "env_forest_1"
+      },
+      {
+        "desc": "bookshelves filled with books",
+        "action": "static",
+        "position": "background"
+      },
+      {
+        "desc": "white 'M' logo and 'MASTERCLASS' text",
+        "action": "static",
+        "position": "bottom right",
+        "id": "logo_masterclass_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The man is sitting on a wooden bench in a forest setting.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The man is writing in a notebook with a pen.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The man is speaking and gesturing with his hand in a room with bookshelves.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The text 'MASTERCLASS' is visible in the bottom right corner.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "M",
+      "MASTERCLASS"
+    ],
+    "spatial": "The man is sitting on a wooden bench in the first scene. The notebook is on his lap, and he is holding a pen above it. In the second scene, the man is in front of bookshelves. The 'MASTERCLASS' logo is in the bottom right corner of both frames.",
+    "parse_success": true,
+    "chunk_idx": 50,
+    "video_id": "ytb_SinJ_hB8T1k",
+    "state_changes": [
+      "Instructor shown writing in a notebook while seated on outdoor benches."
+    ]
+  },
+  {
+    "time": [
+      51,
+      52
+    ],
+    "visible_entities": [
+      {
+        "desc": "man with curly dark hair, grey beard, wearing a black blazer over a black t-shirt",
+        "action": "speaking and gesturing in the first frame, writing in a notebook in the second frame",
+        "position": "center",
+        "id": "person_neil_gaiman_1"
+      },
+      {
+        "desc": "wooden bookshelves filled with books",
+        "action": "static",
+        "position": "background",
+        "id": "prop_bookshelf_1"
+      },
+      {
+        "desc": "small notebook with white pages",
+        "action": "being written in",
+        "position": "foreground",
+        "id": "prop_notebook_1"
+      },
+      {
+        "desc": "black pen with gold accents",
+        "action": "being held",
+        "position": "foreground",
+        "id": "prop_pen_1"
+      },
+      {
+        "desc": "wooden steps or bleachers",
+        "action": "static",
+        "position": "foreground",
+        "id": "prop_bench_1"
+      },
+      {
+        "desc": "trees with green leaves",
+        "action": "static",
+        "position": "background",
+        "id": "env_forest_1"
+      },
+      {
+        "desc": "white 'M' logo and 'MASTERCLASS' text",
+        "action": "static",
+        "position": "bottom right",
+        "id": "logo_masterclass_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The man is speaking and gesturing with his right hand in a room with bookshelves.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The man is sitting on wooden steps outdoors and writing in a notebook with a pen.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The 'MASTERCLASS' logo is visible in the bottom right corner of both frames.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "M",
+      "MASTERCLASS"
+    ],
+    "spatial": "The man is in the center of the frame in both scenes. In the first scene, he is in front of bookshelves. In the second scene, he is sitting on wooden steps, holding a notebook in his lap and a pen in his hand, with trees behind him. The 'MASTERCLASS' logo is in the bottom right corner.",
+    "parse_success": true,
+    "chunk_idx": 51,
+    "video_id": "ytb_SinJ_hB8T1k",
+    "state_changes": []
+  },
+  {
+    "time": [
+      52,
+      53
+    ],
+    "visible_entities": [
+      {
+        "desc": "man with curly dark hair, graying beard, wearing a black blazer over a black t-shirt",
+        "action": "writing in a notebook",
+        "position": "right/foreground",
+        "id": "person_neil_gaiman_1"
+      },
+      {
+        "desc": "black fountain pen with gold accents",
+        "action": "being held",
+        "position": "center/foreground",
+        "id": "prop_pen_1"
+      },
+      {
+        "desc": "small open notebook with white pages",
+        "action": "being held",
+        "position": "center/foreground",
+        "id": "prop_notebook_1"
+      },
+      {
+        "desc": "forest background with tall tree trunks and green foliage",
+        "action": "static",
+        "position": "background",
+        "id": "env_forest_1"
+      },
+      {
+        "desc": "wooden tiered seating structure",
+        "action": "static",
+        "position": "bottom/background",
+        "id": "prop_bench_1"
+      },
+      {
+        "desc": "white 'MASTERCLASS' logo with a stylized 'M'",
+        "action": "static",
+        "position": "bottom right",
+        "id": "logo_masterclass_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The man is holding a black fountain pen in his right hand.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The man is writing in an open notebook held in his left hand.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The man is looking down at the notebook.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The scene takes place outdoors in a wooded area.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The 'MASTERCLASS' logo is visible in the bottom right corner.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "MASTERCLASS"
+    ],
+    "spatial": "The man is in the foreground, positioned to the right of the frame. He is holding the notebook in his left hand and the pen in his right hand, with the pen touching the paper. The wooden seating structure is below and behind the man. The forest is in the background behind the man and the seating.",
+    "parse_success": true,
+    "chunk_idx": 52,
+    "video_id": "ytb_SinJ_hB8T1k",
+    "state_changes": []
+  },
+  {
+    "time": [
+      53,
+      54
+    ],
+    "visible_entities": [
+      {
+        "desc": "man with curly dark hair, grey beard, wearing a black t-shirt and a black blazer",
+        "action": "gesturing with hands",
+        "position": "center",
+        "id": "person_neil_gaiman_1"
+      },
+      {
+        "desc": "wooden bookshelves filled with books",
+        "action": "static",
+        "position": "background",
+        "id": "prop_bookshelf_1"
+      },
+      {
+        "desc": "tall trees with sunlight flaring through branches",
+        "action": "static",
+        "position": "background",
+        "id": "env_forest_1"
+      },
+      {
+        "desc": "white 'M' logo and 'MASTERCLASS' text",
+        "action": "static",
+        "position": "bottom right",
+        "id": "logo_masterclass_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A man with curly hair and a beard is gesturing with his hands in front of a bookshelf.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The scene cuts to a view of sunlight shining through tall trees.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The 'MASTERCLASS' logo is visible in the bottom right corner.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "M",
+      "MASTERCLASS"
+    ],
+    "spatial": "The man is centered in the foreground with bookshelves behind him. The trees are shown in a separate shot. The 'MASTERCLASS' logo is located in the bottom right corner of the screen.",
+    "parse_success": true,
+    "chunk_idx": 53,
+    "video_id": "ytb_SinJ_hB8T1k",
+    "state_changes": []
+  },
+  {
+    "time": [
+      54,
+      55
+    ],
+    "visible_entities": [
+      {
+        "desc": "dark, rough-textured tree trunk, out of focus",
+        "action": "moving right",
+        "position": "foreground",
+        "id": "env_forest_1"
+      },
+      {
+        "desc": "tall, slender trees with light-colored bark and green leaves",
+        "action": "static",
+        "position": "background",
+        "id": "env_forest_1"
+      },
+      {
+        "desc": "bright sunlight causing lens flare",
+        "action": "static",
+        "position": "center",
+        "id": "env_forest_1"
+      },
+      {
+        "desc": "white 'M' logo with 'MASTERCLASS' text below",
+        "action": "static",
+        "position": "bottom right",
+        "id": "logo_masterclass_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A dark tree trunk moves across the foreground from left to right, momentarily obscuring the view.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "Bright sunlight shines through the trees in the background, creating a strong lens flare.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The 'MASTERCLASS' logo is visible in the bottom right corner.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "M",
+      "MASTERCLASS"
+    ],
+    "spatial": "The dark, out-of-focus tree trunk is in the foreground, moving in front of the background trees. The bright sunlight is positioned behind the trees in the center of the frame. The 'MASTERCLASS' logo is located in the bottom right corner of the screen.",
+    "parse_success": true,
+    "chunk_idx": 54,
+    "video_id": "ytb_SinJ_hB8T1k",
+    "state_changes": [
+      "Camera moves through forest trees with lens flare."
+    ]
+  },
+  {
+    "time": [
+      55,
+      56
+    ],
+    "visible_entities": [
+      {
+        "desc": "man with curly dark hair, graying beard, wearing a black blazer over a black t-shirt",
+        "action": "gesturing with hands",
+        "position": "center",
+        "id": "person_neil_gaiman_1"
+      },
+      {
+        "desc": "wooden bookshelves filled with various books",
+        "action": "static",
+        "position": "background",
+        "id": "prop_bookshelf_1"
+      },
+      {
+        "desc": "white 'M' logo and 'MASTERCLASS' text",
+        "action": "static",
+        "position": "bottom right",
+        "id": "logo_masterclass_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The man is gesturing with both hands raised in front of his chest.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The man is seated in front of a bookshelf.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The MasterClass logo is visible in the bottom right corner.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "M",
+      "MASTERCLASS"
+    ],
+    "spatial": "The man is positioned in the center of the frame, in front of the wooden bookshelves. The bookshelves are behind him and to his left and right. The MasterClass logo is in the bottom right corner of the screen.",
+    "parse_success": true,
+    "chunk_idx": 55,
+    "video_id": "ytb_SinJ_hB8T1k",
+    "state_changes": []
+  },
+  {
+    "time": [
+      56,
+      57
+    ],
+    "visible_entities": [
+      {
+        "desc": "man with curly dark hair and a graying beard, wearing a black t-shirt under a black blazer",
+        "action": "gesturing with both hands while speaking",
+        "position": "center",
+        "id": "person_neil_gaiman_1"
+      },
+      {
+        "desc": "wooden bookshelf filled with various books",
+        "action": "static",
+        "position": "background",
+        "id": "prop_bookshelf_1"
+      },
+      {
+        "desc": "white 'MASTERCLASS' logo with a stylized 'M' symbol",
+        "action": "static",
+        "position": "bottom right",
+        "id": "logo_masterclass_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "the man is gesturing with both hands raised in front of his chest",
+        "confidence": 1.0
+      },
+      {
+        "fact": "the man is speaking",
+        "confidence": 1.0
+      },
+      {
+        "fact": "the bookshelf is located behind the man",
+        "confidence": 1.0
+      },
+      {
+        "fact": "the 'MASTERCLASS' logo is visible in the bottom right corner",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "MASTERCLASS"
+    ],
+    "spatial": "The man is in the center of the frame, positioned in front of the bookshelf. The bookshelf spans the background behind him. The 'MASTERCLASS' logo is in the bottom right corner of the screen.",
+    "parse_success": true,
+    "chunk_idx": 56,
+    "video_id": "ytb_SinJ_hB8T1k",
+    "state_changes": []
+  },
+  {
+    "time": [
+      57,
+      58
+    ],
+    "visible_entities": [
+      {
+        "desc": "man with curly dark hair, graying beard, wearing a black jacket over a black shirt",
+        "action": "gesturing with hands",
+        "position": "center",
+        "id": "person_neil_gaiman_1"
+      },
+      {
+        "desc": "wooden bookshelves filled with books",
+        "action": "static",
+        "position": "background",
+        "id": "prop_bookshelf_1"
+      },
+      {
+        "desc": "white 'MASTERCLASS' logo with a stylized 'M'",
+        "action": "static",
+        "position": "bottom right",
+        "id": "logo_masterclass_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "the man gestures with both hands raised in front of his chest",
+        "confidence": 1.0
+      },
+      {
+        "fact": "the man is speaking",
+        "confidence": 1.0
+      },
+      {
+        "fact": "the background consists of blurred bookshelves",
+        "confidence": 1.0
+      },
+      {
+        "fact": "the MASTERCLASS logo is visible in the bottom right corner",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "MASTERCLASS"
+    ],
+    "spatial": "The man is in the center foreground, in front of the bookshelves. The bookshelves are behind the man and extend to the left and right sides of the frame. The MASTERCLASS logo is in the bottom right corner of the screen.",
+    "parse_success": true,
+    "chunk_idx": 57,
+    "video_id": "ytb_SinJ_hB8T1k",
+    "state_changes": []
+  },
+  {
+    "time": [
+      58,
+      59
+    ],
+    "visible_entities": [
+      {
+        "desc": "man with curly dark hair, graying beard, wearing a black t-shirt and black jacket",
+        "action": "gesturing with hands",
+        "position": "center",
+        "id": "person_neil_gaiman_1"
+      },
+      {
+        "desc": "wooden bookshelves filled with books",
+        "action": "static",
+        "position": "background",
+        "id": "prop_bookshelf_1"
+      },
+      {
+        "desc": "white MasterClass logo with text",
+        "action": "static",
+        "position": "bottom right",
+        "id": "logo_masterclass_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "man gestures with hands",
+        "confidence": 1.0
+      },
+      {
+        "fact": "man is in front of bookshelves",
+        "confidence": 1.0
+      },
+      {
+        "fact": "the text 'MASTERCLASS' is visible in the bottom right corner",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "MASTERCLASS"
+    ],
+    "spatial": "The man is in the center of the frame, positioned in front of the bookshelves. The MasterClass logo is located in the bottom right corner of the screen.",
     "parse_success": true,
     "chunk_idx": 58,
     "video_id": "ytb_SinJ_hB8T1k",
@@ -3347,12 +3360,12 @@
   },
   {
     "time": [
-      118,
-      120
+      59,
+      60
     ],
     "visible_entities": [
       {
-        "desc": "man with curly dark hair, graying beard, wearing a black jacket over a black shirt",
+        "desc": "man with curly dark hair and a graying beard, wearing a black jacket over a black t-shirt",
         "action": "speaking",
         "position": "center",
         "id": "person_neil_gaiman_1"
@@ -3361,28 +3374,18 @@
         "desc": "wooden bookshelves filled with books",
         "action": "static",
         "position": "background",
-        "id": "bookshelf_wooden_1"
+        "id": "prop_bookshelf_1"
       },
       {
-        "desc": "warm glowing light fixture",
-        "action": "static",
-        "position": "background right",
-        "id": "light_fixture_1"
-      },
-      {
-        "desc": "text '02 Truth in Fiction' in black sans-serif font on a white background",
+        "desc": "text '02 Truth in Fiction' in a sans-serif font",
         "action": "static",
         "position": "bottom",
-        "id": "text_chapter_1"
+        "id": "text_lesson_title_1"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A man with curly hair and a beard is speaking.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The man is wearing a black jacket and black shirt.",
+        "fact": "The man in the center is speaking with his mouth open.",
         "confidence": 1.0
       },
       {
@@ -3390,43 +3393,50 @@
         "confidence": 1.0
       },
       {
-        "fact": "Bookshelves filled with books are visible in the background.",
+        "fact": "The man is positioned in front of bookshelves.",
         "confidence": 1.0
       }
     ],
     "ocr": [
       "02 Truth in Fiction"
     ],
-    "spatial": "The man is in the center foreground, in front of the bookshelves. The bookshelves are behind the man and span the width of the background. The light fixture is in the upper right background, above the bookshelves. The text '02 Truth in Fiction' is below the man.",
+    "spatial": "The man is in the center of the frame, in front of the bookshelves. The text '02 Truth in Fiction' is below the man.",
     "parse_success": true,
     "chunk_idx": 59,
     "video_id": "ytb_SinJ_hB8T1k",
     "state_changes": [
-      "chapter title card '02 Truth in Fiction' appears"
+      "Text overlay '02 Truth in Fiction' appears."
     ]
   },
   {
     "time": [
-      120,
-      122
+      60,
+      61
     ],
     "visible_entities": [
       {
         "desc": "man with curly dark hair and a beard, wearing a black jacket over a black shirt",
         "action": "speaking",
-        "position": "center"
+        "position": "center",
+        "id": "person_neil_gaiman_1"
       },
       {
         "desc": "wooden bookshelves filled with books",
         "action": "static",
         "position": "background",
-        "id": "bookshelf_wooden_1"
+        "id": "prop_bookshelf_1"
       },
       {
-        "desc": "text overlay with the number '11', the title 'Worldbuilding', and a descriptive paragraph",
+        "desc": "white text overlay with the number '11' and the title 'Worldbuilding'",
         "action": "static",
         "position": "bottom",
-        "id": "text_chapter_1"
+        "id": "text_lesson_title_1"
+      },
+      {
+        "desc": "white 'MASTERCLASS' logo with an 'M' icon",
+        "action": "static",
+        "position": "top",
+        "id": "logo_masterclass_1"
       }
     ],
     "atomic_facts": [
@@ -3435,11 +3445,15 @@
         "confidence": 1.0
       },
       {
-        "fact": "The text overlay identifies the lesson as '11 Worldbuilding'.",
+        "fact": "The text '11 Worldbuilding' is visible at the bottom of the screen.",
         "confidence": 1.0
       },
       {
-        "fact": "The text describes the content as learning Neil's philosophy of worldbuilding.",
+        "fact": "The 'MASTERCLASS' logo is displayed at the top center.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The man is situated in front of bookshelves.",
         "confidence": 1.0
       }
     ],
@@ -3448,71 +3462,72 @@
       "11 Worldbuilding",
       "Learn Neil's philosophy of worldbuilding, including how to create compelling and believable settings for your novel, and how to avoid the common pitfalls many inexperienced writers make."
     ],
-    "spatial": "The man is in the center of the frame, in front of the bookshelves. The text overlay is below the man. The 'MASTERCLASS' logo is at the top center of the screen.",
+    "spatial": "The man is positioned in the center of the frame, in front of the bookshelves that fill the background. The 'MASTERCLASS' logo is located at the top center, above the man. The text block containing '11 Worldbuilding' is situated at the bottom of the screen, below the video feed of the man.",
     "parse_success": true,
     "chunk_idx": 60,
     "video_id": "ytb_SinJ_hB8T1k",
     "state_changes": [
-      "chapter title changes to '11 Worldbuilding'"
+      "Text overlay changes to '11 Worldbuilding'."
     ]
   },
   {
     "time": [
-      122,
-      124
+      61,
+      62
     ],
     "visible_entities": [
       {
         "desc": "man with curly dark hair and a beard, wearing a black jacket over a black shirt",
         "action": "static",
-        "position": "center"
+        "position": "center",
+        "id": "person_neil_gaiman_1"
       },
       {
-        "desc": "man with short blonde hair, wearing a blue button-down shirt",
+        "desc": "man with short blonde hair, wearing a blue collared shirt",
         "action": "static",
         "position": "bottom",
-        "id": "grid_people_1"
-      },
-      {
-        "desc": "white 'M' logo and 'MASTERCLASS' text on a black background",
-        "action": "static",
-        "position": "top",
-        "id": "logo_masterclass_1"
+        "id": "person_neil_gaiman_1"
       },
       {
         "desc": "wooden bookshelves filled with books",
         "action": "static",
         "position": "background",
-        "id": "bookshelf_wooden_1"
+        "id": "prop_bookshelf_1"
       },
       {
-        "desc": "woman with dark curly hair wearing a black top with a colorful pattern",
+        "desc": "white 'M' logo and 'MASTERCLASS' text",
+        "action": "static",
+        "position": "top",
+        "id": "logo_masterclass_1"
+      },
+      {
+        "desc": "person with dark curly hair wearing a patterned top",
         "action": "static",
         "position": "left",
-        "id": "grid_people_1"
+        "id": "person_neil_gaiman_1"
       },
       {
-        "desc": "man with glasses and a light-colored shirt",
+        "desc": "person with glasses wearing a light-colored shirt",
         "action": "static",
         "position": "right",
-        "id": "grid_people_1"
+        "id": "person_neil_gaiman_1"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A man with curly hair and a beard is centered in the frame.",
+        "fact": "The man with curly hair is positioned in the center of the screen.",
         "confidence": 1.0
       },
       {
-        "fact": "A man with blonde hair is positioned below the central man.",
+        "fact": "The man with blonde hair is positioned below the central man.",
         "confidence": 1.0
       },
       {
-        "fact": "The 'MASTERCLASS' logo is displayed at the top of the screen.",
+        "fact": "The background behind the central man consists of bookshelves.",
         "confidence": 1.0
       },
       {
-        "fact": "Bookshelves filled with books are visible in the background behind the central man.",
+        "fact": "The text 'MASTERCLASS' is displayed at the top center of the screen.",
         "confidence": 1.0
       }
     ],
@@ -3520,88 +3535,86 @@
       "M",
       "MASTERCLASS"
     ],
-    "spatial": "The 'MASTERCLASS' logo is above the central man. The man with blonde hair is below the central man. The bookshelves are behind the central man. The woman with the patterned top is to the left of the central man, and the man with glasses is to the right.",
+    "spatial": "The man with curly hair is in the center, in front of the bookshelves. The man with blonde hair is below the central man. The 'MASTERCLASS' logo is above the central man. A person in a patterned top is to the left of the central man, and a person with glasses is to the right.",
     "parse_success": true,
     "chunk_idx": 61,
     "video_id": "ytb_SinJ_hB8T1k",
     "state_changes": [
-      "grid of multiple people appears (MasterClass instructors/students)"
+      "Additional people appear in the background/frame alongside the instructor."
     ]
   },
   {
     "time": [
-      124,
-      126
+      62,
+      63
     ],
     "visible_entities": [
       {
-        "desc": "bald man with glasses wearing a maroon blazer and light blue shirt",
+        "desc": "white sans-serif text reading 'ONLINE LESSONS FROM THE WORLD'S BEST' and a small 'M MASTERCLASS' logo",
         "action": "static",
-        "position": "left",
-        "id": "grid_people_1"
+        "position": "center",
+        "id": "text_outro_1"
       },
       {
-        "desc": "man with curly dark hair and beard wearing a black shirt",
+        "desc": "bald man with round glasses, wearing a maroon blazer and light blue shirt",
+        "action": "static",
+        "position": "left",
+        "id": "person_neil_gaiman_1"
+      },
+      {
+        "desc": "man with curly dark hair and beard, wearing a black shirt",
         "action": "static",
         "position": "center",
         "id": "person_neil_gaiman_1"
       },
       {
-        "desc": "man with short brown hair wearing a blue button-down shirt",
+        "desc": "man with short brown hair, wearing a dark blue button-down shirt",
         "action": "static",
-        "position": "bottom-center",
-        "id": "grid_people_1"
+        "position": "bottom center",
+        "id": "person_neil_gaiman_1"
       },
       {
-        "desc": "man with glasses and short brown hair wearing a light blue shirt",
+        "desc": "man with glasses and short brown hair, wearing a light blue shirt",
         "action": "static",
         "position": "right",
-        "id": "grid_people_1"
+        "id": "person_neil_gaiman_1"
       },
       {
-        "desc": "woman with dark hair in a ponytail wearing a blue top",
+        "desc": "woman with dark hair pulled back, wearing a blue top",
         "action": "static",
-        "position": "bottom-left",
-        "id": "grid_people_1"
+        "position": "bottom left",
+        "id": "person_neil_gaiman_1"
       },
       {
-        "desc": "older man with white hair wearing a dark jacket",
+        "desc": "older man with white hair",
         "action": "static",
-        "position": "bottom-right",
-        "id": "grid_people_1"
+        "position": "bottom right",
+        "id": "person_neil_gaiman_1"
       },
       {
-        "desc": "woman with blonde hair wearing a black top",
+        "desc": "woman with long blonde hair, wearing a black top",
         "action": "static",
-        "position": "top-left",
-        "id": "grid_people_1"
+        "position": "top left",
+        "id": "person_neil_gaiman_1"
       },
       {
-        "desc": "white sans-serif text overlay",
+        "desc": "man with glasses and a light grey jacket",
         "action": "static",
-        "position": "center",
-        "id": "text_outro_1"
+        "position": "right",
+        "id": "person_neil_gaiman_1"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A montage of video clips featuring various people is displayed on a black background.",
+        "fact": "The text 'ONLINE LESSONS FROM THE WORLD'S BEST' is displayed in the center of the screen.",
         "confidence": 1.0
       },
       {
-        "fact": "The text 'ONLINE LESSONS FROM THE WORLD'S BEST' is centered on the screen.",
+        "fact": "A grid of video frames featuring various people is visible in the background.",
         "confidence": 1.0
       },
       {
         "fact": "The MasterClass logo is visible above the central text.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The bald man in the maroon blazer is positioned to the left of the central text.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The man with curly hair is positioned directly behind the central text.",
         "confidence": 1.0
       }
     ],
@@ -3611,32 +3624,34 @@
       "ONLINE LESSONS",
       "FROM THE WORLD'S BEST"
     ],
-    "spatial": "The text 'ONLINE LESSONS FROM THE WORLD'S BEST' is centered on the screen, overlaying the video of the man with curly hair. The bald man in the maroon blazer is to the left of the central text, while the man in the light blue shirt is to the right. The woman with the ponytail is below the bald man, and the older man with white hair is below the man on the right.",
+    "spatial": "The text 'ONLINE LESSONS FROM THE WORLD'S BEST' is centered on the screen, overlaying a background grid of video frames. The man in the maroon blazer is to the left of the central text, while the man in the light blue shirt is to the right. The man in the dark blue shirt is positioned below the central text.",
     "parse_success": true,
     "chunk_idx": 62,
     "video_id": "ytb_SinJ_hB8T1k",
-    "state_changes": []
+    "state_changes": [
+      "Scene transitions to grid of various instructors/people."
+    ]
   },
   {
     "time": [
-      126,
-      128
+      63,
+      64
     ],
     "visible_entities": [
       {
-        "desc": "grid of multiple people in individual video frames, diverse in appearance, clothing, and setting",
+        "desc": "grid of multiple people in individual video frames, wearing various clothing including a blue shirt, a black tank top holding basketballs, a denim jacket, and a blue athletic top",
         "action": "static",
         "position": "background",
-        "id": "grid_people_1"
+        "id": "person_neil_gaiman_1"
       },
       {
-        "desc": "white sans-serif text reading 'ONLINE LESSONS FROM THE WORLD'S BEST'",
+        "desc": "white text reading 'ONLINE LESSONS FROM THE WORLD'S BEST' in a sans-serif font",
         "action": "static",
         "position": "center",
         "id": "text_outro_1"
       },
       {
-        "desc": "white sans-serif text reading 'masterclass.com'",
+        "desc": "white text reading 'masterclass.com' in a lowercase sans-serif font",
         "action": "static",
         "position": "center",
         "id": "text_outro_1"
@@ -3644,15 +3659,15 @@
     ],
     "atomic_facts": [
       {
-        "fact": "The text 'ONLINE LESSONS FROM THE WORLD'S BEST' is displayed in the center of the screen.",
+        "fact": "A grid of people is displayed in the background.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The text 'ONLINE LESSONS FROM THE WORLD'S BEST' appears in the center of the screen.",
         "confidence": 1.0
       },
       {
         "fact": "The text changes to 'masterclass.com' in the center of the screen.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "A grid of people is visible behind the text overlay.",
         "confidence": 1.0
       }
     ],
@@ -3661,12 +3676,12 @@
       "FROM THE WORLD'S BEST",
       "masterclass.com"
     ],
-    "spatial": "The text is centered in the foreground, overlaying the grid of people which fills the background.",
+    "spatial": "The text 'ONLINE LESSONS FROM THE WORLD'S BEST' is centered over the grid of people. The text 'masterclass.com' replaces the previous text in the center of the screen. The people in the grid are arranged in rows and columns behind the text.",
     "parse_success": true,
     "chunk_idx": 63,
     "video_id": "ytb_SinJ_hB8T1k",
     "state_changes": [
-      "outro screen with 'ONLINE LESSONS FROM THE WORLD'S BEST' and masterclass.com"
+      "Final outro screen with 'masterclass.com' URL appears."
     ]
   }
 ]

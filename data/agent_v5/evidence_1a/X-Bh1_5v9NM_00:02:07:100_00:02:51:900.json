@@ -2,49 +2,54 @@
   {
     "time": [
       0,
-      2
+      1
     ],
     "visible_entities": [
       {
-        "desc": "snow-covered forest with tall evergreen trees and thin bare branches",
+        "desc": "snow-covered forest floor",
         "action": "static",
-        "position": "background"
+        "position": "bottom/foreground"
       },
       {
-        "desc": "thick white snow layer on the ground",
+        "desc": "tall evergreen trees with snow-laden branches",
         "action": "static",
-        "position": "foreground"
+        "position": "left/center/background"
       },
       {
-        "desc": "dark tree trunk, rough bark texture, leaning",
+        "desc": "thin bare tree trunks and branches",
         "action": "static",
-        "position": "right"
+        "position": "right/foreground"
+      },
+      {
+        "desc": "small yellow rectangular sign",
+        "action": "static",
+        "position": "center/midground"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "The camera moves slightly through the snowy forest.",
+        "fact": "The scene is a snowy forest with trees covered in white snow.",
         "confidence": 1.0
       },
       {
-        "fact": "Snow covers the ground and clings to the tree branches.",
+        "fact": "A small yellow sign is visible among the trees in the midground.",
         "confidence": 1.0
       },
       {
-        "fact": "A dark tree trunk leans from the right side of the frame.",
+        "fact": "The ground is completely covered in a thick layer of snow.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The snow-covered ground is below the trees. The dark leaning tree trunk is to the right of the evergreen trees. The thin bare branches are in front of the taller evergreen trees.",
+    "spatial": "The snow-covered forest floor is below the tall evergreen trees and thin bare branches. The small yellow sign is in front of the background trees and to the right of the large evergreen trees on the left. The thin bare tree trunks are to the right of the yellow sign and in front of the denser forest background.",
     "parse_success": true,
     "chunk_idx": 0,
     "video_id": "X-Bh1_5v9NM_00:02:07:100_00:02:51:900"
   },
   {
     "time": [
-      2,
-      4
+      1,
+      2
     ],
     "visible_entities": [
       {
@@ -53,17 +58,17 @@
         "position": "background"
       },
       {
-        "desc": "small leafless bushes with thin branches coated in white frost",
+        "desc": "small leafless bushes covered in white frost",
         "action": "static",
         "position": "center"
       },
       {
-        "desc": "white snow covering the forest floor",
+        "desc": "white snow covering the ground",
         "action": "static",
         "position": "bottom"
       },
       {
-        "desc": "small rectangular yellow sign on a post",
+        "desc": "small yellow rectangular sign",
         "action": "static",
         "position": "center"
       }
@@ -74,33 +79,29 @@
         "confidence": 1.0
       },
       {
-        "fact": "Snow covers the ground and the branches of the trees.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "A yellow sign stands near the frosted bushes.",
+        "fact": "The yellow sign is positioned among the frosted bushes.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The tall evergreen trees are behind the small frosted bushes in the center. The yellow sign is located near the bushes and slightly to the right of the center path. The white snow is below the trees and bushes, covering the ground.",
+    "spatial": "The tall evergreen trees are behind the small frosted bushes. The yellow sign is located near the bushes in the center of the frame. The white snow is on the ground below the trees and bushes.",
     "parse_success": true,
     "chunk_idx": 1,
     "video_id": "X-Bh1_5v9NM_00:02:07:100_00:02:51:900"
   },
   {
     "time": [
-      4,
-      6
+      2,
+      3
     ],
     "visible_entities": [
       {
-        "desc": "tall evergreen trees with dark brown trunks and green needles covered in white frost",
+        "desc": "tall evergreen trees with dark brown trunks and green needles covered in white snow",
         "action": "static",
         "position": "background"
       },
       {
-        "desc": "smaller deciduous bushes with thin, bare branches completely coated in white frost",
+        "desc": "smaller deciduous trees or bushes with thin branches heavily coated in white frost",
         "action": "static",
         "position": "foreground"
       },
@@ -112,81 +113,81 @@
     ],
     "atomic_facts": [
       {
-        "fact": "The camera tilts upward to view the tops of the trees.",
+        "fact": "The camera angle is low, looking up at the tree canopy.",
         "confidence": 1.0
       },
       {
-        "fact": "The trees and bushes are covered in heavy white frost.",
+        "fact": "The trees are covered in snow and frost.",
         "confidence": 1.0
       },
       {
-        "fact": "The scene is a snowy forest environment.",
+        "fact": "The scene is a snowy forest.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The frosted bushes are in the foreground, positioned below the tall evergreen trees. The snow is on the ground at the bottom of the frame, beneath the trees and bushes.",
+    "spatial": "The tall evergreen trees are in the background, towering above the smaller frosted bushes in the foreground. The snow-covered ground is below the trees and bushes.",
     "parse_success": true,
     "chunk_idx": 2,
     "video_id": "X-Bh1_5v9NM_00:02:07:100_00:02:51:900"
   },
   {
     "time": [
-      6,
-      8
+      3,
+      4
     ],
     "visible_entities": [
       {
-        "desc": "tall evergreen trees with dark green needles covered in white snow and frost",
+        "desc": "tall evergreen trees with dark green needles and branches heavily coated in white snow and frost",
         "action": "static",
-        "position": "foreground"
+        "position": "left/center/right"
       },
       {
         "desc": "pale blue sky with soft white clouds",
         "action": "static",
-        "position": "background"
+        "position": "background/top"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "The camera looks upward at the tree canopy.",
+        "fact": "The camera points upward at the canopy of snow-covered trees.",
         "confidence": 1.0
       },
       {
-        "fact": "Snow and frost coat the branches of the evergreen trees.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The trees frame the sky in the center.",
+        "fact": "The branches of the trees are laden with white frost.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The tall evergreen trees are in the foreground, surrounding the edges of the frame. The pale blue sky is visible in the center, positioned above the trees and behind the canopy.",
+    "spatial": "The tall evergreen trees are positioned on the left, center, and right sides of the frame, surrounding the central view. The pale blue sky is visible above the trees and in the gaps between their branches.",
     "parse_success": true,
     "chunk_idx": 3,
     "video_id": "X-Bh1_5v9NM_00:02:07:100_00:02:51:900"
   },
   {
     "time": [
-      8,
-      10
+      4,
+      5
     ],
     "visible_entities": [
       {
-        "desc": "tall evergreen trees with dark green needles and branches heavily coated in white snow or frost",
+        "desc": "tall evergreen trees with dark green needles and branches heavily coated in white frost or snow",
         "action": "static",
         "position": "left/center/right/top/bottom"
       },
       {
-        "desc": "pale blue sky visible through the gaps in the tree canopy",
+        "desc": "pale blue sky with soft white clouds",
         "action": "static",
-        "position": "background"
+        "position": "center/background"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "The camera points upward at the sky through a canopy of snow-covered trees.",
+        "fact": "The camera is positioned at ground level looking directly upwards at the tree canopy.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The branches of the trees are covered in a layer of white frost.",
         "confidence": 1.0
       },
       {
@@ -195,21 +196,54 @@
       }
     ],
     "ocr": [],
-    "spatial": "The snow-covered trees are positioned on the left, right, and top of the frame, surrounding the central patch of pale blue sky.",
+    "spatial": "The tall evergreen trees are positioned on the left, right, top, and bottom edges of the frame, surrounding the central patch of pale blue sky. The frosted branches are in the foreground, appearing closer to the viewer than the sky in the background.",
     "parse_success": true,
     "chunk_idx": 4,
     "video_id": "X-Bh1_5v9NM_00:02:07:100_00:02:51:900"
   },
   {
     "time": [
-      10,
-      12
+      5,
+      6
     ],
     "visible_entities": [
       {
-        "desc": "tall evergreen trees with dark green needles, heavily coated in white frost and snow",
+        "desc": "tall coniferous trees with dark green needles heavily coated in white frost and snow",
         "action": "static",
-        "position": "left/center/right/foreground/background"
+        "position": "foreground/background"
+      },
+      {
+        "desc": "pale blue sky with diffuse white light",
+        "action": "static",
+        "position": "background"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The camera angle is low, looking up at the tree canopy.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The trees are covered in a thick layer of white frost.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The frosted trees are positioned in the foreground and background, surrounding the central view of the sky. The sky is visible above and between the tree branches.",
+    "parse_success": true,
+    "chunk_idx": 5,
+    "video_id": "X-Bh1_5v9NM_00:02:07:100_00:02:51:900"
+  },
+  {
+    "time": [
+      6,
+      7
+    ],
+    "visible_entities": [
+      {
+        "desc": "tall evergreen trees with dark green needles and branches heavily coated in white frost or snow",
+        "action": "static",
+        "position": "foreground/background"
       },
       {
         "desc": "pale blue sky with soft white clouds",
@@ -219,7 +253,45 @@
     ],
     "atomic_facts": [
       {
-        "fact": "The camera tilts upwards to view the tree canopy.",
+        "fact": "The camera is positioned at a low angle looking directly up at the tree canopy.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The trees are covered in a thick layer of white frost or snow.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The tall evergreen trees are in the foreground, surrounding the edges of the frame. The pale blue sky is visible in the center, above the trees and behind the branches.",
+    "parse_success": true,
+    "chunk_idx": 6,
+    "video_id": "X-Bh1_5v9NM_00:02:07:100_00:02:51:900"
+  },
+  {
+    "time": [
+      7,
+      8
+    ],
+    "visible_entities": [
+      {
+        "desc": "tall evergreen trees with dark green needles heavily coated in white frost and snow",
+        "action": "static",
+        "position": "foreground/center"
+      },
+      {
+        "desc": "pale blue sky with soft white clouds",
+        "action": "static",
+        "position": "background/top"
+      },
+      {
+        "desc": "small yellow rectangular object, possibly a sign or marker",
+        "action": "static",
+        "position": "bottom right"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The camera angle is low, looking up towards the sky through the tree canopy.",
         "confidence": 1.0
       },
       {
@@ -227,138 +299,68 @@
         "confidence": 1.0
       },
       {
-        "fact": "The sky is visible through the gaps in the branches.",
+        "fact": "A small yellow object is visible near the bottom right edge of the frame.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The frosted evergreen trees are in the foreground, surrounding the edges of the frame. The pale blue sky is in the background, visible above and between the tree branches.",
-    "parse_success": true,
-    "chunk_idx": 5,
-    "video_id": "X-Bh1_5v9NM_00:02:07:100_00:02:51:900"
-  },
-  {
-    "time": [
-      12,
-      14
-    ],
-    "visible_entities": [
-      {
-        "desc": "tall evergreen trees with dark green needles heavily coated in white frost and snow",
-        "action": "static",
-        "position": "foreground/surrounding"
-      },
-      {
-        "desc": "pale blue sky with soft white clouds",
-        "action": "static",
-        "position": "background/center"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "The camera looks upward at the sky through a canopy of trees.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The trees are covered in a thick layer of white frost or snow.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The sky is visible in the gaps between the tree branches.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [],
-    "spatial": "The frosted evergreen trees surround the central patch of sky, with branches extending from the left, right, and bottom edges of the frame towards the center. The sky is positioned above the trees and visible through the gaps in the canopy.",
-    "parse_success": true,
-    "chunk_idx": 6,
-    "video_id": "X-Bh1_5v9NM_00:02:07:100_00:02:51:900"
-  },
-  {
-    "time": [
-      14,
-      16
-    ],
-    "visible_entities": [
-      {
-        "desc": "tall evergreen trees with dark green needles covered in white frost and snow",
-        "action": "swaying slightly in the wind",
-        "position": "center"
-      },
-      {
-        "desc": "thick dark brown tree trunks",
-        "action": "static",
-        "position": "right"
-      },
-      {
-        "desc": "pale blue sky",
-        "action": "static",
-        "position": "background"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "The camera tilts upwards towards the tree canopy.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The trees are covered in frost.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The tree branches are swaying.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [],
-    "spatial": "The tall evergreen trees are in the center and left of the frame, reaching upwards. The thick dark brown trunks are positioned to the right of the central trees. The pale blue sky is visible in the background above the tree tops.",
+    "spatial": "The tall evergreen trees are in the foreground, reaching up towards the top of the frame. The pale blue sky is visible in the background, above and between the tree branches. A small yellow object is located at the bottom right, below the main cluster of trees.",
     "parse_success": true,
     "chunk_idx": 7,
     "video_id": "X-Bh1_5v9NM_00:02:07:100_00:02:51:900"
   },
   {
     "time": [
-      16,
-      18
+      8,
+      9
     ],
     "visible_entities": [
       {
-        "desc": "man with short dark hair, beard, and mustache, wearing a red plaid jacket over a white turtleneck sweater",
-        "action": "looking at the camera",
-        "position": "bottom-left/foreground"
+        "desc": "man with short dark hair, beard, and mustache, wearing a red plaid jacket over a white turtleneck",
+        "action": "moving through the forest",
+        "position": "foreground left"
       },
       {
-        "desc": "snow-covered forest with tall trees and a snowy slope",
+        "desc": "tall pine trees with dark trunks and snow-covered branches",
         "action": "static",
         "position": "background"
+      },
+      {
+        "desc": "white snow covering the ground",
+        "action": "static",
+        "position": "bottom"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A man in a red plaid jacket is looking at the camera.",
+        "fact": "A man in a red plaid jacket is moving through a snowy forest.",
         "confidence": 1.0
       },
       {
-        "fact": "The scene is a snowy forest with snow-covered trees.",
+        "fact": "The trees are covered in snow.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The ground is covered in a layer of snow.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The man is in the foreground, positioned to the left of the frame. The snow-covered forest is behind him and fills the rest of the background.",
+    "spatial": "The man is in the foreground, positioned to the left of the frame. The snow-covered trees are behind the man and extend into the background. The snow is on the ground below the trees and the man.",
     "parse_success": true,
     "chunk_idx": 8,
     "video_id": "X-Bh1_5v9NM_00:02:07:100_00:02:51:900"
   },
   {
     "time": [
-      18,
-      20
+      9,
+      10
     ],
     "visible_entities": [
       {
-        "desc": "man with short dark hair and a goatee, wearing a white turtleneck sweater and a thick red and orange plaid coat",
+        "desc": "man with short dark hair and a beard, wearing a white turtleneck sweater and a red and orange plaid coat with snowflakes on it",
         "action": "standing in the snow",
-        "position": "center/foreground"
+        "position": "center foreground"
       },
       {
         "desc": "snow-covered pine trees with dark trunks and white snow on branches",
@@ -368,49 +370,7 @@
       {
         "desc": "white snow covering the ground",
         "action": "static",
-        "position": "bottom/background"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "A man stands in a snowy forest environment.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The man is wearing a red and orange plaid coat over a white turtleneck.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "Snow is visible on the ground and on the tree branches.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [],
-    "spatial": "The man is in the foreground, positioned centrally in the frame. The snow-covered pine trees are behind the man, filling the background. The snow is on the ground below the man and the trees.",
-    "parse_success": true,
-    "chunk_idx": 9,
-    "video_id": "X-Bh1_5v9NM_00:02:07:100_00:02:51:900"
-  },
-  {
-    "time": [
-      20,
-      22
-    ],
-    "visible_entities": [
-      {
-        "desc": "man with short dark hair, beard, wearing a white turtleneck sweater and a red, orange, and purple plaid coat",
-        "action": "standing in the snow",
-        "position": "center/foreground"
-      },
-      {
-        "desc": "snow-covered pine trees with dark trunks",
-        "action": "static",
-        "position": "background"
-      },
-      {
-        "desc": "white snow covering the ground",
-        "action": "static",
-        "position": "bottom/background"
+        "position": "bottom"
       }
     ],
     "atomic_facts": [
@@ -419,71 +379,71 @@
         "confidence": 1.0
       },
       {
-        "fact": "The man is wearing a colorful plaid coat.",
+        "fact": "Snowflakes are visible on the man's coat.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The trees in the background are covered in snow.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The man is in the center foreground, in front of the snow-covered pine trees. The snow is on the ground below the man and the trees.",
+    "parse_success": true,
+    "chunk_idx": 9,
+    "video_id": "X-Bh1_5v9NM_00:02:07:100_00:02:51:900"
+  },
+  {
+    "time": [
+      10,
+      11
+    ],
+    "visible_entities": [
+      {
+        "desc": "man with short dark hair, beard, wearing a white turtleneck sweater and a red, orange, and purple plaid wool coat",
+        "action": "standing in the snow",
+        "position": "center/foreground"
+      },
+      {
+        "desc": "tall pine trees with snow-covered branches",
+        "action": "static",
+        "position": "background"
+      },
+      {
+        "desc": "white snow covering the ground and tree branches",
+        "action": "static",
+        "position": "background/ground"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A man stands in a snowy forest.",
         "confidence": 1.0
       },
       {
         "fact": "Snow is visible on the man's coat.",
         "confidence": 1.0
+      },
+      {
+        "fact": "The man is wearing a white turtleneck sweater under a plaid coat.",
+        "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The man is in the foreground, in front of the snow-covered pine trees. The snow is on the ground below the trees and around the man.",
+    "spatial": "The man is in the foreground, centered in the frame. The snow-covered pine trees are behind him and to his left and right. The snow is on the ground below the trees and the man.",
     "parse_success": true,
     "chunk_idx": 10,
     "video_id": "X-Bh1_5v9NM_00:02:07:100_00:02:51:900"
   },
   {
     "time": [
-      22,
-      24
-    ],
-    "visible_entities": [
-      {
-        "desc": "man with short dark hair, beard, wearing a white turtleneck sweater and a red-orange plaid coat",
-        "action": "standing in the snow",
-        "position": "center/foreground"
-      },
-      {
-        "desc": "snow-covered pine trees with brown trunks",
-        "action": "static",
-        "position": "background/left/right"
-      },
-      {
-        "desc": "white snow covering the ground",
-        "action": "static",
-        "position": "bottom/background"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "A man stands in a snowy forest environment.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The man is wearing a red and orange plaid coat over a white turtleneck.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "Snow is visible on the man's coat and the surrounding trees.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [],
-    "spatial": "The man is in the foreground, centered in the frame. The snow-covered trees are behind him and to his left and right. The snow is on the ground below the trees and the man.",
-    "parse_success": true,
-    "chunk_idx": 11,
-    "video_id": "X-Bh1_5v9NM_00:02:07:100_00:02:51:900"
-  },
-  {
-    "time": [
-      24,
-      26
+      11,
+      12
     ],
     "visible_entities": [
       {
         "desc": "man with short dark hair, beard, wearing a white turtleneck sweater and a red and orange plaid coat",
-        "action": "talking and gesturing",
+        "action": "standing in the snow",
         "position": "center foreground"
       },
       {
@@ -492,43 +452,85 @@
         "position": "background"
       },
       {
-        "desc": "snowy ground",
+        "desc": "snow",
         "action": "static",
-        "position": "bottom"
+        "position": "ground"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "man is talking",
+        "fact": "A man stands in a snowy forest.",
         "confidence": 1.0
       },
       {
-        "fact": "man is gesturing with his hand",
+        "fact": "The man is wearing a red and orange plaid coat over a white turtleneck.",
         "confidence": 1.0
       },
       {
-        "fact": "snow is on the ground and trees",
-        "confidence": 1.0
-      },
-      {
-        "fact": "man is wearing a plaid coat",
+        "fact": "Snowflakes are visible on the man's coat.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The man is in the center foreground, in front of the snow-covered pine trees. The snowy ground is below the man and the trees.",
+    "spatial": "The man is in the center foreground, standing in front of the snow-covered pine trees. The snow is on the ground below the man and the trees.",
+    "parse_success": true,
+    "chunk_idx": 11,
+    "video_id": "X-Bh1_5v9NM_00:02:07:100_00:02:51:900"
+  },
+  {
+    "time": [
+      12,
+      13
+    ],
+    "visible_entities": [
+      {
+        "desc": "man with short dark hair, beard, wearing a white turtleneck sweater and a red-orange plaid coat with snowflakes on the shoulder",
+        "action": "speaking to the camera",
+        "position": "center foreground"
+      },
+      {
+        "desc": "snow-covered pine trees with dark trunks and snow-laden branches",
+        "action": "static",
+        "position": "background"
+      },
+      {
+        "desc": "snow-covered ground with a path",
+        "action": "static",
+        "position": "bottom background"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The man is speaking to the camera.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The man is wearing a red-orange plaid coat.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "Snowflakes are visible on the man's coat.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The trees in the background are covered in snow.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The man is in the foreground, centered in the frame. The snow-covered trees are behind the man and to his left and right. The snow-covered ground is below the man and the trees.",
     "parse_success": true,
     "chunk_idx": 12,
     "video_id": "X-Bh1_5v9NM_00:02:07:100_00:02:51:900"
   },
   {
     "time": [
-      26,
-      28
+      13,
+      14
     ],
     "visible_entities": [
       {
-        "desc": "man with short dark hair, beard, wearing a white turtleneck sweater and a red and orange plaid coat",
+        "desc": "man with short dark hair, beard, white turtleneck sweater, red and orange plaid coat",
         "action": "standing still",
         "position": "center"
       },
@@ -538,41 +540,79 @@
         "position": "background"
       },
       {
-        "desc": "snow-covered ground",
+        "desc": "white snow on the ground",
         "action": "static",
         "position": "bottom"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A man stands in a snowy forest.",
+        "fact": "man stands in a snowy forest",
         "confidence": 1.0
       },
       {
-        "fact": "The man is looking to his left.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "Snow is visible on the ground and trees.",
+        "fact": "snow covers the ground and trees",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The man is in the center of the frame, in front of the snow-covered trees. The snow-covered ground is below the man and the trees.",
+    "spatial": "The man is in the center foreground. Snow-covered trees are behind him and to his left and right. The snow is on the ground below the trees and the man.",
     "parse_success": true,
     "chunk_idx": 13,
     "video_id": "X-Bh1_5v9NM_00:02:07:100_00:02:51:900"
   },
   {
     "time": [
-      28,
-      30
+      14,
+      15
     ],
     "visible_entities": [
       {
-        "desc": "man with short dark hair, beard, wearing a white turtleneck sweater and a red and orange plaid coat",
+        "desc": "man with short dark hair and beard, wearing a white turtleneck sweater and a red and orange plaid coat",
         "action": "turning head from left to center",
         "position": "center foreground"
+      },
+      {
+        "desc": "snow-covered trees with brown trunks",
+        "action": "static",
+        "position": "background"
+      },
+      {
+        "desc": "white snow on the ground",
+        "action": "static",
+        "position": "bottom background"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The man turns his head from looking left to facing forward.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The man is wearing a red and orange plaid coat over a white turtleneck.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "Snow is visible on the man's coat and on the trees in the background.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The man is in the center foreground, standing in front of the snow-covered trees. The trees are behind the man and extend to the left and right sides of the frame. The snow is on the ground below the trees and the man.",
+    "parse_success": true,
+    "chunk_idx": 14,
+    "video_id": "X-Bh1_5v9NM_00:02:07:100_00:02:51:900"
+  },
+  {
+    "time": [
+      15,
+      16
+    ],
+    "visible_entities": [
+      {
+        "desc": "man with short dark hair, beard, wearing a white turtleneck sweater and a red-orange plaid coat",
+        "action": "standing in the snow",
+        "position": "center/foreground"
       },
       {
         "desc": "snow-covered pine trees",
@@ -587,48 +627,6 @@
     ],
     "atomic_facts": [
       {
-        "fact": "The man turns his head from looking left to facing forward.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "Snow is visible on the man's coat shoulders.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The man is standing in a snowy forest.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [],
-    "spatial": "The man is in the center foreground, standing in front of the snow-covered trees. The trees are behind him and to his left and right. The snow covers the ground below the trees and the man.",
-    "parse_success": true,
-    "chunk_idx": 14,
-    "video_id": "X-Bh1_5v9NM_00:02:07:100_00:02:51:900"
-  },
-  {
-    "time": [
-      30,
-      32
-    ],
-    "visible_entities": [
-      {
-        "desc": "man with short dark hair and a beard, wearing a white turtleneck sweater and a red and orange plaid coat",
-        "action": "standing in the snow",
-        "position": "center/foreground"
-      },
-      {
-        "desc": "snow-covered pine trees with dark trunks",
-        "action": "static",
-        "position": "background"
-      },
-      {
-        "desc": "white snow covering the ground",
-        "action": "static",
-        "position": "bottom/background"
-      }
-    ],
-    "atomic_facts": [
-      {
         "fact": "A man stands in a snowy forest.",
         "confidence": 1.0
       },
@@ -637,29 +635,29 @@
         "confidence": 1.0
       },
       {
-        "fact": "Snow is visible on the man's coat and on the surrounding trees.",
+        "fact": "Snow covers the ground and the branches of the pine trees.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The man is in the foreground, centered in the frame. The snow-covered pine trees are behind him and to his left and right. The snow on the ground is below the man and the trees.",
+    "spatial": "The man is in the foreground, centered in the frame. The snow-covered pine trees are behind him, forming the background. The white snow is on the ground beneath the man and the trees.",
     "parse_success": true,
     "chunk_idx": 15,
     "video_id": "X-Bh1_5v9NM_00:02:07:100_00:02:51:900"
   },
   {
     "time": [
-      32,
-      34
+      16,
+      17
     ],
     "visible_entities": [
       {
-        "desc": "man with short dark hair, beard, wearing a white turtleneck sweater and a red and orange plaid coat",
+        "desc": "man with short dark hair, beard, and mustache, wearing a white turtleneck sweater and a red and orange plaid coat with snowflakes on it",
         "action": "walking forward",
         "position": "center/foreground"
       },
       {
-        "desc": "snow-covered pine trees",
+        "desc": "snow-covered pine trees with dark trunks",
         "action": "static",
         "position": "background"
       },
@@ -671,49 +669,7 @@
     ],
     "atomic_facts": [
       {
-        "fact": "The man is walking forward through the forest.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "Snow is visible on the man's coat.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The trees in the background are covered in snow.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [],
-    "spatial": "The man is in the center foreground, positioned in front of the snowy pine trees. The snowy ground is below the man and the trees.",
-    "parse_success": true,
-    "chunk_idx": 16,
-    "video_id": "X-Bh1_5v9NM_00:02:07:100_00:02:51:900"
-  },
-  {
-    "time": [
-      34,
-      36
-    ],
-    "visible_entities": [
-      {
-        "desc": "man with short dark hair and a beard, wearing a white turtleneck sweater under a red and orange plaid coat",
-        "action": "walking through the snow",
-        "position": "foreground"
-      },
-      {
-        "desc": "snow-covered pine trees",
-        "action": "static",
-        "position": "background"
-      },
-      {
-        "desc": "snowy ground",
-        "action": "static",
-        "position": "bottom"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "The man is walking through a snowy forest.",
+        "fact": "The man is walking forward through a snowy forest.",
         "confidence": 1.0
       },
       {
@@ -721,25 +677,25 @@
         "confidence": 1.0
       },
       {
-        "fact": "The trees in the background are covered in snow.",
+        "fact": "Snowflakes are visible on the man's coat.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The man is in the foreground, walking in front of the snow-covered pine trees. The snowy ground is below the man and the trees.",
+    "spatial": "The man is in the foreground, centered in the frame. The snow-covered pine trees are behind the man and to his left and right. The snowy ground is below the man and the trees.",
     "parse_success": true,
-    "chunk_idx": 17,
+    "chunk_idx": 16,
     "video_id": "X-Bh1_5v9NM_00:02:07:100_00:02:51:900"
   },
   {
     "time": [
-      36,
-      38
+      17,
+      18
     ],
     "visible_entities": [
       {
-        "desc": "man with short dark hair and beard, wearing a red and orange plaid fleece jacket over a white turtleneck sweater",
-        "action": "walking through a snowy forest",
+        "desc": "man with short dark hair and a beard, wearing a red and orange plaid jacket over a white turtleneck sweater",
+        "action": "walking through the snow",
         "position": "center/foreground"
       },
       {
@@ -754,7 +710,40 @@
         "confidence": 1.0
       },
       {
-        "fact": "Snow is falling and accumulating on the man's jacket.",
+        "fact": "Snowflakes are visible on the man's jacket.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The man is in the foreground, centered in the frame. The snow-covered pine trees are behind him, forming the background of the scene.",
+    "parse_success": true,
+    "chunk_idx": 17,
+    "video_id": "X-Bh1_5v9NM_00:02:07:100_00:02:51:900"
+  },
+  {
+    "time": [
+      18,
+      19
+    ],
+    "visible_entities": [
+      {
+        "desc": "man with short dark hair and a beard, wearing a thick red and orange plaid jacket over a white turtleneck sweater",
+        "action": "walking through the snow",
+        "position": "center/foreground"
+      },
+      {
+        "desc": "tall pine trees covered in snow",
+        "action": "static",
+        "position": "background"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The man is walking through a snowy forest.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The man is looking around at the trees.",
         "confidence": 1.0
       },
       {
@@ -763,21 +752,21 @@
       }
     ],
     "ocr": [],
-    "spatial": "The man is in the foreground, positioned centrally in the frame. The snow-covered pine trees are behind him, filling the background.",
+    "spatial": "The man is in the foreground, positioned in front of the snow-covered pine trees. The trees are behind him and surround him in the background.",
     "parse_success": true,
     "chunk_idx": 18,
     "video_id": "X-Bh1_5v9NM_00:02:07:100_00:02:51:900"
   },
   {
     "time": [
-      38,
-      40
+      19,
+      20
     ],
     "visible_entities": [
       {
         "desc": "man with short dark hair, goatee, wearing a white turtleneck sweater and a red and orange plaid jacket",
-        "action": "standing in the snow",
-        "position": "center"
+        "action": "looking up",
+        "position": "center/foreground"
       },
       {
         "desc": "snow-covered pine trees",
@@ -787,70 +776,71 @@
     ],
     "atomic_facts": [
       {
-        "fact": "A man stands in a snowy forest environment.",
+        "fact": "the man looks up",
         "confidence": 1.0
       },
       {
-        "fact": "Snowflakes are visible on the man's red and orange plaid jacket.",
+        "fact": "snow is falling on the man's jacket",
         "confidence": 1.0
       },
       {
-        "fact": "The man is wearing a white turtleneck underneath his jacket.",
+        "fact": "the man is standing in a snowy forest",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The man is in the foreground, centered in the frame. The snow-covered pine trees are behind the man, filling the background.",
+    "spatial": "The man is in front of the snow-covered pine trees. The snow is on the man's jacket.",
     "parse_success": true,
     "chunk_idx": 19,
     "video_id": "X-Bh1_5v9NM_00:02:07:100_00:02:51:900"
   },
   {
     "time": [
-      40,
-      42
+      20,
+      21
     ],
     "visible_entities": [
       {
-        "desc": "man with short dark hair and a beard, wearing a red and black plaid flannel jacket over a white shirt",
-        "action": "gesturing with his right arm extended",
-        "position": "center"
+        "desc": "man with short dark hair and a beard, wearing a red and black plaid flannel shirt over a white t-shirt",
+        "action": "gesturing with his right arm extended to the side",
+        "position": "center/foreground"
       },
       {
         "desc": "snow-covered trees with dark trunks",
+        "action": "static",
+        "position": "background"
+      },
+      {
+        "desc": "white snow covering the ground",
         "action": "static",
         "position": "background"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "The man in the red plaid jacket is standing in a snowy forest.",
+        "fact": "The man extends his right arm outward to his side.",
         "confidence": 1.0
       },
       {
-        "fact": "The man extends his right arm outward to the side.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The ground and trees are covered in white snow.",
+        "fact": "The man is standing in a snowy forest environment.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The man in the red plaid jacket is in the foreground, centered in the frame. The snow-covered trees are behind him in the background.",
+    "spatial": "The man is in the foreground, positioned in front of the snow-covered trees. The trees are behind the man and extend into the background.",
     "parse_success": true,
     "chunk_idx": 20,
     "video_id": "X-Bh1_5v9NM_00:02:07:100_00:02:51:900"
   },
   {
     "time": [
-      42,
-      44
+      21,
+      22
     ],
     "visible_entities": [
       {
         "desc": "man with short dark hair and a beard, wearing a red and orange plaid flannel shirt over a white t-shirt",
-        "action": "walking through the snow and gesturing with hands",
+        "action": "standing in the snow and looking up",
         "position": "center/foreground"
       },
       {
@@ -861,42 +851,42 @@
       {
         "desc": "white snow",
         "action": "static",
-        "position": "background/ground"
+        "position": "bottom/ground"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A man in a plaid shirt is walking through a snowy forest.",
+        "fact": "The man stands in a snowy forest environment.",
         "confidence": 1.0
       },
       {
-        "fact": "The man raises his hands in front of his chest while moving.",
+        "fact": "The man looks upward towards the sky or tree canopy.",
         "confidence": 1.0
       },
       {
-        "fact": "The trees in the background are covered in snow.",
+        "fact": "The man raises his hands slightly in the second frame.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The man is in the foreground, positioned in front of the snow-covered trees. The white snow covers the ground below the man and the trees.",
+    "spatial": "The man is in the foreground, standing on the white snow. The snow-covered pine trees are behind the man in the background.",
     "parse_success": true,
     "chunk_idx": 21,
     "video_id": "X-Bh1_5v9NM_00:02:07:100_00:02:51:900"
   },
   {
     "time": [
-      44,
-      46
+      22,
+      23
     ],
     "visible_entities": [
       {
-        "desc": "man with short dark hair and beard, wearing a red and black plaid flannel jacket over a white turtleneck sweater and white pants",
+        "desc": "man with short dark hair and beard, wearing a red and black plaid flannel shirt over a white turtleneck sweater and white pants",
         "action": "walking forward and looking up",
         "position": "center"
       },
       {
-        "desc": "snow-covered forest with tall pine trees",
+        "desc": "snow-covered forest with tall trees and white ground",
         "action": "static",
         "position": "background"
       }
@@ -907,49 +897,7 @@
         "confidence": 1.0
       },
       {
-        "fact": "The man tilts his head back to look up at the trees.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The ground is covered in white snow.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [],
-    "spatial": "The man is in the center of the frame, walking on the snow-covered ground. The tall pine trees are behind him and to his left and right, forming a dense forest background.",
-    "parse_success": true,
-    "chunk_idx": 22,
-    "video_id": "X-Bh1_5v9NM_00:02:07:100_00:02:51:900"
-  },
-  {
-    "time": [
-      46,
-      48
-    ],
-    "visible_entities": [
-      {
-        "desc": "man with short dark hair and a beard, wearing a red and black plaid flannel shirt over a white turtleneck sweater, white pants, and tan boots",
-        "action": "walking through the snow",
-        "position": "center/foreground"
-      },
-      {
-        "desc": "snow-covered pine trees with dark trunks",
-        "action": "static",
-        "position": "background"
-      },
-      {
-        "desc": "white snow covering the ground",
-        "action": "static",
-        "position": "bottom/background"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "The man is walking through a snowy forest.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The man is wearing a red and black plaid shirt.",
+        "fact": "The man tilts his head back to look up at the sky.",
         "confidence": 1.0
       },
       {
@@ -958,20 +906,57 @@
       }
     ],
     "ocr": [],
-    "spatial": "The man is in the foreground, positioned in front of the snow-covered trees. The trees are behind the man and surround him in the background. The snow is on the ground below the man and the trees.",
+    "spatial": "The man is in the center of the frame, surrounded by the snow-covered forest. The trees are behind him and to his left and right.",
+    "parse_success": true,
+    "chunk_idx": 22,
+    "video_id": "X-Bh1_5v9NM_00:02:07:100_00:02:51:900"
+  },
+  {
+    "time": [
+      23,
+      24
+    ],
+    "visible_entities": [
+      {
+        "desc": "man with short dark hair and a beard, wearing a red and black plaid flannel shirt over a white turtleneck sweater, white pants, and tan boots",
+        "action": "walking through the snow",
+        "position": "center"
+      },
+      {
+        "desc": "snow-covered forest with tall trees and white ground",
+        "action": "static",
+        "position": "background"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The man is walking through a snowy forest.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The man is wearing a red plaid shirt.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The trees in the background are covered in snow.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The man is in the center of the frame, walking on the snow-covered ground. The snow-covered trees are behind the man and surround him in the background.",
     "parse_success": true,
     "chunk_idx": 23,
     "video_id": "X-Bh1_5v9NM_00:02:07:100_00:02:51:900"
   },
   {
     "time": [
-      48,
-      50
+      24,
+      25
     ],
     "visible_entities": [
       {
         "desc": "man with short dark hair and beard, wearing a red and orange plaid coat over a white turtleneck sweater",
-        "action": "walking through the snow",
+        "action": "walking through snow",
         "position": "foreground"
       },
       {
@@ -982,7 +967,7 @@
       {
         "desc": "white snow covering the ground",
         "action": "static",
-        "position": "background"
+        "position": "bottom"
       }
     ],
     "atomic_facts": [
@@ -1000,157 +985,131 @@
       }
     ],
     "ocr": [],
-    "spatial": "The man is in the foreground, positioned in front of the snow-covered trees. The trees are behind the man and surround the snowy path.",
+    "spatial": "The man is in the foreground, positioned in front of the snow-covered trees. The trees are behind the man and extend into the background. The snow is on the ground below the man and the trees.",
     "parse_success": true,
     "chunk_idx": 24,
     "video_id": "X-Bh1_5v9NM_00:02:07:100_00:02:51:900"
   },
   {
     "time": [
-      50,
-      52
+      25,
+      26
     ],
     "visible_entities": [
       {
-        "desc": "man with short dark hair and a beard, wearing a red and black plaid flannel shirt, a white long-sleeved shirt underneath, white pants, and tan boots",
+        "desc": "man with short dark hair and beard, wearing a red and black plaid flannel jacket, white shirt, white pants, and tan boots",
         "action": "walking through snow",
         "position": "center"
-      },
-      {
-        "desc": "snow-covered forest with tall trees and deep snow on the ground",
-        "action": "static",
-        "position": "background"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "the man is walking forward through the snow",
+        "fact": "A man in a red plaid jacket walks through a snowy forest.",
         "confidence": 1.0
       },
       {
-        "fact": "the man is wearing a red and black plaid shirt",
-        "confidence": 1.0
-      },
-      {
-        "fact": "the man is wearing white pants",
-        "confidence": 1.0
-      },
-      {
-        "fact": "the man is wearing tan boots",
-        "confidence": 1.0
-      },
-      {
-        "fact": "the ground is covered in deep snow",
-        "confidence": 1.0
-      },
-      {
-        "fact": "the trees are covered in snow",
+        "fact": "The man is moving forward through deep snow.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The man is in the center of the frame, walking on the snow-covered ground. The snow-covered trees are behind him and to his left and right, forming a forest setting.",
+    "spatial": "The man is in the center of the frame, surrounded by snow-covered trees. The trees are behind and to the sides of the man.",
     "parse_success": true,
     "chunk_idx": 25,
     "video_id": "X-Bh1_5v9NM_00:02:07:100_00:02:51:900"
   },
   {
     "time": [
-      52,
-      54
+      26,
+      27
     ],
     "visible_entities": [
       {
-        "desc": "person with short dark hair, wearing a red plaid flannel shirt, white pants, and tan boots",
-        "action": "walking through snow and turning away from the camera",
+        "desc": "person with short dark hair, wearing a red and black plaid flannel shirt, white pants, and tan boots",
+        "action": "turning around and walking away",
         "position": "center"
       },
       {
-        "desc": "snow-covered trees with white branches",
+        "desc": "snow-covered forest with tall trees",
         "action": "static",
         "position": "background"
-      },
-      {
-        "desc": "white snow covering the ground",
-        "action": "static",
-        "position": "foreground"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "The person is walking through a snowy forest.",
+        "fact": "The person turns their body away from the camera.",
         "confidence": 1.0
       },
       {
-        "fact": "The person turns their back to the camera while moving.",
+        "fact": "The person walks through the snow.",
         "confidence": 1.0
       },
       {
-        "fact": "The trees in the background are covered in snow.",
+        "fact": "The trees are covered in snow.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The person is in the center of the frame, walking on the white snow which covers the ground. The snow-covered trees are behind the person and to the left and right sides of the scene.",
+    "spatial": "The person is in the center of the frame, surrounded by the snow-covered forest. The trees are behind and to the sides of the person.",
     "parse_success": true,
     "chunk_idx": 26,
     "video_id": "X-Bh1_5v9NM_00:02:07:100_00:02:51:900"
   },
   {
     "time": [
-      54,
-      56
+      27,
+      28
     ],
     "visible_entities": [
       {
-        "desc": "person with short dark hair, wearing a red and black plaid flannel shirt and white pants",
+        "desc": "person with short dark hair, wearing a red and black plaid flannel jacket and white pants",
         "action": "walking away from the camera",
         "position": "center"
       },
       {
-        "desc": "snow-covered pine trees with dark trunks",
+        "desc": "snow-covered pine trees with dark trunks and white branches",
         "action": "static",
         "position": "background"
       },
       {
-        "desc": "white snow covering the ground",
+        "desc": "thick white snow covering the ground",
         "action": "static",
         "position": "foreground"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A person is walking away from the camera through a snowy forest.",
+        "fact": "A person in a red plaid jacket is walking through a snowy forest.",
         "confidence": 1.0
       },
       {
-        "fact": "The person is wearing a red and black plaid shirt.",
+        "fact": "The person is moving away from the camera into the distance.",
         "confidence": 1.0
       },
       {
-        "fact": "The trees in the background are covered in snow.",
+        "fact": "The trees are heavily laden with snow.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The person is in the center of the frame, walking on the snow which covers the ground. The snow-covered trees are behind the person and to the left and right sides of the frame.",
+    "spatial": "The person is in the center of the frame, walking on the snow which covers the ground. The snow-covered trees are located in the background and to the sides of the person.",
     "parse_success": true,
     "chunk_idx": 27,
     "video_id": "X-Bh1_5v9NM_00:02:07:100_00:02:51:900"
   },
   {
     "time": [
-      56,
-      58
+      28,
+      29
     ],
     "visible_entities": [
       {
-        "desc": "man with short dark hair, beard, wearing a red and black plaid jacket over a white shirt and white pants",
-        "action": "turning around and walking towards the camera",
-        "position": "center/foreground"
+        "desc": "man with short dark hair and a beard, wearing a red and black plaid flannel jacket over a white turtleneck sweater and white pants",
+        "action": "turning around to face the camera",
+        "position": "center"
       },
       {
-        "desc": "snow-covered forest with tall trees and white ground",
+        "desc": "snow-covered forest with tall dark tree trunks and white ground",
         "action": "static",
         "position": "background"
       }
@@ -1161,24 +1120,28 @@
         "confidence": 1.0
       },
       {
-        "fact": "The man is walking through the snow.",
+        "fact": "The man is wearing a red and black plaid jacket.",
         "confidence": 1.0
       },
       {
-        "fact": "The trees in the background are covered in snow.",
+        "fact": "The ground is covered in deep white snow.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "Trees surround the man in the background.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The man is in the foreground, centered in the frame. The snow-covered trees are behind him and to his sides, forming the background of the scene.",
+    "spatial": "The man is in the center foreground of the frame. The snow-covered trees are behind him and to his sides.",
     "parse_success": true,
     "chunk_idx": 28,
     "video_id": "X-Bh1_5v9NM_00:02:07:100_00:02:51:900"
   },
   {
     "time": [
-      58,
-      60
+      29,
+      30
     ],
     "visible_entities": [
       {
@@ -1187,140 +1150,18 @@
         "position": "center"
       },
       {
-        "desc": "snow-covered pine trees",
-        "action": "static",
-        "position": "background"
-      },
-      {
-        "desc": "white snow",
-        "action": "static",
-        "position": "foreground"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "person stands in a snowy forest",
-        "confidence": 1.0
-      },
-      {
-        "fact": "person raises hands near face",
-        "confidence": 1.0
-      },
-      {
-        "fact": "snow covers the ground and trees",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [],
-    "spatial": "The person is in the center of the frame, standing on the snow. The snow-covered trees are behind the person and surround the snowy path.",
-    "parse_success": true,
-    "chunk_idx": 29,
-    "video_id": "X-Bh1_5v9NM_00:02:07:100_00:02:51:900"
-  },
-  {
-    "time": [
-      60,
-      62
-    ],
-    "visible_entities": [
-      {
-        "desc": "man with short dark hair and a beard, wearing a red and orange plaid flannel jacket over a white shirt",
-        "action": "standing in the snow and moving his arms",
-        "position": "center"
-      },
-      {
-        "desc": "snow-covered trees with dark trunks",
+        "desc": "snow-covered forest with tall trees",
         "action": "static",
         "position": "background"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A man in a plaid jacket is standing in a snowy forest.",
+        "fact": "The person is standing in a snowy forest.",
         "confidence": 1.0
       },
       {
-        "fact": "The man moves his arms in front of his body.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "Snow covers the ground and the trees in the background.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [],
-    "spatial": "The man is in the foreground, positioned in front of the snow-covered trees. The trees are behind him and to his sides.",
-    "parse_success": true,
-    "chunk_idx": 30,
-    "video_id": "X-Bh1_5v9NM_00:02:07:100_00:02:51:900"
-  },
-  {
-    "time": [
-      62,
-      64
-    ],
-    "visible_entities": [
-      {
-        "desc": "man with short dark hair and beard, wearing a red and black plaid puffer jacket, white turtleneck sweater, white pants, and tan boots",
-        "action": "walking forward through snow",
-        "position": "center"
-      },
-      {
-        "desc": "snow-covered trees with dark trunks",
-        "action": "static",
-        "position": "background"
-      },
-      {
-        "desc": "white snow covering the ground",
-        "action": "static",
-        "position": "foreground"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "The man in the red plaid jacket is walking forward through the snow.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The man is surrounded by a snowy forest.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The man is wearing tan boots.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [],
-    "spatial": "The man in the red plaid jacket is in the center of the frame, walking on the white snow. The snow-covered trees are behind him and to his left and right, forming a forest background.",
-    "parse_success": true,
-    "chunk_idx": 31,
-    "video_id": "X-Bh1_5v9NM_00:02:07:100_00:02:51:900"
-  },
-  {
-    "time": [
-      64,
-      66
-    ],
-    "visible_entities": [
-      {
-        "desc": "man with short dark hair and beard, wearing a red plaid jacket, white turtleneck sweater, white pants, and tan boots",
-        "action": "walking forward",
-        "position": "center"
-      },
-      {
-        "desc": "snow-covered pine trees",
-        "action": "static",
-        "position": "background"
-      },
-      {
-        "desc": "white snow",
-        "action": "static",
-        "position": "foreground"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "The man is walking forward through the snow.",
+        "fact": "The person raises their hands to their face.",
         "confidence": 1.0
       },
       {
@@ -1329,188 +1170,20 @@
       }
     ],
     "ocr": [],
-    "spatial": "The man is in the center of the frame, walking on the snow. The snow-covered trees are behind the man and to his left and right.",
+    "spatial": "The person is in the center of the frame, standing in front of the snow-covered trees. The trees are behind the person and extend into the background.",
     "parse_success": true,
-    "chunk_idx": 32,
+    "chunk_idx": 29,
     "video_id": "X-Bh1_5v9NM_00:02:07:100_00:02:51:900"
   },
   {
     "time": [
-      66,
-      68
+      30,
+      31
     ],
     "visible_entities": [
       {
-        "desc": "man with short dark hair and beard, wearing a red and orange plaid jacket over a white turtleneck sweater and white pants",
-        "action": "clasping hands together",
-        "position": "center"
-      },
-      {
-        "desc": "snow-covered trees with dark trunks",
-        "action": "static",
-        "position": "background"
-      },
-      {
-        "desc": "white snow covering the ground",
-        "action": "static",
-        "position": "bottom"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "The man clasps his hands together in front of his chest.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The man is standing in a snowy forest.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The trees in the background are covered in snow.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [],
-    "spatial": "The man is in the center foreground, standing in front of the snow-covered trees. The snow is on the ground below the man and the trees.",
-    "parse_success": true,
-    "chunk_idx": 33,
-    "video_id": "X-Bh1_5v9NM_00:02:07:100_00:02:51:900"
-  },
-  {
-    "time": [
-      68,
-      70
-    ],
-    "visible_entities": [
-      {
-        "desc": "man with short dark hair and beard, wearing a red plaid jacket over a white turtleneck sweater and white pants",
-        "action": "walking forward and gesturing with hands",
-        "position": "center/foreground"
-      },
-      {
-        "desc": "snow-covered pine trees with dark trunks",
-        "action": "static",
-        "position": "background"
-      },
-      {
-        "desc": "white snow covering the ground",
-        "action": "static",
-        "position": "bottom/foreground"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "A man in a red plaid jacket walks forward through a snowy forest.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The man gestures with both hands while moving.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The trees in the background are covered in snow.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [],
-    "spatial": "The man is in the center of the frame, walking on the snow. The snow-covered trees are behind him and to his left and right.",
-    "parse_success": true,
-    "chunk_idx": 34,
-    "video_id": "X-Bh1_5v9NM_00:02:07:100_00:02:51:900"
-  },
-  {
-    "time": [
-      70,
-      72
-    ],
-    "visible_entities": [
-      {
-        "desc": "man with short dark hair and a beard, wearing a red and black plaid flannel shirt over a white turtleneck sweater and white pants",
-        "action": "walking forward",
-        "position": "center"
-      },
-      {
-        "desc": "snow-covered pine trees",
-        "action": "static",
-        "position": "background"
-      },
-      {
-        "desc": "snow-covered ground",
-        "action": "static",
-        "position": "bottom"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "The man walks forward through the snowy forest.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "Snow is falling around the man.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The trees in the background are covered in snow.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [],
-    "spatial": "The man is in the center of the frame, walking on the snow-covered ground. The snow-covered pine trees are behind him and to his left and right.",
-    "parse_success": true,
-    "chunk_idx": 35,
-    "video_id": "X-Bh1_5v9NM_00:02:07:100_00:02:51:900"
-  },
-  {
-    "time": [
-      72,
-      74
-    ],
-    "visible_entities": [
-      {
-        "desc": "man with short dark hair, beard, wearing a red and orange plaid jacket over a white turtleneck sweater",
-        "action": "filming a selfie video",
-        "position": "center"
-      },
-      {
-        "desc": "snow-covered pine trees",
-        "action": "static",
-        "position": "background"
-      },
-      {
-        "desc": "white snow",
-        "action": "static",
-        "position": "foreground"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "A man is filming a selfie video in a snowy forest.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The camera moves rapidly, causing the image to blur.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The man is wearing a red and orange plaid jacket.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [],
-    "spatial": "The man is in the center of the frame, in front of the snow-covered trees. The white snow is on the ground below the trees and surrounds the man.",
-    "parse_success": true,
-    "chunk_idx": 36,
-    "video_id": "X-Bh1_5v9NM_00:02:07:100_00:02:51:900"
-  },
-  {
-    "time": [
-      74,
-      76
-    ],
-    "visible_entities": [
-      {
-        "desc": "man with short dark hair, beard, wearing a red and orange plaid jacket over a white turtleneck sweater",
-        "action": "raising hand and wiping face",
+        "desc": "man with short dark hair and beard, wearing a red and orange plaid jacket over a white shirt",
+        "action": "standing in the snow",
         "position": "center"
       },
       {
@@ -1526,57 +1199,82 @@
     ],
     "atomic_facts": [
       {
-        "fact": "The man raises his right hand.",
+        "fact": "A man in a red and orange plaid jacket is standing in a snowy forest.",
         "confidence": 1.0
       },
       {
-        "fact": "The man wipes his face with his hand.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "Snow is falling in the scene.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The man is wearing a red and orange plaid jacket.",
+        "fact": "The man is looking towards the right side of the frame.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The man is in the foreground, centered in the frame. The snow-covered trees are behind the man. The white snow is on the ground below the trees.",
+    "spatial": "The man is in the center foreground of the frame. The snow-covered trees are behind the man and to his left and right.",
     "parse_success": true,
-    "chunk_idx": 37,
+    "chunk_idx": 30,
     "video_id": "X-Bh1_5v9NM_00:02:07:100_00:02:51:900"
   },
   {
     "time": [
-      76,
-      78
+      31,
+      32
     ],
     "visible_entities": [
       {
-        "desc": "man with short dark hair and a beard, wearing a white turtleneck sweater and a red and orange plaid coat",
-        "action": "standing and looking at the camera",
-        "position": "center/foreground"
+        "desc": "man with short brown hair and beard, wearing a red and black plaid puffer jacket, white turtleneck sweater, white trousers, and tan boots",
+        "action": "walking forward through snow",
+        "position": "center"
       },
       {
-        "desc": "snow-covered pine trees",
+        "desc": "snow-covered forest with tall trees and white ground",
         "action": "static",
         "position": "background"
-      },
-      {
-        "desc": "white snow",
-        "action": "static",
-        "position": "background/ground"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "The man is standing in a snowy forest.",
+        "fact": "A man in a red plaid jacket walks forward through a snowy forest.",
         "confidence": 1.0
       },
       {
-        "fact": "The man is looking at the camera.",
+        "fact": "The man is wearing tan boots.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The man is in the center of the frame, surrounded by trees in the background. The snow is under his feet.",
+    "parse_success": true,
+    "chunk_idx": 31,
+    "video_id": "X-Bh1_5v9NM_00:02:07:100_00:02:51:900"
+  },
+  {
+    "time": [
+      32,
+      33
+    ],
+    "visible_entities": [
+      {
+        "desc": "man with short dark hair and a beard, wearing a red and black plaid flannel jacket, a white turtleneck sweater, white trousers, and tan boots",
+        "action": "walking forward through snow",
+        "position": "center"
+      },
+      {
+        "desc": "snow-covered pine trees with dark trunks",
+        "action": "static",
+        "position": "background"
+      },
+      {
+        "desc": "white snow covering the ground",
+        "action": "static",
+        "position": "bottom"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The man is walking forward through a snowy forest.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The man is wearing a red plaid jacket over a white turtleneck.",
         "confidence": 1.0
       },
       {
@@ -1585,68 +1283,40 @@
       }
     ],
     "ocr": [],
-    "spatial": "The man is in the foreground, centered in the frame. The snow-covered trees are behind the man, filling the background.",
+    "spatial": "The man is in the center of the frame, walking on the snow. The snow-covered trees are behind him and to his sides.",
     "parse_success": true,
-    "chunk_idx": 38,
+    "chunk_idx": 32,
     "video_id": "X-Bh1_5v9NM_00:02:07:100_00:02:51:900"
   },
   {
     "time": [
-      78,
-      80
+      33,
+      34
     ],
     "visible_entities": [
       {
-        "desc": "man with short dark hair, beard, and mustache, wearing a red and orange plaid coat over a white turtleneck sweater",
+        "desc": "man with short dark hair and beard, wearing a red and orange plaid jacket, white turtleneck sweater, and white pants",
         "action": "standing in the snow",
-        "position": "center/foreground"
+        "position": "center"
       },
       {
-        "desc": "snow-covered trees and forest background",
+        "desc": "snow-covered trees with dark trunks",
         "action": "static",
         "position": "background"
+      },
+      {
+        "desc": "white snow covering the ground",
+        "action": "static",
+        "position": "bottom"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "man stands in a snowy forest",
+        "fact": "A man stands in a snowy forest.",
         "confidence": 1.0
       },
       {
-        "fact": "snowflakes are visible on the man's coat",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [],
-    "spatial": "The man is in the foreground, centered in the frame. The snow-covered trees are behind him, filling the background.",
-    "parse_success": true,
-    "chunk_idx": 39,
-    "video_id": "X-Bh1_5v9NM_00:02:07:100_00:02:51:900"
-  },
-  {
-    "time": [
-      80,
-      82
-    ],
-    "visible_entities": [
-      {
-        "desc": "man with short dark hair and a beard, wearing a white turtleneck sweater and a red and orange plaid coat",
-        "action": "looking at the camera then looking down",
-        "position": "center/foreground"
-      },
-      {
-        "desc": "snow-covered pine trees with white branches",
-        "action": "static",
-        "position": "background"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "The man looks down during the clip.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "Snow is visible on the man's coat.",
+        "fact": "The man clasps his hands together in front of his chest.",
         "confidence": 1.0
       },
       {
@@ -1655,40 +1325,142 @@
       }
     ],
     "ocr": [],
-    "spatial": "The man is in the foreground, positioned in front of the snow-covered pine trees. The trees are behind the man and extend into the background.",
+    "spatial": "The man is in the center of the frame, standing in front of the snow-covered trees. The snow is on the ground below the trees and the man.",
     "parse_success": true,
-    "chunk_idx": 40,
+    "chunk_idx": 33,
     "video_id": "X-Bh1_5v9NM_00:02:07:100_00:02:51:900"
   },
   {
     "time": [
-      82,
-      84
+      34,
+      35
     ],
     "visible_entities": [
       {
-        "desc": "man with short dark hair, beard, wearing a white turtleneck sweater and a red and orange plaid coat",
-        "action": "holding a snowball",
-        "position": "center/foreground"
+        "desc": "man with short dark hair and beard, wearing a red plaid jacket over a white turtleneck sweater and white pants",
+        "action": "walking forward and gesturing with hands",
+        "position": "center"
       },
       {
-        "desc": "snow-covered trees with dark trunks",
+        "desc": "snow-covered pine trees with dark trunks",
         "action": "static",
         "position": "background"
       },
       {
-        "desc": "white snowball",
-        "action": "being held",
-        "position": "left/foreground"
+        "desc": "white snow covering the ground",
+        "action": "static",
+        "position": "foreground"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "The man is holding a snowball in his left hand.",
+        "fact": "The man walks forward through the snowy forest.",
         "confidence": 1.0
       },
       {
-        "fact": "The man is looking at the snowball.",
+        "fact": "The man gestures with both hands while walking.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The trees are covered in snow.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The man is in the center of the frame, walking on the snow-covered ground. The snow-covered trees are behind the man and to his left and right.",
+    "parse_success": true,
+    "chunk_idx": 34,
+    "video_id": "X-Bh1_5v9NM_00:02:07:100_00:02:51:900"
+  },
+  {
+    "time": [
+      35,
+      36
+    ],
+    "visible_entities": [
+      {
+        "desc": "man with short dark hair and a beard, wearing a red and black plaid flannel shirt over a white turtleneck sweater and white pants",
+        "action": "walking forward",
+        "position": "center"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A man walks through a snowy forest.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The man is wearing a red and black plaid shirt.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The man is in the center foreground, surrounded by snow-covered trees in the background. The trees are behind the man.",
+    "parse_success": true,
+    "chunk_idx": 35,
+    "video_id": "X-Bh1_5v9NM_00:02:07:100_00:02:51:900"
+  },
+  {
+    "time": [
+      36,
+      37
+    ],
+    "visible_entities": [
+      {
+        "desc": "man with short dark hair and beard, wearing a red and orange plaid jacket over a white turtleneck sweater",
+        "action": "filming himself in a snowy forest",
+        "position": "center"
+      },
+      {
+        "desc": "snow-covered trees with white frost on branches",
+        "action": "static",
+        "position": "background"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A man is filming himself in a snowy forest.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The man is wearing a red and orange plaid jacket.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The camera moves rapidly, causing motion blur in the second frame.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The man is in the foreground, centered in the frame. The snow-covered trees are behind him, filling the background.",
+    "parse_success": true,
+    "chunk_idx": 36,
+    "video_id": "X-Bh1_5v9NM_00:02:07:100_00:02:51:900"
+  },
+  {
+    "time": [
+      37,
+      38
+    ],
+    "visible_entities": [
+      {
+        "desc": "man with short dark hair, beard, wearing a red and orange plaid coat over a white turtleneck sweater",
+        "action": "raising hand to face",
+        "position": "center foreground"
+      },
+      {
+        "desc": "snow-covered trees and ground",
+        "action": "static",
+        "position": "background"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The man raises his right hand towards his face.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The man is wearing a red and orange plaid coat.",
         "confidence": 1.0
       },
       {
@@ -1697,99 +1469,326 @@
       }
     ],
     "ocr": [],
-    "spatial": "The man is in the foreground, positioned centrally. He is holding the snowball in his left hand, which is to the left of his body. The snow-covered trees are behind the man, forming the background.",
+    "spatial": "The man is in the center foreground, in front of the snow-covered trees and ground which are in the background.",
+    "parse_success": true,
+    "chunk_idx": 37,
+    "video_id": "X-Bh1_5v9NM_00:02:07:100_00:02:51:900"
+  },
+  {
+    "time": [
+      38,
+      39
+    ],
+    "visible_entities": [
+      {
+        "desc": "man with short dark hair, beard, and mustache, wearing a white turtleneck sweater and a red and orange plaid coat",
+        "action": "walking through snow",
+        "position": "center/foreground"
+      },
+      {
+        "desc": "snow-covered trees",
+        "action": "static",
+        "position": "background"
+      },
+      {
+        "desc": "white snow",
+        "action": "static",
+        "position": "ground/background"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The man is walking through a snowy forest.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The man is wearing a red and orange plaid coat.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The trees in the background are covered in snow.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The man is in the foreground, centered in the frame. The snow-covered trees are behind him, forming the background of the scene. The snow is on the ground below the man and the trees.",
+    "parse_success": true,
+    "chunk_idx": 38,
+    "video_id": "X-Bh1_5v9NM_00:02:07:100_00:02:51:900"
+  },
+  {
+    "time": [
+      39,
+      40
+    ],
+    "visible_entities": [
+      {
+        "desc": "man with short dark hair, beard, and mustache, wearing a red and orange plaid coat with snowflakes on it and a white turtleneck sweater",
+        "action": "walking forward",
+        "position": "center/foreground"
+      },
+      {
+        "desc": "snow-covered pine trees with white snow on branches",
+        "action": "static",
+        "position": "background"
+      },
+      {
+        "desc": "white snow covering the ground",
+        "action": "static",
+        "position": "bottom/background"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The man is walking forward through a snowy forest.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "Snowflakes are visible on the man's coat.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The trees in the background are covered in snow.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The man is in the foreground, centered in the frame. The snow-covered trees are behind the man. The snow on the ground is below the man and the trees.",
+    "parse_success": true,
+    "chunk_idx": 39,
+    "video_id": "X-Bh1_5v9NM_00:02:07:100_00:02:51:900"
+  },
+  {
+    "time": [
+      40,
+      41
+    ],
+    "visible_entities": [
+      {
+        "desc": "man with short dark hair, beard, wearing a red and orange plaid coat over a white turtleneck sweater",
+        "action": "looking down",
+        "position": "center/foreground"
+      },
+      {
+        "desc": "snow-covered pine trees",
+        "action": "static",
+        "position": "background"
+      },
+      {
+        "desc": "snow on the ground",
+        "action": "static",
+        "position": "bottom/background"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The man looks down from the camera.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The man is wearing a red and orange plaid coat.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The trees in the background are covered in snow.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The man is in the foreground, centered in the frame. The snow-covered trees are behind the man. The snow on the ground is below the trees and the man.",
+    "parse_success": true,
+    "chunk_idx": 40,
+    "video_id": "X-Bh1_5v9NM_00:02:07:100_00:02:51:900"
+  },
+  {
+    "time": [
+      41,
+      42
+    ],
+    "visible_entities": [
+      {
+        "desc": "man with short dark hair and beard, wearing a red and orange plaid coat over a white turtleneck sweater",
+        "action": "holding a snowball",
+        "position": "center"
+      },
+      {
+        "desc": "snowball, round, white, textured",
+        "action": "being held",
+        "position": "left"
+      },
+      {
+        "desc": "snow-covered forest with tall trees and white ground",
+        "action": "static",
+        "position": "background"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The man holds a snowball in his left hand.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The man is wearing a red and orange plaid coat.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The man is wearing a white turtleneck sweater.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The background is a forest covered in snow.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The man is in the center of the frame. The snowball is in his left hand, positioned to the left of his body. The snow-covered forest is behind the man.",
     "parse_success": true,
     "chunk_idx": 41,
     "video_id": "X-Bh1_5v9NM_00:02:07:100_00:02:51:900"
   },
   {
     "time": [
-      84,
-      86
+      42,
+      43
     ],
     "visible_entities": [
       {
         "desc": "man with short dark hair, beard, wearing a red and orange plaid coat over a white turtleneck",
-        "action": "holding a clump of snow",
-        "position": "right/foreground"
+        "action": "holding a snowball",
+        "position": "center/foreground"
       },
       {
-        "desc": "snow-covered pine trees",
-        "action": "static",
-        "position": "background"
-      },
-      {
-        "desc": "clump of white snow",
+        "desc": "snowball, white, round, textured",
         "action": "being held",
         "position": "left/foreground"
+      },
+      {
+        "desc": "snow-covered forest, trees with white snow, snowy ground",
+        "action": "static",
+        "position": "background"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "The man holds a clump of snow in his hand.",
+        "fact": "The man holds a snowball in his right hand.",
         "confidence": 1.0
       },
       {
-        "fact": "The man looks down at the snow in his hand.",
+        "fact": "The man is looking at the snowball.",
         "confidence": 1.0
       },
       {
-        "fact": "The background consists of a snowy forest with tall trees.",
+        "fact": "The man is wearing a plaid coat.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The background is a snowy forest.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The man is positioned on the right side of the frame in the foreground. He is holding a clump of snow in his left hand, which is positioned to the left of his body. The snow-covered trees are located behind the man in the background.",
+    "spatial": "The man is in the foreground, centered in the frame. He is holding the snowball in his right hand, which is positioned to the left of his body. The snow-covered forest is behind the man.",
     "parse_success": true,
     "chunk_idx": 42,
     "video_id": "X-Bh1_5v9NM_00:02:07:100_00:02:51:900"
   },
   {
     "time": [
-      86,
-      88
+      43,
+      44
     ],
     "visible_entities": [
       {
         "desc": "man with short dark hair, beard, wearing a red and orange plaid coat over a white turtleneck sweater",
-        "action": "gesturing with hand and speaking",
-        "position": "foreground"
+        "action": "holding snow in hand then blowing it",
+        "position": "center/foreground"
       },
       {
-        "desc": "snow-covered forest with tall trees",
+        "desc": "snow-covered pine trees",
         "action": "static",
         "position": "background"
+      },
+      {
+        "desc": "snow on ground",
+        "action": "static",
+        "position": "background/ground"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "The man gestures with his left hand while looking at the camera.",
+        "fact": "The man holds a handful of snow in his left hand.",
         "confidence": 1.0
       },
       {
-        "fact": "The man is speaking in a snowy forest setting.",
+        "fact": "The man blows the snow from his hand into the air.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "Snow is falling around the man.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The man is in the foreground, positioned in front of the snow-covered trees which form the background.",
+    "spatial": "The man is in the foreground, centered in the frame. The snow-covered trees are behind him in the background. The snow is on the ground below the trees and the man.",
     "parse_success": true,
     "chunk_idx": 43,
     "video_id": "X-Bh1_5v9NM_00:02:07:100_00:02:51:900"
   },
   {
     "time": [
-      88,
-      90
+      44,
+      45
     ],
     "visible_entities": [
       {
-        "desc": "man with short dark hair, beard, wearing a white turtleneck sweater and a red and orange plaid coat",
-        "action": "walking through snow",
+        "desc": "man with short dark hair, beard, wearing a white turtleneck and a red and orange plaid coat",
+        "action": "walking and talking",
         "position": "foreground"
       },
       {
         "desc": "snow-covered pine trees",
+        "action": "static",
+        "position": "background"
+      },
+      {
+        "desc": "snow-covered ground",
+        "action": "static",
+        "position": "bottom"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The man is walking through a snowy forest.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The man is talking to the camera.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The trees are covered in snow.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The man is in the foreground, in front of the snow-covered trees. The snow-covered ground is below the man and the trees.",
+    "parse_success": true,
+    "chunk_idx": 44,
+    "video_id": "X-Bh1_5v9NM_00:02:07:100_00:02:51:900"
+  },
+  {
+    "time": [
+      45,
+      46
+    ],
+    "visible_entities": [
+      {
+        "desc": "man with short dark hair and a beard, wearing a red and orange plaid jacket over a white turtleneck sweater",
+        "action": "falling backward",
+        "position": "center/foreground"
+      },
+      {
+        "desc": "snow-covered trees with dark trunks",
         "action": "static",
         "position": "background"
       },
@@ -1801,114 +1800,82 @@
     ],
     "atomic_facts": [
       {
-        "fact": "A man is walking through a snowy forest.",
+        "fact": "The man in the plaid jacket is falling backward into the snow.",
         "confidence": 1.0
       },
       {
-        "fact": "The man is wearing a red and orange plaid coat over a white turtleneck.",
+        "fact": "The camera angle shifts from the man's face to looking up at the trees.",
         "confidence": 1.0
       },
       {
-        "fact": "The trees in the background are covered in snow.",
+        "fact": "The man's mouth is open as he falls.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The man is in the foreground, in front of the snow-covered trees. The trees are behind the man and surround him on the left and right.",
-    "parse_success": true,
-    "chunk_idx": 44,
-    "video_id": "X-Bh1_5v9NM_00:02:07:100_00:02:51:900"
-  },
-  {
-    "time": [
-      90,
-      92
-    ],
-    "visible_entities": [
-      {
-        "desc": "man with short dark hair and beard, wearing a red and orange plaid coat over a white turtleneck sweater",
-        "action": "falling backwards",
-        "position": "center/foreground"
-      },
-      {
-        "desc": "snow-covered trees with dark trunks",
-        "action": "static",
-        "position": "background"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "The man in the red and orange plaid coat falls backwards onto the snow.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The camera angle shifts from facing the man to looking up at the sky and trees.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [],
-    "spatial": "The man in the red and orange plaid coat is in the foreground, positioned in front of the snow-covered trees. As he falls, the trees appear above him in the background.",
+    "spatial": "The man is in the foreground, positioned in front of the snow-covered trees. The trees are behind the man and extend upwards above him. The snow is on the ground below the man and the trees.",
     "parse_success": true,
     "chunk_idx": 45,
     "video_id": "X-Bh1_5v9NM_00:02:07:100_00:02:51:900"
   },
   {
     "time": [
-      92,
-      94
+      46,
+      47
     ],
     "visible_entities": [
       {
-        "desc": "man with short dark hair and beard, wearing a red and orange plaid jacket over a white turtleneck sweater",
-        "action": "looking upward",
+        "desc": "man with short dark hair and beard, wearing a red and orange plaid puffer jacket over a white turtleneck sweater",
+        "action": "looking up and moving head",
         "position": "center"
       },
       {
-        "desc": "snow-covered trees",
+        "desc": "snow-covered pine trees",
         "action": "static",
         "position": "background"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "The man looks upward with his head tilted back.",
+        "fact": "A man in a plaid jacket looks upward while standing in a snowy forest.",
         "confidence": 1.0
       },
       {
-        "fact": "Snow is falling around the man.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The man is wearing a red and orange plaid jacket.",
+        "fact": "Snow is visible on the trees in the background.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The man is in the foreground, centered in the frame. The snow-covered trees are behind the man.",
+    "spatial": "The man is in the foreground, centered in the frame. The snow-covered trees are behind him, filling the background.",
     "parse_success": true,
     "chunk_idx": 46,
     "video_id": "X-Bh1_5v9NM_00:02:07:100_00:02:51:900"
   },
   {
     "time": [
-      94,
-      96
+      47,
+      48
     ],
     "visible_entities": [
       {
-        "desc": "man with short dark hair and beard, wearing a red and orange plaid jacket over a white turtleneck sweater",
-        "action": "walking through snow",
+        "desc": "man with short dark hair, beard, and mustache, wearing a white turtleneck sweater and a red and orange plaid coat",
+        "action": "standing in the snow and looking around",
         "position": "center"
       },
       {
         "desc": "snow-covered trees",
         "action": "static",
         "position": "background"
+      },
+      {
+        "desc": "snow",
+        "action": "falling",
+        "position": "background"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "The man is walking through a snowy forest.",
+        "fact": "A man is standing in a snowy forest.",
         "confidence": 1.0
       },
       {
@@ -1916,34 +1883,29 @@
         "confidence": 1.0
       },
       {
-        "fact": "The man is wearing a red and orange plaid jacket.",
+        "fact": "The man is wearing a red and orange plaid coat.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The man is in the center foreground of the frame. The snow-covered trees are behind the man, forming the background of the scene.",
+    "spatial": "The man is in the foreground, in front of the snow-covered trees. The snow is falling all around the man and the trees.",
     "parse_success": true,
     "chunk_idx": 47,
     "video_id": "X-Bh1_5v9NM_00:02:07:100_00:02:51:900"
   },
   {
     "time": [
-      96,
-      98
+      48,
+      49
     ],
     "visible_entities": [
       {
-        "desc": "man with short dark hair and a beard, wearing a red and orange plaid flannel jacket over a white shirt",
-        "action": "turning body to the right",
-        "position": "center"
+        "desc": "man with short dark hair and beard, wearing a red and orange plaid flannel jacket over a white shirt",
+        "action": "turning body and raising hand",
+        "position": "center/foreground"
       },
       {
         "desc": "snow-covered trees with dark trunks",
-        "action": "static",
-        "position": "background"
-      },
-      {
-        "desc": "white snow covering the ground",
         "action": "static",
         "position": "background"
       }
@@ -1954,77 +1916,63 @@
         "confidence": 1.0
       },
       {
-        "fact": "The man is standing in a snowy forest.",
+        "fact": "The man raises his right hand near his face.",
         "confidence": 1.0
       },
       {
-        "fact": "The trees in the background are covered in snow.",
+        "fact": "The setting is a snowy forest.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The man is in the foreground, positioned centrally. The snow-covered trees are behind the man, forming the background of the scene.",
+    "spatial": "The man is in the foreground, positioned in front of the snow-covered trees. The trees are behind him and to his sides.",
     "parse_success": true,
     "chunk_idx": 48,
     "video_id": "X-Bh1_5v9NM_00:02:07:100_00:02:51:900"
   },
   {
     "time": [
-      98,
-      100
+      49,
+      50
     ],
     "visible_entities": [
       {
-        "desc": "man with short dark hair and a beard, wearing a red and black plaid flannel shirt over a white t-shirt and white pants",
+        "desc": "person with short dark hair and beard, wearing a red and black plaid flannel jacket over a white top and white pants",
         "action": "throwing snow into the air",
-        "position": "right"
+        "position": "right foreground"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "The man throws a handful of snow upwards into the air.",
+        "fact": "The person throws a handful of snow into the air.",
         "confidence": 1.0
       },
       {
-        "fact": "The man is standing in a snowy forest.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The trees in the background are covered in snow.",
+        "fact": "The person tilts their head back to look up at the falling snow.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The man is positioned on the right side of the frame. He is standing in front of a background of snow-covered trees.",
+    "spatial": "The person is in the foreground on the right side of the frame. Snow-covered trees are behind the person and to the left.",
     "parse_success": true,
     "chunk_idx": 49,
     "video_id": "X-Bh1_5v9NM_00:02:07:100_00:02:51:900"
   },
   {
     "time": [
-      100,
-      102
+      50,
+      51
     ],
     "visible_entities": [
       {
-        "desc": "man with short dark hair and a beard, wearing a red and black plaid flannel jacket, white turtleneck sweater, white pants, and tan boots",
-        "action": "walking forward and gesturing with arms",
+        "desc": "man with short dark hair and beard, wearing a red and black plaid flannel shirt over a white turtleneck sweater, white pants, and tan boots",
+        "action": "dancing and gesturing with arms",
         "position": "center"
-      },
-      {
-        "desc": "snow-covered pine trees",
-        "action": "static",
-        "position": "background"
-      },
-      {
-        "desc": "snow-covered ground",
-        "action": "static",
-        "position": "bottom"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A man in a red plaid jacket is walking forward through a snowy forest.",
+        "fact": "The man in the red plaid shirt is dancing in the snow.",
         "confidence": 1.0
       },
       {
@@ -2032,26 +1980,63 @@
         "confidence": 1.0
       },
       {
-        "fact": "The trees and ground are covered in snow.",
+        "fact": "The man is wearing tan boots.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The man is in the center of the frame, walking on the snow-covered ground. The snow-covered pine trees are behind him and to his sides.",
+    "spatial": "The man is in the center of the frame, surrounded by snow-covered trees. The trees are behind and to the sides of the man.",
     "parse_success": true,
     "chunk_idx": 50,
     "video_id": "X-Bh1_5v9NM_00:02:07:100_00:02:51:900"
   },
   {
     "time": [
-      102,
-      104
+      51,
+      52
     ],
     "visible_entities": [
       {
-        "desc": "man with short dark hair and beard, wearing a red and black plaid jacket, white turtleneck sweater, white pants, and tan boots",
-        "action": "walking forward and singing",
+        "desc": "man with short dark hair and beard, wearing a red and black plaid flannel shirt open over a white turtleneck sweater, white trousers, and tan boots",
+        "action": "walking forward through snow",
         "position": "center"
+      },
+      {
+        "desc": "snow-covered forest with tall trees and white ground",
+        "action": "static",
+        "position": "background"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The man walks forward through the snow towards the camera.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The man's mouth is open as if singing or speaking.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The forest floor and trees are covered in snow.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The man is in the center of the frame, walking in front of the snow-covered trees. The trees are behind the man and surround him on the left and right sides.",
+    "parse_success": true,
+    "chunk_idx": 51,
+    "video_id": "X-Bh1_5v9NM_00:02:07:100_00:02:51:900"
+  },
+  {
+    "time": [
+      52,
+      53
+    ],
+    "visible_entities": [
+      {
+        "desc": "man with short dark hair and beard, wearing a red and orange plaid flannel jacket over a white turtleneck sweater",
+        "action": "gesturing with hand then turning body to the left",
+        "position": "foreground"
       },
       {
         "desc": "snow-covered trees with dark trunks",
@@ -2059,51 +2044,9 @@
         "position": "background"
       },
       {
-        "desc": "white snow covering the ground",
+        "desc": "white snow-covered ground",
         "action": "static",
         "position": "bottom"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "The man walks forward through the snow.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The man sings with his mouth open.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The camera zooms in on the man's face.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [],
-    "spatial": "The man is in the center of the frame, walking on the snow which covers the ground below him. The snow-covered trees are behind the man in the background.",
-    "parse_success": true,
-    "chunk_idx": 51,
-    "video_id": "X-Bh1_5v9NM_00:02:07:100_00:02:51:900"
-  },
-  {
-    "time": [
-      104,
-      106
-    ],
-    "visible_entities": [
-      {
-        "desc": "man with short dark hair and beard, wearing a red and orange plaid jacket over a white turtleneck sweater",
-        "action": "gesturing with right hand then turning head to the left",
-        "position": "center/foreground"
-      },
-      {
-        "desc": "snow-covered pine trees with dark trunks and white branches",
-        "action": "static",
-        "position": "background"
-      },
-      {
-        "desc": "white snow covering the ground",
-        "action": "static",
-        "position": "bottom/background"
       }
     ],
     "atomic_facts": [
@@ -2112,74 +2055,65 @@
         "confidence": 1.0
       },
       {
-        "fact": "The man turns his head to the left to look into the forest.",
+        "fact": "The man turns his body to the left.",
         "confidence": 1.0
       },
       {
-        "fact": "The ground is covered in a thick layer of white snow.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The trees in the background are covered in snow.",
+        "fact": "The man is wearing a red and orange plaid jacket.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The man is in the foreground, standing in front of the snow-covered trees. The trees are behind the man and extend into the background. The snow is below the man and the trees.",
+    "spatial": "The man is in the foreground, positioned in front of the snow-covered trees. The trees are behind the man and extend into the background. The snow is below the man and the trees.",
     "parse_success": true,
     "chunk_idx": 52,
     "video_id": "X-Bh1_5v9NM_00:02:07:100_00:02:51:900"
   },
   {
     "time": [
-      106,
-      108
+      53,
+      54
     ],
     "visible_entities": [
       {
         "desc": "man with short dark hair and beard, wearing a red and black plaid flannel shirt over a white turtleneck sweater, white pants, and tan boots",
-        "action": "walking forward and gesturing with hands",
+        "action": "walking forward and gesturing with hand",
         "position": "center"
       },
       {
-        "desc": "snow-covered trees with white branches",
+        "desc": "snow-covered forest with trees and ground covered in white snow",
         "action": "static",
         "position": "background"
-      },
-      {
-        "desc": "white snow covering the ground",
-        "action": "static",
-        "position": "foreground"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "The man walks forward through the snow.",
+        "fact": "A man in a red plaid shirt walks through a snowy forest.",
         "confidence": 1.0
       },
       {
-        "fact": "The man gestures with his hands while moving.",
+        "fact": "The man gestures with his right hand towards the camera.",
         "confidence": 1.0
       },
       {
-        "fact": "The trees in the background are covered in snow.",
+        "fact": "The ground is covered in deep snow.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The man is in the center of the frame, walking on the snow which covers the ground below him. The snow-covered trees are behind the man in the background.",
+    "spatial": "The man is in the center of the frame, walking on the snow-covered ground. The trees are behind him and to his sides, forming a forest background.",
     "parse_success": true,
     "chunk_idx": 53,
     "video_id": "X-Bh1_5v9NM_00:02:07:100_00:02:51:900"
   },
   {
     "time": [
-      108,
-      110
+      54,
+      55
     ],
     "visible_entities": [
       {
-        "desc": "man with short dark hair and beard, wearing a red and black buffalo plaid flannel shirt over a white turtleneck sweater and white pants",
+        "desc": "man with short dark hair and a beard, wearing a red and black plaid flannel shirt over a white turtleneck sweater and white pants",
         "action": "standing with arms outstretched and head tilted back",
         "position": "center"
       },
@@ -2191,11 +2125,15 @@
     ],
     "atomic_facts": [
       {
-        "fact": "A man stands in a snowy forest with his arms spread wide.",
+        "fact": "The man stands in the center of a snowy forest.",
         "confidence": 1.0
       },
       {
-        "fact": "The man tilts his head back, looking up towards the sky.",
+        "fact": "The man tilts his head back and looks upward.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The man extends his arms outwards to his sides.",
         "confidence": 1.0
       },
       {
@@ -2204,40 +2142,30 @@
       }
     ],
     "ocr": [],
-    "spatial": "The man is in the center of the frame, standing in front of the snow-covered forest. The trees are behind him and surround him on the left and right sides.",
+    "spatial": "The man is in the center of the frame, standing in front of the snow-covered trees. The trees are behind the man and surround him on the left and right sides.",
     "parse_success": true,
     "chunk_idx": 54,
     "video_id": "X-Bh1_5v9NM_00:02:07:100_00:02:51:900"
   },
   {
     "time": [
-      110,
-      112
+      55,
+      56
     ],
     "visible_entities": [
       {
-        "desc": "man with short dark hair and a beard, wearing a red and black plaid jacket with white fur collar and cuffs, over a white turtleneck sweater and white trousers",
-        "action": "walking forward and clapping hands",
+        "desc": "man with short dark hair and a beard, wearing a red and black plaid jacket over a white turtleneck sweater and white pants",
+        "action": "walking forward and rubbing hands together",
         "position": "center"
-      },
-      {
-        "desc": "snow-covered pine trees with dark trunks and white branches",
-        "action": "static",
-        "position": "background"
-      },
-      {
-        "desc": "white snow covering the ground",
-        "action": "static",
-        "position": "bottom"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "The man walks forward through the snow.",
+        "fact": "The man is walking forward through a snowy forest.",
         "confidence": 1.0
       },
       {
-        "fact": "The man claps his hands together.",
+        "fact": "The man rubs his hands together in front of his chest.",
         "confidence": 1.0
       },
       {
@@ -2246,20 +2174,20 @@
       }
     ],
     "ocr": [],
-    "spatial": "The man is in the center of the frame, walking on the snow-covered ground. The snow-covered pine trees are behind the man and surround him in the background.",
+    "spatial": "The man is in the center of the frame, surrounded by snow-covered trees. The trees are behind and to the sides of the man.",
     "parse_success": true,
     "chunk_idx": 55,
     "video_id": "X-Bh1_5v9NM_00:02:07:100_00:02:51:900"
   },
   {
     "time": [
-      112,
-      114
+      56,
+      57
     ],
     "visible_entities": [
       {
-        "desc": "man with short dark hair and beard, wearing a red and black plaid flannel shirt over a white turtleneck, white pants, and tan boots",
-        "action": "walking through snow and looking up",
+        "desc": "man with short dark hair and beard, wearing a red and black plaid fuzzy jacket, white turtleneck, white pants, and tan boots",
+        "action": "walking through snow",
         "position": "center"
       },
       {
@@ -2275,91 +2203,7 @@
     ],
     "atomic_facts": [
       {
-        "fact": "The man walks forward through the snowy forest.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The man tilts his head back to look up at the trees.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The ground is covered in a thick layer of white snow.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [],
-    "spatial": "The man is in the center of the frame, surrounded by snow-covered trees. The trees are behind and to the sides of the man. The snow is below the man's feet.",
-    "parse_success": true,
-    "chunk_idx": 56,
-    "video_id": "X-Bh1_5v9NM_00:02:07:100_00:02:51:900"
-  },
-  {
-    "time": [
-      114,
-      116
-    ],
-    "visible_entities": [
-      {
-        "desc": "man with short dark hair and beard, wearing a red and black plaid flannel shirt over a white turtleneck sweater and white pants",
-        "action": "walking forward and covering face with hands",
-        "position": "center/foreground"
-      },
-      {
-        "desc": "snow-covered pine trees with dark trunks and white branches",
-        "action": "static",
-        "position": "background"
-      },
-      {
-        "desc": "white snow covering the ground",
-        "action": "static",
-        "position": "bottom/background"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "The man walks forward through the snow.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The man raises his hands to cover his face.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The trees are covered in snow.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [],
-    "spatial": "The man is in the center foreground, walking in front of the snow-covered trees. The trees are behind the man and extend into the background. The snow is on the ground below the trees and under the man's feet.",
-    "parse_success": true,
-    "chunk_idx": 57,
-    "video_id": "X-Bh1_5v9NM_00:02:07:100_00:02:51:900"
-  },
-  {
-    "time": [
-      116,
-      118
-    ],
-    "visible_entities": [
-      {
-        "desc": "man with short brown hair and beard, wearing a red and black plaid flannel jacket, white turtleneck sweater, white pants, and tan boots",
-        "action": "walking forward",
-        "position": "center"
-      },
-      {
-        "desc": "snow-covered pine trees",
-        "action": "static",
-        "position": "background"
-      },
-      {
-        "desc": "white snow",
-        "action": "static",
-        "position": "foreground"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "The man walks forward through the snow.",
+        "fact": "A man is walking through a snowy forest.",
         "confidence": 1.0
       },
       {
@@ -2367,36 +2211,124 @@
         "confidence": 1.0
       },
       {
-        "fact": "The trees are covered in snow.",
+        "fact": "The trees in the background are covered in snow.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The man is in the center of the frame, walking on the snow. The snow-covered trees are behind the man and to his left and right.",
+    "spatial": "The man is in the center of the frame, walking on the snow which covers the bottom of the scene. The snow-covered pine trees are behind the man and to his left and right.",
+    "parse_success": true,
+    "chunk_idx": 56,
+    "video_id": "X-Bh1_5v9NM_00:02:07:100_00:02:51:900"
+  },
+  {
+    "time": [
+      57,
+      58
+    ],
+    "visible_entities": [
+      {
+        "desc": "person with short dark hair and a beard, wearing a red and black plaid flannel jacket over a white turtleneck sweater and white pants",
+        "action": "walking forward and bringing hands up to face",
+        "position": "center/foreground"
+      },
+      {
+        "desc": "snow-covered pine trees with dark trunks and white snow on branches",
+        "action": "static",
+        "position": "background/left/right"
+      },
+      {
+        "desc": "thick white snow covering the forest floor",
+        "action": "static",
+        "position": "bottom/background"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The person in the red plaid jacket is walking through a snowy forest.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The person raises both hands towards their face in the second frame.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The trees in the background are covered in snow.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The person is in the center foreground, walking on the snow. The snow-covered trees are behind the person and to the left and right sides of the frame.",
+    "parse_success": true,
+    "chunk_idx": 57,
+    "video_id": "X-Bh1_5v9NM_00:02:07:100_00:02:51:900"
+  },
+  {
+    "time": [
+      58,
+      59
+    ],
+    "visible_entities": [
+      {
+        "desc": "man with short brown hair and beard, wearing a red and black plaid flannel jacket, white turtleneck sweater, white trousers, and tan boots",
+        "action": "dancing in the snow",
+        "position": "center"
+      },
+      {
+        "desc": "snow-covered pine trees with dark trunks",
+        "action": "static",
+        "position": "background"
+      },
+      {
+        "desc": "white snow covering the ground",
+        "action": "static",
+        "position": "bottom"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A man is dancing in a snowy forest.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The man is wearing a red and black plaid jacket.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The trees in the background are covered in snow.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The man is in the center of the frame, standing on the white snow. The snow-covered pine trees are behind the man and surround him in the background.",
     "parse_success": true,
     "chunk_idx": 58,
     "video_id": "X-Bh1_5v9NM_00:02:07:100_00:02:51:900"
   },
   {
     "time": [
-      118,
-      120
+      59,
+      60
     ],
     "visible_entities": [
       {
-        "desc": "man with short dark hair and beard, wearing a red and orange plaid flannel shirt over a white turtleneck sweater and white pants",
-        "action": "walking through snow",
-        "position": "center"
+        "desc": "man with short dark hair and a beard, wearing a red and orange plaid flannel shirt over a white turtleneck sweater and white pants",
+        "action": "walking forward through snow",
+        "position": "center/foreground"
       },
       {
-        "desc": "snow-covered forest with tall pine trees",
+        "desc": "snow-covered forest with tall trees and bushes",
         "action": "static",
         "position": "background"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A man in a red plaid shirt is walking through a snowy forest.",
+        "fact": "The man is walking forward through a snowy landscape.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The man is wearing a red and orange plaid shirt.",
         "confidence": 1.0
       },
       {
@@ -2409,62 +2341,62 @@
       }
     ],
     "ocr": [],
-    "spatial": "The man is in the center foreground, walking in front of the snow-covered trees which are in the background.",
+    "spatial": "The man is in the foreground, walking towards the camera. The snow-covered forest is behind him.",
     "parse_success": true,
     "chunk_idx": 59,
     "video_id": "X-Bh1_5v9NM_00:02:07:100_00:02:51:900"
   },
   {
     "time": [
-      120,
-      122
+      60,
+      61
     ],
     "visible_entities": [
       {
-        "desc": "man with short dark hair, beard, wearing a red and orange plaid jacket over a white turtleneck sweater",
-        "action": "walking through snow",
+        "desc": "man with short dark hair, beard, and mustache, wearing a red and orange plaid jacket over a white shirt",
+        "action": "moving through snow",
         "position": "center/foreground"
-      },
-      {
-        "desc": "snow-covered pine trees",
-        "action": "static",
-        "position": "background"
       },
       {
         "desc": "snow-covered ground",
         "action": "static",
         "position": "bottom/background"
+      },
+      {
+        "desc": "tall trees with snow on branches",
+        "action": "static",
+        "position": "background"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "The man is walking through a snowy forest.",
+        "fact": "man moves through a snowy forest",
         "confidence": 1.0
       },
       {
-        "fact": "The man is wearing a red and orange plaid jacket.",
+        "fact": "trees are covered in snow",
         "confidence": 1.0
       },
       {
-        "fact": "The trees in the background are covered in snow.",
+        "fact": "ground is covered in snow",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The man is in the foreground, centered in the frame. The snow-covered trees are behind him and to his left and right. The snow-covered ground is below him.",
+    "spatial": "The man is in the foreground, positioned in front of the snow-covered trees. The trees are located in the background behind the man. The snow covers the ground below the trees and surrounds the man.",
     "parse_success": true,
     "chunk_idx": 60,
     "video_id": "X-Bh1_5v9NM_00:02:07:100_00:02:51:900"
   },
   {
     "time": [
-      122,
-      124
+      61,
+      62
     ],
     "visible_entities": [
       {
-        "desc": "man with short dark hair, beard, wearing a white turtleneck sweater and a red and orange plaid coat",
-        "action": "talking and gesturing with right hand",
+        "desc": "man with short dark hair and a beard, wearing a white turtleneck sweater and a red and orange plaid coat",
+        "action": "talking and gesturing with his right hand",
         "position": "center foreground"
       },
       {
@@ -2492,45 +2424,45 @@
         "confidence": 1.0
       },
       {
-        "fact": "The background consists of a snowy forest with pine trees.",
+        "fact": "The background is a forest of snow-covered pine trees.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The man is in the center foreground, positioned in front of the snow-covered pine trees. The white snow is below the trees and surrounds the man's lower body.",
+    "spatial": "The man is in the foreground, centered in the frame. The snow-covered pine trees are behind him, filling the background. The snow on the ground is below the trees and the man.",
     "parse_success": true,
     "chunk_idx": 61,
     "video_id": "X-Bh1_5v9NM_00:02:07:100_00:02:51:900"
   },
   {
     "time": [
-      124,
-      126
+      62,
+      63
     ],
     "visible_entities": [
       {
-        "desc": "man with short dark hair, beard, wearing a white turtleneck and a red and orange plaid jacket",
-        "action": "walking forward",
+        "desc": "man with short dark hair, beard, wearing a red and orange plaid jacket over a white turtleneck sweater",
+        "action": "walking through snow",
         "position": "center foreground"
       },
       {
-        "desc": "snow-covered pine trees",
+        "desc": "snow-covered pine trees with dark trunks and white branches",
         "action": "static",
         "position": "background"
       },
       {
-        "desc": "snow-covered ground",
+        "desc": "white snow covering the ground",
         "action": "static",
         "position": "bottom background"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "The man is walking forward through the snow.",
+        "fact": "The man is walking through a snowy forest.",
         "confidence": 1.0
       },
       {
-        "fact": "The man is wearing a white turtleneck under a red and orange plaid jacket.",
+        "fact": "The man is wearing a red and orange plaid jacket.",
         "confidence": 1.0
       },
       {
@@ -2539,15 +2471,15 @@
       }
     ],
     "ocr": [],
-    "spatial": "The man is in the center foreground, in front of the snow-covered pine trees. The snow-covered ground is below the man and the trees.",
+    "spatial": "The man is in the foreground, centered in the frame. The snow-covered pine trees are behind the man, filling the background. The white snow is on the ground below the trees and around the man's feet.",
     "parse_success": true,
     "chunk_idx": 62,
     "video_id": "X-Bh1_5v9NM_00:02:07:100_00:02:51:900"
   },
   {
     "time": [
-      126,
-      128
+      63,
+      64
     ],
     "visible_entities": [
       {
@@ -2572,103 +2504,103 @@
         "confidence": 1.0
       },
       {
-        "fact": "Snow is visible on the man's jacket.",
+        "fact": "The man is wearing a red and orange plaid jacket over a white turtleneck.",
         "confidence": 1.0
       },
       {
-        "fact": "The man turns his head to the right.",
+        "fact": "Snow is visible on the man's jacket.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The man is in the foreground, centered in the frame. The snow-covered pine trees are behind the man. The snow is on the ground below the trees and the man.",
+    "spatial": "The man is in the foreground, in front of the snow-covered pine trees. The trees are behind the man.",
     "parse_success": true,
     "chunk_idx": 63,
     "video_id": "X-Bh1_5v9NM_00:02:07:100_00:02:51:900"
   },
   {
     "time": [
-      128,
-      130
+      64,
+      65
     ],
     "visible_entities": [
       {
-        "desc": "man with short dark hair and beard, wearing a red and orange plaid flannel jacket over a white turtleneck sweater",
-        "action": "walking through snow and bending down to touch a snow mound",
+        "desc": "man with short dark hair, beard, and mustache, wearing a red and orange plaid flannel jacket over a white turtleneck sweater",
+        "action": "interacting with snow",
         "position": "center/foreground"
       },
       {
-        "desc": "snow-covered pine trees with dark trunks",
+        "desc": "white snow",
         "action": "static",
-        "position": "background"
+        "position": "background/ground"
       },
       {
-        "desc": "large mound of white snow",
+        "desc": "tall pine trees with snow-covered branches",
         "action": "static",
-        "position": "right/foreground"
+        "position": "background"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "The man is walking through a snowy forest.",
+        "fact": "A man in a red plaid jacket is standing in a snowy forest.",
         "confidence": 1.0
       },
       {
-        "fact": "The man bends down and touches a large mound of snow with his hand.",
+        "fact": "The man is reaching out and touching a pile of snow with his hand.",
         "confidence": 1.0
       },
       {
-        "fact": "The man is wearing a red and orange plaid jacket.",
+        "fact": "The trees in the background are covered in snow.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The man is in the center foreground, positioned in front of the snow-covered pine trees. He is to the left of the large mound of snow. The man's hand is touching the snow mound.",
+    "spatial": "The man is in the foreground, positioned in front of the snowy forest background. The snow is on the ground below the man and covers the branches of the trees behind him.",
     "parse_success": true,
     "chunk_idx": 64,
     "video_id": "X-Bh1_5v9NM_00:02:07:100_00:02:51:900"
   },
   {
     "time": [
-      130,
-      132
+      65,
+      66
     ],
     "visible_entities": [
       {
-        "desc": "person with short dark hair, beard, wearing a red and black plaid coat and brown boots",
-        "action": "kneeling in the snow and holding a snowball",
+        "desc": "man with short dark hair and beard, wearing a red and black plaid coat and brown boots",
+        "action": "kneeling in snow and holding a snowball",
         "position": "center"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A person is kneeling in the snow.",
+        "fact": "The man kneels in the snow.",
         "confidence": 1.0
       },
       {
-        "fact": "The person is holding a snowball in their hands.",
+        "fact": "The man holds a snowball in his hands.",
         "confidence": 1.0
       },
       {
-        "fact": "The person is wearing a red and black plaid coat.",
+        "fact": "The man is wearing a red and black plaid coat.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The person is in the center of the frame, surrounded by snow. The person is in front of the snowy forest background.",
+    "spatial": "The man is in the center of the frame, kneeling on the snow. The snowball is held in front of his chest. Snow-covered trees are in the background behind the man.",
     "parse_success": true,
     "chunk_idx": 65,
     "video_id": "X-Bh1_5v9NM_00:02:07:100_00:02:51:900"
   },
   {
     "time": [
-      132,
-      134
+      66,
+      67
     ],
     "visible_entities": [
       {
-        "desc": "man with short dark hair and beard, wearing a red and orange plaid coat over a white turtleneck sweater",
-        "action": "kneeling in snow and shaping a snowball",
+        "desc": "man with short dark hair and beard, wearing a red and orange plaid flannel jacket over a white shirt",
+        "action": "holding a snowball",
         "position": "center"
       },
       {
@@ -2677,68 +2609,69 @@
         "position": "center"
       },
       {
-        "desc": "snow-covered forest floor",
+        "desc": "snowy forest background with trees",
         "action": "static",
         "position": "background"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A man is kneeling in the snow.",
-        "confidence": 1.0
-      },
-      {
         "fact": "The man is holding a large snowball with both hands.",
         "confidence": 1.0
       },
       {
-        "fact": "The man is shaping the snowball.",
+        "fact": "The man is wearing a red and orange plaid jacket.",
         "confidence": 1.0
       },
       {
-        "fact": "The man is wearing a red and orange plaid coat.",
+        "fact": "The man is kneeling in the snow.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The man is in the center of the frame, kneeling on the snow-covered ground. He is holding the snowball in front of his chest. The snowy forest is behind the man.",
+    "spatial": "The man is in the center of the frame, holding the snowball in front of his chest. The snowy forest is behind the man.",
     "parse_success": true,
     "chunk_idx": 66,
     "video_id": "X-Bh1_5v9NM_00:02:07:100_00:02:51:900"
   },
   {
     "time": [
-      134,
-      136
+      67,
+      68
     ],
     "visible_entities": [
       {
         "desc": "man with short dark hair and beard, wearing a red and orange plaid fleece jacket with a white collar and tan pants",
-        "action": "kneeling in snow and packing a snowball with both hands",
+        "action": "kneeling in snow and packing a snowball",
         "position": "center"
       },
       {
-        "desc": "white snowball, round and compacted",
-        "action": "being held and shaped",
+        "desc": "white snowball",
+        "action": "being held",
         "position": "center"
       },
       {
-        "desc": "snow-covered forest floor with thin trees in the background",
+        "desc": "snow-covered ground",
+        "action": "static",
+        "position": "background"
+      },
+      {
+        "desc": "dark tree trunks",
         "action": "static",
         "position": "background"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "The man is kneeling on the snow-covered ground.",
+        "fact": "The man is kneeling in the snow.",
         "confidence": 1.0
       },
       {
-        "fact": "The man is holding a snowball in his hands.",
+        "fact": "The man is holding a snowball with both hands.",
         "confidence": 1.0
       },
       {
-        "fact": "The man is pressing his hands together to pack the snowball.",
+        "fact": "The man is packing the snowball.",
         "confidence": 1.0
       },
       {
@@ -2747,29 +2680,29 @@
       }
     ],
     "ocr": [],
-    "spatial": "The man is in the center of the frame, kneeling on the snow. He is holding the snowball in front of his chest with both hands. The trees are behind the man in the background.",
+    "spatial": "The man is in the center of the frame, kneeling on the snow-covered ground. He is holding the snowball in front of his chest. The dark tree trunks are behind the man in the background.",
     "parse_success": true,
     "chunk_idx": 67,
     "video_id": "X-Bh1_5v9NM_00:02:07:100_00:02:51:900"
   },
   {
     "time": [
-      136,
-      138
+      68,
+      69
     ],
     "visible_entities": [
       {
-        "desc": "person with short dark hair, wearing a thick red and orange plaid jacket, brown pants, and brown shoes",
+        "desc": "person with short dark hair, wearing a red and black plaid flannel shirt and brown boots",
         "action": "kneeling in the snow",
         "position": "center"
       },
       {
-        "desc": "white snow covering the ground",
+        "desc": "snow-covered ground",
         "action": "static",
         "position": "background"
       },
       {
-        "desc": "snow-covered trees and branches",
+        "desc": "snow-covered trees",
         "action": "static",
         "position": "background"
       }
@@ -2780,44 +2713,49 @@
         "confidence": 1.0
       },
       {
-        "fact": "The person is wearing a red and orange plaid jacket.",
+        "fact": "The person is wearing a red and black plaid shirt.",
         "confidence": 1.0
       },
       {
-        "fact": "The person is facing away from the camera.",
+        "fact": "The person is wearing brown boots.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The person is in the center of the frame, kneeling on the snow. The snow-covered trees are behind the person.",
+    "spatial": "The person is in the center of the frame, kneeling on the snow-covered ground. The snow-covered trees are in the background behind the person.",
     "parse_success": true,
     "chunk_idx": 68,
     "video_id": "X-Bh1_5v9NM_00:02:07:100_00:02:51:900"
   },
   {
     "time": [
-      138,
-      140
+      69,
+      70
     ],
     "visible_entities": [
       {
-        "desc": "man with short dark hair, beard, wearing a red and black plaid flannel jacket over a white turtleneck sweater",
-        "action": "packing snow into a ball",
+        "desc": "man with short dark hair and beard, wearing a red and orange plaid flannel shirt over a white turtleneck sweater and white pants",
+        "action": "holding a snowball with both hands",
         "position": "center"
       },
       {
-        "desc": "white snowball",
+        "desc": "snowball, white, round, held in hands",
         "action": "being held",
         "position": "center"
+      },
+      {
+        "desc": "snowy forest background with trees",
+        "action": "static",
+        "position": "background"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "The man is packing snow into a ball with his hands.",
+        "fact": "The man is holding a snowball in front of his chest.",
         "confidence": 1.0
       },
       {
-        "fact": "The man is holding the snowball in front of his chest.",
+        "fact": "The man is wearing a red and orange plaid shirt.",
         "confidence": 1.0
       },
       {
@@ -2826,35 +2764,72 @@
       }
     ],
     "ocr": [],
-    "spatial": "The man is in the center of the frame, surrounded by snow. He is holding the snowball in front of his chest.",
+    "spatial": "The man is in the center of the frame, holding the snowball in front of his chest. The snowy forest is behind the man.",
     "parse_success": true,
     "chunk_idx": 69,
     "video_id": "X-Bh1_5v9NM_00:02:07:100_00:02:51:900"
   },
   {
     "time": [
-      140,
-      142
+      70,
+      71
     ],
     "visible_entities": [
       {
-        "desc": "man with short dark hair and beard, wearing a red and orange plaid hooded jacket",
+        "desc": "man with short dark hair and beard, wearing a red and orange plaid flannel jacket",
         "action": "packing snow into a ball",
         "position": "center"
       },
       {
         "desc": "white snow",
-        "action": "static",
+        "action": "being manipulated",
         "position": "foreground"
+      },
+      {
+        "desc": "dark tree trunks",
+        "action": "static",
+        "position": "background"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "The man is packing snow into a ball with his hands.",
+        "fact": "The man is crouching in the snow.",
         "confidence": 1.0
       },
       {
-        "fact": "The man is kneeling in the snow.",
+        "fact": "The man is holding a large clump of snow in his hands.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The man is pressing the snow together to form a snowball.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The man is in the center of the frame, surrounded by snow. The dark tree trunks are behind the man in the background.",
+    "parse_success": true,
+    "chunk_idx": 70,
+    "video_id": "X-Bh1_5v9NM_00:02:07:100_00:02:51:900"
+  },
+  {
+    "time": [
+      71,
+      72
+    ],
+    "visible_entities": [
+      {
+        "desc": "man with short dark hair and beard, wearing a red and orange plaid flannel jacket over a white sweater",
+        "action": "kneeling in snow and rubbing hands together",
+        "position": "center"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The man is kneeling in deep snow.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The man is rubbing his hands together.",
         "confidence": 1.0
       },
       {
@@ -2863,63 +2838,31 @@
       }
     ],
     "ocr": [],
-    "spatial": "The man is in the center of the frame, kneeling on the snow. The snow is all around him and in the foreground.",
-    "parse_success": true,
-    "chunk_idx": 70,
-    "video_id": "X-Bh1_5v9NM_00:02:07:100_00:02:51:900"
-  },
-  {
-    "time": [
-      142,
-      144
-    ],
-    "visible_entities": [
-      {
-        "desc": "man with short dark hair and beard, wearing a red and orange plaid jacket over a white turtleneck sweater",
-        "action": "kneeling in snow and clapping hands",
-        "position": "center"
-      },
-      {
-        "desc": "white snow covering the ground",
-        "action": "static",
-        "position": "foreground"
-      },
-      {
-        "desc": "tall thin tree trunks in a forest",
-        "action": "static",
-        "position": "background"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "The man is kneeling in the snow.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The man is clapping his hands together.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "Snow is visible on the man's jacket.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [],
-    "spatial": "The man is in the center of the frame, kneeling on the snow. The forest trees are behind the man in the background.",
+    "spatial": "The man is in the center of the frame, surrounded by white snow. Trees are visible in the background behind the man.",
     "parse_success": true,
     "chunk_idx": 71,
     "video_id": "X-Bh1_5v9NM_00:02:07:100_00:02:51:900"
   },
   {
     "time": [
-      144,
-      146
+      72,
+      73
     ],
     "visible_entities": [
       {
-        "desc": "man with short dark hair and a beard, wearing a red and black plaid flannel shirt over a white sweater",
+        "desc": "man with short dark hair and beard, wearing a red and black plaid flannel shirt over a white turtleneck sweater",
         "action": "kneeling in snow and throwing a snowball",
         "position": "center"
+      },
+      {
+        "desc": "white snowball",
+        "action": "being held then thrown",
+        "position": "center"
+      },
+      {
+        "desc": "snow-covered ground and forest background with trees",
+        "action": "static",
+        "position": "background"
       }
     ],
     "atomic_facts": [
@@ -2936,29 +2879,29 @@
         "confidence": 1.0
       },
       {
-        "fact": "The setting is a snowy forest with trees in the background.",
+        "fact": "The man is wearing a red plaid shirt.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The man is in the center of the frame, surrounded by snow. The trees are behind the man in the background.",
+    "spatial": "The man is in the center of the frame, kneeling on the snow-covered ground. The forest trees are behind the man in the background. The snowball is held in the man's hands in front of his chest before being thrown.",
     "parse_success": true,
     "chunk_idx": 72,
     "video_id": "X-Bh1_5v9NM_00:02:07:100_00:02:51:900"
   },
   {
     "time": [
-      146,
-      148
+      73,
+      74
     ],
     "visible_entities": [
       {
-        "desc": "man with short dark hair and beard, wearing a red and black plaid flannel shirt over a white t-shirt, white pants, and tan boots",
-        "action": "crouching and standing up in the snow",
+        "desc": "man with short dark hair, wearing a red and black plaid flannel shirt, white t-shirt, white pants, and tan boots",
+        "action": "running through the snow",
         "position": "center"
       },
       {
-        "desc": "snow-covered ground with footprints and tracks",
+        "desc": "snow-covered ground with footprints",
         "action": "static",
         "position": "bottom"
       },
@@ -2970,15 +2913,103 @@
     ],
     "atomic_facts": [
       {
-        "fact": "The man crouches down in the snow.",
+        "fact": "A man is running through a snowy forest.",
         "confidence": 1.0
       },
       {
-        "fact": "The man stands up and moves his arms.",
+        "fact": "The man is wearing a red plaid shirt over a white t-shirt.",
         "confidence": 1.0
       },
       {
         "fact": "The ground is covered in deep snow with visible footprints.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The man is in the center of the frame, running on top of the snow-covered ground. The trees are in the background behind the man. Thin branches are visible to the right of the man.",
+    "parse_success": true,
+    "chunk_idx": 73,
+    "video_id": "X-Bh1_5v9NM_00:02:07:100_00:02:51:900"
+  },
+  {
+    "time": [
+      74,
+      75
+    ],
+    "visible_entities": [
+      {
+        "desc": "man with short dark hair and beard, wearing a red and black plaid flannel shirt over a white turtleneck sweater and white pants",
+        "action": "walking through snow",
+        "position": "center/foreground"
+      },
+      {
+        "desc": "snow-covered pine trees with dark trunks",
+        "action": "static",
+        "position": "background"
+      },
+      {
+        "desc": "white snow covering the ground",
+        "action": "static",
+        "position": "bottom/foreground"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The man is walking forward through a snowy forest.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The man looks up towards the sky in the second frame.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The trees are covered in snow.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The ground is covered in a thick layer of white snow.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The man is in the center foreground, walking on the snow which covers the bottom of the frame. The snow-covered trees are behind the man and extend into the background.",
+    "parse_success": true,
+    "chunk_idx": 74,
+    "video_id": "X-Bh1_5v9NM_00:02:07:100_00:02:51:900"
+  },
+  {
+    "time": [
+      75,
+      76
+    ],
+    "visible_entities": [
+      {
+        "desc": "man with short dark hair and a beard, wearing a red and orange plaid flannel jacket over a white turtleneck sweater",
+        "action": "standing in the snow",
+        "position": "center"
+      },
+      {
+        "desc": "snow-covered forest with tall trees",
+        "action": "static",
+        "position": "background"
+      },
+      {
+        "desc": "white snow",
+        "action": "static",
+        "position": "foreground"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A man is standing in a snowy forest.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The man is wearing a red and orange plaid jacket.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "Snow is visible on the man's jacket.",
         "confidence": 1.0
       },
       {
@@ -2987,21 +3018,183 @@
       }
     ],
     "ocr": [],
-    "spatial": "The man is in the center of the frame, standing on the snow-covered ground. The snow-covered trees are behind the man in the background. Thin branches are visible to the right of the man.",
+    "spatial": "The man is in the center of the frame, standing in front of the snow-covered forest. The snow is on the ground around him and on the trees in the background.",
     "parse_success": true,
-    "chunk_idx": 73,
+    "chunk_idx": 75,
     "video_id": "X-Bh1_5v9NM_00:02:07:100_00:02:51:900"
   },
   {
     "time": [
-      148,
-      150
+      76,
+      77
     ],
     "visible_entities": [
       {
-        "desc": "man with short dark hair and a beard, wearing a red and black plaid flannel shirt over a white turtleneck sweater and white pants",
-        "action": "walking through the snow and looking up",
-        "position": "center"
+        "desc": "man with short dark hair, beard, wearing a red and orange plaid jacket over a white turtleneck sweater",
+        "action": "walking through snow",
+        "position": "center/foreground"
+      },
+      {
+        "desc": "snow-covered pine trees",
+        "action": "static",
+        "position": "background"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The man is walking through a snowy forest.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "Snowflakes are falling and landing on the man's jacket.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The man is wearing a red and orange plaid jacket.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The man is in the foreground, centered in the frame. The snow-covered pine trees are behind him, forming the background of the scene.",
+    "parse_success": true,
+    "chunk_idx": 76,
+    "video_id": "X-Bh1_5v9NM_00:02:07:100_00:02:51:900"
+  },
+  {
+    "time": [
+      77,
+      78
+    ],
+    "visible_entities": [
+      {
+        "desc": "man with short dark hair, beard, wearing a white turtleneck sweater and a red and orange plaid coat",
+        "action": "gesturing with hand",
+        "position": "center foreground"
+      },
+      {
+        "desc": "snow-covered forest with tall pine trees",
+        "action": "static",
+        "position": "background"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "the man gestures with his right hand towards the camera",
+        "confidence": 1.0
+      },
+      {
+        "fact": "snow is visible on the man's coat",
+        "confidence": 1.0
+      },
+      {
+        "fact": "the man is wearing a white turtleneck under his coat",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The man is in the foreground, centered in the frame. The snow-covered forest is behind the man.",
+    "parse_success": true,
+    "chunk_idx": 77,
+    "video_id": "X-Bh1_5v9NM_00:02:07:100_00:02:51:900"
+  },
+  {
+    "time": [
+      78,
+      79
+    ],
+    "visible_entities": [
+      {
+        "desc": "man with short dark hair and beard, wearing a white turtleneck sweater under a red and orange plaid coat",
+        "action": "standing in the snow",
+        "position": "center foreground"
+      },
+      {
+        "desc": "snow-covered pine trees",
+        "action": "static",
+        "position": "background"
+      },
+      {
+        "desc": "white snow",
+        "action": "static",
+        "position": "ground"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A man is standing in a snowy forest.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "Snow is falling and accumulating on the man's coat.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The man is facing the camera.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The man is in the foreground, centered in the frame. The snow-covered trees are behind the man, forming the background. The snow covers the ground beneath the man and the trees.",
+    "parse_success": true,
+    "chunk_idx": 78,
+    "video_id": "X-Bh1_5v9NM_00:02:07:100_00:02:51:900"
+  },
+  {
+    "time": [
+      79,
+      80
+    ],
+    "visible_entities": [
+      {
+        "desc": "man with short dark hair, beard, and mustache, wearing a white turtleneck sweater and a thick red and orange plaid coat",
+        "action": "talking and gesturing with hand",
+        "position": "center/foreground"
+      },
+      {
+        "desc": "snow-covered pine trees",
+        "action": "static",
+        "position": "background"
+      },
+      {
+        "desc": "snow-covered ground",
+        "action": "static",
+        "position": "bottom/background"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The man is talking to the camera.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The man is gesturing with his right hand.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "Snow is visible on the man's coat.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The setting is a snowy forest.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The man is in the foreground, centered in the frame. The snow-covered pine trees are behind the man. The snow-covered ground is below the man and the trees.",
+    "parse_success": true,
+    "chunk_idx": 79,
+    "video_id": "X-Bh1_5v9NM_00:02:07:100_00:02:51:900"
+  },
+  {
+    "time": [
+      80,
+      81
+    ],
+    "visible_entities": [
+      {
+        "desc": "man with short dark hair, beard, and mustache, wearing a red and orange plaid coat over a white turtleneck sweater",
+        "action": "walking through snow and looking up",
+        "position": "center/foreground"
       },
       {
         "desc": "snow-covered forest with tall trees",
@@ -3019,29 +3212,29 @@
         "confidence": 1.0
       },
       {
-        "fact": "The trees in the background are covered in snow.",
+        "fact": "Snow is visible on the man's coat.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The man is in the center foreground, walking in front of the snow-covered trees which form the background.",
+    "spatial": "The man is in the foreground, positioned in front of the snow-covered forest. The trees are behind him.",
     "parse_success": true,
-    "chunk_idx": 74,
+    "chunk_idx": 80,
     "video_id": "X-Bh1_5v9NM_00:02:07:100_00:02:51:900"
   },
   {
     "time": [
-      150,
-      152
+      81,
+      82
     ],
     "visible_entities": [
       {
-        "desc": "man with short dark hair and beard, wearing a red and orange plaid jacket over a white turtleneck sweater",
+        "desc": "man with short dark hair, beard, and mustache, wearing a red and orange plaid jacket over a white shirt",
         "action": "walking through snow",
-        "position": "center"
+        "position": "center/foreground"
       },
       {
-        "desc": "snow-covered trees and ground",
+        "desc": "snow-covered forest with tall trees",
         "action": "static",
         "position": "background"
       }
@@ -3049,6 +3242,10 @@
     "atomic_facts": [
       {
         "fact": "The man is walking through a snowy forest.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The man is holding the camera in a selfie position.",
         "confidence": 1.0
       },
       {
@@ -3057,249 +3254,21 @@
       }
     ],
     "ocr": [],
-    "spatial": "The man is in the foreground, centered in the frame. The snow-covered trees are behind the man, forming the background.",
-    "parse_success": true,
-    "chunk_idx": 75,
-    "video_id": "X-Bh1_5v9NM_00:02:07:100_00:02:51:900"
-  },
-  {
-    "time": [
-      152,
-      154
-    ],
-    "visible_entities": [
-      {
-        "desc": "man with short dark hair, beard, wearing a red and orange plaid jacket over a white turtleneck sweater",
-        "action": "walking through snow",
-        "position": "center"
-      },
-      {
-        "desc": "snow-covered pine trees",
-        "action": "static",
-        "position": "background"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "The man is walking through a snowy forest.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The man turns his head to the left.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "Snow is falling and visible on the man's jacket.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [],
-    "spatial": "The man is in the foreground, centered in the frame. The snow-covered pine trees are behind the man, filling the background.",
-    "parse_success": true,
-    "chunk_idx": 76,
-    "video_id": "X-Bh1_5v9NM_00:02:07:100_00:02:51:900"
-  },
-  {
-    "time": [
-      154,
-      156
-    ],
-    "visible_entities": [
-      {
-        "desc": "man with short dark hair and a beard, wearing a red and orange plaid coat over a white turtleneck sweater, with snowflakes on his coat",
-        "action": "walking forward",
-        "position": "center/foreground"
-      },
-      {
-        "desc": "snow-covered forest with tall thin trees",
-        "action": "static",
-        "position": "background"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "The man walks forward through the snow.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "Snowflakes are visible on the man's coat.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [],
-    "spatial": "The man is in the foreground, centered in the frame. The snow-covered forest is behind him.",
-    "parse_success": true,
-    "chunk_idx": 77,
-    "video_id": "X-Bh1_5v9NM_00:02:07:100_00:02:51:900"
-  },
-  {
-    "time": [
-      156,
-      158
-    ],
-    "visible_entities": [
-      {
-        "desc": "man with short dark hair, beard, wearing a red and orange plaid coat over a white turtleneck sweater",
-        "action": "standing in the snow",
-        "position": "center/foreground"
-      },
-      {
-        "desc": "snow-covered forest with tall pine trees",
-        "action": "static",
-        "position": "background"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "A man stands in a snowy forest.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "Snowflakes are visible on the man's coat.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The man is wearing a red and orange plaid coat.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [],
-    "spatial": "The man is in the foreground, centered in the frame. The snow-covered forest is behind the man.",
-    "parse_success": true,
-    "chunk_idx": 78,
-    "video_id": "X-Bh1_5v9NM_00:02:07:100_00:02:51:900"
-  },
-  {
-    "time": [
-      158,
-      160
-    ],
-    "visible_entities": [
-      {
-        "desc": "man with short dark hair and a beard, wearing a white turtleneck sweater and a thick red and orange plaid coat",
-        "action": "standing in the snow",
-        "position": "center foreground"
-      },
-      {
-        "desc": "snow-covered pine trees",
-        "action": "static",
-        "position": "background"
-      },
-      {
-        "desc": "white snow",
-        "action": "static",
-        "position": "ground"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "A man is standing in a snowy forest.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The man is wearing a red and orange plaid coat over a white turtleneck.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "Snow is visible on the man's coat.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [],
-    "spatial": "The man is in the center foreground, standing in front of the snow-covered pine trees. The snow is on the ground below the trees and the man.",
-    "parse_success": true,
-    "chunk_idx": 79,
-    "video_id": "X-Bh1_5v9NM_00:02:07:100_00:02:51:900"
-  },
-  {
-    "time": [
-      160,
-      162
-    ],
-    "visible_entities": [
-      {
-        "desc": "man with short dark hair, beard, and mustache, wearing a white turtleneck sweater under a red and orange plaid jacket",
-        "action": "walking through snow and looking up",
-        "position": "center/foreground"
-      },
-      {
-        "desc": "snow-covered forest with tall trees",
-        "action": "static",
-        "position": "background"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "The man is walking through a snowy forest.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The man tilts his head back to look up at the sky or trees.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "Snowflakes are visible on the man's jacket.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [],
-    "spatial": "The man is in the foreground, centered in the frame. The snow-covered trees are behind him in the background. Snow is on top of the man's jacket.",
-    "parse_success": true,
-    "chunk_idx": 80,
-    "video_id": "X-Bh1_5v9NM_00:02:07:100_00:02:51:900"
-  },
-  {
-    "time": [
-      162,
-      164
-    ],
-    "visible_entities": [
-      {
-        "desc": "man with short dark hair and a beard, wearing a red and orange plaid jacket over a white shirt",
-        "action": "walking through the snow",
-        "position": "center"
-      },
-      {
-        "desc": "snow-covered pine trees",
-        "action": "static",
-        "position": "background"
-      },
-      {
-        "desc": "white snow",
-        "action": "static",
-        "position": "bottom"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "A man in a plaid jacket is walking through a snowy forest.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The man is holding the camera in a selfie position.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The trees in the background are covered in snow.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [],
-    "spatial": "The man is in the center of the frame, in front of the snow-covered trees. The snow is on the ground below the man and the trees.",
+    "spatial": "The man is in the foreground, centered in the frame. The snow-covered forest is behind him, filling the background.",
     "parse_success": true,
     "chunk_idx": 81,
     "video_id": "X-Bh1_5v9NM_00:02:07:100_00:02:51:900"
   },
   {
     "time": [
-      164,
-      166
+      82,
+      83
     ],
     "visible_entities": [
       {
-        "desc": "man with short dark hair and beard, wearing a white turtleneck sweater and a red and orange plaid coat",
-        "action": "standing in the snow",
-        "position": "center/foreground"
+        "desc": "man with short dark hair and beard, wearing a white turtleneck sweater and a red and orange patterned coat with snowflakes on it",
+        "action": "spinning around",
+        "position": "center"
       },
       {
         "desc": "snow-covered forest with tall trees",
@@ -3309,11 +3278,15 @@
     ],
     "atomic_facts": [
       {
-        "fact": "A man is standing in a snowy forest.",
+        "fact": "the man is spinning around in the snow",
         "confidence": 1.0
       },
       {
-        "fact": "The man is wearing a red and orange plaid coat.",
+        "fact": "snowflakes are visible on the man's coat",
+        "confidence": 1.0
+      },
+      {
+        "fact": "the background is a snowy forest",
         "confidence": 1.0
       }
     ],
@@ -3325,66 +3298,66 @@
   },
   {
     "time": [
-      166,
-      168
+      83,
+      84
     ],
     "visible_entities": [
       {
-        "desc": "tall coniferous trees with dark green needles heavily covered in white snow, rough brown bark visible on trunks",
+        "desc": "tall coniferous trees with brown trunks and branches heavily laden with white snow",
         "action": "static",
-        "position": "foreground/background"
+        "position": "background"
       },
       {
-        "desc": "pale white sky",
+        "desc": "bright white sky",
         "action": "static",
         "position": "top"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "The camera pans across a dense forest of snow-covered trees.",
+        "fact": "The camera pans across the snowy forest canopy.",
         "confidence": 1.0
       },
       {
-        "fact": "Heavy snow clings to the branches of the evergreen trees.",
+        "fact": "Snow covers the branches of the tall trees.",
         "confidence": 1.0
       },
       {
-        "fact": "The view is directed upwards towards the tree canopy and sky.",
+        "fact": "The sky is visible through the gaps in the tree tops.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The snow-covered trees dominate the foreground and background, extending from the bottom to the top of the frame. The pale sky is visible above the tree canopy through the gaps in the branches.",
+    "spatial": "The tall coniferous trees are positioned below the bright white sky. The snow is on the branches of the trees. The camera view is looking upwards from the forest floor towards the canopy.",
     "parse_success": true,
     "chunk_idx": 83,
     "video_id": "X-Bh1_5v9NM_00:02:07:100_00:02:51:900"
   },
   {
     "time": [
-      168,
-      170
+      84,
+      85
     ],
     "visible_entities": [
       {
-        "desc": "tall evergreen trees with dark green needles covered in white snow",
+        "desc": "tall evergreen trees with dark green needles heavily covered in white snow",
         "action": "static",
         "position": "left"
       },
       {
-        "desc": "tall evergreen trees with dark green needles covered in white snow",
+        "desc": "tall evergreen trees with dark green needles heavily covered in white snow",
         "action": "static",
         "position": "right"
       },
       {
-        "desc": "thin bare tree branch, dark brown, extending diagonally",
+        "desc": "thin, dark, leafless tree branch extending across the upper frame",
         "action": "static",
         "position": "top"
       },
       {
-        "desc": "pale blue sky, overcast",
+        "desc": "pale blue-grey overcast sky",
         "action": "static",
-        "position": "center"
+        "position": "background"
       }
     ],
     "atomic_facts": [
@@ -3393,28 +3366,24 @@
         "confidence": 1.0
       },
       {
-        "fact": "Snow covers the branches of the evergreen trees on both sides.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "A thin bare branch hangs down from the top right corner.",
+        "fact": "A thin, bare branch hangs from the top right, silhouetted against the sky.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The evergreen trees are positioned on the left and right sides of the frame, framing the pale blue sky in the center. A thin bare branch is located at the top right, hanging above the trees on the right side.",
+    "spatial": "The snow-covered evergreen trees are positioned on the left and right sides of the frame, framing the central view of the sky. The thin, leafless branch is located at the top of the frame, extending from the right side towards the center, appearing above the evergreen trees.",
     "parse_success": true,
     "chunk_idx": 84,
     "video_id": "X-Bh1_5v9NM_00:02:07:100_00:02:51:900"
   },
   {
     "time": [
-      170,
-      172
+      85,
+      86
     ],
     "visible_entities": [
       {
-        "desc": "tall evergreen trees with dark green needles, heavily laden with white snow on their branches",
+        "desc": "tall evergreen trees with dark green needles and branches heavily laden with white snow",
         "action": "static",
         "position": "center"
       },
@@ -3426,77 +3395,77 @@
     ],
     "atomic_facts": [
       {
-        "fact": "The camera looks upward at the canopy of a snowy forest.",
+        "fact": "The camera tilts upward to view the tops of the snow-covered trees.",
         "confidence": 1.0
       },
       {
-        "fact": "Snow covers the branches of the evergreen trees.",
+        "fact": "The trees are covered in a layer of white snow.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The tall evergreen trees are positioned in the foreground and center, reaching upward. The pale sky is visible in the background, situated above and between the tree branches.",
+    "spatial": "The tall evergreen trees are positioned in the foreground and center, extending upwards towards the top of the frame. The pale sky is visible in the background, situated above and between the tree branches.",
     "parse_success": true,
     "chunk_idx": 85,
     "video_id": "X-Bh1_5v9NM_00:02:07:100_00:02:51:900"
   },
   {
     "time": [
-      172,
-      174
+      86,
+      87
     ],
     "visible_entities": [
       {
-        "desc": "tall tree trunk with rough brown bark and snow-covered branches",
-        "action": "falling to the right",
-        "position": "center"
+        "desc": "tall tree trunk, brown bark, vertical orientation, partially covered in snow",
+        "action": "falling and tilting to the right",
+        "position": "center to right"
       },
       {
-        "desc": "evergreen trees with dense branches covered in white snow",
+        "desc": "dense evergreen trees, dark green needles, heavily covered in white snow",
         "action": "static",
         "position": "background"
       },
       {
-        "desc": "pale overcast sky",
+        "desc": "overcast sky, pale blue-grey color, visible through tree canopy",
         "action": "static",
         "position": "top"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A tall tree trunk is falling towards the right side of the frame.",
+        "fact": "A tall tree trunk is falling and tilting towards the right side of the frame.",
         "confidence": 1.0
       },
       {
-        "fact": "The forest floor and surrounding trees are covered in snow.",
+        "fact": "The surrounding evergreen trees are heavily laden with snow.",
         "confidence": 1.0
       },
       {
-        "fact": "The camera angle is looking upwards towards the sky.",
+        "fact": "The camera angle is looking upwards from the forest floor.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The falling tree trunk is in the center foreground, positioned in front of the static evergreen trees. The pale sky is visible above the tree line.",
+    "spatial": "The falling tree trunk is in the foreground, positioned in front of the static, snow-covered evergreen trees. The pale sky is visible above the tree canopy.",
     "parse_success": true,
     "chunk_idx": 86,
     "video_id": "X-Bh1_5v9NM_00:02:07:100_00:02:51:900"
   },
   {
     "time": [
-      174,
-      176
+      87,
+      88
     ],
     "visible_entities": [
       {
-        "desc": "tall coniferous trees with dark green needles covered in white snow, bare deciduous branches with frost",
+        "desc": "tall coniferous trees with dark green needles heavily covered in white snow",
         "action": "static",
-        "position": "left/center/right/foreground/background"
+        "position": "left/center/right"
       },
       {
         "desc": "pale blue-grey overcast sky",
         "action": "static",
-        "position": "top/center"
+        "position": "top/background"
       }
     ],
     "atomic_facts": [
@@ -3505,95 +3474,49 @@
         "confidence": 1.0
       },
       {
-        "fact": "Snow covers the branches of the evergreen trees.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "Bare tree branches are visible against the sky.",
+        "fact": "Snow covers the branches of the tall trees.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The snow-covered trees are positioned on the left, right, and bottom of the frame, surrounding the central view. The pale sky is visible above the trees in the center and top of the frame. The bare branches are located near the top right, extending into the sky area.",
+    "spatial": "The snow-covered trees are positioned on the left, right, and center, framing the sky which is visible above them.",
     "parse_success": true,
     "chunk_idx": 87,
     "video_id": "X-Bh1_5v9NM_00:02:07:100_00:02:51:900"
   },
   {
     "time": [
-      176,
-      178
+      88,
+      89
     ],
     "visible_entities": [
       {
-        "desc": "man with short dark hair, beard, and mustache, wearing a red and orange plaid coat over a white turtleneck sweater",
-        "action": "walking forward while holding the camera",
+        "desc": "man with short dark hair and beard, wearing a red and orange plaid jacket over a white turtleneck sweater",
+        "action": "moving through a snowy forest",
         "position": "center/foreground"
       },
       {
-        "desc": "snow-covered pine trees with dark green needles and white snow accumulation",
+        "desc": "snow-covered pine trees",
         "action": "static",
         "position": "background"
       },
       {
-        "desc": "white snow covering the ground",
+        "desc": "snow",
         "action": "static",
-        "position": "background"
+        "position": "ground"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "The man is walking forward through a snowy forest.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The man is holding the camera in a selfie-style shot.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The man raises his right arm slightly in the second frame.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "Snow is visible on the man's coat.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [],
-    "spatial": "The man is in the foreground, centered in the frame. The snow-covered pine trees are behind the man, forming the background. The snow is on the ground below the trees and the man.",
-    "parse_success": true,
-    "chunk_idx": 88,
-    "video_id": "X-Bh1_5v9NM_00:02:07:100_00:02:51:900"
-  },
-  {
-    "time": [
-      178,
-      180
-    ],
-    "visible_entities": [
-      {
-        "desc": "man with short dark hair and a beard, wearing a white turtleneck sweater under a red and orange plaid jacket",
-        "action": "walking forward through the snow",
-        "position": "center"
-      },
-      {
-        "desc": "snow-covered trees",
-        "action": "static",
-        "position": "background"
-      },
-      {
-        "desc": "white snow",
-        "action": "static",
-        "position": "foreground"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "The man is walking forward through a snowy forest.",
+        "fact": "The man is moving through a snowy forest.",
         "confidence": 1.0
       },
       {
         "fact": "The man is wearing a red and orange plaid jacket.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The man is wearing a white turtleneck sweater.",
         "confidence": 1.0
       },
       {
@@ -3602,20 +3525,61 @@
       }
     ],
     "ocr": [],
-    "spatial": "The man is in the center of the frame, in front of the snow-covered trees. The snow is on the ground below the man and the trees.",
+    "spatial": "The man is in the foreground, in front of the snow-covered pine trees. The snow is on the ground below the man and the trees.",
+    "parse_success": true,
+    "chunk_idx": 88,
+    "video_id": "X-Bh1_5v9NM_00:02:07:100_00:02:51:900"
+  },
+  {
+    "time": [
+      89,
+      90
+    ],
+    "visible_entities": [
+      {
+        "desc": "man with short dark hair and beard, wearing a white turtleneck sweater and a red and orange plaid jacket",
+        "action": "walking through snow",
+        "position": "center"
+      },
+      {
+        "desc": "snow-covered forest with trees and ground covered in snow",
+        "action": "static",
+        "position": "background"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "man is walking through a snowy forest",
+        "confidence": 1.0
+      },
+      {
+        "fact": "man is wearing a red and orange plaid jacket",
+        "confidence": 1.0
+      },
+      {
+        "fact": "man is wearing a white turtleneck sweater",
+        "confidence": 1.0
+      },
+      {
+        "fact": "trees in the background are covered in snow",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The man is in the foreground, centered in the frame. The snow-covered forest is behind him, filling the background.",
     "parse_success": true,
     "chunk_idx": 89,
     "video_id": "X-Bh1_5v9NM_00:02:07:100_00:02:51:900"
   },
   {
     "time": [
-      180,
-      182
+      90,
+      91
     ],
     "visible_entities": [
       {
-        "desc": "man with short dark hair and beard, wearing a red and orange plaid coat over a white turtleneck sweater",
-        "action": "walking and gesturing with hand",
+        "desc": "man with short dark hair, beard, wearing a red and orange plaid fuzzy coat over a white turtleneck sweater",
+        "action": "gesturing with hand and turning head",
         "position": "center/foreground"
       },
       {
@@ -3626,11 +3590,44 @@
     ],
     "atomic_facts": [
       {
-        "fact": "The man is walking through a snowy forest.",
+        "fact": "The man turns his head from facing left to facing the camera.",
         "confidence": 1.0
       },
       {
-        "fact": "The man gestures with his right hand extended.",
+        "fact": "The man gestures with his right hand while looking at the camera.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The setting is a snowy forest with trees covered in snow.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The man is in the foreground, positioned in front of the snow-covered pine trees. The trees are behind him and extend into the background.",
+    "parse_success": true,
+    "chunk_idx": 90,
+    "video_id": "X-Bh1_5v9NM_00:02:07:100_00:02:51:900"
+  },
+  {
+    "time": [
+      91,
+      92
+    ],
+    "visible_entities": [
+      {
+        "desc": "man with short dark hair and beard, wearing a red and orange plaid coat over a white turtleneck sweater",
+        "action": "walking through snow",
+        "position": "center foreground"
+      },
+      {
+        "desc": "snow-covered pine trees",
+        "action": "static",
+        "position": "background"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The man is walking through a snowy forest.",
         "confidence": 1.0
       },
       {
@@ -3639,63 +3636,21 @@
       }
     ],
     "ocr": [],
-    "spatial": "The man is in front of the snow-covered pine trees. The trees are behind the man.",
-    "parse_success": true,
-    "chunk_idx": 90,
-    "video_id": "X-Bh1_5v9NM_00:02:07:100_00:02:51:900"
-  },
-  {
-    "time": [
-      182,
-      184
-    ],
-    "visible_entities": [
-      {
-        "desc": "man with short dark hair and a beard, wearing a red and orange plaid coat over a white turtleneck sweater",
-        "action": "walking through the snow",
-        "position": "center/foreground"
-      },
-      {
-        "desc": "snow-covered trees with dark trunks",
-        "action": "static",
-        "position": "background"
-      },
-      {
-        "desc": "white snow covering the ground",
-        "action": "static",
-        "position": "bottom/background"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "The man is walking through a snowy forest.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The man is wearing a red and orange plaid coat.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The trees in the background are covered in snow.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [],
-    "spatial": "The man is in the foreground, centered in the frame. The snow-covered trees are behind him and to his left and right. The snow on the ground is below the man and the trees.",
+    "spatial": "The man is in the foreground, centered in the frame. The snow-covered trees are behind him and to his left and right, forming a forest background.",
     "parse_success": true,
     "chunk_idx": 91,
     "video_id": "X-Bh1_5v9NM_00:02:07:100_00:02:51:900"
   },
   {
     "time": [
-      184,
-      186
+      92,
+      93
     ],
     "visible_entities": [
       {
-        "desc": "man with short dark hair, beard, wearing a white turtleneck sweater and a red and orange plaid coat",
-        "action": "walking through snow",
-        "position": "center/foreground"
+        "desc": "man with short dark hair, shaved sides, beard, wearing a white turtleneck sweater and a red and orange plaid jacket",
+        "action": "walking through the snow",
+        "position": "foreground"
       },
       {
         "desc": "snow-covered pine trees",
@@ -3705,196 +3660,83 @@
     ],
     "atomic_facts": [
       {
-        "fact": "A man is walking through a snowy forest.",
+        "fact": "the man is walking through a snowy forest",
         "confidence": 1.0
       },
       {
-        "fact": "The man is wearing a red and orange plaid coat over a white turtleneck.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "Snow is visible on the man's coat.",
+        "fact": "snow is falling on the man's jacket",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The man is in the foreground, positioned centrally in the frame. The snow-covered pine trees are behind the man, filling the background.",
+    "spatial": "The man is in the foreground, in front of the snow-covered pine trees which are in the background.",
     "parse_success": true,
     "chunk_idx": 92,
     "video_id": "X-Bh1_5v9NM_00:02:07:100_00:02:51:900"
   },
   {
     "time": [
-      186,
-      188
+      93,
+      94
     ],
     "visible_entities": [
       {
-        "desc": "man with short dark hair and a beard, wearing a white turtleneck sweater, a red and orange plaid coat, and white gloves",
-        "action": "gesturing with his right hand",
-        "position": "center/foreground"
+        "desc": "man with short dark hair and beard, wearing a red and orange plaid coat, white turtleneck sweater, and white gloves",
+        "action": "gesturing with right hand",
+        "position": "center foreground"
       },
       {
-        "desc": "snow-covered forest with tall trees and white ground",
+        "desc": "snow-covered forest with tall trees and snow on the ground",
         "action": "static",
         "position": "background"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "the man is gesturing with his right hand",
+        "fact": "man gestures with his right hand",
         "confidence": 1.0
       },
       {
-        "fact": "the man is wearing a red and orange plaid coat",
+        "fact": "man is wearing a red and orange plaid coat",
         "confidence": 1.0
       },
       {
-        "fact": "the forest is covered in snow",
+        "fact": "man is wearing white gloves",
+        "confidence": 1.0
+      },
+      {
+        "fact": "man is wearing a white turtleneck sweater",
+        "confidence": 1.0
+      },
+      {
+        "fact": "man has short dark hair and a beard",
+        "confidence": 1.0
+      },
+      {
+        "fact": "trees in the background are covered in snow",
+        "confidence": 1.0
+      },
+      {
+        "fact": "ground is covered in snow",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The man is in the foreground, in front of the snow-covered forest. The trees are behind the man.",
+    "spatial": "The man is in the foreground, centered in the frame. The snow-covered forest is behind the man. The man's right hand is raised in front of his chest.",
     "parse_success": true,
     "chunk_idx": 93,
     "video_id": "X-Bh1_5v9NM_00:02:07:100_00:02:51:900"
   },
   {
     "time": [
-      188,
-      190
+      94,
+      95
     ],
     "visible_entities": [
       {
         "desc": "man with short dark hair and beard, wearing a white turtleneck sweater and a red and orange plaid coat",
-        "action": "gesturing with right hand and tilting head back",
-        "position": "center/foreground"
-      },
-      {
-        "desc": "snow-covered pine trees with white snow accumulation",
-        "action": "static",
-        "position": "background"
-      },
-      {
-        "desc": "white snow covering the ground",
-        "action": "static",
-        "position": "bottom/background"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "The man is gesturing with his right hand.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The man tilts his head back.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The man is wearing a red and orange plaid coat.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The forest background is covered in snow.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [],
-    "spatial": "The man is in the foreground, positioned in front of the snow-covered trees. The snow is on the ground below the trees and surrounding the man.",
-    "parse_success": true,
-    "chunk_idx": 94,
-    "video_id": "X-Bh1_5v9NM_00:02:07:100_00:02:51:900"
-  },
-  {
-    "time": [
-      190,
-      192
-    ],
-    "visible_entities": [
-      {
-        "desc": "man with short dark hair, beard, wearing a red and orange plaid coat over a white turtleneck sweater",
-        "action": "gesturing with hand and speaking",
-        "position": "center foreground"
-      },
-      {
-        "desc": "snow-covered pine trees",
-        "action": "static",
-        "position": "background"
-      },
-      {
-        "desc": "white snow",
-        "action": "static",
-        "position": "ground"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "man is gesturing with his right hand",
-        "confidence": 1.0
-      },
-      {
-        "fact": "man is speaking to the camera",
-        "confidence": 1.0
-      },
-      {
-        "fact": "snow is falling or present on the man's coat",
-        "confidence": 1.0
-      },
-      {
-        "fact": "the setting is a snowy forest",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [],
-    "spatial": "The man is in the center foreground, standing in front of the snow-covered pine trees. The snow covers the ground below the trees and the man.",
-    "parse_success": true,
-    "chunk_idx": 95,
-    "video_id": "X-Bh1_5v9NM_00:02:07:100_00:02:51:900"
-  },
-  {
-    "time": [
-      192,
-      194
-    ],
-    "visible_entities": [
-      {
-        "desc": "man with short dark hair and beard, wearing a red and orange plaid coat over a white turtleneck sweater",
-        "action": "falling forward into the snow",
+        "action": "gesturing with hand and moving head",
         "position": "center"
-      },
-      {
-        "desc": "snow-covered forest with tall trees and white ground",
-        "action": "static",
-        "position": "background"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "The man in the red and orange plaid coat falls forward into the snow.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The man's head is lowered towards the ground in the second frame.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [],
-    "spatial": "The man is in the foreground, positioned in front of the snow-covered forest trees.",
-    "parse_success": true,
-    "chunk_idx": 96,
-    "video_id": "X-Bh1_5v9NM_00:02:07:100_00:02:51:900"
-  },
-  {
-    "time": [
-      194,
-      196
-    ],
-    "visible_entities": [
-      {
-        "desc": "man with short dark hair and a beard, wearing a red and orange plaid coat over a white turtleneck sweater",
-        "action": "filming himself selfie-style while walking",
-        "position": "center/foreground"
       },
       {
         "desc": "snow-covered pine trees",
@@ -3904,12 +3746,175 @@
       {
         "desc": "snow-covered ground",
         "action": "static",
-        "position": "bottom/background"
+        "position": "bottom"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A man is filming himself selfie-style in a snowy forest.",
+        "fact": "man gestures with his right hand",
+        "confidence": 1.0
+      },
+      {
+        "fact": "man moves his head slightly",
+        "confidence": 1.0
+      },
+      {
+        "fact": "trees are covered in snow",
+        "confidence": 1.0
+      },
+      {
+        "fact": "ground is covered in snow",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The man is in the foreground, centered in the frame. The snow-covered pine trees are behind the man. The snow-covered ground is below the man and the trees.",
+    "parse_success": true,
+    "chunk_idx": 94,
+    "video_id": "X-Bh1_5v9NM_00:02:07:100_00:02:51:900"
+  },
+  {
+    "time": [
+      95,
+      96
+    ],
+    "visible_entities": [
+      {
+        "desc": "man with short dark hair, beard, wearing a red and orange plaid coat, white turtleneck sweater, and white gloves",
+        "action": "gesturing with hand",
+        "position": "center"
+      },
+      {
+        "desc": "snow-covered pine trees",
+        "action": "static",
+        "position": "background"
+      },
+      {
+        "desc": "snowy ground",
+        "action": "static",
+        "position": "background"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The man is gesturing with his gloved hand.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The man is standing in a snowy forest.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "Snow is visible on the man's coat.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The man is in the foreground, centered in the frame. The snow-covered trees are behind the man. The snowy ground is below the man and the trees.",
+    "parse_success": true,
+    "chunk_idx": 95,
+    "video_id": "X-Bh1_5v9NM_00:02:07:100_00:02:51:900"
+  },
+  {
+    "time": [
+      96,
+      97
+    ],
+    "visible_entities": [
+      {
+        "desc": "man with short dark hair and beard, wearing a red and orange plaid coat over a white turtleneck sweater",
+        "action": "bending forward",
+        "position": "foreground"
+      },
+      {
+        "desc": "snow-covered forest with tall trees",
+        "action": "static",
+        "position": "background"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The man bends forward at the waist.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "Snow is falling in the forest.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The man is in the foreground, positioned in front of the snow-covered trees. The trees are behind the man and extend into the background.",
+    "parse_success": true,
+    "chunk_idx": 96,
+    "video_id": "X-Bh1_5v9NM_00:02:07:100_00:02:51:900"
+  },
+  {
+    "time": [
+      97,
+      98
+    ],
+    "visible_entities": [
+      {
+        "desc": "man with short dark hair and beard, wearing a red and orange plaid coat over a white turtleneck sweater",
+        "action": "walking through snow",
+        "position": "center foreground"
+      },
+      {
+        "desc": "snow-covered pine trees with white branches",
+        "action": "static",
+        "position": "background"
+      },
+      {
+        "desc": "white snow covering the ground",
+        "action": "static",
+        "position": "bottom"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A man is walking through a snowy forest.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The man is wearing a red and orange plaid coat.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "Snow is visible on the man's coat.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The man is in the foreground, positioned in front of the snow-covered pine trees. The snow is below the man and the trees.",
+    "parse_success": true,
+    "chunk_idx": 97,
+    "video_id": "X-Bh1_5v9NM_00:02:07:100_00:02:51:900"
+  },
+  {
+    "time": [
+      98,
+      99
+    ],
+    "visible_entities": [
+      {
+        "desc": "man with short dark hair and a beard, wearing a white turtleneck sweater under a red and orange plaid coat",
+        "action": "standing in the snow",
+        "position": "center/foreground"
+      },
+      {
+        "desc": "snow-covered pine trees",
+        "action": "static",
+        "position": "background"
+      },
+      {
+        "desc": "white snow on the ground",
+        "action": "static",
+        "position": "bottom/foreground"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A man is standing in a snowy forest.",
         "confidence": 1.0
       },
       {
@@ -3922,63 +3927,21 @@
       }
     ],
     "ocr": [],
-    "spatial": "The man is in the foreground, centered in the frame. The snow-covered pine trees are behind him, filling the background. The snow-covered ground is below the man and extends into the background.",
-    "parse_success": true,
-    "chunk_idx": 97,
-    "video_id": "X-Bh1_5v9NM_00:02:07:100_00:02:51:900"
-  },
-  {
-    "time": [
-      196,
-      198
-    ],
-    "visible_entities": [
-      {
-        "desc": "man with short dark hair, beard, and mustache, wearing a white turtleneck sweater and a red and orange plaid coat",
-        "action": "standing in a snowy forest",
-        "position": "center/foreground"
-      },
-      {
-        "desc": "snow-covered pine trees with white snow on branches",
-        "action": "static",
-        "position": "background"
-      },
-      {
-        "desc": "white snow covering the ground",
-        "action": "static",
-        "position": "bottom/background"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "A man is standing in a snowy forest.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The man is wearing a red and orange plaid coat over a white turtleneck.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "Snow covers the ground and the trees in the background.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [],
-    "spatial": "The man is in the foreground, centered in the frame. The snow-covered pine trees are behind the man, forming the background. The snow is on the ground below the trees and around the man's feet.",
+    "spatial": "The man is in the center foreground, standing in front of the snow-covered pine trees. The snow is on the ground below the trees and around the man's feet.",
     "parse_success": true,
     "chunk_idx": 98,
     "video_id": "X-Bh1_5v9NM_00:02:07:100_00:02:51:900"
   },
   {
     "time": [
-      198,
-      200
+      99,
+      100
     ],
     "visible_entities": [
       {
-        "desc": "man with short dark hair and a beard, wearing a white turtleneck sweater under a red and orange plaid coat",
-        "action": "standing in the snow",
-        "position": "center foreground"
+        "desc": "man with short dark hair, beard, wearing a white turtleneck sweater and a red and orange plaid coat",
+        "action": "standing in a snowy forest",
+        "position": "center/foreground"
       },
       {
         "desc": "snow-covered pine trees",
@@ -3988,7 +3951,7 @@
       {
         "desc": "white snow on the ground",
         "action": "static",
-        "position": "bottom"
+        "position": "bottom/background"
       }
     ],
     "atomic_facts": [
@@ -4001,12 +3964,12 @@
         "confidence": 1.0
       },
       {
-        "fact": "Snow covers the trees and the ground.",
+        "fact": "The trees in the background are covered in snow.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The man is in the center foreground, standing in front of the snow-covered pine trees. The snow is on the ground below the trees and around the man's feet.",
+    "spatial": "The man is in the foreground, centered in the frame. The snow-covered trees are behind him, filling the background. The snow is on the ground below the man and the trees.",
     "parse_success": true,
     "chunk_idx": 99,
     "video_id": "X-Bh1_5v9NM_00:02:07:100_00:02:51:900"

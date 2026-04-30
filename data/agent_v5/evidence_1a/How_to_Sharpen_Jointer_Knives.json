@@ -2,23 +2,23 @@
   {
     "time": [
       0,
-      2
+      1
     ],
     "visible_entities": [
       {
-        "desc": "person wearing a dark plaid flannel shirt, tan work pants, and white gloves",
-        "action": "guiding a wooden piece along a machine",
+        "desc": "person wearing a grey and black plaid flannel shirt, tan work pants, and white gloves",
+        "action": "guiding a wooden plank through a machine",
         "position": "center"
       },
       {
-        "desc": "long wooden workpiece with a green painted curved edge and a light-colored wooden block attached",
-        "action": "being pushed across the machine bed",
+        "desc": "long wooden plank with a light green painted edge and raw wood surface",
+        "action": "being pushed forward",
         "position": "center"
       },
       {
-        "desc": "large industrial machine with a flat metallic surface and a green side guide",
+        "desc": "large metal machine with a flat silver surface and a green metal fence",
         "action": "static",
-        "position": "center"
+        "position": "foreground"
       },
       {
         "desc": "black text overlay reading 'DAVID CAN MAKE THAT'",
@@ -28,89 +28,468 @@
     ],
     "atomic_facts": [
       {
-        "fact": "A person is pushing a wooden workpiece across a flat machine surface.",
+        "fact": "A person is pushing a wooden plank along a metal machine surface.",
         "confidence": 1.0
       },
       {
-        "fact": "The workpiece has a green painted curved edge.",
+        "fact": "The person's gloved hands are holding the wood against a green guide fence.",
         "confidence": 1.0
       },
       {
-        "fact": "The text 'DAVID CAN MAKE THAT' is overlaid at the bottom of the screen.",
+        "fact": "The text 'DAVID CAN MAKE THAT' is superimposed at the bottom of the screen.",
         "confidence": 1.0
       }
     ],
     "ocr": [
       "DAVID CAN MAKE THAT"
     ],
-    "spatial": "The person is standing behind the machine, holding the wooden workpiece. The workpiece is positioned on top of the machine's flat metal surface. The text overlay is located at the bottom of the frame, below the machine and the person.",
+    "spatial": "The person is standing behind the metal machine, with their hands positioned above the machine's surface. The wooden plank is resting on the machine, situated between the person's hands and the green fence on the left. The text overlay is located at the bottom of the frame, below the machine and the person's legs.",
     "parse_success": true,
     "chunk_idx": 0,
     "video_id": "How_to_Sharpen_Jointer_Knives"
   },
   {
     "time": [
-      2,
-      4
+      1,
+      2
     ],
     "visible_entities": [
       {
-        "desc": "person wearing a grey and black plaid flannel shirt, tan work pants with black knee patches, and white gloves with black palms",
-        "action": "guiding a wooden piece along a machine",
+        "desc": "person wearing a grey and black plaid flannel shirt, tan work pants, and white gloves with black palms",
+        "action": "guiding a wooden board through a machine",
         "position": "center"
       },
       {
-        "desc": "light-colored wooden block with a green painted, rounded edge attached to it",
-        "action": "being pushed across a metal surface",
+        "desc": "long, light-brown wooden board with a green-painted, rounded edge",
+        "action": "sliding across a metal surface",
         "position": "center"
       },
       {
-        "desc": "flat, metallic machine bed with small white specks of debris",
+        "desc": "large, flat, metallic machine bed with a dark surface",
         "action": "static",
         "position": "center"
       },
       {
-        "desc": "text overlay in large, dark, sans-serif font",
+        "desc": "text overlay in bold, black, sans-serif font",
         "action": "static",
         "position": "bottom"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "The person is pushing a wooden block with a green edge across a metal surface.",
+        "fact": "A person is pushing a wooden board forward along a metal machine bed.",
         "confidence": 1.0
       },
       {
-        "fact": "Small white particles are scattered on the metal surface.",
+        "fact": "The text 'DAVID CAN MAKE THAT' is displayed at the bottom of the screen.",
         "confidence": 1.0
       },
       {
-        "fact": "The text 'DAVID CAN MAKE THAT' is visible at the bottom of the screen.",
+        "fact": "The wooden board has a distinct green painted edge.",
         "confidence": 1.0
       }
     ],
     "ocr": [
       "DAVID CAN MAKE THAT"
     ],
-    "spatial": "The person is standing behind the metal machine bed. The wooden block is on top of the metal surface, positioned in front of the person. The text overlay is located at the bottom of the frame, below the machine and the person's legs.",
+    "spatial": "The person is positioned behind the wooden board, holding it with gloved hands. The wooden board is resting on top of the metal machine bed. The text overlay is located at the bottom of the frame, below the machine.",
     "parse_success": true,
     "chunk_idx": 1,
     "video_id": "How_to_Sharpen_Jointer_Knives"
   },
   {
     "time": [
+      2,
+      3
+    ],
+    "visible_entities": [
+      {
+        "desc": "person's hands with fair skin, wearing a silver ring on the ring finger of the right hand",
+        "action": "cutting paper with scissors",
+        "position": "center"
+      },
+      {
+        "desc": "black handled scissors with red accents",
+        "action": "cutting",
+        "position": "center"
+      },
+      {
+        "desc": "white sheet of paper",
+        "action": "being cut",
+        "position": "center"
+      },
+      {
+        "desc": "yellow rectangular sharpening stone holder with a dark grey abrasive surface",
+        "action": "static",
+        "position": "foreground"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The person is using scissors to cut a strip of white paper.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The yellow sharpening stone holder is resting on the white table surface.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The person's right hand is holding the paper steady while the left hand operates the scissors.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The yellow sharpening stone holder is in the foreground, positioned below the hands. The hands are holding the white paper and scissors in the center of the frame, directly above the sharpening stone.",
+    "parse_success": true,
+    "chunk_idx": 2,
+    "video_id": "How_to_Sharpen_Jointer_Knives"
+  },
+  {
+    "time": [
+      3,
+      4
+    ],
+    "visible_entities": [
+      {
+        "desc": "person with fair skin, wearing a dark long-sleeved top",
+        "action": "cutting paper with scissors",
+        "position": "top"
+      },
+      {
+        "desc": "scissors with black handles and silver blades",
+        "action": "cutting paper",
+        "position": "top"
+      },
+      {
+        "desc": "white sheet of paper",
+        "action": "being cut",
+        "position": "center"
+      },
+      {
+        "desc": "rectangular sharpening stone with a dark grey abrasive surface and a yellow plastic base",
+        "action": "static",
+        "position": "foreground"
+      },
+      {
+        "desc": "stack of white paper sheets",
+        "action": "static",
+        "position": "left"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A person is using scissors to cut a piece of white paper.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The scissors are slicing through the paper held by the person's left hand.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A sharpening stone is resting on the white surface in the foreground.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A stack of paper sits to the left of the sharpening stone.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The person is positioned at the top of the frame, holding the paper above the table surface. The sharpening stone is in the foreground, below the hands and scissors. The stack of paper is to the left of the sharpening stone.",
+    "parse_success": true,
+    "chunk_idx": 3,
+    "video_id": "How_to_Sharpen_Jointer_Knives"
+  },
+  {
+    "time": [
       4,
+      5
+    ],
+    "visible_entities": [
+      {
+        "desc": "person's hands with light skin tone, wearing a silver ring on the right ring finger",
+        "action": "wiping the metal surface with a white tissue",
+        "position": "top/center"
+      },
+      {
+        "desc": "rectangular metal bar with a dark, smooth surface, set inside a yellow plastic holder with a textured grip",
+        "action": "static",
+        "position": "center/foreground"
+      },
+      {
+        "desc": "white, soft paper tissue",
+        "action": "being manipulated by hands",
+        "position": "left/center"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A person is wiping the top surface of the metal bar with a white tissue.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The metal bar is resting on a white table surface.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The metal bar is housed in a yellow plastic base.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The yellow and metal tool is in the center foreground on the white table. The person's hands are positioned above and around the tool. The white tissue is held by the hands and is in contact with the top of the metal bar.",
+    "parse_success": true,
+    "chunk_idx": 4,
+    "video_id": "How_to_Sharpen_Jointer_Knives"
+  },
+  {
+    "time": [
+      5,
       6
     ],
     "visible_entities": [
       {
-        "desc": "person's hands, fair skin, wearing a silver ring on the left ring finger and a black watch on the right wrist",
-        "action": "cutting white paper with scissors",
+        "desc": "person's hands with light skin tone and short fingernails",
+        "action": "manipulating a yellow tool and white material",
         "position": "top/center"
       },
       {
-        "desc": "black scissors with red accents on the handle",
-        "action": "being used to cut paper",
+        "desc": "yellow rectangular tool with a metal blade grid, resembling a small grater or cutter",
+        "action": "being held and used",
+        "position": "center"
+      },
+      {
+        "desc": "white, thin, flexible sheet of material, possibly paper or fabric",
+        "action": "being pressed against the tool",
+        "position": "left/center"
+      },
+      {
+        "desc": "white, flat, smooth surface",
+        "action": "static",
+        "position": "bottom/background"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The person is holding the yellow tool in their right hand.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The person is pressing the white sheet against the metal blade of the yellow tool.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The action takes place over a white table surface.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The person's hands are positioned above the white surface. The yellow tool is held in the center, with the white sheet being manipulated to its left and underneath the fingers.",
+    "parse_success": true,
+    "chunk_idx": 5,
+    "video_id": "How_to_Sharpen_Jointer_Knives"
+  },
+  {
+    "time": [
+      6,
+      7
+    ],
+    "visible_entities": [
+      {
+        "desc": "hands with fair skin and short fingernails",
+        "action": "manipulating a wrapped object",
+        "position": "top center"
+      },
+      {
+        "desc": "yellow plastic object with a rectangular metal blade, resembling a box cutter",
+        "action": "being held and adjusted",
+        "position": "center"
+      },
+      {
+        "desc": "white soft material, appearing to be foam or paper, wrapped around the yellow object",
+        "action": "being held",
+        "position": "center"
+      },
+      {
+        "desc": "smooth white surface, likely a table",
+        "action": "static",
+        "position": "bottom"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A person is holding a yellow utility knife wrapped in white material.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The hands are adjusting the white wrapping around the yellow tool.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The metal blade of the yellow tool is partially visible.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The hands are positioned above the white surface. The hands are holding the yellow object which is wrapped in the white material. The yellow object is located between the two hands.",
+    "parse_success": true,
+    "chunk_idx": 6,
+    "video_id": "How_to_Sharpen_Jointer_Knives"
+  },
+  {
+    "time": [
+      7,
+      8
+    ],
+    "visible_entities": [
+      {
+        "desc": "hands with fair skin and short, natural fingernails",
+        "action": "holding a white rectangular object",
+        "position": "center"
+      },
+      {
+        "desc": "white rectangular object, smooth, solid, resembling a stick of chalk or a rolled paper tube",
+        "action": "being held and rotated",
+        "position": "center"
+      },
+      {
+        "desc": "white sheet of paper, thin, slightly translucent",
+        "action": "being held behind the white object",
+        "position": "center"
+      },
+      {
+        "desc": "white flat surface, smooth, likely a table",
+        "action": "static",
+        "position": "bottom"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The hands are holding a white rectangular object horizontally.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The hands are manipulating the white object, slightly rotating it.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A piece of white paper is positioned behind the white object.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The action takes place over a white table surface.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The hands are in the center of the frame, holding the white rectangular object. The white object is positioned in front of the white sheet of paper. The hands and objects are above the white table surface.",
+    "parse_success": true,
+    "chunk_idx": 7,
+    "video_id": "How_to_Sharpen_Jointer_Knives"
+  },
+  {
+    "time": [
+      8,
+      9
+    ],
+    "visible_entities": [
+      {
+        "desc": "hands with light skin, wearing a dark grey long-sleeved shirt and a silver ring on the right ring finger",
+        "action": "manipulating a white object",
+        "position": "center"
+      },
+      {
+        "desc": "white cylindrical object with a smooth, matte texture, containing a yellow core",
+        "action": "being unrolled",
+        "position": "center"
+      },
+      {
+        "desc": "white flat surface",
+        "action": "static",
+        "position": "bottom"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The hands are unrolling a white cylindrical object.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The unrolling action reveals a yellow interior inside the white cylinder.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The object is resting on a white surface.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The hands are positioned above the white surface and are holding the white cylindrical object. The yellow core is inside the white cylinder.",
+    "parse_success": true,
+    "chunk_idx": 8,
+    "video_id": "How_to_Sharpen_Jointer_Knives"
+  },
+  {
+    "time": [
+      9,
+      10
+    ],
+    "visible_entities": [
+      {
+        "desc": "person with fair skin, wearing a dark grey long-sleeved shirt and a dark ring on the left ring finger",
+        "action": "manipulating paper and tools",
+        "position": "center"
+      },
+      {
+        "desc": "white rectangular piece of paper, thin and flexible",
+        "action": "being cut",
+        "position": "center"
+      },
+      {
+        "desc": "black handled scissors with a red pivot screw and serrated metal blades",
+        "action": "cutting paper",
+        "position": "left"
+      },
+      {
+        "desc": "small yellow square object, smooth plastic texture",
+        "action": "static",
+        "position": "center"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The person uses the black scissors to cut the white piece of paper.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The yellow square object rests on the white surface.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The person's left hand holds the paper steady while the right hand operates the scissors.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The person's hands are positioned in the center of the frame, holding the white paper. The scissors are held in the left hand, positioned to the left of the paper being cut. The yellow square object is located below the paper and to the right of the scissors.",
+    "parse_success": true,
+    "chunk_idx": 9,
+    "video_id": "How_to_Sharpen_Jointer_Knives"
+  },
+  {
+    "time": [
+      10,
+      11
+    ],
+    "visible_entities": [
+      {
+        "desc": "person wearing a dark plaid shirt with grey and black tones",
+        "action": "cutting paper and holding a tube",
+        "position": "center"
+      },
+      {
+        "desc": "black handled scissors with a red pivot screw",
+        "action": "cutting paper",
         "position": "center"
       },
       {
@@ -119,431 +498,51 @@
         "position": "center"
       },
       {
-        "desc": "yellow rectangular plastic case with a dark metal sharpening stone insert",
+        "desc": "white cylindrical tube with a yellow cap",
         "action": "static",
-        "position": "bottom/center"
-      },
-      {
-        "desc": "white flat surface",
-        "action": "static",
-        "position": "background"
+        "position": "right"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A person is cutting a strip of white paper using black scissors.",
+        "fact": "The person is using scissors to cut a piece of white paper.",
         "confidence": 1.0
       },
       {
-        "fact": "The scissors are positioned above the yellow sharpening tool.",
+        "fact": "The scissors are positioned over the white paper.",
         "confidence": 1.0
       },
       {
-        "fact": "The yellow sharpening tool rests on the white table surface.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [],
-    "spatial": "The person's hands are holding the scissors and paper above the yellow sharpening tool. The yellow tool is resting on the white surface below the cutting action. The scissors are positioned between the person's hands and the paper.",
-    "parse_success": true,
-    "chunk_idx": 2,
-    "video_id": "How_to_Sharpen_Jointer_Knives"
-  },
-  {
-    "time": [
-      6,
-      8
-    ],
-    "visible_entities": [
-      {
-        "desc": "person's hands with light skin tone",
-        "action": "cutting white paper with scissors",
-        "position": "top/center"
-      },
-      {
-        "desc": "black scissors with red accents on the handle",
-        "action": "cutting paper",
-        "position": "top/center"
-      },
-      {
-        "desc": "white paper sheet",
-        "action": "being cut",
-        "position": "top/center"
-      },
-      {
-        "desc": "rectangular sharpening stone with a dark grey abrasive surface and a yellow plastic base",
-        "action": "static",
-        "position": "bottom/center"
-      },
-      {
-        "desc": "white table surface",
-        "action": "static",
-        "position": "background"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "A person is using black scissors to cut a piece of white paper.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "A sharpening stone with a yellow base sits on the table in the foreground.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The scissors have red details on the handles.",
+        "fact": "A white tube with a yellow cap is lying on the table to the right of the scissors.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The sharpening stone is in the foreground, positioned below the hands and scissors. The hands are holding the scissors and paper above the table surface. The scissors are cutting the paper in the center of the frame.",
-    "parse_success": true,
-    "chunk_idx": 3,
-    "video_id": "How_to_Sharpen_Jointer_Knives"
-  },
-  {
-    "time": [
-      8,
-      10
-    ],
-    "visible_entities": [
-      {
-        "desc": "person with fair skin, wearing a dark long-sleeved garment and a silver ring on the right ring finger",
-        "action": "wiping the metal blade with a tissue",
-        "position": "top/center"
-      },
-      {
-        "desc": "yellow rectangular plastic tool with a flat, dark metal blade insert on top",
-        "action": "static",
-        "position": "center"
-      },
-      {
-        "desc": "white paper tissue, crumpled and soft",
-        "action": "being held and moved",
-        "position": "left/center"
-      },
-      {
-        "desc": "white flat surface, smooth and reflective",
-        "action": "static",
-        "position": "bottom/background"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "The person is using a white tissue to wipe the metal blade of the yellow tool.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The yellow tool rests on a white surface.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The person's hands are positioned above the tool.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [],
-    "spatial": "The yellow tool is on the white surface in the center of the frame. The person's hands are above the tool, holding the white tissue against the metal blade. The tissue is to the left of the tool's center.",
-    "parse_success": true,
-    "chunk_idx": 4,
-    "video_id": "How_to_Sharpen_Jointer_Knives"
-  },
-  {
-    "time": [
-      10,
-      12
-    ],
-    "visible_entities": [
-      {
-        "desc": "person's hands with light skin tone and short fingernails",
-        "action": "manipulating a yellow tool and white material",
-        "position": "center"
-      },
-      {
-        "desc": "yellow rectangular tool with a metal blade, resembling a box cutter",
-        "action": "being held and used to cut",
-        "position": "center"
-      },
-      {
-        "desc": "white flexible sheet material, appearing like paper or thin plastic",
-        "action": "being cut and folded",
-        "position": "left"
-      },
-      {
-        "desc": "white flat surface, likely a table",
-        "action": "static",
-        "position": "background"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "The person is using the yellow tool to cut the white sheet material.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The person folds the white material around the yellow tool.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The cutting action takes place on a white surface.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [],
-    "spatial": "The person's hands are holding the yellow tool and the white material in the center of the frame. The white sheet material is positioned to the left of the tool. The hands and objects are located above the white table surface.",
-    "parse_success": true,
-    "chunk_idx": 5,
-    "video_id": "How_to_Sharpen_Jointer_Knives"
-  },
-  {
-    "time": [
-      12,
-      14
-    ],
-    "visible_entities": [
-      {
-        "desc": "hands with light skin tone",
-        "action": "holding and manipulating a tool",
-        "position": "top/center"
-      },
-      {
-        "desc": "utility knife with a yellow plastic handle and a white foam-wrapped body",
-        "action": "being held and adjusted",
-        "position": "center"
-      },
-      {
-        "desc": "metallic utility knife blade",
-        "action": "extending and retracting",
-        "position": "center"
-      },
-      {
-        "desc": "white flat surface",
-        "action": "static",
-        "position": "bottom/foreground"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "The person is holding the utility knife with both hands.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The metallic blade of the utility knife is extended in the first frame.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The person retracts the blade into the handle in the second frame.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The body of the knife is wrapped in white foam material.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [],
-    "spatial": "The hands are positioned above the white flat surface. The hands are holding the utility knife in the center of the frame. The yellow handle is on the right side of the white foam-wrapped body.",
-    "parse_success": true,
-    "chunk_idx": 6,
-    "video_id": "How_to_Sharpen_Jointer_Knives"
-  },
-  {
-    "time": [
-      14,
-      16
-    ],
-    "visible_entities": [
-      {
-        "desc": "person's hands with fair skin and short, natural fingernails",
-        "action": "holding and manipulating a white object",
-        "position": "center"
-      },
-      {
-        "desc": "white rectangular object, smooth texture, appearing to be a rolled paper or plastic tube",
-        "action": "being held horizontally",
-        "position": "center"
-      },
-      {
-        "desc": "white flat surface, smooth and unadorned",
-        "action": "static",
-        "position": "bottom"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "The person is holding a white rectangular object horizontally with both hands.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The hands are positioned over a white table surface.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The fingers are curled around the white object to support it.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [],
-    "spatial": "The person's hands are positioned in the center of the frame, holding the white rectangular object. The object is located directly above the white table surface. The hands are in front of the person's torso, which is partially visible in the background.",
-    "parse_success": true,
-    "chunk_idx": 7,
-    "video_id": "How_to_Sharpen_Jointer_Knives"
-  },
-  {
-    "time": [
-      16,
-      18
-    ],
-    "visible_entities": [
-      {
-        "desc": "person with fair skin, wearing a dark grey long-sleeved shirt and a silver ring on the left ring finger",
-        "action": "holding and manipulating a white object",
-        "position": "center"
-      },
-      {
-        "desc": "white cylindrical object, smooth texture, containing a yellow core",
-        "action": "being held and turned",
-        "position": "center"
-      },
-      {
-        "desc": "white flat surface, smooth",
-        "action": "static",
-        "position": "bottom"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "The person holds a white cylindrical object with both hands.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The person rotates the white object to reveal a yellow interior.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The object is positioned above a white table surface.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [],
-    "spatial": "The person's hands are holding the white cylindrical object in the center of the frame. The object is positioned above the white flat surface. The yellow core is located inside the white cylindrical object.",
-    "parse_success": true,
-    "chunk_idx": 8,
-    "video_id": "How_to_Sharpen_Jointer_Knives"
-  },
-  {
-    "time": [
-      18,
-      20
-    ],
-    "visible_entities": [
-      {
-        "desc": "hands with light skin, wearing a dark ring on the left ring finger",
-        "action": "manipulating paper and tools",
-        "position": "center"
-      },
-      {
-        "desc": "white rectangular paper",
-        "action": "being cut",
-        "position": "center"
-      },
-      {
-        "desc": "scissors with black handles, silver blades, and a red pivot screw",
-        "action": "cutting paper",
-        "position": "left"
-      },
-      {
-        "desc": "small yellow square object",
-        "action": "static",
-        "position": "center"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "A person is cutting a piece of white paper with scissors.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The scissors have a distinctive red pivot point.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "A small yellow square object sits on the table near the paper.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [],
-    "spatial": "The scissors are held in the left hand and are positioned to the left of the paper. The paper is held in the right hand, which is to the right of the scissors. The yellow square object is below the paper and the hands.",
-    "parse_success": true,
-    "chunk_idx": 9,
-    "video_id": "How_to_Sharpen_Jointer_Knives"
-  },
-  {
-    "time": [
-      20,
-      22
-    ],
-    "visible_entities": [
-      {
-        "desc": "person's hands, light skin tone, wearing a grey and black plaid shirt",
-        "action": "cutting a white paper strip",
-        "position": "center"
-      },
-      {
-        "desc": "black handled scissors with a red pivot screw and silver blades",
-        "action": "cutting through paper",
-        "position": "center"
-      },
-      {
-        "desc": "white rectangular paper strip",
-        "action": "being cut",
-        "position": "center"
-      },
-      {
-        "desc": "white rectangular foam block with a yellow plastic cap on the right end",
-        "action": "static",
-        "position": "center"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "A person is using scissors to cut a strip of white paper.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The scissors are positioned above a white foam block.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The foam block has a yellow cap on its right side.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [],
-    "spatial": "The person's hands are holding the scissors and the paper strip in the center of the frame. The scissors are positioned above the white foam block. The yellow cap is attached to the right end of the foam block.",
+    "spatial": "The person's hands are holding the scissors and the paper in the center of the frame. The scissors are positioned above the white paper. The white tube with the yellow cap is to the right of the scissors and paper.",
     "parse_success": true,
     "chunk_idx": 10,
     "video_id": "How_to_Sharpen_Jointer_Knives"
   },
   {
     "time": [
-      22,
-      24
+      11,
+      12
     ],
     "visible_entities": [
       {
-        "desc": "person's hand with fair skin, wearing a black ring on the ring finger",
-        "action": "holding a white and yellow pill bottle",
-        "position": "right"
+        "desc": "person's hands with light skin tone, wearing a black ring on the left ring finger",
+        "action": "holding a roll of green tape",
+        "position": "top/center"
       },
       {
-        "desc": "white pill bottle with a yellow cap, lying horizontally",
-        "action": "being held",
+        "desc": "roll of bright lime-green tape with a white label containing blue text",
+        "action": "being held and positioned over a container",
         "position": "center"
       },
       {
-        "desc": "roll of bright green tape",
-        "action": "being held and unrolled",
-        "position": "top center"
+        "desc": "white rectangular plastic container with a yellow cap, resembling a pill bottle",
+        "action": "static",
+        "position": "center"
       },
       {
         "desc": "black scissors with a red pivot point",
@@ -558,49 +557,51 @@
     ],
     "atomic_facts": [
       {
-        "fact": "A person is holding a white pill bottle with a yellow cap.",
+        "fact": "A person is holding a roll of green tape above a white container.",
         "confidence": 1.0
       },
       {
-        "fact": "A person is holding a roll of green tape above the pill bottle.",
+        "fact": "The white container has a yellow cap and is lying horizontally on the table.",
         "confidence": 1.0
       },
       {
-        "fact": "Black scissors are resting on the white surface to the left.",
+        "fact": "Black scissors are resting on the left side of the white surface.",
         "confidence": 1.0
       }
     ],
-    "ocr": [],
-    "spatial": "The white pill bottle is in the center of the frame, resting on a white surface. The person's hand is to the right of the bottle, holding it. The roll of green tape is above the bottle. The black scissors are to the left of the bottle.",
+    "ocr": [
+      "Made in China"
+    ],
+    "spatial": "The person's hands are positioned above the white container and the roll of green tape. The white container is to the right of the black scissors. The scissors are resting on the white surface in the foreground.",
     "parse_success": true,
     "chunk_idx": 11,
     "video_id": "How_to_Sharpen_Jointer_Knives"
   },
   {
     "time": [
-      24,
-      26
+      12,
+      13
     ],
     "visible_entities": [
       {
-        "desc": "hands with fair skin, wearing a silver ring on the right ring finger",
+        "desc": "hands with light skin tone, wearing a silver ring on the right ring finger",
         "action": "manipulating green tape",
-        "position": "center/foreground"
+        "position": "top/center"
       },
       {
-        "desc": "roll of bright green tape with a cardboard core",
+        "desc": "roll of bright green masking tape, translucent",
         "action": "being held and pulled",
         "position": "left/center"
+      },
+      {
+        "desc": "white rectangular container with a yellow cap, resembling a pill case",
+        "action": "static",
+        "position": "center/right"
       },
       {
         "desc": "black scissors with a red pivot screw",
         "action": "static",
         "position": "bottom left"
-      },
-      {
-        "desc": "white rectangular object with a yellow cap, partially wrapped in white material",
-        "action": "static",
-        "position": "center right"
       }
     ],
     "atomic_facts": [
@@ -609,33 +610,33 @@
         "confidence": 1.0
       },
       {
-        "fact": "The scissors are resting on the white surface.",
+        "fact": "The hands are positioned over a white table surface.",
         "confidence": 1.0
       },
       {
-        "fact": "The white and yellow object is lying on the table.",
+        "fact": "The white container is sitting on the table next to the scissors.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The hands are positioned above the white surface, holding the green tape roll to the left of the white and yellow object. The black scissors are located in the bottom left corner, below the tape roll. The white and yellow object is to the right of the tape roll.",
+    "spatial": "The hands are above the white container and the scissors. The roll of green tape is to the left of the white container. The scissors are in the bottom left corner, to the left of the container.",
     "parse_success": true,
     "chunk_idx": 12,
     "video_id": "How_to_Sharpen_Jointer_Knives"
   },
   {
     "time": [
-      26,
-      28
+      13,
+      14
     ],
     "visible_entities": [
       {
         "desc": "hands with fair skin, wearing a silver ring on the right ring finger",
-        "action": "peeling a backing sheet off a rectangular object",
+        "action": "holding a yellow cloth and pressing it against a white object",
         "position": "center"
       },
       {
-        "desc": "rectangular object with a white body and a yellow cap, resembling a glue stick or cosmetic container",
+        "desc": "rectangular white object with a yellow cap, resembling a glue stick or cosmetic tube",
         "action": "static",
         "position": "center"
       },
@@ -645,50 +646,50 @@
         "position": "left"
       },
       {
-        "desc": "white table surface",
-        "action": "static",
-        "position": "background"
+        "desc": "small piece of pale yellow cloth",
+        "action": "being manipulated",
+        "position": "center"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "The person is peeling a translucent backing sheet off the white rectangular object.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The scissors are resting on the table to the left of the hands.",
+        "fact": "A person is holding a piece of yellow cloth against the white body of a rectangular object.",
         "confidence": 1.0
       },
       {
         "fact": "The rectangular object has a yellow cap on its right end.",
         "confidence": 1.0
+      },
+      {
+        "fact": "Black scissors are resting on the white surface to the left of the object.",
+        "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The hands are positioned above the white table surface, manipulating the rectangular object in the center. The black scissors are lying on the table to the left of the rectangular object.",
+    "spatial": "The hands are positioned above the rectangular white object. The scissors are to the left of the white object. The yellow cloth is held between the hands and the white object.",
     "parse_success": true,
     "chunk_idx": 13,
     "video_id": "How_to_Sharpen_Jointer_Knives"
   },
   {
     "time": [
-      28,
-      30
+      14,
+      15
     ],
     "visible_entities": [
       {
-        "desc": "person with fair skin, wearing a grey long-sleeved shirt and a black ring on the left ring finger",
-        "action": "manipulating a paper strip",
+        "desc": "person with fair skin, wearing a dark grey long-sleeved shirt and a black ring on the right ring finger",
+        "action": "wrapping a yellow strip around a white tube",
         "position": "center"
       },
       {
-        "desc": "light green rectangular paper strip",
-        "action": "being wrapped around a tube",
-        "position": "center"
-      },
-      {
-        "desc": "white cylindrical tube with a yellow plastic cap",
+        "desc": "white cylindrical tube with a yellow plastic cap on the right end",
         "action": "static",
+        "position": "center"
+      },
+      {
+        "desc": "pale yellow rectangular strip of paper or tape",
+        "action": "being wrapped",
         "position": "center"
       },
       {
@@ -699,43 +700,42 @@
     ],
     "atomic_facts": [
       {
-        "fact": "The person is wrapping a light green paper strip around the white tube.",
+        "fact": "The person is wrapping a yellow strip of material around the white tube.",
         "confidence": 1.0
       },
       {
-        "fact": "The person's left hand holds the paper against the tube while the right hand adjusts the end.",
+        "fact": "The person's left hand holds the yellow strip against the tube.",
         "confidence": 1.0
       },
       {
-        "fact": "A pair of black scissors rests on the white surface to the left of the tube.",
+        "fact": "The person's right hand pulls the yellow strip over the tube.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The black scissors are resting on the white surface to the left of the tube.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The person's hands are positioned in the center of the frame, holding the white tube and green paper. The black scissors are located to the left of the hands and tube on the white table surface.",
+    "spatial": "The person's hands are positioned above the white tube, manipulating the yellow strip. The black scissors are located to the left of the tube on the white surface. The yellow cap is attached to the right end of the white tube.",
     "parse_success": true,
     "chunk_idx": 14,
     "video_id": "How_to_Sharpen_Jointer_Knives"
   },
   {
     "time": [
-      30,
-      32
+      15,
+      16
     ],
     "visible_entities": [
       {
-        "desc": "person with fair skin, wearing a dark grey long-sleeved shirt and a black ring on the left ring finger",
-        "action": "pressing a green leaf into a tube",
+        "desc": "person's hands with light skin tone, wearing a dark ring on the left ring finger",
+        "action": "pressing down on a tube",
         "position": "center"
       },
       {
-        "desc": "white cylindrical tube with a yellow cap",
-        "action": "static",
-        "position": "center"
-      },
-      {
-        "desc": "small green leaf",
-        "action": "being pressed",
+        "desc": "white tube with a yellow cap and a green label",
+        "action": "being squeezed",
         "position": "center"
       },
       {
@@ -746,42 +746,38 @@
     ],
     "atomic_facts": [
       {
-        "fact": "A person is using their fingers to press a green leaf into the opening of a white tube.",
+        "fact": "The person is pressing their fingers into the white tube near the yellow cap.",
         "confidence": 1.0
       },
       {
-        "fact": "The white tube has a yellow cap on the right end.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "Black scissors are lying on the white surface to the left of the hands.",
+        "fact": "The scissors are resting on the white surface to the left of the hands.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The person's hands are in the center of the frame, holding the white tube. The green leaf is positioned between the fingers and the tube opening. The black scissors are to the left of the hands and the tube on the white surface.",
+    "spatial": "The person's hands are positioned in the center of the frame, holding the white tube. The black scissors are located to the left of the hands and the tube. The tube is lying on a white surface.",
     "parse_success": true,
     "chunk_idx": 15,
     "video_id": "How_to_Sharpen_Jointer_Knives"
   },
   {
     "time": [
-      32,
-      34
+      16,
+      17
     ],
     "visible_entities": [
       {
-        "desc": "pair of hands with fair skin, wearing a grey long-sleeved garment, with a silver ring on the right ring finger",
-        "action": "pressing and folding a strip of material",
+        "desc": "person's hands with light skin tone, wearing a dark grey long-sleeved garment",
+        "action": "pressing and folding a multi-colored object",
         "position": "center"
       },
       {
-        "desc": "strip of material composed of white, green, and yellow sections, appearing soft and pliable",
+        "desc": "rectangular object with white, green, and yellow sections, appearing to be made of soft pliable material like fondant or clay",
         "action": "being manipulated",
         "position": "center"
       },
       {
-        "desc": "black handled scissors with a red pivot screw",
+        "desc": "black handled scissors with a red pivot point",
         "action": "static",
         "position": "left"
       },
@@ -793,38 +789,38 @@
     ],
     "atomic_facts": [
       {
-        "fact": "The hands are pressing down on the green section of the material strip.",
+        "fact": "The person uses their fingers to press down on the green section of the rectangular object.",
         "confidence": 1.0
       },
       {
-        "fact": "The material strip is being folded or flattened against the white surface.",
+        "fact": "The rectangular object is resting on the white surface.",
         "confidence": 1.0
       },
       {
-        "fact": "The scissors are resting on the table to the left of the hands.",
+        "fact": "The scissors are lying on the white surface to the left of the hands.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The hands are positioned in the center of the frame, directly above the white surface. The strip of material is located under the hands. The black scissors are lying to the left of the hands and the material strip.",
+    "spatial": "The person's hands are positioned above the white surface, holding and manipulating the multi-colored rectangular object. The black scissors are located to the left of the hands and the object on the same white surface.",
     "parse_success": true,
     "chunk_idx": 16,
     "video_id": "How_to_Sharpen_Jointer_Knives"
   },
   {
     "time": [
-      34,
-      36
+      17,
+      18
     ],
     "visible_entities": [
       {
-        "desc": "hands with fair skin, wearing a silver ring on the left ring finger",
-        "action": "holding and adjusting a utility knife",
+        "desc": "hands with fair skin, one wearing a silver ring on the ring finger",
+        "action": "holding and manipulating a utility knife",
         "position": "center"
       },
       {
-        "desc": "utility knife with a white handle, yellow base, and a silver metal blade",
-        "action": "being held and manipulated",
+        "desc": "utility knife with a white body, yellow base, and a metal blade",
+        "action": "being held and adjusted",
         "position": "center"
       },
       {
@@ -833,7 +829,7 @@
         "position": "bottom left"
       },
       {
-        "desc": "white flat surface",
+        "desc": "white table surface",
         "action": "static",
         "position": "background"
       }
@@ -844,47 +840,43 @@
         "confidence": 1.0
       },
       {
-        "fact": "The person's fingers are pressing against the white handle of the knife.",
+        "fact": "The person is adjusting the blade of the utility knife.",
         "confidence": 1.0
       },
       {
-        "fact": "The utility knife has a yellow base and a silver blade.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "Black scissors are resting on the table to the left of the knife.",
+        "fact": "A pair of scissors is lying on the table.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The hands are holding the utility knife in the center of the frame. The utility knife is positioned above the white surface. The black scissors are located to the left of the utility knife.",
+    "spatial": "The hands are in the center of the frame, holding the utility knife. The scissors are to the left of the hands on the white table surface.",
     "parse_success": true,
     "chunk_idx": 17,
     "video_id": "How_to_Sharpen_Jointer_Knives"
   },
   {
     "time": [
-      36,
-      38
+      18,
+      19
     ],
     "visible_entities": [
       {
-        "desc": "hand with light skin tone",
+        "desc": "hands with light skin tone, holding a tool",
         "action": "holding a utility knife",
         "position": "center"
       },
       {
-        "desc": "utility knife with white handle and yellow tip",
+        "desc": "utility knife with a white handle and a yellow plastic tip",
         "action": "being held",
         "position": "center"
       },
       {
-        "desc": "black scissors with red pivot screw",
+        "desc": "black scissors with a red pivot screw",
         "action": "static",
-        "position": "left"
+        "position": "bottom left"
       },
       {
-        "desc": "metal vise jaws, grey and textured",
+        "desc": "metallic industrial blade or guide with a V-shaped groove",
         "action": "static",
         "position": "center"
       },
@@ -896,214 +888,200 @@
     ],
     "atomic_facts": [
       {
-        "fact": "A hand is holding a utility knife with a white handle and yellow tip.",
+        "fact": "A person is holding a utility knife with a white handle and yellow tip.",
         "confidence": 1.0
       },
       {
-        "fact": "The utility knife is positioned above a white surface.",
+        "fact": "Black scissors are resting on the white surface to the left.",
         "confidence": 1.0
       },
       {
-        "fact": "Black scissors are resting on the left side of the white surface.",
+        "fact": "The camera focuses on a close-up of a metallic blade with a V-shaped groove.",
         "confidence": 1.0
       },
       {
-        "fact": "The scene cuts to a close-up of metal vise jaws.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The metal vise jaws are stationary and appear worn.",
+        "fact": "The utility knife is positioned above the white surface.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The hand holding the utility knife is in the center of the frame, positioned above the white surface. The black scissors are to the left of the hand. The metal vise jaws are shown in a close-up view, filling the center of the frame.",
+    "spatial": "The hands are holding the utility knife in the center of the frame. The black scissors are located to the bottom left of the utility knife. The metallic blade is shown in a close-up view, appearing to be part of the machinery or surface below the hands.",
     "parse_success": true,
     "chunk_idx": 18,
     "video_id": "How_to_Sharpen_Jointer_Knives"
   },
   {
     "time": [
-      38,
-      40
+      19,
+      20
     ],
     "visible_entities": [
       {
-        "desc": "metallic tool with a curved, semi-cylindrical blade and a flat base, showing signs of wear and rust",
-        "action": "being held and positioned",
+        "desc": "dark grey metal machine jaws with a rough, industrial texture",
+        "action": "static",
+        "position": "left and right"
+      },
+      {
+        "desc": "metallic workpiece with a curved top surface and a flat bottom edge, showing signs of wear and rust",
+        "action": "being clamped",
         "position": "center"
       },
       {
-        "desc": "human fingers, light skin tone, holding the tool",
-        "action": "holding the tool",
+        "desc": "human fingers with light skin tone",
+        "action": "holding the workpiece",
         "position": "top right"
-      },
-      {
-        "desc": "dark, textured metal surface with a groove or slot",
-        "action": "static",
-        "position": "background"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A person's fingers are holding a metallic tool.",
+        "fact": "A person's fingers are holding a metallic workpiece in place.",
         "confidence": 1.0
       },
       {
-        "fact": "The tool is positioned over a groove in a metal surface.",
+        "fact": "The workpiece is positioned between the jaws of a metal clamp or vice.",
         "confidence": 1.0
       },
       {
-        "fact": "The tool has a curved cutting edge.",
+        "fact": "The machine jaws are closing or holding the metal piece steady.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The fingers are above and to the right of the metallic tool. The tool is positioned in the center, directly above the groove in the metal surface. The metal surface is below the tool and fingers.",
+    "spatial": "The metallic workpiece is centered between the two dark grey metal machine jaws. The human fingers are located above and to the right of the workpiece, holding it in place. The machine jaws are on the left and right sides of the workpiece.",
     "parse_success": true,
     "chunk_idx": 19,
     "video_id": "How_to_Sharpen_Jointer_Knives"
   },
   {
     "time": [
-      40,
-      42
+      20,
+      21
     ],
     "visible_entities": [
       {
-        "desc": "metallic cutting blade with a sharp, angled edge and a worn, textured surface",
+        "desc": "metallic cutting blade with a beveled edge, showing signs of wear and rust",
         "action": "static",
         "position": "center"
       },
       {
-        "desc": "dark metal workbench surface with a narrow slot",
+        "desc": "dark metal table surface with a narrow slot",
         "action": "static",
         "position": "foreground"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A metallic blade is positioned within a slot in a metal workbench.",
+        "fact": "A metallic blade is positioned vertically within a slot in the table surface.",
         "confidence": 1.0
       },
       {
-        "fact": "The blade remains stationary during the clip.",
+        "fact": "The blade remains stationary in the center of the frame.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The metallic cutting blade is situated inside the narrow slot of the dark metal workbench. The workbench surface is in the foreground, surrounding the blade.",
+    "spatial": "The metallic blade is located in the center, rising out of the slot in the dark metal table surface. The table surface is in the foreground and extends to the left and right of the blade.",
     "parse_success": true,
     "chunk_idx": 20,
     "video_id": "How_to_Sharpen_Jointer_Knives"
   },
   {
     "time": [
-      42,
-      44
+      21,
+      22
     ],
     "visible_entities": [
       {
-        "desc": "metallic cutting tool with a sharp, angled blade edge, showing signs of wear and rust",
-        "action": "cutting into the material",
+        "desc": "metallic cutting tool with a sharp, angled blade edge and a dark, textured surface showing signs of wear",
+        "action": "pressing down into the metal workpiece",
         "position": "center"
       },
       {
-        "desc": "yellow and orange cylindrical object, likely a handle or casing",
+        "desc": "dark, rectangular metal block with a rough, industrial texture",
+        "action": "static",
+        "position": "left"
+      },
+      {
+        "desc": "yellow-orange cylindrical object, likely a tool handle or safety guard",
         "action": "static",
         "position": "top"
-      },
-      {
-        "desc": "dark, textured material being sliced",
-        "action": "being cut",
-        "position": "center"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A sharp metallic blade is slicing through a dark material.",
+        "fact": "The metallic cutting tool is actively pressing down into the metal workpiece.",
         "confidence": 1.0
       },
       {
-        "fact": "The blade is positioned vertically in the center of the frame.",
+        "fact": "The metal block is positioned to the left of the cutting tool.",
         "confidence": 1.0
       },
       {
-        "fact": "A yellow and orange object is visible above the cutting action.",
+        "fact": "The yellow-orange object is located above the cutting tool.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The metallic cutting tool is in the center, slicing through the dark material. The yellow and orange object is above the cutting tool. The dark material is below the tool.",
+    "spatial": "The metallic cutting tool is in the center, positioned between the dark metal block on the left and another metal surface on the right. The yellow-orange object is above the cutting tool.",
     "parse_success": true,
     "chunk_idx": 21,
     "video_id": "How_to_Sharpen_Jointer_Knives"
   },
   {
     "time": [
-      44,
-      46
+      22,
+      23
     ],
     "visible_entities": [
       {
-        "desc": "yellow utility knife handle with a small, sharp metal blade tip",
+        "desc": "yellow plastic utility knife handle with a small, sharp metal blade tip",
         "action": "cutting into a groove",
-        "position": "top right"
+        "position": "top center"
       },
       {
-        "desc": "dark, rough-textured material with a V-shaped groove",
-        "action": "static",
-        "position": "center"
-      },
-      {
-        "desc": "metallic, angled blade edge inside the groove",
+        "desc": "dark metallic surface with a V-shaped groove and rough, cut edges",
         "action": "static",
         "position": "center"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A yellow utility knife is cutting into a dark material.",
+        "fact": "A yellow utility knife is cutting into the material.",
         "confidence": 1.0
       },
       {
-        "fact": "The knife blade is positioned inside a V-shaped groove.",
+        "fact": "The blade is positioned inside a V-shaped groove.",
         "confidence": 1.0
       },
       {
-        "fact": "The material appears to be wood or a similar composite.",
+        "fact": "Small debris is visible inside the cut.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The yellow utility knife is above and to the right of the dark material. The metallic blade edge is inside the V-shaped groove of the material.",
+    "spatial": "The yellow utility knife is positioned above the dark metallic surface. The blade of the knife is inserted into the V-shaped groove of the metal.",
     "parse_success": true,
     "chunk_idx": 22,
     "video_id": "How_to_Sharpen_Jointer_Knives"
   },
   {
     "time": [
-      46,
-      48
+      23,
+      24
     ],
     "visible_entities": [
       {
-        "desc": "yellow and white utility knife with a textured grip",
-        "action": "being guided by a hand",
+        "desc": "utility knife with a yellow plastic handle and a silver metal blade",
+        "action": "cutting into a groove",
         "position": "center"
       },
       {
-        "desc": "human hand with visible fingers",
-        "action": "holding and guiding the knife",
+        "desc": "hand with light skin tone",
+        "action": "holding the knife handle",
         "position": "right"
       },
       {
-        "desc": "metallic table saw blade with sharp teeth",
-        "action": "static",
-        "position": "center"
-      },
-      {
-        "desc": "dark metallic table saw surface with a slot",
+        "desc": "dark metallic surface with a central groove",
         "action": "static",
         "position": "foreground"
       }
@@ -1114,401 +1092,397 @@
         "confidence": 1.0
       },
       {
-        "fact": "The utility knife is being moved along the edge of the table saw slot.",
+        "fact": "The knife blade is inserted into a groove in a metal surface.",
         "confidence": 1.0
       },
       {
-        "fact": "The knife blade is positioned next to the circular saw blade.",
+        "fact": "The knife is cutting or scraping the material inside the groove.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The hand is to the right of the utility knife, holding it. The utility knife is positioned above the table saw surface and next to the circular saw blade. The saw blade is inside the slot of the table.",
+    "spatial": "The hand is positioned to the right of the knife blade. The knife is located above the dark metallic surface and is inserted into the groove in the center of the surface.",
     "parse_success": true,
     "chunk_idx": 23,
     "video_id": "How_to_Sharpen_Jointer_Knives"
   },
   {
     "time": [
-      48,
-      50
+      24,
+      25
     ],
     "visible_entities": [
       {
-        "desc": "human hand with light skin tone, fingers gripping a small object",
-        "action": "sliding a yellow object along a track",
+        "desc": "hand with fair skin, short fingernails",
+        "action": "pushing a yellow object",
         "position": "right"
       },
       {
-        "desc": "small yellow rectangular plastic object with diagonal ridges on the side",
-        "action": "being pushed along a groove",
+        "desc": "small yellow plastic object, rectangular with diagonal ridges on the side",
+        "action": "being pushed along a track",
         "position": "center"
       },
       {
-        "desc": "dark metallic surface with a straight groove or track",
+        "desc": "dark metallic surface with a groove or track, scattered with fine sawdust",
         "action": "static",
-        "position": "left"
+        "position": "foreground"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A hand is pushing a yellow plastic piece along a metal track.",
+        "fact": "A hand is pushing a yellow plastic object along a groove in a table.",
         "confidence": 1.0
       },
       {
-        "fact": "The yellow object moves from right to left within the groove.",
+        "fact": "The yellow object slides forward between two frames.",
         "confidence": 1.0
       },
       {
-        "fact": "The metal surface has a visible groove running horizontally.",
+        "fact": "Fine sawdust is scattered on the dark surface.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The hand is positioned to the right of the yellow object and is holding it. The yellow object is inside the groove of the dark metallic surface. The metallic surface is to the left of the hand.",
+    "spatial": "The hand is to the right of the yellow object. The yellow object is inside the groove of the dark metallic surface. The sawdust is scattered on top of the surface.",
     "parse_success": true,
     "chunk_idx": 24,
     "video_id": "How_to_Sharpen_Jointer_Knives"
   },
   {
     "time": [
-      50,
-      52
+      25,
+      26
     ],
     "visible_entities": [
       {
-        "desc": "hand with fair skin, short fingernails",
-        "action": "holding and sliding a yellow tool",
+        "desc": "hand with light skin tone",
+        "action": "holding and sliding a tool",
         "position": "right"
       },
       {
-        "desc": "yellow plastic tool with a textured grip surface and a thin metal blade",
-        "action": "sliding along a groove",
+        "desc": "yellow plastic tool with a textured, ribbed grip surface and a translucent white body",
+        "action": "being pushed along a track",
         "position": "center"
       },
       {
-        "desc": "dark metallic surface with a groove and sawdust residue",
+        "desc": "dark metallic surface with parallel grooves and a raised edge",
         "action": "static",
         "position": "foreground"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A hand is holding a yellow tool.",
+        "fact": "A hand is pushing a yellow tool along a grooved track.",
         "confidence": 1.0
       },
       {
-        "fact": "The tool is being slid along a groove in the metal surface.",
+        "fact": "The yellow tool is sliding to the left.",
         "confidence": 1.0
       },
       {
-        "fact": "The tool has a thin metal blade extending from the yellow handle.",
+        "fact": "The tool has a textured grip pattern.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The hand is to the right of the yellow tool, holding it. The yellow tool is positioned on top of the dark metallic surface, with its blade inserted into a groove. The hand is in the foreground relative to the background wall.",
+    "spatial": "The hand is to the right of the yellow tool and is holding it. The yellow tool is on the dark metallic surface, positioned next to a raised edge. The tool is moving towards the left side of the frame.",
     "parse_success": true,
     "chunk_idx": 25,
     "video_id": "How_to_Sharpen_Jointer_Knives"
   },
   {
     "time": [
-      52,
-      54
+      26,
+      27
     ],
     "visible_entities": [
       {
-        "desc": "hand holding a translucent plastic squeeze bottle with a white nozzle and a red label",
-        "action": "squeezing liquid onto the metal surface",
+        "desc": "hand holding a translucent plastic bottle with a red label and white nozzle",
+        "action": "squeezing liquid into the gap",
         "position": "top right"
       },
       {
-        "desc": "large flat metal plates, dull grey, with a visible horizontal gap",
+        "desc": "metallic workbench surface with a horizontal gap",
         "action": "static",
         "position": "center"
       },
       {
-        "desc": "green and yellow cleaning brush",
+        "desc": "yellow and green cleaning brush",
         "action": "static",
         "position": "background"
       },
       {
-        "desc": "red and black tool handle",
+        "desc": "red and black handled tool",
         "action": "static",
         "position": "right"
+      },
+      {
+        "desc": "clear liquid drop",
+        "action": "falling from nozzle",
+        "position": "center"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A hand squeezes a bottle to dispense a clear liquid.",
+        "fact": "A hand squeezes a bottle to dispense a clear liquid drop.",
         "confidence": 1.0
       },
       {
-        "fact": "The liquid drips from the nozzle into the gap between the metal plates.",
+        "fact": "The liquid drop falls from the nozzle into the gap between the metal plates.",
         "confidence": 1.0
       },
       {
-        "fact": "A cleaning brush rests on the metal surface in the background.",
+        "fact": "A yellow and green brush rests on the metal surface in the background.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The hand holding the bottle is positioned above the metal plates. The liquid is being applied directly into the gap between the two metal sections. The green and yellow brush is located behind the gap on the upper metal plate.",
+    "spatial": "The hand holding the bottle is positioned above the metal workbench. The liquid drop is falling from the nozzle into the gap in the center of the metal surface. The yellow and green brush is behind the gap on the metal surface. The red and black handled tool is to the right of the gap.",
     "parse_success": true,
     "chunk_idx": 26,
     "video_id": "How_to_Sharpen_Jointer_Knives"
   },
   {
     "time": [
-      54,
-      56
+      27,
+      28
     ],
     "visible_entities": [
       {
-        "desc": "flat metallic surface, dark grey, smooth, reflective",
+        "desc": "yellow and green cleaning brush with a white handle",
+        "action": "static",
+        "position": "top center"
+      },
+      {
+        "desc": "flat metallic surface, likely a griddle or industrial table, with a visible horizontal seam",
         "action": "static",
         "position": "center"
       },
       {
-        "desc": "cleaning tool with yellow plastic base, white foam pad, and green handle",
-        "action": "static",
-        "position": "top"
-      },
-      {
-        "desc": "red cylindrical tool handle with black textured grip",
+        "desc": "red tool handle with a black grip",
         "action": "static",
         "position": "right"
       },
       {
-        "desc": "metallic plate, gold-colored, rectangular, with visible wear and dust",
+        "desc": "vertical metal plate or barrier",
         "action": "static",
-        "position": "foreground"
+        "position": "left"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A cleaning tool rests on the upper metallic surface.",
+        "fact": "A yellow and green cleaning brush rests on the upper section of the metallic surface.",
         "confidence": 1.0
       },
       {
-        "fact": "A red tool handle is positioned on the right side of the frame.",
+        "fact": "The metallic surface is divided into two sections by a horizontal seam.",
         "confidence": 1.0
       },
       {
-        "fact": "The metallic surfaces are arranged horizontally with a gap between them.",
+        "fact": "A red tool handle is visible on the right side of the frame.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The cleaning tool is on top of the dark grey metallic surface. The red tool handle is to the right of the metallic surface. The gold-colored metallic plate is in the foreground, below the dark grey surface.",
+    "spatial": "The yellow and green cleaning brush is on the upper section of the metallic surface. The red tool handle is to the right of the metallic surface. The vertical metal plate is to the left of the metallic surface.",
     "parse_success": true,
     "chunk_idx": 27,
     "video_id": "How_to_Sharpen_Jointer_Knives"
   },
   {
     "time": [
-      56,
-      58
+      28,
+      29
     ],
     "visible_entities": [
       {
-        "desc": "yellow and white cleaning tool with a green handle",
-        "action": "static",
-        "position": "center"
-      },
-      {
-        "desc": "large flat metallic surface, likely a griddle or press",
+        "desc": "metallic surface, flat, gray, industrial-looking",
         "action": "static",
         "position": "foreground"
       },
       {
-        "desc": "red and black handle of a tool",
+        "desc": "yellow and green plastic scraper tool",
         "action": "static",
-        "position": "right"
+        "position": "center"
       },
       {
-        "desc": "hand of a person",
-        "action": "moving slightly",
-        "position": "top"
+        "desc": "red and black cylindrical object",
+        "action": "static",
+        "position": "right"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A yellow and white cleaning tool rests on a metallic surface.",
+        "fact": "A yellow and green scraper tool rests on the metallic surface.",
         "confidence": 1.0
       },
       {
-        "fact": "A hand is visible at the top of the frame, moving slightly.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The metallic surface appears to be part of a cooking appliance.",
+        "fact": "The metallic surface is split by a horizontal gap.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The yellow and white cleaning tool is in the center of the metallic surface. The red and black handle is to the right of the cleaning tool. The hand is above the cleaning tool.",
+    "spatial": "The yellow and green scraper tool is on the metallic surface in the center. The red and black object is to the right of the scraper tool. The metallic surface is in the foreground.",
     "parse_success": true,
     "chunk_idx": 28,
     "video_id": "How_to_Sharpen_Jointer_Knives"
   },
   {
     "time": [
-      58,
-      60
+      29,
+      30
     ],
     "visible_entities": [
       {
-        "desc": "hand with fair skin, holding a small object",
-        "action": "rubbing object against metal",
+        "desc": "hand with light skin tone",
+        "action": "holding a yellow and green object",
+        "position": "top center"
+      },
+      {
+        "desc": "yellow and green plastic object, rectangular with rounded edges",
+        "action": "being moved along a metal surface",
         "position": "center"
       },
       {
-        "desc": "small rectangular object, yellow base with a green top layer",
-        "action": "being rubbed on metal surface",
-        "position": "center"
-      },
-      {
-        "desc": "metal surface, flat, grey, industrial texture",
+        "desc": "flat metal surface, metallic gray, with a horizontal seam",
         "action": "static",
         "position": "bottom"
       },
       {
-        "desc": "red and black tool handle, partially visible",
+        "desc": "red and black cylindrical tool handle",
         "action": "static",
         "position": "right"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A hand is holding a yellow and green object.",
+        "fact": "A hand is holding a yellow and green plastic object.",
         "confidence": 1.0
       },
       {
-        "fact": "The hand is rubbing the yellow and green object back and forth against the metal surface.",
+        "fact": "The hand moves the object along the horizontal seam of the metal surface.",
         "confidence": 1.0
       },
       {
-        "fact": "The metal surface is located below the hand.",
+        "fact": "A red and black tool handle is visible on the right side of the frame.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The hand is positioned above the metal surface, holding the yellow and green object directly against it. The red and black tool handle is to the right of the metal surface.",
+    "spatial": "The hand is positioned above the metal surface, holding the yellow and green object. The object is in direct contact with the metal surface, moving along the seam. The red and black tool handle is located to the right of the metal surface.",
     "parse_success": true,
     "chunk_idx": 29,
     "video_id": "How_to_Sharpen_Jointer_Knives"
   },
   {
     "time": [
-      60,
-      62
+      30,
+      31
     ],
     "visible_entities": [
       {
         "desc": "hand with light skin tone",
-        "action": "rubbing a yellow object",
+        "action": "rubbing a sponge along a metal surface",
         "position": "center"
       },
       {
-        "desc": "yellow rectangular object with a green top layer, appearing to be a sharpening stone or abrasive block",
-        "action": "being moved back and forth",
+        "desc": "yellow and green sponge, rectangular, porous texture",
+        "action": "being moved along the metal",
         "position": "center"
       },
       {
-        "desc": "flat metal surface with a dark finish, possibly a machine bed or sharpening plate",
+        "desc": "metal surface, flat, gray, with visible scratches and dust",
         "action": "static",
         "position": "bottom"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A hand is rubbing a yellow and green object against a metal surface.",
+        "fact": "A hand is holding a yellow and green sponge.",
         "confidence": 1.0
       },
       {
-        "fact": "The yellow object is moving horizontally across the metal plate.",
+        "fact": "The sponge is being rubbed back and forth along the edge of a metal surface.",
         "confidence": 1.0
       },
       {
-        "fact": "The metal surface is positioned below the hand.",
+        "fact": "The metal surface shows signs of wear and dust.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The hand is holding the yellow object and is positioned above the flat metal surface. The yellow object is in direct contact with the metal surface, moving across it.",
+    "spatial": "The hand is positioned above the metal surface, holding the sponge against it. The sponge is in direct contact with the top of the metal surface.",
     "parse_success": true,
     "chunk_idx": 30,
     "video_id": "How_to_Sharpen_Jointer_Knives"
   },
   {
     "time": [
-      62,
-      64
+      31,
+      32
     ],
     "visible_entities": [
       {
-        "desc": "hand with fair skin, wearing a dark sleeve",
-        "action": "rubbing a yellow block",
-        "position": "top left"
+        "desc": "person's hand with fair skin, wearing a dark long-sleeved garment",
+        "action": "rubbing a yellow block along a metal surface",
+        "position": "top/center"
       },
       {
-        "desc": "yellow rectangular block, likely chalk or rosin, with a green top surface",
-        "action": "being rubbed on metal",
-        "position": "center left"
+        "desc": "yellow rectangular block, appearing to be a sharpening stone or honing tool",
+        "action": "being moved back and forth",
+        "position": "center/left"
       },
       {
-        "desc": "large flat metal surface, appearing to be a machine table or blade, with a visible seam",
+        "desc": "flat metal surface, likely a jointer bed, with a metallic sheen and visible seam",
         "action": "static",
-        "position": "center"
-      },
-      {
-        "desc": "red and black tool handle",
-        "action": "static",
-        "position": "right"
+        "position": "bottom/foreground"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A hand is rubbing a yellow block back and forth along the edge of a metal surface.",
+        "fact": "A hand is rubbing a yellow block along the edge of a metal surface.",
         "confidence": 1.0
       },
       {
-        "fact": "The yellow block is being applied to the seam between two metal plates.",
+        "fact": "The metal surface has a visible seam or gap running horizontally across the frame.",
         "confidence": 1.0
       },
       {
-        "fact": "A red and black tool handle is visible in the background on the right.",
+        "fact": "The yellow block is being used to hone or clean the metal edge.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The hand is positioned above the yellow block, holding it against the metal surface. The yellow block is to the left of the red and black tool handle. The metal surface is below the hand and block.",
+    "spatial": "The person's hand is positioned above the metal surface, holding the yellow block. The yellow block is in direct contact with the metal surface, moving along its edge. The metal surface occupies the lower portion of the frame, extending from the left to the right.",
     "parse_success": true,
     "chunk_idx": 31,
     "video_id": "How_to_Sharpen_Jointer_Knives"
   },
   {
     "time": [
-      64,
-      66
+      32,
+      33
     ],
     "visible_entities": [
       {
         "desc": "hand with fair skin, holding a small tool",
-        "action": "rubbing the tool along the metal surface",
-        "position": "center"
+        "action": "rubbing the tool against the metal surface",
+        "position": "center/foreground"
       },
       {
-        "desc": "small tool with a yellow base and a green top section",
+        "desc": "small tool with a bright yellow plastic base and a lime green top section",
         "action": "being moved back and forth",
         "position": "center"
       },
       {
-        "desc": "flat, dark metallic surface with a horizontal seam",
+        "desc": "flat, dark metallic surface with a visible horizontal seam or gap",
         "action": "static",
-        "position": "bottom"
+        "position": "background/center"
+      },
+      {
+        "desc": "red and black object, likely a tool handle",
+        "action": "static",
+        "position": "right"
       }
     ],
     "atomic_facts": [
@@ -1517,40 +1491,40 @@
         "confidence": 1.0
       },
       {
-        "fact": "The hand is rubbing the tool along the seam of the metal surface.",
+        "fact": "The hand is rubbing the tool along the seam of a metal surface.",
         "confidence": 1.0
       },
       {
-        "fact": "The tool moves from left to right across the frame.",
+        "fact": "The tool moves from the left side of the seam towards the right side between the two frames.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The hand is positioned above the metal surface, holding the yellow and green tool. The tool is in direct contact with the metal surface, specifically along the horizontal seam. The metal surface occupies the lower portion of the frame.",
+    "spatial": "The hand is positioned above the metal surface, holding the yellow and green tool. The tool is in direct contact with the horizontal seam on the metal. The red and black object is located to the right of the hand and the metal surface.",
     "parse_success": true,
     "chunk_idx": 32,
     "video_id": "How_to_Sharpen_Jointer_Knives"
   },
   {
     "time": [
-      66,
-      68
+      33,
+      34
     ],
     "visible_entities": [
       {
-        "desc": "hand with light skin tone, holding a tool",
-        "action": "rubbing a tool against a metal surface",
-        "position": "center/foreground"
+        "desc": "hand with fair skin, holding a tool",
+        "action": "rubbing the tool against the metal surface",
+        "position": "center"
       },
       {
-        "desc": "small tool with a bright yellow rectangular base and a lime green top section",
+        "desc": "sharpening tool with a bright yellow base and a lime green top section",
         "action": "being moved back and forth",
         "position": "center"
       },
       {
-        "desc": "flat, metallic surface with a visible horizontal seam or gap, appearing to be part of a machine bed",
+        "desc": "flat, dark metallic surface with a visible seam or gap running horizontally",
         "action": "static",
-        "position": "bottom/foreground"
+        "position": "bottom"
       },
       {
         "desc": "dark, blurry background area",
@@ -1560,146 +1534,100 @@
     ],
     "atomic_facts": [
       {
-        "fact": "A hand is vigorously rubbing a yellow and green tool against a metal surface.",
+        "fact": "A hand is holding a yellow and green tool.",
         "confidence": 1.0
       },
       {
-        "fact": "The tool is being moved back and forth along a seam in the metal.",
+        "fact": "The tool is being rubbed against the flat metal surface.",
         "confidence": 1.0
       },
       {
-        "fact": "The metal surface has a horizontal gap running across the middle.",
+        "fact": "The metal surface has a horizontal gap separating two plates.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The hand is holding the yellow and green tool directly above the metal surface. The tool is positioned on the metal surface, specifically near the horizontal seam. The metal surface occupies the lower portion of the frame, while the hand and tool are in the center foreground.",
+    "spatial": "The hand is positioned above the metal surface, holding the yellow and green tool. The tool is in direct contact with the metal surface, specifically near the horizontal gap. The dark background is behind the hand and the metal surface.",
     "parse_success": true,
     "chunk_idx": 33,
     "video_id": "How_to_Sharpen_Jointer_Knives"
   },
   {
     "time": [
-      68,
-      70
+      34,
+      35
     ],
     "visible_entities": [
       {
-        "desc": "hand with light skin tone",
-        "action": "rubbing a yellow block",
+        "desc": "hand with fair skin, wearing a dark sleeve",
+        "action": "rubbing a block against a surface",
         "position": "top left"
       },
       {
-        "desc": "yellow rectangular block with a green top layer",
-        "action": "being rubbed on metal",
-        "position": "center left"
+        "desc": "yellow rectangular block with a green top surface",
+        "action": "being pressed against metal",
+        "position": "left"
       },
       {
-        "desc": "flat metallic surface with a horizontal seam",
+        "desc": "flat metallic surface, likely a jointer table, with a visible seam",
         "action": "static",
         "position": "center"
-      },
-      {
-        "desc": "red and black tool handle",
-        "action": "static",
-        "position": "right"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A hand is rubbing a yellow block against a metallic surface.",
+        "fact": "A hand is rubbing a yellow and green block against the flat metallic surface.",
         "confidence": 1.0
       },
       {
-        "fact": "The yellow block has a green layer on top.",
+        "fact": "The metallic surface has a visible seam or gap running horizontally across the center.",
         "confidence": 1.0
       },
       {
-        "fact": "The metallic surface features a distinct horizontal gap or seam.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "A red and black tool handle is visible on the right side of the frame.",
+        "fact": "The block is positioned on the left side of the metal table.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The hand is positioned above the yellow block, holding it against the metallic surface. The yellow block is to the left of the horizontal seam on the metal. The red and black tool handle is located to the right of the metallic surface.",
+    "spatial": "The hand is above the yellow and green block, holding it against the metallic surface. The block is to the left of the center of the metal table. The metal surface is below the hand and the block.",
     "parse_success": true,
     "chunk_idx": 34,
     "video_id": "How_to_Sharpen_Jointer_Knives"
   },
   {
     "time": [
-      70,
-      72
+      35,
+      36
     ],
     "visible_entities": [
       {
-        "desc": "hand with fair skin and short fingernails",
-        "action": "pointing index finger at metal seam then moving away",
-        "position": "top center"
+        "desc": "hand with light skin tone, short fingernails, pointing index finger",
+        "action": "pointing at metal surface then retracting",
+        "position": "top/center"
       },
       {
-        "desc": "large flat metallic surface with a horizontal seam and metallic dust",
+        "desc": "flat metallic surface, dark grey, smooth, rectangular plate",
         "action": "static",
-        "position": "foreground"
+        "position": "center"
       },
       {
-        "desc": "green and yellow plastic scraper tool",
-        "action": "static",
-        "position": "background left"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "A hand points an index finger at the horizontal seam of a metal surface.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The hand moves out of the frame to the right.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "A green and yellow scraper rests on the metal surface in the background.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [],
-    "spatial": "The hand is positioned above the large flat metallic surface. The green and yellow scraper is located in the background, to the left of the hand's position.",
-    "parse_success": true,
-    "chunk_idx": 35,
-    "video_id": "How_to_Sharpen_Jointer_Knives"
-  },
-  {
-    "time": [
-      72,
-      74
-    ],
-    "visible_entities": [
-      {
-        "desc": "person wearing a grey and black plaid shirt sleeve and a white glove with a black leather palm",
-        "action": "reaching forward and manipulating a metal surface",
-        "position": "foreground"
-      },
-      {
-        "desc": "yellow and green plastic tool, rectangular shape",
+        "desc": "yellow and green rectangular object, plastic handle, brush-like",
         "action": "static",
         "position": "background"
       },
       {
-        "desc": "dark metal surface, flat and reflective",
+        "desc": "metallic base plate, brass or gold-colored, textured surface",
         "action": "static",
-        "position": "center"
+        "position": "foreground/bottom"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A person's gloved hand reaches forward towards a metal surface.",
+        "fact": "A hand points an index finger at the edge of a dark metal plate.",
         "confidence": 1.0
       },
       {
-        "fact": "The hand is positioned over a dark metal plate.",
+        "fact": "The hand retracts and moves out of the frame.",
         "confidence": 1.0
       },
       {
@@ -1708,165 +1636,165 @@
       }
     ],
     "ocr": [],
-    "spatial": "The person's gloved hand is in the foreground, positioned above and in front of the dark metal surface. The yellow and green tool is located behind the hand on the metal surface.",
+    "spatial": "The hand is positioned above the dark metal plate. The yellow and green object is behind the metal plate. The brass-colored base is below the dark metal plate.",
+    "parse_success": true,
+    "chunk_idx": 35,
+    "video_id": "How_to_Sharpen_Jointer_Knives"
+  },
+  {
+    "time": [
+      36,
+      37
+    ],
+    "visible_entities": [
+      {
+        "desc": "person's arm wearing a dark grey and black plaid flannel shirt sleeve, with a white glove featuring a black leather palm",
+        "action": "manipulating a metal surface",
+        "position": "foreground right"
+      },
+      {
+        "desc": "yellow and green plastic tool, possibly a scraper or handle",
+        "action": "static",
+        "position": "background center"
+      },
+      {
+        "desc": "dark metal surface, appearing to be part of a machine or workbench",
+        "action": "static",
+        "position": "center left"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A person wearing a plaid shirt and protective glove is manipulating a metal surface.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The gloved hand is pressing down or adjusting something on the dark metal plate.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A yellow and green tool rests on the metal surface in the background.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The person's arm is in the foreground on the right side of the frame. The gloved hand is positioned over the dark metal surface which occupies the center and left. The yellow and green tool is located behind the hand, resting on the metal surface.",
     "parse_success": true,
     "chunk_idx": 36,
     "video_id": "How_to_Sharpen_Jointer_Knives"
   },
   {
     "time": [
-      74,
-      76
+      37,
+      38
     ],
     "visible_entities": [
       {
-        "desc": "person's arm wearing a dark blue and black plaid flannel shirt with a white cuff",
+        "desc": "hand wearing a black and grey plaid flannel shirt with a white cuff",
         "action": "holding a squeeze bottle",
-        "position": "right"
+        "position": "top right"
       },
       {
-        "desc": "translucent plastic squeeze bottle with a white nozzle cap and a pink label",
-        "action": "being squeezed to dispense liquid",
+        "desc": "translucent plastic squeeze bottle with a white nozzle",
+        "action": "dispensing liquid",
         "position": "center"
       },
       {
-        "desc": "flat, dark metal surface, likely a griddle or workbench",
+        "desc": "flat, dark metal surface with a seam",
         "action": "static",
         "position": "bottom"
       },
       {
-        "desc": "yellow and green rectangular object, possibly a sponge or tool handle",
+        "desc": "yellow and green rectangular object",
         "action": "static",
-        "position": "background left"
+        "position": "left background"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A person is squeezing a translucent bottle to dispense a white liquid onto a flat metal surface.",
+        "fact": "A hand is squeezing a translucent bottle to dispense a white liquid onto a metal surface.",
         "confidence": 1.0
       },
       {
-        "fact": "The liquid is being applied near the center of the metal surface.",
+        "fact": "The liquid is being applied near a seam on the metal plate.",
         "confidence": 1.0
       },
       {
-        "fact": "The person is wearing a plaid shirt with a white cuff.",
+        "fact": "A yellow and green object sits on the surface in the background.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The person's arm is positioned on the right side of the frame, holding the squeeze bottle above the metal surface. The bottle is centered over the metal surface, dispensing liquid onto it. A yellow and green object is visible in the background to the left of the bottle.",
+    "spatial": "The hand holding the bottle is positioned above the dark metal surface. The yellow and green object is to the left of the area where the liquid is being dispensed.",
     "parse_success": true,
     "chunk_idx": 37,
     "video_id": "How_to_Sharpen_Jointer_Knives"
   },
   {
     "time": [
-      76,
-      78
+      38,
+      39
     ],
     "visible_entities": [
       {
         "desc": "hand with light skin tone",
-        "action": "picking up a cleaning tool",
+        "action": "reaching for and grasping a cleaning tool",
         "position": "top center"
       },
       {
-        "desc": "cleaning tool with a yellow sponge base, white middle layer, and green scrubbing top",
-        "action": "being lifted from the surface",
+        "desc": "cleaning tool with a yellow sponge base, white middle layer, and green top layer",
+        "action": "being picked up",
         "position": "left"
       },
       {
-        "desc": "flat metallic surface, likely a griddle or machine bed, with a dull sheen",
+        "desc": "flat, dark metallic surface, likely a griddle or machine bed",
         "action": "static",
         "position": "center"
       },
       {
-        "desc": "black cylindrical handle with a red grip section",
+        "desc": "red and black cylindrical tool handle",
         "action": "static",
         "position": "right"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A hand reaches down and picks up a multi-layered cleaning tool.",
+        "fact": "A hand reaches down and grasps a multi-layered cleaning tool.",
         "confidence": 1.0
       },
       {
-        "fact": "The cleaning tool is lifted off the metallic surface.",
+        "fact": "The cleaning tool is lifted from the metallic surface.",
         "confidence": 1.0
       },
       {
-        "fact": "The metallic surface occupies the majority of the frame.",
+        "fact": "The cleaning tool consists of a yellow sponge, a white layer, and a green cloth or sponge.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The hand is positioned above the cleaning tool and the metallic surface. The cleaning tool is located on the left side of the metallic surface. The black and red handle is visible on the right side of the frame, next to the metallic surface.",
+    "spatial": "The hand is positioned above the cleaning tool. The cleaning tool is on the left side of the flat metallic surface. The red and black tool handle is to the right of the metallic surface.",
     "parse_success": true,
     "chunk_idx": 38,
     "video_id": "How_to_Sharpen_Jointer_Knives"
   },
   {
     "time": [
-      78,
-      80
+      39,
+      40
     ],
     "visible_entities": [
       {
-        "desc": "hand with light skin tone, wearing a beige or light brown long-sleeved garment",
-        "action": "holding a yellow tool and pressing it against a metal surface",
-        "position": "top center"
-      },
-      {
-        "desc": "yellow rectangular tool with a white or light-colored backing, appearing to be a sharpening stone or honing guide",
-        "action": "being moved along a metal edge",
-        "position": "center"
-      },
-      {
-        "desc": "large flat metallic surface, likely a table saw or jointer bed, with a brass or gold-colored finish and visible wood dust",
-        "action": "static",
-        "position": "bottom and background"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "A hand is holding a yellow tool against a metal surface.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The yellow tool is being slid along the edge of the metal surface.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "Wood dust is visible on the metallic surface.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [],
-    "spatial": "The hand is positioned above the yellow tool, gripping it firmly. The yellow tool is in contact with the flat metallic surface, specifically near a gap or slot in the metal. The metallic surface occupies the lower portion of the frame and extends into the background.",
-    "parse_success": true,
-    "chunk_idx": 39,
-    "video_id": "How_to_Sharpen_Jointer_Knives"
-  },
-  {
-    "time": [
-      80,
-      82
-    ],
-    "visible_entities": [
-      {
-        "desc": "hand with light skin tone, short fingernails, wearing a dark long-sleeved garment",
-        "action": "rubbing a yellow sponge along a metal edge",
+        "desc": "hand with light skin tone, wearing a beige or tan long-sleeved garment",
+        "action": "pressing a yellow block against a metal surface",
         "position": "top/center"
       },
       {
-        "desc": "small yellow sponge with a green top layer and white underside, rectangular shape",
-        "action": "being moved back and forth",
+        "desc": "yellow rectangular block, appearing to be a sharpening stone or honing compound, with a white backing",
+        "action": "being rubbed against the metal",
         "position": "center"
       },
       {
-        "desc": "large flat metal surface, smooth, silver-grey, with a visible horizontal seam or gap",
+        "desc": "metallic workbench surface, flat, silver-grey, with a visible seam or gap",
         "action": "static",
         "position": "bottom/foreground"
       },
@@ -1878,373 +1806,394 @@
     ],
     "atomic_facts": [
       {
-        "fact": "A hand is holding a yellow and green sponge.",
+        "fact": "A hand is pressing a yellow block against the edge of a metal surface.",
         "confidence": 1.0
       },
       {
-        "fact": "The hand is rubbing the sponge along the edge of a metal sheet.",
+        "fact": "The yellow block is being moved slightly along the metal seam.",
         "confidence": 1.0
       },
       {
-        "fact": "The metal surface has a distinct horizontal gap or seam running across it.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "A tool with a red handle rests on the right side of the metal surface.",
+        "fact": "A red and black tool handle rests on the right side of the workbench.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The hand is positioned above the metal surface, holding the yellow sponge. The sponge is in direct contact with the edge of the metal sheet. The red-handled tool is to the right of the hand and the sponge.",
+    "spatial": "The hand is positioned above the metal workbench surface, holding the yellow block. The yellow block is in direct contact with the metal surface near the center. The red and black tool handle is to the right of the hand and the yellow block.",
+    "parse_success": true,
+    "chunk_idx": 39,
+    "video_id": "How_to_Sharpen_Jointer_Knives"
+  },
+  {
+    "time": [
+      40,
+      41
+    ],
+    "visible_entities": [
+      {
+        "desc": "hand with light skin tone, wearing a dark long-sleeved garment",
+        "action": "rubbing a yellow and green block along a metal seam",
+        "position": "center"
+      },
+      {
+        "desc": "small rectangular block, yellow base with a green top layer and white underside",
+        "action": "being held and moved",
+        "position": "center"
+      },
+      {
+        "desc": "large flat metal surface, dull silver-grey, with a horizontal seam or gap",
+        "action": "static",
+        "position": "foreground"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A hand is holding a yellow and green block.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The hand is rubbing the block back and forth along the edge of a metal surface.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The metal surface has a visible horizontal gap or seam running across it.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The hand is positioned above the metal surface. The yellow and green block is held between the fingers and is in direct contact with the metal surface, specifically along the horizontal seam. The metal surface occupies the lower portion of the frame.",
     "parse_success": true,
     "chunk_idx": 40,
     "video_id": "How_to_Sharpen_Jointer_Knives"
   },
   {
     "time": [
-      82,
-      84
+      41,
+      42
     ],
     "visible_entities": [
       {
-        "desc": "person's hand with fair skin, wearing a dark long-sleeved garment",
-        "action": "manipulating a yellow object",
-        "position": "center/foreground"
-      },
-      {
-        "desc": "small yellow plastic object with a green top section, rectangular shape",
-        "action": "being moved along a metal surface",
+        "desc": "person's hand with light skin tone",
+        "action": "sliding a tool along a metal surface",
         "position": "center"
       },
       {
-        "desc": "large flat metallic surface, dull silver/grey, industrial appearance",
+        "desc": "yellow and green handheld tool, likely a deburring tool or scraper, with a yellow base and green top",
+        "action": "being pushed along a metal edge",
+        "position": "center"
+      },
+      {
+        "desc": "flat metal sheet or plate with a straight edge, appearing to be steel or aluminum",
         "action": "static",
-        "position": "bottom/background"
+        "position": "foreground"
+      },
+      {
+        "desc": "dark metal workbench or machine surface",
+        "action": "static",
+        "position": "background"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A person's hand is holding a small yellow and green object.",
+        "fact": "A person is using a yellow and green tool to scrape or deburr the edge of a metal sheet.",
         "confidence": 1.0
       },
       {
-        "fact": "The hand moves the yellow object from the right side of the metal surface towards the left.",
+        "fact": "The tool is moved from the right side of the frame towards the left along the metal edge.",
         "confidence": 1.0
       },
       {
-        "fact": "The yellow object is sliding along the flat metallic surface.",
+        "fact": "The metal sheet is resting on a larger metal surface.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The person's hand is positioned above the large metallic surface. The yellow object is held by the hand and is in direct contact with the metal surface. The hand moves the object from the right side of the frame towards the left side.",
+    "spatial": "The person's hand is holding the yellow and green tool. The tool is positioned on top of the metal sheet's edge. The metal sheet is in the foreground, resting on a larger metal workbench surface that extends into the background.",
     "parse_success": true,
     "chunk_idx": 41,
     "video_id": "How_to_Sharpen_Jointer_Knives"
   },
   {
     "time": [
-      84,
-      86
+      42,
+      43
     ],
     "visible_entities": [
       {
-        "desc": "person wearing a dark grey and black plaid jacket with a white sleeve and black glove",
-        "action": "leaning over the machine",
+        "desc": "person wearing a dark grey jacket with a white sleeve cuff and black gloves",
+        "action": "leaning over the metal surface",
         "position": "center"
       },
       {
-        "desc": "metallic industrial machine with a flat, dark grey surface and a visible horizontal seam",
+        "desc": "metallic workbench surface with a flat, dark grey finish",
         "action": "static",
         "position": "background"
       },
       {
-        "desc": "yellow and white rectangular object, possibly a tool handle or block",
-        "action": "being held",
+        "desc": "yellow and white rectangular object, possibly a tool handle",
+        "action": "static",
         "position": "top"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A person in a plaid jacket leans over a metallic machine.",
+        "fact": "A person wearing black gloves leans their upper body over a metal workbench.",
         "confidence": 1.0
       },
       {
-        "fact": "A hand is holding a yellow and white object above the machine surface.",
+        "fact": "The person's dark grey jacket sleeve obscures the view of the work surface.",
         "confidence": 1.0
       },
       {
-        "fact": "The machine has a horizontal gap separating two metal plates.",
+        "fact": "A yellow and white object rests on the metal surface near the top of the frame.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The person in the plaid jacket is positioned above and in front of the metallic machine. The yellow and white object is held by the person's hand, which is located above the machine's flat surface. The machine occupies the lower and central portion of the frame.",
+    "spatial": "The person in the dark grey jacket is positioned above the metallic workbench surface. The yellow and white object is located at the top of the frame, resting on the metal surface. The person's gloved hand is near the center of the frame, obscuring the view below.",
     "parse_success": true,
     "chunk_idx": 42,
     "video_id": "How_to_Sharpen_Jointer_Knives"
   },
   {
     "time": [
-      86,
-      88
+      43,
+      44
     ],
     "visible_entities": [
       {
-        "desc": "person wearing a dark blue and black plaid cap with a metal snap button, white cotton glove, and black leather glove",
-        "action": "holding a yellow object",
+        "desc": "person wearing a dark blue and grey plaid cap with a metal snap button, and a white glove with a black textured palm",
+        "action": "reaching towards the machine",
         "position": "foreground"
       },
       {
-        "desc": "yellow rectangular object with a green top surface",
-        "action": "being placed on a metal surface",
+        "desc": "small yellow rectangular object with a white top",
+        "action": "being picked up by the hand",
         "position": "center"
       },
       {
-        "desc": "flat metal surface with a seam or gap",
+        "desc": "metallic jointer machine bed with a dark surface",
         "action": "static",
         "position": "background"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A person wearing a plaid cap and gloves places a yellow object onto a metal surface.",
+        "fact": "A hand wearing a white glove picks up a small yellow object from the metal surface.",
         "confidence": 1.0
       },
       {
-        "fact": "The yellow object has a green top.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The person is wearing a white glove on one hand and a black leather glove on the other.",
+        "fact": "The person is wearing a plaid cap.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The person is in the foreground, positioned above the metal surface. The yellow object is held by the person and is placed on top of the metal surface in the center of the frame.",
+    "spatial": "The person's gloved hand is in the foreground, reaching down towards the yellow object which is resting on the metal machine bed. The plaid cap is positioned above the hand.",
     "parse_success": true,
     "chunk_idx": 43,
     "video_id": "How_to_Sharpen_Jointer_Knives"
   },
   {
     "time": [
-      88,
-      90
+      44,
+      45
     ],
     "visible_entities": [
       {
-        "desc": "hand with light skin tone, appearing slightly blurred due to motion",
-        "action": "rubbing a yellow object along a metal surface",
-        "position": "center/foreground"
-      },
-      {
-        "desc": "small, round, yellow object, possibly a sponge or polishing block",
-        "action": "being moved back and forth",
+        "desc": "hand with fair skin, fingers curled",
+        "action": "rubbing a yellow object",
         "position": "center"
       },
       {
-        "desc": "flat, metallic surface, likely a sharpening stone or metal plate, with a dull sheen",
-        "action": "static",
-        "position": "bottom/foreground"
+        "desc": "small, round, yellow object, smooth texture",
+        "action": "being rubbed on a surface",
+        "position": "center"
       },
       {
-        "desc": "dark, indistinct background, likely a person's torso in black clothing",
+        "desc": "flat, metallic surface, dark grey, reflective",
         "action": "static",
-        "position": "background"
+        "position": "bottom"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A hand is vigorously rubbing a yellow object against a flat metal surface.",
+        "fact": "A hand is rubbing a small yellow object back and forth on a flat metallic surface.",
         "confidence": 1.0
       },
       {
-        "fact": "The yellow object is moving horizontally across the metal surface.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The metal surface is positioned horizontally in the lower part of the frame.",
+        "fact": "The yellow object is positioned between the hand and the metal plate.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The hand is positioned above the yellow object, holding it against the metal surface. The yellow object is in direct contact with the top of the metal surface. The metal surface is in the foreground, below the hand and the dark background.",
+    "spatial": "The hand is positioned above the yellow object. The yellow object is on top of the flat metallic surface. The metallic surface is below the hand and the object.",
     "parse_success": true,
     "chunk_idx": 44,
     "video_id": "How_to_Sharpen_Jointer_Knives"
   },
   {
     "time": [
-      90,
-      92
+      45,
+      46
     ],
     "visible_entities": [
       {
-        "desc": "hand with light skin tone, wearing a dark long-sleeved garment",
-        "action": "holding and sliding a yellow tool",
+        "desc": "hand with light skin tone",
+        "action": "rubbing a yellow block along a metal edge",
         "position": "center"
       },
       {
-        "desc": "yellow rectangular tool with a white top surface and a metallic blade edge",
-        "action": "being slid along a metal surface",
+        "desc": "yellow rectangular block, smooth texture",
+        "action": "being moved along a metal surface",
         "position": "center"
       },
       {
-        "desc": "large flat metallic surface, appearing to be a machine bed or table, with a dark horizontal gap",
+        "desc": "flat metal surface, metallic grey, smooth",
         "action": "static",
         "position": "bottom"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A hand is holding a yellow tool.",
+        "fact": "A hand is holding a yellow block.",
         "confidence": 1.0
       },
       {
-        "fact": "The hand slides the yellow tool along the edge of a metal surface.",
+        "fact": "The hand moves the yellow block back and forth along the edge of a metal surface.",
         "confidence": 1.0
       },
       {
-        "fact": "The tool moves from the left side towards the center.",
+        "fact": "The metal surface appears to be part of a machine or workbench.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The hand is positioned above the yellow tool, holding it against the metal surface. The yellow tool is on top of the metallic table. The metal surface is below the hand and tool.",
+    "spatial": "The hand is positioned above the metal surface. The yellow block is held by the hand and is in contact with the metal surface. The metal surface is below the hand.",
     "parse_success": true,
     "chunk_idx": 45,
     "video_id": "How_to_Sharpen_Jointer_Knives"
   },
   {
     "time": [
-      92,
-      94
+      46,
+      47
     ],
     "visible_entities": [
       {
-        "desc": "black textured glove with a ribbed or knitted surface",
-        "action": "pressing down on the metal surface",
+        "desc": "black textured glove, appearing to be made of leather or a similar material with a pebbled surface",
+        "action": "resting on the metal surface",
         "position": "left"
       },
       {
-        "desc": "flat metallic surface with a brushed finish and a bright reflection",
+        "desc": "metallic surface with a brushed finish, featuring a horizontal cylindrical bar or handle",
         "action": "static",
         "position": "center"
-      },
-      {
-        "desc": "cylindrical metal bar with a smooth, reflective surface",
-        "action": "static",
-        "position": "bottom"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A gloved hand is pressing down on a flat metal surface.",
+        "fact": "A gloved hand is resting on a metal surface.",
         "confidence": 1.0
       },
       {
-        "fact": "A cylindrical metal bar is positioned horizontally below the flat surface.",
+        "fact": "A bright light reflects off the upper portion of the metal surface.",
         "confidence": 1.0
       },
       {
-        "fact": "A bright light source creates a glare on the upper metal plate.",
+        "fact": "The metal surface features a horizontal cylindrical bar.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The black textured glove is on the left side of the frame, resting on top of the flat metallic surface. The cylindrical metal bar is located directly below the flat surface, running horizontally across the view.",
+    "spatial": "The black textured glove is on the left side of the frame, resting on the metallic surface. The cylindrical bar is part of the metal surface, positioned horizontally below the area where the light is reflecting.",
     "parse_success": true,
     "chunk_idx": 46,
     "video_id": "How_to_Sharpen_Jointer_Knives"
   },
   {
     "time": [
-      94,
-      96
+      47,
+      48
     ],
     "visible_entities": [
       {
-        "desc": "black textured glove",
-        "action": "holding metal sheet",
-        "position": "left"
-      },
-      {
-        "desc": "flat metallic sheet with brushed finish",
-        "action": "static",
-        "position": "center"
-      },
-      {
-        "desc": "cylindrical metal roller",
-        "action": "static",
-        "position": "center"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "A gloved hand is holding a metal sheet in place.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The metal sheet is positioned above a cylindrical roller.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "A bright reflection is visible on the surface of the metal sheet.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [],
-    "spatial": "The black textured glove is on the left side of the frame, holding the flat metallic sheet. The metallic sheet is positioned above the cylindrical metal roller. The roller is located below the sheet.",
-    "parse_success": true,
-    "chunk_idx": 47,
-    "video_id": "How_to_Sharpen_Jointer_Knives"
-  },
-  {
-    "time": [
-      96,
-      98
-    ],
-    "visible_entities": [
-      {
-        "desc": "dark, textured glove or fabric",
+        "desc": "black textured work glove",
         "action": "static",
         "position": "left"
       },
       {
-        "desc": "metallic cylindrical bar, shiny, reflective",
+        "desc": "metallic cylindrical rod",
         "action": "static",
         "position": "center"
       },
       {
-        "desc": "flat metallic surface, brushed texture, illuminated by bright light",
+        "desc": "flat metallic surface",
         "action": "static",
         "position": "background"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A dark, textured glove or fabric is positioned on the left side of the frame.",
+        "fact": "A gloved hand is positioned next to a metal rod.",
         "confidence": 1.0
       },
       {
-        "fact": "A metallic cylindrical bar is situated horizontally in the center.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "A bright light source illuminates the flat metallic surface in the background.",
+        "fact": "A bright light reflects off the flat metallic surface.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The dark, textured glove or fabric is to the left of the metallic cylindrical bar. The metallic cylindrical bar is in front of the flat metallic surface. The flat metallic surface is behind the metallic cylindrical bar.",
+    "spatial": "The black textured glove is to the left of the metallic cylindrical rod. The rod is resting on or near the flat metallic surface. The light reflection is above the rod on the background surface.",
+    "parse_success": true,
+    "chunk_idx": 47,
+    "video_id": "How_to_Sharpen_Jointer_Knives"
+  },
+  {
+    "time": [
+      48,
+      49
+    ],
+    "visible_entities": [
+      {
+        "desc": "dark, textured glove, likely black or dark grey, with a woven or mesh-like surface pattern",
+        "action": "resting on the metal surface",
+        "position": "left"
+      },
+      {
+        "desc": "metallic cylindrical rod or bar, silver or steel-colored, with a smooth, reflective surface",
+        "action": "static",
+        "position": "center"
+      },
+      {
+        "desc": "flat metal surface or plate, appearing worn or dirty with a brownish tint, reflecting a bright light source",
+        "action": "static",
+        "position": "background"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A gloved hand is resting on a metal surface.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A cylindrical metal bar is positioned horizontally across the frame.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A bright light source is reflecting off the metal surface in the background.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The dark textured glove is on the left side of the frame, resting on the flat metal surface. The cylindrical metal bar is positioned horizontally in front of the flat metal surface and to the right of the glove.",
     "parse_success": true,
     "chunk_idx": 48,
     "video_id": "How_to_Sharpen_Jointer_Knives"
   },
   {
     "time": [
-      98,
-      100
+      49,
+      50
     ],
     "visible_entities": [
       {
@@ -2253,12 +2202,12 @@
         "position": "left"
       },
       {
-        "desc": "cylindrical metal rod, silver, reflective, smooth surface",
+        "desc": "cylindrical metal rod, shiny, silver, smooth surface",
         "action": "being held",
         "position": "center"
       },
       {
-        "desc": "flat metal surface, brushed texture, illuminated by bright light",
+        "desc": "flat metal surface, brushed texture, reflective",
         "action": "static",
         "position": "background"
       }
@@ -2273,62 +2222,62 @@
         "confidence": 1.0
       },
       {
-        "fact": "A bright light reflects off the flat metal surface in the background.",
+        "fact": "The rod rests on or near a flat metal surface.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The black textured glove is on the left side of the frame, holding the cylindrical metal rod. The metal rod is positioned in front of the flat metal surface. The bright light reflection is visible on the background surface above the rod.",
+    "spatial": "The black textured glove is on the left side of the frame, holding the cylindrical metal rod. The metal rod is positioned horizontally in the center, resting on the flat metal surface which is below it.",
     "parse_success": true,
     "chunk_idx": 49,
     "video_id": "How_to_Sharpen_Jointer_Knives"
   },
   {
     "time": [
-      100,
-      102
+      50,
+      51
     ],
     "visible_entities": [
       {
-        "desc": "black textured glove",
-        "action": "static",
+        "desc": "black textured glove with a shiny, bumpy surface",
+        "action": "holding the metal rod",
         "position": "left"
       },
       {
-        "desc": "metallic cylindrical rod with horizontal grooves",
-        "action": "static",
+        "desc": "cylindrical metal rod, silver-grey, smooth, with dark smudges or residue along its length",
+        "action": "resting in a groove",
         "position": "center"
       },
       {
-        "desc": "flat metallic surface",
+        "desc": "metallic surface with parallel grooves, brushed finish, grey color",
         "action": "static",
         "position": "background"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A black textured glove rests on the left side of the frame.",
+        "fact": "A gloved hand is holding a metal rod.",
         "confidence": 1.0
       },
       {
-        "fact": "A metallic rod with horizontal grooves is positioned horizontally across the center.",
+        "fact": "The metal rod is resting inside a groove on a metallic surface.",
         "confidence": 1.0
       },
       {
-        "fact": "The scene is illuminated by a light source from above, creating reflections on the metal.",
+        "fact": "The metal rod has dark residue or smudges on its surface.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The black textured glove is to the left of the metallic cylindrical rod. The rod is positioned in front of the flat metallic surface.",
+    "spatial": "The black textured glove is on the left side of the frame and is holding the cylindrical metal rod. The metal rod is positioned horizontally in the center, resting inside a groove on the larger metallic surface. The metallic surface is below and behind the rod.",
     "parse_success": true,
     "chunk_idx": 50,
     "video_id": "How_to_Sharpen_Jointer_Knives"
   },
   {
     "time": [
-      102,
-      104
+      51,
+      52
     ],
     "visible_entities": [
       {
@@ -2337,7 +2286,7 @@
         "position": "left"
       },
       {
-        "desc": "metallic cylindrical bar",
+        "desc": "metallic cylindrical rod with a horizontal groove",
         "action": "static",
         "position": "center"
       },
@@ -2349,7 +2298,7 @@
       {
         "desc": "dark flat surface",
         "action": "static",
-        "position": "background"
+        "position": "bottom"
       }
     ],
     "atomic_facts": [
@@ -2358,148 +2307,155 @@
         "confidence": 1.0
       },
       {
-        "fact": "A human hand with short fingernails is resting on a dark surface in the bottom right.",
+        "fact": "A human hand is resting on a dark flat surface in the bottom right.",
         "confidence": 1.0
       },
       {
-        "fact": "A metallic cylindrical bar runs horizontally across the center of the view.",
+        "fact": "A metallic rod runs horizontally across the center of the view.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The black textured glove is to the left of the metallic cylindrical bar. The human hand is in the bottom right corner, resting on the dark flat surface which is below the metallic bar.",
+    "spatial": "The black textured glove is to the left of the metallic cylindrical rod. The human hand is below the rod and rests on the dark flat surface. The rod is positioned above the dark flat surface.",
     "parse_success": true,
     "chunk_idx": 51,
     "video_id": "How_to_Sharpen_Jointer_Knives"
   },
   {
     "time": [
-      104,
-      106
+      52,
+      53
     ],
     "visible_entities": [
       {
         "desc": "human hand with fair skin, wearing a silver ring with a dark inlay on the ring finger",
-        "action": "moving fingers",
+        "action": "resting on a surface",
         "position": "center"
       },
       {
-        "desc": "metallic cylindrical handle, silver, reflective",
+        "desc": "metallic cylindrical bar, silver, reflective",
         "action": "static",
-        "position": "left"
+        "position": "top left"
       },
       {
-        "desc": "dark flat surface, smooth",
+        "desc": "dark smooth surface, likely a countertop or appliance",
         "action": "static",
         "position": "background"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A hand is moving its fingers near a metallic handle.",
+        "fact": "A hand is resting on a dark surface.",
         "confidence": 1.0
       },
       {
-        "fact": "The hand is wearing a silver ring with a dark band.",
+        "fact": "The hand is wearing a ring on the ring finger.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A metallic bar is visible in the upper left corner.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The hand is positioned to the right of the metallic handle. The handle is attached to the dark flat surface.",
+    "spatial": "The hand is positioned in the center, resting on the dark surface. The metallic bar is located above and to the left of the hand.",
     "parse_success": true,
     "chunk_idx": 52,
     "video_id": "How_to_Sharpen_Jointer_Knives"
   },
   {
     "time": [
-      106,
-      108
+      53,
+      54
     ],
     "visible_entities": [
       {
-        "desc": "hand with light skin tone, fingers gripping a white rectangular object",
-        "action": "holding the white object",
-        "position": "left"
+        "desc": "hand with light skin tone, holding an object",
+        "action": "holding a white rectangular tool",
+        "position": "left/foreground"
       },
       {
-        "desc": "white rectangular block, smooth matte texture, with a yellow/orange tip and a dark grey metal plate featuring a grid of small circular holes",
-        "action": "being held and tilted",
-        "position": "center"
+        "desc": "white rectangular tool with a yellow-orange tip and a metal plate featuring a grid of small circular holes",
+        "action": "being held and slightly rotated",
+        "position": "center/foreground"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A hand is holding a white rectangular object.",
+        "fact": "A hand is holding a white rectangular tool.",
         "confidence": 1.0
       },
       {
-        "fact": "The object is tilted to reveal a metal plate with a grid pattern on its yellow tip.",
+        "fact": "The tool has a yellow-orange tip.",
         "confidence": 1.0
       },
       {
-        "fact": "The metal plate has multiple small circular indentations or holes.",
+        "fact": "The tool features a metal plate with a grid of small circular holes.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The hand rotates the tool slightly between frames.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The hand is on the left side of the frame, holding the white object which extends towards the center. The metal plate is located at the tip of the white object, facing the viewer.",
+    "spatial": "The hand is on the left side of the frame, holding the white tool which extends towards the center. The tool is in front of a blurred background surface.",
     "parse_success": true,
     "chunk_idx": 53,
     "video_id": "How_to_Sharpen_Jointer_Knives"
   },
   {
     "time": [
-      108,
-      110
+      54,
+      55
     ],
     "visible_entities": [
       {
-        "desc": "white rectangular tool handle with a metallic tip featuring a 3x3 grid of red circular inserts, attached to a yellowish-orange rounded cap",
-        "action": "being held by a hand",
-        "position": "center"
+        "desc": "white rectangular tool handle with a square metal tip featuring a 3x3 grid of red dots, attached to a yellow-orange translucent cap",
+        "action": "being held",
+        "position": "left/foreground"
       },
       {
-        "desc": "human hand with visible fingers",
+        "desc": "fingers of a hand",
         "action": "holding the tool",
         "position": "left"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A hand is holding a white tool with a specialized tip.",
+        "fact": "A hand is holding a white tool with a metal tip.",
         "confidence": 1.0
       },
       {
-        "fact": "The tool tip has a grid of red dots.",
+        "fact": "The metal tip has a grid of nine red dots.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The tool is positioned in front of a blurred background.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The hand is on the left side of the frame, holding the white tool which extends towards the center. The tool is in the foreground, positioned in front of a blurred background.",
+    "spatial": "The hand is on the left side of the frame, holding the white tool. The tool extends from the left towards the center. The background is behind the tool and hand.",
     "parse_success": true,
     "chunk_idx": 54,
     "video_id": "How_to_Sharpen_Jointer_Knives"
   },
   {
     "time": [
-      110,
-      112
+      55,
+      56
     ],
     "visible_entities": [
       {
-        "desc": "person wearing a grey and black plaid flannel shirt and tan work pants",
-        "action": "operating a jointer",
-        "position": "center"
+        "desc": "hand holding a white rectangular tool with a yellow cap and a metal grid tip",
+        "action": "holding the tool",
+        "position": "foreground"
       },
       {
-        "desc": "long, light-colored wooden board",
-        "action": "being pushed across the machine",
-        "position": "left"
-      },
-      {
-        "desc": "black jointer machine with a flat metal table surface",
-        "action": "static",
-        "position": "center"
+        "desc": "person wearing a grey and black plaid shirt and brown pants",
+        "action": "working at a machine",
+        "position": "background"
       },
       {
         "desc": "black propane tank with a green label",
@@ -2507,86 +2463,82 @@
         "position": "left"
       },
       {
-        "desc": "white rectangular object with a yellow end cap and exposed metal teeth",
-        "action": "held in hand",
-        "position": "foreground"
+        "desc": "metal machine surface",
+        "action": "static",
+        "position": "center"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A person in a plaid shirt is pushing a wooden board across the surface of a jointer.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The person's hands are guiding the wood over the machine's cutter head area.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "A black propane tank sits on the floor to the left of the machinery.",
-        "confidence": 1.0
-      },
-      {
         "fact": "A hand holds a white tool with a yellow cap in the foreground.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A person in a plaid shirt is working at a metal machine in the background.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A black propane tank is visible on the left side of the frame.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The person is standing behind the jointer machine, pushing the wooden board from left to right across the metal table. The propane tank is located on the floor to the left of the jointer. The white tool with the yellow cap is held in the foreground, appearing closer to the camera than the woodworking scene.",
+    "spatial": "The hand holding the tool is in the foreground, obscuring part of the view. The person in the plaid shirt is behind the hand, working at the metal machine. The black propane tank is to the left of the machine.",
     "parse_success": true,
     "chunk_idx": 55,
     "video_id": "How_to_Sharpen_Jointer_Knives"
   },
   {
     "time": [
-      112,
-      114
+      56,
+      57
     ],
     "visible_entities": [
       {
-        "desc": "person wearing a grey and black plaid flannel shirt, tan pants, and a ring on their left hand",
+        "desc": "person wearing a grey and black plaid flannel shirt, tan pants, and a silver ring on the left ring finger",
         "action": "guiding a long wooden board",
-        "position": "center"
+        "position": "right/center"
       },
       {
-        "desc": "long, light-colored wooden board with a rounded edge",
-        "action": "being pushed across a metal surface",
-        "position": "center"
+        "desc": "long, curved wooden board, light greenish-yellow color, smooth surface",
+        "action": "being pushed across the machine",
+        "position": "center/left"
       },
       {
-        "desc": "black propane tank with a green label",
+        "desc": "black propane tank with a green label and brass nozzle",
         "action": "static",
-        "position": "left"
+        "position": "bottom left"
       },
       {
-        "desc": "metal jointer table with a dark surface and yellow-painted fence",
+        "desc": "metal jointer machine with a flat bed and cutter head",
         "action": "static",
         "position": "center"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A person is pushing a long wooden board across a metal jointer table.",
+        "fact": "The person is pushing a long, curved wooden board across the metal jointer table.",
         "confidence": 1.0
       },
       {
-        "fact": "The person's hands are guiding the wood along the fence.",
+        "fact": "The person's left hand is placed on top of the board to guide it.",
         "confidence": 1.0
       },
       {
-        "fact": "A black propane tank sits on the floor to the left of the machinery.",
+        "fact": "A black propane tank is sitting on the floor to the left of the machine.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The person is standing behind the metal jointer table, guiding the wooden board across its surface. The black propane tank is to the left of the table and the person. The person's hands are on top of the wooden board.",
+    "spatial": "The person is standing to the right of the jointer machine, holding the wooden board which extends to the left. The propane tank is located on the floor to the left of the machine and the board.",
     "parse_success": true,
     "chunk_idx": 56,
     "video_id": "How_to_Sharpen_Jointer_Knives"
   },
   {
     "time": [
-      114,
-      116
+      57,
+      58
     ],
     "visible_entities": [
       {
@@ -2596,18 +2548,70 @@
       },
       {
         "desc": "light-colored rectangular wooden block",
-        "action": "being pushed across the metal table",
+        "action": "sliding across the metal table",
         "position": "center"
       },
       {
-        "desc": "industrial jointer machine with a flat metal table and yellow-painted edges",
-        "action": "static",
-        "position": "center"
-      },
-      {
-        "desc": "green propane tank",
+        "desc": "green propane tank with a black valve",
         "action": "static",
         "position": "bottom left"
+      },
+      {
+        "desc": "black and yellow toolbox",
+        "action": "static",
+        "position": "background right"
+      },
+      {
+        "desc": "metal jointer table with a yellow-painted edge",
+        "action": "static",
+        "position": "center"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The person is using both hands to push a wooden block along the jointer table.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The wooden block is moving past the cutter head of the machine.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A green propane tank is visible on the floor to the left of the machine.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The person is standing to the left of the jointer table, holding the wooden block. The wooden block is on top of the metal table surface. The green propane tank is located on the floor to the left of the person. The black and yellow toolbox is in the background to the right of the machine.",
+    "parse_success": true,
+    "chunk_idx": 57,
+    "video_id": "How_to_Sharpen_Jointer_Knives"
+  },
+  {
+    "time": [
+      58,
+      59
+    ],
+    "visible_entities": [
+      {
+        "desc": "person wearing a grey and black plaid flannel shirt, brown work pants, and grey work gloves",
+        "action": "guiding a wooden board through a jointer",
+        "position": "center"
+      },
+      {
+        "desc": "long, light-colored wooden board with a rounded edge",
+        "action": "being pushed across the machine bed",
+        "position": "center"
+      },
+      {
+        "desc": "large industrial jointer machine with a flat metal bed and a green painted fence",
+        "action": "static",
+        "position": "foreground"
+      },
+      {
+        "desc": "black propane tank with a green label",
+        "action": "static",
+        "position": "left"
       },
       {
         "desc": "black and yellow toolbox",
@@ -2617,59 +2621,7 @@
     ],
     "atomic_facts": [
       {
-        "fact": "A person is pushing a small wooden block across the metal surface of a jointer.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The person's hands are guiding the wood along the fence of the machine.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "A green propane tank is visible on the floor to the left of the machine.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [],
-    "spatial": "The person is standing to the left of the jointer machine. The wooden block is on top of the metal table, positioned between the person's hands and the cutter head. The green propane tank is located on the floor to the left of the person.",
-    "parse_success": true,
-    "chunk_idx": 57,
-    "video_id": "How_to_Sharpen_Jointer_Knives"
-  },
-  {
-    "time": [
-      116,
-      118
-    ],
-    "visible_entities": [
-      {
-        "desc": "person wearing a grey and black plaid flannel shirt, brown work pants, and grey work gloves",
-        "action": "guiding a wooden board through a machine",
-        "position": "center"
-      },
-      {
-        "desc": "light-colored rectangular wooden board with visible grain",
-        "action": "being pushed along a metal surface",
-        "position": "center"
-      },
-      {
-        "desc": "large industrial jointer with a flat metal bed and a green-painted wooden fence",
-        "action": "static",
-        "position": "foreground"
-      },
-      {
-        "desc": "green propane tank with a black hose",
-        "action": "static",
-        "position": "left"
-      },
-      {
-        "desc": "black and yellow tool case",
-        "action": "static",
-        "position": "background right"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "The person is pushing a wooden board across the metal bed of the jointer.",
+        "fact": "The person is pushing a wooden board along the metal bed of a jointer.",
         "confidence": 1.0
       },
       {
@@ -2677,348 +2629,359 @@
         "confidence": 1.0
       },
       {
-        "fact": "A green propane tank is visible on the left side of the frame.",
+        "fact": "Wood shavings are visible on the machine bed.",
         "confidence": 1.0
       },
       {
-        "fact": "A black and yellow tool case sits on the floor in the background.",
+        "fact": "A propane tank is positioned on the floor to the left of the machine.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The person is standing behind the jointer, pushing the wooden board which is on the metal bed. The green fence is to the left of the wooden board. The propane tank is to the left of the person. The tool case is in the background to the right of the machine.",
+    "spatial": "The person is standing behind the jointer machine, pushing the wooden board which is located on top of the machine bed. The green fence is to the left of the wooden board. The propane tank is on the floor to the left of the person and the machine. The toolbox is in the background to the right of the machine.",
     "parse_success": true,
     "chunk_idx": 58,
     "video_id": "How_to_Sharpen_Jointer_Knives"
   },
   {
     "time": [
-      118,
-      120
+      59,
+      60
     ],
     "visible_entities": [
       {
         "desc": "person wearing a grey and black plaid flannel shirt, tan work pants, and white gloves with black palms",
-        "action": "guiding a wooden plank along a machine",
-        "position": "right"
+        "action": "guiding wood through a machine",
+        "position": "center"
       },
       {
-        "desc": "light-colored wooden plank with visible grain pattern",
+        "desc": "long piece of wood with a flat face and a rounded, green-painted edge",
         "action": "being pushed forward",
         "position": "center"
       },
       {
-        "desc": "green metal guide rail with a curved edge",
+        "desc": "metal jointer machine with a flat bed and a spinning cutter head",
         "action": "static",
-        "position": "left"
+        "position": "foreground"
       },
       {
-        "desc": "dark grey metallic machine bed",
-        "action": "static",
-        "position": "center"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "A person is pushing a wooden plank against a green guide rail.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The wood is sliding across a dark metallic surface.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The person is wearing protective gloves while operating the machinery.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [],
-    "spatial": "The person is standing to the right of the machine, holding the wooden plank. The plank is positioned between the person's hands and the green guide rail on the left. The green rail is attached to the left side of the dark machine bed.",
-    "parse_success": true,
-    "chunk_idx": 59,
-    "video_id": "How_to_Sharpen_Jointer_Knives"
-  },
-  {
-    "time": [
-      120,
-      122
-    ],
-    "visible_entities": [
-      {
-        "desc": "person wearing black gloves, dark plaid shirt, and brown pants",
-        "action": "holding a white rectangular block",
-        "position": "right"
-      },
-      {
-        "desc": "white rectangular block, smooth surface",
-        "action": "being held and moved",
-        "position": "center"
-      },
-      {
-        "desc": "metal jointer table with a green-painted fence",
-        "action": "static",
-        "position": "center"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "A person wearing black gloves is holding a white rectangular block.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The person moves the white block over the metal surface of the jointer.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The jointer has a green fence on the left side.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [],
-    "spatial": "The person is standing to the right of the jointer table. The person is holding the white block above the metal table surface. The green fence is on the left side of the metal table.",
-    "parse_success": true,
-    "chunk_idx": 60,
-    "video_id": "How_to_Sharpen_Jointer_Knives"
-  },
-  {
-    "time": [
-      122,
-      124
-    ],
-    "visible_entities": [
-      {
-        "desc": "gloved hand wearing a black glove with a textured, mesh-like palm and a dark sleeve cuff",
-        "action": "holding and rotating a wooden block",
-        "position": "right/foreground"
-      },
-      {
-        "desc": "rectangular wooden block, light-colored with visible grain patterns and a smooth, angled cut on the end",
-        "action": "being rotated",
-        "position": "center/foreground"
-      },
-      {
-        "desc": "long, green-painted metal beam or rail with a flat top surface",
-        "action": "static",
-        "position": "left/background"
-      },
-      {
-        "desc": "concrete floor, gray and slightly reflective",
+        "desc": "yellow object with black text",
         "action": "static",
         "position": "background"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A gloved hand is holding a rectangular wooden block.",
+        "fact": "A person is pushing a piece of wood across a jointer machine.",
         "confidence": 1.0
       },
       {
-        "fact": "The wooden block is being rotated to show its angled cut end.",
+        "fact": "Wood shavings are flying up from the cutter head as the wood passes over it.",
         "confidence": 1.0
       },
       {
-        "fact": "The wood has visible grain patterns.",
+        "fact": "The person is wearing protective gloves while operating the machinery.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The wood has a distinct green painted edge.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "JET"
+    ],
+    "spatial": "The person is standing behind the jointer machine, holding the piece of wood with both hands. The wood is positioned on top of the machine's metal bed, moving from left to right. The yellow object is in the background to the right of the person.",
+    "parse_success": true,
+    "chunk_idx": 59,
+    "video_id": "How_to_Sharpen_Jointer_Knives"
+  },
+  {
+    "time": [
+      60,
+      61
+    ],
+    "visible_entities": [
+      {
+        "desc": "person wearing a blue and black plaid shirt, brown cargo pants, and black gloves",
+        "action": "holding a wooden block",
+        "position": "right"
+      },
+      {
+        "desc": "rectangular wooden block, light-colored, smooth surface",
+        "action": "being held above the machine",
+        "position": "center"
+      },
+      {
+        "desc": "industrial jointer machine with a metallic silver table and a green-painted fence",
+        "action": "static",
+        "position": "center"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A person wearing black gloves is holding a light-colored wooden block.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The wooden block is positioned above the metallic table of the jointer.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The machine features a green fence on the left side of the table.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The gloved hand is in the foreground on the right, holding the wooden block. The wooden block is in the center of the frame. The green metal beam is to the left of the wooden block and extends into the background.",
+    "spatial": "The person is standing to the right of the jointer machine. The wooden block is held in the person's hands, positioned directly above the metallic table surface. The green fence is located on the left side of the machine table.",
+    "parse_success": true,
+    "chunk_idx": 60,
+    "video_id": "How_to_Sharpen_Jointer_Knives"
+  },
+  {
+    "time": [
+      61,
+      62
+    ],
+    "visible_entities": [
+      {
+        "desc": "light-colored rectangular wooden block with visible grain pattern",
+        "action": "being held and rotated",
+        "position": "foreground center"
+      },
+      {
+        "desc": "hand wearing a black textured glove with a grey sleeve cuff",
+        "action": "holding the wooden block",
+        "position": "foreground right"
+      },
+      {
+        "desc": "long green metal beam or rail",
+        "action": "static",
+        "position": "background left"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A hand wearing a black glove is holding a piece of light-colored wood.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The wooden block is being rotated to display its different sides.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The wood has a distinct grain pattern visible on its surface.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The wooden block is held in the center foreground by the gloved hand, which is positioned to the right. The green metal beam is located in the background to the left of the wooden block.",
     "parse_success": true,
     "chunk_idx": 61,
     "video_id": "How_to_Sharpen_Jointer_Knives"
   },
   {
     "time": [
-      124,
-      126
+      62,
+      63
     ],
     "visible_entities": [
       {
-        "desc": "gloved hand wearing a black glove with blue textured grip dots and a dark sleeve",
+        "desc": "gloved hand wearing a black glove with a blue dotted grip pattern and a dark grey sleeve cuff",
         "action": "holding a wooden plank",
         "position": "right foreground"
       },
       {
-        "desc": "rectangular wooden plank, light-colored with visible grain, smooth surface",
+        "desc": "rectangular wooden plank, light-colored with visible grain lines and a smooth surface",
         "action": "being held and rotated",
-        "position": "center foreground"
+        "position": "center"
       },
       {
-        "desc": "green metal beam or rail, slightly out of focus",
+        "desc": "long green metal beam or rail with a rounded edge",
         "action": "static",
         "position": "left background"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A gloved hand is holding a rectangular wooden plank.",
+        "fact": "A gloved hand holds a rectangular wooden plank.",
         "confidence": 1.0
       },
       {
-        "fact": "The wooden plank is rotated to show its side profile and end grain.",
+        "fact": "The wooden plank is rotated to display its side profile and grain texture.",
         "confidence": 1.0
       },
       {
-        "fact": "The glove features a blue dotted texture on the palm area.",
+        "fact": "The hand is positioned to the right of the green metal beam.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The gloved hand is on the right side of the frame, holding the wooden plank in the center. The wooden plank is positioned in front of the green metal beam, which runs vertically on the left side of the background.",
+    "spatial": "The gloved hand is in the right foreground, holding the wooden plank in the center of the frame. The wooden plank is positioned in front of the green metal beam, which runs along the left side of the scene.",
     "parse_success": true,
     "chunk_idx": 62,
     "video_id": "How_to_Sharpen_Jointer_Knives"
   },
   {
     "time": [
-      126,
-      128
+      63,
+      64
     ],
     "visible_entities": [
       {
-        "desc": "hand wearing a black textured work glove with a grey fabric cuff",
+        "desc": "hand wearing a black textured glove with a dark grey sleeve cuff",
         "action": "holding a wooden plank",
-        "position": "right"
+        "position": "right foreground"
       },
       {
-        "desc": "long, light-colored wooden plank with visible vertical grain lines",
-        "action": "being held",
+        "desc": "long, narrow, light-colored wooden plank with visible vertical grain",
+        "action": "being held and tilted",
         "position": "center"
       },
       {
         "desc": "green metal support structure",
         "action": "static",
-        "position": "left"
+        "position": "left background"
+      },
+      {
+        "desc": "grey concrete floor",
+        "action": "static",
+        "position": "background"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A gloved hand is holding a long wooden plank upright.",
+        "fact": "A gloved hand is holding a wooden plank.",
         "confidence": 1.0
       },
       {
-        "fact": "The wooden plank is positioned vertically in the center of the frame.",
+        "fact": "The wooden plank is being tilted upwards.",
         "confidence": 1.0
       },
       {
-        "fact": "A green metal structure is visible in the background to the left.",
+        "fact": "The plank has a light wood finish with distinct grain lines.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The gloved hand is on the right side of the frame, holding the wooden plank which is positioned in the center. The green metal structure is to the left of the wooden plank.",
+    "spatial": "The gloved hand is on the right side of the frame, holding the wooden plank which is positioned in the center. The green metal support structure is to the left of the wooden plank and slightly behind it. The concrete floor is visible in the background below the plank.",
     "parse_success": true,
     "chunk_idx": 63,
     "video_id": "How_to_Sharpen_Jointer_Knives"
   },
   {
     "time": [
-      128,
-      130
+      64,
+      65
     ],
     "visible_entities": [
       {
-        "desc": "light-colored wooden plank with visible grain lines, rectangular cross-section",
-        "action": "being rotated and held",
-        "position": "center/foreground"
+        "desc": "light-colored wooden plank with visible grain pattern",
+        "action": "being held and rotated",
+        "position": "center"
       },
       {
-        "desc": "hand wearing a black glove with textured grip dots on the palm",
-        "action": "holding and rotating the wooden plank",
-        "position": "right/foreground"
+        "desc": "black textured work glove",
+        "action": "holding the wooden plank",
+        "position": "right"
       },
       {
-        "desc": "green metal sawhorse or support stand",
+        "desc": "dark plaid shirt sleeve",
         "action": "static",
-        "position": "left/background"
+        "position": "right"
+      },
+      {
+        "desc": "green metal sawhorse",
+        "action": "static",
+        "position": "left background"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A hand wearing a black glove is holding a wooden plank.",
+        "fact": "A gloved hand is holding a wooden plank.",
         "confidence": 1.0
       },
       {
-        "fact": "The wooden plank is being rotated to reveal its end grain.",
+        "fact": "The wooden plank is being rotated to show its edge.",
         "confidence": 1.0
       },
       {
-        "fact": "The wood has a light finish with distinct grain patterns.",
+        "fact": "The wood has a light natural finish.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The gloved hand is on the right side of the frame, holding the wooden plank which extends diagonally across the center. The green metal stand is positioned to the left and slightly behind the wooden plank.",
+    "spatial": "The gloved hand is on the right side of the frame, holding the wooden plank which extends diagonally across the center. The green sawhorse is visible in the background to the left of the plank.",
     "parse_success": true,
     "chunk_idx": 64,
     "video_id": "How_to_Sharpen_Jointer_Knives"
   },
   {
     "time": [
-      130,
-      132
+      65,
+      66
     ],
     "visible_entities": [
       {
-        "desc": "rectangular wooden block with a light-colored smooth face and a darker rough-sawn face, showing distinct wood grain",
+        "desc": "rectangular wooden plank with light-colored grain on the top surface and darker, rougher grain on the side face",
         "action": "being held and rotated",
         "position": "center/foreground"
       },
       {
-        "desc": "person's arm wearing a dark blue sleeve with a textured or mesh pattern",
-        "action": "holding the wooden block",
+        "desc": "dark blue sleeve with a textured, grid-like pattern",
+        "action": "holding the wooden plank",
         "position": "right"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A person is holding a rectangular wooden block in their hand.",
+        "fact": "A person is holding a rectangular wooden plank.",
         "confidence": 1.0
       },
       {
-        "fact": "The wooden block is rotated to show its different sides.",
+        "fact": "The wooden plank is being rotated to show its side profile.",
         "confidence": 1.0
       },
       {
-        "fact": "One face of the wood is light and smooth, while the adjacent face is darker and rougher.",
+        "fact": "The wood has a distinct grain pattern visible on its cut end.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The wooden block is in the center foreground, held by the person's arm which is visible on the right side of the frame.",
+    "spatial": "The wooden plank is in the center foreground, held by a person whose arm is on the right. The plank is in front of a blurred background.",
     "parse_success": true,
     "chunk_idx": 65,
     "video_id": "How_to_Sharpen_Jointer_Knives"
   },
   {
     "time": [
-      132,
-      134
+      66,
+      67
     ],
     "visible_entities": [
       {
-        "desc": "long, rectangular wooden board with a light-colored finish and parallel vertical grooves or ridges running along its length",
-        "action": "being held and slightly rotated",
-        "position": "center/foreground"
+        "desc": "long, light-colored wooden plank with parallel grooves running lengthwise",
+        "action": "being held",
+        "position": "center"
       },
       {
-        "desc": "hand wearing a black glove with a textured surface and a white cuff",
-        "action": "holding the wooden board",
-        "position": "right/foreground"
+        "desc": "hand wearing a black glove with a textured surface",
+        "action": "holding the wooden plank",
+        "position": "right"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A gloved hand is holding a grooved wooden board.",
+        "fact": "A gloved hand is holding a grooved wooden plank.",
         "confidence": 1.0
       },
       {
-        "fact": "The hand rotates the board slightly to display its profile.",
+        "fact": "The wooden plank is positioned diagonally across the frame.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The gloved hand is on the right side of the frame, holding the wooden board which extends diagonally from the bottom right towards the top left. The board is in front of a blurred background.",
+    "spatial": "The wooden plank is held in the center of the frame, extending diagonally from the top left towards the bottom right. The gloved hand is on the right side, gripping the plank.",
     "parse_success": true,
     "chunk_idx": 66,
     "video_id": "How_to_Sharpen_Jointer_Knives"

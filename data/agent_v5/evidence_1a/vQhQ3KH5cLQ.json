@@ -2,67 +2,72 @@
   {
     "time": [
       0,
-      2
+      1
     ],
     "visible_entities": [
       {
-        "desc": "red lawnmower with black wheels and a black handle",
+        "desc": "red push lawnmower with a black grass catcher bag on top and a long black handle",
         "action": "static",
         "position": "center"
       },
       {
-        "desc": "wooden stairs with a wooden railing",
+        "desc": "wooden stairs with vertical slat railings",
         "action": "static",
         "position": "foreground"
       },
       {
-        "desc": "green grass",
-        "action": "static",
-        "position": "background"
-      },
-      {
-        "desc": "red gas can",
+        "desc": "red plastic gas can",
         "action": "static",
         "position": "right"
       },
       {
-        "desc": "scattered bricks",
+        "desc": "grey concrete walkway",
+        "action": "static",
+        "position": "center"
+      },
+      {
+        "desc": "green grass lawn",
+        "action": "static",
+        "position": "background"
+      },
+      {
+        "desc": "scattered dark rectangular bricks",
         "action": "static",
         "position": "left"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A red lawnmower is parked on a concrete path.",
+        "fact": "A red lawnmower is parked on a concrete walkway.",
         "confidence": 1.0
       },
       {
-        "fact": "The lawnmower is positioned in front of a set of wooden stairs.",
+        "fact": "The view is from the top of wooden stairs looking down at the yard.",
         "confidence": 1.0
       },
       {
-        "fact": "A red gas can is on the ground to the right of the stairs.",
+        "fact": "A red gas can sits on the ground next to the stairs.",
         "confidence": 1.0
       },
       {
-        "fact": "Bricks are scattered on the grass to the left of the path.",
+        "fact": "Several bricks are scattered on the left side of the walkway.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The red lawnmower is in the center of the frame, on a concrete path. The wooden stairs are in the foreground, in front of the lawnmower. The red gas can is to the right of the stairs. The scattered bricks are to the left of the concrete path.",
+    "spatial": "The wooden stairs are in the foreground, leading down to the concrete walkway. The red lawnmower is positioned in the center of the walkway. To the right of the stairs, a red gas can is placed on the ground. To the left of the walkway, several dark bricks are scattered on the grass.",
     "parse_success": true,
     "chunk_idx": 0,
     "video_id": "vQhQ3KH5cLQ"
   },
   {
     "time": [
-      2,
-      4
+      1,
+      2
     ],
     "visible_entities": [
       {
-        "desc": "red push lawnmower with black wheels and a black grass catcher bag on top",
+        "desc": "red push lawnmower with black engine housing and black wheels",
         "action": "static",
         "position": "center"
       },
@@ -87,14 +92,14 @@
         "position": "background"
       },
       {
-        "desc": "scattered bricks and a small pot",
+        "desc": "scattered bricks and a red pot",
         "action": "static",
         "position": "left"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A red push lawnmower is parked on a concrete walkway.",
+        "fact": "A red lawnmower is parked on a concrete walkway.",
         "confidence": 1.0
       },
       {
@@ -102,28 +107,24 @@
         "confidence": 1.0
       },
       {
-        "fact": "The lawnmower is positioned next to the grass lawn.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "Bricks are scattered on the left side of the walkway.",
+        "fact": "The wooden railing is in the immediate foreground.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The red lawnmower is in the center of the frame, resting on the concrete walkway. The wooden railing is in the bottom right foreground, next to the red gas can. The green lawn is to the right of the walkway and behind the lawnmower.",
+    "spatial": "The red lawnmower is in the center of the frame, positioned on the concrete walkway. The wooden railing is in the bottom right foreground, located in front of the red gas can. The green grass lawn is to the right of the walkway and behind the lawnmower.",
     "parse_success": true,
     "chunk_idx": 1,
     "video_id": "vQhQ3KH5cLQ"
   },
   {
     "time": [
-      4,
-      6
+      2,
+      3
     ],
     "visible_entities": [
       {
-        "desc": "red lawnmower with black wheels and a black engine cover, featuring a pull-start cord",
+        "desc": "red lawnmower with black engine cover and black wheels",
         "action": "static",
         "position": "center"
       },
@@ -133,14 +134,9 @@
         "position": "left"
       },
       {
-        "desc": "black plastic tray with grid pattern",
+        "desc": "grey concrete walkway",
         "action": "static",
-        "position": "right"
-      },
-      {
-        "desc": "concrete walkway",
-        "action": "static",
-        "position": "bottom"
+        "position": "left"
       },
       {
         "desc": "green grass lawn",
@@ -148,7 +144,12 @@
         "position": "background"
       },
       {
-        "desc": "scattered bricks and small tools",
+        "desc": "black plastic crate",
+        "action": "static",
+        "position": "right"
+      },
+      {
+        "desc": "scattered bricks and tools",
         "action": "static",
         "position": "left"
       }
@@ -163,30 +164,26 @@
         "confidence": 1.0
       },
       {
-        "fact": "A black plastic tray is placed on the grass to the right of the lawnmower.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The lawnmower is surrounded by maintenance tools and bricks.",
+        "fact": "A black plastic crate is lying on the grass to the right of the lawnmower.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The red lawnmower is in the center of the frame, resting on the concrete walkway. To the left of the lawnmower, there is a red oil drain pan and several bricks. To the right of the lawnmower, a black plastic tray is sitting on the grass. The green lawn extends into the background behind the lawnmower.",
+    "spatial": "The red lawnmower is centered on the concrete walkway. To the left of the lawnmower, there is a red oil drain pan and scattered bricks. To the right of the lawnmower, a black plastic crate rests on the green grass.",
     "parse_success": true,
     "chunk_idx": 2,
     "video_id": "vQhQ3KH5cLQ"
   },
   {
     "time": [
-      6,
-      8
+      3,
+      4
     ],
     "visible_entities": [
       {
-        "desc": "red lawnmower with a black engine cover and black wheels",
-        "action": "moving forward",
-        "position": "bottom center"
+        "desc": "red lawnmower with a black plastic engine cover and black wheels",
+        "action": "moving forward on the grass",
+        "position": "foreground"
       },
       {
         "desc": "green grass lawn",
@@ -194,119 +191,118 @@
         "position": "center"
       },
       {
-        "desc": "grey paved driveway",
+        "desc": "grey concrete surface",
         "action": "static",
         "position": "bottom left"
       },
       {
-        "desc": "dark rectangular brick",
+        "desc": "small rectangular brown brick",
         "action": "static",
         "position": "bottom left"
       },
       {
-        "desc": "light grey paved road",
+        "desc": "grey paved road",
         "action": "static",
         "position": "background"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "The red lawnmower moves forward from the paved driveway onto the green grass.",
+        "fact": "The red lawnmower is moving forward across the green grass.",
         "confidence": 1.0
       },
       {
-        "fact": "A dark brick sits on the edge of the driveway.",
+        "fact": "A small brown brick is resting on the concrete surface.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The lawnmower is positioned on the grass next to the concrete area.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The red lawnmower is in the foreground, positioned in front of the green grass lawn. The paved driveway is to the left of the lawnmower. A dark brick is on the driveway, near the lawnmower. The paved road is in the background, behind the grass.",
+    "spatial": "The red lawnmower is in the foreground, positioned on the green grass. To the left of the lawnmower is a grey concrete surface with a small brown brick resting on it. Behind the grass is a grey paved road.",
     "parse_success": true,
     "chunk_idx": 3,
     "video_id": "vQhQ3KH5cLQ"
   },
   {
     "time": [
-      8,
-      10
+      4,
+      5
     ],
     "visible_entities": [
       {
-        "desc": "red lawnmower with a black plastic deck, a silver engine, and a beige wheel with a black tire",
-        "action": "tilted on its side",
+        "desc": "red lawnmower with a black engine cover and a beige wheel with circular holes",
+        "action": "being tilted up on its side",
         "position": "right"
       },
       {
-        "desc": "black rectangular plastic tray with a grid pattern",
+        "desc": "black plastic tray containing silver screws and bolts",
         "action": "static",
-        "position": "center"
+        "position": "center-left"
       },
       {
-        "desc": "small rectangular block with a dark base and a lighter top surface",
+        "desc": "concrete sidewalk surface",
         "action": "static",
-        "position": "bottom left"
+        "position": "foreground"
       },
       {
-        "desc": "green grass",
+        "desc": "green grass lawn",
         "action": "static",
         "position": "background"
       },
       {
-        "desc": "light gray concrete surface",
+        "desc": "small dark rectangular object",
         "action": "static",
-        "position": "foreground"
+        "position": "bottom-left"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A red lawnmower is tilted onto its side on a concrete surface.",
+        "fact": "The red lawnmower is being tilted up onto its side.",
         "confidence": 1.0
       },
       {
-        "fact": "A black plastic tray rests on the grass near the edge of the concrete.",
+        "fact": "A black tray containing hardware is sitting on the grass.",
         "confidence": 1.0
       },
       {
-        "fact": "A small block lies on the concrete in the bottom left corner.",
+        "fact": "The lawnmower is positioned on the edge of the concrete sidewalk.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The red lawnmower is on the right side of the frame, tilted on the concrete surface. The black plastic tray is to the left of the lawnmower, resting on the grass. The small block is in the bottom left corner, on the concrete.",
+    "spatial": "The red lawnmower is on the right side of the frame, positioned on the concrete sidewalk. The black tray of screws is to the left of the lawnmower, resting on the green grass. The grass is behind the concrete sidewalk.",
     "parse_success": true,
     "chunk_idx": 4,
     "video_id": "vQhQ3KH5cLQ"
   },
   {
     "time": [
-      10,
-      12
+      5,
+      6
     ],
     "visible_entities": [
       {
-        "desc": "red push lawnmower with a black grass catcher bag, silver engine components, and white wheels with black tires",
+        "desc": "red push lawnmower with a black grass catcher bag and beige wheels",
         "action": "tilted on its side",
         "position": "center"
       },
       {
-        "desc": "red plastic fuel container",
+        "desc": "red plastic fuel can",
         "action": "static",
         "position": "background"
-      },
-      {
-        "desc": "rectangular brown bricks",
-        "action": "static",
-        "position": "foreground"
-      },
-      {
-        "desc": "green grass",
-        "action": "static",
-        "position": "left"
       },
       {
         "desc": "wooden stairs",
         "action": "static",
         "position": "background"
+      },
+      {
+        "desc": "red bricks",
+        "action": "static",
+        "position": "foreground"
       }
     ],
     "atomic_facts": [
@@ -315,85 +311,24 @@
         "confidence": 1.0
       },
       {
-        "fact": "The lawnmower is propped up by bricks placed under its wheels.",
+        "fact": "The black grass catcher bag is attached to the side of the mower.",
         "confidence": 1.0
       },
       {
-        "fact": "A red fuel container sits on the ground near the wooden stairs.",
+        "fact": "Red bricks are placed on the ground near the lawnmower.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The red lawnmower is positioned in the center, tilted on its side on the concrete. To the left of the lawnmower is a patch of green grass. Behind the lawnmower, a red fuel container sits near the base of wooden stairs. Several bricks are placed on the concrete in front of and under the lawnmower's wheels.",
+    "spatial": "The red lawnmower is in the center of the frame, tilted on the concrete. The red fuel can is behind the lawnmower near the wooden stairs. The wooden stairs are to the right of the lawnmower. Red bricks are scattered on the ground in front of and next to the lawnmower.",
     "parse_success": true,
     "chunk_idx": 5,
     "video_id": "vQhQ3KH5cLQ"
   },
   {
     "time": [
-      12,
-      14
-    ],
-    "visible_entities": [
-      {
-        "desc": "red push lawnmower with a black grass catcher bag, silver engine block, and white wheels with black tires",
-        "action": "static",
-        "position": "center"
-      },
-      {
-        "desc": "red plastic fuel container",
-        "action": "static",
-        "position": "background"
-      },
-      {
-        "desc": "grey concrete paving slabs",
-        "action": "static",
-        "position": "foreground"
-      },
-      {
-        "desc": "green grass lawn",
-        "action": "static",
-        "position": "left"
-      },
-      {
-        "desc": "wooden steps",
-        "action": "static",
-        "position": "background"
-      },
-      {
-        "desc": "brown bricks",
-        "action": "static",
-        "position": "right"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "A red lawnmower is resting on a concrete surface.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The lawnmower is tilted slightly to the side.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "A red fuel can is sitting on the ground near the wooden steps.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "Bricks are scattered on the concrete near the lawnmower handle.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [],
-    "spatial": "The red lawnmower is positioned in the center of the frame, resting on the concrete slabs. To the left of the lawnmower is a patch of green grass. Behind the lawnmower are wooden steps and a red fuel container. To the right of the lawnmower, several bricks are lying on the concrete.",
-    "parse_success": true,
-    "chunk_idx": 6,
-    "video_id": "vQhQ3KH5cLQ"
-  },
-  {
-    "time": [
-      14,
-      16
+      6,
+      7
     ],
     "visible_entities": [
       {
@@ -412,51 +347,103 @@
         "position": "foreground"
       },
       {
+        "desc": "wooden stairs",
+        "action": "static",
+        "position": "background"
+      },
+      {
         "desc": "green grass",
         "action": "static",
         "position": "left"
-      },
-      {
-        "desc": "wooden steps",
-        "action": "static",
-        "position": "background"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "The red lawnmower is propped up on bricks.",
+        "fact": "The red lawnmower is resting on a concrete surface.",
         "confidence": 1.0
       },
       {
-        "fact": "The front wheels of the lawnmower are resting on bricks.",
+        "fact": "The lawnmower is tilted upwards at the front.",
         "confidence": 1.0
       },
       {
-        "fact": "The rear wheel of the lawnmower is resting on a brick.",
+        "fact": "Bricks are placed on the ground near the lawnmower's handle.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The red lawnmower is positioned in the center, resting on top of several brown bricks. The green grass is to the left of the lawnmower. The red fuel container is behind the lawnmower near the wooden steps.",
+    "spatial": "The red lawnmower is positioned in the center of the frame, resting on a concrete path. To the left of the lawnmower is a patch of green grass. Behind the lawnmower are wooden stairs and a red fuel container. In the foreground, several bricks are scattered on the concrete near the lawnmower's handle.",
+    "parse_success": true,
+    "chunk_idx": 6,
+    "video_id": "vQhQ3KH5cLQ"
+  },
+  {
+    "time": [
+      7,
+      8
+    ],
+    "visible_entities": [
+      {
+        "desc": "red push lawnmower with a black grass catcher bag, silver engine components, and white wheels with black tires",
+        "action": "tilted on its side",
+        "position": "center"
+      },
+      {
+        "desc": "red plastic fuel container",
+        "action": "static",
+        "position": "background"
+      },
+      {
+        "desc": "brown rectangular bricks with holes",
+        "action": "static",
+        "position": "foreground"
+      },
+      {
+        "desc": "wooden stairs",
+        "action": "static",
+        "position": "background"
+      },
+      {
+        "desc": "green grass",
+        "action": "static",
+        "position": "left"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The red lawnmower is tilted on its side, resting on the ground and bricks.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The lawnmower is positioned on a concrete surface next to a grassy area.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A red fuel container sits on the ground near the wooden stairs.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The red lawnmower is in the center of the frame, tilted on its side on the concrete. The green grass is to the left of the lawnmower. The wooden stairs are behind the lawnmower, and the red fuel container is near the stairs.",
     "parse_success": true,
     "chunk_idx": 7,
     "video_id": "vQhQ3KH5cLQ"
   },
   {
     "time": [
-      16,
-      18
+      8,
+      9
     ],
     "visible_entities": [
       {
-        "desc": "person wearing dark blue long-sleeved clothing",
-        "action": "working on the engine",
-        "position": "left/foreground"
+        "desc": "red lawnmower with a red plastic engine cover, black handle, and visible engine components",
+        "action": "being worked on",
+        "position": "center"
       },
       {
-        "desc": "red lawnmower with a red plastic engine cover and black mechanical components",
-        "action": "being serviced",
-        "position": "center/right"
+        "desc": "person wearing a dark blue long-sleeved shirt",
+        "action": "leaning over the lawnmower",
+        "position": "left"
       },
       {
         "desc": "green grass",
@@ -466,86 +453,34 @@
     ],
     "atomic_facts": [
       {
-        "fact": "A person is working on the engine of a red lawnmower.",
+        "fact": "A person is leaning over a red lawnmower.",
         "confidence": 1.0
       },
       {
-        "fact": "The red plastic engine cover is lifted or removed, exposing the internal mechanical parts.",
+        "fact": "The person appears to be inspecting or repairing the lawnmower's engine.",
         "confidence": 1.0
       },
       {
-        "fact": "The lawnmower is positioned on a grassy surface.",
+        "fact": "The lawnmower is positioned on a patch of green grass.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The person in dark blue clothing is to the left of the red lawnmower. The lawnmower is on the green grass. The engine components are inside the red housing of the lawnmower.",
+    "spatial": "The person in the dark blue shirt is to the left of the red lawnmower. The lawnmower is on the green grass. The person is leaning over the lawnmower.",
     "parse_success": true,
     "chunk_idx": 8,
     "video_id": "vQhQ3KH5cLQ"
   },
   {
     "time": [
-      18,
-      20
+      9,
+      10
     ],
     "visible_entities": [
       {
-        "desc": "red walk-behind lawn mower with a black plastic deck, black wheels, and a visible engine assembly",
-        "action": "tilting upward",
+        "desc": "red walk-behind lawn mower with a black plastic deck, black wheels, and a visible engine with cooling fins",
+        "action": "tilted on its side",
         "position": "center"
-      },
-      {
-        "desc": "red plastic gas can",
-        "action": "static",
-        "position": "background"
-      },
-      {
-        "desc": "rectangular brick with holes",
-        "action": "static",
-        "position": "right"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "The red lawn mower is being tilted upwards onto its side.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The mower is resting on its left wheel and the edge of its deck.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "A brick is lying on the ground to the right of the mower.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [],
-    "spatial": "The red lawn mower is in the center of the frame, positioned on a concrete surface. The red gas can is behind the mower in the background. A brick is on the ground to the right of the mower.",
-    "parse_success": true,
-    "chunk_idx": 9,
-    "video_id": "vQhQ3KH5cLQ"
-  },
-  {
-    "time": [
-      20,
-      22
-    ],
-    "visible_entities": [
-      {
-        "desc": "red push lawnmower with a black plastic deck, black engine components, and black rubber tires with treads",
-        "action": "static",
-        "position": "center"
-      },
-      {
-        "desc": "red plastic gas can with a black cap",
-        "action": "static",
-        "position": "left"
-      },
-      {
-        "desc": "brown rectangular brick with holes",
-        "action": "static",
-        "position": "right"
       },
       {
         "desc": "green grass",
@@ -553,44 +488,106 @@
         "position": "left"
       },
       {
-        "desc": "light gray concrete surface",
+        "desc": "concrete surface",
+        "action": "static",
+        "position": "bottom"
+      },
+      {
+        "desc": "red plastic gas can",
+        "action": "static",
+        "position": "background"
+      },
+      {
+        "desc": "shadow of a person",
+        "action": "static",
+        "position": "bottom left"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The red lawn mower is tilted on its side, exposing its underside and wheels.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The mower is resting on a concrete surface next to a patch of grass.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A shadow of a person is visible on the ground to the left of the mower.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The red lawn mower is positioned in the center, resting on the concrete surface. The green grass is to the left of the concrete area. The red gas can is in the background behind the mower. The shadow of a person is cast on the ground in the bottom left corner.",
+    "parse_success": true,
+    "chunk_idx": 9,
+    "video_id": "vQhQ3KH5cLQ"
+  },
+  {
+    "time": [
+      10,
+      11
+    ],
+    "visible_entities": [
+      {
+        "desc": "red riding lawnmower with a black plastic deck cover featuring vertical ventilation slots, black rubber tires, and a visible engine assembly",
+        "action": "static",
+        "position": "center"
+      },
+      {
+        "desc": "red plastic fuel container with a black cap",
+        "action": "static",
+        "position": "left"
+      },
+      {
+        "desc": "rectangular brown brick with circular holes",
+        "action": "static",
+        "position": "bottom right"
+      },
+      {
+        "desc": "green grass",
+        "action": "static",
+        "position": "left"
+      },
+      {
+        "desc": "concrete ground surface",
         "action": "static",
         "position": "bottom"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A red lawnmower is propped up on its side on a concrete surface.",
+        "fact": "The red riding lawnmower is propped up on a concrete surface.",
         "confidence": 1.0
       },
       {
-        "fact": "A red gas can is sitting on the grass to the left of the lawnmower.",
+        "fact": "A red plastic fuel container sits on the grass to the left of the lawnmower.",
         "confidence": 1.0
       },
       {
-        "fact": "A brown brick is lying on the concrete to the right of the lawnmower.",
+        "fact": "A brown brick lies on the ground near the front right tire of the lawnmower.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The red lawnmower is in the center of the frame, resting on the concrete surface. The red gas can is to the left of the lawnmower, positioned on the green grass. The brown brick is to the right of the lawnmower on the concrete.",
+    "spatial": "The red riding lawnmower is positioned centrally on the concrete ground. To the left of the lawnmower, a red fuel container rests on the green grass. A brown brick is located on the ground to the right of the lawnmower's front wheel.",
     "parse_success": true,
     "chunk_idx": 10,
     "video_id": "vQhQ3KH5cLQ"
   },
   {
     "time": [
-      22,
-      24
+      11,
+      12
     ],
     "visible_entities": [
       {
-        "desc": "red lawnmower with black engine components and a large black plastic deck featuring vertical ridges",
+        "desc": "red and black lawnmower with a large black plastic front bumper featuring vertical slots, black wheels, and a red engine cover",
         "action": "static",
-        "position": "center"
+        "position": "center/foreground"
       },
       {
-        "desc": "red plastic gas can",
+        "desc": "red plastic fuel can with a black handle",
         "action": "static",
         "position": "left"
       },
@@ -600,58 +597,54 @@
         "position": "background"
       },
       {
-        "desc": "single brown perforated brick",
-        "action": "static",
-        "position": "foreground"
-      },
-      {
         "desc": "green grass",
         "action": "static",
-        "position": "right"
+        "position": "right/background"
+      },
+      {
+        "desc": "wooden pallet structure",
+        "action": "static",
+        "position": "background"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A red lawnmower is resting on a concrete surface.",
+        "fact": "The lawnmower is stationary on a concrete surface.",
         "confidence": 1.0
       },
       {
-        "fact": "A red gas can sits to the left of the lawnmower.",
+        "fact": "The red fuel can is positioned to the left of the lawnmower.",
         "confidence": 1.0
       },
       {
-        "fact": "A stack of bricks is positioned behind the lawnmower.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "A single brick lies on the ground in the foreground.",
+        "fact": "A stack of bricks is visible behind the lawnmower.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The red lawnmower is in the center of the frame. To the left of the lawnmower is a red gas can. Behind the lawnmower is a stack of brown bricks. To the right of the lawnmower is a patch of green grass. A single brick is on the ground in front of the lawnmower.",
+    "spatial": "The red and black lawnmower is in the center foreground. The red fuel can is to the left of the lawnmower. The stack of brown bricks is behind the lawnmower and to the right of the wooden pallet structure. Green grass is to the right of the lawnmower.",
     "parse_success": true,
     "chunk_idx": 11,
     "video_id": "vQhQ3KH5cLQ"
   },
   {
     "time": [
-      24,
-      26
+      12,
+      13
     ],
     "visible_entities": [
       {
-        "desc": "red metal lawnmower deck, covered in green grass clippings and dirt, with a black plastic discharge chute underneath",
+        "desc": "red metal lawnmower deck, covered in green grass clippings and dirt, with a black plastic discharge chute attached",
         "action": "static",
         "position": "center"
       },
       {
-        "desc": "black rubber tire with visible tread",
+        "desc": "black rubber tire with tread pattern",
         "action": "static",
         "position": "left"
       },
       {
-        "desc": "rectangular brick, reddish-brown, with grooved surface",
+        "desc": "red brick with ridged texture",
         "action": "static",
         "position": "bottom left"
       },
@@ -663,16 +656,16 @@
       {
         "desc": "green grass",
         "action": "static",
-        "position": "background"
+        "position": "background left"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "The lawnmower is stationary on a concrete surface.",
+        "fact": "The lawnmower is resting on a concrete surface.",
         "confidence": 1.0
       },
       {
-        "fact": "A brick is placed on the ground next to the lawnmower's tire.",
+        "fact": "A red brick is placed on the ground near the lawnmower tire.",
         "confidence": 1.0
       },
       {
@@ -681,127 +674,118 @@
       }
     ],
     "ocr": [],
-    "spatial": "The red lawnmower deck is positioned above the black tire and the concrete surface. The brick is on the ground to the left of the tire. The green grass is in the background behind the lawnmower.",
+    "spatial": "The red lawnmower deck is positioned above the concrete surface. The black tire is located on the left side of the mower deck. A red brick lies on the ground to the left of the tire. Green grass is visible in the background to the left of the mower.",
     "parse_success": true,
     "chunk_idx": 12,
     "video_id": "vQhQ3KH5cLQ"
   },
   {
     "time": [
-      26,
-      28
+      13,
+      14
     ],
     "visible_entities": [
       {
-        "desc": "red, curved, metallic or plastic housing with a rough, weathered texture and a large circular opening",
+        "desc": "red metallic wheel rim with a curved edge, showing signs of wear and rust",
         "action": "static",
         "position": "center"
       },
       {
-        "desc": "dark, cylindrical metal shaft or axle, appearing rusty and worn",
+        "desc": "dark cylindrical axle hub with a circular flange and bolt holes",
+        "action": "static",
+        "position": "right"
+      },
+      {
+        "desc": "greyish wheel spokes visible through the rim opening",
         "action": "static",
         "position": "center"
       },
       {
-        "desc": "flat, rectangular metal plate, light brown or rust-colored, with a hole visible",
+        "desc": "rectangular wooden block with a rough texture",
         "action": "static",
-        "position": "bottom"
-      },
-      {
-        "desc": "blurred, light-colored, possibly metallic components inside the red housing",
-        "action": "static",
-        "position": "background"
+        "position": "bottom-right"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A red, curved housing with a circular opening is the central focus.",
+        "fact": "The camera focuses on a close-up view of a vehicle wheel assembly.",
         "confidence": 1.0
       },
       {
-        "fact": "A dark, cylindrical shaft protrudes from the center of the assembly.",
+        "fact": "A wooden block is positioned near the bottom of the wheel structure.",
         "confidence": 1.0
       },
       {
-        "fact": "A flat, rectangular metal plate is positioned below the shaft.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The components appear to be part of a larger mechanical system, possibly a wheel hub or motor assembly.",
+        "fact": "The wheel rim surrounds the central axle hub.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The red housing is in the center of the frame. The dark cylindrical shaft is inside the circular opening of the red housing. The flat metal plate is below the shaft and in front of the lower part of the red housing.",
+    "spatial": "The red wheel rim is in the center of the frame, surrounding the grey spokes. The dark axle hub is located to the right of the spokes. The wooden block is positioned below the axle hub and near the bottom edge of the rim.",
     "parse_success": true,
     "chunk_idx": 13,
     "video_id": "vQhQ3KH5cLQ"
   },
   {
     "time": [
-      28,
-      30
+      14,
+      15
     ],
     "visible_entities": [
       {
-        "desc": "red circular metal housing, likely a lawnmower deck, with a rough, dirty texture and a central opening",
+        "desc": "red circular metal housing, likely a mower deck, with a central shaft and blade attachment point",
         "action": "static",
         "position": "center"
       },
       {
-        "desc": "dark metal spindle shaft with a circular flange at the top, protruding vertically",
+        "desc": "metal blade or tool component, dark grey, attached to the central shaft",
         "action": "static",
         "position": "center"
       },
       {
-        "desc": "two thin, dark metal rods or wires, slightly curved, extending diagonally across the opening",
-        "action": "static",
-        "position": "center"
-      },
-      {
-        "desc": "blurry, textured ground surface, appearing to be dirt or concrete with scattered debris",
+        "desc": "ground surface, dirt and debris, blurry",
         "action": "static",
         "position": "background"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A red circular metal housing with a central opening is the main subject.",
+        "fact": "A red circular metal housing is visible in the center of the frame.",
         "confidence": 1.0
       },
       {
-        "fact": "A dark metal spindle shaft protrudes vertically from the center of the housing.",
+        "fact": "A metal blade or tool component is attached to the central shaft of the red housing.",
         "confidence": 1.0
       },
       {
-        "fact": "Two thin metal rods are positioned diagonally over the opening of the red housing.",
+        "fact": "The camera angle is looking down into the interior of the red housing.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The red circular housing is in the center of the frame. The dark metal spindle shaft is inside the central opening of the red housing. The two thin metal rods are in front of the spindle shaft and cross over the opening of the red housing. The blurry ground surface is behind and around the red housing.",
+    "spatial": "The red circular metal housing is in the center of the frame. The metal blade component is inside the red housing, attached to its central shaft. The blurry ground surface is behind and around the red housing.",
     "parse_success": true,
     "chunk_idx": 14,
     "video_id": "vQhQ3KH5cLQ"
   },
   {
     "time": [
-      30,
-      32
+      15,
+      16
     ],
     "visible_entities": [
       {
-        "desc": "red plastic trimmer head with a metal spool and black cutting line",
-        "action": "being pointed at by a finger",
+        "desc": "red plastic trimmer head with a black central hub and metal eyelets",
+        "action": "being pointed at",
         "position": "center"
       },
       {
-        "desc": "human hand with a pointing finger",
+        "desc": "human finger, pale skin tone",
         "action": "pointing at the trimmer head",
-        "position": "bottom left"
+        "position": "left"
       },
       {
-        "desc": "grey concrete or stone surface",
+        "desc": "grey concrete or stone paving slabs",
         "action": "static",
         "position": "bottom"
       },
@@ -813,91 +797,86 @@
     ],
     "atomic_facts": [
       {
-        "fact": "A hand enters the frame and points a finger at the red trimmer head.",
+        "fact": "A finger points at the red trimmer head.",
         "confidence": 1.0
       },
       {
-        "fact": "The trimmer head is resting on the ground near a concrete surface.",
+        "fact": "The trimmer head is resting on the ground.",
         "confidence": 1.0
       },
       {
-        "fact": "The camera angle shifts from a blurry close-up to a clearer view of the trimmer.",
+        "fact": "The camera angle shifts from a blurry view of the ground to a clear view of the trimmer head.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The red trimmer head is in the center of the frame, resting on the ground. A hand is to the left of the trimmer head, pointing at it. The concrete surface is below the trimmer head.",
+    "spatial": "The finger is to the left of the red trimmer head. The trimmer head is on the ground, which consists of grass and concrete slabs. The concrete slabs are below the trimmer head.",
     "parse_success": true,
     "chunk_idx": 15,
     "video_id": "vQhQ3KH5cLQ"
   },
   {
     "time": [
-      32,
-      34
+      16,
+      17
     ],
     "visible_entities": [
       {
-        "desc": "pale-skinned hand with short fingernails",
-        "action": "touching and gripping the red metal housing",
+        "desc": "pale hand with short fingernails",
+        "action": "grasping and rotating the red mechanical component",
         "position": "foreground left"
       },
       {
-        "desc": "red metal wheel hub assembly, showing signs of rust and wear, with a central dark axle and a silver flange",
-        "action": "static",
+        "desc": "red circular metal housing with a central dark axle and a silver flange",
+        "action": "being manipulated",
         "position": "center"
       },
       {
-        "desc": "dark metal spokes",
+        "desc": "metallic spokes or blades inside the red housing",
         "action": "static",
         "position": "center"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A hand is touching the red metal wheel hub assembly.",
+        "fact": "A hand is gripping the edge of a red circular mechanical part.",
         "confidence": 1.0
       },
       {
-        "fact": "The hand moves to grip the lower edge of the red housing.",
+        "fact": "The hand rotates the red housing slightly between the frames.",
         "confidence": 1.0
       },
       {
-        "fact": "The wheel hub has a central dark axle with a silver flange.",
+        "fact": "The mechanical part features a central dark shaft with a silver collar.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The hand is in the foreground to the left of the red wheel hub assembly. The dark metal spokes are inside the red housing, radiating from the central axle. The silver flange is on the central axle, in front of the spokes.",
+    "spatial": "The pale hand is in the foreground, positioned to the left of the red mechanical housing. The hand is holding the rim of the red housing. The dark axle is located in the center of the red housing.",
     "parse_success": true,
     "chunk_idx": 16,
     "video_id": "vQhQ3KH5cLQ"
   },
   {
     "time": [
-      34,
-      36
+      17,
+      18
     ],
     "visible_entities": [
       {
-        "desc": "red, circular metal housing with a rough, rusty texture and a central opening",
+        "desc": "red mechanical housing with a circular opening, showing signs of rust and dirt",
         "action": "static",
         "position": "background"
       },
       {
-        "desc": "dark, cylindrical metal shaft with a circular flange at its base",
+        "desc": "dark metal shaft with a circular flange, appearing greasy and worn",
         "action": "static",
         "position": "center"
       },
       {
-        "desc": "thin, light-colored, flexible tube or wire",
+        "desc": "thin, curved metal rod or wire",
         "action": "static",
         "position": "center"
-      },
-      {
-        "desc": "dark, metallic, fin-like internal component",
-        "action": "static",
-        "position": "background"
       }
     ],
     "atomic_facts": [
@@ -906,403 +885,307 @@
         "confidence": 1.0
       },
       {
-        "fact": "A thin, light-colored tube is positioned over the dark metal shaft.",
+        "fact": "A metal shaft protrudes from the center of the red housing.",
         "confidence": 1.0
       },
       {
-        "fact": "The red housing surrounds the internal mechanical components.",
+        "fact": "A thin metal rod is positioned near the central shaft.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The dark, cylindrical shaft is in the center of the red, circular housing. The thin, light-colored tube is in front of the shaft and the internal fin-like component. The fin-like component is inside the red housing and behind the shaft.",
+    "spatial": "The dark metal shaft is in the center of the red mechanical housing. The thin metal rod is positioned above and slightly to the left of the shaft. The red housing surrounds the internal mechanical components.",
     "parse_success": true,
     "chunk_idx": 17,
     "video_id": "vQhQ3KH5cLQ"
   },
   {
     "time": [
-      36,
-      38
+      18,
+      19
     ],
     "visible_entities": [
       {
-        "desc": "human hand with light skin tone, index finger extended",
-        "action": "pointing at a mechanical component",
+        "desc": "hand with light skin tone, index finger extended",
+        "action": "pointing at a bolt",
         "position": "bottom left"
       },
       {
-        "desc": "red painted metal wheel rim, chipped and rusty",
-        "action": "static",
-        "position": "left"
-      },
-      {
-        "desc": "dark metal axle shaft with a circular flange, greasy and worn",
+        "desc": "rusty metal wheel hub with a central axle, dirty and worn",
         "action": "static",
         "position": "center right"
       },
       {
-        "desc": "rusty metal bracket with bolt holes",
+        "desc": "red painted metal rim, chipped and dirty",
         "action": "static",
-        "position": "bottom right"
+        "position": "left"
       },
       {
-        "desc": "small dark circular hole or bearing seat on the axle",
+        "desc": "dark metal bolt or nut, recessed in the wheel assembly",
         "action": "static",
         "position": "center"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A person's hand enters the frame from the bottom left.",
+        "fact": "A hand enters the frame and points an index finger at a specific bolt on the wheel assembly.",
         "confidence": 1.0
       },
       {
-        "fact": "The index finger points directly at a small dark hole on the axle assembly.",
+        "fact": "The wheel hub is covered in rust and grime.",
         "confidence": 1.0
       },
       {
-        "fact": "The red wheel rim is positioned to the left of the central axle shaft.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The rusty bracket is located below the axle shaft.",
+        "fact": "The red paint on the rim is chipped.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The human hand is in the bottom left foreground, pointing towards the center of the image. The red wheel rim is to the left of the dark metal axle shaft. The rusty metal bracket is situated below the axle shaft and to the right of the pointing finger.",
+    "spatial": "The hand is in the bottom left foreground, pointing towards the center of the image. The bolt is located inside the red rim, to the left of the central rusty axle. The rusty hub is to the right of the red rim.",
     "parse_success": true,
     "chunk_idx": 18,
     "video_id": "vQhQ3KH5cLQ"
   },
   {
     "time": [
-      38,
-      40
+      19,
+      20
     ],
     "visible_entities": [
       {
         "desc": "human hand with light skin tone, index finger extended",
         "action": "pointing at a mechanical joint",
-        "position": "bottom center foreground"
+        "position": "foreground"
       },
       {
-        "desc": "rusted metal mechanical assembly with a red painted wheel hub and a dark greasy axle",
+        "desc": "rusted metal mechanical assembly, featuring a red curved housing and a cylindrical axle hub",
         "action": "static",
-        "position": "center background"
+        "position": "background"
+      },
+      {
+        "desc": "small metallic ring or washer",
+        "action": "static",
+        "position": "center"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A person's index finger points directly at a small circular metal component on the machinery.",
+        "fact": "A human hand points an index finger at a specific mechanical joint.",
         "confidence": 1.0
       },
       {
-        "fact": "The machinery features a large red wheel hub on the left and a dark, greasy axle on the right.",
+        "fact": "The finger is touching or indicating a small metallic ring on the axle.",
         "confidence": 1.0
       },
       {
-        "fact": "The metal components show signs of rust and wear.",
+        "fact": "The mechanical assembly shows signs of rust and wear.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The human hand is in the foreground, positioned below the mechanical assembly. The index finger is pointing upwards towards the center of the machinery, specifically at the junction between the red wheel hub and the axle.",
+    "spatial": "The human hand is in the foreground, positioned in front of the rusted mechanical assembly. The index finger is pointing towards the center of the frame where a small metallic ring is located on the axle, which is to the right of the red curved housing.",
     "parse_success": true,
     "chunk_idx": 19,
     "video_id": "vQhQ3KH5cLQ"
   },
   {
     "time": [
-      40,
-      42
+      20,
+      21
     ],
     "visible_entities": [
       {
-        "desc": "human hand with light skin tone, index finger extended",
-        "action": "pointing at mechanical components",
-        "position": "bottom center"
+        "desc": "human hand with fair skin, index finger extended",
+        "action": "pointing at a mechanical component",
+        "position": "bottom center foreground"
       },
       {
-        "desc": "red curved metal housing, painted, showing signs of rust and dirt",
+        "desc": "red metal wheel hub, rusty and dirty with visible wear",
         "action": "static",
-        "position": "left"
+        "position": "left and center background"
       },
       {
-        "desc": "rusty metal axle assembly with a circular flange and a central shaft",
+        "desc": "rusty metal axle shaft with a circular flange",
         "action": "static",
-        "position": "right"
+        "position": "right side"
       },
       {
-        "desc": "small metallic bolt or fastener head",
+        "desc": "small metallic bearing or seal component",
         "action": "static",
         "position": "center"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A human hand points a finger at a small bolt located between the red housing and the axle.",
+        "fact": "A person's index finger points directly at a small metallic bearing or seal.",
         "confidence": 1.0
       },
       {
-        "fact": "The red metal housing is positioned to the left of the rusty axle assembly.",
+        "fact": "The red wheel hub is positioned to the left of the axle shaft.",
         "confidence": 1.0
       },
       {
-        "fact": "The axle assembly features a circular flange with bolt holes.",
+        "fact": "The axle shaft protrudes from the center of the wheel assembly.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The human hand is in the foreground, positioned below the mechanical parts. The red curved housing is to the left of the rusty axle assembly. The finger is pointing directly at a bolt situated between the red housing and the axle.",
+    "spatial": "The human hand is in the foreground, positioned below the mechanical parts. The red wheel hub is to the left of the rusty axle shaft. The finger is pointing at a small component located between the hub and the axle.",
     "parse_success": true,
     "chunk_idx": 20,
     "video_id": "vQhQ3KH5cLQ"
   },
   {
     "time": [
-      42,
-      44
+      21,
+      22
     ],
     "visible_entities": [
       {
-        "desc": "red metal machinery part, weathered with rust and dirt, featuring a bolt hole and a dark circular opening",
+        "desc": "red painted metal housing, weathered, dirty, with chipped paint and rust",
         "action": "static"
       },
       {
-        "desc": "dark mechanical component, metallic, visible inside the circular opening",
+        "desc": "dark mechanical component, metallic, cylindrical, greasy",
         "action": "static"
       },
       {
-        "desc": "ground surface, muddy with scattered dry grass",
-        "action": "static"
+        "desc": "human finger, skin-toned, blurry",
+        "action": "pointing"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "The red metal machinery part is stationary.",
+        "fact": "A human finger points towards the bottom of the red metal housing.",
         "confidence": 1.0
       },
       {
-        "fact": "The dark mechanical component is visible inside the opening of the red part.",
+        "fact": "The red metal housing is dirty and shows signs of wear.",
         "confidence": 1.0
       },
       {
-        "fact": "The machinery is positioned above the muddy ground.",
+        "fact": "A dark mechanical component is visible inside the opening of the red housing.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The red metal machinery part is in the foreground, positioned above the muddy ground. The dark mechanical component is inside the circular opening of the red part.",
+    "spatial": "The dark mechanical component is inside the opening of the red metal housing. The human finger is below the red metal housing.",
     "parse_success": true,
     "chunk_idx": 21,
     "video_id": "vQhQ3KH5cLQ"
   },
   {
     "time": [
-      44,
-      46
+      22,
+      23
     ],
     "visible_entities": [
       {
-        "desc": "red painted metal housing, chipped paint, rusty texture",
+        "desc": "red metal housing with chipped paint and rust",
         "action": "static",
         "position": "left"
       },
       {
-        "desc": "rusty metal axle shaft, cylindrical, dark brown corrosion",
+        "desc": "rusty metal axle shaft with a circular flange",
         "action": "static",
         "position": "right"
       },
       {
-        "desc": "circular metal bearing or seal, dark, recessed",
+        "desc": "dark circular mechanical component (bearing or seal)",
         "action": "static",
         "position": "center"
       },
       {
-        "desc": "rusty metal bracket, perforated with holes, orange-brown rust",
+        "desc": "rusty metal bracket with holes",
         "action": "static",
         "position": "bottom right"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "The camera zooms out slightly to reveal more of the rusty axle shaft.",
+        "fact": "A red metal housing is positioned on the left side of the frame.",
         "confidence": 1.0
       },
       {
-        "fact": "A circular bearing is visible inside the red metal housing.",
+        "fact": "A rusty axle shaft is visible on the right side.",
         "confidence": 1.0
       },
       {
-        "fact": "The metal components show significant signs of rust and wear.",
+        "fact": "A dark circular mechanical component is situated between the red housing and the axle.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The red painted metal housing is on the left side of the frame. The rusty metal axle shaft is positioned to the right of the red housing. A circular bearing is located in the center, recessed within the housing. A rusty metal bracket is situated below the axle shaft in the foreground.",
+    "spatial": "The red metal housing is to the left of the rusty axle shaft. The dark circular mechanical component is located between the red housing and the axle shaft. The rusty metal bracket is below the axle shaft.",
     "parse_success": true,
     "chunk_idx": 22,
     "video_id": "vQhQ3KH5cLQ"
   },
   {
     "time": [
-      46,
-      48
+      23,
+      24
     ],
     "visible_entities": [
       {
-        "desc": "rusty red metal wheel rim with chipped paint and a circular mounting flange",
+        "desc": "rusty red metal plate with a circular hole and a smaller bolt hole, showing signs of wear and dirt",
         "action": "static",
-        "position": "left"
+        "position": "foreground"
       },
       {
-        "desc": "dark cylindrical metal axle shaft protruding from the center",
+        "desc": "dark cylindrical metal shaft, appearing greasy or wet, protruding from a circular metal flange",
         "action": "static",
         "position": "center"
       },
       {
-        "desc": "rusty orange metal mounting bracket with bolt holes",
+        "desc": "circular metal flange or bearing housing, silver/grey in color, surrounding the shaft",
         "action": "static",
-        "position": "bottom"
+        "position": "center"
       },
       {
-        "desc": "grey concrete paving slabs with grass growing in the cracks",
+        "desc": "grey concrete or stone paving slabs with grass growing in the cracks",
         "action": "static",
-        "position": "background"
+        "position": "bottom"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "The camera pans from the central axle assembly to the left side of the wheel rim.",
+        "fact": "The camera moves slightly, changing the angle of the rusty red metal plate relative to the shaft.",
         "confidence": 1.0
       },
       {
-        "fact": "A rusty orange metal bracket is positioned below the axle shaft.",
+        "fact": "The rusty red metal plate is positioned in front of the cylindrical shaft.",
         "confidence": 1.0
       },
       {
-        "fact": "The red wheel rim is located to the left of the central axle.",
+        "fact": "The shaft protrudes horizontally from the circular metal flange.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The rusty red wheel rim is to the left of the central axle shaft. The orange metal bracket is below the axle shaft. The concrete paving slabs are in the background below the machinery.",
+    "spatial": "The rusty red metal plate is in the foreground, positioned below and in front of the cylindrical shaft. The shaft protrudes from the center of the circular metal flange. The grey paving slabs are visible at the bottom of the frame, below the metal components.",
     "parse_success": true,
     "chunk_idx": 23,
     "video_id": "vQhQ3KH5cLQ"
   },
   {
     "time": [
-      48,
-      50
+      24,
+      25
     ],
     "visible_entities": [
       {
-        "desc": "human hand with light skin tone, holding a small cylindrical object",
-        "action": "holding and rotating a small object",
-        "position": "foreground center"
+        "desc": "human hand with light skin tone",
+        "action": "holding and rotating a tool",
+        "position": "foreground"
       },
       {
-        "desc": "small cylindrical object, metallic silver with a gold-colored band and a hollow or open tip",
-        "action": "being manipulated by hand",
-        "position": "foreground center"
-      },
-      {
-        "desc": "dark textured tire tread",
-        "action": "static",
-        "position": "bottom left background"
+        "desc": "metallic tool with a silver handle and a brass-colored hexagonal socket head",
+        "action": "being manipulated",
+        "position": "center"
       },
       {
         "desc": "rough concrete or stone surface with patches of green moss or grass",
-        "action": "static",
-        "position": "background"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "A hand is holding a small metallic object in the foreground.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The hand rotates the object to show its hollow tip.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "A tire is visible in the lower left background.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The background consists of a rough, mossy surface.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [],
-    "spatial": "The hand holding the metallic object is in the foreground, positioned centrally. The tire is located to the left of the hand and further back in the scene. The mossy concrete surface is behind the hand and the tire.",
-    "parse_success": true,
-    "chunk_idx": 24,
-    "video_id": "vQhQ3KH5cLQ"
-  },
-  {
-    "time": [
-      50,
-      52
-    ],
-    "visible_entities": [
-      {
-        "desc": "hand with light skin tone holding a small, shiny, silver-colored metal tool with a rounded, possibly damaged tip",
-        "action": "holding and pointing the tool",
-        "position": "foreground"
-      },
-      {
-        "desc": "dark, textured tire tread with deep grooves, appearing dirty",
-        "action": "static",
-        "position": "left"
-      },
-      {
-        "desc": "rough, dark brown and grey surface with patches of green moss or grass, possibly a stone or concrete step",
-        "action": "static",
-        "position": "background"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "A hand is holding a small metal tool in the foreground.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The index finger of the hand points towards the background surface.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "A tire is visible on the left side of the frame.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The background surface has patches of green vegetation growing on it.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [],
-    "spatial": "The hand holding the tool is in the foreground, positioned to the right of the tire. The tire is on the left side of the frame. The mossy, textured surface is in the background, behind the hand and to the right of the tire.",
-    "parse_success": true,
-    "chunk_idx": 25,
-    "video_id": "vQhQ3KH5cLQ"
-  },
-  {
-    "time": [
-      52,
-      54
-    ],
-    "visible_entities": [
-      {
-        "desc": "hand with light skin tone holding a small, shiny, silver-colored metal tool with a cylindrical shaft and a hexagonal head",
-        "action": "holding and manipulating a metal tool",
-        "position": "foreground"
-      },
-      {
-        "desc": "rusty, reddish-brown metal surface with patches of green moss and dirt",
         "action": "static",
         "position": "background"
       },
@@ -1314,53 +1197,147 @@
     ],
     "atomic_facts": [
       {
-        "fact": "A hand is holding a small metal tool in the foreground.",
+        "fact": "A hand is holding a metallic tool with a brass socket head.",
         "confidence": 1.0
       },
       {
-        "fact": "The tool is being moved slightly between the two frames.",
+        "fact": "The tool is being rotated to show different angles of the head.",
         "confidence": 1.0
       },
       {
-        "fact": "The background consists of a rusty metal surface covered in moss.",
+        "fact": "The background consists of a weathered concrete surface with vegetation.",
         "confidence": 1.0
       },
       {
-        "fact": "A portion of a black tire is visible on the left side of the frame.",
+        "fact": "A portion of a vehicle tire is visible on the left side of the frame.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The hand holding the metal tool is in the foreground, positioned in front of the rusty metal surface. The rusty surface is above and to the right of the black tire, which is located on the left side of the frame.",
+    "spatial": "The hand is in the foreground, holding the metallic tool in the center of the view. The tool is positioned in front of the rough concrete surface. To the left of the hand and tool, a black tire is visible.",
+    "parse_success": true,
+    "chunk_idx": 24,
+    "video_id": "vQhQ3KH5cLQ"
+  },
+  {
+    "time": [
+      25,
+      26
+    ],
+    "visible_entities": [
+      {
+        "desc": "human hand with light skin tone",
+        "action": "holding a metal tool",
+        "position": "foreground"
+      },
+      {
+        "desc": "silver metal tool with a hexagonal socket head, appearing to be a socket wrench extension",
+        "action": "being held and pointed",
+        "position": "center-right"
+      },
+      {
+        "desc": "dark textured tire tread",
+        "action": "static",
+        "position": "bottom-left"
+      },
+      {
+        "desc": "rough stone or concrete surface with patches of green grass",
+        "action": "static",
+        "position": "background"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A hand is holding a silver metal tool in the foreground.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The tool is being pointed towards the stone surface.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A tire is visible on the ground to the left.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The hand holding the metal tool is in the foreground, positioned to the right of the tire. The tire is located at the bottom left of the frame. The stone surface with grass is in the background, behind the hand and tool.",
+    "parse_success": true,
+    "chunk_idx": 25,
+    "video_id": "vQhQ3KH5cLQ"
+  },
+  {
+    "time": [
+      26,
+      27
+    ],
+    "visible_entities": [
+      {
+        "desc": "hand with light skin tone",
+        "action": "holding a metal tool",
+        "position": "foreground"
+      },
+      {
+        "desc": "silver metal tool, cylindrical shaft with a hexagonal head",
+        "action": "being held",
+        "position": "foreground"
+      },
+      {
+        "desc": "rusty red metal surface, textured with dirt and grass clippings",
+        "action": "static",
+        "position": "background"
+      },
+      {
+        "desc": "black rubber tire with deep treads",
+        "action": "static",
+        "position": "left"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A hand is holding a silver metal tool in the foreground.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The tool is positioned in front of a rusty red metal surface.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A black tire is visible on the left side of the frame.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The hand holding the metal tool is in the foreground, positioned in front of the rusty red metal surface. The black tire is located to the left of the hand and tool.",
     "parse_success": true,
     "chunk_idx": 26,
     "video_id": "vQhQ3KH5cLQ"
   },
   {
     "time": [
-      54,
-      56
+      27,
+      28
     ],
     "visible_entities": [
       {
         "desc": "human hand with light skin tone",
-        "action": "holding a silver ratchet wrench",
-        "position": "bottom/foreground"
+        "action": "holding a metal tool",
+        "position": "bottom center foreground"
       },
       {
-        "desc": "silver metal ratchet wrench",
-        "action": "being used to turn a bolt",
-        "position": "center"
+        "desc": "silver metal ratchet wrench, shiny, cylindrical handle",
+        "action": "being inserted into a bolt",
+        "position": "center foreground"
       },
       {
-        "desc": "red painted metal surface, curved, with chipped paint and dirt",
+        "desc": "red curved metal surface, weathered, dirty, with visible rust and debris",
         "action": "static",
-        "position": "left/background"
+        "position": "background"
       },
       {
-        "desc": "metal bolt and nut assembly",
-        "action": "being turned",
-        "position": "center"
+        "desc": "dark mechanical bolt or nut, metallic, hexagonal head",
+        "action": "static",
+        "position": "center background"
       }
     ],
     "atomic_facts": [
@@ -1369,233 +1346,231 @@
         "confidence": 1.0
       },
       {
-        "fact": "The wrench is engaged with a bolt on a red metal surface.",
+        "fact": "The wrench is being used to engage a bolt on a red metal surface.",
         "confidence": 1.0
       },
       {
-        "fact": "The hand is turning the wrench.",
+        "fact": "The red metal surface is covered in dirt and small debris.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The hand is in the foreground, holding the silver wrench. The wrench is positioned in the center of the frame, engaged with a bolt. The red metal surface is to the left of and behind the wrench.",
+    "spatial": "The hand is in the foreground, holding the silver wrench. The wrench extends from the hand towards the center, where it is inserted into the bolt. The bolt is located on the red metal surface, which serves as the background.",
     "parse_success": true,
     "chunk_idx": 27,
     "video_id": "vQhQ3KH5cLQ"
   },
   {
     "time": [
-      56,
-      58
+      28,
+      29
     ],
     "visible_entities": [
       {
-        "desc": "human hand with light skin tone, holding a tool",
-        "action": "gripping and turning a wrench",
-        "position": "bottom center foreground"
+        "desc": "hand with light skin tone, fingers gripping a tool",
+        "action": "holding a metal tool",
+        "position": "bottom center"
       },
       {
-        "desc": "metallic socket wrench, silver/grey, shiny, cylindrical handle",
-        "action": "engaged with a bolt head",
+        "desc": "metal socket wrench, silver, shiny, cylindrical shaft",
+        "action": "engaged with a bolt",
         "position": "center"
       },
       {
-        "desc": "red metal surface, curved, weathered, dirty, with chipped paint",
+        "desc": "red painted metal surface, curved, weathered, dirty with debris",
         "action": "static",
         "position": "left and background"
       },
       {
-        "desc": "mechanical assembly, dark grey metal, greasy, with a hexagonal bolt head",
+        "desc": "mechanical assembly, dark metal, greasy, bolt head visible",
         "action": "static",
         "position": "center right"
       },
       {
-        "desc": "ground surface, brown dirt/mud with scattered green grass clippings",
+        "desc": "ground surface, brown dirt, scattered green grass clippings",
         "action": "static",
         "position": "bottom left"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A hand is gripping the handle of a socket wrench.",
+        "fact": "A hand is holding a metal socket wrench.",
         "confidence": 1.0
       },
       {
-        "fact": "The wrench is engaged with a bolt on a mechanical part.",
+        "fact": "The wrench is engaged with a bolt on a mechanical assembly.",
         "confidence": 1.0
       },
       {
-        "fact": "The red metal surface is adjacent to the mechanical assembly.",
+        "fact": "The mechanical assembly is attached to a red painted metal structure.",
         "confidence": 1.0
       },
       {
-        "fact": "The scene takes place outdoors on a dirt ground.",
+        "fact": "The ground below is covered in dirt and grass clippings.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The hand is in the foreground, holding the wrench which extends towards the center. The wrench is positioned against the mechanical assembly on the right. The red metal surface is to the left of the mechanical assembly. The ground is below the hand and the machinery.",
+    "spatial": "The hand is at the bottom center, holding the metal wrench which extends upwards into the center of the frame. The wrench is inserted into a bolt on the mechanical assembly, which is positioned to the right of the red painted metal surface. The red surface curves around the left side of the mechanical parts. The ground with grass clippings is visible in the bottom left corner, below the red structure.",
     "parse_success": true,
     "chunk_idx": 28,
     "video_id": "vQhQ3KH5cLQ"
   },
   {
     "time": [
-      58,
-      60
+      29,
+      30
     ],
     "visible_entities": [
       {
-        "desc": "hand with light skin tone",
-        "action": "manipulating a metal pin",
-        "position": "foreground"
+        "desc": "human hand with light skin tone, holding a small dark metal tool",
+        "action": "manipulating a bolt",
+        "position": "bottom right foreground"
       },
       {
-        "desc": "metal pin or cotter pin, silver, small",
-        "action": "being inserted into a hole",
-        "position": "center"
-      },
-      {
-        "desc": "red metal surface, curved, rusty, dirty",
+        "desc": "red painted metal surface, curved, with visible rust and dirt texture",
         "action": "static",
-        "position": "background"
+        "position": "left and center background"
       },
       {
-        "desc": "mechanical assembly, dark metal, greasy",
-        "action": "static",
-        "position": "background"
+        "desc": "metallic bolt or nut assembly, silver/grey, partially inserted into a hole",
+        "action": "being turned",
+        "position": "center right"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A hand is holding a small metal pin.",
+        "fact": "A hand is holding a tool against a bolt.",
         "confidence": 1.0
       },
       {
-        "fact": "The hand is inserting the metal pin into a hole in the mechanical assembly.",
+        "fact": "The hand is turning or adjusting the bolt.",
         "confidence": 1.0
       },
       {
-        "fact": "The mechanical assembly is attached to a red, rusty metal surface.",
+        "fact": "The red metal surface has a curved cutout edge.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The hand is in the foreground, holding the metal pin. The metal pin is being inserted into the mechanical assembly, which is located behind the red metal surface. The red metal surface is to the left of the mechanical assembly.",
+    "spatial": "The hand is in the foreground, positioned to the right of the red metal surface. The tool held by the hand is inserted into the bolt, which is located near the edge of the red metal.",
     "parse_success": true,
     "chunk_idx": 29,
     "video_id": "vQhQ3KH5cLQ"
   },
   {
     "time": [
-      60,
-      62
+      30,
+      31
     ],
     "visible_entities": [
       {
-        "desc": "human hand with light skin tone, fingers gripping a tool",
-        "action": "manipulating a bolt",
-        "position": "foreground"
+        "desc": "human hand with light skin tone",
+        "action": "manipulating a tool",
+        "position": "bottom right"
       },
       {
-        "desc": "dark metal wrench or socket tool",
-        "action": "turning a bolt",
+        "desc": "dark metal tool, likely a wrench or pliers",
+        "action": "gripping a bolt",
         "position": "center"
       },
       {
-        "desc": "red curved metal surface, textured and dirty",
+        "desc": "red curved metal surface, dirty and textured",
         "action": "static",
         "position": "left"
       },
       {
-        "desc": "mechanical assembly with grey metal spokes and a central bolt",
+        "desc": "mechanical assembly with metallic spokes and a central bolt",
         "action": "static",
-        "position": "right"
+        "position": "center right"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A hand is holding a wrench and turning a bolt on a mechanical assembly.",
+        "fact": "A hand is holding a metal tool and applying it to a bolt on a mechanical assembly.",
         "confidence": 1.0
       },
       {
-        "fact": "The mechanical assembly is attached to a red metal surface.",
+        "fact": "The tool is gripping the head of the bolt.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The red metal surface is adjacent to the mechanical assembly.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The hand is in the foreground, holding the wrench which is positioned at the center of the mechanical assembly. The red metal surface is to the left of the mechanical assembly.",
+    "spatial": "The hand is in the foreground, holding the tool which is positioned at the center of the mechanical assembly. The red curved metal surface is to the left of the mechanical assembly and the tool.",
     "parse_success": true,
     "chunk_idx": 30,
     "video_id": "vQhQ3KH5cLQ"
   },
   {
     "time": [
-      62,
-      64
+      31,
+      32
     ],
     "visible_entities": [
       {
-        "desc": "red cylindrical metal container, open top, filled with dark liquid",
+        "desc": "red metal bucket, cylindrical, containing dark liquid",
         "action": "static",
         "position": "right"
       },
       {
-        "desc": "two brown rectangular bricks, rough texture, one with a central hole",
+        "desc": "two brown bricks, rough texture, rectangular",
         "action": "static",
         "position": "left"
       },
       {
-        "desc": "dry brown plant debris or straw",
-        "action": "static",
-        "position": "left"
-      },
-      {
-        "desc": "green grass",
+        "desc": "green grass, natural texture",
         "action": "static",
         "position": "background"
+      },
+      {
+        "desc": "grey concrete surface, paved",
+        "action": "static",
+        "position": "foreground"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "The camera pans from the bricks on the left to the red container on the right.",
+        "fact": "A red metal bucket sits on the concrete surface.",
         "confidence": 1.0
       },
       {
-        "fact": "The red container is filled with a dark liquid.",
+        "fact": "The bucket contains a dark liquid.",
         "confidence": 1.0
       },
       {
-        "fact": "Two bricks are sitting on the concrete surface.",
+        "fact": "Two brown bricks are positioned on the concrete near the grass.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The camera angle shifts slightly between frames.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The red container is to the right of the bricks. The bricks are on the concrete surface in the foreground. The green grass is behind the bricks and the container.",
+    "spatial": "The red metal bucket is on the right side of the frame, resting on the grey concrete surface. The two brown bricks are to the left of the bucket, positioned near the edge where the concrete meets the green grass in the background.",
     "parse_success": true,
     "chunk_idx": 31,
     "video_id": "vQhQ3KH5cLQ"
   },
   {
     "time": [
-      64,
-      66
+      32,
+      33
     ],
     "visible_entities": [
       {
-        "desc": "red brick with two holes and a ribbed side texture",
+        "desc": "red brick with two holes and a ribbed side profile, resting on concrete",
         "action": "static",
         "position": "left"
       },
       {
-        "desc": "red brick with a single hole",
+        "desc": "red brick with one hole, resting on concrete",
         "action": "static",
         "position": "center-right"
-      },
-      {
-        "desc": "dark grey plastic object with vertical slats",
-        "action": "static",
-        "position": "bottom"
       },
       {
         "desc": "green grass",
@@ -1603,169 +1578,357 @@
         "position": "top-right"
       },
       {
-        "desc": "concrete surface",
+        "desc": "dark blurry object, possibly a shoe or knee",
         "action": "static",
-        "position": "background"
+        "position": "bottom-right"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A red brick with two holes lies on the concrete surface.",
+        "fact": "The camera view shifts from a wide shot of bricks on concrete to a close-up of a textured surface.",
         "confidence": 1.0
       },
       {
-        "fact": "A second red brick with one hole stands upright on the concrete.",
+        "fact": "A red brick with two holes is positioned on the left side of the concrete surface.",
         "confidence": 1.0
       },
       {
-        "fact": "A dark grey plastic object with slats is positioned at the bottom of the frame.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "Green grass is visible in the top right corner.",
+        "fact": "A second red brick is positioned to the right of the first brick.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The red brick with two holes is to the left of the red brick with one hole. The dark grey plastic object is below the bricks. The green grass is above the concrete surface in the background.",
+    "spatial": "The red brick with two holes is to the left of the red brick with one hole. Both bricks are on a concrete surface. Green grass is visible in the background, behind the bricks.",
     "parse_success": true,
     "chunk_idx": 32,
     "video_id": "vQhQ3KH5cLQ"
   },
   {
     "time": [
-      66,
-      68
+      33,
+      34
     ],
     "visible_entities": [
       {
-        "desc": "red metal wheel rim, weathered with rust, featuring a central hub and a protruding axle shaft with a flange",
+        "desc": "red metal wheel rim, weathered with rust and dirt, featuring a central hub and bolt holes",
         "action": "static",
         "position": "center"
       },
       {
-        "desc": "rusty metal mounting bracket, rectangular with a bolt hole, attached to the wheel assembly",
+        "desc": "metal axle shaft, dark grey, cylindrical, protruding from the center of the wheel",
+        "action": "static",
+        "position": "center"
+      },
+      {
+        "desc": "metal bracket, rusty, rectangular with a hole, attached to the bottom of the axle assembly",
         "action": "static",
         "position": "bottom"
       },
       {
-        "desc": "grey paved ground, composed of rectangular slabs with grass growing in the cracks",
+        "desc": "ground surface, composed of grey paving stones and green grass",
         "action": "static",
-        "position": "bottom"
+        "position": "background"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "The camera focuses on the central hub of a red wheel rim.",
+        "fact": "The camera captures a close-up view of a red metal wheel rim.",
         "confidence": 1.0
       },
       {
-        "fact": "A rusty metal bracket is attached to the bottom of the wheel assembly.",
+        "fact": "A metal axle shaft protrudes from the center of the wheel.",
         "confidence": 1.0
       },
       {
-        "fact": "The wheel assembly is positioned above a paved ground surface.",
+        "fact": "A rusty metal bracket is attached to the bottom of the axle assembly.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The wheel assembly is positioned above a ground surface of paving stones and grass.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The red metal wheel rim is in the center of the frame. The rusty metal mounting bracket is attached to the bottom of the wheel rim. The grey paved ground is below the wheel assembly.",
+    "spatial": "The red metal wheel rim is the central object in the frame. The metal axle shaft protrudes from the center of the wheel rim. The rusty metal bracket is attached to the bottom of the axle assembly. The entire wheel assembly is positioned above the ground surface, which consists of paving stones and grass.",
     "parse_success": true,
     "chunk_idx": 33,
     "video_id": "vQhQ3KH5cLQ"
   },
   {
     "time": [
-      68,
-      70
+      34,
+      35
     ],
     "visible_entities": [
       {
-        "desc": "rusty metal wheel hub assembly with a central axle shaft, a circular flange, and a rectangular mounting plate at the bottom, surrounded by a red painted rim",
+        "desc": "rusty metal wheel hub with a central axle shaft, a circular flange, and a rectangular mounting plate at the bottom",
         "action": "static",
         "position": "center"
       },
       {
-        "desc": "two thin, dark metal rods or spokes",
+        "desc": "red painted metal rim with a circular opening",
         "action": "static",
-        "position": "foreground"
+        "position": "background"
       },
       {
-        "desc": "muddy ground with patches of green grass",
+        "desc": "two thin, curved metal rods or wires",
         "action": "static",
-        "position": "bottom"
+        "position": "foreground"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "The camera remains static, focused on the wheel hub assembly.",
+        "fact": "The wheel hub and rim are static.",
         "confidence": 1.0
       },
       {
-        "fact": "The wheel hub is covered in dirt and rust.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "Two metal rods cross in front of the wheel hub.",
+        "fact": "The red rim surrounds the central hub assembly.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The rusty wheel hub assembly is in the center of the frame. The two thin metal rods are in the foreground, crossing in front of the hub. The muddy ground with grass is below the wheel assembly.",
+    "spatial": "The rusty metal wheel hub is in the center of the frame. The red painted rim is behind the hub. Two thin metal rods are in front of the hub, crossing over it.",
     "parse_success": true,
     "chunk_idx": 34,
     "video_id": "vQhQ3KH5cLQ"
   },
   {
     "time": [
-      70,
-      72
+      35,
+      36
     ],
     "visible_entities": [
       {
-        "desc": "red metal wheel hub assembly, rusty, with a central axle shaft, a circular flange, and a rectangular mounting bracket at the end",
+        "desc": "rusty metal wheel hub assembly with a central protruding axle, a circular flange, and a rectangular mounting plate at the bottom, surrounded by a red wheel rim and internal spokes",
         "action": "static",
         "position": "center"
       },
       {
-        "desc": "grey paved ground surface with patches of grass and dirt",
+        "desc": "dark grey rectangular paving stones",
+        "action": "static",
+        "position": "bottom"
+      },
+      {
+        "desc": "green grass and dirt",
         "action": "static",
         "position": "bottom"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A red metal wheel hub assembly is positioned centrally in the frame.",
+        "fact": "The wheel hub assembly remains stationary on the ground.",
         "confidence": 1.0
       },
       {
-        "fact": "The wheel hub assembly remains static throughout the clip.",
+        "fact": "The rectangular mounting plate is attached to the bottom of the central axle.",
         "confidence": 1.0
       },
       {
-        "fact": "The assembly is situated above a paved ground surface.",
+        "fact": "The red wheel rim encircles the internal spokes and hub mechanism.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The red metal wheel hub assembly is in the center of the frame. The grey paved ground is below the wheel hub assembly.",
+    "spatial": "The rusty metal wheel hub assembly is positioned above the dark grey paving stones and patches of grass. The rectangular mounting plate is at the bottom of the central axle, facing the ground. The red wheel rim surrounds the internal components of the wheel.",
     "parse_success": true,
     "chunk_idx": 35,
     "video_id": "vQhQ3KH5cLQ"
   },
   {
     "time": [
-      72,
-      74
+      36,
+      37
     ],
     "visible_entities": [
       {
-        "desc": "rusty red metal wheel hub assembly with a central axle shaft and a rectangular mounting bracket",
+        "desc": "rusty red metal wheel hub assembly with a central axle shaft, a circular flange, and a rectangular mounting bracket with a hole",
+        "action": "static",
+        "position": "top"
+      },
+      {
+        "desc": "rectangular grey concrete paving slab",
+        "action": "static",
+        "position": "bottom"
+      },
+      {
+        "desc": "patchy green grass and dirt ground",
+        "action": "static",
+        "position": "bottom"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The camera angle shifts slightly between the two frames.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A rusty red metal wheel hub assembly is positioned above a concrete slab.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The ground consists of dirt and patches of grass.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The rusty red metal wheel hub assembly is located above the grey concrete paving slab. The concrete slab is situated on the ground next to patches of green grass.",
+    "parse_success": true,
+    "chunk_idx": 36,
+    "video_id": "vQhQ3KH5cLQ"
+  },
+  {
+    "time": [
+      37,
+      38
+    ],
+    "visible_entities": [
+      {
+        "desc": "red metal mower deck, rusty, covered in dried grass clippings, with a central metal spindle and a rectangular metal plate attached to the underside",
         "action": "static",
         "position": "center"
       },
       {
-        "desc": "grey rectangular paving stone",
+        "desc": "black rubber tire with deep treads",
+        "action": "static",
+        "position": "bottom"
+      },
+      {
+        "desc": "black plastic anti-scalp wheel or roller",
+        "action": "static",
+        "position": "bottom right"
+      },
+      {
+        "desc": "red brick on the ground",
+        "action": "static",
+        "position": "bottom left"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The camera pans slightly to the left, revealing more of the mower's side and the ground.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The red mower deck is positioned above the black tire.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "Green grass clippings are stuck to the underside of the red deck.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A red brick is visible on the ground to the left of the tire.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The red metal mower deck is located above the black rubber tire. The black plastic roller is attached to the underside of the deck, positioned to the right of the tire. A red brick lies on the ground to the left of the tire.",
+    "parse_success": true,
+    "chunk_idx": 37,
+    "video_id": "vQhQ3KH5cLQ"
+  },
+  {
+    "time": [
+      38,
+      39
+    ],
+    "visible_entities": [
+      {
+        "desc": "red metal wheel rim with a rusty central hub and axle, showing signs of wear and dirt",
+        "action": "static",
+        "position": "top right"
+      },
+      {
+        "desc": "black rubber tire with a deep tread pattern, appearing dirty",
+        "action": "static",
+        "position": "bottom left"
+      },
+      {
+        "desc": "dark plastic or metal chassis component with a rectangular access panel, covered in green grass clippings and dirt",
+        "action": "static",
+        "position": "center"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The camera is positioned underneath a piece of machinery, likely a lawnmower.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "Green grass clippings are stuck to the underside of the chassis.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A black tire is visible on the left side of the frame.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The red wheel rim is located in the top right corner, positioned above the central chassis component. The black tire is situated to the left of the chassis. The rectangular access panel is part of the chassis structure.",
+    "parse_success": true,
+    "chunk_idx": 38,
+    "video_id": "vQhQ3KH5cLQ"
+  },
+  {
+    "time": [
+      39,
+      40
+    ],
+    "visible_entities": [
+      {
+        "desc": "rusty red metal wheel rim with a central hub and bolt, attached to a dirty, mud-caked metal chassis",
+        "action": "static",
+        "position": "top right"
+      },
+      {
+        "desc": "black rubber tire with a tread pattern, partially visible",
+        "action": "static",
+        "position": "bottom left"
+      },
+      {
+        "desc": "rectangular metal plate, dark grey, covered in dried mud and grass clippings, with a horizontal slot",
+        "action": "static",
+        "position": "center"
+      },
+      {
+        "desc": "black plastic ribbed guard or skid plate",
+        "action": "static",
+        "position": "bottom"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The camera remains static, focused on the underside of a vehicle.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A rusty red wheel rim is positioned above a mud-covered rectangular metal plate.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "Green grass clippings are stuck to the dirty metal surfaces of the chassis.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The rusty red wheel rim is located in the top right of the frame, above the rectangular metal plate. The black rubber tire is to the left of the metal plate. The black plastic ribbed guard is below the metal plate.",
+    "parse_success": true,
+    "chunk_idx": 39,
+    "video_id": "vQhQ3KH5cLQ"
+  },
+  {
+    "time": [
+      40,
+      41
+    ],
+    "visible_entities": [
+      {
+        "desc": "red painted metal wheel hub, weathered and dirty, with a central metal axle shaft and a rusty rectangular mounting bracket",
+        "action": "static",
+        "position": "center"
+      },
+      {
+        "desc": "grey concrete paving slab, rectangular, with grass growing in the cracks",
         "action": "static",
         "position": "bottom"
       },
@@ -1777,220 +1940,16 @@
     ],
     "atomic_facts": [
       {
-        "fact": "A rusty red metal wheel hub assembly is positioned above a grey paving stone.",
+        "fact": "The red metal wheel hub is positioned above the concrete paving slab.",
         "confidence": 1.0
       },
       {
-        "fact": "The wheel hub features a central axle shaft and a rectangular mounting bracket with a hole.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The ground beneath the machinery consists of dirt and patches of green grass.",
+        "fact": "Grass is growing in the cracks of the concrete slab.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The rusty red metal wheel hub assembly is located in the center of the frame, positioned above the grey rectangular paving stone. The paving stone is situated on the ground, which is covered in dirt and green grass.",
-    "parse_success": true,
-    "chunk_idx": 36,
-    "video_id": "vQhQ3KH5cLQ"
-  },
-  {
-    "time": [
-      74,
-      76
-    ],
-    "visible_entities": [
-      {
-        "desc": "red metal mower deck, rusty, covered in green grass clippings and dirt",
-        "action": "static",
-        "position": "center"
-      },
-      {
-        "desc": "metal spindle assembly, silver and grey, cylindrical shaft",
-        "action": "static",
-        "position": "top right"
-      },
-      {
-        "desc": "black rubber tire, treaded, dirty",
-        "action": "static",
-        "position": "bottom left"
-      },
-      {
-        "desc": "black plastic discharge chute, rectangular, textured",
-        "action": "static",
-        "position": "bottom center"
-      },
-      {
-        "desc": "grey concrete surface, flat",
-        "action": "static",
-        "position": "background"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "The camera is positioned underneath the red mower deck looking up.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "Green grass clippings are stuck to the underside of the mower deck.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The metal spindle assembly is visible at the top right.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "A black tire is visible on the left side.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "A black plastic chute is located below the mower deck.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [],
-    "spatial": "The red mower deck is in the center, positioned above the black plastic chute and the black tire. The metal spindle assembly is located on the top right of the mower deck. The tire is to the left of the plastic chute.",
-    "parse_success": true,
-    "chunk_idx": 37,
-    "video_id": "vQhQ3KH5cLQ"
-  },
-  {
-    "time": [
-      76,
-      78
-    ],
-    "visible_entities": [
-      {
-        "desc": "red metal lawnmower deck, dirty with rust and caked-on grass clippings, featuring a central pulley mechanism",
-        "action": "static",
-        "position": "center"
-      },
-      {
-        "desc": "black rubber tire with a tread pattern",
-        "action": "static",
-        "position": "bottom left"
-      },
-      {
-        "desc": "black plastic discharge chute or guard",
-        "action": "static",
-        "position": "bottom right"
-      },
-      {
-        "desc": "rectangular metal plate on the deck, covered in dirt and grass",
-        "action": "static",
-        "position": "center"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "The camera shows a close-up, static view of the underside of a lawnmower.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "Green grass clippings are stuck to the red metal deck and the black plastic components.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "A black tire is visible on the left side of the frame.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [],
-    "spatial": "The red lawnmower deck occupies the center and upper portion of the frame. The black tire is located to the left of the deck. The black plastic chute is positioned below the main body of the deck.",
-    "parse_success": true,
-    "chunk_idx": 38,
-    "video_id": "vQhQ3KH5cLQ"
-  },
-  {
-    "time": [
-      78,
-      80
-    ],
-    "visible_entities": [
-      {
-        "desc": "red metal wheel rim with a rusty central hub and axle, attached to a rusty metal bracket",
-        "action": "static",
-        "position": "top right"
-      },
-      {
-        "desc": "dirty metal mower deck covered in dried mud and green grass clippings",
-        "action": "static",
-        "position": "center"
-      },
-      {
-        "desc": "black rubber tire with deep treads",
-        "action": "static",
-        "position": "bottom left"
-      },
-      {
-        "desc": "rectangular metal access plate on the deck, covered in dirt and grass",
-        "action": "static",
-        "position": "center"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "The camera captures a static close-up view of the underside of a lawnmower.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The mower deck is covered in dried mud and grass clippings.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "A red wheel rim is visible in the upper right corner.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "A black tire is visible in the lower left corner.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [],
-    "spatial": "The red wheel rim is positioned above and to the right of the rectangular metal access plate. The black tire is located to the left of the mower deck. The rusty bracket is attached to the axle of the red wheel.",
-    "parse_success": true,
-    "chunk_idx": 39,
-    "video_id": "vQhQ3KH5cLQ"
-  },
-  {
-    "time": [
-      80,
-      82
-    ],
-    "visible_entities": [
-      {
-        "desc": "red painted metal wheel hub assembly, weathered and dirty, with a central metal axle shaft protruding outwards and a rectangular mounting bracket attached below",
-        "action": "static",
-        "position": "center"
-      },
-      {
-        "desc": "grey rectangular concrete paving stone, rough texture, partially covered in dirt and small patches of grass",
-        "action": "static",
-        "position": "bottom"
-      },
-      {
-        "desc": "green grass and dirt ground surface",
-        "action": "static",
-        "position": "background"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "The red metal wheel hub assembly is positioned directly above the grey concrete paving stone.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The central axle shaft protrudes horizontally from the center of the wheel hub.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The rectangular mounting bracket is attached to the bottom of the red hub assembly.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [],
-    "spatial": "The red metal wheel hub assembly is located in the center of the frame, positioned above the grey concrete paving stone. The green grass and dirt ground are visible in the background and to the left of the hub assembly.",
+    "spatial": "The red metal wheel hub is located above the grey concrete paving slab. The concrete slab is situated on the ground, with green grass visible around it.",
     "parse_success": true,
     "chunk_idx": 40,
     "video_id": "vQhQ3KH5cLQ"

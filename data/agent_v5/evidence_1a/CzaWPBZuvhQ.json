@@ -2,11 +2,11 @@
   {
     "time": [
       0,
-      2
+      1
     ],
     "visible_entities": [
       {
-        "desc": "blue circular plastic board with a central hole and multiple indentations",
+        "desc": "blue circular plastic game board with a grid of holes and a central empty hole",
         "action": "static",
         "position": "center"
       },
@@ -18,88 +18,86 @@
     ],
     "atomic_facts": [
       {
-        "fact": "The black marbles are arranged in a hexagonal grid pattern on the blue board.",
+        "fact": "The black marbles are arranged in a cross-shaped pattern on the blue board.",
         "confidence": 1.0
       },
       {
-        "fact": "The central hole of the board is empty.",
+        "fact": "The central hole of the game board is empty.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The blue circular board is centered in the frame. The black marbles are placed inside the indentations on the surface of the board. The central hole is located in the middle of the board, surrounded by the marbles.",
+    "spatial": "The black marbles are placed inside the holes of the blue circular board. The board is resting on a grey surface.",
     "parse_success": true,
     "chunk_idx": 0,
-    "video_id": "CzaWPBZuvhQ",
-    "_rescued": "parse"
+    "video_id": "CzaWPBZuvhQ"
   },
   {
     "time": [
-      2,
-      4
+      1,
+      2
     ],
     "visible_entities": [
       {
-        "desc": "hand with dark skin tone, short fingernails",
-        "action": "placing a marble into the board",
+        "desc": "dark-skinned hand with short fingernails",
+        "action": "placing a marble into a hole",
         "position": "top right"
       },
       {
-        "desc": "blue circular plastic solitaire board with round indentations",
+        "desc": "blue circular plastic game board with a grid of holes",
         "action": "static",
         "position": "center"
       },
       {
-        "desc": "dark blue translucent glass marbles",
-        "action": "being placed into the board",
+        "desc": "glossy dark blue glass marbles",
+        "action": "resting in holes",
         "position": "center"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A hand is placing a dark blue marble into a hole on the blue solitaire board.",
+        "fact": "A hand is placing a dark blue marble into an empty hole on the blue board.",
         "confidence": 1.0
       },
       {
-        "fact": "The solitaire board has a cross-shaped arrangement of holes.",
+        "fact": "The board features a cross-shaped arrangement of holes filled with marbles.",
         "confidence": 1.0
       },
       {
-        "fact": "Most holes on the board are filled with marbles, leaving one central hole empty.",
+        "fact": "The game board is resting on a light gray concrete surface.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The hand is positioned above the blue solitaire board. The marbles are inside the indentations of the board. The empty hole is in the center of the board, surrounded by the marbles.",
+    "spatial": "The blue circular game board is centered in the frame, resting on a gray surface. The dark-skinned hand is positioned at the top right, reaching over the board to place a marble. The marbles are arranged in rows and columns within the holes of the board.",
     "parse_success": true,
     "chunk_idx": 1,
-    "video_id": "CzaWPBZuvhQ",
-    "_rescued": "parse"
+    "video_id": "CzaWPBZuvhQ"
   },
   {
     "time": [
-      4,
-      6
+      2,
+      3
     ],
     "visible_entities": [
       {
-        "desc": "blue circular plastic game board with a grid of holes and glossy black marbles",
+        "desc": "blue circular plastic game board with a grid of holes and dark glossy marbles",
         "action": "static",
         "position": "center"
       },
       {
         "desc": "dark-skinned hand",
-        "action": "touching a marble",
+        "action": "reaching towards the marbles",
         "position": "top right"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A hand is touching a black marble on the blue board.",
+        "fact": "A hand reaches towards the blue game board.",
         "confidence": 1.0
       },
       {
-        "fact": "The board contains numerous black marbles arranged in a grid pattern.",
+        "fact": "The game board is filled with dark, glossy marbles.",
         "confidence": 1.0
       },
       {
@@ -108,54 +106,15 @@
       }
     ],
     "ocr": [],
-    "spatial": "The blue game board is centered in the frame. The hand is positioned at the top right, reaching over the board to touch a marble.",
+    "spatial": "The blue game board is in the center of the frame. The hand is positioned above and to the right of the board, reaching down towards the marbles.",
     "parse_success": true,
     "chunk_idx": 2,
-    "video_id": "CzaWPBZuvhQ",
-    "_rescued": "parse"
+    "video_id": "CzaWPBZuvhQ"
   },
   {
     "time": [
-      6,
-      8
-    ],
-    "visible_entities": [
-      {
-        "desc": "dark-skinned hand with short fingernails",
-        "action": "moving near the board",
-        "position": "top right"
-      },
-      {
-        "desc": "blue circular plastic game board with a grid of holes and dark glossy marbles",
-        "action": "static",
-        "position": "center"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "A hand is positioned near the top right edge of the blue game board.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The board contains a pattern of dark, reflective marbles placed in circular indentations.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "Several empty holes are visible in the grid where marbles are missing.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [],
-    "spatial": "The blue circular game board is centered in the frame on a light gray surface. The hand is located to the top right of the board, hovering near the edge.",
-    "parse_success": true,
-    "chunk_idx": 3,
-    "video_id": "CzaWPBZuvhQ",
-    "_rescued": "parse"
-  },
-  {
-    "time": [
-      8,
-      10
+      3,
+      4
     ],
     "visible_entities": [
       {
@@ -169,207 +128,161 @@
         "position": "center"
       },
       {
-        "desc": "black glossy spherical marbles",
-        "action": "being moved",
+        "desc": "dark glossy marbles",
+        "action": "static",
+        "position": "on board"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A hand is moving marbles on the blue board.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The marbles are arranged in a hexagonal pattern.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The board has empty holes where marbles have been moved.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The blue circular game board is centered in the frame. The hand is positioned at the top right, reaching over the board. The dark marbles are placed inside the holes of the board.",
+    "parse_success": true,
+    "chunk_idx": 3,
+    "video_id": "CzaWPBZuvhQ"
+  },
+  {
+    "time": [
+      4,
+      5
+    ],
+    "visible_entities": [
+      {
+        "desc": "dark-skinned hand with fingers",
+        "action": "manipulating a marble",
+        "position": "top right"
+      },
+      {
+        "desc": "blue circular plastic solitaire game board with holes",
+        "action": "static",
+        "position": "center"
+      },
+      {
+        "desc": "glossy black marbles",
+        "action": "resting in holes",
         "position": "on the board"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A hand is picking up a black marble from the blue board.",
+        "fact": "A hand is interacting with the game board.",
         "confidence": 1.0
       },
       {
-        "fact": "The marbles are arranged in a hexagonal grid pattern on the board.",
+        "fact": "The hand is moving a marble into an empty hole.",
         "confidence": 1.0
       },
       {
-        "fact": "The game board is resting on a light-colored surface.",
+        "fact": "The game board is filled with black marbles except for a few empty spots.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The blue game board is in the center of the frame. The hand is positioned at the top right, reaching down towards the board. The black marbles are placed inside the holes of the board.",
+    "spatial": "The blue game board is centered in the frame. The hand is positioned above and to the right of the board. The black marbles are arranged in rows on the surface of the blue board.",
     "parse_success": true,
     "chunk_idx": 4,
-    "video_id": "CzaWPBZuvhQ",
-    "_rescued": "parse"
+    "video_id": "CzaWPBZuvhQ"
   },
   {
     "time": [
-      10,
-      12
+      5,
+      6
     ],
     "visible_entities": [
       {
-        "desc": "blue circular plastic game board with a grid of holes, some containing dark glossy marbles",
+        "desc": "blue circular plastic board with a grid of holes",
         "action": "static",
         "position": "center"
       },
       {
-        "desc": "dark glossy marbles with internal speckles",
+        "desc": "glossy black spherical marbles",
         "action": "static",
-        "position": "center"
+        "position": "on the blue board"
       },
       {
-        "desc": "human hand with fingers visible",
+        "desc": "human hand with fingers",
         "action": "reaching towards the board",
         "position": "top right"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A human hand reaches into the frame from the top right corner.",
+        "fact": "A hand reaches towards the blue board from the top right corner.",
         "confidence": 1.0
       },
       {
-        "fact": "The hand is positioned above the blue game board.",
+        "fact": "Black marbles are placed in the holes of the blue board.",
         "confidence": 1.0
       },
       {
-        "fact": "The game board contains a pattern of filled and empty holes.",
+        "fact": "Several holes on the right side of the board are empty.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The blue circular game board is in the center of the frame. The human hand is located at the top right, reaching towards the board. The dark marbles are placed inside the holes of the board.",
+    "spatial": "The blue circular board is centered in the frame. The black marbles are arranged in rows on the surface of the board. The hand is positioned above and to the right of the board.",
     "parse_success": true,
     "chunk_idx": 5,
-    "video_id": "CzaWPBZuvhQ",
-    "_rescued": "parse"
-  },
-  {
-    "time": [
-      12,
-      14
-    ],
-    "visible_entities": [
-      {
-        "desc": "hand with dark skin tone",
-        "action": "picking up a marble",
-        "position": "right"
-      },
-      {
-        "desc": "blue circular plastic board with holes",
-        "action": "static",
-        "position": "center"
-      },
-      {
-        "desc": "dark blue translucent glass marbles",
-        "action": "being picked up",
-        "position": "center"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "A hand picks up a dark blue marble from the blue board.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The blue board has a grid of circular indentations.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "Several marbles are arranged in rows on the board.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [],
-    "spatial": "The hand is positioned to the right of the blue board. The marbles are placed inside the holes of the board. The hand is reaching towards the marbles in the center-right area.",
-    "parse_success": true,
-    "chunk_idx": 6,
-    "video_id": "CzaWPBZuvhQ",
-    "_rescued": "parse"
-  },
-  {
-    "time": [
-      14,
-      16
-    ],
-    "visible_entities": [
-      {
-        "desc": "hand with dark skin tone",
-        "action": "placing a marble into a hole",
-        "position": "top right"
-      },
-      {
-        "desc": "blue plastic solitaire game board with circular indentations",
-        "action": "static",
-        "position": "center"
-      },
-      {
-        "desc": "glossy dark blue glass marbles",
-        "action": "static",
-        "position": "center"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "A hand is placing a dark blue marble into an empty slot on the game board.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The blue game board is filled with numerous dark blue marbles.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The game board rests on a grey concrete surface.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [],
-    "spatial": "The hand is positioned above the blue game board, interacting with the marbles on the right side. The marbles are arranged inside the circular indentations of the board. The board is on top of a grey floor.",
-    "parse_success": true,
-    "chunk_idx": 7,
-    "video_id": "CzaWPBZuvhQ",
-    "_rescued": "parse"
-  },
-  {
-    "time": [
-      16,
-      18
-    ],
-    "visible_entities": [
-      {
-        "desc": "hand with dark skin tone, index finger extended",
-        "action": "moving towards and touching marbles",
-        "position": "top right"
-      },
-      {
-        "desc": "blue plastic solitaire game board with circular holes",
-        "action": "static",
-        "position": "center"
-      },
-      {
-        "desc": "dark translucent glass marbles",
-        "action": "static",
-        "position": "inside the holes of the board"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "A hand reaches into the frame from the top right.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The index finger touches a marble located on the right side of the blue board.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The game board is resting on a light grey, textured surface.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [],
-    "spatial": "The blue solitaire board is in the center of the frame, resting on a grey surface. The hand is positioned above and to the right of the board, interacting with the marbles placed within the board's holes.",
-    "parse_success": true,
-    "chunk_idx": 8,
     "video_id": "CzaWPBZuvhQ"
   },
   {
     "time": [
-      18,
-      20
+      6,
+      7
+    ],
+    "visible_entities": [
+      {
+        "desc": "hand with dark skin tone",
+        "action": "manipulating marbles on the board",
+        "position": "right"
+      },
+      {
+        "desc": "blue circular plastic board with a grid of holes",
+        "action": "static",
+        "position": "center"
+      },
+      {
+        "desc": "shiny black spherical marbles",
+        "action": "being moved",
+        "position": "on the board"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A hand is interacting with the marbles on the blue board.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The hand moves a black marble from one hole to another.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The blue board contains a pattern of holes, some filled with marbles and some empty.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The blue circular board is centered in the frame. The hand is positioned to the right of the board, reaching over it. The black marbles are placed inside the holes on the surface of the board.",
+    "parse_success": true,
+    "chunk_idx": 6,
+    "video_id": "CzaWPBZuvhQ"
+  },
+  {
+    "time": [
+      7,
+      8
     ],
     "visible_entities": [
       {
@@ -378,14 +291,19 @@
         "position": "top right"
       },
       {
-        "desc": "blue plastic solitaire game board with circular holes",
+        "desc": "blue circular plastic game board with concentric rings of holes",
         "action": "static",
         "position": "center"
       },
       {
         "desc": "dark blue translucent glass marbles",
+        "action": "being placed",
+        "position": "on the board"
+      },
+      {
+        "desc": "grey textured surface",
         "action": "static",
-        "position": "center"
+        "position": "background"
       }
     ],
     "atomic_facts": [
@@ -394,201 +312,37 @@
         "confidence": 1.0
       },
       {
-        "fact": "The blue game board is filled with dark blue marbles except for a few empty holes.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The game board is resting on a light-colored surface.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [],
-    "spatial": "The hand is positioned above the blue game board. The marbles are inside the holes of the board. The game board is on a light-colored surface.",
-    "parse_success": true,
-    "chunk_idx": 9,
-    "video_id": "CzaWPBZuvhQ",
-    "_rescued": "parse"
-  },
-  {
-    "time": [
-      20,
-      22
-    ],
-    "visible_entities": [
-      {
-        "desc": "hand with dark skin tone, fingers extended",
-        "action": "manipulating marbles",
-        "position": "top center"
-      },
-      {
-        "desc": "blue circular plastic game board with concentric rings of holes",
-        "action": "static",
-        "position": "center"
-      },
-      {
-        "desc": "dark blue translucent glass marbles",
-        "action": "being moved",
-        "position": "on the board"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "A hand is moving a dark blue marble into a hole on the blue game board.",
-        "confidence": 1.0
-      },
-      {
         "fact": "The game board features a pattern of circular indentations arranged in concentric circles.",
         "confidence": 1.0
       },
       {
-        "fact": "Several marbles are already placed in the holes of the board.",
+        "fact": "Most of the holes on the board are filled with dark blue marbles.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The game board rests on a grey surface.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The hand is positioned above the blue game board. The dark blue marbles are resting inside the holes or on the surface of the board. The board is centered in the frame, resting on a light-colored surface.",
+    "spatial": "The hand is positioned at the top right of the frame, reaching down towards the blue game board. The blue game board is centered in the image, resting on top of the grey textured surface. The dark blue marbles are situated inside the holes of the game board.",
     "parse_success": true,
-    "chunk_idx": 10,
-    "video_id": "CzaWPBZuvhQ",
-    "_rescued": "parse"
+    "chunk_idx": 7,
+    "video_id": "CzaWPBZuvhQ"
   },
   {
     "time": [
-      22,
-      24
+      8,
+      9
     ],
     "visible_entities": [
       {
         "desc": "hand with dark skin tone",
-        "action": "placing a marble",
-        "position": "top"
-      },
-      {
-        "desc": "blue plastic solitaire game board with circular indentations",
-        "action": "static",
-        "position": "center"
-      },
-      {
-        "desc": "dark blue translucent glass marbles",
-        "action": "static",
-        "position": "center"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "A hand is placing a dark blue marble into an empty hole on the game board.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The blue game board is filled with dark blue marbles except for a few empty spots.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The game board rests on a grey concrete surface.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [],
-    "spatial": "The hand is positioned above the blue game board. The marbles are inside the circular indentations of the board. The board is on the grey floor.",
-    "parse_success": true,
-    "chunk_idx": 11,
-    "video_id": "CzaWPBZuvhQ",
-    "_rescued": "parse"
-  },
-  {
-    "time": [
-      24,
-      26
-    ],
-    "visible_entities": [
-      {
-        "desc": "blue circular plastic solitaire board with a grid of holes and a surrounding rim",
-        "action": "static",
-        "position": "center"
-      },
-      {
-        "desc": "glossy black spherical marbles",
-        "action": "being placed",
-        "position": "center"
-      },
-      {
-        "desc": "human hand with visible fingers",
-        "action": "placing a marble",
-        "position": "top"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "A human hand is placing a black marble into a hole on the blue board.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The board is filled with black marbles in a cross-shaped pattern.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The game board rests on a grey concrete surface.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [],
-    "spatial": "The blue solitaire board is centered in the frame, resting on a grey surface. The black marbles are arranged inside the holes of the board. The hand is positioned at the top edge of the board, reaching down to place a marble.",
-    "parse_success": true,
-    "chunk_idx": 12,
-    "video_id": "CzaWPBZuvhQ",
-    "_rescued": "parse"
-  },
-  {
-    "time": [
-      26,
-      28
-    ],
-    "visible_entities": [
-      {
-        "desc": "blue circular plastic game board with concentric rings of holes, containing dark glossy marbles",
-        "action": "static",
-        "position": "center"
-      },
-      {
-        "desc": "hand with dark skin tone",
-        "action": "reaching towards the board",
-        "position": "top right"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "A hand reaches towards the blue game board.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The board is populated with dark marbles in a grid pattern.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The game board rests on a grey concrete surface.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [],
-    "spatial": "The blue game board is centered in the frame on a grey surface. The hand is positioned above and to the right of the board, reaching down towards the marbles.",
-    "parse_success": true,
-    "chunk_idx": 13,
-    "video_id": "CzaWPBZuvhQ",
-    "_rescued": "parse"
-  },
-  {
-    "time": [
-      28,
-      30
-    ],
-    "visible_entities": [
-      {
-        "desc": "hand with dark skin tone",
-        "action": "manipulating marbles on the board",
+        "action": "manipulating marbles",
         "position": "top right"
       },
       {
-        "desc": "blue plastic solitaire game board with circular holes",
+        "desc": "blue plastic solitaire board with circular indentations",
         "action": "static",
         "position": "center"
       },
@@ -598,121 +352,39 @@
         "position": "on the board"
       },
       {
-        "desc": "grey concrete floor",
+        "desc": "larger blue plastic tray",
         "action": "static",
         "position": "background"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A hand is picking up a dark blue marble from the blue game board.",
+        "fact": "A hand is picking up a marble from the board.",
         "confidence": 1.0
       },
       {
-        "fact": "The game board is filled with dark blue marbles arranged in a cross pattern.",
+        "fact": "The game board is a blue plastic disc with holes arranged in a cross pattern.",
         "confidence": 1.0
       },
       {
-        "fact": "The hand moves a marble from one hole to another on the board.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [],
-    "spatial": "The hand is positioned above the blue plastic game board. The dark blue marbles are placed inside the circular holes of the board. The game board rests on the grey concrete floor.",
-    "parse_success": true,
-    "chunk_idx": 14,
-    "video_id": "CzaWPBZuvhQ",
-    "_rescued": "parse"
-  },
-  {
-    "time": [
-      30,
-      32
-    ],
-    "visible_entities": [
-      {
-        "desc": "blue circular plastic tray with a grid of holes",
-        "action": "static",
-        "position": "center"
-      },
-      {
-        "desc": "dark blue/black glossy glass marbles",
-        "action": "resting in the tray",
-        "position": "center"
-      },
-      {
-        "desc": "hand with fingers holding a marble",
-        "action": "placing a marble",
-        "position": "top"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "A hand is placing a blue marble into a hole in the tray.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The tray contains multiple dark marbles already placed in the holes.",
+        "fact": "Dark blue marbles are placed in the holes of the board.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The blue plastic tray is in the center of the frame. The marbles are inside the holes of the tray. The hand is above the tray, reaching down to place a marble.",
+    "spatial": "The blue solitaire board is centered inside the larger blue tray. The hand is positioned above the top right section of the board, holding a marble. The marbles are arranged on the surface of the board.",
     "parse_success": true,
-    "chunk_idx": 15,
+    "chunk_idx": 8,
     "video_id": "CzaWPBZuvhQ"
   },
   {
     "time": [
-      32,
-      34
+      9,
+      10
     ],
     "visible_entities": [
       {
         "desc": "hand with dark skin tone",
-        "action": "manipulating marbles",
-        "position": "top/foreground"
-      },
-      {
-        "desc": "blue circular plastic game board with concentric rings of holes",
-        "action": "static",
-        "position": "center"
-      },
-      {
-        "desc": "dark blue translucent glass marbles",
-        "action": "being placed",
-        "position": "on board"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "A hand is placing a marble into a hole on the board.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The game board is filled with dark blue marbles in a specific pattern.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The board rests on a light-colored surface.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [],
-    "spatial": "The hand is positioned above the blue game board. The marbles are inside the holes of the board. The board is on a concrete-like surface.",
-    "parse_success": true,
-    "chunk_idx": 16,
-    "video_id": "CzaWPBZuvhQ",
-    "_rescued": "parse"
-  },
-  {
-    "time": [
-      34,
-      36
-    ],
-    "visible_entities": [
-      {
-        "desc": "person's hand with dark skin tone",
         "action": "placing a marble into a hole",
         "position": "top right"
       },
@@ -722,9 +394,9 @@
         "position": "center"
       },
       {
-        "desc": "black glossy glass marbles",
-        "action": "being placed into holes",
-        "position": "center"
+        "desc": "dark blue translucent glass marbles",
+        "action": "static",
+        "position": "on the board"
       },
       {
         "desc": "grey concrete floor surface",
@@ -734,276 +406,53 @@
     ],
     "atomic_facts": [
       {
-        "fact": "A person's hand is placing a black marble into an empty hole on the blue board.",
+        "fact": "A hand is placing a marble into an empty slot on the blue game board.",
         "confidence": 1.0
       },
       {
-        "fact": "The blue game board is filled with black marbles in a cross-shaped pattern.",
+        "fact": "The game board is resting on a grey concrete floor.",
         "confidence": 1.0
       },
       {
-        "fact": "The game board rests on a grey concrete floor.",
+        "fact": "Several holes on the board are empty while others are filled with marbles.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The person's hand is positioned above the blue game board. The black marbles are inside the circular indentations of the board. The game board is on top of the grey concrete floor.",
+    "spatial": "The blue game board is in the center of the frame, resting on the grey floor. The hand is positioned at the top right, reaching over the board. The marbles are arranged in a pattern on the board, with some empty holes visible near the center and right side.",
     "parse_success": true,
-    "chunk_idx": 17,
-    "video_id": "CzaWPBZuvhQ",
-    "_rescued": "parse"
+    "chunk_idx": 9,
+    "video_id": "CzaWPBZuvhQ"
   },
   {
     "time": [
-      36,
-      38
+      10,
+      11
     ],
     "visible_entities": [
       {
-        "desc": "dark-skinned hand",
+        "desc": "hand with dark skin tone, fingers visible",
         "action": "manipulating marbles",
-        "position": "center/foreground"
+        "position": "top"
       },
       {
-        "desc": "blue plastic solitaire board with circular indentations",
+        "desc": "blue plastic solitaire game board with circular holes",
         "action": "static",
         "position": "center"
       },
       {
         "desc": "dark blue translucent glass marbles",
         "action": "being moved",
-        "position": "on the board"
+        "position": "center"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A hand is picking up a dark blue marble from the board.",
+        "fact": "A hand is manipulating the marbles on the blue board.",
         "confidence": 1.0
       },
       {
-        "fact": "The blue board features a grid of circular holes, some filled with marbles and some empty.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The game board is resting on a light gray concrete surface.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [],
-    "spatial": "The dark-skinned hand is positioned above the blue plastic board. The marbles are placed inside the circular indentations of the board. The board is resting on the ground.",
-    "parse_success": true,
-    "chunk_idx": 18,
-    "video_id": "CzaWPBZuvhQ",
-    "_rescued": "parse"
-  },
-  {
-    "time": [
-      38,
-      40
-    ],
-    "visible_entities": [
-      {
-        "desc": "blue circular plastic game board with concentric rings of holes and dark glass marbles",
-        "action": "being manipulated by a hand",
-        "position": "center"
-      },
-      {
-        "desc": "human hand with visible fingers",
-        "action": "reaching down towards the game board",
-        "position": "top"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "A hand enters the frame from the top.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The hand reaches towards the blue game board.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "Dark glass marbles are placed in the holes of the board.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The game board rests on a grey surface.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [],
-    "spatial": "The blue circular game board is positioned in the center of the frame. The human hand is located above the board, reaching down towards it. The board is resting on top of a grey surface.",
-    "parse_success": true,
-    "chunk_idx": 19,
-    "video_id": "CzaWPBZuvhQ"
-  },
-  {
-    "time": [
-      40,
-      42
-    ],
-    "visible_entities": [
-      {
-        "desc": "person's hand with dark skin tone",
-        "action": "moving over the game board",
-        "position": "top center"
-      },
-      {
-        "desc": "blue plastic solitaire board with circular holes and dark glass marbles",
-        "action": "static",
-        "position": "center"
-      },
-      {
-        "desc": "grey concrete floor surface",
-        "action": "static",
-        "position": "background"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "A hand is hovering over the blue game board.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The game board contains dark marbles placed in specific holes.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The board is resting on a concrete floor.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [],
-    "spatial": "The hand is positioned above the blue game board. The blue game board is on top of the grey concrete floor. The marbles are inside the holes of the board.",
-    "parse_success": true,
-    "chunk_idx": 20,
-    "video_id": "CzaWPBZuvhQ",
-    "_rescued": "parse"
-  },
-  {
-    "time": [
-      42,
-      44
-    ],
-    "visible_entities": [
-      {
-        "desc": "hand with dark skin tone",
-        "action": "manipulating marbles",
-        "position": "top right"
-      },
-      {
-        "desc": "blue circular plastic game board with concentric rows of holes",
-        "action": "static",
-        "position": "center"
-      },
-      {
-        "desc": "shiny dark blue glass marbles",
-        "action": "being moved",
-        "position": "on the board"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "A hand is picking up a dark blue marble from the game board.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The blue plastic board features a pattern of circular indentations.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "Several marbles are placed in the holes of the board while others are empty.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [],
-    "spatial": "The hand is positioned above the blue game board. The dark blue marbles are resting inside the holes of the board or being held by the fingers. The game board is placed on a light-colored concrete surface.",
-    "parse_success": true,
-    "chunk_idx": 21,
-    "video_id": "CzaWPBZuvhQ",
-    "_rescued": "parse"
-  },
-  {
-    "time": [
-      44,
-      46
-    ],
-    "visible_entities": [
-      {
-        "desc": "blue circular plastic game board with concentric rings of holes and a central area",
-        "action": "static",
-        "position": "center"
-      },
-      {
-        "desc": "dark, glossy, spherical marbles",
-        "action": "being placed into holes",
-        "position": "on the board"
-      },
-      {
-        "desc": "human hand with dark skin tone",
-        "action": "manipulating marbles",
-        "position": "top/center"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "A hand is placing a dark marble into a hole on the blue game board.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The game board has multiple dark marbles already positioned in its holes.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The game board is resting on a light gray, textured surface.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [],
-    "spatial": "The blue game board is in the center of the frame, resting on a light gray surface. The hand is above the board, reaching down to place a marble into one of the holes. The marbles are inside the holes or resting on the surface of the board.",
-    "parse_success": true,
-    "chunk_idx": 22,
-    "video_id": "CzaWPBZuvhQ",
-    "_rescued": "parse"
-  },
-  {
-    "time": [
-      46,
-      48
-    ],
-    "visible_entities": [
-      {
-        "desc": "person's hand with dark skin tone",
-        "action": "moving over the game board",
-        "position": "top right"
-      },
-      {
-        "desc": "blue circular plastic game board with concentric rows of holes",
-        "action": "static",
-        "position": "center"
-      },
-      {
-        "desc": "glossy black marbles",
-        "action": "resting in holes",
-        "position": "center"
-      },
-      {
-        "desc": "glossy black marbles",
-        "action": "resting in outer rim",
-        "position": "perimeter"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "A person's hand is moving over the blue game board.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "Black marbles are placed in the holes of the inner circular board.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "Additional black marbles are stored in the outer rim of the board.",
+        "fact": "The marbles are being moved from one hole to another.",
         "confidence": 1.0
       },
       {
@@ -1012,25 +461,146 @@
       }
     ],
     "ocr": [],
-    "spatial": "The blue game board is in the center of the frame, resting on a light-colored floor. The person's hand is positioned above the board on the right side. The black marbles are located inside the holes of the board and along its outer edge.",
+    "spatial": "The hand is positioned above the blue game board. The marbles are placed inside the holes of the board. The board is centered on the surface.",
     "parse_success": true,
-    "chunk_idx": 23,
-    "video_id": "CzaWPBZuvhQ",
-    "_rescued": "parse"
+    "chunk_idx": 10,
+    "video_id": "CzaWPBZuvhQ"
   },
   {
     "time": [
-      48,
-      50
+      11,
+      12
     ],
     "visible_entities": [
       {
-        "desc": "dark-skinned hand",
-        "action": "manipulating a marble",
-        "position": "right"
+        "desc": "hand with dark skin tone, fingers visible",
+        "action": "placing a marble into a hole",
+        "position": "top center"
       },
       {
-        "desc": "blue plastic solitaire board with circular indentations",
+        "desc": "blue circular plastic game board with concentric rings of holes",
+        "action": "static",
+        "position": "center"
+      },
+      {
+        "desc": "dark blue translucent glass marbles",
+        "action": "being placed or resting in holes",
+        "position": "on the board"
+      },
+      {
+        "desc": "grey concrete floor surface",
+        "action": "static",
+        "position": "background"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A hand is placing a dark blue marble into a hole on the game board.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The game board is blue and circular with multiple holes arranged in a pattern.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "Several holes on the board are empty while others are filled with marbles.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The hand is positioned above the blue game board. The marbles are inside the holes on the board. The board is on top of the grey concrete floor.",
+    "parse_success": true,
+    "chunk_idx": 11,
+    "video_id": "CzaWPBZuvhQ"
+  },
+  {
+    "time": [
+      12,
+      13
+    ],
+    "visible_entities": [
+      {
+        "desc": "blue circular plastic board with a grid of holes, some filled with black marbles",
+        "action": "static",
+        "position": "center"
+      },
+      {
+        "desc": "glossy black spherical marbles",
+        "action": "being placed",
+        "position": "center"
+      },
+      {
+        "desc": "human finger",
+        "action": "placing a marble",
+        "position": "top"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A human finger places a black marble into a hole on the blue board.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The board features a pattern of empty and filled holes.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The blue circular board is centered in the frame. The black marbles are arranged in rows on the board, with some occupying the holes. A human finger is positioned at the top edge of the board, interacting with the marbles.",
+    "parse_success": true,
+    "chunk_idx": 12,
+    "video_id": "CzaWPBZuvhQ"
+  },
+  {
+    "time": [
+      13,
+      14
+    ],
+    "visible_entities": [
+      {
+        "desc": "blue circular plastic game board with a grid of holes, some filled with dark glossy marbles and others empty",
+        "action": "static",
+        "position": "center"
+      },
+      {
+        "desc": "hand with dark skin tone",
+        "action": "reaching towards the marbles",
+        "position": "top right"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A hand reaches into the frame from the top right.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The hand moves towards the marbles on the blue board.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The board contains a mix of occupied and empty slots.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The blue game board is centered in the frame. The hand is positioned above and to the right of the board, reaching down towards the marbles.",
+    "parse_success": true,
+    "chunk_idx": 13,
+    "video_id": "CzaWPBZuvhQ"
+  },
+  {
+    "time": [
+      14,
+      15
+    ],
+    "visible_entities": [
+      {
+        "desc": "person's hand with dark skin tone",
+        "action": "manipulating marbles on the board",
+        "position": "top right"
+      },
+      {
+        "desc": "blue plastic solitaire game board with circular indentations",
         "action": "static",
         "position": "center"
       },
@@ -1042,35 +612,72 @@
     ],
     "atomic_facts": [
       {
-        "fact": "A hand is holding a dark blue marble between the thumb and index finger.",
+        "fact": "A person's hand is reaching into the frame to move a marble.",
         "confidence": 1.0
       },
       {
-        "fact": "The hand is moving the marble over the blue plastic board.",
+        "fact": "The hand picks up a dark blue marble from a hole in the blue plastic board.",
         "confidence": 1.0
       },
       {
-        "fact": "Several dark blue marbles are resting in the circular indentations of the board.",
+        "fact": "The board is filled with a pattern of dark blue marbles, with some empty holes visible.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The blue plastic board is centered in the frame. The hand is positioned to the right of the board. The marbles are placed inside the circular holes on the surface of the board.",
+    "spatial": "The blue plastic game board is centered in the frame. The person's hand is positioned above the board, reaching down from the top right corner. The dark blue marbles are sitting inside the circular indentations of the board.",
     "parse_success": true,
-    "chunk_idx": 24,
-    "video_id": "CzaWPBZuvhQ",
-    "_rescued": "parse"
+    "chunk_idx": 14,
+    "video_id": "CzaWPBZuvhQ"
   },
   {
     "time": [
-      50,
-      52
+      15,
+      16
     ],
     "visible_entities": [
       {
-        "desc": "hand with medium skin tone",
-        "action": "manipulating marbles",
-        "position": "right"
+        "desc": "blue circular plastic game board with a grid of holes and a surrounding rim",
+        "action": "static",
+        "position": "center"
+      },
+      {
+        "desc": "dark blue translucent glass marbles",
+        "action": "being placed",
+        "position": "center"
+      },
+      {
+        "desc": "hand with dark skin tone",
+        "action": "holding a marble",
+        "position": "top"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A hand is placing a dark blue marble into a hole on the blue game board.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The game board is filled with dark blue marbles in a specific pattern.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The blue game board is in the center of the frame. The hand is positioned above the board, holding a marble over one of the holes. The marbles are arranged inside the holes of the board.",
+    "parse_success": true,
+    "chunk_idx": 15,
+    "video_id": "CzaWPBZuvhQ"
+  },
+  {
+    "time": [
+      16,
+      17
+    ],
+    "visible_entities": [
+      {
+        "desc": "dark-skinned hand",
+        "action": "placing a marble",
+        "position": "top/center"
       },
       {
         "desc": "blue plastic solitaire board with circular holes",
@@ -1079,79 +686,40 @@
       },
       {
         "desc": "dark blue translucent glass marbles",
-        "action": "being moved",
+        "action": "static",
         "position": "on board"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A hand is moving a dark blue marble on the board.",
+        "fact": "A hand is placing a dark blue marble into a hole on the blue board.",
         "confidence": 1.0
       },
       {
-        "fact": "The board is filled with dark blue marbles in a cross pattern.",
+        "fact": "The blue board is filled with dark blue marbles arranged in a cross pattern.",
         "confidence": 1.0
       },
       {
-        "fact": "The hand is positioned on the right side of the frame.",
+        "fact": "The board rests on a light gray concrete surface.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The hand is to the right of the blue solitaire board. The marbles are inside the holes of the board. The board is on a light-colored surface.",
+    "spatial": "The blue plastic board is centered in the frame and rests on a gray surface. The hand is positioned above the board, reaching down to place a marble into one of the holes. The marbles are situated inside the holes of the board.",
     "parse_success": true,
-    "chunk_idx": 25,
-    "video_id": "CzaWPBZuvhQ",
-    "_rescued": "parse"
+    "chunk_idx": 16,
+    "video_id": "CzaWPBZuvhQ"
   },
   {
     "time": [
-      52,
-      54
+      17,
+      18
     ],
     "visible_entities": [
       {
-        "desc": "blue plastic solitaire game board with concentric rings of holes and black marbles",
-        "action": "being manipulated",
-        "position": "center"
-      },
-      {
-        "desc": "hand with brown skin tone",
-        "action": "moving marbles",
-        "position": "right"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "A hand is moving black marbles on a blue solitaire board.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The game board features a central cross pattern of holes filled with marbles and an outer ring of holes.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The hand is positioned on the right side of the frame, interacting with the board.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [],
-    "spatial": "The blue solitaire board is in the center of the frame. The hand is to the right of the board, reaching in to move the marbles.",
-    "parse_success": true,
-    "chunk_idx": 26,
-    "video_id": "CzaWPBZuvhQ",
-    "_rescued": "parse"
-  },
-  {
-    "time": [
-      54,
-      56
-    ],
-    "visible_entities": [
-      {
-        "desc": "hand with dark skin tone",
-        "action": "manipulating marbles",
-        "position": "bottom right foreground"
+        "desc": "person's hand with dark skin tone, fingers extended",
+        "action": "reaching towards the game board",
+        "position": "top right"
       },
       {
         "desc": "blue circular plastic game board with concentric rings of holes",
@@ -1160,6 +728,459 @@
       },
       {
         "desc": "glossy black spherical marbles",
+        "action": "resting in holes",
+        "position": "on the game board"
+      },
+      {
+        "desc": "grey concrete floor surface",
+        "action": "static",
+        "position": "background"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A person's hand reaches towards the blue game board.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The hand is positioned over the upper section of the board.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "Black marbles are placed in the holes of the board.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The game board rests on a concrete floor.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The person's hand is above the blue game board. The black marbles are inside the holes of the game board. The game board is on the grey concrete floor.",
+    "parse_success": true,
+    "chunk_idx": 17,
+    "video_id": "CzaWPBZuvhQ"
+  },
+  {
+    "time": [
+      18,
+      19
+    ],
+    "visible_entities": [
+      {
+        "desc": "hand with dark skin tone",
+        "action": "manipulating marbles",
+        "position": "top/center"
+      },
+      {
+        "desc": "blue plastic solitaire board with circular indentations",
+        "action": "static",
+        "position": "center"
+      },
+      {
+        "desc": "dark blue translucent marbles",
+        "action": "being moved",
+        "position": "on board"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A hand is picking up a dark blue marble from the blue board.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The blue board has a pattern of circular holes holding marbles.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The game board is resting on a light-colored concrete surface.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The hand is positioned above the blue plastic board. The marbles are inside the circular indentations of the board. The board is on the ground.",
+    "parse_success": true,
+    "chunk_idx": 18,
+    "video_id": "CzaWPBZuvhQ"
+  },
+  {
+    "time": [
+      19,
+      20
+    ],
+    "visible_entities": [
+      {
+        "desc": "blue plastic solitaire game board with circular indentations",
+        "action": "static",
+        "position": "center"
+      },
+      {
+        "desc": "glossy black marbles",
+        "action": "being placed",
+        "position": "center"
+      },
+      {
+        "desc": "human hand",
+        "action": "placing a marble",
+        "position": "top"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A hand places a black marble into an empty hole on the blue game board.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The game board features a central area and an outer ring of holes.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "Black marbles occupy most of the holes on the board.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The blue game board is centered in the frame. The hand is positioned above the board, reaching down to place a marble. The black marbles are situated inside the circular indentations of the board.",
+    "parse_success": true,
+    "chunk_idx": 19,
+    "video_id": "CzaWPBZuvhQ"
+  },
+  {
+    "time": [
+      20,
+      21
+    ],
+    "visible_entities": [
+      {
+        "desc": "hand with dark skin tone",
+        "action": "placing marbles into holes",
+        "position": "top/foreground"
+      },
+      {
+        "desc": "blue plastic solitaire game board with circular indentations",
+        "action": "static",
+        "position": "center"
+      },
+      {
+        "desc": "glossy dark blue glass marbles",
+        "action": "being placed",
+        "position": "inside the board holes"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A hand is placing a dark blue marble into a hole on the blue game board.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The game board features a pattern of circular holes, some filled with marbles and some empty.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The marbles are shiny and reflect light.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The hand is positioned above the blue game board. The marbles are inside the circular indentations of the board. The board is resting on a light-colored surface.",
+    "parse_success": true,
+    "chunk_idx": 20,
+    "video_id": "CzaWPBZuvhQ"
+  },
+  {
+    "time": [
+      21,
+      22
+    ],
+    "visible_entities": [
+      {
+        "desc": "hand with dark skin tone",
+        "action": "manipulating marbles on the board",
+        "position": "top right"
+      },
+      {
+        "desc": "blue circular plastic game board with concentric rings of holes",
+        "action": "static",
+        "position": "center"
+      },
+      {
+        "desc": "dark blue translucent glass marbles",
+        "action": "being moved",
+        "position": "on the board"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A hand is moving a dark blue marble from one hole to another on the blue game board.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The game board features a circular pattern of indentations holding the marbles.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The marbles are glossy and reflect light.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The blue game board is centered in the frame on a concrete surface. The hand is positioned above the board, reaching down to interact with the marbles. The marbles are placed inside the holes of the board.",
+    "parse_success": true,
+    "chunk_idx": 21,
+    "video_id": "CzaWPBZuvhQ"
+  },
+  {
+    "time": [
+      22,
+      23
+    ],
+    "visible_entities": [
+      {
+        "desc": "person's hand with brown skin tone",
+        "action": "placing a marble into a hole",
+        "position": "top/center"
+      },
+      {
+        "desc": "blue plastic solitaire game board with circular holes and a rim",
+        "action": "static",
+        "position": "center"
+      },
+      {
+        "desc": "dark blue translucent glass marbles",
+        "action": "being placed and static",
+        "position": "on the board"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A person's hand is placing a dark blue marble into an empty hole on the blue game board.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The blue plastic board features a grid of circular indentations for holding marbles.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "Several dark blue marbles are already arranged on the board in a specific pattern.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The person's hand is positioned above the blue plastic game board. The dark blue marbles are sitting inside the circular holes on the surface of the board. The board rests on a light-colored, textured surface.",
+    "parse_success": true,
+    "chunk_idx": 22,
+    "video_id": "CzaWPBZuvhQ"
+  },
+  {
+    "time": [
+      23,
+      24
+    ],
+    "visible_entities": [
+      {
+        "desc": "hand with dark skin tone, fingers extended",
+        "action": "touching the game board",
+        "position": "top right"
+      },
+      {
+        "desc": "blue circular plastic game board with concentric rings of holes",
+        "action": "static",
+        "position": "center"
+      },
+      {
+        "desc": "glossy dark blue glass marbles",
+        "action": "static",
+        "position": "inside the board holes"
+      },
+      {
+        "desc": "grey concrete floor surface",
+        "action": "static",
+        "position": "background"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A hand is touching the blue game board.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "Dark blue marbles are placed inside the holes of the board.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The game board is resting on a grey floor.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The hand is positioned above the blue game board, with fingers touching the plastic surface. The marbles are inside the holes of the board. The board is on the grey concrete floor.",
+    "parse_success": true,
+    "chunk_idx": 23,
+    "video_id": "CzaWPBZuvhQ"
+  },
+  {
+    "time": [
+      24,
+      25
+    ],
+    "visible_entities": [
+      {
+        "desc": "hand with dark skin tone",
+        "action": "placing a marble into a hole",
+        "position": "right/foreground"
+      },
+      {
+        "desc": "blue plastic solitaire game board with circular indentations",
+        "action": "static",
+        "position": "center"
+      },
+      {
+        "desc": "dark blue translucent glass marbles",
+        "action": "being placed",
+        "position": "on the board"
+      },
+      {
+        "desc": "grey concrete floor surface",
+        "action": "static",
+        "position": "background"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A hand is placing a dark blue marble into an empty hole on the blue game board.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The game board is filled with several dark blue marbles arranged in a pattern.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The game board rests on a grey concrete surface.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The hand is positioned to the right of the blue game board. The marbles are inside the circular indentations of the board. The game board is on top of the grey concrete floor.",
+    "parse_success": true,
+    "chunk_idx": 24,
+    "video_id": "CzaWPBZuvhQ"
+  },
+  {
+    "time": [
+      25,
+      26
+    ],
+    "visible_entities": [
+      {
+        "desc": "hand with dark skin tone",
+        "action": "manipulating marbles",
+        "position": "right foreground"
+      },
+      {
+        "desc": "blue circular plastic game board with concentric rings of holes",
+        "action": "static",
+        "position": "center"
+      },
+      {
+        "desc": "shiny dark blue or black glass marbles",
+        "action": "being moved",
+        "position": "on the board"
+      },
+      {
+        "desc": "grey concrete floor surface",
+        "action": "static",
+        "position": "background"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A hand is moving a marble on the blue board.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The board features a pattern of circular indentations.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "Several marbles are placed in the holes of the board.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The game board is resting on a concrete floor.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The blue game board is centered in the frame and rests on the grey concrete floor. The hand is positioned to the right of the board, reaching over it. The marbles are distributed across the holes on the surface of the board.",
+    "parse_success": true,
+    "chunk_idx": 25,
+    "video_id": "CzaWPBZuvhQ"
+  },
+  {
+    "time": [
+      26,
+      27
+    ],
+    "visible_entities": [
+      {
+        "desc": "blue circular plastic game board with concentric rings of holes and black marbles",
+        "action": "static",
+        "position": "center"
+      },
+      {
+        "desc": "dark-skinned hand with fingers extended",
+        "action": "manipulating a marble",
+        "position": "right"
+      },
+      {
+        "desc": "shiny black spherical marbles",
+        "action": "being moved",
+        "position": "on the board"
+      },
+      {
+        "desc": "grey concrete floor with debris",
+        "action": "static",
+        "position": "background"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A hand is moving a black marble on the blue game board.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The game board features a central circular area and an outer ring filled with holes.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "Several holes on the board are empty while others contain black marbles.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The blue game board is centered in the frame, resting on a grey concrete floor. A hand enters from the right side, positioned above the board's surface. The black marbles are situated inside the holes of the board or in the outer rim.",
+    "parse_success": true,
+    "chunk_idx": 26,
+    "video_id": "CzaWPBZuvhQ"
+  },
+  {
+    "time": [
+      27,
+      28
+    ],
+    "visible_entities": [
+      {
+        "desc": "hand with dark skin tone",
+        "action": "manipulating marbles on the board",
+        "position": "bottom right foreground"
+      },
+      {
+        "desc": "blue circular plastic solitaire board with concentric rings of holes",
+        "action": "static",
+        "position": "center"
+      },
+      {
+        "desc": "glossy black marbles",
         "action": "being moved",
         "position": "on the board"
       }
@@ -1170,117 +1191,30 @@
         "confidence": 1.0
       },
       {
-        "fact": "The game board features a central area and an outer ring for holding marbles.",
+        "fact": "The board features a pattern of circular indentations arranged in concentric circles.",
         "confidence": 1.0
       },
       {
-        "fact": "Several holes on the board are empty while others are filled with marbles.",
+        "fact": "Several holes on the board are empty, while others are filled with black marbles.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The blue circular game board is centered on a grey surface. The hand is positioned in the bottom right foreground, reaching over the board. The black marbles are placed inside the holes of the board or resting in the outer rim.",
+    "spatial": "The blue circular board is centered on a grey surface. The hand is positioned at the bottom right of the board, reaching in to manipulate the marbles. The black marbles are situated inside the holes of the blue board.",
     "parse_success": true,
     "chunk_idx": 27,
-    "video_id": "CzaWPBZuvhQ",
-    "_rescued": "parse"
+    "video_id": "CzaWPBZuvhQ"
   },
   {
     "time": [
-      56,
-      58
+      28,
+      29
     ],
     "visible_entities": [
       {
-        "desc": "blue plastic solitaire board with circular indentations and a surrounding rim",
-        "action": "static",
-        "position": "center"
-      },
-      {
-        "desc": "glossy black marbles",
-        "action": "being manipulated",
-        "position": "on the board"
-      },
-      {
-        "desc": "human hand with brown skin",
-        "action": "picking up a marble",
-        "position": "right foreground"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "A hand reaches into the frame from the right side.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The hand picks up a black marble from the blue board.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The board features a pattern of holes arranged in concentric circles.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [],
-    "spatial": "The blue solitaire board is centered in the frame. The black marbles are placed inside the indentations of the board. The hand is positioned to the right of the board and reaches over it to grasp a marble.",
-    "parse_success": true,
-    "chunk_idx": 28,
-    "video_id": "CzaWPBZuvhQ",
-    "_rescued": "parse"
-  },
-  {
-    "time": [
-      58,
-      60
-    ],
-    "visible_entities": [
-      {
-        "desc": "blue circular plastic game board with concentric rings of holes and black marbles",
-        "action": "static",
-        "position": "center"
-      },
-      {
-        "desc": "black glossy marbles",
-        "action": "being moved",
-        "position": "on the board"
-      },
-      {
-        "desc": "hand with dark skin tone",
-        "action": "moving marbles",
-        "position": "right"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "A hand is moving black marbles on a blue circular board.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The board features a pattern of holes arranged in concentric circles.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "Some holes are filled with marbles while others are empty.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [],
-    "spatial": "The blue game board is centered in the frame. The hand is positioned on the right side, reaching over the board to manipulate the marbles. The marbles are placed inside the holes or on the surface of the board.",
-    "parse_success": true,
-    "chunk_idx": 29,
-    "video_id": "CzaWPBZuvhQ",
-    "_rescued": "parse"
-  },
-  {
-    "time": [
-      60,
-      62
-    ],
-    "visible_entities": [
-      {
-        "desc": "dark-skinned hand",
-        "action": "placing a marble into a hole",
-        "position": "right foreground"
+        "desc": "hand with brown skin tone",
+        "action": "manipulating marbles on the board",
+        "position": "right/foreground"
       },
       {
         "desc": "blue circular plastic game board with concentric rings of holes",
@@ -1289,13 +1223,96 @@
       },
       {
         "desc": "dark blue translucent glass marbles",
-        "action": "being placed or sitting in holes",
+        "action": "being moved",
         "position": "on the board"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A hand is reaching towards the marbles on the blue board.",
+        "confidence": 1.0
       },
       {
-        "desc": "grey concrete floor",
+        "fact": "The hand is touching or picking up a marble in the second frame.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The marbles are placed in the holes of the blue plastic board.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The board is resting on a grey concrete-like surface.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The blue circular game board is in the center of the frame, resting on a grey surface. The hand is to the right of the board, reaching inwards towards the marbles. The marbles are situated inside the holes of the board.",
+    "parse_success": true,
+    "chunk_idx": 28,
+    "video_id": "CzaWPBZuvhQ"
+  },
+  {
+    "time": [
+      29,
+      30
+    ],
+    "visible_entities": [
+      {
+        "desc": "hand with dark skin tone",
+        "action": "manipulating marbles",
+        "position": "right"
+      },
+      {
+        "desc": "blue circular plastic game board with concentric rings of holes",
         "action": "static",
-        "position": "background"
+        "position": "center"
+      },
+      {
+        "desc": "glossy black marbles",
+        "action": "being moved",
+        "position": "on board"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A hand is moving black marbles on the blue game board.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The marbles are being placed into the circular indentations of the board.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The game board is resting on a grey concrete surface.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The blue game board is in the center of the frame, resting on a grey surface. The hand is positioned to the right of the board, reaching over the marbles. The black marbles are situated inside the holes of the blue board.",
+    "parse_success": true,
+    "chunk_idx": 29,
+    "video_id": "CzaWPBZuvhQ"
+  },
+  {
+    "time": [
+      30,
+      31
+    ],
+    "visible_entities": [
+      {
+        "desc": "hand with dark skin tone",
+        "action": "placing a marble",
+        "position": "right/foreground"
+      },
+      {
+        "desc": "blue circular plastic game board with concentric rings of holes",
+        "action": "static",
+        "position": "center"
+      },
+      {
+        "desc": "dark blue translucent glass marbles",
+        "action": "being placed",
+        "position": "on board"
       }
     ],
     "atomic_facts": [
@@ -1304,34 +1321,33 @@
         "confidence": 1.0
       },
       {
-        "fact": "The game board features a pattern of circular indentations arranged in concentric circles.",
+        "fact": "The game board has multiple marbles already placed in the inner rings.",
         "confidence": 1.0
       },
       {
-        "fact": "Several marbles are already positioned in the holes of the board.",
+        "fact": "The game board is resting on a grey concrete surface.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The hand is to the right of the blue game board. The marbles are inside the holes of the board. The board is on top of the grey concrete floor.",
+    "spatial": "The hand is to the right of the blue game board. The marbles are inside the holes of the board. The board is on the grey floor.",
     "parse_success": true,
     "chunk_idx": 30,
-    "video_id": "CzaWPBZuvhQ",
-    "_rescued": "parse"
+    "video_id": "CzaWPBZuvhQ"
   },
   {
     "time": [
-      62,
-      64
+      31,
+      32
     ],
     "visible_entities": [
       {
-        "desc": "dark-skinned hand with fingers",
-        "action": "pointing at and touching the game board",
+        "desc": "dark-skinned hand with fingers extended",
+        "action": "pointing at the game board",
         "position": "right/foreground"
       },
       {
-        "desc": "blue plastic circular solitaire game board with concentric rings of holes and black marbles",
+        "desc": "blue circular plastic game board with concentric rings of holes and black marbles",
         "action": "static",
         "position": "center"
       },
@@ -1343,95 +1359,42 @@
     ],
     "atomic_facts": [
       {
-        "fact": "A hand points at a hole on the blue game board.",
+        "fact": "A hand points at a specific hole on the blue game board.",
         "confidence": 1.0
       },
       {
-        "fact": "The hand touches a black marble in the second frame.",
+        "fact": "The game board features a central area and an outer ring populated with black marbles.",
         "confidence": 1.0
       },
       {
-        "fact": "Black marbles are placed in the holes of the blue board.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The game board is resting on a concrete surface.",
+        "fact": "The board rests on a concrete surface.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The blue game board is in the center of the frame, resting on the grey concrete floor. The hand is to the right of the board, reaching in to point at the holes and marbles.",
+    "spatial": "The blue game board is in the center of the frame, resting on the grey concrete floor. The hand is to the right of the board, hovering over it in the foreground.",
     "parse_success": true,
     "chunk_idx": 31,
-    "video_id": "CzaWPBZuvhQ",
-    "_rescued": "parse"
+    "video_id": "CzaWPBZuvhQ"
   },
   {
     "time": [
-      64,
-      66
+      32,
+      33
     ],
     "visible_entities": [
       {
-        "desc": "person's hand with dark skin tone",
-        "action": "manipulating marbles on the board",
-        "position": "top right"
-      },
-      {
-        "desc": "blue circular plastic game board with concentric rows of holes",
+        "desc": "blue circular plastic game board with concentric rings of holes, some filled with black marbles",
         "action": "static",
         "position": "center"
       },
       {
-        "desc": "glossy black spherical marbles",
-        "action": "being moved and placed into holes",
-        "position": "on the board"
-      },
-      {
-        "desc": "grey concrete floor surface",
-        "action": "static",
-        "position": "background"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "A hand is picking up and placing black marbles into the holes of the blue board.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The marbles are arranged in a specific pattern on the circular board.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The game board is resting on a grey floor.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [],
-    "spatial": "The blue game board is centered on the grey floor. The person's hand is positioned above the board, reaching down to interact with the black marbles. The marbles are situated inside the holes or resting on the surface of the blue board.",
-    "parse_success": true,
-    "chunk_idx": 32,
-    "video_id": "CzaWPBZuvhQ",
-    "_rescued": "parse"
-  },
-  {
-    "time": [
-      66,
-      68
-    ],
-    "visible_entities": [
-      {
-        "desc": "hand with brown skin tone",
-        "action": "manipulating marbles on the board",
+        "desc": "dark-skinned hand",
+        "action": "moving marbles on the board",
         "position": "top right"
       },
       {
-        "desc": "blue plastic circular game board with concentric rings of holes",
-        "action": "static",
-        "position": "center"
-      },
-      {
-        "desc": "shiny dark blue glass marbles",
+        "desc": "black glossy marbles",
         "action": "being moved",
         "position": "on the board"
       },
@@ -1443,44 +1406,183 @@
     ],
     "atomic_facts": [
       {
-        "fact": "A hand is moving a dark blue marble into an empty hole on the blue plastic board.",
+        "fact": "A hand is moving a black marble on the blue game board.",
         "confidence": 1.0
       },
       {
-        "fact": "The game board features a circular arrangement of holes filled with marbles.",
+        "fact": "The game board is placed on a grey concrete floor.",
         "confidence": 1.0
       },
       {
-        "fact": "The scene takes place on a grey concrete surface.",
+        "fact": "Black marbles are placed in the holes of the blue plastic board.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The hand is positioned above the blue game board, reaching down to interact with the marbles. The blue game board rests on the grey concrete floor. The marbles are situated inside the holes of the board.",
+    "spatial": "The blue game board is in the center of the frame, resting on the grey concrete floor. The hand is positioned above the board on the top right side, interacting with the black marbles.",
     "parse_success": true,
-    "chunk_idx": 33,
-    "video_id": "CzaWPBZuvhQ",
-    "_rescued": "parse"
+    "chunk_idx": 32,
+    "video_id": "CzaWPBZuvhQ"
   },
   {
     "time": [
-      68,
-      70
+      33,
+      34
     ],
     "visible_entities": [
       {
-        "desc": "person's hand with brown skin tone",
-        "action": "placing a black marble into a hole",
-        "position": "right/foreground"
+        "desc": "hand with brown skin tone",
+        "action": "manipulating marbles",
+        "position": "top right"
       },
       {
-        "desc": "blue circular plastic game board with concentric rings of holes",
+        "desc": "blue plastic solitaire game board with circular indentations",
         "action": "static",
         "position": "center"
       },
       {
-        "desc": "shiny black spherical marbles",
-        "action": "being placed and static in holes",
+        "desc": "dark blue translucent marbles",
+        "action": "being moved",
+        "position": "on the board"
+      },
+      {
+        "desc": "grey concrete floor",
+        "action": "static",
+        "position": "background"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A hand is reaching towards the blue game board.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The hand is manipulating the dark blue marbles on the board.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The game board is resting on a grey concrete surface.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The blue plastic game board is in the center of the frame, resting on the grey concrete floor. The hand is positioned above the board, reaching down to interact with the marbles. The marbles are placed inside the circular indentations of the board.",
+    "parse_success": true,
+    "chunk_idx": 33,
+    "video_id": "CzaWPBZuvhQ"
+  },
+  {
+    "time": [
+      34,
+      35
+    ],
+    "visible_entities": [
+      {
+        "desc": "hand with brown skin tone",
+        "action": "placing marbles into holes",
+        "position": "right foreground"
+      },
+      {
+        "desc": "blue plastic solitaire board with circular indentations",
+        "action": "static",
+        "position": "center"
+      },
+      {
+        "desc": "dark blue translucent glass marbles",
+        "action": "being placed in holes",
+        "position": "on the board"
+      },
+      {
+        "desc": "grey concrete floor with debris",
+        "action": "static",
+        "position": "background"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A hand is placing a dark blue marble into a hole on the blue plastic board.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The blue board has a circular arrangement of holes.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "Several marbles are already placed in the holes of the board.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The board is resting on a grey concrete surface.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The hand is to the right of the blue board. The marbles are inside the holes of the board. The board is on top of the concrete floor.",
+    "parse_success": true,
+    "chunk_idx": 34,
+    "video_id": "CzaWPBZuvhQ"
+  },
+  {
+    "time": [
+      35,
+      36
+    ],
+    "visible_entities": [
+      {
+        "desc": "hand with dark skin tone",
+        "action": "picking up a marble",
+        "position": "right/foreground"
+      },
+      {
+        "desc": "blue plastic solitaire board with circular holes and black marbles",
+        "action": "static",
+        "position": "center"
+      },
+      {
+        "desc": "black glass marble",
+        "action": "being picked up",
+        "position": "right/center"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A hand is picking up a black marble from the blue board.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The blue board has a circular pattern of holes.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "Black marbles are placed in various holes on the board.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The hand is to the right of the blue board. The black marble is being held by the hand and is above the board. The board is on a grey surface.",
+    "parse_success": true,
+    "chunk_idx": 35,
+    "video_id": "CzaWPBZuvhQ"
+  },
+  {
+    "time": [
+      36,
+      37
+    ],
+    "visible_entities": [
+      {
+        "desc": "hand with dark skin tone",
+        "action": "manipulating marbles",
+        "position": "top right"
+      },
+      {
+        "desc": "blue circular plastic solitaire board with concentric rings of holes",
+        "action": "static",
+        "position": "center"
+      },
+      {
+        "desc": "dark blue translucent glass marbles",
+        "action": "being placed and static",
         "position": "on the board"
       },
       {
@@ -1491,178 +1593,48 @@
     ],
     "atomic_facts": [
       {
-        "fact": "A hand is placing a black marble into a hole on the blue board.",
+        "fact": "A hand is holding a light blue marble above the board in the second frame.",
         "confidence": 1.0
       },
       {
-        "fact": "The blue board has multiple concentric rings of holes.",
+        "fact": "The hand places a dark marble into a hole on the board in the first frame.",
         "confidence": 1.0
       },
       {
-        "fact": "Black marbles are placed in the outer ring and some inner holes of the board.",
+        "fact": "The blue board features a grid of circular indentations for holding marbles.",
         "confidence": 1.0
       },
       {
-        "fact": "The board is resting on a grey concrete surface.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [],
-    "spatial": "The person's hand is to the right of the blue game board. The black marbles are inside the holes of the board. The blue board is on top of the grey concrete floor.",
-    "parse_success": true,
-    "chunk_idx": 34,
-    "video_id": "CzaWPBZuvhQ",
-    "_rescued": "parse"
-  },
-  {
-    "time": [
-      70,
-      72
-    ],
-    "visible_entities": [
-      {
-        "desc": "hand with dark skin tone",
-        "action": "manipulating marbles",
-        "position": "right"
-      },
-      {
-        "desc": "blue circular plastic game board with concentric rings of holes",
-        "action": "static",
-        "position": "center"
-      },
-      {
-        "desc": "shiny black spherical marbles",
-        "action": "being moved",
-        "position": "on board"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "A hand is picking up a black marble from the blue board.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The hand places a marble into an empty hole on the board.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The game board is resting on a grey concrete surface.",
+        "fact": "Several dark marbles are already placed in the holes of the board.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The blue game board is centered in the frame, resting on a grey surface. The hand is positioned to the right of the board, reaching over the holes to manipulate the black marbles.",
-    "parse_success": true,
-    "chunk_idx": 35,
-    "video_id": "CzaWPBZuvhQ",
-    "_rescued": "parse"
-  },
-  {
-    "time": [
-      72,
-      74
-    ],
-    "visible_entities": [
-      {
-        "desc": "hand with dark skin tone",
-        "action": "manipulating marbles",
-        "position": "top right"
-      },
-      {
-        "desc": "blue circular plastic game board with concentric rings of holes",
-        "action": "static",
-        "position": "center"
-      },
-      {
-        "desc": "black spherical marbles",
-        "action": "being placed",
-        "position": "on the board"
-      },
-      {
-        "desc": "translucent light blue marble",
-        "action": "being held",
-        "position": "top right"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "A hand is holding a translucent light blue marble.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The hand is placing marbles into the holes of the blue game board.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "Black marbles are already placed in several holes on the board.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [],
-    "spatial": "The blue game board is in the center of the frame. The hand is to the top right of the board, holding a marble above it. The black marbles are inside the holes of the board.",
+    "spatial": "The blue solitaire board is resting on the grey concrete floor. The hand is positioned above the top right section of the board. The marbles are situated inside the holes of the board or held by the hand.",
     "parse_success": true,
     "chunk_idx": 36,
-    "video_id": "CzaWPBZuvhQ",
-    "_rescued": "parse"
+    "video_id": "CzaWPBZuvhQ"
   },
   {
     "time": [
-      74,
-      76
+      37,
+      38
     ],
     "visible_entities": [
+      {
+        "desc": "blue circular plastic game board with concentric rings of holes and black marbles",
+        "action": "static",
+        "position": "center"
+      },
       {
         "desc": "hand with dark skin tone",
         "action": "placing a marble",
         "position": "top right"
       },
       {
-        "desc": "blue circular plastic game board with concentric rings of holes",
-        "action": "static",
-        "position": "center"
-      },
-      {
-        "desc": "glossy black marbles",
+        "desc": "small black marble",
         "action": "being placed",
-        "position": "on the board"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "A hand places a black marble into a hole on the blue board.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The blue board features a central grid of holes and an outer ring of holes.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "Several black marbles are already positioned in the holes of the board.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [],
-    "spatial": "The hand is positioned above the top right section of the blue board. The black marbles are inside the circular indentations of the board. The board rests on a grey concrete surface.",
-    "parse_success": true,
-    "chunk_idx": 37,
-    "video_id": "CzaWPBZuvhQ",
-    "_rescued": "parse"
-  },
-  {
-    "time": [
-      76,
-      78
-    ],
-    "visible_entities": [
-      {
-        "desc": "hand with dark skin tone",
-        "action": "placing a marble",
         "position": "top right"
-      },
-      {
-        "desc": "blue plastic solitaire game board with circular holes and black glass marbles",
-        "action": "static",
-        "position": "center"
       },
       {
         "desc": "grey concrete floor",
@@ -1676,7 +1648,11 @@
         "confidence": 1.0
       },
       {
-        "fact": "The blue game board features a cross-shaped grid of holes filled with black marbles.",
+        "fact": "The game board features an outer ring of holes filled with black marbles.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The inner section of the board has a grid of holes, some filled with black marbles and others empty.",
         "confidence": 1.0
       },
       {
@@ -1685,111 +1661,66 @@
       }
     ],
     "ocr": [],
-    "spatial": "The hand is positioned above the blue game board, holding a marble near the top edge. The blue game board is centered in the frame and rests on the grey concrete floor.",
+    "spatial": "The blue game board is in the center of the frame, resting on the grey concrete floor. The hand is positioned at the top right, holding a black marble above the board's surface. The black marbles are situated inside the circular holes of the plastic board.",
     "parse_success": true,
-    "chunk_idx": 38,
-    "video_id": "CzaWPBZuvhQ",
-    "_rescued": "parse"
+    "chunk_idx": 37,
+    "video_id": "CzaWPBZuvhQ"
   },
   {
     "time": [
-      78,
-      80
+      38,
+      39
     ],
     "visible_entities": [
       {
         "desc": "hand with dark skin tone",
-        "action": "manipulating marbles",
+        "action": "placing a marble",
         "position": "top right"
       },
       {
-        "desc": "blue circular plastic game board with concentric rows of holes",
+        "desc": "blue plastic circular game board with concentric rings of holes",
         "action": "static",
         "position": "center"
       },
       {
-        "desc": "shiny black glass marbles",
-        "action": "being moved",
-        "position": "on the board"
+        "desc": "dark blue translucent glass marbles",
+        "action": "being placed",
+        "position": "center"
       },
       {
-        "desc": "grey concrete floor surface",
+        "desc": "grey concrete floor",
         "action": "static",
         "position": "background"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A hand is picking up a black marble from the blue board.",
+        "fact": "A hand is placing a dark blue marble into a hole on the blue game board.",
         "confidence": 1.0
       },
       {
-        "fact": "The blue board has a central playing area and an outer rim filled with marbles.",
+        "fact": "The game board has a central circular area with a grid of holes and an outer ring filled with marbles.",
         "confidence": 1.0
       },
       {
-        "fact": "The game board is resting on a concrete floor.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [],
-    "spatial": "The blue game board is in the center of the frame, resting on the grey concrete floor. The hand is positioned above the board, reaching down to interact with the black marbles located in the holes.",
-    "parse_success": true,
-    "chunk_idx": 39,
-    "video_id": "CzaWPBZuvhQ",
-    "_rescued": "parse"
-  },
-  {
-    "time": [
-      80,
-      82
-    ],
-    "visible_entities": [
-      {
-        "desc": "hand with dark skin tone",
-        "action": "manipulating marbles",
-        "position": "top right"
-      },
-      {
-        "desc": "blue circular plastic game board with concentric rings of holes",
-        "action": "static",
-        "position": "center"
-      },
-      {
-        "desc": "black glossy marbles",
-        "action": "being moved",
-        "position": "on the board"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "A hand is moving a black marble on the blue board.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The board features a central circular area with a grid of holes and an outer ring of holes.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "Black marbles are placed in various holes on the board.",
+        "fact": "Several marbles are already placed in the inner grid of the board.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The blue circular game board is in the center of the frame. The hand is positioned above and to the right of the board, interacting with the marbles. The black marbles are situated inside the holes of the blue board.",
+    "spatial": "The hand is positioned above the blue game board. The game board is resting on the grey concrete floor. The marbles are located inside the holes of the board.",
     "parse_success": true,
-    "chunk_idx": 40,
-    "video_id": "CzaWPBZuvhQ",
-    "_rescued": "parse"
+    "chunk_idx": 38,
+    "video_id": "CzaWPBZuvhQ"
   },
   {
     "time": [
-      82,
-      84
+      39,
+      40
     ],
     "visible_entities": [
       {
-        "desc": "hand with dark skin tone, short fingernails",
+        "desc": "person's hand with dark skin tone, fingers extended",
         "action": "manipulating black marbles",
         "position": "top right"
       },
@@ -1799,8 +1730,8 @@
         "position": "center"
       },
       {
-        "desc": "glossy black spherical marbles",
-        "action": "being moved and placed",
+        "desc": "small, glossy black marbles",
+        "action": "being moved",
         "position": "on the board"
       },
       {
@@ -1811,44 +1742,127 @@
     ],
     "atomic_facts": [
       {
-        "fact": "A hand is picking up and placing black marbles into the holes of the blue board.",
+        "fact": "A person's hand is moving a black marble on the blue game board.",
         "confidence": 1.0
       },
       {
-        "fact": "The blue board features a central area with a grid of holes and an outer ring containing marbles.",
+        "fact": "The game board features a central circular area with a grid of holes and an outer ring filled with marbles.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "Several black marbles are placed in the holes of the central grid.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The blue game board is centered in the frame, resting on the grey concrete floor. The person's hand is positioned above the board, reaching down to interact with the marbles. The black marbles are situated inside the holes of the board or resting on its surface.",
+    "parse_success": true,
+    "chunk_idx": 39,
+    "video_id": "CzaWPBZuvhQ"
+  },
+  {
+    "time": [
+      40,
+      41
+    ],
+    "visible_entities": [
+      {
+        "desc": "hand with dark skin tone",
+        "action": "manipulating marbles on the board",
+        "position": "top right"
+      },
+      {
+        "desc": "blue circular plastic solitaire board with concentric rings of holes",
+        "action": "static",
+        "position": "center"
+      },
+      {
+        "desc": "glossy black marbles",
+        "action": "being moved",
+        "position": "on the board"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A hand is moving a black marble on the blue solitaire board.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The blue board features a central circular area with holes and an outer ring filled with marbles.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "Several black marbles are placed in the holes of the central circle.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The blue solitaire board is in the center of the frame, resting on a light gray surface. The hand is positioned above the top right section of the board. The black marbles are situated inside the holes of the board or resting on its surface.",
+    "parse_success": true,
+    "chunk_idx": 40,
+    "video_id": "CzaWPBZuvhQ"
+  },
+  {
+    "time": [
+      41,
+      42
+    ],
+    "visible_entities": [
+      {
+        "desc": "blue circular plastic game board with concentric rings of holes and black marbles",
+        "action": "static",
+        "position": "center"
+      },
+      {
+        "desc": "hand with dark skin tone",
+        "action": "picking up a black marble",
+        "position": "right"
+      },
+      {
+        "desc": "grey concrete floor",
+        "action": "static",
+        "position": "background"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A hand is picking up a black marble from the blue game board.",
         "confidence": 1.0
       },
       {
         "fact": "The game board is resting on a grey concrete floor.",
         "confidence": 1.0
+      },
+      {
+        "fact": "Black marbles are arranged in the outer ring and scattered in the inner holes of the board.",
+        "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The blue circular game board is centered in the frame, resting on the grey concrete floor. The hand is positioned above the top right section of the board, interacting with the black marbles. The black marbles are located both inside the holes of the central grid and within the outer ring of the board.",
+    "spatial": "The blue game board is in the center of the frame, resting on the grey concrete floor. The hand is positioned to the right of the board, reaching in to manipulate a marble.",
     "parse_success": true,
     "chunk_idx": 41,
-    "video_id": "CzaWPBZuvhQ",
-    "_rescued": "parse"
+    "video_id": "CzaWPBZuvhQ"
   },
   {
     "time": [
-      84,
-      86
+      42,
+      43
     ],
     "visible_entities": [
       {
-        "desc": "person's hand with dark skin tone",
-        "action": "placing a black marble into a hole",
+        "desc": "hand with dark skin tone",
+        "action": "placing a black marble",
         "position": "top right"
       },
       {
-        "desc": "blue circular plastic game board with concentric rings of holes",
+        "desc": "blue circular plastic game board with concentric rings of holes and black marbles",
         "action": "static",
         "position": "center"
       },
       {
-        "desc": "small, round, black marbles",
-        "action": "being placed into holes",
+        "desc": "small, round, shiny black marble",
+        "action": "being placed into a hole",
         "position": "center"
       },
       {
@@ -1859,70 +1873,68 @@
     ],
     "atomic_facts": [
       {
-        "fact": "A person's hand is placing a black marble into a hole on the blue game board.",
+        "fact": "A hand places a black marble into a hole on the blue game board.",
         "confidence": 1.0
       },
       {
-        "fact": "The blue game board is circular and has multiple concentric rings of holes.",
+        "fact": "The blue game board has multiple concentric rings of circular indentations.",
         "confidence": 1.0
       },
       {
-        "fact": "Black marbles are arranged in the outermost ring of the board.",
+        "fact": "Black marbles are arranged in the outermost ring of the game board.",
         "confidence": 1.0
       },
       {
-        "fact": "The game board is resting on a grey concrete floor.",
+        "fact": "The game board rests on a grey concrete surface.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The person's hand is above the blue game board. The black marbles are inside the holes of the board. The game board is on the grey concrete floor.",
+    "spatial": "The hand is positioned above the blue game board. The black marble is being placed into a hole located in the inner ring of the board. The grey concrete floor is beneath the game board.",
     "parse_success": true,
     "chunk_idx": 42,
-    "video_id": "CzaWPBZuvhQ",
-    "_rescued": "parse"
+    "video_id": "CzaWPBZuvhQ"
   },
   {
     "time": [
-      86,
-      88
+      43,
+      44
     ],
     "visible_entities": [
       {
-        "desc": "dark-skinned hand",
-        "action": "manipulating marbles",
+        "desc": "hand with dark skin tone",
+        "action": "manipulating marbles on the board",
         "position": "top right"
       },
       {
-        "desc": "blue circular plastic game board with concentric rows of holes",
+        "desc": "blue circular plastic game board with concentric rings of holes",
         "action": "static",
         "position": "center"
       },
       {
         "desc": "black glass marbles",
         "action": "being moved",
-        "position": "on board"
+        "position": "on the board"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A hand is picking up a black marble from the blue board.",
+        "fact": "A hand is moving black marbles on a blue game board.",
         "confidence": 1.0
       },
       {
-        "fact": "The blue board has a central area with holes and an outer ring filled with marbles.",
+        "fact": "The board features a central grid of holes and an outer ring filled with marbles.",
         "confidence": 1.0
       },
       {
-        "fact": "The game board is placed on a light-colored concrete floor.",
+        "fact": "The game is being played on a grey concrete floor.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The blue game board is in the center of the frame, resting on the floor. The hand is positioned above the board on the right side, interacting with the marbles located in the holes.",
+    "spatial": "The blue game board is centered in the frame, resting on a grey concrete surface. A hand enters from the top right, positioned above the board. The black marbles are situated inside the holes of the board or in the outer ring.",
     "parse_success": true,
     "chunk_idx": 43,
-    "video_id": "CzaWPBZuvhQ",
-    "_rescued": "parse"
+    "video_id": "CzaWPBZuvhQ"
   }
 ]

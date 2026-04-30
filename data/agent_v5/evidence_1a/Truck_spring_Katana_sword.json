@@ -2,51 +2,45 @@
   {
     "time": [
       0,
-      2
+      1
     ],
     "visible_entities": [
       {
-        "desc": "logo featuring a stylized samurai head profile in orange and black",
+        "desc": "Logo featuring an orange and black circular graphic of a samurai silhouette, next to the text 'SAMURAI KATANA-SHOP.NL' in black and orange sans-serif font.",
         "action": "static",
-        "position": "top left"
+        "position": "top"
       },
       {
-        "desc": "text 'SAMURAI' in black uppercase and 'KATANA-SHOP.NL' in orange uppercase",
-        "action": "static",
-        "position": "top center"
-      },
-      {
-        "desc": "text 'Japanese Sword Specialist' in black sans-serif font",
+        "desc": "Text list of services including 'Japanese Iaito', 'Nihonto', 'Nihonto Kantei', 'Modern Katana', 'Maintenance', 'Koshirae', 'Iaido Gi', and 'Bokken' in black font.",
         "action": "static",
         "position": "center"
       },
       {
-        "desc": "list of items including 'Japanese Iaito', 'Nihonto', 'Nihonto Kantei', 'Modern Katana', 'Maintenance', 'Koshirae', 'Iaido Gi', 'Bokken' in black text",
+        "desc": "Website URL text 'WWW.SAMURAI-KATANA-SHOP.NL' in black uppercase font.",
+        "action": "static",
+        "position": "bottom"
+      },
+      {
+        "desc": "A grey, semi-transparent circular overlay obscuring the center of the text list.",
         "action": "static",
         "position": "center"
-      },
-      {
-        "desc": "website URL 'WWW.SAMURAI-KATANA-SHOP.NL' in black uppercase text",
-        "action": "static",
-        "position": "bottom center"
-      },
-      {
-        "desc": "white background",
-        "action": "static",
-        "position": "background"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "The video displays a static white page with black and orange text.",
+        "fact": "The video displays a static white background with black and orange text.",
         "confidence": 1.0
       },
       {
-        "fact": "The text lists various Japanese sword related items and services.",
+        "fact": "The text 'Japanese Sword Specialist' is positioned below the logo.",
         "confidence": 1.0
       },
       {
-        "fact": "The website URL is displayed at the bottom of the page.",
+        "fact": "A grey circular overlay appears over the center of the list of items.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The website address is located at the bottom of the screen.",
         "confidence": 1.0
       }
     ],
@@ -64,31 +58,31 @@
       "Bokken",
       "WWW.SAMURAI-KATANA-SHOP.NL"
     ],
-    "spatial": "The logo is to the left of the shop name text at the top. The heading 'Japanese Sword Specialist' is below the logo and shop name. The list of items is below the heading. The website URL is at the bottom of the page, below the list of items.",
+    "spatial": "The logo is at the top of the screen, above the 'Japanese Sword Specialist' text. The list of sword-related terms is centered below the specialist title. The website URL is at the bottom of the screen, below the list.",
     "parse_success": true,
     "chunk_idx": 0,
     "video_id": "Truck_spring_Katana_sword"
   },
   {
     "time": [
-      2,
-      4
+      1,
+      2
     ],
     "visible_entities": [
       {
-        "desc": "Japanese katana sword with a curved silver blade, a white handle wrapped in diamond-patterned cord, and a dark circular handguard",
+        "desc": "Japanese sword with a long, curved, silver-grey blade, a black circular handguard (tsuba), and a white handle wrap (tsuka-ito) featuring a repeating black diamond pattern",
         "action": "static",
         "position": "center"
       },
       {
-        "desc": "light brown textured surface with vertical striations",
+        "desc": "light brown textured surface with vertical striations, resembling a tatami mat or woven fabric",
         "action": "static",
         "position": "background"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A Japanese katana sword is lying horizontally on a textured surface.",
+        "fact": "A Japanese sword is lying horizontally on a textured surface.",
         "confidence": 1.0
       },
       {
@@ -97,120 +91,110 @@
       }
     ],
     "ocr": [],
-    "spatial": "The katana sword is positioned horizontally in the center of the frame, resting on top of the light brown textured surface.",
+    "spatial": "The Japanese sword is positioned horizontally across the center of the frame, resting on top of the light brown textured surface.",
     "parse_success": true,
     "chunk_idx": 1,
     "video_id": "Truck_spring_Katana_sword"
   },
   {
     "time": [
-      4,
-      6
+      2,
+      3
     ],
     "visible_entities": [
       {
-        "desc": "Japanese katana sword with a curved silver blade, white handle wrap featuring a black diamond pattern, and a dark circular handguard",
+        "desc": "Japanese katana sword with a curved silver blade, a black circular handguard (tsuba), and a white handle (tsuka) wrapped in a diamond pattern with black diamond-shaped openings",
         "action": "static",
         "position": "center"
       },
       {
-        "desc": "white text overlay reading 'Snake Katana - Hanwei Forge' in a sans-serif font",
+        "desc": "text overlay reading 'Snake Katana - Hanwei Forge' in white sans-serif font",
         "action": "static",
         "position": "top"
       },
       {
-        "desc": "light brown textured surface with vertical grain lines, resembling a tatami mat",
+        "desc": "textured beige surface with vertical lines, likely a tatami mat",
         "action": "static",
         "position": "background"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "The katana is lying horizontally on the textured surface.",
+        "fact": "The katana is lying horizontally on the textured beige surface.",
         "confidence": 1.0
       },
       {
-        "fact": "The text overlay identifies the sword as a 'Snake Katana' from 'Hanwei Forge'.",
+        "fact": "The text 'Snake Katana - Hanwei Forge' appears at the top of the frame.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The sword features a white handle with a black diamond pattern.",
         "confidence": 1.0
       }
     ],
     "ocr": [
       "Snake Katana - Hanwei Forge"
     ],
-    "spatial": "The katana is positioned horizontally across the center of the frame, resting on top of the textured background surface. The white text overlay is located above the sword near the top edge of the image.",
+    "spatial": "The katana is positioned horizontally in the center of the frame, resting on the beige textured surface. The text overlay is located above the sword.",
     "parse_success": true,
     "chunk_idx": 2,
     "video_id": "Truck_spring_Katana_sword"
   },
   {
     "time": [
-      6,
-      8
+      3,
+      4
     ],
     "visible_entities": [
       {
-        "desc": "Japanese sword (katana) with a curved silver blade, a white handle wrapped in a diamond pattern with black accents, and a dark circular handguard",
+        "desc": "Snake Katana with a white handle featuring a black diamond pattern, a dark guard, a gold-colored collar, and a long, curved silver blade",
         "action": "static",
         "position": "center"
-      },
-      {
-        "desc": "Text overlay reading 'Snake Katana - Hanwei Forge' in white sans-serif font",
-        "action": "static",
-        "position": "top"
-      },
-      {
-        "desc": "Light brown textured surface, likely a tatami mat or carpet",
-        "action": "static",
-        "position": "background"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "The sword is lying horizontally on the textured surface.",
+        "fact": "A Snake Katana is lying horizontally on a textured beige surface.",
         "confidence": 1.0
       },
       {
         "fact": "The text 'Snake Katana - Hanwei Forge' is displayed at the top of the frame.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The sword has a white handle with a black diamond pattern.",
         "confidence": 1.0
       }
     ],
     "ocr": [
       "Snake Katana - Hanwei Forge"
     ],
-    "spatial": "The sword is positioned horizontally across the center of the frame, resting on the textured surface. The text overlay is located above the sword.",
+    "spatial": "The Snake Katana is positioned horizontally in the center of the frame, lying on a beige textured surface. The text 'Snake Katana - Hanwei Forge' is located above the sword.",
     "parse_success": true,
     "chunk_idx": 3,
     "video_id": "Truck_spring_Katana_sword"
   },
   {
     "time": [
-      8,
-      10
+      4,
+      5
     ],
     "visible_entities": [
       {
-        "desc": "Japanese sword handle (tsuka) with white cord wrapping (ito) over black diamond-shaped openings (samegawa), black pommel (kashira), black guard (tsuba), and a silver blade base (nakago) visible",
+        "desc": "Japanese sword handle (tsuka) wrapped in white cord (ito) with black diamond-shaped openings revealing the same-colored rayskin (samegawa) underneath, featuring a black pommel (kashira) on the left and a black handguard (tsuba) on the right",
         "action": "static",
         "position": "center"
       },
       {
-        "desc": "Text overlay in white sans-serif font",
+        "desc": "white text overlay reading 'Snake Katana - Hanwei Forge'",
         "action": "static",
         "position": "top"
       },
       {
-        "desc": "Textured beige surface",
+        "desc": "light brown textured surface with vertical grain pattern",
         "action": "static",
         "position": "background"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "The sword handle is lying horizontally on a textured surface.",
+        "fact": "The sword handle rests horizontally on a textured surface.",
         "confidence": 1.0
       },
       {
@@ -218,50 +202,46 @@
         "confidence": 1.0
       },
       {
-        "fact": "The white wrapping on the handle features a diamond pattern revealing black material underneath.",
+        "fact": "The white wrapping cord forms a diamond pattern along the length of the handle.",
         "confidence": 1.0
       }
     ],
     "ocr": [
       "Snake Katana - Hanwei Forge"
     ],
-    "spatial": "The sword handle is positioned in the center of the frame, lying on top of the beige textured surface. The text overlay is located above the sword handle.",
+    "spatial": "The sword handle is positioned horizontally in the center of the frame, resting on the textured background surface. The text overlay is located above the sword handle.",
     "parse_success": true,
     "chunk_idx": 4,
     "video_id": "Truck_spring_Katana_sword"
   },
   {
     "time": [
-      10,
-      12
+      5,
+      6
     ],
     "visible_entities": [
       {
-        "desc": "white sword hilt (tsuka) with black diamond-patterned wrapping (ito) and a black pommel (kashira)",
+        "desc": "white sword hilt with black diamond-shaped wrapping pattern and black pommel",
         "action": "static",
         "position": "right"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A white sword hilt with black diamond-patterned wrapping is visible on the right side of the frame.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The hilt remains static against a textured beige background.",
+        "fact": "The white sword hilt is resting on a textured beige surface.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The white sword hilt is positioned on the right side of the frame, lying against a textured beige surface that fills the rest of the view.",
+    "spatial": "The white sword hilt is positioned on the right side of the frame, lying on top of a textured beige surface that fills the rest of the view.",
     "parse_success": true,
     "chunk_idx": 5,
     "video_id": "Truck_spring_Katana_sword"
   },
   {
     "time": [
-      12,
-      14
+      6,
+      7
     ],
     "visible_entities": [
       {
@@ -286,211 +266,198 @@
       }
     ],
     "ocr": [],
-    "spatial": "The white wrapped handle is positioned on the right side of the frame, resting on top of the beige textured fabric surface which fills the rest of the background.",
+    "spatial": "The white wrapped handle is positioned on the right side of the frame, resting on top of the beige textured fabric surface.",
     "parse_success": true,
     "chunk_idx": 6,
     "video_id": "Truck_spring_Katana_sword"
   },
   {
     "time": [
-      14,
-      16
+      7,
+      8
     ],
     "visible_entities": [
       {
-        "desc": "cylindrical object with a black rounded cap and a white fabric-wrapped body featuring black markings",
+        "desc": "cylindrical object with a black rounded tip and a white body wrapped in fabric or tape, featuring a small circular opening with a gold rim and black markings",
         "action": "static",
         "position": "right"
       },
       {
-        "desc": "beige textured surface with a woven or ribbed pattern",
+        "desc": "textured beige surface with a woven or ribbed pattern",
         "action": "static",
         "position": "background"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A cylindrical object with a black cap and white body rests on a textured surface.",
+        "fact": "The cylindrical object is resting on the textured beige surface.",
         "confidence": 1.0
       },
       {
-        "fact": "The object remains stationary on the right side of the frame.",
+        "fact": "The object remains stationary throughout the clip.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The cylindrical object is positioned on the right side of the frame, resting on top of the beige textured surface which fills the rest of the view.",
+    "spatial": "The cylindrical object is positioned on the right side of the frame, resting on top of the textured beige surface which fills the background.",
     "parse_success": true,
     "chunk_idx": 7,
     "video_id": "Truck_spring_Katana_sword"
   },
   {
     "time": [
-      16,
-      18
+      8,
+      9
     ],
     "visible_entities": [
       {
-        "desc": "black and white shoe with a textured black toe cap and a white upper featuring a gold-colored decorative trim",
+        "desc": "black object with a textured, possibly rubberized surface and a white strap featuring a gold-colored zipper or decorative trim",
         "action": "static",
         "position": "right"
       },
       {
-        "desc": "woven surface made of light brown natural fibers with a vertical texture",
+        "desc": "woven surface made of light brown, natural fibers with a vertical texture",
         "action": "static",
         "position": "left"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A black and white shoe is resting on a woven surface.",
+        "fact": "A black object with a white strap rests on a woven surface.",
         "confidence": 1.0
       },
       {
-        "fact": "The shoe remains stationary throughout the clip.",
+        "fact": "The woven surface occupies the left side of the frame.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The black and white shoe is positioned on the right side of the frame, resting on top of the woven surface which occupies the left and center portions of the view.",
+    "spatial": "The black object is to the right of the woven surface. The object is resting on top of the woven surface.",
     "parse_success": true,
     "chunk_idx": 8,
     "video_id": "Truck_spring_Katana_sword"
   },
   {
     "time": [
-      18,
-      20
+      9,
+      10
     ],
     "visible_entities": [
       {
-        "desc": "Japanese sword handle (tsuka) wrapped in white cord (ito) over black diamond-shaped rayskin (samegawa), featuring a black pommel (kashira) and a gold-colored metal collar (fuchi)",
+        "desc": "Japanese sword handle (tsuka) wrapped in white cord (ito) with black diamond-shaped under-wrapping (samegawa) visible, featuring a black pommel (kashira) and a gold-colored decorative ring (fuchi) at the base",
         "action": "static",
         "position": "right"
       },
       {
-        "desc": "woven mat surface with a textured, light brown and beige pattern",
+        "desc": "woven mat surface with a textured, light brown and beige fibrous pattern",
         "action": "static",
         "position": "background"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "The sword handle is resting on the woven mat.",
+        "fact": "The sword handle rests on the woven mat.",
         "confidence": 1.0
       },
       {
-        "fact": "The white wrapping cord is tied in a knot near the pommel.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The black pommel has a textured surface.",
+        "fact": "The handle is positioned on the right side of the frame.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The sword handle is positioned on the right side of the frame, resting on top of the woven mat. The mat fills the background and extends to the left of the handle.",
+    "spatial": "The Japanese sword handle is positioned on the right side of the frame, resting on top of the woven mat background which fills the rest of the view.",
     "parse_success": true,
     "chunk_idx": 9,
     "video_id": "Truck_spring_Katana_sword"
   },
   {
     "time": [
-      20,
-      22
+      10,
+      11
     ],
     "visible_entities": [
       {
-        "desc": "white cord-wrapped handle with diamond-shaped openings revealing black textured material and gold-colored metal fittings",
+        "desc": "white sword handle wrapped in white cord with a diamond pattern, revealing black textured material underneath, featuring a gold-colored metal fitting on the right end",
         "action": "static",
         "position": "center"
       },
       {
-        "desc": "woven textured surface, beige/brown color",
+        "desc": "woven straw mat surface with a light brown color and horizontal texture",
         "action": "static",
         "position": "background"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "The white cord-wrapped handle rests on the woven surface.",
+        "fact": "The white sword handle rests on a woven mat.",
         "confidence": 1.0
       },
       {
-        "fact": "The camera pans slightly to the right along the length of the handle.",
+        "fact": "The handle features a white cord wrapping in a diamond pattern over a black textured underlayer.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A gold-colored metal fitting is visible at the right end of the handle.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The white cord-wrapped handle is positioned horizontally across the center of the frame, lying on top of the woven textured surface.",
+    "spatial": "The white sword handle is positioned horizontally in the center of the frame, resting on top of the woven straw mat background.",
     "parse_success": true,
     "chunk_idx": 10,
     "video_id": "Truck_spring_Katana_sword"
   },
   {
     "time": [
-      22,
-      24
+      11,
+      12
     ],
     "visible_entities": [
       {
-        "desc": "white ito cord wrapping with a diamond pattern, revealing black samegawa underneath",
+        "desc": "white cord-wrapped handle with a diamond-pattern weave, revealing black textured material underneath and gold-colored metal fittings in the gaps",
         "action": "static",
         "position": "center"
       },
       {
-        "desc": "gold-colored menuki ornaments with detailed relief carvings",
-        "action": "static",
-        "position": "center"
-      },
-      {
-        "desc": "woven straw mat surface",
+        "desc": "woven straw mat background with a light brown, textured surface",
         "action": "static",
         "position": "background"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "The camera zooms in on the handle of the sword.",
+        "fact": "The white cord-wrapped handle is resting on the woven straw mat.",
         "confidence": 1.0
       },
       {
-        "fact": "The white wrapping cord is wound in a hineri-maki style, creating diamond-shaped openings.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "Gold menuki ornaments are visible through the gaps in the white wrapping.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The sword handle rests on a woven straw mat.",
+        "fact": "The handle features a diamond-pattern weave that exposes gold-colored metal fittings.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The white wrapped handle is in the foreground, positioned horizontally across the frame. The gold menuki are embedded within the handle, visible through the diamond-shaped gaps in the white cord. The woven straw mat is located behind and underneath the handle.",
+    "spatial": "The white cord-wrapped handle is positioned horizontally across the center of the frame, resting on top of the woven straw mat background.",
     "parse_success": true,
     "chunk_idx": 11,
     "video_id": "Truck_spring_Katana_sword"
   },
   {
     "time": [
-      24,
-      26
+      12,
+      13
     ],
     "visible_entities": [
       {
-        "desc": "Japanese sword handle (tsuka) wrapped in white cord (ito) with black diamond-shaped openings (hishi) revealing black textured rayskin (samegawa) and gold-colored metal ornaments (menuki)",
+        "desc": "Japanese sword handle (tsuka) wrapped in white cord (ito) with diamond-shaped openings revealing black textured rayskin (samegawa) and gold-colored metal ornaments (menuki)",
+        "action": "static",
+        "position": "left"
+      },
+      {
+        "desc": "black textured sword guard (tsuba) with a wavy, organic shape",
         "action": "static",
         "position": "center"
       },
       {
-        "desc": "black textured metal handguard (tsuba) with a wavy, organic shape",
-        "action": "static",
-        "position": "right"
-      },
-      {
-        "desc": "gold-colored metal collar (habaki) and the base of a silver-colored blade",
+        "desc": "gold-colored metal collar (habaki) and a portion of a light-colored scabbard (saya)",
         "action": "static",
         "position": "right"
       },
@@ -502,253 +469,276 @@
     ],
     "atomic_facts": [
       {
-        "fact": "The camera pans slightly to the right along the length of the sword handle.",
+        "fact": "The camera pans from left to right along the length of the sword.",
         "confidence": 1.0
       },
       {
-        "fact": "The sword is resting on a woven mat surface.",
+        "fact": "The sword is resting on a woven mat.",
         "confidence": 1.0
       },
       {
-        "fact": "The white cord wrapping is tightly wound around the handle.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The gold-colored menuki is visible through the diamond-shaped openings in the wrapping.",
+        "fact": "The white cord wrapping on the handle is tightly wound in a traditional style.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The white-wrapped sword handle is positioned horizontally across the center of the frame. The black handguard is to the right of the handle, followed by the gold collar and the base of the blade. The entire sword assembly is resting on top of the woven mat background.",
+    "spatial": "The sword handle is on the left side of the frame, connected to the black guard in the center. The gold collar and scabbard are to the right of the guard. The entire sword assembly is positioned on top of the woven mat background.",
     "parse_success": true,
     "chunk_idx": 12,
     "video_id": "Truck_spring_Katana_sword"
   },
   {
     "time": [
-      26,
-      28
+      13,
+      14
     ],
     "visible_entities": [
       {
-        "desc": "Japanese sword hilt with white cord wrapping (tsuka-ito) over black textured rayskin (samegawa), featuring a gold-colored mekugi-ana (peg hole) and a dark metal guard (tsuba) with a wavy pattern",
-        "action": "static"
+        "desc": "Japanese sword hilt with white cord wrapping (ito) featuring diamond-shaped openings revealing black textured rayskin (samegawa), a dark metal guard (tsuba) with a wavy pattern, and a gold-colored metal collar (habaki) at the base of the blade",
+        "action": "static",
+        "position": "center"
       },
       {
-        "desc": "Polished steel blade with a visible hamon (temper line) and a gold-colored habaki (collar) at the base",
-        "action": "static"
-      },
-      {
-        "desc": "Woven straw mat surface with a light brown, textured pattern",
-        "action": "static"
+        "desc": "woven mat surface with a light brown, textured pattern",
+        "action": "static",
+        "position": "background"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "The sword is resting horizontally on the woven mat.",
+        "fact": "The sword hilt is resting on a woven mat.",
         "confidence": 1.0
       },
       {
-        "fact": "The white cord wrapping is tightly wound in a diamond pattern.",
+        "fact": "The white cord is wrapped in a crisscross pattern around the handle.",
         "confidence": 1.0
       },
       {
-        "fact": "The blade reflects light, indicating a polished surface.",
+        "fact": "A gold-colored metal collar sits between the black guard and the silver blade.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The sword hilt is positioned on the left side of the frame, connected to the blade which extends towards the right. The entire sword assembly lies on top of the woven mat background.",
+    "spatial": "The sword hilt is positioned horizontally across the center of the frame, resting on top of the woven mat. The gold collar is located to the right of the black guard and to the left of the silver blade.",
     "parse_success": true,
     "chunk_idx": 13,
     "video_id": "Truck_spring_Katana_sword"
   },
   {
     "time": [
-      28,
-      30
+      14,
+      15
     ],
     "visible_entities": [
       {
-        "desc": "black textured object with embossed wavy patterns and a brown zipper trim",
+        "desc": "black textured object with a glossy, snakeskin-like pattern and a brown zipper edge",
         "action": "static",
         "position": "center"
       },
       {
-        "desc": "white braided rope",
+        "desc": "white thick braided rope",
         "action": "static",
         "position": "left"
       },
       {
-        "desc": "black shiny object with a scale-like texture",
+        "desc": "beige smooth surface",
         "action": "static",
         "position": "right"
-      },
-      {
-        "desc": "beige flat surface",
-        "action": "static",
-        "position": "right background"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "The camera view is blurry and out of focus.",
+        "fact": "The camera focus shifts from clear to blurry.",
         "confidence": 1.0
       },
       {
-        "fact": "A white braided rope rests on the left side of the frame.",
+        "fact": "A white braided rope rests against a black textured object.",
         "confidence": 1.0
       },
       {
-        "fact": "A black object with embossed wavy patterns is positioned in the center.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "A brown zipper trim runs vertically along the edge of the central black object.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "A black shiny object with a scale-like texture is visible to the right of the central object.",
+        "fact": "The black object features a brown zipper running vertically.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The white braided rope is to the left of the central black object. The central black object, which features a brown zipper trim, is next to the black shiny object on the right. The beige flat surface is in the background behind the black shiny object.",
+    "spatial": "The white braided rope is positioned to the left of the black textured object. The black object is in the center, adjacent to a beige surface on the right.",
     "parse_success": true,
     "chunk_idx": 14,
     "video_id": "Truck_spring_Katana_sword"
   },
   {
     "time": [
-      30,
-      32
+      15,
+      16
     ],
     "visible_entities": [
       {
-        "desc": "Japanese sword handle (tsuka) wrapped in white cord (ito) over black rayskin (samegawa), featuring a gold-colored metal ornament (menuki) and a black metal handguard (tsuba)",
+        "desc": "Japanese sword hilt (tsuka) with white cord wrapping (ito) over black diamond-patterned rayskin (samegawa), featuring a gold-colored metal collar (fuchi) and a black metal handguard (tsuba) with an ornate openwork design",
         "action": "static",
-        "position": "foreground"
+        "position": "center"
       },
       {
-        "desc": "light-colored wooden block",
-        "action": "static",
-        "position": "right"
-      },
-      {
-        "desc": "woven wicker surface",
+        "desc": "woven wicker surface with a light brown, ribbed texture",
         "action": "static",
         "position": "background"
+      },
+      {
+        "desc": "light-colored wooden block stand",
+        "action": "static",
+        "position": "right"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "The sword handle rests horizontally on a wooden block.",
+        "fact": "The sword hilt is resting on a wooden block stand.",
         "confidence": 1.0
       },
       {
-        "fact": "The camera angle shifts slightly to reveal more of the black handguard.",
+        "fact": "The camera angle shifts slightly to reveal more of the black metal handguard.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The sword handle is positioned horizontally across the frame, resting on top of the wooden block on the right side. The woven wicker surface is visible underneath and behind the sword handle.",
+    "spatial": "The sword hilt is positioned horizontally across the center of the frame, resting on top of the wooden block stand on the right side. The woven wicker surface is visible in the background behind and below the sword.",
     "parse_success": true,
     "chunk_idx": 15,
     "video_id": "Truck_spring_Katana_sword"
   },
   {
     "time": [
-      32,
-      34
+      16,
+      17
     ],
     "visible_entities": [
       {
-        "desc": "Japanese sword handle (tsuka) with white cord wrapping (ito) over black diamond-shaped underlay (samegawa), attached to a black, openwork metal handguard (tsuba) with an organic, branch-like design",
-        "action": "being held and slightly rotated",
-        "position": "foreground"
+        "desc": "Japanese sword handle (tsuka) wrapped in white cord (ito) over black diamond-patterned rayskin, with a black openwork metal handguard (tsuba) and a black leather scabbard mouth (koiguchi)",
+        "action": "being unsheathed",
+        "position": "center"
       },
       {
-        "desc": "woven straw mat surface (tatami) with a light brown, textured, ribbed pattern",
+        "desc": "silver-colored metal blade",
+        "action": "emerging from scabbard",
+        "position": "right"
+      },
+      {
+        "desc": "woven straw mat surface, light brown with vertical texture",
         "action": "static",
         "position": "background"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A person is holding the sword handle and slightly rotating it to reveal the blade.",
+        "fact": "The sword is being drawn from its scabbard.",
         "confidence": 1.0
       },
       {
-        "fact": "The sword is positioned horizontally across the frame.",
+        "fact": "The silver blade is emerging from the right side of the black scabbard.",
         "confidence": 1.0
       },
       {
-        "fact": "The background is a woven straw mat.",
+        "fact": "The sword rests on a woven mat surface.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The sword handle is in the foreground, positioned above the woven straw mat background. The black handguard is located to the right of the white wrapped handle. The silver blade extends from the handguard towards the right edge of the frame.",
+    "spatial": "The sword handle is positioned to the left of the emerging blade. The black handguard is located between the white handle wrap and the scabbard mouth. The entire sword assembly is resting on top of the woven straw mat.",
     "parse_success": true,
     "chunk_idx": 16,
     "video_id": "Truck_spring_Katana_sword"
   },
   {
     "time": [
-      34,
-      36
+      17,
+      18
     ],
     "visible_entities": [
       {
-        "desc": "black metal tsuba (handguard) with an openwork design featuring intertwined snakes",
+        "desc": "black tsuba (handguard) with a sculpted snake design wrapping around the rim, featuring textured scales and a visible snake head",
         "action": "static",
-        "position": "center"
+        "position": "right/foreground"
       },
       {
-        "desc": "white cord-wrapped handle (tsuka) with gold-colored metal fittings (menuki)",
+        "desc": "white tsuka-ito (handle wrap) with a diamond pattern, revealing gold-colored menuki (ornaments) underneath",
         "action": "static",
-        "position": "left"
+        "position": "left/foreground"
       },
       {
-        "desc": "shiny silver metal blade",
-        "action": "static",
-        "position": "right"
-      },
-      {
-        "desc": "woven straw mat surface",
+        "desc": "light brown woven mat surface with a ribbed texture",
         "action": "static",
         "position": "background"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "The sword is resting on a woven mat.",
+        "fact": "The camera focuses on the hilt of a sword resting on a surface.",
         "confidence": 1.0
       },
       {
-        "fact": "The camera angle shifts slightly to show the side profile of the snake tsuba.",
+        "fact": "The black handguard features a sculpted snake design.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The white handle wrap is positioned to the left of the handguard.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The white cord-wrapped handle is to the left of the black snake tsuba. The silver blade extends to the right of the tsuba. The entire sword is lying on top of the woven mat.",
+    "spatial": "The white wrapped handle is to the left of the black snake-shaped handguard. The sword hilt is resting on top of the woven mat background.",
     "parse_success": true,
     "chunk_idx": 17,
     "video_id": "Truck_spring_Katana_sword"
   },
   {
     "time": [
-      36,
-      38
+      18,
+      19
     ],
     "visible_entities": [
       {
-        "desc": "black sculptural object with a textured, snakeskin-like pattern and openwork design",
+        "desc": "black sculpted object with a textured, snakeskin-like pattern and openwork cutouts",
         "action": "static",
         "position": "center"
       },
       {
         "desc": "thick white braided rope",
+        "action": "static",
+        "position": "left"
+      },
+      {
+        "desc": "woven wicker surface with a light tan color",
+        "action": "static",
+        "position": "background"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The white braided rope is coiled inside the black sculpted object.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The black sculpted object rests on a woven wicker surface.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The white braided rope is positioned to the left of the black sculpted object and is coiled inside it. The black sculpted object is in front of the woven wicker surface.",
+    "parse_success": true,
+    "chunk_idx": 18,
+    "video_id": "Truck_spring_Katana_sword"
+  },
+  {
+    "time": [
+      19,
+      20
+    ],
+    "visible_entities": [
+      {
+        "desc": "black leather object with a loop handle, textured surface, and brown zipper trim",
+        "action": "static",
+        "position": "center"
+      },
+      {
+        "desc": "white braided rope with black markings",
         "action": "static",
         "position": "left"
       },
@@ -760,159 +750,104 @@
     ],
     "atomic_facts": [
       {
-        "fact": "A close-up shot focuses on a black object with a snakeskin texture.",
+        "fact": "A black leather object with a loop handle rests on a woven surface.",
         "confidence": 1.0
       },
       {
-        "fact": "A thick white rope is positioned next to the black object.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [],
-    "spatial": "The white braided rope is to the left of the black sculptural object. The black object is in the foreground, positioned above the woven wicker surface.",
-    "parse_success": true,
-    "chunk_idx": 18,
-    "video_id": "Truck_spring_Katana_sword"
-  },
-  {
-    "time": [
-      38,
-      40
-    ],
-    "visible_entities": [
-      {
-        "desc": "thick white rope with a braided texture",
-        "action": "static",
-        "position": "left/foreground"
-      },
-      {
-        "desc": "black leather object with a textured surface and a looped handle",
-        "action": "static",
-        "position": "center/right"
-      },
-      {
-        "desc": "light brown woven wicker surface",
-        "action": "static",
-        "position": "background"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "A thick white rope rests in the foreground.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "A black leather object with a looped handle is positioned behind the rope.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The objects are placed on a woven wicker surface.",
+        "fact": "A white braided rope is positioned next to the black leather object.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The white rope is in the foreground on the left side of the frame. The black leather object is to the right of the rope and slightly behind it. Both objects are resting on top of the woven wicker background.",
+    "spatial": "The black leather object is in the center of the frame, resting on the woven wicker background. The white braided rope is to the left of the black leather object.",
     "parse_success": true,
     "chunk_idx": 19,
     "video_id": "Truck_spring_Katana_sword"
   },
   {
     "time": [
-      40,
-      42
+      20,
+      21
     ],
     "visible_entities": [
       {
-        "desc": "white cylindrical object with a textured, ribbed surface, featuring a pattern of dark, diamond-shaped cutouts revealing a black interior, and gold-colored accents on the left side",
+        "desc": "white cylindrical object with a ribbed, woven texture, featuring diagonal cutouts revealing a black interior and gold accents",
         "action": "static",
-        "position": "center"
+        "position": "foreground"
       },
       {
-        "desc": "black, glossy, sculpted base with a complex, intertwined, looped design resembling a stylized snake or knot",
+        "desc": "black sculptural base with a glossy finish and curved, looped arms",
         "action": "static",
         "position": "right"
       },
       {
-        "desc": "light brown woven surface with a distinct horizontal texture, likely wicker or rattan",
+        "desc": "light brown woven surface with a textured, basket-like pattern",
         "action": "static",
         "position": "background"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "The white cylindrical object is resting on the black sculpted base.",
+        "fact": "The white cylindrical object is resting on the black sculptural base.",
         "confidence": 1.0
       },
       {
         "fact": "The black base is positioned on the light brown woven surface.",
         "confidence": 1.0
-      },
-      {
-        "fact": "The camera angle shifts slightly, revealing more of the black base's structure.",
-        "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The white cylindrical object is positioned to the left of the black sculpted base. The black base is on the light brown woven surface. The gold accents are on the far left side of the white cylindrical object.",
+    "spatial": "The white cylindrical object is positioned to the left of the black sculptural base. The black base is situated on top of the light brown woven surface.",
     "parse_success": true,
     "chunk_idx": 20,
     "video_id": "Truck_spring_Katana_sword"
   },
   {
     "time": [
-      42,
-      44
+      21,
+      22
     ],
     "visible_entities": [
       {
-        "desc": "Japanese sword handle (tsuka) wrapped in white cord (ito) with a diamond pattern, revealing gold-colored ornaments (menuki) underneath",
+        "desc": "Japanese sword handle (tsuka) wrapped in white cord (ito) with black diamond-shaped accents and gold menuki ornaments, attached to a black metal handguard (tsuba) with an openwork design",
         "action": "static",
         "position": "center"
       },
       {
-        "desc": "Black, textured, openwork handguard (tsuba) attached to the sword",
-        "action": "static",
-        "position": "right"
-      },
-      {
-        "desc": "Woven mat surface with a light brown, fibrous texture",
+        "desc": "woven straw mat surface with a textured, ribbed pattern",
         "action": "static",
         "position": "background"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "The sword handle is resting on a woven mat.",
+        "fact": "A Japanese sword handle rests horizontally on a woven mat.",
         "confidence": 1.0
       },
       {
-        "fact": "The white cord wrapping creates a diamond-shaped pattern along the handle.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "Gold-colored ornaments are visible through the gaps in the white wrapping.",
+        "fact": "The white cord wrapping reveals gold ornaments underneath.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The sword handle is positioned horizontally across the center of the frame, resting on top of the woven mat. The black handguard is attached to the right end of the handle.",
+    "spatial": "The sword handle is positioned horizontally across the center of the frame, lying on top of the woven straw mat background.",
     "parse_success": true,
     "chunk_idx": 21,
     "video_id": "Truck_spring_Katana_sword"
   },
   {
     "time": [
-      44,
-      46
+      22,
+      23
     ],
     "visible_entities": [
       {
-        "desc": "Japanese sword handle (tsuka) wrapped in white cord (ito) with black diamond-shaped openings revealing gold foil (samegawa) underneath, featuring a black metal guard (tsuba) on the right and a black pommel (kashira) on the left.",
+        "desc": "Japanese sword handle (tsuka) with white cord wrapping (ito) in a diamond pattern, revealing black under-wrapping (samegawa) and three gold-colored ornaments (menuki), attached to a black metal handguard (tsuba) with a cutout design",
         "action": "static",
         "position": "center"
       },
       {
-        "desc": "Light brown textured surface, likely a wooden table or floor.",
+        "desc": "textured beige surface",
         "action": "static",
         "position": "background"
       }
@@ -923,58 +858,62 @@
         "confidence": 1.0
       },
       {
-        "fact": "The white wrapping cord is arranged in a traditional diamond pattern.",
+        "fact": "The white wrapping on the handle features a diamond-shaped pattern.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "Three gold ornaments are visible through the wrapping on the handle.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The sword handle is positioned horizontally across the center of the frame, resting on top of the light brown textured surface.",
+    "spatial": "The Japanese sword handle is positioned horizontally in the center of the frame, resting on top of the textured beige background surface.",
     "parse_success": true,
     "chunk_idx": 22,
     "video_id": "Truck_spring_Katana_sword"
   },
   {
     "time": [
-      46,
-      48
+      23,
+      24
     ],
     "visible_entities": [
       {
-        "desc": "Japanese sword handle (tsuka) wrapped in white cord (ito) with black diamond-shaped gaps revealing gold-colored metal accents (menuki) underneath, featuring black fittings (fuchi and kashira) with snake motifs",
+        "desc": "white tsuka (sword handle) wrapped in white cord with black diamond-shaped openings revealing gold-colored menuki ornaments underneath, featuring a black fuchi (collar) and black kashira (pommel)",
         "action": "static",
         "position": "center"
       },
       {
-        "desc": "Text 'Full-Tang Tsuka' in white sans-serif font",
+        "desc": "text 'Full-Tang Tsuka' in white sans-serif font",
         "action": "static",
         "position": "top"
       },
       {
-        "desc": "Text 'Snake motifs gracing the kashira, fuchi and tsuba' in white sans-serif font",
+        "desc": "text 'Snake motifs gracing the kashira, fuchi and tsuba' in white sans-serif font",
         "action": "static",
         "position": "bottom"
       },
       {
-        "desc": "Beige textured fabric background",
+        "desc": "textured beige background surface",
         "action": "static",
         "position": "background"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "The video displays a close-up of a sword handle lying horizontally.",
+        "fact": "The white tsuka is displayed horizontally across the center of the frame.",
         "confidence": 1.0
       },
       {
-        "fact": "The text 'Full-Tang Tsuka' appears at the top of the frame.",
+        "fact": "The text 'Full-Tang Tsuka' appears at the top of the screen.",
         "confidence": 1.0
       },
       {
-        "fact": "The text 'Snake motifs gracing the kashira, fuchi and tsuba' appears at the bottom of the frame.",
+        "fact": "The text 'Snake motifs gracing the kashira, fuchi and tsuba' appears at the bottom of the screen in the second frame.",
         "confidence": 1.0
       },
       {
-        "fact": "The handle features white wrapping with black diamond patterns.",
+        "fact": "Gold-colored ornaments are visible through the diamond-shaped openings in the white wrapping.",
         "confidence": 1.0
       }
     ],
@@ -982,86 +921,26 @@
       "Full-Tang Tsuka",
       "Snake motifs gracing the kashira, fuchi and tsuba"
     ],
-    "spatial": "The sword handle is positioned horizontally in the center of the frame, resting on a beige textured surface. The text 'Full-Tang Tsuka' is located above the handle, while the descriptive text about snake motifs is located below the handle.",
+    "spatial": "The white tsuka is positioned horizontally in the center of the frame, resting on the textured beige background. The text 'Full-Tang Tsuka' is located above the tsuka, while the text 'Snake motifs gracing the kashira, fuchi and tsuba' is located below the tsuka.",
     "parse_success": true,
     "chunk_idx": 23,
     "video_id": "Truck_spring_Katana_sword"
   },
   {
     "time": [
-      48,
-      50
+      24,
+      25
     ],
     "visible_entities": [
       {
-        "desc": "Japanese sword handle (tsuka) wrapped in white ito cord with black diamond-shaped menuki visible underneath, featuring gold-colored snake motifs on the metal fittings (fuchi and kashira), and a black tsuba (guard) with a gold habaki (collar) at the base of the blade.",
+        "desc": "Japanese sword handle (tsuka) wrapped in white cord (ito) with black diamond-shaped openings revealing gold-colored menuki underneath, attached to a black guard (tsuba) and a gold collar (habaki) at the base of a grey blade",
         "action": "static",
         "position": "center"
       },
       {
-        "desc": "White text overlay with a drop shadow.",
+        "desc": "Text overlay in white sans-serif font reading 'Full-Tang Tsuka' and 'Snake motifs gracing the kashira, fuchi and tsuba'",
         "action": "static",
-        "position": "top"
-      },
-      {
-        "desc": "White text overlay with a drop shadow.",
-        "action": "static",
-        "position": "bottom"
-      },
-      {
-        "desc": "Textured beige background surface.",
-        "action": "static",
-        "position": "background"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "The video displays a close-up of a sword handle labeled as a 'Full-Tang Tsuka'.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The text 'Snake motifs gracing the kashira, fuchi and tsuba' describes the decorative elements on the sword.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The sword handle features a white wrap over a black underlayer creating a diamond pattern.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "Gold-colored metal fittings with snake designs are visible near the guard and pommel.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [
-      "Full-Tang Tsuka",
-      "Snake motifs gracing the",
-      "kashira, fuchi and tsuba"
-    ],
-    "spatial": "The sword handle lies horizontally across the center of the frame, resting on a textured beige background. The text 'Full-Tang Tsuka' is positioned above the sword handle, while the descriptive text about snake motifs is located below it.",
-    "parse_success": true,
-    "chunk_idx": 24,
-    "video_id": "Truck_spring_Katana_sword"
-  },
-  {
-    "time": [
-      50,
-      52
-    ],
-    "visible_entities": [
-      {
-        "desc": "Japanese sword handle (tsuka) wrapped in white cord (ito) with black diamond-shaped openings (hishi) revealing gold-colored menuki underneath",
-        "action": "static",
-        "position": "center"
-      },
-      {
-        "desc": "Black metal handguard (tsuba) with a gold-colored spacer (seppa) and a grey blade tang",
-        "action": "static",
-        "position": "right"
-      },
-      {
-        "desc": "White text overlay reading 'Full-Tang Tsuka' and 'Snake motifs gracing the kashira, fuchi and tsuba'",
-        "action": "static",
-        "position": "top/bottom"
+        "position": "top and bottom"
       }
     ],
     "atomic_facts": [
@@ -1070,7 +949,7 @@
         "confidence": 1.0
       },
       {
-        "fact": "Gold-colored snake motifs are visible through the black diamond-shaped openings in the handle wrap.",
+        "fact": "Gold-colored snake motifs are visible through the diamond-shaped openings in the handle wrap.",
         "confidence": 1.0
       },
       {
@@ -1086,97 +965,147 @@
       "Full-Tang Tsuka",
       "Snake motifs gracing the kashira, fuchi and tsuba"
     ],
-    "spatial": "The white wrapped handle extends from the left side of the frame towards the right. The black handguard is located at the right end of the handle, separating it from the grey blade tang. The text 'Full-Tang Tsuka' is positioned above the sword handle, while the descriptive text about snake motifs is positioned below it.",
+    "spatial": "The white wrapped handle is positioned horizontally across the center of the frame. The text 'Full-Tang Tsuka' is located above the handle, while the text describing the snake motifs is located below the handle. The black guard is to the right of the wrapped handle section.",
+    "parse_success": true,
+    "chunk_idx": 24,
+    "video_id": "Truck_spring_Katana_sword"
+  },
+  {
+    "time": [
+      25,
+      26
+    ],
+    "visible_entities": [
+      {
+        "desc": "Japanese sword handle (tsuka) wrapped in white cord (ito) with black diamond-shaped openings (hishi) revealing gold-colored snake motifs underneath, featuring a black guard (tsuba) and gold collar (habaki)",
+        "action": "static",
+        "position": "center"
+      },
+      {
+        "desc": "Text overlay in white sans-serif font reading 'Full-Tang Tsuka' and 'Snake motifs gracing the kashira, fuchi and tsuba'",
+        "action": "static",
+        "position": "top and bottom"
+      },
+      {
+        "desc": "Textured beige fabric background",
+        "action": "static",
+        "position": "background"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The sword handle is wrapped in white cord with a diamond pattern.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "Gold-colored snake motifs are visible through the openings in the handle wrap.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The text 'Full-Tang Tsuka' appears at the top of the frame.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The text 'Snake motifs gracing the kashira, fuchi and tsuba' appears at the bottom of the frame.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "Full-Tang Tsuka",
+      "Snake motifs gracing the kashira, fuchi and tsuba"
+    ],
+    "spatial": "The sword handle is positioned horizontally across the center of the frame. The text 'Full-Tang Tsuka' is above the sword handle. The text 'Snake motifs gracing the kashira, fuchi and tsuba' is below the sword handle. The sword rests on a textured beige surface.",
     "parse_success": true,
     "chunk_idx": 25,
     "video_id": "Truck_spring_Katana_sword"
   },
   {
     "time": [
-      52,
-      54
+      26,
+      27
     ],
     "visible_entities": [
       {
-        "desc": "Japanese sword (katana) with a white ito-wrapped tsuka featuring black diamond patterns and gold menuki, a black tsuba, and a gold habaki",
+        "desc": "Japanese sword handle (tsuka) wrapped in white cord (ito) with black diamond-shaped openings revealing gold-colored accents (menuki), attached to a black metal guard (tsuba) and a brass-colored collar (habaki) leading to a silver blade",
         "action": "static",
         "position": "center"
       },
       {
-        "desc": "textured beige mat surface",
+        "desc": "woven beige textured mat",
         "action": "static",
         "position": "background"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "The sword is resting on a textured beige mat.",
+        "fact": "The Japanese sword handle is resting on a woven mat.",
         "confidence": 1.0
       },
       {
-        "fact": "The white wrapping on the handle has a diamond pattern with black accents.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "Gold ornaments are visible through the gaps in the handle wrapping.",
+        "fact": "The sword remains stationary throughout the clip.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The Japanese sword is positioned diagonally across the frame, resting on top of the textured beige mat.",
+    "spatial": "The Japanese sword handle is positioned diagonally across the frame, resting on top of the woven beige mat.",
     "parse_success": true,
     "chunk_idx": 26,
     "video_id": "Truck_spring_Katana_sword"
   },
   {
     "time": [
-      54,
-      56
+      27,
+      28
     ],
     "visible_entities": [
       {
-        "desc": "Japanese sword handle (tsuka) with white cord wrapping (ito) over black diamond-shaped underlay, featuring gold-colored metal ornaments (menuki), attached to a black textured handguard (tsuba) and a gold-colored metal collar (habaki) at the base of a silver blade",
+        "desc": "Japanese sword hilt with white cord wrapping (ito) in a diamond pattern, revealing black under-wrapping (samegawa) and gold-colored menuki ornaments; features a black, textured iron handguard (tsuba) with a wheel-like design and a gold-colored metal collar (habaki) at the base of the blade.",
         "action": "static"
       },
       {
-        "desc": "woven beige mat surface with a ribbed texture",
+        "desc": "woven straw mat surface (tatami) with a coarse, ribbed texture in beige and light brown tones.",
         "action": "static"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A Japanese sword handle rests on a woven mat.",
+        "fact": "A Japanese sword hilt rests horizontally on a woven mat.",
         "confidence": 1.0
       },
       {
-        "fact": "The white cord wrapping is arranged in a diamond pattern.",
+        "fact": "The white cord wrapping is arranged in a crisscross diamond pattern.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The sword handle is positioned above the woven beige mat. The black handguard is located between the white wrapped handle and the gold collar of the blade.",
+    "spatial": "The sword hilt is positioned horizontally across the upper portion of the frame, resting directly on top of the woven straw mat which fills the background.",
     "parse_success": true,
     "chunk_idx": 27,
     "video_id": "Truck_spring_Katana_sword"
   },
   {
     "time": [
-      56,
-      58
+      28,
+      29
     ],
     "visible_entities": [
       {
-        "desc": "Japanese sword hilt (tsuka) wrapped in white cord (ito) over black ray skin (samegawa) with gold-colored menuki ornaments visible through the diamond-shaped openings",
+        "desc": "Japanese sword hilt with white cord wrapping (tsuka-ito) in a diamond pattern, revealing black textured under-wrapping (samegawa) and gold-colored ornaments (menuki) underneath",
         "action": "static",
         "position": "left"
       },
       {
-        "desc": "black metal sword guard (tsuba) with an intricate openwork design featuring a star-like or wheel pattern",
+        "desc": "black metal sword guard (tsuba) with an openwork design featuring curved spokes",
         "action": "static",
         "position": "center"
       },
       {
-        "desc": "gold-colored rectangular metal collar (habaki) with a textured edge",
+        "desc": "gold-colored metal collar (habaki) with a textured edge",
+        "action": "static",
+        "position": "right"
+      },
+      {
+        "desc": "rectangular metal blade base (nakago) with a matte finish",
         "action": "static",
         "position": "right"
       },
@@ -1188,177 +1117,157 @@
     ],
     "atomic_facts": [
       {
-        "fact": "The sword hilt is resting on a woven mat.",
+        "fact": "The camera pans slightly to the right, revealing more of the sword's metal fittings.",
         "confidence": 1.0
       },
       {
-        "fact": "The white cord wrapping is arranged in a traditional diamond pattern.",
+        "fact": "The white cord wrapping is arranged in a crisscross diamond pattern.",
         "confidence": 1.0
       },
       {
-        "fact": "Gold menuki ornaments are visible beneath the white cord wrapping.",
+        "fact": "The black metal guard is positioned between the handle and the blade base.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The sword components are resting on a woven mat.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The white-wrapped sword hilt is positioned to the left of the black metal guard. The gold-colored collar is attached to the right of the black guard. The entire sword assembly is resting on top of the woven beige mat.",
+    "spatial": "The white wrapped hilt is to the left of the black metal guard. The gold-colored collar is to the right of the guard and surrounds the base of the metal blade. The entire sword assembly is resting on top of the woven beige mat.",
     "parse_success": true,
     "chunk_idx": 28,
     "video_id": "Truck_spring_Katana_sword"
   },
   {
     "time": [
-      58,
-      60
+      29,
+      30
     ],
     "visible_entities": [
       {
-        "desc": "black leather glove with visible stitching and a textured grip surface",
-        "action": "holding the sword hilt",
-        "position": "center"
-      },
-      {
-        "desc": "sword hilt wrapped in white cord with a black diamond pattern underneath",
+        "desc": "Japanese sword hilt (tsuka) with white cord wrapping (ito) over black diamond-shaped underlay (samegawa), featuring a gold-colored metal collar (habaki) and a black leather scabbard guard (saya-guchi)",
         "action": "static",
-        "position": "left"
+        "position": "foreground"
       },
       {
-        "desc": "gold-colored metal guard with a serrated edge",
-        "action": "static",
-        "position": "right"
-      },
-      {
-        "desc": "woven wicker or rattan surface",
+        "desc": "woven wicker surface, light brown, textured",
         "action": "static",
         "position": "background"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A hand wearing a black leather glove is gripping the handle of a sword.",
+        "fact": "The camera focuses on the junction where the sword handle meets the scabbard.",
         "confidence": 1.0
       },
       {
-        "fact": "The sword hilt features a white cord wrap over a black diamond pattern.",
+        "fact": "The white cord wrapping on the handle is tightly wound in a traditional diamond pattern.",
         "confidence": 1.0
       },
       {
-        "fact": "A gold-colored metal guard is attached to the hilt.",
+        "fact": "The gold-colored metal collar sits at the base of the handle, partially covered by the black leather scabbard opening.",
         "confidence": 1.0
       },
       {
-        "fact": "The object is resting on a woven wicker surface.",
+        "fact": "The background consists of a light brown woven material.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The black leather glove is in the center, holding the sword hilt which extends to the left. The gold-colored guard is to the right of the glove. The entire assembly is positioned in front of a woven wicker background.",
+    "spatial": "The sword hilt is in the foreground, positioned horizontally across the frame. The gold-colored metal collar is to the right of the white cord wrapping. The black leather scabbard guard is positioned around the gold collar and the base of the handle. The entire sword assembly is resting on or in front of the woven wicker background.",
     "parse_success": true,
     "chunk_idx": 29,
     "video_id": "Truck_spring_Katana_sword"
   },
   {
     "time": [
-      60,
-      62
+      30,
+      31
     ],
     "visible_entities": [
       {
-        "desc": "Japanese sword hilt (tsuka) wrapped in white cord (ito) with diamond-shaped openings revealing black rayskin (samegawa) and gold menuki ornaments",
-        "action": "static",
-        "position": "left"
-      },
-      {
-        "desc": "Dark metal handguard (tsuba) with a textured, irregular surface",
-        "action": "static",
+        "desc": "Japanese sword (katana) featuring a white cord-wrapped handle (tsuka) with black diamond-shaped gaps and gold menuki ornaments, a dark textured metal handguard (tsuba), a gold-colored rectangular collar (habaki), and a silver-colored blade",
+        "action": "resting on a surface",
         "position": "center"
       },
       {
-        "desc": "Gold-colored metal collar (habaki) with a smooth, reflective finish",
-        "action": "static",
-        "position": "center-right"
-      },
-      {
-        "desc": "Polished silver blade with a visible ridge line",
-        "action": "static",
-        "position": "right"
-      },
-      {
-        "desc": "Woven straw mat background with a natural beige texture",
+        "desc": "woven mat surface with a light brown, textured, straw-like pattern",
         "action": "static",
         "position": "background"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "The camera pans slightly to the right, revealing more of the sword's blade.",
+        "fact": "A Japanese sword is resting horizontally on a woven mat.",
         "confidence": 1.0
       },
       {
-        "fact": "The white cord wrapping on the hilt features a traditional diamond pattern.",
+        "fact": "The sword's handle is wrapped in white cord over a black material.",
         "confidence": 1.0
       },
       {
-        "fact": "The gold collar sits between the handguard and the base of the blade.",
+        "fact": "A gold-colored metal collar is positioned at the base of the blade.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The wrapped hilt is on the left side of the frame, connected to the dark handguard in the center. The gold collar is positioned to the right of the handguard, covering the base of the silver blade which extends to the right edge. The entire sword assembly rests on top of the woven straw mat background.",
+    "spatial": "The Japanese sword is lying on top of the woven mat. The white wrapped handle is to the left of the dark handguard, which is to the left of the gold collar and silver blade.",
     "parse_success": true,
     "chunk_idx": 30,
     "video_id": "Truck_spring_Katana_sword"
   },
   {
     "time": [
-      62,
-      64
+      31,
+      32
     ],
     "visible_entities": [
       {
-        "desc": "metallic sword blade with a polished silver finish, featuring a visible hamon (temper line) and a gold-colored guard",
+        "desc": "metallic sword blade with a polished silver finish, featuring a distinct wavy hamon (temper line) pattern along the edge and a visible ridge line (shinogi)",
         "action": "static",
         "position": "center"
       },
       {
-        "desc": "woven mat surface with a textured, light brown pattern",
+        "desc": "gold-colored metal guard (tsuba) with a smooth, reflective surface",
+        "action": "static",
+        "position": "left"
+      },
+      {
+        "desc": "woven straw mat surface with a textured, light brown pattern",
         "action": "static",
         "position": "background"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A metallic sword blade rests on a woven mat.",
+        "fact": "The sword blade is resting on a woven mat.",
         "confidence": 1.0
       },
       {
-        "fact": "The blade displays a distinct wavy temper line along its edge.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "A gold-colored guard is visible at the base of the blade.",
+        "fact": "The gold guard is attached to the left side of the blade.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The metallic sword blade is positioned on top of the woven mat. The gold-colored guard is located to the left of the silver blade.",
+    "spatial": "The metallic sword blade is positioned diagonally across the frame, lying on top of the woven straw mat. The gold-colored guard is located at the left end of the blade, partially visible.",
     "parse_success": true,
     "chunk_idx": 31,
     "video_id": "Truck_spring_Katana_sword"
   },
   {
     "time": [
-      64,
-      66
+      32,
+      33
     ],
     "visible_entities": [
       {
-        "desc": "metallic blade with a polished silver finish, featuring a distinct wavy hamon line pattern and a sharp, beveled edge",
+        "desc": "metal blade with a polished silver finish, featuring a darker grey upper section and a lighter reflective lower edge",
         "action": "static",
         "position": "center"
       },
       {
-        "desc": "woven mat background with a light brown, textured, straw-like appearance",
+        "desc": "woven textured surface, light brown in color, resembling a straw mat or wicker basket",
         "action": "static",
         "position": "background"
       },
@@ -1370,15 +1279,15 @@
     ],
     "atomic_facts": [
       {
-        "fact": "The text 'Forged Folded K120C Powder Steel Blade' appears on the screen.",
+        "fact": "The text 'Forged Folded K120C Powder Steel Blade' is displayed on the screen.",
         "confidence": 1.0
       },
       {
-        "fact": "The blade rests on top of the woven mat.",
+        "fact": "The metal blade rests on top of the woven surface.",
         "confidence": 1.0
       },
       {
-        "fact": "The blade features a visible wavy pattern along its length.",
+        "fact": "The blade has a distinct two-tone appearance with a darker top and lighter bottom edge.",
         "confidence": 1.0
       }
     ],
@@ -1386,24 +1295,24 @@
       "Forged Folded K120C",
       "Powder Steel Blade"
     ],
-    "spatial": "The metallic blade is positioned in the foreground, resting on top of the woven mat background. The white text overlay is located above the blade.",
+    "spatial": "The metal blade is positioned diagonally across the frame, resting on top of the woven textured surface. The white text overlay is located above the blade in the upper portion of the image.",
     "parse_success": true,
     "chunk_idx": 32,
     "video_id": "Truck_spring_Katana_sword"
   },
   {
     "time": [
-      66,
-      68
+      33,
+      34
     ],
     "visible_entities": [
       {
-        "desc": "long, metallic blade with a smooth, reflective silver surface and a darker grey spine, resting on a textured surface",
+        "desc": "long, straight metal blade with a smooth, polished silver-grey surface and a distinct darker grey beveled edge",
         "action": "static",
         "position": "center"
       },
       {
-        "desc": "woven mat background with a light brown, fibrous texture",
+        "desc": "woven mat surface with a light brown, textured pattern of interlaced fibers",
         "action": "static",
         "position": "background"
       },
@@ -1415,11 +1324,15 @@
     ],
     "atomic_facts": [
       {
-        "fact": "The blade is resting on a woven mat.",
+        "fact": "The text 'Forged Folded K120C Powder Steel Blade' is displayed on the screen.",
         "confidence": 1.0
       },
       {
-        "fact": "The text overlay reads 'Forged Folded K120C Powder Steel Blade'.",
+        "fact": "The metal blade rests on top of the woven mat.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The blade remains stationary throughout the clip.",
         "confidence": 1.0
       }
     ],
@@ -1427,44 +1340,44 @@
       "Forged Folded K120C",
       "Powder Steel Blade"
     ],
-    "spatial": "The metallic blade is positioned horizontally across the center of the frame, lying on top of the woven mat. The white text overlay is located in the upper portion of the image, superimposed over the blade and the background.",
+    "spatial": "The metal blade is positioned horizontally across the center of the frame, resting on top of the woven mat. The white text overlay is located above the blade in the upper portion of the image.",
     "parse_success": true,
     "chunk_idx": 33,
     "video_id": "Truck_spring_Katana_sword"
   },
   {
     "time": [
-      68,
-      70
+      34,
+      35
     ],
     "visible_entities": [
       {
-        "desc": "metal blade, smooth, silver-grey, reflective, forged folded K120C powder steel",
+        "desc": "metallic blade with a smooth, reflective silver surface and a darker grey spine",
         "action": "static",
-        "position": "center/foreground"
+        "position": "center"
       },
       {
-        "desc": "woven mat, light-brown, textured, straw-like",
+        "desc": "woven wicker or bamboo mat background with a light brown, textured pattern",
         "action": "static",
         "position": "background"
       },
       {
-        "desc": "white text overlay, sans-serif font, 'Forged Folded K120C Powder Steel Blade'",
+        "desc": "white sans-serif text overlay",
         "action": "static",
-        "position": "top/center"
+        "position": "top"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "The forged folded K120C powder steel blade is resting on a woven mat.",
+        "fact": "The video displays a close-up of a forged folded K120C powder steel blade.",
         "confidence": 1.0
       },
       {
-        "fact": "The text 'Forged Folded K120C Powder Steel Blade' is overlaid on the top portion of the video frame.",
+        "fact": "The blade rests on a woven mat surface.",
         "confidence": 1.0
       },
       {
-        "fact": "The blade has a smooth, reflective surface.",
+        "fact": "The text 'Forged Folded K120C Powder Steel Blade' is superimposed over the image.",
         "confidence": 1.0
       }
     ],
@@ -1472,158 +1385,160 @@
       "Forged Folded K120C",
       "Powder Steel Blade"
     ],
-    "spatial": "The metal blade is in the foreground, positioned on top of the woven mat which serves as the background. The white text overlay is located above the blade, near the top edge of the frame.",
+    "spatial": "The metallic blade is positioned in the foreground, resting on top of the woven mat background. The white text overlay is located above the blade, centered near the top of the frame.",
     "parse_success": true,
     "chunk_idx": 34,
     "video_id": "Truck_spring_Katana_sword"
   },
   {
     "time": [
-      70,
-      72
+      35,
+      36
     ],
     "visible_entities": [
       {
-        "desc": "long, rectangular metallic bar with a smooth, silver-grey finish and a darker, reflective lower edge",
+        "desc": "rectangular metallic bar, silver-grey color, smooth surface with a distinct darker horizontal band along the lower edge, reflective finish",
         "action": "static",
         "position": "center"
       },
       {
-        "desc": "woven mat with a light brown, straw-like texture and vertical striations",
+        "desc": "woven mat background, light brown color, vertical fibrous texture",
         "action": "static",
         "position": "background"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A metallic bar rests horizontally on a woven mat.",
+        "fact": "A rectangular metallic bar rests on a woven mat.",
         "confidence": 1.0
       },
       {
-        "fact": "The metallic bar remains static throughout the clip.",
+        "fact": "The metallic bar features a darker horizontal band along its lower edge.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The metallic bar is positioned horizontally across the center of the frame, resting on top of the woven mat which serves as the background.",
+    "spatial": "The rectangular metallic bar is positioned in the foreground, lying on top of the light brown woven mat which serves as the background.",
     "parse_success": true,
     "chunk_idx": 35,
     "video_id": "Truck_spring_Katana_sword"
   },
   {
     "time": [
-      72,
-      74
+      36,
+      37
     ],
     "visible_entities": [
       {
-        "desc": "long, rectangular metallic bar with a smooth, highly reflective silver surface",
+        "desc": "long, rectangular metallic bar with a highly polished, reflective silver surface",
         "action": "static",
         "position": "center"
       },
       {
-        "desc": "woven mat with a textured, light-brown natural fiber pattern",
+        "desc": "woven surface made of light brown natural fibers, likely straw or wicker",
         "action": "static",
         "position": "background"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A long metallic bar is resting on a woven mat.",
+        "fact": "A polished metallic bar rests horizontally on a woven surface.",
         "confidence": 1.0
       },
       {
-        "fact": "The surface of the metallic bar reflects light and the surrounding environment.",
+        "fact": "The surface of the metal bar reflects the surrounding light and environment.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The metallic bar is positioned horizontally across the center of the frame, lying on top of the woven mat which serves as the background.",
+    "spatial": "The metallic bar is positioned horizontally in the center of the frame, lying directly on top of the woven background surface.",
     "parse_success": true,
     "chunk_idx": 36,
     "video_id": "Truck_spring_Katana_sword"
   },
   {
     "time": [
-      74,
-      76
+      37,
+      38
     ],
     "visible_entities": [
       {
-        "desc": "long, rectangular, silver-colored metallic blade with a polished, reflective surface and a visible hamon line",
+        "desc": "long, rectangular, metallic blade with a smooth, reflective silver surface and a distinct horizontal ridge running along its length",
         "action": "static",
         "position": "center"
       },
       {
-        "desc": "woven mat background made of light brown natural fibers with a vertical texture",
+        "desc": "woven, light-brown textured surface, likely a mat or basket weave",
         "action": "static",
         "position": "background"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A long, silver-colored metallic blade is resting horizontally on a woven mat.",
+        "fact": "A metallic blade is resting on a woven surface.",
         "confidence": 1.0
       },
       {
-        "fact": "The blade has a polished, reflective surface that mirrors the blue sky and clouds above.",
+        "fact": "The blade reflects light, showing a gradient from dark grey to bright silver.",
         "confidence": 1.0
       },
       {
-        "fact": "The background consists of a light brown woven mat with a vertical pattern.",
+        "fact": "The background texture consists of vertical woven strands.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The long, silver-colored metallic blade is positioned horizontally in the center of the frame, lying on top of the woven mat background. The mat extends across the entire background, visible above and below the blade.",
+    "spatial": "The metallic blade is positioned horizontally in the center of the frame, lying on top of the woven background surface.",
     "parse_success": true,
     "chunk_idx": 37,
     "video_id": "Truck_spring_Katana_sword"
   },
   {
     "time": [
-      76,
-      78
+      38,
+      39
     ],
     "visible_entities": [
       {
-        "desc": "long, polished silver metal blade with a curved tip and a distinct beveled edge, resting on a textured surface",
-        "action": "static"
+        "desc": "metallic blade with a polished silver finish, featuring a distinct hamon (temper line) pattern and a curved tip",
+        "action": "static",
+        "position": "center"
       },
       {
-        "desc": "woven mat surface with a light brown, fibrous texture",
-        "action": "static"
+        "desc": "woven straw mat with a light brown, textured surface",
+        "action": "static",
+        "position": "background"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "The metal blade is resting on the woven mat.",
+        "fact": "A metallic blade rests horizontally on a woven mat.",
         "confidence": 1.0
       },
       {
-        "fact": "The blade has a sharp, curved tip visible on the right side.",
+        "fact": "The blade displays a visible temper line along its length.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The silver metal blade is positioned horizontally across the center of the frame, lying on top of the woven mat surface.",
+    "spatial": "The metallic blade is positioned horizontally in the center of the frame, resting on top of the woven straw mat which serves as the background.",
     "parse_success": true,
     "chunk_idx": 38,
     "video_id": "Truck_spring_Katana_sword"
   },
   {
     "time": [
-      78,
-      80
+      39,
+      40
     ],
     "visible_entities": [
       {
-        "desc": "long, slender metallic blade with a silver-grey finish, featuring a distinct wavy hamon (temper line) along the edge and a smooth, reflective surface",
+        "desc": "long, straight, metallic silver blade with a polished, reflective surface and a visible edge bevel",
         "action": "static",
         "position": "center"
       },
       {
-        "desc": "coarse, brown woven fabric background with a visible grid-like texture",
+        "desc": "coarse, woven brown fabric with a textured, ribbed pattern",
         "action": "static",
         "position": "background"
       }
@@ -1634,11 +1549,11 @@
         "confidence": 1.0
       },
       {
-        "fact": "The blade rests on top of a brown textured fabric surface.",
+        "fact": "The blade rests on a textured brown fabric surface.",
         "confidence": 1.0
       },
       {
-        "fact": "Light reflects off the polished surface of the blade, highlighting the wavy temper line.",
+        "fact": "Light reflects off the polished surface of the blade.",
         "confidence": 1.0
       }
     ],
@@ -1650,17 +1565,17 @@
   },
   {
     "time": [
-      80,
-      82
+      40,
+      41
     ],
     "visible_entities": [
       {
-        "desc": "Japanese sword with a long, curved, silver-grey metallic blade, a gold-colored habaki (collar), a dark tsuba (guard), and a white tsuka (handle) featuring a black diamond-pattern wrap",
+        "desc": "Japanese sword (katana) with a curved, polished silver blade, a white tsuka (handle) featuring a black diamond-shaped ito wrap pattern, and a dark metal tsuba (guard)",
         "action": "static",
         "position": "center"
       },
       {
-        "desc": "beige textured surface with vertical striations",
+        "desc": "beige textured surface with a vertical woven or ribbed pattern",
         "action": "static",
         "position": "background"
       }
@@ -1671,328 +1586,328 @@
         "confidence": 1.0
       },
       {
-        "fact": "The camera pans slightly to the left, revealing the handle of the sword.",
+        "fact": "The sword features a white handle with a black diamond pattern.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The Japanese sword is lying on top of the beige textured surface. The handle is positioned to the left of the blade.",
+    "spatial": "The Japanese sword is positioned horizontally across the center of the frame, resting on top of the beige textured surface.",
     "parse_success": true,
     "chunk_idx": 40,
     "video_id": "Truck_spring_Katana_sword"
   },
   {
     "time": [
-      82,
-      84
+      41,
+      42
     ],
     "visible_entities": [
       {
-        "desc": "Japanese sword with a long, curved, silver-grey metal blade, a white handle wrapped in a diamond-patterned cord (ito), and a dark brown circular handguard (tsuba)",
+        "desc": "Japanese sword with a long, curved, silver-grey metal blade, a white handle wrapped in a diamond-patterned cord (ito) over white rayskin (same), and a dark brown metal handguard (tsuba)",
         "action": "static",
         "position": "center"
+      },
+      {
+        "desc": "textured beige surface with vertical striations, resembling a tatami mat or woven fabric",
+        "action": "static",
+        "position": "background"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A Japanese sword is lying horizontally on a surface.",
+        "fact": "The Japanese sword is lying horizontally on the textured beige surface.",
         "confidence": 1.0
       },
       {
-        "fact": "The sword features a white handle with a black diamond pattern.",
+        "fact": "The blade of the sword is curved and points towards the right side of the frame.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The handle of the sword is positioned on the left side of the frame.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The Japanese sword is positioned horizontally across the center of the frame, resting on top of a textured, light-brown surface.",
+    "spatial": "The Japanese sword is lying on top of the textured beige surface. The handle of the sword is to the left of the blade. The blade extends from the center towards the right edge of the frame.",
     "parse_success": true,
     "chunk_idx": 41,
     "video_id": "Truck_spring_Katana_sword"
   },
   {
     "time": [
-      84,
-      86
+      42,
+      43
     ],
     "visible_entities": [
       {
-        "desc": "Japanese sword with a curved silver blade, white handle featuring black diamond-shaped patterns, and a black guard",
-        "action": "static",
+        "desc": "Japanese sword (katana) with a white hilt wrapped in white cord featuring black diamond-shaped patterns, a black circular handguard (tsuba), and a long, curved, silver-colored metal blade.",
+        "action": "lying horizontally",
         "position": "center"
+      },
+      {
+        "desc": "light brown surface with a distinct vertical wood grain texture.",
+        "action": "static",
+        "position": "background"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A Japanese sword is lying horizontally on a surface.",
+        "fact": "A Japanese sword is lying horizontally across the frame.",
         "confidence": 1.0
       },
       {
-        "fact": "The sword has a white handle with black diamond patterns.",
+        "fact": "The sword is resting on a wooden surface.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The hilt of the sword is white with black diamond patterns.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The Japanese sword is positioned horizontally across the center of the frame, resting on a textured beige surface.",
+    "spatial": "The Japanese sword is positioned horizontally in the center of the frame, lying on top of the light brown wooden surface.",
     "parse_success": true,
     "chunk_idx": 42,
     "video_id": "Truck_spring_Katana_sword"
   },
   {
     "time": [
-      86,
-      88
+      43,
+      44
     ],
     "visible_entities": [
       {
-        "desc": "arm covered in a white, textured protective sleeve or glove",
+        "desc": "arm covered in a thick, white, textured protective sleeve or glove",
         "action": "holding a black snake",
-        "position": "center/foreground"
+        "position": "center foreground"
       },
       {
-        "desc": "black snake with dark scales",
-        "action": "coiled around the wrist of the arm",
-        "position": "center/foreground"
+        "desc": "black snake with a glossy, smooth texture and visible scales",
+        "action": "coiled around the white sleeve",
+        "position": "center"
       },
       {
-        "desc": "green leafy foliage background",
+        "desc": "dense green foliage, likely bamboo leaves",
         "action": "static",
         "position": "background"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A person is holding a black snake.",
+        "fact": "A person wearing a white protective sleeve is holding a black snake.",
         "confidence": 1.0
       },
       {
-        "fact": "The black snake is coiled around the person's wrist.",
+        "fact": "The black snake is coiled tightly around the white sleeve.",
         "confidence": 1.0
       },
       {
-        "fact": "The person is wearing a white protective sleeve on their arm.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The scene takes place outdoors in front of green plants.",
+        "fact": "The scene takes place outdoors in front of green vegetation.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The arm covered in the white sleeve is in the center foreground, holding the black snake. The snake is wrapped around the wrist of the arm. The green leafy foliage is behind the arm and snake.",
+    "spatial": "The arm in the white sleeve is in the foreground, holding the black snake which is wrapped around it. The green foliage is located behind the arm and snake, filling the background.",
     "parse_success": true,
     "chunk_idx": 43,
     "video_id": "Truck_spring_Katana_sword"
   },
   {
     "time": [
-      88,
-      90
+      44,
+      45
     ],
     "visible_entities": [
       {
-        "desc": "black, textured snake sculpture with detailed scales, coiled around a dark metal fixture",
+        "desc": "black snake sculpture with detailed scales and a coiled body",
         "action": "static",
-        "position": "center/foreground"
+        "position": "center"
       },
       {
-        "desc": "dark metal fixture with a curved handle and a copper-colored coiled spring base",
-        "action": "static",
-        "position": "center/foreground"
-      },
-      {
-        "desc": "green leafy foliage, out of focus",
-        "action": "static",
-        "position": "background"
-      },
-      {
-        "desc": "white cylindrical object, partially visible at the bottom",
+        "desc": "white sleeve with a textured cuff",
         "action": "static",
         "position": "bottom"
+      },
+      {
+        "desc": "green foliage background",
+        "action": "static",
+        "position": "background"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A black snake sculpture is coiled around the top of a dark metal fixture.",
+        "fact": "A black snake sculpture is coiled around a dark object.",
         "confidence": 1.0
       },
       {
-        "fact": "The snake sculpture is positioned above a copper-colored coiled spring.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "Green foliage is visible in the background behind the fixture.",
+        "fact": "The snake sculpture has detailed scales.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The black snake sculpture is coiled around the top of the dark metal fixture. The copper-colored spring is located below the snake sculpture on the fixture. The green leafy foliage is in the background, behind the entire assembly.",
+    "spatial": "The black snake sculpture is in the center of the frame, coiled around a dark object. The white sleeve is below the snake sculpture. The green foliage is in the background, behind the snake sculpture.",
     "parse_success": true,
     "chunk_idx": 44,
     "video_id": "Truck_spring_Katana_sword"
   },
   {
     "time": [
-      90,
-      92
+      45,
+      46
     ],
     "visible_entities": [
       {
-        "desc": "black metal object with a textured, snakeskin-like pattern and a copper-colored coiled wire",
+        "desc": "black ornate metal object with a textured, scale-like pattern resembling a coiled snake or dragon, featuring a copper-colored ribbed ring",
         "action": "being held",
         "position": "center"
       },
       {
-        "desc": "white textured surface, likely a gloved hand or cloth",
+        "desc": "white textured fabric, appearing to be a sleeve or glove",
         "action": "holding the metal object",
         "position": "left"
       },
       {
-        "desc": "green foliage, out of focus",
+        "desc": "blurred green foliage",
         "action": "static",
         "position": "background"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A white textured surface is holding a black metal object.",
+        "fact": "A white textured sleeve or glove is holding a black ornate metal object.",
         "confidence": 1.0
       },
       {
-        "fact": "The black metal object features a copper-colored coiled wire wrapped around a cylindrical part.",
+        "fact": "The metal object features a copper-colored ribbed ring.",
         "confidence": 1.0
       },
       {
-        "fact": "The background consists of blurred green foliage.",
+        "fact": "The background consists of out-of-focus green foliage.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The white textured surface is on the left side of the frame and is holding the black metal object. The black metal object is in the center foreground. The green foliage is in the background behind the metal object.",
+    "spatial": "The white textured sleeve is on the left side of the frame, holding the black metal object which is positioned in the center. The green foliage is in the background behind the metal object.",
     "parse_success": true,
     "chunk_idx": 45,
     "video_id": "Truck_spring_Katana_sword"
   },
   {
     "time": [
-      92,
-      94
+      46,
+      47
     ],
     "visible_entities": [
       {
-        "desc": "black ornate metal object with curved, branch-like structures and a textured surface",
+        "desc": "black sword hilt with an intricate, openwork guard featuring curved, branch-like metal designs and a small sculpted detail at the top, attached to a white handle wrapped in textured cord",
         "action": "static",
-        "position": "center"
+        "position": "right/foreground"
       },
       {
-        "desc": "white cylindrical object with a ribbed, fabric-like texture and a coiled metal wire wrapping at the top",
+        "desc": "green foliage, out of focus",
         "action": "static",
-        "position": "right"
-      },
-      {
-        "desc": "out-of-focus green foliage",
-        "action": "static",
-        "position": "background"
+        "position": "left/background"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "The black ornate metal object is positioned next to the white ribbed cylindrical object.",
+        "fact": "A black sword hilt with a white wrapped handle is held in the foreground.",
         "confidence": 1.0
       },
       {
-        "fact": "The background consists of blurry green foliage.",
+        "fact": "The background consists of blurred green leaves.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The black ornate metal object is to the left of the white ribbed cylindrical object. The white object is in the foreground on the right side of the frame. The green foliage is in the background, behind both the black and white objects.",
+    "spatial": "The black sword hilt is positioned on the right side of the frame in the foreground. The out-of-focus green foliage is located to the left of the sword hilt in the background.",
     "parse_success": true,
     "chunk_idx": 46,
     "video_id": "Truck_spring_Katana_sword"
   },
   {
     "time": [
-      94,
-      96
+      47,
+      48
     ],
     "visible_entities": [
       {
-        "desc": "black snake with dark scales, coiled",
-        "action": "wrapped around a gloved hand",
+        "desc": "black snake with smooth, dark scales",
+        "action": "coiling around a tool",
         "position": "center/foreground"
       },
       {
-        "desc": "arm wearing a white ribbed long-sleeve shirt and a black glove with a brown cuff",
-        "action": "holding the snake",
+        "desc": "snake hook with a black rubberized handle and a white textured grip",
+        "action": "being held",
         "position": "center/foreground"
       },
       {
-        "desc": "green leafy foliage, likely bamboo",
+        "desc": "green leafy foliage",
         "action": "static",
         "position": "background"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A black snake is coiled around a person's gloved hand.",
+        "fact": "A black snake is coiled around the hook end of a snake handling tool.",
         "confidence": 1.0
       },
       {
-        "fact": "The person is holding the snake up against a background of green leaves.",
+        "fact": "The snake's head is visible near the top of the hook.",
         "confidence": 1.0
       },
       {
-        "fact": "The snake's body loops over the top of the hand and wrist.",
+        "fact": "The tool has a white textured grip extending towards the bottom of the frame.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The black snake is wrapped around the black glove, which is on the person's hand. The person's arm, covered in a white sleeve, extends from the bottom of the frame. The green foliage is behind the snake and the arm.",
+    "spatial": "The black snake is coiled around the hook of the tool in the center of the frame. The tool is held in front of the green leafy foliage which fills the background.",
     "parse_success": true,
     "chunk_idx": 47,
     "video_id": "Truck_spring_Katana_sword"
   },
   {
     "time": [
-      96,
-      98
+      48,
+      49
     ],
     "visible_entities": [
       {
-        "desc": "Japanese sword hilt (tsuba) with a black, circular, open-work metal guard, a gold-colored collar (habaki), and a white wrapped handle (tsuka)",
-        "action": "enters the frame from the left",
-        "position": "left foreground"
-      },
-      {
-        "desc": "dense green foliage with long, narrow leaves resembling bamboo",
+        "desc": "dense green bamboo leaves with pointed tips, some showing yellowing or browning at the ends",
         "action": "static",
         "position": "background"
+      },
+      {
+        "desc": "black circular valve wheel with a brass-colored central stem and a white cylindrical base",
+        "action": "static",
+        "position": "left foreground"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A Japanese sword hilt enters the frame from the left side.",
+        "fact": "A black valve wheel is positioned in the foreground on the left side of the frame.",
         "confidence": 1.0
       },
       {
-        "fact": "The sword is held in front of a background of green leaves.",
+        "fact": "Dense green foliage fills the background behind the valve wheel.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The sword hilt is in the foreground on the left side of the frame. The dense green foliage is in the background, filling the rest of the view behind the sword.",
+    "spatial": "The black valve wheel is in the foreground on the left side of the frame. The dense green bamboo leaves are in the background, positioned behind and to the right of the valve wheel.",
     "parse_success": true,
     "chunk_idx": 48,
     "video_id": "Truck_spring_Katana_sword"
   },
   {
     "time": [
-      98,
-      100
+      49,
+      50
     ],
     "visible_entities": [
       {
-        "desc": "black metal sword guard (tsuba) with an openwork design featuring two stylized birds, likely cranes, facing each other",
+        "desc": "black metal sword guard (tsuba) with a circular rim and openwork design featuring a bird figure on the left side",
         "action": "static",
         "position": "center"
       },
@@ -2002,141 +1917,108 @@
         "position": "center"
       },
       {
-        "desc": "black handle grip (tsuka) with a textured surface",
+        "desc": "black sword tang (nakago) protruding vertically",
         "action": "static",
-        "position": "top"
+        "position": "center"
       },
       {
-        "desc": "white wrapped material, likely a cord or cloth, at the base of the handle",
+        "desc": "white wrapped handle (tsuka-ito) visible at the bottom",
         "action": "static",
         "position": "bottom"
       },
       {
-        "desc": "green bamboo leaves with long, slender shapes",
+        "desc": "green bamboo leaves forming a dense background",
         "action": "static",
         "position": "background"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "The camera focuses on the hilt of a sword against a background of bamboo.",
+        "fact": "The camera zooms in slightly on the sword guard assembly.",
         "confidence": 1.0
       },
       {
-        "fact": "The black sword guard features a relief design of two birds.",
+        "fact": "The black metal guard is positioned between the gold collar and the white handle wrapping.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The gold collar sits directly below the black tang.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The black sword guard is positioned in the center of the frame, surrounding the gold-colored collar. The black handle grip extends upwards from the collar, while the white wrapped material is located below the guard. The green bamboo leaves are visible in the background behind the sword components.",
+    "spatial": "The black metal guard is in the center foreground, surrounding the gold collar and black tang. The white wrapped handle is below the guard. The green bamboo leaves are behind the sword components.",
     "parse_success": true,
     "chunk_idx": 49,
     "video_id": "Truck_spring_Katana_sword"
   },
   {
     "time": [
-      100,
-      102
+      50,
+      51
     ],
     "visible_entities": [
       {
-        "desc": "black metal tsuba (sword guard) with an openwork design featuring a coiled snake with detailed scales",
+        "desc": "black metal tsuba (sword guard) featuring a sculpted snake design with visible scales and a distinct head, surrounding a central opening",
+        "action": "static",
+        "position": "foreground"
+      },
+      {
+        "desc": "brass-colored hexagonal metal collar (habaki) with a brushed texture",
         "action": "static",
         "position": "center"
       },
       {
-        "desc": "brass-colored habaki (metal collar) with a hexagonal cross-section and a textured rim",
+        "desc": "black hexagonal metal tang (nakago) of a sword blade",
         "action": "static",
-        "position": "center"
+        "position": "top center"
       },
       {
-        "desc": "black hexagonal blade tang or blade section",
-        "action": "static",
-        "position": "center"
-      },
-      {
-        "desc": "green foliage background",
+        "desc": "blurred green foliage background",
         "action": "static",
         "position": "background"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "The camera pans slightly to the right, revealing more of the snake design on the sword guard.",
+        "fact": "The camera angle shifts slightly to the left, revealing the head of the snake sculpture on the sword guard.",
         "confidence": 1.0
       },
       {
-        "fact": "The brass habaki is positioned between the black blade and the black tsuba.",
+        "fact": "A brass-colored metal collar is positioned directly below the black hexagonal sword tang.",
         "confidence": 1.0
       },
       {
-        "fact": "The tsuba features a sculpted snake wrapping around the rim.",
+        "fact": "The black metal sword guard surrounds the central brass collar.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The brass habaki is in the center, positioned in front of the black tsuba. The black hexagonal blade extends upwards from the habaki. The green foliage is in the background behind the sword components.",
+    "spatial": "The black hexagonal tang is positioned above the brass-colored collar in the center of the frame. The black metal tsuba with the snake design surrounds the brass collar. The blurred green foliage is located behind the sword components.",
     "parse_success": true,
     "chunk_idx": 50,
     "video_id": "Truck_spring_Katana_sword"
   },
   {
     "time": [
-      102,
-      104
+      51,
+      52
     ],
     "visible_entities": [
       {
-        "desc": "black metal sword guard (tsuba) featuring a sculpted snake design with detailed scales, coiled around the outer rim",
+        "desc": "black metal tsuba (sword guard) featuring a sculpted snake design coiled around the rim with a textured scale pattern",
+        "action": "static",
+        "position": "center/foreground"
+      },
+      {
+        "desc": "brass-colored hexagonal metal collar with a knurled edge",
         "action": "static",
         "position": "center"
       },
       {
-        "desc": "brass-colored metal collar (habaki) with a ribbed lower edge, fitted around the base of the blade",
+        "desc": "black hexagonal rod or handle shaft",
         "action": "static",
         "position": "center"
-      },
-      {
-        "desc": "black hexagonal tang (nakago) of the sword blade",
-        "action": "static",
-        "position": "center"
-      },
-      {
-        "desc": "green leafy foliage background",
-        "action": "static",
-        "position": "background"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "The camera focuses on the hilt assembly of a sword.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "A black metal guard with a snake motif surrounds a brass collar.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The brass collar is positioned between the guard and the black hexagonal tang.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [],
-    "spatial": "The black metal snake guard is in the foreground, surrounding the central brass collar. The brass collar is positioned directly below the black hexagonal tang of the blade. The green foliage is visible in the background behind the sword components.",
-    "parse_success": true,
-    "chunk_idx": 51,
-    "video_id": "Truck_spring_Katana_sword"
-  },
-  {
-    "time": [
-      104,
-      106
-    ],
-    "visible_entities": [
-      {
-        "desc": "sword hilt with a gold-colored cylindrical habaki, a black textured tsuba (guard), and a silver blade",
-        "action": "being unsheathed and moved out of frame",
-        "position": "left/foreground"
       },
       {
         "desc": "green foliage background",
@@ -2146,192 +2028,271 @@
     ],
     "atomic_facts": [
       {
-        "fact": "The sword is being unsheathed, revealing the silver blade.",
+        "fact": "A black metal tsuba with a snake motif is displayed in the foreground.",
         "confidence": 1.0
       },
       {
-        "fact": "The sword moves rapidly from the left side of the frame towards the top left, exiting the view.",
+        "fact": "A brass-colored hexagonal collar is positioned on the central shaft, resting above the tsuba.",
         "confidence": 1.0
       },
       {
-        "fact": "The background consists of blurred green leaves.",
+        "fact": "The camera angle shifts slightly between the two frames, altering the perspective of the sword guard.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The sword hilt is in the foreground on the left side of the frame. The green foliage is behind the sword, filling the background.",
+    "spatial": "The black metal tsuba is in the foreground, centered in the frame. The brass-colored hexagonal collar is positioned on the black shaft, which passes through the center of the tsuba. The green foliage is visible in the background behind the metal object.",
+    "parse_success": true,
+    "chunk_idx": 51,
+    "video_id": "Truck_spring_Katana_sword"
+  },
+  {
+    "time": [
+      52,
+      53
+    ],
+    "visible_entities": [
+      {
+        "desc": "black sword guard (tsuba) with an irregular, organic shape and a matte finish, topped with a cylindrical gold-colored metal collar (habaki)",
+        "action": "static",
+        "position": "left/foreground"
+      },
+      {
+        "desc": "silver-grey metallic blade surface, smooth and reflective",
+        "action": "moving",
+        "position": "left/foreground"
+      },
+      {
+        "desc": "green leafy foliage background, blurred",
+        "action": "static",
+        "position": "background"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The black sword guard is stationary in the foreground.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The silver-grey blade moves rapidly across the left side of the frame.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The background consists of out-of-focus green leaves.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The black sword guard is positioned in the lower-left foreground. The silver-grey blade is located to the left of the guard and moves vertically. The green leafy foliage is behind the sword components.",
     "parse_success": true,
     "chunk_idx": 52,
     "video_id": "Truck_spring_Katana_sword"
   },
   {
     "time": [
-      106,
-      108
+      53,
+      54
     ],
     "visible_entities": [
       {
-        "desc": "Japanese sword (katana) with a long, polished silver blade featuring a visible wavy hamon pattern, a black tsuba (handguard) intricately designed with intertwined dragon figures, a gold-colored habaki (collar), and a white tsuka (handle) wrapped in white cord with black diamond-shaped accents.",
-        "action": "being held up and displayed",
+        "desc": "Japanese sword (katana) with a polished silver blade, a black intricately woven tsuba (handguard), and a white tsuka (handle) wrapped in white cord (ito) over black diamond-shaped menuki accents.",
+        "action": "being held and tilted",
         "position": "foreground"
       },
       {
-        "desc": "Dense green foliage consisting of long, narrow leaves, likely bamboo or similar shrubbery.",
+        "desc": "dense green foliage, likely bamboo leaves",
         "action": "static",
         "position": "background"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A person is holding a Japanese sword upright in the foreground.",
+        "fact": "A person is holding a Japanese sword in front of a green leafy background.",
         "confidence": 1.0
       },
       {
-        "fact": "The sword's blade reflects light, indicating a polished surface.",
+        "fact": "The sword is tilted diagonally from the bottom left to the top right.",
         "confidence": 1.0
       },
       {
-        "fact": "The background consists of out-of-focus green plants.",
+        "fact": "The blade reflects light, indicating a polished metal surface.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The Japanese sword is positioned in the foreground, extending diagonally from the bottom left towards the top right. The dense green foliage is located behind the sword, filling the background.",
+    "spatial": "The Japanese sword is in the foreground, positioned in front of the dense green foliage. The handle of the sword is located at the bottom left, while the blade extends towards the top right.",
     "parse_success": true,
     "chunk_idx": 53,
     "video_id": "Truck_spring_Katana_sword"
   },
   {
     "time": [
-      108,
-      110
+      54,
+      55
     ],
     "visible_entities": [
       {
-        "desc": "Japanese sword (katana) with a black, intricately knotted cord-wrapped handguard (tsuba), a white fabric-wrapped handle (tsuka), and a long, curved, polished silver blade",
-        "action": "being held and angled upwards",
+        "desc": "Japanese katana sword with a white ray skin handle (tsuka), black cord wrapping (ito), and a complex black metal handguard (tsuba) featuring a coiled snake design",
+        "action": "being held and tilted",
         "position": "foreground"
       },
       {
-        "desc": "dense green bamboo foliage with long, slender leaves",
+        "desc": "dense green bamboo foliage",
         "action": "static",
         "position": "background"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A person is holding a katana with the blade pointed upwards.",
+        "fact": "A person is holding a katana sword in the foreground.",
         "confidence": 1.0
       },
       {
-        "fact": "The sword is positioned in front of a background of green bamboo leaves.",
+        "fact": "The sword is tilted upwards to reveal the blade.",
         "confidence": 1.0
       },
       {
-        "fact": "The handguard of the sword features a complex, knotted black cord design.",
+        "fact": "The blade reflects light against the green background.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The Japanese sword is in the foreground, positioned in front of the dense green bamboo foliage which fills the background. The blade of the sword extends from the bottom left towards the top right of the frame.",
+    "spatial": "The katana sword is positioned in the foreground, held in front of the dense green bamboo foliage which fills the background.",
     "parse_success": true,
     "chunk_idx": 54,
     "video_id": "Truck_spring_Katana_sword"
   },
   {
     "time": [
-      110,
-      112
+      55,
+      56
     ],
     "visible_entities": [
       {
-        "desc": "curved metallic blade, silver-grey color, reflective surface with visible texture patterns, sharp edge",
-        "action": "held in foreground",
-        "position": "center/foreground"
+        "desc": "curved metallic blade, silver, shiny, reflective surface, sharp edge",
+        "action": "being held up",
+        "position": "foreground"
       },
       {
-        "desc": "dense green foliage, bamboo-like leaves, natural texture",
+        "desc": "green bamboo leaves, dense foliage",
         "action": "static",
         "position": "background"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A curved metallic blade is held in front of green foliage.",
+        "fact": "A curved metallic blade is being held up against a background of green leaves.",
         "confidence": 1.0
       },
       {
-        "fact": "The blade reflects light, showing a textured surface pattern.",
+        "fact": "The blade reflects light, indicating a polished metal surface.",
         "confidence": 1.0
       },
       {
-        "fact": "The background consists of dense green leaves.",
+        "fact": "The background consists of dense bamboo foliage.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The curved metallic blade is in front of the dense green foliage. The foliage fills the background behind the blade.",
+    "spatial": "The curved metallic blade is in the foreground, positioned in front of the green bamboo leaves which fill the background.",
     "parse_success": true,
     "chunk_idx": 55,
     "video_id": "Truck_spring_Katana_sword"
   },
   {
     "time": [
-      112,
-      114
+      56,
+      57
     ],
     "visible_entities": [
       {
-        "desc": "curved blade with a metallic silver finish, black textured handle, and a black cord wrapped around the base",
-        "action": "being held and displayed",
-        "position": "foreground"
+        "desc": "curved sword with a shiny, metallic silver blade and a black hilt wrapped in black cord",
+        "action": "being held up",
+        "position": "center"
       },
       {
-        "desc": "dense green bamboo leaves",
+        "desc": "dense green bamboo foliage",
         "action": "static",
         "position": "background"
       },
       {
-        "desc": "circular overlay with a beige vertical wood-grain texture",
+        "desc": "white sleeve with black markings",
+        "action": "holding sword",
+        "position": "bottom left"
+      },
+      {
+        "desc": "circular overlay with a beige wood-grain texture",
         "action": "static",
         "position": "center"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A person is holding a curved, metallic blade in front of a bamboo background.",
+        "fact": "A person is holding a curved sword up against a background of green bamboo.",
         "confidence": 1.0
       },
       {
-        "fact": "A circular graphic overlay appears in the center of the frame.",
+        "fact": "A circular graphic overlay appears in the center of the screen, obscuring the sword blade.",
         "confidence": 1.0
       },
       {
-        "fact": "The blade is positioned diagonally across the screen.",
+        "fact": "The sword has a distinct curve and a reflective silver surface.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The curved blade is in the foreground, positioned in front of the dense green bamboo leaves. The circular beige overlay is superimposed in the center of the frame, partially obscuring the blade and the background.",
+    "spatial": "The curved sword is held in the center foreground, positioned in front of the dense green bamboo foliage. The white sleeve is visible at the bottom left, gripping the hilt of the sword. The circular wood-grain overlay is superimposed directly over the center of the sword blade.",
     "parse_success": true,
     "chunk_idx": 56,
     "video_id": "Truck_spring_Katana_sword"
   },
   {
     "time": [
-      114,
-      116
+      57,
+      58
     ],
     "visible_entities": [
       {
-        "desc": "Japanese sword with a white handle featuring a black diamond pattern, a black guard, and a long, curved black scabbard",
+        "desc": "Japanese sword (katana) with a white handle featuring a black diamond-shaped pattern, a black circular handguard, and a black scabbard with a textured surface",
         "action": "static",
         "position": "center"
       },
       {
-        "desc": "light brown textured surface with vertical lines",
+        "desc": "light brown wooden table with a visible vertical grain texture",
         "action": "static",
         "position": "background"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The sword is lying horizontally on the wooden table.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The handle of the sword is positioned on the left side of the frame.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The scabbard extends towards the right side of the frame.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The sword is resting on top of the wooden table. The handle is to the left of the scabbard.",
+    "parse_success": true,
+    "chunk_idx": 57,
+    "video_id": "Truck_spring_Katana_sword"
+  },
+  {
+    "time": [
+      58,
+      59
+    ],
+    "visible_entities": [
+      {
+        "desc": "Japanese sword (katana) with a black textured scabbard, a black circular handguard (tsuba), and a white handle wrap with a diamond pattern",
+        "action": "static",
+        "position": "center"
       }
     ],
     "atomic_facts": [
@@ -2341,34 +2302,6 @@
       },
       {
         "fact": "The sword remains static throughout the clip.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [],
-    "spatial": "The Japanese sword is positioned horizontally across the center of the frame, resting on top of the light brown textured surface.",
-    "parse_success": true,
-    "chunk_idx": 57,
-    "video_id": "Truck_spring_Katana_sword"
-  },
-  {
-    "time": [
-      116,
-      118
-    ],
-    "visible_entities": [
-      {
-        "desc": "Japanese sword (katana) with a black scabbard, black hilt wrapping, and a white tsuba (handguard) featuring a repeating diamond pattern",
-        "action": "static",
-        "position": "center"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "A Japanese sword is lying horizontally on a textured surface.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The sword remains stationary throughout the clip.",
         "confidence": 1.0
       }
     ],
@@ -2380,297 +2313,295 @@
   },
   {
     "time": [
-      118,
-      120
+      59,
+      60
     ],
     "visible_entities": [
       {
-        "desc": "Japanese sword (katana) with a white tsuka-ito wrap featuring black diamond-shaped patterns, a black tsuba, and a black scabbard (saya)",
+        "desc": "Japanese sword (katana) with a white handle featuring black diamond-shaped patterns, a black guard, and a black scabbard",
         "action": "static",
         "position": "center"
-      },
-      {
-        "desc": "light-colored wooden surface with vertical grain texture",
-        "action": "static",
-        "position": "background"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A Japanese sword is lying on a wooden surface.",
+        "fact": "The sword is lying horizontally on a textured beige surface.",
         "confidence": 1.0
       },
       {
-        "fact": "The sword handle features a white wrap with black diamond patterns.",
+        "fact": "The handle of the sword is white with a repeating black diamond pattern.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The Japanese sword is lying on top of the wooden surface. The white handle is positioned to the left of the black scabbard.",
+    "spatial": "The sword is positioned horizontally across the center of the frame, resting on top of a beige textured background.",
     "parse_success": true,
     "chunk_idx": 59,
     "video_id": "Truck_spring_Katana_sword"
   },
   {
     "time": [
-      120,
-      122
+      60,
+      61
     ],
     "visible_entities": [
       {
-        "desc": "white sword handle wrapped in white cord with black diamond-shaped patterns and a black pommel",
+        "desc": "white wrapped sword handle (tsuka) with black diamond-shaped openings (hishi) revealing black under-wrapping, and a black pommel (kashira) at the end",
         "action": "static",
         "position": "center"
       },
       {
-        "desc": "beige textured fabric surface",
+        "desc": "textured beige background surface",
         "action": "static",
         "position": "background"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A white sword handle is resting on a beige textured surface.",
+        "fact": "A white wrapped sword handle is lying horizontally on a textured surface.",
         "confidence": 1.0
       },
       {
-        "fact": "The handle features a black pommel at the left end.",
+        "fact": "The handle features a pattern of black diamond shapes running along its length.",
         "confidence": 1.0
       },
       {
-        "fact": "The wrapping pattern consists of black diamond shapes.",
+        "fact": "The pommel at the left end of the handle is black.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The white sword handle is positioned horizontally in the center of the frame. The handle is resting on top of the beige textured fabric surface.",
+    "spatial": "The white wrapped sword handle is positioned horizontally in the center of the frame, resting on top of the textured beige background.",
     "parse_success": true,
     "chunk_idx": 60,
     "video_id": "Truck_spring_Katana_sword"
   },
   {
     "time": [
-      122,
-      124
+      61,
+      62
     ],
     "visible_entities": [
       {
-        "desc": "Japanese sword handle (tsuka) wrapped in white cord (ito) with black diamond-shaped openings revealing gold-colored metal ornaments (menuki) underneath, featuring a black circular guard (tsuba) and a black cord-wrapped pommel (tsukagashira)",
+        "desc": "white tsuka-ito wrapped sword handle with black diamond-shaped openings revealing gold menuki ornaments",
         "action": "static",
         "position": "center"
       },
       {
-        "desc": "textured beige woven mat background",
+        "desc": "black tsuba handguard with a textured, organic shape",
+        "action": "static",
+        "position": "right"
+      },
+      {
+        "desc": "black cord wrapped around the handle base",
+        "action": "static",
+        "position": "far right"
+      },
+      {
+        "desc": "beige woven mat background",
         "action": "static",
         "position": "background"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "The camera pans from left to right along the length of the sword handle.",
+        "fact": "The camera pans slightly to the right, revealing the black tsuba handguard.",
         "confidence": 1.0
       },
       {
-        "fact": "The sword handle is resting on a textured beige mat.",
+        "fact": "The sword handle rests horizontally on a beige woven mat.",
         "confidence": 1.0
       },
       {
-        "fact": "The white wrapping cord creates a diamond pattern over the black rayskin.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "Gold-colored menuki ornaments are visible through the openings in the white wrapping.",
+        "fact": "Gold-colored menuki ornaments are visible through the diamond-shaped openings in the white wrapping.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The sword handle is positioned horizontally in the center of the frame, lying on top of the textured beige mat which serves as the background. The black guard is located to the right of the white wrapped section.",
+    "spatial": "The white wrapped sword handle is positioned horizontally across the center of the frame. The black tsuba handguard is located to the right of the white wrapping. The entire sword assembly rests on top of the beige woven mat background.",
     "parse_success": true,
     "chunk_idx": 61,
     "video_id": "Truck_spring_Katana_sword"
   },
   {
     "time": [
-      124,
-      126
+      62,
+      63
     ],
     "visible_entities": [
       {
-        "desc": "Japanese sword handle (tsuka) with black cord wrapping (ito) over a black scabbard (saya), featuring a dark oval menuki ornament and a white handle wrap (tsuka-ito) with black diamond patterns near the guard (tsuba)",
+        "desc": "Japanese sword handle (tsuka) featuring black cord wrapping (ito) over a black scabbard (saya), a black metal guard (tsuba), and a white section with black diamond patterns (tsuka-ito or habaki area) on the left.",
         "action": "static",
         "position": "center"
       },
       {
-        "desc": "woven straw mat surface (tatami) with a textured, light beige appearance",
+        "desc": "Woven mat background with a textured, light beige or straw-colored surface.",
         "action": "static",
         "position": "background"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "The sword handle rests horizontally on the woven mat.",
+        "fact": "A Japanese sword handle lies horizontally across the frame.",
         "confidence": 1.0
       },
       {
-        "fact": "The black cord is wrapped in a diamond pattern around the handle.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "A dark, oval-shaped ornament is visible beneath the cord wrapping.",
+        "fact": "The sword is resting on a woven mat surface.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The sword handle is positioned horizontally across the center of the frame, lying on top of the woven straw mat background.",
+    "spatial": "The sword handle is positioned horizontally in the center of the frame, lying on top of the woven mat background.",
     "parse_success": true,
     "chunk_idx": 62,
     "video_id": "Truck_spring_Katana_sword"
   },
   {
     "time": [
-      126,
-      128
+      63,
+      64
     ],
     "visible_entities": [
       {
-        "desc": "black sword handle with a dark purple cord wrap (ito) in a diamond pattern, a black menuki ornament, and a black textured grip section (tsuka) with rectangular cutouts",
+        "desc": "black sword hilt with dark purple cord wrapping (tsuka-ito) in a diamond pattern, a central black menuki ornament, and a black metal guard (tsuba) on the left",
         "action": "static",
         "position": "center"
       },
       {
-        "desc": "woven beige mat background with a textured surface",
+        "desc": "light beige woven mat with a grid-like texture",
         "action": "static",
         "position": "background"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "The camera pans to the right along the length of the sword handle.",
+        "fact": "The sword hilt is resting horizontally on the woven mat.",
         "confidence": 1.0
       },
       {
-        "fact": "The sword handle rests on a woven mat.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The handle features a dark purple cord wrap near the guard and a perforated grip section extending to the right.",
+        "fact": "The camera pans slightly to the right, revealing more of the sword's scabbard.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The black sword handle is positioned horizontally across the center of the frame, resting on top of the woven beige mat. The camera movement reveals the handle extending from the left side towards the right side of the view.",
+    "spatial": "The black sword hilt is positioned horizontally across the center of the frame, resting on top of the light beige woven mat. The tsuba is located at the far left end of the hilt.",
     "parse_success": true,
     "chunk_idx": 63,
     "video_id": "Truck_spring_Katana_sword"
   },
   {
     "time": [
-      128,
-      130
+      64,
+      65
     ],
     "visible_entities": [
       {
-        "desc": "black plastic cable management duct with a perforated grid pattern of rectangular slots",
+        "desc": "black plastic cable management spine with a ladder-like structure of rectangular slots",
         "action": "static",
         "position": "center"
       },
       {
-        "desc": "light beige textured fabric surface with a woven appearance",
+        "desc": "beige textured fabric surface with a woven pattern",
         "action": "static",
         "position": "background"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A black plastic cable management duct is resting horizontally on a textured fabric surface.",
+        "fact": "A black plastic cable management spine is lying horizontally across the frame.",
         "confidence": 1.0
       },
       {
-        "fact": "The duct features a repeating pattern of rectangular ventilation slots.",
+        "fact": "The spine rests on top of a beige textured fabric surface.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The black plastic cable management duct is positioned horizontally across the center of the frame, lying on top of the light beige textured fabric surface.",
+    "spatial": "The black plastic cable management spine is positioned horizontally in the center of the frame, lying on top of the beige textured fabric surface.",
     "parse_success": true,
     "chunk_idx": 64,
     "video_id": "Truck_spring_Katana_sword"
   },
   {
     "time": [
-      130,
-      132
+      65,
+      66
     ],
     "visible_entities": [
       {
-        "desc": "black perforated plastic strip with a grid of rectangular slots",
+        "desc": "black flexible tube with a perforated pattern of rectangular slots",
         "action": "static",
         "position": "center"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A black perforated plastic strip is lying on a textured surface.",
+        "fact": "A black perforated tube lies horizontally on a textured surface.",
         "confidence": 1.0
       },
       {
-        "fact": "The strip features a repeating pattern of rectangular holes.",
+        "fact": "The tube remains static throughout the clip.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The black perforated strip is positioned horizontally across the center of the frame, resting on top of a beige textured surface.",
+    "spatial": "The black perforated tube is positioned horizontally across the center of the frame, resting on top of a beige textured background.",
     "parse_success": true,
     "chunk_idx": 65,
     "video_id": "Truck_spring_Katana_sword"
   },
   {
     "time": [
-      132,
-      134
+      66,
+      67
     ],
     "visible_entities": [
       {
-        "desc": "Japanese sword (katana) with a white blade featuring a repeating black diamond pattern along the spine, a black circular handguard (tsuba), and a black scabbard (saya) with a textured surface.",
+        "desc": "Japanese sword (katana) with a black scabbard (saya) featuring a textured, scale-like pattern, a black hilt (tsuka), a black handguard (tsuba), and a white blade section with a repeating black diamond pattern along the edge",
         "action": "static",
         "position": "center"
+      },
+      {
+        "desc": "light brown wooden surface with visible vertical grain texture",
+        "action": "static",
+        "position": "background"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A Japanese sword is lying horizontally on a surface.",
+        "fact": "A Japanese sword is lying horizontally on a wooden surface.",
         "confidence": 1.0
       },
       {
-        "fact": "The sword blade is white with a black diamond pattern.",
+        "fact": "The sword features a white blade section with a black diamond pattern.",
         "confidence": 1.0
       },
       {
-        "fact": "The sword is partially sheathed in a black scabbard.",
+        "fact": "The scabbard of the sword has a textured, scale-like appearance.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The Japanese sword is positioned horizontally across the center of the frame, resting on top of a light-colored wooden surface.",
+    "spatial": "The Japanese sword is positioned horizontally across the center of the frame, resting on top of the wooden surface.",
     "parse_success": true,
     "chunk_idx": 66,
     "video_id": "Truck_spring_Katana_sword"
   },
   {
     "time": [
-      134,
-      136
+      67,
+      68
     ],
     "visible_entities": [
       {
-        "desc": "Japanese sword (katana) with a white handle featuring black diamond-shaped grip wrap, a dark metal handguard, and a black scabbard with a textured, scale-like pattern",
+        "desc": "Japanese sword (katana) with a white tsuka (handle) featuring black diamond-shaped ito wrap pattern, a black tsuba (guard), and a black scabbard (saya) with a textured surface",
         "action": "static",
         "position": "center"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A Japanese sword is lying horizontally on a surface.",
+        "fact": "A Japanese sword is lying horizontally on a textured beige surface.",
         "confidence": 1.0
       },
       {
@@ -2679,108 +2610,63 @@
       }
     ],
     "ocr": [],
-    "spatial": "The Japanese sword is positioned horizontally across the center of the frame. It rests on top of a beige, textured surface that fills the background.",
+    "spatial": "The Japanese sword is positioned horizontally across the center of the frame, resting on top of a beige, wood-grain textured surface.",
     "parse_success": true,
     "chunk_idx": 67,
     "video_id": "Truck_spring_Katana_sword"
   },
   {
     "time": [
-      136,
-      138
+      68,
+      69
     ],
     "visible_entities": [
       {
-        "desc": "Japanese sword (katana) with a white handle featuring black diamond-shaped pattern, black circular guard, and a black scabbard with textured wrapping",
+        "desc": "Japanese sword (katana) with a white hilt featuring black diamond-shaped menuki, a black tsuba, and a black textured scabbard",
         "action": "static",
         "position": "center"
       },
       {
-        "desc": "light-colored wooden floor with visible grain pattern",
+        "desc": "light-colored wood grain surface",
         "action": "static",
         "position": "background"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A Japanese sword is lying horizontally on the wooden floor.",
+        "fact": "A Japanese sword is lying horizontally on a wooden surface.",
         "confidence": 1.0
       },
       {
-        "fact": "The sword features a white handle with a black diamond pattern.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The scabbard is black and textured.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The text 'SAMURAI' is visible overlaid on the scabbard.",
+        "fact": "The sword has a white handle with black accents and a black scabbard.",
         "confidence": 1.0
       }
     ],
-    "ocr": [
-      "SAMURAI"
-    ],
-    "spatial": "The Japanese sword is lying horizontally across the center of the wooden floor. The handle is on the left side, and the scabbard extends to the right. The text 'SAMURAI' is overlaid on top of the scabbard.",
+    "ocr": [],
+    "spatial": "The Japanese sword is lying on top of the light-colored wood grain surface. The white hilt is positioned on the left side of the frame, while the black scabbard extends towards the right.",
     "parse_success": true,
     "chunk_idx": 68,
     "video_id": "Truck_spring_Katana_sword"
   },
   {
     "time": [
-      138,
-      140
+      69,
+      70
     ],
     "visible_entities": [
       {
-        "desc": "Logo consisting of a stylized samurai head silhouette in orange and black, next to the text 'SAMURAI' in black and 'KATANA-SHOP.NL' in orange and black",
-        "action": "forming from distorted shapes",
-        "position": "center"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "The video transitions from a distorted, wavy visual effect to a clear, static logo.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The text 'SAMURAI KATANA-SHOP.NL' becomes fully legible as the distortion clears.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [
-      "SAMURAI",
-      "KATANA-SHOP.NL"
-    ],
-    "spatial": "The samurai head icon is to the left of the text 'SAMURAI'. The text 'KATANA-SHOP.NL' is located directly below the text 'SAMURAI'.",
-    "parse_success": true,
-    "chunk_idx": 69,
-    "video_id": "Truck_spring_Katana_sword"
-  },
-  {
-    "time": [
-      140,
-      142
-    ],
-    "visible_entities": [
-      {
-        "desc": "A logo consisting of an orange circular icon with black abstract patterns resembling a stylized head or mask, next to the text 'SAMURAI' in bold black uppercase letters and 'KATANA-SHOP.NL' in thinner orange uppercase letters.",
+        "desc": "Logo consisting of a circular orange icon with black abstract patterns resembling a stylized head or mask, next to the text 'SAMURAI' in black and 'KATANA-SHOP.NL' in orange.",
         "action": "static",
         "position": "center"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "The logo remains static in the center of the white background.",
+        "fact": "The logo for 'SAMURAI KATANA-SHOP.NL' is displayed centrally on a white background.",
         "confidence": 1.0
       },
       {
-        "fact": "The text 'SAMURAI' is displayed in black.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The text 'KATANA-SHOP.NL' is displayed in orange.",
+        "fact": "The text 'SAMURAI' appears in black uppercase letters.",
         "confidence": 1.0
       }
     ],
@@ -2788,7 +2674,38 @@
       "SAMURAI",
       "KATANA-SHOP.NL"
     ],
-    "spatial": "The orange circular icon is to the left of the text 'SAMURAI'. The text 'KATANA-SHOP.NL' is positioned directly below the text 'SAMURAI'.",
+    "spatial": "The circular orange icon is located to the left of the text 'SAMURAI'. The text 'KATANA-SHOP.NL' is positioned directly below the text 'SAMURAI'.",
+    "parse_success": true,
+    "chunk_idx": 69,
+    "video_id": "Truck_spring_Katana_sword"
+  },
+  {
+    "time": [
+      70,
+      71
+    ],
+    "visible_entities": [
+      {
+        "desc": "Logo consisting of a circular orange icon with black abstract patterns resembling a stylized head or mask, next to text reading 'SAMURAI' in black uppercase sans-serif font and 'KATANA-SHOP.NL' in orange uppercase sans-serif font below it",
+        "action": "static",
+        "position": "center"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The logo for 'SAMURAI KATANA-SHOP.NL' is displayed statically in the center of the screen.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The text 'SAMURAI' is positioned above the text 'KATANA-SHOP.NL'.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "SAMURAI",
+      "KATANA-SHOP.NL"
+    ],
+    "spatial": "The circular orange icon is to the left of the text block. The word 'SAMURAI' is above the text 'KATANA-SHOP.NL'. The entire logo is centered on the white background.",
     "parse_success": true,
     "chunk_idx": 70,
     "video_id": "Truck_spring_Katana_sword"

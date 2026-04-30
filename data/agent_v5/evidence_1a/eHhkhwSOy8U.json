@@ -2,7 +2,7 @@
   {
     "time": [
       0,
-      2
+      1
     ],
     "visible_entities": [
       {
@@ -11,51 +11,45 @@
         "position": "center"
       },
       {
-        "desc": "two-wheeled self-balancing personal transporter with large tires",
+        "desc": "black Segway personal transporter with two large tires",
         "action": "moving forward",
         "position": "center"
       },
       {
         "desc": "gravel path with loose stones",
         "action": "static",
-        "position": "bottom"
+        "position": "foreground"
       },
       {
         "desc": "steep rocky hillside with sparse vegetation",
         "action": "static",
         "position": "background"
-      },
-      {
-        "desc": "clump of spiky green plants",
-        "action": "static",
-        "position": "foreground right"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A person is riding a Segway on a gravel path.",
+        "fact": "A person is riding a Segway along a gravel path.",
         "confidence": 1.0
       },
       {
-        "fact": "The person is wearing a helmet for safety.",
+        "fact": "The rider is wearing a helmet for safety.",
         "confidence": 1.0
       },
       {
-        "fact": "The terrain is a rocky, unpaved trail.",
+        "fact": "The terrain is uneven and rocky.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The person is standing on the Segway in the center of the frame. The Segway is on the gravel path. The steep hillside is behind the person. A clump of plants is in the foreground to the right of the path.",
+    "spatial": "The person is standing on the Segway, which is positioned in the center of the gravel path. The rider is in front of the steep rocky hillside that rises in the background.",
     "parse_success": true,
     "chunk_idx": 0,
-    "video_id": "eHhkhwSOy8U",
-    "_rescued": "parse"
+    "video_id": "eHhkhwSOy8U"
   },
   {
     "time": [
-      2,
-      4
+      1,
+      2
     ],
     "visible_entities": [
       {
@@ -64,19 +58,24 @@
         "position": "center"
       },
       {
-        "desc": "black two-wheeled Segway personal transporter",
+        "desc": "black two-wheeled self-balancing scooter with large tires and a vertical handlebar stem",
         "action": "moving on gravel",
         "position": "center"
       },
       {
-        "desc": "gravel path with a rocky, vegetated hillside in the background",
+        "desc": "gravel road surface with loose stones and dirt",
+        "action": "static",
+        "position": "bottom"
+      },
+      {
+        "desc": "rocky hillside with sparse green vegetation and loose rocks",
         "action": "static",
         "position": "background"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A person is riding a Segway on a gravel path.",
+        "fact": "A person is riding a Segway on a gravel road.",
         "confidence": 1.0
       },
       {
@@ -89,212 +88,198 @@
       }
     ],
     "ocr": [],
-    "spatial": "The person is on top of the Segway. The Segway is on the gravel path. The hillside is behind the person and the Segway.",
+    "spatial": "The person is standing on the Segway, which is positioned on the gravel road. The rocky hillside is behind the person and the Segway.",
     "parse_success": true,
     "chunk_idx": 1,
-    "video_id": "eHhkhwSOy8U",
-    "_rescued": "parse"
+    "video_id": "eHhkhwSOy8U"
   },
   {
     "time": [
-      4,
-      6
+      2,
+      3
     ],
     "visible_entities": [
       {
-        "desc": "person wearing a dark helmet, dark jacket with a white stripe across the chest, and blue jeans",
+        "desc": "person wearing a dark helmet, dark jacket with a white diagonal stripe across the chest, and blue jeans",
         "action": "standing on a Segway",
         "position": "center"
       },
       {
-        "desc": "Segway with large, knobby off-road tires",
-        "action": "static",
-        "position": "center"
-      },
-      {
         "desc": "person with dark hair, wearing a dark green long-sleeved shirt and blue jeans",
-        "action": "standing and gesturing",
+        "action": "standing and gesturing with arms",
         "position": "left"
       },
       {
-        "desc": "gravelly ground with a rocky, vegetated hillside in the background",
+        "desc": "Segway with large, knobby off-road tires and a silver frame",
         "action": "static",
-        "position": "background"
+        "position": "center"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A person is standing on a Segway with large off-road tires.",
+        "fact": "A person is standing on a Segway in the center of the frame.",
         "confidence": 1.0
       },
       {
-        "fact": "Another person stands to the left of the Segway rider.",
+        "fact": "A second person stands to the left of the Segway rider.",
         "confidence": 1.0
       },
       {
-        "fact": "The person on the left gestures with their hands towards the rider.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The scene takes place outdoors on a gravelly surface.",
+        "fact": "The person on the left is gesturing with their hands towards the rider.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The person on the Segway is in the center of the frame. The person in the green shirt is to the left of the person on the Segway. The rocky hillside is behind both people.",
+    "spatial": "The person in the green shirt is to the left of the person on the Segway. The Segway is on a gravel surface in front of a grassy hill.",
     "parse_success": true,
     "chunk_idx": 2,
-    "video_id": "eHhkhwSOy8U",
-    "_rescued": "parse"
+    "video_id": "eHhkhwSOy8U"
   },
   {
     "time": [
-      6,
-      8
+      3,
+      4
     ],
     "visible_entities": [
       {
         "desc": "person with dark hair, wearing a dark green long-sleeved jacket and blue jeans",
-        "action": "standing on the left side of the frame",
+        "action": "standing on the ground",
         "position": "left"
       },
       {
         "desc": "person wearing a black helmet, a black jacket with white stripes on the sleeves, and blue jeans",
         "action": "riding a Segway",
-        "position": "center"
+        "position": "right"
       },
       {
-        "desc": "black Segway personal transporter with large tires and a yellow accent on the base",
-        "action": "being ridden",
-        "position": "center"
+        "desc": "black Segway with large off-road tires and a yellow reflector",
+        "action": "moving on the gravel path",
+        "position": "center-right"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "The person in the green jacket is standing on the gravel ground.",
+        "fact": "The person in the green jacket stands on the left side of the frame.",
         "confidence": 1.0
       },
       {
-        "fact": "The person in the black jacket is riding a Segway.",
+        "fact": "The person in the black jacket rides a Segway on the right side of the frame.",
         "confidence": 1.0
       },
       {
-        "fact": "The person in the green jacket extends their hand towards the person on the Segway.",
+        "fact": "The Segway moves away from the camera in the second frame.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The person in the green jacket is to the left of the person on the Segway. The person on the Segway is in the center of the frame. The Segway is under the person riding it.",
+    "spatial": "The person in the green jacket is to the left of the person on the Segway. The person on the Segway is positioned in front of the rocky slope in the background.",
     "parse_success": true,
     "chunk_idx": 3,
-    "video_id": "eHhkhwSOy8U",
-    "_rescued": "parse"
+    "video_id": "eHhkhwSOy8U"
   },
   {
     "time": [
-      8,
-      10
+      4,
+      5
     ],
     "visible_entities": [
       {
-        "desc": "person wearing a black jacket with white stripes on the sleeves, blue jeans, and a helmet",
+        "desc": "person wearing a black helmet, a black jacket with white stripes on the sleeves, and blue jeans",
         "action": "standing on a Segway",
         "position": "center"
       },
       {
-        "desc": "person wearing a dark green long-sleeved shirt and blue jeans",
-        "action": "walking",
+        "desc": "person with short dark hair, wearing a dark green long-sleeved shirt and blue jeans",
+        "action": "walking left",
         "position": "left"
       },
       {
-        "desc": "black Segway with large tires",
+        "desc": "two-wheeled self-balancing vehicle (Segway) with large tires and a black base",
         "action": "static",
         "position": "center"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A person is standing on a Segway.",
+        "fact": "The person in the black jacket is standing on the Segway.",
         "confidence": 1.0
       },
       {
-        "fact": "A person is walking on the gravel path.",
+        "fact": "The person in the green shirt is walking to the left of the Segway.",
         "confidence": 1.0
       },
       {
-        "fact": "The person on the Segway is wearing a helmet.",
+        "fact": "The Segway is positioned on a gravel path.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The person in the green shirt is to the left of the person on the Segway. The Segway is on the gravel path. The person on the Segway is in front of the bushes.",
+    "spatial": "The person in the green shirt is to the left of the person on the Segway. The person on the Segway is in the center of the frame. The Segway is on the gravel ground.",
     "parse_success": true,
     "chunk_idx": 4,
-    "video_id": "eHhkhwSOy8U",
-    "_rescued": "parse"
+    "video_id": "eHhkhwSOy8U"
   },
   {
     "time": [
-      10,
-      12
+      5,
+      6
     ],
     "visible_entities": [
       {
-        "desc": "person wearing a black helmet, black vest over a dark long-sleeved top, and blue jeans",
+        "desc": "person wearing a black helmet, black vest over a grey long-sleeved shirt, and blue jeans",
         "action": "standing on a Segway",
         "position": "center"
       },
       {
-        "desc": "person wearing a dark baseball cap, green long-sleeved shirt, and light blue jeans",
-        "action": "standing still",
+        "desc": "person wearing a dark baseball cap, green long-sleeved jacket, and light blue jeans",
+        "action": "standing",
         "position": "left"
       },
       {
-        "desc": "black Segway with large knobby tires",
+        "desc": "black and white Segway with large knobby tires",
         "action": "static",
         "position": "center"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A person in a black vest is standing on a Segway.",
+        "fact": "A person wearing a helmet is standing on a Segway.",
         "confidence": 1.0
       },
       {
-        "fact": "A person in a green shirt is standing to the left of the Segway.",
+        "fact": "A person in a green jacket is standing to the left of the Segway rider.",
         "confidence": 1.0
       },
       {
-        "fact": "The Segway has large, knobby tires.",
+        "fact": "The Segway has large, off-road style tires.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The person in the green shirt is to the left of the person on the Segway. The person on the Segway is in the center of the frame. The Segway is on a gravel path.",
+    "spatial": "The person in the green jacket is to the left of the person on the Segway. The person on the Segway is in the center of the frame, standing on the device. The Segway is on a gravel path.",
     "parse_success": true,
     "chunk_idx": 5,
-    "video_id": "eHhkhwSOy8U",
-    "_rescued": "parse"
+    "video_id": "eHhkhwSOy8U"
   },
   {
     "time": [
-      12,
-      14
+      6,
+      7
     ],
     "visible_entities": [
       {
-        "desc": "person wearing a black helmet, a black vest over a white long-sleeved shirt, and blue jeans",
+        "desc": "person wearing a black helmet, a black hooded jacket with white side panels, and blue jeans",
         "action": "standing on a Segway",
         "position": "center"
       },
       {
-        "desc": "Segway with large, knobby off-road tires and a black frame",
+        "desc": "Segway with large, knobby off-road tires and a black body",
         "action": "static",
         "position": "center"
       },
       {
-        "desc": "person wearing a dark green jacket, light blue jeans, and a dark cap",
-        "action": "walking to the left",
+        "desc": "person wearing a dark green jacket, blue jeans, and a dark cap",
+        "action": "walking left",
         "position": "left"
       }
     ],
@@ -306,61 +291,22 @@
       {
         "fact": "Another person is walking to the left of the Segway rider.",
         "confidence": 1.0
-      },
-      {
-        "fact": "The Segway is stationary on a gravel path.",
-        "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The person on the Segway is in the center of the frame. The person in the green jacket is to the left of the Segway. The Segway is on a gravel path with vegetation in the background.",
+    "spatial": "The person on the Segway is in the center of the frame. The person in the green jacket is to the left of the Segway rider. The Segway is on a gravel path.",
     "parse_success": true,
     "chunk_idx": 6,
-    "video_id": "eHhkhwSOy8U",
-    "_rescued": "parse"
+    "video_id": "eHhkhwSOy8U"
   },
   {
     "time": [
-      14,
-      16
+      7,
+      8
     ],
     "visible_entities": [
       {
-        "desc": "person wearing a dark helmet, black jacket with white stripes on the sleeves, and blue jeans",
-        "action": "riding a Segway",
-        "position": "center"
-      },
-      {
-        "desc": "black Segway with large, knobby off-road tires",
-        "action": "moving on gravel",
-        "position": "center"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "A person is riding a Segway on a gravel path.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The Segway is equipped with large, knobby tires suitable for off-road terrain.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [],
-    "spatial": "The person is standing on the Segway, which is positioned in the center of the frame. The Segway is on a gravel path, with a grassy and bushy embankment visible in the background behind the person.",
-    "parse_success": true,
-    "chunk_idx": 7,
-    "video_id": "eHhkhwSOy8U",
-    "_rescued": "parse"
-  },
-  {
-    "time": [
-      16,
-      18
-    ],
-    "visible_entities": [
-      {
-        "desc": "person wearing a black helmet, black long-sleeved jacket, and blue jeans",
+        "desc": "person wearing a black helmet, black jacket with white stripes on the sleeves, and blue jeans",
         "action": "riding a Segway",
         "position": "center"
       },
@@ -370,7 +316,7 @@
         "position": "center"
       },
       {
-        "desc": "gravel path with a grassy hillside in the background",
+        "desc": "gravel path with green bushes in the background",
         "action": "static",
         "position": "background"
       }
@@ -385,40 +331,81 @@
         "confidence": 1.0
       },
       {
-        "fact": "The person is wearing a helmet for safety.",
+        "fact": "The rider is wearing a helmet for safety.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The person is standing on the Segway. The Segway is on the gravel path. The grassy hillside is behind the person and the Segway.",
+    "spatial": "The person is standing on the Segway. The Segway is on the gravel path. The green bushes are behind the person and the Segway.",
     "parse_success": true,
-    "chunk_idx": 8,
-    "video_id": "eHhkhwSOy8U",
-    "_rescued": "parse"
+    "chunk_idx": 7,
+    "video_id": "eHhkhwSOy8U"
   },
   {
     "time": [
-      18,
-      20
+      8,
+      9
     ],
     "visible_entities": [
       {
-        "desc": "person wearing a black hooded jacket, dark pants, and a helmet",
+        "desc": "person wearing a black helmet, dark jacket, and blue jeans",
         "action": "riding a Segway",
         "position": "center"
       },
       {
-        "desc": "black Segway with large, knobby off-road tires",
+        "desc": "Segway with large, knobby off-road tires, black and silver body",
+        "action": "moving on gravel",
+        "position": "center"
+      },
+      {
+        "desc": "gravel path with a grassy, vegetated slope in the background",
+        "action": "static",
+        "position": "background"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A person wearing a helmet is riding a Segway.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The Segway has large, off-road tires.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The person is standing on the Segway.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The person is standing on the Segway. The Segway is on a gravel path. The grassy slope is behind the person and the Segway.",
+    "parse_success": true,
+    "chunk_idx": 8,
+    "video_id": "eHhkhwSOy8U"
+  },
+  {
+    "time": [
+      9,
+      10
+    ],
+    "visible_entities": [
+      {
+        "desc": "person wearing a dark hooded jacket with the hood up, dark pants, and dark shoes",
+        "action": "riding a Segway",
+        "position": "center"
+      },
+      {
+        "desc": "Segway with large, knobby off-road tires, black body, and white wheel fenders",
         "action": "moving forward",
         "position": "center"
       },
       {
-        "desc": "gravel road surface",
+        "desc": "gravel road surface, grey and uneven",
         "action": "static",
         "position": "bottom"
       },
       {
-        "desc": "grassy and rocky hillside",
+        "desc": "grassy and rocky embankment with sparse vegetation",
         "action": "static",
         "position": "background"
       }
@@ -433,90 +420,36 @@
         "confidence": 1.0
       },
       {
-        "fact": "The person is wearing a helmet for safety.",
+        "fact": "The rider is wearing a dark hooded jacket.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The person is on the Segway. The Segway is on the gravel road. The grassy hillside is behind the person and the Segway.",
+    "spatial": "The person is on the Segway. The Segway is on the gravel road. The grassy embankment is behind the person and the Segway.",
     "parse_success": true,
     "chunk_idx": 9,
-    "video_id": "eHhkhwSOy8U",
-    "_rescued": "parse"
+    "video_id": "eHhkhwSOy8U"
   },
   {
     "time": [
-      20,
-      22
+      10,
+      11
     ],
     "visible_entities": [
       {
-        "desc": "person wearing dark jacket and dark pants, helmet",
+        "desc": "person wearing dark clothing and a helmet",
         "action": "riding a Segway",
         "position": "center"
       },
       {
-        "desc": "black dog, medium size",
-        "action": "running",
+        "desc": "black and white Segway personal transporter",
+        "action": "moving forward",
+        "position": "center"
+      },
+      {
+        "desc": "black dog",
+        "action": "walking",
         "position": "right"
-      },
-      {
-        "desc": "Segway, two-wheeled personal transporter, dark color",
-        "action": "moving",
-        "position": "center"
-      },
-      {
-        "desc": "gravel path, grey stones",
-        "action": "static",
-        "position": "bottom"
-      },
-      {
-        "desc": "steep hillside, rocky with sparse vegetation",
-        "action": "static",
-        "position": "background"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "A person is riding a Segway along a gravel path.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "A black dog is running on the path to the right of the person.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The terrain is a rocky hillside.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [],
-    "spatial": "The person on the Segway is in the center of the frame, moving along the gravel path. The black dog is to the right of the person and slightly behind them. The steep hillside is in the background, rising above the path.",
-    "parse_success": true,
-    "chunk_idx": 10,
-    "video_id": "eHhkhwSOy8U",
-    "_rescued": "parse"
-  },
-  {
-    "time": [
-      22,
-      24
-    ],
-    "visible_entities": [
-      {
-        "desc": "person wearing a dark jacket, dark pants, and a helmet",
-        "action": "riding a Segway",
-        "position": "center"
-      },
-      {
-        "desc": "black two-wheeled self-balancing scooter (Segway)",
-        "action": "moving on a gravel path",
-        "position": "center"
-      },
-      {
-        "desc": "steep rocky hillside with sparse green vegetation",
-        "action": "static",
-        "position": "background"
       }
     ],
     "atomic_facts": [
@@ -525,30 +458,77 @@
         "confidence": 1.0
       },
       {
-        "fact": "The rider is wearing a helmet and dark clothing.",
+        "fact": "A black dog is walking near the grassy slope.",
         "confidence": 1.0
       },
       {
-        "fact": "The terrain is a rough, unpaved road next to a steep slope.",
+        "fact": "The person is moving away from the camera.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The person is standing on the Segway in the center of the frame. The Segway is on the gravel path, which is in front of the steep rocky hillside.",
+    "spatial": "The person on the Segway is to the left of the black dog. The dog is near the grassy slope on the right side of the path. The person is in the center of the frame.",
     "parse_success": true,
-    "chunk_idx": 11,
-    "video_id": "eHhkhwSOy8U",
-    "_rescued": "parse"
+    "chunk_idx": 10,
+    "video_id": "eHhkhwSOy8U"
   },
   {
     "time": [
-      24,
-      26
+      11,
+      12
     ],
     "visible_entities": [
       {
-        "desc": "person wearing dark clothing, standing on a two-wheeled self-balancing vehicle",
+        "desc": "person wearing dark clothing and a helmet",
         "action": "riding a Segway",
+        "position": "center"
+      },
+      {
+        "desc": "two-wheeled self-balancing scooter (Segway)",
+        "action": "moving forward",
+        "position": "center"
+      },
+      {
+        "desc": "steep hillside with sparse vegetation and rocks",
+        "action": "static",
+        "position": "background"
+      },
+      {
+        "desc": "gravel path",
+        "action": "static",
+        "position": "foreground"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A person is riding a Segway on a gravel path.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The path winds through a hilly, rocky terrain.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The person is on the Segway. The Segway is on the gravel path. The path is in front of the steep hillside.",
+    "parse_success": true,
+    "chunk_idx": 11,
+    "video_id": "eHhkhwSOy8U"
+  },
+  {
+    "time": [
+      12,
+      13
+    ],
+    "visible_entities": [
+      {
+        "desc": "person wearing dark clothing and a helmet",
+        "action": "riding a Segway",
+        "position": "center"
+      },
+      {
+        "desc": "two-wheeled self-balancing personal transporter (Segway)",
+        "action": "moving along the path",
         "position": "center"
       },
       {
@@ -557,7 +537,7 @@
         "position": "background"
       },
       {
-        "desc": "gravel path with scattered rocks",
+        "desc": "gravel and dirt path",
         "action": "static",
         "position": "foreground"
       }
@@ -568,334 +548,144 @@
         "confidence": 1.0
       },
       {
-        "fact": "The path is situated at the base of a steep, rocky hillside.",
+        "fact": "The rider is positioned in the center of the frame.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The path is surrounded by a steep, rocky hillside.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The person on the Segway is in the center of the frame, positioned on the gravel path. The steep hillside rises in the background behind the person.",
+    "spatial": "The person on the Segway is in the center of the frame, positioned on the gravel path. The steep, rocky hillside is behind the person and rises above the path.",
     "parse_success": true,
     "chunk_idx": 12,
-    "video_id": "eHhkhwSOy8U",
-    "_rescued": "parse"
+    "video_id": "eHhkhwSOy8U"
   },
   {
     "time": [
-      26,
-      28
+      13,
+      14
     ],
     "visible_entities": [
       {
-        "desc": "person wearing dark clothing and a helmet, riding a bicycle",
-        "action": "cycling away from the camera",
-        "position": "center"
-      },
-      {
-        "desc": "steep mountain slope with rocky terrain and sparse vegetation",
-        "action": "static",
-        "position": "background"
-      },
-      {
-        "desc": "rough gravel path with loose stones",
-        "action": "static",
-        "position": "foreground"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "A person is cycling away from the camera on a gravel path.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The path is surrounded by a steep, rocky mountain slope.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [],
-    "spatial": "The cyclist is in the center of the frame, moving along the gravel path. The steep mountain slope is to the left of and behind the cyclist, rising up into the background.",
-    "parse_success": true,
-    "chunk_idx": 13,
-    "video_id": "eHhkhwSOy8U",
-    "_rescued": "parse"
-  },
-  {
-    "time": [
-      28,
-      30
-    ],
-    "visible_entities": [
-      {
-        "desc": "person wearing dark clothing and a helmet, riding a motorcycle",
-        "action": "riding away from the camera",
-        "position": "center"
-      },
-      {
-        "desc": "motorcycle, dark colored",
-        "action": "moving forward on the path",
-        "position": "center"
-      },
-      {
-        "desc": "animal, four-legged, dark fur, medium size",
-        "action": "running to the right",
-        "position": "right"
-      },
-      {
-        "desc": "gravel path, grey and rocky",
-        "action": "static",
-        "position": "bottom"
-      },
-      {
-        "desc": "steep hillside, covered in green vegetation and rocks",
-        "action": "static",
-        "position": "left"
-      },
-      {
-        "desc": "brownish bushy plant",
-        "action": "static",
-        "position": "foreground"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "A person is riding a motorcycle away from the camera on a gravel path.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "An animal is running to the right side of the path.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The motorcycle is positioned between the hillside and the running animal.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The terrain is mountainous with a steep slope on the left.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [],
-    "spatial": "The person on the motorcycle is in the center of the frame, moving away from the viewer. To the right of the motorcycle, a dark animal is running along the path. A steep, vegetated hillside rises on the left side of the path, while a brownish bush sits in the immediate foreground at the bottom right.",
-    "parse_success": true,
-    "chunk_idx": 14,
-    "video_id": "eHhkhwSOy8U",
-    "_rescued": "parse"
-  },
-  {
-    "time": [
-      30,
-      32
-    ],
-    "visible_entities": [
-      {
-        "desc": "person wearing dark clothing, possibly a dark jacket and pants, riding a bicycle",
-        "action": "riding a bicycle away from the camera",
-        "position": "center"
-      },
-      {
-        "desc": "large bush with brown, dry-looking leaves and branches",
-        "action": "static",
-        "position": "foreground right"
-      },
-      {
-        "desc": "steep, rocky mountain slope with sparse green vegetation",
-        "action": "static",
-        "position": "background left"
-      },
-      {
-        "desc": "gravel and dirt path",
-        "action": "static",
-        "position": "bottom"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "A person is riding a bicycle on a gravel path.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The cyclist is moving away from the camera's viewpoint.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "A large bush is in the foreground on the right side of the frame.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The path is situated at the base of a steep, rocky mountain.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [],
-    "spatial": "The person on the bicycle is in the center of the frame, on the gravel path. The large brown bush is in the foreground to the right of the cyclist. The steep mountain slope is to the left of and behind the cyclist.",
-    "parse_success": true,
-    "chunk_idx": 15,
-    "video_id": "eHhkhwSOy8U",
-    "_rescued": "parse"
-  },
-  {
-    "time": [
-      32,
-      34
-    ],
-    "visible_entities": [
-      {
-        "desc": "person wearing dark clothing, possibly a black jacket and dark pants, riding a bicycle",
-        "action": "riding a bicycle away from the camera",
-        "position": "center"
-      },
-      {
-        "desc": "steep, rocky mountain slope with sparse green vegetation and grey scree",
-        "action": "static",
-        "position": "left"
-      },
-      {
-        "desc": "large, brownish-green tussock grass or shrub",
-        "action": "static",
-        "position": "foreground right"
-      },
-      {
-        "desc": "gravel and dirt path",
-        "action": "static",
-        "position": "bottom"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "A person is riding a bicycle along a gravel path.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The cyclist is moving away from the camera towards the background.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The path is situated at the base of a steep, rocky mountain.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [],
-    "spatial": "The person on the bicycle is in the center of the frame, positioned on the gravel path. To the left of the cyclist is a steep mountain slope. In the foreground on the right, a large bush is next to the path.",
-    "parse_success": true,
-    "chunk_idx": 16,
-    "video_id": "eHhkhwSOy8U",
-    "_rescued": "parse"
-  },
-  {
-    "time": [
-      34,
-      36
-    ],
-    "visible_entities": [
-      {
-        "desc": "person wearing dark clothing, riding a bicycle",
+        "desc": "person wearing dark clothing and a helmet, riding a dark-colored motorcycle",
         "action": "riding away on a gravel path",
         "position": "center"
       },
       {
-        "desc": "steep, rocky mountain slope with sparse vegetation",
+        "desc": "steep, rocky hillside with sparse green vegetation and grey stones",
         "action": "static",
-        "position": "left"
+        "position": "background"
       },
       {
-        "desc": "brown, dry, bushy plant",
+        "desc": "grey gravel path with scattered rocks",
         "action": "static",
-        "position": "foreground right"
+        "position": "foreground"
       },
       {
-        "desc": "grey gravel path",
+        "desc": "brownish-green shrubbery",
         "action": "static",
-        "position": "bottom"
+        "position": "bottom right"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A person is riding a bicycle away from the camera on a gravel path.",
+        "fact": "A person is riding a motorcycle away from the camera.",
         "confidence": 1.0
       },
       {
-        "fact": "The path winds through a mountainous landscape.",
+        "fact": "The motorcycle is moving along a rough, unpaved gravel track.",
         "confidence": 1.0
       },
       {
-        "fact": "A large, dry bush is visible in the foreground on the right.",
+        "fact": "The terrain is mountainous with a steep slope rising on the left side of the path.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The person on the bicycle is in the center of the frame, moving along the gravel path. The steep mountain slope is to the left of the path. The dry bush is in the foreground, to the right of the path.",
+    "spatial": "The person on the motorcycle is in the center of the frame, positioned on the gravel path. The steep hillside is to the left of and behind the rider. A patch of shrubbery is in the bottom right foreground, near the edge of the path.",
     "parse_success": true,
-    "chunk_idx": 17,
-    "video_id": "eHhkhwSOy8U",
-    "_rescued": "parse"
+    "chunk_idx": 13,
+    "video_id": "eHhkhwSOy8U"
   },
   {
     "time": [
-      36,
-      38
+      14,
+      15
     ],
     "visible_entities": [
       {
-        "desc": "person wearing dark clothing, riding a dark motorcycle",
+        "desc": "person wearing dark clothing, riding a motorcycle",
         "action": "riding away",
         "position": "center"
       },
       {
-        "desc": "steep rocky mountain slope with sparse vegetation",
-        "action": "static",
-        "position": "left"
+        "desc": "motorcycle, dark color",
+        "action": "moving away",
+        "position": "center"
       },
       {
-        "desc": "gravel path with loose stones",
+        "desc": "small dark animal, possibly a dog",
+        "action": "running",
+        "position": "center-right"
+      },
+      {
+        "desc": "gravel road, grey and rocky",
         "action": "static",
         "position": "bottom"
       },
       {
-        "desc": "brown dry brush or vegetation",
-        "action": "static",
-        "position": "foreground"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "A person is riding a motorcycle on a gravel path.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The motorcycle is moving away from the camera.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The path is situated between a steep mountain slope and a body of water.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [],
-    "spatial": "The person on the motorcycle is in the center of the frame, positioned on the gravel path. The steep mountain slope is to the left of the rider. The brown dry brush is in the foreground, below the rider.",
-    "parse_success": true,
-    "chunk_idx": 18,
-    "video_id": "eHhkhwSOy8U",
-    "_rescued": "parse"
-  },
-  {
-    "time": [
-      38,
-      40
-    ],
-    "visible_entities": [
-      {
-        "desc": "dark-colored motorcycle with a rider wearing dark clothing and a helmet",
-        "action": "riding away from the camera",
-        "position": "center"
-      },
-      {
-        "desc": "steep, rocky mountain slope with sparse green vegetation",
+        "desc": "steep hillside, rocky with sparse green vegetation",
         "action": "static",
         "position": "left"
       },
       {
-        "desc": "brown, dry, bushy shrub",
+        "desc": "bushy plant, brownish-green",
         "action": "static",
-        "position": "foreground right"
+        "position": "foreground-right"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A person is riding a motorcycle away from the camera on a gravel road.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A small dark animal is running on the road to the right of the motorcycle.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The road is situated at the base of a steep, rocky hillside.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The person on the motorcycle is in the center of the frame, moving away. The small animal is to the right of the motorcycle. The steep hillside is to the left of the road. A bushy plant is in the foreground on the right side of the frame.",
+    "parse_success": true,
+    "chunk_idx": 14,
+    "video_id": "eHhkhwSOy8U"
+  },
+  {
+    "time": [
+      15,
+      16
+    ],
+    "visible_entities": [
+      {
+        "desc": "person wearing dark clothing and a helmet, riding a motorcycle",
+        "action": "riding away on a dirt path",
+        "position": "center"
+      },
+      {
+        "desc": "large brownish bush with spiky leaves",
+        "action": "static",
+        "position": "right foreground"
+      },
+      {
+        "desc": "steep rocky mountain slope with sparse vegetation",
+        "action": "static",
+        "position": "background"
       },
       {
         "desc": "grey gravel and dirt path",
@@ -909,30 +699,223 @@
         "confidence": 1.0
       },
       {
-        "fact": "The motorcycle is moving towards the background mountains.",
+        "fact": "The terrain is mountainous and rocky.",
         "confidence": 1.0
       },
       {
-        "fact": "The path is unpaved and consists of loose stones and dirt.",
+        "fact": "A large bush is situated in the foreground on the right side of the frame.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The motorcycle is in the center of the frame, positioned on the gravel path. The steep mountain slope is to the left of the motorcycle. The brown shrub is in the foreground on the right side of the image, partially obscuring the view of the path.",
+    "spatial": "The person on the motorcycle is in the center of the frame, positioned on the gravel path. The large bush is to the right of the rider and in the foreground. The steep mountain slope rises in the background behind the rider and the path.",
     "parse_success": true,
-    "chunk_idx": 19,
-    "video_id": "eHhkhwSOy8U",
-    "_rescued": "parse"
+    "chunk_idx": 15,
+    "video_id": "eHhkhwSOy8U"
   },
   {
     "time": [
-      40,
-      42
+      16,
+      17
     ],
     "visible_entities": [
       {
-        "desc": "person wearing dark clothing and a helmet, riding a bicycle",
-        "action": "riding away from the camera",
+        "desc": "person wearing dark clothing, possibly a black jacket and dark pants",
+        "action": "walking away from the camera",
+        "position": "center"
+      },
+      {
+        "desc": "steep, rocky mountain slope covered in sparse green vegetation and moss",
+        "action": "static",
+        "position": "left"
+      },
+      {
+        "desc": "gravel path with loose stones and dirt",
+        "action": "static",
+        "position": "bottom"
+      },
+      {
+        "desc": "bushy plant with long, dark, reddish-brown leaves",
+        "action": "static",
+        "position": "foreground right"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A person is walking away from the camera along a gravel path.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The path is situated at the base of a steep, rocky mountain slope.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A bushy plant with dark leaves is visible in the foreground on the right side of the frame.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The person is in the center of the frame, walking along the gravel path. The steep mountain slope is to the left of the person and the path. The bushy plant is in the foreground to the right of the path.",
+    "parse_success": true,
+    "chunk_idx": 16,
+    "video_id": "eHhkhwSOy8U"
+  },
+  {
+    "time": [
+      17,
+      18
+    ],
+    "visible_entities": [
+      {
+        "desc": "person wearing dark clothing, riding a bicycle",
+        "action": "riding away",
+        "position": "center"
+      },
+      {
+        "desc": "gravel path, grey and rocky",
+        "action": "static",
+        "position": "bottom"
+      },
+      {
+        "desc": "steep rocky hillside, dark grey with sparse vegetation",
+        "action": "static",
+        "position": "left"
+      },
+      {
+        "desc": "brownish dried vegetation or bush",
+        "action": "static",
+        "position": "foreground right"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A person is riding a bicycle away from the camera on a gravel path.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The path is situated at the base of a steep, rocky mountain slope.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The terrain is rugged and uneven.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The cyclist is in the center of the frame, moving along the gravel path that runs through the bottom of the scene. To the left of the cyclist is a steep, rocky hillside. In the foreground on the right, there is a patch of brownish vegetation.",
+    "parse_success": true,
+    "chunk_idx": 17,
+    "video_id": "eHhkhwSOy8U"
+  },
+  {
+    "time": [
+      18,
+      19
+    ],
+    "visible_entities": [
+      {
+        "desc": "person wearing dark clothing, riding a dark-colored motorcycle",
+        "action": "riding away",
+        "position": "center"
+      },
+      {
+        "desc": "steep rocky mountain slope with sparse green vegetation",
+        "action": "static",
+        "position": "left"
+      },
+      {
+        "desc": "gravelly dirt path",
+        "action": "static",
+        "position": "bottom"
+      },
+      {
+        "desc": "brown dried vegetation or brush",
+        "action": "static",
+        "position": "foreground right"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A person is riding a motorcycle away from the camera on a gravel path.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The path is situated at the base of a steep, rocky mountain slope.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The person on the motorcycle is in the center of the frame, positioned on the gravel path. The steep mountain slope is to the left of the rider. A patch of brown dried vegetation is in the foreground on the right side of the path.",
+    "parse_success": true,
+    "chunk_idx": 18,
+    "video_id": "eHhkhwSOy8U"
+  },
+  {
+    "time": [
+      19,
+      20
+    ],
+    "visible_entities": [
+      {
+        "desc": "dark-colored motorcycle, appearing as a silhouette",
+        "action": "riding away",
+        "position": "center"
+      },
+      {
+        "desc": "rider wearing dark clothing",
+        "action": "riding away",
+        "position": "center"
+      },
+      {
+        "desc": "steep rocky mountain slope, grey and brown with patches of green vegetation",
+        "action": "static",
+        "position": "left"
+      },
+      {
+        "desc": "gravel path, grey and uneven",
+        "action": "static",
+        "position": "bottom"
+      },
+      {
+        "desc": "brownish dried vegetation clump",
+        "action": "static",
+        "position": "foreground"
+      },
+      {
+        "desc": "distant mountain range, hazy and grey",
+        "action": "static",
+        "position": "background"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A person is riding a motorcycle away from the camera on a gravel path.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The path is situated at the base of a steep mountain slope.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The terrain is rocky and uneven.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The motorcycle and rider are in the center of the frame, moving away on the gravel path. The steep mountain slope is to the left of the path. A clump of brown vegetation is in the foreground, to the right of the path. The distant mountains are behind the rider.",
+    "parse_success": true,
+    "chunk_idx": 19,
+    "video_id": "eHhkhwSOy8U"
+  },
+  {
+    "time": [
+      20,
+      21
+    ],
+    "visible_entities": [
+      {
+        "desc": "person wearing dark clothing and a helmet, riding a motorcycle",
+        "action": "riding away on a gravel path",
         "position": "center"
       },
       {
@@ -941,41 +924,96 @@
         "position": "left"
       },
       {
-        "desc": "gravel path",
+        "desc": "distant mountain range",
         "action": "static",
-        "position": "bottom"
+        "position": "background"
       },
       {
-        "desc": "brown dried vegetation clump",
+        "desc": "bushy shrub with brownish-green leaves",
         "action": "static",
         "position": "foreground right"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A person is riding a bicycle along a gravel path.",
+        "fact": "A person is riding a motorcycle away from the camera.",
         "confidence": 1.0
       },
       {
-        "fact": "The cyclist is moving away from the camera towards the background.",
+        "fact": "The motorcycle is traveling on a grey gravel path.",
         "confidence": 1.0
       },
       {
-        "fact": "The path is situated at the base of a steep mountain slope.",
+        "fact": "The terrain is mountainous and rugged.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The cyclist is in the center of the frame, riding on the gravel path. The steep mountain slope is to the left of the cyclist. A clump of brown vegetation is in the foreground to the right of the path.",
+    "spatial": "The person on the motorcycle is in the center of the frame, positioned between the steep mountain slope on the left and the bushy shrub in the foreground right. The distant mountains are behind the rider.",
     "parse_success": true,
     "chunk_idx": 20,
-    "video_id": "eHhkhwSOy8U",
-    "_rescued": "parse"
+    "video_id": "eHhkhwSOy8U"
   },
   {
     "time": [
-      42,
-      44
+      21,
+      22
+    ],
+    "visible_entities": [
+      {
+        "desc": "person wearing dark clothing, possibly a black jacket and dark pants, riding a small vehicle",
+        "action": "riding away from the camera",
+        "position": "center"
+      },
+      {
+        "desc": "small dark vehicle, possibly a mini-bike or go-kart",
+        "action": "moving forward",
+        "position": "center"
+      },
+      {
+        "desc": "large pile of brown dried vegetation or seaweed",
+        "action": "static",
+        "position": "foreground right"
+      },
+      {
+        "desc": "steep rocky hillside with sparse green vegetation",
+        "action": "static",
+        "position": "left background"
+      },
+      {
+        "desc": "gravel path",
+        "action": "static",
+        "position": "bottom"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A person is riding a small vehicle away from the camera on a gravel path.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The vehicle is moving along the path towards the background.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A large pile of brown vegetation sits in the foreground on the right side of the path.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The path is situated between a steep hillside on the left and a body of water on the right.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The person on the vehicle is in the center of the frame, moving away from the viewer. The large pile of brown vegetation is in the foreground to the right of the path. The steep hillside is to the left of the path and behind the person. The path is below the hillside and leads towards the background mountains.",
+    "parse_success": true,
+    "chunk_idx": 21,
+    "video_id": "eHhkhwSOy8U"
+  },
+  {
+    "time": [
+      22,
+      23
     ],
     "visible_entities": [
       {
@@ -984,76 +1022,28 @@
         "position": "center"
       },
       {
-        "desc": "large, dark brown, leafy bush or shrub",
+        "desc": "large, bushy plant with dark reddish-brown leaves",
         "action": "static",
         "position": "foreground right"
-      },
-      {
-        "desc": "steep, rocky mountain slope with sparse green vegetation",
-        "action": "static",
-        "position": "left"
-      },
-      {
-        "desc": "gravel and dirt path",
-        "action": "static",
-        "position": "bottom"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "A person is riding a motorcycle on a gravel path.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The motorcycle is moving away from the camera towards the background.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The path is situated between a steep mountain slope on the left and a body of water on the right.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [],
-    "spatial": "The person on the motorcycle is in the center of the frame, positioned on the gravel path. To the left of the path is a steep mountain slope. In the foreground on the right, a large bush is visible, partially obscuring the view of the path and the water behind it.",
-    "parse_success": true,
-    "chunk_idx": 21,
-    "video_id": "eHhkhwSOy8U",
-    "_rescued": "parse"
-  },
-  {
-    "time": [
-      44,
-      46
-    ],
-    "visible_entities": [
-      {
-        "desc": "person wearing dark clothing, possibly a black jacket and dark pants, riding a dark-colored motorcycle",
-        "action": "riding away from the camera",
-        "position": "center"
-      },
-      {
-        "desc": "large, spiky, brownish-green bush",
-        "action": "static",
-        "position": "foreground right"
-      },
-      {
-        "desc": "gravel and dirt path",
-        "action": "static",
-        "position": "bottom"
       },
       {
         "desc": "steep, rocky mountain slope with sparse vegetation",
         "action": "static",
         "position": "background left"
+      },
+      {
+        "desc": "grey gravel and dirt path",
+        "action": "static",
+        "position": "bottom"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A person is riding a motorcycle away from the camera along a gravel path.",
+        "fact": "A person is riding a motorcycle away from the camera on a gravel path.",
         "confidence": 1.0
       },
       {
-        "fact": "The motorcycle is moving towards the background of the scene.",
+        "fact": "The motorcycle is moving towards the mountains in the background.",
         "confidence": 1.0
       },
       {
@@ -1065,61 +1055,59 @@
     "spatial": "The person on the motorcycle is in the center of the frame, positioned on the gravel path. The large bush is in the foreground to the right of the motorcycle. The steep mountain slope is to the left of the path and rises above the scene.",
     "parse_success": true,
     "chunk_idx": 22,
-    "video_id": "eHhkhwSOy8U",
-    "_rescued": "parse"
+    "video_id": "eHhkhwSOy8U"
   },
   {
     "time": [
-      46,
-      48
+      23,
+      24
     ],
     "visible_entities": [
       {
-        "desc": "person wearing dark clothing and a helmet, riding a small dark vehicle",
-        "action": "riding a vehicle on a gravel path",
+        "desc": "person wearing dark clothing, riding a dark-colored scooter",
+        "action": "riding away from the camera",
         "position": "center"
       },
       {
-        "desc": "small dark vehicle, possibly a mini-bike or quad, with visible wheels",
-        "action": "moving forward",
-        "position": "center"
+        "desc": "gravel path, grey and rocky texture",
+        "action": "static",
+        "position": "foreground"
       },
       {
-        "desc": "steep rocky mountain slope with sparse vegetation",
+        "desc": "steep hillside, covered in green vegetation and grey rocks",
         "action": "static",
         "position": "background"
       },
       {
-        "desc": "bushy plant with brownish leaves",
+        "desc": "bushy plant, brown and dry appearance",
         "action": "static",
-        "position": "foreground right"
+        "position": "bottom right"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A person is riding a small vehicle along a gravel path.",
+        "fact": "A person is riding a scooter along a gravel path.",
         "confidence": 1.0
       },
       {
-        "fact": "The path is situated at the base of a steep, rocky mountain.",
+        "fact": "The scooter is moving away from the camera towards the background.",
         "confidence": 1.0
       },
       {
-        "fact": "A bush is visible in the foreground on the right side of the frame.",
+        "fact": "The path is situated between a steep hillside and a lower slope.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The person on the vehicle is in the center of the frame, positioned in front of the steep mountain slope. The bushy plant is in the foreground to the right of the person and vehicle.",
+    "spatial": "The person on the scooter is in the center of the frame, riding on the gravel path. The steep hillside is to the left of the person and rises above the path. A bushy plant is in the bottom right foreground, near the edge of the path.",
     "parse_success": true,
     "chunk_idx": 23,
-    "video_id": "eHhkhwSOy8U",
-    "_rescued": "parse"
+    "video_id": "eHhkhwSOy8U"
   },
   {
     "time": [
-      48,
-      50
+      24,
+      25
     ],
     "visible_entities": [
       {
@@ -1133,24 +1121,24 @@
         "position": "center"
       },
       {
-        "desc": "large brown bushy plant",
+        "desc": "large brown leafy bush",
         "action": "static",
         "position": "foreground right"
       },
       {
-        "desc": "steep rocky mountain slope",
+        "desc": "steep rocky mountain slope with sparse vegetation",
         "action": "static",
-        "position": "background left"
+        "position": "background"
       },
       {
-        "desc": "gravel path",
+        "desc": "grey gravel path",
         "action": "static",
         "position": "bottom"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A person is riding a two-wheeled vehicle on a gravel path.",
+        "fact": "A person is riding a two-wheeled vehicle along a gravel path.",
         "confidence": 1.0
       },
       {
@@ -1158,21 +1146,20 @@
         "confidence": 1.0
       },
       {
-        "fact": "The terrain is rocky and mountainous.",
+        "fact": "The terrain is a rocky mountain slope.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The person on the vehicle is to the left of the small black dog. The large brown bush is in the foreground to the right of the person. The steep mountain slope is behind and to the left of the person.",
+    "spatial": "The person on the vehicle is in the center of the frame, positioned to the left of the small black dog. The large brown bush is in the foreground to the right of the person and dog. The steep mountain slope rises in the background behind the path.",
     "parse_success": true,
     "chunk_idx": 24,
-    "video_id": "eHhkhwSOy8U",
-    "_rescued": "parse"
+    "video_id": "eHhkhwSOy8U"
   },
   {
     "time": [
-      50,
-      52
+      25,
+      26
     ],
     "visible_entities": [
       {
@@ -1181,9 +1168,14 @@
         "position": "center"
       },
       {
-        "desc": "black two-wheeled self-balancing scooter (Segway)",
-        "action": "moving on gravel",
+        "desc": "dark-colored Segway personal transporter",
+        "action": "moving forward",
         "position": "center"
+      },
+      {
+        "desc": "gravel and dirt path",
+        "action": "static",
+        "position": "bottom"
       },
       {
         "desc": "steep rocky hillside with sparse vegetation",
@@ -1191,7 +1183,7 @@
         "position": "background"
       },
       {
-        "desc": "brownish shrubbery",
+        "desc": "brownish bush",
         "action": "static",
         "position": "foreground right"
       }
@@ -1202,35 +1194,29 @@
         "confidence": 1.0
       },
       {
-        "fact": "The rider is wearing a helmet for safety.",
+        "fact": "The path is situated at the base of a steep, rocky hillside.",
         "confidence": 1.0
       },
       {
-        "fact": "The terrain is a rough, unpaved track in a mountainous area.",
+        "fact": "A bush is visible in the foreground on the right side of the frame.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The person is standing on the Segway in the center of the frame. The Segway is on the gravel path, which is situated between the steep hillside in the background and the shrubbery in the foreground right.",
+    "spatial": "The person is on the Segway in the center of the frame. The gravel path is below the person and the Segway. The steep hillside is behind the person. The bush is to the right of the person and in the foreground.",
     "parse_success": true,
     "chunk_idx": 25,
-    "video_id": "eHhkhwSOy8U",
-    "_rescued": "parse"
+    "video_id": "eHhkhwSOy8U"
   },
   {
     "time": [
-      52,
-      54
+      26,
+      27
     ],
     "visible_entities": [
       {
-        "desc": "person wearing a dark jacket, dark pants, and a helmet",
+        "desc": "person wearing a dark jacket and dark pants, standing on a two-wheeled personal transporter",
         "action": "riding a Segway",
-        "position": "center"
-      },
-      {
-        "desc": "black Segway personal transporter with two large wheels",
-        "action": "moving forward",
         "position": "center"
       },
       {
@@ -1239,57 +1225,14 @@
         "position": "left"
       },
       {
-        "desc": "steep hillside covered in grass and low vegetation",
+        "desc": "steep, rocky hillside with sparse vegetation",
         "action": "static",
         "position": "background"
       },
       {
         "desc": "gravel and dirt path",
         "action": "static",
-        "position": "bottom"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "A person is riding a Segway along a gravel path.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "A black dog is walking alongside the person on the Segway.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The terrain is a steep, grassy hillside.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [],
-    "spatial": "The person on the Segway is in the center of the frame, with the black dog to their left. The gravel path is below them, and the steep hillside is behind them.",
-    "parse_success": true,
-    "chunk_idx": 26,
-    "video_id": "eHhkhwSOy8U",
-    "_rescued": "parse"
-  },
-  {
-    "time": [
-      54,
-      56
-    ],
-    "visible_entities": [
-      {
-        "desc": "person wearing a dark helmet, dark jacket with white stripes on the sleeves, and dark pants",
-        "action": "standing on a Segway",
-        "position": "center"
-      },
-      {
-        "desc": "black dog with a blue collar",
-        "action": "walking left",
-        "position": "left"
-      },
-      {
-        "desc": "Segway with large, knobby off-road tires",
-        "action": "static",
-        "position": "center"
+        "position": "foreground"
       }
     ],
     "atomic_facts": [
@@ -1298,36 +1241,81 @@
         "confidence": 1.0
       },
       {
-        "fact": "A black dog is walking to the left of the person.",
+        "fact": "A black dog is walking to the left of the person on the Segway.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The scene is set on a path at the base of a steep, rocky hillside.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The black dog is to the left of the person on the Segway. The person is standing on the Segway, which is on the gravel ground.",
+    "spatial": "The person on the Segway is in the center of the frame. The black dog is to the left of the person. The steep hillside is in the background, behind the person and the dog. The gravel path is under the person and the dog.",
     "parse_success": true,
-    "chunk_idx": 27,
-    "video_id": "eHhkhwSOy8U",
-    "_rescued": "parse"
+    "chunk_idx": 26,
+    "video_id": "eHhkhwSOy8U"
   },
   {
     "time": [
-      56,
-      58
+      27,
+      28
     ],
     "visible_entities": [
       {
-        "desc": "person wearing a black helmet, a black jacket with white stripes on the sleeves, and blue jeans",
+        "desc": "person wearing a black helmet, black jacket with white stripes on the sleeves, and dark pants",
+        "action": "riding a Segway",
+        "position": "center"
+      },
+      {
+        "desc": "black dog with a blue collar",
+        "action": "running to the left",
+        "position": "left"
+      },
+      {
+        "desc": "black Segway with large off-road tires",
+        "action": "moving forward",
+        "position": "center"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The person is riding a Segway on a gravel path.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The black dog is running alongside the Segway.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The person is wearing a helmet for safety.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The person on the Segway is to the right of the black dog. The dog is running next to the Segway. The person is standing on the Segway.",
+    "parse_success": true,
+    "chunk_idx": 27,
+    "video_id": "eHhkhwSOy8U"
+  },
+  {
+    "time": [
+      28,
+      29
+    ],
+    "visible_entities": [
+      {
+        "desc": "person wearing a black helmet, black jacket with white stripes on the sleeves, and blue jeans",
         "action": "riding a Segway",
         "position": "center"
       },
       {
         "desc": "black dog with a white collar",
-        "action": "walking to the left",
+        "action": "walking",
         "position": "left"
       },
       {
         "desc": "Segway with large, knobby off-road tires and a black platform",
-        "action": "moving forward",
+        "action": "moving",
         "position": "center"
       },
       {
@@ -1338,7 +1326,7 @@
     ],
     "atomic_facts": [
       {
-        "fact": "A person is riding a Segway on a gravel path.",
+        "fact": "A person is riding a Segway on a dirt path.",
         "confidence": 1.0
       },
       {
@@ -1348,23 +1336,18 @@
       {
         "fact": "The Segway has large, knobby tires suitable for off-road terrain.",
         "confidence": 1.0
-      },
-      {
-        "fact": "The background consists of a rocky cliff with plants.",
-        "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The person on the Segway is to the right of the black dog. The dog is walking on the gravel path in front of the rocky cliff. The Segway is under the person.",
+    "spatial": "The person on the Segway is to the right of the black dog. The dog is walking on the dirt path in front of the rocky cliff face. The person is holding the handlebars of the Segway.",
     "parse_success": true,
     "chunk_idx": 28,
-    "video_id": "eHhkhwSOy8U",
-    "_rescued": "parse"
+    "video_id": "eHhkhwSOy8U"
   },
   {
     "time": [
-      58,
-      60
+      29,
+      30
     ],
     "visible_entities": [
       {
@@ -1373,59 +1356,49 @@
         "position": "center"
       },
       {
-        "desc": "black Segway personal transporter with large tires",
-        "action": "moving forward",
-        "position": "center"
+        "desc": "black dog with a white patch on its chest",
+        "action": "walking left",
+        "position": "left"
       },
       {
-        "desc": "medium-sized black dog",
-        "action": "running",
-        "position": "left"
+        "desc": "black Segway with large tires",
+        "action": "moving forward",
+        "position": "center"
       },
       {
         "desc": "rocky cliff face with sparse vegetation",
         "action": "static",
         "position": "background"
-      },
-      {
-        "desc": "gravel road surface",
-        "action": "static",
-        "position": "bottom"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A person is riding a Segway along a gravel road.",
+        "fact": "A person is riding a Segway on a gravel road.",
         "confidence": 1.0
       },
       {
-        "fact": "A black dog is running on the road to the left of the person.",
+        "fact": "A black dog is walking to the left of the person.",
         "confidence": 1.0
       },
       {
         "fact": "The person is wearing a helmet for safety.",
         "confidence": 1.0
-      },
-      {
-        "fact": "The road is bordered by a rocky cliff on the right side.",
-        "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The person on the Segway is to the right of the black dog. The rocky cliff is to the right of the person and the dog. The gravel road is below the person, the Segway, and the dog.",
+    "spatial": "The person on the Segway is to the right of the black dog. The rocky cliff is behind the person and the dog. The dog is walking on the gravel road next to the Segway.",
     "parse_success": true,
     "chunk_idx": 29,
-    "video_id": "eHhkhwSOy8U",
-    "_rescued": "parse"
+    "video_id": "eHhkhwSOy8U"
   },
   {
     "time": [
-      60,
-      62
+      30,
+      31
     ],
     "visible_entities": [
       {
-        "desc": "person wearing a black helmet, dark jacket with white stripes on the sleeves, and blue jeans",
+        "desc": "person wearing a black helmet, a black jacket with white stripes on the sleeves, and blue jeans",
         "action": "riding a Segway",
         "position": "center"
       },
@@ -1437,10 +1410,10 @@
       {
         "desc": "large black tire with a hexagonal tread pattern",
         "action": "static",
-        "position": "bottom left"
+        "position": "bottom-left"
       },
       {
-        "desc": "steep rocky cliff face with sparse vegetation",
+        "desc": "steep rocky cliffs with sparse vegetation",
         "action": "static",
         "position": "background"
       }
@@ -1451,46 +1424,45 @@
         "confidence": 1.0
       },
       {
-        "fact": "The rider is moving away from the camera.",
+        "fact": "The road is flanked by steep rocky cliffs.",
         "confidence": 1.0
       },
       {
-        "fact": "The road is flanked by tall rocky cliffs.",
+        "fact": "A large tire is visible in the immediate foreground on the left.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The person is on the Segway in the center of the road. The large tire is in the bottom left foreground, positioned to the left of the Segway. The rocky cliffs are behind and to the right of the person.",
+    "spatial": "The person on the Segway is in the center of the road, moving away from the camera. The large tire is in the bottom-left foreground, positioned to the left of the Segway. The rocky cliffs are on both sides of the road, rising above the person and the vehicle.",
     "parse_success": true,
     "chunk_idx": 30,
-    "video_id": "eHhkhwSOy8U",
-    "_rescued": "parse"
+    "video_id": "eHhkhwSOy8U"
   },
   {
     "time": [
-      62,
-      64
+      31,
+      32
     ],
     "visible_entities": [
       {
-        "desc": "person wearing a dark jacket, dark pants, and a white helmet",
-        "action": "riding a Segway",
-        "position": "center"
-      },
-      {
-        "desc": "black Segway personal transporter",
-        "action": "moving forward",
+        "desc": "person wearing a dark long-sleeved top and dark pants, standing on a two-wheeled self-balancing scooter",
+        "action": "riding away from the camera",
         "position": "center"
       },
       {
         "desc": "person with dark hair wearing a black t-shirt and light-colored shorts",
-        "action": "standing",
+        "action": "walking on the left side",
         "position": "left"
       },
       {
         "desc": "large black tire with a hexagonal tread pattern",
         "action": "static",
-        "position": "bottom-left foreground"
+        "position": "bottom left foreground"
+      },
+      {
+        "desc": "rough gravel road surface",
+        "action": "static",
+        "position": "center"
       },
       {
         "desc": "steep rocky cliffs with sparse vegetation",
@@ -1500,15 +1472,15 @@
     ],
     "atomic_facts": [
       {
-        "fact": "A person is riding a Segway up a gravel road.",
+        "fact": "A person is riding a Segway-like vehicle up a gravel path.",
         "confidence": 1.0
       },
       {
-        "fact": "The road is flanked by steep rocky cliffs.",
+        "fact": "Another person is walking on the left side of the road.",
         "confidence": 1.0
       },
       {
-        "fact": "A person stands on the left side of the road.",
+        "fact": "The terrain is rocky and mountainous.",
         "confidence": 1.0
       },
       {
@@ -1517,80 +1489,21 @@
       }
     ],
     "ocr": [],
-    "spatial": "The person on the Segway is in the center of the frame, positioned on the gravel road. The standing person is to the left of the Segway rider. The large tire is in the bottom-left foreground, in front of the standing person. The rocky cliffs are in the background, rising above and on both sides of the road.",
+    "spatial": "The person riding the scooter is in the center of the road, moving away from the camera. The person walking is to the left of the rider. The large tire is in the bottom left foreground, below the walking person. The rocky cliffs rise up on both sides of the road in the background.",
     "parse_success": true,
     "chunk_idx": 31,
-    "video_id": "eHhkhwSOy8U",
-    "_rescued": "parse"
+    "video_id": "eHhkhwSOy8U"
   },
   {
     "time": [
-      64,
-      66
+      32,
+      33
     ],
     "visible_entities": [
       {
-        "desc": "person wearing a dark jacket and dark pants, riding a standing electric scooter",
-        "action": "riding away from the camera",
-        "position": "center"
-      },
-      {
-        "desc": "small black dog",
-        "action": "walking on the left side of the road",
-        "position": "left"
-      },
-      {
-        "desc": "person wearing a dark jacket, partially visible",
-        "action": "standing",
-        "position": "left foreground"
-      },
-      {
-        "desc": "gravel road",
-        "action": "static",
-        "position": "bottom"
-      },
-      {
-        "desc": "steep rocky cliffs",
-        "action": "static",
-        "position": "background"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "A person is riding an electric scooter down a gravel road.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "A small black dog is walking on the left side of the road.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The road is surrounded by steep rocky cliffs.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [],
-    "spatial": "The person on the scooter is in the center of the road, moving away from the camera. The small black dog is to the left of the scooter. The partially visible person is in the left foreground, near the dog. The rocky cliffs are on both sides of the road, forming a canyon-like setting.",
-    "parse_success": true,
-    "chunk_idx": 32,
-    "video_id": "eHhkhwSOy8U",
-    "_rescued": "parse"
-  },
-  {
-    "time": [
-      66,
-      68
-    ],
-    "visible_entities": [
-      {
-        "desc": "person wearing a dark jacket, dark pants, and a helmet",
+        "desc": "person wearing dark clothing and a helmet",
         "action": "riding a Segway",
         "position": "center"
-      },
-      {
-        "desc": "black dog, medium size",
-        "action": "running",
-        "position": "left"
       },
       {
         "desc": "black Segway personal transporter",
@@ -1598,14 +1511,76 @@
         "position": "center"
       },
       {
-        "desc": "steep rocky cliffs with jagged edges",
+        "desc": "small black dog",
+        "action": "running",
+        "position": "left"
+      },
+      {
+        "desc": "person wearing a dark jacket with a red stripe on the sleeve",
+        "action": "standing",
+        "position": "left"
+      },
+      {
+        "desc": "rocky mountain cliffs",
         "action": "static",
         "position": "background"
       },
       {
-        "desc": "grey gravel road",
+        "desc": "gravel road",
         "action": "static",
         "position": "bottom"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A person is riding a Segway down a gravel road.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A black dog is running on the left side of the road.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The road is flanked by steep rocky cliffs.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The person on the Segway is in the center of the gravel road. The black dog is to the left of the Segway rider. The rocky cliffs are on both sides of the road, rising above the ground level.",
+    "parse_success": true,
+    "chunk_idx": 32,
+    "video_id": "eHhkhwSOy8U"
+  },
+  {
+    "time": [
+      33,
+      34
+    ],
+    "visible_entities": [
+      {
+        "desc": "person wearing a dark jacket and dark pants",
+        "action": "riding a Segway",
+        "position": "center"
+      },
+      {
+        "desc": "black dog, medium-sized",
+        "action": "running",
+        "position": "left"
+      },
+      {
+        "desc": "Segway personal transporter, dark color",
+        "action": "moving forward",
+        "position": "center"
+      },
+      {
+        "desc": "gravel road, gray and rocky",
+        "action": "static",
+        "position": "background"
+      },
+      {
+        "desc": "rocky cliffs, steep and gray",
+        "action": "static",
+        "position": "background"
       }
     ],
     "atomic_facts": [
@@ -1618,47 +1593,46 @@
         "confidence": 1.0
       },
       {
-        "fact": "The road is flanked by steep, rocky cliffs.",
+        "fact": "The road is surrounded by steep rocky cliffs.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The person on the Segway is in the center of the road. The black dog is to the left of the person and the Segway. The rocky cliffs are on both sides of the road, forming a narrow pass.",
+    "spatial": "The person on the Segway is in the center of the road. The black dog is to the left of the person and the Segway. The rocky cliffs are on both sides of the road, in the background.",
     "parse_success": true,
     "chunk_idx": 33,
-    "video_id": "eHhkhwSOy8U",
-    "_rescued": "parse"
+    "video_id": "eHhkhwSOy8U"
   },
   {
     "time": [
-      68,
-      70
+      34,
+      35
     ],
     "visible_entities": [
       {
-        "desc": "person wearing a black jacket with white stripes on the sleeves and dark pants",
+        "desc": "person wearing a dark jacket with white stripes on the sleeves and dark pants",
         "action": "riding a Segway",
         "position": "center"
       },
       {
-        "desc": "black dog, medium-sized",
+        "desc": "black dog, medium size",
         "action": "running alongside the Segway",
         "position": "center"
       },
       {
-        "desc": "black two-wheeled self-balancing scooter (Segway)",
+        "desc": "black Segway personal transporter",
         "action": "moving forward",
         "position": "center"
       },
       {
-        "desc": "gravel road, grey and unpaved",
+        "desc": "rocky cliffs, steep and grey",
         "action": "static",
         "position": "background"
       },
       {
-        "desc": "steep rocky cliffs, grey and jagged",
+        "desc": "gravel road, grey and unpaved",
         "action": "static",
-        "position": "background"
+        "position": "foreground"
       }
     ],
     "atomic_facts": [
@@ -1676,40 +1650,39 @@
       }
     ],
     "ocr": [],
-    "spatial": "The person is on the Segway in the center of the gravel road. The black dog is running to the right of the Segway. The rocky cliffs are on both the left and right sides of the road, rising above the person and the dog.",
+    "spatial": "The person on the Segway is in the center of the gravel road. The black dog is running to the right of the Segway. The rocky cliffs are on both sides of the road, rising above the person and the dog.",
     "parse_success": true,
     "chunk_idx": 34,
-    "video_id": "eHhkhwSOy8U",
-    "_rescued": "parse"
+    "video_id": "eHhkhwSOy8U"
   },
   {
     "time": [
-      70,
-      72
+      35,
+      36
     ],
     "visible_entities": [
       {
-        "desc": "person wearing a black long-sleeved top with white horizontal stripes across the chest and arms, dark pants, and a dark helmet",
+        "desc": "person wearing a dark jacket with horizontal red and white stripes on the upper back and dark pants",
         "action": "riding a Segway",
         "position": "center"
       },
       {
-        "desc": "black Segway personal transporter",
-        "action": "moving along the path",
+        "desc": "black two-wheeled self-balancing scooter (Segway)",
+        "action": "moving forward",
         "position": "center"
       },
       {
-        "desc": "black dog",
-        "action": "running",
+        "desc": "black dog, medium-sized",
+        "action": "walking",
         "position": "center"
       },
       {
-        "desc": "steep rocky cliff face with dark grey texture and sparse vegetation",
+        "desc": "steep rocky cliff face with sparse vegetation",
         "action": "static",
         "position": "background"
       },
       {
-        "desc": "grey gravel road",
+        "desc": "gravel road surface",
         "action": "static",
         "position": "foreground"
       }
@@ -1720,39 +1693,42 @@
         "confidence": 1.0
       },
       {
-        "fact": "A black dog is running alongside the person on the Segway.",
+        "fact": "A black dog is walking alongside the person on the Segway.",
         "confidence": 1.0
       },
       {
-        "fact": "The person is wearing a black top with white stripes.",
+        "fact": "The person is wearing a jacket with red and white stripes on the back.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The road is bordered by a rocky cliff on the right side.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The person on the Segway is in the center of the frame, moving along the gravel road. The black dog is to the right of the Segway, running parallel to it. The rocky cliff face is behind the person and the dog, forming the background of the scene.",
+    "spatial": "The person on the Segway is in the center of the frame, positioned on the gravel road. The black dog is to the right of the person and slightly behind them. The rocky cliff face is to the right of the road and rises above the person and the dog.",
     "parse_success": true,
     "chunk_idx": 35,
-    "video_id": "eHhkhwSOy8U",
-    "_rescued": "parse"
+    "video_id": "eHhkhwSOy8U"
   },
   {
     "time": [
-      72,
-      74
+      36,
+      37
     ],
     "visible_entities": [
       {
-        "desc": "person wearing a dark helmet, a maroon and white long-sleeved top, and dark pants",
+        "desc": "person wearing a dark jacket with white stripes on the sleeves, dark pants, and a helmet",
         "action": "riding a Segway",
         "position": "center"
       },
       {
         "desc": "black Segway with large, knobby off-road tires",
-        "action": "moving on a gravel path",
+        "action": "moving forward",
         "position": "center"
       },
       {
-        "desc": "medium-sized black dog",
+        "desc": "black dog, medium-sized",
         "action": "walking",
         "position": "left"
       },
@@ -1764,7 +1740,7 @@
     ],
     "atomic_facts": [
       {
-        "fact": "A person is riding a Segway on a gravel path.",
+        "fact": "A person is riding a Segway on a dirt path.",
         "confidence": 1.0
       },
       {
@@ -1772,83 +1748,81 @@
         "confidence": 1.0
       },
       {
-        "fact": "The Segway has large, rugged tires suitable for off-road terrain.",
+        "fact": "The Segway has large, off-road tires.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The person on the Segway is in the center of the frame, with the black dog to their left. The rocky cliff face is behind both the person and the dog.",
+    "spatial": "The person is on the Segway. The black dog is to the left of the Segway. The rocky cliff is behind the person and the dog.",
     "parse_success": true,
     "chunk_idx": 36,
-    "video_id": "eHhkhwSOy8U",
-    "_rescued": "parse"
+    "video_id": "eHhkhwSOy8U"
   },
   {
     "time": [
-      74,
-      76
+      37,
+      38
     ],
     "visible_entities": [
       {
-        "desc": "person wearing a black helmet, dark long-sleeved top, and blue jeans",
-        "action": "standing on a Segway",
-        "position": "center"
-      },
-      {
-        "desc": "black dog with a blue collar",
-        "action": "walking to the right",
-        "position": "left"
-      },
-      {
-        "desc": "Segway with large, knobby off-road tires",
-        "action": "static",
-        "position": "center"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "A person is standing on a Segway.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "A black dog is walking on the gravel path.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The dog is moving towards the right side of the frame.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [],
-    "spatial": "The black dog is to the left of the person on the Segway. The person is standing on the Segway, which is on a gravel path. The dog is walking near the person.",
-    "parse_success": true,
-    "chunk_idx": 37,
-    "video_id": "eHhkhwSOy8U",
-    "_rescued": "parse"
-  },
-  {
-    "time": [
-      76,
-      78
-    ],
-    "visible_entities": [
-      {
-        "desc": "person wearing a black jacket, dark pants, and a helmet",
+        "desc": "person wearing a dark helmet, dark long-sleeved top, and dark pants",
         "action": "riding a Segway",
         "position": "center"
       },
       {
-        "desc": "black dog, medium-sized",
-        "action": "running",
-        "position": "left"
-      },
-      {
-        "desc": "white and black two-wheeled self-balancing scooter (Segway)",
+        "desc": "Segway with large, knobby off-road tires",
         "action": "moving forward",
         "position": "center"
       },
       {
-        "desc": "gravel path with a rocky hillside in the background",
+        "desc": "black dog with a blue collar",
+        "action": "running",
+        "position": "left"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A person is riding a Segway on a gravel path.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A black dog is running alongside the Segway.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The Segway is equipped with large, off-road tires.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The person is standing on the Segway in the center of the frame. The black dog is to the left of the person and the Segway. The dog is running next to the Segway.",
+    "parse_success": true,
+    "chunk_idx": 37,
+    "video_id": "eHhkhwSOy8U"
+  },
+  {
+    "time": [
+      38,
+      39
+    ],
+    "visible_entities": [
+      {
+        "desc": "person wearing a black jacket and dark pants, standing on a vehicle",
+        "action": "riding a Segway",
+        "position": "center"
+      },
+      {
+        "desc": "dark-colored dog, medium size, short fur",
+        "action": "walking",
+        "position": "left"
+      },
+      {
+        "desc": "two-wheeled self-balancing vehicle (Segway), dark grey or black",
+        "action": "moving forward",
+        "position": "center"
+      },
+      {
+        "desc": "steep hillside covered in rocks and sparse green vegetation",
         "action": "static",
         "position": "background"
       }
@@ -1859,19 +1833,18 @@
         "confidence": 1.0
       },
       {
-        "fact": "A black dog is running alongside the person on the Segway.",
+        "fact": "A dark dog is walking to the left of the person.",
         "confidence": 1.0
       },
       {
-        "fact": "The dog is positioned to the left of the Segway.",
+        "fact": "The terrain is a rocky, unpaved road next to a hillside.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The person on the Segway is in the center of the frame. The black dog is to the left of the person and the Segway. The rocky hillside is in the background, behind the person and the dog.",
+    "spatial": "The person on the Segway is in the center of the frame. The dog is to the left of the person and slightly behind the vehicle. The hillside is in the background, rising above the path.",
     "parse_success": true,
     "chunk_idx": 38,
-    "video_id": "eHhkhwSOy8U",
-    "_rescued": "parse"
+    "video_id": "eHhkhwSOy8U"
   }
 ]

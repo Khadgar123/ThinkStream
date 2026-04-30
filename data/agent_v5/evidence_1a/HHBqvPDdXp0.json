@@ -2,138 +2,140 @@
   {
     "time": [
       0,
-      2
+      1
     ],
     "visible_entities": [
       {
-        "desc": "black industrial engine assembly, metallic texture, mounted on a wooden pallet, featuring a silver exhaust pipe and red and white warning labels",
+        "desc": "large black industrial engine assembly with a silver metal roll bar, mounted on a wooden pallet",
         "action": "static",
         "position": "center"
       },
       {
-        "desc": "wooden pallet, light brown, slatted",
+        "desc": "red and white rectangular sticker with text",
         "action": "static",
-        "position": "bottom"
+        "position": "center"
       },
       {
-        "desc": "brown cardboard or wooden panel, flat surface",
+        "desc": "brown cardboard sheet",
         "action": "static",
         "position": "right"
+      },
+      {
+        "desc": "concrete floor with a metal ring",
+        "action": "static",
+        "position": "bottom"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "The black engine assembly is sitting stationary on a wooden pallet.",
+        "fact": "A large black engine assembly sits stationary on a wooden pallet.",
         "confidence": 1.0
       },
       {
-        "fact": "The engine features a label with the text '2203'.",
+        "fact": "A sticker on the engine reads '2018'.",
         "confidence": 1.0
       },
       {
-        "fact": "A silver exhaust pipe curves over the top of the engine block.",
+        "fact": "A metal ring lies on the floor in the foreground.",
         "confidence": 1.0
       }
     ],
     "ocr": [
-      "2203"
+      "2018"
     ],
-    "spatial": "The black engine assembly is positioned in the center of the frame, resting on top of the wooden pallet. A brown panel is located to the right of the engine assembly. The silver exhaust pipe is situated above the main body of the engine.",
+    "spatial": "The black engine assembly is in the center of the frame, resting on a wooden pallet. A brown cardboard sheet is positioned to the right of the engine. A metal ring is on the floor in front of the pallet.",
     "parse_success": true,
     "chunk_idx": 0,
     "video_id": "HHBqvPDdXp0"
   },
   {
     "time": [
-      2,
-      4
+      1,
+      2
     ],
     "visible_entities": [
       {
-        "desc": "black engine block, metallic, with a silver curved exhaust pipe, a red and white '222' sticker, and a red rectangular warning label",
+        "desc": "black engine block with a glossy finish, featuring a red and white 'Perkins' logo and a '228' model number sticker, equipped with silver metal pipes and hoses",
         "action": "static",
         "position": "center"
       },
       {
-        "desc": "brown cardboard box, matte texture",
+        "desc": "brown cardboard box",
         "action": "static",
         "position": "right"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "The engine block is stationary.",
+        "fact": "The engine is sitting stationary on the ground.",
         "confidence": 1.0
       },
       {
-        "fact": "The engine block is positioned next to a cardboard box.",
+        "fact": "The text 'Perkins' is visible on a red label on the side of the engine.",
         "confidence": 1.0
       },
       {
-        "fact": "The sticker on the engine reads '222'.",
+        "fact": "The number '228' is printed on a white sticker next to the logo.",
         "confidence": 1.0
       }
     ],
     "ocr": [
-      "222"
+      "Perkins",
+      "228"
     ],
-    "spatial": "The black engine block is to the left of the brown cardboard box. The silver exhaust pipe is attached to the left side of the engine block. The '222' sticker is located on the top surface of the engine block.",
+    "spatial": "The black engine block is positioned to the left of the brown cardboard box. The silver pipes are attached to the top and side of the engine block.",
     "parse_success": true,
     "chunk_idx": 1,
     "video_id": "HHBqvPDdXp0"
   },
   {
     "time": [
-      4,
-      6
+      2,
+      3
     ],
     "visible_entities": [
       {
-        "desc": "black industrial engine block with metallic exhaust pipes and a yellow fuel tank on top",
+        "desc": "black industrial engine assembly with a metallic exhaust pipe, a white fuel tank on top, and red and white warning stickers on the side",
         "action": "static",
         "position": "center"
       },
       {
-        "desc": "rectangular stickers with red and white graphics",
+        "desc": "brown cardboard box",
         "action": "static",
-        "position": "center"
-      },
-      {
-        "desc": "brown cardboard box walls",
-        "action": "static",
-        "position": "background"
+        "position": "right"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "The engine block is resting inside a cardboard box.",
+        "fact": "A black engine assembly sits stationary on a surface.",
         "confidence": 1.0
       },
       {
-        "fact": "The stickers are adhered to the side of the engine block.",
+        "fact": "The engine features a curved metallic exhaust pipe.",
         "confidence": 1.0
       },
       {
-        "fact": "The exhaust pipes curve upwards from the engine block.",
+        "fact": "Red and white warning stickers are visible on the side of the engine.",
         "confidence": 1.0
       }
     ],
     "ocr": [
-      "2000"
+      "DANGER",
+      "HOT"
     ],
-    "spatial": "The black engine block is positioned in the center of the frame, resting inside the brown cardboard box. The metallic exhaust pipes are located above the main body of the engine. The stickers are attached to the side of the engine block, facing the viewer.",
+    "spatial": "The black engine assembly is positioned in the center of the frame. A brown cardboard box is located to the right of the engine. The metallic exhaust pipe is attached to the left side of the engine block.",
     "parse_success": true,
     "chunk_idx": 2,
     "video_id": "HHBqvPDdXp0"
   },
   {
     "time": [
-      6,
-      8
+      3,
+      4
     ],
     "visible_entities": [
       {
-        "desc": "black industrial engine assembly, metallic, with a white cylindrical air filter on top, silver curved exhaust pipes, and red and white rectangular stickers on the side",
+        "desc": "black industrial engine assembly with a silver curved metal pipe, a white cylindrical filter on top, and red and white warning labels",
         "action": "static",
         "position": "center"
       },
@@ -150,79 +152,637 @@
     ],
     "atomic_facts": [
       {
-        "fact": "The engine assembly sits stationary on a wooden pallet.",
+        "fact": "The engine assembly is resting on a wooden pallet.",
         "confidence": 1.0
       },
       {
-        "fact": "The text '22B' is visible on a sticker on the engine.",
+        "fact": "A silver metal pipe curves over the top of the engine block.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The engine features red and white labels with text.",
         "confidence": 1.0
       }
     ],
     "ocr": [
       "22B"
     ],
-    "spatial": "The black engine assembly is positioned in the center, resting on top of a wooden pallet base. A brown cardboard box is located to the right of the engine. The white air filter is mounted on top of the engine block.",
+    "spatial": "The black engine assembly is positioned in the center, resting on top of a wooden pallet. A brown cardboard box is located to the right of the engine. The silver metal pipe is situated above the main engine block.",
     "parse_success": true,
     "chunk_idx": 3,
     "video_id": "HHBqvPDdXp0"
   },
   {
     "time": [
-      8,
-      10
+      4,
+      5
     ],
     "visible_entities": [
       {
-        "desc": "black industrial engine with a silver curved exhaust pipe, a white air filter housing on top, and a black valve cover featuring red and white decals",
+        "desc": "black industrial engine assembly with a black valve cover, silver metal pipes, and a white cylindrical filter on top",
         "action": "static",
         "position": "center"
       },
       {
-        "desc": "wooden surface with light brown grain texture",
+        "desc": "red and white rectangular stickers with text and logos",
+        "action": "static",
+        "position": "center"
+      },
+      {
+        "desc": "light brown wooden surface",
         "action": "static",
         "position": "background"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A black engine is resting on a wooden surface.",
+        "fact": "A black engine assembly sits stationary on a wooden surface.",
         "confidence": 1.0
       },
       {
-        "fact": "The engine features a prominent silver exhaust manifold.",
+        "fact": "The engine features a white cylindrical filter mounted on top.",
         "confidence": 1.0
       },
       {
-        "fact": "The text '2200' is visible on the side of the engine.",
+        "fact": "Red and white stickers are adhered to the side of the engine's valve cover.",
         "confidence": 1.0
       }
     ],
     "ocr": [
-      "2200"
+      "2200",
+      "ISUZU"
     ],
-    "spatial": "The black engine is positioned in the center of the frame, resting on top of the wooden surface. The silver exhaust pipe is attached to the left side of the engine block. The white air filter housing is located above the main engine body.",
+    "spatial": "The black engine assembly is positioned in the center of the frame, resting on a wooden surface. The white cylindrical filter is located on top of the engine block. The red and white stickers are attached to the side of the engine, facing the viewer.",
     "parse_success": true,
     "chunk_idx": 4,
     "video_id": "HHBqvPDdXp0"
   },
   {
     "time": [
-      10,
-      12
+      5,
+      6
     ],
     "visible_entities": [
       {
-        "desc": "black industrial engine assembly, metallic texture, with a silver curved exhaust pipe and a white fuel tank on top",
+        "desc": "black industrial engine assembly with a silver metal handlebar, a yellow fuel tank, and a black side panel featuring red and white stickers",
         "action": "static",
         "position": "center"
       },
       {
-        "desc": "red and white rectangular stickers with text",
+        "desc": "brown cardboard surface",
+        "action": "static",
+        "position": "right"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The engine assembly sits stationary on a surface.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The side panel displays the text '220' and a red logo.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "220"
+    ],
+    "spatial": "The black engine assembly is positioned in the center of the frame. The brown cardboard surface is to the right of the engine. The silver handlebar is located above the main body of the engine.",
+    "parse_success": true,
+    "chunk_idx": 5,
+    "video_id": "HHBqvPDdXp0"
+  },
+  {
+    "time": [
+      6,
+      7
+    ],
+    "visible_entities": [
+      {
+        "desc": "black engine assembly with a red and white '2200' decal, featuring silver metal pipes, a beige air filter housing, and a black fan belt system",
         "action": "static",
         "position": "center"
       },
       {
         "desc": "brown cardboard box",
+        "action": "static",
+        "position": "right"
+      },
+      {
+        "desc": "white plastic bottle with a black cap",
+        "action": "static",
+        "position": "left"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The engine assembly sits stationary on the floor.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The decal on the engine reads '2200'.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "2200"
+    ],
+    "spatial": "The black engine assembly is positioned in the center of the frame. A brown cardboard box is to the right of the engine. A white plastic bottle is located to the left of the engine.",
+    "parse_success": true,
+    "chunk_idx": 6,
+    "video_id": "HHBqvPDdXp0"
+  },
+  {
+    "time": [
+      7,
+      8
+    ],
+    "visible_entities": [
+      {
+        "desc": "black engine assembly with a silver carburetor, white air filter housing, and curved silver metal pipes, featuring a black side cover with red and white stickers",
+        "action": "static",
+        "position": "center"
+      },
+      {
+        "desc": "wooden paneling or wall",
+        "action": "static",
+        "position": "background"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A black engine assembly sits stationary on a wooden surface.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The engine features a prominent silver carburetor and air filter on top.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The side cover of the engine displays a sticker with the text '2228'.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "2228"
+    ],
+    "spatial": "The black engine assembly is positioned in the center of the frame, resting on a wooden surface. A wooden wall or panel is visible behind the engine. The silver carburetor is located on top of the engine block.",
+    "parse_success": true,
+    "chunk_idx": 7,
+    "video_id": "HHBqvPDdXp0"
+  },
+  {
+    "time": [
+      8,
+      9
+    ],
+    "visible_entities": [
+      {
+        "desc": "black industrial engine with a silver metallic exhaust pipe, a beige circular air filter housing, and red and white warning labels",
+        "action": "static",
+        "position": "center"
+      },
+      {
+        "desc": "brown cardboard box",
+        "action": "static",
+        "position": "right"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A black engine sits stationary on a surface.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The engine features a silver exhaust pipe curving upwards.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The text '228' is visible on a label on the engine.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "228"
+    ],
+    "spatial": "The black engine is positioned in the center of the frame, resting on a surface. A brown cardboard box is located to the right of the engine.",
+    "parse_success": true,
+    "chunk_idx": 8,
+    "video_id": "HHBqvPDdXp0"
+  },
+  {
+    "time": [
+      9,
+      10
+    ],
+    "visible_entities": [
+      {
+        "desc": "black industrial engine with a silver metal exhaust pipe, a beige circular air filter housing on top, and a red and white identification sticker",
+        "action": "static",
+        "position": "center"
+      },
+      {
+        "desc": "brown cardboard surface",
+        "action": "static",
+        "position": "right"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A black engine sits stationary on a surface.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The engine features a prominent silver exhaust pipe curving over the top.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A sticker on the side of the engine displays the number '2205'.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "2205"
+    ],
+    "spatial": "The black engine is positioned in the center of the frame, resting on a surface. A brown cardboard box or wall is located to the right of the engine.",
+    "parse_success": true,
+    "chunk_idx": 9,
+    "video_id": "HHBqvPDdXp0"
+  },
+  {
+    "time": [
+      10,
+      11
+    ],
+    "visible_entities": [
+      {
+        "desc": "black engine assembly with a black valve cover featuring red and white decals, a silver carburetor with a round air filter, and silver exhaust piping",
+        "action": "static",
+        "position": "center"
+      },
+      {
+        "desc": "tan ribbed upholstery panel",
+        "action": "static",
+        "position": "background"
+      },
+      {
+        "desc": "black pulley and belt system",
+        "action": "static",
+        "position": "foreground"
+      },
+      {
+        "desc": "white cylindrical fuel filter",
+        "action": "static",
+        "position": "left"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The engine assembly is sitting stationary on a surface.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The valve cover displays the text '225' and a red logo.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A white fuel filter is connected to the engine via a black hose.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "225"
+    ],
+    "spatial": "The black engine assembly is positioned in the center of the frame, in front of a tan ribbed upholstery panel. A white cylindrical fuel filter is located to the left of the main engine block. The black pulley system is visible in the foreground below the exhaust pipes.",
+    "parse_success": true,
+    "chunk_idx": 10,
+    "video_id": "HHBqvPDdXp0"
+  },
+  {
+    "time": [
+      11,
+      12
+    ],
+    "visible_entities": [
+      {
+        "desc": "large mechanical engine assembly with metallic components, black belts, pulleys, and silver piping",
+        "action": "static",
+        "position": "right"
+      },
+      {
+        "desc": "tan ribbed interior wall paneling",
+        "action": "static",
+        "position": "background"
+      },
+      {
+        "desc": "small white cylindrical filter attached to the engine",
+        "action": "static",
+        "position": "center"
+      },
+      {
+        "desc": "tan flat floor surface with scattered debris",
+        "action": "static",
+        "position": "bottom"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The engine assembly is mounted on the right side of the frame.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A small white filter is attached to the side of the engine.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The scene is static with no visible movement between frames.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The large mechanical engine assembly is positioned on the right side of the frame. The tan ribbed wall paneling is located behind the engine and extends across the background. The floor is below the engine and wall paneling.",
+    "parse_success": true,
+    "chunk_idx": 11,
+    "video_id": "HHBqvPDdXp0"
+  },
+  {
+    "time": [
+      12,
+      13
+    ],
+    "visible_entities": [
+      {
+        "desc": "person's hand with light skin tone",
+        "action": "pointing at a black hose",
+        "position": "bottom left"
+      },
+      {
+        "desc": "black rubber hose, flexible, cylindrical",
+        "action": "static",
+        "position": "center"
+      },
+      {
+        "desc": "white cylindrical filter canister, smooth surface",
+        "action": "static",
+        "position": "center"
+      },
+      {
+        "desc": "large metallic engine assembly, silver and black, with pulleys and pipes",
+        "action": "static",
+        "position": "right"
+      },
+      {
+        "desc": "metal socket wrench, silver, lying on concrete",
+        "action": "static",
+        "position": "left"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A person's hand enters the frame and points a finger at a black hose.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The black hose is connected to the top of a white filter canister.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A metal socket wrench is lying on the ground to the left of the engine.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The person's hand is in the foreground to the left of the engine assembly. The black hose is positioned between the white filter canister and the engine. The metal wrench is lying on the ground to the left of the hose.",
+    "parse_success": true,
+    "chunk_idx": 12,
+    "video_id": "HHBqvPDdXp0"
+  },
+  {
+    "time": [
+      13,
+      14
+    ],
+    "visible_entities": [
+      {
+        "desc": "black engine block with red and white rectangular decals, silver metal intake pipes, and a white cylindrical filter",
+        "action": "static",
+        "position": "center"
+      },
+      {
+        "desc": "shiny silver metallic pulley wheel attached to the engine",
+        "action": "static",
+        "position": "bottom center"
+      },
+      {
+        "desc": "black rubber hoses connected to the engine components",
+        "action": "static",
+        "position": "top left"
+      },
+      {
+        "desc": "concrete floor with scattered dry brown leaves and a small metal tool",
+        "action": "static",
+        "position": "left"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The camera captures a close-up view of a stationary engine assembly.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A metal tool lies on the ground to the left of the engine.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The engine features a sticker with the number '228' visible on its side.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "228"
+    ],
+    "spatial": "The black engine block is positioned in the center of the frame. The silver pulley wheel is located at the bottom of the engine block. The black hoses are situated above and to the left of the main engine body. The concrete floor with leaves is visible to the left of the engine.",
+    "parse_success": true,
+    "chunk_idx": 13,
+    "video_id": "HHBqvPDdXp0"
+  },
+  {
+    "time": [
+      14,
+      15
+    ],
+    "visible_entities": [
+      {
+        "desc": "black engine assembly with a silver curved metal pipe, a round air filter housing on top, and a black valve cover featuring a red and white 'Cummins' logo and '2200' text",
+        "action": "static",
+        "position": "center"
+      },
+      {
+        "desc": "brown cardboard box",
+        "action": "static",
+        "position": "left"
+      },
+      {
+        "desc": "black corrugated hose",
+        "action": "static",
+        "position": "background"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The engine assembly is sitting stationary in a confined space.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The text 'Cummins' and '2200' is visible on the engine's valve cover.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "Cummins",
+      "2200"
+    ],
+    "spatial": "The black engine assembly is positioned in the center of the frame, next to a brown cardboard box on the left. A black corrugated hose is visible behind the engine.",
+    "parse_success": true,
+    "chunk_idx": 14,
+    "video_id": "HHBqvPDdXp0"
+  },
+  {
+    "time": [
+      15,
+      16
+    ],
+    "visible_entities": [
+      {
+        "desc": "black industrial engine assembly with a silver air filter housing, metallic fuel lines, and a black side cover featuring red and white branding",
+        "action": "static",
+        "position": "center"
+      },
+      {
+        "desc": "brown cardboard box",
+        "action": "static",
+        "position": "background"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A black engine assembly sits stationary on a surface.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The engine features a prominent silver air filter on top.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The text '2010' is visible on the side of the engine.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "2010"
+    ],
+    "spatial": "The black engine assembly is positioned in the center of the frame, resting in front of a brown cardboard box. The silver air filter is located on top of the engine block.",
+    "parse_success": true,
+    "chunk_idx": 15,
+    "video_id": "HHBqvPDdXp0"
+  },
+  {
+    "time": [
+      16,
+      17
+    ],
+    "visible_entities": [
+      {
+        "desc": "black engine assembly with a yellow circular air filter housing and silver metal piping",
+        "action": "static",
+        "position": "center"
+      },
+      {
+        "desc": "black rectangular engine cover with red and white branding decals",
+        "action": "static",
+        "position": "center"
+      },
+      {
+        "desc": "brown cardboard surface",
+        "action": "static",
+        "position": "right"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The engine assembly sits stationary on a surface.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The engine cover displays the text '222' and a red logo.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "Silver piping curves over the top of the engine block.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "222"
+    ],
+    "spatial": "The black engine assembly is positioned in the center of the frame. The engine cover is mounted on top of the engine block. A brown cardboard surface is visible to the right of the engine.",
+    "parse_success": true,
+    "chunk_idx": 16,
+    "video_id": "HHBqvPDdXp0"
+  },
+  {
+    "time": [
+      17,
+      18
+    ],
+    "visible_entities": [
+      {
+        "desc": "black rectangular engine component with a glossy finish, featuring a white label with red and black text",
+        "action": "static",
+        "position": "center"
+      },
+      {
+        "desc": "silver metallic curved pipes, appearing to be part of a cooling or fuel system",
+        "action": "static",
+        "position": "left"
+      },
+      {
+        "desc": "brown cardboard box, partially visible with a rough texture",
+        "action": "static",
+        "position": "right"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The engine component remains static in the center of the frame.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The text '228' is visible on the side of the black engine component.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "228"
+    ],
+    "spatial": "The black engine component is positioned in the center of the frame. The silver metallic pipes are located to the left of the engine component. The brown cardboard box is situated to the right of the engine component.",
+    "parse_success": true,
+    "chunk_idx": 17,
+    "video_id": "HHBqvPDdXp0"
+  },
+  {
+    "time": [
+      18,
+      19
+    ],
+    "visible_entities": [
+      {
+        "desc": "black mechanical engine assembly with a silver metal intake manifold, a round gold-colored air filter housing, and a black rectangular cover featuring red and white stickers",
+        "action": "static",
+        "position": "center"
+      },
+      {
+        "desc": "brown cardboard surface",
         "action": "static",
         "position": "right"
       }
@@ -233,146 +793,37 @@
         "confidence": 1.0
       },
       {
-        "fact": "The engine features a silver exhaust pipe curving upwards.",
+        "fact": "The engine features a silver intake pipe and a gold air filter.",
         "confidence": 1.0
       },
       {
-        "fact": "Red and white labels are attached to the side of the engine housing.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [
-      "220"
-    ],
-    "spatial": "The black engine assembly is positioned in the center of the frame, resting on a surface. A brown cardboard box is located to the right of the engine. The red and white stickers are affixed to the side of the engine, below the silver exhaust pipe.",
-    "parse_success": true,
-    "chunk_idx": 5,
-    "video_id": "HHBqvPDdXp0"
-  },
-  {
-    "time": [
-      12,
-      14
-    ],
-    "visible_entities": [
-      {
-        "desc": "black industrial engine assembly with a black metal housing, silver metal pipes, and a white cylindrical filter on top",
-        "action": "static",
-        "position": "center"
-      },
-      {
-        "desc": "red rectangular stickers with white text and logos",
-        "action": "static",
-        "position": "center"
-      },
-      {
-        "desc": "brown cardboard sheet",
-        "action": "static",
-        "position": "right"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "A black engine assembly sits stationary on the floor.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "Red stickers with white text are affixed to the side of the engine housing.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "A white cylindrical filter is mounted on the top of the engine.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [
-      "P220"
-    ],
-    "spatial": "The black engine assembly is positioned in the center of the frame. A brown cardboard sheet is to the right of the engine. The red stickers are on the side of the engine housing, below the silver pipes.",
-    "parse_success": true,
-    "chunk_idx": 6,
-    "video_id": "HHBqvPDdXp0"
-  },
-  {
-    "time": [
-      14,
-      16
-    ],
-    "visible_entities": [
-      {
-        "desc": "black engine assembly with a black valve cover featuring red and white '2200' decals, a silver carburetor with a white air filter element on top, and curved silver metal piping",
-        "action": "static",
-        "position": "center"
-      },
-      {
-        "desc": "wooden paneling with vertical grain texture",
-        "action": "static",
-        "position": "background"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "The engine assembly is sitting stationary on the floor.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The text '2200' is visible on the side of the engine's valve cover.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [
-      "2200"
-    ],
-    "spatial": "The black engine assembly is in the center of the frame. The wooden paneling is behind the engine. The silver piping is attached to the top and front of the engine block.",
-    "parse_success": true,
-    "chunk_idx": 7,
-    "video_id": "HHBqvPDdXp0"
-  },
-  {
-    "time": [
-      16,
-      18
-    ],
-    "visible_entities": [
-      {
-        "desc": "black industrial engine with a silver metallic exhaust pipe, a beige circular air filter housing, and a black side panel featuring red and white stickers",
-        "action": "static",
-        "position": "center"
-      },
-      {
-        "desc": "large brown cardboard box",
-        "action": "static",
-        "position": "right"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "The engine is sitting stationary on the floor.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The engine features a sticker with the number '228'.",
+        "fact": "A sticker on the engine cover displays the number '228'.",
         "confidence": 1.0
       }
     ],
     "ocr": [
       "228"
     ],
-    "spatial": "The black industrial engine is positioned to the left of the large brown cardboard box. The silver exhaust pipe is attached to the front of the engine block, and the beige air filter is located on top of the engine.",
+    "spatial": "The black engine assembly is positioned in the center of the frame. A brown cardboard surface is visible to the right of the engine. The silver intake manifold is located above the main engine block.",
     "parse_success": true,
-    "chunk_idx": 8,
+    "chunk_idx": 18,
     "video_id": "HHBqvPDdXp0"
   },
   {
     "time": [
-      18,
+      19,
       20
     ],
     "visible_entities": [
       {
-        "desc": "black industrial engine block with a glossy finish, featuring a red and white rectangular sticker, a silver curved metal pipe, and a beige circular air filter housing on top",
+        "desc": "black rectangular engine cover with a glossy finish, featuring red and white branding stickers",
         "action": "static",
         "position": "center"
+      },
+      {
+        "desc": "silver curved metal tubing, likely a roll bar or handle, with a smooth metallic texture",
+        "action": "static",
+        "position": "left"
       },
       {
         "desc": "brown cardboard box with a rough, matte texture",
@@ -380,517 +831,84 @@
         "position": "right"
       },
       {
-        "desc": "white plastic fluid reservoir with a black cap",
-        "action": "static",
-        "position": "left"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "A black engine block sits stationary in the center of the frame.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "A red and white sticker with the text '2205' is adhered to the side of the engine.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "A silver metal pipe curves over the top of the engine block.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "A brown cardboard box is positioned to the right of the engine.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [
-      "2205"
-    ],
-    "spatial": "The black engine block is positioned in the center, to the left of the brown cardboard box. The silver metal pipe is located above the main body of the engine. The white fluid reservoir is situated to the left of the engine block.",
-    "parse_success": true,
-    "chunk_idx": 9,
-    "video_id": "HHBqvPDdXp0"
-  },
-  {
-    "time": [
-      20,
-      22
-    ],
-    "visible_entities": [
-      {
-        "desc": "black engine assembly with a silver carburetor, black pulleys, and a black valve cover featuring red and white decals",
+        "desc": "white text '228' on a black background",
         "action": "static",
         "position": "center"
-      },
-      {
-        "desc": "tan, ribbed padded surface",
-        "action": "static",
-        "position": "background"
-      },
-      {
-        "desc": "black and yellow battery with red and black cables",
-        "action": "static",
-        "position": "left"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "The engine assembly is stationary in the frame.",
+        "fact": "The camera angle shifts slightly to the right, revealing more of the brown cardboard box.",
         "confidence": 1.0
       },
       {
-        "fact": "The text '228' is visible on the engine's valve cover.",
+        "fact": "The engine cover displays the number '228' in white text.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A red sticker with a white logo is visible on the black engine cover.",
         "confidence": 1.0
       }
     ],
     "ocr": [
       "228"
     ],
-    "spatial": "The black engine assembly is positioned in the center of the frame. To the left of the engine is a black and yellow battery. Behind the engine is a tan, ribbed padded surface.",
-    "parse_success": true,
-    "chunk_idx": 10,
-    "video_id": "HHBqvPDdXp0"
-  },
-  {
-    "time": [
-      22,
-      24
-    ],
-    "visible_entities": [
-      {
-        "desc": "large mechanical engine assembly, metallic grey and black, featuring a shiny chrome pulley, black drive belt, and various hoses",
-        "action": "static",
-        "position": "right"
-      },
-      {
-        "desc": "tan or beige padded surface, likely a boat seat or wall, with vertical stitching lines",
-        "action": "static",
-        "position": "left"
-      },
-      {
-        "desc": "small cylindrical white filter with a black top, attached to the engine via a black hose",
-        "action": "static",
-        "position": "center"
-      },
-      {
-        "desc": "flat beige floor surface with scattered brown debris",
-        "action": "static",
-        "position": "bottom"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "The engine assembly sits stationary on the right side of the frame.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "A white filter is connected to the engine by a black hose.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The tan padded surface is positioned to the left of the engine.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [],
-    "spatial": "The large mechanical engine assembly is on the right side of the frame. To the left of the engine is a tan padded surface with vertical stitching. A small white filter is attached to the engine and hangs near the center. The engine and filter are situated above the beige floor.",
-    "parse_success": true,
-    "chunk_idx": 11,
-    "video_id": "HHBqvPDdXp0"
-  },
-  {
-    "time": [
-      24,
-      26
-    ],
-    "visible_entities": [
-      {
-        "desc": "human hand with light skin tone, index finger extended",
-        "action": "pointing at a hose",
-        "position": "left foreground"
-      },
-      {
-        "desc": "mechanical engine assembly with a white cylindrical filter, black rubber hoses, and a shiny metallic pulley",
-        "action": "static",
-        "position": "right"
-      },
-      {
-        "desc": "metal ratchet wrench with a socket attached",
-        "action": "static",
-        "position": "left background"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "A hand enters the frame and points at a black hose connected to the engine.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "A metal ratchet wrench is lying on the concrete floor.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The engine features a white oil filter and a large silver pulley.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [],
-    "spatial": "The hand is in the foreground on the left, pointing towards the engine assembly which occupies the right side of the frame. The ratchet wrench is lying on the ground to the left of the engine and behind the hand.",
-    "parse_success": true,
-    "chunk_idx": 12,
-    "video_id": "HHBqvPDdXp0"
-  },
-  {
-    "time": [
-      26,
-      28
-    ],
-    "visible_entities": [
-      {
-        "desc": "black engine block with a red and white rectangular sticker featuring a logo and the number '228'",
-        "action": "static",
-        "position": "center"
-      },
-      {
-        "desc": "shiny silver metallic pulley wheel",
-        "action": "static",
-        "position": "bottom"
-      },
-      {
-        "desc": "black rubber hoses and curved metal pipes",
-        "action": "static",
-        "position": "top"
-      },
-      {
-        "desc": "white cylindrical oil filter",
-        "action": "static",
-        "position": "left"
-      },
-      {
-        "desc": "metal wrench lying on the ground",
-        "action": "static",
-        "position": "left"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "The camera focuses on the side of a stationary engine.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "A sticker on the engine block displays the number '228'.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "A metal wrench is lying on the ground to the left of the engine.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [
-      "228"
-    ],
-    "spatial": "The black engine block is in the center of the frame. The silver pulley wheel is located below the engine block. The white oil filter is positioned to the left of the engine block. A metal wrench is lying on the ground to the left of the engine.",
-    "parse_success": true,
-    "chunk_idx": 13,
-    "video_id": "HHBqvPDdXp0"
-  },
-  {
-    "time": [
-      28,
-      30
-    ],
-    "visible_entities": [
-      {
-        "desc": "black industrial engine block with a red and white rectangular label, featuring a silver curved metal pipe and a round gold-colored air filter housing on top",
-        "action": "static",
-        "position": "center"
-      },
-      {
-        "desc": "black ribbed flexible hose",
-        "action": "static",
-        "position": "background"
-      },
-      {
-        "desc": "yellow and black electrical component",
-        "action": "static",
-        "position": "left"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "The engine is stationary within the frame.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "A silver pipe curves over the top of the engine block.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The label on the engine reads '2280'.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [
-      "2280"
-    ],
-    "spatial": "The black engine block is in the center of the frame. The silver pipe is positioned above the main body of the engine. The yellow and black electrical component is to the left of the engine. The black ribbed hose is behind the engine.",
-    "parse_success": true,
-    "chunk_idx": 14,
-    "video_id": "HHBqvPDdXp0"
-  },
-  {
-    "time": [
-      30,
-      32
-    ],
-    "visible_entities": [
-      {
-        "desc": "black industrial engine block with a white circular air filter housing on top and silver metal piping",
-        "action": "static",
-        "position": "center"
-      },
-      {
-        "desc": "red and white rectangular label with text and a logo",
-        "action": "static",
-        "position": "right"
-      },
-      {
-        "desc": "black flexible corrugated hose",
-        "action": "static",
-        "position": "background"
-      },
-      {
-        "desc": "brown cardboard surface",
-        "action": "static",
-        "position": "right"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "The engine is sitting stationary on a surface.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The label on the engine reads '2000'.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "A black hose is positioned behind the engine.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [
-      "2000"
-    ],
-    "spatial": "The black engine is in the center of the frame. The red and white label is attached to the right side of the engine. A black hose is located behind the engine. A brown cardboard surface is to the right of the engine.",
-    "parse_success": true,
-    "chunk_idx": 15,
-    "video_id": "HHBqvPDdXp0"
-  },
-  {
-    "time": [
-      32,
-      34
-    ],
-    "visible_entities": [
-      {
-        "desc": "black industrial engine assembly with a black valve cover, a round gold-colored air filter housing on top, and silver metal piping",
-        "action": "static",
-        "position": "center"
-      },
-      {
-        "desc": "red and white rectangular sticker with a logo and text",
-        "action": "static",
-        "position": "center"
-      },
-      {
-        "desc": "brown cardboard surface",
-        "action": "static",
-        "position": "right"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "A black engine assembly sits stationary in the frame.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The valve cover features a red and white sticker with the text '222'.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [
-      "222"
-    ],
-    "spatial": "The black engine assembly is positioned in the center of the frame. The round gold air filter is mounted on top of the engine block. The red and white sticker is adhered to the side of the black valve cover. A brown cardboard surface is visible to the right of the engine.",
-    "parse_success": true,
-    "chunk_idx": 16,
-    "video_id": "HHBqvPDdXp0"
-  },
-  {
-    "time": [
-      34,
-      36
-    ],
-    "visible_entities": [
-      {
-        "desc": "black engine assembly with a silver metallic tubular guard, black hoses, and a beige circular air filter housing",
-        "action": "static",
-        "position": "center"
-      },
-      {
-        "desc": "black rectangular label with white text and a red logo",
-        "action": "static",
-        "position": "center"
-      },
-      {
-        "desc": "brown cardboard-like surface",
-        "action": "static",
-        "position": "right"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "A black engine assembly sits stationary in the frame.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "A silver tubular guard curves over the top of the engine components.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The label on the engine reads '228'.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [
-      "228"
-    ],
-    "spatial": "The black engine assembly is positioned in the center of the frame. The silver tubular guard is located above and in front of the engine block. The brown surface is to the right of the engine assembly.",
-    "parse_success": true,
-    "chunk_idx": 17,
-    "video_id": "HHBqvPDdXp0"
-  },
-  {
-    "time": [
-      36,
-      38
-    ],
-    "visible_entities": [
-      {
-        "desc": "black industrial engine assembly with a silver air intake pipe, a gold-colored circular air filter housing, and a black valve cover featuring red and white decals.",
-        "action": "static",
-        "position": "center"
-      },
-      {
-        "desc": "brown cardboard surface",
-        "action": "static",
-        "position": "right"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "A black engine assembly sits stationary in the frame.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The text '228' is visible on the side of the engine's valve cover.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "A silver metal pipe curves over the top of the engine block.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [
-      "228"
-    ],
-    "spatial": "The black engine assembly is positioned in the center of the frame. A brown cardboard surface is located to the right of the engine. The silver air intake pipe is situated above the main engine block.",
-    "parse_success": true,
-    "chunk_idx": 18,
-    "video_id": "HHBqvPDdXp0"
-  },
-  {
-    "time": [
-      38,
-      40
-    ],
-    "visible_entities": [
-      {
-        "desc": "black mechanical engine assembly with silver metal tubing, a beige circular air filter housing on top, and a black rectangular cover featuring red and white stickers",
-        "action": "static",
-        "position": "center"
-      },
-      {
-        "desc": "brown cardboard box",
-        "action": "static",
-        "position": "right"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "The engine assembly is stationary on the ground.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The camera angle shifts slightly, revealing more of the cardboard box on the right.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [
-      "228"
-    ],
-    "spatial": "The black mechanical engine assembly is positioned to the left of the brown cardboard box. The beige air filter housing is on top of the engine block. The silver metal tubing is attached to the front and top of the engine.",
+    "spatial": "The silver metal tubing is positioned to the left of the black engine cover. The brown cardboard box is located to the right of the engine cover. The '228' text is printed on the top surface of the engine cover.",
     "parse_success": true,
     "chunk_idx": 19,
     "video_id": "HHBqvPDdXp0"
   },
   {
     "time": [
-      40,
-      42
+      20,
+      21
     ],
     "visible_entities": [
       {
-        "desc": "dark metal frame with a glossy black finish, featuring a bolted joint and a white rectangular block attached to its underside",
+        "desc": "dark metallic structural beam, black, with a bolted joint and visible rust or wear",
         "action": "static",
         "position": "left"
       },
       {
-        "desc": "large, curved object with a rough, light-brown or tan textured surface",
+        "desc": "large tan textured object, rough surface, possibly a sack or insulation material",
         "action": "static",
         "position": "right"
       },
       {
-        "desc": "dark, dirty floor surface covered in small debris and dust",
+        "desc": "mechanical assembly, consisting of a black cylindrical component, a white rectangular block, and thin copper-colored wires",
+        "action": "static",
+        "position": "center"
+      },
+      {
+        "desc": "brown floor surface, covered with small debris and dust",
         "action": "static",
         "position": "bottom"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "The camera performs a slight zoom-in on the gap between the metal frame and the brown object.",
+        "fact": "The camera angle shifts slightly, revealing more of the mechanical assembly under the beam.",
         "confidence": 1.0
       },
       {
-        "fact": "A white block is attached to the underside of the black metal frame.",
+        "fact": "A black cylindrical component is bolted to a white block.",
         "confidence": 1.0
       },
       {
-        "fact": "The floor is littered with small particles of debris.",
+        "fact": "Thin copper-colored wires run from the mechanical assembly towards the right.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The dark metal frame is positioned on the left side of the scene. The large, curved brown object is to the right of the metal frame. The white block is located underneath the metal frame, near the floor.",
+    "spatial": "The dark metallic beam is on the left side of the frame. The large tan textured object is to the right of the beam. The mechanical assembly is located underneath the beam and to the left of the tan object. The debris is scattered on the floor below all other entities.",
     "parse_success": true,
     "chunk_idx": 20,
     "video_id": "HHBqvPDdXp0"
   },
   {
     "time": [
-      42,
-      44
+      21,
+      22
     ],
     "visible_entities": [
       {
@@ -899,24 +917,24 @@
         "position": "left"
       },
       {
-        "desc": "rough, light-brown wooden block or beam",
+        "desc": "large orange-brown rectangular block with a rough, porous texture",
         "action": "static",
         "position": "right"
       },
       {
-        "desc": "dirty, brownish floor surface with debris",
-        "action": "static",
-        "position": "bottom"
-      },
-      {
-        "desc": "thin, reddish-brown wire or cable",
+        "desc": "thin reddish-brown rod or wire",
         "action": "static",
         "position": "center"
+      },
+      {
+        "desc": "dirty, textured brown floor surface",
+        "action": "static",
+        "position": "bottom"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A thin reddish-brown wire runs across the floor between the mechanical assembly and the wooden block.",
+        "fact": "A thin reddish-brown rod extends from the mechanical assembly towards the orange block.",
         "confidence": 1.0
       },
       {
@@ -924,278 +942,645 @@
         "confidence": 1.0
       },
       {
-        "fact": "The wooden block is positioned on the right side of the frame.",
+        "fact": "The orange block is positioned on the right side of the frame.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The dark mechanical assembly is on the left side of the frame, adjacent to the dirty floor. The rough wooden block is on the right side of the frame. A thin reddish-brown wire lies on the floor, connecting the area near the mechanical assembly to the wooden block.",
+    "spatial": "The dark mechanical assembly is on the left side of the frame, while the orange block is on the right. The reddish-brown rod is positioned between the mechanical assembly and the orange block. The dirty floor is below all other visible entities.",
     "parse_success": true,
     "chunk_idx": 21,
     "video_id": "HHBqvPDdXp0"
   },
   {
     "time": [
-      44,
-      46
+      22,
+      23
     ],
     "visible_entities": [
       {
-        "desc": "white rectangular block, textured surface, stained with dark debris",
+        "desc": "rough, light-colored wooden block with dark stains and debris on top",
         "action": "static",
         "position": "left"
       },
       {
-        "desc": "black rectangular tray, smooth surface, containing dark liquid",
+        "desc": "dark, rectangular recessed area containing black liquid or shadow",
         "action": "static",
         "position": "center"
       },
       {
-        "desc": "light-colored wooden plank, rough texture",
-        "action": "static",
-        "position": "bottom"
-      },
-      {
-        "desc": "dark metal pipe, cylindrical, rusty",
+        "desc": "rusty, reddish-brown metal pipe or tube",
         "action": "static",
         "position": "right"
+      },
+      {
+        "desc": "black metal bolt and bracket assembly",
+        "action": "static",
+        "position": "bottom-left"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A black tray containing dark liquid sits in the center of the frame.",
+        "fact": "A wooden block is positioned next to a dark recessed area.",
         "confidence": 1.0
       },
       {
-        "fact": "A white block with dark stains is positioned to the left of the tray.",
+        "fact": "A rusty metal pipe runs along the right side of the frame.",
         "confidence": 1.0
       },
       {
-        "fact": "A wooden plank lies below the white block and tray.",
+        "fact": "A black metal bracket is attached to the wooden structure in the foreground.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The black tray is in the center, positioned to the right of the white block. The white block is on the left side of the frame. A wooden plank is below the white block and the tray. A dark metal pipe is to the right of the tray.",
+    "spatial": "The rough wooden block is to the left of the dark, rectangular recessed area. The rusty metal pipe is to the right of the recessed area and runs diagonally. The black metal bolt assembly is in the foreground, attached to the wooden structure.",
     "parse_success": true,
     "chunk_idx": 22,
     "video_id": "HHBqvPDdXp0"
   },
   {
     "time": [
-      46,
-      48
+      23,
+      24
     ],
     "visible_entities": [
       {
-        "desc": "white painted wooden beam, weathered with rust stains and black debris",
+        "desc": "dark, viscous liquid pool",
         "action": "static",
         "position": "center"
       },
       {
-        "desc": "dark rectangular recess, black interior, framed by wood",
+        "desc": "white rectangular block with black debris",
         "action": "static",
-        "position": "center"
+        "position": "left"
       },
       {
-        "desc": "thick black cable, curved",
+        "desc": "pinkish-white rectangular block",
         "action": "static",
-        "position": "top"
+        "position": "foreground"
       },
       {
-        "desc": "thin copper-colored wire",
+        "desc": "rusty brown metal surface",
         "action": "static",
-        "position": "right"
+        "position": "bottom"
       },
       {
-        "desc": "rusty metal bolt and bracket",
+        "desc": "dark metal bolt head",
         "action": "static",
         "position": "bottom-left"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "The camera remains static on a close-up of a mechanical or structural assembly.",
+        "fact": "A pool of dark liquid sits inside a recessed area.",
         "confidence": 1.0
       },
       {
-        "fact": "A white wooden beam sits adjacent to a dark, recessed cavity.",
+        "fact": "A white block with black debris rests next to the liquid.",
         "confidence": 1.0
       },
       {
-        "fact": "A thin copper wire runs diagonally across the right side of the frame.",
+        "fact": "A pinkish block is positioned in the foreground near the liquid.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The white painted wooden beam is positioned in the center, directly to the left of the dark rectangular recess. A thick black cable is located above the recess. A thin copper wire is to the right of the wooden beam and runs diagonally downwards. A rusty metal bolt is visible in the bottom-left foreground.",
+    "spatial": "The pool of dark liquid is in the center, surrounded by a white block on the left and a pinkish block in the foreground. The rusty brown metal surface is below the blocks and liquid. A dark metal bolt head is visible in the bottom-left corner, near the white block.",
     "parse_success": true,
     "chunk_idx": 23,
     "video_id": "HHBqvPDdXp0"
   },
   {
     "time": [
-      48,
-      50
+      24,
+      25
     ],
     "visible_entities": [
       {
-        "desc": "rectangular black tray, smooth surface, containing dark liquid",
+        "desc": "white rectangular block, rough texture, dirty with black specks",
+        "action": "static",
+        "position": "bottom left"
+      },
+      {
+        "desc": "black rectangular cavity, smooth interior",
         "action": "static",
         "position": "center"
       },
       {
-        "desc": "light-colored wooden block, rough texture, dirty with dark debris",
-        "action": "static",
-        "position": "left"
-      },
-      {
-        "desc": "dark brown cables, thick, curved",
+        "desc": "dark brown curved metal pipes",
         "action": "static",
         "position": "top"
       },
       {
-        "desc": "metallic bolt head, hexagonal, dark grey",
+        "desc": "light-colored wooden support block",
         "action": "static",
-        "position": "bottom-left"
+        "position": "bottom center"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A black tray containing dark liquid sits in the center of the frame.",
+        "fact": "The camera remains static on the mechanical assembly.",
         "confidence": 1.0
       },
       {
-        "fact": "A dirty wooden block is positioned to the left of the tray.",
+        "fact": "A white block is positioned next to a black cavity.",
         "confidence": 1.0
       },
       {
-        "fact": "Thick cables run across the top of the scene.",
+        "fact": "Dark pipes run horizontally above the cavity.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The black tray is in the center, positioned to the right of the dirty wooden block. The dark brown cables are above the tray and the wooden block. The metallic bolt head is in the bottom-left corner, below the wooden block.",
+    "spatial": "The white rectangular block is to the left of the black cavity. The dark brown pipes are above the cavity and the white block. The light-colored wooden support is below the pipes and next to the white block.",
     "parse_success": true,
     "chunk_idx": 24,
     "video_id": "HHBqvPDdXp0"
   },
   {
     "time": [
-      50,
-      52
+      25,
+      26
     ],
     "visible_entities": [
       {
-        "desc": "dark, viscous liquid, appearing black and glossy, filling a container",
-        "action": "static",
-        "position": "center"
-      },
-      {
-        "desc": "white, rectangular block, textured surface with dark stains and debris",
+        "desc": "white wooden block, painted white with chipped paint, showing dark stains and rust-colored residue, rectangular shape",
         "action": "static",
         "position": "bottom-left"
       },
       {
-        "desc": "thick, dark brown cables or hoses, curved and bundled",
+        "desc": "thick black cables, bundled together, appearing flexible and insulated",
         "action": "static",
         "position": "top"
       },
       {
-        "desc": "rusty, orange-brown metal surface, weathered texture",
+        "desc": "dark rectangular recess, black interior, shadowed",
+        "action": "static",
+        "position": "center"
+      },
+      {
+        "desc": "rusty metal surface, reddish-brown, textured with corrosion",
         "action": "static",
         "position": "right"
       },
       {
-        "desc": "dark metallic bolt or fastener, hexagonal head",
+        "desc": "black metal bracket, bolted down, industrial appearance",
         "action": "static",
         "position": "bottom-left"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A pool of dark liquid sits inside a mechanical compartment.",
+        "fact": "A white wooden block sits stationary in the foreground.",
         "confidence": 1.0
       },
       {
-        "fact": "Thick cables hang above the liquid reservoir.",
+        "fact": "Thick black cables hang above the scene.",
         "confidence": 1.0
       },
       {
-        "fact": "A stained white block rests next to the liquid.",
+        "fact": "A dark rectangular recess is visible in the center of the frame.",
         "confidence": 1.0
       },
       {
-        "fact": "A rusty metal panel is visible on the right side of the frame.",
+        "fact": "A rusty metal surface is located to the right of the recess.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The dark liquid is in the center, surrounded by a white block on the bottom-left and a rusty metal surface on the right. Thick brown cables are positioned above the liquid and the white block. A metallic bolt is located in the bottom-left corner, near the white block.",
+    "spatial": "The white wooden block is in the bottom-left foreground, positioned below the hanging black cables. The dark rectangular recess is in the center, to the right of the wooden block and to the left of the rusty metal surface. The black metal bracket is attached near the bottom-left corner, next to the wooden block.",
     "parse_success": true,
     "chunk_idx": 25,
     "video_id": "HHBqvPDdXp0"
   },
   {
     "time": [
-      52,
-      54
+      26,
+      27
     ],
     "visible_entities": [
       {
-        "desc": "rectangular compartment containing dark liquid, surrounded by white painted wood with rust stains",
+        "desc": "black mechanical component with a silver hexagonal bolt head",
         "action": "static",
-        "position": "center"
+        "position": "bottom left"
       },
       {
-        "desc": "black metal bracket with a silver hexagonal bolt head",
-        "action": "static",
-        "position": "bottom-left"
-      },
-      {
-        "desc": "bundle of black and red wires",
+        "desc": "thick black cables",
         "action": "static",
         "position": "top"
       },
       {
-        "desc": "brown textured surface",
+        "desc": "white painted wooden block with chipped paint and rust stains",
+        "action": "static",
+        "position": "center"
+      },
+      {
+        "desc": "dark rectangular cavity",
+        "action": "static",
+        "position": "center"
+      },
+      {
+        "desc": "tan cylindrical object",
         "action": "static",
         "position": "right"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A rectangular compartment filled with dark liquid is situated in the center.",
+        "fact": "The camera remains static on a close-up view of the machinery.",
         "confidence": 1.0
       },
       {
-        "fact": "A black metal bracket with a silver bolt is visible in the bottom-left corner.",
+        "fact": "A white wooden block sits next to a dark cavity.",
         "confidence": 1.0
       },
       {
-        "fact": "Wires run across the top of the frame above the compartment.",
+        "fact": "Black cables run across the top of the frame.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The rectangular compartment containing dark liquid is in the center, surrounded by white painted wood. The black metal bracket with a silver bolt is to the left of the compartment. A bundle of wires is above the compartment, and a brown textured surface is to the right.",
+    "spatial": "The black mechanical component with the bolt is located in the bottom left foreground. The white wooden block is positioned to the right of this component and below the hanging black cables. The dark cavity is situated behind the white block. The tan cylindrical object is visible on the far right edge of the frame.",
     "parse_success": true,
     "chunk_idx": 26,
     "video_id": "HHBqvPDdXp0"
   },
   {
     "time": [
-      54,
-      56
+      27,
+      28
     ],
     "visible_entities": [
       {
-        "desc": "white wooden block, painted white with peeling paint and black stains, rectangular shape",
+        "desc": "white painted wooden block, weathered with chipped paint and dark stains",
+        "action": "static",
+        "position": "foreground"
+      },
+      {
+        "desc": "black rectangular metal component, smooth surface",
+        "action": "static",
+        "position": "center"
+      },
+      {
+        "desc": "thick black cables, bundled together",
+        "action": "static",
+        "position": "top"
+      },
+      {
+        "desc": "rusty metal bolt, hexagonal head",
         "action": "static",
         "position": "bottom left"
       },
       {
-        "desc": "black liquid, dark and reflective, filling a rectangular cavity",
+        "desc": "tan textured surface, possibly leather or fabric",
+        "action": "static",
+        "position": "right"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The camera remains static on a close-up view of mechanical parts.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A white wooden block is positioned in the foreground.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "Black cables run across the top of the frame.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The white painted wooden block is in the foreground, positioned below the black rectangular metal component. The thick black cables are located above the wooden block and the metal component. The rusty metal bolt is visible at the bottom left corner, next to the wooden block. The tan textured surface is to the right of the central mechanical assembly.",
+    "parse_success": true,
+    "chunk_idx": 27,
+    "video_id": "HHBqvPDdXp0"
+  },
+  {
+    "time": [
+      28,
+      29
+    ],
+    "visible_entities": [
+      {
+        "desc": "white rectangular tray or container, heavily soiled with black grime and rust stains, appearing to be made of plastic or painted metal",
+        "action": "static",
+        "position": "center"
+      },
+      {
+        "desc": "thick black cables or hoses, flexible and curved",
+        "action": "static",
+        "position": "top"
+      },
+      {
+        "desc": "dark mechanical housing or engine block, black and metallic",
+        "action": "static",
+        "position": "background"
+      },
+      {
+        "desc": "metallic bolt or fastener, silver and hexagonal",
+        "action": "static",
+        "position": "bottom-left"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A dirty white tray sits stationary beneath a cluster of black cables.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "Black grime and rust stains cover the surface of the white container.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The cables are routed above the white tray and mechanical housing.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The white tray is positioned below the thick black cables. The cables are suspended above the tray and in front of the dark mechanical housing. A metallic bolt is visible in the bottom-left corner, near the edge of the white tray.",
+    "parse_success": true,
+    "chunk_idx": 28,
+    "video_id": "HHBqvPDdXp0"
+  },
+  {
+    "time": [
+      29,
+      30
+    ],
+    "visible_entities": [
+      {
+        "desc": "dark, viscous liquid pool, black, glossy surface",
+        "action": "static",
+        "position": "center"
+      },
+      {
+        "desc": "white painted wooden frame, weathered, chipped paint, rectangular",
+        "action": "static",
+        "position": "bottom"
+      },
+      {
+        "desc": "thick black cables, bundled, rubber texture",
+        "action": "static",
+        "position": "top"
+      },
+      {
+        "desc": "metallic bolt, hexagonal head, silver",
+        "action": "static",
+        "position": "bottom-left"
+      },
+      {
+        "desc": "tan vertical surface, rough texture",
+        "action": "static",
+        "position": "right"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A pool of black liquid sits inside a white wooden frame.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "Thick black cables hang above the liquid pool.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A metallic bolt is visible on the bottom-left corner of the frame.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The pool of black liquid is inside the white wooden frame. The thick black cables are above the liquid pool. The metallic bolt is on the bottom-left corner of the wooden frame. The tan vertical surface is to the right of the wooden frame.",
+    "parse_success": true,
+    "chunk_idx": 29,
+    "video_id": "HHBqvPDdXp0"
+  },
+  {
+    "time": [
+      30,
+      31
+    ],
+    "visible_entities": [
+      {
+        "desc": "white painted wooden structure, weathered with chipped paint and rust stains, forming a corner or step",
+        "action": "static",
+        "position": "bottom-left"
+      },
+      {
+        "desc": "dark rectangular cavity or compartment, appearing black inside",
+        "action": "static",
+        "position": "center"
+      },
+      {
+        "desc": "thick dark cables or hoses, running horizontally across the top",
+        "action": "static",
+        "position": "top"
+      },
+      {
+        "desc": "rusty metal surface, reddish-brown, textured",
+        "action": "static",
+        "position": "right"
+      },
+      {
+        "desc": "black mechanical component with a bolt, attached to the white structure",
+        "action": "static",
+        "position": "bottom-left"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The scene shows a static close-up of a mechanical or industrial area.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A dark cavity is located next to a white painted wooden structure.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "Thick cables run above the dark cavity and the wooden structure.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The white structure shows signs of wear with rust stains and chipped paint.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The dark rectangular cavity is in the center, positioned to the right of the white painted wooden structure. Thick dark cables are located above both the cavity and the wooden structure. A rusty metal surface is visible to the right of the cavity.",
+    "parse_success": true,
+    "chunk_idx": 30,
+    "video_id": "HHBqvPDdXp0"
+  },
+  {
+    "time": [
+      31,
+      32
+    ],
+    "visible_entities": [
+      {
+        "desc": "white rectangular tray with a dirty, textured surface and black debris",
+        "action": "static",
+        "position": "bottom-left"
+      },
+      {
+        "desc": "black rectangular container filled with dark liquid",
+        "action": "static",
+        "position": "center"
+      },
+      {
+        "desc": "thick, dark brown cables and wires",
+        "action": "static",
+        "position": "top"
+      },
+      {
+        "desc": "rusty, reddish-brown metal surface",
+        "action": "static",
+        "position": "bottom-right"
+      },
+      {
+        "desc": "black bolt head",
+        "action": "static",
+        "position": "bottom-left"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A white tray with black debris sits next to a black container.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The black container is filled with a dark liquid.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "Thick cables run across the top of the frame, above the container.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A black bolt head is visible in the bottom-left corner.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The white tray is to the left of the black container. The thick cables are above the black container. The rusty metal surface is to the right of the black container. The black bolt head is in front of the white tray.",
+    "parse_success": true,
+    "chunk_idx": 31,
+    "video_id": "HHBqvPDdXp0"
+  },
+  {
+    "time": [
+      32,
+      33
+    ],
+    "visible_entities": [
+      {
+        "desc": "white rectangular block, weathered surface with black stains and rust-colored grime, possibly concrete or painted wood",
+        "action": "static",
+        "position": "bottom-left"
+      },
+      {
+        "desc": "dark liquid, black and reflective, filling a rectangular cavity",
+        "action": "static",
+        "position": "center"
+      },
+      {
+        "desc": "thick dark cables, black or dark brown, bundled together",
+        "action": "static",
+        "position": "top"
+      },
+      {
+        "desc": "rusty metal bolt, dark grey with corrosion",
+        "action": "static",
+        "position": "bottom-left"
+      },
+      {
+        "desc": "brownish-orange curved surface, textured, possibly a boot or machinery part",
+        "action": "static",
+        "position": "right"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A pool of dark liquid sits inside a rectangular recess.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A white block with black stains is positioned next to the liquid-filled cavity.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "Thick cables run across the top of the frame.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The white block is to the left of the dark liquid pool. The thick cables are above the liquid and the white block. The rusty bolt is in front of the white block.",
+    "parse_success": true,
+    "chunk_idx": 32,
+    "video_id": "HHBqvPDdXp0"
+  },
+  {
+    "time": [
+      33,
+      34
+    ],
+    "visible_entities": [
+      {
+        "desc": "white rectangular wooden block, weathered with black debris and rust stains, featuring a bolted metal bracket",
+        "action": "static",
+        "position": "bottom left"
+      },
+      {
+        "desc": "dark recessed cavity, black interior",
+        "action": "static",
+        "position": "center"
+      },
+      {
+        "desc": "thick rusty brown cables and wires",
+        "action": "static",
+        "position": "top"
+      },
+      {
+        "desc": "tan textured surface, possibly leather or metal",
+        "action": "static",
+        "position": "right"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The camera remains static on the mechanical assembly.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A white wooden block is positioned at the bottom left.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "Rusty cables run horizontally across the top of the frame.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The white wooden block is in the bottom left foreground, positioned below the dark recessed cavity. The rusty brown cables are located above the cavity and the wooden block. The tan textured surface is to the right of the cavity.",
+    "parse_success": true,
+    "chunk_idx": 33,
+    "video_id": "HHBqvPDdXp0"
+  },
+  {
+    "time": [
+      34,
+      35
+    ],
+    "visible_entities": [
+      {
+        "desc": "white painted wooden block, weathered with black and brown stains, featuring a bolted metal bracket",
+        "action": "static",
+        "position": "bottom left"
+      },
+      {
+        "desc": "dark rectangular cavity, black interior, framed by light-colored wood",
         "action": "static",
         "position": "center"
       },
@@ -1205,520 +1590,165 @@
         "position": "top"
       },
       {
-        "desc": "copper-colored metal rod, thin and cylindrical",
+        "desc": "vertical wooden plank, light brown, with a visible metal bolt head",
         "action": "static",
         "position": "right"
       },
       {
-        "desc": "dark metal machinery part, bolted, with a hexagonal nut visible",
+        "desc": "thin copper-colored pipe or tube",
         "action": "static",
-        "position": "bottom left foreground"
+        "position": "center right"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A pool of black liquid sits inside a rectangular cavity.",
+        "fact": "The scene remains static with no visible movement or changes between the two frames.",
         "confidence": 1.0
       },
       {
-        "fact": "A white wooden block is positioned next to the liquid-filled cavity.",
+        "fact": "A white wooden block with a metal bracket is positioned in the foreground.",
         "confidence": 1.0
       },
       {
-        "fact": "Thick black cables run above the cavity and wooden block.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [],
-    "spatial": "The white wooden block is to the left of the black liquid pool. The thick black cables are above the liquid and the wooden block. The copper-colored rod is to the right of the liquid pool.",
-    "parse_success": true,
-    "chunk_idx": 27,
-    "video_id": "HHBqvPDdXp0"
-  },
-  {
-    "time": [
-      56,
-      58
-    ],
-    "visible_entities": [
-      {
-        "desc": "white wooden block, painted white with chipped paint and black grime, rectangular shape",
-        "action": "static",
-        "position": "center"
-      },
-      {
-        "desc": "black cables, thick, bundled together, flexible",
-        "action": "static",
-        "position": "top"
-      },
-      {
-        "desc": "dark rectangular cavity, black interior, recessed space",
-        "action": "static",
-        "position": "center"
-      },
-      {
-        "desc": "metallic bolt, silver, hexagonal head, shiny",
-        "action": "static",
-        "position": "bottom-left"
-      },
-      {
-        "desc": "brown surface, rough texture, possibly concrete or rusted metal",
-        "action": "static",
-        "position": "bottom-right"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "A white wooden block rests on a surface next to a dark cavity.",
+        "fact": "A dark, rectangular opening is visible behind the white block.",
         "confidence": 1.0
       },
       {
         "fact": "Thick black cables run across the top of the frame.",
         "confidence": 1.0
-      },
-      {
-        "fact": "A metallic bolt is visible in the bottom-left corner.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The white block shows signs of wear with black stains.",
-        "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The white wooden block is positioned in the center, adjacent to a dark rectangular cavity. A bundle of black cables is located above the block and cavity. A metallic bolt is situated to the left of the white block.",
-    "parse_success": true,
-    "chunk_idx": 28,
-    "video_id": "HHBqvPDdXp0"
-  },
-  {
-    "time": [
-      58,
-      60
-    ],
-    "visible_entities": [
-      {
-        "desc": "dark, viscous liquid pool",
-        "action": "static",
-        "position": "center"
-      },
-      {
-        "desc": "white wooden frame structure",
-        "action": "static",
-        "position": "bottom"
-      },
-      {
-        "desc": "black electrical cables",
-        "action": "static",
-        "position": "top"
-      },
-      {
-        "desc": "rusty metal surface",
-        "action": "static",
-        "position": "right"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "A pool of dark liquid sits inside a white wooden frame.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "Black cables hang above the liquid pool.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The wooden frame rests on a rusty metal surface.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [],
-    "spatial": "The dark liquid is inside the white wooden frame. The black cables are above the liquid and the frame. The rusty metal surface is to the right of the wooden frame.",
-    "parse_success": true,
-    "chunk_idx": 29,
-    "video_id": "HHBqvPDdXp0"
-  },
-  {
-    "time": [
-      60,
-      62
-    ],
-    "visible_entities": [
-      {
-        "desc": "white painted wooden beam, weathered with chipped paint, rectangular shape",
-        "action": "static",
-        "position": "bottom/foreground"
-      },
-      {
-        "desc": "black rectangular cavity, dark interior, recessed",
-        "action": "static",
-        "position": "center"
-      },
-      {
-        "desc": "thick dark brown cables, bundled, flexible",
-        "action": "static",
-        "position": "top"
-      },
-      {
-        "desc": "black metal bracket, bolted, L-shaped",
-        "action": "static",
-        "position": "bottom left"
-      },
-      {
-        "desc": "rusty metal surface, textured, reddish-brown",
-        "action": "static",
-        "position": "right"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "The scene shows a static view of a mechanical or structural compartment.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "A black rectangular cavity is situated between wooden beams.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "Thick cables run across the top of the frame.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [],
-    "spatial": "The white painted wooden beam is in the foreground at the bottom. The black rectangular cavity is located above the wooden beam and to the left of the rusty metal surface. The thick dark brown cables are positioned above the cavity and the wooden beam.",
-    "parse_success": true,
-    "chunk_idx": 30,
-    "video_id": "HHBqvPDdXp0"
-  },
-  {
-    "time": [
-      62,
-      64
-    ],
-    "visible_entities": [
-      {
-        "desc": "white painted wooden structure, weathered with chipped paint and rust stains, featuring a rectangular opening",
-        "action": "static",
-        "position": "center"
-      },
-      {
-        "desc": "thick black cables, bundled together, appearing flexible and rubbery",
-        "action": "static",
-        "position": "top"
-      },
-      {
-        "desc": "dark liquid, black in color, filling the bottom of the wooden structure",
-        "action": "static",
-        "position": "center"
-      },
-      {
-        "desc": "black metal bolt and nut, hexagonal shape, securing the wooden structure",
-        "action": "static",
-        "position": "bottom-left"
-      },
-      {
-        "desc": "rough brown surface, possibly concrete or dirt, with scattered debris",
-        "action": "static",
-        "position": "bottom-right"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "A white wooden structure contains a pool of dark liquid.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "Thick black cables run above the wooden structure.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "A black bolt secures the corner of the wooden structure.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [],
-    "spatial": "The thick black cables are positioned above the white wooden structure. The dark liquid is inside the rectangular opening of the wooden structure. The black bolt is located at the bottom-left corner of the wooden structure, near the rough brown surface.",
-    "parse_success": true,
-    "chunk_idx": 31,
-    "video_id": "HHBqvPDdXp0"
-  },
-  {
-    "time": [
-      64,
-      66
-    ],
-    "visible_entities": [
-      {
-        "desc": "white rectangular block with black stains and rust marks, appearing to be made of concrete or painted wood",
-        "action": "static",
-        "position": "bottom left"
-      },
-      {
-        "desc": "dark liquid pool, black and reflective, filling a recessed area",
-        "action": "static",
-        "position": "center"
-      },
-      {
-        "desc": "thick dark cables, black and brown, bundled together",
-        "action": "static",
-        "position": "top"
-      },
-      {
-        "desc": "rusty metal surface, reddish-brown, textured with corrosion",
-        "action": "static",
-        "position": "right"
-      },
-      {
-        "desc": "black hexagonal bolt head, metallic",
-        "action": "static",
-        "position": "bottom left"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "A pool of dark liquid sits inside a recessed compartment.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "Thick cables run across the top of the frame.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "A white block with stains is positioned next to the liquid pool.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "A black bolt is visible in the foreground near the white block.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [],
-    "spatial": "The pool of dark liquid is in the center, surrounded by a white block on the left and a rusty metal surface on the right. Thick cables are positioned above the liquid and the white block. A black bolt is located in front of the white block at the bottom left.",
-    "parse_success": true,
-    "chunk_idx": 32,
-    "video_id": "HHBqvPDdXp0"
-  },
-  {
-    "time": [
-      66,
-      68
-    ],
-    "visible_entities": [
-      {
-        "desc": "white wooden block with black debris and rust stains",
-        "action": "static",
-        "position": "bottom left"
-      },
-      {
-        "desc": "dark rectangular cavity",
-        "action": "static",
-        "position": "center"
-      },
-      {
-        "desc": "tangled dark brown and black cables",
-        "action": "static",
-        "position": "top"
-      },
-      {
-        "desc": "tan leather-like object with metal rivet",
-        "action": "static",
-        "position": "right"
-      },
-      {
-        "desc": "black mechanical component with bolt",
-        "action": "static",
-        "position": "bottom left"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "A white wooden block sits next to a dark rectangular cavity.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "Tangled cables hang above the cavity.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "A tan leather-like object is positioned to the right of the cavity.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [],
-    "spatial": "The white wooden block is to the left of the dark rectangular cavity. The tangled cables are above the cavity. The tan leather-like object is to the right of the cavity.",
-    "parse_success": true,
-    "chunk_idx": 33,
-    "video_id": "HHBqvPDdXp0"
-  },
-  {
-    "time": [
-      68,
-      70
-    ],
-    "visible_entities": [
-      {
-        "desc": "white wooden beam, weathered with black stains and rust marks, rectangular shape",
-        "action": "static",
-        "position": "bottom-left"
-      },
-      {
-        "desc": "black rectangular recess, dark interior, box-like cavity",
-        "action": "static",
-        "position": "center"
-      },
-      {
-        "desc": "thick dark cables, curved, bundled together",
-        "action": "static",
-        "position": "top"
-      },
-      {
-        "desc": "vertical wooden plank, light brown, rough texture",
-        "action": "static",
-        "position": "right"
-      },
-      {
-        "desc": "metallic bolt head, dark, hexagonal shape",
-        "action": "static",
-        "position": "bottom-left"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "The white wooden beam is positioned adjacent to a black rectangular recess.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "Thick dark cables run horizontally across the top of the frame.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "A metallic bolt head is visible at the bottom left corner of the white beam.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [],
-    "spatial": "The white wooden beam is to the left of the black rectangular recess. The thick dark cables are above the recess and the beam. The vertical wooden plank is to the right of the recess.",
+    "spatial": "The white painted wooden block is in the bottom left foreground. The dark rectangular cavity is located behind and slightly above the white block. The thick black cables are positioned above the cavity. The vertical wooden plank is to the right of the cavity and the copper-colored pipe.",
     "parse_success": true,
     "chunk_idx": 34,
     "video_id": "HHBqvPDdXp0"
   },
   {
     "time": [
-      70,
-      72
+      35,
+      36
     ],
     "visible_entities": [
       {
-        "desc": "white rectangular block, rough texture, dirty with black debris",
+        "desc": "white painted wooden beam, weathered with black grime and rust stains",
         "action": "static",
-        "position": "left foreground"
+        "position": "foreground left"
       },
       {
-        "desc": "black rectangular pool of liquid, glossy surface",
+        "desc": "black cylindrical metal pipe, smooth surface",
         "action": "static",
         "position": "center"
       },
       {
-        "desc": "dark brown cables, thick, curved",
+        "desc": "dark reddish-brown cables, thick and bundled",
         "action": "static",
         "position": "top"
       },
       {
-        "desc": "black metal bolt, hexagonal head",
+        "desc": "black rectangular recessed area, shadowed",
         "action": "static",
-        "position": "bottom left"
+        "position": "center background"
       },
       {
-        "desc": "tan curved surface, smooth, possibly plastic or metal",
+        "desc": "rusty metal bolt head, hexagonal",
         "action": "static",
-        "position": "right"
+        "position": "bottom left"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A pool of black liquid sits in a recessed area.",
+        "fact": "A black cylindrical pipe runs vertically through the frame.",
         "confidence": 1.0
       },
       {
-        "fact": "A white block is positioned next to the liquid pool.",
+        "fact": "Thick cables are positioned above the wooden beam.",
         "confidence": 1.0
       },
       {
-        "fact": "Thick cables run across the top of the frame.",
+        "fact": "The wooden beam is located in the foreground to the left of the pipe.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A rusty bolt is visible at the bottom left corner.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The white rectangular block is to the left of the black pool of liquid. The dark brown cables are above the liquid and the white block. The black metal bolt is in front of the white block.",
+    "spatial": "The white painted wooden beam is in the foreground on the left side of the frame. A black cylindrical pipe is positioned to the right of the wooden beam and runs vertically. Thick dark cables are located above the wooden beam and the pipe. A black recessed area is visible behind the pipe and wooden beam.",
     "parse_success": true,
     "chunk_idx": 35,
     "video_id": "HHBqvPDdXp0"
   },
   {
     "time": [
-      72,
-      74
+      36,
+      37
     ],
     "visible_entities": [
       {
-        "desc": "white rectangular block, rough texture, dirty with black specks, likely a firebrick or insulating material",
+        "desc": "white rectangular block, textured surface with black debris and yellow stains, likely foam or insulation material",
         "action": "static",
         "position": "bottom-left"
       },
       {
-        "desc": "dark recessed cavity, black interior, rectangular shape",
+        "desc": "dark rectangular cavity, black interior, recessed into the structure",
         "action": "static",
         "position": "center"
       },
       {
-        "desc": "dark cables, thick, curved, reddish-brown and black colors",
+        "desc": "dark brown and black cables, thick, bundled together",
         "action": "static",
         "position": "top"
       },
       {
-        "desc": "tan curved surface, smooth, possibly a boot or leather casing",
+        "desc": "tan leather-like panel, curved edge, with a silver rivet",
         "action": "static",
         "position": "right"
       },
       {
-        "desc": "thin copper-colored tube, metallic, straight",
+        "desc": "rusty metal surface, reddish-brown, textured",
         "action": "static",
-        "position": "center-right"
+        "position": "bottom-right"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A white block sits at the edge of a dark cavity.",
+        "fact": "The camera remains static on a close-up view of a mechanical or structural assembly.",
         "confidence": 1.0
       },
       {
-        "fact": "Thick cables run across the top of the frame.",
+        "fact": "A white block with debris sits adjacent to a dark, empty rectangular cavity.",
         "confidence": 1.0
       },
       {
-        "fact": "A copper tube extends diagonally near the tan surface.",
+        "fact": "Thick cables run horizontally across the top of the frame, above the cavity.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A tan panel with a rivet is positioned to the right of the cavity.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The white rectangular block is positioned to the left of the dark cavity. The dark cables are located above the cavity and the white block. The tan curved surface is to the right of the cavity, with a thin copper tube running between them.",
+    "spatial": "The white rectangular block is to the left of the dark rectangular cavity. The dark cables are above the cavity and the white block. The tan leather-like panel is to the right of the cavity. The rusty metal surface is below the tan panel and to the right of the white block.",
     "parse_success": true,
     "chunk_idx": 36,
     "video_id": "HHBqvPDdXp0"
   },
   {
     "time": [
-      74,
-      76
+      37,
+      38
     ],
     "visible_entities": [
       {
-        "desc": "person's hand with light skin tone, fingers curled",
+        "desc": "blurry hand with light skin tone",
         "action": "reaching into the dark space",
         "position": "right/foreground"
       },
       {
-        "desc": "white rectangular plastic container with black debris and grime inside",
+        "desc": "white plastic container with black debris and grime",
         "action": "static",
         "position": "bottom left"
       },
@@ -1726,229 +1756,237 @@
         "desc": "dark mechanical cavity with black cables and hoses",
         "action": "static",
         "position": "center/background"
-      },
-      {
-        "desc": "tan-colored cylindrical object, possibly a fluid reservoir",
-        "action": "static",
-        "position": "far right"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A person's hand reaches into a dark mechanical cavity.",
+        "fact": "A blurry hand reaches into the dark mechanical cavity.",
         "confidence": 1.0
       },
       {
-        "fact": "The hand is positioned near a black hose or cable.",
+        "fact": "A dirty white plastic container sits in the bottom left corner.",
         "confidence": 1.0
       },
       {
-        "fact": "A dirty white plastic container sits in the lower left corner.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The scene appears to be inside a vehicle engine bay or mechanical compartment.",
+        "fact": "Black cables run across the top of the dark cavity.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The person's hand is in the foreground on the right, reaching towards the center. The white plastic container is located at the bottom left, below the dark mechanical cavity. The tan cylindrical object is positioned to the right of the hand.",
+    "spatial": "The blurry hand is on the right side of the frame, reaching towards the center. The white plastic container is located in the bottom left, below the dark mechanical cavity. The black cables are positioned above the dark cavity.",
     "parse_success": true,
     "chunk_idx": 37,
     "video_id": "HHBqvPDdXp0"
   },
   {
     "time": [
-      76,
-      78
+      38,
+      39
     ],
     "visible_entities": [
       {
-        "desc": "pale hand with fingers extended",
-        "action": "reaching into the wires",
-        "position": "bottom/foreground"
+        "desc": "pale-skinned hand with short fingernails",
+        "action": "reaching into a bundle of cables",
+        "position": "bottom right"
       },
       {
         "desc": "bundle of thick black cables",
         "action": "static",
-        "position": "center/top"
+        "position": "center"
       },
       {
-        "desc": "dark mechanical component",
+        "desc": "orange plastic connector",
+        "action": "static",
+        "position": "top left"
+      },
+      {
+        "desc": "dark mechanical undercarriage",
         "action": "static",
         "position": "background"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A hand reaches into a cluster of black cables.",
+        "fact": "A hand reaches into a bundle of black cables.",
         "confidence": 1.0
       },
       {
-        "fact": "The fingers are positioned behind the wires.",
+        "fact": "The cables are connected to an orange connector.",
         "confidence": 1.0
       },
       {
-        "fact": "The cables are bundled together in the foreground.",
+        "fact": "The scene takes place in a dark, mechanical space.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The hand is below the bundle of black cables and is reaching upwards into them. The cables are in front of the dark mechanical component in the background.",
+    "spatial": "The hand is positioned below and in front of the bundle of black cables. The orange connector is located at the top left of the cable bundle. The cables are suspended in front of a dark mechanical undercarriage.",
     "parse_success": true,
     "chunk_idx": 38,
     "video_id": "HHBqvPDdXp0"
   },
   {
     "time": [
-      78,
-      80
+      39,
+      40
     ],
     "visible_entities": [
       {
-        "desc": "black rectangular tray or container filled with dark liquid, appearing to be oil or grease",
+        "desc": "thick black cables, bundled together, appearing flexible and insulated",
+        "action": "static",
+        "position": "top/foreground"
+      },
+      {
+        "desc": "dark rectangular cavity, black interior, recessed into the structure",
         "action": "static",
         "position": "center"
       },
       {
-        "desc": "thick black cables or hoses, curved and bundled together",
+        "desc": "white structural component, weathered surface with rust stains and dirt",
         "action": "static",
-        "position": "top"
+        "position": "bottom/left"
       },
       {
-        "desc": "white painted metal surface with rust spots and grime",
-        "action": "static",
-        "position": "bottom-left"
-      },
-      {
-        "desc": "copper-colored pipe or tube",
+        "desc": "copper-colored pipe, cylindrical, metallic texture",
         "action": "static",
         "position": "right"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A black tray containing dark fluid is positioned underneath a set of black cables.",
+        "fact": "Thick black cables are draped over the top of the frame.",
         "confidence": 1.0
       },
       {
-        "fact": "The white metal surface shows signs of rust and wear.",
+        "fact": "A dark rectangular cavity is visible in the center.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A white structural component with rust stains is located below the cables.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A copper-colored pipe runs vertically on the right side.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The black tray is located in the center, underneath the black cables which are at the top of the frame. The white metal surface is to the left of the tray, and a copper pipe is visible to the right of the tray.",
+    "spatial": "The thick black cables are positioned above the dark rectangular cavity. The white structural component is below the cables and to the left of the cavity. The copper-colored pipe is to the right of the cavity and next to the white component.",
     "parse_success": true,
     "chunk_idx": 39,
     "video_id": "HHBqvPDdXp0"
   },
   {
     "time": [
-      80,
-      82
+      40,
+      41
     ],
     "visible_entities": [
       {
-        "desc": "dark brown wooden beam or furniture leg, smooth surface, angled diagonally",
+        "desc": "dark, curved metal structure with a rough texture",
         "action": "static",
-        "position": "top-left"
+        "position": "left"
       },
       {
-        "desc": "black electrical cables, thin and flexible, curved",
+        "desc": "light brown, textured surface, possibly wood or cardboard",
+        "action": "static",
+        "position": "right"
+      },
+      {
+        "desc": "thin, dark wires or cables",
         "action": "static",
         "position": "center"
       },
       {
-        "desc": "white rectangular object, possibly a connector or block, with visible dirt or debris",
+        "desc": "white, rectangular object with a dirty surface",
         "action": "static",
-        "position": "bottom-center"
-      },
-      {
-        "desc": "tan or light brown fabric surface, textured",
-        "action": "static",
-        "position": "right"
+        "position": "bottom"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "Black cables are routed underneath a dark brown wooden structure.",
+        "fact": "The camera moves slightly, changing the view of the objects in the gap.",
         "confidence": 1.0
       },
       {
-        "fact": "A white object with debris rests on the floor below the cables.",
+        "fact": "A dark metal structure is on the left side of the frame.",
         "confidence": 1.0
       },
       {
-        "fact": "The scene is a close-up view of a cluttered area near the floor.",
+        "fact": "A light brown surface is on the right side of the frame.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "Wires are visible in the space between the metal structure and the brown surface.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The dark brown wooden beam is positioned above and to the left of the black cables. The cables are located between the wooden beam and the tan fabric surface on the right. The white rectangular object is below the cables and near the bottom of the frame.",
+    "spatial": "The dark metal structure is to the left of the light brown surface. The thin wires are located in the gap between the metal structure and the brown surface. The white rectangular object is below the wires and near the bottom of the frame.",
     "parse_success": true,
     "chunk_idx": 40,
     "video_id": "HHBqvPDdXp0"
   },
   {
     "time": [
-      82,
-      84
+      41,
+      42
     ],
     "visible_entities": [
       {
-        "desc": "bundle of thick, dark-colored cables or hoses, appearing black or dark grey, with a smooth texture",
+        "desc": "white rectangular object, dirty with black debris and rust stains",
         "action": "static",
-        "position": "top"
+        "position": "bottom left"
       },
       {
-        "desc": "dark, rectangular recessed area or cavity, appearing black and empty",
+        "desc": "bundle of dark cables, some with orange connectors",
+        "action": "static",
+        "position": "top center"
+      },
+      {
+        "desc": "dark rectangular cavity or opening",
         "action": "static",
         "position": "center"
       },
       {
-        "desc": "white, rectangular block or component, appearing dirty with black specks and rust-colored stains",
-        "action": "static",
-        "position": "bottom"
-      },
-      {
-        "desc": "reddish-brown, textured surface, appearing to be a metal floor or wall with signs of rust or wear",
+        "desc": "brown vertical surface, possibly wood or rusted metal",
         "action": "static",
         "position": "right"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A bundle of dark cables hangs above a dark, rectangular cavity.",
+        "fact": "The scene is static with no visible movement between the two frames.",
         "confidence": 1.0
       },
       {
-        "fact": "A dirty white block sits below the dark cavity.",
+        "fact": "A bundle of cables hangs above a dark cavity.",
         "confidence": 1.0
       },
       {
-        "fact": "The scene is static with no visible movement of objects.",
+        "fact": "A dirty white object rests below the cables.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The bundle of dark cables is positioned above the dark rectangular cavity. The dirty white block is located below the dark cavity. The reddish-brown textured surface is to the right of the dark cavity and the white block.",
+    "spatial": "The bundle of dark cables is above the dark rectangular cavity. The dirty white object is to the left of the cavity and below the cables. The brown vertical surface is to the right of the cavity.",
     "parse_success": true,
     "chunk_idx": 41,
     "video_id": "HHBqvPDdXp0"
   },
   {
     "time": [
-      84,
-      86
+      42,
+      43
     ],
     "visible_entities": [
       {
-        "desc": "dark, viscous black liquid filling a rectangular container",
+        "desc": "dark, viscous liquid pooling in a recessed area",
         "action": "static",
         "position": "center"
       },
       {
-        "desc": "white, rectangular object with brown rust stains and black debris",
+        "desc": "white, rectangular, textured object with brown stains and black debris",
         "action": "static",
         "position": "bottom-left"
       },
@@ -1958,149 +1996,247 @@
         "position": "top"
       },
       {
-        "desc": "reddish-brown, textured surface resembling rusted metal or brick",
+        "desc": "reddish-brown, rough-textured surface",
         "action": "static",
         "position": "right"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A rectangular container is filled with a dark, viscous black liquid.",
+        "fact": "A pool of dark liquid sits in a recessed compartment.",
         "confidence": 1.0
       },
       {
-        "fact": "A white object with rust stains rests in the foreground near the liquid.",
+        "fact": "A stained white object rests in the foreground.",
         "confidence": 1.0
       },
       {
-        "fact": "Thick cables hang above the liquid container.",
+        "fact": "Cables hang above the liquid and the white object.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The white object with rust stains is in the foreground, positioned to the left of the container filled with black liquid. The thick cables are located above the liquid container. The reddish-brown surface is to the right of the liquid container.",
+    "spatial": "The pool of dark liquid is located in the center of the frame, inside a recessed area. The stained white object is in the foreground, to the left of the liquid. The dark cables are positioned above the liquid and the white object. The reddish-brown surface is to the right of the liquid.",
     "parse_success": true,
     "chunk_idx": 42,
     "video_id": "HHBqvPDdXp0"
   },
   {
     "time": [
-      86,
-      88
+      43,
+      44
     ],
     "visible_entities": [
       {
-        "desc": "dark, rectangular recessed cavity, appearing to be a compartment or pit, containing a dark liquid or void",
+        "desc": "dark, viscous black liquid filling a rectangular cavity",
         "action": "static",
         "position": "center"
       },
       {
-        "desc": "white, rectangular block or container, heavily soiled with black grime and rust-colored stains",
+        "desc": "white, rectangular block with a rough, porous texture and black debris on its surface",
         "action": "static",
-        "position": "bottom-left"
+        "position": "foreground"
       },
       {
-        "desc": "thick, dark, flexible cables or hoses, appearing dusty and worn",
+        "desc": "thick, dark brown cables bundled together",
         "action": "static",
         "position": "top"
       },
       {
-        "desc": "copper-colored metal pipe or tube, cylindrical and rigid",
+        "desc": "copper-colored metal pipe",
         "action": "static",
         "position": "right"
-      },
-      {
-        "desc": "reddish-brown, rough-textured surface, likely brick or concrete flooring",
-        "action": "static",
-        "position": "bottom-right"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A dark, rectangular cavity is visible in the center of the frame.",
+        "fact": "The dark liquid is contained within a rectangular basin.",
         "confidence": 1.0
       },
       {
-        "fact": "A dirty white block rests on the ground to the left of the cavity.",
+        "fact": "A white block rests in the foreground, partially obscuring the view of the liquid.",
         "confidence": 1.0
       },
       {
-        "fact": "Thick dark cables hang above the scene.",
+        "fact": "Thick cables hang above the liquid-filled cavity.",
         "confidence": 1.0
       },
       {
-        "fact": "A copper pipe runs along the right side of the cavity.",
+        "fact": "A copper pipe runs along the right side of the scene.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The dark rectangular cavity is in the center, surrounded by other objects. The dirty white block is to the left of the cavity. The thick dark cables are above the cavity and the white block. The copper pipe is to the right of the cavity, resting on the reddish-brown ground.",
+    "spatial": "The dark liquid is in the center, contained within a basin. The white block is in the foreground, positioned in front of and below the liquid. The thick cables are above the liquid. The copper pipe is to the right of the liquid and the white block.",
     "parse_success": true,
     "chunk_idx": 43,
     "video_id": "HHBqvPDdXp0"
   },
   {
     "time": [
-      88,
-      90
+      44,
+      45
     ],
     "visible_entities": [
       {
-        "desc": "dark, rectangular, open cavity or compartment with black interior walls",
+        "desc": "white rectangular object, dirty with black soot and brown stains, textured surface",
+        "action": "static",
+        "position": "bottom left"
+      },
+      {
+        "desc": "dark liquid pool, black, glossy surface",
         "action": "static",
         "position": "center"
       },
       {
-        "desc": "white, rectangular, foam-like block with a rough, porous texture and black debris on its surface",
-        "action": "static",
-        "position": "bottom-left"
-      },
-      {
-        "desc": "thick, dark-colored cables or wires, appearing dusty and slightly curved",
+        "desc": "thick black cables, curved, rubbery texture",
         "action": "static",
         "position": "top"
       },
       {
-        "desc": "reddish-brown, textured surface, possibly rusted metal or painted wood",
+        "desc": "reddish-brown surface, rough texture, possibly rusted metal or brick",
         "action": "static",
         "position": "right"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "The scene is a static, close-up view of a mechanical or structural interior.",
+        "fact": "A pool of dark liquid sits in the center of the frame.",
         "confidence": 1.0
       },
       {
-        "fact": "A white foam block is positioned at the bottom-left edge of a dark, open cavity.",
+        "fact": "A dirty white object rests on the left side of the surface.",
         "confidence": 1.0
       },
       {
-        "fact": "Several thick, dark cables are routed across the top of the frame, above the cavity.",
+        "fact": "Black cables hang above the liquid and the white object.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The dark, rectangular cavity is in the center of the frame. A white foam block is located at the bottom-left, next to the cavity. A bundle of dark cables is positioned above the cavity. A reddish-brown surface is to the right of the cavity.",
+    "spatial": "The white rectangular object is to the left of the dark liquid pool. The black cables are positioned above both the liquid and the white object. The reddish-brown surface is to the right of the liquid pool.",
     "parse_success": true,
     "chunk_idx": 44,
     "video_id": "HHBqvPDdXp0"
   },
   {
     "time": [
-      90,
-      92
+      45,
+      46
     ],
     "visible_entities": [
       {
-        "desc": "dark, viscous liquid filling a rectangular cavity",
+        "desc": "white rectangular foam block with black stains and brown dirt",
+        "action": "static",
+        "position": "bottom-left"
+      },
+      {
+        "desc": "dark rectangular cavity filled with black liquid",
         "action": "static",
         "position": "center"
       },
       {
-        "desc": "white, rectangular block with black soot marks and brown stains",
+        "desc": "thick rusty brown cables",
+        "action": "static",
+        "position": "top"
+      },
+      {
+        "desc": "reddish-brown textured surface",
+        "action": "static",
+        "position": "bottom-right"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A white foam block sits next to a dark cavity.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The cavity is filled with a black liquid.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "Rusty cables hang above the cavity.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The white foam block is to the left of the dark cavity. The rusty cables are above the cavity. The reddish-brown surface is to the right of the cavity.",
+    "parse_success": true,
+    "chunk_idx": 45,
+    "video_id": "HHBqvPDdXp0"
+  },
+  {
+    "time": [
+      46,
+      47
+    ],
+    "visible_entities": [
+      {
+        "desc": "white rectangular object, possibly a battery or block, with black debris and rust stains on its surface",
         "action": "static",
         "position": "bottom-left"
+      },
+      {
+        "desc": "dark, thick, flexible cables or hoses, appearing rusty or dirty",
+        "action": "static",
+        "position": "top"
+      },
+      {
+        "desc": "black rectangular recessed compartment or tray",
+        "action": "static",
+        "position": "center"
+      },
+      {
+        "desc": "reddish-brown textured surface, likely a rusty metal floor or chassis",
+        "action": "static",
+        "position": "bottom-right"
+      },
+      {
+        "desc": "light-colored wooden block or wedge",
+        "action": "static",
+        "position": "bottom-center"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A white rectangular object with debris sits in the bottom-left corner.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "Dark cables run across the top of the frame.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A wooden block is wedged near the black compartment.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The scene is static with no movement observed.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The white rectangular object is to the left of the black compartment. The dark cables are above the black compartment and the white object. The wooden block is in front of the black compartment and rests on the reddish-brown surface.",
+    "parse_success": true,
+    "chunk_idx": 46,
+    "video_id": "HHBqvPDdXp0"
+  },
+  {
+    "time": [
+      47,
+      48
+    ],
+    "visible_entities": [
+      {
+        "desc": "dark, rectangular, recessed compartment containing a black liquid",
+        "action": "static",
+        "position": "center"
+      },
+      {
+        "desc": "white, rectangular, porous block with black speckles and brown stains",
+        "action": "static",
+        "position": "left"
       },
       {
         "desc": "thick, dark, flexible cables or hoses",
@@ -2108,241 +2244,44 @@
         "position": "top"
       },
       {
-        "desc": "reddish-brown, textured surface",
-        "action": "static",
-        "position": "bottom-right"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "A dark liquid fills a rectangular cavity in the center of the frame.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "A white block with black soot marks is positioned at the bottom-left.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "Thick, dark cables are visible at the top of the frame.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [],
-    "spatial": "The dark liquid is in the center, below the thick, dark cables. The white block with soot marks is to the left of the liquid and below the cables. The reddish-brown surface is to the right of the liquid and below the cables.",
-    "parse_success": true,
-    "chunk_idx": 45,
-    "video_id": "HHBqvPDdXp0"
-  },
-  {
-    "time": [
-      92,
-      94
-    ],
-    "visible_entities": [
-      {
-        "desc": "white rectangular object with black speckles and brown stains, appearing dirty or corroded",
-        "action": "static",
-        "position": "bottom left"
-      },
-      {
-        "desc": "dark rectangular cavity or compartment with a black interior",
-        "action": "static",
-        "position": "center"
-      },
-      {
-        "desc": "thick dark cables, appearing rusty or weathered",
-        "action": "static",
-        "position": "top"
-      },
-      {
-        "desc": "reddish-brown textured surface, appearing rusty or painted metal",
-        "action": "static",
-        "position": "bottom right"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "The scene shows a close-up of a mechanical or industrial component.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "A white object with debris is positioned next to a dark opening.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "Several cables run across the top of the frame.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [],
-    "spatial": "The white rectangular object with black speckles is to the left of the dark rectangular cavity. The thick dark cables are above the cavity and the white object. The reddish-brown textured surface is to the right of the cavity and below the cables.",
-    "parse_success": true,
-    "chunk_idx": 46,
-    "video_id": "HHBqvPDdXp0"
-  },
-  {
-    "time": [
-      94,
-      96
-    ],
-    "visible_entities": [
-      {
-        "desc": "dark, viscous liquid, black in color, filling a rectangular cavity",
-        "action": "static",
-        "position": "center"
-      },
-      {
-        "desc": "thick, dark brown cables, bundled together, appearing flexible",
-        "action": "static",
-        "position": "top"
-      },
-      {
-        "desc": "white, rectangular block, textured surface with black speckles and grime",
-        "action": "static",
-        "position": "left"
-      },
-      {
-        "desc": "copper-colored metal pipe or rod, cylindrical, shiny",
-        "action": "static",
-        "position": "right"
-      },
-      {
-        "desc": "reddish-brown, rough-textured surface, possibly rusted metal or concrete",
+        "desc": "reddish-brown, textured surface with white debris",
         "action": "static",
         "position": "bottom"
+      },
+      {
+        "desc": "light-colored, rough-textured wooden block or wedge",
+        "action": "static",
+        "position": "bottom-center"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A pool of black liquid sits inside a rectangular container.",
+        "fact": "A dark, rectangular compartment is filled with a black liquid.",
         "confidence": 1.0
       },
       {
-        "fact": "Thick cables hang above the liquid pool.",
+        "fact": "A white, porous block with black speckles rests to the left of the compartment.",
         "confidence": 1.0
       },
       {
-        "fact": "A white block with black debris rests on the left side of the frame.",
+        "fact": "Thick, dark cables are positioned above the compartment.",
         "confidence": 1.0
       },
       {
-        "fact": "A copper pipe runs along the right side of the liquid container.",
+        "fact": "A light-colored wooden block is placed on the reddish-brown surface near the compartment.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The dark liquid is in the center, contained within a rectangular structure. Above the liquid, thick cables are suspended. To the left of the liquid is a white, dirty block. To the right of the liquid is a copper pipe. Below the liquid and surrounding objects is a reddish-brown surface.",
+    "spatial": "The dark, rectangular compartment is in the center of the frame. The white, porous block is to the left of the compartment. The thick, dark cables are above the compartment. The reddish-brown surface is below the compartment. The light-colored wooden block is on the reddish-brown surface and next to the compartment.",
     "parse_success": true,
     "chunk_idx": 47,
     "video_id": "HHBqvPDdXp0"
   },
   {
     "time": [
-      96,
-      98
-    ],
-    "visible_entities": [
-      {
-        "desc": "dark, viscous liquid, black in color, filling a rectangular container",
-        "action": "static",
-        "position": "center"
-      },
-      {
-        "desc": "white rectangular block, dirty with black spots and brown stains, textured surface",
-        "action": "static",
-        "position": "bottom-left"
-      },
-      {
-        "desc": "thick, dark brown cables, bundled together, curved shape",
-        "action": "static",
-        "position": "top"
-      },
-      {
-        "desc": "reddish-brown copper pipe, cylindrical, metallic sheen",
-        "action": "static",
-        "position": "right"
-      },
-      {
-        "desc": "rusty metal surface, reddish-brown, textured with corrosion",
-        "action": "static",
-        "position": "bottom-right"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "A pool of black liquid sits inside a mechanical compartment.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "A dirty white block rests next to the liquid.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "Thick cables hang above the liquid and block.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "A copper pipe runs along the right side of the frame.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [],
-    "spatial": "The dark liquid is in the center, surrounded by the white block on the left and the copper pipe on the right. The thick cables are positioned above the liquid and the white block. The rusty metal surface is below the copper pipe and to the right of the white block.",
-    "parse_success": true,
-    "chunk_idx": 48,
-    "video_id": "HHBqvPDdXp0"
-  },
-  {
-    "time": [
-      98,
-      100
-    ],
-    "visible_entities": [
-      {
-        "desc": "dark, viscous liquid pool, black in color, filling a rectangular recess",
-        "action": "static",
-        "position": "center"
-      },
-      {
-        "desc": "white rectangular block, heavily stained with black and brown grime, appearing porous or dirty",
-        "action": "static",
-        "position": "bottom-left"
-      },
-      {
-        "desc": "bundle of dark brown and black cables, appearing thick and flexible",
-        "action": "static",
-        "position": "top"
-      },
-      {
-        "desc": "reddish-brown textured surface, appearing rusty or metallic",
-        "action": "static",
-        "position": "right"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "A pool of black liquid sits motionless in a central container.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "A dirty white block rests at the bottom left of the frame.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "Cables hang above the liquid pool.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [],
-    "spatial": "The bundle of cables is positioned above the pool of black liquid. The dirty white block is located to the bottom-left of the liquid. The reddish-brown surface is to the right of the liquid pool.",
-    "parse_success": true,
-    "chunk_idx": 49,
-    "video_id": "HHBqvPDdXp0"
-  },
-  {
-    "time": [
-      100,
-      102
+      48,
+      49
     ],
     "visible_entities": [
       {
@@ -2351,37 +2290,140 @@
         "position": "center"
       },
       {
-        "desc": "white, rectangular, porous block with black speckles and brown staining",
-        "action": "static",
-        "position": "bottom-left"
-      },
-      {
-        "desc": "thick, dark brown cables or hoses, curved and bundled",
+        "desc": "thick, dark brown cables, bundled together, appearing dusty or dirty",
         "action": "static",
         "position": "top"
       },
       {
-        "desc": "reddish-brown, rough-textured surface, possibly rusted metal or wood",
+        "desc": "white rectangular block, heavily stained with black and brown grime, textured surface",
+        "action": "static",
+        "position": "bottom-left"
+      },
+      {
+        "desc": "copper-colored metal pipe, cylindrical, shiny surface",
+        "action": "static",
+        "position": "right"
+      },
+      {
+        "desc": "reddish-brown textured surface, possibly rusted metal or painted concrete",
         "action": "static",
         "position": "bottom-right"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A pool of black liquid sits inside a rectangular container.",
+        "fact": "A pool of black liquid sits motionless inside a rectangular container.",
         "confidence": 1.0
       },
       {
-        "fact": "A dirty white block rests on the edge of the container.",
+        "fact": "Thick cables run horizontally across the top of the frame.",
         "confidence": 1.0
       },
       {
-        "fact": "Dark cables hang above the liquid pool.",
+        "fact": "A dirty white block rests to the left of the liquid pool.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A copper pipe runs diagonally along the right side of the cavity.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The pool of black liquid is in the center, contained within a rectangular cavity. The white block is positioned at the bottom-left edge of the cavity, partially resting on the rim. The dark cables are located above the liquid, arching across the top of the frame. The reddish-brown surface is visible to the right of the cavity.",
+    "spatial": "The pool of black liquid is in the center, surrounded by other components. The thick dark cables are positioned above the liquid. The stained white block is to the left of the liquid, while the copper pipe is to the right. The reddish-brown surface is below the copper pipe and to the right of the white block.",
+    "parse_success": true,
+    "chunk_idx": 48,
+    "video_id": "HHBqvPDdXp0"
+  },
+  {
+    "time": [
+      49,
+      50
+    ],
+    "visible_entities": [
+      {
+        "desc": "black rectangular tray containing dark liquid",
+        "action": "static",
+        "position": "center"
+      },
+      {
+        "desc": "white rectangular object with black debris and rust stains",
+        "action": "static",
+        "position": "bottom-left"
+      },
+      {
+        "desc": "thick dark brown cables",
+        "action": "static",
+        "position": "top"
+      },
+      {
+        "desc": "reddish-brown textured surface",
+        "action": "static",
+        "position": "right"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A black tray filled with dark liquid sits in the center of the frame.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "Thick dark cables hang above the tray.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A white object with debris rests in the foreground.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The black tray is in the center, positioned below the hanging cables. The white object is to the left of the tray and in the foreground. The reddish-brown surface is to the right of the tray.",
+    "parse_success": true,
+    "chunk_idx": 49,
+    "video_id": "HHBqvPDdXp0"
+  },
+  {
+    "time": [
+      50,
+      51
+    ],
+    "visible_entities": [
+      {
+        "desc": "black liquid pool, dark and reflective surface",
+        "action": "static",
+        "position": "center"
+      },
+      {
+        "desc": "white rectangular object, dirty with black specks and brown stains",
+        "action": "static",
+        "position": "bottom-left"
+      },
+      {
+        "desc": "thick dark cables, curved and bundled",
+        "action": "static",
+        "position": "top"
+      },
+      {
+        "desc": "reddish-brown textured surface, possibly metal or concrete",
+        "action": "static",
+        "position": "bottom-right"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A pool of black liquid sits in a recessed area.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A dirty white rectangular object rests next to the liquid.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "Thick dark cables hang above the liquid pool.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The pool of black liquid is in the center, surrounded by a dirty white object on the bottom-left and a reddish-brown surface on the bottom-right. Thick dark cables are positioned above the liquid pool.",
     "parse_success": true,
     "chunk_idx": 50,
     "video_id": "HHBqvPDdXp0"

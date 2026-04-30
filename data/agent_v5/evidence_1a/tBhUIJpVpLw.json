@@ -2,33 +2,18 @@
   {
     "time": [
       0,
-      2
+      1
     ],
     "visible_entities": [
       {
-        "desc": "man with blonde hair tied back, wearing a black baseball cap and a white short-sleeved button-down shirt",
-        "action": "standing at a counter and chopping food",
+        "desc": "man with blonde hair tied back, wearing a black baseball cap, a white short-sleeved button-up shirt, and a small black microphone clipped to his collar",
+        "action": "standing at a counter and gesturing with his hands",
         "position": "center"
       },
       {
-        "desc": "red cutting board",
+        "desc": "kitchen counter cluttered with various items including a microwave, bottles, jars, and containers",
         "action": "static",
-        "position": "foreground"
-      },
-      {
-        "desc": "brown food item, possibly a potato or meat",
-        "action": "being cut",
-        "position": "center"
-      },
-      {
-        "desc": "green kitchen wall",
-        "action": "static",
-        "position": "background"
-      },
-      {
-        "desc": "white upper cabinets with wood trim",
-        "action": "static",
-        "position": "top"
+        "position": "right"
       },
       {
         "desc": "stainless steel sink",
@@ -36,27 +21,23 @@
         "position": "left"
       },
       {
-        "desc": "black microwave oven",
+        "desc": "white upper cabinets with wooden trim",
         "action": "static",
-        "position": "background"
+        "position": "top"
       },
       {
-        "desc": "various kitchen condiments and bottles",
+        "desc": "green painted wall",
         "action": "static",
-        "position": "right"
+        "position": "background"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "The man is using a knife to cut a brown food item on a red cutting board.",
+        "fact": "A man in a white shirt and black cap is standing in a kitchen.",
         "confidence": 1.0
       },
       {
-        "fact": "The man is wearing a black baseball cap.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The kitchen has green walls and white cabinets.",
+        "fact": "The man is gesturing with his hands over the counter.",
         "confidence": 1.0
       },
       {
@@ -64,25 +45,25 @@
         "confidence": 1.0
       },
       {
-        "fact": "A black microwave sits on the counter behind the cutting board.",
+        "fact": "A microwave and various bottles are on the counter to the right.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The man is standing in the center of the frame, positioned in front of the green wall and white cabinets. To his left is a stainless steel sink, and to his right is a collection of bottles and jars. The red cutting board is on the counter directly in front of him, and the black microwave is behind the cutting board.",
+    "spatial": "The man is standing in the center of the frame, positioned between the sink on the left and the cluttered counter on the right. The white cabinets are mounted on the wall above the green backsplash.",
     "parse_success": true,
     "chunk_idx": 0,
     "video_id": "tBhUIJpVpLw"
   },
   {
     "time": [
-      2,
-      4
+      1,
+      2
     ],
     "visible_entities": [
       {
         "desc": "man with short blonde hair, wearing a black baseball cap and a white short-sleeved button-up shirt",
-        "action": "standing at a kitchen counter and chopping or preparing food",
+        "action": "chopping food on a red cutting board",
         "position": "center"
       },
       {
@@ -91,7 +72,7 @@
         "position": "center"
       },
       {
-        "desc": "stainless steel kitchen sink",
+        "desc": "stainless steel sink",
         "action": "static",
         "position": "left"
       },
@@ -101,23 +82,23 @@
         "position": "background"
       },
       {
-        "desc": "white upper cabinets with wooden trim",
+        "desc": "white kitchen cabinets with wooden trim",
         "action": "static",
         "position": "top"
       },
       {
-        "desc": "various kitchen items including bottles, jars, and a microwave",
+        "desc": "assorted bottles and jars",
         "action": "static",
         "position": "right"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A man is standing at a kitchen counter.",
+        "fact": "The man is chopping ingredients on a red cutting board.",
         "confidence": 1.0
       },
       {
-        "fact": "The man is using his hands to prepare food on a red cutting board.",
+        "fact": "The man is standing in front of a green wall.",
         "confidence": 1.0
       },
       {
@@ -125,20 +106,20 @@
         "confidence": 1.0
       },
       {
-        "fact": "The kitchen has green walls and white cabinets.",
+        "fact": "Various bottles and jars are clustered on the counter to the right.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The man is standing in the center of the frame, in front of the green wall. To his left is a stainless steel sink. To his right, on the counter, are various bottles and jars. Above him are white cabinets.",
+    "spatial": "The man is standing in the center of the kitchen, positioned to the right of the stainless steel sink. The green wall is behind the man and the sink. White cabinets are mounted above the counter, and a collection of bottles and jars sits on the counter to the right of the man.",
     "parse_success": true,
     "chunk_idx": 1,
     "video_id": "tBhUIJpVpLw"
   },
   {
     "time": [
-      4,
-      6
+      2,
+      3
     ],
     "visible_entities": [
       {
@@ -152,7 +133,7 @@
         "position": "center"
       },
       {
-        "desc": "silver metal pot",
+        "desc": "smaller silver metal pot",
         "action": "static",
         "position": "right"
       },
@@ -167,49 +148,54 @@
         "position": "background"
       },
       {
-        "desc": "various spice jars and bottles",
+        "desc": "green wall",
         "action": "static",
         "position": "background"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "person turns a knob on the white stove",
+        "fact": "person turns a knob on the white stove with their right hand",
         "confidence": 1.0
       },
       {
-        "fact": "large dark grey pot is on the front burner",
+        "fact": "a large dark pot sits on the front burner of the stove",
         "confidence": 1.0
       },
       {
-        "fact": "silver pot is on the back burner",
+        "fact": "a smaller silver pot sits on the back burner of the stove",
         "confidence": 1.0
       },
       {
-        "fact": "red cutting board is on the counter next to the stove",
+        "fact": "a red cutting board is placed on the counter next to the stove",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The person is standing to the left of the stove. The large dark grey pot is on the front burner, and the silver pot is to its right on the back burner. The red cutting board is on the counter to the left of the stove, and the microwave is behind the cutting board.",
+    "spatial": "The person is standing to the left of the white stove. The large dark pot is on the stove in front of the smaller silver pot. The red cutting board is to the left of the stove and behind the person's hand. The black microwave is in the background behind the cutting board.",
     "parse_success": true,
     "chunk_idx": 2,
     "video_id": "tBhUIJpVpLw"
   },
   {
     "time": [
-      6,
-      8
+      3,
+      4
     ],
     "visible_entities": [
       {
-        "desc": "person wearing a light beige button-down shirt and black pants",
-        "action": "standing next to the stove",
+        "desc": "person wearing a light beige short-sleeved button-up shirt and black pants",
+        "action": "reaching towards the counter",
         "position": "left"
       },
       {
-        "desc": "large dark grey cooking pot",
-        "action": "sitting on the stovetop",
+        "desc": "large dark grey cooking pot with black handles",
+        "action": "static",
+        "position": "center"
+      },
+      {
+        "desc": "red cutting board",
+        "action": "static",
         "position": "center"
       },
       {
@@ -218,62 +204,53 @@
         "position": "right"
       },
       {
-        "desc": "red cutting board",
+        "desc": "white stovetop",
         "action": "static",
-        "position": "background"
+        "position": "bottom"
       },
       {
-        "desc": "hand",
-        "action": "reaching for a spice jar",
-        "position": "background"
-      },
-      {
-        "desc": "glass spice jars with labels",
+        "desc": "assorted spice jars and bottles",
         "action": "static",
         "position": "background"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A person in a beige shirt is standing to the left of the stove.",
+        "fact": "person reaches their right hand towards the spice jars on the counter",
         "confidence": 1.0
       },
       {
-        "fact": "A hand reaches into the background to pick up a spice jar.",
+        "fact": "large dark grey pot is sitting on the white stovetop",
         "confidence": 1.0
       },
       {
-        "fact": "A large dark grey pot sits on the front burner of the stove.",
+        "fact": "red cutting board is placed on the counter next to the stove",
         "confidence": 1.0
       },
       {
-        "fact": "A silver pot sits on the back right burner.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "A red cutting board is on the counter behind the stove.",
+        "fact": "silver pot is positioned to the right of the dark grey pot",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The person in the beige shirt is to the left of the stove. The large dark grey pot is in front of the silver pot on the stovetop. The red cutting board is behind the pots on the counter. The hand is reaching towards the spice jars which are behind the pots.",
+    "spatial": "The person in the beige shirt is standing to the left of the white stovetop. The large dark grey pot is on the stovetop, to the left of the silver pot. The red cutting board is on the counter behind the dark grey pot, holding a potato and a knife. Various spice jars are arranged on the counter behind the cutting board.",
     "parse_success": true,
     "chunk_idx": 3,
     "video_id": "tBhUIJpVpLw"
   },
   {
     "time": [
-      8,
-      10
+      4,
+      5
     ],
     "visible_entities": [
       {
-        "desc": "person wearing a white short-sleeved shirt and black pants",
-        "action": "squeezing garlic with a metal press",
+        "desc": "person wearing a white short-sleeved shirt and dark pants",
+        "action": "squeezing garlic press",
         "position": "left"
       },
       {
-        "desc": "silver metal garlic press with handles",
+        "desc": "metal garlic press with minced garlic",
         "action": "being squeezed",
         "position": "center"
       },
@@ -283,121 +260,50 @@
         "position": "center"
       },
       {
-        "desc": "large black cooking pot",
+        "desc": "black pot",
         "action": "static",
         "position": "foreground right"
       },
       {
-        "desc": "assorted kitchen bottles and jars",
+        "desc": "assorted spice jars and bottles",
         "action": "static",
         "position": "background right"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "person is using a metal garlic press to crush garlic",
+        "fact": "person is squeezing a metal garlic press over a red cutting board",
         "confidence": 1.0
       },
       {
-        "fact": "the garlic press is positioned over a red cutting board",
+        "fact": "minced garlic is visible on the garlic press",
         "confidence": 1.0
       },
       {
-        "fact": "a large black pot sits on the counter in the foreground",
+        "fact": "a black pot is on the counter in the foreground",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The person is standing to the left of the red cutting board. The metal garlic press is held in the person's hands directly above the cutting board. The black pot is in the foreground to the right of the cutting board, while various bottles and jars are arranged on the counter behind the cutting board.",
+    "spatial": "The person is to the left of the red cutting board. The black pot is in front of the spice jars on the right side of the counter. The garlic press is held above the cutting board.",
     "parse_success": true,
     "chunk_idx": 4,
     "video_id": "tBhUIJpVpLw"
   },
   {
     "time": [
-      10,
-      12
+      5,
+      6
     ],
     "visible_entities": [
       {
-        "desc": "person with fair skin, wearing a beige sleeveless top",
-        "action": "using a metal can opener to open a can",
+        "desc": "person with light skin, wearing a beige sleeveless top and black pants",
+        "action": "operating a can opener",
         "position": "left"
       },
       {
         "desc": "silver metal can opener",
-        "action": "being held and operated by the person",
-        "position": "center"
-      },
-      {
-        "desc": "metal can with a label featuring red and white colors",
-        "action": "being opened on the counter",
-        "position": "center"
-      },
-      {
-        "desc": "red cutting board",
-        "action": "static",
-        "position": "center"
-      },
-      {
-        "desc": "black frying pan",
-        "action": "static",
-        "position": "bottom right"
-      },
-      {
-        "desc": "large plastic jug of yellow cooking oil",
-        "action": "static",
-        "position": "background"
-      },
-      {
-        "desc": "glass jar filled with cashews",
-        "action": "static",
-        "position": "background"
-      },
-      {
-        "desc": "assorted spice jars with red and black lids",
-        "action": "static",
-        "position": "background"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "A person is using a manual can opener to cut the lid of a metal can.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The can is resting on a red cutting board.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "A black frying pan is visible in the foreground.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "Various cooking ingredients, including oil and spices, are arranged on the counter behind the cutting board.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [],
-    "spatial": "The person is positioned to the left of the frame, holding the can opener over the can which sits on the red cutting board. The red cutting board is to the left of the black frying pan in the foreground. Behind the cutting board, a large jug of oil and several spice jars are arranged on the countertop.",
-    "parse_success": true,
-    "chunk_idx": 5,
-    "video_id": "tBhUIJpVpLw"
-  },
-  {
-    "time": [
-      12,
-      14
-    ],
-    "visible_entities": [
-      {
-        "desc": "person with light skin, wearing a white sleeveless top and black pants",
-        "action": "using a can opener to open a can",
-        "position": "left/center"
-      },
-      {
-        "desc": "silver metal can opener",
-        "action": "being held and operated by the person",
+        "action": "being held and turned",
         "position": "center"
       },
       {
@@ -408,78 +314,27 @@
       {
         "desc": "red cutting board",
         "action": "static",
-        "position": "center/foreground"
+        "position": "center"
       },
       {
-        "desc": "black lid with a yellow center",
-        "action": "static",
-        "position": "right/foreground"
-      },
-      {
-        "desc": "large plastic bottle of oil with a yellow label",
+        "desc": "large plastic jug of yellow cooking oil",
         "action": "static",
         "position": "background"
       },
       {
         "desc": "assorted spice jars and bottles",
         "action": "static",
-        "position": "right/background"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "A person is using a can opener to open a small metal can.",
-        "confidence": 1.0
+        "position": "right"
       },
       {
-        "fact": "The can is resting on a red cutting board.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "A black lid is sitting on the counter next to the can.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "Various spice jars and a bottle of oil are in the background.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [],
-    "spatial": "The person is on the left, holding a can opener over a can that is on the red cutting board. The black lid is to the right of the can. The spice jars and oil bottle are behind the cutting board.",
-    "parse_success": true,
-    "chunk_idx": 6,
-    "video_id": "tBhUIJpVpLw"
-  },
-  {
-    "time": [
-      14,
-      16
-    ],
-    "visible_entities": [
-      {
-        "desc": "person with light skin, wearing a white sleeveless shirt",
-        "action": "using a manual can opener to cut the lid of a metal can",
-        "position": "left/center"
-      },
-      {
-        "desc": "silver metal can with a colorful label",
-        "action": "being held and opened",
-        "position": "center"
-      },
-      {
-        "desc": "red plastic cutting board",
+        "desc": "black frying pan",
         "action": "static",
-        "position": "center/bottom"
+        "position": "foreground"
       },
       {
-        "desc": "black pot with a handle",
+        "desc": "black microwave",
         "action": "static",
-        "position": "bottom right"
-      },
-      {
-        "desc": "assorted kitchen bottles and jars including spices and oil",
-        "action": "static",
-        "position": "background/right"
+        "position": "background"
       }
     ],
     "atomic_facts": [
@@ -488,38 +343,46 @@
         "confidence": 1.0
       },
       {
+        "fact": "The person's hands are gripping the handles of the can opener.",
+        "confidence": 1.0
+      },
+      {
         "fact": "The can is resting on a red cutting board.",
         "confidence": 1.0
       },
       {
-        "fact": "A black pot is sitting on the counter to the right of the cutting board.",
+        "fact": "A black frying pan sits in the foreground on the counter.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "Various spice jars and a bottle of oil are clustered in the background.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The person is positioned to the left of the frame, holding a can over a red cutting board. The black pot is located to the right of the cutting board. Various bottles and jars are arranged in the background behind the cutting board.",
+    "spatial": "The person is standing to the left of the red cutting board. The metal can is on top of the cutting board, and the person is holding the can opener over it. The black frying pan is in the foreground, in front of the cutting board. The microwave and bottles of oil and spices are behind the cutting board.",
     "parse_success": true,
-    "chunk_idx": 7,
+    "chunk_idx": 5,
     "video_id": "tBhUIJpVpLw"
   },
   {
     "time": [
-      16,
-      18
+      6,
+      7
     ],
     "visible_entities": [
       {
-        "desc": "person with light skin, wearing a white t-shirt",
-        "action": "using a manual can opener on a metal can",
+        "desc": "person with fair skin, wearing a white sleeveless top",
+        "action": "operating a can opener",
         "position": "left"
       },
       {
-        "desc": "silver manual can opener",
-        "action": "being gripped by hands",
+        "desc": "silver metal manual can opener",
+        "action": "being used to open a can",
         "position": "center"
       },
       {
-        "desc": "metal food can with a green and red label",
+        "desc": "small metal can with a label",
         "action": "being opened",
         "position": "center"
       },
@@ -529,34 +392,29 @@
         "position": "center"
       },
       {
-        "desc": "large yellow plastic jug of oil",
+        "desc": "large clear plastic bottle with yellow liquid and yellow label",
         "action": "static",
         "position": "background"
       },
       {
-        "desc": "glass jar filled with cashews",
+        "desc": "clear glass jar filled with beige nuts",
         "action": "static",
         "position": "background"
       },
       {
-        "desc": "assorted spice jars with red and yellow lids",
+        "desc": "black circular object with a yellow center",
         "action": "static",
         "position": "right"
       },
       {
-        "desc": "black pot",
+        "desc": "black frying pan",
         "action": "static",
         "position": "bottom right"
-      },
-      {
-        "desc": "black lid with a yellow center",
-        "action": "static",
-        "position": "right"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A person is using a manual can opener to open a metal can.",
+        "fact": "A person is using a silver can opener to cut the lid of a metal can.",
         "confidence": 1.0
       },
       {
@@ -564,38 +422,29 @@
         "confidence": 1.0
       },
       {
-        "fact": "A black pot is visible in the foreground.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "Various cooking ingredients, including oil and spices, are arranged on the counter behind the cutting board.",
+        "fact": "Various kitchen ingredients and bottles are arranged in the background.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The person is positioned to the left, holding the can opener over the can which is centered on the red cutting board. The black pot is in the bottom right foreground, near a black lid. Behind the cutting board, a large yellow oil jug and a jar of cashews are visible, with smaller spice jars to their right.",
+    "spatial": "The person is positioned to the left of the frame, holding the can opener over the can which sits on the red cutting board. The black frying pan is in the bottom right foreground, while the black circular object is to the right of the cutting board. The bottles and jars are located behind the cutting board area.",
     "parse_success": true,
-    "chunk_idx": 8,
+    "chunk_idx": 6,
     "video_id": "tBhUIJpVpLw"
   },
   {
     "time": [
-      18,
-      20
+      7,
+      8
     ],
     "visible_entities": [
       {
-        "desc": "person with fair skin, wearing a white sleeveless shirt",
+        "desc": "person with fair skin and hairy arms, wearing a white sleeveless top",
         "action": "opening a can",
         "position": "left"
       },
       {
-        "desc": "silver metal manual can opener",
-        "action": "being used to cut a can lid",
-        "position": "center"
-      },
-      {
-        "desc": "metal can with a label featuring red tomatoes",
+        "desc": "silver metal can with a red and white label",
         "action": "being opened",
         "position": "center"
       },
@@ -612,20 +461,154 @@
       {
         "desc": "black pot lid",
         "action": "static",
-        "position": "center right"
+        "position": "right"
       },
       {
-        "desc": "large plastic bottle of yellow oil",
+        "desc": "large bottle of vegetable oil with a yellow label",
         "action": "static",
         "position": "background"
       },
       {
-        "desc": "glass jar filled with beige nuts",
+        "desc": "clear jar containing cashews",
         "action": "static",
         "position": "background"
       },
       {
         "desc": "spice jars with red caps",
+        "action": "static",
+        "position": "background right"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A person is using a manual can opener to open a silver can.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The can is sitting on a red cutting board.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A black pot is visible in the bottom right corner.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A jar of cashews and a bottle of vegetable oil are on the counter in the background.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "Vegetable Oil"
+    ],
+    "spatial": "The person is on the left side of the frame, holding a can opener over a silver can. The can rests on a red cutting board in the center. To the right of the cutting board is a black pot lid and a black pot. Behind the cutting board are various kitchen items, including a large bottle of vegetable oil and a jar of cashews.",
+    "parse_success": true,
+    "chunk_idx": 7,
+    "video_id": "tBhUIJpVpLw"
+  },
+  {
+    "time": [
+      8,
+      9
+    ],
+    "visible_entities": [
+      {
+        "desc": "person with fair skin, wearing a white sleeveless top",
+        "action": "using a manual can opener on a can",
+        "position": "left/center"
+      },
+      {
+        "desc": "red cutting board, smooth surface",
+        "action": "static",
+        "position": "center"
+      },
+      {
+        "desc": "metal can with green label",
+        "action": "being opened",
+        "position": "center"
+      },
+      {
+        "desc": "silver manual can opener",
+        "action": "being held and operated",
+        "position": "center"
+      },
+      {
+        "desc": "large yellow jug of oil",
+        "action": "static",
+        "position": "background"
+      },
+      {
+        "desc": "assorted spice jars and bottles",
+        "action": "static",
+        "position": "background"
+      },
+      {
+        "desc": "black pot",
+        "action": "static",
+        "position": "foreground right"
+      },
+      {
+        "desc": "black pot lid",
+        "action": "static",
+        "position": "right"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A person is using a silver manual can opener to open a metal can.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The can is resting on a red cutting board.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A large yellow jug of oil is visible in the background.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A black pot is sitting on the counter in the foreground.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The person is positioned to the left of the frame, holding the can opener over the can which sits on the red cutting board. The black pot is in the foreground to the right of the cutting board. Various spice jars and a large yellow oil jug are arranged behind the cutting board.",
+    "parse_success": true,
+    "chunk_idx": 8,
+    "video_id": "tBhUIJpVpLw"
+  },
+  {
+    "time": [
+      9,
+      10
+    ],
+    "visible_entities": [
+      {
+        "desc": "person with fair skin, wearing a white sleeveless shirt and black pants",
+        "action": "opening a can with a manual opener",
+        "position": "left"
+      },
+      {
+        "desc": "silver metal manual can opener",
+        "action": "being used to cut the lid of a can",
+        "position": "center"
+      },
+      {
+        "desc": "cylindrical metal can with a label featuring red tomatoes",
+        "action": "being held and opened",
+        "position": "center"
+      },
+      {
+        "desc": "red cutting board",
+        "action": "static",
+        "position": "center"
+      },
+      {
+        "desc": "black cooking pot",
+        "action": "static",
+        "position": "bottom right"
+      },
+      {
+        "desc": "assorted spice jars and bottles",
         "action": "static",
         "position": "background"
       }
@@ -649,31 +632,26 @@
       }
     ],
     "ocr": [],
-    "spatial": "The person is on the left side of the frame, holding the can opener over the can which sits on the red cutting board. The black pot and its lid are to the right of the cutting board. Various bottles and jars, including oil and spices, are arranged in the background behind the cutting board.",
+    "spatial": "The person is standing to the left of the red cutting board. The metal can is on top of the cutting board, being held by the person. The black pot is to the right of the cutting board and in front of the spice jars.",
     "parse_success": true,
     "chunk_idx": 9,
     "video_id": "tBhUIJpVpLw"
   },
   {
     "time": [
-      20,
-      22
+      10,
+      11
     ],
     "visible_entities": [
       {
-        "desc": "person with hairy arms, wearing a white t-shirt",
+        "desc": "person with hairy arms, wearing a white t-shirt and black pants",
         "action": "cracking an egg into a pot",
         "position": "center"
       },
       {
-        "desc": "black cooking pot with a silver rim",
+        "desc": "dark grey cooking pot containing liquid",
         "action": "static",
         "position": "foreground"
-      },
-      {
-        "desc": "stainless steel pot",
-        "action": "static",
-        "position": "right"
       },
       {
         "desc": "red cutting board",
@@ -681,7 +659,7 @@
         "position": "left"
       },
       {
-        "desc": "silver metal garlic press",
+        "desc": "metal garlic press",
         "action": "static",
         "position": "left"
       },
@@ -701,53 +679,62 @@
         "position": "center"
       },
       {
-        "desc": "white stove top",
+        "desc": "silver pot with water",
         "action": "static",
-        "position": "bottom"
+        "position": "right"
+      },
+      {
+        "desc": "assorted spice bottles and jars",
+        "action": "static",
+        "position": "background"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "The person is using both hands to crack an egg into the black pot.",
+        "fact": "A person is cracking an egg with both hands over a dark grey pot.",
         "confidence": 1.0
       },
       {
-        "fact": "A red cutting board is positioned to the left of the stove.",
+        "fact": "The pot contains a dark liquid.",
         "confidence": 1.0
       },
       {
-        "fact": "A garlic press and a knife are resting on the red cutting board.",
+        "fact": "A garlic press and a knife are resting on a red cutting board.",
         "confidence": 1.0
       },
       {
-        "fact": "A stainless steel pot sits on the burner to the right of the black pot.",
+        "fact": "A potato is sitting on the red cutting board.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "An avocado half is sitting on the counter next to the pot.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The person is standing in front of the stove, holding their hands over the black pot which is in the foreground. To the left of the stove, there is a red cutting board with a garlic press, a knife, and a potato on it. To the right of the black pot, a stainless steel pot is sitting on the white stove top.",
+    "spatial": "The person is positioned in the center, holding their hands over the dark grey pot in the foreground. To the left of the pot is a red cutting board with a garlic press, knife, and potato on it. To the right of the dark pot is a silver pot filled with water. Various spice bottles are arranged in the background behind the cooking area.",
     "parse_success": true,
     "chunk_idx": 10,
     "video_id": "tBhUIJpVpLw"
   },
   {
     "time": [
-      22,
-      24
+      11,
+      12
     ],
     "visible_entities": [
       {
-        "desc": "person with light skin, hairy arms, wearing a black sleeveless top",
+        "desc": "person with light skin, hairy arms, wearing a black shirt",
         "action": "pouring contents from a can into a pot",
-        "position": "left/foreground"
+        "position": "left/center"
       },
       {
-        "desc": "dark grey cooking pot with a black handle",
+        "desc": "dark grey cooking pot with black handle",
         "action": "receiving liquid",
         "position": "center"
       },
       {
-        "desc": "white can with a red label and silver rim",
+        "desc": "white can with red label",
         "action": "being held and tilted",
         "position": "center"
       },
@@ -757,179 +744,109 @@
         "position": "right"
       },
       {
-        "desc": "white stovetop with black burner coils",
+        "desc": "white stovetop",
         "action": "static",
         "position": "bottom"
       },
       {
-        "desc": "red cutting board with black scissors and spice jars",
+        "desc": "green wall",
         "action": "static",
         "position": "background"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A person is pouring a red liquid from a white can into a dark grey pot.",
+        "fact": "A person is holding a white can with a red label over a dark grey pot.",
         "confidence": 1.0
       },
       {
-        "fact": "The person's hands are holding the can upside down over the pot.",
+        "fact": "The person is pouring a dark red liquid from the can into the pot.",
         "confidence": 1.0
       },
       {
-        "fact": "A silver saucepan sits on the stovetop to the right of the grey pot.",
+        "fact": "The pot is sitting on a white stovetop.",
         "confidence": 1.0
       },
       {
-        "fact": "Scissors and spice jars are visible on a red surface in the background.",
+        "fact": "A silver saucepan is sitting to the right of the dark grey pot.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The person is positioned to the left of the frame, holding a can above the dark grey pot which is centered on the stovetop. To the right of the grey pot is a silver saucepan. In the background, behind the pots, there is a red cutting board with scissors and various spice jars.",
+    "spatial": "The person is to the left of the dark grey pot and is holding the can above it. The dark grey pot is on the white stovetop, positioned to the left of the silver saucepan. The green wall is behind the stovetop and the pots.",
     "parse_success": true,
     "chunk_idx": 11,
     "video_id": "tBhUIJpVpLw"
   },
   {
     "time": [
-      24,
-      26
+      12,
+      13
     ],
     "visible_entities": [
       {
         "desc": "person's arm with light skin and visible hair",
-        "action": "stirring liquid in a pot",
-        "position": "left"
+        "action": "stirring contents in a pot",
+        "position": "left/foreground"
       },
       {
-        "desc": "dark grey cooking pot with black handles",
+        "desc": "large dark grey cooking pot with black handles",
         "action": "static",
         "position": "center"
       },
       {
-        "desc": "dark red liquid",
-        "action": "being stirred",
-        "position": "inside the pot"
-      },
-      {
-        "desc": "silver stainless steel pot",
+        "desc": "smaller stainless steel pot",
         "action": "static",
         "position": "right"
       },
       {
-        "desc": "white electric stovetop",
+        "desc": "white stovetop surface",
         "action": "static",
         "position": "bottom"
       },
       {
-        "desc": "assorted spice jars and bottles",
+        "desc": "assorted spice jars and bottles (yellow, red, clear)",
         "action": "static",
         "position": "background"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A person's arm is reaching into the dark grey pot.",
+        "fact": "A person's arm is reaching into the large dark grey pot.",
         "confidence": 1.0
       },
       {
-        "fact": "The hand is stirring a dark red liquid inside the pot.",
+        "fact": "The person is stirring a dark red liquid inside the pot.",
         "confidence": 1.0
       },
       {
-        "fact": "A silver pot sits on the burner to the right of the grey pot.",
+        "fact": "The large pot is sitting on the white stovetop.",
         "confidence": 1.0
       },
       {
-        "fact": "Various spice containers are arranged on the counter behind the stove.",
+        "fact": "A smaller metal pot is positioned to the right of the large pot.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The person's arm is on the left side of the frame, reaching into the dark grey pot which is centered on the white stovetop. To the right of the grey pot is a silver stainless steel pot. Behind the pots, on the counter, are several spice jars and bottles.",
+    "spatial": "The person's arm extends from the left side of the frame into the large dark grey pot located in the center. The large pot is positioned to the left of the smaller stainless steel pot. Both pots are resting on the white stovetop surface. Various spice jars are arranged in the background behind the cooking area.",
     "parse_success": true,
     "chunk_idx": 12,
     "video_id": "tBhUIJpVpLw"
   },
   {
     "time": [
-      26,
-      28
+      13,
+      14
     ],
     "visible_entities": [
       {
-        "desc": "large, dark grey cooking pot with black handles, containing dark red liquid and chunks of food",
+        "desc": "dark grey cooking pot with black handles, containing dark red liquid and chunks",
         "action": "static",
         "position": "center"
       },
       {
-        "desc": "smaller, silver stainless steel pot with a handle",
-        "action": "static",
-        "position": "right"
-      },
-      {
-        "desc": "white electric stovetop with black coil burners",
-        "action": "static",
-        "position": "bottom"
-      },
-      {
-        "desc": "red cutting board with a brown potato, a knife, and a metal garlic press",
-        "action": "static",
-        "position": "left"
-      },
-      {
-        "desc": "assorted spice jars and bottles, including one with a red cap",
-        "action": "static",
-        "position": "background"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "A large dark grey pot sits on the front burner of the stove.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The pot contains a dark red liquid with solid chunks submerged in it.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "A smaller silver pot is positioned on the back burner to the right.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "A red cutting board is placed on the counter to the left of the stove.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "A potato and a garlic press are resting on the red cutting board.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [],
-    "spatial": "The large dark grey pot is in the center foreground on the stovetop. To its right and slightly behind it is the smaller silver pot. To the left of the stovetop is a red cutting board holding a potato and a garlic press. Behind the pots and cutting board, various spice jars are lined up against the wall.",
-    "parse_success": true,
-    "chunk_idx": 13,
-    "video_id": "tBhUIJpVpLw"
-  },
-  {
-    "time": [
-      28,
-      30
-    ],
-    "visible_entities": [
-      {
-        "desc": "dark grey metal pot with black handles",
-        "action": "static",
-        "position": "center"
-      },
-      {
-        "desc": "dark red liquid with sliced red vegetables",
-        "action": "static",
-        "position": "inside pot"
-      },
-      {
-        "desc": "stainless steel pot with green rim",
+        "desc": "silver stainless steel pot with a handle",
         "action": "static",
         "position": "right"
       },
@@ -939,19 +856,146 @@
         "position": "left"
       },
       {
-        "desc": "hand with light skin tone",
-        "action": "moving near cutting board",
+        "desc": "brown potato",
+        "action": "static",
         "position": "left"
       },
       {
-        "desc": "metal kitchen tool",
+        "desc": "metal garlic press",
         "action": "static",
         "position": "left"
+      },
+      {
+        "desc": "black handled knife",
+        "action": "static",
+        "position": "left"
+      },
+      {
+        "desc": "assorted spice jars and bottles",
+        "action": "static",
+        "position": "background"
+      },
+      {
+        "desc": "white stovetop surface",
+        "action": "static",
+        "position": "bottom"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A dark grey pot sits on the stovetop containing dark red liquid and solid chunks.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A red cutting board is positioned to the left of the stovetop.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A potato, a knife, and a garlic press are resting on the red cutting board.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A silver pot is placed to the right of the dark grey pot.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The dark grey pot is in the center of the stovetop, while the silver pot is to its right. The red cutting board is to the left of the stovetop, holding a potato, a knife, and a garlic press. Various spice jars are arranged in the background behind the pots.",
+    "parse_success": true,
+    "chunk_idx": 13,
+    "video_id": "tBhUIJpVpLw"
+  },
+  {
+    "time": [
+      14,
+      15
+    ],
+    "visible_entities": [
+      {
+        "desc": "dark grey pot with black handles, containing dark liquid and red chunks",
+        "action": "static",
+        "position": "center"
+      },
+      {
+        "desc": "silver metal pot with a handle",
+        "action": "static",
+        "position": "right"
+      },
+      {
+        "desc": "red cutting board",
+        "action": "static",
+        "position": "left"
+      },
+      {
+        "desc": "person's hand",
+        "action": "reaching towards the cutting board",
+        "position": "top left"
+      },
+      {
+        "desc": "white stovetop",
+        "action": "static",
+        "position": "bottom"
       },
       {
         "desc": "spice jars with red and yellow labels",
         "action": "static",
         "position": "background"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A person's hand reaches towards the red cutting board.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A dark grey pot sits on the stovetop burner.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The pot contains a dark liquid with red chunks floating in it.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A silver pot is positioned to the right of the dark grey pot.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The dark grey pot is in the center of the stovetop, sitting on a burner. To the right of the dark grey pot is a silver metal pot. To the left of the stove is a red cutting board. The person's hand is above the red cutting board in the background.",
+    "parse_success": true,
+    "chunk_idx": 14,
+    "video_id": "tBhUIJpVpLw"
+  },
+  {
+    "time": [
+      15,
+      16
+    ],
+    "visible_entities": [
+      {
+        "desc": "person with fair skin, wearing a white sleeveless top",
+        "action": "cutting a brown root vegetable",
+        "position": "left"
+      },
+      {
+        "desc": "large dark grey pot with black handles",
+        "action": "static",
+        "position": "center"
+      },
+      {
+        "desc": "red cutting board",
+        "action": "static",
+        "position": "left"
+      },
+      {
+        "desc": "silver metal pot",
+        "action": "static",
+        "position": "right"
+      },
+      {
+        "desc": "dark red liquid with chunks of beets",
+        "action": "static",
+        "position": "center"
       },
       {
         "desc": "white stovetop",
@@ -961,104 +1005,109 @@
     ],
     "atomic_facts": [
       {
-        "fact": "A hand is moving near the red cutting board on the left side of the frame.",
+        "fact": "A person is using a knife to slice a brown root vegetable on a red cutting board.",
         "confidence": 1.0
       },
       {
-        "fact": "A dark grey pot containing dark red liquid and sliced vegetables sits on the stovetop.",
+        "fact": "The large grey pot contains a dark red liquid with chunks of beets.",
         "confidence": 1.0
       },
       {
-        "fact": "A stainless steel pot is positioned to the right of the grey pot.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "Spice jars are lined up in the background behind the pots.",
+        "fact": "The silver pot is sitting on the stovetop next to the grey pot.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The dark grey pot is in the center of the stovetop, with the stainless steel pot to its right. The red cutting board is to the left of the grey pot. The hand is moving above the red cutting board. The spice jars are behind the pots on the counter.",
-    "parse_success": true,
-    "chunk_idx": 14,
-    "video_id": "tBhUIJpVpLw"
-  },
-  {
-    "time": [
-      30,
-      32
-    ],
-    "visible_entities": [
-      {
-        "desc": "person with fair skin, wearing a white short-sleeved shirt",
-        "action": "chopping a potato",
-        "position": "left"
-      },
-      {
-        "desc": "red rectangular plastic cutting board",
-        "action": "static",
-        "position": "left"
-      },
-      {
-        "desc": "large dark grey cooking pot with black handles",
-        "action": "static",
-        "position": "center"
-      },
-      {
-        "desc": "dark red liquid with chunks of beets",
-        "action": "static",
-        "position": "inside the large pot"
-      },
-      {
-        "desc": "smaller silver stainless steel pot",
-        "action": "static",
-        "position": "right"
-      },
-      {
-        "desc": "white electric stovetop",
-        "action": "static",
-        "position": "bottom"
-      },
-      {
-        "desc": "assorted spice jars and bottles",
-        "action": "static",
-        "position": "background"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "A person is using a knife to cut a potato on a red cutting board.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "A large pot containing dark red liquid and beet chunks sits on the stovetop.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "A smaller silver pot is positioned to the right of the large pot.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [],
-    "spatial": "The person is standing to the left of the stovetop, chopping a potato on a red cutting board. The large grey pot is in the foreground on the stove, while the smaller silver pot is to its right. Various spice jars are lined up on the counter behind the cutting board.",
+    "spatial": "The person is standing to the left of the stovetop, cutting vegetables on a red board. The large grey pot is in the center foreground, sitting on the white stovetop. The silver pot is to the right of the grey pot.",
     "parse_success": true,
     "chunk_idx": 15,
     "video_id": "tBhUIJpVpLw"
   },
   {
     "time": [
-      32,
-      34
+      16,
+      17
     ],
     "visible_entities": [
       {
-        "desc": "person with light skin, wearing a white short-sleeved shirt",
+        "desc": "person with light skin, wearing a white sleeveless shirt",
         "action": "cutting an onion",
         "position": "left"
       },
       {
-        "desc": "brown onion with papery skin",
+        "desc": "brown onion, round, with papery skin",
         "action": "being sliced",
+        "position": "center"
+      },
+      {
+        "desc": "red cutting board, rectangular, plastic",
+        "action": "static",
+        "position": "center"
+      },
+      {
+        "desc": "large kitchen knife, metal blade, black handle",
+        "action": "slicing onion",
+        "position": "center"
+      },
+      {
+        "desc": "black pot, round, non-stick interior",
+        "action": "static",
+        "position": "bottom right"
+      },
+      {
+        "desc": "silver microwave, digital display",
+        "action": "static",
+        "position": "background left"
+      },
+      {
+        "desc": "yellow plastic jug, large handle",
+        "action": "static",
+        "position": "background right"
+      },
+      {
+        "desc": "assorted spice jars and bottles, various colors and sizes",
+        "action": "static",
+        "position": "background right"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The person is using a large knife to slice a brown onion on a red cutting board.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A piece of the onion has been cut off and lies on the board.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A black pot is positioned in the foreground to the right of the cutting board.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A silver microwave is visible in the background behind the person's arm.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The person is standing to the left of the red cutting board. The black pot is in the bottom right corner, in front of the spice jars. The microwave is behind the person's arm on the left side of the counter.",
+    "parse_success": true,
+    "chunk_idx": 16,
+    "video_id": "tBhUIJpVpLw"
+  },
+  {
+    "time": [
+      17,
+      18
+    ],
+    "visible_entities": [
+      {
+        "desc": "person with light skin, wearing a white sleeveless top",
+        "action": "chopping food with a knife",
+        "position": "left"
+      },
+      {
+        "desc": "large kitchen knife with a black handle and a wide silver blade",
+        "action": "being used to chop food",
         "position": "center"
       },
       {
@@ -1067,9 +1116,14 @@
         "position": "center"
       },
       {
-        "desc": "large kitchen knife with a black handle and silver blade",
-        "action": "being held",
+        "desc": "small piece of brown food",
+        "action": "being cut",
         "position": "center"
+      },
+      {
+        "desc": "large plastic jug of yellow liquid with a yellow label",
+        "action": "static",
+        "position": "right"
       },
       {
         "desc": "silver microwave oven",
@@ -1077,139 +1131,46 @@
         "position": "background"
       },
       {
-        "desc": "large yellow plastic jug of cooking oil",
+        "desc": "blue and white cylindrical container",
         "action": "static",
         "position": "background"
-      },
-      {
-        "desc": "assorted spice jars and bottles",
-        "action": "static",
-        "position": "background"
-      },
-      {
-        "desc": "black cooking pot",
-        "action": "static",
-        "position": "foreground right"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "The person is holding a knife in their right hand and an onion in their left hand.",
+        "fact": "A person is using a knife to chop a small piece of food on a red cutting board.",
         "confidence": 1.0
       },
       {
-        "fact": "The person is slicing a piece off the onion on the red cutting board.",
+        "fact": "The knife is lifted off the cutting board in the second frame.",
         "confidence": 1.0
       },
       {
-        "fact": "A silver microwave is visible in the background behind the cutting area.",
+        "fact": "A large jug of yellow liquid sits on the counter to the right of the cutting board.",
         "confidence": 1.0
       },
       {
-        "fact": "A large yellow jug of oil sits on the counter to the right of the microwave.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "A black pot is positioned in the foreground on the right side.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [
-      "S",
-      "Hodgson Mill"
-    ],
-    "spatial": "The person is standing to the left of the red cutting board. The cutting board is in front of the silver microwave and the yellow oil jug. The black pot is to the right of the cutting board in the foreground. The spice jars are clustered to the right of the oil jug.",
-    "parse_success": true,
-    "chunk_idx": 16,
-    "video_id": "tBhUIJpVpLw"
-  },
-  {
-    "time": [
-      34,
-      36
-    ],
-    "visible_entities": [
-      {
-        "desc": "person with light skin, wearing a white sleeveless top",
-        "action": "chopping food and placing knife down",
-        "position": "left"
-      },
-      {
-        "desc": "red plastic cutting board",
-        "action": "static",
-        "position": "center"
-      },
-      {
-        "desc": "large kitchen knife with a black handle and silver blade",
-        "action": "being used then placed on board",
-        "position": "center"
-      },
-      {
-        "desc": "small brown food item, possibly a nut or dried fruit",
-        "action": "being chopped",
-        "position": "center"
-      },
-      {
-        "desc": "large clear plastic jug containing yellow liquid",
-        "action": "static",
-        "position": "background right"
-      },
-      {
-        "desc": "black microwave oven",
-        "action": "static",
-        "position": "background left"
-      },
-      {
-        "desc": "clear plastic bag filled with light brown nuts",
-        "action": "static",
-        "position": "background right"
-      },
-      {
-        "desc": "small white tub with a lid",
-        "action": "static",
-        "position": "background center"
-      },
-      {
-        "desc": "blue cylindrical container with white text",
-        "action": "static",
-        "position": "background center"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "A person is using a large knife to chop a small brown food item on a red cutting board.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The person places the knife down on the cutting board after chopping.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The blue container in the background has the text 'SA' visible on it.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "A bag of nuts is sitting on the counter next to the large jug of oil.",
+        "fact": "A microwave is visible in the background behind the person's arms.",
         "confidence": 1.0
       }
     ],
     "ocr": [
       "SA"
     ],
-    "spatial": "The person is positioned to the left of the red cutting board. The cutting board is in the foreground, in front of the microwave and various kitchen containers. The large jug of yellow liquid is to the right of the cutting board, and the bag of nuts is next to the jug.",
+    "spatial": "The person is positioned to the left of the red cutting board. The knife is held in the person's hand above the cutting board. The jug of yellow liquid is to the right of the cutting board. The microwave is behind the person and the cutting board.",
     "parse_success": true,
     "chunk_idx": 17,
     "video_id": "tBhUIJpVpLw"
   },
   {
     "time": [
-      36,
-      38
+      18,
+      19
     ],
     "visible_entities": [
       {
-        "desc": "person wearing a white t-shirt and dark pants with a belt",
-        "action": "holding a silver vegetable peeler",
+        "desc": "person wearing a white t-shirt and dark pants",
+        "action": "holding a silver peeler",
         "position": "left"
       },
       {
@@ -1228,97 +1189,19 @@
         "position": "center"
       },
       {
-        "desc": "silver microwave oven",
-        "action": "static",
-        "position": "background"
-      },
-      {
-        "desc": "large clear jug of yellow cooking oil",
-        "action": "static",
-        "position": "right"
-      },
-      {
-        "desc": "clear jar filled with garlic cloves",
-        "action": "static",
-        "position": "right"
-      },
-      {
-        "desc": "small white yogurt cup",
-        "action": "static",
-        "position": "center"
-      },
-      {
-        "desc": "blue and white salt container",
-        "action": "static",
-        "position": "center"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "The person is holding a silver vegetable peeler in their right hand.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "A brown sweet potato sits on the red cutting board.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "A black-handled knife rests on the red cutting board.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The microwave is located behind the food preparation area.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "A jar of garlic cloves is visible on the counter to the right.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [
-      "SA",
-      "12:13"
-    ],
-    "spatial": "The person is standing to the left of the red cutting board. The sweet potato is in the center of the cutting board, with a knife lying to its right. The microwave is behind the cutting board and other ingredients on the counter.",
-    "parse_success": true,
-    "chunk_idx": 18,
-    "video_id": "tBhUIJpVpLw"
-  },
-  {
-    "time": [
-      38,
-      40
-    ],
-    "visible_entities": [
-      {
-        "desc": "person with fair skin, wearing a white sleeveless top",
-        "action": "peeling a small green vegetable",
+        "desc": "silver metal peeler",
+        "action": "being held",
         "position": "left"
       },
       {
-        "desc": "red rectangular cutting board",
-        "action": "static",
-        "position": "center"
-      },
-      {
-        "desc": "black-handled kitchen knife with silver blade",
-        "action": "static",
-        "position": "center"
-      },
-      {
-        "desc": "large yellow plastic jug of cooking oil",
+        "desc": "large plastic jug of yellow cooking oil",
         "action": "static",
         "position": "right"
       },
       {
-        "desc": "clear plastic jar filled with garlic cloves",
+        "desc": "clear jar filled with chopped garlic",
         "action": "static",
         "position": "right"
-      },
-      {
-        "desc": "dark glass bottle of beer",
-        "action": "static",
-        "position": "background"
       },
       {
         "desc": "black microwave oven",
@@ -1328,7 +1211,100 @@
     ],
     "atomic_facts": [
       {
-        "fact": "The person is using their hands to peel a small green vegetable over the cutting board.",
+        "fact": "person holds a silver peeler in their hands",
+        "confidence": 1.0
+      },
+      {
+        "fact": "a brown sweet potato sits on a red cutting board",
+        "confidence": 1.0
+      },
+      {
+        "fact": "a black-handled knife rests on the cutting board",
+        "confidence": 1.0
+      },
+      {
+        "fact": "a large jug of cooking oil is on the counter",
+        "confidence": 1.0
+      },
+      {
+        "fact": "a jar of chopped garlic is visible on the right",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "SA",
+      "Giant"
+    ],
+    "spatial": "The person is standing to the left of the red cutting board. The sweet potato and the knife are on top of the cutting board. The microwave is behind the cutting board and the other ingredients. The jar of garlic is to the right of the cooking oil.",
+    "parse_success": true,
+    "chunk_idx": 18,
+    "video_id": "tBhUIJpVpLw"
+  },
+  {
+    "time": [
+      19,
+      20
+    ],
+    "visible_entities": [
+      {
+        "desc": "person with fair skin, wearing a white short-sleeved shirt",
+        "action": "peeling a small green vegetable",
+        "position": "left"
+      },
+      {
+        "desc": "red plastic cutting board",
+        "action": "static",
+        "position": "center"
+      },
+      {
+        "desc": "black-handled kitchen knife with a silver blade",
+        "action": "static",
+        "position": "center"
+      },
+      {
+        "desc": "small green vegetable, possibly a chili pepper",
+        "action": "being peeled",
+        "position": "left"
+      },
+      {
+        "desc": "large clear plastic jug containing yellow cooking oil",
+        "action": "static",
+        "position": "right"
+      },
+      {
+        "desc": "clear glass jar filled with peeled garlic cloves",
+        "action": "static",
+        "position": "right"
+      },
+      {
+        "desc": "black microwave oven",
+        "action": "static",
+        "position": "background"
+      },
+      {
+        "desc": "white container with a green label",
+        "action": "static",
+        "position": "center"
+      },
+      {
+        "desc": "blue container with white text",
+        "action": "static",
+        "position": "center"
+      },
+      {
+        "desc": "dark brown glass bottle",
+        "action": "static",
+        "position": "center"
+      },
+      {
+        "desc": "black pot with a handle",
+        "action": "static",
+        "position": "bottom right"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A person is using their hands to peel a small green vegetable over a red cutting board.",
         "confidence": 1.0
       },
       {
@@ -1336,36 +1312,106 @@
         "confidence": 1.0
       },
       {
-        "fact": "A large yellow jug of oil sits on the counter to the right of the cutting board.",
+        "fact": "A large jug of cooking oil sits on the counter next to a jar of garlic.",
         "confidence": 1.0
       },
       {
-        "fact": "A jar of garlic cloves is positioned next to the oil jug.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "A dark beer bottle is visible behind the cutting board.",
+        "fact": "A microwave is visible in the background behind the food preparation area.",
         "confidence": 1.0
       }
     ],
     "ocr": [
       "SA",
-      "12:3"
+      "12:7"
     ],
-    "spatial": "The person is standing to the left of the red cutting board. The cutting board is in the center foreground, with a knife lying on its surface. To the right of the cutting board are a large yellow oil jug and a jar of garlic. In the background, a microwave is visible behind the person's arm and the cutting board.",
+    "spatial": "The person is positioned to the left of the red cutting board. The knife is on the cutting board, to the right of the person's hands. The microwave is behind the cutting board and other items on the counter. The jug of oil and jar of garlic are to the right of the cutting board. The black pot is in the bottom right foreground, partially obscuring the view of the counter.",
     "parse_success": true,
     "chunk_idx": 19,
     "video_id": "tBhUIJpVpLw"
   },
   {
     "time": [
-      40,
-      42
+      20,
+      21
     ],
     "visible_entities": [
       {
-        "desc": "person with fair skin, wearing a white short-sleeved shirt",
-        "action": "peeling a small object over a cutting board",
+        "desc": "person with light skin, wearing a white sleeveless shirt",
+        "action": "peeling garlic cloves over a cutting board",
+        "position": "left"
+      },
+      {
+        "desc": "red rectangular cutting board",
+        "action": "static",
+        "position": "center"
+      },
+      {
+        "desc": "kitchen knife with a black handle and silver blade",
+        "action": "static",
+        "position": "center"
+      },
+      {
+        "desc": "large plastic jug of yellow cooking oil",
+        "action": "static",
+        "position": "right"
+      },
+      {
+        "desc": "clear plastic bag filled with peeled garlic cloves",
+        "action": "static",
+        "position": "right"
+      },
+      {
+        "desc": "small glass bottle with a dark liquid and a yellow label",
+        "action": "static",
+        "position": "background"
+      },
+      {
+        "desc": "blue and white cylindrical container labeled 'SALT'",
+        "action": "static",
+        "position": "background"
+      },
+      {
+        "desc": "silver microwave oven",
+        "action": "static",
+        "position": "background"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A person is using their hands to peel garlic cloves.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "Garlic skins are scattered on the red cutting board.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A knife is resting on the cutting board next to the garlic skins.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The microwave in the background displays the time '12:3'.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "12:3",
+      "SALT"
+    ],
+    "spatial": "The person is standing to the left of the red cutting board. The knife is lying on the cutting board, to the right of the person's hands. The bag of garlic and the jug of oil are positioned to the right of the cutting board. The microwave is located in the background behind the cutting board and ingredients.",
+    "parse_success": true,
+    "chunk_idx": 20,
+    "video_id": "tBhUIJpVpLw"
+  },
+  {
+    "time": [
+      21,
+      22
+    ],
+    "visible_entities": [
+      {
+        "desc": "person with light skin, wearing a white short-sleeved shirt and black pants",
+        "action": "peeling a vegetable",
         "position": "left"
       },
       {
@@ -1379,244 +1425,139 @@
         "position": "center"
       },
       {
-        "desc": "large plastic jug of yellow cooking oil",
+        "desc": "thin, light-brown vegetable peels",
         "action": "static",
-        "position": "right"
+        "position": "center"
       },
       {
-        "desc": "clear plastic jar filled with chopped nuts",
-        "action": "static",
-        "position": "right"
-      },
-      {
-        "desc": "small glass bottle with a dark liquid and a label",
+        "desc": "large clear plastic jug with yellow liquid and blue label",
         "action": "static",
         "position": "background"
-      },
-      {
-        "desc": "blue and white cylindrical container",
-        "action": "static",
-        "position": "background"
-      },
-      {
-        "desc": "silver microwave oven",
-        "action": "static",
-        "position": "background"
-      },
-      {
-        "desc": "thin, light-colored food peels",
-        "action": "static",
-        "position": "center"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "A person is using both hands to peel a small item over a red cutting board.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "Thin strips of peel are lying on the red cutting board.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "A black-handled knife is resting on the cutting board.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "A large jug of yellow oil is sitting on the counter.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "A jar of chopped nuts is next to the oil jug.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "A microwave is visible in the background behind the cooking ingredients.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [
-      "SA",
-      "12:3"
-    ],
-    "spatial": "The person is standing to the left of the red cutting board. The cutting board is in the foreground, with a knife and food peels on top of it. Behind the cutting board, there are various kitchen items including a blue container, a bottle of dark liquid, a large jug of oil, and a jar of nuts. The microwave is located in the background behind these items.",
-    "parse_success": true,
-    "chunk_idx": 20,
-    "video_id": "tBhUIJpVpLw"
-  },
-  {
-    "time": [
-      42,
-      44
-    ],
-    "visible_entities": [
-      {
-        "desc": "person with fair skin, wearing a white short-sleeved shirt and black pants",
-        "action": "peeling a vegetable",
-        "position": "left"
-      },
-      {
-        "desc": "red rectangular cutting board, smooth surface",
-        "action": "static",
-        "position": "center"
-      },
-      {
-        "desc": "small kitchen knife with a black handle and silver blade",
-        "action": "static",
-        "position": "center-right"
-      },
-      {
-        "desc": "orange vegetable peels, thin and curled",
-        "action": "static",
-        "position": "center"
-      },
-      {
-        "desc": "large yellow plastic jug with a blue label",
-        "action": "static",
-        "position": "background-right"
-      },
-      {
-        "desc": "blue and white cylindrical container with 'SA' visible",
-        "action": "static",
-        "position": "background-center"
-      },
-      {
-        "desc": "dark glass bottle with a yellow label",
-        "action": "static",
-        "position": "background-center"
-      },
-      {
-        "desc": "bag of light-colored nuts or snacks",
-        "action": "static",
-        "position": "background-right"
-      },
-      {
-        "desc": "silver metal kitchen tool, possibly a grater or peeler",
-        "action": "static",
-        "position": "right"
-      },
-      {
-        "desc": "black circular object with an orange center",
-        "action": "static",
-        "position": "bottom-right"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "A person is peeling an orange vegetable over a red cutting board.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "Orange peels are scattered on the red cutting board.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "A knife is resting on the cutting board next to the peels.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "Various kitchen ingredients and tools are arranged on the counter behind the cutting board.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [
-      "SA"
-    ],
-    "spatial": "The person is standing to the left of the red cutting board. The cutting board is on the counter in the foreground. The knife and vegetable peels are on top of the cutting board. The yellow jug and other containers are behind the cutting board on the counter.",
-    "parse_success": true,
-    "chunk_idx": 21,
-    "video_id": "tBhUIJpVpLw"
-  },
-  {
-    "time": [
-      44,
-      46
-    ],
-    "visible_entities": [
-      {
-        "desc": "person with light skin, wearing a white sleeveless top",
-        "action": "peeling food over the cutting board",
-        "position": "left"
-      },
-      {
-        "desc": "red cutting board with a smooth surface",
-        "action": "static",
-        "position": "center"
-      },
-      {
-        "desc": "knife with a black handle and silver blade",
-        "action": "static",
-        "position": "center-right"
-      },
-      {
-        "desc": "thin, light-brown food peels",
-        "action": "static",
-        "position": "center"
-      },
-      {
-        "desc": "large plastic jug containing yellow liquid",
-        "action": "static",
-        "position": "background-right"
       },
       {
         "desc": "blue and white cylindrical container labeled 'SALT'",
         "action": "static",
-        "position": "background-center"
+        "position": "background"
       },
       {
-        "desc": "small dark glass bottle with a yellow label",
+        "desc": "small dark glass bottle with yellow label",
         "action": "static",
-        "position": "background-center"
+        "position": "background"
       },
       {
-        "desc": "clear bag filled with light-colored nuts",
+        "desc": "metal vegetable peeler",
         "action": "static",
-        "position": "background-right"
+        "position": "right"
       },
       {
-        "desc": "metallic kitchen tool, possibly a peeler or grater",
+        "desc": "black circular object with orange center",
         "action": "static",
         "position": "right"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A person is using their hands to peel food items.",
+        "fact": "The person is peeling a vegetable over the red cutting board.",
         "confidence": 1.0
       },
       {
-        "fact": "The peels are accumulating on the red cutting board.",
+        "fact": "Vegetable peels are scattered on the cutting board.",
         "confidence": 1.0
       },
       {
-        "fact": "A knife is resting on the cutting board near the peels.",
+        "fact": "A knife is resting on the cutting board.",
         "confidence": 1.0
       },
       {
-        "fact": "The salt container is positioned behind the cutting board.",
+        "fact": "A container labeled 'SALT' is visible in the background.",
         "confidence": 1.0
       },
       {
-        "fact": "The large jug of yellow liquid is to the right of the salt container.",
+        "fact": "A large jug of yellow liquid is on the counter.",
         "confidence": 1.0
       }
     ],
     "ocr": [
       "SALT"
     ],
-    "spatial": "The person is standing to the left of the red cutting board. The knife is lying on the cutting board to the right of the food peels. The salt container and other bottles are arranged in the background behind the cutting board.",
+    "spatial": "The person is standing to the left of the red cutting board. The knife and vegetable peels are on top of the cutting board. The salt container and large jug are behind the cutting board on the counter.",
+    "parse_success": true,
+    "chunk_idx": 21,
+    "video_id": "tBhUIJpVpLw"
+  },
+  {
+    "time": [
+      22,
+      23
+    ],
+    "visible_entities": [
+      {
+        "desc": "person with light skin, wearing a white sleeveless shirt",
+        "action": "chopping food on a cutting board",
+        "position": "left"
+      },
+      {
+        "desc": "red plastic cutting board",
+        "action": "static",
+        "position": "center"
+      },
+      {
+        "desc": "knife with a black handle and silver blade",
+        "action": "static",
+        "position": "center"
+      },
+      {
+        "desc": "thin strips of light-colored food",
+        "action": "being chopped",
+        "position": "center"
+      },
+      {
+        "desc": "large plastic jug of yellow oil",
+        "action": "static",
+        "position": "right"
+      },
+      {
+        "desc": "bag of cashews",
+        "action": "static",
+        "position": "right"
+      },
+      {
+        "desc": "blue and white salt container",
+        "action": "static",
+        "position": "background"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The person is chopping thin strips of food on a red cutting board.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A knife rests on the cutting board near the chopped food.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A large jug of oil and a bag of cashews are sitting on the counter.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "SA",
+      "Kirkland"
+    ],
+    "spatial": "The person is standing to the left of the red cutting board. The knife is lying on the cutting board to the right of the chopped food strips. The jug of oil and bag of cashews are positioned to the right of the cutting board.",
     "parse_success": true,
     "chunk_idx": 22,
     "video_id": "tBhUIJpVpLw"
   },
   {
     "time": [
-      46,
-      48
+      23,
+      24
     ],
     "visible_entities": [
       {
-        "desc": "person wearing a white short-sleeved shirt and black pants",
+        "desc": "person with light skin, wearing a white short-sleeved shirt and black pants",
         "action": "peeling a carrot",
         "position": "left"
       },
@@ -1633,37 +1574,37 @@
       {
         "desc": "knife with a black handle and silver blade",
         "action": "static",
-        "position": "center-right"
+        "position": "center"
       },
       {
-        "desc": "orange carrot peelings",
+        "desc": "orange carrot peels",
         "action": "static",
         "position": "center"
       },
       {
-        "desc": "large plastic jug of apple juice",
+        "desc": "large plastic jug of yellow cooking oil",
         "action": "static",
-        "position": "background right"
+        "position": "right"
       },
       {
         "desc": "bag of cashews",
         "action": "static",
-        "position": "background right"
+        "position": "right"
       },
       {
         "desc": "blue and white container of salt",
         "action": "static",
-        "position": "background center"
+        "position": "background"
       },
       {
-        "desc": "small white cup of yogurt",
+        "desc": "small white cup",
         "action": "static",
-        "position": "background center"
+        "position": "background"
       },
       {
         "desc": "dark glass bottle",
         "action": "static",
-        "position": "background center"
+        "position": "background"
       }
     ],
     "atomic_facts": [
@@ -1672,77 +1613,77 @@
         "confidence": 1.0
       },
       {
-        "fact": "Carrot peelings are scattered on the cutting board.",
+        "fact": "Carrot peels are scattered on the red cutting board.",
         "confidence": 1.0
       },
       {
-        "fact": "A knife is resting on the cutting board.",
+        "fact": "A knife is resting on the red cutting board.",
         "confidence": 1.0
       },
       {
-        "fact": "Various food items including apple juice and cashews are on the counter in the background.",
+        "fact": "A jug of cooking oil and a bag of cashews are on the counter.",
         "confidence": 1.0
       }
     ],
     "ocr": [
       "SA",
-      "APPLE"
+      "PREMIUM"
     ],
-    "spatial": "The person is to the left of the red cutting board. The carrot peelings and a knife are on top of the cutting board. In the background, a container of salt and a cup of yogurt are to the left of a large jug of apple juice and a bag of cashews.",
+    "spatial": "The person is on the left side of the frame, holding a carrot over a red cutting board. The cutting board is in the center, with a knife and carrot peels on top of it. In the background to the right, there is a jug of oil, a bag of cashews, and various containers including a salt shaker.",
     "parse_success": true,
     "chunk_idx": 23,
     "video_id": "tBhUIJpVpLw"
   },
   {
     "time": [
-      48,
-      50
+      24,
+      25
     ],
     "visible_entities": [
       {
-        "desc": "person with fair skin, wearing a white sleeveless top and black pants",
+        "desc": "person with fair skin, wearing a white sleeveless shirt and black pants",
         "action": "peeling a small orange vegetable",
         "position": "left"
       },
       {
-        "desc": "red rectangular plastic cutting board",
+        "desc": "red plastic cutting board",
         "action": "static",
         "position": "center"
       },
       {
-        "desc": "black-handled kitchen knife with a silver blade",
+        "desc": "black-handled knife with a silver blade",
         "action": "static",
         "position": "center-right"
       },
       {
-        "desc": "pile of thin orange vegetable peels",
+        "desc": "orange vegetable peels",
         "action": "static",
         "position": "center"
       },
       {
-        "desc": "large clear plastic jug with a yellow label containing yellow liquid",
+        "desc": "large clear plastic bottle containing yellow liquid",
         "action": "static",
         "position": "background-right"
       },
       {
-        "desc": "blue and white cylindrical container labeled 'SALT'",
+        "desc": "blue cylindrical container with white text",
         "action": "static",
         "position": "background-center"
       },
       {
-        "desc": "small white plastic tub with a green label",
+        "desc": "small white tub with green label",
         "action": "static",
-        "position": "background-left"
+        "position": "background-center"
       },
       {
-        "desc": "clear bag filled with light-brown nuts",
+        "desc": "bag of light-brown nuts",
         "action": "static",
         "position": "background-right"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "The person is using both hands to peel a small orange vegetable over the cutting board.",
+        "fact": "A person is using their hands to peel a small orange vegetable over a red cutting board.",
         "confidence": 1.0
       },
       {
@@ -1754,64 +1695,82 @@
         "confidence": 1.0
       },
       {
-        "fact": "Various kitchen ingredients and containers are arranged on the counter behind the cutting board.",
+        "fact": "A large bottle of oil is visible in the background.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The blue container in the background has the text 'SA' visible.",
         "confidence": 1.0
       }
     ],
     "ocr": [
-      "SALT",
-      "MASON"
+      "SA"
     ],
-    "spatial": "The person is standing to the left of the red cutting board. The cutting board is on the counter in the foreground. The knife is on the right side of the cutting board, near the pile of peels. The salt container and other bottles are behind the cutting board.",
+    "spatial": "The person is standing to the left of the red cutting board. The cutting board is in the foreground, holding the knife and vegetable peels. The blue container and the large bottle of oil are positioned behind the cutting board on the counter.",
     "parse_success": true,
     "chunk_idx": 24,
     "video_id": "tBhUIJpVpLw"
   },
   {
     "time": [
-      50,
-      52
+      25,
+      26
     ],
     "visible_entities": [
       {
-        "desc": "person with light skin, wearing a white sleeveless shirt and dark pants",
+        "desc": "person with fair skin, wearing a white sleeveless shirt and black pants",
         "action": "peeling a vegetable",
         "position": "left"
       },
       {
-        "desc": "orange vegetable, likely a sweet potato, being held in hands",
-        "action": "being peeled",
+        "desc": "orange vegetable, round, partially peeled",
+        "action": "being held and peeled",
         "position": "center"
       },
       {
-        "desc": "red cutting board, flat surface with vegetable peels on it",
+        "desc": "red cutting board, flat, rectangular",
         "action": "static",
         "position": "center"
       },
       {
-        "desc": "black-handled knife, lying on the cutting board",
+        "desc": "knife with a black handle and silver blade",
         "action": "static",
-        "position": "center-right"
+        "position": "center"
       },
       {
-        "desc": "large bottle of yellow cooking oil with a blue label",
+        "desc": "orange vegetable peels, thin, curled strips",
         "action": "static",
-        "position": "background right"
+        "position": "center"
       },
       {
-        "desc": "blue cylindrical container of salt",
+        "desc": "large clear plastic jug containing yellow liquid",
         "action": "static",
-        "position": "background center"
+        "position": "right"
       },
       {
-        "desc": "small white plastic tub",
+        "desc": "blue and white cylindrical container labeled 'SALT'",
         "action": "static",
-        "position": "background center"
+        "position": "background"
       },
       {
-        "desc": "bag of cashews",
+        "desc": "small white plastic tub with a lid",
         "action": "static",
-        "position": "background right"
+        "position": "background"
+      },
+      {
+        "desc": "dark glass bottle with a label",
+        "action": "static",
+        "position": "background"
+      },
+      {
+        "desc": "bag of light-colored nuts or seeds",
+        "action": "static",
+        "position": "right"
+      },
+      {
+        "desc": "metal vegetable peeler",
+        "action": "static",
+        "position": "right"
       }
     ],
     "atomic_facts": [
@@ -1820,75 +1779,7 @@
         "confidence": 1.0
       },
       {
-        "fact": "Vegetable peels are scattered on the red cutting board.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "A knife is lying on the red cutting board.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The salt container has the text 'SA' visible on it.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [
-      "SA"
-    ],
-    "spatial": "The person is standing to the left of the red cutting board. The cutting board is on a countertop in the center of the frame. The knife is on the cutting board, to the right of the vegetable peels. In the background, the bottle of oil is to the right of the salt container.",
-    "parse_success": true,
-    "chunk_idx": 25,
-    "video_id": "tBhUIJpVpLw"
-  },
-  {
-    "time": [
-      52,
-      54
-    ],
-    "visible_entities": [
-      {
-        "desc": "person wearing a white sleeveless top and dark pants",
-        "action": "peeling a vegetable",
-        "position": "left"
-      },
-      {
-        "desc": "orange vegetable, likely a sweet potato or carrot",
-        "action": "being peeled",
-        "position": "center"
-      },
-      {
-        "desc": "red cutting board",
-        "action": "static",
-        "position": "center"
-      },
-      {
-        "desc": "black-handled knife",
-        "action": "static",
-        "position": "center"
-      },
-      {
-        "desc": "large yellow jug of apple cider vinegar",
-        "action": "static",
-        "position": "right"
-      },
-      {
-        "desc": "bag of cashews",
-        "action": "static",
-        "position": "right"
-      },
-      {
-        "desc": "blue container of salt",
-        "action": "static",
-        "position": "background"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "A person is peeling an orange vegetable over a red cutting board.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "Vegetable peels are scattered on the red cutting board.",
+        "fact": "Orange peels are scattered on the red cutting board.",
         "confidence": 1.0
       },
       {
@@ -1896,27 +1787,205 @@
         "confidence": 1.0
       },
       {
-        "fact": "A large jug of apple cider vinegar is sitting on the counter.",
+        "fact": "The person is holding the vegetable in their left hand and the peeler in their right hand.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "Various kitchen ingredients and tools are arranged on the counter behind the cutting board.",
         "confidence": 1.0
       }
     ],
     "ocr": [
-      "SA",
-      "APPLE CIDER VINEGAR"
+      "SALT"
     ],
-    "spatial": "The person is standing to the left of the red cutting board. The knife is on the cutting board, below the person's hands. The jug of apple cider vinegar and bag of cashews are to the right of the cutting board.",
+    "spatial": "The person is standing to the left of the red cutting board. The orange vegetable is being held above the cutting board. The knife and vegetable peels are on the cutting board. The large jug of yellow liquid and the bag of nuts are to the right of the cutting board. The salt container and other bottles are behind the cutting board.",
+    "parse_success": true,
+    "chunk_idx": 25,
+    "video_id": "tBhUIJpVpLw"
+  },
+  {
+    "time": [
+      26,
+      27
+    ],
+    "visible_entities": [
+      {
+        "desc": "person with light skin, wearing a white sleeveless shirt and black pants",
+        "action": "peeling a vegetable",
+        "position": "left"
+      },
+      {
+        "desc": "orange vegetable, likely a carrot or sweet potato",
+        "action": "being held and peeled",
+        "position": "center"
+      },
+      {
+        "desc": "red cutting board, rectangular",
+        "action": "static",
+        "position": "center"
+      },
+      {
+        "desc": "black-handled knife, small",
+        "action": "static",
+        "position": "center"
+      },
+      {
+        "desc": "orange vegetable peels, thin strips",
+        "action": "static",
+        "position": "center"
+      },
+      {
+        "desc": "large clear plastic jug with yellow liquid, label visible",
+        "action": "static",
+        "position": "right"
+      },
+      {
+        "desc": "blue and white cylindrical container, labeled 'SALT'",
+        "action": "static",
+        "position": "background"
+      },
+      {
+        "desc": "dark glass bottle with a label",
+        "action": "static",
+        "position": "background"
+      },
+      {
+        "desc": "clear plastic bag filled with light-colored nuts or beans",
+        "action": "static",
+        "position": "right"
+      },
+      {
+        "desc": "metal can opener, handheld",
+        "action": "static",
+        "position": "right"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A person is actively peeling an orange vegetable over a red cutting board.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The person is holding the vegetable in their left hand and using a peeler in their right hand.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "Thin strips of orange peel are scattered on the red cutting board.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A small knife with a black handle is resting on the cutting board.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A large jug of yellow liquid is sitting on the counter to the right of the cutting board.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A container labeled 'SALT' is visible in the background.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "SALT",
+      "Mazola"
+    ],
+    "spatial": "The person is on the left side of the frame, standing in front of a counter. The red cutting board is on the counter in the center, with vegetable peels and a knife on top of it. To the right of the cutting board are a can opener and a bag of nuts. In the background, behind the cutting board, are a salt container, a dark bottle, and a large jug of oil.",
     "parse_success": true,
     "chunk_idx": 26,
     "video_id": "tBhUIJpVpLw"
   },
   {
     "time": [
-      54,
-      56
+      27,
+      28
     ],
     "visible_entities": [
       {
-        "desc": "person wearing a white short-sleeved t-shirt and dark pants",
+        "desc": "person with fair skin, wearing a white sleeveless shirt and black pants",
+        "action": "peeling a carrot",
+        "position": "left"
+      },
+      {
+        "desc": "orange carrot, partially peeled",
+        "action": "being held and peeled",
+        "position": "center"
+      },
+      {
+        "desc": "red cutting board, rectangular, plastic",
+        "action": "static",
+        "position": "center"
+      },
+      {
+        "desc": "orange carrot peels, thin strips",
+        "action": "static",
+        "position": "center"
+      },
+      {
+        "desc": "black-handled knife, metal blade",
+        "action": "static",
+        "position": "center"
+      },
+      {
+        "desc": "large plastic bottle of apple cider vinegar, yellow liquid, blue label",
+        "action": "static",
+        "position": "right"
+      },
+      {
+        "desc": "bag of cashews, clear plastic packaging",
+        "action": "static",
+        "position": "right"
+      },
+      {
+        "desc": "blue and white salt container, cylindrical",
+        "action": "static",
+        "position": "background"
+      },
+      {
+        "desc": "dark glass bottle, small",
+        "action": "static",
+        "position": "background"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A person is peeling a carrot over a red cutting board.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "Carrot peels are scattered on the cutting board.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A knife is resting on the cutting board near the peels.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A large bottle of apple cider vinegar is on the counter to the right.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A bag of cashews is next to the vinegar bottle.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "SAL",
+      "APPLE CIDER VINEGAR"
+    ],
+    "spatial": "The person is standing to the left of the red cutting board. The carrot peels and knife are on top of the cutting board. The bottle of apple cider vinegar and bag of cashews are to the right of the cutting board. The salt container is behind the cutting board.",
+    "parse_success": true,
+    "chunk_idx": 27,
+    "video_id": "tBhUIJpVpLw"
+  },
+  {
+    "time": [
+      28,
+      29
+    ],
+    "visible_entities": [
+      {
+        "desc": "person with fair skin, wearing a white sleeveless top and black pants",
         "action": "peeling a carrot",
         "position": "left"
       },
@@ -1936,148 +2005,7 @@
         "position": "center"
       },
       {
-        "desc": "orange carrot peelings",
-        "action": "static",
-        "position": "center"
-      },
-      {
-        "desc": "large plastic jug of apple juice with yellow liquid",
-        "action": "static",
-        "position": "right"
-      },
-      {
-        "desc": "clear bag of cashews",
-        "action": "static",
-        "position": "right"
-      },
-      {
-        "desc": "blue and white salt container",
-        "action": "static",
-        "position": "background"
-      },
-      {
-        "desc": "dark glass bottle",
-        "action": "static",
-        "position": "background"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "person is peeling a carrot over a red cutting board",
-        "confidence": 1.0
-      },
-      {
-        "fact": "carrot peelings are accumulating on the cutting board",
-        "confidence": 1.0
-      },
-      {
-        "fact": "a black-handled peeler is resting on the cutting board",
-        "confidence": 1.0
-      },
-      {
-        "fact": "a jug of apple juice is on the counter to the right",
-        "confidence": 1.0
-      },
-      {
-        "fact": "a bag of cashews is next to the apple juice",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [
-      "SA",
-      "APPLE JUICE"
-    ],
-    "spatial": "The person is standing to the left of the red cutting board. The carrot peelings and the black-handled peeler are on the cutting board. The jug of apple juice and the bag of cashews are to the right of the cutting board. The salt container and the dark glass bottle are behind the cutting board.",
-    "parse_success": true,
-    "chunk_idx": 27,
-    "video_id": "tBhUIJpVpLw"
-  },
-  {
-    "time": [
-      56,
-      58
-    ],
-    "visible_entities": [
-      {
-        "desc": "person wearing a white sleeveless shirt and black pants",
-        "action": "peeling a vegetable",
-        "position": "left"
-      },
-      {
-        "desc": "red cutting board with orange peels and a black-handled knife",
-        "action": "static",
-        "position": "center"
-      },
-      {
-        "desc": "large clear plastic jug with yellow liquid and blue label",
-        "action": "static",
-        "position": "right"
-      },
-      {
-        "desc": "bag of cashews",
-        "action": "static",
-        "position": "right"
-      },
-      {
-        "desc": "blue and white salt container",
-        "action": "static",
-        "position": "background"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "person is peeling a vegetable over a red cutting board",
-        "confidence": 1.0
-      },
-      {
-        "fact": "orange peels are scattered on the cutting board",
-        "confidence": 1.0
-      },
-      {
-        "fact": "a knife is lying on the cutting board",
-        "confidence": 1.0
-      },
-      {
-        "fact": "a large jug of oil is on the counter",
-        "confidence": 1.0
-      },
-      {
-        "fact": "a bag of cashews is on the counter",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [
-      "SA",
-      "Mazola"
-    ],
-    "spatial": "The person is to the left of the red cutting board. The cutting board is on the counter in front of the person. The jug of oil and bag of cashews are to the right of the cutting board. The salt container is behind the cutting board.",
-    "parse_success": true,
-    "chunk_idx": 28,
-    "video_id": "tBhUIJpVpLw"
-  },
-  {
-    "time": [
-      58,
-      60
-    ],
-    "visible_entities": [
-      {
-        "desc": "person with light skin, wearing a white short-sleeved t-shirt and black pants",
-        "action": "peeling a vegetable",
-        "position": "left"
-      },
-      {
-        "desc": "red plastic cutting board",
-        "action": "static",
-        "position": "center"
-      },
-      {
-        "desc": "orange vegetable peels",
-        "action": "static",
-        "position": "center"
-      },
-      {
-        "desc": "black-handled knife",
+        "desc": "pile of orange carrot peelings",
         "action": "static",
         "position": "center"
       },
@@ -2087,23 +2015,196 @@
         "position": "right"
       },
       {
-        "desc": "bag of cashews",
+        "desc": "dark glass bottle with a label",
+        "action": "static",
+        "position": "background"
+      },
+      {
+        "desc": "blue and white cylindrical container",
+        "action": "static",
+        "position": "background"
+      },
+      {
+        "desc": "clear bag of cashews",
+        "action": "static",
+        "position": "right"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A person is using a peeler to remove the skin from a carrot.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "Carrot peelings are accumulating on the red cutting board.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A black-handled peeler is resting on the cutting board.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A large yellow jug is sitting on the counter.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "SA",
+      "Mazola"
+    ],
+    "spatial": "The person is standing to the left of the red cutting board. The cutting board is on the counter in the foreground. The pile of carrot peelings is in the center of the cutting board, next to the black-handled peeler. The yellow oil jug and bag of cashews are to the right of the cutting board. The blue container and dark bottle are behind the cutting board.",
+    "parse_success": true,
+    "chunk_idx": 28,
+    "video_id": "tBhUIJpVpLw"
+  },
+  {
+    "time": [
+      29,
+      30
+    ],
+    "visible_entities": [
+      {
+        "desc": "person with fair skin, wearing a white sleeveless top and black pants",
+        "action": "peeling a sweet potato",
+        "position": "left"
+      },
+      {
+        "desc": "orange sweet potato, partially peeled",
+        "action": "being held and peeled",
+        "position": "center"
+      },
+      {
+        "desc": "red cutting board, rectangular, plastic surface",
+        "action": "static",
+        "position": "center"
+      },
+      {
+        "desc": "orange sweet potato peels, thin strips",
+        "action": "static",
+        "position": "center"
+      },
+      {
+        "desc": "black-handled vegetable peeler, metal blade",
+        "action": "static",
+        "position": "center"
+      },
+      {
+        "desc": "large yellow plastic jug with a blue label",
         "action": "static",
         "position": "right"
       },
       {
-        "desc": "blue and white salt container",
+        "desc": "dark glass bottle with a white label",
+        "action": "static",
+        "position": "background"
+      },
+      {
+        "desc": "clear plastic bag filled with light-brown nuts",
+        "action": "static",
+        "position": "right"
+      },
+      {
+        "desc": "white cylindrical container with blue text",
         "action": "static",
         "position": "background"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A person is using a peeler to remove the skin from an orange vegetable over a red cutting board.",
+        "fact": "A person is peeling a sweet potato over a red cutting board.",
         "confidence": 1.0
       },
       {
-        "fact": "Orange vegetable peels are scattered on the red cutting board.",
+        "fact": "Orange peels are scattered on the red cutting board.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A black-handled peeler is resting on the cutting board.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A large yellow jug is sitting on the counter in the background.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "SA",
+      "MARTIN"
+    ],
+    "spatial": "The person is standing to the left of the red cutting board. The sweet potato peels and the black-handled peeler are on top of the cutting board. The yellow jug and bag of nuts are to the right of the cutting board on the counter.",
+    "parse_success": true,
+    "chunk_idx": 29,
+    "video_id": "tBhUIJpVpLw"
+  },
+  {
+    "time": [
+      30,
+      31
+    ],
+    "visible_entities": [
+      {
+        "desc": "person with fair skin, wearing a white short-sleeved shirt and black pants",
+        "action": "peeling a carrot",
+        "position": "left"
+      },
+      {
+        "desc": "orange carrot",
+        "action": "being peeled",
+        "position": "center"
+      },
+      {
+        "desc": "red cutting board",
+        "action": "static",
+        "position": "center"
+      },
+      {
+        "desc": "pile of orange carrot peels",
+        "action": "static",
+        "position": "center"
+      },
+      {
+        "desc": "black-handled knife",
+        "action": "static",
+        "position": "center"
+      },
+      {
+        "desc": "large yellow plastic jug of apple cider vinegar",
+        "action": "static",
+        "position": "right"
+      },
+      {
+        "desc": "clear bag of cashews",
+        "action": "static",
+        "position": "right"
+      },
+      {
+        "desc": "blue and white container of salt",
+        "action": "static",
+        "position": "background"
+      },
+      {
+        "desc": "small dark glass bottle",
+        "action": "static",
+        "position": "background"
+      },
+      {
+        "desc": "white plastic tub",
+        "action": "static",
+        "position": "background"
+      },
+      {
+        "desc": "metal can opener",
+        "action": "static",
+        "position": "right"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A person is using a peeler to remove the skin from a carrot.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "Orange carrot peels are accumulating on the red cutting board.",
         "confidence": 1.0
       },
       {
@@ -2111,37 +2212,38 @@
         "confidence": 1.0
       },
       {
-        "fact": "A large yellow jug and a bag of cashews are sitting on the counter to the right of the cutting board.",
+        "fact": "A large jug of apple cider vinegar is sitting on the counter.",
         "confidence": 1.0
       },
       {
-        "fact": "A blue and white container labeled 'SALT' is visible in the background.",
+        "fact": "A bag of cashews is visible on the right side of the counter.",
         "confidence": 1.0
       }
     ],
     "ocr": [
-      "SALT",
-      "Spectrum"
+      "SA",
+      "APPLE CIDER VINEGAR",
+      "Cashews"
     ],
-    "spatial": "The person is standing to the left of the red cutting board. The orange vegetable peels are on top of the cutting board, next to the black-handled knife. The yellow jug and bag of cashews are to the right of the cutting board. The salt container is behind the cutting board.",
+    "spatial": "The person is standing to the left of the red cutting board. The pile of carrot peels and the knife are on top of the cutting board. The apple cider vinegar and bag of cashews are to the right of the cutting board. The salt container and other bottles are behind the cutting board.",
     "parse_success": true,
-    "chunk_idx": 29,
+    "chunk_idx": 30,
     "video_id": "tBhUIJpVpLw"
   },
   {
     "time": [
-      60,
-      62
+      31,
+      32
     ],
     "visible_entities": [
       {
-        "desc": "person with light skin, wearing a white sleeveless shirt and black pants",
+        "desc": "person with light skin, wearing a white short-sleeved t-shirt and dark pants",
         "action": "peeling a carrot",
         "position": "left"
       },
       {
-        "desc": "orange carrot",
-        "action": "being peeled",
+        "desc": "orange carrot, partially peeled",
+        "action": "being held and peeled",
         "position": "center"
       },
       {
@@ -2155,7 +2257,7 @@
         "position": "center"
       },
       {
-        "desc": "black-handled vegetable peeler",
+        "desc": "black-handled kitchen knife",
         "action": "static",
         "position": "center"
       },
@@ -2165,129 +2267,55 @@
         "position": "right"
       },
       {
-        "desc": "blue cylindrical container of salt",
+        "desc": "blue and white cylindrical salt container",
         "action": "static",
         "position": "background"
       },
       {
-        "desc": "bag of light-colored nuts",
+        "desc": "dark glass bottle with a label",
+        "action": "static",
+        "position": "background"
+      },
+      {
+        "desc": "metal vegetable peeler",
         "action": "static",
         "position": "right"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A person is peeling a carrot over a red cutting board.",
+        "fact": "The person is using a peeler to remove the skin from a carrot.",
         "confidence": 1.0
       },
       {
-        "fact": "Carrot peels are accumulating on the cutting board.",
+        "fact": "Carrot peels are accumulating on the red cutting board.",
         "confidence": 1.0
       },
       {
-        "fact": "A vegetable peeler is resting on the cutting board.",
+        "fact": "A knife is resting on the cutting board near the peels.",
         "confidence": 1.0
       },
       {
-        "fact": "A jug of cooking oil is sitting on the counter.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [
-      "SA",
-      "Nutrition Facts"
-    ],
-    "spatial": "The person is standing to the left of the red cutting board. The pile of carrot peels is on the cutting board, next to the black-handled peeler. The jug of oil and bag of nuts are to the right of the cutting board. The blue salt container is behind the cutting board.",
-    "parse_success": true,
-    "chunk_idx": 30,
-    "video_id": "tBhUIJpVpLw"
-  },
-  {
-    "time": [
-      62,
-      64
-    ],
-    "visible_entities": [
-      {
-        "desc": "person with light skin, wearing a white short-sleeved shirt",
-        "action": "peeling a carrot",
-        "position": "left"
-      },
-      {
-        "desc": "orange carrot, partially peeled",
-        "action": "being held and peeled",
-        "position": "center"
-      },
-      {
-        "desc": "red cutting board, rectangular, covered in orange peelings",
-        "action": "static",
-        "position": "center"
-      },
-      {
-        "desc": "black-handled knife, small blade",
-        "action": "static",
-        "position": "center"
-      },
-      {
-        "desc": "large clear plastic jug with yellow liquid and a blue label",
-        "action": "static",
-        "position": "right"
-      },
-      {
-        "desc": "bag of cashews, clear plastic packaging",
-        "action": "static",
-        "position": "right"
-      },
-      {
-        "desc": "dark glass bottle with a yellow label",
-        "action": "static",
-        "position": "background"
-      },
-      {
-        "desc": "blue and white cylindrical container",
-        "action": "static",
-        "position": "background"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "person is peeling a carrot over a red cutting board",
-        "confidence": 1.0
-      },
-      {
-        "fact": "orange carrot peelings are scattered on the red cutting board",
-        "confidence": 1.0
-      },
-      {
-        "fact": "a black-handled knife is resting on the cutting board",
-        "confidence": 1.0
-      },
-      {
-        "fact": "a bag of cashews is sitting on the counter to the right",
-        "confidence": 1.0
-      },
-      {
-        "fact": "a large jug of yellow liquid is behind the bag of cashews",
+        "fact": "The salt container in the background has the letters 'SA' visible.",
         "confidence": 1.0
       }
     ],
     "ocr": [
-      "SA",
-      "Cashews"
+      "SA"
     ],
-    "spatial": "The person is on the left side of the frame, holding a carrot over the red cutting board which is in the center. The black-handled knife is lying on the cutting board near the pile of peelings. To the right of the cutting board, there is a bag of cashews and a large jug of yellow liquid. In the background, behind the cutting board, are various bottles and containers including a blue and white container.",
+    "spatial": "The person is standing to the left of the red cutting board. The cutting board is on a countertop, with a pile of carrot peels and a knife on top of it. The large jug of oil is to the right of the cutting board, and the salt container is behind the cutting board.",
     "parse_success": true,
     "chunk_idx": 31,
     "video_id": "tBhUIJpVpLw"
   },
   {
     "time": [
-      64,
-      66
+      32,
+      33
     ],
     "visible_entities": [
       {
-        "desc": "person wearing a white short-sleeved shirt and black pants",
+        "desc": "person with fair skin, wearing a white short-sleeved shirt and black pants",
         "action": "peeling a carrot",
         "position": "left"
       },
@@ -2302,24 +2330,24 @@
         "position": "center"
       },
       {
-        "desc": "knife with a black handle",
-        "action": "static",
-        "position": "center"
-      },
-      {
         "desc": "orange carrot peels",
         "action": "static",
         "position": "center"
       },
       {
-        "desc": "large plastic jug of apple juice",
+        "desc": "black-handled knife",
         "action": "static",
-        "position": "background"
+        "position": "center"
+      },
+      {
+        "desc": "large plastic bottle of yellow cooking oil",
+        "action": "static",
+        "position": "right"
       },
       {
         "desc": "bag of cashews",
         "action": "static",
-        "position": "background"
+        "position": "right"
       },
       {
         "desc": "bottle of salt",
@@ -2332,134 +2360,51 @@
         "position": "background"
       },
       {
-        "desc": "metal vegetable peeler",
+        "desc": "microwave",
         "action": "static",
-        "position": "right"
+        "position": "background"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A person is actively peeling a carrot over a red cutting board.",
+        "fact": "A person is peeling a carrot over a red cutting board.",
         "confidence": 1.0
       },
       {
-        "fact": "Orange carrot peels are scattered on the cutting board.",
+        "fact": "Orange carrot peels are scattered on the red cutting board.",
         "confidence": 1.0
       },
       {
-        "fact": "A knife with a black handle is resting on the cutting board.",
+        "fact": "A black-handled knife is resting on the cutting board.",
         "confidence": 1.0
       },
       {
-        "fact": "A large jug of apple juice is visible in the background.",
+        "fact": "A bottle of cooking oil is on the counter to the right of the cutting board.",
         "confidence": 1.0
       },
       {
-        "fact": "A bag of cashews is sitting on the counter.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "A metal vegetable peeler is lying on the right side of the cutting board.",
+        "fact": "A bag of cashews is next to the bottle of oil.",
         "confidence": 1.0
       }
     ],
     "ocr": [
       "SA",
-      "APPLE"
+      "CRISCO"
     ],
-    "spatial": "The person is to the left of the red cutting board. The carrot peels and a knife are on top of the cutting board. In the background, to the right of the person, there is a large jug of apple juice next to a bag of cashews and other bottles. A metal peeler is on the right side of the cutting board.",
+    "spatial": "The person is to the left of the red cutting board. The cutting board is on a countertop, with a knife and carrot peels on top of it. In the background, a microwave is behind the cutting board. To the right of the cutting board, there is a bottle of oil and a bag of cashews.",
     "parse_success": true,
     "chunk_idx": 32,
     "video_id": "tBhUIJpVpLw"
   },
   {
     "time": [
-      66,
-      68
+      33,
+      34
     ],
     "visible_entities": [
       {
-        "desc": "person wearing a white short-sleeved button-up shirt and black pants",
-        "action": "peeling a sweet potato",
-        "position": "left/center"
-      },
-      {
-        "desc": "orange sweet potato, partially peeled",
-        "action": "being held and peeled",
-        "position": "center"
-      },
-      {
-        "desc": "red plastic cutting board",
-        "action": "static",
-        "position": "center/foreground"
-      },
-      {
-        "desc": "black-handled vegetable peeler",
-        "action": "being used to peel",
-        "position": "center"
-      },
-      {
-        "desc": "pile of orange sweet potato peels",
-        "action": "static",
-        "position": "center"
-      },
-      {
-        "desc": "large plastic jug of yellow cooking oil",
-        "action": "static",
-        "position": "right/background"
-      },
-      {
-        "desc": "clear bag of cashews",
-        "action": "static",
-        "position": "right/background"
-      },
-      {
-        "desc": "metal garlic press",
-        "action": "static",
-        "position": "right"
-      },
-      {
-        "desc": "green-handled knife",
-        "action": "static",
-        "position": "center/right"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "person is peeling a sweet potato over a red cutting board",
-        "confidence": 1.0
-      },
-      {
-        "fact": "sweet potato peels are accumulating on the cutting board",
-        "confidence": 1.0
-      },
-      {
-        "fact": "the person holds the sweet potato in their left hand and the peeler in their right hand",
-        "confidence": 1.0
-      },
-      {
-        "fact": "a jug of cooking oil is visible in the background",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [
-      "SA",
-      "CASH"
-    ],
-    "spatial": "The person is standing to the left of the red cutting board. The sweet potato is being held above the pile of peels on the cutting board. The jug of oil and bag of cashews are to the right of the cutting board in the background. The garlic press is on the counter to the right of the cutting board.",
-    "parse_success": true,
-    "chunk_idx": 33,
-    "video_id": "tBhUIJpVpLw"
-  },
-  {
-    "time": [
-      68,
-      70
-    ],
-    "visible_entities": [
-      {
-        "desc": "person with light skin, wearing a beige short-sleeved shirt",
-        "action": "moving hands near the counter edge",
+        "desc": "person wearing a white short-sleeved shirt and black pants",
+        "action": "peeling and chopping a vegetable",
         "position": "left"
       },
       {
@@ -2468,48 +2413,126 @@
         "position": "center"
       },
       {
-        "desc": "large kitchen knife with black handle and silver blade",
-        "action": "static",
-        "position": "right"
+        "desc": "orange vegetable, likely a sweet potato or carrot",
+        "action": "being peeled and chopped",
+        "position": "center"
       },
       {
-        "desc": "peeled orange vegetable, likely a carrot",
+        "desc": "black-handled peeler tool",
+        "action": "being held by person",
+        "position": "center"
+      },
+      {
+        "desc": "green-handled knife",
         "action": "static",
         "position": "center"
       },
       {
-        "desc": "white plastic container with green text",
+        "desc": "large clear plastic jug with yellow liquid and blue label",
+        "action": "static",
+        "position": "right"
+      },
+      {
+        "desc": "bag of light-colored nuts or seeds",
+        "action": "static",
+        "position": "right"
+      },
+      {
+        "desc": "pile of orange vegetable peels",
+        "action": "static",
+        "position": "center"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The person is using a black peeler to remove the skin from an orange vegetable.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The person is chopping the vegetable into small pieces on the red cutting board.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A pile of orange peels has accumulated on the cutting board.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A green-handled knife is lying on the cutting board next to the chopped vegetable.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "SALT",
+      "Kirkland"
+    ],
+    "spatial": "The person is on the left side of the frame, working over a red cutting board that is in the center. The chopped vegetable and peels are on the cutting board. To the right of the cutting board are a large jug of oil and a bag of nuts. The green-handled knife is on the cutting board, to the right of the chopped vegetable.",
+    "parse_success": true,
+    "chunk_idx": 33,
+    "video_id": "tBhUIJpVpLw"
+  },
+  {
+    "time": [
+      34,
+      35
+    ],
+    "visible_entities": [
+      {
+        "desc": "person with light skin, wearing a beige short-sleeved shirt",
+        "action": "pressing hands on the counter",
+        "position": "left"
+      },
+      {
+        "desc": "red cutting board, rectangular, plastic",
+        "action": "static",
+        "position": "center"
+      },
+      {
+        "desc": "kitchen knife, black handle, silver blade",
+        "action": "static",
+        "position": "center-right"
+      },
+      {
+        "desc": "orange vegetable, peeled, round",
+        "action": "static",
+        "position": "center"
+      },
+      {
+        "desc": "white yogurt cup with green text",
         "action": "static",
         "position": "background"
       },
       {
-        "desc": "large clear jug of yellow cooking oil",
+        "desc": "large yellow bottle of oil, plastic",
         "action": "static",
-        "position": "right background"
+        "position": "right"
       },
       {
-        "desc": "bag of light-colored nuts",
+        "desc": "bag of cashews, clear plastic packaging",
         "action": "static",
-        "position": "right background"
+        "position": "right"
       },
       {
-        "desc": "black roll of tape",
+        "desc": "black tape roll",
         "action": "static",
-        "position": "bottom right"
+        "position": "bottom-right"
       },
       {
-        "desc": "silver microwave oven",
+        "desc": "silver microwave, digital display",
         "action": "static",
         "position": "background"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A person is moving their hands near the left edge of the counter.",
+        "fact": "A person is pressing their hands down on the edge of the counter.",
         "confidence": 1.0
       },
       {
-        "fact": "A large knife is resting on the red cutting board.",
+        "fact": "A red cutting board is placed on the countertop.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A kitchen knife rests on the red cutting board.",
         "confidence": 1.0
       },
       {
@@ -2517,23 +2540,27 @@
         "confidence": 1.0
       },
       {
-        "fact": "A bag of nuts is visible on the right side of the counter.",
+        "fact": "A bag of cashews is visible on the right side of the counter.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A large bottle of oil is positioned behind the cutting board.",
         "confidence": 1.0
       }
     ],
     "ocr": [
-      "SALT",
-      "Wesson"
+      "SAL",
+      "CASH"
     ],
-    "spatial": "The person is standing to the left of the red cutting board. The cutting board is on the counter, with a knife and a peeled vegetable on top of it. The microwave is behind the cutting board, and the jug of oil is to the right of the microwave.",
+    "spatial": "The person is standing to the left of the red cutting board. The cutting board is in the center of the frame, with a knife and a peeled orange vegetable on top of it. To the right of the cutting board are a bag of cashews and a large bottle of oil. In the background, a microwave is visible behind the cutting board and other items.",
     "parse_success": true,
     "chunk_idx": 34,
     "video_id": "tBhUIJpVpLw"
   },
   {
     "time": [
-      70,
-      72
+      35,
+      36
     ],
     "visible_entities": [
       {
@@ -2542,13 +2569,13 @@
         "position": "left"
       },
       {
-        "desc": "orange vegetable, likely a sweet potato, with smooth skin",
+        "desc": "orange vegetable, likely a sweet potato, cylindrical shape",
         "action": "being sliced",
         "position": "center"
       },
       {
-        "desc": "large kitchen knife with a silver blade and black handle",
-        "action": "held by the person",
+        "desc": "large kitchen knife with a black handle and silver blade",
+        "action": "slicing the vegetable",
         "position": "center"
       },
       {
@@ -2557,7 +2584,162 @@
         "position": "center"
       },
       {
-        "desc": "large plastic jug containing yellow liquid, likely cooking oil",
+        "desc": "large plastic jug of yellow oil with a blue label",
+        "action": "static",
+        "position": "right"
+      },
+      {
+        "desc": "bag of light-colored nuts or legumes",
+        "action": "static",
+        "position": "right"
+      },
+      {
+        "desc": "metal vegetable peeler",
+        "action": "static",
+        "position": "right"
+      },
+      {
+        "desc": "black roll of tape",
+        "action": "static",
+        "position": "bottom right"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A person is using a knife to slice an orange vegetable on a red cutting board.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The person's hands are holding the knife and the vegetable.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A bottle of oil and a bag of nuts are sitting on the counter next to the cutting board.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A vegetable peeler is lying on the counter near the oil.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The person is standing to the left of the red cutting board. The orange vegetable is on top of the cutting board in the center. The knife is held by the person above the vegetable. To the right of the cutting board, there is a large jug of oil, a bag of nuts, and a metal peeler. The roll of tape is in the bottom right corner of the frame.",
+    "parse_success": true,
+    "chunk_idx": 35,
+    "video_id": "tBhUIJpVpLw"
+  },
+  {
+    "time": [
+      36,
+      37
+    ],
+    "visible_entities": [
+      {
+        "desc": "person wearing a white sleeveless top and black pants",
+        "action": "cutting a carrot",
+        "position": "left"
+      },
+      {
+        "desc": "orange carrot",
+        "action": "being sliced",
+        "position": "center"
+      },
+      {
+        "desc": "red cutting board",
+        "action": "static",
+        "position": "center"
+      },
+      {
+        "desc": "black-handled knife",
+        "action": "being held",
+        "position": "center"
+      },
+      {
+        "desc": "yellow bottle of oil",
+        "action": "static",
+        "position": "background"
+      },
+      {
+        "desc": "bag of pasta",
+        "action": "static",
+        "position": "background"
+      },
+      {
+        "desc": "white yogurt container",
+        "action": "static",
+        "position": "background"
+      },
+      {
+        "desc": "blue salt container",
+        "action": "static",
+        "position": "background"
+      },
+      {
+        "desc": "peeler tool",
+        "action": "static",
+        "position": "right"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "person is cutting an orange carrot on a red cutting board",
+        "confidence": 1.0
+      },
+      {
+        "fact": "the person is holding a black-handled knife",
+        "confidence": 1.0
+      },
+      {
+        "fact": "a peeler tool is lying on the right side of the cutting board",
+        "confidence": 1.0
+      },
+      {
+        "fact": "a bag of pasta and a yellow bottle are in the background",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "SA",
+      "Whole Wheat"
+    ],
+    "spatial": "The person is to the left of the red cutting board. The carrot is on the cutting board, being held by the person's hand. The knife is in the person's right hand, positioned above the carrot. The peeler tool is to the right of the carrot on the cutting board. The yellow bottle and bag of pasta are behind the cutting board.",
+    "parse_success": true,
+    "chunk_idx": 36,
+    "video_id": "tBhUIJpVpLw"
+  },
+  {
+    "time": [
+      37,
+      38
+    ],
+    "visible_entities": [
+      {
+        "desc": "person with fair skin, wearing a white short-sleeved shirt and black pants",
+        "action": "slicing a vegetable",
+        "position": "left/center"
+      },
+      {
+        "desc": "large kitchen knife with a black handle and a wide silver blade",
+        "action": "being held and used to cut",
+        "position": "center"
+      },
+      {
+        "desc": "red rectangular cutting board",
+        "action": "static",
+        "position": "center/foreground"
+      },
+      {
+        "desc": "small piece of orange vegetable, likely carrot",
+        "action": "being sliced",
+        "position": "center"
+      },
+      {
+        "desc": "white plastic tub with green text and label",
+        "action": "static",
+        "position": "background"
+      },
+      {
+        "desc": "large plastic bottle containing yellow liquid with a blue label",
         "action": "static",
         "position": "background right"
       },
@@ -2567,433 +2749,278 @@
         "position": "background right"
       },
       {
-        "desc": "metal vegetable peeler",
+        "desc": "metal garlic press",
         "action": "static",
         "position": "right"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "A person is using a knife to slice an orange vegetable on a red cutting board.",
-        "confidence": 1.0
       },
       {
-        "fact": "The person holds the vegetable steady with their left hand while cutting with their right.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "A bag of nuts and a jug of oil are sitting on the counter in the background.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [],
-    "spatial": "The person is standing to the left of the red cutting board. The orange vegetable is on top of the cutting board in the center. The knife is held in the person's hand above the vegetable. To the right of the cutting board, there is a metal peeler and a bag of nuts. The jug of oil is behind the bag of nuts.",
-    "parse_success": true,
-    "chunk_idx": 35,
-    "video_id": "tBhUIJpVpLw"
-  },
-  {
-    "time": [
-      72,
-      74
-    ],
-    "visible_entities": [
-      {
-        "desc": "person wearing a white short-sleeved shirt and black pants",
-        "action": "cutting and moving vegetables",
-        "position": "left"
-      },
-      {
-        "desc": "red rectangular cutting board",
-        "action": "static",
-        "position": "center"
-      },
-      {
-        "desc": "orange carrot pieces",
-        "action": "being cut and moved",
-        "position": "center"
-      },
-      {
-        "desc": "black-handled knife",
-        "action": "being held and used",
-        "position": "center"
-      },
-      {
-        "desc": "clear plastic bottle with yellow liquid and yellow label",
-        "action": "static",
-        "position": "background right"
-      },
-      {
-        "desc": "bag of cashews",
-        "action": "static",
-        "position": "background right"
-      },
-      {
-        "desc": "small white container with green text",
+        "desc": "black microwave oven",
         "action": "static",
         "position": "background left"
-      },
-      {
-        "desc": "blue salt shaker",
-        "action": "static",
-        "position": "background center"
-      },
-      {
-        "desc": "metal vegetable peeler",
-        "action": "static",
-        "position": "right"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "The person is cutting an orange carrot on a red cutting board.",
+        "fact": "The person is holding a knife in their right hand and pressing down on a piece of orange vegetable.",
         "confidence": 1.0
       },
       {
-        "fact": "The person moves the cut carrot pieces to the right side of the board.",
+        "fact": "The left hand is stabilizing the vegetable on the red cutting board.",
         "confidence": 1.0
       },
       {
-        "fact": "A bag of cashews sits on the counter next to a bottle of oil.",
+        "fact": "A white tub with green labeling sits behind the cutting board.",
         "confidence": 1.0
       },
       {
-        "fact": "A blue shaker labeled 'SALT' is visible in the background.",
+        "fact": "A bottle of yellow oil is positioned to the right of the white tub.",
         "confidence": 1.0
       }
     ],
     "ocr": [
-      "SALT",
-      "CASHEWS"
+      "S",
+      "Gallo"
     ],
-    "spatial": "The person is standing to the left of the red cutting board. The cutting board is on the counter in front of the person. The bag of cashews and oil bottle are to the right of the cutting board. The salt shaker is behind the cutting board.",
-    "parse_success": true,
-    "chunk_idx": 36,
-    "video_id": "tBhUIJpVpLw"
-  },
-  {
-    "time": [
-      74,
-      76
-    ],
-    "visible_entities": [
-      {
-        "desc": "person with fair skin, wearing a white short-sleeved shirt and black pants",
-        "action": "cutting a vegetable",
-        "position": "left/center"
-      },
-      {
-        "desc": "large kitchen knife with a black handle and wide silver blade",
-        "action": "being held and used to slice",
-        "position": "center"
-      },
-      {
-        "desc": "small, peeled, orange vegetable piece (likely carrot)",
-        "action": "being sliced",
-        "position": "center"
-      },
-      {
-        "desc": "red rectangular plastic cutting board",
-        "action": "static",
-        "position": "center/bottom"
-      },
-      {
-        "desc": "white plastic tub with green label",
-        "action": "static",
-        "position": "background"
-      },
-      {
-        "desc": "large clear bottle with yellow liquid and blue label",
-        "action": "static",
-        "position": "background/right"
-      },
-      {
-        "desc": "clear glass jar filled with garlic cloves",
-        "action": "static",
-        "position": "background/right"
-      },
-      {
-        "desc": "metal garlic press",
-        "action": "static",
-        "position": "right"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "A person is holding a knife in their right hand and slicing a small piece of orange vegetable on a red cutting board.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The person's left hand is holding the vegetable steady while the right hand maneuvers the knife.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "A white tub with a green label is visible in the background behind the cutting board.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "A bottle of yellow liquid and a jar of garlic are sitting on the counter to the right of the cutting board.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [],
-    "spatial": "The person is positioned to the left of the frame, leaning over the red cutting board which is in the center. The knife is held in the person's hands directly above the orange vegetable. In the background, the white tub is to the left of the yellow bottle, and the jar of garlic is to the right of the yellow bottle.",
+    "spatial": "The person is standing to the left of the cutting board, holding the knife over the orange vegetable. The red cutting board is in the foreground, positioned in front of a white tub and a bottle of oil. To the right of the cutting board, a garlic press and a bag of nuts are visible on the counter.",
     "parse_success": true,
     "chunk_idx": 37,
     "video_id": "tBhUIJpVpLw"
   },
   {
     "time": [
-      76,
-      78
+      38,
+      39
     ],
     "visible_entities": [
       {
-        "desc": "person with hairy arms, wearing a white sleeveless top and black pants",
-        "action": "chopping a vegetable",
+        "desc": "person with hairy arms, wearing a white shirt",
+        "action": "chopping food",
         "position": "left/center"
       },
       {
-        "desc": "large kitchen knife with a black handle and a wide silver blade",
-        "action": "being held and used to cut",
-        "position": "center"
-      },
-      {
-        "desc": "orange vegetable chunk, likely a sweet potato or carrot",
-        "action": "being cut",
-        "position": "center"
-      },
-      {
-        "desc": "red plastic cutting board",
-        "action": "static",
-        "position": "center/bottom"
-      },
-      {
-        "desc": "yellow bottle of cooking oil",
-        "action": "static",
-        "position": "background/right"
-      },
-      {
-        "desc": "blue cylindrical container labeled 'SALT'",
-        "action": "static",
-        "position": "background/center"
-      },
-      {
-        "desc": "white plastic tub",
-        "action": "static",
-        "position": "background/center"
-      },
-      {
-        "desc": "pile of chopped nuts or garlic",
-        "action": "static",
-        "position": "background/right"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "A person is holding a large knife with their right hand and pressing down on an orange vegetable with their left hand.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The knife is slicing through the orange vegetable on a red cutting board.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "A blue container labeled 'SALT' sits behind the cutting board.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "A yellow bottle of oil is visible in the background to the right.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [
-      "SA"
-    ],
-    "spatial": "The person is positioned to the left of the frame, leaning over the red cutting board which is in the center. The orange vegetable is on the cutting board, directly under the knife blade. In the background, the blue salt container is to the left of the yellow oil bottle.",
-    "parse_success": true,
-    "chunk_idx": 38,
-    "video_id": "tBhUIJpVpLw"
-  },
-  {
-    "time": [
-      78,
-      80
-    ],
-    "visible_entities": [
-      {
-        "desc": "person's hands and forearms, light skin tone",
-        "action": "chopping orange vegetable",
-        "position": "left/foreground"
-      },
-      {
-        "desc": "large kitchen knife with black handle and silver blade",
-        "action": "being used to chop",
-        "position": "center"
-      },
-      {
-        "desc": "red plastic cutting board",
-        "action": "static",
+        "desc": "large kitchen knife with a black handle and silver blade",
+        "action": "cutting food",
         "position": "center"
       },
       {
         "desc": "orange vegetable chunks, likely sweet potato or carrot",
-        "action": "being chopped",
+        "action": "being cut",
         "position": "center"
       },
       {
-        "desc": "large clear plastic jug with yellow label containing yellow liquid",
+        "desc": "red cutting board",
+        "action": "static",
+        "position": "center/bottom"
+      },
+      {
+        "desc": "bottle of yellow cooking oil with a blue label",
         "action": "static",
         "position": "background right"
       },
       {
-        "desc": "bag of light-colored nuts or dried fruit",
+        "desc": "bag of light-colored nuts or snacks",
         "action": "static",
         "position": "background right"
       },
       {
-        "desc": "white container with green label",
+        "desc": "blue salt container",
         "action": "static",
-        "position": "background left"
+        "position": "background center"
       },
       {
-        "desc": "blue container with white text",
+        "desc": "white yogurt or cream container",
         "action": "static",
         "position": "background center"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "Person is using a knife to chop an orange vegetable on a red cutting board.",
+        "fact": "A person is using a large knife to chop an orange vegetable on a red cutting board.",
         "confidence": 1.0
       },
       {
-        "fact": "The knife is moving downwards to cut the vegetable.",
+        "fact": "The person's left hand is holding the vegetable steady while the right hand operates the knife.",
         "confidence": 1.0
       },
       {
-        "fact": "A large jug of yellow liquid is sitting on the counter in the background.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "A bag of nuts is visible to the right of the jug.",
+        "fact": "A bottle of oil and a bag of nuts are sitting on the counter behind the cutting board.",
         "confidence": 1.0
       }
     ],
     "ocr": [
       "SA"
     ],
-    "spatial": "The person's hands are in the foreground holding a knife over the red cutting board. The orange vegetable is on the cutting board being chopped. In the background, various kitchen items including a large jug and a bag of nuts are arranged on the counter behind the cutting board.",
+    "spatial": "The person is positioned to the left of the cutting board, holding the knife over the orange vegetable. The red cutting board is in the foreground, resting on a counter. In the background, to the right of the person's hands, are a bottle of oil and a bag of nuts.",
+    "parse_success": true,
+    "chunk_idx": 38,
+    "video_id": "tBhUIJpVpLw"
+  },
+  {
+    "time": [
+      39,
+      40
+    ],
+    "visible_entities": [
+      {
+        "desc": "person with fair skin, wearing a black sleeveless top",
+        "action": "chopping orange vegetable",
+        "position": "left/foreground"
+      },
+      {
+        "desc": "large kitchen knife with a black handle and wide silver blade",
+        "action": "being held and used to cut",
+        "position": "center/foreground"
+      },
+      {
+        "desc": "red plastic cutting board",
+        "action": "static",
+        "position": "center"
+      },
+      {
+        "desc": "orange vegetable pieces, likely sweet potato or carrot",
+        "action": "being sliced",
+        "position": "center"
+      },
+      {
+        "desc": "large clear plastic jug with a yellow label and yellow liquid inside",
+        "action": "static",
+        "position": "background/right"
+      },
+      {
+        "desc": "white cylindrical container with green text",
+        "action": "static",
+        "position": "background/center"
+      },
+      {
+        "desc": "blue cylindrical container with white text",
+        "action": "static",
+        "position": "background/center"
+      },
+      {
+        "desc": "bag of light-colored nuts or snacks",
+        "action": "static",
+        "position": "background/right"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A person is using a large knife to chop an orange vegetable on a red cutting board.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The knife blade is positioned over the vegetable in the first frame and cutting through it in the second.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The cutting board is placed on a counter surface.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "Various kitchen containers and a jug are arranged behind the cutting board.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "SA"
+    ],
+    "spatial": "The person is positioned to the left of the frame, holding the knife over the red cutting board in the center. The orange vegetable is on the cutting board, directly under the knife. In the background, behind the cutting board, there are several containers including a white tub, a blue canister, and a large jug of yellow liquid to the right.",
     "parse_success": true,
     "chunk_idx": 39,
     "video_id": "tBhUIJpVpLw"
   },
   {
     "time": [
-      80,
-      82
+      40,
+      41
     ],
     "visible_entities": [
       {
-        "desc": "person with light skin, wearing a black shirt, holding a knife",
+        "desc": "person's hands and forearms with light skin tone",
         "action": "chopping orange vegetables",
         "position": "left/foreground"
       },
       {
-        "desc": "large chef knife with a black handle and silver blade",
+        "desc": "large chef knife with black handle and silver blade",
         "action": "being used to chop",
         "position": "center"
       },
       {
-        "desc": "red plastic cutting board",
+        "desc": "red cutting board",
         "action": "static",
         "position": "center/bottom"
       },
       {
-        "desc": "orange vegetable chunks, likely sweet potato or carrot",
+        "desc": "orange vegetable chunks (carrots or sweet potatoes)",
         "action": "being chopped",
         "position": "center"
       },
       {
-        "desc": "large plastic jug of yellow cooking oil with a blue label",
+        "desc": "bottle of yellow cooking oil with blue label",
         "action": "static",
         "position": "background/right"
       },
       {
-        "desc": "bag of pale yellow nuts, possibly cashews",
+        "desc": "bag of peeled garlic cloves",
         "action": "static",
         "position": "background/right"
       },
       {
-        "desc": "blue and white cylindrical container labeled 'SALT'",
-        "action": "static",
-        "position": "background/center"
-      },
-      {
-        "desc": "white plastic tub with a green label",
+        "desc": "blue and white salt container",
         "action": "static",
         "position": "background/center"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A person is chopping orange vegetables into small cubes on a red cutting board.",
+        "fact": "The person is using a knife to chop orange vegetables into small cubes on a red cutting board.",
         "confidence": 1.0
       },
       {
-        "fact": "The person holds a large knife in their right hand.",
+        "fact": "The knife is moving downwards to cut the vegetables.",
         "confidence": 1.0
       },
       {
-        "fact": "A bag of nuts is sitting on the counter next to a jug of oil.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "A container of salt is visible in the background.",
+        "fact": "A bottle of cooking oil and a bag of garlic are sitting on the counter behind the cutting board.",
         "confidence": 1.0
       }
     ],
     "ocr": [
-      "SALT"
+      "SA",
+      "VEGETABLE"
     ],
-    "spatial": "The person is positioned to the left of the cutting board, holding the knife over the orange vegetable chunks. The cutting board is in the foreground, resting on a counter. In the background, to the right of the cutting board, there is a jug of oil and a bag of nuts. A container of salt is located behind the cutting board.",
+    "spatial": "The person's hands are holding the knife in the foreground, positioned over the red cutting board. The chopped orange vegetables are on top of the cutting board. The bottle of oil and bag of garlic are behind the cutting board on the counter.",
     "parse_success": true,
     "chunk_idx": 40,
     "video_id": "tBhUIJpVpLw"
   },
   {
     "time": [
-      82,
-      84
+      41,
+      42
     ],
     "visible_entities": [
       {
-        "desc": "person with fair skin, wearing a white shirt and black pants",
-        "action": "chopping orange vegetable",
-        "position": "left"
+        "desc": "person's hands and forearms, light skin tone, wearing a white short-sleeved shirt",
+        "action": "chopping orange vegetable with a knife",
+        "position": "left/center"
       },
       {
-        "desc": "large kitchen knife with a black handle and silver blade",
-        "action": "being held by person",
+        "desc": "large kitchen knife with a black handle and a wide silver blade",
+        "action": "being used to chop food",
         "position": "center"
       },
       {
-        "desc": "red rectangular plastic cutting board",
+        "desc": "bright red rectangular cutting board",
         "action": "static",
+        "position": "center/foreground"
+      },
+      {
+        "desc": "orange vegetable (carrot) cut into small chunks and slices",
+        "action": "being chopped",
         "position": "center"
       },
       {
-        "desc": "orange vegetable pieces, chopped into small chunks",
-        "action": "being cut",
-        "position": "center"
-      },
-      {
-        "desc": "large clear plastic bottle with yellow liquid and blue label",
-        "action": "static",
-        "position": "background right"
-      },
-      {
-        "desc": "bag of light-brown nuts",
+        "desc": "large clear plastic jug containing yellow liquid (oil) with a blue and yellow label",
         "action": "static",
         "position": "background right"
       },
@@ -3001,30 +3028,45 @@
         "desc": "blue cylindrical container with white text",
         "action": "static",
         "position": "background center"
+      },
+      {
+        "desc": "bag of light-colored nuts (cashews)",
+        "action": "static",
+        "position": "background right"
+      },
+      {
+        "desc": "small white tub with green text",
+        "action": "static",
+        "position": "background center"
+      },
+      {
+        "desc": "dark glass bottle with a yellow label",
+        "action": "static",
+        "position": "background center"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A person is using a knife to chop an orange vegetable on a red cutting board.",
+        "fact": "A person is using a large knife to chop an orange vegetable on a red cutting board.",
         "confidence": 1.0
       },
       {
-        "fact": "The knife is moving downwards to cut the vegetable.",
+        "fact": "The chopped vegetable pieces are accumulating in a pile on the board.",
         "confidence": 1.0
       },
       {
-        "fact": "There is a pile of chopped orange vegetable pieces on the board.",
+        "fact": "The blue container in the background displays the letters 'SA'.",
         "confidence": 1.0
       },
       {
-        "fact": "Various kitchen ingredients are lined up behind the cutting board.",
+        "fact": "Various cooking ingredients and containers are arranged behind the cutting board.",
         "confidence": 1.0
       }
     ],
     "ocr": [
       "SA"
     ],
-    "spatial": "The person is positioned to the left of the cutting board, holding the knife over the orange vegetable. The chopped vegetable pieces are on the center of the red cutting board. In the background, the blue container and the bottle of yellow liquid are to the right of the person's hand.",
+    "spatial": "The person is positioned to the left of the frame, holding the knife over the red cutting board which occupies the center foreground. The chopped orange vegetable is on top of the cutting board. Behind the cutting board, a blue container is to the left of a large jug of oil, and a bag of nuts is to the right of the oil jug.",
     "parse_success": true,
     "chunk_idx": 41,
     "video_id": "tBhUIJpVpLw"

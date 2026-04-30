@@ -2,17 +2,17 @@
   {
     "time": [
       0,
-      2
+      1
     ],
     "visible_entities": [
       {
-        "desc": "vacuum cleaner head, blue plastic, rectangular shape, attached to a silver metal wand with a black connector",
-        "action": "moving across the carpet",
-        "position": "center/foreground",
+        "desc": "vacuum cleaner attachment with a blue rectangular head, silver metal wand, and black handle grip",
+        "action": "cleaning the carpet",
+        "position": "bottom center",
         "id": "vacuum_cleaner_1"
       },
       {
-        "desc": "beige carpet, textured surface, covering the floor",
+        "desc": "beige textured carpet",
         "action": "static",
         "position": "background",
         "id": "carpet_beige_1"
@@ -20,16 +20,16 @@
     ],
     "atomic_facts": [
       {
-        "fact": "A vacuum cleaner head is moving across the beige carpet.",
+        "fact": "The vacuum cleaner attachment is moving across the carpet surface.",
         "confidence": 1.0
       },
       {
-        "fact": "The vacuum cleaner is being pushed forward.",
+        "fact": "The carpet is beige and textured.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The vacuum cleaner head is on top of the beige carpet. The silver wand is attached to the vacuum head and extends towards the bottom of the frame.",
+    "spatial": "The vacuum cleaner attachment is in the foreground, positioned on top of the beige carpet. The carpet extends into the background, filling the majority of the frame.",
     "parse_success": true,
     "chunk_idx": 0,
     "video_id": "29M_i_-Qxg4",
@@ -37,12 +37,84 @@
   },
   {
     "time": [
+      1,
+      2
+    ],
+    "visible_entities": [
+      {
+        "desc": "vacuum cleaner with a silver metal extension wand, a dark blue handle, and a dark blue rectangular floor nozzle head",
+        "action": "moving across the floor",
+        "position": "center",
+        "id": "vacuum_cleaner_1"
+      },
+      {
+        "desc": "beige textured carpet",
+        "action": "static",
+        "position": "background",
+        "id": "carpet_beige_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A vacuum cleaner is being pushed across a carpeted floor.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The vacuum head moves from the center towards the left side of the frame.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The vacuum cleaner is positioned on top of the beige carpet. The nozzle head is at the front of the vacuum, leading the movement across the floor surface.",
+    "parse_success": true,
+    "chunk_idx": 1,
+    "video_id": "29M_i_-Qxg4",
+    "state_changes": []
+  },
+  {
+    "time": [
       2,
+      3
+    ],
+    "visible_entities": [
+      {
+        "desc": "vacuum cleaner with a silver metallic extension wand, black plastic handle, and a black rectangular floor nozzle head",
+        "action": "moving across the carpet",
+        "position": "center",
+        "id": "vacuum_cleaner_1"
+      },
+      {
+        "desc": "beige textured carpet",
+        "action": "static",
+        "position": "background",
+        "id": "carpet_beige_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A vacuum cleaner is being pushed across a beige carpet.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The vacuum cleaner head is in contact with the floor surface.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The vacuum cleaner is positioned above the beige carpet. The black handle is located at the bottom of the frame, connected to the silver wand which extends towards the center where the nozzle head rests on the floor.",
+    "parse_success": true,
+    "chunk_idx": 2,
+    "video_id": "29M_i_-Qxg4",
+    "state_changes": []
+  },
+  {
+    "time": [
+      3,
       4
     ],
     "visible_entities": [
       {
-        "desc": "vacuum cleaner head, blue plastic, rectangular shape, attached to a silver metal extension tube",
+        "desc": "silver metallic vacuum cleaner wand with black plastic joints and a wide, flat, dark blue floor nozzle",
         "action": "cleaning the carpet",
         "position": "center",
         "id": "vacuum_cleaner_1"
@@ -56,7 +128,7 @@
     ],
     "atomic_facts": [
       {
-        "fact": "A vacuum cleaner head is moving across the carpet surface.",
+        "fact": "The vacuum cleaner nozzle is moving across the carpet surface.",
         "confidence": 1.0
       },
       {
@@ -65,79 +137,7 @@
       }
     ],
     "ocr": [],
-    "spatial": "The vacuum cleaner head is on top of the beige carpet. The silver extension tube is attached to the vacuum head and extends towards the bottom left of the frame.",
-    "parse_success": true,
-    "chunk_idx": 1,
-    "video_id": "29M_i_-Qxg4",
-    "state_changes": []
-  },
-  {
-    "time": [
-      4,
-      6
-    ],
-    "visible_entities": [
-      {
-        "desc": "vacuum cleaner wand with a silver metallic tube, a black plastic handle, and a dark grey rectangular floor nozzle head",
-        "action": "moving across the carpet",
-        "position": "center",
-        "id": "vacuum_cleaner_1"
-      },
-      {
-        "desc": "beige textured carpet",
-        "action": "static",
-        "position": "background",
-        "id": "carpet_beige_1"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "A vacuum cleaner is being pushed across the floor.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The vacuum nozzle is in contact with the carpet surface.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [],
-    "spatial": "The vacuum cleaner wand is positioned above the beige carpet. The nozzle head is at the front of the wand, resting on the floor.",
-    "parse_success": true,
-    "chunk_idx": 2,
-    "video_id": "29M_i_-Qxg4",
-    "state_changes": []
-  },
-  {
-    "time": [
-      6,
-      8
-    ],
-    "visible_entities": [
-      {
-        "desc": "vacuum cleaner head with a dark blue rectangular nozzle and a silver metallic telescopic wand",
-        "action": "moving across the carpet",
-        "position": "center",
-        "id": "vacuum_cleaner_1"
-      },
-      {
-        "desc": "beige textured carpet",
-        "action": "static",
-        "position": "background",
-        "id": "carpet_beige_1"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "The vacuum cleaner head is moving across the carpet surface.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The carpet is beige in color with a visible texture.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [],
-    "spatial": "The vacuum cleaner head is positioned on top of the beige carpet. The silver wand extends from the head towards the bottom of the frame.",
+    "spatial": "The vacuum cleaner wand is positioned above the beige carpet. The nozzle is in contact with the carpet fibers.",
     "parse_success": true,
     "chunk_idx": 3,
     "video_id": "29M_i_-Qxg4",
@@ -145,18 +145,18 @@
   },
   {
     "time": [
-      8,
-      10
+      4,
+      5
     ],
     "visible_entities": [
       {
-        "desc": "vacuum cleaner head with a blue rectangular nozzle and a silver metallic telescopic wand",
+        "desc": "vacuum cleaner attachment with a blue rectangular head and a silver metallic telescopic handle",
         "action": "cleaning the carpet",
-        "position": "center",
+        "position": "center/foreground",
         "id": "vacuum_cleaner_1"
       },
       {
-        "desc": "beige textured carpet",
+        "desc": "beige carpet with a visible texture",
         "action": "static",
         "position": "background",
         "id": "carpet_beige_1"
@@ -164,16 +164,16 @@
     ],
     "atomic_facts": [
       {
-        "fact": "The vacuum cleaner head is moving across the carpet.",
+        "fact": "The vacuum cleaner attachment is moving across the carpet.",
         "confidence": 1.0
       },
       {
-        "fact": "The vacuum is removing dirt from the carpet, leaving a cleaner path.",
+        "fact": "The vacuum head is leaving a distinct clean path on the carpet surface.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The vacuum cleaner head is positioned on top of the beige carpet. The silver wand extends from the head towards the bottom of the frame.",
+    "spatial": "The vacuum cleaner attachment is positioned on top of the beige carpet. The silver handle extends from the blue head towards the bottom of the frame.",
     "parse_success": true,
     "chunk_idx": 4,
     "video_id": "29M_i_-Qxg4",
@@ -181,12 +181,12 @@
   },
   {
     "time": [
-      10,
-      12
+      5,
+      6
     ],
     "visible_entities": [
       {
-        "desc": "vacuum cleaner head with a blue rectangular plastic nozzle and a silver metallic telescopic wand with black joints",
+        "desc": "vacuum cleaner attachment with a blue rectangular head, silver metal tube, and black grip section",
         "action": "moving across the carpet",
         "position": "bottom center",
         "id": "vacuum_cleaner_1"
@@ -196,30 +196,20 @@
         "action": "static",
         "position": "background",
         "id": "carpet_beige_1"
-      },
-      {
-        "desc": "dark furniture leg or base",
-        "action": "static",
-        "position": "top right",
-        "id": "furniture_dark_1"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "The vacuum cleaner head is moving across the beige carpet.",
+        "fact": "A vacuum cleaner attachment is moving across the carpet.",
         "confidence": 1.0
       },
       {
-        "fact": "A distinct clean line is visible on the carpet where the vacuum has passed.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The vacuum wand is angled towards the top right of the frame.",
+        "fact": "The vacuum head leaves a distinct clean path on the beige carpet.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The vacuum cleaner head is in the foreground, positioned at the bottom center of the frame. The dark furniture base is located in the background at the top right, above and to the right of the vacuum head.",
+    "spatial": "The vacuum cleaner attachment is positioned at the bottom center of the frame, resting on the beige carpet. A dark object is partially visible in the top right corner, located above and to the right of the vacuum cleaner.",
     "parse_success": true,
     "chunk_idx": 5,
     "video_id": "29M_i_-Qxg4",
@@ -227,14 +217,14 @@
   },
   {
     "time": [
-      12,
-      14
+      6,
+      7
     ],
     "visible_entities": [
       {
-        "desc": "vacuum cleaner attachment with a blue T-shaped head and a silver metal extension wand",
+        "desc": "vacuum cleaner attachment with a blue plastic head, a silver metal wand, and a black handle grip",
         "action": "moving across the carpet",
-        "position": "foreground",
+        "position": "left/center/foreground",
         "id": "vacuum_cleaner_1"
       },
       {
@@ -242,20 +232,30 @@
         "action": "static",
         "position": "background",
         "id": "carpet_beige_1"
+      },
+      {
+        "desc": "black object, possibly furniture",
+        "action": "static",
+        "position": "top right",
+        "id": "furniture_black_beige_1"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A vacuum cleaner attachment is being pushed across the floor.",
+        "fact": "A vacuum cleaner attachment is being pushed across the carpet.",
         "confidence": 1.0
       },
       {
-        "fact": "The vacuum head is blue with a silver handle.",
+        "fact": "The vacuum head is blue and rectangular.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The carpet is beige and textured.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The vacuum cleaner attachment is in the foreground, positioned on top of the beige carpet.",
+    "spatial": "The vacuum cleaner attachment is in the foreground, positioned on top of the beige carpet. A black object is visible in the top right corner, located behind the vacuum cleaner.",
     "parse_success": true,
     "chunk_idx": 6,
     "video_id": "29M_i_-Qxg4",
@@ -263,13 +263,13 @@
   },
   {
     "time": [
-      14,
-      16
+      7,
+      8
     ],
     "visible_entities": [
       {
-        "desc": "silver metal vacuum cleaner wand with a black plastic floor nozzle attachment",
-        "action": "moving across the carpet",
+        "desc": "vacuum cleaner attachment with a silver metal wand, black plastic joints, and a dark grey rectangular floor head",
+        "action": "resting on the carpet",
         "position": "center/foreground",
         "id": "vacuum_cleaner_1"
       },
@@ -282,16 +282,16 @@
     ],
     "atomic_facts": [
       {
-        "fact": "A vacuum cleaner wand is being pushed across the floor.",
+        "fact": "A vacuum cleaner attachment is resting on the floor.",
         "confidence": 1.0
       },
       {
-        "fact": "The vacuum nozzle is in contact with the carpet surface.",
+        "fact": "The vacuum head is positioned on the beige carpet.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The vacuum cleaner wand is positioned in the center of the frame, lying on top of the beige carpet. The nozzle is at the front of the wand, pointing towards the upper part of the image.",
+    "spatial": "The vacuum cleaner attachment is in the foreground, lying on top of the beige carpet which extends into the background.",
     "parse_success": true,
     "chunk_idx": 7,
     "video_id": "29M_i_-Qxg4",
@@ -299,198 +299,14 @@
   },
   {
     "time": [
-      16,
-      18
+      8,
+      9
     ],
     "visible_entities": [
       {
-        "desc": "vacuum cleaner head with a blue rectangular nozzle and a silver metallic tube with black joints",
+        "desc": "vacuum cleaner head with a blue rectangular nozzle and a silver metallic wand with a black grip section",
         "action": "moving across the carpet",
         "position": "bottom center",
-        "id": "vacuum_cleaner_1"
-      },
-      {
-        "desc": "beige textured carpet",
-        "action": "static",
-        "position": "background",
-        "id": "carpet_beige_1"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "The vacuum cleaner head is moving across the carpet.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "A clean strip is visible on the carpet to the left of the vacuum head.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [],
-    "spatial": "The vacuum cleaner head is positioned at the bottom center of the frame, resting on the beige carpet. The cleaned area of the carpet is to the left of the vacuum head.",
-    "parse_success": true,
-    "chunk_idx": 8,
-    "video_id": "29M_i_-Qxg4",
-    "state_changes": []
-  },
-  {
-    "time": [
-      18,
-      20
-    ],
-    "visible_entities": [
-      {
-        "desc": "vacuum cleaner attachment with a dark grey rectangular floor head and a silver metallic extension wand",
-        "action": "moving across the carpet",
-        "position": "center",
-        "id": "vacuum_cleaner_1"
-      },
-      {
-        "desc": "beige carpeted floor",
-        "action": "static",
-        "position": "background",
-        "id": "carpet_beige_1"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "The vacuum cleaner attachment is moving across the beige carpet.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The vacuum head is positioned in the center of the frame.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [],
-    "spatial": "The vacuum cleaner attachment is on top of the beige carpet. The silver wand extends from the floor head towards the bottom left of the frame.",
-    "parse_success": true,
-    "chunk_idx": 9,
-    "video_id": "29M_i_-Qxg4",
-    "state_changes": []
-  },
-  {
-    "time": [
-      20,
-      22
-    ],
-    "visible_entities": [
-      {
-        "desc": "silver metal vacuum cleaner wand with a blue plastic connector and a dark grey rectangular floor nozzle",
-        "action": "moving across the carpet",
-        "position": "center/foreground",
-        "id": "vacuum_cleaner_1"
-      },
-      {
-        "desc": "beige textured carpet",
-        "action": "static",
-        "position": "background",
-        "id": "carpet_beige_1"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "A vacuum cleaner head is being pushed across the floor.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The vacuum nozzle is in contact with the beige carpet.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [],
-    "spatial": "The vacuum cleaner wand is positioned in the center of the frame, extending from the bottom foreground towards the middle. The nozzle head is resting on top of the beige carpet.",
-    "parse_success": true,
-    "chunk_idx": 10,
-    "video_id": "29M_i_-Qxg4",
-    "state_changes": []
-  },
-  {
-    "time": [
-      22,
-      24
-    ],
-    "visible_entities": [
-      {
-        "desc": "vacuum cleaner head with a blue rectangular nozzle and a silver metallic extension tube",
-        "action": "moving across the carpet",
-        "position": "bottom center",
-        "id": "vacuum_cleaner_1"
-      },
-      {
-        "desc": "beige carpet with a textured surface",
-        "action": "static",
-        "position": "background",
-        "id": "carpet_beige_1"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "The vacuum cleaner head is moving across the carpet.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The vacuum cleaner is leaving a distinct clean path on the carpet surface.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The cleaned area of the carpet appears lighter than the surrounding uncleaned area.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [],
-    "spatial": "The vacuum cleaner head is positioned at the bottom center of the frame, resting on the beige carpet. The silver extension tube extends from the head towards the bottom edge of the image.",
-    "parse_success": true,
-    "chunk_idx": 11,
-    "video_id": "29M_i_-Qxg4",
-    "state_changes": []
-  },
-  {
-    "time": [
-      24,
-      26
-    ],
-    "visible_entities": [
-      {
-        "desc": "vacuum cleaner head with a blue plastic housing and a silver metal wand attachment",
-        "action": "moving across the carpet",
-        "position": "bottom left",
-        "id": "vacuum_cleaner_1"
-      },
-      {
-        "desc": "beige carpet with a textured surface",
-        "action": "static",
-        "position": "background",
-        "id": "carpet_beige_1"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "A vacuum cleaner head is moving across the carpet surface.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The carpet appears to be beige in color.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [],
-    "spatial": "The vacuum cleaner head is positioned on the bottom left of the frame, resting on top of the beige carpet which fills the rest of the background.",
-    "parse_success": true,
-    "chunk_idx": 12,
-    "video_id": "29M_i_-Qxg4",
-    "state_changes": []
-  },
-  {
-    "time": [
-      26,
-      28
-    ],
-    "visible_entities": [
-      {
-        "desc": "vacuum cleaner head with a black rectangular brush attachment, connected to a silver metallic extension wand with black joints",
-        "action": "moving across the carpet",
-        "position": "center",
         "id": "vacuum_cleaner_1"
       },
       {
@@ -506,12 +322,200 @@
         "confidence": 1.0
       },
       {
-        "fact": "The vacuum cleaner has a silver wand and a black brush head.",
+        "fact": "A distinct clean strip is visible on the carpet where the vacuum has passed.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The vacuum head is positioned at the bottom of the frame.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The vacuum cleaner head is on top of the beige carpet. The silver extension wand extends from the bottom of the frame towards the center where the head is located.",
+    "spatial": "The vacuum cleaner head is at the bottom center of the frame, resting on the beige carpet. The clean path created by the vacuum is to the left of the current position of the vacuum head.",
+    "parse_success": true,
+    "chunk_idx": 8,
+    "video_id": "29M_i_-Qxg4",
+    "state_changes": []
+  },
+  {
+    "time": [
+      9,
+      10
+    ],
+    "visible_entities": [
+      {
+        "desc": "vacuum cleaner head with a dark grey rectangular nozzle, a silver metal connector, and a long silver metallic extension pole",
+        "action": "moving across the floor",
+        "position": "center/foreground",
+        "id": "vacuum_cleaner_1"
+      },
+      {
+        "desc": "beige carpeted floor with a visible texture",
+        "action": "static",
+        "position": "background",
+        "id": "carpet_beige_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The vacuum cleaner is being pushed across the beige carpet.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The vacuum head is in contact with the floor surface.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The vacuum cleaner is positioned above the beige carpet. The extension pole extends from the bottom of the frame towards the vacuum head in the center.",
+    "parse_success": true,
+    "chunk_idx": 9,
+    "video_id": "29M_i_-Qxg4",
+    "state_changes": []
+  },
+  {
+    "time": [
+      10,
+      11
+    ],
+    "visible_entities": [
+      {
+        "desc": "silver vacuum cleaner wand with a blue connector and a dark grey rectangular floor nozzle",
+        "action": "moving across the carpet",
+        "position": "center/foreground",
+        "id": "vacuum_cleaner_1"
+      },
+      {
+        "desc": "beige textured carpet",
+        "action": "static",
+        "position": "background",
+        "id": "carpet_beige_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A vacuum cleaner nozzle is being pushed across the floor.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The vacuum head moves slightly forward between the two frames.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The vacuum cleaner wand is positioned in the center foreground, extending from the bottom edge towards the middle of the frame. The nozzle head is resting on top of the beige carpet.",
+    "parse_success": true,
+    "chunk_idx": 10,
+    "video_id": "29M_i_-Qxg4",
+    "state_changes": []
+  },
+  {
+    "time": [
+      11,
+      12
+    ],
+    "visible_entities": [
+      {
+        "desc": "vacuum cleaner head with a blue rectangular nozzle and a silver metallic wand with a blue grip section",
+        "action": "moving across the carpet",
+        "position": "center/foreground",
+        "id": "vacuum_cleaner_1"
+      },
+      {
+        "desc": "beige textured carpet",
+        "action": "static",
+        "position": "background",
+        "id": "carpet_beige_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The vacuum cleaner head is moving across the carpet.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The vacuum is leaving a clean path on the carpet.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The vacuum cleaner head is in front of the carpet and is moving across it.",
+    "parse_success": true,
+    "chunk_idx": 11,
+    "video_id": "29M_i_-Qxg4",
+    "state_changes": []
+  },
+  {
+    "time": [
+      12,
+      13
+    ],
+    "visible_entities": [
+      {
+        "desc": "vacuum cleaner head with a blue rectangular plastic housing and a silver metallic nozzle connector, attached to a grey and silver handle",
+        "action": "moving across the carpet",
+        "position": "left foreground",
+        "id": "vacuum_cleaner_1"
+      },
+      {
+        "desc": "beige textured carpet",
+        "action": "static",
+        "position": "background",
+        "id": "carpet_beige_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A vacuum cleaner head is being pushed across the carpet.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The vacuum head is positioned on the left side of the frame.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The carpet covers the entire floor area visible in the shot.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The vacuum cleaner head is in the foreground on the left side, resting on top of the beige carpet which fills the background.",
+    "parse_success": true,
+    "chunk_idx": 12,
+    "video_id": "29M_i_-Qxg4",
+    "state_changes": []
+  },
+  {
+    "time": [
+      13,
+      14
+    ],
+    "visible_entities": [
+      {
+        "desc": "vacuum cleaner head with a black rectangular nozzle, silver metal extension wand, and black grip sections",
+        "action": "moving across the carpet",
+        "position": "center/foreground",
+        "id": "vacuum_cleaner_1"
+      },
+      {
+        "desc": "beige textured carpet",
+        "action": "static",
+        "position": "background",
+        "id": "carpet_beige_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The vacuum cleaner head is moving across the carpet surface.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The vacuum cleaner is positioned on the floor.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The vacuum cleaner head is on top of the beige carpet. The extension wand extends from the head towards the bottom left of the frame.",
     "parse_success": true,
     "chunk_idx": 13,
     "video_id": "29M_i_-Qxg4",
@@ -519,12 +523,12 @@
   },
   {
     "time": [
-      28,
-      30
+      14,
+      15
     ],
     "visible_entities": [
       {
-        "desc": "silver metal vacuum cleaner wand with a black plastic handle and a black rectangular floor nozzle",
+        "desc": "vacuum cleaner attachment with a silver metal tube, black plastic handle, and a black rectangular floor head",
         "action": "moving across the carpet",
         "position": "center",
         "id": "vacuum_cleaner_1"
@@ -538,16 +542,16 @@
     ],
     "atomic_facts": [
       {
-        "fact": "A vacuum cleaner is being pushed across the floor.",
+        "fact": "The vacuum cleaner attachment is moving across the carpet.",
         "confidence": 1.0
       },
       {
-        "fact": "The vacuum head moves over the beige carpet.",
+        "fact": "The vacuum head is positioned on the floor.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The vacuum cleaner is positioned in the center of the frame, resting on top of the beige carpet which covers the floor.",
+    "spatial": "The vacuum cleaner attachment is in the foreground, positioned above the beige carpet. The handle of the vacuum is to the left of the floor head.",
     "parse_success": true,
     "chunk_idx": 14,
     "video_id": "29M_i_-Qxg4",
@@ -555,14 +559,14 @@
   },
   {
     "time": [
-      30,
-      32
+      15,
+      16
     ],
     "visible_entities": [
       {
-        "desc": "vacuum cleaner attachment with a blue rectangular head and a silver metallic telescopic handle",
+        "desc": "vacuum cleaner attachment with a blue rectangular head and a silver metallic wand",
         "action": "moving across the carpet",
-        "position": "foreground",
+        "position": "bottom center",
         "id": "vacuum_cleaner_1"
       },
       {
@@ -583,7 +587,7 @@
       }
     ],
     "ocr": [],
-    "spatial": "The vacuum cleaner attachment is in the foreground, positioned on top of the beige carpeted floor.",
+    "spatial": "The vacuum cleaner attachment is in the foreground, positioned on top of the beige carpet.",
     "parse_success": true,
     "chunk_idx": 15,
     "video_id": "29M_i_-Qxg4",
@@ -591,18 +595,18 @@
   },
   {
     "time": [
-      32,
-      34
+      16,
+      17
     ],
     "visible_entities": [
       {
-        "desc": "vacuum cleaner attachment with a silver metal wand, black plastic joints, and a wide black rectangular floor head",
-        "action": "moving across the carpet",
+        "desc": "vacuum cleaner with a silver metal wand, black handle, and a wide black floor nozzle head",
+        "action": "cleaning the carpet",
         "position": "center",
         "id": "vacuum_cleaner_1"
       },
       {
-        "desc": "beige carpet with a visible textured pile",
+        "desc": "beige textured carpet",
         "action": "static",
         "position": "background",
         "id": "carpet_beige_1"
@@ -614,12 +618,12 @@
         "confidence": 1.0
       },
       {
-        "fact": "The vacuum head is moving over the beige carpet.",
+        "fact": "The vacuum cleaner head is in contact with the carpet.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The vacuum cleaner attachment is positioned above the beige carpet. The floor head is at the front of the wand, making contact with the carpet surface.",
+    "spatial": "The vacuum cleaner is positioned on top of the beige carpet. The nozzle head is at the front of the vacuum wand, resting on the floor surface.",
     "parse_success": true,
     "chunk_idx": 16,
     "video_id": "29M_i_-Qxg4",
@@ -627,18 +631,18 @@
   },
   {
     "time": [
-      34,
-      36
+      17,
+      18
     ],
     "visible_entities": [
       {
-        "desc": "vacuum cleaner head with a blue plastic casing and a silver metal wand attachment",
+        "desc": "vacuum cleaner head with a blue rectangular plastic base, silver metal nozzle, and a silver and black telescopic handle",
         "action": "moving across the carpet",
         "position": "bottom center",
         "id": "vacuum_cleaner_1"
       },
       {
-        "desc": "beige textured carpet covering the floor",
+        "desc": "beige textured carpet with a visible clean path",
         "action": "static",
         "position": "background",
         "id": "carpet_beige_1"
@@ -646,35 +650,41 @@
     ],
     "atomic_facts": [
       {
-        "fact": "A vacuum cleaner head is moving across the carpet.",
+        "fact": "The vacuum cleaner head is moving across the carpet.",
         "confidence": 1.0
       },
       {
-        "fact": "The carpet shows a distinct line where the vacuum has passed, separating a darker, textured area from a lighter, flattened area.",
+        "fact": "The vacuum is creating a clean path on the carpet where the pile has been groomed.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The cleaned section of the carpet appears lighter and smoother than the surrounding area.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The vacuum cleaner head is in the foreground, positioned on top of the beige carpet. The cleaned path of the carpet is visible behind and to the right of the vacuum head.",
+    "spatial": "The vacuum cleaner head is in the foreground, positioned on top of the beige carpet. The cleaned path on the carpet extends from the vacuum head towards the background.",
     "parse_success": true,
     "chunk_idx": 17,
     "video_id": "29M_i_-Qxg4",
-    "state_changes": []
+    "state_changes": [
+      "visible clean path appears on the carpet indicating cleaning progress"
+    ]
   },
   {
     "time": [
-      36,
-      38
+      18,
+      19
     ],
     "visible_entities": [
       {
-        "desc": "vacuum cleaner attachment with a dark blue rectangular floor head and a silver metallic telescopic wand",
-        "action": "moving across the carpet",
+        "desc": "vacuum cleaner head, dark blue plastic housing, silver metal connector, attached to a silver metal extension wand",
+        "action": "moving across the floor",
         "position": "center/foreground",
         "id": "vacuum_cleaner_1"
       },
       {
-        "desc": "beige carpeted floor",
+        "desc": "beige carpeted floor, textured surface",
         "action": "static",
         "position": "background",
         "id": "carpet_beige_1"
@@ -682,7 +692,7 @@
     ],
     "atomic_facts": [
       {
-        "fact": "A vacuum cleaner head is being pushed across the carpet.",
+        "fact": "A vacuum cleaner is being pushed across the carpeted floor.",
         "confidence": 1.0
       },
       {
@@ -691,7 +701,7 @@
       }
     ],
     "ocr": [],
-    "spatial": "The vacuum cleaner attachment is in front of the beige carpet. The silver wand extends from the bottom left towards the center where the blue head is located.",
+    "spatial": "The vacuum cleaner head is on top of the beige carpet. The silver wand extends from the vacuum head towards the bottom left corner of the frame.",
     "parse_success": true,
     "chunk_idx": 18,
     "video_id": "29M_i_-Qxg4",
@@ -699,12 +709,12 @@
   },
   {
     "time": [
-      38,
-      40
+      19,
+      20
     ],
     "visible_entities": [
       {
-        "desc": "vacuum cleaner attachment with a silver metallic telescopic wand, black plastic joints, and a wide rectangular black floor nozzle",
+        "desc": "vacuum cleaner head with a dark grey rectangular nozzle and a silver metallic telescopic wand",
         "action": "moving across the carpet",
         "position": "center/foreground",
         "id": "vacuum_cleaner_1"
@@ -724,20 +734,16 @@
     ],
     "atomic_facts": [
       {
-        "fact": "The vacuum cleaner attachment is being pushed across the carpet.",
+        "fact": "The vacuum cleaner head is moving across the carpet.",
         "confidence": 1.0
       },
       {
-        "fact": "The vacuum head is positioned in the center of the frame.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "A brown curtain hangs in the upper left corner of the room.",
+        "fact": "The vacuum cleaner leaves a clean track on the carpet surface.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The vacuum cleaner attachment is in the foreground, positioned on top of the beige carpet. The brown curtain is located in the background, to the left of the vacuum cleaner.",
+    "spatial": "The vacuum cleaner head is in the foreground, positioned in front of the beige carpet. The brown curtain is located in the top left corner, behind the area where the vacuum is operating.",
     "parse_success": true,
     "chunk_idx": 19,
     "video_id": "29M_i_-Qxg4",
@@ -745,14 +751,14 @@
   },
   {
     "time": [
-      40,
-      42
+      20,
+      21
     ],
     "visible_entities": [
       {
-        "desc": "vacuum cleaner head with a dark blue rectangular nozzle and a silver metallic extension tube",
+        "desc": "vacuum cleaner attachment with a dark blue rectangular head and a silver metallic telescopic tube",
         "action": "moving across the carpet",
-        "position": "center",
+        "position": "center/foreground",
         "id": "vacuum_cleaner_1"
       },
       {
@@ -764,16 +770,20 @@
     ],
     "atomic_facts": [
       {
-        "fact": "The vacuum cleaner head is moving across the carpet surface.",
+        "fact": "The vacuum cleaner attachment moves across the carpet surface.",
         "confidence": 1.0
       },
       {
-        "fact": "The vacuum cleaner leaves a distinct clean path on the carpet where the pile has been disturbed.",
+        "fact": "The vacuum head leaves a distinct, cleaner track on the carpet as it moves.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The carpet has a visible texture and is beige in color.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The vacuum cleaner head is positioned on top of the beige carpet. The silver extension tube extends from the head towards the bottom left of the frame.",
+    "spatial": "The vacuum cleaner attachment is positioned in the foreground, resting on top of the beige carpet. The silver tube extends from the bottom of the frame towards the vacuum head in the center.",
     "parse_success": true,
     "chunk_idx": 20,
     "video_id": "29M_i_-Qxg4",
@@ -781,12 +791,12 @@
   },
   {
     "time": [
-      42,
-      44
+      21,
+      22
     ],
     "visible_entities": [
       {
-        "desc": "vacuum cleaner with a silver metal wand, black plastic handle, and a black rectangular floor nozzle",
+        "desc": "vacuum cleaner attachment with a black rectangular head, silver metal wand, and black handle",
         "action": "moving across the carpet",
         "position": "center",
         "id": "vacuum_cleaner_1"
@@ -800,16 +810,16 @@
     ],
     "atomic_facts": [
       {
-        "fact": "The vacuum cleaner is being pushed across the carpet.",
+        "fact": "The vacuum cleaner head is being pushed across the carpet.",
         "confidence": 1.0
       },
       {
-        "fact": "The vacuum nozzle is in contact with the floor surface.",
+        "fact": "The carpet shows a distinct line where it has been vacuumed, separating a cleaner section from a dirtier section.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The vacuum cleaner is positioned in the center of the frame, resting on top of the beige carpet.",
+    "spatial": "The vacuum cleaner attachment is in the foreground, positioned on top of the beige carpet. The handle of the vacuum extends towards the bottom left of the frame.",
     "parse_success": true,
     "chunk_idx": 21,
     "video_id": "29M_i_-Qxg4",
@@ -817,14 +827,158 @@
   },
   {
     "time": [
-      44,
-      46
+      22,
+      23
     ],
     "visible_entities": [
       {
-        "desc": "vacuum cleaner with a silver metal wand, black grip, and a blue rectangular floor nozzle",
-        "action": "cleaning the carpet",
+        "desc": "vacuum cleaner attachment with a blue rectangular head and a silver metallic telescopic wand",
+        "action": "moving across the carpet",
+        "position": "foreground",
+        "id": "vacuum_cleaner_1"
+      },
+      {
+        "desc": "beige textured carpet",
+        "action": "static",
+        "position": "background",
+        "id": "carpet_beige_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The vacuum cleaner attachment is moving across the carpet.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The carpet shows a visible contrast between a cleaned area and an uncleaned area.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The vacuum cleaner attachment is in front of the carpet. The silver wand is connected to the blue head of the vacuum.",
+    "parse_success": true,
+    "chunk_idx": 22,
+    "video_id": "29M_i_-Qxg4",
+    "state_changes": []
+  },
+  {
+    "time": [
+      23,
+      24
+    ],
+    "visible_entities": [
+      {
+        "desc": "vacuum cleaner head with a blue plastic housing and a silver metallic nozzle connector, attached to a silver metal extension wand with a black grip section",
+        "action": "moving across the carpet",
+        "position": "bottom center foreground",
+        "id": "vacuum_cleaner_1"
+      },
+      {
+        "desc": "beige textured carpet with a visible pile",
+        "action": "static",
+        "position": "background",
+        "id": "carpet_beige_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The vacuum cleaner head is being pushed across the carpet.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The carpet has a beige color and a textured surface.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The vacuum cleaner head is in the foreground, positioned on top of the beige carpet. The extension wand extends from the vacuum head towards the bottom left of the frame.",
+    "parse_success": true,
+    "chunk_idx": 23,
+    "video_id": "29M_i_-Qxg4",
+    "state_changes": []
+  },
+  {
+    "time": [
+      24,
+      25
+    ],
+    "visible_entities": [
+      {
+        "desc": "vacuum cleaner head with a dark blue plastic housing and a silver metallic extension tube",
+        "action": "moving across the carpet",
         "position": "center/foreground",
+        "id": "vacuum_cleaner_1"
+      },
+      {
+        "desc": "beige textured carpet",
+        "action": "static",
+        "position": "background",
+        "id": "carpet_beige_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The vacuum cleaner head is being pushed across the carpet.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The vacuum cleaner is cleaning the floor surface.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The vacuum cleaner head is positioned in the center of the frame, resting on top of the beige carpet. The silver extension tube extends from the head towards the bottom edge of the image.",
+    "parse_success": true,
+    "chunk_idx": 24,
+    "video_id": "29M_i_-Qxg4",
+    "state_changes": []
+  },
+  {
+    "time": [
+      25,
+      26
+    ],
+    "visible_entities": [
+      {
+        "desc": "vacuum cleaner attachment with a blue T-shaped head and a silver metal extension wand",
+        "action": "moving across the carpet",
+        "position": "center/foreground",
+        "id": "vacuum_cleaner_1"
+      },
+      {
+        "desc": "beige textured carpet",
+        "action": "static",
+        "position": "background",
+        "id": "carpet_beige_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A vacuum cleaner is being pushed across the floor.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The vacuum head moves from the center towards the background.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The vacuum cleaner attachment is positioned in the foreground, resting on top of the beige carpet which extends into the background.",
+    "parse_success": true,
+    "chunk_idx": 25,
+    "video_id": "29M_i_-Qxg4",
+    "state_changes": []
+  },
+  {
+    "time": [
+      26,
+      27
+    ],
+    "visible_entities": [
+      {
+        "desc": "vacuum cleaner with a silver metallic telescopic wand, a black plastic handle, and a wide black floor nozzle head",
+        "action": "cleaning the carpet",
+        "position": "foreground",
         "id": "vacuum_cleaner_1"
       },
       {
@@ -840,156 +994,12 @@
         "confidence": 1.0
       },
       {
-        "fact": "The vacuum nozzle is in contact with the floor surface.",
+        "fact": "The vacuum head is in contact with the floor surface.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The vacuum cleaner is positioned in the center of the frame, resting on top of the beige carpet. The nozzle is in the foreground, while the carpet extends into the background.",
-    "parse_success": true,
-    "chunk_idx": 22,
-    "video_id": "29M_i_-Qxg4",
-    "state_changes": []
-  },
-  {
-    "time": [
-      46,
-      48
-    ],
-    "visible_entities": [
-      {
-        "desc": "vacuum cleaner attachment with a blue rectangular head and a silver metal wand featuring a black grip section",
-        "action": "moving across the carpet",
-        "position": "center/foreground",
-        "id": "vacuum_cleaner_1"
-      },
-      {
-        "desc": "beige textured carpet",
-        "action": "static",
-        "position": "background",
-        "id": "carpet_beige_1"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "The vacuum cleaner attachment is moving across the beige carpet.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The vacuum head is positioned in the center of the frame.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [],
-    "spatial": "The vacuum cleaner attachment is in front of the carpet background. The blue head of the vacuum is at the bottom of the silver wand.",
-    "parse_success": true,
-    "chunk_idx": 23,
-    "video_id": "29M_i_-Qxg4",
-    "state_changes": []
-  },
-  {
-    "time": [
-      48,
-      50
-    ],
-    "visible_entities": [
-      {
-        "desc": "vacuum cleaner head with a dark blue rectangular plastic body and a silver metallic telescopic handle",
-        "action": "moving across the carpet",
-        "position": "center foreground",
-        "id": "vacuum_cleaner_1"
-      },
-      {
-        "desc": "beige textured carpet",
-        "action": "static",
-        "position": "background",
-        "id": "carpet_beige_1"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "A vacuum cleaner is being pushed across the floor.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The vacuum head is moving over a beige carpet.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [],
-    "spatial": "The vacuum cleaner head is in front of the carpet and is moving across it. The handle extends from the head towards the bottom of the frame.",
-    "parse_success": true,
-    "chunk_idx": 24,
-    "video_id": "29M_i_-Qxg4",
-    "state_changes": []
-  },
-  {
-    "time": [
-      50,
-      52
-    ],
-    "visible_entities": [
-      {
-        "desc": "vacuum cleaner attachment with a blue T-shaped head and a silver metal extension wand",
-        "action": "moving across the carpet",
-        "position": "center",
-        "id": "vacuum_cleaner_1"
-      },
-      {
-        "desc": "beige carpet with a speckled texture",
-        "action": "static",
-        "position": "background",
-        "id": "carpet_beige_1"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "A vacuum cleaner is being pushed across the floor.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The vacuum head is moving over the beige carpet.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [],
-    "spatial": "The vacuum cleaner attachment is in front of the camera and on top of the beige carpet. The silver wand extends from the blue head towards the bottom of the frame.",
-    "parse_success": true,
-    "chunk_idx": 25,
-    "video_id": "29M_i_-Qxg4",
-    "state_changes": []
-  },
-  {
-    "time": [
-      52,
-      54
-    ],
-    "visible_entities": [
-      {
-        "desc": "vacuum cleaner with a silver metallic telescopic tube, black plastic handle, and a dark grey rectangular floor nozzle head",
-        "action": "moving forward across the carpet",
-        "position": "center/foreground",
-        "id": "vacuum_cleaner_1"
-      },
-      {
-        "desc": "beige textured carpet covering the floor",
-        "action": "static",
-        "position": "background/underneath",
-        "id": "carpet_beige_1"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "The vacuum cleaner is being pushed forward across the carpet.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The vacuum nozzle is in contact with the floor surface.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [],
-    "spatial": "The vacuum cleaner is positioned in the center of the frame, extending from the bottom foreground towards the middle. The vacuum head is resting on top of the beige carpet.",
+    "spatial": "The vacuum cleaner is in the foreground, positioned above the beige carpet. The nozzle head is at the bottom of the frame, extending upwards towards the handle.",
     "parse_success": true,
     "chunk_idx": 26,
     "video_id": "29M_i_-Qxg4",
@@ -997,8 +1007,8 @@
   },
   {
     "time": [
-      54,
-      56
+      27,
+      28
     ],
     "visible_entities": [
       {
@@ -1008,98 +1018,54 @@
         "id": "carpet_beige_1"
       },
       {
-        "desc": "black furniture base, likely an ottoman or sofa bottom, with a smooth finish",
+        "desc": "furniture base, likely an ottoman or sofa, featuring a beige fabric top section and a black bottom section with a ribbed texture",
         "action": "static",
         "position": "background",
-        "id": "furniture_dark_1"
+        "id": "furniture_black_beige_1"
       },
       {
-        "desc": "black leather cushion with white stitching details",
+        "desc": "black leather-like cushion or upholstery with visible white stitching",
         "action": "static",
         "position": "top",
-        "id": "furniture_dark_1"
+        "id": "furniture_black_beige_1"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "The camera is positioned low to the ground, focusing on the carpet.",
+        "fact": "The camera angle shifts to focus primarily on the beige carpet.",
         "confidence": 1.0
       },
       {
-        "fact": "A piece of black furniture rests on the beige carpet.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The camera pans slightly across the floor.",
+        "fact": "The furniture base is positioned behind the carpet area.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The beige carpet covers the floor in the foreground. The black furniture base is located in the background, resting on the carpet. The black leather cushion is positioned on top of the furniture base.",
+    "spatial": "The beige carpet is in the foreground and below the furniture base. The furniture base is located in the background, with the black cushion resting on top of it.",
     "parse_success": true,
     "chunk_idx": 27,
     "video_id": "29M_i_-Qxg4",
     "state_changes": [
-      "vacuum cleaner no longer visible, scene shifts to furniture (ottoman/sofa base and leather cushion)"
+      "vacuum cleaner action stops; scene shifts to static furniture and shaggy carpet texture"
     ]
   },
   {
     "time": [
-      56,
-      58
+      28,
+      29
     ],
     "visible_entities": [
       {
-        "desc": "beige textured surface, likely a carpet or rug, with a fibrous appearance",
+        "desc": "beige textured surface, likely carpet or rug, with a mottled pattern of light and dark fibers",
         "action": "static",
         "position": "center",
         "id": "carpet_beige_1"
       },
       {
-        "desc": "dark, blurry, undefined object, possibly black or dark blue",
+        "desc": "dark, blurry object, possibly black fabric or a shadow",
         "action": "static",
         "position": "top",
-        "id": "furniture_dark_1"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "A beige textured surface fills the majority of the frame.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "A dark, blurry object is visible at the top edge of the frame.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The camera angle is high, looking down at the floor.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [],
-    "spatial": "The dark, blurry object is located at the top of the frame, above the beige textured surface which occupies the rest of the view.",
-    "parse_success": true,
-    "chunk_idx": 28,
-    "video_id": "29M_i_-Qxg4",
-    "state_changes": []
-  },
-  {
-    "time": [
-      58,
-      60
-    ],
-    "visible_entities": [
-      {
-        "desc": "rough, textured beige surface with a stippled or pebbled finish, likely a wall or ceiling",
-        "action": "static",
-        "position": "left/center/foreground",
-        "id": "wall_textured_1"
-      },
-      {
-        "desc": "smooth, light-colored vertical surface, likely a wall",
-        "action": "static",
-        "position": "right/background",
-        "id": "wall_white_1"
+        "id": "shadow_object_dark_1"
       }
     ],
     "atomic_facts": [
@@ -1108,75 +1074,103 @@
         "confidence": 1.0
       },
       {
-        "fact": "A smooth, light-colored wall is visible on the right side of the frame.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The scene is static with no movement.",
+        "fact": "A dark object is partially visible at the top edge of the frame.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The rough, textured beige surface occupies the left and center of the frame. The smooth, light-colored wall is to the right of the textured surface. The textured surface is in the foreground, while the smooth wall appears to be in the background.",
+    "spatial": "The dark object is located at the top of the frame, above the beige textured surface which fills the rest of the view.",
+    "parse_success": true,
+    "chunk_idx": 28,
+    "video_id": "29M_i_-Qxg4",
+    "state_changes": []
+  },
+  {
+    "time": [
+      29,
+      30
+    ],
+    "visible_entities": [
+      {
+        "desc": "rough, textured beige surface with a granular, stucco-like finish",
+        "action": "static",
+        "position": "left",
+        "id": "carpet_beige_1"
+      },
+      {
+        "desc": "smooth, plain white wall section",
+        "action": "static",
+        "position": "right",
+        "id": "wall_white_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The camera remains static on the textured surface.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A rough beige surface occupies the majority of the frame.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The rough, textured beige surface is to the left of the smooth white wall section. The white wall is positioned along the right edge of the frame.",
     "parse_success": true,
     "chunk_idx": 29,
     "video_id": "29M_i_-Qxg4",
     "state_changes": [
-      "camera view shifts from floor/carpet to walls and ceiling surfaces"
+      "furniture disappears; view changes to wall and rough textured surface"
     ]
   },
   {
     "time": [
-      60,
-      62
+      30,
+      31
     ],
     "visible_entities": [
       {
-        "desc": "rough, textured surface with a speckled pattern of light and dark gray spots, resembling concrete or stucco",
+        "desc": "textured beige surface with a rough, granular appearance, likely a carpet or rug",
         "action": "static",
         "position": "center",
-        "id": "wall_textured_1"
+        "id": "carpet_beige_1"
       },
       {
-        "desc": "smooth, plain, light-colored vertical surface, likely a white or off-white wall",
+        "desc": "smooth, light-colored vertical surface, likely a wall",
         "action": "static",
         "position": "right",
         "id": "wall_white_1"
       },
       {
-        "desc": "dark, curved object, possibly a hose or cable, partially visible at the bottom edge",
+        "desc": "curved, dark teal object, possibly a hose or cord",
         "action": "static",
-        "position": "bottom",
-        "id": "object_cable_1"
+        "position": "bottom-left",
+        "id": "hose_cord_dark_1"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "The camera remains static, focused on a textured surface.",
+        "fact": "The camera remains static, focusing on the textured floor surface.",
         "confidence": 1.0
       },
       {
-        "fact": "A rough, speckled surface occupies the majority of the frame.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "A smooth, light-colored wall is visible on the right side of the frame.",
+        "fact": "A teal object is partially visible in the bottom-left corner of the frame.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The rough, textured surface is to the left of the smooth, light-colored wall. The dark, curved object is at the bottom of the frame, below the textured surface.",
+    "spatial": "The textured beige surface occupies the majority of the frame. The smooth, light-colored wall is to the right of the textured surface. The curved teal object is located at the bottom-left edge of the textured surface.",
     "parse_success": true,
     "chunk_idx": 30,
     "video_id": "29M_i_-Qxg4",
     "state_changes": [
-      "dark curved object (hose/cable) becomes visible at bottom edge"
+      "dark teal/green curved object (hose/cord) appears in the scene"
     ]
   },
   {
     "time": [
-      62,
-      64
+      31,
+      32
     ],
     "visible_entities": [
       {
@@ -1186,34 +1180,30 @@
         "id": "carpet_beige_1"
       },
       {
-        "desc": "smooth white wall or baseboard",
+        "desc": "white vertical wall surface",
         "action": "static",
         "position": "right",
         "id": "wall_white_1"
       },
       {
-        "desc": "dark curved object, possibly a hose or cable, partially visible",
+        "desc": "dark green curved object, likely a hose or cord",
         "action": "static",
         "position": "bottom-left",
-        "id": "object_cable_1"
+        "id": "hose_cord_dark_1"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "The camera remains static, focusing on the floor.",
+        "fact": "The camera is pointed downwards at a carpeted floor.",
         "confidence": 1.0
       },
       {
-        "fact": "A beige carpet covers the majority of the visible floor area.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "A white vertical surface borders the carpet on the right side.",
+        "fact": "A dark green curved object is visible in the bottom-left corner.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The beige textured carpet occupies the center and left portions of the frame. The smooth white wall is positioned to the right of the carpet, forming a vertical edge. A small portion of a dark curved object is visible at the very bottom-left corner, resting on the carpet.",
+    "spatial": "The beige textured carpet occupies the majority of the frame. The white vertical wall is located to the right of the carpet. The dark green curved object is positioned at the bottom-left edge of the carpet.",
     "parse_success": true,
     "chunk_idx": 31,
     "video_id": "29M_i_-Qxg4",
@@ -1221,8 +1211,8 @@
   },
   {
     "time": [
-      64,
-      66
+      32,
+      33
     ],
     "visible_entities": [
       {
@@ -1232,24 +1222,30 @@
         "id": "carpet_beige_1"
       },
       {
-        "desc": "dark rectangular object, possibly a furniture base or ottoman, with a lighter top edge",
+        "desc": "white wall or baseboard",
+        "action": "static",
+        "position": "right",
+        "id": "wall_white_1"
+      },
+      {
+        "desc": "dark object with a beige top section, possibly furniture",
         "action": "static",
         "position": "top right",
-        "id": "furniture_dark_1"
+        "id": "furniture_black_beige_1"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "The camera captures a close-up view of the floor surface.",
+        "fact": "The camera is positioned low to the ground, capturing a close-up view of the carpet texture.",
         "confidence": 1.0
       },
       {
-        "fact": "A dark object is positioned in the upper right corner of the frame.",
+        "fact": "A dark object with a beige top is partially visible in the upper right corner of the frame.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The beige textured carpet occupies the majority of the foreground and bottom area. The dark rectangular object is located in the top right corner, resting on the carpet.",
+    "spatial": "The beige textured carpet covers the majority of the foreground and left side. A white wall is located to the right of the carpet. The dark object with a beige top is situated in the top right corner, above the carpet.",
     "parse_success": true,
     "chunk_idx": 32,
     "video_id": "29M_i_-Qxg4",
@@ -1257,71 +1253,93 @@
   },
   {
     "time": [
-      66,
-      68
+      33,
+      34
     ],
     "visible_entities": [
       {
-        "desc": "beige carpet with a textured, fibrous surface",
+        "desc": "beige carpet with a textured, looped pile surface",
         "action": "static",
         "position": "foreground",
         "id": "carpet_beige_1"
       },
       {
-        "desc": "furniture base with a dark brown or black bottom section and a beige upper section",
+        "desc": "dark-colored furniture base, likely black or dark brown, with a solid, blocky structure",
         "action": "static",
         "position": "background",
-        "id": "furniture_dark_1"
+        "id": "furniture_black_beige_1"
+      },
+      {
+        "desc": "light-colored cushion or upholstery, appearing off-white or beige, resting on the furniture base",
+        "action": "static",
+        "position": "background",
+        "id": "furniture_black_beige_1"
+      },
+      {
+        "desc": "thin, light-colored cord or wire, possibly white or beige, draped over the furniture",
+        "action": "static",
+        "position": "background",
+        "id": "cord_light_1"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "The camera is focused on the floor.",
+        "fact": "The camera angle is low, focusing on the floor.",
         "confidence": 1.0
       },
       {
-        "fact": "A piece of furniture is positioned in the background.",
+        "fact": "A dark furniture base is positioned behind the carpeted area.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A light-colored cushion rests on top of the dark furniture base.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A cord is draped over the furniture near the cushion.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The beige carpet is in the foreground and below the furniture base. The furniture base is located in the background, above the carpet.",
+    "spatial": "The beige carpet occupies the foreground and extends towards the background. The dark furniture base is located in the background, above the carpet. The light-colored cushion is on top of the dark furniture base. The thin cord is near the cushion, draped over the furniture.",
     "parse_success": true,
     "chunk_idx": 33,
     "video_id": "29M_i_-Qxg4",
-    "state_changes": []
+    "state_changes": [
+      "light-colored cord draped over furniture appears; furniture details become more distinct"
+    ]
   },
   {
     "time": [
-      68,
-      70
+      34,
+      35
     ],
     "visible_entities": [
       {
-        "desc": "beige textured carpet with a speckled pattern",
+        "desc": "beige textured carpet with a speckled, looped pile pattern",
         "action": "static",
         "position": "center",
         "id": "carpet_beige_1"
       },
       {
-        "desc": "white wall baseboard",
+        "desc": "smooth, plain white wall",
         "action": "static",
-        "position": "top right",
+        "position": "right",
         "id": "wall_white_1"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "The camera focuses on a section of beige carpet.",
+        "fact": "The camera is positioned looking down at a carpeted floor.",
         "confidence": 1.0
       },
       {
-        "fact": "A white wall or baseboard is visible in the upper right corner.",
+        "fact": "A white wall is visible on the right side of the frame.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The white wall baseboard is located in the top right corner of the frame, adjacent to the beige carpet which fills the rest of the view.",
+    "spatial": "The beige textured carpet occupies the majority of the frame, extending from the left to the center. The smooth white wall is positioned to the right of the carpet, forming a vertical edge along the right side of the image.",
     "parse_success": true,
     "chunk_idx": 34,
     "video_id": "29M_i_-Qxg4",

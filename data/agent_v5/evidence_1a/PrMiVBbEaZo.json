@@ -2,11 +2,11 @@
   {
     "time": [
       0,
-      2
+      1
     ],
     "visible_entities": [
       {
-        "desc": "Text reading 'What Did You do this Weekend?' in a green, serif font with a 3D drop shadow effect",
+        "desc": "Text reading 'What Did You do this Weekend?' in a green, serif font with a 3D shadow effect",
         "action": "static",
         "position": "center"
       },
@@ -16,7 +16,7 @@
         "position": "center"
       },
       {
-        "desc": "Light brown wooden background with horizontal grain texture",
+        "desc": "A light brown, wood-grain textured background",
         "action": "static",
         "position": "background"
       }
@@ -27,37 +27,467 @@
         "confidence": 1.0
       },
       {
-        "fact": "The text is positioned between two horizontal white lines.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The background is a wooden surface.",
+        "fact": "The text is positioned between two horizontal lines.",
         "confidence": 1.0
       }
     ],
     "ocr": [
-      "What Did You do this Weekend?"
+      "What Did You do",
+      "this Weekend?"
     ],
-    "spatial": "The green text is centered in the middle of the frame. One white horizontal line is located above the text, and the second white horizontal line is located below the text. All elements are superimposed on top of the wooden background.",
+    "spatial": "The text 'What Did You do this Weekend?' is centered on the screen. One horizontal white line is positioned above the text, and the second horizontal white line is positioned below the text. The text and lines are superimposed on a wood-grain background.",
     "parse_success": true,
     "chunk_idx": 0,
-    "video_id": "PrMiVBbEaZo",
-    "_rescued": "parse"
+    "video_id": "PrMiVBbEaZo"
   },
   {
     "time": [
-      2,
-      4
+      1,
+      2
     ],
     "visible_entities": [
       {
-        "desc": "person in a dark outfit riding a sled",
+        "desc": "long, winding, concrete luge track with raised side walls, covered in snow",
+        "action": "static",
+        "position": "center"
+      },
+      {
+        "desc": "dark-colored luge sled with a rider",
         "action": "sliding down the track",
         "position": "center"
       },
       {
-        "desc": "curved concrete luge track with wooden side barriers",
+        "desc": "tall, bare trees with dark trunks",
         "action": "static",
+        "position": "background"
+      },
+      {
+        "desc": "white snow covering the ground and track edges",
+        "action": "static",
+        "position": "foreground"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A person on a luge sled is sliding down a winding, snow-covered track.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The track curves through a forest of bare trees.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The ground and surrounding area are covered in snow.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The luge sled with the rider is on the concrete track. The track is in the center of the frame, winding from the background towards the foreground. The bare trees are in the background, on both sides of the track. The snow is on the ground, surrounding the track and trees.",
+    "parse_success": true,
+    "chunk_idx": 1,
+    "video_id": "PrMiVBbEaZo"
+  },
+  {
+    "time": [
+      2,
+      3
+    ],
+    "visible_entities": [
+      {
+        "desc": "person wearing dark clothing, sitting on a dark sled",
+        "action": "sliding down the track",
+        "position": "center"
+      },
+      {
+        "desc": "long, curved track with a wooden side wall and a snow-covered surface",
+        "action": "static",
+        "position": "center"
+      },
+      {
+        "desc": "snow-covered ground and numerous bare trees",
+        "action": "static",
+        "position": "background"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A person is sliding down a curved, snow-covered track on a sled.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The track is bordered by a wooden wall on the left side.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The scene is set in a snowy, wooded area.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The person on the sled is in the center of the frame, moving along the track. The wooden wall of the track is to the left of the person. The snowy woods are in the background, surrounding the track.",
+    "parse_success": true,
+    "chunk_idx": 2,
+    "video_id": "PrMiVBbEaZo"
+  },
+  {
+    "time": [
+      3,
+      4
+    ],
+    "visible_entities": [
+      {
+        "desc": "text graphic with green serif font and drop shadow",
+        "action": "static",
+        "position": "center"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The text 'Was it Warm?' is displayed on a wooden background.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "Was it Warm?"
+    ],
+    "spatial": "The text 'Was it Warm?' is centered on the screen, positioned between two horizontal white lines.",
+    "parse_success": true,
+    "chunk_idx": 3,
+    "video_id": "PrMiVBbEaZo"
+  },
+  {
+    "time": [
+      4,
+      5
+    ],
+    "visible_entities": [
+      {
+        "desc": "Text 'Was it Warm?' in a green, serif font with a black drop shadow",
+        "action": "static",
+        "position": "center"
+      },
+      {
+        "desc": "Light brown wooden background with horizontal grain texture",
+        "action": "static",
+        "position": "background"
+      },
+      {
+        "desc": "Two thin horizontal white lines",
+        "action": "static",
+        "position": "top and bottom"
+      },
+      {
+        "desc": "Snowy outdoor scene with bare trees, a winding path, and a group of people in dark winter clothing",
+        "action": "static",
+        "position": "background"
+      },
+      {
+        "desc": "Text 'Muskegon Sports Center' in a red serif font with a black outline",
+        "action": "static",
+        "position": "bottom"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The video transitions from a title card to a scene of a snowy park.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The title card displays the text 'Was it Warm?'.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The second scene shows the text 'Muskegon Sports Center' overlaid on the footage.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A group of people is standing on a snow-covered path.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "Was it Warm?",
+      "Muskegon Sports Center"
+    ],
+    "spatial": "In the first frame, the text 'Was it Warm?' is centered on the wooden background, positioned between two horizontal white lines. In the second frame, the text 'Muskegon Sports Center' is located at the bottom of the screen, below the group of people standing on the snowy path.",
+    "parse_success": true,
+    "chunk_idx": 4,
+    "video_id": "PrMiVBbEaZo"
+  },
+  {
+    "time": [
+      5,
+      6
+    ],
+    "visible_entities": [
+      {
+        "desc": "Group of people wearing dark winter clothing, standing together",
+        "action": "static",
+        "position": "center"
+      },
+      {
+        "desc": "Snow-covered ground",
+        "action": "static",
+        "position": "bottom"
+      },
+      {
+        "desc": "Bare trees with dark trunks",
+        "action": "static",
+        "position": "background"
+      },
+      {
+        "desc": "Wooden picnic tables covered in snow",
+        "action": "static",
+        "position": "foreground"
+      },
+      {
+        "desc": "Text 'Muskegon Sports Center' in pink font with black outline",
+        "action": "static",
+        "position": "bottom"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A group of people is standing in the center of the snowy area.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The text 'Muskegon Sports Center' is displayed at the bottom of the screen.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "Snow covers the ground and the picnic tables.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "Muskegon Sports Center"
+    ],
+    "spatial": "The group of people is in the center of the frame, standing on the snow-covered ground. The picnic tables are in the foreground, positioned in front of the group. The trees are in the background, behind the people and the tables. The text 'Muskegon Sports Center' is located at the bottom of the image, below the picnic tables.",
+    "parse_success": true,
+    "chunk_idx": 5,
+    "video_id": "PrMiVBbEaZo"
+  },
+  {
+    "time": [
+      6,
+      7
+    ],
+    "visible_entities": [
+      {
+        "desc": "Text overlay reading 'Muskegon Sports Center' in a serif font, colored pink with a black outline",
+        "action": "static",
+        "position": "bottom center"
+      },
+      {
+        "desc": "Group of people wearing dark winter clothing and jackets",
+        "action": "standing",
+        "position": "center background"
+      },
+      {
+        "desc": "Snow-covered ground",
+        "action": "static",
+        "position": "foreground"
+      },
+      {
+        "desc": "Bare trees with dark trunks",
+        "action": "static",
+        "position": "background"
+      },
+      {
+        "desc": "Snowy ski slope or hill",
+        "action": "static",
+        "position": "background"
+      },
+      {
+        "desc": "Wooden picnic tables covered in snow",
+        "action": "static",
+        "position": "middle ground"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A group of people is standing together in the snow.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The text 'Muskegon Sports Center' is displayed at the bottom of the screen.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The scene is a snowy outdoor area with trees and a slope.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "Muskegon Sports Center"
+    ],
+    "spatial": "The group of people is standing in the center background, in front of the snowy slope and trees. The snow-covered picnic tables are located in the middle ground, to the left and right of the group. The text overlay is positioned at the bottom center of the frame, superimposed over the snowy ground.",
+    "parse_success": true,
+    "chunk_idx": 6,
+    "video_id": "PrMiVBbEaZo"
+  },
+  {
+    "time": [
+      7,
+      8
+    ],
+    "visible_entities": [
+      {
+        "desc": "text overlay reading 'Muskegon Sports Center' in a pink serif font with a black outline",
+        "action": "static",
+        "position": "bottom center"
+      },
+      {
+        "desc": "group of people wearing dark winter clothing",
+        "action": "standing",
+        "position": "center background"
+      },
+      {
+        "desc": "snow-covered ground",
+        "action": "static",
+        "position": "foreground"
+      },
+      {
+        "desc": "bare trees with dark trunks",
+        "action": "static",
+        "position": "background"
+      },
+      {
+        "desc": "snow-covered benches",
+        "action": "static",
+        "position": "middle ground"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A group of people is standing together in the snow.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The text 'Muskegon Sports Center' is displayed at the bottom of the screen.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The scene is a snowy outdoor area with trees and benches.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "Muskegon Sports Center"
+    ],
+    "spatial": "The text 'Muskegon Sports Center' is located at the bottom center of the frame, superimposed over the snowy ground. A group of people is standing in the center background, positioned between several bare trees. Snow-covered benches are visible in the middle ground, to the left and right of the group of people.",
+    "parse_success": true,
+    "chunk_idx": 7,
+    "video_id": "PrMiVBbEaZo"
+  },
+  {
+    "time": [
+      8,
+      9
+    ],
+    "visible_entities": [
+      {
+        "desc": "curved paved road, gray surface, wet appearance",
+        "action": "static",
+        "position": "center"
+      },
+      {
+        "desc": "snow-covered ground, white, textured",
+        "action": "static",
+        "position": "foreground"
+      },
+      {
+        "desc": "forest of tall thin trees, dark trunks, bare branches",
+        "action": "static",
+        "position": "background"
+      },
+      {
+        "desc": "low concrete curb, gray, linear",
+        "action": "static",
+        "position": "foreground"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A curved paved road winds through a snowy landscape.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "Snow covers the ground in the foreground and background.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A low concrete curb borders the road in the foreground.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "Tall trees stand behind the road in the background.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The snow-covered ground is in the foreground, situated in front of the curved paved road. The low concrete curb runs along the edge of the road, separating it from the snow. The forest of tall trees is located behind the road in the background.",
+    "parse_success": true,
+    "chunk_idx": 8,
+    "video_id": "PrMiVBbEaZo"
+  },
+  {
+    "time": [
+      9,
+      10
+    ],
+    "visible_entities": [
+      {
+        "desc": "dark-colored motorcycle, appearing as a silhouette, with a rider in dark clothing",
+        "action": "leaning into a curve on a snowy road",
+        "position": "center"
+      },
+      {
+        "desc": "snow-covered road, curving to the right, with a low concrete barrier on the outer edge",
+        "action": "static",
+        "position": "center"
+      },
+      {
+        "desc": "snow-covered forest with bare trees",
+        "action": "static",
+        "position": "background"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A motorcycle is actively navigating a turn on a snow-covered road.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The road is bordered by a low concrete barrier.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The surrounding environment is a forest covered in snow.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The motorcycle is on the snow-covered road. The road is in front of the snow-covered forest. The concrete barrier is on the right side of the road from the camera's perspective.",
+    "parse_success": true,
+    "chunk_idx": 9,
+    "video_id": "PrMiVBbEaZo"
+  },
+  {
+    "time": [
+      10,
+      11
+    ],
+    "visible_entities": [
+      {
+        "desc": "person wearing a red helmet and a yellow jacket",
+        "action": "riding a sled",
+        "position": "center"
+      },
+      {
+        "desc": "long, narrow, dark-colored sled or chute",
+        "action": "moving down the slope",
         "position": "center"
       },
       {
@@ -68,558 +498,103 @@
     ],
     "atomic_facts": [
       {
-        "fact": "A person is sliding down a curved track on a sled.",
+        "fact": "A person wearing a red helmet and yellow jacket is riding a sled down a snowy slope.",
         "confidence": 1.0
       },
       {
-        "fact": "The track is surrounded by snow and trees.",
+        "fact": "The sled is moving along a narrow, dark track through the woods.",
         "confidence": 1.0
       },
       {
-        "fact": "The person is moving away from the camera.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [],
-    "spatial": "The person on the sled is on the concrete track. The track is surrounded by snow-covered ground and trees in the background. The wooden barriers are on the sides of the track.",
-    "parse_success": true,
-    "chunk_idx": 1,
-    "video_id": "PrMiVBbEaZo",
-    "_rescued": "parse"
-  },
-  {
-    "time": [
-      4,
-      6
-    ],
-    "visible_entities": [
-      {
-        "desc": "person wearing dark clothing, riding a sled",
-        "action": "sliding down the track",
-        "position": "center"
-      },
-      {
-        "desc": "wooden luge track with snow surface",
-        "action": "static",
-        "position": "center"
-      },
-      {
-        "desc": "snow-covered trees",
-        "action": "static",
-        "position": "background"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "A person is sliding down a wooden track on a sled.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The track is surrounded by snow and trees.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The person is moving away from the camera.",
+        "fact": "The scene is set in a snowy forest with bare trees.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The person is on the wooden track. The track is in front of the snow-covered trees. The person is in the center of the frame.",
+    "spatial": "The person in the red helmet is on the sled, which is positioned in the center of the frame. The sled is on a snowy path that runs through the background of bare trees.",
     "parse_success": true,
-    "chunk_idx": 2,
-    "video_id": "PrMiVBbEaZo",
-    "_rescued": "parse"
+    "chunk_idx": 10,
+    "video_id": "PrMiVBbEaZo"
   },
   {
     "time": [
-      6,
-      8
-    ],
-    "visible_entities": [
-      {
-        "desc": "wooden surface, light brown, horizontal grain texture",
-        "action": "static",
-        "position": "background"
-      },
-      {
-        "desc": "text 'Was it Warm?', green serif font with 3D bevel effect and drop shadow",
-        "action": "static",
-        "position": "center"
-      },
-      {
-        "desc": "thin horizontal white lines",
-        "action": "static",
-        "position": "top/bottom"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "The text 'Was it Warm?' is displayed in the center of the screen.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The text is framed by two horizontal white lines, one above and one below.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [
-      "Was it Warm?"
-    ],
-    "spatial": "The text 'Was it Warm?' is centered on the wooden background. A white horizontal line is positioned above the text, and another white horizontal line is positioned below the text.",
-    "parse_success": true,
-    "chunk_idx": 3,
-    "video_id": "PrMiVBbEaZo",
-    "_rescued": "parse"
-  },
-  {
-    "time": [
-      8,
-      10
-    ],
-    "visible_entities": [
-      {
-        "desc": "text 'Was it Warm?' in a green, serif font with a drop shadow",
-        "action": "static",
-        "position": "center"
-      },
-      {
-        "desc": "two thin, horizontal white lines",
-        "action": "static",
-        "position": "top and bottom"
-      },
-      {
-        "desc": "text 'Muskegon Sports Center' in a red, serif font with a black outline",
-        "action": "static",
-        "position": "bottom"
-      },
-      {
-        "desc": "a group of people in dark winter clothing",
-        "action": "standing",
-        "position": "center"
-      },
-      {
-        "desc": "a snow-covered hill with a winding path",
-        "action": "static",
-        "position": "background"
-      },
-      {
-        "desc": "bare trees with dark trunks",
-        "action": "static",
-        "position": "background"
-      },
-      {
-        "desc": "wooden fences along the sides of the path",
-        "action": "static",
-        "position": "left and right"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "The text 'Was it Warm?' is displayed on a wood-grain background.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The scene transitions to an outdoor winter setting.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The text 'Muskegon Sports Center' is overlaid on the bottom of the winter scene.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "A group of people is standing on a snow-covered path.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The path is flanked by bare trees and wooden fences.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [
-      "Was it Warm?",
-      "Muskegon Sports Center"
-    ],
-    "spatial": "The text 'Was it Warm?' is centered between two horizontal lines. In the second scene, the group of people is in the center of the frame, standing on the snow-covered path. The wooden fences are to the left and right of the path. The text 'Muskegon Sports Center' is at the bottom of the frame, below the group of people.",
-    "parse_success": true,
-    "chunk_idx": 4,
-    "video_id": "PrMiVBbEaZo",
-    "_rescued": "parse"
-  },
-  {
-    "time": [
-      10,
+      11,
       12
     ],
     "visible_entities": [
       {
-        "desc": "Text overlay reading 'Muskegon Sports Center' in a pink serif font with a black outline",
+        "desc": "person wearing a red helmet, a yellow and blue jacket with a black logo, and dark gloves",
+        "action": "standing on a wooden platform",
+        "position": "center foreground"
+      },
+      {
+        "desc": "person wearing a black helmet and a dark blue jacket",
+        "action": "sitting on the wooden platform",
+        "position": "left background"
+      },
+      {
+        "desc": "person wearing a red jacket and a black helmet",
+        "action": "sitting on the wooden platform",
+        "position": "bottom left"
+      },
+      {
+        "desc": "red climbing harness with black straps",
         "action": "static",
-        "position": "bottom/center"
+        "position": "center foreground"
       },
       {
-        "desc": "A group of people wearing dark winter clothing, standing together",
-        "action": "standing",
-        "position": "center"
+        "desc": "wooden platform railing",
+        "action": "static",
+        "position": "right foreground"
       },
       {
-        "desc": "A snowy landscape with bare trees and a winding ski jump ramp in the background",
+        "desc": "snowy ice slide track",
         "action": "static",
         "position": "background"
       },
       {
-        "desc": "Wooden benches covered in snow",
-        "action": "static",
-        "position": "foreground"
+        "desc": "person wearing a red helmet and a dark jacket with red stripes",
+        "action": "standing at the bottom of the slide",
+        "position": "center background"
+      },
+      {
+        "desc": "person wearing a red helmet and a yellow jacket",
+        "action": "standing near the slide",
+        "position": "left background"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A group of people is standing in the middle of a snowy area.",
+        "fact": "A person in a yellow and blue jacket is standing on a wooden platform.",
         "confidence": 1.0
       },
       {
-        "fact": "The text 'Muskegon Sports Center' is displayed at the bottom of the screen.",
+        "fact": "The person in the yellow and blue jacket is wearing a red harness.",
         "confidence": 1.0
       },
       {
-        "fact": "Snow covers the ground and the benches in the foreground.",
+        "fact": "Several people are waiting on the wooden platform.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "Other people are standing at the bottom of the snowy slide.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The setting is a snowy forest with bare trees.",
         "confidence": 1.0
       }
     ],
-    "ocr": [
-      "Muskegon Sports Center"
-    ],
-    "spatial": "The group of people is standing in the center of the frame, in front of the ski jump ramp. The text overlay is positioned below the group of people. The snowy benches are in the foreground, to the left and right of the central path.",
+    "ocr": [],
+    "spatial": "The person in the yellow and blue jacket is in front of the person in the dark blue jacket. The person in the red jacket is below the person in the dark blue jacket. The wooden railing is to the right of the person in the yellow and blue jacket. The snowy slide is behind the group of people on the platform.",
     "parse_success": true,
-    "chunk_idx": 5,
-    "video_id": "PrMiVBbEaZo",
-    "_rescued": "parse"
+    "chunk_idx": 11,
+    "video_id": "PrMiVBbEaZo"
   },
   {
     "time": [
       12,
-      14
-    ],
-    "visible_entities": [
-      {
-        "desc": "Text overlay reading 'Muskegon Sports Center' in a pink serif font with a black outline",
-        "action": "static",
-        "position": "bottom/foreground"
-      },
-      {
-        "desc": "Group of people wearing dark winter clothing, standing together",
-        "action": "standing",
-        "position": "center/middle-ground"
-      },
-      {
-        "desc": "Snow-covered ground",
-        "action": "static",
-        "position": "bottom/foreground"
-      },
-      {
-        "desc": "Tall bare trees with dark trunks",
-        "action": "static",
-        "position": "background"
-      },
-      {
-        "desc": "Wooden park bench covered in snow",
-        "action": "static",
-        "position": "right/middle-ground"
-      },
-      {
-        "desc": "Wooden park bench covered in snow",
-        "action": "static",
-        "position": "left/middle-ground"
-      },
-      {
-        "desc": "Snow-covered hill or slope",
-        "action": "static",
-        "position": "background"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "A group of people is standing in the snow.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The text 'Muskegon Sports Center' is displayed at the bottom of the screen.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "Snow covers the ground, benches, and hill.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [
-      "Muskegon Sports Center"
-    ],
-    "spatial": "The text 'Muskegon Sports Center' is located at the bottom of the frame, in front of the snowy ground. The group of people is standing in the center of the scene, between the trees. A snow-covered bench is to the right of the group, and another is to the left. The trees and the snow-covered hill are behind the group of people.",
-    "parse_success": true,
-    "chunk_idx": 6,
-    "video_id": "PrMiVBbEaZo",
-    "_rescued": "parse"
-  },
-  {
-    "time": [
-      14,
-      16
-    ],
-    "visible_entities": [
-      {
-        "desc": "text overlay 'Muskegon Sports Center' in pink serif font with black outline",
-        "action": "static",
-        "position": "bottom/foreground"
-      },
-      {
-        "desc": "group of people wearing dark winter coats",
-        "action": "standing",
-        "position": "center/right/mid-ground"
-      },
-      {
-        "desc": "snowy hill with trees",
-        "action": "static",
-        "position": "background"
-      },
-      {
-        "desc": "wooden bench",
-        "action": "static",
-        "position": "right/foreground"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "A group of people is standing together on a snowy slope.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The text 'Muskegon Sports Center' is displayed at the bottom of the screen.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "A wooden bench sits in the snow to the right of the group.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [
-      "Muskegon Sports Center"
-    ],
-    "spatial": "The text 'Muskegon Sports Center' is at the bottom of the frame, below the snowy scene. The group of people is standing in the center-right mid-ground, near the base of a hill. A wooden bench is positioned to the right of the group in the foreground.",
-    "parse_success": true,
-    "chunk_idx": 7,
-    "video_id": "PrMiVBbEaZo",
-    "_rescued": "parse"
-  },
-  {
-    "time": [
-      16,
-      18
-    ],
-    "visible_entities": [
-      {
-        "desc": "curved paved road, dark grey asphalt, wet surface",
-        "action": "static",
-        "position": "center"
-      },
-      {
-        "desc": "white snow, covering the ground",
-        "action": "static",
-        "position": "foreground"
-      },
-      {
-        "desc": "tall thin trees, bare branches, dark trunks",
-        "action": "static",
-        "position": "background"
-      },
-      {
-        "desc": "dark low barrier or curb, concrete or stone",
-        "action": "static",
-        "position": "left"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "A curved paved road winds through a snowy landscape.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "Snow covers the ground in the foreground and along the edges of the road.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "A forest of tall, thin trees stands in the background behind the road.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [],
-    "spatial": "The white snow is in the foreground, covering the ground. The curved paved road is in the center, winding from the left towards the background. A dark low barrier runs along the left edge of the road. The tall thin trees are in the background, behind the road.",
-    "parse_success": true,
-    "chunk_idx": 8,
-    "video_id": "PrMiVBbEaZo",
-    "_rescued": "parse"
-  },
-  {
-    "time": [
-      18,
-      20
-    ],
-    "visible_entities": [
-      {
-        "desc": "dark-colored vehicle, appearing as a low-profile silhouette, possibly a sports car or go-kart",
-        "action": "driving along a curved road",
-        "position": "center"
-      },
-      {
-        "desc": "snow-covered winding road with dark asphalt surface and snow-covered banks",
-        "action": "static",
-        "position": "center"
-      },
-      {
-        "desc": "dense forest of bare trees with thin trunks in the background",
-        "action": "static",
-        "position": "background"
-      },
-      {
-        "desc": "wooden posts or barriers along the roadside",
-        "action": "static",
-        "position": "foreground"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "A dark vehicle is driving along a curved road.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The road is surrounded by snow-covered ground and trees.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The vehicle moves from the right side of the frame towards the left.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [],
-    "spatial": "The dark vehicle is on the winding road. The wooden posts are in the foreground, near the bottom edge of the frame. The forest of bare trees is behind the road, filling the background.",
-    "parse_success": true,
-    "chunk_idx": 9,
-    "video_id": "PrMiVBbEaZo",
-    "_rescued": "parse"
-  },
-  {
-    "time": [
-      20,
-      22
-    ],
-    "visible_entities": [
-      {
-        "desc": "person wearing a red helmet and a yellow jacket",
-        "action": "riding a bobsled",
-        "position": "center"
-      },
-      {
-        "desc": "long, dark-colored bobsled",
-        "action": "sliding down a snowy track",
-        "position": "center"
-      },
-      {
-        "desc": "snow-covered forest with bare trees",
-        "action": "static",
-        "position": "background"
-      },
-      {
-        "desc": "wooden railing structure",
-        "action": "static",
-        "position": "foreground"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "A person wearing a red helmet and yellow jacket is riding a bobsled.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The bobsled is moving down a snowy track.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The scene is set in a snowy forest.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [],
-    "spatial": "The person in the red helmet and yellow jacket is sitting inside the bobsled. The bobsled is on the snowy track, which is surrounded by bare trees. A wooden railing is in the foreground, to the left of the bobsled's path.",
-    "parse_success": true,
-    "chunk_idx": 10,
-    "video_id": "PrMiVBbEaZo",
-    "_rescued": "parse"
-  },
-  {
-    "time": [
-      22,
-      24
-    ],
-    "visible_entities": [
-      {
-        "desc": "person wearing a red helmet, yellow vest over a blue jacket, and black gloves",
-        "action": "standing on a wooden platform",
-        "position": "center"
-      },
-      {
-        "desc": "person wearing a black helmet and dark clothing",
-        "action": "standing",
-        "position": "left"
-      },
-      {
-        "desc": "person wearing a red jacket and red helmet",
-        "action": "standing",
-        "position": "bottom left"
-      },
-      {
-        "desc": "wooden railing",
-        "action": "static",
-        "position": "right"
-      },
-      {
-        "desc": "snow-covered ice track",
-        "action": "static",
-        "position": "background"
-      },
-      {
-        "desc": "red sled",
-        "action": "static",
-        "position": "center"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "A person in a yellow vest stands on a wooden platform next to a railing.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "A red sled is positioned on the platform near the person in the yellow vest.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "Other people in helmets are waiting on the platform.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The setting is a snowy outdoor area with trees in the background.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [],
-    "spatial": "The person in the yellow vest is to the right of the person in the black helmet. The wooden railing is to the right of the person in the yellow vest. The snow-covered track is behind the people on the platform.",
-    "parse_success": true,
-    "chunk_idx": 11,
-    "video_id": "PrMiVBbEaZo",
-    "_rescued": "parse"
-  },
-  {
-    "time": [
-      24,
-      26
+      13
     ],
     "visible_entities": [
       {
@@ -635,7 +610,7 @@
       {
         "desc": "red plastic sled",
         "action": "moving down the track",
-        "position": "under the person"
+        "position": "under the people"
       },
       {
         "desc": "white ice track with snow banks",
@@ -645,15 +620,11 @@
     ],
     "atomic_facts": [
       {
-        "fact": "A person in a yellow jacket is sliding down an ice track.",
+        "fact": "A person in a yellow jacket slides down an ice track on a red sled.",
         "confidence": 1.0
       },
       {
-        "fact": "A person in a red jacket is sliding down an ice track.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "Both individuals are lying on their backs on red sleds.",
+        "fact": "A person in a red jacket slides down an ice track on a red sled.",
         "confidence": 1.0
       },
       {
@@ -662,20 +633,19 @@
       }
     ],
     "ocr": [],
-    "spatial": "The person in the yellow jacket is positioned above the person in the red jacket in the frame sequence. Both people are on top of red sleds. The sleds are on the white ice track.",
+    "spatial": "The person in the yellow jacket is in the foreground, positioned above the red sled. The person in the red jacket is behind the first person, also on a red sled. Both individuals are on the white ice track.",
     "parse_success": true,
     "chunk_idx": 12,
-    "video_id": "PrMiVBbEaZo",
-    "_rescued": "parse"
+    "video_id": "PrMiVBbEaZo"
   },
   {
     "time": [
-      26,
-      28
+      13,
+      14
     ],
     "visible_entities": [
       {
-        "desc": "rectangular brown sign with white text 'UPPER LUGE', mounted on wooden posts",
+        "desc": "rectangular brown sign with white border and white uppercase text reading 'UPPER LUGE'",
         "action": "static",
         "position": "center"
       },
@@ -685,22 +655,18 @@
         "position": "background"
       },
       {
-        "desc": "white snow covering the top of the fence and ground",
+        "desc": "white snow covering the top edge of the fence",
         "action": "static",
         "position": "top"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A brown sign with white text reading 'UPPER LUGE' is mounted on a wooden fence.",
+        "fact": "A brown sign reading 'UPPER LUGE' is attached to a wooden fence.",
         "confidence": 1.0
       },
       {
-        "fact": "Snow is visible on top of the fence and in the background.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The fence is made of light-colored wood with horizontal planks.",
+        "fact": "Snow is resting on top of the fence.",
         "confidence": 1.0
       }
     ],
@@ -708,51 +674,55 @@
       "UPPER",
       "LUGE"
     ],
-    "spatial": "The brown sign is mounted on the wooden fence. The snow is on top of the fence and behind the sign. The sign is centered in the frame, with the fence extending to the left and right.",
+    "spatial": "The 'UPPER LUGE' sign is attached to the front of the wooden fence. The snow is located on top of the fence, above the sign.",
     "parse_success": true,
     "chunk_idx": 13,
-    "video_id": "PrMiVBbEaZo",
-    "_rescued": "parse"
+    "video_id": "PrMiVBbEaZo"
   },
   {
     "time": [
-      28,
-      30
+      14,
+      15
     ],
     "visible_entities": [
       {
-        "desc": "group of people wearing winter clothing, including dark jackets and hats",
-        "action": "standing near the top of the track",
-        "position": "background"
-      },
-      {
-        "desc": "American flag with red and white stripes and a blue field with stars",
-        "action": "hanging vertically",
-        "position": "left"
-      },
-      {
-        "desc": "wooden fence with vertical posts and horizontal rails, covered in snow",
-        "action": "static",
-        "position": "left"
-      },
-      {
-        "desc": "long, narrow ice track with wooden side walls",
+        "desc": "long, straight ice track with wooden retaining walls",
         "action": "static",
         "position": "center"
       },
       {
-        "desc": "snow-covered ground and trees",
+        "desc": "group of people wearing winter coats and hats",
+        "action": "standing",
+        "position": "left"
+      },
+      {
+        "desc": "American flag with stars and stripes",
+        "action": "static",
+        "position": "left"
+      },
+      {
+        "desc": "wooden fence with snow accumulation",
+        "action": "static",
+        "position": "left"
+      },
+      {
+        "desc": "snow-covered trees",
         "action": "static",
         "position": "background"
+      },
+      {
+        "desc": "red vertical markers",
+        "action": "static",
+        "position": "center"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A group of people are gathered at the top of the ice track.",
+        "fact": "A group of people is standing on the left side of the ice track.",
         "confidence": 1.0
       },
       {
-        "fact": "An American flag is hanging on the left side of the track.",
+        "fact": "An American flag is displayed on a pole near the people.",
         "confidence": 1.0
       },
       {
@@ -765,60 +735,69 @@
       }
     ],
     "ocr": [],
-    "spatial": "The group of people is at the top of the ice track. The American flag is to the left of the track and near the wooden fence. The wooden fence runs along the left side of the track. The ice track is in the center of the scene, with snow-covered trees in the background.",
+    "spatial": "The group of people is standing to the left of the ice track. The American flag is positioned next to the people on the left side. The wooden fence runs along the left edge of the scene, parallel to the track. The red markers are placed on the surface of the ice track.",
     "parse_success": true,
     "chunk_idx": 14,
-    "video_id": "PrMiVBbEaZo",
-    "_rescued": "parse"
+    "video_id": "PrMiVBbEaZo"
   },
   {
     "time": [
-      30,
-      32
+      15,
+      16
     ],
     "visible_entities": [
       {
-        "desc": "person wearing dark clothing and a dark hat",
+        "desc": "person wearing a dark jacket and dark pants",
+        "action": "standing on the left platform",
+        "position": "left"
+      },
+      {
+        "desc": "person wearing a light grey jacket and dark pants",
+        "action": "standing on the left platform",
+        "position": "left"
+      },
+      {
+        "desc": "person wearing a red jacket",
+        "action": "standing on the left platform",
+        "position": "left"
+      },
+      {
+        "desc": "person in dark clothing sitting on a black tube",
         "action": "sliding down the ramp",
         "position": "center"
       },
       {
-        "desc": "long, white, icy ramp with raised side walls",
+        "desc": "long, white, concrete ramp with raised side walls",
         "action": "static",
         "position": "center"
       },
       {
-        "desc": "group of people in winter clothing",
-        "action": "standing",
-        "position": "left"
-      },
-      {
-        "desc": "American flag on a pole",
+        "desc": "wooden railing structure",
         "action": "static",
         "position": "left"
       },
       {
-        "desc": "wooden fence with snow on top",
+        "desc": "American flag with red, white, and blue colors",
         "action": "static",
         "position": "left"
       },
       {
-        "desc": "snow-covered trees and ground",
+        "desc": "snow-covered ground and trees",
         "action": "static",
         "position": "background"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A person in dark clothing is sliding down the center of the icy ramp.",
+        "fact": "A person is sliding down the center of the ramp on a black tube.",
         "confidence": 1.0
       },
       {
-        "fact": "A group of people stands on the left side of the ramp near a wooden fence.",
+        "fact": "Several people are standing on the wooden platform to the left of the ramp.",
         "confidence": 1.0
       },
       {
-        "fact": "An American flag is displayed on a pole to the left of the ramp.",
+        "fact": "An American flag is displayed on the left side of the scene.",
         "confidence": 1.0
       },
       {
@@ -827,317 +806,289 @@
       }
     ],
     "ocr": [],
-    "spatial": "The person sliding is in the center of the ramp. The group of people and the American flag are to the left of the ramp. The wooden fence runs along the left side, next to the group of people. Snow-covered trees are in the background behind the ramp.",
+    "spatial": "The person sliding on the tube is in the center of the frame, moving down the ramp. To the left of the ramp, a group of people stands on a wooden platform behind a railing. The American flag is positioned on the left side, near the group of people. The snowy trees are in the background behind the ramp.",
     "parse_success": true,
     "chunk_idx": 15,
-    "video_id": "PrMiVBbEaZo",
-    "_rescued": "parse"
+    "video_id": "PrMiVBbEaZo"
   },
   {
     "time": [
-      32,
-      34
+      16,
+      17
     ],
     "visible_entities": [
       {
-        "desc": "person wearing a dark jacket and dark pants",
-        "action": "sliding down the ice track",
+        "desc": "person wearing dark clothing",
+        "action": "sliding down the track",
         "position": "center"
       },
       {
-        "desc": "wooden fence with vertical posts and horizontal rails",
-        "action": "static",
-        "position": "left"
-      },
-      {
-        "desc": "snow-covered ground and trees",
+        "desc": "snow-covered track with wooden railings",
         "action": "static",
         "position": "background"
-      },
-      {
-        "desc": "long, narrow ice track with raised white walls",
-        "action": "static",
-        "position": "center"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A person is sliding down the center of the ice track.",
+        "fact": "A person is sliding down a snow-covered track.",
         "confidence": 1.0
       },
       {
-        "fact": "The person is moving away from the camera.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "A wooden fence runs along the left side of the track.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The track is surrounded by snow.",
+        "fact": "The track has wooden railings on the sides.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The person is in the center of the ice track. The wooden fence is to the left of the person. The snow-covered trees are behind the track.",
+    "spatial": "The person is in the center of the snow-covered track. The wooden railings are on both sides of the track.",
     "parse_success": true,
     "chunk_idx": 16,
-    "video_id": "PrMiVBbEaZo",
-    "_rescued": "parse"
+    "video_id": "PrMiVBbEaZo"
   },
   {
     "time": [
-      34,
-      36
+      17,
+      18
     ],
     "visible_entities": [
       {
-        "desc": "person wearing a dark hooded jacket and dark pants",
+        "desc": "person wearing a dark hooded jacket with the hood up, dark pants, and a red scarf or collar visible at the neck",
         "action": "sliding down the track",
         "position": "center"
       },
       {
-        "desc": "curved concrete track with snow on the sides",
+        "desc": "long, winding, concrete or metal track with raised sides, covered in snow",
         "action": "static",
         "position": "background"
       },
       {
-        "desc": "snow-covered trees and ground",
+        "desc": "snow-covered ground and bare trees in a forest setting",
         "action": "static",
         "position": "background"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A person is sliding down a curved track.",
+        "fact": "A person is sliding down a winding, snow-covered track.",
         "confidence": 1.0
       },
       {
-        "fact": "The track is surrounded by snow and trees.",
+        "fact": "The person is wearing a dark hooded jacket with the hood up.",
         "confidence": 1.0
       },
       {
-        "fact": "The person is wearing dark clothing.",
+        "fact": "The track is surrounded by a snowy forest with bare trees.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The person is on the curved track. The track is in front of the snow-covered trees. The snow is on the ground next to the track.",
+    "spatial": "The person is on the track, moving downwards. The track is surrounded by snow-covered ground and bare trees.",
     "parse_success": true,
     "chunk_idx": 17,
-    "video_id": "PrMiVBbEaZo",
-    "_rescued": "parse"
+    "video_id": "PrMiVBbEaZo"
   },
   {
     "time": [
-      36,
-      38
+      18,
+      19
     ],
     "visible_entities": [
       {
-        "desc": "dark-colored sled or bobsled",
-        "action": "moving down the track",
-        "position": "center"
-      },
-      {
-        "desc": "curved concrete track with wooden side walls",
+        "desc": "snow-covered concrete luge track with wooden side walls, curving through a forest",
         "action": "static",
         "position": "center"
       },
       {
-        "desc": "snow-covered ground and trees",
-        "action": "static",
-        "position": "background"
-      },
-      {
-        "desc": "red light",
-        "action": "static",
-        "position": "right"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "A dark-colored sled is moving down the curved track.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The track is surrounded by a snowy forest environment.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "A red light is visible on the right side of the track.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [],
-    "spatial": "The dark-colored sled is on the concrete track. The track is in the center of the frame, surrounded by snow-covered trees in the background. A red light is positioned to the right of the track.",
-    "parse_success": true,
-    "chunk_idx": 18,
-    "video_id": "PrMiVBbEaZo",
-    "_rescued": "parse"
-  },
-  {
-    "time": [
-      38,
-      40
-    ],
-    "visible_entities": [
-      {
-        "desc": "person wearing dark clothing, lying on a sled",
+        "desc": "dark-colored luge sled with a rider",
         "action": "sliding down the track",
         "position": "center"
       },
       {
-        "desc": "curved wooden track with a white icy surface",
+        "desc": "tall bare trees with snow on branches",
+        "action": "static",
+        "position": "background"
+      },
+      {
+        "desc": "white snow covering the ground",
+        "action": "static",
+        "position": "foreground"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A luge sled with a rider is sliding down a curved, snow-covered track.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The track is surrounded by a snowy forest with bare trees.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The ground and trees are covered in white snow.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The luge sled is on the concrete track. The track is surrounded by trees in the background. The snow is on the ground in the foreground and on the branches of the trees.",
+    "parse_success": true,
+    "chunk_idx": 18,
+    "video_id": "PrMiVBbEaZo"
+  },
+  {
+    "time": [
+      19,
+      20
+    ],
+    "visible_entities": [
+      {
+        "desc": "person in dark clothing, possibly a black jacket and pants, riding a sled",
+        "action": "sliding down the track",
+        "position": "center"
+      },
+      {
+        "desc": "long, winding track with wooden sides and a snow-covered surface",
         "action": "static",
         "position": "center"
       },
       {
-        "desc": "snow-covered ground and bare trees",
+        "desc": "snow-covered ground and numerous bare trees",
         "action": "static",
         "position": "background"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A person is sliding down a curved wooden track.",
+        "fact": "A person is sliding down a winding, snow-covered track.",
         "confidence": 1.0
       },
       {
-        "fact": "The track is covered in snow and ice.",
+        "fact": "The track is surrounded by a snowy forest.",
         "confidence": 1.0
       },
       {
-        "fact": "The person is lying on their back on a sled.",
+        "fact": "The person is moving away from the camera's initial viewpoint.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The person is on the track, moving along its curved path. The track is surrounded by snow-covered ground and trees in the background.",
+    "spatial": "The person is on the track, positioned in the center of the frame. The track winds through the background, which consists of snow and trees. The wooden sides of the track are on either side of the person.",
     "parse_success": true,
     "chunk_idx": 19,
-    "video_id": "PrMiVBbEaZo",
-    "_rescued": "parse"
+    "video_id": "PrMiVBbEaZo"
   },
   {
     "time": [
-      40,
-      42
+      20,
+      21
     ],
     "visible_entities": [
       {
-        "desc": "dark-colored figure, possibly a person or sled, appearing as a black mass",
-        "action": "sliding down the path",
+        "desc": "dark-colored figure, likely a person in winter clothing, appearing as a black silhouette",
+        "action": "sliding down the track",
         "position": "center"
       },
       {
-        "desc": "curved concrete or stone retaining wall, light gray, forming a channel",
+        "desc": "curved concrete track, light gray, covered with snow and ice",
         "action": "static",
-        "position": "right"
+        "position": "center"
       },
       {
         "desc": "snow-covered ground, white, textured",
         "action": "static",
+        "position": "foreground"
+      },
+      {
+        "desc": "bare trees, dark trunks, leafless branches",
+        "action": "static",
         "position": "background"
       },
       {
-        "desc": "dark tree trunks, vertical, rough bark texture",
+        "desc": "wooden railing, brown, snow-dusted",
         "action": "static",
         "position": "left"
       },
       {
-        "desc": "wooden fence rail, brown, snow-dusted",
+        "desc": "street lamp, metal pole, emitting orange light",
         "action": "static",
-        "position": "foreground"
+        "position": "center-left"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A dark figure is sliding down a curved, snow-lined path.",
+        "fact": "A dark figure is sliding down a curved, snow-covered track.",
         "confidence": 1.0
       },
       {
-        "fact": "The path is bordered by a high wall on the right side.",
+        "fact": "The track is bordered by a wooden railing on the left side.",
         "confidence": 1.0
       },
       {
-        "fact": "Snow covers the ground and the wooden fence in the foreground.",
+        "fact": "A street lamp is illuminated in the background.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The dark figure is in the center of the frame, moving down the path. The curved wall is to the right of the figure. The wooden fence is in the foreground, below the path level. Trees are visible in the background behind the path.",
+    "spatial": "The dark figure is on the curved track, positioned in the center of the frame. The wooden railing is to the left of the track. The street lamp is behind the railing and to the left of the track. The snow-covered ground is in the foreground, below the track and railing.",
     "parse_success": true,
     "chunk_idx": 20,
-    "video_id": "PrMiVBbEaZo",
-    "_rescued": "parse"
+    "video_id": "PrMiVBbEaZo"
   },
   {
     "time": [
-      42,
-      44
+      21,
+      22
     ],
     "visible_entities": [
       {
-        "desc": "thick white snow layer covering the ground",
-        "action": "static",
-        "position": "foreground"
-      },
-      {
-        "desc": "dark tree trunks with rough bark texture",
+        "desc": "dark brown tree trunk, rough bark texture, vertical",
         "action": "static",
         "position": "left"
       },
       {
-        "desc": "dark tree trunks with rough bark texture",
+        "desc": "dark brown tree trunk, rough bark texture, vertical",
         "action": "static",
         "position": "right"
       },
       {
-        "desc": "wooden staircase with railings",
+        "desc": "wooden staircase with railings, light brown wood, snow-covered steps",
         "action": "static",
         "position": "left"
       },
       {
-        "desc": "low concrete retaining wall",
+        "desc": "white snow, powdery texture, covering the ground",
+        "action": "static",
+        "position": "bottom"
+      },
+      {
+        "desc": "low concrete wall, grey, horizontal",
         "action": "static",
         "position": "center"
       },
       {
-        "desc": "dense forest of bare trees",
+        "desc": "bare trees, dark branches, no leaves",
         "action": "static",
         "position": "background"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "Snow covers the ground in the foreground.",
+        "fact": "Snow covers the ground and the steps of the staircase.",
         "confidence": 1.0
       },
       {
-        "fact": "A wooden staircase is visible on the left side of the scene.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "A low concrete wall runs horizontally across the middle ground.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "Trees stand on either side of the frame.",
+        "fact": "The camera zooms in on the snowy scene.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The snow covers the ground in the foreground, extending up to the base of the trees and the retaining wall. The wooden staircase is located to the left of the center, behind the foreground snow. The concrete retaining wall is positioned in front of the dense forest background.",
+    "spatial": "The wooden staircase is to the left of the center. The low concrete wall is in the middle ground, behind the snow-covered foreground. The tree trunks are in the foreground, framing the left and right sides of the view. The bare trees are in the background, behind the wall.",
     "parse_success": true,
     "chunk_idx": 21,
-    "video_id": "PrMiVBbEaZo",
-    "_rescued": "parse"
+    "video_id": "PrMiVBbEaZo"
   },
   {
     "time": [
-      44,
-      46
+      22,
+      23
     ],
     "visible_entities": [
       {
@@ -1146,198 +1097,199 @@
         "position": "left"
       },
       {
-        "desc": "picnic table with attached benches, covered in snow",
+        "desc": "snow-covered picnic table with attached benches",
         "action": "static",
         "position": "center"
       },
       {
-        "desc": "black object, possibly a grill cover or bag, partially buried in snow",
-        "action": "static",
-        "position": "right"
-      },
-      {
-        "desc": "red and black object, possibly a bag or piece of equipment, resting on a wooden ledge",
+        "desc": "red and black object, possibly a bag or piece of equipment",
         "action": "static",
         "position": "background"
       },
       {
-        "desc": "wooden retaining wall or ledge structure",
+        "desc": "thick layer of white snow covering the ground and objects",
+        "action": "static",
+        "position": "foreground"
+      },
+      {
+        "desc": "wooden retaining wall or fence structure",
         "action": "static",
         "position": "background"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A picnic table sits in the center of a snow-covered yard.",
+        "fact": "The camera angle shifts from a wide view of the yard to a closer view under the stairs.",
         "confidence": 1.0
       },
       {
-        "fact": "A wooden staircase is visible on the left side of the frame.",
+        "fact": "A picnic table sits in the center of the snowy yard.",
         "confidence": 1.0
       },
       {
-        "fact": "A red and black object rests on a wooden ledge in the background.",
+        "fact": "A red and black object rests on a ledge in the background.",
         "confidence": 1.0
       },
       {
-        "fact": "A black object is partially buried in the snow on the right.",
+        "fact": "Snow covers the ground, the picnic table, and the wooden stairs.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The wooden staircase is to the left of the picnic table. The picnic table is in front of the wooden retaining wall. The red and black object is on top of the wooden retaining wall. The black object is to the right of the picnic table.",
+    "spatial": "The wooden staircase is on the left side of the frame. The snow-covered picnic table is in the center of the yard, to the right of the stairs. The red and black object is in the background, resting on a wooden ledge behind the picnic table. The entire scene is covered in a thick layer of snow.",
     "parse_success": true,
     "chunk_idx": 22,
-    "video_id": "PrMiVBbEaZo",
-    "_rescued": "parse"
+    "video_id": "PrMiVBbEaZo"
   },
   {
     "time": [
-      46,
-      48
+      23,
+      24
     ],
     "visible_entities": [
       {
         "desc": "person wearing a red jacket, black pants, and black boots",
-        "action": "sliding down a snow-covered slope",
+        "action": "sliding down a snow-covered wooden ramp",
         "position": "center"
       },
       {
-        "desc": "wooden retaining wall or fence",
+        "desc": "wooden ramp structure covered in white snow",
         "action": "static",
-        "position": "left"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "A person is sliding down a snow-covered slope.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The person is lying on their back with legs raised.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "A wooden wall runs along the left side of the slope.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [],
-    "spatial": "The person is sliding down the slope, positioned to the right of the wooden wall. The wooden wall is on the left side of the frame, bordering the snowy area.",
-    "parse_success": true,
-    "chunk_idx": 23,
-    "video_id": "PrMiVBbEaZo",
-    "_rescued": "parse"
-  },
-  {
-    "time": [
-      48,
-      50
-    ],
-    "visible_entities": [
-      {
-        "desc": "long, narrow, concrete channel with smooth grey surface, resembling a bobsled or luge track",
-        "action": "static",
-        "position": "center"
-      },
-      {
-        "desc": "snow-covered ground with dark tree trunks",
-        "action": "static",
-        "position": "left"
-      },
-      {
-        "desc": "low wooden retaining wall",
-        "action": "static",
-        "position": "right"
-      },
-      {
-        "desc": "small, dark, indistinct object",
-        "action": "moving down the track",
         "position": "background"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A small, dark object is moving down the concrete track in the distance.",
+        "fact": "A person in a red jacket is sliding down a snow-covered wooden ramp.",
         "confidence": 1.0
       },
       {
-        "fact": "The scene is set outdoors in a snowy environment with trees.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The track is flanked by snow on the left and a wooden barrier on the right.",
+        "fact": "The person is lying on their back with their legs raised in the air.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The concrete track runs through the center of the frame. Snow-covered ground and trees are to the left of the track. A wooden retaining wall is to the right of the track. A small object is visible in the background on the track.",
+    "spatial": "The person is on top of the snow-covered wooden ramp. The ramp is below the person.",
     "parse_success": true,
-    "chunk_idx": 24,
-    "video_id": "PrMiVBbEaZo",
-    "_rescued": "parse"
+    "chunk_idx": 23,
+    "video_id": "PrMiVBbEaZo"
   },
   {
     "time": [
-      50,
-      52
+      24,
+      25
     ],
     "visible_entities": [
       {
-        "desc": "person wearing a red jacket and dark pants, seated on a dark-colored sled",
-        "action": "sliding down the ice track",
-        "position": "center"
-      },
-      {
-        "desc": "long, narrow ice track with white snow-covered walls and a smooth grey surface",
+        "desc": "icy path, smooth, greyish-white, winding",
         "action": "static",
         "position": "center"
       },
       {
-        "desc": "snow-covered ground with dark tree trunks",
+        "desc": "snow-covered ground, white, textured",
         "action": "static",
         "position": "left"
       },
       {
-        "desc": "wooden retaining wall bordering the track",
+        "desc": "trees, dark trunks, bare branches",
+        "action": "static",
+        "position": "left"
+      },
+      {
+        "desc": "low wooden wall, brown, weathered",
         "action": "static",
         "position": "right"
+      },
+      {
+        "desc": "snowy slope, white, uneven",
+        "action": "static",
+        "position": "right"
+      },
+      {
+        "desc": "wooden structure, brown, possibly a bench or fence",
+        "action": "static",
+        "position": "background"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A person in a red jacket is sliding down the ice track on a sled.",
+        "fact": "The scene is a static winter landscape.",
         "confidence": 1.0
       },
       {
-        "fact": "The sled is moving away from the camera along the center of the track.",
+        "fact": "An icy path winds through a snowy area.",
         "confidence": 1.0
       },
       {
-        "fact": "The track is flanked by snow on the left and a wooden barrier on the right.",
+        "fact": "Trees line the left side of the path.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A low wooden wall borders the right side of the path.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The person on the sled is in the center of the ice track. The snow-covered ground with trees is to the left of the track. The wooden retaining wall is to the right of the track.",
+    "spatial": "The icy path is in the center of the frame. To the left of the path is snow-covered ground with trees. To the right of the path is a low wooden wall, and beyond that is a snowy slope. In the background, a wooden structure is visible.",
     "parse_success": true,
-    "chunk_idx": 25,
-    "video_id": "PrMiVBbEaZo",
-    "_rescued": "parse"
+    "chunk_idx": 24,
+    "video_id": "PrMiVBbEaZo"
   },
   {
     "time": [
-      52,
-      54
+      25,
+      26
     ],
     "visible_entities": [
       {
-        "desc": "person wearing a red hooded jacket and dark pants",
+        "desc": "person wearing a dark red or maroon jacket and dark pants, sitting on a dark-colored sled",
+        "action": "sliding down the concrete chute",
+        "position": "center"
+      },
+      {
+        "desc": "long, narrow concrete chute with high walls, covered in a layer of white snow",
+        "action": "static",
+        "position": "center"
+      },
+      {
+        "desc": "snow-covered ground with dark tree trunks and a wooden fence or structure",
+        "action": "static",
+        "position": "background"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A person on a sled is sliding down a snow-covered concrete chute.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The person is moving away from the camera's perspective.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The scene is a snowy outdoor area with trees.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The person on the sled is inside the concrete chute. The chute is in the center of the frame, with snow-covered ground and trees to its left and right. The person is moving down the length of the chute, away from the viewer.",
+    "parse_success": true,
+    "chunk_idx": 25,
+    "video_id": "PrMiVBbEaZo"
+  },
+  {
+    "time": [
+      26,
+      27
+    ],
+    "visible_entities": [
+      {
+        "desc": "person wearing a red jacket, dark pants, and a red helmet",
         "action": "sliding down a snowy channel",
         "position": "center"
       },
       {
-        "desc": "snow-covered channel with a white surface and a concrete wall on the right",
+        "desc": "snow-covered channel with white snow and a low concrete wall",
         "action": "static",
         "position": "background"
       }
@@ -1348,90 +1300,85 @@
         "confidence": 1.0
       },
       {
-        "fact": "The channel has a concrete wall on its right side.",
+        "fact": "The person is positioned in the center of the frame.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The person is in the center of the snowy channel. The concrete wall is to the right of the person.",
+    "spatial": "The person is in the center of the snow-covered channel. The concrete wall is to the right of the person.",
     "parse_success": true,
     "chunk_idx": 26,
-    "video_id": "PrMiVBbEaZo",
-    "_rescued": "parse"
+    "video_id": "PrMiVBbEaZo"
   },
   {
     "time": [
-      54,
-      56
+      27,
+      28
     ],
     "visible_entities": [
       {
-        "desc": "person wearing dark jacket and dark pants",
+        "desc": "person wearing a black jacket, dark pants, and brown boots",
         "action": "standing near trash cans",
         "position": "left"
       },
       {
-        "desc": "large beige sack, bulky and filled",
-        "action": "static",
+        "desc": "large beige sack or bag, appearing full and rounded",
+        "action": "resting on the snow",
         "position": "center"
       },
       {
-        "desc": "child wearing red jacket and red hat",
-        "action": "sitting on snow",
+        "desc": "child wearing a red jacket and a red hat",
+        "action": "sitting on a sled",
         "position": "right"
       },
       {
-        "desc": "black trash cans",
+        "desc": "dark-colored trash cans or bins",
         "action": "static",
         "position": "background"
       },
       {
-        "desc": "person in dark plaid shirt, partially visible",
-        "action": "static",
-        "position": "foreground right"
+        "desc": "person wearing a dark plaid shirt, partially visible",
+        "action": "standing in foreground",
+        "position": "foreground"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A child in a red jacket is sitting on the snow.",
+        "fact": "A child in a red jacket is sitting on a sled on the snow.",
         "confidence": 1.0
       },
       {
-        "fact": "A person in dark clothing is standing near black trash cans.",
+        "fact": "A person in a black jacket is standing next to several trash cans.",
         "confidence": 1.0
       },
       {
-        "fact": "A large beige sack is resting on the snow.",
+        "fact": "A large beige sack is resting on the snow between the standing person and the child.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The scene takes place outdoors in a snowy environment.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The person in the dark jacket is to the left of the large beige sack. The child in the red jacket is to the right of the sack. The black trash cans are behind the person in the dark jacket. The person in the plaid shirt is in the foreground on the right side of the frame.",
+    "spatial": "The person in the black jacket is to the left of the large beige sack. The child on the sled is to the right of the sack. The trash cans are behind the person in the black jacket. The person in the plaid shirt is in the foreground, partially obscuring the view of the scene.",
     "parse_success": true,
     "chunk_idx": 27,
-    "video_id": "PrMiVBbEaZo",
-    "_rescued": "parse"
+    "video_id": "PrMiVBbEaZo"
   },
   {
     "time": [
-      56,
-      58
+      28,
+      29
     ],
     "visible_entities": [
       {
-        "desc": "Text reading 'Who needs to go all the way to Vail?' in a green, serif font with a black drop shadow",
-        "action": "static",
-        "position": "center"
+        "desc": "Text reading 'Who needs to go all the way to Vail?' in a green, stylized serif font with a black drop shadow, centered between two horizontal lines.",
+        "action": "static"
       },
       {
-        "desc": "Light brown wooden background with horizontal grain texture",
-        "action": "static",
-        "position": "background"
-      },
-      {
-        "desc": "Two thin, horizontal, dark lines",
-        "action": "static",
-        "position": "center"
+        "desc": "A light brown, wood-grain textured background.",
+        "action": "static"
       }
     ],
     "atomic_facts": [
@@ -1440,7 +1387,7 @@
         "confidence": 1.0
       },
       {
-        "fact": "The text is framed by two horizontal lines, one above and one below.",
+        "fact": "The text is positioned between two horizontal lines.",
         "confidence": 1.0
       }
     ],
@@ -1449,16 +1396,15 @@
       "all the way to",
       "Vail?"
     ],
-    "spatial": "The green text is centered on the screen. The text is positioned between two horizontal lines, with one line above the text and the other line below it. The text and lines are superimposed on a wooden background.",
+    "spatial": "The green text is centered on the wood-grain background. The text is positioned between two horizontal lines, with one line above the text and one line below the text.",
     "parse_success": true,
     "chunk_idx": 28,
-    "video_id": "PrMiVBbEaZo",
-    "_rescued": "parse"
+    "video_id": "PrMiVBbEaZo"
   },
   {
     "time": [
-      58,
-      60
+      29,
+      30
     ],
     "visible_entities": [
       {
@@ -1469,84 +1415,7 @@
       {
         "desc": "snow-covered dirt mound",
         "action": "static",
-        "position": "foreground/center"
-      },
-      {
-        "desc": "dark forest",
-        "action": "static",
-        "position": "background"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "A person is standing on top of a snow-covered dirt mound.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The ground is covered in patches of snow and brown dirt.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "A line of dark trees is visible in the distance.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [],
-    "spatial": "The person is standing on top of the snow-covered dirt mound. The mound is in the foreground, while the dark forest is in the background behind the mound.",
-    "parse_success": true,
-    "chunk_idx": 29,
-    "video_id": "PrMiVBbEaZo",
-    "_rescued": "parse"
-  },
-  {
-    "time": [
-      60,
-      62
-    ],
-    "visible_entities": [
-      {
-        "desc": "person wearing a dark jacket and dark pants",
-        "action": "walking along the ridge",
-        "position": "center-left"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "A person is walking along the top of a snowy embankment.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The landscape is covered in snow under a grey sky.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [],
-    "spatial": "The person is walking on top of the snowy ridge. The ridge is to the left of the flat snowy ground. Trees are in the background behind the person.",
-    "parse_success": true,
-    "chunk_idx": 30,
-    "video_id": "PrMiVBbEaZo",
-    "_rescued": "parse"
-  },
-  {
-    "time": [
-      62,
-      64
-    ],
-    "visible_entities": [
-      {
-        "desc": "person wearing a dark jacket and dark pants",
-        "action": "skiing down the slope",
-        "position": "center"
-      },
-      {
-        "desc": "person in dark clothing sitting on the snow",
-        "action": "static",
-        "position": "right"
-      },
-      {
-        "desc": "snow-covered slope with patches of brown grass",
-        "action": "static",
-        "position": "background"
+        "position": "foreground"
       },
       {
         "desc": "line of dark trees",
@@ -1556,40 +1425,118 @@
     ],
     "atomic_facts": [
       {
-        "fact": "A person is skiing down a snowy slope.",
+        "fact": "A person in dark clothing stands on top of a snow-covered dirt mound.",
         "confidence": 1.0
       },
       {
-        "fact": "Another person is sitting on the snow to the right.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The slope is covered in snow with visible patches of grass.",
+        "fact": "The scene is outdoors with a cloudy sky.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The skier is in the center of the frame, moving down the slope. The person sitting on the snow is to the right of the skier. The line of trees is in the background, above the slope.",
+    "spatial": "The person is standing on top of the snow-covered dirt mound. The mound is in the foreground, and the line of trees is behind the mound in the background.",
     "parse_success": true,
-    "chunk_idx": 31,
-    "video_id": "PrMiVBbEaZo",
-    "_rescued": "parse"
+    "chunk_idx": 29,
+    "video_id": "PrMiVBbEaZo"
   },
   {
     "time": [
-      64,
-      66
+      30,
+      31
+    ],
+    "visible_entities": [
+      {
+        "desc": "person wearing dark clothing, appearing as a silhouette",
+        "action": "walking along the ridge",
+        "position": "left"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A person is walking along the top of a snow-covered embankment.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The landscape is covered in snow with patches of brown earth visible on the slope.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A line of dark trees is visible in the background against a grey sky.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The person is positioned on the left side of the frame, walking along the ridge of the hill. The snowy slope is below the person, extending towards the right foreground. The line of trees is behind the person and the hill in the background.",
+    "parse_success": true,
+    "chunk_idx": 30,
+    "video_id": "PrMiVBbEaZo"
+  },
+  {
+    "time": [
+      31,
+      32
     ],
     "visible_entities": [
       {
         "desc": "person wearing a dark jacket and dark pants",
         "action": "skiing down a snowy slope",
+        "position": "center-left"
+      },
+      {
+        "desc": "snow-covered hillside with patches of brown grass and a line of dark trees in the background",
+        "action": "static",
+        "position": "background"
+      },
+      {
+        "desc": "small dark object, possibly a bag or equipment, on the snow",
+        "action": "static",
+        "position": "bottom-right"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A person is skiing down a snow-covered hill.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The skier is moving from the upper-left towards the lower-right of the frame.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The landscape is a snowy hillside with visible patches of brown earth.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A line of dark trees is visible in the background against a grey sky.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The person is in the center-left of the frame, skiing down the slope. The line of trees is in the background, above the snowy hill. The small dark object is on the snow in the bottom-right foreground, to the right of the skier's path.",
+    "parse_success": true,
+    "chunk_idx": 31,
+    "video_id": "PrMiVBbEaZo"
+  },
+  {
+    "time": [
+      32,
+      33
+    ],
+    "visible_entities": [
+      {
+        "desc": "person wearing a dark jacket and dark pants",
+        "action": "skiing down the slope",
         "position": "left"
       },
       {
         "desc": "person wearing a light-colored jacket and dark pants",
         "action": "sitting on the snow",
         "position": "right"
+      },
+      {
+        "desc": "snowy hill with patches of brown ground and trees in the background",
+        "action": "static",
+        "position": "background"
       }
     ],
     "atomic_facts": [
@@ -1598,65 +1545,58 @@
         "confidence": 1.0
       },
       {
-        "fact": "A person in a light-colored jacket is sitting on the snow.",
+        "fact": "Another person is sitting on the snow to the right of the skier.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The background features a line of trees under a grey sky.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The person skiing is to the left of the person sitting on the snow. The person sitting is to the right of the person skiing.",
+    "spatial": "The person skiing is to the left of the person sitting on the snow. The person sitting is to the right of the skier. Both people are on the snowy hill, which is in front of the trees.",
     "parse_success": true,
     "chunk_idx": 32,
-    "video_id": "PrMiVBbEaZo",
-    "_rescued": "parse"
+    "video_id": "PrMiVBbEaZo"
   },
   {
     "time": [
-      66,
-      68
+      33,
+      34
     ],
     "visible_entities": [
       {
         "desc": "person wearing a dark jacket and dark pants",
-        "action": "sledding down a snowy slope",
-        "position": "left/center"
-      },
-      {
-        "desc": "snow-covered hill with patches of brown earth and a line of dark evergreen trees",
-        "action": "static",
-        "position": "background"
+        "action": "snowboarding down a slope",
+        "position": "left"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A person is sliding down a snow-covered hill.",
+        "fact": "A person is snowboarding down a snowy slope.",
         "confidence": 1.0
       },
       {
-        "fact": "The person is positioned on the left side of the frame.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "Dark trees are visible along the ridge of the hill in the background.",
+        "fact": "The person is moving from the left side of the frame towards the center.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The person is in front of the snowy hill and below the line of trees. The trees are located at the top of the hill in the background.",
+    "spatial": "The person is on the snow-covered slope. The person is in front of the trees and bushes in the background.",
     "parse_success": true,
     "chunk_idx": 33,
-    "video_id": "PrMiVBbEaZo",
-    "_rescued": "parse"
+    "video_id": "PrMiVBbEaZo"
   },
   {
     "time": [
-      68,
-      70
+      34,
+      35
     ],
     "visible_entities": [
       {
-        "desc": "person wearing dark clothing (black jacket and pants) on skis",
+        "desc": "person wearing a dark jacket and dark pants",
         "action": "skiing down a snowy slope",
-        "position": "left/center"
+        "position": "left/foreground"
       },
       {
         "desc": "snowy hill with patches of brown earth and rocks",
@@ -1667,90 +1607,9 @@
         "desc": "line of dark evergreen trees",
         "action": "static",
         "position": "background"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "A person in dark clothing is skiing down a snow-covered slope.",
-        "confidence": 1.0
       },
       {
-        "fact": "The skier is moving from the left side of the frame towards the center.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The background features a hill with exposed dirt and a line of trees.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [],
-    "spatial": "The skier is positioned in the foreground on the left side of the frame. The snowy hill and trees are in the background, behind the skier. The sky is above the treeline.",
-    "parse_success": true,
-    "chunk_idx": 34,
-    "video_id": "PrMiVBbEaZo",
-    "_rescued": "parse"
-  },
-  {
-    "time": [
-      70,
-      72
-    ],
-    "visible_entities": [
-      {
-        "desc": "person wearing a dark jacket and dark pants",
-        "action": "skiing downhill",
-        "position": "center"
-      },
-      {
-        "desc": "snow-covered slope with scattered trees",
-        "action": "static",
-        "position": "background"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "a person is skiing down a snowy slope",
-        "confidence": 1.0
-      },
-      {
-        "fact": "the person is moving from the upper left towards the lower right of the frame",
-        "confidence": 1.0
-      },
-      {
-        "fact": "the background consists of a forest and a cloudy sky",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [],
-    "spatial": "The person is in the center of the frame, positioned in front of the snow-covered slope and the line of trees in the background.",
-    "parse_success": true,
-    "chunk_idx": 35,
-    "video_id": "PrMiVBbEaZo",
-    "_rescued": "parse"
-  },
-  {
-    "time": [
-      72,
-      74
-    ],
-    "visible_entities": [
-      {
-        "desc": "person wearing a dark jacket and dark pants",
-        "action": "skiing downhill",
-        "position": "left"
-      },
-      {
-        "desc": "snow-covered ground with scattered dark patches and tracks",
-        "action": "static",
-        "position": "foreground"
-      },
-      {
-        "desc": "line of dark evergreen trees and bare branches",
-        "action": "static",
-        "position": "background"
-      },
-      {
-        "desc": "overcast sky with grey clouds",
+        "desc": "grey overcast sky",
         "action": "static",
         "position": "top"
       }
@@ -1765,34 +1624,66 @@
         "confidence": 1.0
       },
       {
-        "fact": "The ground is covered in snow with visible tracks.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "Trees line the horizon in the background.",
+        "fact": "The background features a hill with sparse vegetation and a line of trees.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The person is on the snow-covered ground in the foreground. The line of trees is behind the person in the background. The sky is above the trees and the snowy landscape.",
+    "spatial": "The person is in the foreground, positioned to the left of the center of the frame. The snowy hill and the line of trees are in the background, behind the person. The grey sky is above the hill and trees.",
     "parse_success": true,
-    "chunk_idx": 36,
-    "video_id": "PrMiVBbEaZo",
-    "_rescued": "parse"
+    "chunk_idx": 34,
+    "video_id": "PrMiVBbEaZo"
   },
   {
     "time": [
-      74,
-      76
+      35,
+      36
     ],
     "visible_entities": [
       {
-        "desc": "snow-covered ground with dark patches of vegetation and tracks",
-        "action": "static",
-        "position": "foreground"
+        "desc": "person wearing a dark jacket and dark pants",
+        "action": "skiing down a snowy slope",
+        "position": "left/foreground"
       },
       {
-        "desc": "line of bare trees and shrubs",
+        "desc": "snowy landscape with white ground and dark trees",
+        "action": "static",
+        "position": "background"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A person is skiing down a snow-covered hill.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The skier is moving from the left side of the frame towards the center.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The background features a line of dark evergreen trees against a cloudy sky.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The person is in the foreground on the left side of the frame. The line of trees is in the background, situated behind the skier and stretching across the horizon.",
+    "parse_success": true,
+    "chunk_idx": 35,
+    "video_id": "PrMiVBbEaZo"
+  },
+  {
+    "time": [
+      36,
+      37
+    ],
+    "visible_entities": [
+      {
+        "desc": "person wearing a dark jacket and dark pants",
+        "action": "skiing down the slope",
+        "position": "left"
+      },
+      {
+        "desc": "snow-covered hill with sparse trees and bushes",
         "action": "static",
         "position": "background"
       },
@@ -1804,33 +1695,74 @@
     ],
     "atomic_facts": [
       {
-        "fact": "The scene depicts a snowy landscape with a line of trees in the distance.",
+        "fact": "A person is skiing down a snowy hill.",
         "confidence": 1.0
       },
       {
-        "fact": "The ground is covered in snow with visible tracks and dark patches of vegetation.",
+        "fact": "The terrain is covered in snow with visible tracks.",
         "confidence": 1.0
       },
       {
-        "fact": "The sky is overcast with clouds.",
+        "fact": "Trees are scattered along the ridge of the hill.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The snow-covered ground is in the foreground. The line of bare trees and shrubs is in the background, behind the snow-covered ground. The overcast sky is above the line of trees.",
+    "spatial": "The person is positioned on the left side of the frame, moving down the slope. The snow-covered hill and trees are behind and above the person. The sky is above the entire landscape.",
     "parse_success": true,
-    "chunk_idx": 37,
-    "video_id": "PrMiVBbEaZo",
-    "_rescued": "parse"
+    "chunk_idx": 36,
+    "video_id": "PrMiVBbEaZo"
   },
   {
     "time": [
-      76,
-      78
+      37,
+      38
     ],
     "visible_entities": [
       {
-        "desc": "snow-covered ground with scattered dark patches of vegetation",
+        "desc": "snow-covered ground with scattered dark patches of vegetation and faint tracks",
+        "action": "static",
+        "position": "foreground"
+      },
+      {
+        "desc": "line of sparse, leafless trees and bushes",
+        "action": "static",
+        "position": "background"
+      },
+      {
+        "desc": "overcast sky with diffuse light",
+        "action": "static",
+        "position": "top"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The scene is a static, snowy landscape.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "Dark patches of vegetation are visible on the snow-covered ground.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "Faint tracks are visible in the snow in the foreground.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The snow-covered ground is in the foreground. The line of sparse trees is in the background, behind the snow-covered ground. The overcast sky is above the trees and the ground.",
+    "parse_success": true,
+    "chunk_idx": 37,
+    "video_id": "PrMiVBbEaZo"
+  },
+  {
+    "time": [
+      38,
+      39
+    ],
+    "visible_entities": [
+      {
+        "desc": "snow-covered ground with scattered dark patches of vegetation and faint tracks",
         "action": "static",
         "position": "foreground"
       },
@@ -1840,61 +1772,103 @@
         "position": "background"
       },
       {
-        "desc": "overcast sky with grey clouds",
+        "desc": "cloudy sky with diffuse light",
         "action": "static",
         "position": "top"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "The scene is a static landscape view of a snowy field.",
+        "fact": "The scene is a static winter landscape covered in snow.",
         "confidence": 1.0
       },
       {
-        "fact": "The ground is covered in white snow with visible dark vegetation poking through.",
+        "fact": "Faint tracks are visible on the snow in the foreground.",
         "confidence": 1.0
       },
       {
-        "fact": "A line of bare trees stands in the distance against the horizon.",
+        "fact": "A line of bare trees stands in the background against the horizon.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The snow-covered ground occupies the foreground and center of the frame. The line of bare trees is located in the background, stretching horizontally across the middle of the view. The overcast sky is positioned above the trees and the snowy ground.",
+    "spatial": "The snow-covered ground is in the foreground, extending towards the line of bare trees in the background. The cloudy sky is above the trees and the snowy landscape.",
     "parse_success": true,
     "chunk_idx": 38,
-    "video_id": "PrMiVBbEaZo",
-    "_rescued": "parse"
+    "video_id": "PrMiVBbEaZo"
   },
   {
     "time": [
-      78,
-      80
+      39,
+      40
     ],
     "visible_entities": [
       {
-        "desc": "snow-covered landscape with a white ground surface, scattered dark patches of exposed earth or rocks, and bare trees in the background",
+        "desc": "snow-covered ground with visible tracks and patches of dark earth or vegetation",
+        "action": "static",
+        "position": "foreground"
+      },
+      {
+        "desc": "line of bare trees and bushes",
         "action": "static",
         "position": "background"
       },
       {
-        "desc": "small, dark, indistinct figure resembling a person or animal",
-        "action": "moving",
-        "position": "center"
-      },
-      {
-        "desc": "dark, leafless tree branches",
+        "desc": "cloudy sky with bright light near the horizon",
         "action": "static",
-        "position": "foreground"
+        "position": "top"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A small dark figure is moving across the center of the snowy field.",
+        "fact": "The scene is a snowy landscape with tracks visible on the ground.",
         "confidence": 1.0
       },
       {
-        "fact": "The ground is covered in snow with visible tracks and dark patches.",
+        "fact": "Bare trees are visible in the background against a bright sky.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The snow-covered ground is in the foreground. The line of bare trees is in the background, behind the snowy field. The cloudy sky is above the trees.",
+    "parse_success": true,
+    "chunk_idx": 39,
+    "video_id": "PrMiVBbEaZo"
+  },
+  {
+    "time": [
+      40,
+      41
+    ],
+    "visible_entities": [
+      {
+        "desc": "small, dark figure of a person, likely wearing dark winter clothing",
+        "action": "standing in the snow",
+        "position": "center"
+      },
+      {
+        "desc": "snow-covered landscape with a white, textured surface and scattered dark patches of vegetation",
+        "action": "static",
+        "position": "foreground"
+      },
+      {
+        "desc": "line of bare, leafless trees with dark branches",
+        "action": "static",
+        "position": "background"
+      },
+      {
+        "desc": "overcast sky with layers of grey and white clouds",
+        "action": "static",
+        "position": "top"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A person is standing in the middle of a snow-covered field.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The ground is covered in a thick layer of white snow.",
         "confidence": 1.0
       },
       {
@@ -1903,80 +1877,59 @@
       }
     ],
     "ocr": [],
-    "spatial": "The small dark figure is in the center of the frame, positioned on the snow-covered ground. The bare trees are in the background, behind the figure. Dark branches are visible in the bottom right foreground.",
-    "parse_success": true,
-    "chunk_idx": 39,
-    "video_id": "PrMiVBbEaZo",
-    "_rescued": "parse"
-  },
-  {
-    "time": [
-      80,
-      82
-    ],
-    "visible_entities": [
-      {
-        "desc": "snow-covered hillside with uneven terrain, patches of dark vegetation, and bare trees in the distance",
-        "action": "static",
-        "position": "background"
-      },
-      {
-        "desc": "small dark figure, likely a person, appearing as a silhouette against the snow",
-        "action": "standing",
-        "position": "center"
-      },
-      {
-        "desc": "cloudy sky with diffuse light",
-        "action": "static",
-        "position": "top"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "A small figure is standing on the snowy slope.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The landscape is covered in snow.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "Trees are visible along the horizon line.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [],
-    "spatial": "The small dark figure is in the center of the frame, positioned on the snow-covered hillside. The hillside is below the cloudy sky. The bare trees are in the background, behind the figure.",
+    "spatial": "The person is standing in the center of the snow-covered landscape. The line of bare trees is behind the person and the snowy field. The overcast sky is above the trees and the landscape.",
     "parse_success": true,
     "chunk_idx": 40,
-    "video_id": "PrMiVBbEaZo",
-    "_rescued": "parse"
+    "video_id": "PrMiVBbEaZo"
   },
   {
     "time": [
-      82,
-      84
+      41,
+      42
     ],
     "visible_entities": [
       {
-        "desc": "Text graphic with green, bubbly, 3D-style font and black drop shadow",
+        "desc": "snow-covered ground with scattered dark patches of vegetation",
         "action": "static",
-        "position": "center"
+        "position": "foreground"
       },
       {
-        "desc": "Wooden textured background with horizontal grain",
+        "desc": "bare trees and bushes",
         "action": "static",
         "position": "background"
       },
       {
-        "desc": "Thin white horizontal lines",
+        "desc": "cloudy sky",
+        "action": "static",
+        "position": "top"
+      },
+      {
+        "desc": "green text with a 3D effect and drop shadow",
+        "action": "static",
+        "position": "center"
+      },
+      {
+        "desc": "wooden textured background",
+        "action": "static",
+        "position": "background"
+      },
+      {
+        "desc": "thin horizontal white lines",
         "action": "static",
         "position": "center"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "The text 'We'll be Adults Soon Enough....' is displayed on the screen.",
+        "fact": "The video transitions from a snowy landscape to a title card.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The title card displays the text 'We'll be Adults Soon Enough....'.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The text is green and centered on a wooden background.",
         "confidence": 1.0
       },
       {
@@ -1988,50 +1941,49 @@
       "We'll be Adults",
       "Soon Enough...."
     ],
-    "spatial": "The green text is centered on the wooden background. The text is positioned between two horizontal white lines, with one line above the text and one line below it.",
+    "spatial": "In the first frame, the snow-covered ground is in the foreground, with bare trees behind it and a cloudy sky above. In the second frame, the green text is centered on the wooden background, with one white line above the text and another white line below the text.",
     "parse_success": true,
     "chunk_idx": 41,
-    "video_id": "PrMiVBbEaZo",
-    "_rescued": "parse"
+    "video_id": "PrMiVBbEaZo"
   },
   {
     "time": [
-      84,
-      86
+      42,
+      43
     ],
     "visible_entities": [
       {
-        "desc": "light brown wood grain background texture",
+        "desc": "Text reading 'We'll be Adults Soon Enough....' in a green, serif font with a black drop shadow",
+        "action": "static",
+        "position": "center"
+      },
+      {
+        "desc": "Text reading 'Play Hard...' in a green, serif font with a black drop shadow",
+        "action": "static",
+        "position": "center"
+      },
+      {
+        "desc": "Light brown wooden background with horizontal grain texture",
         "action": "static",
         "position": "background"
       },
       {
-        "desc": "green serif text with black drop shadow reading 'We'll be Adults Soon Enough....'",
+        "desc": "Two thin, horizontal white lines",
         "action": "static",
         "position": "center"
-      },
-      {
-        "desc": "green serif text with black drop shadow reading 'Play Hard...'",
-        "action": "static",
-        "position": "center"
-      },
-      {
-        "desc": "thin white horizontal lines",
-        "action": "static",
-        "position": "top and bottom"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "The text 'We'll be Adults Soon Enough....' is displayed in the center of the screen.",
+        "fact": "The text 'We'll be Adults Soon Enough....' is displayed on the screen.",
         "confidence": 1.0
       },
       {
-        "fact": "The text changes to 'Play Hard...' in the center of the screen.",
+        "fact": "The text changes to 'Play Hard...' in the second frame.",
         "confidence": 1.0
       },
       {
-        "fact": "Two thin white horizontal lines frame the text above and below.",
+        "fact": "The text is positioned between two horizontal white lines.",
         "confidence": 1.0
       }
     ],
@@ -2040,62 +1992,15 @@
       "Soon Enough....",
       "Play Hard..."
     ],
-    "spatial": "The green text is centered between two horizontal white lines. The top white line is above the text, and the bottom white line is below the text. The text and lines are superimposed on a wood grain background.",
+    "spatial": "The text is centered on the screen and positioned between two horizontal white lines. The top line is above the text, and the bottom line is below the text. The entire graphic is set against a wooden background.",
     "parse_success": true,
     "chunk_idx": 42,
-    "video_id": "PrMiVBbEaZo",
-    "_rescued": "parse"
+    "video_id": "PrMiVBbEaZo"
   },
   {
     "time": [
-      86,
-      88
-    ],
-    "visible_entities": [
-      {
-        "desc": "light brown wood grain texture background",
-        "action": "static",
-        "position": "background"
-      },
-      {
-        "desc": "green 3D-style text with a drop shadow",
-        "action": "static",
-        "position": "center"
-      },
-      {
-        "desc": "thin horizontal white line",
-        "action": "static",
-        "position": "top"
-      },
-      {
-        "desc": "thin horizontal white line",
-        "action": "static",
-        "position": "bottom"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "The text 'and earn Eagle!' is displayed in the center of the screen.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "Two horizontal lines frame the text from above and below.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [
-      "and earn Eagle!"
-    ],
-    "spatial": "The green text 'and earn Eagle!' is centered on the screen. A thin horizontal white line is positioned above the text, and another identical line is positioned below the text. The text and lines are superimposed on a light brown wood grain background.",
-    "parse_success": true,
-    "chunk_idx": 43,
-    "video_id": "PrMiVBbEaZo",
-    "_rescued": "parse"
-  },
-  {
-    "time": [
-      88,
-      90
+      43,
+      44
     ],
     "visible_entities": [
       {
@@ -2104,12 +2009,56 @@
         "position": "center"
       },
       {
-        "desc": "Two thin, horizontal grey lines",
+        "desc": "Two thin, horizontal white lines",
         "action": "static",
         "position": "center"
       },
       {
-        "desc": "Light brown wooden background with visible grain texture",
+        "desc": "Light brown wooden background with visible horizontal grain texture",
+        "action": "static",
+        "position": "background"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The text 'and earn Eagle!' is displayed on the screen.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The text is positioned between two horizontal white lines.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The background is a wooden surface.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "and earn Eagle!"
+    ],
+    "spatial": "The green text 'and earn Eagle!' is centered on the screen. One white horizontal line is above the text, and the other white horizontal line is below the text. The text and lines are superimposed on the wooden background.",
+    "parse_success": true,
+    "chunk_idx": 43,
+    "video_id": "PrMiVBbEaZo"
+  },
+  {
+    "time": [
+      44,
+      45
+    ],
+    "visible_entities": [
+      {
+        "desc": "text reading 'and earn Eagle!' in a green, serif font with a 3D beveled effect and drop shadow",
+        "action": "static",
+        "position": "center"
+      },
+      {
+        "desc": "two thin, horizontal, silver-grey lines",
+        "action": "static",
+        "position": "center"
+      },
+      {
+        "desc": "a light brown wooden surface with a visible horizontal grain pattern",
         "action": "static",
         "position": "background"
       }
@@ -2131,10 +2080,9 @@
     "ocr": [
       "and earn Eagle!"
     ],
-    "spatial": "The text 'and earn Eagle!' is centered between the two horizontal lines. The top line is above the text, and the bottom line is below the text. The text and lines are superimposed on the wooden background.",
+    "spatial": "The text 'and earn Eagle!' is centered on the screen. One horizontal line is above the text, and the other horizontal line is below the text. The text and lines are superimposed on top of the wooden background.",
     "parse_success": true,
     "chunk_idx": 44,
-    "video_id": "PrMiVBbEaZo",
-    "_rescued": "parse"
+    "video_id": "PrMiVBbEaZo"
   }
 ]

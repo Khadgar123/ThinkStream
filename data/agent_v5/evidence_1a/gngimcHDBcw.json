@@ -2,42 +2,37 @@
   {
     "time": [
       0,
-      2
+      1
     ],
     "visible_entities": [
       {
-        "desc": "salt grinder with a wooden top and clear glass body filled with white salt",
+        "desc": "two glass salt and pepper grinders with wooden tops and metal grinding mechanisms, containing salt and peppercorns",
         "action": "static",
         "position": "left"
       },
       {
-        "desc": "pepper grinder with a wooden top and clear glass body filled with black peppercorns",
+        "desc": "white text reading 'KITCHEN TIPS' with a sparkling effect in the first frame and a clean sans-serif font in the second",
         "action": "static",
-        "position": "left"
+        "position": "right"
+      },
+      {
+        "desc": "logo text reading 'Powered by ventuno' with a colorful square icon, appearing in the second frame",
+        "action": "appearing",
+        "position": "bottom right"
       },
       {
         "desc": "wooden surface with visible grain texture",
         "action": "static",
         "position": "bottom"
-      },
-      {
-        "desc": "white text reading 'KITCHEN TIPS' with a sparkling particle effect",
-        "action": "static",
-        "position": "right"
-      },
-      {
-        "desc": "logo text reading 'Powered by ventuno' with a multi-colored square icon",
-        "action": "static",
-        "position": "bottom right"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "The text 'KITCHEN TIPS' appears on the right side of the screen.",
+        "fact": "The text 'KITCHEN TIPS' is displayed on the screen.",
         "confidence": 1.0
       },
       {
-        "fact": "The text 'Powered by ventuno' appears below the 'KITCHEN TIPS' text.",
+        "fact": "The 'Powered by ventuno' logo appears in the bottom right corner.",
         "confidence": 1.0
       },
       {
@@ -51,26 +46,31 @@
       "Powered by",
       "ventuno"
     ],
-    "spatial": "The salt and pepper grinders are positioned on the left side of the frame, resting on a wooden surface that spans the bottom. The text 'KITCHEN TIPS' is located to the right of the grinders, and the 'Powered by ventuno' logo is situated below the main title text.",
+    "spatial": "The salt and pepper grinders are positioned on the left side of the frame, resting on the wooden surface. The text 'KITCHEN TIPS' is located to the right of the grinders. The 'Powered by ventuno' logo is situated below the main title text in the bottom right corner.",
     "parse_success": true,
     "chunk_idx": 0,
     "video_id": "gngimcHDBcw"
   },
   {
     "time": [
-      2,
-      4
+      1,
+      2
     ],
     "visible_entities": [
       {
-        "desc": "wooden salt grinder with a clear glass base filled with white salt",
+        "desc": "glass salt shaker with a wooden top and silver metal band, filled with white salt",
         "action": "static",
         "position": "left"
       },
       {
-        "desc": "wooden pepper grinder with a clear glass base filled with multi-colored peppercorns",
+        "desc": "glass pepper grinder with a wooden top and silver metal band, filled with black peppercorns",
         "action": "static",
         "position": "left"
+      },
+      {
+        "desc": "wooden surface with visible grain texture",
+        "action": "static",
+        "position": "bottom"
       },
       {
         "desc": "white text reading 'KITCHEN TIPS' in a sans-serif font",
@@ -78,19 +78,19 @@
         "position": "right"
       },
       {
-        "desc": "logo with a four-colored square and orange text reading 'ventuno'",
+        "desc": "logo text 'Powered by ventuno' with a colorful square icon",
         "action": "static",
-        "position": "bottom right"
+        "position": "right"
       },
       {
-        "desc": "light brown wooden surface with visible grain",
+        "desc": "gradient background transitioning from yellow to brown",
         "action": "static",
-        "position": "bottom"
+        "position": "background"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "Two wooden grinders are standing on a wooden surface.",
+        "fact": "A salt shaker and a pepper grinder are sitting on a wooden surface.",
         "confidence": 1.0
       },
       {
@@ -98,7 +98,7 @@
         "confidence": 1.0
       },
       {
-        "fact": "The text 'Powered by ventuno' is visible below the main title.",
+        "fact": "The phrase 'Powered by ventuno' appears below the main title.",
         "confidence": 1.0
       }
     ],
@@ -108,100 +108,95 @@
       "Powered by",
       "ventuno"
     ],
-    "spatial": "The salt and pepper grinders are positioned on the left side of the frame, resting on a wooden surface. The text 'KITCHEN TIPS' is to the right of the grinders. The 'ventuno' logo is located below the 'KITCHEN TIPS' text.",
+    "spatial": "The salt shaker and pepper grinder are positioned on the left side of the frame, resting on a wooden surface at the bottom. The text 'KITCHEN TIPS' is located to the right of the shakers. The 'Powered by ventuno' logo is situated below the 'KITCHEN TIPS' text.",
     "parse_success": true,
     "chunk_idx": 1,
     "video_id": "gngimcHDBcw"
   },
   {
     "time": [
-      4,
-      6
+      2,
+      3
     ],
     "visible_entities": [
       {
-        "desc": "white granular salt crystals",
-        "action": "spilled",
+        "desc": "pile of white granular crystals, fine-grained appearance",
+        "action": "static",
         "position": "center"
       },
       {
-        "desc": "silver metal salt shaker with perforated lid",
-        "action": "lying on side",
+        "desc": "metallic shaker top with circular holes",
+        "action": "static",
         "position": "right"
       },
       {
-        "desc": "black textured surface",
+        "desc": "colorful four-square logo (green, yellow, red, blue)",
         "action": "static",
-        "position": "background"
+        "position": "bottom-right"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "Salt has spilled out of the shaker onto the black surface.",
+        "fact": "A pile of white granular crystals rests on a black surface.",
         "confidence": 1.0
       },
       {
-        "fact": "The salt shaker is lying on its side.",
+        "fact": "A metallic shaker top is positioned next to the pile of crystals.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A colorful logo is visible in the bottom right corner.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The pile of white salt is in the center of the frame, resting on the black surface. The silver salt shaker is to the right of the salt pile, lying on its side with the lid facing the viewer.",
+    "spatial": "The pile of white granular crystals is in the center of the frame. The metallic shaker top is to the right of the pile. The colorful logo is in the bottom right corner of the frame.",
     "parse_success": true,
     "chunk_idx": 2,
     "video_id": "gngimcHDBcw"
   },
   {
     "time": [
-      6,
-      8
+      3,
+      4
     ],
     "visible_entities": [
       {
-        "desc": "pile of white granular substance, crystalline texture, fine-grained appearance",
+        "desc": "white granular salt crystals",
         "action": "static",
         "position": "center"
       },
       {
-        "desc": "glass shaker with black lid, silver rim, two circular dispensing holes",
+        "desc": "black salt shaker lid with holes",
         "action": "static",
         "position": "right"
       },
       {
-        "desc": "black surface, smooth, reflective",
+        "desc": "black surface",
         "action": "static",
         "position": "background"
-      },
-      {
-        "desc": "multicolored logo, four rounded squares (green, yellow, blue, red)",
-        "action": "static",
-        "position": "bottom right"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A pile of white granular substance is resting on a black surface.",
+        "fact": "A pile of white granular salt is resting on a black surface.",
         "confidence": 1.0
       },
       {
-        "fact": "A glass shaker with a black lid is positioned next to the pile.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The shaker is tipped over, suggesting the substance was poured from it.",
+        "fact": "A black salt shaker lid is positioned next to the pile of salt.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The pile of white granular substance is in the center of the frame, resting on the black surface. The glass shaker is to the right of the pile, lying on its side. The multicolored logo is in the bottom right corner of the frame.",
+    "spatial": "The pile of white granular salt is in the center of the frame. The black salt shaker lid is to the right of the salt pile. The salt and lid are on a black surface.",
     "parse_success": true,
     "chunk_idx": 3,
     "video_id": "gngimcHDBcw"
   },
   {
     "time": [
-      8,
-      10
+      4,
+      5
     ],
     "visible_entities": [
       {
@@ -210,186 +205,125 @@
         "position": "left"
       },
       {
-        "desc": "green spoon filled with fine red powder",
-        "action": "tilting to pour powder",
+        "desc": "green spoon filled with bright red powder",
+        "action": "pouring powder",
         "position": "left"
       },
       {
-        "desc": "pile of bright red spice powder",
-        "action": "falling onto vegetables",
+        "desc": "bright red fine powder",
+        "action": "falling onto food",
         "position": "center"
       },
       {
-        "desc": "chopped pale yellow vegetables, likely onions or potatoes",
+        "desc": "chopped pale yellow vegetables in liquid",
         "action": "static",
         "position": "center"
       },
       {
-        "desc": "white cooking pot interior",
-        "action": "static",
-        "position": "background"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "A hand is holding a green spoon over a pot.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "Red powder is being poured from the spoon onto the chopped vegetables.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The vegetables are chopped into small, irregular chunks.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The red powder forms a pile on top of the vegetables.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [],
-    "spatial": "The hand is on the left side of the frame, holding the green spoon. The spoon is positioned above the center of the pot. The red powder is falling from the spoon onto the chopped vegetables which are inside the white pot.",
-    "parse_success": true,
-    "chunk_idx": 4,
-    "video_id": "gngimcHDBcw"
-  },
-  {
-    "time": [
-      10,
-      12
-    ],
-    "visible_entities": [
-      {
-        "desc": "hand with light skin tone holding a green plastic measuring spoon",
-        "action": "pouring red powder",
-        "position": "left"
-      },
-      {
-        "desc": "bright red fine powder, likely paprika or chili powder",
-        "action": "falling into pot",
-        "position": "center"
-      },
-      {
-        "desc": "chopped white onions and pale yellow potato chunks",
-        "action": "static",
-        "position": "center"
-      },
-      {
-        "desc": "large white cooking pot with a dark rim",
+        "desc": "white cooking pot",
         "action": "static",
         "position": "background"
       },
       {
-        "desc": "colorful logo with blue, green, yellow, and red squares",
+        "desc": "colorful logo with blue, green, yellow, and red shapes",
         "action": "static",
         "position": "bottom right"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A hand is pouring red spice from a green spoon into a pot.",
+        "fact": "A hand is pouring red powder from a green spoon into a pot.",
         "confidence": 1.0
       },
       {
-        "fact": "The pot contains chopped onions and potatoes.",
+        "fact": "The red powder is piling up on top of the chopped vegetables.",
         "confidence": 1.0
       },
       {
-        "fact": "The red powder is accumulating on top of the vegetables.",
+        "fact": "The chopped vegetables are submerged in a liquid inside the pot.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The hand holding the green spoon is on the left side of the frame, positioned above the white pot. The red powder is falling from the spoon into the center of the pot, landing on top of the chopped onions and potatoes. The colorful logo is located in the bottom right corner of the screen.",
+    "spatial": "The hand is on the left side of the frame, holding the green spoon above the pot. The red powder is falling from the spoon into the center of the pot, landing on top of the chopped vegetables. The colorful logo is in the bottom right corner of the screen.",
+    "parse_success": true,
+    "chunk_idx": 4,
+    "video_id": "gngimcHDBcw"
+  },
+  {
+    "time": [
+      5,
+      6
+    ],
+    "visible_entities": [
+      {
+        "desc": "hand with light skin tone and short fingernails",
+        "action": "holding a green spoon",
+        "position": "left"
+      },
+      {
+        "desc": "green plastic spoon filled with bright red powder",
+        "action": "pouring red powder",
+        "position": "left"
+      },
+      {
+        "desc": "bright red fine powder",
+        "action": "falling onto vegetables",
+        "position": "center"
+      },
+      {
+        "desc": "chopped pale yellow vegetables and translucent onions",
+        "action": "static",
+        "position": "bottom"
+      },
+      {
+        "desc": "white cooking pot with a dark rim",
+        "action": "static",
+        "position": "background"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A hand is holding a green spoon.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The spoon is pouring bright red powder into the pot.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The red powder is accumulating on top of the chopped vegetables.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The pot contains chopped onions and pale yellow vegetable chunks.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The hand is on the left side of the frame, holding the green spoon above the white pot. The red powder is falling from the spoon into the center of the pot, landing on top of the chopped vegetables which are at the bottom.",
     "parse_success": true,
     "chunk_idx": 5,
     "video_id": "gngimcHDBcw"
   },
   {
     "time": [
-      12,
-      14
+      6,
+      7
     ],
     "visible_entities": [
       {
         "desc": "woman with short brown hair, wearing a textured pink cardigan over a black top",
-        "action": "reaching for vegetables",
-        "position": "center"
-      },
-      {
-        "desc": "white bowl filled with fresh vegetables including green leafy lettuce, red radishes, and orange carrots",
-        "action": "static",
-        "position": "left"
-      },
-      {
-        "desc": "black tablet computer in a protective case",
-        "action": "static",
-        "position": "right"
-      },
-      {
-        "desc": "glass of white wine",
-        "action": "static",
-        "position": "right"
-      },
-      {
-        "desc": "green onions (scallions)",
-        "action": "static",
-        "position": "center-right"
-      },
-      {
-        "desc": "wooden cutting board",
-        "action": "static",
-        "position": "center"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "The woman is reaching her hand towards the green onions on the cutting board.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "A bowl of vegetables sits on the table to the left of the woman.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "A glass of white wine is placed on the table to the right of the tablet.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The woman is looking down at the tablet or the vegetables.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [],
-    "spatial": "The woman is standing in the center behind the table. To her left is a white bowl filled with vegetables. In front of her on the table is a wooden cutting board with green onions. To her right, a black tablet lies flat on the table, and further to the right is a glass of white wine.",
-    "parse_success": true,
-    "chunk_idx": 6,
-    "video_id": "gngimcHDBcw"
-  },
-  {
-    "time": [
-      14,
-      16
-    ],
-    "visible_entities": [
-      {
-        "desc": "woman with short brown hair, wearing a textured red cardigan over a black top",
         "action": "reaching for green onions",
         "position": "center"
       },
       {
-        "desc": "white bowl filled with fresh vegetables including red radishes, orange carrots, green leafy lettuce, and a head of cabbage",
+        "desc": "white bowl filled with fresh vegetables including cabbage, radishes, and carrots",
         "action": "static",
         "position": "left foreground"
       },
       {
-        "desc": "bunch of long green onions",
-        "action": "being touched",
-        "position": "center foreground"
-      },
-      {
-        "desc": "black tablet device",
+        "desc": "black tablet computer with a protective case",
         "action": "static",
         "position": "right foreground"
       },
@@ -399,9 +333,66 @@
         "position": "right background"
       },
       {
+        "desc": "green onions",
+        "action": "being touched",
+        "position": "center foreground"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The woman is reaching out with her right hand to touch the green onions on the cutting board.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A bowl of vegetables sits on the counter to the left of the woman.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A tablet is lying flat on the counter in front of the woman.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The woman is standing behind the kitchen counter. To her left is a white bowl filled with vegetables. In front of her on the counter are green onions and a black tablet. To the right of the tablet is a glass of white wine.",
+    "parse_success": true,
+    "chunk_idx": 6,
+    "video_id": "gngimcHDBcw"
+  },
+  {
+    "time": [
+      7,
+      8
+    ],
+    "visible_entities": [
+      {
+        "desc": "woman with short brown hair, wearing a textured red open-front cardigan over a black top",
+        "action": "reaching for green onions",
+        "position": "center"
+      },
+      {
+        "desc": "white bowl containing green leafy vegetables, radishes, and an orange fruit",
+        "action": "static",
+        "position": "left"
+      },
+      {
+        "desc": "bunch of long green onions",
+        "action": "being touched",
+        "position": "center-right"
+      },
+      {
+        "desc": "black tablet device",
+        "action": "static",
+        "position": "foreground right"
+      },
+      {
+        "desc": "glass of white wine",
+        "action": "static",
+        "position": "right"
+      },
+      {
         "desc": "wooden cutting board",
         "action": "static",
-        "position": "center foreground"
+        "position": "center"
       }
     ],
     "atomic_facts": [
@@ -410,24 +401,80 @@
         "confidence": 1.0
       },
       {
-        "fact": "A bowl of mixed vegetables sits on the table to the left of the woman.",
+        "fact": "A bowl of fresh vegetables sits on the counter to the left of the woman.",
         "confidence": 1.0
       },
       {
-        "fact": "A glass of white wine is positioned to the right of the tablet.",
+        "fact": "A tablet is lying flat on the counter in the foreground.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The woman is positioned in the center, standing behind the wooden cutting board. To her left is a white bowl filled with vegetables. To her right, a black tablet lies on the table, with a glass of white wine situated further to the right and slightly behind the tablet.",
+    "spatial": "The woman is positioned in the center, standing behind the counter. To her left is a white bowl filled with vegetables. In front of her on the counter is a wooden cutting board with green onions. To the right of the cutting board is a glass of wine and a black tablet.",
     "parse_success": true,
     "chunk_idx": 7,
     "video_id": "gngimcHDBcw"
   },
   {
     "time": [
-      16,
-      18
+      8,
+      9
+    ],
+    "visible_entities": [
+      {
+        "desc": "uncooked brown penne pasta",
+        "action": "static",
+        "position": "center"
+      },
+      {
+        "desc": "crumbled white cheese",
+        "action": "static",
+        "position": "top"
+      },
+      {
+        "desc": "wilted green spinach leaves",
+        "action": "static",
+        "position": "bottom"
+      },
+      {
+        "desc": "cubed cooked chicken",
+        "action": "static",
+        "position": "bottom"
+      },
+      {
+        "desc": "black frying pan",
+        "action": "static",
+        "position": "background"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A pile of uncooked brown penne pasta sits in the center of the pan.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "Crumbled white cheese is sprinkled on top of the pasta.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "Wilted green spinach leaves and cubed chicken are visible at the bottom of the pan.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The ingredients are contained within a black frying pan.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The crumbled white cheese is on top of the brown penne pasta. The pasta is above the green spinach leaves and cubed chicken. All ingredients are inside the black frying pan.",
+    "parse_success": true,
+    "chunk_idx": 8,
+    "video_id": "gngimcHDBcw"
+  },
+  {
+    "time": [
+      9,
+      10
     ],
     "visible_entities": [
       {
@@ -436,78 +483,17 @@
         "position": "center"
       },
       {
-        "desc": "white crumbled cheese, irregular chunks, dry texture",
-        "action": "being sprinkled",
-        "position": "top"
-      },
-      {
-        "desc": "dark green leafy vegetables, wilted appearance",
-        "action": "static",
-        "position": "bottom"
-      },
-      {
-        "desc": "cubed chicken, pale beige color, cooked texture",
-        "action": "static",
-        "position": "foreground"
-      },
-      {
-        "desc": "black frying pan, smooth interior surface",
-        "action": "static",
-        "position": "background"
-      },
-      {
-        "desc": "colorful logo, four squares in green, yellow, blue, red",
-        "action": "static",
-        "position": "bottom right"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "A pile of white crumbled cheese is being added to the top of the pasta mixture.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The penne pasta is mixed with green leafy vegetables and cubed chicken.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The food is contained within a black frying pan.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "A colorful four-square logo is visible in the bottom right corner.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [],
-    "spatial": "The white crumbled cheese is piled on top of the penne pasta and chicken mixture. The green leafy vegetables are located underneath and around the pasta. The cubed chicken pieces are scattered throughout the bottom and foreground of the pan. The colorful logo is positioned in the bottom right corner of the frame, overlaying the pan.",
-    "parse_success": true,
-    "chunk_idx": 8,
-    "video_id": "gngimcHDBcw"
-  },
-  {
-    "time": [
-      18,
-      20
-    ],
-    "visible_entities": [
-      {
-        "desc": "uncooked penne pasta, tan color, tubular shape with angled cuts",
-        "action": "static",
-        "position": "center"
-      },
-      {
-        "desc": "crumbled white cheese, likely feta, irregular chunks",
+        "desc": "crumbled white cheese, irregular chunks, soft texture",
         "action": "static",
         "position": "top"
       },
       {
-        "desc": "cooked chicken chunks, light beige color, bite-sized",
+        "desc": "green spinach leaves, wilted, dark green",
         "action": "static",
         "position": "bottom"
       },
       {
-        "desc": "wilted green spinach leaves",
+        "desc": "cubed chicken breast, cooked, beige color",
         "action": "static",
         "position": "bottom"
       },
@@ -515,66 +501,48 @@
         "desc": "black frying pan, round, matte finish",
         "action": "static",
         "position": "background"
-      },
-      {
-        "desc": "red chili peppers, whole, glossy skin",
-        "action": "static",
-        "position": "foreground"
-      },
-      {
-        "desc": "multi-colored square logo, blue, green, yellow, red",
-        "action": "static",
-        "position": "bottom right"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "The video cuts from a shot of pasta in a pan to a shot of red peppers.",
+        "fact": "The black frying pan contains a mixture of pasta, cheese, spinach, and chicken.",
         "confidence": 1.0
       },
       {
-        "fact": "The first frame shows a mixture of penne pasta, crumbled white cheese, chicken, and spinach in a black pan.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The second frame shows a close-up of red chili peppers with green stems.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The cheese is piled on top of the pasta.",
+        "fact": "Crumbled white cheese is piled on top of the pasta and vegetables.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The crumbled white cheese is on top of the penne pasta. The chicken chunks and spinach leaves are below the pasta. The red chili peppers are in front of the pasta mixture in the second frame. The multi-colored logo is in the bottom right corner of the screen.",
+    "spatial": "The crumbled white cheese is on top of the penne pasta. The green spinach leaves and cubed chicken are below the pasta layer. All ingredients are inside the black frying pan.",
     "parse_success": true,
     "chunk_idx": 9,
     "video_id": "gngimcHDBcw"
   },
   {
     "time": [
-      20,
-      22
+      10,
+      11
     ],
     "visible_entities": [
       {
-        "desc": "bright red chili peppers with green stems, shiny texture, piled together",
+        "desc": "pile of bright red chili peppers with green stems, glossy texture",
         "action": "static",
         "position": "background"
       },
       {
-        "desc": "white text overlay reading 'Reducing excess' in cursive font and 'SALT/SPICE' in bold sans-serif font",
+        "desc": "white text overlay reading 'Reducing excess SALT/SPICE' in mixed cursive and sans-serif fonts",
         "action": "static",
         "position": "center"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "Text reading 'Reducing excess SALT/SPICE' is overlaid on the image of red chili peppers.",
+        "fact": "The text 'Reducing excess SALT/SPICE' appears on screen.",
         "confidence": 1.0
       },
       {
-        "fact": "The text 'Reducing excess' appears above the text 'SALT/SPICE'.",
+        "fact": "The text is superimposed over a background of red chili peppers.",
         "confidence": 1.0
       }
     ],
@@ -582,15 +550,15 @@
       "Reducing excess",
       "SALT/SPICE"
     ],
-    "spatial": "The text 'Reducing excess SALT/SPICE' is centered in front of the background of red chili peppers. The phrase 'Reducing excess' is positioned above the phrase 'SALT/SPICE'.",
+    "spatial": "The text 'Reducing excess SALT/SPICE' is centered in the foreground, positioned directly in front of the pile of red chili peppers which fills the entire background.",
     "parse_success": true,
     "chunk_idx": 10,
     "video_id": "gngimcHDBcw"
   },
   {
     "time": [
-      22,
-      24
+      11,
+      12
     ],
     "visible_entities": [
       {
@@ -609,7 +577,7 @@
         "position": "background"
       },
       {
-        "desc": "white text overlay with 'Add' in standard font and 'SUGAR/JAGGERY' in bold sans-serif font",
+        "desc": "white text overlay reading 'Add SUGAR/JAGGERY' in sans-serif font",
         "action": "static",
         "position": "center"
       }
@@ -620,15 +588,15 @@
         "confidence": 1.0
       },
       {
-        "fact": "Text 'Reducing excess SALT/SPICE' appears over the peppers.",
+        "fact": "Text on the screen reads 'Reducing excess SALT/SPICE'.",
         "confidence": 1.0
       },
       {
-        "fact": "The scene transitions to a black screen.",
+        "fact": "The scene transitions to a black screen with text.",
         "confidence": 1.0
       },
       {
-        "fact": "Text 'Add SUGAR/JAGGERY' appears on the black background.",
+        "fact": "Text on the black screen reads 'Add SUGAR/JAGGERY'.",
         "confidence": 1.0
       }
     ],
@@ -638,107 +606,15 @@
       "Add",
       "SUGAR/JAGGERY"
     ],
-    "spatial": "The text 'Reducing excess SALT/SPICE' is superimposed in the center of the frame, in front of the background image of red chili peppers. In the subsequent frame, the text 'Add SUGAR/JAGGERY' is centered on a black background.",
+    "spatial": "The text 'Reducing excess SALT/SPICE' is centered over the background of red chili peppers. The text 'Add SUGAR/JAGGERY' is centered on a black background.",
     "parse_success": true,
     "chunk_idx": 11,
     "video_id": "gngimcHDBcw"
   },
   {
     "time": [
-      24,
-      26
-    ],
-    "visible_entities": [
-      {
-        "desc": "white text on black background, sans-serif font, reading 'Add SUGAR/JAGGERY'",
-        "action": "static",
-        "position": "center"
-      },
-      {
-        "desc": "hand with light skin tone, holding a small red bowl",
-        "action": "pouring white granules",
-        "position": "top left"
-      },
-      {
-        "desc": "small red plastic bowl containing white granular substance",
-        "action": "being tilted",
-        "position": "top left"
-      },
-      {
-        "desc": "orange liquid mixture in a dark pan",
-        "action": "static",
-        "position": "bottom"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "The video displays the text 'Add SUGAR/JAGGERY'.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "A hand is pouring a white granular substance from a red bowl into a pan.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The pan contains an orange liquid.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [
-      "Add",
-      "SUGAR/JAGGERY"
-    ],
-    "spatial": "The text 'Add SUGAR/JAGGERY' is centered on the screen. The hand holding the red bowl is positioned above the pan containing the orange liquid. The red bowl is being tilted to pour its contents into the liquid below.",
-    "parse_success": true,
-    "chunk_idx": 12,
-    "video_id": "gngimcHDBcw"
-  },
-  {
-    "time": [
-      26,
-      28
-    ],
-    "visible_entities": [
-      {
-        "desc": "hand with light skin tone",
-        "action": "holding a red bowl",
-        "position": "top left"
-      },
-      {
-        "desc": "small red plastic bowl containing white granular substance",
-        "action": "being held above the pot",
-        "position": "top center"
-      },
-      {
-        "desc": "large pot containing orange liquid",
-        "action": "static",
-        "position": "bottom center"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "A hand is holding a red bowl filled with a white granular substance.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The red bowl is positioned directly above a pot of orange liquid.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The white substance appears to be salt or sugar.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [],
-    "spatial": "The hand is holding the red bowl in the top left area of the frame. The red bowl is positioned above the large pot of orange liquid which occupies the bottom and center of the view.",
-    "parse_success": true,
-    "chunk_idx": 13,
-    "video_id": "gngimcHDBcw"
-  },
-  {
-    "time": [
-      28,
-      30
+      12,
+      13
     ],
     "visible_entities": [
       {
@@ -748,152 +624,277 @@
       },
       {
         "desc": "small red plastic bowl",
-        "action": "being tilted",
-        "position": "top center"
+        "action": "being held and tilted",
+        "position": "top left"
       },
       {
-        "desc": "white granular crystals",
-        "action": "falling from the bowl",
+        "desc": "white granular substance",
+        "action": "pouring from the bowl",
         "position": "center"
       },
       {
-        "desc": "orange viscous liquid",
+        "desc": "large pan containing orange liquid",
         "action": "static",
         "position": "bottom"
       },
       {
-        "desc": "solid orange rectangular blocks",
-        "action": "submerged in liquid",
-        "position": "bottom"
-      },
-      {
-        "desc": "multi-colored square logo",
+        "desc": "white text on black background",
         "action": "static",
-        "position": "bottom right"
+        "position": "center"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A hand tilts a red bowl to pour white granular crystals into a large container.",
+        "fact": "A hand is pouring white granular substance from a red bowl into a pan.",
         "confidence": 1.0
       },
       {
-        "fact": "The white crystals are falling into an orange liquid.",
+        "fact": "The pan contains a large volume of orange liquid.",
         "confidence": 1.0
       },
       {
-        "fact": "Solid orange blocks are visible submerged in the liquid in the second frame.",
+        "fact": "The text 'Add SUGAR/JAGGERY' is displayed on the screen.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "Add",
+      "SUGAR/JAGGERY"
+    ],
+    "spatial": "The hand is holding the red bowl above the pan. The white granular substance is falling from the bowl into the orange liquid inside the pan. The text is centered on a black background.",
+    "parse_success": true,
+    "chunk_idx": 12,
+    "video_id": "gngimcHDBcw"
+  },
+  {
+    "time": [
+      13,
+      14
+    ],
+    "visible_entities": [
+      {
+        "desc": "hand with light skin tone",
+        "action": "holding a red bowl",
+        "position": "top left"
+      },
+      {
+        "desc": "small red plastic bowl filled with white granular crystals",
+        "action": "being tilted",
+        "position": "top center"
+      },
+      {
+        "desc": "large pot containing orange liquid",
+        "action": "static",
+        "position": "bottom center"
+      },
+      {
+        "desc": "white granular crystals",
+        "action": "falling into liquid",
+        "position": "center"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A hand is holding a red bowl over a pot.",
         "confidence": 1.0
       },
       {
-        "fact": "A logo consisting of four colored squares is visible in the bottom right corner.",
+        "fact": "White granular crystals are falling from the red bowl into the orange liquid.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The orange liquid fills the bottom of the pot.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The hand is holding the red bowl above the orange liquid. The white crystals are falling from the bowl into the liquid below. The orange blocks are submerged inside the liquid. The logo is located in the bottom right corner of the frame.",
+    "spatial": "The hand is holding the red bowl above the pot. The white crystals are falling from the bowl into the orange liquid below. The pot is positioned underneath the hand and bowl.",
+    "parse_success": true,
+    "chunk_idx": 13,
+    "video_id": "gngimcHDBcw"
+  },
+  {
+    "time": [
+      14,
+      15
+    ],
+    "visible_entities": [
+      {
+        "desc": "hand with light skin tone",
+        "action": "holding red bowl",
+        "position": "top left"
+      },
+      {
+        "desc": "small red bowl containing white granular substance",
+        "action": "pouring contents",
+        "position": "top center"
+      },
+      {
+        "desc": "orange liquid surface with bubbles",
+        "action": "static",
+        "position": "bottom"
+      },
+      {
+        "desc": "orange rectangular blocks",
+        "action": "floating",
+        "position": "center"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A hand is holding a red bowl over a pot of liquid.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "White granular substance is being poured from the red bowl.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "Orange rectangular blocks are floating in the orange liquid.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The hand is positioned at the top left, holding the red bowl above the orange liquid. The white granular substance is falling from the bowl into the liquid below. The orange blocks are floating inside the liquid.",
     "parse_success": true,
     "chunk_idx": 14,
     "video_id": "gngimcHDBcw"
   },
   {
     "time": [
-      30,
-      32
+      15,
+      16
     ],
     "visible_entities": [
       {
-        "desc": "pinkish-brown rectangular blocks, solid, slightly textured surface, irregular edges",
+        "desc": "pinkish-brown rectangular blocks with a rough, crystalline texture",
         "action": "static",
         "position": "center"
       },
       {
-        "desc": "metallic bowl, silver, reflective interior surface",
+        "desc": "metallic bowl with a reflective interior surface",
         "action": "static",
         "position": "background"
       },
       {
-        "desc": "colorful logo, four squares (green, yellow, red, blue)",
+        "desc": "colorful four-square logo (green, yellow, red, blue)",
         "action": "static",
-        "position": "bottom-right"
+        "position": "bottom right"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "Pinkish-brown rectangular blocks are resting inside a metallic bowl.",
+        "fact": "Pinkish-brown rectangular blocks are sitting inside a metallic bowl.",
         "confidence": 1.0
       },
       {
-        "fact": "A colorful four-square logo is visible in the bottom right corner.",
+        "fact": "The blocks appear to be coated in a white, crystalline substance resembling sugar or salt.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A colorful logo is visible in the bottom right corner of the frame.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The pinkish-brown blocks are inside the metallic bowl. The blocks are clustered in the center of the bowl. The colorful logo is to the right of the bowl.",
+    "spatial": "The pinkish-brown blocks are clustered in the center of the metallic bowl. The colorful logo is located in the bottom right corner, outside the bowl area.",
     "parse_success": true,
     "chunk_idx": 15,
     "video_id": "gngimcHDBcw"
   },
   {
     "time": [
-      32,
-      34
+      16,
+      17
     ],
     "visible_entities": [
       {
-        "desc": "pinkish-brown rectangular cubes with a rough, porous, and slightly glossy texture, resembling frozen meat or processed food blocks",
+        "desc": "pinkish-brown rectangular blocks of raw meat, appearing frozen or semi-frozen with a textured surface",
         "action": "static",
         "position": "center"
       },
       {
-        "desc": "metallic pot with a curved, reflective silver interior surface",
+        "desc": "silver metallic cooking pot interior",
         "action": "static",
         "position": "background"
-      },
-      {
-        "desc": "clear liquid pooling at the bottom of the container",
-        "action": "static",
-        "position": "bottom"
-      },
-      {
-        "desc": "colorful logo composed of four squares (green, yellow, red, blue) arranged in a 2x2 grid",
-        "action": "static",
-        "position": "bottom-right"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "Several pinkish-brown food cubes are resting inside a metallic pot.",
+        "fact": "Cubed pieces of raw meat are resting inside a metal pot.",
         "confidence": 1.0
       },
       {
-        "fact": "A small amount of clear liquid is visible at the bottom of the pot, surrounding the base of the cubes.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The cubes appear to be in a solid, possibly frozen state.",
+        "fact": "The meat blocks are clustered together in the center of the container.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The pinkish-brown cubes are clustered in the center of the metallic pot. The clear liquid is below the cubes, pooling at the bottom of the container. The colorful four-square logo is located in the bottom-right corner of the frame, overlaid on the image.",
+    "spatial": "The pinkish-brown meat blocks are inside the silver metallic pot. The meat is positioned in the center of the pot's base.",
     "parse_success": true,
     "chunk_idx": 16,
     "video_id": "gngimcHDBcw"
   },
   {
     "time": [
-      34,
-      36
+      17,
+      18
     ],
     "visible_entities": [
       {
-        "desc": "man with short dark facial stubble, wearing a light blue collared shirt",
+        "desc": "person with short facial stubble, mouth open, tongue extended",
         "action": "licking food",
         "position": "right"
       },
       {
-        "desc": "silver metal fork with a brown, textured chunk of food",
+        "desc": "silver metal fork with a brown textured chunk of food",
+        "action": "held near mouth",
+        "position": "left"
+      },
+      {
+        "desc": "solid blue background",
+        "action": "static",
+        "position": "background"
+      },
+      {
+        "desc": "multicolored square logo (green, yellow, blue, red)",
+        "action": "static",
+        "position": "bottom right"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A person extends their tongue to lick a piece of food.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A silver fork holds a brown, textured chunk of food near the person's mouth.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The food appears to be a small, irregular piece of meat or savory dish.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The fork holding the food is positioned to the left of the person's face. The person's mouth and tongue are in the center-right of the frame, reaching towards the food. The multicolored logo is located in the bottom right corner of the screen.",
+    "parse_success": true,
+    "chunk_idx": 17,
+    "video_id": "gngimcHDBcw"
+  },
+  {
+    "time": [
+      18,
+      19
+    ],
+    "visible_entities": [
+      {
+        "desc": "person with short facial stubble, mouth open, tongue extended",
+        "action": "licking food",
+        "position": "right"
+      },
+      {
+        "desc": "silver metal fork holding a brown, textured chunk of food",
         "action": "being held near mouth",
         "position": "left"
       },
@@ -903,93 +904,46 @@
         "position": "background"
       },
       {
-        "desc": "multicolored square logo (green, yellow, red, blue)",
+        "desc": "multicolored square logo (green, yellow, blue, red)",
         "action": "static",
         "position": "bottom right"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A man extends his tongue to lick a piece of brown food.",
+        "fact": "A person extends their tongue to lick a piece of food.",
         "confidence": 1.0
       },
       {
-        "fact": "The food is resting on the tines of a silver fork.",
+        "fact": "The food is a brown, textured chunk resting on the tines of a fork.",
         "confidence": 1.0
       },
       {
-        "fact": "The fork is positioned to the left of the man's face.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [],
-    "spatial": "The man's face is positioned on the right side of the frame, while the fork holding the food is on the left. The food is in front of the man's open mouth. The multicolored logo is located in the bottom right corner of the screen.",
-    "parse_success": true,
-    "chunk_idx": 17,
-    "video_id": "gngimcHDBcw"
-  },
-  {
-    "time": [
-      36,
-      38
-    ],
-    "visible_entities": [
-      {
-        "desc": "man with short dark stubble beard and fair skin",
-        "action": "licking food",
-        "position": "right"
-      },
-      {
-        "desc": "silver metal fork",
-        "action": "holding food",
-        "position": "left"
-      },
-      {
-        "desc": "brown textured food chunk",
-        "action": "being licked",
-        "position": "center"
-      },
-      {
-        "desc": "multicolored square logo (green, yellow, red, blue)",
-        "action": "static",
-        "position": "bottom right"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "The man extends his tongue to lick the food on the fork.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The fork holds a piece of brown food near the man's mouth.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The man's mouth is open.",
+        "fact": "The fork is positioned to the left of the person's face.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The man's face is on the right side of the frame, while the fork enters from the left. The piece of food is positioned in the center, between the fork tines and the man's tongue. The multicolored logo is located in the bottom right corner of the screen.",
+    "spatial": "The person's face is on the right side of the frame, while the fork holding the food is on the left. The food is positioned directly in front of the person's extended tongue. The multicolored logo is in the bottom right corner of the screen.",
     "parse_success": true,
     "chunk_idx": 18,
     "video_id": "gngimcHDBcw"
   },
   {
     "time": [
-      38,
-      40
+      19,
+      20
     ],
     "visible_entities": [
       {
-        "desc": "White text reading 'Add more' in sentence case and 'MAIN INGREDIENT' in uppercase, sans-serif font",
+        "desc": "White sans-serif text reading 'Add more' on the top line and 'MAIN INGREDIENT' in all-caps on the bottom line",
         "action": "static",
         "position": "center"
       },
       {
-        "desc": "Small colorful logo composed of four rounded squares (green, yellow, blue, red) arranged in a 2x2 grid",
+        "desc": "Small square logo composed of four colored quadrants (green top-left, yellow top-right, blue bottom-left, red bottom-right)",
         "action": "static",
-        "position": "bottom-right"
+        "position": "bottom right"
       }
     ],
     "atomic_facts": [
@@ -998,7 +952,7 @@
         "confidence": 1.0
       },
       {
-        "fact": "A four-colored logo is visible in the bottom right corner.",
+        "fact": "A four-colored square logo is visible in the bottom right corner.",
         "confidence": 1.0
       }
     ],
@@ -1006,15 +960,15 @@
       "Add more",
       "MAIN INGREDIENT"
     ],
-    "spatial": "The text 'Add more MAIN INGREDIENT' is centered on the black background. The colorful four-square logo is located in the bottom right corner, below and to the right of the text.",
+    "spatial": "The white text 'Add more MAIN INGREDIENT' is centered on the black background. The multi-colored square logo is positioned in the bottom right corner, below and to the right of the main text.",
     "parse_success": true,
     "chunk_idx": 19,
     "video_id": "gngimcHDBcw"
   },
   {
     "time": [
-      40,
-      42
+      20,
+      21
     ],
     "visible_entities": [
       {
@@ -1028,27 +982,27 @@
         "position": "background"
       },
       {
-        "desc": "chunks of boiled white potato, irregular shape, soft texture",
+        "desc": "chunks of boiled white potato, irregular shapes, soft texture",
         "action": "being added",
-        "position": "center"
+        "position": "foreground"
       },
       {
-        "desc": "colorful square logo composed of four smaller squares (green, yellow, blue, red)",
+        "desc": "small colorful square logo composed of green, blue, yellow, and red blocks",
         "action": "static",
         "position": "bottom right"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "The video displays an instruction to 'Add more MAIN INGREDIENT'.",
+        "fact": "The text 'Add more MAIN INGREDIENT' is displayed on a black screen.",
         "confidence": 1.0
       },
       {
-        "fact": "Chunks of white potato are placed into the orange curry sauce.",
+        "fact": "Chunks of white potato are added to the orange curry sauce.",
         "confidence": 1.0
       },
       {
-        "fact": "A green chili pepper is visible floating in the sauce.",
+        "fact": "The potato pieces are placed on top of the liquid sauce.",
         "confidence": 1.0
       }
     ],
@@ -1056,54 +1010,54 @@
       "Add more",
       "MAIN INGREDIENT"
     ],
-    "spatial": "The text 'Add more MAIN INGREDIENT' is centered on the black background. The chunks of potato are in the center of the pot, surrounded by the orange sauce. The colorful logo is in the bottom right corner of the screen.",
+    "spatial": "The text 'Add more MAIN INGREDIENT' is centered on the screen above the cooking scene. In the cooking shot, the chunks of white potato are in the foreground, resting on top of the orange curry sauce. The colorful logo is located in the bottom right corner of the frame.",
     "parse_success": true,
     "chunk_idx": 20,
     "video_id": "gngimcHDBcw"
   },
   {
     "time": [
-      42,
-      44
+      21,
+      22
     ],
     "visible_entities": [
       {
-        "desc": "white, chunky, irregularly shaped food pieces, appearing soft and solid",
-        "action": "static",
-        "position": "center"
-      },
-      {
-        "desc": "thick, orange-brown liquid sauce with a smooth texture",
+        "desc": "creamy orange-brown liquid sauce with a smooth texture",
         "action": "static",
         "position": "background"
       },
       {
-        "desc": "green, elongated vegetable piece, possibly a chili pepper",
+        "desc": "irregular chunks of white, opaque solid food, appearing soft",
+        "action": "static",
+        "position": "center"
+      },
+      {
+        "desc": "green vegetable piece, partially submerged",
         "action": "static",
         "position": "left"
       },
       {
-        "desc": "blue rectangular graphic with a white Twitter bird logo and white text",
+        "desc": "blue rectangular banner with a white Twitter bird logo",
         "action": "static",
         "position": "bottom-left"
       },
       {
-        "desc": "small, colorful square logo composed of four smaller squares (green, yellow, blue, red)",
+        "desc": "colorful square logo composed of four smaller squares",
         "action": "static",
         "position": "bottom-right"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "White food chunks are resting in the orange-brown sauce.",
+        "fact": "White chunks of food are resting in the center of the orange-brown sauce.",
         "confidence": 1.0
       },
       {
-        "fact": "A blue graphic displays the text 'Follow us on /kitchentips1'.",
+        "fact": "A green vegetable piece is visible on the left side of the dish.",
         "confidence": 1.0
       },
       {
-        "fact": "A green vegetable piece is visible on the left side of the sauce.",
+        "fact": "The text 'Follow us on /kitchentips1' is displayed on a blue banner at the bottom of the screen.",
         "confidence": 1.0
       }
     ],
@@ -1111,40 +1065,53 @@
       "Follow us on",
       "/kitchentips1"
     ],
-    "spatial": "The white food chunks are in the center, surrounded by the orange-brown sauce. The green vegetable piece is to the left of the white chunks. The blue social media graphic is in the bottom-left corner, and the colorful square logo is in the bottom-right corner.",
+    "spatial": "The white food chunks are in the center of the orange-brown sauce. The green vegetable piece is to the left of the white chunks. The blue banner with text is at the bottom of the frame, below the food.",
     "parse_success": true,
     "chunk_idx": 21,
     "video_id": "gngimcHDBcw"
   },
   {
     "time": [
-      44,
-      46
+      22,
+      23
     ],
     "visible_entities": [
       {
-        "desc": "white, irregular chunks of cooked food, likely potato or root vegetable, with a soft, starchy texture",
+        "desc": "white, irregular chunks of cooked food, likely boiled potato or root vegetable, soft texture",
         "action": "static",
         "position": "center"
       },
       {
-        "desc": "blue rectangular banner with a white bird logo and white text",
+        "desc": "white, diced raw vegetable cubes, firm texture, cut into rough squares",
         "action": "static",
-        "position": "bottom left"
+        "position": "center"
       },
       {
-        "desc": "small, colorful square logo composed of four smaller squares (green, yellow, red, blue)",
+        "desc": "blue rectangular graphic overlay with white Twitter bird logo and text",
         "action": "static",
-        "position": "bottom right"
+        "position": "bottom-left"
+      },
+      {
+        "desc": "small colorful square logo composed of four smaller squares (green, yellow, red, blue)",
+        "action": "static",
+        "position": "bottom-right"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A blue banner with the text 'Follow us on /kitchentips1' is displayed in the bottom left corner.",
+        "fact": "The video displays a close-up of white food chunks.",
         "confidence": 1.0
       },
       {
-        "fact": "Chunks of white food are piled in the center of the frame.",
+        "fact": "The scene cuts from cooked food chunks to raw diced vegetables.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A social media handle overlay is visible in the bottom left corner.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The text 'Follow us on /kitchentips1' is displayed on the screen.",
         "confidence": 1.0
       }
     ],
@@ -1152,181 +1119,176 @@
       "Follow us on",
       "/kitchentips1"
     ],
-    "spatial": "The chunks of white food are in the center of the frame. The blue banner is located in the bottom left corner, below and to the left of the food. The colorful square logo is in the bottom right corner, to the right of the food.",
+    "spatial": "The white food chunks are centered in the frame. The blue social media overlay is positioned in the bottom-left corner, below the food. The colorful square logo is located in the bottom-right corner, to the right of the blue overlay.",
     "parse_success": true,
     "chunk_idx": 22,
     "video_id": "gngimcHDBcw"
   },
   {
     "time": [
-      46,
-      48
+      23,
+      24
     ],
     "visible_entities": [
       {
-        "desc": "white potato chunks, diced into irregular cubes, moist texture, some with small brown speckles",
+        "desc": "diced white potato chunks, moist, irregular cubic shapes, some with small brown speckles",
         "action": "static",
-        "position": "center"
+        "position": "center/foreground"
       },
       {
         "desc": "wooden cutting board, light brown, smooth surface",
         "action": "static",
         "position": "background"
+      },
+      {
+        "desc": "colorful logo, four squares (green, yellow, red, blue) arranged in a grid",
+        "action": "static",
+        "position": "bottom right"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "Diced white potato chunks are scattered across the surface of a wooden cutting board.",
+        "fact": "Diced white potato chunks are scattered across a wooden cutting board.",
         "confidence": 1.0
       },
       {
-        "fact": "The potato pieces appear moist and are cut into irregular cube shapes.",
+        "fact": "A colorful logo is visible in the bottom right corner of the frame.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The diced white potato chunks are scattered on top of the wooden cutting board. A larger, uncut portion of the potato is visible in the top left corner, positioned above the smaller diced pieces.",
+    "spatial": "The diced potato chunks are scattered on top of the wooden cutting board. The colorful logo is located in the bottom right corner, overlaying the scene.",
     "parse_success": true,
     "chunk_idx": 23,
     "video_id": "gngimcHDBcw"
   },
   {
     "time": [
-      48,
-      50
+      24,
+      25
     ],
     "visible_entities": [
       {
-        "desc": "raw red meat chunks with white fat marbling",
-        "action": "static",
-        "position": "right"
-      },
-      {
-        "desc": "large piece of raw red meat with bone",
+        "desc": "white potato, peeled, cut into rough cubes and wedges",
         "action": "static",
         "position": "left"
       },
       {
-        "desc": "wooden cutting board with light grain",
+        "desc": "red raw meat chunks with white fat marbling",
+        "action": "static",
+        "position": "right"
+      },
+      {
+        "desc": "wooden cutting board, light brown with grain",
         "action": "static",
         "position": "background"
-      },
-      {
-        "desc": "silver knife blade tip",
-        "action": "static",
-        "position": "bottom right"
-      },
-      {
-        "desc": "colorful square logo with blue, green, yellow, red",
-        "action": "static",
-        "position": "bottom right"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "Raw red meat is cut into chunks on a wooden board.",
+        "fact": "The video displays prepared ingredients on a cutting board.",
         "confidence": 1.0
       },
       {
-        "fact": "A large piece of meat sits to the left of the cut chunks.",
+        "fact": "Diced white potatoes are positioned on the left side of the board.",
         "confidence": 1.0
       },
       {
-        "fact": "The tip of a knife is visible at the bottom right edge.",
+        "fact": "Chunks of raw red meat are positioned on the right side of the board.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The large piece of raw meat is to the left of the pile of cut meat chunks. The cut meat chunks are piled on the right side of the wooden cutting board. The tip of a knife is visible at the bottom right, near the meat.",
+    "spatial": "The diced white potatoes are to the left of the raw meat chunks. Both the potatoes and the meat are resting on top of the wooden cutting board.",
     "parse_success": true,
     "chunk_idx": 24,
     "video_id": "gngimcHDBcw"
   },
   {
     "time": [
-      50,
-      52
+      25,
+      26
     ],
     "visible_entities": [
       {
-        "desc": "large raw beef roast, deep red with white fat marbling and bone",
+        "desc": "large raw beef roast, red with white fat marbling and a bone",
         "action": "static",
         "position": "left"
       },
       {
-        "desc": "pile of raw beef chunks, deep red with white fat marbling",
+        "desc": "pile of cubed raw beef chunks, red with white fat",
         "action": "static",
-        "position": "center-right"
+        "position": "center/right"
       },
       {
-        "desc": "wooden cutting board, light brown with visible grain",
+        "desc": "wooden cutting board, light brown with grain",
         "action": "static",
         "position": "background"
       },
       {
-        "desc": "silver knife blade, metallic and reflective",
+        "desc": "silver knife blade, metallic",
         "action": "static",
-        "position": "bottom-right"
+        "position": "bottom right"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A large piece of raw meat sits on the left side of the cutting board.",
+        "fact": "A large piece of raw beef sits on the left side of the cutting board.",
         "confidence": 1.0
       },
       {
-        "fact": "A pile of cut meat chunks is located to the right of the large roast.",
+        "fact": "A pile of cubed beef chunks is positioned to the right of the large roast.",
         "confidence": 1.0
       },
       {
-        "fact": "The tip of a silver knife is visible in the bottom right corner.",
+        "fact": "The tip of a knife blade is visible at the bottom right edge of the frame.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The large raw beef roast is to the left of the pile of cut meat chunks. Both the roast and the chunks are on the wooden cutting board. The silver knife blade is in the bottom right corner, near the pile of meat.",
+    "spatial": "The large raw beef roast is to the left of the pile of cubed beef chunks. Both pieces of meat are on top of the wooden cutting board. The knife blade is in the bottom right corner, near the pile of cubed meat.",
     "parse_success": true,
     "chunk_idx": 25,
     "video_id": "gngimcHDBcw"
   },
   {
     "time": [
-      52,
-      54
+      26,
+      27
     ],
     "visible_entities": [
       {
-        "desc": "raw red meat chunks with white marbling and fat, cut into irregular bite-sized pieces",
-        "action": "static",
-        "position": "center"
-      },
-      {
-        "desc": "large block of raw red meat with visible bone and fat layers",
+        "desc": "large chunk of raw red meat with bone and white fat marbling",
         "action": "static",
         "position": "left"
       },
       {
-        "desc": "light brown wooden cutting board with visible grain and grooves",
+        "desc": "pile of cubed raw red meat with white fat",
+        "action": "static",
+        "position": "center"
+      },
+      {
+        "desc": "wooden cutting board with light and dark stripes",
         "action": "static",
         "position": "background"
       },
       {
-        "desc": "black screen with white sans-serif text",
+        "desc": "white text on black background",
         "action": "static",
         "position": "center"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "The video displays raw meat on a wooden surface.",
+        "fact": "A large piece of raw meat sits on the left side of a wooden cutting board.",
         "confidence": 1.0
       },
       {
-        "fact": "The text 'Add DAIRY PRODUCTS' appears on a black background.",
+        "fact": "A pile of cubed raw meat is positioned next to the large piece.",
         "confidence": 1.0
       },
       {
-        "fact": "The meat is cut into chunks and sits next to a larger bone-in piece.",
+        "fact": "The text 'Add DAIRY PRODUCTS' appears on a black screen.",
         "confidence": 1.0
       }
     ],
@@ -1334,15 +1296,15 @@
       "Add",
       "DAIRY PRODUCTS"
     ],
-    "spatial": "The pile of cut meat chunks is positioned in the center and right of the wooden cutting board. The large block of meat is to the left of the cut chunks. The text overlay appears on a black screen, replacing the view of the meat.",
+    "spatial": "The large chunk of raw meat is to the left of the pile of cubed meat. Both pieces of meat are resting on top of the wooden cutting board. The text 'Add DAIRY PRODUCTS' is centered on the screen, replacing the view of the meat.",
     "parse_success": true,
     "chunk_idx": 26,
     "video_id": "gngimcHDBcw"
   },
   {
     "time": [
-      54,
-      56
+      27,
+      28
     ],
     "visible_entities": [
       {
@@ -1351,24 +1313,29 @@
         "position": "center"
       },
       {
-        "desc": "orange saucepan with a white interior and an orange handle",
-        "action": "static",
+        "desc": "orange pot with white interior and orange handle, containing yellow liquid with red and green specks",
+        "action": "receiving liquid",
         "position": "center"
       },
       {
-        "desc": "yellowish liquid mixture with visible red and green specks",
-        "action": "static",
-        "position": "inside saucepan"
-      },
-      {
-        "desc": "white liquid being poured",
-        "action": "pouring into saucepan",
-        "position": "center"
-      },
-      {
-        "desc": "hand holding a blue and white carton",
-        "action": "pouring",
+        "desc": "blue and white carton with red logo, held by hand",
+        "action": "pouring white liquid",
         "position": "top left"
+      },
+      {
+        "desc": "hand with light skin tone",
+        "action": "holding carton",
+        "position": "top left"
+      },
+      {
+        "desc": "black stovetop with silver knobs",
+        "action": "static",
+        "position": "background"
+      },
+      {
+        "desc": "multicolored square logo (green, blue, yellow, red)",
+        "action": "static",
+        "position": "bottom right"
       }
     ],
     "atomic_facts": [
@@ -1377,11 +1344,15 @@
         "confidence": 1.0
       },
       {
-        "fact": "A hand pours a white liquid from a carton into a saucepan.",
+        "fact": "A hand pours a white liquid from a blue and white carton into an orange pot.",
         "confidence": 1.0
       },
       {
-        "fact": "The white liquid mixes with a yellowish liquid already in the saucepan.",
+        "fact": "The pot contains a yellow liquid with visible red and green ingredients.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The pot is sitting on a black stovetop.",
         "confidence": 1.0
       }
     ],
@@ -1389,25 +1360,30 @@
       "Add",
       "DAIRY PRODUCTS"
     ],
-    "spatial": "The text 'Add DAIRY PRODUCTS' is centered on the screen. In the following shot, the orange saucepan is in the center of the frame. A hand holding a carton is positioned above and to the left of the saucepan, pouring a white liquid into it. The yellowish mixture is inside the saucepan.",
+    "spatial": "The hand holding the carton is positioned above the orange pot. The white liquid stream flows from the carton into the center of the pot. The pot is on top of the black stovetop. The multicolored logo is in the bottom right corner of the frame.",
     "parse_success": true,
     "chunk_idx": 27,
     "video_id": "gngimcHDBcw"
   },
   {
     "time": [
-      56,
-      58
+      28,
+      29
     ],
     "visible_entities": [
       {
-        "desc": "orange cooking pot with a white interior, containing a yellow liquid mixture",
+        "desc": "orange enameled cast iron pot with a white interior and an orange handle",
         "action": "static",
         "position": "center"
       },
       {
-        "desc": "white liquid stream being poured",
-        "action": "pouring into the pot",
+        "desc": "yellowish-brown liquid soup containing visible red chunks and green herbs",
+        "action": "being poured into",
+        "position": "inside pot"
+      },
+      {
+        "desc": "white liquid stream",
+        "action": "pouring from top",
         "position": "center"
       },
       {
@@ -1416,94 +1392,84 @@
         "position": "top left"
       },
       {
-        "desc": "hand holding the carton",
-        "action": "holding",
-        "position": "top left"
-      },
-      {
-        "desc": "black stovetop with control knobs",
+        "desc": "black stovetop with black control knobs",
         "action": "static",
         "position": "background"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A hand is pouring a white liquid from a blue and white carton into an orange pot.",
+        "fact": "A person is pouring a white liquid from a blue and white carton into a pot.",
         "confidence": 1.0
       },
       {
-        "fact": "The white liquid is mixing with a yellow liquid already in the pot.",
+        "fact": "The pot contains a yellowish soup with visible ingredients.",
         "confidence": 1.0
       },
       {
-        "fact": "The pot is sitting on a black stovetop.",
+        "fact": "The white liquid is mixing with the soup in the center of the pot.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The orange pot is in the center of the frame, resting on the black stovetop. The blue and white carton is held above and to the left of the pot. The white liquid stream flows from the carton down into the center of the pot.",
+    "spatial": "The orange pot is sitting on the black stovetop. The blue and white carton is positioned above and to the left of the pot, pouring a stream of white liquid into the center of the soup.",
     "parse_success": true,
     "chunk_idx": 28,
     "video_id": "gngimcHDBcw"
   },
   {
     "time": [
-      58,
-      60
+      29,
+      30
     ],
     "visible_entities": [
       {
-        "desc": "orange enameled pot with white interior",
-        "action": "containing soup",
+        "desc": "orange enameled cast iron pot with a white interior",
+        "action": "static",
         "position": "center"
       },
       {
-        "desc": "yellowish soup with red vegetable chunks",
+        "desc": "yellowish soup with visible chunks of vegetables and herbs",
         "action": "being poured into",
-        "position": "inside pot"
+        "position": "inside the pot"
       },
       {
-        "desc": "white liquid stream",
-        "action": "pouring into soup",
+        "desc": "white liquid, likely cream or milk",
+        "action": "being poured",
         "position": "center"
       },
       {
         "desc": "stainless steel pan",
-        "action": "containing meat",
+        "action": "static",
         "position": "center"
       },
       {
-        "desc": "shredded brown meat",
-        "action": "simmering",
-        "position": "left"
+        "desc": "shredded brown cooked meat",
+        "action": "static",
+        "position": "left side of pan"
       },
       {
-        "desc": "white creamy dollop",
+        "desc": "thick white cream or sour cream",
         "action": "being added",
-        "position": "right"
+        "position": "right side of pan"
       },
       {
-        "desc": "metal spoon",
-        "action": "depositing cream",
-        "position": "right"
-      },
-      {
-        "desc": "blue Facebook banner",
+        "desc": "blue Facebook logo with white text",
         "action": "static",
         "position": "bottom left"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A white liquid is being poured into a yellow soup in an orange pot.",
+        "fact": "A stream of white liquid is being poured into a pot of yellow soup.",
         "confidence": 1.0
       },
       {
-        "fact": "A spoon deposits a dollop of white cream into a pan of shredded meat.",
+        "fact": "A spoon is adding a dollop of thick white cream to a pan of shredded meat.",
         "confidence": 1.0
       },
       {
-        "fact": "The Facebook banner displays the text 'Like us on /VentunoKitchenTips?fref=ts'.",
+        "fact": "The text 'Like us on /VentunoKitchenTips?fref=ts' is displayed on screen.",
         "confidence": 1.0
       }
     ],
@@ -1511,58 +1477,54 @@
       "Like us on",
       "/VentunoKitchenTips?fref=ts"
     ],
-    "spatial": "In the first scene, a stream of white liquid falls into the center of the yellow soup inside the orange pot. In the second scene, the shredded meat is on the left side of the pan, while the spoon and the dollop of white cream are on the right side. The blue banner is located in the bottom left corner of the screen.",
+    "spatial": "In the first frame, the white liquid is being poured from above into the center of the soup inside the orange pot. In the second frame, the shredded meat is on the left side of the stainless steel pan, while the white cream is being placed on the right side. The Facebook social media banner is located at the bottom left corner of the second frame.",
     "parse_success": true,
     "chunk_idx": 29,
     "video_id": "gngimcHDBcw"
   },
   {
     "time": [
-      60,
-      62
+      30,
+      31
     ],
     "visible_entities": [
       {
-        "desc": "shredded brown meat chunks, cooked texture",
-        "action": "static",
-        "position": "left"
-      },
-      {
-        "desc": "thick white creamy substance, smooth texture",
-        "action": "being added",
-        "position": "center-right"
-      },
-      {
-        "desc": "silver metal spoon",
-        "action": "pouring white substance",
-        "position": "top-right"
-      },
-      {
-        "desc": "stainless steel cooking pot",
+        "desc": "stainless steel pan",
         "action": "static",
         "position": "center"
       },
       {
+        "desc": "shredded brown meat",
+        "action": "static",
+        "position": "left"
+      },
+      {
+        "desc": "white creamy substance",
+        "action": "being poured",
+        "position": "right"
+      },
+      {
+        "desc": "metal spoon",
+        "action": "pouring",
+        "position": "top right"
+      },
+      {
         "desc": "blue Facebook logo with white text",
         "action": "static",
-        "position": "bottom-left"
+        "position": "bottom left"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A spoon is pouring a white creamy substance into the pot.",
+        "fact": "A spoon is pouring a white creamy substance into the pan.",
         "confidence": 1.0
       },
       {
-        "fact": "The pot contains shredded brown meat on the left side.",
+        "fact": "The pan contains shredded brown meat on the left side.",
         "confidence": 1.0
       },
       {
-        "fact": "The white substance is accumulating in a pile next to the meat.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The text overlay reads 'Like us on /VentunoKitchenTips?fref=ts'.",
+        "fact": "The white substance is accumulating in a pile on the right side of the pan.",
         "confidence": 1.0
       }
     ],
@@ -1571,34 +1533,35 @@
       "Like us on",
       "/VentunoKitchenTips?fref=ts"
     ],
-    "spatial": "The shredded brown meat is located on the left side of the stainless steel pot. The white creamy substance is being poured into the right side of the pot, next to the meat. The silver spoon is positioned above the white substance, dispensing it into the pan. The Facebook promotional graphic is overlaid in the bottom-left corner of the frame.",
+    "spatial": "The shredded brown meat is to the left of the white creamy substance inside the stainless steel pan. The metal spoon is positioned above the white substance, pouring it into the pan. The Facebook logo and text overlay are located at the bottom left of the frame.",
     "parse_success": true,
     "chunk_idx": 30,
     "video_id": "gngimcHDBcw"
   },
   {
     "time": [
-      62,
-      64
+      31,
+      32
     ],
     "visible_entities": [
       {
-        "desc": "A logo composed of four rounded squares arranged in a 2x2 grid (green top-left, yellow top-right, blue bottom-left, red bottom-right), accompanied by text.",
-        "action": "appearing and assembling",
+        "desc": "A logo consisting of four rounded squares in a 2x2 grid (green top-left, yellow top-right, blue bottom-left, red bottom-right) with a small white circular highlight on the blue square.",
+        "action": "appearing and settling",
         "position": "center"
+      },
+      {
+        "desc": "Text reading 'A ventuno Producti'. 'A' is small and black. 'ventuno' is large, bold, and orange. 'Producti' is smaller, black, and below 'ventuno'.",
+        "action": "appearing",
+        "position": "center-right"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A blue square graphic appears in the center of the screen.",
+        "fact": "A multi-colored square logo and text appear on a white background.",
         "confidence": 1.0
       },
       {
-        "fact": "The graphic expands to reveal a four-colored square logo and the text 'A ventuno Producti'.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The text 'A ventuno Producti' is displayed to the right of the logo.",
+        "fact": "The text 'A ventuno Producti' is displayed next to the logo.",
         "confidence": 1.0
       }
     ],
@@ -1607,39 +1570,44 @@
       "ventuno",
       "Producti"
     ],
-    "spatial": "The four-colored square logo is positioned to the left of the text 'A ventuno Producti'. The word 'A' is located above the word 'ventuno'. The entire graphic assembly is centered on a white background.",
+    "spatial": "The four-colored square logo is to the left of the text 'ventuno'. The word 'A' is above 'ventuno', and 'Producti' is below 'ventuno'. The entire group of elements is centered on the screen.",
     "parse_success": true,
     "chunk_idx": 31,
     "video_id": "gngimcHDBcw"
   },
   {
     "time": [
-      64,
-      66
+      32,
+      33
     ],
     "visible_entities": [
       {
-        "desc": "A logo composed of four rounded squares arranged in a 2x2 grid (top-left green, top-right yellow, bottom-left blue, bottom-right red), followed by the text 'A' in black, 'ventuno' in orange lowercase sans-serif font, and 'Production' in black sans-serif font.",
+        "desc": "Logo consisting of four colored squares (green, yellow, blue, red) arranged in a 2x2 grid",
+        "action": "static",
+        "position": "center-left"
+      },
+      {
+        "desc": "Text reading 'A ventuno Production' with 'ventuno' in orange lowercase and 'A' and 'Production' in black",
         "action": "static",
         "position": "center"
       },
       {
-        "desc": "The text 'www.ventunotech.com' in black sans-serif font.",
+        "desc": "Text reading 'www.ventunotech.com' in black sans-serif font",
         "action": "static",
         "position": "center"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "The video displays a production company logo for 'A ventuno Production'.",
+        "fact": "The video transitions from a production logo to a website URL.",
         "confidence": 1.0
       },
       {
-        "fact": "The logo features a four-color square icon to the left of the company name.",
+        "fact": "The text 'A ventuno Production' is displayed next to a four-colored square logo.",
         "confidence": 1.0
       },
       {
-        "fact": "The website address 'www.ventunotech.com' is displayed on a white background.",
+        "fact": "The website address 'www.ventunotech.com' appears on a white background.",
         "confidence": 1.0
       }
     ],
@@ -1649,37 +1617,42 @@
       "Production",
       "www.ventunotech.com"
     ],
-    "spatial": "The 'A ventuno Production' logo is centered in the frame. The website URL is centered in the frame, appearing after the logo. The colorful square icon is to the left of the text 'ventuno'.",
+    "spatial": "The four-colored square logo is to the left of the text 'ventuno'. The letter 'A' is above the word 'ventuno', and the word 'Production' is below it. The website URL is centered on the screen in the second frame.",
     "parse_success": true,
     "chunk_idx": 32,
     "video_id": "gngimcHDBcw"
   },
   {
     "time": [
-      66,
-      68
+      33,
+      34
     ],
     "visible_entities": [
       {
         "desc": "black text reading 'www.ventunotech.com' in a sans-serif font",
-        "action": "static",
+        "action": "fading out",
         "position": "center"
+      },
+      {
+        "desc": "white background with a soft grey vignette border",
+        "action": "static",
+        "position": "background"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "The text 'www.ventunotech.com' is displayed in the center of the screen.",
+        "fact": "The text 'www.ventunotech.com' is visible in the center of the screen.",
         "confidence": 1.0
       },
       {
-        "fact": "The text remains static throughout the clip.",
+        "fact": "The text fades from black to a faint grey, disappearing into the background.",
         "confidence": 1.0
       }
     ],
     "ocr": [
       "www.ventunotech.com"
     ],
-    "spatial": "The text is centered on a white background with a subtle grey vignette effect around the edges.",
+    "spatial": "The text is centered on the white background.",
     "parse_success": true,
     "chunk_idx": 33,
     "video_id": "gngimcHDBcw"

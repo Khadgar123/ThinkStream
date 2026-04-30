@@ -2,17 +2,17 @@
   {
     "time": [
       0,
-      2
+      1
     ],
     "visible_entities": [
       {
-        "desc": "white rectangular sheet of paper, smooth surface",
+        "desc": "rectangular white sheet of paper, smooth texture, blank surface",
         "action": "static",
         "position": "center"
       },
       {
-        "desc": "human hand with light skin tone",
-        "action": "entering from the right",
+        "desc": "human hand, light skin tone, fingers visible",
+        "action": "entering from right",
         "position": "right"
       }
     ],
@@ -27,15 +27,15 @@
       }
     ],
     "ocr": [],
-    "spatial": "The white sheet of paper is in the center of the frame. The hand is to the right of the paper.",
+    "spatial": "The white sheet of paper is centered on the black background. The hand is positioned to the right of the paper.",
     "parse_success": true,
     "chunk_idx": 0,
     "video_id": "How_to_Make_a_Paper_Airplane_-__Best_Ways___Tips_and_Tricks_"
   },
   {
     "time": [
-      2,
-      4
+      1,
+      2
     ],
     "visible_entities": [
       {
@@ -44,49 +44,49 @@
         "position": "center"
       },
       {
-        "desc": "left hand with tan skin tone, short fingernails",
+        "desc": "person's left hand with tan skin tone and short fingernails",
         "action": "resting on the paper",
         "position": "bottom left"
       },
       {
-        "desc": "right hand with tan skin tone, short fingernails",
-        "action": "resting on the surface",
+        "desc": "person's right hand with tan skin tone, fingers slightly curled",
+        "action": "hovering near the paper",
         "position": "bottom right"
       },
       {
-        "desc": "black flat surface, matte finish",
+        "desc": "flat black surface, matte finish",
         "action": "static",
         "position": "background"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A left hand rests on the bottom left corner of the white paper.",
+        "fact": "A left hand rests on the bottom edge of a white sheet of paper.",
         "confidence": 1.0
       },
       {
-        "fact": "A right hand rests on the black surface to the right of the paper.",
+        "fact": "A right hand is positioned to the right of the paper.",
         "confidence": 1.0
       },
       {
-        "fact": "The white paper is placed horizontally in the center of the black surface.",
+        "fact": "The paper is placed on a black surface.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The white sheet of paper is centered on the black surface. The left hand is positioned on top of the bottom left area of the paper. The right hand is located to the right of the paper, resting on the black surface.",
+    "spatial": "The white sheet of paper is centered on the black surface. The left hand is positioned on the bottom left portion of the paper. The right hand is located to the right of the paper.",
     "parse_success": true,
     "chunk_idx": 1,
     "video_id": "How_to_Make_a_Paper_Airplane_-__Best_Ways___Tips_and_Tricks_"
   },
   {
     "time": [
-      4,
-      6
+      2,
+      3
     ],
     "visible_entities": [
       {
-        "desc": "rectangular white sheet of paper, smooth texture, unmarked",
+        "desc": "white rectangular sheet of paper, smooth texture",
         "action": "being held and adjusted",
         "position": "center"
       },
@@ -96,8 +96,8 @@
         "position": "bottom left"
       },
       {
-        "desc": "right hand with light skin tone, fingers curled",
-        "action": "gripping the edge of the paper",
+        "desc": "right hand with light skin tone, thumb and index finger visible",
+        "action": "holding the edge of the paper",
         "position": "bottom right"
       },
       {
@@ -112,140 +112,129 @@
         "confidence": 1.0
       },
       {
-        "fact": "The left hand is pressing down on the lower left portion of the paper.",
+        "fact": "The left hand presses down on the lower left portion of the paper.",
         "confidence": 1.0
       },
       {
-        "fact": "The right hand is gripping the bottom right corner of the paper.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The paper remains stationary in the center of the frame.",
+        "fact": "The right hand grips the bottom right corner of the paper.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The white sheet of paper is centered on the black surface. The left hand is positioned on the bottom left side of the paper, while the right hand is positioned on the bottom right side of the paper.",
+    "spatial": "The white sheet of paper is centered on the black surface. The left hand is positioned on the bottom left of the paper, while the right hand is positioned on the bottom right edge. Both hands are in front of the black background.",
     "parse_success": true,
     "chunk_idx": 2,
     "video_id": "How_to_Make_a_Paper_Airplane_-__Best_Ways___Tips_and_Tricks_"
   },
   {
     "time": [
-      6,
-      8
+      3,
+      4
     ],
     "visible_entities": [
       {
-        "desc": "hands with light brown skin tone and short, unpolished fingernails",
-        "action": "manipulating a sheet of paper",
-        "position": "foreground"
-      },
-      {
-        "desc": "white rectangular sheet of paper, smooth texture, standard letter or A4 size",
+        "desc": "white rectangular sheet of paper, smooth texture",
         "action": "being folded",
         "position": "center"
       },
       {
-        "desc": "dark, matte black surface, likely a table or desk",
+        "desc": "hands with light skin tone",
+        "action": "holding and folding the paper",
+        "position": "foreground"
+      },
+      {
+        "desc": "black flat surface",
         "action": "static",
         "position": "background"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "The hands are folding the white paper in half lengthwise.",
+        "fact": "Hands are folding a white sheet of paper in half.",
         "confidence": 1.0
       },
       {
-        "fact": "The left hand presses down on the paper to create a crease.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The right hand holds the edge of the paper steady.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The paper is resting on a black surface.",
+        "fact": "The paper is being manipulated on a black surface.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The hands are positioned in the foreground, holding and pressing the white paper. The paper is centered on top of the dark black background surface.",
+    "spatial": "The hands are holding the white paper in the center of the frame. The paper is positioned above the black background surface.",
     "parse_success": true,
     "chunk_idx": 3,
     "video_id": "How_to_Make_a_Paper_Airplane_-__Best_Ways___Tips_and_Tricks_"
   },
   {
     "time": [
-      8,
-      10
+      4,
+      5
     ],
     "visible_entities": [
       {
-        "desc": "hands with light skin tone and short, clean fingernails",
-        "action": "holding and pressing a sheet of paper",
+        "desc": "hands with light skin tone and short fingernails",
+        "action": "pressing down on paper",
         "position": "foreground"
       },
       {
-        "desc": "white rectangular sheet of paper, smooth texture, slightly curved",
-        "action": "being held and smoothed",
+        "desc": "white rectangular sheet of paper",
+        "action": "being folded",
         "position": "center"
       },
       {
-        "desc": "dark, solid black surface, smooth and matte",
+        "desc": "dark black flat surface",
         "action": "static",
         "position": "background"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A pair of hands is holding a white sheet of paper against a black background.",
+        "fact": "A pair of hands is pressing down on a white sheet of paper.",
         "confidence": 1.0
       },
       {
-        "fact": "The left hand is pressing down on the paper with fingers spread.",
+        "fact": "The paper is being folded in half horizontally.",
         "confidence": 1.0
       },
       {
-        "fact": "The right hand is gripping the right edge of the paper.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The paper is slightly curved upwards in the center.",
+        "fact": "The paper rests on a black surface.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The hands are in the foreground, holding the white paper which is positioned in the center of the frame. The dark black surface is behind and underneath the paper and hands.",
+    "spatial": "The hands are positioned on top of the white paper, pressing it against the black surface below. The paper is centered in the frame.",
     "parse_success": true,
     "chunk_idx": 4,
     "video_id": "How_to_Make_a_Paper_Airplane_-__Best_Ways___Tips_and_Tricks_"
   },
   {
     "time": [
-      10,
-      12
+      5,
+      6
     ],
     "visible_entities": [
       {
-        "desc": "white rectangular sheet of paper, smooth texture, slightly curved",
-        "action": "being held and manipulated",
+        "desc": "hands with light skin tone",
+        "action": "holding a sheet of paper",
+        "position": "left and right edges"
+      },
+      {
+        "desc": "white rectangular sheet of paper",
+        "action": "being held horizontally",
         "position": "center"
       },
       {
-        "desc": "pair of hands with light skin tone",
-        "action": "holding the paper",
-        "position": "left and right edges"
+        "desc": "black background surface",
+        "action": "static",
+        "position": "background"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "Hands are holding a white sheet of paper.",
+        "fact": "Hands are holding a white sheet of paper horizontally.",
         "confidence": 1.0
       },
       {
-        "fact": "The paper is being slightly curved or bent by the hands.",
+        "fact": "The paper is positioned in the center of the frame.",
         "confidence": 1.0
       },
       {
@@ -254,155 +243,25 @@
       }
     ],
     "ocr": [],
-    "spatial": "The white paper is in the center of the frame, held by a hand on the left and a hand on the right. The hands are positioned at the edges of the paper. The paper and hands are in front of a black background.",
+    "spatial": "The white sheet of paper is held in the center of the frame. The hands are positioned at the left and right edges of the paper, holding it. The paper is in front of the black background.",
     "parse_success": true,
     "chunk_idx": 5,
     "video_id": "How_to_Make_a_Paper_Airplane_-__Best_Ways___Tips_and_Tricks_"
   },
   {
     "time": [
-      12,
-      14
+      6,
+      7
     ],
     "visible_entities": [
       {
-        "desc": "pair of hands with light skin tone and short, natural fingernails",
-        "action": "folding a sheet of paper",
-        "position": "foreground"
-      },
-      {
-        "desc": "rectangular sheet of white paper, smooth texture, standard letter size",
-        "action": "being folded in half lengthwise",
-        "position": "center"
-      },
-      {
-        "desc": "flat, matte black surface",
-        "action": "static",
-        "position": "background"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "The hands are folding the white paper in half lengthwise.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The left hand presses down on the paper to create a crease.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The right hand holds the edge of the paper steady.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The paper is resting on a black surface.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [],
-    "spatial": "The hands are positioned above the white paper, manipulating it. The paper is centered on the black surface. The left hand is to the left of the right hand.",
-    "parse_success": true,
-    "chunk_idx": 6,
-    "video_id": "How_to_Make_a_Paper_Airplane_-__Best_Ways___Tips_and_Tricks_"
-  },
-  {
-    "time": [
-      14,
-      16
-    ],
-    "visible_entities": [
-      {
-        "desc": "hands with light skin tone, short fingernails, no jewelry",
+        "desc": "hands with light skin tone and short, natural fingernails",
         "action": "pressing and smoothing a folded paper",
         "position": "foreground"
       },
       {
-        "desc": "white rectangular paper, smooth texture, folded lengthwise into a strip",
-        "action": "being flattened",
-        "position": "center"
-      },
-      {
-        "desc": "dark matte surface, solid black or dark grey background",
-        "action": "static",
-        "position": "background"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "A person is folding a piece of white paper in half lengthwise.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The hands are pressing down on the paper to create a sharp crease.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The paper is positioned horizontally on a dark surface.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [],
-    "spatial": "The white paper is in the center of the frame, resting on the dark background surface. The hands are positioned on top of the paper, with the left hand pressing the center and the right hand holding the edge.",
-    "parse_success": true,
-    "chunk_idx": 7,
-    "video_id": "How_to_Make_a_Paper_Airplane_-__Best_Ways___Tips_and_Tricks_"
-  },
-  {
-    "time": [
-      16,
-      18
-    ],
-    "visible_entities": [
-      {
-        "desc": "hands with light skin tone",
-        "action": "pressing and smoothing the paper",
-        "position": "foreground"
-      },
-      {
-        "desc": "white rectangular paper strip, folded lengthwise",
-        "action": "being flattened",
-        "position": "center"
-      },
-      {
-        "desc": "dark matte surface",
-        "action": "static",
-        "position": "background"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "hands are pressing down on the white paper strip",
-        "confidence": 1.0
-      },
-      {
-        "fact": "the paper is folded in half lengthwise",
-        "confidence": 1.0
-      },
-      {
-        "fact": "the paper rests on a dark surface",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [],
-    "spatial": "The white paper strip is on the dark surface. The hands are above the paper, pressing it down.",
-    "parse_success": true,
-    "chunk_idx": 8,
-    "video_id": "How_to_Make_a_Paper_Airplane_-__Best_Ways___Tips_and_Tricks_"
-  },
-  {
-    "time": [
-      18,
-      20
-    ],
-    "visible_entities": [
-      {
-        "desc": "hands with light brown skin tone and short, natural fingernails",
-        "action": "pressing down on paper",
-        "position": "foreground"
-      },
-      {
-        "desc": "white rectangular sheet of paper, smooth texture",
-        "action": "being folded",
+        "desc": "white rectangular sheet of paper, folded in half lengthwise",
+        "action": "being manipulated",
         "position": "center"
       },
       {
@@ -417,122 +276,164 @@
         "confidence": 1.0
       },
       {
-        "fact": "The paper is folded in half lengthwise.",
+        "fact": "The paper is folded in half horizontally.",
         "confidence": 1.0
       },
       {
-        "fact": "The paper rests on a black surface.",
+        "fact": "The left hand holds the paper flat while the right hand adjusts the edge.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The hands are positioned on top of the white paper. The paper is centered on the dark black surface. The left hand is to the left of the right hand.",
+    "spatial": "The hands are positioned on top of the white paper, pressing it against the dark surface. The paper is centered in the frame, resting on the background surface.",
+    "parse_success": true,
+    "chunk_idx": 6,
+    "video_id": "How_to_Make_a_Paper_Airplane_-__Best_Ways___Tips_and_Tricks_"
+  },
+  {
+    "time": [
+      7,
+      8
+    ],
+    "visible_entities": [
+      {
+        "desc": "hands with light skin tone",
+        "action": "holding and folding a white paper",
+        "position": "foreground"
+      },
+      {
+        "desc": "white rectangular paper, smooth texture",
+        "action": "being folded",
+        "position": "center"
+      },
+      {
+        "desc": "dark flat surface, matte black",
+        "action": "static",
+        "position": "background"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A person is folding a white sheet of paper in half.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The hands are pressing down on the paper to create a crease.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The paper is resting on a black surface.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The hands are positioned on top of the white paper. The white paper is centered on the dark flat surface. The left hand is to the left of the right hand.",
+    "parse_success": true,
+    "chunk_idx": 7,
+    "video_id": "How_to_Make_a_Paper_Airplane_-__Best_Ways___Tips_and_Tricks_"
+  },
+  {
+    "time": [
+      8,
+      9
+    ],
+    "visible_entities": [
+      {
+        "desc": "hands with light skin tone, short fingernails, no visible jewelry or accessories",
+        "action": "pressing and folding a white paper strip",
+        "position": "foreground"
+      },
+      {
+        "desc": "white rectangular paper strip, smooth texture, folded lengthwise",
+        "action": "being manipulated",
+        "position": "center"
+      },
+      {
+        "desc": "dark matte surface, uniform black or dark gray color, no visible texture",
+        "action": "static",
+        "position": "background"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The hands are pressing down on the white paper strip to create a crease.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The paper strip is folded lengthwise.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The paper strip is positioned horizontally across the center of the frame.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The hands are positioned on top of the white paper strip, pressing it against the dark matte surface. The paper strip is centered horizontally in the frame, with the dark surface extending behind and around it.",
+    "parse_success": true,
+    "chunk_idx": 8,
+    "video_id": "How_to_Make_a_Paper_Airplane_-__Best_Ways___Tips_and_Tricks_"
+  },
+  {
+    "time": [
+      9,
+      10
+    ],
+    "visible_entities": [
+      {
+        "desc": "hands with light skin tone and short fingernails",
+        "action": "pressing and smoothing a white paper",
+        "position": "foreground"
+      },
+      {
+        "desc": "rectangular white paper, smooth texture",
+        "action": "being folded",
+        "position": "center"
+      },
+      {
+        "desc": "black flat surface",
+        "action": "static",
+        "position": "background"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A person is folding a rectangular piece of white paper in half lengthwise.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The hands are pressing down on the paper to create a crease.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The paper is resting on a black surface.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The hands are positioned on top of the white paper. The white paper is centered on the black surface. The black surface is underneath the paper.",
     "parse_success": true,
     "chunk_idx": 9,
     "video_id": "How_to_Make_a_Paper_Airplane_-__Best_Ways___Tips_and_Tricks_"
   },
   {
     "time": [
-      20,
-      22
+      10,
+      11
     ],
     "visible_entities": [
       {
-        "desc": "rectangular white paper, smooth surface",
-        "action": "being pressed down",
-        "position": "center"
-      },
-      {
-        "desc": "pair of hands with light skin tone",
-        "action": "pressing the paper",
-        "position": "foreground"
-      },
-      {
-        "desc": "dark black surface, smooth texture",
-        "action": "static",
-        "position": "background"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "A pair of hands is pressing down on a rectangular white paper.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The paper is resting on a dark black surface.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The hands are smoothing the paper against the background.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [],
-    "spatial": "The white paper is in the center of the frame, resting on top of the dark black surface. The hands are positioned on the left and right sides of the paper, pressing down on its surface.",
-    "parse_success": true,
-    "chunk_idx": 10,
-    "video_id": "How_to_Make_a_Paper_Airplane_-__Best_Ways___Tips_and_Tricks_"
-  },
-  {
-    "time": [
-      22,
-      24
-    ],
-    "visible_entities": [
-      {
-        "desc": "pair of hands with light skin tone and short, clean fingernails",
-        "action": "pressing down and smoothing a white rectangular sheet of paper",
-        "position": "foreground"
-      },
-      {
-        "desc": "white rectangular sheet of paper, smooth texture, plain surface",
-        "action": "being flattened on a surface",
-        "position": "center"
-      },
-      {
-        "desc": "black flat surface, matte finish",
-        "action": "static",
-        "position": "background"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "The hands are pressing down on the white paper to flatten it.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The paper is resting on a black surface.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The fingers are spread out across the width of the paper.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [],
-    "spatial": "The hands are positioned above the white paper, pressing it against the black surface. The paper is centered on the black surface.",
-    "parse_success": true,
-    "chunk_idx": 11,
-    "video_id": "How_to_Make_a_Paper_Airplane_-__Best_Ways___Tips_and_Tricks_"
-  },
-  {
-    "time": [
-      24,
-      26
-    ],
-    "visible_entities": [
-      {
-        "desc": "hands with light brown skin tone and short, natural fingernails",
+        "desc": "hands with light skin tone",
         "action": "pressing down on paper",
         "position": "foreground"
       },
       {
-        "desc": "rectangular white paper, smooth texture, plain surface",
-        "action": "being pressed flat",
+        "desc": "white rectangular paper",
+        "action": "being pressed",
         "position": "center"
       },
       {
-        "desc": "dark black surface, matte finish",
+        "desc": "black flat surface",
         "action": "static",
         "position": "background"
       }
@@ -545,32 +446,150 @@
       {
         "fact": "The paper is lying flat on a black surface.",
         "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The hands are positioned on top of the white paper, pressing it against the black surface below.",
+    "parse_success": true,
+    "chunk_idx": 10,
+    "video_id": "How_to_Make_a_Paper_Airplane_-__Best_Ways___Tips_and_Tricks_"
+  },
+  {
+    "time": [
+      11,
+      12
+    ],
+    "visible_entities": [
+      {
+        "desc": "hands with light skin tone and short fingernails",
+        "action": "pressing and smoothing a piece of paper",
+        "position": "foreground"
       },
       {
-        "fact": "The fingers are spread out to hold the paper in place.",
+        "desc": "rectangular white paper, smooth texture, folded horizontally",
+        "action": "being pressed flat",
+        "position": "center"
+      },
+      {
+        "desc": "black flat surface, matte texture",
+        "action": "static",
+        "position": "background"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "Hands are pressing down on a white piece of paper.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The paper is lying flat on a black surface.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The hands move across the paper to smooth out a fold.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The hands are positioned on top of the white paper, pressing it against the black surface. The paper is centered in the frame, with the hands located at the left and right edges of the paper.",
+    "spatial": "The hands are positioned on top of the white paper. The white paper is centered on the black surface. The black surface is underneath the paper and hands.",
+    "parse_success": true,
+    "chunk_idx": 11,
+    "video_id": "How_to_Make_a_Paper_Airplane_-__Best_Ways___Tips_and_Tricks_"
+  },
+  {
+    "time": [
+      12,
+      13
+    ],
+    "visible_entities": [
+      {
+        "desc": "hands with light brown skin tone",
+        "action": "pressing down on paper",
+        "position": "foreground"
+      },
+      {
+        "desc": "white rectangular piece of paper, smooth surface",
+        "action": "being held flat",
+        "position": "center"
+      },
+      {
+        "desc": "black flat surface, matte texture",
+        "action": "static",
+        "position": "background"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "hands press down on the white paper to flatten it against the surface",
+        "confidence": 1.0
+      },
+      {
+        "fact": "the paper is positioned horizontally on the black background",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The white paper is in the center of the frame, resting on top of the black surface. The hands are positioned on the left and right sides of the paper, pressing down on it.",
     "parse_success": true,
     "chunk_idx": 12,
     "video_id": "How_to_Make_a_Paper_Airplane_-__Best_Ways___Tips_and_Tricks_"
   },
   {
     "time": [
-      26,
-      28
+      13,
+      14
     ],
     "visible_entities": [
       {
-        "desc": "pair of hands with light brown skin tone",
-        "action": "pressing down on the paper",
+        "desc": "hands with light brown skin tone",
+        "action": "pressing and holding paper",
         "position": "foreground"
       },
       {
-        "desc": "white rectangular sheet of paper",
-        "action": "lying flat on a surface",
+        "desc": "white rectangular paper strip, smooth texture",
+        "action": "being pressed flat",
+        "position": "center"
+      },
+      {
+        "desc": "black flat surface, matte finish",
+        "action": "static",
+        "position": "background"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "Hands are pressing down on the white paper strip.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The paper is lying flat on the black surface.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "Fingers are spread out to hold the paper in place.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The white paper strip is on the black surface. The hands are above the paper, pressing down on it.",
+    "parse_success": true,
+    "chunk_idx": 13,
+    "video_id": "How_to_Make_a_Paper_Airplane_-__Best_Ways___Tips_and_Tricks_"
+  },
+  {
+    "time": [
+      14,
+      15
+    ],
+    "visible_entities": [
+      {
+        "desc": "hands with light skin tone",
+        "action": "folding paper",
+        "position": "foreground"
+      },
+      {
+        "desc": "white rectangular paper strip",
+        "action": "being folded",
         "position": "center"
       },
       {
@@ -581,34 +600,374 @@
     ],
     "atomic_facts": [
       {
-        "fact": "A pair of hands is pressing down on a white rectangular sheet of paper.",
+        "fact": "The hands are folding the white paper strip in half.",
         "confidence": 1.0
       },
       {
-        "fact": "The white paper is lying flat on a black surface.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The hands are positioned at the bottom edge of the paper.",
+        "fact": "The paper is resting on a black surface.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The white rectangular sheet of paper is centered on the black flat surface. The pair of hands is in the foreground, positioned below the paper and pressing down on its bottom edge.",
+    "spatial": "The hands are positioned above the white paper strip. The paper strip is centered on the black surface.",
     "parse_success": true,
-    "chunk_idx": 13,
+    "chunk_idx": 14,
     "video_id": "How_to_Make_a_Paper_Airplane_-__Best_Ways___Tips_and_Tricks_"
   },
   {
     "time": [
-      28,
-      30
+      15,
+      16
     ],
     "visible_entities": [
       {
-        "desc": "person with tan skin, hands with short fingernails",
+        "desc": "hands with light skin tone",
         "action": "folding paper",
         "position": "foreground"
+      },
+      {
+        "desc": "white rectangular paper strip",
+        "action": "being folded",
+        "position": "center"
+      },
+      {
+        "desc": "dark black surface",
+        "action": "static",
+        "position": "background"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A person is folding a white strip of paper in half lengthwise.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The paper is resting on a black surface.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The hands are pressing down on the paper to create a crease.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The white paper strip is positioned in the center of the dark black surface. The hands are placed on top of the paper, with fingers spread out to hold and fold it.",
+    "parse_success": true,
+    "chunk_idx": 15,
+    "video_id": "How_to_Make_a_Paper_Airplane_-__Best_Ways___Tips_and_Tricks_"
+  },
+  {
+    "time": [
+      16,
+      17
+    ],
+    "visible_entities": [
+      {
+        "desc": "pair of hands with light brown skin and short, natural fingernails",
+        "action": "folding a strip of white paper",
+        "position": "foreground"
+      },
+      {
+        "desc": "long, rectangular strip of white paper, smooth texture, approximately 20-30cm long",
+        "action": "being folded horizontally",
+        "position": "center"
+      },
+      {
+        "desc": "solid black background surface, matte finish",
+        "action": "static",
+        "position": "background"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The hands are folding the white paper strip in half lengthwise.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The left hand presses down on the paper to secure the fold.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The right hand holds the edge of the paper strip.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The paper strip is positioned horizontally across the center of the frame.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The hands are in the foreground, positioned above the black background surface. The white paper strip is held between the hands in the center of the frame. The left hand is to the left of the paper's center, and the right hand is to the right of the paper's center.",
+    "parse_success": true,
+    "chunk_idx": 16,
+    "video_id": "How_to_Make_a_Paper_Airplane_-__Best_Ways___Tips_and_Tricks_"
+  },
+  {
+    "time": [
+      17,
+      18
+    ],
+    "visible_entities": [
+      {
+        "desc": "hands with light skin tone",
+        "action": "manipulating paper",
+        "position": "foreground"
+      },
+      {
+        "desc": "white rectangular sheet of paper",
+        "action": "being unfolded",
+        "position": "center"
+      },
+      {
+        "desc": "dark black background surface",
+        "action": "static",
+        "position": "background"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The hands are unfolding the white paper.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The paper is being opened from a folded state to a flat state.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The paper is resting on a black surface.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The hands are positioned on top of the white paper. The white paper is centered on the black background surface.",
+    "parse_success": true,
+    "chunk_idx": 17,
+    "video_id": "How_to_Make_a_Paper_Airplane_-__Best_Ways___Tips_and_Tricks_"
+  },
+  {
+    "time": [
+      18,
+      19
+    ],
+    "visible_entities": [
+      {
+        "desc": "person with light skin tone, short fingernails, no visible jewelry",
+        "action": "pressing and smoothing the paper",
+        "position": "left and right foreground"
+      },
+      {
+        "desc": "white rectangular sheet of paper, smooth texture, folded vertically down the center",
+        "action": "being flattened",
+        "position": "center"
+      },
+      {
+        "desc": "black flat surface, matte finish",
+        "action": "static",
+        "position": "background"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The person uses their left hand to press down on the left side of the paper.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The person uses their right hand to hold and flatten the right side of the paper.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The paper is folded in half vertically with the crease running down the middle.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The white paper is centered on the black surface. The person's left hand is positioned on the left side of the paper, while the right hand is positioned on the right side of the paper.",
+    "parse_success": true,
+    "chunk_idx": 18,
+    "video_id": "How_to_Make_a_Paper_Airplane_-__Best_Ways___Tips_and_Tricks_"
+  },
+  {
+    "time": [
+      19,
+      20
+    ],
+    "visible_entities": [
+      {
+        "desc": "hands with light skin tone",
+        "action": "holding and pressing a white sheet of paper",
+        "position": "foreground"
+      },
+      {
+        "desc": "white sheet of paper, rectangular, folded vertically down the center",
+        "action": "being held open",
+        "position": "center"
+      },
+      {
+        "desc": "black surface, smooth and matte",
+        "action": "static",
+        "position": "background"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The hands are holding a white sheet of paper that is folded in half.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The left hand presses down on the left side of the paper.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The right hand holds the right edge of the paper.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The paper is positioned vertically in the center of the frame.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The white sheet of paper is in the center of the frame, resting on the black surface. The left hand is on the left side of the paper, and the right hand is on the right side of the paper. The hands are in front of the black surface.",
+    "parse_success": true,
+    "chunk_idx": 19,
+    "video_id": "How_to_Make_a_Paper_Airplane_-__Best_Ways___Tips_and_Tricks_"
+  },
+  {
+    "time": [
+      20,
+      21
+    ],
+    "visible_entities": [
+      {
+        "desc": "pair of hands with light brown skin tone",
+        "action": "folding the top right corner of the paper",
+        "position": "center"
+      },
+      {
+        "desc": "white rectangular sheet of paper with a vertical center crease",
+        "action": "being folded",
+        "position": "center"
+      },
+      {
+        "desc": "dark black flat surface",
+        "action": "static",
+        "position": "background"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The hands are folding the top right corner of the white paper downwards.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The paper rests on a black surface.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A vertical crease runs down the center of the paper.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The hands are positioned above the white paper, manipulating its top right corner. The paper is lying on the dark black surface.",
+    "parse_success": true,
+    "chunk_idx": 20,
+    "video_id": "How_to_Make_a_Paper_Airplane_-__Best_Ways___Tips_and_Tricks_"
+  },
+  {
+    "time": [
+      21,
+      22
+    ],
+    "visible_entities": [
+      {
+        "desc": "pair of hands with light skin tone",
+        "action": "pressing down on paper",
+        "position": "center"
+      },
+      {
+        "desc": "white rectangular sheet of paper",
+        "action": "being folded",
+        "position": "center"
+      },
+      {
+        "desc": "black flat surface",
+        "action": "static",
+        "position": "background"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A pair of hands is pressing down on a white sheet of paper.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The paper is being folded along a vertical crease.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The paper rests on a black surface.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The hands are positioned above the white paper, pressing down on its surface. The paper is centered on top of the black background.",
+    "parse_success": true,
+    "chunk_idx": 21,
+    "video_id": "How_to_Make_a_Paper_Airplane_-__Best_Ways___Tips_and_Tricks_"
+  },
+  {
+    "time": [
+      22,
+      23
+    ],
+    "visible_entities": [
+      {
+        "desc": "pair of hands with light skin tone",
+        "action": "folding paper",
+        "position": "center"
+      },
+      {
+        "desc": "white rectangular sheet of paper",
+        "action": "being folded",
+        "position": "center"
+      },
+      {
+        "desc": "black flat surface",
+        "action": "static",
+        "position": "background"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The hands are folding the top right corner of the white paper downwards.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The paper rests on a black surface.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The paper has a vertical center crease.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The hands are positioned above the white paper, manipulating its top edge. The white paper is centered on top of the black surface.",
+    "parse_success": true,
+    "chunk_idx": 22,
+    "video_id": "How_to_Make_a_Paper_Airplane_-__Best_Ways___Tips_and_Tricks_"
+  },
+  {
+    "time": [
+      23,
+      24
+    ],
+    "visible_entities": [
+      {
+        "desc": "hands with light skin tone",
+        "action": "folding paper",
+        "position": "center"
       },
       {
         "desc": "white rectangular paper, smooth texture",
@@ -623,242 +982,71 @@
     ],
     "atomic_facts": [
       {
-        "fact": "The person is folding the white paper in half.",
+        "fact": "hands are folding the top corner of the white paper down",
         "confidence": 1.0
       },
       {
-        "fact": "The left hand holds the paper flat against the surface.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The right hand lifts the right edge of the paper to create a crease.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The paper is positioned on top of the black surface.",
+        "fact": "the paper rests on a black surface",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The white paper is in the center of the black surface. The person's left hand is on the left side of the paper, and the right hand is on the right side, holding the edge up.",
+    "spatial": "The hands are positioned above the white paper. The white paper is on top of the black surface.",
     "parse_success": true,
-    "chunk_idx": 14,
+    "chunk_idx": 23,
     "video_id": "How_to_Make_a_Paper_Airplane_-__Best_Ways___Tips_and_Tricks_"
   },
   {
     "time": [
-      30,
-      32
+      24,
+      25
     ],
     "visible_entities": [
       {
-        "desc": "hands with light skin tone and short fingernails",
-        "action": "manipulating paper",
-        "position": "foreground"
+        "desc": "pair of hands with light skin tone and short, clean fingernails",
+        "action": "pressing down on paper folds",
+        "position": "center"
       },
       {
-        "desc": "white rectangular strip of paper",
+        "desc": "white rectangular sheet of paper, folded into a pointed shape",
         "action": "being folded",
         "position": "center"
       },
       {
-        "desc": "black flat surface",
+        "desc": "dark, smooth, matte surface",
         "action": "static",
         "position": "background"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "The hands are folding the white paper strip in half lengthwise.",
+        "fact": "Hands are pressing down on the white paper to crease the folds.",
         "confidence": 1.0
       },
       {
-        "fact": "The paper is resting on a black surface.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [],
-    "spatial": "The white paper strip is centered on the black surface. The hands are positioned on top of the paper, holding it down and folding it.",
-    "parse_success": true,
-    "chunk_idx": 15,
-    "video_id": "How_to_Make_a_Paper_Airplane_-__Best_Ways___Tips_and_Tricks_"
-  },
-  {
-    "time": [
-      32,
-      34
-    ],
-    "visible_entities": [
-      {
-        "desc": "hands with light skin tone and short fingernails",
-        "action": "folding the paper",
-        "position": "foreground"
-      },
-      {
-        "desc": "long, rectangular strip of white paper",
-        "action": "being folded",
-        "position": "center"
-      },
-      {
-        "desc": "dark, solid black surface",
-        "action": "static",
-        "position": "background"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "The hands are pressing down on the white paper strip.",
+        "fact": "The paper is folded into a pointed shape resembling the nose of a paper airplane.",
         "confidence": 1.0
       },
       {
-        "fact": "The right hand is folding the edge of the paper strip upwards.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The paper strip is lying horizontally on the black surface.",
+        "fact": "The paper rests on a dark surface.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The hands are positioned above the white paper strip. The paper strip is on the dark black surface. The left hand is to the left of the right hand.",
+    "spatial": "The hands are positioned above the white paper, pressing down on its surface. The white paper is centered on the dark background surface.",
     "parse_success": true,
-    "chunk_idx": 16,
+    "chunk_idx": 24,
     "video_id": "How_to_Make_a_Paper_Airplane_-__Best_Ways___Tips_and_Tricks_"
   },
   {
     "time": [
-      34,
-      36
+      25,
+      26
     ],
     "visible_entities": [
       {
         "desc": "pair of hands with light skin tone",
-        "action": "manipulating paper",
-        "position": "foreground"
-      },
-      {
-        "desc": "white rectangular sheet of paper",
-        "action": "being unfolded",
-        "position": "center"
-      },
-      {
-        "desc": "black flat surface",
-        "action": "static",
-        "position": "background"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "A pair of hands is unfolding a white sheet of paper.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The paper is being opened from a folded state to a flat state.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The hands are pressing down on the paper to flatten it.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [],
-    "spatial": "The hands are positioned on top of the white paper, holding its edges. The paper is located in the center of the frame, resting on the black surface.",
-    "parse_success": true,
-    "chunk_idx": 17,
-    "video_id": "How_to_Make_a_Paper_Airplane_-__Best_Ways___Tips_and_Tricks_"
-  },
-  {
-    "time": [
-      36,
-      38
-    ],
-    "visible_entities": [
-      {
-        "desc": "white rectangular paper, smooth texture, folded vertically down the center",
-        "action": "being held open",
-        "position": "center"
-      },
-      {
-        "desc": "pair of hands with light skin tone, short fingernails, no jewelry",
-        "action": "holding the paper",
-        "position": "left and right"
-      },
-      {
-        "desc": "black flat surface, matte finish",
-        "action": "static",
-        "position": "background"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "A pair of hands holds a piece of white paper open.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The paper is folded vertically in the middle.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The hands are positioned on either side of the paper's central fold.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [],
-    "spatial": "The white paper is in the center of the frame, held by a left hand on its left side and a right hand on its right side. The paper and hands are positioned above a black surface.",
-    "parse_success": true,
-    "chunk_idx": 18,
-    "video_id": "How_to_Make_a_Paper_Airplane_-__Best_Ways___Tips_and_Tricks_"
-  },
-  {
-    "time": [
-      38,
-      40
-    ],
-    "visible_entities": [
-      {
-        "desc": "white rectangular sheet of paper, folded vertically in half",
-        "action": "being pressed flat",
-        "position": "center"
-      },
-      {
-        "desc": "pair of hands with light brown skin tone",
-        "action": "smoothing the paper",
-        "position": "foreground"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "A person is using both hands to press down on a folded piece of white paper.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The left hand is placed flat on the left side of the paper.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The right hand is holding the right edge of the paper.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The paper is being smoothed against a black surface.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [],
-    "spatial": "The white paper is centered on a black surface. The left hand is positioned on the left side of the paper, while the right hand is positioned on the right edge of the paper.",
-    "parse_success": true,
-    "chunk_idx": 19,
-    "video_id": "How_to_Make_a_Paper_Airplane_-__Best_Ways___Tips_and_Tricks_"
-  },
-  {
-    "time": [
-      40,
-      42
-    ],
-    "visible_entities": [
-      {
-        "desc": "pair of hands with light skin tone",
-        "action": "folding paper",
+        "action": "pressing down on paper",
         "position": "center"
       },
       {
@@ -874,78 +1062,36 @@
     ],
     "atomic_facts": [
       {
-        "fact": "The hands are folding the top corners of the white paper inward.",
+        "fact": "The hands are pressing down on the white paper to create a crease.",
         "confidence": 1.0
       },
       {
-        "fact": "The paper is resting on a dark surface.",
+        "fact": "The paper is folded in half lengthwise.",
         "confidence": 1.0
       },
       {
-        "fact": "The left hand presses down on the paper while the right hand adjusts the fold.",
+        "fact": "The paper rests on a dark surface.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The hands are positioned above the white paper, manipulating its top edge. The paper is lying flat on the dark surface.",
+    "spatial": "The hands are positioned above the white paper, pressing down on its surface. The white paper is centered on top of the dark flat surface.",
     "parse_success": true,
-    "chunk_idx": 20,
+    "chunk_idx": 25,
     "video_id": "How_to_Make_a_Paper_Airplane_-__Best_Ways___Tips_and_Tricks_"
   },
   {
     "time": [
-      42,
-      44
+      26,
+      27
     ],
     "visible_entities": [
       {
-        "desc": "pair of hands with light skin tone and short, clean fingernails",
-        "action": "pressing down on paper folds",
+        "desc": "hands with light skin tone",
+        "action": "folding paper",
         "position": "center/foreground"
       },
       {
-        "desc": "white rectangular sheet of paper, smooth texture",
-        "action": "being folded",
-        "position": "center"
-      },
-      {
-        "desc": "dark, solid black surface",
-        "action": "static",
-        "position": "background"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "hands are pressing down on the top corners of the white paper",
-        "confidence": 1.0
-      },
-      {
-        "fact": "the paper is being folded along a central vertical crease",
-        "confidence": 1.0
-      },
-      {
-        "fact": "the paper rests on a flat black surface",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [],
-    "spatial": "The hands are positioned above the white paper, pressing down on its top section. The paper is centered on the dark background surface.",
-    "parse_success": true,
-    "chunk_idx": 21,
-    "video_id": "How_to_Make_a_Paper_Airplane_-__Best_Ways___Tips_and_Tricks_"
-  },
-  {
-    "time": [
-      44,
-      46
-    ],
-    "visible_entities": [
-      {
-        "desc": "pair of hands with light skin tone",
-        "action": "folding the top corners of the paper",
-        "position": "center"
-      },
-      {
         "desc": "white rectangular sheet of paper",
         "action": "being folded",
         "position": "center"
@@ -958,57 +1104,53 @@
     ],
     "atomic_facts": [
       {
-        "fact": "The hands are folding the top corners of the white paper inward to meet at the center line.",
+        "fact": "Hands are folding the top corners of the white paper inwards to meet at the center crease.",
         "confidence": 1.0
       },
       {
-        "fact": "The paper rests on a black surface.",
+        "fact": "The paper is resting on a black surface.",
         "confidence": 1.0
       },
       {
-        "fact": "The paper has a visible vertical crease down the middle.",
+        "fact": "The paper has a vertical crease down the middle.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The hands are positioned above the white paper, manipulating its top edge. The paper is lying flat on the black surface.",
+    "spatial": "The hands are positioned on top of the white paper, manipulating its corners. The white paper is centered on the black surface.",
     "parse_success": true,
-    "chunk_idx": 22,
+    "chunk_idx": 26,
     "video_id": "How_to_Make_a_Paper_Airplane_-__Best_Ways___Tips_and_Tricks_"
   },
   {
     "time": [
-      46,
-      48
+      27,
+      28
     ],
     "visible_entities": [
       {
-        "desc": "pair of hands with light skin tone",
+        "desc": "person with light skin tone, no visible clothing or accessories",
         "action": "folding paper",
-        "position": "center"
+        "position": "foreground"
       },
       {
-        "desc": "white rectangular sheet of paper",
+        "desc": "white rectangular sheet of paper, smooth texture, with visible crease lines",
         "action": "being folded",
         "position": "center"
       },
       {
-        "desc": "black flat surface",
+        "desc": "black flat surface, smooth texture",
         "action": "static",
         "position": "background"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A pair of hands is folding a white sheet of paper.",
+        "fact": "The person is folding the top right corner of the white paper downwards.",
         "confidence": 1.0
       },
       {
-        "fact": "The right hand is pressing down on a triangular flap of the paper.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The left hand is holding the main body of the paper steady.",
+        "fact": "The person's left hand is pressing down on the paper to hold it in place.",
         "confidence": 1.0
       },
       {
@@ -1017,24 +1159,524 @@
       }
     ],
     "ocr": [],
-    "spatial": "The hands are positioned above the white paper, manipulating its corners. The white paper is centered on top of the black surface.",
+    "spatial": "The person's hands are positioned above the black surface and are holding the white paper. The paper is centered in the frame, resting on the black surface.",
     "parse_success": true,
-    "chunk_idx": 23,
+    "chunk_idx": 27,
     "video_id": "How_to_Make_a_Paper_Airplane_-__Best_Ways___Tips_and_Tricks_"
   },
   {
     "time": [
-      48,
-      50
+      28,
+      29
+    ],
+    "visible_entities": [
+      {
+        "desc": "pair of hands with light brown skin tone and short, natural fingernails",
+        "action": "pressing down on paper flaps",
+        "position": "foreground"
+      },
+      {
+        "desc": "white rectangular sheet of paper with visible creases and folded corners",
+        "action": "being folded",
+        "position": "center"
+      },
+      {
+        "desc": "dark, smooth, matte black surface",
+        "action": "static",
+        "position": "background"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The hands are pressing down on the white paper to flatten the folds.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The paper has diagonal creases forming a triangular shape in the center.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The top edge of the paper is folded over horizontally.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The hands are positioned on top of the white paper, pressing it against the dark surface. The paper is centered in the frame, resting on the background surface.",
+    "parse_success": true,
+    "chunk_idx": 28,
+    "video_id": "How_to_Make_a_Paper_Airplane_-__Best_Ways___Tips_and_Tricks_"
+  },
+  {
+    "time": [
+      29,
+      30
+    ],
+    "visible_entities": [
+      {
+        "desc": "pair of hands with light skin tone, short fingernails, no visible jewelry or clothing",
+        "action": "pressing and folding paper",
+        "position": "foreground"
+      },
+      {
+        "desc": "white rectangular sheet of paper, smooth texture, partially folded with visible creases",
+        "action": "being manipulated",
+        "position": "center"
+      },
+      {
+        "desc": "flat black surface, matte finish, featureless background",
+        "action": "static",
+        "position": "background"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The left hand presses down on the center of the white paper to hold it in place.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The right hand folds the right edge of the paper inward.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The paper is resting on a black surface.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The hands are positioned above the white paper. The white paper is centered on the black surface. The left hand is to the left of the right hand.",
+    "parse_success": true,
+    "chunk_idx": 29,
+    "video_id": "How_to_Make_a_Paper_Airplane_-__Best_Ways___Tips_and_Tricks_"
+  },
+  {
+    "time": [
+      30,
+      31
     ],
     "visible_entities": [
       {
         "desc": "pair of hands with light skin tone and short fingernails",
-        "action": "pressing down on the paper",
+        "action": "pressing down on white paper",
+        "position": "foreground"
+      },
+      {
+        "desc": "white rectangular sheet of paper, smooth texture, partially folded",
+        "action": "being folded",
         "position": "center"
       },
       {
-        "desc": "white rectangular sheet of paper, folded into a pointed triangular shape",
+        "desc": "black flat surface, matte texture",
+        "action": "static",
+        "position": "background"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The hands are pressing down on the white paper to crease a fold.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The white paper is resting on a black surface.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The paper is being folded in an origami-like manner.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The white paper is centered on the black surface. The hands are positioned on top of the paper, with the left hand pressing the center and the right hand holding the edge.",
+    "parse_success": true,
+    "chunk_idx": 30,
+    "video_id": "How_to_Make_a_Paper_Airplane_-__Best_Ways___Tips_and_Tricks_"
+  },
+  {
+    "time": [
+      31,
+      32
+    ],
+    "visible_entities": [
+      {
+        "desc": "hands with light skin tone and short, natural fingernails",
+        "action": "pressing down on paper",
+        "position": "foreground"
+      },
+      {
+        "desc": "white rectangular sheet of paper, smooth texture, folded",
+        "action": "being folded",
+        "position": "center"
+      },
+      {
+        "desc": "flat black surface, matte texture",
+        "action": "static",
+        "position": "background"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "Hands are pressing down on a white sheet of paper to crease a fold.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The paper is folded horizontally in the middle.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The paper rests on a black surface.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The hands are positioned above the white paper. The white paper is on top of the black surface.",
+    "parse_success": true,
+    "chunk_idx": 31,
+    "video_id": "How_to_Make_a_Paper_Airplane_-__Best_Ways___Tips_and_Tricks_"
+  },
+  {
+    "time": [
+      32,
+      33
+    ],
+    "visible_entities": [
+      {
+        "desc": "pair of hands with light brown skin tone",
+        "action": "pressing down on paper",
+        "position": "center foreground"
+      },
+      {
+        "desc": "white rectangular sheet of paper with faint diagonal crease lines",
+        "action": "being folded",
+        "position": "center"
+      },
+      {
+        "desc": "black flat surface",
+        "action": "static",
+        "position": "background"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The hands are pressing down on the white paper to flatten a fold.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The paper rests on a black surface.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "Faint diagonal crease lines are visible on the white paper.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The hands are positioned above the white paper, pressing down on its surface. The white paper is centered on the black background surface.",
+    "parse_success": true,
+    "chunk_idx": 32,
+    "video_id": "How_to_Make_a_Paper_Airplane_-__Best_Ways___Tips_and_Tricks_"
+  },
+  {
+    "time": [
+      33,
+      34
+    ],
+    "visible_entities": [
+      {
+        "desc": "pair of hands with light brown skin and short, clean fingernails",
+        "action": "pressing down on paper",
+        "position": "foreground"
+      },
+      {
+        "desc": "rectangular white sheet of paper with a visible diagonal crease on the left side",
+        "action": "being flattened",
+        "position": "center"
+      },
+      {
+        "desc": "smooth black surface",
+        "action": "static",
+        "position": "background"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "hands press down on the white paper to flatten it against the black surface",
+        "confidence": 1.0
+      },
+      {
+        "fact": "the paper has a diagonal fold line visible on the left side",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The hands are positioned on top of the white paper. The white paper is centered on the black surface. The left hand is to the left of the right hand.",
+    "parse_success": true,
+    "chunk_idx": 33,
+    "video_id": "How_to_Make_a_Paper_Airplane_-__Best_Ways___Tips_and_Tricks_"
+  },
+  {
+    "time": [
+      34,
+      35
+    ],
+    "visible_entities": [
+      {
+        "desc": "pair of hands with light skin tone, short fingernails, no visible jewelry or tattoos",
+        "action": "pressing and folding paper",
+        "position": "foreground"
+      },
+      {
+        "desc": "rectangular white sheet of paper, smooth texture, standard size",
+        "action": "being folded",
+        "position": "center"
+      },
+      {
+        "desc": "flat black surface, matte finish, uniform color",
+        "action": "static",
+        "position": "background"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The hands are pressing down on the white paper to create a crease.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The paper is being folded in half horizontally.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The paper rests on a black surface.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The hands are positioned on top of the white paper. The white paper is centered on the black surface. The left hand is to the left of the right hand.",
+    "parse_success": true,
+    "chunk_idx": 34,
+    "video_id": "How_to_Make_a_Paper_Airplane_-__Best_Ways___Tips_and_Tricks_"
+  },
+  {
+    "time": [
+      35,
+      36
+    ],
+    "visible_entities": [
+      {
+        "desc": "pair of hands with light skin tone",
+        "action": "folding the paper",
+        "position": "center/foreground"
+      },
+      {
+        "desc": "white rectangular sheet of paper, smooth texture, with visible diagonal creases",
+        "action": "being folded",
+        "position": "center"
+      },
+      {
+        "desc": "black flat surface, matte texture",
+        "action": "static",
+        "position": "background"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The hands are pressing down on the white paper to create a fold.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The paper rests on a black surface.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The paper has existing diagonal crease lines visible on its surface.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The hands are positioned above the white paper. The white paper is on top of the black surface. The left hand is to the left of the right hand.",
+    "parse_success": true,
+    "chunk_idx": 35,
+    "video_id": "How_to_Make_a_Paper_Airplane_-__Best_Ways___Tips_and_Tricks_"
+  },
+  {
+    "time": [
+      36,
+      37
+    ],
+    "visible_entities": [
+      {
+        "desc": "hands with light skin tone",
+        "action": "folding paper",
+        "position": "center"
+      },
+      {
+        "desc": "white rectangular paper",
+        "action": "being folded",
+        "position": "center"
+      },
+      {
+        "desc": "dark black surface",
+        "action": "static",
+        "position": "background"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A pair of hands is folding a white piece of paper.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The right hand is pressing down a corner of the paper to create a crease.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The paper is resting on a dark surface.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The hands are positioned above the white paper, manipulating it. The paper is centered on top of the dark black surface.",
+    "parse_success": true,
+    "chunk_idx": 36,
+    "video_id": "How_to_Make_a_Paper_Airplane_-__Best_Ways___Tips_and_Tricks_"
+  },
+  {
+    "time": [
+      37,
+      38
+    ],
+    "visible_entities": [
+      {
+        "desc": "pair of hands with light brown skin tone and short, natural fingernails",
+        "action": "pressing down on paper",
+        "position": "center/foreground"
+      },
+      {
+        "desc": "white rectangular sheet of paper with visible fold lines",
+        "action": "being folded",
+        "position": "center"
+      },
+      {
+        "desc": "dark, smooth, matte black surface",
+        "action": "static",
+        "position": "background"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The hands are pressing down on the white paper to flatten a fold.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The paper rests on a black surface.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The paper has visible creases indicating previous folding steps.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The hands are positioned on top of the white paper. The paper is located in the center of the frame, resting on the dark background surface.",
+    "parse_success": true,
+    "chunk_idx": 37,
+    "video_id": "How_to_Make_a_Paper_Airplane_-__Best_Ways___Tips_and_Tricks_"
+  },
+  {
+    "time": [
+      38,
+      39
+    ],
+    "visible_entities": [
+      {
+        "desc": "pair of hands with light skin tone",
+        "action": "folding paper",
+        "position": "center"
+      },
+      {
+        "desc": "white rectangular sheet of paper with visible crease lines",
+        "action": "being folded",
+        "position": "center"
+      },
+      {
+        "desc": "dark matte black surface",
+        "action": "static",
+        "position": "background"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A pair of hands is manipulating a white sheet of paper.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The hands are pressing down on the paper to create a fold.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The paper rests on a dark surface.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The hands are positioned above the white paper, pressing down on its surface. The paper is centered on the dark background surface.",
+    "parse_success": true,
+    "chunk_idx": 38,
+    "video_id": "How_to_Make_a_Paper_Airplane_-__Best_Ways___Tips_and_Tricks_"
+  },
+  {
+    "time": [
+      39,
+      40
+    ],
+    "visible_entities": [
+      {
+        "desc": "pair of hands with light brown skin tone, short fingernails, no jewelry or accessories",
+        "action": "folding the top right corner of the paper down",
+        "position": "center/foreground"
+      },
+      {
+        "desc": "rectangular white sheet of paper, smooth texture, with visible faint pencil crease lines",
+        "action": "being folded on a surface",
+        "position": "center"
+      },
+      {
+        "desc": "dark matte black surface, smooth texture, likely a table or desk",
+        "action": "static",
+        "position": "background"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The hands are folding the top right corner of the white paper downwards to create a triangular flap.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The left hand holds the body of the paper steady while the right hand presses down the fold.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "Faint pencil lines are visible on the paper, indicating previous folds or guides.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The hands are positioned above the white paper, manipulating it. The white paper is resting on top of the dark black surface. The right hand is to the right of the left hand.",
+    "parse_success": true,
+    "chunk_idx": 39,
+    "video_id": "How_to_Make_a_Paper_Airplane_-__Best_Ways___Tips_and_Tricks_"
+  },
+  {
+    "time": [
+      40,
+      41
+    ],
+    "visible_entities": [
+      {
+        "desc": "pair of hands with light skin tone",
+        "action": "folding paper",
+        "position": "center"
+      },
+      {
+        "desc": "white rectangular sheet of paper with faint pencil lines",
         "action": "being folded",
         "position": "center"
       },
@@ -1046,121 +1688,121 @@
     ],
     "atomic_facts": [
       {
-        "fact": "Hands are pressing down on the white paper to flatten the folds.",
+        "fact": "The hands are pressing down on the white paper to create a fold.",
         "confidence": 1.0
       },
       {
-        "fact": "The paper has been folded to create a pointed tip at the top.",
+        "fact": "The paper rests on a dark surface.",
         "confidence": 1.0
       },
       {
-        "fact": "The background is a solid dark color.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [],
-    "spatial": "The hands are positioned on top of the white paper, pressing down on the upper section. The paper is centered on the dark surface, which lies underneath the paper.",
-    "parse_success": true,
-    "chunk_idx": 24,
-    "video_id": "How_to_Make_a_Paper_Airplane_-__Best_Ways___Tips_and_Tricks_"
-  },
-  {
-    "time": [
-      50,
-      52
-    ],
-    "visible_entities": [
-      {
-        "desc": "pair of hands with light skin tone and short, clean fingernails",
-        "action": "pressing down on the paper to crease the fold",
-        "position": "center"
-      },
-      {
-        "desc": "white rectangular sheet of paper, smooth texture, partially folded",
-        "action": "being manipulated",
-        "position": "center"
-      },
-      {
-        "desc": "dark, matte black surface",
-        "action": "static",
-        "position": "background"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "The hands are pressing the top corner of the white paper down to form a sharp crease.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The paper is being folded along a central vertical axis.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The hands are positioned symmetrically on either side of the paper's fold.",
+        "fact": "Faint pencil lines are visible on the paper, guiding the fold.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The hands are positioned above the white paper, pressing down on its surface. The white paper rests on top of the dark background surface. The left hand is to the left of the fold, and the right hand is to the right of the fold.",
+    "spatial": "The hands are positioned above the white paper, manipulating it. The paper is lying on top of the dark surface.",
     "parse_success": true,
-    "chunk_idx": 25,
+    "chunk_idx": 40,
     "video_id": "How_to_Make_a_Paper_Airplane_-__Best_Ways___Tips_and_Tricks_"
   },
   {
     "time": [
-      52,
-      54
+      41,
+      42
     ],
     "visible_entities": [
       {
         "desc": "pair of hands with light skin tone",
-        "action": "folding the top corners of the paper",
+        "action": "folding and pressing the paper",
+        "position": "center/foreground"
+      },
+      {
+        "desc": "white rectangular sheet of paper with visible crease lines",
+        "action": "being folded",
         "position": "center"
       },
       {
-        "desc": "white rectangular sheet of paper",
-        "action": "being folded into a pointed shape",
-        "position": "center"
-      },
-      {
-        "desc": "black flat surface",
+        "desc": "dark smooth black surface",
         "action": "static",
         "position": "background"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "The hands are folding the top corners of the white paper inward to meet at the center line.",
+        "fact": "The hands are pressing down on the top corner of the white paper.",
         "confidence": 1.0
       },
       {
-        "fact": "The paper is being transformed into a triangular point at the top.",
+        "fact": "The paper is being folded inward along a central vertical crease.",
         "confidence": 1.0
       },
       {
-        "fact": "The paper rests on a black surface.",
+        "fact": "The paper rests on a black table surface.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The hands are positioned on top of the white paper, manipulating its upper corners. The paper is centered on the black background surface.",
+    "spatial": "The hands are positioned above the white paper, manipulating its top edge. The paper is centered on the dark black surface.",
     "parse_success": true,
-    "chunk_idx": 26,
+    "chunk_idx": 41,
     "video_id": "How_to_Make_a_Paper_Airplane_-__Best_Ways___Tips_and_Tricks_"
   },
   {
     "time": [
-      54,
-      56
+      42,
+      43
     ],
     "visible_entities": [
       {
-        "desc": "person with light skin tone, hands visible, no jewelry or nail polish",
-        "action": "folding paper",
-        "position": "foreground"
+        "desc": "pair of hands with light brown skin tone",
+        "action": "folding a piece of paper",
+        "position": "center"
       },
       {
-        "desc": "white rectangular sheet of paper, smooth texture, with visible crease lines",
+        "desc": "white rectangular sheet of paper with visible crease lines",
+        "action": "being folded",
+        "position": "center"
+      },
+      {
+        "desc": "dark matte black surface",
+        "action": "static",
+        "position": "background"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A pair of hands is folding a white sheet of paper on a black surface.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The hands are pressing down on the corners of the paper to create a crease.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The paper has existing fold lines visible on its surface.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The hands are positioned above the white paper, manipulating its corners. The paper rests on top of the dark black surface which fills the background.",
+    "parse_success": true,
+    "chunk_idx": 42,
+    "video_id": "How_to_Make_a_Paper_Airplane_-__Best_Ways___Tips_and_Tricks_"
+  },
+  {
+    "time": [
+      43,
+      44
+    ],
+    "visible_entities": [
+      {
+        "desc": "hands with light skin tone, short fingernails, no jewelry",
+        "action": "pressing down on paper",
+        "position": "center/foreground"
+      },
+      {
+        "desc": "white rectangular sheet of paper, smooth texture, folded into a triangular shape",
         "action": "being folded",
         "position": "center"
       },
@@ -1172,414 +1814,28 @@
     ],
     "atomic_facts": [
       {
-        "fact": "The person is folding the top right corner of the white paper downwards.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The paper rests on a black surface.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The left hand holds the paper steady while the right hand manipulates the fold.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [],
-    "spatial": "The person's hands are positioned above the black surface. The white paper is located between the hands and the black surface. The right hand is to the right of the left hand.",
-    "parse_success": true,
-    "chunk_idx": 27,
-    "video_id": "How_to_Make_a_Paper_Airplane_-__Best_Ways___Tips_and_Tricks_"
-  },
-  {
-    "time": [
-      56,
-      58
-    ],
-    "visible_entities": [
-      {
-        "desc": "hands with light skin tone, short fingernails, no visible jewelry or accessories",
-        "action": "folding the top corners of the paper",
-        "position": "foreground"
-      },
-      {
-        "desc": "white rectangular sheet of paper, smooth texture, with visible crease lines",
-        "action": "being folded",
-        "position": "center"
-      },
-      {
-        "desc": "black flat surface, matte finish",
-        "action": "static",
-        "position": "background"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "The hands are folding the top corners of the white paper downwards.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The paper rests on a black surface.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The left hand holds the paper steady while the right hand manipulates the fold.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [],
-    "spatial": "The hands are positioned above the white paper. The white paper is on top of the black surface. The left hand is to the left of the right hand.",
-    "parse_success": true,
-    "chunk_idx": 28,
-    "video_id": "How_to_Make_a_Paper_Airplane_-__Best_Ways___Tips_and_Tricks_"
-  },
-  {
-    "time": [
-      58,
-      60
-    ],
-    "visible_entities": [
-      {
-        "desc": "hands with light skin tone and short, natural fingernails",
-        "action": "pressing down on paper",
-        "position": "foreground"
-      },
-      {
-        "desc": "white rectangular sheet of paper with visible crease lines",
-        "action": "being folded",
-        "position": "center"
-      },
-      {
-        "desc": "flat black surface",
-        "action": "static",
-        "position": "background"
-      }
-    ],
-    "atomic_facts": [
-      {
         "fact": "The hands are pressing down on the white paper to flatten a fold.",
         "confidence": 1.0
       },
       {
-        "fact": "The paper rests on a black surface.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The paper has visible diagonal and horizontal crease lines.",
+        "fact": "The paper is folded into a triangular shape on the black surface.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The hands are positioned on top of the white paper. The white paper is centered on the black surface.",
+    "spatial": "The hands are positioned above the white paper. The white paper is resting on the black surface.",
     "parse_success": true,
-    "chunk_idx": 29,
+    "chunk_idx": 43,
     "video_id": "How_to_Make_a_Paper_Airplane_-__Best_Ways___Tips_and_Tricks_"
   },
   {
     "time": [
-      60,
-      62
+      44,
+      45
     ],
     "visible_entities": [
       {
-        "desc": "pair of hands with light skin tone and short, clean fingernails",
-        "action": "pressing down on paper",
-        "position": "foreground"
-      },
-      {
-        "desc": "white rectangular sheet of paper, partially folded with a rolled top edge",
-        "action": "being folded",
-        "position": "center"
-      },
-      {
-        "desc": "solid black flat surface",
-        "action": "static",
-        "position": "background"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "hands are pressing down on the white paper to flatten a fold",
-        "confidence": 1.0
-      },
-      {
-        "fact": "the paper is resting on a black surface",
-        "confidence": 1.0
-      },
-      {
-        "fact": "the top edge of the paper is rolled or folded over",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [],
-    "spatial": "The white paper is centered on the black surface. The hands are positioned on top of the paper, with the left hand on the left side and the right hand on the right side, holding the paper in place.",
-    "parse_success": true,
-    "chunk_idx": 30,
-    "video_id": "How_to_Make_a_Paper_Airplane_-__Best_Ways___Tips_and_Tricks_"
-  },
-  {
-    "time": [
-      62,
-      64
-    ],
-    "visible_entities": [
-      {
-        "desc": "pair of hands with light brown skin tone and short, clean fingernails",
-        "action": "pressing down and smoothing a paper fold",
-        "position": "center foreground"
-      },
-      {
-        "desc": "white rectangular sheet of paper with visible crease lines",
-        "action": "being folded",
-        "position": "center"
-      },
-      {
-        "desc": "solid black flat surface",
-        "action": "static",
-        "position": "background"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "The hands are pressing down on the white paper to create a sharp crease.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The paper is resting on a black surface.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The paper has diagonal fold lines visible on the left side.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [],
-    "spatial": "The hands are positioned on top of the white paper. The white paper is centered on the black surface.",
-    "parse_success": true,
-    "chunk_idx": 31,
-    "video_id": "How_to_Make_a_Paper_Airplane_-__Best_Ways___Tips_and_Tricks_"
-  },
-  {
-    "time": [
-      64,
-      66
-    ],
-    "visible_entities": [
-      {
-        "desc": "pair of hands with light skin tone",
-        "action": "pressing down on paper",
-        "position": "center"
-      },
-      {
-        "desc": "white rectangular sheet of paper with faint diagonal crease lines",
-        "action": "being folded",
-        "position": "center"
-      },
-      {
-        "desc": "dark black flat surface",
-        "action": "static",
-        "position": "background"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "The hands are pressing down on the white paper to flatten a fold.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The paper rests on a black surface.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "Faint diagonal lines are visible on the paper, indicating previous folds.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [],
-    "spatial": "The hands are positioned above the white paper, pressing down on its surface. The paper is centered on the black background surface.",
-    "parse_success": true,
-    "chunk_idx": 32,
-    "video_id": "How_to_Make_a_Paper_Airplane_-__Best_Ways___Tips_and_Tricks_"
-  },
-  {
-    "time": [
-      66,
-      68
-    ],
-    "visible_entities": [
-      {
-        "desc": "pair of hands with light skin tone and short fingernails",
-        "action": "pressing down on paper",
-        "position": "foreground"
-      },
-      {
-        "desc": "rectangular white sheet of paper with a visible diagonal crease",
-        "action": "being flattened",
-        "position": "center"
-      },
-      {
-        "desc": "flat black surface",
-        "action": "static",
-        "position": "background"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "Hands are pressing down on the white paper to flatten a fold.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The paper rests on a black surface.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "A diagonal crease is visible on the left side of the paper.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [],
-    "spatial": "The hands are positioned on top of the white paper, pressing it against the black surface. The paper is centered between the left and right hands.",
-    "parse_success": true,
-    "chunk_idx": 33,
-    "video_id": "How_to_Make_a_Paper_Airplane_-__Best_Ways___Tips_and_Tricks_"
-  },
-  {
-    "time": [
-      68,
-      70
-    ],
-    "visible_entities": [
-      {
-        "desc": "hands with light brown skin tone",
-        "action": "pressing and folding paper",
-        "position": "foreground"
-      },
-      {
-        "desc": "white rectangular sheet of paper",
-        "action": "being folded",
-        "position": "center"
-      },
-      {
-        "desc": "black flat surface",
-        "action": "static",
-        "position": "background"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "Hands are pressing down on a white sheet of paper.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The paper is being folded on a black surface.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The left hand holds the paper flat while the right hand manipulates the edge.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [],
-    "spatial": "The white paper is centered on the black surface. The hands are positioned on top of the paper, with the left hand to the left of the right hand.",
-    "parse_success": true,
-    "chunk_idx": 34,
-    "video_id": "How_to_Make_a_Paper_Airplane_-__Best_Ways___Tips_and_Tricks_"
-  },
-  {
-    "time": [
-      70,
-      72
-    ],
-    "visible_entities": [
-      {
-        "desc": "person's hands with light skin tone",
-        "action": "folding paper",
-        "position": "center"
-      },
-      {
-        "desc": "white rectangular paper",
-        "action": "being folded",
-        "position": "center"
-      },
-      {
-        "desc": "black flat surface",
-        "action": "static",
-        "position": "background"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "The person is folding the white paper on a black surface.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The hands are pressing down on the paper to create a crease.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The paper is being manipulated in the center of the frame.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [],
-    "spatial": "The white paper is on the black surface. The person's hands are above the paper, holding and folding it.",
-    "parse_success": true,
-    "chunk_idx": 35,
-    "video_id": "How_to_Make_a_Paper_Airplane_-__Best_Ways___Tips_and_Tricks_"
-  },
-  {
-    "time": [
-      72,
-      74
-    ],
-    "visible_entities": [
-      {
-        "desc": "pair of hands with light brown skin tone, short fingernails, no visible jewelry or accessories",
-        "action": "folding the corner of a white sheet of paper",
-        "position": "center"
-      },
-      {
-        "desc": "rectangular sheet of white paper, smooth texture, standard letter size",
-        "action": "being folded",
-        "position": "center"
-      },
-      {
-        "desc": "dark gray or black flat surface, matte finish, likely a table or desk",
-        "action": "static",
-        "position": "background"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "The hands are folding the top right corner of the white paper downwards.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The left hand holds the paper flat against the surface.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The right hand presses down on the folded corner to create a crease.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The paper rests on a dark, flat surface.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [],
-    "spatial": "The hands are positioned above the white paper. The white paper is on top of the dark surface. The left hand is to the left of the right hand.",
-    "parse_success": true,
-    "chunk_idx": 36,
-    "video_id": "How_to_Make_a_Paper_Airplane_-__Best_Ways___Tips_and_Tricks_"
-  },
-  {
-    "time": [
-      74,
-      76
-    ],
-    "visible_entities": [
-      {
-        "desc": "pair of hands with light brown skin and short, natural fingernails",
+        "desc": "pair of hands with light skin tone and short, natural fingernails",
         "action": "pressing down on paper",
         "position": "center/foreground"
       },
@@ -1600,159 +1856,75 @@
         "confidence": 1.0
       },
       {
-        "fact": "The paper rests on a black surface.",
+        "fact": "The paper has existing diagonal crease lines forming a triangular shape.",
         "confidence": 1.0
       },
       {
-        "fact": "The paper has visible crease lines indicating previous folds.",
+        "fact": "The paper is resting on a black surface.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The hands are positioned above the white paper, pressing down on its surface. The paper is centered on the dark background surface.",
+    "spatial": "The hands are positioned above the white paper, with fingers spread out to press against the surface. The paper is centered on the dark background surface.",
     "parse_success": true,
-    "chunk_idx": 37,
+    "chunk_idx": 44,
     "video_id": "How_to_Make_a_Paper_Airplane_-__Best_Ways___Tips_and_Tricks_"
   },
   {
     "time": [
-      76,
-      78
+      45,
+      46
     ],
     "visible_entities": [
       {
-        "desc": "pair of hands with light skin tone",
-        "action": "folding the paper",
+        "desc": "pair of hands with light skin tone and manicured nails",
+        "action": "folding paper",
         "position": "center"
       },
       {
-        "desc": "white rectangular sheet of paper with visible crease lines",
+        "desc": "white rectangular sheet of paper with visible creases",
         "action": "being folded",
         "position": "center"
       },
       {
-        "desc": "dark flat surface, likely a black table",
+        "desc": "dark matte black surface",
         "action": "static",
         "position": "background"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "The hands are manipulating the white paper on the dark surface.",
+        "fact": "The hands are pressing down on the white paper to create a fold.",
         "confidence": 1.0
       },
       {
-        "fact": "The fingers are pressing down to create a fold in the paper.",
+        "fact": "The paper is resting on a black surface.",
         "confidence": 1.0
       },
       {
-        "fact": "The paper has existing diagonal crease lines visible on its surface.",
+        "fact": "The left hand holds the paper steady while the right hand manipulates the corner.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The hands are positioned above the white paper, pressing down on it. The paper rests on top of the dark flat surface.",
+    "spatial": "The hands are positioned above the white paper, pressing it against the black surface. The paper is centered in the frame, with the hands surrounding it.",
     "parse_success": true,
-    "chunk_idx": 38,
+    "chunk_idx": 45,
     "video_id": "How_to_Make_a_Paper_Airplane_-__Best_Ways___Tips_and_Tricks_"
   },
   {
     "time": [
-      78,
-      80
+      46,
+      47
     ],
     "visible_entities": [
       {
         "desc": "pair of hands with light skin tone",
-        "action": "folding the corner of the paper",
-        "position": "center"
+        "action": "folding paper",
+        "position": "foreground"
       },
       {
-        "desc": "white rectangular sheet of paper with visible crease lines",
-        "action": "being manipulated",
-        "position": "center"
-      },
-      {
-        "desc": "dark smooth surface",
-        "action": "static",
-        "position": "background"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "The hands are folding the top right corner of the white paper downwards.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The paper rests on a dark surface.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The left hand holds the paper steady while the right hand presses the fold.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [],
-    "spatial": "The hands are positioned above the white paper, pressing down on it. The paper is located in the center of the dark surface.",
-    "parse_success": true,
-    "chunk_idx": 39,
-    "video_id": "How_to_Make_a_Paper_Airplane_-__Best_Ways___Tips_and_Tricks_"
-  },
-  {
-    "time": [
-      80,
-      82
-    ],
-    "visible_entities": [
-      {
-        "desc": "pair of hands with light skin tone",
-        "action": "folding the paper",
-        "position": "center"
-      },
-      {
-        "desc": "white rectangular sheet of paper with visible crease lines",
-        "action": "being folded",
-        "position": "center"
-      },
-      {
-        "desc": "dark, smooth, matte surface",
-        "action": "static",
-        "position": "background"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "A pair of hands is folding a white sheet of paper on a dark surface.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The paper has visible diagonal crease lines from previous folds.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The fingers are pressing down to create a sharp crease.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [],
-    "spatial": "The hands are positioned above the white paper, manipulating it. The paper is resting on the dark surface, which serves as the background for the entire scene.",
-    "parse_success": true,
-    "chunk_idx": 40,
-    "video_id": "How_to_Make_a_Paper_Airplane_-__Best_Ways___Tips_and_Tricks_"
-  },
-  {
-    "time": [
-      82,
-      84
-    ],
-    "visible_entities": [
-      {
-        "desc": "pair of hands with light brown skin",
-        "action": "folding the top corner of the paper",
-        "position": "center"
-      },
-      {
-        "desc": "white rectangular sheet of paper with visible crease lines",
+        "desc": "white square paper with visible crease lines",
         "action": "being folded",
         "position": "center"
       },
@@ -1764,7 +1936,175 @@
     ],
     "atomic_facts": [
       {
-        "fact": "The hands are pressing down on the top corner of the white paper.",
+        "fact": "The hands are pressing down on the white paper to create a fold.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The paper is positioned on top of the black surface.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The fingers are manipulating the bottom corners of the paper triangle.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The hands are positioned on either side of the white paper in the center of the frame. The paper is resting on top of the dark black background surface.",
+    "parse_success": true,
+    "chunk_idx": 46,
+    "video_id": "How_to_Make_a_Paper_Airplane_-__Best_Ways___Tips_and_Tricks_"
+  },
+  {
+    "time": [
+      47,
+      48
+    ],
+    "visible_entities": [
+      {
+        "desc": "pair of hands with light brown skin tone",
+        "action": "folding the bottom edge of the paper upwards",
+        "position": "foreground"
+      },
+      {
+        "desc": "white square sheet of paper, folded into a triangle shape with a vertical center crease",
+        "action": "being manipulated",
+        "position": "center"
+      },
+      {
+        "desc": "black flat surface",
+        "action": "static",
+        "position": "background"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The hands are folding the bottom edge of the white paper upwards to create a horizontal crease.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The paper is resting on a black surface.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The paper has a triangular shape with a visible vertical fold line in the center.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The hands are positioned on either side of the white paper in the foreground. The white paper is centered on top of the black surface.",
+    "parse_success": true,
+    "chunk_idx": 47,
+    "video_id": "How_to_Make_a_Paper_Airplane_-__Best_Ways___Tips_and_Tricks_"
+  },
+  {
+    "time": [
+      48,
+      49
+    ],
+    "visible_entities": [
+      {
+        "desc": "hands with light skin tone",
+        "action": "pressing down on paper",
+        "position": "center"
+      },
+      {
+        "desc": "white paper with visible crease lines",
+        "action": "being folded",
+        "position": "center"
+      },
+      {
+        "desc": "black flat surface",
+        "action": "static",
+        "position": "background"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The hands are pressing down on the white paper to flatten a fold.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The paper is shaped like a triangle with a vertical crease line visible.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The paper rests on a black surface.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The hands are positioned above the white paper, pressing down on its surface. The white paper is centered on top of the black background surface.",
+    "parse_success": true,
+    "chunk_idx": 48,
+    "video_id": "How_to_Make_a_Paper_Airplane_-__Best_Ways___Tips_and_Tricks_"
+  },
+  {
+    "time": [
+      49,
+      50
+    ],
+    "visible_entities": [
+      {
+        "desc": "person's hands with light skin tone",
+        "action": "pressing down on paper",
+        "position": "foreground"
+      },
+      {
+        "desc": "white paper with visible crease lines, folded into a triangular shape",
+        "action": "being folded",
+        "position": "center"
+      },
+      {
+        "desc": "black flat surface",
+        "action": "static",
+        "position": "background"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The person is folding the white paper.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The fingers are pressing down on the paper to flatten the crease.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The paper is resting on a black surface.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The hands are positioned above the white paper. The white paper is on top of the black surface. The fingers are touching the center of the paper.",
+    "parse_success": true,
+    "chunk_idx": 49,
+    "video_id": "How_to_Make_a_Paper_Airplane_-__Best_Ways___Tips_and_Tricks_"
+  },
+  {
+    "time": [
+      50,
+      51
+    ],
+    "visible_entities": [
+      {
+        "desc": "pair of hands with light skin tone",
+        "action": "folding paper",
+        "position": "center/foreground"
+      },
+      {
+        "desc": "white rectangular sheet of paper with visible creases",
+        "action": "being folded",
+        "position": "center"
+      },
+      {
+        "desc": "black flat surface",
+        "action": "static",
+        "position": "background"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The hands are folding the corners of the white paper inward.",
         "confidence": 1.0
       },
       {
@@ -1772,80 +2112,156 @@
         "confidence": 1.0
       },
       {
-        "fact": "The person is creating a fold at the top center of the paper.",
+        "fact": "The paper has a triangular shape at the top due to previous folds.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The hands are positioned above the white paper, manipulating its top edge. The paper is lying flat on the black surface.",
+    "spatial": "The hands are positioned on the left and right sides of the white paper, holding it in place. The paper is lying flat on top of the black surface.",
     "parse_success": true,
-    "chunk_idx": 41,
+    "chunk_idx": 50,
     "video_id": "How_to_Make_a_Paper_Airplane_-__Best_Ways___Tips_and_Tricks_"
   },
   {
     "time": [
-      84,
-      86
+      51,
+      52
     ],
     "visible_entities": [
       {
-        "desc": "pair of hands with light brown skin tone and short, unpolished fingernails",
-        "action": "folding and pressing a piece of paper",
-        "position": "center/foreground"
+        "desc": "hands with light skin tone, short fingernails",
+        "action": "folding paper",
+        "position": "center"
       },
       {
-        "desc": "white rectangular sheet of paper, smooth texture, with visible crease lines",
+        "desc": "white paper, rectangular sheet, smooth texture",
         "action": "being folded",
         "position": "center"
       },
       {
-        "desc": "dark, matte black surface",
+        "desc": "black surface, flat, matte texture",
         "action": "static",
         "position": "background"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "The hands are folding the white paper on a black surface.",
+        "fact": "A person is folding a piece of white paper.",
         "confidence": 1.0
       },
       {
-        "fact": "The right hand is pressing down on the top corner of the paper to create a crease.",
+        "fact": "The hands are pressing down on the paper to create a crease.",
         "confidence": 1.0
       },
       {
-        "fact": "The left hand is holding the body of the paper steady.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The paper has existing fold lines visible on its surface.",
+        "fact": "The paper is being manipulated on a black surface.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The hands are positioned above the white paper, manipulating it. The paper rests on top of the dark black surface which fills the background.",
+    "spatial": "The hands are holding the white paper in the center of the frame. The paper is positioned above the black surface. The left hand is to the left of the right hand.",
     "parse_success": true,
-    "chunk_idx": 42,
+    "chunk_idx": 51,
     "video_id": "How_to_Make_a_Paper_Airplane_-__Best_Ways___Tips_and_Tricks_"
   },
   {
     "time": [
-      86,
-      88
+      52,
+      53
     ],
     "visible_entities": [
       {
-        "desc": "pair of hands with light brown skin tone, short fingernails, no visible jewelry or accessories",
-        "action": "pressing down and smoothing a fold on a piece of paper",
-        "position": "center/foreground"
-      },
-      {
-        "desc": "white rectangular sheet of paper, smooth texture, partially folded with visible crease lines",
-        "action": "being manipulated",
+        "desc": "hands with light skin tone",
+        "action": "folding paper",
         "position": "center"
       },
       {
-        "desc": "dark black flat surface, smooth matte texture, likely a table or mat",
+        "desc": "white paper, folded into a triangular shape",
+        "action": "being folded",
+        "position": "center"
+      },
+      {
+        "desc": "black background surface",
+        "action": "static",
+        "position": "background"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "hands are folding the white paper",
+        "confidence": 1.0
+      },
+      {
+        "fact": "the paper is being manipulated into a pointed shape",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The hands are in the center of the frame, holding the white paper. The white paper is in front of the black background surface.",
+    "parse_success": true,
+    "chunk_idx": 52,
+    "video_id": "How_to_Make_a_Paper_Airplane_-__Best_Ways___Tips_and_Tricks_"
+  },
+  {
+    "time": [
+      53,
+      54
+    ],
+    "visible_entities": [
+      {
+        "desc": "hands with light skin tone",
+        "action": "folding a white paper triangle",
+        "position": "center"
+      },
+      {
+        "desc": "white paper triangle with a visible vertical crease",
+        "action": "being folded",
+        "position": "center"
+      },
+      {
+        "desc": "black flat surface",
+        "action": "static",
+        "position": "background"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "hands are folding a white paper triangle",
+        "confidence": 1.0
+      },
+      {
+        "fact": "the paper has a vertical crease down the middle",
+        "confidence": 1.0
+      },
+      {
+        "fact": "the paper is being held over a black surface",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The hands are holding the white paper triangle in the center of the frame. The paper is positioned above the black flat surface.",
+    "parse_success": true,
+    "chunk_idx": 53,
+    "video_id": "How_to_Make_a_Paper_Airplane_-__Best_Ways___Tips_and_Tricks_"
+  },
+  {
+    "time": [
+      54,
+      55
+    ],
+    "visible_entities": [
+      {
+        "desc": "pair of hands with light skin tone, short fingernails",
+        "action": "folding white paper",
+        "position": "center"
+      },
+      {
+        "desc": "white rectangular piece of paper, smooth texture",
+        "action": "being folded",
+        "position": "center"
+      },
+      {
+        "desc": "dark grey flat surface, smooth matte texture",
         "action": "static",
         "position": "background"
       }
@@ -1856,75 +2272,75 @@
         "confidence": 1.0
       },
       {
-        "fact": "The paper is folded into a triangular shape on one side.",
+        "fact": "The paper is being folded in half lengthwise.",
         "confidence": 1.0
       },
       {
-        "fact": "The activity takes place on a black surface.",
+        "fact": "The left hand holds the paper steady while the right hand aligns the edge.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The hands are positioned above the white paper, pressing it against the black surface. The paper is centered in the frame, resting on top of the dark background.",
+    "spatial": "The hands are positioned above the dark grey surface. The white paper is held between the hands in the center of the frame. The left hand is to the left of the right hand.",
     "parse_success": true,
-    "chunk_idx": 43,
+    "chunk_idx": 54,
     "video_id": "How_to_Make_a_Paper_Airplane_-__Best_Ways___Tips_and_Tricks_"
   },
   {
     "time": [
-      88,
-      90
+      55,
+      56
     ],
     "visible_entities": [
       {
-        "desc": "pair of hands with light skin tone and short, clean fingernails",
-        "action": "pressing down and smoothing the crease of a folded paper",
-        "position": "center/foreground"
-      },
-      {
-        "desc": "white sheet of paper, folded into a triangular shape with visible crease lines",
-        "action": "being manipulated",
+        "desc": "person's hands with light skin tone",
+        "action": "folding the paper",
         "position": "center"
       },
       {
-        "desc": "dark, matte black surface",
+        "desc": "white rectangular paper, partially folded",
+        "action": "being folded",
+        "position": "center"
+      },
+      {
+        "desc": "dark blue or black smooth surface",
         "action": "static",
         "position": "background"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "The hands are pressing down on the white paper to flatten a fold.",
+        "fact": "The person is folding the right corner of the white paper towards the center.",
         "confidence": 1.0
       },
       {
-        "fact": "The fingers are positioned on the edges of the paper triangle to hold it steady.",
+        "fact": "The left hand is pressing down on the paper to hold it in place.",
         "confidence": 1.0
       },
       {
-        "fact": "The paper rests on a black surface.",
+        "fact": "The right hand is manipulating the edge of the paper.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The hands are positioned above the white paper, pressing it against the black surface. The paper is centered in the frame, with the hands flanking it on the left and right sides.",
+    "spatial": "The hands are positioned above the dark surface and are holding the white paper in the center of the frame. The left hand is to the left of the right hand.",
     "parse_success": true,
-    "chunk_idx": 44,
+    "chunk_idx": 55,
     "video_id": "How_to_Make_a_Paper_Airplane_-__Best_Ways___Tips_and_Tricks_"
   },
   {
     "time": [
-      90,
-      92
+      56,
+      57
     ],
     "visible_entities": [
       {
-        "desc": "pair of hands with light skin tone and manicured nails",
-        "action": "folding the corners of the paper",
-        "position": "center"
+        "desc": "person with light brown skin, hands visible",
+        "action": "folding paper",
+        "position": "foreground"
       },
       {
-        "desc": "white rectangular sheet of paper",
+        "desc": "white rectangular paper, smooth texture",
         "action": "being folded",
         "position": "center"
       },
@@ -1936,249 +2352,132 @@
     ],
     "atomic_facts": [
       {
-        "fact": "The hands are pressing down on the corners of the white paper to create creases.",
+        "fact": "The person is folding the white paper on the black surface.",
         "confidence": 1.0
       },
       {
-        "fact": "The paper is being folded into a triangular shape at the top.",
+        "fact": "The left hand holds the paper steady while the right hand presses down on a fold.",
         "confidence": 1.0
       },
       {
-        "fact": "The paper rests on a black surface.",
+        "fact": "The paper is being shaped into a pointed form.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The hands are positioned above the white paper, manipulating its corners. The white paper is centered on the black surface.",
+    "spatial": "The person's hands are in the foreground, positioned above the black surface. The white paper is held between the hands in the center of the frame. The black surface is underneath the paper and hands.",
     "parse_success": true,
-    "chunk_idx": 45,
+    "chunk_idx": 56,
     "video_id": "How_to_Make_a_Paper_Airplane_-__Best_Ways___Tips_and_Tricks_"
   },
   {
     "time": [
-      92,
-      94
+      57,
+      58
     ],
     "visible_entities": [
       {
-        "desc": "pair of hands with light skin tone",
-        "action": "folding the bottom corner of the paper upwards",
+        "desc": "person with tan skin, bare arms and hands",
+        "action": "folding paper airplane",
         "position": "foreground"
       },
       {
-        "desc": "white square paper with visible crease lines",
+        "desc": "white paper airplane, partially folded, geometric shape",
         "action": "being manipulated",
         "position": "center"
       },
       {
-        "desc": "dark black flat surface",
+        "desc": "black flat surface, smooth texture",
         "action": "static",
         "position": "background"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "The hands are folding the bottom point of the white paper up towards the center.",
+        "fact": "The person is folding the wings of the white paper airplane.",
         "confidence": 1.0
       },
       {
-        "fact": "The paper rests on a black surface.",
+        "fact": "The left hand is pressing down on the paper to crease the fold.",
         "confidence": 1.0
       },
       {
-        "fact": "The paper has a vertical crease line visible down the middle.",
+        "fact": "The right hand is holding the nose of the paper airplane steady.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The paper airplane rests on a black surface.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The hands are in the foreground, positioned on either side of the white paper. The white paper is centered on top of the dark black surface.",
+    "spatial": "The white paper airplane is in the center of the frame, resting on the black surface. The person's hands are positioned on either side of the airplane, holding and folding it.",
     "parse_success": true,
-    "chunk_idx": 46,
+    "chunk_idx": 57,
     "video_id": "How_to_Make_a_Paper_Airplane_-__Best_Ways___Tips_and_Tricks_"
   },
   {
     "time": [
-      94,
-      96
+      58,
+      59
     ],
     "visible_entities": [
       {
-        "desc": "pair of hands with light brown skin tone, short fingernails, no visible jewelry or accessories",
-        "action": "pressing down and smoothing the creases of a paper fold",
-        "position": "center/foreground"
+        "desc": "pair of hands with light brown skin tone and short, natural fingernails",
+        "action": "pressing down on a piece of paper",
+        "position": "foreground"
       },
       {
-        "desc": "white square sheet of paper, smooth texture, folded into a triangular shape with a central vertical crease",
-        "action": "being manipulated and folded",
+        "desc": "white rectangular piece of paper, folded into a geometric shape with a diagonal edge",
+        "action": "being folded",
         "position": "center"
       },
       {
-        "desc": "flat, matte black surface, likely a table or desk, providing high contrast background",
+        "desc": "flat, matte black surface",
         "action": "static",
         "position": "background"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "The hands are folding the bottom corners of the white paper upwards to meet the central vertical crease.",
+        "fact": "The hands are pressing down on the white paper to flatten a fold.",
         "confidence": 1.0
       },
       {
-        "fact": "The fingers are pressing firmly along the newly created diagonal folds to sharpen the creases.",
+        "fact": "The white paper is resting on the black surface.",
         "confidence": 1.0
       },
       {
-        "fact": "The paper is resting on a black surface.",
+        "fact": "The paper has been folded to create a diagonal edge.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The hands are positioned on top of the white paper, with fingers pressing down on the folds. The white paper is centered on the black surface. The black surface is underneath the paper and hands.",
+    "spatial": "The hands are positioned above the white paper, pressing it against the black surface. The white paper is centered on the black background.",
     "parse_success": true,
-    "chunk_idx": 47,
+    "chunk_idx": 58,
     "video_id": "How_to_Make_a_Paper_Airplane_-__Best_Ways___Tips_and_Tricks_"
   },
   {
     "time": [
-      96,
-      98
+      59,
+      60
     ],
     "visible_entities": [
       {
         "desc": "hands with light skin tone",
-        "action": "pressing down on paper",
-        "position": "center/foreground"
-      },
-      {
-        "desc": "white square paper with visible creases",
-        "action": "being folded",
-        "position": "center"
-      },
-      {
-        "desc": "black flat surface",
-        "action": "static",
-        "position": "background"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "The hands are pressing down on the white paper to flatten a fold.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The paper has a triangular shape at the top with a vertical center crease.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The paper rests on a black surface.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [],
-    "spatial": "The hands are positioned on top of the white paper. The white paper is centered on the black surface.",
-    "parse_success": true,
-    "chunk_idx": 48,
-    "video_id": "How_to_Make_a_Paper_Airplane_-__Best_Ways___Tips_and_Tricks_"
-  },
-  {
-    "time": [
-      98,
-      100
-    ],
-    "visible_entities": [
-      {
-        "desc": "pair of hands with light brown skin tone, short fingernails, no visible jewelry or clothing",
-        "action": "pressing down on paper folds",
-        "position": "foreground"
-      },
-      {
-        "desc": "white paper, rectangular sheet, folded into a triangular shape at the top with visible crease lines",
-        "action": "being manipulated",
-        "position": "center"
-      },
-      {
-        "desc": "black surface, smooth, matte texture, likely a table or mat",
-        "action": "static",
-        "position": "background"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "Hands are pressing down on the white paper to flatten the folds.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The paper is folded into a triangular point at the top.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The paper rests on a black surface.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [],
-    "spatial": "The hands are positioned above the white paper, pressing down on its surface. The white paper is centered on the black background surface.",
-    "parse_success": true,
-    "chunk_idx": 49,
-    "video_id": "How_to_Make_a_Paper_Airplane_-__Best_Ways___Tips_and_Tricks_"
-  },
-  {
-    "time": [
-      100,
-      102
-    ],
-    "visible_entities": [
-      {
-        "desc": "pair of hands with light skin tone",
-        "action": "folding a white paper triangle",
-        "position": "foreground"
-      },
-      {
-        "desc": "white paper triangle with visible crease lines",
-        "action": "being folded",
-        "position": "center"
-      },
-      {
-        "desc": "black flat surface",
-        "action": "static",
-        "position": "background"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "A pair of hands is folding a white paper triangle on a black surface.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The paper has visible crease lines from previous folds.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The hands are manipulating the corners of the paper to create a new fold.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [],
-    "spatial": "The hands are in the foreground, holding and folding the white paper triangle. The paper is centered on the black surface, which serves as the background.",
-    "parse_success": true,
-    "chunk_idx": 50,
-    "video_id": "How_to_Make_a_Paper_Airplane_-__Best_Ways___Tips_and_Tricks_"
-  },
-  {
-    "time": [
-      102,
-      104
-    ],
-    "visible_entities": [
-      {
-        "desc": "hands with light skin tone and short, natural fingernails",
         "action": "folding paper",
+        "position": "foreground"
+      },
+      {
+        "desc": "white paper, rectangular, smooth",
+        "action": "being folded",
         "position": "center"
       },
       {
-        "desc": "white paper, rectangular, with visible creases",
-        "action": "being folded",
-        "position": "center"
+        "desc": "black surface, flat, matte",
+        "action": "static",
+        "position": "background"
       }
     ],
     "atomic_facts": [
@@ -2187,34 +2486,252 @@
         "confidence": 1.0
       },
       {
-        "fact": "the paper has a diagonal crease on the upper left corner",
+        "fact": "the paper is on a black surface",
         "confidence": 1.0
       },
       {
-        "fact": "the paper is being held against a black background",
+        "fact": "the left hand presses down on the paper",
+        "confidence": 1.0
+      },
+      {
+        "fact": "the right hand holds the edge of the paper",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The hands are in the center of the frame, holding the white paper. The paper is in front of the black background.",
+    "spatial": "The hands are in front of the black surface. The white paper is between the hands and on top of the black surface. The left hand is to the left of the right hand.",
     "parse_success": true,
-    "chunk_idx": 51,
+    "chunk_idx": 59,
     "video_id": "How_to_Make_a_Paper_Airplane_-__Best_Ways___Tips_and_Tricks_"
   },
   {
     "time": [
-      104,
-      106
+      60,
+      61
     ],
     "visible_entities": [
       {
         "desc": "hands with light skin tone",
         "action": "folding paper",
+        "position": "center/foreground"
+      },
+      {
+        "desc": "white paper, rectangular, folded into a geometric shape",
+        "action": "being folded",
         "position": "center"
       },
       {
-        "desc": "white paper, triangular shape, folded",
+        "desc": "dark gray surface, smooth, matte",
+        "action": "static",
+        "position": "background"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "hands are folding the white paper",
+        "confidence": 1.0
+      },
+      {
+        "fact": "the paper is on a dark gray surface",
+        "confidence": 1.0
+      },
+      {
+        "fact": "the paper has a pointed tip on the left side",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The hands are in the center of the frame, holding and manipulating the white paper. The white paper is on top of the dark gray surface. The left hand is to the left of the right hand.",
+    "parse_success": true,
+    "chunk_idx": 60,
+    "video_id": "How_to_Make_a_Paper_Airplane_-__Best_Ways___Tips_and_Tricks_"
+  },
+  {
+    "time": [
+      61,
+      62
+    ],
+    "visible_entities": [
+      {
+        "desc": "hands with light skin tone",
+        "action": "folding the paper",
+        "position": "foreground"
+      },
+      {
+        "desc": "white paper, folded into a pointed triangular shape",
+        "action": "being manipulated",
+        "position": "center"
+      },
+      {
+        "desc": "dark grey smooth surface",
+        "action": "static",
+        "position": "background"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The hands are folding the white paper.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The paper is shaped into a triangle.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The paper rests on a dark surface.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The hands are holding the white paper in the center of the frame. The paper is positioned on top of the dark grey surface.",
+    "parse_success": true,
+    "chunk_idx": 61,
+    "video_id": "How_to_Make_a_Paper_Airplane_-__Best_Ways___Tips_and_Tricks_"
+  },
+  {
+    "time": [
+      62,
+      63
+    ],
+    "visible_entities": [
+      {
+        "desc": "pair of hands with light skin tone",
+        "action": "pressing and folding a piece of white paper",
+        "position": "center/foreground"
+      },
+      {
+        "desc": "small piece of white paper, rectangular, folded",
+        "action": "being manipulated",
+        "position": "center"
+      },
+      {
+        "desc": "dark gray or black flat surface",
+        "action": "static",
+        "position": "background"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A pair of hands is folding a small piece of white paper.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The left hand presses down on the paper while the right hand folds the edge.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The paper is on a dark surface.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The hands are in the center of the frame, positioned above the dark surface. The white paper is held between the hands, resting on the surface. The left hand is to the left of the right hand.",
+    "parse_success": true,
+    "chunk_idx": 62,
+    "video_id": "How_to_Make_a_Paper_Airplane_-__Best_Ways___Tips_and_Tricks_"
+  },
+  {
+    "time": [
+      63,
+      64
+    ],
+    "visible_entities": [
+      {
+        "desc": "pair of hands with light skin tone",
+        "action": "folding white paper",
+        "position": "center"
+      },
+      {
+        "desc": "white rectangular paper strip",
         "action": "being folded",
+        "position": "center"
+      },
+      {
+        "desc": "dark flat surface",
+        "action": "static",
+        "position": "background"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A pair of hands is manipulating a white paper strip.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The hands are folding the right end of the paper strip downwards.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The paper rests on a dark surface.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The hands are positioned in the center of the frame, holding the white paper strip. The paper strip lies on top of the dark surface.",
+    "parse_success": true,
+    "chunk_idx": 63,
+    "video_id": "How_to_Make_a_Paper_Airplane_-__Best_Ways___Tips_and_Tricks_"
+  },
+  {
+    "time": [
+      64,
+      65
+    ],
+    "visible_entities": [
+      {
+        "desc": "pair of hands with light brown skin tone and short, natural fingernails",
+        "action": "folding and pressing a piece of paper",
+        "position": "center/foreground"
+      },
+      {
+        "desc": "white rectangular sheet of paper, smooth texture, partially folded into a triangular shape",
+        "action": "being manipulated",
+        "position": "center"
+      },
+      {
+        "desc": "dark, matte black surface, likely a table or desk",
+        "action": "static",
+        "position": "background"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The hands are actively folding the white paper.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The left hand presses down on the main body of the paper to hold it in place.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The right hand is pinching and folding the pointed tip of the paper.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The paper is being folded on a flat, black surface.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The hands are positioned above the black surface and are holding the white paper. The left hand is to the left of the right hand. The paper is between the hands and the black surface.",
+    "parse_success": true,
+    "chunk_idx": 64,
+    "video_id": "How_to_Make_a_Paper_Airplane_-__Best_Ways___Tips_and_Tricks_"
+  },
+  {
+    "time": [
+      65,
+      66
+    ],
+    "visible_entities": [
+      {
+        "desc": "hands with light skin tone",
+        "action": "folding paper",
+        "position": "foreground"
+      },
+      {
+        "desc": "white paper airplane, partially folded, geometric shape",
+        "action": "being manipulated",
         "position": "center"
       },
       {
@@ -2225,577 +2742,109 @@
     ],
     "atomic_facts": [
       {
-        "fact": "hands are folding the white paper",
+        "fact": "hands are folding the white paper airplane",
         "confidence": 1.0
       },
       {
-        "fact": "the paper is triangular in shape",
+        "fact": "the paper airplane is on the black surface",
         "confidence": 1.0
       },
       {
-        "fact": "the paper is on a black surface",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [],
-    "spatial": "The hands are in the center of the frame, holding the white paper. The paper is in front of the black surface. The black surface is the background.",
-    "parse_success": true,
-    "chunk_idx": 52,
-    "video_id": "How_to_Make_a_Paper_Airplane_-__Best_Ways___Tips_and_Tricks_"
-  },
-  {
-    "time": [
-      106,
-      108
-    ],
-    "visible_entities": [
-      {
-        "desc": "pair of hands with light skin tone",
-        "action": "folding a white paper triangle",
-        "position": "center"
-      },
-      {
-        "desc": "white paper triangle, folded with a visible vertical crease",
-        "action": "being manipulated",
-        "position": "center"
-      },
-      {
-        "desc": "black flat surface",
-        "action": "static",
-        "position": "background"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "The hands are folding the white paper triangle.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The paper rests on a black surface.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The left hand holds the paper steady while the right hand presses a fold.",
+        "fact": "the paper airplane has a pointed nose and folded wings",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The hands are positioned in the center of the frame, holding the white paper triangle. The paper is located above the black surface. The left hand is to the left of the right hand.",
-    "parse_success": true,
-    "chunk_idx": 53,
-    "video_id": "How_to_Make_a_Paper_Airplane_-__Best_Ways___Tips_and_Tricks_"
-  },
-  {
-    "time": [
-      108,
-      110
-    ],
-    "visible_entities": [
-      {
-        "desc": "pair of hands with light skin tone",
-        "action": "folding a piece of white paper",
-        "position": "center"
-      },
-      {
-        "desc": "white rectangular piece of paper",
-        "action": "being folded",
-        "position": "center"
-      },
-      {
-        "desc": "dark gray flat surface",
-        "action": "static",
-        "position": "background"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "A pair of hands is folding a white piece of paper.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The paper is being creased along a diagonal line.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The hands are pressing down on the paper to secure the fold.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [],
-    "spatial": "The hands are positioned above the dark gray surface. The white paper is held between the hands in the center of the frame.",
-    "parse_success": true,
-    "chunk_idx": 54,
-    "video_id": "How_to_Make_a_Paper_Airplane_-__Best_Ways___Tips_and_Tricks_"
-  },
-  {
-    "time": [
-      110,
-      112
-    ],
-    "visible_entities": [
-      {
-        "desc": "pair of hands with light brown skin tone",
-        "action": "folding the tip of a white paper airplane",
-        "position": "center"
-      },
-      {
-        "desc": "white paper airplane, partially folded, smooth texture",
-        "action": "being manipulated",
-        "position": "center"
-      },
-      {
-        "desc": "dark black surface, smooth texture",
-        "action": "static",
-        "position": "background"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "The hands are folding the nose tip of the white paper airplane downwards.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The paper airplane rests on a black surface.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The left hand holds the body of the plane while the right hand folds the tip.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [],
-    "spatial": "The hands are positioned in the center of the frame, holding the white paper airplane. The paper airplane is resting on top of the dark black surface. The left hand is to the left of the right hand.",
-    "parse_success": true,
-    "chunk_idx": 55,
-    "video_id": "How_to_Make_a_Paper_Airplane_-__Best_Ways___Tips_and_Tricks_"
-  },
-  {
-    "time": [
-      112,
-      114
-    ],
-    "visible_entities": [
-      {
-        "desc": "hands with light skin tone",
-        "action": "folding paper",
-        "position": "center/foreground"
-      },
-      {
-        "desc": "white rectangular paper, smooth texture",
-        "action": "being folded",
-        "position": "center"
-      },
-      {
-        "desc": "black flat surface, matte finish",
-        "action": "static",
-        "position": "background"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "The hands are folding the white paper on the black surface.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The left hand presses down on the paper to secure the fold.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The right hand holds the edge of the paper steady.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The paper is being folded into a triangular shape.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [],
-    "spatial": "The hands are positioned above the black surface and are holding the white paper. The paper is centered on the black surface. The left hand is to the left of the right hand.",
-    "parse_success": true,
-    "chunk_idx": 56,
-    "video_id": "How_to_Make_a_Paper_Airplane_-__Best_Ways___Tips_and_Tricks_"
-  },
-  {
-    "time": [
-      114,
-      116
-    ],
-    "visible_entities": [
-      {
-        "desc": "hands with light brown skin tone",
-        "action": "folding the paper",
-        "position": "center"
-      },
-      {
-        "desc": "white paper airplane, partially folded",
-        "action": "being manipulated",
-        "position": "center"
-      },
-      {
-        "desc": "black flat surface",
-        "action": "static",
-        "position": "background"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "hands are folding the wings of a white paper airplane",
-        "confidence": 1.0
-      },
-      {
-        "fact": "the paper airplane is resting on a black surface",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [],
-    "spatial": "The hands are positioned above the black surface and are holding the white paper airplane. The paper airplane is centered in the frame, resting on the black background.",
-    "parse_success": true,
-    "chunk_idx": 57,
-    "video_id": "How_to_Make_a_Paper_Airplane_-__Best_Ways___Tips_and_Tricks_"
-  },
-  {
-    "time": [
-      116,
-      118
-    ],
-    "visible_entities": [
-      {
-        "desc": "pair of hands with light skin tone and short, natural nails",
-        "action": "pressing down on paper",
-        "position": "center/foreground"
-      },
-      {
-        "desc": "white paper, folded into an irregular polygonal shape",
-        "action": "being manipulated",
-        "position": "center"
-      },
-      {
-        "desc": "black surface, smooth and matte texture",
-        "action": "static",
-        "position": "background"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "The hands are pressing down on the white paper to flatten a fold.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The fingers are spread out across the surface of the paper.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The paper rests on a black surface.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [],
-    "spatial": "The hands are positioned on top of the white paper, pressing it against the black surface. The paper is located in the center of the frame, surrounded by the black background.",
-    "parse_success": true,
-    "chunk_idx": 58,
-    "video_id": "How_to_Make_a_Paper_Airplane_-__Best_Ways___Tips_and_Tricks_"
-  },
-  {
-    "time": [
-      118,
-      120
-    ],
-    "visible_entities": [
-      {
-        "desc": "hands with light skin tone",
-        "action": "folding paper",
-        "position": "center"
-      },
-      {
-        "desc": "white paper, rectangular sheet, partially folded",
-        "action": "being manipulated",
-        "position": "center"
-      },
-      {
-        "desc": "black surface, smooth, matte texture",
-        "action": "static",
-        "position": "background"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "hands are folding the white paper",
-        "confidence": 1.0
-      },
-      {
-        "fact": "the paper is resting on the black surface",
-        "confidence": 1.0
-      },
-      {
-        "fact": "the left hand presses down on the paper while the right hand adjusts the fold",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [],
-    "spatial": "The hands are positioned above the black surface. The white paper is between the hands and the black surface. The left hand is to the left of the right hand.",
-    "parse_success": true,
-    "chunk_idx": 59,
-    "video_id": "How_to_Make_a_Paper_Airplane_-__Best_Ways___Tips_and_Tricks_"
-  },
-  {
-    "time": [
-      120,
-      122
-    ],
-    "visible_entities": [
-      {
-        "desc": "pair of hands with light skin tone",
-        "action": "folding paper",
-        "position": "center/foreground"
-      },
-      {
-        "desc": "white rectangular paper, partially folded",
-        "action": "being folded",
-        "position": "center"
-      },
-      {
-        "desc": "dark gray flat surface",
-        "action": "static",
-        "position": "background"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "hands are folding a piece of white paper",
-        "confidence": 1.0
-      },
-      {
-        "fact": "the paper is on a dark gray surface",
-        "confidence": 1.0
-      },
-      {
-        "fact": "the paper has a pointed shape on the left side",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [],
-    "spatial": "The hands are positioned in the center of the frame, holding and manipulating the white paper. The white paper is on top of the dark gray surface. The left hand is to the left of the right hand.",
-    "parse_success": true,
-    "chunk_idx": 60,
-    "video_id": "How_to_Make_a_Paper_Airplane_-__Best_Ways___Tips_and_Tricks_"
-  },
-  {
-    "time": [
-      122,
-      124
-    ],
-    "visible_entities": [
-      {
-        "desc": "hands with light skin tone",
-        "action": "folding the tip of a white paper airplane",
-        "position": "center"
-      },
-      {
-        "desc": "white paper airplane, partially folded, pointed nose",
-        "action": "being manipulated",
-        "position": "center"
-      },
-      {
-        "desc": "dark grey flat surface",
-        "action": "static",
-        "position": "background"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "hands are folding the nose tip of a white paper airplane",
-        "confidence": 1.0
-      },
-      {
-        "fact": "the paper airplane is positioned horizontally on a dark surface",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [],
-    "spatial": "The hands are holding the white paper airplane in the center of the frame. The paper airplane is resting on the dark grey surface.",
-    "parse_success": true,
-    "chunk_idx": 61,
-    "video_id": "How_to_Make_a_Paper_Airplane_-__Best_Ways___Tips_and_Tricks_"
-  },
-  {
-    "time": [
-      124,
-      126
-    ],
-    "visible_entities": [
-      {
-        "desc": "pair of hands with light skin tone, short fingernails, no visible jewelry or clothing",
-        "action": "pressing down on white paper",
-        "position": "center"
-      },
-      {
-        "desc": "small white paper, folded, rectangular shape",
-        "action": "being folded",
-        "position": "center"
-      },
-      {
-        "desc": "dark flat surface, smooth, black or dark grey",
-        "action": "static",
-        "position": "background"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "The hands are pressing down on the white paper to crease a fold.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The white paper is resting on the dark surface.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The left hand holds the main body of the paper while the right hand secures the folded edge.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [],
-    "spatial": "The hands are positioned in the center of the frame, directly above the dark surface. The white paper is located between the hands and the dark surface. The left hand is to the left of the right hand.",
-    "parse_success": true,
-    "chunk_idx": 62,
-    "video_id": "How_to_Make_a_Paper_Airplane_-__Best_Ways___Tips_and_Tricks_"
-  },
-  {
-    "time": [
-      126,
-      128
-    ],
-    "visible_entities": [
-      {
-        "desc": "pair of hands with light skin tone",
-        "action": "folding a white paper strip",
-        "position": "center/foreground"
-      },
-      {
-        "desc": "white rectangular paper strip",
-        "action": "being folded",
-        "position": "center"
-      },
-      {
-        "desc": "dark matte surface",
-        "action": "static",
-        "position": "background"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "The hands are pressing down on a white paper strip.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The right hand is folding the tip of the paper strip.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The paper is resting on a dark surface.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [],
-    "spatial": "The hands are positioned above the dark surface and are holding the white paper strip. The paper strip is located in the center of the frame, between the left and right hands.",
-    "parse_success": true,
-    "chunk_idx": 63,
-    "video_id": "How_to_Make_a_Paper_Airplane_-__Best_Ways___Tips_and_Tricks_"
-  },
-  {
-    "time": [
-      128,
-      130
-    ],
-    "visible_entities": [
-      {
-        "desc": "hands with light skin tone and short, natural fingernails",
-        "action": "folding paper",
-        "position": "center/foreground"
-      },
-      {
-        "desc": "white paper, rectangular, smooth texture, partially folded into a triangular shape",
-        "action": "being folded",
-        "position": "center"
-      },
-      {
-        "desc": "black surface, smooth, matte texture, likely a table or desk",
-        "action": "static",
-        "position": "background"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "The hands are folding a piece of white paper on a black surface.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The left hand presses down on the paper while the right hand holds the tip.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The paper is being folded into a pointed, triangular shape.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [],
-    "spatial": "The hands are positioned above the black surface and are holding the white paper. The white paper is in the center of the frame, resting on the black surface. The left hand is to the left of the right hand.",
-    "parse_success": true,
-    "chunk_idx": 64,
-    "video_id": "How_to_Make_a_Paper_Airplane_-__Best_Ways___Tips_and_Tricks_"
-  },
-  {
-    "time": [
-      130,
-      132
-    ],
-    "visible_entities": [
-      {
-        "desc": "hands with light skin tone",
-        "action": "folding paper",
-        "position": "center/foreground"
-      },
-      {
-        "desc": "white paper, rectangular sheet, partially folded",
-        "action": "being folded",
-        "position": "center"
-      },
-      {
-        "desc": "black flat surface",
-        "action": "static",
-        "position": "background"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "The hands are folding the white paper on the black surface.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The paper is being manipulated to create a crease.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [],
-    "spatial": "The hands are holding the white paper in the center of the frame. The paper is positioned on top of the black surface.",
+    "spatial": "The hands are in the foreground, holding and manipulating the white paper airplane. The paper airplane is centered on the black surface, which serves as the background.",
     "parse_success": true,
     "chunk_idx": 65,
     "video_id": "How_to_Make_a_Paper_Airplane_-__Best_Ways___Tips_and_Tricks_"
   },
   {
     "time": [
-      132,
-      134
+      66,
+      67
     ],
     "visible_entities": [
       {
-        "desc": "white paper airplane, folded, triangular shape",
+        "desc": "white paper airplane, folded with a pointed nose and triangular wings",
         "action": "being held and adjusted",
         "position": "center"
       },
       {
-        "desc": "hands, light skin tone",
+        "desc": "pair of hands with light skin tone",
         "action": "holding the paper airplane",
-        "position": "left and right"
+        "position": "center"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A person is holding a white paper airplane with both hands.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The hands are adjusting the position of the paper airplane.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The white paper airplane is held in the center of the frame by the pair of hands. The hands are positioned on either side of the airplane's body. The background is a solid black surface behind the hands and airplane.",
+    "parse_success": true,
+    "chunk_idx": 66,
+    "video_id": "How_to_Make_a_Paper_Airplane_-__Best_Ways___Tips_and_Tricks_"
+  },
+  {
+    "time": [
+      67,
+      68
+    ],
+    "visible_entities": [
+      {
+        "desc": "white paper airplane, folded with a sharp nose and distinct wings",
+        "action": "being held and adjusted",
+        "position": "center"
+      },
+      {
+        "desc": "pair of hands with light skin tone",
+        "action": "holding the paper airplane",
+        "position": "foreground"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A person is holding a white paper airplane with both hands.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The hands are adjusting the wings of the paper airplane.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The paper airplane is positioned horizontally in the center of the frame.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The white paper airplane is held in the center of the frame by a pair of hands. The hands are positioned on either side of the airplane, with the left hand near the nose and the right hand supporting the wing.",
+    "parse_success": true,
+    "chunk_idx": 67,
+    "video_id": "How_to_Make_a_Paper_Airplane_-__Best_Ways___Tips_and_Tricks_"
+  },
+  {
+    "time": [
+      68,
+      69
+    ],
+    "visible_entities": [
+      {
+        "desc": "white paper airplane, folded with a pointed nose and distinct wings, held by hands",
+        "action": "being adjusted",
+        "position": "center"
+      },
+      {
+        "desc": "pair of hands with light skin tone",
+        "action": "holding the paper airplane",
+        "position": "center"
       },
       {
         "desc": "black background surface",
@@ -2805,86 +2854,7 @@
     ],
     "atomic_facts": [
       {
-        "fact": "hands are holding a white paper airplane",
-        "confidence": 1.0
-      },
-      {
-        "fact": "the paper airplane is being adjusted or rotated",
-        "confidence": 1.0
-      },
-      {
-        "fact": "the background is a solid black surface",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [],
-    "spatial": "The white paper airplane is held in the center of the frame by two hands. The left hand is positioned on the left side of the airplane, and the right hand is on the right side. The black background surface is behind the hands and the paper airplane.",
-    "parse_success": true,
-    "chunk_idx": 66,
-    "video_id": "How_to_Make_a_Paper_Airplane_-__Best_Ways___Tips_and_Tricks_"
-  },
-  {
-    "time": [
-      134,
-      136
-    ],
-    "visible_entities": [
-      {
-        "desc": "white paper airplane, folded with a sharp nose and distinct wings",
-        "action": "being held and rotated",
-        "position": "center"
-      },
-      {
-        "desc": "pair of hands with light skin tone",
-        "action": "holding the paper airplane",
-        "position": "foreground"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "A person is holding a white paper airplane with both hands.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The hands rotate the paper airplane to display its top and side profiles.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The background is a solid black surface.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [],
-    "spatial": "The white paper airplane is held in the center of the frame by the pair of hands. The hands are positioned in the foreground, gripping the sides and nose of the airplane. The entire scene is set against a black background.",
-    "parse_success": true,
-    "chunk_idx": 67,
-    "video_id": "How_to_Make_a_Paper_Airplane_-__Best_Ways___Tips_and_Tricks_"
-  },
-  {
-    "time": [
-      136,
-      138
-    ],
-    "visible_entities": [
-      {
-        "desc": "white paper airplane, folded with sharp creases, pointed nose, and wide wings",
-        "action": "being held and adjusted",
-        "position": "center"
-      },
-      {
-        "desc": "hands with light skin tone, fingers gripping the paper airplane",
-        "action": "holding the airplane",
-        "position": "foreground"
-      },
-      {
-        "desc": "black surface, smooth and matte",
-        "action": "static",
-        "position": "background"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "A person is holding a white paper airplane with both hands.",
+        "fact": "A person is holding a white paper airplane.",
         "confidence": 1.0
       },
       {
@@ -2892,40 +2862,40 @@
         "confidence": 1.0
       },
       {
-        "fact": "The paper airplane is positioned above a black surface.",
+        "fact": "The paper airplane is positioned in the center of the frame.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The white paper airplane is in the center of the frame, held by two hands. The hands are in the foreground, gripping the sides of the airplane. The black surface is behind and below the airplane and hands.",
+    "spatial": "The white paper airplane is held in the center of the frame by a pair of hands. The hands are positioned on either side of the airplane, gripping the wings. The black background is behind the hands and the airplane.",
     "parse_success": true,
     "chunk_idx": 68,
     "video_id": "How_to_Make_a_Paper_Airplane_-__Best_Ways___Tips_and_Tricks_"
   },
   {
     "time": [
-      138,
-      140
+      69,
+      70
     ],
     "visible_entities": [
       {
-        "desc": "white paper airplane, folded with a pointed nose and wide wings, smooth texture",
+        "desc": "white paper airplane, folded, rectangular wings",
         "action": "being held and adjusted",
         "position": "center"
       },
       {
-        "desc": "pair of hands with light skin tone",
+        "desc": "hands, light skin tone",
         "action": "holding the paper airplane",
         "position": "foreground"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A pair of hands is holding a white paper airplane.",
+        "fact": "Hands are holding a white paper airplane.",
         "confidence": 1.0
       },
       {
-        "fact": "The hands are adjusting the wings of the paper airplane.",
+        "fact": "The paper airplane is being adjusted by the hands.",
         "confidence": 1.0
       },
       {
@@ -2934,15 +2904,15 @@
       }
     ],
     "ocr": [],
-    "spatial": "The white paper airplane is in the center of the frame, held by the pair of hands in the foreground. The hands are positioned on either side of the airplane's body.",
+    "spatial": "The white paper airplane is in the center of the frame, held by two hands. The hands are in the foreground, gripping the sides of the airplane. The entire scene is set against a black background.",
     "parse_success": true,
     "chunk_idx": 69,
     "video_id": "How_to_Make_a_Paper_Airplane_-__Best_Ways___Tips_and_Tricks_"
   },
   {
     "time": [
-      140,
-      142
+      70,
+      71
     ],
     "visible_entities": [
       {
@@ -2951,28 +2921,32 @@
         "position": "center"
       },
       {
-        "desc": "dark gray or black surface, smooth texture, matte finish",
+        "desc": "dark gray surface, smooth, matte texture",
         "action": "static",
         "position": "background"
       },
       {
-        "desc": "human hand, light skin tone, blurry, partially visible",
-        "action": "resting near",
+        "desc": "blurry hand, skin tone, partially visible",
+        "action": "moving slightly",
         "position": "bottom left"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A white paper airplane rests on a dark surface.",
+        "fact": "A white paper airplane rests on a dark gray surface.",
         "confidence": 1.0
       },
       {
-        "fact": "A blurry hand is visible in the bottom left corner.",
+        "fact": "A blurry hand is visible at the bottom left corner of the frame.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The paper airplane remains stationary throughout the clip.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The white paper airplane is in the center of the frame, resting on the dark surface. The blurry hand is located to the bottom left of the paper airplane.",
+    "spatial": "The white paper airplane is in the center of the frame, resting on the dark gray surface. The blurry hand is located at the bottom left, near the edge of the frame.",
     "parse_success": true,
     "chunk_idx": 70,
     "video_id": "How_to_Make_a_Paper_Airplane_-__Best_Ways___Tips_and_Tricks_"

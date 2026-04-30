@@ -2,54 +2,55 @@
   {
     "time": [
       0,
-      2
+      1
     ],
     "visible_entities": [
       {
-        "desc": "wooden sign with white cutout letters",
+        "desc": "brown sign with large white sans-serif letters reading 'STUDENT UNION'",
         "action": "static",
         "position": "top left"
       },
       {
-        "desc": "dark rectangular plaque with white text mounted on a stone pillar",
+        "desc": "dark rectangular plaque with white text reading 'Missoula College The University of Montana Administration Building Erected 1968'",
         "action": "static",
         "position": "top center"
       },
       {
-        "desc": "logo with a blue circle and grey text reading 'MONTANA SYSTEM'",
+        "desc": "logo graphic with a blue circle and grey text reading 'MONTANA SYSTEM'",
         "action": "static",
         "position": "center"
       },
       {
-        "desc": "red brick building with white window frames and green trees",
+        "desc": "red brick building with white window frames and a stone foundation, partially obscured by green trees",
         "action": "static",
         "position": "bottom left"
       },
       {
-        "desc": "sign reading 'MONTANA STATE UNIVERSITY NORTHERN DONALDSON HALL COMMONS'",
+        "desc": "white sign with black text reading 'MONTANA STATE UNIVERSITY NORTHERN DONALDSON HALL COMMONS'",
+        "action": "static",
+        "position": "bottom right"
+      },
+      {
+        "desc": "red brick building with white windows behind green pine trees",
         "action": "static",
         "position": "bottom right"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "The video displays a montage of university campus scenes.",
+        "fact": "The video displays a collage of university campus imagery.",
         "confidence": 1.0
       },
       {
-        "fact": "The top left frame shows a sign reading 'STUDENT UNION'.",
+        "fact": "The sign in the top left reads 'STUDENT UNION'.",
         "confidence": 1.0
       },
       {
-        "fact": "The top center frame shows a plaque for 'Missoula College The University of Montana Administration Building Erected 1968'.",
+        "fact": "The plaque in the top center identifies the 'Missoula College Administration Building' erected in 1968.",
         "confidence": 1.0
       },
       {
-        "fact": "The bottom right frame shows a sign for 'Donaldson Hall Commons'.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The bottom left frame shows a brick building exterior.",
+        "fact": "The sign in the bottom right identifies 'Donaldson Hall Commons' at Montana State University Northern.",
         "confidence": 1.0
       }
     ],
@@ -60,58 +61,61 @@
       "Administration Building",
       "Erected 1968",
       "MONTANA SYSTEM",
-      "MONTANA STATE UNIVERSITY",
-      "NORTHERN",
+      "MONTANA STATE UNIVERSITY NORTHERN",
       "DONALDSON HALL COMMONS"
     ],
-    "spatial": "The 'STUDENT UNION' sign is to the left of the 'Missoula College' plaque. The 'MONTANA SYSTEM' logo is centered below the top row of images. The brick building is to the left of the 'Donaldson Hall Commons' sign in the bottom row.",
+    "spatial": "The 'STUDENT UNION' sign is to the left of the 'Missoula College' plaque. The 'MONTANA SYSTEM' logo is centered below the top row of images. The red brick building on the left is positioned below the 'STUDENT UNION' sign. The 'DONALDSON HALL COMMONS' sign is in front of the red brick building on the right.",
     "parse_success": true,
     "chunk_idx": 0,
     "video_id": "3Qp1uk9zSo8"
   },
   {
     "time": [
-      2,
-      4
+      1,
+      2
     ],
     "visible_entities": [
       {
-        "desc": "rust-colored metal sign with large white cutout letters spelling 'STUDENT'",
+        "desc": "rust-colored metal sign with large, white, cutout sans-serif letters spelling 'STUDENT'",
         "action": "static",
         "position": "top left"
       },
       {
-        "desc": "dark rectangular plaque with white text reading 'Missoula College The University of Montana Administration Building Erected 1968'",
+        "desc": "dark rectangular plaque with white text mounted on a textured stone pillar",
         "action": "static",
         "position": "top right"
       },
       {
-        "desc": "logo featuring a blue circle with a white torch icon and grey text 'MONTANA UNIVERSITY SYSTEM'",
-        "action": "static",
-        "position": "center"
-      },
-      {
-        "desc": "red brick building with white-framed windows and a central entrance",
+        "desc": "red brick building with white-framed windows and a central entrance featuring a stone archway",
         "action": "static",
         "position": "bottom left"
       },
       {
-        "desc": "blurred outdoor scene with green trees and a building in the background",
+        "desc": "logo featuring a blue circle with a white torch icon and the text 'MONTANA UNIVERSITY SYSTEM' in grey serif font",
+        "action": "static",
+        "position": "center"
+      },
+      {
+        "desc": "blurred background scene showing green trees and a building facade",
         "action": "static",
         "position": "bottom right"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "The video displays a collage of static images related to a university campus.",
+        "fact": "The video displays a static collage of university-related imagery.",
         "confidence": 1.0
       },
       {
-        "fact": "The plaque indicates the Administration Building was erected in 1968.",
+        "fact": "The text 'STUDENT' is visible on a metal sign in the top left.",
         "confidence": 1.0
       },
       {
-        "fact": "The central logo identifies the institution as the Montana University System.",
+        "fact": "A plaque identifies the 'Missoula College The University of Montana Administration Building' as erected in 1968.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The 'MONTANA UNIVERSITY SYSTEM' logo is overlaid in the center of the frame.",
         "confidence": 1.0
       }
     ],
@@ -124,63 +128,63 @@
       "MONTANA",
       "UNIVERSITY SYSTEM"
     ],
-    "spatial": "The 'STUDENT' sign is to the left of the 'Missoula College' plaque in the top row. The 'MONTANA UNIVERSITY SYSTEM' logo is centered below these two signs. The red brick building is positioned to the left of the blurred outdoor scene in the bottom row.",
+    "spatial": "The 'STUDENT' sign is to the left of the dark plaque. The 'MONTANA UNIVERSITY SYSTEM' logo is positioned below the top row of images and overlaps the red brick building. The blurred outdoor scene is to the right of the brick building.",
     "parse_success": true,
     "chunk_idx": 1,
     "video_id": "3Qp1uk9zSo8"
   },
   {
     "time": [
-      4,
-      6
+      2,
+      3
     ],
     "visible_entities": [
       {
-        "desc": "Montana University System logo featuring a blue circle with a white torch icon and grey serif text",
+        "desc": "Montana University System logo featuring a grey torch icon with a flame inside a blue circle, next to the text 'MONTANA UNIVERSITY SYSTEM' in grey serif font",
         "action": "static",
         "position": "center"
       },
       {
-        "desc": "rusty brown metal sign with large cutout letters",
+        "desc": "rusty brown metal sign with large cutout letters spelling 'STUDENT' and decorative scrollwork on top",
         "action": "static",
         "position": "top right"
       },
       {
-        "desc": "ornate stone building facade with carved floral details and a crest",
+        "desc": "ornate stone architectural detail of a building entrance with carved patterns and a crest",
         "action": "static",
         "position": "top left"
       },
       {
-        "desc": "modern dark grey building with a sloped roof under a cloudy sky",
+        "desc": "modern building with a dark, angular roof and large windows under a cloudy sky",
         "action": "static",
         "position": "bottom right"
       },
       {
-        "desc": "blurred view of a brick building and green trees",
+        "desc": "blurred view of a brick building exterior with green trees and a pathway",
         "action": "static",
         "position": "bottom left"
       },
       {
-        "desc": "white sign with black text",
+        "desc": "signpost with text 'BITTERROOT' and other smaller text",
         "action": "static",
         "position": "bottom right foreground"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "The video displays a montage of campus scenes.",
+        "fact": "The Montana University System logo is displayed in the center of the screen.",
         "confidence": 1.0
       },
       {
-        "fact": "The Montana University System logo is centered on the screen.",
+        "fact": "A rusty metal sign reading 'STUDENT' is visible in the top right.",
         "confidence": 1.0
       },
       {
-        "fact": "The text 'STUDENT' is visible on the rusty metal sign.",
+        "fact": "A signpost labeled 'BITTERROOT' stands in front of the modern building.",
         "confidence": 1.0
       },
       {
-        "fact": "The text 'BITTERROOT' is visible on the white sign in the foreground.",
+        "fact": "The video presents a collage of different campus locations.",
         "confidence": 1.0
       }
     ],
@@ -190,123 +194,125 @@
       "STUDENT",
       "BITTERROOT"
     ],
-    "spatial": "The Montana University System logo is in the center of the frame. The ornate stone facade is to the left of the logo, while the rusty metal sign is above and to the right of the logo. The modern building is below the logo, and the white sign is in front of the modern building.",
+    "spatial": "The Montana University System logo is centered on the screen. The rusty 'STUDENT' sign is located above the modern building in the top right corner. The ornate stone archway is positioned to the left of the rusty sign. The blurred brick building is below the stone archway on the left side. The 'BITTERROOT' sign is in the foreground, in front of the modern building on the right.",
     "parse_success": true,
     "chunk_idx": 2,
     "video_id": "3Qp1uk9zSo8"
   },
   {
     "time": [
-      6,
-      8
+      3,
+      4
     ],
     "visible_entities": [
       {
-        "desc": "Text overlay 'All About Credit' in a grey serif font on a white rounded rectangular background",
+        "desc": "Montana University System logo with a torch icon and text",
+        "action": "static",
+        "position": "top"
+      },
+      {
+        "desc": "Modern building with a dark roof and a sign reading 'BITTERROOT'",
+        "action": "static",
+        "position": "top-right"
+      },
+      {
+        "desc": "Red brick building with an arched entrance and a black lamppost",
+        "action": "static",
+        "position": "bottom-left"
+      },
+      {
+        "desc": "Indoor reception area with a curved wooden desk and a 'Great Falls College' banner",
+        "action": "static",
+        "position": "bottom-right"
+      },
+      {
+        "desc": "Text overlay 'All About Credit' in a serif font",
         "action": "static",
         "position": "center"
       },
       {
-        "desc": "Bronze statue of a four-legged animal (likely a bobcat or cougar) in a prowling stance",
+        "desc": "Bronze statue of a bear on a stone base",
         "action": "static",
-        "position": "bottom right"
+        "position": "bottom-right"
       },
       {
-        "desc": "Pond with green algae and tall green reeds growing in it",
+        "desc": "Pond with green algae and tall reeds",
         "action": "static",
-        "position": "bottom left"
-      },
-      {
-        "desc": "Modern building with dark grey siding and small square windows",
-        "action": "static",
-        "position": "background left"
-      },
-      {
-        "desc": "Indoor reception area with a curved wooden desk and a balcony above",
-        "action": "static",
-        "position": "top right"
-      },
-      {
-        "desc": "Banner hanging from the balcony with blue and yellow stripes and a logo",
-        "action": "static",
-        "position": "top right"
-      },
-      {
-        "desc": "Red brick building with large windows and an arched entrance",
-        "action": "static",
-        "position": "top left"
+        "position": "bottom-left"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "The text 'All About Credit' is displayed in the center of the screen.",
+        "fact": "The text 'All About Credit' appears in the center of the screen.",
         "confidence": 1.0
       },
       {
-        "fact": "A bronze statue of an animal stands on a rock base.",
+        "fact": "The 'Great Falls College' banner hangs above the reception desk.",
         "confidence": 1.0
       },
       {
-        "fact": "Green reeds grow out of a pond covered in algae.",
+        "fact": "A bronze bear statue stands on a rock base.",
         "confidence": 1.0
       },
       {
-        "fact": "A banner hangs from a balcony inside a building.",
+        "fact": "The 'BITTERROOT' sign is located in front of a modern building.",
         "confidence": 1.0
       }
     ],
     "ocr": [
+      "MONTANA",
+      "UNIVERSITY SYSTEM",
+      "BITTERROOT",
       "All About Credit",
       "GREAT FALLS COLLEGE",
       "MONTANA STATE UNIVERSITY",
-      "HEALTH SCIENCES",
       "Ask"
     ],
-    "spatial": "The text 'All About Credit' is centered on the screen. The bronze statue is to the right of the pond. The pond is in front of the dark grey building. The indoor reception area is above the statue and to the right of the red brick building.",
+    "spatial": "The 'All About Credit' text is centered in the frame. The red brick building is to the left of the indoor reception area. The bronze bear statue is to the right of the pond with reeds. The Montana University System logo is above the modern building with the dark roof.",
     "parse_success": true,
     "chunk_idx": 3,
     "video_id": "3Qp1uk9zSo8"
   },
   {
     "time": [
-      8,
-      10
+      4,
+      5
     ],
     "visible_entities": [
       {
-        "desc": "Text 'All About Credit' in a serif font, grey color, centered on a white rounded rectangular background",
+        "desc": "Text overlay 'All About Credit' in a serif font with a white background box",
         "action": "static",
         "position": "center"
       },
       {
-        "desc": "Red brick building with a curved facade, large grid windows, and an arched entrance",
+        "desc": "Red brick building with a curved facade, large windows, and an arched entrance labeled 'COLLEGE OF EDUCATION AND HUMAN SERVICES'",
         "action": "static",
-        "position": "top-left"
+        "position": "top left"
       },
       {
-        "desc": "Interior lobby with a curved wooden reception desk, metal pillars, and a hanging banner",
+        "desc": "Interior lobby with a curved wooden reception desk, a 'Great Falls College Montana State University' banner, and a sign reading '? Ask ?'",
         "action": "static",
-        "position": "top-right"
+        "position": "top right"
       },
       {
-        "desc": "Bronze statue of a bison in a walking pose, mounted on a grey rock base",
+        "desc": "Dark grey modern building with large glass windows and the text 'HEALTH SCIENCES' above the entrance",
         "action": "static",
-        "position": "bottom-right"
+        "position": "bottom left"
       },
       {
-        "desc": "Pond with green algae, tall reeds, and a rocky shoreline",
+        "desc": "Bronze statue of a walking bison on a stone base",
         "action": "static",
-        "position": "bottom-left"
+        "position": "bottom right"
       },
       {
-        "desc": "Dark grey building with horizontal windows and 'HEALTH SCIENCES' text",
+        "desc": "Pond with green algae, tall reeds, and a rocky edge",
         "action": "static",
-        "position": "background-left"
+        "position": "bottom left foreground"
       },
       {
-        "desc": "Cluster of red and pink flowers with green leaves",
+        "desc": "Pink and red flowers in a garden bed",
         "action": "static",
-        "position": "bottom-right-corner"
+        "position": "bottom right foreground"
       }
     ],
     "atomic_facts": [
@@ -315,57 +321,53 @@
         "confidence": 1.0
       },
       {
-        "fact": "A collage of campus scenes is visible behind the central text.",
+        "fact": "The video displays a collage of campus locations including a brick building, a lobby, a health sciences building, and a bison statue.",
         "confidence": 1.0
       },
       {
-        "fact": "The banner in the lobby reads 'GREAT FALLS COLLEGE MONTANA STATE UNIVERSITY'.",
+        "fact": "The text 'HEALTH SCIENCES' is visible on the dark grey building.",
         "confidence": 1.0
       },
       {
-        "fact": "The building on the left is labeled 'HEALTH SCIENCES'.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "A bronze bison statue stands on a rock.",
+        "fact": "A banner for 'Great Falls College Montana State University' hangs in the lobby.",
         "confidence": 1.0
       }
     ],
     "ocr": [
       "All About Credit",
-      "GREAT FALLS COLLEGE",
-      "MONTANA STATE UNIVERSITY",
+      "COLLEGE OF EDUCATION AND HUMAN SERVICES",
+      "GREAT FALLS COLLEGE MONTANA STATE UNIVERSITY",
       "? Ask ?",
       "HEALTH SCIENCES"
     ],
-    "spatial": "The text 'All About Credit' is centered in the foreground, overlaying a collage of images. The red brick building is to the top-left of the text, while the interior lobby is to the top-right. The pond scene is below the red brick building on the left side. The bronze bison statue is located to the right of the pond scene and below the lobby image. The flowers appear in the bottom-right corner, next to the bison statue.",
+    "spatial": "The text 'All About Credit' is centered in the middle of the frame, overlaying the background images. The red brick building is located in the top left corner, while the interior lobby scene is in the top right. The Health Sciences building and the pond are situated in the bottom left, and the bison statue is in the bottom right.",
     "parse_success": true,
     "chunk_idx": 4,
     "video_id": "3Qp1uk9zSo8"
   },
   {
     "time": [
-      10,
-      12
+      5,
+      6
     ],
     "visible_entities": [
       {
-        "desc": "young man with short brown hair, wearing a white t-shirt with a black and white graphic print on the chest",
+        "desc": "young man with short brown hair, wearing a white t-shirt with a black and blue graphic pattern on the front",
         "action": "writing in a notebook",
-        "position": "center"
+        "position": "right"
       },
       {
-        "desc": "spiral-bound notebook with white pages and black spiral binding",
-        "action": "static",
-        "position": "center"
-      },
-      {
-        "desc": "red desk lamp with a conical shade and articulated arm",
+        "desc": "red desk lamp with an adjustable arm and a conical shade",
         "action": "static",
         "position": "left"
       },
       {
-        "desc": "dark wooden desk surface",
+        "desc": "spiral-bound notebook with white pages and printed text",
+        "action": "static",
+        "position": "center"
+      },
+      {
+        "desc": "wooden desk surface",
         "action": "static",
         "position": "bottom"
       },
@@ -373,177 +375,58 @@
         "desc": "white door with rectangular panels",
         "action": "static",
         "position": "background"
-      },
-      {
-        "desc": "collage of four images showing a campus scene, a brick building, a bronze lion statue, and flowers, with a text overlay",
-        "action": "static",
-        "position": "background"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A young man is writing in a spiral-bound notebook with a pen.",
+        "fact": "The young man is holding a pen and writing in the notebook.",
         "confidence": 1.0
       },
       {
-        "fact": "A red desk lamp is positioned on the desk to the left of the man.",
+        "fact": "The red lamp is positioned on the desk to the left of the person.",
         "confidence": 1.0
       },
       {
-        "fact": "The text 'All About Credit' is displayed in the center of the screen.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The background features a collage of four distinct images.",
+        "fact": "The notebook is open on the wooden desk surface.",
         "confidence": 1.0
       }
     ],
-    "ocr": [
-      "All About Credit"
-    ],
-    "spatial": "The young man is sitting at a wooden desk, positioned in the center of the frame. To his left, a red desk lamp is on the desk. The man is in front of a white door. The collage of images is in the background, behind the man.",
+    "ocr": [],
+    "spatial": "The young man is seated at the desk on the right side of the frame. The red lamp is to the left of the man and behind the notebook. The notebook is on the desk in front of the man. The white door is in the background behind the man.",
     "parse_success": true,
     "chunk_idx": 5,
     "video_id": "3Qp1uk9zSo8"
   },
   {
     "time": [
-      12,
-      14
+      6,
+      7
     ],
     "visible_entities": [
       {
-        "desc": "person with short brown hair, wearing a white t-shirt with a black and blue graphic pattern on the front",
-        "action": "writing in a notebook",
-        "position": "center"
-      },
-      {
-        "desc": "red desk lamp with an adjustable arm and a conical shade",
-        "action": "static",
-        "position": "left"
-      },
-      {
-        "desc": "spiral-bound notebook with white pages and black text",
-        "action": "static",
-        "position": "center"
-      },
-      {
-        "desc": "pen with a silver body and black grip",
-        "action": "being held",
-        "position": "center"
-      },
-      {
-        "desc": "dark blue book or folder with a yellow spine",
-        "action": "static",
-        "position": "left"
-      },
-      {
-        "desc": "white paneled door",
-        "action": "static",
-        "position": "background"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "person is writing in a spiral-bound notebook with a pen",
-        "confidence": 1.0
-      },
-      {
-        "fact": "person's left hand is resting on a dark blue book",
-        "confidence": 1.0
-      },
-      {
-        "fact": "red desk lamp is positioned on the desk",
-        "confidence": 1.0
-      },
-      {
-        "fact": "notebook is open on the desk",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [],
-    "spatial": "The person is sitting at a desk, positioned to the right of the red lamp. The spiral-bound notebook is in front of the person on the desk. The red lamp is to the left of the notebook. The dark blue book is to the left of the notebook, under the person's left hand. The white door is behind the person.",
-    "parse_success": true,
-    "chunk_idx": 6,
-    "video_id": "3Qp1uk9zSo8"
-  },
-  {
-    "time": [
-      14,
-      16
-    ],
-    "visible_entities": [
-      {
-        "desc": "person with short brown hair, wearing a white t-shirt with a black and blue graphic print on the front, and a white wristband on the left wrist",
+        "desc": "young man with short brown hair, wearing a white t-shirt with a black and blue graphic print on the front",
         "action": "writing in a notebook",
         "position": "right"
       },
       {
-        "desc": "red desk lamp with an adjustable arm and a conical shade",
+        "desc": "red desk lamp with a flexible neck and a conical shade",
         "action": "static",
-        "position": "left"
+        "position": "center-left"
       },
       {
-        "desc": "spiral-bound notebook with white pages containing printed text and blue highlighted sections",
+        "desc": "spiral-bound notebook with white pages and printed text",
         "action": "being written in",
         "position": "center"
       },
       {
-        "desc": "silver pen",
-        "action": "being held",
+        "desc": "pen with a silver body",
+        "action": "held in hand",
         "position": "center"
       },
       {
         "desc": "dark blue book with a yellow spine",
         "action": "static",
-        "position": "bottom left"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "The person is writing in the spiral-bound notebook with a silver pen.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The person's left hand is resting on the dark blue book.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The red desk lamp is positioned on the desk behind the notebook.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [],
-    "spatial": "The person is sitting to the right of the red desk lamp. The spiral-bound notebook is on the desk in front of the person. The dark blue book is to the left of the notebook.",
-    "parse_success": true,
-    "chunk_idx": 7,
-    "video_id": "3Qp1uk9zSo8"
-  },
-  {
-    "time": [
-      16,
-      18
-    ],
-    "visible_entities": [
-      {
-        "desc": "young man with short brown hair, wearing a white t-shirt with a black and blue graphic print on the front",
-        "action": "adjusting a lamp and reading a book",
-        "position": "right"
-      },
-      {
-        "desc": "red desk lamp with a flexible, segmented neck and a conical shade",
-        "action": "being adjusted",
-        "position": "center"
-      },
-      {
-        "desc": "spiral-bound book with white pages containing text and blue/green graphical elements",
-        "action": "static",
-        "position": "center"
-      },
-      {
-        "desc": "dark wooden desk surface",
-        "action": "static",
-        "position": "bottom"
+        "position": "bottom-left"
       },
       {
         "desc": "white wristband",
@@ -553,133 +436,223 @@
     ],
     "atomic_facts": [
       {
-        "fact": "The man is reaching out with his left hand to touch the base of the red lamp.",
+        "fact": "The man is writing in a spiral-bound notebook with a pen.",
         "confidence": 1.0
       },
       {
-        "fact": "The man is looking down at the open spiral-bound book.",
+        "fact": "The man's left hand is resting on a dark blue book.",
         "confidence": 1.0
       },
       {
-        "fact": "The red lamp is positioned on the desk behind the book.",
+        "fact": "A red desk lamp is positioned on the desk.",
         "confidence": 1.0
       },
       {
-        "fact": "The book is open to a page with text and colored sections.",
+        "fact": "The man is wearing a white wristband on his left wrist.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The man is seated to the right of the red lamp. The open book is on the desk in front of the man and below the lamp. The man's left hand is near the base of the lamp.",
+    "spatial": "The man is seated at a desk, positioned to the right of the red lamp. The notebook is in front of him on the desk, and the blue book is to the left of the notebook. The lamp is behind the notebook.",
+    "parse_success": true,
+    "chunk_idx": 6,
+    "video_id": "3Qp1uk9zSo8"
+  },
+  {
+    "time": [
+      7,
+      8
+    ],
+    "visible_entities": [
+      {
+        "desc": "young man with short brown hair, wearing a white t-shirt with a black and blue graphic print on the front",
+        "action": "writing in a notebook",
+        "position": "right"
+      },
+      {
+        "desc": "red desk lamp with an articulated arm and a cone-shaped shade",
+        "action": "static",
+        "position": "center-left"
+      },
+      {
+        "desc": "spiral-bound notebook with white pages containing text and blue highlighting",
+        "action": "being written in",
+        "position": "center"
+      },
+      {
+        "desc": "dark wooden desk surface",
+        "action": "static",
+        "position": "bottom"
+      },
+      {
+        "desc": "white paneled door",
+        "action": "static",
+        "position": "background"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The young man is holding a pen and writing in the spiral-bound notebook.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The red desk lamp is positioned on the desk to the left of the man.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The notebook is open on the wooden desk surface.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The young man is sitting at the desk, positioned to the right of the red lamp. The spiral-bound notebook is in front of him on the desk surface. The white paneled door is behind the man in the background.",
+    "parse_success": true,
+    "chunk_idx": 7,
+    "video_id": "3Qp1uk9zSo8"
+  },
+  {
+    "time": [
+      8,
+      9
+    ],
+    "visible_entities": [
+      {
+        "desc": "person with short brown hair, wearing a white t-shirt with a black and blue graphic print on the front, and a white wristband on the left wrist",
+        "action": "adjusting a lamp and reading a book",
+        "position": "right"
+      },
+      {
+        "desc": "red desk lamp with a flexible segmented arm and a conical shade",
+        "action": "being adjusted",
+        "position": "center"
+      },
+      {
+        "desc": "spiral-bound book with white pages containing text and blue headers",
+        "action": "static",
+        "position": "foreground"
+      },
+      {
+        "desc": "dark wooden desk surface",
+        "action": "static",
+        "position": "bottom"
+      },
+      {
+        "desc": "white paneled door",
+        "action": "static",
+        "position": "background"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The person reaches out with their left hand to adjust the red desk lamp.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The person is looking down at an open spiral-bound book.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The red lamp is positioned on the desk near the wall.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The book is lying open on the desk in front of the person.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The person is seated to the right of the red desk lamp. The lamp is on the wooden desk, positioned to the left of the person. The open book is in front of the person on the desk. The white door is behind the person in the background.",
     "parse_success": true,
     "chunk_idx": 8,
     "video_id": "3Qp1uk9zSo8"
   },
   {
     "time": [
-      18,
-      20
+      9,
+      10
     ],
     "visible_entities": [
       {
-        "desc": "person with short brown hair, wearing a white t-shirt with a black and blue graphic pattern on the front",
-        "action": "holding a blue and yellow box while pointing at a notebook",
+        "desc": "man with short brown hair, wearing a white t-shirt with a black and blue graphic print on the front, wearing a white wristband",
+        "action": "holding a box and pointing at a book",
         "position": "right"
       },
       {
-        "desc": "spiral-bound notebook with white pages containing text and tables",
-        "action": "static",
-        "position": "center"
-      },
-      {
-        "desc": "dark blue rectangular box with a yellow stripe and white label",
-        "action": "being held",
-        "position": "left"
-      },
-      {
-        "desc": "red adjustable desk lamp with a conical shade",
+        "desc": "red desk lamp with an articulated arm and a conical shade",
         "action": "static",
         "position": "background"
       },
       {
-        "desc": "wooden desk surface",
+        "desc": "spiral-bound book with white pages and black text",
         "action": "static",
-        "position": "bottom"
+        "position": "center"
+      },
+      {
+        "desc": "dark blue cardboard box with a yellow horizontal stripe and a white label",
+        "action": "being held",
+        "position": "left"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "The person holds a blue and yellow box in their left hand.",
+        "fact": "The man is holding a dark blue box in his left hand.",
         "confidence": 1.0
       },
       {
-        "fact": "The person points at the open notebook with their right index finger.",
+        "fact": "The man is pointing at the text in the open book with his right index finger.",
         "confidence": 1.0
       },
       {
-        "fact": "The notebook is open on the wooden desk.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The red lamp is positioned behind the notebook.",
+        "fact": "The book is open to a page with the heading 'Large Datasets'.",
         "confidence": 1.0
       }
     ],
     "ocr": [
       "Large Datasets"
     ],
-    "spatial": "The person is seated to the right of the desk. The blue and yellow box is held in the person's left hand, positioned to the left of the open notebook. The notebook lies flat on the wooden desk surface. The red lamp stands in the background, behind the notebook and to the left of the person.",
+    "spatial": "The man is positioned to the right of the desk. The open book is on the wooden desk in front of the man. The red lamp is behind the book on the desk. The blue box is held in the man's left hand, to the left of the book.",
     "parse_success": true,
     "chunk_idx": 9,
     "video_id": "3Qp1uk9zSo8"
   },
   {
     "time": [
-      20,
-      22
+      10,
+      11
     ],
     "visible_entities": [
       {
         "desc": "person with short light brown hair, wearing a white t-shirt and a white wristband with black text on the right wrist",
-        "action": "pulling a card out of a package",
-        "position": "right/foreground"
+        "action": "opening a package",
+        "position": "right"
       },
       {
-        "desc": "dark blue rectangular envelope or package with a torn white paper strip at the top and a yellow horizontal band near the bottom",
-        "action": "being held open",
-        "position": "center"
-      },
-      {
-        "desc": "gold-colored credit card with a white magnetic stripe on the back",
-        "action": "being extracted from the package",
+        "desc": "dark blue rectangular package with a yellow horizontal strip and a white shipping label",
+        "action": "being opened",
         "position": "center"
       },
       {
         "desc": "spiral-bound notebook with white pages containing handwritten notes and printed text",
         "action": "static",
-        "position": "bottom/left"
+        "position": "bottom"
       },
       {
         "desc": "red pen with a silver tip",
         "action": "static",
-        "position": "bottom/right"
+        "position": "bottom right"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "The person is holding a dark blue package with their left hand.",
+        "fact": "The person uses their right hand to pull a white strip of packaging material off the top of the blue package.",
         "confidence": 1.0
       },
       {
-        "fact": "The person uses their right hand to pull a gold credit card out of the package.",
+        "fact": "The blue package features a yellow strip with text including 'ANNUAL FEE', 'EARN 20%', and '2X POINTS'.",
         "confidence": 1.0
       },
       {
-        "fact": "The package has a yellow band with text reading 'ANNUAL FEE', 'EARN 20% EXTRA POINTS', and '2X POINTS AT THE SUPERMARKET'.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "A spiral-bound notebook is open on the table below the package.",
+        "fact": "A spiral-bound notebook is open on the desk surface.",
         "confidence": 1.0
       },
       {
@@ -689,102 +662,168 @@
     ],
     "ocr": [
       "ANNUAL FEE",
-      "EARN 20% EXTRA POINTS",
-      "2X POINTS AT THE SUPERMARKET",
-      "Large Datasets"
+      "EARN 20%",
+      "EXTRA POINTS",
+      "2X POINTS",
+      "ON SUPERMARKET",
+      "0% INTRODUCTORY APR",
+      "Large Datasets",
+      "542"
     ],
-    "spatial": "The person is positioned to the right of the frame, holding the blue package in the center. The gold card is being pulled from inside the package. The spiral-bound notebook lies on the table below the package, and the red pen rests on the notebook to the right.",
+    "spatial": "The person is positioned to the right of the blue package, holding it with their left hand. The package is held above the open spiral-bound notebook. The red pen is resting on the notebook to the right of the package.",
     "parse_success": true,
     "chunk_idx": 10,
     "video_id": "3Qp1uk9zSo8"
   },
   {
     "time": [
-      22,
-      24
+      11,
+      12
     ],
     "visible_entities": [
       {
         "desc": "person with short brown hair, wearing a white t-shirt",
-        "action": "holding and tearing a blue and yellow envelope",
+        "action": "tearing open a package",
         "position": "right/foreground"
       },
       {
-        "desc": "blue and yellow envelope with a white mailing label, partially torn open",
-        "action": "being manipulated",
+        "desc": "dark blue and yellow padded envelope, torn open at the top",
+        "action": "being held and opened",
         "position": "center"
       },
       {
-        "desc": "spiral-bound notebook with a white cover and black spiral binding",
+        "desc": "spiral-bound notebook with white pages and black text",
         "action": "static",
-        "position": "center/bottom"
+        "position": "bottom/center"
       },
       {
-        "desc": "red pen with a silver tip",
-        "action": "static",
-        "position": "center/bottom"
-      },
-      {
-        "desc": "white sheet of paper with printed text and green headers",
+        "desc": "red pen",
         "action": "static",
         "position": "bottom/right"
       },
       {
-        "desc": "wooden desk surface",
+        "desc": "white spiral-bound notebook with handwritten notes",
         "action": "static",
-        "position": "bottom"
+        "position": "bottom/left"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "The person is using their hands to tear open the top edge of a blue and yellow envelope.",
+        "fact": "The person is using their hands to tear open the top of a blue and yellow envelope.",
         "confidence": 1.0
       },
       {
-        "fact": "The envelope has a white mailing label attached to it.",
+        "fact": "The envelope has a white shipping label on it.",
         "confidence": 1.0
       },
       {
-        "fact": "A red pen is resting on top of a spiral-bound notebook.",
+        "fact": "The notebook on the table is open to a page titled 'Large Datasets'.",
         "confidence": 1.0
       },
       {
-        "fact": "The notebook is open to a page titled 'Large Datasets'.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "A sheet of paper with green headers is visible on the desk.",
+        "fact": "A red pen is resting on the open notebook.",
         "confidence": 1.0
       }
     ],
     "ocr": [
-      "Large Datasets",
-      "ANNUAL FEE",
-      "CARD ON"
+      "Large Datasets"
     ],
-    "spatial": "The person is positioned on the right side of the frame, holding the envelope in the center. The envelope is located above the open spiral-bound notebook. The red pen is lying on the notebook, to the right of the spiral binding. The sheet of paper with green headers is underneath the person's right arm and to the right of the notebook.",
+    "spatial": "The person is positioned on the right side of the frame, holding the envelope in the center. The open notebook with the red pen is below the envelope on the table. The notebook with handwritten notes is to the left of the open textbook.",
     "parse_success": true,
     "chunk_idx": 11,
     "video_id": "3Qp1uk9zSo8"
   },
   {
     "time": [
-      24,
-      26
+      12,
+      13
     ],
     "visible_entities": [
       {
         "desc": "person with short brown hair, wearing a white t-shirt and a white wristband with black text",
-        "action": "holding and examining papers",
+        "action": "holding and reading a document",
         "position": "right"
       },
       {
-        "desc": "white papers with a yellow rectangular block and printed text",
-        "action": "being held and flipped through",
+        "desc": "white paper document with a yellow header block and a small image",
+        "action": "being held by the person",
         "position": "center"
       },
       {
-        "desc": "spiral-bound notebook with visible text 'Large Datasets'",
+        "desc": "spiral-bound notebook with black rings, open to a page with text",
+        "action": "static",
+        "position": "bottom"
+      },
+      {
+        "desc": "red mechanical pencil",
+        "action": "static",
+        "position": "bottom"
+      },
+      {
+        "desc": "blue and yellow envelope or folder",
+        "action": "static",
+        "position": "left"
+      },
+      {
+        "desc": "dark brown wooden table surface",
+        "action": "static",
+        "position": "background"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The person holds a document with both hands.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The document features a prominent yellow rectangular block at the top.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The text 'Large Datasets' is visible on the open notebook page.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The person wears a white wristband with the text 'I AM S...' visible.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A red pencil rests on top of the open notebook.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "Large Datasets",
+      "I AM S"
+    ],
+    "spatial": "The person is positioned on the right side of the frame, holding the document above the wooden table. The open spiral notebook is in the foreground below the document, with a red pencil resting on its pages. To the left of the notebook, a blue and yellow envelope sits on the table.",
+    "parse_success": true,
+    "chunk_idx": 12,
+    "video_id": "3Qp1uk9zSo8"
+  },
+  {
+    "time": [
+      13,
+      14
+    ],
+    "visible_entities": [
+      {
+        "desc": "person with short brown hair, wearing a white t-shirt and a white wristband with black text",
+        "action": "holding a credit card offer and pulling out a plastic card",
+        "position": "right"
+      },
+      {
+        "desc": "white paper mailer with a yellow header block and black text",
+        "action": "being held open",
+        "position": "center"
+      },
+      {
+        "desc": "translucent plastic credit card with embossed numbers",
+        "action": "being pulled from the mailer",
+        "position": "center"
+      },
+      {
+        "desc": "spiral-bound notebook with white pages and black text",
         "action": "static",
         "position": "bottom"
       },
@@ -794,82 +833,18 @@
         "position": "bottom"
       },
       {
-        "desc": "blue and yellow box or folder",
+        "desc": "dark blue envelope with a yellow strip",
         "action": "static",
         "position": "left"
-      },
-      {
-        "desc": "dark brown wooden desk surface",
-        "action": "static",
-        "position": "bottom"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A person is holding a stack of papers with both hands.",
+        "fact": "The person is holding a credit card offer letter.",
         "confidence": 1.0
       },
       {
-        "fact": "The person is examining the papers, which feature a yellow header.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "A notebook titled 'Large Datasets' is open on the desk.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "A red pen rests on top of the open notebook.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The person is wearing a white wristband with black lettering on their right wrist.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [
-      "Large Datasets",
-      "THE AMERICAN..."
-    ],
-    "spatial": "The person is positioned on the right side of the frame, holding papers above the desk. The open notebook is located at the bottom center, with the red pen lying on its pages. To the left of the notebook, a blue and yellow box sits on the desk surface.",
-    "parse_success": true,
-    "chunk_idx": 12,
-    "video_id": "3Qp1uk9zSo8"
-  },
-  {
-    "time": [
-      26,
-      28
-    ],
-    "visible_entities": [
-      {
-        "desc": "person with short brown hair, wearing a white t-shirt and a white wristband with black text on the right wrist",
-        "action": "holding and examining a credit card offer",
-        "position": "right"
-      },
-      {
-        "desc": "white paper mailer with a yellow header block and a plastic window containing a credit card",
-        "action": "being held",
-        "position": "center"
-      },
-      {
-        "desc": "blue and yellow cardboard box, partially open",
-        "action": "static",
-        "position": "left"
-      },
-      {
-        "desc": "spiral-bound notebook with printed text",
-        "action": "static",
-        "position": "bottom"
-      },
-      {
-        "desc": "red ballpoint pen",
-        "action": "static",
-        "position": "bottom right"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "The person is holding a credit card offer mailer with both hands.",
+        "fact": "The person is using their right hand to pull a plastic card out of the paper mailer.",
         "confidence": 1.0
       },
       {
@@ -877,199 +852,43 @@
         "confidence": 1.0
       },
       {
-        "fact": "A credit card is visible through a plastic window on the mailer.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The person is wearing a white wristband on their right wrist.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "A blue and yellow box sits on the table to the left of the person's hands.",
+        "fact": "A red pen is resting on top of an open spiral notebook.",
         "confidence": 1.0
       }
     ],
     "ocr": [
       "EVERY DAY BRINGS OPPORTUNITIES.",
       "HERE'S A NEW ONE",
-      "FROM AMERICAN EXPRESS",
+      "FROM AMERICAN EXPRESS.",
       "THE AMEX EVERYDAY CREDIT CARD.",
       "To apply for this Card",
       "use your RSVP Code",
-      "EARN 20% MORE MEMBERSHIP REWARDS POINTS"
+      "E23 800 753",
+      "Dear Shannon Jansen",
+      "credit card with no annual fee",
+      "EARN 20% MORE MEMBERSHIP REWARDS POINTS",
+      "H"
     ],
-    "spatial": "The person is positioned on the right side of the frame, holding the mailer in the center. The blue and yellow box is to the left of the mailer. The spiral notebook and red pen are below the mailer on the table surface.",
+    "spatial": "The person is positioned on the right side of the frame, holding the mailer in the center. The mailer is above the open spiral notebook. The red pen is lying on the notebook to the right of the mailer. The blue envelope is to the left of the person's hands.",
     "parse_success": true,
     "chunk_idx": 13,
     "video_id": "3Qp1uk9zSo8"
   },
   {
     "time": [
-      28,
-      30
+      14,
+      15
     ],
     "visible_entities": [
       {
-        "desc": "man with short brown hair, wearing a white t-shirt with a black abstract geometric line pattern and blue text on the chest, and a white wristband on his right wrist",
-        "action": "looking down at an object in his hands",
+        "desc": "man with short brown hair, wearing a white t-shirt with a black geometric starburst pattern and blue text reading 'space people', and a white wristband on his right wrist",
+        "action": "looking down at a white object",
         "position": "center"
       },
       {
-        "desc": "white rectangular object, appearing to be a piece of paper or a card",
+        "desc": "white object, possibly a paper or card",
         "action": "being held",
         "position": "bottom center"
-      },
-      {
-        "desc": "dark blue dresser with horizontal gold trim lines",
-        "action": "static",
-        "position": "right background"
-      },
-      {
-        "desc": "white door with vertical panels",
-        "action": "static",
-        "position": "left background"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "The man is looking down at a white object he is holding.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The man's t-shirt features the text 'space people' in blue letters.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [
-      "space people"
-    ],
-    "spatial": "The man is sitting in the center of the frame, in front of a white door. To the right of the man is a dark blue dresser. The man is holding a white object in his hands, which are positioned in the lower center of the frame.",
-    "parse_success": true,
-    "chunk_idx": 14,
-    "video_id": "3Qp1uk9zSo8"
-  },
-  {
-    "time": [
-      30,
-      32
-    ],
-    "visible_entities": [
-      {
-        "desc": "young man with short brown hair, wearing a white t-shirt with a black geometric line pattern and blue text",
-        "action": "holding a small clear plastic bag",
-        "position": "center"
-      },
-      {
-        "desc": "small clear plastic bag",
-        "action": "being held and examined",
-        "position": "foreground"
-      },
-      {
-        "desc": "dark blue dresser with gold trim",
-        "action": "static",
-        "position": "right background"
-      },
-      {
-        "desc": "white door",
-        "action": "static",
-        "position": "left background"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "The man is holding a small clear plastic bag in his right hand.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The man is looking down at the plastic bag.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The t-shirt has the text 'space needle' printed on it.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [
-      "space needle"
-    ],
-    "spatial": "The man is in the center of the frame, sitting in front of a white door. The blue dresser is to the right of the man. The plastic bag is held in the man's hand, positioned in front of his torso.",
-    "parse_success": true,
-    "chunk_idx": 15,
-    "video_id": "3Qp1uk9zSo8"
-  },
-  {
-    "time": [
-      32,
-      34
-    ],
-    "visible_entities": [
-      {
-        "desc": "young man with short brown hair, wearing a white t-shirt with a black geometric pattern and blue text, holding a small transparent plastic bag",
-        "action": "holding a small bag",
-        "position": "center"
-      },
-      {
-        "desc": "small transparent plastic bag containing a small object",
-        "action": "being held",
-        "position": "left foreground"
-      },
-      {
-        "desc": "dark blue dresser with gold handles",
-        "action": "static",
-        "position": "right background"
-      },
-      {
-        "desc": "grey upholstered chair",
-        "action": "static",
-        "position": "center background"
-      },
-      {
-        "desc": "white door",
-        "action": "static",
-        "position": "left background"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "A young man is holding a small transparent plastic bag in his right hand.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The man is looking down at the bag he is holding.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The man is sitting in a grey chair.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The text 'space people' is visible on the man's t-shirt.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [
-      "space people"
-    ],
-    "spatial": "The young man is sitting in the center of the frame, in front of a grey chair. He is holding a small plastic bag in his right hand, which is positioned to the left from the viewer's perspective. To the man's right, in the background, is a dark blue dresser. A white door is visible in the background to the man's left.",
-    "parse_success": true,
-    "chunk_idx": 16,
-    "video_id": "3Qp1uk9zSo8"
-  },
-  {
-    "time": [
-      34,
-      36
-    ],
-    "visible_entities": [
-      {
-        "desc": "man with short brown hair, wearing a white t-shirt with a black abstract geometric pattern and blue text",
-        "action": "holding a small clear object",
-        "position": "center"
-      },
-      {
-        "desc": "small clear plastic object, possibly a wrapper or container",
-        "action": "being held",
-        "position": "foreground left"
       },
       {
         "desc": "dark blue dresser with horizontal gold handles",
@@ -1080,213 +899,356 @@
         "desc": "white door with panels",
         "action": "static",
         "position": "left background"
+      },
+      {
+        "desc": "black office chair",
+        "action": "static",
+        "position": "behind the man"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "The man is holding a small clear object in his right hand.",
+        "fact": "The man is looking down at a white object in his hands.",
         "confidence": 1.0
       },
       {
-        "fact": "The man is looking up and to his right.",
+        "fact": "The man is wearing a white t-shirt with a black geometric pattern.",
         "confidence": 1.0
       },
       {
-        "fact": "The man is wearing a white t-shirt with a black pattern.",
+        "fact": "The text 'space people' is visible on the man's t-shirt.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A dark blue dresser is to the right of the man.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "space people"
+    ],
+    "spatial": "The man is sitting in the center of the frame, in front of a black office chair. To his left is a white door, and to his right is a dark blue dresser. He is holding a white object in his hands, which are in the lower part of the frame.",
+    "parse_success": true,
+    "chunk_idx": 14,
+    "video_id": "3Qp1uk9zSo8"
+  },
+  {
+    "time": [
+      15,
+      16
+    ],
+    "visible_entities": [
+      {
+        "desc": "man with short brown hair, wearing a white t-shirt with a black geometric line pattern and blue text reading 'space people', wearing a white wristband on his right wrist",
+        "action": "holding a small clear plastic bag",
+        "position": "center"
+      },
+      {
+        "desc": "small clear plastic bag",
+        "action": "being held",
+        "position": "foreground"
+      },
+      {
+        "desc": "dark blue dresser with gold horizontal trim",
+        "action": "static",
+        "position": "right"
+      },
+      {
+        "desc": "white door",
+        "action": "static",
+        "position": "background left"
+      },
+      {
+        "desc": "grey office chair",
+        "action": "static",
+        "position": "behind the man"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The man is holding a small clear plastic bag in his right hand.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The man is looking down at the object in his hand.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The text 'space people' is printed in blue on the man's t-shirt.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "space people"
+    ],
+    "spatial": "The man is sitting in the center of the frame, positioned in front of a grey chair. To his right is a dark blue dresser. Behind him and to the left is a white door. He is holding a small plastic bag in his right hand, which is positioned in the foreground.",
+    "parse_success": true,
+    "chunk_idx": 15,
+    "video_id": "3Qp1uk9zSo8"
+  },
+  {
+    "time": [
+      16,
+      17
+    ],
+    "visible_entities": [
+      {
+        "desc": "young man with short brown hair, wearing a white t-shirt with a black abstract geometric pattern and blue text",
+        "action": "holding a small transparent card",
+        "position": "center"
+      },
+      {
+        "desc": "small transparent rectangular card with printed text",
+        "action": "being held",
+        "position": "foreground left"
+      },
+      {
+        "desc": "dark blue dresser with gold horizontal trim",
+        "action": "static",
+        "position": "right background"
+      },
+      {
+        "desc": "white door",
+        "action": "static",
+        "position": "left background"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The man holds a small transparent card in his right hand.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The man is looking down at the card.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The card has text printed on it.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "space people"
+    ],
+    "spatial": "The man is in the center of the frame, sitting in front of a white door. He is holding the transparent card in his right hand, which is positioned in the lower left foreground. To the right of the man, a dark blue dresser is visible in the background.",
+    "parse_success": true,
+    "chunk_idx": 16,
+    "video_id": "3Qp1uk9zSo8"
+  },
+  {
+    "time": [
+      17,
+      18
+    ],
+    "visible_entities": [
+      {
+        "desc": "man with short brown hair, wearing a white t-shirt with a black abstract geometric pattern and blue text",
+        "action": "holding a small clear plastic object",
+        "position": "center/foreground"
+      },
+      {
+        "desc": "small clear plastic object, rectangular, held in hand",
+        "action": "being held",
+        "position": "left/foreground"
+      },
+      {
+        "desc": "dark blue dresser with gold horizontal trim lines",
+        "action": "static",
+        "position": "right/background"
+      },
+      {
+        "desc": "white door with panels",
+        "action": "static",
+        "position": "left/background"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The man is holding a small clear plastic object in his right hand.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The man is looking towards the upper right.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The dresser is positioned to the right of the man.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The man is in the center of the frame, sitting in front of a white door on the left and a dark blue dresser on the right. He is holding a small clear object in his right hand, which is positioned in the foreground.",
+    "spatial": "The man is in the center foreground, holding the plastic object in his right hand to his left. The white door is behind the man to the left. The dark blue dresser is to the right of the man in the background.",
     "parse_success": true,
     "chunk_idx": 17,
     "video_id": "3Qp1uk9zSo8"
   },
   {
     "time": [
-      36,
-      38
+      18,
+      19
     ],
     "visible_entities": [
       {
-        "desc": "person with short dark hair, wearing a white t-shirt with a graphic print",
+        "desc": "person with short dark hair, wearing a white t-shirt with a graphic print on the front",
         "action": "gesturing with right hand",
-        "position": "center"
+        "position": "center/foreground"
       },
       {
-        "desc": "dark blue dresser with horizontal drawers",
+        "desc": "dark blue dresser or cabinet with horizontal drawers",
         "action": "static",
-        "position": "right"
+        "position": "right/background"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "person gestures with right hand",
+        "fact": "The person is gesturing with their right hand towards the camera.",
         "confidence": 1.0
       },
       {
-        "fact": "person is sitting in front of a wall",
+        "fact": "The person is wearing a white t-shirt.",
         "confidence": 1.0
       },
       {
-        "fact": "dresser is to the right of the person",
+        "fact": "A dark blue dresser is visible in the background.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The person is in the center of the frame, sitting in front of a plain wall. The dark blue dresser is to the right of the person.",
+    "spatial": "The person is positioned in the center foreground of the frame. The dark blue dresser is located to the right of the person and behind them in the background.",
     "parse_success": true,
     "chunk_idx": 18,
     "video_id": "3Qp1uk9zSo8"
   },
   {
     "time": [
-      38,
-      40
+      19,
+      20
     ],
     "visible_entities": [
       {
-        "desc": "man with short hair, wearing black sunglasses and a white t-shirt with a blue and grey graphic print",
+        "desc": "man with short blonde hair, wearing dark sunglasses and a white t-shirt with a blue and grey radial graphic print",
         "action": "walking forward",
-        "position": "foreground center"
+        "position": "center foreground"
       },
       {
-        "desc": "man with short brown hair, wearing a black suit jacket, white shirt, and black tie",
+        "desc": "man with short brown hair, wearing a black suit jacket, white collared shirt, and black tie",
         "action": "walking forward",
-        "position": "background left"
+        "position": "left background"
       },
       {
-        "desc": "large mountain range, brown and hazy",
+        "desc": "large, hazy mountain range",
         "action": "static",
         "position": "background"
       },
       {
-        "desc": "white car, partially visible",
+        "desc": "green leafy trees",
+        "action": "static",
+        "position": "left"
+      },
+      {
+        "desc": "silver sedan",
         "action": "static",
         "position": "bottom right"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A man in a white t-shirt and sunglasses is walking towards the camera.",
+        "fact": "The man in the white t-shirt is walking forward in the foreground.",
         "confidence": 1.0
       },
       {
-        "fact": "A man in a black suit is walking behind the man in the white t-shirt.",
+        "fact": "The man in the black suit is walking behind the man in the white t-shirt.",
         "confidence": 1.0
       },
       {
-        "fact": "A mountain range is visible in the distance behind the people.",
+        "fact": "A large mountain range is visible in the background.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The man in the white t-shirt is in front of the man in the black suit. The man in the black suit is to the left of the man in the white t-shirt. The mountain range is behind both men. The white car is to the right of the man in the white t-shirt.",
+    "spatial": "The man in the white t-shirt is in front of the man in the black suit. The man in the black suit is to the left of the man in the white t-shirt. The mountain range is behind both men.",
     "parse_success": true,
     "chunk_idx": 19,
     "video_id": "3Qp1uk9zSo8"
   },
   {
     "time": [
-      40,
-      42
+      20,
+      21
     ],
     "visible_entities": [
       {
-        "desc": "man with short light brown hair, wearing dark sunglasses and a white t-shirt with a black and blue graphic print",
-        "action": "standing in the foreground",
+        "desc": "man with short blonde hair, wearing dark sunglasses and a white t-shirt with a black abstract graphic pattern and blue text",
+        "action": "walking forward",
         "position": "foreground right"
       },
       {
-        "desc": "man with short brown hair, wearing glasses, a black suit jacket, a white shirt, and a black tie",
-        "action": "standing in the background",
+        "desc": "man with short brown hair, wearing glasses, a black suit jacket, white shirt, and black tie",
+        "action": "walking forward",
         "position": "background left"
+      },
+      {
+        "desc": "large mountain range with visible slopes",
+        "action": "static",
+        "position": "background"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A man in a white t-shirt stands in the foreground.",
+        "fact": "The man in the white t-shirt is walking towards the camera in the foreground.",
         "confidence": 1.0
       },
       {
-        "fact": "A man in a black suit stands behind the man in the t-shirt.",
+        "fact": "The man in the black suit is walking behind the man in the white t-shirt.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The man in the foreground is wearing sunglasses.",
         "confidence": 1.0
       }
     ],
-    "ocr": [],
-    "spatial": "The man in the white t-shirt is in front of the man in the black suit. The man in the black suit is to the left of the man in the white t-shirt.",
+    "ocr": [
+      "space"
+    ],
+    "spatial": "The man in the white t-shirt is in front of the man in the black suit. The man in the black suit is to the left of the man in the white t-shirt. The mountain range is behind both men.",
     "parse_success": true,
     "chunk_idx": 20,
     "video_id": "3Qp1uk9zSo8"
   },
   {
     "time": [
-      42,
-      44
+      21,
+      22
     ],
     "visible_entities": [
       {
-        "desc": "man with short blonde hair, wearing sunglasses and a white t-shirt with black graphic text",
+        "desc": "man with short blonde hair, wearing sunglasses and a white t-shirt with black graphic print",
         "action": "eating a wrapped food item",
-        "position": "right foreground"
+        "position": "right/foreground"
       },
       {
-        "desc": "man with short brown hair and glasses, wearing a black suit, white shirt, and black tie",
+        "desc": "man with short brown hair, wearing glasses, a black suit jacket, white shirt, and black tie",
         "action": "standing",
-        "position": "left background"
+        "position": "left/background"
       },
       {
-        "desc": "white text with black outline in all caps",
+        "desc": "food item wrapped in silver foil",
+        "action": "being held",
+        "position": "right/foreground"
+      },
+      {
+        "desc": "text 'COLLEGE STUDENT' in white capital letters with a black outline",
         "action": "static",
         "position": "top right"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "The man in the foreground is holding a wrapped food item with both hands and taking a bite.",
+        "fact": "The man in the foreground is eating a wrapped food item.",
         "confidence": 1.0
       },
       {
-        "fact": "The man in the background is standing still and looking towards the foreground.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The text 'COLLEGE STUDENT' is displayed in the upper right corner.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [
-      "COLLEGE STUDENT"
-    ],
-    "spatial": "The man eating is in the foreground on the right side of the frame. The man in the suit is in the background on the left side, behind the first man. The text 'COLLEGE STUDENT' is located above the man eating in the top right corner.",
-    "parse_success": true,
-    "chunk_idx": 21,
-    "video_id": "3Qp1uk9zSo8"
-  },
-  {
-    "time": [
-      44,
-      46
-    ],
-    "visible_entities": [
-      {
-        "desc": "man with short brown hair, wearing sunglasses and a white t-shirt with black graphic text",
-        "action": "eating a wrapped food item",
-        "position": "right foreground"
-      },
-      {
-        "desc": "man with short brown hair and glasses, wearing a black suit, white shirt, and black tie",
-        "action": "walking forward",
-        "position": "left background"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "The man in the foreground is holding a wrapped food item with both hands and taking a bite.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The man in the background is walking towards the camera.",
+        "fact": "The man in the background is standing still.",
         "confidence": 1.0
       },
       {
@@ -1297,119 +1259,118 @@
     "ocr": [
       "COLLEGE STUDENT"
     ],
-    "spatial": "The man in the white t-shirt is in the foreground on the right side of the frame, positioned in front of the man in the black suit. The man in the black suit is in the background on the left side. The text 'COLLEGE STUDENT' is located above the head of the man in the white t-shirt.",
+    "spatial": "The man in the white t-shirt is in the foreground to the right of the man in the black suit. The man in the suit is standing in the background behind the first man. The text 'COLLEGE STUDENT' is above the man in the white t-shirt.",
+    "parse_success": true,
+    "chunk_idx": 21,
+    "video_id": "3Qp1uk9zSo8"
+  },
+  {
+    "time": [
+      22,
+      23
+    ],
+    "visible_entities": [
+      {
+        "desc": "man with short blonde hair, wearing sunglasses and a white t-shirt with black abstract graphic print",
+        "action": "eating a wrapped food item",
+        "position": "right foreground"
+      },
+      {
+        "desc": "man with short brown hair and glasses, wearing a black suit, white shirt, and black tie",
+        "action": "standing and smiling",
+        "position": "left background"
+      },
+      {
+        "desc": "wrapped food item, likely a burrito, in silver foil",
+        "action": "being held and eaten",
+        "position": "right foreground"
+      },
+      {
+        "desc": "text overlay 'COLLEGE STUDENT' in white capital letters with black outline",
+        "action": "static",
+        "position": "top right"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The man in the foreground is eating a wrapped food item.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The man in the background is standing still and smiling.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The text 'COLLEGE STUDENT' is visible in the top right corner.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "COLLEGE STUDENT"
+    ],
+    "spatial": "The man in the white t-shirt is in the foreground on the right side of the frame. The man in the black suit is in the background on the left side, behind the first man. The text 'COLLEGE STUDENT' is positioned above the man in the white t-shirt.",
     "parse_success": true,
     "chunk_idx": 22,
     "video_id": "3Qp1uk9zSo8"
   },
   {
     "time": [
-      46,
-      48
+      23,
+      24
     ],
     "visible_entities": [
       {
-        "desc": "man with short brown hair, round glasses, black suit jacket, white shirt, black tie",
+        "desc": "man with short brown hair, round glasses, black suit, white shirt, and black tie",
         "action": "giving two thumbs up",
         "position": "center"
       },
       {
-        "desc": "man with short blonde hair, sunglasses, white t-shirt with grey and blue graphic print",
-        "action": "standing",
-        "position": "right foreground"
+        "desc": "man with short blonde hair, sunglasses, and white t-shirt with graphic print",
+        "action": "walking right",
+        "position": "foreground right"
       },
       {
-        "desc": "white text with black outline",
+        "desc": "text overlay 'CREDIT COMPANY' in white sans-serif font with black outline",
         "action": "static",
         "position": "center"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "The man in the black suit raises both hands and gives a thumbs up gesture.",
+        "fact": "The man in the suit gives a double thumbs up gesture.",
         "confidence": 1.0
       },
       {
         "fact": "The text 'CREDIT COMPANY' appears above the man in the suit.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The man in the white t-shirt walks past the camera in the foreground.",
         "confidence": 1.0
       }
     ],
     "ocr": [
       "CREDIT COMPANY"
     ],
-    "spatial": "The man in the suit is positioned in the center of the frame, behind the man in the white t-shirt who is in the right foreground. The text 'CREDIT COMPANY' is located above the man in the suit.",
+    "spatial": "The man in the white t-shirt is in the foreground on the right, partially obscuring the view. The man in the suit is in the center background, positioned behind the man in the white t-shirt. The text 'CREDIT COMPANY' is located above the man in the suit.",
     "parse_success": true,
     "chunk_idx": 23,
     "video_id": "3Qp1uk9zSo8"
   },
   {
     "time": [
-      48,
-      50
+      24,
+      25
     ],
     "visible_entities": [
       {
-        "desc": "man with short brown hair, round glasses, goatee, wearing a black suit, white shirt, and black tie",
+        "desc": "man with short brown hair, round glasses, black suit, white shirt, black tie",
         "action": "giving two thumbs up",
         "position": "background left"
       },
       {
-        "desc": "man with short blonde hair, wearing dark sunglasses and a white t-shirt with a black and blue graphic pattern",
-        "action": "standing still",
-        "position": "foreground right"
-      },
-      {
-        "desc": "green digital text overlay in a pixelated font",
-        "action": "static",
-        "position": "top left"
-      },
-      {
-        "desc": "white text overlay with a black outline in a sans-serif font",
-        "action": "static",
-        "position": "center left"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "The man in the suit is giving a double thumbs-up gesture.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The man in the white t-shirt is standing in the foreground.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The text 'CREDIT COMPANY' is visible above the man in the suit.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "A digital counter displays '$ 0000.00' in the top left corner.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [
-      "CREDIT COMPANY",
-      "$ 0000.00"
-    ],
-    "spatial": "The man in the white t-shirt is in the foreground on the right side of the frame. The man in the black suit is in the background to the left of the man in the t-shirt. The text 'CREDIT COMPANY' is positioned above the man in the suit. The digital price display is located in the top left corner of the screen.",
-    "parse_success": true,
-    "chunk_idx": 24,
-    "video_id": "3Qp1uk9zSo8"
-  },
-  {
-    "time": [
-      50,
-      52
-    ],
-    "visible_entities": [
-      {
-        "desc": "man with short brown hair, round glasses, black suit jacket, white shirt, black tie",
-        "action": "giving two thumbs up",
-        "position": "center"
-      },
-      {
-        "desc": "man with short blonde hair, sunglasses, white t-shirt with grey pattern",
-        "action": "walking past camera",
+        "desc": "man with short blonde hair, sunglasses, white t-shirt with black graphic print",
+        "action": "standing",
         "position": "foreground right"
       },
       {
@@ -1420,98 +1381,44 @@
     ],
     "atomic_facts": [
       {
-        "fact": "The man in the black suit gives a double thumbs-up gesture.",
+        "fact": "The man in the background is giving a double thumbs-up gesture.",
         "confidence": 1.0
       },
       {
-        "fact": "The man in the white t-shirt walks from right to left in the foreground.",
+        "fact": "The man in the foreground is standing still.",
         "confidence": 1.0
       },
       {
-        "fact": "The digital counter displays '$0002.28' at t=50s.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The digital counter displays '$0006.79' at t=52s.",
+        "fact": "A digital counter displays '$0000.00'.",
         "confidence": 1.0
       }
     ],
     "ocr": [
-      "$0002.28",
-      "$0006.79"
+      "$0000.00"
     ],
-    "spatial": "The man in the black suit is standing in the center of the frame, behind the man in the white t-shirt who is in the foreground. The green digital text overlay is positioned in the top left corner, above the man in the suit.",
+    "spatial": "The man in the white t-shirt is in the foreground on the right side of the frame. The man in the black suit is behind him to the left. The green digital text is located in the top left corner of the screen.",
     "parse_success": true,
-    "chunk_idx": 25,
+    "chunk_idx": 24,
     "video_id": "3Qp1uk9zSo8"
   },
   {
     "time": [
-      52,
-      54
+      25,
+      26
     ],
     "visible_entities": [
       {
         "desc": "man with short brown hair, round glasses, black suit jacket, white collared shirt, black tie",
-        "action": "giving a double thumbs up then lowering hands",
-        "position": "center foreground"
+        "action": "giving two thumbs up",
+        "position": "center"
       },
       {
-        "desc": "digital text overlay, green font on black background",
-        "action": "static",
-        "position": "top left"
+        "desc": "man with short blonde hair, sunglasses, white t-shirt with grey graphic print",
+        "action": "standing in foreground",
+        "position": "right foreground"
       },
       {
-        "desc": "red car, sedan",
-        "action": "static",
-        "position": "background"
-      },
-      {
-        "desc": "silver car, sedan",
-        "action": "static",
-        "position": "background right"
-      },
-      {
-        "desc": "large dry hill, light brown",
-        "action": "static",
-        "position": "background"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "The man in the black suit gives a double thumbs up gesture.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The man lowers his hands from the thumbs up position.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The digital text overlay reads '$ 0006.79'.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [
-      "$ 0006.79"
-    ],
-    "spatial": "The man in the black suit is in the center foreground, positioned in front of the red car and the silver car. The digital text overlay is located in the top left corner, above the man. The large dry hill is in the background behind the street scene.",
-    "parse_success": true,
-    "chunk_idx": 26,
-    "video_id": "3Qp1uk9zSo8"
-  },
-  {
-    "time": [
-      54,
-      56
-    ],
-    "visible_entities": [
-      {
-        "desc": "man with short brown hair, glasses, black suit jacket, white shirt, and black tie",
-        "action": "smiling and walking forward",
-        "position": "center/foreground"
-      },
-      {
-        "desc": "digital text overlay with green numbers on a black background",
+        "desc": "green digital text overlay",
         "action": "static",
         "position": "top left"
       },
@@ -1521,14 +1428,127 @@
         "position": "background"
       },
       {
-        "desc": "silver car",
+        "desc": "red sedan",
         "action": "static",
-        "position": "right/foreground"
+        "position": "background"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "The man in the black suit is smiling and walking towards the camera.",
+        "fact": "The man in the black suit is giving a double thumbs-up gesture.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The digital counter in the top left corner displays a dollar amount.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The man in the white t-shirt stands in the foreground, partially obscuring the view.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A red car is parked in the background behind the man in the suit.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "$ 0002.28",
+      "$ 0006.79"
+    ],
+    "spatial": "The man in the black suit is positioned in the center of the frame, while the man in the white t-shirt stands to his right in the foreground. The green digital text overlay is located in the top left corner, above the man in the suit. A large hill rises in the background behind both men.",
+    "parse_success": true,
+    "chunk_idx": 25,
+    "video_id": "3Qp1uk9zSo8"
+  },
+  {
+    "time": [
+      26,
+      27
+    ],
+    "visible_entities": [
+      {
+        "desc": "man with short brown hair, round glasses, wearing a black suit jacket, white dress shirt, and black tie",
+        "action": "giving two thumbs up then lowering hands",
+        "position": "center foreground"
+      },
+      {
+        "desc": "digital display with green LED-style numbers on a black background",
+        "action": "static",
+        "position": "top left"
+      },
+      {
+        "desc": "red sedan car",
+        "action": "static",
+        "position": "background center"
+      },
+      {
+        "desc": "silver sedan car",
+        "action": "static",
+        "position": "background right"
+      },
+      {
+        "desc": "large dry grassy hill",
+        "action": "static",
+        "position": "background"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The man in the suit gives a double thumbs-up gesture in the first frame.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The man lowers his hands to his sides in the second frame.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The digital display reads '$ 0006.79'.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "$ 0006.79"
+    ],
+    "spatial": "The man in the suit is in the foreground, positioned in front of the red and silver cars. The digital display is located in the top left corner, above the man and the street scene. The large hill is in the background behind the buildings and vehicles.",
+    "parse_success": true,
+    "chunk_idx": 26,
+    "video_id": "3Qp1uk9zSo8"
+  },
+  {
+    "time": [
+      27,
+      28
+    ],
+    "visible_entities": [
+      {
+        "desc": "man with short brown hair, round glasses, black suit jacket, white collared shirt, and black tie",
+        "action": "smiling and standing",
+        "position": "center/foreground"
+      },
+      {
+        "desc": "digital text overlay in green font on a black background",
+        "action": "static",
+        "position": "top left"
+      },
+      {
+        "desc": "large dry mountain range",
+        "action": "static",
+        "position": "background"
+      },
+      {
+        "desc": "silver car",
+        "action": "static",
+        "position": "right/foreground"
+      },
+      {
+        "desc": "green leafy tree",
+        "action": "static",
+        "position": "left"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The man in the black suit is smiling.",
         "confidence": 1.0
       },
       {
@@ -1540,26 +1560,26 @@
         "confidence": 1.0
       },
       {
-        "fact": "A large hill is visible in the background behind the buildings.",
+        "fact": "A large mountain is visible in the background behind the buildings.",
         "confidence": 1.0
       }
     ],
     "ocr": [
       "$ 0006.79"
     ],
-    "spatial": "The man in the black suit is in the center foreground, positioned in front of the buildings and the large hill in the background. The digital text overlay is located in the top left corner of the frame, above the man. A silver car is situated to the right of the man.",
+    "spatial": "The man in the black suit is in the center foreground, standing in front of a silver car and a street scene. The digital text overlay is located in the top left corner, above the green tree on the left side. The large mountain range is in the background, behind the buildings and the man.",
     "parse_success": true,
     "chunk_idx": 27,
     "video_id": "3Qp1uk9zSo8"
   },
   {
     "time": [
-      56,
-      58
+      28,
+      29
     ],
     "visible_entities": [
       {
-        "desc": "man with short brown hair, wearing glasses and a dark suit jacket over a white collared shirt",
+        "desc": "man with short brown hair, wearing glasses, a dark suit jacket, and a white collared shirt",
         "action": "standing in the foreground",
         "position": "right/foreground"
       },
@@ -1581,7 +1601,7 @@
       {
         "desc": "hazy mountain range",
         "action": "static",
-        "position": "top/background"
+        "position": "background"
       }
     ],
     "atomic_facts": [
@@ -1598,31 +1618,31 @@
         "confidence": 1.0
       },
       {
-        "fact": "The scene takes place on a street with trees and mountains in the distance.",
+        "fact": "The scene takes place on a street with mountains visible in the distance.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The man in the suit is in the foreground on the right side of the frame. The red sedan and white SUV are on the road in the background, positioned to the left of the man. The green trees are on the left side of the road, and the hazy mountains are visible above the street scene in the distance.",
+    "spatial": "The man in the suit is in the foreground on the right, partially obscuring the view of the street behind him. The red sedan and white SUV are on the road in the center background, to the left of the man. The green trees are on the left side of the street, and the hazy mountains are above the street scene in the far background.",
     "parse_success": true,
     "chunk_idx": 28,
     "video_id": "3Qp1uk9zSo8"
   },
   {
     "time": [
-      58,
-      60
+      29,
+      30
     ],
     "visible_entities": [
       {
-        "desc": "person with short blonde hair, wearing silver-rimmed aviator sunglasses and a white t-shirt",
+        "desc": "man with short blonde hair, wearing silver aviator sunglasses and a white t-shirt",
         "action": "drinking from a cup",
         "position": "foreground"
       },
       {
-        "desc": "person with brown hair, wearing round glasses, a black suit jacket, white shirt, and black tie",
+        "desc": "man with short brown hair, wearing round glasses, a black suit jacket, white shirt, and black tie",
         "action": "static",
-        "position": "background"
+        "position": "background right"
       },
       {
         "desc": "white cup with a green straw",
@@ -1632,43 +1652,87 @@
     ],
     "atomic_facts": [
       {
-        "fact": "The person in the foreground is drinking from a cup using a green straw.",
+        "fact": "The man in the foreground is drinking from a cup using a green straw.",
         "confidence": 1.0
       },
       {
-        "fact": "A second person in a suit is visible in the background.",
+        "fact": "A second man in a suit is visible in the background.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The person in the white t-shirt is in the foreground, positioned to the left of the frame. The person in the black suit is behind and to the right of the person in the white t-shirt. The white cup is held in front of the person in the white t-shirt.",
+    "spatial": "The man in the white t-shirt is in the foreground, positioned to the left of the man in the black suit. The man in the suit is behind and to the right of the first man. The white cup is held by the man in the foreground.",
     "parse_success": true,
     "chunk_idx": 29,
     "video_id": "3Qp1uk9zSo8"
   },
   {
     "time": [
-      60,
-      62
+      30,
+      31
     ],
     "visible_entities": [
       {
-        "desc": "person with short hair, wearing silver aviator sunglasses and a white t-shirt",
+        "desc": "person with short blonde hair, wearing silver aviator sunglasses and a white t-shirt with a black graphic print",
         "action": "drinking from a green straw",
         "position": "left foreground"
       },
       {
-        "desc": "person with reddish-brown beard, wearing round black-rimmed glasses, a black suit jacket, white shirt, and black tie",
-        "action": "raising hand near face",
+        "desc": "man with reddish-brown hair and beard, wearing round black-rimmed glasses, a black suit jacket, white shirt, and black tie",
+        "action": "raising hands near face",
         "position": "right background"
       },
       {
         "desc": "green plastic straw",
         "action": "static",
-        "position": "left foreground"
+        "position": "in mouth of left person"
       },
       {
         "desc": "green digital text overlay reading '$0008.71'",
+        "action": "static",
+        "position": "bottom right"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The person in the foreground is drinking from a green straw.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The man in the background raises his hands near his face.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A green digital text overlay displays '$0008.71' in the bottom right corner.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "$0008.71"
+    ],
+    "spatial": "The person in the white t-shirt is in front of the man in the black suit. The man in the black suit is to the right of the person in the white t-shirt. The green digital text is below the man in the black suit.",
+    "parse_success": true,
+    "chunk_idx": 30,
+    "video_id": "3Qp1uk9zSo8"
+  },
+  {
+    "time": [
+      31,
+      32
+    ],
+    "visible_entities": [
+      {
+        "desc": "person with shaved head, wearing silver-rimmed aviator sunglasses and a white t-shirt with black text",
+        "action": "drinking from a green straw",
+        "position": "left foreground"
+      },
+      {
+        "desc": "person with reddish-brown beard, wearing round black-rimmed glasses, a black suit jacket, white shirt, and black tie",
+        "action": "smiling and holding up hand",
+        "position": "right background"
+      },
+      {
+        "desc": "green digital text overlay displaying '$0011.54'",
         "action": "static",
         "position": "bottom right"
       }
@@ -1679,51 +1743,11 @@
         "confidence": 1.0
       },
       {
-        "fact": "The person on the right raises their hand near their face.",
+        "fact": "The person on the right is smiling.",
         "confidence": 1.0
       },
       {
-        "fact": "A green digital text overlay displays '$0008.71'.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [
-      "$0008.71"
-    ],
-    "spatial": "The person in the white t-shirt is in front of the person in the black suit. The green straw is in the mouth of the person on the left. The digital text overlay is in the bottom right corner of the frame.",
-    "parse_success": true,
-    "chunk_idx": 30,
-    "video_id": "3Qp1uk9zSo8"
-  },
-  {
-    "time": [
-      62,
-      64
-    ],
-    "visible_entities": [
-      {
-        "desc": "man with short hair, wearing dark sunglasses and a white shirt with black text",
-        "action": "drinking from a green straw",
-        "position": "left foreground"
-      },
-      {
-        "desc": "man with reddish hair and beard, wearing round black-rimmed glasses, a black suit jacket, white shirt, and black tie",
-        "action": "holding up right hand with fingers curled",
-        "position": "center background"
-      },
-      {
-        "desc": "green digital text overlay displaying a dollar amount",
-        "action": "static",
-        "position": "bottom right"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "The man in the foreground is drinking from a green straw.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The man in the background is holding his right hand up near his face.",
+        "fact": "The person on the right is holding up their hand with fingers curled.",
         "confidence": 1.0
       },
       {
@@ -1734,19 +1758,19 @@
     "ocr": [
       "$0011.54"
     ],
-    "spatial": "The man in the white shirt is in the foreground to the left of the man in the black suit. The man in the black suit is behind the man in the white shirt. The green digital text is in the bottom right corner of the frame.",
+    "spatial": "The person with sunglasses is in the foreground on the left side of the frame. The person with the beard and round glasses is behind and to the right of the first person. The green digital text is located in the bottom right corner of the screen.",
     "parse_success": true,
     "chunk_idx": 31,
     "video_id": "3Qp1uk9zSo8"
   },
   {
     "time": [
-      64,
-      66
+      32,
+      33
     ],
     "visible_entities": [
       {
-        "desc": "person wearing a white t-shirt with a black graphic design on the chest, beige cargo shorts, and black sneakers with white soles",
+        "desc": "person wearing a white t-shirt with black graphic text on the chest, beige cargo shorts, and black sneakers with white soles",
         "action": "walking forward",
         "position": "center"
       },
@@ -1761,19 +1785,19 @@
         "position": "left"
       },
       {
-        "desc": "hanging flower basket with pink and yellow flowers",
+        "desc": "hanging flower basket with pink, purple, and yellow flowers",
         "action": "static",
         "position": "right"
       },
       {
-        "desc": "glass entrance doors with metal frames",
+        "desc": "glass storefront entrance with dark frames",
         "action": "static",
         "position": "background"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A person is walking forward along a sidewalk.",
+        "fact": "A person is walking forward on a paved sidewalk.",
         "confidence": 1.0
       },
       {
@@ -1781,70 +1805,71 @@
         "confidence": 1.0
       },
       {
-        "fact": "The shopping bag displays the text 'Game' and 'power to the player'.",
+        "fact": "The shopping bag displays the text 'GameStop' and 'power to the player'.",
         "confidence": 1.0
       },
       {
-        "fact": "A red brick wall is situated to the left of the walking person.",
+        "fact": "A brick wall is situated to the left of the walking person.",
         "confidence": 1.0
       },
       {
-        "fact": "A hanging flower basket is visible to the right of the entrance.",
+        "fact": "A hanging flower basket is visible on the right side of the frame.",
         "confidence": 1.0
       }
     ],
     "ocr": [
-      "Game",
-      "power to the player"
+      "GameStop",
+      "power to the player",
+      "B"
     ],
-    "spatial": "The person is walking in the center of the frame, positioned to the right of the red brick wall. The person is holding the shopping bag in their left hand, which is on the side closer to the wall. The glass entrance doors are in the background behind the person. The hanging flower basket is to the right of the entrance doors.",
+    "spatial": "The person is walking in the center of the frame, positioned to the right of the brick wall and to the left of the hanging flower basket. The glass storefront entrance is behind the person in the background. The person is holding the shopping bag in their left hand, which is near their leg.",
     "parse_success": true,
     "chunk_idx": 32,
     "video_id": "3Qp1uk9zSo8"
   },
   {
     "time": [
-      66,
-      68
+      33,
+      34
     ],
     "visible_entities": [
       {
-        "desc": "person wearing a white t-shirt with a black geometric graphic print, beige cargo shorts, and black sneakers with white soles",
-        "action": "walking forward on a sidewalk",
+        "desc": "person wearing a white t-shirt with a black graphic design, beige cargo shorts, and black sneakers",
+        "action": "walking forward",
         "position": "center"
       },
       {
-        "desc": "black and white plastic shopping bag with text",
-        "action": "being carried in the person's hand",
-        "position": "center"
+        "desc": "black and white plastic shopping bag",
+        "action": "being carried",
+        "position": "right"
       },
       {
-        "desc": "red brick wall with horizontal mortar lines",
+        "desc": "red brick wall",
         "action": "static",
         "position": "left"
       },
       {
-        "desc": "hanging flower baskets with pink, purple, and yellow flowers",
+        "desc": "hanging flower basket with purple, pink, and yellow flowers",
         "action": "static",
         "position": "right"
       },
       {
-        "desc": "glass entrance doors with a letter 'B' sign above",
+        "desc": "glass entrance doors with a letter 'B' sign",
         "action": "static",
         "position": "background"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A person is walking forward along a concrete sidewalk.",
+        "fact": "A person is walking forward on a concrete sidewalk.",
         "confidence": 1.0
       },
       {
-        "fact": "The person is carrying a shopping bag in their left hand.",
+        "fact": "The person is holding a black and white shopping bag in their right hand.",
         "confidence": 1.0
       },
       {
-        "fact": "The shopping bag displays the text 'GAMMA' and 'MALL'.",
+        "fact": "The shopping bag has the text 'GAME' visible on it.",
         "confidence": 1.0
       },
       {
@@ -1854,76 +1879,26 @@
     ],
     "ocr": [
       "B",
-      "MALL",
-      "GAMMA"
+      "GAME"
     ],
-    "spatial": "The person is walking on the sidewalk, positioned to the right of the red brick wall. The hanging flower baskets are to the right of the person. The glass entrance doors are in the background, behind the person.",
+    "spatial": "The person is walking in the center of the frame, positioned to the right of the red brick wall. The person is holding the shopping bag in their right hand. To the right of the person, there is a hanging flower basket. The glass entrance doors are in the background behind the person.",
     "parse_success": true,
     "chunk_idx": 33,
     "video_id": "3Qp1uk9zSo8"
   },
   {
     "time": [
-      68,
-      70
+      34,
+      35
     ],
     "visible_entities": [
       {
-        "desc": "person wearing a white t-shirt, beige cargo shorts, and black sneakers with white soles",
+        "desc": "person wearing a white t-shirt, beige cargo shorts with side pockets, and black sneakers with white soles",
         "action": "walking forward",
         "position": "center"
       },
       {
-        "desc": "white plastic shopping bag with black text and graphics",
-        "action": "being carried",
-        "position": "right"
-      },
-      {
-        "desc": "red brick wall",
-        "action": "static",
-        "position": "left"
-      },
-      {
-        "desc": "black lamppost with white globe lights and hanging baskets of purple and yellow flowers",
-        "action": "static",
-        "position": "background right"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "person is walking forward along a paved walkway",
-        "confidence": 1.0
-      },
-      {
-        "fact": "person is holding a white plastic bag in their right hand",
-        "confidence": 1.0
-      },
-      {
-        "fact": "the bag has the word 'SMALL' printed on it in black letters",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [
-      "SMALL"
-    ],
-    "spatial": "The person is walking next to the red brick wall on their left. The person is holding the white plastic bag in their right hand, which is positioned to the right of their body. The lamppost with flowers is in the background to the right of the person.",
-    "parse_success": true,
-    "chunk_idx": 34,
-    "video_id": "3Qp1uk9zSo8"
-  },
-  {
-    "time": [
-      70,
-      72
-    ],
-    "visible_entities": [
-      {
-        "desc": "person wearing a white t-shirt, beige cargo shorts, and black sneakers with white soles",
-        "action": "walking forward",
-        "position": "center"
-      },
-      {
-        "desc": "white plastic shopping bag with black and red graphics",
+        "desc": "white and black plastic shopping bag with red accents",
         "action": "being carried",
         "position": "center-right"
       },
@@ -1933,7 +1908,65 @@
         "position": "left"
       },
       {
-        "desc": "black lamppost with four white globe lights and hanging baskets of purple and yellow flowers",
+        "desc": "black lamppost with white globe lights and hanging flower baskets containing purple and yellow flowers",
+        "action": "static",
+        "position": "right"
+      },
+      {
+        "desc": "glass doors with dark frames",
+        "action": "static",
+        "position": "background"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "person is walking forward on a paved walkway",
+        "confidence": 1.0
+      },
+      {
+        "fact": "person is holding a plastic bag in their right hand",
+        "confidence": 1.0
+      },
+      {
+        "fact": "the bag has the text 'SMALL' visible on it",
+        "confidence": 1.0
+      },
+      {
+        "fact": "the person is walking next to a brick wall",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "SMALL"
+    ],
+    "spatial": "The person is walking in the center of the frame, to the right of the brick wall. The person is holding the plastic bag in their right hand, which is to the right of their body. The lamppost with flowers is to the right of the person and in front of the glass doors in the background.",
+    "parse_success": true,
+    "chunk_idx": 34,
+    "video_id": "3Qp1uk9zSo8"
+  },
+  {
+    "time": [
+      35,
+      36
+    ],
+    "visible_entities": [
+      {
+        "desc": "person wearing a white t-shirt, beige cargo shorts, and black sneakers",
+        "action": "walking forward",
+        "position": "center"
+      },
+      {
+        "desc": "white plastic shopping bag with black and red graphics",
+        "action": "being carried",
+        "position": "right"
+      },
+      {
+        "desc": "red brick wall",
+        "action": "static",
+        "position": "left"
+      },
+      {
+        "desc": "black lamppost with white globe lights and hanging flower baskets containing purple and yellow flowers",
         "action": "static",
         "position": "background right"
       }
@@ -1944,77 +1977,77 @@
         "confidence": 1.0
       },
       {
-        "fact": "The person is holding a white plastic bag in their right hand.",
+        "fact": "The person is holding a plastic shopping bag in their right hand.",
         "confidence": 1.0
       },
       {
-        "fact": "The bag features the text 'Game' in white letters on a black background.",
+        "fact": "The shopping bag displays the text 'Game'.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A brick wall is visible to the left of the person.",
         "confidence": 1.0
       }
     ],
     "ocr": [
       "Game"
     ],
-    "spatial": "The person is walking in the center of the frame, positioned to the right of the red brick wall. The person is holding the white shopping bag in their right hand. The lamppost with flowers is located in the background to the right of the person.",
+    "spatial": "The person is walking on the sidewalk next to a brick wall on the left. The person is holding the shopping bag in their right hand, positioned to the right of their body. The lamppost with flowers is in the background to the right of the person.",
     "parse_success": true,
     "chunk_idx": 35,
     "video_id": "3Qp1uk9zSo8"
   },
   {
     "time": [
-      72,
-      74
+      36,
+      37
     ],
     "visible_entities": [
       {
-        "desc": "red brick wall with a running bond pattern and a dark brown horizontal beam at the top",
+        "desc": "red brick wall with a dark brown horizontal beam at the top",
         "action": "static",
         "position": "background"
       },
       {
-        "desc": "light gray concrete sidewalk with visible seams and minor surface stains",
+        "desc": "light gray concrete sidewalk with visible seams and a small blue mark",
         "action": "static",
         "position": "foreground"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A red brick wall stands vertically in the background.",
+        "fact": "The scene consists of a static brick wall and a concrete sidewalk.",
         "confidence": 1.0
       },
       {
-        "fact": "A concrete sidewalk is positioned horizontally in the foreground.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The scene is static with no movement.",
+        "fact": "The sidewalk is located at the bottom of the frame, below the wall.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The concrete sidewalk is below the red brick wall. The dark brown beam is above the brick wall.",
+    "spatial": "The light gray concrete sidewalk is below the red brick wall. The dark brown beam is at the top of the brick wall.",
     "parse_success": true,
     "chunk_idx": 36,
     "video_id": "3Qp1uk9zSo8"
   },
   {
     "time": [
-      74,
-      76
+      37,
+      38
     ],
     "visible_entities": [
       {
-        "desc": "man with short hair, wearing sunglasses, a white t-shirt, beige cargo shorts, and black sneakers",
+        "desc": "man with short hair, wearing sunglasses, a white t-shirt with a graphic print, beige cargo shorts, and black sneakers",
         "action": "walking from right to left",
         "position": "right"
       },
       {
-        "desc": "black and white shopping bag with 'Game' logo",
+        "desc": "black and white shopping bag with 'GameStop' text",
         "action": "being carried",
         "position": "right"
       },
       {
-        "desc": "red brick wall with dark brown wooden trim at the top",
+        "desc": "red brick wall with a dark brown horizontal beam at the top",
         "action": "static",
         "position": "background"
       },
@@ -2034,92 +2067,91 @@
         "confidence": 1.0
       },
       {
-        "fact": "The background consists of a brick wall and a concrete sidewalk.",
+        "fact": "The digital text overlay displays '$04 19.58'.",
         "confidence": 1.0
       },
       {
-        "fact": "The digital text overlay displays '$ 04 19.58'.",
+        "fact": "The background consists of a red brick wall.",
         "confidence": 1.0
       }
     ],
     "ocr": [
-      "$ 04 19.58",
-      "Game"
+      "$04 19.58",
+      "GameStop"
     ],
-    "spatial": "The man is walking in front of the red brick wall. He is holding the shopping bag in his left hand, which is positioned to his side. The digital text overlay is located in the bottom right corner of the screen, below the man's feet.",
+    "spatial": "The man is walking in front of the red brick wall. He is holding the shopping bag in his hand. The digital text overlay is located in the bottom right corner of the frame, below the man.",
     "parse_success": true,
     "chunk_idx": 37,
     "video_id": "3Qp1uk9zSo8"
   },
   {
     "time": [
-      76,
-      78
+      38,
+      39
     ],
     "visible_entities": [
       {
-        "desc": "man with short hair, wearing sunglasses, white t-shirt, beige shorts, and black sneakers",
-        "action": "walking from right to left",
+        "desc": "bald man wearing sunglasses, white t-shirt, beige shorts, and black sneakers",
+        "action": "walking right",
         "position": "right"
       },
       {
-        "desc": "black shopping bag with white text 'Supreme' and red stripe",
+        "desc": "black and white shopping bag with 'Supreme' logo",
         "action": "being carried",
         "position": "right"
+      },
+      {
+        "desc": "red brick wall with dark brown horizontal trim",
+        "action": "static",
+        "position": "background"
       },
       {
         "desc": "green digital text overlay",
         "action": "static",
         "position": "bottom right"
-      },
-      {
-        "desc": "red brick wall",
-        "action": "static",
-        "position": "background"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "The man walks from right to left along the sidewalk.",
+        "fact": "A bald man walks from left to right along a sidewalk.",
         "confidence": 1.0
       },
       {
-        "fact": "The man is holding a black shopping bag in his left hand.",
+        "fact": "The man is carrying a shopping bag in his left hand.",
         "confidence": 1.0
       },
       {
-        "fact": "The digital counter displays '$0476.30' in the first frame and '$0534.82' in the second frame.",
+        "fact": "The digital counter displays '$0476.30' in the first frame.",
         "confidence": 1.0
       },
       {
-        "fact": "The background consists of a red brick wall with a dark brown trim at the top.",
+        "fact": "The digital counter displays '$0534.82' in the second frame.",
         "confidence": 1.0
       }
     ],
     "ocr": [
       "$0476.30",
-      "$0534.82",
-      "Supreme"
+      "$0534.82"
     ],
-    "spatial": "The man is walking in front of the red brick wall. The black shopping bag is held by the man. The green digital text is located in the bottom right corner of the frame, below the man.",
+    "spatial": "The man is walking in front of the brick wall. He is holding the shopping bag in his left hand. The digital text overlay is located in the bottom right corner of the screen, below the man.",
     "parse_success": true,
     "chunk_idx": 38,
     "video_id": "3Qp1uk9zSo8"
   },
   {
     "time": [
-      78,
-      80
+      39,
+      40
     ],
     "visible_entities": [
       {
-        "desc": "man with short hair, wearing a white t-shirt, khaki shorts, and black sneakers",
-        "action": "walking to the left",
+        "desc": "man with short hair and glasses, wearing a white t-shirt, beige shorts, and black sneakers",
+        "action": "walking left",
         "position": "center"
       },
       {
-        "desc": "man with short hair, wearing a black suit, white shirt, and black tie",
-        "action": "running to the left",
+        "desc": "man with short hair and glasses, wearing a black suit jacket, white shirt, black tie, and black pants",
+        "action": "running or jumping",
         "position": "right"
       },
       {
@@ -2135,46 +2167,41 @@
     ],
     "atomic_facts": [
       {
-        "fact": "The man in the white t-shirt is walking towards the left side of the frame.",
+        "fact": "A man in a white t-shirt walks to the left carrying a shopping bag.",
         "confidence": 1.0
       },
       {
-        "fact": "The man in the black suit is running towards the left side of the frame.",
+        "fact": "A man in a black suit runs or jumps behind the first man.",
         "confidence": 1.0
       },
       {
-        "fact": "The man in the white t-shirt is holding a shopping bag in his right hand.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The green digital text displays a monetary value that changes from $0591.50 to $0649.38.",
+        "fact": "The digital text displays '$0591.50' in the first frame and '$0649.38' in the second frame.",
         "confidence": 1.0
       }
     ],
     "ocr": [
       "$0591.50",
-      "$0649.38",
-      "Game"
+      "$0649.38"
     ],
-    "spatial": "The man in the white t-shirt is to the left of the man in the black suit. The shopping bag is held by the man in the white t-shirt. The green digital text is at the bottom of the screen, below the walking and running men.",
+    "spatial": "The man in the white t-shirt is to the left of the man in the black suit. The man in the black suit is behind the man in the white t-shirt. The digital text is below both men.",
     "parse_success": true,
     "chunk_idx": 39,
     "video_id": "3Qp1uk9zSo8"
   },
   {
     "time": [
-      80,
-      82
+      40,
+      41
     ],
     "visible_entities": [
       {
-        "desc": "man with short brown hair, wearing a white t-shirt, beige shorts, and dark sneakers",
-        "action": "walking to the left",
+        "desc": "man with short hair, wearing a white t-shirt, beige shorts, and black sneakers",
+        "action": "walking left",
         "position": "left"
       },
       {
-        "desc": "man with short brown hair, wearing a black suit jacket, black pants, and black shoes",
-        "action": "kicking leg high in the air",
+        "desc": "man with short hair, wearing a black suit jacket, black pants, and black shoes",
+        "action": "performing a high kick",
         "position": "right"
       },
       {
@@ -2185,29 +2212,29 @@
       {
         "desc": "green digital text overlay",
         "action": "static",
-        "position": "bottom left"
+        "position": "bottom"
       },
       {
-        "desc": "red brick wall with a dark brown horizontal beam at the top",
+        "desc": "red brick wall",
         "action": "static",
         "position": "background"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A man in a black suit performs a high kick with his right leg.",
+        "fact": "The man in the white t-shirt is walking towards the left side of the frame.",
         "confidence": 1.0
       },
       {
-        "fact": "A man in a white t-shirt walks away from the man in the suit.",
+        "fact": "The man in the black suit is performing a high kick with his left leg extended.",
         "confidence": 1.0
       },
       {
-        "fact": "The man in the white t-shirt is holding a large shopping bag.",
+        "fact": "The man in the white t-shirt is holding a large shopping bag in his left hand.",
         "confidence": 1.0
       },
       {
-        "fact": "The digital text displays a dollar amount that changes from $0706.99 to $0764.25.",
+        "fact": "The digital text overlay displays a dollar amount that changes between frames.",
         "confidence": 1.0
       }
     ],
@@ -2215,15 +2242,15 @@
       "$0706.99",
       "$0764.25"
     ],
-    "spatial": "The man in the white t-shirt is to the left of the man in the black suit. The man in the black suit is in front of the red brick wall. The shopping bag is held by the man in the white t-shirt. The digital text is located at the bottom left of the frame.",
+    "spatial": "The man in the white t-shirt is to the left of the man in the black suit. The man in the black suit is positioned in front of the red brick wall. The digital text overlay is located at the bottom of the screen, below the walking man.",
     "parse_success": true,
     "chunk_idx": 40,
     "video_id": "3Qp1uk9zSo8"
   },
   {
     "time": [
-      82,
-      84
+      41,
+      42
     ],
     "visible_entities": [
       {
@@ -2232,37 +2259,28 @@
         "position": "center"
       },
       {
-        "desc": "man with short hair, wearing a white t-shirt, beige cargo shorts, and black sneakers",
+        "desc": "man with short hair, wearing a white t-shirt, khaki shorts, and black sneakers",
         "action": "walking to the left",
-        "position": "left"
-      },
-      {
-        "desc": "white shopping bag with black and red text/graphics",
-        "action": "being carried",
         "position": "left"
       },
       {
         "desc": "green digital timer text",
         "action": "static",
-        "position": "bottom-left"
+        "position": "bottom left"
       },
       {
-        "desc": "red brick wall with a dark brown horizontal beam at the top",
+        "desc": "red brick wall",
         "action": "static",
         "position": "background"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A man in a black suit is running towards the left side of the frame.",
+        "fact": "A man in a black suit is running to the left along a sidewalk.",
         "confidence": 1.0
       },
       {
-        "fact": "A man in a white t-shirt is walking towards the left, ahead of the running man.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The man in the white t-shirt is carrying a white shopping bag in his left hand.",
+        "fact": "A man in a white t-shirt is walking to the left in the foreground.",
         "confidence": 1.0
       },
       {
@@ -2274,19 +2292,19 @@
       "0821.58",
       "18"
     ],
-    "spatial": "The man in the black suit is to the right of the man in the white t-shirt. Both men are in front of the red brick wall. The digital timer is located in the bottom-left corner of the frame, below the walking man.",
+    "spatial": "The man in the black suit is to the right of the man in the white t-shirt. Both men are in front of the red brick wall. The digital timer is located in the bottom left corner of the screen.",
     "parse_success": true,
     "chunk_idx": 41,
     "video_id": "3Qp1uk9zSo8"
   },
   {
     "time": [
-      84,
-      86
+      42,
+      43
     ],
     "visible_entities": [
       {
-        "desc": "man with short brown hair, wearing a black suit jacket, black trousers, white shirt, and black shoes",
+        "desc": "person with short brown hair, wearing a black suit jacket, white shirt, black trousers, and black shoes",
         "action": "kicking leg up and raising arms",
         "position": "left"
       },
@@ -2296,144 +2314,140 @@
         "position": "background"
       },
       {
-        "desc": "light gray concrete sidewalk with visible seams",
+        "desc": "light gray concrete sidewalk with visible seams and a small blue mark",
         "action": "static",
         "position": "bottom"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A man in a black suit is performing a high kick on the sidewalk.",
+        "fact": "A person in a black suit is performing a high kick on the left side of the frame.",
         "confidence": 1.0
       },
       {
-        "fact": "The man raises his arms while kicking.",
+        "fact": "The person has their arms raised in the air.",
         "confidence": 1.0
       },
       {
-        "fact": "The man moves out of the frame to the left.",
+        "fact": "The background consists of a red brick wall.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The man is on the left side of the frame, standing on the concrete sidewalk. The sidewalk is below the red brick wall. The dark brown beam is above the brick wall.",
+    "spatial": "The person is standing on the concrete sidewalk in front of the red brick wall. The dark brown beam is located above the brick wall.",
     "parse_success": true,
     "chunk_idx": 42,
     "video_id": "3Qp1uk9zSo8"
   },
   {
     "time": [
-      86,
-      88
+      43,
+      44
     ],
     "visible_entities": [
       {
-        "desc": "red brick wall with a running bond pattern, featuring a dark brown horizontal wooden beam at the top",
+        "desc": "red brick wall with a dark brown wooden beam at the top",
         "action": "static",
         "position": "background"
       },
       {
-        "desc": "light gray concrete sidewalk with visible expansion joints and minor surface stains",
+        "desc": "concrete pavement with a small blue mark and a brown stain",
         "action": "static",
         "position": "foreground"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "The scene is static with no movement occurring.",
+        "fact": "The scene is static with no movement.",
         "confidence": 1.0
       },
       {
-        "fact": "A red brick wall stands behind a concrete sidewalk.",
+        "fact": "A red brick wall is visible in the background.",
         "confidence": 1.0
       },
       {
-        "fact": "A dark brown beam runs horizontally along the top of the brick wall.",
+        "fact": "Concrete pavement is in the foreground.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The concrete sidewalk is in the foreground, situated below the red brick wall. The dark brown wooden beam is positioned above the brick wall.",
+    "spatial": "The concrete pavement is below the red brick wall. The dark brown wooden beam is above the red brick wall.",
     "parse_success": true,
     "chunk_idx": 43,
     "video_id": "3Qp1uk9zSo8"
   },
   {
     "time": [
-      88,
-      90
+      44,
+      45
     ],
     "visible_entities": [
       {
-        "desc": "grey textured fabric office chair with black curved armrest",
+        "desc": "grey textured fabric office chair with black armrest",
         "action": "static",
-        "position": "left/foreground"
+        "position": "left foreground"
       },
       {
-        "desc": "white six-panel interior door with a round gold-colored doorknob",
+        "desc": "white six-panel interior door with gold doorknob",
         "action": "static",
-        "position": "center/background"
+        "position": "center background"
       },
       {
-        "desc": "black metal laundry sorter frame holding three brown fabric bags",
+        "desc": "black metal laundry sorter with three brown fabric bags",
         "action": "static",
-        "position": "center/right"
+        "position": "center right"
       },
       {
-        "desc": "black chest of drawers with horizontal gold trim lines and a red object on top",
+        "desc": "black chest of drawers with silver horizontal handles",
         "action": "static",
         "position": "right"
       },
       {
-        "desc": "beige wall with a white electrical outlet",
+        "desc": "small pink object",
         "action": "static",
-        "position": "background"
+        "position": "top right"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "The scene is static with no visible movement.",
+        "fact": "The scene is static with no movement.",
         "confidence": 1.0
       },
       {
-        "fact": "A grey office chair is positioned in the foreground on the left.",
+        "fact": "A grey chair sits in the foreground on the left.",
         "confidence": 1.0
       },
       {
-        "fact": "A laundry sorter with brown bags stands between the door and the dresser.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "A red object rests on top of the black dresser.",
+        "fact": "A laundry sorter stands next to a black dresser.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The grey office chair is in the foreground on the left, partially obscuring the view of the white door behind it. The laundry sorter is positioned to the right of the door and to the left of the black dresser. The dresser is located on the far right side of the frame, with a red object sitting on top of it.",
+    "spatial": "The grey office chair is in the foreground on the left, positioned in front of the white door. The black laundry sorter is to the right of the door and to the left of the black chest of drawers. The small pink object rests on top of the chest of drawers.",
     "parse_success": true,
     "chunk_idx": 44,
     "video_id": "3Qp1uk9zSo8"
   },
   {
     "time": [
-      90,
-      92
+      45,
+      46
     ],
     "visible_entities": [
       {
-        "desc": "grey textured fabric office chair with black curved armrest",
+        "desc": "grey textured fabric office chair with a black curved armrest",
         "action": "static",
-        "position": "left/foreground"
+        "position": "left foreground"
       },
       {
-        "desc": "white six-panel interior door with brass doorknob",
+        "desc": "white paneled interior door with a gold-colored round doorknob",
         "action": "static",
-        "position": "center/background"
+        "position": "center background"
       },
       {
-        "desc": "black metal laundry sorter with three brown fabric bags",
+        "desc": "black metal laundry sorter frame with three hanging brown fabric bags",
         "action": "static",
-        "position": "center/right"
+        "position": "center right"
       },
       {
         "desc": "black chest of drawers with horizontal gold trim lines",
@@ -2441,44 +2455,49 @@
         "position": "right"
       },
       {
-        "desc": "small red object on top of the chest of drawers",
+        "desc": "small red object, possibly a toy or container, sitting on top of the chest of drawers",
         "action": "static",
-        "position": "right/top"
+        "position": "top right"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A grey office chair sits in the foreground on the left.",
+        "fact": "The scene is a static shot of a room interior with no movement.",
         "confidence": 1.0
       },
       {
-        "fact": "A white door with a brass knob is visible in the background.",
+        "fact": "A grey office chair is positioned in the foreground on the left.",
         "confidence": 1.0
       },
       {
-        "fact": "A laundry sorter with brown bags is positioned next to the chest of drawers.",
+        "fact": "A laundry sorter with brown bags stands between the door and the chest of drawers.",
         "confidence": 1.0
       },
       {
-        "fact": "A small red object rests on top of the black dresser.",
+        "fact": "A small red object rests on the top surface of the black chest of drawers.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The grey office chair is in the foreground on the left side of the frame. Behind the chair is a white door. To the right of the door is a black laundry sorter with brown bags. The black chest of drawers is to the right of the laundry sorter, and a small red object is on top of the chest of drawers.",
+    "spatial": "The grey office chair is in the foreground on the left, partially obscuring the view of the white door behind it. To the right of the door, the black laundry sorter stands next to the black chest of drawers. The small red object is on top of the chest of drawers.",
     "parse_success": true,
     "chunk_idx": 45,
     "video_id": "3Qp1uk9zSo8"
   },
   {
     "time": [
-      92,
-      94
+      46,
+      47
     ],
     "visible_entities": [
       {
-        "desc": "person wearing a white t-shirt and light-colored shorts",
-        "action": "walking through a doorway while holding a black rectangular object",
+        "desc": "person wearing a white t-shirt and beige shorts",
+        "action": "standing in doorway holding a black object",
+        "position": "center"
+      },
+      {
+        "desc": "black rectangular object, possibly a laptop or binder",
+        "action": "being held by the person",
         "position": "center"
       },
       {
@@ -2497,44 +2516,48 @@
         "position": "right background"
       },
       {
-        "desc": "white door with a gold doorknob",
+        "desc": "white door with gold knob",
         "action": "static",
-        "position": "center left"
+        "position": "left background"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A person walks through a doorway carrying a black object.",
+        "fact": "A person stands in the doorway holding a black object.",
         "confidence": 1.0
       },
       {
-        "fact": "The person is holding the object with both hands.",
+        "fact": "The person is wearing a white t-shirt and beige shorts.",
         "confidence": 1.0
       },
       {
-        "fact": "A laundry sorter stands next to a chest of drawers.",
+        "fact": "A grey office chair is positioned in the foreground on the left.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A laundry sorter with brown bags is positioned in the foreground on the right.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The person is walking through the doorway in the center of the frame. The grey office chair is in the foreground on the left side of the image. To the right of the doorway, the laundry sorter is positioned in front of the black chest of drawers.",
+    "spatial": "The person is standing in the doorway in the center of the frame, holding a black object. To the left of the person is a white door with a gold knob. In the foreground, a grey office chair is to the left, and a black laundry sorter with brown bags is to the right. Behind the laundry sorter is a black chest of drawers.",
     "parse_success": true,
     "chunk_idx": 46,
     "video_id": "3Qp1uk9zSo8"
   },
   {
     "time": [
-      94,
-      96
+      47,
+      48
     ],
     "visible_entities": [
       {
-        "desc": "person wearing a white t-shirt with a dark graphic print, beige cargo shorts, and a white wristband",
+        "desc": "person wearing a white t-shirt with a dark graphic print, tan cargo shorts, and a white wristband",
         "action": "carrying a black flat-screen monitor",
         "position": "center"
       },
       {
-        "desc": "black flat-screen monitor with a stand and dangling power cables",
+        "desc": "black flat-screen monitor with visible cables",
         "action": "being carried",
         "position": "center"
       },
@@ -2546,116 +2569,120 @@
       {
         "desc": "black metal laundry sorter with three brown fabric bags",
         "action": "static",
-        "position": "right background"
+        "position": "center background"
       },
       {
-        "desc": "black chest of drawers with gold trim",
+        "desc": "black chest of drawers",
         "action": "static",
-        "position": "right background"
+        "position": "right"
       },
       {
-        "desc": "white door with a gold doorknob",
+        "desc": "white door with a gold handle",
         "action": "static",
         "position": "left background"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A person is carrying a black flat-screen monitor into the room.",
+        "fact": "A person is walking through a doorway carrying a black monitor.",
         "confidence": 1.0
       },
       {
-        "fact": "The monitor has cables hanging from the back.",
+        "fact": "The person is holding the monitor with both hands.",
         "confidence": 1.0
       },
       {
-        "fact": "The person is wearing beige cargo shorts.",
+        "fact": "A laundry sorter with brown bags is positioned behind the person.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A grey office chair is in the foreground on the left.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The person is in the center of the frame, holding the black monitor in front of their torso. To the left of the person is a grey office chair and a white door. To the right of the person, in the background, are a laundry sorter and a chest of drawers.",
+    "spatial": "The person is in the center of the frame, holding the black monitor in front of their torso. To the left of the person is a white door and a grey office chair in the foreground. Behind the person is a black laundry sorter with brown bags. To the right of the laundry sorter is a black chest of drawers.",
     "parse_success": true,
     "chunk_idx": 47,
     "video_id": "3Qp1uk9zSo8"
   },
   {
     "time": [
-      96,
-      98
+      48,
+      49
     ],
     "visible_entities": [
       {
-        "desc": "black television back panel with ventilation grilles, mounting screw holes, and a central specification label",
-        "action": "being held and adjusted",
+        "desc": "black flat-screen television, matte plastic back panel, ventilation grilles, central label with 'PROSCAN' branding, four mounting screw holes",
+        "action": "being held",
         "position": "center"
       },
       {
-        "desc": "hands with light skin tone",
-        "action": "holding the sides of the television",
-        "position": "left and right edges"
+        "desc": "person's hands, light skin tone",
+        "action": "holding the television",
+        "position": "right"
       },
       {
-        "desc": "green digital text overlay in a rectangular box",
-        "action": "displaying changing monetary values",
+        "desc": "green digital text overlay, calculator-style font",
+        "action": "displaying price",
         "position": "bottom right"
       },
       {
-        "desc": "person wearing a white t-shirt with a black geometric pattern",
-        "action": "static",
+        "desc": "person wearing white t-shirt with black geometric pattern",
+        "action": "standing behind the television",
         "position": "background"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A person is holding the back of a black television set.",
+        "fact": "A person is holding a black Proscan television by its edges.",
         "confidence": 1.0
       },
       {
-        "fact": "The television is being tilted or adjusted by hands on the left and right sides.",
+        "fact": "The back of the television features ventilation slots and a central specification label.",
         "confidence": 1.0
       },
       {
-        "fact": "A green digital counter in the bottom right corner displays '$2043.17' in the first frame and '$2110.33' in the second frame.",
+        "fact": "A green digital price overlay is visible in the bottom right corner.",
         "confidence": 1.0
       },
       {
-        "fact": "The label on the television identifies the brand as 'PROSCAN' and the model as 'PLED3257A-B'.",
+        "fact": "The price displayed changes from $2043.17 to $2110.33.",
         "confidence": 1.0
       }
     ],
     "ocr": [
+      "$2043.17",
       "PROSCAN",
-      "PLED3257A-B",
-      "32\" D-LED TV(ATSC Tuner)",
+      "$2110.33",
+      "PLDED3257A-B",
+      "32\" D-LED TV (ATSC Tuner)",
       "POWER INPUT: 110V~ 60Hz",
       "Rated power consumption: 53W",
-      "FC",
       "S/N: A1209086350000542",
       "MADE IN CHINA",
-      "$2043.17",
-      "$2110.33"
+      "FC"
     ],
-    "spatial": "The black television back panel is in the center of the frame, held by hands on its left and right edges. The green digital text overlay is positioned in the bottom right corner, superimposed over the television. The person in the white patterned shirt is visible in the background, above the television.",
+    "spatial": "The black television is held in the center of the frame by a person's hands on the right side. The green price text is superimposed in the bottom right corner, below the television's right edge. A person wearing a patterned shirt is standing behind the television.",
     "parse_success": true,
     "chunk_idx": 48,
     "video_id": "3Qp1uk9zSo8"
   },
   {
     "time": [
-      98,
-      100
+      49,
+      50
     ],
     "visible_entities": [
       {
-        "desc": "black Proscan 32-inch LED TV back panel with ventilation grilles, mounting holes, and a central specification label",
-        "action": "being held",
-        "position": "center"
+        "desc": "person wearing a white t-shirt with a black abstract geometric pattern",
+        "action": "holding the television",
+        "position": "background"
       },
       {
-        "desc": "person wearing a white t-shirt with a black geometric pattern",
-        "action": "holding the TV",
-        "position": "background"
+        "desc": "black flat-screen television back panel with ventilation grilles and a central label",
+        "action": "being held",
+        "position": "center"
       },
       {
         "desc": "green digital price overlay reading '$2349.92'",
@@ -2665,72 +2692,19 @@
     ],
     "atomic_facts": [
       {
-        "fact": "A person is holding a black television set, displaying its back panel.",
+        "fact": "A person is holding a black television set by its sides.",
         "confidence": 1.0
       },
       {
-        "fact": "The TV label identifies the brand as PROSCAN and the model as PLED3287A-B.",
+        "fact": "The back of the television features a label with the brand name 'PROSCAN'.",
         "confidence": 1.0
       },
       {
-        "fact": "The label specifies the screen size as 32\" D-LED TV with ATSC Tuner.",
+        "fact": "A green digital price tag of $2349.92 is displayed in the bottom right corner.",
         "confidence": 1.0
       },
       {
-        "fact": "The price overlay indicates a value of $2349.92.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The TV has a serial number S/N: A1289086358888542 visible on the label.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [
-      "PROSCAN",
-      "PLED3287A-B",
-      "32\" D-LED TV(ATSC Tuner)",
-      "POWER INPUT: 110V~ 60Hz",
-      "Rated power consumption: 65W",
-      "FC",
-      "S/N: A1289086358888542",
-      "MADE IN CHINA",
-      "Stereo Headphone Port",
-      "R L",
-      "$2349.92"
-    ],
-    "spatial": "The person in the white patterned shirt is positioned behind the black television set. The green price text is overlaid in the bottom right corner of the frame, in front of the TV. The specification label is located in the center of the TV's back panel.",
-    "parse_success": true,
-    "chunk_idx": 49,
-    "video_id": "3Qp1uk9zSo8"
-  },
-  {
-    "time": [
-      100,
-      102
-    ],
-    "visible_entities": [
-      {
-        "desc": "black flat-screen television back panel, matte plastic finish, with horizontal ventilation grilles and a central specification label",
-        "action": "static",
-        "position": "center"
-      },
-      {
-        "desc": "green digital price overlay, LED-style font, displaying '$2349.92'",
-        "action": "static",
-        "position": "bottom-right"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "The back of a black Proscan television is shown.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "A digital price tag of $2349.92 is displayed in the bottom right corner.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The television model is identified as PLED3257A-B.",
+        "fact": "The television has horizontal ventilation slots near the top.",
         "confidence": 1.0
       }
     ],
@@ -2739,28 +2713,76 @@
       "PLED3257A-B",
       "32\" D-LED TV(ATSC Tuner)",
       "POWER INPUT: 110V~ 60Hz",
-      "Rated power consumption: 60W",
+      "Rated power consumption: 65W",
       "FC",
-      "S/N:A1209086358900542",
-      "Space Headphone Port",
-      "L",
+      "S/N: A1289086350000542",
+      "MADE IN CHINA",
+      "Service Headphone Port",
       "R",
+      "L",
       "$2349.92"
     ],
-    "spatial": "The specification label is centered on the back of the television. The ventilation grilles are located above the label. The green digital price overlay is positioned in the bottom right corner of the frame, superimposed over the television's side panel.",
+    "spatial": "The person is positioned behind the television, holding it with their hands visible on the right edge. The price overlay is located in the bottom right corner, superimposed over the television's casing. The label is centered on the back of the television, below the ventilation grilles.",
+    "parse_success": true,
+    "chunk_idx": 49,
+    "video_id": "3Qp1uk9zSo8"
+  },
+  {
+    "time": [
+      50,
+      51
+    ],
+    "visible_entities": [
+      {
+        "desc": "black television back panel with ventilation grilles, mounting screw holes, and a central specification label",
+        "action": "static",
+        "position": "center"
+      },
+      {
+        "desc": "green digital price overlay with a dollar sign and decimal values",
+        "action": "static",
+        "position": "bottom-right"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The back of a black television is shown in a static shot.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A green digital price tag reading '$2349.92' is superimposed in the bottom right corner.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The label on the TV identifies the brand as 'PROSCAN' and the model as 'PLED3257A-B'.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "PROSCAN",
+      "PLED3257A-B",
+      "32\" D-LED TV(ATSC Tuner)",
+      "POWER INPUT: 110V~ 60Hz",
+      "Rated power consumption: 62W",
+      "FC",
+      "S/N:A1209086350000542",
+      "Space Headphone Port",
+      "$2349.92"
+    ],
+    "spatial": "The specification label is located in the center of the television's back panel. The green price overlay is positioned in the bottom right corner of the frame, superimposed over the television's edge. The ventilation grilles run horizontally across the upper portion of the TV back, above the central label.",
     "parse_success": true,
     "chunk_idx": 50,
     "video_id": "3Qp1uk9zSo8"
   },
   {
     "time": [
-      102,
-      104
+      51,
+      52
     ],
     "visible_entities": [
       {
-        "desc": "man with short brown hair, wearing a white t-shirt with a black abstract geometric pattern on the chest",
-        "action": "sitting and looking at a monitor",
+        "desc": "man with short brown hair, wearing a white t-shirt with a black geometric pattern on the chest",
+        "action": "sitting in a chair and looking left",
         "position": "right"
       },
       {
@@ -2774,7 +2796,7 @@
         "position": "bottom right"
       },
       {
-        "desc": "white double closet doors with rectangular paneling",
+        "desc": "white closet doors with rectangular panels",
         "action": "static",
         "position": "background right"
       },
@@ -2786,145 +2808,136 @@
     ],
     "atomic_facts": [
       {
-        "fact": "A man is sitting in a chair facing a computer monitor.",
+        "fact": "A man sits in a chair facing a computer monitor.",
         "confidence": 1.0
       },
       {
-        "fact": "The man is looking at the screen.",
+        "fact": "A green digital text overlay displays '$2349.92' in the first frame.",
         "confidence": 1.0
       },
       {
-        "fact": "A green digital text overlay displays '$2349.92' in the bottom right corner of the screen.",
+        "fact": "The text overlay disappears in the second frame.",
         "confidence": 1.0
       },
       {
-        "fact": "A pink object is sitting on the desk next to the monitor.",
+        "fact": "A pink object rests on the desk next to the monitor.",
         "confidence": 1.0
       }
     ],
     "ocr": [
       "$2349.92"
     ],
-    "spatial": "The man is sitting to the right of the black monitor. The monitor is on a desk in front of the man. A pink object is on the desk to the right of the monitor base. The white closet doors are behind the man.",
+    "spatial": "The man is sitting to the right of the black monitor. The monitor is placed on a desk in front of the man. The white closet doors are behind the man. The pink object is on the desk next to the monitor.",
     "parse_success": true,
     "chunk_idx": 51,
     "video_id": "3Qp1uk9zSo8"
   },
   {
     "time": [
-      104,
-      106
+      52,
+      53
     ],
     "visible_entities": [
       {
-        "desc": "man with short brown hair, wearing glasses, a black suit jacket, and a white collared shirt",
-        "action": "walking from right to left and bending over a desk",
-        "position": "center/foreground"
+        "desc": "man with short brown hair, wearing a black suit jacket and white collared shirt",
+        "action": "standing and leaning forward",
+        "position": "left/foreground"
       },
       {
-        "desc": "man with short brown hair, wearing a white t-shirt with a black abstract geometric pattern",
-        "action": "sitting in a chair and looking to the left",
+        "desc": "man with short brown hair, wearing a white t-shirt with a black geometric pattern",
+        "action": "sitting in a chair",
+        "position": "right/background"
+      },
+      {
+        "desc": "black flat-screen monitor",
+        "action": "static",
+        "position": "center"
+      },
+      {
+        "desc": "grey upholstered chair",
+        "action": "static",
         "position": "right"
       },
       {
-        "desc": "black flat-screen monitor or television",
-        "action": "static",
-        "position": "left/center"
-      },
-      {
-        "desc": "grey upholstered office chair",
-        "action": "static",
-        "position": "right"
-      },
-      {
-        "desc": "white bi-fold closet doors with rectangular panels",
+        "desc": "white bi-fold closet doors",
         "action": "static",
         "position": "background"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "The man in the black suit walks past the camera, obscuring the view momentarily.",
+        "fact": "The man in the black suit jacket is standing and leaning towards the monitor.",
         "confidence": 1.0
       },
       {
-        "fact": "The man in the black suit bends forward over the desk area near the monitor.",
+        "fact": "The man in the white t-shirt is sitting in the grey chair.",
         "confidence": 1.0
       },
       {
-        "fact": "The man in the white t-shirt sits in the grey chair and turns his head to watch the man in the suit.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "A black monitor sits on a surface to the left of the seated man.",
+        "fact": "The monitor is positioned on a surface in front of the wall.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The man in the black suit is positioned in the center foreground, standing in front of the black monitor. The man in the white t-shirt is seated to the right of the monitor and behind the standing man. The grey chair is underneath the seated man. The white closet doors are in the background behind the seated man.",
+    "spatial": "The man in the black suit jacket is standing to the left of the man in the white t-shirt. The black monitor is located between the standing man and the seated man. The seated man is positioned in front of the white closet doors.",
     "parse_success": true,
     "chunk_idx": 52,
     "video_id": "3Qp1uk9zSo8"
   },
   {
     "time": [
-      106,
-      108
+      53,
+      54
     ],
     "visible_entities": [
       {
-        "desc": "person's hand with light skin tone",
-        "action": "gripping wrist",
+        "desc": "person with fair skin, wearing a black long-sleeved garment",
+        "action": "grasping wrist",
         "position": "center"
       },
       {
-        "desc": "person's forearm with light skin tone and fine hair",
-        "action": "being held",
-        "position": "right"
-      },
-      {
         "desc": "white wristband with black text",
-        "action": "static",
-        "position": "right"
+        "action": "being held",
+        "position": "center"
       },
       {
-        "desc": "black sleeve",
+        "desc": "hairy forearm",
         "action": "static",
-        "position": "left"
+        "position": "right"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A hand is gripping a wrist.",
+        "fact": "A hand wearing a black sleeve is grasping a wrist.",
         "confidence": 1.0
       },
       {
-        "fact": "The wrist is wearing a white wristband.",
+        "fact": "The wrist is adorned with a white band.",
         "confidence": 1.0
       },
       {
-        "fact": "The wristband has black text printed on it.",
+        "fact": "The white band features black text.",
         "confidence": 1.0
       }
     ],
     "ocr": [
       "H"
     ],
-    "spatial": "The hand is positioned in the center, gripping the wrist which is to the right. The white wristband is on the wrist. The black sleeve is to the left of the hand.",
+    "spatial": "The hand in the black sleeve is positioned to the left of the hairy forearm. The white wristband is wrapped around the wrist, located between the grasping hand and the forearm.",
     "parse_success": true,
     "chunk_idx": 53,
     "video_id": "3Qp1uk9zSo8"
   },
   {
     "time": [
-      108,
-      110
+      54,
+      55
     ],
     "visible_entities": [
       {
-        "desc": "man with short brown hair, beard, round glasses, wearing a black suit jacket and white shirt",
-        "action": "looking down at the camera",
-        "position": "center/right"
+        "desc": "man with short brown hair, goatee, round glasses, wearing a black suit jacket and white collared shirt",
+        "action": "smiling and looking down",
+        "position": "center"
       },
       {
         "desc": "white silicone wristband with black text",
@@ -2932,27 +2945,23 @@
         "position": "foreground"
       },
       {
-        "desc": "silver metal bracelet",
+        "desc": "silver metal bangle bracelet",
         "action": "static",
         "position": "foreground"
       },
       {
-        "desc": "hand with fingers curled",
-        "action": "clenched",
-        "position": "foreground"
+        "desc": "textured white ceiling",
+        "action": "static",
+        "position": "top"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "The man is looking down at the camera.",
+        "fact": "The man is smiling while looking down at the camera.",
         "confidence": 1.0
       },
       {
-        "fact": "The hand is clenched into a fist.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The wristband reads 'I AM' and 'ND'.",
+        "fact": "The wristband displays the text 'I AM' and 'ND'.",
         "confidence": 1.0
       }
     ],
@@ -2960,161 +2969,170 @@
       "I AM",
       "ND"
     ],
-    "spatial": "The hand is in the foreground, positioned below the man's face. The white wristband and silver bracelet are on the wrist of the hand. The man is above the hand.",
+    "spatial": "The man is positioned below the textured ceiling. The wristband and metal bracelet are on the man's wrist in the foreground.",
     "parse_success": true,
     "chunk_idx": 54,
     "video_id": "3Qp1uk9zSo8"
   },
   {
     "time": [
-      110,
-      112
+      55,
+      56
     ],
     "visible_entities": [
       {
-        "desc": "man with short brown hair, round glasses, black suit jacket, white shirt, black tie",
+        "desc": "man with short brown hair, round glasses, goatee, wearing a black suit jacket, white collared shirt, and black tie",
         "action": "looking down and smiling",
-        "position": "right"
+        "position": "right/foreground"
       },
       {
-        "desc": "man with short brown hair, white t-shirt with black and blue graphic print",
-        "action": "looking at camera",
-        "position": "center"
+        "desc": "man with short brown hair, wearing a white t-shirt with a black abstract geometric pattern and blue text",
+        "action": "looking at the camera",
+        "position": "center/foreground"
       },
       {
-        "desc": "white window blinds",
+        "desc": "white horizontal window blinds",
         "action": "static",
-        "position": "bottom left"
+        "position": "left/background"
       },
       {
         "desc": "white paneled door",
         "action": "static",
         "position": "background"
+      },
+      {
+        "desc": "dark grey textured office chair",
+        "action": "static",
+        "position": "center/background"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "The man in the black suit is looking down at the camera with a smile.",
+        "fact": "The man in the black suit is looking down towards the camera with a slight smile.",
         "confidence": 1.0
       },
       {
-        "fact": "The man in the white t-shirt is looking directly at the camera.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The man in the white t-shirt is wearing a white wristband.",
+        "fact": "The man in the white t-shirt is sitting in a chair and looking directly at the camera.",
         "confidence": 1.0
       },
       {
         "fact": "The text 'space people' is visible on the man's t-shirt.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The window blinds are located to the left of the man in the suit.",
         "confidence": 1.0
       }
     ],
     "ocr": [
       "space people"
     ],
-    "spatial": "The man in the black suit is positioned to the right of the frame, appearing above the camera. The man in the white t-shirt is centered in the frame. The white window blinds are located in the bottom left corner, below the ceiling. The white paneled door is in the background behind the man in the white t-shirt.",
+    "spatial": "The man in the black suit is positioned to the right of the window blinds. The man in the white t-shirt is sitting in the dark grey chair, which is in front of the white paneled door. The man in the suit is in the foreground relative to the ceiling and walls.",
     "parse_success": true,
     "chunk_idx": 55,
     "video_id": "3Qp1uk9zSo8"
   },
   {
     "time": [
-      112,
-      114
+      56,
+      57
     ],
     "visible_entities": [
       {
-        "desc": "person with short brown hair, wearing a white t-shirt with black abstract geometric lines and blue text reading 'space people'",
+        "desc": "man with short brown hair, wearing a white t-shirt with a black abstract geometric pattern and blue text reading 'space people', and a white wristband on his left wrist",
         "action": "sitting in a chair",
         "position": "right"
       },
       {
-        "desc": "person with short dark hair, glasses, wearing a black suit jacket, white collared shirt, and black tie",
-        "action": "holding the wrist of the seated person",
+        "desc": "man with short dark hair, glasses, wearing a black suit jacket, white collared shirt, and black tie",
+        "action": "holding the seated man's wrist",
         "position": "left"
       },
       {
-        "desc": "dark grey textured office chair",
+        "desc": "dark grey fabric office chair",
         "action": "static",
-        "position": "center-right"
-      },
-      {
-        "desc": "white wristband",
-        "action": "static",
-        "position": "right"
+        "position": "center"
       },
       {
         "desc": "white paneled closet doors",
         "action": "static",
         "position": "background"
+      },
+      {
+        "desc": "dark wooden table",
+        "action": "static",
+        "position": "foreground"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "The person in the black suit is holding the wrist of the person in the white t-shirt.",
+        "fact": "The man in the black suit is holding the left wrist of the man in the white t-shirt.",
         "confidence": 1.0
       },
       {
-        "fact": "The person in the white t-shirt is seated in a dark grey chair.",
+        "fact": "The man in the white t-shirt is sitting in a dark grey chair.",
         "confidence": 1.0
       },
       {
-        "fact": "The text 'space people' is visible on the front of the white t-shirt.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The person in the white t-shirt is wearing a white wristband on their left wrist.",
+        "fact": "The man in the white t-shirt is looking up at the man in the black suit.",
         "confidence": 1.0
       }
     ],
     "ocr": [
       "space people"
     ],
-    "spatial": "The person in the black suit is standing to the left of the person in the white t-shirt. The person in the white t-shirt is sitting in a chair in front of the white closet doors. The person in the black suit is holding the wrist of the seated person.",
+    "spatial": "The man in the black suit is standing to the left of the man in the white t-shirt. The man in the white t-shirt is sitting in a chair which is positioned in front of white closet doors. The man in the black suit is holding the wrist of the seated man over a dark wooden table.",
     "parse_success": true,
     "chunk_idx": 56,
     "video_id": "3Qp1uk9zSo8"
   },
   {
     "time": [
-      114,
-      116
+      57,
+      58
     ],
     "visible_entities": [
       {
-        "desc": "man with short brown hair, glasses, wearing a black suit jacket, white collared shirt, and black tie",
-        "action": "holding the wrist of the seated man",
+        "desc": "man with short dark hair, glasses, wearing a black suit jacket, white collared shirt, and black tie",
+        "action": "standing and holding the wrist of the seated man",
         "position": "left"
       },
       {
-        "desc": "man with short brown hair, wearing a white t-shirt with a black geometric pattern and blue text",
-        "action": "sitting in a chair with arm extended",
+        "desc": "man with short light brown hair, wearing a white t-shirt with a black abstract geometric pattern and blue text",
+        "action": "sitting in a chair and looking up at the standing man",
         "position": "right"
       },
       {
-        "desc": "silver handcuffs",
-        "action": "static",
+        "desc": "silver metal handcuffs",
+        "action": "securing the wrists of the two men together",
         "position": "center"
       },
       {
-        "desc": "white bi-fold closet doors with rectangular panels",
+        "desc": "white bi-fold closet doors with rectangular paneling",
         "action": "static",
         "position": "background"
       },
       {
-        "desc": "black computer monitor",
+        "desc": "dark grey upholstered office chair",
         "action": "static",
-        "position": "center"
+        "position": "right"
       }
     ],
     "atomic_facts": [
+      {
+        "fact": "The man in the black suit is standing to the left of the seated man.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The seated man is wearing a white t-shirt with a graphic design.",
+        "confidence": 1.0
+      },
       {
         "fact": "The standing man is holding the seated man's wrist.",
         "confidence": 1.0
       },
       {
-        "fact": "The seated man's wrist is secured by silver handcuffs.",
+        "fact": "A pair of silver handcuffs connects the wrists of the two men.",
         "confidence": 1.0
       },
       {
@@ -3123,45 +3141,45 @@
       }
     ],
     "ocr": [],
-    "spatial": "The man in the black suit is standing to the left of the seated man. The seated man is positioned in front of the white closet doors. The black monitor is on the desk between the two men.",
+    "spatial": "The man in the black suit is standing to the left of the seated man. The seated man is positioned in front of the white closet doors. The handcuffs are located between the two men, connecting their wrists.",
     "parse_success": true,
     "chunk_idx": 57,
     "video_id": "3Qp1uk9zSo8"
   },
   {
     "time": [
-      116,
-      118
+      58,
+      59
     ],
     "visible_entities": [
       {
-        "desc": "young man with short brown hair, wearing a white t-shirt with a black abstract geometric pattern and blue text",
-        "action": "holding a small transparent plastic card",
+        "desc": "man with short brown hair, wearing a white t-shirt with a black abstract geometric pattern and blue text",
+        "action": "holding a small plastic card",
         "position": "center"
       },
       {
         "desc": "small transparent plastic card with printed text",
-        "action": "being held in the man's right hand",
-        "position": "foreground left"
+        "action": "being held",
+        "position": "foreground"
       },
       {
-        "desc": "dark blue dresser with horizontal gold handles",
+        "desc": "dark blue dresser with gold trim",
         "action": "static",
-        "position": "background right"
+        "position": "right"
       },
       {
-        "desc": "white door with panels",
+        "desc": "white door",
         "action": "static",
-        "position": "background left"
+        "position": "background"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "The man holds a small transparent plastic card in his right hand.",
+        "fact": "The man holds a small plastic card in his right hand.",
         "confidence": 1.0
       },
       {
-        "fact": "The man looks to his left in the first frame and then looks down at the card in the second frame.",
+        "fact": "The man looks to his right in the first frame and down at the card in the second frame.",
         "confidence": 1.0
       },
       {
@@ -3172,41 +3190,36 @@
     "ocr": [
       "space people"
     ],
-    "spatial": "The man is in the center of the frame, sitting in front of a white door. He is holding the transparent card in his right hand, which is positioned in the lower-left foreground. To the right of the man, in the background, is a dark blue dresser.",
+    "spatial": "The man is sitting in the center of the frame, in front of a white door. He is holding the plastic card in his right hand, which is positioned in the foreground. To the right of the man is a dark blue dresser.",
     "parse_success": true,
     "chunk_idx": 58,
     "video_id": "3Qp1uk9zSo8"
   },
   {
     "time": [
-      118,
-      120
+      59,
+      60
     ],
     "visible_entities": [
       {
-        "desc": "person with short brown hair, wearing a white t-shirt with a black geometric line pattern and blue text",
+        "desc": "man with short brown hair, wearing a white t-shirt with a black geometric line pattern and blue text",
         "action": "sitting at a desk and looking down at a book",
-        "position": "center/right"
+        "position": "right"
       },
       {
-        "desc": "red desk lamp with an adjustable arm and a circular base",
-        "action": "static",
-        "position": "left"
-      },
-      {
-        "desc": "open spiral-bound book with text and diagrams",
+        "desc": "wooden desk with a dark finish",
         "action": "static",
         "position": "center"
       },
       {
-        "desc": "dark wooden desk surface",
+        "desc": "red adjustable desk lamp with a conical shade",
         "action": "static",
-        "position": "bottom"
+        "position": "left"
       },
       {
-        "desc": "white door with panels",
+        "desc": "open spiral-bound textbook with text and diagrams",
         "action": "static",
-        "position": "background"
+        "position": "center"
       },
       {
         "desc": "dark blue dresser with gold trim",
@@ -3216,45 +3229,45 @@
     ],
     "atomic_facts": [
       {
-        "fact": "The person is sitting at a desk.",
+        "fact": "The man is sitting at a desk.",
         "confidence": 1.0
       },
       {
-        "fact": "The person is looking down at an open book.",
+        "fact": "The man is looking down at an open book.",
         "confidence": 1.0
       },
       {
-        "fact": "A red lamp is positioned on the desk.",
+        "fact": "A red lamp is positioned on the left side of the desk.",
         "confidence": 1.0
       },
       {
-        "fact": "The book is open to a page with text and diagrams.",
+        "fact": "A blue dresser is visible in the background.",
         "confidence": 1.0
       }
     ],
     "ocr": [
       "space"
     ],
-    "spatial": "The person is sitting to the right of the red lamp. The open book is on the desk in front of the person. The white door is behind the person and the desk.",
+    "spatial": "The man is sitting to the right of the red lamp. The open book is in front of the man on the desk. The dresser is behind the man and to the right.",
     "parse_success": true,
     "chunk_idx": 59,
     "video_id": "3Qp1uk9zSo8"
   },
   {
     "time": [
-      120,
-      122
+      60,
+      61
     ],
     "visible_entities": [
       {
-        "desc": "man with short brown hair, wearing a white t-shirt with a black and blue geometric pattern on the front",
+        "desc": "man with short brown hair, wearing a white t-shirt with a black and blue abstract geometric pattern",
         "action": "sitting at a desk and opening a drawer",
         "position": "right"
       },
       {
-        "desc": "red adjustable desk lamp with a conical shade and a round base",
+        "desc": "red adjustable desk lamp with a conical shade and black joints",
         "action": "static",
-        "position": "center"
+        "position": "center-left"
       },
       {
         "desc": "wooden desk with a dark finish",
@@ -3267,7 +3280,7 @@
         "position": "center"
       },
       {
-        "desc": "white door with rectangular panels and a round doorknob",
+        "desc": "white door with rectangular panels and a round knob",
         "action": "static",
         "position": "background"
       }
@@ -3278,7 +3291,7 @@
         "confidence": 1.0
       },
       {
-        "fact": "The man reaches down and pulls open a drawer on the right side of the desk.",
+        "fact": "The man reaches down and opens a drawer on the right side of the desk.",
         "confidence": 1.0
       },
       {
@@ -3291,29 +3304,34 @@
       }
     ],
     "ocr": [],
-    "spatial": "The man is sitting to the right of the wooden desk. The red lamp is on the desk, positioned to the left of the open notebook. The white door is behind the man and the desk.",
+    "spatial": "The man is sitting to the right of the desk. The red lamp is on the left side of the desk, next to the open notebook. The notebook is in front of the man. The white door is behind the man.",
     "parse_success": true,
     "chunk_idx": 60,
     "video_id": "3Qp1uk9zSo8"
   },
   {
     "time": [
-      122,
-      124
+      61,
+      62
     ],
     "visible_entities": [
       {
-        "desc": "person with short dark hair, wearing a white t-shirt with a black and blue abstract graphic pattern on the chest",
-        "action": "sitting in the chair",
+        "desc": "person wearing a white t-shirt with a black and blue abstract graphic print",
+        "action": "moving out of frame to the right",
         "position": "right"
       },
       {
-        "desc": "red desk lamp with an articulated arm and a circular base",
+        "desc": "red adjustable desk lamp with a conical shade and black joints",
         "action": "static",
         "position": "center"
       },
       {
-        "desc": "open spiral-bound notebook with printed text and a pen resting on the page",
+        "desc": "wooden desk surface",
+        "action": "static",
+        "position": "bottom"
+      },
+      {
+        "desc": "open spiral-bound notebook with printed text and a pen resting on it",
         "action": "static",
         "position": "center"
       },
@@ -3323,11 +3341,6 @@
         "position": "right"
       },
       {
-        "desc": "wooden desk surface",
-        "action": "static",
-        "position": "bottom"
-      },
-      {
         "desc": "white paneled door",
         "action": "static",
         "position": "background"
@@ -3335,135 +3348,147 @@
     ],
     "atomic_facts": [
       {
-        "fact": "A person is sitting in a chair at a desk.",
+        "fact": "The person in the white t-shirt moves out of the frame to the right.",
         "confidence": 1.0
       },
       {
-        "fact": "A red lamp is positioned on the wooden desk.",
+        "fact": "A red desk lamp is positioned on the wooden desk.",
         "confidence": 1.0
       },
       {
-        "fact": "An open notebook and papers are spread out on the desk surface.",
+        "fact": "An open notebook lies on the desk with a pen on top of the pages.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The desk is situated in front of a white door.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The person is sitting in the dark grey chair on the right side of the frame. The wooden desk is in front of the person and to the left of the chair. The red lamp is on the desk, positioned to the left of the open notebook. The white door is in the background behind the desk and lamp.",
+    "spatial": "The red desk lamp is on the wooden desk, positioned to the left of the open notebook. The notebook is in front of the lamp. The person is to the right of the desk and chair. The white door is behind the desk and lamp.",
     "parse_success": true,
     "chunk_idx": 61,
     "video_id": "3Qp1uk9zSo8"
   },
   {
     "time": [
-      124,
-      126
+      62,
+      63
     ],
     "visible_entities": [
       {
-        "desc": "circular emblem featuring a landscape with blue mountains, a yellow sky with horizontal lines, a turquoise body of water, and green foreground with crossed pickaxes and a shovel; includes a white banner at the bottom",
+        "desc": "circular emblem featuring a landscape illustration with blue mountains, a yellow sky with horizontal lines, a turquoise body of water, and green grassy terrain. The foreground contains crossed mining tools (a pickaxe and a shovel) and a white ribbon banner. The emblem has a thick gold border.",
         "action": "static",
         "position": "center"
       },
       {
-        "desc": "dark blue textured surface, possibly a chair or fabric",
+        "desc": "white ribbon banner with black text",
         "action": "static",
-        "position": "right"
+        "position": "bottom"
+      },
+      {
+        "desc": "black serif text reading 'THE GREA' (partially cut off)",
+        "action": "static",
+        "position": "top"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "The circular emblem is displayed against a background.",
+        "fact": "The emblem displays a landscape scene with mountains and water.",
         "confidence": 1.0
       },
       {
-        "fact": "The text 'ORO -Y- PLATA' is visible on a banner within the emblem.",
+        "fact": "The text 'ORO -Y- PLATA' is written on a white banner at the bottom of the emblem.",
         "confidence": 1.0
       },
       {
-        "fact": "The text 'THE GREA' is partially visible along the top curve of the emblem in the second frame.",
+        "fact": "The text 'THE GREA' is visible along the top curve of the emblem's border.",
         "confidence": 1.0
       }
     ],
     "ocr": [
-      "ORO -Y- PLATA",
-      "THE GREA"
+      "THE GREA",
+      "ORO -Y- PLATA"
     ],
-    "spatial": "The circular emblem is centered in the frame. A dark blue textured object is positioned to the right of the emblem. The text 'THE GREA' is located above the landscape illustration within the emblem's border.",
+    "spatial": "The text 'THE GREA' is located at the top of the circular emblem, following the curve of the border. The landscape illustration fills the center of the emblem. The white banner containing the text 'ORO -Y- PLATA' is positioned at the bottom of the illustration, below the crossed mining tools.",
     "parse_success": true,
     "chunk_idx": 62,
     "video_id": "3Qp1uk9zSo8"
   },
   {
     "time": [
-      126,
-      128
+      63,
+      64
     ],
     "visible_entities": [
       {
-        "desc": "Circular emblem with a gold border containing a landscape illustration of blue mountains, a yellow sky with sun rays, a turquoise waterfall, and green fields. In the foreground, there are crossed mining tools (pickaxe and shovel) and a white ribbon banner.",
+        "desc": "The Great Seal of the State of Montana, a circular emblem featuring a landscape with blue mountains, a yellow sky with sun rays, a turquoise river, and green grassy foreground with mining tools (pickaxe and shovel). It is surrounded by a gold ring with black text.",
         "action": "static",
         "position": "center"
       },
       {
-        "desc": "Solid dark blue background field.",
+        "desc": "A white ribbon banner located at the bottom of the seal's inner circle.",
+        "action": "static",
+        "position": "bottom"
+      },
+      {
+        "desc": "A solid dark blue background field.",
         "action": "static",
         "position": "background"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "The video displays a static graphic of a circular seal centered on a blue background.",
+        "fact": "The seal displays a landscape scene with mountains and a river.",
         "confidence": 1.0
       },
       {
-        "fact": "The text 'THE GREAT SEAL OF THE STATE OF' curves along the top of the gold border.",
+        "fact": "The text 'THE GREAT SEAL OF THE STATE OF' is visible along the top arc of the gold ring.",
         "confidence": 1.0
       },
       {
-        "fact": "The text 'ORO -Y- PLATA' is written on a white ribbon at the bottom of the seal.",
+        "fact": "The text 'ORO Y PLATA' is written on the white ribbon banner at the bottom.",
         "confidence": 1.0
       }
     ],
     "ocr": [
-      "THE GREAT SEAL OF",
-      "THE STATE OF",
-      "ORO",
-      "-Y-",
-      "PLATA"
+      "THE GREAT SEAL OF THE STATE OF",
+      "ORO -Y- PLATA"
     ],
-    "spatial": "The circular seal is centered on the blue background. The text 'THE GREAT SEAL OF THE STATE OF' is located along the upper arc of the seal's border. The crossed mining tools are positioned in the lower center of the inner circle, just above the white ribbon banner.",
+    "spatial": "The circular seal is centered on the dark blue background. The text 'THE GREAT SEAL OF THE STATE OF' is located in the upper portion of the gold ring surrounding the central image. The white ribbon with the text 'ORO Y PLATA' is positioned at the bottom of the inner circle, below the crossed pickaxe and shovel.",
     "parse_success": true,
     "chunk_idx": 63,
     "video_id": "3Qp1uk9zSo8"
   },
   {
     "time": [
-      128,
-      130
+      64,
+      65
     ],
     "visible_entities": [
       {
-        "desc": "The Great Seal of the State of Montana, featuring a circular gold border with black text, a landscape scene with blue mountains, a yellow sky with white rays, a turquoise river, green grass, and mining tools (pickaxe and shovel) crossed over a white ribbon.",
+        "desc": "The Great Seal of the State of Montana, a circular emblem featuring a landscape with blue mountains, a yellow sky with white rays, a turquoise river, and a foreground with a plow, pick, and shovel. The seal is bordered by a gold ring with black text.",
         "action": "static",
         "position": "center"
       },
       {
-        "desc": "Solid dark blue background field.",
+        "desc": "A white ribbon banner located at the bottom of the seal's inner circle, containing black text.",
+        "action": "static",
+        "position": "bottom"
+      },
+      {
+        "desc": "A solid dark blue background field surrounding the central seal.",
         "action": "static",
         "position": "background"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "The flag of Montana is displayed statically against a blue background.",
+        "fact": "The video displays the flag of Montana, which features the state seal centered on a blue field.",
         "confidence": 1.0
       },
       {
-        "fact": "The seal features a landscape with mountains and a river.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The text 'THE GREAT SEAL OF THE STATE OF MONTANA' encircles the top and sides of the seal.",
+        "fact": "The text 'THE GREAT SEAL OF THE STATE OF MONTANA' encircles the top and sides of the inner image.",
         "confidence": 1.0
       },
       {
@@ -3473,48 +3498,84 @@
     ],
     "ocr": [
       "THE GREAT SEAL OF THE STATE OF MONTANA",
-      "ORO",
-      "-Y-",
-      "PLATA"
+      "ORO -Y- PLATA"
     ],
-    "spatial": "The Great Seal of the State of Montana is centered on the blue background. The text 'THE GREAT SEAL OF THE STATE OF MONTANA' is located along the outer gold ring of the seal. The landscape scene is inside the ring, with mountains in the background and mining tools in the foreground. The ribbon with 'ORO Y PLATA' is below the mining tools.",
+    "spatial": "The circular seal is positioned in the center of the blue background. Inside the seal, the mountains are in the background behind the river and the foreground tools. The text ring surrounds the landscape image. The ribbon with the motto is located below the tools and above the bottom edge of the gold ring.",
     "parse_success": true,
     "chunk_idx": 64,
     "video_id": "3Qp1uk9zSo8"
   },
   {
     "time": [
-      130,
-      132
+      65,
+      66
     ],
     "visible_entities": [
       {
-        "desc": "A logo graphic featuring a stylized black television set with a rectangular screen showing a blue and white gradient. The TV has two thin black antennae extending upwards from the top center.",
+        "desc": "faint, low-contrast circular emblem or logo featuring a landscape scene with mountains and water, appearing as a ghostly overlay",
         "action": "static",
         "position": "center"
       },
       {
-        "desc": "Text reading 'THE PEER Connection Network' in a bold, black, stylized font. 'THE' is small and positioned above 'PEER', which is large and arched. 'Connection' and 'Network' are below 'PEER', separated by the TV antennae.",
+        "desc": "solid grey background filling the entire frame",
+        "action": "static",
+        "position": "background"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A faint, circular landscape emblem is visible in the center of the screen.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The emblem is extremely low-contrast against the grey background.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The faint circular emblem is centered on the grey background.",
+    "parse_success": true,
+    "chunk_idx": 65,
+    "video_id": "3Qp1uk9zSo8"
+  },
+  {
+    "time": [
+      66,
+      67
+    ],
+    "visible_entities": [
+      {
+        "desc": "black stylized text logo reading 'THE PEER Connection Network' with a V-shaped antenna graphic",
         "action": "static",
         "position": "top"
       },
       {
-        "desc": "Text reading 'umt.edu/oss/kpcn' in a bold, black, lowercase sans-serif font.",
+        "desc": "black rounded rectangular frame resembling a television screen",
+        "action": "static",
+        "position": "center"
+      },
+      {
+        "desc": "white silhouettes of hands inside the screen frame against a light blue background",
+        "action": "forming letters",
+        "position": "inside"
+      },
+      {
+        "desc": "black bold text reading 'umt.edu/oss/kpcn'",
         "action": "static",
         "position": "bottom"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "The video displays a static title card for 'THE PEER Connection Network'.",
+        "fact": "The white hand silhouettes inside the screen frame are arranged to spell out the letters 'KPCN'.",
         "confidence": 1.0
       },
       {
-        "fact": "The text 'umt.edu/oss/kpcn' is visible at the bottom of the screen.",
+        "fact": "The text 'THE PEER Connection Network' is displayed above the screen frame.",
         "confidence": 1.0
       },
       {
-        "fact": "The TV graphic is positioned centrally between the title text and the URL.",
+        "fact": "The URL 'umt.edu/oss/kpcn' is displayed below the screen frame.",
         "confidence": 1.0
       }
     ],
@@ -3522,15 +3583,15 @@
       "THE PEER Connection Network",
       "umt.edu/oss/kpcn"
     ],
-    "spatial": "The text 'THE PEER Connection Network' is located above the television graphic. The television graphic is centered in the frame. The URL text is positioned below the television graphic.",
+    "spatial": "The 'THE PEER Connection Network' logo is positioned above the central screen frame. The white hand silhouettes are located inside the screen frame. The URL text is positioned below the screen frame.",
     "parse_success": true,
-    "chunk_idx": 65,
+    "chunk_idx": 66,
     "video_id": "3Qp1uk9zSo8"
   },
   {
     "time": [
-      132,
-      134
+      67,
+      68
     ],
     "visible_entities": [
       {
@@ -3539,14 +3600,14 @@
         "position": "top"
       },
       {
-        "desc": "black rectangular frame resembling a television screen",
+        "desc": "rectangular television screen with a black border displaying a blue background and white text",
         "action": "static",
         "position": "center"
       },
       {
-        "desc": "white silhouettes of hands forming letters inside the screen against a light blue background",
-        "action": "forming letters",
-        "position": "inside screen"
+        "desc": "white text 'KPCN' inside the television screen",
+        "action": "static",
+        "position": "center"
       },
       {
         "desc": "black text reading 'umt.edu/oss/kpcn' in a rounded sans-serif font",
@@ -3556,60 +3617,15 @@
     ],
     "atomic_facts": [
       {
-        "fact": "The text 'THE PEER Connection Network' is displayed at the top of the screen.",
+        "fact": "The graphic displays the title 'THE PEER Connection Network' at the top.",
         "confidence": 1.0
       },
       {
-        "fact": "White hand silhouettes inside the central screen frame are arranged to spell out 'KPCN'.",
+        "fact": "A television screen in the center shows the letters 'KPCN'.",
         "confidence": 1.0
       },
       {
-        "fact": "The URL 'umt.edu/oss/kpcn' is visible at the bottom of the image.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [
-      "THE PEER Connection Network",
-      "umt.edu/oss/kpcn"
-    ],
-    "spatial": "The 'THE PEER Connection Network' text is positioned above the central rectangular screen frame. The URL text is located below the screen frame. Inside the screen, the white hand silhouettes are arranged against a blue background.",
-    "parse_success": true,
-    "chunk_idx": 66,
-    "video_id": "3Qp1uk9zSo8"
-  },
-  {
-    "time": [
-      134,
-      136
-    ],
-    "visible_entities": [
-      {
-        "desc": "Logo graphic featuring the text 'THE PEER Connection Network' in a bold, black, rounded sans-serif font. The word 'PEER' is stylized with a unique shape. Two thin black lines resembling TV antennas extend from the text.",
-        "action": "static",
-        "position": "top"
-      },
-      {
-        "desc": "A rectangular television screen with a thick black border. The screen displays a light blue background with the white, hand-painted style letters 'KPCN'. On the right side of the screen, there is a dark, blurry image of a person's profile.",
-        "action": "static",
-        "position": "center"
-      },
-      {
-        "desc": "A URL text string 'umt.edu/oss/kpcn' written in a bold, black, lowercase sans-serif font.",
-        "action": "static",
-        "position": "bottom"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "The logo 'THE PEER Connection Network' is displayed at the top of the screen.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The television graphic in the center displays the letters 'KPCN'.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The URL 'umt.edu/oss/kpcn' is visible at the bottom of the frame.",
+        "fact": "The URL 'umt.edu/oss/kpcn' is displayed at the bottom of the screen.",
         "confidence": 1.0
       }
     ],
@@ -3618,7 +3634,7 @@
       "KPCN",
       "umt.edu/oss/kpcn"
     ],
-    "spatial": "The 'THE PEER Connection Network' logo is positioned above the central television graphic. The television graphic is located between the top logo and the bottom URL text. The URL 'umt.edu/oss/kpcn' is situated below the television graphic.",
+    "spatial": "The text 'THE PEER Connection Network' is above the television screen. The television screen is in the center of the frame, positioned between the top title and the bottom URL. The URL 'umt.edu/oss/kpcn' is below the television screen.",
     "parse_success": true,
     "chunk_idx": 67,
     "video_id": "3Qp1uk9zSo8"

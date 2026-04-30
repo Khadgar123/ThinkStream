@@ -2,7 +2,7 @@
   {
     "time": [
       0,
-      2
+      1
     ],
     "visible_entities": [
       {
@@ -11,18 +11,18 @@
         "position": "left"
       },
       {
-        "desc": "Text 'Laydey Ka' where 'Laydey' is in a thin sans-serif font and 'Ka' is in a cursive script font, black color",
+        "desc": "Text 'Laydey Ka' in a mixed style, with 'Laydey' in a thin sans-serif font and 'Ka' in a cursive script, black color",
         "action": "static",
         "position": "left"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "The text 'Lay' is visible on the left side of the screen.",
+        "fact": "The text 'Lay' is visible on the screen.",
         "confidence": 1.0
       },
       {
-        "fact": "The text changes to 'Laydey Ka' on the left side of the screen.",
+        "fact": "The text changes to 'Laydey Ka'.",
         "confidence": 1.0
       }
     ],
@@ -30,224 +30,234 @@
       "Lay",
       "Laydey Ka"
     ],
-    "spatial": "The text is positioned on the left side of the white background. The text 'Laydey Ka' appears in the same location as the previous text 'Lay'.",
+    "spatial": "The text is positioned on the left side of the frame against a white background.",
     "parse_success": true,
     "chunk_idx": 0,
     "video_id": "WW-k2iTvJ3Q"
   },
   {
     "time": [
-      2,
-      4
+      1,
+      2
     ],
     "visible_entities": [
       {
-        "desc": "Text 'Laydey Katabella' in a thin, black, mixed-style font (sans-serif and script), accompanied by a black hand-drawn heart symbol",
+        "desc": "Text 'Laydey' in a thin, sans-serif font",
         "action": "static",
-        "position": "center"
+        "position": "center-left"
       },
       {
-        "desc": "Cluster of small, tilted photographs with film strip borders featuring a young woman with long hair",
+        "desc": "Text 'Katabell' in a black, cursive script font",
+        "action": "static",
+        "position": "center-right"
+      },
+      {
+        "desc": "Cluster of small, tilted photographs with film strip borders showing a girl with long hair",
         "action": "static",
         "position": "top-left"
       },
       {
-        "desc": "Cluster of small, tilted photographs with film strip borders featuring a young woman in various poses and outfits",
+        "desc": "Cluster of small, tilted photographs with film strip borders showing a girl in various poses",
         "action": "static",
         "position": "bottom-right"
+      },
+      {
+        "desc": "Black, hand-drawn style heart icon",
+        "action": "static",
+        "position": "right"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "The text 'Laydey Katabella' is displayed in the center of the screen.",
+        "fact": "The text 'Laydey' appears in a thin font next to 'Katabell' in a script font.",
         "confidence": 1.0
       },
       {
-        "fact": "A black heart graphic is positioned to the right of the text.",
+        "fact": "A collage of photos appears in the top-left corner.",
         "confidence": 1.0
       },
       {
-        "fact": "Two clusters of photos are arranged in the corners of the frame.",
+        "fact": "A collage of photos appears in the bottom-right corner.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A black heart icon is visible to the right of the text.",
         "confidence": 1.0
       }
     ],
     "ocr": [
-      "Laydey Katabella"
+      "Laydey Katabell"
     ],
-    "spatial": "The text 'Laydey Katabella' is centered horizontally in the frame. A black heart graphic is located immediately to the right of the text. A cluster of photos is positioned in the top-left corner, while another cluster of photos is located in the bottom-right corner.",
+    "spatial": "The text 'Laydey Katabell' is centered in the frame. A cluster of photos is located above and to the left of the text. Another cluster of photos is located below and to the right of the text. The heart icon is to the right of the text.",
     "parse_success": true,
     "chunk_idx": 1,
     "video_id": "WW-k2iTvJ3Q"
   },
   {
     "time": [
-      4,
-      6
+      2,
+      3
     ],
     "visible_entities": [
       {
-        "desc": "brown pinecone with white tips on the scales, resembling snow",
+        "desc": "pinecone with brown scales and white tips, appearing frosted or snow-dusted",
         "action": "static",
-        "position": "top/center"
+        "position": "top center"
       },
       {
         "desc": "green artificial pine needles",
         "action": "static",
-        "position": "left/bottom"
+        "position": "left"
       },
       {
-        "desc": "gold spherical beaded garland",
+        "desc": "gold spherical bead garland",
         "action": "static",
         "position": "left"
       },
       {
-        "desc": "warm white Christmas light bulb with a green plastic base",
-        "action": "static",
-        "position": "left/bottom"
+        "desc": "miniature string lights with clear bulbs and green plastic bases",
+        "action": "glowing",
+        "position": "foreground"
       },
       {
-        "desc": "thin red string",
+        "desc": "thin red wire",
         "action": "static",
         "position": "center"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A pinecone with white-tipped scales is positioned at the top of the frame.",
+        "fact": "The pinecone is positioned at the top of the arrangement.",
         "confidence": 1.0
       },
       {
-        "fact": "A string of gold beads is draped over the green pine needles.",
+        "fact": "The string lights are illuminated, emitting a warm yellow glow.",
         "confidence": 1.0
       },
       {
-        "fact": "A lit Christmas light bulb is visible in the lower left area.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "A thin red string hangs vertically below the pinecone.",
+        "fact": "The red wire hangs vertically below the pinecone.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The pinecone is located above the green pine needles and the gold beaded garland. The lit light bulb is situated to the left of the red string and below the pinecone. The gold beads are draped over the pine needles on the left side of the frame.",
+    "spatial": "The frosted pinecone is positioned at the top center, above the green pine needles and gold bead garland on the left. The illuminated string lights are in the foreground, situated below the pinecone and near the pine needles. A thin red wire hangs vertically below the pinecone.",
     "parse_success": true,
     "chunk_idx": 2,
     "video_id": "WW-k2iTvJ3Q"
   },
   {
     "time": [
-      6,
-      8
+      3,
+      4
     ],
     "visible_entities": [
       {
-        "desc": "large brown pinecone with silver-tipped scales, hanging by a twine string",
+        "desc": "large brown pinecone with silver glitter on the tips of the scales, hanging vertically",
         "action": "static",
         "position": "right"
       },
       {
-        "desc": "artificial green Christmas tree branches with gold bead garland and warm yellow lights",
+        "desc": "green artificial Christmas tree branches with shiny gold spherical bead garland and warm white string lights",
         "action": "static",
         "position": "left"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A pinecone ornament hangs suspended by a string.",
+        "fact": "A pinecone ornament hangs suspended from a string.",
         "confidence": 1.0
       },
       {
-        "fact": "Gold beads are draped over the green tree branches.",
+        "fact": "Gold bead garland is draped over the green tree branches.",
         "confidence": 1.0
       },
       {
-        "fact": "Small lights on the tree are illuminated.",
+        "fact": "The pinecone is decorated with silver glitter.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The pinecone is positioned to the right of the Christmas tree branches. The gold bead garland is draped over the green branches on the left side of the frame.",
+    "spatial": "The pinecone is to the right of the Christmas tree branches. The gold bead garland is draped on the tree branches. The string lights are interwoven with the green needles.",
     "parse_success": true,
     "chunk_idx": 3,
     "video_id": "WW-k2iTvJ3Q"
   },
   {
     "time": [
-      8,
-      10
+      4,
+      5
     ],
     "visible_entities": [
       {
-        "desc": "natural brown pinecone with textured scales, hanging vertically",
+        "desc": "natural brown pinecone with open scales",
         "action": "static",
         "position": "right"
       },
       {
-        "desc": "artificial green Christmas tree branches with needle-like texture",
+        "desc": "artificial green pine needles",
         "action": "static",
         "position": "left"
       },
       {
-        "desc": "shiny gold beaded garland wrapped around branches",
+        "desc": "gold beaded garland",
         "action": "static",
         "position": "center"
       },
       {
-        "desc": "warm white string lights with small bulbs",
+        "desc": "small warm white string lights",
         "action": "static",
         "position": "center"
       },
       {
-        "desc": "dark pinecone with red-tipped scales",
+        "desc": "pinecone with red painted tips",
         "action": "static",
-        "position": "top left"
+        "position": "left"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A natural brown pinecone hangs on the right side of the frame.",
+        "fact": "A natural brown pinecone hangs suspended on the right side of the frame.",
         "confidence": 1.0
       },
       {
-        "fact": "Gold beaded garland is draped over the green artificial branches.",
+        "fact": "Gold beaded garland is draped over the artificial green pine needles.",
         "confidence": 1.0
       },
       {
-        "fact": "Small warm white lights are illuminated on the tree.",
+        "fact": "Small warm white string lights are illuminated among the branches.",
         "confidence": 1.0
       },
       {
-        "fact": "A second pinecone with red accents is visible in the upper left corner.",
+        "fact": "A pinecone with red painted tips is partially visible on the left.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The natural brown pinecone is to the right of the green artificial branches. The gold beaded garland is wrapped around the branches in the center. The red-tipped pinecone is above the gold garland on the left side.",
+    "spatial": "The natural brown pinecone is to the right of the artificial green pine needles. The gold beaded garland is draped over the green needles in the center. The pinecone with red painted tips is to the left of the gold garland.",
     "parse_success": true,
     "chunk_idx": 4,
     "video_id": "WW-k2iTvJ3Q"
   },
   {
     "time": [
-      10,
-      12
+      5,
+      6
     ],
     "visible_entities": [
       {
-        "desc": "pinecone with dark brown scales and bright red painted tips",
+        "desc": "pine cone with dark brown scales and bright red tips, slightly out of focus",
         "action": "static",
-        "position": "left/foreground"
+        "position": "left foreground"
       },
       {
-        "desc": "natural brown pinecone with open scales",
+        "desc": "pine cone with natural brown scales, sharp focus",
         "action": "static",
-        "position": "right/foreground"
+        "position": "right foreground"
       },
       {
         "desc": "green artificial pine needles",
         "action": "static",
-        "position": "background"
+        "position": "center"
       },
       {
         "desc": "gold beaded garland",
@@ -262,150 +272,172 @@
     ],
     "atomic_facts": [
       {
-        "fact": "A pinecone with red-tipped scales hangs in the foreground on the left.",
+        "fact": "A pine cone with red-tipped scales is positioned in the left foreground.",
         "confidence": 1.0
       },
       {
-        "fact": "A natural brown pinecone is positioned on the right side of the frame.",
+        "fact": "A natural brown pine cone is positioned on the right side.",
         "confidence": 1.0
       },
       {
-        "fact": "Gold beads and string lights are draped among the green branches.",
+        "fact": "Gold beaded garland is draped among the green pine needles.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "Warm white lights are illuminated within the branches.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The red-tipped pinecone is to the left of the natural brown pinecone. Both pinecones are in front of the green artificial needles. The gold beaded garland is draped behind the red-tipped pinecone and near the string lights.",
+    "spatial": "The pine cone with red tips is to the left of the natural brown pine cone. The gold beaded garland is draped over the green pine needles in the center. The lights are situated behind the gold beads and among the greenery.",
     "parse_success": true,
     "chunk_idx": 5,
     "video_id": "WW-k2iTvJ3Q"
   },
   {
     "time": [
-      12,
-      14
+      6,
+      7
     ],
     "visible_entities": [
       {
-        "desc": "pine cone ornament with dark brown scales, red glittery tips, and a natural beige base, hanging by a white twine string",
+        "desc": "pine cone ornament with dark brown scales tipped with red glitter, hanging from a rough white string",
         "action": "static",
         "position": "center"
       },
       {
-        "desc": "green artificial pine needles",
+        "desc": "green artificial pine tree branches with needle-like leaves",
         "action": "static",
         "position": "background"
       },
       {
-        "desc": "gold beaded garland",
+        "desc": "gold beaded garland consisting of small, shiny, spherical beads",
         "action": "static",
-        "position": "left"
+        "position": "foreground"
+      },
+      {
+        "desc": "warm white fairy lights emitting a soft glow",
+        "action": "static",
+        "position": "background"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A pine cone ornament hangs from a branch.",
+        "fact": "A pine cone ornament hangs suspended in the center of the frame.",
         "confidence": 1.0
       },
       {
-        "fact": "The tips of the pine cone scales are coated in red glitter.",
+        "fact": "The pine cone has red glitter applied to the tips of its scales.",
         "confidence": 1.0
       },
       {
-        "fact": "A gold beaded garland is draped on the tree branches.",
+        "fact": "A string of gold beads is draped across the green branches.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The pine cone is positioned in front of the tree branches and lights.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The pine cone ornament is in the center of the frame, hanging in front of the green pine needles. The gold beaded garland is to the left of the pine cone ornament.",
+    "spatial": "The pine cone ornament is in the center of the frame, hanging in front of the green pine branches. The gold beaded garland is draped across the branches to the left and right of the pine cone. The warm white lights are scattered in the background behind the pine cone and garland.",
     "parse_success": true,
     "chunk_idx": 6,
     "video_id": "WW-k2iTvJ3Q"
   },
   {
     "time": [
-      14,
-      16
+      7,
+      8
     ],
     "visible_entities": [
       {
-        "desc": "pine cone with dark brown scales and red-painted tips, hanging by a string",
-        "action": "hanging",
+        "desc": "pinecone ornament with dark brown scales and red-painted tips, hanging from a string",
+        "action": "static",
         "position": "center"
       },
       {
-        "desc": "green artificial pine tree branches",
+        "desc": "green artificial pine tree branches with needle-like leaves",
         "action": "static",
         "position": "background"
       },
       {
-        "desc": "string of shiny gold spherical beads",
+        "desc": "gold beaded garland with spherical metallic beads",
         "action": "static",
         "position": "foreground"
-      },
-      {
-        "desc": "small warm white Christmas lights",
-        "action": "glowing",
-        "position": "background"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "The pine cone hangs from a branch in the center of the frame.",
+        "fact": "The camera focus shifts, causing the central pinecone to become blurry in the second frame.",
         "confidence": 1.0
       },
       {
-        "fact": "Gold beads are draped across the green branches.",
+        "fact": "A pinecone ornament hangs from a branch in the center of the frame.",
         "confidence": 1.0
       },
       {
-        "fact": "The tips of the pine cone scales are painted red.",
+        "fact": "Gold beads are draped over the green branches.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The pine cone is in the center, hanging in front of the green branches. The string of gold beads is draped over the branches and is positioned to the left and right of the pine cone. The warm white lights are scattered behind the beads and pine cone.",
+    "spatial": "The pinecone ornament is in the center of the frame, hanging from the green pine branches. The gold beaded garland is draped around the branches, appearing in the foreground and to the left of the pinecone.",
     "parse_success": true,
     "chunk_idx": 7,
     "video_id": "WW-k2iTvJ3Q"
   },
   {
     "time": [
-      16,
-      18
+      8,
+      9
     ],
     "visible_entities": [
       {
-        "desc": "pine cone ornament with brown scales, white painted tips, and a twine loop",
+        "desc": "green artificial pine branch with needle-like leaves",
+        "action": "static",
+        "position": "background"
+      },
+      {
+        "desc": "string of shiny gold spherical beads",
         "action": "static",
         "position": "center"
       },
       {
-        "desc": "green pine branches with gold bead garland and warm white lights",
+        "desc": "pinecone with red-tipped scales and white frosted tips",
         "action": "static",
-        "position": "background"
+        "position": "top"
+      },
+      {
+        "desc": "pinecone ornament with white frosted tips and a twine loop",
+        "action": "static",
+        "position": "foreground"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A pine cone ornament with white-tipped scales and a twine loop is shown in close-up.",
+        "fact": "The video cuts from a decorated Christmas tree branch to a close-up of a single pinecone ornament.",
         "confidence": 1.0
       },
       {
-        "fact": "The background features blurred green pine branches decorated with gold beads and lights.",
+        "fact": "A pinecone ornament with a twine loop is shown against a plain background.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "Gold beads are draped over the green pine branches.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The pine cone ornament is in the foreground, centered in the frame. The green pine branches with gold beads and lights are behind the pine cone ornament.",
+    "spatial": "The gold beads are draped over the green pine branch in the background. The red-tipped pinecone is positioned above the beads. In the second frame, the frosted pinecone ornament is centered in the foreground with a twine loop extending to the right.",
     "parse_success": true,
     "chunk_idx": 8,
     "video_id": "WW-k2iTvJ3Q"
   },
   {
     "time": [
-      18,
-      20
+      9,
+      10
     ],
     "visible_entities": [
       {
@@ -414,19 +446,66 @@
         "position": "foreground"
       },
       {
-        "desc": "three brown pinecones with textured scales",
+        "desc": "three brown pinecones with rough, textured scales",
         "action": "static",
         "position": "background left"
       },
       {
-        "desc": "coil of brown twine",
+        "desc": "coil of thick, brown natural fiber twine",
         "action": "static",
         "position": "background center"
       },
       {
-        "desc": "three small bottles with red, dark red, and white contents",
+        "desc": "three small bottles of nail polish with red, dark purple, and white contents",
         "action": "static",
         "position": "background top"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A black hot glue gun rests on a white surface.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "Three pinecones are clustered near a coil of twine.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "Bottles of nail polish are arranged in a row behind the twine.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The black hot glue gun is in the foreground, positioned below the other items. The coil of twine is located behind the glue gun and to the right of the pinecones. The three bottles of nail polish are situated above the twine and pinecones in the background.",
+    "parse_success": true,
+    "chunk_idx": 9,
+    "video_id": "WW-k2iTvJ3Q"
+  },
+  {
+    "time": [
+      10,
+      11
+    ],
+    "visible_entities": [
+      {
+        "desc": "black hot glue gun with a yellow trigger and a silver metal nozzle, showing signs of dried glue residue on the body",
+        "action": "static",
+        "position": "foreground"
+      },
+      {
+        "desc": "translucent white glue stick inserted into the back of the glue gun",
+        "action": "static",
+        "position": "left"
+      },
+      {
+        "desc": "brown pinecones with textured scales",
+        "action": "static",
+        "position": "background"
+      },
+      {
+        "desc": "coil of brown jute twine",
+        "action": "static",
+        "position": "background"
       }
     ],
     "atomic_facts": [
@@ -439,112 +518,65 @@
         "confidence": 1.0
       },
       {
-        "fact": "Three pinecones are clustered near a coil of twine.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "Three small bottles are lined up behind the twine.",
+        "fact": "Pinecones and a coil of twine are positioned in the background behind the glue gun.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The black hot glue gun is in the foreground, positioned below the other items. The coil of twine is to the right of the pinecones. The three small bottles are behind the coil of twine.",
-    "parse_success": true,
-    "chunk_idx": 9,
-    "video_id": "WW-k2iTvJ3Q"
-  },
-  {
-    "time": [
-      20,
-      22
-    ],
-    "visible_entities": [
-      {
-        "desc": "black hot glue gun with a yellow trigger, metal nozzle, and a translucent glue stick inserted in the back",
-        "action": "static",
-        "position": "foreground"
-      },
-      {
-        "desc": "brown pinecones with textured scales",
-        "action": "static",
-        "position": "background left"
-      },
-      {
-        "desc": "coil of brown twine",
-        "action": "static",
-        "position": "background center"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "A black hot glue gun rests on a white surface.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "Pinecones and a coil of twine are placed in the background.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [],
-    "spatial": "The black hot glue gun is in the foreground, positioned to the right of the pinecones and twine. The pinecones are to the left of the coil of twine. All items are resting on a white surface.",
+    "spatial": "The black hot glue gun is in the foreground, positioned diagonally across the frame. A translucent glue stick protrudes from the left side of the gun. In the background, a coil of brown twine and several pinecones are arranged on the white surface behind the tool.",
     "parse_success": true,
     "chunk_idx": 10,
     "video_id": "WW-k2iTvJ3Q"
   },
   {
     "time": [
-      22,
-      24
+      11,
+      12
     ],
     "visible_entities": [
       {
-        "desc": "three pinecones, brown and textured with woody scales, varying in size",
+        "desc": "three pinecones, brown and woody with textured scales, varying in size",
         "action": "static"
       },
       {
-        "desc": "a coiled bundle of rough, light-brown twine or jute string",
+        "desc": "a coiled bundle of rough, brown natural fiber twine",
         "action": "static"
       },
       {
-        "desc": "three small glass bottles of nail polish, containing red, dark red, and white liquids",
+        "desc": "three glass nail polish bottles with black caps, containing red and beige liquid",
         "action": "static"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A collection of craft supplies is arranged on a white surface.",
+        "fact": "The items are arranged on a plain white surface.",
         "confidence": 1.0
       },
       {
-        "fact": "The nail polish bottle on the left has a label that reads 'NAIL PAINT'.",
+        "fact": "The nail polish bottles are positioned in the background.",
         "confidence": 1.0
       },
       {
-        "fact": "The pinecones are positioned to the left of the twine and nail polish.",
+        "fact": "The pinecones and twine are positioned in the foreground.",
         "confidence": 1.0
       }
     ],
     "ocr": [
       "NAIL PAINT"
     ],
-    "spatial": "The pinecones are located on the left side of the frame, with the largest one at the top left and a smaller one at the bottom left. The coil of twine is in the center, positioned to the right of the pinecones. The three nail polish bottles are arranged in a row in the upper right background, behind the twine.",
+    "spatial": "The bundle of twine is located in the center of the frame, surrounded by the pinecones. The pinecones are to the left of the twine. The nail polish bottles are behind the twine and pinecones, arranged in a row near the top edge.",
     "parse_success": true,
     "chunk_idx": 11,
     "video_id": "WW-k2iTvJ3Q"
   },
   {
     "time": [
-      24,
-      26
+      12,
+      13
     ],
     "visible_entities": [
       {
-        "desc": "large brown pinecone with textured scales",
-        "action": "static",
-        "position": "left"
-      },
-      {
-        "desc": "smaller brown pinecone",
+        "desc": "brown pine cone with textured scales",
         "action": "static",
         "position": "left"
       },
@@ -554,161 +586,165 @@
         "position": "left foreground"
       },
       {
-        "desc": "red nail polish bottle with black cap",
+        "desc": "bottle of red nail polish with black cap",
         "action": "static",
         "position": "center"
       },
       {
-        "desc": "dark red nail polish bottle with gold cap",
+        "desc": "bottle of dark red nail polish with gold cap",
         "action": "static",
         "position": "center"
       },
       {
-        "desc": "white nail polish bottle with black cap",
+        "desc": "bottle of pearlescent white nail polish with black cap",
         "action": "static",
-        "position": "center right"
+        "position": "right"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "Three nail polish bottles are arranged in a row on a white surface.",
+        "fact": "Three bottles of nail polish are arranged in a row on a white surface.",
         "confidence": 1.0
       },
       {
-        "fact": "A coil of twine sits in the foreground near the pinecones.",
+        "fact": "A coil of twine sits in the foreground to the left of the nail polish bottles.",
         "confidence": 1.0
       },
       {
-        "fact": "The red nail polish bottle displays the text 'NAIL PAINT'.",
+        "fact": "Pine cones are positioned on the far left side of the frame.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The red nail polish bottle has text reading 'NAIL PAINT' on the front.",
         "confidence": 1.0
       }
     ],
     "ocr": [
-      "NAIL PAINT"
+      "NAIL",
+      "PAINT"
     ],
-    "spatial": "The pinecones and twine are positioned to the left of the nail polish bottles. The red nail polish bottle is to the left of the dark red bottle, which is to the left of the white bottle. The twine is in front of the pinecones.",
+    "spatial": "The pine cones are to the left of the coil of twine. The twine is in the foreground, positioned in front of the nail polish bottles. The red nail polish bottle is to the left of the dark red bottle, which is to the left of the white bottle.",
     "parse_success": true,
     "chunk_idx": 12,
     "video_id": "WW-k2iTvJ3Q"
   },
   {
     "time": [
-      26,
-      28
+      13,
+      14
     ],
     "visible_entities": [
       {
-        "desc": "hand with light skin tone and manicured nails",
-        "action": "holding a bottle of red nail polish",
-        "position": "right"
+        "desc": "person's hands with light skin tone and manicured nails",
+        "action": "holding a nail polish bottle",
+        "position": "top right"
       },
       {
-        "desc": "small brown pinecone with open scales",
-        "action": "static",
-        "position": "left"
-      },
-      {
-        "desc": "rectangular glass bottle of red nail polish with a black cap",
+        "desc": "red nail polish bottle with a black cap and gold lettering",
         "action": "being held",
-        "position": "right"
+        "position": "center right"
+      },
+      {
+        "desc": "brown pine cone with open scales",
+        "action": "static",
+        "position": "center left"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A hand is holding a bottle of red nail polish.",
+        "fact": "A person's hands are holding a bottle of red nail polish.",
         "confidence": 1.0
       },
       {
-        "fact": "The hand is positioned to the right of the pinecone.",
+        "fact": "The red nail polish bottle is positioned next to a pine cone.",
         "confidence": 1.0
       },
       {
-        "fact": "The pinecone is resting on a white surface.",
+        "fact": "The pine cone is resting on a white surface.",
         "confidence": 1.0
       }
     ],
     "ocr": [
-      "NAIL",
-      "PAINT",
+      "NAIL PAINT",
       "Barry M"
     ],
-    "spatial": "The hand holding the red nail polish bottle is to the right of the small brown pinecone. The pinecone is resting on the white surface in the foreground.",
+    "spatial": "The person's hands are above the pine cone and are holding the red nail polish bottle. The red nail polish bottle is to the right of the pine cone. The pine cone is on the white surface.",
     "parse_success": true,
     "chunk_idx": 13,
     "video_id": "WW-k2iTvJ3Q"
   },
   {
     "time": [
-      28,
-      30
+      14,
+      15
     ],
     "visible_entities": [
       {
-        "desc": "hands with light skin and natural nails",
-        "action": "holding pinecone and applying polish",
+        "desc": "person's hands with natural nails",
+        "action": "painting the pinecone",
         "position": "center"
       },
       {
-        "desc": "brown pinecone with woody scales",
+        "desc": "brown pinecone with textured scales",
         "action": "being painted",
         "position": "center"
       },
       {
         "desc": "red glitter nail polish brush",
-        "action": "dabbing pinecone",
+        "action": "applying polish to pinecone",
         "position": "center"
       },
       {
-        "desc": "square glass bottle of red glitter nail polish",
+        "desc": "square glass bottle of red glitter nail polish with black cap",
         "action": "static",
-        "position": "right"
+        "position": "bottom right"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A person is painting a pinecone with red glitter nail polish.",
+        "fact": "A person is using a brush to apply red glitter nail polish to a pinecone.",
         "confidence": 1.0
       },
       {
-        "fact": "The brush is dabbing the top scales of the pinecone.",
+        "fact": "The pinecone is held in the person's left hand.",
         "confidence": 1.0
       },
       {
-        "fact": "The nail polish bottle is sitting on the white surface.",
+        "fact": "The bottle of nail polish is sitting on the white surface.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The hands are in the center of the frame, holding the pinecone. The nail polish brush is touching the top of the pinecone. The bottle of nail polish is to the right of the hands and pinecone.",
+    "spatial": "The person's hands are in the center of the frame, holding the pinecone. The nail polish brush is touching the top of the pinecone. The bottle of nail polish is to the right of the pinecone and below the hands.",
     "parse_success": true,
     "chunk_idx": 14,
     "video_id": "WW-k2iTvJ3Q"
   },
   {
     "time": [
-      30,
-      32
+      15,
+      16
     ],
     "visible_entities": [
       {
-        "desc": "hands with manicured, natural-looking fingernails",
+        "desc": "hands with light skin and natural, unpolished fingernails",
         "action": "holding a pinecone and applying polish",
-        "position": "center"
+        "position": "center/foreground"
       },
       {
-        "desc": "brown pinecone with woody, textured scales",
+        "desc": "brown pinecone with rough, woody scales and some white residue",
         "action": "being painted",
         "position": "center"
       },
       {
-        "desc": "red glittery nail polish on a brush",
-        "action": "applying to pinecone scales",
-        "position": "center"
+        "desc": "black nail polish brush with a black handle and bristles coated in red glitter polish",
+        "action": "dabbing polish onto the pinecone",
+        "position": "left/center"
       },
       {
-        "desc": "square glass bottle of red glitter nail polish with a black cap",
+        "desc": "small glass bottle of red glitter nail polish with a black cap and a white barcode label",
         "action": "static",
-        "position": "bottom right"
+        "position": "right/background"
       }
     ],
     "atomic_facts": [
@@ -721,133 +757,132 @@
         "confidence": 1.0
       },
       {
-        "fact": "The bottle of red nail polish is sitting on the surface nearby.",
+        "fact": "The nail polish bottle is sitting on the white surface.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The hands are in the center of the frame, holding the pinecone. The nail polish brush is touching the top of the pinecone. The bottle of nail polish is to the right of the hands and pinecone.",
+    "spatial": "The hands are in the center of the frame, holding the pinecone. The nail polish brush is positioned above the pinecone, touching its scales. The bottle of nail polish is to the right of the hands and pinecone, resting on the white surface.",
     "parse_success": true,
     "chunk_idx": 15,
     "video_id": "WW-k2iTvJ3Q"
   },
   {
     "time": [
-      32,
-      34
+      16,
+      17
     ],
     "visible_entities": [
       {
-        "desc": "person's hands with light skin tone",
-        "action": "holding a brown textured object and reaching for a bottle",
-        "position": "center"
+        "desc": "hand with fair skin holding a brown, textured, fibrous object",
+        "action": "holding a brown object",
+        "position": "top right"
       },
       {
-        "desc": "small red glass bottle with a white label",
-        "action": "being picked up",
-        "position": "right"
+        "desc": "small square glass bottle with red liquid and a white label",
+        "action": "static",
+        "position": "bottom right"
       },
       {
-        "desc": "brown textured object, possibly a pinecone or dried flower",
-        "action": "being held",
-        "position": "center"
-      },
-      {
-        "desc": "red applicator brush",
+        "desc": "red applicator brush tip",
         "action": "static",
         "position": "left"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A person is holding a brown textured object in their right hand.",
+        "fact": "A hand is holding a brown, textured object above a white surface.",
         "confidence": 1.0
       },
       {
-        "fact": "The person's left hand reaches for and picks up the red bottle.",
+        "fact": "A small bottle of red liquid sits on the white surface.",
         "confidence": 1.0
       },
       {
-        "fact": "A red applicator brush lies on the white surface to the left.",
+        "fact": "A red brush tip is visible on the left side of the frame.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The person's hands are in the center of the frame. The red bottle is to the right of the hands. The red applicator brush is to the left of the hands. The brown textured object is held in the person's right hand.",
+    "spatial": "The hand holding the brown object is positioned above and to the right of the red bottle. The red bottle is located in the bottom right area of the frame. The red brush tip is to the left of the bottle.",
     "parse_success": true,
     "chunk_idx": 16,
     "video_id": "WW-k2iTvJ3Q"
   },
   {
     "time": [
-      34,
-      36
+      17,
+      18
     ],
     "visible_entities": [
       {
-        "desc": "hand with light skin tone and short, natural nails",
+        "desc": "hand with fair skin and short, natural nails",
         "action": "holding a pinecone",
         "position": "center"
       },
       {
-        "desc": "brown pinecone with textured scales, partially painted with red polish",
+        "desc": "brown pinecone with woody scales, partially painted with red glitter",
         "action": "being painted",
         "position": "center"
       },
       {
-        "desc": "black nail polish brush with red glittery polish on the bristles",
-        "action": "applying polish to the pinecone",
+        "desc": "black nail polish brush with red glitter polish on bristles",
+        "action": "applying polish to pinecone",
         "position": "left"
       },
       {
-        "desc": "square glass bottle containing red glittery nail polish",
+        "desc": "square glass bottle containing red glitter nail polish",
         "action": "static",
         "position": "right"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A hand holds a brown pinecone in the center of the frame.",
+        "fact": "A hand holds a brown pinecone steady.",
         "confidence": 1.0
       },
       {
-        "fact": "A brush applies red glittery nail polish to the scales of the pinecone.",
+        "fact": "A brush applies red glitter nail polish to the scales of the pinecone.",
         "confidence": 1.0
       },
       {
-        "fact": "The bottle of red nail polish sits on the surface to the right.",
+        "fact": "The pinecone has patches of red glitter on its upper scales.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A bottle of red glitter nail polish sits on the surface.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The hand is holding the pinecone in the center of the frame. The nail polish brush is to the left of the pinecone, touching its scales. The bottle of red polish is to the right of the hand and pinecone.",
+    "spatial": "The hand is in the center of the frame, holding the pinecone. The nail polish brush is to the left of the pinecone, touching its scales. The bottle of nail polish is to the right of the hand and pinecone, resting on the white surface.",
     "parse_success": true,
     "chunk_idx": 17,
     "video_id": "WW-k2iTvJ3Q"
   },
   {
     "time": [
-      36,
-      38
+      18,
+      19
     ],
     "visible_entities": [
       {
-        "desc": "hands with fair skin and short, natural nails",
+        "desc": "person's hands with light skin tone and natural fingernails",
         "action": "holding pinecone and applying polish",
         "position": "center"
       },
       {
-        "desc": "brown pinecone with rough, woody texture and open scales",
+        "desc": "brown pinecone with textured scales, partially painted with red glitter",
         "action": "being painted",
         "position": "center"
       },
       {
-        "desc": "red glitter nail polish on a black brush applicator",
-        "action": "dabbing onto pinecone scales",
+        "desc": "black nail polish brush with red glittery polish on bristles",
+        "action": "applying polish to pinecone scales",
         "position": "left"
       },
       {
-        "desc": "glass bottle of red glitter nail polish with a black cap",
+        "desc": "glass bottle of red glitter nail polish with black cap",
         "action": "static",
         "position": "right"
       }
@@ -862,20 +897,20 @@
         "confidence": 1.0
       },
       {
-        "fact": "Some scales on the pinecone are already painted with red glitter.",
+        "fact": "The bottle of red polish is sitting on the surface to the right of the hands.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The hands are in the center of the frame, holding the pinecone. The brush with red polish is to the left of the pinecone, touching its scales. The bottle of nail polish is sitting on the surface to the right of the hands.",
+    "spatial": "The person's hands are in the center of the frame, holding the pinecone. The brush is positioned to the left of the pinecone, touching its scales. The bottle of nail polish is located to the right of the hands on the white surface.",
     "parse_success": true,
     "chunk_idx": 18,
     "video_id": "WW-k2iTvJ3Q"
   },
   {
     "time": [
-      38,
-      40
+      19,
+      20
     ],
     "visible_entities": [
       {
@@ -884,79 +919,83 @@
         "position": "center"
       },
       {
-        "desc": "pinecone with brown scales and red painted tips",
+        "desc": "pinecone, brown, woody texture, with red painted tips on scales",
         "action": "being held and rotated",
         "position": "center"
       },
       {
-        "desc": "red nail polish bottle, square glass container",
+        "desc": "red nail polish bottle, glass, square shape, open",
         "action": "static",
         "position": "right"
       },
       {
-        "desc": "red nail polish brush",
-        "action": "painting",
+        "desc": "red nail polish brush, wet with red polish",
+        "action": "static",
         "position": "left"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A hand is holding a pinecone.",
+        "fact": "A hand is holding a brown pinecone.",
         "confidence": 1.0
       },
       {
-        "fact": "Red nail polish is being applied to the tips of the pinecone scales.",
+        "fact": "The tips of the pinecone scales are painted with red nail polish.",
         "confidence": 1.0
       },
       {
-        "fact": "The pinecone is rotated to show the painted red tips.",
+        "fact": "The pinecone is being rotated to show the painted details.",
         "confidence": 1.0
       },
       {
-        "fact": "A bottle of red nail polish sits on the surface to the right.",
+        "fact": "An open bottle of red nail polish sits on the surface to the right.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A nail polish brush with red polish is visible on the left side.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The hand is in the center of the frame holding the pinecone. The nail polish brush is to the left of the pinecone. The nail polish bottle is to the right of the hand on the white surface.",
+    "spatial": "The hand is in the center holding the pinecone. The red nail polish bottle is to the right of the hand. The nail polish brush is to the left of the hand.",
     "parse_success": true,
     "chunk_idx": 19,
     "video_id": "WW-k2iTvJ3Q"
   },
   {
     "time": [
-      40,
-      42
+      20,
+      21
     ],
     "visible_entities": [
       {
-        "desc": "hands with light skin and manicured nails, wearing a silver ring on the right ring finger",
-        "action": "holding and placing pinecones",
-        "position": "left and right"
+        "desc": "person's hands with light skin and manicured nails",
+        "action": "holding and releasing pinecones",
+        "position": "top/foreground"
       },
       {
         "desc": "dark brown pinecone with white-tipped scales",
-        "action": "being placed on the surface",
+        "action": "being held then placed on surface",
         "position": "left"
       },
       {
         "desc": "pinecone with red-tipped scales",
-        "action": "being placed on the surface",
+        "action": "being held then placed on surface",
         "position": "right"
       },
       {
-        "desc": "smooth, light beige surface",
+        "desc": "smooth, light-colored surface",
         "action": "static",
         "position": "background"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A person is holding two pinecones.",
+        "fact": "A person's hands are holding two pinecones.",
         "confidence": 1.0
       },
       {
-        "fact": "The person places the pinecones onto the surface.",
+        "fact": "The hands release the pinecones onto the surface.",
         "confidence": 1.0
       },
       {
@@ -969,52 +1008,52 @@
       }
     ],
     "ocr": [],
-    "spatial": "The dark brown pinecone is to the left of the red-tipped pinecone. The hands are above the pinecones, holding them. The pinecones are on the light beige surface.",
+    "spatial": "The person's hands are above the two pinecones. The dark brown pinecone with white tips is to the left of the pinecone with red tips. Both pinecones are on the light-colored surface.",
     "parse_success": true,
     "chunk_idx": 20,
     "video_id": "WW-k2iTvJ3Q"
   },
   {
     "time": [
-      42,
-      44
+      21,
+      22
     ],
     "visible_entities": [
       {
-        "desc": "natural brown pinecone with woody scales",
+        "desc": "natural brown pinecone with woody scales, appearing slightly open",
         "action": "static",
         "position": "left"
       },
       {
-        "desc": "pinecone painted with red tips on the scales",
+        "desc": "pinecone painted with red tips on the scales and a dark brown body",
         "action": "static",
-        "position": "center"
+        "position": "right"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "Two pinecones are resting on a white surface.",
+        "fact": "Two pinecones rest on a flat, light-colored surface.",
         "confidence": 1.0
       },
       {
-        "fact": "The pinecone on the left is natural brown.",
+        "fact": "The pinecone on the left is natural brown, while the one on the right is painted with red accents.",
         "confidence": 1.0
       },
       {
-        "fact": "The pinecone in the center has red paint on the tips of its scales.",
+        "fact": "Both objects remain stationary throughout the clip.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The natural brown pinecone is to the left of the red-tipped pinecone. Both objects are resting on a plain white background.",
+    "spatial": "The natural brown pinecone is to the left of the red-tipped pinecone. Both objects are resting on a plain, light-colored background.",
     "parse_success": true,
     "chunk_idx": 21,
     "video_id": "WW-k2iTvJ3Q"
   },
   {
     "time": [
-      44,
-      46
+      22,
+      23
     ],
     "visible_entities": [
       {
@@ -1023,24 +1062,24 @@
         "position": "left"
       },
       {
-        "desc": "pinecone with red painted tips",
+        "desc": "pinecone painted with red and gold glitter",
         "action": "static",
         "position": "center"
       },
       {
-        "desc": "pinecone with white painted tips",
+        "desc": "pinecone painted with white tips",
         "action": "being placed",
         "position": "right"
       },
       {
         "desc": "human hand with light skin tone",
-        "action": "placing pinecone",
+        "action": "placing the pinecone",
         "position": "right"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A hand places a pinecone with white painted tips onto the surface.",
+        "fact": "A hand is placing a white-tipped pinecone onto the surface.",
         "confidence": 1.0
       },
       {
@@ -1052,39 +1091,44 @@
         "confidence": 1.0
       },
       {
-        "fact": "The pinecone in the center has red paint on its scales.",
+        "fact": "The pinecone in the center has red and gold glitter paint.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The dark brown pinecone is to the left of the red-tipped pinecone. The red-tipped pinecone is in the center, between the dark brown pinecone and the white-tipped pinecone. The hand is positioned above and to the right of the white-tipped pinecone, holding it in place.",
+    "spatial": "The dark brown pinecone is to the left of the red and gold pinecone. The red and gold pinecone is to the left of the white-tipped pinecone. The hand is positioned above and to the right of the white-tipped pinecone, holding it.",
     "parse_success": true,
     "chunk_idx": 22,
     "video_id": "WW-k2iTvJ3Q"
   },
   {
     "time": [
-      46,
-      48
+      23,
+      24
     ],
     "visible_entities": [
       {
-        "desc": "hand with light pink nail polish and a silver ring on the ring finger",
-        "action": "holding a piece of twine",
+        "desc": "hand with light skin and pale pink nail polish, wearing a ring on the ring finger",
+        "action": "holding a loop of twine",
         "position": "right"
       },
       {
-        "desc": "coarse brown twine rope",
+        "desc": "yellow-handled scissors with silver metal blades",
+        "action": "cutting the twine",
+        "position": "center"
+      },
+      {
+        "desc": "brown twisted twine rope",
         "action": "being cut",
         "position": "center"
       },
       {
-        "desc": "scissors with yellow handles and silver blades",
-        "action": "cutting the twine",
-        "position": "left"
+        "desc": "pile of brown twisted twine",
+        "action": "static",
+        "position": "bottom"
       },
       {
-        "desc": "plain off-white surface",
+        "desc": "light beige flat surface",
         "action": "static",
         "position": "background"
       }
@@ -1095,119 +1139,224 @@
         "confidence": 1.0
       },
       {
-        "fact": "Scissors are used to cut the twine.",
+        "fact": "Yellow-handled scissors are cutting the brown twine.",
         "confidence": 1.0
       },
       {
-        "fact": "The scissors have yellow handles.",
+        "fact": "A pile of twine rests on the surface below the hand.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The hand is positioned on the right side of the frame, holding the twine. The scissors are to the left of the hand, with their blades positioned around the twine. The twine extends from the hand down towards the bottom of the frame.",
+    "spatial": "The hand is positioned on the right side of the frame, holding the twine. The yellow-handled scissors are in the center, cutting the twine held by the hand. A pile of twine is located at the bottom of the frame, below the active cutting area.",
     "parse_success": true,
     "chunk_idx": 23,
     "video_id": "WW-k2iTvJ3Q"
   },
   {
     "time": [
-      48,
-      50
+      24,
+      25
     ],
     "visible_entities": [
       {
-        "desc": "person's hands with light skin and manicured fingernails painted with light pink polish, wearing a silver ring on the right ring finger",
+        "desc": "person's hands with light skin and manicured nails with light pink polish, wearing a ring on the right ring finger",
         "action": "manipulating a small brown object",
-        "position": "top center"
+        "position": "center"
       },
       {
-        "desc": "scissors with bright yellow plastic handles and silver metal blades",
-        "action": "held in the left hand",
-        "position": "top left"
+        "desc": "scissors with yellow plastic handles and silver metal blades",
+        "action": "cutting a small object",
+        "position": "left"
       },
       {
-        "desc": "small, brown, fibrous object resembling a piece of twine or dried plant material",
-        "action": "being held and cut",
-        "position": "top center"
+        "desc": "small brown fibrous object, possibly a piece of twine or dried plant material",
+        "action": "being cut",
+        "position": "center"
       },
       {
         "desc": "coiled brown twine rope",
         "action": "static",
-        "position": "bottom left"
-      },
-      {
-        "desc": "loop of brown twine rope",
-        "action": "static",
-        "position": "bottom center"
+        "position": "bottom"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "The person is holding a small brown fibrous object between their thumb and forefinger.",
+        "fact": "The person is using the yellow-handled scissors to cut a small brown fibrous object.",
         "confidence": 1.0
       },
       {
-        "fact": "The person is using the yellow-handled scissors to cut the small brown object.",
+        "fact": "The scissors are positioned to the left of the hands.",
         "confidence": 1.0
       },
       {
-        "fact": "Two separate pieces of brown twine are resting on the white surface below the hands.",
+        "fact": "A coil of brown twine is visible at the bottom of the frame.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The person's hands are positioned above the white surface. The yellow-handled scissors are held in the left hand, positioned to the left of the small brown object held in the right hand. The coiled and looped brown twine are located below the hands on the surface.",
+    "spatial": "The scissors are held in the left hand and are positioned to the left of the right hand, which is holding the small brown object. The hands and scissors are above the coiled twine resting on the surface.",
     "parse_success": true,
     "chunk_idx": 24,
     "video_id": "WW-k2iTvJ3Q"
   },
   {
     "time": [
-      50,
-      52
+      25,
+      26
     ],
     "visible_entities": [
       {
-        "desc": "hands with light skin and manicured nails, wearing a silver ring on the right ring finger",
-        "action": "manipulating twine and newspaper",
-        "position": "left/center"
+        "desc": "hands with light skin and manicured fingernails, wearing a ring on the right ring finger",
+        "action": "holding and manipulating twine",
+        "position": "foreground"
       },
       {
-        "desc": "brown twisted twine, fibrous texture",
+        "desc": "brown natural fiber twine",
         "action": "being held and stretched",
-        "position": "center"
-      },
-      {
-        "desc": "rolled newspaper with colorful advertisements (yellow, pink, green sections) and black text",
-        "action": "static",
-        "position": "center"
-      },
-      {
-        "desc": "black hot glue gun with a metal nozzle",
-        "action": "being held",
         "position": "center"
       },
       {
         "desc": "black handled scissors",
         "action": "static",
-        "position": "left"
+        "position": "center"
+      },
+      {
+        "desc": "folded newspaper with white paper, black text, and pink and yellow highlighted sections",
+        "action": "being glued",
+        "position": "center"
+      },
+      {
+        "desc": "black hot glue gun",
+        "action": "applying glue",
+        "position": "top"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "Hands are holding and stretching a piece of brown twine.",
+        "fact": "Hands are holding and stretching a piece of twine in the first frame.",
         "confidence": 1.0
       },
       {
-        "fact": "A hot glue gun is being applied to the edge of a rolled newspaper.",
+        "fact": "A hot glue gun is applying glue to the edge of a folded newspaper in the second frame.",
         "confidence": 1.0
       },
       {
-        "fact": "Scissors are resting on the white surface near the hands.",
+        "fact": "Scissors are lying on the white surface in the first frame.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The newspaper has text and colored sections visible.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "THANK YOUR LOCAL GP",
+      "We are a not-for-profit GP",
+      "According to the point",
+      "ask us.",
+      "FRIENDS AND FAMILY TEST",
+      "We are happy to report that over 90%",
+      "friends or families would recommend us.",
+      "0161"
+    ],
+    "spatial": "In the first frame, the hands are holding the twine above the scissors which are resting on the white surface. In the second frame, the hand is holding the hot glue gun above the newspaper, applying glue to its edge. The newspaper is positioned on the white surface.",
+    "parse_success": true,
+    "chunk_idx": 25,
+    "video_id": "WW-k2iTvJ3Q"
+  },
+  {
+    "time": [
+      26,
+      27
+    ],
+    "visible_entities": [
+      {
+        "desc": "hand with fair skin, holding a tool",
+        "action": "pressing tool onto newspaper",
+        "position": "top left"
+      },
+      {
+        "desc": "black and silver tool, possibly a soldering iron or hot knife",
+        "action": "being used to cut or seal paper",
+        "position": "center"
+      },
+      {
+        "desc": "folded newspaper with white, yellow, and pink sections, containing printed text",
+        "action": "static",
+        "position": "center"
+      },
+      {
+        "desc": "piece of brown twine",
+        "action": "static",
+        "position": "bottom right"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A hand is pressing a black and silver tool onto a folded newspaper.",
         "confidence": 1.0
       },
       {
         "fact": "The newspaper features a yellow section with the text 'THANK YOUR LOCAL GP'.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A pink section on the newspaper reads 'FRIENDS AND FAMILY TEST'.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A piece of twine lies on the white surface in the bottom right corner.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "THANK YOUR LOCAL GP",
+      "FRIENDS AND FAMILY TEST",
+      "Who is my named GP?",
+      "We are happy to report that over 90%",
+      "Tel: 01491 839999",
+      "Health Centre"
+    ],
+    "spatial": "The hand is holding the tool above the newspaper. The newspaper is positioned on a white surface. The piece of twine is to the right of the newspaper.",
+    "parse_success": true,
+    "chunk_idx": 26,
+    "video_id": "WW-k2iTvJ3Q"
+  },
+  {
+    "time": [
+      27,
+      28
+    ],
+    "visible_entities": [
+      {
+        "desc": "hand with light skin and manicured fingernails",
+        "action": "holding a piece of twine",
+        "position": "left"
+      },
+      {
+        "desc": "black hot glue gun with a metal nozzle",
+        "action": "applying glue to the twine",
+        "position": "top center"
+      },
+      {
+        "desc": "folded newspaper with white paper, black text, and pink and yellow highlighted sections",
+        "action": "static",
+        "position": "center"
+      },
+      {
+        "desc": "loose piece of brown twine",
+        "action": "static",
+        "position": "bottom right"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A hand is holding a piece of twine against the edge of a folded newspaper.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A hot glue gun is being used to apply glue to the twine.",
         "confidence": 1.0
       },
       {
@@ -1216,157 +1365,50 @@
       }
     ],
     "ocr": [
-      "THANK YOUR LOCAL GP",
-      "FRIENDS AND FAMILY TEST",
-      "We are happy to report that our new",
-      "We are very pleased GPs",
-      "official GP",
-      "0845 601 01 01"
-    ],
-    "spatial": "The hands are positioned above the white surface, holding the twine and the glue gun. The scissors are located to the left of the hands. The rolled newspaper is in the center, with the glue gun being applied to its top edge. The twine is being stretched between the hands above the surface.",
-    "parse_success": true,
-    "chunk_idx": 25,
-    "video_id": "WW-k2iTvJ3Q"
-  },
-  {
-    "time": [
-      52,
-      54
-    ],
-    "visible_entities": [
-      {
-        "desc": "person's hand with fair skin, holding a tool",
-        "action": "pressing tool onto newspaper",
-        "position": "top left"
-      },
-      {
-        "desc": "hot glue gun with black body and metallic nozzle",
-        "action": "being used to apply adhesive",
-        "position": "top center"
-      },
-      {
-        "desc": "folded newspaper with white paper, black text, and pink and yellow colored sections",
-        "action": "static",
-        "position": "center"
-      },
-      {
-        "desc": "piece of brown twisted twine",
-        "action": "static",
-        "position": "bottom right"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "A person is using a hot glue gun to apply glue to a folded newspaper.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The newspaper features a pink section with the text 'FRIENDS AND FAMILY FEST'.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "A piece of twine lies on the white surface near the newspaper.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [
-      "TH 06",
+      "ey HEALTH",
       "YOUR LOCAL GP",
-      "Who is my named GP?",
       "FRIENDS AND FAMILY TEST",
-      "We are happy to report that over 90%"
+      "We are happy to report that over the last 6 months, our patients have rated us as"
     ],
-    "spatial": "The person's hand is holding the glue gun above the newspaper. The newspaper is positioned on a white surface. The piece of twine is to the right of the newspaper.",
-    "parse_success": true,
-    "chunk_idx": 26,
-    "video_id": "WW-k2iTvJ3Q"
-  },
-  {
-    "time": [
-      54,
-      56
-    ],
-    "visible_entities": [
-      {
-        "desc": "hand with manicured nails, holding a piece of twine",
-        "action": "holding twine against newspaper",
-        "position": "left"
-      },
-      {
-        "desc": "black hot glue gun nozzle",
-        "action": "static",
-        "position": "top center"
-      },
-      {
-        "desc": "folded newspaper with colorful text and images",
-        "action": "static",
-        "position": "center"
-      },
-      {
-        "desc": "brown twine string",
-        "action": "static",
-        "position": "bottom right"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "A hand holds a piece of twine against a folded newspaper.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "A hot glue gun nozzle is positioned near the twine.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The newspaper features a pink banner with the text 'FRIENDS AND FAMILY TEXT'.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [
-      "ey WEALTH",
-      "YOUR LOCAL GP",
-      "FRIENDS AND FAMILY TEXT",
-      "We are happy to report that our"
-    ],
-    "spatial": "The hand is on the left side of the frame, holding the twine against the newspaper. The glue gun nozzle is above the hand and twine. A loose piece of twine lies on the surface to the bottom right of the newspaper.",
+    "spatial": "The hand is on the left side, holding the twine against the newspaper. The hot glue gun is positioned above the hand and newspaper, dispensing glue. A loose piece of twine lies on the white surface to the bottom right of the newspaper.",
     "parse_success": true,
     "chunk_idx": 27,
     "video_id": "WW-k2iTvJ3Q"
   },
   {
     "time": [
-      56,
-      58
+      28,
+      29
     ],
     "visible_entities": [
       {
-        "desc": "hands with light skin and manicured nails, wearing a silver ring on the left ring finger",
+        "desc": "hands with long, light pink manicured nails",
         "action": "tying a knot with twine",
-        "position": "left/center"
+        "position": "center"
       },
       {
-        "desc": "rolled newspaper with colorful print, featuring yellow, pink, and blue sections with text and a smiley face graphic",
+        "desc": "rolled newspaper with visible text and colorful graphics",
         "action": "static",
         "position": "center"
       },
       {
-        "desc": "natural brown twine string",
+        "desc": "brown twisted twine",
         "action": "being manipulated",
-        "position": "center/left"
+        "position": "center"
       },
       {
-        "desc": "white surface, likely a table",
+        "desc": "dark, textured object with red accents",
         "action": "static",
-        "position": "background"
+        "position": "center"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A person is using their hands to tie a piece of twine around a rolled-up newspaper.",
+        "fact": "A person is tying a knot with brown twine around a rolled newspaper.",
         "confidence": 1.0
       },
       {
-        "fact": "The newspaper has a yellow section with a smiley face and the text 'RAMSEY'.",
+        "fact": "The newspaper features a yellow section with a smiley face and the text 'RAMSAY'.",
         "confidence": 1.0
       },
       {
@@ -1374,157 +1416,163 @@
         "confidence": 1.0
       },
       {
-        "fact": "The hands are positioned over the white surface.",
+        "fact": "The hands are holding the twine and the rolled paper steady.",
         "confidence": 1.0
       }
     ],
     "ocr": [
-      "RAMSEY",
+      "RAMSAY",
       "FRIENDS AND FAMILY TEST",
-      "We are happy to report that our",
-      "months of",
-      "Who is my home girl? If you",
-      "which of our girls is your home girl, please",
-      "ask us.",
-      "To order the",
-      "visit us at the",
-      "official",
-      "coordinating this",
-      "This is not home girl",
-      "TANNER"
+      "This is my home! GIFT",
+      "We are happy to report that our"
     ],
-    "spatial": "The hands are holding the twine and are positioned above the rolled newspaper. The newspaper is lying on the white surface. The text 'FRIENDS AND FAMILY TEST' is located on a pink banner towards the right side of the visible newspaper section.",
+    "spatial": "The hands are positioned above the rolled newspaper, manipulating the twine. The twine is wrapped around the newspaper. The dark textured object is resting on top of the newspaper, held in place by the right hand.",
     "parse_success": true,
     "chunk_idx": 28,
     "video_id": "WW-k2iTvJ3Q"
   },
   {
     "time": [
-      58,
-      60
+      29,
+      30
     ],
     "visible_entities": [
       {
-        "desc": "hands with light skin and manicured nails, wearing a silver ring on the left ring finger",
+        "desc": "hands with light skin and manicured fingernails",
         "action": "tying a knot with twine",
-        "position": "left/center"
+        "position": "top left"
       },
       {
-        "desc": "rolled newspaper bundle wrapped in colorful patterned fabric with red and black tones",
-        "action": "being tied",
+        "desc": "rolled newspaper with visible text and colorful graphics",
+        "action": "static",
         "position": "center"
       },
       {
-        "desc": "natural fiber twine, light brown color",
+        "desc": "brown natural fiber twine",
         "action": "being manipulated",
+        "position": "top left"
+      },
+      {
+        "desc": "silver ring with a clear stone",
+        "action": "static",
         "position": "center"
       },
       {
-        "desc": "white table surface",
+        "desc": "white surface",
         "action": "static",
         "position": "background"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A person is tying a knot with twine around a rolled newspaper bundle.",
+        "fact": "Hands are tying a piece of brown twine around the top of a rolled newspaper.",
         "confidence": 1.0
       },
       {
-        "fact": "The bundle is wrapped in colorful fabric.",
+        "fact": "The newspaper features a yellow section with a blue sun graphic.",
         "confidence": 1.0
       },
       {
-        "fact": "The text 'FRIENDS AND FAMILY FEST' is visible on the newspaper.",
+        "fact": "A pink banner on the newspaper reads 'FRIENDS AND FAMILY TEST'.",
         "confidence": 1.0
       },
       {
-        "fact": "The text 'RAMS' is visible on the newspaper.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The person is wearing a silver ring.",
+        "fact": "A silver ring is worn on the ring finger of the left hand.",
         "confidence": 1.0
       }
     ],
     "ocr": [
-      "RAMS",
-      "FRIENDS AND FAMILY FEST",
-      "We are happy to report that our",
-      "months of construction",
-      "Here is my home gift",
-      "which of our gifts is your home? Or, you can"
+      "RAM",
+      "FRIENDS AND FAMILY TEST",
+      "Here is my home! GIFT is a new way to",
+      "celebrate the people and places that",
+      "mean the most to you. Give a gift",
+      "that's as unique as your home. Or, give a",
+      "gift to someone else.",
+      "We are happy to report that over the last",
+      "months, our community has grown to"
     ],
-    "spatial": "The hands are positioned above the rolled newspaper bundle, manipulating the twine. The bundle rests on the white table surface. The text 'FRIENDS AND FAMILY FEST' is printed on the side of the newspaper facing the camera.",
+    "spatial": "The hands are positioned above the rolled newspaper, manipulating the twine near the top edge. The newspaper lies horizontally on a white surface. The silver ring is on the finger of the hand holding the twine.",
     "parse_success": true,
     "chunk_idx": 29,
     "video_id": "WW-k2iTvJ3Q"
   },
   {
     "time": [
-      60,
-      62
+      30,
+      31
     ],
     "visible_entities": [
       {
-        "desc": "hands with fair skin and short, natural fingernails",
-        "action": "tying a knot with twine",
-        "position": "left/center/foreground"
+        "desc": "hands with light skin and manicured nails",
+        "action": "tying twine around a pinecone",
+        "position": "top left"
       },
       {
-        "desc": "pinecone with dark brown scales and red painted tips",
-        "action": "being secured by twine",
+        "desc": "pinecone with red painted tips and attached twine",
+        "action": "being held and manipulated",
         "position": "center"
       },
       {
-        "desc": "newspaper wrapping with white paper, black text, and pink and yellow colored sections",
+        "desc": "rolled newspaper with visible black text and pink/yellow graphics",
         "action": "static",
-        "position": "center/bottom"
+        "position": "center"
       },
       {
-        "desc": "natural fiber twine, light brown color",
-        "action": "being manipulated",
-        "position": "center"
+        "desc": "silver ring with a clear stone",
+        "action": "static",
+        "position": "on the left hand"
+      },
+      {
+        "desc": "loose piece of brown twine",
+        "action": "static",
+        "position": "bottom right"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A person is tying a knot with twine around a pinecone.",
+        "fact": "A person is using both hands to tie a piece of twine around the top of a pinecone.",
         "confidence": 1.0
       },
       {
-        "fact": "The pinecone is resting on top of a newspaper-wrapped package.",
+        "fact": "The pinecone is resting on top of a rolled-up newspaper.",
         "confidence": 1.0
       },
       {
-        "fact": "The text 'RAISE' is visible in a yellow box on the newspaper.",
+        "fact": "The newspaper features a pink banner with the text 'FRIENDS AND FAMILY TEST'.",
         "confidence": 1.0
       },
       {
-        "fact": "The text 'FRIENDS AND FAMILY TEST' is visible in a pink box on the newspaper.",
+        "fact": "A yellow section of the newspaper displays the text 'RAISE' and a smiley face graphic.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The person is wearing a silver ring on their left ring finger.",
         "confidence": 1.0
       }
     ],
     "ocr": [
+      "16",
       "RAISE",
       "FRIENDS AND FAMILY TEST",
-      "16",
-      "April 2018",
-      "We are happy to report that our"
+      "We are happy to report that our",
+      "Who is my home GIFT",
+      "Ask us",
+      "11"
     ],
-    "spatial": "The hands are positioned above the newspaper package, manipulating the twine. The pinecone is situated between the hands and the newspaper. The yellow 'RAISE' box is to the left of the pink 'FRIENDS AND FAMILY TEST' box on the newspaper surface.",
+    "spatial": "The hands are positioned above the rolled newspaper, holding the pinecone. The pinecone is resting on the newspaper. The loose piece of twine is located to the right of the newspaper on the white surface.",
     "parse_success": true,
     "chunk_idx": 30,
     "video_id": "WW-k2iTvJ3Q"
   },
   {
     "time": [
-      62,
-      64
+      31,
+      32
     ],
     "visible_entities": [
       {
-        "desc": "hands with light skin tone and natural nails",
+        "desc": "hands with fair skin and short, natural nails",
         "action": "manipulating a pinecone and applying glue",
         "position": "center"
       },
@@ -1534,8 +1582,8 @@
         "position": "center"
       },
       {
-        "desc": "black hot glue gun with a metal nozzle",
-        "action": "dispensing glue onto the pinecone",
+        "desc": "hot glue gun with a black body and metal nozzle",
+        "action": "applying glue to the pinecone",
         "position": "top right"
       },
       {
@@ -1555,19 +1603,19 @@
         "confidence": 1.0
       },
       {
-        "fact": "Hot glue is being applied to the base of the pinecone.",
+        "fact": "A hot glue gun is being used to apply a ring of glue to the base of the pinecone.",
         "confidence": 1.0
       },
       {
-        "fact": "The pinecone is positioned over a rolled newspaper.",
+        "fact": "The crafting is taking place on top of a rolled-up newspaper.",
         "confidence": 1.0
       },
       {
-        "fact": "The newspaper features a section titled 'FRIENDS AND FAMILY TEXT' highlighted in pink.",
+        "fact": "The newspaper has a section titled 'FRIENDS AND FAMILY TEXT' highlighted in pink.",
         "confidence": 1.0
       },
       {
-        "fact": "A piece of twine lies on the white surface in the bottom right corner.",
+        "fact": "A piece of twine lies on the white surface to the right of the newspaper.",
         "confidence": 1.0
       }
     ],
@@ -1575,20 +1623,29 @@
       "16 August",
       "KAI",
       "AL GR",
-      "Who is my career GF?",
-      "FRIENDS AND FAMILY TEXT",
+      "to obtain",
+      "will be one of",
+      "original",
+      "coordinating the post",
+      "Who is my contact GP?",
+      "What is my Care Plan and what does it",
+      "Who is my GP?",
+      "ask us.",
+      "FRIENDS AND FAMILY TEST",
       "We are happy to report that over the",
-      "months, we have been able to"
+      "months, an overwhelming number of",
+      "THANKS FOR YOUR",
+      "months, GP's have been the"
     ],
-    "spatial": "The hands are holding the pinecone in the center of the frame, directly above the rolled newspaper. The glue gun is positioned to the right of the pinecone, with its nozzle touching the pinecone's base. The piece of twine is located in the bottom right corner, separate from the main activity.",
+    "spatial": "The hands are in the center of the frame, holding the pinecone above the rolled newspaper. The hot glue gun is positioned to the top right of the pinecone, with its nozzle touching the pinecone's base. The piece of twine is located on the white surface to the bottom right of the newspaper.",
     "parse_success": true,
     "chunk_idx": 31,
     "video_id": "WW-k2iTvJ3Q"
   },
   {
     "time": [
-      64,
-      66
+      32,
+      33
     ],
     "visible_entities": [
       {
@@ -1598,28 +1655,28 @@
       },
       {
         "desc": "pinecone painted with red and black stripes",
-        "action": "being held",
-        "position": "left"
+        "action": "being glued",
+        "position": "center"
       },
       {
-        "desc": "hot glue gun with black body and metal nozzle",
+        "desc": "hot glue gun nozzle, black and metallic",
         "action": "applying glue",
+        "position": "top"
+      },
+      {
+        "desc": "piece of natural twine string",
+        "action": "being attached",
         "position": "center"
       },
       {
-        "desc": "twine string, light brown",
-        "action": "being attached to pinecone",
-        "position": "center"
-      },
-      {
-        "desc": "newspaper with white paper, black text, and pink and yellow graphics",
+        "desc": "newspaper page with text and pink highlights",
         "action": "static",
         "position": "background"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A hand holds a pinecone painted with red and black stripes.",
+        "fact": "A hand is holding a red and black painted pinecone.",
         "confidence": 1.0
       },
       {
@@ -1627,29 +1684,31 @@
         "confidence": 1.0
       },
       {
-        "fact": "A piece of twine is being attached to the glued top of the pinecone.",
+        "fact": "A piece of twine is being attached to the pinecone.",
         "confidence": 1.0
       },
       {
-        "fact": "The newspaper underneath has a headline that reads 'FRIENDS AND FAMILY TEXT'.",
+        "fact": "The newspaper underneath has a pink highlighted section titled 'FRIENDS AND FAMILY TEXT'.",
         "confidence": 1.0
       }
     ],
     "ocr": [
-      "FRIENDS AND FAMILY TEXT",
+      "2015",
+      "sey HEALTH C",
+      "YOUR LOCAL GP",
       "Who is my named GP?",
-      "I'm an emergency",
-      "YOUR LOCAL GP"
+      "FRIENDS AND FAMILY TEST",
+      "We are happy to learn that over"
     ],
-    "spatial": "The hand is on the left, holding the pinecone. The hot glue gun is positioned above the pinecone, applying glue to its top. The twine is being pressed into the glue on the pinecone. The newspaper is underneath the pinecone and the hand.",
+    "spatial": "The hand is on the left side of the frame, holding the pinecone which is positioned in the center. The glue gun nozzle is above the pinecone, dispensing glue onto it. The newspaper is underneath the pinecone and hand, serving as a work surface.",
     "parse_success": true,
     "chunk_idx": 32,
     "video_id": "WW-k2iTvJ3Q"
   },
   {
     "time": [
-      66,
-      68
+      33,
+      34
     ],
     "visible_entities": [
       {
@@ -1668,108 +1727,108 @@
         "position": "left"
       },
       {
-        "desc": "string of Christmas lights with green wire and clear bulbs",
-        "action": "glowing",
-        "position": "foreground"
+        "desc": "Christmas light string with green wire and clear bulbs emitting warm yellow light",
+        "action": "static",
+        "position": "bottom left"
       },
       {
-        "desc": "thin red wire",
+        "desc": "thin red wire hanging down",
         "action": "static",
         "position": "center"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A pinecone with white-tipped scales is positioned at the top of the frame.",
+        "fact": "A pinecone with white tips is positioned at the top of the arrangement.",
         "confidence": 1.0
       },
       {
-        "fact": "Christmas lights with green sockets are glowing in the foreground.",
+        "fact": "Christmas lights are illuminated, casting a warm glow.",
         "confidence": 1.0
       },
       {
-        "fact": "Gold beads are draped over the green pine needles.",
+        "fact": "Gold beads are draped among the green pine needles.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The pinecone is above the string of lights and the green pine needles. The gold beaded garland is intertwined with the pine needles on the left side. The red wire hangs vertically below the pinecone.",
+    "spatial": "The pinecone is above the Christmas lights and green pine needles. The gold beaded garland is to the left of the pinecone and intertwined with the green needles. A thin red wire hangs below the pinecone.",
     "parse_success": true,
     "chunk_idx": 33,
     "video_id": "WW-k2iTvJ3Q"
   },
   {
     "time": [
-      68,
-      70
+      34,
+      35
     ],
     "visible_entities": [
       {
-        "desc": "brown pinecone ornament with white frosted tips on the scales, hanging from a string",
+        "desc": "brown pinecone ornament with silver-painted tips on the scales, hanging from a rough twine string",
         "action": "static",
-        "position": "right"
+        "position": "right/foreground"
       },
       {
         "desc": "green artificial Christmas tree branches with gold bead garland and warm white string lights",
         "action": "static",
-        "position": "left"
+        "position": "left/foreground"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A pinecone ornament hangs stationary from a string.",
+        "fact": "A pinecone ornament hangs suspended in the air.",
         "confidence": 1.0
       },
       {
-        "fact": "Gold beads are draped over the green tree branches.",
+        "fact": "Gold bead garland is draped over the green tree branches.",
         "confidence": 1.0
       },
       {
-        "fact": "String lights are illuminated on the tree.",
+        "fact": "Warm white lights are illuminated on the tree.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The pinecone ornament is to the right of the Christmas tree branches. The gold bead garland is draped over the green branches on the left side of the frame.",
+    "spatial": "The pinecone ornament is positioned to the right of the Christmas tree branches. The gold bead garland is draped on the green branches. The pinecone is in the foreground, hanging near the tree.",
     "parse_success": true,
     "chunk_idx": 34,
     "video_id": "WW-k2iTvJ3Q"
   },
   {
     "time": [
-      70,
-      72
+      35,
+      36
     ],
     "visible_entities": [
       {
-        "desc": "natural brown pinecone with textured scales, hanging vertically",
-        "action": "static",
+        "desc": "brown pinecone with white-tipped scales, textured surface",
+        "action": "hanging",
         "position": "right"
       },
       {
-        "desc": "artificial green Christmas tree branches with needle-like texture",
+        "desc": "green artificial pine needles",
         "action": "static",
         "position": "left"
       },
       {
-        "desc": "shiny gold beaded garland wrapped around branches",
+        "desc": "gold beaded garland, shiny metallic finish",
         "action": "static",
         "position": "left"
       },
       {
-        "desc": "small warm-white Christmas light bulb, illuminated",
+        "desc": "warm white string lights, glowing bulbs",
         "action": "static",
         "position": "left"
       },
       {
-        "desc": "red-tipped pinecone decoration, partially visible",
+        "desc": "red-tipped pinecone decoration",
         "action": "static",
         "position": "top left"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A natural brown pinecone hangs from a string on the right side of the frame.",
+        "fact": "A brown pinecone hangs from a branch on the right side of the frame.",
         "confidence": 1.0
       },
       {
@@ -1777,35 +1836,31 @@
         "confidence": 1.0
       },
       {
-        "fact": "A small light bulb is illuminated, emitting a warm glow.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "A red-tipped pinecone decoration is visible in the upper left corner.",
+        "fact": "Warm white lights are illuminated among the greenery.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The natural brown pinecone is positioned to the right of the green Christmas tree branches. The gold beaded garland is wrapped around the branches on the left side. The red-tipped pinecone is located above the gold beads and to the left of the natural pinecone.",
+    "spatial": "The brown pinecone is to the right of the green artificial branches. The gold beaded garland and warm white lights are draped over and intertwined with the green branches on the left. The red-tipped pinecone is located in the upper left corner, above the gold beads.",
     "parse_success": true,
     "chunk_idx": 35,
     "video_id": "WW-k2iTvJ3Q"
   },
   {
     "time": [
-      72,
-      74
+      36,
+      37
     ],
     "visible_entities": [
       {
-        "desc": "large pinecone with dark brown scales and bright red tips, slightly out of focus",
+        "desc": "large pinecone with dark brown scales and red tips, slightly out of focus",
         "action": "static",
         "position": "left/foreground"
       },
       {
-        "desc": "natural brown pinecone with open scales, sharp focus",
+        "desc": "smaller natural brown pinecone with open scales, in focus",
         "action": "static",
-        "position": "right"
+        "position": "right/foreground"
       },
       {
         "desc": "green artificial pine needles",
@@ -1819,42 +1874,42 @@
       },
       {
         "desc": "warm white fairy lights",
-        "action": "glowing",
+        "action": "static",
         "position": "center"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A large pinecone with red-tipped scales hangs in the foreground on the left.",
+        "fact": "A large pinecone with red-tipped scales hangs on the left side of the frame.",
         "confidence": 1.0
       },
       {
-        "fact": "A natural brown pinecone is positioned on the right side of the frame.",
+        "fact": "A natural brown pinecone hangs on the right side of the frame.",
         "confidence": 1.0
       },
       {
-        "fact": "A string of gold beads is draped through the green pine needles.",
+        "fact": "Gold bead garlands are draped across the green pine branches.",
         "confidence": 1.0
       },
       {
-        "fact": "Small lights are glowing amidst the branches.",
+        "fact": "Small warm lights are illuminated among the decorations.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The large pinecone with red tips is in the foreground on the left, partially obscuring the green pine needles and gold beads behind it. The natural brown pinecone is located to the right of the red-tipped pinecone. The string of gold beads and glowing lights are woven through the green branches in the center.",
+    "spatial": "The large pinecone with red tips is to the left of the smaller brown pinecone. The gold beads and lights are draped over the green pine needles in the center, positioned between the two pinecones.",
     "parse_success": true,
     "chunk_idx": 36,
     "video_id": "WW-k2iTvJ3Q"
   },
   {
     "time": [
-      74,
-      76
+      37,
+      38
     ],
     "visible_entities": [
       {
-        "desc": "pinecone ornament with dark brown scales, red glittery tips, and a natural light-brown base, hanging from a beige twine string",
+        "desc": "pine cone ornament with dark brown scales, red glittery tips, and a beige glittery base, hanging by a white string",
         "action": "static",
         "position": "center"
       },
@@ -1866,142 +1921,234 @@
       {
         "desc": "gold beaded garland",
         "action": "static",
-        "position": "foreground"
+        "position": "left"
       },
       {
-        "desc": "warm white Christmas lights",
+        "desc": "warm white string lights",
         "action": "static",
         "position": "background"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A pinecone ornament hangs from a tree branch.",
+        "fact": "A pine cone ornament hangs from a branch.",
         "confidence": 1.0
       },
       {
-        "fact": "The pinecone has red glitter applied to the tips of its scales.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "Gold beads are draped across the green branches.",
+        "fact": "The pine cone has red glitter on the tips of its scales.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The pinecone ornament is in the center, hanging in front of the green pine needles. The gold beaded garland is draped in the foreground, partially obscuring the branches behind it. The warm white lights are scattered in the background behind the pinecone.",
+    "spatial": "The pine cone ornament is in the center of the frame, hanging in front of the green pine needles. The gold beaded garland is to the left of the pine cone. The warm white lights are in the background behind the pine cone and garland.",
     "parse_success": true,
     "chunk_idx": 37,
     "video_id": "WW-k2iTvJ3Q"
   },
   {
     "time": [
-      76,
-      78
+      38,
+      39
     ],
     "visible_entities": [
       {
-        "desc": "pinecone ornament with dark brown scales and red painted tips, hanging from a white string",
+        "desc": "pinecone ornament with dark brown scales tipped in red glitter and a natural beige base, hanging by a white string",
         "action": "static",
         "position": "center"
       },
       {
-        "desc": "gold beaded garland with spherical metallic beads",
+        "desc": "string of shiny gold spherical beads",
         "action": "static",
-        "position": "foreground"
+        "position": "left"
       },
       {
-        "desc": "green artificial pine branches",
+        "desc": "green artificial pine tree branches",
         "action": "static",
         "position": "background"
       },
       {
-        "desc": "small warm white lights",
+        "desc": "second pinecone, partially visible and out of focus",
         "action": "static",
-        "position": "background"
+        "position": "right"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "The pinecone ornament hangs from a branch in the center of the frame.",
+        "fact": "A pinecone ornament with red-tipped scales hangs from a white string.",
         "confidence": 1.0
       },
       {
-        "fact": "The gold beaded garland is draped across the foreground, partially obscuring the branches.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The pinecone has red paint applied to the tips of its scales.",
+        "fact": "Gold beads are draped over the green pine branches.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The pinecone ornament is in the center, hanging from the green pine branches. The gold beaded garland is draped in front of the branches and to the left of the pinecone. The small lights are scattered behind the garland and pinecone.",
+    "spatial": "The pinecone ornament is in the center of the frame, hanging in front of the green pine branches. A string of gold beads is to the left of the central pinecone. A second, blurry pinecone is visible to the right of the central ornament.",
     "parse_success": true,
     "chunk_idx": 38,
     "video_id": "WW-k2iTvJ3Q"
   },
   {
     "time": [
-      78,
-      80
+      39,
+      40
     ],
     "visible_entities": [
       {
-        "desc": "green artificial pine tree branches with needle-like leaves",
+        "desc": "pine cone ornament with dark brown scales, white painted tips, and a natural twine string loop",
         "action": "static",
-        "position": "background"
+        "position": "center"
       },
       {
-        "desc": "gold-colored beaded garland",
+        "desc": "green artificial pine branches with gold bead garland and red-tipped pine cone decoration",
         "action": "static",
         "position": "background"
-      },
-      {
-        "desc": "pine cone ornament with dark brown scales, white painted tips, and a light brown twine hanging loop",
-        "action": "static",
-        "position": "foreground"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A pine cone ornament with white-tipped scales and a twine loop is shown in close-up.",
+        "fact": "A pine cone ornament with white-tipped scales and a twine loop is shown in a close-up view.",
         "confidence": 1.0
       },
       {
-        "fact": "The pine cone ornament is positioned in front of the green tree branches and gold beads.",
+        "fact": "The pine cone ornament is positioned against a plain, light-colored background.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The background scene features a decorated Christmas tree with gold beads and red accents.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The pine cone ornament with white tips is in the foreground, positioned in front of the green artificial tree branches and the gold beaded garland.",
+    "spatial": "The pine cone ornament is in the foreground, centered in the frame. The decorated Christmas tree branches are in the background, appearing behind the pine cone ornament.",
     "parse_success": true,
     "chunk_idx": 39,
     "video_id": "WW-k2iTvJ3Q"
   },
   {
     "time": [
-      80,
-      82
+      40,
+      41
     ],
     "visible_entities": [
       {
-        "desc": "Text 'Laydey Katabella' in thin, black, handwritten-style font",
+        "desc": "text 'Laydey Katabella' in thin black handwritten font",
         "action": "static",
         "position": "top center"
       },
       {
-        "desc": "Text 'Thanks for Watching!' in black handwritten font with dashed lines and a red scribbled heart",
+        "desc": "text 'More Places to find me' in grey sans-serif font",
+        "action": "static",
+        "position": "top left"
+      },
+      {
+        "desc": "row of four dark grey star-shaped social media icons (Twitter, Facebook, LinkedIn, Pinterest)",
+        "action": "static",
+        "position": "top center"
+      },
+      {
+        "desc": "text 'Thanks for Watching!' in black handwritten font with dashed underline",
         "action": "static",
         "position": "center left"
       },
       {
-        "desc": "Text 'Like, comment & Subscribe for more videos!' in thin grey font",
+        "desc": "red scribbled heart graphic",
+        "action": "static",
+        "position": "center left"
+      },
+      {
+        "desc": "text 'Like, comment & Subscribe for more videos!' in grey font",
         "action": "static",
         "position": "bottom left"
       },
       {
-        "desc": "Silver computer monitor displaying a blog webpage with product images",
+        "desc": "silver computer monitor displaying a blog webpage with product images",
+        "action": "static",
+        "position": "bottom right"
+      },
+      {
+        "desc": "text 'My Blog' with a curved arrow pointing to the monitor",
+        "action": "static",
+        "position": "center right"
+      },
+      {
+        "desc": "vertical column of four polaroid-style photos showing a woman in various outfits",
+        "action": "static",
+        "position": "right"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The screen displays a static outro card for a video.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The text 'Laydey Katabella' is visible at the top.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "Social media icons are arranged horizontally below the name.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A red heart graphic is positioned next to the 'Thanks for Watching' text.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A computer monitor graphic is displayed in the bottom right corner.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "Photos of a woman are stacked vertically on the right side.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "Laydey Katabella",
+      "More Places to find me",
+      "Thanks for",
+      "Watching!",
+      "Like, comment & Subscribe for more videos!",
+      "My Blog"
+    ],
+    "spatial": "The name 'Laydey Katabella' is at the top center, above the social media icons. The 'Thanks for Watching' text and red heart are to the left of the computer monitor. The column of photos is to the right of the social media icons and above the computer monitor. The 'My Blog' text is above the computer monitor.",
+    "parse_success": true,
+    "chunk_idx": 40,
+    "video_id": "WW-k2iTvJ3Q"
+  },
+  {
+    "time": [
+      41,
+      42
+    ],
+    "visible_entities": [
+      {
+        "desc": "Text 'Laydey Katabella' in thin, handwritten-style black font",
+        "action": "static",
+        "position": "top center"
+      },
+      {
+        "desc": "Row of four dark grey star-shaped icons containing white social media logos (Twitter, Facebook, LinkedIn, Pinterest)",
+        "action": "static",
+        "position": "center"
+      },
+      {
+        "desc": "Text 'Thanks for Watching!' in black handwritten font with dashed underlines",
+        "action": "static",
+        "position": "center left"
+      },
+      {
+        "desc": "Red scribbled heart illustration",
+        "action": "static",
+        "position": "center left"
+      },
+      {
+        "desc": "Text 'Like, comment & Subscribe for more videos!' in grey and black fonts",
+        "action": "static",
+        "position": "bottom left"
+      },
+      {
+        "desc": "Silver desktop computer monitor displaying a website with product images",
         "action": "static",
         "position": "bottom right"
       },
@@ -2011,177 +2158,9 @@
         "position": "top right"
       },
       {
-        "desc": "Row of five grey star-shaped social media icons (Twitter, Facebook, LinkedIn, Pinterest)",
-        "action": "static",
-        "position": "top center"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "The screen displays a static end card graphic.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The text 'Laydey Katabella' is written at the top of the screen.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "A red heart graphic is drawn next to the text 'Thanks for Watching!'.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "A computer monitor graphic is positioned in the bottom right corner.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "Social media icons are arranged horizontally below the name.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [
-      "Laydey Katabella",
-      "More Places to find me",
-      "Thanks for",
-      "Watching!",
-      "My Blog",
-      "Like, comment & Subscribe for more videos!"
-    ],
-    "spatial": "The name 'Laydey Katabella' is centered at the top of the screen. Below the name, a row of social media icons is positioned horizontally. To the left, the text 'Thanks for Watching!' is displayed above the subscription prompt. To the right, a collage of photos is located above a computer monitor graphic.",
-    "parse_success": true,
-    "chunk_idx": 40,
-    "video_id": "WW-k2iTvJ3Q"
-  },
-  {
-    "time": [
-      82,
-      84
-    ],
-    "visible_entities": [
-      {
-        "desc": "text 'Laydey Katabella' in thin black cursive font",
-        "action": "static",
-        "position": "top center"
-      },
-      {
-        "desc": "red hand-drawn sketch heart",
-        "action": "static",
-        "position": "center left"
-      },
-      {
-        "desc": "text 'Thanks for Watching!' in black handwritten font with dashed lines",
-        "action": "static",
-        "position": "center"
-      },
-      {
-        "desc": "row of four grey star icons containing social media logos (Twitter, Facebook, LinkedIn, Pinterest)",
-        "action": "static",
-        "position": "top center"
-      },
-      {
-        "desc": "silver desktop computer monitor displaying a blog webpage",
-        "action": "static",
-        "position": "bottom right"
-      },
-      {
-        "desc": "vertical stack of polaroid-style photos showing a woman in various outfits",
+        "desc": "Text 'My Blog' with a curved arrow pointing to the computer",
         "action": "static",
         "position": "right"
-      },
-      {
-        "desc": "text 'Like, comment & Subscribe for more videos!' in grey and black fonts",
-        "action": "static",
-        "position": "bottom left"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "The screen displays a static YouTube end card layout.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The text 'Laydey Katabella' appears at the top of the screen.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "A red sketch heart is positioned next to the text 'Thanks for Watching!'.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "Social media icons for Twitter, Facebook, LinkedIn, and Pinterest are arranged in a horizontal row.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "A computer monitor graphic is displayed in the bottom right corner.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The text 'Like, comment & Subscribe for more videos!' is visible at the bottom.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [
-      "Laydey Katabella",
-      "More Places to find me",
-      "Thanks for",
-      "Watching!",
-      "My Blog",
-      "Like, comment & Subscribe for more videos!"
-    ],
-    "spatial": "The title 'Laydey Katabella' is at the top center, above the row of social media icons. The 'Thanks for Watching!' text and red heart are in the center, to the left of the computer monitor. The stack of polaroid photos is on the far right side, above the computer monitor. The 'Like, comment & Subscribe' text is at the bottom left, below the heart.",
-    "parse_success": true,
-    "chunk_idx": 41,
-    "video_id": "WW-k2iTvJ3Q"
-  },
-  {
-    "time": [
-      84,
-      86
-    ],
-    "visible_entities": [
-      {
-        "desc": "Text 'Laydey Katabella' in a thin, handwritten-style black font",
-        "action": "static",
-        "position": "top/center"
-      },
-      {
-        "desc": "Text 'More Places to find me' in a light grey sans-serif font",
-        "action": "static",
-        "position": "center/left"
-      },
-      {
-        "desc": "Five dark grey star-shaped icons containing social media logos (Twitter, Facebook, LinkedIn, Pinterest)",
-        "action": "static",
-        "position": "center"
-      },
-      {
-        "desc": "Text 'Thanks for Watching!' in a handwritten font with a dashed underline",
-        "action": "static",
-        "position": "center/left"
-      },
-      {
-        "desc": "A large, red, scribbled heart illustration",
-        "action": "static",
-        "position": "center/left"
-      },
-      {
-        "desc": "Text 'Like, comment & Subscribe for more videos!' in a mix of sans-serif and script fonts",
-        "action": "static",
-        "position": "bottom/left"
-      },
-      {
-        "desc": "Text 'My Blog' with a curved arrow pointing downwards",
-        "action": "static",
-        "position": "center/right"
-      },
-      {
-        "desc": "A silver desktop computer monitor displaying a blog webpage with product images",
-        "action": "static",
-        "position": "bottom/right"
-      },
-      {
-        "desc": "A stack of four polaroid-style photographs featuring a woman in various outfits",
-        "action": "static",
-        "position": "top/right"
       }
     ],
     "atomic_facts": [
@@ -2194,19 +2173,23 @@
         "confidence": 1.0
       },
       {
-        "fact": "Social media icons for Twitter, Facebook, LinkedIn, and Pinterest are arranged horizontally in the center.",
+        "fact": "Social media icons for Twitter, Facebook, LinkedIn, and Pinterest are arranged horizontally.",
         "confidence": 1.0
       },
       {
-        "fact": "A red scribbled heart is positioned next to the text 'Thanks for Watching!'.",
+        "fact": "A red heart graphic is positioned next to the text 'Thanks for Watching!'.",
         "confidence": 1.0
       },
       {
-        "fact": "The phrase 'Like, comment & Subscribe for more videos!' is visible at the bottom left.",
+        "fact": "A computer monitor graphic is displayed in the bottom right corner.",
         "confidence": 1.0
       },
       {
-        "fact": "An arrow points from the text 'My Blog' to an image of a computer monitor.",
+        "fact": "The text 'My Blog' has an arrow pointing towards the computer monitor.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A collage of photos is located in the top right corner.",
         "confidence": 1.0
       }
     ],
@@ -2218,270 +2201,83 @@
       "Like, comment & Subscribe for more videos!",
       "My Blog"
     ],
-    "spatial": "The name 'Laydey Katabella' is centered at the top of the frame. Below it, the text 'More Places to find me' is to the left of a row of social media icons. The phrase 'Thanks for Watching!' and a red heart are located in the middle-left area, above the subscription text. To the right of the heart, the text 'My Blog' is positioned above a computer monitor image. A stack of photos is located in the top right corner.",
+    "spatial": "The title 'Laydey Katabella' is at the top center, above the row of social media icons. The 'Thanks for Watching!' text and red heart are to the left of the computer monitor. The computer monitor is in the bottom right corner, with the text 'My Blog' and an arrow positioned above and to the left of it. The photo collage is in the top right corner, above the computer monitor.",
     "parse_success": true,
-    "chunk_idx": 42,
+    "chunk_idx": 41,
     "video_id": "WW-k2iTvJ3Q"
   },
   {
     "time": [
-      86,
-      88
+      42,
+      43
     ],
     "visible_entities": [
       {
-        "desc": "text 'Laydey Katabella' in thin black handwritten-style font",
-        "action": "static",
-        "position": "top/center"
-      },
-      {
-        "desc": "text 'Thanks for Watching!' in black handwritten font with dashed underline",
-        "action": "static",
-        "position": "center/left"
-      },
-      {
-        "desc": "red scribbled heart graphic",
-        "action": "static",
-        "position": "center/left"
-      },
-      {
-        "desc": "text 'More Places to find me' in grey sans-serif font",
-        "action": "static",
-        "position": "top/left"
-      },
-      {
-        "desc": "four grey star-shaped social media icons (Twitter, Facebook, LinkedIn, Pinterest)",
-        "action": "static",
-        "position": "top/center"
-      },
-      {
-        "desc": "computer monitor displaying a blog webpage with product images",
-        "action": "static",
-        "position": "bottom/right"
-      },
-      {
-        "desc": "collage of four polaroid-style photos showing a woman in various outfits",
-        "action": "static",
-        "position": "top/right"
-      },
-      {
-        "desc": "text 'Like, comment & Subscribe for more videos!' in grey font",
-        "action": "static",
-        "position": "bottom/left"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "The screen displays a YouTube end card layout.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The text 'Laydey Katabella' is positioned at the top center.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "A red heart graphic is located below the 'Thanks for' text.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "Social media icons are arranged horizontally in a row.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "A computer monitor image is placed in the bottom right corner.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The text 'My Blog' with an arrow points to the computer monitor.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [
-      "Laydey Katabella",
-      "More Places to find me",
-      "Thanks for",
-      "Watching!",
-      "My Blog",
-      "Like, comment & Subscribe for more videos!"
-    ],
-    "spatial": "The title 'Laydey Katabella' is at the top center, above the social media icons. The 'Thanks for Watching!' text and red heart are to the left of the computer monitor image. The collage of photos is in the top right corner, above the computer monitor. The 'Like, comment & Subscribe' text is at the bottom left, below the heart graphic.",
-    "parse_success": true,
-    "chunk_idx": 43,
-    "video_id": "WW-k2iTvJ3Q"
-  },
-  {
-    "time": [
-      88,
-      90
-    ],
-    "visible_entities": [
-      {
-        "desc": "text 'Laydey Katabella' in thin, handwritten-style black font",
+        "desc": "Text 'Laydey Katabella' in a thin, black, handwritten-style font",
         "action": "static",
         "position": "top center"
       },
       {
-        "desc": "text 'Thanks for Watching!' in black handwritten font with dashed lines",
+        "desc": "Text 'Thanks for Watching!' in a black, handwritten-style font with dashed lines underneath",
         "action": "static",
         "position": "center left"
       },
       {
-        "desc": "red scribbled heart graphic",
+        "desc": "A red, scribbled-style heart graphic",
         "action": "static",
         "position": "center left"
       },
       {
-        "desc": "text 'More Places to find me' in light grey font with an arrow",
-        "action": "static",
-        "position": "upper left"
-      },
-      {
-        "desc": "five dark grey star icons containing social media logos (Twitter, Facebook, LinkedIn, Pinterest)",
-        "action": "static",
-        "position": "upper center"
-      },
-      {
-        "desc": "silver desktop computer monitor displaying a blog webpage with images",
-        "action": "static",
-        "position": "bottom right"
-      },
-      {
-        "desc": "text 'My Blog' with a curved arrow pointing to the monitor",
-        "action": "static",
-        "position": "center right"
-      },
-      {
-        "desc": "stack of four polaroid-style photos showing a woman in various outfits",
-        "action": "static",
-        "position": "top right"
-      },
-      {
-        "desc": "text 'Like, comment & Subscribe for more videos!' in light grey font",
-        "action": "static",
-        "position": "bottom left"
-      },
-      {
-        "desc": "two small grey heart icons",
+        "desc": "Text 'More Places to find me' in a light grey, sans-serif font",
         "action": "static",
         "position": "top left"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "The screen displays a static outro card for a video.",
-        "confidence": 1.0
       },
       {
-        "fact": "The text 'Laydey Katabella' appears at the top of the screen.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "A red scribbled heart is positioned next to the text 'Thanks for Watching!'.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "Social media icons for Twitter, Facebook, LinkedIn, and Pinterest are displayed in a row.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "A computer monitor graphic shows a blog layout with the label 'My Blog' pointing to it.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The text 'Like, comment & Subscribe for more videos!' is visible at the bottom.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [
-      "Laydey Katabella",
-      "More Places to find me",
-      "Thanks for",
-      "Watching!",
-      "My Blog",
-      "Like, comment & Subscribe for more videos!"
-    ],
-    "spatial": "The name 'Laydey Katabella' is at the top center, above the social media icons. The 'Thanks for Watching!' text and red heart are to the left of the computer monitor. The stack of photos is in the top right corner, above the monitor. The 'My Blog' text is positioned between the central text and the monitor.",
-    "parse_success": true,
-    "chunk_idx": 44,
-    "video_id": "WW-k2iTvJ3Q"
-  },
-  {
-    "time": [
-      90,
-      92
-    ],
-    "visible_entities": [
-      {
-        "desc": "text 'Laydey Katabella' in thin, black, handwritten-style font",
+        "desc": "Four dark grey star-shaped icons containing white social media logos (Twitter, Facebook, LinkedIn, Pinterest)",
         "action": "static",
         "position": "top center"
       },
       {
-        "desc": "text 'Thanks for Watching!' in black, handwritten-style font with a dashed underline",
-        "action": "static",
-        "position": "center left"
-      },
-      {
-        "desc": "red, scribbled, hand-drawn heart icon",
-        "action": "static",
-        "position": "center left"
-      },
-      {
-        "desc": "text 'More Places to find me' in light gray sans-serif font",
-        "action": "static",
-        "position": "center left"
-      },
-      {
-        "desc": "five dark gray star-shaped social media icons (Twitter, Facebook, LinkedIn, Pinterest)",
-        "action": "static",
-        "position": "center"
-      },
-      {
-        "desc": "text 'My Blog' in light gray handwritten font with a curved arrow",
+        "desc": "Text 'My Blog' in a light grey, handwritten-style font with a curved arrow pointing downwards",
         "action": "static",
         "position": "center right"
       },
       {
-        "desc": "silver iMac computer displaying a blog website with product images",
+        "desc": "A silver desktop computer monitor (resembling an iMac) displaying a webpage with a header and product images",
         "action": "static",
         "position": "bottom right"
       },
       {
-        "desc": "white computer mouse",
+        "desc": "A small white computer mouse",
         "action": "static",
         "position": "bottom right"
       },
       {
-        "desc": "collage of four polaroid-style photos showing a woman with glasses and various outfits",
+        "desc": "A collage of four polaroid-style photos showing a woman with glasses and blonde hair in different outfits",
         "action": "static",
         "position": "top right"
       },
       {
-        "desc": "text 'Like, comment & Subscribe for more videos!' in light gray font",
+        "desc": "Text 'Like, comment & Subscribe for more videos!' in a light grey, mixed font style",
         "action": "static",
         "position": "bottom left"
-      },
-      {
-        "desc": "two small gray heart icons",
-        "action": "static",
-        "position": "top left"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "The screen displays a static YouTube outro card for the channel 'Laydey Katabella'.",
+        "fact": "The screen displays a static YouTube outro card for 'Laydey Katabella'.",
         "confidence": 1.0
       },
       {
-        "fact": "The text 'Thanks for Watching!' is positioned above a red heart icon.",
+        "fact": "The text 'Thanks for Watching!' is positioned above a red scribbled heart.",
         "confidence": 1.0
       },
       {
-        "fact": "The iMac computer is located below the text 'My Blog' and the arrow pointing to it.",
+        "fact": "An arrow points from the text 'My Blog' to the image of the desktop computer.",
         "confidence": 1.0
       },
       {
-        "fact": "The social media icons are arranged horizontally next to the text 'More Places to find me'.",
+        "fact": "The social media icons are arranged horizontally in a row.",
         "confidence": 1.0
       },
       {
@@ -2497,7 +2293,266 @@
       "My Blog",
       "Like, comment & Subscribe for more videos!"
     ],
-    "spatial": "The channel name 'Laydey Katabella' is at the top center, above the social media icons and the 'Thanks for Watching!' text. The red heart is below the 'Thanks for' text and to the left of the 'Watching!' text. The iMac computer is in the bottom right corner, below the photo collage and to the right of the 'My Blog' text. The photo collage is in the top right corner, to the right of the social media icons.",
+    "spatial": "The name 'Laydey Katabella' is at the top center, above the row of social media icons. The 'Thanks for Watching!' text and red heart are to the left of the 'My Blog' text and the computer monitor. The computer monitor is positioned in the bottom right corner, with a mouse to its right. A collage of photos is located in the top right corner, above the computer monitor.",
+    "parse_success": true,
+    "chunk_idx": 42,
+    "video_id": "WW-k2iTvJ3Q"
+  },
+  {
+    "time": [
+      43,
+      44
+    ],
+    "visible_entities": [
+      {
+        "desc": "Text 'Laydey Katabella' in a thin, handwritten-style black font",
+        "action": "static",
+        "position": "top center"
+      },
+      {
+        "desc": "Red, hand-drawn sketch of a heart",
+        "action": "static",
+        "position": "center left"
+      },
+      {
+        "desc": "Text 'Thanks for Watching!' in a handwritten font, with dashed lines underneath",
+        "action": "static",
+        "position": "center left"
+      },
+      {
+        "desc": "Silver desktop computer monitor displaying a website with a white background and product images",
+        "action": "static",
+        "position": "bottom right"
+      },
+      {
+        "desc": "Collage of four photos on the right side showing a woman in various outfits and poses",
+        "action": "static",
+        "position": "right"
+      },
+      {
+        "desc": "Row of four social media icons (Twitter, Facebook, LinkedIn, Pinterest) in dark grey stars",
+        "action": "static",
+        "position": "top center"
+      },
+      {
+        "desc": "Text 'More Places to find me' with an arrow pointing to the social media icons",
+        "action": "static",
+        "position": "top left"
+      },
+      {
+        "desc": "Text 'My Blog' with a curved arrow pointing to the computer monitor",
+        "action": "static",
+        "position": "center right"
+      },
+      {
+        "desc": "Text 'Like, comment & Subscribe for more videos!' in a mix of sans-serif and script fonts",
+        "action": "static",
+        "position": "bottom left"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The screen displays a static end card graphic for a video.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The text 'Laydey Katabella' is visible at the top of the screen.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A red heart sketch is positioned to the left of the text 'Watching!'.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The computer monitor is located below the photo collage on the right side.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The text 'My Blog' has an arrow pointing towards the computer monitor.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "Social media icons are arranged horizontally in the upper center area.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "Laydey Katabella",
+      "More Places to find me",
+      "Thanks for",
+      "Watching!",
+      "My Blog",
+      "Like, comment & Subscribe for more videos!"
+    ],
+    "spatial": "The name 'Laydey Katabella' is at the top center, above the social media icons. The red heart and 'Thanks for Watching!' text are on the left side, while the computer monitor and photo collage are on the right side. The text 'My Blog' is positioned between the central text and the computer monitor, with an arrow pointing to the monitor.",
+    "parse_success": true,
+    "chunk_idx": 43,
+    "video_id": "WW-k2iTvJ3Q"
+  },
+  {
+    "time": [
+      44,
+      45
+    ],
+    "visible_entities": [
+      {
+        "desc": "text 'Laydey Katabella' in thin, black, handwritten-style font",
+        "action": "static",
+        "position": "top center"
+      },
+      {
+        "desc": "red, hand-drawn sketch of a heart",
+        "action": "static",
+        "position": "center left"
+      },
+      {
+        "desc": "text 'Thanks for Watching!' in black, handwritten-style font with dashed lines",
+        "action": "static",
+        "position": "center left"
+      },
+      {
+        "desc": "silver desktop computer monitor displaying a blog webpage",
+        "action": "static",
+        "position": "bottom right"
+      },
+      {
+        "desc": "collection of four polaroid-style photos showing a woman in various outfits",
+        "action": "static",
+        "position": "top right"
+      },
+      {
+        "desc": "row of four social media icons (Twitter, Facebook, LinkedIn, Pinterest) in dark grey stars",
+        "action": "static",
+        "position": "top center"
+      },
+      {
+        "desc": "text 'Like, comment & Subscribe for more videos!' in grey and black fonts",
+        "action": "static",
+        "position": "bottom left"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The screen displays a static outro card for a video.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The text 'Laydey Katabella' appears at the top of the screen.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A red sketched heart is positioned next to the text 'Thanks for Watching!'.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A computer monitor graphic is shown in the bottom right corner.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The text 'Like, comment & Subscribe for more videos!' is visible at the bottom.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "Laydey Katabella",
+      "More Places to find me",
+      "Thanks for",
+      "Watching!",
+      "My Blog",
+      "Like, comment & Subscribe for more videos!"
+    ],
+    "spatial": "The title 'Laydey Katabella' is at the top center, above the social media icons. The 'Thanks for Watching!' text and red heart are to the left of the computer monitor. The polaroid photos are in the top right corner, above the computer monitor. The 'Like, comment & Subscribe' text is at the bottom left, below the heart.",
+    "parse_success": true,
+    "chunk_idx": 44,
+    "video_id": "WW-k2iTvJ3Q"
+  },
+  {
+    "time": [
+      45,
+      46
+    ],
+    "visible_entities": [
+      {
+        "desc": "Text 'Laydey Katabella' in a thin, handwritten-style black font",
+        "action": "static",
+        "position": "top center"
+      },
+      {
+        "desc": "Text 'Thanks for Watching!' in a handwritten font, with 'Thanks for' above a red heart and 'Watching!' to the right",
+        "action": "static",
+        "position": "center left"
+      },
+      {
+        "desc": "A large, red, scribbled heart graphic",
+        "action": "static",
+        "position": "center left"
+      },
+      {
+        "desc": "Text 'More Places to find me' in a light grey sans-serif font",
+        "action": "static",
+        "position": "top left"
+      },
+      {
+        "desc": "Four dark grey star-shaped icons containing social media logos (Twitter, Facebook, LinkedIn, Pinterest)",
+        "action": "static",
+        "position": "top center"
+      },
+      {
+        "desc": "A collage of five photos with white borders, showing a woman in various outfits and poses",
+        "action": "static",
+        "position": "top right"
+      },
+      {
+        "desc": "A silver desktop computer monitor displaying a blog webpage with images and text",
+        "action": "static",
+        "position": "bottom right"
+      },
+      {
+        "desc": "Text 'My Blog' in a handwritten font with a curved arrow pointing to the monitor",
+        "action": "static",
+        "position": "center right"
+      },
+      {
+        "desc": "Text 'Like, comment & Subscribe for more videos!' in a mix of sans-serif and script fonts",
+        "action": "static",
+        "position": "bottom left"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The screen displays a static end card graphic.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The text 'Laydey Katabella' is at the top of the screen.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The phrase 'Thanks for Watching!' is written next to a red heart.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "Social media icons for Twitter, Facebook, LinkedIn, and Pinterest are displayed in a row.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A computer monitor shows a blog layout.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The text 'Like, comment & Subscribe for more videos!' is at the bottom.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "Laydey Katabella",
+      "More Places to find me",
+      "Thanks for",
+      "Watching!",
+      "My Blog",
+      "Like, comment & Subscribe for more videos!"
+    ],
+    "spatial": "The name 'Laydey Katabella' is at the top center, above the social media icons. The 'Thanks for Watching!' message and red heart are to the left of the computer monitor. The photo collage is in the top right corner, above the monitor. The 'My Blog' text is positioned between the central message and the monitor.",
     "parse_success": true,
     "chunk_idx": 45,
     "video_id": "WW-k2iTvJ3Q"

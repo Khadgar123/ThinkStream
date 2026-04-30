@@ -2,32 +2,32 @@
   {
     "time": [
       0,
-      2
+      1
     ],
     "visible_entities": [
       {
-        "desc": "pile of golden-brown chocolate chip cookies with visible chocolate chunks and a baked texture",
+        "desc": "pile of golden-brown chocolate chip cookies, round shape, textured surface with visible chocolate chunks",
         "action": "static",
         "position": "center"
-      },
-      {
-        "desc": "white rectangular serving platter",
-        "action": "static",
-        "position": "background"
       },
       {
         "desc": "white text overlay reading 'KitchenAid presents' in a sans-serif font",
         "action": "static",
         "position": "center"
+      },
+      {
+        "desc": "white rectangular serving dish or plate",
+        "action": "static",
+        "position": "bottom"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A pile of chocolate chip cookies is displayed on a white platter.",
+        "fact": "A pile of chocolate chip cookies sits on a white plate.",
         "confidence": 1.0
       },
       {
-        "fact": "The text 'KitchenAid presents' is overlaid on the image of the cookies.",
+        "fact": "The text 'KitchenAid presents' is superimposed over the center of the cookie pile.",
         "confidence": 1.0
       }
     ],
@@ -35,46 +35,51 @@
       "KitchenAid",
       "presents"
     ],
-    "spatial": "The pile of cookies is centered in the frame and rests on the white serving platter. The text 'KitchenAid presents' is superimposed directly over the center of the cookie pile.",
+    "spatial": "The pile of cookies is centered in the frame and rests on the white plate. The text overlay is positioned directly in front of the cookies in the center of the image.",
     "parse_success": true,
     "chunk_idx": 0,
     "video_id": "How_to_make_Chocolate_Chip_Cookies_using_the_Kitchenaid_Stand_Mixer"
   },
   {
     "time": [
-      2,
-      4
+      1,
+      2
     ],
     "visible_entities": [
       {
-        "desc": "red KitchenAid stand mixer with silver mixing bowl",
+        "desc": "red KitchenAid stand mixer with silver metal bowl",
         "action": "static",
         "position": "left"
       },
       {
-        "desc": "red KitchenAid stand mixer with silver mixing bowl",
+        "desc": "red KitchenAid stand mixer with silver metal bowl",
         "action": "static",
         "position": "center"
       },
       {
-        "desc": "red KitchenAid stand mixer with silver mixing bowl",
+        "desc": "red KitchenAid stand mixer with silver metal bowl",
         "action": "static",
         "position": "right"
       },
       {
-        "desc": "stack of chocolate chip cookies",
+        "desc": "stacks of golden-brown chocolate chip cookies",
         "action": "static",
         "position": "foreground"
       },
       {
-        "desc": "text overlay 'CHOCOLATE CHIP COOKIES WITH THE KITCHENAID STAND MIXER' in grey font",
+        "desc": "text overlay 'CHOCOLATE CHIP COOKIES WITH THE KITCHENAID STAND MIXER' in grey sans-serif font",
         "action": "static",
         "position": "top"
+      },
+      {
+        "desc": "white window frame with green foliage visible outside",
+        "action": "static",
+        "position": "background"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "Three red stand mixers are arranged in a row on a countertop.",
+        "fact": "Three red stand mixers are arranged in a row on a white countertop.",
         "confidence": 1.0
       },
       {
@@ -84,55 +89,74 @@
       {
         "fact": "The text 'CHOCOLATE CHIP COOKIES' is displayed at the top of the screen.",
         "confidence": 1.0
+      },
+      {
+        "fact": "Green plants are visible through the window in the background.",
+        "confidence": 1.0
       }
     ],
     "ocr": [
       "CHOCOLATE CHIP COOKIES",
       "WITH THE KITCHENAID STAND MIXER"
     ],
-    "spatial": "The text overlay is located above the three red stand mixers. The mixers are positioned side-by-side on a white countertop. Stacks of cookies are placed in the foreground, directly in front of the mixers.",
+    "spatial": "The three red stand mixers are positioned side-by-side on the counter. The stacks of cookies are in front of the mixers in the foreground. The text overlay is located above the mixers and window.",
     "parse_success": true,
     "chunk_idx": 1,
     "video_id": "How_to_make_Chocolate_Chip_Cookies_using_the_Kitchenaid_Stand_Mixer"
   },
   {
     "time": [
-      4,
-      6
+      2,
+      3
     ],
     "visible_entities": [
       {
-        "desc": "three red KitchenAid stand mixers with silver stainless steel mixing bowls, arranged in a row",
+        "desc": "red KitchenAid stand mixer with silver metal bowl",
         "action": "static",
-        "position": "left/center/right"
+        "position": "left"
       },
       {
-        "desc": "three white rectangular plates, each holding a large pile of golden-brown chocolate chip cookies",
+        "desc": "red KitchenAid stand mixer with silver metal bowl",
         "action": "static",
-        "position": "foreground"
+        "position": "center"
       },
       {
-        "desc": "black sans-serif text overlay reading 'CHOCOLATE CHIP COOKIES WITH THE KITCHENAID STAND MIXER'",
+        "desc": "red KitchenAid stand mixer with silver metal bowl",
+        "action": "static",
+        "position": "right"
+      },
+      {
+        "desc": "stack of chocolate chip cookies on a white rectangular plate",
+        "action": "static",
+        "position": "foreground left"
+      },
+      {
+        "desc": "stack of chocolate chip cookies on a white rectangular plate",
+        "action": "static",
+        "position": "foreground center"
+      },
+      {
+        "desc": "stack of chocolate chip cookies on a white rectangular plate",
+        "action": "static",
+        "position": "foreground right"
+      },
+      {
+        "desc": "black bold text overlay",
         "action": "static",
         "position": "top"
-      },
-      {
-        "desc": "bright kitchen background with a window showing greenery outside and a white countertop",
-        "action": "static",
-        "position": "background"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "The video displays a static scene of three red stand mixers on a kitchen counter.",
+        "fact": "Three red stand mixers are arranged in a row on a white countertop.",
         "confidence": 1.0
       },
       {
-        "fact": "Large piles of chocolate chip cookies are placed on plates in front of each mixer.",
+        "fact": "Three plates of chocolate chip cookies are placed in front of the mixers.",
         "confidence": 1.0
       },
       {
-        "fact": "The text 'CHOCOLATE CHIP COOKIES WITH THE KITCHENAID STAND MIXER' is visible at the top of the screen.",
+        "fact": "The text 'CHOCOLATE CHIP COOKIES WITH THE KITCHENAID STAND MIXER' is displayed at the top of the screen.",
         "confidence": 1.0
       }
     ],
@@ -140,35 +164,35 @@
       "CHOCOLATE CHIP COOKIES",
       "WITH THE KITCHENAID STAND MIXER"
     ],
-    "spatial": "The text overlay is positioned at the top of the frame, above the three red stand mixers. The mixers are arranged horizontally across the middle ground, with one on the left, one in the center, and one on the right. The plates of cookies are in the foreground, sitting on the counter directly in front of their respective mixers.",
+    "spatial": "The text overlay is above the stand mixers. The three red stand mixers are positioned behind the three plates of cookies. The cookies are in the foreground on the counter.",
     "parse_success": true,
     "chunk_idx": 2,
     "video_id": "How_to_make_Chocolate_Chip_Cookies_using_the_Kitchenaid_Stand_Mixer"
   },
   {
     "time": [
-      6,
-      8
+      3,
+      4
     ],
     "visible_entities": [
       {
-        "desc": "red KitchenAid stand mixer with a silver metal band and black text",
-        "action": "static",
-        "position": "background"
+        "desc": "human hand with light skin tone, fingers extended",
+        "action": "reaching towards the mixer",
+        "position": "foreground"
       },
       {
-        "desc": "human hand with light skin tone",
-        "action": "touching the mixer",
-        "position": "foreground"
+        "desc": "red KitchenAid stand mixer with a silver metallic band and black safety icon",
+        "action": "static",
+        "position": "background"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A hand is touching the side of the red stand mixer.",
+        "fact": "A hand reaches towards the red stand mixer.",
         "confidence": 1.0
       },
       {
-        "fact": "The mixer features a silver band with black text.",
+        "fact": "The mixer features a silver band with safety instructions.",
         "confidence": 1.0
       }
     ],
@@ -176,15 +200,15 @@
       "SAN",
       "avant d'insérer ou d'enlever des pièces"
     ],
-    "spatial": "The hand is in the foreground, positioned in front of the red stand mixer. The silver band with text is located on the side of the mixer.",
+    "spatial": "The human hand is in the foreground, positioned in front of the red stand mixer. The silver band with text is located on the upper part of the mixer body.",
     "parse_success": true,
     "chunk_idx": 3,
     "video_id": "How_to_make_Chocolate_Chip_Cookies_using_the_Kitchenaid_Stand_Mixer"
   },
   {
     "time": [
-      8,
-      10
+      4,
+      5
     ],
     "visible_entities": [
       {
@@ -193,19 +217,14 @@
         "position": "right"
       },
       {
-        "desc": "red stand mixer with a silver metallic band and a stainless steel mixing bowl",
+        "desc": "red stand mixer with a silver metallic band and a silver mixing bowl",
         "action": "static",
         "position": "left"
       },
       {
         "desc": "white dough hook attachment",
-        "action": "being inserted into the mixer",
+        "action": "being held and inserted",
         "position": "center"
-      },
-      {
-        "desc": "green leafy plant in a white pot",
-        "action": "static",
-        "position": "background"
       }
     ],
     "atomic_facts": [
@@ -214,57 +233,62 @@
         "confidence": 1.0
       },
       {
-        "fact": "The mixer has a silver band with text on it.",
+        "fact": "The mixer head is tilted up to allow access to the attachment hub.",
         "confidence": 1.0
       },
       {
-        "fact": "A stainless steel bowl is positioned below the mixer head.",
+        "fact": "A silver mixing bowl is positioned below the mixer head.",
         "confidence": 1.0
       }
     ],
     "ocr": [
       "KitchenAid"
     ],
-    "spatial": "The red stand mixer is on the left side of the frame. The person is to the right of the mixer, reaching towards it. The stainless steel bowl is below the mixer head. The white dough hook is being held by the person and inserted into the mixer. The green plant is in the background behind the mixer.",
+    "spatial": "The red stand mixer is on the left side of the frame. The person is to the right of the mixer, reaching in to attach the white dough hook. The silver mixing bowl is below the mixer head.",
     "parse_success": true,
     "chunk_idx": 4,
     "video_id": "How_to_make_Chocolate_Chip_Cookies_using_the_Kitchenaid_Stand_Mixer"
   },
   {
     "time": [
-      10,
-      12
+      5,
+      6
     ],
     "visible_entities": [
       {
-        "desc": "red KitchenAid stand mixer with silver bowl and white paddle attachment",
+        "desc": "red KitchenAid stand mixer with silver metal bowl and white paddle attachment",
         "action": "static",
         "position": "left"
       },
       {
-        "desc": "hand holding a glass bowl containing cubed pale yellow butter",
-        "action": "pouring butter into mixer",
-        "position": "top-left"
+        "desc": "person's hand holding a small glass bowl",
+        "action": "pouring butter",
+        "position": "top left"
       },
       {
-        "desc": "glass bowl with light brown sugar",
+        "desc": "cubed unsalted butter, pale yellow",
+        "action": "falling into bowl",
+        "position": "center left"
+      },
+      {
+        "desc": "glass bowl with brown sugar",
         "action": "static",
-        "position": "top-right"
+        "position": "top center"
       },
       {
         "desc": "white bowl with two cracked eggs",
         "action": "static",
-        "position": "top-right"
+        "position": "top right"
       },
       {
-        "desc": "white bowl with dark chocolate chips",
+        "desc": "white bowl with chocolate chips",
         "action": "static",
-        "position": "top-right"
+        "position": "top right"
       },
       {
-        "desc": "glass bowl with white granulated sugar",
+        "desc": "glass bowl with white sugar",
         "action": "static",
-        "position": "bottom-right"
+        "position": "bottom right"
       },
       {
         "desc": "white marble countertop",
@@ -274,19 +298,15 @@
     ],
     "atomic_facts": [
       {
-        "fact": "A hand is pouring cubed butter from a glass bowl into the silver bowl of a red stand mixer.",
+        "fact": "A person is pouring cubed unsalted butter from a small glass bowl into the metal bowl of a red stand mixer.",
         "confidence": 1.0
       },
       {
-        "fact": "The text 'UNSALTED BUTTER 225 G' is displayed in the bottom-left corner.",
+        "fact": "The text 'UNSALTED BUTTER 225 G' is displayed on the screen.",
         "confidence": 1.0
       },
       {
-        "fact": "Various baking ingredients are arranged on the right side of the countertop.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The mixer is equipped with a white paddle attachment.",
+        "fact": "Various baking ingredients are arranged on the countertop.",
         "confidence": 1.0
       }
     ],
@@ -294,15 +314,15 @@
       "UNSALTED BUTTER",
       "225 G"
     ],
-    "spatial": "The red stand mixer is positioned on the left side of the marble countertop. A hand is holding a bowl of butter directly above the mixer's bowl, pouring the contents inside. To the right of the mixer, various ingredients including brown sugar, eggs, chocolate chips, and white sugar are arranged on the surface.",
+    "spatial": "The red stand mixer is on the left side of the marble countertop. A hand is positioned above the mixer's bowl, pouring butter into it. To the right of the mixer, several bowls containing ingredients like brown sugar, eggs, and chocolate chips are arranged on the surface.",
     "parse_success": true,
     "chunk_idx": 5,
     "video_id": "How_to_make_Chocolate_Chip_Cookies_using_the_Kitchenaid_Stand_Mixer"
   },
   {
     "time": [
-      12,
-      14
+      6,
+      7
     ],
     "visible_entities": [
       {
@@ -311,102 +331,24 @@
         "position": "left"
       },
       {
-        "desc": "person's hands and forearms with light skin tone",
-        "action": "pouring ingredients",
-        "position": "center/right"
-      },
-      {
-        "desc": "clear glass bowl containing pale yellow cubed butter",
-        "action": "being tipped",
+        "desc": "person's hands holding a small glass bowl and a spatula",
+        "action": "adding ingredients",
         "position": "center"
       },
       {
-        "desc": "clear glass bowl containing packed light brown sugar",
-        "action": "being held",
-        "position": "top center"
-      },
-      {
-        "desc": "small glass bowl with two cracked raw eggs",
-        "action": "static",
-        "position": "right"
-      },
-      {
-        "desc": "white bowl filled with dark chocolate chips",
-        "action": "static",
-        "position": "right"
-      },
-      {
-        "desc": "small glass bowl containing white granulated sugar",
-        "action": "static",
-        "position": "bottom right"
-      },
-      {
-        "desc": "small glass bowl containing dark liquid (vanilla extract)",
-        "action": "static",
-        "position": "top right"
-      },
-      {
-        "desc": "white marble countertop surface",
-        "action": "static",
-        "position": "background"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "A person is pouring cubed butter from a glass bowl into the silver mixing bowl of the red stand mixer.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "A person is holding a glass bowl filled with light brown sugar above the counter.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The text 'LIGHT BROWN SUGAR 220 G, PACKED' is displayed on the screen.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The stand mixer is equipped with a white flat beater attachment.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "Various baking ingredients including eggs, chocolate chips, and sugars are arranged on the counter.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [
-      "LIGHT BROWN SUGAR",
-      "220 G, PACKED"
-    ],
-    "spatial": "The red stand mixer is positioned on the left side of the frame. The person's hands are in the center, holding a bowl of butter over the mixer's bowl. To the right of the mixer, various ingredients like eggs, chocolate chips, and sugars are arranged on the white marble countertop. The text overlay is located at the bottom left of the screen.",
-    "parse_success": true,
-    "chunk_idx": 6,
-    "video_id": "How_to_make_Chocolate_Chip_Cookies_using_the_Kitchenaid_Stand_Mixer"
-  },
-  {
-    "time": [
-      14,
-      16
-    ],
-    "visible_entities": [
-      {
-        "desc": "red KitchenAid stand mixer with white paddle attachment",
-        "action": "static",
-        "position": "left"
-      },
-      {
-        "desc": "stainless steel mixing bowl",
-        "action": "static",
-        "position": "center"
-      },
-      {
-        "desc": "clear glass bowl containing light brown granular substance",
+        "desc": "cubed pale yellow butter",
         "action": "being poured",
         "position": "center"
       },
       {
-        "desc": "person's hands and arms wearing black long-sleeved shirt",
-        "action": "pouring ingredients",
-        "position": "right"
+        "desc": "black spatula with a wooden handle",
+        "action": "being held",
+        "position": "center"
+      },
+      {
+        "desc": "small clear glass bowl",
+        "action": "being held",
+        "position": "center"
       },
       {
         "desc": "white marble countertop",
@@ -414,36 +356,96 @@
         "position": "background"
       },
       {
-        "desc": "small glass bowl with white granulated sugar",
+        "desc": "text overlay in black sans-serif font",
         "action": "static",
-        "position": "right"
-      },
-      {
-        "desc": "white bowl with two cracked eggs",
-        "action": "static",
-        "position": "top right"
-      },
-      {
-        "desc": "text overlay 'GRANULATED SUGAR 150 G' in black sans-serif font",
-        "action": "static",
-        "position": "bottom left"
+        "position": "bottom"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A person is pouring a brown granular substance from a glass bowl into a stainless steel mixing bowl.",
+        "fact": "A person is adding cubed butter from a glass bowl into the mixer bowl.",
         "confidence": 1.0
       },
       {
-        "fact": "The mixing bowl is attached to a red stand mixer.",
+        "fact": "The text 'LIGHT BROWN SUGAR 220 G, PACKED' is displayed on the screen.",
         "confidence": 1.0
       },
       {
-        "fact": "The text overlay identifies the ingredient as 'GRANULATED SUGAR' with a quantity of '150 G'.",
+        "fact": "The mixer is equipped with a white flat beater attachment.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "LIGHT BROWN SUGAR",
+      "220 G, PACKED"
+    ],
+    "spatial": "The red stand mixer is on the left side of the frame. The person's hands are in the center, holding a glass bowl above the mixer's bowl. The text overlay is at the bottom of the screen.",
+    "parse_success": true,
+    "chunk_idx": 6,
+    "video_id": "How_to_make_Chocolate_Chip_Cookies_using_the_Kitchenaid_Stand_Mixer"
+  },
+  {
+    "time": [
+      7,
+      8
+    ],
+    "visible_entities": [
+      {
+        "desc": "person with fair skin, wearing a black long-sleeved shirt",
+        "action": "pouring ingredients",
+        "position": "right"
+      },
+      {
+        "desc": "red KitchenAid stand mixer with a silver mixing bowl and white paddle attachment",
+        "action": "static",
+        "position": "left"
+      },
+      {
+        "desc": "clear glass bowl containing light brown, granular sugar",
+        "action": "being tilted",
+        "position": "center"
+      },
+      {
+        "desc": "white granulated sugar in a small glass bowl",
+        "action": "static",
+        "position": "right"
+      },
+      {
+        "desc": "white bowl containing two cracked eggs with yellow yolks",
+        "action": "static",
+        "position": "top right"
+      },
+      {
+        "desc": "small glass bowl containing dark brown liquid",
+        "action": "static",
+        "position": "top right"
+      },
+      {
+        "desc": "white bowl containing white flour",
+        "action": "static",
+        "position": "right"
+      },
+      {
+        "desc": "white marble countertop with grey veining",
+        "action": "static",
+        "position": "background"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A person is pouring light brown sugar from a glass bowl into the silver mixing bowl of a red stand mixer.",
         "confidence": 1.0
       },
       {
-        "fact": "Other ingredients, including eggs and vanilla extract, are visible on the counter.",
+        "fact": "The text 'GRANULATED SUGAR 150 G' is displayed on the screen.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A bowl of white granulated sugar sits on the countertop next to the person's hands.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "Two eggs are visible in a white bowl on the countertop.",
         "confidence": 1.0
       }
     ],
@@ -451,31 +453,36 @@
       "GRANULATED SUGAR",
       "150 G"
     ],
-    "spatial": "The red stand mixer is positioned on the left side of the frame, holding the stainless steel mixing bowl. The person's hands are to the right of the mixer, holding a glass bowl above the mixing bowl to pour ingredients. The text overlay is located at the bottom left of the screen, below the mixer.",
+    "spatial": "The red stand mixer is on the left side of the frame, while the person is positioned on the right. The person is holding a glass bowl above the mixer's bowl to pour the contents. The text 'GRANULATED SUGAR 150 G' is located at the bottom left of the screen, below the mixer. Other ingredients, including eggs and flour, are arranged on the countertop to the right of the mixer.",
     "parse_success": true,
     "chunk_idx": 7,
     "video_id": "How_to_make_Chocolate_Chip_Cookies_using_the_Kitchenaid_Stand_Mixer"
   },
   {
     "time": [
-      16,
-      18
+      8,
+      9
     ],
     "visible_entities": [
       {
-        "desc": "red KitchenAid stand mixer with silver accents and a white flat beater attachment",
-        "action": "being tilted by hands",
-        "position": "left"
+        "desc": "red KitchenAid stand mixer with silver band and white flat beater attachment",
+        "action": "mixing ingredients",
+        "position": "left/center"
       },
       {
         "desc": "stainless steel mixing bowl",
         "action": "static",
-        "position": "center"
+        "position": "bottom/center"
       },
       {
-        "desc": "person's hands and arms with fair skin",
-        "action": "holding the mixer and bowl",
-        "position": "center"
+        "desc": "person's hands and arms",
+        "action": "pouring sugar",
+        "position": "right"
+      },
+      {
+        "desc": "glass bowl containing white granulated sugar",
+        "action": "being tilted",
+        "position": "right"
       },
       {
         "desc": "white marble countertop",
@@ -485,97 +492,94 @@
       {
         "desc": "small glass bowl with yellow egg yolks",
         "action": "static",
-        "position": "right"
+        "position": "top right"
       },
       {
-        "desc": "white bowl filled with chocolate chips",
+        "desc": "white bowl with dark chocolate chips",
         "action": "static",
-        "position": "right"
+        "position": "top right"
       },
       {
-        "desc": "white bowl filled with flour",
+        "desc": "white pitcher with flour",
         "action": "static",
-        "position": "right"
+        "position": "bottom right"
       },
       {
-        "desc": "small glass bowl with dark liquid",
+        "desc": "small glass bowl with dark liquid (vanilla extract)",
         "action": "static",
-        "position": "right"
+        "position": "top right"
       },
       {
-        "desc": "two small glass jars with white powder",
+        "desc": "two small glass bowls with white powder (baking soda/salt)",
         "action": "static",
         "position": "right"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A person is tilting the red stand mixer over the stainless steel bowl.",
+        "fact": "Person is pouring white granulated sugar from a glass bowl into the stainless steel mixing bowl.",
         "confidence": 1.0
       },
       {
-        "fact": "The mixer contains a mixture of ingredients.",
+        "fact": "The red stand mixer is actively mixing ingredients in the bowl.",
         "confidence": 1.0
       },
       {
-        "fact": "Various baking ingredients are arranged on the countertop to the right of the mixer.",
+        "fact": "Various baking ingredients including eggs, chocolate chips, and flour are arranged on the countertop.",
         "confidence": 1.0
       }
     ],
-    "ocr": [],
-    "spatial": "The red stand mixer is positioned on the left side of the frame, held by a person's hands over a stainless steel mixing bowl. To the right of the mixer, on the white marble countertop, are several bowls containing ingredients like eggs, chocolate chips, and flour.",
+    "ocr": [
+      "KitchenAid"
+    ],
+    "spatial": "The red stand mixer is positioned on the left side of the frame, with its mixing head lowered into the stainless steel bowl below. The person's hands are to the right of the mixer, holding a glass bowl of sugar above the mixing bowl to pour it in. To the right of the mixer on the white marble countertop, there are several small bowls containing eggs, chocolate chips, vanilla extract, and flour arranged in a semi-circle.",
     "parse_success": true,
     "chunk_idx": 8,
     "video_id": "How_to_make_Chocolate_Chip_Cookies_using_the_Kitchenaid_Stand_Mixer"
   },
   {
     "time": [
-      18,
-      20
+      9,
+      10
     ],
     "visible_entities": [
       {
-        "desc": "red KitchenAid Artisan stand mixer with a silver metal bowl",
+        "desc": "red KitchenAid Artisan stand mixer with a stainless steel bowl",
         "action": "mixing ingredients",
         "position": "left"
       },
       {
-        "desc": "small white bowl containing two cracked raw eggs",
+        "desc": "white bowl containing two cracked eggs",
         "action": "static",
         "position": "right"
       },
       {
-        "desc": "small white bowl filled with dark chocolate chips",
-        "action": "static",
-        "position": "right"
-      },
-      {
-        "desc": "small glass container with dark liquid, likely vanilla extract",
+        "desc": "white bowl filled with dark chocolate chips",
         "action": "static",
         "position": "top right"
       },
       {
-        "desc": "white marble countertop surface",
+        "desc": "small glass bowl containing dark liquid",
         "action": "static",
-        "position": "background"
+        "position": "top right"
       },
       {
-        "desc": "black sans-serif text overlay",
+        "desc": "white marble countertop",
         "action": "static",
-        "position": "bottom left"
+        "position": "background"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "The stand mixer is actively mixing a pale yellow batter inside the metal bowl.",
+        "fact": "The red stand mixer is actively mixing ingredients in the metal bowl.",
         "confidence": 1.0
       },
       {
-        "fact": "The text overlay instructs to 'SET TO STIR MIX FOR 1 MINUTE'.",
+        "fact": "Text on the screen instructs to 'SET TO STIR MIX FOR 1 MINUTE'.",
         "confidence": 1.0
       },
       {
-        "fact": "Ingredients including eggs, chocolate chips, and vanilla extract are arranged on the counter next to the mixer.",
+        "fact": "Ingredients including eggs, chocolate chips, and vanilla extract are arranged on the counter.",
         "confidence": 1.0
       }
     ],
@@ -585,152 +589,81 @@
       "SET TO STIR",
       "MIX FOR 1 MINUTE"
     ],
-    "spatial": "The red stand mixer is positioned on the left side of the frame, while the bowls of ingredients are arranged to the right of the mixer. The text overlay is located in the bottom left corner, below the mixer. The mixer is sitting on top of the white marble countertop.",
+    "spatial": "The red stand mixer is positioned on the left side of the white marble countertop. To the right of the mixer, various ingredients including eggs, chocolate chips, and a small bowl of liquid are arranged. The text overlay is located at the bottom left of the frame.",
     "parse_success": true,
     "chunk_idx": 9,
     "video_id": "How_to_make_Chocolate_Chip_Cookies_using_the_Kitchenaid_Stand_Mixer"
   },
   {
     "time": [
-      20,
-      22
+      10,
+      11
     ],
     "visible_entities": [
       {
-        "desc": "red KitchenAid Artisan stand mixer with silver band and stainless steel bowl",
+        "desc": "red KitchenAid Artisan stand mixer with silver accents and a stainless steel bowl",
         "action": "mixing ingredients",
         "position": "left"
       },
       {
-        "desc": "small white bowl containing two cracked raw eggs",
+        "desc": "white bowl containing two raw eggs",
         "action": "static",
         "position": "right"
       },
       {
-        "desc": "white bowl filled with dark chocolate chips",
+        "desc": "white bowl filled with chocolate chips",
+        "action": "static",
+        "position": "right"
+      },
+      {
+        "desc": "small glass bowl with dark liquid",
         "action": "static",
         "position": "top right"
       },
       {
-        "desc": "small glass bowl with dark brown liquid",
-        "action": "static",
-        "position": "top right"
-      },
-      {
-        "desc": "white marble countertop surface",
+        "desc": "white marble countertop",
         "action": "static",
         "position": "background"
-      },
-      {
-        "desc": "black sans-serif text overlay",
-        "action": "static",
-        "position": "bottom left"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "The red stand mixer is actively stirring cubed butter inside the metal bowl.",
+        "fact": "The red stand mixer is actively mixing ingredients inside the metal bowl.",
         "confidence": 1.0
       },
       {
-        "fact": "The text overlay instructs to 'SET TO STIR MIX FOR 1 MINUTE'.",
+        "fact": "Text on the screen instructs to 'SET TO STIR MIX FOR 1 MINUTE'.",
         "confidence": 1.0
       },
       {
-        "fact": "Two raw eggs are visible in a small bowl on the counter.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "Chocolate chips are prepared in a bowl next to the eggs.",
+        "fact": "Various baking ingredients are arranged on the countertop to the right of the mixer.",
         "confidence": 1.0
       }
     ],
     "ocr": [
       "SET TO STIR",
-      "MIX FOR 1 MINUTE"
+      "MIX FOR 1 MINUTE",
+      "KitchenAid",
+      "ARTISAN"
     ],
-    "spatial": "The red stand mixer is positioned on the left side of the frame, while the bowls of ingredients are arranged on the right side. The bowl of chocolate chips is above the bowl of eggs. The instructional text is located at the bottom left corner, below the mixer.",
+    "spatial": "The red stand mixer is positioned on the left side of the frame. To the right of the mixer, several bowls containing eggs, chocolate chips, and other ingredients are arranged on the white marble countertop. The instructional text is located at the bottom left corner of the screen.",
     "parse_success": true,
     "chunk_idx": 10,
     "video_id": "How_to_make_Chocolate_Chip_Cookies_using_the_Kitchenaid_Stand_Mixer"
   },
   {
     "time": [
-      22,
-      24
+      11,
+      12
     ],
     "visible_entities": [
       {
-        "desc": "person's left hand and forearm, fair skin, holding a red stand mixer",
-        "action": "holding the mixer",
+        "desc": "person's hand and forearm with light skin tone",
+        "action": "holding the mixer head",
         "position": "left"
       },
       {
-        "desc": "red stand mixer, glossy finish, metal mixing bowl attached",
-        "action": "mixing ingredients",
-        "position": "left"
-      },
-      {
-        "desc": "white bowl containing two cracked eggs with yellow yolks",
-        "action": "static",
-        "position": "right"
-      },
-      {
-        "desc": "white bowl filled with dark chocolate chips",
-        "action": "static",
-        "position": "top right"
-      },
-      {
-        "desc": "small glass bowl with dark brown liquid",
-        "action": "static",
-        "position": "top right"
-      },
-      {
-        "desc": "white marble countertop with grey veining",
-        "action": "static",
-        "position": "background"
-      },
-      {
-        "desc": "black sans-serif text overlay",
-        "action": "static",
-        "position": "bottom left"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "The person is holding the red stand mixer while it operates.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The mixer is blending ingredients inside the metal bowl.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The text overlay reads 'GRADUALLY INCREASE SPEED TO 4'.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "Two eggs are visible in a white bowl on the right side of the counter.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [
-      "GRADUALLY",
-      "INCREASE SPEED TO 4"
-    ],
-    "spatial": "The red stand mixer is positioned on the left side of the white marble countertop, held by a person's hand. To the right of the mixer, there are several bowls containing ingredients, including eggs and chocolate chips. The instructional text is located at the bottom left corner of the screen, below the mixer.",
-    "parse_success": true,
-    "chunk_idx": 11,
-    "video_id": "How_to_make_Chocolate_Chip_Cookies_using_the_Kitchenaid_Stand_Mixer"
-  },
-  {
-    "time": [
-      24,
-      26
-    ],
-    "visible_entities": [
-      {
-        "desc": "red KitchenAid Artisan stand mixer with silver metallic band and stainless steel bowl",
+        "desc": "red stand mixer with a glossy finish and a silver metal mixing bowl",
         "action": "mixing ingredients",
         "position": "left"
       },
@@ -742,7 +675,7 @@
       {
         "desc": "white bowl filled with dark brown chocolate chips",
         "action": "static",
-        "position": "right"
+        "position": "top right"
       },
       {
         "desc": "small glass bowl containing dark brown liquid",
@@ -750,74 +683,66 @@
         "position": "top right"
       },
       {
-        "desc": "small glass bowl containing white powder",
+        "desc": "white marble countertop surface with grey veining",
         "action": "static",
-        "position": "right"
+        "position": "background"
       },
       {
-        "desc": "small glass bowl containing white granules",
-        "action": "static",
-        "position": "right"
-      },
-      {
-        "desc": "white bowl containing white flour",
-        "action": "static",
-        "position": "bottom right"
-      },
-      {
-        "desc": "black bold sans-serif text overlay",
+        "desc": "black sans-serif text overlay",
         "action": "static",
         "position": "bottom left"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "The red stand mixer is actively mixing ingredients inside the metal bowl.",
+        "fact": "A person is holding a red stand mixer over a metal bowl.",
         "confidence": 1.0
       },
       {
-        "fact": "The text 'MIX FOR 1-2 MORE MINUTES' is displayed at the bottom of the screen.",
+        "fact": "The mixer is actively blending ingredients inside the bowl.",
         "confidence": 1.0
       },
       {
-        "fact": "Various baking ingredients are arranged on the white marble countertop to the right of the mixer.",
+        "fact": "The text 'GRADUALLY INCREASE SPEED TO 4' is displayed at the bottom of the screen.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A bowl of eggs is positioned next to a bowl of chocolate chips.",
         "confidence": 1.0
       }
     ],
     "ocr": [
-      "KitchenAid",
-      "ARTISAN",
-      "MIX FOR",
-      "1-2 MORE MINUTES"
+      "GRADUALLY",
+      "INCREASE SPEED TO 4"
     ],
-    "spatial": "The red stand mixer is positioned on the left side of the white marble countertop. To the right of the mixer, several small bowls containing ingredients like eggs, chocolate chips, and liquids are arranged. The instructional text is located at the bottom left, below the mixer.",
+    "spatial": "The red stand mixer is on the left side of the frame, positioned above the marble countertop. To the right of the mixer, there are several bowls containing ingredients like eggs and chocolate chips. The instructional text is located at the bottom left, below the mixer.",
     "parse_success": true,
-    "chunk_idx": 12,
+    "chunk_idx": 11,
     "video_id": "How_to_make_Chocolate_Chip_Cookies_using_the_Kitchenaid_Stand_Mixer"
   },
   {
     "time": [
-      26,
-      28
+      12,
+      13
     ],
     "visible_entities": [
       {
-        "desc": "red stand mixer with a silver metal bowl",
+        "desc": "red KitchenAid Artisan stand mixer with silver metallic band and stainless steel bowl",
         "action": "mixing ingredients",
         "position": "left"
       },
       {
-        "desc": "white bowl containing two cracked raw eggs with yellow yolks",
+        "desc": "white bowl containing two cracked raw eggs",
         "action": "static",
         "position": "right"
       },
       {
-        "desc": "white bowl filled with dark chocolate chips",
+        "desc": "white bowl containing dark chocolate chips",
         "action": "static",
         "position": "top right"
       },
       {
-        "desc": "small glass bowl with dark brown liquid",
+        "desc": "small glass bowl with dark liquid",
         "action": "static",
         "position": "top right"
       },
@@ -829,25 +754,92 @@
       {
         "desc": "white bowl with white flour",
         "action": "static",
-        "position": "bottom right"
+        "position": "right"
       },
       {
-        "desc": "black bold sans-serif text overlay",
+        "desc": "black sans-serif text overlay",
         "action": "static",
         "position": "bottom left"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "The red stand mixer is actively mixing the contents of the silver bowl.",
+        "fact": "The red stand mixer is actively mixing ingredients in the metal bowl.",
         "confidence": 1.0
       },
       {
-        "fact": "The text overlay instructs to 'MIX FOR 1-2 MORE MINUTES'.",
+        "fact": "The text 'MIX FOR 1-2 MORE MINUTES' is displayed on the screen.",
         "confidence": 1.0
       },
       {
-        "fact": "Various baking ingredients are arranged on the right side of the counter.",
+        "fact": "Various baking ingredients are arranged on the white countertop.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "KitchenAid",
+      "ARTISAN",
+      "MIX FOR",
+      "1-2 MORE MINUTES"
+    ],
+    "spatial": "The red stand mixer is positioned on the left side of the white countertop. The bowls containing eggs, chocolate chips, and other ingredients are arranged to the right of the mixer. The instructional text is located in the bottom left corner, below the mixer.",
+    "parse_success": true,
+    "chunk_idx": 12,
+    "video_id": "How_to_make_Chocolate_Chip_Cookies_using_the_Kitchenaid_Stand_Mixer"
+  },
+  {
+    "time": [
+      13,
+      14
+    ],
+    "visible_entities": [
+      {
+        "desc": "red stand mixer with a silver metal mixing bowl",
+        "action": "mixing ingredients",
+        "position": "left"
+      },
+      {
+        "desc": "white bowl containing two cracked raw eggs",
+        "action": "static",
+        "position": "right"
+      },
+      {
+        "desc": "white bowl filled with dark chocolate chips",
+        "action": "static",
+        "position": "top right"
+      },
+      {
+        "desc": "small glass bowl with dark liquid",
+        "action": "static",
+        "position": "top right"
+      },
+      {
+        "desc": "small glass bowls with white powder",
+        "action": "static",
+        "position": "right"
+      },
+      {
+        "desc": "white bowl with white powder",
+        "action": "static",
+        "position": "bottom right"
+      },
+      {
+        "desc": "black bold sans-serif text",
+        "action": "static",
+        "position": "bottom left"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The red stand mixer is actively mixing ingredients in the metal bowl.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The text 'MIX FOR 1-2 MORE MINUTES' is displayed at the bottom of the screen.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "Various baking ingredients including eggs, chocolate chips, and powders are arranged on the right side of the counter.",
         "confidence": 1.0
       }
     ],
@@ -855,73 +847,78 @@
       "MIX FOR",
       "1-2 MORE MINUTES"
     ],
-    "spatial": "The red stand mixer is on the left side of the white marble countertop. The bowls of ingredients, including eggs, chocolate chips, and flour, are arranged to the right of the mixer. The instructional text is located in the bottom left corner, below the mixer.",
+    "spatial": "The red stand mixer is positioned on the left side of the frame, while the bowls of ingredients are arranged to the right. The bowl of chocolate chips is above the bowl of eggs. The instructional text is located below the mixer.",
     "parse_success": true,
     "chunk_idx": 13,
     "video_id": "How_to_make_Chocolate_Chip_Cookies_using_the_Kitchenaid_Stand_Mixer"
   },
   {
     "time": [
-      28,
-      30
+      14,
+      15
     ],
     "visible_entities": [
       {
-        "desc": "person with fair skin, wearing a white long-sleeved top",
-        "action": "holding a bowl of eggs",
+        "desc": "person with light skin, bare arms",
+        "action": "holding a white bowl and pouring eggs",
         "position": "top right"
       },
       {
-        "desc": "red KitchenAid stand mixer with a silver metal bowl containing cookie dough and a white paddle attachment",
+        "desc": "red stand mixer with silver bowl and white paddle attachment",
         "action": "static",
         "position": "left"
       },
       {
-        "desc": "white ceramic bowl containing two cracked raw eggs with yellow yolks",
-        "action": "being held and moved",
-        "position": "center right"
+        "desc": "white bowl containing two cracked raw eggs with yellow yolks",
+        "action": "being poured into the mixer",
+        "position": "center"
       },
       {
-        "desc": "small glass bowl containing dark brown liquid",
+        "desc": "beige cookie dough mixture",
+        "action": "static",
+        "position": "inside the mixer bowl"
+      },
+      {
+        "desc": "small glass bowl with dark brown liquid",
         "action": "static",
         "position": "top right"
       },
       {
-        "desc": "white bowl containing dark chocolate chips",
+        "desc": "white bowl with dark chocolate chips",
         "action": "static",
-        "position": "top right"
+        "position": "right"
       },
       {
-        "desc": "white bowl containing white flour",
+        "desc": "white bowl with white flour",
         "action": "static",
         "position": "bottom right"
       },
       {
-        "desc": "two small glass bowls containing white powder",
+        "desc": "two small glass bowls with white powder",
         "action": "static",
-        "position": "center right"
+        "position": "right"
       },
       {
-        "desc": "white marble countertop surface",
+        "desc": "text 'EGGS 2, LARGE' in black sans-serif font",
         "action": "static",
-        "position": "background"
+        "position": "bottom left"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "The person is holding a white bowl containing two cracked eggs.",
+        "fact": "The person pours two raw eggs from a white bowl into the stand mixer.",
         "confidence": 1.0
       },
       {
-        "fact": "The person moves the bowl of eggs towards the stand mixer.",
+        "fact": "The stand mixer contains a beige dough mixture.",
         "confidence": 1.0
       },
       {
-        "fact": "The stand mixer contains a mixture of cookie dough.",
+        "fact": "The text 'EGGS 2, LARGE' is displayed on the screen.",
         "confidence": 1.0
       },
       {
-        "fact": "The text 'EGGS 2, LARGE' is displayed in the bottom left corner.",
+        "fact": "Several bowls of ingredients are arranged on the right side of the table.",
         "confidence": 1.0
       }
     ],
@@ -929,31 +926,31 @@
       "EGGS",
       "2, LARGE"
     ],
-    "spatial": "The red stand mixer is positioned on the left side of the frame. The person is located at the top right, holding the bowl of eggs above the countertop. The bowl of eggs is being moved from the right side towards the mixer on the left. Other ingredient bowls are arranged on the right side of the countertop, near the person's hands.",
+    "spatial": "The red stand mixer is on the left side of the frame, containing dough. The person is at the top right, holding a bowl of eggs above the mixer. To the right of the mixer and below the person's hands are bowls containing chocolate chips, flour, and other ingredients. The text overlay is in the bottom left corner.",
     "parse_success": true,
     "chunk_idx": 14,
     "video_id": "How_to_make_Chocolate_Chip_Cookies_using_the_Kitchenaid_Stand_Mixer"
   },
   {
     "time": [
-      30,
-      32
+      15,
+      16
     ],
     "visible_entities": [
       {
-        "desc": "red stand mixer with a white flat beater attachment",
-        "action": "mixing ingredients",
+        "desc": "red KitchenAid stand mixer with a white flat beater attachment",
+        "action": "static",
         "position": "left"
       },
       {
-        "desc": "stainless steel mixing bowl containing cookie dough",
+        "desc": "stainless steel mixing bowl containing pale yellow cookie dough",
         "action": "static",
         "position": "center"
       },
       {
-        "desc": "white ceramic bowl containing a raw egg",
-        "action": "being tilted",
-        "position": "right"
+        "desc": "white ceramic bowl containing a raw egg yolk and white",
+        "action": "being poured",
+        "position": "center"
       },
       {
         "desc": "small glass bottle containing amber liquid",
@@ -966,13 +963,18 @@
         "position": "top right"
       },
       {
-        "desc": "white bowl filled with flour",
+        "desc": "white bowl containing white flour",
         "action": "static",
         "position": "right"
       },
       {
         "desc": "two small clear glass bowls containing white powder",
         "action": "static",
+        "position": "right"
+      },
+      {
+        "desc": "person's hands",
+        "action": "pouring ingredients",
         "position": "right"
       },
       {
@@ -987,15 +989,15 @@
         "confidence": 1.0
       },
       {
-        "fact": "The mixer is actively beating the dough mixture.",
+        "fact": "A person holds a small glass bottle of vanilla extract.",
         "confidence": 1.0
       },
       {
-        "fact": "A person holds a small bottle of vanilla extract.",
+        "fact": "The text 'VANILLA 10 ML' appears on the screen.",
         "confidence": 1.0
       },
       {
-        "fact": "On-screen text displays 'VANILLA' and '10 ML'.",
+        "fact": "The mixer paddle is coated in dough.",
         "confidence": 1.0
       }
     ],
@@ -1003,36 +1005,41 @@
       "VANILLA",
       "10 ML"
     ],
-    "spatial": "The red stand mixer is positioned on the left side of the frame, with its stainless steel bowl in the center. A white bowl containing an egg is held above the mixer bowl, pouring its contents in. To the right of the mixer, various ingredients including chocolate chips, flour, and small glass bowls are arranged on the white marble countertop.",
+    "spatial": "The red stand mixer is on the left side of the frame with its mixing bowl in the center. A person's hands are to the right of the mixer, pouring an egg into the bowl. To the right of the mixing bowl on the marble countertop are bowls of chocolate chips, flour, and small glass containers. The text overlay is in the bottom left corner.",
     "parse_success": true,
     "chunk_idx": 15,
     "video_id": "How_to_make_Chocolate_Chip_Cookies_using_the_Kitchenaid_Stand_Mixer"
   },
   {
     "time": [
-      32,
-      34
+      16,
+      17
     ],
     "visible_entities": [
       {
-        "desc": "red stand mixer with a white paddle attachment",
-        "action": "mixing ingredients in a bowl",
+        "desc": "red stand mixer with white paddle attachment",
+        "action": "mixing ingredients",
         "position": "left"
       },
       {
-        "desc": "silver metal mixing bowl",
+        "desc": "stainless steel mixing bowl",
         "action": "containing batter",
         "position": "center"
       },
       {
-        "desc": "hand with light skin and manicured nails",
-        "action": "holding a small glass jar",
+        "desc": "hand holding a small glass jar",
+        "action": "pouring liquid",
         "position": "top right"
       },
       {
-        "desc": "small clear glass jar containing dark liquid",
-        "action": "being poured into the mixer",
+        "desc": "small glass jar with clear liquid",
+        "action": "being poured",
         "position": "top right"
+      },
+      {
+        "desc": "pale yellow batter",
+        "action": "clinging to paddle",
+        "position": "center"
       },
       {
         "desc": "white marble countertop",
@@ -1040,31 +1047,40 @@
         "position": "background"
       },
       {
-        "desc": "small glass bowls with white powder",
+        "desc": "white bowl with dark chocolate chips",
+        "action": "static",
+        "position": "top right"
+      },
+      {
+        "desc": "white bowl with flour",
         "action": "static",
         "position": "right"
       },
       {
-        "desc": "bowl with dark chocolate chips",
+        "desc": "two small glass containers with white powder",
         "action": "static",
-        "position": "top right"
+        "position": "right"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A hand pours a dark liquid from a small glass jar into the mixing bowl.",
+        "fact": "A hand is pouring a clear liquid from a small glass jar into the mixing bowl.",
         "confidence": 1.0
       },
       {
-        "fact": "The red stand mixer is actively mixing the batter.",
+        "fact": "The red stand mixer is set to speed 4.",
         "confidence": 1.0
       },
       {
-        "fact": "The text 'SET TO SPEED 4 MIX FOR 1 MINUTE' is displayed on the screen.",
+        "fact": "The mixer is instructed to mix for 1 minute.",
         "confidence": 1.0
       },
       {
-        "fact": "Ingredients including chocolate chips and white powder are arranged on the counter.",
+        "fact": "The white paddle attachment is coated in thick batter.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A bowl of chocolate chips sits on the counter next to a bowl of flour.",
         "confidence": 1.0
       }
     ],
@@ -1072,30 +1088,25 @@
       "SET TO SPEED 4",
       "MIX FOR 1 MINUTE"
     ],
-    "spatial": "The red stand mixer is positioned on the left side of the frame, with the silver mixing bowl attached to it. A hand holding a glass jar is located above and to the right of the bowl, pouring liquid into it. To the right of the mixer on the marble countertop, there are small bowls containing ingredients like chocolate chips and white powder.",
+    "spatial": "The red stand mixer is positioned on the left side of the frame, with its stainless steel bowl in the center. A hand holding a small glass jar is located above and to the right of the bowl, pouring liquid into it. To the right of the mixer on the white marble countertop, there are bowls containing chocolate chips and flour, along with two small glass containers.",
     "parse_success": true,
     "chunk_idx": 16,
     "video_id": "How_to_make_Chocolate_Chip_Cookies_using_the_Kitchenaid_Stand_Mixer"
   },
   {
     "time": [
-      34,
-      36
+      17,
+      18
     ],
     "visible_entities": [
       {
-        "desc": "person's hand and forearm with fair skin",
-        "action": "holding the mixer",
+        "desc": "person's left hand and forearm, light skin tone, wearing a white long-sleeved shirt",
+        "action": "holding the mixer head",
         "position": "left"
       },
       {
-        "desc": "red electric hand mixer with a glossy finish and silver beaters",
+        "desc": "red stand mixer, glossy finish, metallic silver mixing bowl",
         "action": "mixing ingredients",
-        "position": "left"
-      },
-      {
-        "desc": "stainless steel mixing bowl containing a yellowish mixture",
-        "action": "static",
         "position": "left"
       },
       {
@@ -1109,7 +1120,7 @@
         "position": "top right"
       },
       {
-        "desc": "white bowl containing white flour",
+        "desc": "white measuring cup containing white flour",
         "action": "static",
         "position": "right"
       },
@@ -1126,15 +1137,15 @@
     ],
     "atomic_facts": [
       {
-        "fact": "A person is using a red electric hand mixer to blend ingredients in a metal bowl.",
+        "fact": "The person is holding the red stand mixer while it operates.",
         "confidence": 1.0
       },
       {
-        "fact": "The mixer is set to speed 4 and mixing for 1 minute according to the on-screen text.",
+        "fact": "The mixer is blending yellow ingredients inside the silver bowl.",
         "confidence": 1.0
       },
       {
-        "fact": "Chocolate chips and flour are sitting in separate bowls on the counter.",
+        "fact": "The text overlay instructs to 'SET TO SPEED 4' and 'MIX FOR 1 MINUTE'.",
         "confidence": 1.0
       }
     ],
@@ -1142,68 +1153,63 @@
       "SET TO SPEED 4",
       "MIX FOR 1 MINUTE"
     ],
-    "spatial": "The person's hand is holding the red mixer, which is positioned inside the metal bowl on the left side of the frame. The bowls of ingredients, including chocolate chips and flour, are arranged to the right of the mixing bowl on the marble countertop. The instructional text is located at the bottom left, below the mixing action.",
+    "spatial": "The red stand mixer is positioned on the left side of the white marble countertop. To the right of the mixer, there are bowls containing chocolate chips, flour, and other ingredients. The instructional text is located at the bottom left corner of the frame, below the mixer.",
     "parse_success": true,
     "chunk_idx": 17,
     "video_id": "How_to_make_Chocolate_Chip_Cookies_using_the_Kitchenaid_Stand_Mixer"
   },
   {
     "time": [
-      36,
-      38
+      18,
+      19
     ],
     "visible_entities": [
       {
         "desc": "red stand mixer with a white paddle attachment",
-        "action": "static",
+        "action": "mixing yellow dough",
         "position": "left"
       },
       {
-        "desc": "stainless steel mixing bowl containing yellow dough",
-        "action": "static",
+        "desc": "stainless steel mixing bowl",
+        "action": "containing yellow dough",
         "position": "center"
       },
       {
         "desc": "person's arm wearing a black long-sleeved shirt",
-        "action": "holding a white bowl",
+        "action": "reaching for a bowl",
         "position": "right"
       },
       {
-        "desc": "white bowl containing white powder",
+        "desc": "white bowl filled with flour",
         "action": "being held",
         "position": "right"
       },
       {
-        "desc": "small bowl containing dark chocolate chips",
+        "desc": "white bowl filled with dark chocolate chips",
         "action": "static",
-        "position": "top right"
+        "position": "right"
       },
       {
-        "desc": "small glass jar with white contents",
+        "desc": "small glass jar with white powder",
         "action": "static",
-        "position": "center right"
-      },
-      {
-        "desc": "white marble countertop",
-        "action": "static",
-        "position": "background"
+        "position": "right"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A person's arm is holding a white bowl filled with flour.",
+        "fact": "The red stand mixer is mixing yellow dough in a stainless steel bowl.",
         "confidence": 1.0
       },
       {
-        "fact": "The text 'FLOUR 312 G' is displayed in the bottom left corner.",
+        "fact": "A person is reaching for a white bowl containing flour.",
         "confidence": 1.0
       },
       {
-        "fact": "Yellow dough is visible inside the stainless steel mixing bowl.",
+        "fact": "The text 'FLOUR 312 G' is displayed on the screen.",
         "confidence": 1.0
       },
       {
-        "fact": "A bowl of chocolate chips sits on the counter near the person's hand.",
+        "fact": "A bowl of chocolate chips sits on the counter next to the flour.",
         "confidence": 1.0
       }
     ],
@@ -1211,51 +1217,46 @@
       "FLOUR",
       "312 G"
     ],
-    "spatial": "The red stand mixer is positioned on the left side of the frame, next to the stainless steel mixing bowl. The person's arm is on the right side, holding a white bowl above the counter surface. The small bowl of chocolate chips is located above the white bowl being held. The text overlay is in the bottom left corner, below the mixer.",
+    "spatial": "The red stand mixer is on the left side of the frame, with its mixing bowl positioned centrally. To the right of the mixer, a person's arm reaches towards a white bowl of flour. A bowl of chocolate chips is located above the flour bowl, and a small glass jar is placed between the mixer and the flour bowl.",
     "parse_success": true,
     "chunk_idx": 18,
     "video_id": "How_to_make_Chocolate_Chip_Cookies_using_the_Kitchenaid_Stand_Mixer"
   },
   {
     "time": [
-      38,
-      40
+      19,
+      20
     ],
     "visible_entities": [
       {
-        "desc": "red stand mixer with silver bowl and white paddle attachment",
+        "desc": "red KitchenAid stand mixer with silver metallic bowl and white paddle attachment",
         "action": "mixing ingredients",
         "position": "left"
       },
       {
-        "desc": "person's hands holding a white ceramic bowl",
-        "action": "pouring flour",
-        "position": "top center"
-      },
-      {
-        "desc": "white flour powder",
-        "action": "falling into the mixer bowl",
+        "desc": "white ceramic bowl containing white flour",
+        "action": "being poured",
         "position": "center"
       },
       {
-        "desc": "yellow dough mixture",
+        "desc": "person's hand with light skin tone",
+        "action": "holding the white bowl",
+        "position": "top right"
+      },
+      {
+        "desc": "yellow cookie dough mixture",
         "action": "being mixed",
         "position": "inside the mixer bowl"
       },
       {
-        "desc": "white bowl containing dark brown chocolate chips",
+        "desc": "small white bowl with dark chocolate chips",
         "action": "static",
         "position": "top right"
       },
       {
-        "desc": "two small clear glass containers with white powder",
+        "desc": "two small clear glass bowls with white powder",
         "action": "static",
         "position": "right"
-      },
-      {
-        "desc": "white marble countertop",
-        "action": "static",
-        "position": "background"
       },
       {
         "desc": "black text overlay reading 'FLOUR 312 G'",
@@ -1269,19 +1270,15 @@
         "confidence": 1.0
       },
       {
-        "fact": "The mixer is actively mixing yellow dough with a white paddle attachment.",
+        "fact": "The mixer paddle is coated with yellow dough.",
         "confidence": 1.0
       },
       {
-        "fact": "The text overlay indicates that 312 grams of flour are being added.",
+        "fact": "A bowl of chocolate chips sits on the counter to the right.",
         "confidence": 1.0
       },
       {
-        "fact": "A bowl of chocolate chips sits on the counter to the right of the mixer.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "Two small glass containers are placed next to the bowl of chocolate chips.",
+        "fact": "The text overlay indicates 312 grams of flour are being added.",
         "confidence": 1.0
       }
     ],
@@ -1289,31 +1286,36 @@
       "FLOUR",
       "312 G"
     ],
-    "spatial": "The red stand mixer is positioned on the left side of the frame. The person's hands are above the mixer, pouring flour from a white bowl into the mixer's silver bowl. To the right of the mixer, a bowl of chocolate chips and two small glass containers are arranged on the white marble countertop. The text 'FLOUR 312 G' is located in the bottom left corner of the screen.",
+    "spatial": "The red stand mixer is positioned on the left side of the frame. The person's hand is holding a white bowl above the mixer's metal bowl, pouring flour into it. To the right of the mixer, there is a bowl of chocolate chips and two small glass containers on the white marble countertop.",
     "parse_success": true,
     "chunk_idx": 19,
     "video_id": "How_to_make_Chocolate_Chip_Cookies_using_the_Kitchenaid_Stand_Mixer"
   },
   {
     "time": [
-      40,
-      42
+      20,
+      21
     ],
     "visible_entities": [
       {
-        "desc": "red KitchenAid stand mixer with a silver stainless steel mixing bowl and a white flat beater attachment",
-        "action": "static",
+        "desc": "red stand mixer with a silver metal bowl and a white paddle attachment",
+        "action": "mixing ingredients",
         "position": "left"
       },
       {
-        "desc": "person's hand and forearm, wearing a black long-sleeved shirt",
+        "desc": "person's hand and forearm with fair skin, wearing a black long-sleeved shirt",
         "action": "pouring white powder",
         "position": "right"
       },
       {
         "desc": "small clear glass jar containing white powder",
-        "action": "being tilted",
-        "position": "right"
+        "action": "being held and tilted",
+        "position": "center-right"
+      },
+      {
+        "desc": "thick yellowish batter clinging to the mixer paddle",
+        "action": "static",
+        "position": "center"
       },
       {
         "desc": "white bowl filled with dark brown chocolate chips",
@@ -1321,19 +1323,14 @@
         "position": "top right"
       },
       {
-        "desc": "white marble countertop",
-        "action": "static",
-        "position": "background"
-      },
-      {
-        "desc": "black text overlay reading 'BAKING SODA 5 G'",
+        "desc": "black text reading 'BAKING SODA' and '5 G'",
         "action": "static",
         "position": "bottom left"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A person is pouring white powder from a small glass jar into the mixing bowl.",
+        "fact": "A person pours white powder from a small glass jar into a mixer bowl.",
         "confidence": 1.0
       },
       {
@@ -1341,7 +1338,7 @@
         "confidence": 1.0
       },
       {
-        "fact": "The mixer contains a yellowish batter mixed with white flour.",
+        "fact": "The mixer paddle is coated in yellow batter.",
         "confidence": 1.0
       },
       {
@@ -1353,131 +1350,36 @@
       "BAKING SODA",
       "5 G"
     ],
-    "spatial": "The red stand mixer is positioned on the left side of the frame, while the person's hand is on the right side pouring ingredients into the mixer's bowl. The bowl of chocolate chips is located to the right of the person's hand. The text overlay is situated in the bottom left corner, below the mixer.",
+    "spatial": "The red stand mixer is on the left side of the frame. The person's hand is to the right of the mixer, holding a jar above the mixer bowl. The bowl of chocolate chips is in the top right corner, next to the person's hand. The text overlay is in the bottom left corner.",
     "parse_success": true,
     "chunk_idx": 20,
     "video_id": "How_to_make_Chocolate_Chip_Cookies_using_the_Kitchenaid_Stand_Mixer"
   },
   {
     "time": [
-      42,
-      44
+      21,
+      22
     ],
     "visible_entities": [
       {
-        "desc": "red stand mixer with silver mixing bowl containing flour and butter mixture",
+        "desc": "red stand mixer with silver mixing bowl and white paddle attachment",
         "action": "static",
         "position": "left"
       },
       {
-        "desc": "person's arm with black sleeve and hand holding a small glass jar",
-        "action": "pouring contents into bowl",
+        "desc": "white powdery flour and yellowish butter mixture",
+        "action": "static",
+        "position": "left"
+      },
+      {
+        "desc": "person's arm in black long-sleeved shirt and hand",
+        "action": "pouring sea salt",
         "position": "right"
       },
       {
-        "desc": "white bowl filled with dark chocolate chips",
-        "action": "static",
-        "position": "top right"
-      },
-      {
-        "desc": "black text reading 'SEA SALT' and '6 G'",
-        "action": "static",
-        "position": "bottom left"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "A person pours a white substance from a small glass jar into the silver mixing bowl.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The mixing bowl contains a mixture of flour and yellow butter.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The on-screen text indicates the ingredient being added is 'SEA SALT' with a quantity of '6 G'.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [
-      "SEA SALT",
-      "6 G"
-    ],
-    "spatial": "The red stand mixer is positioned on the left side of the frame. The person's hand is to the right of the mixer, holding a jar directly above the mixing bowl to pour the contents. The bowl of chocolate chips is located in the upper right corner, next to the person's arm.",
-    "parse_success": true,
-    "chunk_idx": 21,
-    "video_id": "How_to_make_Chocolate_Chip_Cookies_using_the_Kitchenaid_Stand_Mixer"
-  },
-  {
-    "time": [
-      44,
-      46
-    ],
-    "visible_entities": [
-      {
-        "desc": "red stand mixer with a silver metal mixing bowl",
-        "action": "mixing ingredients",
-        "position": "left"
-      },
-      {
-        "desc": "small white bowl filled with brown chocolate chips",
-        "action": "static",
+        "desc": "small clear glass jar containing white granular sea salt",
+        "action": "being held and poured",
         "position": "right"
-      },
-      {
-        "desc": "white marble countertop surface",
-        "action": "static",
-        "position": "background"
-      },
-      {
-        "desc": "black instructional text overlay",
-        "action": "static",
-        "position": "bottom left"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "The red stand mixer is actively mixing the contents of the silver bowl.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The text 'SET TO STIR MIX UNTIL COMBINED' appears on the screen.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "A bowl of chocolate chips sits on the counter next to the mixer.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [
-      "SET TO STIR",
-      "MIX UNTIL COMBINED"
-    ],
-    "spatial": "The red stand mixer is positioned on the left side of the frame, while the small white bowl of chocolate chips is located to the right. The instructional text is overlaid in the bottom left corner, below the mixer.",
-    "parse_success": true,
-    "chunk_idx": 22,
-    "video_id": "How_to_make_Chocolate_Chip_Cookies_using_the_Kitchenaid_Stand_Mixer"
-  },
-  {
-    "time": [
-      46,
-      48
-    ],
-    "visible_entities": [
-      {
-        "desc": "red stand mixer with silver metal bowl and white paddle attachment",
-        "action": "mixing dough",
-        "position": "left"
-      },
-      {
-        "desc": "person's hands and arms, wearing a dark blue long-sleeved shirt",
-        "action": "adjusting the mixer head",
-        "position": "center"
-      },
-      {
-        "desc": "thick, pale yellow dough",
-        "action": "being mixed",
-        "position": "inside bowl"
       },
       {
         "desc": "white bowl filled with dark brown chocolate chips",
@@ -1490,22 +1392,131 @@
         "position": "background"
       },
       {
-        "desc": "black sans-serif text overlay",
+        "desc": "text overlay 'SEA SALT 6 G' in black sans-serif font",
         "action": "static",
         "position": "bottom left"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "The mixer is set to stir and mix until combined.",
+        "fact": "A person's hand is pouring sea salt from a small glass jar into the mixing bowl.",
         "confidence": 1.0
       },
+      {
+        "fact": "The mixing bowl contains flour and butter.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The text overlay indicates 'SEA SALT 6 G'.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A bowl of chocolate chips is sitting on the counter.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "SEA SALT",
+      "6 G"
+    ],
+    "spatial": "The red stand mixer is on the left side of the frame. The person's hand is to the right of the mixer, pouring salt into the bowl. The bowl of chocolate chips is to the right of the person's hand. The text overlay is in the bottom left corner.",
+    "parse_success": true,
+    "chunk_idx": 21,
+    "video_id": "How_to_make_Chocolate_Chip_Cookies_using_the_Kitchenaid_Stand_Mixer"
+  },
+  {
+    "time": [
+      22,
+      23
+    ],
+    "visible_entities": [
+      {
+        "desc": "red stand mixer with a silver metal mixing bowl",
+        "action": "mixing ingredients",
+        "position": "left"
+      },
+      {
+        "desc": "white bowl filled with brown chocolate chips",
+        "action": "static",
+        "position": "right"
+      },
+      {
+        "desc": "white marble countertop with grey veining",
+        "action": "static",
+        "position": "background"
+      },
+      {
+        "desc": "black sans-serif text overlay",
+        "action": "static",
+        "position": "bottom-left"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The red stand mixer is actively mixing the contents of the silver bowl.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A bowl of chocolate chips sits on the counter.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The on-screen text instructs to 'SET TO STIR' and 'MIX UNTIL COMBINED'.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "SET TO STIR",
+      "MIX UNTIL COMBINED"
+    ],
+    "spatial": "The red stand mixer is positioned on the left side of the white marble countertop. The white bowl containing chocolate chips is located to the right of the mixer. The instructional text is overlaid at the bottom left of the frame, below the mixer.",
+    "parse_success": true,
+    "chunk_idx": 22,
+    "video_id": "How_to_make_Chocolate_Chip_Cookies_using_the_Kitchenaid_Stand_Mixer"
+  },
+  {
+    "time": [
+      23,
+      24
+    ],
+    "visible_entities": [
+      {
+        "desc": "red stand mixer with a silver metal bowl and a white paddle attachment",
+        "action": "mixing dough",
+        "position": "left"
+      },
+      {
+        "desc": "person's hands and arms wearing a dark blue long-sleeved shirt",
+        "action": "adjusting the mixer head",
+        "position": "center"
+      },
+      {
+        "desc": "thick, pale yellow cookie dough",
+        "action": "being mixed",
+        "position": "center"
+      },
+      {
+        "desc": "white bowl filled with dark brown chocolate chips",
+        "action": "static",
+        "position": "top right"
+      },
+      {
+        "desc": "white marble countertop with grey veining",
+        "action": "static",
+        "position": "background"
+      }
+    ],
+    "atomic_facts": [
       {
         "fact": "A person is adjusting the head of the red stand mixer.",
         "confidence": 1.0
       },
       {
-        "fact": "The mixer's paddle attachment is stirring the dough inside the metal bowl.",
+        "fact": "The mixer is blending the dough inside the metal bowl.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The text 'SET TO STIR MIX UNTIL COMBINED' is displayed on the screen.",
         "confidence": 1.0
       },
       {
@@ -1517,49 +1528,49 @@
       "SET TO STIR",
       "MIX UNTIL COMBINED"
     ],
-    "spatial": "The red stand mixer is on the left side of the frame, with the person's hands positioned above and behind it. The bowl of chocolate chips is to the right of the mixer. The instructional text is located at the bottom left, below the mixer.",
+    "spatial": "The red stand mixer is on the left side of the frame, with the person's hands positioned above and behind it. The bowl of chocolate chips is to the right of the mixer in the background. The instructional text is located at the bottom left of the screen, below the mixer.",
     "parse_success": true,
     "chunk_idx": 23,
     "video_id": "How_to_make_Chocolate_Chip_Cookies_using_the_Kitchenaid_Stand_Mixer"
   },
   {
     "time": [
-      48,
-      50
+      24,
+      25
     ],
     "visible_entities": [
       {
-        "desc": "red stand mixer with silver metallic bowl and white paddle attachment",
+        "desc": "red stand mixer with silver metal bowl containing yellow dough",
         "action": "mixing dough",
         "position": "left"
       },
       {
-        "desc": "hands holding a white ceramic bowl filled with brown semi-sweet chocolate chips",
-        "action": "pouring chocolate chips",
+        "desc": "white ceramic bowl filled with brown semi-sweet chocolate chips",
+        "action": "being poured into the mixer",
         "position": "right"
       },
       {
-        "desc": "thick yellow cookie dough inside the mixer bowl",
-        "action": "being mixed",
-        "position": "center"
+        "desc": "pair of hands with light skin tone",
+        "action": "holding and tilting the white bowl",
+        "position": "right"
       },
       {
-        "desc": "black text overlay reading 'SEMI-SWEET CHOCOLATE CHIPS' and '265 G'",
+        "desc": "black text overlay reading 'SEMI-SWEET CHOCOLATE CHIPS 265 G'",
         "action": "static",
         "position": "bottom"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A person is pouring semi-sweet chocolate chips from a white bowl into a stand mixer.",
+        "fact": "A person is pouring chocolate chips from a white bowl into a stand mixer.",
         "confidence": 1.0
       },
       {
-        "fact": "The stand mixer is actively mixing yellow dough.",
+        "fact": "The mixer bowl contains a thick, yellow dough mixture.",
         "confidence": 1.0
       },
       {
-        "fact": "The text overlay indicates the ingredient is 'SEMI-SWEET CHOCOLATE CHIPS' with a weight of '265 G'.",
+        "fact": "The on-screen text indicates the ingredient is 265 grams of semi-sweet chocolate chips.",
         "confidence": 1.0
       }
     ],
@@ -1567,30 +1578,25 @@
       "SEMI-SWEET CHOCOLATE CHIPS",
       "265 G"
     ],
-    "spatial": "The red stand mixer is positioned on the left side of the frame, while the hands holding the bowl of chocolate chips are on the right. The chocolate chips are being poured from the bowl into the mixer's silver bowl. The text overlay is located at the bottom of the screen, below the mixing action.",
+    "spatial": "The red stand mixer is positioned on the left side of the frame. The hands holding the white bowl of chocolate chips are to the right of the mixer. The text overlay is located at the bottom of the screen, below the mixer and the bowl.",
     "parse_success": true,
     "chunk_idx": 24,
     "video_id": "How_to_make_Chocolate_Chip_Cookies_using_the_Kitchenaid_Stand_Mixer"
   },
   {
     "time": [
-      50,
-      52
+      25,
+      26
     ],
     "visible_entities": [
       {
-        "desc": "red stand mixer with a glossy finish",
+        "desc": "red stand mixer with a glossy finish and a silver metal mixing bowl",
         "action": "mixing ingredients",
         "position": "left"
       },
       {
-        "desc": "silver metal mixing bowl",
-        "action": "static",
-        "position": "left"
-      },
-      {
         "desc": "person's hand with light skin tone",
-        "action": "adjusting the mixer",
+        "action": "holding the mixer",
         "position": "left"
       },
       {
@@ -1599,22 +1605,22 @@
         "position": "background"
       },
       {
-        "desc": "text overlay in grey sans-serif font",
+        "desc": "text overlay in bold, dark grey, sans-serif font",
         "action": "static",
         "position": "bottom left"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "The red stand mixer is actively stirring the contents inside the silver bowl.",
+        "fact": "A red stand mixer is actively mixing ingredients in a metal bowl.",
         "confidence": 1.0
       },
       {
-        "fact": "A hand is visible holding the top of the mixer head.",
+        "fact": "A hand is holding the mixer head steady during the mixing process.",
         "confidence": 1.0
       },
       {
-        "fact": "The text on the screen instructs to 'SET TO STIR' and 'MIX UNTIL COMBINED'.",
+        "fact": "The on-screen text instructs to 'SET TO STIR' and 'MIX UNTIL COMBINED'.",
         "confidence": 1.0
       }
     ],
@@ -1622,29 +1628,29 @@
       "SET TO STIR",
       "MIX UNTIL COMBINED"
     ],
-    "spatial": "The red stand mixer is positioned on the left side of the white marble countertop. The silver mixing bowl is situated directly underneath the mixer head. The instructional text is located in the bottom left corner, below the mixing setup.",
+    "spatial": "The red stand mixer is positioned on the left side of the white marble countertop. The person's hand is holding the mixer from the top left. The instructional text is located in the bottom left corner, below the mixer.",
     "parse_success": true,
     "chunk_idx": 25,
     "video_id": "How_to_make_Chocolate_Chip_Cookies_using_the_Kitchenaid_Stand_Mixer"
   },
   {
     "time": [
-      52,
-      54
+      26,
+      27
     ],
     "visible_entities": [
       {
-        "desc": "red stand mixer with silver bowl and white paddle attachment",
-        "action": "mixing dough",
-        "position": "left/center"
+        "desc": "red stand mixer with silver metallic accents and a stainless steel mixing bowl",
+        "action": "mixing ingredients",
+        "position": "left"
       },
       {
-        "desc": "person's hands and arms, wearing a dark long-sleeved shirt",
+        "desc": "person's hands and arms wearing a dark long-sleeved shirt",
         "action": "adjusting the mixer head",
-        "position": "top/center"
+        "position": "top right"
       },
       {
-        "desc": "pale yellow dough mixture",
+        "desc": "thick, pale yellow dough or batter",
         "action": "being mixed",
         "position": "inside the bowl"
       },
@@ -1656,15 +1662,19 @@
     ],
     "atomic_facts": [
       {
-        "fact": "A person is adjusting the head of a red stand mixer.",
+        "fact": "The video displays a top-down view of a red stand mixer in operation.",
         "confidence": 1.0
       },
       {
-        "fact": "The mixer is set to stir and mix until combined.",
+        "fact": "The mixer is set to stir and mix ingredients until combined.",
         "confidence": 1.0
       },
       {
-        "fact": "The dough is being mixed inside the silver bowl.",
+        "fact": "A person's hands are visible adjusting the head of the mixer.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The dough inside the bowl is being worked by the mixer attachment.",
         "confidence": 1.0
       }
     ],
@@ -1672,36 +1682,31 @@
       "SET TO STIR",
       "MIX UNTIL COMBINED"
     ],
-    "spatial": "The red stand mixer is positioned on the left side of the frame. The person's hands are above the mixer, adjusting its head. The dough is inside the silver bowl of the mixer. The instructional text is located at the bottom left of the screen.",
+    "spatial": "The red stand mixer is positioned on the left side of the frame, resting on a white marble surface. The text instructions are located below the mixer in the bottom left corner. The person's hands are positioned above and to the right of the mixer, interacting with the appliance.",
     "parse_success": true,
     "chunk_idx": 26,
     "video_id": "How_to_make_Chocolate_Chip_Cookies_using_the_Kitchenaid_Stand_Mixer"
   },
   {
     "time": [
-      54,
-      56
+      27,
+      28
     ],
     "visible_entities": [
       {
-        "desc": "red KitchenAid stand mixer with silver metallic bowl",
+        "desc": "red KitchenAid stand mixer with a silver mixing bowl containing yellow cookie dough",
         "action": "static",
         "position": "left"
       },
       {
-        "desc": "thick yellow cookie dough",
-        "action": "being scraped",
-        "position": "inside the mixer bowl"
-      },
-      {
-        "desc": "rectangular silver metal baking sheet",
-        "action": "being placed on the counter",
+        "desc": "silver rectangular metal baking sheet",
+        "action": "being placed on the surface",
         "position": "right"
       },
       {
         "desc": "person's hands with light skin tone",
-        "action": "scraping dough and holding baking sheet",
-        "position": "center and right"
+        "action": "holding and placing the baking sheet",
+        "position": "right"
       },
       {
         "desc": "white marble countertop with grey veining",
@@ -1711,118 +1716,109 @@
     ],
     "atomic_facts": [
       {
-        "fact": "A person uses a spatula to scrape cookie dough from the sides of the mixer bowl.",
+        "fact": "A person is placing a silver baking sheet onto the white countertop.",
         "confidence": 1.0
       },
       {
-        "fact": "Hands place a silver baking sheet onto the marble countertop.",
+        "fact": "The red stand mixer is positioned on the left side of the frame.",
         "confidence": 1.0
       },
       {
-        "fact": "The stand mixer is positioned on the left side of the frame.",
+        "fact": "The baking sheet is positioned on the right side of the frame.",
         "confidence": 1.0
       }
     ],
     "ocr": [
       "KitchenAid"
     ],
-    "spatial": "The red stand mixer is to the left of the silver baking sheet. The baking sheet is placed on the white marble countertop. The person's hands are interacting with both the mixer bowl and the baking sheet.",
+    "spatial": "The red stand mixer is to the left of the silver baking sheet. The person's hands are holding the baking sheet on the right side. Both the mixer and the baking sheet are resting on the white marble countertop.",
     "parse_success": true,
     "chunk_idx": 27,
     "video_id": "How_to_make_Chocolate_Chip_Cookies_using_the_Kitchenaid_Stand_Mixer"
   },
   {
     "time": [
-      56,
-      58
+      28,
+      29
     ],
     "visible_entities": [
       {
-        "desc": "person with fair skin, bare arms, no visible clothing sleeves",
-        "action": "scooping dough onto a tray",
-        "position": "top right"
-      },
-      {
-        "desc": "red KitchenAid stand mixer with silver metal bowl",
+        "desc": "red stand mixer with silver mixing bowl",
         "action": "static",
         "position": "left"
       },
       {
-        "desc": "thick, pale yellow cookie dough with visible dark specks",
+        "desc": "thick yellow cookie dough with visible chunks",
         "action": "being scooped",
-        "position": "inside bowl and on tray"
+        "position": "left/center"
       },
       {
-        "desc": "silver metal baking sheet lined with white parchment paper",
+        "desc": "silver metal baking sheet",
         "action": "static",
         "position": "right"
       },
       {
-        "desc": "two metal spoons",
-        "action": "holding and manipulating dough",
-        "position": "in hands"
+        "desc": "person's hands and forearms with fair skin",
+        "action": "scooping dough onto tray",
+        "position": "right"
+      },
+      {
+        "desc": "metal spoon",
+        "action": "being held",
+        "position": "right"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A person is using two spoons to scoop cookie dough from a mixer bowl.",
+        "fact": "A person is using a spoon to scoop cookie dough from a mixing bowl.",
         "confidence": 1.0
       },
       {
-        "fact": "The person places scoops of dough onto a parchment-lined baking sheet.",
+        "fact": "The person places scoops of dough onto a metal baking sheet.",
         "confidence": 1.0
       },
       {
-        "fact": "The red stand mixer is positioned on the left side of the counter.",
+        "fact": "The baking sheet contains multiple mounds of raw cookie dough.",
         "confidence": 1.0
       },
       {
-        "fact": "The baking sheet is positioned on the right side of the counter.",
+        "fact": "The red stand mixer is positioned on the left side of the frame.",
         "confidence": 1.0
       }
     ],
     "ocr": [
       "KitchenAid"
     ],
-    "spatial": "The red stand mixer is to the left of the baking sheet. The person's hands are positioned above the baking sheet on the right side. The cookie dough is inside the mixer bowl and on the parchment paper.",
+    "spatial": "The red stand mixer is to the left of the silver baking sheet. The person's hands are positioned above the baking sheet, holding a spoon to deposit dough. The mixing bowl is attached to the mixer and contains the remaining dough.",
     "parse_success": true,
     "chunk_idx": 28,
     "video_id": "How_to_make_Chocolate_Chip_Cookies_using_the_Kitchenaid_Stand_Mixer"
   },
   {
     "time": [
-      58,
-      60
+      29,
+      30
     ],
     "visible_entities": [
       {
-        "desc": "red stand mixer with a silver metal mixing bowl containing yellow cookie dough",
+        "desc": "red stand mixer with silver metal bowl containing cookie dough",
         "action": "static",
         "position": "left"
       },
       {
-        "desc": "rectangular metal baking sheet lined with white parchment paper, holding eight scoops of raw cookie dough",
-        "action": "being held and lifted",
+        "desc": "silver metal baking sheet with white parchment paper and eight scoops of raw cookie dough",
+        "action": "being moved out of frame",
         "position": "right"
       },
       {
-        "desc": "hands with light skin tone",
-        "action": "holding the baking sheet",
-        "position": "top right"
-      },
-      {
-        "desc": "black bold sans-serif text overlay",
+        "desc": "black text overlay",
         "action": "static",
         "position": "bottom left"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A pair of hands lifts the baking sheet containing cookie dough scoops off the counter.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The baking sheet is moved from the table surface towards the top right of the frame.",
+        "fact": "A person moves the baking sheet with cookie dough scoops out of the frame.",
         "confidence": 1.0
       },
       {
@@ -1834,136 +1830,128 @@
       "BAKE AT 190°C",
       "FOR 10-12 MINUTES"
     ],
-    "spatial": "The red stand mixer is positioned on the left side of the frame, next to the baking sheet which is on the right. The hands are holding the edges of the baking sheet. The instructional text is located at the bottom left, below the mixer.",
+    "spatial": "The red stand mixer is on the left side of the frame, next to the baking sheet which is on the right. The baking sheet is being lifted and moved towards the top right. The instructional text is located at the bottom left corner of the screen.",
     "parse_success": true,
     "chunk_idx": 29,
     "video_id": "How_to_make_Chocolate_Chip_Cookies_using_the_Kitchenaid_Stand_Mixer"
   },
   {
     "time": [
-      60,
-      62
+      30,
+      31
     ],
     "visible_entities": [
       {
-        "desc": "pile of golden-brown, round cookies with visible white chips or nuts",
+        "desc": "pile of golden-brown, round cookies with a textured surface and visible white chunks",
         "action": "static",
         "position": "right foreground"
       },
       {
-        "desc": "red stand mixer base with a silver metallic bowl",
+        "desc": "red stand mixer base with a silver metallic bowl attached",
         "action": "static",
         "position": "left background"
       },
       {
-        "desc": "white marble countertop surface",
+        "desc": "white countertop with faint grey veining",
         "action": "static",
         "position": "bottom"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A pile of cookies sits on the counter.",
+        "fact": "A pile of cookies sits on the countertop.",
         "confidence": 1.0
       },
       {
-        "fact": "A red mixer is positioned to the left of the cookies.",
+        "fact": "A red stand mixer is positioned in the background.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The pile of cookies is in the foreground on the right side of the frame. The red stand mixer is to the left of the cookies and slightly behind them. Both items are resting on the white marble countertop.",
+    "spatial": "The pile of cookies is in the foreground on the right side of the frame. The red stand mixer is to the left of the cookies and positioned further back in the background. Both items are resting on the white countertop.",
     "parse_success": true,
     "chunk_idx": 30,
     "video_id": "How_to_make_Chocolate_Chip_Cookies_using_the_Kitchenaid_Stand_Mixer"
   },
   {
     "time": [
-      62,
-      64
+      31,
+      32
     ],
     "visible_entities": [
       {
-        "desc": "hands with light skin tone and manicured nails",
+        "desc": "hands with fair skin and short, natural nails",
         "action": "breaking a cookie",
         "position": "center"
       },
       {
-        "desc": "golden-brown chocolate chip cookie with a soft, chewy texture",
-        "action": "being broken apart",
+        "desc": "golden-brown chocolate chip cookie, soft and chewy texture with visible chocolate chunks",
+        "action": "being pulled apart",
         "position": "center"
       },
       {
-        "desc": "large pile of golden-brown chocolate chip cookies",
+        "desc": "large pile of baked chocolate chip cookies",
         "action": "static",
         "position": "background"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A pair of hands is holding a chocolate chip cookie.",
+        "fact": "Hands are pulling a chocolate chip cookie apart to reveal the interior texture.",
         "confidence": 1.0
       },
       {
-        "fact": "The hands are pulling the cookie apart to reveal the interior.",
+        "fact": "The cookie breaks open to show melted chocolate chunks inside.",
         "confidence": 1.0
       },
       {
-        "fact": "The cookie breaks open to show melted chocolate chips inside.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "A large pile of cookies sits on a white surface in the background.",
+        "fact": "A pile of cookies sits on a surface in the background.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The hands are in the foreground holding the cookie. The cookie is positioned in the center of the frame. The pile of cookies is behind the hands and the single cookie being broken.",
+    "spatial": "The hands are in the foreground holding the cookie. The cookie is being broken in the center of the frame. The pile of cookies is behind the hands and the broken cookie.",
     "parse_success": true,
     "chunk_idx": 31,
     "video_id": "How_to_make_Chocolate_Chip_Cookies_using_the_Kitchenaid_Stand_Mixer"
   },
   {
     "time": [
-      64,
-      66
+      32,
+      33
     ],
     "visible_entities": [
       {
-        "desc": "hands with fair skin and natural nails",
-        "action": "breaking a cookie apart",
+        "desc": "hands with fair skin and manicured nails",
+        "action": "pulling a cookie apart",
         "position": "center"
       },
       {
         "desc": "golden-brown chocolate chip cookie with a soft, crumbly texture and visible dark chocolate chunks",
-        "action": "being pulled apart",
+        "action": "being broken into two pieces",
         "position": "center"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A pair of hands is breaking a chocolate chip cookie into two separate pieces.",
+        "fact": "A pair of hands is pulling a chocolate chip cookie apart.",
         "confidence": 1.0
       },
       {
-        "fact": "The cookie has a soft texture as it crumbles slightly during the break.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "Dark chocolate chunks are visible embedded within the cookie dough.",
+        "fact": "The cookie breaks into two distinct halves, revealing the interior texture and melted chocolate.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The hands are holding the cookie in the center of the frame. One half of the broken cookie is positioned above the other half as they are being pulled apart. The background is blurred and located behind the hands and cookie.",
+    "spatial": "The hands are holding the cookie in the center of the frame. The top half of the cookie is positioned above the bottom half as they are being separated. The background is behind the hands and cookie.",
     "parse_success": true,
     "chunk_idx": 32,
     "video_id": "How_to_make_Chocolate_Chip_Cookies_using_the_Kitchenaid_Stand_Mixer"
   },
   {
     "time": [
-      66,
-      68
+      33,
+      34
     ],
     "visible_entities": [
       {
@@ -1982,7 +1970,7 @@
         "position": "right"
       },
       {
-        "desc": "stack of golden-brown cookies",
+        "desc": "stack of baked cookies",
         "action": "static",
         "position": "foreground"
       },
@@ -2011,81 +1999,15 @@
       "TAILORED TO YOUR SIZE OF STAND MIXER,",
       "CLICK THE LINK BELOW"
     ],
-    "spatial": "The text overlay is positioned at the top center of the frame, above the three red stand mixers. The mixers are arranged horizontally across the middle ground, with one on the left, one in the center, and one on the right. Stacks of cookies are placed in the foreground, directly in front of each respective mixer.",
+    "spatial": "The three red stand mixers are positioned side-by-side on the counter, with the left mixer next to the center mixer, and the center mixer next to the right mixer. The stacks of cookies are in front of the mixers in the foreground. The instructional text is located above the mixers near the top of the frame.",
     "parse_success": true,
     "chunk_idx": 33,
     "video_id": "How_to_make_Chocolate_Chip_Cookies_using_the_Kitchenaid_Stand_Mixer"
   },
   {
     "time": [
-      68,
-      70
-    ],
-    "visible_entities": [
-      {
-        "desc": "red stand mixer, small size, metallic silver bowl",
-        "action": "static",
-        "position": "left"
-      },
-      {
-        "desc": "red stand mixer, medium size, metallic silver bowl",
-        "action": "static",
-        "position": "center"
-      },
-      {
-        "desc": "red stand mixer, large size, metallic silver bowl",
-        "action": "static",
-        "position": "right"
-      },
-      {
-        "desc": "stack of golden-brown cookies, small pile",
-        "action": "static",
-        "position": "left foreground"
-      },
-      {
-        "desc": "stack of golden-brown cookies, medium pile",
-        "action": "static",
-        "position": "center foreground"
-      },
-      {
-        "desc": "stack of golden-brown cookies, large pile",
-        "action": "static",
-        "position": "right foreground"
-      },
-      {
-        "desc": "black sans-serif text overlay",
-        "action": "static",
-        "position": "top center"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "Three red stand mixers of increasing sizes are arranged in a row.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "Piles of cookies are placed on white plates in front of the mixers.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The text overlay instructs viewers to click a link for a recipe tailored to their mixer size.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [
-      "FOR THE COMPLETE RECIPE",
-      "TAILORED TO YOUR SIZE OF STAND MIXER,",
-      "CLICK THE LINK BELOW"
-    ],
-    "spatial": "The three red stand mixers are arranged horizontally across the counter, with the smallest on the left, the medium one in the center, and the largest on the right. A stack of cookies on a white plate is positioned directly in front of each mixer. The instructional text is located above the mixers in the upper center of the frame.",
-    "parse_success": true,
-    "chunk_idx": 34,
-    "video_id": "How_to_make_Chocolate_Chip_Cookies_using_the_Kitchenaid_Stand_Mixer"
-  },
-  {
-    "time": [
-      70,
-      72
+      34,
+      35
     ],
     "visible_entities": [
       {
@@ -2104,47 +2026,33 @@
         "position": "right"
       },
       {
-        "desc": "small stack of cookies on white plate",
+        "desc": "plate of cookies",
         "action": "static",
-        "position": "left foreground"
+        "position": "foreground left"
       },
       {
-        "desc": "medium stack of cookies on white plate",
+        "desc": "plate of cookies",
         "action": "static",
-        "position": "center foreground"
+        "position": "foreground center"
       },
       {
-        "desc": "large stack of cookies on white plate",
+        "desc": "plate of cookies",
         "action": "static",
-        "position": "right foreground"
+        "position": "foreground right"
       },
       {
-        "desc": "black sans-serif text overlay",
+        "desc": "black text overlay",
         "action": "static",
-        "position": "top center"
-      },
-      {
-        "desc": "hanging fruit basket with green and yellow fruit",
-        "action": "static",
-        "position": "top left background"
-      },
-      {
-        "desc": "wooden bottle",
-        "action": "static",
-        "position": "right background"
+        "position": "top"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "Three red stand mixers of increasing size are arranged in a row on a white countertop.",
+        "fact": "Three red stand mixers of varying sizes are lined up on a white countertop.",
         "confidence": 1.0
       },
       {
-        "fact": "Three plates containing stacks of cookies are placed directly in front of the mixers.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The stack of cookies on the left is the smallest, the center stack is medium, and the right stack is the largest.",
+        "fact": "Plates of cookies are placed in front of each mixer.",
         "confidence": 1.0
       },
       {
@@ -2153,23 +2061,87 @@
       }
     ],
     "ocr": [
+      "FOR THE COMPLETE RECIPE TAILORED TO YOUR SIZE OF STAND MIXER, CLICK THE LINK BELOW"
+    ],
+    "spatial": "The three red stand mixers are arranged horizontally on the counter, with the smallest on the left, the medium in the center, and the largest on the right. A plate of cookies is positioned in front of each mixer. The instructional text is located above the mixers in the upper center of the frame.",
+    "parse_success": true,
+    "chunk_idx": 34,
+    "video_id": "How_to_make_Chocolate_Chip_Cookies_using_the_Kitchenaid_Stand_Mixer"
+  },
+  {
+    "time": [
+      35,
+      36
+    ],
+    "visible_entities": [
+      {
+        "desc": "small red stand mixer with silver bowl",
+        "action": "static",
+        "position": "left"
+      },
+      {
+        "desc": "medium red stand mixer with silver bowl",
+        "action": "static",
+        "position": "center"
+      },
+      {
+        "desc": "large red stand mixer with silver bowl",
+        "action": "static",
+        "position": "right"
+      },
+      {
+        "desc": "small pile of golden-brown cookies on a white rectangular plate",
+        "action": "static",
+        "position": "left foreground"
+      },
+      {
+        "desc": "medium pile of golden-brown cookies on a white rectangular plate",
+        "action": "static",
+        "position": "center foreground"
+      },
+      {
+        "desc": "large pile of golden-brown cookies on a white rectangular plate",
+        "action": "static",
+        "position": "right foreground"
+      },
+      {
+        "desc": "black sans-serif text overlay",
+        "action": "static",
+        "position": "top center"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "Three red stand mixers of increasing size are arranged in a row on a white countertop.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "Three plates of cookies are placed in front of the mixers, with the pile size corresponding to the mixer size.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The text overlay instructs viewers to click a link for a recipe tailored to their mixer size.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
       "FOR THE COMPLETE RECIPE",
       "TAILORED TO YOUR SIZE OF STAND MIXER,",
       "CLICK THE LINK BELOW"
     ],
-    "spatial": "The three red stand mixers are lined up horizontally on the counter, with the smallest on the left and the largest on the right. The text overlay is positioned above the mixers in the upper center of the frame. The plates of cookies are in front of their corresponding mixers.",
+    "spatial": "The three red stand mixers are lined up horizontally on the counter, with the smallest on the left and the largest on the right. The text overlay is positioned above the mixers in the upper center of the frame. The plates of cookies are located in the foreground, directly in front of their corresponding mixers.",
     "parse_success": true,
     "chunk_idx": 35,
     "video_id": "How_to_make_Chocolate_Chip_Cookies_using_the_Kitchenaid_Stand_Mixer"
   },
   {
     "time": [
-      72,
-      74
+      36,
+      37
     ],
     "visible_entities": [
       {
-        "desc": "Text reading 'FOR EVERYTHING YOU WANT TO MAKE' in bold, uppercase, red sans-serif font",
+        "desc": "Text reading 'FOR EVERYTHING YOU WANT TO MAKE' in bold, red, uppercase, sans-serif font",
         "action": "static",
         "position": "center"
       }
@@ -2180,7 +2152,7 @@
         "confidence": 1.0
       },
       {
-        "fact": "The text is colored red against a light gray background.",
+        "fact": "The text is arranged in two lines.",
         "confidence": 1.0
       }
     ],
@@ -2188,33 +2160,35 @@
       "FOR EVERYTHING",
       "YOU WANT TO MAKE"
     ],
-    "spatial": "The red text is centered on the light gray background.",
+    "spatial": "The text is centered on a light gray background.",
     "parse_success": true,
     "chunk_idx": 36,
     "video_id": "How_to_make_Chocolate_Chip_Cookies_using_the_Kitchenaid_Stand_Mixer"
   },
   {
     "time": [
-      74,
-      76
+      37,
+      38
     ],
     "visible_entities": [
       {
-        "desc": "Text reading 'FOR EVERYTHING YOU WANT TO MAKE' in bold, red, sans-serif font, centered on a light gray background.",
-        "action": "static"
+        "desc": "Text reading 'FOR EVERYTHING YOU WANT TO MAKE' in bold, red, uppercase, sans-serif font",
+        "action": "static",
+        "position": "center"
       },
       {
-        "desc": "Text reading 'KitchenAid' in bold, red, sans-serif font, centered on a light gray background.",
-        "action": "static"
+        "desc": "Text reading 'KitchenAid' in bold, red, mixed-case, sans-serif font",
+        "action": "static",
+        "position": "center"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "The text 'FOR EVERYTHING YOU WANT TO MAKE' is displayed on the screen.",
+        "fact": "The phrase 'FOR EVERYTHING YOU WANT TO MAKE' is displayed on screen.",
         "confidence": 1.0
       },
       {
-        "fact": "The text 'KitchenAid' is displayed on the screen.",
+        "fact": "The brand name 'KitchenAid' is displayed on screen.",
         "confidence": 1.0
       }
     ],
@@ -2223,19 +2197,19 @@
       "YOU WANT TO MAKE",
       "KitchenAid"
     ],
-    "spatial": "The text 'FOR EVERYTHING YOU WANT TO MAKE' is positioned above the text 'KitchenAid'. Both text elements are centered horizontally on the screen.",
+    "spatial": "The text 'FOR EVERYTHING YOU WANT TO MAKE' is positioned in the center of the frame. The text 'KitchenAid' is also positioned in the center of the frame, appearing as a separate visual element.",
     "parse_success": true,
     "chunk_idx": 37,
     "video_id": "How_to_make_Chocolate_Chip_Cookies_using_the_Kitchenaid_Stand_Mixer"
   },
   {
     "time": [
-      76,
-      78
+      38,
+      39
     ],
     "visible_entities": [
       {
-        "desc": "The word 'KitchenAid' written in a bold, red, sans-serif font with the 'K' and 'A' capitalized",
+        "desc": "The word 'KitchenAid' in a bold, red, sans-serif font with a capitalized 'K' and 'A'",
         "action": "static",
         "position": "center"
       }
@@ -2246,14 +2220,14 @@
         "confidence": 1.0
       },
       {
-        "fact": "The text remains static throughout the duration of the clip.",
+        "fact": "The logo text is red against a light gray background.",
         "confidence": 1.0
       }
     ],
     "ocr": [
       "KitchenAid"
     ],
-    "spatial": "The red 'KitchenAid' text is centered on a plain light gray background.",
+    "spatial": "The red 'KitchenAid' text is centered on the light gray background.",
     "parse_success": true,
     "chunk_idx": 38,
     "video_id": "How_to_make_Chocolate_Chip_Cookies_using_the_Kitchenaid_Stand_Mixer"

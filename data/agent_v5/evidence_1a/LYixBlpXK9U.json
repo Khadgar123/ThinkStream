@@ -2,6 +2,55 @@
   {
     "time": [
       0,
+      1
+    ],
+    "visible_entities": [
+      {
+        "desc": "black and white Border Collie dog with snowflakes on its fur",
+        "action": "static",
+        "position": "center"
+      },
+      {
+        "desc": "red text 'BRUCE THE BORDER COLLIE' in bold sans-serif font",
+        "action": "static",
+        "position": "top"
+      },
+      {
+        "desc": "blue text 'IN THE DEEP SNOW' in bold sans-serif font",
+        "action": "static",
+        "position": "right"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A Border Collie dog is standing in deep snow.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "Snowflakes are visible on the dog's black fur.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The text 'BRUCE THE BORDER COLLIE' is displayed at the top of the frame.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The text 'IN THE DEEP SNOW' is displayed vertically on the right side of the frame.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "BRUCE THE BORDER COLLIE",
+      "IN THE DEEP SNOW"
+    ],
+    "spatial": "The Border Collie is positioned in the center of the frame, surrounded by white snow. The red text 'BRUCE THE BORDER COLLIE' is located above the dog. The blue text 'IN THE DEEP SNOW' is situated to the right of the dog.",
+    "parse_success": true,
+    "chunk_idx": 0,
+    "video_id": "LYixBlpXK9U"
+  },
+  {
+    "time": [
+      1,
       2
     ],
     "visible_entities": [
@@ -11,31 +60,31 @@
         "position": "center"
       },
       {
-        "desc": "red text 'BRUCE THE BORDER COLLIE' in bold uppercase font",
+        "desc": "red text reading 'BRUCE THE BORDER COLLIE'",
         "action": "static",
         "position": "top"
       },
       {
-        "desc": "blue text 'IN THE DEEP SNOW' in bold uppercase font, oriented vertically",
+        "desc": "blue vertical text reading 'IN THE DEEP SNOW'",
         "action": "static",
         "position": "right"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "The dog is standing still in deep snow.",
+        "fact": "A black and white Border Collie dog is shown in profile facing right.",
         "confidence": 1.0
       },
       {
-        "fact": "Snowflakes are visible on the dog's black fur.",
+        "fact": "The dog has snowflakes on its black fur.",
         "confidence": 1.0
       },
       {
-        "fact": "The text 'BRUCE THE BORDER COLLIE' is displayed at the top of the frame.",
+        "fact": "The text 'BRUCE THE BORDER COLLIE' is displayed in red at the top.",
         "confidence": 1.0
       },
       {
-        "fact": "The text 'IN THE DEEP SNOW' is displayed vertically on the right side of the frame.",
+        "fact": "The text 'IN THE DEEP SNOW' is displayed in blue vertically on the right.",
         "confidence": 1.0
       }
     ],
@@ -43,64 +92,15 @@
       "BRUCE THE BORDER COLLIE",
       "IN THE DEEP SNOW"
     ],
-    "spatial": "The dog is centered in the frame, surrounded by white snow. The red text is above the dog. The blue vertical text is to the right of the dog.",
-    "parse_success": true,
-    "chunk_idx": 0,
-    "video_id": "LYixBlpXK9U"
-  },
-  {
-    "time": [
-      2,
-      4
-    ],
-    "visible_entities": [
-      {
-        "desc": "black and white Border Collie dog with snowflakes on its fur",
-        "action": "static",
-        "position": "center"
-      },
-      {
-        "desc": "red text 'BRUCE THE BORDER COLLIE' in bold sans-serif font",
-        "action": "static",
-        "position": "top"
-      },
-      {
-        "desc": "blue text 'IN THE DEEP SNOW' in bold sans-serif font",
-        "action": "static",
-        "position": "right"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "The dog is standing still in the snow.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "Snowflakes are visible on the dog's black fur.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The text 'BRUCE THE BORDER COLLIE' is displayed at the top of the frame.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The text 'IN THE DEEP SNOW' is displayed vertically on the right side.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [
-      "BRUCE THE BORDER COLLIE",
-      "IN THE DEEP SNOW"
-    ],
-    "spatial": "The dog is in the center of the frame, surrounded by white snow. The red text is above the dog. The blue text is to the right of the dog.",
+    "spatial": "The red text 'BRUCE THE BORDER COLLIE' is above the dog. The blue text 'IN THE DEEP SNOW' is to the right of the dog. The dog is in the center of the frame.",
     "parse_success": true,
     "chunk_idx": 1,
     "video_id": "LYixBlpXK9U"
   },
   {
     "time": [
-      4,
-      6
+      2,
+      3
     ],
     "visible_entities": [
       {
@@ -109,19 +109,19 @@
         "position": "center"
       },
       {
-        "desc": "red text 'BRUCE THE BORDER COLLIE' in bold sans-serif font",
+        "desc": "red text reading 'BRUCE THE BORDER COLLIE'",
         "action": "static",
         "position": "top"
       },
       {
-        "desc": "blue text 'IN THE DEEP SNOW' in bold sans-serif font",
+        "desc": "blue text reading 'IN THE DEEP SNOW'",
         "action": "static",
         "position": "right"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "The dog is standing still in deep snow.",
+        "fact": "A black and white Border Collie is shown with snow on its fur.",
         "confidence": 1.0
       },
       {
@@ -137,59 +137,59 @@
       "BRUCE THE BORDER COLLIE",
       "IN THE DEEP SNOW"
     ],
-    "spatial": "The Border Collie is in the center of the frame, surrounded by white snow. The red text 'BRUCE THE BORDER COLLIE' is above the dog. The blue text 'IN THE DEEP SNOW' is to the right of the dog.",
+    "spatial": "The Border Collie is in the center of the frame. The red text 'BRUCE THE BORDER COLLIE' is above the dog. The blue text 'IN THE DEEP SNOW' is to the right of the dog.",
     "parse_success": true,
     "chunk_idx": 2,
     "video_id": "LYixBlpXK9U"
   },
   {
     "time": [
-      6,
-      8
+      3,
+      4
     ],
     "visible_entities": [
       {
-        "desc": "person wearing a dark jacket and dark pants",
-        "action": "walking down a snowy hill",
+        "desc": "person wearing dark clothing, possibly a jacket and pants",
+        "action": "walking down a snowy slope",
         "position": "background"
       },
       {
-        "desc": "bush with long, spiky leaves covered in snow",
+        "desc": "clump of spiky vegetation covered in snow",
         "action": "static",
         "position": "center"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A person is walking down a snow-covered hill.",
+        "fact": "A person is walking down a snowy hill in the background.",
         "confidence": 1.0
       },
       {
-        "fact": "A bush with spiky leaves is covered in snow.",
+        "fact": "A clump of vegetation is visible in the center foreground, covered in snow.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The person is behind the bush and to the left of the center of the frame. The bush is in the foreground, while the person is further up the hill in the background.",
+    "spatial": "The person is behind the clump of vegetation. The vegetation is in the center of the frame, while the person is slightly to the left in the background.",
     "parse_success": true,
     "chunk_idx": 3,
     "video_id": "LYixBlpXK9U"
   },
   {
     "time": [
-      8,
-      10
+      4,
+      5
     ],
     "visible_entities": [
       {
-        "desc": "person wearing dark winter clothing and carrying a large backpack",
+        "desc": "person wearing dark clothing and a backpack",
         "action": "walking uphill through snow",
-        "position": "background left"
+        "position": "background"
       },
       {
-        "desc": "snow-covered bush with dark leaves protruding from the snow",
+        "desc": "snow-covered plant with spiky leaves",
         "action": "static",
-        "position": "center foreground"
+        "position": "foreground"
       }
     ],
     "atomic_facts": [
@@ -198,148 +198,147 @@
         "confidence": 1.0
       },
       {
-        "fact": "A bush is partially buried in the snow in the foreground.",
+        "fact": "A plant is partially buried in snow in the foreground.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The person is behind and to the left of the snow-covered bush. The bush is in the foreground relative to the person.",
+    "spatial": "The person is behind and to the left of the snow-covered plant. The plant is in the foreground.",
     "parse_success": true,
     "chunk_idx": 4,
     "video_id": "LYixBlpXK9U"
   },
   {
     "time": [
-      10,
-      12
+      5,
+      6
     ],
     "visible_entities": [
       {
-        "desc": "person wearing dark clothing and carrying a large backpack",
-        "action": "walking uphill",
-        "position": "background"
+        "desc": "person wearing dark winter clothing and a large backpack",
+        "action": "walking uphill to the right",
+        "position": "background left"
       },
       {
         "desc": "snow-covered plant with spiky leaves",
         "action": "static",
         "position": "center"
+      },
+      {
+        "desc": "snow-covered ground with footprints",
+        "action": "static",
+        "position": "foreground"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A person is walking uphill in the background.",
+        "fact": "A person is walking uphill in the snow.",
         "confidence": 1.0
       },
       {
-        "fact": "A plant covered in snow is visible in the center.",
+        "fact": "The person is carrying a large backpack.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "There are visible footprints in the snow in the foreground.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A plant is partially buried in snow.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The person is to the left of the snow-covered plant. The plant is in front of the person.",
+    "spatial": "The person is to the left of the snow-covered plant. The plant is in the center of the frame, while the person is in the background. The footprints are in the foreground, leading towards the background.",
     "parse_success": true,
     "chunk_idx": 5,
     "video_id": "LYixBlpXK9U"
   },
   {
     "time": [
-      12,
-      14
+      6,
+      7
     ],
     "visible_entities": [
       {
-        "desc": "person wearing dark winter clothing and carrying a large backpack",
-        "action": "standing still",
-        "position": "background left"
+        "desc": "person wearing dark clothing and a backpack",
+        "action": "standing on a snowy slope",
+        "position": "left"
       },
       {
-        "desc": "snow-covered bush with dark branches protruding from the white snow",
+        "desc": "snow-covered bush with protruding branches",
         "action": "static",
-        "position": "background left"
+        "position": "left"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A person is standing on a snowy hillside.",
+        "fact": "A person wearing dark clothing and a backpack is standing on a snowy slope.",
         "confidence": 1.0
       },
       {
-        "fact": "The person is positioned behind a snow-covered bush.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The landscape is covered in deep snow.",
+        "fact": "A snow-covered bush is situated next to the person.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The person is to the left of the center and is standing behind the snow-covered bush. The bush is situated on the snowy slope in the background.",
+    "spatial": "The person is to the left of the center of the frame. The snow-covered bush is to the right of the person and slightly in front of them. Both entities are on a white, snow-covered hill.",
     "parse_success": true,
     "chunk_idx": 6,
     "video_id": "LYixBlpXK9U"
   },
   {
     "time": [
-      14,
-      16
+      7,
+      8
     ],
     "visible_entities": [
       {
-        "desc": "person wearing dark clothing and a backpack, holding a hiking pole",
-        "action": "walking up the snowy hill",
-        "position": "center/background"
+        "desc": "person wearing a dark hooded jacket and dark pants",
+        "action": "walking uphill",
+        "position": "background"
       },
       {
-        "desc": "snow-covered ground with uneven texture",
+        "desc": "snow-covered ground with small bushes",
         "action": "static",
-        "position": "foreground/background"
-      },
-      {
-        "desc": "small dark bush or shrub covered in snow",
-        "action": "static",
-        "position": "center"
+        "position": "foreground"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "person is walking up the snowy hill",
+        "fact": "A person is walking uphill in the distance.",
         "confidence": 1.0
       },
       {
-        "fact": "person is holding a hiking pole",
+        "fact": "The landscape is covered in white snow.",
         "confidence": 1.0
       },
       {
-        "fact": "snow covers the ground and a small bush",
+        "fact": "Small bushes are visible protruding from the snow.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The person is walking up the hill in the center background. The snow-covered bush is in front of the person. The snowy ground is below the person and extends to the foreground.",
+    "spatial": "The person is located in the background, positioned above the snow-covered ground in the foreground. The person is walking near some small bushes on the snowy hill.",
     "parse_success": true,
     "chunk_idx": 7,
     "video_id": "LYixBlpXK9U"
   },
   {
     "time": [
-      16,
-      18
+      8,
+      9
     ],
     "visible_entities": [
       {
-        "desc": "person wearing a dark jacket and dark pants",
+        "desc": "person wearing dark clothing, possibly a dark jacket and pants",
         "action": "walking away",
         "position": "background"
       },
       {
-        "desc": "snow-covered ground with footprints",
+        "desc": "snow-covered ground with visible footprints and small plants",
         "action": "static",
         "position": "foreground"
-      },
-      {
-        "desc": "small green bush",
-        "action": "static",
-        "position": "background"
       }
     ],
     "atomic_facts": [
@@ -348,106 +347,142 @@
         "confidence": 1.0
       },
       {
-        "fact": "Footprints are visible in the snow leading towards the person.",
+        "fact": "The ground is covered in snow.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "There are footprints visible in the snow.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The person is in the background, walking away from the foreground. The footprints are in the snow in front of the person's path. The small green bush is to the left of the person.",
+    "spatial": "The person is in the background, walking away from the camera. The snow-covered ground with footprints is in the foreground and middle ground. Some small plants are poking through the snow near the person.",
     "parse_success": true,
     "chunk_idx": 8,
     "video_id": "LYixBlpXK9U"
   },
   {
     "time": [
-      18,
-      20
+      9,
+      10
     ],
     "visible_entities": [
       {
-        "desc": "dark-colored dog",
+        "desc": "person wearing dark pants and dark boots, partially visible",
         "action": "walking away",
-        "position": "top/center/background"
+        "position": "background"
       },
       {
-        "desc": "deep footprints in snow",
+        "desc": "small black and white dog",
+        "action": "walking",
+        "position": "background"
+      },
+      {
+        "desc": "deep footprints in white snow",
         "action": "static",
-        "position": "center/foreground"
+        "position": "center"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A dark-colored dog is walking away from the camera in the distance.",
+        "fact": "A person is walking away from the camera in the distance.",
         "confidence": 1.0
       },
       {
-        "fact": "A trail of deep footprints is visible in the snow, leading from the foreground towards the dog.",
+        "fact": "A small black and white dog is walking near the person.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A trail of deep footprints is visible in the snow leading towards the person.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The dark-colored dog is in the background at the top of the frame. The trail of footprints is in the foreground and center, extending towards the dog.",
+    "spatial": "The person is in the background, walking away from the camera. The dog is to the left of the person. The footprints are in the center foreground, leading up towards the person in the background.",
     "parse_success": true,
     "chunk_idx": 9,
     "video_id": "LYixBlpXK9U"
   },
   {
     "time": [
-      20,
-      22
+      10,
+      11
     ],
     "visible_entities": [
       {
-        "desc": "person wearing a dark hooded jacket and dark trousers",
-        "action": "walking uphill away from the camera",
-        "position": "center background"
+        "desc": "person wearing a dark hooded jacket and dark pants",
+        "action": "walking up a snowy slope",
+        "position": "background"
       },
       {
         "desc": "small dark dog",
-        "action": "walking uphill next to the person",
-        "position": "center background"
+        "action": "walking up a snowy slope",
+        "position": "background"
       },
       {
         "desc": "deep footprints in the snow",
         "action": "static",
-        "position": "center foreground"
+        "position": "foreground"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A person is walking uphill away from the camera.",
+        "fact": "A person and a dog are walking away from the camera up a snow-covered hill.",
         "confidence": 1.0
       },
       {
-        "fact": "A small dog is walking alongside the person.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "Deep footprints trail from the foreground towards the figures in the background.",
+        "fact": "A trail of deep footprints leads from the foreground towards the person and dog.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The person is to the right of the small dog. The footprints are in front of the person and dog, leading up the slope towards them.",
+    "spatial": "The person is to the right of the small dog. The footprints are in the foreground, leading up the slope towards the person and dog who are in the background.",
     "parse_success": true,
     "chunk_idx": 10,
     "video_id": "LYixBlpXK9U"
   },
   {
     "time": [
-      22,
-      24
+      11,
+      12
     ],
     "visible_entities": [
       {
-        "desc": "person wearing a dark hooded jacket and dark pants, carrying a large dark backpack",
-        "action": "walking uphill through deep snow",
+        "desc": "person wearing dark winter clothing, including a hooded jacket and dark pants",
+        "action": "walking down a snowy slope",
         "position": "left"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A person is walking down a snow-covered hill.",
+        "confidence": 1.0
       },
       {
-        "desc": "snow-covered hillside with sparse vegetation",
-        "action": "static",
-        "position": "background"
+        "fact": "The person is moving from the upper left towards the lower left of the frame.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The environment is covered in deep snow with visible footprints.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The person is located on the left side of the frame, positioned on a snowy slope. The person is surrounded by white snow, with some sparse vegetation visible to their left.",
+    "parse_success": true,
+    "chunk_idx": 11,
+    "video_id": "LYixBlpXK9U"
+  },
+  {
+    "time": [
+      12,
+      13
+    ],
+    "visible_entities": [
+      {
+        "desc": "person wearing a dark hooded jacket, dark pants, and a backpack",
+        "action": "walking uphill through snow",
+        "position": "left"
       }
     ],
     "atomic_facts": [
@@ -456,161 +491,31 @@
         "confidence": 1.0
       },
       {
-        "fact": "The person is carrying a large backpack.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The terrain is covered in deep snow.",
+        "fact": "The person is carrying a backpack on their back.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The person is on the left side of the frame, walking up the snow-covered hillside. The hillside extends to the right and into the background.",
-    "parse_success": true,
-    "chunk_idx": 11,
-    "video_id": "LYixBlpXK9U"
-  },
-  {
-    "time": [
-      24,
-      26
-    ],
-    "visible_entities": [
-      {
-        "desc": "person wearing a dark hooded jacket, dark pants, and carrying a backpack",
-        "action": "walking through snow",
-        "position": "left"
-      },
-      {
-        "desc": "snow-covered ground with small dark plants protruding",
-        "action": "static",
-        "position": "foreground"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "A person is walking through deep snow on a hillside.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The person is moving towards the left side of the frame.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "Small dark plants are visible poking through the snow on the left.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [],
-    "spatial": "The person is walking on the snow-covered ground. The person is positioned to the left of the center of the frame. The small plants are near the person's path on the left side.",
+    "spatial": "The person is on the left side of the frame, walking up a snowy slope. A small, snow-covered bush is to the left of the person. The background is a uniform white sky or fog.",
     "parse_success": true,
     "chunk_idx": 12,
     "video_id": "LYixBlpXK9U"
   },
   {
     "time": [
-      26,
-      28
+      13,
+      14
     ],
     "visible_entities": [
       {
-        "desc": "person wearing a dark hooded jacket and dark pants, carrying a backpack",
+        "desc": "person wearing a dark hooded jacket and dark pants",
         "action": "walking through deep snow",
-        "position": "center/background"
+        "position": "center-right"
       },
       {
-        "desc": "snow-covered vegetation, appearing as dark, spiky shapes buried under white snow",
-        "action": "static",
-        "position": "left/foreground"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "A person is walking through deep snow on a hillside.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The person is moving towards the camera.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "Vegetation on the left is heavily covered in snow.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [],
-    "spatial": "The person is to the right of the snow-covered vegetation. The vegetation is in the foreground on the left side of the frame. The person is walking on the snowy ground.",
-    "parse_success": true,
-    "chunk_idx": 13,
-    "video_id": "LYixBlpXK9U"
-  },
-  {
-    "time": [
-      28,
-      30
-    ],
-    "visible_entities": [
-      {
-        "desc": "person wearing a dark jacket and dark pants",
-        "action": "walking through deep snow",
-        "position": "center/background"
-      },
-      {
-        "desc": "small black and white dog",
-        "action": "walking through deep snow",
-        "position": "center/background"
-      },
-      {
-        "desc": "snow-covered bushes",
+        "desc": "snow-covered vegetation",
         "action": "static",
         "position": "left"
-      },
-      {
-        "desc": "thin vertical pole",
-        "action": "static",
-        "position": "right"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "A person and a small dog are walking away from the camera through deep snow.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The snow is deep enough to cover the lower legs of the person and the body of the dog.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "There is a thin pole standing vertically on the right side of the frame.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [],
-    "spatial": "The person is walking next to the small dog in the center of the frame. The snow-covered bushes are to the left of the person and dog. The thin vertical pole is to the right of the person and dog.",
-    "parse_success": true,
-    "chunk_idx": 14,
-    "video_id": "LYixBlpXK9U"
-  },
-  {
-    "time": [
-      30,
-      32
-    ],
-    "visible_entities": [
-      {
-        "desc": "person wearing dark pants and dark boots",
-        "action": "walking through deep snow",
-        "position": "background"
-      },
-      {
-        "desc": "black and white dog",
-        "action": "walking through deep snow",
-        "position": "background"
-      },
-      {
-        "desc": "thin vertical pole",
-        "action": "static",
-        "position": "right"
       }
     ],
     "atomic_facts": [
@@ -619,33 +524,131 @@
         "confidence": 1.0
       },
       {
-        "fact": "A black and white dog is walking through deep snow.",
+        "fact": "The person is moving towards the camera.",
         "confidence": 1.0
       },
       {
-        "fact": "The dog is to the left of the person.",
+        "fact": "Snow covers the ground and vegetation.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The person is to the right of the dog. Both the person and the dog are in the background, walking through the snow. A thin vertical pole is visible on the right side of the frame.",
+    "spatial": "The person is to the right of the snow-covered vegetation. The vegetation is in the foreground on the left side of the frame.",
+    "parse_success": true,
+    "chunk_idx": 13,
+    "video_id": "LYixBlpXK9U"
+  },
+  {
+    "time": [
+      14,
+      15
+    ],
+    "visible_entities": [
+      {
+        "desc": "person wearing a dark jacket and dark pants",
+        "action": "walking away through deep snow",
+        "position": "center/background"
+      },
+      {
+        "desc": "small dog with black and white fur",
+        "action": "walking through snow",
+        "position": "center/background"
+      },
+      {
+        "desc": "thin vertical pole",
+        "action": "static",
+        "position": "right"
+      },
+      {
+        "desc": "snow-covered bushes",
+        "action": "static",
+        "position": "left"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A person is walking away from the camera through deep snow.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A small dog is walking alongside the person in the snow.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The ground is covered in a thick layer of white snow.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A thin pole stands vertically on the right side of the frame.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The person is to the right of the snow-covered bushes. The small dog is walking next to the person. The thin pole is to the right of the person and the dog.",
+    "parse_success": true,
+    "chunk_idx": 14,
+    "video_id": "LYixBlpXK9U"
+  },
+  {
+    "time": [
+      15,
+      16
+    ],
+    "visible_entities": [
+      {
+        "desc": "black and white dog, medium-sized",
+        "action": "walking through snow",
+        "position": "center/background"
+      },
+      {
+        "desc": "person wearing black pants and dark boots",
+        "action": "walking through snow",
+        "position": "center/background"
+      },
+      {
+        "desc": "thin vertical pole, dark color",
+        "action": "static",
+        "position": "right"
+      },
+      {
+        "desc": "snow-covered bushes or rocks",
+        "action": "static",
+        "position": "left"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A black and white dog is walking through deep snow.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A person in black pants is walking next to the dog.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "Deep snow covers the ground and surrounding objects.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The dog is to the left of the person. The person is to the left of the thin vertical pole. The snow-covered bushes are on the far left of the scene.",
     "parse_success": true,
     "chunk_idx": 15,
     "video_id": "LYixBlpXK9U"
   },
   {
     "time": [
-      32,
-      34
+      16,
+      17
     ],
     "visible_entities": [
       {
-        "desc": "person wearing dark pants and dark footwear",
-        "action": "standing in deep snow",
-        "position": "top/center"
+        "desc": "person wearing dark pants and dark boots",
+        "action": "walking through snow",
+        "position": "background"
       },
       {
-        "desc": "vertical wooden stick or stake, brown, thin",
+        "desc": "thin vertical pole, brownish, partially buried",
         "action": "static",
         "position": "right"
       },
@@ -657,39 +660,39 @@
     ],
     "atomic_facts": [
       {
-        "fact": "A person is standing in deep snow at the top of the frame.",
+        "fact": "A person in dark clothing is walking away in the background.",
         "confidence": 1.0
       },
       {
-        "fact": "A trail of footprints is visible in the snow leading towards the person.",
+        "fact": "Footprints are visible in the snow leading towards the person.",
         "confidence": 1.0
       },
       {
-        "fact": "A wooden stake protrudes from the snow on the right side.",
+        "fact": "A thin pole stands vertically on the right side of the frame.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The person is located at the top center of the frame, standing in the snow. The wooden stick is to the right of the person. The footprints are in the foreground, leading up towards the person's position.",
+    "spatial": "The person is located in the background, slightly to the left of the center. The thin pole is to the right of the person. The footprints are in the foreground, leading from the bottom of the frame towards the person.",
     "parse_success": true,
     "chunk_idx": 16,
     "video_id": "LYixBlpXK9U"
   },
   {
     "time": [
-      34,
-      36
+      17,
+      18
     ],
     "visible_entities": [
       {
-        "desc": "person wearing a dark winter jacket and dark pants",
+        "desc": "person wearing a dark jacket and dark pants with red stripes, carrying a backpack",
         "action": "walking through deep snow",
-        "position": "center/background"
+        "position": "background"
       },
       {
         "desc": "black and white dog",
         "action": "walking through deep snow",
-        "position": "center/background"
+        "position": "background"
       },
       {
         "desc": "thin vertical pole with red markings",
@@ -699,32 +702,32 @@
     ],
     "atomic_facts": [
       {
-        "fact": "A person and a dog are walking away from the camera through deep snow.",
+        "fact": "A person and a dog are walking through deep snow in the background.",
         "confidence": 1.0
       },
       {
-        "fact": "The dog is walking alongside the person.",
+        "fact": "The dog is walking next to the person.",
         "confidence": 1.0
       },
       {
-        "fact": "A pole stands vertically in the snow on the right side of the frame.",
+        "fact": "A pole stands vertically on the right side of the frame.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The person is to the left of the pole. The dog is next to the person, slightly in front of them. Both the person and the dog are behind the foreground snow.",
+    "spatial": "The person is to the left of the vertical pole. The dog is next to the person. The person and dog are behind the foreground snow.",
     "parse_success": true,
     "chunk_idx": 17,
     "video_id": "LYixBlpXK9U"
   },
   {
     "time": [
-      36,
-      38
+      18,
+      19
     ],
     "visible_entities": [
       {
-        "desc": "person wearing a large dark backpack, dark jacket, and red pants",
+        "desc": "person wearing a large grey backpack, dark jacket, and dark pants",
         "action": "walking through deep snow",
         "position": "background"
       },
@@ -734,114 +737,114 @@
         "position": "center"
       },
       {
-        "desc": "tall thin pole with red top and white shaft",
+        "desc": "vertical pole with red top and white shaft",
         "action": "static",
         "position": "right"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A person with a large backpack is walking through deep snow.",
+        "fact": "A person with a backpack is walking through deep snow.",
         "confidence": 1.0
       },
       {
-        "fact": "A black and white dog is walking in the snow near the person.",
+        "fact": "A black and white dog is walking next to the person.",
         "confidence": 1.0
       },
       {
-        "fact": "A pole stands vertically in the snow on the right side of the frame.",
+        "fact": "A vertical pole stands on the right side of the frame.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The person is behind the dog. The dog is to the left of the pole. The pole is in the foreground on the right side.",
+    "spatial": "The person is behind the dog. The dog is to the left of the vertical pole. The person is to the left of the vertical pole.",
     "parse_success": true,
     "chunk_idx": 18,
     "video_id": "LYixBlpXK9U"
   },
   {
     "time": [
-      38,
-      40
+      19,
+      20
     ],
     "visible_entities": [
       {
-        "desc": "black and white dog with spotted markings",
-        "action": "walking through deep snow",
+        "desc": "black and white dog with spotted markings, partially submerged in snow",
+        "action": "standing in deep snow",
         "position": "left"
       },
       {
-        "desc": "person wearing dark pants and boots",
-        "action": "walking through deep snow",
+        "desc": "person wearing dark pants with red stripes and dark boots",
+        "action": "standing in snow",
         "position": "left"
       },
       {
-        "desc": "vertical wooden post, brown, partially buried",
+        "desc": "vertical pole, brownish-grey, thin",
         "action": "static",
         "position": "right"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A black and white dog is walking through deep snow.",
+        "fact": "A black and white dog is standing in deep snow.",
         "confidence": 1.0
       },
       {
-        "fact": "A person is walking next to the dog.",
+        "fact": "A person is standing next to the dog in the snow.",
         "confidence": 1.0
       },
       {
-        "fact": "A wooden post stands vertically on the right side of the frame.",
+        "fact": "A vertical pole stands on the right side of the frame.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The dog is to the left of the wooden post. The person is walking next to the dog on the left side of the frame. The wooden post is standing vertically on the right side of the scene.",
+    "spatial": "The dog is to the left of the vertical pole. The person is standing next to the dog on the left side of the frame. The pole is positioned on the right side of the snowy ground.",
     "parse_success": true,
     "chunk_idx": 19,
     "video_id": "LYixBlpXK9U"
   },
   {
     "time": [
-      40,
-      42
+      20,
+      21
     ],
     "visible_entities": [
       {
-        "desc": "person wearing black winter clothing with a red vertical stripe on the leg, carrying a backpack",
-        "action": "walking through deep snow",
-        "position": "left"
+        "desc": "black and white dog, medium-sized, with a pink tongue visible",
+        "action": "wading through deep snow",
+        "position": "center"
       },
       {
-        "desc": "black and white dog with a pink tongue",
-        "action": "wading through snow next to the person",
-        "position": "center"
+        "desc": "person wearing black pants with a red vertical stripe and a dark backpack",
+        "action": "walking through snow",
+        "position": "left"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A person is walking through deep snow.",
+        "fact": "A black and white dog is wading through deep snow.",
         "confidence": 1.0
       },
       {
-        "fact": "A black and white dog is wading through the snow beside the person.",
+        "fact": "A person is walking in the snow behind the dog.",
         "confidence": 1.0
       },
       {
-        "fact": "The snow is deep enough to cover the lower legs of the person and the body of the dog.",
+        "fact": "The snow is deep enough to cover the dog's legs.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The person is to the left of the dog. The dog is next to the person, moving through the snow.",
+    "spatial": "The person is to the left of and slightly behind the dog. The dog is in front of the person, moving through the snow.",
     "parse_success": true,
     "chunk_idx": 20,
     "video_id": "LYixBlpXK9U"
   },
   {
     "time": [
-      42,
-      44
+      21,
+      22
     ],
     "visible_entities": [
       {
@@ -851,7 +854,7 @@
       },
       {
         "desc": "person wearing black pants and boots",
-        "action": "standing in snow",
+        "action": "standing",
         "position": "left"
       }
     ],
@@ -865,29 +868,29 @@
         "confidence": 1.0
       },
       {
-        "fact": "Snow is falling and covering the dog's fur.",
+        "fact": "The dog has snow on its fur.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The dog is to the right of the person. Both the dog and the person are standing in the snow.",
+    "spatial": "The dog is to the right of the person. The person is standing next to the dog in the snow.",
     "parse_success": true,
     "chunk_idx": 21,
     "video_id": "LYixBlpXK9U"
   },
   {
     "time": [
-      44,
-      46
+      22,
+      23
     ],
     "visible_entities": [
       {
-        "desc": "black and white dog with long fur, snowflakes on head",
+        "desc": "black and white dog with long fur, snowflakes on head and back",
         "action": "standing in snow",
         "position": "center"
       },
       {
-        "desc": "person's leg in dark pants covered in snow",
+        "desc": "person's leg wearing dark pants covered in snow",
         "action": "static",
         "position": "left"
       }
@@ -898,7 +901,7 @@
         "confidence": 1.0
       },
       {
-        "fact": "Snowflakes are visible on the dog's black fur.",
+        "fact": "Snowflakes are visible on the dog's fur.",
         "confidence": 1.0
       },
       {
@@ -907,52 +910,52 @@
       }
     ],
     "ocr": [],
-    "spatial": "The dog is in the center of the frame, surrounded by snow. The person's leg is to the left of the dog.",
+    "spatial": "The person's leg is to the left of the dog. The dog is surrounded by snow.",
     "parse_success": true,
     "chunk_idx": 22,
     "video_id": "LYixBlpXK9U"
   },
   {
     "time": [
-      46,
-      48
+      23,
+      24
     ],
     "visible_entities": [
       {
-        "desc": "black and white dog with snow on its fur",
-        "action": "moving through snow",
+        "desc": "black and white dog with snowflakes on its fur",
+        "action": "moving through deep snow",
         "position": "center"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "The black and white dog is moving through deep snow.",
+        "fact": "A black and white dog is moving through deep snow.",
         "confidence": 1.0
       },
       {
-        "fact": "Snow is visible on the dog's head and fur.",
+        "fact": "Snowflakes are visible on the dog's black fur.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The black and white dog is in the center of the frame, surrounded by white snow.",
+    "spatial": "The dog is surrounded by white snow. The dog's head is positioned above the deep snow level.",
     "parse_success": true,
     "chunk_idx": 23,
     "video_id": "LYixBlpXK9U"
   },
   {
     "time": [
-      48,
-      50
+      24,
+      25
     ],
     "visible_entities": [
       {
-        "desc": "black and white dog with fluffy fur, white blaze on face, black ears and body, white muzzle",
+        "desc": "black and white dog with fluffy fur, white stripe on face, black ears",
         "action": "wading through deep snow",
         "position": "center"
       },
       {
-        "desc": "person's leg wearing dark pants and dark boots",
+        "desc": "person's legs wearing dark pants and boots",
         "action": "standing",
         "position": "top right background"
       }
@@ -963,34 +966,34 @@
         "confidence": 1.0
       },
       {
-        "fact": "Snow is piled up around the dog's body.",
+        "fact": "Snow is clinging to the dog's fur.",
         "confidence": 1.0
       },
       {
-        "fact": "A person is standing near the dog.",
+        "fact": "A person is standing in the background.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The black and white dog is in the center of the frame, surrounded by snow. The person's leg is to the right of and slightly behind the dog.",
+    "spatial": "The black and white dog is in the center foreground, surrounded by snow. The person's legs are to the right of and behind the dog.",
     "parse_success": true,
     "chunk_idx": 24,
     "video_id": "LYixBlpXK9U"
   },
   {
     "time": [
-      50,
-      52
+      25,
+      26
     ],
     "visible_entities": [
       {
-        "desc": "black and white dog with long fur, white markings on the back of the neck and head, wearing a bright red collar",
-        "action": "walking through deep snow",
+        "desc": "black and white dog with fluffy fur, white markings on head and neck, wearing a bright orange collar",
+        "action": "walking through snow",
         "position": "center"
       },
       {
-        "desc": "human leg wearing dark pants or boots covered in snow",
-        "action": "static",
+        "desc": "person's leg wearing black pants covered in snow",
+        "action": "standing",
         "position": "background right"
       }
     ],
@@ -1000,35 +1003,35 @@
         "confidence": 1.0
       },
       {
-        "fact": "The dog is wearing a red collar.",
+        "fact": "The dog is wearing a bright orange collar.",
         "confidence": 1.0
       },
       {
-        "fact": "Snow is falling or blowing around the dog.",
+        "fact": "A person's leg is visible standing in the snow behind the dog.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The black and white dog is in the center foreground, moving through the snow. A human leg is visible in the background to the right of the dog.",
+    "spatial": "The black and white dog is in the center foreground, moving through the snow. The person's leg is to the right of and behind the dog.",
     "parse_success": true,
     "chunk_idx": 25,
     "video_id": "LYixBlpXK9U"
   },
   {
     "time": [
-      52,
-      54
+      26,
+      27
     ],
     "visible_entities": [
       {
         "desc": "black and white dog with fluffy fur, wearing a bright orange collar",
-        "action": "standing in deep snow",
-        "position": "left/center"
+        "action": "standing in snow",
+        "position": "left"
       },
       {
-        "desc": "person's legs wearing black pants covered in snow",
+        "desc": "person's legs wearing dark pants covered in snow",
         "action": "standing",
-        "position": "right/background"
+        "position": "right"
       }
     ],
     "atomic_facts": [
@@ -1037,24 +1040,20 @@
         "confidence": 1.0
       },
       {
-        "fact": "The dog is wearing a bright orange collar.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "A person's legs are visible standing next to the dog.",
+        "fact": "A person is standing next to the dog in the snow.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The black and white dog is to the left of the person's legs. The person's legs are behind the dog in the background. The dog is standing in the snow.",
+    "spatial": "The black and white dog is to the left of the person's legs. The dog is standing in the snow.",
     "parse_success": true,
     "chunk_idx": 26,
     "video_id": "LYixBlpXK9U"
   },
   {
     "time": [
-      54,
-      56
+      27,
+      28
     ],
     "visible_entities": [
       {
@@ -1078,67 +1077,30 @@
         "confidence": 1.0
       },
       {
-        "fact": "Snow is visible on the dog's fur and the person's boots.",
+        "fact": "The dog has snow on its fur.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The dog is to the left of the person. The person is standing next to the dog. Both are surrounded by snow.",
+    "spatial": "The black and white dog is in the center of the frame. The person in camouflage pants is to the right of the dog. Both are standing in the snow.",
     "parse_success": true,
     "chunk_idx": 27,
     "video_id": "LYixBlpXK9U"
   },
   {
     "time": [
-      56,
-      58
+      28,
+      29
     ],
     "visible_entities": [
       {
-        "desc": "black and white dog with medium-length fur, white blaze on face, white chest, and white paws",
+        "desc": "black and white dog with medium-length fur, white markings on the face and neck",
         "action": "standing in snow",
         "position": "left"
       },
       {
-        "desc": "person wearing black pants with white snow patterns and a black jacket with a red logo on the sleeve",
+        "desc": "person wearing dark pants with a white speckled pattern and a red logo on the upper leg",
         "action": "standing",
-        "position": "right"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "The black and white dog is standing in the snow.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The person is standing to the right of the dog.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "Snow covers the ground and the lower legs of the person.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [],
-    "spatial": "The black and white dog is to the left of the person. The person is standing next to the dog. Both entities are on the snow-covered ground.",
-    "parse_success": true,
-    "chunk_idx": 28,
-    "video_id": "LYixBlpXK9U"
-  },
-  {
-    "time": [
-      58,
-      60
-    ],
-    "visible_entities": [
-      {
-        "desc": "black and white dog with a white blaze on its face and snow on its fur",
-        "action": "standing in deep snow",
-        "position": "center"
-      },
-      {
-        "desc": "person's legs wearing dark pants covered in snow",
-        "action": "standing in snow",
         "position": "right"
       }
     ],
@@ -1148,40 +1110,77 @@
         "confidence": 1.0
       },
       {
-        "fact": "A person stands to the right of the dog.",
+        "fact": "A person stands next to the dog.",
         "confidence": 1.0
       },
       {
-        "fact": "Snow covers the dog's fur and the person's pants.",
+        "fact": "Snow covers the ground and the lower legs of the person.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The black and white dog is in the center of the frame, surrounded by snow. The person's legs are to the right of the dog.",
+    "spatial": "The dog is to the left of the person. The person is to the right of the dog. Both entities are standing on the snow.",
+    "parse_success": true,
+    "chunk_idx": 28,
+    "video_id": "LYixBlpXK9U"
+  },
+  {
+    "time": [
+      29,
+      30
+    ],
+    "visible_entities": [
+      {
+        "desc": "black and white dog with a white blaze on its face and snowflakes on its fur",
+        "action": "standing in snow",
+        "position": "center"
+      },
+      {
+        "desc": "person's legs wearing dark pants covered in snow",
+        "action": "standing",
+        "position": "right"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A black and white dog is standing in deep snow.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A person is standing next to the dog.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "Snowflakes are visible on the dog's fur.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The black and white dog is in the center of the frame, standing in the snow. The person's legs are to the right of the dog. The snow is surrounding both the dog and the person's legs.",
     "parse_success": true,
     "chunk_idx": 29,
     "video_id": "LYixBlpXK9U"
   },
   {
     "time": [
-      60,
-      62
+      30,
+      31
     ],
     "visible_entities": [
       {
-        "desc": "person wearing camouflage patterned jacket and dark pants",
-        "action": "holding the dog",
+        "desc": "person wearing camouflage pattern jacket, black gloves, and dark pants",
+        "action": "holding a dog",
         "position": "center"
       },
       {
-        "desc": "black and white dog with snow on fur",
+        "desc": "black and white dog with snow on its fur",
         "action": "being held in the snow",
         "position": "center"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A person is holding a black and white dog in deep snow.",
+        "fact": "A person in camouflage clothing is holding a black and white dog in deep snow.",
         "confidence": 1.0
       },
       {
@@ -1190,25 +1189,25 @@
       }
     ],
     "ocr": [],
-    "spatial": "The person is behind the dog, holding it with both hands. The dog is in front of the person and surrounded by snow.",
+    "spatial": "The person is standing in the snow and holding the dog in front of them. The dog is positioned between the person's legs and arms.",
     "parse_success": true,
     "chunk_idx": 30,
     "video_id": "LYixBlpXK9U"
   },
   {
     "time": [
-      62,
-      64
+      31,
+      32
     ],
     "visible_entities": [
       {
-        "desc": "person wearing camouflage patterned winter jacket and dark pants",
-        "action": "holding the dog",
+        "desc": "black and white dog with snow on its fur",
+        "action": "being held in the snow",
         "position": "center"
       },
       {
-        "desc": "black and white dog with snow on its fur",
-        "action": "being held in the snow",
+        "desc": "person wearing camouflage patterned jacket and dark pants",
+        "action": "holding the dog",
         "position": "center"
       }
     ],
@@ -1223,58 +1222,25 @@
       }
     ],
     "ocr": [],
-    "spatial": "The person is behind the dog, holding it with both hands. The dog is in front of the person and is partially submerged in the snow.",
+    "spatial": "The person is behind the dog, holding it in the center of the frame. The dog is in front of the person and surrounded by snow.",
     "parse_success": true,
     "chunk_idx": 31,
     "video_id": "LYixBlpXK9U"
   },
   {
     "time": [
-      64,
-      66
+      32,
+      33
     ],
     "visible_entities": [
       {
         "desc": "person wearing camouflage patterned jacket and dark pants",
-        "action": "holding the dog",
+        "action": "holding a dog",
         "position": "center"
       },
       {
         "desc": "black and white dog with snow on its fur",
-        "action": "being held",
-        "position": "center"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "A person is holding a black and white dog in deep snow.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The dog has snow on its fur.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [],
-    "spatial": "The person is behind the dog, holding it. The dog is in front of the person and surrounded by snow.",
-    "parse_success": true,
-    "chunk_idx": 32,
-    "video_id": "LYixBlpXK9U"
-  },
-  {
-    "time": [
-      66,
-      68
-    ],
-    "visible_entities": [
-      {
-        "desc": "person wearing camouflage patterned jacket and dark pants with snow accumulation",
-        "action": "holding the dog",
-        "position": "center"
-      },
-      {
-        "desc": "black and white dog with snow on its fur",
-        "action": "being held in the snow",
+        "action": "being held in snow",
         "position": "center"
       }
     ],
@@ -1284,132 +1250,160 @@
         "confidence": 1.0
       },
       {
-        "fact": "The dog is positioned in deep snow between the person's legs.",
+        "fact": "The dog is partially submerged in deep snow.",
         "confidence": 1.0
       },
       {
-        "fact": "Snow is visible on the dog's fur and the person's clothing.",
+        "fact": "Snow is visible on the dog's fur.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The person is standing behind the dog. The dog is located between the person's legs and is surrounded by snow. The person's arms are wrapped around the dog, holding it.",
+    "spatial": "The person is behind the dog, holding it from above. The dog is in front of the person and surrounded by snow.",
+    "parse_success": true,
+    "chunk_idx": 32,
+    "video_id": "LYixBlpXK9U"
+  },
+  {
+    "time": [
+      33,
+      34
+    ],
+    "visible_entities": [
+      {
+        "desc": "person wearing camouflage patterned jacket and dark pants covered in snow",
+        "action": "holding a dog",
+        "position": "center"
+      },
+      {
+        "desc": "black and white dog with snow on its fur",
+        "action": "being held",
+        "position": "center"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A person in camouflage clothing is holding a black and white dog in deep snow.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The dog is positioned between the person's legs.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The person is standing in the snow with the dog positioned between their legs. The dog is in front of the person's torso and below the person's arms.",
     "parse_success": true,
     "chunk_idx": 33,
     "video_id": "LYixBlpXK9U"
   },
   {
     "time": [
-      68,
-      70
+      34,
+      35
     ],
     "visible_entities": [
       {
-        "desc": "large backpack covered in a thick layer of white snow and ice, with black straps hanging down",
+        "desc": "large backpack with a greyish, snow-covered exterior and black straps",
         "action": "static",
         "position": "center"
       },
       {
-        "desc": "snow-covered ground with small tufts of grass poking through",
+        "desc": "snowy ground with white snow and small tufts of grass",
         "action": "static",
         "position": "background"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A backpack is sitting in the snow.",
+        "fact": "A large backpack is resting on the snowy ground.",
         "confidence": 1.0
       },
       {
-        "fact": "The backpack is heavily coated in snow.",
+        "fact": "The backpack is covered in a layer of snow.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The snow-covered backpack is in the foreground, positioned centrally in the frame. The snowy ground extends behind and around the backpack.",
+    "spatial": "The snow-covered backpack is in the foreground, resting on the snowy ground which extends into the background.",
     "parse_success": true,
     "chunk_idx": 34,
     "video_id": "LYixBlpXK9U"
   },
   {
     "time": [
-      70,
-      72
+      35,
+      36
     ],
     "visible_entities": [
       {
-        "desc": "person wearing a camouflage jacket with a brown and green pattern, dark blue pants covered in snow, and thick white gloves",
+        "desc": "person wearing camouflage patterned jacket and pants, black gloves, and a large grey backpack covered in snow",
         "action": "bending over and holding a dog",
         "position": "center"
       },
       {
-        "desc": "black and white dog, likely a border collie, with a white stripe on its face",
+        "desc": "black and white dog, medium size, covered in snow",
         "action": "being held by the person",
-        "position": "center"
-      },
-      {
-        "desc": "large backpack covered in snow and ice, with a camouflage pattern",
-        "action": "static",
-        "position": "top"
+        "position": "center foreground"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A person is bending over in the snow.",
+        "fact": "A person in camouflage clothing is bending forward in the snow.",
         "confidence": 1.0
       },
       {
-        "fact": "The person is holding a black and white dog.",
+        "fact": "The person is holding a black and white dog with both hands.",
         "confidence": 1.0
       },
       {
-        "fact": "The dog is positioned between the person's legs.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "A large backpack covered in snow is visible on the person's back.",
+        "fact": "The person's backpack is heavily covered in snow.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The person is in the center of the frame, bending over the dog. The dog is positioned below the person's torso and between their legs. The snow-covered backpack is located on the person's back, above their waist.",
+    "spatial": "The person is positioned above the dog, holding it with their hands. The dog is in front of the person's legs and below the person's torso. The backpack is on the person's back.",
     "parse_success": true,
     "chunk_idx": 35,
     "video_id": "LYixBlpXK9U"
   },
   {
     "time": [
-      72,
-      74
+      36,
+      37
     ],
     "visible_entities": [
       {
-        "desc": "person wearing camouflage jacket and pants, black gloves covered in snow",
-        "action": "holding a snow-covered animal",
+        "desc": "person wearing brown camouflage jacket and pants, black gloves covered in snow",
+        "action": "holding a black and white animal",
         "position": "center"
       },
       {
-        "desc": "animal with black and white fur, covered in snow",
-        "action": "being held",
+        "desc": "black and white animal, likely a dog, covered in snow",
+        "action": "being held by the person",
         "position": "center"
       },
       {
-        "desc": "snow-covered ground with sparse vegetation",
+        "desc": "snow-covered ground with sparse vegetation poking through",
         "action": "static",
         "position": "background"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A person in camouflage clothing is holding a snow-covered animal.",
+        "fact": "A person in camouflage clothing is holding a black and white animal.",
         "confidence": 1.0
       },
       {
-        "fact": "The animal has black and white fur.",
+        "fact": "The person's gloves are covered in snow.",
         "confidence": 1.0
       },
       {
-        "fact": "The scene is set in a snowy landscape.",
+        "fact": "The animal is being held in the snow.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The background shows a snowy hillside.",
         "confidence": 1.0
       }
     ],
@@ -1421,13 +1415,13 @@
   },
   {
     "time": [
-      74,
-      76
+      37,
+      38
     ],
     "visible_entities": [
       {
-        "desc": "person wearing a camouflage-patterned boonie hat with snow accumulation on the brim",
-        "action": "looking up",
+        "desc": "person wearing a camouflage-patterned boonie hat with a wide brim, partially covered in snow",
+        "action": "looking forward",
         "position": "bottom"
       },
       {
@@ -1442,141 +1436,141 @@
         "confidence": 1.0
       },
       {
-        "fact": "The person is looking upwards towards the sky.",
+        "fact": "Snow is falling or blowing through the air.",
         "confidence": 1.0
       },
       {
-        "fact": "Snow is visible on the brim of the hat.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "Snow-covered rocks are visible in the bottom right corner.",
+        "fact": "The background is obscured by heavy fog or whiteout conditions.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The person wearing the camouflage hat is positioned at the bottom center of the frame. The snow-covered rocky terrain is located to the right of the person in the bottom right corner. The sky fills the background above the person and the terrain.",
+    "spatial": "The person is located at the bottom center of the frame. The snow-covered rocks are to the right of the person. The foggy background is behind the person and the rocks.",
     "parse_success": true,
     "chunk_idx": 37,
     "video_id": "LYixBlpXK9U"
   },
   {
     "time": [
-      76,
-      78
+      38,
+      39
     ],
     "visible_entities": [
       {
-        "desc": "dark, textured object covered in white snow",
+        "desc": "dark, blurry, rounded object with a rough texture, partially covered in white snow",
         "action": "static",
         "position": "left foreground"
       },
       {
-        "desc": "small bird with olive-green and yellowish feathers",
-        "action": "perched on snow",
-        "position": "center right"
+        "desc": "mound of white snow with a granular texture",
+        "action": "static",
+        "position": "bottom right foreground"
       },
       {
-        "desc": "mound of white snow",
+        "desc": "small, indistinct object with a yellowish-green hue",
         "action": "static",
-        "position": "bottom right"
+        "position": "center background"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A small bird is perched on a snow-covered surface.",
+        "fact": "A dark, blurry object is positioned in the left foreground.",
         "confidence": 1.0
       },
       {
-        "fact": "The bird is positioned next to a large, dark, snow-covered object.",
+        "fact": "A mound of snow sits in the bottom right foreground.",
         "confidence": 1.0
       },
       {
-        "fact": "The scene is dominated by white snow and a grey sky.",
+        "fact": "A small, yellowish-green object is visible behind the foreground elements.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The dark, snow-covered object is in the left foreground. The small bird is to the right of the dark object and is perched on the mound of snow. The snow mound is below the bird.",
+    "spatial": "The dark, blurry object is to the left of the mound of snow. The small, yellowish-green object is behind the dark object and the snow mound.",
     "parse_success": true,
     "chunk_idx": 38,
     "video_id": "LYixBlpXK9U"
   },
   {
     "time": [
-      78,
-      80
+      39,
+      40
     ],
     "visible_entities": [
       {
         "desc": "dark textured object, possibly a glove or sleeve, covered in white snow",
         "action": "static",
-        "position": "foreground/left"
+        "position": "foreground left"
       },
       {
-        "desc": "blurred figure with dark upper clothing and reddish lower clothing",
+        "desc": "blurred figure with a dark head covering and reddish clothing",
         "action": "static",
-        "position": "background/right"
+        "position": "background right"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "Snow is accumulated on the dark textured object in the foreground.",
+        "fact": "A dark textured object is covered in snow in the foreground.",
         "confidence": 1.0
       },
       {
-        "fact": "A blurred figure is visible in the background behind the foreground object.",
+        "fact": "A blurred figure is visible in the background.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The snow-covered dark object is in the foreground on the left side of the frame. The blurred figure is located to the right of the foreground object and is positioned in the background.",
+    "spatial": "The dark textured object covered in snow is in the foreground on the left side of the frame. The blurred figure is positioned to the right of the foreground object and is further back in the background.",
     "parse_success": true,
     "chunk_idx": 39,
     "video_id": "LYixBlpXK9U"
   },
   {
     "time": [
-      80,
-      82
+      40,
+      41
     ],
     "visible_entities": [
       {
         "desc": "person wearing a bright orange jacket and a large black backpack covered in snow",
         "action": "walking away",
-        "position": "center"
+        "position": "center-right"
       },
       {
-        "desc": "dark blurry object, likely part of another person or gear",
+        "desc": "blurry dark object, likely part of another person or clothing",
         "action": "static",
         "position": "left foreground"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A person is walking away from the camera in a snowy environment.",
+        "fact": "A person wearing an orange jacket is walking away from the camera.",
         "confidence": 1.0
       },
       {
-        "fact": "Snow is falling and accumulating on the person's backpack.",
+        "fact": "The person is carrying a large black backpack.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "Snow is falling and accumulating on the backpack.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The person in the orange jacket is in the center of the frame, walking away. A dark, blurry object is in the left foreground, partially obscuring the view. The snowy ground is below the person.",
+    "spatial": "The person in the orange jacket is to the right of the blurry dark object in the foreground. The black backpack is on the back of the person in the orange jacket.",
     "parse_success": true,
     "chunk_idx": 40,
     "video_id": "LYixBlpXK9U"
   },
   {
     "time": [
-      82,
-      84
+      41,
+      42
     ],
     "visible_entities": [
       {
-        "desc": "man with dark beard, wearing a camouflage bucket hat, an orange puffy jacket with a grey hood and red inner lining, and a large black backpack",
-        "action": "smiling and reaching forward with hand",
+        "desc": "man with short dark hair and beard, wearing a camouflage bucket hat, an orange puffer jacket with a grey hood and red inner lining, and a large black backpack",
+        "action": "smiling and looking forward",
         "position": "center"
       },
       {
@@ -1592,128 +1586,156 @@
     ],
     "atomic_facts": [
       {
-        "fact": "The man in the orange jacket smiles while looking at the camera.",
+        "fact": "The man in the orange jacket is smiling while standing in the snow.",
         "confidence": 1.0
       },
       {
-        "fact": "The man extends his hand towards the foreground.",
+        "fact": "Snow is falling around the man.",
         "confidence": 1.0
       },
       {
-        "fact": "Snow is falling in the scene.",
+        "fact": "The man is wearing a camouflage hat.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The man in the orange jacket is in the center of the frame, positioned in front of the snow-covered bushes. A blurry dark object is visible in the foreground on the left side, partially obscuring the view.",
+    "spatial": "The man in the orange jacket is positioned in the center of the frame. A blurry dark object is in the foreground to the left of the man. Snow-covered bushes are visible in the background behind the man.",
     "parse_success": true,
     "chunk_idx": 41,
     "video_id": "LYixBlpXK9U"
   },
   {
     "time": [
-      84,
-      86
+      42,
+      43
     ],
     "visible_entities": [
       {
-        "desc": "person wearing a camouflage patterned jacket, black pants, and a red and black vest with a white logo",
+        "desc": "person wearing a camouflage hat, glasses, and a grey jacket with red accents",
         "action": "standing in snow",
-        "position": "center"
-      },
-      {
-        "desc": "black and white dog, medium size",
-        "action": "standing in snow",
-        "position": "center"
-      },
-      {
-        "desc": "person wearing an orange jacket with a white logo and a dark backpack",
-        "action": "static",
         "position": "right"
       },
       {
-        "desc": "white snow covering the ground",
-        "action": "static",
-        "position": "background"
+        "desc": "black and white dog, partially buried in snow",
+        "action": "being held or supported",
+        "position": "center"
+      },
+      {
+        "desc": "person wearing a bright orange jacket with a white logo on the sleeve",
+        "action": "standing near the dog",
+        "position": "foreground"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A person in a camouflage jacket is standing in deep snow.",
+        "fact": "A person in a grey jacket is holding or supporting a black and white dog in deep snow.",
         "confidence": 1.0
       },
       {
-        "fact": "A black and white dog is standing in the snow next to the person.",
+        "fact": "The dog is partially submerged in the snow.",
         "confidence": 1.0
       },
       {
-        "fact": "The person is wearing a red and black vest over their jacket.",
+        "fact": "A person in an orange jacket is standing next to the dog and the person in grey.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The person in the camouflage jacket is standing in the center of the frame, surrounded by snow. The black and white dog is positioned in front of and slightly below the person, standing in the snow. To the right of the person and dog, another individual in an orange jacket is partially visible.",
+    "spatial": "The person in the grey jacket is to the right of the dog. The dog is in the center, surrounded by snow. The person in the orange jacket is in the foreground, to the left of the person in the grey jacket.",
     "parse_success": true,
     "chunk_idx": 42,
     "video_id": "LYixBlpXK9U"
   },
   {
     "time": [
-      86,
-      88
+      43,
+      44
     ],
     "visible_entities": [
       {
-        "desc": "thick white snow covering the ground, smooth texture with small indentations",
+        "desc": "thick white snow layer covering the ground, with small dark tufts of grass or low vegetation poking through",
         "action": "static",
         "position": "foreground"
       },
       {
-        "desc": "snow-covered bushes with dark green leaves visible beneath the white layer",
+        "desc": "large dense bush or shrubbery heavily laden with snow, appearing as a textured white mass",
         "action": "static",
         "position": "background"
-      },
-      {
-        "desc": "small dark plants or grass tufts poking through the snow",
-        "action": "static",
-        "position": "center"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "The camera pans upwards from the snowy ground to reveal bushes in the background.",
+        "fact": "The camera pans upwards from the snow-covered ground to reveal a snow-covered bush.",
         "confidence": 1.0
       },
       {
-        "fact": "The ground is completely covered in a layer of white snow.",
+        "fact": "The ground is blanketed in a continuous layer of white snow.",
         "confidence": 1.0
       },
       {
-        "fact": "Small dark plants are visible protruding from the snow surface.",
+        "fact": "The bush in the background is covered in snow.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The thick white snow is in the foreground, covering the ground. The small dark plants are poking through the snow in the center. The snow-covered bushes are located in the background, above the snowy ground.",
+    "spatial": "The snow-covered ground is in the foreground. The large snow-covered bush is in the background, positioned above the ground level.",
     "parse_success": true,
     "chunk_idx": 43,
     "video_id": "LYixBlpXK9U"
   },
   {
     "time": [
-      88,
-      90
+      44,
+      45
     ],
     "visible_entities": [
       {
-        "desc": "dense bushes covered in white snow",
+        "desc": "dense row of bushes covered in thick white snow, dark green leaves visible underneath",
         "action": "static",
         "position": "background"
       },
       {
-        "desc": "snow-covered ground with protruding dark twigs",
+        "desc": "ground covered in deep white snow with small dark twigs or branches protruding",
         "action": "static",
         "position": "foreground"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "Snow covers the bushes and ground in a winter landscape.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "Small dark twigs protrude from the snow in the foreground.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The snow-covered bushes are located in the background, stretching horizontally across the frame. The snowy ground with protruding twigs is in the foreground, positioned below the bushes.",
+    "parse_success": true,
+    "chunk_idx": 44,
+    "video_id": "LYixBlpXK9U"
+  },
+  {
+    "time": [
+      45,
+      46
+    ],
+    "visible_entities": [
+      {
+        "desc": "thick layer of white snow covering the ground and vegetation",
+        "action": "static",
+        "position": "foreground"
+      },
+      {
+        "desc": "dark green leafy plants partially buried in snow",
+        "action": "static",
+        "position": "center"
+      },
+      {
+        "desc": "dense bushes covered in snow",
+        "action": "static",
+        "position": "background"
       },
       {
         "desc": "grey overcast sky",
@@ -1723,103 +1745,37 @@
     ],
     "atomic_facts": [
       {
-        "fact": "Snow covers the bushes and the ground.",
+        "fact": "Snow covers the ground and vegetation.",
         "confidence": 1.0
       },
       {
-        "fact": "Dark twigs protrude from the snow in the foreground.",
+        "fact": "Plants are partially buried in the snow.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "Bushes in the background are covered in snow.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The snow-covered bushes are in the background, positioned below the grey sky. The snow-covered ground with protruding twigs is in the foreground, in front of the bushes.",
-    "parse_success": true,
-    "chunk_idx": 44,
-    "video_id": "LYixBlpXK9U"
-  },
-  {
-    "time": [
-      90,
-      92
-    ],
-    "visible_entities": [
-      {
-        "desc": "dense green bushes covered in white snow",
-        "action": "static",
-        "position": "background"
-      },
-      {
-        "desc": "snow-covered ground with small green plants poking through",
-        "action": "static",
-        "position": "foreground"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "Snow covers the ground and bushes.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "Small green plants are visible protruding from the snow in the foreground.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [],
-    "spatial": "The dense bushes covered in snow are located in the background, behind the snow-covered ground in the foreground. Small green plants are emerging from the snow on the ground.",
+    "spatial": "The snow-covered ground is in the foreground. The dark green leafy plants are in the center, partially under the snow. The dense bushes are behind the foreground snow and plants. The grey sky is above the bushes.",
     "parse_success": true,
     "chunk_idx": 45,
     "video_id": "LYixBlpXK9U"
   },
   {
     "time": [
-      92,
-      94
+      46,
+      47
     ],
     "visible_entities": [
       {
-        "desc": "dense hedge or bush covered in white snow",
+        "desc": "snow-covered bush with dark green leaves visible underneath the white snow layer",
         "action": "static",
         "position": "background"
       },
       {
-        "desc": "snow-covered ground with a small patch of exposed grey surface",
-        "action": "static",
-        "position": "foreground"
-      },
-      {
-        "desc": "small plant with pointed leaves poking through the snow",
-        "action": "static",
-        "position": "center"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "The scene depicts a snowy landscape with a hedge in the background.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "A small plant is visible in the center, partially buried in snow.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "A patch of grey ground is exposed on the left side of the frame.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [],
-    "spatial": "The snow-covered hedge is in the background, behind the snowy ground in the foreground. The small plant is in the center of the snowy ground. The exposed grey patch is to the left of the small plant.",
-    "parse_success": true,
-    "chunk_idx": 46,
-    "video_id": "LYixBlpXK9U"
-  },
-  {
-    "time": [
-      94,
-      96
-    ],
-    "visible_entities": [
-      {
-        "desc": "dark, pointed leaves of a plant, partially buried under thick white snow",
+        "desc": "small plant with long, pointed leaves protruding through the snow",
         "action": "static",
         "position": "center"
       },
@@ -1831,24 +1787,66 @@
     ],
     "atomic_facts": [
       {
-        "fact": "A plant with dark leaves is partially covered by snow.",
+        "fact": "Snow covers the ground and vegetation.",
         "confidence": 1.0
       },
       {
-        "fact": "The ground is blanketed in a thick layer of white snow.",
+        "fact": "A small plant with pointed leaves is visible in the center of the frame.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A large bush covered in snow is located in the background.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The plant is in the center of the frame, surrounded by the snow which covers the foreground and background.",
+    "spatial": "The snow-covered bush is in the background, positioned above the snow-covered ground. The small plant with pointed leaves is in the center of the foreground, surrounded by the snow.",
+    "parse_success": true,
+    "chunk_idx": 46,
+    "video_id": "LYixBlpXK9U"
+  },
+  {
+    "time": [
+      47,
+      48
+    ],
+    "visible_entities": [
+      {
+        "desc": "dark, spiky plant leaves protruding from snow",
+        "action": "static",
+        "position": "center"
+      },
+      {
+        "desc": "thick white snow cover",
+        "action": "static",
+        "position": "foreground"
+      },
+      {
+        "desc": "snow-covered bushes",
+        "action": "static",
+        "position": "background"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "Snow covers the ground and partially buries a plant with dark leaves.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The camera remains static on the snowy scene.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The dark plant leaves are in the center of the frame, surrounded by the white snow. The snow-covered bushes are located in the background, behind the central plant.",
     "parse_success": true,
     "chunk_idx": 47,
     "video_id": "LYixBlpXK9U"
   },
   {
     "time": [
-      96,
-      98
+      48,
+      49
     ],
     "visible_entities": [
       {
@@ -1857,9 +1855,9 @@
         "position": "foreground/center"
       },
       {
-        "desc": "snow-covered bushes and plants",
+        "desc": "snow-covered bushes and plants with visible dark stems",
         "action": "static",
-        "position": "background/right"
+        "position": "right/background"
       },
       {
         "desc": "patch of greyish water or ice",
@@ -1869,44 +1867,44 @@
     ],
     "atomic_facts": [
       {
-        "fact": "The scene is a static shot of a snowy landscape.",
+        "fact": "The scene depicts a snowy landscape with heavy snow accumulation.",
         "confidence": 1.0
       },
       {
-        "fact": "Snow covers the ground and vegetation heavily.",
+        "fact": "Snow covers the ground and clings to the branches of bushes on the right side.",
         "confidence": 1.0
       },
       {
-        "fact": "A patch of water or ice is visible on the left side.",
+        "fact": "A patch of water or ice is visible on the left side, surrounded by snow.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The patch of greyish water or ice is to the left of the snow-covered ground. Snow-covered bushes are in the background and to the right of the water patch. The snow is on top of the ground and vegetation.",
+    "spatial": "The patch of water is located to the left of the snow-covered ground. The snow-covered bushes are positioned to the right of the central snowy area and in the background.",
     "parse_success": true,
     "chunk_idx": 48,
     "video_id": "LYixBlpXK9U"
   },
   {
     "time": [
-      98,
-      100
+      49,
+      50
     ],
     "visible_entities": [
       {
-        "desc": "white snow covering the ground, partially melted in patches to reveal grey surface underneath",
+        "desc": "white snow covering the ground and bushes",
         "action": "static",
-        "position": "foreground/center"
+        "position": "foreground/background"
       },
       {
-        "desc": "dark green bushes heavily laden with snow",
+        "desc": "irregular patch of grey water or ice",
+        "action": "static",
+        "position": "center-left"
+      },
+      {
+        "desc": "dark green bushes covered in snow",
         "action": "static",
         "position": "background"
-      },
-      {
-        "desc": "small tufts of grass poking through the snow",
-        "action": "static",
-        "position": "foreground"
       }
     ],
     "atomic_facts": [
@@ -1915,35 +1913,96 @@
         "confidence": 1.0
       },
       {
-        "fact": "Patches of snow have melted to reveal the grey ground beneath.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "Small tufts of grass are visible protruding from the snow layer.",
+        "fact": "A patch of grey water or ice is visible in the snow.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The snow-covered bushes are located in the background, behind the snowy ground in the foreground. Patches of exposed grey ground are situated in the center of the snowy area. Tufts of grass are scattered across the foreground, poking through the snow.",
+    "spatial": "The patch of grey water is in the center-left of the frame, surrounded by white snow. The snow-covered bushes are in the background, behind the snowy ground.",
     "parse_success": true,
     "chunk_idx": 49,
     "video_id": "LYixBlpXK9U"
   },
   {
     "time": [
-      100,
-      102
+      50,
+      51
     ],
     "visible_entities": [
       {
-        "desc": "thick white snow covering the ground, with small dark twigs or plant stems protruding from the surface",
+        "desc": "thick white snow covering the ground with a smooth, powdery texture",
         "action": "static",
-        "position": "center"
+        "position": "foreground/background"
+      },
+      {
+        "desc": "dark, thin twigs or plant stems protruding from the snow",
+        "action": "static",
+        "position": "top right"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "The camera remains static on a snowy landscape.",
+        "fact": "Snow covers the ground completely.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "Small dark twigs are visible sticking out of the snow in the upper right area.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The dark twigs are protruding from the top of the white snow layer. The snow covers the entire visible ground surface.",
+    "parse_success": true,
+    "chunk_idx": 50,
+    "video_id": "LYixBlpXK9U"
+  },
+  {
+    "time": [
+      51,
+      52
+    ],
+    "visible_entities": [
+      {
+        "desc": "thick white snow covering the ground and vegetation",
+        "action": "static",
+        "position": "foreground/background"
+      },
+      {
+        "desc": "dark plant stems or twigs protruding through the snow",
+        "action": "static",
+        "position": "center/right"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "Snow covers the ground and vegetation.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "Dark plant stems protrude through the snow.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The dark plant stems are protruding through the white snow. The snow covers the ground in the foreground and background.",
+    "parse_success": true,
+    "chunk_idx": 51,
+    "video_id": "LYixBlpXK9U"
+  },
+  {
+    "time": [
+      52,
+      53
+    ],
+    "visible_entities": [
+      {
+        "desc": "white snow covering the ground, with a few small dark twigs or plant stems poking through",
+        "action": "static"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The scene shows a snowy ground surface.",
         "confidence": 1.0
       },
       {
@@ -1952,194 +2011,133 @@
       }
     ],
     "ocr": [],
-    "spatial": "The dark twigs are protruding from the top of the white snow layer. The snow covers the ground in the foreground and background.",
-    "parse_success": true,
-    "chunk_idx": 50,
-    "video_id": "LYixBlpXK9U"
-  },
-  {
-    "time": [
-      102,
-      104
-    ],
-    "visible_entities": [
-      {
-        "desc": "thick white snow covering the ground",
-        "action": "static",
-        "position": "foreground"
-      },
-      {
-        "desc": "dark plant stems or twigs protruding from the snow",
-        "action": "static",
-        "position": "center"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "Snow covers the ground and partially buries the plant stems.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "Dark plant stems protrude from the white snow in the center of the frame.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [],
-    "spatial": "The dark plant stems are protruding from the white snow in the center of the frame. The snow covers the ground in the foreground and background.",
-    "parse_success": true,
-    "chunk_idx": 51,
-    "video_id": "LYixBlpXK9U"
-  },
-  {
-    "time": [
-      104,
-      106
-    ],
-    "visible_entities": [
-      {
-        "desc": "white snow covering the ground, with small dark twigs or plant stems protruding from the surface",
-        "action": "static"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "The camera pans slightly across a snow-covered ground.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "Small dark twigs are visible sticking out of the snow.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [],
-    "spatial": "The snow covers the entire ground surface. Small dark twigs are protruding from the snow, primarily visible on the right side of the frame.",
+    "spatial": "The snow covers the entire visible ground area. The small dark twigs are scattered within the snow, mostly towards the right side of the frame.",
     "parse_success": true,
     "chunk_idx": 52,
     "video_id": "LYixBlpXK9U"
   },
   {
     "time": [
-      106,
-      108
+      53,
+      54
     ],
     "visible_entities": [
       {
-        "desc": "white snow surface with scattered dark debris and small holes",
-        "action": "static",
-        "position": "center"
+        "desc": "white snow surface with scattered small dark debris or twigs",
+        "action": "static"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "The camera pans slightly over a snowy ground surface.",
+        "fact": "The scene consists of a white snow surface.",
         "confidence": 1.0
       },
       {
-        "fact": "Small dark specks and holes are visible scattered across the white snow.",
+        "fact": "Small dark debris or twigs are scattered across the snow.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The dark debris and holes are scattered across the surface of the white snow.",
+    "spatial": "Small dark debris or twigs are scattered on the white snow surface.",
     "parse_success": true,
     "chunk_idx": 53,
     "video_id": "LYixBlpXK9U"
   },
   {
     "time": [
-      108,
-      110
+      54,
+      55
     ],
     "visible_entities": [
       {
-        "desc": "thick white snow covering the ground, textured with small mounds and indentations",
+        "desc": "thick white snow covering the ground, with a smooth, undulating surface and scattered small dark spots of exposed vegetation",
         "action": "static"
       },
       {
-        "desc": "small dark twigs or dried plant stems protruding from the snow",
+        "desc": "small dark plant stems or twigs protruding vertically from the snow",
         "action": "static"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "The scene shows a ground surface completely covered in snow.",
+        "fact": "The scene shows a snow-covered ground with no visible movement.",
         "confidence": 1.0
       },
       {
-        "fact": "Small dark twigs are sticking out of the snow layer.",
+        "fact": "Small dark plant stems are poking through the white snow layer.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The small dark twigs are protruding from the top of the thick white snow layer. The snow covers the entire visible ground area.",
+    "spatial": "The small dark plant stems are protruding from the thick white snow. The snow covers the entire visible ground surface.",
     "parse_success": true,
     "chunk_idx": 54,
     "video_id": "LYixBlpXK9U"
   },
   {
     "time": [
-      110,
-      112
+      55,
+      56
     ],
     "visible_entities": [
       {
-        "desc": "thick white snow covering the ground, textured surface with small dark indentations and holes",
+        "desc": "thick white snow covering the ground, with small dark holes and bits of vegetation visible",
         "action": "static"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "The scene shows a ground surface completely covered in a layer of white snow.",
+        "fact": "The scene shows a static view of a snow-covered surface.",
         "confidence": 1.0
       },
       {
-        "fact": "Small dark holes or indentations are scattered across the snow surface.",
+        "fact": "Small dark holes and bits of vegetation are visible protruding from the snow.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The white snow covers the entire visible ground area. Dark indentations are embedded within the snow surface.",
+    "spatial": "The snow covers the entire visible ground area. Small dark holes and bits of vegetation are scattered across the snow surface.",
     "parse_success": true,
     "chunk_idx": 55,
     "video_id": "LYixBlpXK9U"
   },
   {
     "time": [
-      112,
-      114
+      56,
+      57
     ],
     "visible_entities": [
       {
-        "desc": "dark, narrow vertical object, possibly a stick or branch, protruding from the snow",
+        "desc": "dark, narrow, vertical object, possibly a stick or tool, protruding from the snow",
         "action": "static",
         "position": "center"
       },
       {
-        "desc": "white snow surface with uneven texture and small depressions",
+        "desc": "white snow surface with a smooth, uniform texture and several small, dark indentations or holes",
         "action": "static",
         "position": "background"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A dark, narrow object protrudes vertically from the snow surface.",
+        "fact": "A dark, narrow object is sticking out of the snow in the center of the frame.",
         "confidence": 1.0
       },
       {
-        "fact": "The snow surface has small depressions and uneven texture.",
+        "fact": "The scene is a wide shot of a snow-covered ground.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The dark vertical object is protruding from the center of the white snow surface. Small depressions are scattered across the snow, with some near the central object.",
+    "spatial": "The dark, narrow object is in the center of the frame, protruding from the white snow surface which fills the entire background.",
     "parse_success": true,
     "chunk_idx": 56,
     "video_id": "LYixBlpXK9U"
   },
   {
     "time": [
-      114,
-      116
+      57,
+      58
     ],
     "visible_entities": [
       {
@@ -2148,106 +2146,95 @@
         "position": "center"
       },
       {
-        "desc": "thin dark stick or twig protruding from the snow",
+        "desc": "thin dark stick or twig",
         "action": "static",
         "position": "top right"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "The camera pans across a snow-covered ground.",
+        "fact": "The camera captures a close-up view of a snow-covered ground.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "Small dark debris is scattered on the white snow surface.",
         "confidence": 1.0
       },
       {
         "fact": "A thin dark stick protrudes from the snow in the upper right corner.",
         "confidence": 1.0
-      },
-      {
-        "fact": "Small dark specks of debris are scattered on the white snow surface.",
-        "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The thin dark stick is located in the top right corner, protruding from the white snow surface which fills the rest of the frame. Small dark debris is scattered near the stick and across the snow.",
+    "spatial": "The thin dark stick is located in the top right corner of the frame. Small dark debris is scattered across the snow surface, with some pieces near the center and others near the edges.",
     "parse_success": true,
     "chunk_idx": 57,
     "video_id": "LYixBlpXK9U"
   },
   {
     "time": [
-      116,
-      118
+      58,
+      59
     ],
     "visible_entities": [
       {
-        "desc": "uniform white snow surface with faint, shallow tracks",
+        "desc": "vast expanse of white snow with subtle undulations and faint dark specks",
         "action": "static",
         "position": "background"
-      },
-      {
-        "desc": "tiny dark specks, likely distant debris or vegetation",
-        "action": "static",
-        "position": "top"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "The scene consists of a flat, white snow surface.",
+        "fact": "The scene consists of a continuous white surface, likely snow, filling the entire frame.",
         "confidence": 1.0
       },
       {
-        "fact": "Faint, shallow tracks are visible on the snow.",
+        "fact": "Small dark specks are scattered across the upper portion of the snow.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "Tiny dark specks are located near the top edge of the frame, above the vast expanse of white snow.",
+    "spatial": "The white snow covers the entire visible area. The dark specks are located on the surface of the snow, primarily in the upper region.",
     "parse_success": true,
     "chunk_idx": 58,
     "video_id": "LYixBlpXK9U"
   },
   {
     "time": [
-      118,
-      120
+      59,
+      60
     ],
     "visible_entities": [
       {
-        "desc": "thick white snow covering the ground, smooth and undulating texture with small dark indentations or holes",
+        "desc": "snow-covered ground with a white, powdery texture and small dark debris or holes scattered in the upper left",
         "action": "static"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "The scene shows a static view of a snow-covered ground.",
+        "fact": "The scene shows a static view of a snow-covered surface.",
         "confidence": 1.0
       },
       {
-        "fact": "Small dark holes or indentations are visible in the snow near the top of the frame.",
+        "fact": "Small dark spots are visible on the snow in the upper left area.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The snow covers the entire visible area of the frame. The dark indentations are located near the top edge of the snowy surface.",
+    "spatial": "The snow covers the entire visible area. The dark debris is located in the upper left portion of the snow field.",
     "parse_success": true,
     "chunk_idx": 59,
     "video_id": "LYixBlpXK9U"
   },
   {
     "time": [
-      120,
-      122
+      60,
+      61
     ],
     "visible_entities": [
       {
-        "desc": "white snow covering the ground with a rough, uneven texture",
-        "action": "static",
-        "position": "center"
-      },
-      {
-        "desc": "dark, irregular holes or indentations in the snow",
-        "action": "static",
-        "position": "left"
+        "desc": "white snow surface with uneven texture and small dark indentations",
+        "action": "static"
       }
     ],
     "atomic_facts": [
@@ -2256,305 +2243,306 @@
         "confidence": 1.0
       },
       {
-        "fact": "Several dark holes or depressions are visible in the snow on the left side of the frame.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The snow appears undisturbed except for the specific indentations.",
+        "fact": "Small dark spots and indentations are visible in the snow.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The dark holes are located on the left side of the frame, embedded within the white snow that covers the rest of the visible area.",
+    "spatial": "The snow covers the entire visible area. Dark indentations are scattered across the white snow surface.",
     "parse_success": true,
     "chunk_idx": 60,
     "video_id": "LYixBlpXK9U"
   },
   {
     "time": [
-      122,
-      124
+      61,
+      62
     ],
     "visible_entities": [
       {
-        "desc": "thick white snow covering the ground, textured with deep, dark depressions and footprints",
-        "action": "static"
+        "desc": "white snow surface, powdery texture, covering the ground",
+        "action": "static",
+        "position": "background"
+      },
+      {
+        "desc": "dark irregular holes in the snow, revealing the ground or deeper snow beneath",
+        "action": "static",
+        "position": "center"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "The scene consists of a snow-covered ground.",
+        "fact": "The scene shows a snow-covered ground.",
         "confidence": 1.0
       },
       {
-        "fact": "Deep, dark depressions are visible in the snow, indicating footprints or tracks.",
+        "fact": "There are dark holes visible in the center of the snow.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The deep, dark depressions are embedded within the white snow surface. The snow covers the entire visible ground area.",
+    "spatial": "The dark holes are located in the center of the white snow surface.",
     "parse_success": true,
     "chunk_idx": 61,
     "video_id": "LYixBlpXK9U"
   },
   {
     "time": [
-      124,
-      126
+      62,
+      63
     ],
     "visible_entities": [
       {
-        "desc": "thick white snow covering the ground with uneven texture and dark crevices",
+        "desc": "thick white snow layer with uneven texture and dark gaps",
         "action": "static"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "The snow remains static on the ground throughout the clip.",
+        "fact": "The scene consists of a snow-covered surface.",
         "confidence": 1.0
       },
       {
-        "fact": "Dark crevices are visible beneath the layer of snow.",
+        "fact": "The snow remains static throughout the clip.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The thick white snow covers the entire visible ground surface. Dark crevices are located underneath the snow layer, primarily visible in the center and left portions of the frame.",
+    "spatial": "The white snow covers the entire visible area. Dark gaps or holes are visible within the snow layer, particularly on the left side.",
     "parse_success": true,
     "chunk_idx": 62,
     "video_id": "LYixBlpXK9U"
   },
   {
     "time": [
-      126,
-      128
+      63,
+      64
     ],
     "visible_entities": [
       {
-        "desc": "small dark object, appearing as a black speck or tip, possibly a ski pole or marker",
-        "action": "static",
-        "position": "right"
-      },
-      {
-        "desc": "irregular dark patch, greyish-black, appearing as a hole or depression in the snow",
+        "desc": "small, dark, irregularly shaped hole or depression in the snow",
         "action": "static",
         "position": "left"
+      },
+      {
+        "desc": "tiny, dark, vertical speck or object",
+        "action": "static",
+        "position": "right"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "The camera pans to the right across a white snowy surface.",
+        "fact": "A small, dark hole is visible in the snow on the left side of the frame.",
         "confidence": 1.0
       },
       {
-        "fact": "A dark hole or depression is visible on the left side of the frame.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "A small dark object is visible on the right side of the frame.",
+        "fact": "A tiny, dark speck is visible in the snow on the right side of the frame.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The dark hole is located on the left side of the frame. The small dark object is located to the right of the hole. Both entities are situated on the white snow surface.",
+    "spatial": "The small, dark hole is on the left side of the frame. The tiny, dark speck is on the right side of the frame. Both are surrounded by white snow.",
     "parse_success": true,
     "chunk_idx": 63,
     "video_id": "LYixBlpXK9U"
   },
   {
     "time": [
-      128,
-      130
+      64,
+      65
     ],
     "visible_entities": [
       {
-        "desc": "thick white snow covering the ground, smooth and undulating texture",
+        "desc": "thick white snow layer with undulating texture",
         "action": "static",
         "position": "center"
       },
       {
-        "desc": "dark rocky outcrop or ground patches partially covered in snow",
+        "desc": "dark rocky outcrop partially covered in snow",
         "action": "static",
-        "position": "top-left"
+        "position": "top left"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "The camera captures a static view of a snowy landscape.",
+        "fact": "The scene consists of a snowy landscape.",
         "confidence": 1.0
       },
       {
-        "fact": "Dark patches of rock or ground are visible beneath the snow in the upper left corner.",
+        "fact": "A dark rocky outcrop is visible in the upper left corner.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The snow covers the majority of the frame.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The dark rocky outcrop is located in the top-left corner of the frame, surrounded by the white snow that fills the rest of the view.",
+    "spatial": "The dark rocky outcrop is located in the top left corner of the frame. The thick white snow layer is below and to the right of the rocky outcrop, covering the rest of the visible ground.",
     "parse_success": true,
     "chunk_idx": 64,
     "video_id": "LYixBlpXK9U"
   },
   {
     "time": [
-      130,
-      132
+      65,
+      66
     ],
     "visible_entities": [
       {
-        "desc": "thick white snow covering the ground with a textured, uneven surface",
+        "desc": "thick white snow layer with uneven surface texture and small dark patches",
         "action": "static",
-        "position": "foreground/background"
-      },
-      {
-        "desc": "dark, jagged rocks partially buried in the snow",
-        "action": "static",
-        "position": "left"
+        "position": "center"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "The camera captures a static view of a snow-covered landscape.",
+        "fact": "The scene is covered in a layer of snow.",
         "confidence": 1.0
       },
       {
-        "fact": "Dark rocks are visible protruding from the snow on the left side of the frame.",
+        "fact": "The snow surface has an uneven texture with small dark patches visible.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The dark rocks are located on the left side of the frame, partially submerged under the white snow. The snow covers the majority of the ground, extending from the foreground to the background.",
+    "spatial": "The thick white snow covers the entire visible ground surface. Small dark patches are embedded within the snow layer.",
     "parse_success": true,
     "chunk_idx": 65,
     "video_id": "LYixBlpXK9U"
   },
   {
     "time": [
-      132,
-      134
+      66,
+      67
     ],
     "visible_entities": [
       {
-        "desc": "white snow surface with undulating texture and small dark specks",
+        "desc": "thick white snow layer with undulating texture and small dark debris",
         "action": "static",
-        "position": "center"
+        "position": "background"
+      },
+      {
+        "desc": "small dark specks, likely rocks or debris",
+        "action": "static",
+        "position": "top left"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "The camera captures a close-up view of a snow-covered surface.",
+        "fact": "The scene consists of a close-up view of a snow-covered surface.",
         "confidence": 1.0
       },
       {
-        "fact": "Small dark specks are visible on the white snow in the upper left area.",
+        "fact": "The snow surface features gentle, wave-like undulations.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "Small dark specks are visible protruding from the snow in the upper left area.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The white snow surface fills the entire frame. Small dark specks are located in the upper left portion of the snow.",
+    "spatial": "The small dark specks are located in the top left area of the frame, resting on the surface of the white snow layer.",
     "parse_success": true,
     "chunk_idx": 66,
     "video_id": "LYixBlpXK9U"
   },
   {
     "time": [
-      134,
-      136
+      67,
+      68
     ],
     "visible_entities": [
       {
-        "desc": "small dark triangular object, black, sharp-edged",
+        "desc": "small dark object, appearing as a black triangular tip or point, protruding from the surface",
         "action": "static",
         "position": "top-left"
       },
       {
-        "desc": "white snow surface, smooth texture with subtle undulations",
+        "desc": "white snow surface, smooth texture with subtle undulations and shadows",
         "action": "static",
         "position": "background"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A small dark triangular object protrudes from the snow.",
+        "fact": "A small dark object protrudes from the snow surface.",
         "confidence": 1.0
       },
       {
-        "fact": "The scene consists of a vast white snow surface.",
+        "fact": "The snow surface remains static throughout the clip.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The small dark triangular object is located in the top-left area of the frame, protruding from the white snow surface which fills the rest of the view.",
+    "spatial": "The small dark object is located in the top-left portion of the frame, protruding from the white snow surface which fills the rest of the background.",
     "parse_success": true,
     "chunk_idx": 67,
     "video_id": "LYixBlpXK9U"
   },
   {
     "time": [
-      136,
-      138
+      68,
+      69
     ],
     "visible_entities": [
       {
-        "desc": "thick white snow covering the ground with a soft, uneven texture",
+        "desc": "thick white snow layer covering the ground, with a small dark hole or gap visible in the lower center",
         "action": "static",
         "position": "center"
       },
       {
         "desc": "dark, snow-covered vegetation or rocks",
         "action": "static",
-        "position": "left"
-      },
-      {
-        "desc": "small dark hole or gap in the snow",
-        "action": "static",
-        "position": "center-right"
+        "position": "top-left"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "The scene shows a snowy landscape.",
+        "fact": "A thick layer of white snow covers the ground.",
         "confidence": 1.0
       },
       {
-        "fact": "A small dark hole is visible in the snow surface.",
+        "fact": "A small dark hole is visible in the snow in the lower center of the frame.",
         "confidence": 1.0
       },
       {
-        "fact": "Snow-covered vegetation is present on the left side.",
+        "fact": "Dark vegetation or rocks are partially covered by snow in the top-left corner.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The dark, snow-covered vegetation is located on the left side of the frame. The small dark hole is situated in the center-right area of the snow. The snow covers the majority of the ground surface.",
+    "spatial": "The dark, snow-covered vegetation is located in the top-left corner of the frame. The small dark hole is situated in the lower center of the snow-covered ground.",
     "parse_success": true,
     "chunk_idx": 68,
     "video_id": "LYixBlpXK9U"
   },
   {
     "time": [
-      138,
-      140
+      69,
+      70
     ],
     "visible_entities": [
       {
-        "desc": "thick white snow covering the ground with a soft, undulating texture",
+        "desc": "thick white snow covering the ground with undulating mounds and texture",
         "action": "static",
         "position": "foreground"
       },
       {
-        "desc": "evergreen bushes with dark green needles heavily laden with clumps of snow",
+        "desc": "evergreen bushes with dark green needles heavily laden with snow",
         "action": "static",
         "position": "background"
       },
       {
-        "desc": "small orange triangular marker attached to a branch",
+        "desc": "small orange triangular marker or tag",
         "action": "static",
-        "position": "background"
+        "position": "center"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "Snow covers the ground and bushes in a winter scene.",
+        "fact": "Snow covers the ground and bushes in a winter setting.",
         "confidence": 1.0
       },
       {
@@ -2563,167 +2551,177 @@
       }
     ],
     "ocr": [],
-    "spatial": "The thick white snow is in the foreground, covering the ground. The snow-covered evergreen bushes are behind the foreground snow. The small orange marker is attached to one of the bushes in the background.",
+    "spatial": "The thick white snow is in the foreground, covering the ground. The evergreen bushes are behind the snow in the background. The small orange marker is attached to one of the bushes in the center.",
     "parse_success": true,
     "chunk_idx": 69,
     "video_id": "LYixBlpXK9U"
   },
   {
     "time": [
-      140,
-      142
+      70,
+      71
     ],
     "visible_entities": [
       {
-        "desc": "thick white snow covering the ground with a smooth, undulating surface",
+        "desc": "thick white snow covering the ground with a soft, uneven texture",
         "action": "static",
-        "position": "foreground/background"
+        "position": "foreground"
       },
       {
-        "desc": "small dark object, possibly a rock or piece of debris, partially buried in the snow",
+        "desc": "small dark patch of exposed ground or debris",
         "action": "static",
         "position": "left"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "The scene is covered in a layer of white snow.",
+        "fact": "The scene is dominated by a layer of white snow.",
         "confidence": 1.0
       },
       {
-        "fact": "A small dark object is partially buried in the snow on the left side.",
+        "fact": "A small dark spot is visible on the left side of the frame.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The small dark object is located on the left side of the frame, partially submerged in the snow. The snow covers the entire visible ground area, surrounding the dark object.",
+    "spatial": "The small dark patch is located on the left side, surrounded by the white snow that covers the rest of the visible area.",
     "parse_success": true,
     "chunk_idx": 70,
     "video_id": "LYixBlpXK9U"
   },
   {
     "time": [
-      142,
-      144
+      71,
+      72
     ],
     "visible_entities": [
       {
-        "desc": "thick white snow covering the ground with a small dark patch of underlying surface visible",
+        "desc": "thick white snow with a soft, uneven, undulating texture covering the ground",
         "action": "static",
-        "position": "center"
+        "position": "background"
+      },
+      {
+        "desc": "dark, irregular hole or gap in the snow revealing a black or dark grey surface underneath",
+        "action": "static",
+        "position": "left"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "The camera pans slightly across a snow-covered surface.",
+        "fact": "A dark hole is visible in the snow on the left side of the frame.",
         "confidence": 1.0
       },
       {
-        "fact": "A small dark area is exposed in the snow where the covering is thin.",
+        "fact": "The snow covers the majority of the visible ground surface.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The dark patch of underlying surface is located in the upper-left portion of the frame, surrounded by the white snow.",
+    "spatial": "The dark hole is located on the left side of the frame, surrounded by the white snow which fills the rest of the view.",
     "parse_success": true,
     "chunk_idx": 71,
     "video_id": "LYixBlpXK9U"
   },
   {
     "time": [
-      144,
-      146
+      72,
+      73
     ],
     "visible_entities": [
       {
-        "desc": "thick white snow covering the ground, textured with mounds and small dark debris",
+        "desc": "thick white snow covering the ground with uneven mounds and texture",
         "action": "static",
-        "position": "center"
+        "position": "center/foreground/background"
       },
       {
-        "desc": "curved, pale object partially buried in the snow",
+        "desc": "dark, thin, curved object resembling a frozen vine or branch",
         "action": "static",
         "position": "left"
+      },
+      {
+        "desc": "dark vertical shape resembling a tree trunk or post",
+        "action": "static",
+        "position": "right/background"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "The camera captures a close-up view of a snow-covered surface.",
+        "fact": "The camera captures a static view of a snow-covered landscape.",
         "confidence": 1.0
       },
       {
-        "fact": "A curved, pale object is partially buried in the snow on the left side of the frame.",
+        "fact": "A dark, curved object is visible on the left side, partially buried in the snow.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A dark vertical object stands in the background on the right side.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The curved, pale object is located on the left side of the frame, partially buried in the thick white snow that covers the rest of the visible ground.",
+    "spatial": "The dark, curved object is located on the left side of the frame, resting on the snow. The dark vertical object is positioned to the right and slightly behind the central area of the snow mounds. The snow covers the entire ground surface visible in the frame.",
     "parse_success": true,
     "chunk_idx": 72,
     "video_id": "LYixBlpXK9U"
   },
   {
     "time": [
-      146,
-      148
+      73,
+      74
     ],
     "visible_entities": [
       {
-        "desc": "snow-covered ground with patches of dark, rough-textured earth or rock visible underneath",
+        "desc": "snow-covered ground with dark patches of soil or rock visible underneath",
         "action": "static",
         "position": "foreground"
       },
       {
-        "desc": "bushes or low-lying vegetation heavily laden with thick, clumpy white snow",
+        "desc": "bushes or low vegetation heavily laden with white snow",
         "action": "static",
         "position": "right"
       },
       {
-        "desc": "tree trunks and branches in the background, partially obscured by snow and shadows",
+        "desc": "tree trunks and branches covered in snow and moss",
         "action": "static",
         "position": "background"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "The camera pans slightly to the right, revealing more of the snowy landscape.",
+        "fact": "The scene depicts a snowy outdoor environment.",
         "confidence": 1.0
       },
       {
-        "fact": "Thick snow covers the vegetation on the right side of the frame.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "Patches of dark ground are visible in the foreground where the snow is thinner.",
+        "fact": "Snow covers the ground and vegetation.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The snow-covered ground is in the foreground, extending towards the background. The bushes laden with snow are to the right of the exposed ground patches. The tree trunks are behind the bushes and the foreground snow.",
+    "spatial": "The snow-covered ground is in the foreground. The bushes laden with snow are to the right of the ground. The tree trunks are behind the bushes and ground.",
     "parse_success": true,
     "chunk_idx": 73,
     "video_id": "LYixBlpXK9U"
   },
   {
     "time": [
-      148,
-      150
+      74,
+      75
     ],
     "visible_entities": [
       {
-        "desc": "snow-covered forest ground with dark, uneven soil, exposed tree roots, and patches of white snow",
+        "desc": "snow-covered ground with exposed dark soil and tangled tree roots",
         "action": "static",
         "position": "center"
       },
       {
-        "desc": "dark tree trunk with rough bark texture, partially covered in snow",
+        "desc": "snow-laden tree trunks and branches",
         "action": "static",
         "position": "left"
       },
       {
-        "desc": "snow-covered branches and foliage",
+        "desc": "snow-covered vegetation and roots",
         "action": "static",
-        "position": "background"
+        "position": "right"
       }
     ],
     "atomic_facts": [
@@ -2732,460 +2730,459 @@
         "confidence": 1.0
       },
       {
-        "fact": "The ground is covered with a mix of dark soil and white snow.",
+        "fact": "Snow covers the majority of the forest floor.",
         "confidence": 1.0
       },
       {
-        "fact": "Tree roots are visible protruding from the ground on the right side.",
+        "fact": "Dark soil is visible where the snow has melted or is thin.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The dark tree trunk is located on the left side of the frame. The snow-covered ground occupies the center and foreground. The snow-covered branches and foliage are in the background, behind the ground.",
+    "spatial": "The snow-covered ground is in the center of the frame. Tree trunks are to the left of the ground. Vegetation and roots are to the right of the ground.",
     "parse_success": true,
     "chunk_idx": 74,
     "video_id": "LYixBlpXK9U"
   },
   {
     "time": [
-      150,
-      152
+      75,
+      76
     ],
     "visible_entities": [
       {
         "desc": "rough, uneven ground surface with dark soil, scattered light-colored rocks, and debris",
-        "action": "static"
+        "action": "static",
+        "position": "background"
       },
       {
-        "desc": "large, dark, textured object resembling a rock or log",
-        "action": "static"
+        "desc": "dark, elongated object resembling a stick or root",
+        "action": "static",
+        "position": "center"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "The camera focuses on a patch of rough, uneven ground.",
+        "fact": "The camera focuses on a patch of rough, rocky terrain.",
         "confidence": 1.0
       },
       {
-        "fact": "Light-colored rocks and debris are scattered across the dark soil.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "A large, dark object is positioned on the ground surface.",
+        "fact": "A dark, stick-like object lies on the ground.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The large, dark object is located on the right side of the frame, resting on the rough ground. Scattered light-colored rocks are visible to the left of and below the dark object.",
+    "spatial": "The dark, stick-like object is in the center of the frame, lying on top of the rough, rocky ground surface.",
     "parse_success": true,
     "chunk_idx": 75,
     "video_id": "LYixBlpXK9U"
   },
   {
     "time": [
-      152,
-      154
+      76,
+      77
     ],
     "visible_entities": [
       {
-        "desc": "dark, blurry object or person's limb, appearing black or dark grey, located in the foreground",
-        "action": "moving into the frame from the left",
-        "position": "left/foreground"
+        "desc": "dark, blurry object or limb, possibly a foot or shoe, appearing in the lower left",
+        "action": "moving into view",
+        "position": "bottom-left"
       },
       {
-        "desc": "rough, textured ground surface, appearing grey and white with scattered debris or rocks",
+        "desc": "rough, textured ground surface, appearing grey and grainy with scattered debris",
         "action": "static",
-        "position": "center/background"
+        "position": "center"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A dark, blurry object or limb moves into the frame from the left side.",
+        "fact": "A dark, blurry object moves into the frame from the left side.",
         "confidence": 1.0
       },
       {
-        "fact": "The ground surface is rough and textured with scattered debris.",
+        "fact": "The ground surface is rough and textured.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The dark, blurry object is in the foreground on the left side of the frame. The rough, textured ground is in the background and center of the frame. The dark object is moving over the ground surface.",
+    "spatial": "The dark, blurry object is in the bottom-left foreground, partially obscuring the rough, textured ground surface which occupies the center and right of the frame.",
     "parse_success": true,
     "chunk_idx": 76,
     "video_id": "LYixBlpXK9U"
   },
   {
     "time": [
-      154,
-      156
+      77,
+      78
     ],
     "visible_entities": [
       {
-        "desc": "white snow covering the ground with a rough, uneven texture",
+        "desc": "snow-covered ground with dark, rough-textured patches of exposed earth or debris",
         "action": "static",
         "position": "center"
-      },
-      {
-        "desc": "dark, textured patch of ground or debris",
-        "action": "static",
-        "position": "right"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "The camera captures a close-up view of a snowy ground surface.",
+        "fact": "The ground is partially covered in white snow.",
         "confidence": 1.0
       },
       {
-        "fact": "A dark, textured area is visible on the right side of the frame, contrasting with the white snow.",
+        "fact": "Dark patches of rough terrain are visible amidst the snow.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The dark, textured patch of ground is located to the right of the white snow. The snow covers the majority of the visible area in the center and left.",
+    "spatial": "The snow covers the majority of the ground surface, with dark patches of earth or debris scattered across the center and right side of the frame.",
     "parse_success": true,
     "chunk_idx": 77,
     "video_id": "LYixBlpXK9U"
   },
   {
     "time": [
-      156,
-      158
+      78,
+      79
     ],
     "visible_entities": [
       {
         "desc": "thick white snow covering the ground and vegetation",
         "action": "static",
-        "position": "foreground/center"
+        "position": "center/foreground"
       },
       {
-        "desc": "snow-covered bushes and trees with dark green foliage visible underneath",
+        "desc": "snow-covered bushes with visible leafy shapes underneath the white layer",
+        "action": "static",
+        "position": "right/foreground"
+      },
+      {
+        "desc": "dark evergreen trees heavily laden with snow",
         "action": "static",
         "position": "background"
       },
       {
-        "desc": "clumps of grass or plants bent under the weight of the snow",
+        "desc": "tall thin grass stalks poking through the snow",
         "action": "static",
-        "position": "left/center"
+        "position": "left/foreground"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "The scene is a snowy landscape with heavy snow accumulation.",
+        "fact": "Snow covers the ground and vegetation in a forest setting.",
         "confidence": 1.0
       },
       {
-        "fact": "Snow covers the ground, bushes, and trees completely.",
+        "fact": "Bushes and trees are heavily laden with white snow.",
         "confidence": 1.0
       },
       {
-        "fact": "Some plant life is visible, bent over by the weight of the snow.",
+        "fact": "Tall grass stalks are visible protruding from the snow on the left side.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The snow-covered ground is in the foreground and center of the frame. The snow-covered bushes and trees are in the background, behind the foreground snow. Clumps of snow-laden grass are visible on the left and center, partially buried in the snow.",
+    "spatial": "The snow-covered bushes are in the foreground on the right side of the frame. The dark evergreen trees are located in the background behind the snow-covered ground. Tall grass stalks are visible on the left side, emerging from the snow.",
     "parse_success": true,
     "chunk_idx": 78,
     "video_id": "LYixBlpXK9U"
   },
   {
     "time": [
-      158,
-      160
+      79,
+      80
     ],
     "visible_entities": [
       {
-        "desc": "evergreen trees with dense dark green needles, heavily laden with thick, fluffy white snow",
+        "desc": "evergreen trees with dark green needles, heavily laden with thick, clumpy white snow",
         "action": "static",
         "position": "background"
       },
       {
-        "desc": "low-lying bushes and grasses completely covered in a thick, smooth layer of white snow",
+        "desc": "low-lying bush or shrub completely covered in a thick, smooth blanket of white snow",
         "action": "static",
         "position": "foreground"
+      },
+      {
+        "desc": "spiky grass-like plant with thin, pale blades protruding from the snow",
+        "action": "static",
+        "position": "bottom-left"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "Snow is falling gently through the air.",
+        "fact": "Heavy snow covers the evergreen trees and bushes in the scene.",
         "confidence": 1.0
       },
       {
-        "fact": "The evergreen trees are covered in heavy snow.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The bushes in the foreground are buried under a thick blanket of snow.",
+        "fact": "Snowflakes are falling through the air.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The snow-covered bushes are in the foreground, situated below the taller evergreen trees in the background. The trees are positioned behind the bushes, filling the upper portion of the frame.",
+    "spatial": "The snow-covered bush is in the foreground, positioned in front of the evergreen trees in the background. The spiky grass-like plant is located at the bottom-left, next to the large snow-covered bush.",
     "parse_success": true,
     "chunk_idx": 79,
     "video_id": "LYixBlpXK9U"
   },
   {
     "time": [
-      160,
-      162
+      80,
+      81
     ],
     "visible_entities": [
       {
-        "desc": "person wearing a brown and green camouflage pattern jacket with a visible orange patch on the sleeve, dark pants, and dark boots",
-        "action": "crouching or kneeling in the snow",
+        "desc": "person wearing a brown and green camouflage patterned jacket or ghillie suit with a small orange patch on the sleeve",
+        "action": "moving through the snow",
         "position": "left/foreground"
       },
       {
-        "desc": "snow-covered evergreen trees and bushes",
+        "desc": "snow-covered evergreen trees and bushes with heavy white snow accumulation on branches",
         "action": "static",
-        "position": "background"
-      },
-      {
-        "desc": "white snow on the ground",
-        "action": "static",
-        "position": "bottom/foreground"
+        "position": "background/right"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A person in camouflage clothing is crouching or kneeling in the snow.",
+        "fact": "A person in camouflage gear is moving through a snowy forest environment.",
         "confidence": 1.0
       },
       {
-        "fact": "The person is positioned next to snow-covered trees.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The environment is a snowy forest.",
+        "fact": "The person is positioned on the left side of the frame, partially obscured by the foreground.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The person in the camouflage jacket is on the left side of the frame and is in front of the snow-covered trees. The white snow is on the ground below the person and the trees.",
+    "spatial": "The person in the camouflage jacket is in the foreground on the left side of the frame. The snow-covered trees are to the right of the person and fill the background.",
     "parse_success": true,
     "chunk_idx": 80,
     "video_id": "LYixBlpXK9U"
   },
   {
     "time": [
-      162,
-      164
+      81,
+      82
     ],
     "visible_entities": [
       {
-        "desc": "person wearing camouflage patterned clothing with dark gloves and a red patch or item on the lower leg",
-        "action": "crouching or kneeling on the ground",
-        "position": "right/foreground"
+        "desc": "person wearing camouflage-patterned clothing (greens, browns, blacks) and black gloves",
+        "action": "bending over or crouching",
+        "position": "center/right"
       },
       {
-        "desc": "snow-covered ground with patches of dirt and debris",
+        "desc": "snow-covered ground with dark soil and debris",
         "action": "static",
-        "position": "left/bottom/background"
+        "position": "bottom/left"
+      },
+      {
+        "desc": "snow-covered trees or bushes",
+        "action": "static",
+        "position": "background"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A person in camouflage clothing is crouching or kneeling on the snowy ground.",
+        "fact": "A person in camouflage clothing is bending over or crouching in a snowy environment.",
         "confidence": 1.0
       },
       {
-        "fact": "The person is positioned on the right side of the frame.",
+        "fact": "The ground is covered with snow and dark debris.",
         "confidence": 1.0
       },
       {
-        "fact": "The ground is covered in snow and dirt.",
+        "fact": "Snow-covered vegetation is visible in the background.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The person in camouflage clothing is on the right side of the frame, crouching over the snow-covered ground which extends to the left and background.",
+    "spatial": "The person in camouflage is positioned in the center-right of the frame, bending over the snowy ground. The snow-covered ground occupies the bottom and left portions of the scene. Snow-covered trees are located in the background behind the person.",
     "parse_success": true,
     "chunk_idx": 81,
     "video_id": "LYixBlpXK9U"
   },
   {
     "time": [
-      164,
-      166
+      82,
+      83
     ],
     "visible_entities": [
       {
-        "desc": "black animal with white markings on head and a red collar",
+        "desc": "black animal with white markings on the head and a red patch on the neck",
         "action": "lying on the ground",
         "position": "center"
       },
       {
-        "desc": "snowy ground with patches of dark earth",
+        "desc": "snowy ground with dark patches of earth",
         "action": "static",
         "position": "background"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A black animal with white markings is lying on the snowy ground.",
+        "fact": "A black animal with white and red markings is lying on the snowy ground.",
         "confidence": 1.0
       },
       {
-        "fact": "The animal is wearing a red collar.",
+        "fact": "The ground is covered in snow with visible dark patches of earth.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The black animal is lying on top of the snowy ground. The red collar is around the animal's neck.",
+    "spatial": "The black animal is lying on the snowy ground. The red patch is on the neck of the animal, which is positioned in the center of the frame.",
     "parse_success": true,
     "chunk_idx": 82,
     "video_id": "LYixBlpXK9U"
   },
   {
     "time": [
-      166,
-      168
+      83,
+      84
     ],
     "visible_entities": [
       {
-        "desc": "black and white dog with fluffy fur",
-        "action": "moving through snow",
-        "position": "center"
+        "desc": "black and white dog with shaggy fur, black body, white legs and white markings on the head",
+        "action": "walking on a snowy path",
+        "position": "center/foreground"
       },
       {
-        "desc": "person wearing dark pants and boots",
+        "desc": "person wearing dark pants and dark boots",
         "action": "standing",
         "position": "background"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A black and white dog is moving through a snowy landscape.",
+        "fact": "A black and white dog is walking on a snowy path.",
         "confidence": 1.0
       },
       {
-        "fact": "A person is standing on the snowy ground in the background.",
+        "fact": "A person is standing in the background behind the dog.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The black and white dog is in the foreground, moving across the center of the frame. The person is standing behind the dog on the snowy path.",
+    "spatial": "The black and white dog is in the foreground, occupying the center of the frame. The person is behind the dog, standing further up the snowy path in the background.",
     "parse_success": true,
     "chunk_idx": 83,
     "video_id": "LYixBlpXK9U"
   },
   {
     "time": [
-      168,
-      170
+      84,
+      85
     ],
     "visible_entities": [
       {
-        "desc": "black and white dog, medium-sized, with white paws and a white muzzle",
-        "action": "walking towards the camera",
+        "desc": "black and white dog with fluffy fur, likely a Border Collie, with a pink tongue visible",
+        "action": "standing and panting",
         "position": "left/foreground"
       },
       {
-        "desc": "snowy ground with patches of dark earth and debris",
+        "desc": "snowy ground with patches of dark dirt and debris",
         "action": "static",
         "position": "center/right/background"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A black and white dog walks towards the camera.",
+        "fact": "A black and white dog is standing on the snowy ground.",
         "confidence": 1.0
       },
       {
-        "fact": "The dog has its tongue out.",
+        "fact": "The dog has its mouth open with its tongue hanging out.",
         "confidence": 1.0
       },
       {
-        "fact": "The ground is covered in patchy snow.",
+        "fact": "The ground is covered in a mix of white snow and dark soil.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The black and white dog is in the foreground on the left side of the frame. The snowy ground is to the right of the dog and extends into the background.",
+    "spatial": "The black and white dog is positioned on the left side of the frame, standing in front of the snowy ground which extends to the right and background.",
     "parse_success": true,
     "chunk_idx": 84,
     "video_id": "LYixBlpXK9U"
   },
   {
     "time": [
-      170,
-      172
+      85,
+      86
     ],
     "visible_entities": [
       {
-        "desc": "black and white furry animal legs with large clumps of white snow attached to the fur",
+        "desc": "black and white furry animal, likely a dog, with white paws and an orange reflective collar",
         "action": "walking on snowy ground",
         "position": "center"
       },
       {
-        "desc": "orange reflective strip or band",
-        "action": "static",
-        "position": "top right"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "The animal is walking on a surface covered in dark soil and white snow.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "Large clumps of snow are stuck to the animal's fur.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "An orange reflective strip is visible on the animal's upper body.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [],
-    "spatial": "The black and white furry legs are in the center of the frame, moving across the snowy ground. The orange reflective strip is located on the upper right side, above the legs.",
-    "parse_success": true,
-    "chunk_idx": 85,
-    "video_id": "LYixBlpXK9U"
-  },
-  {
-    "time": [
-      172,
-      174
-    ],
-    "visible_entities": [
-      {
-        "desc": "animal legs with black fur on the upper portion and white fur on the lower paws, covered in large, round clumps of white snow",
-        "action": "standing on snowy ground",
-        "position": "center"
-      },
-      {
-        "desc": "ground covered in a mixture of white snow and dark soil or debris",
+        "desc": "dark ground covered with patches of white snow",
         "action": "static",
         "position": "bottom"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "An animal with black and white legs is standing on the ground.",
+        "fact": "The black and white animal is walking across the frame.",
         "confidence": 1.0
       },
       {
-        "fact": "Large clumps of snow are attached to the animal's legs.",
+        "fact": "The animal's paws are stepping on the snow-covered ground.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The animal is wearing an orange collar.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The animal legs are positioned in the center of the frame, standing on top of the snowy ground. The snow clumps are attached to the legs, extending outwards.",
+    "spatial": "The black and white animal is positioned above the dark ground. The orange collar is around the animal's neck area. The white paws are in contact with the snow on the ground.",
+    "parse_success": true,
+    "chunk_idx": 85,
+    "video_id": "LYixBlpXK9U"
+  },
+  {
+    "time": [
+      86,
+      87
+    ],
+    "visible_entities": [
+      {
+        "desc": "animal legs with dark fur and large clumps of white snow attached to the lower legs and paws",
+        "action": "walking on snowy ground",
+        "position": "center"
+      },
+      {
+        "desc": "ground covered in patches of snow and dark earth",
+        "action": "static",
+        "position": "bottom"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "An animal with dark fur is walking through a snowy environment.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "Large, round clumps of snow are stuck to the animal's legs.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The animal is moving its legs forward.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The animal's legs are positioned in the center of the frame, standing on the snowy ground. The clumps of snow are attached to the lower parts of the legs, near the paws.",
     "parse_success": true,
     "chunk_idx": 86,
     "video_id": "LYixBlpXK9U"
   },
   {
     "time": [
-      174,
-      176
+      87,
+      88
     ],
     "visible_entities": [
       {
-        "desc": "black furry animal leg with large, clumped white snowballs attached to the fur",
+        "desc": "animal with thick black fur, covered in large white snowballs and ice clumps",
         "action": "standing still",
         "position": "center"
       },
@@ -3197,165 +3194,156 @@
     ],
     "atomic_facts": [
       {
-        "fact": "A black furry animal leg is standing on snowy ground.",
+        "fact": "An animal with black fur is standing on snowy ground.",
         "confidence": 1.0
       },
       {
-        "fact": "Large clumps of snow are stuck to the animal's fur.",
+        "fact": "Large clumps of snow are clinging to the animal's fur.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The black furry animal leg is positioned above the snowy ground. The clumps of snow are attached to the leg.",
+    "spatial": "The animal is standing on the snowy ground. The snow clumps are attached to the animal's fur.",
     "parse_success": true,
     "chunk_idx": 87,
     "video_id": "LYixBlpXK9U"
   },
   {
     "time": [
-      176,
-      178
+      88,
+      89
     ],
     "visible_entities": [
       {
-        "desc": "animal with dark brown/black fur on the upper body and white fur on the lower legs and paws",
-        "action": "walking on snow",
-        "position": "center"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "The animal is walking across the ground.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The ground is covered in a mixture of snow and dark soil.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The animal's paws are stepping on the snowy surface.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [],
-    "spatial": "The animal is positioned in the center of the frame, moving above the snowy ground. The dark fur of the animal is above the white fur of its legs.",
-    "parse_success": true,
-    "chunk_idx": 88,
-    "video_id": "LYixBlpXK9U"
-  },
-  {
-    "time": [
-      178,
-      180
-    ],
-    "visible_entities": [
-      {
-        "desc": "large, white, fluffy snow clumps with a soft, powdery texture",
-        "action": "resting on the ground",
-        "position": "left/foreground"
-      },
-      {
-        "desc": "dark, textured ground surface, likely asphalt or gravel, partially covered in snow",
-        "action": "static",
-        "position": "right/background"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "Large clumps of white snow are resting on the dark ground.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The ground surface is partially covered with scattered snow.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [],
-    "spatial": "The large clumps of snow are positioned to the left of the frame and in the foreground. The dark, textured ground is to the right of the snow and extends into the background.",
-    "parse_success": true,
-    "chunk_idx": 89,
-    "video_id": "LYixBlpXK9U"
-  },
-  {
-    "time": [
-      180,
-      182
-    ],
-    "visible_entities": [
-      {
-        "desc": "animal paw with black fur and white toes",
-        "action": "shaking snow off",
+        "desc": "animal with dark fur and white fur, heavily covered in large clumps of white snow on its legs and underbelly",
+        "action": "walking on snowy ground",
         "position": "center"
       },
       {
-        "desc": "clumps of white snow",
-        "action": "falling",
-        "position": "foreground"
-      },
-      {
-        "desc": "dark ground surface",
-        "action": "static",
-        "position": "background"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "An animal paw with black fur and white toes shakes vigorously.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "Clumps of white snow fall from the paw onto the ground.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The ground is dark and partially covered in snow.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [],
-    "spatial": "The animal paw is in the center of the frame, positioned above the dark ground surface. Clumps of snow are falling from the paw onto the ground below.",
-    "parse_success": true,
-    "chunk_idx": 90,
-    "video_id": "LYixBlpXK9U"
-  },
-  {
-    "time": [
-      182,
-      184
-    ],
-    "visible_entities": [
-      {
-        "desc": "black animal with dark fur",
-        "action": "moving through snow",
-        "position": "center"
-      },
-      {
-        "desc": "red object",
-        "action": "static",
-        "position": "left"
-      },
-      {
-        "desc": "white snow",
+        "desc": "ground covered in patches of white snow and dark soil",
         "action": "static",
         "position": "bottom"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A black animal is moving through the snow.",
+        "fact": "The animal is walking on the snowy ground.",
         "confidence": 1.0
       },
       {
-        "fact": "The animal's legs are kicking up snow as it moves.",
+        "fact": "Large clumps of snow are stuck to the animal's legs and fur.",
         "confidence": 1.0
       },
       {
-        "fact": "A red object is visible on the left side of the frame.",
+        "fact": "The ground is partially covered in snow.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The black animal is in the center of the frame, moving above the white snow. The red object is to the left of the animal.",
+    "spatial": "The animal is in the center of the frame, positioned above the snowy ground. The snow clumps are attached to the animal's legs and underbelly.",
+    "parse_success": true,
+    "chunk_idx": 88,
+    "video_id": "LYixBlpXK9U"
+  },
+  {
+    "time": [
+      89,
+      90
+    ],
+    "visible_entities": [
+      {
+        "desc": "large, white, fluffy snow clumps with a soft, powdery texture",
+        "action": "resting on the ground",
+        "position": "left"
+      },
+      {
+        "desc": "dark, textured ground surface, likely asphalt or gravel, speckled with scattered snow",
+        "action": "static",
+        "position": "right"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A large accumulation of white snow is resting on the left side of the frame.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The ground surface is dark and partially covered with scattered snow.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The large white snow clumps are positioned to the left of the dark, textured ground surface. The snow is resting on top of the ground.",
+    "parse_success": true,
+    "chunk_idx": 89,
+    "video_id": "LYixBlpXK9U"
+  },
+  {
+    "time": [
+      90,
+      91
+    ],
+    "visible_entities": [
+      {
+        "desc": "animal paw with black fur and white fur, covered in large white snowballs",
+        "action": "standing in snow",
+        "position": "center"
+      },
+      {
+        "desc": "ground covered in patchy white snow and dark soil",
+        "action": "static",
+        "position": "background"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "An animal paw covered in black and white fur is standing on snowy ground.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "Large clumps of white snow are stuck to the fur of the paw.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The animal paw is in the center of the frame, positioned above the snowy ground. The snow clumps are attached to the paw.",
+    "parse_success": true,
+    "chunk_idx": 90,
+    "video_id": "LYixBlpXK9U"
+  },
+  {
+    "time": [
+      91,
+      92
+    ],
+    "visible_entities": [
+      {
+        "desc": "black furry animal, likely a dog, with a red collar or harness",
+        "action": "moving through snow",
+        "position": "center"
+      },
+      {
+        "desc": "white snow covering the ground",
+        "action": "static",
+        "position": "bottom"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A black furry animal is moving through the snow.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The animal has a red collar or harness visible.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The ground is covered in white snow.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The black furry animal is in the center of the frame, moving over the snow which covers the bottom portion of the scene. The red collar is on the animal's neck area.",
     "parse_success": true,
     "chunk_idx": 91,
     "video_id": "LYixBlpXK9U"

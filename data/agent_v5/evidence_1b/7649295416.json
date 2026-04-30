@@ -2,88 +2,68 @@
   {
     "time": [
       0,
-      2
+      1
     ],
     "visible_entities": [
       {
-        "desc": "man with dark hair, wearing a black cap, black long-sleeved shirt, and blue jeans",
-        "action": "playing an acoustic guitar and singing into a microphone",
+        "desc": "man with black beanie, black long-sleeved shirt, blue jeans, holding a wooden acoustic guitar",
+        "action": "singing into microphone and playing guitar",
         "position": "center",
-        "id": "person_male_performer_1"
+        "id": "person_male_lead"
       },
       {
-        "desc": "woman with long dark hair, wearing a black hat, a dark sleeveless top, and blue jeans",
-        "action": "singing into a microphone and moving",
+        "desc": "woman with long dark hair, black hat, sleeveless top, blue jeans, holding a microphone",
+        "action": "singing and dancing",
         "position": "right",
-        "id": "person_female_performer_1"
+        "id": "person_female_lead"
       },
       {
-        "desc": "man with short dark hair and glasses, wearing a black t-shirt",
-        "action": "standing behind equipment",
+        "desc": "man with short dark hair, black shirt, standing behind equipment",
+        "action": "standing",
         "position": "left",
-        "id": "person_background_man_1"
+        "id": "person_crew_1"
       },
       {
-        "desc": "brown acoustic guitar",
-        "action": "being held and played",
-        "position": "center",
-        "id": "guitar_acoustic_1"
-      },
-      {
-        "desc": "black microphone on a stand",
-        "action": "static",
-        "position": "center",
-        "id": "microphone_stand_1"
-      },
-      {
-        "desc": "black handheld microphone",
-        "action": "being held",
-        "position": "right",
-        "id": "microphone_handheld_1"
-      },
-      {
-        "desc": "large banner with white text and colorful graphics",
+        "desc": "black banner with white text and colorful abstract shapes",
         "action": "static",
         "position": "background",
-        "id": "banner_stereo_1"
+        "id": "banner_sunburst"
       },
       {
-        "desc": "metal stage truss structure",
+        "desc": "metal truss structure with stage lights",
         "action": "static",
         "position": "left",
-        "id": "stage_truss_1"
+        "id": "truss_stage"
+      },
+      {
+        "desc": "blue equipment case with white arrows",
+        "action": "static",
+        "position": "right",
+        "id": "case_audio_black"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "The man in the center is playing a brown acoustic guitar.",
+        "fact": "The man in the center is playing an acoustic guitar.",
         "confidence": 1.0
       },
       {
-        "fact": "The man in the center is singing into a microphone on a stand.",
+        "fact": "The woman on the right is holding a microphone to her mouth.",
         "confidence": 1.0
       },
       {
-        "fact": "The woman on the right is holding a black microphone and singing.",
+        "fact": "The man on the left is standing behind a keyboard or mixer.",
         "confidence": 1.0
       },
       {
-        "fact": "The woman on the right is moving her body while performing.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "A man with glasses is standing behind audio equipment on the left.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The banner in the background has the text 'STEREO' on it.",
+        "fact": "The banner in the background displays the text 'STEREO'.",
         "confidence": 1.0
       }
     ],
     "ocr": [
       "STEREO"
     ],
-    "spatial": "The man playing the guitar is in the center of the stage, to the left of the woman singing. The woman is to the right of the guitarist. The man with glasses is to the left of the guitarist, behind some equipment. The large banner is behind all the performers on the stage.",
+    "spatial": "The man playing the guitar is in the center of the stage, to the left of the woman singing. The woman is standing to the right of the guitarist. The man in the black shirt is on the far left, behind the metal truss structure. The blue equipment case is on the floor to the right of the woman. The banner is behind all the performers.",
     "parse_success": true,
     "chunk_idx": 0,
     "video_id": "7649295416",
@@ -91,62 +71,63 @@
   },
   {
     "time": [
-      2,
-      4
+      1,
+      2
     ],
     "visible_entities": [
       {
-        "desc": "man with black beanie, black long-sleeved shirt, blue jeans, holding an acoustic guitar",
-        "action": "singing into microphone",
+        "desc": "man with dark hair, wearing a black beanie, black long-sleeved shirt, and grey jeans",
+        "action": "playing an acoustic guitar and singing into a microphone",
         "position": "center",
-        "id": "person_male_performer_1"
+        "id": "person_male_lead"
       },
       {
-        "desc": "woman with long dark hair, black sleeveless top, blue jeans with a studded belt",
-        "action": "standing",
+        "desc": "woman with long dark hair, wearing a black sleeveless top and blue jeans with a studded belt",
+        "action": "standing with back to the camera",
         "position": "right",
-        "id": "person_female_performer_1"
+        "id": "person_female_lead"
       },
       {
-        "desc": "man in a black t-shirt",
-        "action": "standing",
-        "position": "left"
+        "desc": "man with short dark hair, wearing a black t-shirt",
+        "action": "standing behind equipment",
+        "position": "left",
+        "id": "person_crew_1"
       },
       {
-        "desc": "white banner with black text",
-        "action": "static",
-        "position": "background",
-        "id": "banner_stereo_1"
-      },
-      {
-        "desc": "black microphone on a stand",
-        "action": "static",
+        "desc": "acoustic guitar, wooden body, dark finish",
+        "action": "being held by the man in the center",
         "position": "center",
-        "id": "microphone_stand_1"
+        "id": "guitar_acoustic_main"
+      },
+      {
+        "desc": "banner with black text on a white background",
+        "action": "static",
+        "position": "background right",
+        "id": "banner_stereo"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A man in a black beanie sings into a microphone while holding a guitar.",
+        "fact": "The man in the center is playing an acoustic guitar.",
         "confidence": 1.0
       },
       {
-        "fact": "A woman stands to the right of the singer.",
+        "fact": "The man in the center is singing into a microphone.",
         "confidence": 1.0
       },
       {
-        "fact": "A banner with the text 'STEREO' is visible in the background.",
+        "fact": "The banner in the background reads 'STEREO'.",
         "confidence": 1.0
       },
       {
-        "fact": "A man stands behind a keyboard on the left side of the stage.",
+        "fact": "The woman is standing to the right of the guitarist.",
         "confidence": 1.0
       }
     ],
     "ocr": [
       "STEREO"
     ],
-    "spatial": "The man with the guitar is in the center of the stage, in front of the woman. The woman is to the right of the singer. The man in the black t-shirt is to the left of the singer. The 'STEREO' banner is behind the performers.",
+    "spatial": "The man playing the guitar is in the center of the stage. To his right stands a woman facing away from the camera. To the left of the guitarist, another man is visible behind some equipment. A banner with the text 'STEREO' is hanging in the background behind the performers.",
     "parse_success": true,
     "chunk_idx": 1,
     "video_id": "7649295416",
@@ -154,77 +135,70 @@
   },
   {
     "time": [
-      4,
-      6
+      2,
+      3
     ],
     "visible_entities": [
       {
-        "desc": "man with black beanie, black long-sleeve shirt, blue jeans, holding an acoustic guitar",
-        "action": "playing guitar and singing into a microphone",
-        "position": "center"
+        "desc": "man wearing a black beanie, black long-sleeved shirt, and blue jeans",
+        "action": "playing an acoustic guitar",
+        "position": "center",
+        "id": "person_male_lead"
       },
       {
-        "desc": "person with long dark hair, black hat, black sleeveless top, blue jeans",
-        "action": "standing behind the guitarist",
-        "position": "center-right"
+        "desc": "woman with dark hair, wearing a black hat, black sleeveless top, and blue jeans",
+        "action": "standing",
+        "position": "center-right",
+        "id": "person_female_lead"
       },
       {
-        "desc": "man with short dark hair, black t-shirt",
+        "desc": "man with short dark hair wearing a black t-shirt",
         "action": "standing behind equipment",
         "position": "left",
-        "id": "person_background_man_1"
+        "id": "person_crew_1"
       },
       {
-        "desc": "acoustic guitar, wooden body, dark finish",
-        "action": "being played",
+        "desc": "brown acoustic guitar",
+        "action": "being held",
         "position": "center",
-        "id": "guitar_acoustic_1"
+        "id": "guitar_acoustic_main"
       },
       {
-        "desc": "microphone on a stand, black",
+        "desc": "white banner with black text",
         "action": "static",
-        "position": "center",
-        "id": "microphone_stand_1"
+        "position": "background right",
+        "id": "banner_stereo"
       },
       {
-        "desc": "stage equipment, black cases and racks",
+        "desc": "blue flight case with white arrows",
         "action": "static",
-        "position": "left and right",
-        "id": "audio_equipment_case_1"
-      },
-      {
-        "desc": "banner with text 'STEREO', black text on white background",
-        "action": "static",
-        "position": "right background",
-        "id": "banner_stereo_1"
+        "position": "bottom right",
+        "id": "case_audio_black"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A man in a black beanie is playing an acoustic guitar.",
+        "fact": "The man in the center is strumming a brown acoustic guitar.",
         "confidence": 1.0
       },
       {
-        "fact": "The man in the black beanie is singing into a microphone.",
+        "fact": "A woman stands behind the guitarist.",
         "confidence": 1.0
       },
       {
-        "fact": "A person with long dark hair is standing behind the guitarist.",
+        "fact": "A banner with the text 'STEREO' is visible in the background.",
         "confidence": 1.0
       },
       {
-        "fact": "A man in a black t-shirt is standing behind equipment on the left.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The banner with the text 'STEREO' is visible in the background on the right.",
+        "fact": "A blue case with white upward-pointing arrows is on the stage floor.",
         "confidence": 1.0
       }
     ],
     "ocr": [
-      "STEREO"
+      "STEREO",
+      "11"
     ],
-    "spatial": "The man playing the guitar is in the center of the stage. The person with long dark hair is standing behind and to the right of the guitarist. The man in the black t-shirt is to the left of the guitarist. The 'STEREO' banner is in the background on the right side of the stage.",
+    "spatial": "The man playing the guitar is in the center of the frame. The woman is standing behind and to the right of the guitarist. The man in the black t-shirt is to the left of the guitarist. The 'STEREO' banner is in the background on the right side. The blue case is on the floor to the right of the performers.",
     "parse_success": true,
     "chunk_idx": 2,
     "video_id": "7649295416",
@@ -232,62 +206,54 @@
   },
   {
     "time": [
-      6,
-      8
+      3,
+      4
     ],
     "visible_entities": [
       {
         "desc": "man wearing a black hat, black long-sleeved shirt, and blue jeans",
-        "action": "playing an acoustic guitar and singing",
-        "position": "center",
-        "id": "person_male_performer_1"
+        "action": "playing an acoustic guitar",
+        "position": "center-right",
+        "id": "person_male_lead"
       },
       {
-        "desc": "woman with long dark hair, wearing a black hat, a yellow sleeveless top, and blue jeans",
-        "action": "standing and singing into a microphone",
-        "position": "left",
-        "id": "person_female_performer_1"
+        "desc": "woman with long dark hair, wearing a black cowboy hat, yellow sleeveless top, and blue jeans",
+        "action": "standing near a microphone",
+        "position": "center-left",
+        "id": "person_female_lead"
       },
       {
         "desc": "man with short dark hair wearing a black t-shirt",
         "action": "standing behind equipment",
         "position": "background left",
-        "id": "person_background_man_1"
+        "id": "person_crew_1"
       },
       {
-        "desc": "brown acoustic guitar",
-        "action": "being held and played",
+        "desc": "wooden acoustic guitar with a dark finish",
+        "action": "being held",
         "position": "center",
-        "id": "guitar_acoustic_1"
+        "id": "guitar_acoustic_main"
       },
       {
         "desc": "black microphone on a stand",
         "action": "static",
-        "position": "center",
-        "id": "microphone_stand_1"
+        "position": "center-left",
+        "id": "mic_stand"
       },
       {
-        "desc": "black and white sign with text",
+        "desc": "large black banner with a colorful sunburst graphic",
         "action": "static",
-        "position": "background right",
-        "id": "banner_stereo_1"
+        "position": "background",
+        "id": "banner_sunburst"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "The man in the black hat is playing a brown acoustic guitar.",
+        "fact": "The man in the black hat is strumming a wooden acoustic guitar.",
         "confidence": 1.0
       },
       {
-        "fact": "The man in the black hat is singing into a microphone.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The woman in the yellow top is standing to the left of the man with the guitar.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The woman in the yellow top is singing into a microphone.",
+        "fact": "The woman in the yellow top is standing in front of a microphone stand.",
         "confidence": 1.0
       },
       {
@@ -295,14 +261,14 @@
         "confidence": 1.0
       },
       {
-        "fact": "The sign in the background displays the text 'STE'.",
+        "fact": "The banner behind the performers features a stylized sun design.",
         "confidence": 1.0
       }
     ],
     "ocr": [
-      "STE"
+      "ST"
     ],
-    "spatial": "The man playing the guitar is in the center of the frame. The woman in the yellow top is to his left. The man in the black t-shirt is in the background, to the left of the woman. The sign with 'STE' is in the background on the right side of the stage.",
+    "spatial": "The man playing the guitar is to the right of the woman in the yellow top. The woman is standing in front of the microphone stand. The man in the black t-shirt is behind the woman and to the left of the stage setup. The banner with the sun graphic is behind the performers.",
     "parse_success": true,
     "chunk_idx": 3,
     "video_id": "7649295416",
@@ -310,104 +276,44 @@
   },
   {
     "time": [
-      8,
-      10
+      4,
+      5
     ],
     "visible_entities": [
       {
-        "desc": "woman with long dark hair, wearing a black wide-brimmed hat with silver embellishments, a tan sleeveless top, and blue jeans",
+        "desc": "woman with long dark hair, wearing a black cowboy hat with a silver band, a sleeveless mustard-yellow top, and blue jeans",
         "action": "singing into a microphone",
         "position": "left"
-      },
-      {
-        "desc": "man wearing a black fedora hat, a black long-sleeved button-down shirt, and dark pants",
-        "action": "playing an acoustic guitar",
-        "position": "right",
-        "id": "person_male_performer_1"
-      },
-      {
-        "desc": "man with short dark hair wearing a black t-shirt",
-        "action": "static",
-        "position": "background left",
-        "id": "person_background_man_1"
-      },
-      {
-        "desc": "acoustic guitar with a natural wood finish",
-        "action": "being held by the man",
-        "position": "center right",
-        "id": "guitar_acoustic_1"
-      },
-      {
-        "desc": "red keyboard with white text",
-        "action": "static",
-        "position": "background center",
-        "id": "keyboard_yamaha_1"
-      },
-      {
-        "desc": "black microphone on a stand",
-        "action": "static",
-        "position": "left",
-        "id": "microphone_stand_1"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "The woman on the left is singing into a microphone.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The man on the right is playing an acoustic guitar.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The red keyboard in the background displays the text 'nord stage'.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [
-      "nord stage"
-    ],
-    "spatial": "The woman is to the left of the man. The man is holding the acoustic guitar. The red keyboard is behind the man and the woman. The microphone stand is in front of the woman.",
-    "parse_success": true,
-    "chunk_idx": 4,
-    "video_id": "7649295416",
-    "state_changes": []
-  },
-  {
-    "time": [
-      10,
-      12
-    ],
-    "visible_entities": [
-      {
-        "desc": "woman with long dark hair, wearing a black cowboy hat with a patterned band, a tan sleeveless vest over a leopard print top, and blue jeans",
-        "action": "singing into a microphone",
-        "position": "left",
-        "id": "person_female_performer_1"
       },
       {
         "desc": "man wearing a black fedora hat, a black long-sleeved shirt, and blue jeans",
         "action": "playing an acoustic guitar",
         "position": "right",
-        "id": "person_male_performer_1"
+        "id": "person_male_lead"
       },
       {
-        "desc": "acoustic guitar with a natural wood finish",
-        "action": "being played",
-        "position": "right",
-        "id": "guitar_acoustic_1"
-      },
-      {
-        "desc": "microphone on a stand",
+        "desc": "man with short dark hair wearing a black t-shirt",
         "action": "static",
-        "position": "center",
-        "id": "microphone_stand_1"
+        "position": "background left",
+        "id": "person_crew_1"
       },
       {
-        "desc": "metal stage truss structure with lighting equipment",
+        "desc": "brown acoustic guitar with a black strap",
+        "action": "being held",
+        "position": "center right",
+        "id": "guitar_acoustic_main"
+      },
+      {
+        "desc": "red keyboard with white text",
         "action": "static",
-        "position": "background",
-        "id": "stage_truss_1"
+        "position": "bottom center",
+        "id": "keyboard_yamaha"
+      },
+      {
+        "desc": "black microphone on a stand",
+        "action": "static",
+        "position": "left",
+        "id": "mic_stand"
       }
     ],
     "atomic_facts": [
@@ -416,23 +322,96 @@
         "confidence": 1.0
       },
       {
-        "fact": "The man on the right is strumming an acoustic guitar.",
+        "fact": "The man on the right is strumming a brown acoustic guitar.",
         "confidence": 1.0
       },
       {
-        "fact": "A microphone stand is positioned between the two performers.",
+        "fact": "A red keyboard with the text 'nord stage' is visible on the stage floor.",
         "confidence": 1.0
       },
       {
-        "fact": "The stage background features a large graphic with pink and orange rays.",
+        "fact": "A third person is standing in the background behind the woman.",
         "confidence": 1.0
       }
     ],
     "ocr": [
-      "A H7CL",
       "nord stage"
     ],
-    "spatial": "The woman is to the left of the man. The man is holding the acoustic guitar in front of him. The microphone stand is between the woman and the man. The metal truss structure is behind both performers.",
+    "spatial": "The woman in the yellow top is to the left of the man in the black shirt. The man is holding the acoustic guitar in front of his body. The red keyboard is on the floor below the musicians. The microphone stand is positioned in front of the woman.",
+    "parse_success": true,
+    "chunk_idx": 4,
+    "video_id": "7649295416",
+    "state_changes": []
+  },
+  {
+    "time": [
+      5,
+      6
+    ],
+    "visible_entities": [
+      {
+        "desc": "woman with long dark hair, wearing a black hat with a patterned band, a sleeveless tan vest over a leopard print top, and blue jeans",
+        "action": "singing into a microphone",
+        "position": "left",
+        "id": "person_female_lead"
+      },
+      {
+        "desc": "man wearing a black hat, black long-sleeved shirt, and blue jeans",
+        "action": "playing an acoustic guitar",
+        "position": "right",
+        "id": "person_male_lead"
+      },
+      {
+        "desc": "acoustic guitar with a wooden body and dark fretboard",
+        "action": "being held and played",
+        "position": "right",
+        "id": "guitar_acoustic_main"
+      },
+      {
+        "desc": "microphone on a stand",
+        "action": "static",
+        "position": "center",
+        "id": "mic_stand"
+      },
+      {
+        "desc": "metal stage truss structure with lighting equipment",
+        "action": "static",
+        "position": "background",
+        "id": "truss_stage"
+      },
+      {
+        "desc": "black equipment case with white text",
+        "action": "static",
+        "position": "bottom left",
+        "id": "case_audio_black"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The woman is singing into a microphone held in her hand.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The man is playing an acoustic guitar.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The man is smiling.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The woman is wearing a leopard print top under a vest.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The text 'A H7CL' is visible on the equipment case.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "A H7CL"
+    ],
+    "spatial": "The woman is to the left of the man. The man is holding the acoustic guitar. The microphone stand is between the woman and the man. The equipment case with text is below the woman.",
     "parse_success": true,
     "chunk_idx": 5,
     "video_id": "7649295416",
@@ -440,50 +419,50 @@
   },
   {
     "time": [
-      12,
-      14
+      6,
+      7
     ],
     "visible_entities": [
       {
-        "desc": "woman with long dark hair, wearing a black cowboy hat, a tan sleeveless top with a black patterned vest, and blue jeans",
+        "desc": "woman with long dark hair, wearing a black cowboy hat, a tan sleeveless top with a black lace overlay, and blue jeans",
         "action": "singing into a microphone",
         "position": "left",
-        "id": "person_female_performer_1"
+        "id": "person_female_lead"
       },
       {
-        "desc": "man with short dark hair, wearing a black cowboy hat, a black long-sleeved shirt, and blue jeans",
+        "desc": "man wearing a black cowboy hat, a black long-sleeved shirt, and blue jeans",
         "action": "playing an acoustic guitar",
-        "position": "center",
-        "id": "person_male_performer_1"
+        "position": "center-right",
+        "id": "person_male_lead"
       },
       {
-        "desc": "acoustic guitar with a wooden body and dark neck",
+        "desc": "acoustic guitar with a natural wood finish",
         "action": "being played",
-        "position": "center",
-        "id": "guitar_acoustic_1"
+        "position": "center-right",
+        "id": "guitar_acoustic_main"
       },
       {
         "desc": "black microphone on a stand",
         "action": "static",
         "position": "left",
-        "id": "microphone_stand_1"
+        "id": "mic_stand"
       },
       {
-        "desc": "black Yamaha N7CL speaker cabinet",
+        "desc": "black speaker cabinet with white text",
         "action": "static",
         "position": "left",
-        "id": "speaker_cabinet_1"
+        "id": "speaker_stage"
       },
       {
-        "desc": "banner with a sunburst design and partial text 'STE'",
+        "desc": "large stage banner with a sunburst graphic and text",
         "action": "static",
         "position": "background",
-        "id": "banner_stereo_1"
+        "id": "banner_sunburst"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "The woman is holding a microphone and singing.",
+        "fact": "The woman is holding a microphone to her mouth.",
         "confidence": 1.0
       },
       {
@@ -491,11 +470,11 @@
         "confidence": 1.0
       },
       {
-        "fact": "The Yamaha N7CL speaker is on the stage floor to the left.",
+        "fact": "The speaker cabinet displays the text 'YAMAHA N7CL'.",
         "confidence": 1.0
       },
       {
-        "fact": "The banner with the sunburst design is behind the man.",
+        "fact": "The banner in the background displays the partial text 'STE'.",
         "confidence": 1.0
       }
     ],
@@ -503,7 +482,7 @@
       "YAMAHA N7CL",
       "STE"
     ],
-    "spatial": "The woman is to the left of the man. The man is in the center of the stage, holding a guitar. The Yamaha speaker is on the floor to the left of the woman. The sunburst banner is in the background, behind the man.",
+    "spatial": "The woman is standing to the left of the man. The man is holding the acoustic guitar in front of him. The speaker cabinet is located below and to the left of the woman. The banner is positioned in the background behind the man.",
     "parse_success": true,
     "chunk_idx": 6,
     "video_id": "7649295416",
@@ -511,50 +490,45 @@
   },
   {
     "time": [
-      14,
-      16
+      7,
+      8
     ],
     "visible_entities": [
       {
-        "desc": "woman with long dark hair, wearing a black cowboy hat, a black sleeveless top with a leopard print pattern, and blue jeans",
+        "desc": "woman with long dark hair, wearing a black cowboy hat, a black sleeveless top, a leopard print scarf, and blue jeans",
         "action": "singing into a microphone",
         "position": "left",
-        "id": "person_female_performer_1"
+        "id": "person_female_lead"
       },
       {
-        "desc": "man wearing a black hat, a black long-sleeved shirt, and blue jeans",
+        "desc": "man wearing a black fedora hat, a black long-sleeved shirt, and blue jeans",
         "action": "playing an acoustic guitar",
-        "position": "center"
+        "position": "center",
+        "id": "person_male_lead"
       },
       {
-        "desc": "acoustic guitar with a wooden body",
+        "desc": "acoustic guitar with a wooden body and black strap",
         "action": "being played",
         "position": "center",
-        "id": "guitar_acoustic_1"
+        "id": "guitar_acoustic_main"
       },
       {
         "desc": "black microphone on a stand",
         "action": "static",
         "position": "left",
-        "id": "microphone_stand_1"
+        "id": "mic_stand"
       },
       {
-        "desc": "black stage monitor speaker",
-        "action": "static",
-        "position": "foreground",
-        "id": "speaker_cabinet_1"
-      },
-      {
-        "desc": "black amplifier with white text",
+        "desc": "black speaker cabinet with white text",
         "action": "static",
         "position": "left",
-        "id": "speaker_cabinet_1"
+        "id": "speaker_stage"
       },
       {
-        "desc": "large backdrop with a colorful sunburst graphic and text",
+        "desc": "large banner with a sunburst graphic and text",
         "action": "static",
         "position": "background",
-        "id": "banner_stereo_1"
+        "id": "banner_sunburst"
       }
     ],
     "atomic_facts": [
@@ -567,19 +541,19 @@
         "confidence": 1.0
       },
       {
-        "fact": "The amplifier on the left has the text 'YAMAHA M7CL' on it.",
+        "fact": "The text 'YAMAHA M7CL' is visible on the speaker cabinet.",
         "confidence": 1.0
       },
       {
-        "fact": "The backdrop behind the performers has the text 'STEREO' visible.",
+        "fact": "The text 'STERE' is visible on the background banner.",
         "confidence": 1.0
       }
     ],
     "ocr": [
       "YAMAHA M7CL",
-      "STEREO"
+      "STERE"
     ],
-    "spatial": "The woman is to the left of the man. The man is holding the acoustic guitar. The microphone is in front of the woman. The stage monitors are in the foreground, below the performers. The backdrop is behind the performers.",
+    "spatial": "The woman is to the left of the man. The man is holding the acoustic guitar. The microphone is in front of the woman. The speaker cabinet is below the woman. The banner is behind the man.",
     "parse_success": true,
     "chunk_idx": 7,
     "video_id": "7649295416",
@@ -587,935 +561,45 @@
   },
   {
     "time": [
-      16,
-      18
+      8,
+      9
     ],
     "visible_entities": [
       {
-        "desc": "woman with long brown hair, wearing a black cowboy hat, a sleeveless leopard-print top, and blue jeans",
+        "desc": "woman with long brown hair, wearing a black cowboy hat, a sleeveless brown top, and blue jeans",
         "action": "singing into a microphone",
         "position": "left",
-        "id": "person_female_performer_1"
+        "id": "person_female_lead"
       },
       {
         "desc": "man wearing a black fedora hat, a black long-sleeved shirt, and blue jeans",
         "action": "playing an acoustic guitar",
         "position": "right",
-        "id": "person_male_performer_1"
+        "id": "person_male_lead"
       },
       {
-        "desc": "black acoustic guitar with a wooden body",
-        "action": "being held and played",
+        "desc": "acoustic guitar with a wooden body",
+        "action": "being played",
         "position": "right",
-        "id": "guitar_acoustic_black_1"
+        "id": "guitar_acoustic_main"
       },
       {
         "desc": "black microphone on a stand",
         "action": "static",
         "position": "left",
-        "id": "microphone_stand_1"
+        "id": "mic_stand"
+      },
+      {
+        "desc": "metal truss structure with stage lights",
+        "action": "static",
+        "position": "center",
+        "id": "truss_stage"
       },
       {
         "desc": "black audio equipment with white text",
         "action": "static",
         "position": "bottom left",
-        "id": "audio_equipment_case_1"
-      },
-      {
-        "desc": "metal stage truss structure with lighting fixtures",
-        "action": "static",
-        "position": "center background",
-        "id": "stage_truss_1"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "The woman is singing into a microphone held in her hand.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The man is strumming an acoustic guitar.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The woman is wearing a black cowboy hat.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The man is wearing a black fedora hat.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The audio equipment in the foreground has the text 'YAMAHA N7CL' printed on it.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [
-      "YAMAHA N7CL"
-    ],
-    "spatial": "The woman is to the left of the man. The man is holding the guitar in front of his body. The microphone stand is positioned in front of the woman. The audio equipment is located below the woman and in the foreground.",
-    "parse_success": true,
-    "chunk_idx": 8,
-    "video_id": "7649295416",
-    "state_changes": []
-  },
-  {
-    "time": [
-      18,
-      20
-    ],
-    "visible_entities": [
-      {
-        "desc": "man with short dark hair, black fedora hat, black long-sleeved shirt, blue jeans, holding a wooden acoustic guitar",
-        "action": "playing guitar",
-        "position": "right",
-        "id": "person_male_performer_1"
-      },
-      {
-        "desc": "woman with long curly brown hair, black cowboy hat, sleeveless patterned top, blue jeans, holding a tambourine",
-        "action": "playing tambourine",
-        "position": "left"
-      },
-      {
-        "desc": "person with short dark hair, black shirt, partially visible behind equipment",
-        "action": "static",
-        "position": "center-left background",
-        "id": "person_background_man_1"
-      },
-      {
-        "desc": "black keyboard with white text 'YAMAHA N7CL'",
-        "action": "static",
-        "position": "left",
-        "id": "keyboard_yamaha_1"
-      },
-      {
-        "desc": "metal truss structure with stage lights",
-        "action": "static",
-        "position": "center background",
-        "id": "stage_truss_1"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "The man on the right is strumming an acoustic guitar.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The woman on the left is shaking a tambourine.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The keyboard displays the text 'YAMAHA N7CL'.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [
-      "YAMAHA N7CL"
-    ],
-    "spatial": "The man playing the guitar is to the right of the woman playing the tambourine. The woman is standing in front of the keyboard. The metal truss structure is behind both musicians.",
-    "parse_success": true,
-    "chunk_idx": 9,
-    "video_id": "7649295416",
-    "state_changes": [
-      "woman starts playing tambourine"
-    ]
-  },
-  {
-    "time": [
-      20,
-      22
-    ],
-    "visible_entities": [
-      {
-        "desc": "woman with long brown hair, wearing a black cowboy hat, a black sleeveless top, a leopard print scarf, and blue jeans",
-        "action": "singing into a microphone",
-        "position": "left",
-        "id": "person_female_performer_1"
-      },
-      {
-        "desc": "man wearing a black fedora hat, a black long-sleeved shirt, and blue jeans",
-        "action": "playing an acoustic guitar",
-        "position": "right",
-        "id": "person_male_performer_1"
-      },
-      {
-        "desc": "acoustic guitar with a wooden body and dark pickguard",
-        "action": "being played",
-        "position": "center-right",
-        "id": "guitar_acoustic_1"
-      },
-      {
-        "desc": "black keyboard stand with white text 'YAMAHA N7CL'",
-        "action": "static",
-        "position": "bottom-left"
-      },
-      {
-        "desc": "metal lighting truss structure with stage lights",
-        "action": "static",
-        "position": "center-background",
-        "id": "stage_truss_1"
-      },
-      {
-        "desc": "banner with white text 'STE' on a black background",
-        "action": "static",
-        "position": "right-background",
-        "id": "banner_stereo_1"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "The woman is singing into a microphone held in her hand.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The man is strumming an acoustic guitar.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The text 'YAMAHA N7CL' is visible on the keyboard stand.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The text 'STE' is visible on a banner in the background.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [
-      "YAMAHA N7CL",
-      "STE"
-    ],
-    "spatial": "The woman is to the left of the man. The man is holding the acoustic guitar in front of him. The keyboard stand is below the woman. The lighting truss is behind the performers.",
-    "parse_success": true,
-    "chunk_idx": 10,
-    "video_id": "7649295416",
-    "state_changes": []
-  },
-  {
-    "time": [
-      22,
-      24
-    ],
-    "visible_entities": [
-      {
-        "desc": "woman with long blonde hair, wearing a black cowboy hat, a black top with a leopard print pattern, and blue jeans",
-        "action": "standing at a microphone and adjusting her hat",
-        "position": "center",
-        "id": "person_female_performer_1"
-      },
-      {
-        "desc": "man wearing a black fedora hat, a black long-sleeved shirt, and grey jeans",
-        "action": "playing an acoustic guitar",
-        "position": "right",
-        "id": "person_male_performer_1"
-      },
-      {
-        "desc": "man with short dark hair wearing a black shirt",
-        "action": "playing a keyboard",
-        "position": "left",
-        "id": "person_background_man_1"
-      },
-      {
-        "desc": "black Yamaha keyboard with white text",
-        "action": "static",
-        "position": "left",
-        "id": "keyboard_yamaha_1"
-      },
-      {
-        "desc": "wooden acoustic guitar",
-        "action": "being played",
-        "position": "right",
-        "id": "guitar_acoustic_1"
-      },
-      {
-        "desc": "black metal lighting truss with stage lights",
-        "action": "static",
-        "position": "background",
-        "id": "stage_truss_1"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "The woman in the center raises her hand to adjust her black cowboy hat.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The man on the right is strumming an acoustic guitar.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The man on the left is playing a keyboard.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The text 'YAMAHA N7CL' is visible on the side of the keyboard.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [
-      "YAMAHA N7CL",
-      "ST"
-    ],
-    "spatial": "The woman is standing in the center of the stage, positioned between the keyboard player on the left and the guitarist on the right. The guitarist is holding the acoustic guitar in front of him. The lighting truss is located behind the performers.",
-    "parse_success": true,
-    "chunk_idx": 11,
-    "video_id": "7649295416",
-    "state_changes": [
-      "man starts playing keyboard (new performer action)"
-    ]
-  },
-  {
-    "time": [
-      24,
-      26
-    ],
-    "visible_entities": [
-      {
-        "desc": "man wearing a black fedora hat, black long-sleeved shirt, and grey jeans",
-        "action": "playing an acoustic guitar",
-        "position": "right",
-        "id": "person_male_performer_1"
-      },
-      {
-        "desc": "woman with long curly hair, wearing a black cowboy hat, a tan fringed vest, and blue jeans",
-        "action": "bending forward at the waist",
-        "position": "center",
-        "id": "person_female_performer_1"
-      },
-      {
-        "desc": "man with short dark hair wearing a black t-shirt",
-        "action": "standing behind equipment",
-        "position": "left",
-        "id": "person_background_man_1"
-      },
-      {
-        "desc": "black rectangular speaker cabinet with white text",
-        "action": "static",
-        "position": "bottom left",
-        "id": "speaker_cabinet_1"
-      },
-      {
-        "desc": "black metal truss structure with stage lights",
-        "action": "static",
-        "position": "background",
-        "id": "stage_truss_1"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "The man on the right is strumming an acoustic guitar.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The woman in the center bends her upper body forward.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The speaker cabinet displays the text 'YAMAHA N7CL'.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "A banner with the letters 'STE' is visible in the background.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [
-      "YAMAHA N7CL",
-      "STE"
-    ],
-    "spatial": "The man playing the guitar is to the right of the woman bending over. The woman is positioned between the guitarist and the man standing on the far left. The Yamaha speaker is in the foreground at the bottom left, below the man on the left. The metal truss structure is behind the performers.",
-    "parse_success": true,
-    "chunk_idx": 12,
-    "video_id": "7649295416",
-    "state_changes": [
-      "woman bends forward at waist (action change)"
-    ]
-  },
-  {
-    "time": [
-      26,
-      28
-    ],
-    "visible_entities": [
-      {
-        "desc": "person with long dark hair, wearing a black top with white text on the back and blue jeans",
-        "action": "bending over towards the stage floor",
-        "position": "center-left",
-        "id": "person_female_performer_1"
-      },
-      {
-        "desc": "person wearing a black long-sleeved shirt and blue jeans",
-        "action": "standing and holding an acoustic guitar",
-        "position": "center-right"
-      },
-      {
-        "desc": "person with short dark hair wearing a black t-shirt",
-        "action": "static",
-        "position": "background left",
-        "id": "person_background_man_1"
-      },
-      {
-        "desc": "acoustic guitar with a wooden body",
-        "action": "being held",
-        "position": "center-right",
-        "id": "guitar_acoustic_1"
-      },
-      {
-        "desc": "black stage monitor speaker",
-        "action": "static",
-        "position": "foreground",
-        "id": "speaker_cabinet_1"
-      },
-      {
-        "desc": "white banner with black text",
-        "action": "static",
-        "position": "background right",
-        "id": "banner_stereo_1"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "A person with long dark hair is bending over near the center of the stage.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "A person in a black shirt is standing and holding an acoustic guitar.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "A large black speaker is positioned on the stage floor in the foreground.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "A banner with the text 'STER' is visible in the background.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [
-      "STER"
-    ],
-    "spatial": "The person bending over is to the left of the person holding the guitar. The black stage monitor speaker is in the foreground, below the people. The banner with text is in the background, to the right of the person with the guitar.",
-    "parse_success": true,
-    "chunk_idx": 13,
-    "video_id": "7649295416",
-    "state_changes": []
-  },
-  {
-    "time": [
-      28,
-      30
-    ],
-    "visible_entities": [
-      {
-        "desc": "person with long dark hair, wearing a sleeveless patterned top and blue jeans",
-        "action": "standing on stage",
-        "position": "center/background",
-        "id": "person_female_performer_1"
-      },
-      {
-        "desc": "person wearing blue jeans",
-        "action": "standing on stage",
-        "position": "center/background"
-      },
-      {
-        "desc": "black wedge-shaped stage monitor speakers",
-        "action": "static",
-        "position": "foreground/middle-ground",
-        "id": "speaker_cabinet_1"
-      },
-      {
-        "desc": "silver metal crowd control barrier",
-        "action": "static",
-        "position": "foreground",
-        "id": "barrier_crowd_1"
-      },
-      {
-        "desc": "black audio equipment rack with rack-mounted units",
-        "action": "static",
-        "position": "left/background",
-        "id": "audio_equipment_case_1"
-      },
-      {
-        "desc": "black equipment case with white text",
-        "action": "static",
-        "position": "left/background",
-        "id": "audio_equipment_case_1"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "A person with long dark hair is standing on the stage.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "A silver metal barrier is positioned in the foreground, separating the viewer from the stage.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "Black wedge speakers are lined up along the front edge of the stage.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The text 'YAMAHA 117CL' is visible on a black case in the background.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [
-      "YAMAHA 117CL"
-    ],
-    "spatial": "The silver metal barrier is in the immediate foreground, in front of the stage. The black wedge speakers are arranged in a row on the stage floor, behind the barrier. The person with long dark hair is standing behind the speakers, near the center of the stage. To the left of the person, there is a rack of audio equipment and a black case labeled 'YAMAHA 117CL'.",
-    "parse_success": true,
-    "chunk_idx": 14,
-    "video_id": "7649295416",
-    "state_changes": []
-  },
-  {
-    "time": [
-      30,
-      32
-    ],
-    "visible_entities": [
-      {
-        "desc": "black fabric banner with white text 'NERVLING' in a bold, distressed font",
-        "action": "static",
-        "position": "center",
-        "id": "banner_nervling_1"
-      },
-      {
-        "desc": "silver metal crowd control barrier with vertical bars",
-        "action": "static",
-        "position": "right",
-        "id": "barrier_crowd_1"
-      },
-      {
-        "desc": "person wearing a blue t-shirt and dark shorts",
-        "action": "standing",
-        "position": "left",
-        "id": "person_child_1"
-      },
-      {
-        "desc": "child wearing a blue t-shirt and dark shorts",
-        "action": "standing",
-        "position": "left",
-        "id": "person_child_1"
-      },
-      {
-        "desc": "black stage skirting or equipment cover",
-        "action": "static",
-        "position": "background",
-        "id": "stage_skirting_1"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "A black banner displaying the text 'NERVLING' is attached to a metal barrier.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "A person and a child are standing behind the metal barrier on the left side.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The metal barrier is positioned in front of a black stage skirting.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [
-      "NERVLING"
-    ],
-    "spatial": "The black banner with 'NERVLING' text is attached to the metal barrier. The metal barrier is to the right of the person and child. The person and child are standing behind the barrier on the left side of the frame.",
-    "parse_success": true,
-    "chunk_idx": 15,
-    "video_id": "7649295416",
-    "state_changes": [
-      "child appears on stage"
-    ]
-  },
-  {
-    "time": [
-      32,
-      34
-    ],
-    "visible_entities": [
-      {
-        "desc": "black banner with white text 'NERVLING' in a distressed, brush-stroke font",
-        "action": "static",
-        "position": "foreground",
-        "id": "banner_nervling_1"
-      },
-      {
-        "desc": "silver metal crowd control barrier",
-        "action": "static",
-        "position": "left",
-        "id": "barrier_crowd_1"
-      },
-      {
-        "desc": "person with long hair wearing a hat, sleeveless top, and blue jeans",
-        "action": "standing on stage",
-        "position": "right",
-        "id": "person_female_performer_1"
-      },
-      {
-        "desc": "black audio equipment case with 'YAMAHA N7CL' text",
-        "action": "static",
-        "position": "right",
-        "id": "audio_equipment_case_1"
-      },
-      {
-        "desc": "white tent structure",
-        "action": "static",
-        "position": "background",
-        "id": "tent_white_1"
-      },
-      {
-        "desc": "green leafy trees",
-        "action": "static",
-        "position": "background",
-        "id": "trees_green_1"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "A black banner with the text 'NERVLING' is attached to a metal barrier in the foreground.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "A person is standing on a stage holding a microphone.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The text 'YAMAHA N7CL' is visible on a piece of equipment on the stage.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "A white tent is visible in the background behind the stage.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [
-      "NERVLING",
-      "YAMAHA N7CL"
-    ],
-    "spatial": "The black banner is in front of the stage area. The person is standing on the stage to the right of the banner. The Yamaha equipment is on the stage floor near the person's feet. The white tent and trees are in the background behind the stage.",
-    "parse_success": true,
-    "chunk_idx": 16,
-    "video_id": "7649295416",
-    "state_changes": []
-  },
-  {
-    "time": [
-      34,
-      36
-    ],
-    "visible_entities": [
-      {
-        "desc": "man with short dark hair, wearing a black fedora hat, black long-sleeved shirt, and blue jeans",
-        "action": "playing an acoustic guitar",
-        "position": "center-right",
-        "id": "person_male_performer_1"
-      },
-      {
-        "desc": "woman with long dark hair, wearing a black wide-brimmed hat and a black sleeveless top with a leopard print pattern",
-        "action": "singing into a microphone",
-        "position": "left",
-        "id": "person_female_performer_1"
-      },
-      {
-        "desc": "acoustic guitar with a wooden body and dark pickguard",
-        "action": "being played",
-        "position": "center-right",
-        "id": "guitar_acoustic_1"
-      },
-      {
-        "desc": "black metal truss structure with stage lights",
-        "action": "static",
-        "position": "left",
-        "id": "stage_truss_1"
-      },
-      {
-        "desc": "black banner with white text and a pink and white graphic design",
-        "action": "static",
-        "position": "background",
-        "id": "banner_stereo_1"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "The man in the black fedora is strumming an acoustic guitar.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The woman in the leopard print top is holding a microphone.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The stage lights are mounted on a metal truss to the left of the performers.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "A banner with the text 'STERE' is visible in the background.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [
-      "STERE"
-    ],
-    "spatial": "The man in the black fedora is to the right of the woman in the leopard print top. The metal truss structure is to the left of the woman. The banner with text is behind the man.",
-    "parse_success": true,
-    "chunk_idx": 17,
-    "video_id": "7649295416",
-    "state_changes": []
-  },
-  {
-    "time": [
-      36,
-      38
-    ],
-    "visible_entities": [
-      {
-        "desc": "woman with long dark hair, wearing a black cowboy hat, leopard print scarf, black sleeveless top, and blue jeans",
-        "action": "singing into a microphone",
-        "position": "left",
-        "id": "person_female_performer_1"
-      },
-      {
-        "desc": "man wearing a black fedora hat, black long-sleeved shirt, and grey jeans",
-        "action": "playing an acoustic guitar",
-        "position": "right",
-        "id": "person_male_performer_1"
-      },
-      {
-        "desc": "man with short dark hair wearing a black t-shirt",
-        "action": "static",
-        "position": "background",
-        "id": "person_background_man_1"
-      },
-      {
-        "desc": "black acoustic guitar with a strap",
-        "action": "being played",
-        "position": "right",
-        "id": "guitar_strap_1"
-      },
-      {
-        "desc": "metal lighting truss with stage lights",
-        "action": "static",
-        "position": "center",
-        "id": "stage_truss_1"
-      },
-      {
-        "desc": "black keyboard stand with white text",
-        "action": "static",
-        "position": "left"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "The woman on the left is holding a microphone and singing.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The man on the right is strumming an acoustic guitar.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "A man in a black t-shirt is visible in the background behind the woman.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The text 'YAMAHA' is visible on the equipment stand on the left.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [
-      "YAMAHA"
-    ],
-    "spatial": "The woman is to the left of the metal lighting truss. The man playing the guitar is to the right of the truss. The truss is positioned between the two main performers. The keyboard stand is in front of the woman.",
-    "parse_success": true,
-    "chunk_idx": 18,
-    "video_id": "7649295416",
-    "state_changes": []
-  },
-  {
-    "time": [
-      38,
-      40
-    ],
-    "visible_entities": [
-      {
-        "desc": "woman with long dark hair, wearing a black cowboy hat, black sleeveless top, leopard print scarf, and blue jeans",
-        "action": "singing into a microphone",
-        "position": "left",
-        "id": "person_female_performer_1"
-      },
-      {
-        "desc": "man wearing a black hat, black long-sleeved shirt, and grey jeans",
-        "action": "playing an acoustic guitar",
-        "position": "right",
-        "id": "person_male_performer_1"
-      },
-      {
-        "desc": "black acoustic guitar with a strap",
-        "action": "being played",
-        "position": "right",
-        "id": "guitar_strap_1"
-      },
-      {
-        "desc": "black keyboard with white text",
-        "action": "static",
-        "position": "left",
-        "id": "keyboard_yamaha_1"
-      },
-      {
-        "desc": "metal truss structure with stage lights",
-        "action": "static",
-        "position": "center",
-        "id": "stage_truss_1"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "The woman on the left is holding a microphone and singing.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The man on the right is strumming an acoustic guitar.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The keyboard on the left displays the text 'YAMAHA N7CL'.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The musicians are performing on an outdoor stage.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [
-      "YAMAHA N7CL"
-    ],
-    "spatial": "The woman is to the left of the man. The man is holding the guitar in front of him. The keyboard is positioned in front of the woman. The metal truss structure is located between the two musicians.",
-    "parse_success": true,
-    "chunk_idx": 19,
-    "video_id": "7649295416",
-    "state_changes": []
-  },
-  {
-    "time": [
-      40,
-      42
-    ],
-    "visible_entities": [
-      {
-        "desc": "man with long dark hair, black fedora hat, black long-sleeved shirt, grey jeans",
-        "action": "playing an acoustic guitar",
-        "position": "right",
-        "id": "person_male_performer_1"
-      },
-      {
-        "desc": "woman with long dark hair, black cowboy hat, sleeveless patterned vest, blue jeans",
-        "action": "standing at a microphone",
-        "position": "center",
-        "id": "person_female_performer_1"
-      },
-      {
-        "desc": "man with short dark hair, glasses, black shirt",
-        "action": "static",
-        "position": "left background",
-        "id": "person_background_man_1"
-      },
-      {
-        "desc": "acoustic guitar, wooden body, dark neck",
-        "action": "being held and played",
-        "position": "right foreground",
-        "id": "guitar_acoustic_1"
-      },
-      {
-        "desc": "black metal truss structure with stage lights",
-        "action": "static",
-        "position": "center background",
-        "id": "stage_truss_1"
-      },
-      {
-        "desc": "black equipment case with white text",
-        "action": "static",
-        "position": "bottom left",
-        "id": "audio_equipment_case_1"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "The man on the right is strumming an acoustic guitar.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The woman in the center is standing in front of a microphone stand.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The man in the background is sitting behind a keyboard setup.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The text 'YAMAHA 17CL' is visible on the equipment case.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [
-      "YAMAHA 17CL",
-      "ST"
-    ],
-    "spatial": "The man playing the guitar is to the right of the woman singing. The woman is standing in front of the metal truss structure. The man in the background is to the left of the woman. The equipment case is below the man in the background.",
-    "parse_success": true,
-    "chunk_idx": 20,
-    "video_id": "7649295416",
-    "state_changes": []
-  },
-  {
-    "time": [
-      42,
-      44
-    ],
-    "visible_entities": [
-      {
-        "desc": "woman with long dark hair, wearing a black cowboy hat, a black sleeveless top, a tan vest, and blue jeans",
-        "action": "singing into a microphone",
-        "position": "left",
-        "id": "person_female_performer_1"
-      },
-      {
-        "desc": "man wearing a black fedora hat, a black long-sleeved shirt, and grey jeans",
-        "action": "playing an acoustic guitar",
-        "position": "right",
-        "id": "person_male_performer_1"
-      },
-      {
-        "desc": "black acoustic guitar with a strap",
-        "action": "being played",
-        "position": "right",
-        "id": "guitar_strap_1"
-      },
-      {
-        "desc": "black microphone on a stand",
-        "action": "static",
-        "position": "center",
-        "id": "microphone_stand_1"
-      },
-      {
-        "desc": "metal lighting truss with stage lights",
-        "action": "static",
-        "position": "center",
-        "id": "stage_truss_1"
-      },
-      {
-        "desc": "black speaker cabinet with white text",
-        "action": "static",
-        "position": "bottom left",
-        "id": "speaker_cabinet_1"
-      },
-      {
-        "desc": "white sign with black text",
-        "action": "static",
-        "position": "background right",
-        "id": "banner_stereo_1"
+        "id": "rack_audio"
       }
     ],
     "atomic_facts": [
@@ -1528,86 +612,137 @@
         "confidence": 1.0
       },
       {
-        "fact": "The speaker cabinet reads 'YAMAHA N7CL'.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The sign in the background displays the letters 'ST'.",
+        "fact": "The text 'YAMAHA N7CL' is visible on the black equipment.",
         "confidence": 1.0
       }
     ],
     "ocr": [
-      "YAMAHA N7CL",
-      "ST"
+      "YAMAHA N7CL"
     ],
-    "spatial": "The woman is to the left of the man. The man is holding the guitar in front of him. The microphone stand is between the woman and the man. The speaker cabinet is below the woman. The lighting truss is behind the performers.",
+    "spatial": "The woman is to the left of the man. The man is holding the acoustic guitar. The microphone is in front of the woman. The metal truss structure is behind the performers.",
     "parse_success": true,
-    "chunk_idx": 21,
+    "chunk_idx": 8,
     "video_id": "7649295416",
     "state_changes": []
   },
   {
     "time": [
-      44,
-      46
+      9,
+      10
     ],
     "visible_entities": [
       {
-        "desc": "woman with long curly brown hair, wearing a black cowboy hat, a tan fringed vest over a black top, and blue jeans",
-        "action": "standing and gesturing with her left arm",
+        "desc": "woman with long wavy brown hair, wearing a black wide-brimmed hat, a sleeveless patterned top, and blue jeans",
+        "action": "playing a saxophone",
         "position": "left",
-        "id": "person_female_performer_1"
+        "id": "person_female_lead"
       },
       {
-        "desc": "man wearing a black fedora hat, a black long-sleeved shirt, and grey jeans",
-        "action": "playing an electric guitar",
-        "position": "center-right",
-        "id": "person_male_performer_1"
+        "desc": "man with a mustache, wearing a black hat, a black long-sleeved shirt, and grey jeans",
+        "action": "playing an acoustic guitar",
+        "position": "right",
+        "id": "person_male_lead"
       },
       {
-        "desc": "black electric guitar",
-        "action": "being played",
-        "position": "center-right",
-        "id": "guitar_electric_1"
+        "desc": "black Yamaha keyboard on a stand",
+        "action": "static",
+        "position": "left",
+        "id": "keyboard_yamaha"
       },
       {
-        "desc": "metal truss structure with stage lights",
+        "desc": "silver metal truss structure with stage lights",
         "action": "static",
         "position": "center",
-        "id": "stage_truss_1"
+        "id": "truss_stage"
       },
       {
-        "desc": "black equipment case with white text",
+        "desc": "black stage monitor speaker",
         "action": "static",
-        "position": "bottom-left",
-        "id": "audio_equipment_case_1"
-      },
-      {
-        "desc": "white banner with black text",
-        "action": "static",
-        "position": "background-right",
-        "id": "banner_stereo_1"
+        "position": "foreground",
+        "id": "speaker_stage"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "The woman is standing to the left of the man.",
+        "fact": "The woman on the left is playing a saxophone.",
         "confidence": 1.0
       },
       {
-        "fact": "The man is playing a black electric guitar.",
+        "fact": "The man on the right is playing an acoustic guitar.",
         "confidence": 1.0
       },
       {
-        "fact": "The woman is gesturing with her left arm.",
+        "fact": "The text 'YAMAHA' is visible on the keyboard.",
         "confidence": 1.0
       },
       {
-        "fact": "The text 'YAMAHA N7CL' is visible on the equipment case.",
+        "fact": "The musicians are performing on an outdoor stage.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "YAMAHA"
+    ],
+    "spatial": "The woman playing the saxophone is to the left of the man playing the guitar. The Yamaha keyboard is positioned in front of the woman. The metal truss structure is located behind the musicians in the center of the stage.",
+    "parse_success": true,
+    "chunk_idx": 9,
+    "video_id": "7649295416",
+    "state_changes": [
+      "Woman switches from singing to playing saxophone"
+    ]
+  },
+  {
+    "time": [
+      10,
+      11
+    ],
+    "visible_entities": [
+      {
+        "desc": "woman with long brown hair, wearing a black cowboy hat, a black sleeveless top, a leopard print scarf, and blue jeans",
+        "action": "singing into a microphone",
+        "position": "left",
+        "id": "person_female_lead"
+      },
+      {
+        "desc": "man wearing a black fedora hat, a black long-sleeved shirt, and grey jeans",
+        "action": "playing an acoustic guitar",
+        "position": "right",
+        "id": "person_male_lead"
+      },
+      {
+        "desc": "black keyboard with white text 'YAMAHA N7CL'",
+        "action": "static",
+        "position": "bottom left",
+        "id": "keyboard_yamaha"
+      },
+      {
+        "desc": "metal truss structure with stage lights",
+        "action": "static",
+        "position": "center background",
+        "id": "truss_stage"
+      },
+      {
+        "desc": "white sign with black text 'ST'",
+        "action": "static",
+        "position": "right background",
+        "id": "banner_stereo"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The woman is holding a microphone and singing.",
         "confidence": 1.0
       },
       {
-        "fact": "The text 'ST' is visible on the banner in the background.",
+        "fact": "The man is strumming an acoustic guitar.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The keyboard has the text 'YAMAHA N7CL' printed on it.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A sign with the letters 'ST' is visible in the background.",
         "confidence": 1.0
       }
     ],
@@ -1615,55 +750,538 @@
       "YAMAHA N7CL",
       "ST"
     ],
-    "spatial": "The woman is to the left of the man. The metal truss structure is behind the woman and to the left of the man. The equipment case is on the floor in front of the truss structure. The banner is in the background to the right of the man.",
+    "spatial": "The woman is to the left of the man. The man is holding a guitar. The keyboard is in front of the woman. The metal truss structure is behind the performers.",
     "parse_success": true,
-    "chunk_idx": 22,
+    "chunk_idx": 10,
+    "video_id": "7649295416",
+    "state_changes": []
+  },
+  {
+    "time": [
+      11,
+      12
+    ],
+    "visible_entities": [
+      {
+        "desc": "woman with long blonde hair, wearing a black cowboy hat, a leopard-print scarf, a black top, and blue jeans",
+        "action": "standing and singing into a microphone",
+        "position": "center",
+        "id": "person_female_lead"
+      },
+      {
+        "desc": "man wearing a black fedora hat, a black long-sleeved shirt, and grey pants",
+        "action": "playing an acoustic guitar",
+        "position": "right",
+        "id": "person_male_lead"
+      },
+      {
+        "desc": "man with short dark hair wearing a black shirt",
+        "action": "playing a keyboard",
+        "position": "left",
+        "id": "person_crew_1"
+      },
+      {
+        "desc": "black keyboard with white text 'YAMAHA M7CL' on the side",
+        "action": "static",
+        "position": "left",
+        "id": "keyboard_yamaha"
+      },
+      {
+        "desc": "black microphone stand",
+        "action": "static",
+        "position": "center",
+        "id": "mic_stand"
+      },
+      {
+        "desc": "stage lighting rig with blue and red lights",
+        "action": "static",
+        "position": "background",
+        "id": "light_stage_red"
+      },
+      {
+        "desc": "white sign with black text 'ST'",
+        "action": "static",
+        "position": "right background",
+        "id": "banner_stereo"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The woman in the center is singing into a microphone on a stand.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The man on the right is playing an acoustic guitar.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The man on the left is playing a Yamaha M7CL keyboard.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The stage has a lighting rig with blue and red lights in the background.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A sign with the letters 'ST' is visible in the background on the right.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "YAMAHA M7CL",
+      "ST"
+    ],
+    "spatial": "The woman is standing in the center of the stage, to the left of the man playing the guitar. The man playing the keyboard is to the left of the woman. The Yamaha M7CL keyboard is in front of the man on the left. The microphone stand is in front of the woman. The stage lighting rig is behind the performers. The 'ST' sign is to the right of the man playing the guitar.",
+    "parse_success": true,
+    "chunk_idx": 11,
     "video_id": "7649295416",
     "state_changes": [
-      "man switches from acoustic to electric guitar"
+      "Crew member starts playing keyboard"
     ]
   },
   {
     "time": [
-      46,
-      48
+      12,
+      13
     ],
     "visible_entities": [
       {
-        "desc": "woman with long dark hair, wearing a black cowboy hat, a tan sleeveless vest over a black top, and blue jeans with fringe",
-        "action": "singing into a microphone",
-        "position": "left",
-        "id": "person_female_performer_1"
-      },
-      {
-        "desc": "man wearing a black fedora hat, a black long-sleeved shirt, and blue jeans",
-        "action": "playing an electric guitar",
+        "desc": "man wearing a black fedora hat, black long-sleeved shirt, and grey jeans",
+        "action": "playing an acoustic guitar",
         "position": "right",
-        "id": "person_male_performer_1"
+        "id": "person_male_lead"
       },
       {
-        "desc": "black microphone on a stand",
-        "action": "static",
+        "desc": "woman with long curly hair, wearing a black cowboy hat, a tan fringed vest, and blue jeans",
+        "action": "bending forward at the waist",
+        "position": "center",
+        "id": "person_female_lead"
+      },
+      {
+        "desc": "man with short dark hair wearing a black t-shirt",
+        "action": "standing behind equipment",
         "position": "left",
-        "id": "microphone_stand_1"
+        "id": "person_crew_1"
       },
       {
-        "desc": "electric guitar with a sunburst finish",
+        "desc": "black keyboard case with white text",
+        "action": "static",
+        "position": "bottom left",
+        "id": "case_audio_black"
+      },
+      {
+        "desc": "black metal truss structure with stage lights",
+        "action": "static",
+        "position": "center background",
+        "id": "truss_stage"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The man on the right is playing an acoustic guitar while standing.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The woman in the center bends forward at the waist.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The keyboard case displays the text 'YAMAHA N7CL'.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A partial sign with the letters 'STE' is visible in the background.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "YAMAHA N7CL",
+      "STE"
+    ],
+    "spatial": "The man playing the guitar is to the right of the woman in the cowboy hat. The woman is positioned in front of the metal truss structure. The man in the black t-shirt is to the left of the woman and stands behind the keyboard case. The keyboard case is in the foreground at the bottom left.",
+    "parse_success": true,
+    "chunk_idx": 12,
+    "video_id": "7649295416",
+    "state_changes": [
+      "Woman bends forward at the waist"
+    ]
+  },
+  {
+    "time": [
+      13,
+      14
+    ],
+    "visible_entities": [
+      {
+        "desc": "person with long dark hair, wearing a black top, blue jeans, and a patterned scarf or shawl",
+        "action": "bending forward at the waist",
+        "position": "center",
+        "id": "person_female_lead"
+      },
+      {
+        "desc": "man with short dark hair, wearing a black long-sleeved shirt and blue jeans",
+        "action": "standing and playing an acoustic guitar",
+        "position": "center-right",
+        "id": "person_crew_1"
+      },
+      {
+        "desc": "man with short dark hair, wearing a black t-shirt",
+        "action": "standing behind equipment",
+        "position": "left",
+        "id": "person_crew_1"
+      },
+      {
+        "desc": "acoustic guitar with a wooden body",
+        "action": "being played",
+        "position": "center",
+        "id": "guitar_acoustic_main"
+      },
+      {
+        "desc": "black stage monitors (speakers)",
+        "action": "static",
+        "position": "foreground",
+        "id": "speaker_stage"
+      },
+      {
+        "desc": "black road cases and audio equipment racks",
+        "action": "static",
+        "position": "left and right",
+        "id": "case_audio_black"
+      },
+      {
+        "desc": "banner with text",
+        "action": "static",
+        "position": "background",
+        "id": "banner_stereo"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A person with long dark hair is bending over towards the stage floor.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A man in a black shirt is standing and playing an acoustic guitar.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "Another man is visible in the background on the left, standing behind audio equipment.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The stage is set up with multiple speakers and equipment cases.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "STER"
+    ],
+    "spatial": "The person bending over is to the left of the man playing the guitar. The man in the background is to the left of the person bending over. The stage monitors are in the foreground, in front of the performers. The banner with the text 'STER' is in the background, behind the man playing the guitar.",
+    "parse_success": true,
+    "chunk_idx": 13,
+    "video_id": "7649295416",
+    "state_changes": []
+  },
+  {
+    "time": [
+      14,
+      15
+    ],
+    "visible_entities": [
+      {
+        "desc": "person with long dark hair, wearing a sleeveless patterned top and blue jeans",
+        "action": "standing on stage",
+        "position": "center",
+        "id": "person_female_lead"
+      },
+      {
+        "desc": "person wearing blue jeans",
+        "action": "standing on stage",
+        "position": "center-right",
+        "id": "person_crew_1"
+      },
+      {
+        "desc": "black wedge-shaped stage monitor speakers",
+        "action": "static",
+        "position": "foreground",
+        "id": "speaker_stage"
+      },
+      {
+        "desc": "silver metal crowd control barrier",
+        "action": "static",
+        "position": "foreground",
+        "id": "barrier_crowd"
+      },
+      {
+        "desc": "black rack-mounted audio equipment with indicator lights",
+        "action": "static",
+        "position": "background",
+        "id": "rack_audio"
+      },
+      {
+        "desc": "black equipment case with white text",
+        "action": "static",
+        "position": "background-left",
+        "id": "case_audio_black"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A person with long dark hair is standing on the stage.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A silver metal barrier is positioned in front of the stage.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "Black wedge speakers are lined up along the edge of the stage.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The text 'YAMAHA N7CL' is visible on a black case in the background.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "YAMAHA N7CL"
+    ],
+    "spatial": "The silver metal barrier is in the immediate foreground, positioned in front of the stage. The black wedge speakers are on the stage floor, behind the barrier. The person with long dark hair is standing behind the speakers, near the center of the frame. The audio equipment rack is located behind the person on the left side.",
+    "parse_success": true,
+    "chunk_idx": 14,
+    "video_id": "7649295416",
+    "state_changes": [
+      "Woman stands up straight; crew member no longer visible"
+    ]
+  },
+  {
+    "time": [
+      15,
+      16
+    ],
+    "visible_entities": [
+      {
+        "desc": "black fabric banner with white text 'NERVLING' in a distressed, bold font",
+        "action": "static",
+        "position": "center",
+        "id": "banner_stereo"
+      },
+      {
+        "desc": "silver metal crowd control barrier with vertical bars",
+        "action": "static",
+        "position": "foreground",
+        "id": "barrier_crowd"
+      },
+      {
+        "desc": "person with short dark hair wearing a blue t-shirt and grey shorts",
+        "action": "standing",
+        "position": "left",
+        "id": "person_child_1"
+      },
+      {
+        "desc": "child with short dark hair wearing a blue t-shirt",
+        "action": "standing",
+        "position": "left",
+        "id": "person_child_1"
+      },
+      {
+        "desc": "black rectangular equipment cases or speakers",
+        "action": "static",
+        "position": "background",
+        "id": "case_audio_black"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A person and a child are standing behind the metal barrier on the left side.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The black banner with the text 'NERVLING' is draped over the metal barrier.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The metal barrier is positioned in front of the black equipment cases.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "NERVLING"
+    ],
+    "spatial": "The metal barrier is in the foreground, running horizontally across the frame. The black banner is draped over the center section of the barrier. To the left of the banner, a person and a child are standing behind the barrier. The black equipment cases are located behind the barrier and banner.",
+    "parse_success": true,
+    "chunk_idx": 15,
+    "video_id": "7649295416",
+    "state_changes": [
+      "Child appears on stage"
+    ]
+  },
+  {
+    "time": [
+      16,
+      17
+    ],
+    "visible_entities": [
+      {
+        "desc": "black fabric banner with white text",
+        "action": "static",
+        "position": "foreground",
+        "id": "banner_stereo"
+      },
+      {
+        "desc": "person with long hair, wearing a hat, sleeveless top, and jeans",
+        "action": "standing on stage",
+        "position": "right",
+        "id": "person_female_lead"
+      },
+      {
+        "desc": "metal crowd control barriers",
+        "action": "static",
+        "position": "foreground",
+        "id": "barrier_crowd"
+      },
+      {
+        "desc": "black audio equipment rack with silver faceplate",
+        "action": "static",
+        "position": "right",
+        "id": "rack_audio"
+      },
+      {
+        "desc": "white stage support structure",
+        "action": "static",
+        "position": "center",
+        "id": "structure_white"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A black banner displays the text 'NERVLING' in a distressed white font.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A person is standing on a stage holding a microphone.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "Metal barriers are positioned in front of the stage area.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "NERVLING",
+      "YAMAHA N7CL"
+    ],
+    "spatial": "The black banner with 'NERVLING' text is in the foreground, attached to metal barriers. The person on stage is to the right of the white stage support structure. The audio equipment rack is next to the person on the stage.",
+    "parse_success": true,
+    "chunk_idx": 16,
+    "video_id": "7649295416",
+    "state_changes": []
+  },
+  {
+    "time": [
+      17,
+      18
+    ],
+    "visible_entities": [
+      {
+        "desc": "man with short dark hair, wearing a black fedora hat, black long-sleeved shirt, and blue jeans",
+        "action": "playing an acoustic guitar",
+        "position": "right",
+        "id": "person_male_lead"
+      },
+      {
+        "desc": "woman with long dark hair, wearing a black cowboy hat and a black sleeveless top",
+        "action": "standing and gesturing with hands",
+        "position": "left",
+        "id": "person_female_lead"
+      },
+      {
+        "desc": "acoustic guitar with a wooden body and dark finish",
         "action": "being played",
         "position": "right",
-        "id": "guitar_electric_1"
+        "id": "guitar_acoustic_main"
+      },
+      {
+        "desc": "metal stage truss structure with attached lighting fixtures",
+        "action": "static",
+        "position": "center",
+        "id": "truss_stage"
+      },
+      {
+        "desc": "banner with the text 'STEREO' in black letters on a white background",
+        "action": "static",
+        "position": "right background",
+        "id": "banner_stereo"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The man in the black fedora is strumming an acoustic guitar.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The woman in the cowboy hat is standing to the left of the stage equipment.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A banner reading 'STEREO' is visible in the background behind the guitarist.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "Stage lights are mounted on the metal truss structure.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "STEREO"
+    ],
+    "spatial": "The man in the black fedora is positioned to the right of the metal truss structure. The woman in the cowboy hat is standing to the left of the truss. The 'STEREO' banner is located behind the man playing the guitar.",
+    "parse_success": true,
+    "chunk_idx": 17,
+    "video_id": "7649295416",
+    "state_changes": []
+  },
+  {
+    "time": [
+      18,
+      19
+    ],
+    "visible_entities": [
+      {
+        "desc": "woman with long dark hair, wearing a black cowboy hat, a black sleeveless top, a leopard print scarf, and blue jeans",
+        "action": "singing into a microphone and gesturing with her left hand",
+        "position": "left",
+        "id": "person_female_lead"
+      },
+      {
+        "desc": "man wearing a black fedora hat, a black long-sleeved shirt, and grey jeans",
+        "action": "playing an acoustic guitar",
+        "position": "right",
+        "id": "person_male_lead"
+      },
+      {
+        "desc": "man with dark hair wearing a black t-shirt",
+        "action": "static",
+        "position": "background",
+        "id": "person_crew_1"
+      },
+      {
+        "desc": "black acoustic guitar with a strap",
+        "action": "being played",
+        "position": "right",
+        "id": "guitar_acoustic_black"
       },
       {
         "desc": "metal lighting truss with stage lights",
         "action": "static",
         "position": "center",
-        "id": "stage_truss_1"
+        "id": "truss_stage"
       },
       {
-        "desc": "black audio equipment rack with 'YAMAHA' logo",
+        "desc": "black Yamaha keyboard on a stand",
         "action": "static",
-        "position": "bottom left",
-        "id": "audio_equipment_case_1"
+        "position": "left",
+        "id": "keyboard_yamaha"
       }
     ],
     "atomic_facts": [
@@ -1672,34 +1290,366 @@
         "confidence": 1.0
       },
       {
-        "fact": "The man on the right is playing an electric guitar.",
+        "fact": "The man on the right is playing an acoustic guitar.",
         "confidence": 1.0
       },
       {
-        "fact": "The 'YAMAHA' logo is visible on the equipment rack.",
+        "fact": "The woman is wearing a leopard print scarf.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The man is wearing a black fedora hat.",
         "confidence": 1.0
       }
     ],
     "ocr": [
       "YAMAHA"
     ],
-    "spatial": "The woman is to the left of the man. The man is to the right of the woman. The lighting truss is between the woman and the man. The Yamaha equipment rack is below the woman.",
+    "spatial": "The woman is to the left of the metal lighting truss. The man is to the right of the lighting truss. The Yamaha keyboard is in front of the woman. The man in the background is behind the woman and the keyboard.",
     "parse_success": true,
-    "chunk_idx": 23,
+    "chunk_idx": 18,
     "video_id": "7649295416",
     "state_changes": []
   },
   {
     "time": [
-      48,
-      50
+      19,
+      20
     ],
     "visible_entities": [
       {
-        "desc": "woman with long dark hair, wearing a black cowboy hat, a tan sleeveless top with a black waistband, and blue jeans",
-        "action": "standing and singing into a microphone",
+        "desc": "woman with long dark hair, wearing a black cowboy hat, a black sleeveless top, a leopard print scarf, and blue jeans",
+        "action": "singing into a microphone",
         "position": "left",
-        "id": "person_female_performer_1"
+        "id": "person_female_lead"
+      },
+      {
+        "desc": "man wearing a black hat, a black long-sleeved shirt, and grey jeans",
+        "action": "playing an acoustic guitar",
+        "position": "right"
+      },
+      {
+        "desc": "black acoustic guitar with a strap",
+        "action": "being played",
+        "position": "center-right",
+        "id": "guitar_acoustic_black"
+      },
+      {
+        "desc": "metal truss structure with stage lights",
+        "action": "static",
+        "position": "center",
+        "id": "truss_stage"
+      },
+      {
+        "desc": "black keyboard with white text",
+        "action": "static",
+        "position": "bottom-left",
+        "id": "keyboard_yamaha"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The woman on the left is holding a microphone and singing.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The man on the right is strumming an acoustic guitar.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The keyboard on the stage floor reads 'YAMAHA N7CL'.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "YAMAHA N7CL"
+    ],
+    "spatial": "The woman is to the left of the man. The man is standing next to the metal truss structure. The keyboard is on the floor in front of the woman.",
+    "parse_success": true,
+    "chunk_idx": 19,
+    "video_id": "7649295416",
+    "state_changes": []
+  },
+  {
+    "time": [
+      20,
+      21
+    ],
+    "visible_entities": [
+      {
+        "desc": "man with long dark hair, wearing a black fedora hat, black long-sleeved shirt, and blue jeans",
+        "action": "playing an acoustic guitar",
+        "position": "right",
+        "id": "person_male_lead"
+      },
+      {
+        "desc": "woman with long dark hair, wearing a black wide-brimmed hat, a patterned vest over a dark top, and blue jeans",
+        "action": "standing at a microphone",
+        "position": "center",
+        "id": "person_female_lead"
+      },
+      {
+        "desc": "man with short dark hair and glasses, wearing a dark shirt",
+        "action": "static",
+        "position": "background left",
+        "id": "person_crew_1"
+      },
+      {
+        "desc": "black audio equipment case with white text",
+        "action": "static",
+        "position": "bottom left",
+        "id": "case_audio_black"
+      },
+      {
+        "desc": "black metal lighting truss structure",
+        "action": "static",
+        "position": "center background",
+        "id": "truss_stage"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The man on the right is strumming an acoustic guitar.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The woman in the center is standing in front of a microphone stand.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The text 'YAMAHA 17CL' is visible on the black equipment case in the foreground.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A man is seated behind the equipment on the left side of the stage.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "YAMAHA 17CL",
+      "ST"
+    ],
+    "spatial": "The man playing the guitar is to the right of the woman singing. The woman is standing in front of the metal lighting truss. The black equipment case with 'YAMAHA 17CL' text is in the foreground on the left, below the seated man.",
+    "parse_success": true,
+    "chunk_idx": 20,
+    "video_id": "7649295416",
+    "state_changes": []
+  },
+  {
+    "time": [
+      21,
+      22
+    ],
+    "visible_entities": [
+      {
+        "desc": "woman with long dark hair, wearing a black cowboy hat, a sleeveless black top with a brown patterned vest, and blue jeans",
+        "action": "singing into a microphone",
+        "position": "left",
+        "id": "person_female_lead"
+      },
+      {
+        "desc": "man wearing a black fedora hat, a black long-sleeved shirt, and grey jeans",
+        "action": "playing an acoustic guitar",
+        "position": "right",
+        "id": "person_male_lead"
+      },
+      {
+        "desc": "black acoustic guitar with a strap",
+        "action": "being played",
+        "position": "center-right",
+        "id": "guitar_acoustic_black"
+      },
+      {
+        "desc": "black metal truss structure with stage lights",
+        "action": "static",
+        "position": "center",
+        "id": "truss_stage"
+      },
+      {
+        "desc": "black audio equipment case with white text",
+        "action": "static",
+        "position": "bottom-left",
+        "id": "case_audio_black"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The woman on the left is singing into a microphone.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The man on the right is playing an acoustic guitar.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The woman is wearing a black cowboy hat.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The man is wearing a black fedora hat.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The text 'YAMAHA N7CL' is visible on the equipment case.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "YAMAHA N7CL",
+      "ST"
+    ],
+    "spatial": "The woman is to the left of the man. The man is holding the guitar in front of him. The truss structure is behind the performers. The audio equipment case is below the woman.",
+    "parse_success": true,
+    "chunk_idx": 21,
+    "video_id": "7649295416",
+    "state_changes": []
+  },
+  {
+    "time": [
+      22,
+      23
+    ],
+    "visible_entities": [
+      {
+        "desc": "woman with long curly brown hair, wearing a black cowboy hat, tan fringed vest, black top, and blue jeans",
+        "action": "standing with arm raised",
+        "position": "left",
+        "id": "person_female_lead"
+      },
+      {
+        "desc": "man wearing a black fedora hat, black long-sleeved shirt, and grey jeans",
+        "action": "playing guitar",
+        "position": "right",
+        "id": "person_male_lead"
+      },
+      {
+        "desc": "black electric guitar",
+        "action": "being played",
+        "position": "center-right",
+        "id": "guitar_electric_black"
+      },
+      {
+        "desc": "metal lighting truss with stage lights",
+        "action": "static",
+        "position": "center-left",
+        "id": "truss_stage"
+      },
+      {
+        "desc": "black speaker cabinet with white text",
+        "action": "static",
+        "position": "bottom-left",
+        "id": "speaker_stage"
+      },
+      {
+        "desc": "banner with partial text 'ST'",
+        "action": "static",
+        "position": "background-right",
+        "id": "banner_stereo"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The man is playing a black electric guitar.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The woman is standing to the left of the man.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The speaker cabinet displays the text 'YAMAHA N7CL'.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A metal truss structure stands between the two performers.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "YAMAHA N7CL",
+      "ST"
+    ],
+    "spatial": "The woman is to the left of the man. The metal lighting truss is behind the woman and to the left of the man. The speaker cabinet is below the woman. The banner with text is in the background to the right of the man.",
+    "parse_success": true,
+    "chunk_idx": 22,
+    "video_id": "7649295416",
+    "state_changes": [
+      "Man switches from acoustic to electric guitar; woman raises arm"
+    ]
+  },
+  {
+    "time": [
+      23,
+      24
+    ],
+    "visible_entities": [
+      {
+        "desc": "woman with long dark hair, wearing a black cowboy hat, a tan sleeveless top with a leopard print pattern, and blue jeans with fringe",
+        "action": "holding a microphone and singing",
+        "position": "left",
+        "id": "person_female_lead"
+      },
+      {
+        "desc": "man wearing a black hat, black long-sleeved shirt, and grey jeans",
+        "action": "playing an electric guitar",
+        "position": "right",
+        "id": "person_male_lead"
+      },
+      {
+        "desc": "black electric guitar with a wooden body",
+        "action": "being played",
+        "position": "right",
+        "id": "guitar_electric_black"
+      },
+      {
+        "desc": "metal truss structure with stage lights",
+        "action": "static",
+        "position": "center",
+        "id": "truss_stage"
+      },
+      {
+        "desc": "black equipment case with white text",
+        "action": "static",
+        "position": "bottom left",
+        "id": "case_audio_black"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The woman on the left is holding a microphone to her mouth.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The man on the right is strumming a guitar.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The equipment case reads 'YAMAHA'.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "YAMAHA"
+    ],
+    "spatial": "The woman is to the left of the metal truss structure. The man is to the right of the truss structure. The Yamaha equipment case is below the woman. The stage lights are attached to the truss structure.",
+    "parse_success": true,
+    "chunk_idx": 23,
+    "video_id": "7649295416",
+    "state_changes": [
+      "Man continues playing electric guitar"
+    ]
+  },
+  {
+    "time": [
+      24,
+      25
+    ],
+    "visible_entities": [
+      {
+        "desc": "woman with long dark hair, wearing a black cowboy hat, a tan sleeveless top, a black waistband, and blue jeans",
+        "action": "standing at a microphone",
+        "position": "left",
+        "id": "person_female_lead"
       },
       {
         "desc": "man wearing a black hat, black long-sleeved shirt, and grey pants",
@@ -1708,221 +1658,104 @@
       },
       {
         "desc": "man with dark hair wearing a black t-shirt",
-        "action": "static",
+        "action": "standing behind equipment",
         "position": "center background",
-        "id": "person_background_man_1"
+        "id": "person_crew_1"
       },
       {
         "desc": "black acoustic guitar",
         "action": "being played",
         "position": "right",
-        "id": "guitar_acoustic_black_1"
+        "id": "guitar_acoustic_black"
       },
       {
-        "desc": "metal lighting truss with blue and red stage lights",
+        "desc": "silver metal lighting truss with stage lights",
         "action": "static",
         "position": "center",
-        "id": "stage_truss_1"
+        "id": "truss_stage"
       },
       {
-        "desc": "black Yamaha speaker cabinet",
+        "desc": "black speaker cabinet with white text",
         "action": "static",
-        "position": "bottom left",
-        "id": "speaker_cabinet_1"
+        "position": "left",
+        "id": "speaker_stage"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "The woman on the left is singing into a microphone on a stand.",
+        "fact": "The man on the right is playing an acoustic guitar.",
         "confidence": 1.0
       },
       {
-        "fact": "The man on the right is strumming an acoustic guitar.",
+        "fact": "The woman on the left is standing in front of a microphone.",
         "confidence": 1.0
       },
       {
-        "fact": "A man in a black t-shirt is visible in the background behind the equipment.",
+        "fact": "The speaker cabinet displays the text 'YAMAHA'.",
         "confidence": 1.0
       },
       {
-        "fact": "The Yamaha logo is visible on the speaker cabinet.",
+        "fact": "A metal truss structure stands between the two main performers.",
         "confidence": 1.0
       }
     ],
     "ocr": [
       "YAMAHA"
     ],
-    "spatial": "The woman is to the left of the metal lighting truss. The man playing the guitar is to the right of the truss. The Yamaha speaker is below the woman and in front of the background scenery.",
+    "spatial": "The woman is to the left of the metal truss structure. The man playing the guitar is to the right of the truss. The third man is behind the woman and the truss. The speaker cabinet is in front of the woman.",
     "parse_success": true,
     "chunk_idx": 24,
     "video_id": "7649295416",
     "state_changes": [
-      "man switches back to acoustic guitar"
+      "Man switches back to acoustic guitar"
     ]
   },
   {
     "time": [
-      50,
-      52
+      25,
+      26
     ],
     "visible_entities": [
       {
-        "desc": "woman with long dark hair, wearing a black cowboy hat with silver studs, a tan sleeveless top, and a black waistband",
+        "desc": "woman with long dark hair, wearing a black cowboy hat with silver embellishments, a tan sleeveless top, and a black waistband",
         "action": "singing into a microphone",
         "position": "center",
-        "id": "person_female_performer_1"
+        "id": "person_female_lead"
       },
       {
         "desc": "black microphone on a stand",
         "action": "static",
         "position": "center",
-        "id": "microphone_stand_1"
+        "id": "mic_stand"
       },
       {
-        "desc": "metal lighting truss with stage lights",
+        "desc": "metal lighting truss with stage lights (blue, red, black)",
         "action": "static",
         "position": "right",
-        "id": "stage_truss_1"
+        "id": "truss_stage"
       },
       {
-        "desc": "man with short dark hair",
+        "desc": "man with short dark hair and glasses",
         "action": "static",
-        "position": "background right"
+        "position": "background right",
+        "id": "person_crew_1"
       },
       {
-        "desc": "green trees",
+        "desc": "green leafy trees",
         "action": "static",
         "position": "background left",
-        "id": "trees_green_1"
+        "id": "trees_background"
+      },
+      {
+        "desc": "white stage structure",
+        "action": "static",
+        "position": "left",
+        "id": "structure_white"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "The woman is singing into a microphone.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The woman is wearing a black cowboy hat.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "A metal truss structure stands to the right of the singer.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "Green trees are visible in the background on the left.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [],
-    "spatial": "The woman is in the center of the frame, standing in front of the microphone. The metal lighting truss is to the right of the woman. The man is behind the woman and to her right. The green trees are in the background to the left of the woman.",
-    "parse_success": true,
-    "chunk_idx": 25,
-    "video_id": "7649295416",
-    "state_changes": []
-  },
-  {
-    "time": [
-      52,
-      54
-    ],
-    "visible_entities": [
-      {
-        "desc": "woman with long dark hair, wearing a black cowboy hat with silver embellishments, a tan sleeveless vest with fringe, a black top, blue jeans, and a scarf",
-        "action": "singing into a microphone",
-        "position": "center",
-        "id": "person_female_performer_1"
-      },
-      {
-        "desc": "man with dark hair and glasses, wearing a dark shirt",
-        "action": "standing in the background",
-        "position": "right background",
-        "id": "person_background_man_1"
-      },
-      {
-        "desc": "black microphone",
-        "action": "being held",
-        "position": "center",
-        "id": "microphone_handheld_1"
-      },
-      {
-        "desc": "black audio equipment case with white text",
-        "action": "static",
-        "position": "bottom center",
-        "id": "audio_equipment_case_1"
-      },
-      {
-        "desc": "metal stage truss structure",
-        "action": "static",
-        "position": "right",
-        "id": "stage_truss_1"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "The woman is holding a microphone to her mouth.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The woman is singing.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The man is standing behind the woman.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The text 'YAMAHA' is visible on the equipment.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [
-      "YAMAHA"
-    ],
-    "spatial": "The woman is in the center foreground, standing in front of the man who is to her right. The microphone is held by the woman near her mouth. The Yamaha equipment is below the woman. The metal truss is to the right of the man.",
-    "parse_success": true,
-    "chunk_idx": 26,
-    "video_id": "7649295416",
-    "state_changes": []
-  },
-  {
-    "time": [
-      54,
-      56
-    ],
-    "visible_entities": [
-      {
-        "desc": "woman with long dark hair, wearing a black cowboy hat with silver embellishments and a sleeveless leopard print top",
-        "action": "singing into a microphone",
-        "position": "center",
-        "id": "person_female_performer_1"
-      },
-      {
-        "desc": "black handheld microphone",
-        "action": "being held",
-        "position": "center",
-        "id": "microphone_handheld_1"
-      },
-      {
-        "desc": "metal stage truss structure with lighting equipment",
-        "action": "static",
-        "position": "right",
-        "id": "stage_truss_1"
-      },
-      {
-        "desc": "green trees",
-        "action": "static",
-        "position": "background",
-        "id": "trees_green_1"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "The woman is holding a black microphone with both hands.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The woman is singing into the microphone.",
+        "fact": "The woman is singing into a microphone on a stand.",
         "confidence": 1.0
       },
       {
@@ -1930,12 +1763,154 @@
         "confidence": 1.0
       },
       {
-        "fact": "The woman is wearing a sleeveless leopard print top.",
+        "fact": "A metal truss with stage lights is positioned to the right of the singer.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A man is visible in the background behind the singer.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The woman is in the center of the frame, standing in front of the green trees in the background. The metal stage truss structure is to the right of the woman. The microphone is held in front of the woman's mouth.",
+    "spatial": "The woman is in the center of the frame, standing in front of the white stage structure. The metal lighting truss is to the right of the woman. The green trees are in the background to the left of the stage structure.",
+    "parse_success": true,
+    "chunk_idx": 25,
+    "video_id": "7649295416",
+    "state_changes": []
+  },
+  {
+    "time": [
+      26,
+      27
+    ],
+    "visible_entities": [
+      {
+        "desc": "woman with long dark hair, wearing a black cowboy hat with silver embroidery, a tan sleeveless vest over a black top, a leopard print scarf, and blue jeans",
+        "action": "singing into a microphone",
+        "position": "center",
+        "id": "person_female_lead"
+      },
+      {
+        "desc": "man with short dark hair and glasses, wearing a dark shirt",
+        "action": "standing",
+        "position": "right background",
+        "id": "person_crew_1"
+      },
+      {
+        "desc": "black handheld microphone",
+        "action": "being held",
+        "position": "center",
+        "id": "mic_handheld"
+      },
+      {
+        "desc": "black microphone stand",
+        "action": "static",
+        "position": "center left",
+        "id": "mic_stand"
+      },
+      {
+        "desc": "black audio equipment case with white 'YAMAHA' text",
+        "action": "static",
+        "position": "bottom center",
+        "id": "case_audio_black"
+      },
+      {
+        "desc": "silver metal truss structure",
+        "action": "static",
+        "position": "right",
+        "id": "truss_stage"
+      },
+      {
+        "desc": "stage lighting fixtures",
+        "action": "static",
+        "position": "right",
+        "id": "light_stage_red"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The woman holds a microphone to her mouth with both hands.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The woman is singing.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The man stands behind the woman to her right.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The microphone stand is positioned in front of the woman.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The Yamaha equipment case is below the woman.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "YAMAHA"
+    ],
+    "spatial": "The woman is in the center of the frame, standing in front of the man who is to her right. The microphone stand is to the left of the woman. The Yamaha equipment case is below the woman. The metal truss structure is to the right of the man.",
+    "parse_success": true,
+    "chunk_idx": 26,
+    "video_id": "7649295416",
+    "state_changes": [
+      "Woman starts holding handheld microphone"
+    ]
+  },
+  {
+    "time": [
+      27,
+      28
+    ],
+    "visible_entities": [
+      {
+        "desc": "woman with long dark hair, wearing a black cowboy hat with silver embroidery, a sleeveless tan top, and a leopard print scarf",
+        "action": "singing into a microphone",
+        "position": "center",
+        "id": "person_female_lead"
+      },
+      {
+        "desc": "black microphone",
+        "action": "being held",
+        "position": "center",
+        "id": "mic_handheld"
+      },
+      {
+        "desc": "metal stage truss structure with mounted lighting fixtures",
+        "action": "static",
+        "position": "right",
+        "id": "truss_stage"
+      },
+      {
+        "desc": "green trees",
+        "action": "static",
+        "position": "background",
+        "id": "trees_background"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The woman holds a black microphone in her right hand.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The woman sings into the microphone.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The woman wears a black cowboy hat with silver detailing.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A metal truss structure stands to the right of the singer.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The woman is in the center of the frame, holding the microphone in front of her mouth. The metal stage truss structure is to the right of the woman. Green trees are visible in the background behind the stage equipment.",
     "parse_success": true,
     "chunk_idx": 27,
     "video_id": "7649295416",
@@ -1943,131 +1918,33 @@
   },
   {
     "time": [
-      56,
-      58
+      28,
+      29
     ],
     "visible_entities": [
       {
-        "desc": "woman with long dark wavy hair, wearing a black cowboy hat with a silver patterned band, a sleeveless tan vest with fringed edges over a black top, and a leopard print scarf",
+        "desc": "woman with long dark hair, wearing a black wide-brimmed hat with a silver patterned band, a tan sleeveless vest with a fringed hem over a black top, and a leopard print scarf",
         "action": "singing into a microphone",
         "position": "center",
-        "id": "person_female_performer_1"
+        "id": "person_female_lead"
       },
       {
         "desc": "black handheld microphone with a silver mesh grille",
         "action": "being held",
         "position": "center",
-        "id": "microphone_handheld_1"
+        "id": "mic_handheld"
       },
       {
-        "desc": "silver metal truss structure with black cables and equipment",
+        "desc": "silver metal truss structure",
         "action": "static",
         "position": "right",
-        "id": "stage_truss_1"
+        "id": "truss_stage"
       },
       {
-        "desc": "black microphone stand arm",
+        "desc": "green tree foliage",
         "action": "static",
         "position": "left",
-        "id": "microphone_stand_1"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "The woman holds a black microphone up to her mouth with her right hand.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The woman is standing in front of a metal truss structure.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "A microphone stand is positioned to the left of the woman.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [],
-    "spatial": "The woman is in the center of the frame, holding the microphone in front of her face. The silver metal truss structure is to the right of the woman and behind her. A black microphone stand arm is visible to the left of the woman.",
-    "parse_success": true,
-    "chunk_idx": 28,
-    "video_id": "7649295416",
-    "state_changes": []
-  },
-  {
-    "time": [
-      58,
-      60
-    ],
-    "visible_entities": [
-      {
-        "desc": "woman with long dark brown hair, wearing a black cowboy hat with a white floral-patterned band, a sleeveless tan top, and a leopard print scarf",
-        "action": "singing into a microphone",
-        "position": "center",
-        "id": "person_female_performer_1"
-      },
-      {
-        "desc": "black handheld microphone with a silver mesh grille",
-        "action": "being held",
-        "position": "center",
-        "id": "microphone_handheld_1"
-      },
-      {
-        "desc": "silver metal stage truss structure",
-        "action": "static",
-        "position": "right",
-        "id": "stage_truss_1"
-      },
-      {
-        "desc": "black microphone stand",
-        "action": "static",
-        "position": "left",
-        "id": "microphone_stand_1"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "The woman holds a black microphone up to her mouth with her right hand.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The woman is wearing a black cowboy hat with a decorative band.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "A metal truss structure is visible in the background.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [],
-    "spatial": "The woman is positioned in the center of the frame, holding the microphone in front of her face. The silver metal truss structure is to the right of the woman. A black microphone stand is visible to the left of the woman.",
-    "parse_success": true,
-    "chunk_idx": 29,
-    "video_id": "7649295416",
-    "state_changes": []
-  },
-  {
-    "time": [
-      60,
-      62
-    ],
-    "visible_entities": [
-      {
-        "desc": "woman with long dark brown hair, wearing a black wide-brimmed hat with a silver decorative band and a turquoise stone, a leopard print scarf, and a sleeveless beige top",
-        "action": "singing into a microphone",
-        "position": "center",
-        "id": "person_female_performer_1"
-      },
-      {
-        "desc": "black handheld microphone with a silver mesh grille",
-        "action": "being held",
-        "position": "center",
-        "id": "microphone_handheld_1"
-      },
-      {
-        "desc": "silver metal truss structure with a mounted microphone stand",
-        "action": "static",
-        "position": "right",
-        "id": "stage_truss_1"
+        "id": "trees_background"
       }
     ],
     "atomic_facts": [
@@ -2076,16 +1953,118 @@
         "confidence": 1.0
       },
       {
+        "fact": "The woman is singing.",
+        "confidence": 1.0
+      },
+      {
         "fact": "The woman is wearing a black hat with a silver band.",
         "confidence": 1.0
       },
       {
-        "fact": "A microphone stand is positioned to the right of the woman.",
+        "fact": "The woman is wearing a tan vest with fringes.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The woman is in the center of the frame, holding the microphone in front of her mouth. The silver metal truss structure is to the right of the woman. The microphone stand is attached to the truss structure.",
+    "spatial": "The woman is in the center of the frame, standing in front of the silver metal truss structure which is to her right. She is holding the microphone in front of her face. The green tree foliage is visible in the background to the left of the woman.",
+    "parse_success": true,
+    "chunk_idx": 28,
+    "video_id": "7649295416",
+    "state_changes": []
+  },
+  {
+    "time": [
+      29,
+      30
+    ],
+    "visible_entities": [
+      {
+        "desc": "person with long dark hair, wearing a black cowboy hat with a silver patterned band, a sleeveless tan top, and a leopard print scarf",
+        "action": "singing into a microphone",
+        "position": "center",
+        "id": "person_female_lead"
+      },
+      {
+        "desc": "black handheld microphone with a silver mesh grille",
+        "action": "being held",
+        "position": "center",
+        "id": "mic_handheld"
+      },
+      {
+        "desc": "silver metal stage truss structure",
+        "action": "static",
+        "position": "right",
+        "id": "truss_stage"
+      },
+      {
+        "desc": "black microphone on a stand",
+        "action": "static",
+        "position": "left",
+        "id": "mic_stand"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The person is holding a microphone up to their mouth.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The person is standing in front of a metal truss structure.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A microphone on a stand is visible to the left of the person.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The person is positioned in the center of the frame, standing in front of the silver metal truss structure on the right. The person is holding the black microphone in their right hand. A microphone on a stand is located to the left of the person.",
+    "parse_success": true,
+    "chunk_idx": 29,
+    "video_id": "7649295416",
+    "state_changes": []
+  },
+  {
+    "time": [
+      30,
+      31
+    ],
+    "visible_entities": [
+      {
+        "desc": "woman with long dark hair, wearing a black wide-brimmed hat with silver embroidery, a brown sleeveless top, and a leopard print scarf",
+        "action": "singing into a microphone",
+        "position": "left/center/foreground",
+        "id": "person_female_lead"
+      },
+      {
+        "desc": "black handheld microphone with a silver mesh head",
+        "action": "being held",
+        "position": "left/center/foreground",
+        "id": "mic_handheld"
+      },
+      {
+        "desc": "silver metal truss structure with stage lights",
+        "action": "static",
+        "position": "right/background",
+        "id": "truss_stage"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The woman holds a black microphone to her mouth.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The woman is singing.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A metal truss structure stands behind the woman.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The woman is in the foreground, positioned to the left of the metal truss structure. She is holding the microphone in front of her mouth. The truss structure is behind the woman.",
     "parse_success": true,
     "chunk_idx": 30,
     "video_id": "7649295416",
@@ -2093,55 +2072,55 @@
   },
   {
     "time": [
-      62,
-      64
+      31,
+      32
     ],
     "visible_entities": [
       {
-        "desc": "person with long brown hair, wearing a black cowboy hat with silver embroidery, a leopard print scarf, and a tan sleeveless top",
+        "desc": "woman with long brown hair, wearing a black cowboy hat with a silver patterned band, a leopard print scarf, and a tan sleeveless top",
         "action": "singing into a microphone",
-        "position": "left",
-        "id": "person_female_performer_1"
+        "position": "left/foreground",
+        "id": "person_female_lead"
       },
       {
-        "desc": "black microphone with a silver mesh head",
+        "desc": "black microphone with a silver grille",
         "action": "being held",
-        "position": "left",
-        "id": "microphone_handheld_1"
+        "position": "left/foreground",
+        "id": "mic_handheld"
       },
       {
         "desc": "silver metal truss structure with stage lights",
         "action": "static",
-        "position": "right",
-        "id": "stage_truss_1"
+        "position": "right/background",
+        "id": "truss_stage"
       },
       {
-        "desc": "microphone stand with a boom arm",
+        "desc": "microphone on a stand",
         "action": "static",
-        "position": "right",
-        "id": "microphone_stand_1"
+        "position": "right/background",
+        "id": "mic_stand"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "person is holding a microphone to their mouth",
+        "fact": "The woman is holding a microphone to her mouth.",
         "confidence": 1.0
       },
       {
-        "fact": "person is wearing a black cowboy hat with silver embroidery",
+        "fact": "The woman is wearing a black cowboy hat.",
         "confidence": 1.0
       },
       {
-        "fact": "person is wearing a leopard print scarf",
+        "fact": "The woman is wearing a leopard print scarf.",
         "confidence": 1.0
       },
       {
-        "fact": "a microphone stand is positioned to the right of the person",
+        "fact": "A metal truss structure is visible in the background.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The person is on the left side of the frame, holding a microphone in front of their mouth. The metal truss structure and microphone stand are to the right of the person.",
+    "spatial": "The woman is positioned in the foreground on the left side of the frame. She is holding a microphone in front of her mouth. The metal truss structure and a microphone on a stand are located to the right of the woman in the background.",
     "parse_success": true,
     "chunk_idx": 31,
     "video_id": "7649295416",
@@ -2149,55 +2128,55 @@
   },
   {
     "time": [
-      64,
-      66
+      32,
+      33
     ],
     "visible_entities": [
       {
-        "desc": "person with long dark hair, wearing a black cowboy hat with a silver decorative band, a sleeveless leopard-print vest over a black top",
+        "desc": "woman with long dark hair, wearing a black cowboy hat with silver embroidery, a leopard print scarf, and a sleeveless beige top",
         "action": "singing into a microphone",
         "position": "left",
-        "id": "person_female_performer_1"
+        "id": "person_female_lead"
       },
       {
         "desc": "black microphone",
         "action": "being held",
         "position": "left",
-        "id": "microphone_handheld_1"
+        "id": "mic_handheld"
       },
       {
         "desc": "silver metal truss structure",
         "action": "static",
         "position": "right",
-        "id": "stage_truss_1"
+        "id": "truss_stage"
       },
       {
-        "desc": "stage lighting fixtures, including a blue light",
+        "desc": "stage lighting equipment",
         "action": "static",
         "position": "right",
-        "id": "stage_light_1"
+        "id": "light_stage_red"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "The person is holding a black microphone to their mouth.",
+        "fact": "The woman is holding a black microphone to her mouth.",
         "confidence": 1.0
       },
       {
-        "fact": "The person is wearing a black cowboy hat with a silver band.",
+        "fact": "The woman is wearing a black cowboy hat with silver embroidery.",
         "confidence": 1.0
       },
       {
-        "fact": "The person is wearing a leopard-print vest.",
+        "fact": "A metal truss structure stands to the right of the woman.",
         "confidence": 1.0
       },
       {
-        "fact": "A silver metal truss structure is visible in the background.",
+        "fact": "Stage lights are mounted on the truss structure.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The person is on the left side of the frame, holding a microphone. The silver metal truss structure and stage lights are to the right of the person and behind them.",
+    "spatial": "The woman is positioned on the left side of the frame, standing in front of the silver metal truss structure which is on the right. She is holding the microphone near her mouth. The stage lighting equipment is mounted on the truss structure.",
     "parse_success": true,
     "chunk_idx": 32,
     "video_id": "7649295416",
@@ -2205,33 +2184,33 @@
   },
   {
     "time": [
-      66,
-      68
+      33,
+      34
     ],
     "visible_entities": [
       {
         "desc": "man with short dark hair, wearing a black fedora hat and a black long-sleeved shirt",
         "action": "playing an acoustic guitar and singing into a microphone",
         "position": "right",
-        "id": "person_male_performer_1"
+        "id": "person_male_lead"
       },
       {
         "desc": "woman with long dark hair, wearing a black wide-brimmed hat with silver embellishments and a leopard print top",
         "action": "singing into a microphone",
         "position": "left",
-        "id": "person_female_performer_1"
+        "id": "person_female_lead"
       },
       {
-        "desc": "acoustic guitar with a wooden body and black strap",
+        "desc": "wooden acoustic guitar with a dark strap",
         "action": "being held and played",
-        "position": "center-right",
-        "id": "guitar_strap_1"
+        "position": "right",
+        "id": "guitar_acoustic_main"
       },
       {
-        "desc": "metal truss structure with stage lights attached",
+        "desc": "metal truss structure with stage lights",
         "action": "static",
-        "position": "background",
-        "id": "stage_truss_1"
+        "position": "center",
+        "id": "truss_stage"
       }
     ],
     "atomic_facts": [
@@ -2248,12 +2227,12 @@
         "confidence": 1.0
       },
       {
-        "fact": "A red stage light is visible in the background.",
+        "fact": "A red stage light is illuminated on the truss structure.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The man in the black hat is positioned to the right of the woman in the leopard print top. The metal truss structure is behind both performers. The acoustic guitar is held in front of the man's torso.",
+    "spatial": "The man in the black hat is positioned to the right of the metal truss structure. The woman in the leopard print top is to the left of the truss structure. The acoustic guitar is held by the man in front of his body.",
     "parse_success": true,
     "chunk_idx": 33,
     "video_id": "7649295416",
@@ -2261,40 +2240,52 @@
   },
   {
     "time": [
-      68,
-      70
+      34,
+      35
     ],
     "visible_entities": [
       {
-        "desc": "woman with long dark hair, wearing a black hat with silver embellishments and a leopard print top",
+        "desc": "woman with long dark hair, wearing a black hat with a silver patterned band and a sleeveless leopard print top",
         "action": "singing into a microphone",
         "position": "left",
-        "id": "person_female_performer_1"
+        "id": "person_female_lead"
       },
       {
-        "desc": "man wearing a black hat and black shirt",
+        "desc": "man with short dark hair, wearing a black hat and a black long-sleeved shirt",
         "action": "playing an acoustic guitar and singing",
         "position": "right",
-        "id": "person_male_performer_1"
+        "id": "person_male_lead"
       },
       {
-        "desc": "metal truss structure with stage lights",
+        "desc": "metal stage truss structure with attached lighting equipment",
         "action": "static",
         "position": "background",
-        "id": "stage_truss_1"
+        "id": "truss_stage"
+      },
+      {
+        "desc": "red circular stage light",
+        "action": "static",
+        "position": "background",
+        "id": "light_stage_red"
+      },
+      {
+        "desc": "acoustic guitar with a wooden body",
+        "action": "being played",
+        "position": "right",
+        "id": "guitar_acoustic_main"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "The woman on the left is singing into a handheld microphone.",
+        "fact": "The woman on the left is holding a microphone to her mouth.",
         "confidence": 1.0
       },
       {
-        "fact": "The man on the right is playing an acoustic guitar.",
+        "fact": "The man on the right is strumming an acoustic guitar.",
         "confidence": 1.0
       },
       {
-        "fact": "The man on the right is singing into a microphone on a stand.",
+        "fact": "Both performers are singing into microphones.",
         "confidence": 1.0
       },
       {
@@ -2303,7 +2294,7 @@
       }
     ],
     "ocr": [],
-    "spatial": "The woman is to the left of the man. The metal truss structure is behind both performers. The man is holding a guitar.",
+    "spatial": "The woman is positioned to the left of the man. The man is holding the acoustic guitar in front of his body. The metal truss structure and stage lights are located behind both performers.",
     "parse_success": true,
     "chunk_idx": 34,
     "video_id": "7649295416",
@@ -2311,60 +2302,50 @@
   },
   {
     "time": [
-      70,
-      72
+      35,
+      36
     ],
     "visible_entities": [
       {
-        "desc": "woman with long dark hair, wearing a black cowboy hat with silver embellishments, a leopard print scarf, a tan vest over a black top, and blue jeans",
-        "action": "singing into a microphone and adjusting her hat",
+        "desc": "woman with long dark hair, wearing a black cowboy hat with silver embellishments, a leopard print scarf, a tan sleeveless vest over a black top, and blue jeans",
+        "action": "singing into a microphone",
         "position": "left",
-        "id": "person_female_performer_1"
+        "id": "person_female_lead"
       },
       {
-        "desc": "man wearing a black hat and a black long-sleeved shirt",
-        "action": "playing an acoustic guitar and singing",
+        "desc": "man wearing a black hat, black long-sleeved shirt, and blue jeans",
+        "action": "playing an acoustic guitar",
         "position": "right",
-        "id": "person_male_performer_1"
+        "id": "person_male_lead"
       },
       {
-        "desc": "black microphone",
-        "action": "being held by the woman",
-        "position": "left",
-        "id": "microphone_handheld_1"
-      },
-      {
-        "desc": "acoustic guitar with a wooden body",
-        "action": "being played by the man",
+        "desc": "acoustic guitar with a wooden body and dark fretboard",
+        "action": "being played",
         "position": "right",
-        "id": "guitar_acoustic_1"
+        "id": "guitar_acoustic_main"
+      },
+      {
+        "desc": "black microphone on a stand",
+        "action": "static",
+        "position": "center",
+        "id": "mic_stand"
+      },
+      {
+        "desc": "metal truss structure with stage lights",
+        "action": "static",
+        "position": "background",
+        "id": "truss_stage"
       },
       {
         "desc": "red circular stage light",
         "action": "static",
         "position": "top center",
-        "id": "stage_light_1"
-      },
-      {
-        "desc": "metal stage truss structure",
-        "action": "static",
-        "position": "background",
-        "id": "stage_truss_1"
-      },
-      {
-        "desc": "red keyboard with white text",
-        "action": "static",
-        "position": "background",
-        "id": "keyboard_yamaha_1"
+        "id": "light_stage_red"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "The woman on the left is singing into a microphone.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The woman raises her hand to adjust her hat.",
+        "fact": "The woman on the left is holding a microphone to her mouth.",
         "confidence": 1.0
       },
       {
@@ -2372,84 +2353,78 @@
         "confidence": 1.0
       },
       {
-        "fact": "The man is singing into a microphone on a stand.",
+        "fact": "A red stage light is illuminated above the performers.",
         "confidence": 1.0
       },
       {
-        "fact": "A red keyboard labeled 'nord stage' is visible in the background.",
+        "fact": "The performers are standing on a stage in front of a metal truss structure.",
         "confidence": 1.0
       }
     ],
     "ocr": [
-      "nord stage"
+      "nord sta"
     ],
-    "spatial": "The woman is positioned to the left of the man. The man is holding the guitar in front of his body. The red stage light is located above the performers on the metal truss structure. The keyboard is situated behind the man.",
+    "spatial": "The woman is to the left of the man. The man is holding the acoustic guitar. The microphone stand is between the woman and the man. The red stage light is above the performers. The metal truss structure is behind the performers.",
     "parse_success": true,
     "chunk_idx": 35,
     "video_id": "7649295416",
-    "state_changes": [
-      "woman adjusts hat while singing"
-    ]
+    "state_changes": []
   },
   {
     "time": [
-      72,
-      74
+      36,
+      37
     ],
     "visible_entities": [
       {
-        "desc": "woman with long dark hair, wearing a black top, a tan fringed vest, and blue jeans",
+        "desc": "woman with long dark hair, wearing a black top, a brown fringed vest with leopard print accents, and blue jeans",
         "action": "singing into a microphone",
         "position": "left",
-        "id": "person_female_performer_1"
+        "id": "person_female_lead"
       },
       {
-        "desc": "man with a black hat, black shirt, and grey pants",
+        "desc": "man wearing a black hat, black shirt, and grey pants",
         "action": "playing an acoustic guitar and singing",
         "position": "right",
-        "id": "person_male_performer_1"
+        "id": "person_male_lead"
       },
       {
-        "desc": "acoustic guitar with a wooden body",
+        "desc": "acoustic guitar with a natural wood finish",
         "action": "being played",
         "position": "right",
-        "id": "guitar_acoustic_1"
+        "id": "guitar_acoustic_main"
       },
       {
-        "desc": "metal truss structure with stage lights",
+        "desc": "metal stage truss structure with lighting equipment",
         "action": "static",
         "position": "background",
-        "id": "stage_truss_1"
+        "id": "truss_stage"
       },
       {
         "desc": "black speaker cabinet with white text",
         "action": "static",
         "position": "bottom left",
-        "id": "speaker_cabinet_1"
+        "id": "speaker_stage"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A woman on the left is singing into a microphone.",
+        "fact": "The woman on the left is holding a microphone to her mouth.",
         "confidence": 1.0
       },
       {
-        "fact": "A man on the right is playing an acoustic guitar and singing.",
+        "fact": "The man on the right is strumming an acoustic guitar.",
         "confidence": 1.0
       },
       {
-        "fact": "The speaker cabinet on the bottom left reads 'YAMAHA N7CL'.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "A red stage light is illuminated on the truss structure.",
+        "fact": "The speaker cabinet on the bottom left displays the text 'YAMAHA N7CL'.",
         "confidence": 1.0
       }
     ],
     "ocr": [
       "YAMAHA N7CL"
     ],
-    "spatial": "The woman is to the left of the man. The man is holding the acoustic guitar. The metal truss structure is behind both performers. The speaker cabinet is below the woman.",
+    "spatial": "The woman is positioned to the left of the man. The man is holding the acoustic guitar in front of his body. The metal truss structure is located behind both performers. The speaker cabinet is situated below the woman.",
     "parse_success": true,
     "chunk_idx": 36,
     "video_id": "7649295416",
@@ -2457,39 +2432,45 @@
   },
   {
     "time": [
-      74,
-      76
+      37,
+      38
     ],
     "visible_entities": [
       {
-        "desc": "woman with long brown hair, wearing a black cowboy hat with a silver band, a black tank top, a brown fringed vest, and blue jeans",
+        "desc": "woman with long brown hair, wearing a black cowboy hat with a silver band, a black sleeveless top with a leopard print scarf, and blue jeans",
         "action": "singing into a microphone",
         "position": "left",
-        "id": "person_female_performer_1"
+        "id": "person_female_lead"
       },
       {
-        "desc": "man wearing a black hat, a black button-down shirt, and grey pants",
+        "desc": "man wearing a black hat, black long-sleeved shirt, and blue jeans",
         "action": "playing an acoustic guitar and singing",
         "position": "right",
-        "id": "person_male_performer_1"
+        "id": "person_male_lead"
       },
       {
         "desc": "acoustic guitar with a natural wood finish",
         "action": "being played",
         "position": "right",
-        "id": "guitar_acoustic_1"
+        "id": "guitar_acoustic_main"
       },
       {
-        "desc": "black microphone on a stand",
-        "action": "static",
-        "position": "center",
-        "id": "microphone_stand_1"
-      },
-      {
-        "desc": "black speaker cabinet with white text",
-        "action": "static",
+        "desc": "black microphone",
+        "action": "being held",
         "position": "left",
-        "id": "speaker_cabinet_1"
+        "id": "mic_handheld"
+      },
+      {
+        "desc": "black amplifier with white text",
+        "action": "static",
+        "position": "bottom left",
+        "id": "speaker_stage"
+      },
+      {
+        "desc": "metal stage truss structure with lighting fixtures",
+        "action": "static",
+        "position": "center background",
+        "id": "truss_stage"
       }
     ],
     "atomic_facts": [
@@ -2502,18 +2483,19 @@
         "confidence": 1.0
       },
       {
-        "fact": "The man is singing into a microphone on a stand.",
+        "fact": "The amplifier on the floor displays the text 'YAMAHA N7CL'.",
         "confidence": 1.0
       },
       {
-        "fact": "The text 'YAMAHA N7CL' is visible on the speaker cabinet.",
+        "fact": "A red stage light is visible on the truss structure.",
         "confidence": 1.0
       }
     ],
     "ocr": [
-      "YAMAHA N7CL"
+      "YAMAHA N7CL",
+      "nord sta"
     ],
-    "spatial": "The woman is to the left of the man. The man is holding the acoustic guitar in front of his body. The microphone stand is positioned between the woman and the man. The speaker cabinet is located below and to the left of the woman.",
+    "spatial": "The woman is standing to the left of the man. The man is holding the acoustic guitar in front of his body. The amplifier is located on the floor below the woman. The metal truss structure is behind both performers.",
     "parse_success": true,
     "chunk_idx": 37,
     "video_id": "7649295416",
@@ -2521,40 +2503,46 @@
   },
   {
     "time": [
-      76,
-      78
+      38,
+      39
     ],
     "visible_entities": [
       {
-        "desc": "man wearing a black hat, black button-down shirt, and a guitar strap",
-        "action": "singing into a microphone and playing an acoustic guitar",
-        "position": "right",
-        "id": "person_male_performer_1"
-      },
-      {
-        "desc": "woman wearing a black cowboy hat with white embroidery, a black top, and a brown fringed vest",
-        "action": "singing into a handheld microphone",
+        "desc": "woman with long dark hair, wearing a black wide-brimmed hat with a white patterned band, a black sleeveless top, and a brown fringed vest",
+        "action": "singing into a microphone",
         "position": "left",
-        "id": "person_female_performer_1"
+        "id": "person_female_lead"
       },
       {
-        "desc": "metal truss structure with stage lights",
+        "desc": "man wearing a black hat and a black button-down shirt",
+        "action": "playing an acoustic guitar and singing",
+        "position": "right",
+        "id": "person_male_lead"
+      },
+      {
+        "desc": "acoustic guitar with a wooden body and dark fretboard",
+        "action": "being played",
+        "position": "center-right",
+        "id": "guitar_acoustic_main"
+      },
+      {
+        "desc": "metal stage truss structure with lighting equipment",
         "action": "static",
         "position": "background",
-        "id": "stage_truss_1"
+        "id": "truss_stage"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "The man on the right is singing into a microphone on a stand.",
+        "fact": "The woman on the left is holding a microphone and singing.",
         "confidence": 1.0
       },
       {
-        "fact": "The man is strumming an acoustic guitar.",
+        "fact": "The man on the right is strumming an acoustic guitar.",
         "confidence": 1.0
       },
       {
-        "fact": "The woman on the left is holding a microphone to her mouth.",
+        "fact": "The man is singing into a microphone on a stand.",
         "confidence": 1.0
       },
       {
@@ -2563,48 +2551,53 @@
       }
     ],
     "ocr": [],
-    "spatial": "The man is positioned to the right of the woman. The metal truss structure is behind both performers. The microphone stand is in front of the man.",
+    "spatial": "The woman is to the left of the man. The man is holding the acoustic guitar in front of his body. The metal truss structure is behind both performers.",
     "parse_success": true,
     "chunk_idx": 38,
     "video_id": "7649295416",
-    "state_changes": [
-      "woman switches to handheld microphone"
-    ]
+    "state_changes": []
   },
   {
     "time": [
-      78,
-      80
+      39,
+      40
     ],
     "visible_entities": [
       {
-        "desc": "man with fair skin, wearing a black hat, black button-down shirt with rolled-up sleeves, and a dark guitar strap",
-        "action": "playing guitar and singing into a microphone",
-        "position": "center/foreground",
-        "id": "person_male_performer_1"
+        "desc": "man with short brown hair, wearing a black button-down shirt and a black hat",
+        "action": "singing into a microphone",
+        "position": "center",
+        "id": "person_male_lead"
       },
       {
-        "desc": "black microphone with a silver mesh grille",
+        "desc": "acoustic guitar with a dark headstock",
+        "action": "being held and played",
+        "position": "center",
+        "id": "guitar_acoustic_main"
+      },
+      {
+        "desc": "silver microphone on a stand",
         "action": "static",
-        "position": "center/left",
-        "id": "microphone_handheld_1"
+        "position": "center",
+        "id": "mic_handheld"
       },
       {
-        "desc": "metal truss structure with stage lights, including a red circular light",
+        "desc": "metal truss structure with stage lights",
         "action": "static",
-        "position": "left/background",
-        "id": "stage_truss_1"
+        "position": "left",
+        "id": "truss_stage"
       },
       {
-        "desc": "guitar with a dark headstock and tuning pegs",
-        "action": "being played",
-        "position": "center"
-      },
-      {
-        "desc": "large backdrop with abstract graphics in orange, pink, and white",
+        "desc": "red circular stage light",
         "action": "static",
-        "position": "right/background",
-        "id": "background_abstract_1"
+        "position": "top left",
+        "id": "light_stage_red"
+      },
+      {
+        "desc": "graphic backdrop with orange, white, and pink abstract shapes",
+        "action": "static",
+        "position": "background",
+        "id": "backdrop_abstract"
       }
     ],
     "atomic_facts": [
@@ -2613,56 +2606,62 @@
         "confidence": 1.0
       },
       {
-        "fact": "The man is holding and playing a guitar.",
+        "fact": "The man is holding an acoustic guitar.",
         "confidence": 1.0
       },
       {
-        "fact": "A red stage light is illuminated on the truss structure.",
+        "fact": "A red stage light is visible in the upper left corner.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The man is wearing a black hat.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The man is in the center of the frame, positioned in front of the colorful backdrop. The microphone is in front of the man's mouth. The metal truss structure with lights is to the left of the man.",
+    "spatial": "The man is in the center of the frame, standing in front of a graphic backdrop. To his left is a metal truss structure with stage lights. The microphone is positioned directly in front of his mouth. The red circular light is located above and to the left of the man.",
     "parse_success": true,
     "chunk_idx": 39,
     "video_id": "7649295416",
-    "state_changes": []
+    "state_changes": [
+      "New vocalist (button-down shirt) takes lead; backdrop changes to abstract graphic"
+    ]
   },
   {
     "time": [
-      80,
-      82
+      40,
+      41
     ],
     "visible_entities": [
       {
-        "desc": "man with fair skin, wearing a black fedora hat and a black collared shirt",
+        "desc": "man with short dark hair, wearing a black fedora hat and a black shirt",
         "action": "singing into a microphone",
-        "position": "center/foreground",
-        "id": "person_male_performer_1"
+        "position": "center",
+        "id": "person_male_lead"
       },
       {
         "desc": "silver microphone with a black handle",
         "action": "static",
-        "position": "center",
-        "id": "microphone_handheld_1"
+        "position": "center-left",
+        "id": "mic_handheld"
       },
       {
         "desc": "red circular stage light",
         "action": "static",
-        "position": "left/background",
-        "id": "stage_light_1"
+        "position": "left",
+        "id": "light_stage_red"
       },
       {
         "desc": "metal truss structure",
         "action": "static",
-        "position": "left/background",
-        "id": "stage_truss_1"
+        "position": "left",
+        "id": "truss_stage"
       },
       {
-        "desc": "dark guitar strap",
+        "desc": "black guitar strap",
         "action": "static",
-        "position": "center/foreground",
-        "id": "guitar_strap_1"
+        "position": "center",
+        "id": "strap_guitar"
       }
     ],
     "atomic_facts": [
@@ -2675,16 +2674,16 @@
         "confidence": 1.0
       },
       {
-        "fact": "A red light is visible on the left side of the frame.",
+        "fact": "A red light is illuminated on the stage rigging.",
         "confidence": 1.0
       },
       {
-        "fact": "The man has a guitar strap over his shoulder.",
+        "fact": "The man has a black strap over his shoulder.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The man is positioned in the center of the frame, standing in front of a dark background. To his left, a metal truss structure supports a red circular light. The microphone is directly in front of the man's mouth. A guitar strap runs diagonally across the man's chest.",
+    "spatial": "The man is positioned in the center of the frame, standing in front of a dark background. To his left, a metal truss structure supports a red circular light. The microphone is positioned directly in front of the man's mouth. A black strap is visible over the man's right shoulder.",
     "parse_success": true,
     "chunk_idx": 40,
     "video_id": "7649295416",
@@ -2692,97 +2691,39 @@
   },
   {
     "time": [
-      82,
-      84
+      41,
+      42
     ],
     "visible_entities": [
       {
-        "desc": "man with short brown hair, wearing a black fedora hat and a black long-sleeved shirt",
+        "desc": "man with fair skin, wearing a black fedora hat and a black long-sleeved shirt",
         "action": "singing into a microphone",
         "position": "center/foreground",
-        "id": "person_male_performer_1"
+        "id": "person_male_lead"
       },
       {
         "desc": "silver microphone with a black handle",
         "action": "static",
         "position": "center/left",
-        "id": "microphone_handheld_1"
-      },
-      {
-        "desc": "red circular stage light",
-        "action": "static",
-        "position": "left/background",
-        "id": "stage_light_1"
-      },
-      {
-        "desc": "metal truss structure",
-        "action": "static",
-        "position": "left/background",
-        "id": "stage_truss_1"
-      },
-      {
-        "desc": "abstract graphic backdrop with white, purple, and orange shapes",
-        "action": "static",
-        "position": "background",
-        "id": "background_abstract_1"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "The man is singing into the microphone.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The man is wearing a black hat.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "A red light is visible on the left side of the stage.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [],
-    "spatial": "The man is in the center foreground, positioned in front of the abstract graphic backdrop. The microphone is directly in front of the man's mouth. The red stage light and metal truss are to the left of the man.",
-    "parse_success": true,
-    "chunk_idx": 41,
-    "video_id": "7649295416",
-    "state_changes": []
-  },
-  {
-    "time": [
-      84,
-      86
-    ],
-    "visible_entities": [
-      {
-        "desc": "man with fair skin, wearing a black fedora hat and a black collared shirt",
-        "action": "singing into a microphone",
-        "position": "center",
-        "id": "person_male_performer_1"
-      },
-      {
-        "desc": "silver microphone with a black handle",
-        "action": "static",
-        "position": "left",
-        "id": "microphone_handheld_1"
+        "id": "mic_handheld"
       },
       {
         "desc": "black guitar strap",
         "action": "static",
         "position": "center",
-        "id": "guitar_strap_1"
+        "id": "strap_guitar"
       },
       {
         "desc": "red circular stage light",
         "action": "static",
-        "position": "background left",
-        "id": "stage_light_1"
+        "position": "left/background",
+        "id": "light_stage_red"
       },
       {
         "desc": "abstract background graphic with white, purple, and orange shapes",
         "action": "static",
-        "position": "background right",
-        "id": "background_abstract_1"
+        "position": "background",
+        "id": "backdrop_abstract"
       }
     ],
     "atomic_facts": [
@@ -2795,50 +2736,46 @@
         "confidence": 1.0
       },
       {
-        "fact": "A guitar strap is visible over the man's shoulder.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "A red light is illuminated in the background.",
+        "fact": "A red light is visible in the background.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The man is positioned in the center of the frame, standing in front of a microphone on a stand. The microphone is to the left of the man's face. A black strap runs diagonally across the man's chest. In the background, a red light is visible to the left, and abstract colorful graphics are visible to the right.",
+    "spatial": "The man is standing in front of the abstract background graphic. The microphone is positioned in front of the man's mouth. The red circular light is to the left of the man.",
     "parse_success": true,
-    "chunk_idx": 42,
+    "chunk_idx": 41,
     "video_id": "7649295416",
     "state_changes": []
   },
   {
     "time": [
-      86,
-      88
+      42,
+      43
     ],
     "visible_entities": [
       {
-        "desc": "man with short brown hair, wearing a black fedora hat, black collared shirt, and a black guitar strap over his shoulder",
+        "desc": "man with fair skin, wearing a black fedora hat, black collared shirt, and a dark guitar strap",
         "action": "singing into a microphone",
-        "position": "center",
-        "id": "person_male_performer_1"
+        "position": "center/foreground",
+        "id": "person_male_lead"
       },
       {
-        "desc": "microphone with a silver grille and a red band near the base",
+        "desc": "silver microphone with a black handle and red ring detail",
         "action": "static",
-        "position": "left",
-        "id": "microphone_handheld_1"
+        "position": "center/left",
+        "id": "mic_handheld"
       },
       {
-        "desc": "black microphone stand",
+        "desc": "red circular stage light",
         "action": "static",
-        "position": "left",
-        "id": "microphone_stand_1"
+        "position": "top left/background",
+        "id": "light_stage_red"
       },
       {
-        "desc": "abstract background graphic with white, purple, and orange shapes on a black background",
+        "desc": "abstract background graphic with white, purple, and orange shapes",
         "action": "static",
         "position": "background",
-        "id": "background_abstract_1"
+        "id": "backdrop_abstract"
       }
     ],
     "atomic_facts": [
@@ -2851,12 +2788,64 @@
         "confidence": 1.0
       },
       {
-        "fact": "The man has a guitar strap over his shoulder.",
+        "fact": "A red light is visible in the background.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The man is positioned in the center of the frame, standing in front of the abstract background graphic. The microphone on its stand is located to the left of the man.",
+    "spatial": "The man is standing in front of the abstract background graphic. The microphone is positioned directly in front of the man's mouth. The red circular light is located to the left of the man and above the microphone stand.",
+    "parse_success": true,
+    "chunk_idx": 42,
+    "video_id": "7649295416",
+    "state_changes": []
+  },
+  {
+    "time": [
+      43,
+      44
+    ],
+    "visible_entities": [
+      {
+        "desc": "man with short brown hair, wearing a black fedora hat and a black collared shirt",
+        "action": "singing into a microphone",
+        "position": "center",
+        "id": "person_male_lead"
+      },
+      {
+        "desc": "microphone with a silver grille and red band on a black stand",
+        "action": "static",
+        "position": "left",
+        "id": "mic_handheld"
+      },
+      {
+        "desc": "abstract graphic backdrop featuring an orange circle with radiating white and purple shapes",
+        "action": "static",
+        "position": "background",
+        "id": "backdrop_abstract"
+      },
+      {
+        "desc": "black guitar strap",
+        "action": "static",
+        "position": "center",
+        "id": "strap_guitar"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The man is singing into the microphone.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The man is wearing a black hat.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The man has a black strap over his shoulder.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The man is positioned in the center of the frame, standing in front of the abstract graphic backdrop. The microphone on its stand is located to the left of the man. The black guitar strap is draped over the man's shoulder.",
     "parse_success": true,
     "chunk_idx": 43,
     "video_id": "7649295416",
@@ -2864,54 +2853,50 @@
   },
   {
     "time": [
-      88,
-      90
+      44,
+      45
     ],
     "visible_entities": [
       {
-        "desc": "man wearing a black hat and black shirt, holding a guitar with a strap",
+        "desc": "man with short dark hair, wearing a black hat and black shirt",
         "action": "singing into a microphone",
         "position": "right",
-        "id": "person_male_performer_1"
+        "id": "person_male_lead"
       },
       {
-        "desc": "woman with long dark hair, wearing a black cowboy hat with a silver band, a leopard print scarf, and a sleeveless top",
-        "action": "holding a microphone stand",
+        "desc": "woman with long dark hair, wearing a black cowboy hat with silver embellishments, a leopard print scarf, and a sleeveless top",
+        "action": "singing into a microphone",
         "position": "left",
-        "id": "person_female_performer_1"
+        "id": "person_female_lead"
       },
       {
-        "desc": "metal truss structure with stage lights, including a red light and a blue light",
+        "desc": "metal truss structure with stage lights",
         "action": "static",
         "position": "background",
-        "id": "stage_truss_1"
+        "id": "truss_stage"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "The man in the black hat is singing into a microphone.",
+        "fact": "The man on the right is singing into a microphone.",
         "confidence": 1.0
       },
       {
-        "fact": "The woman in the cowboy hat is holding a microphone stand.",
+        "fact": "The woman on the left is singing into a microphone.",
         "confidence": 1.0
       },
       {
-        "fact": "The woman is standing to the left of the man.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "Stage lights are mounted on the metal truss behind the performers.",
+        "fact": "The woman is wearing a leopard print scarf.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The woman in the cowboy hat is to the left of the man in the black hat. The man is in front of a metal truss structure. The stage lights are mounted on the truss, which is behind both performers.",
+    "spatial": "The woman is to the left of the man. The metal truss structure is behind both performers. The woman is holding a microphone in her right hand.",
     "parse_success": true,
     "chunk_idx": 44,
     "video_id": "7649295416",
     "state_changes": [
-      "woman holds microphone stand"
+      "Female lead vocalist reappears alongside male vocalist"
     ]
   }
 ]

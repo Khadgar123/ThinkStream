@@ -2,21 +2,63 @@
   {
     "time": [
       0,
+      1
+    ],
+    "visible_entities": [
+      {
+        "desc": "man with short dark hair, wearing a dark suit jacket, light blue button-down shirt, silver watch, and ring",
+        "action": "looking down",
+        "position": "center"
+      },
+      {
+        "desc": "digital screen with abstract blue and red graphics",
+        "action": "static",
+        "position": "background"
+      },
+      {
+        "desc": "dark desk surface",
+        "action": "static",
+        "position": "foreground"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "the man looks down at the desk",
+        "confidence": 1.0
+      },
+      {
+        "fact": "the man is wearing a watch on his left wrist",
+        "confidence": 1.0
+      },
+      {
+        "fact": "the man is wearing a ring on his left hand",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The man is seated behind the desk. The digital screen is behind the man. The man's hands are on the desk surface.",
+    "parse_success": true,
+    "chunk_idx": 0,
+    "video_id": "ytb_JewB6CNKAGo"
+  },
+  {
+    "time": [
+      1,
       2
     ],
     "visible_entities": [
       {
-        "desc": "man with short dark hair, wearing a dark suit jacket, light blue striped button-down shirt, silver watch, and ring",
+        "desc": "man with short dark hair, wearing a dark suit jacket, a light blue striped button-down shirt, a silver watch on his left wrist, and a ring on his left ring finger",
         "action": "looking down at the desk",
         "position": "center"
       },
       {
         "desc": "dark reflective desk surface",
         "action": "static",
-        "position": "bottom"
+        "position": "foreground"
       },
       {
-        "desc": "large screen with abstract blue and red graphics",
+        "desc": "large screen displaying abstract red and blue wavy graphics",
         "action": "static",
         "position": "background"
       }
@@ -31,71 +73,119 @@
         "confidence": 1.0
       },
       {
-        "fact": "The man is wearing a silver watch on his left wrist.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [],
-    "spatial": "The man is sitting behind the desk. The large screen with graphics is behind the man.",
-    "parse_success": true,
-    "chunk_idx": 0,
-    "video_id": "ytb_JewB6CNKAGo"
-  },
-  {
-    "time": [
-      2,
-      4
-    ],
-    "visible_entities": [
-      {
-        "desc": "man with short dark hair, wearing a dark suit jacket over a light blue button-down shirt, with a watch on his left wrist",
-        "action": "sitting at a desk and looking down",
-        "position": "center"
-      },
-      {
-        "desc": "large screen displaying abstract red and blue wavy graphics",
-        "action": "static",
-        "position": "background"
-      },
-      {
-        "desc": "dark reflective desk surface",
-        "action": "static",
-        "position": "foreground"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "The man is sitting at a desk.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The man is looking down at the desk surface.",
-        "confidence": 1.0
-      },
-      {
         "fact": "The man is wearing a watch on his left wrist.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The man is sitting behind the desk in the center of the frame. The large screen with red and blue graphics is positioned behind the man. The man's hands are resting on the desk surface in front of him.",
+    "spatial": "The man is positioned in the center of the frame, sitting behind the dark desk. The large screen with red and blue graphics is located behind the man.",
     "parse_success": true,
     "chunk_idx": 1,
     "video_id": "ytb_JewB6CNKAGo"
   },
   {
     "time": [
-      4,
-      6
+      2,
+      3
     ],
     "visible_entities": [
       {
-        "desc": "man with short dark hair, wearing a dark suit jacket over a light blue button-down shirt, silver watch on left wrist, ring on left ring finger",
+        "desc": "man with short dark hair, wearing a dark suit jacket, light blue button-down shirt, silver watch, and ring",
         "action": "turning head to the right",
+        "position": "center"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The man turns his head to the right.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The man is wearing a silver watch on his left wrist.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The man is wearing a ring on his left ring finger.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The man is sitting in front of a large screen displaying blue and red abstract graphics. The screen is behind the man.",
+    "parse_success": true,
+    "chunk_idx": 2,
+    "video_id": "ytb_JewB6CNKAGo"
+  },
+  {
+    "time": [
+      3,
+      4
+    ],
+    "visible_entities": [
+      {
+        "desc": "man with short dark hair, wearing a dark suit jacket and light blue button-down shirt",
+        "action": "gesturing with right hand",
+        "position": "left"
+      },
+      {
+        "desc": "woman with long blonde wavy hair, wearing a dark blue short-sleeved dress",
+        "action": "sitting with hands clasped",
+        "position": "right"
+      },
+      {
+        "desc": "large curved news desk with a glossy black surface and a blue front panel displaying a logo",
+        "action": "static",
+        "position": "center foreground"
+      },
+      {
+        "desc": "large video wall screen displaying a stylized red and blue abstract flag pattern",
+        "action": "static",
+        "position": "background"
+      },
+      {
+        "desc": "white papers and a black tablet device",
+        "action": "static",
+        "position": "on the desk"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The man on the left extends his right arm across the desk while speaking.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The woman on the right sits with her hands clasped on the desk surface.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The letters 'TYT' are visible on the front of the news desk.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "Papers and a tablet are placed on the desk in front of the presenters.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "TYT"
+    ],
+    "spatial": "The man is seated to the left of the woman. Both individuals are positioned behind the large curved news desk. The video wall screen is located behind the presenters and the desk. The 'TYT' logo is on the front panel of the desk, below the surface where the papers are resting.",
+    "parse_success": true,
+    "chunk_idx": 3,
+    "video_id": "ytb_JewB6CNKAGo"
+  },
+  {
+    "time": [
+      4,
+      5
+    ],
+    "visible_entities": [
+      {
+        "desc": "man with short dark hair, wearing a dark navy blazer, a light blue button-down shirt, a silver watch on his left wrist, and a gold ring on his left ring finger",
+        "action": "gesturing with left hand and speaking",
         "position": "center"
       },
       {
-        "desc": "digital screen background with abstract red and blue geometric shapes",
+        "desc": "digital background screen with abstract blue, red, and purple wavy graphics",
         "action": "static",
         "position": "background"
       },
@@ -107,175 +197,67 @@
     ],
     "atomic_facts": [
       {
-        "fact": "The man turns his head from facing forward to looking towards his right.",
+        "fact": "The man is gesturing with his left hand raised.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The man is looking towards the camera with his mouth open.",
         "confidence": 1.0
       },
       {
         "fact": "The man is seated behind a desk.",
         "confidence": 1.0
-      },
-      {
-        "fact": "The man is wearing a silver watch on his left wrist.",
-        "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The man is positioned in the center of the frame, sitting behind the desk. The digital screen background is located behind the man.",
-    "parse_success": true,
-    "chunk_idx": 2,
-    "video_id": "ytb_JewB6CNKAGo"
-  },
-  {
-    "time": [
-      6,
-      8
-    ],
-    "visible_entities": [
-      {
-        "desc": "man with short dark hair, wearing a dark suit jacket and a light blue button-down shirt",
-        "action": "sitting at the desk and gesturing with his right hand",
-        "position": "left"
-      },
-      {
-        "desc": "woman with long blonde wavy hair, wearing a dark blue short-sleeved dress",
-        "action": "sitting at the desk with hands clasped",
-        "position": "right"
-      },
-      {
-        "desc": "large curved news desk with a glossy black surface and a blue front panel displaying a logo",
-        "action": "static",
-        "position": "foreground"
-      },
-      {
-        "desc": "large video wall background displaying a stylized red and blue abstract flag pattern",
-        "action": "static",
-        "position": "background"
-      },
-      {
-        "desc": "white papers and a tablet device",
-        "action": "resting on the desk",
-        "position": "on the desk"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "The man in the dark suit is sitting on the left side of the desk.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The woman in the dark blue dress is sitting on the right side of the desk.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The man gestures with his right hand towards the center of the desk.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The logo 'TYT' is visible on the front of the news desk.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "Papers and a tablet are placed on the desk surface in front of the presenters.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [
-      "TYT"
-    ],
-    "spatial": "The man is seated to the left of the woman. Both presenters are positioned behind the large curved news desk. The 'TYT' logo is located on the front panel of the desk, below the presenters' hands. The video wall background is situated behind the presenters and the desk.",
-    "parse_success": true,
-    "chunk_idx": 3,
-    "video_id": "ytb_JewB6CNKAGo"
-  },
-  {
-    "time": [
-      8,
-      10
-    ],
-    "visible_entities": [
-      {
-        "desc": "man with short dark hair, wearing a dark suit jacket over a light blue button-down shirt, silver watch on left wrist, ring on left ring finger",
-        "action": "speaking and gesturing with left hand",
-        "position": "center"
-      },
-      {
-        "desc": "large screen background with abstract blue, red, and purple graphics",
-        "action": "static",
-        "position": "background"
-      },
-      {
-        "desc": "dark desk surface",
-        "action": "static",
-        "position": "foreground"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "The man is speaking with his mouth open in the first frame.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The man gestures with his left hand, pointing his index finger.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The man looks down at the desk in the second frame.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The man is wearing a watch on his left wrist.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [],
-    "spatial": "The man is sitting behind the dark desk. The large screen with blue and red graphics is behind the man. The man's left hand is raised above the desk surface.",
+    "spatial": "The man is positioned in the center of the frame, sitting behind the dark desk. The digital background screen is located behind the man.",
     "parse_success": true,
     "chunk_idx": 4,
     "video_id": "ytb_JewB6CNKAGo"
   },
   {
     "time": [
-      10,
-      12
+      5,
+      6
     ],
     "visible_entities": [
       {
-        "desc": "man with short dark hair, wearing a dark suit jacket over a light blue button-down shirt",
+        "desc": "man with short dark hair, wearing a dark suit jacket and a light blue button-down shirt",
         "action": "gesturing with his right hand",
         "position": "left"
       },
       {
-        "desc": "woman with long blonde wavy hair, wearing a dark blue short-sleeved top",
+        "desc": "woman with long blonde hair, wearing a dark blue short-sleeved top",
         "action": "sitting with hands clasped on the desk",
         "position": "right"
       },
       {
-        "desc": "large curved news desk with a glossy black surface and a blue front panel featuring the text 'TYT' in large silver letters",
+        "desc": "large curved news desk with a glossy black surface and a blue front panel featuring the 'TYT' logo",
         "action": "static",
         "position": "foreground"
       },
       {
-        "desc": "large video wall background displaying a stylized red, white, and blue abstract flag pattern",
+        "desc": "large video wall displaying a stylized red, white, and blue abstract flag pattern",
         "action": "static",
         "position": "background"
       },
       {
         "desc": "white papers and a tablet device",
         "action": "resting on the desk",
-        "position": "on the desk"
+        "position": "center"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "The man on the left is gesturing with his right hand while speaking.",
+        "fact": "The man on the left raises his right hand in a gesture while looking down at the desk.",
         "confidence": 1.0
       },
       {
-        "fact": "The woman on the right is smiling and looking towards the man.",
+        "fact": "The woman on the right smiles and looks towards the man.",
         "confidence": 1.0
       },
       {
-        "fact": "The text 'TYT' is visible on the front of the desk.",
+        "fact": "The 'TYT' logo is displayed on the front of the desk.",
         "confidence": 1.0
       },
       {
@@ -286,115 +268,77 @@
     "ocr": [
       "TYT"
     ],
-    "spatial": "The man is seated to the left of the woman at the news desk. The desk is positioned in the foreground, in front of the large video wall background. The papers are on top of the desk surface, in front of the man and woman.",
+    "spatial": "The man is seated to the left of the woman. Both individuals are positioned behind the large news desk. The video wall is located behind the presenters. The papers are on top of the desk surface.",
     "parse_success": true,
     "chunk_idx": 5,
     "video_id": "ytb_JewB6CNKAGo"
   },
   {
     "time": [
-      12,
-      14
+      6,
+      7
     ],
     "visible_entities": [
       {
         "desc": "man with short dark hair, wearing a dark suit jacket and a light blue button-down shirt",
-        "action": "gesturing with right hand",
+        "action": "sitting at a desk and gesturing with his right hand",
         "position": "left"
       },
       {
-        "desc": "woman with long blonde hair, wearing a dark blue short-sleeved top",
-        "action": "static",
+        "desc": "woman with long blonde wavy hair, wearing a dark blue short-sleeved top",
+        "action": "sitting at a desk and smiling",
         "position": "right"
       },
       {
-        "desc": "large curved news desk with a black glossy top and a blue front panel featuring the text 'TYT' in silver letters",
+        "desc": "large curved news desk with a black glossy surface and a blue front panel featuring a logo",
         "action": "static",
         "position": "foreground"
       },
       {
-        "desc": "large video wall background displaying abstract red, white, and blue wavy patterns",
+        "desc": "large screen background displaying abstract red, white, and blue wavy patterns",
         "action": "static",
         "position": "background"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "The man is gesturing with his right hand while looking down at the desk.",
+        "fact": "The man in the dark suit is gesturing with his right hand while looking down at the desk.",
         "confidence": 1.0
       },
       {
-        "fact": "The woman is sitting with her hands clasped on the desk.",
+        "fact": "The woman with blonde hair is smiling and looking forward.",
         "confidence": 1.0
       },
       {
-        "fact": "The text 'TYT' is visible on the front of the desk.",
+        "fact": "The letters 'TYT' are visible on the front of the desk.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "Papers and a tablet are lying on the surface of the desk.",
         "confidence": 1.0
       }
     ],
     "ocr": [
       "TYT"
     ],
-    "spatial": "The man is sitting to the left of the woman. Both are seated behind the large news desk. The video wall is behind the people and the desk.",
+    "spatial": "The man is sitting to the left of the woman at the desk. The woman is sitting to the right of the man. The desk is in front of the large screen background. The 'TYT' logo is on the front panel of the desk, below the surface.",
     "parse_success": true,
     "chunk_idx": 6,
     "video_id": "ytb_JewB6CNKAGo"
   },
   {
     "time": [
-      14,
-      16
+      7,
+      8
     ],
     "visible_entities": [
       {
-        "desc": "man with short dark hair, wearing a dark suit jacket and a light blue button-down shirt",
-        "action": "speaking and gesturing",
+        "desc": "man with short dark hair, wearing a dark suit jacket over a light blue button-down shirt",
+        "action": "gesturing with right hand",
         "position": "center"
       },
       {
-        "desc": "large screen with blue and red abstract graphics",
-        "action": "static",
-        "position": "background"
-      },
-      {
-        "desc": "dark desk surface",
-        "action": "static",
-        "position": "foreground"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "The man is speaking and gesturing with his hands.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The man is wearing a light blue button-down shirt under a dark suit jacket.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The background screen displays abstract blue and red graphics.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [],
-    "spatial": "The man is in the center of the frame, sitting behind the dark desk. The large screen with blue and red graphics is behind him.",
-    "parse_success": true,
-    "chunk_idx": 7,
-    "video_id": "ytb_JewB6CNKAGo"
-  },
-  {
-    "time": [
-      16,
-      18
-    ],
-    "visible_entities": [
-      {
-        "desc": "man with short graying dark hair, wearing a dark navy suit jacket over a light blue button-down shirt",
-        "action": "speaking and gesturing with left hand",
-        "position": "center"
-      },
-      {
-        "desc": "digital background screen with abstract blue and red wavy graphics",
+        "desc": "large screen background with abstract blue and red wavy patterns",
         "action": "static",
         "position": "background"
       },
@@ -406,41 +350,83 @@
     ],
     "atomic_facts": [
       {
-        "fact": "The man is speaking with his mouth open.",
+        "fact": "man gestures with his right hand",
         "confidence": 1.0
       },
       {
-        "fact": "The man is gesturing with his left hand.",
+        "fact": "man is looking down towards the desk",
         "confidence": 1.0
       },
       {
-        "fact": "The man is resting his right hand on the desk.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The man is wearing a ring on his left ring finger.",
+        "fact": "man is wearing a ring on his right hand",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The man is in front of the digital background screen. The man is behind the desk. The man's right hand is on the desk surface.",
+    "spatial": "The man is positioned in front of the large screen background. The desk is below the man's torso and arms. The man's right hand is raised slightly above the desk surface.",
+    "parse_success": true,
+    "chunk_idx": 7,
+    "video_id": "ytb_JewB6CNKAGo"
+  },
+  {
+    "time": [
+      8,
+      9
+    ],
+    "visible_entities": [
+      {
+        "desc": "man with short dark hair, wearing a dark suit jacket and a light blue button-down shirt",
+        "action": "speaking and gesturing with right hand",
+        "position": "center"
+      },
+      {
+        "desc": "large screen with abstract blue and red wavy graphics",
+        "action": "static",
+        "position": "background"
+      },
+      {
+        "desc": "dark desk surface",
+        "action": "static",
+        "position": "foreground"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "the man is speaking",
+        "confidence": 1.0
+      },
+      {
+        "fact": "the man is gesturing with his right hand",
+        "confidence": 1.0
+      },
+      {
+        "fact": "the man is sitting behind a desk",
+        "confidence": 1.0
+      },
+      {
+        "fact": "a screen with graphics is behind the man",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The man is in the center of the frame, sitting behind the desk. The large screen with abstract graphics is behind the man.",
     "parse_success": true,
     "chunk_idx": 8,
     "video_id": "ytb_JewB6CNKAGo"
   },
   {
     "time": [
-      18,
-      20
+      9,
+      10
     ],
     "visible_entities": [
       {
-        "desc": "man with short dark hair, wearing a dark suit jacket and a light blue button-down shirt",
-        "action": "looking down and gesturing with his left hand",
+        "desc": "man with short dark hair, wearing a dark suit jacket over a light blue button-down shirt",
+        "action": "sitting at a desk and looking down",
         "position": "center"
       },
       {
-        "desc": "large screen with abstract blue and red graphics",
+        "desc": "large digital screen with abstract blue and red graphics",
         "action": "static",
         "position": "background"
       },
@@ -452,37 +438,41 @@
     ],
     "atomic_facts": [
       {
-        "fact": "The man is looking down towards the desk.",
+        "fact": "The man is sitting at a desk.",
         "confidence": 1.0
       },
       {
-        "fact": "The man's left hand is raised in a gesture.",
+        "fact": "The man is looking down towards the desk surface.",
         "confidence": 1.0
       },
       {
-        "fact": "The man's right hand is resting on the desk.",
+        "fact": "The man's left hand is resting on the desk.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The man's right hand is raised slightly in a gesture.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The man is sitting behind the desk. The large screen is behind the man.",
+    "spatial": "The man is positioned in the center of the frame, sitting behind the desk. The large digital screen is located behind the man, filling the background.",
     "parse_success": true,
     "chunk_idx": 9,
     "video_id": "ytb_JewB6CNKAGo"
   },
   {
     "time": [
-      20,
-      22
+      10,
+      11
     ],
     "visible_entities": [
       {
-        "desc": "man with short dark hair, wearing a dark navy suit jacket over a light blue button-down shirt",
-        "action": "looking down at the desk then lifting head to look forward",
+        "desc": "man with short dark hair, wearing a dark navy suit jacket and a light blue button-down shirt",
+        "action": "looking down at the desk then looking up at the camera",
         "position": "center"
       },
       {
-        "desc": "large video wall screen displaying abstract blue and red graphics",
+        "desc": "large screen background with abstract blue and red wavy graphics",
         "action": "static",
         "position": "background"
       },
@@ -494,11 +484,11 @@
     ],
     "atomic_facts": [
       {
-        "fact": "The man looks down at the desk surface.",
+        "fact": "The man looks down at the desk in the first frame.",
         "confidence": 1.0
       },
       {
-        "fact": "The man lifts his head and looks forward.",
+        "fact": "The man lifts his head to look forward in the second frame.",
         "confidence": 1.0
       },
       {
@@ -507,29 +497,78 @@
       }
     ],
     "ocr": [],
-    "spatial": "The man is positioned in the center of the frame, sitting behind the dark desk. The large video wall screen is located behind the man.",
+    "spatial": "The man is positioned in the center of the frame, sitting behind the dark desk. The large screen with abstract graphics is located directly behind the man.",
     "parse_success": true,
     "chunk_idx": 10,
     "video_id": "ytb_JewB6CNKAGo"
   },
   {
     "time": [
-      22,
-      24
+      11,
+      12
     ],
     "visible_entities": [
       {
         "desc": "man with short dark hair, wearing a dark suit jacket and a light blue button-down shirt",
-        "action": "speaking and gesturing with hands",
+        "action": "speaking and gesturing with his right hand",
         "position": "left"
       },
       {
-        "desc": "woman with long blonde wavy hair, wearing a dark blue short-sleeved dress",
+        "desc": "woman with long blonde wavy hair, wearing a dark blue short-sleeved top",
         "action": "sitting with hands clasped on the desk",
         "position": "right"
       },
       {
         "desc": "large curved news desk with a glossy black surface and a blue front panel featuring a logo",
+        "action": "static",
+        "position": "foreground"
+      },
+      {
+        "desc": "large screen background displaying a stylized red, white, and blue flag pattern",
+        "action": "static",
+        "position": "background"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The man is gesturing with his right hand while looking down at the desk.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The woman is sitting still with her hands resting on the desk.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The letters 'TYT' are visible on the front of the desk.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "TYT"
+    ],
+    "spatial": "The man is seated to the left of the woman at the news desk. The woman is seated to the right of the man. The 'TYT' logo is on the front of the desk, below the surface where the people are sitting. The large screen with the flag pattern is behind both the man and the woman.",
+    "parse_success": true,
+    "chunk_idx": 11,
+    "video_id": "ytb_JewB6CNKAGo"
+  },
+  {
+    "time": [
+      12,
+      13
+    ],
+    "visible_entities": [
+      {
+        "desc": "man with short dark hair, wearing a dark suit jacket and a light blue button-down shirt",
+        "action": "laughing and leaning back",
+        "position": "left"
+      },
+      {
+        "desc": "woman with long blonde wavy hair, wearing a dark blue short-sleeved top",
+        "action": "laughing with hands clasped on the desk",
+        "position": "right"
+      },
+      {
+        "desc": "large curved news desk with a glossy black surface and a blue front panel displaying a logo",
         "action": "static",
         "position": "foreground"
       },
@@ -546,97 +585,35 @@
     ],
     "atomic_facts": [
       {
-        "fact": "The man on the left is speaking and gesturing with his hands.",
+        "fact": "The man on the left is laughing and leaning back in his chair.",
         "confidence": 1.0
       },
       {
-        "fact": "The woman on the right is sitting quietly with her hands clasped.",
+        "fact": "The woman on the right is laughing with her hands clasped on the desk.",
         "confidence": 1.0
       },
       {
-        "fact": "The text 'TYT' is visible on the front of the news desk.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "Papers and a tablet are placed on the desk in front of the anchors.",
+        "fact": "The logo 'TYT' is visible on the front of the desk.",
         "confidence": 1.0
       }
     ],
     "ocr": [
       "TYT"
     ],
-    "spatial": "The man is sitting to the left of the woman. Both are positioned behind the large news desk. The papers and tablet are on the desk in front of them. The 'TYT' logo is on the front of the desk, below the papers. The large screen with the flag pattern is behind both anchors.",
-    "parse_success": true,
-    "chunk_idx": 11,
-    "video_id": "ytb_JewB6CNKAGo"
-  },
-  {
-    "time": [
-      24,
-      26
-    ],
-    "visible_entities": [
-      {
-        "desc": "man with short dark hair, wearing a dark suit jacket and light blue button-down shirt",
-        "action": "laughing and gesturing with his left hand",
-        "position": "left"
-      },
-      {
-        "desc": "woman with long blonde wavy hair, wearing a dark blue short-sleeved dress",
-        "action": "laughing with hands clasped on the desk",
-        "position": "right"
-      },
-      {
-        "desc": "large black news desk with a glossy surface and a blue screen on the front",
-        "action": "static",
-        "position": "foreground"
-      },
-      {
-        "desc": "large video wall background displaying a stylized red, white, and blue flag pattern",
-        "action": "static",
-        "position": "background"
-      },
-      {
-        "desc": "white papers and a tablet device",
-        "action": "static",
-        "position": "on the desk"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "The man on the left laughs and raises his left hand in a gesture.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The woman on the right laughs with her mouth open.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The letters 'TYT' are displayed on the front of the desk.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "Papers and a tablet are resting on the desk surface.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [
-      "TYT"
-    ],
-    "spatial": "The man is seated to the left of the woman at the news desk. The desk is in the foreground, positioned in front of the large video wall background. The 'TYT' logo is located on the front panel of the desk, below the surface where the papers are placed.",
+    "spatial": "The man is sitting to the left of the woman. Both are seated behind the large news desk. The papers and tablet are on the desk in front of them. The 'TYT' logo is on the front panel of the desk, below the surface. The large screen with the flag pattern is behind the anchors.",
     "parse_success": true,
     "chunk_idx": 12,
     "video_id": "ytb_JewB6CNKAGo"
   },
   {
     "time": [
-      26,
-      28
+      13,
+      14
     ],
     "visible_entities": [
       {
-        "desc": "man with short dark hair, wearing a dark suit jacket and a light blue button-down shirt",
-        "action": "gesturing with right hand",
+        "desc": "man with short dark hair, wearing a dark suit jacket over a light blue button-down shirt",
+        "action": "gesturing with right hand while looking down",
         "position": "center"
       },
       {
@@ -645,14 +622,56 @@
         "position": "bottom"
       },
       {
-        "desc": "large screen displaying abstract blue and red graphics",
+        "desc": "large screen background with abstract blue and red graphics",
         "action": "static",
         "position": "background"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "The man is sitting at a desk.",
+        "fact": "The man is gesturing with his right hand.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The man is looking down towards the desk.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The man is wearing a ring on his left hand.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The man is sitting behind the dark desk. The large screen with blue and red graphics is behind the man.",
+    "parse_success": true,
+    "chunk_idx": 13,
+    "video_id": "ytb_JewB6CNKAGo"
+  },
+  {
+    "time": [
+      14,
+      15
+    ],
+    "visible_entities": [
+      {
+        "desc": "man with short dark hair, wearing a dark suit jacket over a light blue button-down shirt",
+        "action": "looking down and gesturing with his right hand",
+        "position": "center"
+      },
+      {
+        "desc": "dark desk surface",
+        "action": "static",
+        "position": "bottom"
+      },
+      {
+        "desc": "large screen with blue background and red abstract lines",
+        "action": "static",
+        "position": "background"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The man is looking down at the desk.",
         "confidence": 1.0
       },
       {
@@ -660,82 +679,36 @@
         "confidence": 1.0
       },
       {
-        "fact": "The man is looking down at the desk.",
+        "fact": "The man is wearing a ring on his left hand.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The man is in front of the large screen. The desk is below the man. The man's right hand is above the desk.",
-    "parse_success": true,
-    "chunk_idx": 13,
-    "video_id": "ytb_JewB6CNKAGo"
-  },
-  {
-    "time": [
-      28,
-      30
-    ],
-    "visible_entities": [
-      {
-        "desc": "man with short dark hair, wearing a dark suit jacket and a light blue button-down shirt",
-        "action": "looking down and gesturing with his right hand",
-        "position": "center"
-      },
-      {
-        "desc": "large screen displaying a blue background with red and purple abstract wavy lines",
-        "action": "static",
-        "position": "background"
-      },
-      {
-        "desc": "dark desk surface",
-        "action": "static",
-        "position": "foreground"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "man is looking down",
-        "confidence": 1.0
-      },
-      {
-        "fact": "man is gesturing with his right hand",
-        "confidence": 1.0
-      },
-      {
-        "fact": "man is wearing a ring on his left ring finger",
-        "confidence": 1.0
-      },
-      {
-        "fact": "man is sitting at a desk",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [],
-    "spatial": "The man is in front of the large screen. The desk is below the man. The man's right hand is near the desk surface.",
+    "spatial": "The man is sitting behind the desk. The screen is behind the man.",
     "parse_success": true,
     "chunk_idx": 14,
     "video_id": "ytb_JewB6CNKAGo"
   },
   {
     "time": [
-      30,
-      32
+      15,
+      16
     ],
     "visible_entities": [
       {
-        "desc": "man with short dark hair, wearing a black suit jacket over a light blue button-down shirt",
-        "action": "looking down at a desk",
+        "desc": "man with short dark hair, wearing a black suit jacket and a light blue button-down shirt",
+        "action": "looking down at the desk",
         "position": "center"
+      },
+      {
+        "desc": "large screen background with abstract blue, red, and purple graphics",
+        "action": "static",
+        "position": "background"
       },
       {
         "desc": "dark desk surface",
         "action": "static",
         "position": "bottom"
-      },
-      {
-        "desc": "digital screen background with abstract blue, purple, and red graphics",
-        "action": "static",
-        "position": "background"
       }
     ],
     "atomic_facts": [
@@ -744,29 +717,33 @@
         "confidence": 1.0
       },
       {
-        "fact": "The man is wearing a ring on his left hand.",
+        "fact": "The man is wearing a black suit jacket.",
         "confidence": 1.0
       },
       {
-        "fact": "The man is resting his hands on the desk surface.",
+        "fact": "The man is wearing a light blue button-down shirt.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The background screen displays abstract graphics.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The man is positioned in the center of the frame, sitting behind the desk. The digital screen background is located behind the man.",
+    "spatial": "The man is in front of the large screen background. The man is behind the dark desk surface. The desk surface is below the man.",
     "parse_success": true,
     "chunk_idx": 15,
     "video_id": "ytb_JewB6CNKAGo"
   },
   {
     "time": [
-      32,
-      34
+      16,
+      17
     ],
     "visible_entities": [
       {
         "desc": "man with short dark hair, wearing a dark suit jacket over a light blue button-down shirt",
-        "action": "looking down and gesturing with left hand",
+        "action": "looking down and gesturing with his right hand",
         "position": "center"
       },
       {
@@ -786,110 +763,101 @@
         "confidence": 1.0
       },
       {
-        "fact": "The man's left hand is raised slightly above the desk surface.",
+        "fact": "The man is gesturing with his right hand.",
         "confidence": 1.0
       },
       {
-        "fact": "The man is wearing a ring on his left ring finger.",
+        "fact": "The man is wearing a ring on his left hand.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The man is positioned in front of the large screen. The desk is located below the man's torso and hands.",
+    "spatial": "The man is in front of the large screen. The desk is in front of the man.",
     "parse_success": true,
     "chunk_idx": 16,
     "video_id": "ytb_JewB6CNKAGo"
   },
   {
     "time": [
-      34,
-      36
+      17,
+      18
     ],
     "visible_entities": [
       {
-        "desc": "man with short dark hair, wearing a dark suit jacket over a light blue button-down shirt",
-        "action": "looking down at the desk then looking up and gesturing with his right hand",
+        "desc": "man with short dark hair, wearing a dark suit jacket, a light blue button-down shirt, and a watch on his left wrist",
+        "action": "looking down then looking up and gesturing with left hand",
         "position": "center"
       },
       {
-        "desc": "large screen displaying a blue background with red and white wavy stripes",
+        "desc": "large screen with abstract blue and red wavy graphics",
         "action": "static",
         "position": "background"
       },
       {
         "desc": "dark desk surface",
         "action": "static",
-        "position": "foreground"
+        "position": "bottom"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "The man is seated at a desk.",
+        "fact": "The man looks down at the desk in the first frame.",
         "confidence": 1.0
       },
       {
-        "fact": "The man looks down at the desk and then lifts his head to face forward.",
+        "fact": "The man looks up and raises his left hand in the second frame.",
         "confidence": 1.0
       },
       {
-        "fact": "The man raises his right hand while speaking.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "A large screen with a graphic pattern is positioned behind the man.",
+        "fact": "The man is wearing a watch on his left wrist.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The man is sitting in front of the large screen. His hands are resting on or hovering above the desk surface.",
+    "spatial": "The man is in front of the large screen. The desk is below the man.",
     "parse_success": true,
     "chunk_idx": 17,
     "video_id": "ytb_JewB6CNKAGo"
   },
   {
     "time": [
-      36,
-      38
+      18,
+      19
     ],
     "visible_entities": [
       {
-        "desc": "man with short dark hair, wearing a dark suit jacket over a light blue button-down shirt",
+        "desc": "man with short dark hair, wearing a dark suit jacket and a light blue button-down shirt",
         "action": "gesturing with both hands",
         "position": "left"
       },
       {
-        "desc": "woman with long wavy blonde hair, wearing a dark blue short-sleeved top",
-        "action": "static",
+        "desc": "woman with long blonde wavy hair, wearing a dark blue short-sleeved top",
+        "action": "sitting with hands clasped on the desk",
         "position": "right"
       },
       {
         "desc": "large curved news desk with a glossy black surface and a blue front panel featuring a logo",
         "action": "static",
-        "position": "center"
+        "position": "foreground"
       },
       {
-        "desc": "large video wall background displaying abstract red and blue ribbon-like graphics",
+        "desc": "large video wall displaying abstract red and blue ribbon-like graphics",
         "action": "static",
         "position": "background"
       },
       {
-        "desc": "white papers and a tablet device",
-        "action": "static",
-        "position": "on desk"
-      },
-      {
-        "desc": "blue lower-third graphic bar with white text",
-        "action": "static",
-        "position": "bottom left"
+        "desc": "white papers and a black tablet device",
+        "action": "resting on the desk",
+        "position": "center"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "The man on the left is gesturing with both hands raised in front of his chest.",
+        "fact": "The man on the left is gesturing with both hands raised.",
         "confidence": 1.0
       },
       {
-        "fact": "The woman on the right is sitting with her hands clasped on the desk.",
+        "fact": "The woman on the right is smiling and looking forward.",
         "confidence": 1.0
       },
       {
@@ -897,69 +865,65 @@
         "confidence": 1.0
       },
       {
-        "fact": "The text 'TYT' is visible on the blue graphic bar at the bottom left of the screen.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "Papers and a tablet are placed on the desk in front of the presenters.",
+        "fact": "Papers and a tablet are placed on the desk surface.",
         "confidence": 1.0
       }
     ],
     "ocr": [
       "TYT"
     ],
-    "spatial": "The man is sitting to the left of the woman at the news desk. The desk is in front of the large video wall background. The 'TYT' logo is on the front panel of the desk, below the surface where the papers are placed. The blue graphic bar is located at the bottom left corner of the screen.",
+    "spatial": "The man is seated to the left of the woman. Both individuals are positioned behind the large news desk. The video wall is located behind the people and the desk.",
     "parse_success": true,
     "chunk_idx": 18,
     "video_id": "ytb_JewB6CNKAGo"
   },
   {
     "time": [
-      38,
-      40
+      19,
+      20
     ],
     "visible_entities": [
       {
         "desc": "man with short dark hair, wearing a dark suit jacket and a light blue button-down shirt",
-        "action": "gesturing with hands",
+        "action": "gesturing with both hands",
         "position": "left"
       },
       {
-        "desc": "woman with long blonde wavy hair, wearing a dark blue short-sleeved top",
-        "action": "sitting with hands on desk",
+        "desc": "woman with long blonde hair, wearing a dark blue short-sleeved top",
+        "action": "sitting and looking at the man",
         "position": "right"
       },
       {
-        "desc": "large curved news desk with a glossy black surface and silver trim",
+        "desc": "large curved news desk with a black glossy surface and silver trim",
         "action": "static",
-        "position": "center"
+        "position": "foreground"
       },
       {
-        "desc": "large screen background displaying a stylized red, white, and blue flag pattern",
+        "desc": "large video wall displaying a stylized red, white, and blue flag pattern",
         "action": "static",
         "position": "background"
       },
       {
-        "desc": "blue lower-third graphic banner with white text",
+        "desc": "blue lower-third graphic with white text",
         "action": "static",
         "position": "bottom"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "The man on the left is gesturing with both hands open while speaking.",
+        "fact": "The man on the left is gesturing with his hands open while speaking.",
         "confidence": 1.0
       },
       {
-        "fact": "The woman on the right is looking towards the man.",
+        "fact": "The woman on the right is sitting with her hands clasped on the desk.",
         "confidence": 1.0
       },
       {
-        "fact": "Papers and a tablet are resting on the desk in front of the presenters.",
+        "fact": "Papers and a tablet are resting on the desk surface.",
         "confidence": 1.0
       },
       {
-        "fact": "The text 'TYT.COM/JOIN' is displayed on the blue banner at the bottom of the screen.",
+        "fact": "The text 'TYT.COM/JOIN' is displayed on the screen.",
         "confidence": 1.0
       }
     ],
@@ -967,15 +931,15 @@
       "TYT",
       "TYT.COM/JOIN"
     ],
-    "spatial": "The man is seated to the left of the woman at the news desk. The large screen with the flag pattern is behind both presenters. The blue graphic banner is located at the bottom of the frame, below the desk.",
+    "spatial": "The man is sitting to the left of the woman at the news desk. The desk is in front of the large video wall background. The blue graphic banner is located at the bottom of the screen, below the desk.",
     "parse_success": true,
     "chunk_idx": 19,
     "video_id": "ytb_JewB6CNKAGo"
   },
   {
     "time": [
-      40,
-      42
+      20,
+      21
     ],
     "visible_entities": [
       {
@@ -984,12 +948,12 @@
         "position": "center"
       },
       {
-        "desc": "blue and white lower-third graphic overlay",
+        "desc": "blue lower-third graphic with white text",
         "action": "static",
         "position": "bottom"
       },
       {
-        "desc": "abstract background with blue and red wavy patterns",
+        "desc": "large screen displaying abstract red and blue graphics",
         "action": "static",
         "position": "background"
       }
@@ -1000,11 +964,7 @@
         "confidence": 1.0
       },
       {
-        "fact": "The text 'TYT.COM/JOIN' is displayed on the lower-third graphic.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The man is wearing a dark suit jacket over a light blue shirt.",
+        "fact": "The lower-third graphic displays the text 'TYT.COM/JOIN'.",
         "confidence": 1.0
       }
     ],
@@ -1012,20 +972,20 @@
       "TYT",
       "TYT.COM/JOIN"
     ],
-    "spatial": "The man is positioned in the center of the frame, in front of the abstract blue and red background. The lower-third graphic is located at the bottom of the screen, below the man.",
+    "spatial": "The man is in the center of the frame, in front of the large screen. The lower-third graphic is at the bottom of the screen, below the man.",
     "parse_success": true,
     "chunk_idx": 20,
     "video_id": "ytb_JewB6CNKAGo"
   },
   {
     "time": [
-      42,
-      44
+      21,
+      22
     ],
     "visible_entities": [
       {
         "desc": "man with short dark hair, wearing a dark suit jacket over a light blue button-down shirt",
-        "action": "speaking and gesturing with hands",
+        "action": "gesturing with hands",
         "position": "center"
       },
       {
@@ -1041,15 +1001,15 @@
     ],
     "atomic_facts": [
       {
-        "fact": "The man gestures with both hands raised in front of his chest.",
+        "fact": "the man raises his hands while speaking",
         "confidence": 1.0
       },
       {
-        "fact": "The banner at the bottom displays the text 'TYT.COM/JOIN'.",
+        "fact": "the banner displays the text 'TYT.COM/JOIN'",
         "confidence": 1.0
       },
       {
-        "fact": "The man is seated behind a desk.",
+        "fact": "the man is seated behind a desk",
         "confidence": 1.0
       }
     ],
@@ -1057,15 +1017,15 @@
       "TYT",
       "TYT.COM/JOIN"
     ],
-    "spatial": "The man is centered in the frame, positioned in front of the abstract background. The lower-third graphic banner is located at the bottom of the screen, below the man.",
+    "spatial": "The man is in the center of the frame, positioned in front of the abstract background. The blue and white banner is located at the bottom of the screen, below the man.",
     "parse_success": true,
     "chunk_idx": 21,
     "video_id": "ytb_JewB6CNKAGo"
   },
   {
     "time": [
-      44,
-      46
+      22,
+      23
     ],
     "visible_entities": [
       {
@@ -1086,11 +1046,15 @@
     ],
     "atomic_facts": [
       {
-        "fact": "The man is gesturing with his hands open.",
+        "fact": "man gestures with both hands open",
         "confidence": 1.0
       },
       {
-        "fact": "The banner displays the text 'TYT.COM/JOIN'.",
+        "fact": "the banner displays the text 'TYT.COM/JOIN'",
+        "confidence": 1.0
+      },
+      {
+        "fact": "the man is wearing a light blue shirt under a dark jacket",
         "confidence": 1.0
       }
     ],
@@ -1098,20 +1062,20 @@
       "TYT",
       "TYT.COM/JOIN"
     ],
-    "spatial": "The man is positioned in the center of the frame, in front of the abstract background. The blue and white graphic banner is located at the bottom of the screen, below the man.",
+    "spatial": "The man is positioned in the center of the frame, in front of the abstract background. The graphic banner is located at the bottom of the screen, below the man.",
     "parse_success": true,
     "chunk_idx": 22,
     "video_id": "ytb_JewB6CNKAGo"
   },
   {
     "time": [
-      46,
-      48
+      23,
+      24
     ],
     "visible_entities": [
       {
-        "desc": "man with short dark hair, wearing a dark navy suit jacket, light blue pinstriped button-down shirt, silver watch on left wrist, and a ring on left ring finger",
-        "action": "gesturing with hands while speaking",
+        "desc": "man with short dark hair, wearing a dark suit jacket over a light blue button-down shirt",
+        "action": "gesturing with hands",
         "position": "center"
       },
       {
@@ -1120,79 +1084,79 @@
         "position": "background"
       },
       {
-        "desc": "TYT logo in white text on a blue rectangular background",
+        "desc": "blue rectangular logo with white text",
         "action": "static",
         "position": "bottom left"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "The man is gesturing with both hands in front of his chest.",
+        "fact": "The man is gesturing with both hands open in front of his chest.",
         "confidence": 1.0
       },
       {
-        "fact": "The man is wearing a silver watch on his left wrist.",
+        "fact": "The man is wearing a watch on his left wrist.",
         "confidence": 1.0
       },
       {
-        "fact": "The TYT logo is visible in the bottom left corner of the screen.",
+        "fact": "The logo in the bottom left corner reads 'TYT'.",
         "confidence": 1.0
       }
     ],
     "ocr": [
       "TYT"
     ],
-    "spatial": "The man is in the center of the frame, in front of the blue and red background graphic. The TYT logo is located in the bottom left corner, below the man.",
+    "spatial": "The man is positioned in the center of the frame, in front of the blue and red background graphic. The 'TYT' logo is located in the bottom left corner, below the man's right arm.",
     "parse_success": true,
     "chunk_idx": 23,
     "video_id": "ytb_JewB6CNKAGo"
   },
   {
     "time": [
-      48,
-      50
+      24,
+      25
     ],
     "visible_entities": [
       {
-        "desc": "man with short dark hair, wearing a dark suit jacket over a light blue striped button-down shirt",
-        "action": "gesturing with hands",
+        "desc": "man with short dark hair, wearing a dark navy blazer, a light blue and white vertically striped button-down shirt, and a silver watch on his left wrist",
+        "action": "gesturing with hands while speaking",
         "position": "center"
       },
       {
-        "desc": "large screen with abstract blue and red graphics",
+        "desc": "large screen background with abstract blue, red, and purple graphics",
         "action": "static",
         "position": "background"
       },
       {
         "desc": "dark desk surface",
         "action": "static",
-        "position": "foreground"
+        "position": "bottom"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "man is gesturing with his hands while speaking",
+        "fact": "The man is sitting at a desk.",
         "confidence": 1.0
       },
       {
-        "fact": "man is sitting behind a desk",
+        "fact": "The man is gesturing with his hands.",
         "confidence": 1.0
       },
       {
-        "fact": "screen is behind the man",
+        "fact": "The man is looking slightly to his right.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The man is in front of the large screen. The desk is in front of the man. The screen is behind the man.",
+    "spatial": "The man is in the center of the frame, sitting behind a dark desk. The large screen with abstract graphics is behind the man.",
     "parse_success": true,
     "chunk_idx": 24,
     "video_id": "ytb_JewB6CNKAGo"
   },
   {
     "time": [
-      50,
-      52
+      25,
+      26
     ],
     "visible_entities": [
       {
@@ -1201,121 +1165,107 @@
         "position": "center"
       },
       {
-        "desc": "large screen displaying abstract red and blue graphics",
+        "desc": "large screen background with abstract blue, purple, and red graphics",
         "action": "static",
         "position": "background"
-      },
-      {
-        "desc": "dark desk surface",
-        "action": "static",
-        "position": "foreground"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "The man is gesturing with both hands raised in front of his chest.",
+        "fact": "man gestures with both hands raised",
         "confidence": 1.0
       },
       {
-        "fact": "The man is wearing a ring on his left ring finger.",
+        "fact": "man is wearing a ring on his left hand",
         "confidence": 1.0
       },
       {
-        "fact": "The man is wearing a watch on his left wrist.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The background screen displays abstract red and blue shapes.",
+        "fact": "man is wearing a watch on his left wrist",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The man is positioned in the center of the frame, sitting behind a dark desk. The large screen with abstract graphics is located behind the man.",
+    "spatial": "The man is in front of the large screen background. The screen is behind the man.",
     "parse_success": true,
     "chunk_idx": 25,
     "video_id": "ytb_JewB6CNKAGo"
   },
   {
     "time": [
-      52,
-      54
+      26,
+      27
     ],
     "visible_entities": [
       {
-        "desc": "man with short dark hair, wearing a dark navy suit jacket, a light blue button-down shirt with thin vertical stripes, a silver watch on his left wrist, and a ring on his left ring finger",
-        "action": "sitting at a desk with hands clasped, eyes closed in the first frame and open in the second",
+        "desc": "man with short dark hair, wearing a dark navy suit jacket, a light blue striped button-down shirt, a silver watch on his left wrist, and a ring on his left ring finger",
+        "action": "sitting at a desk with hands clasped",
         "position": "center"
       },
       {
-        "desc": "large screen background displaying abstract red, blue, and black graphics",
+        "desc": "large video wall screen displaying an abstract graphic with blue, red, and purple colors",
         "action": "static",
         "position": "background"
       },
       {
-        "desc": "dark glossy desk surface",
+        "desc": "dark reflective desk surface",
         "action": "static",
         "position": "foreground"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "The man sits at a desk with his hands clasped together.",
+        "fact": "A man sits at a desk with his hands clasped together.",
         "confidence": 1.0
       },
       {
-        "fact": "The man closes his eyes in the first frame and opens them in the second frame.",
+        "fact": "The man is wearing a dark suit jacket over a light blue shirt.",
         "confidence": 1.0
       },
       {
-        "fact": "The man is wearing a silver watch on his left wrist.",
+        "fact": "A large screen with abstract blue and red graphics is behind the man.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The man is positioned in the center of the frame, sitting behind the dark desk. The large screen with abstract graphics is located behind the man.",
+    "spatial": "The man is sitting in front of the large video wall screen. His hands are resting on the desk surface in the foreground. The screen is behind the man.",
     "parse_success": true,
     "chunk_idx": 26,
     "video_id": "ytb_JewB6CNKAGo"
   },
   {
     "time": [
-      54,
-      56
+      27,
+      28
     ],
     "visible_entities": [
       {
-        "desc": "man with short graying hair, wearing a dark suit jacket over a light blue button-down shirt",
-        "action": "sitting at the desk",
+        "desc": "man with short dark hair, wearing a dark suit jacket over a light blue button-down shirt",
+        "action": "sitting at a desk",
         "position": "left"
       },
       {
-        "desc": "woman with long blonde wavy hair, wearing a dark blue short-sleeved top",
-        "action": "sitting at the desk",
+        "desc": "woman with long blonde hair, wearing a dark blue short-sleeved top",
+        "action": "sitting at a desk",
         "position": "right"
       },
       {
-        "desc": "large curved news desk with a glossy black surface and a front panel displaying a logo",
+        "desc": "large curved news desk with a black glossy surface and a blue front panel featuring a logo",
         "action": "static",
         "position": "foreground"
       },
       {
-        "desc": "large screen background displaying a stylized red and blue flag pattern",
+        "desc": "large screen background displaying abstract red and blue wavy graphics",
         "action": "static",
         "position": "background"
-      },
-      {
-        "desc": "white papers and a tablet device",
-        "action": "static",
-        "position": "on the desk"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A man and a woman are seated behind a news desk.",
+        "fact": "The man sits to the left of the woman at the news desk.",
         "confidence": 1.0
       },
       {
-        "fact": "The man is positioned to the left of the woman.",
+        "fact": "The woman sits to the right of the man at the news desk.",
         "confidence": 1.0
       },
       {
@@ -1323,26 +1273,26 @@
         "confidence": 1.0
       },
       {
-        "fact": "Papers and a tablet are resting on the desk surface.",
+        "fact": "Papers and a tablet are resting on the surface of the desk.",
         "confidence": 1.0
       }
     ],
     "ocr": [
       "TYT"
     ],
-    "spatial": "The man is to the left of the woman. Both individuals are sitting behind the large news desk. The 'TYT' logo is on the front of the desk, below the papers.",
+    "spatial": "The man is seated to the left of the woman. Both individuals are positioned behind the large curved desk. The desk is in the foreground, situated in front of the large screen displaying red and blue graphics.",
     "parse_success": true,
     "chunk_idx": 27,
     "video_id": "ytb_JewB6CNKAGo"
   },
   {
     "time": [
-      56,
-      58
+      28,
+      29
     ],
     "visible_entities": [
       {
-        "desc": "man with short dark hair, wearing a black suit jacket and a light blue button-down shirt",
+        "desc": "man with short dark hair, wearing a dark suit jacket and a light blue button-down shirt",
         "action": "gesturing with both hands",
         "position": "left"
       },
@@ -1352,70 +1302,70 @@
         "position": "right"
       },
       {
-        "desc": "large curved black news desk with a glossy surface",
+        "desc": "large curved news desk with a glossy black surface and a blue front panel featuring a logo",
         "action": "static",
-        "position": "center"
+        "position": "foreground"
       },
       {
-        "desc": "large screen displaying a red, white, and blue abstract flag-like pattern",
+        "desc": "large video wall background displaying abstract red and blue flowing graphics",
         "action": "static",
         "position": "background"
       },
       {
-        "desc": "white papers and a tablet",
+        "desc": "white papers and a black tablet device",
         "action": "static",
-        "position": "on the desk"
+        "position": "on desk"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "The man on the left is gesturing with his hands while speaking.",
+        "fact": "The man on the left is gesturing with his hands while looking forward.",
         "confidence": 1.0
       },
       {
-        "fact": "The woman on the right is looking down at papers on the desk.",
+        "fact": "The woman on the right is looking down at the papers on the desk.",
         "confidence": 1.0
       },
       {
-        "fact": "The desk features a 'TYT' logo on the front panel.",
+        "fact": "The letters 'TYT' are visible on the front of the desk.",
         "confidence": 1.0
       },
       {
-        "fact": "There are papers and a tablet resting on the desk surface.",
+        "fact": "Papers and a tablet are resting on the surface of the desk.",
         "confidence": 1.0
       }
     ],
     "ocr": [
       "TYT"
     ],
-    "spatial": "The man is seated to the left of the woman at the news desk. The woman is seated to the right of the man. The large screen with the flag pattern is behind both individuals. The papers are on the desk in front of the woman.",
+    "spatial": "The man is seated to the left of the woman. Both individuals are positioned behind the large news desk. The 'TYT' logo is located on the front panel of the desk, below the surface where the papers are placed. The video wall is situated behind the anchors.",
     "parse_success": true,
     "chunk_idx": 28,
     "video_id": "ytb_JewB6CNKAGo"
   },
   {
     "time": [
-      58,
-      60
+      29,
+      30
     ],
     "visible_entities": [
       {
-        "desc": "man with short dark hair, wearing a black suit jacket and a light blue button-down shirt",
-        "action": "gesturing with hands and looking down at a tablet",
+        "desc": "man with short dark hair, wearing a dark suit jacket over a light blue collared shirt",
+        "action": "gesturing with hands and looking at a tablet",
         "position": "left"
       },
       {
         "desc": "woman with long blonde wavy hair, wearing a dark blue short-sleeved top",
-        "action": "sitting with hands resting on papers",
+        "action": "looking down at papers on the desk",
         "position": "right"
       },
       {
         "desc": "large curved news desk with a glossy black surface and a blue front panel featuring a logo",
         "action": "static",
-        "position": "foreground"
+        "position": "center foreground"
       },
       {
-        "desc": "large video wall background displaying a stylized red, white, and blue flag pattern",
+        "desc": "large video wall screen displaying a stylized red, white, and blue flag graphic",
         "action": "static",
         "position": "background"
       },
@@ -1432,59 +1382,143 @@
     ],
     "atomic_facts": [
       {
-        "fact": "The man on the left gestures with his hands while looking at a tablet on the desk.",
+        "fact": "The man on the left gestures with his hands while looking at a tablet.",
         "confidence": 1.0
       },
       {
-        "fact": "The woman on the right sits with her hands on papers.",
+        "fact": "The woman on the right looks down at papers on the desk.",
         "confidence": 1.0
       },
       {
-        "fact": "The text 'TYT' is visible on the front of the desk.",
+        "fact": "The logo 'TYT' is visible on the front of the news desk.",
         "confidence": 1.0
       }
     ],
     "ocr": [
       "TYT"
     ],
-    "spatial": "The man is seated to the left of the woman. Both are positioned behind the large news desk. The 'TYT' logo is on the front panel of the desk, below the surface where the papers and tablet are placed. The video wall is behind the anchors.",
+    "spatial": "The man is seated to the left of the woman at the news desk. The tablet is on the desk in front of the man, and the papers are on the desk in front of the woman. The large video screen is behind both individuals.",
     "parse_success": true,
     "chunk_idx": 29,
     "video_id": "ytb_JewB6CNKAGo"
   },
   {
     "time": [
-      60,
-      62
+      30,
+      31
     ],
     "visible_entities": [
       {
-        "desc": "man with short dark hair, wearing a dark suit jacket, white button-down shirt, silver watch, and gold ring",
-        "action": "gesturing with hands and pointing",
+        "desc": "man with short dark hair, wearing a dark suit jacket, white button-down shirt, silver wristwatch on left wrist, and a gold ring on left ring finger",
+        "action": "gesturing with hands",
         "position": "center"
       },
       {
-        "desc": "large screen displaying blue and red abstract graphics",
+        "desc": "large screen displaying abstract blue and red graphics",
         "action": "static",
         "position": "background"
       },
       {
-        "desc": "dark desk surface",
+        "desc": "dark reflective desk surface",
+        "action": "static",
+        "position": "bottom"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The man gestures with his hands while speaking.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The man points his right index finger forward.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The man is seated behind a desk.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The man is in the center of the frame, positioned in front of the large screen. The screen is behind the man. The desk is below the man's hands and torso.",
+    "parse_success": true,
+    "chunk_idx": 30,
+    "video_id": "ytb_JewB6CNKAGo"
+  },
+  {
+    "time": [
+      31,
+      32
+    ],
+    "visible_entities": [
+      {
+        "desc": "man with short dark hair, wearing a black suit jacket over a white button-down shirt, silver watch on left wrist, ring on left ring finger",
+        "action": "speaking and gesturing with hands",
+        "position": "center/foreground"
+      },
+      {
+        "desc": "large digital screen displaying abstract blue and red graphics",
+        "action": "static",
+        "position": "background"
+      },
+      {
+        "desc": "dark reflective desk surface",
+        "action": "static",
+        "position": "bottom/foreground"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "man is speaking with mouth open",
+        "confidence": 1.0
+      },
+      {
+        "fact": "man is gesturing with both hands raised slightly above the desk",
+        "confidence": 1.0
+      },
+      {
+        "fact": "man is seated behind a desk",
+        "confidence": 1.0
+      },
+      {
+        "fact": "digital screen is behind the man",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The man is centered in the foreground, seated behind a dark desk. The large digital screen displaying blue and red graphics is directly behind him. His hands are positioned above the desk surface.",
+    "parse_success": true,
+    "chunk_idx": 31,
+    "video_id": "ytb_JewB6CNKAGo"
+  },
+  {
+    "time": [
+      32,
+      33
+    ],
+    "visible_entities": [
+      {
+        "desc": "man with short dark hair, wearing a dark navy suit jacket, white button-down shirt, and a silver watch on his left wrist",
+        "action": "speaking",
+        "position": "center"
+      },
+      {
+        "desc": "large digital screen displaying abstract red and blue graphics",
+        "action": "static",
+        "position": "background"
+      },
+      {
+        "desc": "glossy dark desk surface",
         "action": "static",
         "position": "foreground"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "The man clasps his hands together on the desk.",
+        "fact": "The man is speaking with his mouth open.",
         "confidence": 1.0
       },
       {
-        "fact": "The man points his right index finger to his left.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The man is wearing a gold ring on his left ring finger.",
+        "fact": "The man has his hands clasped together on the desk.",
         "confidence": 1.0
       },
       {
@@ -1493,24 +1527,24 @@
       }
     ],
     "ocr": [],
-    "spatial": "The man is positioned in the center of the frame, sitting behind the dark desk. The large screen with blue and red graphics is located behind the man. The man's hands are resting on or hovering just above the desk surface.",
+    "spatial": "The man is sitting behind the glossy dark desk in the foreground. The large digital screen with red and blue graphics is located behind the man.",
     "parse_success": true,
-    "chunk_idx": 30,
+    "chunk_idx": 32,
     "video_id": "ytb_JewB6CNKAGo"
   },
   {
     "time": [
-      62,
-      64
+      33,
+      34
     ],
     "visible_entities": [
       {
-        "desc": "man with short dark hair, wearing a black suit jacket, white collared shirt, silver watch, and ring",
-        "action": "speaking and gesturing with hands",
+        "desc": "man with short dark hair, wearing a dark suit jacket, white button-down shirt, and a silver watch on his left wrist",
+        "action": "speaking",
         "position": "center"
       },
       {
-        "desc": "large digital screen with abstract blue and red graphics",
+        "desc": "large screen displaying abstract graphics with horizontal bands of red, blue, and purple",
         "action": "static",
         "position": "background"
       },
@@ -1526,173 +1560,137 @@
         "confidence": 1.0
       },
       {
-        "fact": "The man is gesturing with both hands on the desk.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The man is wearing a silver watch on his left wrist.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The man is wearing a ring on his left ring finger.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [],
-    "spatial": "The man is sitting behind the dark desk in the center of the frame. The large digital screen is located behind the man. The man's hands are resting on top of the desk surface.",
-    "parse_success": true,
-    "chunk_idx": 31,
-    "video_id": "ytb_JewB6CNKAGo"
-  },
-  {
-    "time": [
-      64,
-      66
-    ],
-    "visible_entities": [
-      {
-        "desc": "man with short dark hair, wearing a dark navy suit jacket, white button-down shirt, and a silver wristwatch on his left wrist",
-        "action": "speaking with hands clasped",
-        "position": "center"
-      },
-      {
-        "desc": "large video wall displaying abstract graphics with red, pink, and blue colors",
-        "action": "static",
-        "position": "background"
-      },
-      {
-        "desc": "dark reflective desk surface",
-        "action": "static",
-        "position": "foreground"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "The man is sitting at a desk with his hands clasped together.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The man is speaking, as indicated by his open mouth and facial expression.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The man is wearing a silver watch on his left wrist.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [],
-    "spatial": "The man is sitting behind the dark desk in the foreground. The large video wall is located behind the man.",
-    "parse_success": true,
-    "chunk_idx": 32,
-    "video_id": "ytb_JewB6CNKAGo"
-  },
-  {
-    "time": [
-      66,
-      68
-    ],
-    "visible_entities": [
-      {
-        "desc": "man with short dark hair, wearing a dark suit jacket, white collared shirt, and a silver wristwatch",
-        "action": "sitting at a desk with hands clasped",
-        "position": "center"
-      },
-      {
-        "desc": "large screen displaying abstract red, blue, and purple graphics",
-        "action": "static",
-        "position": "background"
-      },
-      {
-        "desc": "dark reflective desk surface",
-        "action": "static",
-        "position": "foreground"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "A man is sitting at a desk with his hands clasped together.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The man is wearing a silver watch on his left wrist.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "A large screen with colorful graphics is positioned behind the man.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [],
-    "spatial": "The man is sitting in front of the large screen. The desk is below the man's hands and in the foreground of the shot.",
-    "parse_success": true,
-    "chunk_idx": 33,
-    "video_id": "ytb_JewB6CNKAGo"
-  },
-  {
-    "time": [
-      68,
-      70
-    ],
-    "visible_entities": [
-      {
-        "desc": "man with short dark hair and light skin, wearing a dark navy suit jacket, a white button-down shirt, and a silver wristwatch",
-        "action": "speaking",
-        "position": "center"
-      },
-      {
-        "desc": "large screen displaying abstract blue and red graphics",
-        "action": "static",
-        "position": "background"
-      },
-      {
-        "desc": "dark reflective desk surface",
-        "action": "static",
-        "position": "foreground"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "The man is speaking with his mouth moving.",
-        "confidence": 1.0
-      },
-      {
         "fact": "The man has his hands clasped together on the desk.",
         "confidence": 1.0
       },
       {
         "fact": "The man is wearing a silver watch on his left wrist.",
         "confidence": 1.0
+      },
+      {
+        "fact": "The screen behind the man displays red and blue abstract patterns.",
+        "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The man is positioned in the center of the frame, sitting behind the dark reflective desk. The large screen with blue and red graphics is located behind the man.",
+    "spatial": "The man is sitting behind the dark desk in the center of the frame. The large screen with colorful graphics is located behind the man. The man's hands are resting on top of the desk surface.",
+    "parse_success": true,
+    "chunk_idx": 33,
+    "video_id": "ytb_JewB6CNKAGo"
+  },
+  {
+    "time": [
+      34,
+      35
+    ],
+    "visible_entities": [
+      {
+        "desc": "man with short dark hair, wearing a black suit jacket, white button-down shirt, and a silver wristwatch",
+        "action": "speaking",
+        "position": "center"
+      },
+      {
+        "desc": "large digital screen displaying abstract blue and red graphics",
+        "action": "static",
+        "position": "background"
+      },
+      {
+        "desc": "dark reflective desk surface",
+        "action": "static",
+        "position": "foreground"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The man is speaking to the camera.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The man is sitting behind a desk.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The man has his hands clasped together on the desk surface.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A large screen with blue and red abstract patterns is behind the man.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The man is positioned in the center of the frame, sitting behind a dark desk. The large digital screen is located directly behind the man, filling the background. The man's hands are resting on top of the desk in the foreground.",
     "parse_success": true,
     "chunk_idx": 34,
     "video_id": "ytb_JewB6CNKAGo"
   },
   {
     "time": [
-      70,
-      72
+      35,
+      36
     ],
     "visible_entities": [
       {
-        "desc": "man with short dark hair, wearing a black suit jacket and white button-down shirt, silver watch on left wrist",
+        "desc": "man with short dark hair, wearing a black suit jacket and white collared shirt",
         "action": "static",
         "position": "center-left"
       },
       {
-        "desc": "woman with blonde hair in an updo, wearing a black blazer over a magenta top, black lace bracelet on left wrist",
+        "desc": "woman with blonde hair in a high bun, wearing a black blazer and bright pink top",
         "action": "static",
         "position": "center-right"
       },
       {
-        "desc": "text 'WATCH MORE!' in bold white sans-serif font",
+        "desc": "white bold sans-serif text reading 'WATCH MORE!'",
+        "action": "static",
+        "position": "top-left"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The man and woman stand side-by-side with their arms crossed.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The text 'WATCH MORE!' is displayed in the upper left corner.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The background features abstract red and blue shapes.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "WATCH MORE!"
+    ],
+    "spatial": "The man is to the left of the woman. The text 'WATCH MORE!' is above the man and to the left of the woman. Both people are in front of the abstract background.",
+    "parse_success": true,
+    "chunk_idx": 35,
+    "video_id": "ytb_JewB6CNKAGo"
+  },
+  {
+    "time": [
+      36,
+      37
+    ],
+    "visible_entities": [
+      {
+        "desc": "man with short dark hair, wearing a black suit jacket over a white collared shirt, silver watch on left wrist",
+        "action": "static",
+        "position": "center-left"
+      },
+      {
+        "desc": "woman with blonde hair in a high bun, wearing a black blazer over a magenta top with lace trim, dark bracelet on left wrist",
+        "action": "static",
+        "position": "center-right"
+      },
+      {
+        "desc": "white bold sans-serif text",
         "action": "static",
         "position": "top-left"
       },
       {
-        "desc": "abstract background with dark blue and red wavy patterns",
+        "desc": "abstract background with dark blue and red flowing shapes",
         "action": "static",
         "position": "background"
       }
@@ -1714,24 +1712,24 @@
     "ocr": [
       "WATCH MORE!"
     ],
-    "spatial": "The man is to the left of the woman. Both individuals are standing in front of the abstract background. The text is located above and to the left of the man.",
+    "spatial": "The man is to the left of the woman. Both individuals are positioned in front of the abstract background. The text is above the man and to the left of the woman.",
     "parse_success": true,
-    "chunk_idx": 35,
+    "chunk_idx": 36,
     "video_id": "ytb_JewB6CNKAGo"
   },
   {
     "time": [
-      72,
-      74
+      37,
+      38
     ],
     "visible_entities": [
       {
-        "desc": "man with short dark hair, wearing a black suit jacket over a white button-down shirt, silver watch on left wrist",
+        "desc": "man with short dark hair, wearing a black suit jacket over a white collared shirt, silver watch on left wrist",
         "action": "static",
         "position": "center-left"
       },
       {
-        "desc": "woman with blonde hair in an updo, wearing a black blazer over a magenta top with lace detailing on the sleeves",
+        "desc": "woman with blonde hair styled in an updo, wearing a black blazer over a magenta top, black lace cuffs",
         "action": "static",
         "position": "center-right"
       },
@@ -1741,7 +1739,7 @@
         "position": "top-left"
       },
       {
-        "desc": "abstract background with dark blue and red swirling ribbon-like shapes",
+        "desc": "abstract background with flowing red and dark blue ribbon-like shapes",
         "action": "static",
         "position": "background"
       }
@@ -1763,15 +1761,15 @@
     "ocr": [
       "WATCH MORE!"
     ],
-    "spatial": "The man is to the left of the woman. The woman is to the right of the man. Both people are in front of the abstract background. The text is above the man.",
+    "spatial": "The man is to the left of the woman. Both individuals are standing in front of the abstract red and blue background. The text is positioned above and to the left of the man.",
     "parse_success": true,
-    "chunk_idx": 36,
+    "chunk_idx": 37,
     "video_id": "ytb_JewB6CNKAGo"
   },
   {
     "time": [
-      74,
-      76
+      38,
+      39
     ],
     "visible_entities": [
       {
@@ -1780,17 +1778,17 @@
         "position": "center-left"
       },
       {
-        "desc": "woman with blonde hair in an updo, wearing a black blazer over a magenta top with lace detailing on the sleeves",
+        "desc": "woman with blonde hair styled in a high bun, wearing a black blazer over a bright pink top with lace detailing on the sleeves",
         "action": "static",
         "position": "center-right"
       },
       {
-        "desc": "white bold sans-serif text reading 'WATCH MORE!'",
+        "desc": "text 'WATCH MORE!' in bold white sans-serif font",
         "action": "static",
         "position": "top-left"
       },
       {
-        "desc": "abstract background with dark blue and red flowing ribbon-like shapes",
+        "desc": "abstract background with flowing red and dark blue ribbon-like shapes",
         "action": "static",
         "position": "background"
       }
@@ -1816,83 +1814,34 @@
     "ocr": [
       "WATCH MORE!"
     ],
-    "spatial": "The man is to the left of the woman. The text 'WATCH MORE!' is above the man. Both people are in front of the abstract red and blue background.",
-    "parse_success": true,
-    "chunk_idx": 37,
-    "video_id": "ytb_JewB6CNKAGo"
-  },
-  {
-    "time": [
-      76,
-      78
-    ],
-    "visible_entities": [
-      {
-        "desc": "man with short dark hair, wearing a black suit jacket over a white open-collar shirt, and a silver watch on his left wrist",
-        "action": "static",
-        "position": "center-left"
-      },
-      {
-        "desc": "woman with blonde hair styled in a high bun, wearing a black blazer over a bright pink top with lace detailing on the sleeves",
-        "action": "static",
-        "position": "center-right"
-      },
-      {
-        "desc": "text in bold white capital letters reading 'WATCH MORE!'",
-        "action": "static",
-        "position": "top-left"
-      },
-      {
-        "desc": "abstract background with dark blue and red flowing ribbon-like shapes",
-        "action": "static",
-        "position": "background"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "A man and a woman stand side-by-side with their arms crossed.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The text 'WATCH MORE!' is displayed in the top left corner.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The man is wearing a silver watch.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [
-      "WATCH MORE!"
-    ],
-    "spatial": "The man is to the left of the woman. The text 'WATCH MORE!' is above the man. Both people are in front of the abstract background.",
+    "spatial": "The man is positioned to the left of the woman. Both individuals are standing in front of the abstract background. The text 'WATCH MORE!' is located above the man in the top left corner of the frame.",
     "parse_success": true,
     "chunk_idx": 38,
     "video_id": "ytb_JewB6CNKAGo"
   },
   {
     "time": [
-      78,
-      80
+      39,
+      40
     ],
     "visible_entities": [
       {
-        "desc": "man with short dark hair, wearing a black suit jacket and a white collared shirt, with a silver watch on his left wrist",
+        "desc": "man with short dark hair, wearing a black suit jacket over a white button-down shirt, and a silver watch on his left wrist",
         "action": "static",
         "position": "center-left"
       },
       {
-        "desc": "woman with blonde hair styled in a high bun, wearing a black blazer over a magenta top with lace detailing on the sleeves",
+        "desc": "woman with blonde hair styled in an updo, wearing a black blazer over a bright pink top with lace detailing on the sleeves",
         "action": "static",
         "position": "center-right"
       },
       {
-        "desc": "text 'WATCH MORE!' in bold white sans-serif font",
+        "desc": "white bold sans-serif text",
         "action": "static",
         "position": "top-left"
       },
       {
-        "desc": "abstract background with flowing red and dark blue ribbon-like shapes",
+        "desc": "abstract background featuring dark blue and red flowing shapes",
         "action": "static",
         "position": "background"
       }
@@ -1903,22 +1852,22 @@
         "confidence": 1.0
       },
       {
-        "fact": "The text 'WATCH MORE!' is displayed in the top-left corner of the screen.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The woman is wearing a magenta top under a black blazer.",
+        "fact": "The text 'WATCH MORE!' is displayed in the top left corner.",
         "confidence": 1.0
       },
       {
         "fact": "The man is wearing a silver watch on his left wrist.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The woman is wearing a bright pink top under her black blazer.",
         "confidence": 1.0
       }
     ],
     "ocr": [
       "WATCH MORE!"
     ],
-    "spatial": "The man is to the left of the woman. The woman is to the right of the man. The text 'WATCH MORE!' is above and to the left of the man. Both people are in front of the abstract red and blue background.",
+    "spatial": "The man is to the left of the woman. The text 'WATCH MORE!' is above the man and woman. The abstract background is behind the two people.",
     "parse_success": true,
     "chunk_idx": 39,
     "video_id": "ytb_JewB6CNKAGo"

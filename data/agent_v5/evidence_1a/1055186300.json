@@ -2,17 +2,17 @@
   {
     "time": [
       0,
-      2
+      1
     ],
     "visible_entities": [
       {
-        "desc": "cartoon character with a large white beard, bald head with a small tuft of hair, wearing a black robe and white pants",
-        "action": "standing and gesturing with his hand",
+        "desc": "cartoon character with a long white beard, large round glasses, a dark pointed hat, and a dark robe",
+        "action": "looking through a telescope",
         "position": "center"
       },
       {
-        "desc": "small cartoon character wearing a dark outfit and a pointed hat",
-        "action": "standing",
+        "desc": "cartoon character with a pointed hat and dark clothing",
+        "action": "standing next to the bearded character",
         "position": "left"
       },
       {
@@ -21,53 +21,53 @@
         "position": "right"
       },
       {
-        "desc": "wall poster with a drawing of a planet with rings, stars, and a crescent moon",
+        "desc": "wall poster with drawings of a planet, stars, and a crescent moon",
         "action": "static",
-        "position": "background"
+        "position": "background left"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "The bearded character is gesturing with his hand towards the small character.",
+        "fact": "The bearded character is looking through the eyepiece of the telescope.",
         "confidence": 1.0
       },
       {
-        "fact": "The small character is standing to the left of the bearded character.",
+        "fact": "The smaller character stands to the left of the bearded character.",
         "confidence": 1.0
       },
       {
-        "fact": "The telescope is positioned on the right side of the scene.",
+        "fact": "The telescope is positioned on the right side of the frame.",
         "confidence": 1.0
       },
       {
-        "fact": "A poster depicting celestial bodies is on the wall in the background.",
+        "fact": "A poster with celestial drawings hangs on the wall in the background.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The small character is to the left of the bearded character. The bearded character is standing next to the telescope, which is on the right. The poster with the planet and moon is on the wall behind the characters.",
+    "spatial": "The bearded character is in the center of the frame, looking through the telescope which is to his right. The smaller character is to the left of the bearded character. The poster is on the wall in the background, to the left of the characters.",
     "parse_success": true,
     "chunk_idx": 0,
     "video_id": "1055186300"
   },
   {
     "time": [
-      2,
-      4
+      1,
+      2
     ],
     "visible_entities": [
       {
-        "desc": "black cartoon cat with white eyes and a wide grin",
-        "action": "walking to the right",
+        "desc": "black cat character with white eyes and a wide grin",
+        "action": "standing and looking up",
         "position": "left"
       },
       {
-        "desc": "cartoon man with a white beard, glasses, and a dark robe",
+        "desc": "bald man with a white beard, wearing a black robe and white shoes",
         "action": "standing and looking at the cat",
         "position": "center"
       },
       {
-        "desc": "large telescope on a tripod stand",
+        "desc": "large white telescope on a stand",
         "action": "static",
         "position": "right"
       },
@@ -79,33 +79,33 @@
     ],
     "atomic_facts": [
       {
-        "fact": "The black cat walks from the left side of the screen towards the center.",
+        "fact": "The black cat character is standing to the left of the man.",
         "confidence": 1.0
       },
       {
-        "fact": "The man in the dark robe stands still and looks down at the cat.",
+        "fact": "The man is standing between the cat and the telescope.",
         "confidence": 1.0
       },
       {
-        "fact": "The telescope is positioned on the right side of the room.",
+        "fact": "The telescope is positioned on the right side of the frame.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The black cat is to the left of the man in the dark robe. The man is standing next to the large telescope, which is on the right side of the frame. The poster with celestial bodies is on the wall above and to the left of the cat.",
+    "spatial": "The black cat character is to the left of the man. The man is to the left of the large telescope. The wall poster is above the cat on the left wall.",
     "parse_success": true,
     "chunk_idx": 1,
     "video_id": "1055186300"
   },
   {
     "time": [
-      4,
-      6
+      2,
+      3
     ],
     "visible_entities": [
       {
-        "desc": "black cartoon cat with white eyes and a wide open mouth",
-        "action": "standing with mouth open",
+        "desc": "black cartoon cat with white eyes, white mouth, and white gloves",
+        "action": "sitting on the floor with mouth open",
         "position": "left"
       },
       {
@@ -119,200 +119,252 @@
         "position": "right"
       },
       {
-        "desc": "wall poster with a planet, stars, and a crescent moon",
+        "desc": "wall poster featuring a planet with rings, stars, and a crescent moon",
         "action": "static",
-        "position": "background left"
+        "position": "top left background"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "The black cat stands with its mouth wide open.",
+        "fact": "The black cat sits on the floor with its mouth wide open.",
         "confidence": 1.0
       },
       {
-        "fact": "The man stands next to the cat with his hands clasped.",
+        "fact": "The man stands next to the cat with his hands clasped together.",
         "confidence": 1.0
       },
       {
-        "fact": "A large telescope is positioned to the right of the man.",
+        "fact": "A large telescope is positioned on the right side of the room.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A poster depicting space elements hangs on the wall in the background.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The black cat is to the left of the man. The man is standing in the center, next to the cat and to the left of the telescope. The telescope is on the right side of the frame. The poster is on the wall in the background, above and to the left of the cat.",
+    "spatial": "The black cat is to the left of the man. The man is standing between the cat and the telescope. The telescope is on the right side of the frame. The space-themed poster is on the wall above and behind the cat.",
     "parse_success": true,
     "chunk_idx": 2,
     "video_id": "1055186300"
   },
   {
     "time": [
-      6,
-      8
+      3,
+      4
     ],
     "visible_entities": [
       {
-        "desc": "black cat with white eyes and white gloves",
-        "action": "sitting and watching",
+        "desc": "black cat character with white eyes and white gloves",
+        "action": "standing on the floor",
         "position": "left"
       },
       {
-        "desc": "man with white beard, bald head with tuft of hair, wearing dark robe and light pants",
-        "action": "looking through telescope",
+        "desc": "bald man with a long white beard, wearing a dark robe and light pants",
+        "action": "looking through a telescope",
         "position": "center"
       },
       {
-        "desc": "large white telescope on a stand",
+        "desc": "large white telescope on a metal stand",
         "action": "static",
         "position": "right"
       },
       {
-        "desc": "poster with planet, stars, and moon",
+        "desc": "wall poster with a planet, stars, and a crescent moon",
         "action": "static",
-        "position": "background left"
+        "position": "top left"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "The man bends forward to look through the eyepiece of the telescope.",
+        "fact": "The man leans forward to look through the eyepiece of the telescope.",
         "confidence": 1.0
       },
       {
-        "fact": "The black cat sits on the floor observing the man.",
+        "fact": "The black cat stands on the floor watching the man.",
         "confidence": 1.0
       },
       {
-        "fact": "The telescope is mounted on a stand with a tripod base.",
+        "fact": "A poster depicting space elements hangs on the wall.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The black cat is to the left of the man. The man is standing in front of the telescope, looking through its eyepiece. The poster is on the wall in the background, behind the cat.",
+    "spatial": "The black cat is to the left of the man. The man is standing in front of the telescope, looking through its eyepiece. The poster is on the wall above the cat.",
     "parse_success": true,
     "chunk_idx": 3,
     "video_id": "1055186300"
   },
   {
     "time": [
-      8,
-      10
+      4,
+      5
     ],
     "visible_entities": [
       {
-        "desc": "cartoon character with a long white beard, glasses, dark jacket, and light-colored pants",
-        "action": "gesturing with raised hand and pointing finger",
-        "position": "center"
-      },
-      {
-        "desc": "small black cartoon cat with white eyes and mouth",
+        "desc": "cartoon cat character, black fur, white eyes, white gloves, white shoes",
         "action": "standing and looking up",
         "position": "left"
       },
       {
-        "desc": "large telescope on a tripod stand",
+        "desc": "elderly cartoon man, white beard, glasses, dark jacket, light trousers",
+        "action": "gesturing with raised hand then leaning forward",
+        "position": "center"
+      },
+      {
+        "desc": "large telescope on a tripod stand, cylindrical tube with dots",
         "action": "static",
         "position": "right"
       },
       {
         "desc": "wall poster featuring a planet with rings, stars, and a crescent moon",
         "action": "static",
-        "position": "background left"
+        "position": "top left"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "The bearded character raises his right hand and points his index finger upward.",
+        "fact": "The elderly man raises his right index finger in the first frame.",
         "confidence": 1.0
       },
       {
-        "fact": "The small black cat stands on the floor looking up at the bearded character.",
+        "fact": "The elderly man leans forward towards the cat in the second frame.",
         "confidence": 1.0
       },
       {
-        "fact": "The telescope is positioned on the right side of the room.",
+        "fact": "The cat stands to the left of the elderly man.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The telescope is positioned to the right of the elderly man.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The bearded character is in the center of the frame, standing to the right of the small black cat. The telescope is to the right of the bearded character. The wall poster is in the background on the left side, behind the cat.",
+    "spatial": "The cat is to the left of the elderly man. The elderly man is standing between the cat and the telescope. The telescope is on the right side of the frame. The poster is on the wall in the background, above the cat.",
     "parse_success": true,
     "chunk_idx": 4,
     "video_id": "1055186300"
   },
   {
     "time": [
-      10,
-      12
+      5,
+      6
     ],
     "visible_entities": [
       {
-        "desc": "bald cartoon man with a single hair tuft, wearing a dark suit jacket and light-colored trousers",
-        "action": "gesturing with his right hand while standing",
+        "desc": "bald man with a tuft of hair, wearing a black jacket and white pants",
+        "action": "standing and gesturing with his right hand",
         "position": "center"
       },
       {
-        "desc": "small black cartoon cat with white eyes and a white muzzle",
-        "action": "standing and looking up",
+        "desc": "small black cat-like character with a white face and a pointed hat",
+        "action": "standing",
         "position": "left"
       },
       {
-        "desc": "large white telescope with black dots, mounted on a stand with a crank handle",
+        "desc": "large white telescope on a stand with a crank handle",
         "action": "static",
         "position": "right"
       },
       {
-        "desc": "rectangular wall poster featuring a crescent moon and stars",
+        "desc": "rectangular poster with a crescent moon and stars",
         "action": "static",
         "position": "background left"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "The bald man is gesturing with his right hand towards the small black cat.",
+        "fact": "The bald man is gesturing with his right hand towards the cat-like character.",
         "confidence": 1.0
       },
       {
-        "fact": "The small black cat is standing to the left of the bald man.",
+        "fact": "The cat-like character is standing to the left of the bald man.",
         "confidence": 1.0
       },
       {
-        "fact": "A large telescope is positioned on the right side of the frame.",
+        "fact": "A large telescope is positioned to the right of the bald man.",
         "confidence": 1.0
       },
       {
-        "fact": "A poster with a moon and stars is hanging on the wall in the background.",
+        "fact": "A poster featuring a moon and stars is hanging on the wall in the background.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The small black cat is to the left of the bald man. The bald man is standing between the cat and the large telescope. The telescope is to the right of the man. The poster with the moon and stars is on the wall behind the cat and the man.",
+    "spatial": "The cat-like character is to the left of the bald man. The bald man is standing between the cat-like character and the telescope. The telescope is to the right of the bald man. The poster is on the wall behind the cat-like character.",
     "parse_success": true,
     "chunk_idx": 5,
     "video_id": "1055186300"
   },
   {
     "time": [
-      12,
-      14
+      6,
+      7
     ],
     "visible_entities": [
       {
-        "desc": "large, light-colored metal safe with a square door, a circular combination dial, and a handle",
+        "desc": "large, light-colored metal safe with a circular combination dial and a handle",
         "action": "static",
         "position": "left"
       },
       {
-        "desc": "cartoon man with a bald head, large nose, wearing a dark jacket and light-colored pants",
-        "action": "standing and gesturing with hands",
+        "desc": "cartoon man with a bald head, large nose, wearing a dark suit jacket and light-colored pants",
+        "action": "standing and gesturing",
         "position": "right"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A cartoon man stands to the right of a large safe.",
+        "fact": "The word 'SAFE' is printed in bold, black capital letters on the top front of the safe.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The man stands to the right of the safe.",
         "confidence": 1.0
       },
       {
         "fact": "The man gestures with his hands towards the safe.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "SAFE"
+    ],
+    "spatial": "The safe is positioned on the left side of the frame. The man is standing to the right of the safe. The text 'SAFE' is located above the door of the safe.",
+    "parse_success": true,
+    "chunk_idx": 6,
+    "video_id": "1055186300"
+  },
+  {
+    "time": [
+      7,
+      8
+    ],
+    "visible_entities": [
+      {
+        "desc": "large, light-colored metal safe with a rectangular door, a circular dial, and a handle",
+        "action": "static",
+        "position": "left"
+      },
+      {
+        "desc": "bald man with a large nose, wearing a dark long-sleeved jacket and dark pants",
+        "action": "turning the dial of the safe",
+        "position": "center"
+      },
+      {
+        "desc": "small black cartoon cat with large white eyes and a long tail",
+        "action": "watching the man",
+        "position": "right"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The man is turning the dial on the safe door.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The cat is sitting on the floor next to the man.",
         "confidence": 1.0
       },
       {
@@ -323,121 +375,77 @@
     "ocr": [
       "SAFE"
     ],
-    "spatial": "The safe is on the left side of the frame. The cartoon man is standing to the right of the safe. The text 'SAFE' is located above the door of the safe.",
-    "parse_success": true,
-    "chunk_idx": 6,
-    "video_id": "1055186300"
-  },
-  {
-    "time": [
-      14,
-      16
-    ],
-    "visible_entities": [
-      {
-        "desc": "large, light-colored, box-shaped metal safe with a circular dial and handle on the door",
-        "action": "static",
-        "position": "left"
-      },
-      {
-        "desc": "bald man with a large nose, wearing a dark suit jacket and pants",
-        "action": "reaching for the safe dial",
-        "position": "center"
-      },
-      {
-        "desc": "small black cartoon cat with large white eyes and a thin tail",
-        "action": "sitting and watching",
-        "position": "right"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "The bald man reaches his hand out to touch the dial of the safe.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The black cat sits on the floor next to the man.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The word 'SAFE' is printed on the top front of the box.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [
-      "SAFE"
-    ],
-    "spatial": "The large safe is positioned on the left side of the frame. The bald man stands in the center, directly in front of the safe's door. The black cat is sitting on the floor to the right of the man.",
+    "spatial": "The safe is on the left side of the frame. The man is standing to the right of the safe, facing it. The cat is sitting on the floor to the right of the man.",
     "parse_success": true,
     "chunk_idx": 7,
     "video_id": "1055186300"
   },
   {
     "time": [
-      16,
-      18
+      8,
+      9
     ],
     "visible_entities": [
       {
-        "desc": "bald man with a large nose, wearing a dark coat and dark pants",
-        "action": "opening the safe door and leaning inside",
+        "desc": "bald man with a large nose, wearing a black coat",
+        "action": "opening the safe door and bending forward to look inside",
         "position": "center"
       },
       {
-        "desc": "black cat with white eyes and whiskers",
+        "desc": "black cat with large white eyes and whiskers",
         "action": "sitting and watching",
         "position": "right"
       },
       {
-        "desc": "large rectangular metal safe with a circular dial and handle",
-        "action": "being opened",
+        "desc": "large, light-colored metal safe with the word 'SAFE' printed on top",
+        "action": "static",
         "position": "left"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "The man opens the door of the safe.",
+        "fact": "The bald man opens the door of the safe.",
         "confidence": 1.0
       },
       {
-        "fact": "The man leans his upper body into the interior of the safe.",
+        "fact": "The man bends over to look inside the open safe.",
         "confidence": 1.0
       },
       {
-        "fact": "The black cat sits on the floor to the right of the safe.",
+        "fact": "The black cat sits on the floor to the right of the man.",
         "confidence": 1.0
       },
       {
-        "fact": "The word 'SAFE' is written on the top of the safe.",
+        "fact": "The text 'SAFE' is visible on the top front of the safe.",
         "confidence": 1.0
       }
     ],
     "ocr": [
       "SAFE"
     ],
-    "spatial": "The safe is positioned on the left side of the frame. The man stands in front of the safe, leaning his head inside it. The black cat is sitting on the floor to the right of the man.",
+    "spatial": "The safe is positioned on the left side of the frame. The man stands in front of the safe, between the safe and the cat. The cat is sitting on the floor to the right of the man.",
     "parse_success": true,
     "chunk_idx": 8,
     "video_id": "1055186300"
   },
   {
     "time": [
-      18,
-      20
+      9,
+      10
     ],
     "visible_entities": [
       {
-        "desc": "black cartoon cat with white eyes, white muzzle, and white chest patch",
+        "desc": "black cartoon cat with white eyes, white muzzle, and white gloves",
         "action": "holding a money bag",
         "position": "right"
       },
       {
-        "desc": "bald man with white hair on sides, mustache, dark jacket, and light pants",
+        "desc": "bald man with a white beard and mustache, wearing a dark jacket and light pants",
         "action": "holding a money bag",
         "position": "center"
       },
       {
-        "desc": "large rectangular metal safe with an open door",
+        "desc": "large metal safe with an open door",
         "action": "static",
         "position": "left"
       },
@@ -449,185 +457,182 @@
     ],
     "atomic_facts": [
       {
-        "fact": "The black cat is holding a round money bag.",
+        "fact": "The black cat is holding a money bag.",
         "confidence": 1.0
       },
       {
-        "fact": "The bald man is holding the same money bag.",
+        "fact": "The bald man is holding a money bag.",
         "confidence": 1.0
       },
       {
         "fact": "The safe door is open.",
         "confidence": 1.0
-      },
-      {
-        "fact": "The text 'SAFE' is visible on the top of the safe.",
-        "confidence": 1.0
       }
     ],
     "ocr": [
-      "SAFE"
+      "SAFE",
+      "$"
     ],
-    "spatial": "The safe is to the left of the bald man. The bald man is to the left of the black cat. The man and the cat are both holding the money bag between them. The text 'SAFE' is on the top front of the safe.",
+    "spatial": "The safe is to the left of the bald man. The bald man is to the left of the black cat. The bald man is holding a money bag in front of him. The black cat is holding a money bag in front of him.",
     "parse_success": true,
     "chunk_idx": 9,
     "video_id": "1055186300"
   },
   {
     "time": [
-      20,
-      22
+      10,
+      11
     ],
     "visible_entities": [
       {
-        "desc": "black cartoon cat with large white eyes, black pupils, white muzzle, and whiskers",
+        "desc": "black cartoon cat with large white eyes, black pupils, white muzzle, whiskers, and a smiling mouth",
         "action": "walking to the right",
         "position": "center"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "The black cartoon cat is walking to the right.",
+        "fact": "The black cartoon cat walks to the right.",
         "confidence": 1.0
       },
       {
-        "fact": "The cat's arms are swinging as it walks.",
+        "fact": "The cat's arms swing as it moves.",
         "confidence": 1.0
       },
       {
-        "fact": "The cat's legs are moving in a walking motion.",
+        "fact": "The cat's legs move in a walking motion.",
         "confidence": 1.0
       }
     ],
     "ocr": [
       "shutterstock"
     ],
-    "spatial": "The black cartoon cat is in the center of the frame. The 'shutterstock' watermark is overlaid on the lower portion of the cat's body.",
+    "spatial": "The black cartoon cat is in the center of the frame. The 'shutterstock' watermark is overlaid on the lower portion of the cat's body. The cat is in front of a plain white background.",
     "parse_success": true,
     "chunk_idx": 10,
     "video_id": "1055186300"
   },
   {
     "time": [
-      22,
-      24
+      11,
+      12
     ],
     "visible_entities": [
       {
-        "desc": "black cartoon cat with large white eyes, white muzzle, and three whiskers on each side",
+        "desc": "black cartoon cat with large white eyes, pointed ears, and whiskers",
         "action": "holding a white sack",
         "position": "center"
       },
       {
-        "desc": "small white sack tied at the top with a string",
-        "action": "being held by the cat",
+        "desc": "white sack tied at the top",
+        "action": "being held",
         "position": "center"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "The black cartoon cat holds a white sack in its right hand.",
+        "fact": "The black cartoon cat is holding a white sack in its hands.",
         "confidence": 1.0
       },
       {
-        "fact": "The cat is standing on a horizontal line.",
+        "fact": "The cat is standing on a surface marked by horizontal lines.",
         "confidence": 1.0
       }
     ],
     "ocr": [
       "shutterstock"
     ],
-    "spatial": "The black cartoon cat is in the center of the frame. The white sack is held in front of the cat's body. The 'shutterstock' watermark is overlaid across the lower portion of the image, in front of the cat's legs.",
+    "spatial": "The black cartoon cat is in the center of the frame. The cat is holding the white sack in front of its body. The watermark text is overlaid across the lower portion of the image.",
     "parse_success": true,
     "chunk_idx": 11,
     "video_id": "1055186300"
   },
   {
     "time": [
-      24,
-      26
+      12,
+      13
     ],
     "visible_entities": [
       {
-        "desc": "black cartoon cat with large white eyes, white muzzle, and whiskers",
-        "action": "holding a white sack",
+        "desc": "black cartoon cat character with large white eyes, white muzzle, whiskers, and a black body",
+        "action": "gesturing with arms open then holding a sack",
         "position": "center"
       },
       {
-        "desc": "white sack with a tied top",
+        "desc": "white sack or bag tied at the top",
         "action": "being held",
         "position": "right"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "The black cartoon cat holds a white sack in its left hand.",
+        "fact": "The black cartoon cat character stands with arms outstretched in the first frame.",
         "confidence": 1.0
       },
       {
-        "fact": "The cat raises its right hand in a waving gesture.",
+        "fact": "The character holds a white sack in its left hand in the second frame.",
         "confidence": 1.0
       },
       {
-        "fact": "The cat stands on a surface marked by horizontal lines.",
+        "fact": "The character smiles and looks towards the viewer.",
         "confidence": 1.0
       }
     ],
     "ocr": [
       "shutterstock"
     ],
-    "spatial": "The black cartoon cat is in the center of the frame. The white sack is held in the cat's left hand, positioned to the right of the cat's body. The 'shutterstock' watermark is overlaid across the lower portion of the image, in front of the cat's legs.",
+    "spatial": "The black cartoon cat is in the center of the frame. The white sack is held in the cat's left hand, positioned to the right of the cat's body. The watermark text is overlaid across the lower middle section of the image.",
     "parse_success": true,
     "chunk_idx": 12,
     "video_id": "1055186300"
   },
   {
     "time": [
-      26,
-      28
+      13,
+      14
     ],
     "visible_entities": [
       {
-        "desc": "black cartoon cat with large white eyes, black pupils, white muzzle, and long whiskers",
-        "action": "standing with arms spread wide",
+        "desc": "black cartoon cat with large white eyes, black pupils, long whiskers, and a rounded body",
+        "action": "changing expression from surprised to angry",
         "position": "center"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "The black cartoon cat stands with its arms spread wide.",
+        "fact": "The black cartoon cat changes its facial expression from wide-eyed surprise to an angry scowl.",
         "confidence": 1.0
       },
       {
-        "fact": "The cat's expression changes from surprised to angry.",
+        "fact": "The cat's arms move from a resting position to being extended outward with clenched fists.",
         "confidence": 1.0
       },
       {
-        "fact": "A horizontal line runs behind the cat.",
+        "fact": "The cat is positioned on a surface marked by horizontal lines.",
         "confidence": 1.0
       }
     ],
     "ocr": [
       "shutterstock"
     ],
-    "spatial": "The black cartoon cat is in the center of the frame. The 'shutterstock' watermark is overlaid on the cat's body. A horizontal line is behind the cat.",
+    "spatial": "The black cartoon cat is in the center of the frame. The 'shutterstock' watermark is overlaid across the lower-middle portion of the cat's body. The cat is standing on a surface defined by two horizontal lines that run behind its lower body.",
     "parse_success": true,
     "chunk_idx": 13,
     "video_id": "1055186300"
   },
   {
     "time": [
-      28,
-      30
+      14,
+      15
     ],
     "visible_entities": [
       {
-        "desc": "black cartoon cat with white eyes, white muzzle, and whiskers",
-        "action": "standing with arms spread wide",
-        "position": "center"
+        "desc": "black cartoon cat with white eyes, white muzzle, whiskers, and a round body",
+        "action": "standing with arms outstretched",
+        "position": "right"
       },
       {
-        "desc": "large rectangular metal safe with a heavy door",
+        "desc": "large grey metal safe with an open door",
         "action": "static",
         "position": "left"
       }
@@ -638,89 +643,50 @@
         "confidence": 1.0
       },
       {
-        "fact": "The safe door is slightly ajar.",
+        "fact": "The safe door is open, revealing a dark interior.",
         "confidence": 1.0
       },
       {
-        "fact": "The text 'SAFE' is visible on the top front of the safe.",
+        "fact": "The text 'SAFE' is printed on the top of the safe.",
         "confidence": 1.0
       }
     ],
     "ocr": [
       "SAFE"
     ],
-    "spatial": "The black cartoon cat is standing to the right of the large metal safe. The safe is positioned on the left side of the frame. The text 'SAFE' is located on the upper front face of the safe.",
+    "spatial": "The large metal safe is positioned on the left side of the frame. The black cartoon cat is standing to the right of the safe. The word 'SAFE' is located on the top surface of the safe.",
     "parse_success": true,
     "chunk_idx": 14,
     "video_id": "1055186300"
   },
   {
     "time": [
-      30,
-      32
+      15,
+      16
     ],
     "visible_entities": [
       {
-        "desc": "black cartoon cat with white eyes and white muzzle",
-        "action": "standing and looking at the safe",
+        "desc": "black cartoon cat with large white eyes, white muzzle, and white paws",
+        "action": "standing and looking towards the safe",
         "position": "right"
       },
       {
-        "desc": "large rectangular metal safe with an open door",
+        "desc": "large, light-colored metal safe with a heavy door and handle",
         "action": "static",
         "position": "left"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A black cartoon cat stands on the right side of the frame.",
+        "fact": "The safe door is open, revealing a dark interior.",
         "confidence": 1.0
       },
       {
-        "fact": "A large safe with an open door sits on the left side.",
+        "fact": "The black cat stands on the floor to the right of the safe.",
         "confidence": 1.0
       },
       {
         "fact": "The word 'SAFE' is printed on the front of the safe.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [
-      "SAFE"
-    ],
-    "spatial": "The black cartoon cat is standing to the right of the large metal safe. The safe is positioned on the left side of the scene. The text 'SAFE' is located on the upper front face of the safe.",
-    "parse_success": true,
-    "chunk_idx": 15,
-    "video_id": "1055186300"
-  },
-  {
-    "time": [
-      32,
-      34
-    ],
-    "visible_entities": [
-      {
-        "desc": "black cartoon cat with large white eyes and a white muzzle",
-        "action": "standing and gesturing with arms",
-        "position": "right"
-      },
-      {
-        "desc": "large, light-colored metal safe with a thick door",
-        "action": "static",
-        "position": "left"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "The safe door is open.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The black cat stands to the right of the safe.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The cat gestures with its arms while facing the safe.",
         "confidence": 1.0
       }
     ],
@@ -729,77 +695,33 @@
     ],
     "spatial": "The large safe is positioned on the left side of the frame. The black cat is standing on the floor to the right of the safe. The text 'SAFE' is located on the upper front face of the safe.",
     "parse_success": true,
-    "chunk_idx": 16,
+    "chunk_idx": 15,
     "video_id": "1055186300"
   },
   {
     "time": [
-      34,
-      36
+      16,
+      17
     ],
     "visible_entities": [
       {
-        "desc": "black cartoon cat with white eyes and pointed ears",
-        "action": "holding a money bag",
+        "desc": "black cartoon cat with large white eyes and white whiskers",
+        "action": "standing next to the safe",
         "position": "right"
       },
       {
-        "desc": "large rectangular metal safe with an open door",
-        "action": "static",
-        "position": "left"
-      },
-      {
-        "desc": "round sack with a dollar sign printed on it",
-        "action": "being held",
-        "position": "right"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "The black cat is holding a money bag with a dollar sign.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The safe door is open.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The cat is standing next to the safe.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [
-      "SAFE"
-    ],
-    "spatial": "The large safe is positioned on the left side of the frame. The black cat is to the right of the safe. The cat is holding the money bag in front of its body.",
-    "parse_success": true,
-    "chunk_idx": 17,
-    "video_id": "1055186300"
-  },
-  {
-    "time": [
-      36,
-      38
-    ],
-    "visible_entities": [
-      {
-        "desc": "black cartoon cat with a white face and pointed ears",
-        "action": "pulling the safe door open",
-        "position": "center"
-      },
-      {
-        "desc": "large, light-colored metal safe with a heavy door and a rectangular window on the side",
+        "desc": "large white rectangular safe with an open door",
         "action": "static",
         "position": "left"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "The black cartoon cat is pulling the door of the safe open.",
+        "fact": "The black cartoon cat stands to the right of the safe.",
         "confidence": 1.0
       },
       {
-        "fact": "The safe door is swinging outward to the left.",
+        "fact": "The safe door is open, revealing a dark interior.",
         "confidence": 1.0
       },
       {
@@ -810,135 +732,239 @@
     "ocr": [
       "SAFE"
     ],
-    "spatial": "The black cartoon cat is in front of the safe, holding the door handle. The safe is positioned to the left of the cat. The text 'SAFE' is located above the door on the front face of the safe.",
+    "spatial": "The large white safe is positioned on the left side of the frame. The black cartoon cat is standing to the right of the safe. The text 'SAFE' is located on the upper front face of the safe.",
+    "parse_success": true,
+    "chunk_idx": 16,
+    "video_id": "1055186300"
+  },
+  {
+    "time": [
+      17,
+      18
+    ],
+    "visible_entities": [
+      {
+        "desc": "black cartoon cat with large white eyes, pointed ears, and a long tail",
+        "action": "holding a money bag and walking right",
+        "position": "right foreground"
+      },
+      {
+        "desc": "large, light-colored, rectangular metal safe with a heavy open door",
+        "action": "static",
+        "position": "left center"
+      },
+      {
+        "desc": "round money bag with a dollar sign symbol on the front",
+        "action": "being held",
+        "position": "right foreground"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The black cartoon cat is holding a money bag marked with a dollar sign.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The cat is walking away from the safe towards the right side of the frame.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The safe door is open, revealing a dark interior.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The word 'SAFE' is printed on the front of the safe.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "SAFE",
+      "$"
+    ],
+    "spatial": "The large safe is positioned on the left side of the frame. The black cat is to the right of the safe, holding the money bag in front of its body.",
+    "parse_success": true,
+    "chunk_idx": 17,
+    "video_id": "1055186300"
+  },
+  {
+    "time": [
+      18,
+      19
+    ],
+    "visible_entities": [
+      {
+        "desc": "black cartoon cat with a white face, white eyes, and a long tail",
+        "action": "manipulating the safe door",
+        "position": "center"
+      },
+      {
+        "desc": "large rectangular metal safe with a heavy door and a handle",
+        "action": "static",
+        "position": "left"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The black cartoon cat is standing in front of the safe.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The cat is using its hands to pull the safe door open.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The safe door is partially open in the first frame and fully open in the second frame.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The text 'SAFE' is written on the top front of the safe.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "SAFE"
+    ],
+    "spatial": "The black cartoon cat is positioned to the right of the safe, standing in front of it. The cat is holding the handle of the safe door. The word 'SAFE' is located above the door on the front face of the safe.",
     "parse_success": true,
     "chunk_idx": 18,
     "video_id": "1055186300"
   },
   {
     "time": [
-      38,
-      40
+      19,
+      20
     ],
     "visible_entities": [
       {
-        "desc": "silhouette character with dark body, white face, and a striped tail or scarf, resembling a cat",
-        "action": "walking right while carrying a large object",
-        "position": "bottom center to right"
+        "desc": "black silhouette cartoon character with a round head and small body",
+        "action": "carrying a large rectangular object",
+        "position": "center"
       },
       {
-        "desc": "large, flat, rectangular object with a smaller rectangular hole in the center, resembling a stylized letter 'D' or a frame",
-        "action": "being carried on the character's shoulder",
-        "position": "center to right"
+        "desc": "large rectangular object with a square cutout in the center, resembling a frame or door",
+        "action": "being carried",
+        "position": "center"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "The silhouette character is walking from left to right.",
+        "fact": "A black silhouette character is carrying a large rectangular object on its shoulder.",
         "confidence": 1.0
       },
       {
-        "fact": "The character is carrying a large, flat, rectangular object on its shoulder.",
+        "fact": "The character is walking towards the right side of the screen.",
         "confidence": 1.0
       },
       {
-        "fact": "The object has a rectangular cutout in its center.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The character's tail or scarf is striped.",
+        "fact": "The rectangular object has a square hole in the middle.",
         "confidence": 1.0
       }
     ],
     "ocr": [
       "shutterstock"
     ],
-    "spatial": "The silhouette character is below the large rectangular object it is carrying. The character is moving towards the right side of the frame. The 'shutterstock' watermark is overlaid across the center of the scene.",
+    "spatial": "The black silhouette character is underneath the large rectangular object, supporting it on its shoulder. The character is positioned in the center of the frame, moving towards the right. The 'shutterstock' watermark is overlaid across the center of the image.",
     "parse_success": true,
     "chunk_idx": 19,
     "video_id": "1055186300"
   },
   {
     "time": [
-      40,
-      42
+      20,
+      21
     ],
     "visible_entities": [
       {
-        "desc": "black horizontal line",
+        "desc": "light gray textured background surface",
+        "action": "static",
+        "position": "background"
+      },
+      {
+        "desc": "thin black horizontal line",
         "action": "static",
         "position": "bottom"
       },
       {
-        "desc": "black angular line segment",
+        "desc": "black outline of a geometric arrow shape",
         "action": "static",
         "position": "right"
       },
       {
-        "desc": "black circular mask",
+        "desc": "black circular mask border",
+        "action": "static",
+        "position": "foreground"
+      },
+      {
+        "desc": "semi-transparent 'shutterstock' watermark text",
         "action": "static",
         "position": "center"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A black horizontal line is drawn across the bottom of the frame.",
+        "fact": "A black circular mask appears in the second frame, obscuring the corners of the view.",
         "confidence": 1.0
       },
       {
-        "fact": "A black angular line segment appears on the right side of the frame.",
+        "fact": "The geometric arrow shape remains visible on the right side of the screen.",
         "confidence": 1.0
       },
       {
-        "fact": "A circular mask obscures the corners of the frame, creating a vignette effect.",
+        "fact": "The horizontal line remains static at the bottom of the frame.",
         "confidence": 1.0
       }
     ],
-    "ocr": [],
-    "spatial": "The black horizontal line is located at the bottom of the visible area. The black angular line segment is positioned to the right of the center. The circular mask frames the central content, with the line and segment appearing inside its boundary.",
+    "ocr": [
+      "shutterstock"
+    ],
+    "spatial": "The circular mask is in the foreground, framing the light gray background. The horizontal line is positioned near the bottom of the circular view. The arrow shape is located to the right of the center, inside the circular boundary. The watermark text is superimposed over the center of the image.",
     "parse_success": true,
     "chunk_idx": 20,
     "video_id": "1055186300"
   },
   {
     "time": [
-      42,
-      44
+      21,
+      22
     ],
     "visible_entities": [
       {
-        "desc": "black cartoon cat with white eyes and a white muzzle",
+        "desc": "black cat-like cartoon character with white eyes and a white muzzle",
         "action": "pulling a rope",
         "position": "left"
       },
       {
-        "desc": "cartoon female character with a pointed hairstyle and a dark dress",
+        "desc": "smaller cartoon character with a pointed head and a skirt",
         "action": "pulling a rope",
         "position": "right"
       },
       {
-        "desc": "large rectangular safe with a circular dial and handle",
+        "desc": "large rectangular safe with a circular dial and a handle",
         "action": "static",
         "position": "left"
       },
       {
-        "desc": "rope or wire",
-        "action": "being pulled taut",
+        "desc": "thick rope or cable",
+        "action": "being pulled",
         "position": "center"
       },
       {
-        "desc": "white circular shape",
+        "desc": "white circle on a black background",
         "action": "static",
         "position": "center"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A black cat and a female character are pulling on opposite ends of a rope.",
+        "fact": "Two cartoon characters are pulling on opposite ends of a rope.",
         "confidence": 1.0
       },
       {
-        "fact": "The rope is attached to a large safe on the left side of the screen.",
+        "fact": "The rope is attached to the door of a safe.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The safe is positioned on the left side of the scene.",
         "confidence": 1.0
       },
       {
@@ -946,90 +972,86 @@
         "confidence": 1.0
       },
       {
-        "fact": "A white circle is visible in the center of the frame.",
+        "fact": "A white circle is displayed in the center of a black screen.",
         "confidence": 1.0
       }
     ],
     "ocr": [
       "SAFE"
     ],
-    "spatial": "The safe is on the left side of the frame. The black cat is standing next to the safe, holding one end of the rope. The female character is to the right of the cat, holding the other end of the rope. The rope stretches horizontally between the two characters.",
+    "spatial": "The safe is on the left side of the frame. The black cat-like character is standing in front of the safe. The smaller character is to the right of the black cat-like character. A rope connects the two characters and is attached to the safe. The white circle is centered in the frame.",
     "parse_success": true,
     "chunk_idx": 21,
     "video_id": "1055186300"
   },
   {
     "time": [
-      44,
-      46
+      22,
+      23
     ],
     "visible_entities": [
       {
-        "desc": "black cat-like character with pointed ears and a tail",
+        "desc": "black cat with pointed ears and a tail",
         "action": "opening the safe door",
         "position": "left"
       },
       {
-        "desc": "white safe with a circular dial and a handle",
+        "desc": "white safe box with a circular dial and a handle",
         "action": "being opened",
         "position": "left"
       },
       {
-        "desc": "money bag with a dollar sign printed on it",
-        "action": "being pulled out of the safe",
-        "position": "center-left"
+        "desc": "money bag with a dollar sign",
+        "action": "being pulled out",
+        "position": "left"
       },
       {
         "desc": "small character with a pointed head and a dark cape",
-        "action": "pulling a rope",
+        "action": "standing and watching",
         "position": "right"
       },
       {
-        "desc": "rope connecting the money bag to the small character",
-        "action": "being pulled taut",
-        "position": "center"
+        "desc": "black text 'SAFE' in bold capital letters",
+        "action": "static",
+        "position": "left"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "The black cat-like character is opening the door of the safe.",
+        "fact": "The black cat opens the door of the safe.",
         "confidence": 1.0
       },
       {
-        "fact": "A money bag is being pulled out of the safe.",
+        "fact": "A money bag with a dollar sign is pulled out of the safe.",
         "confidence": 1.0
       },
       {
-        "fact": "The small character on the right is pulling a rope attached to the money bag.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The text 'SAFE' is written on the top of the safe.",
+        "fact": "The text 'SAFE' is visible on the front of the box.",
         "confidence": 1.0
       }
     ],
     "ocr": [
       "SAFE"
     ],
-    "spatial": "The safe is on the left side of the frame. The black cat-like character is standing in front of the safe. The money bag is emerging from the safe, positioned between the cat and the small character on the right. The small character is to the right of the cat, pulling a rope that extends to the money bag.",
+    "spatial": "The safe is on the left side of the frame. The black cat is in front of the safe, manipulating the door. The money bag is emerging from inside the safe. The small character with the cape is standing to the right of the cat.",
     "parse_success": true,
     "chunk_idx": 22,
     "video_id": "1055186300"
   },
   {
     "time": [
-      46,
-      48
+      23,
+      24
     ],
     "visible_entities": [
       {
-        "desc": "black cat with white eyes and muzzle, wearing white gloves",
-        "action": "standing and gesturing",
+        "desc": "black cartoon cat with white eyes and muzzle",
+        "action": "standing next to a bird character",
         "position": "center"
       },
       {
-        "desc": "small character with spiky hair, wearing a dark cape and shorts",
-        "action": "standing and looking at the cat",
+        "desc": "small bird character wearing a dark cape",
+        "action": "standing next to the cat",
         "position": "right"
       },
       {
@@ -1038,52 +1060,53 @@
         "position": "left"
       },
       {
-        "desc": "pile of sacks with dollar signs drawn on them",
+        "desc": "pile of money bags with dollar signs",
         "action": "static",
         "position": "left foreground"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "The black cat gestures with its left hand towards the small character.",
+        "fact": "A black cat and a bird character are standing together.",
         "confidence": 1.0
       },
       {
-        "fact": "The safe door is open, revealing the interior.",
+        "fact": "A safe with its door open is positioned on the left.",
         "confidence": 1.0
       },
       {
-        "fact": "Sacks marked with dollar signs are piled in front of the safe.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The text 'SAFE' is printed on the upper front of the safe.",
+        "fact": "Money bags are piled in front of the safe.",
         "confidence": 1.0
       }
     ],
     "ocr": [
       "SAFE"
     ],
-    "spatial": "The safe is located on the left side of the frame. A pile of money sacks is positioned in front of the safe. The black cat stands in the center, to the right of the safe. The small character stands to the right of the black cat.",
+    "spatial": "The safe is on the left side of the frame. The pile of money bags is in front of the safe. The black cat is to the right of the money bags, and the bird character is to the right of the cat.",
     "parse_success": true,
     "chunk_idx": 23,
     "video_id": "1055186300"
   },
   {
     "time": [
-      48,
-      50
+      24,
+      25
     ],
     "visible_entities": [
       {
-        "desc": "black cat character with white eyes, wearing a black mask and black gloves",
+        "desc": "black cartoon cat with white eyes and whiskers",
         "action": "pulling a rope",
         "position": "center"
       },
       {
-        "desc": "small bird-like character with a pointed head, wearing a dark dress and dark gloves",
+        "desc": "small cartoon character with a pointed head and dark dress",
         "action": "pulling a rope",
         "position": "right"
+      },
+      {
+        "desc": "large pile of money bags with dollar signs",
+        "action": "static",
+        "position": "left"
       },
       {
         "desc": "large rectangular safe with an open door",
@@ -1091,54 +1114,45 @@
         "position": "left"
       },
       {
-        "desc": "pile of money bags with dollar signs drawn on them",
-        "action": "static",
-        "position": "left"
-      },
-      {
-        "desc": "thin rope or string",
+        "desc": "long thin rope",
         "action": "being pulled",
         "position": "center"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "The black cat character and the bird-like character are pulling a rope together.",
+        "fact": "The black cat and the small character are pulling a rope together.",
         "confidence": 1.0
       },
       {
-        "fact": "The rope is attached to the door of the safe.",
+        "fact": "The rope is attached to a pile of money bags.",
         "confidence": 1.0
       },
       {
-        "fact": "The safe door is open.",
+        "fact": "The money bags are spilling out of the open safe.",
         "confidence": 1.0
       },
       {
-        "fact": "Money bags are spilling out of the safe.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The text 'SAFE' is visible on the front of the safe.",
+        "fact": "The text 'SAFE' is written on the front of the safe.",
         "confidence": 1.0
       }
     ],
     "ocr": [
       "SAFE"
     ],
-    "spatial": "The safe is on the left side of the frame. The pile of money bags is in front of the safe. The black cat character is to the right of the money bags. The bird-like character is to the right of the black cat character. The rope connects the safe door to the characters in the center and right.",
+    "spatial": "The safe is on the left side of the frame. The pile of money bags is in front of the safe. The black cat is to the right of the money bags. The small character is to the right of the cat. The rope connects the money bags to the characters.",
     "parse_success": true,
     "chunk_idx": 24,
     "video_id": "1055186300"
   },
   {
     "time": [
-      50,
-      52
+      25,
+      26
     ],
     "visible_entities": [
       {
-        "desc": "black cartoon cat with white muzzle, white chest, and white gloves",
+        "desc": "black and white cartoon cat with large eyes and pointed ears",
         "action": "running to the right",
         "position": "center"
       },
@@ -1153,113 +1167,47 @@
         "position": "left"
       },
       {
-        "desc": "white circle",
+        "desc": "white circle on a black background",
         "action": "static",
         "position": "center"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A black cartoon cat is running towards the right side of the screen.",
+        "fact": "A cartoon cat runs to the right away from a safe.",
         "confidence": 1.0
       },
       {
-        "fact": "A pile of money bags is spilling out of an open safe.",
+        "fact": "The safe door is open, revealing a pile of money bags inside.",
         "confidence": 1.0
       },
       {
-        "fact": "The word 'SAFE' is printed on the top of the safe.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The scene transitions to a black screen with a white circle in the center.",
+        "fact": "The scene cuts to a black screen with a white circle in the center.",
         "confidence": 1.0
       }
     ],
     "ocr": [
       "SAFE"
     ],
-    "spatial": "The safe is located on the left side of the frame. The pile of money bags is in front of the safe's open door. The black cat is to the right of the money bags and is moving away from the safe.",
+    "spatial": "The safe is on the left side of the frame. The money bags are inside the safe. The cat is to the right of the safe and money bags. In the second frame, the white circle is in the center of the black background.",
     "parse_success": true,
     "chunk_idx": 25,
     "video_id": "1055186300"
   },
   {
     "time": [
-      52,
-      54
+      26,
+      27
     ],
     "visible_entities": [
       {
-        "desc": "black cat with white eyes and a wide grin",
-        "action": "standing on hind legs",
+        "desc": "black cat with large white eyes and a wide grin",
+        "action": "standing next to the man",
         "position": "left"
       },
       {
-        "desc": "elderly man with a long white beard, bald head, and glasses, wearing a black robe",
-        "action": "gesturing with open arms",
-        "position": "center"
-      },
-      {
-        "desc": "large telescope on a tripod stand",
-        "action": "static",
-        "position": "right"
-      },
-      {
-        "desc": "wall poster with a planet and crescent moon",
-        "action": "static",
-        "position": "background left"
-      },
-      {
-        "desc": "white circular object with a dark shadow",
-        "action": "static",
-        "position": "center"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "The scene transitions from a view of a celestial body to a cartoon interior.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "An elderly man stands between a black cat and a telescope.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The man gestures with his hands open towards the cat.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The black cat stands on its hind legs facing the man.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "A telescope is positioned on the right side of the room.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [
-      "shutterstock"
-    ],
-    "spatial": "The black cat is to the left of the elderly man. The man is standing next to the telescope, which is on the right side of the frame. The wall poster is behind the cat on the left wall.",
-    "parse_success": true,
-    "chunk_idx": 26,
-    "video_id": "1055186300"
-  },
-  {
-    "time": [
-      54,
-      56
-    ],
-    "visible_entities": [
-      {
-        "desc": "black cartoon cat with a wide grin and white eyes",
-        "action": "standing on hind legs",
-        "position": "left"
-      },
-      {
-        "desc": "elderly man with a white beard, glasses, a dark vest, and light pants",
-        "action": "standing and looking down",
+        "desc": "elderly man with a long white beard, glasses, and a dark robe",
+        "action": "gesturing towards the telescope",
         "position": "center"
       },
       {
@@ -1268,18 +1216,76 @@
         "position": "right"
       },
       {
-        "desc": "rectangular poster with a planet, stars, and a crescent moon",
+        "desc": "framed picture of a planet and moon",
         "action": "static",
-        "position": "top left background"
+        "position": "background left"
+      },
+      {
+        "desc": "white crescent moon against a black background",
+        "action": "static",
+        "position": "center"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "The black cat is standing on its hind legs.",
+        "fact": "The scene transitions from a view of a white crescent moon to a cartoon interior.",
         "confidence": 1.0
       },
       {
-        "fact": "The man is standing next to the cat.",
+        "fact": "The elderly man stands between the black cat and the telescope.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The man is gesturing with his hand towards the telescope.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The black cat is looking towards the viewer with a smile.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "shutterstock"
+    ],
+    "spatial": "The black cat is to the left of the elderly man. The elderly man is to the left of the large telescope. The framed picture is on the wall behind the cat. The telescope is positioned on the right side of the room.",
+    "parse_success": true,
+    "chunk_idx": 26,
+    "video_id": "1055186300"
+  },
+  {
+    "time": [
+      27,
+      28
+    ],
+    "visible_entities": [
+      {
+        "desc": "black cartoon cat with white eyes and a wide grin",
+        "action": "falling backwards onto the floor",
+        "position": "left"
+      },
+      {
+        "desc": "bald man with glasses, a white beard, wearing a black vest and white pants",
+        "action": "standing and looking down",
+        "position": "center"
+      },
+      {
+        "desc": "large white telescope on a stand",
+        "action": "static",
+        "position": "right"
+      },
+      {
+        "desc": "rectangular poster with a planet, stars, and a crescent moon",
+        "action": "static",
+        "position": "top left"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The black cat falls backwards onto the floor.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The man stands next to the cat.",
         "confidence": 1.0
       },
       {
@@ -1292,45 +1298,45 @@
       }
     ],
     "ocr": [],
-    "spatial": "The black cat is to the left of the elderly man. The man is standing between the cat and the large telescope on the right. The poster is on the wall behind the cat.",
+    "spatial": "The black cat is to the left of the man. The man is standing between the cat and the telescope. The telescope is to the right of the man. The poster is on the wall behind the cat.",
     "parse_success": true,
     "chunk_idx": 27,
     "video_id": "1055186300"
   },
   {
     "time": [
-      56,
-      58
+      28,
+      29
     ],
     "visible_entities": [
       {
-        "desc": "small black cat-like character with a white face, large eyes, and a pointed hat",
-        "action": "kneeling on the floor and reaching out",
+        "desc": "small black cartoon cat with a white face, white eyes, and a white-tipped tail",
+        "action": "sitting on the floor",
         "position": "left"
       },
       {
-        "desc": "bald man with a long white beard, glasses, a dark cape, and light-colored pants",
-        "action": "bending forward and shaking hands",
+        "desc": "bald man with glasses, a long white beard, wearing a black vest over a white shirt and white pants",
+        "action": "shaking hands with the cat",
         "position": "center"
       },
       {
-        "desc": "large white telescope on a metal stand with a crank handle",
+        "desc": "large white telescope on a stand with a crank handle",
         "action": "static",
         "position": "right"
       },
       {
-        "desc": "rectangular wall poster featuring a planet with rings, stars, and a crescent moon",
+        "desc": "rectangular picture on the wall featuring a planet with rings, stars, and a crescent moon",
         "action": "static",
         "position": "background left"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "The small black character kneels on the floor.",
+        "fact": "The man shakes hands with the small black cat.",
         "confidence": 1.0
       },
       {
-        "fact": "The bearded man bends forward to shake the hand of the small character.",
+        "fact": "The cat is sitting on the floor.",
         "confidence": 1.0
       },
       {
@@ -1338,30 +1344,30 @@
         "confidence": 1.0
       },
       {
-        "fact": "A poster depicting space elements hangs on the wall.",
+        "fact": "A picture of space hangs on the wall in the background.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The small black character is to the left of the bearded man. The bearded man is standing in front of the telescope. The space poster is on the wall behind the small black character.",
+    "spatial": "The small black cat is to the left of the man. The man is standing next to the large telescope on the right. The picture of the planet and moon is on the wall behind the cat.",
     "parse_success": true,
     "chunk_idx": 28,
     "video_id": "1055186300"
   },
   {
     "time": [
-      58,
-      60
+      29,
+      30
     ],
     "visible_entities": [
       {
         "desc": "black cartoon cat with white eyes and a white muzzle",
-        "action": "standing and looking at the man",
+        "action": "standing and looking up",
         "position": "left"
       },
       {
-        "desc": "bald man with a white beard, glasses, a dark jacket, and light pants",
-        "action": "standing and gesturing with hands",
+        "desc": "elderly man with a long white beard, glasses, a dark jacket, and light-colored pants",
+        "action": "bending forward with hands clasped",
         "position": "center"
       },
       {
@@ -1370,18 +1376,18 @@
         "position": "right"
       },
       {
-        "desc": "wall poster with a planet, stars, and a crescent moon",
+        "desc": "framed picture of a planet and stars",
         "action": "static",
         "position": "background left"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "The man gestures with his hands towards the cat.",
+        "fact": "The elderly man bends forward at the waist.",
         "confidence": 1.0
       },
       {
-        "fact": "The cat stands on the floor looking at the man.",
+        "fact": "The black cat stands to the left of the man.",
         "confidence": 1.0
       },
       {
@@ -1390,7 +1396,7 @@
       }
     ],
     "ocr": [],
-    "spatial": "The black cat is to the left of the man. The man is standing in the center of the room, in front of the wall poster. The telescope is to the right of the man.",
+    "spatial": "The black cat is to the left of the elderly man. The man is standing in the center, in front of the telescope which is on the right. The framed picture is on the wall in the background, above and to the left of the cat.",
     "parse_success": true,
     "chunk_idx": 29,
     "video_id": "1055186300"

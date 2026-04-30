@@ -2,38 +2,43 @@
   {
     "time": [
       0,
-      2
+      1
     ],
     "visible_entities": [
       {
-        "desc": "square oatmeal bar, textured, golden-brown, with visible oats and nuts",
+        "desc": "square oatmeal bars, textured with oats and nuts, light brown color",
         "action": "being drizzled with chocolate",
-        "position": "center"
+        "position": "center",
+        "id": "dessert_bar_final_1"
       },
       {
-        "desc": "dark brown chocolate sauce, liquid, flowing in a thin stream",
-        "action": "dripping from top",
-        "position": "center"
+        "desc": "dark brown chocolate syrup, liquid stream",
+        "action": "pouring onto the bars",
+        "position": "center",
+        "id": "chocolate_syrup_1"
       },
       {
-        "desc": "white ceramic bowl, round, containing brown chunks",
+        "desc": "white ceramic bowl, round",
         "action": "static",
-        "position": "background left"
+        "position": "background left",
+        "id": "bowl_white_ceramic_1"
       },
       {
-        "desc": "wooden cutting board, light-brown, flat surface",
+        "desc": "light wooden cutting board, flat surface",
         "action": "static",
-        "position": "bottom"
+        "position": "bottom",
+        "id": "cutting_board_wood_1"
       },
       {
-        "desc": "square oatmeal bar, textured, golden-brown, with visible oats and nuts",
+        "desc": "chopped nuts or cereal pieces, brown and tan",
         "action": "static",
-        "position": "background right"
+        "position": "inside the bowl",
+        "id": "nuts_chopped_1"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A thin stream of dark chocolate sauce is being drizzled onto the central oatmeal bar.",
+        "fact": "A stream of dark chocolate syrup is being poured onto the oatmeal bars.",
         "confidence": 1.0
       },
       {
@@ -41,164 +46,163 @@
         "confidence": 1.0
       },
       {
-        "fact": "A white bowl containing brown chunks sits in the background.",
+        "fact": "A white bowl containing chopped ingredients sits in the background.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The central oatmeal bar is on the wooden cutting board. The stream of chocolate is falling onto the central bar from above. The white bowl is to the left of the central bar and behind it. Another oatmeal bar is to the right of the central bar.",
+    "spatial": "The oatmeal bars are arranged on top of the wooden cutting board in the foreground. A white bowl filled with chopped nuts is located to the left and behind the bars. The stream of chocolate is falling from above onto the center bar.",
     "parse_success": true,
     "chunk_idx": 0,
     "video_id": "Butterfinger_Rice_Krispies_Treats",
-    "state_changes": [],
-    "_rescued": "parse"
+    "state_changes": []
   },
   {
     "time": [
-      2,
-      4
+      1,
+      2
     ],
     "visible_entities": [
       {
-        "desc": "hand with light skin tone",
-        "action": "sprinkling toppings",
-        "position": "top/center"
+        "desc": "hand with light skin tone and short, natural fingernails",
+        "action": "sprinkling crumbs onto the bar",
+        "position": "top/center",
+        "id": "person_chef_1"
       },
       {
-        "desc": "rectangular cereal bars, golden-brown, drizzled with dark chocolate",
+        "desc": "rectangular rice crispy treat bar, golden-brown, topped with dark chocolate drizzle",
         "action": "static",
-        "position": "foreground/center"
+        "position": "center/foreground",
+        "id": "dessert_bar_final_1"
       },
       {
-        "desc": "small white ceramic bowl",
+        "desc": "small white ceramic bowl containing brown crumbles",
         "action": "static",
-        "position": "background/left"
+        "position": "left/background",
+        "id": "bowl_white_ceramic_1"
       },
       {
         "desc": "light-colored wooden cutting board",
         "action": "static",
-        "position": "bottom"
+        "position": "bottom",
+        "id": "cutting_board_wood_1"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A hand is sprinkling small, light-brown toppings onto the cereal bars.",
+        "fact": "A hand sprinkles brown crumbles onto a chocolate-drizzled rice crispy treat.",
         "confidence": 1.0
       },
       {
-        "fact": "The cereal bars are arranged on a wooden cutting board.",
+        "fact": "The treats are arranged on a wooden cutting board.",
         "confidence": 1.0
       },
       {
-        "fact": "The bars are drizzled with chocolate.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "A white bowl containing more toppings sits in the background.",
+        "fact": "A small white bowl sits in the background.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The hand is positioned above the cereal bars in the center. The cereal bars are arranged on the wooden cutting board in the foreground. The white bowl is to the left and behind the main group of bars.",
+    "spatial": "The hand is positioned above the central rice crispy treat. The treat is on the wooden cutting board. The white bowl is to the left of the treats and slightly behind them.",
     "parse_success": true,
     "chunk_idx": 1,
     "video_id": "Butterfinger_Rice_Krispies_Treats",
-    "state_changes": [],
-    "_rescued": "parse"
+    "state_changes": [
+      "Action starts: Hand sprinkling crumbs onto the bar."
+    ]
   },
   {
     "time": [
-      4,
-      6
+      2,
+      3
     ],
     "visible_entities": [
       {
-        "desc": "hand with light skin tone and short fingernails",
-        "action": "reaching for a cereal bar",
-        "position": "top right"
+        "desc": "human hand with light skin tone and short, natural fingernails",
+        "action": "reaching down to pick up a granola bar",
+        "position": "top right",
+        "id": "person_chef_1"
       },
       {
-        "desc": "rectangular cereal bar with a textured oat base, topped with cornflakes and drizzled with dark chocolate",
-        "action": "being touched by the hand",
-        "position": "center"
+        "desc": "rectangular granola bars with a textured oat base, topped with corn flakes, nuts, and drizzled with dark chocolate",
+        "action": "resting on a wooden board",
+        "position": "center and foreground",
+        "id": "dessert_bar_final_1"
+      },
+      {
+        "desc": "small white ceramic bowl containing cereal pieces",
+        "action": "static",
+        "position": "left background",
+        "id": "bowl_white_ceramic_1"
       },
       {
         "desc": "light-colored wooden cutting board with visible grain",
         "action": "static",
-        "position": "bottom"
-      },
-      {
-        "desc": "small white ceramic bowl containing brown cereal pieces",
-        "action": "static",
-        "position": "left background"
-      },
-      {
-        "desc": "striped cloth napkin with grey and white stripes",
-        "action": "static",
-        "position": "left background"
+        "position": "bottom",
+        "id": "cutting_board_wood_1"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A hand reaches down from the top right to pick up a cereal bar.",
+        "fact": "A hand reaches down from the top right to grasp a granola bar.",
         "confidence": 1.0
       },
       {
-        "fact": "The fingers of the hand are grasping the edges of the central cereal bar.",
+        "fact": "The granola bars are arranged on a wooden cutting board.",
         "confidence": 1.0
       },
       {
-        "fact": "The cereal bars are arranged on a wooden board.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "A white bowl filled with cereal sits in the background.",
+        "fact": "A white bowl sits in the background to the left of the bars.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The hand is positioned above the central cereal bar. The wooden board is underneath the cereal bars. The white bowl is to the left of the cereal bars and behind the striped cloth.",
+    "spatial": "The wooden cutting board is at the bottom of the frame, supporting the granola bars. The hand is positioned above and to the right of the central granola bar, reaching down towards it. The white bowl is located to the left of the granola bars in the background.",
     "parse_success": true,
     "chunk_idx": 2,
     "video_id": "Butterfinger_Rice_Krispies_Treats",
-    "state_changes": [],
-    "_rescued": "parse"
+    "state_changes": []
   },
   {
     "time": [
-      6,
-      8
+      3,
+      4
     ],
     "visible_entities": [
       {
-        "desc": "square-shaped Rice Krispie treat topped with crushed Butterfinger candy pieces and drizzled chocolate",
+        "desc": "square-shaped dessert bar with a light-brown crispy rice base, topped with crushed golden-brown candy pieces and drizzled with dark chocolate",
         "action": "being lifted by hands",
-        "position": "center"
+        "position": "center",
+        "id": "dessert_bar_final_1"
       },
       {
         "desc": "pair of hands with light skin tone",
-        "action": "lifting the treat",
-        "position": "center"
-      },
-      {
-        "desc": "white text overlay reading 'BUTTERFINGER RICE KRISPIE TREATS' in bold sans-serif font",
-        "action": "static",
-        "position": "center"
+        "action": "lifting the dessert bar",
+        "position": "center",
+        "id": "person_chef_1"
       },
       {
         "desc": "light-colored wooden cutting board with visible grain",
         "action": "static",
-        "position": "background"
+        "position": "background",
+        "id": "cutting_board_wood_1"
       },
       {
-        "desc": "white bowl containing crushed candy pieces",
+        "desc": "white ceramic bowl containing brown ingredients",
         "action": "static",
-        "position": "left"
+        "position": "left",
+        "id": "bowl_white_ceramic_1"
+      },
+      {
+        "desc": "white text overlay in bold sans-serif font reading 'BUTTERFINGER RICE KRISPIE TREATS'",
+        "action": "static",
+        "position": "foreground",
+        "id": "text_overlay_1"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A pair of hands lifts a Butterfinger Rice Krispie treat from a wooden board.",
+        "fact": "Hands are lifting a Butterfinger Rice Krispie treat from a wooden board.",
         "confidence": 1.0
       },
       {
@@ -215,48 +219,67 @@
       "RICE KRISPIE",
       "TREATS"
     ],
-    "spatial": "The hands are in the center, holding the treat above the wooden board. The text overlay is superimposed over the center of the image, partially obscuring the treat. The white bowl is located to the left of the wooden board.",
+    "spatial": "The hands are holding the dessert bar in the center of the frame. The wooden board is underneath the dessert bar. The white bowl is to the left of the dessert bar. The text overlay is in front of the dessert bar and hands.",
     "parse_success": true,
     "chunk_idx": 3,
     "video_id": "Butterfinger_Rice_Krispies_Treats",
-    "state_changes": [],
-    "_rescued": "parse"
+    "state_changes": [
+      "Action starts: Hands lifting the dessert bar; Title text 'BUTTERFINGER RICE KRISPIE TREATS' appears."
+    ]
   },
   {
     "time": [
-      8,
-      10
+      4,
+      5
     ],
     "visible_entities": [
       {
-        "desc": "hands with light skin tone",
-        "action": "stirring mixture",
-        "position": "center"
+        "desc": "hands with fair skin, holding a small white ceramic bowl and a silver spoon",
+        "action": "stirring a mixture",
+        "position": "center",
+        "id": "person_chef_1"
       },
       {
-        "desc": "small white ceramic bowl",
+        "desc": "small white ceramic bowl containing a smooth, light-brown creamy mixture",
         "action": "being held",
-        "position": "center"
-      },
-      {
-        "desc": "creamy light-brown mixture (butter and peanut butter)",
-        "action": "being stirred",
-        "position": "inside bowl"
+        "position": "center",
+        "id": "bowl_white_ceramic_1"
       },
       {
         "desc": "silver spoon",
         "action": "stirring",
-        "position": "center"
+        "position": "center",
+        "id": "spoon_silver_1"
       },
       {
-        "desc": "large grey non-stick pan",
+        "desc": "large dark grey non-stick pot",
         "action": "static",
-        "position": "background"
+        "position": "center",
+        "id": "pot_silver_1"
       },
       {
-        "desc": "white text overlay",
+        "desc": "black stovetop surface",
         "action": "static",
-        "position": "center"
+        "position": "background",
+        "id": "cooktop_black_1"
+      },
+      {
+        "desc": "white text overlay with a black outline",
+        "action": "static",
+        "position": "center",
+        "id": "text_overlay_1"
+      },
+      {
+        "desc": "white bowl containing brown flakes",
+        "action": "static",
+        "position": "top left",
+        "id": "bowl_white_ceramic_1"
+      },
+      {
+        "desc": "white and grey striped cloth",
+        "action": "static",
+        "position": "top right",
+        "id": "towel_striped_1"
       }
     ],
     "atomic_facts": [
@@ -265,11 +288,15 @@
         "confidence": 1.0
       },
       {
-        "fact": "The small white bowl is positioned inside a larger grey pan.",
+        "fact": "The small white bowl is being held over a larger grey pot.",
         "confidence": 1.0
       },
       {
-        "fact": "The text 'BUTTER & PEANUT BUTTER' is overlaid on the screen.",
+        "fact": "The text 'BUTTER & PEANUT BUTTER' is displayed on the screen.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A bowl of flakes is visible in the top left corner.",
         "confidence": 1.0
       }
     ],
@@ -277,122 +304,157 @@
       "BUTTER &",
       "PEANUT BUTTER"
     ],
-    "spatial": "The small white bowl is positioned inside the large grey pan. The hands are holding the bowl and the spoon. The text overlay is centered on top of the bowl and hands.",
+    "spatial": "The hands are holding the small white bowl directly above the large grey pot. The silver spoon is inside the small bowl, mixing the contents. The text overlay is centered over the bowl and hands. To the top left of the pot, a bowl of flakes sits on the surface. To the top right, a striped cloth is draped near the edge of the frame.",
     "parse_success": true,
     "chunk_idx": 4,
     "video_id": "Butterfinger_Rice_Krispies_Treats",
-    "state_changes": [],
-    "_rescued": "parse"
+    "state_changes": [
+      "Scene transition: Start of cooking process; hands stirring mixture in a bowl; new pot and stovetop visible."
+    ]
   },
   {
     "time": [
-      10,
-      12
+      5,
+      6
     ],
     "visible_entities": [
       {
-        "desc": "hand with light skin tone, wearing a silver ring on the ring finger",
-        "action": "holding a fork and scraping a jar",
-        "position": "foreground"
+        "desc": "hand with fair skin, wearing a silver ring on the ring finger",
+        "action": "scraping peanut butter",
+        "position": "foreground",
+        "id": "person_chef_1"
       },
       {
-        "desc": "small white ceramic jar containing creamy light-brown paste",
-        "action": "being held and scraped",
-        "position": "center"
+        "desc": "silver fork with tines",
+        "action": "being used to scrape",
+        "position": "center",
+        "id": "fork_silver_1"
       },
       {
-        "desc": "silver metal fork",
-        "action": "scraping paste from jar",
-        "position": "center"
+        "desc": "small white ceramic ramekin",
+        "action": "being held",
+        "position": "center",
+        "id": "bowl_white_ceramic_1"
       },
       {
-        "desc": "large grey metal cooking pot",
+        "desc": "creamy light-brown peanut butter",
+        "action": "being transferred",
+        "position": "center",
+        "id": "peanut_butter_1"
+      },
+      {
+        "desc": "large grey metal pot",
         "action": "static",
-        "position": "background"
+        "position": "background",
+        "id": "pot_silver_1"
       },
       {
-        "desc": "chunk of yellow butter",
+        "desc": "small yellow square of butter",
         "action": "static",
-        "position": "inside pot"
+        "position": "inside pot",
+        "id": "butter_1"
+      },
+      {
+        "desc": "white bowl containing chopped nuts",
+        "action": "static",
+        "position": "top left",
+        "id": "bowl_white_ceramic_1"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A hand is scraping creamy light-brown paste from a white jar using a fork.",
+        "fact": "A hand uses a silver fork to scrape creamy peanut butter out of a white ramekin.",
         "confidence": 1.0
       },
       {
-        "fact": "The paste is being transferred into a large grey pot.",
+        "fact": "The peanut butter is being transferred into a large grey pot.",
         "confidence": 1.0
       },
       {
-        "fact": "A chunk of butter is sitting inside the pot.",
+        "fact": "A square of butter is already sitting inside the pot.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The hand holding the white jar is positioned in the foreground, directly above the large grey pot. The fork is inserted into the jar, scraping the paste. The chunk of butter is located inside the pot, to the right of where the paste is being added.",
+    "spatial": "The hand holding the ramekin is in the foreground, positioned above the large grey pot. The fork is inserted into the ramekin, scraping the peanut butter towards the pot's interior. The square of butter is inside the pot, to the right of where the peanut butter is being added. A bowl of nuts is visible in the top left corner, behind the main action.",
     "parse_success": true,
     "chunk_idx": 5,
     "video_id": "Butterfinger_Rice_Krispies_Treats",
-    "state_changes": [],
-    "_rescued": "parse"
+    "state_changes": [
+      "Action starts: Scraping peanut butter; butter square appears static."
+    ]
   },
   {
     "time": [
-      12,
-      14
+      6,
+      7
     ],
     "visible_entities": [
       {
-        "desc": "silver metal pot, round, smooth interior surface",
+        "desc": "silver metal pot with a smooth interior surface",
         "action": "static",
-        "position": "center"
+        "position": "center",
+        "id": "pot_silver_1"
       },
       {
-        "desc": "light brown creamy substance, smooth texture, dollop shape",
+        "desc": "dollop of creamy light-brown peanut butter",
         "action": "being stirred",
-        "position": "center"
+        "position": "center",
+        "id": "peanut_butter_1"
       },
       {
-        "desc": "wooden spoon, light brown, smooth handle",
-        "action": "stirring the mixture",
-        "position": "center"
+        "desc": "rectangular chunk of pale yellow butter",
+        "action": "melting",
+        "position": "right",
+        "id": "butter_1"
+      },
+      {
+        "desc": "wooden spoon with a smooth handle",
+        "action": "stirring mixture",
+        "position": "center",
+        "id": "spoon_wood_1"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A wooden spoon is stirring a light brown creamy substance inside a metal pot.",
+        "fact": "A wooden spoon is stirring the contents inside the pot.",
         "confidence": 1.0
       },
       {
-        "fact": "The mixture is being blended into a smooth consistency.",
+        "fact": "The peanut butter and butter are blending together into a smooth sauce.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The butter is melting into a liquid state.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The wooden spoon is inside the silver metal pot. The light brown creamy substance is at the bottom of the pot and is being moved by the spoon.",
+    "spatial": "The silver pot is centered in the frame. Inside the pot, the dollop of peanut butter is to the left of the melting butter chunk. The wooden spoon is inside the pot, moving through the mixture.",
     "parse_success": true,
     "chunk_idx": 6,
     "video_id": "Butterfinger_Rice_Krispies_Treats",
-    "state_changes": [],
-    "_rescued": "parse"
+    "state_changes": [
+      "State change: Butter chunk begins melting; peanut butter being stirred in pot."
+    ]
   },
   {
     "time": [
-      14,
-      16
+      7,
+      8
     ],
     "visible_entities": [
       {
-        "desc": "thick, glossy, light-brown viscous mixture with smooth texture",
+        "desc": "thick, glossy, light-brown viscous mixture",
         "action": "being stirred in a circular motion",
-        "position": "center"
+        "position": "center",
+        "id": "mix_brown_visous_1"
       },
       {
-        "desc": "metallic cooking pot with reflective silver interior surface",
+        "desc": "metallic pot interior",
         "action": "static",
-        "position": "background"
+        "position": "background",
+        "id": "pot_silver_1"
       }
     ],
     "atomic_facts": [
@@ -405,455 +467,508 @@
         "confidence": 1.0
       },
       {
-        "fact": "The mixture coats the bottom and sides of the metallic container.",
+        "fact": "The mixture has a glossy surface texture.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The light-brown mixture is inside the metallic pot. The swirls created by the stirring are located in the center of the pot's interior.",
+    "spatial": "The light-brown viscous mixture is inside the metallic pot. The swirls created by the stirring are visible on the surface of the mixture.",
     "parse_success": true,
     "chunk_idx": 7,
     "video_id": "Butterfinger_Rice_Krispies_Treats",
-    "state_changes": [],
-    "_rescued": "parse"
+    "state_changes": []
   },
   {
     "time": [
-      16,
-      18
+      8,
+      9
     ],
     "visible_entities": [
       {
         "desc": "white cylindrical marshmallows",
         "action": "being dropped into the pot",
-        "position": "center"
+        "position": "center",
+        "id": "marshmallows_1"
       },
       {
         "desc": "brown liquid mixture",
         "action": "static",
-        "position": "center"
+        "position": "bottom",
+        "id": "mix_brown_visous_1"
       },
       {
         "desc": "silver metal pot",
         "action": "static",
-        "position": "center"
-      },
-      {
-        "desc": "wooden spoon",
-        "action": "static",
-        "position": "center"
+        "position": "center",
+        "id": "pot_silver_1"
       },
       {
         "desc": "hand",
         "action": "dropping marshmallows",
-        "position": "top right"
+        "position": "top right",
+        "id": "person_chef_1"
+      },
+      {
+        "desc": "wooden spoon",
+        "action": "static",
+        "position": "center",
+        "id": "spoon_wood_1"
+      },
+      {
+        "desc": "white text overlay 'MARSHMALLOWS'",
+        "action": "static",
+        "position": "center",
+        "id": "text_overlay_1"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A hand drops white marshmallows into a pot containing a brown liquid.",
+        "fact": "A hand is dropping white marshmallows into a pot containing a brown liquid.",
         "confidence": 1.0
       },
       {
-        "fact": "The text 'MARSHMALLOWS' is overlaid on the video.",
+        "fact": "The text 'MARSHMALLOWS' is displayed in the center of the screen.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A wooden spoon is resting in the pot.",
         "confidence": 1.0
       }
     ],
     "ocr": [
       "MARSHMALLOWS"
     ],
-    "spatial": "The white marshmallows are falling into the brown liquid inside the silver pot. The wooden spoon is resting in the liquid near the center. The hand is positioned above the pot, releasing the marshmallows.",
+    "spatial": "The hand is positioned above the silver pot, dropping marshmallows into the brown liquid mixture inside. The wooden spoon is submerged in the liquid near the center. The text 'MARSHMALLOWS' is superimposed over the center of the pot.",
     "parse_success": true,
     "chunk_idx": 8,
     "video_id": "Butterfinger_Rice_Krispies_Treats",
-    "state_changes": [],
-    "_rescued": "parse"
+    "state_changes": [
+      "Action starts: Marshmallows dropped into pot; Text overlay 'MARSHMALLOWS' appears."
+    ]
   },
   {
     "time": [
-      18,
-      20
+      9,
+      10
     ],
     "visible_entities": [
       {
         "desc": "silver metal saucepan",
         "action": "static",
-        "position": "center"
+        "position": "center",
+        "id": "pot_silver_1"
       },
       {
         "desc": "white cylindrical marshmallows",
         "action": "being stirred",
-        "position": "center"
+        "position": "center",
+        "id": "marshmallows_1"
       },
       {
         "desc": "light brown viscous liquid",
-        "action": "being stirred",
-        "position": "center"
+        "action": "static",
+        "position": "center",
+        "id": "mix_brown_visous_1"
       },
       {
-        "desc": "wooden spoon",
+        "desc": "wooden spoon with light brown handle",
         "action": "stirring marshmallows",
-        "position": "center"
-      },
-      {
-        "desc": "hand",
-        "action": "holding wooden spoon",
-        "position": "right"
+        "position": "center",
+        "id": "spoon_wood_1"
       },
       {
         "desc": "black induction cooktop",
         "action": "static",
-        "position": "bottom"
-      },
-      {
-        "desc": "white bowl with cereal",
-        "action": "static",
-        "position": "top left"
-      },
-      {
-        "desc": "striped kitchen towel",
-        "action": "static",
-        "position": "top right"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "A hand is stirring white marshmallows into a light brown liquid inside a saucepan.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The saucepan is sitting on a black induction cooktop.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "A wooden spoon is being used to mix the ingredients.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "A bowl of cereal is visible in the background.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [],
-    "spatial": "The silver saucepan is centered on the black cooktop. The hand is to the right of the saucepan, holding the wooden spoon which is inside the pan. The bowl of cereal is to the top left of the saucepan, and the striped towel is to the top right.",
-    "parse_success": true,
-    "chunk_idx": 9,
-    "video_id": "Butterfinger_Rice_Krispies_Treats",
-    "state_changes": [],
-    "_rescued": "parse"
-  },
-  {
-    "time": [
-      20,
-      22
-    ],
-    "visible_entities": [
-      {
-        "desc": "hand with light skin tone",
-        "action": "stirring marshmallows with a wooden spoon",
-        "position": "bottom right"
-      },
-      {
-        "desc": "wooden spoon, light brown, smooth texture",
-        "action": "stirring marshmallows in the pot",
-        "position": "center"
-      },
-      {
-        "desc": "large silver metal pot, round, containing a brown liquid",
-        "action": "static",
-        "position": "center"
-      },
-      {
-        "desc": "white marshmallows, cylindrical, partially melted",
-        "action": "being stirred and melting",
-        "position": "inside the pot"
-      },
-      {
-        "desc": "small white bowl containing brown cereal pieces",
-        "action": "static",
-        "position": "top left"
-      },
-      {
-        "desc": "white and grey striped cloth",
-        "action": "static",
-        "position": "top right"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "A hand is stirring white marshmallows in a pot of brown liquid.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The marshmallows are melting into the mixture.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "A wooden spoon is used to stir the contents of the pot.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [],
-    "spatial": "The large silver pot is in the center of the frame. The hand holding the wooden spoon is in the bottom right, reaching into the pot. The small bowl of cereal is to the top left of the pot. The striped cloth is to the top right of the pot.",
-    "parse_success": true,
-    "chunk_idx": 10,
-    "video_id": "Butterfinger_Rice_Krispies_Treats",
-    "state_changes": [],
-    "_rescued": "parse"
-  },
-  {
-    "time": [
-      22,
-      24
-    ],
-    "visible_entities": [
-      {
-        "desc": "hand with light skin tone",
-        "action": "holding wooden spoon",
-        "position": "right"
-      },
-      {
-        "desc": "wooden spoon, light brown, smooth texture",
-        "action": "stirring contents",
-        "position": "center"
-      },
-      {
-        "desc": "silver metal pot, round, reflective interior",
-        "action": "static",
-        "position": "center"
-      },
-      {
-        "desc": "white cylindrical marshmallows, cut into chunks",
-        "action": "being stirred",
-        "position": "center"
-      },
-      {
-        "desc": "brown viscous liquid, glossy texture",
-        "action": "coating marshmallows",
-        "position": "bottom"
+        "position": "bottom",
+        "id": "cooktop_black_1"
       },
       {
         "desc": "white bowl with brown cereal pieces",
         "action": "static",
-        "position": "top left"
+        "position": "top left",
+        "id": "bowl_white_ceramic_1"
       },
       {
-        "desc": "striped cloth, white with thin dark stripes",
+        "desc": "white cloth with black stripes",
         "action": "static",
-        "position": "top right"
+        "position": "top right",
+        "id": "towel_striped_1"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A hand holds a wooden spoon inside a metal pot.",
+        "fact": "A wooden spoon is stirring white marshmallows in a pot of brown liquid.",
         "confidence": 1.0
       },
       {
-        "fact": "The spoon stirs white marshmallow chunks in a brown liquid.",
+        "fact": "The pot is sitting on a black cooktop.",
         "confidence": 1.0
       },
       {
-        "fact": "The marshmallows are being coated by the brown mixture.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "A bowl of cereal sits on the table to the left of the pot.",
+        "fact": "A bowl of cereal is visible in the top left corner.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The silver pot is in the center of the frame. A hand enters from the right side, holding a wooden spoon inside the pot. The white marshmallow chunks are inside the pot, mixed with the brown liquid at the bottom. A bowl of cereal is located to the top left of the pot, and a striped cloth is visible in the top right background.",
+    "spatial": "The silver saucepan is centered on the black cooktop. Inside the pan, the wooden spoon is mixing the white marshmallows into the brown liquid. To the top left of the pan, a small white bowl containing cereal sits on the counter. To the top right, a striped cloth is draped near the edge of the frame.",
+    "parse_success": true,
+    "chunk_idx": 9,
+    "video_id": "Butterfinger_Rice_Krispies_Treats",
+    "state_changes": []
+  },
+  {
+    "time": [
+      10,
+      11
+    ],
+    "visible_entities": [
+      {
+        "desc": "hand with light skin tone",
+        "action": "stirring marshmallows",
+        "position": "bottom right",
+        "id": "person_chef_1"
+      },
+      {
+        "desc": "wooden spoon, light brown",
+        "action": "stirring marshmallows",
+        "position": "center",
+        "id": "spoon_wood_1"
+      },
+      {
+        "desc": "large silver metal pot",
+        "action": "static",
+        "position": "center",
+        "id": "pot_silver_1"
+      },
+      {
+        "desc": "white marshmallows, cylindrical, melting",
+        "action": "melting into liquid",
+        "position": "inside pot",
+        "id": "marshmallows_1"
+      },
+      {
+        "desc": "thick light brown liquid",
+        "action": "being stirred",
+        "position": "inside pot",
+        "id": "mix_brown_visous_1"
+      },
+      {
+        "desc": "white bowl with cereal",
+        "action": "static",
+        "position": "top left",
+        "id": "bowl_white_ceramic_1"
+      },
+      {
+        "desc": "striped kitchen towel, white with grey stripes",
+        "action": "static",
+        "position": "top right",
+        "id": "towel_striped_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A hand is stirring marshmallows in a pot with a wooden spoon.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The marshmallows are melting into a thick brown liquid.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A bowl of cereal is visible in the top left corner.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The hand is holding the wooden spoon inside the silver pot. The pot is on a black surface. The bowl of cereal is to the left of the pot. The striped towel is behind the pot.",
+    "parse_success": true,
+    "chunk_idx": 10,
+    "video_id": "Butterfinger_Rice_Krispies_Treats",
+    "state_changes": [
+      "State change: Marshmallows melting into liquid; mixture becoming viscous."
+    ]
+  },
+  {
+    "time": [
+      11,
+      12
+    ],
+    "visible_entities": [
+      {
+        "desc": "hand with light skin tone",
+        "action": "stirring ingredients",
+        "position": "right",
+        "id": "person_chef_1"
+      },
+      {
+        "desc": "wooden spoon, light brown, smooth texture",
+        "action": "mixing food",
+        "position": "center",
+        "id": "spoon_wood_1"
+      },
+      {
+        "desc": "silver metal pot, round, reflective interior",
+        "action": "static",
+        "position": "center",
+        "id": "pot_silver_1"
+      },
+      {
+        "desc": "white cylindrical marshmallows, cut into chunks",
+        "action": "being stirred",
+        "position": "inside pot",
+        "id": "marshmallows_1"
+      },
+      {
+        "desc": "brown caramel-like sauce, viscous, glossy",
+        "action": "coating marshmallows",
+        "position": "inside pot"
+      },
+      {
+        "desc": "black induction cooktop surface",
+        "action": "static",
+        "position": "bottom",
+        "id": "cooktop_black_1"
+      },
+      {
+        "desc": "white bowl with brown granular topping",
+        "action": "static",
+        "position": "top left",
+        "id": "bowl_white_ceramic_1"
+      },
+      {
+        "desc": "white and grey striped kitchen towel",
+        "action": "static",
+        "position": "background",
+        "id": "towel_striped_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A hand is holding a wooden spoon to stir the contents of the pot.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "White marshmallow chunks are being mixed with a brown sauce.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The pot is sitting on a black cooktop.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A small bowl of toppings is visible in the upper left corner.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The silver pot is centered on the black cooktop. Inside the pot, the wooden spoon is mixing the white marshmallows and brown sauce. The hand holding the spoon enters from the right side. A white bowl containing brown toppings is positioned to the top left of the pot, near a striped towel in the background.",
     "parse_success": true,
     "chunk_idx": 11,
     "video_id": "Butterfinger_Rice_Krispies_Treats",
-    "state_changes": [],
-    "_rescued": "parse"
+    "state_changes": []
   },
   {
     "time": [
-      24,
-      26
+      12,
+      13
     ],
     "visible_entities": [
       {
-        "desc": "thick, glossy, beige-colored batter with a sticky, stringy texture",
+        "desc": "thick, viscous, beige-colored batter with a glossy, fibrous texture",
         "action": "being stirred",
-        "position": "center"
+        "position": "center",
+        "id": "mix_brown_visous_1"
       },
       {
-        "desc": "white, irregular chunks of unmixed ingredients",
-        "action": "being incorporated",
-        "position": "right"
-      },
-      {
-        "desc": "silver metal mixing bowl",
+        "desc": "metallic mixing bowl, silver-grey",
         "action": "static",
-        "position": "background"
+        "position": "background",
+        "id": "bowl_mix_silver_1"
+      },
+      {
+        "desc": "dark, blurry stirring tool",
+        "action": "moving through batter",
+        "position": "right",
+        "id": "stirring_tool_dark_1"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A utensil is stirring the thick beige batter in a circular motion.",
+        "fact": "A dark tool is stirring the thick beige batter.",
         "confidence": 1.0
       },
       {
-        "fact": "The batter is stretching and forming strands as it is moved.",
+        "fact": "The batter is being manipulated inside a metallic bowl.",
         "confidence": 1.0
       },
       {
-        "fact": "White chunks are being folded into the main mixture.",
+        "fact": "The mixture exhibits a stringy, elastic consistency as it is moved.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The beige batter fills the majority of the silver metal mixing bowl. The white chunks are located on the right side, partially submerged in the batter. The batter is inside the bowl.",
+    "spatial": "The beige batter is inside the metallic mixing bowl. The stirring tool is on the right side of the batter, moving through the mixture.",
     "parse_success": true,
     "chunk_idx": 12,
     "video_id": "Butterfinger_Rice_Krispies_Treats",
-    "state_changes": [],
-    "_rescued": "parse"
+    "state_changes": [
+      "Scene transition: Mixture moved to a silver mixing bowl; texture described as fibrous batter."
+    ]
   },
   {
     "time": [
-      26,
-      28
+      13,
+      14
     ],
     "visible_entities": [
       {
-        "desc": "thick, glossy, light-brown batter with white streaks",
+        "desc": "thick, beige-colored batter with a glossy, viscous texture and visible swirls",
         "action": "being stirred",
         "position": "center"
       },
       {
+        "desc": "white, creamy liquid dollops",
+        "action": "being mixed into batter",
+        "position": "right",
+        "id": "liquid_creamy_dollops_1"
+      },
+      {
         "desc": "silver metal mixing bowl",
         "action": "static",
-        "position": "foreground"
+        "position": "background",
+        "id": "bowl_mix_silver_1"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "The batter is being stirred in a circular motion.",
+        "fact": "A thick beige batter is being stirred in a circular motion.",
         "confidence": 1.0
       },
       {
-        "fact": "White streaks are visible within the light-brown mixture.",
+        "fact": "White liquid dollops are being incorporated into the mixture.",
         "confidence": 1.0
       },
       {
-        "fact": "The mixture is contained inside a metal bowl.",
+        "fact": "The mixture is contained within a metal bowl.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The light-brown batter is inside the silver metal mixing bowl. The white streaks are mixed within the batter.",
+    "spatial": "The beige batter fills the center of the silver metal bowl. The white liquid dollops are located on the right side of the batter, being folded into the mixture.",
     "parse_success": true,
     "chunk_idx": 13,
     "video_id": "Butterfinger_Rice_Krispies_Treats",
-    "state_changes": [],
-    "_rescued": "parse"
+    "state_changes": [
+      "Action starts: Creamy liquid dollops mixed into the batter."
+    ]
   },
   {
     "time": [
-      28,
-      30
+      14,
+      15
     ],
     "visible_entities": [
       {
-        "desc": "hand with fair skin",
+        "desc": "hand with light skin tone",
         "action": "stirring mixture",
-        "position": "right"
+        "position": "bottom right",
+        "id": "person_chef_1"
       },
       {
-        "desc": "wooden spoon, light brown, smooth",
-        "action": "mixing batter",
-        "position": "center"
+        "desc": "wooden spoon, light brown, smooth texture",
+        "action": "stirring mixture",
+        "position": "center",
+        "id": "spoon_wood_1"
       },
       {
         "desc": "metal mixing bowl, silver, round",
         "action": "static",
-        "position": "center"
+        "position": "center",
+        "id": "bowl_mix_silver_1"
       },
       {
-        "desc": "thick brown batter, creamy texture",
+        "desc": "thick brown batter, smooth and creamy texture",
         "action": "being stirred",
-        "position": "inside bowl"
+        "position": "inside bowl",
+        "id": "mix_brown_visous_1"
       },
       {
-        "desc": "white bowl with food",
+        "desc": "white and grey striped cloth",
         "action": "static",
-        "position": "top left"
+        "position": "background",
+        "id": "towel_striped_1"
       },
       {
-        "desc": "striped cloth, white with black stripes",
+        "desc": "white bowl with brown contents",
         "action": "static",
-        "position": "background"
+        "position": "top left",
+        "id": "bowl_white_ceramic_1"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A hand is stirring a thick brown batter inside a metal bowl.",
+        "fact": "A hand is holding a wooden spoon and stirring a thick brown batter inside a metal bowl.",
         "confidence": 1.0
       },
       {
-        "fact": "The wooden spoon is coated with the batter.",
+        "fact": "The batter has a smooth, creamy consistency with swirls created by the stirring motion.",
         "confidence": 1.0
       },
       {
-        "fact": "The batter has a smooth, creamy consistency.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "A white bowl containing food sits on the table in the background.",
+        "fact": "The metal bowl is placed on a white surface with a striped cloth in the background.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The hand is on the right side of the frame, holding the wooden spoon which is inside the metal bowl. The brown batter fills the bottom of the bowl. The striped cloth is behind the bowl, and the small white bowl is to the top left of the mixing bowl.",
+    "spatial": "The hand is at the bottom right of the frame, holding the wooden spoon which is inside the metal bowl. The brown batter is inside the bowl. The striped cloth is behind the bowl in the background. A small white bowl is to the top left of the metal bowl.",
     "parse_success": true,
     "chunk_idx": 14,
     "video_id": "Butterfinger_Rice_Krispies_Treats",
-    "state_changes": [],
-    "_rescued": "parse"
+    "state_changes": []
   },
   {
     "time": [
-      30,
-      32
+      15,
+      16
     ],
     "visible_entities": [
       {
-        "desc": "thick, glossy, light-brown mixture",
+        "desc": "thick, smooth, light-brown mixture",
         "action": "being stirred",
-        "position": "center"
+        "position": "center",
+        "id": "mix_brown_visous_1"
       },
       {
         "desc": "wooden spoon, light-brown, coated with mixture",
-        "action": "stirring mixture",
+        "action": "stirring the mixture",
+        "position": "center",
+        "id": "spoon_wood_1"
+      },
+      {
+        "desc": "metal pot, silver, round",
+        "action": "holding the mixture",
         "position": "center"
       },
       {
-        "desc": "silver metal pot, round",
+        "desc": "Rice Krispies cereal, beige, puffed rice texture",
+        "action": "being poured into the pot",
+        "position": "right",
+        "id": "cereal_rice_krispies_1"
+      },
+      {
+        "desc": "white text, bold, sans-serif font",
         "action": "static",
-        "position": "center"
-      },
-      {
-        "desc": "puffed rice cereal, beige, clumpy",
-        "action": "being poured",
-        "position": "right"
-      },
-      {
-        "desc": "white text overlay, bold, sans-serif font",
-        "action": "static",
-        "position": "center"
+        "position": "center",
+        "id": "text_overlay_1"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A hand pours puffed rice cereal from a glass container into the pot.",
+        "fact": "A wooden spoon is stirring a thick, light-brown mixture inside a metal pot.",
         "confidence": 1.0
       },
       {
-        "fact": "A wooden spoon stirs the thick brown mixture inside the pot.",
+        "fact": "Rice Krispies cereal is being poured from the right side into the pot.",
         "confidence": 1.0
       },
       {
@@ -864,38 +979,49 @@
     "ocr": [
       "RICE KRISPIES"
     ],
-    "spatial": "The silver pot is in the center of the frame containing the brown mixture. The wooden spoon is inside the pot, submerged in the mixture. The puffed rice cereal is being poured from the right side into the pot. The text 'RICE KRISPIES' is overlaid in the center of the screen, above the spoon.",
+    "spatial": "The wooden spoon is inside the metal pot, mixing the brown substance. The Rice Krispies cereal is being poured from the right side into the pot, landing next to the spoon. The text 'RICE KRISPIES' is superimposed over the center of the pot.",
     "parse_success": true,
     "chunk_idx": 15,
     "video_id": "Butterfinger_Rice_Krispies_Treats",
-    "state_changes": [],
-    "_rescued": "parse"
+    "state_changes": [
+      "Action starts: Rice Krispies cereal poured into the pot/mixture."
+    ]
   },
   {
     "time": [
-      32,
-      34
+      16,
+      17
     ],
     "visible_entities": [
       {
         "desc": "hand holding a clear glass measuring cup",
         "action": "pouring chopped nuts",
-        "position": "right"
+        "position": "right/foreground",
+        "id": "person_chef_1"
       },
       {
         "desc": "silver metal pot containing a thick brown mixture",
         "action": "static",
-        "position": "center"
+        "position": "center",
+        "id": "pot_silver_1"
       },
       {
-        "desc": "light-colored chopped nuts",
-        "action": "falling into the pot",
-        "position": "center"
+        "desc": "light-brown wooden spoon",
+        "action": "static",
+        "position": "left/inside pot",
+        "id": "spoon_wood_1"
       },
       {
-        "desc": "wooden spoon with a long handle",
-        "action": "resting in the mixture",
-        "position": "left"
+        "desc": "chopped nuts, light beige, irregular small pieces",
+        "action": "falling into pot",
+        "position": "center/inside pot",
+        "id": "nuts_chopped_1"
+      },
+      {
+        "desc": "white and grey striped cloth",
+        "action": "static",
+        "position": "background",
+        "id": "towel_striped_1"
       }
     ],
     "atomic_facts": [
@@ -904,375 +1030,384 @@
         "confidence": 1.0
       },
       {
-        "fact": "The pot contains a thick, brown, sticky mixture.",
+        "fact": "The pot contains a thick brown mixture.",
         "confidence": 1.0
       },
       {
-        "fact": "A wooden spoon is resting inside the pot.",
+        "fact": "A wooden spoon rests inside the pot.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The hand holding the measuring cup is to the right of the pot. The chopped nuts are falling from the cup into the center of the pot. The wooden spoon is resting inside the pot on the left side, partially submerged in the mixture.",
+    "spatial": "The hand holding the measuring cup is to the right of the pot. The wooden spoon is inside the pot, resting in the brown mixture. The chopped nuts are falling from the cup into the center of the pot.",
     "parse_success": true,
     "chunk_idx": 16,
     "video_id": "Butterfinger_Rice_Krispies_Treats",
-    "state_changes": [],
-    "_rescued": "parse"
+    "state_changes": [
+      "Action starts: Chopped nuts poured from measuring cup into the mixture."
+    ]
   },
   {
     "time": [
-      34,
-      36
+      17,
+      18
     ],
     "visible_entities": [
       {
+        "desc": "silver metal mixing bowl",
+        "action": "static",
+        "position": "center",
+        "id": "bowl_mix_silver_1"
+      },
+      {
         "desc": "hand with light skin tone",
         "action": "stirring mixture",
-        "position": "right"
+        "position": "right",
+        "id": "person_chef_1"
       },
       {
-        "desc": "wooden spoon, light brown, smooth",
+        "desc": "wooden spoon",
         "action": "mixing ingredients",
-        "position": "center"
+        "position": "center",
+        "id": "spoon_wood_1"
       },
       {
-        "desc": "silver metal pot, round, deep",
-        "action": "static",
-        "position": "center"
-      },
-      {
-        "desc": "mixture of beige batter and chopped nuts",
+        "desc": "chopped light-brown nuts",
         "action": "being stirred",
-        "position": "inside pot"
+        "position": "inside bowl",
+        "id": "nuts_chopped_1"
       },
       {
-        "desc": "white bowl with brown food items",
+        "desc": "thick beige batter",
+        "action": "being mixed",
+        "position": "inside bowl",
+        "id": "mix_brown_visous_1"
+      },
+      {
+        "desc": "white bowl with brown contents",
         "action": "static",
-        "position": "top left"
+        "position": "top left",
+        "id": "bowl_white_ceramic_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A hand is stirring a mixture of chopped nuts and batter in a metal bowl.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The wooden spoon is moving through the ingredients to combine them.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "Chopped nuts are visible on top of the batter before being fully incorporated.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The silver metal mixing bowl is in the center of the frame. A hand holding a wooden spoon is to the right of the bowl, reaching inside to stir. The chopped nuts and batter are inside the bowl. A small white bowl is located in the top left corner, above and to the left of the main mixing bowl.",
+    "parse_success": true,
+    "chunk_idx": 17,
+    "video_id": "Butterfinger_Rice_Krispies_Treats",
+    "state_changes": []
+  },
+  {
+    "time": [
+      18,
+      19
+    ],
+    "visible_entities": [
+      {
+        "desc": "silver metal pot containing a thick, textured, light-brown mixture of oats and liquid",
+        "action": "being stirred",
+        "position": "center",
+        "id": "pot_silver_1"
+      },
+      {
+        "desc": "wooden spoon with a light-colored handle",
+        "action": "stirring the mixture",
+        "position": "center",
+        "id": "spoon_wood_1"
+      },
+      {
+        "desc": "white bowl with food contents",
+        "action": "static",
+        "position": "top left",
+        "id": "bowl_white_ceramic_1"
       },
       {
         "desc": "white surface with black stripes",
         "action": "static",
-        "position": "background"
+        "position": "background",
+        "id": "towel_striped_1"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A hand is stirring a mixture of batter and chopped nuts inside a metal pot.",
+        "fact": "A wooden spoon is stirring a thick oatmeal-like mixture inside a silver pot.",
         "confidence": 1.0
       },
       {
-        "fact": "The wooden spoon is moving in a circular motion to combine the ingredients.",
+        "fact": "The mixture is being moved in a circular motion.",
         "confidence": 1.0
       },
       {
-        "fact": "Chopped nuts are visible on top of the beige batter before being fully mixed in.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "A white bowl containing brown food items sits on the table in the upper left corner.",
+        "fact": "A white bowl is visible in the top left corner.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The silver metal pot is in the center of the frame, sitting on a white surface with black stripes. A hand is to the right of the pot, holding a wooden spoon that is inside the pot. The mixture of batter and nuts is inside the pot. A white bowl is to the top left of the pot.",
-    "parse_success": true,
-    "chunk_idx": 17,
-    "video_id": "Butterfinger_Rice_Krispies_Treats",
-    "state_changes": [],
-    "_rescued": "parse"
-  },
-  {
-    "time": [
-      36,
-      38
-    ],
-    "visible_entities": [
-      {
-        "desc": "thick, beige, textured mixture with visible flakes, likely oatmeal or granola",
-        "action": "being stirred",
-        "position": "center"
-      },
-      {
-        "desc": "silver metal pot with handles",
-        "action": "static",
-        "position": "center"
-      },
-      {
-        "desc": "wooden spoon or spatula",
-        "action": "stirring the mixture",
-        "position": "center"
-      },
-      {
-        "desc": "hand holding the spoon",
-        "action": "stirring",
-        "position": "right"
-      },
-      {
-        "desc": "white bowl with brown food items",
-        "action": "static",
-        "position": "top left"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "A hand is stirring a thick, beige mixture inside a silver pot.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The mixture appears to be oatmeal or a similar grain-based food.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "A wooden spoon is used to mix the contents of the pot.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [],
-    "spatial": "The silver pot is in the center of the frame. The hand holding the wooden spoon is on the right side, stirring the mixture inside the pot. A white bowl is located in the top left corner, next to the pot.",
+    "spatial": "The silver pot is in the center of the frame, resting on a white surface with black stripes. A wooden spoon is inside the pot, mixing the contents. A white bowl is located to the top left of the pot.",
     "parse_success": true,
     "chunk_idx": 18,
     "video_id": "Butterfinger_Rice_Krispies_Treats",
-    "state_changes": [],
-    "_rescued": "parse"
+    "state_changes": []
   },
   {
     "time": [
-      38,
-      40
+      19,
+      20
     ],
     "visible_entities": [
       {
-        "desc": "brown, sticky, fibrous rice mixture with visible strands",
+        "desc": "brown, sticky, stringy rice mixture",
         "action": "being stirred",
-        "position": "center"
+        "position": "center",
+        "id": "mix_brown_visous_1"
       },
       {
-        "desc": "lighter, clumpy rice mixture",
+        "desc": "lighter, clumpy rice portion",
         "action": "static",
-        "position": "bottom right"
+        "position": "bottom-right",
+        "id": "cereal_rice_krispies_1"
       },
       {
         "desc": "silver metal pot",
         "action": "static",
-        "position": "background"
-      },
-      {
-        "desc": "dark stirring tool",
-        "action": "mixing the rice",
-        "position": "center"
+        "position": "background",
+        "id": "pot_silver_1"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A dark tool is stirring the brown rice mixture inside the pot.",
+        "fact": "A utensil is stirring the brown rice mixture.",
         "confidence": 1.0
       },
       {
-        "fact": "The rice mixture appears sticky and fibrous.",
+        "fact": "The rice mixture has a sticky, stringy texture.",
         "confidence": 1.0
       },
       {
-        "fact": "A lighter colored rice mixture sits unmixed in the bottom right corner.",
+        "fact": "A lighter-colored portion of rice sits unmixed in the pot.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The brown rice mixture is inside the silver metal pot. The dark stirring tool is in the center of the pot, mixing the brown rice. The lighter rice mixture is located to the right of the brown mixture.",
+    "spatial": "The brown rice mixture is inside the silver metal pot. The lighter rice portion is located at the bottom right, next to the darker mixture.",
     "parse_success": true,
     "chunk_idx": 19,
     "video_id": "Butterfinger_Rice_Krispies_Treats",
-    "state_changes": [],
-    "_rescued": "parse"
+    "state_changes": []
   },
   {
     "time": [
-      40,
-      42
+      20,
+      21
+    ],
+    "visible_entities": [
+      {
+        "desc": "shredded, fibrous, light-brown food mixture with a sticky, stringy texture",
+        "action": "being stirred and lifted",
+        "position": "center",
+        "id": "mix_brown_visous_1"
+      },
+      {
+        "desc": "silver metal pot with a smooth, reflective interior surface",
+        "action": "static",
+        "position": "background",
+        "id": "pot_silver_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A utensil is lifting a portion of the shredded food mixture.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The food mixture exhibits a stringy, cohesive texture as it is moved.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The mixture is contained within a metal pot.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The shredded food mixture is inside the metal pot. The lifted portion of the food is above the rest of the mixture in the center of the frame.",
+    "parse_success": true,
+    "chunk_idx": 20,
+    "video_id": "Butterfinger_Rice_Krispies_Treats",
+    "state_changes": []
+  },
+  {
+    "time": [
+      21,
+      22
+    ],
+    "visible_entities": [
+      {
+        "desc": "light-brown, fibrous, shredded food mixture",
+        "action": "being mixed",
+        "position": "center",
+        "id": "mix_brown_visous_1"
+      },
+      {
+        "desc": "brown, granular powder",
+        "action": "falling",
+        "position": "top",
+        "id": "mixture_crumbly_1"
+      },
+      {
+        "desc": "metallic cooking pot",
+        "action": "static",
+        "position": "background",
+        "id": "pot_silver_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "Brown granular powder is being poured from above into the pot.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The powder falls onto the shredded food mixture.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The food mixture is contained inside the metallic pot.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The brown granular powder is falling from the top of the frame into the center of the pot. The shredded food mixture is inside the metallic pot, which occupies the majority of the view.",
+    "parse_success": true,
+    "chunk_idx": 21,
+    "video_id": "Butterfinger_Rice_Krispies_Treats",
+    "state_changes": []
+  },
+  {
+    "time": [
+      22,
+      23
+    ],
+    "visible_entities": [
+      {
+        "desc": "shredded light-brown food mixture with flaky texture",
+        "action": "being stirred",
+        "position": "center",
+        "id": "mix_brown_visous_1"
+      },
+      {
+        "desc": "silver metal pot",
+        "action": "static",
+        "position": "foreground",
+        "id": "pot_silver_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A utensil is stirring the shredded food mixture inside the pot.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The food mixture is contained within the silver metal pot.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The shredded food mixture is inside the silver metal pot. The mixture fills the bottom and center of the pot.",
+    "parse_success": true,
+    "chunk_idx": 22,
+    "video_id": "Butterfinger_Rice_Krispies_Treats",
+    "state_changes": []
+  },
+  {
+    "time": [
+      23,
+      24
     ],
     "visible_entities": [
       {
         "desc": "shredded, fibrous, light-brown food mixture",
         "action": "being stirred",
-        "position": "center"
+        "position": "center",
+        "id": "mix_brown_visous_1"
       },
       {
         "desc": "silver metal pot",
         "action": "static",
-        "position": "background"
+        "position": "foreground",
+        "id": "pot_silver_1"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A utensil is stirring a fibrous, shredded food mixture inside a pot.",
+        "fact": "A utensil is stirring a shredded, fibrous food mixture inside a pot.",
         "confidence": 1.0
       },
       {
-        "fact": "The mixture is light brown and has a stringy texture.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [],
-    "spatial": "The shredded food mixture is inside the silver metal pot. The mixture occupies the central area of the pot.",
-    "parse_success": true,
-    "chunk_idx": 20,
-    "video_id": "Butterfinger_Rice_Krispies_Treats",
-    "state_changes": [],
-    "_rescued": "parse"
-  },
-  {
-    "time": [
-      42,
-      44
-    ],
-    "visible_entities": [
-      {
-        "desc": "brown, fibrous, shredded food mixture",
-        "action": "being mixed",
-        "position": "center"
-      },
-      {
-        "desc": "falling brown granular powder",
-        "action": "falling into the pot",
-        "position": "top"
-      },
-      {
-        "desc": "silver metal cooking pot",
-        "action": "static",
-        "position": "background"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "A brown granular powder is falling from the top into the pot.",
+        "fact": "The food mixture is light brown in color.",
         "confidence": 1.0
       },
       {
-        "fact": "The powder lands on top of a brown, fibrous food mixture.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The food mixture is contained inside a silver metal pot.",
+        "fact": "The pot is made of silver metal.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The falling brown powder is above the shredded food mixture. The food mixture is inside the silver metal pot.",
-    "parse_success": true,
-    "chunk_idx": 21,
-    "video_id": "Butterfinger_Rice_Krispies_Treats",
-    "state_changes": [],
-    "_rescued": "parse"
-  },
-  {
-    "time": [
-      44,
-      46
-    ],
-    "visible_entities": [
-      {
-        "desc": "brown, flaky, shredded food mixture with a fibrous texture",
-        "action": "being stirred",
-        "position": "center"
-      },
-      {
-        "desc": "silver metal pot",
-        "action": "static",
-        "position": "background"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "A utensil is stirring the brown food mixture inside the pot.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The food mixture is being lifted and turned over during the stirring process.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [],
-    "spatial": "The brown food mixture is inside the silver metal pot. The mixture fills the bottom and center of the pot.",
-    "parse_success": true,
-    "chunk_idx": 22,
-    "video_id": "Butterfinger_Rice_Krispies_Treats",
-    "state_changes": [],
-    "_rescued": "parse"
-  },
-  {
-    "time": [
-      46,
-      48
-    ],
-    "visible_entities": [
-      {
-        "desc": "shredded, light-brown fibrous food mixture with a moist, clumpy texture",
-        "action": "being stirred and lifted",
-        "position": "center"
-      },
-      {
-        "desc": "silver metal pot with a smooth, reflective interior surface",
-        "action": "static",
-        "position": "foreground"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "A utensil is actively stirring the shredded food mixture inside the pot.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The food mixture is being lifted and turned over during the stirring process.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The mixture consists of small, fibrous strands that are clumping together.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [],
-    "spatial": "The shredded food mixture is inside the silver metal pot. The mixture fills the bottom and center of the pot's interior.",
+    "spatial": "The shredded food mixture is inside the silver metal pot. The pot is in the foreground of the shot.",
     "parse_success": true,
     "chunk_idx": 23,
     "video_id": "Butterfinger_Rice_Krispies_Treats",
-    "state_changes": [],
-    "_rescued": "parse"
+    "state_changes": []
   },
   {
     "time": [
-      48,
-      50
+      24,
+      25
     ],
     "visible_entities": [
       {
-        "desc": "hands with fair skin, wearing a ring on the left ring finger",
+        "desc": "hands with light skin tone, wearing a silver ring on the left ring finger",
         "action": "pressing down on the mixture",
-        "position": "center"
+        "position": "center",
+        "id": "person_chef_1"
       },
       {
-        "desc": "brown crumbly food mixture with a coarse, moist texture",
+        "desc": "brown crumbly mixture, textured, granular",
         "action": "being flattened",
-        "position": "center"
+        "position": "center",
+        "id": "mixture_crumbly_1"
       },
       {
-        "desc": "clear rectangular glass baking dish",
+        "desc": "clear glass baking dish, rectangular",
         "action": "static",
-        "position": "center"
+        "position": "center",
+        "id": "baking_dish_glass_1"
       },
       {
-        "desc": "metal pot containing brown food mixture",
+        "desc": "metal pot, silver, containing brown crumbly mixture",
         "action": "static",
         "position": "background"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "Hands are pressing down on the brown crumbly mixture inside the glass dish.",
+        "fact": "A person is pressing a brown crumbly mixture into a glass baking dish with their hands.",
         "confidence": 1.0
       },
       {
-        "fact": "The mixture is being flattened into an even layer.",
+        "fact": "The mixture is being flattened to form an even layer.",
         "confidence": 1.0
       },
       {
@@ -1281,97 +1416,102 @@
       }
     ],
     "ocr": [],
-    "spatial": "The hands are positioned above the brown crumbly mixture, pressing it down into the glass baking dish. The glass dish is situated on a white surface. The metal pot is located behind the glass dish.",
+    "spatial": "The hands are positioned above the brown crumbly mixture inside the glass baking dish. The glass dish is in the foreground, while the metal pot is located behind it.",
     "parse_success": true,
     "chunk_idx": 24,
     "video_id": "Butterfinger_Rice_Krispies_Treats",
-    "state_changes": [],
-    "_rescued": "parse"
+    "state_changes": [
+      "Action starts: Mixture pressed/flattened into a glass baking dish."
+    ]
   },
   {
     "time": [
-      50,
-      52
+      25,
+      26
     ],
     "visible_entities": [
       {
-        "desc": "golden-brown baked oatmeal dish with a crumbly texture and visible chunks of fruit",
+        "desc": "square glass baking dish containing a baked oatmeal dessert with a golden-brown, crumbly texture and visible chunks of fruit",
+        "action": "being held by hands",
+        "position": "center",
+        "id": "baking_dish_glass_1"
+      },
+      {
+        "desc": "pair of hands with light skin tone",
+        "action": "holding the sides of the glass dish",
+        "position": "left and right",
+        "id": "person_chef_1"
+      },
+      {
+        "desc": "white and grey striped kitchen towel",
         "action": "static",
-        "position": "center"
-      },
-      {
-        "desc": "square clear glass baking dish",
-        "action": "being held",
-        "position": "center"
-      },
-      {
-        "desc": "hands with light skin tone",
-        "action": "holding the dish",
-        "position": "left/right edges"
+        "position": "top left background",
+        "id": "towel_striped_1"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A pair of hands holds the glass baking dish containing the oatmeal.",
+        "fact": "A pair of hands holds the sides of a square glass baking dish.",
         "confidence": 1.0
       },
       {
-        "fact": "The baked oatmeal fills the square glass dish.",
+        "fact": "The dish contains a baked oatmeal dessert with a crumbly topping.",
         "confidence": 1.0
       },
       {
-        "fact": "The dish is held above a white surface.",
+        "fact": "The baked oatmeal has visible chunks of fruit mixed in.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The baked oatmeal is inside the clear glass baking dish. The hands are on the left and right sides of the dish, holding it. The dish is positioned above a white surface.",
+    "spatial": "The glass baking dish is in the center of the frame. The hands are on the left and right sides of the dish, holding it. The striped kitchen towel is in the top left background, behind the dish.",
     "parse_success": true,
     "chunk_idx": 25,
     "video_id": "Butterfinger_Rice_Krispies_Treats",
-    "state_changes": [],
-    "_rescued": "parse"
+    "state_changes": [
+      "Scene transition: Showing baked oatmeal dessert in glass dish (different recipe step or item)."
+    ]
   },
   {
     "time": [
-      52,
-      54
+      26,
+      27
     ],
     "visible_entities": [
       {
-        "desc": "white ceramic bowl with a textured, embossed exterior pattern",
+        "desc": "white ceramic bowl, smooth, round",
         "action": "static",
-        "position": "center"
+        "position": "center",
+        "id": "bowl_white_ceramic_1"
       },
       {
-        "desc": "silver metal measuring cup",
+        "desc": "silver metal measuring cup, cylindrical, filled with dark brown chocolate chips",
         "action": "pouring chocolate chips",
-        "position": "top right"
+        "position": "top right",
+        "id": "measuring_cup_silver_1"
       },
       {
-        "desc": "dark brown chocolate chips",
-        "action": "falling into the bowl",
-        "position": "center"
+        "desc": "dark brown chocolate chips, small, oval-shaped",
+        "action": "falling into bowl",
+        "position": "center",
+        "id": "chocolate_chips_1"
       },
       {
-        "desc": "white kitchen towel with thin dark stripes",
+        "desc": "white and blue striped kitchen towel, fabric texture",
         "action": "static",
-        "position": "top left"
+        "position": "top left",
+        "id": "towel_striped_1"
       },
       {
-        "desc": "whole almond nut",
+        "desc": "white wooden surface, painted, distressed texture",
         "action": "static",
-        "position": "top left"
-      },
-      {
-        "desc": "white text with a drop shadow effect",
-        "action": "static",
-        "position": "center"
+        "position": "background",
+        "id": "surface_white_wood_1"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A hand holds a silver measuring cup and pours dark chocolate chips into a white bowl.",
+        "fact": "Chocolate chips are being poured from a metal measuring cup into a white bowl.",
         "confidence": 1.0
       },
       {
@@ -1379,7 +1519,7 @@
         "confidence": 1.0
       },
       {
-        "fact": "The chocolate chips are falling from the cup into the bowl.",
+        "fact": "A striped towel rests on the table in the background.",
         "confidence": 1.0
       }
     ],
@@ -1387,82 +1527,99 @@
       "CHOCOLATE",
       "CHIPS"
     ],
-    "spatial": "The silver measuring cup is positioned above the white bowl, pouring chocolate chips into it. The striped towel and an almond are located to the left of the bowl. The text 'CHOCOLATE CHIPS' is centered over the bowl and the falling chips.",
+    "spatial": "The white bowl is in the center of the frame. The silver measuring cup is positioned above and to the right of the bowl, pouring chocolate chips into it. The striped towel is located in the top left corner, behind the bowl.",
     "parse_success": true,
     "chunk_idx": 26,
     "video_id": "Butterfinger_Rice_Krispies_Treats",
-    "state_changes": [],
-    "_rescued": "parse"
+    "state_changes": [
+      "Action starts: Chocolate chips poured into a white bowl; new scene setup for topping."
+    ]
   },
   {
     "time": [
-      54,
-      56
+      27,
+      28
     ],
     "visible_entities": [
       {
-        "desc": "white ceramic bowl",
+        "desc": "white ceramic bowl with a textured exterior surface",
         "action": "static",
         "position": "center",
-        "id": "bowl_white_1"
+        "id": "bowl_white_ceramic_1"
       },
       {
-        "desc": "dark brown chocolate chips",
+        "desc": "small, dark brown chocolate chips",
         "action": "static",
-        "position": "inside the bowl",
+        "position": "inside bowl",
         "id": "chocolate_chips_1"
       },
       {
         "desc": "silver metal measuring cup",
         "action": "pouring white powder",
-        "position": "above the bowl",
+        "position": "top",
         "id": "measuring_cup_silver_1"
       },
       {
         "desc": "silver metal spoon",
-        "action": "dropping yellow solid",
-        "position": "right of the bowl",
+        "action": "holding yellow butter",
+        "position": "right",
         "id": "spoon_silver_1"
       },
       {
-        "desc": "white cloth with green stripes",
+        "desc": "yellow butter",
+        "action": "being held by spoon",
+        "position": "right",
+        "id": "butter_1"
+      },
+      {
+        "desc": "white cloth with green grid pattern",
         "action": "static",
         "position": "background",
-        "id": "cloth_white_1"
+        "id": "towel_striped_1"
+      },
+      {
+        "desc": "brown nut",
+        "action": "static",
+        "position": "left",
+        "id": "nuts_chopped_1"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A metal measuring cup pours white powder into the bowl.",
+        "fact": "A silver metal measuring cup pours white powder into the bowl.",
         "confidence": 1.0
       },
       {
-        "fact": "A metal spoon drops a yellow solid into the bowl.",
+        "fact": "A silver spoon holds a dollop of yellow butter over the bowl.",
         "confidence": 1.0
       },
       {
-        "fact": "The bowl contains dark brown chocolate chips.",
+        "fact": "Dark brown chocolate chips are inside the white ceramic bowl.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A brown nut rests on the table to the left of the bowl.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The white bowl is in the center of the frame. The metal measuring cup is above the bowl. The metal spoon is to the right of the bowl. The striped cloth is behind the bowl.",
+    "spatial": "The white ceramic bowl is in the center of the frame, containing dark brown chocolate chips. A silver metal measuring cup is positioned above the bowl, pouring white powder into it. To the right of the bowl, a silver spoon holds a piece of yellow butter. A brown nut is located to the left of the bowl, near a white cloth with a green grid pattern in the background.",
     "parse_success": true,
     "chunk_idx": 27,
     "video_id": "Butterfinger_Rice_Krispies_Treats",
     "state_changes": [
-      "cooking process starts: ingredients added to bowl (pouring powder, dropping solid)"
+      "Action starts: Spoon holding butter; measuring cup pouring white powder."
     ]
   },
   {
     "time": [
-      56,
-      58
+      28,
+      29
     ],
     "visible_entities": [
       {
-        "desc": "hand with light skin, wearing a gold ring with stones on the index finger, and having light pink nail polish",
-        "action": "pressing butter into chocolate chips",
+        "desc": "hand with light skin tone, wearing a silver ring on the ring finger, with pink nail polish",
+        "action": "pressing down on butter",
         "position": "top/center",
         "id": "person_chef_1"
       },
@@ -1470,285 +1627,304 @@
         "desc": "white ceramic bowl with a textured exterior surface",
         "action": "static",
         "position": "center",
-        "id": "bowl_white_1"
+        "id": "bowl_white_ceramic_1"
       },
       {
-        "desc": "pile of small, dark brown chocolate chips",
+        "desc": "dark brown chocolate chips, small and conical in shape",
+        "action": "static",
+        "position": "inside the bowl",
+        "id": "chocolate_chips_1"
+      },
+      {
+        "desc": "pale yellow pat of butter, smooth and solid",
+        "action": "being pressed",
+        "position": "center inside the bowl",
+        "id": "butter_1"
+      },
+      {
+        "desc": "silver metal spoon, shiny and reflective",
+        "action": "hovering",
+        "position": "right",
+        "id": "spoon_silver_1"
+      },
+      {
+        "desc": "white kitchen towel with blue stripes",
+        "action": "static",
+        "position": "background left",
+        "id": "towel_striped_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A hand is pressing a pat of butter into a pile of chocolate chips.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The chocolate chips are contained within a white bowl.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A silver spoon is positioned to the right of the bowl.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The white bowl is in the center of the frame, containing the chocolate chips and the pat of butter. The hand is positioned above the bowl, pressing down on the butter. The silver spoon is to the right of the bowl. The striped towel is in the background to the left of the bowl.",
+    "parse_success": true,
+    "chunk_idx": 28,
+    "video_id": "Butterfinger_Rice_Krispies_Treats",
+    "state_changes": [
+      "Action starts: Hand pressing down on butter pat."
+    ]
+  },
+  {
+    "time": [
+      29,
+      30
+    ],
+    "visible_entities": [
+      {
+        "desc": "white ceramic bowl",
+        "action": "being held",
+        "position": "center",
+        "id": "bowl_white_ceramic_1"
+      },
+      {
+        "desc": "dark brown chocolate chips",
         "action": "static",
         "position": "inside bowl",
         "id": "chocolate_chips_1"
       },
       {
-        "desc": "pat of pale yellow butter",
-        "action": "being pressed",
-        "position": "on top of chocolate chips",
+        "desc": "pale yellow butter pat",
+        "action": "static",
+        "position": "center of bowl",
         "id": "butter_1"
       },
       {
-        "desc": "silver metal spoon",
+        "desc": "white cloth with blue stripes",
         "action": "static",
+        "position": "background",
+        "id": "towel_striped_1"
+      },
+      {
+        "desc": "hand",
+        "action": "holding bowl",
         "position": "right",
-        "id": "spoon_silver_1"
-      },
-      {
-        "desc": "white cloth with a grid pattern of thin dark lines",
-        "action": "static",
-        "position": "background/left",
-        "id": "cloth_white_1"
+        "id": "person_chef_1"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A hand is pressing a pat of butter down into a bowl of chocolate chips.",
+        "fact": "A hand holds a white bowl containing chocolate chips and a pat of butter.",
         "confidence": 1.0
       },
       {
-        "fact": "A silver spoon is resting on the right side of the bowl.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The bowl is sitting on a white surface next to a patterned cloth.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [],
-    "spatial": "The white bowl is in the center of the frame. Inside the bowl, the pile of chocolate chips is below the pat of butter. The hand is positioned above the bowl, with a finger pressing down on the butter. The silver spoon is to the right of the bowl. The patterned cloth is in the background, to the left of the bowl.",
-    "parse_success": true,
-    "chunk_idx": 28,
-    "video_id": "Butterfinger_Rice_Krispies_Treats",
-    "state_changes": [
-      "action shifts to mixing: hand pressing butter into chocolate chips"
-    ]
-  },
-  {
-    "time": [
-      58,
-      60
-    ],
-    "visible_entities": [
-      {
-        "desc": "white ceramic bowl containing dark brown chocolate chips and a yellow pat of butter",
-        "action": "being held by a hand",
-        "position": "center/foreground"
-      },
-      {
-        "desc": "hand with light skin tone",
-        "action": "holding the bowl",
-        "position": "right"
-      },
-      {
-        "desc": "white kitchen towel with blue stripes",
-        "action": "static",
-        "position": "background/left"
-      },
-      {
-        "desc": "white text overlay reading 'MICROWAVE' in capital letters",
-        "action": "static",
-        "position": "center"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "A hand holds a white bowl filled with chocolate chips and a piece of butter.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The text 'MICROWAVE' appears on the screen, indicating the cooking method.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The bowl is placed in front of a striped towel.",
+        "fact": "The text 'MICROWAVE' appears on the screen.",
         "confidence": 1.0
       }
     ],
     "ocr": [
       "MICROWAVE"
     ],
-    "spatial": "The white bowl containing chocolate chips and butter is in the center foreground, held by a hand on the right. The striped towel is in the background to the left of the bowl. The text 'MICROWAVE' is superimposed over the center of the scene.",
+    "spatial": "The white bowl is in the center of the frame, held by a hand on the right. Inside the bowl, the butter pat rests on top of the chocolate chips. The striped cloth is in the background, behind and to the left of the bowl.",
     "parse_success": true,
     "chunk_idx": 29,
     "video_id": "Butterfinger_Rice_Krispies_Treats",
-    "state_changes": [
-      "scene cleared: all entities and actions become empty"
-    ],
-    "_rescued": "parse"
+    "state_changes": []
   },
   {
     "time": [
-      60,
-      62
+      30,
+      31
+    ],
+    "visible_entities": [
+      {
+        "desc": "thick, glossy, dark brown chocolate mixture with a smooth, viscous texture",
+        "action": "being stirred",
+        "position": "center",
+        "id": "chocolate_syrup_1"
+      },
+      {
+        "desc": "white ceramic bowl with a smooth, rounded interior",
+        "action": "static",
+        "position": "center",
+        "id": "bowl_white_ceramic_1"
+      },
+      {
+        "desc": "silver metal fork with four tines",
+        "action": "stirring the mixture",
+        "position": "right",
+        "id": "fork_silver_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A silver fork is actively stirring the chocolate mixture inside the bowl.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The chocolate mixture has a glossy sheen and swirls as it is agitated.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The white bowl contains the brown liquid mixture.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The white ceramic bowl is in the center of the frame, containing the dark brown chocolate mixture. A silver fork is positioned on the right side, partially submerged inside the mixture. The fork is being used to stir the contents within the bowl.",
+    "parse_success": true,
+    "chunk_idx": 30,
+    "video_id": "Butterfinger_Rice_Krispies_Treats",
+    "state_changes": [
+      "Action starts: Stirring thick chocolate mixture with a fork."
+    ]
+  },
+  {
+    "time": [
+      31,
+      32
     ],
     "visible_entities": [
       {
         "desc": "white ceramic bowl, smooth, round",
         "action": "static",
-        "position": "center"
+        "position": "center",
+        "id": "bowl_white_ceramic_1"
       },
       {
         "desc": "thick brown chocolate mixture, glossy, viscous",
         "action": "being stirred",
-        "position": "inside the bowl"
+        "position": "inside the bowl",
+        "id": "chocolate_syrup_1"
       },
       {
-        "desc": "silver metal fork, shiny",
+        "desc": "metal spoon, silver, reflective",
         "action": "stirring the mixture",
-        "position": "right"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "A silver fork is stirring the thick brown chocolate mixture.",
-        "confidence": 1.0
+        "position": "right side",
+        "id": "spoon_silver_1"
       },
       {
-        "fact": "The chocolate mixture is swirling inside the white bowl.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The mixture has a glossy and viscous texture.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [],
-    "spatial": "The silver fork is inside the white ceramic bowl. The thick brown chocolate mixture is inside the bowl, surrounding the tines of the fork. The fork is positioned on the right side of the bowl.",
-    "parse_success": true,
-    "chunk_idx": 30,
-    "video_id": "Butterfinger_Rice_Krispies_Treats",
-    "state_changes": [],
-    "_rescued": "parse"
-  },
-  {
-    "time": [
-      62,
-      64
-    ],
-    "visible_entities": [
-      {
-        "desc": "white ceramic bowl, round, smooth, glossy",
+        "desc": "checkered cloth, white with blue stripes",
         "action": "static",
-        "position": "center"
-      },
-      {
-        "desc": "thick brown liquid, glossy, viscous, smooth texture",
-        "action": "being stirred",
-        "position": "inside the bowl"
-      },
-      {
-        "desc": "stirring tool, blurred, silver or white",
-        "action": "stirring the liquid",
-        "position": "right side"
+        "position": "background",
+        "id": "towel_striped_1"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A stirring tool is mixing a thick brown liquid inside a white bowl.",
+        "fact": "A spoon is stirring the brown chocolate mixture inside the white bowl.",
         "confidence": 1.0
       },
       {
-        "fact": "The liquid swirls in a circular motion as it is stirred.",
+        "fact": "The mixture has a glossy texture and swirls as it is moved.",
         "confidence": 1.0
       },
       {
-        "fact": "The bowl sits on a surface with a checkered cloth visible in the background.",
+        "fact": "The bowl is sitting on a surface near a checkered cloth.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The white bowl is in the center of the frame. The thick brown liquid is inside the bowl. The stirring tool is on the right side, interacting with the liquid. A checkered cloth is behind the bowl.",
+    "spatial": "The white ceramic bowl is in the center of the frame. The brown chocolate mixture is inside the bowl. The metal spoon is on the right side, partially submerged in the mixture. The checkered cloth is in the background, behind and to the left of the bowl.",
     "parse_success": true,
     "chunk_idx": 31,
     "video_id": "Butterfinger_Rice_Krispies_Treats",
-    "state_changes": [],
-    "_rescued": "parse"
+    "state_changes": []
   },
   {
     "time": [
-      64,
-      66
+      32,
+      33
     ],
     "visible_entities": [
       {
-        "desc": "square oatmeal bars, golden-brown, textured with visible oats and nut pieces",
+        "desc": "square-shaped granola bars with a textured surface containing visible oats and nuts, light golden-brown color",
         "action": "static",
-        "position": "center"
+        "position": "center",
+        "id": "dessert_bar_final_1"
       },
       {
-        "desc": "light brown wooden cutting board, smooth surface",
+        "desc": "light brown wooden cutting board with visible wood grain",
         "action": "static",
-        "position": "center"
+        "position": "center",
+        "id": "cutting_board_wood_1"
       },
       {
-        "desc": "white bowl, partially visible",
+        "desc": "white bowl containing cereal or granola",
         "action": "static",
-        "position": "top left"
+        "position": "top left",
+        "id": "bowl_white_ceramic_1"
       },
       {
-        "desc": "white cloth with thin dark horizontal stripes",
+        "desc": "white cloth napkin with thin dark horizontal stripes",
         "action": "static",
-        "position": "left"
+        "position": "left",
+        "id": "towel_striped_1"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "Square oatmeal bars are arranged on a wooden cutting board.",
+        "fact": "Square granola bars are arranged on a wooden cutting board.",
         "confidence": 1.0
       },
       {
-        "fact": "A white bowl containing ingredients sits next to the board.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The bars have a rough texture with visible chunks of nuts or grains.",
+        "fact": "A white bowl filled with cereal sits on a striped napkin in the upper left corner.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The wooden cutting board is in the center of the frame, holding several square oatmeal bars. To the left of the board, there is a white cloth with dark stripes. A white bowl is positioned at the top left corner, partially visible next to the cloth.",
+    "spatial": "The granola bars are scattered across the surface of the wooden cutting board. The cutting board is positioned to the right of the striped napkin. The white bowl is placed on top of the striped napkin in the top left area of the frame.",
     "parse_success": true,
     "chunk_idx": 32,
     "video_id": "Butterfinger_Rice_Krispies_Treats",
-    "state_changes": [],
-    "_rescued": "parse"
+    "state_changes": []
   },
   {
     "time": [
-      66,
-      68
+      33,
+      34
     ],
     "visible_entities": [
       {
-        "desc": "square oat bars, beige color, textured surface with visible oats and nuts",
+        "desc": "square oatmeal bars with a textured, golden-brown surface containing visible oats and nuts",
         "action": "static",
-        "position": "center"
+        "position": "center",
+        "id": "dessert_bar_final_1"
       },
       {
-        "desc": "dark brown chocolate sauce, liquid stream",
-        "action": "drizzling down",
-        "position": "center"
+        "desc": "dark chocolate syrup",
+        "action": "drizzling onto the bars",
+        "position": "center",
+        "id": "chocolate_syrup_1"
       },
       {
-        "desc": "wooden cutting board, light brown, wood grain texture",
+        "desc": "white ceramic bowl filled with nuts",
         "action": "static",
-        "position": "center"
+        "position": "background left",
+        "id": "bowl_white_ceramic_1"
       },
       {
-        "desc": "white ceramic bowl, round, containing nuts",
+        "desc": "wooden cutting board",
         "action": "static",
-        "position": "background left"
+        "position": "center",
+        "id": "cutting_board_wood_1"
       },
       {
-        "desc": "striped cloth, white with grey stripes",
+        "desc": "striped kitchen towel",
         "action": "static",
-        "position": "background"
+        "position": "background left",
+        "id": "towel_striped_1"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A stream of dark chocolate sauce is drizzling down onto the oat bars.",
+        "fact": "Dark chocolate syrup is being drizzled from above onto the oatmeal bars.",
         "confidence": 1.0
       },
       {
-        "fact": "Square oat bars are arranged on a wooden cutting board.",
+        "fact": "Square oatmeal bars are arranged on a wooden cutting board.",
         "confidence": 1.0
       },
       {
@@ -1757,101 +1933,116 @@
       }
     ],
     "ocr": [],
-    "spatial": "The oat bars are arranged on top of the wooden cutting board. The chocolate sauce is falling from above onto the bars in the center. The white bowl is located to the left of the cutting board in the background, resting near a striped cloth.",
+    "spatial": "The oatmeal bars are arranged on top of the wooden cutting board. The white bowl of nuts is located in the background to the left of the bars. The striped kitchen towel is positioned under the bowl and to the left of the cutting board.",
     "parse_success": true,
     "chunk_idx": 33,
     "video_id": "Butterfinger_Rice_Krispies_Treats",
-    "state_changes": [],
-    "_rescued": "parse"
+    "state_changes": [
+      "Action starts: Drizzling dark chocolate syrup onto oatmeal bars."
+    ]
   },
   {
     "time": [
-      68,
-      70
+      34,
+      35
     ],
     "visible_entities": [
       {
-        "desc": "rectangular oatmeal bars with a textured, golden-brown surface, topped with a drizzle of dark chocolate",
+        "desc": "rectangular oatmeal bars, golden-brown, textured with oats and nuts, drizzled with dark chocolate",
         "action": "static",
-        "position": "center/foreground"
+        "position": "center/foreground",
+        "id": "dessert_bar_final_1"
       },
       {
-        "desc": "small white ceramic bowl containing chopped nuts",
+        "desc": "small white ceramic bowl",
         "action": "static",
-        "position": "left/background"
+        "position": "left/background",
+        "id": "bowl_white_ceramic_1"
       },
       {
-        "desc": "light-colored wooden cutting board",
+        "desc": "chunky nut pieces, light brown",
         "action": "static",
-        "position": "bottom"
+        "position": "inside bowl",
+        "id": "nuts_chopped_1"
       },
       {
-        "desc": "striped cloth napkin",
+        "desc": "light-colored wooden board",
         "action": "static",
-        "position": "left/background"
+        "position": "bottom",
+        "id": "cutting_board_wood_1"
+      },
+      {
+        "desc": "striped kitchen towel, white with grey stripes",
+        "action": "static",
+        "position": "background",
+        "id": "towel_striped_1"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "Oatmeal bars are arranged on a wooden cutting board.",
+        "fact": "Oatmeal bars are arranged on a wooden board.",
         "confidence": 1.0
       },
       {
-        "fact": "A white bowl containing chopped nuts sits in the background.",
+        "fact": "Dark chocolate is drizzled over the top of the bars.",
         "confidence": 1.0
       },
       {
-        "fact": "Dark chocolate is drizzled over the tops of the oatmeal bars.",
+        "fact": "A white bowl containing nut pieces sits to the left of the bars.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The bars are cut into rectangular shapes.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The oatmeal bars are arranged on top of the wooden cutting board in the center and foreground. The white bowl containing nuts is positioned to the left of the bars and slightly behind them. The striped cloth napkin is visible in the background to the left of the bowl.",
+    "spatial": "The oatmeal bars are placed on top of the wooden board. The white bowl is to the left of the oatmeal bars. The striped towel is behind the bowl and the bars.",
     "parse_success": true,
     "chunk_idx": 34,
     "video_id": "Butterfinger_Rice_Krispies_Treats",
-    "state_changes": [],
-    "_rescued": "parse"
+    "state_changes": []
   },
   {
     "time": [
-      70,
-      72
+      35,
+      36
     ],
     "visible_entities": [
       {
-        "desc": "hand with light skin tone and short, natural nails",
-        "action": "sprinkling cereal pieces onto the bar",
-        "position": "top/center"
+        "desc": "hand with light skin tone and short fingernails",
+        "action": "sprinkling a small golden-brown crumble onto the bar",
+        "position": "top right",
+        "id": "person_chef_1"
       },
       {
-        "desc": "rectangular granola bar with a textured oat base, topped with dark brown chocolate drizzle",
-        "action": "being garnished",
-        "position": "center/foreground"
-      },
-      {
-        "desc": "small white ceramic bowl containing golden-brown cereal chunks",
+        "desc": "rectangular granola bar, beige, textured with oats, topped with dark brown chocolate drizzle",
         "action": "static",
-        "position": "background/left"
+        "position": "center foreground",
+        "id": "dessert_bar_final_1"
+      },
+      {
+        "desc": "small white ceramic bowl containing golden-brown crumbles",
+        "action": "static",
+        "position": "background left",
+        "id": "bowl_white_ceramic_1"
       },
       {
         "desc": "light-colored wooden cutting board with visible grain",
         "action": "static",
-        "position": "bottom"
+        "position": "bottom",
+        "id": "cutting_board_wood_1"
       },
       {
-        "desc": "striped cloth napkin with blue and white stripes",
+        "desc": "striped cloth napkin, white with grey or blue stripes",
         "action": "static",
-        "position": "left"
+        "position": "bottom left",
+        "id": "towel_striped_1"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A hand is sprinkling small, golden-brown cereal pieces onto a granola bar.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The granola bar is topped with a zig-zag pattern of dark chocolate drizzle.",
+        "fact": "A hand is sprinkling a small piece of crumble onto the granola bar.",
         "confidence": 1.0
       },
       {
@@ -1859,43 +2050,48 @@
         "confidence": 1.0
       },
       {
-        "fact": "A white bowl filled with cereal chunks sits in the background.",
+        "fact": "A white bowl containing crumbles sits in the background.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The hand is positioned above the granola bar in the center, dropping cereal pieces onto it. The granola bar rests on the wooden cutting board in the foreground. To the left and slightly behind the main bar is a white bowl containing more cereal pieces. A striped cloth is visible on the far left edge of the frame.",
+    "spatial": "The granola bar is in the center foreground on top of the wooden cutting board. The hand is positioned above the granola bar, dropping a crumble onto it. The white bowl is to the left of the hand and behind the granola bar. The striped cloth is underneath the left side of the cutting board.",
     "parse_success": true,
     "chunk_idx": 35,
     "video_id": "Butterfinger_Rice_Krispies_Treats",
-    "state_changes": [],
-    "_rescued": "parse"
+    "state_changes": [
+      "Action starts: Sprinkling golden-brown crumble onto the bar."
+    ]
   },
   {
     "time": [
-      72,
-      74
+      36,
+      37
     ],
     "visible_entities": [
       {
-        "desc": "square dessert bar with a light beige crumbly base, topped with golden cornflake clusters, chocolate chips, and a dark brown chocolate drizzle",
+        "desc": "square dessert bar with a light beige crumbly base, topped with golden-brown cornflake clusters, dark chocolate chunks, and a drizzle of melted chocolate",
         "action": "static",
-        "position": "foreground center"
+        "position": "foreground center",
+        "id": "dessert_bar_final_1"
       },
       {
-        "desc": "second square dessert bar with similar toppings, slightly out of focus",
+        "desc": "square dessert bar with a light beige crumbly base, topped with golden-brown cornflake clusters, dark chocolate chunks, and a drizzle of melted chocolate",
         "action": "static",
-        "position": "background center"
+        "position": "background center",
+        "id": "dessert_bar_final_1"
       },
       {
-        "desc": "light-colored wooden cutting board with visible grain",
+        "desc": "light brown wooden cutting board with visible wood grain",
         "action": "static",
-        "position": "bottom"
+        "position": "underneath",
+        "id": "cutting_board_wood_1"
       },
       {
         "desc": "white ceramic bowl, partially visible",
         "action": "static",
-        "position": "top left"
+        "position": "top left",
+        "id": "bowl_white_ceramic_1"
       }
     ],
     "atomic_facts": [
@@ -1904,221 +2100,229 @@
         "confidence": 1.0
       },
       {
-        "fact": "The foreground bar features a drizzle of chocolate sauce over cornflake toppings.",
+        "fact": "The foreground dessert bar is topped with cornflakes and chocolate drizzle.",
         "confidence": 1.0
       },
       {
-        "fact": "A white bowl is positioned to the left of the cutting board.",
+        "fact": "A white bowl is partially visible in the top left corner.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The foreground dessert bar is in front of the second dessert bar. Both bars are on top of the wooden cutting board. The white bowl is to the left of the cutting board.",
+    "spatial": "The foreground dessert bar is in front of the background dessert bar. Both bars are on the wooden cutting board. The white bowl is to the left of the dessert bars.",
     "parse_success": true,
     "chunk_idx": 36,
     "video_id": "Butterfinger_Rice_Krispies_Treats",
-    "state_changes": [],
-    "_rescued": "parse"
+    "state_changes": []
   },
   {
     "time": [
-      74,
-      76
+      37,
+      38
     ],
     "visible_entities": [
       {
-        "desc": "square dessert bar with a light-colored crumbly base, topped with golden-brown flakes and drizzled with dark chocolate",
+        "desc": "square dessert bars with a light-colored, textured base, topped with golden-brown flakes and drizzled with dark chocolate",
         "action": "static",
-        "position": "foreground"
-      },
-      {
-        "desc": "square dessert bar with a light-colored crumbly base, topped with golden-brown flakes and drizzled with dark chocolate",
-        "action": "static",
-        "position": "background"
-      },
-      {
-        "desc": "light-colored wooden board with visible grain",
-        "action": "static",
-        "position": "center"
-      },
-      {
-        "desc": "white bowl, partially visible",
-        "action": "static",
-        "position": "top left"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "Two square dessert bars are resting on a wooden board.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The bars are topped with chocolate drizzle and flakes.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "A white bowl is visible in the upper left corner.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [],
-    "spatial": "One dessert bar is in the foreground, while a second identical bar is positioned behind it. Both bars are resting on a wooden board. A white bowl is located to the left of the bars.",
-    "parse_success": true,
-    "chunk_idx": 37,
-    "video_id": "Butterfinger_Rice_Krispies_Treats",
-    "state_changes": [],
-    "_rescued": "parse"
-  },
-  {
-    "time": [
-      76,
-      78
-    ],
-    "visible_entities": [
-      {
-        "desc": "hand with light skin tone",
-        "action": "picking up a dessert bar",
-        "position": "center/foreground"
-      },
-      {
-        "desc": "rectangular dessert bar, beige textured base with dark chocolate drizzle and crumbly topping",
-        "action": "being lifted",
-        "position": "center"
-      },
-      {
-        "desc": "light brown wooden cutting board",
-        "action": "static",
-        "position": "bottom/center"
-      },
-      {
-        "desc": "white ceramic bowl containing brown crumbs",
-        "action": "static",
-        "position": "left/background"
-      },
-      {
-        "desc": "striped kitchen towel",
-        "action": "static",
-        "position": "left"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "A hand is picking up a chocolate-drizzled dessert bar from a wooden board.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The dessert bar has a textured, crumbly surface.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "Dark chocolate is drizzled in a zigzag pattern over the bars.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [],
-    "spatial": "The hand is above the wooden cutting board, grasping the dessert bar. The white bowl is to the left of the cutting board. The striped towel is underneath the bowl on the left side.",
-    "parse_success": true,
-    "chunk_idx": 38,
-    "video_id": "Butterfinger_Rice_Krispies_Treats",
-    "state_changes": [],
-    "_rescued": "parse"
-  },
-  {
-    "time": [
-      78,
-      80
-    ],
-    "visible_entities": [
-      {
-        "desc": "hand with light skin tone",
-        "action": "picking up a dessert bar",
-        "position": "center"
-      },
-      {
-        "desc": "rectangular dessert bar, textured beige base, topped with chopped nuts and dark chocolate drizzle",
-        "action": "being lifted",
-        "position": "center"
+        "position": "center/foreground",
+        "id": "dessert_bar_final_1"
       },
       {
         "desc": "light-colored wooden cutting board with visible grain",
         "action": "static",
-        "position": "background"
+        "position": "center/bottom",
+        "id": "cutting_board_wood_1"
       },
       {
-        "desc": "white ceramic bowl",
+        "desc": "white bowl, partially visible",
         "action": "static",
-        "position": "left"
-      },
-      {
-        "desc": "dark chocolate drizzle smears",
-        "action": "static",
-        "position": "foreground"
+        "position": "top left",
+        "id": "bowl_white_ceramic_1"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A hand reaches down and picks up a rectangular dessert bar from a wooden board.",
+        "fact": "Two square dessert bars are resting on a wooden cutting board.",
         "confidence": 1.0
       },
       {
-        "fact": "The dessert bar has a textured base and is topped with nuts and chocolate.",
+        "fact": "Dark chocolate is drizzled in a zigzag pattern over the top of the bars.",
         "confidence": 1.0
       },
       {
-        "fact": "A white bowl sits to the left of the wooden board.",
+        "fact": "A white bowl is positioned in the upper left corner of the frame.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The hand is positioned above the wooden cutting board in the center of the frame. The hand is holding the dessert bar, lifting it from the board. A white bowl is located to the left of the cutting board. Chocolate drizzle smears are visible on the board in the foreground.",
+    "spatial": "The dessert bars are placed on top of the wooden cutting board. One bar is in the foreground, while the second bar is behind it. The white bowl is to the left of the cutting board.",
     "parse_success": true,
-    "chunk_idx": 39,
+    "chunk_idx": 37,
     "video_id": "Butterfinger_Rice_Krispies_Treats",
-    "state_changes": [],
-    "_rescued": "parse"
+    "state_changes": []
   },
   {
     "time": [
-      80,
-      82
+      38,
+      39
     ],
     "visible_entities": [
       {
-        "desc": "square dessert bar with a light-brown, crumbly base, topped with chopped nuts and drizzled with dark chocolate",
-        "action": "static",
-        "position": "center"
+        "desc": "hand with fair skin",
+        "action": "picking up a dessert bar",
+        "position": "center/foreground",
+        "id": "person_chef_1"
       },
       {
-        "desc": "wooden cutting board with visible grain",
+        "desc": "rectangular dessert bar, beige base with visible cereal texture, topped with caramel drizzle, chocolate drizzle, and crunchy cereal pieces",
+        "action": "being picked up",
+        "position": "center",
+        "id": "dessert_bar_final_1"
+      },
+      {
+        "desc": "light-colored wooden cutting board with visible grain",
         "action": "static",
-        "position": "background"
+        "position": "center/bottom",
+        "id": "cutting_board_wood_1"
+      },
+      {
+        "desc": "white ceramic bowl, partially visible",
+        "action": "static",
+        "position": "left/background",
+        "id": "bowl_white_ceramic_1"
+      },
+      {
+        "desc": "striped cloth napkin, white with dark stripes",
+        "action": "static",
+        "position": "left/bottom",
+        "id": "towel_striped_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A hand is picking up a dessert bar from a wooden board.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The dessert bar is topped with chocolate and caramel drizzles.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A white bowl is visible in the background to the left.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The hand is above the wooden cutting board, grasping the dessert bar in the center. The white bowl is to the left of the cutting board. The striped napkin is below the bowl and to the left of the board.",
+    "parse_success": true,
+    "chunk_idx": 38,
+    "video_id": "Butterfinger_Rice_Krispies_Treats",
+    "state_changes": [
+      "Action starts: Hand picking up a finished dessert bar."
+    ]
+  },
+  {
+    "time": [
+      39,
+      40
+    ],
+    "visible_entities": [
+      {
+        "desc": "hand with fair skin",
+        "action": "picking up a dessert bar",
+        "position": "center",
+        "id": "person_chef_1"
+      },
+      {
+        "desc": "square dessert bar, textured light-brown base, topped with chopped nuts and dark chocolate drizzle",
+        "action": "being lifted",
+        "position": "center",
+        "id": "dessert_bar_final_1"
+      },
+      {
+        "desc": "wooden cutting board, light brown, textured surface with chocolate smears",
+        "action": "static",
+        "position": "background",
+        "id": "cutting_board_wood_1"
+      },
+      {
+        "desc": "white ceramic bowl, partially visible",
+        "action": "static",
+        "position": "left",
+        "id": "bowl_white_ceramic_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A hand reaches down and picks up a square dessert bar from a wooden board.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The dessert bar has a crumbly base and is topped with nuts and chocolate.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "Chocolate drizzle is scattered on the wooden board surface.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The hand is positioned above the wooden cutting board, grasping the dessert bar in the center. The white bowl is located to the left of the cutting board. Another dessert bar sits on the board behind the one being lifted.",
+    "parse_success": true,
+    "chunk_idx": 39,
+    "video_id": "Butterfinger_Rice_Krispies_Treats",
+    "state_changes": []
+  },
+  {
+    "time": [
+      40,
+      41
+    ],
+    "visible_entities": [
+      {
+        "desc": "square dessert bars with a light brown, crumbly base, topped with chopped nuts and a dark chocolate drizzle",
+        "action": "static",
+        "position": "center/foreground",
+        "id": "dessert_bar_final_1"
+      },
+      {
+        "desc": "light brown wooden cutting board with visible grain",
+        "action": "static",
+        "position": "center/background",
+        "id": "cutting_board_wood_1"
       },
       {
         "desc": "white ceramic bowl containing brown crumbs",
         "action": "static",
-        "position": "left"
+        "position": "left/background",
+        "id": "bowl_white_ceramic_1"
       },
       {
-        "desc": "circular black logo with white text",
+        "desc": "black circular logo with white text 'RECIPE GIRL' in a brush script font, 'SINCE 2006' at the top, and 'DISHING OUT THE BEST RECIPES' at the bottom",
         "action": "static",
-        "position": "right"
+        "position": "center",
+        "id": "logo_recipe_girl_1"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A square dessert bar sits on a wooden cutting board.",
+        "fact": "Square dessert bars are arranged on a wooden cutting board.",
         "confidence": 1.0
       },
       {
-        "fact": "The dessert bar is topped with chopped nuts and a chocolate drizzle.",
+        "fact": "One bar in the foreground has a bite taken out of it.",
         "confidence": 1.0
       },
       {
-        "fact": "A white bowl containing crumbs is positioned to the left of the board.",
+        "fact": "The bars are topped with chopped nuts and drizzled with chocolate.",
         "confidence": 1.0
       },
       {
-        "fact": "A circular logo with the text 'RECIPE GIRL' is visible on the right.",
+        "fact": "A white bowl containing crumbs sits to the left of the cutting board.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The logo text reads 'RECIPE GIRL' and 'SINCE 2006'.",
         "confidence": 1.0
       }
     ],
@@ -2127,39 +2331,38 @@
       "RECIPE GIRL",
       "DISHING OUT THE BEST RECIPES"
     ],
-    "spatial": "The dessert bar is in the center of the frame, resting on the wooden cutting board. The white bowl is to the left of the cutting board. The circular logo is to the right of the dessert bar.",
+    "spatial": "The dessert bars are placed on top of the wooden cutting board. The white bowl is to the left of the cutting board. The logo is centered in the frame.",
     "parse_success": true,
     "chunk_idx": 40,
     "video_id": "Butterfinger_Rice_Krispies_Treats",
-    "state_changes": [],
-    "_rescued": "parse"
+    "state_changes": [
+      "Scene transition: Final display of bars with 'RECIPE GIRL' logo appearing."
+    ]
   },
   {
     "time": [
-      82,
-      84
+      41,
+      42
     ],
     "visible_entities": [
       {
-        "desc": "A circular black logo featuring white text. The central text 'RECIPE GIRL' is in a large, bold, brush-style font with a light blue drop shadow. Curved text at the top reads 'SINCE 2006' and curved text at the bottom reads 'DISHING OUT THE BEST RECIPES' in a smaller sans-serif font.",
-        "action": "static"
+        "desc": "circular black logo with white text 'SINCE 2006' at the top, large stylized white text 'RECIPE GIRL' with a light blue shadow in the center, and curved white text 'DISHING OUT THE BEST RECIPES' at the bottom",
+        "action": "static",
+        "position": "center",
+        "id": "logo_recipe_girl_1"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "The logo remains static on the screen.",
+        "fact": "The logo displays the text 'SINCE 2006' at the top.",
         "confidence": 1.0
       },
       {
-        "fact": "The text 'RECIPE GIRL' is displayed in the center of the black circle.",
+        "fact": "The central text reads 'RECIPE GIRL'.",
         "confidence": 1.0
       },
       {
-        "fact": "The phrase 'SINCE 2006' is positioned above the main title.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The phrase 'DISHING OUT THE BEST RECIPES' is positioned below the main title.",
+        "fact": "The bottom text reads 'DISHING OUT THE BEST RECIPES'.",
         "confidence": 1.0
       }
     ],
@@ -2168,11 +2371,10 @@
       "RECIPE GIRL",
       "DISHING OUT THE BEST RECIPES"
     ],
-    "spatial": "The text 'SINCE 2006' is located above the central 'RECIPE GIRL' text. The text 'DISHING OUT THE BEST RECIPES' is located below the central text. All text elements are contained within the black circular background.",
+    "spatial": "The text 'SINCE 2006' is located above the central 'RECIPE GIRL' text. The text 'DISHING OUT THE BEST RECIPES' is located below the central text, curving along the bottom edge of the circle.",
     "parse_success": true,
     "chunk_idx": 41,
     "video_id": "Butterfinger_Rice_Krispies_Treats",
-    "state_changes": [],
-    "_rescued": "parse"
+    "state_changes": []
   }
 ]

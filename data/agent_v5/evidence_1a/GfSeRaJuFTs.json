@@ -2,38 +2,38 @@
   {
     "time": [
       0,
-      2
+      1
     ],
     "visible_entities": [
       {
-        "desc": "young boy with short light brown hair, wearing a dark blue t-shirt with a colorful geometric graphic (yellow, pink, and blue shapes) on the chest, and a beaded necklace",
-        "action": "sitting still and looking forward",
-        "position": "center foreground"
+        "desc": "young boy with short light brown hair, wearing a dark blue t-shirt with a colorful geometric graphic (yellow, pink, blue rectangles) and a beaded necklace",
+        "action": "static",
+        "position": "center/foreground"
       },
       {
-        "desc": "blue curtain",
+        "desc": "white shelf with various small figurines and items",
         "action": "static",
-        "position": "right background"
+        "position": "top/background"
       },
       {
-        "desc": "white shelf with small figurines",
+        "desc": "blue curtain covering a window",
         "action": "static",
-        "position": "top background"
+        "position": "right/background"
       },
       {
-        "desc": "wooden dresser with items on top",
+        "desc": "wooden furniture with items on top",
         "action": "static",
-        "position": "left background"
+        "position": "left/background"
       },
       {
-        "desc": "white crumpled blanket",
+        "desc": "dark blue chair back",
         "action": "static",
-        "position": "left background"
+        "position": "bottom/foreground"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A young boy sits in the center of the frame facing the camera.",
+        "fact": "The boy is sitting still and facing the camera.",
         "confidence": 1.0
       },
       {
@@ -41,36 +41,35 @@
         "confidence": 1.0
       },
       {
-        "fact": "A shelf with figurines is mounted on the wall above the boy.",
+        "fact": "A shelf with figurines is mounted on the wall above the boy's head.",
         "confidence": 1.0
       },
       {
-        "fact": "A blue curtain hangs to the right of the boy.",
+        "fact": "A blue curtain is visible to the right of the boy.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The boy is in the center foreground, sitting in front of a wooden dresser and a white blanket. A shelf with figurines is located above the boy on the wall. A blue curtain is positioned to the right of the boy.",
+    "spatial": "The boy is in the center foreground, sitting in front of a dark blue chair back. The white shelf with figurines is above and behind the boy. The blue curtain is to the right of the boy. The wooden furniture is to the left of the boy.",
     "parse_success": true,
     "chunk_idx": 0,
-    "video_id": "GfSeRaJuFTs",
-    "_rescued": "parse"
+    "video_id": "GfSeRaJuFTs"
   },
   {
     "time": [
-      2,
-      4
+      1,
+      2
     ],
     "visible_entities": [
       {
-        "desc": "young boy with short blonde hair, wearing a dark blue t-shirt with a colorful geometric graphic on the chest and a beaded necklace",
-        "action": "looking down",
-        "position": "center"
+        "desc": "young boy with short blonde hair, wearing a black t-shirt with a colorful geometric graphic (pink, yellow, blue outlines) and a dark patterned necklace",
+        "action": "turning head down and to the right",
+        "position": "center/foreground"
       },
       {
         "desc": "white shelf with small figurines and string lights",
         "action": "static",
-        "position": "top"
+        "position": "top/background"
       },
       {
         "desc": "blue curtains",
@@ -80,220 +79,49 @@
       {
         "desc": "wooden furniture with items on top",
         "action": "static",
-        "position": "background"
+        "position": "left/background"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "The boy looks down, shifting his gaze from the camera.",
+        "fact": "The boy turns his head down and to the right between the two frames.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The boy is wearing a necklace over his t-shirt.",
         "confidence": 1.0
       },
       {
         "fact": "A shelf with figurines is mounted on the wall above the furniture.",
         "confidence": 1.0
-      },
-      {
-        "fact": "Blue curtains hang to the right of the boy.",
-        "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The boy is in the center foreground. The shelf is above the wooden furniture in the background. The blue curtains are to the right of the boy.",
+    "spatial": "The boy is in the foreground, positioned in front of the wooden furniture and the blue curtains. The white shelf is mounted on the wall above the furniture in the background.",
     "parse_success": true,
     "chunk_idx": 1,
-    "video_id": "GfSeRaJuFTs",
-    "_rescued": "parse"
+    "video_id": "GfSeRaJuFTs"
   },
   {
     "time": [
-      4,
-      6
+      2,
+      3
     ],
     "visible_entities": [
       {
-        "desc": "person with short light brown hair, wearing a black long-sleeved shirt with a colorful geometric graphic print (pink, yellow, blue, green) and a silver chain necklace",
-        "action": "holding a black object above head with both hands",
+        "desc": "person with short hair, wearing a black long-sleeved shirt with a colorful graphic print featuring pink, yellow, and blue shapes, and a silver chain necklace",
+        "action": "holding a black object above their head with both hands",
         "position": "center/foreground"
       },
       {
-        "desc": "black object, possibly a shoe or case, held by the person",
-        "action": "being held above head",
+        "desc": "black rectangular object, possibly a shoe or case",
+        "action": "being held and moved by the person",
         "position": "center/top"
       },
       {
-        "desc": "bed with a dark blue cover and a messy white duvet",
+        "desc": "wooden shelf unit with stuffed animals and toys on top",
         "action": "static",
-        "position": "background"
-      },
-      {
-        "desc": "wooden shelf unit with stuffed animals and toys",
-        "action": "static",
-        "position": "background"
-      },
-      {
-        "desc": "blue curtains covering a window",
-        "action": "static",
-        "position": "right"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "person holds a black object above their head",
-        "confidence": 1.0
-      },
-      {
-        "fact": "the person is wearing a silver chain necklace",
-        "confidence": 1.0
-      },
-      {
-        "fact": "the bed has a dark blue cover",
-        "confidence": 1.0
-      },
-      {
-        "fact": "blue curtains are on the right side of the room",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [],
-    "spatial": "The person is in the center foreground, in front of the bed. The bed is behind the person and below the wooden shelf unit. The blue curtains are to the right of the bed and the person.",
-    "parse_success": true,
-    "chunk_idx": 2,
-    "video_id": "GfSeRaJuFTs",
-    "_rescued": "parse"
-  },
-  {
-    "time": [
-      6,
-      8
-    ],
-    "visible_entities": [
-      {
-        "desc": "person with short dark hair, wearing a black long-sleeved shirt with a colorful geometric logo (pink, blue, yellow), a black and white baseball cap with a logo, and a silver chain necklace",
-        "action": "gesturing with hands and giving a thumbs up",
-        "position": "center"
-      },
-      {
-        "desc": "white shelf with various small figurines and objects",
-        "action": "static",
-        "position": "top"
-      },
-      {
-        "desc": "blue curtains",
-        "action": "static",
-        "position": "right"
-      },
-      {
-        "desc": "wooden furniture with items on top",
-        "action": "static",
-        "position": "left"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "person raises both hands with open palms",
-        "confidence": 1.0
-      },
-      {
-        "fact": "person gives a thumbs up with both hands",
-        "confidence": 1.0
-      },
-      {
-        "fact": "person is wearing a black and white baseball cap",
-        "confidence": 1.0
-      },
-      {
-        "fact": "person is wearing a silver chain necklace",
-        "confidence": 1.0
-      },
-      {
-        "fact": "shelf is mounted on the wall above the person",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [],
-    "spatial": "The person is in the center of the frame. The white shelf is above the person. The blue curtains are to the right of the person. The wooden furniture is to the left of the person.",
-    "parse_success": true,
-    "chunk_idx": 3,
-    "video_id": "GfSeRaJuFTs",
-    "_rescued": "parse"
-  },
-  {
-    "time": [
-      8,
-      10
-    ],
-    "visible_entities": [
-      {
-        "desc": "person with short blonde hair, wearing a dark grey sweatshirt with a large yellow, pink, and blue graphic logo on the chest, and a silver chain necklace",
-        "action": "looking down and moving forward",
-        "position": "center/foreground"
-      },
-      {
-        "desc": "white shelf with various small figurines and objects",
-        "action": "static",
-        "position": "top/background"
-      },
-      {
-        "desc": "wooden shelving unit with stuffed animals and clutter",
-        "action": "static",
-        "position": "left/background"
-      },
-      {
-        "desc": "blue curtains covering a window",
-        "action": "static",
-        "position": "right/background"
-      },
-      {
-        "desc": "bed with a dark blue cover and a white blanket",
-        "action": "static",
-        "position": "left/center/background"
-      },
-      {
-        "desc": "framed picture on the wall",
-        "action": "static",
-        "position": "center-right/background"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "The person is looking down and moving forward towards the camera.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The person is wearing a silver chain necklace.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "A white shelf is mounted high on the wall.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "Blue curtains are hanging on the right side of the room.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [],
-    "spatial": "The person is in the foreground, positioned in front of the bed and the wooden shelving unit. The white shelf is above the wooden shelving unit and the bed. The blue curtains are to the right of the person and the framed picture.",
-    "parse_success": true,
-    "chunk_idx": 4,
-    "video_id": "GfSeRaJuFTs",
-    "_rescued": "parse"
-  },
-  {
-    "time": [
-      10,
-      12
-    ],
-    "visible_entities": [
-      {
-        "desc": "person with short dark hair, wearing a black long-sleeved hoodie with a colorful abstract graphic print (yellow, pink, blue) on the chest and a silver chain necklace",
-        "action": "adjusting hair with both hands",
-        "position": "center"
-      },
-      {
-        "desc": "white wall-mounted shelf with various small figurines and items",
-        "action": "static",
-        "position": "background"
+        "position": "background/center"
       },
       {
         "desc": "blue curtain covering a window",
@@ -301,59 +129,221 @@
         "position": "right"
       },
       {
-        "desc": "red wooden cabinet or dresser",
+        "desc": "bed with a dark blue cover and a white duvet",
+        "action": "static",
+        "position": "bottom/center"
+      },
+      {
+        "desc": "white wall shelf with small figurines and string lights",
+        "action": "static",
+        "position": "top/background"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A person is holding a black object above their head.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The person is wearing a black shirt with a colorful graphic design.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The person is wearing a silver chain necklace.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The room has a bed with a dark blue cover.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "There is a wooden shelf unit in the background with stuffed animals on top.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A blue curtain is visible on the right side of the frame.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The person is in the center foreground, holding a black object above their head. Behind the person is a wooden shelf unit with stuffed animals. To the right of the person is a blue curtain. Below the person is a bed with a dark blue cover. Above the shelf unit is a white wall shelf with figurines.",
+    "parse_success": true,
+    "chunk_idx": 2,
+    "video_id": "GfSeRaJuFTs"
+  },
+  {
+    "time": [
+      3,
+      4
+    ],
+    "visible_entities": [
+      {
+        "desc": "person with short dark hair, wearing a black long-sleeved shirt with a colorful geometric graphic (pink, blue, yellow), a silver chain necklace, and a black baseball cap with a white Under Armour logo",
+        "action": "raising hands and then giving a double thumbs up",
+        "position": "center"
+      },
+      {
+        "desc": "white shelf with various small figurines and items",
+        "action": "static",
+        "position": "top"
+      },
+      {
+        "desc": "blue curtain",
+        "action": "static",
+        "position": "right"
+      },
+      {
+        "desc": "wooden cabinet with items on top",
+        "action": "static",
+        "position": "background"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The person raises both hands with open palms.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The person lowers their hands and gives a thumbs up with both hands.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The person is wearing a black cap with a white logo.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The person is in the center of the frame, in front of a wooden cabinet and below a white shelf. The blue curtain is to the right of the person.",
+    "parse_success": true,
+    "chunk_idx": 3,
+    "video_id": "GfSeRaJuFTs"
+  },
+  {
+    "time": [
+      4,
+      5
+    ],
+    "visible_entities": [
+      {
+        "desc": "person with short blonde hair, wearing a dark grey sweatshirt with a large yellow and pink graphic logo on the chest and a silver chain necklace",
+        "action": "looking down and moving out of frame",
+        "position": "foreground/center"
+      },
+      {
+        "desc": "wooden shelf with white brackets holding various small figurines and objects",
+        "action": "static",
+        "position": "background/top"
+      },
+      {
+        "desc": "blue curtains covering a window",
+        "action": "static",
+        "position": "right"
+      },
+      {
+        "desc": "wooden shelving unit with stuffed animals and clutter",
+        "action": "static",
+        "position": "background/center"
+      },
+      {
+        "desc": "bed with a dark blue cover and a white pillow",
+        "action": "static",
+        "position": "background/left"
+      },
+      {
+        "desc": "framed picture on the wall",
+        "action": "static",
+        "position": "background/right"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The person with short blonde hair is looking down.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The person moves from the center of the frame towards the bottom right, partially exiting the view.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A wooden shelf is mounted high on the wall.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "Blue curtains hang vertically on the right side of the room.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The person is in the foreground, positioned in front of the bed and the wooden shelving unit. The wooden shelf is above the bed and the shelving unit. The blue curtains are to the right of the framed picture on the wall.",
+    "parse_success": true,
+    "chunk_idx": 4,
+    "video_id": "GfSeRaJuFTs"
+  },
+  {
+    "time": [
+      5,
+      6
+    ],
+    "visible_entities": [
+      {
+        "desc": "person with short dark hair, wearing a black long-sleeved shirt with a colorful geometric graphic on the chest and a silver chain necklace",
+        "action": "adjusting hair",
+        "position": "center"
+      },
+      {
+        "desc": "white shelf with various small figurines and objects",
+        "action": "static",
+        "position": "top"
+      },
+      {
+        "desc": "blue curtain",
+        "action": "static",
+        "position": "right"
+      },
+      {
+        "desc": "red cabinet with bottles",
         "action": "static",
         "position": "left"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "person raises both hands to their head to adjust their hair",
+        "fact": "The person is using both hands to adjust their hair.",
         "confidence": 1.0
       },
       {
-        "fact": "person is wearing a black hoodie with a colorful graphic design",
+        "fact": "The person is wearing a necklace.",
         "confidence": 1.0
       },
       {
-        "fact": "shelf is mounted on the wall above the person's head",
-        "confidence": 1.0
-      },
-      {
-        "fact": "blue curtain is to the right of the person",
+        "fact": "A shelf with figurines is mounted on the wall above the person.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The person is in the center of the frame, in front of a white wall. A white shelf with figurines is mounted on the wall above the person's head. To the right of the person is a blue curtain. To the left of the person is a red cabinet.",
+    "spatial": "The person is in the center of the frame, positioned in front of the white shelf and the red cabinet. The blue curtain is to the right of the person. The shelf is above the person's head.",
     "parse_success": true,
     "chunk_idx": 5,
-    "video_id": "GfSeRaJuFTs",
-    "_rescued": "parse"
+    "video_id": "GfSeRaJuFTs"
   },
   {
     "time": [
-      12,
-      14
+      6,
+      7
     ],
     "visible_entities": [
       {
-        "desc": "person with short dark hair, wearing a black baseball cap backwards, a black sweatshirt with a yellow and pink graphic design on the chest, and a silver chain necklace",
+        "desc": "person with short brown hair, wearing a black backward baseball cap, a black long-sleeved shirt with a yellow and pink graphic design, and a silver chain necklace",
         "action": "removing the black cap",
         "position": "center/foreground"
       },
       {
-        "desc": "black baseball cap",
-        "action": "being lifted off the head",
-        "position": "center/foreground"
-      },
-      {
-        "desc": "white shelf with various small figurines and objects",
+        "desc": "white shelf with various small figurines and items",
         "action": "static",
         "position": "top/background"
       },
       {
-        "desc": "blue curtains",
+        "desc": "blue curtains covering a window",
         "action": "static",
         "position": "right"
       },
@@ -365,7 +355,7 @@
     ],
     "atomic_facts": [
       {
-        "fact": "The person lifts the black cap off their head with their left hand.",
+        "fact": "The person is removing a black cap from their head.",
         "confidence": 1.0
       },
       {
@@ -373,251 +363,105 @@
         "confidence": 1.0
       },
       {
-        "fact": "The sweatshirt features a graphic with yellow and pink colors.",
+        "fact": "A shelf with figurines is mounted on the wall above the bed.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The person is in the center foreground, sitting in front of a bed. The white shelf is located above the bed and behind the person. The blue curtains are to the right of the person and the bed.",
+    "spatial": "The person is in the center foreground, in front of the bed. The shelf is above the bed and behind the person. The blue curtains are to the right of the person and the bed.",
     "parse_success": true,
     "chunk_idx": 6,
-    "video_id": "GfSeRaJuFTs",
-    "_rescued": "parse"
-  },
-  {
-    "time": [
-      14,
-      16
-    ],
-    "visible_entities": [
-      {
-        "desc": "person with short dark hair, wearing a dark shirt, partially visible in the bottom right corner",
-        "action": "static",
-        "position": "bottom right"
-      },
-      {
-        "desc": "bed covered with a dark blue comforter and a messy pile of white and blue blankets",
-        "action": "static",
-        "position": "center foreground"
-      },
-      {
-        "desc": "wooden shelving unit filled with stuffed animals, including a large white and black plush toy",
-        "action": "static",
-        "position": "center background"
-      },
-      {
-        "desc": "white wall-mounted shelf holding various small figurines and trophies",
-        "action": "static",
-        "position": "top"
-      },
-      {
-        "desc": "bright blue curtains covering a window on the right side",
-        "action": "static",
-        "position": "right"
-      },
-      {
-        "desc": "framed picture hanging on the wall",
-        "action": "static",
-        "position": "right background"
-      },
-      {
-        "desc": "dark wooden dresser with bottles and items on top",
-        "action": "static",
-        "position": "left"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "A person is partially visible in the bottom right corner of the frame.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The bed is unmade with blankets piled in the center.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "Stuffed animals are arranged on the wooden shelves against the back wall.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "A framed picture hangs on the wall to the right of the shelves.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [],
-    "spatial": "The bed is in the center foreground, positioned in front of the wooden shelving unit. The wooden shelving unit is against the back wall, below a white wall-mounted shelf. To the right of the shelving unit, a framed picture hangs on the wall. The blue curtains are to the right of the framed picture. A dresser is located to the left of the bed.",
-    "parse_success": true,
-    "chunk_idx": 7,
-    "video_id": "GfSeRaJuFTs",
-    "_rescued": "parse"
-  },
-  {
-    "time": [
-      16,
-      18
-    ],
-    "visible_entities": [
-      {
-        "desc": "person with short light brown hair, wearing a dark grey long-sleeved sweatshirt with a large colorful geometric logo (pink, blue, yellow, black) on the chest, a dark necklace, and a maroon baseball cap",
-        "action": "adjusting a maroon baseball cap on their head",
-        "position": "center"
-      },
-      {
-        "desc": "maroon baseball cap",
-        "action": "being adjusted",
-        "position": "center"
-      },
-      {
-        "desc": "white wall with a wooden shelf holding small figurines and string lights",
-        "action": "static",
-        "position": "background"
-      },
-      {
-        "desc": "blue curtains covering a window",
-        "action": "static",
-        "position": "right"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "person adjusts a maroon baseball cap on their head with both hands",
-        "confidence": 1.0
-      },
-      {
-        "fact": "person is wearing a dark grey sweatshirt with a colorful geometric logo",
-        "confidence": 1.0
-      },
-      {
-        "fact": "a wooden shelf with figurines is mounted on the wall behind the person",
-        "confidence": 1.0
-      },
-      {
-        "fact": "blue curtains are visible to the right of the person",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [],
-    "spatial": "The person is in the center of the frame, in front of a white wall. The wooden shelf with figurines is above the person's head. The blue curtains are to the right of the person.",
-    "parse_success": true,
-    "chunk_idx": 8,
-    "video_id": "GfSeRaJuFTs",
-    "_rescued": "parse"
-  },
-  {
-    "time": [
-      18,
-      20
-    ],
-    "visible_entities": [
-      {
-        "desc": "person with short brown hair, wearing a maroon baseball cap backwards, a dark grey long-sleeved shirt with a colorful geometric logo (yellow, pink, blue), and a silver chain necklace",
-        "action": "moving right hand up and down while speaking",
-        "position": "center"
-      },
-      {
-        "desc": "white string lights",
-        "action": "static",
-        "position": "top"
-      },
-      {
-        "desc": "blue curtain",
-        "action": "static",
-        "position": "right"
-      },
-      {
-        "desc": "white wall",
-        "action": "static",
-        "position": "background"
-      },
-      {
-        "desc": "wooden shelf with figurines",
-        "action": "static",
-        "position": "top"
-      },
-      {
-        "desc": "bed with blue and yellow patterned blanket",
-        "action": "static",
-        "position": "right"
-      },
-      {
-        "desc": "white pillow or folded blanket",
-        "action": "static",
-        "position": "left"
-      },
-      {
-        "desc": "framed poster on wall",
-        "action": "static",
-        "position": "background"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "person moves right hand in gesturing motion",
-        "confidence": 1.0
-      },
-      {
-        "fact": "person is wearing a maroon baseball cap backwards",
-        "confidence": 1.0
-      },
-      {
-        "fact": "person is wearing a dark grey shirt with a colorful geometric logo",
-        "confidence": 1.0
-      },
-      {
-        "fact": "white string lights hang below a shelf with figurines",
-        "confidence": 1.0
-      },
-      {
-        "fact": "blue curtain covers a window on the right side of the room",
-        "confidence": 1.0
-      },
-      {
-        "fact": "bed with blue and yellow blanket is to the right of the person",
-        "confidence": 1.0
-      },
-      {
-        "fact": "white pillow or folded blanket is on furniture to the left of the person",
-        "confidence": 1.0
-      },
-      {
-        "fact": "framed poster is mounted on the wall behind the person",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [],
-    "spatial": "The person is centered in the frame, in front of a white wall. Above the person, white string lights hang below a wooden shelf holding figurines. To the right of the person is a blue curtain covering a window and a bed with a blue and yellow blanket. To the left of the person is a white pillow or folded blanket on furniture. A framed poster is mounted on the wall behind and to the right of the person.",
-    "parse_success": true,
-    "chunk_idx": 9,
     "video_id": "GfSeRaJuFTs"
   },
   {
     "time": [
-      20,
-      22
+      7,
+      8
     ],
     "visible_entities": [
       {
-        "desc": "person with short light brown hair, wearing a black t-shirt with a yellow and blue graphic design on the front, and a beaded necklace",
-        "action": "leaning forward and moving head down and to the right",
-        "position": "foreground"
-      },
-      {
-        "desc": "wooden shelf with various small figurines and objects",
-        "action": "static",
-        "position": "top"
-      },
-      {
-        "desc": "wooden shelving unit with stuffed animals and other items",
-        "action": "static",
-        "position": "background"
+        "desc": "person with short dark hair, wearing a dark shirt",
+        "action": "entering the frame",
+        "position": "bottom right"
       },
       {
         "desc": "bed with a dark blue comforter and a yellow and blue patterned blanket",
         "action": "static",
+        "position": "foreground"
+      },
+      {
+        "desc": "wooden headboard shelf with stuffed animals and books",
+        "action": "static",
+        "position": "center background"
+      },
+      {
+        "desc": "white wall shelf with figurines and books",
+        "action": "static",
+        "position": "top"
+      },
+      {
+        "desc": "bright blue curtains",
+        "action": "static",
+        "position": "right"
+      },
+      {
+        "desc": "framed picture on the wall",
+        "action": "static",
+        "position": "center background"
+      },
+      {
+        "desc": "red and white bag hanging on the wall",
+        "action": "static",
+        "position": "left"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A person with short dark hair enters the frame from the bottom right.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The bed is covered with a dark blue comforter.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A wooden shelf above the bed holds several stuffed animals.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "Blue curtains hang on the right side of the room.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The bed is in the foreground, in front of the wooden headboard shelf. The wooden shelf is below the white wall shelf. The blue curtains are to the right of the bed. The framed picture is on the wall to the right of the wooden shelf.",
+    "parse_success": true,
+    "chunk_idx": 7,
+    "video_id": "GfSeRaJuFTs"
+  },
+  {
+    "time": [
+      8,
+      9
+    ],
+    "visible_entities": [
+      {
+        "desc": "person with short light brown hair, wearing a dark grey long-sleeved shirt with a colorful geometric logo (pink, blue, yellow, black), a silver chain necklace, and a maroon baseball cap",
+        "action": "adjusting a maroon baseball cap",
         "position": "center"
       },
       {
-        "desc": "blue curtains covering a window",
+        "desc": "maroon baseball cap",
+        "action": "being adjusted by person",
+        "position": "center"
+      },
+      {
+        "desc": "wooden shelf with various small figurines and string lights",
+        "action": "static",
+        "position": "top"
+      },
+      {
+        "desc": "blue curtains",
         "action": "static",
         "position": "right"
       },
@@ -629,63 +473,11 @@
     ],
     "atomic_facts": [
       {
-        "fact": "A person with short light brown hair leans forward and moves their head down and to the right.",
+        "fact": "person adjusts a maroon baseball cap on their head",
         "confidence": 1.0
       },
       {
-        "fact": "A wooden shelf with figurines is mounted on the wall above a wooden shelving unit.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The bed is in front of the wooden shelving unit.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "Blue curtains are to the right of the bed.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [],
-    "spatial": "The person is in the foreground, in front of the bed. The bed is in the center of the room, with a wooden shelving unit behind it. A wooden shelf with figurines is mounted on the wall above the shelving unit. To the right of the bed are blue curtains covering a window. A framed picture is on the wall to the right of the shelving unit.",
-    "parse_success": true,
-    "chunk_idx": 10,
-    "video_id": "GfSeRaJuFTs",
-    "_rescued": "parse"
-  },
-  {
-    "time": [
-      22,
-      24
-    ],
-    "visible_entities": [
-      {
-        "desc": "person with short blonde hair, wearing a black long-sleeved shirt with a colorful geometric graphic (pink, blue, yellow), a silver chain necklace, and a black baseball cap",
-        "action": "removing a red wig",
-        "position": "center"
-      },
-      {
-        "desc": "bright red wig",
-        "action": "being lifted off the head",
-        "position": "center"
-      },
-      {
-        "desc": "white shelf with various small figurines and objects",
-        "action": "static",
-        "position": "top"
-      },
-      {
-        "desc": "blue curtains",
-        "action": "static",
-        "position": "right"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "person removes a red wig from their head",
-        "confidence": 1.0
-      },
-      {
-        "fact": "person is wearing a black baseball cap underneath the wig",
+        "fact": "person is wearing a dark grey long-sleeved shirt with a colorful geometric logo",
         "confidence": 1.0
       },
       {
@@ -693,250 +485,33 @@
         "confidence": 1.0
       },
       {
-        "fact": "white shelf is mounted on the wall above the person",
+        "fact": "a wooden shelf with figurines and string lights is mounted on the wall above the person",
+        "confidence": 1.0
+      },
+      {
+        "fact": "blue curtains are visible to the right of the person",
+        "confidence": 1.0
+      },
+      {
+        "fact": "a framed picture hangs on the wall behind the person",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The person is in the center of the frame, with the blue curtains to their right. The white shelf with figurines is above the person on the wall. The red wig is being held by the person's hands and is positioned above their head as it is removed.",
+    "spatial": "The person is centered in the frame, adjusting a maroon baseball cap on their head. The wooden shelf with figurines and string lights is above the person. The blue curtains are to the right of the person. The framed picture is behind the person on the wall.",
     "parse_success": true,
-    "chunk_idx": 11,
-    "video_id": "GfSeRaJuFTs",
-    "_rescued": "parse"
+    "chunk_idx": 8,
+    "video_id": "GfSeRaJuFTs"
   },
   {
     "time": [
-      24,
-      26
+      9,
+      10
     ],
     "visible_entities": [
       {
-        "desc": "young person with short blonde hair, wearing a dark blue long-sleeved shirt with a colorful geometric logo (pink, blue, yellow), a silver chain necklace, and a baseball cap",
-        "action": "gesturing with hands and changing headwear",
-        "position": "center"
-      },
-      {
-        "desc": "black baseball cap",
-        "action": "being worn",
-        "position": "top"
-      },
-      {
-        "desc": "red and black baseball cap with black text",
-        "action": "being worn",
-        "position": "top"
-      },
-      {
-        "desc": "wooden shelf with various small figurines and items",
-        "action": "static",
-        "position": "background"
-      },
-      {
-        "desc": "blue curtains",
-        "action": "static",
-        "position": "right"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "The person is wearing a black baseball cap in the first frame.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The person is wearing a red and black baseball cap in the second frame.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The person is gesturing with their hands raised.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The person is looking down in the second frame.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [],
-    "spatial": "The person is in the center of the frame, in front of a wooden shelf. The blue curtains are to the right of the person. The baseball cap is on the person's head.",
-    "parse_success": true,
-    "chunk_idx": 12,
-    "video_id": "GfSeRaJuFTs",
-    "_rescued": "parse"
-  },
-  {
-    "time": [
-      26,
-      28
-    ],
-    "visible_entities": [
-      {
-        "desc": "person with short light brown hair, wearing a dark grey or black t-shirt",
-        "action": "moving quickly in the foreground, causing motion blur",
-        "position": "left foreground"
-      },
-      {
-        "desc": "bed with a dark blue comforter featuring yellow and white stripes",
-        "action": "static",
-        "position": "center"
-      },
-      {
-        "desc": "wooden shelf unit filled with stuffed animals and toys",
-        "action": "static",
-        "position": "background"
-      },
-      {
-        "desc": "long blue curtains",
-        "action": "static",
-        "position": "right"
-      },
-      {
-        "desc": "high wall shelf with small figurines and string lights",
-        "action": "static",
-        "position": "top background"
-      },
-      {
-        "desc": "framed picture on the wall",
-        "action": "static",
-        "position": "background right"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "A person with short hair moves rapidly in the foreground, creating a blur.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The bed is unmade with a dark blue comforter.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "Stuffed animals are arranged on a wooden shelf unit against the wall.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "Blue curtains cover a window on the right side of the room.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [],
-    "spatial": "The person is in the left foreground, positioned in front of the bed. The bed is in the center of the room, below the high wall shelf and in front of the wooden shelf unit. The blue curtains are to the right of the bed and the wall picture.",
-    "parse_success": true,
-    "chunk_idx": 13,
-    "video_id": "GfSeRaJuFTs",
-    "_rescued": "parse"
-  },
-  {
-    "time": [
-      28,
-      30
-    ],
-    "visible_entities": [
-      {
-        "desc": "person with short brown hair, wearing a black long-sleeved shirt with a colorful geometric pattern (pink, yellow, blue) on the chest, and a dark beaded necklace",
-        "action": "putting on a hat",
-        "position": "center"
-      },
-      {
-        "desc": "hat with a red knitted top, a black front panel featuring a yellow and purple bird logo, and a purple brim",
-        "action": "being placed on head",
-        "position": "center"
-      },
-      {
-        "desc": "white shelf with various small figurines and objects",
-        "action": "static",
-        "position": "top"
-      },
-      {
-        "desc": "blue curtains covering a window",
-        "action": "static",
-        "position": "right"
-      },
-      {
-        "desc": "framed picture on the wall showing a person in a suit",
-        "action": "static",
-        "position": "background"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "person is putting on a hat with both hands",
-        "confidence": 1.0
-      },
-      {
-        "fact": "the hat has a red knitted top and a black front panel with a logo",
-        "confidence": 1.0
-      },
-      {
-        "fact": "the person is wearing a black long-sleeved shirt with a colorful graphic",
-        "confidence": 1.0
-      },
-      {
-        "fact": "a shelf with figurines is mounted on the wall above the person",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [],
-    "spatial": "The person is in the center of the frame, in front of the wall. The white shelf with figurines is above the person. The blue curtains are to the right of the person. The framed picture is on the wall behind the person.",
-    "parse_success": true,
-    "chunk_idx": 14,
-    "video_id": "GfSeRaJuFTs",
-    "_rescued": "parse"
-  },
-  {
-    "time": [
-      30,
-      32
-    ],
-    "visible_entities": [
-      {
-        "desc": "person with light skin, wearing a dark grey long-sleeved sweatshirt with a colorful abstract graphic on the chest, a dark chain necklace, and a blue baseball cap with a red brim",
-        "action": "adjusting cap with both hands",
-        "position": "center"
-      },
-      {
-        "desc": "white wall-mounted shelf with various small figurines and objects",
-        "action": "static",
-        "position": "top"
-      },
-      {
-        "desc": "blue curtains covering a window",
-        "action": "static",
-        "position": "right"
-      },
-      {
-        "desc": "framed picture on the wall",
-        "action": "static",
-        "position": "background"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "The person raises both hands to the sides of their head.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The person is holding and adjusting the blue baseball cap.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "A shelf with figurines is mounted on the wall above the person.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [],
-    "spatial": "The person is in the center of the frame, positioned in front of the white wall. The shelf with figurines is above the person's head. The blue curtains are to the right of the person. The framed picture is on the wall behind the person, to their right.",
-    "parse_success": true,
-    "chunk_idx": 15,
-    "video_id": "GfSeRaJuFTs",
-    "_rescued": "parse"
-  },
-  {
-    "time": [
-      32,
-      34
-    ],
-    "visible_entities": [
-      {
-        "desc": "young person with short dark hair, wearing a red and black baseball cap with a logo, a black t-shirt with a large colorful geometric graphic, and a silver chain necklace",
-        "action": "talking",
+        "desc": "person with short brown hair, wearing a maroon baseball cap backwards, a dark blue long-sleeved shirt with a colorful geometric logo (pink, yellow, blue), and a silver chain necklace",
+        "action": "looking at the camera then looking down and raising left hand",
         "position": "center"
       },
       {
@@ -950,128 +525,61 @@
         "position": "right"
       },
       {
-        "desc": "framed picture on the wall",
-        "action": "static",
-        "position": "background"
-      },
-      {
-        "desc": "bed with blue bedding and a white pillow",
+        "desc": "white wall with a framed picture",
         "action": "static",
         "position": "background"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "The person is talking to the camera.",
+        "fact": "The person looks down and raises their left hand.",
         "confidence": 1.0
       },
       {
-        "fact": "The person is wearing a red and black cap.",
+        "fact": "The person is wearing a maroon baseball cap backwards.",
         "confidence": 1.0
       },
       {
         "fact": "A shelf with figurines is mounted on the wall above the person.",
         "confidence": 1.0
-      },
-      {
-        "fact": "Blue curtains are hanging to the right of the person.",
-        "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The person is in the center of the frame, sitting in front of a bed. The wooden shelf with figurines is above the person's head. The blue curtains are to the right of the person. A framed picture is on the wall behind the person.",
+    "spatial": "The person is in the center of the frame. The wooden shelf is above the person. The blue curtains are to the right of the person. The framed picture is on the wall behind the person.",
     "parse_success": true,
-    "chunk_idx": 16,
-    "video_id": "GfSeRaJuFTs",
-    "_rescued": "parse"
+    "chunk_idx": 9,
+    "video_id": "GfSeRaJuFTs"
   },
   {
     "time": [
-      34,
-      36
+      10,
+      11
     ],
     "visible_entities": [
       {
-        "desc": "person wearing a red and black baseball cap with a purple brim, a black t-shirt with a yellow and purple graphic, and a silver chain necklace",
-        "action": "turning head to the left",
-        "position": "center"
-      },
-      {
-        "desc": "blue curtains",
-        "action": "static",
-        "position": "right"
-      },
-      {
-        "desc": "white shelf with various small items",
-        "action": "static",
-        "position": "top"
-      },
-      {
-        "desc": "framed picture on the wall",
-        "action": "static",
-        "position": "background"
-      },
-      {
-        "desc": "blue and yellow jacket",
-        "action": "static",
-        "position": "bottom right"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "person turns their head to the left",
-        "confidence": 1.0
-      },
-      {
-        "fact": "person is wearing a red and black cap",
-        "confidence": 1.0
-      },
-      {
-        "fact": "blue curtains are on the right side of the room",
-        "confidence": 1.0
-      },
-      {
-        "fact": "a shelf is mounted on the wall above the person",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [],
-    "spatial": "The person is in the center of the frame, in front of a white wall. To the right of the person are blue curtains. Above the person is a shelf with various items. A framed picture is on the wall behind the person.",
-    "parse_success": true,
-    "chunk_idx": 17,
-    "video_id": "GfSeRaJuFTs",
-    "_rescued": "parse"
-  },
-  {
-    "time": [
-      36,
-      38
-    ],
-    "visible_entities": [
-      {
-        "desc": "person with short blonde hair, wearing a dark grey long-sleeved shirt with a yellow graphic on the chest and a black and white patterned necklace",
-        "action": "looking down and moving head",
+        "desc": "person with short light brown hair, wearing a dark grey t-shirt with a yellow and blue graphic design on the chest, and a silver chain necklace",
+        "action": "moving head down and to the right",
         "position": "foreground"
       },
       {
-        "desc": "blue curtains",
+        "desc": "bed with a dark blue comforter and a yellow and blue patterned blanket",
         "action": "static",
-        "position": "right"
+        "position": "center"
       },
       {
-        "desc": "white shelf with various small figurines and objects",
+        "desc": "wooden shelf with stuffed animals and a white comforter",
+        "action": "static",
+        "position": "background"
+      },
+      {
+        "desc": "white wall shelf with various small figurines and items",
         "action": "static",
         "position": "top"
       },
       {
-        "desc": "wooden shelving unit with stuffed animals and other items",
+        "desc": "blue curtains covering a window",
         "action": "static",
-        "position": "background"
-      },
-      {
-        "desc": "bed with blue and yellow bedding",
-        "action": "static",
-        "position": "background"
+        "position": "right"
       },
       {
         "desc": "framed picture on the wall",
@@ -1081,48 +589,55 @@
     ],
     "atomic_facts": [
       {
-        "fact": "A person with short blonde hair is in the foreground, looking down.",
+        "fact": "A person with short light brown hair is in the foreground.",
         "confidence": 1.0
       },
       {
-        "fact": "The person is wearing a dark grey shirt with a yellow graphic.",
+        "fact": "The person moves their head down and to the right between the two frames.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The person is wearing a dark grey t-shirt with a graphic design.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A bed with a dark blue comforter is in the center of the room.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A wooden shelf with stuffed animals is behind the bed.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A white shelf with figurines is mounted on the wall above the wooden shelf.",
         "confidence": 1.0
       },
       {
         "fact": "Blue curtains are on the right side of the room.",
         "confidence": 1.0
-      },
-      {
-        "fact": "A white shelf with figurines is mounted high on the wall.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "A wooden shelving unit with stuffed animals is in the background.",
-        "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The person is in the foreground, to the left of the blue curtains. The white shelf is above the wooden shelving unit. The framed picture is on the wall, to the right of the wooden shelving unit. The bed is in the background, behind the person.",
+    "spatial": "The person is in the foreground, in front of the bed. The bed is in the center of the room. The wooden shelf with stuffed animals is behind the bed. The white shelf with figurines is above the wooden shelf. The blue curtains are to the right of the bed and the person. The framed picture is on the wall to the right of the wooden shelf.",
     "parse_success": true,
-    "chunk_idx": 18,
-    "video_id": "GfSeRaJuFTs",
-    "_rescued": "parse"
+    "chunk_idx": 10,
+    "video_id": "GfSeRaJuFTs"
   },
   {
     "time": [
-      38,
-      40
+      11,
+      12
     ],
     "visible_entities": [
       {
-        "desc": "young person with short light brown hair, wearing a dark blue sweatshirt with a colorful abstract graphic print (yellow, pink, blue shapes) and a silver chain necklace",
-        "action": "putting on a red and black cap",
-        "position": "center/foreground"
+        "desc": "person with short blonde hair, wearing a black long-sleeved shirt with a colorful geometric graphic, a silver chain necklace, and a black baseball cap",
+        "action": "removing a red object from head and gesturing with hands",
+        "position": "center"
       },
       {
-        "desc": "red and black cap",
-        "action": "being placed on head",
-        "position": "center/top"
+        "desc": "red object, blurry, appearing to be a hat or wig",
+        "action": "being lifted off the person's head",
+        "position": "center/foreground"
       },
       {
         "desc": "white shelf with various small figurines and objects",
@@ -1135,114 +650,116 @@
         "position": "right"
       },
       {
-        "desc": "framed poster on wall",
+        "desc": "wooden furniture with items on top",
         "action": "static",
-        "position": "background/right"
+        "position": "left/background"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "The person puts a red and black cap on their head.",
+        "fact": "The person removes a red object from their head.",
         "confidence": 1.0
       },
       {
-        "fact": "The person is wearing a silver chain necklace.",
+        "fact": "The person is wearing a black baseball cap backwards.",
         "confidence": 1.0
       },
       {
-        "fact": "A white shelf with figurines is mounted on the wall above the person.",
+        "fact": "The person gestures with both hands raised.",
         "confidence": 1.0
       },
       {
-        "fact": "Blue curtains cover a window on the right side of the room.",
+        "fact": "A shelf with figurines is mounted on the wall above the person.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The person is in the center foreground, with a white shelf above them and blue curtains to their right. A framed poster is on the wall behind and to the right of the person.",
+    "spatial": "The person is in the center of the frame, in front of a white wall. The shelf with figurines is above the person. The blue curtains are to the right of the person. The wooden furniture is to the left of the person.",
     "parse_success": true,
-    "chunk_idx": 19,
-    "video_id": "GfSeRaJuFTs",
-    "_rescued": "parse"
+    "chunk_idx": 11,
+    "video_id": "GfSeRaJuFTs"
   },
   {
     "time": [
-      40,
-      42
+      12,
+      13
     ],
     "visible_entities": [
       {
-        "desc": "young boy with short blonde hair, wearing a red baseball cap backwards, a dark grey t-shirt with a colorful geometric graphic, and a silver chain necklace",
-        "action": "looking at the camera",
+        "desc": "young person with short blonde hair, wearing a dark blue sweatshirt with a colorful geometric logo, a silver chain necklace, and a baseball cap",
+        "action": "gesturing with hands and changing headwear",
         "position": "center"
       },
       {
-        "desc": "wooden shelf with white brackets holding various small figurines and objects",
-        "action": "static",
+        "desc": "black baseball cap",
+        "action": "being worn",
         "position": "top"
       },
       {
-        "desc": "blue curtains covering a window",
+        "desc": "red and black baseball cap with a logo",
+        "action": "being worn",
+        "position": "top"
+      },
+      {
+        "desc": "blue curtains",
         "action": "static",
         "position": "right"
       },
       {
-        "desc": "framed picture on the wall",
+        "desc": "white shelf with figurines",
         "action": "static",
         "position": "background"
-      },
-      {
-        "desc": "dark blue chair back",
-        "action": "static",
-        "position": "foreground"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A young boy is sitting in a chair facing the camera.",
+        "fact": "The person is wearing a black baseball cap in the first frame.",
         "confidence": 1.0
       },
       {
-        "fact": "The boy is wearing a red cap backwards.",
+        "fact": "The person is wearing a red and black baseball cap in the second frame.",
         "confidence": 1.0
       },
       {
-        "fact": "A shelf with figurines is mounted on the wall above the boy.",
+        "fact": "The person raises both hands in a gesturing motion.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The person looks down in the second frame.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The boy is in the center of the frame, sitting in front of a dark blue chair back. The wooden shelf is above the boy on the wall. The blue curtains are to the right of the boy. The framed picture is on the wall behind the boy.",
+    "spatial": "The person is in the center of the frame, in front of a white shelf. The blue curtains are to the right of the person. The shelf is above the person's head.",
     "parse_success": true,
-    "chunk_idx": 20,
-    "video_id": "GfSeRaJuFTs",
-    "_rescued": "parse"
+    "chunk_idx": 12,
+    "video_id": "GfSeRaJuFTs"
   },
   {
     "time": [
-      42,
-      44
+      13,
+      14
     ],
     "visible_entities": [
       {
-        "desc": "person with short blonde hair, wearing a dark grey t-shirt with a yellow graphic design and a dark beaded necklace",
-        "action": "moving head downwards and to the left",
-        "position": "foreground left"
+        "desc": "person with short light brown hair, wearing a black t-shirt and a dark necklace",
+        "action": "moving quickly in the foreground",
+        "position": "left/foreground"
       },
       {
-        "desc": "wooden shelf with white brackets, holding various small figurines and bottles",
+        "desc": "wooden shelf with white brackets holding various small figurines and objects",
         "action": "static",
-        "position": "top background"
+        "position": "top/background"
       },
       {
         "desc": "wooden shelving unit filled with stuffed animals and toys",
         "action": "static",
-        "position": "center background"
+        "position": "center/background"
       },
       {
-        "desc": "bed with a dark blue comforter featuring yellow and white stripes",
+        "desc": "bed with a dark blue cover and a yellow and blue striped blanket",
         "action": "static",
-        "position": "center right"
+        "position": "bottom/center"
       },
       {
         "desc": "bright blue curtains covering a window",
@@ -1250,127 +767,95 @@
         "position": "right"
       },
       {
-        "desc": "framed picture hanging on the wall",
+        "desc": "framed picture on the wall showing a person in a suit",
         "action": "static",
-        "position": "background right"
+        "position": "center-right/background"
+      },
+      {
+        "desc": "red and pink bag hanging on the wall",
+        "action": "static",
+        "position": "left/background"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "The person in the foreground is moving their head downwards and to the left.",
+        "fact": "A person with short light brown hair moves quickly in the foreground, causing motion blur.",
         "confidence": 1.0
       },
       {
-        "fact": "A shelf with figurines is mounted high on the wall.",
+        "fact": "The person is wearing a black t-shirt and a dark necklace.",
         "confidence": 1.0
       },
       {
-        "fact": "Stuffed animals are arranged on a wooden unit behind the bed.",
+        "fact": "A wooden shelf with white brackets is mounted high on the wall, holding various small figurines.",
         "confidence": 1.0
       },
       {
-        "fact": "Blue curtains cover the window on the right side of the room.",
+        "fact": "A wooden shelving unit filled with stuffed animals is positioned against the back wall.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A bed with a dark blue cover and a yellow and blue striped blanket is in the center of the room.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "Bright blue curtains cover a window on the right side of the room.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A framed picture of a person in a suit hangs on the wall.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A red and pink bag hangs on the wall to the left.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The person is in the foreground on the left side of the frame. The bed is to the right of the person and in front of the wooden shelving unit. The wooden shelving unit is below the high-mounted shelf. The blue curtains are to the right of the bed and the shelving unit.",
+    "spatial": "The person is in the foreground, in front of the bed. The bed is below the wooden shelving unit filled with stuffed animals. The high wooden shelf is above the shelving unit. The blue curtains are to the right of the bed and the shelving unit. The framed picture is on the wall to the right of the shelving unit and to the left of the curtains. The red and pink bag is on the wall to the left of the shelving unit.",
     "parse_success": true,
-    "chunk_idx": 21,
-    "video_id": "GfSeRaJuFTs",
-    "_rescued": "parse"
+    "chunk_idx": 13,
+    "video_id": "GfSeRaJuFTs"
   },
   {
     "time": [
-      44,
-      46
+      14,
+      15
     ],
     "visible_entities": [
       {
-        "desc": "person with short brown hair, wearing a black long-sleeved shirt with a large yellow and teal graphic print on the chest, and a silver chain necklace",
-        "action": "putting on a cap",
-        "position": "foreground/center"
+        "desc": "person with short brown hair, wearing a black long-sleeved shirt with a colorful geometric graphic print (yellow, pink, blue) and a silver chain necklace",
+        "action": "putting on a hat",
+        "position": "center/foreground"
       },
       {
-        "desc": "black baseball cap with a red and black patterned fabric top and a purple brim, featuring a yellow and white logo on the front",
+        "desc": "baseball cap with a red knitted crown, a black front panel featuring a gold bird logo, and a purple brim",
         "action": "being placed on head",
-        "position": "center"
-      },
-      {
-        "desc": "white wall shelf with small figurines and string lights hanging below",
-        "action": "static",
-        "position": "background/top"
-      },
-      {
-        "desc": "wooden shelving unit filled with stuffed animals and toys",
-        "action": "static",
-        "position": "background/center"
-      },
-      {
-        "desc": "blue curtains covering a window",
-        "action": "static",
-        "position": "background/right"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "The person is putting on a black baseball cap with a red top and purple brim.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The person is wearing a black long-sleeved shirt with a yellow and teal graphic.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The person is wearing a silver chain necklace.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "A shelf with figurines is mounted on the wall above a wooden shelving unit.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [],
-    "spatial": "The person is in the foreground, centered in the frame. The person is holding the cap with both hands, positioning it on their head. The wooden shelving unit is behind the person. The white wall shelf is above the wooden shelving unit. The blue curtains are to the right of the person and the shelving unit.",
-    "parse_success": true,
-    "chunk_idx": 22,
-    "video_id": "GfSeRaJuFTs",
-    "_rescued": "parse"
-  },
-  {
-    "time": [
-      46,
-      48
-    ],
-    "visible_entities": [
-      {
-        "desc": "person wearing a black long-sleeved shirt with a yellow and pink graphic design, a silver chain necklace, and a multi-colored baseball cap (red crown, black front panel, purple brim)",
-        "action": "adjusting cap and moving hand towards camera",
-        "position": "foreground"
+        "position": "center/foreground"
       },
       {
         "desc": "white wall shelf with various small figurines and items",
         "action": "static",
-        "position": "background"
+        "position": "background/top"
       },
       {
-        "desc": "blue curtains covering a window",
+        "desc": "blue curtains",
         "action": "static",
         "position": "right"
       },
       {
         "desc": "framed picture on the wall",
         "action": "static",
-        "position": "background"
+        "position": "background/right"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "The person adjusts the cap on their head with their right hand.",
+        "fact": "The person is using both hands to place a red and black baseball cap onto their head.",
         "confidence": 1.0
       },
       {
-        "fact": "The person moves their hand towards the camera, causing a blur in the foreground.",
+        "fact": "The person is wearing a black long-sleeved shirt with a colorful graphic design.",
         "confidence": 1.0
       },
       {
@@ -1379,32 +864,31 @@
       }
     ],
     "ocr": [],
-    "spatial": "The person is in the foreground, positioned to the left of the blue curtains. The white shelf is on the wall above the person. The framed picture is on the wall to the right of the person and to the left of the curtains.",
+    "spatial": "The person is in the center of the frame, positioned in front of a white wall. The white shelf is above the person's head. The blue curtains are to the right of the person. The framed picture is on the wall behind the person, to their right.",
     "parse_success": true,
-    "chunk_idx": 23,
-    "video_id": "GfSeRaJuFTs",
-    "_rescued": "parse"
+    "chunk_idx": 14,
+    "video_id": "GfSeRaJuFTs"
   },
   {
     "time": [
-      48,
-      50
+      15,
+      16
     ],
     "visible_entities": [
       {
-        "desc": "person with short dark hair, wearing a black long-sleeved shirt with a colorful abstract graphic (pink, blue, yellow), a silver chain necklace, and a stack of three baseball caps (grey on top, red in middle, dark blue with purple brim on bottom)",
-        "action": "adjusting a stack of hats on their head",
+        "desc": "person with short dark hair, wearing a black long-sleeved shirt with a colorful geometric graphic print, a dark chain necklace, and a baseball cap",
+        "action": "adjusting cap with both hands",
         "position": "center"
       },
       {
-        "desc": "blue sheer curtains",
-        "action": "static",
-        "position": "right"
-      },
-      {
-        "desc": "white wall shelf with various small figurines and items",
+        "desc": "white wall shelf with various small figurines and objects",
         "action": "static",
         "position": "top"
+      },
+      {
+        "desc": "blue curtains covering a window",
+        "action": "static",
+        "position": "right"
       },
       {
         "desc": "framed picture on the wall",
@@ -1414,15 +898,455 @@
     ],
     "atomic_facts": [
       {
-        "fact": "The person is holding and adjusting a stack of three baseball caps on their head.",
+        "fact": "person adjusts their baseball cap with both hands",
         "confidence": 1.0
       },
       {
-        "fact": "The person is wearing a black shirt with a colorful graphic design.",
+        "fact": "the cap changes from blue to red between frames",
         "confidence": 1.0
       },
       {
-        "fact": "Blue curtains are hanging on the right side of the room.",
+        "fact": "person is wearing a black shirt with a colorful graphic",
+        "confidence": 1.0
+      },
+      {
+        "fact": "shelf is mounted on the wall above the person",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The person is centered in the frame, in front of the white wall. The shelf with figurines is above the person. The blue curtains are to the right of the person. The framed picture is on the wall behind and to the right of the person.",
+    "parse_success": true,
+    "chunk_idx": 15,
+    "video_id": "GfSeRaJuFTs"
+  },
+  {
+    "time": [
+      16,
+      17
+    ],
+    "visible_entities": [
+      {
+        "desc": "person with short dark hair, wearing a red and blue baseball cap with a yellow logo, a dark grey t-shirt with a colorful geometric graphic, and a silver chain necklace",
+        "action": "talking",
+        "position": "center"
+      },
+      {
+        "desc": "wooden shelf with various small figurines and string lights",
+        "action": "static",
+        "position": "top"
+      },
+      {
+        "desc": "blue curtains",
+        "action": "static",
+        "position": "right"
+      },
+      {
+        "desc": "framed picture on the wall",
+        "action": "static",
+        "position": "background"
+      },
+      {
+        "desc": "bed with blue and yellow bedding",
+        "action": "static",
+        "position": "background"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "person is talking",
+        "confidence": 1.0
+      },
+      {
+        "fact": "person is wearing a red and blue baseball cap",
+        "confidence": 1.0
+      },
+      {
+        "fact": "person is wearing a dark grey t-shirt with a colorful graphic",
+        "confidence": 1.0
+      },
+      {
+        "fact": "wooden shelf is above the person",
+        "confidence": 1.0
+      },
+      {
+        "fact": "blue curtains are to the right of the person",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The person is in the center of the frame. The wooden shelf with figurines is above the person. The blue curtains are to the right of the person. The framed picture is on the wall behind the person.",
+    "parse_success": true,
+    "chunk_idx": 16,
+    "video_id": "GfSeRaJuFTs"
+  },
+  {
+    "time": [
+      17,
+      18
+    ],
+    "visible_entities": [
+      {
+        "desc": "person wearing a red and black baseball cap with a purple brim, a black t-shirt with a yellow and pink graphic design, and a thick silver chain necklace",
+        "action": "turning head to the left",
+        "position": "center/foreground"
+      },
+      {
+        "desc": "wooden shelf with white brackets holding various small figurines and objects",
+        "action": "static",
+        "position": "top/background"
+      },
+      {
+        "desc": "blue curtains covering a window",
+        "action": "static",
+        "position": "right"
+      },
+      {
+        "desc": "bed with blue and yellow bedding",
+        "action": "static",
+        "position": "right/background"
+      },
+      {
+        "desc": "framed picture on the wall",
+        "action": "static",
+        "position": "right/background"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "person turns head to the left",
+        "confidence": 1.0
+      },
+      {
+        "fact": "person is wearing a red and black baseball cap",
+        "confidence": 1.0
+      },
+      {
+        "fact": "person is wearing a silver chain necklace",
+        "confidence": 1.0
+      },
+      {
+        "fact": "shelf is mounted on the wall above the person",
+        "confidence": 1.0
+      },
+      {
+        "fact": "blue curtains are to the right of the person",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The person is in the center foreground, turning their head to the left. The wooden shelf with figurines is above and behind the person. The blue curtains and the bed are to the right of the person. The framed picture is on the wall to the right of the person.",
+    "parse_success": true,
+    "chunk_idx": 17,
+    "video_id": "GfSeRaJuFTs"
+  },
+  {
+    "time": [
+      18,
+      19
+    ],
+    "visible_entities": [
+      {
+        "desc": "young person with short blonde hair, wearing a dark grey long-sleeved shirt with a yellow graphic and a silver chain necklace",
+        "action": "moving head and upper body",
+        "position": "foreground left"
+      },
+      {
+        "desc": "white shelf with various small figurines and objects",
+        "action": "static",
+        "position": "top background"
+      },
+      {
+        "desc": "blue curtains covering a window",
+        "action": "static",
+        "position": "right background"
+      },
+      {
+        "desc": "bed with blue and yellow bedding",
+        "action": "static",
+        "position": "bottom right"
+      },
+      {
+        "desc": "wooden shelving unit with stuffed toys",
+        "action": "static",
+        "position": "center background"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A young person with blonde hair moves their head and upper body in the foreground.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A white shelf with figurines is mounted on the wall above the bed.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "Blue curtains are hanging next to a window on the right side of the room.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The young person is in the foreground on the left side of the frame. The white shelf with figurines is above the wooden shelving unit in the background. The blue curtains are to the right of the bed.",
+    "parse_success": true,
+    "chunk_idx": 18,
+    "video_id": "GfSeRaJuFTs"
+  },
+  {
+    "time": [
+      19,
+      20
+    ],
+    "visible_entities": [
+      {
+        "desc": "young person with short light brown hair, wearing a dark blue sweatshirt with a colorful geometric graphic (yellow, pink, blue), and a silver chain necklace",
+        "action": "putting on a red and black baseball cap",
+        "position": "center foreground"
+      },
+      {
+        "desc": "red and black baseball cap",
+        "action": "being placed on head",
+        "position": "center foreground"
+      },
+      {
+        "desc": "wooden shelf with various small figurines and items",
+        "action": "static",
+        "position": "top background"
+      },
+      {
+        "desc": "blue curtains",
+        "action": "static",
+        "position": "right background"
+      },
+      {
+        "desc": "poster on the wall",
+        "action": "static",
+        "position": "background"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The person puts a red and black baseball cap on their head.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The person is wearing a silver chain necklace.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The sweatshirt has a colorful geometric graphic on the front.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The person is in the center foreground. The wooden shelf is above the person. The blue curtains are to the right of the person. The poster is on the wall behind the person.",
+    "parse_success": true,
+    "chunk_idx": 19,
+    "video_id": "GfSeRaJuFTs"
+  },
+  {
+    "time": [
+      20,
+      21
+    ],
+    "visible_entities": [
+      {
+        "desc": "young person with short blonde hair, wearing a red baseball cap backwards, a dark grey t-shirt with a colorful geometric graphic (pink, yellow, blue lines), and a silver chain necklace",
+        "action": "looking at the camera",
+        "position": "center"
+      },
+      {
+        "desc": "blue curtains",
+        "action": "static",
+        "position": "right"
+      },
+      {
+        "desc": "wooden shelf with various small figurines and objects",
+        "action": "static",
+        "position": "top"
+      },
+      {
+        "desc": "dark blue sofa or chair back",
+        "action": "static",
+        "position": "foreground"
+      },
+      {
+        "desc": "framed picture on the wall",
+        "action": "static",
+        "position": "background"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The person is sitting and looking directly at the camera.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The person is wearing a red baseball cap backwards.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A shelf with figurines is mounted on the wall above the person.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "Blue curtains are hanging to the right of the person.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The person is in the center of the frame, sitting in front of a dark blue sofa. The wooden shelf is above the person on the wall. The blue curtains are to the right of the person. The framed picture is on the wall behind the person.",
+    "parse_success": true,
+    "chunk_idx": 20,
+    "video_id": "GfSeRaJuFTs"
+  },
+  {
+    "time": [
+      21,
+      22
+    ],
+    "visible_entities": [
+      {
+        "desc": "person with short blonde hair, wearing a dark grey t-shirt with a yellow graphic design and a dark beaded necklace",
+        "action": "moving head down and to the left",
+        "position": "foreground left"
+      },
+      {
+        "desc": "wooden shelf, light brown, holding various small figurines and trophies",
+        "action": "static",
+        "position": "background top"
+      },
+      {
+        "desc": "blue curtains, long, covering a window",
+        "action": "static",
+        "position": "right"
+      },
+      {
+        "desc": "bed with a dark blue duvet cover featuring yellow stripes",
+        "action": "static",
+        "position": "center"
+      },
+      {
+        "desc": "wooden shelving unit, reddish-brown, filled with stuffed animals",
+        "action": "static",
+        "position": "background center"
+      },
+      {
+        "desc": "framed picture, rectangular, hanging on the wall",
+        "action": "static",
+        "position": "background right"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "person moves head down and to the left",
+        "confidence": 1.0
+      },
+      {
+        "fact": "blue curtains are hanging on the right side of the room",
+        "confidence": 1.0
+      },
+      {
+        "fact": "a shelf with figurines is mounted high on the wall",
+        "confidence": 1.0
+      },
+      {
+        "fact": "stuffed animals are arranged on a wooden unit behind the bed",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The person is in the foreground on the left, positioned in front of the bed. The bed is in the center of the room, below the high-mounted shelf and in front of the wooden unit filled with stuffed animals. The blue curtains are to the right of the bed and the framed picture.",
+    "parse_success": true,
+    "chunk_idx": 21,
+    "video_id": "GfSeRaJuFTs"
+  },
+  {
+    "time": [
+      22,
+      23
+    ],
+    "visible_entities": [
+      {
+        "desc": "person with short brown hair, wearing a black long-sleeved shirt with a colorful graphic print and a silver chain necklace",
+        "action": "putting on a hat",
+        "position": "foreground"
+      },
+      {
+        "desc": "black baseball cap with a red top panel and a yellow logo on the front",
+        "action": "being placed on head",
+        "position": "center"
+      },
+      {
+        "desc": "white shelf with various small figurines and items",
+        "action": "static",
+        "position": "top"
+      },
+      {
+        "desc": "wooden shelving unit with stuffed animals and toys",
+        "action": "static",
+        "position": "background"
+      },
+      {
+        "desc": "blue curtains",
+        "action": "static",
+        "position": "right"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The person is putting a black and red baseball cap on their head.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The person is wearing a silver chain necklace.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A shelf with figurines is located above the wooden shelving unit.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The person is in the foreground, positioned in front of a wooden shelving unit. The white shelf with figurines is above the wooden shelving unit. The blue curtains are to the right of the person.",
+    "parse_success": true,
+    "chunk_idx": 22,
+    "video_id": "GfSeRaJuFTs"
+  },
+  {
+    "time": [
+      23,
+      24
+    ],
+    "visible_entities": [
+      {
+        "desc": "person wearing a red and black baseball cap with a purple brim, a black long-sleeved shirt with a yellow and pink graphic design, and a dark necklace",
+        "action": "adjusting cap and moving hand towards camera",
+        "position": "center/foreground"
+      },
+      {
+        "desc": "white wall-mounted shelf holding various small figurines and bottles",
+        "action": "static",
+        "position": "top/background"
+      },
+      {
+        "desc": "blue curtains covering a window",
+        "action": "static",
+        "position": "right"
+      },
+      {
+        "desc": "framed picture hanging on the wall",
+        "action": "static",
+        "position": "background"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The person is adjusting the red and black cap on their head.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The person moves their hand towards the camera, creating a blur in the foreground.",
         "confidence": 1.0
       },
       {
@@ -1431,30 +1355,80 @@
       }
     ],
     "ocr": [],
-    "spatial": "The person is in the center of the frame, positioned in front of the white wall and the shelf. The blue curtains are to the right of the person. The framed picture is on the wall behind the person.",
+    "spatial": "The person is in the foreground, positioned in front of the white wall. The shelf is above the person's head. The blue curtains are to the right of the person. The framed picture is on the wall behind the person.",
     "parse_success": true,
-    "chunk_idx": 24,
-    "video_id": "GfSeRaJuFTs",
-    "_rescued": "parse"
+    "chunk_idx": 23,
+    "video_id": "GfSeRaJuFTs"
   },
   {
     "time": [
-      50,
-      52
+      24,
+      25
     ],
     "visible_entities": [
       {
-        "desc": "young person with short dark hair, wearing a black long-sleeved shirt with a colorful geometric graphic (pink, blue, yellow, black), a silver chain necklace, and a stack of three baseball caps (maroon on top, black with a logo in the middle, purple brim at the bottom)",
-        "action": "adjusting the stack of caps on their head",
+        "desc": "person with short dark hair, wearing a black long-sleeved sweatshirt with a large colorful graphic (pink, blue, yellow shapes), a silver chain necklace, and a stack of three baseball caps (grey, red, and dark blue with purple brim)",
+        "action": "adjusting the stack of hats on their head",
         "position": "center"
       },
       {
-        "desc": "white wall shelf",
+        "desc": "white shelf with various small figurines and objects",
         "action": "static",
         "position": "background"
       },
       {
         "desc": "blue curtains",
+        "action": "static",
+        "position": "right"
+      },
+      {
+        "desc": "blurry reddish object",
+        "action": "moving towards camera",
+        "position": "foreground"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "person is adjusting a stack of three baseball caps on their head",
+        "confidence": 1.0
+      },
+      {
+        "fact": "a blurry reddish object moves into the foreground",
+        "confidence": 1.0
+      },
+      {
+        "fact": "the person is wearing a black sweatshirt with a colorful graphic design",
+        "confidence": 1.0
+      },
+      {
+        "fact": "the stack of hats includes a grey cap, a red cap, and a dark blue cap with a purple brim",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The person is in the center of the frame, in front of a white shelf. The blue curtains are to the right of the person. A blurry reddish object is in the foreground, in front of the person.",
+    "parse_success": true,
+    "chunk_idx": 24,
+    "video_id": "GfSeRaJuFTs"
+  },
+  {
+    "time": [
+      25,
+      26
+    ],
+    "visible_entities": [
+      {
+        "desc": "person with short dark hair, wearing a black long-sleeved shirt with a colorful geometric graphic (pink, blue, yellow, black), a silver chain necklace, and a stack of three baseball caps (top maroon, middle red, bottom black with a purple brim)",
+        "action": "adjusting the stack of caps on their head",
+        "position": "center"
+      },
+      {
+        "desc": "white wall-mounted shelf with various small objects",
+        "action": "static",
+        "position": "background"
+      },
+      {
+        "desc": "blue curtains covering a window",
         "action": "static",
         "position": "right"
       },
@@ -1470,100 +1444,33 @@
         "confidence": 1.0
       },
       {
-        "fact": "The person is wearing a black shirt with a colorful graphic design.",
+        "fact": "The person is wearing a black shirt with a colorful geometric design.",
         "confidence": 1.0
       },
       {
-        "fact": "A blue and yellow jacket is draped over a surface in the foreground.",
+        "fact": "The bottom cap in the stack has a purple brim and a logo on the front.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The person is in the center of the frame, standing in front of a white wall shelf. To the right of the person are blue curtains covering a window. A blue and yellow jacket is located in the bottom right corner, in front of the curtains.",
+    "spatial": "The person is in the center of the frame, in front of a white wall. A shelf with objects is above the person's head. Blue curtains are to the right of the person. A blue and yellow jacket is below and to the right of the person.",
     "parse_success": true,
     "chunk_idx": 25,
-    "video_id": "GfSeRaJuFTs",
-    "_rescued": "parse"
+    "video_id": "GfSeRaJuFTs"
   },
   {
     "time": [
-      52,
-      54
+      26,
+      27
     ],
     "visible_entities": [
       {
-        "desc": "young person with short dark hair, wearing a black t-shirt with a large colorful geometric logo (pink, yellow, blue), a dark beaded necklace, and a stack of three baseball caps (top maroon, middle black with red design, bottom black with purple brim)",
-        "action": "smiling and gesturing with hands",
-        "position": "center/foreground"
+        "desc": "person with short dark hair, wearing a black t-shirt with a large colorful geometric logo (pink, blue, yellow), a dark beaded necklace, and a stack of three hats (bottom black cap with purple brim, middle black cap, top red cap)",
+        "action": "looking at the camera and moving hands",
+        "position": "center"
       },
       {
         "desc": "blue sheer curtains",
-        "action": "static",
-        "position": "right"
-      },
-      {
-        "desc": "white wall shelf with various small items",
-        "action": "static",
-        "position": "top/background"
-      },
-      {
-        "desc": "framed picture on the wall",
-        "action": "static",
-        "position": "right/background"
-      },
-      {
-        "desc": "wooden furniture with bottles and items",
-        "action": "static",
-        "position": "left/background"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "The person is wearing a stack of three baseball caps.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The person smiles at the camera.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The person raises their hands in a gesturing motion.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "Blue curtains hang on the right side of the room.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "A shelf with small objects is mounted high on the wall.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [],
-    "spatial": "The person is in the center foreground, positioned in front of the wooden furniture on the left and the blue curtains on the right. The white shelf is above the person's head in the background. The framed picture is on the wall to the right of the person.",
-    "parse_success": true,
-    "chunk_idx": 26,
-    "video_id": "GfSeRaJuFTs",
-    "_rescued": "parse"
-  },
-  {
-    "time": [
-      54,
-      56
-    ],
-    "visible_entities": [
-      {
-        "desc": "person wearing a black long-sleeved shirt with a colorful geometric graphic print, a silver chain necklace, and a black baseball cap with a purple brim and a bird logo",
-        "action": "adjusting a stack of hats on their head then bending forward out of frame",
-        "position": "center"
-      },
-      {
-        "desc": "stack of hats including a black cap, a red cap, and a maroon cap",
-        "action": "being held and adjusted by the person",
-        "position": "center"
-      },
-      {
-        "desc": "blue curtains",
         "action": "static",
         "position": "right"
       },
@@ -1573,14 +1480,70 @@
         "position": "top"
       },
       {
-        "desc": "wooden shelf unit with stuffed animals and toys",
+        "desc": "framed picture on the wall",
         "action": "static",
         "position": "background"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "The person uses both hands to adjust a stack of hats on their head.",
+        "fact": "The person is looking directly at the camera.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The person moves their hands slightly in front of their chest.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The person is wearing a stack of three hats on their head.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The t-shirt features a large graphic design with pink, blue, and yellow colors.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The person is in the center of the frame, in front of a white wall. The blue curtains are to the right of the person. A shelf with objects is above the person's head. A framed picture is on the wall behind and to the right of the person.",
+    "parse_success": true,
+    "chunk_idx": 26,
+    "video_id": "GfSeRaJuFTs"
+  },
+  {
+    "time": [
+      27,
+      28
+    ],
+    "visible_entities": [
+      {
+        "desc": "person with short hair, wearing a black long-sleeved shirt with a colorful geometric graphic, a silver chain necklace, and a black baseball cap with a purple brim and a yellow bird logo",
+        "action": "adjusting a stack of hats on their head then bending down out of frame",
+        "position": "center/foreground"
+      },
+      {
+        "desc": "stack of hats including a black cap with a purple brim, a red cap, and a maroon cap",
+        "action": "being held on the person's head",
+        "position": "center/foreground"
+      },
+      {
+        "desc": "wooden shelf with stuffed animals and toys",
+        "action": "static",
+        "position": "background"
+      },
+      {
+        "desc": "blue curtains",
+        "action": "static",
+        "position": "right"
+      },
+      {
+        "desc": "white wall shelf with small figurines",
+        "action": "static",
+        "position": "top/background"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The person holds a stack of three hats on their head with both hands.",
         "confidence": 1.0
       },
       {
@@ -1588,249 +1551,92 @@
         "confidence": 1.0
       },
       {
-        "fact": "The black cap features a purple brim and a bird logo.",
+        "fact": "The black cap features a yellow bird logo on the front.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The person is in the center foreground, positioned in front of the wooden shelf unit. The blue curtains are to the right of the person. The white wall shelf is above the wooden shelf unit.",
+    "spatial": "The person is in the foreground, positioned in front of a wooden shelf filled with toys. The blue curtains are to the right of the person and the shelf. A white shelf with figurines is mounted on the wall above the wooden shelf.",
     "parse_success": true,
     "chunk_idx": 27,
-    "video_id": "GfSeRaJuFTs",
-    "_rescued": "parse"
+    "video_id": "GfSeRaJuFTs"
   },
   {
     "time": [
-      56,
-      58
+      28,
+      29
     ],
     "visible_entities": [
       {
-        "desc": "young person with short blonde hair, wearing a dark grey long-sleeved shirt with a colorful graphic print on the chest and a patterned collar",
-        "action": "moving head and speaking",
-        "position": "center foreground"
+        "desc": "person with short blonde hair, wearing a dark grey long-sleeved shirt with a colorful geometric graphic on the chest and a patterned collar",
+        "action": "sitting and facing the camera",
+        "position": "center/foreground"
       },
       {
-        "desc": "white shelf with various small figurines and objects",
+        "desc": "white wall-mounted shelf with various small figurines and objects",
         "action": "static",
-        "position": "top background"
+        "position": "top/background"
       },
       {
-        "desc": "blue curtains covering a window",
+        "desc": "wooden shelving unit with stuffed animals and toys",
         "action": "static",
-        "position": "right background"
+        "position": "left/background"
       },
       {
-        "desc": "wooden shelving unit with stuffed animals",
+        "desc": "bright blue curtains covering a window",
         "action": "static",
-        "position": "background"
+        "position": "right/background"
       },
       {
-        "desc": "framed picture on the wall",
+        "desc": "framed picture hanging on the wall",
         "action": "static",
-        "position": "background right"
+        "position": "right/background"
+      },
+      {
+        "desc": "dark blue fabric or clothing item draped over a surface",
+        "action": "static",
+        "position": "bottom/foreground"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "The person in the foreground is moving their head and mouth, appearing to speak.",
+        "fact": "The person is sitting in the center of the frame, facing the camera.",
         "confidence": 1.0
       },
       {
-        "fact": "A white shelf is mounted high on the wall behind the person.",
+        "fact": "A white shelf with figurines is mounted high on the wall in the background.",
         "confidence": 1.0
       },
       {
-        "fact": "Blue curtains hang vertically on the right side of the frame.",
+        "fact": "Blue curtains are visible on the right side of the room.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A wooden shelving unit with toys is visible on the left side of the room.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The person is in the center foreground, positioned in front of a wooden shelving unit and a wall with a framed picture. The white shelf is located above the person's head in the background. The blue curtains are to the right of the person and the shelving unit.",
+    "spatial": "The person is in the foreground, centered in the frame. The white shelf is above the person's head in the background. The wooden shelving unit is to the left of the person. The blue curtains are to the right of the person. The framed picture is on the wall behind the person and to the right.",
     "parse_success": true,
     "chunk_idx": 28,
-    "video_id": "GfSeRaJuFTs",
-    "_rescued": "parse"
+    "video_id": "GfSeRaJuFTs"
   },
   {
     "time": [
-      58,
-      60
+      29,
+      30
     ],
     "visible_entities": [
       {
-        "desc": "boy with short light brown hair, wearing a black long-sleeved shirt with a colorful abstract geometric graphic print in pink, blue, and yellow, and a silver chain necklace",
-        "action": "adjusting a Santa hat",
+        "desc": "young person with short light brown hair, wearing a black long-sleeved sweatshirt with a colorful geometric graphic print (pink, blue, yellow) and a silver chain necklace",
+        "action": "adjusting a red and white Santa hat",
         "position": "center"
       },
       {
-        "desc": "red Santa hat with white faux-fur trim and white pom-pom",
+        "desc": "red Santa hat with white fur trim",
         "action": "being placed on head",
-        "position": "top/center"
-      },
-      {
-        "desc": "white wall shelf with various small figurines and objects",
-        "action": "static",
-        "position": "background/top"
-      },
-      {
-        "desc": "blue curtains covering a window",
-        "action": "static",
-        "position": "right"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "The boy uses both hands to pull the Santa hat down onto his head.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The boy is wearing a silver chain necklace.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The boy is wearing a black shirt with a colorful graphic design.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "There are figurines arranged on a shelf in the background.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [],
-    "spatial": "The boy is in the center of the frame, positioned in front of a white wall shelf. The blue curtains are to the right of the boy. The Santa hat is on top of the boy's head.",
-    "parse_success": true,
-    "chunk_idx": 29,
-    "video_id": "GfSeRaJuFTs",
-    "_rescued": "parse"
-  },
-  {
-    "time": [
-      60,
-      62
-    ],
-    "visible_entities": [
-      {
-        "desc": "person with short dark hair, wearing a dark blue long-sleeved shirt with a colorful abstract geometric graphic (pink, blue, yellow), a dark necklace, and a red Santa hat with white trim and black text",
-        "action": "adjusting the Santa hat on their head",
-        "position": "center"
-      },
-      {
-        "desc": "red Santa hat with white trim and black text",
-        "action": "being adjusted",
-        "position": "top"
-      },
-      {
-        "desc": "wooden shelf with various small figurines and items",
-        "action": "static",
-        "position": "background"
-      },
-      {
-        "desc": "blue curtains covering a window",
-        "action": "static",
-        "position": "right"
-      },
-      {
-        "desc": "framed picture on the wall",
-        "action": "static",
-        "position": "background"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "The person is adjusting a Santa hat on their head.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The Santa hat has text on the white trim.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The person is wearing a dark blue shirt with a colorful graphic.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [
-      "Peace Tank"
-    ],
-    "spatial": "The person is in the center of the frame. The wooden shelf is above and behind the person. The blue curtains are to the right of the person. The framed picture is on the wall behind the person.",
-    "parse_success": true,
-    "chunk_idx": 30,
-    "video_id": "GfSeRaJuFTs",
-    "_rescued": "parse"
-  },
-  {
-    "time": [
-      62,
-      64
-    ],
-    "visible_entities": [
-      {
-        "desc": "person with short brown hair, wearing a dark grey long-sleeved shirt with a colorful graphic print on the chest",
-        "action": "putting on a red and white Santa hat",
-        "position": "center"
-      },
-      {
-        "desc": "red and white Santa hat with a white pom-pom",
-        "action": "being placed on the person's head",
-        "position": "center"
-      },
-      {
-        "desc": "wooden shelf with various small figurines and objects",
-        "action": "static",
-        "position": "background"
-      },
-      {
-        "desc": "blue curtains covering a window",
-        "action": "static",
-        "position": "right"
-      },
-      {
-        "desc": "dark blue sofa or couch",
-        "action": "static",
-        "position": "foreground"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "A person is putting on a red and white Santa hat.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The person is wearing a dark grey long-sleeved shirt with a colorful graphic.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "A wooden shelf with figurines is mounted on the wall in the background.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "Blue curtains are hanging next to a window on the right side of the room.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [],
-    "spatial": "The person is in the center of the frame, in front of the wooden shelf. The blue curtains are to the right of the person and the shelf. The dark blue sofa is in the foreground, below the person.",
-    "parse_success": true,
-    "chunk_idx": 31,
-    "video_id": "GfSeRaJuFTs",
-    "_rescued": "parse"
-  },
-  {
-    "time": [
-      64,
-      66
-    ],
-    "visible_entities": [
-      {
-        "desc": "boy with short light brown hair, wearing a dark grey long-sleeved shirt with a colorful geometric graphic on the chest",
-        "action": "placing a pair of grey furry animal ears on top of his head",
-        "position": "center"
-      },
-      {
-        "desc": "grey furry animal ears headband",
-        "action": "being adjusted on the boy's head",
-        "position": "top center"
+        "position": "center/top"
       },
       {
         "desc": "blue curtains",
@@ -1840,315 +1646,105 @@
       {
         "desc": "white shelf with various small items",
         "action": "static",
+        "position": "background/top"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The person is adjusting a red and white Santa hat on their head with both hands.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The person is wearing a black sweatshirt with a colorful graphic design.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "Blue curtains are visible to the right of the person.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The person is in the center of the frame, positioned in front of a white shelf and a wooden cabinet. The blue curtains are to the right of the person. The Santa hat is on top of the person's head.",
+    "parse_success": true,
+    "chunk_idx": 29,
+    "video_id": "GfSeRaJuFTs"
+  },
+  {
+    "time": [
+      30,
+      31
+    ],
+    "visible_entities": [
+      {
+        "desc": "person with short dark hair, wearing a dark blue long-sleeved shirt with a colorful geometric graphic, a silver chain necklace, and a red and white Santa hat with black text",
+        "action": "adjusting hat then lowering hand",
+        "position": "center"
+      },
+      {
+        "desc": "red and white Santa hat with black text on the white band",
+        "action": "being adjusted",
+        "position": "top center"
+      },
+      {
+        "desc": "blue curtains",
+        "action": "static",
+        "position": "right"
+      },
+      {
+        "desc": "wooden shelf with various small items",
+        "action": "static",
         "position": "top background"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "The boy raises both hands to place a headband with grey furry ears onto his head.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The boy adjusts the position of the ears on top of his head.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The boy is wearing a dark grey shirt with a multi-colored graphic design.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [],
-    "spatial": "The boy is in the center of the frame, with blue curtains to his right. A white shelf filled with items is located above and behind him.",
-    "parse_success": true,
-    "chunk_idx": 32,
-    "video_id": "GfSeRaJuFTs",
-    "_rescued": "parse"
-  },
-  {
-    "time": [
-      66,
-      68
-    ],
-    "visible_entities": [
-      {
-        "desc": "young person with short blonde hair, wearing a black long-sleeved shirt with a colorful geometric graphic (yellow, blue, pink), a silver chain necklace, and fuzzy brown animal ears on their head",
-        "action": "manipulating a pink rubber band with fingers",
-        "position": "center"
-      },
-      {
-        "desc": "blue sheer curtains",
-        "action": "static",
-        "position": "right"
-      },
-      {
-        "desc": "white wall shelf with various small items",
-        "action": "static",
-        "position": "top"
       },
       {
         "desc": "framed picture on the wall",
         "action": "static",
-        "position": "background"
+        "position": "background right"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "The person is holding a pink rubber band between their hands.",
+        "fact": "person raises their right hand to adjust the Santa hat on their head",
         "confidence": 1.0
       },
       {
-        "fact": "The person is wearing fuzzy animal ears on top of their head.",
+        "fact": "person lowers their hand from the hat",
         "confidence": 1.0
       },
       {
-        "fact": "The person is wearing a silver chain necklace.",
+        "fact": "the Santa hat has text that reads 'Peace Tank'",
+        "confidence": 1.0
+      },
+      {
+        "fact": "the person is wearing a silver chain necklace",
         "confidence": 1.0
       }
     ],
-    "ocr": [],
-    "spatial": "The person is centered in the frame, sitting in front of a white wall. The blue curtains are to the right of the person. The shelf is above the person's head.",
+    "ocr": [
+      "Peace Tank"
+    ],
+    "spatial": "The person is in the center of the frame, in front of a white wall. A shelf with items is above the person's head. Blue curtains are to the right of the person. A framed picture is on the wall behind and to the right of the person.",
     "parse_success": true,
-    "chunk_idx": 33,
-    "video_id": "GfSeRaJuFTs",
-    "_rescued": "parse"
+    "chunk_idx": 30,
+    "video_id": "GfSeRaJuFTs"
   },
   {
     "time": [
-      68,
-      70
+      31,
+      32
     ],
     "visible_entities": [
       {
-        "desc": "young person with short brown hair, wearing a black long-sleeved shirt with a colorful geometric pattern, and a furry animal-ear headband",
-        "action": "raising hands then adjusting headband",
-        "position": "center"
-      },
-      {
-        "desc": "wooden shelf with various small objects",
-        "action": "static",
-        "position": "top"
-      },
-      {
-        "desc": "blue curtains",
-        "action": "static",
-        "position": "right"
-      },
-      {
-        "desc": "framed picture on the wall",
-        "action": "static",
-        "position": "background"
-      },
-      {
-        "desc": "red and white bag",
-        "action": "static",
-        "position": "left"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "The person raises both hands with palms facing the camera.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The person uses both hands to adjust the furry animal-ear headband on their head.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "A wooden shelf is mounted on the wall above the person.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "Blue curtains cover a window to the right of the person.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [],
-    "spatial": "The person is in the center of the frame, in front of a white wall. A wooden shelf is above the person. To the right of the person are blue curtains. A framed picture is on the wall behind and to the right of the person. A red and white bag is on a surface to the left of the person.",
-    "parse_success": true,
-    "chunk_idx": 34,
-    "video_id": "GfSeRaJuFTs",
-    "_rescued": "parse"
-  },
-  {
-    "time": [
-      70,
-      72
-    ],
-    "visible_entities": [
-      {
-        "desc": "person with short blonde hair, wearing a black t-shirt with a colorful graphic print",
-        "action": "moving in the foreground",
-        "position": "foreground"
-      },
-      {
-        "desc": "wooden shelf with white brackets, holding various small figurines and bottles",
-        "action": "static",
-        "position": "top"
-      },
-      {
-        "desc": "wooden shelving unit with stuffed animals and boxes",
-        "action": "static",
-        "position": "background"
-      },
-      {
-        "desc": "blue curtains covering a window",
-        "action": "static",
-        "position": "right"
-      },
-      {
-        "desc": "framed picture on the wall",
-        "action": "static",
-        "position": "background"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "A person with short blonde hair moves in the foreground.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "A wooden shelf with white brackets is mounted high on the wall.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "Blue curtains hang on the right side of the room.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "A framed picture is visible on the wall behind the person.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [],
-    "spatial": "The person is in the foreground, in front of the wooden shelving unit and the framed picture. The wooden shelf is above the shelving unit. The blue curtains are to the right of the shelving unit.",
-    "parse_success": true,
-    "chunk_idx": 35,
-    "video_id": "GfSeRaJuFTs",
-    "_rescued": "parse"
-  },
-  {
-    "time": [
-      72,
-      74
-    ],
-    "visible_entities": [
-      {
-        "desc": "young person with short blonde hair, wearing a black long-sleeved sweatshirt with a colorful geometric logo (pink, blue, yellow) on the chest, and a dark necklace",
-        "action": "adjusting a green fuzzy hat",
-        "position": "center"
-      },
-      {
-        "desc": "bright green fuzzy hat with white spiky fringe trim",
-        "action": "being placed on head",
-        "position": "center"
-      },
-      {
-        "desc": "white wall shelf with various small items",
-        "action": "static",
-        "position": "background"
-      },
-      {
-        "desc": "blue curtains",
-        "action": "static",
-        "position": "right"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "The person is holding a green fuzzy hat with both hands.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The person is placing the green hat onto their head.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The person is wearing a black sweatshirt with a graphic design.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [],
-    "spatial": "The person is in the center of the frame, positioned in front of a white wall shelf. The blue curtains are to the right of the person. The green hat is on top of the person's head.",
-    "parse_success": true,
-    "chunk_idx": 36,
-    "video_id": "GfSeRaJuFTs",
-    "_rescued": "parse"
-  },
-  {
-    "time": [
-      74,
-      76
-    ],
-    "visible_entities": [
-      {
-        "desc": "person with short brown hair, wearing a fuzzy bright green hood, a dark blue sweatshirt with a colorful geometric logo (pink, blue, yellow), and a dark necklace",
-        "action": "smiling and looking at the camera",
+        "desc": "person with short dark hair, wearing a dark grey long-sleeved shirt with a colorful graphic print on the chest",
+        "action": "putting on a Santa hat",
         "position": "center/foreground"
       },
       {
-        "desc": "wooden shelf with various small objects and figurines",
-        "action": "static",
-        "position": "top/background"
+        "desc": "red Santa hat with white trim and a white pom-pom",
+        "action": "being placed on head",
+        "position": "center/top"
       },
       {
-        "desc": "blue curtains covering a window",
-        "action": "static",
-        "position": "right"
-      },
-      {
-        "desc": "dark wooden dresser with bottles and a bag",
-        "action": "static",
-        "position": "left/background"
-      },
-      {
-        "desc": "framed picture on the wall",
-        "action": "static",
-        "position": "background"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "person smiles at the camera",
-        "confidence": 1.0
-      },
-      {
-        "fact": "person wears a fuzzy green hood",
-        "confidence": 1.0
-      },
-      {
-        "fact": "shelf is mounted on the wall above the person",
-        "confidence": 1.0
-      },
-      {
-        "fact": "blue curtains are to the right of the person",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [],
-    "spatial": "The person is in the center foreground. The wooden shelf is above and behind the person. The blue curtains are to the right of the person. The dresser is to the left of the person.",
-    "parse_success": true,
-    "chunk_idx": 37,
-    "video_id": "GfSeRaJuFTs",
-    "_rescued": "parse"
-  },
-  {
-    "time": [
-      76,
-      78
-    ],
-    "visible_entities": [
-      {
-        "desc": "boy with short light brown hair, wearing a dark blue long-sleeved shirt with a colorful abstract graphic print in yellow, pink, and blue",
-        "action": "removing a green fuzzy hat",
-        "position": "center"
-      },
-      {
-        "desc": "bright green fuzzy hat with a shaggy texture",
-        "action": "being lifted off the head",
-        "position": "top/center"
-      },
-      {
-        "desc": "wooden shelf with various small figurines and items",
+        "desc": "wooden shelf with various small figurines and objects",
         "action": "static",
         "position": "background/top"
       },
@@ -2156,81 +1752,479 @@
         "desc": "blue curtains covering a window",
         "action": "static",
         "position": "right"
+      },
+      {
+        "desc": "wooden shelving unit with stuffed animals and other items",
+        "action": "static",
+        "position": "background/center"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "The boy lifts the green fuzzy hat off his head with his right hand.",
+        "fact": "The person is putting a red Santa hat on their head.",
         "confidence": 1.0
       },
       {
-        "fact": "The boy is wearing a dark blue shirt with a colorful graphic design.",
+        "fact": "The person is wearing a dark grey long-sleeved shirt with a graphic print.",
         "confidence": 1.0
       },
       {
-        "fact": "A shelf with small objects is mounted on the wall behind the boy.",
+        "fact": "A wooden shelf with figurines is mounted on the wall above a shelving unit.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "Blue curtains are hanging to the right of the person.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The boy is in the center of the frame, in front of a white wall. The wooden shelf is above and behind the boy. The blue curtains are to the right of the boy.",
+    "spatial": "The person is in the center of the frame, in front of a wooden shelving unit. The Santa hat is on the person's head. The wooden shelf with figurines is above the shelving unit. The blue curtains are to the right of the person and the shelving unit.",
     "parse_success": true,
-    "chunk_idx": 38,
-    "video_id": "GfSeRaJuFTs",
-    "_rescued": "parse"
+    "chunk_idx": 31,
+    "video_id": "GfSeRaJuFTs"
   },
   {
     "time": [
-      78,
-      80
+      32,
+      33
     ],
     "visible_entities": [
       {
-        "desc": "young person with short blonde hair, wearing a dark grey t-shirt with a colorful geometric graphic and a silver chain necklace",
-        "action": "talking and gesturing with hand",
+        "desc": "boy with short blonde hair, wearing a dark grey long-sleeved shirt with a colorful geometric graphic on the chest and a silver chain necklace",
+        "action": "adjusting a headband with grey furry animal ears",
         "position": "center/foreground"
       },
       {
-        "desc": "wooden shelf with various small figurines and decorations",
+        "desc": "grey furry animal ears on a headband",
+        "action": "being placed on the boy's head",
+        "position": "center/top"
+      },
+      {
+        "desc": "blue curtains",
+        "action": "static",
+        "position": "right"
+      },
+      {
+        "desc": "white shelf with various small items",
         "action": "static",
         "position": "top/background"
       },
       {
-        "desc": "blue curtain covering a window",
+        "desc": "picture on the wall",
         "action": "static",
         "position": "right/background"
-      },
-      {
-        "desc": "bed with white bedding and a wooden headboard",
-        "action": "static",
-        "position": "left/background"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "The person is talking to the camera.",
+        "fact": "The boy is placing a headband with grey furry ears on his head.",
         "confidence": 1.0
       },
       {
-        "fact": "The person is gesturing with their right hand.",
+        "fact": "The boy's hands are raised to the sides of his head.",
         "confidence": 1.0
       },
       {
-        "fact": "A shelf with figurines is mounted on the wall above the bed.",
+        "fact": "A shelf with small items is visible above the boy's head.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "Blue curtains are visible to the right of the boy.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The person is in the center of the frame, in front of the bed and the shelf. The blue curtain is to the right of the person. The shelf is above the bed.",
+    "spatial": "The boy is in the center of the frame, in front of a white wall. The shelf is above the boy. The blue curtains are to the right of the boy. The picture is on the wall behind and to the right of the boy.",
     "parse_success": true,
-    "chunk_idx": 39,
-    "video_id": "GfSeRaJuFTs",
-    "_rescued": "parse"
+    "chunk_idx": 32,
+    "video_id": "GfSeRaJuFTs"
   },
   {
     "time": [
-      80,
-      82
+      33,
+      34
+    ],
+    "visible_entities": [
+      {
+        "desc": "person with short blonde hair, wearing a dark grey t-shirt with a colorful geometric graphic, a silver chain necklace, and a fuzzy brown animal-ear headband",
+        "action": "manipulating a pink string",
+        "position": "center"
+      },
+      {
+        "desc": "pink string",
+        "action": "being held and moved",
+        "position": "foreground"
+      },
+      {
+        "desc": "blue curtains",
+        "action": "static",
+        "position": "right"
+      },
+      {
+        "desc": "white shelf with various small objects",
+        "action": "static",
+        "position": "top"
+      },
+      {
+        "desc": "framed picture on the wall",
+        "action": "static",
+        "position": "background"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The person is holding a pink string with both hands.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The person is wearing a fuzzy brown headband with ears.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The person is wearing a silver chain necklace.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The person is wearing a dark grey t-shirt with a colorful graphic.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The person is in the center of the frame, in front of a white wall. The blue curtains are to the right of the person. The white shelf is above the person. The framed picture is on the wall behind the person.",
+    "parse_success": true,
+    "chunk_idx": 33,
+    "video_id": "GfSeRaJuFTs"
+  },
+  {
+    "time": [
+      34,
+      35
+    ],
+    "visible_entities": [
+      {
+        "desc": "person with short light brown hair, wearing a black long-sleeved shirt with a colorful geometric pattern (pink, blue, yellow, green), wearing a fuzzy brown animal ear headband",
+        "action": "raising hands with palms facing forward, then adjusting the headband with both hands",
+        "position": "center"
+      },
+      {
+        "desc": "blue curtains",
+        "action": "static",
+        "position": "right"
+      },
+      {
+        "desc": "wooden shelf with various small objects",
+        "action": "static",
+        "position": "top"
+      },
+      {
+        "desc": "framed picture on the wall",
+        "action": "static",
+        "position": "background"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "person raises both hands with palms facing the camera",
+        "confidence": 1.0
+      },
+      {
+        "fact": "person places both hands on the fuzzy animal ear headband",
+        "confidence": 1.0
+      },
+      {
+        "fact": "person adjusts the position of the headband on their head",
+        "confidence": 1.0
+      },
+      {
+        "fact": "blue curtains are visible on the right side of the frame",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The person is in the center of the frame, in front of a wall with a shelf above their head. The blue curtains are to the right of the person. A framed picture is on the wall behind the person.",
+    "parse_success": true,
+    "chunk_idx": 34,
+    "video_id": "GfSeRaJuFTs"
+  },
+  {
+    "time": [
+      35,
+      36
+    ],
+    "visible_entities": [
+      {
+        "desc": "person with short blonde hair, wearing a black t-shirt with a colorful graphic print",
+        "action": "turning head and moving body",
+        "position": "foreground right"
+      },
+      {
+        "desc": "wooden shelf with white brackets, holding various small figurines and objects",
+        "action": "static",
+        "position": "top background"
+      },
+      {
+        "desc": "wooden shelving unit with stuffed animals and boxes",
+        "action": "static",
+        "position": "center background"
+      },
+      {
+        "desc": "blue curtains covering a window",
+        "action": "static",
+        "position": "right background"
+      },
+      {
+        "desc": "white bedding or blanket",
+        "action": "static",
+        "position": "center left"
+      },
+      {
+        "desc": "framed picture on the wall",
+        "action": "static",
+        "position": "center background"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "person turns head and moves body in the foreground",
+        "confidence": 1.0
+      },
+      {
+        "fact": "shelf is mounted on the wall above the wooden shelving unit",
+        "confidence": 1.0
+      },
+      {
+        "fact": "blue curtains are to the right of the person",
+        "confidence": 1.0
+      },
+      {
+        "fact": "white bedding is on a surface in front of the wooden shelving unit",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The person is in the foreground right, in front of the blue curtains. The wooden shelf is above the wooden shelving unit. The framed picture is on the wall to the right of the wooden shelving unit. The white bedding is to the left of the person and in front of the wooden shelving unit.",
+    "parse_success": true,
+    "chunk_idx": 35,
+    "video_id": "GfSeRaJuFTs"
+  },
+  {
+    "time": [
+      36,
+      37
+    ],
+    "visible_entities": [
+      {
+        "desc": "young boy with short light brown hair, wearing a dark blue long-sleeved sweatshirt with a colorful geometric graphic print (pink, blue, yellow) and a dark beaded necklace",
+        "action": "adjusting a hat",
+        "position": "center"
+      },
+      {
+        "desc": "bright green fuzzy hat with white spiky fringe around the brim",
+        "action": "being held",
+        "position": "center"
+      },
+      {
+        "desc": "wooden shelf with various small objects and figurines",
+        "action": "static",
+        "position": "top"
+      },
+      {
+        "desc": "blue curtains covering a window",
+        "action": "static",
+        "position": "right"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The boy is holding the green fuzzy hat with both hands.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The boy is adjusting the position of the hat on his head.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The boy is looking directly at the camera.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The boy is in the center of the frame, positioned in front of a wooden shelf. The green hat is on the boy's head. The blue curtains are to the right of the boy.",
+    "parse_success": true,
+    "chunk_idx": 36,
+    "video_id": "GfSeRaJuFTs"
+  },
+  {
+    "time": [
+      37,
+      38
+    ],
+    "visible_entities": [
+      {
+        "desc": "person with short brown hair, wearing a fuzzy bright green hooded hat, a dark blue long-sleeved sweatshirt with a large colorful geometric logo (pink, blue, yellow), and a dark chain necklace",
+        "action": "smiling and looking at the camera",
+        "position": "center/foreground"
+      },
+      {
+        "desc": "wooden shelf with various small figurines and objects",
+        "action": "static",
+        "position": "top/background"
+      },
+      {
+        "desc": "blue curtains covering a window",
+        "action": "static",
+        "position": "right/background"
+      },
+      {
+        "desc": "framed picture on the wall",
+        "action": "static",
+        "position": "right/background"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The person is smiling and looking directly at the camera.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The person is wearing a fuzzy green hooded hat.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A shelf with figurines is mounted on the wall above the person's head.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "Blue curtains are visible to the right of the person.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The person is in the center foreground. The wooden shelf is above the person. The blue curtains are to the right of the person. The framed picture is on the wall behind and to the right of the person.",
+    "parse_success": true,
+    "chunk_idx": 37,
+    "video_id": "GfSeRaJuFTs"
+  },
+  {
+    "time": [
+      38,
+      39
+    ],
+    "visible_entities": [
+      {
+        "desc": "boy with short brown hair, wearing a dark blue long-sleeved shirt with a colorful abstract graphic print on the chest",
+        "action": "removing a green fuzzy hat",
+        "position": "center"
+      },
+      {
+        "desc": "green fuzzy hat with a shaggy texture",
+        "action": "being lifted off head",
+        "position": "top center"
+      },
+      {
+        "desc": "wooden shelf with various small figurines and objects",
+        "action": "static",
+        "position": "top background"
+      },
+      {
+        "desc": "blue curtains covering a window",
+        "action": "static",
+        "position": "right background"
+      },
+      {
+        "desc": "framed picture on the wall",
+        "action": "static",
+        "position": "background right"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The boy lifts a green fuzzy hat off his head.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The boy is wearing a dark blue shirt with a colorful graphic.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A wooden shelf with figurines is mounted on the wall above the boy.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "Blue curtains hang next to a window on the right side of the room.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The boy is in the center of the frame, in front of a white wall. The wooden shelf is above the boy's head. The blue curtains are to the right of the boy. The framed picture is on the wall behind and to the right of the boy.",
+    "parse_success": true,
+    "chunk_idx": 38,
+    "video_id": "GfSeRaJuFTs"
+  },
+  {
+    "time": [
+      39,
+      40
+    ],
+    "visible_entities": [
+      {
+        "desc": "person with short blonde hair, wearing a dark t-shirt with a colorful geometric line pattern on the chest and a silver chain necklace",
+        "action": "talking",
+        "position": "center/foreground"
+      },
+      {
+        "desc": "wooden shelf with various small figurines and string lights",
+        "action": "static",
+        "position": "top/background"
+      },
+      {
+        "desc": "blue window curtains",
+        "action": "static",
+        "position": "right/background"
+      },
+      {
+        "desc": "wooden dresser with bottles and items on top",
+        "action": "static",
+        "position": "left/background"
+      },
+      {
+        "desc": "solid orange screen",
+        "action": "static",
+        "position": "full frame"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A person with short blonde hair is talking to the camera.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The person is wearing a dark t-shirt with a colorful geometric design.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A wooden shelf with figurines is mounted on the wall above the person.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "Blue curtains are visible to the right of the person.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The video cuts to a solid orange screen.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The person is in the center foreground, in front of a wooden dresser on the left and blue curtains on the right. A wooden shelf with figurines is above the person on the wall.",
+    "parse_success": true,
+    "chunk_idx": 39,
+    "video_id": "GfSeRaJuFTs"
+  },
+  {
+    "time": [
+      40,
+      41
     ],
     "visible_entities": [
       {
@@ -2246,31 +2240,26 @@
     ],
     "atomic_facts": [
       {
-        "fact": "The video displays a static screen with an orange background.",
+        "fact": "The text 'Thanks for wtaching!' is displayed on the screen.",
         "confidence": 1.0
       },
       {
-        "fact": "The text 'Thanks for wtaching!' is visible at the bottom of the screen.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The word 'watching' is misspelled as 'wtaching' in the on-screen text.",
+        "fact": "The background is a solid orange color.",
         "confidence": 1.0
       }
     ],
     "ocr": [
       "Thanks for wtaching!"
     ],
-    "spatial": "The black text is positioned at the bottom of the frame, centered horizontally against the solid orange background.",
+    "spatial": "The black text is located at the bottom of the frame, centered horizontally. The text is superimposed on top of the solid orange background.",
     "parse_success": true,
     "chunk_idx": 40,
-    "video_id": "GfSeRaJuFTs",
-    "_rescued": "parse"
+    "video_id": "GfSeRaJuFTs"
   },
   {
     "time": [
-      82,
-      84
+      41,
+      42
     ],
     "visible_entities": [
       {
@@ -2279,32 +2268,22 @@
         "position": "background"
       },
       {
-        "desc": "black handwritten-style text reading 'Thanks for wtaching!' with a typo",
-        "action": "static",
-        "position": "top"
-      },
-      {
-        "desc": "black handwritten-style text reading 'By:'",
+        "desc": "black text in a casual, handwritten-style font",
         "action": "static",
         "position": "center"
-      },
-      {
-        "desc": "black handwritten-style text reading 'MagicFinder33'",
-        "action": "static",
-        "position": "bottom"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "The video displays a static end screen with text on an orange background.",
+        "fact": "The screen displays a static closing message.",
         "confidence": 1.0
       },
       {
-        "fact": "The text 'Thanks for wtaching!' is visible at the top of the screen.",
+        "fact": "The text 'Thanks for wtaching!' is visible at the top.",
         "confidence": 1.0
       },
       {
-        "fact": "The username 'MagicFinder33' is displayed at the bottom of the screen.",
+        "fact": "The text 'By: MagicFinder33' is visible at the bottom.",
         "confidence": 1.0
       }
     ],
@@ -2313,16 +2292,15 @@
       "By:",
       "MagicFinder33"
     ],
-    "spatial": "The text 'Thanks for wtaching!' is located at the top of the frame. The text 'By:' is positioned in the center, below the first line of text. The text 'MagicFinder33' is located at the bottom, below the 'By:' text.",
+    "spatial": "The text 'Thanks for wtaching!' is located in the upper portion of the screen. The text 'By:' is positioned in the middle, directly above the text 'MagicFinder33' which is at the bottom. All text elements are centered horizontally against the orange background.",
     "parse_success": true,
     "chunk_idx": 41,
-    "video_id": "GfSeRaJuFTs",
-    "_rescued": "parse"
+    "video_id": "GfSeRaJuFTs"
   },
   {
     "time": [
-      84,
-      86
+      42,
+      43
     ],
     "visible_entities": [
       {
@@ -2331,36 +2309,22 @@
         "position": "background"
       },
       {
-        "desc": "black text reading 'By:' in a casual, handwritten-style font",
-        "action": "static",
-        "position": "top"
-      },
-      {
-        "desc": "black text reading 'MagicFinder33' in a casual, handwritten-style font",
+        "desc": "black handwritten-style text reading 'By:', 'MagicFinder33', and 'Subscribe!'",
         "action": "static",
         "position": "center"
-      },
-      {
-        "desc": "black text reading 'Subscribe!' in a casual, handwritten-style font",
-        "action": "static",
-        "position": "bottom"
       }
     ],
     "atomic_facts": [
-      {
-        "fact": "The text 'By:' is displayed at the top of the screen.",
-        "confidence": 1.0
-      },
       {
         "fact": "The text 'MagicFinder33' is displayed in the center of the screen.",
         "confidence": 1.0
       },
       {
-        "fact": "The text 'Subscribe!' is displayed at the bottom of the screen.",
+        "fact": "The text 'Subscribe!' is positioned at the bottom of the frame.",
         "confidence": 1.0
       },
       {
-        "fact": "All text elements are static on the orange background.",
+        "fact": "The text 'By:' is positioned above the name 'MagicFinder33'.",
         "confidence": 1.0
       }
     ],
@@ -2369,32 +2333,31 @@
       "MagicFinder33",
       "Subscribe!"
     ],
-    "spatial": "The text 'By:' is above the text 'MagicFinder33'. The text 'MagicFinder33' is above the text 'Subscribe!'. All text elements are centered horizontally on the orange background.",
+    "spatial": "The text 'By:' is above the text 'MagicFinder33'. The text 'Subscribe!' is below the text 'MagicFinder33'. All text elements are centered on the orange background.",
     "parse_success": true,
     "chunk_idx": 42,
-    "video_id": "GfSeRaJuFTs",
-    "_rescued": "parse"
+    "video_id": "GfSeRaJuFTs"
   },
   {
     "time": [
-      86,
-      88
+      43,
+      44
     ],
     "visible_entities": [
+      {
+        "desc": "black handwritten-style text reading 'Subscibe!'",
+        "action": "static",
+        "position": "top-center"
+      },
       {
         "desc": "solid orange background",
         "action": "static",
         "position": "background"
-      },
-      {
-        "desc": "black text reading 'Subscibe!' in a casual, handwritten-style font",
-        "action": "static",
-        "position": "top-center"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "The word 'Subscibe!' is displayed on the screen.",
+        "fact": "The text 'Subscibe!' is displayed on the screen.",
         "confidence": 1.0
       },
       {
@@ -2405,10 +2368,9 @@
     "ocr": [
       "Subscibe!"
     ],
-    "spatial": "The text 'Subscibe!' is positioned in the upper portion of the frame, centered horizontally against the solid orange background.",
+    "spatial": "The text 'Subscibe!' is positioned in the upper center of the frame, above the solid orange background.",
     "parse_success": true,
     "chunk_idx": 43,
-    "video_id": "GfSeRaJuFTs",
-    "_rescued": "parse"
+    "video_id": "GfSeRaJuFTs"
   }
 ]

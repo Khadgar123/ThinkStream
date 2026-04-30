@@ -2,40 +2,44 @@
   {
     "time": [
       0,
-      2
+      1
     ],
     "visible_entities": [
       {
-        "desc": "person with short dark hair, wearing a dark top",
-        "action": "sitting in the foreground",
-        "position": "center",
-        "id": "person_dark_hair_1"
+        "desc": "person with short dark hair and bangs, face obscured by shadow and backlighting",
+        "action": "static",
+        "position": "foreground center",
+        "id": "person_dark_1"
       },
       {
-        "desc": "television screen displaying a man in a black shirt sitting on a chair",
-        "action": "static",
-        "position": "left",
+        "desc": "television screen displaying a man in a black t-shirt sitting with hands clasped",
+        "action": "displaying image",
+        "position": "background left",
         "id": "television_1"
       },
       {
-        "desc": "bright light source, likely a window",
+        "desc": "bright window with vertical blinds, emitting intense white light",
         "action": "static",
-        "position": "background",
+        "position": "background center",
         "id": "window_1"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A person with short dark hair is sitting in the foreground.",
+        "fact": "A person with short dark hair is positioned in the foreground.",
         "confidence": 1.0
       },
       {
-        "fact": "A television screen is on and displaying a man in a black shirt.",
+        "fact": "A television screen is visible in the background on the left.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The television displays a man wearing a black shirt.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The person with short dark hair is in the foreground and to the right of the television screen. The television screen is on the left side of the frame. A bright light source is in the background behind the person.",
+    "spatial": "The person with short dark hair is in the foreground, positioned in front of the bright window. The television screen is to the left of the person and the window.",
     "parse_success": true,
     "chunk_idx": 0,
     "video_id": "v_o6_h2v15A",
@@ -43,75 +47,65 @@
   },
   {
     "time": [
-      2,
-      4
+      1,
+      2
     ],
     "visible_entities": [
       {
-        "desc": "person with short blonde hair and bangs, wearing a dark top",
-        "action": "turning head towards the camera",
-        "position": "center/foreground",
-        "id": "child_blonde_1"
+        "desc": "person with light blonde hair and bangs, wearing a dark top",
+        "action": "moving into the foreground",
+        "position": "foreground",
+        "id": "person_child_1"
       },
       {
-        "desc": "television screen displaying a person in a black shirt",
+        "desc": "television screen displaying a person with dark hair in a black shirt",
         "action": "static",
-        "position": "left/background",
+        "position": "background left",
         "id": "television_1"
-      },
-      {
-        "desc": "bright window emitting strong backlight",
-        "action": "static",
-        "position": "right/background",
-        "id": "window_1"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A person with blonde hair turns their head to face the camera.",
+        "fact": "A person with blonde hair moves into the foreground, obscuring the view.",
         "confidence": 1.0
       },
       {
-        "fact": "A television is visible in the background on the left side.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The scene is heavily backlit by a window on the right.",
+        "fact": "A television is on in the background showing a broadcast.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The person with blonde hair is in the center foreground, positioned in front of the television and the window. The television is to the left of the person, and the bright window is to the right of the person.",
+    "spatial": "The person with blonde hair is in the foreground, positioned to the right of the television screen. The television screen is located in the background on the left side of the frame.",
     "parse_success": true,
     "chunk_idx": 1,
     "video_id": "v_o6_h2v15A",
     "state_changes": [
-      "person turns head towards camera"
+      "Person with blonde hair moves into the foreground."
     ]
   },
   {
     "time": [
-      4,
-      6
+      2,
+      3
     ],
     "visible_entities": [
       {
         "desc": "child with blonde hair and bangs, wearing a dark top",
         "action": "moving head slightly",
-        "position": "foreground",
-        "id": "child_blonde_1"
+        "position": "foreground right",
+        "id": "person_child_1"
       },
       {
-        "desc": "television screen displaying a video game scene with a palm tree and blue sky",
+        "desc": "black television screen displaying a bright scene with a palm tree",
         "action": "static",
-        "position": "background",
+        "position": "background left",
         "id": "television_1"
       },
       {
-        "desc": "white cylindrical object, possibly a candle or vase",
+        "desc": "white cylindrical object",
         "action": "static",
-        "position": "background",
-        "id": "lamp_white_1"
+        "position": "background top left",
+        "id": "lamp_1"
       }
     ],
     "atomic_facts": [
@@ -120,16 +114,16 @@
         "confidence": 1.0
       },
       {
-        "fact": "television is on and displaying a video game",
+        "fact": "television is on and displaying a bright outdoor scene",
         "confidence": 1.0
       },
       {
-        "fact": "white cylindrical object is on top of the television",
+        "fact": "a palm tree is visible on the television screen",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The child is in the foreground, to the right of the television. The television is in the background, to the left of the child. The white cylindrical object is on top of the television.",
+    "spatial": "The child is in the foreground to the right of the television. The television is positioned on the left side of the frame. The white cylindrical object is above the television.",
     "parse_success": true,
     "chunk_idx": 2,
     "video_id": "v_o6_h2v15A",
@@ -137,45 +131,35 @@
   },
   {
     "time": [
-      6,
-      8
+      3,
+      4
     ],
     "visible_entities": [
       {
-        "desc": "person with short blonde hair, dark clothing",
-        "action": "sitting in foreground",
+        "desc": "person with short blonde hair, wearing a dark top",
+        "action": "looking forward",
         "position": "foreground right",
-        "id": "child_blonde_1"
+        "id": "person_child_1"
       },
       {
-        "desc": "television screen displaying a person with dark hair in a green shirt",
+        "desc": "television screen displaying a person lying on a green surface",
         "action": "displaying video",
         "position": "background left",
         "id": "television_1"
-      },
-      {
-        "desc": "bright light source",
-        "action": "emitting light",
-        "position": "center right",
-        "id": "window_1"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A person with short blonde hair is sitting in the foreground.",
+        "fact": "A person with short blonde hair is positioned in the foreground.",
         "confidence": 1.0
       },
       {
-        "fact": "A television is on in the background, showing a person lying down.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "A bright light source is obscuring part of the scene.",
+        "fact": "A television is turned on and displaying a scene in the background.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The person with short blonde hair is in the foreground to the right of the television. The television is in the background on the left. A bright light source is between the person and the television.",
+    "spatial": "The person with short blonde hair is in the foreground to the right of the television. The television is positioned in the background on the left side of the frame.",
     "parse_success": true,
     "chunk_idx": 3,
     "video_id": "v_o6_h2v15A",
@@ -183,32 +167,179 @@
   },
   {
     "time": [
-      8,
-      10
+      4,
+      5
     ],
     "visible_entities": [
       {
-        "desc": "child with shoulder-length blonde hair and bangs, wearing a dark blue top",
+        "desc": "child with blonde hair and bangs, wearing a dark blue shirt",
         "action": "looking down",
         "position": "center",
-        "id": "child_blonde_1"
+        "id": "person_child_1"
       },
       {
-        "desc": "television screen displaying a bright image with geometric shapes",
+        "desc": "television screen displaying a bright image",
         "action": "static",
-        "position": "background left",
+        "position": "left",
         "id": "television_1"
       },
       {
-        "desc": "bright window emitting strong white light",
+        "desc": "bright window emitting strong light",
         "action": "static",
-        "position": "background right",
+        "position": "background",
         "id": "window_1"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "The child is looking downwards.",
+        "fact": "child looks down",
+        "confidence": 1.0
+      },
+      {
+        "fact": "television is on",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The child is in the center foreground. The television is to the left of the child. The bright window is behind the child.",
+    "parse_success": true,
+    "chunk_idx": 4,
+    "video_id": "v_o6_h2v15A",
+    "state_changes": []
+  },
+  {
+    "time": [
+      5,
+      6
+    ],
+    "visible_entities": [
+      {
+        "desc": "child with blonde hair and bangs, wearing a dark blue shirt",
+        "action": "moving head slightly",
+        "position": "foreground center",
+        "id": "person_child_1"
+      },
+      {
+        "desc": "television screen displaying a building with many windows",
+        "action": "static",
+        "position": "background left",
+        "id": "television_1"
+      },
+      {
+        "desc": "lamp with a white cylindrical shade",
+        "action": "static",
+        "position": "background left",
+        "id": "lamp_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A child with blonde hair is in the foreground.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The child moves their head slightly between frames.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A television is on in the background showing a building.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The child is in the foreground, positioned to the right of the television. The television is on the left side of the frame, with a lamp situated above it.",
+    "parse_success": true,
+    "chunk_idx": 5,
+    "video_id": "v_o6_h2v15A",
+    "state_changes": []
+  },
+  {
+    "time": [
+      6,
+      7
+    ],
+    "visible_entities": [
+      {
+        "desc": "child with blonde hair and bangs, wearing a dark top",
+        "action": "looking at the camera",
+        "position": "foreground right",
+        "id": "person_child_1"
+      },
+      {
+        "desc": "television screen displaying a person in a black sleeveless top",
+        "action": "static",
+        "position": "background left",
+        "id": "television_1"
+      },
+      {
+        "desc": "white subtitles text",
+        "action": "static",
+        "position": "bottom of television screen"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A child with blonde hair is positioned in the foreground.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The child is looking towards the camera.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A television is on in the background displaying a video.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The video on the television shows a person wearing a black sleeveless top.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "White subtitles are visible at the bottom of the television screen.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "I'm not gonna let you do this."
+    ],
+    "spatial": "The child is in the foreground to the right of the television. The television is positioned in the background on the left side of the frame. The subtitles are located at the bottom of the television screen.",
+    "parse_success": true,
+    "chunk_idx": 6,
+    "video_id": "v_o6_h2v15A",
+    "state_changes": []
+  },
+  {
+    "time": [
+      7,
+      8
+    ],
+    "visible_entities": [
+      {
+        "desc": "child with blonde hair and bangs, wearing a dark top",
+        "action": "looking at the camera",
+        "position": "foreground right",
+        "id": "person_child_1"
+      },
+      {
+        "desc": "black flat-screen television displaying a scene with a person lying on a white surface",
+        "action": "static",
+        "position": "background left",
+        "id": "television_1"
+      },
+      {
+        "desc": "cylindrical lamp with a light-colored shade",
+        "action": "static",
+        "position": "background left",
+        "id": "lamp_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A child with blonde hair is positioned in the foreground.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The child is looking towards the camera.",
         "confidence": 1.0
       },
       {
@@ -216,42 +347,44 @@
         "confidence": 1.0
       },
       {
-        "fact": "Bright light from a window is washing out the right side of the frame.",
+        "fact": "The television screen displays a scene with a person lying down.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A lamp is situated above the television.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The child is in the foreground, positioned centrally. The television is to the left of the child and behind them. The bright window is to the right of the child and behind them.",
+    "spatial": "The child is in the foreground on the right side of the frame. The television is in the background to the left of the child. The lamp is positioned above the television.",
     "parse_success": true,
-    "chunk_idx": 4,
+    "chunk_idx": 7,
     "video_id": "v_o6_h2v15A",
-    "state_changes": [
-      "child looks down"
-    ]
+    "state_changes": []
   },
   {
     "time": [
-      10,
-      12
+      8,
+      9
     ],
     "visible_entities": [
       {
-        "desc": "child with blonde hair and bangs, wearing a dark blue top",
+        "desc": "child with blonde hair and bangs, wearing a dark top",
         "action": "looking at the camera",
-        "position": "foreground center",
-        "id": "child_blonde_1"
+        "position": "right foreground",
+        "id": "person_child_1"
       },
       {
-        "desc": "black television screen displaying a building",
+        "desc": "television screen displaying a building facade",
         "action": "static",
-        "position": "background left",
+        "position": "left background",
         "id": "television_1"
       },
       {
-        "desc": "white cylindrical lamp shade",
+        "desc": "white cylindrical lampshade",
         "action": "static",
-        "position": "background left",
-        "id": "lamp_white_1"
+        "position": "left background",
+        "id": "lamp_1"
       }
     ],
     "atomic_facts": [
@@ -260,179 +393,35 @@
         "confidence": 1.0
       },
       {
-        "fact": "television is on and displaying an image of a building",
+        "fact": "television is turned on",
         "confidence": 1.0
       },
       {
-        "fact": "lamp is positioned above the television",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [],
-    "spatial": "The child is in the foreground, positioned to the right of the television. The television is on the left side of the frame, with a white lamp shade located above it.",
-    "parse_success": true,
-    "chunk_idx": 5,
-    "video_id": "v_o6_h2v15A",
-    "state_changes": []
-  },
-  {
-    "time": [
-      12,
-      14
-    ],
-    "visible_entities": [
-      {
-        "desc": "person with light blonde hair and bangs, wearing a dark top",
-        "action": "sitting in the foreground",
-        "position": "right foreground",
-        "id": "child_blonde_1"
-      },
-      {
-        "desc": "television screen displaying a video of a person with dark hair in a black sleeveless top",
-        "action": "displaying a video",
-        "position": "left background",
-        "id": "television_1"
-      },
-      {
-        "desc": "white subtitles",
-        "action": "static",
-        "position": "bottom of television screen",
-        "id": "subtitles_1"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "A person with blonde hair is sitting in the foreground.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "A television is on in the background.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The television screen displays a video of another person.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "White subtitles are visible at the bottom of the television screen.",
+        "fact": "lampshade is above the television",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The person with blonde hair is in the foreground, to the right of the television. The television is in the background, to the left of the person. The subtitles are at the bottom of the television screen.",
-    "parse_success": true,
-    "chunk_idx": 6,
-    "video_id": "v_o6_h2v15A",
-    "state_changes": []
-  },
-  {
-    "time": [
-      14,
-      16
-    ],
-    "visible_entities": [
-      {
-        "desc": "child with blonde hair and bangs, wearing a dark top",
-        "action": "looking at the camera",
-        "position": "right/foreground",
-        "id": "child_blonde_1"
-      },
-      {
-        "desc": "television screen displaying a scene with a person lying on a white surface",
-        "action": "static",
-        "position": "left/background",
-        "id": "television_1"
-      },
-      {
-        "desc": "lamp with a white cylindrical shade",
-        "action": "static",
-        "position": "left/background",
-        "id": "lamp_white_1"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "child with blonde hair is looking at the camera",
-        "confidence": 1.0
-      },
-      {
-        "fact": "television is on and displaying a scene",
-        "confidence": 1.0
-      },
-      {
-        "fact": "lamp is positioned above the television",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [],
-    "spatial": "The child is in the foreground on the right side of the frame. The television is in the background on the left side. The lamp is above the television.",
-    "parse_success": true,
-    "chunk_idx": 7,
-    "video_id": "v_o6_h2v15A",
-    "state_changes": []
-  },
-  {
-    "time": [
-      16,
-      18
-    ],
-    "visible_entities": [
-      {
-        "desc": "child with blonde hair and bangs, wearing a black shirt",
-        "action": "talking",
-        "position": "foreground right",
-        "id": "child_blonde_1"
-      },
-      {
-        "desc": "television screen displaying a building facade",
-        "action": "static",
-        "position": "background left",
-        "id": "television_1"
-      },
-      {
-        "desc": "white cylindrical lamp shade",
-        "action": "static",
-        "position": "background left",
-        "id": "lamp_white_1"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "child with blonde hair is talking",
-        "confidence": 1.0
-      },
-      {
-        "fact": "television is displaying a building facade",
-        "confidence": 1.0
-      },
-      {
-        "fact": "white lamp shade is positioned above the television",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [],
-    "spatial": "The child with blonde hair is in the foreground to the right of the television. The television is in the background on the left side of the frame. The white cylindrical lamp shade is positioned above the television.",
+    "spatial": "The child is in the foreground on the right side of the frame. The television is in the background to the left of the child. The white lampshade is positioned above the television.",
     "parse_success": true,
     "chunk_idx": 8,
     "video_id": "v_o6_h2v15A",
-    "state_changes": [
-      "child starts talking"
-    ]
+    "state_changes": []
   },
   {
     "time": [
-      18,
-      20
+      9,
+      10
     ],
     "visible_entities": [
       {
         "desc": "child with blonde hair and bangs, wearing a dark blue zip-up top",
-        "action": "moving mouth and blinking eyes",
-        "position": "foreground right",
-        "id": "child_blonde_1"
+        "action": "changing facial expression from surprised to neutral",
+        "position": "foreground center",
+        "id": "person_child_1"
       },
       {
-        "desc": "black television screen displaying a video of a person with dark hair",
+        "desc": "television screen displaying a video of a person lying down",
         "action": "static",
         "position": "background left",
         "id": "television_1"
@@ -441,97 +430,101 @@
         "desc": "white cylindrical lamp shade",
         "action": "static",
         "position": "background left",
-        "id": "lamp_white_1"
+        "id": "lamp_1"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "child moves mouth and blinks eyes",
+        "fact": "The child in the foreground changes their facial expression between the two frames.",
         "confidence": 1.0
       },
       {
-        "fact": "television displays a video of a person with dark hair",
+        "fact": "The television in the background displays a scene with a person lying on a green surface.",
         "confidence": 1.0
       },
       {
-        "fact": "white lamp shade is positioned above the television",
+        "fact": "The child is positioned in front of the television and the lamp.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The child is in the foreground to the right of the television. The television is on the left side of the frame, with a white lamp shade situated above it.",
+    "spatial": "The child is in the foreground, positioned to the right of the television. The television is on the left side of the frame, with a white lamp shade visible above it. The child is in front of both the television and the lamp.",
     "parse_success": true,
     "chunk_idx": 9,
     "video_id": "v_o6_h2v15A",
-    "state_changes": []
+    "state_changes": [
+      "Child changes facial expression from surprised to neutral."
+    ]
   },
   {
     "time": [
-      20,
-      22
+      10,
+      11
     ],
     "visible_entities": [
       {
         "desc": "child with blonde hair and bangs, wearing a dark blue shirt",
-        "action": "closing eyes",
-        "position": "center/foreground",
-        "id": "child_blonde_1"
+        "action": "blinking eyes and moving mouth",
+        "position": "center foreground",
+        "id": "person_child_1"
       },
       {
-        "desc": "television screen displaying a video with a person's face and text",
+        "desc": "television screen displaying a video feed with a face",
         "action": "static",
-        "position": "left/background",
+        "position": "left background",
         "id": "television_1"
       },
       {
-        "desc": "window with bright light",
+        "desc": "bright window emitting strong light",
         "action": "static",
-        "position": "right/background",
+        "position": "right background",
         "id": "window_1"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "The child closes their eyes.",
+        "fact": "The child in the foreground blinks their eyes and moves their mouth.",
         "confidence": 1.0
       },
       {
-        "fact": "The television screen is on in the background.",
+        "fact": "A television screen is visible in the background on the left.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "Bright light from a window on the right creates a glare on the child's hair.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The child is in the foreground, centered in the frame. The television is to the left of the child and behind them. The window is to the right of the child and behind them.",
+    "spatial": "The child is in the center foreground, positioned in front of the television and the window. The television is to the left of the child, while the bright window is to the right of the child.",
     "parse_success": true,
     "chunk_idx": 10,
     "video_id": "v_o6_h2v15A",
-    "state_changes": [
-      "child closes eyes"
-    ]
+    "state_changes": []
   },
   {
     "time": [
-      22,
-      24
+      11,
+      12
     ],
     "visible_entities": [
       {
-        "desc": "child with blonde hair and bangs, wearing a dark blue shirt",
+        "desc": "child with blonde hair and bangs, wearing a dark blue top",
         "action": "looking at the camera",
-        "position": "foreground",
-        "id": "child_blonde_1"
+        "position": "foreground right",
+        "id": "person_child_1"
       },
       {
-        "desc": "television screen displaying video content",
+        "desc": "television screen displaying a video",
         "action": "static",
         "position": "background left",
         "id": "television_1"
       },
       {
-        "desc": "lamp with a white cylindrical shade",
-        "action": "static",
+        "desc": "person on television screen wearing a black sleeveless top and light-colored shorts",
+        "action": "standing",
         "position": "background left",
-        "id": "lamp_white_1"
+        "id": "person_tv_figure_1"
       },
       {
         "desc": "window with bright light",
@@ -542,20 +535,20 @@
     ],
     "atomic_facts": [
       {
-        "fact": "The child is looking at the camera.",
+        "fact": "child is looking at the camera",
         "confidence": 1.0
       },
       {
-        "fact": "The television screen in the background changes content between frames.",
+        "fact": "television is on in the background",
         "confidence": 1.0
       },
       {
-        "fact": "Bright light is coming from the window on the right.",
+        "fact": "bright light is coming from the window",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The child is in the foreground, positioned to the right of the television. The television is on the left side of the frame, behind the child. A lamp is located behind the television, and a bright window is to the right of the child.",
+    "spatial": "The child is in the foreground, to the right of the television. The television is on the left side of the frame, behind the child. The window is in the background, to the right of the child.",
     "parse_success": true,
     "chunk_idx": 11,
     "video_id": "v_o6_h2v15A",
@@ -563,101 +556,99 @@
   },
   {
     "time": [
-      24,
-      26
+      12,
+      13
     ],
     "visible_entities": [
       {
         "desc": "child with blonde hair and bangs, wearing a dark blue shirt",
         "action": "speaking",
-        "position": "center/foreground",
-        "id": "child_blonde_1"
+        "position": "foreground",
+        "id": "person_child_1"
       },
       {
-        "desc": "television screen displaying a person in silhouette on a body of water",
+        "desc": "television screen showing a person in a boat on water",
         "action": "static",
-        "position": "left/background",
+        "position": "background left",
         "id": "television_1"
       },
       {
-        "desc": "bright window emitting strong white light",
+        "desc": "window with bright white light",
         "action": "static",
-        "position": "right/background",
+        "position": "background right",
         "id": "window_1"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "The child is speaking with their mouth open.",
+        "fact": "child with blonde hair is speaking in the foreground",
         "confidence": 1.0
       },
       {
-        "fact": "A television is on in the background showing a scene of a person on water.",
+        "fact": "television is displaying a scene of a person in a boat",
         "confidence": 1.0
       },
       {
-        "fact": "Bright light from a window is washing out the right side of the frame.",
+        "fact": "bright light is coming from the window behind the child",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The child is in the center foreground, positioned in front of the television and the window. The television is to the left of the child, and the bright window is to the right of the child.",
+    "spatial": "The child is in the foreground, positioned in front of the television and the window. The television is to the left of the child, and the window is to the right of the child.",
     "parse_success": true,
     "chunk_idx": 12,
     "video_id": "v_o6_h2v15A",
-    "state_changes": []
+    "state_changes": [
+      "Child begins speaking."
+    ]
   },
   {
     "time": [
-      26,
-      28
+      13,
+      14
     ],
     "visible_entities": [
       {
-        "desc": "child with short blonde hair and straight bangs, wearing a dark blue or black top",
+        "desc": "person with blonde hair, straight bangs, wearing a dark blue zip-up top",
         "action": "looking at the camera",
         "position": "center/foreground",
-        "id": "child_blonde_1"
+        "id": "person_child_1"
       },
       {
-        "desc": "black flat-screen television displaying a video with a person and subtitles",
+        "desc": "television screen displaying a video with a person in a black shirt",
         "action": "static",
         "position": "left/background",
         "id": "television_1"
       },
       {
-        "desc": "bright window emitting strong white light",
+        "desc": "white cylindrical lamp shade",
+        "action": "static",
+        "position": "left/background",
+        "id": "lamp_1"
+      },
+      {
+        "desc": "bright window light source",
         "action": "static",
         "position": "right/background",
         "id": "window_1"
-      },
-      {
-        "desc": "lamp with a white cylindrical shade",
-        "action": "static",
-        "position": "left/background",
-        "id": "lamp_white_1"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "The child is facing forward and looking directly at the camera.",
+        "fact": "person with blonde hair looks at the camera",
         "confidence": 1.0
       },
       {
-        "fact": "A television is turned on in the background, showing a scene with a person.",
+        "fact": "television is on in the background",
         "confidence": 1.0
       },
       {
-        "fact": "Bright light from a window on the right causes a glare on the child's hair.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "Subtitles are visible on the television screen.",
+        "fact": "bright light from the window creates a glare on the person's hair",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The child is in the foreground, positioned in front of the television and the window. The television is to the left of the child. The window is to the right of the child. The lamp is located behind the television.",
+    "spatial": "The person with blonde hair is in the foreground, centered in the frame. The television is to the left of the person and behind them. The white lamp shade is above the television. The bright window is to the right of the person.",
     "parse_success": true,
     "chunk_idx": 13,
     "video_id": "v_o6_h2v15A",
@@ -665,24 +656,24 @@
   },
   {
     "time": [
-      28,
-      30
+      14,
+      15
     ],
     "visible_entities": [
       {
-        "desc": "person with blonde hair and bangs, wearing a dark blue or black long-sleeved top",
-        "action": "covering mouth with hand",
+        "desc": "person with blonde hair and bangs, wearing a dark blue zip-up jacket",
+        "action": "covering mouth with right hand",
         "position": "center/foreground",
-        "id": "child_blonde_1"
+        "id": "person_child_1"
       },
       {
-        "desc": "television screen displaying a bright, blurry image",
+        "desc": "television screen displaying a scene with a person standing",
         "action": "static",
         "position": "left/background",
         "id": "television_1"
       },
       {
-        "desc": "bright light source, likely a window",
+        "desc": "bright window emitting light",
         "action": "static",
         "position": "right/background",
         "id": "window_1"
@@ -699,55 +690,54 @@
       }
     ],
     "ocr": [],
-    "spatial": "The person is in the center foreground. The television is to the left of the person and behind them. The bright light source is to the right of the person.",
+    "spatial": "The person is in the center foreground. The television is to the left of the person in the background. The bright window is to the right of the person.",
     "parse_success": true,
     "chunk_idx": 14,
     "video_id": "v_o6_h2v15A",
     "state_changes": [
-      "person starts covering mouth with hand"
+      "Person covers mouth with right hand."
     ]
   },
   {
     "time": [
-      30,
-      32
+      15,
+      16
     ],
     "visible_entities": [
       {
         "desc": "person with short brown hair and bangs, wearing a dark blue long-sleeved top",
         "action": "covering mouth with hands",
-        "position": "center",
-        "id": "person_dark_hair_1"
+        "position": "center"
       },
       {
         "desc": "television screen displaying a bright image",
         "action": "static",
-        "position": "left background",
+        "position": "background left",
         "id": "television_1"
       },
       {
-        "desc": "bright window light source",
+        "desc": "bright window emitting light",
         "action": "static",
-        "position": "right background",
+        "position": "background right",
         "id": "window_1"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "person covers their mouth with both hands",
+        "fact": "person covers mouth with both hands",
         "confidence": 1.0
       },
       {
-        "fact": "person looks towards the camera",
+        "fact": "person is looking towards the camera",
         "confidence": 1.0
       },
       {
-        "fact": "television is turned on in the background",
+        "fact": "television is on in the background",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The person is in the center foreground, positioned between the television on the left and the window on the right. The television is behind the person to the left. The window is behind the person to the right.",
+    "spatial": "The person is in the center foreground. The television is to the left of the person in the background. The window is to the right of the person in the background.",
     "parse_success": true,
     "chunk_idx": 15,
     "video_id": "v_o6_h2v15A",
@@ -755,24 +745,24 @@
   },
   {
     "time": [
-      32,
-      34
+      16,
+      17
     ],
     "visible_entities": [
       {
         "desc": "person with short blonde hair and bangs, wearing a dark blue long-sleeved top",
         "action": "covering mouth with both hands",
         "position": "center/foreground",
-        "id": "child_blonde_1"
+        "id": "person_child_1"
       },
       {
-        "desc": "television screen displaying a scene with a person standing",
+        "desc": "television screen displaying a scene with a person and text",
         "action": "static",
         "position": "left/background",
         "id": "television_1"
       },
       {
-        "desc": "bright window emitting white light",
+        "desc": "bright window",
         "action": "static",
         "position": "right/background",
         "id": "window_1"
@@ -784,11 +774,11 @@
         "confidence": 1.0
       },
       {
-        "fact": "television is turned on and displaying an image",
+        "fact": "television is on in the background",
         "confidence": 1.0
       },
       {
-        "fact": "bright light from the window overexposes the right side of the frame",
+        "fact": "bright light enters from the window on the right",
         "confidence": 1.0
       }
     ],
@@ -801,18 +791,18 @@
   },
   {
     "time": [
-      34,
-      36
+      17,
+      18
     ],
     "visible_entities": [
       {
         "desc": "child with blonde hair and bangs, wearing a dark blue top",
         "action": "covering mouth with both hands",
         "position": "foreground",
-        "id": "child_blonde_1"
+        "id": "person_child_1"
       },
       {
-        "desc": "television screen displaying a video with a dark figure",
+        "desc": "black television set",
         "action": "static",
         "position": "background left",
         "id": "television_1"
@@ -821,7 +811,13 @@
         "desc": "white cylindrical lamp shade",
         "action": "static",
         "position": "background left",
-        "id": "lamp_white_1"
+        "id": "lamp_1"
+      },
+      {
+        "desc": "bright window",
+        "action": "static",
+        "position": "background right",
+        "id": "window_1"
       }
     ],
     "atomic_facts": [
@@ -830,12 +826,16 @@
         "confidence": 1.0
       },
       {
-        "fact": "television is turned on in the background",
+        "fact": "television is turned on and displaying a scene",
+        "confidence": 1.0
+      },
+      {
+        "fact": "lamp shade is positioned above the television",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The child is in the foreground, positioned to the right of the television. The television is in the background on the left side of the frame. The white lamp shade is above and slightly behind the television.",
+    "spatial": "The child is in the foreground, positioned to the right of the television. The television is on the left side of the background, with a white lamp shade above it. A bright window is to the right of the child.",
     "parse_success": true,
     "chunk_idx": 17,
     "video_id": "v_o6_h2v15A",
@@ -843,116 +843,24 @@
   },
   {
     "time": [
-      36,
-      38
+      18,
+      19
     ],
     "visible_entities": [
       {
-        "desc": "child with blonde hair and bangs, wearing a dark blue long-sleeved top",
-        "action": "covering mouth with both hands",
-        "position": "center/foreground",
-        "id": "child_blonde_1"
+        "desc": "child with blonde hair and straight bangs, wearing a dark blue long-sleeved top",
+        "action": "holding both hands over mouth",
+        "position": "center foreground",
+        "id": "person_child_1"
       },
       {
-        "desc": "television screen displaying a blue static pattern",
-        "action": "static",
-        "position": "left/background",
-        "id": "television_1"
-      },
-      {
-        "desc": "bright window emitting light",
-        "action": "static",
-        "position": "right/background",
-        "id": "window_1"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "child covers mouth with both hands",
-        "confidence": 1.0
-      },
-      {
-        "fact": "television screen displays static noise",
-        "confidence": 1.0
-      },
-      {
-        "fact": "bright light enters from the right side",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [],
-    "spatial": "The child is in the center foreground, positioned to the right of the television screen. The television is located in the background on the left side. A bright window is situated in the background to the right of the child.",
-    "parse_success": true,
-    "chunk_idx": 18,
-    "video_id": "v_o6_h2v15A",
-    "state_changes": []
-  },
-  {
-    "time": [
-      38,
-      40
-    ],
-    "visible_entities": [
-      {
-        "desc": "child with blonde hair and bangs, wearing a dark blue long-sleeved top",
-        "action": "covering mouth with both hands",
-        "position": "center/foreground",
-        "id": "child_blonde_1"
-      },
-      {
-        "desc": "black television screen displaying a green grid pattern",
-        "action": "static",
-        "position": "left/background",
-        "id": "television_1"
-      },
-      {
-        "desc": "bright window with white light",
-        "action": "static",
-        "position": "right/background",
-        "id": "window_1"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "child covers mouth with both hands",
-        "confidence": 1.0
-      },
-      {
-        "fact": "television displays a green grid pattern",
-        "confidence": 1.0
-      },
-      {
-        "fact": "bright light enters from the window on the right",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [],
-    "spatial": "The child is in the center foreground, positioned between the television on the left and the window on the right. The television is behind the child and to the left. The window is behind the child and to the right.",
-    "parse_success": true,
-    "chunk_idx": 19,
-    "video_id": "v_o6_h2v15A",
-    "state_changes": []
-  },
-  {
-    "time": [
-      40,
-      42
-    ],
-    "visible_entities": [
-      {
-        "desc": "person with blonde hair and bangs, wearing a dark blue long-sleeved top",
-        "action": "covering mouth with hands then lowering hands to chin",
-        "position": "center",
-        "id": "child_blonde_1"
-      },
-      {
-        "desc": "television screen displaying a dark silhouette against a white background",
+        "desc": "television screen displaying a bright blue and white static pattern",
         "action": "static",
         "position": "left background",
         "id": "television_1"
       },
       {
-        "desc": "bright window emitting strong white light",
+        "desc": "bright window emitting strong light",
         "action": "static",
         "position": "right background",
         "id": "window_1"
@@ -960,55 +868,129 @@
     ],
     "atomic_facts": [
       {
-        "fact": "person covers mouth with both hands in the first frame",
+        "fact": "The child holds both hands over their mouth.",
         "confidence": 1.0
       },
       {
-        "fact": "person lowers hands to cup the chin in the second frame",
-        "confidence": 1.0
-      },
-      {
-        "fact": "television screen is visible in the background",
+        "fact": "The television is turned on and displaying static.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The person is in the center foreground. The television is to the left of the person in the background. The bright window is to the right of the person in the background.",
+    "spatial": "The child is in the center foreground, positioned to the right of the television and in front of the window. The television is on the left side of the frame, while the window is on the right side.",
     "parse_success": true,
-    "chunk_idx": 20,
+    "chunk_idx": 18,
     "video_id": "v_o6_h2v15A",
-    "state_changes": [
-      "person lowers hands from mouth to chin"
-    ]
+    "state_changes": []
   },
   {
     "time": [
-      42,
-      44
+      19,
+      20
     ],
     "visible_entities": [
       {
-        "desc": "child with straight blonde hair cut in bangs, wearing a dark blue top",
-        "action": "resting chin on hand",
+        "desc": "child with blonde hair and bangs, wearing a dark blue long-sleeved top",
+        "action": "covering mouth with hands",
         "position": "center/foreground",
-        "id": "child_blonde_1"
+        "id": "person_child_1"
       },
       {
-        "desc": "television screen displaying a green pixelated grid pattern",
+        "desc": "television screen displaying a green grid pattern",
         "action": "static",
         "position": "left/background",
         "id": "television_1"
       },
       {
-        "desc": "white cylindrical lamp shade",
-        "action": "static",
-        "position": "left/background",
-        "id": "lamp_white_1"
-      },
-      {
-        "desc": "bright window emitting strong light",
+        "desc": "bright window with white frame",
         "action": "static",
         "position": "right/background",
+        "id": "window_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "child covers mouth with both hands",
+        "confidence": 1.0
+      },
+      {
+        "fact": "television screen displays a green grid pattern",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The child is in the center foreground, positioned to the right of the television screen and to the left of the window. The television is on the left side of the room, behind the child. The window is on the right side, behind the child.",
+    "parse_success": true,
+    "chunk_idx": 19,
+    "video_id": "v_o6_h2v15A",
+    "state_changes": []
+  },
+  {
+    "time": [
+      20,
+      21
+    ],
+    "visible_entities": [
+      {
+        "desc": "child with blonde hair and bangs, wearing a dark blue top",
+        "action": "moving hands from covering mouth to resting under chin",
+        "position": "center",
+        "id": "person_child_1"
+      },
+      {
+        "desc": "television screen displaying a dark silhouette figure on a white background",
+        "action": "static",
+        "position": "left",
+        "id": "television_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "child moves hands from covering mouth to resting under chin",
+        "confidence": 1.0
+      },
+      {
+        "fact": "television screen displays a dark silhouette figure",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The child is in the center foreground. The television is to the left of the child and slightly behind them.",
+    "parse_success": true,
+    "chunk_idx": 20,
+    "video_id": "v_o6_h2v15A",
+    "state_changes": [
+      "Person moves hands from covering mouth to resting under chin."
+    ]
+  },
+  {
+    "time": [
+      21,
+      22
+    ],
+    "visible_entities": [
+      {
+        "desc": "child with blonde hair and straight bangs, wearing a dark blue shirt",
+        "action": "resting chin on hand",
+        "position": "foreground",
+        "id": "person_child_1"
+      },
+      {
+        "desc": "television screen displaying a green pixelated image",
+        "action": "static",
+        "position": "background left",
+        "id": "television_1"
+      },
+      {
+        "desc": "television screen displaying a building scene",
+        "action": "static",
+        "position": "background left",
+        "id": "television_1"
+      },
+      {
+        "desc": "window with bright white light",
+        "action": "static",
+        "position": "background right",
         "id": "window_1"
       }
     ],
@@ -1018,60 +1000,60 @@
         "confidence": 1.0
       },
       {
-        "fact": "The television screen displays a green grid pattern.",
+        "fact": "The television screen changes from a green pixelated image to a scene of a building.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The child is in the center foreground, positioned to the right of the television screen. The television is on the left side of the room, with a white lamp shade situated above it. A bright window is located to the right of the child.",
+    "spatial": "The child is in the foreground, positioned to the right of the television. The television is in the background on the left side of the frame. The window is in the background to the right of the child.",
     "parse_success": true,
     "chunk_idx": 21,
     "video_id": "v_o6_h2v15A",
     "state_changes": [
-      "child rests chin on hand"
+      "Person rests chin on hand."
     ]
   },
   {
     "time": [
-      44,
-      46
+      22,
+      23
     ],
     "visible_entities": [
       {
-        "desc": "child with platinum blonde hair cut in a bowl style with straight bangs, wearing a dark blue top",
+        "desc": "child with blonde hair and bangs, wearing a dark blue top",
         "action": "touching chin with hand",
-        "position": "foreground right",
-        "id": "child_blonde_1"
+        "position": "right foreground",
+        "id": "person_child_1"
       },
       {
-        "desc": "flat-screen television displaying a black and white image of a building facade",
+        "desc": "black flat-screen television displaying a building scene",
         "action": "static",
-        "position": "background left",
+        "position": "left background",
         "id": "television_1"
       },
       {
-        "desc": "white cylindrical lampshade",
+        "desc": "white cylindrical lamp shade",
         "action": "static",
-        "position": "background left",
-        "id": "lamp_white_1"
+        "position": "background",
+        "id": "lamp_1"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "The child touches their chin with their fingers.",
+        "fact": "child touches chin with hand",
         "confidence": 1.0
       },
       {
-        "fact": "A television is on in the background showing a building.",
+        "fact": "television displays a building with many windows",
         "confidence": 1.0
       },
       {
-        "fact": "The child is positioned in the foreground, partially obscuring the background.",
+        "fact": "lamp shade is positioned above the television",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The child is in the foreground on the right side of the frame. The television is to the left of the child in the background. The white lampshade is positioned above the television.",
+    "spatial": "The child is in the right foreground, positioned to the right of the television. The television is on the left side of the frame, with the white lamp shade situated above it.",
     "parse_success": true,
     "chunk_idx": 22,
     "video_id": "v_o6_h2v15A",
@@ -1079,26 +1061,26 @@
   },
   {
     "time": [
-      46,
-      48
+      23,
+      24
     ],
     "visible_entities": [
       {
         "desc": "person with short blonde hair and bangs, wearing a dark blue long-sleeved top",
         "action": "touching face with hand",
-        "position": "center/foreground",
-        "id": "child_blonde_1"
+        "position": "center",
+        "id": "person_child_1"
       },
       {
         "desc": "television screen displaying a bright image",
         "action": "static",
-        "position": "left/background",
+        "position": "left background",
         "id": "television_1"
       },
       {
         "desc": "bright window emitting light",
         "action": "static",
-        "position": "right/background",
+        "position": "right background",
         "id": "window_1"
       }
     ],
@@ -1108,16 +1090,16 @@
         "confidence": 1.0
       },
       {
-        "fact": "television is turned on in the background",
+        "fact": "television is on in the background",
         "confidence": 1.0
       },
       {
-        "fact": "bright light source is visible on the right side",
+        "fact": "bright light from the window causes overexposure on the right side of the frame",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The person is in the center foreground, positioned between the television on the left and the window on the right. The television is behind the person and to their left. The window is behind the person and to their right.",
+    "spatial": "The person is in the center foreground, positioned in front of the television and the window. The television is to the left of the person. The window is to the right of the person.",
     "parse_success": true,
     "chunk_idx": 23,
     "video_id": "v_o6_h2v15A",
@@ -1125,18 +1107,18 @@
   },
   {
     "time": [
-      48,
-      50
+      24,
+      25
     ],
     "visible_entities": [
       {
-        "desc": "person with short blonde hair and bangs, wearing a dark blue top",
+        "desc": "person with blonde hair and bangs, wearing a dark blue top",
         "action": "holding hand over mouth",
         "position": "foreground",
-        "id": "child_blonde_1"
+        "id": "person_child_1"
       },
       {
-        "desc": "television screen displaying a video with a person in a black outfit against a green background",
+        "desc": "television screen displaying a video of a person in a black outfit against a green background",
         "action": "static",
         "position": "background left",
         "id": "television_1"
@@ -1144,11 +1126,11 @@
       {
         "desc": "white cylindrical lamp shade",
         "action": "static",
-        "position": "background left",
-        "id": "lamp_white_1"
+        "position": "background top left",
+        "id": "lamp_1"
       },
       {
-        "desc": "bright window",
+        "desc": "window with bright light",
         "action": "static",
         "position": "background right",
         "id": "window_1"
@@ -1164,12 +1146,12 @@
         "confidence": 1.0
       },
       {
-        "fact": "lamp is positioned above the television",
+        "fact": "lamp shade is above the television",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The person is in the foreground, positioned to the right of the television. The television is on the left side of the background, with a white lamp shade above it. A bright window is to the right of the person.",
+    "spatial": "The person is in the foreground, to the right of the television. The television is on the left side of the frame, below the lamp shade. The window is to the right of the person.",
     "parse_success": true,
     "chunk_idx": 24,
     "video_id": "v_o6_h2v15A",
@@ -1177,18 +1159,18 @@
   },
   {
     "time": [
-      50,
-      52
+      25,
+      26
     ],
     "visible_entities": [
       {
-        "desc": "child with light blonde hair and bangs, wearing a dark blue top",
-        "action": "covering mouth with hands",
+        "desc": "child with short blonde hair and bangs, wearing a dark blue shirt",
+        "action": "covering mouth with both hands",
         "position": "right foreground",
-        "id": "child_blonde_1"
+        "id": "person_child_1"
       },
       {
-        "desc": "black television screen displaying a green background with a figure",
+        "desc": "black flat-screen television displaying a green screen scene",
         "action": "static",
         "position": "left background",
         "id": "television_1"
@@ -1197,60 +1179,13 @@
         "desc": "white cylindrical lamp shade",
         "action": "static",
         "position": "top left background",
-        "id": "lamp_white_1"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "A child covers their mouth with their hands.",
-        "confidence": 1.0
+        "id": "lamp_1"
       },
       {
-        "fact": "The television displays the text 'TEEN' in white letters.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The television shows a figure standing in front of a green wall.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [
-      "TEEN"
-    ],
-    "spatial": "The child is in the foreground on the right side of the frame. The television is to the left of the child and behind them. The lamp shade is positioned above the television.",
-    "parse_success": true,
-    "chunk_idx": 25,
-    "video_id": "v_o6_h2v15A",
-    "state_changes": []
-  },
-  {
-    "time": [
-      52,
-      54
-    ],
-    "visible_entities": [
-      {
-        "desc": "child with straight blonde hair and bangs, wearing a dark blue shirt",
-        "action": "covering mouth with both hands",
-        "position": "right foreground",
-        "id": "child_blonde_1"
-      },
-      {
-        "desc": "black flat-screen television displaying a video",
-        "action": "static",
-        "position": "left background",
-        "id": "television_1"
-      },
-      {
-        "desc": "person on television screen with dark hair, wearing a black top",
-        "action": "lying down",
-        "position": "on television screen"
-      },
-      {
-        "desc": "white cylindrical lamp shade",
-        "action": "static",
-        "position": "above television",
-        "id": "lamp_white_1"
+        "desc": "figure on TV screen wearing a black outfit with white stripes",
+        "action": "standing",
+        "position": "on television screen",
+        "id": "person_tv_figure_1"
       }
     ],
     "atomic_facts": [
@@ -1259,16 +1194,74 @@
         "confidence": 1.0
       },
       {
-        "fact": "television displays a person lying down",
+        "fact": "television displays a scene with a green background",
         "confidence": 1.0
       },
       {
-        "fact": "lamp shade is positioned above the television",
+        "fact": "text 'TEEN' is visible on the television screen",
+        "confidence": 1.0
+      },
+      {
+        "fact": "lamp is positioned above the television",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "TEEN"
+    ],
+    "spatial": "The child is in the right foreground, positioned in front of a bright window. The television is to the left of the child in the background. The lamp is above the television. The figure on the screen is inside the television frame.",
+    "parse_success": true,
+    "chunk_idx": 25,
+    "video_id": "v_o6_h2v15A",
+    "state_changes": []
+  },
+  {
+    "time": [
+      26,
+      27
+    ],
+    "visible_entities": [
+      {
+        "desc": "child with straight blonde hair and bangs, wearing a dark blue shirt",
+        "action": "covering mouth with hands",
+        "position": "right foreground",
+        "id": "person_child_1"
+      },
+      {
+        "desc": "black television set",
+        "action": "displaying a scene",
+        "position": "left background",
+        "id": "television_1"
+      },
+      {
+        "desc": "person on television screen with dark hair, wearing a dark top",
+        "action": "lying down with arms raised",
+        "position": "on television screen",
+        "id": "person_tv_figure_1"
+      },
+      {
+        "desc": "white cylindrical lamp shade",
+        "action": "static",
+        "position": "above television",
+        "id": "lamp_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The child in the foreground covers their mouth with both hands.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The television in the background displays a scene of a person lying down.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The person on the television screen raises their arms above their head.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The child is in the foreground on the right side of the frame. The television is in the background to the left of the child. The white lamp shade is located above the television.",
+    "spatial": "The child is in the right foreground, positioned in front of the television which is on the left. The white lamp shade is situated above the television set. The person on the screen is lying down inside the television frame.",
     "parse_success": true,
     "chunk_idx": 26,
     "video_id": "v_o6_h2v15A",
@@ -1276,27 +1269,179 @@
   },
   {
     "time": [
-      54,
-      56
+      27,
+      28
     ],
     "visible_entities": [
       {
         "desc": "child with straight blonde hair and bangs, wearing a dark blue shirt",
         "action": "covering mouth with both hands",
-        "position": "foreground right",
-        "id": "child_blonde_1"
+        "position": "right foreground",
+        "id": "person_child_1"
       },
       {
-        "desc": "black television set displaying a video scene",
-        "action": "static",
-        "position": "background left",
+        "desc": "black flat-screen television",
+        "action": "displaying a video",
+        "position": "left background",
         "id": "television_1"
       },
       {
         "desc": "white cylindrical lamp shade",
         "action": "static",
+        "position": "background",
+        "id": "lamp_1"
+      },
+      {
+        "desc": "person on TV screen with dark skin and dreadlocks",
+        "action": "appearing on screen",
+        "position": "on television screen",
+        "id": "person_tv_figure_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The child covers their mouth with their hands.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The television screen changes content from a building scene to a close-up of a person.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A white lamp shade sits on top of the television.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The child is in the foreground to the right of the television. The television is positioned to the left of the child. The white lamp shade is on top of the television.",
+    "parse_success": true,
+    "chunk_idx": 27,
+    "video_id": "v_o6_h2v15A",
+    "state_changes": [
+      "New person (dark skin, dreadlocks) appears on TV screen."
+    ]
+  },
+  {
+    "time": [
+      28,
+      29
+    ],
+    "visible_entities": [
+      {
+        "desc": "child with blonde hair and bangs, wearing a dark blue top",
+        "action": "covering mouth with hands",
+        "position": "foreground right",
+        "id": "person_child_1"
+      },
+      {
+        "desc": "television screen displaying a green and black image",
+        "action": "static",
         "position": "background left",
-        "id": "lamp_white_1"
+        "id": "television_1"
+      },
+      {
+        "desc": "white cylindrical lampshade",
+        "action": "static",
+        "position": "background left",
+        "id": "lamp_1"
+      },
+      {
+        "desc": "bright window with white frame",
+        "action": "static",
+        "position": "background right",
+        "id": "window_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "child covers mouth with both hands",
+        "confidence": 1.0
+      },
+      {
+        "fact": "television is turned on and displaying an image",
+        "confidence": 1.0
+      },
+      {
+        "fact": "lamp is positioned on top of the television unit",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The child is in the foreground to the right of the television. The television is to the left of the window. The lamp is on top of the television.",
+    "parse_success": true,
+    "chunk_idx": 28,
+    "video_id": "v_o6_h2v15A",
+    "state_changes": []
+  },
+  {
+    "time": [
+      29,
+      30
+    ],
+    "visible_entities": [
+      {
+        "desc": "child with blonde hair and bangs, wearing a dark blue long-sleeved top",
+        "action": "covering mouth with hands",
+        "position": "foreground",
+        "id": "person_child_1"
+      },
+      {
+        "desc": "television screen displaying a person's face and text",
+        "action": "static",
+        "position": "background left",
+        "id": "television_1"
+      },
+      {
+        "desc": "window with bright white light",
+        "action": "static",
+        "position": "background right",
+        "id": "window_1"
+      },
+      {
+        "desc": "white cylindrical lamp shade",
+        "action": "static",
+        "position": "background left",
+        "id": "lamp_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The child covers their mouth with both hands.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The television screen is on in the background.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "Bright light enters from the window on the right.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The child is in the foreground, positioned in front of the television and the window. The television is to the left of the child, and the window is to the right of the child. The lamp shade is above the television.",
+    "parse_success": true,
+    "chunk_idx": 29,
+    "video_id": "v_o6_h2v15A",
+    "state_changes": []
+  },
+  {
+    "time": [
+      30,
+      31
+    ],
+    "visible_entities": [
+      {
+        "desc": "child with blonde hair and bangs, wearing a dark blue top",
+        "action": "touching chin with hand and looking to the right",
+        "position": "foreground",
+        "id": "person_child_1"
+      },
+      {
+        "desc": "television screen displaying a green background with white text",
+        "action": "static",
+        "position": "background left",
+        "id": "television_1"
       },
       {
         "desc": "bright window emitting strong light",
@@ -1307,169 +1452,22 @@
     ],
     "atomic_facts": [
       {
-        "fact": "The child in the foreground covers their mouth with their hands.",
+        "fact": "The child touches their chin with their hand.",
         "confidence": 1.0
       },
       {
-        "fact": "The television screen displays a scene with a person and subtitles.",
+        "fact": "The child looks to the right side of the frame.",
         "confidence": 1.0
       },
       {
-        "fact": "The lamp is positioned on top of the television set.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [
-      "I'M NOT GONNA LET YOU",
-      "I'M NOT GONNA LET YOU"
-    ],
-    "spatial": "The child is in the foreground to the right of the television. The television is to the left of the child and below the white lamp shade. The bright window is behind the child on the right side.",
-    "parse_success": true,
-    "chunk_idx": 27,
-    "video_id": "v_o6_h2v15A",
-    "state_changes": []
-  },
-  {
-    "time": [
-      56,
-      58
-    ],
-    "visible_entities": [
-      {
-        "desc": "child with blonde hair and bangs, wearing a dark blue long-sleeved shirt",
-        "action": "covering mouth with both hands",
-        "position": "center/foreground",
-        "id": "child_blonde_1"
-      },
-      {
-        "desc": "black television screen displaying a green and black image",
-        "action": "static",
-        "position": "left/background",
-        "id": "television_1"
-      },
-      {
-        "desc": "white cylindrical lampshade",
-        "action": "static",
-        "position": "left/background",
-        "id": "lamp_white_1"
-      },
-      {
-        "desc": "bright window with white frame",
-        "action": "static",
-        "position": "right/background",
-        "id": "window_1"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "child covers mouth with both hands",
-        "confidence": 1.0
-      },
-      {
-        "fact": "television is on and displaying a green image",
-        "confidence": 1.0
-      },
-      {
-        "fact": "text 'GREEN' is visible on the television screen",
+        "fact": "The television screen displays the text 'GREEN'.",
         "confidence": 1.0
       }
     ],
     "ocr": [
       "GREEN"
     ],
-    "spatial": "The child is in the foreground, positioned in front of the television and the window. The television is to the left of the child. The lampshade is on top of the television. The window is to the right of the child.",
-    "parse_success": true,
-    "chunk_idx": 28,
-    "video_id": "v_o6_h2v15A",
-    "state_changes": []
-  },
-  {
-    "time": [
-      58,
-      60
-    ],
-    "visible_entities": [
-      {
-        "desc": "child with short blonde hair and bangs, wearing a dark blue long-sleeved top",
-        "action": "covering mouth with hands",
-        "position": "center/foreground",
-        "id": "child_blonde_1"
-      },
-      {
-        "desc": "television screen displaying a video with a person's face and text",
-        "action": "static",
-        "position": "left/background",
-        "id": "television_1"
-      },
-      {
-        "desc": "white cylindrical lampshade",
-        "action": "static",
-        "position": "left/background",
-        "id": "lamp_white_1"
-      },
-      {
-        "desc": "bright window with white frame",
-        "action": "static",
-        "position": "right/background",
-        "id": "window_1"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "The child is covering their mouth with both hands.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The television is on and displaying a video.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The text 'CALL ON ME' is visible on the television screen.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [
-      "CALL ON ME"
-    ],
-    "spatial": "The child is in the foreground, positioned in front of the television and the window. The television is to the left of the child, and the window is to the right of the child. The lampshade is above the television.",
-    "parse_success": true,
-    "chunk_idx": 29,
-    "video_id": "v_o6_h2v15A",
-    "state_changes": []
-  },
-  {
-    "time": [
-      60,
-      62
-    ],
-    "visible_entities": [
-      {
-        "desc": "child with blonde hair and bangs, wearing a dark blue top",
-        "action": "moving hand to mouth",
-        "position": "foreground",
-        "id": "child_blonde_1"
-      },
-      {
-        "desc": "television screen displaying a green background with white text",
-        "action": "static",
-        "position": "background left",
-        "id": "television_1"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "child moves hand towards mouth",
-        "confidence": 1.0
-      },
-      {
-        "fact": "television is turned on in the background",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [
-      "GREEN"
-    ],
-    "spatial": "The child is in the foreground, positioned to the right of the television. The television is in the background on the left side of the frame.",
+    "spatial": "The child is in the foreground, positioned to the right of the television screen. The television is on the left side of the background, while the bright window is to the right of the child.",
     "parse_success": true,
     "chunk_idx": 30,
     "video_id": "v_o6_h2v15A",
@@ -1477,15 +1475,15 @@
   },
   {
     "time": [
-      62,
-      64
+      31,
+      32
     ],
     "visible_entities": [
       {
-        "desc": "child with blonde hair and straight bangs, wearing a dark blue or black zip-up jacket",
+        "desc": "child with straight blonde hair and bangs, wearing a dark blue zip-up top",
         "action": "looking at the camera",
         "position": "right foreground",
-        "id": "child_blonde_1"
+        "id": "person_child_1"
       },
       {
         "desc": "black flat-screen television displaying a video",
@@ -1497,84 +1495,87 @@
         "desc": "white cylindrical lamp shade",
         "action": "static",
         "position": "above the television",
-        "id": "lamp_white_1"
+        "id": "lamp_1"
       },
       {
-        "desc": "person on the television screen with dark curly hair and a white top",
+        "desc": "person on the television screen with dark curly hair and a white shirt",
         "action": "appearing on screen",
-        "position": "on the television screen"
+        "position": "on the television screen",
+        "id": "person_tv_figure_1"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "The child is looking towards the camera.",
+        "fact": "A child with blonde hair is positioned in the foreground on the right side of the frame.",
         "confidence": 1.0
       },
       {
-        "fact": "The television is turned on and displaying a video.",
+        "fact": "A television set is located in the background on the left side.",
         "confidence": 1.0
       },
       {
-        "fact": "The image on the television screen changes from a green background to a person with dark curly hair.",
+        "fact": "The television screen displays a scene with a green background and a person.",
         "confidence": 1.0
       },
       {
-        "fact": "A white lamp shade is positioned above the television.",
+        "fact": "A white lamp shade sits on top of the television unit.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The child is in the right foreground, positioned to the right of the television. The television is in the left background. The white lamp shade is above the television. The person with curly hair is visible on the television screen.",
+    "spatial": "The child is in the foreground to the right of the television. The television is positioned on the left side of the room, with a white lamp shade resting above it. The person on the screen is centered within the television frame.",
     "parse_success": true,
     "chunk_idx": 31,
     "video_id": "v_o6_h2v15A",
-    "state_changes": []
+    "state_changes": [
+      "New person (dark curly hair, white shirt) appears on TV screen."
+    ]
   },
   {
     "time": [
-      64,
-      66
+      32,
+      33
     ],
     "visible_entities": [
       {
-        "desc": "person with long light-colored hair, wearing a dark top",
+        "desc": "person with shoulder-length blonde hair and bangs, wearing a dark top",
         "action": "sitting in the foreground",
-        "position": "right foreground",
-        "id": "child_blonde_1"
+        "position": "right/foreground",
+        "id": "person_child_1"
       },
       {
-        "desc": "television screen displaying a person with dark skin, dreadlocks, and a green shirt against a green grid background",
+        "desc": "television screen displaying a person with dark skin, dreadlocks, and a green shirt against a green tiled background",
         "action": "displaying a video",
-        "position": "left background",
+        "position": "left/background",
         "id": "television_1"
       },
       {
-        "desc": "lamp with a white cylindrical shade",
+        "desc": "white cylindrical lamp shade",
         "action": "static",
-        "position": "left background",
-        "id": "lamp_white_1"
+        "position": "background/above television",
+        "id": "lamp_1"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A person is sitting in the foreground on the right.",
+        "fact": "A person with blonde hair is sitting in the foreground on the right side of the frame.",
         "confidence": 1.0
       },
       {
-        "fact": "A television is on in the background on the left.",
+        "fact": "A television is turned on and displaying a video of a person in a green shirt.",
         "confidence": 1.0
       },
       {
-        "fact": "The television screen shows a person with dreadlocks wearing a green shirt.",
+        "fact": "The person on the television screen is facing forward.",
         "confidence": 1.0
       },
       {
-        "fact": "A lamp with a white shade is visible behind the television.",
+        "fact": "The room is dimly lit with a bright light source coming from a window behind the person in the foreground.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The person with light-colored hair is in the foreground on the right. The television is to the left of the person and behind them. The lamp is behind the television.",
+    "spatial": "The person with blonde hair is in the foreground and to the right of the television. The television is in the background on the left side of the frame. The white lamp shade is above the television.",
     "parse_success": true,
     "chunk_idx": 32,
     "video_id": "v_o6_h2v15A",
@@ -1582,170 +1583,18 @@
   },
   {
     "time": [
-      66,
-      68
+      33,
+      34
     ],
     "visible_entities": [
       {
-        "desc": "child with blonde hair and bangs, wearing a dark blue long-sleeved top",
-        "action": "eating a small food item",
+        "desc": "child with short blonde hair and bangs, wearing a dark blue long-sleeved top",
+        "action": "moving hands from mouth to chest",
         "position": "center/foreground",
-        "id": "child_blonde_1"
+        "id": "person_child_1"
       },
       {
-        "desc": "television screen displaying a person with dark curly hair and a light-colored tank top",
-        "action": "static",
-        "position": "left/background",
-        "id": "television_1"
-      },
-      {
-        "desc": "small light-brown food item, possibly a cracker or cookie",
-        "action": "being held to mouth",
-        "position": "center/foreground",
-        "id": "snack_1"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "The child holds a small food item to their mouth with both hands.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The child lowers the food item from their mouth.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "A television is on in the background.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [],
-    "spatial": "The child is in the foreground, positioned to the right of the television. The television is in the background on the left side of the frame. The child is holding the food item in front of their face.",
-    "parse_success": true,
-    "chunk_idx": 33,
-    "video_id": "v_o6_h2v15A",
-    "state_changes": [
-      "child starts eating small food item"
-    ]
-  },
-  {
-    "time": [
-      68,
-      70
-    ],
-    "visible_entities": [
-      {
-        "desc": "person with short blonde hair and bangs, wearing a dark long-sleeved top",
-        "action": "holding a red apple to mouth",
-        "position": "center foreground",
-        "id": "child_blonde_1"
-      },
-      {
-        "desc": "red apple",
-        "action": "being held",
-        "position": "center foreground",
-        "id": "apple_red_1"
-      },
-      {
-        "desc": "television screen displaying a video with a person and green graphics",
-        "action": "static",
-        "position": "left background",
-        "id": "television_1"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "person holds a red apple with both hands near their mouth",
-        "confidence": 1.0
-      },
-      {
-        "fact": "television is on in the background",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [],
-    "spatial": "The person is in the center foreground, holding the apple in front of their face. The television is to the left of the person in the background.",
-    "parse_success": true,
-    "chunk_idx": 34,
-    "video_id": "v_o6_h2v15A",
-    "state_changes": [
-      "red apple appears, held to mouth"
-    ]
-  },
-  {
-    "time": [
-      70,
-      72
-    ],
-    "visible_entities": [
-      {
-        "desc": "person with blonde hair and bangs, wearing a dark long-sleeved zip-up top",
-        "action": "eating a sandwich",
-        "position": "center/foreground",
-        "id": "child_blonde_1"
-      },
-      {
-        "desc": "television screen displaying a green and black graphic with text",
-        "action": "static",
-        "position": "left/background",
-        "id": "television_1"
-      },
-      {
-        "desc": "sandwich with a brown bun",
-        "action": "being held to mouth",
-        "position": "center/foreground",
-        "id": "sandwich_1"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "person is holding a sandwich with both hands",
-        "confidence": 1.0
-      },
-      {
-        "fact": "person brings the sandwich to their mouth to take a bite",
-        "confidence": 1.0
-      },
-      {
-        "fact": "television screen displays the text 'THE REAL' in white letters",
-        "confidence": 1.0
-      },
-      {
-        "fact": "bright light source is visible to the right of the person",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [
-      "THE REAL"
-    ],
-    "spatial": "The person is in the center foreground, holding the sandwich in front of their face. The television is to the left of the person in the background. A bright window is to the right of the person.",
-    "parse_success": true,
-    "chunk_idx": 35,
-    "video_id": "v_o6_h2v15A",
-    "state_changes": [
-      "person starts eating sandwich"
-    ]
-  },
-  {
-    "time": [
-      72,
-      74
-    ],
-    "visible_entities": [
-      {
-        "desc": "child with blonde hair and bangs, wearing a dark blue top",
-        "action": "eating a red apple",
-        "position": "center/foreground",
-        "id": "child_blonde_1"
-      },
-      {
-        "desc": "red apple",
-        "action": "being held and bitten",
-        "position": "center/foreground",
-        "id": "apple_red_1"
-      },
-      {
-        "desc": "television screen displaying a menu with a landscape background",
+        "desc": "television screen displaying a person with dark curly hair and a white tank top",
         "action": "static",
         "position": "left/background",
         "id": "television_1"
@@ -1754,7 +1603,163 @@
         "desc": "white cylindrical lamp shade",
         "action": "static",
         "position": "left/background",
-        "id": "lamp_white_1"
+        "id": "lamp_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "child moves hands away from mouth",
+        "confidence": 1.0
+      },
+      {
+        "fact": "television is on in the background",
+        "confidence": 1.0
+      },
+      {
+        "fact": "person on television is wearing a white tank top",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The child is in the foreground, positioned to the right of the television. The television is in the background on the left side of the frame. The lamp shade is located above the television.",
+    "parse_success": true,
+    "chunk_idx": 33,
+    "video_id": "v_o6_h2v15A",
+    "state_changes": [
+      "Person moves hands from mouth to chest."
+    ]
+  },
+  {
+    "time": [
+      34,
+      35
+    ],
+    "visible_entities": [
+      {
+        "desc": "person with short blonde hair and bangs, wearing a dark blue long-sleeved top",
+        "action": "holding a round red fruit to their mouth",
+        "position": "center foreground",
+        "id": "person_child_1"
+      },
+      {
+        "desc": "red round fruit, likely an apple",
+        "action": "being held and bitten",
+        "position": "center foreground",
+        "id": "apple_1"
+      },
+      {
+        "desc": "television screen displaying a video of a person with dark hair",
+        "action": "static",
+        "position": "left background",
+        "id": "television_1"
+      },
+      {
+        "desc": "bright window emitting strong white light",
+        "action": "static",
+        "position": "right background",
+        "id": "window_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The person is holding a red fruit with both hands.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The person is biting into the red fruit.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A television is on in the background showing a person.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The person is in the center foreground, holding the red fruit in front of their mouth. The television is to the left of the person in the background. The bright window is to the right of the person.",
+    "parse_success": true,
+    "chunk_idx": 34,
+    "video_id": "v_o6_h2v15A",
+    "state_changes": [
+      "Person brings red apple to mouth and bites it."
+    ]
+  },
+  {
+    "time": [
+      35,
+      36
+    ],
+    "visible_entities": [
+      {
+        "desc": "person with blonde hair and bangs, wearing a black zip-up jacket",
+        "action": "raising hands to mouth",
+        "position": "center foreground",
+        "id": "person_child_1"
+      },
+      {
+        "desc": "television screen displaying a green and black graphic with text",
+        "action": "static",
+        "position": "left background",
+        "id": "television_1"
+      },
+      {
+        "desc": "bright window emitting light",
+        "action": "static",
+        "position": "right background",
+        "id": "window_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "person raises both hands to their mouth",
+        "confidence": 1.0
+      },
+      {
+        "fact": "television screen displays text 'THE REAL'",
+        "confidence": 1.0
+      },
+      {
+        "fact": "bright light source is visible on the right side of the frame",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "THE REAL"
+    ],
+    "spatial": "The person is in the center foreground, in front of the television and the window. The television is to the left of the person. The bright window is to the right of the person.",
+    "parse_success": true,
+    "chunk_idx": 35,
+    "video_id": "v_o6_h2v15A",
+    "state_changes": []
+  },
+  {
+    "time": [
+      36,
+      37
+    ],
+    "visible_entities": [
+      {
+        "desc": "child with blonde hair and bangs, wearing a dark blue shirt",
+        "action": "eating a red apple",
+        "position": "center foreground",
+        "id": "person_child_1"
+      },
+      {
+        "desc": "red apple",
+        "action": "being held and bitten",
+        "position": "center foreground",
+        "id": "apple_1"
+      },
+      {
+        "desc": "television screen displaying a menu with a landscape background",
+        "action": "static",
+        "position": "left background",
+        "id": "television_1"
+      },
+      {
+        "desc": "window with bright light",
+        "action": "static",
+        "position": "right background",
+        "id": "window_1"
       }
     ],
     "atomic_facts": [
@@ -1763,74 +1768,66 @@
         "confidence": 1.0
       },
       {
-        "fact": "The television screen displays the word 'Discovery' in the top left corner.",
+        "fact": "The television screen displays the word 'CLIMBING' in the top left corner.",
         "confidence": 1.0
       },
       {
-        "fact": "A white lamp shade sits on top of the television set.",
+        "fact": "The child is positioned in front of the television and the window.",
         "confidence": 1.0
       }
     ],
     "ocr": [
-      "Discovery"
+      "CLIMBING"
     ],
-    "spatial": "The child is in the center foreground, holding the apple in front of their mouth. The television is to the left of the child in the background. The white lamp shade is on top of the television.",
+    "spatial": "The child is in the center foreground, holding the apple in front of their mouth. The television is to the left of the child in the background. The bright window is to the right of the child in the background.",
     "parse_success": true,
     "chunk_idx": 36,
     "video_id": "v_o6_h2v15A",
     "state_changes": [
-      "child bites into red apple"
+      "Person continues eating the red apple."
     ]
   },
   {
     "time": [
-      74,
-      76
+      37,
+      38
     ],
     "visible_entities": [
       {
         "desc": "person with short blonde hair and bangs, wearing a dark blue shirt",
-        "action": "static",
-        "position": "foreground",
-        "id": "child_blonde_1"
+        "action": "sitting in the foreground",
+        "position": "center foreground",
+        "id": "person_child_1"
       },
       {
-        "desc": "television screen displaying a figure in a black bodysuit against a blue background",
-        "action": "static",
-        "position": "background left",
+        "desc": "television screen displaying a figure in a dark outfit against a bright blue background",
+        "action": "displaying an image",
+        "position": "left background",
         "id": "television_1"
       },
       {
-        "desc": "bright window with white light",
+        "desc": "bright window emitting intense white light",
         "action": "static",
-        "position": "background right",
+        "position": "right background",
         "id": "window_1"
-      },
-      {
-        "desc": "white lampshade",
-        "action": "static",
-        "position": "background left",
-        "id": "lamp_white_1"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A person with blonde hair is positioned in the foreground.",
+        "fact": "A person with blonde hair sits in the foreground.",
         "confidence": 1.0
       },
       {
-        "fact": "A television is on in the background.",
+        "fact": "A television is on in the background to the left.",
         "confidence": 1.0
       },
       {
-        "fact": "The text 'Samsung' is visible in the top left corner of the television screen.",
+        "fact": "A bright window is visible to the right of the person.",
         "confidence": 1.0
       }
     ],
-    "ocr": [
-      "Samsung"
-    ],
-    "spatial": "The person with blonde hair is in the foreground, positioned to the right of the television. The television is to the left of the bright window. A white lampshade is located above the television.",
+    "ocr": [],
+    "spatial": "The person with blonde hair is in the center foreground. The television is to the left of the person and behind them. The bright window is to the right of the person and behind them.",
     "parse_success": true,
     "chunk_idx": 37,
     "video_id": "v_o6_h2v15A",
@@ -1838,18 +1835,18 @@
   },
   {
     "time": [
-      76,
-      78
+      38,
+      39
     ],
     "visible_entities": [
       {
-        "desc": "child with blonde hair and bangs, wearing a dark blue top",
+        "desc": "child with blonde hair and bangs, wearing a dark blue shirt",
         "action": "moving head and opening mouth",
         "position": "center/foreground",
-        "id": "child_blonde_1"
+        "id": "person_child_1"
       },
       {
-        "desc": "television screen displaying video content",
+        "desc": "television screen displaying a video",
         "action": "static",
         "position": "left/background",
         "id": "television_1"
@@ -1867,16 +1864,12 @@
         "confidence": 1.0
       },
       {
-        "fact": "television is on and displaying a scene",
-        "confidence": 1.0
-      },
-      {
-        "fact": "bright light is coming from the window",
+        "fact": "television is on in the background",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The child is in the center foreground. The television is to the left of the child and behind them. The window is to the right of the child and behind them.",
+    "spatial": "The child is in the center foreground. The television is to the left of the child in the background. The window is to the right of the child in the background.",
     "parse_success": true,
     "chunk_idx": 38,
     "video_id": "v_o6_h2v15A",
@@ -1884,24 +1877,24 @@
   },
   {
     "time": [
-      78,
-      80
+      39,
+      40
     ],
     "visible_entities": [
       {
         "desc": "child with blonde hair and bangs, wearing a dark blue top",
-        "action": "moving mouth and hand",
+        "action": "moving mouth",
         "position": "center/foreground",
-        "id": "child_blonde_1"
+        "id": "person_child_1"
       },
       {
-        "desc": "television screen displaying a blue grid pattern and a dark shape",
+        "desc": "television screen displaying a video game with a blue grid background and a character",
         "action": "static",
         "position": "left/background",
         "id": "television_1"
       },
       {
-        "desc": "bright window emitting light",
+        "desc": "bright window emitting strong white light",
         "action": "static",
         "position": "right/background",
         "id": "window_1"
@@ -1909,24 +1902,20 @@
     ],
     "atomic_facts": [
       {
-        "fact": "child moves mouth as if speaking",
+        "fact": "The child moves their mouth, opening it in the first frame and closing it in the second.",
         "confidence": 1.0
       },
       {
-        "fact": "child raises hand to chin area",
+        "fact": "A television is visible in the background displaying a video game scene.",
         "confidence": 1.0
       },
       {
-        "fact": "television screen displays a blue grid pattern",
-        "confidence": 1.0
-      },
-      {
-        "fact": "bright light from the window illuminates the right side of the child's face",
+        "fact": "Bright light from a window on the right side causes a glare on the child's head.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The child is in the center foreground, positioned to the right of the television screen and in front of the bright window. The television is on the left side of the background. The window is on the right side of the background.",
+    "spatial": "The child is in the center foreground, positioned to the right of the television. The television is on the left side of the frame, behind the child. A bright window is located to the right of the child.",
     "parse_success": true,
     "chunk_idx": 39,
     "video_id": "v_o6_h2v15A",
@@ -1934,18 +1923,18 @@
   },
   {
     "time": [
-      80,
-      82
+      40,
+      41
     ],
     "visible_entities": [
       {
-        "desc": "child with blonde hair and bangs, wearing a dark blue shirt",
-        "action": "touching chin",
+        "desc": "child with blonde hair and bangs, wearing a dark blue top",
+        "action": "moving hand to chin",
         "position": "foreground",
-        "id": "child_blonde_1"
+        "id": "person_child_1"
       },
       {
-        "desc": "television screen displaying a green background with a hand graphic",
+        "desc": "television screen displaying a green background with a person's arm",
         "action": "static",
         "position": "background left",
         "id": "television_1"
@@ -1954,25 +1943,33 @@
         "desc": "white cylindrical lamp shade",
         "action": "static",
         "position": "background left",
-        "id": "lamp_white_1"
+        "id": "lamp_1"
+      },
+      {
+        "desc": "bright window with white frame",
+        "action": "static",
+        "position": "background right",
+        "id": "window_1"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "child touches chin with hand",
+        "fact": "child moves hand to chin",
         "confidence": 1.0
       },
       {
-        "fact": "television displays a green screen with a hand graphic",
+        "fact": "television is on and displaying a green image",
         "confidence": 1.0
       },
       {
-        "fact": "lamp shade sits on top of the television",
+        "fact": "text 'CIA' is visible on the television screen",
         "confidence": 1.0
       }
     ],
-    "ocr": [],
-    "spatial": "The child is in the foreground, positioned to the right of the television. The television is in the background on the left side of the frame. The white lamp shade is on top of the television.",
+    "ocr": [
+      "CIA"
+    ],
+    "spatial": "The child is in the foreground, positioned in front of the television and the window. The television is to the left of the child, and the window is to the right of the child. The lamp shade is above the television.",
     "parse_success": true,
     "chunk_idx": 40,
     "video_id": "v_o6_h2v15A",
@@ -1980,18 +1977,18 @@
   },
   {
     "time": [
-      82,
-      84
+      41,
+      42
     ],
     "visible_entities": [
       {
         "desc": "child with blonde hair and bangs, wearing a dark top",
-        "action": "facing the camera",
-        "position": "foreground",
-        "id": "child_blonde_1"
+        "action": "looking at the camera",
+        "position": "foreground right",
+        "id": "person_child_1"
       },
       {
-        "desc": "television screen displaying a green background with a person in a blue shirt",
+        "desc": "television screen displaying a person in a blue shirt against a green background",
         "action": "static",
         "position": "background left",
         "id": "television_1"
@@ -1999,26 +1996,26 @@
       {
         "desc": "white cylindrical lamp shade",
         "action": "static",
-        "position": "background top left",
-        "id": "lamp_white_1"
+        "position": "background left",
+        "id": "lamp_1"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A child with blonde hair is positioned in the foreground.",
+        "fact": "child looks at the camera",
         "confidence": 1.0
       },
       {
-        "fact": "A television is visible in the background on the left.",
+        "fact": "television is on in the background",
         "confidence": 1.0
       },
       {
-        "fact": "The television screen displays a scene with a green background.",
+        "fact": "lamp is positioned above the television",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The child is in the foreground, positioned to the right of the television. The television is in the background on the left side of the frame. A white lamp shade is located above the television.",
+    "spatial": "The child is in the foreground to the right of the television. The television is in the background on the left. The white lamp shade is above the television.",
     "parse_success": true,
     "chunk_idx": 41,
     "video_id": "v_o6_h2v15A",
@@ -2026,27 +2023,81 @@
   },
   {
     "time": [
-      84,
-      86
+      42,
+      43
     ],
     "visible_entities": [
       {
-        "desc": "child with straight blonde hair and bangs, wearing a dark blue shirt",
-        "action": "looking at the camera",
+        "desc": "child with straight blonde hair and bangs, wearing a dark blue top",
+        "action": "looking down",
         "position": "foreground right",
-        "id": "child_blonde_1"
+        "id": "person_child_1"
       },
       {
-        "desc": "television screen displaying a music video with a person in a blue shirt and sunglasses against a green background",
-        "action": "displaying video content",
+        "desc": "flat-screen television displaying a video with green tint",
+        "action": "static",
         "position": "background left",
+        "id": "television_1"
+      },
+      {
+        "desc": "person on television screen with dark skin, wearing a blue shirt",
+        "action": "gesturing",
+        "position": "on television screen",
+        "id": "person_tv_figure_1"
+      },
+      {
+        "desc": "white cylindrical lampshade",
+        "action": "static",
+        "position": "background left",
+        "id": "lamp_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The child in the foreground is looking downwards.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The television in the background is playing a video featuring a person in a blue shirt.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The person on the television screen is gesturing with their hand.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The child is in the foreground on the right side of the frame. The television is behind the child and to the left. The white lampshade is positioned above the television.",
+    "parse_success": true,
+    "chunk_idx": 42,
+    "video_id": "v_o6_h2v15A",
+    "state_changes": [
+      "Person on TV screen begins gesturing."
+    ]
+  },
+  {
+    "time": [
+      43,
+      44
+    ],
+    "visible_entities": [
+      {
+        "desc": "child with blonde hair and bangs, wearing a dark top",
+        "action": "looking at the camera",
+        "position": "right foreground",
+        "id": "person_child_1"
+      },
+      {
+        "desc": "television screen displaying a video with a person in a blue shirt and green background",
+        "action": "displaying video content",
+        "position": "left background",
         "id": "television_1"
       },
       {
         "desc": "white cylindrical lamp shade",
         "action": "static",
-        "position": "background left",
-        "id": "lamp_white_1"
+        "position": "background",
+        "id": "lamp_1"
       }
     ],
     "atomic_facts": [
@@ -2059,62 +2110,12 @@
         "confidence": 1.0
       },
       {
-        "fact": "The television screen shows a person wearing sunglasses and a blue shirt.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "A white lamp shade is visible above the television.",
+        "fact": "The video on the television screen changes between the two frames.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The child is in the foreground to the right of the television. The television is in the background on the left side of the frame. The white lamp shade is above the television.",
-    "parse_success": true,
-    "chunk_idx": 42,
-    "video_id": "v_o6_h2v15A",
-    "state_changes": []
-  },
-  {
-    "time": [
-      86,
-      88
-    ],
-    "visible_entities": [
-      {
-        "desc": "child with blonde hair and bangs, wearing a dark top",
-        "action": "looking at the camera",
-        "position": "right foreground",
-        "id": "child_blonde_1"
-      },
-      {
-        "desc": "black television set",
-        "action": "displaying video content",
-        "position": "left background",
-        "id": "television_1"
-      },
-      {
-        "desc": "white cylindrical lamp shade",
-        "action": "static",
-        "position": "background",
-        "id": "lamp_white_1"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "child is positioned in the foreground on the right side of the frame",
-        "confidence": 1.0
-      },
-      {
-        "fact": "television is turned on and displaying a scene with a person against a green background",
-        "confidence": 1.0
-      },
-      {
-        "fact": "white lamp shade is visible above the television",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [],
-    "spatial": "The child is in the foreground on the right side of the frame. The television is to the left of the child and behind them. The white lamp shade is above the television.",
+    "spatial": "The child is in the foreground on the right side of the frame. The television is located in the background to the left of the child. A white lamp shade is visible above the television.",
     "parse_success": true,
     "chunk_idx": 43,
     "video_id": "v_o6_h2v15A",
@@ -2122,79 +2123,83 @@
   },
   {
     "time": [
-      88,
-      90
+      44,
+      45
     ],
     "visible_entities": [
       {
         "desc": "child with blonde hair and bangs, wearing a dark blue top",
-        "action": "raising hand to cover mouth",
-        "position": "center",
-        "id": "child_blonde_1"
+        "action": "raising hand to mouth",
+        "position": "center/foreground",
+        "id": "person_child_1"
       },
       {
-        "desc": "television screen displaying a bright interface with text",
+        "desc": "television screen displaying a bright image with text",
         "action": "static",
-        "position": "background left",
+        "position": "left/background",
+        "id": "television_1"
+      },
+      {
+        "desc": "bright window",
+        "action": "static",
+        "position": "right/background",
+        "id": "window_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The child raises their hand to cover their mouth.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The television screen displays text that reads 'CLIP'.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "CLIP"
+    ],
+    "spatial": "The child is in the center foreground, positioned between the television on the left and the window on the right. The television is behind the child and to their left.",
+    "parse_success": true,
+    "chunk_idx": 44,
+    "video_id": "v_o6_h2v15A",
+    "state_changes": []
+  },
+  {
+    "time": [
+      45,
+      46
+    ],
+    "visible_entities": [
+      {
+        "desc": "person with blonde hair and bangs, wearing a dark blue long-sleeved top",
+        "action": "covering mouth with hand",
+        "position": "center",
+        "id": "person_child_1"
+      },
+      {
+        "desc": "black rectangular electronic device with a screen displaying orange vertical bars",
+        "action": "static",
+        "position": "left",
         "id": "television_1"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "The child raises their right hand to cover their mouth.",
+        "fact": "person covers mouth with right hand",
         "confidence": 1.0
       },
       {
-        "fact": "The television screen displays text that reads 'CUPCAKE'.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [
-      "CUPCAKE"
-    ],
-    "spatial": "The child is in the foreground, positioned to the right of the television. The television is located in the background on the left side of the frame.",
-    "parse_success": true,
-    "chunk_idx": 44,
-    "video_id": "v_o6_h2v15A",
-    "state_changes": [
-      "child raises hand to cover mouth"
-    ]
-  },
-  {
-    "time": [
-      90,
-      92
-    ],
-    "visible_entities": [
-      {
-        "desc": "person with short blonde hair and bangs, wearing a dark blue long-sleeved top",
-        "action": "covering mouth with hand",
-        "position": "center",
-        "id": "child_blonde_1"
-      },
-      {
-        "desc": "dark rectangular object with vertical orange stripes",
-        "action": "static",
-        "position": "left",
-        "id": "object_striped_1"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "person covers mouth with hand",
+        "fact": "electronic device displays orange vertical bars on screen",
         "confidence": 1.0
       },
       {
-        "fact": "person is in front of a window",
-        "confidence": 1.0
-      },
-      {
-        "fact": "dark rectangular object is to the left of the person",
+        "fact": "bright light source is visible in the background",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The person is in the center of the frame, in front of a bright window on the right. The dark rectangular object with orange stripes is to the left of the person.",
+    "spatial": "The person is in the center of the frame, positioned to the right of the electronic device. The electronic device is on the left side of the image. A bright window is behind the person.",
     "parse_success": true,
     "chunk_idx": 45,
     "video_id": "v_o6_h2v15A",
@@ -2202,15 +2207,15 @@
   },
   {
     "time": [
-      92,
-      94
+      46,
+      47
     ],
     "visible_entities": [
       {
-        "desc": "person with shoulder-length blonde hair and bangs, wearing a dark blue long-sleeved top",
-        "action": "covering mouth with right hand",
+        "desc": "person with shoulder-length blonde hair, wearing a dark blue long-sleeved top",
+        "action": "holding hand over mouth",
         "position": "center",
-        "id": "child_blonde_1"
+        "id": "person_child_1"
       },
       {
         "desc": "television screen displaying a green graphic with white text",
@@ -2227,22 +2232,18 @@
     ],
     "atomic_facts": [
       {
-        "fact": "person covers mouth with right hand",
+        "fact": "person holds hand over mouth",
         "confidence": 1.0
       },
       {
-        "fact": "television screen displays text reading 'NEEN'",
-        "confidence": 1.0
-      },
-      {
-        "fact": "person is positioned in front of the television",
+        "fact": "television displays the text 'NEEN' in white on a green background",
         "confidence": 1.0
       }
     ],
     "ocr": [
       "NEEN"
     ],
-    "spatial": "The person is in the center of the frame, positioned to the right of the television screen. The bright window is to the right of the person. The person is in front of the television.",
+    "spatial": "The person is in the center of the frame, positioned to the right of the television screen. The television is to the left of the person. The bright window is to the right of the person and behind them.",
     "parse_success": true,
     "chunk_idx": 46,
     "video_id": "v_o6_h2v15A",
@@ -2250,15 +2251,15 @@
   },
   {
     "time": [
-      94,
-      96
+      47,
+      48
     ],
     "visible_entities": [
       {
-        "desc": "person with long blonde hair, wearing dark clothing",
+        "desc": "person with long blonde hair, wearing a dark top",
         "action": "sitting still",
         "position": "center",
-        "id": "child_blonde_1"
+        "id": "person_child_1"
       },
       {
         "desc": "bright window with white frame",
@@ -2267,7 +2268,7 @@
         "id": "window_1"
       },
       {
-        "desc": "television screen displaying blue geometric pattern",
+        "desc": "television screen displaying a blue geometric pattern",
         "action": "static",
         "position": "left",
         "id": "television_1"
@@ -2275,16 +2276,20 @@
     ],
     "atomic_facts": [
       {
-        "fact": "person sits in front of a bright window",
+        "fact": "A person with long blonde hair sits in the center of the frame.",
         "confidence": 1.0
       },
       {
-        "fact": "television screen is visible on the left side of the frame",
+        "fact": "A television screen on the left displays a blue geometric pattern.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "Bright light enters through a window on the right side of the room.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The person is in the center of the frame, positioned in front of the bright window on the right. The television screen is to the left of the person.",
+    "spatial": "The person is in the center of the frame, positioned between the television screen on the left and the window on the right. The television is behind the person to the left. The window is behind the person to the right.",
     "parse_success": true,
     "chunk_idx": 47,
     "video_id": "v_o6_h2v15A",
@@ -2292,15 +2297,15 @@
   },
   {
     "time": [
-      96,
-      98
+      48,
+      49
     ],
     "visible_entities": [
       {
         "desc": "person with blonde hair and bangs, wearing a dark blue top",
-        "action": "touching face with hand",
+        "action": "holding hand over mouth",
         "position": "center/foreground",
-        "id": "child_blonde_1"
+        "id": "person_child_1"
       },
       {
         "desc": "television screen displaying a bright image with blue and white colors",
@@ -2309,7 +2314,7 @@
         "id": "television_1"
       },
       {
-        "desc": "bright window with white frame",
+        "desc": "bright window emitting strong light",
         "action": "static",
         "position": "right/background",
         "id": "window_1"
@@ -2317,7 +2322,7 @@
     ],
     "atomic_facts": [
       {
-        "fact": "person touches their face with their hand",
+        "fact": "person holds hand over mouth",
         "confidence": 1.0
       },
       {
@@ -2325,7 +2330,7 @@
         "confidence": 1.0
       },
       {
-        "fact": "bright light is coming from the window",
+        "fact": "bright light comes from the window on the right",
         "confidence": 1.0
       }
     ],
@@ -2338,168 +2343,32 @@
   },
   {
     "time": [
-      98,
-      100
+      49,
+      50
     ],
     "visible_entities": [
       {
-        "desc": "child with short blonde hair and bangs, wearing a dark blue long-sleeved top",
+        "desc": "person with blonde hair and bangs, wearing a dark blue top",
         "action": "covering mouth with hands",
-        "position": "center/foreground",
-        "id": "child_blonde_1"
+        "position": "center foreground",
+        "id": "person_child_1"
       },
       {
-        "desc": "television screen displaying a scene with reddish-brown tones and white text",
+        "desc": "television screen displaying a scene with orange and brown tones",
         "action": "static",
-        "position": "left/background",
+        "position": "left background",
         "id": "television_1"
       },
       {
         "desc": "bright window emitting strong white light",
         "action": "static",
-        "position": "right/background",
+        "position": "right background",
         "id": "window_1"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "child covers mouth with both hands",
-        "confidence": 1.0
-      },
-      {
-        "fact": "television is on and displaying content in the background",
-        "confidence": 1.0
-      },
-      {
-        "fact": "bright light from the window causes glare on the right side of the frame",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [],
-    "spatial": "The child is in the center foreground, positioned between the television on the left and the window on the right. The television is behind the child and to the left. The window is behind the child and to the right.",
-    "parse_success": true,
-    "chunk_idx": 49,
-    "video_id": "v_o6_h2v15A",
-    "state_changes": []
-  },
-  {
-    "time": [
-      100,
-      102
-    ],
-    "visible_entities": [
-      {
-        "desc": "person with short dark hair, wearing a dark long-sleeved top",
-        "action": "moving into the frame",
-        "position": "foreground",
-        "id": "person_dark_hair_1"
-      },
-      {
-        "desc": "television screen displaying a scene with a person and a red rectangular object",
-        "action": "static",
-        "position": "background left",
-        "id": "television_1"
-      },
-      {
-        "desc": "bright window emitting intense white light",
-        "action": "static",
-        "position": "background right",
-        "id": "window_1"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "A person moves into the foreground, partially obscuring the view of the room.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The television screen is on and displaying a video in the background.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "Intense light from the window on the right creates a silhouette effect.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [],
-    "spatial": "The person is in the foreground, positioned to the right of the television screen. The television screen is on the left side of the background, while the bright window is on the right side of the background.",
-    "parse_success": true,
-    "chunk_idx": 50,
-    "video_id": "v_o6_h2v15A",
-    "state_changes": [
-      "new person moves into frame"
-    ]
-  },
-  {
-    "time": [
-      102,
-      104
-    ],
-    "visible_entities": [
-      {
-        "desc": "child with short blonde hair and bangs, wearing a dark blue shirt",
-        "action": "covering mouth with hands",
-        "position": "foreground center",
-        "id": "child_blonde_1"
-      },
-      {
-        "desc": "black television set displaying a colorful image",
-        "action": "static",
-        "position": "background left",
-        "id": "television_1"
-      },
-      {
-        "desc": "white cylindrical lamp shade",
-        "action": "static",
-        "position": "background left",
-        "id": "lamp_white_1"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "The child holds both hands up to cover their mouth and nose area.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The television is turned on and displaying a scene with a person's face.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [],
-    "spatial": "The child is positioned in the foreground, centered in the frame. The television is located in the background to the left of the child. The white lamp shade is situated above the television set.",
-    "parse_success": true,
-    "chunk_idx": 51,
-    "video_id": "v_o6_h2v15A",
-    "state_changes": []
-  },
-  {
-    "time": [
-      104,
-      106
-    ],
-    "visible_entities": [
-      {
-        "desc": "person with short blonde hair and bangs, wearing a dark blue top",
-        "action": "holding hands over mouth",
-        "position": "center/foreground",
-        "id": "child_blonde_1"
-      },
-      {
-        "desc": "television screen displaying a video with a person in a striped shirt",
-        "action": "static",
-        "position": "left/background",
-        "id": "television_1"
-      },
-      {
-        "desc": "lamp with a white cylindrical shade",
-        "action": "static",
-        "position": "left/background",
-        "id": "lamp_white_1"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "person holds hands over mouth",
+        "fact": "person covers their mouth with both hands",
         "confidence": 1.0
       },
       {
@@ -2507,277 +2376,77 @@
         "confidence": 1.0
       },
       {
-        "fact": "bright light source is to the right of the person",
+        "fact": "bright light from the window washes out the right side of the frame",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The person with blonde hair is in the center foreground. The television is to the left of the person and behind them. The lamp is above the television.",
+    "spatial": "The person is in the center foreground, positioned in front of the television and the window. The television is to the left of the person, and the window is to the right of the person.",
     "parse_success": true,
-    "chunk_idx": 52,
+    "chunk_idx": 49,
     "video_id": "v_o6_h2v15A",
     "state_changes": []
   },
   {
     "time": [
-      106,
-      108
+      50,
+      51
     ],
     "visible_entities": [
       {
-        "desc": "person with short blonde hair, wearing a dark top",
-        "action": "holding hand over mouth",
-        "position": "foreground center",
-        "id": "child_blonde_1"
-      },
-      {
-        "desc": "television screen displaying a blue and white geometric pattern",
-        "action": "static",
-        "position": "background left",
-        "id": "television_1"
-      },
-      {
-        "desc": "bright window emitting intense white light",
-        "action": "static",
-        "position": "background right",
-        "id": "window_1"
-      },
-      {
-        "desc": "white cylindrical lamp shade",
-        "action": "static",
-        "position": "background top left",
-        "id": "lamp_white_1"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "person holds hand over mouth",
-        "confidence": 1.0
-      },
-      {
-        "fact": "television displays a geometric pattern",
-        "confidence": 1.0
-      },
-      {
-        "fact": "bright light from the window obscures the right side of the frame",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [],
-    "spatial": "The person is in the foreground, positioned in front of the television and the window. The television is to the left of the person, while the bright window is to the right. The lamp shade is located above the television.",
-    "parse_success": true,
-    "chunk_idx": 53,
-    "video_id": "v_o6_h2v15A",
-    "state_changes": []
-  },
-  {
-    "time": [
-      108,
-      110
-    ],
-    "visible_entities": [
-      {
-        "desc": "person with short blonde hair, dark clothing",
-        "action": "sitting in foreground",
-        "position": "foreground center",
-        "id": "child_blonde_1"
-      },
-      {
-        "desc": "television screen displaying a scene with a person and green vertical stripes",
-        "action": "displaying changing images",
-        "position": "background left",
-        "id": "television_1"
-      },
-      {
-        "desc": "bright window with white light",
-        "action": "static",
-        "position": "background right",
-        "id": "window_1"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "A person with short blonde hair is sitting in the foreground.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The television screen in the background changes its display from green vertical stripes to a scene with a person.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "Bright light is coming from a window on the right side of the room.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [],
-    "spatial": "The person with short blonde hair is in the foreground, positioned in front of the television and the window. The television is to the left of the window in the background.",
-    "parse_success": true,
-    "chunk_idx": 54,
-    "video_id": "v_o6_h2v15A",
-    "state_changes": []
-  },
-  {
-    "time": [
-      110,
-      112
-    ],
-    "visible_entities": [
-      {
-        "desc": "person with shoulder-length blonde hair, wearing dark clothing",
-        "action": "sitting still",
-        "position": "foreground right",
-        "id": "child_blonde_1"
-      },
-      {
-        "desc": "television screen displaying a video with a person in a dark jacket and a blue geometric background",
-        "action": "static",
-        "position": "background left",
-        "id": "television_1"
-      },
-      {
-        "desc": "bright window emitting intense white light",
-        "action": "static",
-        "position": "background right",
-        "id": "window_1"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "A person with blonde hair sits in the foreground.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "A television is on in the background.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The television displays a scene with a person and a blue patterned background.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [],
-    "spatial": "The person with blonde hair is in the foreground, positioned to the right of the television screen. The television is located on the left side of the room, behind the person. A bright window is situated to the right of the person.",
-    "parse_success": true,
-    "chunk_idx": 55,
-    "video_id": "v_o6_h2v15A",
-    "state_changes": []
-  },
-  {
-    "time": [
-      112,
-      114
-    ],
-    "visible_entities": [
-      {
-        "desc": "person with short brown hair and bangs, wearing a dark top",
-        "action": "moving head down and forward",
+        "desc": "person with short dark hair, wearing a dark long-sleeved top",
+        "action": "standing in the foreground",
         "position": "foreground",
-        "id": "person_dark_hair_1"
+        "id": "person_dark_1"
       },
       {
-        "desc": "person with dark hair and a beard, wearing a dark shirt",
+        "desc": "television screen displaying a scene with a person and a red object",
         "action": "static",
-        "position": "background left",
-        "id": "person_dark_hair_1"
-      },
-      {
-        "desc": "television screen displaying a video with a person and text",
-        "action": "static",
-        "position": "background left",
+        "position": "left background",
         "id": "television_1"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "A person with short brown hair moves their head down and forward, obscuring the view.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "A television is on in the background, displaying a scene with a person and subtitles.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The text 'Calling' is visible in the top left corner of the television screen.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [
-      "Calling"
-    ],
-    "spatial": "The person with short brown hair is in the foreground, in front of the television and the person with the beard. The television is to the left of the bright window light. The person with the beard is to the left of the foreground person.",
-    "parse_success": true,
-    "chunk_idx": 56,
-    "video_id": "v_o6_h2v15A",
-    "state_changes": [
-      "person with beard appears, person moves head down"
-    ]
-  },
-  {
-    "time": [
-      114,
-      116
-    ],
-    "visible_entities": [
-      {
-        "desc": "child with blonde hair and bangs, wearing a dark blue top",
-        "action": "touching chin with hand",
-        "position": "center/foreground",
-        "id": "child_blonde_1"
-      },
-      {
-        "desc": "black television screen displaying a scene with vertical white and green bars",
-        "action": "static",
-        "position": "left/background",
-        "id": "television_1"
-      },
-      {
-        "desc": "white cylindrical lamp shade",
-        "action": "static",
-        "position": "left/background",
-        "id": "lamp_white_1"
       },
       {
         "desc": "bright window emitting intense white light",
         "action": "static",
-        "position": "right/background",
+        "position": "right background",
         "id": "window_1"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "The child is touching their chin with their hand.",
+        "fact": "A person stands in the foreground facing the camera.",
         "confidence": 1.0
       },
       {
-        "fact": "The television screen displays a scene with vertical bars.",
+        "fact": "A television is on in the background on the left side.",
         "confidence": 1.0
       },
       {
-        "fact": "The window is emitting bright light that washes out the right side of the frame.",
+        "fact": "Bright light from a window on the right creates a silhouette effect.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The child is in the foreground, centered in the frame. The television is to the left of the child and behind them. The lamp shade is above the television. The bright window is to the right of the child.",
+    "spatial": "The person is in the foreground, positioned in front of the television and the window. The television is to the left of the person, while the bright window is to the right of the person.",
     "parse_success": true,
-    "chunk_idx": 57,
+    "chunk_idx": 50,
     "video_id": "v_o6_h2v15A",
     "state_changes": []
   },
   {
     "time": [
-      116,
-      118
+      51,
+      52
     ],
     "visible_entities": [
       {
-        "desc": "child with blonde hair and bangs, wearing a dark blue zip-up top",
-        "action": "moving hand from mouth to chest",
-        "position": "foreground right",
-        "id": "child_blonde_1"
+        "desc": "child with short blonde hair and bangs, wearing a dark blue top",
+        "action": "covering mouth with hand",
+        "position": "foreground",
+        "id": "person_child_1"
       },
       {
-        "desc": "television screen showing a man in a dark sleeveless top",
+        "desc": "television screen displaying a colorful image",
         "action": "static",
         "position": "background left",
         "id": "television_1"
@@ -2786,7 +2455,357 @@
         "desc": "white cylindrical lampshade",
         "action": "static",
         "position": "background left",
-        "id": "lamp_white_1"
+        "id": "lamp_1"
+      },
+      {
+        "desc": "bright window light source",
+        "action": "static",
+        "position": "background right",
+        "id": "window_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "child covers mouth with hand",
+        "confidence": 1.0
+      },
+      {
+        "fact": "television is on in the background",
+        "confidence": 1.0
+      },
+      {
+        "fact": "bright light from the window causes glare on the child's hair",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The child is in the foreground, positioned to the right of the television. The television is on the left side of the frame, with a lampshade above it. The bright window is to the right of the child.",
+    "parse_success": true,
+    "chunk_idx": 51,
+    "video_id": "v_o6_h2v15A",
+    "state_changes": []
+  },
+  {
+    "time": [
+      52,
+      53
+    ],
+    "visible_entities": [
+      {
+        "desc": "person with short blonde hair and bangs, wearing a dark blue top",
+        "action": "holding hands over mouth",
+        "position": "foreground center",
+        "id": "person_child_1"
+      },
+      {
+        "desc": "black television screen displaying a video feed",
+        "action": "static",
+        "position": "background left",
+        "id": "television_1"
+      },
+      {
+        "desc": "white cylindrical lampshade",
+        "action": "static",
+        "position": "background left",
+        "id": "lamp_1"
+      },
+      {
+        "desc": "bright window emitting intense light",
+        "action": "static",
+        "position": "background right",
+        "id": "window_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "person holds both hands over their mouth",
+        "confidence": 1.0
+      },
+      {
+        "fact": "television is turned on and displaying a scene with a person in a striped shirt",
+        "confidence": 1.0
+      },
+      {
+        "fact": "bright light from the window obscures the right side of the frame",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The person with blonde hair is in the foreground, positioned to the right of the television. The television is on the left side of the room, with a white lampshade situated above it. A bright window is located to the right of the person.",
+    "parse_success": true,
+    "chunk_idx": 52,
+    "video_id": "v_o6_h2v15A",
+    "state_changes": []
+  },
+  {
+    "time": [
+      53,
+      54
+    ],
+    "visible_entities": [
+      {
+        "desc": "person with light blonde hair, wearing a dark top",
+        "action": "holding hand over mouth",
+        "position": "foreground center",
+        "id": "person_child_1"
+      },
+      {
+        "desc": "television screen displaying a geometric pattern of blue and white triangles",
+        "action": "static",
+        "position": "background left",
+        "id": "television_1"
+      },
+      {
+        "desc": "window emitting bright white light",
+        "action": "static",
+        "position": "background right",
+        "id": "window_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "person holds hand over mouth",
+        "confidence": 1.0
+      },
+      {
+        "fact": "television screen displays a geometric pattern",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The person is in the foreground, positioned in front of the television and the window. The television is to the left of the person, while the bright window is to the right of the person.",
+    "parse_success": true,
+    "chunk_idx": 53,
+    "video_id": "v_o6_h2v15A",
+    "state_changes": []
+  },
+  {
+    "time": [
+      54,
+      55
+    ],
+    "visible_entities": [
+      {
+        "desc": "person with light-colored, shoulder-length hair, wearing dark clothing",
+        "action": "sitting in foreground",
+        "position": "center/foreground",
+        "id": "person_child_1"
+      },
+      {
+        "desc": "television screen displaying a scene with a person and green vertical stripes",
+        "action": "displaying changing images",
+        "position": "left/background",
+        "id": "television_1"
+      },
+      {
+        "desc": "lamp with a white cylindrical shade",
+        "action": "static",
+        "position": "left/background",
+        "id": "lamp_1"
+      },
+      {
+        "desc": "window frame with bright light coming through",
+        "action": "static",
+        "position": "right/background",
+        "id": "window_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The image on the television screen changes between the two frames.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A person with light hair is sitting in the foreground.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "Bright light is entering from a window on the right side of the room.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The person with light hair is in the foreground, positioned to the right of the television. The television is on the left side of the frame, with a lamp visible behind it. A window is located to the right of the person, casting bright light into the room.",
+    "parse_success": true,
+    "chunk_idx": 54,
+    "video_id": "v_o6_h2v15A",
+    "state_changes": [
+      "TV screen content starts changing rapidly."
+    ]
+  },
+  {
+    "time": [
+      55,
+      56
+    ],
+    "visible_entities": [
+      {
+        "desc": "person with short blonde hair, wearing a dark top",
+        "action": "static",
+        "position": "foreground",
+        "id": "person_child_1"
+      },
+      {
+        "desc": "television screen displaying a scene with a person and a blue geometric background",
+        "action": "static",
+        "position": "background",
+        "id": "television_1"
+      },
+      {
+        "desc": "bright light source, likely a window, causing overexposure",
+        "action": "static",
+        "position": "right",
+        "id": "window_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A person with blonde hair is sitting in the foreground.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A television is on in the background, displaying an image.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The television screen shows a person and a blue geometric pattern.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A bright light source is to the right of the person.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The person with blonde hair is in the foreground, positioned in front of the television. The television is in the background and to the left of the person. A bright light source is to the right of the person.",
+    "parse_success": true,
+    "chunk_idx": 55,
+    "video_id": "v_o6_h2v15A",
+    "state_changes": []
+  },
+  {
+    "time": [
+      56,
+      57
+    ],
+    "visible_entities": [
+      {
+        "desc": "person with short dark hair and a beard, wearing a black t-shirt",
+        "action": "sitting and looking to the left",
+        "position": "left/background",
+        "id": "person_dark_1"
+      },
+      {
+        "desc": "person with light brown hair and bangs, wearing a dark top",
+        "action": "leaning forward into the foreground",
+        "position": "center/foreground",
+        "id": "person_child_1"
+      },
+      {
+        "desc": "television screen displaying a video with subtitles",
+        "action": "static",
+        "position": "left/background",
+        "id": "television_1"
+      },
+      {
+        "desc": "bright window emitting intense white light",
+        "action": "static",
+        "position": "right/background",
+        "id": "window_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A person with light brown hair leans forward, obscuring the view of the room.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A man with a beard sits in the background, looking towards the left.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A television screen is on in the background, displaying text.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The person with light brown hair is in the foreground, positioned in front of the man with the beard. The man with the beard is to the left of the bright window. The television screen is to the left of the man with the beard.",
+    "parse_success": true,
+    "chunk_idx": 56,
+    "video_id": "v_o6_h2v15A",
+    "state_changes": [
+      "New person (short dark hair, beard) appears; another person leans forward into foreground."
+    ]
+  },
+  {
+    "time": [
+      57,
+      58
+    ],
+    "visible_entities": [
+      {
+        "desc": "child with shoulder-length blonde hair and straight bangs, wearing a dark blue top",
+        "action": "touching chin with hand",
+        "position": "foreground center",
+        "id": "person_child_1"
+      },
+      {
+        "desc": "television screen displaying a video with vertical green and white bars",
+        "action": "static",
+        "position": "background left",
+        "id": "television_1"
+      },
+      {
+        "desc": "white cylindrical lampshade",
+        "action": "static",
+        "position": "background left",
+        "id": "lamp_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "child touches chin with hand",
+        "confidence": 1.0
+      },
+      {
+        "fact": "television is on in the background",
+        "confidence": 1.0
+      },
+      {
+        "fact": "bright light source is behind the child",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The child is in the foreground, centered in the frame. The television is to the left of the child in the background. The lampshade is above the television.",
+    "parse_success": true,
+    "chunk_idx": 57,
+    "video_id": "v_o6_h2v15A",
+    "state_changes": []
+  },
+  {
+    "time": [
+      58,
+      59
+    ],
+    "visible_entities": [
+      {
+        "desc": "child with blonde hair and bangs, wearing a dark blue zip-up top",
+        "action": "moving hand from mouth to chest",
+        "position": "foreground",
+        "id": "person_child_1"
+      },
+      {
+        "desc": "television screen displaying a man with dark hair in a sleeveless top",
+        "action": "static",
+        "position": "background left",
+        "id": "television_1"
+      },
+      {
+        "desc": "white cylindrical lamp shade",
+        "action": "static",
+        "position": "background left",
+        "id": "lamp_1"
       }
     ],
     "atomic_facts": [
@@ -2795,36 +2814,36 @@
         "confidence": 1.0
       },
       {
-        "fact": "The television is on and displaying a music video or program.",
+        "fact": "The television is turned on and displaying a video.",
         "confidence": 1.0
       },
       {
-        "fact": "The text 'CALL ON ME' is visible on the television screen.",
+        "fact": "The text 'DURAN DURAN' is visible on the television screen.",
         "confidence": 1.0
       }
     ],
     "ocr": [
-      "CALL ON ME"
+      "DURAN DURAN"
     ],
-    "spatial": "The child is in the foreground to the right of the television. The television is to the left of the child and below the white lampshade.",
+    "spatial": "The child is in the foreground, positioned to the right of the television. The television is in the background on the left side of the frame. The white lamp shade is located above the television.",
     "parse_success": true,
     "chunk_idx": 58,
     "video_id": "v_o6_h2v15A",
     "state_changes": [
-      "child moves hand from mouth to chest"
+      "Person moves hand from mouth to chest."
     ]
   },
   {
     "time": [
-      118,
-      120
+      59,
+      60
     ],
     "visible_entities": [
       {
         "desc": "child with blonde hair and bangs, wearing a dark blue zip-up jacket",
-        "action": "moving mouth and hand",
-        "position": "foreground",
-        "id": "child_blonde_1"
+        "action": "making facial expressions and moving hands",
+        "position": "foreground center",
+        "id": "person_child_1"
       },
       {
         "desc": "television screen displaying video content",
@@ -2836,83 +2855,79 @@
         "desc": "white cylindrical lamp shade",
         "action": "static",
         "position": "background left",
-        "id": "lamp_white_1"
+        "id": "lamp_1"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "child moves mouth as if speaking or eating",
+        "fact": "The child in the foreground moves their hands and changes facial expressions between frames.",
         "confidence": 1.0
       },
       {
-        "fact": "child raises hand in foreground",
+        "fact": "The television screen in the background changes the displayed image between frames.",
         "confidence": 1.0
       },
       {
-        "fact": "television screen changes image content between frames",
+        "fact": "The first frame shows a person with dark hair on the TV screen.",
         "confidence": 1.0
       },
       {
-        "fact": "television displays subtitles at the bottom of the screen",
+        "fact": "The second frame shows a bird flying over water on the TV screen.",
         "confidence": 1.0
       }
     ],
-    "ocr": [
-      "I'm not gonna let you do this."
-    ],
-    "spatial": "The child is in the foreground, positioned to the right of the television. The television is on the left side of the frame, behind the child. The white lamp shade is located above and to the left of the television.",
+    "ocr": [],
+    "spatial": "The child is in the foreground, positioned to the right of the television. The television is in the background on the left side of the frame. A white lamp shade is situated above the television.",
     "parse_success": true,
     "chunk_idx": 59,
     "video_id": "v_o6_h2v15A",
-    "state_changes": []
+    "state_changes": [
+      "Person makes varied facial expressions and hand movements."
+    ]
   },
   {
     "time": [
-      120,
-      122
+      60,
+      61
     ],
     "visible_entities": [
       {
-        "desc": "person with short blonde hair, dark clothing",
-        "action": "moving head",
-        "position": "foreground right",
-        "id": "child_blonde_1"
+        "desc": "person with short blonde hair featuring straight bangs, wearing a dark top",
+        "action": "sitting in the foreground",
+        "position": "right/foreground",
+        "id": "person_child_1"
       },
       {
-        "desc": "black flat-screen television displaying video content",
-        "action": "static",
-        "position": "background left",
+        "desc": "flat-screen television displaying a video with a dark background and white text",
+        "action": "displaying changing content",
+        "position": "left/background",
         "id": "television_1"
       },
       {
-        "desc": "white cylindrical lamp shade",
+        "desc": "white cylindrical lampshade",
         "action": "static",
-        "position": "background left",
-        "id": "lamp_white_1"
+        "position": "background",
+        "id": "lamp_1"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A person with short blonde hair is in the foreground.",
+        "fact": "The television screen content changes from a scene with a light horizon to a dark screen with white text.",
         "confidence": 1.0
       },
       {
-        "fact": "The person moves their head, causing motion blur in the second frame.",
+        "fact": "The text 'DUMP' is visible on the television screen in the second frame.",
         "confidence": 1.0
       },
       {
-        "fact": "A television is on in the background displaying a scene with a bird flying over water.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The television screen displays the text 'DUMPS' in the second frame.",
+        "fact": "A person with blonde hair is positioned in the foreground, partially obscuring the view of the room.",
         "confidence": 1.0
       }
     ],
     "ocr": [
-      "DUMPS"
+      "DUMP"
     ],
-    "spatial": "The person is in the foreground to the right of the television. The television is positioned on the left side of the frame. The white lamp shade is located above and slightly behind the television.",
+    "spatial": "The person is in the foreground to the right of the television. The television is positioned on the left side of the frame, with a white lampshade located above and slightly behind it.",
     "parse_success": true,
     "chunk_idx": 60,
     "video_id": "v_o6_h2v15A",
@@ -2920,15 +2935,15 @@
   },
   {
     "time": [
-      122,
-      124
+      61,
+      62
     ],
     "visible_entities": [
       {
-        "desc": "person with short blonde hair, wearing a dark jacket with white text on the chest",
-        "action": "turning head to face the camera",
+        "desc": "person with short blonde hair, wearing a dark blue or black jacket with a white logo on the left chest",
+        "action": "moving from right to left",
         "position": "foreground",
-        "id": "child_blonde_1"
+        "id": "person_child_1"
       },
       {
         "desc": "television screen displaying a scene with subtitles",
@@ -2939,155 +2954,55 @@
       {
         "desc": "white cylindrical lamp shade",
         "action": "static",
-        "position": "background left",
-        "id": "lamp_white_1"
+        "position": "background top left",
+        "id": "lamp_1"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "person turns their head to face the camera",
+        "fact": "A person with short blonde hair moves from the right side of the frame towards the left.",
         "confidence": 1.0
       },
       {
-        "fact": "television is on in the background",
+        "fact": "The person is wearing a dark jacket with a visible white logo on the chest.",
         "confidence": 1.0
       },
       {
-        "fact": "subtitles are visible on the television screen",
+        "fact": "A television is on in the background, displaying a scene with subtitles.",
         "confidence": 1.0
       }
     ],
     "ocr": [
-      "LAZILLA"
+      "LAUREL"
     ],
-    "spatial": "The person is in the foreground, positioned to the right of the television. The television is in the background on the left side of the frame. The white lamp shade is above the television.",
+    "spatial": "The person is in the foreground, positioned to the right of the television. The television is on the left side of the room. The white lamp shade is above the television.",
     "parse_success": true,
     "chunk_idx": 61,
     "video_id": "v_o6_h2v15A",
     "state_changes": [
-      "person turns head to face camera"
+      "Person moves from right to left across the frame."
     ]
   },
   {
     "time": [
-      124,
-      126
+      62,
+      63
     ],
     "visible_entities": [
       {
         "desc": "person with short blonde hair and bangs, wearing a dark blue or black long-sleeved top",
-        "action": "moving arm and hand",
-        "position": "center",
-        "id": "child_blonde_1"
-      },
-      {
-        "desc": "computer monitor with a bright white screen and a dark bezel",
-        "action": "static",
-        "position": "left",
-        "id": "computer_monitor_1"
-      },
-      {
-        "desc": "window with intense white light coming through",
-        "action": "static",
-        "position": "right",
-        "id": "window_1"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "person moves their right arm and hand",
-        "confidence": 1.0
-      },
-      {
-        "fact": "the computer monitor is turned on and displaying a bright white screen",
-        "confidence": 1.0
-      },
-      {
-        "fact": "the person is positioned in front of the window",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [],
-    "spatial": "The person is in the center of the frame. The computer monitor is to the left of the person. The bright window is to the right of the person and behind them.",
-    "parse_success": true,
-    "chunk_idx": 62,
-    "video_id": "v_o6_h2v15A",
-    "state_changes": []
-  },
-  {
-    "time": [
-      126,
-      128
-    ],
-    "visible_entities": [
-      {
-        "desc": "child with short blonde hair and bangs, wearing a dark blue long-sleeved top",
-        "action": "bringing fingers to mouth",
-        "position": "foreground center",
-        "id": "child_blonde_1"
-      },
-      {
-        "desc": "television screen displaying a close-up of a person's face wearing a dark hat",
-        "action": "static",
-        "position": "background left",
-        "id": "television_1"
-      },
-      {
-        "desc": "window with bright white light",
-        "action": "static",
-        "position": "background right",
-        "id": "window_1"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "The child in the foreground brings their fingers to their mouth.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "A television is on in the background showing a person's face.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "Bright light streams in from a window on the right side of the frame.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [],
-    "spatial": "The child is in the foreground, positioned in front of the television and the window. The television is to the left of the child, while the window is to the right of the child.",
-    "parse_success": true,
-    "chunk_idx": 63,
-    "video_id": "v_o6_h2v15A",
-    "state_changes": [
-      "child brings fingers to mouth"
-    ]
-  },
-  {
-    "time": [
-      128,
-      130
-    ],
-    "visible_entities": [
-      {
-        "desc": "child with blonde hair and bangs, wearing a dark blue top",
-        "action": "eating a red fruit",
+        "action": "moving arm and body",
         "position": "center/foreground",
-        "id": "child_blonde_1"
+        "id": "person_child_1"
       },
       {
-        "desc": "red fruit, round, held in hands",
-        "action": "being eaten",
-        "position": "center/foreground",
-        "id": "apple_red_1"
-      },
-      {
-        "desc": "television screen displaying a video",
+        "desc": "computer monitor with a bright white screen and a dark frame",
         "action": "static",
         "position": "left/background",
         "id": "television_1"
       },
       {
-        "desc": "bright window emitting light",
+        "desc": "bright window emitting intense light",
         "action": "static",
         "position": "right/background",
         "id": "window_1"
@@ -3095,37 +3010,39 @@
     ],
     "atomic_facts": [
       {
-        "fact": "A child is holding a red fruit with both hands and biting into it.",
+        "fact": "person moves their right arm upwards and then brings their hand towards their face",
         "confidence": 1.0
       },
       {
-        "fact": "A television is on in the background showing a scene with a person.",
+        "fact": "the lighting changes drastically, causing the person to become a silhouette against the bright window",
+        "confidence": 1.0
+      },
+      {
+        "fact": "a computer monitor is visible in the background",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The child is in the center foreground, positioned in front of the television and the window. The television is to the left of the child, and the bright window is to the right of the child.",
+    "spatial": "The person is in the foreground, positioned between the computer monitor on the left and the bright window on the right. The monitor is behind the person's raised arm. The window is behind the person's head and shoulders.",
     "parse_success": true,
-    "chunk_idx": 64,
+    "chunk_idx": 62,
     "video_id": "v_o6_h2v15A",
-    "state_changes": [
-      "child starts eating red fruit"
-    ]
+    "state_changes": []
   },
   {
     "time": [
-      130,
-      132
+      63,
+      64
     ],
     "visible_entities": [
       {
-        "desc": "child with blonde hair and bangs, wearing a dark jacket",
-        "action": "looking at the camera",
+        "desc": "child with short blonde hair and bangs, wearing a dark blue long-sleeved shirt",
+        "action": "bringing hands to mouth",
         "position": "foreground center",
-        "id": "child_blonde_1"
+        "id": "person_child_1"
       },
       {
-        "desc": "television screen displaying a news broadcast with a smiling man in a suit",
+        "desc": "television screen displaying a person wearing a black hat",
         "action": "static",
         "position": "background left",
         "id": "television_1"
@@ -3134,31 +3051,130 @@
         "desc": "white cylindrical lamp shade",
         "action": "static",
         "position": "background left",
-        "id": "lamp_white_1"
+        "id": "lamp_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The child in the foreground brings both hands up to their mouth.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The television in the background displays a close-up of a person's face.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The child is in the foreground, positioned in front of the television and the window. The television is to the left of the child. The lamp shade is located behind the television.",
+    "parse_success": true,
+    "chunk_idx": 63,
+    "video_id": "v_o6_h2v15A",
+    "state_changes": []
+  },
+  {
+    "time": [
+      64,
+      65
+    ],
+    "visible_entities": [
+      {
+        "desc": "child with blonde hair and bangs, wearing a dark blue top",
+        "action": "holding a red apple to mouth",
+        "position": "center foreground",
+        "id": "person_child_1"
+      },
+      {
+        "desc": "red apple",
+        "action": "being held by child",
+        "position": "center foreground",
+        "id": "apple_1"
+      },
+      {
+        "desc": "television screen showing a person in black clothing",
+        "action": "displaying video",
+        "position": "left background",
+        "id": "television_1"
+      },
+      {
+        "desc": "white lampshade",
+        "action": "static",
+        "position": "left background",
+        "id": "lamp_1"
       },
       {
         "desc": "bright window",
         "action": "static",
-        "position": "background right",
+        "position": "right background",
         "id": "window_1"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A child with blonde hair is positioned in the foreground.",
+        "fact": "A child is holding a red apple with both hands.",
         "confidence": 1.0
       },
       {
-        "fact": "A television is turned on in the background.",
+        "fact": "The child is bringing the apple to their mouth.",
         "confidence": 1.0
       },
       {
-        "fact": "The television screen displays a man in a suit smiling.",
+        "fact": "A television is on in the background.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The child is in the foreground, positioned to the right of the television. The television is on the left side of the room, next to a white lamp. A bright window is located to the right of the child.",
+    "spatial": "The child is in the center foreground, holding the apple in front of their face. The television is to the left of the child in the background. The bright window is to the right of the child in the background.",
+    "parse_success": true,
+    "chunk_idx": 64,
+    "video_id": "v_o6_h2v15A",
+    "state_changes": [
+      "Person brings red apple to mouth again."
+    ]
+  },
+  {
+    "time": [
+      65,
+      66
+    ],
+    "visible_entities": [
+      {
+        "desc": "child with blonde hair and bangs, wearing a black zip-up jacket",
+        "action": "looking at the camera",
+        "position": "center/foreground",
+        "id": "person_child_1"
+      },
+      {
+        "desc": "television screen displaying a news broadcast with a man's face and text graphics",
+        "action": "static",
+        "position": "left/background",
+        "id": "television_1"
+      },
+      {
+        "desc": "window with bright light coming through",
+        "action": "static",
+        "position": "right/background",
+        "id": "window_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "child is looking at the camera",
+        "confidence": 1.0
+      },
+      {
+        "fact": "television is on and displaying a news broadcast",
+        "confidence": 1.0
+      },
+      {
+        "fact": "text on the television screen reads 'LIVE' and 'LIVE FROM THE MIDDLE EAST'",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "LIVE",
+      "LIVE FROM THE MIDDLE EAST"
+    ],
+    "spatial": "The child is in the foreground, centered in the frame. The television is to the left of the child and behind them. The window is to the right of the child and behind them.",
     "parse_success": true,
     "chunk_idx": 65,
     "video_id": "v_o6_h2v15A",
@@ -3166,49 +3182,45 @@
   },
   {
     "time": [
-      132,
-      134
+      66,
+      67
     ],
     "visible_entities": [
       {
-        "desc": "person with short blonde hair, face obscured by shadow and glare",
-        "action": "sitting in the foreground",
-        "position": "foreground",
-        "id": "child_blonde_1"
+        "desc": "person with short light-colored hair, head and shoulders visible in silhouette",
+        "action": "sitting in front of a bright light source",
+        "position": "foreground right",
+        "id": "person_dark_1"
       },
       {
-        "desc": "television screen displaying a woman with dark hair lying on a blue surface",
-        "action": "displaying a video",
+        "desc": "television screen displaying a woman with dark hair wearing a black sleeveless top",
+        "action": "displaying a video of a woman lying down",
         "position": "background left",
         "id": "television_1"
       },
       {
-        "desc": "window with bright white light and dark frames",
-        "action": "static",
+        "desc": "bright light source, likely a window, causing significant glare and overexposure",
+        "action": "emitting bright light",
         "position": "background right",
         "id": "window_1"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A person with short blonde hair sits in the foreground.",
+        "fact": "A person is sitting in the foreground, silhouetted against a bright light.",
         "confidence": 1.0
       },
       {
-        "fact": "A television screen in the background displays a video of a woman lying down.",
+        "fact": "A television in the background is on, showing a woman lying on a bed.",
         "confidence": 1.0
       },
       {
-        "fact": "Bright light from a window creates a strong glare over the scene.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The person in the foreground is positioned in front of the television.",
+        "fact": "The bright light source is to the right of the person in the foreground.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The person with short blonde hair is in the foreground, positioned in front of the television screen. The television screen is to the left of the window. The window is to the right of the television screen.",
+    "spatial": "The person in the foreground is to the right of the television. The television is to the left of the bright light source. The person is in front of the bright light source.",
     "parse_success": true,
     "chunk_idx": 66,
     "video_id": "v_o6_h2v15A",

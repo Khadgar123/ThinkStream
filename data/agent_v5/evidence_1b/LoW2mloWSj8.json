@@ -2,225 +2,218 @@
   {
     "time": [
       0,
-      2
+      1
     ],
     "visible_entities": [
       {
-        "desc": "pair of bare feet with light brown skin tone",
-        "action": "holding a pencil",
-        "position": "center/foreground"
+        "desc": "pair of human feet with light brown skin tone",
+        "action": "holding a pencil between the toes",
+        "position": "center/foreground",
+        "id": "person_writer_1"
       },
       {
-        "desc": "yellow wooden pencil with a purple eraser tip",
-        "action": "being held between toes",
-        "position": "center"
+        "desc": "yellow wooden pencil with a blue eraser tip",
+        "action": "being gripped by the toes",
+        "position": "center",
+        "id": "pen_yellow_blue_cap"
       },
       {
-        "desc": "white lined notebook paper",
+        "desc": "white lined notebook paper with blue horizontal lines",
         "action": "static",
-        "position": "background"
+        "position": "background",
+        "id": "paper_notebook_lined"
       },
       {
         "desc": "white text overlay reading 'JiMMY KHaN- FooT WriTer'",
         "action": "static",
-        "position": "top"
+        "position": "top",
+        "id": "text_overlay_title"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A pair of feet is gripping a yellow pencil.",
+        "fact": "A person is gripping a yellow pencil between the toes of their feet.",
         "confidence": 1.0
       },
       {
-        "fact": "The pencil is positioned between the big toe and the second toe of the right foot.",
+        "fact": "The pencil is positioned over a sheet of lined paper.",
         "confidence": 1.0
       },
       {
-        "fact": "The feet are resting on a sheet of lined paper.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The text 'JiMMY KHaN- FooT WriTer' is visible at the top of the frame.",
+        "fact": "The text 'JiMMY KHaN- FooT WriTer' is displayed at the top of the frame.",
         "confidence": 1.0
       }
     ],
     "ocr": [
       "JiMMY KHaN- FooT WriTer"
     ],
-    "spatial": "The pair of feet is in the center foreground, positioned on top of the white lined paper. The yellow pencil is held between the toes of the right foot. The text overlay is located above the feet and paper at the top of the frame.",
+    "spatial": "The pair of feet is positioned in the center of the frame, directly above the lined notebook paper. The yellow pencil is held between the toes of the feet. The text overlay is located at the top of the image, above the feet and paper.",
     "parse_success": true,
     "chunk_idx": 0,
     "video_id": "LoW2mloWSj8",
-    "state_changes": [],
-    "_rescued": "parse"
+    "state_changes": []
   },
   {
     "time": [
-      2,
-      4
+      1,
+      2
     ],
     "visible_entities": [
       {
-        "desc": "pair of bare human feet with light brown skin tone",
+        "desc": "pair of human feet with tan skin tone",
         "action": "manipulating writing tools",
-        "position": "center"
+        "position": "foreground",
+        "id": "person_writer_1"
       },
       {
-        "desc": "yellow wooden pencil with a purple eraser tip",
+        "desc": "yellow wooden pencil with a purple eraser",
         "action": "being held between toes",
-        "position": "right"
+        "position": "right",
+        "id": "pencil_yellow_purple_tip"
       },
       {
-        "desc": "orange cylindrical pen cap",
+        "desc": "orange cylindrical pencil cap",
         "action": "held between toes",
-        "position": "left"
+        "position": "left",
+        "id": "cap_orange_cylindrical"
       },
       {
         "desc": "white lined notebook paper",
         "action": "static",
-        "position": "background"
+        "position": "center",
+        "id": "paper_notebook_lined"
       },
       {
         "desc": "white text overlay reading 'JiMMY KHaN- FooT WriTer'",
         "action": "static",
-        "position": "top"
+        "position": "top",
+        "id": "text_overlay_title"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "The right foot holds a yellow pencil between the big toe and second toe.",
+        "fact": "A person is using their feet to hold a pencil and a pencil cap.",
         "confidence": 1.0
       },
       {
-        "fact": "The left foot holds an orange pen cap between the big toe and second toe.",
+        "fact": "The right foot is gripping a yellow pencil between the big toe and the second toe.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The left foot is gripping an orange pencil cap between the toes.",
         "confidence": 1.0
       },
       {
         "fact": "The feet are positioned over a sheet of lined paper.",
         "confidence": 1.0
-      },
-      {
-        "fact": "The text 'JiMMY KHaN- FooT WriTer' is visible at the top of the frame.",
-        "confidence": 1.0
       }
     ],
     "ocr": [
       "JiMMY KHaN- FooT WriTer"
     ],
-    "spatial": "The pair of feet is positioned in the center of the frame, resting above the white lined paper. The right foot is to the right of the left foot. The yellow pencil is held by the right foot, while the orange cap is held by the left foot. The text overlay is located at the top of the image, above the feet.",
+    "spatial": "The text overlay is located at the top of the frame, above the feet and paper. The left foot is positioned to the left of the right foot. The pencil cap is held by the left foot, while the pencil is held by the right foot. Both feet are positioned above the lined paper.",
     "parse_success": true,
     "chunk_idx": 1,
     "video_id": "LoW2mloWSj8",
-    "state_changes": [],
-    "_rescued": "parse"
+    "state_changes": [
+      "Switch from blue eraser tip pencil to purple eraser pencil; orange cap introduced between toes."
+    ]
   },
   {
     "time": [
-      4,
-      6
+      2,
+      3
     ],
     "visible_entities": [
       {
-        "desc": "pair of bare human feet with light brown skin tone",
-        "action": "holding a pencil and pen cap",
-        "position": "center"
-      },
-      {
-        "desc": "yellow wooden pencil with a blue eraser tip",
-        "action": "being gripped by toes",
-        "position": "center"
-      },
-      {
-        "desc": "orange cylindrical pen cap",
-        "action": "held between toes",
-        "position": "center"
+        "desc": "pair of human feet with light brown skin, holding a yellow pencil with a blue eraser and a small orange cylindrical object",
+        "action": "writing on paper",
+        "position": "center/foreground",
+        "id": "person_writer_1"
       },
       {
         "desc": "open notebook with white lined paper",
         "action": "static",
-        "position": "background"
+        "position": "background",
+        "id": "paper_notebook_lined"
       },
       {
         "desc": "white text overlay reading 'JiMMY KHaN- FooT WriTer'",
         "action": "static",
-        "position": "top"
+        "position": "top",
+        "id": "text_overlay_title"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A person is using their feet to hold a yellow pencil and an orange pen cap.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The toes of the left foot are gripping the orange pen cap.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The toes of the right foot are gripping the yellow pencil.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The feet are positioned over an open notebook.",
+        "fact": "A person is using their feet to hold a pencil and write on a notebook.",
         "confidence": 1.0
       },
       {
         "fact": "The text 'JiMMY KHaN- FooT WriTer' is visible at the top of the frame.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The pencil is yellow with a blue eraser tip.",
         "confidence": 1.0
       }
     ],
     "ocr": [
       "JiMMY KHaN- FooT WriTer"
     ],
-    "spatial": "The pair of feet is positioned in the center of the frame, directly above the open notebook. The yellow pencil is held by the right foot, while the orange pen cap is held by the left foot. The text overlay is located at the top of the image, above the feet and the notebook.",
+    "spatial": "The pair of feet is positioned in the center foreground, resting on top of the open notebook. The text overlay is located above the feet and notebook at the top of the screen.",
     "parse_success": true,
     "chunk_idx": 2,
     "video_id": "LoW2mloWSj8",
-    "state_changes": [],
-    "_rescued": "parse"
+    "state_changes": []
   },
   {
     "time": [
-      6,
-      8
+      3,
+      4
     ],
     "visible_entities": [
       {
-        "desc": "pair of bare feet with light skin tone",
-        "action": "manipulating writing instruments",
+        "desc": "human feet with light skin tone, holding writing instruments",
+        "action": "manipulating pencils to write",
         "position": "foreground"
       },
       {
-        "desc": "white lined notebook paper",
-        "action": "static",
-        "position": "center"
+        "desc": "yellow wooden pencil with a blue eraser cap",
+        "action": "being held by toes and used for writing",
+        "position": "right",
+        "id": "pen_yellow_blue_cap"
       },
       {
-        "desc": "yellow pencil with blue eraser",
-        "action": "being held between toes",
-        "position": "right"
-      },
-      {
-        "desc": "orange pen cap",
+        "desc": "orange plastic pencil cap",
         "action": "held between toes",
-        "position": "left"
+        "position": "left",
+        "id": "cap_orange_cylindrical"
+      },
+      {
+        "desc": "white lined notebook paper with blue horizontal lines",
+        "action": "static",
+        "position": "center",
+        "id": "paper_notebook_lined"
       },
       {
         "desc": "white text overlay reading 'JiMMY KHaN- FooT WriTer'",
         "action": "static",
-        "position": "top"
+        "position": "top",
+        "id": "text_overlay_title"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A person is writing on a notebook using their feet.",
+        "fact": "A person is using their feet to write on a piece of paper.",
         "confidence": 1.0
       },
       {
-        "fact": "The right foot holds a yellow pencil between the big toe and second toe.",
+        "fact": "The right foot holds a yellow pencil with a blue eraser between the big toe and second toe.",
         "confidence": 1.0
       },
       {
-        "fact": "The left foot holds an orange pen cap between the toes.",
+        "fact": "The left foot holds an orange pencil cap between the toes.",
         "confidence": 1.0
       },
       {
@@ -231,172 +224,47 @@
     "ocr": [
       "JiMMY KHaN- FooT WriTer"
     ],
-    "spatial": "The notebook is positioned centrally on a grey concrete surface. The right foot is on the right side of the paper, holding the pencil. The left foot is on the left side of the paper, holding the orange cap. The text overlay is located above the feet and notebook.",
+    "spatial": "The text overlay is located at the top of the frame, above the notebook paper. The notebook paper lies flat on a grey concrete surface in the center. The left foot holding the orange cap is positioned to the left of the paper, while the right foot holding the pencil is positioned on the right side of the paper.",
     "parse_success": true,
     "chunk_idx": 3,
     "video_id": "LoW2mloWSj8",
-    "state_changes": [],
-    "_rescued": "parse"
+    "state_changes": []
   },
   {
     "time": [
-      8,
-      10
+      4,
+      5
     ],
     "visible_entities": [
       {
-        "desc": "human feet with light skin tone and short toenails",
+        "desc": "human feet with light skin tone",
         "action": "manipulating writing tools",
-        "position": "foreground"
+        "position": "foreground",
+        "id": "person_writer_1"
       },
       {
-        "desc": "yellow wooden pencil with blue lead tip",
-        "action": "being held between toes",
-        "position": "right"
-      },
-      {
-        "desc": "orange cylindrical pen cap",
-        "action": "held between toes",
-        "position": "left"
-      },
-      {
-        "desc": "white lined notebook paper with blue horizontal lines",
-        "action": "static",
-        "position": "center"
-      },
-      {
-        "desc": "grey speckled concrete floor",
-        "action": "static",
-        "position": "background"
-      },
-      {
-        "desc": "white text overlay reading 'JiMMY KHaN- FooT WriTer'",
-        "action": "static",
-        "position": "top"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "A person is using their feet to hold a pencil and a pen cap.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The right foot holds a yellow pencil between the big toe and second toe.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The left foot holds an orange pen cap between the toes.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The pencil tip is positioned over the lined paper as if writing.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The text 'JiMMY KHaN- FooT WriTer' is visible at the top of the frame.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [
-      "JiMMY KHaN- FooT WriTer"
-    ],
-    "spatial": "The lined paper is in the center, resting on the grey concrete floor. The left foot is on the left side of the paper holding the orange cap, while the right foot is on the right side holding the yellow pencil. The text overlay is above the feet and paper.",
-    "parse_success": true,
-    "chunk_idx": 4,
-    "video_id": "LoW2mloWSj8",
-    "state_changes": [],
-    "_rescued": "parse"
-  },
-  {
-    "time": [
-      10,
-      12
-    ],
-    "visible_entities": [
-      {
-        "desc": "pair of human feet with light skin tone, bare",
-        "action": "manipulating writing tools",
-        "position": "foreground"
-      },
-      {
-        "desc": "yellow pen with a blue cap",
-        "action": "being held by toes and writing",
-        "position": "right"
-      },
-      {
-        "desc": "orange pen cap",
-        "action": "held between toes",
-        "position": "left"
-      },
-      {
-        "desc": "white lined notebook paper",
-        "action": "static",
-        "position": "center"
-      },
-      {
-        "desc": "white text overlay reading 'JiMMY KHaN- FooT WriTer'",
-        "action": "static",
-        "position": "top"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "A person is writing on lined paper using their right foot.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The right foot holds a yellow pen between the big toe and second toe.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The left foot holds an orange pen cap between the big toe and second toe.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The text 'JiMMY KHaN- FooT WriTer' is visible at the top of the frame.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [
-      "JiMMY KHaN- FooT WriTer"
-    ],
-    "spatial": "The lined paper is positioned in the center of the frame on a surface. The left foot is on the left side of the paper, while the right foot is on the right side. The yellow pen is held by the right foot and is touching the paper. The orange pen cap is held by the left foot. The text overlay is located above the feet and paper.",
-    "parse_success": true,
-    "chunk_idx": 5,
-    "video_id": "LoW2mloWSj8",
-    "state_changes": [],
-    "_rescued": "parse"
-  },
-  {
-    "time": [
-      12,
-      14
-    ],
-    "visible_entities": [
-      {
-        "desc": "pair of human feet with light skin tone",
-        "action": "manipulating pen and paper",
-        "position": "foreground"
-      },
-      {
-        "desc": "yellow wooden pencil with purple tip",
+        "desc": "yellow pencil with purple tip",
         "action": "being held by toes",
-        "position": "right"
+        "position": "right",
+        "id": "pencil_yellow_purple_tip"
       },
       {
-        "desc": "yellow plastic pen cap",
-        "action": "held between toes",
-        "position": "left"
+        "desc": "yellow pen cap",
+        "action": "being held by toes",
+        "position": "left",
+        "id": "cap_yellow_pen"
       },
       {
         "desc": "white lined notebook paper",
         "action": "static",
-        "position": "center"
+        "position": "center",
+        "id": "paper_notebook_lined"
       },
       {
         "desc": "grey textured concrete surface",
         "action": "static",
-        "position": "background"
+        "position": "background",
+        "id": "floor_grey_concrete"
       }
     ],
     "atomic_facts": [
@@ -413,226 +281,6 @@
         "confidence": 1.0
       },
       {
-        "fact": "Blue ink marks are visible on the paper.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [
-      "JiMMY KHaN- FooT WriTer"
-    ],
-    "spatial": "The feet are positioned in the foreground on top of the white lined paper. The right foot is to the right of the left foot. The yellow pencil is held by the right foot. The yellow pen cap is held by the left foot. The text overlay is at the top of the frame, above the concrete surface.",
-    "parse_success": true,
-    "chunk_idx": 6,
-    "video_id": "LoW2mloWSj8",
-    "state_changes": [],
-    "_rescued": "parse"
-  },
-  {
-    "time": [
-      14,
-      16
-    ],
-    "visible_entities": [
-      {
-        "desc": "human foot, light skin tone, holding a yellow pen with a blue cap",
-        "action": "writing on lined paper",
-        "position": "right"
-      },
-      {
-        "desc": "human foot, light skin tone, holding a yellow pen cap between the big toe and second toe",
-        "action": "static",
-        "position": "left"
-      },
-      {
-        "desc": "lined notebook paper with blue horizontal lines",
-        "action": "static",
-        "position": "center"
-      },
-      {
-        "desc": "white text overlay reading 'JiMMY KHaN- FooT WriTer'",
-        "action": "static",
-        "position": "top"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "A person is writing on a piece of paper using their right foot.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The right foot is holding a yellow pen and writing in blue ink.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The left foot is holding the yellow pen cap between the toes.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The text 'JiMMY KHaN- FooT WriTer' is visible at the top of the screen.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [
-      "JiMMY KHaN- FooT WriTer"
-    ],
-    "spatial": "The right foot is positioned on the right side of the frame, writing on the paper. The left foot is positioned on the left side of the frame, holding the pen cap. The paper is below the feet. The text overlay is above the feet and paper.",
-    "parse_success": true,
-    "chunk_idx": 7,
-    "video_id": "LoW2mloWSj8",
-    "state_changes": [],
-    "_rescued": "parse"
-  },
-  {
-    "time": [
-      16,
-      18
-    ],
-    "visible_entities": [
-      {
-        "desc": "human foot with light skin tone, holding a yellow pen with a blue cap",
-        "action": "writing on paper",
-        "position": "right/foreground"
-      },
-      {
-        "desc": "human foot with light skin tone, holding a yellow pen cap",
-        "action": "static",
-        "position": "left/foreground"
-      },
-      {
-        "desc": "white lined notebook paper with blue horizontal lines",
-        "action": "static",
-        "position": "center/bottom"
-      },
-      {
-        "desc": "white text overlay reading 'JiMMY KHaN- FooT WriTer'",
-        "action": "static",
-        "position": "top"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "A foot on the right is holding a yellow pen and writing blue ink on the paper.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "A foot on the left is holding the yellow cap of the pen.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The text 'JiMMY KHaN- FooT WriTer' is visible at the top of the frame.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "Blue Arabic or Urdu script is being written on the notebook page.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [
-      "JiMMY KHaN- FooT WriTer"
-    ],
-    "spatial": "The foot holding the pen is to the right of the foot holding the cap. Both feet are positioned above the lined notebook paper. The text overlay is above the feet and the paper.",
-    "parse_success": true,
-    "chunk_idx": 8,
-    "video_id": "LoW2mloWSj8",
-    "state_changes": [],
-    "_rescued": "parse"
-  },
-  {
-    "time": [
-      18,
-      20
-    ],
-    "visible_entities": [
-      {
-        "desc": "human foot with light skin tone, holding a yellow pen with a blue cap",
-        "action": "writing on paper",
-        "position": "center/foreground"
-      },
-      {
-        "desc": "human foot with light skin tone, holding a yellow pen cap",
-        "action": "static",
-        "position": "left/foreground"
-      },
-      {
-        "desc": "lined notebook paper with blue lines",
-        "action": "static",
-        "position": "center/background"
-      },
-      {
-        "desc": "white text overlay reading 'JiMMY KHaN- FooT WriTer'",
-        "action": "static",
-        "position": "top"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "A person is writing Urdu script on a piece of paper using their foot.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The right foot holds the pen and is actively moving to form letters.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The left foot holds the pen cap and remains stationary.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The text 'JiMMY KHaN- FooT WriTer' is displayed at the top of the screen.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [
-      "JiMMY KHaN- FooT WriTer"
-    ],
-    "spatial": "The right foot is positioned in the center of the frame, writing on the paper. The left foot is to the left of the right foot, holding the pen cap. The paper is underneath both feet. The text overlay is above the feet and paper.",
-    "parse_success": true,
-    "chunk_idx": 9,
-    "video_id": "LoW2mloWSj8",
-    "state_changes": [],
-    "_rescued": "parse"
-  },
-  {
-    "time": [
-      20,
-      22
-    ],
-    "visible_entities": [
-      {
-        "desc": "human foot, light skin tone, holding a yellow pencil with a blue eraser tip",
-        "action": "writing on paper",
-        "position": "center foreground"
-      },
-      {
-        "desc": "human foot, light skin tone, toes holding a yellow pen cap",
-        "action": "static",
-        "position": "left foreground"
-      },
-      {
-        "desc": "lined notebook paper with blue horizontal lines",
-        "action": "static",
-        "position": "center background"
-      },
-      {
-        "desc": "white text overlay reading 'JiMMY KHaN- FooT WriTer'",
-        "action": "static",
-        "position": "top"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "A person is using their right foot to hold a pencil and write on a piece of paper.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The person is using their left foot to hold a yellow pen cap steady.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The writing on the paper is in blue ink and appears to be in Urdu script.",
-        "confidence": 1.0
-      },
-      {
         "fact": "The text 'JiMMY KHaN- FooT WriTer' is visible at the top of the frame.",
         "confidence": 1.0
       }
@@ -640,149 +288,100 @@
     "ocr": [
       "JiMMY KHaN- FooT WriTer"
     ],
-    "spatial": "The right foot is positioned in the center of the frame, writing on the lined paper. The left foot is to the left of the right foot, holding the pen cap. The text overlay is above the feet and the paper.",
+    "spatial": "The lined paper is in the center of the frame, resting on a grey concrete surface. The left foot is positioned on the left side of the paper, while the right foot is on the right side. The text overlay is located above the paper and feet.",
     "parse_success": true,
-    "chunk_idx": 10,
+    "chunk_idx": 4,
     "video_id": "LoW2mloWSj8",
-    "state_changes": [],
-    "_rescued": "parse"
+    "state_changes": [
+      "Writing instrument changes to yellow pencil with purple tip; yellow pen cap introduced."
+    ]
   },
   {
     "time": [
-      22,
-      24
-    ],
-    "visible_entities": [
-      {
-        "desc": "human foot with light skin tone, holding a yellow pen with a blue cap",
-        "action": "writing on paper",
-        "position": "center foreground"
-      },
-      {
-        "desc": "human foot with light skin tone, holding a yellow pen cap",
-        "action": "static",
-        "position": "left foreground"
-      },
-      {
-        "desc": "white lined notebook paper with blue ink writing",
-        "action": "static",
-        "position": "center background"
-      },
-      {
-        "desc": "text overlay 'JiMMY KHaN- FooT WriTer' in white serif font",
-        "action": "static",
-        "position": "top"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "A person is writing on a notebook using their foot.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The right foot is gripping a yellow pen to write in blue ink.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The left foot is holding the yellow cap of the pen.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The text 'JiMMY KHaN- FooT WriTer' is visible at the top of the screen.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [
-      "JiMMY KHaN- FooT WriTer"
-    ],
-    "spatial": "The writing foot is positioned in the center of the frame, resting on the white notebook paper. The second foot is located to the left of the writing foot. The text overlay is situated above the feet and the notebook.",
-    "parse_success": true,
-    "chunk_idx": 11,
-    "video_id": "LoW2mloWSj8",
-    "state_changes": [],
-    "_rescued": "parse"
-  },
-  {
-    "time": [
-      24,
-      26
-    ],
-    "visible_entities": [
-      {
-        "desc": "human foot with light skin tone, toes gripping a yellow pen with a blue cap",
-        "action": "writing on paper",
-        "position": "center/foreground"
-      },
-      {
-        "desc": "human hand with light skin tone holding a yellow pen cap",
-        "action": "static",
-        "position": "left"
-      },
-      {
-        "desc": "white lined notebook paper with blue horizontal lines",
-        "action": "static",
-        "position": "center/bottom"
-      },
-      {
-        "desc": "grey textured concrete surface",
-        "action": "static",
-        "position": "background"
-      },
-      {
-        "desc": "white text overlay reading 'JiMMY KHaN- FooT WriTer'",
-        "action": "static",
-        "position": "top"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "A person is using their foot to hold a pen and write Urdu script on a piece of paper.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The text 'JiMMY KHaN- FooT WriTer' is displayed at the top of the screen.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The writing on the paper is in blue ink.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [
-      "JiMMY KHaN- FooT WriTer"
-    ],
-    "spatial": "The foot holding the pen is positioned in the center of the frame, resting on the lined paper. The hand holding the pen cap is to the left of the foot. The grey concrete surface is visible above the paper in the background. The text overlay is located at the very top of the image.",
-    "parse_success": true,
-    "chunk_idx": 12,
-    "video_id": "LoW2mloWSj8",
-    "state_changes": [],
-    "_rescued": "parse"
-  },
-  {
-    "time": [
-      26,
-      28
+      5,
+      6
     ],
     "visible_entities": [
       {
         "desc": "pair of human feet with light skin tone",
-        "action": "writing with a pen",
-        "position": "center"
+        "action": "manipulating writing tools",
+        "position": "foreground",
+        "id": "person_writer_1"
       },
       {
-        "desc": "yellow ballpoint pen with a blue cap",
-        "action": "being held between toes",
-        "position": "center"
+        "desc": "yellow pencil with blue eraser tip",
+        "action": "being held between toes to write",
+        "position": "right",
+        "id": "pen_yellow_blue_cap"
+      },
+      {
+        "desc": "orange pen cap",
+        "action": "held between toes",
+        "position": "left",
+        "id": "cap_orange_cylindrical"
+      },
+      {
+        "desc": "white lined paper",
+        "action": "static",
+        "position": "center",
+        "id": "paper_notebook_lined"
+      },
+      {
+        "desc": "text overlay 'JiMMY KHaN- FooT WriTer' in white serif font",
+        "action": "static",
+        "position": "top",
+        "id": "text_overlay_title"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A person is writing on lined paper using a pencil held between the toes of their right foot.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The left foot is holding an orange pen cap between the big toe and second toe.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "Blue ink marks are visible on the paper where the pencil is writing.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The text 'JiMMY KHaN- FooT WriTer' is displayed at the top of the screen.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "JiMMY KHaN- FooT WriTer"
+    ],
+    "spatial": "The text overlay is positioned above the scene of the feet and paper. The left foot holding the orange cap is to the left of the right foot holding the pencil. The pencil is in contact with the white lined paper, which lies on a grey surface.",
+    "parse_success": true,
+    "chunk_idx": 5,
+    "video_id": "LoW2mloWSj8",
+    "state_changes": []
+  },
+  {
+    "time": [
+      6,
+      7
+    ],
+    "visible_entities": [
+      {
+        "desc": "human feet with light skin tone, holding a yellow pen with a blue cap",
+        "action": "writing on paper",
+        "position": "foreground"
       },
       {
         "desc": "white lined notebook paper",
         "action": "static",
-        "position": "center"
+        "position": "center",
+        "id": "paper_notebook_lined"
       },
       {
         "desc": "white text overlay reading 'JiMMY KHaN- FooT WriTer'",
         "action": "static",
-        "position": "top"
+        "position": "top",
+        "id": "text_overlay_title"
       }
     ],
     "atomic_facts": [
@@ -791,62 +390,7 @@
         "confidence": 1.0
       },
       {
-        "fact": "The right foot holds a yellow pen between the big toe and the second toe.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The left foot holds the paper steady by pinching the top edge with the toes.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "Blue ink text in Urdu script is visible on the paper.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [
-      "JiMMY KHaN- FooT WriTer"
-    ],
-    "spatial": "The feet are positioned in the center of the frame, resting on and above the lined paper. The yellow pen is held by the right foot and is positioned over the paper to write. The left foot is to the left of the right foot, holding the paper down. The white text overlay is located at the top of the frame, above the feet and paper.",
-    "parse_success": true,
-    "chunk_idx": 13,
-    "video_id": "LoW2mloWSj8",
-    "state_changes": [],
-    "_rescued": "parse"
-  },
-  {
-    "time": [
-      28,
-      30
-    ],
-    "visible_entities": [
-      {
-        "desc": "human feet with light skin tone, holding a yellow pen with a blue cap",
-        "action": "writing on paper",
-        "position": "center/foreground"
-      },
-      {
-        "desc": "lined white paper with blue horizontal lines",
-        "action": "static",
-        "position": "center/bottom"
-      },
-      {
-        "desc": "grey textured concrete surface",
-        "action": "static",
-        "position": "top/background"
-      },
-      {
-        "desc": "white text overlay reading 'JiMMY KHaN- FooT WriTer'",
-        "action": "static",
-        "position": "top"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "A person is using their feet to hold a pen and write on a piece of paper.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The writing is in blue ink and appears to be in a cursive script.",
+        "fact": "The right foot holds a yellow pen and is actively forming purple letters.",
         "confidence": 1.0
       },
       {
@@ -861,56 +405,178 @@
     "ocr": [
       "JiMMY KHaN- FooT WriTer"
     ],
-    "spatial": "The feet are positioned in the center of the frame, directly above the lined paper. The paper rests on a grey concrete surface which is visible at the top of the frame. The text overlay is located at the very top edge, above the concrete background.",
+    "spatial": "The text overlay is located at the top of the frame, above the notebook paper. The left foot is positioned on the left side of the paper, while the right foot is on the right side, holding the pen.",
     "parse_success": true,
-    "chunk_idx": 14,
+    "chunk_idx": 6,
     "video_id": "LoW2mloWSj8",
-    "state_changes": [],
-    "_rescued": "parse"
+    "state_changes": []
   },
   {
     "time": [
-      30,
-      32
+      7,
+      8
     ],
     "visible_entities": [
       {
-        "desc": "human feet with light skin tone",
-        "action": "writing with foot",
-        "position": "center/foreground"
+        "desc": "pair of bare human feet with light skin tone",
+        "action": "holding a pen and writing",
+        "position": "foreground",
+        "id": "person_writer_1"
       },
       {
-        "desc": "yellow pencil with blue eraser",
-        "action": "being held between toes",
-        "position": "center"
+        "desc": "yellow pen with a blue cap",
+        "action": "being used to write",
+        "position": "right",
+        "id": "pen_yellow_blue_cap"
       },
       {
-        "desc": "lined notebook paper",
+        "desc": "white lined notebook paper",
         "action": "static",
-        "position": "bottom"
+        "position": "center",
+        "id": "paper_notebook_lined"
       },
       {
-        "desc": "orange cylindrical object (likely pen cap)",
+        "desc": "grey speckled floor surface",
         "action": "static",
-        "position": "top left"
+        "position": "background",
+        "id": "floor_grey_concrete"
       },
       {
-        "desc": "white text overlay",
+        "desc": "white text overlay reading 'JiMMY KHaN- FooT WriTer'",
         "action": "static",
-        "position": "top"
+        "position": "top",
+        "id": "text_overlay_title"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A person is writing on lined paper using a pencil held between the toes of their right foot.",
+        "fact": "A person is writing on paper using their feet.",
         "confidence": 1.0
       },
       {
-        "fact": "The left foot is holding an orange object between the big toe and second toe.",
+        "fact": "The right foot is gripping a yellow pen between the big toe and the second toe.",
         "confidence": 1.0
       },
       {
-        "fact": "Blue ink script is visible on the paper.",
+        "fact": "The left foot is holding the orange cap of the pen.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "Blue ink is being applied to the paper to form script characters.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The text 'JiMMY KHaN- FooT WriTer' is visible at the top of the frame.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "JiMMY KHaN- FooT WriTer"
+    ],
+    "spatial": "The lined paper is positioned on the grey floor in the center of the frame. The person's feet are in the foreground, with the right foot holding the pen over the paper and the left foot resting on the left side of the paper. The white text overlay is located above the feet and paper at the top of the screen.",
+    "parse_success": true,
+    "chunk_idx": 7,
+    "video_id": "LoW2mloWSj8",
+    "state_changes": []
+  },
+  {
+    "time": [
+      8,
+      9
+    ],
+    "visible_entities": [
+      {
+        "desc": "human foot with light skin tone, holding a yellow pen with a blue cap",
+        "action": "writing on paper",
+        "position": "right foreground",
+        "id": "person_writer_1"
+      },
+      {
+        "desc": "human foot with light skin tone, holding a yellow pen cap between the big toe and second toe",
+        "action": "static",
+        "position": "left foreground",
+        "id": "person_writer_1"
+      },
+      {
+        "desc": "white lined notebook paper with blue ink writing",
+        "action": "static",
+        "position": "center",
+        "id": "paper_notebook_lined"
+      },
+      {
+        "desc": "white text overlay reading 'JiMMY KHaN- FooT WriTer'",
+        "action": "static",
+        "position": "top",
+        "id": "text_overlay_title"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A person is writing on a piece of paper using their right foot.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The writing is being done in blue ink.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The left foot is holding the cap of the pen.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The text 'JiMMY KHaN- FooT WriTer' is visible at the top of the frame.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "JiMMY KHaN- FooT WriTer"
+    ],
+    "spatial": "The right foot is positioned on the right side of the frame, holding a pen and writing on the paper. The left foot is positioned on the left side of the frame, holding the pen cap. The paper is located below the feet on a surface. The text overlay is above the feet and paper.",
+    "parse_success": true,
+    "chunk_idx": 8,
+    "video_id": "LoW2mloWSj8",
+    "state_changes": [
+      "Yellow pen cap is now held statically between toes while writing continues with the pen."
+    ]
+  },
+  {
+    "time": [
+      9,
+      10
+    ],
+    "visible_entities": [
+      {
+        "desc": "human foot with light skin tone, toes gripping a yellow pen with a blue cap",
+        "action": "writing on paper",
+        "position": "right foreground",
+        "id": "person_writer_1"
+      },
+      {
+        "desc": "human foot with light skin tone, toes holding a yellow pen cap",
+        "action": "static",
+        "position": "left foreground",
+        "id": "person_writer_1"
+      },
+      {
+        "desc": "white lined paper with blue horizontal lines",
+        "action": "static",
+        "position": "center",
+        "id": "paper_notebook_lined"
+      },
+      {
+        "desc": "text overlay 'JiMMY KHaN- FooT WriTer' in white font",
+        "action": "static",
+        "position": "top",
+        "id": "text_overlay_title"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A person is using their right foot to write Urdu script on a piece of paper.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The left foot is holding a yellow pen cap steady on the paper.",
         "confidence": 1.0
       },
       {
@@ -921,112 +587,475 @@
     "ocr": [
       "JiMMY KHaN- FooT WriTer"
     ],
-    "spatial": "The feet are positioned in the center of the frame, with the right foot holding the pencil and writing on the paper below it. The left foot is to the left of the right foot, holding an orange object. The text overlay is above the feet and paper.",
+    "spatial": "The right foot holding the pen is positioned to the right of the left foot. Both feet are above the white lined paper. The text overlay is above the feet and the paper.",
     "parse_success": true,
-    "chunk_idx": 15,
+    "chunk_idx": 9,
     "video_id": "LoW2mloWSj8",
-    "state_changes": [],
-    "_rescued": "parse"
+    "state_changes": []
   },
   {
     "time": [
-      32,
-      34
+      10,
+      11
     ],
     "visible_entities": [
       {
-        "desc": "human feet with light skin tone, holding a yellow pencil with a blue eraser tip",
+        "desc": "person's right foot with light skin tone, holding a yellow pencil with a blue eraser cap",
         "action": "writing on paper",
-        "position": "center/foreground"
+        "position": "right foreground",
+        "id": "person_writer_1"
       },
       {
-        "desc": "lined notebook paper with blue horizontal lines",
+        "desc": "person's left foot with light skin tone, toes curled to hold the top edge of the paper",
         "action": "static",
-        "position": "bottom/center"
+        "position": "left foreground",
+        "id": "person_writer_1"
+      },
+      {
+        "desc": "white lined notebook paper with blue horizontal lines",
+        "action": "static",
+        "position": "center",
+        "id": "paper_notebook_lined"
+      },
+      {
+        "desc": "yellow pencil with a blue eraser cap",
+        "action": "being used to write",
+        "position": "center right",
+        "id": "pen_yellow_blue_cap"
       },
       {
         "desc": "white text overlay reading 'JiMMY KHaN- FooT WriTer'",
         "action": "static",
-        "position": "top"
+        "position": "top",
+        "id": "text_overlay_title"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A person is using their right foot to hold a pencil and write on a piece of paper.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The person's left foot is holding the paper steady.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The text 'JiMMY KHaN- FooT WriTer' is visible at the top of the screen.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "Blue ink writing in a non-Latin script is appearing on the paper.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "JiMMY KHaN- FooT WriTer"
+    ],
+    "spatial": "The right foot is to the right of the left foot. The pencil is held by the toes of the right foot and is positioned over the paper. The paper is below the feet and on a gray surface. The text overlay is above the entire scene.",
+    "parse_success": true,
+    "chunk_idx": 10,
+    "video_id": "LoW2mloWSj8",
+    "state_changes": [
+      "Left foot action changes to holding the paper edge; right foot identified as the primary writer."
+    ]
+  },
+  {
+    "time": [
+      11,
+      12
+    ],
+    "visible_entities": [
+      {
+        "desc": "pair of human feet with light skin tone, toes gripping a yellow pencil with a blue eraser cap",
+        "action": "writing on paper",
+        "position": "center foreground",
+        "id": "person_writer_1"
+      },
+      {
+        "desc": "white lined notebook paper with blue horizontal lines",
+        "action": "static",
+        "position": "center background",
+        "id": "paper_notebook_lined"
+      },
+      {
+        "desc": "white text overlay reading 'JiMMY KHaN- FooT WriTer' in a serif font",
+        "action": "static",
+        "position": "top",
+        "id": "text_overlay_title"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A person is using their feet to hold a pencil and write on a piece of paper.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The writing on the paper is in a cursive script, likely Urdu or Arabic.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The text 'JiMMY KHaN- FooT WriTer' is displayed at the top of the frame.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "JiMMY KHaN- FooT WriTer"
+    ],
+    "spatial": "The feet are positioned in the center of the frame, holding the pencil above the lined paper. The text overlay is located at the top of the screen, above the feet and paper.",
+    "parse_success": true,
+    "chunk_idx": 11,
+    "video_id": "LoW2mloWSj8",
+    "state_changes": []
+  },
+  {
+    "time": [
+      12,
+      13
+    ],
+    "visible_entities": [
+      {
+        "desc": "human foot with light skin tone, holding a yellow pen with a blue cap between the big toe and second toe",
+        "action": "writing Urdu script on paper",
+        "position": "foreground center",
+        "id": "person_writer_1"
+      },
+      {
+        "desc": "human hand with light skin tone, holding a yellow pen cap",
+        "action": "static",
+        "position": "left",
+        "id": "person_writer_1"
+      },
+      {
+        "desc": "white lined notebook paper with blue horizontal lines",
+        "action": "static",
+        "position": "center",
+        "id": "paper_notebook_lined"
+      },
+      {
+        "desc": "text overlay reading 'JiMMY KHaN- FooT WriTer' in white font",
+        "action": "static",
+        "position": "top",
+        "id": "text_overlay_title"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A person is writing on a notebook using their foot to hold the pen.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The text 'JiMMY KHaN- FooT WriTer' is displayed at the top of the screen.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "Blue ink is being deposited onto the white paper to form characters.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "JiMMY KHaN- FooT WriTer"
+    ],
+    "spatial": "The foot holding the pen is in the center foreground, positioned above the lined paper. The hand holding the pen cap is to the left of the foot. The text overlay is located at the top of the frame, above the writing activity.",
+    "parse_success": true,
+    "chunk_idx": 12,
+    "video_id": "LoW2mloWSj8",
+    "state_changes": [
+      "Human hand appears holding a pen cap; writing content specified as Urdu script."
+    ]
+  },
+  {
+    "time": [
+      13,
+      14
+    ],
+    "visible_entities": [
+      {
+        "desc": "human foot with light skin tone, holding a yellow pen with a blue cap between the toes",
+        "action": "writing on paper",
+        "position": "center",
+        "id": "person_writer_1"
+      },
+      {
+        "desc": "human foot with light skin tone, holding a yellow pen cap between the toes",
+        "action": "static",
+        "position": "left",
+        "id": "person_writer_1"
+      },
+      {
+        "desc": "white lined notebook paper with blue horizontal lines",
+        "action": "static",
+        "position": "center",
+        "id": "paper_notebook_lined"
       },
       {
         "desc": "grey textured concrete surface",
         "action": "static",
-        "position": "background"
+        "position": "background",
+        "id": "floor_grey_concrete"
+      },
+      {
+        "desc": "white text overlay reading 'JiMMY KHaN- FooT WriTer'",
+        "action": "static",
+        "position": "top",
+        "id": "text_overlay_title"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A person is using their toes to hold a pencil and write on a piece of paper.",
+        "fact": "A person is using their right foot to hold a pen and write Urdu script on a piece of paper.",
         "confidence": 1.0
       },
       {
-        "fact": "The writing appears to be in a cursive script, likely Urdu or Arabic.",
+        "fact": "The left foot is holding the cap of the pen.",
         "confidence": 1.0
       },
       {
-        "fact": "The text 'JiMMY KHaN- FooT WriTer' is displayed at the top of the screen.",
+        "fact": "The text 'JiMMY KHaN- FooT WriTer' is displayed at the top of the video.",
         "confidence": 1.0
       }
     ],
     "ocr": [
       "JiMMY KHaN- FooT WriTer"
     ],
-    "spatial": "The feet are positioned in the center foreground, resting on the lined paper. The paper is below the feet and lies on top of the grey concrete surface. The text overlay is located at the top of the frame, above the feet and paper.",
+    "spatial": "The writing foot is positioned in the center of the frame, resting on the white lined paper. The second foot is located to the left of the writing foot. The paper is placed on top of the grey concrete surface. The text overlay is situated above the feet and paper.",
     "parse_success": true,
-    "chunk_idx": 16,
+    "chunk_idx": 13,
     "video_id": "LoW2mloWSj8",
-    "state_changes": [],
-    "_rescued": "parse"
+    "state_changes": []
   },
   {
     "time": [
-      34,
-      36
+      14,
+      15
     ],
     "visible_entities": [
       {
-        "desc": "human foot with light skin tone, short toenails, holding an orange pen cap between the big toe and second toe",
-        "action": "holding a pen cap and pressing down on paper",
-        "position": "left/foreground"
+        "desc": "pair of human feet with light skin tone, holding a yellow pen with a blue cap between the toes",
+        "action": "writing on paper",
+        "position": "center/foreground",
+        "id": "person_writer_1"
       },
       {
-        "desc": "human foot with light skin tone, short toenails",
+        "desc": "white lined notebook paper with blue horizontal lines",
         "action": "static",
-        "position": "right/foreground"
+        "position": "center/bottom",
+        "id": "paper_notebook_lined"
       },
       {
-        "desc": "lined notebook paper with blue horizontal lines and a vertical red margin line",
+        "desc": "grey speckled surface, likely a floor or table",
         "action": "static",
-        "position": "center/bottom"
-      },
-      {
-        "desc": "handwritten text in blue ink, cursive Urdu script",
-        "action": "static",
-        "position": "center"
+        "position": "top/background",
+        "id": "floor_grey_concrete"
       },
       {
         "desc": "white text overlay reading 'JiMMY KHaN- FooT WriTer'",
         "action": "static",
-        "position": "top"
-      },
-      {
-        "desc": "grey concrete or stone surface with a rough texture",
-        "action": "static",
-        "position": "background"
+        "position": "top",
+        "id": "text_overlay_title"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A foot is holding an orange pen cap between its toes.",
+        "fact": "A person is using their feet to hold a pen and write on a piece of paper.",
         "confidence": 1.0
       },
       {
-        "fact": "The foot is pressing down on the top edge of a lined notebook.",
+        "fact": "The writing on the paper is in a cursive script, likely Urdu or Arabic.",
         "confidence": 1.0
       },
       {
-        "fact": "Blue Urdu text is written on the paper.",
+        "fact": "The text 'JiMMY KHaN- FooT WriTer' is visible at the top of the frame.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "JiMMY KHaN- FooT WriTer"
+    ],
+    "spatial": "The feet are positioned in the center of the frame, holding the pen over the notebook paper. The paper is below the feet and rests on the grey speckled surface. The text overlay is at the top of the image, above the scene.",
+    "parse_success": true,
+    "chunk_idx": 14,
+    "video_id": "LoW2mloWSj8",
+    "state_changes": []
+  },
+  {
+    "time": [
+      15,
+      16
+    ],
+    "visible_entities": [
+      {
+        "desc": "human feet with light skin tone, one foot holding a yellow pen with a blue cap between the big toe and second toe",
+        "action": "writing on paper",
+        "position": "center"
+      },
+      {
+        "desc": "white lined notebook paper with blue grid lines and purple ink handwriting",
+        "action": "static",
+        "position": "bottom",
+        "id": "paper_notebook_lined"
+      },
+      {
+        "desc": "small orange cylindrical object, possibly a pen cap or straw piece",
+        "action": "static",
+        "position": "left",
+        "id": "cap_orange_held_by_toes"
+      },
+      {
+        "desc": "grey speckled surface, likely a floor or table",
+        "action": "static",
+        "position": "background",
+        "id": "floor_grey_concrete"
+      },
+      {
+        "desc": "white text overlay reading 'JiMMY KHaN- FooT WriTer'",
+        "action": "static",
+        "position": "top",
+        "id": "text_overlay_title"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A person is writing on a piece of paper using a pen held between their toes.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The writing on the paper is in purple ink and appears to be in Urdu script.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The text 'JiMMY KHaN- FooT WriTer' is displayed at the top of the frame.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "JiMMY KHaN- FooT WriTer"
+    ],
+    "spatial": "The human feet are positioned in the center of the frame, with the right foot holding the pen and writing on the paper below it. The orange cylindrical object is to the left of the feet. The grey speckled surface is behind the paper and feet. The text overlay is above all other elements in the frame.",
+    "parse_success": true,
+    "chunk_idx": 15,
+    "video_id": "LoW2mloWSj8",
+    "state_changes": [
+      "Paper content changes to show purple ink handwriting and grid lines."
+    ]
+  },
+  {
+    "time": [
+      16,
+      17
+    ],
+    "visible_entities": [
+      {
+        "desc": "pair of human feet with light skin tone",
+        "action": "writing on paper",
+        "position": "center/foreground",
+        "id": "person_writer_1"
+      },
+      {
+        "desc": "yellow pencil with a blue eraser tip",
+        "action": "being held by toes",
+        "position": "center",
+        "id": "pen_yellow_blue_cap"
+      },
+      {
+        "desc": "lined notebook paper with blue grid lines",
+        "action": "static",
+        "position": "bottom",
+        "id": "paper_notebook_lined"
+      },
+      {
+        "desc": "orange cylindrical object, likely a pen cap",
+        "action": "static",
+        "position": "top left",
+        "id": "cap_orange_cylindrical"
+      },
+      {
+        "desc": "white text overlay reading 'JiMMY KHaN- FooT WriTer'",
+        "action": "static",
+        "position": "top",
+        "id": "text_overlay_title"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A person is writing Urdu script on lined paper using a pencil held between their toes.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The left foot is pressing down on the paper to hold it steady.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "An orange pen cap is wedged between the toes of the left foot.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The text 'JiMMY KHaN- FooT WriTer' is visible at the top of the frame.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "JiMMY KHaN- FooT WriTer"
+    ],
+    "spatial": "The feet are positioned in the center of the frame, with the right foot holding the pencil and the left foot resting on the paper. The orange object is located between the toes of the left foot. The notebook paper is below the feet, and the white text overlay is at the very top of the image.",
+    "parse_success": true,
+    "chunk_idx": 16,
+    "video_id": "LoW2mloWSj8",
+    "state_changes": []
+  },
+  {
+    "time": [
+      17,
+      18
+    ],
+    "visible_entities": [
+      {
+        "desc": "human foot with light skin tone, holding a short, hollow, orange cylindrical object between the big toe and second toe",
+        "action": "holding a pen and writing",
+        "position": "left",
+        "id": "cap_orange_held_by_toes"
+      },
+      {
+        "desc": "human foot with light skin tone, big toe visible",
+        "action": "static",
+        "position": "right",
+        "id": "person_writer_1"
+      },
+      {
+        "desc": "white lined paper with blue horizontal lines",
+        "action": "static",
+        "position": "center",
+        "id": "paper_notebook_lined"
+      },
+      {
+        "desc": "blue ink handwriting in Urdu script",
+        "action": "static",
+        "position": "center",
+        "id": "handwriting_blue_urdu"
+      },
+      {
+        "desc": "white text overlay reading 'JiMMY KHaN- FooT WriTer'",
+        "action": "static",
+        "position": "top",
+        "id": "text_overlay_title"
+      },
+      {
+        "desc": "grey textured concrete floor",
+        "action": "static",
+        "position": "background",
+        "id": "floor_grey_concrete"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A person is writing on a piece of paper using a pen held between their toes.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The left foot is gripping an orange pen to write blue Urdu text.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The right foot is resting on the paper to hold it in place.",
         "confidence": 1.0
       },
       {
@@ -1036,303 +1065,308 @@
     ],
     "ocr": [
       "JiMMY KHaN- FooT WriTer",
-      "والدین کے پیر جنت میں مجھے"
+      "والدین کے بغیر کھلی دنیا میں رہنا"
     ],
-    "spatial": "The foot holding the pen cap is on the left side of the frame, pressing down on the top edge of the notebook paper. The second foot is on the right side, near the bottom edge of the paper. The handwritten Urdu text is in the center of the paper, below the left foot. The grey concrete surface is behind the paper and feet.",
+    "spatial": "The left foot is positioned on the left side of the paper, holding the orange pen. The right foot is positioned on the right side of the paper, pressing down on the edge. The blue Urdu text is written on the white paper, located below the feet. The white text overlay is at the top of the frame, above the concrete floor background.",
     "parse_success": true,
     "chunk_idx": 17,
     "video_id": "LoW2mloWSj8",
-    "state_changes": [],
-    "_rescued": "parse"
+    "state_changes": [
+      "Blue Urdu handwriting becomes visible on the paper."
+    ]
   },
   {
     "time": [
-      36,
-      38
+      18,
+      19
     ],
     "visible_entities": [
       {
         "desc": "human foot with light skin tone, holding a yellow pencil between the big toe and second toe",
         "action": "writing on paper",
-        "position": "bottom right"
+        "position": "bottom right",
+        "id": "person_writer_1"
       },
       {
         "desc": "human hand with light skin tone, holding an orange pen cap between the thumb and index finger",
-        "action": "holding pen cap",
-        "position": "left"
-      },
-      {
-        "desc": "white lined notebook paper with blue horizontal lines and a red vertical margin line",
         "action": "static",
-        "position": "center"
-      },
-      {
-        "desc": "grey textured concrete floor",
-        "action": "static",
-        "position": "background"
-      },
-      {
-        "desc": "white text overlay reading 'JiMMY KHaN- FooT WriTer'",
-        "action": "static",
-        "position": "top"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "A person is writing Urdu script on a notebook using a pencil held by their toes.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The hand on the left is holding an orange pen cap.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The text 'JiMMY KHaN- FooT WriTer' is displayed at the top of the screen.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [
-      "JiMMY KHaN- FooT WriTer",
-      "ہرانی کے بعد مکمل کیا ہے"
-    ],
-    "spatial": "The foot holding the pencil is positioned on the right side of the paper, while the hand holding the pen cap is on the left side. The paper lies on top of the grey concrete floor. The white text overlay is located above the scene at the top of the frame.",
-    "parse_success": true,
-    "chunk_idx": 18,
-    "video_id": "LoW2mloWSj8",
-    "state_changes": [],
-    "_rescued": "parse"
-  },
-  {
-    "time": [
-      38,
-      40
-    ],
-    "visible_entities": [
-      {
-        "desc": "hand with light skin tone, holding a yellow pen",
-        "action": "writing on paper",
-        "position": "bottom right"
-      },
-      {
-        "desc": "hand with light skin tone, holding an orange pen cap",
-        "action": "static",
-        "position": "left"
-      },
-      {
-        "desc": "white lined paper with blue handwritten text",
-        "action": "static",
-        "position": "center"
-      },
-      {
-        "desc": "grey textured concrete surface",
-        "action": "static",
-        "position": "background"
-      },
-      {
-        "desc": "white text overlay 'JiMMY KHaN- FooT WriTer'",
-        "action": "static",
-        "position": "top"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "A hand is writing on a piece of lined paper with a yellow pen.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The paper contains blue handwritten text in a non-Latin script.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "Another hand is holding an orange pen cap on the left side of the frame.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The text 'JiMMY KHaN- FooT WriTer' is visible at the top of the video.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [
-      "JiMMY KHaN- FooT WriTer"
-    ],
-    "spatial": "The hand holding the yellow pen is to the right of the paper. The hand holding the orange pen cap is to the left of the paper. The paper is on a grey concrete surface. The text overlay is above all other elements in the frame.",
-    "parse_success": true,
-    "chunk_idx": 19,
-    "video_id": "LoW2mloWSj8",
-    "state_changes": [],
-    "_rescued": "parse"
-  },
-  {
-    "time": [
-      40,
-      42
-    ],
-    "visible_entities": [
-      {
-        "desc": "person's left hand with light skin tone, holding an orange pen cap",
-        "action": "holding pen cap",
-        "position": "left"
-      },
-      {
-        "desc": "person's right hand with light skin tone, holding a yellow pencil",
-        "action": "writing on paper",
-        "position": "right"
+        "position": "left",
+        "id": "person_writer_1"
       },
       {
         "desc": "white lined notebook paper with blue horizontal lines",
         "action": "static",
-        "position": "center"
+        "position": "center",
+        "id": "paper_notebook_lined"
       },
       {
-        "desc": "yellow wooden pencil with a sharpened graphite tip",
-        "action": "being used to write",
-        "position": "right"
-      },
-      {
-        "desc": "orange plastic pen cap",
+        "desc": "text overlay in white font reading 'JiMMY KHaN- FooT WriTer'",
         "action": "static",
-        "position": "left"
+        "position": "top",
+        "id": "text_overlay_title"
       },
       {
-        "desc": "grey textured concrete surface",
+        "desc": "grey textured concrete floor",
         "action": "static",
-        "position": "background"
-      },
-      {
-        "desc": "white text overlay reading 'JiMMY KHaN- FooT WriTer'",
-        "action": "static",
-        "position": "top"
+        "position": "background",
+        "id": "floor_grey_concrete"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A person is writing Urdu script on a lined notebook using a yellow pencil held by their right foot.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The person's left hand is holding an orange pen cap near the top left of the paper.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The text 'JiMMY KHaN- FooT WriTer' is displayed at the top of the video frame.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "Blue ink Urdu text is visible on the white paper.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [
-      "JiMMY KHaN- FooT WriTer",
-      "لہذا آپ نے بہت اچھا کام کیا",
-      "بہت اچھا!"
-    ],
-    "spatial": "The person's left hand is positioned to the left of the notebook paper, while the right hand is on the right side of the paper. The yellow pencil is held by the right hand and is touching the paper surface. The orange pen cap is held in the left hand above the paper. The grey concrete surface is behind and above the notebook.",
-    "parse_success": true,
-    "chunk_idx": 20,
-    "video_id": "LoW2mloWSj8",
-    "state_changes": [],
-    "_rescued": "parse"
-  },
-  {
-    "time": [
-      42,
-      44
-    ],
-    "visible_entities": [
-      {
-        "desc": "human foot with light skin tone, holding a yellow pen with a blue cap between the big toe and second toe",
-        "action": "writing on paper",
-        "position": "right foreground"
-      },
-      {
-        "desc": "human hand with light skin tone, holding a small orange cylindrical object between the thumb and index finger",
-        "action": "static",
-        "position": "left foreground"
-      },
-      {
-        "desc": "white lined paper with blue horizontal lines and a red vertical margin line",
-        "action": "static",
-        "position": "center"
-      },
-      {
-        "desc": "grey textured surface, likely concrete or stone",
-        "action": "static",
-        "position": "background"
-      },
-      {
-        "desc": "white text overlay reading 'JiMMY KHaN- FooT WriTer'",
-        "action": "static",
-        "position": "top"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "A foot is writing Urdu script on a piece of lined paper using a pen held between the toes.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "A hand is holding a small orange object steady on the left side of the paper.",
+        "fact": "A person is writing Urdu script on lined paper using a pencil held by their toes.",
         "confidence": 1.0
       },
       {
         "fact": "The text 'JiMMY KHaN- FooT WriTer' is displayed at the top of the screen.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A hand is holding an orange pen cap on the left side of the paper.",
         "confidence": 1.0
       }
     ],
     "ocr": [
       "JiMMY KHaN- FooT WriTer"
     ],
-    "spatial": "The foot is positioned on the right side of the paper, while the hand is on the left side. The paper lies on top of the grey textured surface. The text overlay is located above the hand and paper.",
+    "spatial": "The hand holding the orange cap is to the left of the notebook paper. The foot holding the pencil is positioned at the bottom right of the paper, actively writing. The text overlay is above the entire scene.",
     "parse_success": true,
-    "chunk_idx": 21,
+    "chunk_idx": 18,
     "video_id": "LoW2mloWSj8",
-    "state_changes": [],
-    "_rescued": "parse"
+    "state_changes": []
   },
   {
     "time": [
-      44,
-      46
+      19,
+      20
     ],
     "visible_entities": [
       {
-        "desc": "left foot with light skin, holding an orange pen cap between the big toe and second toe",
-        "action": "holding the paper steady",
-        "position": "left"
+        "desc": "person's left hand with light skin tone, holding an orange pen cap between the thumb and index finger",
+        "action": "holding pen cap",
+        "position": "left",
+        "id": "person_writer_1"
       },
       {
-        "desc": "right foot with light skin, holding a yellow pencil with a blue eraser tip between the big toe and second toe",
-        "action": "writing on the paper",
-        "position": "right"
+        "desc": "person's right hand with light skin tone, holding a yellow pencil",
+        "action": "writing on paper",
+        "position": "right",
+        "id": "person_writer_1"
       },
       {
-        "desc": "white lined paper with blue horizontal lines",
+        "desc": "white lined paper with blue horizontal lines and a red vertical margin line",
         "action": "static",
-        "position": "center"
+        "position": "center",
+        "id": "paper_notebook_lined"
       },
       {
-        "desc": "grey textured concrete surface",
+        "desc": "grey textured surface, likely concrete or stone",
         "action": "static",
-        "position": "background"
+        "position": "background",
+        "id": "floor_grey_concrete"
       },
       {
         "desc": "white text overlay reading 'JiMMY KHaN- FooT WriTer'",
         "action": "static",
-        "position": "top"
+        "position": "top",
+        "id": "text_overlay_title"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A person is writing Urdu script on lined paper using a pencil held by their right foot.",
+        "fact": "A person is writing Urdu script on a piece of lined paper using a yellow pencil.",
         "confidence": 1.0
       },
       {
-        "fact": "The left foot is holding an orange pen cap to keep the paper in place.",
+        "fact": "The person's left hand is holding an orange pen cap to steady the paper.",
         "confidence": 1.0
       },
       {
-        "fact": "The text 'JiMMY KHaN- FooT WriTer' is displayed at the top of the screen.",
+        "fact": "The text 'JiMMY KHaN- FooT WriTer' is displayed at the top of the frame.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The writing surface is a grey, textured ground.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "JiMMY KHaN- FooT WriTer",
+      "لڑائی سے بہتر کھلی نما محسوس نہ مجھے",
+      "پاؤں"
+    ],
+    "spatial": "The person's left hand is positioned on the left side of the paper, while the right hand is on the right side, actively writing. The paper lies flat on top of the grey textured surface. The white text overlay is located above the hands and paper at the top of the frame.",
+    "parse_success": true,
+    "chunk_idx": 19,
+    "video_id": "LoW2mloWSj8",
+    "state_changes": [
+      "Action shifts from feet to hands; right hand writes with pencil, left hand holds cap."
+    ]
+  },
+  {
+    "time": [
+      20,
+      21
+    ],
+    "visible_entities": [
+      {
+        "desc": "human hand with light skin tone, holding a yellow pencil",
+        "action": "writing on paper",
+        "position": "right foreground",
+        "id": "person_writer_1"
+      },
+      {
+        "desc": "human hand with light skin tone, holding an orange pen cap",
+        "action": "static",
+        "position": "left foreground",
+        "id": "person_writer_1"
+      },
+      {
+        "desc": "white lined paper with blue horizontal lines",
+        "action": "static",
+        "position": "center",
+        "id": "paper_notebook_lined"
+      },
+      {
+        "desc": "grey textured surface, likely concrete or stone",
+        "action": "static",
+        "position": "background",
+        "id": "floor_grey_concrete"
+      },
+      {
+        "desc": "white text overlay reading 'JiMMY KHaN- FooT WriTer'",
+        "action": "static",
+        "position": "top",
+        "id": "text_overlay_title"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A person is writing Urdu script on a piece of paper using a yellow pencil.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The text 'JiMMY KHaN- FooT WriTer' is displayed at the top of the video.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The writing is done in blue ink.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "JiMMY KHaN- FooT WriTer",
+      "لا الیٰ الا اللہ محمد رسول اللہ",
+      "پاک زندہ باد"
+    ],
+    "spatial": "The lined paper is positioned on top of the grey textured surface. The hand holding the pencil is on the right side of the paper, while the hand holding the pen cap is on the left side. The text overlay is located above the paper and hands.",
+    "parse_success": true,
+    "chunk_idx": 20,
+    "video_id": "LoW2mloWSj8",
+    "state_changes": []
+  },
+  {
+    "time": [
+      21,
+      22
+    ],
+    "visible_entities": [
+      {
+        "desc": "human foot with light skin tone, toes gripping a yellow wooden pencil with a blue eraser tip",
+        "action": "writing on paper",
+        "position": "right foreground",
+        "id": "person_writer_1"
+      },
+      {
+        "desc": "human hand with light skin tone, thumb and index finger holding an orange plastic pen cap",
+        "action": "holding pen cap",
+        "position": "left foreground",
+        "id": "person_writer_1"
+      },
+      {
+        "desc": "white lined notebook paper with blue horizontal lines",
+        "action": "static",
+        "position": "center",
+        "id": "paper_notebook_lined"
+      },
+      {
+        "desc": "grey textured concrete surface",
+        "action": "static",
+        "position": "background",
+        "id": "floor_grey_concrete"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A person is writing Urdu script on a notebook using a pencil held between their toes.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A hand is holding an orange pen cap on the left side of the paper.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The text 'JiMMY KHaN- FooT WriTer' is visible at the top of the frame.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "JiMMY KHaN- FooT WriTer"
+    ],
+    "spatial": "The foot holding the pencil is on the right side of the paper, while the hand holding the orange cap is on the left side. The paper is placed on top of the grey concrete surface. The white text overlay is positioned above the scene at the top of the frame.",
+    "parse_success": true,
+    "chunk_idx": 21,
+    "video_id": "LoW2mloWSj8",
+    "state_changes": []
+  },
+  {
+    "time": [
+      22,
+      23
+    ],
+    "visible_entities": [
+      {
+        "desc": "human foot with light skin tone, holding a yellow pencil with a blue cap",
+        "action": "writing on paper",
+        "position": "bottom right foreground",
+        "id": "person_writer_1"
+      },
+      {
+        "desc": "human foot with light skin tone, holding a small orange cylindrical object",
+        "action": "static",
+        "position": "left foreground",
+        "id": "cap_orange_held_by_toes"
+      },
+      {
+        "desc": "white lined paper with blue horizontal lines and handwritten purple text",
+        "action": "static",
+        "position": "center",
+        "id": "paper_notebook_lined"
+      },
+      {
+        "desc": "grey textured concrete surface",
+        "action": "static",
+        "position": "background",
+        "id": "floor_grey_concrete"
+      },
+      {
+        "desc": "white text overlay reading 'JiMMY KHaN- FooT WriTer'",
+        "action": "static",
+        "position": "top",
+        "id": "text_overlay_title"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A foot is writing purple text on a piece of lined paper.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The text on the paper is written in Urdu script.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A second foot is holding an orange object steady on the left side of the paper.",
         "confidence": 1.0
       },
       {
@@ -1342,106 +1376,118 @@
     ],
     "ocr": [
       "JiMMY KHaN- FooT WriTer",
-      "ذوالفقار نے پیدرِ کامل بننا پسند نہیں کیا",
-      "بلکہ میدان کوڑا!"
+      "ذوالفقار نے بہت اچھا کھیل دکھایا",
+      "بہت بہت مبارک ہو!"
     ],
-    "spatial": "The left foot is positioned to the left of the paper, holding it down. The right foot is to the right of the left foot, actively writing on the paper. The paper lies on top of the grey concrete surface. The text overlay is above the feet and paper.",
+    "spatial": "The white lined paper is placed on the grey concrete surface. The foot holding the pencil is positioned on the right side of the paper, actively writing. The foot holding the orange object is positioned on the left side of the paper. The text overlay is located at the top of the frame, above the concrete surface.",
     "parse_success": true,
     "chunk_idx": 22,
     "video_id": "LoW2mloWSj8",
-    "state_changes": [],
-    "_rescued": "parse"
+    "state_changes": [
+      "Paper content updates to show handwritten purple text."
+    ]
   },
   {
     "time": [
-      46,
-      48
+      23,
+      24
     ],
     "visible_entities": [
       {
-        "desc": "human hand with light skin tone, holding a yellow pen with a blue cap",
+        "desc": "human foot with light skin tone, holding a yellow pen with a blue cap between the toes",
         "action": "writing on paper",
-        "position": "bottom right"
+        "position": "bottom right foreground",
+        "id": "person_writer_1"
       },
       {
-        "desc": "human hand with light skin tone, holding a small yellow cylindrical object",
-        "action": "static",
-        "position": "left"
+        "desc": "human hand with light skin tone, holding a yellow pen cap between the thumb and index finger",
+        "action": "holding paper steady",
+        "position": "left foreground",
+        "id": "person_writer_1"
       },
       {
-        "desc": "white lined paper with blue horizontal lines and purple handwritten text",
+        "desc": "white lined paper with blue Urdu script written on it",
         "action": "static",
-        "position": "center"
+        "position": "center",
+        "id": "paper_notebook_lined"
       },
       {
-        "desc": "grey textured surface, likely concrete or stone",
+        "desc": "grey textured surface, likely a floor or table",
         "action": "static",
-        "position": "background"
+        "position": "background",
+        "id": "floor_grey_concrete"
       },
       {
         "desc": "white text overlay reading 'JiMMY KHaN- FooT WriTer'",
         "action": "static",
-        "position": "top"
+        "position": "top",
+        "id": "text_overlay_title"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A hand is writing purple text on a piece of lined paper.",
+        "fact": "A person is writing Urdu text on a piece of paper using their foot.",
         "confidence": 1.0
       },
       {
-        "fact": "The text being written is in a script resembling Urdu or Arabic.",
+        "fact": "The foot is holding a yellow pen to write the second line of text.",
         "confidence": 1.0
       },
       {
-        "fact": "A second hand is holding a yellow object on the left side of the frame.",
+        "fact": "The hand is holding a pen cap while resting on the paper.",
         "confidence": 1.0
       },
       {
-        "fact": "The paper is placed on a grey, textured surface.",
+        "fact": "The text 'JiMMY KHaN- FooT WriTer' is visible at the top of the frame.",
         "confidence": 1.0
       }
     ],
     "ocr": [
       "JiMMY KHaN- FooT WriTer"
     ],
-    "spatial": "The hand holding the pen is positioned on the right side of the paper, actively writing. The other hand is to the left of the paper, holding a yellow object. The paper lies on top of the grey surface. The text overlay is located at the top of the frame, above the hands and paper.",
+    "spatial": "The foot holding the pen is positioned in the bottom right foreground, writing on the paper. The hand holding the pen cap is to the left of the foot, resting on the paper. The paper is centered on the grey textured surface. The text overlay is at the top of the frame, above the writing activity.",
     "parse_success": true,
     "chunk_idx": 23,
     "video_id": "LoW2mloWSj8",
-    "state_changes": [],
-    "_rescued": "parse"
+    "state_changes": [
+      "Hand action changes to holding paper steady; paper shows blue Urdu script."
+    ]
   },
   {
     "time": [
-      48,
-      50
+      24,
+      25
     ],
     "visible_entities": [
       {
-        "desc": "human foot with light skin tone, toes gripping a yellow pen with a blue cap",
+        "desc": "human foot with light skin tone, holding a yellow pen with a blue cap",
         "action": "writing on paper",
-        "position": "center foreground"
+        "position": "bottom right foreground",
+        "id": "person_writer_1"
       },
       {
-        "desc": "human foot with light skin tone, toes gripping an orange pen cap",
+        "desc": "human foot with light skin tone, holding an orange pen cap",
         "action": "static",
-        "position": "left foreground"
+        "position": "left foreground",
+        "id": "cap_orange_held_by_toes"
       },
       {
-        "desc": "white lined paper with blue horizontal lines and handwritten purple text",
+        "desc": "white lined paper with blue horizontal lines and purple handwritten text",
         "action": "static",
-        "position": "center"
+        "position": "center",
+        "id": "paper_notebook_lined"
       },
       {
         "desc": "grey textured concrete surface",
         "action": "static",
-        "position": "background"
+        "position": "background",
+        "id": "floor_grey_concrete"
       },
       {
-        "desc": "white text overlay reading 'JiMMY KHaN- FooT WriTer'",
+        "desc": "white text overlay 'JiMMY KHaN- FooT WriTer'",
         "action": "static",
-        "position": "top"
+        "position": "top",
+        "id": "text_overlay_title"
       }
     ],
     "atomic_facts": [
@@ -1454,61 +1500,232 @@
         "confidence": 1.0
       },
       {
-        "fact": "The text 'JiMMY KHaN- FooT WriTer' is displayed at the top of the screen.",
+        "fact": "The text 'JiMMY KHaN- FooT WriTer' is displayed at the top of the frame.",
         "confidence": 1.0
       }
     ],
     "ocr": [
       "JiMMY KHaN- FooT WriTer",
-      "ہماری زندگی میں کچھ لوگ ایسے ہوتے ہیں جو",
-      "ایمان بچا لیتے ہیں!"
+      "لڑائین کے بغیر کھلی دنیا میں بس رہے",
+      "ایمان بچاں کو آ دہ"
     ],
-    "spatial": "The writing foot is positioned in the center foreground, holding a pen over the white lined paper. The left foot is to the left of the writing foot, holding an orange cap on the paper. The paper is lying on top of the grey concrete surface. The text overlay is above the entire scene.",
+    "spatial": "The lined paper is placed on top of the grey concrete surface. The right foot is positioned below the written text, holding the pen. The left foot is to the left of the paper, holding the pen cap. The text overlay is above the concrete surface.",
     "parse_success": true,
     "chunk_idx": 24,
     "video_id": "LoW2mloWSj8",
-    "state_changes": [],
-    "_rescued": "parse"
+    "state_changes": []
   },
   {
     "time": [
-      50,
-      52
+      25,
+      26
     ],
     "visible_entities": [
       {
-        "desc": "human foot with light skin tone, holding a yellow pen with a blue cap",
+        "desc": "human feet with light skin tone, holding a yellow pen with a blue cap",
         "action": "writing on paper",
-        "position": "bottom center"
+        "position": "center/foreground"
       },
       {
-        "desc": "human foot with light skin tone, toes curled over the paper",
-        "action": "holding paper static",
-        "position": "left"
-      },
-      {
-        "desc": "white lined paper with blue horizontal lines",
+        "desc": "lined white paper with blue Urdu script",
         "action": "static",
-        "position": "center"
+        "position": "center/bottom",
+        "id": "paper_notebook_lined"
       },
       {
-        "desc": "grey textured concrete surface",
+        "desc": "grey textured concrete floor",
         "action": "static",
-        "position": "background"
+        "position": "background",
+        "id": "floor_grey_concrete"
       },
       {
-        "desc": "white text overlay 'JiMMY KHaN- FooT WriTer'",
+        "desc": "white text overlay reading 'JiMMY KHaN- FooT WriTer'",
         "action": "static",
-        "position": "top"
+        "position": "top",
+        "id": "text_overlay_title"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A person is writing Urdu script on a piece of paper using a pen held between their toes.",
+        "fact": "A person is writing Urdu text on a sheet of paper using a pen held between their toes.",
         "confidence": 1.0
       },
       {
-        "fact": "The left foot is pressing down on the paper to keep it steady.",
+        "fact": "The text 'JiMMY KHaN- FooT WriTer' is displayed at the top of the screen.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The writing surface is a sheet of lined paper placed on a grey floor.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "JiMMY KHaN- FooT WriTer"
+    ],
+    "spatial": "The human feet are positioned in the center foreground, holding the pen over the paper. The paper is lying flat on the grey concrete floor, which serves as the background. The white text overlay is located at the very top of the frame, above the feet and paper.",
+    "parse_success": true,
+    "chunk_idx": 25,
+    "video_id": "LoW2mloWSj8",
+    "state_changes": []
+  },
+  {
+    "time": [
+      26,
+      27
+    ],
+    "visible_entities": [
+      {
+        "desc": "human feet with light skin tone, bare, holding a yellow pen with a blue cap",
+        "action": "writing on paper",
+        "position": "center foreground"
+      },
+      {
+        "desc": "white lined notebook paper with blue horizontal lines",
+        "action": "static",
+        "position": "center",
+        "id": "paper_notebook_lined"
+      },
+      {
+        "desc": "grey textured concrete or stone surface",
+        "action": "static",
+        "position": "background",
+        "id": "floor_grey_concrete"
+      },
+      {
+        "desc": "white text overlay reading 'JiMMY KHaN- FooT WriTer'",
+        "action": "static",
+        "position": "top",
+        "id": "text_overlay_title"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A person is writing on a piece of paper using their feet.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The left foot holds the paper steady while the right foot manipulates the pen.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "Blue ink text in a non-Latin script is visible on the paper.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The text 'JiMMY KHaN- FooT WriTer' is displayed at the top of the frame.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "JiMMY KHaN- FooT WriTer"
+    ],
+    "spatial": "The feet are positioned in the center foreground, resting on and interacting with the white paper. The paper lies flat on top of the grey textured surface. The text overlay is located above the scene at the top edge of the frame.",
+    "parse_success": true,
+    "chunk_idx": 26,
+    "video_id": "LoW2mloWSj8",
+    "state_changes": []
+  },
+  {
+    "time": [
+      27,
+      28
+    ],
+    "visible_entities": [
+      {
+        "desc": "human foot with light skin tone, holding a yellow pencil with a blue eraser tip between the big toe and second toe",
+        "action": "writing on paper",
+        "position": "bottom center",
+        "id": "person_writer_1"
+      },
+      {
+        "desc": "human foot with light skin tone, holding a small orange cylindrical object between the big toe and second toe",
+        "action": "static",
+        "position": "left center",
+        "id": "cap_orange_held_by_toes"
+      },
+      {
+        "desc": "white lined paper with blue horizontal lines",
+        "action": "static",
+        "position": "bottom right",
+        "id": "paper_notebook_lined"
+      },
+      {
+        "desc": "grey textured concrete surface",
+        "action": "static",
+        "position": "top background",
+        "id": "floor_grey_concrete"
+      },
+      {
+        "desc": "white text overlay reading 'JiMMY KHaN- FooT WriTer'",
+        "action": "static",
+        "position": "top",
+        "id": "text_overlay_title"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A person is writing Urdu script on lined paper using a pencil held by their toes.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The left foot holds a small orange object steady.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The text 'JiMMY KHaN- FooT WriTer' is displayed at the top of the screen.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "JiMMY KHaN- FooT WriTer"
+    ],
+    "spatial": "The writing foot is positioned below the foot holding the orange object. The paper is underneath the writing foot and to the right of the stationary foot. The concrete surface is behind and above the feet and paper.",
+    "parse_success": true,
+    "chunk_idx": 27,
+    "video_id": "LoW2mloWSj8",
+    "state_changes": []
+  },
+  {
+    "time": [
+      28,
+      29
+    ],
+    "visible_entities": [
+      {
+        "desc": "human feet with light skin tone, holding a yellow pen with a blue cap",
+        "action": "writing on paper",
+        "position": "center/foreground"
+      },
+      {
+        "desc": "lined notebook paper with blue Urdu script",
+        "action": "static",
+        "position": "center/bottom",
+        "id": "paper_notebook_lined"
+      },
+      {
+        "desc": "grey textured concrete surface",
+        "action": "static",
+        "position": "background",
+        "id": "floor_grey_concrete"
+      },
+      {
+        "desc": "white text overlay reading 'JiMMY KHaN- FooT WriTer'",
+        "action": "static",
+        "position": "top",
+        "id": "text_overlay_title"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A person is using their feet to hold a pen and write on a piece of paper.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The pen is yellow with a blue cap.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The writing on the paper is in blue ink and appears to be Urdu script.",
         "confidence": 1.0
       },
       {
@@ -1519,304 +1736,186 @@
     "ocr": [
       "JiMMY KHaN- FooT WriTer"
     ],
-    "spatial": "The writing foot is positioned below the left foot which is holding the paper. The paper lies on top of the grey concrete surface. The text overlay is located above the feet and paper.",
-    "parse_success": true,
-    "chunk_idx": 25,
-    "video_id": "LoW2mloWSj8",
-    "state_changes": [],
-    "_rescued": "parse"
-  },
-  {
-    "time": [
-      52,
-      54
-    ],
-    "visible_entities": [
-      {
-        "desc": "pair of bare human feet with light skin tone",
-        "action": "writing on paper",
-        "position": "foreground"
-      },
-      {
-        "desc": "yellow pen with a blue cap",
-        "action": "being held by toes",
-        "position": "center"
-      },
-      {
-        "desc": "white lined notebook paper",
-        "action": "static",
-        "position": "center"
-      },
-      {
-        "desc": "orange pen cap",
-        "action": "held between toes",
-        "position": "left"
-      },
-      {
-        "desc": "grey concrete floor",
-        "action": "static",
-        "position": "background"
-      },
-      {
-        "desc": "white text overlay reading 'JiMMY KHaN- FooT WriTer'",
-        "action": "static",
-        "position": "top"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "A person is using their right foot to hold a yellow pen and write on a piece of paper.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The person's left foot is holding an orange pen cap steady on the paper.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "Blue ink handwriting is visible on the white lined paper.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The text 'JiMMY KHaN- FooT WriTer' is displayed at the top of the screen.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [
-      "JiMMY KHaN- FooT WriTer"
-    ],
-    "spatial": "The feet are in the foreground, positioned above the white lined paper which rests on the grey concrete floor. The yellow pen is held by the toes of the right foot, while the orange pen cap is held by the toes of the left foot. The white text overlay is located at the top of the frame, above the feet and paper.",
-    "parse_success": true,
-    "chunk_idx": 26,
-    "video_id": "LoW2mloWSj8",
-    "state_changes": [],
-    "_rescued": "parse"
-  },
-  {
-    "time": [
-      54,
-      56
-    ],
-    "visible_entities": [
-      {
-        "desc": "human feet with light skin tone, holding a yellow pencil with a blue cap between the big toe and second toe",
-        "action": "writing on paper",
-        "position": "center foreground"
-      },
-      {
-        "desc": "human foot with light skin tone, holding a small orange cylindrical object between the big toe and second toe",
-        "action": "static",
-        "position": "left foreground"
-      },
-      {
-        "desc": "white lined paper with blue horizontal lines and handwritten text in blue ink",
-        "action": "static",
-        "position": "center bottom"
-      },
-      {
-        "desc": "grey textured concrete surface",
-        "action": "static",
-        "position": "background"
-      },
-      {
-        "desc": "white text overlay reading 'JiMMY KHaN- FooT WriTer'",
-        "action": "static",
-        "position": "top"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "A person is writing Urdu script on lined paper using a pencil held between their toes.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The left foot is holding a small orange object steady.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The text 'JiMMY KHaN- FooT WriTer' is displayed at the top of the screen.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [
-      "JiMMY KHaN- FooT WriTer",
-      "لڑائی سے بچو کل تمہارا حسن رہ جائے",
-      "ہیلو تمہارا کون ! وہ تمہاری ماں کو"
-    ],
-    "spatial": "The writing foot is positioned to the right of the foot holding the orange object. Both feet are above the white lined paper. The paper is resting on the grey concrete surface. The text overlay is above the feet and the paper.",
-    "parse_success": true,
-    "chunk_idx": 27,
-    "video_id": "LoW2mloWSj8",
-    "state_changes": [],
-    "_rescued": "parse"
-  },
-  {
-    "time": [
-      56,
-      58
-    ],
-    "visible_entities": [
-      {
-        "desc": "human feet with light skin tone, toenails painted with white polish",
-        "action": "writing on paper",
-        "position": "foreground"
-      },
-      {
-        "desc": "yellow pencil with a blue eraser tip",
-        "action": "being held by toes",
-        "position": "center"
-      },
-      {
-        "desc": "white lined notebook paper with blue horizontal lines",
-        "action": "static",
-        "position": "center"
-      },
-      {
-        "desc": "blue ink handwriting in Urdu script",
-        "action": "static",
-        "position": "center"
-      },
-      {
-        "desc": "small yellow plastic tube cap",
-        "action": "static",
-        "position": "top left"
-      },
-      {
-        "desc": "grey textured concrete surface",
-        "action": "static",
-        "position": "background"
-      },
-      {
-        "desc": "white text overlay reading 'JiMMY KHAN- FooT WriTer'",
-        "action": "static",
-        "position": "top"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "A person is using their feet to hold a yellow pencil and write on a piece of paper.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The toes of the right foot are gripping the pencil to form letters in Urdu script.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The toes of the left foot are holding a small yellow cap against the ground.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The writing is being done in blue ink on white lined paper.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The text 'JiMMY KHAN- FooT WriTer' is visible at the top of the frame.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [
-      "JiMMY KHAN- FooT WriTer"
-    ],
-    "spatial": "The feet are positioned in the foreground, resting on and above the white lined paper. The yellow pencil is held between the toes of the right foot, positioned centrally over the paper where the blue Urdu text is written. The yellow cap is held by the toes of the left foot, located to the left of the writing area. The grey concrete surface is visible in the background, behind and above the paper.",
+    "spatial": "The human feet are in the foreground, positioned above the lined notebook paper. The yellow pen is held between the toes of the feet and is touching the paper. The grey concrete surface is behind and below the paper. The white text overlay is at the top of the frame, above the feet and paper.",
     "parse_success": true,
     "chunk_idx": 28,
     "video_id": "LoW2mloWSj8",
-    "state_changes": [],
-    "_rescued": "parse"
+    "state_changes": []
   },
   {
     "time": [
-      58,
-      60
+      29,
+      30
     ],
     "visible_entities": [
       {
-        "desc": "Person's hands and feet with light skin tone, holding a yellow pencil with a blue eraser tip",
+        "desc": "human foot with light skin tone, holding a yellow pencil with a blue eraser tip between the big toe and second toe",
         "action": "writing on paper",
-        "position": "foreground"
+        "position": "center foreground",
+        "id": "person_writer_1"
       },
       {
-        "desc": "White lined notebook paper with blue horizontal lines",
+        "desc": "human hand with light skin tone, holding a small yellow cylindrical object between the thumb and index finger",
         "action": "static",
-        "position": "center"
+        "position": "left foreground",
+        "id": "person_writer_1"
       },
       {
-        "desc": "Yellow pen cap held between the toes of the left foot",
+        "desc": "white lined notebook paper with blue horizontal lines",
         "action": "static",
-        "position": "left"
+        "position": "center",
+        "id": "paper_notebook_lined"
       },
       {
-        "desc": "Grey textured concrete or stone surface",
+        "desc": "purple ink handwriting in Urdu script",
         "action": "static",
-        "position": "background"
+        "position": "center on paper",
+        "id": "handwriting_purple_urdu"
       },
       {
-        "desc": "White text overlay reading 'JiMMY KHaN- FooT WriTer'",
+        "desc": "white text overlay reading 'JiMMY KHaN- FooT WriTer' in a sans-serif font",
         "action": "static",
-        "position": "top"
+        "position": "top",
+        "id": "text_overlay_title"
+      },
+      {
+        "desc": "grey textured concrete surface",
+        "action": "static",
+        "position": "background",
+        "id": "floor_grey_concrete"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A person is writing Urdu script on a notebook using a pencil held between their toes.",
+        "fact": "A person is using their foot to hold a pencil and write on a piece of paper.",
         "confidence": 1.0
       },
       {
-        "fact": "The left foot is stabilizing a yellow pen cap on the paper.",
+        "fact": "The writing is being done in purple ink.",
         "confidence": 1.0
       },
       {
         "fact": "The text 'JiMMY KHaN- FooT WriTer' is displayed at the top of the frame.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A hand is holding a small yellow object near the paper.",
         "confidence": 1.0
       }
     ],
     "ocr": [
       "JiMMY KHaN- FooT WriTer"
     ],
-    "spatial": "The person's feet are in the foreground, positioned above the white lined paper. The right foot is holding the pencil and writing on the paper, while the left foot is to the left, holding the pen cap. The paper rests on a grey textured surface. The text overlay is located at the top of the image, above the hands and feet.",
+    "spatial": "The foot holding the pencil is in the foreground, positioned over the lined paper. The hand holding the yellow object is to the left of the foot. The purple Urdu text is written on the paper, below the hand and in front of the foot. The white text overlay is at the top of the frame, above all other elements. The paper rests on the grey concrete background.",
     "parse_success": true,
     "chunk_idx": 29,
     "video_id": "LoW2mloWSj8",
-    "state_changes": [],
-    "_rescued": "parse"
+    "state_changes": [
+      "Purple ink handwriting appears; hand holds a small yellow cylindrical object."
+    ]
   },
   {
     "time": [
-      60,
-      62
+      30,
+      31
     ],
     "visible_entities": [
       {
-        "desc": "pair of bare feet with medium-brown skin tone, short toenails, and visible toes",
-        "action": "holding a pencil and writing",
-        "position": "center/foreground"
+        "desc": "human feet with light brown skin tone",
+        "action": "holding a pencil between toes and writing",
+        "position": "center foreground",
+        "id": "person_writer_1"
       },
       {
-        "desc": "yellow wooden pencil with a sharpened graphite tip",
+        "desc": "yellow wooden pencil",
         "action": "being manipulated to write",
-        "position": "center/foreground"
+        "position": "center",
+        "id": "pen_yellow_blue_cap"
       },
       {
-        "desc": "white lined notebook paper with blue horizontal lines and a vertical margin line",
+        "desc": "white lined notebook paper with blue horizontal lines",
         "action": "static",
-        "position": "background"
+        "position": "background",
+        "id": "paper_notebook_lined"
       },
       {
-        "desc": "text overlay reading 'JiMMY KHaN- FooT WriTer' in white, mixed-case font",
+        "desc": "white text overlay reading 'JiMMY KHaN- FooT WriTer'",
         "action": "static",
-        "position": "top"
+        "position": "top",
+        "id": "text_overlay_title"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A person is writing on a piece of paper using their feet.",
+        "fact": "A person is writing on a notebook using their feet.",
         "confidence": 1.0
       },
       {
-        "fact": "The right foot is gripping a yellow pencil between the toes.",
+        "fact": "The right foot holds a yellow pencil between the big toe and second toe.",
         "confidence": 1.0
       },
       {
-        "fact": "The pencil tip is touching the paper, creating blue ink marks.",
+        "fact": "The left foot rests on the paper to hold it steady.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "Blue ink script is visible on the paper.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "JiMMY KHaN- FooT WriTer"
+    ],
+    "spatial": "The feet are positioned in the center foreground, resting on top of the lined paper. The yellow pencil is held between the toes of the right foot, which is to the right of the left foot. The text overlay is located at the top of the frame, above the feet and paper.",
+    "parse_success": true,
+    "chunk_idx": 30,
+    "video_id": "LoW2mloWSj8",
+    "state_changes": [
+      "Action reverts to feet writing; skin tone description updates to light brown."
+    ]
+  },
+  {
+    "time": [
+      31,
+      32
+    ],
+    "visible_entities": [
+      {
+        "desc": "pair of bare feet with light brown skin tone, short toenails, and visible veins on the top of the foot",
+        "action": "holding a pencil with toes and writing on paper",
+        "position": "center foreground",
+        "id": "person_writer_1"
+      },
+      {
+        "desc": "yellow wooden pencil with a blue eraser tip",
+        "action": "being manipulated by toes to write",
+        "position": "center right",
+        "id": "pen_yellow_blue_cap"
+      },
+      {
+        "desc": "white lined notebook paper with blue horizontal lines",
+        "action": "static",
+        "position": "background",
+        "id": "paper_notebook_lined"
+      },
+      {
+        "desc": "white text overlay reading 'JiMMY KHaN- FooT WriTer'",
+        "action": "static",
+        "position": "top",
+        "id": "text_overlay_title"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A person is using their feet to hold a pencil and write on a piece of paper.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The pencil is gripped between the big toe and the second toe of the right foot.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "Blue ink handwriting is visible on the paper.",
         "confidence": 1.0
       },
       {
@@ -1827,71 +1926,10 @@
     "ocr": [
       "JiMMY KHaN- FooT WriTer"
     ],
-    "spatial": "The pair of feet is positioned in the center of the frame, resting on top of the lined paper. The right foot is holding the yellow pencil, which is positioned to the right of the left foot. The text overlay is located above the feet and the paper.",
-    "parse_success": true,
-    "chunk_idx": 30,
-    "video_id": "LoW2mloWSj8",
-    "state_changes": [],
-    "_rescued": "parse"
-  },
-  {
-    "time": [
-      62,
-      64
-    ],
-    "visible_entities": [
-      {
-        "desc": "human feet with light brown skin, toes curled around a writing instrument",
-        "action": "holding a pencil",
-        "position": "center/foreground"
-      },
-      {
-        "desc": "yellow wooden pencil with a blue eraser tip",
-        "action": "being used to write",
-        "position": "center"
-      },
-      {
-        "desc": "white lined notebook paper with blue horizontal lines",
-        "action": "static",
-        "position": "bottom/background"
-      },
-      {
-        "desc": "blue ink handwriting in Urdu script",
-        "action": "static",
-        "position": "center"
-      },
-      {
-        "desc": "white text overlay reading 'JiMMY KHaN- FooT WriTer'",
-        "action": "static",
-        "position": "top"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "A person is writing on paper using their feet.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The toes of the right foot are gripping a yellow pencil.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "Blue ink text in Urdu script is visible on the paper.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The text 'JiMMY KHaN- FooT WriTer' is displayed at the top of the frame.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [
-      "JiMMY KHaN- FooT WriTer"
-    ],
-    "spatial": "The feet are positioned in the center of the frame, resting on top of the lined paper. The pencil is held between the toes of the right foot, positioned above the paper surface. The Urdu text is located to the right of the feet, and the English watermark is situated above the entire scene.",
+    "spatial": "The feet are positioned in the center foreground, resting on top of the lined paper. The pencil is held by the toes and is located to the right of the left foot. The text overlay is situated above the feet and paper at the top of the frame.",
     "parse_success": true,
     "chunk_idx": 31,
     "video_id": "LoW2mloWSj8",
-    "state_changes": [],
-    "_rescued": "parse"
+    "state_changes": []
   }
 ]

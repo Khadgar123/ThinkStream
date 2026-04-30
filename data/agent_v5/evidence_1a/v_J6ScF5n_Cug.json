@@ -2,38 +2,38 @@
   {
     "time": [
       0,
-      2
+      1
     ],
     "visible_entities": [
       {
-        "desc": "young girl with long straight dark hair, wearing a black long-sleeved velvet top with a red heart-shaped detail at the neckline",
+        "desc": "young girl with long straight dark hair, wearing a black velvet long-sleeved top and a red undershirt with a heart-shaped pendant necklace",
         "action": "playing the flute",
-        "position": "right/foreground"
+        "position": "center/right foreground"
       },
       {
-        "desc": "silver metal flute",
-        "action": "being held and played",
-        "position": "center/foreground"
+        "desc": "silver metal flute, shiny, cylindrical",
+        "action": "being played",
+        "position": "center foreground"
       },
       {
-        "desc": "green artificial Christmas tree with white ornaments",
+        "desc": "green artificial Christmas tree with white hanging ornaments",
         "action": "static",
-        "position": "background"
+        "position": "background left"
       },
       {
         "desc": "green leafy houseplant",
         "action": "static",
-        "position": "left/background"
+        "position": "far left background"
       },
       {
-        "desc": "white sheet music or book",
+        "desc": "white music stand with sheet music",
         "action": "static",
-        "position": "bottom/foreground"
+        "position": "bottom foreground"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "The girl raises the silver flute to her mouth.",
+        "fact": "The girl lifts the silver flute to her mouth.",
         "confidence": 1.0
       },
       {
@@ -45,41 +45,41 @@
         "confidence": 1.0
       },
       {
-        "fact": "The Christmas tree is located behind the girl.",
+        "fact": "A Christmas tree stands behind the girl.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The girl is positioned in the foreground to the right of the frame. The silver flute is held horizontally in front of her face. The green Christmas tree is situated in the background behind the girl. To the left of the Christmas tree, a leafy plant is visible.",
+    "spatial": "The girl is in the foreground, positioned to the right of the Christmas tree. She is holding the silver flute horizontally in front of her face. The music stand is located below the flute at the bottom of the frame.",
     "parse_success": true,
     "chunk_idx": 0,
     "video_id": "v_J6ScF5n_Cug"
   },
   {
     "time": [
-      2,
-      4
+      1,
+      2
     ],
     "visible_entities": [
       {
-        "desc": "young girl with long dark hair, wearing a black long-sleeved velvet top with a red heart detail on the chest",
-        "action": "playing a silver flute",
-        "position": "center"
+        "desc": "young girl with long dark hair, wearing a black long-sleeved velvet top with a red heart-shaped pendant necklace",
+        "action": "playing the flute",
+        "position": "right foreground"
       },
       {
-        "desc": "silver flute, metallic, cylindrical, with gold-colored keys",
-        "action": "being held and played",
-        "position": "center"
+        "desc": "silver metal flute, shiny, cylindrical",
+        "action": "being played",
+        "position": "center foreground"
       },
       {
-        "desc": "green Christmas tree, decorated with white angel ornaments",
+        "desc": "green Christmas tree with ornaments, including a white angel figure",
         "action": "static",
         "position": "background"
       },
       {
         "desc": "green leafy plant",
         "action": "static",
-        "position": "left"
+        "position": "left background"
       }
     ],
     "atomic_facts": [
@@ -88,39 +88,35 @@
         "confidence": 1.0
       },
       {
-        "fact": "The girl's fingers are positioned on the keys of the flute.",
+        "fact": "The girl's fingers are pressing down on the keys of the flute.",
         "confidence": 1.0
       },
       {
-        "fact": "A green Christmas tree is visible behind the girl.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "A white angel ornament hangs from the Christmas tree.",
+        "fact": "A white angel ornament is hanging on the Christmas tree.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The girl is in the center of the frame, holding the flute in front of her. The Christmas tree is behind the girl. The green leafy plant is to the left of the girl.",
+    "spatial": "The girl is positioned in the foreground to the right of the green leafy plant. She is holding the silver flute in front of her body. The Christmas tree is located behind the girl and the flute.",
     "parse_success": true,
     "chunk_idx": 1,
     "video_id": "v_J6ScF5n_Cug"
   },
   {
     "time": [
-      4,
-      6
+      2,
+      3
     ],
     "visible_entities": [
       {
-        "desc": "young girl with long straight black hair, wearing a black velvet long-sleeved top with a red heart-shaped detail at the neckline",
+        "desc": "young girl with long dark hair, wearing a black long-sleeved velvet top with a red heart detail on the chest",
         "action": "playing a silver flute",
-        "position": "center/right"
+        "position": "right/foreground"
       },
       {
-        "desc": "silver concert flute with gold-colored keys and mechanisms",
-        "action": "being held horizontally",
-        "position": "center"
+        "desc": "silver metal flute with keys",
+        "action": "being played",
+        "position": "center/held by girl"
       },
       {
         "desc": "green artificial Christmas tree with a white hanging ornament",
@@ -130,98 +126,34 @@
     ],
     "atomic_facts": [
       {
-        "fact": "The girl is holding a silver flute horizontally with both hands.",
+        "fact": "The girl holds a silver flute horizontally to her mouth.",
         "confidence": 1.0
       },
       {
-        "fact": "The girl is blowing into the embouchure hole of the flute.",
+        "fact": "The girl's fingers are pressing the keys of the flute.",
         "confidence": 1.0
       },
       {
-        "fact": "The girl's fingers are pressing down on the keys of the instrument.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "A white ornament hangs from a branch of the Christmas tree behind the girl.",
+        "fact": "A white ornament hangs from a branch of the Christmas tree.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The girl is positioned in the foreground, holding the flute in front of her chest. The green Christmas tree is located behind the girl and the flute.",
+    "spatial": "The girl is in the foreground, positioned to the right of the frame. She is holding the silver flute in front of her. The green Christmas tree is located behind the girl and the flute.",
     "parse_success": true,
     "chunk_idx": 2,
     "video_id": "v_J6ScF5n_Cug"
   },
   {
     "time": [
-      6,
-      8
-    ],
-    "visible_entities": [
-      {
-        "desc": "young girl with long dark hair, wearing a black velvet long-sleeved top with a red heart-shaped pendant necklace",
-        "action": "playing the flute",
-        "position": "right/foreground"
-      },
-      {
-        "desc": "silver metal flute, cylindrical, shiny, with keys and rods",
-        "action": "being played",
-        "position": "center/foreground"
-      },
-      {
-        "desc": "green Christmas tree, needle-covered branches, decorated with a white angel ornament",
-        "action": "static",
-        "position": "background"
-      },
-      {
-        "desc": "green leafy houseplant, palm-like leaves",
-        "action": "static",
-        "position": "left/background"
-      },
-      {
-        "desc": "music stand, white surface with blue metal frame",
-        "action": "static",
-        "position": "bottom/foreground"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "The girl is holding the silver flute horizontally with both hands.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The girl is blowing into the mouthpiece of the flute.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The girl's fingers are positioned on the keys of the flute.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "A white angel ornament hangs from the Christmas tree branch.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The girl is standing in front of the Christmas tree.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [],
-    "spatial": "The girl is positioned to the right of the green leafy houseplant and in front of the Christmas tree. She is holding the silver flute horizontally in front of her chest. The music stand is located below the flute in the foreground.",
-    "parse_success": true,
-    "chunk_idx": 3,
-    "video_id": "v_J6ScF5n_Cug"
-  },
-  {
-    "time": [
-      8,
-      10
+      3,
+      4
     ],
     "visible_entities": [
       {
         "desc": "young girl with long dark hair, wearing a black long-sleeved velvet top with a red heart-shaped pendant necklace",
         "action": "playing a silver flute",
-        "position": "right/foreground"
+        "position": "center/right"
       },
       {
         "desc": "silver metal flute with keys",
@@ -234,391 +166,9 @@
         "position": "background"
       },
       {
-        "desc": "green leafy houseplant",
-        "action": "static",
-        "position": "left"
-      },
-      {
         "desc": "white music stand with blue clips",
         "action": "static",
-        "position": "bottom"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "The girl is holding a silver flute horizontally with both hands.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The girl is blowing into the mouthpiece of the flute.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "A white angel ornament is hanging from the Christmas tree.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The girl is wearing a red heart pendant necklace.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [],
-    "spatial": "The girl is positioned in the foreground on the right side of the frame. She is holding the silver flute horizontally in front of her. The Christmas tree is located behind the girl and the flute. The leafy plant is to the left of the Christmas tree. The music stand is situated below the flute.",
-    "parse_success": true,
-    "chunk_idx": 4,
-    "video_id": "v_J6ScF5n_Cug"
-  },
-  {
-    "time": [
-      10,
-      12
-    ],
-    "visible_entities": [
-      {
-        "desc": "young girl with long straight black hair, wearing a black long-sleeved velvet top with a red heart-shaped pendant necklace",
-        "action": "playing the flute",
-        "position": "right"
-      },
-      {
-        "desc": "silver metal flute with gold-colored keys and mechanisms",
-        "action": "being played",
-        "position": "center"
-      },
-      {
-        "desc": "green Christmas tree with a white hanging ornament",
-        "action": "static",
-        "position": "background"
-      },
-      {
-        "desc": "green leafy houseplant",
-        "action": "static",
-        "position": "left"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "The girl is holding a silver flute horizontally to her mouth.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The girl's fingers are positioned on the keys of the flute.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "A white ornament is hanging from the Christmas tree in the background.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The girl is wearing a red heart-shaped necklace.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [],
-    "spatial": "The girl is positioned on the right side of the frame, holding the silver flute horizontally in front of her. The Christmas tree is located behind the girl and the flute. A green leafy plant is visible to the left of the girl.",
-    "parse_success": true,
-    "chunk_idx": 5,
-    "video_id": "v_J6ScF5n_Cug"
-  },
-  {
-    "time": [
-      12,
-      14
-    ],
-    "visible_entities": [
-      {
-        "desc": "young girl with long dark hair, wearing a black long-sleeved velvet top with a red heart-shaped pendant necklace",
-        "action": "playing the flute",
-        "position": "right"
-      },
-      {
-        "desc": "silver metal flute, cylindrical, shiny",
-        "action": "being played",
-        "position": "center"
-      },
-      {
-        "desc": "green artificial Christmas tree with white ornaments",
-        "action": "static",
-        "position": "background"
-      },
-      {
-        "desc": "music stand with blue frame and white surface",
-        "action": "static",
-        "position": "bottom"
-      },
-      {
-        "desc": "green leafy houseplant",
-        "action": "static",
-        "position": "left"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "The girl holds the silver flute horizontally with both hands.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The girl blows across the mouthpiece of the flute.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The girl's fingers are positioned on the keys of the flute.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The music stand is positioned in front of the girl.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [],
-    "spatial": "The girl is positioned to the right of the green houseplant. The silver flute is held in front of the girl's face and body. The Christmas tree is behind the girl and the flute. The music stand is below the flute and in front of the girl.",
-    "parse_success": true,
-    "chunk_idx": 6,
-    "video_id": "v_J6ScF5n_Cug"
-  },
-  {
-    "time": [
-      14,
-      16
-    ],
-    "visible_entities": [
-      {
-        "desc": "young girl with long straight dark hair, wearing a black long-sleeved velvet top with a red heart-shaped detail at the neckline",
-        "action": "playing a silver flute",
-        "position": "right/foreground"
-      },
-      {
-        "desc": "silver metal flute with visible keys and mechanisms",
-        "action": "being held horizontally to the mouth",
-        "position": "center/foreground"
-      },
-      {
-        "desc": "green artificial Christmas tree with a white angel ornament",
-        "action": "static",
-        "position": "background"
-      },
-      {
-        "desc": "blue metal music stand",
-        "action": "static",
         "position": "bottom left"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "The girl holds the silver flute horizontally with both hands.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The girl presses the keys of the flute with her fingers.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The girl blows air across the mouthpiece of the flute.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "A white angel ornament hangs on the green tree in the background.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [],
-    "spatial": "The girl is positioned to the right of the frame, holding the flute in front of her. The green Christmas tree is located behind the girl and the flute. The blue music stand is situated below the flute in the bottom left corner.",
-    "parse_success": true,
-    "chunk_idx": 7,
-    "video_id": "v_J6ScF5n_Cug"
-  },
-  {
-    "time": [
-      16,
-      18
-    ],
-    "visible_entities": [
-      {
-        "desc": "young girl with long straight black hair, wearing a black long-sleeved velvet top with a red heart-shaped detail on the chest",
-        "action": "playing a silver flute",
-        "position": "right/foreground"
-      },
-      {
-        "desc": "silver metal flute",
-        "action": "being held and played",
-        "position": "center/foreground"
-      },
-      {
-        "desc": "green Christmas tree with ornaments",
-        "action": "static",
-        "position": "background"
-      },
-      {
-        "desc": "white music stand with blue clips",
-        "action": "static",
-        "position": "bottom/foreground"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "The girl is holding a silver flute horizontally to her mouth.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The girl's fingers are positioned on the keys of the flute.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The girl is standing in front of a green Christmas tree.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "A music stand is positioned below the flute.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [],
-    "spatial": "The girl is positioned to the right of the frame, holding the silver flute horizontally in front of her. The Christmas tree is located behind the girl and the flute. The music stand is situated below the flute in the foreground.",
-    "parse_success": true,
-    "chunk_idx": 8,
-    "video_id": "v_J6ScF5n_Cug"
-  },
-  {
-    "time": [
-      18,
-      20
-    ],
-    "visible_entities": [
-      {
-        "desc": "girl with long straight black hair, wearing a black long-sleeved velvet top with a red heart-shaped detail on the chest",
-        "action": "playing the flute",
-        "position": "right"
-      },
-      {
-        "desc": "silver metal flute with gold-colored keys and mechanisms",
-        "action": "being held and played",
-        "position": "center"
-      },
-      {
-        "desc": "green artificial Christmas tree with white hanging ornaments",
-        "action": "static",
-        "position": "background"
-      },
-      {
-        "desc": "blue metal music stand with white sheet music",
-        "action": "static",
-        "position": "bottom left"
-      },
-      {
-        "desc": "green leafy houseplant",
-        "action": "static",
-        "position": "left"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "The girl holds the silver flute horizontally with both hands.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The girl's fingers are pressing down on the keys of the flute.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The girl's mouth is positioned on the lip plate of the flute.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The music stand is positioned in front of the girl.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [],
-    "spatial": "The girl is positioned to the right of the green leafy plant. She is holding the silver flute in front of her chest. The green Christmas tree is behind the girl and the flute. The blue music stand is located in the bottom left foreground, below the level of the flute.",
-    "parse_success": true,
-    "chunk_idx": 9,
-    "video_id": "v_J6ScF5n_Cug"
-  },
-  {
-    "time": [
-      20,
-      22
-    ],
-    "visible_entities": [
-      {
-        "desc": "young girl with long dark hair, wearing a black velvet long-sleeved top and a red heart-shaped pendant necklace",
-        "action": "playing the flute",
-        "position": "right"
-      },
-      {
-        "desc": "silver metal flute with gold-colored keys",
-        "action": "being held and played",
-        "position": "center"
-      },
-      {
-        "desc": "green Christmas tree decorated with small white ornaments",
-        "action": "static",
-        "position": "background"
-      },
-      {
-        "desc": "music stand with blue frame and white sheet music",
-        "action": "static",
-        "position": "bottom foreground"
-      },
-      {
-        "desc": "green leafy potted plant",
-        "action": "static",
-        "position": "left"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "The girl is blowing into the flute's mouthpiece.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The girl's fingers are pressing down on the keys of the flute.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The music stand is positioned in front of the girl.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The Christmas tree is located behind the girl.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [],
-    "spatial": "The girl is positioned to the right of the green leafy plant. The silver flute is held horizontally in front of her face. The music stand is in the foreground, below the flute. The Christmas tree is in the background, behind the girl and the flute.",
-    "parse_success": true,
-    "chunk_idx": 10,
-    "video_id": "v_J6ScF5n_Cug"
-  },
-  {
-    "time": [
-      22,
-      24
-    ],
-    "visible_entities": [
-      {
-        "desc": "girl with long dark hair, wearing a black velvet long-sleeved top over a red shirt with a small heart pendant necklace",
-        "action": "playing the flute",
-        "position": "right"
-      },
-      {
-        "desc": "silver metal flute with keys",
-        "action": "being held and played",
-        "position": "center"
-      },
-      {
-        "desc": "green Christmas tree with ornaments",
-        "action": "static",
-        "position": "background"
-      },
-      {
-        "desc": "music stand with sheet music",
-        "action": "static",
-        "position": "bottom foreground"
-      },
-      {
-        "desc": "green leafy plant",
-        "action": "static",
-        "position": "left"
       }
     ],
     "atomic_facts": [
@@ -631,368 +181,26 @@
         "confidence": 1.0
       },
       {
-        "fact": "She is reading sheet music placed on a stand in front of her.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "A Christmas tree stands behind the girl.",
+        "fact": "A white angel ornament hangs on the Christmas tree in the background.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The girl is positioned to the right of the frame, holding the flute in front of her. The music stand is located below the flute in the foreground. The Christmas tree is behind the girl, and the leafy plant is to the left of the scene.",
+    "spatial": "The girl is positioned in front of the green Christmas tree. She is holding the silver flute horizontally in front of her face. The white music stand is located below the flute and to the left of the girl.",
     "parse_success": true,
-    "chunk_idx": 11,
+    "chunk_idx": 3,
     "video_id": "v_J6ScF5n_Cug"
   },
   {
     "time": [
-      24,
-      26
+      4,
+      5
     ],
     "visible_entities": [
       {
         "desc": "young girl with long dark hair, wearing a black velvet long-sleeved top with a red heart-shaped pendant necklace",
         "action": "playing the flute",
-        "position": "right"
-      },
-      {
-        "desc": "silver metal flute, shiny, cylindrical",
-        "action": "being played",
-        "position": "center"
-      },
-      {
-        "desc": "green Christmas tree, decorated with white ornaments",
-        "action": "static",
-        "position": "background"
-      },
-      {
-        "desc": "white music stand, metal frame",
-        "action": "static",
-        "position": "bottom"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "The girl is holding the silver flute horizontally to her mouth.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The girl's fingers are pressing down on the keys of the flute.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The girl is looking down towards the music stand.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "A Christmas tree is visible behind the girl.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [],
-    "spatial": "The girl is positioned to the right of the frame, holding the flute in front of her. The Christmas tree is behind the girl and the flute. The music stand is located below the flute in the foreground.",
-    "parse_success": true,
-    "chunk_idx": 12,
-    "video_id": "v_J6ScF5n_Cug"
-  },
-  {
-    "time": [
-      26,
-      28
-    ],
-    "visible_entities": [
-      {
-        "desc": "girl with long dark hair, wearing a black velvet long-sleeved top over a red shirt with a heart detail",
-        "action": "playing a silver flute",
-        "position": "right"
-      },
-      {
-        "desc": "silver flute, metallic, shiny",
-        "action": "being held horizontally",
-        "position": "center"
-      },
-      {
-        "desc": "green Christmas tree with ornaments",
-        "action": "static",
-        "position": "background"
-      },
-      {
-        "desc": "music stand with sheet music",
-        "action": "static",
-        "position": "bottom"
-      },
-      {
-        "desc": "green leafy plant",
-        "action": "static",
-        "position": "left"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "A girl is playing a silver flute.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The girl is holding the flute horizontally with both hands.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The girl's eyes are closed.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "A music stand with sheet music is positioned in front of the girl.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "A Christmas tree is behind the girl.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [],
-    "spatial": "The girl is positioned to the right of the frame, holding the silver flute horizontally in front of her. The music stand is below the flute and in front of the girl. The Christmas tree is behind the girl, and a leafy plant is to the left of the Christmas tree.",
-    "parse_success": true,
-    "chunk_idx": 13,
-    "video_id": "v_J6ScF5n_Cug"
-  },
-  {
-    "time": [
-      28,
-      30
-    ],
-    "visible_entities": [
-      {
-        "desc": "young girl with long dark hair, wearing a black velvet long-sleeved top with a red heart-shaped detail at the neckline",
-        "action": "playing a silver flute",
-        "position": "right"
-      },
-      {
-        "desc": "silver concert flute with gold-colored keys and a green band on the headjoint",
-        "action": "being held horizontally",
-        "position": "center"
-      },
-      {
-        "desc": "green Christmas tree decorated with white angel ornaments",
-        "action": "static",
-        "position": "background"
-      },
-      {
-        "desc": "white music stand with blue clips",
-        "action": "static",
-        "position": "bottom foreground"
-      },
-      {
-        "desc": "green leafy houseplant",
-        "action": "static",
-        "position": "left"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "The girl holds the silver flute horizontally with both hands.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "Her fingers are positioned on the keys of the flute.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "She is blowing across the mouthpiece of the flute.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The music stand is positioned in front of the girl.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The Christmas tree is behind the girl.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [],
-    "spatial": "The girl is positioned to the right of the green leafy houseplant. The silver flute is held in front of her chest. The Christmas tree is located behind the girl and the flute. The music stand is in the foreground, below the flute.",
-    "parse_success": true,
-    "chunk_idx": 14,
-    "video_id": "v_J6ScF5n_Cug"
-  },
-  {
-    "time": [
-      30,
-      32
-    ],
-    "visible_entities": [
-      {
-        "desc": "young girl with long straight black hair, wearing a black long-sleeved velvet top with a red heart-shaped brooch",
-        "action": "playing a silver flute",
-        "position": "right"
-      },
-      {
-        "desc": "silver metal flute",
-        "action": "being held and played",
-        "position": "center"
-      },
-      {
-        "desc": "green Christmas tree with ornaments",
-        "action": "static",
-        "position": "background"
-      },
-      {
-        "desc": "music stand with sheet music",
-        "action": "static",
-        "position": "foreground"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "The girl is holding a silver flute horizontally to her right.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The girl is blowing into the mouthpiece of the flute.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The girl's fingers are positioned on the keys of the flute.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "A music stand is positioned in front of the girl.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [],
-    "spatial": "The girl is positioned to the right of the frame, holding the silver flute horizontally in front of her. The music stand is in the foreground, below the flute. The green Christmas tree is in the background behind the girl.",
-    "parse_success": true,
-    "chunk_idx": 15,
-    "video_id": "v_J6ScF5n_Cug"
-  },
-  {
-    "time": [
-      32,
-      34
-    ],
-    "visible_entities": [
-      {
-        "desc": "young girl with long straight dark hair, wearing a black long-sleeved velvet top with a red heart-shaped pendant necklace",
-        "action": "playing a silver flute",
-        "position": "right"
-      },
-      {
-        "desc": "silver metal flute with gold-colored keys and mechanisms",
-        "action": "being held and played",
-        "position": "center"
-      },
-      {
-        "desc": "blue metal music stand with a white sheet of paper",
-        "action": "static",
-        "position": "bottom foreground"
-      },
-      {
-        "desc": "green Christmas tree with ornaments",
-        "action": "static",
-        "position": "background"
-      },
-      {
-        "desc": "green leafy houseplant",
-        "action": "static",
-        "position": "left background"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "The girl is holding a silver flute horizontally to her right.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "Her fingers are pressing down on the keys of the flute.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "She is blowing across the mouthpiece of the instrument.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "A music stand is positioned in front of the girl.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "A Christmas tree is visible behind the girl.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [],
-    "spatial": "The girl is positioned to the right of the frame, holding the silver flute horizontally in front of her. The blue music stand is in the foreground below the flute. A green Christmas tree is located in the background behind the girl, and a leafy plant is to the left of the tree.",
-    "parse_success": true,
-    "chunk_idx": 16,
-    "video_id": "v_J6ScF5n_Cug"
-  },
-  {
-    "time": [
-      34,
-      36
-    ],
-    "visible_entities": [
-      {
-        "desc": "young girl with long dark hair, wearing a black long-sleeved velvet top with a red heart-shaped detail at the neckline",
-        "action": "playing the flute",
-        "position": "right"
-      },
-      {
-        "desc": "silver metal flute, shiny, cylindrical, with visible keys and mechanisms",
-        "action": "being played",
-        "position": "center"
-      },
-      {
-        "desc": "green Christmas tree, decorated with a white hanging ornament",
-        "action": "static",
-        "position": "background"
-      },
-      {
-        "desc": "blue metal music stand with sheet music",
-        "action": "static",
-        "position": "bottom left"
-      },
-      {
-        "desc": "green leafy houseplant",
-        "action": "static",
-        "position": "left"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "The girl is holding the silver flute horizontally with both hands.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The girl is blowing into the mouthpiece of the flute.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The girl's fingers are positioned on the keys of the flute.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The music stand is positioned in front of the girl.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [],
-    "spatial": "The girl is positioned to the right of the frame, holding the silver flute horizontally in front of her. The blue music stand is in the foreground at the bottom left, in front of the girl. The green Christmas tree is in the background behind the girl and the flute.",
-    "parse_success": true,
-    "chunk_idx": 17,
-    "video_id": "v_J6ScF5n_Cug"
-  },
-  {
-    "time": [
-      36,
-      38
-    ],
-    "visible_entities": [
-      {
-        "desc": "young girl with long dark hair, wearing a black long-sleeved velvet top with a red heart-shaped detail on the chest",
-        "action": "playing a silver flute",
-        "position": "right"
+        "position": "center/right"
       },
       {
         "desc": "silver metal flute with keys",
@@ -1005,7 +213,12 @@
         "position": "background"
       },
       {
-        "desc": "music stand with blue frame and white surface",
+        "desc": "green leafy houseplant",
+        "action": "static",
+        "position": "left"
+      },
+      {
+        "desc": "white music stand with blue clips",
         "action": "static",
         "position": "bottom"
       }
@@ -1020,33 +233,33 @@
         "confidence": 1.0
       },
       {
-        "fact": "The girl's fingers are positioned on the keys of the flute.",
+        "fact": "The girl is looking down at the music stand.",
         "confidence": 1.0
       },
       {
-        "fact": "A music stand is positioned in front of the girl.",
+        "fact": "A white ornament is hanging from the Christmas tree branch.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The girl is positioned to the right of the frame, holding the silver flute horizontally in front of her. The green Christmas tree is located behind the girl and the flute. The music stand is situated below the flute in the foreground.",
+    "spatial": "The girl is positioned in the center-right of the frame, holding the flute in front of her. The Christmas tree is behind the girl. The leafy plant is to the left of the girl. The music stand is in front of the girl at the bottom of the frame.",
     "parse_success": true,
-    "chunk_idx": 18,
+    "chunk_idx": 4,
     "video_id": "v_J6ScF5n_Cug"
   },
   {
     "time": [
-      38,
-      40
+      5,
+      6
     ],
     "visible_entities": [
       {
-        "desc": "young girl with long dark hair, wearing a black long-sleeved velvet top with a red heart-shaped embellishment on the chest",
+        "desc": "young girl with long dark hair, wearing a black long-sleeved velvet top with a red heart-shaped pendant necklace",
         "action": "playing the flute",
         "position": "right"
       },
       {
-        "desc": "silver metal flute with keys and rods",
+        "desc": "silver metal flute with gold-colored keys",
         "action": "being held and played",
         "position": "center"
       },
@@ -1056,14 +269,541 @@
         "position": "background"
       },
       {
-        "desc": "music stand with blue frame and white surface",
+        "desc": "green leafy houseplant",
         "action": "static",
-        "position": "bottom foreground"
+        "position": "left"
+      },
+      {
+        "desc": "white music stand with blue clips",
+        "action": "static",
+        "position": "bottom"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The girl is holding a silver flute horizontally to her mouth.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The girl's fingers are positioned on the keys of the flute.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The girl is wearing a black top with a red heart pendant.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A Christmas tree is visible behind the girl.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The girl is positioned to the right of the green houseplant. The silver flute is held in front of the girl's chest and mouth. The Christmas tree is located behind the girl and the flute. The music stand is situated below the flute in the foreground.",
+    "parse_success": true,
+    "chunk_idx": 5,
+    "video_id": "v_J6ScF5n_Cug"
+  },
+  {
+    "time": [
+      6,
+      7
+    ],
+    "visible_entities": [
+      {
+        "desc": "girl with long dark hair, wearing a black long-sleeved velvet top and a red heart-shaped pendant necklace",
+        "action": "playing the flute",
+        "position": "right"
+      },
+      {
+        "desc": "silver metal flute",
+        "action": "being played",
+        "position": "center"
+      },
+      {
+        "desc": "green Christmas tree with ornaments",
+        "action": "static",
+        "position": "background"
+      },
+      {
+        "desc": "music stand with sheet music",
+        "action": "static",
+        "position": "bottom"
       },
       {
         "desc": "green leafy plant",
         "action": "static",
-        "position": "left background"
+        "position": "left"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The girl is holding a silver flute horizontally to her mouth.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The girl's fingers are positioned on the keys of the flute.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A music stand is positioned in front of the girl.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The girl is positioned to the right of the green leafy plant and in front of the Christmas tree. She is holding the silver flute horizontally in front of her. The music stand is located below the flute in the foreground.",
+    "parse_success": true,
+    "chunk_idx": 6,
+    "video_id": "v_J6ScF5n_Cug"
+  },
+  {
+    "time": [
+      7,
+      8
+    ],
+    "visible_entities": [
+      {
+        "desc": "person with long dark hair, wearing a black long-sleeved velvet top with a red heart-shaped detail at the neckline",
+        "action": "playing a silver flute",
+        "position": "center"
+      },
+      {
+        "desc": "silver metal flute with keys",
+        "action": "being played",
+        "position": "center"
+      },
+      {
+        "desc": "green Christmas tree with a white hanging ornament",
+        "action": "static",
+        "position": "background"
+      },
+      {
+        "desc": "blue metal music stand",
+        "action": "static",
+        "position": "bottom foreground"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The person is holding the flute horizontally with both hands.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The person is blowing into the mouthpiece of the flute.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The person's fingers are pressing down on the keys of the flute.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The music stand is positioned in front of the person.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The person is positioned in front of the green Christmas tree. The silver flute is held horizontally in front of the person's chest and mouth. The blue music stand is located below the flute in the foreground.",
+    "parse_success": true,
+    "chunk_idx": 7,
+    "video_id": "v_J6ScF5n_Cug"
+  },
+  {
+    "time": [
+      8,
+      9
+    ],
+    "visible_entities": [
+      {
+        "desc": "young girl with long dark hair, wearing a black long-sleeved velvet top with a red heart detail on the chest",
+        "action": "playing the flute",
+        "position": "right"
+      },
+      {
+        "desc": "silver metal flute",
+        "action": "being played",
+        "position": "center"
+      },
+      {
+        "desc": "green Christmas tree with ornaments",
+        "action": "static",
+        "position": "background"
+      },
+      {
+        "desc": "music stand with blue ribbons",
+        "action": "static",
+        "position": "bottom"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The girl is holding a silver flute horizontally to her mouth.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The girl's fingers are positioned on the keys of the flute.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A green Christmas tree is visible in the background behind the girl.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The girl is positioned to the right of the frame, holding the silver flute horizontally in front of her. The green Christmas tree is located behind the girl and the flute. The music stand is situated below the flute in the foreground.",
+    "parse_success": true,
+    "chunk_idx": 8,
+    "video_id": "v_J6ScF5n_Cug"
+  },
+  {
+    "time": [
+      9,
+      10
+    ],
+    "visible_entities": [
+      {
+        "desc": "young girl with long dark hair, wearing a black velvet long-sleeved top with a red heart detail at the neckline",
+        "action": "playing a silver flute",
+        "position": "right"
+      },
+      {
+        "desc": "silver flute, metallic, cylindrical, with keys and mechanisms",
+        "action": "being played",
+        "position": "center"
+      },
+      {
+        "desc": "green Christmas tree, decorated with white ornaments",
+        "action": "static",
+        "position": "background"
+      },
+      {
+        "desc": "music stand, blue frame with white surface",
+        "action": "static",
+        "position": "bottom left"
+      },
+      {
+        "desc": "green leafy plant",
+        "action": "static",
+        "position": "far left"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The girl is holding a silver flute horizontally to her lips.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The girl's fingers are positioned on the keys of the flute.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The girl is standing in front of a Christmas tree.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A music stand is positioned in front of the girl.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The girl is positioned to the right of the frame, holding the silver flute in front of her. The Christmas tree is behind the girl. The music stand is in the bottom left foreground, in front of the girl. A leafy plant is to the far left of the scene.",
+    "parse_success": true,
+    "chunk_idx": 9,
+    "video_id": "v_J6ScF5n_Cug"
+  },
+  {
+    "time": [
+      10,
+      11
+    ],
+    "visible_entities": [
+      {
+        "desc": "young girl with long dark hair, wearing a black long-sleeved velvet top with a red heart-shaped detail on the chest",
+        "action": "playing the flute",
+        "position": "right"
+      },
+      {
+        "desc": "silver metal flute with gold-colored keys",
+        "action": "being played",
+        "position": "center"
+      },
+      {
+        "desc": "green Christmas tree with ornaments",
+        "action": "static",
+        "position": "background"
+      },
+      {
+        "desc": "green leafy houseplant",
+        "action": "static",
+        "position": "left"
+      },
+      {
+        "desc": "music stand with sheet music",
+        "action": "static",
+        "position": "bottom"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The girl is holding a silver flute horizontally to her mouth.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The girl's fingers are positioned on the keys of the flute.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The girl is blowing into the flute to play it.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A music stand is positioned in front of the girl.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The girl is positioned to the right of the green leafy plant and in front of the Christmas tree. She is holding the silver flute horizontally in front of her face. The music stand is located below the flute and in front of the girl.",
+    "parse_success": true,
+    "chunk_idx": 10,
+    "video_id": "v_J6ScF5n_Cug"
+  },
+  {
+    "time": [
+      11,
+      12
+    ],
+    "visible_entities": [
+      {
+        "desc": "young girl with long dark hair, wearing a black long-sleeved velvet top with a red heart-shaped detail on the chest",
+        "action": "playing the flute",
+        "position": "right/foreground"
+      },
+      {
+        "desc": "silver metal flute with gold-colored keys",
+        "action": "being played",
+        "position": "center"
+      },
+      {
+        "desc": "green Christmas tree with ornaments",
+        "action": "static",
+        "position": "background"
+      },
+      {
+        "desc": "music stand with sheet music",
+        "action": "static",
+        "position": "bottom/foreground"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The girl is holding the silver flute horizontally to her mouth.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "Her fingers are pressing down on the keys of the flute.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The girl's eyes are closed as she plays the instrument.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A music stand is positioned in front of the girl.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The girl is positioned to the right of the frame, holding the flute in front of her. The music stand is located below the flute in the foreground. The green Christmas tree is situated behind the girl and the flute.",
+    "parse_success": true,
+    "chunk_idx": 11,
+    "video_id": "v_J6ScF5n_Cug"
+  },
+  {
+    "time": [
+      12,
+      13
+    ],
+    "visible_entities": [
+      {
+        "desc": "young girl with long dark hair, wearing a black long-sleeved top with a red heart-shaped detail at the neckline",
+        "action": "playing a silver flute",
+        "position": "right"
+      },
+      {
+        "desc": "silver flute with gold-colored keys",
+        "action": "being held horizontally",
+        "position": "center"
+      },
+      {
+        "desc": "green Christmas tree with ornaments",
+        "action": "static",
+        "position": "background"
+      },
+      {
+        "desc": "music stand with sheet music",
+        "action": "static",
+        "position": "bottom"
+      },
+      {
+        "desc": "green leafy plant",
+        "action": "static",
+        "position": "left"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The girl is holding a silver flute horizontally to her mouth.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "Her fingers are positioned on the keys of the flute.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The girl's eyes are closed while playing the instrument.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A music stand is positioned in front of the girl.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The girl is positioned to the right of the green leafy plant. The silver flute is held in front of the girl and the Christmas tree. The music stand is located below the flute and in front of the girl.",
+    "parse_success": true,
+    "chunk_idx": 12,
+    "video_id": "v_J6ScF5n_Cug"
+  },
+  {
+    "time": [
+      13,
+      14
+    ],
+    "visible_entities": [
+      {
+        "desc": "young girl with long dark hair, wearing a black long-sleeved velvet top with a red heart-shaped pendant necklace",
+        "action": "playing a silver flute",
+        "position": "right"
+      },
+      {
+        "desc": "silver concert flute, metallic and shiny, held horizontally",
+        "action": "being played",
+        "position": "center"
+      },
+      {
+        "desc": "green Christmas tree with ornaments, including a white angel topper",
+        "action": "static",
+        "position": "background"
+      },
+      {
+        "desc": "music stand with sheet music and blue clips",
+        "action": "static",
+        "position": "bottom left"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The girl is holding a silver flute horizontally to her mouth.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The girl's fingers are positioned on the keys of the flute.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The girl is wearing a black top with a red heart pendant.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A Christmas tree is visible in the background behind the girl.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The girl is positioned to the right of the frame, holding the silver flute in front of her. The music stand is located in the bottom left foreground, below the level of the flute. The green Christmas tree is situated in the background behind the girl and the flute.",
+    "parse_success": true,
+    "chunk_idx": 13,
+    "video_id": "v_J6ScF5n_Cug"
+  },
+  {
+    "time": [
+      14,
+      15
+    ],
+    "visible_entities": [
+      {
+        "desc": "young girl with long dark hair, wearing a black long-sleeved velvet top with a red heart-shaped detail on the chest",
+        "action": "playing a silver flute",
+        "position": "right/foreground"
+      },
+      {
+        "desc": "silver flute with gold-colored keys and a green band on the headjoint",
+        "action": "being held horizontally",
+        "position": "center"
+      },
+      {
+        "desc": "green Christmas tree decorated with white angel ornaments",
+        "action": "static",
+        "position": "background"
+      },
+      {
+        "desc": "music stand with blue clips holding sheet music",
+        "action": "static",
+        "position": "bottom/foreground"
+      },
+      {
+        "desc": "green leafy houseplant",
+        "action": "static",
+        "position": "left/background"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The girl is holding a silver flute horizontally to her mouth.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "Her fingers are positioned on the keys of the flute.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The music stand is positioned in front of the girl.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The Christmas tree is behind the girl.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The girl is in the foreground, positioned to the right of the frame. She is holding the silver flute horizontally in front of her. The music stand is below the flute and in front of the girl. The Christmas tree is behind the girl, and the houseplant is to the left of the tree.",
+    "parse_success": true,
+    "chunk_idx": 14,
+    "video_id": "v_J6ScF5n_Cug"
+  },
+  {
+    "time": [
+      15,
+      16
+    ],
+    "visible_entities": [
+      {
+        "desc": "young girl with long dark hair, wearing a black long-sleeved velvet top with a red heart-shaped detail on the chest",
+        "action": "playing the flute",
+        "position": "right"
+      },
+      {
+        "desc": "silver metal flute with keys",
+        "action": "being held horizontally",
+        "position": "center"
+      },
+      {
+        "desc": "green Christmas tree with ornaments",
+        "action": "static",
+        "position": "background"
+      },
+      {
+        "desc": "music stand with white sheet music and blue clips",
+        "action": "static",
+        "position": "bottom foreground"
       }
     ],
     "atomic_facts": [
@@ -1076,7 +816,7 @@
         "confidence": 1.0
       },
       {
-        "fact": "The girl is blowing across the mouthpiece of the flute.",
+        "fact": "The girl is blowing into the mouthpiece of the flute.",
         "confidence": 1.0
       },
       {
@@ -1085,36 +825,41 @@
       }
     ],
     "ocr": [],
-    "spatial": "The girl is positioned to the right of the frame, holding the flute horizontally in front of her. The music stand is in the foreground below the flute. The Christmas tree is behind the girl and the flute. The leafy plant is to the left of the Christmas tree.",
+    "spatial": "The girl is positioned to the right of the frame, holding the flute horizontally across the center. The music stand is in the foreground below the flute. The green Christmas tree is in the background behind the girl and the flute.",
     "parse_success": true,
-    "chunk_idx": 19,
+    "chunk_idx": 15,
     "video_id": "v_J6ScF5n_Cug"
   },
   {
     "time": [
-      40,
-      42
+      16,
+      17
     ],
     "visible_entities": [
       {
-        "desc": "young girl with long dark hair, wearing a black long-sleeved velvet top with a red heart-shaped detail on the chest",
-        "action": "playing the flute",
+        "desc": "young girl with long dark hair, wearing a black long-sleeved velvet top with a red heart-shaped pendant necklace",
+        "action": "playing a silver flute",
         "position": "right"
       },
       {
-        "desc": "silver metal flute with keys",
-        "action": "being played",
+        "desc": "silver concert flute, metallic, cylindrical",
+        "action": "being held and played",
         "position": "center"
       },
       {
-        "desc": "green Christmas tree with white ornaments",
+        "desc": "green Christmas tree with ornaments",
         "action": "static",
         "position": "background"
       },
       {
-        "desc": "music stand with sheet music",
+        "desc": "blue metal music stand",
         "action": "static",
-        "position": "bottom"
+        "position": "foreground"
+      },
+      {
+        "desc": "green leafy houseplant",
+        "action": "static",
+        "position": "left"
       }
     ],
     "atomic_facts": [
@@ -1136,19 +881,75 @@
       }
     ],
     "ocr": [],
-    "spatial": "The girl is positioned to the right of the frame, holding the flute in front of her. The music stand is located below the flute in the foreground. The Christmas tree is situated behind the girl.",
+    "spatial": "The girl is positioned to the right of the frame, holding the silver flute in front of her. The blue music stand is in the foreground, below the flute. A green Christmas tree is behind the girl, and a leafy plant is to the left of the tree.",
     "parse_success": true,
-    "chunk_idx": 20,
+    "chunk_idx": 16,
     "video_id": "v_J6ScF5n_Cug"
   },
   {
     "time": [
-      42,
-      44
+      17,
+      18
     ],
     "visible_entities": [
       {
-        "desc": "young girl with long dark hair, wearing a black long-sleeved velvet top with a red bow featuring a silver heart detail",
+        "desc": "person with long dark hair, wearing a black long-sleeved velvet top with a red heart-shaped pendant necklace",
+        "action": "playing a silver flute",
+        "position": "right"
+      },
+      {
+        "desc": "silver metal flute with keys",
+        "action": "being played",
+        "position": "center"
+      },
+      {
+        "desc": "green Christmas tree with ornaments",
+        "action": "static",
+        "position": "background"
+      },
+      {
+        "desc": "blue metal music stand with sheet music",
+        "action": "static",
+        "position": "bottom foreground"
+      },
+      {
+        "desc": "green leafy plant",
+        "action": "static",
+        "position": "left background"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The person is holding a silver flute horizontally to their mouth.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The person's fingers are positioned on the keys of the flute.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The person is looking down at the sheet music on the stand.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A Christmas tree is visible in the background behind the person.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The person is positioned to the right of the frame, holding the flute in front of them. The music stand is in the foreground below the flute. The Christmas tree is behind the person, and the leafy plant is to the left of the Christmas tree.",
+    "parse_success": true,
+    "chunk_idx": 17,
+    "video_id": "v_J6ScF5n_Cug"
+  },
+  {
+    "time": [
+      18,
+      19
+    ],
+    "visible_entities": [
+      {
+        "desc": "young girl with long dark hair, wearing a black long-sleeved velvet top and a red heart-shaped pendant necklace",
         "action": "playing the flute",
         "position": "right"
       },
@@ -1158,14 +959,211 @@
         "position": "center"
       },
       {
-        "desc": "green Christmas tree with a white angel ornament",
+        "desc": "green Christmas tree with ornaments",
         "action": "static",
         "position": "background"
       },
       {
-        "desc": "music stand with blue frame and white surface",
+        "desc": "music stand with blue frame and white sheet music",
+        "action": "static",
+        "position": "bottom"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The girl is holding a silver flute horizontally to her mouth.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The girl's fingers are positioned on the keys of the flute.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A music stand is positioned in front of the girl.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The girl is positioned to the right of the frame, holding the silver flute horizontally in front of her. The green Christmas tree is in the background behind the girl and the flute. The music stand is located in the foreground at the bottom of the frame, below the flute.",
+    "parse_success": true,
+    "chunk_idx": 18,
+    "video_id": "v_J6ScF5n_Cug"
+  },
+  {
+    "time": [
+      19,
+      20
+    ],
+    "visible_entities": [
+      {
+        "desc": "young girl with long dark hair, wearing a black long-sleeved velvet top with a red heart-shaped detail on the chest",
+        "action": "playing the flute",
+        "position": "right"
+      },
+      {
+        "desc": "silver metal flute with keys",
+        "action": "being played",
+        "position": "center"
+      },
+      {
+        "desc": "green Christmas tree with ornaments",
+        "action": "static",
+        "position": "background"
+      },
+      {
+        "desc": "blue metal music stand with sheet music",
+        "action": "static",
+        "position": "foreground"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The girl is holding a silver flute horizontally to her mouth.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The girl's fingers are pressing the keys of the flute.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The music stand is positioned in front of the girl.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The girl is positioned to the right of the frame, holding the flute in front of her. The blue music stand is in the foreground, below the flute. The green Christmas tree is in the background behind the girl.",
+    "parse_success": true,
+    "chunk_idx": 19,
+    "video_id": "v_J6ScF5n_Cug"
+  },
+  {
+    "time": [
+      20,
+      21
+    ],
+    "visible_entities": [
+      {
+        "desc": "young girl with long dark hair, wearing a black long-sleeved velvet top with a red heart-shaped brooch",
+        "action": "playing the flute",
+        "position": "right"
+      },
+      {
+        "desc": "silver metal flute",
+        "action": "being held and played",
+        "position": "center"
+      },
+      {
+        "desc": "green Christmas tree with white ornaments",
+        "action": "static",
+        "position": "background"
+      },
+      {
+        "desc": "music stand with sheet music",
+        "action": "static",
+        "position": "bottom"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The girl is holding a silver flute horizontally to her mouth.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "Her fingers are positioned on the keys of the flute.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "She is looking down at the sheet music on the stand.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The girl is positioned to the right of the frame, holding the silver flute in front of her. The music stand is located below the flute in the foreground. The Christmas tree is situated behind the girl.",
+    "parse_success": true,
+    "chunk_idx": 20,
+    "video_id": "v_J6ScF5n_Cug"
+  },
+  {
+    "time": [
+      21,
+      22
+    ],
+    "visible_entities": [
+      {
+        "desc": "young girl with long dark hair, wearing a black velvet long-sleeved top with a red bow detail at the neckline",
+        "action": "playing the flute",
+        "position": "right"
+      },
+      {
+        "desc": "silver metal flute with gold-colored keys and mechanisms",
+        "action": "being held and played",
+        "position": "center"
+      },
+      {
+        "desc": "green artificial Christmas tree with a white angel ornament",
+        "action": "static",
+        "position": "background"
+      },
+      {
+        "desc": "blue metal music stand with white sheet music",
         "action": "static",
         "position": "bottom left"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The girl is holding a silver flute horizontally with both hands.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The girl is blowing into the mouthpiece of the flute.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The girl's fingers are positioned on the keys of the flute.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A white angel ornament hangs from the Christmas tree.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The girl is positioned to the right of the frame, holding the flute in front of her. The Christmas tree is behind the girl and the flute. The music stand is in the foreground at the bottom left, below the flute.",
+    "parse_success": true,
+    "chunk_idx": 21,
+    "video_id": "v_J6ScF5n_Cug"
+  },
+  {
+    "time": [
+      22,
+      23
+    ],
+    "visible_entities": [
+      {
+        "desc": "young girl with long dark hair, wearing a black long-sleeved velvet top with a red bow featuring a heart outline",
+        "action": "playing the flute",
+        "position": "right"
+      },
+      {
+        "desc": "silver metal flute",
+        "action": "being played",
+        "position": "center"
+      },
+      {
+        "desc": "green Christmas tree with white ornaments",
+        "action": "static",
+        "position": "background"
+      },
+      {
+        "desc": "music stand with sheet music",
+        "action": "static",
+        "position": "bottom"
+      },
+      {
+        "desc": "green leafy plant",
+        "action": "static",
+        "position": "left"
       }
     ],
     "atomic_facts": [
@@ -1178,41 +1176,50 @@
         "confidence": 1.0
       },
       {
-        "fact": "A white angel ornament hangs on the Christmas tree behind the girl.",
+        "fact": "The girl's eyes are closed while playing.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The music stand is positioned in front of the girl.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The girl is positioned to the right of the frame, standing in front of the green Christmas tree. She is holding the silver flute horizontally in front of her mouth. The music stand is located in the bottom left foreground, below the level of the flute.",
+    "spatial": "The girl is positioned to the right of the green leafy plant. The silver flute is held in front of the girl's face. The Christmas tree is behind the girl and the flute. The music stand is below the flute and in front of the girl.",
     "parse_success": true,
-    "chunk_idx": 21,
+    "chunk_idx": 22,
     "video_id": "v_J6ScF5n_Cug"
   },
   {
     "time": [
-      44,
-      46
+      23,
+      24
     ],
     "visible_entities": [
       {
-        "desc": "girl with long dark hair, wearing a black long-sleeved velvet top with a red bow featuring a heart outline",
-        "action": "playing a silver flute",
-        "position": "right"
+        "desc": "young girl with long dark hair, wearing a black long-sleeved velvet top with a red heart-shaped detail at the neckline",
+        "action": "playing the flute",
+        "position": "center/right"
       },
       {
-        "desc": "silver concert flute, metallic and shiny",
-        "action": "being held and played",
+        "desc": "silver metal flute with gold-colored keys",
+        "action": "being played",
         "position": "center"
       },
       {
-        "desc": "green Christmas tree with ornaments",
+        "desc": "green Christmas tree with white ornaments",
         "action": "static",
         "position": "background"
       },
       {
         "desc": "music stand with sheet music",
         "action": "static",
-        "position": "bottom"
+        "position": "foreground/bottom"
+      },
+      {
+        "desc": "green leafy houseplant",
+        "action": "static",
+        "position": "left"
       }
     ],
     "atomic_facts": [
@@ -1234,21 +1241,77 @@
       }
     ],
     "ocr": [],
-    "spatial": "The girl is positioned in the foreground to the right of the frame. She is holding the silver flute in front of her chest. The music stand is located below the flute in the bottom foreground. The green Christmas tree is situated behind the girl.",
+    "spatial": "The girl is in the center of the frame, holding the flute in front of her. The music stand is in the foreground, below the flute. The Christmas tree is behind the girl, and the houseplant is to the left of the tree.",
     "parse_success": true,
-    "chunk_idx": 22,
+    "chunk_idx": 23,
     "video_id": "v_J6ScF5n_Cug"
   },
   {
     "time": [
-      46,
-      48
+      24,
+      25
     ],
     "visible_entities": [
       {
-        "desc": "young girl with long dark hair, wearing a black velvet long-sleeved top with a red bow featuring a heart detail",
+        "desc": "young girl with long dark hair, wearing a black velvet long-sleeved top with a red bow featuring a silver heart detail",
         "action": "playing the flute",
-        "position": "right/foreground"
+        "position": "right"
+      },
+      {
+        "desc": "silver metal flute with gold-colored keys and green pads",
+        "action": "being held horizontally",
+        "position": "center"
+      },
+      {
+        "desc": "green Christmas tree with white angel ornaments",
+        "action": "static",
+        "position": "background"
+      },
+      {
+        "desc": "music stand with blue bars and sheet music",
+        "action": "static",
+        "position": "foreground"
+      },
+      {
+        "desc": "green leafy houseplant",
+        "action": "static",
+        "position": "left"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The girl holds the silver flute horizontally with both hands.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The girl's fingers are positioned on the keys of the flute.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The girl is blowing across the mouthpiece of the flute.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The music stand is positioned in front of the girl.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The girl is positioned to the right of the green houseplant. The silver flute is held in front of the girl's face and above the music stand. The Christmas tree is located behind the girl and the flute.",
+    "parse_success": true,
+    "chunk_idx": 24,
+    "video_id": "v_J6ScF5n_Cug"
+  },
+  {
+    "time": [
+      25,
+      26
+    ],
+    "visible_entities": [
+      {
+        "desc": "young girl with long dark hair, wearing a black long-sleeved velvet top with a red bow featuring a heart shape at the neckline",
+        "action": "playing the flute",
+        "position": "right"
       },
       {
         "desc": "silver metal flute with gold-colored keys",
@@ -1261,7 +1324,221 @@
         "position": "background"
       },
       {
+        "desc": "music stand with blue frame and white surface",
+        "action": "static",
+        "position": "foreground"
+      },
+      {
+        "desc": "green leafy plant",
+        "action": "static",
+        "position": "left"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The girl is holding the silver flute horizontally with both hands.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The girl is blowing into the mouthpiece of the flute.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The girl's fingers are positioned on the keys of the flute.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The music stand is positioned in front of the girl.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The girl is positioned to the right of the green leafy plant. The silver flute is held in front of the girl's face. The music stand is in the foreground, below the flute. The Christmas tree is behind the girl and the flute.",
+    "parse_success": true,
+    "chunk_idx": 25,
+    "video_id": "v_J6ScF5n_Cug"
+  },
+  {
+    "time": [
+      26,
+      27
+    ],
+    "visible_entities": [
+      {
+        "desc": "young girl with long dark hair, wearing a black long-sleeved velvet top with a red heart-shaped detail on the chest",
+        "action": "playing the flute",
+        "position": "right"
+      },
+      {
+        "desc": "silver metal flute, cylindrical, shiny, with keys",
+        "action": "being held and played",
+        "position": "center"
+      },
+      {
+        "desc": "green Christmas tree with ornaments, including a white angel figure",
+        "action": "static",
+        "position": "background"
+      },
+      {
+        "desc": "music stand with blue frame and white surface",
+        "action": "static",
+        "position": "foreground"
+      },
+      {
+        "desc": "green leafy plant",
+        "action": "static",
+        "position": "left"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The girl is holding a silver flute horizontally to her mouth.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "Her fingers are positioned on the keys of the flute.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The girl's eyes are closed while playing.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A music stand is positioned in front of the girl.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The girl is positioned to the right of the frame, holding the silver flute horizontally in front of her. The music stand is in the foreground, below the flute. The green Christmas tree is behind the girl, and a leafy plant is to the left of the tree.",
+    "parse_success": true,
+    "chunk_idx": 26,
+    "video_id": "v_J6ScF5n_Cug"
+  },
+  {
+    "time": [
+      27,
+      28
+    ],
+    "visible_entities": [
+      {
+        "desc": "young girl with long dark hair, wearing a black long-sleeved velvet top with a red heart-shaped detail at the neckline",
+        "action": "playing a silver flute",
+        "position": "right/foreground"
+      },
+      {
+        "desc": "silver flute with gold-colored keys and a small white ornament hanging from the headjoint",
+        "action": "being held and played",
+        "position": "center"
+      },
+      {
+        "desc": "green Christmas tree with dense needles",
+        "action": "static",
+        "position": "background"
+      },
+      {
+        "desc": "music stand with blue elastic bands",
+        "action": "static",
+        "position": "bottom left"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The girl is holding a silver flute horizontally to her lips.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "Her fingers are positioned on the keys of the flute.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A small white ornament is hanging from the headjoint of the flute.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The girl is wearing a black top with a red heart detail.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The girl is in the foreground, positioned to the right of the center. She is holding the silver flute in front of her. Behind her is a green Christmas tree. To her left and slightly below, a music stand is visible.",
+    "parse_success": true,
+    "chunk_idx": 27,
+    "video_id": "v_J6ScF5n_Cug"
+  },
+  {
+    "time": [
+      28,
+      29
+    ],
+    "visible_entities": [
+      {
+        "desc": "young girl with long dark hair, wearing a black long-sleeved velvet top with a red heart-shaped pendant necklace",
+        "action": "playing a silver flute",
+        "position": "right"
+      },
+      {
+        "desc": "silver concert flute with metal keys",
+        "action": "being played",
+        "position": "center"
+      },
+      {
+        "desc": "green Christmas tree with ornaments",
+        "action": "static",
+        "position": "background"
+      },
+      {
         "desc": "music stand with sheet music",
+        "action": "static",
+        "position": "foreground"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The girl is holding a silver flute horizontally to her mouth.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "Her fingers are positioned on the keys of the flute.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "She is looking down at the music stand in front of her.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A Christmas tree stands behind the girl.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The girl is positioned to the right of the frame, holding the flute in front of her. The music stand is in the foreground, below the flute and in front of the girl. The green Christmas tree is in the background, behind the girl and the flute.",
+    "parse_success": true,
+    "chunk_idx": 28,
+    "video_id": "v_J6ScF5n_Cug"
+  },
+  {
+    "time": [
+      29,
+      30
+    ],
+    "visible_entities": [
+      {
+        "desc": "girl with long dark hair, wearing a black velvet long-sleeved top with a red heart-shaped detail at the neckline",
+        "action": "playing the flute",
+        "position": "right/foreground"
+      },
+      {
+        "desc": "silver metal flute, shiny, held horizontally",
+        "action": "being played",
+        "position": "center/foreground"
+      },
+      {
+        "desc": "green Christmas tree, decorated with a white hanging ornament",
+        "action": "static",
+        "position": "background"
+      },
+      {
+        "desc": "music stand, metallic frame with blue accents, holding sheet music",
         "action": "static",
         "position": "bottom/foreground"
       },
@@ -1281,705 +1558,50 @@
         "confidence": 1.0
       },
       {
-        "fact": "She is reading from sheet music on a stand in front of her.",
+        "fact": "She is reading sheet music placed on the stand in front of her.",
         "confidence": 1.0
       },
       {
-        "fact": "A Christmas tree is visible behind the girl.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [],
-    "spatial": "The girl is positioned to the right of the green houseplant. The music stand is in front of the girl and below the flute. The Christmas tree is behind the girl and the flute.",
-    "parse_success": true,
-    "chunk_idx": 23,
-    "video_id": "v_J6ScF5n_Cug"
-  },
-  {
-    "time": [
-      48,
-      50
-    ],
-    "visible_entities": [
-      {
-        "desc": "young girl with long dark hair, wearing a black long-sleeved velvet top with a red heart-shaped detail on the chest",
-        "action": "playing the flute",
-        "position": "right"
-      },
-      {
-        "desc": "silver metal flute with gold-colored keys and a green band on the headjoint",
-        "action": "being held horizontally",
-        "position": "center"
-      },
-      {
-        "desc": "green Christmas tree with a white angel ornament",
-        "action": "static",
-        "position": "background"
-      },
-      {
-        "desc": "music stand with blue clips",
-        "action": "static",
-        "position": "bottom foreground"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "The girl is holding the flute horizontally to her right side.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "Her fingers are pressing down on the keys of the instrument.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "She is blowing across the embouchure hole to produce sound.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "A music stand is positioned in front of the girl.",
+        "fact": "A white ornament hangs from the Christmas tree behind the girl.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The girl is positioned to the right of the frame, holding the silver flute horizontally in front of her. The green Christmas tree is located behind the girl and the flute. The music stand is situated in the bottom foreground, below the flute.",
-    "parse_success": true,
-    "chunk_idx": 24,
-    "video_id": "v_J6ScF5n_Cug"
-  },
-  {
-    "time": [
-      50,
-      52
-    ],
-    "visible_entities": [
-      {
-        "desc": "young girl with long dark hair, wearing a black long-sleeved velvet top with a red heart-shaped brooch",
-        "action": "playing a silver flute",
-        "position": "right"
-      },
-      {
-        "desc": "silver metal flute",
-        "action": "being held and played",
-        "position": "center"
-      },
-      {
-        "desc": "green Christmas tree with a white hanging ornament",
-        "action": "static",
-        "position": "background"
-      },
-      {
-        "desc": "music stand with sheet music",
-        "action": "static",
-        "position": "bottom foreground"
-      },
-      {
-        "desc": "green leafy houseplant",
-        "action": "static",
-        "position": "left background"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "The girl is holding a silver flute horizontally to her mouth.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "Her fingers are positioned on the keys of the flute.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "She is looking down at the sheet music on the stand.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "A white ornament is hanging from the Christmas tree branch.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [],
-    "spatial": "The girl is positioned to the right of the frame, holding the silver flute in front of her. The music stand is located below the flute in the foreground. The green Christmas tree is behind the girl, and a leafy plant is to the left of the tree.",
-    "parse_success": true,
-    "chunk_idx": 25,
-    "video_id": "v_J6ScF5n_Cug"
-  },
-  {
-    "time": [
-      52,
-      54
-    ],
-    "visible_entities": [
-      {
-        "desc": "young girl with long dark hair, wearing a black long-sleeved velvet top with a red heart-shaped detail on the chest",
-        "action": "playing the flute",
-        "position": "right"
-      },
-      {
-        "desc": "silver metal flute",
-        "action": "being played",
-        "position": "center"
-      },
-      {
-        "desc": "green Christmas tree with ornaments",
-        "action": "static",
-        "position": "background"
-      },
-      {
-        "desc": "music stand with blue frame and white surface",
-        "action": "static",
-        "position": "bottom foreground"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "The girl is holding the silver flute horizontally with both hands.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The girl is blowing into the mouthpiece of the flute.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The music stand is positioned in front of the girl.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [],
-    "spatial": "The girl is positioned to the right of the frame, holding the silver flute horizontally in front of her. The music stand is located in the bottom foreground, directly in front of the girl. A green Christmas tree stands in the background behind the girl and the flute.",
-    "parse_success": true,
-    "chunk_idx": 26,
-    "video_id": "v_J6ScF5n_Cug"
-  },
-  {
-    "time": [
-      54,
-      56
-    ],
-    "visible_entities": [
-      {
-        "desc": "person with long dark hair, wearing a black long-sleeved velvet top with a red heart-shaped detail on the chest",
-        "action": "playing a silver flute",
-        "position": "right"
-      },
-      {
-        "desc": "silver metal flute with keys",
-        "action": "being played",
-        "position": "center"
-      },
-      {
-        "desc": "green Christmas tree with a white angel ornament",
-        "action": "static",
-        "position": "background"
-      },
-      {
-        "desc": "music stand with blue elastic bands",
-        "action": "static",
-        "position": "bottom foreground"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "The person holds the silver flute horizontally to their mouth.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The person's fingers are positioned on the keys of the flute.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "A white angel ornament hangs on the green Christmas tree.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [],
-    "spatial": "The person is positioned to the right of the green Christmas tree. The silver flute is held in front of the person's face. The music stand is located in the bottom foreground, below the flute.",
-    "parse_success": true,
-    "chunk_idx": 27,
-    "video_id": "v_J6ScF5n_Cug"
-  },
-  {
-    "time": [
-      56,
-      58
-    ],
-    "visible_entities": [
-      {
-        "desc": "young girl with long dark hair, wearing a black velvet long-sleeved top with a red heart-shaped detail at the neckline",
-        "action": "playing the flute",
-        "position": "right"
-      },
-      {
-        "desc": "silver metal flute with gold-colored keys and a green band on the left hand grip",
-        "action": "being held horizontally",
-        "position": "center"
-      },
-      {
-        "desc": "green Christmas tree with a white angel ornament",
-        "action": "static",
-        "position": "background"
-      },
-      {
-        "desc": "music stand with blue frame and white sheet music",
-        "action": "static",
-        "position": "bottom left"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "The girl is holding the silver flute horizontally to her mouth.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "Her fingers are positioned on the keys of the flute.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The music stand is placed in front of the girl.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The Christmas tree is located behind the girl.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [],
-    "spatial": "The girl is positioned to the right of the music stand. The silver flute is held in front of the girl's face. The Christmas tree is behind the girl and the flute.",
-    "parse_success": true,
-    "chunk_idx": 28,
-    "video_id": "v_J6ScF5n_Cug"
-  },
-  {
-    "time": [
-      58,
-      60
-    ],
-    "visible_entities": [
-      {
-        "desc": "young girl with long dark hair, wearing a black long-sleeved velvet top with a red heart-shaped detail at the neckline",
-        "action": "playing the flute",
-        "position": "right"
-      },
-      {
-        "desc": "silver metal flute with gold-colored keys and a green ribbon tied near the left hand grip",
-        "action": "being held horizontally",
-        "position": "center"
-      },
-      {
-        "desc": "green Christmas tree decorated with a white angel ornament",
-        "action": "static",
-        "position": "background"
-      },
-      {
-        "desc": "blue metal music stand holding white sheet music",
-        "action": "static",
-        "position": "bottom foreground"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "The girl is holding a silver flute horizontally to her lips.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The girl's fingers are positioned on the keys of the flute.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "A white angel ornament hangs from the Christmas tree in the background.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "Sheet music is placed on the blue stand in front of the girl.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [],
-    "spatial": "The girl is positioned to the right of the frame, holding the flute which extends towards the left. The blue music stand is in the foreground below the flute. The Christmas tree is in the background behind the girl and the flute.",
+    "spatial": "The girl is positioned to the right of the frame, holding the flute in front of her. The music stand is located below the flute and in front of the girl. The Christmas tree is behind the girl and the flute, while the houseplant is to the left of the tree.",
     "parse_success": true,
     "chunk_idx": 29,
     "video_id": "v_J6ScF5n_Cug"
   },
   {
     "time": [
-      60,
-      62
+      30,
+      31
     ],
     "visible_entities": [
       {
-        "desc": "young girl with long dark hair, wearing a black long-sleeved velvet top with a red bow detail at the neckline",
+        "desc": "young girl with long dark hair, wearing a black long-sleeved velvet top with a red bow at the neckline",
         "action": "playing the flute",
         "position": "right"
       },
       {
-        "desc": "silver metal flute with keys",
-        "action": "being held horizontally",
-        "position": "center"
-      },
-      {
-        "desc": "green Christmas tree with hanging white ornaments",
-        "action": "static",
-        "position": "background"
-      },
-      {
-        "desc": "music stand with blue frame and white surface",
-        "action": "static",
-        "position": "bottom foreground"
-      },
-      {
-        "desc": "green leafy potted plant",
-        "action": "static",
-        "position": "left background"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "The girl is holding a silver flute horizontally to her mouth.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The girl's fingers are positioned on the keys of the flute.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "A music stand is positioned in front of the girl.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [],
-    "spatial": "The girl is positioned to the right of the green leafy plant. She is holding the silver flute in front of her chest. The Christmas tree is located behind the girl and the flute. The music stand is situated below the flute in the foreground.",
-    "parse_success": true,
-    "chunk_idx": 30,
-    "video_id": "v_J6ScF5n_Cug"
-  },
-  {
-    "time": [
-      62,
-      64
-    ],
-    "visible_entities": [
-      {
-        "desc": "young girl with long dark hair, wearing a black velvet long-sleeved top with a red heart-shaped detail on the chest",
-        "action": "playing the flute",
-        "position": "center"
-      },
-      {
-        "desc": "silver metal flute",
+        "desc": "silver metal flute with gold-colored keys",
         "action": "being played",
         "position": "center"
       },
       {
-        "desc": "green Christmas tree with white ornaments",
-        "action": "static",
-        "position": "background"
-      },
-      {
-        "desc": "music stand with sheet music",
-        "action": "static",
-        "position": "foreground"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "The girl is holding a silver flute horizontally.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The girl's fingers are pressing the keys of the flute.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The girl is blowing into the mouthpiece of the flute.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "A music stand is positioned in front of the girl.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [],
-    "spatial": "The girl is in the center of the frame, holding the silver flute horizontally in front of her. The music stand is in the foreground, positioned below the flute. The green Christmas tree is in the background, behind the girl.",
-    "parse_success": true,
-    "chunk_idx": 31,
-    "video_id": "v_J6ScF5n_Cug"
-  },
-  {
-    "time": [
-      64,
-      66
-    ],
-    "visible_entities": [
-      {
-        "desc": "young girl with long dark hair, wearing a black long-sleeved velvet top with a red heart-shaped detail on the chest",
-        "action": "playing a silver flute and then lowering it",
-        "position": "center"
-      },
-      {
-        "desc": "silver metal flute",
-        "action": "being held horizontally to the mouth then lowered vertically",
-        "position": "center"
-      },
-      {
         "desc": "green Christmas tree with white hanging ornaments",
         "action": "static",
         "position": "background"
       },
       {
-        "desc": "music stand with blue frame and white surface",
+        "desc": "blue metal music stand",
         "action": "static",
         "position": "foreground"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "The girl holds the silver flute horizontally to her lips in the first frame.",
-        "confidence": 1.0
       },
       {
-        "fact": "The girl lowers the flute to a vertical position in the second frame.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "A music stand is positioned in front of the girl.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [],
-    "spatial": "The girl is positioned in the center of the frame, standing behind the music stand. The green Christmas tree is located behind the girl. The silver flute is held by the girl in front of her body.",
-    "parse_success": true,
-    "chunk_idx": 32,
-    "video_id": "v_J6ScF5n_Cug"
-  },
-  {
-    "time": [
-      66,
-      68
-    ],
-    "visible_entities": [
-      {
-        "desc": "young girl with long dark hair, wearing a black long-sleeved top with a red heart-shaped detail at the neckline",
-        "action": "holding a silver flute and looking down at a music stand",
-        "position": "right"
-      },
-      {
-        "desc": "silver flute, metallic, held vertically",
-        "action": "being held by the girl",
-        "position": "right foreground"
-      },
-      {
-        "desc": "music stand with sheet music, metallic frame with blue accents",
+        "desc": "green leafy indoor plant",
         "action": "static",
-        "position": "bottom center"
-      },
-      {
-        "desc": "green Christmas tree with white ornaments",
-        "action": "static",
-        "position": "background left"
-      },
-      {
-        "desc": "green leafy plant",
-        "action": "static",
-        "position": "far left"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "The girl is holding a silver flute.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The girl is looking down at the sheet music on the stand.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "A Christmas tree is visible in the background.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [],
-    "spatial": "The girl is positioned to the right of the music stand. The music stand is in front of the girl. The Christmas tree is behind the girl and to her left. The girl is holding the flute in front of her.",
-    "parse_success": true,
-    "chunk_idx": 33,
-    "video_id": "v_J6ScF5n_Cug"
-  },
-  {
-    "time": [
-      68,
-      70
-    ],
-    "visible_entities": [
-      {
-        "desc": "young girl with long dark hair, wearing a black long-sleeved top and a red heart-shaped pendant necklace",
-        "action": "holding a silver flute",
-        "position": "right"
-      },
-      {
-        "desc": "silver flute, metallic, cylindrical with keys",
-        "action": "being held vertically",
-        "position": "right foreground"
-      },
-      {
-        "desc": "blue metal music stand with sheet music",
-        "action": "static",
-        "position": "bottom left foreground"
-      },
-      {
-        "desc": "green Christmas tree with white hanging ornaments",
-        "action": "static",
-        "position": "center background"
-      },
-      {
-        "desc": "green leafy plant",
-        "action": "static",
-        "position": "far left background"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "The girl is holding a silver flute in her hands.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The girl is looking down towards the music stand.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "A Christmas tree is positioned behind the girl.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [],
-    "spatial": "The girl is positioned to the right of the music stand. The music stand is in the foreground, below the girl's face. The Christmas tree is behind the girl and the music stand.",
-    "parse_success": true,
-    "chunk_idx": 34,
-    "video_id": "v_J6ScF5n_Cug"
-  },
-  {
-    "time": [
-      70,
-      72
-    ],
-    "visible_entities": [
-      {
-        "desc": "young girl with long straight dark hair, wearing a black long-sleeved velvet top with a red heart-shaped detail at the neckline",
-        "action": "holding a silver flute and looking down at sheet music",
-        "position": "right"
-      },
-      {
-        "desc": "silver flute, metallic, held vertically",
-        "action": "being held by the girl",
-        "position": "right foreground"
-      },
-      {
-        "desc": "music stand with blue frame and white sheet music",
-        "action": "static",
-        "position": "left foreground"
-      },
-      {
-        "desc": "green Christmas tree with white ornaments",
-        "action": "static",
-        "position": "background"
-      },
-      {
-        "desc": "green leafy plant",
-        "action": "static",
-        "position": "far left"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "The girl holds a silver flute in her hands.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The girl looks down at the sheet music on the stand.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The music stand is positioned in front of the girl.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [],
-    "spatial": "The girl is positioned to the right of the music stand. The music stand is in front of the girl. The Christmas tree is behind the girl and the music stand. The green leafy plant is to the left of the Christmas tree.",
-    "parse_success": true,
-    "chunk_idx": 35,
-    "video_id": "v_J6ScF5n_Cug"
-  },
-  {
-    "time": [
-      72,
-      74
-    ],
-    "visible_entities": [
-      {
-        "desc": "young girl with long dark hair, wearing a black long-sleeved velvet top over a red shirt with a heart-shaped pendant necklace",
-        "action": "playing the flute",
-        "position": "center"
-      },
-      {
-        "desc": "silver metal flute",
-        "action": "being held and played",
-        "position": "center"
-      },
-      {
-        "desc": "green Christmas tree with white ornaments",
-        "action": "static",
-        "position": "background"
-      },
-      {
-        "desc": "blue metal music stand with sheet music",
-        "action": "static",
-        "position": "foreground"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "The girl holds the silver flute horizontally with both hands.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The girl blows into the mouthpiece of the flute.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The girl's fingers are positioned on the keys of the flute.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The sheet music is placed on the blue stand in front of the girl.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [],
-    "spatial": "The girl is positioned in the center of the frame, standing behind the blue music stand. The silver flute is held horizontally in front of her face. The green Christmas tree is located in the background behind the girl.",
-    "parse_success": true,
-    "chunk_idx": 36,
-    "video_id": "v_J6ScF5n_Cug"
-  },
-  {
-    "time": [
-      74,
-      76
-    ],
-    "visible_entities": [
-      {
-        "desc": "young girl with long dark hair, wearing a black long-sleeved top over a red shirt with a silver heart necklace",
-        "action": "playing the flute",
-        "position": "center"
-      },
-      {
-        "desc": "silver metal flute",
-        "action": "being held and played",
-        "position": "center"
-      },
-      {
-        "desc": "green Christmas tree with white ornaments",
-        "action": "static",
-        "position": "background"
-      },
-      {
-        "desc": "music stand with sheet music",
-        "action": "static",
-        "position": "foreground"
+        "position": "left"
       }
     ],
     "atomic_facts": [
@@ -1992,100 +1614,99 @@
         "confidence": 1.0
       },
       {
+        "fact": "The girl has her eyes closed while playing the instrument.",
+        "confidence": 1.0
+      },
+      {
         "fact": "A music stand is positioned in front of the girl.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The girl is positioned in the center of the frame, holding the silver flute horizontally. The music stand is in the foreground, below the flute. The green Christmas tree is in the background, behind the girl.",
+    "spatial": "The girl is positioned to the right of the green leafy plant. The silver flute is held in front of the girl's face. The Christmas tree is located behind the girl and the flute. The blue music stand is in the foreground, below the flute.",
     "parse_success": true,
-    "chunk_idx": 37,
+    "chunk_idx": 30,
     "video_id": "v_J6ScF5n_Cug"
   },
   {
     "time": [
-      76,
-      78
+      31,
+      32
     ],
     "visible_entities": [
       {
-        "desc": "young girl with long dark hair, wearing a black long-sleeved velvet top with a red heart-shaped detail at the neckline",
-        "action": "playing a silver flute",
-        "position": "right"
+        "desc": "young girl with long dark hair, wearing a black velvet long-sleeved top with a red heart-shaped detail at the neckline",
+        "action": "playing the flute",
+        "position": "center/right"
       },
       {
-        "desc": "silver metal flute with gold-colored keys and mechanisms",
-        "action": "being held and played",
+        "desc": "silver metal flute, shiny, cylindrical",
+        "action": "being played",
         "position": "center"
       },
       {
-        "desc": "green Christmas tree with ornaments, including a white angel figure",
+        "desc": "green Christmas tree with white ornaments",
         "action": "static",
         "position": "background"
       },
       {
-        "desc": "music stand with sheet music and blue clips",
+        "desc": "music stand with white sheet music and blue straps",
         "action": "static",
-        "position": "bottom"
-      },
-      {
-        "desc": "green leafy houseplant",
-        "action": "static",
-        "position": "left"
+        "position": "bottom/foreground"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "The girl is holding a silver flute horizontally to her mouth.",
+        "fact": "The girl holds a silver flute horizontally with both hands.",
         "confidence": 1.0
       },
       {
-        "fact": "Her fingers are positioned on the keys of the flute.",
+        "fact": "The girl presses her fingers on the keys of the flute.",
         "confidence": 1.0
       },
       {
-        "fact": "The girl is reading from sheet music on a stand in front of her.",
+        "fact": "The girl blows air across the mouthpiece of the flute.",
         "confidence": 1.0
       },
       {
-        "fact": "A Christmas tree is visible in the background behind the girl.",
+        "fact": "The music stand is positioned in front of the girl.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The girl is positioned to the right of the frame, holding the flute in front of her. The music stand is located below the flute in the foreground. The Christmas tree is behind the girl, and a leafy plant is to the left of the tree.",
+    "spatial": "The girl is positioned in front of the green Christmas tree. She is holding the silver flute horizontally in front of her face. The music stand is located below the flute and in front of the girl.",
     "parse_success": true,
-    "chunk_idx": 38,
+    "chunk_idx": 31,
     "video_id": "v_J6ScF5n_Cug"
   },
   {
     "time": [
-      78,
-      80
+      32,
+      33
     ],
     "visible_entities": [
       {
-        "desc": "young girl with long dark hair, wearing a black long-sleeved velvet top with a red heart-shaped detail at the neckline",
+        "desc": "girl with long dark hair, wearing a black velvet long-sleeved top with a red heart-shaped detail at the neckline",
         "action": "playing the flute",
-        "position": "right"
+        "position": "center/right"
       },
       {
-        "desc": "silver metal flute with keys",
-        "action": "being held and played",
+        "desc": "silver metal flute, cylindrical, shiny",
+        "action": "being held horizontally",
         "position": "center"
       },
       {
-        "desc": "green Christmas tree with ornaments",
+        "desc": "green Christmas tree with white ornaments",
         "action": "static",
         "position": "background"
       },
       {
-        "desc": "music stand with sheet music",
+        "desc": "blue metal music stand with sheet music",
         "action": "static",
-        "position": "foreground"
+        "position": "foreground/bottom"
       },
       {
-        "desc": "green leafy plant",
+        "desc": "green leafy houseplant",
         "action": "static",
         "position": "left"
       }
@@ -2100,152 +1721,210 @@
         "confidence": 1.0
       },
       {
-        "fact": "The girl is blowing into the flute to produce sound.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "A music stand is positioned in front of the girl.",
+        "fact": "The music stand is positioned in front of the girl.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The girl is positioned to the right of the green leafy plant. The silver flute is held in front of the girl's face. The Christmas tree is behind the girl and the flute. The music stand is in the foreground, below the flute.",
+    "spatial": "The girl is positioned in front of the green Christmas tree. The blue music stand is in the foreground, below the flute. A green leafy plant is visible to the left of the Christmas tree.",
     "parse_success": true,
-    "chunk_idx": 39,
+    "chunk_idx": 32,
     "video_id": "v_J6ScF5n_Cug"
   },
   {
     "time": [
-      80,
-      82
+      33,
+      34
     ],
     "visible_entities": [
       {
-        "desc": "young girl with long dark hair, wearing a black velvet long-sleeved top over a red shirt with a heart pendant necklace",
-        "action": "playing the flute",
+        "desc": "young girl with long dark hair, wearing a black long-sleeved top with a red heart-shaped detail at the neckline",
+        "action": "holding a silver flute and looking down at a music stand",
         "position": "right/foreground"
       },
       {
+        "desc": "silver flute, metallic, cylindrical with keys",
+        "action": "being held vertically",
+        "position": "center/right/foreground"
+      },
+      {
+        "desc": "music stand with blue frame and grey surface",
+        "action": "static",
+        "position": "bottom/foreground"
+      },
+      {
+        "desc": "green Christmas tree with white hanging ornaments",
+        "action": "static",
+        "position": "left/background"
+      },
+      {
+        "desc": "green leafy plant",
+        "action": "static",
+        "position": "far left/background"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The girl holds a silver flute in her hands.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The girl is looking down at the music stand.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The music stand is positioned in front of the girl.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The Christmas tree is behind the girl.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The girl is to the right of the Christmas tree. The music stand is in front of the girl and below the flute she is holding. The green leafy plant is to the left of the Christmas tree.",
+    "parse_success": true,
+    "chunk_idx": 33,
+    "video_id": "v_J6ScF5n_Cug"
+  },
+  {
+    "time": [
+      34,
+      35
+    ],
+    "visible_entities": [
+      {
+        "desc": "girl with long dark hair, wearing a black long-sleeved top with a red heart-shaped detail at the neckline",
+        "action": "holding a silver flute and looking down at sheet music",
+        "position": "right"
+      },
+      {
+        "desc": "silver flute, metallic, cylindrical, with keys and rods",
+        "action": "being held vertically",
+        "position": "right foreground"
+      },
+      {
+        "desc": "sheet music, white paper with black musical notation",
+        "action": "resting on a stand",
+        "position": "center foreground"
+      },
+      {
+        "desc": "blue music stand, metal wire frame",
+        "action": "static",
+        "position": "bottom center"
+      },
+      {
+        "desc": "green Christmas tree, artificial, decorated with white hanging ornaments",
+        "action": "static",
+        "position": "background left"
+      },
+      {
+        "desc": "green leafy houseplant, potted",
+        "action": "static",
+        "position": "far left background"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The girl holds a silver flute in her hands.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The girl looks down at the sheet music on the stand.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The sheet music rests on a blue metal stand.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A green Christmas tree stands behind the girl and the music stand.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The girl is positioned to the right of the music stand. The silver flute is held in front of her chest. The music stand is in front of the Christmas tree. The Christmas tree is to the left of the girl in the background.",
+    "parse_success": true,
+    "chunk_idx": 34,
+    "video_id": "v_J6ScF5n_Cug"
+  },
+  {
+    "time": [
+      35,
+      36
+    ],
+    "visible_entities": [
+      {
+        "desc": "young girl with long dark hair, wearing a black long-sleeved velvet top over a red shirt with a white heart design",
+        "action": "holding a silver flute and looking at a music stand",
+        "position": "right"
+      },
+      {
         "desc": "silver metal flute",
-        "action": "being played",
+        "action": "being held vertically",
+        "position": "right foreground"
+      },
+      {
+        "desc": "blue metal music stand with sheet music",
+        "action": "static",
+        "position": "bottom left foreground"
+      },
+      {
+        "desc": "green Christmas tree with white ornaments",
+        "action": "static",
+        "position": "background"
+      },
+      {
+        "desc": "green leafy plant",
+        "action": "static",
+        "position": "far left"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The girl holds a silver flute in a vertical position.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The girl looks down at the sheet music on the stand.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A Christmas tree stands behind the girl.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The girl is positioned to the right of the music stand. The music stand is in the foreground, in front of the Christmas tree. The Christmas tree is behind the girl and the music stand.",
+    "parse_success": true,
+    "chunk_idx": 35,
+    "video_id": "v_J6ScF5n_Cug"
+  },
+  {
+    "time": [
+      36,
+      37
+    ],
+    "visible_entities": [
+      {
+        "desc": "young girl with long dark hair, wearing a black long-sleeved velvet top and a red shirt with a heart-shaped pendant necklace",
+        "action": "playing the flute",
         "position": "center"
       },
       {
-        "desc": "green Christmas tree with ornaments",
+        "desc": "silver metal flute",
+        "action": "being held and played",
+        "position": "center"
+      },
+      {
+        "desc": "green Christmas tree with white ornaments",
         "action": "static",
         "position": "background"
       },
       {
         "desc": "music stand with sheet music",
         "action": "static",
-        "position": "bottom left"
-      },
-      {
-        "desc": "green leafy houseplant",
-        "action": "static",
-        "position": "left"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "The girl is holding a silver flute horizontally with both hands.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The girl is blowing into the mouthpiece of the flute.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The girl's fingers are pressing the keys of the flute.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "Sheet music is placed on the music stand in front of the girl.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [],
-    "spatial": "The girl is positioned to the right of the green houseplant. The Christmas tree is behind the girl. The music stand is in front of the girl and below the flute.",
-    "parse_success": true,
-    "chunk_idx": 40,
-    "video_id": "v_J6ScF5n_Cug"
-  },
-  {
-    "time": [
-      82,
-      84
-    ],
-    "visible_entities": [
-      {
-        "desc": "young girl with long dark hair, wearing a black velvet long-sleeved top and a red heart-shaped pendant necklace",
-        "action": "playing the flute",
-        "position": "right"
-      },
-      {
-        "desc": "silver metal flute with gold-colored keys and green felt pads",
-        "action": "being held horizontally",
-        "position": "center"
-      },
-      {
-        "desc": "blue metal music stand holding white sheet music",
-        "action": "static",
-        "position": "bottom left"
-      },
-      {
-        "desc": "green Christmas tree decorated with white ornaments",
-        "action": "static",
-        "position": "background"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "The girl is blowing into the mouthpiece of the silver flute.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The girl's fingers are pressing down on the keys of the flute.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The girl is holding the flute horizontally with both hands.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "Sheet music is resting on the blue music stand.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [],
-    "spatial": "The girl is positioned to the right of the music stand. She is holding the silver flute horizontally in front of her chest. The green Christmas tree is located behind the girl and the flute.",
-    "parse_success": true,
-    "chunk_idx": 41,
-    "video_id": "v_J6ScF5n_Cug"
-  },
-  {
-    "time": [
-      84,
-      86
-    ],
-    "visible_entities": [
-      {
-        "desc": "young girl with long straight black hair, wearing a black velvet long-sleeved top over a red shirt with a silver heart necklace",
-        "action": "playing the flute",
-        "position": "right/foreground"
-      },
-      {
-        "desc": "silver metal flute",
-        "action": "being played",
-        "position": "center"
-      },
-      {
-        "desc": "green Christmas tree with ornaments",
-        "action": "static",
-        "position": "background"
-      },
-      {
-        "desc": "blue metal music stand with sheet music",
-        "action": "static",
-        "position": "bottom left"
+        "position": "foreground"
       }
     ],
     "atomic_facts": [
@@ -2267,217 +1946,41 @@
       }
     ],
     "ocr": [],
-    "spatial": "The girl is positioned to the right of the music stand and in front of the Christmas tree. She is holding the flute in front of her chest. The music stand is located in the bottom left foreground, below the level of the flute.",
+    "spatial": "The girl is positioned in front of the Christmas tree. She is holding the silver flute in her hands. The music stand is located in front of the girl, below the level of the flute.",
     "parse_success": true,
-    "chunk_idx": 42,
+    "chunk_idx": 36,
     "video_id": "v_J6ScF5n_Cug"
   },
   {
     "time": [
-      86,
-      88
+      37,
+      38
     ],
     "visible_entities": [
       {
-        "desc": "young girl with long dark hair, wearing a black velvet long-sleeved top and a red necklace with a heart pendant",
-        "action": "playing the flute",
-        "position": "center/right"
-      },
-      {
-        "desc": "silver metal flute",
-        "action": "being held horizontally",
+        "desc": "young girl with long dark hair, wearing a black velvet long-sleeved top over a red shirt with a heart-shaped pendant necklace",
+        "action": "playing a silver flute",
         "position": "center"
       },
       {
-        "desc": "green Christmas tree with ornaments",
+        "desc": "silver metal flute with keys",
+        "action": "being held and played",
+        "position": "center"
+      },
+      {
+        "desc": "green Christmas tree with white ornaments",
         "action": "static",
         "position": "background"
       },
       {
         "desc": "music stand with sheet music",
         "action": "static",
-        "position": "foreground/bottom"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "The girl holds a silver flute horizontally with both hands.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The girl blows into the mouthpiece of the flute.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The girl's fingers are positioned on the keys of the instrument.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "A music stand is placed in front of the girl.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [],
-    "spatial": "The girl is positioned in front of the green Christmas tree. She is holding the silver flute horizontally in front of her mouth. The music stand is located below the flute in the foreground.",
-    "parse_success": true,
-    "chunk_idx": 43,
-    "video_id": "v_J6ScF5n_Cug"
-  },
-  {
-    "time": [
-      88,
-      90
-    ],
-    "visible_entities": [
-      {
-        "desc": "young girl with long dark hair, wearing a black long-sleeved top over a red shirt with a heart pendant necklace",
-        "action": "playing the flute",
-        "position": "right"
-      },
-      {
-        "desc": "silver metal flute",
-        "action": "being held and played",
-        "position": "center"
-      },
-      {
-        "desc": "green Christmas tree with ornaments",
-        "action": "static",
-        "position": "background"
-      },
-      {
-        "desc": "blue metal music stand",
-        "action": "static",
-        "position": "bottom"
-      },
-      {
-        "desc": "green leafy plant",
-        "action": "static",
-        "position": "left"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "The girl holds the silver flute horizontally with both hands.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The girl blows into the mouthpiece of the flute.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The girl's fingers are positioned on the keys of the flute.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The music stand is positioned in front of the girl.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [],
-    "spatial": "The girl is positioned to the right of the green leafy plant. The silver flute is held in front of the girl's face and above the blue music stand. The Christmas tree is located behind the girl and the flute.",
-    "parse_success": true,
-    "chunk_idx": 44,
-    "video_id": "v_J6ScF5n_Cug"
-  },
-  {
-    "time": [
-      90,
-      92
-    ],
-    "visible_entities": [
-      {
-        "desc": "young girl with long dark hair, wearing a black long-sleeved velvet top over a red shirt with a silver necklace",
-        "action": "playing a silver flute",
-        "position": "center/right"
-      },
-      {
-        "desc": "silver concert flute, metallic, shiny, with keys and a green ribbon tied to it",
-        "action": "being held and played",
-        "position": "center"
-      },
-      {
-        "desc": "blue metal music stand with sheet music on it",
-        "action": "static",
-        "position": "bottom/foreground"
-      },
-      {
-        "desc": "green Christmas tree with ornaments",
-        "action": "static",
-        "position": "background"
-      },
-      {
-        "desc": "green leafy houseplant",
-        "action": "static",
-        "position": "left"
+        "position": "foreground"
       }
     ],
     "atomic_facts": [
       {
         "fact": "The girl is holding a silver flute horizontally to her mouth.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The girl's fingers are positioned on the keys of the flute.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The girl is blowing into the flute to produce sound.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "A blue music stand is positioned in front of the girl.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "A Christmas tree is visible in the background behind the girl.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [],
-    "spatial": "The girl is in the center of the frame, holding the silver flute horizontally in front of her. The blue music stand is in the foreground, below the flute. The Christmas tree is behind the girl, and the leafy houseplant is to the left of the girl.",
-    "parse_success": true,
-    "chunk_idx": 45,
-    "video_id": "v_J6ScF5n_Cug"
-  },
-  {
-    "time": [
-      92,
-      94
-    ],
-    "visible_entities": [
-      {
-        "desc": "young girl with long dark hair, wearing a black long-sleeved velvet top and a red heart-shaped pendant necklace",
-        "action": "playing the flute",
-        "position": "right"
-      },
-      {
-        "desc": "silver metal flute with keys and a green tie or ribbon attached",
-        "action": "being played",
-        "position": "center"
-      },
-      {
-        "desc": "green Christmas tree with ornaments",
-        "action": "static",
-        "position": "background"
-      },
-      {
-        "desc": "music stand with sheet music",
-        "action": "static",
-        "position": "bottom foreground"
-      },
-      {
-        "desc": "green leafy houseplant",
-        "action": "static",
-        "position": "left"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "The girl is holding a silver flute horizontally with both hands.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The girl is blowing into the mouthpiece of the flute.",
         "confidence": 1.0
       },
       {
@@ -2489,30 +1992,30 @@
         "confidence": 1.0
       },
       {
-        "fact": "A Christmas tree is visible behind the girl.",
+        "fact": "A Christmas tree is visible in the background behind the girl.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The girl is positioned on the right side of the frame, holding the flute in front of her. The music stand is in the foreground below the flute. A large green Christmas tree is behind the girl, and a leafy plant is to the left of the scene.",
+    "spatial": "The girl is positioned in the center of the frame, holding the silver flute horizontally in front of her. The music stand is in the foreground, located below the flute. The green Christmas tree is in the background, situated behind the girl.",
     "parse_success": true,
-    "chunk_idx": 46,
+    "chunk_idx": 37,
     "video_id": "v_J6ScF5n_Cug"
   },
   {
     "time": [
-      94,
-      96
+      38,
+      39
     ],
     "visible_entities": [
       {
-        "desc": "young girl with long dark hair, wearing a black long-sleeved velvet top and a red heart-shaped necklace",
+        "desc": "young girl with long straight black hair, wearing a black velvet long-sleeved top and a red heart-shaped necklace",
         "action": "playing the flute",
         "position": "right"
       },
       {
-        "desc": "silver metal flute",
-        "action": "being held and played",
+        "desc": "silver metal flute with keys",
+        "action": "being played",
         "position": "center"
       },
       {
@@ -2521,130 +2024,9 @@
         "position": "background"
       },
       {
-        "desc": "blue metal music stand with sheet music",
-        "action": "static",
-        "position": "foreground"
-      },
-      {
-        "desc": "green leafy houseplant",
-        "action": "static",
-        "position": "left"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "The girl holds the silver flute horizontally with both hands.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The girl is blowing into the flute's mouthpiece.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The girl's fingers are positioned on the keys of the flute.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The music stand is positioned in front of the girl.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The Christmas tree is located behind the girl.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [],
-    "spatial": "The girl is positioned to the right of the frame, holding the flute horizontally in front of her. The blue music stand is in the foreground, below the flute and in front of the girl. A green Christmas tree stands in the background behind the girl, while a leafy plant is visible to the left.",
-    "parse_success": true,
-    "chunk_idx": 47,
-    "video_id": "v_J6ScF5n_Cug"
-  },
-  {
-    "time": [
-      96,
-      98
-    ],
-    "visible_entities": [
-      {
-        "desc": "young girl with long dark hair, wearing a black velvet long-sleeved top over a red shirt with a heart-shaped pendant necklace",
-        "action": "playing a silver flute",
-        "position": "right"
-      },
-      {
-        "desc": "silver metal flute with gold-colored keys",
-        "action": "being held horizontally",
-        "position": "center"
-      },
-      {
-        "desc": "green artificial Christmas tree with white ornaments",
-        "action": "static",
-        "position": "background"
-      },
-      {
-        "desc": "blue metal music stand with sheet music",
-        "action": "static",
-        "position": "foreground"
-      },
-      {
-        "desc": "green leafy houseplant",
-        "action": "static",
-        "position": "left"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "The girl is blowing into the mouthpiece of the flute.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The girl's fingers are pressing down on the keys of the flute.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The girl is holding the flute horizontally with both hands.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The music stand is positioned in front of the girl.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [],
-    "spatial": "The girl is positioned to the right of the green houseplant. The silver flute is held horizontally in front of the girl's face. The Christmas tree is located behind the girl. The blue music stand is in the foreground, below the flute.",
-    "parse_success": true,
-    "chunk_idx": 48,
-    "video_id": "v_J6ScF5n_Cug"
-  },
-  {
-    "time": [
-      98,
-      100
-    ],
-    "visible_entities": [
-      {
-        "desc": "young girl with long dark hair, wearing a black long-sleeved velvet top and a red heart necklace",
-        "action": "playing a silver flute",
-        "position": "right"
-      },
-      {
-        "desc": "silver flute with keys",
-        "action": "being held horizontally",
-        "position": "center"
-      },
-      {
-        "desc": "blue wire music stand",
+        "desc": "white music sheet on a stand",
         "action": "static",
         "position": "bottom"
-      },
-      {
-        "desc": "sheet music with visible text",
-        "action": "static",
-        "position": "bottom"
-      },
-      {
-        "desc": "green Christmas tree with ornaments",
-        "action": "static",
-        "position": "background"
       },
       {
         "desc": "green leafy plant",
@@ -2658,36 +2040,38 @@
         "confidence": 1.0
       },
       {
-        "fact": "The girl's fingers are pressing the keys of the flute.",
+        "fact": "The girl's fingers are positioned on the keys of the flute.",
         "confidence": 1.0
       },
       {
-        "fact": "The sheet music on the stand reads 'Merry Christmas'.",
+        "fact": "The girl is looking down at a music sheet.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A Christmas tree is visible behind the girl.",
         "confidence": 1.0
       }
     ],
-    "ocr": [
-      "Merry Christmas"
-    ],
-    "spatial": "The girl is positioned to the right of the green leafy plant. The blue music stand is in front of the girl and below the flute. The Christmas tree is behind the girl and the flute.",
+    "ocr": [],
+    "spatial": "The girl is positioned on the right side of the frame, holding the silver flute in front of her. The Christmas tree is located behind the girl and the flute. To the left of the girl, there is a green leafy plant. The music sheet is situated below the flute in the foreground.",
     "parse_success": true,
-    "chunk_idx": 49,
+    "chunk_idx": 38,
     "video_id": "v_J6ScF5n_Cug"
   },
   {
     "time": [
-      100,
-      102
+      39,
+      40
     ],
     "visible_entities": [
       {
-        "desc": "young girl with long dark hair, wearing a black long-sleeved velvet top with a red heart-shaped pendant necklace",
-        "action": "playing a silver flute",
-        "position": "right/foreground"
+        "desc": "girl with long dark hair, wearing a black long-sleeved velvet top with a red heart-shaped neckline detail",
+        "action": "playing the flute",
+        "position": "right"
       },
       {
-        "desc": "silver metal flute with white keys",
-        "action": "being held horizontally",
+        "desc": "silver metal flute with keys",
+        "action": "being held and played",
         "position": "center"
       },
       {
@@ -2696,9 +2080,9 @@
         "position": "background"
       },
       {
-        "desc": "blue metal music stand with sheet music",
+        "desc": "music stand with sheet music",
         "action": "static",
-        "position": "bottom left"
+        "position": "bottom foreground"
       }
     ],
     "atomic_facts": [
@@ -2713,249 +2097,22 @@
       {
         "fact": "The girl is looking down at the sheet music on the stand.",
         "confidence": 1.0
-      },
-      {
-        "fact": "A Christmas tree is visible behind the girl.",
-        "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The girl is positioned to the right of the music stand. She is holding the flute in front of her body. The Christmas tree is located behind the girl and the flute.",
+    "spatial": "The girl is positioned to the right of the frame, holding the flute in front of her. The music stand is in the foreground, below the flute. The Christmas tree is in the background, behind the girl and the flute.",
     "parse_success": true,
-    "chunk_idx": 50,
+    "chunk_idx": 39,
     "video_id": "v_J6ScF5n_Cug"
   },
   {
     "time": [
-      102,
-      104
+      40,
+      41
     ],
     "visible_entities": [
       {
-        "desc": "young girl with long dark hair, wearing a black velvet long-sleeved top over a red shirt, with a silver heart-shaped necklace",
-        "action": "playing the flute",
-        "position": "right/foreground"
-      },
-      {
-        "desc": "silver metal flute",
-        "action": "being held and played",
-        "position": "center"
-      },
-      {
-        "desc": "green Christmas tree with ornaments",
-        "action": "static",
-        "position": "background"
-      },
-      {
-        "desc": "blue metal music stand with sheet music",
-        "action": "static",
-        "position": "bottom left"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "The girl is holding a silver flute horizontally to her right.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The girl's fingers are pressing the keys of the flute.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The girl is blowing air across the mouthpiece of the flute.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "A music stand is positioned in front of the girl.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [],
-    "spatial": "The girl is positioned to the right of the music stand. The Christmas tree is behind the girl. The flute is held in front of the girl's face.",
-    "parse_success": true,
-    "chunk_idx": 51,
-    "video_id": "v_J6ScF5n_Cug"
-  },
-  {
-    "time": [
-      104,
-      106
-    ],
-    "visible_entities": [
-      {
-        "desc": "young girl with long dark hair, wearing a black long-sleeved velvet top and a red heart-shaped pendant necklace",
-        "action": "playing the flute",
-        "position": "center/right"
-      },
-      {
-        "desc": "silver metal flute with keys and a green ribbon tied to it",
-        "action": "being played",
-        "position": "center"
-      },
-      {
-        "desc": "blue metal music stand holding sheet music",
-        "action": "static",
-        "position": "bottom left"
-      },
-      {
-        "desc": "green Christmas tree with ornaments",
-        "action": "static",
-        "position": "background"
-      },
-      {
-        "desc": "green leafy houseplant",
-        "action": "static",
-        "position": "left"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "The girl holds the silver flute horizontally with both hands.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The girl blows across the mouthpiece of the flute.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The sheet music rests on the blue stand in front of the girl.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The Christmas tree is positioned behind the girl.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [],
-    "spatial": "The girl is positioned to the right of the green houseplant and in front of the Christmas tree. She is holding the silver flute horizontally in front of her face. The blue music stand is located below the flute and to the left of the girl's torso.",
-    "parse_success": true,
-    "chunk_idx": 52,
-    "video_id": "v_J6ScF5n_Cug"
-  },
-  {
-    "time": [
-      106,
-      108
-    ],
-    "visible_entities": [
-      {
-        "desc": "young girl with long dark hair, wearing a black velvet long-sleeved top with a red heart-shaped pendant necklace",
-        "action": "playing the flute",
-        "position": "right/foreground"
-      },
-      {
-        "desc": "silver metal flute with keys",
-        "action": "being played",
-        "position": "center"
-      },
-      {
-        "desc": "green artificial Christmas tree with ornaments",
-        "action": "static",
-        "position": "background"
-      },
-      {
-        "desc": "blue metal music stand with sheet music",
-        "action": "static",
-        "position": "bottom left"
-      },
-      {
-        "desc": "green leafy houseplant",
-        "action": "static",
-        "position": "far left"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "The girl holds a silver flute horizontally to her mouth.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The girl's fingers are positioned on the keys of the flute.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The girl is reading from sheet music on a stand.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The music stand is positioned in front of the girl.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [],
-    "spatial": "The girl is positioned to the right of the music stand. The music stand is in front of the girl and below the flute. The Christmas tree is behind the girl. The houseplant is to the left of the music stand.",
-    "parse_success": true,
-    "chunk_idx": 53,
-    "video_id": "v_J6ScF5n_Cug"
-  },
-  {
-    "time": [
-      108,
-      110
-    ],
-    "visible_entities": [
-      {
-        "desc": "young girl with long dark hair, wearing a black long-sleeved velvet top with a red heart-shaped detail at the neckline",
-        "action": "playing a silver flute",
-        "position": "right/foreground"
-      },
-      {
-        "desc": "silver flute, metallic, cylindrical, with visible keys and a green band around the body",
-        "action": "being played",
-        "position": "center/foreground"
-      },
-      {
-        "desc": "blue metal music stand with sheet music",
-        "action": "static",
-        "position": "bottom/foreground"
-      },
-      {
-        "desc": "green Christmas tree with ornaments",
-        "action": "static",
-        "position": "background"
-      },
-      {
-        "desc": "green leafy plant",
-        "action": "static",
-        "position": "left/background"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "The girl is holding a silver flute horizontally to her mouth.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The girl's fingers are pressing down on the keys of the flute.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The girl is blowing across the mouthpiece of the flute.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "A music stand is positioned in front of the girl.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "A Christmas tree is visible behind the girl.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [],
-    "spatial": "The girl is positioned to the right of the frame, holding the silver flute horizontally in front of her. The blue music stand is located below the flute and in front of the girl. The green Christmas tree and a leafy plant are situated behind the girl.",
-    "parse_success": true,
-    "chunk_idx": 54,
-    "video_id": "v_J6ScF5n_Cug"
-  },
-  {
-    "time": [
-      110,
-      112
-    ],
-    "visible_entities": [
-      {
-        "desc": "young girl with long dark hair, wearing a black long-sleeved velvet top over a red shirt with a white heart design",
+        "desc": "young girl with long dark hair, wearing a black velvet long-sleeved top with a red heart-shaped detail at the neckline",
         "action": "playing a silver flute",
         "position": "right/foreground"
       },
@@ -2970,70 +2127,19 @@
         "position": "background"
       },
       {
-        "desc": "blue metal music stand with sheet music",
+        "desc": "music stand with sheet music",
         "action": "static",
         "position": "bottom left"
       },
       {
-        "desc": "green leafy houseplant",
+        "desc": "green leafy plant",
         "action": "static",
-        "position": "left background"
+        "position": "left"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "The girl is holding a silver flute horizontally to her mouth.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The girl's fingers are positioned on the keys of the flute.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The girl is blowing into the flute to produce sound.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "A music stand with sheet music is positioned in front of the girl.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [],
-    "spatial": "The girl is positioned to the right of the music stand and in front of the Christmas tree. The silver flute is held horizontally in front of the girl's face. The houseplant is to the left of the Christmas tree.",
-    "parse_success": true,
-    "chunk_idx": 55,
-    "video_id": "v_J6ScF5n_Cug"
-  },
-  {
-    "time": [
-      112,
-      114
-    ],
-    "visible_entities": [
-      {
-        "desc": "young girl with long dark hair, wearing a black long-sleeved top over a red shirt with a silver heart necklace",
-        "action": "playing the flute",
-        "position": "center/right"
-      },
-      {
-        "desc": "silver metal flute",
-        "action": "being played",
-        "position": "center"
-      },
-      {
-        "desc": "blue metal music stand with sheet music",
-        "action": "static",
-        "position": "bottom left"
-      },
-      {
-        "desc": "green artificial Christmas tree",
-        "action": "static",
-        "position": "background"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "The girl is holding the silver flute horizontally with both hands.",
+        "fact": "The girl is holding a silver flute horizontally with both hands.",
         "confidence": 1.0
       },
       {
@@ -3041,33 +2147,33 @@
         "confidence": 1.0
       },
       {
-        "fact": "The music stand is positioned in front of the girl.",
+        "fact": "The girl's fingers are pressing the keys of the flute.",
         "confidence": 1.0
       },
       {
-        "fact": "The Christmas tree is located behind the girl.",
+        "fact": "Sheet music is placed on a stand in front of the girl.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The girl is positioned in front of the green Christmas tree. She is holding the silver flute horizontally in front of her mouth. The blue music stand is located below the flute and to the left of the girl's torso.",
+    "spatial": "The girl is positioned to the right of the music stand and the green leafy plant. The Christmas tree is behind the girl. The flute is held in front of the girl's face and chest.",
     "parse_success": true,
-    "chunk_idx": 56,
+    "chunk_idx": 40,
     "video_id": "v_J6ScF5n_Cug"
   },
   {
     "time": [
-      114,
-      116
+      41,
+      42
     ],
     "visible_entities": [
       {
-        "desc": "young girl with long dark hair, wearing a black long-sleeved velvet top over a red shirt, and a silver heart-shaped necklace",
+        "desc": "young girl with long dark hair, wearing a black velvet long-sleeved top over a red shirt with a heart pendant necklace",
         "action": "playing the flute",
         "position": "right"
       },
       {
-        "desc": "silver metal flute",
+        "desc": "silver metal flute, cylindrical with keys",
         "action": "being played",
         "position": "center"
       },
@@ -3084,43 +2190,146 @@
     ],
     "atomic_facts": [
       {
-        "fact": "The girl is holding a silver flute horizontally to her mouth.",
+        "fact": "The girl is holding a silver flute horizontally to her lips.",
         "confidence": 1.0
       },
       {
-        "fact": "Her fingers are positioned on the keys of the flute.",
+        "fact": "The girl's fingers are positioned on the keys of the flute.",
         "confidence": 1.0
       },
       {
-        "fact": "The girl is reading sheet music placed on a stand in front of her.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "A Christmas tree is visible behind the girl.",
+        "fact": "Sheet music is resting on the blue music stand.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The girl is positioned to the right of the frame, holding the flute in front of her. The blue music stand is in the foreground, below the flute. The green Christmas tree is in the background behind the girl.",
+    "spatial": "The girl is positioned to the right of the frame, holding the silver flute horizontally in front of her. The blue music stand is in the foreground, below the flute. The green Christmas tree is in the background behind the girl.",
     "parse_success": true,
-    "chunk_idx": 57,
+    "chunk_idx": 41,
     "video_id": "v_J6ScF5n_Cug"
   },
   {
     "time": [
-      116,
-      118
+      42,
+      43
     ],
     "visible_entities": [
       {
-        "desc": "girl with long dark hair, wearing a black long-sleeved velvet top over a red shirt with a heart pendant necklace",
+        "desc": "young girl with long dark hair, wearing a black long-sleeved velvet top over a red shirt, with a silver heart-shaped necklace",
+        "action": "playing the flute",
+        "position": "right/foreground"
+      },
+      {
+        "desc": "silver concert flute, metallic and shiny",
+        "action": "being held and played",
+        "position": "center"
+      },
+      {
+        "desc": "green Christmas tree with ornaments",
+        "action": "static",
+        "position": "background"
+      },
+      {
+        "desc": "blue metal music stand with sheet music",
+        "action": "static",
+        "position": "bottom left"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The girl holds the silver flute horizontally with both hands.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The girl blows across the embouchure hole of the flute.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The girl's fingers are positioned on the keys of the flute.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The girl is reading sheet music placed on the stand.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The girl is positioned to the right of the frame, holding the flute in front of her. The music stand is located in the bottom left foreground, below the flute. The Christmas tree is situated in the background behind the girl.",
+    "parse_success": true,
+    "chunk_idx": 42,
+    "video_id": "v_J6ScF5n_Cug"
+  },
+  {
+    "time": [
+      43,
+      44
+    ],
+    "visible_entities": [
+      {
+        "desc": "young girl with long straight black hair, wearing a black long-sleeved velvet top with a red heart-shaped pendant necklace",
+        "action": "playing the flute",
+        "position": "center"
+      },
+      {
+        "desc": "silver metal flute with keys",
+        "action": "being played",
+        "position": "center"
+      },
+      {
+        "desc": "green Christmas tree with ornaments",
+        "action": "static",
+        "position": "background"
+      },
+      {
+        "desc": "music stand with sheet music",
+        "action": "static",
+        "position": "foreground"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The girl is holding a silver flute horizontally to her mouth.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The girl's fingers are positioned on the keys of the flute.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The girl's eyes are closed in the second frame.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A music stand is positioned in front of the girl.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The girl is standing in the center of the frame, holding the flute horizontally in front of her. The music stand is in the foreground, below the flute and in front of the girl. The green Christmas tree is in the background, behind the girl.",
+    "parse_success": true,
+    "chunk_idx": 43,
+    "video_id": "v_J6ScF5n_Cug"
+  },
+  {
+    "time": [
+      44,
+      45
+    ],
+    "visible_entities": [
+      {
+        "desc": "young girl with long dark hair, wearing a black long-sleeved velvet top over a red shirt with a silver heart necklace",
         "action": "playing the flute",
         "position": "right"
       },
       {
-        "desc": "silver metal flute",
-        "action": "being held and played",
+        "desc": "silver metal flute with gold-colored keys and mechanisms",
+        "action": "being held horizontally",
         "position": "center"
+      },
+      {
+        "desc": "green artificial Christmas tree decorated with hanging ornaments",
+        "action": "static",
+        "position": "background"
       },
       {
         "desc": "blue metal music stand with sheet music",
@@ -3128,9 +2337,9 @@
         "position": "bottom"
       },
       {
-        "desc": "green Christmas tree with ornaments",
+        "desc": "green leafy plant",
         "action": "static",
-        "position": "background"
+        "position": "left"
       }
     ],
     "atomic_facts": [
@@ -3139,75 +2348,75 @@
         "confidence": 1.0
       },
       {
-        "fact": "Her fingers are positioned on the keys of the flute.",
+        "fact": "The girl's fingers are positioned on the keys of the flute.",
         "confidence": 1.0
       },
       {
-        "fact": "She is looking down at the sheet music on the stand.",
+        "fact": "The girl's eyes are closed in the second frame.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A Christmas tree stands behind the girl.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The girl is positioned to the right of the frame, holding the flute in front of her. The blue music stand is in the foreground below the flute. The green Christmas tree is located behind the girl and the music stand.",
+    "spatial": "The girl is positioned to the right of the frame, holding the flute in front of her. The blue music stand is located below the flute in the foreground. A green leafy plant is visible to the left of the girl. The Christmas tree is situated behind the girl and the flute.",
     "parse_success": true,
-    "chunk_idx": 58,
+    "chunk_idx": 44,
     "video_id": "v_J6ScF5n_Cug"
   },
   {
     "time": [
-      118,
-      120
+      45,
+      46
     ],
     "visible_entities": [
       {
-        "desc": "young girl with long dark hair, wearing a black velvet long-sleeved top over a red shirt with a heart pendant necklace",
-        "action": "playing the flute",
-        "position": "right/foreground"
-      },
-      {
-        "desc": "silver flute with gold-colored keys",
-        "action": "being held and played",
+        "desc": "young girl with long dark hair, wearing a black long-sleeved velvet top and a red necklace",
+        "action": "playing a silver flute",
         "position": "center"
       },
       {
-        "desc": "green leafy Christmas tree",
+        "desc": "silver metal flute with keys",
+        "action": "being played",
+        "position": "center"
+      },
+      {
+        "desc": "green Christmas tree with white ornaments",
         "action": "static",
         "position": "background"
       },
       {
         "desc": "blue metal music stand with sheet music",
         "action": "static",
-        "position": "bottom/foreground"
+        "position": "foreground"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "The girl is holding a silver flute horizontally with both hands.",
+        "fact": "The girl is holding a silver flute horizontally to her mouth.",
         "confidence": 1.0
       },
       {
-        "fact": "The girl is blowing into the flute to play it.",
+        "fact": "The girl's fingers are positioned on the keys of the flute.",
         "confidence": 1.0
       },
       {
-        "fact": "The music stand is positioned in front of the girl.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The Christmas tree is behind the girl.",
+        "fact": "A music stand is positioned in front of the girl.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The girl is positioned to the right of the frame, holding the silver flute in front of her. The blue music stand is below the flute and in front of the girl. The green Christmas tree is behind the girl and the flute.",
+    "spatial": "The girl is standing behind the blue music stand. The silver flute is held in front of the girl's face. The green Christmas tree is located behind the girl.",
     "parse_success": true,
-    "chunk_idx": 59,
+    "chunk_idx": 45,
     "video_id": "v_J6ScF5n_Cug"
   },
   {
     "time": [
-      120,
-      122
+      46,
+      47
     ],
     "visible_entities": [
       {
@@ -3221,19 +2430,19 @@
         "position": "center"
       },
       {
-        "desc": "blue metal music stand holding sheet music",
-        "action": "static",
-        "position": "bottom left"
-      },
-      {
         "desc": "green Christmas tree with ornaments",
         "action": "static",
         "position": "background"
+      },
+      {
+        "desc": "music stand with sheet music",
+        "action": "static",
+        "position": "bottom"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "The girl is holding a silver flute horizontally to her mouth.",
+        "fact": "The girl is holding the flute horizontally to her mouth.",
         "confidence": 1.0
       },
       {
@@ -3241,40 +2450,100 @@
         "confidence": 1.0
       },
       {
-        "fact": "Sheet music is resting on the blue music stand.",
+        "fact": "The girl is reading sheet music on a stand in front of her.",
         "confidence": 1.0
       },
       {
-        "fact": "The girl is wearing a heart-shaped pendant necklace.",
+        "fact": "A Christmas tree is visible behind the girl.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The girl is positioned to the right of the music stand. She is holding the silver flute in front of her face. The Christmas tree is located behind the girl and the music stand.",
+    "spatial": "The girl is positioned to the right of the frame, holding the flute in front of her. The music stand is located below the flute in the foreground. The Christmas tree is situated behind the girl.",
     "parse_success": true,
-    "chunk_idx": 60,
+    "chunk_idx": 46,
     "video_id": "v_J6ScF5n_Cug"
   },
   {
     "time": [
-      122,
-      124
+      47,
+      48
     ],
     "visible_entities": [
       {
-        "desc": "young girl with long straight dark hair, wearing a black long-sleeved velvet top over a red garment with a silver necklace",
-        "action": "playing the flute",
+        "desc": "young girl with long dark hair, wearing a black long-sleeved velvet top and a red heart-shaped pendant necklace",
+        "action": "playing a silver flute",
+        "position": "center/right"
+      },
+      {
+        "desc": "silver metal flute with keys",
+        "action": "being held and played",
+        "position": "center"
+      },
+      {
+        "desc": "blue metal music stand with sheet music",
+        "action": "static",
+        "position": "bottom/foreground"
+      },
+      {
+        "desc": "green Christmas tree with ornaments",
+        "action": "static",
+        "position": "background"
+      },
+      {
+        "desc": "green leafy potted plant",
+        "action": "static",
+        "position": "left"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The girl is holding a silver flute horizontally with both hands.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The girl is blowing into the flute's mouthpiece.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The girl's fingers are positioned on the keys of the flute.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A music stand is positioned in front of the girl.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A Christmas tree is visible in the background behind the girl.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The girl is positioned to the right of the green leafy plant. The silver flute is held in front of the girl's face. The blue music stand is in the foreground, below the flute. The Christmas tree is behind the girl and the flute.",
+    "parse_success": true,
+    "chunk_idx": 47,
+    "video_id": "v_J6ScF5n_Cug"
+  },
+  {
+    "time": [
+      48,
+      49
+    ],
+    "visible_entities": [
+      {
+        "desc": "young girl with long dark hair, wearing a black long-sleeved velvet top with a red heart-shaped pendant necklace",
+        "action": "playing a silver flute",
         "position": "right"
       },
       {
-        "desc": "silver metal concert flute",
+        "desc": "silver flute with gold-colored keys and a green ribbon tied to the headjoint",
         "action": "being held horizontally",
         "position": "center"
       },
       {
         "desc": "blue metal music stand with sheet music",
         "action": "static",
-        "position": "bottom left"
+        "position": "bottom foreground"
       },
       {
         "desc": "green Christmas tree with ornaments",
@@ -3289,157 +2558,36 @@
     ],
     "atomic_facts": [
       {
-        "fact": "The girl holds the silver flute horizontally to her mouth.",
+        "fact": "The girl is playing a silver flute.",
         "confidence": 1.0
       },
       {
-        "fact": "Her fingers are positioned on the keys of the flute.",
+        "fact": "The girl is holding the flute horizontally with both hands.",
         "confidence": 1.0
       },
       {
-        "fact": "The music stand is positioned in front of the girl.",
+        "fact": "The sheet music is resting on the blue music stand.",
         "confidence": 1.0
       },
       {
-        "fact": "The Christmas tree is located behind the girl.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [],
-    "spatial": "The girl is positioned to the right of the music stand. The silver flute is held in front of her face and the Christmas tree. The music stand is in the foreground, below the level of the flute.",
-    "parse_success": true,
-    "chunk_idx": 61,
-    "video_id": "v_J6ScF5n_Cug"
-  },
-  {
-    "time": [
-      124,
-      126
-    ],
-    "visible_entities": [
-      {
-        "desc": "young girl with long dark hair, wearing a black long-sleeved velvet top over a red shirt with a heart necklace",
-        "action": "playing a silver flute",
-        "position": "right"
-      },
-      {
-        "desc": "silver flute, metallic, cylindrical",
-        "action": "being held horizontally",
-        "position": "center"
-      },
-      {
-        "desc": "green Christmas tree, decorated with ornaments",
-        "action": "static",
-        "position": "background"
-      },
-      {
-        "desc": "blue metal music stand",
-        "action": "static",
-        "position": "foreground"
-      },
-      {
-        "desc": "sheet music, white paper",
-        "action": "resting on stand",
-        "position": "bottom center"
-      },
-      {
-        "desc": "green leafy houseplant",
-        "action": "static",
-        "position": "left"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "The girl holds a silver flute horizontally with both hands.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The girl blows air across the mouthpiece of the flute.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The girl's fingers are positioned on the keys of the flute.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "Sheet music rests on a blue stand in front of the girl.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "A Christmas tree stands behind the girl.",
+        "fact": "The Christmas tree is positioned behind the girl.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The girl is positioned to the right of the frame, holding the flute in front of her. The blue music stand is in the foreground, below the flute. The Christmas tree is in the background behind the girl, and a houseplant is visible to the left of the tree.",
+    "spatial": "The girl is positioned to the right of the frame, holding the silver flute horizontally in front of her. The blue music stand is in the foreground below the flute. The Christmas tree and the leafy plant are in the background behind the girl.",
     "parse_success": true,
-    "chunk_idx": 62,
+    "chunk_idx": 48,
     "video_id": "v_J6ScF5n_Cug"
   },
   {
     "time": [
-      126,
-      128
+      49,
+      50
     ],
     "visible_entities": [
       {
-        "desc": "young girl with long straight dark hair, wearing a black long-sleeved velvet top over a red shirt with a silver heart necklace",
-        "action": "playing the flute",
-        "position": "right"
-      },
-      {
-        "desc": "silver metal flute, cylindrical, shiny",
-        "action": "being played",
-        "position": "center"
-      },
-      {
-        "desc": "green Christmas tree with white ornaments",
-        "action": "static",
-        "position": "background"
-      },
-      {
-        "desc": "blue metal music stand with sheet music",
-        "action": "static",
-        "position": "foreground"
-      },
-      {
-        "desc": "green leafy houseplant",
-        "action": "static",
-        "position": "left"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "The girl is holding a silver flute horizontally to her mouth.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "Her fingers are positioned on the keys of the flute.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The girl is looking down at the sheet music on the stand.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "A Christmas tree is visible behind the girl.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [],
-    "spatial": "The girl is positioned to the right of the green leafy plant. She is standing behind the blue music stand which is in the foreground. The Christmas tree is located behind the girl.",
-    "parse_success": true,
-    "chunk_idx": 63,
-    "video_id": "v_J6ScF5n_Cug"
-  },
-  {
-    "time": [
-      128,
-      130
-    ],
-    "visible_entities": [
-      {
-        "desc": "young girl with long dark hair, wearing a black long-sleeved velvet top over a red garment with a silver heart pendant necklace",
+        "desc": "young girl with long dark hair, wearing a black long-sleeved velvet top and a red heart-shaped pendant necklace",
         "action": "playing the flute",
         "position": "center/right"
       },
@@ -3449,9 +2597,14 @@
         "position": "center"
       },
       {
-        "desc": "blue metal music stand with sheet music",
+        "desc": "blue metal music stand",
         "action": "static",
-        "position": "foreground/bottom"
+        "position": "bottom/foreground"
+      },
+      {
+        "desc": "sheet music with printed notes",
+        "action": "static",
+        "position": "bottom/foreground"
       },
       {
         "desc": "green Christmas tree with white ornaments",
@@ -3470,7 +2623,339 @@
         "confidence": 1.0
       },
       {
+        "fact": "The girl's fingers are pressing down on the keys of the flute.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "Sheet music is resting on the blue music stand in front of the girl.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A Christmas tree is visible in the background behind the girl.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The girl is positioned in the center-right of the frame, holding the flute in front of her. The blue music stand with sheet music is in the foreground, below the flute. The Christmas tree is behind the girl, and the leafy houseplant is to the left of the scene.",
+    "parse_success": true,
+    "chunk_idx": 49,
+    "video_id": "v_J6ScF5n_Cug"
+  },
+  {
+    "time": [
+      50,
+      51
+    ],
+    "visible_entities": [
+      {
+        "desc": "young girl with long dark hair, wearing a black long-sleeved velvet top and a red heart pendant necklace",
+        "action": "playing the flute",
+        "position": "right/foreground"
+      },
+      {
+        "desc": "silver metal flute with gold-colored keys",
+        "action": "being played",
+        "position": "center/held by person"
+      },
+      {
+        "desc": "green Christmas tree with white ornaments",
+        "action": "static",
+        "position": "background"
+      },
+      {
+        "desc": "blue metal music stand with white sheet music",
+        "action": "static",
+        "position": "bottom left"
+      },
+      {
+        "desc": "green leafy houseplant",
+        "action": "static",
+        "position": "left background"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The girl is holding the silver flute horizontally to her mouth.",
+        "confidence": 1.0
+      },
+      {
         "fact": "The girl's fingers are positioned on the keys of the flute.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The girl is blowing into the embouchure hole of the flute.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The sheet music is resting on the blue music stand.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The girl is positioned to the right of the music stand. The music stand is in front of the Christmas tree. The girl is holding the flute in front of her chest.",
+    "parse_success": true,
+    "chunk_idx": 50,
+    "video_id": "v_J6ScF5n_Cug"
+  },
+  {
+    "time": [
+      51,
+      52
+    ],
+    "visible_entities": [
+      {
+        "desc": "young girl with long dark hair, wearing a black velvet long-sleeved top over a red shirt, and a silver heart-shaped pendant necklace",
+        "action": "playing the flute",
+        "position": "right"
+      },
+      {
+        "desc": "silver metal flute with keys",
+        "action": "being played",
+        "position": "center"
+      },
+      {
+        "desc": "green Christmas tree with white ornaments",
+        "action": "static",
+        "position": "background"
+      },
+      {
+        "desc": "blue metal music stand",
+        "action": "static",
+        "position": "bottom"
+      },
+      {
+        "desc": "sheet music with musical notation",
+        "action": "static",
+        "position": "bottom"
+      },
+      {
+        "desc": "green leafy plant",
+        "action": "static",
+        "position": "left"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The girl holds a silver flute horizontally to her mouth.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The girl's fingers are positioned on the keys of the flute.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The girl is reading sheet music placed on a blue stand.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A Christmas tree stands behind the girl.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The girl is positioned to the right of the frame, holding the flute in front of her. The blue music stand is in the foreground below the flute. The Christmas tree is behind the girl, and a leafy plant is to the left of the scene.",
+    "parse_success": true,
+    "chunk_idx": 51,
+    "video_id": "v_J6ScF5n_Cug"
+  },
+  {
+    "time": [
+      52,
+      53
+    ],
+    "visible_entities": [
+      {
+        "desc": "young girl with long straight dark hair, wearing a black long-sleeved velvet top with a red underlayer visible at the neckline and a silver heart-shaped pendant necklace",
+        "action": "playing a silver flute",
+        "position": "right"
+      },
+      {
+        "desc": "silver concert flute, metallic and shiny, with a green ribbon tied to the keys",
+        "action": "being held horizontally",
+        "position": "center"
+      },
+      {
+        "desc": "blue metal music stand with sheet music on it",
+        "action": "static",
+        "position": "bottom foreground"
+      },
+      {
+        "desc": "green Christmas tree with ornaments",
+        "action": "static",
+        "position": "background"
+      },
+      {
+        "desc": "green leafy houseplant",
+        "action": "static",
+        "position": "left"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The girl holds the silver flute horizontally to her mouth.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "Her fingers are positioned on the keys of the flute.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The girl is reading sheet music placed on the blue stand in front of her.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A green ribbon is attached to the flute.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The girl is positioned to the right of the frame, holding the flute in front of her. The blue music stand is in the foreground below the flute. The Christmas tree is behind the girl, and the leafy plant is to the left of the scene.",
+    "parse_success": true,
+    "chunk_idx": 52,
+    "video_id": "v_J6ScF5n_Cug"
+  },
+  {
+    "time": [
+      53,
+      54
+    ],
+    "visible_entities": [
+      {
+        "desc": "young girl with long dark hair, wearing a black velvet long-sleeved top and a red heart-shaped pendant necklace",
+        "action": "playing a silver flute",
+        "position": "center/right"
+      },
+      {
+        "desc": "silver metal flute with gold-colored keys",
+        "action": "being played",
+        "position": "center"
+      },
+      {
+        "desc": "green Christmas tree with ornaments",
+        "action": "static",
+        "position": "background"
+      },
+      {
+        "desc": "blue metal music stand holding sheet music",
+        "action": "static",
+        "position": "bottom/foreground"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The girl is holding a silver flute horizontally to her mouth.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The girl's fingers are pressing down on the keys of the flute.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A music stand is positioned in front of the girl.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The girl is standing in front of the green Christmas tree. The silver flute is held horizontally in front of her face. The blue music stand is located below the flute in the foreground.",
+    "parse_success": true,
+    "chunk_idx": 53,
+    "video_id": "v_J6ScF5n_Cug"
+  },
+  {
+    "time": [
+      54,
+      55
+    ],
+    "visible_entities": [
+      {
+        "desc": "young girl with long dark hair, wearing a black velvet long-sleeved top and a red necklace with a heart pendant",
+        "action": "playing the flute",
+        "position": "center/right"
+      },
+      {
+        "desc": "silver metal flute",
+        "action": "being held and played",
+        "position": "center"
+      },
+      {
+        "desc": "blue metal music stand with sheet music",
+        "action": "static",
+        "position": "bottom left"
+      },
+      {
+        "desc": "green Christmas tree with ornaments",
+        "action": "static",
+        "position": "background"
+      },
+      {
+        "desc": "green leafy houseplant",
+        "action": "static",
+        "position": "left"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The girl is holding the silver flute horizontally to her mouth.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "Her fingers are positioned on the keys of the flute.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "She is looking down at the sheet music on the stand.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The music stand is positioned in front of the girl.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The girl is positioned to the right of the green houseplant and in front of the Christmas tree. She is holding the flute horizontally in front of her face. The blue music stand is located below the flute and in front of the girl.",
+    "parse_success": true,
+    "chunk_idx": 54,
+    "video_id": "v_J6ScF5n_Cug"
+  },
+  {
+    "time": [
+      55,
+      56
+    ],
+    "visible_entities": [
+      {
+        "desc": "young girl with long dark hair, wearing a black velvet long-sleeved top over a red shirt with a white heart design",
+        "action": "playing the flute",
+        "position": "center/right"
+      },
+      {
+        "desc": "silver metal flute",
+        "action": "being played",
+        "position": "center"
+      },
+      {
+        "desc": "green Christmas tree with silver ornaments",
+        "action": "static",
+        "position": "background"
+      },
+      {
+        "desc": "blue metal music stand with sheet music",
+        "action": "static",
+        "position": "foreground/bottom"
+      },
+      {
+        "desc": "green leafy plant",
+        "action": "static",
+        "position": "left"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The girl is holding a silver flute horizontally to her mouth.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "Her fingers are positioned on the keys of the flute.",
         "confidence": 1.0
       },
       {
@@ -3483,25 +2968,25 @@
       }
     ],
     "ocr": [],
-    "spatial": "The girl is positioned to the right of the leafy houseplant and in front of the Christmas tree. She is holding the silver flute horizontally in front of her face. The blue music stand is in the foreground, located below the flute and in front of the girl.",
+    "spatial": "The girl is positioned in front of the green Christmas tree. She is holding the silver flute horizontally in front of her face. The blue music stand is located below the flute in the foreground. A leafy plant is visible to the left of the girl.",
     "parse_success": true,
-    "chunk_idx": 64,
+    "chunk_idx": 55,
     "video_id": "v_J6ScF5n_Cug"
   },
   {
     "time": [
-      130,
-      132
+      56,
+      57
     ],
     "visible_entities": [
       {
-        "desc": "young girl with long dark hair, wearing a black long-sleeved velvet top with a red heart-shaped neckline detail",
+        "desc": "young girl with long dark hair, wearing a black long-sleeved velvet top over a red shirt with a silver heart pendant necklace",
         "action": "playing the flute",
         "position": "right"
       },
       {
-        "desc": "silver metal flute, cylindrical, shiny",
-        "action": "being held horizontally",
+        "desc": "silver metal flute with gold-colored keys",
+        "action": "being held and played",
         "position": "center"
       },
       {
@@ -3510,9 +2995,391 @@
         "position": "bottom left"
       },
       {
-        "desc": "green artificial Christmas tree with white ornaments",
+        "desc": "green Christmas tree with ornaments",
         "action": "static",
         "position": "background"
+      },
+      {
+        "desc": "green leafy houseplant",
+        "action": "static",
+        "position": "left"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The girl is holding the silver flute horizontally to her mouth.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "Her fingers are positioned on the keys of the flute.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The music stand is positioned in front of the girl.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The Christmas tree is located behind the girl.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The girl is positioned on the right side of the frame, holding the flute in front of her. The blue music stand is in the foreground to the left of the girl. The Christmas tree is in the background behind the girl and the flute.",
+    "parse_success": true,
+    "chunk_idx": 56,
+    "video_id": "v_J6ScF5n_Cug"
+  },
+  {
+    "time": [
+      57,
+      58
+    ],
+    "visible_entities": [
+      {
+        "desc": "young girl with long dark hair, wearing a black long-sleeved velvet top over a red shirt with a silver heart pendant necklace",
+        "action": "playing the flute",
+        "position": "right"
+      },
+      {
+        "desc": "silver metal flute",
+        "action": "being held horizontally",
+        "position": "center"
+      },
+      {
+        "desc": "green Christmas tree with ornaments",
+        "action": "static",
+        "position": "background"
+      },
+      {
+        "desc": "blue metal music stand with sheet music",
+        "action": "static",
+        "position": "bottom left"
+      },
+      {
+        "desc": "green leafy plant",
+        "action": "static",
+        "position": "left"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The girl holds the silver flute horizontally to her mouth.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The girl's fingers are positioned on the keys of the flute.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The sheet music is resting on the blue music stand.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The Christmas tree is located behind the girl.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The girl is positioned to the right of the green leafy plant. The blue music stand is in front of the girl and to her left. The Christmas tree is behind the girl and the flute.",
+    "parse_success": true,
+    "chunk_idx": 57,
+    "video_id": "v_J6ScF5n_Cug"
+  },
+  {
+    "time": [
+      58,
+      59
+    ],
+    "visible_entities": [
+      {
+        "desc": "young girl with long dark hair, wearing a black long-sleeved velvet top over a red shirt, and a silver heart-shaped necklace",
+        "action": "playing a silver flute",
+        "position": "right"
+      },
+      {
+        "desc": "silver metal flute",
+        "action": "being played",
+        "position": "center"
+      },
+      {
+        "desc": "green Christmas tree with ornaments",
+        "action": "static",
+        "position": "background"
+      },
+      {
+        "desc": "blue metal music stand with sheet music",
+        "action": "static",
+        "position": "foreground"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The girl is holding a silver flute horizontally with both hands.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The girl is blowing into the mouthpiece of the flute.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The girl's fingers are positioned on the keys of the flute.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A music stand is positioned in front of the girl.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The girl is positioned to the right of the frame, holding the flute in front of her. The music stand is in the foreground, below the flute and in front of the girl. The Christmas tree is in the background, behind the girl and the flute.",
+    "parse_success": true,
+    "chunk_idx": 58,
+    "video_id": "v_J6ScF5n_Cug"
+  },
+  {
+    "time": [
+      59,
+      60
+    ],
+    "visible_entities": [
+      {
+        "desc": "young girl with long dark hair, wearing a black long-sleeved velvet top over a red shirt with a silver heart necklace",
+        "action": "playing a silver flute",
+        "position": "right"
+      },
+      {
+        "desc": "silver flute, metallic, cylindrical",
+        "action": "being held and played",
+        "position": "center"
+      },
+      {
+        "desc": "green leafy plant, possibly a pine tree or large indoor plant",
+        "action": "static",
+        "position": "background"
+      },
+      {
+        "desc": "blue metal music stand with sheet music",
+        "action": "static",
+        "position": "bottom left"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The girl is holding a silver flute horizontally with both hands.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The girl is blowing into the mouthpiece of the flute.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A music stand with sheet music is positioned in front of the girl.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A large green plant is visible behind the girl.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The girl is positioned to the right of the frame, holding the silver flute in front of her. The blue music stand is in the foreground at the bottom left, below the flute. The green leafy plant is in the background behind the girl and the flute.",
+    "parse_success": true,
+    "chunk_idx": 59,
+    "video_id": "v_J6ScF5n_Cug"
+  },
+  {
+    "time": [
+      60,
+      61
+    ],
+    "visible_entities": [
+      {
+        "desc": "young girl with long straight black hair, wearing a black long-sleeved velvet top over a red shirt, and a silver heart-shaped necklace",
+        "action": "playing the flute",
+        "position": "right"
+      },
+      {
+        "desc": "silver metal flute",
+        "action": "being held and played",
+        "position": "center"
+      },
+      {
+        "desc": "green Christmas tree with ornaments",
+        "action": "static",
+        "position": "background"
+      },
+      {
+        "desc": "blue metal music stand with sheet music",
+        "action": "static",
+        "position": "foreground"
+      },
+      {
+        "desc": "green leafy plant",
+        "action": "static",
+        "position": "left"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The girl is holding a silver flute horizontally to her mouth.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The girl's fingers are pressing the keys on the flute.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The girl is reading from sheet music placed on a blue stand.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A Christmas tree stands behind the girl.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The girl is positioned to the right of the frame, holding the flute in front of her. The blue music stand is in the foreground, below the flute. The Christmas tree is located behind the girl, and a leafy plant is visible to the left of the scene.",
+    "parse_success": true,
+    "chunk_idx": 60,
+    "video_id": "v_J6ScF5n_Cug"
+  },
+  {
+    "time": [
+      61,
+      62
+    ],
+    "visible_entities": [
+      {
+        "desc": "young girl with long straight black hair, wearing a black long-sleeved velvet top over a red shirt with a silver necklace",
+        "action": "playing the flute",
+        "position": "right"
+      },
+      {
+        "desc": "silver metal flute with keys",
+        "action": "being held and played",
+        "position": "center"
+      },
+      {
+        "desc": "blue metal music stand with sheet music",
+        "action": "static",
+        "position": "bottom left"
+      },
+      {
+        "desc": "green Christmas tree with ornaments",
+        "action": "static",
+        "position": "background"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The girl is holding a silver flute horizontally to her mouth.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The girl's fingers are positioned on the keys of the flute.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The girl is looking down at the sheet music on the stand.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A Christmas tree is visible behind the girl.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The girl is positioned to the right of the music stand. The flute is held in front of the girl's face. The Christmas tree is behind the girl and the flute.",
+    "parse_success": true,
+    "chunk_idx": 61,
+    "video_id": "v_J6ScF5n_Cug"
+  },
+  {
+    "time": [
+      62,
+      63
+    ],
+    "visible_entities": [
+      {
+        "desc": "young girl with long dark hair, wearing a black long-sleeved top over a red shirt, with a silver heart-shaped pendant necklace",
+        "action": "playing the flute",
+        "position": "right"
+      },
+      {
+        "desc": "silver metal flute, cylindrical, shiny",
+        "action": "being played",
+        "position": "center"
+      },
+      {
+        "desc": "blue metal music stand with sheet music",
+        "action": "static",
+        "position": "foreground"
+      },
+      {
+        "desc": "green Christmas tree with white ornaments",
+        "action": "static",
+        "position": "background"
+      },
+      {
+        "desc": "green leafy plant",
+        "action": "static",
+        "position": "left"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The girl holds the silver flute horizontally to her lips.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The girl's fingers are pressing down on the keys of the flute.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The sheet music is resting on the blue music stand.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The girl is wearing a silver heart necklace.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The girl is positioned to the right of the frame, holding the flute in front of her. The blue music stand is in the foreground, below the flute. The green Christmas tree is in the background behind the girl, and a leafy plant is visible to the left of the girl.",
+    "parse_success": true,
+    "chunk_idx": 62,
+    "video_id": "v_J6ScF5n_Cug"
+  },
+  {
+    "time": [
+      63,
+      64
+    ],
+    "visible_entities": [
+      {
+        "desc": "young girl with long straight dark hair, wearing a black velvet long-sleeved top over a red shirt, and a silver heart-shaped necklace",
+        "action": "playing a silver flute",
+        "position": "right"
+      },
+      {
+        "desc": "silver flute, metallic and shiny, held horizontally",
+        "action": "being played",
+        "position": "center"
+      },
+      {
+        "desc": "green Christmas tree with white ornaments",
+        "action": "static",
+        "position": "background"
+      },
+      {
+        "desc": "blue metal music stand",
+        "action": "static",
+        "position": "foreground"
+      },
+      {
+        "desc": "sheet music with musical notation",
+        "action": "static",
+        "position": "foreground"
       },
       {
         "desc": "green leafy houseplant",
@@ -3530,7 +3397,58 @@
         "confidence": 1.0
       },
       {
-        "fact": "A blue music stand is positioned in front of the girl.",
+        "fact": "The sheet music is resting on the blue music stand.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The Christmas tree is located behind the girl.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The girl is positioned to the right of the green houseplant. The blue music stand is in the foreground, in front of the girl. The Christmas tree is in the background, behind the girl and the flute.",
+    "parse_success": true,
+    "chunk_idx": 63,
+    "video_id": "v_J6ScF5n_Cug"
+  },
+  {
+    "time": [
+      64,
+      65
+    ],
+    "visible_entities": [
+      {
+        "desc": "young girl with long dark hair, wearing a black velvet long-sleeved top over a red shirt, and a silver heart-shaped necklace",
+        "action": "playing a silver flute",
+        "position": "center/right"
+      },
+      {
+        "desc": "silver metal flute with keys",
+        "action": "being held and played",
+        "position": "center"
+      },
+      {
+        "desc": "blue metal music stand with sheet music",
+        "action": "static",
+        "position": "bottom/foreground"
+      },
+      {
+        "desc": "green Christmas tree with ornaments",
+        "action": "static",
+        "position": "background"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The girl is holding a silver flute horizontally to her mouth.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "Her fingers are positioned on the keys of the flute.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The girl is looking down at the sheet music on the stand.",
         "confidence": 1.0
       },
       {
@@ -3539,34 +3457,141 @@
       }
     ],
     "ocr": [],
-    "spatial": "The girl is positioned to the right of the music stand. The music stand is in front of the girl and below the flute. The Christmas tree is behind the girl and the flute. The leafy plant is to the left of the music stand.",
+    "spatial": "The girl is positioned in front of the green Christmas tree. She is holding the silver flute horizontally in front of her chest. The blue music stand is located below the flute in the foreground.",
+    "parse_success": true,
+    "chunk_idx": 64,
+    "video_id": "v_J6ScF5n_Cug"
+  },
+  {
+    "time": [
+      65,
+      66
+    ],
+    "visible_entities": [
+      {
+        "desc": "young girl with long dark hair, wearing a black long-sleeved velvet top and a red heart-shaped pendant necklace",
+        "action": "playing a silver flute",
+        "position": "center/right"
+      },
+      {
+        "desc": "silver metal flute",
+        "action": "being held horizontally to the mouth",
+        "position": "center"
+      },
+      {
+        "desc": "green Christmas tree with white hanging ornaments",
+        "action": "static",
+        "position": "background"
+      },
+      {
+        "desc": "blue metal music stand with white sheet music",
+        "action": "static",
+        "position": "foreground/bottom"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The girl holds a silver flute horizontally to her lips.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The girl's fingers are positioned on the keys of the flute.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A blue music stand is placed in front of the girl.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "Sheet music is resting on the music stand.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The girl is positioned to the right of the green Christmas tree. She is holding the silver flute in front of her face. The blue music stand is in the foreground, located below the flute and in front of the girl.",
     "parse_success": true,
     "chunk_idx": 65,
     "video_id": "v_J6ScF5n_Cug"
   },
   {
     "time": [
-      132,
-      134
+      66,
+      67
     ],
     "visible_entities": [
       {
-        "desc": "young girl with long dark hair, wearing a black long-sleeved top over a red shirt",
-        "action": "holding a silver flute",
+        "desc": "young girl with long dark hair, wearing a black long-sleeved top over a red shirt with white trim",
+        "action": "holding a silver flute vertically",
         "position": "right"
       },
       {
-        "desc": "silver flute",
-        "action": "being held vertically",
+        "desc": "silver flute, metallic, cylindrical",
+        "action": "being held upright",
         "position": "center-right"
       },
       {
-        "desc": "music stand with blue frame and grey surface",
+        "desc": "blue metal music stand with sheet music",
         "action": "static",
         "position": "foreground"
       },
       {
-        "desc": "green Christmas tree with ornaments",
+        "desc": "green Christmas tree with white ornaments",
+        "action": "static",
+        "position": "background"
+      },
+      {
+        "desc": "green leafy potted plant",
+        "action": "static",
+        "position": "left"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The girl is holding a silver flute in a vertical position.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The girl's eyes are open in the first frame and closed in the second frame.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A music stand is positioned in front of the girl.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A Christmas tree is visible behind the girl.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The girl is positioned to the right of the frame, holding the flute in front of her chest. The blue music stand is in the foreground, situated to the left of the girl. Behind the girl and the music stand is a green Christmas tree, while a leafy plant is visible on the far left side of the scene.",
+    "parse_success": true,
+    "chunk_idx": 66,
+    "video_id": "v_J6ScF5n_Cug"
+  },
+  {
+    "time": [
+      67,
+      68
+    ],
+    "visible_entities": [
+      {
+        "desc": "young girl with long dark hair, wearing a black long-sleeved top over a red shirt",
+        "action": "static",
+        "position": "right"
+      },
+      {
+        "desc": "silver flute, metallic, held vertically",
+        "action": "static",
+        "position": "center"
+      },
+      {
+        "desc": "music stand, metallic, holding sheet music",
+        "action": "static",
+        "position": "foreground"
+      },
+      {
+        "desc": "green Christmas tree, decorated with white ornaments",
         "action": "static",
         "position": "background"
       },
@@ -3584,66 +3609,10 @@
       {
         "fact": "The girl is standing behind a music stand.",
         "confidence": 1.0
-      },
-      {
-        "fact": "A Christmas tree is visible in the background.",
-        "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The girl is positioned to the right of the music stand. The silver flute is held in front of her chest. The Christmas tree is behind the girl and the music stand. A leafy plant is to the left of the Christmas tree.",
-    "parse_success": true,
-    "chunk_idx": 66,
-    "video_id": "v_J6ScF5n_Cug"
-  },
-  {
-    "time": [
-      134,
-      136
-    ],
-    "visible_entities": [
-      {
-        "desc": "young girl with long dark hair, wearing a black velvet long-sleeved top over a red shirt with white trim",
-        "action": "holding a silver flute",
-        "position": "right"
-      },
-      {
-        "desc": "silver metal flute",
-        "action": "static",
-        "position": "center-right"
-      },
-      {
-        "desc": "blue metal music stand with sheet music",
-        "action": "static",
-        "position": "foreground"
-      },
-      {
-        "desc": "green Christmas tree with white hanging ornaments",
-        "action": "static",
-        "position": "background"
-      },
-      {
-        "desc": "green leafy plant",
-        "action": "static",
-        "position": "left"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "The girl is holding a silver flute in a vertical position.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The girl is standing behind a blue music stand.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "A Christmas tree is visible in the background behind the girl.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [],
-    "spatial": "The girl is positioned to the right of the green leafy plant and in front of the Christmas tree. She is holding the silver flute in front of her chest. The blue music stand is in the foreground, located below the flute and in front of the girl.",
+    "spatial": "The girl is to the right of the music stand and in front of the Christmas tree. The flute is held by the girl, positioned between her and the music stand. A green leafy plant is to the left of the Christmas tree.",
     "parse_success": true,
     "chunk_idx": 67,
     "video_id": "v_J6ScF5n_Cug"

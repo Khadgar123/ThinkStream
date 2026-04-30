@@ -2,51 +2,51 @@
   {
     "time": [
       0,
-      2
+      1
     ],
     "visible_entities": [
       {
-        "desc": "green text logo reading 'eHcv' in a stylized sans-serif font with a 3D folded ribbon effect and drop shadows",
-        "action": "appears on screen",
+        "desc": "green stylized text logo reading 'eHcv' with a folded ribbon effect on the letter 'H'",
+        "action": "appearing on screen",
         "position": "center"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "The green text 'eHcv' appears in the center of the screen.",
+        "fact": "The text 'eHcv' appears in the center of the screen.",
         "confidence": 1.0
       },
       {
-        "fact": "The letters are styled to look like folded paper or ribbon.",
+        "fact": "The logo features a 3D folded ribbon design connecting the letters.",
         "confidence": 1.0
       }
     ],
     "ocr": [
       "eHcv"
     ],
-    "spatial": "The green text logo is centered on a plain white background.",
+    "spatial": "The green 'eHcv' logo is centered on a plain white background.",
     "parse_success": true,
     "chunk_idx": 0,
     "video_id": "2UMp078OGQw"
   },
   {
     "time": [
-      2,
-      4
+      1,
+      2
     ],
     "visible_entities": [
       {
-        "desc": "green text logo reading 'eHow' in a sans-serif font with a 3D folded ribbon effect",
+        "desc": "green text logo 'eHow' with a folded ribbon style",
         "action": "static",
         "position": "center"
       },
       {
-        "desc": "red background with a white page-curl graphic in the top right corner",
+        "desc": "red background with a white page-peel effect in the top right corner",
         "action": "static",
         "position": "background"
       },
       {
-        "desc": "white text reading 'od' in a sans-serif font",
+        "desc": "white text 'od' in a sans-serif font",
         "action": "static",
         "position": "center"
       }
@@ -57,11 +57,7 @@
         "confidence": 1.0
       },
       {
-        "fact": "The scene transitions to a red background with a white page-curl effect.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The text 'od' is visible on the red background.",
+        "fact": "A red background with a peeling corner reveals white text 'od'.",
         "confidence": 1.0
       }
     ],
@@ -69,24 +65,24 @@
       "eHow",
       "od"
     ],
-    "spatial": "The green 'eHow' text is centered on the white background. The white 'od' text is centered on the red background. The white page-curl graphic is located in the top right corner of the red background.",
+    "spatial": "The green 'eHow' logo is centered on a white background. The red background is behind the white text 'od'. The white text 'od' is positioned centrally within the red background area.",
     "parse_success": true,
     "chunk_idx": 1,
     "video_id": "2UMp078OGQw"
   },
   {
     "time": [
-      4,
-      6
+      2,
+      3
     ],
     "visible_entities": [
       {
-        "desc": "woman with long dark brown hair, wearing a blue sleeveless top with a white collar and white front panel",
-        "action": "standing behind the counter and smiling",
+        "desc": "woman with long dark wavy hair, wearing a blue sleeveless top with a white collar",
+        "action": "standing behind the counter",
         "position": "center"
       },
       {
-        "desc": "white kitchen island with grey marble countertop",
+        "desc": "white kitchen island with grey marble veining",
         "action": "static",
         "position": "foreground"
       },
@@ -96,12 +92,17 @@
         "position": "center-left"
       },
       {
-        "desc": "small white plate with a slice of cake, a strawberry, and a banana slice",
+        "desc": "white plate with a banana and a red strawberry",
         "action": "static",
         "position": "center"
       },
       {
-        "desc": "clear plastic cup filled with white liquid",
+        "desc": "glass jar containing a brown substance",
+        "action": "static",
+        "position": "center"
+      },
+      {
+        "desc": "tall glass containing a white liquid",
         "action": "static",
         "position": "center-right"
       },
@@ -111,26 +112,30 @@
         "position": "background"
       },
       {
-        "desc": "red background with white text and logo",
+        "desc": "red graphic background with white text",
         "action": "static",
         "position": "top"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "The video starts with a title card showing the 'eHow' logo and the word 'food'.",
+        "fact": "A woman is standing behind a kitchen island with ingredients laid out.",
         "confidence": 1.0
       },
       {
-        "fact": "A woman stands behind a marble kitchen island.",
+        "fact": "A banana and a strawberry are placed on a white plate.",
         "confidence": 1.0
       },
       {
-        "fact": "The woman is smiling at the camera.",
+        "fact": "A glass jar and a glass of milk are sitting on the counter.",
         "confidence": 1.0
       },
       {
-        "fact": "A blender, a plate of food, and a cup of milk are arranged on the counter in front of the woman.",
+        "fact": "The text 'eHow' appears in green on a white tag.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The word 'food' is written in large white letters on a red background.",
         "confidence": 1.0
       }
     ],
@@ -138,41 +143,36 @@
       "eHow",
       "food"
     ],
-    "spatial": "The woman is standing behind the marble kitchen island. The blender is to the left of the plate of food, and the cup of milk is to the right of the plate. The stainless steel refrigerator is in the background behind the woman.",
+    "spatial": "The woman is standing behind the marble kitchen island. On the island, the blender is to the left of the plate, and the glass of milk is to the right of the plate. The refrigerator is located in the background behind the woman.",
     "parse_success": true,
     "chunk_idx": 2,
     "video_id": "2UMp078OGQw"
   },
   {
     "time": [
-      6,
-      8
+      3,
+      4
     ],
     "visible_entities": [
       {
-        "desc": "woman with long dark brown hair, wearing a blue sleeveless top with white trim",
-        "action": "standing behind a counter",
+        "desc": "woman with long dark wavy hair, wearing a blue sleeveless top with white trim",
+        "action": "standing behind the counter",
         "position": "center"
       },
       {
-        "desc": "white marble kitchen island",
+        "desc": "white rectangular logo with green text",
+        "action": "static",
+        "position": "bottom left"
+      },
+      {
+        "desc": "grey lower-third banner with white text",
+        "action": "static",
+        "position": "bottom left"
+      },
+      {
+        "desc": "white kitchen counter with marble pattern",
         "action": "static",
         "position": "foreground"
-      },
-      {
-        "desc": "white blender base",
-        "action": "static",
-        "position": "center"
-      },
-      {
-        "desc": "clear cup with white liquid",
-        "action": "static",
-        "position": "right"
-      },
-      {
-        "desc": "small plate with food items",
-        "action": "static",
-        "position": "center"
       },
       {
         "desc": "stainless steel refrigerator",
@@ -180,28 +180,102 @@
         "position": "background"
       },
       {
-        "desc": "white and grey kitchen cabinets",
+        "desc": "white and grey kitchen appliances and containers",
+        "action": "static",
+        "position": "foreground"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A woman is standing behind a kitchen counter.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The eHow logo is visible in the bottom left corner.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A text overlay identifies the woman as 'Chrisie Allemand, Licensed Nutritionist'.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "Kitchen appliances and containers are sitting on the counter.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "eHow",
+      "Chrisie Allemand",
+      "Licensed Nutritionist"
+    ],
+    "spatial": "The woman is standing behind the white marble kitchen counter. The eHow logo and the name banner are located in the bottom left corner of the screen, in front of the counter. The stainless steel refrigerator is in the background behind the woman.",
+    "parse_success": true,
+    "chunk_idx": 3,
+    "video_id": "2UMp078OGQw"
+  },
+  {
+    "time": [
+      4,
+      5
+    ],
+    "visible_entities": [
+      {
+        "desc": "woman with long dark wavy hair, wearing a blue sleeveless top with a white collar",
+        "action": "standing behind a kitchen counter",
+        "position": "center"
+      },
+      {
+        "desc": "white cylindrical container with a lid",
+        "action": "static",
+        "position": "foreground"
+      },
+      {
+        "desc": "clear plastic shaker cup with a white lid",
+        "action": "static",
+        "position": "foreground"
+      },
+      {
+        "desc": "small glass bowl containing brown powder",
+        "action": "static",
+        "position": "foreground"
+      },
+      {
+        "desc": "small white plate with a red strawberry",
+        "action": "static",
+        "position": "foreground"
+      },
+      {
+        "desc": "stainless steel refrigerator",
         "action": "static",
         "position": "background"
       },
       {
-        "desc": "eHow logo with green text on a white background",
+        "desc": "white kitchen cabinets",
         "action": "static",
-        "position": "bottom-left"
+        "position": "background"
       },
       {
-        "desc": "text overlay reading 'Chrisie Allemand' and 'Licensed Nutritionist'",
+        "desc": "white marble countertop",
+        "action": "static",
+        "position": "foreground"
+      },
+      {
+        "desc": "graphic overlay with green 'eHow' logo and white text",
         "action": "static",
         "position": "bottom-left"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A woman stands behind a kitchen counter.",
+        "fact": "A woman is standing behind a kitchen counter.",
         "confidence": 1.0
       },
       {
-        "fact": "A blender base, a cup, and a plate are on the counter.",
+        "fact": "The woman is facing the camera.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A white container, a shaker cup, a bowl, and a plate are arranged on the counter in front of the woman.",
         "confidence": 1.0
       },
       {
@@ -214,95 +288,34 @@
       "Chrisie Allemand",
       "Licensed Nutritionist"
     ],
-    "spatial": "The woman is standing behind the marble kitchen island. The blender base is in front of her on the island. The clear cup is to the right of the blender base. The eHow logo and the text overlay are in the bottom-left corner of the screen.",
-    "parse_success": true,
-    "chunk_idx": 3,
-    "video_id": "2UMp078OGQw"
-  },
-  {
-    "time": [
-      8,
-      10
-    ],
-    "visible_entities": [
-      {
-        "desc": "woman with long dark brown hair, wearing a blue sleeveless top with a white collar",
-        "action": "standing behind a counter",
-        "position": "center"
-      },
-      {
-        "desc": "stainless steel refrigerator",
-        "action": "static",
-        "position": "background"
-      },
-      {
-        "desc": "white blender base",
-        "action": "static",
-        "position": "foreground"
-      },
-      {
-        "desc": "clear shaker cup with white lid",
-        "action": "static",
-        "position": "foreground"
-      },
-      {
-        "desc": "white rectangular eHow logo with green text",
-        "action": "static",
-        "position": "bottom left"
-      },
-      {
-        "desc": "grey lower-third graphic with white text",
-        "action": "static",
-        "position": "bottom left"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "A woman stands behind a kitchen counter.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The text 'Chrissie Allemand' and 'Licensed Nutritionist' is displayed on the screen.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "A blender and a shaker cup are on the counter in front of the woman.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [
-      "eHow",
-      "Chrissie Allemand",
-      "Licensed Nutritionist"
-    ],
-    "spatial": "The woman is standing behind the kitchen counter. The blender and shaker cup are on the counter in front of her. The refrigerator is behind the woman. The eHow logo and text graphic are in the bottom left corner of the screen.",
+    "spatial": "The woman is standing behind the marble countertop. The white container is to the left of the shaker cup on the counter. The refrigerator is behind the woman. The text overlay is in the bottom-left corner of the screen.",
     "parse_success": true,
     "chunk_idx": 4,
     "video_id": "2UMp078OGQw"
   },
   {
     "time": [
-      10,
-      12
+      5,
+      6
     ],
     "visible_entities": [
       {
-        "desc": "woman with long dark wavy hair, wearing a blue sleeveless top with a white collar",
+        "desc": "woman with long dark brown hair, wearing a blue sleeveless top with white lapels",
         "action": "standing behind a kitchen island",
         "position": "center"
       },
       {
-        "desc": "white blender base",
+        "desc": "white blender base with a clear container",
         "action": "static",
         "position": "foreground"
       },
       {
-        "desc": "clear plastic shaker cup with white lid",
+        "desc": "small glass bowl containing brown powder",
         "action": "static",
         "position": "foreground"
       },
       {
-        "desc": "small bowl with brown contents",
+        "desc": "tall clear shaker cup with white powder",
         "action": "static",
         "position": "foreground"
       },
@@ -312,9 +325,19 @@
         "position": "background"
       },
       {
-        "desc": "white and grey text overlay",
+        "desc": "white and grey kitchen cabinets",
         "action": "static",
-        "position": "bottom left"
+        "position": "background"
+      },
+      {
+        "desc": "eHow logo graphic with green text",
+        "action": "static",
+        "position": "bottom-left"
+      },
+      {
+        "desc": "text overlay identifying 'Chrisie Allemand' as 'Licensed Nutritionist'",
+        "action": "static",
+        "position": "bottom-left"
       }
     ],
     "atomic_facts": [
@@ -323,28 +346,32 @@
         "confidence": 1.0
       },
       {
-        "fact": "The text overlay identifies the woman as 'Chrissie Allemand, Licensed Nutritionist'.",
+        "fact": "The woman is positioned between a blender and a shaker cup.",
         "confidence": 1.0
       },
       {
-        "fact": "A blender base and a shaker cup are sitting on the counter in front of the woman.",
+        "fact": "A small bowl of brown powder sits on the counter.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The text overlay identifies the woman as Chrisie Allemand, a Licensed Nutritionist.",
         "confidence": 1.0
       }
     ],
     "ocr": [
       "eHow",
-      "Chrissie Allemand",
+      "Chrisie Allemand",
       "Licensed Nutritionist"
     ],
-    "spatial": "The woman is standing behind the kitchen island. The blender base is to the left of the shaker cup on the counter. The refrigerator is behind the woman.",
+    "spatial": "The woman is standing behind the kitchen island in the center of the frame. On the island in front of her, the blender is to her left, while the bowl of powder and the shaker cup are to her right. The stainless steel refrigerator is visible in the background behind the woman.",
     "parse_success": true,
     "chunk_idx": 5,
     "video_id": "2UMp078OGQw"
   },
   {
     "time": [
-      12,
-      14
+      6,
+      7
     ],
     "visible_entities": [
       {
@@ -358,84 +385,17 @@
         "position": "foreground"
       },
       {
-        "desc": "white blender base",
-        "action": "static",
-        "position": "left"
-      },
-      {
-        "desc": "small glass bowl containing a brown paste",
+        "desc": "white blender base with a clear container",
         "action": "static",
         "position": "center"
       },
       {
-        "desc": "white plate with a banana and a red strawberry",
+        "desc": "small white plate with a banana slice and a strawberry slice",
         "action": "static",
         "position": "center"
-      },
-      {
-        "desc": "tall glass cup filled with a white liquid",
-        "action": "static",
-        "position": "right"
-      },
-      {
-        "desc": "stainless steel refrigerator",
-        "action": "static",
-        "position": "background"
       },
       {
         "desc": "glass cup filled with a pink smoothie",
-        "action": "static",
-        "position": "center"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "A woman stands behind a kitchen island with ingredients laid out.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The ingredients on the counter include a banana, a strawberry, a brown paste, and a glass of white liquid.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "A pink smoothie is shown in a glass cup on the marble countertop.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [],
-    "spatial": "The woman is standing behind the white marble kitchen island. On the island, the white blender base is to the left of the small glass bowl containing brown paste. The plate with the banana and strawberry is in front of the bowl, and the glass of white liquid is to the right of the bowl. The stainless steel refrigerator is in the background behind the woman.",
-    "parse_success": true,
-    "chunk_idx": 6,
-    "video_id": "2UMp078OGQw"
-  },
-  {
-    "time": [
-      14,
-      16
-    ],
-    "visible_entities": [
-      {
-        "desc": "woman with long dark wavy hair, wearing a blue sleeveless top with white collar and trim",
-        "action": "standing behind the counter",
-        "position": "center"
-      },
-      {
-        "desc": "white kitchen island with marble countertop",
-        "action": "static",
-        "position": "foreground"
-      },
-      {
-        "desc": "white blender base with black control panel",
-        "action": "static",
-        "position": "center"
-      },
-      {
-        "desc": "white plate with sliced banana and strawberry",
-        "action": "static",
-        "position": "center"
-      },
-      {
-        "desc": "clear plastic cup with white liquid",
         "action": "static",
         "position": "center"
       },
@@ -452,60 +412,183 @@
     ],
     "atomic_facts": [
       {
-        "fact": "woman stands behind the kitchen island",
+        "fact": "A woman is standing behind a kitchen island.",
         "confidence": 1.0
       },
       {
-        "fact": "blender base is on the countertop",
+        "fact": "A white blender base is on the kitchen island.",
         "confidence": 1.0
       },
       {
-        "fact": "plate with fruit is on the countertop",
+        "fact": "A small white plate with fruit is on the kitchen island.",
         "confidence": 1.0
       },
       {
-        "fact": "cup with liquid is on the countertop",
+        "fact": "A glass cup filled with a pink smoothie is on the kitchen island.",
         "confidence": 1.0
       },
       {
-        "fact": "refrigerator is behind the woman",
+        "fact": "A stainless steel refrigerator is in the background.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The woman is standing behind the kitchen island. The blender base is to the left of the plate with fruit. The cup with liquid is to the right of the plate. The refrigerator is behind the woman.",
+    "spatial": "The woman is standing behind the kitchen island. The blender, plate of fruit, and glass of smoothie are on the island in front of her. The refrigerator and kitchen cabinets are behind the woman.",
+    "parse_success": true,
+    "chunk_idx": 6,
+    "video_id": "2UMp078OGQw"
+  },
+  {
+    "time": [
+      7,
+      8
+    ],
+    "visible_entities": [
+      {
+        "desc": "woman with long dark brown hair, wearing a blue sleeveless top with a white collar and white front panel",
+        "action": "standing behind the counter and looking at the camera",
+        "position": "center"
+      },
+      {
+        "desc": "white electric blender base with a control dial",
+        "action": "static",
+        "position": "foreground left"
+      },
+      {
+        "desc": "clear plastic blender cup filled with white liquid",
+        "action": "static",
+        "position": "foreground right"
+      },
+      {
+        "desc": "white rectangular plate with a banana slice, a red strawberry slice, and a small glass bowl of brown powder",
+        "action": "static",
+        "position": "foreground center"
+      },
+      {
+        "desc": "stainless steel refrigerator",
+        "action": "static",
+        "position": "background center"
+      },
+      {
+        "desc": "white marble kitchen island countertop",
+        "action": "static",
+        "position": "foreground"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The woman is standing behind the kitchen island.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The blender base, plate of ingredients, and blender cup are arranged on the countertop.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The woman looks directly at the camera.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The woman is standing behind the white marble kitchen island. On the island, the white blender base is to the left of the plate with fruit, and the clear blender cup is to the right of the plate. The stainless steel refrigerator is located in the background behind the woman.",
     "parse_success": true,
     "chunk_idx": 7,
     "video_id": "2UMp078OGQw"
   },
   {
     "time": [
-      16,
-      18
+      8,
+      9
     ],
     "visible_entities": [
       {
-        "desc": "woman with long dark brown hair, wearing a blue sleeveless top with a white collar and white vertical trim",
+        "desc": "woman with long dark brown hair, wearing a blue sleeveless top with white trim at the collar",
         "action": "gesturing with right hand",
         "position": "center"
       },
       {
-        "desc": "white kitchen island with grey marble veining",
+        "desc": "white countertop appliance, cylindrical shape",
         "action": "static",
         "position": "foreground"
       },
       {
-        "desc": "white electric blender base",
+        "desc": "small white plate with sliced banana and strawberry",
+        "action": "static",
+        "position": "foreground"
+      },
+      {
+        "desc": "clear plastic cup with white liquid",
+        "action": "static",
+        "position": "foreground"
+      },
+      {
+        "desc": "stainless steel refrigerator",
+        "action": "static",
+        "position": "background"
+      },
+      {
+        "desc": "white marble countertop",
+        "action": "static",
+        "position": "foreground"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The woman gestures with her right hand while speaking.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A plate of fruit is placed on the marble countertop.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A white appliance sits on the counter to the left of the plate.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A cup of white liquid sits on the counter to the right of the plate.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The woman is standing behind the marble countertop. The white appliance is to the left of the fruit plate, and the cup is to the right of the fruit plate. The stainless steel refrigerator is behind the woman.",
+    "parse_success": true,
+    "chunk_idx": 8,
+    "video_id": "2UMp078OGQw"
+  },
+  {
+    "time": [
+      9,
+      10
+    ],
+    "visible_entities": [
+      {
+        "desc": "woman with long dark brown hair, wearing a blue sleeveless top with a white collar and white front panel",
+        "action": "standing behind a counter",
+        "position": "center"
+      },
+      {
+        "desc": "white marble kitchen island countertop",
+        "action": "static",
+        "position": "foreground"
+      },
+      {
+        "desc": "white electric appliance with a black control panel",
         "action": "static",
         "position": "center"
       },
       {
-        "desc": "small glass bowl containing brown powder",
+        "desc": "small white rectangular plate",
         "action": "static",
         "position": "center"
       },
       {
-        "desc": "white rectangular plate with sliced banana and strawberry",
+        "desc": "sliced red strawberry and a piece of banana",
+        "action": "static",
+        "position": "center"
+      },
+      {
+        "desc": "small glass bowl containing brown granular substance",
         "action": "static",
         "position": "center"
       },
@@ -520,44 +603,45 @@
         "position": "background"
       },
       {
-        "desc": "white kitchen cabinets",
+        "desc": "stainless steel range hood",
+        "action": "static",
+        "position": "background"
+      },
+      {
+        "desc": "white and grey kitchen cabinets",
         "action": "static",
         "position": "background"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "The woman is gesturing with her right hand while speaking.",
+        "fact": "A woman is standing behind a kitchen island.",
         "confidence": 1.0
       },
       {
-        "fact": "A white blender base is sitting on the marble countertop.",
+        "fact": "A white appliance, a plate with fruit, a bowl, and a cup are arranged on the countertop.",
         "confidence": 1.0
       },
       {
-        "fact": "A plate with sliced fruit is placed in front of the woman.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "A glass bowl with brown powder is next to the blender.",
+        "fact": "The woman is looking towards the camera.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The woman is standing behind the kitchen island. The blender, bowl, plate, and cup are arranged on the countertop in front of her. The refrigerator is located in the background behind the woman.",
+    "spatial": "The woman is standing behind the white marble countertop. The white appliance is to the left of the plate with fruit. The plate is in front of the woman. The refrigerator is behind the woman.",
     "parse_success": true,
-    "chunk_idx": 8,
+    "chunk_idx": 9,
     "video_id": "2UMp078OGQw"
   },
   {
     "time": [
-      18,
-      20
+      10,
+      11
     ],
     "visible_entities": [
       {
-        "desc": "woman with long dark brown hair, wearing a blue sleeveless top with a white collar and white front panel",
-        "action": "standing behind the counter and talking",
+        "desc": "woman with long dark brown hair, wearing a sleeveless royal blue top with a white collar and white vertical stripe down the front",
+        "action": "standing behind a kitchen island",
         "position": "center"
       },
       {
@@ -566,88 +650,17 @@
         "position": "foreground"
       },
       {
-        "desc": "white electric rice cooker with a black control panel",
-        "action": "static",
-        "position": "center"
-      },
-      {
-        "desc": "small white rectangular plate with sliced strawberries and banana pieces",
-        "action": "static",
-        "position": "center"
-      },
-      {
-        "desc": "clear plastic shaker cup containing a white liquid",
-        "action": "static",
-        "position": "center"
-      },
-      {
-        "desc": "small glass bowl containing a brown substance",
-        "action": "static",
-        "position": "center"
-      },
-      {
-        "desc": "stainless steel refrigerator",
-        "action": "static",
-        "position": "background"
-      },
-      {
-        "desc": "white kitchen cabinets",
-        "action": "static",
-        "position": "background"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "The woman is standing behind the kitchen island.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The woman is talking.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "A rice cooker, a plate of fruit, a shaker cup, and a bowl are on the counter.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The refrigerator is behind the woman.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [],
-    "spatial": "The woman is standing behind the white marble kitchen island. On the island, the rice cooker is to the left of the plate of fruit, and the shaker cup is to the right of the plate. The stainless steel refrigerator is in the background behind the woman.",
-    "parse_success": true,
-    "chunk_idx": 9,
-    "video_id": "2UMp078OGQw"
-  },
-  {
-    "time": [
-      20,
-      22
-    ],
-    "visible_entities": [
-      {
-        "desc": "woman with long dark brown hair, wearing a blue sleeveless top with a white collar and white front panel",
-        "action": "standing behind the counter",
-        "position": "center"
-      },
-      {
-        "desc": "white marble countertop with grey veining",
-        "action": "static",
-        "position": "foreground"
-      },
-      {
-        "desc": "white electric blender base with a black control dial",
+        "desc": "white electric appliance with a black control panel and a white lid",
         "action": "static",
         "position": "center-left"
       },
       {
-        "desc": "small white rectangular plate with sliced strawberries and a banana slice",
+        "desc": "white rectangular plate with a slice of banana, a slice of strawberry, and a small glass bowl of brown powder",
         "action": "static",
         "position": "center"
       },
       {
-        "desc": "clear plastic cup filled with white liquid",
+        "desc": "clear plastic shaker cup containing white liquid",
         "action": "static",
         "position": "center-right"
       },
@@ -673,52 +686,61 @@
         "confidence": 1.0
       },
       {
-        "fact": "A blender base is on the counter to the left of the plate.",
+        "fact": "The white appliance is on the countertop to the left of the plate.",
         "confidence": 1.0
       },
       {
-        "fact": "A plate with fruit is on the counter in front of the woman.",
+        "fact": "The plate with fruit and a bowl is on the countertop.",
         "confidence": 1.0
       },
       {
-        "fact": "A cup of milk is on the counter to the right of the plate.",
+        "fact": "The shaker cup is on the countertop to the right of the plate.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The refrigerator is behind the woman.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The woman is standing behind the white marble countertop. The blender base is to the left of the fruit plate, and the cup of milk is to the right of the fruit plate. The refrigerator and range hood are in the background behind the woman.",
+    "spatial": "The woman is standing behind the white marble kitchen island. The white appliance is on the island to the left of the plate. The plate is in the center of the island, and the shaker cup is to the right of the plate. The stainless steel refrigerator is behind the woman.",
     "parse_success": true,
     "chunk_idx": 10,
     "video_id": "2UMp078OGQw"
   },
   {
     "time": [
-      22,
-      24
+      11,
+      12
     ],
     "visible_entities": [
       {
-        "desc": "woman with long dark brown hair, wearing a blue sleeveless top with white panels",
-        "action": "standing behind the counter and talking",
+        "desc": "woman with long dark brown hair, wearing a blue sleeveless top with a white front panel",
+        "action": "standing behind a kitchen island and speaking",
         "position": "center"
       },
       {
-        "desc": "white marble countertop",
+        "desc": "white marble kitchen island countertop",
         "action": "static",
         "position": "foreground"
       },
       {
-        "desc": "white electric appliance with a digital display",
+        "desc": "white electric appliance, likely a yogurt maker or blender base",
         "action": "static",
         "position": "center"
       },
       {
-        "desc": "small white plate with a banana slice and a strawberry slice",
+        "desc": "small clear container with brown contents",
         "action": "static",
         "position": "center"
       },
       {
-        "desc": "clear plastic cup filled with white liquid",
+        "desc": "white plate with sliced strawberries and a banana slice",
+        "action": "static",
+        "position": "center"
+      },
+      {
+        "desc": "tall clear cup with white liquid",
         "action": "static",
         "position": "center"
       },
@@ -730,7 +752,7 @@
       {
         "desc": "stainless steel range hood",
         "action": "static",
-        "position": "background"
+        "position": "top"
       },
       {
         "desc": "white kitchen cabinets",
@@ -738,63 +760,76 @@
         "position": "background"
       },
       {
-        "desc": "small glass bowl with brown contents",
+        "desc": "stainless steel toaster oven",
         "action": "static",
-        "position": "center"
+        "position": "background"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "The woman is standing behind the kitchen island.",
+        "fact": "woman stands behind a kitchen island",
         "confidence": 1.0
       },
       {
-        "fact": "The woman is talking with her mouth open in the first frame.",
+        "fact": "woman is speaking",
         "confidence": 1.0
       },
       {
-        "fact": "A white appliance sits on the counter next to a plate of fruit.",
+        "fact": "white appliance is on the kitchen island",
         "confidence": 1.0
       },
       {
-        "fact": "A cup of white liquid is placed on the counter to the right of the plate.",
+        "fact": "plate with fruit is on the kitchen island",
+        "confidence": 1.0
+      },
+      {
+        "fact": "cup with white liquid is on the kitchen island",
+        "confidence": 1.0
+      },
+      {
+        "fact": "refrigerator is behind the woman",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The woman is standing behind the white marble countertop. The white appliance is to the left of the plate with fruit. The cup of white liquid is to the right of the plate. The refrigerator is behind the woman.",
+    "spatial": "The woman is standing behind the white marble kitchen island. The white appliance, the plate with fruit, and the cup with white liquid are on the kitchen island in front of the woman. The stainless steel refrigerator and range hood are behind the woman.",
     "parse_success": true,
     "chunk_idx": 11,
     "video_id": "2UMp078OGQw"
   },
   {
     "time": [
-      24,
-      26
+      12,
+      13
     ],
     "visible_entities": [
       {
-        "desc": "woman with long dark wavy hair, wearing a blue sleeveless top with a white collar and white front panel",
+        "desc": "woman with long dark wavy hair, wearing a blue sleeveless top with a white collar and white trim",
         "action": "standing behind a kitchen island",
         "position": "center"
       },
       {
-        "desc": "white electric yogurt maker with a digital display and control buttons",
+        "desc": "white kitchen appliance, cylindrical shape with a black control panel",
         "action": "static",
         "position": "foreground left"
       },
       {
-        "desc": "small glass bowl containing a brown granular substance",
+        "desc": "small white rectangular plate",
         "action": "static",
         "position": "foreground center"
       },
       {
-        "desc": "white rectangular plate with sliced strawberries and a piece of banana",
+        "desc": "red strawberry and a slice of banana on the plate",
         "action": "static",
         "position": "foreground center"
       },
       {
-        "desc": "tall clear plastic cup filled with white liquid",
+        "desc": "small glass bowl containing a brown substance",
+        "action": "static",
+        "position": "foreground center"
+      },
+      {
+        "desc": "tall clear plastic cup filled with a white liquid",
         "action": "static",
         "position": "foreground right"
       },
@@ -806,47 +841,69 @@
       {
         "desc": "stainless steel refrigerator",
         "action": "static",
+        "position": "background center"
+      },
+      {
+        "desc": "stainless steel range hood",
+        "action": "static",
+        "position": "background top"
+      },
+      {
+        "desc": "white cabinets",
+        "action": "static",
         "position": "background"
       },
       {
-        "desc": "white and grey kitchen cabinets",
+        "desc": "stainless steel toaster oven",
         "action": "static",
-        "position": "background"
+        "position": "background right"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A woman stands behind a kitchen island with various food items and appliances.",
+        "fact": "A woman is standing behind a kitchen island.",
         "confidence": 1.0
       },
       {
-        "fact": "A yogurt maker, a bowl of brown topping, a plate of fruit, and a cup of milk are arranged on the counter.",
+        "fact": "A white appliance is on the counter to the woman's right.",
         "confidence": 1.0
       },
       {
-        "fact": "The woman is facing the camera.",
+        "fact": "A plate with a strawberry and banana slice is on the counter.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A glass bowl with brown contents is on the counter.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A cup with white liquid is on the counter.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A stainless steel refrigerator is behind the woman.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The woman is standing behind the marble countertop. The yogurt maker is to the left of the bowl of brown topping. The plate of fruit is in front of the bowl, and the cup of milk is to the right of the plate. The stainless steel refrigerator is behind the woman.",
+    "spatial": "The woman is standing behind the marble countertop. The white appliance is to the left of the plate, and the cup is to the right of the plate. The refrigerator is behind the woman.",
     "parse_success": true,
     "chunk_idx": 12,
     "video_id": "2UMp078OGQw"
   },
   {
     "time": [
-      26,
-      28
+      13,
+      14
     ],
     "visible_entities": [
       {
-        "desc": "woman with long dark brown hair, wearing a blue sleeveless top with a white collar and white trim",
-        "action": "standing behind the kitchen island",
+        "desc": "woman with long dark wavy hair, wearing a blue sleeveless top with a white collar and white side panels",
+        "action": "standing behind the counter",
         "position": "center"
       },
       {
-        "desc": "white kitchen island with a grey marble countertop",
+        "desc": "white marble kitchen island countertop",
         "action": "static",
         "position": "foreground"
       },
@@ -861,7 +918,7 @@
         "position": "center"
       },
       {
-        "desc": "small white rectangular plate with sliced banana and strawberry",
+        "desc": "small white rectangular plate with sliced banana and strawberries",
         "action": "static",
         "position": "center"
       },
@@ -881,79 +938,12 @@
         "position": "background"
       },
       {
-        "desc": "white kitchen cabinets",
-        "action": "static",
-        "position": "background"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "A woman is standing behind a kitchen island.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "A blender base, a cup of white liquid, a plate of fruit, and a bowl of brown substance are arranged on the countertop.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The woman is positioned between the blender base and the cup of liquid.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [],
-    "spatial": "The woman is standing behind the marble kitchen island. On the island, the white blender base is to the left of the small plate of fruit. The clear cup filled with white liquid is to the right of the plate of fruit. The small glass bowl is located behind the plate of fruit. The stainless steel refrigerator is in the background behind the woman.",
-    "parse_success": true,
-    "chunk_idx": 13,
-    "video_id": "2UMp078OGQw"
-  },
-  {
-    "time": [
-      28,
-      30
-    ],
-    "visible_entities": [
-      {
-        "desc": "woman with long dark brown hair, wearing a blue sleeveless top with a white collar",
-        "action": "standing behind the kitchen island",
-        "position": "center"
-      },
-      {
-        "desc": "white marble kitchen island countertop",
-        "action": "static",
-        "position": "foreground"
-      },
-      {
-        "desc": "white electric blender base",
-        "action": "static",
-        "position": "center"
-      },
-      {
-        "desc": "clear plastic blender cup containing white liquid",
-        "action": "static",
-        "position": "center"
-      },
-      {
-        "desc": "small white rectangular plate with sliced banana and strawberry",
-        "action": "static",
-        "position": "center"
-      },
-      {
-        "desc": "small glass bowl containing brown powder",
-        "action": "static",
-        "position": "center"
-      },
-      {
-        "desc": "stainless steel refrigerator",
+        "desc": "white and grey kitchen cabinets",
         "action": "static",
         "position": "background"
       },
       {
-        "desc": "stainless steel range hood",
-        "action": "static",
-        "position": "background"
-      },
-      {
-        "desc": "white kitchen cabinets",
+        "desc": "stainless steel toaster oven",
         "action": "static",
         "position": "background"
       }
@@ -968,7 +958,7 @@
         "confidence": 1.0
       },
       {
-        "fact": "A blender base, a blender cup with white liquid, a plate of fruit, and a bowl of powder are arranged on the countertop.",
+        "fact": "A blender base, a cup of white liquid, a plate of fruit, and a bowl of brown ingredients are arranged on the counter in front of the woman.",
         "confidence": 1.0
       },
       {
@@ -977,294 +967,342 @@
       }
     ],
     "ocr": [],
-    "spatial": "The woman is standing behind the white marble kitchen island. On the island, the blender base is to the left of the plate of fruit, and the blender cup is to the right of the plate. The stainless steel refrigerator is located in the background behind the woman.",
+    "spatial": "The woman is standing behind the white marble kitchen island. On the island, the blender base is to the left of the plate of fruit, and the cup of white liquid is to the right of the plate. The refrigerator and range hood are visible in the background behind the woman.",
+    "parse_success": true,
+    "chunk_idx": 13,
+    "video_id": "2UMp078OGQw"
+  },
+  {
+    "time": [
+      14,
+      15
+    ],
+    "visible_entities": [
+      {
+        "desc": "woman with long dark brown hair, wearing a blue sleeveless top with a white collar",
+        "action": "standing behind the counter",
+        "position": "center"
+      },
+      {
+        "desc": "white marble countertop",
+        "action": "static",
+        "position": "foreground"
+      },
+      {
+        "desc": "white blender base",
+        "action": "static",
+        "position": "center"
+      },
+      {
+        "desc": "small white rectangular plate with a banana slice and a strawberry slice",
+        "action": "static",
+        "position": "center"
+      },
+      {
+        "desc": "clear plastic cup with white liquid",
+        "action": "static",
+        "position": "center"
+      },
+      {
+        "desc": "small glass bowl with brown contents",
+        "action": "static",
+        "position": "center"
+      },
+      {
+        "desc": "stainless steel refrigerator",
+        "action": "static",
+        "position": "background"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A woman is standing behind a kitchen island.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A white blender base is on the counter.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A plate with fruit slices is on the counter.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A cup with white liquid is on the counter.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The woman is standing behind the marble countertop. The blender base is to the left of the plate with fruit. The cup with white liquid is to the right of the plate. The refrigerator is in the background behind the woman.",
     "parse_success": true,
     "chunk_idx": 14,
     "video_id": "2UMp078OGQw"
   },
   {
     "time": [
-      30,
-      32
+      15,
+      16
     ],
     "visible_entities": [
       {
-        "desc": "woman with long dark wavy hair, wearing a blue sleeveless top with white side panels",
-        "action": "touching her hair with her right hand",
+        "desc": "woman with long dark wavy hair, wearing a blue sleeveless top with white side panels and silver bangle bracelets",
+        "action": "touching her hair and reaching for a cup",
         "position": "center"
       },
       {
-        "desc": "white personal blender base with silver accents",
+        "desc": "white blender base with silver trim and a black control dial",
         "action": "static",
-        "position": "left foreground"
+        "position": "left"
       },
       {
-        "desc": "clear plastic blender cup containing white liquid and ice",
-        "action": "being held by the woman's left hand",
-        "position": "right foreground"
+        "desc": "clear plastic blender cup filled with white liquid and ice cubes",
+        "action": "being held by the woman",
+        "position": "right"
       },
       {
-        "desc": "small white square plate with sliced banana and strawberry",
+        "desc": "white rectangular plate with sliced banana, red strawberry, and a foil-wrapped item",
         "action": "static",
-        "position": "center foreground"
+        "position": "center"
       },
       {
-        "desc": "small plastic container with brown paste",
+        "desc": "small clear plastic container filled with brown paste",
         "action": "static",
-        "position": "center foreground"
+        "position": "center"
       },
       {
-        "desc": "marble countertop",
+        "desc": "marble countertop with grey veining",
         "action": "static",
         "position": "bottom"
-      },
-      {
-        "desc": "stainless steel refrigerator",
-        "action": "static",
-        "position": "background"
-      },
-      {
-        "desc": "silver toaster oven",
-        "action": "static",
-        "position": "background right"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "The woman is touching her hair with her right hand.",
+        "fact": "The woman reaches out with her left hand to hold the clear blender cup.",
         "confidence": 1.0
       },
       {
-        "fact": "The woman is holding a blender cup with her left hand.",
+        "fact": "The woman touches her hair with her right hand.",
         "confidence": 1.0
       },
       {
-        "fact": "A white blender base sits on the marble countertop.",
+        "fact": "A white plate with fruit sits on the marble countertop.",
         "confidence": 1.0
       },
       {
-        "fact": "A plate with sliced fruit is placed on the countertop.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "A container of brown paste is on the countertop.",
+        "fact": "The blender base is positioned to the left of the plate.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The woman stands behind the marble countertop. The white blender base is to the left of the fruit plate. The blender cup is to the right of the fruit plate. The refrigerator is behind the woman.",
+    "spatial": "The woman stands behind the marble countertop. The white blender base is to the left of the white plate, which holds the fruit. The clear blender cup is to the right of the plate and is being held by the woman.",
     "parse_success": true,
     "chunk_idx": 15,
     "video_id": "2UMp078OGQw"
   },
   {
     "time": [
-      32,
-      34
+      16,
+      17
     ],
     "visible_entities": [
       {
-        "desc": "person wearing a blue sleeveless top and silver bracelets",
+        "desc": "person wearing a blue sleeveless top and a silver bracelet",
         "action": "holding a glass",
-        "position": "left"
+        "position": "left/center"
       },
       {
-        "desc": "white and silver electric kitchen appliance",
+        "desc": "white and silver electric food processor",
         "action": "static",
-        "position": "left"
+        "position": "left/foreground"
       },
       {
         "desc": "white rectangular plate",
         "action": "static",
-        "position": "center"
+        "position": "right/foreground"
       },
       {
-        "desc": "sliced banana and strawberries on a plate",
+        "desc": "piece of banana",
+        "action": "static",
+        "position": "right/foreground"
+      },
+      {
+        "desc": "red strawberries",
+        "action": "static",
+        "position": "right/foreground"
+      },
+      {
+        "desc": "small knife",
+        "action": "static",
+        "position": "right/foreground"
+      },
+      {
+        "desc": "clear plastic container with brown substance",
         "action": "static",
         "position": "center"
       },
       {
-        "desc": "small plastic container with brown sauce",
-        "action": "static",
-        "position": "center"
-      },
-      {
-        "desc": "glass filled with white liquid",
+        "desc": "glass with white liquid",
         "action": "being held",
-        "position": "top center"
+        "position": "center"
       },
       {
         "desc": "marble countertop",
         "action": "static",
-        "position": "background"
+        "position": "bottom/foreground"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A person is holding a glass of white liquid above the counter.",
+        "fact": "A person is holding a glass containing a white liquid.",
         "confidence": 1.0
       },
       {
-        "fact": "A white appliance sits on the marble countertop.",
+        "fact": "A white and silver food processor sits on the marble countertop.",
         "confidence": 1.0
       },
       {
-        "fact": "A plate containing sliced fruit is placed on the counter.",
+        "fact": "A white plate holds a piece of banana, strawberries, and a knife.",
         "confidence": 1.0
       },
       {
-        "fact": "A container of brown sauce is positioned behind the fruit plate.",
+        "fact": "A plastic container with a brown substance is placed behind the plate.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The person in the blue top is standing to the left of the white appliance. The white appliance is to the left of the plate with fruit. The container of brown sauce is behind the plate. The glass is held above the counter surface.",
+    "spatial": "The person is standing behind the marble countertop. The food processor is to the left of the white plate. The plate with fruit is in the foreground on the right. The glass is being held by the person above the countertop.",
     "parse_success": true,
     "chunk_idx": 16,
     "video_id": "2UMp078OGQw"
   },
   {
     "time": [
-      34,
-      36
+      17,
+      18
     ],
     "visible_entities": [
       {
-        "desc": "person wearing a blue sleeveless top with a white vertical stripe on the shoulder, wearing a silver bracelet",
+        "desc": "person wearing a blue sleeveless top with white vertical trim and a silver bracelet",
         "action": "holding a blender cup",
         "position": "left"
       },
       {
-        "desc": "white and silver blender base with a control dial",
+        "desc": "white and silver blender base",
         "action": "static",
         "position": "left"
       },
       {
         "desc": "clear plastic blender cup containing a white liquid with dark chunks",
-        "action": "being held and moved",
+        "action": "being held",
         "position": "center"
       },
       {
-        "desc": "clear plastic container with a brown paste-like substance",
+        "desc": "small clear plastic container with brown paste",
         "action": "static",
         "position": "center"
       },
       {
-        "desc": "white rectangular plate with sliced bananas and strawberries",
+        "desc": "white rectangular plate with a peeled banana, red strawberries, and a knife",
         "action": "static",
         "position": "right"
       },
       {
-        "desc": "marble countertop with grey veining",
-        "action": "static",
-        "position": "foreground"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "The person is holding a blender cup filled with a white mixture.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The blender cup is positioned above the countertop.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "A plate of fruit sits on the counter next to the blender base.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [],
-    "spatial": "The person is standing to the left of the frame, holding the blender cup in their hand. The blender base is on the countertop to the left of the fruit plate. The container of brown paste is situated between the blender base and the fruit plate.",
-    "parse_success": true,
-    "chunk_idx": 17,
-    "video_id": "2UMp078OGQw"
-  },
-  {
-    "time": [
-      36,
-      38
-    ],
-    "visible_entities": [
-      {
-        "desc": "person with fair skin, wearing a blue sleeveless top with a white vertical stripe on the chest",
-        "action": "reaching for strawberries",
-        "position": "center"
-      },
-      {
-        "desc": "white and silver personal blender base, cylindrical, plastic and metal finish",
-        "action": "static",
-        "position": "left"
-      },
-      {
-        "desc": "clear plastic blender cup, containing a white liquid mixture with dark specks",
-        "action": "static",
-        "position": "center"
-      },
-      {
-        "desc": "white rectangular plate with rounded corners",
-        "action": "static",
-        "position": "right"
-      },
-      {
-        "desc": "pale yellow banana slice, peeled",
-        "action": "static",
-        "position": "right"
-      },
-      {
-        "desc": "red strawberries, whole",
-        "action": "being touched",
-        "position": "right"
-      },
-      {
-        "desc": "small clear plastic container with a brownish-orange puree or sauce",
-        "action": "static",
-        "position": "center"
-      },
-      {
-        "desc": "marble countertop, white with grey veining, glossy surface",
+        "desc": "marble countertop",
         "action": "static",
         "position": "bottom"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "The person reaches their right hand towards the strawberries on the plate.",
+        "fact": "person is holding a blender cup filled with a white mixture",
         "confidence": 1.0
       },
       {
-        "fact": "The person's fingers make contact with a red strawberry.",
+        "fact": "a blender base sits on the counter next to a plate of fruit",
         "confidence": 1.0
       },
       {
-        "fact": "A white blender base sits on the marble countertop.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "A clear cup filled with a white liquid stands next to the blender base.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "A plate holding a banana slice and strawberries is positioned to the right of the blender.",
+        "fact": "a container of brown paste is placed between the blender and the plate",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The person is positioned behind the marble countertop. The white blender base is to the left of the clear blender cup. The plate with fruit is to the right of the blender cup and in front of the person's hand.",
+    "spatial": "The person is standing to the left of the blender base. The blender cup is held above the counter, to the right of the blender base. The plate with fruit is to the right of the blender base and the paste container.",
+    "parse_success": true,
+    "chunk_idx": 17,
+    "video_id": "2UMp078OGQw"
+  },
+  {
+    "time": [
+      18,
+      19
+    ],
+    "visible_entities": [
+      {
+        "desc": "person wearing a blue short-sleeved top with a white vertical stripe on the chest",
+        "action": "reaching for strawberries",
+        "position": "center"
+      },
+      {
+        "desc": "white and silver blender base, cylindrical, plastic and metal",
+        "action": "static",
+        "position": "left"
+      },
+      {
+        "desc": "clear plastic blender cup containing white liquid and dark chunks",
+        "action": "static",
+        "position": "center"
+      },
+      {
+        "desc": "small clear plastic container with orange-brown puree",
+        "action": "static",
+        "position": "center"
+      },
+      {
+        "desc": "white rectangular plate with a peeled banana and red strawberries",
+        "action": "static",
+        "position": "right"
+      },
+      {
+        "desc": "marble countertop, white with grey veining",
+        "action": "static",
+        "position": "bottom"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "person reaches for strawberries on the plate",
+        "confidence": 1.0
+      },
+      {
+        "fact": "blender cup contains white liquid with dark chunks",
+        "confidence": 1.0
+      },
+      {
+        "fact": "plate holds a peeled banana and red strawberries",
+        "confidence": 1.0
+      },
+      {
+        "fact": "small container holds orange-brown puree",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The person is behind the countertop. The blender base is to the left of the blender cup. The plate with fruit is to the right of the blender cup. The small container of puree is between the blender base and the blender cup. All items are on the marble countertop.",
     "parse_success": true,
     "chunk_idx": 18,
     "video_id": "2UMp078OGQw"
   },
   {
     "time": [
-      38,
-      40
+      19,
+      20
     ],
     "visible_entities": [
       {
         "desc": "person wearing a blue sleeveless top",
-        "action": "adding red fruit to a blender cup",
-        "position": "center"
+        "action": "adding ingredients to a blender cup",
+        "position": "background"
       },
       {
         "desc": "white blender base with silver trim",
@@ -1272,14 +1310,19 @@
         "position": "left"
       },
       {
-        "desc": "clear plastic blender cup containing white liquid and red fruit",
-        "action": "being held",
+        "desc": "clear plastic blender cup",
+        "action": "being filled with ingredients",
         "position": "center"
       },
       {
-        "desc": "white oval plate with a peeled banana and a silver spoon",
+        "desc": "white rectangular plate",
         "action": "static",
-        "position": "right"
+        "position": "foreground"
+      },
+      {
+        "desc": "peeled banana",
+        "action": "being picked up",
+        "position": "foreground"
       },
       {
         "desc": "small glass bowl with brown paste",
@@ -1289,34 +1332,38 @@
     ],
     "atomic_facts": [
       {
-        "fact": "A person is holding a blender cup and adding red fruit pieces into it.",
+        "fact": "A person is adding red fruit pieces into a blender cup.",
         "confidence": 1.0
       },
       {
-        "fact": "A peeled banana rests on a white plate next to a spoon.",
+        "fact": "A hand reaches for a peeled banana on a white plate.",
         "confidence": 1.0
       },
       {
-        "fact": "A white blender base sits on the marble countertop.",
+        "fact": "A blender base sits on the marble countertop.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A small bowl containing a brown substance is next to the blender cup.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The person is standing behind the marble countertop. The white blender base is to the left of the blender cup the person is holding. The plate with the banana is to the right of the blender cup and in front of the person.",
+    "spatial": "The white blender base is to the left of the clear blender cup. The person is behind the blender cup, adding ingredients to it. The white plate with the banana is in front of the blender cup and the small glass bowl.",
     "parse_success": true,
     "chunk_idx": 19,
     "video_id": "2UMp078OGQw"
   },
   {
     "time": [
-      40,
-      42
+      20,
+      21
     ],
     "visible_entities": [
       {
         "desc": "person wearing a blue sleeveless top",
         "action": "preparing food",
-        "position": "left"
+        "position": "background"
       },
       {
         "desc": "white and silver blender base",
@@ -1324,7 +1371,7 @@
         "position": "left"
       },
       {
-        "desc": "clear plastic blender cup with red fruit and white liquid",
+        "desc": "clear plastic blender cup containing white liquid and red fruit pieces",
         "action": "static",
         "position": "center"
       },
@@ -1334,184 +1381,176 @@
         "position": "center"
       },
       {
-        "desc": "white plate with a knife",
+        "desc": "white rectangular plate with a silver utensil",
         "action": "static",
         "position": "right"
       },
       {
         "desc": "marble countertop",
         "action": "static",
-        "position": "bottom"
+        "position": "foreground"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A person is preparing food at a counter.",
+        "fact": "A person is standing behind a kitchen counter preparing ingredients.",
         "confidence": 1.0
       },
       {
-        "fact": "A blender cup contains red fruit and white liquid.",
+        "fact": "A blender cup is filled with a white mixture and red fruit chunks.",
         "confidence": 1.0
       },
       {
-        "fact": "A knife is resting on a white plate.",
+        "fact": "A small container of brown paste sits next to the blender cup.",
         "confidence": 1.0
       },
       {
-        "fact": "A small container with a brown substance is on the counter.",
+        "fact": "A white plate with a utensil rests on the counter to the right.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The person is to the left of the blender cup. The blender base is to the left of the small container. The white plate with the knife is to the right of the blender cup. All items are on the marble countertop.",
+    "spatial": "The white blender base is on the left side of the marble countertop. The clear blender cup is positioned to the right of the blender base and in front of the person. The small container with brown substance is between the blender base and the white plate. The white plate is on the right side of the counter, near the edge.",
     "parse_success": true,
     "chunk_idx": 20,
     "video_id": "2UMp078OGQw"
   },
   {
     "time": [
-      42,
-      44
+      21,
+      22
     ],
     "visible_entities": [
       {
-        "desc": "person wearing a blue sleeveless top with white vertical stripes",
-        "action": "adding ingredients to a blender cup",
+        "desc": "person wearing a blue sleeveless top with white vertical stripes on the shoulder",
+        "action": "placing a small object onto a plate",
         "position": "background"
       },
       {
-        "desc": "white and silver blender base",
+        "desc": "white blender base with silver trim and a black control panel",
         "action": "static",
         "position": "left"
       },
       {
-        "desc": "clear plastic blender cup containing white liquid, banana slices, and red fruit pieces",
-        "action": "being held",
-        "position": "center"
-      },
-      {
-        "desc": "small glass jar containing brown paste",
+        "desc": "clear plastic blender cup filled with white liquid, banana slices, and red fruit pieces",
         "action": "static",
         "position": "center"
       },
       {
-        "desc": "white rectangular plate with a silver spoon on it",
+        "desc": "small glass jar containing a brown, chunky substance",
+        "action": "static",
+        "position": "center"
+      },
+      {
+        "desc": "white rectangular plate with a silver spoon resting on it",
         "action": "static",
         "position": "right"
       },
       {
-        "desc": "marble countertop",
+        "desc": "marble countertop with grey veining",
         "action": "static",
         "position": "foreground"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "person is holding a blender cup filled with fruit and liquid",
+        "fact": "A person is placing a small object onto a white plate.",
         "confidence": 1.0
       },
       {
-        "fact": "person is adding an ingredient to the blender cup",
+        "fact": "A blender cup containing fruit and liquid sits on the counter.",
         "confidence": 1.0
       },
       {
-        "fact": "a blender base sits on the counter to the left",
-        "confidence": 1.0
-      },
-      {
-        "fact": "a jar of brown paste is on the counter",
-        "confidence": 1.0
-      },
-      {
-        "fact": "a spoon rests on a white plate",
+        "fact": "A spoon is resting on the white plate.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The person is behind the blender cup and the jar of brown paste. The blender base is to the left of the blender cup. The white plate with the spoon is to the right of the blender cup. All items are on the marble countertop.",
+    "spatial": "The white blender base is to the left of the blender cup. The blender cup is positioned behind the white plate. The person is behind the counter, reaching over the plate and jar.",
     "parse_success": true,
     "chunk_idx": 21,
     "video_id": "2UMp078OGQw"
   },
   {
     "time": [
-      44,
-      46
+      22,
+      23
     ],
     "visible_entities": [
       {
-        "desc": "person with light skin, wearing a blue sleeveless top and a white apron",
-        "action": "pouring contents from a small packet into a blender cup",
+        "desc": "person wearing a blue sleeveless top with a white apron strap",
+        "action": "pouring liquid from a glass into a blender cup",
         "position": "background"
       },
       {
-        "desc": "white and silver blender base, plastic material, cylindrical shape",
+        "desc": "white and silver blender base with a control panel",
         "action": "static",
         "position": "left"
       },
       {
-        "desc": "clear plastic blender cup containing white liquid, red strawberries, and banana slices",
+        "desc": "clear plastic blender cup containing fruit and liquid",
         "action": "being filled",
         "position": "center"
       },
       {
-        "desc": "small clear plastic container with brown paste-like food",
+        "desc": "clear plastic container with brown sauce or puree",
         "action": "static",
         "position": "center"
       },
       {
-        "desc": "white square plate with rounded corners, holding a metal spoon",
+        "desc": "white square plate with a metal spoon",
         "action": "static",
-        "position": "right"
+        "position": "foreground"
       },
       {
-        "desc": "marble countertop, white with grey veining, glossy surface",
+        "desc": "marble countertop with grey veining",
         "action": "static",
         "position": "foreground"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A person is pouring ingredients from a packet into a blender cup.",
+        "fact": "A person is pouring liquid from a small glass into a blender cup.",
         "confidence": 1.0
       },
       {
-        "fact": "The blender cup contains fruit and liquid.",
+        "fact": "The blender cup contains chunks of fruit and a white liquid.",
         "confidence": 1.0
       },
       {
-        "fact": "A spoon rests on a white plate next to the blender cup.",
+        "fact": "A container of brown sauce sits next to the blender cup.",
         "confidence": 1.0
       },
       {
-        "fact": "The blender base is sitting on the marble counter.",
+        "fact": "A white plate with a spoon rests on the counter in the foreground.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The person is standing behind the marble countertop. The white blender base is to the left of the blender cup. The container of brown food is positioned between the blender base and the cup. The white plate with a spoon is to the right of the blender cup.",
+    "spatial": "The white blender base is to the left of the blender cup. The person is standing behind the counter, holding a glass above the blender cup. The container of brown sauce is between the blender base and the blender cup. The white plate is in front of the blender cup on the marble countertop.",
     "parse_success": true,
     "chunk_idx": 22,
     "video_id": "2UMp078OGQw"
   },
   {
     "time": [
-      46,
-      48
+      23,
+      24
     ],
     "visible_entities": [
       {
         "desc": "person wearing a blue sleeveless top and a silver bracelet",
         "action": "adding ingredients to a cup",
-        "position": "left"
+        "position": "center"
       },
       {
-        "desc": "white and silver blender base",
+        "desc": "white blender base with silver trim",
         "action": "static",
         "position": "left"
       },
       {
-        "desc": "clear plastic cup with white liquid and fruit",
+        "desc": "clear plastic cup containing white liquid, red strawberries, and banana slices",
         "action": "being filled",
         "position": "center"
       },
@@ -1521,130 +1560,8 @@
         "position": "center"
       },
       {
-        "desc": "white square plate with a spoon",
+        "desc": "white square plate with a metal spoon",
         "action": "static",
-        "position": "right"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "person adds banana slices to a cup containing white liquid and strawberries",
-        "confidence": 1.0
-      },
-      {
-        "fact": "white blender base sits on the marble countertop",
-        "confidence": 1.0
-      },
-      {
-        "fact": "small container of brown puree is next to the cup",
-        "confidence": 1.0
-      },
-      {
-        "fact": "white plate with a spoon is on the counter",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [],
-    "spatial": "The person is to the left of the clear cup. The blender base is to the left of the cup and the container of puree. The white plate is to the right of the cup.",
-    "parse_success": true,
-    "chunk_idx": 23,
-    "video_id": "2UMp078OGQw"
-  },
-  {
-    "time": [
-      48,
-      50
-    ],
-    "visible_entities": [
-      {
-        "desc": "person wearing a blue short-sleeved top and a silver bangle bracelet",
-        "action": "holding a clear cup",
-        "position": "left"
-      },
-      {
-        "desc": "white and silver blender base with a smooth plastic finish",
-        "action": "static",
-        "position": "left"
-      },
-      {
-        "desc": "clear plastic cup containing white liquid, red fruit chunks, and yellow fruit slices",
-        "action": "being held",
-        "position": "center"
-      },
-      {
-        "desc": "small round container with a brown substance",
-        "action": "static",
-        "position": "center"
-      },
-      {
-        "desc": "white square plate with a silver blade attachment",
-        "action": "static",
-        "position": "right"
-      },
-      {
-        "desc": "grey marble countertop with white veining",
-        "action": "static",
-        "position": "bottom"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "A person is holding a clear cup filled with ingredients above a countertop.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "A white blender base sits on the marble surface.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "A blade attachment rests on a white plate next to the cup.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "A small container of brown food is positioned between the blender and the cup.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [],
-    "spatial": "The person in the blue top is on the left side of the frame, holding the clear cup in the center. The white blender base is to the left of the cup. The white plate with the blade is to the right of the cup. The small container is behind the plate and next to the blender.",
-    "parse_success": true,
-    "chunk_idx": 24,
-    "video_id": "2UMp078OGQw"
-  },
-  {
-    "time": [
-      50,
-      52
-    ],
-    "visible_entities": [
-      {
-        "desc": "person wearing a blue sleeveless top with white straps",
-        "action": "holding a blender cup and placing a spoon on a plate",
-        "position": "center"
-      },
-      {
-        "desc": "white and silver blender base",
-        "action": "static",
-        "position": "left"
-      },
-      {
-        "desc": "clear plastic blender cup containing white chunks",
-        "action": "being held",
-        "position": "center"
-      },
-      {
-        "desc": "small clear container with brown paste",
-        "action": "static",
-        "position": "center"
-      },
-      {
-        "desc": "white square plate",
-        "action": "static",
-        "position": "right"
-      },
-      {
-        "desc": "silver spoon",
-        "action": "being placed on the plate",
         "position": "right"
       },
       {
@@ -1655,11 +1572,7 @@
     ],
     "atomic_facts": [
       {
-        "fact": "The person is holding a blender cup filled with white chunks.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The person places a silver spoon onto the white square plate.",
+        "fact": "A person is adding banana slices to a clear cup filled with liquid and strawberries.",
         "confidence": 1.0
       },
       {
@@ -1667,101 +1580,222 @@
         "confidence": 1.0
       },
       {
-        "fact": "A small container of brown paste is positioned between the blender base and the plate.",
+        "fact": "A container of brown puree is placed next to the blender.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A white plate with a spoon rests on the counter to the right of the cup.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The person is standing behind the marble countertop. The white blender base is to the left of the person's hands. The blender cup is held in the center, above the countertop. The white plate is to the right of the blender base and in front of the person.",
+    "spatial": "The person is standing behind the marble countertop. The white blender base is to the left of the clear cup. The container of brown puree is positioned between the blender and the cup. The white plate is to the right of the cup.",
     "parse_success": true,
-    "chunk_idx": 25,
+    "chunk_idx": 23,
     "video_id": "2UMp078OGQw"
   },
   {
     "time": [
-      52,
-      54
+      24,
+      25
     ],
     "visible_entities": [
       {
-        "desc": "person wearing a blue sleeveless top",
-        "action": "stirring contents in a container",
-        "position": "left/background"
-      },
-      {
-        "desc": "white blender base with silver trim and a white lid",
-        "action": "static",
-        "position": "left/foreground"
-      },
-      {
-        "desc": "clear plastic cup containing white liquid, red fruit, and yellow fruit",
-        "action": "static",
-        "position": "center/foreground"
-      },
-      {
-        "desc": "small clear plastic container with brown paste-like substance",
-        "action": "being stirred",
+        "desc": "person wearing a blue sleeveless top and a silver bracelet",
+        "action": "holding a clear cup and pressing down on the contents",
         "position": "center"
       },
       {
-        "desc": "white rectangular plate with a small packet on it",
+        "desc": "white and silver blender base",
         "action": "static",
-        "position": "right/foreground"
+        "position": "left"
       },
       {
-        "desc": "grey marble countertop",
+        "desc": "clear plastic cup containing white liquid, red berries, and yellow fruit chunks",
+        "action": "being held by person",
+        "position": "center"
+      },
+      {
+        "desc": "small container with brownish paste",
+        "action": "static",
+        "position": "center"
+      },
+      {
+        "desc": "white square plate with a metal blade attachment",
+        "action": "static",
+        "position": "right"
+      },
+      {
+        "desc": "marble countertop",
         "action": "static",
         "position": "bottom"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A person is using a utensil to stir a brown substance inside a small plastic container.",
+        "fact": "person is holding a clear cup filled with ingredients",
         "confidence": 1.0
       },
       {
-        "fact": "A blender cup filled with fruit and liquid sits next to the blender base.",
+        "fact": "person is pressing down on the contents of the cup",
         "confidence": 1.0
       },
       {
-        "fact": "A white plate holding a packet rests on the counter in the foreground.",
+        "fact": "the blender base is on the marble countertop",
+        "confidence": 1.0
+      },
+      {
+        "fact": "a white plate with a blade attachment is on the countertop",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The person in the blue top is positioned behind the blender base and the containers. The blender base is to the left of the fruit-filled cup and the container being stirred. The white plate is to the right of the fruit cup and in front of the other items on the marble countertop.",
+    "spatial": "The person is standing behind the marble countertop. The blender base is to the left of the person's hands. The clear cup is being held by the person in the center. The small container with brownish paste is to the left of the clear cup. The white plate with the blade attachment is to the right of the clear cup.",
+    "parse_success": true,
+    "chunk_idx": 24,
+    "video_id": "2UMp078OGQw"
+  },
+  {
+    "time": [
+      25,
+      26
+    ],
+    "visible_entities": [
+      {
+        "desc": "person wearing a blue sleeveless top with white straps",
+        "action": "placing a spoon on a plate",
+        "position": "center"
+      },
+      {
+        "desc": "white and silver blender base, cylindrical",
+        "action": "static",
+        "position": "left"
+      },
+      {
+        "desc": "clear plastic cup containing white chunks and liquid",
+        "action": "being held",
+        "position": "center"
+      },
+      {
+        "desc": "white square plate with rounded corners",
+        "action": "static",
+        "position": "right"
+      },
+      {
+        "desc": "small container with brown paste",
+        "action": "static",
+        "position": "center"
+      },
+      {
+        "desc": "silver spoon",
+        "action": "being placed",
+        "position": "right"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "person places a silver spoon onto a white plate",
+        "confidence": 1.0
+      },
+      {
+        "fact": "person holds a clear plastic cup with one hand",
+        "confidence": 1.0
+      },
+      {
+        "fact": "white blender base sits on the marble countertop",
+        "confidence": 1.0
+      },
+      {
+        "fact": "small container with brown paste is next to the blender",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The person is standing behind the marble countertop. The white blender base is to the left of the small container with brown paste. The clear plastic cup is held in the person's hand above the counter. The white plate is to the right of the blender base.",
+    "parse_success": true,
+    "chunk_idx": 25,
+    "video_id": "2UMp078OGQw"
+  },
+  {
+    "time": [
+      26,
+      27
+    ],
+    "visible_entities": [
+      {
+        "desc": "person wearing a blue sleeveless top with a white vertical stripe",
+        "action": "stirring contents in a container",
+        "position": "left"
+      },
+      {
+        "desc": "white blender base with silver trim",
+        "action": "static",
+        "position": "left"
+      },
+      {
+        "desc": "clear plastic cup filled with white liquid and red fruit chunks",
+        "action": "static",
+        "position": "center"
+      },
+      {
+        "desc": "small clear plastic container with brown paste",
+        "action": "being stirred",
+        "position": "center"
+      },
+      {
+        "desc": "white rectangular plate with a small packet",
+        "action": "static",
+        "position": "right"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A person is stirring a brown substance in a small container with a spoon.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A blender cup containing white liquid and fruit sits on the counter.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A white plate holding a packet is placed on the counter.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The person is positioned to the left of the blender base. The blender base is to the left of the cup filled with fruit and liquid. The small container with brown paste is located between the blender base and the fruit cup. The white plate is to the right of the fruit cup.",
     "parse_success": true,
     "chunk_idx": 26,
     "video_id": "2UMp078OGQw"
   },
   {
     "time": [
-      54,
-      56
+      27,
+      28
     ],
     "visible_entities": [
       {
         "desc": "person wearing a blue sleeveless top",
-        "action": "stirring a bowl",
+        "action": "stirring contents in a bowl",
         "position": "left"
       },
       {
-        "desc": "white blender base with silver accents",
+        "desc": "white and silver blender base",
         "action": "static",
         "position": "left foreground"
       },
       {
-        "desc": "brown bowl containing a brown substance",
+        "desc": "brown wooden bowl",
         "action": "being stirred",
         "position": "center"
       },
       {
-        "desc": "clear blender cup with white liquid and fruit",
+        "desc": "clear blender cup with white liquid and red fruit pieces",
         "action": "static",
         "position": "center right"
       },
       {
-        "desc": "white rectangular plate with a packet",
+        "desc": "white rectangular plate with a small packet",
         "action": "static",
         "position": "right foreground"
       },
@@ -1773,32 +1807,28 @@
     ],
     "atomic_facts": [
       {
-        "fact": "A person is stirring a brown substance in a bowl with a spoon.",
+        "fact": "A person is stirring a mixture inside a brown wooden bowl with a utensil.",
         "confidence": 1.0
       },
       {
-        "fact": "A white blender base sits on the marble countertop.",
+        "fact": "A blender cup filled with white liquid and red fruit sits on the counter.",
         "confidence": 1.0
       },
       {
-        "fact": "A clear blender cup filled with white liquid and fruit is standing on the counter.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "A white plate holding a small packet is placed on the counter.",
+        "fact": "A white plate holding a small packet is placed in the foreground.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The person in the blue top is on the left side of the frame, stirring a bowl that is positioned next to the white blender base. To the right of the bowl is a clear blender cup filled with ingredients. In the foreground, a white plate is placed on the marble countertop.",
+    "spatial": "The person in the blue top is on the left side of the frame, stirring a wooden bowl. The white blender base is to the left of the wooden bowl. The clear blender cup is to the right of the wooden bowl. The white plate is in the foreground, to the right of the blender base.",
     "parse_success": true,
     "chunk_idx": 27,
     "video_id": "2UMp078OGQw"
   },
   {
     "time": [
-      56,
-      58
+      28,
+      29
     ],
     "visible_entities": [
       {
@@ -1807,104 +1837,29 @@
         "position": "left"
       },
       {
-        "desc": "white and silver blender base, cylindrical, glossy finish",
+        "desc": "white blender base with silver trim",
         "action": "static",
         "position": "left foreground"
       },
       {
-        "desc": "brown ceramic bowl with textured surface",
+        "desc": "brown wooden bowl",
         "action": "being stirred",
         "position": "center"
       },
       {
-        "desc": "clear plastic blender cup containing white liquid, red fruit pieces, and banana slices",
+        "desc": "clear plastic blender cup containing white liquid and fruit chunks",
         "action": "static",
         "position": "center right"
       },
       {
-        "desc": "white rectangular plate with rounded corners",
-        "action": "static",
-        "position": "right foreground"
-      },
-      {
-        "desc": "silver foil packet, rectangular",
-        "action": "static",
-        "position": "on the plate"
-      },
-      {
-        "desc": "marble countertop, white with grey veining",
-        "action": "static",
-        "position": "bottom"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "A person is stirring a brown mixture inside a ceramic bowl with a spoon.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "A blender cup filled with fruit and liquid sits next to the bowl.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "A silver foil packet rests on a white plate in the foreground.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The blender base is positioned to the left of the bowl.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [],
-    "spatial": "The person in the blue top is on the left side of the frame, stirring a brown bowl that is positioned to the right of the white blender base. To the right of the bowl is a clear blender cup filled with ingredients. In the foreground on the right, a white plate holding a silver packet sits on the marble countertop.",
-    "parse_success": true,
-    "chunk_idx": 28,
-    "video_id": "2UMp078OGQw"
-  },
-  {
-    "time": [
-      58,
-      60
-    ],
-    "visible_entities": [
-      {
-        "desc": "person wearing a blue sleeveless top and silver bracelets",
-        "action": "adding ingredients to a cup",
-        "position": "left"
-      },
-      {
-        "desc": "white blender base with a silver bottom trim",
-        "action": "static",
-        "position": "left"
-      },
-      {
-        "desc": "tall clear plastic cup containing white liquid, red berries, and yellow chunks",
-        "action": "being filled",
-        "position": "center"
-      },
-      {
-        "desc": "small glass bowl containing brown paste",
-        "action": "static",
-        "position": "center"
-      },
-      {
         "desc": "white rectangular plate with a silver foil packet",
         "action": "static",
-        "position": "foreground"
-      },
-      {
-        "desc": "marble countertop with grey veining",
-        "action": "static",
-        "position": "bottom"
+        "position": "right foreground"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A person is using a spoon to add yellow chunks into a clear cup.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The clear cup already contains a white liquid and red berries.",
+        "fact": "A person is using a spoon to stir a brown mixture inside a wooden bowl.",
         "confidence": 1.0
       },
       {
@@ -1912,30 +1867,91 @@
         "confidence": 1.0
       },
       {
-        "fact": "A small bowl of brown paste is positioned between the blender and the cup.",
+        "fact": "A clear blender cup filled with white liquid and fruit stands next to the bowl.",
         "confidence": 1.0
       },
       {
-        "fact": "A white plate holding a foil packet rests in the foreground.",
+        "fact": "A foil packet rests on a white plate in the foreground.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The person is standing behind the counter on the left side. The white blender base is on the counter to the left of the person's hands. The clear cup is being held in the center, to the right of the blender. The small bowl of brown paste is on the counter between the blender and the cup. The white plate is in the foreground, in front of the cup and bowl.",
+    "spatial": "The person in the blue top is positioned to the left of the wooden bowl. The white blender base is in front of the person and to the left of the bowl. The clear blender cup is to the right of the wooden bowl. The white plate with the foil packet is in the foreground, to the right of the blender base.",
+    "parse_success": true,
+    "chunk_idx": 28,
+    "video_id": "2UMp078OGQw"
+  },
+  {
+    "time": [
+      29,
+      30
+    ],
+    "visible_entities": [
+      {
+        "desc": "person wearing a blue sleeveless top and silver bracelets",
+        "action": "adding ingredients to a cup",
+        "position": "left/center"
+      },
+      {
+        "desc": "white and silver blender base",
+        "action": "static",
+        "position": "left/foreground"
+      },
+      {
+        "desc": "clear plastic blender cup containing white liquid, red berries, and yellow chunks",
+        "action": "being filled",
+        "position": "center"
+      },
+      {
+        "desc": "small glass bowl with brown paste",
+        "action": "static",
+        "position": "center"
+      },
+      {
+        "desc": "white rectangular plate with a silver foil packet",
+        "action": "static",
+        "position": "right/foreground"
+      },
+      {
+        "desc": "marble countertop",
+        "action": "static",
+        "position": "bottom"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "person is using a spoon to add yellow chunks into the blender cup",
+        "confidence": 1.0
+      },
+      {
+        "fact": "blender cup contains white liquid and red berries",
+        "confidence": 1.0
+      },
+      {
+        "fact": "white plate holds a silver foil packet",
+        "confidence": 1.0
+      },
+      {
+        "fact": "glass bowl contains a brown paste",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The person is standing behind the marble countertop. The blender base is to the left of the blender cup. The glass bowl is between the blender base and the blender cup. The white plate is to the right of the blender cup and in front of the person.",
     "parse_success": true,
     "chunk_idx": 29,
     "video_id": "2UMp078OGQw"
   },
   {
     "time": [
-      60,
-      62
+      30,
+      31
     ],
     "visible_entities": [
       {
         "desc": "person wearing a blue sleeveless top and silver bracelets",
-        "action": "holding a blender cup and using a utensil",
-        "position": "center"
+        "action": "adding ingredients to a blender cup",
+        "position": "left"
       },
       {
         "desc": "white and silver blender base",
@@ -1943,17 +1959,17 @@
         "position": "left"
       },
       {
-        "desc": "clear plastic blender cup containing white liquid, red fruit chunks, and banana slices",
-        "action": "being filled",
+        "desc": "clear blender cup containing white liquid, red fruit, and banana slices",
+        "action": "being held",
         "position": "center"
       },
       {
-        "desc": "small glass bowl containing brown paste",
+        "desc": "small glass bowl with brown paste",
         "action": "static",
         "position": "center"
       },
       {
-        "desc": "white rectangular plate with a small silver packet",
+        "desc": "white rectangular plate with a silver packet",
         "action": "static",
         "position": "right"
       },
@@ -1965,62 +1981,63 @@
     ],
     "atomic_facts": [
       {
-        "fact": "A person is holding a blender cup with their left hand.",
+        "fact": "A person is adding ingredients to a blender cup.",
         "confidence": 1.0
       },
       {
-        "fact": "The person is using a utensil to add ingredients to the blender cup.",
+        "fact": "The blender cup contains white liquid, red fruit, and banana slices.",
         "confidence": 1.0
       },
       {
-        "fact": "The blender cup contains a white liquid, red fruit chunks, and banana slices.",
+        "fact": "A small glass bowl with brown paste sits on the counter.",
         "confidence": 1.0
       },
       {
-        "fact": "A small glass bowl containing brown paste sits on the counter.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "A white plate with a silver packet is on the counter.",
+        "fact": "A silver packet rests on a white plate.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The person is standing behind the marble countertop. The white blender base is to the left of the blender cup. The small glass bowl is positioned between the blender base and the blender cup. The white plate is to the right of the blender cup.",
+    "spatial": "The person is standing behind the marble countertop. The blender base is to the left of the blender cup. The small glass bowl is in front of the blender cup. The white plate is to the right of the blender cup.",
     "parse_success": true,
     "chunk_idx": 30,
     "video_id": "2UMp078OGQw"
   },
   {
     "time": [
-      62,
-      64
+      31,
+      32
     ],
     "visible_entities": [
       {
-        "desc": "woman with long dark wavy hair, wearing a sleeveless blue top with a white vertical panel down the center",
+        "desc": "woman with long dark wavy hair, wearing a blue sleeveless top with a white vertical panel down the front",
         "action": "holding a glass jar and looking at it",
         "position": "center"
       },
       {
-        "desc": "white electric appliance, cylindrical, with a control dial",
+        "desc": "white electric rice cooker with a black control panel",
         "action": "static",
-        "position": "left"
+        "position": "center-left"
       },
       {
-        "desc": "tall glass jar containing layered white and brown contents",
+        "desc": "clear glass jar containing a layered white and brown substance",
         "action": "being held",
         "position": "center"
       },
       {
-        "desc": "small glass jar with brown contents",
+        "desc": "small glass bowl containing a brown substance",
         "action": "static",
         "position": "center"
       },
       {
-        "desc": "white rectangular plate with a spoon",
+        "desc": "white rectangular plate with a spoon on it",
         "action": "static",
         "position": "center"
+      },
+      {
+        "desc": "white marble countertop with grey veining",
+        "action": "static",
+        "position": "foreground"
       },
       {
         "desc": "stainless steel refrigerator",
@@ -2028,14 +2045,14 @@
         "position": "background"
       },
       {
-        "desc": "white marble countertop",
+        "desc": "stainless steel range hood",
         "action": "static",
-        "position": "foreground"
+        "position": "background"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "The woman is holding a glass jar with layered contents in her left hand.",
+        "fact": "The woman is holding a glass jar with her left hand.",
         "confidence": 1.0
       },
       {
@@ -2043,55 +2060,54 @@
         "confidence": 1.0
       },
       {
-        "fact": "A white appliance sits on the counter to the woman's right.",
+        "fact": "A rice cooker is on the countertop to the woman's right.",
         "confidence": 1.0
       },
       {
-        "fact": "A small jar and a plate with a spoon are on the counter in front of the woman.",
+        "fact": "A small bowl and a plate with a spoon are on the countertop in front of the woman.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The kitchen features stainless steel appliances and white cabinetry.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The woman is standing behind the white marble countertop. The white appliance is to the left of the woman (viewer's left). The glass jar she is holding is in front of her torso. The refrigerator is behind the woman.",
+    "spatial": "The woman is standing behind the marble countertop. The rice cooker is to her right on the counter. She is holding the glass jar in her left hand, which is positioned over the counter. The small bowl and the plate with the spoon are on the counter in front of her. The refrigerator and range hood are in the background behind the woman.",
     "parse_success": true,
     "chunk_idx": 31,
     "video_id": "2UMp078OGQw"
   },
   {
     "time": [
-      64,
-      66
+      32,
+      33
     ],
     "visible_entities": [
       {
-        "desc": "woman with long dark brown hair, wearing a blue short-sleeved top",
-        "action": "pouring white liquid from a glass jar into a container",
+        "desc": "woman with long dark brown hair, wearing a blue short-sleeved top and a bracelet",
+        "action": "pouring a white liquid from a glass jar into a container",
         "position": "center"
       },
       {
-        "desc": "white appliance, cylindrical base with a black control panel",
+        "desc": "white kitchen appliance with a black label",
         "action": "static",
-        "position": "center-left"
-      },
-      {
-        "desc": "clear glass jar containing white liquid",
-        "action": "being held and tilted",
-        "position": "center"
+        "position": "left foreground"
       },
       {
         "desc": "small container with brown contents",
         "action": "static",
-        "position": "center"
+        "position": "center foreground"
       },
       {
         "desc": "white rectangular plate with a spoon",
         "action": "static",
-        "position": "center"
+        "position": "center foreground"
       },
       {
-        "desc": "marble countertop, white with grey veining",
+        "desc": "marble countertop",
         "action": "static",
-        "position": "foreground"
+        "position": "bottom"
       },
       {
         "desc": "stainless steel refrigerator",
@@ -2101,39 +2117,43 @@
     ],
     "atomic_facts": [
       {
-        "fact": "The woman is pouring a white liquid from a glass jar into a small container.",
+        "fact": "The woman is pouring a white liquid from a glass jar into a container.",
         "confidence": 1.0
       },
       {
-        "fact": "A white appliance sits on the marble countertop to the left of the woman.",
+        "fact": "The woman is holding the jar with both hands.",
         "confidence": 1.0
       },
       {
-        "fact": "A white plate with a spoon rests on the countertop in front of the woman.",
+        "fact": "A white kitchen appliance sits on the counter to the left of the woman.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A spoon rests on a white plate in front of the woman.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The woman is standing behind the marble countertop. The white appliance is to the left of the woman. The glass jar is in the woman's hands, positioned above the small container. The white plate is on the countertop in front of the woman.",
+    "spatial": "The woman is standing behind the marble countertop. The white kitchen appliance is to the left of the woman. The container receiving the liquid is on the counter in front of the woman. The refrigerator is behind the woman.",
     "parse_success": true,
     "chunk_idx": 32,
     "video_id": "2UMp078OGQw"
   },
   {
     "time": [
-      66,
-      68
+      33,
+      34
     ],
     "visible_entities": [
       {
-        "desc": "woman with long dark brown hair, wearing a blue short-sleeved top and a silver bracelet",
+        "desc": "woman with long dark brown hair, wearing a blue short-sleeved top and a bracelet",
         "action": "pouring white powder from a glass jar",
         "position": "center"
       },
       {
-        "desc": "white kitchen appliance, cylindrical base with a control panel",
+        "desc": "white kitchen appliance, cylindrical with a black control panel",
         "action": "static",
-        "position": "foreground left"
+        "position": "center foreground"
       },
       {
         "desc": "clear glass jar containing white powder",
@@ -2143,15 +2163,15 @@
       {
         "desc": "small container with brown contents",
         "action": "static",
-        "position": "foreground center"
+        "position": "center foreground"
       },
       {
         "desc": "white rectangular plate with a spoon",
         "action": "static",
-        "position": "foreground center"
+        "position": "center foreground"
       },
       {
-        "desc": "white marble countertop",
+        "desc": "marble countertop, white with grey veining",
         "action": "static",
         "position": "foreground"
       },
@@ -2172,39 +2192,43 @@
         "confidence": 1.0
       },
       {
-        "fact": "A small container with brown contents sits on the counter next to the appliance.",
+        "fact": "The woman is holding the glass jar with both hands.",
         "confidence": 1.0
       },
       {
-        "fact": "A white plate with a spoon is placed on the marble countertop.",
+        "fact": "A small container with brown contents is sitting on the countertop.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A white plate with a spoon is on the countertop.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The woman is standing behind the white marble countertop. The white kitchen appliance is on the counter in front of her. She is holding the glass jar above the appliance. To the right of the appliance is a small container with brown contents. The stainless steel refrigerator is in the background behind the woman.",
+    "spatial": "The woman is standing behind the marble countertop. The white kitchen appliance is on the countertop in front of the woman. The small container with brown contents is to the right of the appliance. The white plate with a spoon is to the right of the small container. The stainless steel refrigerator is behind the woman.",
     "parse_success": true,
     "chunk_idx": 33,
     "video_id": "2UMp078OGQw"
   },
   {
     "time": [
-      68,
-      70
+      34,
+      35
     ],
     "visible_entities": [
       {
-        "desc": "woman with long dark brown hair, wearing a blue short-sleeved top with white trim and a silver bracelet",
+        "desc": "woman with long dark brown hair, wearing a blue short-sleeved top and a silver bracelet",
         "action": "pouring white powder from a glass jar into a white appliance",
         "position": "center"
       },
       {
-        "desc": "white cylindrical kitchen appliance with a black control panel and red text",
+        "desc": "white kitchen appliance with a cylindrical base and a clear lid",
         "action": "static",
         "position": "center foreground"
       },
       {
         "desc": "clear glass jar containing white powder",
-        "action": "being held and tilted by the woman",
+        "action": "being held and tilted",
         "position": "center"
       },
       {
@@ -2218,9 +2242,9 @@
         "position": "background"
       },
       {
-        "desc": "white kitchen cabinets",
+        "desc": "small container with brown contents",
         "action": "static",
-        "position": "background"
+        "position": "center foreground"
       }
     ],
     "atomic_facts": [
@@ -2233,43 +2257,48 @@
         "confidence": 1.0
       },
       {
-        "fact": "The white appliance is sitting on the marble countertop.",
+        "fact": "A small container with brown contents sits on the counter next to the appliance.",
         "confidence": 1.0
       },
       {
-        "fact": "A small container with a brown substance is on the counter next to the appliance.",
+        "fact": "The kitchen features stainless steel appliances and white cabinetry.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The woman is standing behind the marble countertop in the center of the frame. The white appliance is on the countertop directly in front of her. She is holding the glass jar above the opening of the appliance to pour the contents inside. The stainless steel refrigerator and white cabinets are visible in the background behind the woman.",
+    "spatial": "The woman is standing behind the marble countertop. The white appliance is on the countertop in front of her. She is holding the glass jar above the appliance to pour the contents into it. The stainless steel refrigerator is in the background behind the woman.",
     "parse_success": true,
     "chunk_idx": 34,
     "video_id": "2UMp078OGQw"
   },
   {
     "time": [
-      70,
-      72
+      35,
+      36
     ],
     "visible_entities": [
       {
-        "desc": "woman with long dark wavy hair, wearing a blue short-sleeved top and a white apron",
-        "action": "unscrewing the lid of a jar",
+        "desc": "woman with long dark wavy hair, wearing a blue sleeveless top and a bracelet",
+        "action": "screwing a lid onto a jar",
         "position": "center"
       },
       {
-        "desc": "white electric blender base with a control panel",
+        "desc": "white electric appliance base with a black control panel",
         "action": "static",
         "position": "center foreground"
       },
       {
-        "desc": "clear glass jar containing a white liquid",
-        "action": "being held",
+        "desc": "clear glass jar with a white lid",
+        "action": "being held and manipulated",
         "position": "center"
       },
       {
-        "desc": "small container with a brown substance",
+        "desc": "small container with brown contents",
+        "action": "static",
+        "position": "center foreground"
+      },
+      {
+        "desc": "white oval plate with a spoon",
         "action": "static",
         "position": "center foreground"
       },
@@ -2282,6 +2311,67 @@
         "desc": "white marble countertop",
         "action": "static",
         "position": "foreground"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The woman is using both hands to twist the lid onto the glass jar.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The white appliance base is sitting on the marble countertop.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A small container of brown food is placed next to the appliance.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The woman is standing behind the kitchen island.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The woman is standing behind the white marble countertop. The white appliance base is on the countertop in front of her. She is holding the glass jar above the appliance base. To the right of the appliance is a small container of food and a white plate with a spoon.",
+    "parse_success": true,
+    "chunk_idx": 35,
+    "video_id": "2UMp078OGQw"
+  },
+  {
+    "time": [
+      36,
+      37
+    ],
+    "visible_entities": [
+      {
+        "desc": "woman with long dark wavy hair, wearing a blue sleeveless top with a white collar and a silver bracelet",
+        "action": "twisting the lid of a jar",
+        "position": "center"
+      },
+      {
+        "desc": "white electric kitchen appliance, cylindrical shape, sitting on the counter",
+        "action": "static",
+        "position": "center foreground"
+      },
+      {
+        "desc": "glass jar with a silver lid, containing a light-colored substance",
+        "action": "being held and twisted",
+        "position": "center foreground"
+      },
+      {
+        "desc": "stainless steel refrigerator, double door",
+        "action": "static",
+        "position": "background"
+      },
+      {
+        "desc": "marble countertop, white with grey veining",
+        "action": "static",
+        "position": "foreground"
+      },
+      {
+        "desc": "small white plate with a spoon and a small container",
+        "action": "static",
+        "position": "center foreground"
       }
     ],
     "atomic_facts": [
@@ -2290,109 +2380,880 @@
         "confidence": 1.0
       },
       {
-        "fact": "The woman is twisting the lid of the jar to open it.",
+        "fact": "The woman is twisting the lid of the jar.",
         "confidence": 1.0
       },
       {
-        "fact": "A blender base sits on the counter to the left of the woman's hands.",
+        "fact": "A white kitchen appliance sits on the marble countertop.",
         "confidence": 1.0
       },
       {
-        "fact": "A small container of brown food is on the counter in front of the woman.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [],
-    "spatial": "The woman is standing behind the marble countertop. The blender base is on the counter in front of her and to her left. She is holding the glass jar above the counter, positioned between the blender and the small container of brown food. The stainless steel refrigerator is in the background behind the woman.",
-    "parse_success": true,
-    "chunk_idx": 35,
-    "video_id": "2UMp078OGQw"
-  },
-  {
-    "time": [
-      72,
-      74
-    ],
-    "visible_entities": [
-      {
-        "desc": "woman with long dark brown hair, wearing a sleeveless royal blue top with a white collar, and a silver bracelet on her left wrist",
-        "action": "twisting the lid of a container",
-        "position": "center"
-      },
-      {
-        "desc": "white electric appliance with a cylindrical body and a black control panel",
-        "action": "static",
-        "position": "center foreground"
-      },
-      {
-        "desc": "small clear glass jar with a silver metal lid",
-        "action": "being held and twisted",
-        "position": "center foreground"
-      },
-      {
-        "desc": "small round container with a brownish textured substance",
-        "action": "static",
-        "position": "center foreground"
-      },
-      {
-        "desc": "white rectangular plate with a silver spoon resting on it",
-        "action": "static",
-        "position": "center foreground"
-      },
-      {
-        "desc": "large stainless steel refrigerator with a brushed metal finish",
-        "action": "static",
-        "position": "background"
-      },
-      {
-        "desc": "white marble countertop with grey veining",
-        "action": "static",
-        "position": "foreground"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "The woman is using both hands to twist the lid of the glass jar.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The glass jar is positioned directly above the white electric appliance.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The woman is standing behind the kitchen island.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "A spoon rests on a white plate next to the food container.",
+        "fact": "A small plate with a spoon is on the counter.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The woman is standing behind the marble countertop in the center of the frame. She is holding the glass jar directly above the white appliance. To her right on the counter, there is a small container of food and a plate with a spoon. The stainless steel refrigerator is located in the background behind the woman.",
+    "spatial": "The woman is standing behind the marble countertop. The white kitchen appliance is on the countertop in front of the woman. The glass jar is being held by the woman above the appliance. The refrigerator is behind the woman.",
     "parse_success": true,
     "chunk_idx": 36,
     "video_id": "2UMp078OGQw"
   },
   {
     "time": [
-      74,
-      76
+      37,
+      38
     ],
     "visible_entities": [
       {
         "desc": "woman with long dark brown hair, wearing a blue sleeveless top and a white apron",
-        "action": "pouring contents from a glass jar into a white appliance",
+        "action": "scooping white powder from a jar",
         "position": "center"
       },
       {
-        "desc": "white kitchen appliance with a black control panel and a clear lid",
+        "desc": "white electric appliance, cylindrical shape with a control panel",
         "action": "static",
         "position": "center foreground"
       },
       {
-        "desc": "clear glass jar containing a white granular substance",
+        "desc": "clear glass jar containing white powder",
+        "action": "being held",
+        "position": "center"
+      },
+      {
+        "desc": "small clear container with brown granular substance",
+        "action": "static",
+        "position": "center foreground"
+      },
+      {
+        "desc": "white rectangular plate with a spoon",
+        "action": "static",
+        "position": "center foreground"
+      },
+      {
+        "desc": "stainless steel refrigerator",
+        "action": "static",
+        "position": "background"
+      },
+      {
+        "desc": "stainless steel range hood",
+        "action": "static",
+        "position": "top center"
+      },
+      {
+        "desc": "white marble countertop",
+        "action": "static",
+        "position": "foreground"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The woman is scooping white powder from a glass jar into the white appliance.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The woman is holding the glass jar with her left hand and using a spoon with her right hand.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A small container with brown contents sits on the counter next to the white appliance.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A spoon rests on a white plate on the counter.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The woman is standing behind the marble countertop. The white appliance is on the counter in front of her. She is holding the glass jar above the opening of the appliance. The small container with brown contents is to the right of the white appliance. The refrigerator is behind the woman.",
+    "parse_success": true,
+    "chunk_idx": 37,
+    "video_id": "2UMp078OGQw"
+  },
+  {
+    "time": [
+      38,
+      39
+    ],
+    "visible_entities": [
+      {
+        "desc": "woman with long dark wavy hair, wearing a blue short-sleeved top and a white apron",
+        "action": "pouring contents from a glass jar into a white appliance",
+        "position": "center"
+      },
+      {
+        "desc": "white kitchen appliance, cylindrical shape with a control panel",
+        "action": "static",
+        "position": "center foreground"
+      },
+      {
+        "desc": "clear glass jar containing white granular substance",
         "action": "being held and tilted",
+        "position": "center"
+      },
+      {
+        "desc": "small container with brown substance, sitting on a white plate with a spoon",
+        "action": "static",
+        "position": "center foreground"
+      },
+      {
+        "desc": "stainless steel refrigerator",
+        "action": "static",
+        "position": "background"
+      },
+      {
+        "desc": "white marble countertop",
+        "action": "static",
+        "position": "foreground"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The woman is pouring a white granular substance from a glass jar into a white appliance.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A small container with a brown substance sits on a white plate next to the appliance.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The woman is wearing a white apron over a blue top.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The woman is standing behind the white marble countertop. The white appliance is on the countertop in front of her. The small container on the plate is to the right of the white appliance. The stainless steel refrigerator is in the background behind the woman.",
+    "parse_success": true,
+    "chunk_idx": 38,
+    "video_id": "2UMp078OGQw"
+  },
+  {
+    "time": [
+      39,
+      40
+    ],
+    "visible_entities": [
+      {
+        "desc": "woman with long dark wavy hair, wearing a blue sleeveless top over a white v-neck shirt, silver bracelet on left wrist",
+        "action": "lifting a white bowl from the rice cooker",
+        "position": "center"
+      },
+      {
+        "desc": "white electric rice cooker with a metallic lid and control panel",
+        "action": "static",
+        "position": "center foreground"
+      },
+      {
+        "desc": "white ceramic bowl containing cooked white rice",
+        "action": "being lifted",
+        "position": "center"
+      },
+      {
+        "desc": "white marble countertop with grey veining",
+        "action": "static",
+        "position": "foreground"
+      },
+      {
+        "desc": "stainless steel refrigerator",
+        "action": "static",
+        "position": "background"
+      },
+      {
+        "desc": "white kitchen cabinets",
+        "action": "static",
+        "position": "background"
+      },
+      {
+        "desc": "small container of brown food on a white plate",
+        "action": "static",
+        "position": "center foreground"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The woman lifts a white bowl filled with rice out of the rice cooker.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The rice cooker sits on the marble countertop.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A small container of food rests on a plate next to the rice cooker.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The woman is standing behind the marble countertop. The white rice cooker is on the countertop in front of her. She is holding the white bowl above the rice cooker. The refrigerator is behind the woman.",
+    "parse_success": true,
+    "chunk_idx": 39,
+    "video_id": "2UMp078OGQw"
+  },
+  {
+    "time": [
+      40,
+      41
+    ],
+    "visible_entities": [
+      {
+        "desc": "woman with long dark brown hair, wearing a blue sleeveless top over a white v-neck shirt, and a silver bracelet on her left wrist",
+        "action": "operating a food processor",
+        "position": "center"
+      },
+      {
+        "desc": "white electric food processor with a clear plastic bowl containing white food",
+        "action": "static",
+        "position": "center"
+      },
+      {
+        "desc": "white marble countertop with grey veining",
+        "action": "static",
+        "position": "foreground"
+      },
+      {
+        "desc": "small glass bowl containing brown granular substance",
+        "action": "static",
+        "position": "center"
+      },
+      {
+        "desc": "white rectangular plate with a silver knife",
+        "action": "static",
+        "position": "center"
+      },
+      {
+        "desc": "stainless steel refrigerator",
+        "action": "static",
+        "position": "background"
+      },
+      {
+        "desc": "white kitchen cabinets",
+        "action": "static",
+        "position": "background"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The woman is using her right hand to push down on the food inside the processor bowl.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The woman is holding the base of the food processor with her left hand.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A small glass bowl of brown ingredients sits on the counter next to the food processor.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A knife rests on a white plate in front of the food processor.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The woman stands behind the marble countertop. The food processor is in front of the woman on the counter. The small glass bowl is to the right of the food processor. The plate with the knife is in front of the food processor. The refrigerator is behind the woman.",
+    "parse_success": true,
+    "chunk_idx": 40,
+    "video_id": "2UMp078OGQw"
+  },
+  {
+    "time": [
+      41,
+      42
+    ],
+    "visible_entities": [
+      {
+        "desc": "person with long dark hair, wearing a blue sleeveless top and a white undergarment, with a silver bracelet on the left wrist",
+        "action": "holding a pink blender cup",
+        "position": "center"
+      },
+      {
+        "desc": "white blender base with a silver control panel",
+        "action": "static",
+        "position": "center"
+      },
+      {
+        "desc": "pink plastic blender cup containing a pink liquid",
+        "action": "being held",
+        "position": "center"
+      },
+      {
+        "desc": "small clear glass bowl containing a brown substance",
+        "action": "static",
+        "position": "right"
+      },
+      {
+        "desc": "white rectangular plate with a spoon",
+        "action": "static",
+        "position": "bottom right"
+      },
+      {
+        "desc": "stainless steel sink and faucet",
+        "action": "static",
+        "position": "background right"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "person is holding a pink blender cup with both hands",
+        "confidence": 1.0
+      },
+      {
+        "fact": "the pink blender cup is positioned above the white blender base",
+        "confidence": 1.0
+      },
+      {
+        "fact": "a small glass bowl with brown contents sits on the counter to the right of the blender",
+        "confidence": 1.0
+      },
+      {
+        "fact": "a white plate with a spoon is visible in the bottom right corner",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The person is standing behind the counter, holding the pink blender cup directly above the white blender base. To the right of the blender, there is a small glass bowl containing a brown substance. In the background to the right, a stainless steel sink is visible. The white plate with a spoon is located in the foreground, to the right of the blender base.",
+    "parse_success": true,
+    "chunk_idx": 41,
+    "video_id": "2UMp078OGQw"
+  },
+  {
+    "time": [
+      42,
+      43
+    ],
+    "visible_entities": [
+      {
+        "desc": "person with long dark hair, wearing a blue sleeveless top",
+        "action": "pushing a pink cylinder into a machine",
+        "position": "center"
+      },
+      {
+        "desc": "white electric kitchen appliance with a cylindrical opening",
+        "action": "static",
+        "position": "center foreground"
+      },
+      {
+        "desc": "pink cylindrical food item, smooth texture",
+        "action": "being pushed down",
+        "position": "center"
+      },
+      {
+        "desc": "clear plastic container with brown residue inside",
+        "action": "static",
+        "position": "right foreground"
+      },
+      {
+        "desc": "stainless steel kitchen sink and faucet",
+        "action": "static",
+        "position": "background right"
+      },
+      {
+        "desc": "silver spoon",
+        "action": "static",
+        "position": "bottom right"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A person is using their hand to push a pink cylinder into the top of a white machine.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A container with brown residue sits on the counter next to the machine.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A spoon rests on a white plate in the bottom right corner.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The person is standing behind the white kitchen appliance. The pink cylinder is inside the opening of the appliance. The container with brown residue is to the right of the appliance. The sink is in the background behind the person's arm.",
+    "parse_success": true,
+    "chunk_idx": 42,
+    "video_id": "2UMp078OGQw"
+  },
+  {
+    "time": [
+      43,
+      44
+    ],
+    "visible_entities": [
+      {
+        "desc": "person with long dark hair, wearing a blue sleeveless top with white trim",
+        "action": "pressing down on a blender cup",
+        "position": "center"
+      },
+      {
+        "desc": "white blender base with a pink blending cup attached",
+        "action": "static",
+        "position": "center"
+      },
+      {
+        "desc": "clear plastic container with brown residue inside",
+        "action": "static",
+        "position": "right"
+      },
+      {
+        "desc": "white plate with a spoon",
+        "action": "static",
+        "position": "bottom right"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "person is pressing down on the pink blender cup",
+        "confidence": 1.0
+      },
+      {
+        "fact": "the blender cup contains a pink liquid",
+        "confidence": 1.0
+      },
+      {
+        "fact": "a container with brown residue sits on the counter",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The person is standing behind the white blender base. The pink cup is inserted into the top of the blender base. To the right of the blender, there is a plastic container with brown residue. The white plate with a spoon is in the foreground, near the bottom right corner.",
+    "parse_success": true,
+    "chunk_idx": 43,
+    "video_id": "2UMp078OGQw"
+  },
+  {
+    "time": [
+      44,
+      45
+    ],
+    "visible_entities": [
+      {
+        "desc": "person with long dark hair, wearing a blue sleeveless top",
+        "action": "holding a pink blender cup",
+        "position": "center"
+      },
+      {
+        "desc": "white blender base with a control panel",
+        "action": "static",
+        "position": "center foreground"
+      },
+      {
+        "desc": "pink plastic blender cup",
+        "action": "being held",
+        "position": "center"
+      },
+      {
+        "desc": "clear plastic container with brown residue",
+        "action": "static",
+        "position": "right foreground"
+      },
+      {
+        "desc": "stainless steel kitchen sink and faucet",
+        "action": "static",
+        "position": "background right"
+      },
+      {
+        "desc": "white plate with a spoon",
+        "action": "static",
+        "position": "bottom right"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The person is holding a pink blender cup with their right hand.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The pink blender cup is positioned directly above the white blender base.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A container with brown residue sits on the counter to the right of the blender.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A spoon rests on a white plate in the bottom right corner.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The person in the blue top is centered in the frame, holding the pink blender cup above the white blender base. To the right of the blender, a container with brown residue sits on the counter. In the background, a stainless steel sink is visible behind the person's right arm. A white plate with a spoon is located in the bottom right foreground.",
+    "parse_success": true,
+    "chunk_idx": 44,
+    "video_id": "2UMp078OGQw"
+  },
+  {
+    "time": [
+      45,
+      46
+    ],
+    "visible_entities": [
+      {
+        "desc": "woman with long dark wavy hair, wearing a blue sleeveless top with a white collar and white vertical trim",
+        "action": "placing a cup onto a blender base",
+        "position": "center"
+      },
+      {
+        "desc": "white personal blender base with a clear cup containing pink liquid",
+        "action": "static",
+        "position": "center"
+      },
+      {
+        "desc": "marble kitchen countertop",
+        "action": "static",
+        "position": "foreground"
+      },
+      {
+        "desc": "stainless steel refrigerator",
+        "action": "static",
+        "position": "background"
+      },
+      {
+        "desc": "small container with brown contents",
+        "action": "static",
+        "position": "center"
+      },
+      {
+        "desc": "white plate with a spoon",
+        "action": "static",
+        "position": "center"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The woman places the blender cup onto the white blender base.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The blender cup contains a pink liquid.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A small container and a plate with a spoon are sitting on the counter.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The woman is standing behind the marble kitchen countertop. The blender is on the counter in front of her. The stainless steel refrigerator is in the background behind the woman.",
+    "parse_success": true,
+    "chunk_idx": 45,
+    "video_id": "2UMp078OGQw"
+  },
+  {
+    "time": [
+      46,
+      47
+    ],
+    "visible_entities": [
+      {
+        "desc": "woman with long brown hair, wearing a blue short-sleeved top and a silver bracelet",
+        "action": "pouring pink powder from a container",
+        "position": "center"
+      },
+      {
+        "desc": "white cylindrical container with a black label",
+        "action": "static",
+        "position": "center foreground"
+      },
+      {
+        "desc": "pink powder",
+        "action": "being poured",
+        "position": "center"
+      },
+      {
+        "desc": "small clear container with brown contents",
+        "action": "static",
+        "position": "center foreground"
+      },
+      {
+        "desc": "white plate with a spoon",
+        "action": "static",
+        "position": "center foreground"
+      },
+      {
+        "desc": "marble countertop",
+        "action": "static",
+        "position": "foreground"
+      },
+      {
+        "desc": "stainless steel refrigerator",
+        "action": "static",
+        "position": "background"
+      },
+      {
+        "desc": "white kitchen cabinets",
+        "action": "static",
+        "position": "background"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The woman is pouring pink powder from a container into the white cylindrical container.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A small clear container with brown contents sits on the counter.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A white plate with a spoon is on the counter.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The woman is standing behind the marble countertop.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The woman is standing behind the marble countertop. The white cylindrical container is on the countertop in front of her. The small clear container is to the right of the white cylindrical container. The white plate with a spoon is in front of the small clear container. The stainless steel refrigerator is behind the woman.",
+    "parse_success": true,
+    "chunk_idx": 46,
+    "video_id": "2UMp078OGQw"
+  },
+  {
+    "time": [
+      47,
+      48
+    ],
+    "visible_entities": [
+      {
+        "desc": "woman with long dark brown hair, wearing a blue sleeveless top and a white apron",
+        "action": "pouring pink powder into a blender cup",
+        "position": "center"
+      },
+      {
+        "desc": "white blender base with a black control panel",
+        "action": "static",
+        "position": "center foreground"
+      },
+      {
+        "desc": "clear plastic blender cup containing pink powder",
+        "action": "being held and filled",
+        "position": "center foreground"
+      },
+      {
+        "desc": "small clear container with brown powder",
+        "action": "static",
+        "position": "center foreground"
+      },
+      {
+        "desc": "white rectangular plate with a spoon",
+        "action": "static",
+        "position": "center foreground"
+      },
+      {
+        "desc": "stainless steel refrigerator",
+        "action": "static",
+        "position": "background"
+      },
+      {
+        "desc": "white marble countertop",
+        "action": "static",
+        "position": "foreground"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The woman is pouring pink powder from a bag into a blender cup.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The blender cup is sitting on top of the white blender base.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A small container of brown powder sits on the counter next to the blender.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A white plate with a spoon is on the counter to the right of the blender.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The woman is standing behind the kitchen island. The blender base is on the counter in front of her. The blender cup is being held by the woman above the blender base. The small container of brown powder is to the right of the blender base. The white plate is to the right of the brown powder container.",
+    "parse_success": true,
+    "chunk_idx": 47,
+    "video_id": "2UMp078OGQw"
+  },
+  {
+    "time": [
+      48,
+      49
+    ],
+    "visible_entities": [
+      {
+        "desc": "woman with long dark brown hair, wearing a blue short-sleeved top and silver bracelets",
+        "action": "twisting the lid of a shaker cup",
+        "position": "center"
+      },
+      {
+        "desc": "tall clear plastic shaker cup containing pink liquid",
+        "action": "being held",
+        "position": "center"
+      },
+      {
+        "desc": "white electric blender base",
+        "action": "static",
+        "position": "center-left"
+      },
+      {
+        "desc": "small glass bowl with brown granular contents",
+        "action": "static",
+        "position": "center"
+      },
+      {
+        "desc": "white rectangular plate with a spoon",
+        "action": "static",
+        "position": "center"
+      },
+      {
+        "desc": "marble countertop",
+        "action": "static",
+        "position": "foreground"
+      },
+      {
+        "desc": "stainless steel refrigerator",
+        "action": "static",
+        "position": "background"
+      },
+      {
+        "desc": "stainless steel range hood",
+        "action": "static",
+        "position": "background"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The woman is twisting the lid of the shaker cup with both hands.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The shaker cup contains a pink liquid.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A small glass bowl containing brown granules sits on the counter.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A white blender base is positioned to the left of the shaker cup.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A spoon rests on a white plate in front of the bowl.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The woman is standing behind the marble countertop in the center of the frame. She is holding the shaker cup with both hands above the counter. To her left (viewer's left) is the white blender base. In front of her on the counter, there is a small glass bowl and a white plate with a spoon. The stainless steel refrigerator and range hood are visible in the background behind the woman.",
+    "parse_success": true,
+    "chunk_idx": 48,
+    "video_id": "2UMp078OGQw"
+  },
+  {
+    "time": [
+      49,
+      50
+    ],
+    "visible_entities": [
+      {
+        "desc": "woman with long dark brown hair, wearing a blue sleeveless top",
+        "action": "pouring pink liquid from a small glass into a larger cup",
+        "position": "center"
+      },
+      {
+        "desc": "white blender base with a control panel",
+        "action": "static",
+        "position": "foreground left"
+      },
+      {
+        "desc": "tall clear plastic cup containing pink liquid",
+        "action": "being held",
+        "position": "center"
+      },
+      {
+        "desc": "small clear glass containing pink liquid",
+        "action": "being held",
+        "position": "center"
+      },
+      {
+        "desc": "small glass jar with brown contents and a spoon",
+        "action": "static",
+        "position": "foreground center"
+      },
+      {
+        "desc": "white marble countertop",
+        "action": "static",
+        "position": "foreground"
+      },
+      {
+        "desc": "stainless steel refrigerator",
+        "action": "static",
+        "position": "background center"
+      },
+      {
+        "desc": "stainless steel range hood",
+        "action": "static",
+        "position": "background top"
+      },
+      {
+        "desc": "white kitchen cabinets",
+        "action": "static",
+        "position": "background"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A woman is pouring pink liquid from a small glass into a larger cup.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The woman is holding the cup and glass over a marble countertop.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A white blender base sits on the counter to the left of the woman.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A jar of brown ingredients is on the counter in front of the woman.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The woman is standing behind the marble countertop. The blender base is to the left of the cup she is holding. The refrigerator is behind the woman. The jar is in front of the woman on the counter.",
+    "parse_success": true,
+    "chunk_idx": 49,
+    "video_id": "2UMp078OGQw"
+  },
+  {
+    "time": [
+      50,
+      51
+    ],
+    "visible_entities": [
+      {
+        "desc": "woman with long dark brown hair, wearing a blue sleeveless top with white side panels",
+        "action": "pouring pink liquid from a blender cup into a glass jar",
+        "position": "center"
+      },
+      {
+        "desc": "white blender base with a black dial",
+        "action": "static",
+        "position": "center"
+      },
+      {
+        "desc": "clear blender cup containing a pink smoothie",
+        "action": "being held and tilted",
+        "position": "center"
+      },
+      {
+        "desc": "small glass jar with a metal lid",
+        "action": "being filled with liquid",
+        "position": "center"
+      },
+      {
+        "desc": "white rectangular plate with a spoon",
+        "action": "static",
         "position": "center"
       },
       {
@@ -2409,824 +3270,40 @@
         "desc": "white kitchen cabinets",
         "action": "static",
         "position": "background"
-      },
-      {
-        "desc": "small container with brown contents",
-        "action": "static",
-        "position": "center foreground"
-      },
-      {
-        "desc": "white plate with a spoon",
-        "action": "static",
-        "position": "center foreground"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "The woman is pouring a white granular substance from a glass jar into the white appliance.",
+        "fact": "The woman is pouring a pink smoothie from a blender cup into a glass jar.",
         "confidence": 1.0
       },
       {
-        "fact": "The woman is holding the glass jar with both hands.",
+        "fact": "The woman is holding the blender cup with her right hand and the jar with her left hand.",
         "confidence": 1.0
       },
       {
-        "fact": "The white appliance is sitting on the marble countertop.",
+        "fact": "A white plate with a spoon sits on the counter next to the jar.",
         "confidence": 1.0
       },
       {
-        "fact": "The small container with brown contents is next to the white appliance.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The spoon is resting on the white plate.",
+        "fact": "The blender base is sitting on the marble countertop.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The woman is standing behind the marble countertop. The white appliance is in front of the woman on the countertop. The small container with brown contents is to the right of the white appliance. The white plate with a spoon is in front of the small container. The stainless steel refrigerator is behind the woman.",
-    "parse_success": true,
-    "chunk_idx": 37,
-    "video_id": "2UMp078OGQw"
-  },
-  {
-    "time": [
-      76,
-      78
-    ],
-    "visible_entities": [
-      {
-        "desc": "woman with long dark wavy hair, wearing a blue short-sleeved top and a white apron",
-        "action": "pouring white powder from a glass jar into a white appliance",
-        "position": "center"
-      },
-      {
-        "desc": "white kitchen appliance, cylindrical with a control panel",
-        "action": "static",
-        "position": "center foreground"
-      },
-      {
-        "desc": "clear glass jar containing white powder",
-        "action": "being held and tilted",
-        "position": "center"
-      },
-      {
-        "desc": "stainless steel refrigerator",
-        "action": "static",
-        "position": "background"
-      },
-      {
-        "desc": "marble countertop, white with grey veining",
-        "action": "static",
-        "position": "foreground"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "The woman is pouring a white powdery substance from a glass jar into the white appliance.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The woman is holding the jar with both hands.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "A small container with a brown substance sits on the counter next to the appliance.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [],
-    "spatial": "The woman is standing behind the marble countertop. The white appliance is on the countertop in front of her. She is holding the glass jar above the opening of the appliance. The refrigerator is behind the woman.",
-    "parse_success": true,
-    "chunk_idx": 38,
-    "video_id": "2UMp078OGQw"
-  },
-  {
-    "time": [
-      78,
-      80
-    ],
-    "visible_entities": [
-      {
-        "desc": "woman with long dark brown hair, wearing a sleeveless blue top over a white shirt, and a bracelet on her left wrist",
-        "action": "removing the lid from a white appliance",
-        "position": "center"
-      },
-      {
-        "desc": "white cylindrical kitchen appliance with a control panel",
-        "action": "static",
-        "position": "center foreground"
-      },
-      {
-        "desc": "white lid with a handle",
-        "action": "being lifted",
-        "position": "center"
-      },
-      {
-        "desc": "small glass bowl containing a brown substance",
-        "action": "static",
-        "position": "center foreground"
-      },
-      {
-        "desc": "white oval plate with a knife",
-        "action": "static",
-        "position": "center foreground"
-      },
-      {
-        "desc": "stainless steel refrigerator",
-        "action": "static",
-        "position": "background"
-      },
-      {
-        "desc": "white marble countertop",
-        "action": "static",
-        "position": "foreground"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "The woman lifts the white lid off the cylindrical appliance.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "She holds the lid in her hands above the appliance.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "A small bowl of brown food sits on the counter next to the appliance.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The appliance is sitting on a white marble countertop.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [],
-    "spatial": "The woman is standing behind the white marble countertop. The white appliance is in front of her on the counter. She is holding the lid above the appliance. To the right of the appliance is a small glass bowl and a white plate.",
-    "parse_success": true,
-    "chunk_idx": 39,
-    "video_id": "2UMp078OGQw"
-  },
-  {
-    "time": [
-      80,
-      82
-    ],
-    "visible_entities": [
-      {
-        "desc": "woman with long dark wavy hair, wearing a blue sleeveless top over a white shirt, silver bracelet on left wrist",
-        "action": "operating a food processor",
-        "position": "center"
-      },
-      {
-        "desc": "white food processor with a clear plastic bowl and white lid",
-        "action": "processing food",
-        "position": "center foreground"
-      },
-      {
-        "desc": "white marble countertop with grey veining",
-        "action": "static",
-        "position": "foreground"
-      },
-      {
-        "desc": "stainless steel refrigerator",
-        "action": "static",
-        "position": "background"
-      },
-      {
-        "desc": "white kitchen cabinets",
-        "action": "static",
-        "position": "background"
-      },
-      {
-        "desc": "small glass bowl containing brown granular substance",
-        "action": "static",
-        "position": "center foreground"
-      },
-      {
-        "desc": "white rectangular plate with a spoon",
-        "action": "static",
-        "position": "center foreground"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "The woman is using her right hand to push the plunger down into the food processor.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The woman is holding the base of the food processor with her left hand.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The food processor is running on the marble countertop.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "A small bowl of ingredients sits next to the food processor.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [],
-    "spatial": "The woman is standing behind the marble countertop. The food processor is in front of the woman on the counter. The small glass bowl is to the right of the food processor. The white plate is in front of the glass bowl.",
-    "parse_success": true,
-    "chunk_idx": 40,
-    "video_id": "2UMp078OGQw"
-  },
-  {
-    "time": [
-      82,
-      84
-    ],
-    "visible_entities": [
-      {
-        "desc": "person with long dark hair, wearing a blue sleeveless top",
-        "action": "holding the blender cup",
-        "position": "center"
-      },
-      {
-        "desc": "white blender base with a control dial",
-        "action": "static",
-        "position": "center foreground"
-      },
-      {
-        "desc": "tall pink blender cup containing a pink liquid mixture",
-        "action": "being held on the base",
-        "position": "center"
-      },
-      {
-        "desc": "small clear plastic container with brown residue inside",
-        "action": "static",
-        "position": "right foreground"
-      },
-      {
-        "desc": "white rectangular plate with a spoon",
-        "action": "static",
-        "position": "bottom right"
-      },
-      {
-        "desc": "silver bracelet",
-        "action": "static",
-        "position": "right"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "The person is holding the pink blender cup onto the white base.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The blender cup contains a pink liquid mixture.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "A small container with brown residue sits on the counter next to the blender.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "A white plate with a spoon is visible in the bottom right corner.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [],
-    "spatial": "The person is standing behind the white blender base. The pink blender cup is positioned on top of the base and is being held by the person. To the right of the blender, there is a small container with brown residue and a white plate with a spoon.",
-    "parse_success": true,
-    "chunk_idx": 41,
-    "video_id": "2UMp078OGQw"
-  },
-  {
-    "time": [
-      84,
-      86
-    ],
-    "visible_entities": [
-      {
-        "desc": "person with long dark hair, wearing a blue sleeveless top",
-        "action": "holding a pink cup",
-        "position": "center"
-      },
-      {
-        "desc": "white blender base, cylindrical, smooth plastic",
-        "action": "static",
-        "position": "center foreground"
-      },
-      {
-        "desc": "pink cup, smooth surface, cylindrical",
-        "action": "being held and pressed down",
-        "position": "center"
-      },
-      {
-        "desc": "clear plastic container with brown residue inside",
-        "action": "static",
-        "position": "right foreground"
-      },
-      {
-        "desc": "stainless steel sink and faucet",
-        "action": "static",
-        "position": "background right"
-      },
-      {
-        "desc": "white countertop",
-        "action": "static",
-        "position": "bottom"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "The person is holding a pink cup with both hands.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The person is pressing the pink cup down onto the white blender base.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "A container with brown residue sits on the counter to the right of the blender.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [],
-    "spatial": "The person is standing behind the white blender base. The pink cup is positioned on top of the blender base and is being held by the person. The container with brown residue is to the right of the blender base on the white countertop.",
-    "parse_success": true,
-    "chunk_idx": 42,
-    "video_id": "2UMp078OGQw"
-  },
-  {
-    "time": [
-      86,
-      88
-    ],
-    "visible_entities": [
-      {
-        "desc": "person with long dark brown hair, wearing a blue sleeveless top with white trim",
-        "action": "pressing down on a blender cup",
-        "position": "center"
-      },
-      {
-        "desc": "white blender base with a control panel",
-        "action": "static",
-        "position": "center foreground"
-      },
-      {
-        "desc": "pink blender cup containing a pink liquid mixture",
-        "action": "being pressed into the blender base",
-        "position": "center"
-      },
-      {
-        "desc": "clear plastic container with a brown substance inside",
-        "action": "static",
-        "position": "right foreground"
-      },
-      {
-        "desc": "white plate with a metal spoon",
-        "action": "static",
-        "position": "bottom right"
-      },
-      {
-        "desc": "stainless steel kitchen sink and faucet",
-        "action": "static",
-        "position": "background right"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "The person is using their right hand to press the pink blender cup down onto the white blender base.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "A container with a brown substance sits on the counter to the right of the blender.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The blender base is positioned in the center of the frame.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [],
-    "spatial": "The person is standing behind the white blender base. The pink blender cup is inserted into the top of the blender base. To the right of the blender, there is a plastic container with a brown substance and a white plate with a spoon. The stainless steel sink is in the background to the right of the person.",
-    "parse_success": true,
-    "chunk_idx": 43,
-    "video_id": "2UMp078OGQw"
-  },
-  {
-    "time": [
-      88,
-      90
-    ],
-    "visible_entities": [
-      {
-        "desc": "person with long dark hair, wearing a blue sleeveless top",
-        "action": "pressing down on a blender cup",
-        "position": "center"
-      },
-      {
-        "desc": "white blender base with a pink smoothie cup attached",
-        "action": "static",
-        "position": "center"
-      },
-      {
-        "desc": "clear plastic container with brown residue inside",
-        "action": "static",
-        "position": "right"
-      },
-      {
-        "desc": "white plate with a spoon on it",
-        "action": "static",
-        "position": "bottom right"
-      },
-      {
-        "desc": "kitchen counter with a sink and faucet in the background",
-        "action": "static",
-        "position": "background"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "A person is pressing down on a pink blender cup attached to a white base.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "A container with brown residue sits on the counter next to the blender.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "A spoon rests on a white plate in the foreground.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [],
-    "spatial": "The person is standing behind the white blender base. The container with brown residue is to the right of the blender. The white plate with a spoon is in front of the container and to the right of the blender.",
-    "parse_success": true,
-    "chunk_idx": 44,
-    "video_id": "2UMp078OGQw"
-  },
-  {
-    "time": [
-      90,
-      92
-    ],
-    "visible_entities": [
-      {
-        "desc": "woman with long dark wavy hair, wearing a blue sleeveless top with white trim and a white collar, and a silver bracelet",
-        "action": "placing a blender cup onto the blender base",
-        "position": "center"
-      },
-      {
-        "desc": "white blender base with a pink smoothie inside a clear cup",
-        "action": "static",
-        "position": "center"
-      },
-      {
-        "desc": "white marble countertop",
-        "action": "static",
-        "position": "foreground"
-      },
-      {
-        "desc": "stainless steel refrigerator",
-        "action": "static",
-        "position": "background"
-      },
-      {
-        "desc": "small white plate with a spoon and a small container of food",
-        "action": "static",
-        "position": "center"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "The woman places the blender cup onto the blender base.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The blender contains a pink liquid.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [],
-    "spatial": "The woman is standing behind the marble countertop. The blender is on the countertop in front of the woman. The refrigerator is behind the woman. The plate with the spoon is to the right of the blender.",
-    "parse_success": true,
-    "chunk_idx": 45,
-    "video_id": "2UMp078OGQw"
-  },
-  {
-    "time": [
-      92,
-      94
-    ],
-    "visible_entities": [
-      {
-        "desc": "woman with long dark brown hair, wearing a blue sleeveless top and a silver bracelet",
-        "action": "pouring pink powder from a pink bottle into a white container",
-        "position": "center"
-      },
-      {
-        "desc": "white cylindrical container with a black label",
-        "action": "static",
-        "position": "center foreground"
-      },
-      {
-        "desc": "pink bottle with a white cap",
-        "action": "being held and tilted",
-        "position": "center foreground"
-      },
-      {
-        "desc": "white marble countertop",
-        "action": "static",
-        "position": "foreground"
-      },
-      {
-        "desc": "stainless steel refrigerator",
-        "action": "static",
-        "position": "background"
-      },
-      {
-        "desc": "white kitchen cabinets",
-        "action": "static",
-        "position": "background"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "The woman is pouring pink powder from a pink bottle into a white container.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The white container is sitting on the marble countertop.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The woman is holding the pink bottle with both hands.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [],
-    "spatial": "The woman is standing behind the marble countertop. The white container is on the countertop in front of the woman. The pink bottle is being held by the woman above the white container. The stainless steel refrigerator is behind the woman.",
-    "parse_success": true,
-    "chunk_idx": 46,
-    "video_id": "2UMp078OGQw"
-  },
-  {
-    "time": [
-      94,
-      96
-    ],
-    "visible_entities": [
-      {
-        "desc": "woman with long dark brown hair, wearing a blue sleeveless top and a white apron, with a bracelet on her left wrist",
-        "action": "pouring pink powder from a plastic bag into a white appliance",
-        "position": "center"
-      },
-      {
-        "desc": "white cylindrical kitchen appliance, likely an ice cream maker base, with a silver control panel",
-        "action": "static",
-        "position": "center foreground"
-      },
-      {
-        "desc": "clear plastic bag containing pink powder",
-        "action": "being held and poured",
-        "position": "center"
-      },
-      {
-        "desc": "marble countertop, white with grey veining",
-        "action": "static",
-        "position": "foreground"
-      },
-      {
-        "desc": "stainless steel refrigerator",
-        "action": "static",
-        "position": "background"
-      },
-      {
-        "desc": "small container with brown contents and a spoon on a white plate",
-        "action": "static",
-        "position": "center foreground"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "The woman is pouring pink powder from a bag into the white appliance.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The appliance is sitting on the marble countertop.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "A small container with a spoon is placed on the counter next to the appliance.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [],
-    "spatial": "The woman is standing behind the marble countertop. The white appliance is on the countertop in front of her. The small container with the spoon is to the right of the appliance.",
-    "parse_success": true,
-    "chunk_idx": 47,
-    "video_id": "2UMp078OGQw"
-  },
-  {
-    "time": [
-      96,
-      98
-    ],
-    "visible_entities": [
-      {
-        "desc": "woman with long dark brown hair, wearing a blue short-sleeved top and a bracelet",
-        "action": "holding a blender cup and pressing down on the lid",
-        "position": "center"
-      },
-      {
-        "desc": "white blender base with a red label",
-        "action": "static",
-        "position": "center foreground"
-      },
-      {
-        "desc": "clear blender cup containing a pink liquid",
-        "action": "being held by the woman",
-        "position": "center"
-      },
-      {
-        "desc": "small glass bowl with brown granular contents",
-        "action": "static",
-        "position": "center foreground"
-      },
-      {
-        "desc": "white rectangular plate with a spoon",
-        "action": "static",
-        "position": "center foreground"
-      },
-      {
-        "desc": "stainless steel refrigerator",
-        "action": "static",
-        "position": "background"
-      },
-      {
-        "desc": "white marble countertop",
-        "action": "static",
-        "position": "foreground"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "The woman is holding a blender cup filled with pink liquid.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The woman is pressing down on the lid of the blender cup.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The blender cup is positioned above the white blender base.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "A small bowl of brown ingredients sits on the counter next to the blender.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "A spoon rests on a white plate in front of the blender.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [],
-    "spatial": "The woman stands behind the kitchen island, holding the blender cup above the white blender base. To the right of the blender base, there is a small bowl and a plate with a spoon. The stainless steel refrigerator is visible in the background behind the woman.",
-    "parse_success": true,
-    "chunk_idx": 48,
-    "video_id": "2UMp078OGQw"
-  },
-  {
-    "time": [
-      98,
-      100
-    ],
-    "visible_entities": [
-      {
-        "desc": "woman with long dark brown hair, wearing a blue sleeveless top",
-        "action": "pouring pink powder from a small container into a shaker cup",
-        "position": "center"
-      },
-      {
-        "desc": "clear plastic shaker cup containing pink liquid",
-        "action": "being held by the woman",
-        "position": "center"
-      },
-      {
-        "desc": "white blender base with a black control panel",
-        "action": "static",
-        "position": "left"
-      },
-      {
-        "desc": "small glass jar with brown contents",
-        "action": "static",
-        "position": "center"
-      },
-      {
-        "desc": "white marble kitchen countertop",
-        "action": "static",
-        "position": "foreground"
-      },
-      {
-        "desc": "stainless steel refrigerator",
-        "action": "static",
-        "position": "background"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "The woman is pouring pink powder from a small container into a shaker cup.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The woman is holding the shaker cup with her left hand.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "A white blender base sits on the countertop to the left of the woman.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "A small glass jar is on the countertop in front of the woman.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [],
-    "spatial": "The woman is standing behind the white marble countertop. The white blender base is to the left of the woman on the counter. The shaker cup is being held by the woman in the center of the frame. The stainless steel refrigerator is in the background behind the woman.",
-    "parse_success": true,
-    "chunk_idx": 49,
-    "video_id": "2UMp078OGQw"
-  },
-  {
-    "time": [
-      100,
-      102
-    ],
-    "visible_entities": [
-      {
-        "desc": "woman with long dark brown hair, wearing a blue sleeveless top with white side panels",
-        "action": "pouring pink liquid from a blender cup into a glass",
-        "position": "center"
-      },
-      {
-        "desc": "white blender base with a black control dial",
-        "action": "static",
-        "position": "center-left"
-      },
-      {
-        "desc": "clear plastic blender cup containing pink liquid",
-        "action": "being held and tilted",
-        "position": "center"
-      },
-      {
-        "desc": "small glass containing a brown liquid",
-        "action": "static",
-        "position": "center"
-      },
-      {
-        "desc": "white rectangular plate with a silver spoon",
-        "action": "static",
-        "position": "center"
-      },
-      {
-        "desc": "stainless steel refrigerator",
-        "action": "static",
-        "position": "background"
-      },
-      {
-        "desc": "white marble countertop",
-        "action": "static",
-        "position": "foreground"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "The woman is pouring a pink smoothie from a blender cup into a glass.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The blender cup is tilted downwards over the glass.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "A small glass with brown liquid sits on the counter.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "A white plate with a spoon is placed on the counter.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [],
-    "spatial": "The woman is standing behind the kitchen island. The blender base is to her left on the counter. She is holding the blender cup in her right hand, positioned above the glass. The glass and the white plate are in front of her on the marble countertop.",
+    "spatial": "The woman is standing behind the marble countertop. The blender base is to the left of the glass jar she is filling. The white plate is in front of the jar. The stainless steel refrigerator is behind the woman.",
     "parse_success": true,
     "chunk_idx": 50,
     "video_id": "2UMp078OGQw"
   },
   {
     "time": [
-      102,
-      104
+      51,
+      52
     ],
     "visible_entities": [
       {
-        "desc": "woman with long dark brown hair, wearing a blue sleeveless top with a white vertical stripe",
+        "desc": "woman with long dark brown hair, wearing a blue sleeveless top with white side panels",
         "action": "drinking from a cup",
         "position": "center"
       },
@@ -3236,29 +3313,29 @@
         "position": "center"
       },
       {
-        "desc": "white kitchen blender base",
+        "desc": "white kitchen blender base with a digital display",
         "action": "static",
         "position": "foreground left"
       },
       {
-        "desc": "small glass bowl with brown contents",
+        "desc": "small glass jar containing a brown substance",
         "action": "static",
         "position": "foreground center"
       },
       {
-        "desc": "white plate with pink food residue",
+        "desc": "white plate with a small pink item on it",
         "action": "static",
         "position": "foreground center"
-      },
-      {
-        "desc": "marble kitchen island countertop",
-        "action": "static",
-        "position": "foreground"
       },
       {
         "desc": "stainless steel refrigerator",
         "action": "static",
-        "position": "background"
+        "position": "background center"
+      },
+      {
+        "desc": "white marble kitchen countertop",
+        "action": "static",
+        "position": "foreground"
       }
     ],
     "atomic_facts": [
@@ -3267,60 +3344,75 @@
         "confidence": 1.0
       },
       {
-        "fact": "The woman is standing behind a marble kitchen island.",
+        "fact": "A white blender base sits on the marble countertop.",
         "confidence": 1.0
       },
       {
-        "fact": "A white blender base sits on the counter to the left of the woman.",
+        "fact": "A small glass jar and a plate are placed on the counter in front of the woman.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The woman is standing behind the marble kitchen island. The white blender base is to the left of the small glass bowl and plate on the counter. The stainless steel refrigerator is behind the woman.",
+    "spatial": "The woman is standing behind the marble countertop. The white blender base is to her left on the counter. The small glass jar and the plate are in front of her on the counter. The stainless steel refrigerator is behind the woman.",
     "parse_success": true,
     "chunk_idx": 51,
     "video_id": "2UMp078OGQw"
   },
   {
     "time": [
-      104,
-      106
+      52,
+      53
     ],
     "visible_entities": [
       {
-        "desc": "woman with long dark wavy hair, wearing a blue sleeveless top with a white diagonal stripe",
+        "desc": "woman with long dark wavy hair, wearing a blue sleeveless top with a white vertical stripe",
         "action": "drinking from a pink cup",
         "position": "center"
       },
       {
-        "desc": "pink cup",
+        "desc": "pink cup, opaque, cylindrical",
         "action": "being held to mouth",
         "position": "center"
       },
       {
-        "desc": "white blender base",
+        "desc": "white blender base, cylindrical, with a black control panel",
         "action": "static",
         "position": "foreground left"
       },
       {
-        "desc": "small glass with brown liquid",
+        "desc": "white plate with a small pink dessert",
         "action": "static",
         "position": "foreground center"
       },
       {
-        "desc": "white plate with pink food item",
+        "desc": "glass of iced coffee, brown liquid with ice",
         "action": "static",
         "position": "foreground center"
       },
       {
-        "desc": "stainless steel refrigerator",
-        "action": "static",
-        "position": "background"
-      },
-      {
-        "desc": "white marble countertop",
+        "desc": "marble countertop, white with grey veining",
         "action": "static",
         "position": "foreground"
+      },
+      {
+        "desc": "stainless steel refrigerator, large, double-door",
+        "action": "static",
+        "position": "background center"
+      },
+      {
+        "desc": "stainless steel range hood, rectangular",
+        "action": "static",
+        "position": "top center"
+      },
+      {
+        "desc": "white kitchen cabinets, flat-panel style",
+        "action": "static",
+        "position": "background right"
+      },
+      {
+        "desc": "stainless steel toaster oven",
+        "action": "static",
+        "position": "background right"
       }
     ],
     "atomic_facts": [
@@ -3329,42 +3421,46 @@
         "confidence": 1.0
       },
       {
-        "fact": "A white blender base sits on the counter.",
+        "fact": "A white blender base sits on the marble countertop.",
         "confidence": 1.0
       },
       {
-        "fact": "A small glass containing brown liquid is on the counter.",
+        "fact": "A plate with a small pink dessert is on the counter.",
         "confidence": 1.0
       },
       {
-        "fact": "A white plate with a pink food item is on the counter.",
+        "fact": "A glass of iced coffee is on the counter.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The kitchen features stainless steel appliances and white cabinets.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The woman is standing behind the marble countertop. The white blender base is to the left of the small glass of brown liquid. The plate with the pink food item is in front of the glass. The refrigerator is behind the woman.",
+    "spatial": "The woman is standing behind the marble countertop. The white blender base is to the left of the glass of iced coffee. The plate with the dessert is in front of the glass of iced coffee. The stainless steel refrigerator is behind the woman. The white kitchen cabinets are to the right of the refrigerator.",
     "parse_success": true,
     "chunk_idx": 52,
     "video_id": "2UMp078OGQw"
   },
   {
     "time": [
-      106,
-      108
+      53,
+      54
     ],
     "visible_entities": [
       {
-        "desc": "woman with long dark wavy hair, wearing a blue sleeveless top with white trim",
+        "desc": "woman with long dark wavy hair, wearing a blue sleeveless top with a white vertical stripe down the center",
         "action": "drinking from a pink cup then lowering it",
         "position": "center"
       },
       {
-        "desc": "tall pink plastic cup",
+        "desc": "pink plastic cup",
         "action": "being held and lowered",
         "position": "center"
       },
       {
-        "desc": "white electric blender base",
+        "desc": "white blender base",
         "action": "static",
         "position": "foreground left"
       },
@@ -3379,19 +3475,24 @@
         "position": "foreground center"
       },
       {
-        "desc": "stainless steel refrigerator",
-        "action": "static",
-        "position": "background center"
-      },
-      {
-        "desc": "white marble countertop",
+        "desc": "marble countertop",
         "action": "static",
         "position": "foreground"
+      },
+      {
+        "desc": "stainless steel refrigerator",
+        "action": "static",
+        "position": "background"
+      },
+      {
+        "desc": "stainless steel range hood",
+        "action": "static",
+        "position": "top center"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "The woman drinks from the pink cup.",
+        "fact": "The woman is drinking from a pink cup.",
         "confidence": 1.0
       },
       {
@@ -3408,51 +3509,56 @@
       }
     ],
     "ocr": [],
-    "spatial": "The woman is standing behind the white marble countertop. The white blender base is to the left of the small glass jar on the counter. The pink cup is held by the woman in front of her face before being lowered near the blender.",
+    "spatial": "The woman is standing behind the marble countertop. The white blender base is to the left of the small glass jar on the counter. The stainless steel refrigerator is behind the woman.",
     "parse_success": true,
     "chunk_idx": 53,
     "video_id": "2UMp078OGQw"
   },
   {
     "time": [
-      108,
-      110
+      54,
+      55
     ],
     "visible_entities": [
       {
-        "desc": "woman with long dark wavy hair, wearing a blue sleeveless top with white vertical panels and a V-neck",
-        "action": "standing behind a kitchen island",
+        "desc": "woman with long dark wavy hair, wearing a blue sleeveless top with white vertical panels",
+        "action": "standing behind the counter",
         "position": "center"
       },
       {
-        "desc": "white cylindrical container with a lid",
-        "action": "static",
-        "position": "foreground left"
-      },
-      {
-        "desc": "tall glass filled with pink liquid",
-        "action": "static",
-        "position": "foreground center"
-      },
-      {
-        "desc": "small glass bowl containing brown granular substance",
-        "action": "static",
-        "position": "foreground center-right"
-      },
-      {
-        "desc": "white plate with a spoon and small food items",
-        "action": "static",
-        "position": "foreground right"
-      },
-      {
-        "desc": "white marble countertop",
+        "desc": "white marble kitchen island countertop",
         "action": "static",
         "position": "foreground"
       },
       {
+        "desc": "white cylindrical blender base",
+        "action": "static",
+        "position": "center"
+      },
+      {
+        "desc": "clear blender cup containing pink liquid",
+        "action": "static",
+        "position": "center"
+      },
+      {
+        "desc": "small glass jar containing brown substance",
+        "action": "static",
+        "position": "center"
+      },
+      {
+        "desc": "white plate with food remnants",
+        "action": "static",
+        "position": "center"
+      },
+      {
         "desc": "stainless steel refrigerator",
         "action": "static",
-        "position": "background center"
+        "position": "background"
+      },
+      {
+        "desc": "stainless steel double wall oven",
+        "action": "static",
+        "position": "left"
       },
       {
         "desc": "stainless steel toaster oven",
@@ -3462,33 +3568,109 @@
     ],
     "atomic_facts": [
       {
-        "fact": "A woman stands behind a kitchen island with her hands resting on the counter.",
+        "fact": "A woman stands behind a kitchen island.",
         "confidence": 1.0
       },
       {
-        "fact": "A white container, a glass of pink liquid, a bowl of brown substance, and a plate are arranged on the countertop.",
+        "fact": "A blender cup filled with pink liquid sits on the counter.",
         "confidence": 1.0
       },
       {
-        "fact": "The woman is positioned between the refrigerator and the doorway on the left.",
+        "fact": "A small jar of brown substance is placed next to the blender.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A white plate with food is on the counter in front of the woman.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The woman is standing behind the marble countertop. The white container is to the left of the pink drink, which is to the left of the bowl of brown substance. The plate is to the right of the bowl. The refrigerator is directly behind the woman.",
+    "spatial": "The woman is standing behind the white marble kitchen island. The blender cup with pink liquid is to the left of the small glass jar. The white plate is in front of the jar and the blender cup. The stainless steel refrigerator is behind the woman.",
     "parse_success": true,
     "chunk_idx": 54,
     "video_id": "2UMp078OGQw"
   },
   {
     "time": [
-      110,
-      112
+      55,
+      56
     ],
     "visible_entities": [
       {
-        "desc": "woman with long dark brown hair, wearing a blue sleeveless top with a white collar and white trim, standing behind a counter",
-        "action": "smiling and looking at the camera",
+        "desc": "woman with long dark wavy hair, wearing a blue sleeveless top with a white collar and white trim",
+        "action": "standing behind the kitchen island",
+        "position": "center"
+      },
+      {
+        "desc": "white marble kitchen island countertop",
+        "action": "static",
+        "position": "foreground"
+      },
+      {
+        "desc": "white blender base",
+        "action": "static",
+        "position": "center"
+      },
+      {
+        "desc": "clear cup containing a pink smoothie",
+        "action": "static",
+        "position": "center"
+      },
+      {
+        "desc": "small glass bowl containing a brown substance",
+        "action": "static",
+        "position": "center"
+      },
+      {
+        "desc": "white plate with a spoon and a small pink item",
+        "action": "static",
+        "position": "center"
+      },
+      {
+        "desc": "stainless steel refrigerator",
+        "action": "static",
+        "position": "background"
+      },
+      {
+        "desc": "white and grey kitchen cabinets",
+        "action": "static",
+        "position": "background"
+      },
+      {
+        "desc": "stainless steel toaster oven",
+        "action": "static",
+        "position": "background"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A woman is standing behind a kitchen island.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A blender, a cup with a pink smoothie, a bowl, and a plate are on the countertop.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The woman is looking at the camera.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The woman is standing behind the kitchen island. The blender, the cup with the pink smoothie, the bowl, and the plate are on the island in front of the woman. The refrigerator and kitchen cabinets are behind the woman.",
+    "parse_success": true,
+    "chunk_idx": 55,
+    "video_id": "2UMp078OGQw"
+  },
+  {
+    "time": [
+      56,
+      57
+    ],
+    "visible_entities": [
+      {
+        "desc": "woman with long dark brown hair, wearing a blue sleeveless top with a white collar and white vertical trim",
+        "action": "standing behind the counter",
         "position": "center"
       },
       {
@@ -3497,24 +3679,24 @@
         "position": "foreground"
       },
       {
-        "desc": "tall white cylindrical container with a lid",
-        "action": "static",
-        "position": "center-left"
-      },
-      {
-        "desc": "glass filled with a pink liquid",
+        "desc": "white blender base",
         "action": "static",
         "position": "center"
       },
       {
-        "desc": "small glass bowl containing a brown substance",
+        "desc": "blender cup containing a pink liquid",
         "action": "static",
-        "position": "center-right"
+        "position": "center"
       },
       {
-        "desc": "white plate with a small pink dessert",
+        "desc": "small glass bowl containing a brown mixture",
         "action": "static",
-        "position": "center-right"
+        "position": "center"
+      },
+      {
+        "desc": "white plate with a spoon and food residue",
+        "action": "static",
+        "position": "center"
       },
       {
         "desc": "stainless steel refrigerator",
@@ -3527,136 +3709,78 @@
         "position": "background"
       },
       {
-        "desc": "white kitchen cabinets",
+        "desc": "white and grey kitchen cabinets",
         "action": "static",
         "position": "background"
+      },
+      {
+        "desc": "stainless steel toaster oven",
+        "action": "static",
+        "position": "background"
+      },
+      {
+        "desc": "double wall oven with stainless steel finish",
+        "action": "static",
+        "position": "left"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "The woman is smiling at the camera.",
+        "fact": "A woman stands behind a kitchen island.",
         "confidence": 1.0
       },
       {
-        "fact": "The woman is standing behind a marble countertop.",
+        "fact": "A blender cup filled with pink liquid sits on the counter.",
         "confidence": 1.0
       },
       {
-        "fact": "A glass of pink liquid is on the counter.",
+        "fact": "A small bowl of brown mixture is placed next to the blender.",
         "confidence": 1.0
       },
       {
-        "fact": "A white container is on the counter.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "A small bowl of brown substance is on the counter.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "A plate with a dessert is on the counter.",
+        "fact": "A used plate with a spoon rests on the counter.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The woman is standing behind the marble countertop. The white container, glass of pink liquid, bowl, and plate are all on the countertop in front of her. The refrigerator and kitchen cabinets are in the background behind the woman.",
-    "parse_success": true,
-    "chunk_idx": 55,
-    "video_id": "2UMp078OGQw"
-  },
-  {
-    "time": [
-      112,
-      114
-    ],
-    "visible_entities": [
-      {
-        "desc": "woman with long dark brown hair, wearing a blue sleeveless top with a white collar and white vertical front panel",
-        "action": "standing behind the counter",
-        "position": "center"
-      },
-      {
-        "desc": "white marble countertop with grey veining",
-        "action": "static",
-        "position": "foreground"
-      },
-      {
-        "desc": "white blender base",
-        "action": "static",
-        "position": "center-left"
-      },
-      {
-        "desc": "clear cup containing a pink liquid",
-        "action": "static",
-        "position": "center"
-      },
-      {
-        "desc": "small glass bowl containing a brown substance",
-        "action": "static",
-        "position": "center-right"
-      },
-      {
-        "desc": "white plate with a spoon and a small amount of pink substance",
-        "action": "static",
-        "position": "center-right"
-      },
-      {
-        "desc": "stainless steel refrigerator",
-        "action": "static",
-        "position": "background"
-      },
-      {
-        "desc": "white kitchen cabinets",
-        "action": "static",
-        "position": "background"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "A woman is standing behind a marble kitchen counter.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "A white blender base, a cup of pink liquid, a bowl of brown substance, and a plate with a spoon are on the counter.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The woman is positioned between the blender and the bowl.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [],
-    "spatial": "The woman is standing behind the marble countertop. The blender base is to the left of the pink drink, which is to the left of the brown bowl. The plate with the spoon is in front of the brown bowl. The refrigerator and cabinets are in the background behind the woman.",
+    "spatial": "The woman is standing behind the white marble countertop. The blender, cup, bowl, and plate are arranged on the countertop in front of her. The stainless steel refrigerator and range hood are located behind the woman in the background.",
     "parse_success": true,
     "chunk_idx": 56,
     "video_id": "2UMp078OGQw"
   },
   {
     "time": [
-      114,
-      116
+      57,
+      58
     ],
     "visible_entities": [
       {
-        "desc": "red background with diagonal shadow lines",
-        "action": "static"
+        "desc": "solid red background with subtle diagonal shadow lines",
+        "action": "static",
+        "position": "background"
       },
       {
-        "desc": "white rectangular tag with green 'eHow' text",
-        "action": "static"
+        "desc": "white rectangular graphic resembling a sticky note with green text",
+        "action": "static",
+        "position": "top"
       },
       {
-        "desc": "white lowercase text 'food' in sans-serif font",
-        "action": "static"
+        "desc": "large white text in a sans-serif font",
+        "action": "static",
+        "position": "center"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "The video displays a red background with the word 'food' in the center.",
+        "fact": "The video displays a static title card.",
         "confidence": 1.0
       },
       {
-        "fact": "The 'eHow' logo is visible on a tag at the top of the screen.",
+        "fact": "The word 'food' is displayed in the center of the screen.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The eHow logo is visible at the top of the screen.",
         "confidence": 1.0
       }
     ],
@@ -3664,74 +3788,75 @@
       "eHow",
       "food"
     ],
-    "spatial": "The white tag with the 'eHow' logo is positioned at the top center of the frame. The word 'food' is located directly below the tag in the center of the red background.",
+    "spatial": "The white 'eHow' logo is positioned above the large white word 'food'. Both text elements are centered horizontally against the red background.",
     "parse_success": true,
     "chunk_idx": 57,
     "video_id": "2UMp078OGQw"
   },
   {
     "time": [
-      116,
-      118
+      58,
+      59
     ],
     "visible_entities": [
       {
-        "desc": "green text logo reading 'eHow' with a stylized, folded ribbon effect on the letters 'H' and 'w', set against a plain white background",
-        "action": "static"
+        "desc": "green 'eHow' logo with a stylized ribbon-like font and a subtle drop shadow",
+        "action": "static",
+        "position": "center"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "The 'eHow' logo is displayed in the center of the screen.",
+        "fact": "The 'eHow' logo is displayed on the screen.",
         "confidence": 1.0
       },
       {
-        "fact": "The logo features a gradient green color scheme.",
+        "fact": "The text 'eHow' is written in green.",
         "confidence": 1.0
       }
     ],
     "ocr": [
       "eHow"
     ],
-    "spatial": "The green 'eHow' logo is positioned in the center of the frame, surrounded by a white background.",
+    "spatial": "The green 'eHow' logo is centered on a plain white background.",
     "parse_success": true,
     "chunk_idx": 58,
     "video_id": "2UMp078OGQw"
   },
   {
     "time": [
-      118,
-      120
+      59,
+      60
     ],
     "visible_entities": [
       {
-        "desc": "green stylized logo composed of a lowercase 'e' and a geometric 'h' shape, featuring a folded ribbon effect with a subtle drop shadow",
+        "desc": "green stylized logo consisting of the lowercase letters 'e' and 'h' with a folded ribbon effect",
         "action": "static",
-        "position": "left"
+        "position": "center"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "The green 'eh' logo is displayed on a white background.",
+        "fact": "A green logo featuring the text 'eh' is displayed on a white background.",
         "confidence": 1.0
       },
       {
-        "fact": "The logo remains static on the left side of the screen.",
+        "fact": "The logo remains static in the center of the frame.",
         "confidence": 1.0
       }
     ],
     "ocr": [
       "eh"
     ],
-    "spatial": "The green 'eh' logo is positioned on the left side of the white background.",
+    "spatial": "The green 'eh' logo is centered on the white background.",
     "parse_success": true,
     "chunk_idx": 59,
     "video_id": "2UMp078OGQw"
   },
   {
     "time": [
-      120,
-      122
+      60,
+      61
     ],
     "visible_entities": [],
     "atomic_facts": [
@@ -3741,19 +3866,19 @@
       }
     ],
     "ocr": [],
-    "spatial": "The frame is entirely filled with a solid white color, containing no distinguishable entities or spatial relationships.",
+    "spatial": "The frame is entirely filled with a solid white background.",
     "parse_success": true,
     "chunk_idx": 60,
     "video_id": "2UMp078OGQw"
   },
   {
     "time": [
-      122,
-      124
+      61,
+      62
     ],
     "visible_entities": [
       {
-        "desc": "white sans-serif text on a black background",
+        "desc": "white text in a sans-serif font reading 'video filmed by Darryl Townsend'",
         "action": "static",
         "position": "right"
       }
@@ -3764,7 +3889,7 @@
         "confidence": 1.0
       },
       {
-        "fact": "The text remains static throughout the clip.",
+        "fact": "The text is white against a black background.",
         "confidence": 1.0
       }
     ],
@@ -3772,7 +3897,7 @@
       "video filmed by",
       "Darryl Townsend"
     ],
-    "spatial": "The text block is positioned on the right side of the frame against a black background.",
+    "spatial": "The white text is positioned on the right side of the black background.",
     "parse_success": true,
     "chunk_idx": 61,
     "video_id": "2UMp078OGQw"

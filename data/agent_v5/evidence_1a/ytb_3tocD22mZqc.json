@@ -2,92 +2,83 @@
   {
     "time": [
       0,
-      2
+      1
     ],
     "visible_entities": [
       {
-        "desc": "female gymnast with dark hair in a bun, wearing a red long-sleeved leotard with sparkly patterns and white wrist guards",
-        "action": "standing and adjusting wrist guards",
-        "position": "center/foreground"
+        "desc": "female gymnast with dark hair in a bun, wearing a red long-sleeved leotard with sparkly details and white wrist guards",
+        "action": "adjusting wrist guards",
+        "position": "center"
       },
       {
-        "desc": "blue padded safety mat with white text",
+        "desc": "blue vertical banner with white text",
         "action": "static",
-        "position": "center/foreground"
+        "position": "foreground"
       },
       {
-        "desc": "silver metal uneven bars apparatus",
+        "desc": "silver metal uneven bars structure",
         "action": "static",
-        "position": "left/foreground"
+        "position": "left"
       },
       {
-        "desc": "audience members in casual clothing sitting in bleachers",
-        "action": "watching",
+        "desc": "audience members in casual clothing",
+        "action": "static",
         "position": "background"
-      },
-      {
-        "desc": "yellow warning sticker with black text",
-        "action": "static",
-        "position": "right/foreground"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "The gymnast in the red leotard is adjusting her white wrist guards.",
+        "fact": "The gymnast is adjusting the white wrist guards on her hands.",
         "confidence": 1.0
       },
       {
-        "fact": "The blue padded mat is hanging from the uneven bars.",
+        "fact": "The gymnast is standing in front of the uneven bars.",
         "confidence": 1.0
       },
       {
-        "fact": "The audience is seated in the background watching the gymnast.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The yellow sticker on the bar reads 'WARNING'.",
+        "fact": "A blue banner with the text 'AAI' is hanging in the foreground.",
         "confidence": 1.0
       }
     ],
     "ocr": [
-      "WARNING",
-      "AAI"
+      "AAI",
+      "WARNING"
     ],
-    "spatial": "The gymnast is standing in front of the audience and behind the blue padded mat. The silver uneven bars are to the left of the gymnast. The yellow warning sticker is on the right side of the apparatus.",
+    "spatial": "The gymnast is positioned in the center, standing in front of the silver uneven bars structure. A blue banner with white text is in the immediate foreground, partially obscuring the gymnast. The audience is seated in the background behind the gymnast.",
     "parse_success": true,
     "chunk_idx": 0,
     "video_id": "ytb_3tocD22mZqc"
   },
   {
     "time": [
-      2,
-      4
+      1,
+      2
     ],
     "visible_entities": [
       {
         "desc": "female gymnast with dark hair pulled back, wearing a shiny red long-sleeved leotard and white wrist guards",
-        "action": "standing still and adjusting wrist guards",
+        "action": "standing on a platform and adjusting wrist guards",
         "position": "center"
       },
       {
-        "desc": "gymnastics uneven bars apparatus with silver metal poles and a blue padded bar cover",
+        "desc": "gymnastics uneven bars apparatus with metal uprights and blue protective padding",
         "action": "static",
         "position": "foreground"
       },
       {
-        "desc": "yellow rectangular warning sticker with black text",
-        "action": "static",
-        "position": "left"
+        "desc": "audience members sitting in tiered stadium seating, wearing various casual clothing",
+        "action": "watching",
+        "position": "background"
       },
       {
-        "desc": "audience members sitting in tiered green stadium seats",
+        "desc": "yellow warning label with black text attached to a metal pole",
         "action": "static",
-        "position": "background"
+        "position": "right"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "The gymnast is standing between the uneven bars.",
+        "fact": "The gymnast is standing on a raised platform between the bars.",
         "confidence": 1.0
       },
       {
@@ -95,36 +86,36 @@
         "confidence": 1.0
       },
       {
-        "fact": "A yellow warning sticker is attached to the metal pole of the apparatus.",
+        "fact": "The audience is seated in the background watching the event.",
         "confidence": 1.0
       },
       {
-        "fact": "The blue padding on the bar has white text printed on it.",
+        "fact": "A yellow warning label is attached to the right metal pole.",
         "confidence": 1.0
       }
     ],
     "ocr": [
       "WARNING",
-      "AAI"
+      "NG"
     ],
-    "spatial": "The gymnast is standing in the center, positioned between the metal poles of the uneven bars. The blue padded bar is in front of the gymnast. The audience is seated in the background behind the apparatus.",
+    "spatial": "The gymnast is standing in the center, positioned between the metal uprights of the uneven bars. The blue protective padding is in front of the gymnast. The audience is seated in the background behind the apparatus. The yellow warning label is on the right metal pole.",
     "parse_success": true,
     "chunk_idx": 1,
     "video_id": "ytb_3tocD22mZqc"
   },
   {
     "time": [
-      4,
-      6
+      2,
+      3
     ],
     "visible_entities": [
       {
-        "desc": "female gymnast with dark hair pulled back, wearing a red long-sleeved leotard with silver sparkles and 'USA' text on the sleeve",
-        "action": "standing still and looking down",
+        "desc": "female gymnast with dark hair pulled back, wearing a shiny red leotard with silver sparkles and 'USA' text on the sleeve",
+        "action": "preparing for routine",
         "position": "center"
       },
       {
-        "desc": "metal gymnastics apparatus pole, silver/grey, vertical",
+        "desc": "metal gymnastics bar structure with a vertical pole and horizontal bar",
         "action": "static",
         "position": "foreground"
       },
@@ -136,11 +127,11 @@
     ],
     "atomic_facts": [
       {
-        "fact": "The gymnast is standing still behind the metal pole.",
+        "fact": "The gymnast is holding a white object in her hands.",
         "confidence": 1.0
       },
       {
-        "fact": "The gymnast is holding a white object in her hands.",
+        "fact": "The gymnast is standing behind the metal bar structure.",
         "confidence": 1.0
       },
       {
@@ -152,71 +143,67 @@
       "USA",
       "AAI"
     ],
-    "spatial": "The gymnast is positioned behind the vertical metal pole in the foreground. The pole is in front of the gymnast's face. The gymnast is holding the white object in her hands near the bottom of the frame.",
+    "spatial": "The gymnast is positioned behind the vertical metal pole of the gymnastics apparatus. The horizontal bar extends to the left of the vertical pole. The gymnast is holding the white object in front of her torso.",
     "parse_success": true,
     "chunk_idx": 2,
     "video_id": "ytb_3tocD22mZqc"
   },
   {
     "time": [
-      6,
-      8
+      3,
+      4
     ],
     "visible_entities": [
       {
-        "desc": "young female gymnast with dark hair pulled back in a ponytail, wearing a sparkly red long-sleeved leotard with rhinestone embellishments",
-        "action": "standing still and looking forward",
+        "desc": "young female gymnast with dark hair pulled back in a ponytail, wearing a shiny red long-sleeved leotard with silver sparkles on the shoulders and 'USA' text on the sleeve",
+        "action": "standing still",
         "position": "center"
       },
       {
-        "desc": "vertical metal pole, silver/grey, with a white label containing text",
+        "desc": "metal gymnastics apparatus support pole with a grey connector band",
         "action": "static",
-        "position": "foreground right"
-      },
-      {
-        "desc": "horizontal metal bar, silver/grey",
-        "action": "static",
-        "position": "foreground bottom"
+        "position": "foreground"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "The gymnast is standing still behind the metal bars.",
+        "fact": "The gymnast is standing still behind the metal pole.",
         "confidence": 1.0
       },
       {
-        "fact": "The vertical pole is positioned in front of the gymnast's face, partially obscuring it.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The text 'USA' is visible on the sleeve of the gymnast's leotard.",
+        "fact": "The gymnast is wearing a red leotard with 'USA' printed on the sleeve.",
         "confidence": 1.0
       }
     ],
     "ocr": [
       "USA",
-      "AV"
+      "AAI"
     ],
-    "spatial": "The gymnast is positioned behind the horizontal metal bar and the vertical metal pole. The vertical pole is in the foreground, to the right of the gymnast's face. The horizontal bar runs across the lower portion of the frame, in front of the gymnast's torso.",
+    "spatial": "The gymnast is positioned behind the vertical metal pole in the foreground. The pole is to the right of the gymnast's face. The 'USA' text is visible on the gymnast's left sleeve.",
     "parse_success": true,
     "chunk_idx": 3,
     "video_id": "ytb_3tocD22mZqc"
   },
   {
     "time": [
-      8,
-      10
+      4,
+      5
     ],
     "visible_entities": [
       {
-        "desc": "young female gymnast with brown hair in a ponytail secured by a red scrunchie, wearing a shiny red long-sleeved leotard with silver rhinestone embellishments on the sleeves",
+        "desc": "young female gymnast with brown hair in a ponytail secured by a red accessory, wearing a shiny red long-sleeved leotard with silver sparkles",
         "action": "standing still with eyes closed",
         "position": "right"
       },
       {
-        "desc": "metal gymnastics apparatus upright with a grey clamp",
+        "desc": "vertical metal pole, silver/grey color, cylindrical",
         "action": "static",
         "position": "center"
+      },
+      {
+        "desc": "horizontal metal bar, silver/grey color, cylindrical",
+        "action": "static",
+        "position": "left"
       }
     ],
     "atomic_facts": [
@@ -225,35 +212,35 @@
         "confidence": 1.0
       },
       {
-        "fact": "The gymnast is positioned behind the metal apparatus upright.",
+        "fact": "The gymnast is wearing a red sparkly leotard.",
         "confidence": 1.0
       },
       {
-        "fact": "The metal upright has the text 'AAI' printed on it.",
+        "fact": "The vertical pole has the text 'AAI' printed on it.",
         "confidence": 1.0
       }
     ],
     "ocr": [
       "AAI"
     ],
-    "spatial": "The gymnast is positioned to the right of the metal apparatus upright. The upright is in the foreground, partially obscuring the gymnast's face. The gymnast is behind the upright.",
+    "spatial": "The gymnast is positioned to the right of the vertical metal pole. The horizontal metal bar is located to the left of the vertical pole. The vertical pole is in the foreground, partially obscuring the gymnast's face.",
     "parse_success": true,
     "chunk_idx": 4,
     "video_id": "ytb_3tocD22mZqc"
   },
   {
     "time": [
-      10,
-      12
+      5,
+      6
     ],
     "visible_entities": [
       {
-        "desc": "female gymnast with dark hair tied back, wearing a shiny red long-sleeved leotard with rhinestone embellishments on the shoulders",
-        "action": "lowering arms from raised position",
+        "desc": "female gymnast with dark hair pulled back in a ponytail, wearing a shiny red long-sleeved leotard with sparkling embellishments",
+        "action": "lowering arms from a raised position",
         "position": "center"
       },
       {
-        "desc": "metal gymnastics apparatus with vertical and horizontal bars, featuring a grey connector with white text",
+        "desc": "metal gymnastics apparatus support pole, silver/grey, with a bracket clamp",
         "action": "static",
         "position": "foreground"
       }
@@ -264,85 +251,90 @@
         "confidence": 1.0
       },
       {
-        "fact": "The gymnast is wearing a red leotard with sparkly details.",
+        "fact": "The gymnast is wearing a red leotard with sparkles.",
         "confidence": 1.0
       },
       {
-        "fact": "The metal bar structure is positioned in front of the gymnast.",
+        "fact": "The text 'AAI' is visible on the metal pole.",
         "confidence": 1.0
       }
     ],
     "ocr": [
       "AAI"
     ],
-    "spatial": "The gymnast is positioned behind the metal gymnastics apparatus. The vertical bar of the apparatus is in the foreground, partially obscuring the gymnast's face. The horizontal bar extends to the left of the vertical support.",
+    "spatial": "The gymnast is positioned behind the metal support pole. The pole is in the foreground, partially obscuring the gymnast's face and torso. The 'AAI' text is located on the bracket of the pole.",
     "parse_success": true,
     "chunk_idx": 5,
     "video_id": "ytb_3tocD22mZqc"
   },
   {
     "time": [
-      12,
-      14
+      6,
+      7
     ],
     "visible_entities": [
       {
-        "desc": "young female gymnast with dark hair pulled back in a ponytail, wearing a shiny red long-sleeved leotard with silver rhinestone embellishments on the sleeves and chest",
-        "action": "standing still",
+        "desc": "young female gymnast with dark hair pulled back in a ponytail, wearing a shiny red long-sleeved leotard with silver rhinestone embellishments on the sleeves and shoulders",
+        "action": "standing still and looking forward",
         "position": "center"
       },
       {
-        "desc": "silver metal gymnastics apparatus support pole with a grey clamp mechanism",
+        "desc": "metal gymnastics apparatus upright with a grey clamp and horizontal bar",
         "action": "static",
-        "position": "foreground"
+        "position": "foreground left"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "The gymnast is standing still with a focused expression.",
+        "fact": "The gymnast is standing still in front of the apparatus.",
         "confidence": 1.0
       },
       {
-        "fact": "The gymnast is positioned behind the metal support pole.",
+        "fact": "The gymnast is wearing a red leotard with sparkles.",
         "confidence": 1.0
       },
       {
-        "fact": "The metal pole partially obscures the gymnast's right shoulder and arm.",
+        "fact": "The metal apparatus is positioned in the foreground, partially obscuring the gymnast.",
         "confidence": 1.0
       }
     ],
     "ocr": [
       "AV"
     ],
-    "spatial": "The gymnast is standing behind the silver metal support pole. The pole is in the foreground, positioned to the left of the gymnast's face. The 'AV' text is visible on the grey clamp of the pole.",
+    "spatial": "The gymnast is positioned behind the metal gymnastics apparatus. The apparatus is in the foreground on the left side of the frame, while the gymnast is centered in the background.",
     "parse_success": true,
     "chunk_idx": 6,
     "video_id": "ytb_3tocD22mZqc"
   },
   {
     "time": [
-      14,
-      16
+      7,
+      8
     ],
     "visible_entities": [
       {
-        "desc": "female gymnast with dark hair in a bun, wearing a red long-sleeved leotard with sparkles",
+        "desc": "female gymnast with dark hair in a bun, wearing a red long-sleeved leotard with sparkly details and white wrist guards",
         "action": "swinging on the high bar",
         "position": "center"
       },
       {
-        "desc": "uneven bars apparatus with metal uprights, white bars, and blue protective padding",
+        "desc": "uneven bars apparatus with silver metal uprights, white bars, and blue protective padding",
         "action": "static",
         "position": "center"
       },
       {
-        "desc": "blue landing mats with white 'AAI' logos",
+        "desc": "large blue landing mats with white 'AAI' logos",
         "action": "static",
         "position": "bottom"
       },
       {
-        "desc": "spectators in casual clothing sitting in tiered stadium seating",
+        "desc": "audience members in casual clothing sitting in tiered stadium seating",
         "action": "watching",
+        "position": "background"
+      },
+      {
+        "desc": "black barrier wall with white text",
+        "action": "static",
         "position": "background"
       }
     ],
@@ -352,15 +344,19 @@
         "confidence": 1.0
       },
       {
-        "fact": "The gymnast is wearing a red leotard.",
+        "fact": "The gymnast's body is extended horizontally in the air.",
         "confidence": 1.0
       },
       {
-        "fact": "The blue mats are positioned underneath the bars for safety.",
+        "fact": "The blue landing mats are positioned below the bars.",
         "confidence": 1.0
       },
       {
-        "fact": "Spectators are seated in the stands behind the apparatus.",
+        "fact": "The text 'AAI' is visible on the blue padding and mats.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The text 'PANTENE PRO-V' is visible on the black barrier in the background.",
         "confidence": 1.0
       }
     ],
@@ -369,29 +365,88 @@
       "PANTENE",
       "PRO-V"
     ],
-    "spatial": "The gymnast is positioned on the high bar, which is above the blue landing mats. The spectators are seated in the background behind the gymnastics apparatus. The 'AAI' logo is visible on the side of the blue mats.",
+    "spatial": "The gymnast is suspended above the blue landing mats. The uneven bars apparatus is in the center of the frame, with the audience seated in the background behind the black barrier. The 'AAI' logo is printed on the side of the mats and the vertical padding.",
     "parse_success": true,
     "chunk_idx": 7,
     "video_id": "ytb_3tocD22mZqc"
   },
   {
     "time": [
-      16,
-      18
+      8,
+      9
     ],
     "visible_entities": [
       {
-        "desc": "female gymnast with dark hair in a bun, wearing a red long-sleeved leotard with sparkles",
+        "desc": "female gymnast with dark hair in a bun, wearing a red long-sleeved leotard with sparkly details and white wrist guards",
         "action": "performing a handstand on the high bar",
         "position": "center"
       },
       {
-        "desc": "uneven bars apparatus with silver metal uprights and white bars",
+        "desc": "uneven bars apparatus with silver metal uprights and white horizontal bars",
         "action": "static",
         "position": "center"
       },
       {
-        "desc": "audience members seated in stadium rows",
+        "desc": "crowd of spectators in tiered seating",
+        "action": "watching",
+        "position": "background"
+      },
+      {
+        "desc": "flags hanging on the wall",
+        "action": "static",
+        "position": "top left"
+      },
+      {
+        "desc": "black banner with white text",
+        "action": "static",
+        "position": "bottom right"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The gymnast is balancing in a vertical handstand position on the high bar.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The gymnast's body is fully extended with legs together and toes pointed.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The crowd is seated in the stands behind the apparatus.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The text 'PANTENE PRO-V' is visible on the banner in the background.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "PANTENE",
+      "PRO-V"
+    ],
+    "spatial": "The gymnast is positioned in the center of the frame, holding onto the high bar of the uneven bars apparatus. The crowd is located in the background behind the gymnast. The flags are hanging on the wall in the upper left corner, above the spectators.",
+    "parse_success": true,
+    "chunk_idx": 8,
+    "video_id": "ytb_3tocD22mZqc"
+  },
+  {
+    "time": [
+      9,
+      10
+    ],
+    "visible_entities": [
+      {
+        "desc": "female gymnast with brown hair in a bun, wearing a red long-sleeved leotard with sparkly details",
+        "action": "swinging on the high bar",
+        "position": "center"
+      },
+      {
+        "desc": "uneven bars apparatus with silver metal uprights and white horizontal bars",
+        "action": "static",
+        "position": "center"
+      },
+      {
+        "desc": "audience members seated in tiered rows",
         "action": "watching",
         "position": "background"
       },
@@ -403,15 +458,15 @@
     ],
     "atomic_facts": [
       {
-        "fact": "The gymnast is balancing upside down on the high bar.",
+        "fact": "The gymnast is swinging on the high bar of the uneven bars apparatus.",
         "confidence": 1.0
       },
       {
-        "fact": "The gymnast's legs are extended straight upwards.",
+        "fact": "The gymnast is wearing a red leotard.",
         "confidence": 1.0
       },
       {
-        "fact": "The audience is seated in the background behind the apparatus.",
+        "fact": "The audience is seated in the background watching the performance.",
         "confidence": 1.0
       },
       {
@@ -419,75 +474,20 @@
         "confidence": 1.0
       }
     ],
-    "ocr": [
-      "AAI",
-      "PANTENE",
-      "PRO-V"
-    ],
-    "spatial": "The gymnast is positioned on the high bar in the center of the frame. The audience is seated in the background behind the gymnast and the apparatus. The flags are hanging above the audience on the left side.",
-    "parse_success": true,
-    "chunk_idx": 8,
-    "video_id": "ytb_3tocD22mZqc"
-  },
-  {
-    "time": [
-      18,
-      20
-    ],
-    "visible_entities": [
-      {
-        "desc": "female gymnast with brown hair tied back, wearing a red long-sleeved leotard with sparkly details",
-        "action": "swinging on the uneven bars",
-        "position": "center"
-      },
-      {
-        "desc": "metal uneven bars apparatus with white rails and support cables",
-        "action": "static",
-        "position": "center"
-      },
-      {
-        "desc": "crowd of spectators in tiered seating",
-        "action": "watching",
-        "position": "background"
-      },
-      {
-        "desc": "international flags hanging from the ceiling",
-        "action": "static",
-        "position": "top left"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "The gymnast is swinging her body around the high bar of the uneven bars.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The gymnast is wearing a red leotard.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "Flags representing different countries are hanging in the background.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The crowd is seated in the stands behind the apparatus.",
-        "confidence": 1.0
-      }
-    ],
     "ocr": [],
-    "spatial": "The gymnast is in the center of the frame, holding onto the high bar of the uneven bars. The crowd is behind the gymnast in the background. The flags are hanging above and to the left of the gymnast.",
+    "spatial": "The gymnast is in the center of the frame, positioned on the high bar of the uneven bars apparatus. The audience is seated in the background behind the apparatus. The flags are hanging from the ceiling in the top left corner, above the audience.",
     "parse_success": true,
     "chunk_idx": 9,
     "video_id": "ytb_3tocD22mZqc"
   },
   {
     "time": [
-      20,
-      22
+      10,
+      11
     ],
     "visible_entities": [
       {
-        "desc": "female gymnast with brown hair in a bun, wearing a red long-sleeved leotard with sparkles and white wrist guards",
+        "desc": "female gymnast with brown hair in a ponytail, wearing a sparkly red long-sleeved leotard and white wrist guards",
         "action": "swinging on the high bar",
         "position": "center"
       },
@@ -497,658 +497,9 @@
         "position": "center"
       },
       {
-        "desc": "crowd of spectators in tiered seating",
+        "desc": "crowd of spectators in casual clothing",
         "action": "static",
         "position": "background"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "The gymnast is swinging around the high bar of the uneven bars apparatus.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The gymnast is wearing white wrist guards while gripping the bar.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The crowd is seated in the background watching the performance.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [],
-    "spatial": "The gymnast is holding onto the high bar which is positioned in the center of the frame. The crowd of spectators is located in the background behind the gymnast and the apparatus.",
-    "parse_success": true,
-    "chunk_idx": 10,
-    "video_id": "ytb_3tocD22mZqc"
-  },
-  {
-    "time": [
-      22,
-      24
-    ],
-    "visible_entities": [
-      {
-        "desc": "female gymnast with dark hair in a bun, wearing a shiny red long-sleeved leotard with white wrist guards",
-        "action": "performing a handstand on the high bar and swinging underneath it",
-        "position": "center"
-      },
-      {
-        "desc": "uneven bars apparatus with white horizontal bars and silver metal vertical supports",
-        "action": "static",
-        "position": "center"
-      },
-      {
-        "desc": "crowd of spectators in tiered seating",
-        "action": "static",
-        "position": "background"
-      },
-      {
-        "desc": "flags hanging on the wall",
-        "action": "static",
-        "position": "left"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "The gymnast performs a handstand on the high bar with legs extended vertically.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The gymnast swings her body underneath the high bar.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The gymnast is wearing white wrist guards.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "Flags are hanging on the wall to the left of the apparatus.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [
-      "200",
-      "199"
-    ],
-    "spatial": "The gymnast is on the high bar, which is positioned above the lower bar. The crowd is behind the gymnast and the apparatus. The flags are to the left of the uneven bars.",
-    "parse_success": true,
-    "chunk_idx": 11,
-    "video_id": "ytb_3tocD22mZqc"
-  },
-  {
-    "time": [
-      24,
-      26
-    ],
-    "visible_entities": [
-      {
-        "desc": "female gymnast with brown hair in a bun, wearing a shiny red long-sleeved leotard and white wrist guards",
-        "action": "performing a handstand and swinging on the high bar",
-        "position": "center"
-      },
-      {
-        "desc": "uneven bars apparatus with silver metal uprights and white horizontal bars",
-        "action": "static",
-        "position": "center"
-      },
-      {
-        "desc": "crowd of spectators in tiered seating",
-        "action": "watching",
-        "position": "background"
-      },
-      {
-        "desc": "flags hanging on the wall",
-        "action": "static",
-        "position": "left"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "The gymnast performs a handstand on the high bar with legs extended vertically.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The gymnast swings her body downward from the handstand position.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The crowd is seated in the stands behind the gymnastics apparatus.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [],
-    "spatial": "The gymnast is positioned above the uneven bars apparatus. The crowd is located behind and below the gymnast in the background seating. The flags are hanging on the wall to the left of the apparatus.",
-    "parse_success": true,
-    "chunk_idx": 12,
-    "video_id": "ytb_3tocD22mZqc"
-  },
-  {
-    "time": [
-      26,
-      28
-    ],
-    "visible_entities": [
-      {
-        "desc": "female gymnast with dark hair in a bun, wearing a red long-sleeved leotard with sparkles and white wrist guards",
-        "action": "performing on uneven bars",
-        "position": "center"
-      },
-      {
-        "desc": "metal uneven bars apparatus with white rails and support cables",
-        "action": "static",
-        "position": "foreground"
-      },
-      {
-        "desc": "crowd of spectators in tiered seating",
-        "action": "watching",
-        "position": "background"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "The gymnast is swinging on the high bar of the uneven bars.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The gymnast is wearing a red leotard.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The crowd is seated in the stands behind the apparatus.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [],
-    "spatial": "The gymnast is above the uneven bars apparatus. The crowd is behind the gymnast and the apparatus. The gymnast is in front of the crowd.",
-    "parse_success": true,
-    "chunk_idx": 13,
-    "video_id": "ytb_3tocD22mZqc"
-  },
-  {
-    "time": [
-      28,
-      30
-    ],
-    "visible_entities": [
-      {
-        "desc": "female gymnast with dark hair in a bun, wearing a shiny red long-sleeved leotard with silver sequin details and white wrist guards",
-        "action": "performing a handstand on the high bar",
-        "position": "center"
-      },
-      {
-        "desc": "uneven bars apparatus with silver metal uprights and white horizontal bars",
-        "action": "static",
-        "position": "center"
-      },
-      {
-        "desc": "crowd of spectators in tiered seating",
-        "action": "static",
-        "position": "background"
-      },
-      {
-        "desc": "flags hanging on the wall",
-        "action": "static",
-        "position": "left"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "The gymnast is balancing upside down on the high bar with legs extended vertically.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The gymnast's hands are gripping the white high bar.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The crowd is seated in the stands behind the gymnastics equipment.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [],
-    "spatial": "The gymnast is positioned above the uneven bars apparatus, specifically on the high bar. The crowd of spectators is located behind and below the gymnast in the background seating. The flags are hanging on the wall to the left of the apparatus.",
-    "parse_success": true,
-    "chunk_idx": 14,
-    "video_id": "ytb_3tocD22mZqc"
-  },
-  {
-    "time": [
-      30,
-      32
-    ],
-    "visible_entities": [
-      {
-        "desc": "female gymnast with brown hair in a bun, wearing a shiny red long-sleeved leotard with white wrist guards",
-        "action": "performing a giant swing on the high bar",
-        "position": "center"
-      },
-      {
-        "desc": "uneven bars apparatus with silver metal uprights and white horizontal bars",
-        "action": "static",
-        "position": "center"
-      },
-      {
-        "desc": "crowd of spectators in tiered seating",
-        "action": "watching",
-        "position": "background"
-      },
-      {
-        "desc": "flags hanging on the wall",
-        "action": "static",
-        "position": "left"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "The gymnast in the red leotard swings upside down around the high bar.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The gymnast's body is fully extended in a handstand position at the top of the swing.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The crowd is seated in the background watching the performance.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [],
-    "spatial": "The gymnast is positioned on the high bar in the center of the frame. The crowd is located in the background behind the apparatus. The flags are hanging on the wall to the left of the uneven bars.",
-    "parse_success": true,
-    "chunk_idx": 15,
-    "video_id": "ytb_3tocD22mZqc"
-  },
-  {
-    "time": [
-      32,
-      34
-    ],
-    "visible_entities": [
-      {
-        "desc": "female gymnast with brown hair, wearing a red long-sleeved leotard with white wrist guards",
-        "action": "performing a giant swing and handstand on the high bar",
-        "position": "center"
-      },
-      {
-        "desc": "male coach with short brown hair, wearing a white polo shirt with black stripes on the sleeves",
-        "action": "standing and watching",
-        "position": "bottom right"
-      },
-      {
-        "desc": "uneven bars apparatus with silver metal uprights and white rails",
-        "action": "static",
-        "position": "center"
-      },
-      {
-        "desc": "crowd of spectators in tiered seating",
-        "action": "sitting and watching",
-        "position": "background"
-      },
-      {
-        "desc": "row of international flags hanging from the ceiling",
-        "action": "static",
-        "position": "top left"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "The gymnast swings her body around the high bar in a circular motion.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The gymnast reaches a vertical handstand position at the top of the bar.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The coach stands on the floor looking up at the gymnast.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "Flags representing different countries hang in the background.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [],
-    "spatial": "The gymnast is positioned above the uneven bars apparatus. The male coach stands to the right of the apparatus and below the gymnast. The crowd is seated in the background behind the apparatus. The flags are hanging in the top left corner, above the crowd.",
-    "parse_success": true,
-    "chunk_idx": 16,
-    "video_id": "ytb_3tocD22mZqc"
-  },
-  {
-    "time": [
-      34,
-      36
-    ],
-    "visible_entities": [
-      {
-        "desc": "female gymnast with light brown hair in a bun, wearing a red long-sleeved leotard and white wrist guards",
-        "action": "swinging on the high bar",
-        "position": "center"
-      },
-      {
-        "desc": "man with short brown hair, wearing a white polo shirt with black stripes on the sleeves and dark pants",
-        "action": "standing and watching",
-        "position": "bottom right"
-      },
-      {
-        "desc": "uneven bars apparatus with metal uprights and white rails",
-        "action": "static",
-        "position": "center"
-      },
-      {
-        "desc": "crowd of spectators in tiered seating",
-        "action": "sitting",
-        "position": "background"
-      },
-      {
-        "desc": "row of international flags including Malaysia, Mexico, and Australia",
-        "action": "hanging",
-        "position": "left background"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "The gymnast swings her body around the high bar.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The gymnast performs a handstand on the high bar.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The man in the white shirt stands on the mat observing the gymnast.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "Flags are hanging on the wall in the background.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [],
-    "spatial": "The gymnast is above the man in the white shirt. The man is standing to the right of the uneven bars. The flags are hanging on the wall to the left of the apparatus. The crowd is seated in the background behind the gymnast.",
-    "parse_success": true,
-    "chunk_idx": 17,
-    "video_id": "ytb_3tocD22mZqc"
-  },
-  {
-    "time": [
-      36,
-      38
-    ],
-    "visible_entities": [
-      {
-        "desc": "gymnast with blonde hair, wearing a red leotard with white accents",
-        "action": "performing a release move on the high bar",
-        "position": "center"
-      },
-      {
-        "desc": "man with short brown hair, wearing a white polo shirt with black stripes on the sleeves and dark shorts",
-        "action": "standing and watching",
-        "position": "bottom right"
-      },
-      {
-        "desc": "uneven bars apparatus with silver metal uprights and white bars",
-        "action": "static",
-        "position": "center"
-      },
-      {
-        "desc": "crowd of spectators in tiered seating",
-        "action": "static",
-        "position": "background"
-      },
-      {
-        "desc": "row of international flags hanging on the wall",
-        "action": "static",
-        "position": "left background"
-      },
-      {
-        "desc": "red banner with white text",
-        "action": "static",
-        "position": "top left"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "The gymnast in the red leotard releases the high bar and flips in the air.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The man in the white polo shirt stands below the apparatus looking up.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The uneven bars are positioned in the center of the arena floor.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "Flags representing different countries hang on the wall to the left.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "A red banner with the year '2007' is visible in the upper left corner.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [
-      "2007"
-    ],
-    "spatial": "The gymnast is above the uneven bars apparatus. The man in the white polo shirt is standing to the right of the bars and below the gymnast. The crowd is seated in the background behind the apparatus. The flags are hanging on the wall to the left of the scene.",
-    "parse_success": true,
-    "chunk_idx": 18,
-    "video_id": "ytb_3tocD22mZqc"
-  },
-  {
-    "time": [
-      38,
-      40
-    ],
-    "visible_entities": [
-      {
-        "desc": "female gymnast with brown hair in a bun, wearing a red long-sleeved leotard with white wrist guards",
-        "action": "swinging on the high bar",
-        "position": "center"
-      },
-      {
-        "desc": "male coach with short brown hair, wearing a white polo shirt and dark blue track pants with red stripes",
-        "action": "standing and watching",
-        "position": "right foreground"
-      },
-      {
-        "desc": "metal uneven bars apparatus with white rails and support cables",
-        "action": "static",
-        "position": "center"
-      },
-      {
-        "desc": "blue landing mat",
-        "action": "static",
-        "position": "bottom"
-      },
-      {
-        "desc": "crowd of spectators in tiered seating",
-        "action": "static",
-        "position": "background"
-      },
-      {
-        "desc": "flags hanging on the wall",
-        "action": "static",
-        "position": "top left background"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "The gymnast is swinging on the high bar of the uneven bars apparatus.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The coach is standing on the blue mat near the apparatus.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "Flags are hanging on the wall in the background.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [
-      "AAI",
-      "P"
-    ],
-    "spatial": "The gymnast is above the blue mat and in front of the crowd. The coach is to the right of the gymnast and standing on the mat. The flags are to the left of the gymnast and above the crowd in the background.",
-    "parse_success": true,
-    "chunk_idx": 19,
-    "video_id": "ytb_3tocD22mZqc"
-  },
-  {
-    "time": [
-      40,
-      42
-    ],
-    "visible_entities": [
-      {
-        "desc": "female gymnast with brown hair in a bun, wearing a red long-sleeved leotard with sparkly details and white wrist guards",
-        "action": "performing a handstand and swinging on the high bar",
-        "position": "center"
-      },
-      {
-        "desc": "metal uneven bars apparatus with white rails",
-        "action": "static",
-        "position": "center/foreground"
-      },
-      {
-        "desc": "crowd of spectators in tiered seating",
-        "action": "watching",
-        "position": "background"
-      },
-      {
-        "desc": "red banners with white text",
-        "action": "static",
-        "position": "top left"
-      },
-      {
-        "desc": "row of international flags",
-        "action": "static",
-        "position": "left background"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "The gymnast performs a handstand on the high bar in the first frame.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The gymnast swings her legs forward and downward in the second frame.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The gymnast is wearing white wrist guards.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "A red banner in the top left corner displays the text '2007'.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "Flags of various nations hang on the wall to the left of the apparatus.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [
-      "2007"
-    ],
-    "spatial": "The gymnast is positioned above the uneven bars apparatus. The crowd is seated in the background behind the gymnast. The red banners are located in the top left corner, above the row of flags.",
-    "parse_success": true,
-    "chunk_idx": 20,
-    "video_id": "ytb_3tocD22mZqc"
-  },
-  {
-    "time": [
-      42,
-      44
-    ],
-    "visible_entities": [
-      {
-        "desc": "female gymnast with long dark hair, wearing a red sleeveless leotard with sparkly details",
-        "action": "swinging upside down on the high bar",
-        "position": "center"
-      },
-      {
-        "desc": "metal uneven bars apparatus with white bars and blue padding on the uprights",
-        "action": "static",
-        "position": "center/foreground"
-      },
-      {
-        "desc": "large crowd of spectators seated in tiered stadium seating",
-        "action": "static",
-        "position": "background"
-      },
-      {
-        "desc": "bright overhead arena lights",
-        "action": "static",
-        "position": "top"
-      },
-      {
-        "desc": "blue landing mat",
-        "action": "static",
-        "position": "bottom"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "The gymnast is performing a swing on the high bar with her body inverted.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The crowd is watching the gymnastics performance from the stands.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The text 'ARENA GRILL' is visible on a sign in the background.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The text 'at&t' is visible on the barrier wall.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The text 'AAI' is visible on the blue padding of the apparatus.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [
-      "ARENA GRILL",
-      "at&t",
-      "AAI"
-    ],
-    "spatial": "The gymnast is in the center of the frame, swinging on the high bar which is positioned in the foreground. The crowd is seated in the background behind the apparatus. The 'ARENA GRILL' sign is located in the upper right background, above the spectators. The 'at&t' logo is on the black barrier wall below the seating area.",
-    "parse_success": true,
-    "chunk_idx": 21,
-    "video_id": "ytb_3tocD22mZqc"
-  },
-  {
-    "time": [
-      44,
-      46
-    ],
-    "visible_entities": [
-      {
-        "desc": "female gymnast with brown hair in a bun, wearing a red long-sleeved leotard with white accents",
-        "action": "performing a swing on the uneven bars",
-        "position": "center"
-      },
-      {
-        "desc": "metal uneven bars apparatus with blue padding on the uprights",
-        "action": "static",
-        "position": "center"
-      },
-      {
-        "desc": "large crowd of spectators in tiered seating",
-        "action": "static",
-        "position": "background"
-      },
-      {
-        "desc": "black advertising banners with white logos and text",
-        "action": "static",
-        "position": "bottom"
       }
     ],
     "atomic_facts": [
@@ -1161,142 +512,27 @@
         "confidence": 1.0
       },
       {
-        "fact": "The crowd is seated in the background watching the event.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The 'ARENA GRILL' sign is illuminated in the upper right background.",
+        "fact": "The crowd is watching from the stands in the background.",
         "confidence": 1.0
       }
     ],
     "ocr": [
-      "ARENA GRILL",
-      "AAI",
-      "at&t",
-      "PANTENE",
-      "HILTON HHONORS",
-      "COVERGIRL",
-      "Kellogg's",
-      "PACIFIC RIM CH"
+      "USA"
     ],
-    "spatial": "The gymnast is positioned on the uneven bars in the center of the frame. The crowd is located in the background behind the apparatus. The advertising banners are situated below the spectators and behind the landing mat area.",
+    "spatial": "The gymnast is holding onto the high bar, positioned centrally in the frame. The crowd is seated in the background behind the apparatus. A spectator in the bottom right is wearing a shirt with 'USA' text.",
     "parse_success": true,
-    "chunk_idx": 22,
+    "chunk_idx": 10,
     "video_id": "ytb_3tocD22mZqc"
   },
   {
     "time": [
-      46,
-      48
+      11,
+      12
     ],
     "visible_entities": [
       {
-        "desc": "female gymnast with brown hair, wearing a red long-sleeved leotard with white wristbands",
-        "action": "performing a giant swing on the high bar",
-        "position": "center"
-      },
-      {
-        "desc": "uneven bars apparatus with metal uprights and horizontal bars",
-        "action": "static",
-        "position": "center"
-      },
-      {
-        "desc": "crowd of spectators in tiered seating",
-        "action": "static",
-        "position": "background"
-      },
-      {
-        "desc": "illuminated sign reading 'ARENA GRILL' with green arrows",
-        "action": "static",
-        "position": "background right"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "The gymnast swings around the high bar in a circular motion.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The gymnast transitions from a horizontal position to a vertical handstand position.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The crowd is seated in the stands behind the gymnastics apparatus.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The 'ARENA GRILL' sign is visible in the upper background.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [
-      "ARENA GRILL"
-    ],
-    "spatial": "The gymnast is positioned on the high bar in the center of the frame. The crowd is located in the background behind and below the gymnast. The 'ARENA GRILL' sign is situated to the right of the gymnast in the upper background.",
-    "parse_success": true,
-    "chunk_idx": 23,
-    "video_id": "ytb_3tocD22mZqc"
-  },
-  {
-    "time": [
-      48,
-      50
-    ],
-    "visible_entities": [
-      {
-        "desc": "female gymnast with dark hair, wearing a shiny red leotard with white wrist guards",
-        "action": "swinging on the high bar",
-        "position": "center"
-      },
-      {
-        "desc": "uneven bars apparatus with silver metal uprights and white horizontal bars",
-        "action": "static",
-        "position": "center"
-      },
-      {
-        "desc": "large audience seated in tiered stadium bleachers",
-        "action": "watching",
-        "position": "background"
-      },
-      {
-        "desc": "row of international flags hanging on the wall",
-        "action": "static",
-        "position": "left"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "The gymnast in the red leotard is performing a giant swing on the high bar.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The gymnast's body is extended and inverted above the bar in the second frame.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The audience is seated in the background behind the gymnastics equipment.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "Flags representing different countries are hanging on the wall to the left of the apparatus.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [],
-    "spatial": "The gymnast is positioned in the center of the frame, swinging on the high bar which is part of the uneven bars apparatus. The audience is seated in the background behind and to the right of the gymnast. The row of international flags is hanging on the wall to the left of the apparatus.",
-    "parse_success": true,
-    "chunk_idx": 24,
-    "video_id": "ytb_3tocD22mZqc"
-  },
-  {
-    "time": [
-      50,
-      52
-    ],
-    "visible_entities": [
-      {
-        "desc": "female gymnast with fair skin, wearing a long-sleeved red leotard with white wrist guards",
-        "action": "performing a giant swing on the high bar",
+        "desc": "female gymnast with dark hair in a bun, wearing a shiny red long-sleeved leotard and white wrist guards",
+        "action": "performing a handstand and swinging on the high bar",
         "position": "center"
       },
       {
@@ -1305,486 +541,59 @@
         "position": "center"
       },
       {
-        "desc": "large audience seated in tiered rows",
+        "desc": "crowd of spectators in tiered seating",
         "action": "watching",
         "position": "background"
       },
       {
-        "desc": "row of international flags hanging vertically",
+        "desc": "flags hanging on the wall",
         "action": "static",
-        "position": "left background"
+        "position": "left"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "The gymnast is swinging around the high bar with her body extended.",
+        "fact": "The gymnast performs a handstand on the high bar with legs extended vertically.",
         "confidence": 1.0
       },
       {
-        "fact": "The gymnast is wearing white wrist guards for grip.",
+        "fact": "The gymnast swings her body around the high bar.",
         "confidence": 1.0
       },
       {
-        "fact": "The audience is seated in the stands behind the apparatus.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "Flags are hanging on the wall to the left of the gymnast.",
+        "fact": "The crowd is seated in the background watching the performance.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The gymnast is holding onto the high bar in the center of the frame. The audience is seated in the background behind the gymnast. The flags are hanging on the wall to the left of the uneven bars.",
+    "spatial": "The gymnast is positioned above the uneven bars apparatus. The crowd is located in the background behind the apparatus. The flags are hanging on the wall to the left of the gymnast.",
     "parse_success": true,
-    "chunk_idx": 25,
+    "chunk_idx": 11,
     "video_id": "ytb_3tocD22mZqc"
   },
   {
     "time": [
-      52,
-      54
+      12,
+      13
     ],
     "visible_entities": [
       {
-        "desc": "female gymnast with brown hair in a ponytail, wearing a red long-sleeved leotard with sparkles",
-        "action": "performing a dismount from the high bar and landing on the mat",
-        "position": "center"
-      },
-      {
-        "desc": "uneven bars apparatus with silver metal supports and white rails",
-        "action": "static",
-        "position": "left"
-      },
-      {
-        "desc": "large blue landing mat",
-        "action": "static",
-        "position": "bottom"
-      },
-      {
-        "desc": "crowd of spectators in tiered seating",
-        "action": "static",
-        "position": "background"
-      },
-      {
-        "desc": "black advertising banner with white text",
-        "action": "static",
-        "position": "background"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "The gymnast releases the high bar and flips through the air.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The gymnast lands on her feet on the blue mat.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The uneven bars are positioned to the left of the landing area.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The advertising banner is located behind the landing mat.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [
-      "at&t",
-      "PANTENE",
-      "AAI"
-    ],
-    "spatial": "The gymnast is above the blue landing mat during the first frame and on the mat in the second frame. The uneven bars are to the left of the gymnast. The crowd is in the background behind the gymnast and the equipment. The advertising banner is behind the landing mat.",
-    "parse_success": true,
-    "chunk_idx": 26,
-    "video_id": "ytb_3tocD22mZqc"
-  },
-  {
-    "time": [
-      54,
-      56
-    ],
-    "visible_entities": [
-      {
-        "desc": "female gymnast with dark hair pulled back, wearing a shiny red long-sleeved leotard with sequined details on the chest and white wrist guards",
-        "action": "standing with arms raised then lowering them",
-        "position": "center/foreground"
-      },
-      {
-        "desc": "crowd of spectators in stadium seating",
-        "action": "static",
-        "position": "background"
-      },
-      {
-        "desc": "man with short dark hair wearing a white polo shirt with black stripes on the sleeves",
-        "action": "static",
-        "position": "right/background"
-      },
-      {
-        "desc": "blue gymnastics landing mat",
-        "action": "static",
-        "position": "bottom/foreground"
-      },
-      {
-        "desc": "black advertising banner",
-        "action": "static",
-        "position": "background"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "The gymnast stands on the blue mat with arms raised in the air.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The gymnast lowers her arms to her sides.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The crowd is seated in the stands behind the gymnast.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The text 'at&t' is visible on the black banner in the background.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The text 'PANTENE' is visible on the black banner to the left.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [
-      "at&t",
-      "PANTENE",
-      "PRO V"
-    ],
-    "spatial": "The gymnast is standing on top of the blue mat in the center of the frame. The black advertising banner is behind the gymnast and runs horizontally across the background. The crowd is seated in the stands above and behind the banner. The man in the white shirt is to the right of the gymnast, sitting behind the banner.",
-    "parse_success": true,
-    "chunk_idx": 27,
-    "video_id": "ytb_3tocD22mZqc"
-  },
-  {
-    "time": [
-      56,
-      58
-    ],
-    "visible_entities": [
-      {
-        "desc": "young gymnast with brown hair in a high ponytail secured by a shiny red scrunchie and black hair clips, wearing a red long-sleeved leotard with silver sequins",
-        "action": "turning from profile to back view",
-        "position": "foreground right"
-      },
-      {
-        "desc": "woman with reddish-brown hair wearing a white top",
-        "action": "static",
-        "position": "background left"
-      },
-      {
-        "desc": "white rectangular patch with red cursive text",
-        "action": "static",
-        "position": "center back"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "The gymnast turns her body so her back faces the camera.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "A white patch on the back of the gymnast's leotard displays the text 'Kellogg's' in red script.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The gymnast wears a shiny red scrunchie in her hair.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [
-      "Kellogg's"
-    ],
-    "spatial": "The gymnast in the red leotard is in the foreground to the right of the woman in the white top. The 'Kellogg's' patch is located on the center of the gymnast's back.",
-    "parse_success": true,
-    "chunk_idx": 28,
-    "video_id": "ytb_3tocD22mZqc"
-  },
-  {
-    "time": [
-      58,
-      60
-    ],
-    "visible_entities": [
-      {
-        "desc": "female gymnast with brown hair in a ponytail, wearing a long-sleeved red leotard with silver sparkles and white wrist guards",
-        "action": "walking onto the springboard",
-        "position": "center/foreground"
-      },
-      {
-        "desc": "man with short brown hair wearing a white polo shirt with black stripes on the sleeves",
-        "action": "standing with arm extended",
-        "position": "left/foreground"
-      },
-      {
-        "desc": "springboard with a beige padded top and black base",
-        "action": "static",
-        "position": "center/foreground"
-      },
-      {
-        "desc": "large blue landing mats",
-        "action": "static",
-        "position": "background"
-      },
-      {
-        "desc": "crowd of spectators in tiered seating",
-        "action": "static",
-        "position": "background"
-      },
-      {
-        "desc": "white banner with green text and number",
-        "action": "static",
-        "position": "top left"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "The female gymnast steps onto the springboard with her right foot.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The man in the white shirt extends his left arm towards the gymnast.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The gymnast is wearing white wrist guards.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The banner in the background displays the number '1'.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [
-      "1",
-      "AAI"
-    ],
-    "spatial": "The gymnast is to the right of the man in the white shirt. The springboard is in front of the blue landing mats. The man is standing to the left of the springboard. The banner is hanging above the crowd in the background.",
-    "parse_success": true,
-    "chunk_idx": 29,
-    "video_id": "ytb_3tocD22mZqc"
-  },
-  {
-    "time": [
-      60,
-      62
-    ],
-    "visible_entities": [
-      {
-        "desc": "young female gymnast with brown hair in a bun, wearing a sparkly red long-sleeved leotard and white wrist guards",
-        "action": "landing on a mat and walking away",
-        "position": "center/foreground"
-      },
-      {
-        "desc": "man with short brown hair, wearing a white polo shirt with black stripes on the sleeves and dark blue pants",
-        "action": "standing and watching the gymnast",
-        "position": "left/center"
-      },
-      {
-        "desc": "gymnastics equipment including a vaulting table and a large blue landing mat",
-        "action": "static",
-        "position": "right/background"
-      },
-      {
-        "desc": "crowd of spectators seated in stadium stands",
-        "action": "static",
-        "position": "background"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "The gymnast in the red leotard lands on the mat and then walks away from the vault.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The man in the white polo shirt stands near the landing mat.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The text 'Kellogg's' is visible on a banner in the background.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The text 'AAI' is visible on the side of the blue landing mat.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [
-      "Kellogg's",
-      "AAI"
-    ],
-    "spatial": "The gymnast is to the right of the man in the white polo shirt. The man is standing next to the blue landing mat. The crowd is in the background, behind the gymnastics equipment.",
-    "parse_success": true,
-    "chunk_idx": 30,
-    "video_id": "ytb_3tocD22mZqc"
-  },
-  {
-    "time": [
-      62,
-      64
-    ],
-    "visible_entities": [
-      {
-        "desc": "man with short brown hair, white polo shirt with black stripes on shoulders and a logo on the chest, dark blue pants",
-        "action": "walking and placing hand on the gymnast's shoulder",
-        "position": "center"
-      },
-      {
-        "desc": "female gymnast with dark hair in a ponytail with a red scrunchie, wearing a sparkly red long-sleeved leotard and white wrist guards",
-        "action": "walking next to the man",
-        "position": "center-right"
-      },
-      {
-        "desc": "gymnast in a green and white leotard",
-        "action": "standing on a raised platform",
-        "position": "background"
-      },
-      {
-        "desc": "photographers with cameras",
-        "action": "sitting and standing on the floor",
-        "position": "left"
-      },
-      {
-        "desc": "crowd of spectators",
-        "action": "sitting in stadium seats",
-        "position": "background"
-      },
-      {
-        "desc": "gymnastics equipment with red and blue mats",
-        "action": "static",
-        "position": "right"
-      },
-      {
-        "desc": "black barrier wall",
-        "action": "static",
-        "position": "left"
-      },
-      {
-        "desc": "white pleated table skirt",
-        "action": "static",
-        "position": "right"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "A man in a white polo shirt walks alongside a gymnast in a red leotard.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The man places his left hand on the gymnast's shoulder.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The gymnast is wearing white wrist guards.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "Photographers are positioned on the floor to the left of the walking pair.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "A gymnast in a green and white leotard stands on a platform in the background.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The text 'VISA' is visible on a sign in the background.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [
-      "VISA"
-    ],
-    "spatial": "The man in the white polo shirt is to the left of the gymnast in the red leotard. The gymnast is to the right of the man. The photographers are to the left of the man and gymnast, near a black barrier. The gymnastics equipment with red and blue mats is to the right of the gymnast. The crowd is in the background, above the main floor.",
-    "parse_success": true,
-    "chunk_idx": 31,
-    "video_id": "ytb_3tocD22mZqc"
-  },
-  {
-    "time": [
-      64,
-      66
-    ],
-    "visible_entities": [
-      {
-        "desc": "female gymnast with dark hair in a bun, wearing a red long-sleeved leotard with silver sparkles and white wrist guards",
-        "action": "performing a flip on the high bar",
-        "position": "center"
-      },
-      {
-        "desc": "male coach with short brown hair, wearing a white polo shirt with black stripes on the shoulders and dark blue pants",
-        "action": "standing and watching",
-        "position": "right"
-      },
-      {
-        "desc": "uneven bars apparatus with metal bars and support cables",
-        "action": "static",
-        "position": "center"
-      },
-      {
-        "desc": "crowd of spectators in tiered seating",
-        "action": "watching",
-        "position": "background"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "The gymnast in the red leotard is swinging upside down on the high bar.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The coach in the white shirt stands on the mat watching the performance.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The gymnast is wearing white wrist guards on both hands.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The uneven bars are positioned in front of the audience seating.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [],
-    "spatial": "The gymnast is above the uneven bars apparatus. The coach is to the right of the gymnast and stands on the floor. The crowd is in the background behind the apparatus.",
-    "parse_success": true,
-    "chunk_idx": 32,
-    "video_id": "ytb_3tocD22mZqc"
-  },
-  {
-    "time": [
-      66,
-      68
-    ],
-    "visible_entities": [
-      {
-        "desc": "female gymnast with blonde hair tied back, wearing a shiny red long-sleeved leotard and white wrist guards",
+        "desc": "female gymnast with brown hair in a bun, wearing a shiny red long-sleeved leotard and white wrist guards",
         "action": "performing a handstand on the high bar",
         "position": "center"
       },
       {
-        "desc": "male spectator or coach with short dark hair, wearing a white polo shirt with black stripes on the sleeves",
-        "action": "standing and watching",
-        "position": "bottom right"
-      },
-      {
-        "desc": "metal gymnastics uneven bars apparatus with white padded rails and tension cables",
+        "desc": "uneven bars apparatus with white horizontal bars and silver metal uprights",
         "action": "static",
         "position": "center"
       },
       {
-        "desc": "crowd of spectators seated in tiered stadium seating",
+        "desc": "crowd of spectators in tiered seating",
         "action": "watching",
         "position": "background"
       },
       {
-        "desc": "row of international flags hanging vertically",
+        "desc": "flags hanging on the wall",
         "action": "static",
         "position": "left background"
       }
@@ -1799,44 +608,35 @@
         "confidence": 1.0
       },
       {
-        "fact": "A man in a white shirt stands in the foreground observing the performance.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "Flags representing different countries are displayed on the wall to the left.",
+        "fact": "The crowd is seated in the stands behind the apparatus.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The gymnast is positioned above the high bar in the center of the frame. The man in the white shirt is standing in the bottom right corner, in front of the seated crowd. The row of flags is hanging on the wall to the left of the gymnastics apparatus.",
+    "spatial": "The gymnast is positioned on top of the high bar, which is supported by silver uprights. The crowd is located in the background behind and below the gymnast. Flags are hanging on the wall to the left of the apparatus.",
     "parse_success": true,
-    "chunk_idx": 33,
+    "chunk_idx": 12,
     "video_id": "ytb_3tocD22mZqc"
   },
   {
     "time": [
-      68,
-      70
+      13,
+      14
     ],
     "visible_entities": [
       {
-        "desc": "female gymnast with long brown hair, wearing a red long-sleeved leotard with white wrist guards",
-        "action": "swinging on the high bar and performing a handstand",
+        "desc": "female gymnast with dark hair in a bun, wearing a red long-sleeved leotard with sparkly details and white wrist guards",
+        "action": "performing a release move on the high bar",
         "position": "center"
       },
       {
-        "desc": "male coach with short brown hair, wearing a white polo shirt with black stripes on the sleeves and dark pants",
-        "action": "standing and watching",
-        "position": "right"
-      },
-      {
-        "desc": "uneven bars apparatus with silver metal uprights and wooden high bar",
+        "desc": "uneven bars apparatus with metal uprights and white bars",
         "action": "static",
         "position": "center"
       },
       {
         "desc": "crowd of spectators in tiered seating",
-        "action": "static",
+        "action": "watching",
         "position": "background"
       },
       {
@@ -1847,15 +647,170 @@
     ],
     "atomic_facts": [
       {
-        "fact": "The gymnast swings her body upward on the high bar.",
+        "fact": "The gymnast is in mid-air above the high bar.",
         "confidence": 1.0
       },
       {
-        "fact": "The gymnast performs a handstand on the high bar.",
+        "fact": "The gymnast's legs are split wide apart.",
         "confidence": 1.0
       },
       {
-        "fact": "The coach stands on the mat near the uneven bars.",
+        "fact": "The crowd is seated in the background stands.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The gymnast is above the uneven bars apparatus. The crowd is behind the gymnast and the apparatus. The flags are to the left of the scene.",
+    "parse_success": true,
+    "chunk_idx": 13,
+    "video_id": "ytb_3tocD22mZqc"
+  },
+  {
+    "time": [
+      14,
+      15
+    ],
+    "visible_entities": [
+      {
+        "desc": "female gymnast with dark hair tied back, wearing a shiny red long-sleeved leotard with sparkles and white wrist guards",
+        "action": "performing a handstand on the high bar",
+        "position": "center"
+      },
+      {
+        "desc": "uneven bars apparatus with silver metal supports and white high and low bars",
+        "action": "static",
+        "position": "foreground"
+      },
+      {
+        "desc": "large crowd of spectators in tiered seating",
+        "action": "watching",
+        "position": "background"
+      },
+      {
+        "desc": "bright overhead arena lights",
+        "action": "static",
+        "position": "top"
+      },
+      {
+        "desc": "flags hanging on the wall",
+        "action": "static",
+        "position": "left"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The gymnast is balancing upside down on the high bar with legs extended straight up.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The gymnast is wearing white wrist guards while gripping the bar.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The crowd is seated in the background behind the gymnastics apparatus.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The gymnast is positioned on top of the high bar in the center of the frame. The crowd is located in the background behind the gymnast and the apparatus. The overhead lights are above the gymnast.",
+    "parse_success": true,
+    "chunk_idx": 14,
+    "video_id": "ytb_3tocD22mZqc"
+  },
+  {
+    "time": [
+      15,
+      16
+    ],
+    "visible_entities": [
+      {
+        "desc": "female gymnast with brown hair tied back, wearing a shiny red long-sleeved leotard and white wrist guards",
+        "action": "performing a handstand on the high bar",
+        "position": "center"
+      },
+      {
+        "desc": "uneven bars apparatus with silver metal uprights and white horizontal bars",
+        "action": "static",
+        "position": "center"
+      },
+      {
+        "desc": "large crowd of spectators in tiered seating",
+        "action": "watching",
+        "position": "background"
+      },
+      {
+        "desc": "row of international flags hanging from the ceiling",
+        "action": "static",
+        "position": "top left"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The gymnast is balancing in a vertical handstand position on the high bar.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The gymnast's body is fully extended with legs together and toes pointed.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The gymnast is wearing white wrist guards while gripping the bar.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "Flags of various nations are hanging above the audience area.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The gymnast is positioned on top of the high bar in the center of the frame. The crowd is seated in the background behind and below the apparatus. The flags are hanging in the top left corner, above the spectators.",
+    "parse_success": true,
+    "chunk_idx": 15,
+    "video_id": "ytb_3tocD22mZqc"
+  },
+  {
+    "time": [
+      16,
+      17
+    ],
+    "visible_entities": [
+      {
+        "desc": "female gymnast with brown hair, wearing a red long-sleeved leotard with white wrist guards",
+        "action": "performing a handstand on the high bar",
+        "position": "center"
+      },
+      {
+        "desc": "male coach with short brown hair, wearing a white polo shirt with black stripes on the sleeves",
+        "action": "standing and watching",
+        "position": "bottom right"
+      },
+      {
+        "desc": "metal uneven bars apparatus with white rails",
+        "action": "static",
+        "position": "center"
+      },
+      {
+        "desc": "crowd of spectators in tiered seating",
+        "action": "watching",
+        "position": "background"
+      },
+      {
+        "desc": "flags hanging on the wall",
+        "action": "static",
+        "position": "background left"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The gymnast is balancing in a vertical handstand position on the high bar.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The coach is standing on the mat looking up at the gymnast.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The gymnast is gripping the high bar with both hands.",
         "confidence": 1.0
       },
       {
@@ -1864,35 +819,35 @@
       }
     ],
     "ocr": [],
-    "spatial": "The gymnast is positioned on the high bar in the center of the frame. The male coach is standing to the right of the gymnast. The crowd is seated in the background behind the apparatus. The flags are hanging on the wall to the left of the uneven bars.",
+    "spatial": "The gymnast is positioned above the high bar in the center of the frame. The male coach is standing to the right of the uneven bars apparatus and below the gymnast. The crowd is seated in the background behind the apparatus.",
     "parse_success": true,
-    "chunk_idx": 34,
+    "chunk_idx": 16,
     "video_id": "ytb_3tocD22mZqc"
   },
   {
     "time": [
-      70,
-      72
+      17,
+      18
     ],
     "visible_entities": [
       {
-        "desc": "female gymnast with dark hair, wearing a red long-sleeved leotard and white wrist guards",
+        "desc": "female gymnast with blonde hair in a bun, wearing a shiny red long-sleeved leotard and white wrist guards",
         "action": "swinging on the high bar",
         "position": "center"
       },
       {
-        "desc": "man with short brown hair, wearing a white polo shirt with black stripes on the sleeves",
+        "desc": "man with short brown hair, wearing a white polo shirt with black stripes on the sleeves and dark pants",
         "action": "standing and watching",
-        "position": "bottom right"
+        "position": "right foreground"
       },
       {
-        "desc": "metal gymnastics uneven bars apparatus with white rails",
+        "desc": "uneven bars apparatus with metal uprights and white bars",
         "action": "static",
         "position": "center"
       },
       {
-        "desc": "crowd of spectators in tiered seating",
-        "action": "sitting",
+        "desc": "crowd of spectators seated in tiered stadium seating",
+        "action": "static",
         "position": "background"
       },
       {
@@ -1903,7 +858,996 @@
     ],
     "atomic_facts": [
       {
-        "fact": "The gymnast is performing a swing on the high bar.",
+        "fact": "The gymnast is swinging on the high bar of the uneven bars apparatus.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The gymnast transitions from a hanging position to a handstand position on the bar.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The man in the white shirt stands on the floor watching the gymnast.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The crowd is seated in the stands behind the apparatus.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The gymnast is on the high bar, positioned above the man in the white shirt. The man is standing to the right of the uneven bars apparatus. The crowd is in the background behind the gymnast and the apparatus. The flags are hanging on the wall to the left of the scene.",
+    "parse_success": true,
+    "chunk_idx": 17,
+    "video_id": "ytb_3tocD22mZqc"
+  },
+  {
+    "time": [
+      18,
+      19
+    ],
+    "visible_entities": [
+      {
+        "desc": "female gymnast with blonde hair, wearing a red leotard with white accents",
+        "action": "performing a high bar routine, swinging and releasing into a flip",
+        "position": "center/top"
+      },
+      {
+        "desc": "male coach with short brown hair, wearing a white polo shirt with black stripes on the sleeves and dark shorts",
+        "action": "standing and watching the gymnast",
+        "position": "center/bottom"
+      },
+      {
+        "desc": "uneven bars apparatus with metal uprights and wooden rails",
+        "action": "static",
+        "position": "center"
+      },
+      {
+        "desc": "audience members seated in tiered rows",
+        "action": "watching",
+        "position": "background"
+      },
+      {
+        "desc": "red banner with white text",
+        "action": "static",
+        "position": "top/left"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The gymnast swings around the high bar and releases into a backflip.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The coach stands on the mat looking up at the gymnast.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The red banner displays the year '2007'.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "2007"
+    ],
+    "spatial": "The gymnast is above the uneven bars and the coach. The coach is standing in front of the audience seating. The red banner is hanging high up in the background, to the left of the gymnast.",
+    "parse_success": true,
+    "chunk_idx": 18,
+    "video_id": "ytb_3tocD22mZqc"
+  },
+  {
+    "time": [
+      19,
+      20
+    ],
+    "visible_entities": [
+      {
+        "desc": "female gymnast with brown hair in a bun, wearing a red long-sleeved leotard and white wrist guards",
+        "action": "swinging on the high bar",
+        "position": "center"
+      },
+      {
+        "desc": "male coach with short brown hair, wearing a white polo shirt and dark blue pants",
+        "action": "standing and watching",
+        "position": "right"
+      },
+      {
+        "desc": "metal uneven bars apparatus with white padding on the supports",
+        "action": "static",
+        "position": "center"
+      },
+      {
+        "desc": "crowd of spectators in tiered seating",
+        "action": "static",
+        "position": "background"
+      },
+      {
+        "desc": "flags hanging on the wall",
+        "action": "static",
+        "position": "top left"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The gymnast is swinging around the high bar.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The coach is standing on the mat to the right of the apparatus.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "Flags representing different countries are hanging in the background.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "NAI",
+      "PAN"
+    ],
+    "spatial": "The gymnast is positioned above the lower bar and in front of the crowd. The coach is standing to the right of the gymnast and the apparatus. The flags are located in the upper left background, above the spectators.",
+    "parse_success": true,
+    "chunk_idx": 19,
+    "video_id": "ytb_3tocD22mZqc"
+  },
+  {
+    "time": [
+      20,
+      21
+    ],
+    "visible_entities": [
+      {
+        "desc": "female gymnast with brown hair tied back, wearing a red long-sleeved leotard with sparkly details and white wrist guards",
+        "action": "performing a handstand and swinging on the uneven bars",
+        "position": "center"
+      },
+      {
+        "desc": "metal uneven bars apparatus with white rails",
+        "action": "static",
+        "position": "center"
+      },
+      {
+        "desc": "crowd of spectators in tiered seating",
+        "action": "static",
+        "position": "background"
+      },
+      {
+        "desc": "red banner with white text",
+        "action": "static",
+        "position": "top left"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The gymnast performs a handstand on the high bar in the first frame.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The gymnast swings her body horizontally over the bar in the second frame.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The gymnast is wearing white wrist guards.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The banner in the background reads '2007'.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "2007"
+    ],
+    "spatial": "The gymnast is positioned above the uneven bars apparatus. The crowd of spectators is seated in the background behind the apparatus. The red banner is hanging in the top left corner, above the flags and to the left of the gymnast.",
+    "parse_success": true,
+    "chunk_idx": 20,
+    "video_id": "ytb_3tocD22mZqc"
+  },
+  {
+    "time": [
+      21,
+      22
+    ],
+    "visible_entities": [
+      {
+        "desc": "female gymnast with dark hair, wearing a shiny red long-sleeved leotard",
+        "action": "swinging on the uneven bars",
+        "position": "center"
+      },
+      {
+        "desc": "uneven bars apparatus with metal rails and blue padded supports",
+        "action": "static",
+        "position": "center"
+      },
+      {
+        "desc": "crowd of spectators in tiered seating",
+        "action": "static",
+        "position": "background"
+      },
+      {
+        "desc": "blue mat",
+        "action": "static",
+        "position": "bottom"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The gymnast is performing a swing on the high bar of the uneven bars.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The gymnast is wearing a red leotard.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The crowd is watching the performance from the stands.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The text 'ARENA GRILL' is visible on a sign in the background.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The text 'at&t' is visible on the barrier behind the apparatus.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "ARENA GRILL",
+      "at&t",
+      "AAI"
+    ],
+    "spatial": "The gymnast is positioned above the blue mat and is interacting with the uneven bars. The crowd is located in the background behind the apparatus. The 'ARENA GRILL' sign is situated in the upper right background, above the spectators.",
+    "parse_success": true,
+    "chunk_idx": 21,
+    "video_id": "ytb_3tocD22mZqc"
+  },
+  {
+    "time": [
+      22,
+      23
+    ],
+    "visible_entities": [
+      {
+        "desc": "female gymnast with brown hair in a bun, wearing a red long-sleeved leotard with white accents",
+        "action": "swinging on the high bar",
+        "position": "center"
+      },
+      {
+        "desc": "uneven bars apparatus with silver metal bars and blue padded supports",
+        "action": "static",
+        "position": "center"
+      },
+      {
+        "desc": "crowd of spectators in tiered seating",
+        "action": "static",
+        "position": "background"
+      },
+      {
+        "desc": "black advertising banners with white text",
+        "action": "static",
+        "position": "bottom"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The gymnast is swinging on the high bar of the uneven bars apparatus.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The gymnast is wearing a red leotard.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The crowd is watching from the stands in the background.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The 'PANTENE' banner is visible at the bottom left.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The 'at&t' logo is visible on the barrier.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "PANTENE",
+      "HILTON HHONORS",
+      "at&t",
+      "AAI",
+      "ARENA GRILL",
+      "COVERGIRL",
+      "Kellogg's",
+      "PACIFIC RIM CH"
+    ],
+    "spatial": "The gymnast is positioned above the blue mat and is holding onto the high bar. The crowd is seated in the background behind the apparatus. The advertising banners are located below the spectators and behind the gymnastics equipment.",
+    "parse_success": true,
+    "chunk_idx": 22,
+    "video_id": "ytb_3tocD22mZqc"
+  },
+  {
+    "time": [
+      23,
+      24
+    ],
+    "visible_entities": [
+      {
+        "desc": "female gymnast with brown hair, wearing a red long-sleeved leotard with white wrist guards",
+        "action": "performing a handstand on the high bar",
+        "position": "center"
+      },
+      {
+        "desc": "uneven bars apparatus with metal uprights and white bars",
+        "action": "static",
+        "position": "center"
+      },
+      {
+        "desc": "large crowd of spectators in tiered seating",
+        "action": "static",
+        "position": "background"
+      },
+      {
+        "desc": "illuminated sign with white text",
+        "action": "static",
+        "position": "background right"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The gymnast is balancing in a vertical handstand position on the high bar.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The gymnast's body is fully extended with legs together and toes pointed.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The crowd is seated in the stands behind the gymnastics equipment.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The sign reads 'ARENA GRILL'.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "ARENA GRILL"
+    ],
+    "spatial": "The gymnast is positioned on top of the high bar in the center of the frame. The crowd is located in the background behind and below the gymnast. The 'ARENA GRILL' sign is visible in the upper right background, situated above the seating area.",
+    "parse_success": true,
+    "chunk_idx": 23,
+    "video_id": "ytb_3tocD22mZqc"
+  },
+  {
+    "time": [
+      24,
+      25
+    ],
+    "visible_entities": [
+      {
+        "desc": "female gymnast with dark hair, wearing a shiny red long-sleeved leotard",
+        "action": "swinging on the high bar",
+        "position": "center"
+      },
+      {
+        "desc": "uneven bars apparatus with metal uprights and white horizontal bars",
+        "action": "static",
+        "position": "center"
+      },
+      {
+        "desc": "crowd of spectators in tiered seating",
+        "action": "static",
+        "position": "background"
+      },
+      {
+        "desc": "flags hanging on the wall",
+        "action": "static",
+        "position": "left"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The gymnast is performing a routine on the uneven bars.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The gymnast swings from a hanging position to a handstand position on the high bar.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The crowd is watching the performance from the stands.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The gymnast is in the center of the frame, holding onto the high bar of the uneven bars apparatus. The crowd is in the background, situated behind and below the gymnast. The flags are hanging on the wall to the left of the apparatus.",
+    "parse_success": true,
+    "chunk_idx": 24,
+    "video_id": "ytb_3tocD22mZqc"
+  },
+  {
+    "time": [
+      25,
+      26
+    ],
+    "visible_entities": [
+      {
+        "desc": "female gymnast with brown hair, wearing a red long-sleeved leotard with white accents",
+        "action": "performing a giant swing on the uneven bars",
+        "position": "center"
+      },
+      {
+        "desc": "metal uneven bars apparatus with white rails",
+        "action": "static",
+        "position": "center"
+      },
+      {
+        "desc": "large crowd of spectators in tiered seating",
+        "action": "watching",
+        "position": "background"
+      },
+      {
+        "desc": "row of international flags",
+        "action": "static",
+        "position": "left"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The gymnast is swinging around the high bar of the uneven bars.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The gymnast's body is inverted with legs extended upwards in the first frame.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The gymnast is gripping the bar with both hands in the second frame.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "Flags are hanging on the wall to the left of the apparatus.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The gymnast is in the center of the frame, interacting with the uneven bars. The crowd is seated in the background behind and below the apparatus. The flags are located to the left of the gymnast and the bars.",
+    "parse_success": true,
+    "chunk_idx": 25,
+    "video_id": "ytb_3tocD22mZqc"
+  },
+  {
+    "time": [
+      26,
+      27
+    ],
+    "visible_entities": [
+      {
+        "desc": "female gymnast with brown hair in a ponytail, wearing a red long-sleeved leotard with sparkly details and white wrist guards",
+        "action": "performing a dismount from the high bar and landing on the mat",
+        "position": "center"
+      },
+      {
+        "desc": "uneven bars apparatus with silver metal uprights and white horizontal bars",
+        "action": "static",
+        "position": "left"
+      },
+      {
+        "desc": "large blue landing mat with white branding text",
+        "action": "static",
+        "position": "bottom"
+      },
+      {
+        "desc": "crowd of spectators seated in tiered stadium seating",
+        "action": "watching",
+        "position": "background"
+      },
+      {
+        "desc": "man in a white polo shirt with black stripes on the sleeves",
+        "action": "sitting",
+        "position": "right"
+      },
+      {
+        "desc": "black advertising banner with white text and logos",
+        "action": "static",
+        "position": "background"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The gymnast is in mid-air above the mat in the first frame.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The gymnast lands on her feet on the blue mat in the second frame.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The gymnast bends her knees deeply to absorb the impact of the landing.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The 'at&t' logo is visible on the black banner behind the mat.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The word 'PANTENE' is visible on the black banner to the left.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The word 'AAI' is visible on the side of the blue landing mat.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "at&t",
+      "PANTENE",
+      "AAI"
+    ],
+    "spatial": "The gymnast is above the blue landing mat in the first frame and on the mat in the second frame. The uneven bars are to the left of the gymnast. The crowd is in the background behind the gymnast and the equipment. The black advertising banner is behind the landing mat and in front of the lower rows of the audience.",
+    "parse_success": true,
+    "chunk_idx": 26,
+    "video_id": "ytb_3tocD22mZqc"
+  },
+  {
+    "time": [
+      27,
+      28
+    ],
+    "visible_entities": [
+      {
+        "desc": "female gymnast with dark hair pulled back, wearing a long-sleeved red leotard with silver sequin embellishments on the chest and white wrist guards",
+        "action": "standing with arms raised",
+        "position": "center"
+      },
+      {
+        "desc": "large crowd of spectators in stadium seating",
+        "action": "static",
+        "position": "background"
+      },
+      {
+        "desc": "black advertising banner with white text and logos",
+        "action": "static",
+        "position": "background"
+      },
+      {
+        "desc": "blue gymnastics landing mat",
+        "action": "static",
+        "position": "foreground"
+      },
+      {
+        "desc": "man in a white polo shirt with black stripes on the sleeves",
+        "action": "static",
+        "position": "right"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The gymnast stands on the blue mat with both arms raised vertically.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The crowd is seated in the stands behind the gymnast.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The advertising banner displays the text 'PANTENE PRO-V' and 'at&t'.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "PANTENE",
+      "PRO-V",
+      "at&t",
+      "AAI"
+    ],
+    "spatial": "The gymnast is standing on top of the blue mat in the center of the frame. The black advertising banner is located behind the gymnast and below the crowd of spectators. The man in the white shirt is positioned to the right of the gymnast.",
+    "parse_success": true,
+    "chunk_idx": 27,
+    "video_id": "ytb_3tocD22mZqc"
+  },
+  {
+    "time": [
+      28,
+      29
+    ],
+    "visible_entities": [
+      {
+        "desc": "person with brown hair in a high ponytail secured by a red scrunchie and hair clips, wearing a red sparkly leotard with a white patch on the back",
+        "action": "turning from side profile to back view",
+        "position": "right/foreground"
+      },
+      {
+        "desc": "person with reddish-brown hair wearing a white top",
+        "action": "static",
+        "position": "left/background"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The person in the red leotard turns their head from facing left to facing away from the camera.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A white patch with text is visible on the back of the red leotard.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "Kellogg's"
+    ],
+    "spatial": "The person in the red leotard is in the foreground to the right of the person with reddish-brown hair. The person with reddish-brown hair is in the background to the left. The white patch with text is on the back of the red leotard.",
+    "parse_success": true,
+    "chunk_idx": 28,
+    "video_id": "ytb_3tocD22mZqc"
+  },
+  {
+    "time": [
+      29,
+      30
+    ],
+    "visible_entities": [
+      {
+        "desc": "female gymnast with brown hair in a ponytail, wearing a red long-sleeved leotard with sparkly embellishments and white wrist guards",
+        "action": "stepping onto the springboard",
+        "position": "center/foreground"
+      },
+      {
+        "desc": "man with short brown hair wearing a white polo shirt with black stripes on the sleeves",
+        "action": "standing with arm extended",
+        "position": "left/foreground"
+      },
+      {
+        "desc": "springboard with a white padded top and black base",
+        "action": "static",
+        "position": "center/foreground"
+      },
+      {
+        "desc": "large blue landing mat",
+        "action": "static",
+        "position": "center/background"
+      },
+      {
+        "desc": "crowd of spectators in stadium seating",
+        "action": "static",
+        "position": "background"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The gymnast steps onto the springboard with her right foot.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The man in the white shirt stands to the left of the springboard.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The springboard is positioned in front of the blue landing mat.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The banner in the background reads 'PACIFIC CHAMPIONSHIPS'.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "1",
+      "PACIFIC CHAMPIONSHIPS",
+      "AAI"
+    ],
+    "spatial": "The gymnast is in the center of the frame, stepping onto the springboard. The man in the white shirt is to the left of the gymnast and the springboard. The springboard is in front of the large blue landing mat. The crowd is in the background behind the competition floor.",
+    "parse_success": true,
+    "chunk_idx": 29,
+    "video_id": "ytb_3tocD22mZqc"
+  },
+  {
+    "time": [
+      30,
+      31
+    ],
+    "visible_entities": [
+      {
+        "desc": "female gymnast with brown hair in a bun, wearing a sparkly red long-sleeved leotard and white wrist guards",
+        "action": "jumping off a vault onto a mat",
+        "position": "center"
+      },
+      {
+        "desc": "male coach with short brown hair, wearing a white polo shirt with black stripes on the sleeves and dark blue pants",
+        "action": "standing with arms extended to spot the gymnast",
+        "position": "left"
+      },
+      {
+        "desc": "gymnastics vaulting apparatus with a white padded top and black base",
+        "action": "static",
+        "position": "right"
+      },
+      {
+        "desc": "large blue landing mat",
+        "action": "static",
+        "position": "center"
+      },
+      {
+        "desc": "crowd of spectators in stadium seating",
+        "action": "static",
+        "position": "background"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The gymnast jumps from the vaulting table onto the landing mat.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The coach stands ready to spot the gymnast's landing.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The gymnast lands on her feet on the blue mat.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The coach extends his hands towards the gymnast.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "Kellogg's",
+      "AAI"
+    ],
+    "spatial": "The male coach is to the left of the female gymnast. The gymnast is in the air above the blue landing mat, having just left the vaulting apparatus which is to her right. The crowd is in the background behind the gymnastics equipment.",
+    "parse_success": true,
+    "chunk_idx": 30,
+    "video_id": "ytb_3tocD22mZqc"
+  },
+  {
+    "time": [
+      31,
+      32
+    ],
+    "visible_entities": [
+      {
+        "desc": "man with short brown hair, wearing a white polo shirt with black stripes on the shoulders and dark blue pants",
+        "action": "walking and placing hand on gymnast's shoulder",
+        "position": "center"
+      },
+      {
+        "desc": "female gymnast with dark hair in a ponytail with a red scrunchie, wearing a sparkly red long-sleeved leotard and white wrist guards",
+        "action": "walking next to the man",
+        "position": "center-right"
+      },
+      {
+        "desc": "group of photographers wearing black clothing, holding cameras",
+        "action": "sitting and taking photos",
+        "position": "left"
+      },
+      {
+        "desc": "gymnastics equipment with red and blue mats and white skirting",
+        "action": "static",
+        "position": "right"
+      },
+      {
+        "desc": "crowd of spectators in stadium seating",
+        "action": "static",
+        "position": "background"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The man in the white polo shirt walks alongside the gymnast in the red leotard.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The man places his left hand on the gymnast's shoulder.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "Photographers are seated on the floor to the left of the walking pair.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The gymnast is wearing white wrist guards.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "VISA"
+    ],
+    "spatial": "The man in the white polo shirt is to the left of the gymnast in the red leotard. The photographers are to the left of the man. The gymnastics mats are to the right of the gymnast. The crowd is in the background above the floor level.",
+    "parse_success": true,
+    "chunk_idx": 31,
+    "video_id": "ytb_3tocD22mZqc"
+  },
+  {
+    "time": [
+      32,
+      33
+    ],
+    "visible_entities": [
+      {
+        "desc": "female gymnast with dark hair in a bun, wearing a long-sleeved red leotard with silver sparkles and white wrist guards",
+        "action": "performing a flip on the high bar",
+        "position": "center"
+      },
+      {
+        "desc": "male coach with short brown hair, wearing a white polo shirt with black stripes on the shoulders and dark blue pants",
+        "action": "standing and watching",
+        "position": "right"
+      },
+      {
+        "desc": "uneven bars apparatus with silver metal supports and cables",
+        "action": "static",
+        "position": "center"
+      },
+      {
+        "desc": "crowd of spectators in tiered seating",
+        "action": "static",
+        "position": "background"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The gymnast is swinging upside down on the high bar.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The coach is standing on the floor to the right of the apparatus.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The gymnast is wearing a red leotard with silver embellishments.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The gymnast is above the uneven bars apparatus. The coach is to the right of the gymnast and the bars. The crowd is in the background behind the apparatus.",
+    "parse_success": true,
+    "chunk_idx": 32,
+    "video_id": "ytb_3tocD22mZqc"
+  },
+  {
+    "time": [
+      33,
+      34
+    ],
+    "visible_entities": [
+      {
+        "desc": "female gymnast with blonde hair in a bun, wearing a shiny red long-sleeved leotard and white wrist guards",
+        "action": "performing a handstand on the high bar",
+        "position": "center"
+      },
+      {
+        "desc": "uneven bars apparatus with silver metal uprights and white horizontal bars",
+        "action": "static",
+        "position": "center"
+      },
+      {
+        "desc": "man with short brown hair wearing a white polo shirt with black stripes on the shoulders",
+        "action": "standing and watching",
+        "position": "bottom right"
+      },
+      {
+        "desc": "crowd of spectators seated in tiered stadium seating",
+        "action": "watching",
+        "position": "background"
+      },
+      {
+        "desc": "row of international flags hanging on a wall",
+        "action": "static",
+        "position": "left background"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The gymnast is balancing in a vertical handstand position on the high bar.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The gymnast's body is fully extended with legs together and toes pointed.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A man in a white shirt stands on the floor below the apparatus.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "Flags representing different countries are visible on the wall to the left.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The gymnast is positioned above the uneven bars apparatus. The man in the white shirt is standing to the right of the apparatus and below the gymnast. The crowd is seated in the background behind the apparatus. The flags are hanging on the wall to the left of the gymnast.",
+    "parse_success": true,
+    "chunk_idx": 33,
+    "video_id": "ytb_3tocD22mZqc"
+  },
+  {
+    "time": [
+      34,
+      35
+    ],
+    "visible_entities": [
+      {
+        "desc": "female gymnast with brown hair, wearing a red long-sleeved leotard and white wrist guards",
+        "action": "swinging on the high bar and performing a handstand",
+        "position": "center"
+      },
+      {
+        "desc": "male coach with short brown hair, wearing a white polo shirt and dark pants",
+        "action": "standing and watching",
+        "position": "bottom right"
+      },
+      {
+        "desc": "metal uneven bars apparatus with white rails",
+        "action": "static",
+        "position": "center"
+      },
+      {
+        "desc": "crowd of spectators in tiered seating",
+        "action": "static",
+        "position": "background"
+      },
+      {
+        "desc": "row of international flags hanging on the wall",
+        "action": "static",
+        "position": "left background"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The gymnast swings her body upward from a hanging position to a vertical handstand on the high bar.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The coach stands on the mat near the apparatus observing the routine.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "Flags representing different countries are displayed in the background.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The gymnast is positioned above the uneven bars apparatus. The coach is standing to the right of the bars and below the gymnast. The crowd is seated in the background behind the apparatus.",
+    "parse_success": true,
+    "chunk_idx": 34,
+    "video_id": "ytb_3tocD22mZqc"
+  },
+  {
+    "time": [
+      35,
+      36
+    ],
+    "visible_entities": [
+      {
+        "desc": "female gymnast with dark hair, wearing a red long-sleeved leotard and white wrist guards",
+        "action": "swinging on the high bar",
+        "position": "center"
+      },
+      {
+        "desc": "man with short dark hair, wearing a white polo shirt with black stripes on the sleeves and dark pants",
+        "action": "standing and watching",
+        "position": "bottom right"
+      },
+      {
+        "desc": "metal uneven bars apparatus with white rails and support cables",
+        "action": "static",
+        "position": "center"
+      },
+      {
+        "desc": "crowd of spectators in tiered seating",
+        "action": "static",
+        "position": "background"
+      },
+      {
+        "desc": "row of international flags hanging on the wall",
+        "action": "static",
+        "position": "left background"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The gymnast is performing a swing on the high bar of the uneven bars.",
         "confidence": 1.0
       },
       {
@@ -1911,44 +1855,44 @@
         "confidence": 1.0
       },
       {
-        "fact": "Flags of various countries are displayed on the wall to the left.",
+        "fact": "Flags of various countries are displayed on the wall in the background.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The gymnast is above the man in the white shirt. The man is standing to the right of the uneven bars apparatus. The flags are hanging on the wall in the background to the left of the apparatus.",
+    "spatial": "The gymnast is above the man in the white shirt and is holding onto the high bar. The man is standing to the right of the uneven bars apparatus. The crowd is seated in the background behind the apparatus.",
     "parse_success": true,
     "chunk_idx": 35,
     "video_id": "ytb_3tocD22mZqc"
   },
   {
     "time": [
-      72,
-      74
+      36,
+      37
     ],
     "visible_entities": [
       {
-        "desc": "female gymnast with brown hair, wearing a shiny red leotard and white wrist guards",
+        "desc": "female gymnast with brown hair, wearing a red long-sleeved leotard with white accents and white wrist guards",
         "action": "performing a handstand on the high bar and swinging around it",
-        "position": "center/top"
+        "position": "center"
       },
       {
-        "desc": "man with short dark hair, wearing a white polo shirt with dark stripes on the sleeves",
+        "desc": "man with short dark hair, wearing a white polo shirt with black stripes on the sleeves",
         "action": "standing and watching the gymnast",
-        "position": "bottom/right"
+        "position": "bottom right"
       },
       {
-        "desc": "uneven bars apparatus with metal uprights and white rails",
+        "desc": "uneven bars apparatus with silver metal uprights and white rails",
         "action": "static",
         "position": "center"
       },
       {
-        "desc": "row of international flags hanging on the wall",
+        "desc": "row of international flags including Malaysia, Mexico, and Australia",
         "action": "static",
-        "position": "left/background"
+        "position": "left background"
       },
       {
-        "desc": "crowd of spectators seated in tiered stadium seating",
+        "desc": "audience members seated in tiered stadium seating",
         "action": "static",
         "position": "background"
       }
@@ -1963,124 +1907,119 @@
         "confidence": 1.0
       },
       {
-        "fact": "The man in the white shirt stands below the apparatus observing the routine.",
+        "fact": "The man in the white polo shirt stands below the apparatus watching the performance.",
         "confidence": 1.0
       },
       {
-        "fact": "Flags of various nations are displayed on the wall to the left.",
+        "fact": "Flags are hanging on the wall in the background.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The gymnast is positioned above the man in the white shirt, balancing on the high bar. The man stands on the floor to the right of the uneven bars' support structure. The row of flags is located on the wall to the left of the gymnastics apparatus.",
+    "spatial": "The gymnast is positioned above the uneven bars apparatus. The man in the white polo shirt is standing below and to the right of the gymnast. The audience is seated in the background behind the apparatus. The flags are hanging on the wall to the left of the scene.",
     "parse_success": true,
     "chunk_idx": 36,
     "video_id": "ytb_3tocD22mZqc"
   },
   {
     "time": [
-      74,
-      76
+      37,
+      38
     ],
     "visible_entities": [
       {
         "desc": "female gymnast with dark hair, wearing a red long-sleeved leotard and white wrist guards",
-        "action": "performing a high-flying release move on the uneven bars",
-        "position": "center/top"
+        "action": "swinging on the high bar",
+        "position": "center"
       },
       {
-        "desc": "man with short dark hair, wearing a white short-sleeved polo shirt",
-        "action": "standing and looking up",
-        "position": "center/bottom"
+        "desc": "man with short hair, wearing a white polo shirt with black stripes on the sleeves",
+        "action": "standing and watching",
+        "position": "bottom center"
       },
       {
-        "desc": "metal uneven bars apparatus with silver supports",
+        "desc": "metal uneven bars apparatus with white rails",
         "action": "static",
-        "position": "left/center"
+        "position": "center"
       },
       {
         "desc": "crowd of spectators in tiered seating",
-        "action": "static",
+        "action": "sitting",
         "position": "background"
-      },
-      {
-        "desc": "row of international flags including Malaysia, Mexico, and Australia",
-        "action": "static",
-        "position": "left/background"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "The gymnast in the red leotard is swinging high above the uneven bars.",
+        "fact": "The gymnast is performing a swing on the high bar.",
         "confidence": 1.0
       },
       {
-        "fact": "The man in the white shirt is standing below the apparatus, watching the gymnast.",
+        "fact": "The man in the white shirt is standing below the apparatus looking up.",
         "confidence": 1.0
       },
       {
-        "fact": "Flags of various nations are hanging on the wall in the background.",
+        "fact": "Flags are hanging on the wall in the background.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The gymnast is positioned above the man in the white shirt and the uneven bars. The man is standing on the floor below the apparatus. The crowd is seated in the background behind the gymnast and the apparatus.",
+    "spatial": "The gymnast is above the man in the white shirt. The man is standing in front of the crowd. The uneven bars are in the center of the frame, with the gymnast holding onto the top bar.",
     "parse_success": true,
     "chunk_idx": 37,
     "video_id": "ytb_3tocD22mZqc"
   },
   {
     "time": [
-      76,
-      78
+      38,
+      39
     ],
     "visible_entities": [
       {
-        "desc": "gymnast with brown hair in a bun with a red scrunchie, wearing a sparkly red long-sleeved leotard and a white bib with the number 33",
-        "action": "standing with back to camera",
-        "position": "center"
-      },
-      {
-        "desc": "gymnast with brown hair in a bun with a red scrunchie, wearing a sparkly red long-sleeved leotard and white wrist guards",
-        "action": "smiling and adjusting wrist guard",
+        "desc": "gymnast with dark hair in a bun, wearing a sparkly red long-sleeved leotard and white wrist guards",
+        "action": "standing and smiling while looking down",
         "position": "left"
       },
       {
-        "desc": "gymnast with brown hair in a bun with a red scrunchie, wearing a sparkly red long-sleeved leotard and white wrist guards",
+        "desc": "gymnast with dark hair in a bun, wearing a sparkly red long-sleeved leotard with the number 33 pinned to her back and white wrist guards",
+        "action": "standing with back to the camera",
+        "position": "center"
+      },
+      {
+        "desc": "gymnast with dark hair in a bun, wearing a sparkly red long-sleeved leotard and white wrist guards",
         "action": "standing and looking down",
         "position": "right"
       },
       {
-        "desc": "woman with blonde hair, wearing a black t-shirt with a logo and a red lanyard",
-        "action": "sitting and writing on a notepad",
+        "desc": "woman with blonde hair, wearing a black t-shirt with text and a red lanyard",
+        "action": "sitting on a bench and writing in a notebook",
         "position": "far right"
       },
       {
-        "desc": "green padded bench",
+        "desc": "green bench with black bags placed on it",
         "action": "static",
         "position": "background"
       },
       {
-        "desc": "black backpacks",
+        "desc": "black curtain backdrop",
         "action": "static",
-        "position": "on the bench"
+        "position": "background"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "The gymnast on the left is smiling while adjusting her wrist guard.",
+        "fact": "A gymnast on the left is smiling and looking down.",
         "confidence": 1.0
       },
       {
-        "fact": "The gymnast in the center has a white bib with the number 33 on her back.",
+        "fact": "A woman on the far right is writing in a notebook.",
         "confidence": 1.0
       },
       {
-        "fact": "The woman on the far right is writing on a notepad.",
+        "fact": "The gymnast in the center has the number 33 on her back.",
         "confidence": 1.0
       },
       {
-        "fact": "The gymnasts are wearing matching sparkly red leotards.",
+        "fact": "Black bags are resting on the green bench behind the gymnasts.",
         "confidence": 1.0
       }
     ],
@@ -2090,50 +2029,50 @@
       "PACIFIC RIM",
       "GYMNASTICS CHAMPIONSHIPS"
     ],
-    "spatial": "The gymnast with the number 33 bib is in the center, standing in front of the green bench. To her left, another gymnast is smiling. To her right, a third gymnast is looking down. The woman writing on a notepad is sitting on the far right, next to the third gymnast. Black backpacks are on the bench behind the gymnasts.",
+    "spatial": "The gymnast with number 33 is in the center, standing in front of the green bench. To her left is another gymnast who is smiling. To her right is a third gymnast looking down. The woman writing in the notebook is sitting on the bench to the far right of the group.",
     "parse_success": true,
     "chunk_idx": 38,
     "video_id": "ytb_3tocD22mZqc"
   },
   {
     "time": [
-      78,
-      80
+      39,
+      40
     ],
     "visible_entities": [
       {
-        "desc": "gymnast with brown hair in a bun, wearing a shiny red long-sleeved leotard with silver sparkles and a white number tag reading '73' on her back",
-        "action": "standing in a group",
-        "position": "left/foreground"
+        "desc": "gymnast with brown hair in a bun, wearing a shiny red long-sleeved leotard with white dots and a white bib with the number 73",
+        "action": "hugging another gymnast",
+        "position": "foreground left"
       },
       {
-        "desc": "gymnast with brown hair in a bun with a red scrunchie, wearing a shiny red long-sleeved leotard with silver sparkles",
-        "action": "standing in a group",
-        "position": "center/foreground"
+        "desc": "gymnast with brown hair in a bun with a red ribbon, wearing a shiny red long-sleeved leotard with white dots",
+        "action": "being hugged",
+        "position": "foreground right"
       },
       {
-        "desc": "woman with blonde hair, wearing a black t-shirt with 'PACIFIC RIM' text and a lanyard",
+        "desc": "woman with blonde hair, wearing a black t-shirt with 'PACIFIC RIM' text and a red lanyard",
         "action": "sitting and writing on a notepad",
-        "position": "right/background"
+        "position": "background right"
       },
       {
-        "desc": "woman with dark hair, wearing a black t-shirt with 'PACIFIC RIM' text and a lanyard",
-        "action": "sitting",
-        "position": "right/background"
-      },
-      {
-        "desc": "large cylindrical container, white with blue lid, featuring an American flag and green leaf design",
+        "desc": "person with short dark hair, wearing a black t-shirt with 'PACIFIC RIM' text and a red lanyard",
         "action": "static",
-        "position": "right/background"
+        "position": "background far right"
+      },
+      {
+        "desc": "white cylindrical container with a blue lid, featuring a green leaf graphic and an American flag",
+        "action": "static",
+        "position": "background right"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A group of gymnasts in matching red leotards are standing together.",
+        "fact": "Two gymnasts in red leotards are embracing in the foreground.",
         "confidence": 1.0
       },
       {
-        "fact": "The gymnast on the left has a number tag '73' attached to the back of her leotard.",
+        "fact": "The gymnast on the left has a bib number 73 on her back.",
         "confidence": 1.0
       },
       {
@@ -2141,7 +2080,11 @@
         "confidence": 1.0
       },
       {
-        "fact": "The text 'PACIFIC RIM' is visible on the shirts of the seated women.",
+        "fact": "The text 'PACIFIC RIM' is visible on the shirts of the people sitting in the background.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The text 'esign' is visible on the white container.",
         "confidence": 1.0
       }
     ],
@@ -2149,22 +2092,21 @@
       "73",
       "Kellogg's",
       "PACIFIC RIM",
-      "esign",
-      "DA"
+      "esign"
     ],
-    "spatial": "The gymnast with the number 73 tag is to the left of the other gymnasts in the foreground. The seated women are behind the standing gymnasts. The large white container is to the right of the seated women.",
+    "spatial": "The two gymnasts in red leotards are in the foreground, hugging each other. The gymnast with the number 73 is to the left of the other gymnast. In the background, to the right of the gymnasts, a woman is sitting and writing. Next to her is another person sitting. A white container is to the right of the sitting woman.",
     "parse_success": true,
     "chunk_idx": 39,
     "video_id": "ytb_3tocD22mZqc"
   },
   {
     "time": [
-      80,
-      82
+      40,
+      41
     ],
     "visible_entities": [
       {
-        "desc": "gymnast with dark hair in a bun, wearing a red long-sleeved leotard with silver sparkles and white wrist guards",
+        "desc": "gymnast with dark hair in a bun, wearing a red long-sleeved leotard with silver sparkles",
         "action": "sitting and looking down",
         "position": "right foreground"
       },
@@ -2174,41 +2116,46 @@
         "position": "center background"
       },
       {
-        "desc": "gymnast with dark hair in a bun, wearing a red long-sleeved leotard with silver sparkles and a white number tag on her back",
+        "desc": "gymnast with dark hair in a bun, wearing a red long-sleeved leotard with silver sparkles",
         "action": "standing and facing right",
-        "position": "left foreground"
+        "position": "left background"
       },
       {
-        "desc": "person with brown hair, wearing a black t-shirt with a lanyard and black pants",
+        "desc": "gymnast with dark hair, wearing a red long-sleeved leotard with silver sparkles",
+        "action": "static",
+        "position": "far left foreground"
+      },
+      {
+        "desc": "person with brown hair, wearing a black t-shirt with white text and black pants",
         "action": "sitting",
-        "position": "right background"
+        "position": "background right"
       },
       {
-        "desc": "large cylindrical container, white with blue lid and green leaf graphic",
+        "desc": "blue and white cylindrical container with a logo",
         "action": "static",
         "position": "far right"
       },
       {
-        "desc": "digital scoreboard overlay with American flag and text",
+        "desc": "on-screen graphic overlay with a USA flag and score table",
         "action": "static",
         "position": "bottom center"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A gymnast in a red leotard sits in the foreground looking down.",
+        "fact": "A gymnast in a red leotard is sitting in the foreground looking down.",
         "confidence": 1.0
       },
       {
-        "fact": "A gymnast in a red leotard stands in the center smiling.",
+        "fact": "Two gymnasts in red leotards are standing and smiling in the background.",
         "confidence": 1.0
       },
       {
-        "fact": "The scoreboard displays the name 'KATELYN OHASHI' and a total score of '14.65'.",
+        "fact": "The on-screen graphic displays the name 'KATELYN OHASHI' and a total score of 14.65.",
         "confidence": 1.0
       },
       {
-        "fact": "The scoreboard lists 'DIFFICULTY 6.00' and 'EXECUTION 8.65' for the 'BARS' event.",
+        "fact": "The graphic shows a Difficulty score of 6.00 and an Execution score of 8.65 for the 'BARS' event.",
         "confidence": 1.0
       }
     ],
@@ -2224,10 +2171,10 @@
       "14.65",
       "Kellogg's",
       "esign",
-      "DASANI",
-      "PACIFIC GYMNASTICS"
+      "DAS",
+      "PACIFIC"
     ],
-    "spatial": "The sitting gymnast is in front of the standing gymnast in the center. The standing gymnast on the left is to the left of the center gymnast. The person in the black shirt is sitting to the right of the gymnasts, next to the large white container. The scoreboard overlay is at the bottom of the screen, below the gymnasts.",
+    "spatial": "The gymnast sitting in the foreground is to the right of the standing gymnasts. The standing gymnasts are behind the sitting gymnast. The blue and white container is to the right of the sitting gymnast. The on-screen graphic is below all the gymnasts.",
     "parse_success": true,
     "chunk_idx": 40,
     "video_id": "ytb_3tocD22mZqc"

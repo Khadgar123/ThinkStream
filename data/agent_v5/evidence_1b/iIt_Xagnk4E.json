@@ -2,44 +2,56 @@
   {
     "time": [
       0,
-      2
+      1
     ],
     "visible_entities": [
       {
-        "desc": "young boy with short dark hair, wearing a white t-shirt with a dark graphic print on the front",
-        "action": "sitting at a table and looking forward",
-        "position": "center/foreground",
+        "desc": "young boy with short brown hair, wearing a white t-shirt with a blue and black graphic print on the front",
+        "action": "looking at the camera with mouth open",
+        "position": "center foreground",
         "id": "boy_main_1"
       },
       {
-        "desc": "wooden bunk bed frame with a red mattress and blue bedding",
+        "desc": "wooden bunk bed frame, light brown color",
         "action": "static",
-        "position": "background",
+        "position": "background right",
         "id": "bed_bunk_1"
       },
       {
-        "desc": "light-colored wooden table surface",
+        "desc": "red bed sheet or mattress cover",
         "action": "static",
-        "position": "bottom/foreground",
+        "position": "background right",
+        "id": "bed_bunk_1"
+      },
+      {
+        "desc": "green painted wall",
+        "action": "static",
+        "position": "background left",
+        "id": "wall_green_1"
+      },
+      {
+        "desc": "light-colored flat surface, possibly a table or desk",
+        "action": "static",
+        "position": "bottom foreground",
         "id": "table_wood_1"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A young boy is sitting at a table.",
+        "fact": "The boy is looking directly at the camera.",
         "confidence": 1.0
       },
       {
-        "fact": "The boy is looking towards the camera.",
+        "fact": "The boy's mouth is open as if speaking or reacting.",
         "confidence": 1.0
       },
       {
-        "fact": "A bunk bed is visible in the background behind the boy.",
+        "fact": "The boy is positioned in front of a bunk bed.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The boy is in front of the bunk bed. The table is below the boy's arms. The bunk bed is behind the boy.",
+    "spatial": "The boy is in the center foreground, positioned in front of the wooden bunk bed. The green wall is to the left of the bunk bed. The boy is above the light-colored surface at the bottom of the frame.",
     "parse_success": true,
     "chunk_idx": 0,
     "video_id": "iIt_Xagnk4E",
@@ -47,27 +59,27 @@
   },
   {
     "time": [
-      2,
-      4
+      1,
+      2
     ],
     "visible_entities": [
       {
-        "desc": "young boy with short dark hair, wearing a white t-shirt with a dark collar",
-        "action": "holding a green marker and looking at the camera",
+        "desc": "child with short brown hair, wearing a white t-shirt with black trim on the collar",
+        "action": "leaning over a table and holding a marker",
         "position": "center",
         "id": "boy_main_1"
       },
       {
-        "desc": "green marker",
-        "action": "being held by the boy",
-        "position": "center",
-        "id": "marker_green_1"
+        "desc": "light green rectangular sheet of paper",
+        "action": "static",
+        "position": "foreground",
+        "id": "paper_white_1"
       },
       {
-        "desc": "light green sheet of paper",
-        "action": "static",
-        "position": "bottom left",
-        "id": "paper_green_1"
+        "desc": "light blue marker with a black cap",
+        "action": "being held",
+        "position": "center",
+        "id": "marker_blue_1"
       },
       {
         "desc": "wooden table surface",
@@ -78,37 +90,37 @@
       {
         "desc": "wooden shelving unit with colorful items",
         "action": "static",
-        "position": "background right",
-        "id": "shelving_wood_1"
+        "position": "background",
+        "id": "shelf_wood_1"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "The boy is holding a green marker in his right hand.",
+        "fact": "The child is holding a light blue marker in their right hand.",
         "confidence": 1.0
       },
       {
-        "fact": "The boy is looking directly at the camera.",
+        "fact": "The child is leaning over a wooden table.",
         "confidence": 1.0
       },
       {
-        "fact": "A green sheet of paper is on the table in front of the boy.",
+        "fact": "A sheet of light green paper is on the table in front of the child.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The boy is positioned in the center of the frame, leaning over a wooden table. The green paper is on the table to the left of the boy's hand. The wooden shelving unit is in the background to the right of the boy.",
+    "spatial": "The child is positioned behind the wooden table. The green paper is on the table in front of the child. The child is holding the blue marker above the paper. The wooden shelving unit is in the background behind the child.",
     "parse_success": true,
     "chunk_idx": 1,
     "video_id": "iIt_Xagnk4E",
     "state_changes": [
-      "boy first appears holding green marker"
+      "Scene transition from bedroom to table; boy begins leaning over table holding a marker."
     ]
   },
   {
     "time": [
-      4,
-      6
+      2,
+      3
     ],
     "visible_entities": [
       {
@@ -130,61 +142,61 @@
         "id": "paper_white_1"
       },
       {
-        "desc": "yellow rectangular box with red and black graphics",
+        "desc": "yellow pencil case with a red cartoon character",
         "action": "static",
-        "position": "bottom left",
-        "id": "box_yellow_1"
+        "position": "bottom-left",
+        "id": "object_misc_1"
       },
       {
-        "desc": "black smartphone with a dark screen",
+        "desc": "black smartphone",
         "action": "static",
-        "position": "bottom right",
-        "id": "phone_black_1"
+        "position": "bottom-center",
+        "id": "object_misc_1"
       },
       {
-        "desc": "wooden table surface",
+        "desc": "light-colored wooden table",
         "action": "static",
-        "position": "background",
+        "position": "center",
         "id": "table_wood_1"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "The child is holding a green marker and drawing on a white sheet of paper.",
+        "fact": "A child is drawing on a piece of paper with a green marker.",
         "confidence": 1.0
       },
       {
-        "fact": "A yellow box is sitting on the table next to the paper.",
+        "fact": "A yellow pencil case is on the table.",
         "confidence": 1.0
       },
       {
-        "fact": "A black smartphone is lying on the table near the child's arm.",
+        "fact": "A black smartphone is lying on the table.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The child is positioned on the right side of the frame, leaning over the wooden table. The white paper is in front of the child, and the green marker is in the child's hand, touching the paper. The yellow box is to the left of the paper, and the black smartphone is below the paper on the table surface.",
+    "spatial": "The child is sitting at the wooden table. The child is holding the green marker over the white paper. The yellow pencil case is to the left of the paper, and the black smartphone is below the paper.",
     "parse_success": true,
     "chunk_idx": 2,
     "video_id": "iIt_Xagnk4E",
     "state_changes": [
-      "drawing activity begins with green marker"
+      "Boy starts drawing with a green marker; new objects (pencil case, smartphone) appear."
     ]
   },
   {
     "time": [
-      6,
-      8
+      3,
+      4
     ],
     "visible_entities": [
       {
-        "desc": "person with light skin, wearing a dark sleeve, holding a pen",
-        "action": "writing on paper",
+        "desc": "person with fair skin, wearing a black short-sleeved shirt",
+        "action": "drawing on paper",
         "position": "top right",
-        "id": "person_other_1"
+        "id": "person_black_shirt_1"
       },
       {
-        "desc": "teal pen with a black tip",
+        "desc": "teal marker with a black tip",
         "action": "being held",
         "position": "center",
         "id": "marker_teal_1"
@@ -196,25 +208,25 @@
         "id": "paper_white_1"
       },
       {
-        "desc": "light blue highlighter with a green cap and black text",
+        "desc": "light blue marker with a bright green cap and black text",
         "action": "static",
         "position": "bottom center",
-        "id": "marker_teal_1"
+        "id": "marker_blue_1"
       },
       {
-        "desc": "green cylindrical container with white text",
+        "desc": "green cylindrical container with a white label",
         "action": "static",
         "position": "left",
-        "id": "container_green_1"
+        "id": "object_misc_1"
       },
       {
-        "desc": "yellow and black object",
+        "desc": "yellow and black object, possibly a tool or packaging",
         "action": "static",
         "position": "bottom left",
-        "id": "box_yellow_1"
+        "id": "object_misc_1"
       },
       {
-        "desc": "light brown wooden table surface",
+        "desc": "light-colored wooden table surface",
         "action": "static",
         "position": "background",
         "id": "table_wood_1"
@@ -222,44 +234,44 @@
     ],
     "atomic_facts": [
       {
-        "fact": "A person is writing on a white sheet of paper with a teal pen.",
+        "fact": "A person is holding a teal marker and drawing on a white sheet of paper.",
         "confidence": 1.0
       },
       {
-        "fact": "A light blue highlighter is lying on the table.",
+        "fact": "A light blue marker with a green cap lies on the wooden table.",
         "confidence": 1.0
       },
       {
-        "fact": "The green container is positioned to the left of the paper.",
+        "fact": "The text 'line' is visible on the side of the light blue marker.",
         "confidence": 1.0
       }
     ],
     "ocr": [
       "line"
     ],
-    "spatial": "The person is positioned above the white sheet of paper, holding the teal pen against it. The light blue highlighter is lying on the wooden table below the paper. The green container is to the left of the paper, and the yellow object is in the bottom left foreground.",
+    "spatial": "The person is positioned at the top right, holding the teal marker over the white paper which is in the center. The light blue marker is below the paper on the wooden table. The green container is to the left of the paper, and the yellow object is in the bottom left corner.",
     "parse_success": true,
     "chunk_idx": 3,
     "video_id": "iIt_Xagnk4E",
     "state_changes": [
-      "different person appears with teal pen, writing starts"
+      "Person changes to someone wearing a black shirt; action switches to using a teal marker."
     ]
   },
   {
     "time": [
-      8,
-      10
+      4,
+      5
     ],
     "visible_entities": [
       {
-        "desc": "person with fair skin, wearing a white sleeveless top, holding a writing instrument",
+        "desc": "person with fair skin, short hair, wearing a white shirt",
         "action": "writing on paper",
         "position": "center",
-        "id": "person_other_1"
+        "id": "boy_main_1"
       },
       {
-        "desc": "teal marker with a black cap",
-        "action": "being held by the person",
+        "desc": "teal fine-tip marker with black cap",
+        "action": "being held",
         "position": "center",
         "id": "marker_teal_1"
       },
@@ -270,10 +282,10 @@
         "id": "paper_white_1"
       },
       {
-        "desc": "light blue marker with a green cap and black text",
+        "desc": "light blue marker with green cap and black text",
         "action": "static",
         "position": "bottom",
-        "id": "marker_teal_1"
+        "id": "marker_blue_1"
       },
       {
         "desc": "light-colored wooden table surface",
@@ -288,7 +300,7 @@
         "confidence": 1.0
       },
       {
-        "fact": "The person is holding the teal marker in their right hand.",
+        "fact": "The person is holding the marker in their right hand.",
         "confidence": 1.0
       },
       {
@@ -296,44 +308,53 @@
         "confidence": 1.0
       },
       {
-        "fact": "The text 'line' is visible on the light blue marker.",
+        "fact": "The text 'line' is visible on the body of the light blue marker.",
         "confidence": 1.0
       }
     ],
     "ocr": [
       "line"
     ],
-    "spatial": "The person is positioned above the white sheet of paper, which rests on the wooden table. The teal marker is in the person's hand, directly over the paper. The light blue marker is lying on the table in the foreground, below the paper.",
+    "spatial": "The person is positioned above the white sheet of paper. The teal marker is in the person's hand, touching the paper. The light blue marker is below the paper on the wooden table.",
     "parse_success": true,
     "chunk_idx": 4,
     "video_id": "iIt_Xagnk4E",
-    "state_changes": []
+    "state_changes": [
+      "Person changes back to white shirt; continues writing with teal marker."
+    ]
   },
   {
     "time": [
-      10,
-      12
+      5,
+      6
     ],
     "visible_entities": [
       {
         "desc": "hand with light skin tone, holding a blue marker",
         "action": "drawing a line on paper",
-        "position": "top center"
+        "position": "top/center",
+        "id": "hand_main_1"
       },
       {
-        "desc": "blue marker with a green cap, cylindrical body",
-        "action": "static",
-        "position": "bottom left",
-        "id": "marker_green_1"
+        "desc": "blue marker with black tip",
+        "action": "being held and used for drawing",
+        "position": "center",
+        "id": "marker_blue_1"
       },
       {
         "desc": "white sheet of paper",
         "action": "static",
-        "position": "center",
+        "position": "center/background",
         "id": "paper_white_1"
       },
       {
-        "desc": "light brown wooden surface with visible grain",
+        "desc": "light blue marker with a green cap and black text",
+        "action": "static",
+        "position": "bottom/foreground",
+        "id": "marker_blue_1"
+      },
+      {
+        "desc": "light brown wooden surface",
         "action": "static",
         "position": "bottom",
         "id": "table_wood_1"
@@ -341,120 +362,121 @@
     ],
     "atomic_facts": [
       {
-        "fact": "A hand is drawing a black squiggly line on a white sheet of paper.",
+        "fact": "A hand is drawing a squiggly black line on a white sheet of paper.",
         "confidence": 1.0
       },
       {
-        "fact": "A blue marker with a green cap is lying on the wooden surface.",
+        "fact": "A light blue marker with a green cap is lying on the wooden surface.",
         "confidence": 1.0
       },
       {
-        "fact": "The drawing action creates a continuous line on the paper.",
+        "fact": "The text 'BIC' is visible on the barrel of the marker lying on the table.",
         "confidence": 1.0
       }
     ],
-    "ocr": [],
-    "spatial": "The hand holding the blue marker is positioned above the white sheet of paper. The white paper is resting on top of the light brown wooden surface. The second blue marker with the green cap is lying on the wooden surface, below the paper and to the left of the hand.",
+    "ocr": [
+      "BIC"
+    ],
+    "spatial": "The hand holding the blue marker is positioned above the white paper. The white paper is on top of the wooden surface. The light blue marker with the green cap is lying on the wooden surface, below the paper and in front of the hand.",
     "parse_success": true,
     "chunk_idx": 5,
     "video_id": "iIt_Xagnk4E",
-    "state_changes": []
-  },
-  {
-    "time": [
-      12,
-      14
-    ],
-    "visible_entities": [
-      {
-        "desc": "hand with light skin tone",
-        "action": "drawing a line",
-        "position": "center",
-        "id": "hand_main_1"
-      },
-      {
-        "desc": "light blue marker pen, cylindrical body",
-        "action": "being held",
-        "position": "center",
-        "id": "marker_teal_1"
-      },
-      {
-        "desc": "white sheet of paper",
-        "action": "static",
-        "position": "background",
-        "id": "paper_white_1"
-      },
-      {
-        "desc": "black ink line, wavy and jagged",
-        "action": "appearing",
-        "position": "left",
-        "id": "drawing_black_1"
-      },
-      {
-        "desc": "green object, blurry, partially visible",
-        "action": "static",
-        "position": "bottom"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "A hand is holding a light blue marker pen.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The marker is drawing a black line on the white paper.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The line being drawn is wavy and jagged.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "A green object is visible at the bottom of the frame.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [],
-    "spatial": "The hand is positioned in the center, holding the light blue marker above the white paper. The black line is being drawn on the left side of the paper. The green object is located below the paper.",
-    "parse_success": true,
-    "chunk_idx": 6,
-    "video_id": "iIt_Xagnk4E",
     "state_changes": [
-      "black ink line first appears on paper"
+      "Action shifts to drawing a line with a blue marker."
     ]
   },
   {
     "time": [
-      14,
-      16
+      6,
+      7
     ],
     "visible_entities": [
       {
-        "desc": "hand with light skin tone",
+        "desc": "hand with light skin tone, holding a teal marker",
         "action": "drawing a line",
         "position": "center",
         "id": "hand_main_1"
       },
       {
-        "desc": "teal marker pen, cylindrical body, black tip",
-        "action": "being held",
+        "desc": "teal marker with a black tip",
+        "action": "being used to draw",
         "position": "center",
         "id": "marker_teal_1"
       },
       {
-        "desc": "white paper sheet",
+        "desc": "white sheet of paper",
         "action": "static",
-        "position": "bottom",
+        "position": "center",
         "id": "paper_white_1"
       },
       {
-        "desc": "black ink line, jagged and irregular shape",
-        "action": "being drawn",
-        "position": "bottom-left",
-        "id": "drawing_black_1"
+        "desc": "light brown wooden surface",
+        "action": "static",
+        "position": "background",
+        "id": "table_wood_1"
       },
       {
-        "desc": "wooden surface, light brown",
+        "desc": "black ink line",
+        "action": "being drawn",
+        "position": "center",
+        "id": "drawing_black_ink_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A hand is holding a teal marker and drawing a black line on a white sheet of paper.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The black line extends horizontally across the paper.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The paper is resting on a wooden surface.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The hand is holding the teal marker, which is positioned above the white sheet of paper. The black ink line is being drawn on the surface of the paper. The paper is on top of the wooden surface.",
+    "parse_success": true,
+    "chunk_idx": 6,
+    "video_id": "iIt_Xagnk4E",
+    "state_changes": [
+      "Tool changes to teal marker; black ink line begins appearing."
+    ]
+  },
+  {
+    "time": [
+      7,
+      8
+    ],
+    "visible_entities": [
+      {
+        "desc": "hand with light skin tone holding a teal marker",
+        "action": "drawing a line on paper",
+        "position": "center/foreground",
+        "id": "hand_main_1"
+      },
+      {
+        "desc": "teal marker with a black cap",
+        "action": "being used to draw",
+        "position": "center",
+        "id": "marker_teal_1"
+      },
+      {
+        "desc": "white sheet of paper",
+        "action": "static",
+        "position": "bottom/foreground",
+        "id": "paper_white_1"
+      },
+      {
+        "desc": "black ink line drawing",
+        "action": "being created",
+        "position": "bottom/center",
+        "id": "drawing_black_ink_1"
+      },
+      {
+        "desc": "wooden surface",
         "action": "static",
         "position": "background",
         "id": "table_wood_1"
@@ -462,24 +484,20 @@
     ],
     "atomic_facts": [
       {
-        "fact": "A hand is holding a teal marker pen.",
+        "fact": "A hand is holding a teal marker and drawing a black line on a white sheet of paper.",
         "confidence": 1.0
       },
       {
-        "fact": "The marker tip is touching the white paper.",
+        "fact": "The drawing consists of a wavy line with a small hook at the left end.",
         "confidence": 1.0
       },
       {
-        "fact": "A black jagged line is being drawn on the paper.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The drawing action moves from left to right.",
+        "fact": "The paper is resting on a wooden surface.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The hand is positioned above the white paper. The teal marker is held by the hand and its tip is in contact with the paper surface. The black ink line is located on the paper, below the marker tip. The wooden surface is behind the paper.",
+    "spatial": "The hand is holding the teal marker. The marker's tip is on the white paper, creating a black line. The paper is on top of a wooden surface.",
     "parse_success": true,
     "chunk_idx": 7,
     "video_id": "iIt_Xagnk4E",
@@ -487,48 +505,48 @@
   },
   {
     "time": [
-      16,
-      18
+      8,
+      9
     ],
     "visible_entities": [
       {
         "desc": "hand with light skin tone",
-        "action": "drawing a line",
+        "action": "drawing a squiggly line",
         "position": "center",
         "id": "hand_main_1"
       },
       {
-        "desc": "teal pen with black cap",
-        "action": "being held",
+        "desc": "light blue pen with black tip",
+        "action": "drawing on paper",
         "position": "center",
-        "id": "marker_teal_1"
+        "id": "marker_blue_1"
       },
       {
-        "desc": "white paper",
+        "desc": "white sheet of paper",
         "action": "static",
         "position": "bottom",
         "id": "paper_white_1"
       },
       {
-        "desc": "light wood table",
+        "desc": "light brown wooden table surface",
         "action": "static",
         "position": "background",
         "id": "table_wood_1"
       },
       {
-        "desc": "black squiggly line",
+        "desc": "black squiggly line drawing",
         "action": "being drawn",
-        "position": "bottom",
-        "id": "drawing_black_1"
+        "position": "center",
+        "id": "drawing_black_ink_1"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A hand is holding a teal pen.",
+        "fact": "A hand is holding a light blue pen.",
         "confidence": 1.0
       },
       {
-        "fact": "The pen is drawing a black squiggly line on white paper.",
+        "fact": "The pen is drawing a black squiggly line on the white paper.",
         "confidence": 1.0
       },
       {
@@ -537,27 +555,81 @@
       }
     ],
     "ocr": [],
-    "spatial": "The hand is holding the teal pen above the white paper. The black squiggly line is being drawn on the paper, which is on top of the wooden table.",
+    "spatial": "The hand is holding the light blue pen above the white sheet of paper. The paper is on top of the light brown wooden table. The black squiggly line is being drawn on the paper by the pen tip.",
     "parse_success": true,
     "chunk_idx": 8,
+    "video_id": "iIt_Xagnk4E",
+    "state_changes": [
+      "Drawing style changes to squiggly lines; tool briefly identified as light blue pen."
+    ]
+  },
+  {
+    "time": [
+      9,
+      10
+    ],
+    "visible_entities": [
+      {
+        "desc": "hand with light skin tone, holding a teal marker",
+        "action": "drawing a black line",
+        "position": "center",
+        "id": "hand_main_1"
+      },
+      {
+        "desc": "teal marker with a black tip",
+        "action": "being held and used to draw",
+        "position": "center",
+        "id": "marker_teal_1"
+      },
+      {
+        "desc": "white paper surface",
+        "action": "static",
+        "position": "foreground",
+        "id": "paper_white_1"
+      },
+      {
+        "desc": "black wavy line drawing",
+        "action": "being drawn",
+        "position": "center",
+        "id": "drawing_black_ink_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A hand is holding a teal marker.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The marker is drawing a black wavy line on the white paper.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The drawing progresses from left to right.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The hand is above the white paper and is holding the teal marker. The black wavy line is on the paper, positioned below the tip of the marker.",
+    "parse_success": true,
+    "chunk_idx": 9,
     "video_id": "iIt_Xagnk4E",
     "state_changes": []
   },
   {
     "time": [
-      18,
-      20
+      10,
+      11
     ],
     "visible_entities": [
       {
         "desc": "hand with light skin tone",
-        "action": "drawing a line",
-        "position": "center",
+        "action": "holding a teal pen",
+        "position": "top center",
         "id": "hand_main_1"
       },
       {
-        "desc": "teal marker pen with black tip",
-        "action": "being held and used for drawing",
+        "desc": "teal pen with a black tip",
+        "action": "drawing a line",
         "position": "center",
         "id": "marker_teal_1"
       },
@@ -569,63 +641,27 @@
       },
       {
         "desc": "black ink line drawing",
-        "action": "being created",
+        "action": "being drawn",
         "position": "center",
-        "id": "drawing_black_1"
+        "id": "drawing_black_ink_1"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A hand is holding a teal marker pen.",
+        "fact": "A hand is holding a teal pen.",
         "confidence": 1.0
       },
       {
-        "fact": "The marker is drawing a black line on the white paper.",
+        "fact": "The pen is drawing a black line on the white paper.",
         "confidence": 1.0
       },
       {
-        "fact": "The drawing consists of a wavy horizontal line with a small vertical segment at the left end.",
+        "fact": "The drawing consists of a small loop connected to a longer wavy line.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The hand is holding the teal marker pen. The tip of the marker is touching the white paper surface. The black ink line is on the paper, located below the hand and marker.",
-    "parse_success": true,
-    "chunk_idx": 9,
-    "video_id": "iIt_Xagnk4E",
-    "state_changes": []
-  },
-  {
-    "time": [
-      20,
-      22
-    ],
-    "visible_entities": [
-      {
-        "desc": "hand with light skin tone holding a turquoise marker",
-        "action": "drawing a black line",
-        "position": "center",
-        "id": "hand_main_1"
-      },
-      {
-        "desc": "white sheet of paper with a black ink drawing",
-        "action": "static",
-        "position": "foreground",
-        "id": "paper_white_1"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "A hand is holding a turquoise marker and drawing on a piece of paper.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The marker is creating a black line that resembles a wavy shape or a key.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [],
-    "spatial": "The hand holding the marker is positioned above the white paper. The marker tip is touching the paper surface to create the drawing.",
+    "spatial": "The hand is positioned above the white paper. The teal pen is held by the hand and its tip is touching the paper surface. The black ink line is being drawn on the paper below the pen tip.",
     "parse_success": true,
     "chunk_idx": 10,
     "video_id": "iIt_Xagnk4E",
@@ -633,8 +669,8 @@
   },
   {
     "time": [
-      22,
-      24
+      11,
+      12
     ],
     "visible_entities": [
       {
@@ -644,7 +680,7 @@
         "id": "hand_main_1"
       },
       {
-        "desc": "white sheet of paper with a black ink drawing",
+        "desc": "white sheet of paper with a black ink sketch",
         "action": "static",
         "position": "center/background",
         "id": "paper_white_1"
@@ -652,54 +688,8 @@
       {
         "desc": "teal marker with a black tip",
         "action": "being held",
-        "position": "center",
-        "id": "marker_teal_1"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "A hand is holding a teal marker and drawing on a piece of white paper.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The marker is creating a black line that extends from a vertical shape to the right.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The paper is resting on a wooden surface.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [],
-    "spatial": "The hand is above the white paper, holding the teal marker. The marker tip is touching the paper, creating a black line. The paper is on a wooden table.",
-    "parse_success": true,
-    "chunk_idx": 11,
-    "video_id": "iIt_Xagnk4E",
-    "state_changes": []
-  },
-  {
-    "time": [
-      24,
-      26
-    ],
-    "visible_entities": [
-      {
-        "desc": "hand with light skin tone, holding a teal marker",
-        "action": "drawing a black line on paper",
         "position": "center/foreground",
-        "id": "hand_main_1"
-      },
-      {
-        "desc": "teal marker with a black tip",
-        "action": "being held and moved to draw",
-        "position": "center",
         "id": "marker_teal_1"
-      },
-      {
-        "desc": "white sheet of paper with a black squiggly line drawing",
-        "action": "static",
-        "position": "bottom/foreground",
-        "id": "paper_white_1"
       }
     ],
     "atomic_facts": [
@@ -708,16 +698,62 @@
         "confidence": 1.0
       },
       {
-        "fact": "The marker tip is touching the white paper.",
+        "fact": "The marker is drawing a black line on the white paper.",
         "confidence": 1.0
       },
       {
-        "fact": "The hand is drawing a black squiggly line on the paper.",
+        "fact": "The drawing consists of a vertical line connected to a horizontal wavy line.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The hand is above the white paper. The teal marker is held by the hand and its tip is on the paper, creating a black line.",
+    "spatial": "The hand is above the white sheet of paper. The teal marker is held by the hand and its tip is touching the paper surface. The black ink drawing is on the paper, located below the hand.",
+    "parse_success": true,
+    "chunk_idx": 11,
+    "video_id": "iIt_Xagnk4E",
+    "state_changes": []
+  },
+  {
+    "time": [
+      12,
+      13
+    ],
+    "visible_entities": [
+      {
+        "desc": "hand with light skin tone holding a teal marker",
+        "action": "drawing a black line on paper",
+        "position": "center/foreground",
+        "id": "hand_main_1"
+      },
+      {
+        "desc": "teal marker with a black felt tip",
+        "action": "being held and used to draw",
+        "position": "center",
+        "id": "marker_teal_1"
+      },
+      {
+        "desc": "white sheet of paper with a black scribble",
+        "action": "static",
+        "position": "bottom/foreground",
+        "id": "paper_white_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A hand is holding a teal marker and drawing on a piece of white paper.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The marker is creating a black, wavy line on the paper surface.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The drawing consists of a single continuous scribble.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The hand is positioned above the white paper, holding the teal marker. The marker tip is in contact with the paper, creating a black line. The paper is below the hand and marker.",
     "parse_success": true,
     "chunk_idx": 12,
     "video_id": "iIt_Xagnk4E",
@@ -725,61 +761,51 @@
   },
   {
     "time": [
-      26,
-      28
+      13,
+      14
     ],
     "visible_entities": [
       {
-        "desc": "hand with light skin tone, holding a pen",
-        "action": "drawing a line",
-        "position": "center/foreground",
+        "desc": "hand with light skin tone holding a pen",
+        "action": "drawing a wavy line",
+        "position": "center",
         "id": "hand_main_1"
       },
       {
-        "desc": "light blue pen with a black tip",
-        "action": "being held and moved",
+        "desc": "light blue pen, cylindrical body, black tip",
+        "action": "being used to draw",
         "position": "center",
-        "id": "marker_teal_1"
+        "id": "marker_blue_1"
       },
       {
-        "desc": "white sheet of paper",
+        "desc": "white paper surface",
         "action": "static",
-        "position": "bottom/foreground",
+        "position": "bottom",
         "id": "paper_white_1"
       },
       {
         "desc": "black wavy line drawing",
-        "action": "being drawn",
-        "position": "left/bottom",
-        "id": "drawing_black_1"
-      },
-      {
-        "desc": "light-colored wooden surface",
-        "action": "static",
-        "position": "background",
-        "id": "table_wood_1"
+        "action": "being extended",
+        "position": "bottom left",
+        "id": "drawing_black_ink_1"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A hand is holding a light blue pen.",
+        "fact": "A hand is holding a light blue pen and drawing on white paper.",
         "confidence": 1.0
       },
       {
-        "fact": "The pen tip is touching the white paper.",
+        "fact": "The pen tip is touching the paper to create a black wavy line.",
         "confidence": 1.0
       },
       {
-        "fact": "The hand is drawing a black wavy line on the paper.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The drawing is extending towards the left side of the paper.",
+        "fact": "The drawing consists of a continuous wavy line extending to the right.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The hand is in the center of the frame, holding the light blue pen. The pen is positioned above the white paper, with its tip touching the surface to draw a black line. The wooden surface is visible in the background, behind the hand and paper.",
+    "spatial": "The hand is positioned above the white paper surface. The light blue pen is held by the hand and its tip is in contact with the paper. The black wavy line is on the paper, located below the hand and pen.",
     "parse_success": true,
     "chunk_idx": 13,
     "video_id": "iIt_Xagnk4E",
@@ -787,30 +813,78 @@
   },
   {
     "time": [
-      28,
-      30
+      14,
+      15
     ],
     "visible_entities": [
       {
-        "desc": "hand with light skin tone, holding a teal marker",
-        "action": "drawing a line",
+        "desc": "hand with light skin tone holding a turquoise marker",
+        "action": "drawing a black line on paper",
         "position": "center/foreground",
         "id": "hand_main_1"
       },
       {
-        "desc": "teal marker with a black tip",
-        "action": "being held and used to draw",
-        "position": "center",
-        "id": "marker_teal_1"
-      },
-      {
-        "desc": "white paper surface with a black ink drawing",
+        "desc": "white sheet of paper with a black ink drawing",
         "action": "static",
         "position": "bottom/foreground",
         "id": "paper_white_1"
       },
       {
         "desc": "light-colored wooden surface with visible grain",
+        "action": "static",
+        "position": "top/background",
+        "id": "table_wood_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A hand is holding a turquoise marker and drawing a black line on a white sheet of paper.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The drawing on the paper consists of a wavy, horizontal line with a small vertical line at the left end.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The hand is above the white sheet of paper. The wooden surface is behind the paper and the hand. The drawing is on the surface of the paper.",
+    "parse_success": true,
+    "chunk_idx": 14,
+    "video_id": "iIt_Xagnk4E",
+    "state_changes": []
+  },
+  {
+    "time": [
+      15,
+      16
+    ],
+    "visible_entities": [
+      {
+        "desc": "hand with light skin tone",
+        "action": "holding a teal marker and drawing",
+        "position": "center/foreground",
+        "id": "hand_main_1"
+      },
+      {
+        "desc": "teal marker with a black tip",
+        "action": "drawing on paper",
+        "position": "center",
+        "id": "marker_teal_1"
+      },
+      {
+        "desc": "white paper surface",
+        "action": "static",
+        "position": "bottom/foreground",
+        "id": "paper_white_1"
+      },
+      {
+        "desc": "black ink line drawing",
+        "action": "being created",
+        "position": "bottom left",
+        "id": "drawing_black_ink_1"
+      },
+      {
+        "desc": "light-colored wooden board",
         "action": "static",
         "position": "background",
         "id": "table_wood_1"
@@ -822,64 +896,16 @@
         "confidence": 1.0
       },
       {
-        "fact": "The drawing consists of a wavy horizontal line with a small vertical line at the left end.",
+        "fact": "The drawing consists of a wavy, horizontal line.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The wooden board is behind the paper.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The hand is in the center of the frame, holding the teal marker. The marker's tip is touching the white paper, which is in the foreground. The wooden surface is in the background, behind the paper.",
-    "parse_success": true,
-    "chunk_idx": 14,
-    "video_id": "iIt_Xagnk4E",
-    "state_changes": []
-  },
-  {
-    "time": [
-      30,
-      32
-    ],
-    "visible_entities": [
-      {
-        "desc": "hand with light skin tone holding a teal marker",
-        "action": "drawing a wavy line",
-        "position": "center/foreground",
-        "id": "hand_main_1"
-      },
-      {
-        "desc": "teal marker with a black tip",
-        "action": "being used to draw",
-        "position": "center",
-        "id": "marker_teal_1"
-      },
-      {
-        "desc": "white paper surface",
-        "action": "static",
-        "position": "bottom/foreground",
-        "id": "paper_white_1"
-      },
-      {
-        "desc": "light-colored wooden board",
-        "action": "static",
-        "position": "top/background",
-        "id": "table_wood_1"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "A hand is drawing a wavy black line on a white sheet of paper.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The marker is teal in color.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "A wooden board is visible in the background.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [],
-    "spatial": "The hand holding the teal marker is positioned above the white paper. The marker tip is in contact with the paper, creating a black line. The wooden board is behind the hand and paper.",
+    "spatial": "The hand is holding the teal marker, which is positioned above the white paper. The black ink drawing is on the paper, located below the hand. The wooden board is in the background, behind the paper.",
     "parse_success": true,
     "chunk_idx": 15,
     "video_id": "iIt_Xagnk4E",
@@ -887,20 +913,21 @@
   },
   {
     "time": [
-      32,
-      34
+      16,
+      17
     ],
     "visible_entities": [
       {
-        "desc": "hand with light skin tone holding a teal marker",
+        "desc": "hand with light skin tone",
         "action": "drawing wavy lines",
         "position": "center",
         "id": "hand_main_1"
       },
       {
-        "desc": "teal marker with black tip",
+        "desc": "teal marker pen",
         "action": "being held",
-        "position": "center"
+        "position": "center",
+        "id": "marker_teal_1"
       },
       {
         "desc": "white paper surface",
@@ -909,13 +936,13 @@
         "id": "paper_white_1"
       },
       {
-        "desc": "black wavy lines drawn on paper",
+        "desc": "black wavy scribble lines",
         "action": "static",
         "position": "center",
-        "id": "drawing_black_1"
+        "id": "drawing_black_ink_1"
       },
       {
-        "desc": "light-colored wooden table surface",
+        "desc": "light wooden table surface",
         "action": "static",
         "position": "background",
         "id": "table_wood_1"
@@ -923,20 +950,20 @@
     ],
     "atomic_facts": [
       {
-        "fact": "A hand is holding a teal marker and drawing on a piece of white paper.",
+        "fact": "A hand is holding a teal marker pen.",
         "confidence": 1.0
       },
       {
-        "fact": "The marker is creating black wavy lines on the paper.",
+        "fact": "The marker is drawing black wavy lines on white paper.",
         "confidence": 1.0
       },
       {
-        "fact": "The drawing consists of three horizontal wavy lines.",
+        "fact": "The paper is resting on a wooden table.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The hand is positioned above the white paper. The teal marker is held by the hand and its tip is touching the paper surface. The black wavy lines are on the paper, directly below the marker tip. The wooden table is in the background, behind the paper.",
+    "spatial": "The hand is holding the teal marker pen above the white paper. The black wavy lines are on the paper, positioned below the tip of the marker. The wooden table is visible in the background, behind the paper.",
     "parse_success": true,
     "chunk_idx": 16,
     "video_id": "iIt_Xagnk4E",
@@ -944,59 +971,8 @@
   },
   {
     "time": [
-      34,
-      36
-    ],
-    "visible_entities": [
-      {
-        "desc": "hand with light skin tone holding a teal marker",
-        "action": "drawing wavy lines on paper",
-        "position": "center",
-        "id": "hand_main_1"
-      },
-      {
-        "desc": "teal marker with black tip",
-        "action": "being used to draw",
-        "position": "center"
-      },
-      {
-        "desc": "white sheet of paper",
-        "action": "static",
-        "position": "bottom",
-        "id": "paper_white_1"
-      },
-      {
-        "desc": "light-colored wooden table surface",
-        "action": "static",
-        "position": "background",
-        "id": "table_wood_1"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "A hand is drawing three wavy horizontal lines on a piece of paper.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The marker is teal in color.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The paper rests on a wooden table.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [],
-    "spatial": "The hand is holding the teal marker above the white paper. The paper is resting on the wooden table surface. The marker tip is touching the paper to create black ink lines.",
-    "parse_success": true,
-    "chunk_idx": 17,
-    "video_id": "iIt_Xagnk4E",
-    "state_changes": []
-  },
-  {
-    "time": [
-      36,
-      38
+      17,
+      18
     ],
     "visible_entities": [
       {
@@ -1007,125 +983,13 @@
       },
       {
         "desc": "teal marker with black tip",
-        "action": "being used to draw",
+        "action": "being held and used for drawing",
         "position": "center"
       },
       {
-        "desc": "white paper surface",
-        "action": "static",
-        "position": "background",
-        "id": "paper_white_1"
-      },
-      {
-        "desc": "black wavy lines drawing",
-        "action": "being created",
-        "position": "bottom-left",
-        "id": "drawing_black_1"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "A hand is holding a teal marker.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The marker is drawing black wavy lines on the paper.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The drawing consists of three horizontal wavy lines and one vertical line.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [],
-    "spatial": "The hand is holding the teal marker above the white paper. The black wavy lines are being drawn on the paper below the marker tip.",
-    "parse_success": true,
-    "chunk_idx": 18,
-    "video_id": "iIt_Xagnk4E",
-    "state_changes": []
-  },
-  {
-    "time": [
-      38,
-      40
-    ],
-    "visible_entities": [
-      {
-        "desc": "hand with light skin tone holding a teal marker",
-        "action": "drawing wavy lines",
-        "position": "center",
-        "id": "hand_main_1"
-      },
-      {
-        "desc": "teal marker with black tip",
-        "action": "being held",
-        "position": "center"
-      },
-      {
-        "desc": "white paper surface",
+        "desc": "white paper with black wavy lines drawn on it",
         "action": "static",
         "position": "bottom",
-        "id": "paper_white_1"
-      },
-      {
-        "desc": "black wavy lines drawn on paper",
-        "action": "static",
-        "position": "bottom-left",
-        "id": "drawing_black_1"
-      },
-      {
-        "desc": "wooden surface with visible grain",
-        "action": "static",
-        "position": "background",
-        "id": "table_wood_1"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "A hand is holding a teal marker and drawing on white paper.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The marker tip is touching the paper surface.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "Black wavy lines are visible on the paper.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The drawing is located in the bottom-left area of the paper.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [],
-    "spatial": "The hand holding the teal marker is positioned above the white paper. The black wavy lines are drawn on the paper, located below the hand. The wooden surface is behind the paper and hand.",
-    "parse_success": true,
-    "chunk_idx": 19,
-    "video_id": "iIt_Xagnk4E",
-    "state_changes": []
-  },
-  {
-    "time": [
-      40,
-      42
-    ],
-    "visible_entities": [
-      {
-        "desc": "hand with light skin tone, holding a teal marker",
-        "action": "drawing wavy lines",
-        "position": "center/foreground",
-        "id": "hand_main_1"
-      },
-      {
-        "desc": "teal marker with black tip",
-        "action": "being used to draw",
-        "position": "center"
-      },
-      {
-        "desc": "white paper with black wavy lines",
-        "action": "static",
-        "position": "bottom/foreground",
         "id": "paper_white_1"
       },
       {
@@ -1137,20 +1001,162 @@
     ],
     "atomic_facts": [
       {
-        "fact": "A hand is holding a teal marker and drawing on a piece of white paper.",
+        "fact": "A hand is holding a teal marker.",
         "confidence": 1.0
       },
       {
-        "fact": "The drawing consists of several horizontal, wavy black lines.",
+        "fact": "The marker is drawing black wavy lines on a piece of white paper.",
         "confidence": 1.0
       },
       {
-        "fact": "The paper is resting on a light-colored wooden surface.",
+        "fact": "The paper is resting on a wooden surface.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The hand is above the white paper. The teal marker is held by the hand and its tip is touching the paper. The paper is on top of the wooden surface.",
+    "spatial": "The hand is holding the teal marker. The marker's tip is touching the white paper, which is below the hand. The paper is on top of the wooden surface.",
+    "parse_success": true,
+    "chunk_idx": 17,
+    "video_id": "iIt_Xagnk4E",
+    "state_changes": []
+  },
+  {
+    "time": [
+      18,
+      19
+    ],
+    "visible_entities": [
+      {
+        "desc": "hand with light skin tone holding a teal marker",
+        "action": "drawing wavy lines",
+        "position": "center",
+        "id": "hand_main_1"
+      },
+      {
+        "desc": "teal marker with black tip",
+        "action": "being held and used for drawing",
+        "position": "center"
+      },
+      {
+        "desc": "white paper surface with black ink lines",
+        "action": "static",
+        "position": "bottom",
+        "id": "paper_white_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A hand is holding a teal marker and drawing on a piece of white paper.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The marker is creating black wavy lines on the paper surface.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The drawing consists of three horizontal wavy lines.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The hand is positioned above the white paper. The teal marker is held in the hand and its tip is touching the paper surface. The black wavy lines are drawn on the paper below the marker tip.",
+    "parse_success": true,
+    "chunk_idx": 18,
+    "video_id": "iIt_Xagnk4E",
+    "state_changes": []
+  },
+  {
+    "time": [
+      19,
+      20
+    ],
+    "visible_entities": [
+      {
+        "desc": "hand with light skin tone holding a teal marker pen",
+        "action": "drawing wavy lines",
+        "position": "center",
+        "id": "hand_main_1"
+      },
+      {
+        "desc": "white paper surface with black ink markings",
+        "action": "static",
+        "position": "bottom",
+        "id": "paper_white_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A hand is holding a teal marker pen.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The marker is drawing black wavy lines on a white surface.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "Three distinct wavy lines are visible on the paper.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The hand holding the teal marker is positioned above the white paper. The black wavy lines are drawn on the paper, located below the tip of the marker.",
+    "parse_success": true,
+    "chunk_idx": 19,
+    "video_id": "iIt_Xagnk4E",
+    "state_changes": []
+  },
+  {
+    "time": [
+      20,
+      21
+    ],
+    "visible_entities": [
+      {
+        "desc": "hand with light skin tone, holding a teal marker",
+        "action": "drawing wavy lines",
+        "position": "center",
+        "id": "hand_main_1"
+      },
+      {
+        "desc": "teal marker with black tip",
+        "action": "being used to draw",
+        "position": "center"
+      },
+      {
+        "desc": "white paper surface",
+        "action": "static",
+        "position": "bottom",
+        "id": "paper_white_1"
+      },
+      {
+        "desc": "black wavy lines drawing",
+        "action": "appearing",
+        "position": "center",
+        "id": "drawing_black_ink_1"
+      },
+      {
+        "desc": "wooden surface",
+        "action": "static",
+        "position": "background",
+        "id": "table_wood_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A hand is holding a teal marker and drawing black wavy lines on a white paper.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The drawing consists of several horizontal, wavy lines.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The paper is resting on a wooden surface.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The hand is above the white paper, holding the teal marker. The marker's tip is touching the paper, creating black wavy lines. The paper is on top of a wooden surface in the background.",
     "parse_success": true,
     "chunk_idx": 20,
     "video_id": "iIt_Xagnk4E",
@@ -1158,103 +1164,8 @@
   },
   {
     "time": [
-      42,
-      44
-    ],
-    "visible_entities": [
-      {
-        "desc": "hand with light skin tone",
-        "action": "drawing wavy lines",
-        "position": "right",
-        "id": "hand_main_1"
-      },
-      {
-        "desc": "teal marker pen, plastic body, black tip",
-        "action": "being held and used to draw",
-        "position": "center",
-        "id": "marker_teal_1"
-      },
-      {
-        "desc": "white paper surface, smooth",
-        "action": "static",
-        "position": "center",
-        "id": "paper_white_1"
-      },
-      {
-        "desc": "black ink drawing, wavy parallel lines",
-        "action": "static",
-        "position": "center",
-        "id": "drawing_black_1"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "A hand is holding a teal marker.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The marker tip is touching the white paper.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The hand is drawing black wavy lines on the paper.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [],
-    "spatial": "The hand is positioned on the right side of the frame, holding the teal marker above the white paper. The black wavy lines are being drawn in the center of the paper, directly under the tip of the marker.",
-    "parse_success": true,
-    "chunk_idx": 21,
-    "video_id": "iIt_Xagnk4E",
-    "state_changes": []
-  },
-  {
-    "time": [
-      44,
-      46
-    ],
-    "visible_entities": [
-      {
-        "desc": "white sheet of paper with a black ink doodle consisting of three wavy, horizontal lines",
-        "action": "static",
-        "position": "center",
-        "id": "paper_white_1"
-      },
-      {
-        "desc": "light-colored wooden table surface with visible grain and dark knots",
-        "action": "static",
-        "position": "background",
-        "id": "table_wood_1"
-      },
-      {
-        "desc": "green marker cap and part of a light blue marker body",
-        "action": "static",
-        "position": "bottom"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "A drawing of three wavy lines is visible on the paper.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "A marker lies on the table at the bottom of the frame.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [],
-    "spatial": "The white sheet of paper is placed on top of the wooden table. The green marker is located below the paper in the foreground.",
-    "parse_success": true,
-    "chunk_idx": 22,
-    "video_id": "iIt_Xagnk4E",
-    "state_changes": [
-      "hand disappears, only completed drawing visible"
-    ]
-  },
-  {
-    "time": [
-      46,
-      48
+      21,
+      22
     ],
     "visible_entities": [
       {
@@ -1264,9 +1175,272 @@
         "id": "hand_main_1"
       },
       {
-        "desc": "white sheet of paper with black ink scribbles",
+        "desc": "white paper with black wavy scribbles",
+        "action": "static",
+        "position": "center/bottom",
+        "id": "paper_white_1"
+      },
+      {
+        "desc": "teal marker with black tip",
+        "action": "being used to draw",
+        "position": "right/foreground"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A hand is drawing wavy black lines on white paper.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The marker is held in a writing grip.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The drawing consists of several horizontal, wavy strokes.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The hand is positioned on the right side of the frame, holding the teal marker. The marker tip is in contact with the white paper, which occupies the center and bottom of the view. The black wavy lines are being drawn on the surface of the paper.",
+    "parse_success": true,
+    "chunk_idx": 21,
+    "video_id": "iIt_Xagnk4E",
+    "state_changes": []
+  },
+  {
+    "time": [
+      22,
+      23
+    ],
+    "visible_entities": [
+      {
+        "desc": "white sheet of paper with a black ink drawing of three wavy, horizontal lines resembling a scribble or abstract shape",
+        "action": "static",
+        "position": "center/foreground",
+        "id": "paper_white_1"
+      },
+      {
+        "desc": "light blue marker with a bright green cap and black text on the barrel",
+        "action": "static",
+        "position": "bottom/foreground",
+        "id": "marker_blue_1"
+      },
+      {
+        "desc": "light brown wooden table surface with visible wood grain and dark knots",
+        "action": "static",
+        "position": "background",
+        "id": "table_wood_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A white sheet of paper rests on a wooden table.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A drawing consisting of three wavy black lines is visible on the paper.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A light blue marker with a green cap lies on the table below the paper.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The white sheet of paper with the drawing is positioned in the center of the frame, resting on the wooden table. The light blue marker is located at the bottom edge of the frame, below the paper. The wooden table surface extends into the background behind the paper.",
+    "parse_success": true,
+    "chunk_idx": 22,
+    "video_id": "iIt_Xagnk4E",
+    "state_changes": [
+      "Drawing action pauses; focus shifts to static completed drawing and markers on table."
+    ]
+  },
+  {
+    "time": [
+      23,
+      24
+    ],
+    "visible_entities": [
+      {
+        "desc": "hand with light skin tone",
+        "action": "holding a green marker and drawing",
+        "position": "right/foreground",
+        "id": "hand_main_1"
+      },
+      {
+        "desc": "green marker with a cylindrical body",
+        "action": "being used to draw",
+        "position": "center/right",
+        "id": "marker_green_1"
+      },
+      {
+        "desc": "white sheet of paper",
         "action": "static",
         "position": "center",
+        "id": "paper_white_1"
+      },
+      {
+        "desc": "black ink scribble consisting of wavy lines",
+        "action": "being drawn",
+        "position": "center",
+        "id": "drawing_black_ink_1"
+      },
+      {
+        "desc": "light brown wooden table surface",
+        "action": "static",
+        "position": "background/bottom",
+        "id": "table_wood_1"
+      },
+      {
+        "desc": "bright green wall",
+        "action": "static",
+        "position": "background/top",
+        "id": "wall_green_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A hand is holding a green marker.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The marker is drawing black wavy lines on the white paper.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The paper is resting on a wooden table.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The hand is holding the green marker above the white paper. The paper is on the wooden table. The green wall is in the background behind the table.",
+    "parse_success": true,
+    "chunk_idx": 23,
+    "video_id": "iIt_Xagnk4E",
+    "state_changes": [
+      "Drawing resumes with green marker; background reveals bright green wall."
+    ]
+  },
+  {
+    "time": [
+      24,
+      25
+    ],
+    "visible_entities": [
+      {
+        "desc": "hand with light skin tone holding a teal-colored pencil",
+        "action": "drawing a black squiggly line",
+        "position": "right",
+        "id": "hand_main_1"
+      },
+      {
+        "desc": "white sheet of paper",
+        "action": "static",
+        "position": "center",
+        "id": "paper_white_1"
+      },
+      {
+        "desc": "light brown wooden table surface",
+        "action": "static",
+        "position": "background",
+        "id": "table_wood_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A hand is holding a teal pencil and drawing on a piece of paper.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The pencil is creating a black, wavy line on the white surface.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The hand holding the pencil is positioned on the right side of the frame, above the white sheet of paper. The paper rests on the wooden table surface.",
+    "parse_success": true,
+    "chunk_idx": 24,
+    "video_id": "iIt_Xagnk4E",
+    "state_changes": [
+      "Tool changes to teal-colored pencil for squiggly lines."
+    ]
+  },
+  {
+    "time": [
+      25,
+      26
+    ],
+    "visible_entities": [
+      {
+        "desc": "child's hand with fair skin, holding a light blue marker",
+        "action": "drawing scribbles",
+        "position": "center",
+        "id": "hand_main_1"
+      },
+      {
+        "desc": "white sheet of paper",
+        "action": "static",
+        "position": "center",
+        "id": "paper_white_1"
+      },
+      {
+        "desc": "light blue marker",
+        "action": "being held",
+        "position": "center",
+        "id": "marker_blue_1"
+      },
+      {
+        "desc": "black scribble drawing",
+        "action": "static",
+        "position": "center",
+        "id": "drawing_black_ink_1"
+      },
+      {
+        "desc": "light wooden table surface",
+        "action": "static",
+        "position": "bottom",
+        "id": "table_wood_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A child's hand is holding a light blue marker.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The hand is drawing black scribbles on a white sheet of paper.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The paper is resting on a wooden table.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The child's hand is holding the light blue marker above the white paper. The black scribble drawing is on the paper, located to the left of the marker's tip. The paper is on top of the wooden table surface.",
+    "parse_success": true,
+    "chunk_idx": 25,
+    "video_id": "iIt_Xagnk4E",
+    "state_changes": [
+      "Tool changes to light blue marker for scribbles."
+    ]
+  },
+  {
+    "time": [
+      26,
+      27
+    ],
+    "visible_entities": [
+      {
+        "desc": "hand with light skin tone holding a teal pen",
+        "action": "drawing scribbles on paper",
+        "position": "right/foreground",
+        "id": "hand_main_1"
+      },
+      {
+        "desc": "white sheet of paper with black ink scribbles",
+        "action": "static",
+        "position": "center/foreground",
         "id": "paper_white_1"
       },
       {
@@ -1274,193 +1448,30 @@
         "action": "static",
         "position": "bottom/background",
         "id": "table_wood_1"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "A hand is holding a teal marker and drawing on a piece of paper.",
-        "confidence": 1.0
       },
       {
-        "fact": "The marker is creating black wavy lines on the white surface.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The paper rests on a wooden table.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [],
-    "spatial": "The hand holding the teal marker is positioned to the right of the paper. The paper is lying flat on top of the wooden table surface.",
-    "parse_success": true,
-    "chunk_idx": 23,
-    "video_id": "iIt_Xagnk4E",
-    "state_changes": [
-      "hand returns, drawing resumes"
-    ]
-  },
-  {
-    "time": [
-      48,
-      50
-    ],
-    "visible_entities": [
-      {
-        "desc": "hand with light skin tone",
-        "action": "holding a teal pencil and drawing",
-        "position": "right",
-        "id": "hand_main_1"
-      },
-      {
-        "desc": "teal colored pencil",
-        "action": "being used to draw",
-        "position": "center-right",
-        "id": "marker_teal_1"
-      },
-      {
-        "desc": "white paper",
+        "desc": "second sheet of white paper with faint text",
         "action": "static",
-        "position": "center",
+        "position": "left/background",
         "id": "paper_white_1"
-      },
-      {
-        "desc": "light brown wooden table surface",
-        "action": "static",
-        "position": "background",
-        "id": "table_wood_1"
-      },
-      {
-        "desc": "black ink scribble drawing",
-        "action": "being created",
-        "position": "center",
-        "id": "drawing_black_1"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A hand is holding a teal pencil.",
+        "fact": "A hand is holding a teal pen and moving it across the paper.",
         "confidence": 1.0
       },
       {
-        "fact": "The pencil is drawing a black scribble on white paper.",
+        "fact": "The pen is creating black scribble marks on the white paper.",
         "confidence": 1.0
       },
       {
-        "fact": "The paper is resting on a wooden table.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [],
-    "spatial": "The hand is to the right of the scribble drawing. The teal pencil is held by the hand and its tip is touching the paper. The white paper is on top of the wooden table.",
-    "parse_success": true,
-    "chunk_idx": 24,
-    "video_id": "iIt_Xagnk4E",
-    "state_changes": []
-  },
-  {
-    "time": [
-      50,
-      52
-    ],
-    "visible_entities": [
-      {
-        "desc": "child's hand with fair skin, holding a teal marker",
-        "action": "drawing scribbles",
-        "position": "center",
-        "id": "hand_main_1"
-      },
-      {
-        "desc": "teal marker with a cylindrical body",
-        "action": "being used to draw",
-        "position": "center",
-        "id": "marker_teal_1"
-      },
-      {
-        "desc": "white sheet of paper",
-        "action": "static",
-        "position": "center",
-        "id": "paper_white_1"
-      },
-      {
-        "desc": "black scribble drawing",
-        "action": "being created",
-        "position": "left",
-        "id": "drawing_black_1"
-      },
-      {
-        "desc": "light-colored wooden surface",
-        "action": "static",
-        "position": "bottom",
-        "id": "table_wood_1"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "A hand is holding a teal marker.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The marker is drawing black scribbles on the white paper.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The paper rests on a wooden surface.",
+        "fact": "The drawing activity is taking place on a wooden table.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The hand is holding the teal marker above the white paper. The black scribbles are on the left side of the paper, directly under the marker tip. The paper is resting on top of the wooden surface.",
-    "parse_success": true,
-    "chunk_idx": 25,
-    "video_id": "iIt_Xagnk4E",
-    "state_changes": []
-  },
-  {
-    "time": [
-      52,
-      54
-    ],
-    "visible_entities": [
-      {
-        "desc": "hand holding a teal pen",
-        "action": "drawing scribbles",
-        "position": "right"
-      },
-      {
-        "desc": "white sheet of paper",
-        "action": "static",
-        "position": "center",
-        "id": "paper_white_1"
-      },
-      {
-        "desc": "light brown wooden table surface",
-        "action": "static",
-        "position": "bottom",
-        "id": "table_wood_1"
-      },
-      {
-        "desc": "green wall",
-        "action": "static",
-        "position": "background",
-        "id": "wall_green_1"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "A hand is holding a teal pen and drawing scribbles on a white sheet of paper.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The paper is resting on a wooden table.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "There is a green wall in the background.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [],
-    "spatial": "The hand holding the teal pen is on the right side of the frame, positioned above the white sheet of paper. The paper is in the center, resting on the wooden table which is at the bottom. The green wall is in the background, behind the table and paper.",
+    "spatial": "The hand holding the teal pen is positioned on the right side of the frame, above the white paper. The paper with the scribbles is resting on the wooden table surface. A second sheet of paper is visible to the left of the active drawing area.",
     "parse_success": true,
     "chunk_idx": 26,
     "video_id": "iIt_Xagnk4E",
@@ -1468,8 +1479,8 @@
   },
   {
     "time": [
-      54,
-      56
+      27,
+      28
     ],
     "visible_entities": [
       {
@@ -1480,35 +1491,39 @@
       },
       {
         "desc": "teal marker with a cylindrical body",
-        "action": "being used to draw",
+        "action": "being held",
         "position": "center",
         "id": "marker_teal_1"
       },
       {
-        "desc": "white sheet of paper",
+        "desc": "white paper surface with black ink marks",
         "action": "static",
-        "position": "center",
+        "position": "bottom",
         "id": "paper_white_1"
       },
       {
-        "desc": "black ink scribbles",
+        "desc": "light brown wooden table surface",
         "action": "static",
-        "position": "center",
-        "id": "drawing_black_1"
+        "position": "background",
+        "id": "table_wood_1"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A hand is holding a teal marker and drawing black scribbles on a white sheet of paper.",
+        "fact": "A hand is gripping a teal marker.",
         "confidence": 1.0
       },
       {
-        "fact": "The marker tip is in contact with the paper surface.",
+        "fact": "The marker is creating black scribble lines on the white paper.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The drawing action is taking place on a wooden table.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The hand is holding the teal marker. The marker is positioned above the white sheet of paper. The black ink scribbles are on the surface of the paper, directly beneath the marker tip.",
+    "spatial": "The hand is positioned above the white paper. The teal marker is held by the hand and its tip is touching the paper surface. The paper rests on top of the wooden table.",
     "parse_success": true,
     "chunk_idx": 27,
     "video_id": "iIt_Xagnk4E",
@@ -1516,32 +1531,26 @@
   },
   {
     "time": [
-      56,
-      58
+      28,
+      29
     ],
     "visible_entities": [
       {
-        "desc": "person's hand with light skin tone",
-        "action": "drawing wavy black lines on paper",
-        "position": "right",
+        "desc": "hand holding a teal marker",
+        "action": "drawing wavy lines",
+        "position": "right/foreground",
         "id": "hand_main_1"
       },
       {
-        "desc": "teal colored pencil",
-        "action": "being held and used for drawing",
-        "position": "center-right",
-        "id": "marker_teal_1"
-      },
-      {
-        "desc": "white sheet of paper with black wavy lines",
+        "desc": "white paper with black ink drawing",
         "action": "static",
-        "position": "bottom-right",
+        "position": "center/foreground",
         "id": "paper_white_1"
       },
       {
-        "desc": "white sheet of paper with handwritten text",
+        "desc": "white paper with black text",
         "action": "static",
-        "position": "left",
+        "position": "left/background",
         "id": "paper_white_1"
       },
       {
@@ -1553,22 +1562,22 @@
     ],
     "atomic_facts": [
       {
-        "fact": "A hand is holding a teal pencil and drawing black wavy lines on a piece of white paper.",
+        "fact": "A hand is drawing wavy black lines on a piece of paper.",
         "confidence": 1.0
       },
       {
-        "fact": "The text 'MONSTER' is written in black capital letters on a separate sheet of paper to the left.",
+        "fact": "The paper on the left has the word 'MONSTER' written on it.",
         "confidence": 1.0
       },
       {
-        "fact": "The drawing activity is taking place on a wooden surface.",
+        "fact": "The drawing consists of multiple horizontal wavy lines.",
         "confidence": 1.0
       }
     ],
     "ocr": [
       "MONSTER"
     ],
-    "spatial": "The hand holding the teal pencil is positioned to the right of the paper with the text 'MONSTER'. The paper being drawn on is below the hand and pencil. The paper with the text is to the left of the drawing paper.",
+    "spatial": "The hand holding the marker is to the right of the paper with the text. The paper with the text is to the left of the paper being drawn on. Both papers are on the wooden table.",
     "parse_success": true,
     "chunk_idx": 28,
     "video_id": "iIt_Xagnk4E",
@@ -1576,46 +1585,44 @@
   },
   {
     "time": [
-      58,
-      60
+      29,
+      30
     ],
     "visible_entities": [
       {
-        "desc": "hand holding a teal marker",
-        "action": "drawing black lines",
-        "position": "right"
+        "desc": "hand with light skin tone holding a teal marker",
+        "action": "drawing black wavy lines",
+        "position": "right/foreground",
+        "id": "hand_main_1"
       },
       {
-        "desc": "white paper with black text and drawing",
+        "desc": "white paper with black ink drawing",
         "action": "static",
-        "position": "center",
+        "position": "center/bottom",
         "id": "paper_white_1"
       },
       {
-        "desc": "wooden table surface",
+        "desc": "white paper with handwritten text",
         "action": "static",
-        "position": "bottom",
-        "id": "table_wood_1"
+        "position": "left/background",
+        "id": "paper_white_1"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A hand is using a teal marker to draw black squiggly lines on a piece of white paper.",
+        "fact": "A hand is holding a teal marker and drawing black wavy lines on a white sheet of paper.",
         "confidence": 1.0
       },
       {
-        "fact": "The paper has the text 'MOM I LOVE' written on it.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The drawing is located below the text on the paper.",
+        "fact": "The paper on the left displays the handwritten text 'MOM' and 'BE'.",
         "confidence": 1.0
       }
     ],
     "ocr": [
-      "MOM I LOVE"
+      "MOM",
+      "BE"
     ],
-    "spatial": "The hand holding the marker is to the right of the text on the paper. The drawing is being created below the text. The paper is resting on top of a wooden table.",
+    "spatial": "The hand holding the marker is positioned on the right side of the frame, above the paper being drawn on. The paper with the text is located to the left of the drawing paper.",
     "parse_success": true,
     "chunk_idx": 29,
     "video_id": "iIt_Xagnk4E",
@@ -1623,18 +1630,18 @@
   },
   {
     "time": [
-      60,
-      62
+      30,
+      31
     ],
     "visible_entities": [
       {
-        "desc": "person with light skin, short dark hair, wearing a red shirt",
+        "desc": "person with fair skin, holding a teal marker",
         "action": "drawing on paper",
-        "position": "foreground",
-        "id": "person_other_1"
+        "position": "center",
+        "id": "hand_main_1"
       },
       {
-        "desc": "teal marker pen, plastic body",
+        "desc": "teal marker with black ink tip",
         "action": "being held",
         "position": "center",
         "id": "marker_teal_1"
@@ -1646,62 +1653,81 @@
         "id": "paper_white_1"
       },
       {
-        "desc": "wooden table surface, light brown",
+        "desc": "white paper with text 'MOM'",
         "action": "static",
         "position": "left",
+        "id": "paper_white_1"
+      },
+      {
+        "desc": "wooden surface",
+        "action": "static",
+        "position": "bottom left",
         "id": "table_wood_1"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A person is holding a teal marker and drawing black lines on a piece of white paper.",
+        "fact": "A person is drawing a black outline on a white sheet of paper.",
         "confidence": 1.0
       },
       {
-        "fact": "The drawing consists of squiggly, horizontal lines.",
+        "fact": "The person is holding a teal marker in their right hand.",
         "confidence": 1.0
       },
       {
-        "fact": "The person's head is bent down close to the paper.",
+        "fact": "A piece of paper with the text 'MOM' is visible on the left.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The drawing surface rests on a wooden table.",
         "confidence": 1.0
       }
     ],
     "ocr": [
-      "MOUNT"
+      "MOM"
     ],
-    "spatial": "The person is positioned above the white paper. The teal marker is in the person's hand, touching the paper. The wooden table is to the left of the paper being drawn on.",
+    "spatial": "The person's hand is in the center of the frame, holding the teal marker above the white paper. The paper with the text 'MOM' is to the left of the drawing hand. The wooden surface is visible in the bottom left corner, underneath the papers.",
     "parse_success": true,
     "chunk_idx": 30,
     "video_id": "iIt_Xagnk4E",
-    "state_changes": []
+    "state_changes": [
+      "Text 'MOM' appears on the paper."
+    ]
   },
   {
     "time": [
-      62,
-      64
+      31,
+      32
     ],
     "visible_entities": [
       {
-        "desc": "hand with light skin tone holding a teal-colored pencil",
-        "action": "drawing wavy lines on paper",
-        "position": "right/foreground"
+        "desc": "hand with light skin tone, holding a writing instrument",
+        "action": "drawing wavy lines",
+        "position": "right/foreground",
+        "id": "hand_main_1"
       },
       {
-        "desc": "white sheet of paper with black wavy lines drawn on it",
+        "desc": "teal colored pencil or pen, cylindrical, smooth texture",
+        "action": "being used to draw",
+        "position": "center/foreground",
+        "id": "marker_teal_1"
+      },
+      {
+        "desc": "white sheet of paper, flat surface",
         "action": "static",
         "position": "center/bottom",
         "id": "paper_white_1"
       },
       {
-        "desc": "wooden surface with light brown grain",
+        "desc": "wooden table surface, light brown, smooth",
         "action": "static",
         "position": "background",
         "id": "table_wood_1"
       },
       {
-        "desc": "white paper with faint dark markings",
+        "desc": "second sheet of paper with faint black markings",
         "action": "static",
-        "position": "left",
+        "position": "left/background",
         "id": "paper_white_1"
       }
     ],
@@ -1711,16 +1737,16 @@
         "confidence": 1.0
       },
       {
-        "fact": "The drawing consists of black wavy lines.",
+        "fact": "The pencil is creating dark, wavy lines on the paper.",
         "confidence": 1.0
       },
       {
-        "fact": "The paper rests on a wooden table surface.",
+        "fact": "A second piece of paper with existing writing is visible in the background.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The hand holding the pencil is positioned on the right side of the frame, above the white paper. The paper with the drawing is centered in the foreground, resting on the wooden table. Another sheet of paper is visible to the left of the drawing paper.",
+    "spatial": "The hand is positioned on the right side of the frame, holding the teal pencil which is in contact with the white paper below it. The white paper rests on a wooden table. To the left of the active drawing area, another sheet of paper is visible in the background.",
     "parse_success": true,
     "chunk_idx": 31,
     "video_id": "iIt_Xagnk4E",
@@ -1728,26 +1754,26 @@
   },
   {
     "time": [
-      64,
-      66
+      32,
+      33
     ],
     "visible_entities": [
       {
         "desc": "hand with light skin tone, holding a teal marker",
         "action": "drawing on paper",
-        "position": "top/center",
+        "position": "top center",
         "id": "hand_main_1"
       },
       {
         "desc": "teal marker with a black tip",
-        "action": "being held and used to draw",
+        "action": "being held by hand",
         "position": "center",
         "id": "marker_teal_1"
       },
       {
-        "desc": "white paper with black and green wavy lines drawn on it",
+        "desc": "white paper with green and black wavy line drawings",
         "action": "static",
-        "position": "center/bottom",
+        "position": "center",
         "id": "paper_white_1"
       },
       {
@@ -1763,7 +1789,7 @@
         "confidence": 1.0
       },
       {
-        "fact": "The drawing consists of wavy black lines and a green line underneath them.",
+        "fact": "The drawing consists of green and black wavy lines.",
         "confidence": 1.0
       },
       {
@@ -1772,7 +1798,7 @@
       }
     ],
     "ocr": [],
-    "spatial": "The hand is above the white paper. The teal marker is held by the hand and its tip is on the paper. The paper is on top of the wooden surface.",
+    "spatial": "The hand is above the white paper, holding the teal marker. The marker's tip is touching the paper, creating a drawing. The paper is on top of the wooden surface.",
     "parse_success": true,
     "chunk_idx": 32,
     "video_id": "iIt_Xagnk4E",
@@ -1780,8 +1806,8 @@
   },
   {
     "time": [
-      66,
-      68
+      33,
+      34
     ],
     "visible_entities": [
       {
@@ -1791,16 +1817,16 @@
         "id": "hand_main_1"
       },
       {
-        "desc": "white sheet of paper with black and green marker drawings",
-        "action": "static",
-        "position": "center",
-        "id": "paper_white_1"
-      },
-      {
-        "desc": "teal marker with a black tip",
+        "desc": "teal marker with a cylindrical body",
         "action": "being held",
         "position": "center",
         "id": "marker_teal_1"
+      },
+      {
+        "desc": "white paper with black and green ink drawings",
+        "action": "static",
+        "position": "center",
+        "id": "paper_white_1"
       },
       {
         "desc": "light brown wooden surface",
@@ -1811,351 +1837,11 @@
     ],
     "atomic_facts": [
       {
-        "fact": "A hand is holding a teal marker and drawing on a white sheet of paper.",
+        "fact": "A hand is holding a teal marker and drawing on a piece of white paper.",
         "confidence": 1.0
       },
       {
-        "fact": "The drawing on the paper consists of black and green lines.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The paper is resting on a wooden surface.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [],
-    "spatial": "The hand is above the white paper. The teal marker is held by the hand and its tip is touching the paper. The paper is on top of the wooden surface.",
-    "parse_success": true,
-    "chunk_idx": 33,
-    "video_id": "iIt_Xagnk4E",
-    "state_changes": []
-  },
-  {
-    "time": [
-      68,
-      70
-    ],
-    "visible_entities": [
-      {
-        "desc": "hand with light skin tone holding a teal marker",
-        "action": "drawing on paper",
-        "position": "top right",
-        "id": "hand_main_1"
-      },
-      {
-        "desc": "white sheet of paper with a drawing of a green caterpillar-like shape with black outlines",
-        "action": "static",
-        "position": "center",
-        "id": "paper_white_1"
-      },
-      {
-        "desc": "light brown wooden surface with visible grain",
-        "action": "static",
-        "position": "background",
-        "id": "table_wood_1"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "A hand is holding a teal marker and drawing on a white sheet of paper.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The drawing on the paper depicts a green, segmented shape with black outlines, resembling a caterpillar.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The paper is resting on a light brown wooden surface.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [],
-    "spatial": "The hand holding the marker is in the top right of the frame, positioned above the white paper. The drawing is in the center of the paper. The paper is on top of the wooden surface, which is visible in the background and at the bottom of the frame.",
-    "parse_success": true,
-    "chunk_idx": 34,
-    "video_id": "iIt_Xagnk4E",
-    "state_changes": []
-  },
-  {
-    "time": [
-      70,
-      72
-    ],
-    "visible_entities": [
-      {
-        "desc": "hand with light skin tone holding a teal marker",
-        "action": "coloring a drawing",
-        "position": "top right",
-        "id": "hand_main_1"
-      },
-      {
-        "desc": "teal marker with a felt tip",
-        "action": "being used to color",
-        "position": "top right",
-        "id": "marker_teal_1"
-      },
-      {
-        "desc": "white sheet of paper with a black outline drawing of a leaf or plant",
-        "action": "static",
-        "position": "center",
-        "id": "paper_white_1"
-      },
-      {
-        "desc": "green coloring inside the drawing",
-        "action": "appearing",
-        "position": "center",
-        "id": "drawing_green_1"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "A hand is holding a teal marker.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The marker is applying green color to a drawing on white paper.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The drawing consists of black outlines resembling leaves or grass.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [],
-    "spatial": "The hand is positioned in the top right corner, holding the teal marker above the white paper. The marker tip is touching the paper, filling in the black outlines with green ink.",
-    "parse_success": true,
-    "chunk_idx": 35,
-    "video_id": "iIt_Xagnk4E",
-    "state_changes": [
-      "action changes from drawing to coloring"
-    ]
-  },
-  {
-    "time": [
-      72,
-      74
-    ],
-    "visible_entities": [
-      {
-        "desc": "hand with light skin tone holding a green marker",
-        "action": "drawing on paper",
-        "position": "top right",
-        "id": "hand_main_1"
-      },
-      {
-        "desc": "green marker with a cylindrical body",
-        "action": "being used to draw",
-        "position": "center right",
-        "id": "marker_green_1"
-      },
-      {
-        "desc": "white sheet of paper with a green line drawing",
-        "action": "static",
-        "position": "center",
-        "id": "paper_white_1"
-      },
-      {
-        "desc": "green line drawing resembling a leaf or plant stem",
-        "action": "being created",
-        "position": "center",
-        "id": "drawing_green_1"
-      },
-      {
-        "desc": "wooden surface with visible grain",
-        "action": "static",
-        "position": "bottom",
-        "id": "table_wood_1"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "A hand is holding a green marker and drawing on a white sheet of paper.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The drawing consists of green outlines and filled-in sections.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The paper is resting on a wooden table.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [],
-    "spatial": "The hand is positioned above the white paper, holding the green marker. The green drawing is in the center of the paper, directly under the tip of the marker. The wooden surface is below the paper.",
-    "parse_success": true,
-    "chunk_idx": 36,
-    "video_id": "iIt_Xagnk4E",
-    "state_changes": [
-      "switch from teal marker to green marker"
-    ]
-  },
-  {
-    "time": [
-      74,
-      76
-    ],
-    "visible_entities": [
-      {
-        "desc": "hand with light skin tone, holding a green marker",
-        "action": "drawing green lines",
-        "position": "top right",
-        "id": "hand_main_1"
-      },
-      {
-        "desc": "green marker, cylindrical body, green ink",
-        "action": "being used to draw",
-        "position": "center right",
-        "id": "marker_green_1"
-      },
-      {
-        "desc": "white paper surface",
-        "action": "static",
-        "position": "center",
-        "id": "paper_white_1"
-      },
-      {
-        "desc": "green scribbled lines, wavy and irregular",
-        "action": "being formed",
-        "position": "center",
-        "id": "drawing_green_1"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "A hand is holding a green marker.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The marker is drawing green lines on the white paper.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The drawing consists of wavy, irregular green lines.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [],
-    "spatial": "The hand is above the white paper. The green marker is held by the hand and its tip is touching the paper. The green lines are on the paper, below the hand and marker.",
-    "parse_success": true,
-    "chunk_idx": 37,
-    "video_id": "iIt_Xagnk4E",
-    "state_changes": []
-  },
-  {
-    "time": [
-      76,
-      78
-    ],
-    "visible_entities": [
-      {
-        "desc": "person's hand with light skin tone holding a teal marker",
-        "action": "drawing green lines",
-        "position": "center",
-        "id": "hand_main_1"
-      },
-      {
-        "desc": "white sheet of paper with green ink drawings",
-        "action": "static",
-        "position": "bottom",
-        "id": "paper_white_1"
-      },
-      {
-        "desc": "teal marker with a green tip",
-        "action": "being held",
-        "position": "center",
-        "id": "marker_teal_1"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "A hand is holding a teal marker and drawing on a piece of paper.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The drawing consists of green wavy lines and loops.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [],
-    "spatial": "The hand is positioned above the white paper. The teal marker is held in the hand and its tip is touching the paper surface. The green drawing is on the paper, located below the hand.",
-    "parse_success": true,
-    "chunk_idx": 38,
-    "video_id": "iIt_Xagnk4E",
-    "state_changes": []
-  },
-  {
-    "time": [
-      78,
-      80
-    ],
-    "visible_entities": [
-      {
-        "desc": "person with fair skin and dark eyelashes, holding a teal marker",
-        "action": "drawing on paper",
-        "position": "foreground",
-        "id": "person_other_1"
-      },
-      {
-        "desc": "white paper with green and black marker scribbles",
-        "action": "static",
-        "position": "center",
-        "id": "paper_white_1"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "person is holding a teal marker",
-        "confidence": 1.0
-      },
-      {
-        "fact": "person is drawing green and black lines on white paper",
-        "confidence": 1.0
-      },
-      {
-        "fact": "the drawing consists of scribbled horizontal lines",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [],
-    "spatial": "The person is positioned above the white paper. The teal marker is held in the person's hand and is touching the surface of the paper. The green and black scribbles are on the paper, directly below the tip of the marker.",
-    "parse_success": true,
-    "chunk_idx": 39,
-    "video_id": "iIt_Xagnk4E",
-    "state_changes": []
-  },
-  {
-    "time": [
-      80,
-      82
-    ],
-    "visible_entities": [
-      {
-        "desc": "hand with light skin tone holding a green marker",
-        "action": "drawing on paper",
-        "position": "center",
-        "id": "hand_main_1"
-      },
-      {
-        "desc": "white sheet of paper with green ink markings",
-        "action": "static",
-        "position": "bottom",
-        "id": "paper_white_1"
-      },
-      {
-        "desc": "green marker with a cylindrical body",
-        "action": "being held",
-        "position": "center",
-        "id": "marker_green_1"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "A hand is holding a green marker and drawing on a piece of white paper.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The drawing consists of green ink lines forming a squiggly pattern.",
+        "fact": "The drawing consists of black squiggly lines and green horizontal strokes.",
         "confidence": 1.0
       },
       {
@@ -2164,264 +1850,62 @@
       }
     ],
     "ocr": [],
-    "spatial": "The hand is positioned above the white paper. The green marker is held by the hand and is in contact with the paper surface. The paper is on top of a wooden table.",
+    "spatial": "The hand is positioned above the white paper, holding the teal marker which is touching the paper's surface. The paper is lying on top of the wooden surface visible at the bottom of the frame.",
     "parse_success": true,
-    "chunk_idx": 40,
+    "chunk_idx": 33,
     "video_id": "iIt_Xagnk4E",
     "state_changes": []
   },
   {
     "time": [
-      82,
-      84
+      34,
+      35
     ],
     "visible_entities": [
       {
-        "desc": "child's hand with fair skin, holding a thick green marker",
-        "action": "drawing green lines on paper",
-        "position": "center",
+        "desc": "hand with light skin tone holding a teal marker",
+        "action": "drawing on paper",
+        "position": "top right",
         "id": "hand_main_1"
       },
       {
-        "desc": "white sheet of paper with green and brown scribbles",
+        "desc": "white sheet of paper with a green and black ink drawing",
         "action": "static",
-        "position": "background",
-        "id": "paper_white_1"
-      },
-      {
-        "desc": "thick green marker with a cylindrical body",
-        "action": "being held",
         "position": "center",
-        "id": "marker_green_1"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "A hand is holding a green marker and drawing on a white surface.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The marker is creating green wavy lines on the paper.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The drawing consists of horizontal scribbles.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [],
-    "spatial": "The child's hand is positioned above the white sheet of paper. The green marker is held in the hand and its tip is touching the paper surface. The green scribbles are located below the hand on the paper.",
-    "parse_success": true,
-    "chunk_idx": 41,
-    "video_id": "iIt_Xagnk4E",
-    "state_changes": []
-  },
-  {
-    "time": [
-      84,
-      86
-    ],
-    "visible_entities": [
-      {
-        "desc": "child's hand with light skin tone holding a teal marker",
-        "action": "drawing green lines on paper",
-        "position": "center/foreground",
-        "id": "hand_main_1"
-      },
-      {
-        "desc": "white sheet of paper with green scribbles",
-        "action": "static",
-        "position": "center/bottom",
         "id": "paper_white_1"
       },
       {
         "desc": "light brown wooden surface",
         "action": "static",
-        "position": "bottom",
-        "id": "table_wood_1"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "A hand is holding a teal marker and drawing on a piece of paper.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The marker is creating green wavy lines on the white surface.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The paper rests on a wooden table.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [],
-    "spatial": "The child's hand is positioned above the white paper, holding the teal marker which is touching the paper surface. The paper is lying on top of the wooden table visible at the bottom of the frame.",
-    "parse_success": true,
-    "chunk_idx": 42,
-    "video_id": "iIt_Xagnk4E",
-    "state_changes": []
-  },
-  {
-    "time": [
-      86,
-      88
-    ],
-    "visible_entities": [
-      {
-        "desc": "child's hand with light skin tone",
-        "action": "holding a teal marker",
-        "position": "center",
-        "id": "hand_main_1"
-      },
-      {
-        "desc": "teal marker with a cylindrical body",
-        "action": "drawing on paper",
-        "position": "center",
-        "id": "marker_teal_1"
-      },
-      {
-        "desc": "white sheet of paper with green and black ink drawings",
-        "action": "static",
         "position": "background",
-        "id": "paper_white_1"
-      },
-      {
-        "desc": "light brown wooden surface with visible grain",
-        "action": "static",
-        "position": "bottom",
         "id": "table_wood_1"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A hand is holding a teal marker and drawing on a piece of paper.",
+        "fact": "A hand is holding a teal marker and drawing on a white sheet of paper.",
         "confidence": 1.0
       },
       {
-        "fact": "The drawing consists of green wavy lines and black outlines.",
+        "fact": "The drawing consists of black outlines and green coloring.",
         "confidence": 1.0
       },
       {
-        "fact": "The paper is resting on a wooden table.",
+        "fact": "The paper is resting on a wooden surface.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The child's hand is positioned above the white paper, holding the teal marker. The marker tip is touching the paper surface, creating green and black lines. The paper is lying flat on top of the wooden surface.",
+    "spatial": "The hand holding the marker is positioned above the white paper. The paper is on top of the wooden surface.",
     "parse_success": true,
-    "chunk_idx": 43,
+    "chunk_idx": 34,
     "video_id": "iIt_Xagnk4E",
     "state_changes": []
   },
   {
     "time": [
-      88,
-      90
-    ],
-    "visible_entities": [
-      {
-        "desc": "person's hand with light skin tone holding a green marker",
-        "action": "drawing green lines",
-        "position": "top right",
-        "id": "hand_main_1"
-      },
-      {
-        "desc": "green marker with a teal cap",
-        "action": "being held",
-        "position": "center right",
-        "id": "marker_green_1"
-      },
-      {
-        "desc": "white paper with green wavy lines drawn on it",
-        "action": "static",
-        "position": "center",
-        "id": "paper_white_1"
-      },
-      {
-        "desc": "light brown wooden table surface",
-        "action": "static",
-        "position": "bottom",
-        "id": "table_wood_1"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "A person is drawing green wavy lines on a piece of white paper.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The hand is holding a green marker.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The paper is resting on a wooden table.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [],
-    "spatial": "The person's hand is above the white paper. The green marker is held by the hand and is touching the paper. The paper is on top of the wooden table.",
-    "parse_success": true,
-    "chunk_idx": 44,
-    "video_id": "iIt_Xagnk4E",
-    "state_changes": []
-  },
-  {
-    "time": [
-      90,
-      92
-    ],
-    "visible_entities": [
-      {
-        "desc": "child's hand with fair skin, holding a teal marker",
-        "action": "drawing green lines",
-        "position": "top right",
-        "id": "hand_main_1"
-      },
-      {
-        "desc": "white paper surface",
-        "action": "static",
-        "position": "center",
-        "id": "paper_white_1"
-      },
-      {
-        "desc": "green marker lines, wavy and horizontal",
-        "action": "being drawn",
-        "position": "center",
-        "id": "drawing_green_1"
-      },
-      {
-        "desc": "wooden table surface, light brown",
-        "action": "static",
-        "position": "bottom",
-        "id": "table_wood_1"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "A hand is holding a teal marker and drawing on the paper.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The marker is creating green wavy lines on the white surface.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The paper is resting on a wooden table.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [],
-    "spatial": "The hand is positioned above the white paper, holding the marker which is touching the paper surface. The green lines are being drawn in the center of the paper, below the hand. The paper is on top of the wooden table visible at the bottom of the frame.",
-    "parse_success": true,
-    "chunk_idx": 45,
-    "video_id": "iIt_Xagnk4E",
-    "state_changes": []
-  },
-  {
-    "time": [
-      92,
-      94
+      35,
+      36
     ],
     "visible_entities": [
       {
@@ -2429,6 +1913,64 @@
         "action": "drawing green lines",
         "position": "top right",
         "id": "hand_main_1"
+      },
+      {
+        "desc": "white sheet of paper with green marker scribbles",
+        "action": "static",
+        "position": "center",
+        "id": "paper_white_1"
+      },
+      {
+        "desc": "light brown wooden surface",
+        "action": "static",
+        "position": "background",
+        "id": "table_wood_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A hand is holding a teal marker and drawing on a piece of paper.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "Green scribbles are visible on the white paper.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The paper is resting on a wooden surface.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The hand holding the marker is positioned above the white paper. The green scribbles are on the surface of the paper. The paper is on top of the wooden surface.",
+    "parse_success": true,
+    "chunk_idx": 35,
+    "video_id": "iIt_Xagnk4E",
+    "state_changes": []
+  },
+  {
+    "time": [
+      36,
+      37
+    ],
+    "visible_entities": [
+      {
+        "desc": "hand with fair skin, holding a green marker",
+        "action": "coloring a drawing",
+        "position": "top right",
+        "id": "hand_main_1"
+      },
+      {
+        "desc": "green marker with a teal body",
+        "action": "being used to color",
+        "position": "top right",
+        "id": "marker_green_1"
+      },
+      {
+        "desc": "drawing of a green vegetable with black outlines",
+        "action": "static",
+        "position": "center",
+        "id": "drawing_green_ink_1"
       },
       {
         "desc": "white sheet of paper",
@@ -2437,15 +1979,331 @@
         "id": "paper_white_1"
       },
       {
-        "desc": "green wavy lines drawn on paper",
-        "action": "being drawn",
+        "desc": "wooden surface with light brown grain",
+        "action": "static",
+        "position": "bottom",
+        "id": "table_wood_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A hand is coloring a drawing of a green vegetable with a marker.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The drawing consists of black outlines and green fill.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The paper rests on a wooden surface.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The hand holding the green marker is positioned above the drawing in the center of the paper. The drawing is located on the white sheet of paper, which lies on top of the wooden surface.",
+    "parse_success": true,
+    "chunk_idx": 36,
+    "video_id": "iIt_Xagnk4E",
+    "state_changes": [
+      "Action shifts to coloring a specific drawing (green vegetable) with green marker."
+    ]
+  },
+  {
+    "time": [
+      37,
+      38
+    ],
+    "visible_entities": [
+      {
+        "desc": "person with light skin, short dark hair, holding a green marker",
+        "action": "drawing on paper",
+        "position": "top/foreground",
+        "id": "person_black_shirt_1"
+      },
+      {
+        "desc": "green marker, plastic body",
+        "action": "being held by person",
         "position": "center",
-        "id": "drawing_green_1"
+        "id": "marker_green_1"
+      },
+      {
+        "desc": "white paper with green ink drawing",
+        "action": "static",
+        "position": "center/bottom",
+        "id": "paper_white_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "person is drawing on a piece of paper",
+        "confidence": 1.0
+      },
+      {
+        "fact": "the drawing consists of green lines",
+        "confidence": 1.0
+      },
+      {
+        "fact": "the marker is held in the person's right hand",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The person is positioned above the white paper. The green marker is held in the person's hand and is touching the surface of the paper. The drawing is on the paper.",
+    "parse_success": true,
+    "chunk_idx": 37,
+    "video_id": "iIt_Xagnk4E",
+    "state_changes": []
+  },
+  {
+    "time": [
+      38,
+      39
+    ],
+    "visible_entities": [
+      {
+        "desc": "person with fair skin, short brown hair, wearing a white top",
+        "action": "drawing with a green marker",
+        "position": "top/center",
+        "id": "boy_main_1"
+      },
+      {
+        "desc": "green marker with a cylindrical body",
+        "action": "being held",
+        "position": "center",
+        "id": "marker_green_1"
+      },
+      {
+        "desc": "white paper surface with green and black ink drawings",
+        "action": "static",
+        "position": "bottom/center",
+        "id": "paper_white_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A person is holding a green marker in their right hand.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The person is drawing green lines on a white sheet of paper.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The drawing consists of wavy green lines and black outlines.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The person is positioned above the white paper. The green marker is held in the person's hand and is touching the surface of the paper. The drawing is located in the center of the paper, below the person's hand.",
+    "parse_success": true,
+    "chunk_idx": 38,
+    "video_id": "iIt_Xagnk4E",
+    "state_changes": []
+  },
+  {
+    "time": [
+      39,
+      40
+    ],
+    "visible_entities": [
+      {
+        "desc": "child's hand with fair skin, holding a thick teal marker",
+        "action": "drawing green lines on paper",
+        "position": "center/foreground"
+      },
+      {
+        "desc": "white sheet of paper with black and green scribbles",
+        "action": "static",
+        "position": "bottom/center",
+        "id": "paper_white_1"
+      },
+      {
+        "desc": "child's face profile with eyelashes visible",
+        "action": "static",
+        "position": "top/foreground"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A hand is holding a teal marker and drawing on a piece of paper.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The drawing consists of black squiggly lines and a green horizontal line.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The child's face is positioned close to the paper while drawing.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The child's hand is positioned above the white paper. The teal marker is held in the hand and its tip is touching the paper surface. The child's face is located above and to the left of the hand.",
+    "parse_success": true,
+    "chunk_idx": 39,
+    "video_id": "iIt_Xagnk4E",
+    "state_changes": [
+      "Camera zooms in to show child's face profile while drawing."
+    ]
+  },
+  {
+    "time": [
+      40,
+      41
+    ],
+    "visible_entities": [
+      {
+        "desc": "hand with fair skin holding a teal marker",
+        "action": "drawing green lines on paper",
+        "position": "center",
+        "id": "hand_main_1"
+      },
+      {
+        "desc": "white sheet of paper with green marker scribbles",
+        "action": "static",
+        "position": "bottom",
+        "id": "paper_white_1"
+      },
+      {
+        "desc": "wooden surface, light brown",
+        "action": "static",
+        "position": "left",
+        "id": "table_wood_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A hand is holding a teal marker and drawing on a white sheet of paper.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "Green wavy lines are being created on the paper.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The paper is resting on a wooden surface.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The hand is positioned above the white paper. The wooden surface is to the left of the paper. The teal marker is held by the hand and is in contact with the paper.",
+    "parse_success": true,
+    "chunk_idx": 40,
+    "video_id": "iIt_Xagnk4E",
+    "state_changes": []
+  },
+  {
+    "time": [
+      41,
+      42
+    ],
+    "visible_entities": [
+      {
+        "desc": "child's hand with fair skin holding a thick, light-green marker",
+        "action": "drawing green lines on paper",
+        "position": "center"
+      },
+      {
+        "desc": "white sheet of paper with green and brown scribbles",
+        "action": "static",
+        "position": "foreground",
+        "id": "paper_white_1"
       },
       {
         "desc": "light brown wooden surface",
         "action": "static",
-        "position": "bottom left",
+        "position": "bottom",
+        "id": "table_wood_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A child's hand is holding a green marker and drawing on a white sheet of paper.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The drawing consists of green and brown scribbles.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The paper is resting on a wooden table.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The child's hand is positioned above the white paper. The paper is on top of the wooden surface. The green marker is held in the hand, with its tip touching the paper.",
+    "parse_success": true,
+    "chunk_idx": 41,
+    "video_id": "iIt_Xagnk4E",
+    "state_changes": []
+  },
+  {
+    "time": [
+      42,
+      43
+    ],
+    "visible_entities": [
+      {
+        "desc": "child's hand with light skin, holding a teal marker",
+        "action": "drawing wavy lines",
+        "position": "center",
+        "id": "hand_main_1"
+      },
+      {
+        "desc": "white paper surface with green and black ink drawings",
+        "action": "static",
+        "position": "background",
+        "id": "paper_white_1"
+      },
+      {
+        "desc": "teal marker with a smooth plastic body",
+        "action": "being held",
+        "position": "center",
+        "id": "marker_teal_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A hand is holding a teal marker and drawing on white paper.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The drawing consists of green wavy lines and black outlines.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The marker tip is touching the paper surface.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The child's hand is in the center of the frame, holding the teal marker. The marker is positioned above the white paper, with its tip touching the paper to create drawings. The green and black ink lines are on the paper, below the hand.",
+    "parse_success": true,
+    "chunk_idx": 42,
+    "video_id": "iIt_Xagnk4E",
+    "state_changes": []
+  },
+  {
+    "time": [
+      43,
+      44
+    ],
+    "visible_entities": [
+      {
+        "desc": "child's hand with fair skin, holding a teal marker",
+        "action": "drawing green lines",
+        "position": "center"
+      },
+      {
+        "desc": "white paper surface with green and black marker scribbles",
+        "action": "static",
+        "position": "center",
+        "id": "paper_white_1"
+      },
+      {
+        "desc": "light-colored wooden table surface",
+        "action": "static",
+        "position": "bottom",
         "id": "table_wood_1"
       }
     ],
@@ -2455,154 +2313,50 @@
         "confidence": 1.0
       },
       {
-        "fact": "Green wavy lines are being added to the paper.",
+        "fact": "Green and black wavy lines are visible on the white paper.",
         "confidence": 1.0
       },
       {
-        "fact": "The paper rests on a wooden surface.",
+        "fact": "The paper is resting on a wooden table.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The hand holding the marker is positioned above the white paper. The green lines are on the surface of the paper. The paper is resting on top of the wooden surface.",
+    "spatial": "The child's hand is positioned above the white paper. The teal marker is held by the hand and its tip is touching the paper surface. The paper is lying on top of the wooden table.",
     "parse_success": true,
-    "chunk_idx": 46,
+    "chunk_idx": 43,
     "video_id": "iIt_Xagnk4E",
     "state_changes": []
   },
   {
     "time": [
-      94,
-      96
-    ],
-    "visible_entities": [
-      {
-        "desc": "child's hand with fair skin holding a green marker",
-        "action": "drawing wavy lines on paper",
-        "position": "center",
-        "id": "hand_main_1"
-      },
-      {
-        "desc": "green marker with a plastic body",
-        "action": "being used to draw",
-        "position": "center",
-        "id": "marker_green_1"
-      },
-      {
-        "desc": "white sheet of paper with green wavy lines drawn on it",
-        "action": "static",
-        "position": "bottom",
-        "id": "paper_white_1"
-      },
-      {
-        "desc": "brown cardboard surface",
-        "action": "static",
-        "position": "left",
-        "id": "surface_cardboard_1"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "A hand is holding a green marker and drawing on a piece of paper.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The drawing consists of several horizontal, wavy green lines.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The paper is resting on a wooden surface.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [],
-    "spatial": "The child's hand is positioned above the white paper, holding the green marker. The green wavy lines are on the surface of the paper. A piece of brown cardboard is visible to the left of the paper.",
-    "parse_success": true,
-    "chunk_idx": 47,
-    "video_id": "iIt_Xagnk4E",
-    "state_changes": []
-  },
-  {
-    "time": [
-      96,
-      98
-    ],
-    "visible_entities": [
-      {
-        "desc": "child's hand with fair skin holding a teal marker",
-        "action": "drawing green wavy lines",
-        "position": "center/foreground",
-        "id": "hand_main_1"
-      },
-      {
-        "desc": "white paper sheet",
-        "action": "static",
-        "position": "center/bottom",
-        "id": "paper_white_1"
-      },
-      {
-        "desc": "green wavy lines drawing",
-        "action": "being drawn",
-        "position": "center",
-        "id": "drawing_green_1"
-      },
-      {
-        "desc": "light brown wooden table surface",
-        "action": "static",
-        "position": "bottom/left",
-        "id": "table_wood_1"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "A hand is holding a teal marker and drawing on white paper.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The drawing consists of green wavy lines.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The paper rests on a wooden table.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [],
-    "spatial": "The child's hand is above the white paper, holding the teal marker. The green wavy lines are on the paper, located below the hand. The paper is on top of the light brown wooden table.",
-    "parse_success": true,
-    "chunk_idx": 48,
-    "video_id": "iIt_Xagnk4E",
-    "state_changes": []
-  },
-  {
-    "time": [
-      98,
-      100
+      44,
+      45
     ],
     "visible_entities": [
       {
         "desc": "hand with light skin tone, holding a teal marker",
-        "action": "drawing wavy lines",
-        "position": "center",
+        "action": "drawing green lines",
+        "position": "top right",
         "id": "hand_main_1"
       },
       {
-        "desc": "teal marker with a smooth plastic body",
-        "action": "being held and moved",
-        "position": "center",
+        "desc": "teal marker with a felt tip",
+        "action": "being used to draw",
+        "position": "center right",
         "id": "marker_teal_1"
       },
       {
-        "desc": "white paper surface with green wavy lines drawn on it",
+        "desc": "white paper surface with green ink drawings",
         "action": "static",
-        "position": "bottom",
+        "position": "center",
         "id": "paper_white_1"
       },
       {
-        "desc": "brown cardboard-like surface",
+        "desc": "green ink drawing consisting of three wavy horizontal lines",
         "action": "static",
-        "position": "left",
-        "id": "surface_cardboard_1"
+        "position": "center",
+        "id": "drawing_green_ink_1"
       }
     ],
     "atomic_facts": [
@@ -2611,16 +2365,253 @@
         "confidence": 1.0
       },
       {
-        "fact": "The marker is creating green wavy lines on the paper.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The paper is resting on a brown surface.",
+        "fact": "The drawing consists of three wavy green lines.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The hand is positioned above the white paper. The teal marker is held by the hand and its tip is touching the paper. The brown surface is to the left of the white paper.",
+    "spatial": "The hand is positioned above the white paper. The teal marker is held by the hand and its tip is touching the paper, creating the green lines. The green lines are located in the center of the visible paper area.",
+    "parse_success": true,
+    "chunk_idx": 44,
+    "video_id": "iIt_Xagnk4E",
+    "state_changes": []
+  },
+  {
+    "time": [
+      45,
+      46
+    ],
+    "visible_entities": [
+      {
+        "desc": "child's hand with fair skin, holding a green marker",
+        "action": "drawing green wavy lines",
+        "position": "top right",
+        "id": "hand_main_1"
+      },
+      {
+        "desc": "green marker with a teal cap",
+        "action": "being held",
+        "position": "center",
+        "id": "marker_green_1"
+      },
+      {
+        "desc": "white paper surface with green wavy lines drawn on it",
+        "action": "static",
+        "position": "center",
+        "id": "paper_white_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A hand is holding a green marker and drawing on a piece of paper.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "Green wavy lines are being drawn on the white surface.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The marker is positioned above the paper.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The child's hand is above the white paper, holding the green marker. The green wavy lines are on the paper, located below the hand and marker.",
+    "parse_success": true,
+    "chunk_idx": 45,
+    "video_id": "iIt_Xagnk4E",
+    "state_changes": []
+  },
+  {
+    "time": [
+      46,
+      47
+    ],
+    "visible_entities": [
+      {
+        "desc": "hand with fair skin holding a teal marker",
+        "action": "drawing green wavy lines",
+        "position": "center",
+        "id": "hand_main_1"
+      },
+      {
+        "desc": "green wavy lines drawn on paper",
+        "action": "static",
+        "position": "center",
+        "id": "drawing_green_ink_1"
+      },
+      {
+        "desc": "white sheet of paper",
+        "action": "static",
+        "position": "background",
+        "id": "paper_white_1"
+      },
+      {
+        "desc": "light brown wooden surface",
+        "action": "static",
+        "position": "bottom",
+        "id": "table_wood_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A hand is holding a teal marker and drawing on a white sheet of paper.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The drawing consists of three green wavy horizontal lines.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The paper rests on a wooden surface.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The hand holding the marker is positioned above the white paper. The green wavy lines are on the paper, located below the hand. The white paper is on top of the light brown wooden surface.",
+    "parse_success": true,
+    "chunk_idx": 46,
+    "video_id": "iIt_Xagnk4E",
+    "state_changes": []
+  },
+  {
+    "time": [
+      47,
+      48
+    ],
+    "visible_entities": [
+      {
+        "desc": "child with light skin, holding a green marker",
+        "action": "drawing wavy lines",
+        "position": "top/foreground"
+      },
+      {
+        "desc": "green marker with a smooth plastic body",
+        "action": "being held",
+        "position": "center",
+        "id": "marker_green_1"
+      },
+      {
+        "desc": "white paper with green wavy lines drawn on it",
+        "action": "static",
+        "position": "center/bottom",
+        "id": "paper_white_1"
+      },
+      {
+        "desc": "light brown wooden table surface",
+        "action": "static",
+        "position": "bottom",
+        "id": "table_wood_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A child is drawing green wavy lines on a piece of white paper.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The child is holding a green marker in their right hand.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The paper is resting on a wooden table.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The child's hand is above the white paper. The green marker is held by the child and is touching the paper. The paper is on top of the wooden table.",
+    "parse_success": true,
+    "chunk_idx": 47,
+    "video_id": "iIt_Xagnk4E",
+    "state_changes": []
+  },
+  {
+    "time": [
+      48,
+      49
+    ],
+    "visible_entities": [
+      {
+        "desc": "hand with light skin tone holding a teal marker",
+        "action": "drawing green lines",
+        "position": "center",
+        "id": "hand_main_1"
+      },
+      {
+        "desc": "white sheet of paper with green wavy lines",
+        "action": "static",
+        "position": "center",
+        "id": "paper_white_1"
+      },
+      {
+        "desc": "light brown wooden table surface",
+        "action": "static",
+        "position": "bottom",
+        "id": "table_wood_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A hand is holding a teal marker and drawing on a piece of paper.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The marker is creating green wavy lines on the white surface.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The paper is resting on a wooden table.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The hand holding the teal marker is positioned above the white sheet of paper. The paper is resting on top of the light brown wooden table surface. The green wavy lines are being drawn in the center of the paper.",
+    "parse_success": true,
+    "chunk_idx": 48,
+    "video_id": "iIt_Xagnk4E",
+    "state_changes": []
+  },
+  {
+    "time": [
+      49,
+      50
+    ],
+    "visible_entities": [
+      {
+        "desc": "hand with light skin tone holding a teal marker",
+        "action": "drawing green lines",
+        "position": "center",
+        "id": "hand_main_1"
+      },
+      {
+        "desc": "white paper with green wavy lines drawn on it",
+        "action": "static",
+        "position": "center",
+        "id": "paper_white_1"
+      },
+      {
+        "desc": "light brown wooden surface",
+        "action": "static",
+        "position": "bottom",
+        "id": "table_wood_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A hand is holding a teal marker and drawing on a piece of white paper.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The drawing consists of green wavy lines.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The paper is resting on a wooden surface.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The hand is above the white paper, holding the marker which is touching the paper's surface. The paper is on top of the wooden surface.",
     "parse_success": true,
     "chunk_idx": 49,
     "video_id": "iIt_Xagnk4E",
@@ -2628,8 +2619,8 @@
   },
   {
     "time": [
-      100,
-      102
+      50,
+      51
     ],
     "visible_entities": [
       {
@@ -2639,10 +2630,16 @@
         "id": "hand_main_1"
       },
       {
-        "desc": "white sheet of paper with green marker drawings",
+        "desc": "white paper with green wavy lines drawn on it",
         "action": "static",
-        "position": "center",
+        "position": "bottom",
         "id": "paper_white_1"
+      },
+      {
+        "desc": "teal marker with a smooth plastic body",
+        "action": "being held",
+        "position": "center",
+        "id": "marker_teal_1"
       },
       {
         "desc": "light brown wooden table surface",
@@ -2653,20 +2650,20 @@
     ],
     "atomic_facts": [
       {
-        "fact": "A hand is holding a teal marker and drawing on a piece of paper.",
+        "fact": "A child's hand is holding a teal marker.",
         "confidence": 1.0
       },
       {
-        "fact": "The drawing consists of green wavy lines resembling grass or a caterpillar.",
+        "fact": "The hand is drawing green wavy lines on a piece of white paper.",
         "confidence": 1.0
       },
       {
-        "fact": "The paper rests on a wooden surface.",
+        "fact": "The paper is resting on a wooden table.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The child's hand is positioned above the white paper, holding the teal marker against the surface to draw. The green lines are being created in the center of the paper. The paper is lying on top of the wooden table.",
+    "spatial": "The child's hand is holding the teal marker above the white paper. The green wavy lines are on the paper, which is on top of the wooden table. The hand is positioned to the right of the lines being drawn.",
     "parse_success": true,
     "chunk_idx": 50,
     "video_id": "iIt_Xagnk4E",
@@ -2674,15 +2671,15 @@
   },
   {
     "time": [
-      102,
-      104
+      51,
+      52
     ],
     "visible_entities": [
       {
-        "desc": "green marker drawing of three long, wavy, bean-like shapes with dark green outlines and light green fill",
+        "desc": "green marker drawing of three long, wavy, bean-like shapes with black outlines",
         "action": "static",
         "position": "center",
-        "id": "drawing_green_1"
+        "id": "drawing_green_ink_1"
       },
       {
         "desc": "white sheet of paper",
@@ -2693,10 +2690,11 @@
       {
         "desc": "light brown wooden table surface with visible grain and knots",
         "action": "static",
-        "position": "background"
+        "position": "background",
+        "id": "table_wood_1"
       },
       {
-        "desc": "human hand, partially visible on the right edge",
+        "desc": "person's hand with light skin tone",
         "action": "static",
         "position": "right",
         "id": "hand_main_1"
@@ -2704,7 +2702,11 @@
     ],
     "atomic_facts": [
       {
-        "fact": "A drawing of three green shapes is visible on the white paper.",
+        "fact": "A hand is visible on the right side of the frame.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A drawing of three green shapes is on the white paper.",
         "confidence": 1.0
       },
       {
@@ -2713,40 +2715,40 @@
       }
     ],
     "ocr": [],
-    "spatial": "The green drawing is in the center of the white sheet of paper. The paper is on top of the wooden table. A hand is partially visible to the right of the paper.",
+    "spatial": "The green drawing is in the center of the white paper. The paper is on top of the wooden table. The person's hand is to the right of the drawing.",
     "parse_success": true,
     "chunk_idx": 51,
     "video_id": "iIt_Xagnk4E",
     "state_changes": [
-      "completed green marker drawing displayed"
+      "Drawing action stops; hand becomes static next to completed bean-shaped drawing."
     ]
   },
   {
     "time": [
-      104,
-      106
+      52,
+      53
     ],
     "visible_entities": [
       {
-        "desc": "green marker drawing of three wavy, bean-like shapes with black outlines",
+        "desc": "green marker drawing of three wavy, parallel lines resembling claws",
         "action": "static",
         "position": "center",
-        "id": "drawing_green_1"
+        "id": "drawing_green_ink_1"
       },
       {
         "desc": "human hand with light skin tone",
-        "action": "entering from top right",
+        "action": "entering frame from top right",
         "position": "top right",
         "id": "hand_main_1"
       },
       {
-        "desc": "white sheet of paper",
+        "desc": "white paper sheet",
         "action": "static",
-        "position": "center",
+        "position": "foreground",
         "id": "paper_white_1"
       },
       {
-        "desc": "light brown wooden table surface",
+        "desc": "light brown wooden table surface with visible wood grain",
         "action": "static",
         "position": "background",
         "id": "table_wood_1"
@@ -2758,127 +2760,134 @@
         "confidence": 1.0
       },
       {
-        "fact": "The green drawing remains stationary on the white paper.",
+        "fact": "A green drawing of three wavy lines is visible on the white paper.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The paper is resting on a wooden table.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The green drawing is in the center of the white sheet of paper. The hand is positioned to the top right of the drawing. The paper is lying on the wooden table surface.",
+    "spatial": "The green drawing is in the center of the white paper. The hand is positioned to the top right of the drawing. The paper is on top of the wooden table.",
     "parse_success": true,
     "chunk_idx": 52,
     "video_id": "iIt_Xagnk4E",
-    "state_changes": []
+    "state_changes": [
+      "Hand re-enters frame from top right; new claw-like drawing visible."
+    ]
   },
   {
     "time": [
-      106,
-      108
+      53,
+      54
     ],
     "visible_entities": [
       {
-        "desc": "young boy with short brown hair, wearing a white t-shirt with black trim around the collar and sleeves",
+        "desc": "young boy with short brown buzz-cut hair, wearing a white t-shirt with a black crew neck collar and black horizontal stripes on the sleeve",
         "action": "turning head from left to center",
         "position": "center/foreground",
         "id": "boy_main_1"
       },
       {
-        "desc": "wooden bunk bed frame with a green painted section",
+        "desc": "wooden bunk bed frame with a green painted wall behind it",
         "action": "static",
         "position": "background/right",
         "id": "bed_bunk_1"
       },
       {
-        "desc": "light-colored wooden table surface",
+        "desc": "red, white, and blue bedding with a Union Jack flag pattern",
         "action": "static",
-        "position": "bottom/foreground",
-        "id": "table_wood_1"
+        "position": "background/right",
+        "id": "bed_bunk_1"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A young boy is sitting at a table.",
+        "fact": "The boy turns his head to face forward towards the camera.",
         "confidence": 1.0
       },
       {
-        "fact": "The boy turns his head to face the camera.",
+        "fact": "The boy is sitting at a light-colored wooden table.",
         "confidence": 1.0
       },
       {
-        "fact": "A bunk bed is visible in the background.",
+        "fact": "A bunk bed with Union Jack bedding is visible in the background.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The boy is in the foreground, positioned in front of the wooden bunk bed. The bunk bed is to the right of the boy and behind him. The boy is leaning over the wooden table which is below his chest.",
+    "spatial": "The boy is in the foreground, positioned in front of the wooden bunk bed frame. The bunk bed is to the right of the boy and behind him. The Union Jack bedding is on the lower bunk of the bed.",
     "parse_success": true,
     "chunk_idx": 53,
     "video_id": "iIt_Xagnk4E",
     "state_changes": [
-      "boy reappears after drawing sequence"
+      "Scene cuts back to bedroom; boy turns head."
     ]
   },
   {
     "time": [
-      108,
-      110
+      54,
+      55
     ],
     "visible_entities": [
       {
-        "desc": "young boy with short brown buzz-cut hair, wearing a white t-shirt with a black collar",
+        "desc": "young boy with short brown hair, wearing a white t-shirt with a black collar",
         "action": "looking towards the camera",
-        "position": "center foreground",
+        "position": "center/foreground",
         "id": "boy_main_1"
       },
       {
-        "desc": "wooden shelving unit with multiple levels holding various items",
+        "desc": "wooden bunk bed frame with green painted wall behind it",
         "action": "static",
-        "position": "right background",
-        "id": "shelving_wood_1"
+        "position": "right/background"
       },
       {
-        "desc": "green pen or pencil",
-        "action": "held in hand",
+        "desc": "green pen or marker",
+        "action": "held by the boy",
         "position": "bottom left",
         "id": "marker_green_1"
       },
       {
-        "desc": "white box with red text",
+        "desc": "white pillow with red text",
         "action": "static",
-        "position": "top right shelf",
-        "id": "box_white_1"
+        "position": "top right",
+        "id": "bed_bunk_1"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "The boy is looking directly at the camera.",
+        "fact": "A young boy is looking at the camera.",
         "confidence": 1.0
       },
       {
-        "fact": "The boy is holding a green writing instrument.",
+        "fact": "The boy is holding a green pen.",
         "confidence": 1.0
       },
       {
-        "fact": "A box labeled 'Kraft' is visible on the shelf.",
+        "fact": "A wooden bunk bed is visible in the background.",
         "confidence": 1.0
       }
     ],
     "ocr": [
       "Kraft"
     ],
-    "spatial": "The boy is in the foreground, positioned to the left of the wooden shelving unit. The shelving unit is behind the boy and to his right. The green pen is held in the boy's hand at the bottom left of the frame.",
+    "spatial": "The boy is in the foreground, positioned to the left of the wooden bunk bed. The bunk bed is behind the boy and to his right. A white pillow with red text is on the top bunk of the bed.",
     "parse_success": true,
     "chunk_idx": 54,
     "video_id": "iIt_Xagnk4E",
-    "state_changes": []
+    "state_changes": [
+      "Boy looks at camera holding a green pen/marker."
+    ]
   },
   {
     "time": [
-      110,
-      112
+      55,
+      56
     ],
     "visible_entities": [
       {
-        "desc": "young boy with short dark hair, wearing a white t-shirt with a black collar and a graphic print on the front",
+        "desc": "young boy with short brown hair, wearing a white t-shirt with a black crew neck collar and a graphic print on the chest",
         "action": "sitting at a table and looking forward",
         "position": "center/foreground",
         "id": "boy_main_1"
@@ -2890,10 +2899,10 @@
         "id": "table_wood_1"
       },
       {
-        "desc": "dark plastic storage drawers with labels",
+        "desc": "dark plastic storage drawers with translucent fronts",
         "action": "static",
         "position": "background/left",
-        "id": "storage_plastic_1"
+        "id": "storage_unit_1"
       },
       {
         "desc": "green painted wall",
@@ -2904,7 +2913,7 @@
     ],
     "atomic_facts": [
       {
-        "fact": "The boy is sitting at a table.",
+        "fact": "A young boy sits at a table.",
         "confidence": 1.0
       },
       {
@@ -2912,40 +2921,46 @@
         "confidence": 1.0
       },
       {
-        "fact": "The boy's hands are resting on the table surface.",
+        "fact": "The boy is wearing a white t-shirt with a black collar.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "Storage drawers are visible in the background.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The boy is sitting behind the wooden table. The plastic storage drawers are located in the background to the left of the boy. The green wall is behind the boy and the storage unit.",
+    "spatial": "The boy is positioned in the center of the frame, sitting behind the wooden table. The storage drawers are located behind the boy and to his left. The green wall is visible in the background behind the boy and the drawers.",
     "parse_success": true,
     "chunk_idx": 55,
     "video_id": "iIt_Xagnk4E",
-    "state_changes": []
+    "state_changes": [
+      "Scene shifts to boy sitting at a table with storage drawers visible."
+    ]
   },
   {
     "time": [
-      112,
-      114
+      56,
+      57
     ],
     "visible_entities": [
       {
-        "desc": "young boy with short dark hair, wearing a white t-shirt with a black collar and a graphic print featuring blue, red, and black shapes",
-        "action": "sitting at a table and looking forward",
-        "position": "center",
+        "desc": "young boy with short dark hair, wearing a white t-shirt with a black collar and a large graphic print featuring blue, red, and black colors",
+        "action": "sitting and looking forward",
+        "position": "center/foreground",
         "id": "boy_main_1"
       },
       {
-        "desc": "green and blue pen or marker",
-        "action": "being held by the boy",
-        "position": "foreground",
-        "id": "marker_green_1"
+        "desc": "wooden shelving unit with multiple levels, holding various colorful items",
+        "action": "static",
+        "position": "background/right",
+        "id": "shelf_wood_1"
       },
       {
-        "desc": "wooden shelving unit with colorful items",
+        "desc": "green wall",
         "action": "static",
         "position": "background",
-        "id": "shelving_wood_1"
+        "id": "wall_green_1"
       }
     ],
     "atomic_facts": [
@@ -2954,16 +2969,16 @@
         "confidence": 1.0
       },
       {
-        "fact": "The boy is holding a green and blue pen or marker.",
+        "fact": "The boy is looking towards the camera.",
         "confidence": 1.0
       },
       {
-        "fact": "The boy is looking forward towards the camera.",
+        "fact": "The boy is wearing a graphic t-shirt.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The boy is in the center of the frame, sitting in front of a wooden shelving unit. The pen is in the boy's hand, positioned in the foreground.",
+    "spatial": "The boy is in the foreground, positioned in front of the wooden shelving unit. The shelving unit is to the right of the boy and behind him. The green wall is behind the boy and the shelving unit.",
     "parse_success": true,
     "chunk_idx": 56,
     "video_id": "iIt_Xagnk4E",
@@ -2971,45 +2986,45 @@
   },
   {
     "time": [
-      114,
-      116
+      57,
+      58
     ],
     "visible_entities": [
       {
-        "desc": "young boy with short brown hair, wearing a white t-shirt with a black ringer collar and a colorful graphic print on the front",
+        "desc": "young boy with short brown hair, wearing a white t-shirt with a black crew neck collar and a large graphic print on the chest featuring red, blue, and black geometric shapes",
         "action": "sitting and looking forward",
-        "position": "center",
+        "position": "center/foreground",
         "id": "boy_main_1"
       },
       {
-        "desc": "wooden bunk bed frame with a green wall behind it",
+        "desc": "wooden bunk bed frame, light brown color, with a top bunk holding a white pillow and a lower shelf area containing blue and red bedding",
         "action": "static",
-        "position": "background right",
+        "position": "background/right",
         "id": "bed_bunk_1"
       },
       {
-        "desc": "white pillow or cushion",
+        "desc": "green painted wall",
         "action": "static",
-        "position": "foreground left",
-        "id": "pillow_white_1"
+        "position": "background",
+        "id": "wall_green_1"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A young boy is sitting in a room.",
+        "fact": "The boy is sitting in front of a green wall and a wooden bunk bed.",
         "confidence": 1.0
       },
       {
-        "fact": "The boy is looking towards the camera.",
+        "fact": "The boy's mouth is slightly open in the second frame.",
         "confidence": 1.0
       },
       {
-        "fact": "The boy is wearing a white t-shirt with a graphic design.",
+        "fact": "A white pillow is visible on the top bunk of the bed.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The boy is in the center of the frame, sitting in front of a wooden bunk bed frame. A white pillow is visible in the foreground to the left of the boy.",
+    "spatial": "The boy is in the foreground, positioned in front of the green wall and to the left of the wooden bunk bed. The bunk bed is located to the right of the boy in the background. The white pillow is on the top bunk, above the lower bedding area.",
     "parse_success": true,
     "chunk_idx": 57,
     "video_id": "iIt_Xagnk4E",
@@ -3017,178 +3032,184 @@
   },
   {
     "time": [
-      116,
-      118
+      58,
+      59
     ],
     "visible_entities": [
       {
-        "desc": "young boy with short brown hair, wearing a white t-shirt with a black ringer collar and a large graphic print featuring black, red, and blue geometric shapes",
-        "action": "looking down at a white surface",
-        "position": "center foreground",
+        "desc": "young boy with short brown hair, wearing a white t-shirt with a black collar and a large graphic print featuring black, blue, and red geometric shapes and text",
+        "action": "looking at the camera then looking down at a white surface",
+        "position": "center/foreground",
         "id": "boy_main_1"
       },
       {
-        "desc": "white surface, likely a table or paper",
+        "desc": "white surface, likely a table or desk",
         "action": "static",
-        "position": "bottom foreground",
-        "id": "paper_white_1"
+        "position": "bottom/foreground",
+        "id": "table_wood_1"
       },
       {
-        "desc": "wooden bed frame with a light-colored wooden post",
-        "action": "static",
-        "position": "right background",
-        "id": "bed_bunk_1"
-      },
-      {
-        "desc": "bright green wall",
+        "desc": "green painted wall",
         "action": "static",
         "position": "background",
         "id": "wall_green_1"
       },
       {
-        "desc": "dark plastic storage drawers with a graphic on the front",
+        "desc": "wooden bed frame with a white pillow and a red and white 'JEEP' pillow",
         "action": "static",
-        "position": "left background",
-        "id": "storage_plastic_1"
+        "position": "right/background",
+        "id": "bed_bunk_1"
+      },
+      {
+        "desc": "dark-colored closet or wardrobe with hanging clothes",
+        "action": "static",
+        "position": "left/background",
+        "id": "closet_dark_1"
+      },
+      {
+        "desc": "stack of dark storage boxes with a graphic of a car on the side",
+        "action": "static",
+        "position": "left/background",
+        "id": "storage_unit_1"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "The boy is looking down towards the white surface in front of him.",
+        "fact": "The boy is looking at the camera in the first frame and then looks down in the second frame.",
         "confidence": 1.0
       },
       {
-        "fact": "The boy's head is tilted slightly forward.",
+        "fact": "The boy's left hand is resting on the white surface in front of him.",
         "confidence": 1.0
       },
       {
-        "fact": "The boy is wearing a white t-shirt with a black collar.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "A wooden bed frame is visible in the background to the right of the boy.",
+        "fact": "A pillow with the word 'JEEP' is on the bed in the background.",
         "confidence": 1.0
       }
     ],
-    "ocr": [],
-    "spatial": "The boy is positioned in the center of the frame, in front of a green wall. To the boy's right, a wooden bed frame stands in the background. To the boy's left, dark storage drawers are visible. The boy is looking down at a white surface located in the immediate foreground.",
+    "ocr": [
+      "JEEP"
+    ],
+    "spatial": "The boy is in the foreground, in front of the green wall. To the boy's right is the wooden bed frame. To the boy's left is the dark closet and the stack of storage boxes. The white surface is below the boy's hands.",
     "parse_success": true,
     "chunk_idx": 58,
     "video_id": "iIt_Xagnk4E",
-    "state_changes": []
+    "state_changes": [
+      "Boy looks down at a white surface; closet and storage boxes become visible."
+    ]
   },
   {
     "time": [
-      118,
-      120
+      59,
+      60
     ],
     "visible_entities": [
       {
-        "desc": "person with short brown hair, wearing a white t-shirt with a colorful graphic print",
-        "action": "holding a white sheet of paper",
+        "desc": "person with short brown hair, wearing a white t-shirt with a colorful graphic print featuring black and blue elements",
+        "action": "holding and displaying a piece of paper",
         "position": "right",
         "id": "boy_main_1"
       },
       {
-        "desc": "white sheet of paper with a black ink drawing of a stylized letter 'P' or loop",
+        "desc": "white rectangular piece of paper with a black line drawing of a curved, hook-like shape",
         "action": "being held up",
         "position": "center",
         "id": "paper_white_1"
       },
       {
-        "desc": "green wall",
+        "desc": "bright green wall",
         "action": "static",
         "position": "left",
         "id": "wall_green_1"
       },
       {
-        "desc": "white table surface",
+        "desc": "white flat surface, likely a table",
         "action": "static",
         "position": "bottom",
-        "id": "paper_white_1"
+        "id": "table_wood_1"
       },
       {
-        "desc": "dark storage unit with plastic bins",
+        "desc": "dark storage unit with translucent plastic drawers containing colorful items",
         "action": "static",
         "position": "background",
-        "id": "storage_plastic_1"
+        "id": "storage_unit_1"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "The person holds a white sheet of paper upright.",
+        "fact": "A person holds up a white piece of paper to display a drawing.",
         "confidence": 1.0
       },
       {
-        "fact": "A black drawing resembling the letter 'P' is visible on the paper.",
+        "fact": "The drawing on the paper consists of a single black curved line resembling a hook or a letter 'J'.",
         "confidence": 1.0
       },
       {
-        "fact": "The person is standing to the right of the green wall.",
+        "fact": "The person is standing next to a bright green wall.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The person is positioned on the right side of the frame, holding the white paper in front of them. The paper is centered in the view, positioned above the white table surface. To the left of the paper and person is a bright green wall. In the background, behind the person, is a dark storage unit.",
+    "spatial": "The person is positioned to the right of the center, holding the piece of paper in front of them. The paper is located above the white table surface. To the left of the person and paper is a bright green wall. In the background, behind the person, is a dark storage unit.",
     "parse_success": true,
     "chunk_idx": 59,
     "video_id": "iIt_Xagnk4E",
     "state_changes": [
-      "boy holds up completed paper with drawing"
+      "Boy holds up a piece of paper with a hook-like drawing."
     ]
   },
   {
     "time": [
-      120,
-      122
+      60,
+      61
     ],
     "visible_entities": [
       {
-        "desc": "white rectangular paper with a green and black Monster Energy logo drawn on it",
-        "action": "being held and tilted by a hand",
-        "position": "center/foreground",
+        "desc": "white rectangular paper with a green 'M' claw logo drawn in the center",
+        "action": "being held and tilted",
+        "position": "foreground",
         "id": "paper_white_1"
+      },
+      {
+        "desc": "fingers of a hand",
+        "action": "holding the paper",
+        "position": "bottom right",
+        "id": "hand_main_1"
       },
       {
         "desc": "bright green wall",
         "action": "static",
-        "position": "left/background",
+        "position": "left background",
         "id": "wall_green_1"
       },
       {
-        "desc": "dark plastic storage unit with drawers",
+        "desc": "black plastic storage unit with drawers",
         "action": "static",
-        "position": "right/background",
-        "id": "storage_plastic_1"
-      },
-      {
-        "desc": "hand with light skin tone",
-        "action": "holding the paper",
-        "position": "bottom right",
-        "id": "hand_main_1"
+        "position": "right background",
+        "id": "storage_unit_1"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A hand is holding a piece of white paper.",
+        "fact": "A hand holds a piece of white paper featuring a green Monster Energy logo.",
         "confidence": 1.0
       },
       {
-        "fact": "The paper features a drawing of the Monster Energy logo.",
+        "fact": "The paper is tilted slightly to the right.",
         "confidence": 1.0
       },
       {
-        "fact": "The paper is being tilted slightly by the hand.",
+        "fact": "The background consists of a green wall and a black storage unit.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The white paper with the logo is in the foreground, held by a hand at the bottom right. The bright green wall is to the left of the paper. The dark storage unit is to the right of the paper and behind it.",
+    "spatial": "The white paper is in the foreground, held by a hand at the bottom right. The paper is positioned in front of the green wall on the left and the black storage unit on the right.",
     "parse_success": true,
     "chunk_idx": 60,
     "video_id": "iIt_Xagnk4E",
     "state_changes": [
-      "Monster Energy logo drawing revealed on paper"
+      "Paper is tilted to show a green 'M' claw logo; fingers clearly visible holding it."
     ]
   }
 ]

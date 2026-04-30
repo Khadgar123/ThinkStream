@@ -2,60 +2,61 @@
   {
     "time": [
       0,
-      2
+      1
     ],
     "visible_entities": [
       {
-        "desc": "man with short grey hair, wearing a maroon short-sleeved t-shirt and beige shorts",
-        "action": "cooking at the stove",
-        "position": "right",
+        "desc": "man with short grey hair, wearing a maroon t-shirt and beige shorts",
+        "action": "holding a black frying pan over a gas stove",
+        "position": "center/right",
         "id": "person_chef_1"
       },
       {
         "desc": "black frying pan",
-        "action": "being held by the man",
-        "position": "center-right",
-        "id": "pan_black_frying_1"
-      },
-      {
-        "desc": "gas stovetop with metal grates",
-        "action": "static",
-        "position": "center-right"
+        "action": "being held over the stove",
+        "position": "center",
+        "id": "pan_frying_black_1"
       },
       {
         "desc": "white plate with yellow pasta",
         "action": "static",
-        "position": "center",
-        "id": "plate_white_1"
+        "position": "foreground/left",
+        "id": "dish_plate_oval_white_1"
+      },
+      {
+        "desc": "stainless steel refrigerator",
+        "action": "static",
+        "position": "background/center",
+        "id": "appliance_fridge_silver_1"
+      },
+      {
+        "desc": "built-in stainless steel oven",
+        "action": "static",
+        "position": "background/left",
+        "id": "appliance_oven_builtin_1"
       },
       {
         "desc": "wooden countertop",
         "action": "static",
         "position": "foreground",
-        "id": "countertop_wooden_1"
-      },
-      {
-        "desc": "stainless steel refrigerator",
-        "action": "static",
-        "position": "background",
-        "id": "refrigerator_stainless_1"
-      },
-      {
-        "desc": "built-in stainless steel oven",
-        "action": "static",
-        "position": "left",
-        "id": "oven_stainless_1"
+        "id": "surface_counter_wood_1"
       },
       {
         "desc": "shelves with various food packages and bottles",
         "action": "static",
         "position": "background",
-        "id": "shelves_kitchen_1"
+        "id": "fixture_shelves_kitchen_1"
+      },
+      {
+        "desc": "small potted green plant",
+        "action": "static",
+        "position": "right",
+        "id": "ingredient_plant_potted_1"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "The man is holding a black frying pan over the gas stovetop.",
+        "fact": "The man is holding a frying pan over the gas stove.",
         "confidence": 1.0
       },
       {
@@ -63,16 +64,16 @@
         "confidence": 1.0
       },
       {
-        "fact": "The man is wearing a maroon t-shirt and beige shorts.",
+        "fact": "The kitchen features built-in appliances including an oven and refrigerator.",
         "confidence": 1.0
       },
       {
-        "fact": "The kitchen features white cabinetry and a stainless steel refrigerator.",
+        "fact": "Shelves in the background are stocked with food items.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The man in the maroon shirt is standing to the right of the built-in oven. The frying pan is in his hands, positioned above the stovetop. The plate of pasta is on the wooden countertop to the left of the stove. The refrigerator is behind the man.",
+    "spatial": "The man is standing to the right of the built-in oven and in front of the refrigerator. The wooden countertop is in the foreground, holding a plate of pasta to the left of the stove. The shelves are located above the oven and to the right of the refrigerator.",
     "parse_success": true,
     "chunk_idx": 0,
     "video_id": "zFR13BBw6Ws",
@@ -80,85 +81,132 @@
   },
   {
     "time": [
-      2,
-      4
+      1,
+      2
     ],
     "visible_entities": [
       {
-        "desc": "man with short grey hair, wearing a maroon v-neck t-shirt and beige trousers",
+        "desc": "man with short grey hair, wearing a maroon short-sleeved v-neck t-shirt and beige trousers",
         "action": "gesturing with both hands",
         "position": "center",
         "id": "person_chef_1"
       },
       {
-        "desc": "blue lower-third graphic overlay with white text and logos",
+        "desc": "blue lower-third banner with white text and logos",
         "action": "static",
         "position": "bottom",
-        "id": "graphic_lower_third_1"
+        "id": "overlay_banner_blue_1"
       },
       {
-        "desc": "kitchen background with white shelves, wooden shelves, a stainless steel refrigerator, and a built-in oven",
-        "action": "static",
-        "position": "background"
-      },
-      {
-        "desc": "hanging metal pots and pans on a wall rack",
-        "action": "static",
-        "position": "left",
-        "id": "hanging_cookware_1"
-      },
-      {
-        "desc": "bottles and jars on shelves",
+        "desc": "kitchen background with white shelves, wooden shelves, a silver refrigerator, and a built-in oven",
         "action": "static",
         "position": "background",
-        "id": "shelves_kitchen_1"
+        "id": "fixture_shelves_kitchen_1"
+      },
+      {
+        "desc": "hanging metal pans and jars on a dark wall",
+        "action": "static",
+        "position": "left",
+        "id": "fixture_rack_hanging_1"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "The man in the maroon t-shirt is gesturing with both hands while speaking.",
+        "fact": "The man in the maroon shirt is gesturing with his hands in front of his torso.",
         "confidence": 1.0
       },
       {
-        "fact": "The lower-third graphic identifies the man as 'Adam Swanson, Chef, Zucca'.",
+        "fact": "The text on the banner identifies the man as 'Adam Swanson, Chef, Zucca'.",
         "confidence": 1.0
       },
       {
-        "fact": "The 'San Remo' logo is visible on the right side of the blue banner.",
+        "fact": "A logo for 'San Remo' is visible on the right side of the banner.",
         "confidence": 1.0
       },
       {
-        "fact": "A 'GBC' logo is visible on the left side of the blue banner.",
+        "fact": "A logo with the letters 'G C B C' is visible on the left side of the banner.",
         "confidence": 1.0
       },
       {
-        "fact": "The kitchen features a stainless steel refrigerator to the right of the man.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "Pots and pans are hanging on a rack to the left of the man.",
+        "fact": "The man is standing in a kitchen setting with shelves of food items behind him.",
         "confidence": 1.0
       }
     ],
     "ocr": [
-      "GBC",
+      "G C B C",
       "Adam Swanson",
       "Chef, Zucca",
       "SAN REMO",
       "We're family"
     ],
-    "spatial": "The man is standing in the center of the frame, in front of a kitchen counter and shelves. To his left, pots and pans hang on the wall. To his right, a stainless steel refrigerator is visible. The blue graphic banner is positioned at the bottom of the screen, below the man.",
+    "spatial": "The man is standing in the center of the frame, in front of a silver refrigerator and white shelving units. The blue banner is located at the bottom of the screen, below the man. To the left of the man, there are hanging pans on a dark wall. The 'G C B C' logo is to the left of the text 'Adam Swanson' on the banner.",
     "parse_success": true,
     "chunk_idx": 1,
     "video_id": "zFR13BBw6Ws",
-    "state_changes": [
-      "lower-third graphic overlay appears on screen"
-    ]
+    "state_changes": []
   },
   {
     "time": [
-      4,
-      6
+      2,
+      3
+    ],
+    "visible_entities": [
+      {
+        "desc": "man with short grey hair, wearing a red v-neck t-shirt",
+        "action": "gesturing with hands",
+        "position": "center",
+        "id": "person_chef_1"
+      },
+      {
+        "desc": "blue banner with white text and logos",
+        "action": "static",
+        "position": "bottom",
+        "id": "overlay_banner_blue_1"
+      },
+      {
+        "desc": "kitchen shelves with various bottles and jars",
+        "action": "static",
+        "position": "background",
+        "id": "fixture_shelves_kitchen_1"
+      },
+      {
+        "desc": "silver refrigerator",
+        "action": "static",
+        "position": "background",
+        "id": "appliance_fridge_silver_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The man in the red t-shirt is gesturing with his hands.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The man is standing in a kitchen setting.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A blue banner at the bottom displays the text 'Adam Swanson' and 'Chef, Zucca'.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "GC BC",
+      "Adam Swanson",
+      "Chef, Zucca",
+      "SAN REMO",
+      "Wine Family"
+    ],
+    "spatial": "The man is standing in the center of the frame, in front of a silver refrigerator and wooden shelves. The blue banner is located at the bottom of the screen, below the man.",
+    "parse_success": true,
+    "chunk_idx": 2,
+    "video_id": "zFR13BBw6Ws",
+    "state_changes": []
+  },
+  {
+    "time": [
+      3,
+      4
     ],
     "visible_entities": [
       {
@@ -170,94 +218,43 @@
       {
         "desc": "stainless steel refrigerator",
         "action": "static",
-        "position": "background",
-        "id": "refrigerator_stainless_1"
+        "position": "background right",
+        "id": "appliance_fridge_silver_1"
       },
       {
-        "desc": "wooden shelves with jars and bottles",
+        "desc": "wooden shelves with various bottles and jars",
         "action": "static",
-        "position": "background",
-        "id": "shelves_kitchen_1"
+        "position": "background left",
+        "id": "fixture_shelves_kitchen_1"
       },
       {
-        "desc": "hanging metal pans",
+        "desc": "hanging metal pots and pans",
         "action": "static",
-        "position": "left",
-        "id": "hanging_cookware_1"
+        "position": "background left",
+        "id": "fixture_rack_hanging_1"
       },
       {
-        "desc": "blue lower-third graphic with white text",
+        "desc": "blue lower-third banner with logos and text",
         "action": "static",
         "position": "bottom",
-        "id": "graphic_lower_third_1"
+        "id": "overlay_banner_blue_1"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "The man in the maroon t-shirt is gesturing with his hands in front of his chest.",
+        "fact": "The man in the maroon t-shirt is gesturing with both hands in front of his chest.",
         "confidence": 1.0
       },
       {
-        "fact": "The text 'Adam Swanson' and 'Chef, Zucca' is displayed on the blue banner at the bottom of the screen.",
+        "fact": "The text 'Adam Swanson' is displayed on the blue banner at the bottom of the screen.",
         "confidence": 1.0
       },
       {
-        "fact": "Metal pans are hanging on the wall to the left of the man.",
+        "fact": "The text 'Chef, Zucca' is displayed below the name.",
         "confidence": 1.0
       },
       {
-        "fact": "A stainless steel refrigerator is visible behind the man.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [
-      "GCB",
-      "Adam Swanson",
-      "Chef, Zucca",
-      "SAN REMO",
-      "We're family"
-    ],
-    "spatial": "The man in the maroon t-shirt is standing in the center of the frame. Behind him is a stainless steel refrigerator. To his left, metal pans are hanging on the wall. The blue graphic banner containing text is located at the bottom of the screen, below the man.",
-    "parse_success": true,
-    "chunk_idx": 2,
-    "video_id": "zFR13BBw6Ws",
-    "state_changes": []
-  },
-  {
-    "time": [
-      6,
-      8
-    ],
-    "visible_entities": [
-      {
-        "desc": "man with short grey hair, wearing a red v-neck t-shirt",
-        "action": "gesturing with hands",
-        "position": "center",
-        "id": "person_chef_1"
-      },
-      {
-        "desc": "blue lower-third graphic banner with white text and logos",
-        "action": "static",
-        "position": "bottom",
-        "id": "graphic_lower_third_1"
-      },
-      {
-        "desc": "kitchen background with wooden shelves, jars, bottles, and a stainless steel refrigerator",
-        "action": "static",
-        "position": "background"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "The man in the red t-shirt is gesturing with both hands.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The lower-third graphic identifies the man as 'Adam Swanson, Chef, Zucca'.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The 'San Remo' logo is visible on the bottom right of the screen.",
+        "fact": "The 'San Remo' logo is visible on the bottom right of the banner.",
         "confidence": 1.0
       }
     ],
@@ -268,7 +265,7 @@
       "SAN REMO",
       "Water Family"
     ],
-    "spatial": "The man is standing in the center of the frame, in front of a kitchen background. The blue graphic banner is located at the bottom of the screen, below the man. The shelves and refrigerator are behind the man.",
+    "spatial": "The man is standing in the center of the frame, in front of a stainless steel refrigerator. To the left of the man, there are wooden shelves holding bottles and jars, with metal pots hanging below them. A blue banner containing text and logos is positioned at the bottom of the screen, overlaying the lower portion of the scene.",
     "parse_success": true,
     "chunk_idx": 3,
     "video_id": "zFR13BBw6Ws",
@@ -276,8 +273,8 @@
   },
   {
     "time": [
-      8,
-      10
+      4,
+      5
     ],
     "visible_entities": [
       {
@@ -287,28 +284,22 @@
         "id": "person_chef_1"
       },
       {
-        "desc": "package of San Remo Large Rigatoni pasta, red packaging with green and white label, transparent window showing yellow pasta tubes",
+        "desc": "red and clear plastic package of large rigatoni pasta",
         "action": "static",
         "position": "foreground",
-        "id": "pasta_cannelloni_1"
+        "id": "package_pasta_rigatoni_1"
       },
       {
         "desc": "stainless steel refrigerator",
         "action": "static",
         "position": "background",
-        "id": "refrigerator_stainless_1"
+        "id": "appliance_fridge_silver_1"
       },
       {
-        "desc": "wooden shelves with various jars and bottles",
+        "desc": "wooden kitchen counter with a plate of pasta and a frying pan",
         "action": "static",
-        "position": "background",
-        "id": "shelves_kitchen_1"
-      },
-      {
-        "desc": "black frying pan on a gas stove",
-        "action": "static",
-        "position": "right",
-        "id": "pan_black_frying_1"
+        "position": "bottom",
+        "id": "surface_counter_wood_1"
       }
     ],
     "atomic_facts": [
@@ -317,157 +308,155 @@
         "confidence": 1.0
       },
       {
-        "fact": "A package of San Remo Large Rigatoni pasta is lying on a wooden surface in the foreground.",
+        "fact": "A package of San Remo Large Rigatoni pasta is lying on the wooden counter.",
         "confidence": 1.0
       },
       {
-        "fact": "The pasta package features a red design with a transparent window revealing the pasta inside.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "A stainless steel refrigerator is visible behind the man.",
+        "fact": "The pasta package features a red label with green and white accents.",
         "confidence": 1.0
       }
     ],
     "ocr": [
       "SAN REMO",
-      "LARGE RIGATONI",
-      "100% Australian Durum Semolina"
+      "LARGE RIGATONI"
     ],
-    "spatial": "The man is standing in the center of the kitchen, in front of a stainless steel refrigerator. The package of pasta is in the foreground on a wooden table, positioned below the man's hands. To the right of the man, a black frying pan sits on a gas stove.",
+    "spatial": "The man is standing behind the wooden kitchen counter. The package of pasta is in the foreground on the counter, in front of the man. The stainless steel refrigerator is behind the man.",
     "parse_success": true,
     "chunk_idx": 4,
     "video_id": "zFR13BBw6Ws",
-    "state_changes": [
-      "pasta package introduced and shown"
-    ]
+    "state_changes": []
   },
   {
     "time": [
-      10,
-      12
+      5,
+      6
     ],
     "visible_entities": [
       {
         "desc": "man with short grey hair, wearing a maroon short-sleeved t-shirt and beige trousers",
-        "action": "holding a bag of pasta",
+        "action": "holding a package of pasta",
         "position": "center",
         "id": "person_chef_1"
       },
       {
-        "desc": "red and transparent plastic bag of pasta with green trim",
-        "action": "being held",
+        "desc": "red and clear plastic package containing yellow penne pasta with a green label",
+        "action": "being held by the man",
         "position": "center",
-        "id": "pasta_cannelloni_1"
+        "id": "package_pasta_penne_1"
       },
       {
-        "desc": "wooden countertop with visible grain and knots",
+        "desc": "stainless steel refrigerator with a water dispenser",
         "action": "static",
-        "position": "bottom",
-        "id": "countertop_wooden_1"
+        "position": "right",
+        "id": "appliance_fridge_silver_1"
       },
       {
-        "desc": "stainless steel refrigerator with water dispenser",
+        "desc": "wooden countertop with a white plate of cooked pasta",
         "action": "static",
-        "position": "right background",
-        "id": "refrigerator_stainless_1"
+        "position": "foreground",
+        "id": "surface_counter_wood_1"
       },
       {
-        "desc": "white plate with cooked pasta",
-        "action": "static",
-        "position": "bottom right",
-        "id": "plate_white_1"
-      },
-      {
-        "desc": "kitchen shelves with various bottles and jars",
+        "desc": "wooden shelves with various bottles and jars",
         "action": "static",
         "position": "background",
-        "id": "shelves_kitchen_1"
+        "id": "fixture_shelves_kitchen_1"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "The man is holding a bag of pasta with both hands.",
+        "fact": "The man is holding a package of pasta with both hands.",
         "confidence": 1.0
       },
       {
-        "fact": "The bag of pasta is positioned over the wooden countertop.",
+        "fact": "The package has a green label with the text 'SAN REMO' visible.",
         "confidence": 1.0
       },
       {
-        "fact": "A plate of cooked pasta sits on the counter to the right of the man.",
+        "fact": "The pasta inside the package is yellow and tubular (penne).",
         "confidence": 1.0
       },
       {
-        "fact": "The man is standing in front of a kitchen counter and shelves.",
+        "fact": "A plate of cooked pasta is on the wooden countertop in front of the man.",
         "confidence": 1.0
       }
     ],
     "ocr": [
       "SAN REMO"
     ],
-    "spatial": "The man is standing in the center of the frame, holding the bag of pasta in front of him. The bag is positioned above the wooden countertop. To the man's right, in the background, is a stainless steel refrigerator. On the countertop to the right of the man is a white plate containing cooked pasta.",
+    "spatial": "The man is standing in the center of the kitchen, holding the pasta package in front of his torso. To his right is a large stainless steel refrigerator. Behind him are wooden shelves filled with various kitchen items. In the foreground, on the wooden countertop, there is a white plate with cooked pasta.",
     "parse_success": true,
     "chunk_idx": 5,
     "video_id": "zFR13BBw6Ws",
     "state_changes": [
-      "chef begins holding pasta bag"
+      "Chef begins holding and presenting a package of pasta."
     ]
   },
   {
     "time": [
-      12,
-      14
+      6,
+      7
     ],
     "visible_entities": [
       {
         "desc": "man with short grey hair, wearing a maroon v-neck t-shirt and beige shorts",
-        "action": "gesturing with hands",
-        "position": "center"
+        "action": "standing behind a wooden counter and gesturing with hands",
+        "position": "center",
+        "id": "person_chef_1"
       },
       {
-        "desc": "white plate with cooked pasta",
+        "desc": "stainless steel refrigerator with double doors and a water dispenser",
         "action": "static",
-        "position": "foreground",
-        "id": "plate_white_1"
+        "position": "right background",
+        "id": "appliance_fridge_silver_1"
       },
       {
-        "desc": "stainless steel refrigerator",
+        "desc": "white plate containing yellow pasta",
         "action": "static",
-        "position": "right",
-        "id": "refrigerator_stainless_1"
+        "position": "foreground right",
+        "id": "dish_plate_oval_white_1"
       },
       {
-        "desc": "wooden shelves with various bottles and jars",
+        "desc": "wooden shelf holding various bottles and boxes",
         "action": "static",
-        "position": "background",
-        "id": "shelves_kitchen_1"
+        "position": "top left",
+        "id": "fixture_shelves_kitchen_1"
       },
       {
-        "desc": "hanging metal pots and pans",
+        "desc": "metal pots and pans hanging on a wall rack",
         "action": "static",
-        "position": "left",
-        "id": "hanging_cookware_1"
+        "position": "left background",
+        "id": "fixture_rack_hanging_1"
+      },
+      {
+        "desc": "black frying pan on a gas stove",
+        "action": "static",
+        "position": "bottom right",
+        "id": "pan_frying_black_1"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "man gestures with hands while standing in kitchen",
+        "fact": "The man in the maroon t-shirt stands in a kitchen setting.",
         "confidence": 1.0
       },
       {
-        "fact": "plate of pasta sits on the counter",
+        "fact": "The man gestures with his hands while looking towards the camera.",
         "confidence": 1.0
       },
       {
-        "fact": "pots and pans hang on the wall to the left",
+        "fact": "A plate of cooked pasta sits on the wooden counter in front of the man.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "Kitchen utensils and ingredients are arranged on shelves and counters.",
         "confidence": 1.0
       }
     ],
     "ocr": [
       "RYE"
     ],
-    "spatial": "The man is standing in the center of the kitchen, behind a counter where a plate of pasta is placed. To his right is a large stainless steel refrigerator. To his left, metal pots and pans are hanging on the wall below wooden shelves stocked with food items.",
+    "spatial": "The man is standing behind a wooden counter. To his right is a large stainless steel refrigerator. Above the counter on the left, metal pots hang on a rack below a wooden shelf filled with bottles. A plate of pasta is on the counter in front of the man, to the left of a black frying pan on the stove.",
     "parse_success": true,
     "chunk_idx": 6,
     "video_id": "zFR13BBw6Ws",
@@ -475,90 +464,92 @@
   },
   {
     "time": [
-      14,
-      16
+      7,
+      8
     ],
     "visible_entities": [
       {
-        "desc": "man with short grey hair, wearing a maroon short-sleeved t-shirt and beige trousers",
-        "action": "gesturing with hands over a plate",
+        "desc": "man with short gray hair, wearing a maroon t-shirt and beige shorts",
+        "action": "gesturing with hands",
         "position": "center",
         "id": "person_chef_1"
-      },
-      {
-        "desc": "white plate with yellow food",
-        "action": "static",
-        "position": "foreground",
-        "id": "plate_white_1"
-      },
-      {
-        "desc": "small white bowl containing a white creamy mixture with green specks",
-        "action": "static",
-        "position": "foreground",
-        "id": "bowl_white_small_1"
-      },
-      {
-        "desc": "block of pale yellow butter on a small saucer",
-        "action": "static",
-        "position": "foreground",
-        "id": "butter_block_1"
       },
       {
         "desc": "wooden countertop with visible grain",
         "action": "static",
         "position": "foreground",
-        "id": "countertop_wooden_1"
+        "id": "surface_counter_wood_1"
       },
       {
-        "desc": "stainless steel refrigerator",
+        "desc": "white plate with yellow food",
+        "action": "static",
+        "position": "foreground",
+        "id": "dish_plate_oval_white_1"
+      },
+      {
+        "desc": "small white bowl with white creamy mixture",
+        "action": "static",
+        "position": "foreground",
+        "id": "dish_bowl_small_white_1"
+      },
+      {
+        "desc": "block of pale yellow butter on a small plate",
+        "action": "static",
+        "position": "foreground",
+        "id": "ingredient_butter_block_1"
+      },
+      {
+        "desc": "silver refrigerator",
         "action": "static",
         "position": "background",
-        "id": "refrigerator_stainless_1"
+        "id": "appliance_fridge_silver_1"
+      },
+      {
+        "desc": "black frying pan on a gas stove",
+        "action": "static",
+        "position": "right",
+        "id": "pan_frying_black_1"
       },
       {
         "desc": "wooden shelves with various bottles and jars",
         "action": "static",
         "position": "background",
-        "id": "shelves_kitchen_1"
-      },
-      {
-        "desc": "black frying pan on a gas stovetop",
-        "action": "static",
-        "position": "right",
-        "id": "pan_black_frying_1"
+        "id": "fixture_shelves_kitchen_1"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A man in a maroon shirt is standing in a kitchen and gesturing with his hands.",
+        "fact": "A man in a maroon t-shirt is standing in a kitchen and gesturing with his hands.",
         "confidence": 1.0
       },
       {
-        "fact": "A plate of food, a bowl of white mixture, and a block of butter are arranged on a wooden counter.",
+        "fact": "A block of butter sits on a small plate on the wooden counter.",
         "confidence": 1.0
       },
       {
-        "fact": "The man is standing in front of a stainless steel refrigerator.",
+        "fact": "A small bowl containing a white mixture is placed next to the butter.",
         "confidence": 1.0
       },
       {
-        "fact": "A frying pan is sitting on the stovetop to the right of the butter.",
+        "fact": "A plate of yellow food is on the counter in front of the man.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A black frying pan is resting on the stove burner.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The man is standing in the center of the kitchen, behind a wooden countertop. On the countertop in the foreground, the plate of food is to the left of the small bowl of white mixture, and the block of butter is in front of the bowl. The refrigerator is located in the background behind the man.",
+    "spatial": "The man is standing behind the wooden countertop. On the countertop, the plate of yellow food is to the left of the small bowl of white mixture. The block of butter is in front of the small bowl. The refrigerator is behind the man. The frying pan is on the stove to the right of the countertop items.",
     "parse_success": true,
     "chunk_idx": 7,
     "video_id": "zFR13BBw6Ws",
-    "state_changes": [
-      "butter block and small bowl appear on counter"
-    ]
+    "state_changes": []
   },
   {
     "time": [
-      16,
-      18
+      8,
+      9
     ],
     "visible_entities": [
       {
@@ -571,41 +562,36 @@
         "desc": "rectangular block of pale yellow butter",
         "action": "static",
         "position": "foreground",
-        "id": "butter_block_1"
+        "id": "ingredient_butter_block_1"
       },
       {
         "desc": "small white bowl containing a creamy white dip with green herbs",
         "action": "static",
         "position": "foreground",
-        "id": "bowl_white_small_1"
+        "id": "dish_bowl_small_white_1"
       },
       {
         "desc": "silver metal serving tongs",
         "action": "static",
-        "position": "right"
+        "position": "right",
+        "id": "utensil_tongs_silver_1"
       },
       {
         "desc": "stainless steel double-door refrigerator with a water dispenser",
         "action": "static",
         "position": "background",
-        "id": "refrigerator_stainless_1"
+        "id": "appliance_fridge_silver_1"
       },
       {
-        "desc": "wooden countertop with a rustic grain texture",
+        "desc": "wooden kitchen counter with visible grain",
         "action": "static",
         "position": "bottom",
-        "id": "countertop_wooden_1"
-      },
-      {
-        "desc": "white plate with yellow pasta",
-        "action": "static",
-        "position": "center",
-        "id": "plate_white_1"
+        "id": "surface_counter_wood_1"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A man in a maroon shirt is arranging yellow pasta on a white plate.",
+        "fact": "The man is using his hands to arrange yellow food items on a white plate.",
         "confidence": 1.0
       },
       {
@@ -613,11 +599,7 @@
         "confidence": 1.0
       },
       {
-        "fact": "A bowl of creamy dip is placed next to the butter.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "Silver tongs are resting on the wooden table to the right.",
+        "fact": "A bowl of dip is placed next to the butter on the wooden counter.",
         "confidence": 1.0
       },
       {
@@ -626,7 +608,7 @@
       }
     ],
     "ocr": [],
-    "spatial": "The man is standing behind the wooden countertop, arranging food on a plate. In the foreground, a block of butter on a saucer is positioned to the right of a small bowl of dip. The silver tongs are lying on the table to the right of the dip bowl. The stainless steel refrigerator is in the background, behind the man.",
+    "spatial": "The man is standing behind the wooden kitchen counter. The block of butter is in the foreground, to the right of the bowl of dip. The serving tongs are to the right of the dip bowl. The refrigerator is in the background, behind the man.",
     "parse_success": true,
     "chunk_idx": 8,
     "video_id": "zFR13BBw6Ws",
@@ -634,39 +616,39 @@
   },
   {
     "time": [
-      18,
-      20
+      9,
+      10
     ],
     "visible_entities": [
       {
         "desc": "man with short grey hair, wearing a maroon t-shirt and beige trousers",
-        "action": "placing a piece of food onto a plate",
+        "action": "placing food on a plate",
         "position": "center",
         "id": "person_chef_1"
       },
       {
-        "desc": "white plate with yellow food",
+        "desc": "white round plate with yellow food",
         "action": "static",
         "position": "foreground",
-        "id": "plate_white_1"
+        "id": "dish_plate_oval_white_1"
       },
       {
         "desc": "stainless steel refrigerator",
         "action": "static",
         "position": "background",
-        "id": "refrigerator_stainless_1"
+        "id": "appliance_fridge_silver_1"
       },
       {
-        "desc": "wooden shelves with various bottles and jars",
+        "desc": "wooden shelves with various jars and boxes",
         "action": "static",
         "position": "background",
-        "id": "shelves_kitchen_1"
+        "id": "fixture_shelves_kitchen_1"
       },
       {
         "desc": "black frying pan",
         "action": "static",
         "position": "right",
-        "id": "pan_black_frying_1"
+        "id": "pan_frying_black_1"
       }
     ],
     "atomic_facts": [
@@ -675,16 +657,16 @@
         "confidence": 1.0
       },
       {
-        "fact": "The man is holding a small piece of food in his hand.",
+        "fact": "The man is standing in a kitchen.",
         "confidence": 1.0
       },
       {
-        "fact": "A black frying pan sits on the stovetop.",
+        "fact": "A frying pan is sitting on the stovetop.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The man is standing in front of the stainless steel refrigerator. The wooden shelves are located to the left and right of the refrigerator in the background. The white plate is on the wooden counter in front of the man.",
+    "spatial": "The man is standing in the center of the frame, in front of a stainless steel refrigerator. The white plate is on the wooden counter in front of him. To the right of the plate, there is a black frying pan on the stove.",
     "parse_success": true,
     "chunk_idx": 9,
     "video_id": "zFR13BBw6Ws",
@@ -692,251 +674,241 @@
   },
   {
     "time": [
-      20,
-      22
+      10,
+      11
     ],
     "visible_entities": [
       {
-        "desc": "hands with light skin tone",
-        "action": "holding a yellow pasta tube and a small spoon",
-        "position": "right/foreground",
+        "desc": "hands with fair skin",
+        "action": "holding a yellow pasta tube and a spoon",
+        "position": "right",
         "id": "person_chef_1"
       },
       {
-        "desc": "yellow tubular pasta shell (cannelloni), smooth texture",
-        "action": "being held by hands",
-        "position": "right/foreground",
-        "id": "pasta_cannelloni_1"
+        "desc": "yellow tubular pasta shell",
+        "action": "being held",
+        "position": "right",
+        "id": "dish_pasta_topped_1"
       },
       {
-        "desc": "small white ceramic bowl",
+        "desc": "small white oval bowl containing greyish creamy dip",
         "action": "static",
         "position": "center",
-        "id": "plate_white_1"
+        "id": "dish_bowl_small_white_1"
       },
       {
-        "desc": "greyish-white creamy filling mixture with visible green herb specks",
+        "desc": "large wedge of hard pale yellow cheese",
         "action": "static",
-        "position": "inside the white bowl"
+        "position": "foreground",
+        "id": "ingredient_cheese_wedge_1"
       },
       {
-        "desc": "large wedge of hard pale yellow cheese (parmesan), rough rind texture",
+        "desc": "small beige plate",
         "action": "static",
-        "position": "foreground/center"
+        "position": "foreground",
+        "id": "dish_plate_beige_1"
       },
       {
-        "desc": "small beige ceramic plate",
-        "action": "static",
-        "position": "foreground/center",
-        "id": "plate_white_1"
+        "desc": "silver spoon",
+        "action": "being held",
+        "position": "center",
+        "id": "utensil_spoon_silver_1"
       },
       {
-        "desc": "rustic wooden table surface with dark grain patterns",
+        "desc": "wooden table surface with dark grain",
         "action": "static",
-        "position": "background/bottom",
-        "id": "countertop_wooden_1"
+        "position": "background",
+        "id": "surface_table_wood_1"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A person is holding a yellow pasta tube in their right hand.",
+        "fact": "A person is holding a piece of yellow tubular pasta in their right hand.",
         "confidence": 1.0
       },
       {
-        "fact": "A person is holding a small spoon in their left hand.",
+        "fact": "A person is holding a spoon in their left hand over a bowl of dip.",
         "confidence": 1.0
       },
       {
-        "fact": "The spoon is positioned near the bowl of filling.",
+        "fact": "A large wedge of hard cheese sits on a small plate in the foreground.",
         "confidence": 1.0
       },
       {
-        "fact": "A wedge of cheese sits on a small plate in the foreground.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The bowl of filling is placed on the wooden table.",
+        "fact": "A small white bowl containing a greyish creamy dip is placed on the wooden table.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The hands holding the pasta and spoon are positioned to the right of the bowl of filling. The bowl of filling is located behind the wedge of cheese. The cheese wedge rests on top of a small beige plate in the foreground. The wooden table surface is underneath all the food items.",
+    "spatial": "The hands holding the pasta and spoon are positioned to the right of the bowl of dip. The bowl of dip is behind the wedge of cheese. The wedge of cheese rests on a beige plate in the foreground, which is on the wooden table.",
     "parse_success": true,
     "chunk_idx": 10,
     "video_id": "zFR13BBw6Ws",
     "state_changes": [
-      "scene shifts to close-up of hands stuffing pasta tubes"
+      "Scene shifts to close-up of hands stuffing a pasta shell with filling."
     ]
   },
   {
     "time": [
-      22,
-      24
+      11,
+      12
     ],
     "visible_entities": [
       {
-        "desc": "man with short grey hair, wearing a maroon short-sleeved t-shirt and beige trousers",
-        "action": "squeezing a lemon wedge over a plate",
+        "desc": "man with short grey hair, wearing a red t-shirt and beige trousers",
+        "action": "squeezing a lemon wedge over a plate of pasta",
         "position": "center",
         "id": "person_chef_1"
       },
       {
-        "desc": "white round plate containing yellow pasta",
-        "action": "static",
-        "position": "bottom center",
-        "id": "plate_white_1"
-      },
-      {
-        "desc": "yellow lemon wedge",
-        "action": "being squeezed",
-        "position": "center",
-        "id": "lemon_wedges_1"
-      },
-      {
-        "desc": "wooden countertop",
+        "desc": "wooden kitchen counter",
         "action": "static",
         "position": "bottom",
-        "id": "countertop_wooden_1"
+        "id": "surface_counter_wood_1"
+      },
+      {
+        "desc": "white plate with yellow pasta",
+        "action": "static",
+        "position": "center",
+        "id": "dish_plate_oval_white_1"
       },
       {
         "desc": "stainless steel refrigerator",
         "action": "static",
         "position": "background",
-        "id": "refrigerator_stainless_1"
+        "id": "appliance_fridge_silver_1"
       },
       {
         "desc": "black frying pan",
         "action": "static",
         "position": "right",
-        "id": "pan_black_frying_1"
+        "id": "pan_frying_black_1"
       },
       {
-        "desc": "kitchen shelves with bottles and jars",
+        "desc": "wooden shelves with jars and boxes",
         "action": "static",
         "position": "background",
-        "id": "shelves_kitchen_1"
+        "id": "fixture_shelves_kitchen_1"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "The man is squeezing a lemon wedge with both hands.",
+        "fact": "The man is squeezing a lemon wedge over a plate of pasta.",
         "confidence": 1.0
       },
       {
-        "fact": "Juice is dripping from the lemon onto the pasta.",
+        "fact": "A black frying pan sits on the stove to the right of the man.",
         "confidence": 1.0
       },
       {
-        "fact": "The plate of pasta is sitting on the wooden counter.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "A black frying pan is resting on the stovetop to the right.",
+        "fact": "The man is standing in front of a stainless steel refrigerator.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The man is standing behind the wooden countertop. The plate of pasta is on the counter in front of him. The refrigerator is behind the man. The frying pan is to the right of the plate.",
+    "spatial": "The man is standing behind the wooden kitchen counter. The plate of pasta is on the counter in front of the man. The refrigerator is behind the man. The frying pan is to the right of the plate.",
     "parse_success": true,
     "chunk_idx": 11,
     "video_id": "zFR13BBw6Ws",
-    "state_changes": [
-      "chef begins squeezing lemon over plated pasta"
-    ]
+    "state_changes": []
   },
   {
     "time": [
-      24,
-      26
+      12,
+      13
     ],
     "visible_entities": [
       {
-        "desc": "hands with fair skin and visible arm hair",
-        "action": "stuffing a yellow vegetable",
+        "desc": "hands with light skin tone and visible arm hair",
+        "action": "stuffing a yellow pepper",
         "position": "center/foreground",
         "id": "person_chef_1"
       },
       {
-        "desc": "small yellow vegetable, smooth skin, hollowed out",
-        "action": "being held and filled",
-        "position": "center"
+        "desc": "small yellow pepper, smooth skin, hollowed out",
+        "action": "being stuffed",
+        "position": "center",
+        "id": "ingredient_pepper_yellow_small_1"
       },
       {
-        "desc": "white creamy filling, textured and soft",
-        "action": "being pressed into the vegetable",
-        "position": "center"
+        "desc": "white creamy filling, textured, soft",
+        "action": "being inserted",
+        "position": "center",
+        "id": "filling_creamy_white_1"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A person is holding a small yellow vegetable in their left hand.",
+        "fact": "A person is using their fingers to push a white creamy filling into a small yellow pepper.",
         "confidence": 1.0
       },
       {
-        "fact": "The person is using their right hand to press a white creamy filling into the hollowed-out yellow vegetable.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The vegetable is being stuffed with the white mixture.",
+        "fact": "The yellow pepper is held in the left hand while the right hand manipulates the filling.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The hands are in the center foreground of the frame. The yellow vegetable is held between the hands. The white filling is being placed inside the top opening of the yellow vegetable.",
+    "spatial": "The hands are in the center of the frame, holding the yellow pepper. The white filling is being placed inside the top opening of the yellow pepper. The background is blurred and located behind the hands.",
     "parse_success": true,
     "chunk_idx": 12,
     "video_id": "zFR13BBw6Ws",
     "state_changes": [
-      "action changes to stuffing yellow vegetable instead of pasta"
+      "Action changes to stuffing a hollowed yellow pepper with creamy filling."
     ]
   },
   {
     "time": [
-      26,
-      28
+      13,
+      14
     ],
     "visible_entities": [
       {
-        "desc": "white oval ceramic plate",
+        "desc": "yellow tubular pasta rolls, glossy texture, cylindrical shape",
         "action": "static",
         "position": "center",
-        "id": "plate_white_1"
+        "id": "dish_pasta_topped_1"
       },
       {
-        "desc": "yellow tubular pasta rolls, shiny and glossy",
+        "desc": "white filling, creamy texture",
+        "action": "visible inside pasta",
+        "position": "inside left pasta roll",
+        "id": "filling_creamy_white_1"
+      },
+      {
+        "desc": "white oval plate, smooth surface",
         "action": "static",
         "position": "center",
-        "id": "pasta_cannelloni_1"
+        "id": "dish_plate_oval_white_1"
       },
       {
-        "desc": "small white bowl with green chopped herbs",
+        "desc": "small white dish with green chopped herbs",
         "action": "static",
         "position": "bottom right",
-        "id": "bowl_white_small_1"
+        "id": "dish_bowl_small_white_1"
       },
       {
         "desc": "brown wooden table surface",
         "action": "static",
         "position": "background",
-        "id": "countertop_wooden_1"
+        "id": "surface_table_wood_1"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A white oval plate holds several yellow tubular pasta rolls.",
+        "fact": "The yellow tubular pasta rolls are arranged on the white oval plate.",
         "confidence": 1.0
       },
       {
-        "fact": "A small bowl of green herbs sits in the foreground.",
+        "fact": "The white filling is visible inside the pasta roll on the left side of the plate.",
         "confidence": 1.0
       },
       {
-        "fact": "The pasta rolls are arranged in a pile on the plate.",
+        "fact": "A small dish containing green herbs is placed in the foreground.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The white oval plate is in the center of the frame, resting on a brown wooden table. The yellow pasta rolls are on top of the plate. The small bowl with green herbs is in the bottom right foreground, positioned below and to the right of the main plate.",
+    "spatial": "The white oval plate is centered on the brown wooden table. The yellow pasta rolls are arranged on top of the plate. The small dish with green herbs is located in the bottom right foreground, below and to the right of the main plate.",
     "parse_success": true,
     "chunk_idx": 13,
     "video_id": "zFR13BBw6Ws",
@@ -944,50 +916,50 @@
   },
   {
     "time": [
-      28,
-      30
+      14,
+      15
     ],
     "visible_entities": [
       {
-        "desc": "man with short grey hair, wearing a red v-neck t-shirt and beige shorts",
+        "desc": "man with short grey hair, wearing a red t-shirt and beige trousers",
         "action": "standing and gesturing with hands",
         "position": "center",
         "id": "person_chef_1"
       },
       {
-        "desc": "white oval plate with yellow tubular pasta rolls filled with white stuffing",
+        "desc": "white oval plate containing yellow rolled pasta tubes with white filling",
         "action": "static",
         "position": "foreground",
-        "id": "plate_white_1"
+        "id": "dish_plate_oval_white_1"
       },
       {
         "desc": "small white bowl containing chopped green herbs",
         "action": "static",
         "position": "bottom right",
-        "id": "bowl_white_small_1"
+        "id": "dish_bowl_small_white_1"
       },
       {
-        "desc": "stainless steel double-door refrigerator",
+        "desc": "silver double-door refrigerator",
         "action": "static",
         "position": "background",
-        "id": "refrigerator_stainless_1"
+        "id": "appliance_fridge_silver_1"
       },
       {
-        "desc": "wooden countertop",
+        "desc": "wooden kitchen counter",
         "action": "static",
         "position": "bottom",
-        "id": "countertop_wooden_1"
+        "id": "surface_counter_wood_1"
       },
       {
-        "desc": "kitchen shelves with bottles and jars",
+        "desc": "wooden shelves with various bottles and jars",
         "action": "static",
         "position": "background",
-        "id": "shelves_kitchen_1"
+        "id": "fixture_shelves_kitchen_1"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A man in a red t-shirt is standing in a kitchen.",
+        "fact": "A man in a red t-shirt stands behind a kitchen counter.",
         "confidence": 1.0
       },
       {
@@ -995,16 +967,16 @@
         "confidence": 1.0
       },
       {
-        "fact": "A plate of yellow pasta rolls is placed on the wooden counter.",
+        "fact": "A plate of yellow pasta rolls sits on the counter in the foreground.",
         "confidence": 1.0
       },
       {
-        "fact": "A small bowl of green herbs is positioned near the plate.",
+        "fact": "A small bowl of green herbs is placed next to the pasta plate.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The man is standing behind the wooden countertop. The plate of pasta is in front of the man on the counter. The refrigerator is behind the man to his right. The bowl of herbs is to the right of the pasta plate.",
+    "spatial": "The man is standing behind the wooden kitchen counter. The white plate with yellow pasta rolls is on the counter in front of the man. The small bowl of green herbs is to the right of the pasta plate. The silver refrigerator is in the background behind the man.",
     "parse_success": true,
     "chunk_idx": 14,
     "video_id": "zFR13BBw6Ws",
@@ -1012,66 +984,72 @@
   },
   {
     "time": [
-      30,
-      32
+      15,
+      16
     ],
     "visible_entities": [
       {
-        "desc": "man with short grey hair, wearing a maroon v-neck t-shirt and beige trousers",
-        "action": "holding a dark object and gesturing with hands",
+        "desc": "man with short grey hair, wearing a red v-neck t-shirt and beige trousers",
+        "action": "turning body to the left and reaching towards the oven",
         "position": "center",
         "id": "person_chef_1"
       },
       {
-        "desc": "stainless steel refrigerator with water dispenser",
+        "desc": "stainless steel refrigerator with double doors and water dispenser",
         "action": "static",
-        "position": "right background",
-        "id": "refrigerator_stainless_1"
+        "position": "background right"
+      },
+      {
+        "desc": "white built-in oven with black glass door",
+        "action": "static",
+        "position": "background center",
+        "id": "appliance_oven_builtin_1"
+      },
+      {
+        "desc": "wooden countertop with cooking ingredients and utensils",
+        "action": "static",
+        "position": "foreground",
+        "id": "surface_counter_wood_1"
       },
       {
         "desc": "white plate with yellow food",
         "action": "static",
         "position": "foreground center",
-        "id": "plate_white_1"
+        "id": "dish_plate_oval_white_1"
       },
       {
-        "desc": "black frying pan",
+        "desc": "black frying pan on a gas stove",
         "action": "static",
-        "position": "bottom right",
-        "id": "pan_black_frying_1"
+        "position": "foreground right",
+        "id": "pan_frying_black_1"
       },
       {
-        "desc": "wooden shelves with various bottles and boxes",
+        "desc": "wooden shelves with various jars and bottles",
         "action": "static",
-        "position": "left background",
-        "id": "shelves_kitchen_1"
-      },
-      {
-        "desc": "red pepper grinder",
-        "action": "static",
-        "position": "bottom left"
+        "position": "background top",
+        "id": "fixture_shelves_kitchen_1"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "The man in the maroon t-shirt is standing in a kitchen.",
+        "fact": "The man turns his body to the left.",
         "confidence": 1.0
       },
       {
-        "fact": "The man is holding a dark object in his left hand.",
+        "fact": "The man reaches his hands towards the oven.",
         "confidence": 1.0
       },
       {
-        "fact": "A plate of food sits on the wooden counter in front of the man.",
+        "fact": "A plate of food sits on the wooden counter.",
         "confidence": 1.0
       },
       {
-        "fact": "A black frying pan is on the stovetop to the right.",
+        "fact": "A black frying pan is on the stove.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The man is standing in the center of the kitchen, in front of the refrigerator and wooden shelves. The plate of food is on the counter in front of him. The frying pan is to the right of the plate on the stove.",
+    "spatial": "The man is standing in the center, in front of the oven and to the left of the refrigerator. The wooden countertop is in the foreground, below the man's hands. The plate of food is on the counter, to the left of the stove where the frying pan sits.",
     "parse_success": true,
     "chunk_idx": 15,
     "video_id": "zFR13BBw6Ws",
@@ -1079,87 +1057,87 @@
   },
   {
     "time": [
-      32,
-      34
+      16,
+      17
     ],
     "visible_entities": [
       {
-        "desc": "white ceramic baking dish, oval-shaped with vertical ribbed texture on the exterior, containing brown food items",
+        "desc": "white ceramic baking dish, oval-shaped with vertical ribbed texture on the exterior",
         "action": "being pulled out of the oven",
         "position": "center",
-        "id": "dish_baking_white_1"
+        "id": "dish_baking_oval_ribbed_1"
       },
       {
-        "desc": "pink textured cloth or towel",
+        "desc": "brown and white snails in shells, arranged in a single layer",
+        "action": "static",
+        "position": "inside the baking dish",
+        "id": "ingredient_snails_1"
+      },
+      {
+        "desc": "pink textured kitchen towel",
         "action": "holding the baking dish",
         "position": "left",
-        "id": "cloth_pink_1"
+        "id": "textile_towel_pink_1"
       },
       {
-        "desc": "dark oven interior with metal wire racks",
+        "desc": "metal oven rack with parallel bars",
         "action": "static",
-        "position": "background",
-        "id": "oven_stainless_1"
+        "position": "below the baking dish",
+        "id": "appliance_rack_oven_1"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A hand holding a pink cloth pulls a white baking dish out of the oven.",
+        "fact": "A hand holding a pink towel pulls a white baking dish out of the oven.",
         "confidence": 1.0
       },
       {
-        "fact": "The baking dish is resting on a metal wire rack inside the oven.",
+        "fact": "The baking dish contains cooked snails.",
         "confidence": 1.0
       },
       {
-        "fact": "The dish contains brown food items.",
+        "fact": "The dish rests on a metal wire rack inside the oven.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The white baking dish is positioned in the center of the frame, resting on the metal wire rack inside the oven. The pink cloth is to the left of the dish, holding it. The dark oven interior surrounds the dish and rack.",
+    "spatial": "The pink towel is on the left side, holding the white baking dish. The snails are inside the baking dish. The baking dish is positioned above the metal oven rack.",
     "parse_success": true,
     "chunk_idx": 16,
     "video_id": "zFR13BBw6Ws",
     "state_changes": [
-      "baking dish removed from oven using pink cloth"
+      "Baking dish containing snails is pulled out of the oven."
     ]
   },
   {
     "time": [
-      34,
-      36
+      17,
+      18
     ],
     "visible_entities": [
       {
-        "desc": "hand with fair skin wearing a gold ring on the ring finger",
-        "action": "holding a pink cloth and removing a dish",
-        "position": "left",
+        "desc": "hand with fair skin and a gold ring on the ring finger, holding a pink checkered cloth",
+        "action": "removing a dish from the oven",
+        "position": "left/foreground",
         "id": "person_chef_1"
       },
       {
-        "desc": "pink checkered cloth towel",
-        "action": "being used to grip the dish",
-        "position": "left/center",
-        "id": "cloth_pink_1"
-      },
-      {
-        "desc": "white ceramic oval baking dish with fluted sides containing cooked brown food",
-        "action": "being pulled out of the oven",
+        "desc": "white ceramic oval baking dish with vertical ribbed texture, containing browned food items",
+        "action": "being lifted out of the oven",
         "position": "center",
-        "id": "dish_baking_white_1"
+        "id": "dish_baking_oval_ribbed_1"
       },
       {
-        "desc": "metal oven rack",
+        "desc": "metal wire oven rack",
         "action": "static",
         "position": "center/bottom",
-        "id": "oven_stainless_1"
+        "id": "appliance_rack_oven_1"
       },
       {
         "desc": "dark oven interior",
         "action": "static",
         "position": "background",
-        "id": "oven_stainless_1"
+        "id": "appliance_oven_builtin_1"
       }
     ],
     "atomic_facts": [
@@ -1168,20 +1146,16 @@
         "confidence": 1.0
       },
       {
-        "fact": "The person is removing the dish from the oven.",
+        "fact": "The dish is being lifted off the metal oven rack.",
         "confidence": 1.0
       },
       {
         "fact": "The dish contains cooked food items.",
         "confidence": 1.0
-      },
-      {
-        "fact": "The dish rests on a metal wire rack.",
-        "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The hand is to the left of the white baking dish. The pink cloth is between the hand and the dish. The dish is on top of the metal oven rack. The rack is inside the dark oven interior.",
+    "spatial": "The hand is to the left of the white baking dish. The dish is resting on the metal wire rack. The rack is inside the dark oven interior.",
     "parse_success": true,
     "chunk_idx": 17,
     "video_id": "zFR13BBw6Ws",
@@ -1189,292 +1163,42 @@
   },
   {
     "time": [
-      36,
-      38
+      18,
+      19
     ],
     "visible_entities": [
       {
-        "desc": "white ceramic baking dish, oval-shaped with fluted sides, containing yellow rolled pasta",
+        "desc": "white ceramic serving dish, boat-shaped with fluted sides",
         "action": "static",
         "position": "center",
-        "id": "dish_baking_white_1"
+        "id": "dish_serving_boat_1"
       },
       {
-        "desc": "red plastic food packaging bag with a silver clip",
+        "desc": "rolled pasta, yellowish-green with red filling",
         "action": "static",
-        "position": "background"
+        "position": "inside the dish",
+        "id": "dish_pasta_rolled_sauced_1"
       },
       {
-        "desc": "wooden table surface with visible grain and dark knots",
-        "action": "static",
-        "position": "bottom",
-        "id": "countertop_wooden_1"
-      },
-      {
-        "desc": "dark blurry object, possibly a hand or utensil",
-        "action": "moving",
-        "position": "top left"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "A white ceramic dish containing yellow rolled pasta sits on a wooden table.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "A red food package is placed behind the white dish.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "A dark object moves across the top left of the frame.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [],
-    "spatial": "The white ceramic dish is in the center of the frame, resting on the wooden table. The red packaging bag is behind the dish. A dark blurry object is visible in the top left corner, moving near the edge of the frame.",
-    "parse_success": true,
-    "chunk_idx": 18,
-    "video_id": "zFR13BBw6Ws",
-    "state_changes": []
-  },
-  {
-    "time": [
-      38,
-      40
-    ],
-    "visible_entities": [
-      {
-        "desc": "man with short graying hair, wearing a maroon t-shirt and beige shorts",
-        "action": "holding a black frying pan",
-        "position": "center"
-      },
-      {
-        "desc": "white ceramic baking dish, boat-shaped with ribbed sides",
-        "action": "static",
-        "position": "foreground",
-        "id": "dish_baking_white_1"
-      },
-      {
-        "desc": "yellow rolled pasta, likely cannelloni",
-        "action": "static",
-        "position": "inside the white dish",
-        "id": "pasta_cannelloni_1"
-      },
-      {
-        "desc": "red plastic bag, crinkled texture",
-        "action": "static",
-        "position": "background"
-      },
-      {
-        "desc": "wooden table surface, light brown with dark grain",
-        "action": "static",
-        "position": "bottom",
-        "id": "countertop_wooden_1"
-      },
-      {
-        "desc": "kitchen background with white shelves, stainless steel oven, and refrigerator",
+        "desc": "red plastic packaging bag with a silver clip",
         "action": "static",
         "position": "background",
-        "id": "oven_stainless_1"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "The man holds a black frying pan in his left hand.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The white baking dish contains several rolls of yellow pasta.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The red bag is sitting on the wooden table behind the white dish.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The man is standing in a kitchen setting.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [],
-    "spatial": "The man is standing behind the wooden table. The white baking dish is on the table in the foreground, to the left of the man. The red bag is on the table behind the white dish. The kitchen shelves and appliances are behind the man.",
-    "parse_success": true,
-    "chunk_idx": 19,
-    "video_id": "zFR13BBw6Ws",
-    "state_changes": []
-  },
-  {
-    "time": [
-      40,
-      42
-    ],
-    "visible_entities": [
-      {
-        "desc": "hand with fair skin wearing a gold ring on the ring finger",
-        "action": "scraping food from pan",
-        "position": "left",
-        "id": "person_chef_1"
-      },
-      {
-        "desc": "black non-stick frying pan with oil residue",
-        "action": "being tilted",
-        "position": "center",
-        "id": "pan_black_frying_1"
-      },
-      {
-        "desc": "chopped red food pieces, likely tomatoes or peppers",
-        "action": "being transferred",
-        "position": "center"
-      },
-      {
-        "desc": "white rectangular serving dish",
-        "action": "static",
-        "position": "bottom",
-        "id": "dish_rectangular_white_1"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "A hand is using a utensil to scrape chopped red food from a black frying pan.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The frying pan is tilted to pour the food into a white dish below.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The white dish already contains some of the red food.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [],
-    "spatial": "The hand is on the left side of the frame, holding a utensil inside the black frying pan. The frying pan is positioned above the white rectangular dish. The chopped red food is being moved from the pan into the dish below.",
-    "parse_success": true,
-    "chunk_idx": 20,
-    "video_id": "zFR13BBw6Ws",
-    "state_changes": [
-      "chef begins scraping sauce from frying pan"
-    ]
-  },
-  {
-    "time": [
-      42,
-      44
-    ],
-    "visible_entities": [
-      {
-        "desc": "hand with fair skin, wearing a gold ring on the ring finger",
-        "action": "guiding a spoon to pour sauce",
-        "position": "left/foreground",
-        "id": "person_chef_1"
-      },
-      {
-        "desc": "black frying pan containing red chunky sauce",
-        "action": "being tilted to pour contents",
-        "position": "top/right",
-        "id": "pan_black_frying_1"
-      },
-      {
-        "desc": "white ceramic boat-shaped baking dish",
-        "action": "static",
-        "position": "center/bottom",
-        "id": "dish_baking_white_1"
-      },
-      {
-        "desc": "yellow rolled pasta with visible filling",
-        "action": "being covered with sauce",
-        "position": "inside the white dish",
-        "id": "pasta_cannelloni_1"
-      },
-      {
-        "desc": "silver spoon",
-        "action": "transferring sauce from pan to dish",
-        "position": "center"
+        "id": "package_bag_red_1"
       },
       {
         "desc": "wooden table surface with visible grain",
         "action": "static",
-        "position": "background/bottom",
-        "id": "countertop_wooden_1"
+        "position": "bottom",
+        "id": "surface_table_wood_1"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A hand is pouring red chunky sauce from a black pan onto yellow rolled pasta.",
+        "fact": "The camera cuts from a blurry dark view to a clear shot of the food.",
         "confidence": 1.0
       },
       {
-        "fact": "The sauce is being transferred using a silver spoon.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The pasta is arranged inside a white ceramic baking dish.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The dish is resting on a wooden table.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [],
-    "spatial": "The white baking dish is in the center of the frame, resting on the wooden table. The black frying pan is positioned above and to the right of the dish, tilted downwards. The hand is on the left side, holding the spoon which is bridging the gap between the pan and the pasta inside the dish.",
-    "parse_success": true,
-    "chunk_idx": 21,
-    "video_id": "zFR13BBw6Ws",
-    "state_changes": [
-      "sauce poured from pan onto pasta in baking dish"
-    ]
-  },
-  {
-    "time": [
-      44,
-      46
-    ],
-    "visible_entities": [
-      {
-        "desc": "hand with gold ring on ring finger",
-        "action": "pouring red sauce",
-        "position": "top left",
-        "id": "person_chef_1"
-      },
-      {
-        "desc": "white oval ceramic baking dish with ribbed sides",
-        "action": "static",
-        "position": "center",
-        "id": "dish_baking_white_1"
-      },
-      {
-        "desc": "rolled yellow pasta topped with chunky red sauce",
-        "action": "static",
-        "position": "center",
-        "id": "pasta_cannelloni_1"
-      },
-      {
-        "desc": "black pan or ladle",
-        "action": "pouring",
-        "position": "top right",
-        "id": "pan_black_frying_1"
-      },
-      {
-        "desc": "wooden table surface with visible grain",
-        "action": "static",
-        "position": "background",
-        "id": "countertop_wooden_1"
-      },
-      {
-        "desc": "small bowl with white creamy substance",
-        "action": "static",
-        "position": "background right",
-        "id": "bowl_white_small_1"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "A hand is pouring red sauce from a black pan onto the pasta.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The pasta is served in a white oval dish.",
+        "fact": "Rolled pasta is arranged inside the white ceramic dish.",
         "confidence": 1.0
       },
       {
@@ -1483,16 +1207,270 @@
       }
     ],
     "ocr": [],
-    "spatial": "The white oval dish containing the pasta is in the center of the wooden table. The hand holding the black pan is above the dish, pouring sauce onto the food. A small bowl with a white substance is to the right of the main dish in the background.",
+    "spatial": "The white ceramic dish is in the center of the frame, resting on the wooden table. The rolled pasta is inside the dish. The red packaging bag is behind the dish.",
     "parse_success": true,
-    "chunk_idx": 22,
+    "chunk_idx": 18,
     "video_id": "zFR13BBw6Ws",
     "state_changes": []
   },
   {
     "time": [
-      46,
-      48
+      19,
+      20
+    ],
+    "visible_entities": [
+      {
+        "desc": "man with short grey hair, wearing a maroon t-shirt and beige shorts",
+        "action": "holding a black frying pan",
+        "position": "center",
+        "id": "person_chef_1"
+      },
+      {
+        "desc": "white ceramic baking dish with ribbed sides, containing rolled yellow pasta",
+        "action": "static",
+        "position": "foreground",
+        "id": "dish_baking_oval_ribbed_1"
+      },
+      {
+        "desc": "red plastic bag with a gold label",
+        "action": "static",
+        "position": "background",
+        "id": "package_bag_red_1"
+      },
+      {
+        "desc": "wooden table with visible grain",
+        "action": "static",
+        "position": "bottom",
+        "id": "surface_table_wood_1"
+      },
+      {
+        "desc": "black frying pan",
+        "action": "being held",
+        "position": "center",
+        "id": "pan_frying_black_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The man is holding a black frying pan over a gas stovetop.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A white baking dish filled with rolled pasta sits on the wooden table.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A red bag is placed on the table behind the white dish.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The man is standing behind the wooden table. The white baking dish is on the table in the foreground, to the left of the man. The red bag is on the table behind the white dish. The man is holding the black frying pan in his hands.",
+    "parse_success": true,
+    "chunk_idx": 19,
+    "video_id": "zFR13BBw6Ws",
+    "state_changes": []
+  },
+  {
+    "time": [
+      20,
+      21
+    ],
+    "visible_entities": [
+      {
+        "desc": "hand with fair skin wearing a gold ring",
+        "action": "scraping food from pan",
+        "position": "left",
+        "id": "person_chef_1"
+      },
+      {
+        "desc": "black non-stick frying pan with oily residue",
+        "action": "being tilted",
+        "position": "center",
+        "id": "pan_frying_black_1"
+      },
+      {
+        "desc": "chopped red food pieces",
+        "action": "falling into dish",
+        "position": "center",
+        "id": "ingredient_pepper_red_chopped_1"
+      },
+      {
+        "desc": "white rectangular serving dish",
+        "action": "static",
+        "position": "bottom",
+        "id": "dish_rect_white_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A hand is scraping chopped red food from the black pan.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The pan is being tilted to transfer the food.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The food is falling into the white dish below.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The hand is on the left side, holding a utensil inside the black pan. The black pan is positioned above the white rectangular dish. The chopped red food is moving from the pan down into the dish.",
+    "parse_success": true,
+    "chunk_idx": 20,
+    "video_id": "zFR13BBw6Ws",
+    "state_changes": [
+      "Food pieces are scraped from the frying pan into a serving dish."
+    ]
+  },
+  {
+    "time": [
+      21,
+      22
+    ],
+    "visible_entities": [
+      {
+        "desc": "hand with fair skin wearing a gold ring on the ring finger",
+        "action": "spooning sauce onto pasta",
+        "position": "left/foreground",
+        "id": "person_chef_1"
+      },
+      {
+        "desc": "white ceramic baking dish, oval-shaped with ribbed sides",
+        "action": "static",
+        "position": "center",
+        "id": "dish_baking_oval_ribbed_1"
+      },
+      {
+        "desc": "yellow rolled pasta tubes topped with chunky red tomato sauce",
+        "action": "being garnished",
+        "position": "center/inside dish",
+        "id": "dish_pasta_topped_1"
+      },
+      {
+        "desc": "silver metal spoon",
+        "action": "transferring sauce",
+        "position": "center",
+        "id": "utensil_spoon_silver_1"
+      },
+      {
+        "desc": "black frying pan containing red sauce",
+        "action": "being tilted",
+        "position": "top right",
+        "id": "pan_frying_black_1"
+      },
+      {
+        "desc": "rustic wooden table surface",
+        "action": "static",
+        "position": "bottom/background",
+        "id": "surface_table_wood_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A hand is using a spoon to transfer red sauce from a black pan onto yellow pasta rolls.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The pasta rolls are arranged inside a white oval baking dish.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The dish is sitting on a wooden table.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The white baking dish is centered on the wooden table. The hand is positioned to the left of the dish, holding a spoon over the pasta. The black frying pan is held above and to the right of the dish, pouring sauce downwards.",
+    "parse_success": true,
+    "chunk_idx": 21,
+    "video_id": "zFR13BBw6Ws",
+    "state_changes": [
+      "Red tomato sauce is spooned onto the rolled pasta tubes."
+    ]
+  },
+  {
+    "time": [
+      22,
+      23
+    ],
+    "visible_entities": [
+      {
+        "desc": "white ceramic oval baking dish with fluted sides",
+        "action": "static",
+        "position": "center",
+        "id": "dish_baking_oval_ribbed_1"
+      },
+      {
+        "desc": "rolled pasta sheets with yellow filling",
+        "action": "static",
+        "position": "inside the dish",
+        "id": "dish_pasta_rolled_sauced_1"
+      },
+      {
+        "desc": "chunky red tomato sauce with green herbs",
+        "action": "being poured",
+        "position": "center",
+        "id": "sauce_tomato_red_1"
+      },
+      {
+        "desc": "black ladle or pan",
+        "action": "pouring sauce",
+        "position": "top right",
+        "id": "pan_frying_black_1"
+      },
+      {
+        "desc": "hand with a gold ring on the ring finger",
+        "action": "holding the ladle",
+        "position": "top left",
+        "id": "person_chef_1"
+      },
+      {
+        "desc": "wooden table surface with visible grain",
+        "action": "static",
+        "position": "bottom",
+        "id": "surface_table_wood_1"
+      },
+      {
+        "desc": "small bowl containing white creamy substance",
+        "action": "static",
+        "position": "background right",
+        "id": "dish_bowl_small_white_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A hand is pouring chunky red tomato sauce from a black ladle onto rolled pasta.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The pasta is arranged inside a white ceramic oval baking dish.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The white dish sits on a wooden table surface.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A small bowl with a white creamy substance is visible in the background.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The white ceramic baking dish is in the center of the frame, resting on the wooden table. The hand holding the black ladle is positioned above and to the left of the dish, pouring sauce onto the pasta inside. The small bowl with white cream is located to the right of the main dish in the background.",
+    "parse_success": true,
+    "chunk_idx": 22,
+    "video_id": "zFR13BBw6Ws",
+    "state_changes": [
+      "Chunky red tomato sauce is poured from a ladle onto pasta sheets."
+    ]
+  },
+  {
+    "time": [
+      23,
+      24
     ],
     "visible_entities": [
       {
@@ -1502,50 +1480,46 @@
         "id": "person_chef_1"
       },
       {
-        "desc": "white oval ceramic baking dish containing yellow rolled pasta topped with red tomato sauce and green herbs",
+        "desc": "white oval ceramic baking dish with ribbed exterior",
         "action": "static",
         "position": "foreground",
-        "id": "dish_baking_white_1"
+        "id": "dish_baking_oval_ribbed_1"
       },
       {
-        "desc": "stainless steel refrigerator with a water dispenser",
+        "desc": "rolled pasta sheets filled with green herbs, topped with chunky red tomato sauce",
+        "action": "static",
+        "position": "inside the white dish",
+        "id": "dish_pasta_rolled_sauced_1"
+      },
+      {
+        "desc": "stainless steel double-door refrigerator",
         "action": "static",
         "position": "background right",
-        "id": "refrigerator_stainless_1"
+        "id": "appliance_fridge_silver_1"
       },
       {
-        "desc": "wooden shelves holding various bottles, jars, and boxes",
+        "desc": "wooden shelves with various food packages and bottles",
         "action": "static",
         "position": "background left",
-        "id": "shelves_kitchen_1"
-      },
-      {
-        "desc": "black frying pan on a gas stovetop",
-        "action": "static",
-        "position": "right",
-        "id": "pan_black_frying_1"
+        "id": "fixture_shelves_kitchen_1"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "The camera cuts from a wide shot of the man in the kitchen to a close-up of the food.",
+        "fact": "The man stands behind a wooden kitchen counter.",
         "confidence": 1.0
       },
       {
-        "fact": "The man is standing behind a wooden counter with cooking ingredients.",
+        "fact": "A white oval dish containing rolled pasta with red sauce sits on the counter.",
         "confidence": 1.0
       },
       {
-        "fact": "The white dish contains rolled pasta covered in a chunky red sauce.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "A black frying pan sits on the stove to the right of the counter.",
+        "fact": "The camera focuses on the prepared pasta dish in the foreground.",
         "confidence": 1.0
       }
     ],
     "ocr": [],
-    "spatial": "The man is standing behind the wooden counter. The white oval dish with pasta is in the foreground on the counter. The stainless steel refrigerator is to the right of the man in the background. The wooden shelves are to the left of the man.",
+    "spatial": "The man is standing behind the wooden counter. The white oval dish is on the counter in front of the man. The refrigerator is to the right of the man in the background.",
     "parse_success": true,
     "chunk_idx": 23,
     "video_id": "zFR13BBw6Ws",
@@ -1553,79 +1527,69 @@
   },
   {
     "time": [
-      48,
-      50
+      24,
+      25
     ],
     "visible_entities": [
       {
-        "desc": "man with short grey hair, wearing a maroon t-shirt and beige trousers",
-        "action": "standing and gesturing with his right hand",
+        "desc": "man with short grey hair, wearing a maroon t-shirt and beige pants",
+        "action": "standing and gesturing",
         "position": "center",
         "id": "person_chef_1"
       },
       {
-        "desc": "white oval ceramic baking dish with ribbed sides",
+        "desc": "white oval baking dish containing rolled pasta topped with red tomato sauce and green herbs",
         "action": "static",
         "position": "foreground",
-        "id": "dish_baking_white_1"
-      },
-      {
-        "desc": "rolled pasta filled with white cheese, topped with chunky red tomato sauce and green herbs",
-        "action": "static",
-        "position": "inside the dish",
-        "id": "pasta_cannelloni_1"
+        "id": "dish_baking_oval_ribbed_1"
       },
       {
         "desc": "wooden kitchen counter",
         "action": "static",
         "position": "bottom",
-        "id": "countertop_wooden_1"
+        "id": "surface_counter_wood_1"
       },
       {
         "desc": "stainless steel refrigerator",
         "action": "static",
         "position": "background right",
-        "id": "refrigerator_stainless_1"
+        "id": "appliance_fridge_silver_1"
       },
       {
-        "desc": "wooden shelves with various food packages and jars",
+        "desc": "wooden shelves with various food packages and bottles",
         "action": "static",
         "position": "background",
-        "id": "shelves_kitchen_1"
+        "id": "fixture_shelves_kitchen_1"
       },
       {
-        "desc": "black frying pan",
+        "desc": "hanging metal pots and pans",
         "action": "static",
-        "position": "right",
-        "id": "pan_black_frying_1"
+        "position": "background left",
+        "id": "fixture_rack_hanging_1"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A man in a maroon shirt stands behind a wooden counter.",
+        "fact": "A man in a maroon t-shirt stands in a kitchen setting.",
         "confidence": 1.0
       },
       {
-        "fact": "The man gestures with his right hand while speaking.",
+        "fact": "The man is gesturing with his hand while speaking.",
         "confidence": 1.0
       },
       {
-        "fact": "A white dish containing rolled pasta with red sauce sits on the counter.",
+        "fact": "A white dish of pasta with red sauce sits on the wooden counter in the foreground.",
         "confidence": 1.0
       },
       {
-        "fact": "The camera cuts to a close-up of the pasta dish.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "A stainless steel refrigerator is visible in the background.",
+        "fact": "The kitchen features open wooden shelving stocked with ingredients.",
         "confidence": 1.0
       }
     ],
     "ocr": [
       "RYE"
     ],
-    "spatial": "The man is standing behind the wooden counter. The white dish with pasta is on the counter in front of the man. The refrigerator is to the right of the man in the background. The shelves are above the counter and behind the man.",
+    "spatial": "The man is standing behind the wooden counter. The white dish of pasta is in the foreground on the counter, in front of the man. To the man's right, a stainless steel refrigerator is visible. Behind the man, wooden shelves are mounted on the wall, holding various food items and bottles. To the left, metal pots are hanging on a rack.",
     "parse_success": true,
     "chunk_idx": 24,
     "video_id": "zFR13BBw6Ws",
@@ -1633,12 +1597,12 @@
   },
   {
     "time": [
-      50,
-      52
+      25,
+      26
     ],
     "visible_entities": [
       {
-        "desc": "man with short grey hair, wearing a red v-neck t-shirt",
+        "desc": "man with short grey hair, wearing a maroon v-neck t-shirt",
         "action": "gesturing with hands while speaking",
         "position": "center",
         "id": "person_chef_1"
@@ -1647,53 +1611,53 @@
         "desc": "blue lower-third graphic overlay with white text and logos",
         "action": "static",
         "position": "bottom",
-        "id": "graphic_lower_third_1"
+        "id": "overlay_banner_blue_1"
       },
       {
-        "desc": "silver double-door refrigerator",
+        "desc": "stainless steel double-door refrigerator",
         "action": "static",
-        "position": "right",
-        "id": "refrigerator_stainless_1"
+        "position": "right background",
+        "id": "appliance_fridge_silver_1"
       },
       {
-        "desc": "wooden shelves with various food items and bottles",
+        "desc": "wooden shelves with various food jars and boxes",
         "action": "static",
         "position": "background",
-        "id": "shelves_kitchen_1"
+        "id": "fixture_shelves_kitchen_1"
       },
       {
         "desc": "hanging metal pots and pans",
         "action": "static",
-        "position": "left",
-        "id": "hanging_cookware_1"
+        "position": "left background",
+        "id": "fixture_rack_hanging_1"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "The man is gesturing with his hands.",
+        "fact": "The man in the maroon t-shirt is gesturing with his hands.",
         "confidence": 1.0
       },
       {
-        "fact": "A blue banner appears at the bottom of the screen.",
+        "fact": "A blue graphic overlay appears at the bottom of the screen.",
         "confidence": 1.0
       },
       {
-        "fact": "The text 'Perfect Pasta' and 'Large Rigatoni' is displayed on the banner.",
+        "fact": "The text 'Perfect Pasta' and 'Large Rigatoni' is displayed on the overlay.",
         "confidence": 1.0
       },
       {
-        "fact": "The man is standing in front of the kitchen counter and shelves.",
+        "fact": "The 'San Remo' logo is visible on the right side of the overlay.",
         "confidence": 1.0
       }
     ],
     "ocr": [
       "Perfect Pasta",
       "Large Rigatoni",
-      "G&G BC",
-      "SAN REMO",
-      "Whole Family"
+      "San Remo",
+      "Since 1936",
+      "G&G BC"
     ],
-    "spatial": "The man is standing in the center of the frame, in front of the kitchen shelves. The refrigerator is to the right of the man. The hanging pots are to the left of the man. The blue graphic overlay is at the bottom of the screen, below the man.",
+    "spatial": "The man is standing in the center of the frame, in front of the kitchen shelves and refrigerator. The blue graphic overlay is positioned at the bottom of the screen, below the man. The refrigerator is to the right of the man, and the hanging pots are to his left.",
     "parse_success": true,
     "chunk_idx": 25,
     "video_id": "zFR13BBw6Ws",
@@ -1701,116 +1665,48 @@
   },
   {
     "time": [
-      52,
-      54
+      26,
+      27
     ],
     "visible_entities": [
       {
-        "desc": "man with short grey hair, wearing a maroon t-shirt",
-        "action": "standing in a kitchen",
+        "desc": "man with short grey hair, wearing a maroon short-sleeved t-shirt",
+        "action": "looking down and working with hands",
         "position": "center",
         "id": "person_chef_1"
       },
       {
-        "desc": "white oval serving dish containing large tubular pasta with red sauce and green herbs",
+        "desc": "white oval ceramic serving dish containing large tubular pasta topped with chunky red tomato sauce and green herbs",
         "action": "static",
         "position": "foreground",
-        "id": "dish_baking_white_1"
+        "id": "dish_baking_oval_ribbed_1"
       },
       {
-        "desc": "blue banner with white text and logos",
+        "desc": "stainless steel refrigerator with water dispenser",
         "action": "static",
-        "position": "bottom",
-        "id": "graphic_lower_third_1"
+        "position": "background right",
+        "id": "appliance_fridge_silver_1"
       },
       {
-        "desc": "silver refrigerator",
-        "action": "static",
-        "position": "right background",
-        "id": "refrigerator_stainless_1"
-      },
-      {
-        "desc": "wooden shelves with jars and bottles",
+        "desc": "wooden shelves stocked with various bottles and jars",
         "action": "static",
         "position": "background",
-        "id": "shelves_kitchen_1"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "The video cuts from a shot of a man in a kitchen to a close-up of a pasta dish.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The pasta dish consists of large rigatoni tubes topped with a chunky red sauce.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The text 'Perfect Pasta' and 'Large Rigatoni' appears on the bottom banner.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The 'San Remo' logo is visible on the bottom right of the banner.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [
-      "GC BC",
-      "Perfect Pasta",
-      "Large Rigatoni",
-      "SAN REMO",
-      "We're Family"
-    ],
-    "spatial": "The man in the maroon t-shirt is standing in the center of the kitchen, in front of the wooden shelves and to the left of the silver refrigerator. The white oval dish containing the pasta is shown in a close-up view, filling the foreground. The blue banner with text is located at the bottom of the screen, below the main visual content.",
-    "parse_success": true,
-    "chunk_idx": 26,
-    "video_id": "zFR13BBw6Ws",
-    "state_changes": []
-  },
-  {
-    "time": [
-      54,
-      56
-    ],
-    "visible_entities": [
-      {
-        "desc": "white oval ceramic dish containing large tubular pasta topped with chunky red tomato sauce and green herbs",
-        "action": "static",
-        "position": "foreground",
-        "id": "dish_baking_white_1"
-      },
-      {
-        "desc": "man with short grey hair wearing a red short-sleeved t-shirt",
-        "action": "standing behind a counter",
-        "position": "center",
-        "id": "person_chef_1"
+        "id": "fixture_shelves_kitchen_1"
       },
       {
         "desc": "blue lower-third graphic overlay with logos and text",
         "action": "static",
         "position": "bottom",
-        "id": "graphic_lower_third_1"
-      },
-      {
-        "desc": "stainless steel refrigerator",
-        "action": "static",
-        "position": "background right",
-        "id": "refrigerator_stainless_1"
-      },
-      {
-        "desc": "wooden shelves with jars and bottles",
-        "action": "static",
-        "position": "background",
-        "id": "shelves_kitchen_1"
+        "id": "overlay_banner_blue_1"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "The video transitions from a close-up of a pasta dish to a wide shot of a man in a kitchen.",
+        "fact": "A man in a maroon shirt is standing in a kitchen, looking down at his hands.",
         "confidence": 1.0
       },
       {
-        "fact": "The man is standing behind a kitchen counter.",
+        "fact": "A close-up shot reveals a white dish filled with large rigatoni pasta covered in red sauce.",
         "confidence": 1.0
       },
       {
@@ -1818,7 +1714,7 @@
         "confidence": 1.0
       },
       {
-        "fact": "The San Remo logo is visible in the bottom right corner.",
+        "fact": "The 'San Remo' logo is visible in the bottom right corner of the overlay.",
         "confidence": 1.0
       }
     ],
@@ -1829,7 +1725,81 @@
       "SAN REMO",
       "We're Family"
     ],
-    "spatial": "The white dish of pasta is in the foreground in the first frame. In the second frame, the man in the red shirt is standing in the center, behind the counter. The refrigerator is to the right of the man. The blue graphic overlay is at the bottom of the screen, below the man and the kitchen scene.",
+    "spatial": "The man is standing in the center of the kitchen, positioned to the left of the stainless steel refrigerator. The shelves are mounted on the wall behind him. The blue graphic overlay is located at the bottom of the screen, below the man and the kitchen background. The pasta dish is shown in a separate close-up view.",
+    "parse_success": true,
+    "chunk_idx": 26,
+    "video_id": "zFR13BBw6Ws",
+    "state_changes": []
+  },
+  {
+    "time": [
+      27,
+      28
+    ],
+    "visible_entities": [
+      {
+        "desc": "man with short grey hair, wearing a red short-sleeved t-shirt",
+        "action": "standing behind a counter",
+        "position": "center",
+        "id": "person_chef_1"
+      },
+      {
+        "desc": "white oval ceramic dish containing large rigatoni pasta with red tomato sauce and green herbs",
+        "action": "static",
+        "position": "foreground",
+        "id": "dish_baking_oval_ribbed_1"
+      },
+      {
+        "desc": "blue banner overlay with white text and logos",
+        "action": "static",
+        "position": "bottom",
+        "id": "overlay_banner_blue_1"
+      },
+      {
+        "desc": "stainless steel refrigerator",
+        "action": "static",
+        "position": "background right",
+        "id": "appliance_fridge_silver_1"
+      },
+      {
+        "desc": "wooden shelves with various bottles and jars",
+        "action": "static",
+        "position": "background",
+        "id": "fixture_shelves_kitchen_1"
+      },
+      {
+        "desc": "hanging metal pots and pans",
+        "action": "static",
+        "position": "background left",
+        "id": "fixture_rack_hanging_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The video transitions from a close-up of a pasta dish to a man standing in a kitchen.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The man is standing behind a kitchen counter with a refrigerator behind him.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The text on the screen reads 'Perfect Pasta' and 'Large Rigatoni'.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The pasta dish features large tubular pasta topped with a chunky red sauce.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "Perfect Pasta",
+      "Large Rigatoni",
+      "GC BC",
+      "SAN REMO",
+      "Viva Family"
+    ],
+    "spatial": "The man is standing in the center of the frame, in front of a stainless steel refrigerator and wooden shelves. The blue banner is located at the bottom of the screen, overlaying the lower portion of the man and the counter. The hanging pots are to the left of the man in the background.",
     "parse_success": true,
     "chunk_idx": 27,
     "video_id": "zFR13BBw6Ws",
@@ -1837,106 +1807,162 @@
   },
   {
     "time": [
-      56,
-      58
+      28,
+      29
     ],
     "visible_entities": [
       {
-        "desc": "man with short dark hair, wearing a pink t-shirt",
+        "desc": "man with short hair, wearing a pink t-shirt",
         "action": "standing behind a glass surface",
-        "position": "center/background",
-        "id": "person_chef_2"
+        "position": "background",
+        "id": "person_chef_1"
       },
       {
-        "desc": "wooden table surface with various food ingredients",
+        "desc": "wooden table surface with various food ingredients arranged around the edges",
         "action": "static",
         "position": "foreground",
-        "id": "countertop_wooden_1"
+        "id": "surface_table_wood_1"
       },
       {
-        "desc": "circular logo with text 'GC BC' in brown",
+        "desc": "circular logo with text 'GC BC' and a diagonal line",
         "action": "static",
         "position": "center",
-        "id": "logo_gc_bc_1"
+        "id": "logo_brand_gc_bc_1"
       },
       {
         "desc": "three lemon wedges",
         "action": "static",
-        "position": "top/center",
-        "id": "lemon_wedges_1"
+        "position": "top",
+        "id": "ingredient_lemon_wedge_1"
       },
       {
         "desc": "bunch of green cilantro",
         "action": "static",
-        "position": "top/right",
-        "id": "herbs_cilantro_1"
-      },
-      {
-        "desc": "white rectangular dish containing chopped nuts",
-        "action": "static",
-        "position": "top/right",
-        "id": "dish_rectangular_white_1"
+        "position": "top right",
+        "id": "ingredient_herb_cilantro_1"
       },
       {
         "desc": "red chili peppers",
         "action": "static",
-        "position": "bottom/left",
-        "id": "chili_peppers_1"
+        "position": "bottom left",
+        "id": "ingredient_pepper_chili_1"
+      },
+      {
+        "desc": "white plate with fried food strips",
+        "action": "static",
+        "position": "bottom right",
+        "id": "dish_plate_fried_1"
+      },
+      {
+        "desc": "chopped red peppers and brown cubes",
+        "action": "static",
+        "position": "bottom right",
+        "id": "ingredient_pepper_red_chopped_1"
       },
       {
         "desc": "pair of wooden chopsticks",
         "action": "static",
-        "position": "bottom/left"
+        "position": "bottom left",
+        "id": "utensil_chopsticks_wood_1"
       },
       {
-        "desc": "white square plate with fried strips",
+        "desc": "small bowl of dark sauce",
         "action": "static",
-        "position": "bottom/right",
-        "id": "plate_square_white_1"
+        "position": "bottom center",
+        "id": "dish_bowl_small_white_1"
       },
       {
-        "desc": "red bell pepper pieces",
+        "desc": "white bowl",
         "action": "static",
-        "position": "bottom/right"
+        "position": "bottom center",
+        "id": "dish_bowl_small_white_1"
       },
       {
-        "desc": "small white bowl with grey powder",
+        "desc": "green leafy vegetables",
         "action": "static",
-        "position": "top/left",
-        "id": "bowl_white_small_1"
+        "position": "bottom left",
+        "id": "ingredient_veg_leafy_1"
       },
       {
-        "desc": "hanging metal pans and utensils",
+        "desc": "small white bowl with white powder",
         "action": "static",
-        "position": "left/background",
-        "id": "hanging_cookware_1"
+        "position": "top left",
+        "id": "dish_bowl_small_white_1"
       },
       {
-        "desc": "bottles of sauces and oils on shelves",
+        "desc": "white rectangular dish with fried onions",
         "action": "static",
-        "position": "left/background",
-        "id": "shelves_kitchen_1"
+        "position": "top right",
+        "id": "ingredient_onion_fried_1"
+      },
+      {
+        "desc": "red and white striped cloth",
+        "action": "static",
+        "position": "right",
+        "id": "textile_cloth_striped_1"
+      },
+      {
+        "desc": "white rice grains",
+        "action": "static",
+        "position": "top left",
+        "id": "ingredient_rice_white_1"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "The man in the pink t-shirt is standing behind a glass surface.",
+        "fact": "A man in a pink t-shirt is standing behind a glass surface.",
         "confidence": 1.0
       },
       {
-        "fact": "The wooden table is arranged with ingredients including lemon wedges, cilantro, and nuts.",
+        "fact": "The logo 'GC BC' is in the center of the wooden table.",
         "confidence": 1.0
       },
       {
-        "fact": "The logo 'GC BC' is visible in the center of the table.",
+        "fact": "Lemon wedges are arranged at the top of the table.",
         "confidence": 1.0
       },
       {
-        "fact": "Red chili peppers are placed next to a pair of wooden chopsticks.",
+        "fact": "Cilantro is placed to the right of the lemon wedges.",
         "confidence": 1.0
       },
       {
-        "fact": "Fried strips are on a white square plate near red bell pepper pieces.",
+        "fact": "Red chili peppers are on the bottom left of the table.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "Chopsticks are next to the green leafy vegetables.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A white plate with fried food strips is on the bottom right.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "Chopped red peppers and brown cubes are next to the white plate.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A small bowl of dark sauce is near the bottom center.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A white bowl is at the bottom center of the frame.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A small white bowl with white powder is at the top left.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A white rectangular dish with fried onions is at the top right.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A red and white striped cloth is on the right side of the table.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "White rice grains are scattered at the top left corner.",
         "confidence": 1.0
       }
     ],
@@ -1944,105 +1970,122 @@
       "GC",
       "BC"
     ],
-    "spatial": "The man in the pink t-shirt is behind the wooden table. The 'GC BC' logo is in the center of the table, with lemon wedges above it and cilantro to the right of the lemon wedges. The red chili peppers are to the left of the fried strips on the white plate.",
+    "spatial": "The man in the pink t-shirt is behind the glass surface, which is in front of the wooden table. The 'GC BC' logo is in the center of the table. The lemon wedges are above the logo, and the cilantro is to the right of the lemon wedges. The red chili peppers are to the left of the logo, and the chopsticks are below the chili peppers. The white plate with fried food strips is to the right of the logo, and the chopped red peppers and brown cubes are to the right of the white plate. The small bowl of dark sauce is below the logo, and the white bowl is below the dark sauce bowl. The small white bowl with white powder is to the left of the lemon wedges. The white rectangular dish with fried onions is to the right of the cilantro. The red and white striped cloth is to the right of the white rectangular dish. The white rice grains are to the left of the small white bowl with white powder.",
     "parse_success": true,
     "chunk_idx": 28,
     "video_id": "zFR13BBw6Ws",
     "state_changes": [
-      "different person appears with ingredient display setup"
+      "Scene transitions to a final display of various prepared ingredients and dishes on a table."
     ]
   },
   {
     "time": [
-      58,
-      60
+      29,
+      30
     ],
     "visible_entities": [
       {
-        "desc": "circular logo with brown border, containing orange 'GC' letters above a red strikethrough line and brown 'BC' letters below",
+        "desc": "central circular logo with a brown rim and white background, featuring orange 'GC' letters above a red slash and brown 'BC' letters below",
         "action": "static",
         "position": "center",
-        "id": "logo_gc_bc_1"
+        "id": "logo_brand_gc_bc_1"
       },
       {
         "desc": "white cursive text reading 'Good Chef'",
         "action": "static",
         "position": "left",
-        "id": "logo_gc_bc_1"
+        "id": "text_logo_good_chef_1"
       },
       {
         "desc": "white cursive text reading 'Bad Chef'",
         "action": "static",
         "position": "right",
-        "id": "logo_gc_bc_1"
+        "id": "text_logo_bad_chef_1"
+      },
+      {
+        "desc": "wooden table surface with visible grain",
+        "action": "static",
+        "position": "background",
+        "id": "surface_table_wood_1"
       },
       {
         "desc": "pile of white uncooked rice grains",
         "action": "static",
-        "position": "top-left"
+        "position": "top left",
+        "id": "ingredient_rice_white_1"
+      },
+      {
+        "desc": "small metal cup containing grey powder",
+        "action": "static",
+        "position": "top left",
+        "id": "utensil_cup_metal_1"
       },
       {
         "desc": "three yellow lemon wedges",
         "action": "static",
-        "position": "top-center",
-        "id": "lemon_wedges_1"
+        "position": "top center",
+        "id": "ingredient_lemon_wedge_1"
       },
       {
-        "desc": "bunch of green leafy herbs",
+        "desc": "bunch of fresh green cilantro",
         "action": "static",
-        "position": "top-right",
-        "id": "herbs_cilantro_1"
+        "position": "top right",
+        "id": "ingredient_herb_cilantro_1"
       },
       {
-        "desc": "white rectangular dish containing brown granular food",
+        "desc": "white rectangular dish containing chopped nuts",
         "action": "static",
-        "position": "top-right",
-        "id": "dish_rectangular_white_1"
+        "position": "top right",
+        "id": "ingredient_nuts_chopped_1"
       },
       {
-        "desc": "bunch of red chili peppers",
+        "desc": "bunch of green leafy vegetables",
         "action": "static",
-        "position": "bottom-left",
-        "id": "chili_peppers_1"
+        "position": "bottom left",
+        "id": "ingredient_veg_leafy_1"
       },
       {
         "desc": "pair of wooden chopsticks",
         "action": "static",
-        "position": "bottom-left"
+        "position": "bottom left",
+        "id": "utensil_chopsticks_wood_1"
       },
       {
-        "desc": "small bowl of dark sauce",
+        "desc": "cluster of red chili peppers",
         "action": "static",
-        "position": "bottom-center",
-        "id": "bowl_white_small_1"
+        "position": "bottom center",
+        "id": "ingredient_pepper_chili_1"
       },
       {
-        "desc": "white square plate with beige stick-shaped food items",
+        "desc": "small orange bowl containing dark liquid",
         "action": "static",
-        "position": "bottom-right",
-        "id": "plate_square_white_1"
+        "position": "bottom center",
+        "id": "dish_bowl_orange_1"
       },
       {
-        "desc": "scattered red strawberry pieces and brown chocolate chunks",
+        "desc": "white square plate with fried stick-shaped food",
         "action": "static",
-        "position": "bottom-right"
+        "position": "bottom right",
+        "id": "dish_plate_fried_1"
+      },
+      {
+        "desc": "sliced red strawberries and brown chocolate chunks",
+        "action": "static",
+        "position": "bottom right",
+        "id": "ingredient_fruit_strawberry_1"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "The logo in the center displays 'GC' above a red strikethrough line and 'BC' below it.",
+        "fact": "The text 'Good Chef' is displayed to the left of the central logo.",
         "confidence": 1.0
       },
       {
-        "fact": "The text 'Good Chef' is written on the left side of the screen.",
+        "fact": "The text 'Bad Chef' is displayed to the right of the central logo.",
         "confidence": 1.0
       },
       {
-        "fact": "The text 'Bad Chef' is written on the right side of the screen.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "Various food ingredients are arranged around the central logo on a wooden surface.",
+        "fact": "Various food ingredients are arranged in a circle around the central logo on a wooden table.",
         "confidence": 1.0
       }
     ],
@@ -2052,12 +2095,10 @@
       "BC",
       "Bad Chef"
     ],
-    "spatial": "The circular logo is in the center of the wooden table. The text 'Good Chef' is to the left of the logo, and the text 'Bad Chef' is to the right of the logo. The pile of rice is in the top-left corner, while the strawberries and chocolate are in the bottom-right corner.",
+    "spatial": "The central logo is surrounded by various food items on a wooden table. The text 'Good Chef' is to the left of the logo, while the text 'Bad Chef' is to the right. Rice and a metal cup are above the 'Good Chef' text, while green vegetables and chopsticks are below it.",
     "parse_success": true,
     "chunk_idx": 29,
     "video_id": "zFR13BBw6Ws",
-    "state_changes": [
-      "logo and branding graphics displayed with ingredient showcase"
-    ]
+    "state_changes": []
   }
 ]

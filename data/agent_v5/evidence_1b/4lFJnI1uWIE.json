@@ -2,11 +2,11 @@
   {
     "time": [
       0,
-      2
+      1
     ],
     "visible_entities": [
       {
-        "desc": "man wearing a red bandana and a white double-breasted chef's coat",
+        "desc": "man wearing a white chef's coat and a red bandana",
         "action": "gesturing with his right hand",
         "position": "center",
         "id": "person_chef_1"
@@ -18,16 +18,10 @@
         "id": "refrigerator_steel_1"
       },
       {
-        "desc": "light wood kitchen cabinets with glass-paneled doors",
+        "desc": "light-colored wooden kitchen cabinets with glass doors",
         "action": "static",
         "position": "background",
-        "id": "cabinets_kitchen_1"
-      },
-      {
-        "desc": "hanging metal pots and pans",
-        "action": "static",
-        "position": "left background",
-        "id": "rack_pots_1"
+        "id": "cabinets_wood_glass_1"
       },
       {
         "desc": "text 'Our Cookbook' in white font",
@@ -38,22 +32,26 @@
     ],
     "atomic_facts": [
       {
-        "fact": "A man in a chef's coat is gesturing with his hand.",
+        "fact": "The man in the white chef's coat is gesturing with his right hand.",
         "confidence": 1.0
       },
       {
-        "fact": "The man is wearing a red bandana on his head.",
+        "fact": "The man is standing in a kitchen.",
         "confidence": 1.0
       },
       {
-        "fact": "Text reading 'Our Cookbook' is visible in the top right corner.",
+        "fact": "A stainless steel refrigerator is visible on the left side of the frame.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The text 'Our Cookbook' is displayed in the top right corner.",
         "confidence": 1.0
       }
     ],
     "ocr": [
       "Our Cookbook"
     ],
-    "spatial": "The man is standing in the center of the frame, in front of the kitchen cabinets. To his left is a large stainless steel refrigerator. Behind him and to the left, pots and pans are hanging. The text 'Our Cookbook' is located in the top right corner of the screen.",
+    "spatial": "The man in the white chef's coat is in the center of the frame, in front of the kitchen cabinets. The stainless steel refrigerator is to the left of the man. The text 'Our Cookbook' is located in the top right corner of the screen.",
     "parse_success": true,
     "chunk_idx": 0,
     "video_id": "4lFJnI1uWIE",
@@ -61,57 +59,67 @@
   },
   {
     "time": [
-      2,
-      4
+      1,
+      2
     ],
     "visible_entities": [
       {
-        "desc": "man with short grey hair, wearing a red cap and a white chef's coat",
+        "desc": "man with short grey hair, wearing a red bandana, white double-breasted chef's coat with red piping and embroidered text on the left chest",
         "action": "standing and gesturing with right hand",
         "position": "center",
         "id": "person_chef_1"
       },
       {
-        "desc": "stainless steel refrigerator",
+        "desc": "stainless steel refrigerator with black control panel",
         "action": "static",
         "position": "left",
         "id": "refrigerator_steel_1"
       },
       {
-        "desc": "light wood kitchen cabinets with glass panels",
+        "desc": "light wood kitchen cabinets with glass-paneled doors",
         "action": "static",
         "position": "background",
-        "id": "cabinets_kitchen_1"
+        "id": "cabinets_wood_glass_1"
       },
       {
         "desc": "hanging metal pots and pans",
         "action": "static",
         "position": "background left",
-        "id": "rack_pots_1"
+        "id": "pots_hanging_1"
+      },
+      {
+        "desc": "kitchen countertop with various jars and appliances",
+        "action": "static",
+        "position": "background right",
+        "id": "countertop_beige_tile_1"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "man stands in the center of the kitchen",
+        "fact": "The man in the chef's coat is standing in the center of the kitchen.",
         "confidence": 1.0
       },
       {
-        "fact": "man gestures with his right hand",
+        "fact": "The man is gesturing with his right hand.",
         "confidence": 1.0
       },
       {
-        "fact": "refrigerator is to the left of the man",
+        "fact": "A stainless steel refrigerator is visible on the left side of the frame.",
         "confidence": 1.0
       },
       {
-        "fact": "cabinets are behind the man",
+        "fact": "Kitchen cabinets are located behind the man.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The text 'Our Cookbook' is visible in the top right corner.",
         "confidence": 1.0
       }
     ],
     "ocr": [
       "Our Cookbook"
     ],
-    "spatial": "The man in the white chef's coat is standing in the center of the frame. To his left is a large stainless steel refrigerator. Behind him are light wood kitchen cabinets with glass doors and hanging metal pots.",
+    "spatial": "The man in the chef's coat is standing in the center of the frame, in front of the kitchen cabinets. To his left is a large stainless steel refrigerator. Behind him and to the left, pots and pans are hanging. The text 'Our Cookbook' is located in the top right corner of the screen.",
     "parse_success": true,
     "chunk_idx": 1,
     "video_id": "4lFJnI1uWIE",
@@ -119,55 +127,56 @@
   },
   {
     "time": [
-      4,
-      6
+      2,
+      3
     ],
     "visible_entities": [
       {
-        "desc": "person's hand with light skin tone",
+        "desc": "hand with light skin tone, holding a raw shrimp",
         "action": "holding a raw shrimp",
-        "position": "top right",
-        "id": "person_chef_1"
+        "position": "right",
+        "id": "hands_chef_1"
       },
       {
-        "desc": "raw shrimp, translucent white and pinkish, peeled",
-        "action": "being held above a bowl",
+        "desc": "raw shrimp, translucent white and pinkish, peeled, curved shape",
+        "action": "being held",
         "position": "center",
-        "id": "ingredient_shrimp_1"
+        "id": "shrimp_raw_1"
       },
       {
-        "desc": "small clear glass bowl",
-        "action": "containing raw shrimp",
-        "position": "bottom center",
+        "desc": "small clear glass bowl containing multiple raw shrimp",
+        "action": "static",
+        "position": "center-bottom",
         "id": "bowl_glass_clear_1"
       },
       {
-        "desc": "white cutting board",
+        "desc": "white cutting board, rectangular, smooth surface",
         "action": "static",
         "position": "left",
         "id": "cutting_board_white_1"
       },
       {
-        "desc": "tiled countertop, beige and grey",
+        "desc": "person wearing a white t-shirt",
+        "action": "static",
+        "position": "top",
+        "id": "person_assistant_1"
+      },
+      {
+        "desc": "tiled countertop, beige and grey tones",
         "action": "static",
         "position": "background",
-        "id": "countertop_kitchen_1"
+        "id": "countertop_beige_tile_1"
       },
       {
-        "desc": "white t-shirt",
+        "desc": "text 'Our... Cookbook' in white font with orange highlight",
         "action": "static",
-        "position": "top left"
-      },
-      {
-        "desc": "text 'Our... Cookbook' in white font",
-        "action": "static",
-        "position": "top right",
+        "position": "top-right",
         "id": "text_watermark_1"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A person is holding a raw shrimp above a glass bowl.",
+        "fact": "A hand is holding a single raw shrimp above a glass bowl.",
         "confidence": 1.0
       },
       {
@@ -186,36 +195,36 @@
     "ocr": [
       "Our... Cookbook"
     ],
-    "spatial": "The person's hand is holding a shrimp directly above the glass bowl. The glass bowl is sitting on the tiled countertop. The white cutting board is to the left of the glass bowl.",
+    "spatial": "The hand holding the shrimp is positioned above the glass bowl. The glass bowl is to the right of the white cutting board. The person in the white shirt is behind the hand and bowl.",
     "parse_success": true,
     "chunk_idx": 2,
     "video_id": "4lFJnI1uWIE",
     "state_changes": [
-      "Transition from chef intro to close-up food prep (hands holding shrimp)"
+      "Transition from intro to food prep: raw shrimp and cutting board appear, hands begin holding shrimp."
     ]
   },
   {
     "time": [
-      6,
-      8
+      3,
+      4
     ],
     "visible_entities": [
       {
-        "desc": "person with fair skin, wearing a white t-shirt, wearing a silver ring on the ring finger",
-        "action": "holding a raw shrimp",
-        "position": "center",
-        "id": "person_chef_1"
+        "desc": "person's hands with light skin tone, wearing a white shirt and a gold ring on the ring finger",
+        "action": "holding and peeling a raw shrimp",
+        "position": "center/foreground",
+        "id": "hands_assistant_1"
       },
       {
-        "desc": "raw shrimp, pink and grey, translucent, peeled",
-        "action": "being held",
+        "desc": "raw shrimp, pinkish-white and translucent, with tails attached",
+        "action": "being held and peeled",
         "position": "center",
-        "id": "ingredient_shrimp_1"
+        "id": "shrimp_raw_1"
       },
       {
-        "desc": "clear glass bowl",
+        "desc": "clear glass bowl containing several raw shrimp",
         "action": "static",
-        "position": "bottom center",
+        "position": "center/bottom",
         "id": "bowl_glass_clear_1"
       },
       {
@@ -225,136 +234,13 @@
         "id": "cutting_board_white_1"
       },
       {
-        "desc": "tiled countertop, beige and brown pattern",
+        "desc": "tiled countertop, beige and grey stone pattern",
         "action": "static",
         "position": "background",
-        "id": "countertop_kitchen_1"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "A person is holding a raw shrimp above a glass bowl.",
-        "confidence": 1.0
+        "id": "countertop_beige_tile_1"
       },
       {
-        "fact": "The bowl contains several other raw shrimp.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The person is wearing a ring on their finger.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "A white cutting board is visible on the left side of the frame.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [
-      "OurVideo Cookbook"
-    ],
-    "spatial": "The person's hand is holding the shrimp above the glass bowl. The glass bowl is sitting on the tiled countertop. The white cutting board is to the left of the bowl.",
-    "parse_success": true,
-    "chunk_idx": 3,
-    "video_id": "4lFJnI1uWIE",
-    "state_changes": []
-  },
-  {
-    "time": [
-      8,
-      10
-    ],
-    "visible_entities": [
-      {
-        "desc": "person wearing a white shirt",
-        "action": "holding a shrimp",
-        "position": "center",
-        "id": "person_chef_1"
-      },
-      {
-        "desc": "raw shrimp, pink and white, peeled",
-        "action": "being held",
-        "position": "center",
-        "id": "ingredient_shrimp_1"
-      },
-      {
-        "desc": "clear glass bowl",
-        "action": "static",
-        "position": "center",
-        "id": "bowl_glass_clear_1"
-      },
-      {
-        "desc": "white cutting board",
-        "action": "static",
-        "position": "left",
-        "id": "cutting_board_white_1"
-      },
-      {
-        "desc": "tiled countertop, beige and brown",
-        "action": "static",
-        "position": "background"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "A person is holding a raw shrimp above a glass bowl.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The glass bowl contains several other raw shrimp.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "A white cutting board is positioned to the left of the bowl.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [
-      "Our Cookbook"
-    ],
-    "spatial": "The person is holding the shrimp in the center of the frame, directly above the glass bowl. The glass bowl sits on the tiled countertop. The white cutting board is to the left of the bowl.",
-    "parse_success": true,
-    "chunk_idx": 4,
-    "video_id": "4lFJnI1uWIE",
-    "state_changes": []
-  },
-  {
-    "time": [
-      10,
-      12
-    ],
-    "visible_entities": [
-      {
-        "desc": "person's hand with light skin tone",
-        "action": "holding a raw shrimp",
-        "position": "center",
-        "id": "person_chef_1"
-      },
-      {
-        "desc": "raw shrimp, pale pinkish-white, translucent, with tail shell attached",
-        "action": "being held",
-        "position": "center",
-        "id": "ingredient_shrimp_1"
-      },
-      {
-        "desc": "clear glass bowl, round, empty",
-        "action": "static",
-        "position": "left",
-        "id": "bowl_glass_clear_1"
-      },
-      {
-        "desc": "white cutting board, flat, rectangular",
-        "action": "static",
-        "position": "bottom left",
-        "id": "cutting_board_white_1"
-      },
-      {
-        "desc": "small glass bowl containing other raw shrimp",
-        "action": "static",
-        "position": "bottom right",
-        "id": "bowl_glass_clear_1"
-      },
-      {
-        "desc": "white text 'OurVideo Cookbook' in sans-serif font",
+        "desc": "text 'OurVideo Cookbook' in white font",
         "action": "static",
         "position": "top right",
         "id": "text_watermark_1"
@@ -362,19 +248,19 @@
     ],
     "atomic_facts": [
       {
-        "fact": "A person's hand is holding a single raw shrimp in the center of the frame.",
+        "fact": "A person is holding a raw shrimp in their right hand.",
         "confidence": 1.0
       },
       {
-        "fact": "The shrimp is positioned above a white cutting board.",
+        "fact": "The person is using their left hand to peel the shell off the shrimp.",
         "confidence": 1.0
       },
       {
-        "fact": "An empty clear glass bowl is to the left of the shrimp.",
+        "fact": "There are multiple raw shrimp inside a clear glass bowl.",
         "confidence": 1.0
       },
       {
-        "fact": "A bowl containing more shrimp is visible in the bottom right corner.",
+        "fact": "A white cutting board is visible on the left side of the counter.",
         "confidence": 1.0
       },
       {
@@ -385,47 +271,49 @@
     "ocr": [
       "OurVideo Cookbook"
     ],
-    "spatial": "The hand holding the shrimp is in the center, positioned above the white cutting board. The empty glass bowl is to the left of the hand. The bowl with other shrimp is to the right of the cutting board and below the hand. The text is in the top right corner of the screen.",
+    "spatial": "The person's hands are positioned above the glass bowl in the center of the frame. The white cutting board is to the left of the bowl. The tiled countertop is underneath the bowl and cutting board. The text 'OurVideo Cookbook' is in the top right corner, above the person's hand.",
     "parse_success": true,
-    "chunk_idx": 5,
+    "chunk_idx": 3,
     "video_id": "4lFJnI1uWIE",
-    "state_changes": []
+    "state_changes": [
+      "Action starts: hands begin peeling the shrimp."
+    ]
   },
   {
     "time": [
-      12,
-      14
+      4,
+      5
     ],
     "visible_entities": [
       {
-        "desc": "hands with light skin tone",
-        "action": "peeling a shrimp",
+        "desc": "person wearing a white t-shirt",
+        "action": "holding a shrimp",
         "position": "center",
-        "id": "person_chef_1"
+        "id": "person_assistant_1"
       },
       {
-        "desc": "raw shrimp, pale pinkish-white, translucent",
-        "action": "being peeled",
+        "desc": "raw, peeled, translucent pinkish-white shrimp",
+        "action": "being held and placed in a bowl",
         "position": "center",
-        "id": "ingredient_shrimp_1"
+        "id": "shrimp_raw_1"
       },
       {
-        "desc": "clear glass bowl, round, empty",
+        "desc": "clear glass bowl",
         "action": "static",
-        "position": "bottom left",
+        "position": "center",
         "id": "bowl_glass_clear_1"
       },
       {
-        "desc": "white cutting board, flat surface",
+        "desc": "white rectangular cutting board",
         "action": "static",
-        "position": "bottom",
+        "position": "left",
         "id": "cutting_board_white_1"
       },
       {
-        "desc": "beige tiled countertop",
+        "desc": "tiled countertop with beige and brown patterns",
         "action": "static",
         "position": "background",
-        "id": "countertop_kitchen_1"
+        "id": "countertop_beige_tile_1"
       },
       {
         "desc": "text 'Our Cookbook' in white font",
@@ -436,15 +324,19 @@
     ],
     "atomic_facts": [
       {
-        "fact": "A person is peeling a shrimp with their hands.",
+        "fact": "A person is holding a single peeled shrimp above a glass bowl.",
         "confidence": 1.0
       },
       {
-        "fact": "The shrimp is being held over a clear glass bowl.",
+        "fact": "The glass bowl contains several other raw shrimp.",
         "confidence": 1.0
       },
       {
-        "fact": "The bowl is sitting on a white cutting board.",
+        "fact": "The shrimp are translucent and pinkish-white in color.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A white cutting board is positioned to the left of the bowl.",
         "confidence": 1.0
       },
       {
@@ -455,7 +347,147 @@
     "ocr": [
       "Our Cookbook"
     ],
-    "spatial": "The hands are in the center of the frame, holding the shrimp above the clear glass bowl. The bowl is positioned on the left side of the white cutting board. The tiled countertop is in the background behind the cutting board.",
+    "spatial": "The person's hands are positioned above the glass bowl, holding a shrimp. The bowl is in the center of the frame, resting on a tiled countertop. A white cutting board is to the left of the bowl. The text 'Our Cookbook' is in the top right corner of the frame.",
+    "parse_success": true,
+    "chunk_idx": 4,
+    "video_id": "4lFJnI1uWIE",
+    "state_changes": []
+  },
+  {
+    "time": [
+      5,
+      6
+    ],
+    "visible_entities": [
+      {
+        "desc": "person's hands with light skin tone",
+        "action": "holding and peeling a shrimp",
+        "position": "center",
+        "id": "hands_assistant_1"
+      },
+      {
+        "desc": "raw shrimp, pale pinkish-white with tail attached",
+        "action": "being held",
+        "position": "center",
+        "id": "shrimp_raw_1"
+      },
+      {
+        "desc": "clear glass bowl",
+        "action": "static",
+        "position": "left",
+        "id": "bowl_glass_clear_1"
+      },
+      {
+        "desc": "white cutting board",
+        "action": "static",
+        "position": "bottom left",
+        "id": "cutting_board_white_1"
+      },
+      {
+        "desc": "glass bowl containing other raw shrimp",
+        "action": "static",
+        "position": "bottom right",
+        "id": "bowl_glass_clear_1"
+      },
+      {
+        "desc": "text 'OurKids Cookbook' in white font",
+        "action": "static",
+        "position": "top right",
+        "id": "text_watermark_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A person is holding a raw shrimp in their hands.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The person is peeling the shell off the shrimp.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A clear glass bowl sits on a white cutting board.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A bowl of additional shrimp is visible in the bottom right corner.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The text 'OurKids Cookbook' is displayed in the top right corner.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "OurKids Cookbook"
+    ],
+    "spatial": "The person's hands are holding the shrimp in the center of the frame, positioned above the white cutting board. To the left of the hands is an empty clear glass bowl. To the right and slightly below the hands is another glass bowl filled with shrimp. The text 'OurKids Cookbook' is located in the top right corner of the screen.",
+    "parse_success": true,
+    "chunk_idx": 5,
+    "video_id": "4lFJnI1uWIE",
+    "state_changes": []
+  },
+  {
+    "time": [
+      6,
+      7
+    ],
+    "visible_entities": [
+      {
+        "desc": "pair of hands with light skin tone",
+        "action": "peeling a shrimp",
+        "position": "center",
+        "id": "hands_assistant_1"
+      },
+      {
+        "desc": "raw shrimp, translucent greyish-pink",
+        "action": "being peeled",
+        "position": "center",
+        "id": "shrimp_raw_1"
+      },
+      {
+        "desc": "clear glass bowl, round",
+        "action": "static",
+        "position": "bottom left",
+        "id": "bowl_glass_clear_1"
+      },
+      {
+        "desc": "white cutting board or surface",
+        "action": "static",
+        "position": "bottom",
+        "id": "cutting_board_white_1"
+      },
+      {
+        "desc": "tiled countertop, beige and white",
+        "action": "static",
+        "position": "background",
+        "id": "countertop_beige_tile_1"
+      },
+      {
+        "desc": "text 'Our Cookbook' in white and orange font",
+        "action": "static",
+        "position": "top right",
+        "id": "text_watermark_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A person is peeling the shell off a raw shrimp using their hands.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The shrimp is held directly above a clear glass bowl.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The bowl rests on a white surface.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "Our Cookbook"
+    ],
+    "spatial": "The hands are positioned in the center of the frame, holding the shrimp above the clear glass bowl. The glass bowl sits on a white surface in the lower left. The tiled countertop is visible in the background to the right of the hands.",
     "parse_success": true,
     "chunk_idx": 6,
     "video_id": "4lFJnI1uWIE",
@@ -463,21 +495,21 @@
   },
   {
     "time": [
-      14,
-      16
+      7,
+      8
     ],
     "visible_entities": [
       {
-        "desc": "person's hands with light skin tone",
-        "action": "peeling the shell off a shrimp",
+        "desc": "hands with light skin tone",
+        "action": "peeling the shell off a raw shrimp",
         "position": "center/foreground",
-        "id": "person_chef_1"
+        "id": "hands_chef_1"
       },
       {
-        "desc": "raw shrimp, pinkish-white and translucent",
-        "action": "being held and peeled",
+        "desc": "raw shrimp, pinkish-grey and translucent",
+        "action": "being peeled",
         "position": "center",
-        "id": "ingredient_shrimp_1"
+        "id": "shrimp_raw_1"
       },
       {
         "desc": "clear glass bowl with a black rim",
@@ -492,7 +524,7 @@
         "id": "cutting_board_white_1"
       },
       {
-        "desc": "text overlay 'Our Cookbook' in white font",
+        "desc": "white text 'Our Cookbook' in sans-serif font",
         "action": "static",
         "position": "top right",
         "id": "text_watermark_1"
@@ -500,7 +532,7 @@
     ],
     "atomic_facts": [
       {
-        "fact": "A person is using both hands to peel the shell off a raw shrimp.",
+        "fact": "A person is peeling the shell off a raw shrimp using both hands.",
         "confidence": 1.0
       },
       {
@@ -508,7 +540,7 @@
         "confidence": 1.0
       },
       {
-        "fact": "The glass bowl is resting on a white surface.",
+        "fact": "The glass bowl rests on a white surface.",
         "confidence": 1.0
       },
       {
@@ -519,7 +551,7 @@
     "ocr": [
       "Our Cookbook"
     ],
-    "spatial": "The person's hands are holding the shrimp in the center of the frame, positioned above the glass bowl. The glass bowl sits on top of the white cutting board. The text 'Our Cookbook' is located in the top right corner of the screen, above the action.",
+    "spatial": "The hands are holding the shrimp in the center of the frame, positioned directly above the glass bowl. The glass bowl is sitting on top of a white cutting board. The text 'Our Cookbook' is located in the top right corner of the screen, above the hands.",
     "parse_success": true,
     "chunk_idx": 7,
     "video_id": "4lFJnI1uWIE",
@@ -527,102 +559,36 @@
   },
   {
     "time": [
-      16,
-      18
+      8,
+      9
     ],
     "visible_entities": [
       {
-        "desc": "person with light skin, wearing a white shirt",
-        "action": "peeling a raw shrimp",
-        "position": "center",
-        "id": "person_chef_1"
-      },
-      {
-        "desc": "raw shrimp, pinkish-white and translucent",
-        "action": "being held and peeled",
-        "position": "center",
-        "id": "ingredient_shrimp_1"
-      },
-      {
-        "desc": "clear glass bowl",
-        "action": "static",
-        "position": "bottom",
-        "id": "bowl_glass_clear_1"
-      },
-      {
-        "desc": "white countertop",
-        "action": "static",
-        "position": "background",
-        "id": "countertop_kitchen_1"
-      },
-      {
-        "desc": "text 'Our Video Cookbook' in white font",
-        "action": "static",
-        "position": "top right",
-        "id": "text_watermark_1"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "A person is peeling the shell off a raw shrimp with their hands.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The shrimp is being held over a clear glass bowl.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The text 'Our Video Cookbook' is visible in the top right corner.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [
-      "Our Video Cookbook"
-    ],
-    "spatial": "The person's hands are holding the shrimp in the center of the frame. The clear glass bowl is positioned below the hands and the shrimp. The text 'Our Video Cookbook' is located in the top right corner of the screen, above the countertop.",
-    "parse_success": true,
-    "chunk_idx": 8,
-    "video_id": "4lFJnI1uWIE",
-    "state_changes": []
-  },
-  {
-    "time": [
-      18,
-      20
-    ],
-    "visible_entities": [
-      {
-        "desc": "person's hands with light skin tone",
+        "desc": "person's hands with light skin tone, wearing a white garment (likely an apron or chef's coat)",
         "action": "peeling a raw shrimp",
         "position": "center/foreground",
-        "id": "person_chef_1"
+        "id": "hands_chef_1"
       },
       {
-        "desc": "raw shrimp, translucent greyish-pink, wet texture",
-        "action": "being peeled",
+        "desc": "raw shrimp, translucent pinkish-white flesh, curved body",
+        "action": "being held and peeled",
         "position": "center",
-        "id": "ingredient_shrimp_1"
+        "id": "shrimp_raw_1"
       },
       {
-        "desc": "clear glass bowl, round, empty",
+        "desc": "clear glass bowl, round shape, empty",
         "action": "static",
         "position": "bottom/center",
         "id": "bowl_glass_clear_1"
       },
       {
-        "desc": "white cutting board, smooth surface",
+        "desc": "white cutting board, flat surface",
         "action": "static",
-        "position": "bottom",
+        "position": "bottom/foreground",
         "id": "cutting_board_white_1"
       },
       {
-        "desc": "beige tiled countertop, square tiles with grout lines",
-        "action": "static",
-        "position": "right/background",
-        "id": "countertop_kitchen_1"
-      },
-      {
-        "desc": "text overlay 'Our Video Cookbook' in white font with red accent",
+        "desc": "text overlay 'Our Cookbook' in white and red font",
         "action": "static",
         "position": "top right",
         "id": "text_watermark_1"
@@ -642,14 +608,84 @@
         "confidence": 1.0
       },
       {
-        "fact": "The text 'Our Video Cookbook' is visible in the top right corner.",
+        "fact": "The text 'Our Cookbook' is visible in the top right corner.",
         "confidence": 1.0
       }
     ],
     "ocr": [
-      "Our Video Cookbook"
+      "Our Cookbook"
     ],
-    "spatial": "The person's hands are holding the shrimp in the center of the frame, positioned directly above the clear glass bowl. The glass bowl sits on top of a white cutting board. To the right of the cutting board is a beige tiled countertop. The text overlay is located in the top right corner, above the countertop area.",
+    "spatial": "The person's hands are holding the shrimp in the center of the frame, positioned directly above the clear glass bowl. The glass bowl sits on top of the white cutting board. The text overlay is located in the top right corner, above the hands.",
+    "parse_success": true,
+    "chunk_idx": 8,
+    "video_id": "4lFJnI1uWIE",
+    "state_changes": []
+  },
+  {
+    "time": [
+      9,
+      10
+    ],
+    "visible_entities": [
+      {
+        "desc": "person's hands with light skin tone",
+        "action": "peeling a raw shrimp",
+        "position": "center/foreground",
+        "id": "hands_assistant_1"
+      },
+      {
+        "desc": "raw shrimp, pinkish-grey, translucent, unpeeled",
+        "action": "being peeled",
+        "position": "center",
+        "id": "shrimp_raw_1"
+      },
+      {
+        "desc": "clear glass bowl, round, empty",
+        "action": "static",
+        "position": "bottom/center",
+        "id": "bowl_glass_clear_1"
+      },
+      {
+        "desc": "white cutting board, flat surface",
+        "action": "static",
+        "position": "bottom",
+        "id": "cutting_board_white_1"
+      },
+      {
+        "desc": "beige tiled countertop, stone texture",
+        "action": "static",
+        "position": "right/background",
+        "id": "countertop_beige_tile_1"
+      },
+      {
+        "desc": "text 'Our Cookbook' in white font",
+        "action": "static",
+        "position": "top right",
+        "id": "text_watermark_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A person is using both hands to peel the shell off a raw shrimp.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The shrimp is being held directly above a clear glass bowl.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The glass bowl is resting on a white cutting board.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The text 'Our Cookbook' is visible in the top right corner.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "Our Cookbook"
+    ],
+    "spatial": "The person's hands are holding the shrimp in the center of the frame, positioned directly above the clear glass bowl. The glass bowl sits on top of a white cutting board. To the right of the cutting board is a beige tiled countertop. The text 'Our Cookbook' is located in the top right corner of the screen.",
     "parse_success": true,
     "chunk_idx": 9,
     "video_id": "4lFJnI1uWIE",
@@ -657,21 +693,21 @@
   },
   {
     "time": [
-      20,
-      22
+      10,
+      11
     ],
     "visible_entities": [
       {
-        "desc": "person with fair skin, wearing a white garment and a gold ring on the right ring finger",
+        "desc": "person with light skin, wearing a white shirt and a gold ring on the right ring finger",
         "action": "peeling a shrimp",
         "position": "center",
-        "id": "person_chef_1"
+        "id": "person_assistant_1"
       },
       {
-        "desc": "raw shrimp, pinkish-white and translucent",
-        "action": "being peeled",
+        "desc": "small, raw, pinkish-grey shrimp",
+        "action": "being held and peeled",
         "position": "center",
-        "id": "ingredient_shrimp_1"
+        "id": "shrimp_raw_1"
       },
       {
         "desc": "clear glass bowl with a black rim",
@@ -688,8 +724,8 @@
       {
         "desc": "beige tiled countertop",
         "action": "static",
-        "position": "background",
-        "id": "countertop_kitchen_1"
+        "position": "right",
+        "id": "countertop_beige_tile_1"
       },
       {
         "desc": "text 'Our Video Cookbook' in white font with a red accent",
@@ -700,7 +736,11 @@
     ],
     "atomic_facts": [
       {
-        "fact": "A person is using both hands to peel the shell off a shrimp.",
+        "fact": "A person is using both hands to peel the shell off a small shrimp.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The person is wearing a gold ring on their right hand.",
         "confidence": 1.0
       },
       {
@@ -708,7 +748,7 @@
         "confidence": 1.0
       },
       {
-        "fact": "The person is wearing a gold ring on their right hand.",
+        "fact": "The glass bowl is resting on a white cutting board.",
         "confidence": 1.0
       },
       {
@@ -719,7 +759,7 @@
     "ocr": [
       "Our Video Cookbook"
     ],
-    "spatial": "The person's hands are positioned in the center of the frame, holding the shrimp above the clear glass bowl. The glass bowl rests on a white cutting board, which is situated on a beige tiled countertop. The watermark text is located in the top right corner of the screen.",
+    "spatial": "The person's hands are positioned in the center of the frame, holding the shrimp directly above the clear glass bowl. The glass bowl sits on top of a white cutting board. To the right of the cutting board is a beige tiled countertop. The text 'Our Video Cookbook' is located in the top right corner of the screen.",
     "parse_success": true,
     "chunk_idx": 10,
     "video_id": "4lFJnI1uWIE",
@@ -727,383 +767,36 @@
   },
   {
     "time": [
-      22,
-      24
+      11,
+      12
     ],
     "visible_entities": [
       {
         "desc": "person's hands with light skin tone",
-        "action": "peeling the shell off a shrimp",
+        "action": "peeling the shell off a raw shrimp",
         "position": "center",
-        "id": "person_chef_1"
+        "id": "hands_assistant_1"
       },
       {
-        "desc": "raw shrimp, translucent greyish-white with a brownish tail segment",
+        "desc": "raw shrimp, translucent greyish-white, wet texture",
         "action": "being peeled",
         "position": "center",
-        "id": "ingredient_shrimp_1"
+        "id": "shrimp_raw_1"
       },
       {
-        "desc": "white bowl with a black rim",
+        "desc": "white ceramic bowl with a black rim",
         "action": "static",
         "position": "bottom",
-        "id": "bowl_white_rim_1"
+        "id": "bowl_white_rimmed_1"
       },
       {
-        "desc": "white surface, likely a cutting board",
+        "desc": "white cutting board or countertop surface",
         "action": "static",
         "position": "bottom",
         "id": "cutting_board_white_1"
       },
       {
-        "desc": "text 'Our Cookbook' in white font",
-        "action": "static",
-        "position": "top right",
-        "id": "text_watermark_1"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "A person is using both hands to peel the shell off a raw shrimp.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The shrimp is being held above a white bowl.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The text 'Our Cookbook' is visible in the top right corner.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [
-      "Our Cookbook"
-    ],
-    "spatial": "The person's hands are in the center of the frame, holding the shrimp. The shrimp is positioned directly above the white bowl. The bowl is resting on a white surface at the bottom of the frame. The text 'Our Cookbook' is located in the top right corner of the screen.",
-    "parse_success": true,
-    "chunk_idx": 11,
-    "video_id": "4lFJnI1uWIE",
-    "state_changes": []
-  },
-  {
-    "time": [
-      24,
-      26
-    ],
-    "visible_entities": [
-      {
-        "desc": "hands with light skin tone, fingers manipulating food",
-        "action": "peeling shrimp",
-        "position": "center",
-        "id": "person_chef_1"
-      },
-      {
-        "desc": "raw shrimp, translucent greyish-white, segmented body, tail attached",
-        "action": "being peeled",
-        "position": "center",
-        "id": "ingredient_shrimp_1"
-      },
-      {
-        "desc": "white bowl with a black rim, partially visible",
-        "action": "static",
-        "position": "bottom",
-        "id": "bowl_white_rim_1"
-      },
-      {
-        "desc": "text 'Our Cookbook' in white font",
-        "action": "static",
-        "position": "top right",
-        "id": "text_watermark_1"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "A pair of hands is holding a raw shrimp.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The fingers are pulling at the shell of the shrimp near the tail.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The shrimp is positioned above a white bowl.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [
-      "Our",
-      "Cookbook"
-    ],
-    "spatial": "The hands are in the center of the frame, holding the shrimp. The shrimp is positioned directly above the white bowl at the bottom. The text 'Our Cookbook' is located in the top right corner, above the hands.",
-    "parse_success": true,
-    "chunk_idx": 12,
-    "video_id": "4lFJnI1uWIE",
-    "state_changes": []
-  },
-  {
-    "time": [
-      26,
-      28
-    ],
-    "visible_entities": [
-      {
-        "desc": "hands with light skin tone",
-        "action": "peeling the shell off a shrimp",
-        "position": "center",
-        "id": "person_chef_1"
-      },
-      {
-        "desc": "raw shrimp, greyish-pink, translucent, with tail attached",
-        "action": "being peeled",
-        "position": "center",
-        "id": "ingredient_shrimp_1"
-      },
-      {
-        "desc": "white bowl with a black rim",
-        "action": "static",
-        "position": "bottom",
-        "id": "bowl_white_rim_1"
-      },
-      {
-        "desc": "white text reading 'Our Cookbook'",
-        "action": "static",
-        "position": "top right",
-        "id": "text_watermark_1"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "A person is using their hands to peel the shell off a raw shrimp.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The shrimp is held horizontally above a white bowl.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The text 'Our Cookbook' is visible in the top right corner.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [
-      "Our Cookbook"
-    ],
-    "spatial": "The hands are in the center of the frame, holding the shrimp. The shrimp is positioned directly above the white bowl. The text 'Our Cookbook' is located in the top right corner, above the hands.",
-    "parse_success": true,
-    "chunk_idx": 13,
-    "video_id": "4lFJnI1uWIE",
-    "state_changes": []
-  },
-  {
-    "time": [
-      28,
-      30
-    ],
-    "visible_entities": [
-      {
-        "desc": "person wearing a white apron",
-        "action": "holding a raw shrimp",
-        "position": "center",
-        "id": "person_chef_1"
-      },
-      {
-        "desc": "raw shrimp, pinkish-white, translucent, peeled with tail attached",
-        "action": "being held",
-        "position": "center",
-        "id": "ingredient_shrimp_1"
-      },
-      {
-        "desc": "clear glass bowl",
-        "action": "static",
-        "position": "bottom left",
-        "id": "bowl_glass_clear_1"
-      },
-      {
-        "desc": "white text 'Our Cookbook'",
-        "action": "static",
-        "position": "top right",
-        "id": "text_watermark_1"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "A person is holding a raw, peeled shrimp in their right hand.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The shrimp is positioned above a clear glass bowl.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The person is wearing a white apron.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The text 'Our Cookbook' is visible in the top right corner.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [
-      "Our Cookbook"
-    ],
-    "spatial": "The person's hands are in the center of the frame, holding the shrimp. The shrimp is positioned above and slightly to the right of the clear glass bowl, which is in the bottom left. The text 'Our Cookbook' is in the top right corner of the frame.",
-    "parse_success": true,
-    "chunk_idx": 14,
-    "video_id": "4lFJnI1uWIE",
-    "state_changes": []
-  },
-  {
-    "time": [
-      30,
-      32
-    ],
-    "visible_entities": [
-      {
-        "desc": "pair of hands with light skin tone",
-        "action": "peeling the shell off a shrimp",
-        "position": "center",
-        "id": "person_chef_1"
-      },
-      {
-        "desc": "raw shrimp, pinkish-grey and translucent",
-        "action": "being held and peeled",
-        "position": "center",
-        "id": "ingredient_shrimp_1"
-      },
-      {
-        "desc": "white bowl with a black rim",
-        "action": "static",
-        "position": "bottom",
-        "id": "bowl_white_rim_1"
-      },
-      {
-        "desc": "text 'Our Cookbook' in white font",
-        "action": "static",
-        "position": "top right",
-        "id": "text_watermark_1"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "A person is using their hands to peel the shell off a raw shrimp.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The shrimp is being held horizontally above a white bowl.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The text 'Our Cookbook' is visible in the top right corner.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [
-      "Our Cookbook"
-    ],
-    "spatial": "The hands are positioned in the center of the frame, holding the shrimp directly above the white bowl. The bowl is located at the bottom of the view. The text 'Our Cookbook' is situated in the top right corner, above the hands.",
-    "parse_success": true,
-    "chunk_idx": 15,
-    "video_id": "4lFJnI1uWIE",
-    "state_changes": []
-  },
-  {
-    "time": [
-      32,
-      34
-    ],
-    "visible_entities": [
-      {
-        "desc": "person wearing a white apron",
-        "action": "holding a raw chicken wing",
-        "position": "center",
-        "id": "person_chef_1"
-      },
-      {
-        "desc": "clear glass bowl",
-        "action": "static",
-        "position": "center",
-        "id": "bowl_glass_clear_1"
-      },
-      {
-        "desc": "white rectangular cutting board",
-        "action": "static",
-        "position": "center",
-        "id": "cutting_board_white_1"
-      },
-      {
-        "desc": "raw chicken wing",
-        "action": "being held",
-        "position": "center",
-        "id": "ingredient_chicken_1"
-      },
-      {
-        "desc": "raw chicken pieces",
-        "action": "static",
-        "position": "right",
-        "id": "ingredient_chicken_1"
-      },
-      {
-        "desc": "checkered towel",
-        "action": "static",
-        "position": "left",
-        "id": "towel_checkered_1"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "A person is holding a raw chicken wing above a glass bowl.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The glass bowl is resting on a white cutting board.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "Raw chicken pieces are visible on the counter to the right.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "A checkered towel hangs on the left side of the frame.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [
-      "OurVideo Cookbook"
-    ],
-    "spatial": "The person is standing behind the counter. The clear glass bowl is placed on top of the white cutting board in the center. The person is holding a chicken wing directly above the bowl. To the right of the bowl, other raw chicken pieces are resting on the counter surface. A checkered towel is hanging to the left of the person.",
-    "parse_success": true,
-    "chunk_idx": 16,
-    "video_id": "4lFJnI1uWIE",
-    "state_changes": [
-      "Ingredient switch from shrimp to raw chicken wing"
-    ]
-  },
-  {
-    "time": [
-      34,
-      36
-    ],
-    "visible_entities": [
-      {
-        "desc": "hands with light skin tone, one wearing a gold ring on the ring finger",
-        "action": "peeling the shell off a shrimp",
-        "position": "center",
-        "id": "person_chef_1"
-      },
-      {
-        "desc": "raw shrimp, translucent greyish-white with a pinkish-red section exposed",
-        "action": "being held and peeled",
-        "position": "center",
-        "id": "ingredient_shrimp_1"
-      },
-      {
-        "desc": "white plate with a dark rim",
-        "action": "static",
-        "position": "bottom",
-        "id": "bowl_white_rim_1"
-      },
-      {
-        "desc": "white text watermark",
+        "desc": "white text watermark reading 'Our Cookbook'",
         "action": "static",
         "position": "top right",
         "id": "text_watermark_1"
@@ -1115,46 +808,232 @@
         "confidence": 1.0
       },
       {
-        "fact": "The shrimp is held over a white plate.",
+        "fact": "The shrimp is held above a white bowl with a black rim.",
         "confidence": 1.0
       },
       {
-        "fact": "The text 'Our Video Cookbook' is visible in the top right corner.",
+        "fact": "The text 'Our Cookbook' is visible in the top right corner.",
         "confidence": 1.0
       }
     ],
     "ocr": [
-      "Our Video Cookbook"
+      "Our Cookbook"
     ],
-    "spatial": "The hands are in the center of the frame, holding the shrimp above the white plate. The watermark text is located in the top right corner, above the hands.",
+    "spatial": "The person's hands are holding the shrimp in the center of the frame, positioned directly above the white bowl. The bowl sits on a white surface at the bottom of the view. The watermark text is located in the top right corner, above the hands.",
     "parse_success": true,
-    "chunk_idx": 17,
+    "chunk_idx": 11,
     "video_id": "4lFJnI1uWIE",
     "state_changes": []
   },
   {
     "time": [
-      36,
-      38
+      12,
+      13
     ],
     "visible_entities": [
       {
-        "desc": "hands with light skin tone, one wearing a gold ring on the ring finger",
-        "action": "peeling the shell off a shrimp",
+        "desc": "hands with light skin tone",
+        "action": "peeling the tail shell off a shrimp",
         "position": "center",
-        "id": "person_chef_1"
+        "id": "hands_chef_1"
       },
       {
-        "desc": "raw shrimp, pale pinkish-white, translucent, wet texture",
-        "action": "being peeled",
+        "desc": "raw shrimp, translucent greyish-white, tail shell intact",
+        "action": "being held and peeled",
         "position": "center",
-        "id": "ingredient_shrimp_1"
+        "id": "shrimp_raw_1"
       },
       {
         "desc": "white bowl with a black rim",
         "action": "static",
         "position": "bottom",
-        "id": "bowl_white_rim_1"
+        "id": "bowl_white_rimmed_1"
+      },
+      {
+        "desc": "white text reading 'Our Cookbook'",
+        "action": "static",
+        "position": "top right",
+        "id": "text_watermark_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A person is holding a raw shrimp with both hands.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The person is peeling the shell from the tail end of the shrimp.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The shrimp is positioned above a white bowl with a black rim.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The text 'Our Cookbook' is visible in the top right corner.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "Our Cookbook"
+    ],
+    "spatial": "The hands are in the center of the frame, holding the shrimp. The shrimp is positioned directly above the white bowl with the black rim. The text 'Our Cookbook' is located in the top right corner, above the hands.",
+    "parse_success": true,
+    "chunk_idx": 12,
+    "video_id": "4lFJnI1uWIE",
+    "state_changes": []
+  },
+  {
+    "time": [
+      13,
+      14
+    ],
+    "visible_entities": [
+      {
+        "desc": "pair of hands with light skin tone",
+        "action": "peeling the shell off a raw shrimp",
+        "position": "center",
+        "id": "hands_assistant_1"
+      },
+      {
+        "desc": "raw shrimp, translucent greyish-white, with tail shell attached",
+        "action": "being held and peeled",
+        "position": "center",
+        "id": "shrimp_raw_1"
+      },
+      {
+        "desc": "white bowl with a black rim",
+        "action": "static",
+        "position": "bottom",
+        "id": "bowl_white_rimmed_1"
+      },
+      {
+        "desc": "white text watermark",
+        "action": "static",
+        "position": "top right",
+        "id": "text_watermark_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A person is peeling the shell off a raw shrimp.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The shrimp is being held over a white bowl.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The text 'Our Cookbook' is visible in the top right corner.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "Our Cookbook"
+    ],
+    "spatial": "The hands are in the center of the frame, holding the shrimp. The white bowl is below the hands. The text 'Our Cookbook' is in the top right corner of the frame.",
+    "parse_success": true,
+    "chunk_idx": 13,
+    "video_id": "4lFJnI1uWIE",
+    "state_changes": []
+  },
+  {
+    "time": [
+      14,
+      15
+    ],
+    "visible_entities": [
+      {
+        "desc": "person's hands with light skin tone",
+        "action": "holding and manipulating a shrimp",
+        "position": "center/foreground",
+        "id": "hands_assistant_1"
+      },
+      {
+        "desc": "raw, peeled shrimp, pinkish-white, translucent, tail attached",
+        "action": "being held",
+        "position": "center",
+        "id": "shrimp_raw_1"
+      },
+      {
+        "desc": "white chef's coat or apron",
+        "action": "static",
+        "position": "background",
+        "id": "person_chef_1"
+      },
+      {
+        "desc": "clear glass bowl",
+        "action": "static",
+        "position": "bottom left",
+        "id": "bowl_glass_clear_1"
+      },
+      {
+        "desc": "white cutting board",
+        "action": "static",
+        "position": "bottom center",
+        "id": "cutting_board_white_1"
+      },
+      {
+        "desc": "text 'Our Cookbook' in white sans-serif font",
+        "action": "static",
+        "position": "top right",
+        "id": "text_watermark_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A person is holding a raw shrimp with their right hand.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The shrimp is pinkish-white and translucent.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The shrimp is positioned over a white cutting board.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A clear glass bowl is visible to the left of the shrimp.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The text 'Our Cookbook' is displayed in the top right corner.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "Our Cookbook"
+    ],
+    "spatial": "The person's hands are in the center of the frame, holding the shrimp. The shrimp is positioned above the white cutting board and to the right of the clear glass bowl. The person is wearing a white chef's coat which is visible in the background.",
+    "parse_success": true,
+    "chunk_idx": 14,
+    "video_id": "4lFJnI1uWIE",
+    "state_changes": []
+  },
+  {
+    "time": [
+      15,
+      16
+    ],
+    "visible_entities": [
+      {
+        "desc": "pair of hands with light skin tone",
+        "action": "peeling the shell off a raw shrimp",
+        "position": "center/foreground",
+        "id": "hands_assistant_1"
+      },
+      {
+        "desc": "raw shrimp, pinkish-grey, translucent, elongated",
+        "action": "being held and peeled",
+        "position": "center",
+        "id": "shrimp_raw_1"
+      },
+      {
+        "desc": "white bowl with a black rim",
+        "action": "static",
+        "position": "bottom/foreground",
+        "id": "bowl_white_rimmed_1"
       },
       {
         "desc": "text 'Our Cookbook' in white font",
@@ -1169,22 +1048,196 @@
         "confidence": 1.0
       },
       {
-        "fact": "The shrimp is held in the center of the frame.",
+        "fact": "The shrimp is held horizontally between the fingers.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A white bowl with a black rim is positioned below the hands.",
         "confidence": 1.0
       },
       {
         "fact": "The text 'Our Cookbook' is visible in the top right corner.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "A white bowl is positioned below the hands.",
         "confidence": 1.0
       }
     ],
     "ocr": [
       "Our Cookbook"
     ],
-    "spatial": "The hands are in the center of the frame, holding the shrimp. The white bowl is below the hands. The text 'Our Cookbook' is in the top right corner, above the hands.",
+    "spatial": "The hands are in the center of the frame, holding the shrimp. The white bowl is below the hands and the shrimp. The text 'Our Cookbook' is in the top right corner, above the hands.",
+    "parse_success": true,
+    "chunk_idx": 15,
+    "video_id": "4lFJnI1uWIE",
+    "state_changes": []
+  },
+  {
+    "time": [
+      16,
+      17
+    ],
+    "visible_entities": [
+      {
+        "desc": "person wearing a white apron",
+        "action": "holding a piece of raw chicken",
+        "position": "center",
+        "id": "person_chef_1"
+      },
+      {
+        "desc": "clear glass bowl",
+        "action": "static",
+        "position": "center",
+        "id": "bowl_glass_clear_1"
+      },
+      {
+        "desc": "white cutting board",
+        "action": "static",
+        "position": "center",
+        "id": "cutting_board_white_1"
+      },
+      {
+        "desc": "raw chicken wing",
+        "action": "being held",
+        "position": "center",
+        "id": "chicken_raw_1"
+      },
+      {
+        "desc": "raw chicken pieces",
+        "action": "static",
+        "position": "right",
+        "id": "chicken_raw_1"
+      },
+      {
+        "desc": "white text 'OurVideo Cookbook'",
+        "action": "static",
+        "position": "top right",
+        "id": "text_watermark_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A person is holding a raw chicken wing above a clear glass bowl.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The glass bowl is resting on a white cutting board.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "Additional raw chicken pieces are visible on the counter to the right.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The text 'OurVideo Cookbook' is displayed in the top right corner.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "OurVideo Cookbook"
+    ],
+    "spatial": "The person in the white apron is positioned behind the clear glass bowl. The glass bowl is placed on top of the white cutting board. To the right of the bowl, there are other pieces of raw chicken on the counter surface.",
+    "parse_success": true,
+    "chunk_idx": 16,
+    "video_id": "4lFJnI1uWIE",
+    "state_changes": [
+      "Ingredient change: switched from peeling shrimp to handling raw chicken pieces/wings."
+    ]
+  },
+  {
+    "time": [
+      17,
+      18
+    ],
+    "visible_entities": [
+      {
+        "desc": "person's hands with light skin tone, wearing a gold ring on the ring finger of the right hand",
+        "action": "peeling the shell off a shrimp",
+        "position": "center",
+        "id": "hands_assistant_1"
+      },
+      {
+        "desc": "raw shrimp, translucent greyish-white body with pinkish-red flesh exposed where shell is removed",
+        "action": "being held and peeled",
+        "position": "center",
+        "id": "shrimp_raw_1"
+      },
+      {
+        "desc": "white bowl or plate, partially visible",
+        "action": "static",
+        "position": "bottom",
+        "id": "bowl_white_rimmed_1"
+      },
+      {
+        "desc": "white text watermark 'Our Video Cookbook'",
+        "action": "static",
+        "position": "top right",
+        "id": "text_watermark_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A person is using their fingers to peel the shell off a raw shrimp.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The shrimp is being held over a white bowl.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The text 'Our Video Cookbook' is visible in the top right corner.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "Our Video Cookbook"
+    ],
+    "spatial": "The person's hands are in the center of the frame, holding the shrimp. The shrimp is positioned above the white bowl. The watermark text is in the top right corner, above the hands.",
+    "parse_success": true,
+    "chunk_idx": 17,
+    "video_id": "4lFJnI1uWIE",
+    "state_changes": []
+  },
+  {
+    "time": [
+      18,
+      19
+    ],
+    "visible_entities": [
+      {
+        "desc": "hands with light skin tone, wearing a gold ring on the ring finger of the right hand",
+        "action": "peeling the shell off a shrimp",
+        "position": "center",
+        "id": "hands_chef_1"
+      },
+      {
+        "desc": "raw shrimp, translucent white and pinkish in color, wet texture",
+        "action": "being held and peeled",
+        "position": "center",
+        "id": "shrimp_raw_1"
+      },
+      {
+        "desc": "white text reading 'Our Cookbook'",
+        "action": "static",
+        "position": "top right",
+        "id": "text_watermark_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A person is using both hands to peel the shell off a raw shrimp.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The shrimp is being held in the center of the frame.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The text 'Our Cookbook' is visible in the top right corner.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "Our Cookbook"
+    ],
+    "spatial": "The hands are in the center of the frame, holding the shrimp. The shrimp is positioned between the thumbs and fingers of both hands. The text 'Our Cookbook' is located in the top right corner, above the hands.",
     "parse_success": true,
     "chunk_idx": 18,
     "video_id": "4lFJnI1uWIE",
@@ -1192,83 +1245,24 @@
   },
   {
     "time": [
-      38,
-      40
+      19,
+      20
     ],
     "visible_entities": [
       {
-        "desc": "pair of hands with light skin tone, one wearing a gold ring on the ring finger",
-        "action": "holding and peeling a shrimp",
-        "position": "center/foreground",
-        "id": "person_chef_1"
-      },
-      {
-        "desc": "raw shrimp, greyish-translucent, wet texture, shell partially removed",
-        "action": "being peeled",
-        "position": "center",
-        "id": "ingredient_shrimp_1"
-      },
-      {
-        "desc": "white text 'Our Cookbook' in sans-serif font",
-        "action": "static",
-        "position": "top right",
-        "id": "text_watermark_1"
-      },
-      {
-        "desc": "white bowl or plate with a black rim",
-        "action": "static",
-        "position": "bottom right",
-        "id": "bowl_white_rim_1"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "A pair of hands is holding a raw shrimp.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The fingers are manipulating the shrimp to remove its shell.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The text 'Our Cookbook' is visible in the top right corner.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "A white bowl with a black rim is positioned below the hands.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [
-      "Our",
-      "Cookbook"
-    ],
-    "spatial": "The hands are in the center of the frame, holding the shrimp. The white bowl is located below and to the right of the hands. The text 'Our Cookbook' is positioned in the top right corner, above the hands.",
-    "parse_success": true,
-    "chunk_idx": 19,
-    "video_id": "4lFJnI1uWIE",
-    "state_changes": []
-  },
-  {
-    "time": [
-      40,
-      42
-    ],
-    "visible_entities": [
-      {
-        "desc": "person's hands with light skin tone, wearing a gold ring on the ring finger",
+        "desc": "pair of hands with light skin tone, one wearing a gold ring",
         "action": "peeling the shell off a shrimp",
         "position": "center",
-        "id": "person_chef_1"
+        "id": "hands_chef_1"
       },
       {
-        "desc": "raw shrimp, translucent greyish-white color, wet texture",
+        "desc": "raw shrimp, greyish-white, translucent, curved body",
         "action": "being held and peeled",
         "position": "center",
-        "id": "ingredient_shrimp_1"
+        "id": "shrimp_raw_1"
       },
       {
-        "desc": "white text 'Our Cookbook' in sans-serif font",
+        "desc": "white text watermark",
         "action": "static",
         "position": "top right",
         "id": "text_watermark_1"
@@ -1280,7 +1274,7 @@
         "confidence": 1.0
       },
       {
-        "fact": "The shrimp is held firmly in the center of the frame.",
+        "fact": "The shrimp is greyish-white and translucent.",
         "confidence": 1.0
       },
       {
@@ -1291,38 +1285,32 @@
     "ocr": [
       "Our Cookbook"
     ],
-    "spatial": "The hands are in the center of the frame, holding the shrimp. The shrimp is positioned between the thumbs and fingers. The text 'Our Cookbook' is located in the top right corner, above the hands.",
+    "spatial": "The hands are in the center of the frame, holding the shrimp. The shrimp is positioned between the thumbs and fingers of both hands. The text watermark is located above and to the right of the hands.",
     "parse_success": true,
-    "chunk_idx": 20,
+    "chunk_idx": 19,
     "video_id": "4lFJnI1uWIE",
     "state_changes": []
   },
   {
     "time": [
-      42,
-      44
+      20,
+      21
     ],
     "visible_entities": [
       {
-        "desc": "pair of hands with light skin tone",
-        "action": "peeling the shell off a raw shrimp",
+        "desc": "pair of hands with light skin tone, wearing a gold ring on the right ring finger",
+        "action": "peeling the shell off a shrimp",
         "position": "center",
-        "id": "person_chef_1"
+        "id": "hands_chef_1"
       },
       {
-        "desc": "raw shrimp, translucent greyish-white, elongated body with tail segment",
-        "action": "being held and peeled",
+        "desc": "raw shrimp, translucent greyish-white, wet and shiny",
+        "action": "being peeled",
         "position": "center",
-        "id": "ingredient_shrimp_1"
+        "id": "shrimp_raw_1"
       },
       {
-        "desc": "white bowl with a black rim",
-        "action": "static",
-        "position": "bottom right",
-        "id": "bowl_white_rim_1"
-      },
-      {
-        "desc": "text 'OurVideo Cookbook' in white font with a red logo element",
+        "desc": "white text reading 'Our Cookbook' in a sans-serif font",
         "action": "static",
         "position": "top right",
         "id": "text_watermark_1"
@@ -1334,7 +1322,61 @@
         "confidence": 1.0
       },
       {
-        "fact": "The shrimp is being held above a white bowl.",
+        "fact": "The shrimp is held firmly between the thumbs and fingers of both hands.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The text 'Our Cookbook' is visible in the top right corner of the screen.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "Our Cookbook"
+    ],
+    "spatial": "The hands are in the center of the frame, holding the shrimp. The shrimp is positioned between the fingers of the hands. The text 'Our Cookbook' is located in the top right corner, above the hands.",
+    "parse_success": true,
+    "chunk_idx": 20,
+    "video_id": "4lFJnI1uWIE",
+    "state_changes": []
+  },
+  {
+    "time": [
+      21,
+      22
+    ],
+    "visible_entities": [
+      {
+        "desc": "hands with light skin tone",
+        "action": "peeling the shell off a shrimp",
+        "position": "center/foreground",
+        "id": "hands_chef_1"
+      },
+      {
+        "desc": "raw shrimp, translucent greyish-white, tail attached",
+        "action": "being held and peeled",
+        "position": "center",
+        "id": "shrimp_raw_1"
+      },
+      {
+        "desc": "white bowl with a black rim",
+        "action": "static",
+        "position": "bottom right",
+        "id": "bowl_white_rimmed_1"
+      },
+      {
+        "desc": "text 'OurVideo Cookbook' in white font",
+        "action": "static",
+        "position": "top right",
+        "id": "text_watermark_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A person is using their fingers to peel the shell off a raw shrimp.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The shrimp is being held over a white bowl.",
         "confidence": 1.0
       },
       {
@@ -1345,7 +1387,7 @@
     "ocr": [
       "OurVideo Cookbook"
     ],
-    "spatial": "The hands are in the center of the frame, holding the shrimp. The shrimp is positioned directly above the white bowl. The text 'OurVideo Cookbook' is located in the top right corner, above the hands and the bowl.",
+    "spatial": "The hands are in the center of the frame, holding the shrimp. The shrimp is positioned directly above the white bowl. The text 'OurVideo Cookbook' is located in the top right corner, above the hands and bowl.",
     "parse_success": true,
     "chunk_idx": 21,
     "video_id": "4lFJnI1uWIE",
@@ -1353,41 +1395,54 @@
   },
   {
     "time": [
-      44,
-      46
+      22,
+      23
     ],
     "visible_entities": [
       {
-        "desc": "hand with light skin tone, fingers curled around a translucent, segmented object",
-        "action": "holding and manipulating the object",
-        "position": "left/foreground"
+        "desc": "hand with light skin tone",
+        "action": "holding raw shrimp",
+        "position": "left/foreground",
+        "id": "hands_chef_1"
       },
       {
-        "desc": "translucent, pale pinkish-white segmented object, likely a raw shrimp or prawn, appearing wet and glossy",
-        "action": "being held and moved",
+        "desc": "raw shrimp, translucent, pinkish-white, segmented",
+        "action": "being held",
         "position": "center/foreground",
-        "id": "ingredient_shrimp_1"
+        "id": "shrimp_raw_1"
       },
       {
-        "desc": "white bowl with a distinct black rim, partially visible",
+        "desc": "white plate with black rim",
         "action": "static",
-        "position": "bottom right",
-        "id": "bowl_white_rim_1"
+        "position": "bottom/center",
+        "id": "bowl_white_rimmed_1"
       },
       {
-        "desc": "white text 'Our Cookbook' in a sans-serif font",
+        "desc": "white cutting board",
         "action": "static",
-        "position": "top right",
+        "position": "bottom/right",
+        "id": "cutting_board_white_1"
+      },
+      {
+        "desc": "white cloth or apron",
+        "action": "static",
+        "position": "top/left",
+        "id": "person_chef_1"
+      },
+      {
+        "desc": "text 'Our Cookbook' in white font",
+        "action": "static",
+        "position": "top/right",
         "id": "text_watermark_1"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A hand is holding a raw, translucent shrimp.",
+        "fact": "A hand is holding a raw shrimp over a white plate.",
         "confidence": 1.0
       },
       {
-        "fact": "The shrimp is being positioned over a white bowl.",
+        "fact": "The shrimp is positioned above the plate.",
         "confidence": 1.0
       },
       {
@@ -1398,7 +1453,7 @@
     "ocr": [
       "Our Cookbook"
     ],
-    "spatial": "The hand is to the left of the white bowl. The shrimp is held in the hand, positioned above the bowl. The text 'Our Cookbook' is in the top right corner of the frame, above the bowl.",
+    "spatial": "The hand is to the left of the plate and is holding the shrimp. The shrimp is above the plate. The white cloth is behind the hand. The text 'Our Cookbook' is in the top right corner, above the cutting board.",
     "parse_success": true,
     "chunk_idx": 22,
     "video_id": "4lFJnI1uWIE",
@@ -1406,30 +1461,30 @@
   },
   {
     "time": [
-      46,
-      48
+      23,
+      24
     ],
     "visible_entities": [
       {
-        "desc": "hands with light skin tone",
-        "action": "peeling a translucent shrimp",
+        "desc": "pair of hands with light skin tone",
+        "action": "peeling a translucent, greyish object",
         "position": "center",
-        "id": "person_chef_1"
-      },
-      {
-        "desc": "translucent raw shrimp, greyish-pink",
-        "action": "being peeled",
-        "position": "center",
-        "id": "ingredient_shrimp_1"
+        "id": "hands_assistant_1"
       },
       {
         "desc": "white bowl with a black rim",
         "action": "static",
-        "position": "bottom",
-        "id": "bowl_white_rim_1"
+        "position": "bottom right",
+        "id": "bowl_white_rimmed_1"
       },
       {
-        "desc": "white text 'Our Cookbook' with a red logo",
+        "desc": "translucent, greyish object, likely a shrimp",
+        "action": "being peeled",
+        "position": "center",
+        "id": "shrimp_raw_1"
+      },
+      {
+        "desc": "text 'Our... Cookbook' in white font",
         "action": "static",
         "position": "top right",
         "id": "text_watermark_1"
@@ -1437,22 +1492,22 @@
     ],
     "atomic_facts": [
       {
-        "fact": "Hands are peeling the shell off a raw shrimp.",
+        "fact": "A pair of hands is peeling a translucent, greyish object.",
         "confidence": 1.0
       },
       {
-        "fact": "The peeled shrimp is being held over a white bowl.",
+        "fact": "The peeled object is being held over a white bowl.",
         "confidence": 1.0
       },
       {
-        "fact": "The text 'Our Cookbook' is visible in the top right corner.",
+        "fact": "The text 'Our... Cookbook' is visible in the top right corner.",
         "confidence": 1.0
       }
     ],
     "ocr": [
-      "Our Cookbook"
+      "Our... Cookbook"
     ],
-    "spatial": "The hands are in the center of the frame, holding the shrimp. The shrimp is positioned directly above the white bowl. The text 'Our Cookbook' is located in the top right corner, above the hands.",
+    "spatial": "The hands are in the center of the frame, holding the translucent object. The white bowl is below and to the right of the hands. The text is in the top right corner, above the hands.",
     "parse_success": true,
     "chunk_idx": 23,
     "video_id": "4lFJnI1uWIE",
@@ -1460,27 +1515,27 @@
   },
   {
     "time": [
-      48,
-      50
+      24,
+      25
     ],
     "visible_entities": [
       {
-        "desc": "person with light skin, wearing a white shirt",
+        "desc": "person wearing a white shirt",
         "action": "handling raw food",
         "position": "center",
-        "id": "person_chef_1"
-      },
-      {
-        "desc": "raw meat, pinkish-white, wet texture",
-        "action": "being handled",
-        "position": "center",
-        "id": "ingredient_other_1"
+        "id": "person_assistant_1"
       },
       {
         "desc": "clear glass bowl with a black rim",
         "action": "static",
         "position": "center",
         "id": "bowl_glass_clear_1"
+      },
+      {
+        "desc": "raw meat pieces",
+        "action": "being handled",
+        "position": "center",
+        "id": "shrimp_raw_1"
       },
       {
         "desc": "white cutting board",
@@ -1497,15 +1552,11 @@
     ],
     "atomic_facts": [
       {
-        "fact": "A person is handling raw meat with their hands.",
+        "fact": "A person is handling raw meat pieces over a clear glass bowl.",
         "confidence": 1.0
       },
       {
-        "fact": "The meat is being placed into or manipulated inside a glass bowl.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The bowl is resting on a white cutting board.",
+        "fact": "The glass bowl is placed on a white cutting board.",
         "confidence": 1.0
       },
       {
@@ -1517,7 +1568,7 @@
       "Our",
       "Cookbook"
     ],
-    "spatial": "The person is positioned above the glass bowl, holding the raw meat inside it. The glass bowl sits on top of the white cutting board. The text 'Our Cookbook' is located in the top right corner of the frame, above the person's hands.",
+    "spatial": "The person is positioned above the clear glass bowl. The glass bowl is on top of the white cutting board. The text 'Our Cookbook' is located in the top right corner of the frame.",
     "parse_success": true,
     "chunk_idx": 24,
     "video_id": "4lFJnI1uWIE",
@@ -1525,27 +1576,27 @@
   },
   {
     "time": [
-      50,
-      52
+      25,
+      26
     ],
     "visible_entities": [
       {
-        "desc": "person wearing a white long-sleeved shirt and a gold ring on the right ring finger",
-        "action": "holding and placing raw shrimp into a bowl",
+        "desc": "person wearing a white shirt and a gold ring on the right ring finger",
+        "action": "peeling a shrimp",
         "position": "center",
-        "id": "person_chef_1"
+        "id": "person_assistant_1"
+      },
+      {
+        "desc": "raw shrimp, pale pink and translucent, being peeled",
+        "action": "being held and peeled",
+        "position": "center",
+        "id": "shrimp_raw_1"
       },
       {
         "desc": "clear glass bowl containing water",
         "action": "static",
-        "position": "center foreground",
+        "position": "bottom center",
         "id": "bowl_glass_clear_1"
-      },
-      {
-        "desc": "raw, peeled shrimp, pale pinkish-white and translucent",
-        "action": "being placed into the bowl",
-        "position": "center",
-        "id": "ingredient_shrimp_1"
       },
       {
         "desc": "white cutting board",
@@ -1554,7 +1605,7 @@
         "id": "cutting_board_white_1"
       },
       {
-        "desc": "text 'Our Cookbook' in white font",
+        "desc": "text 'Our Cookbook' in white font with a red logo",
         "action": "static",
         "position": "top right",
         "id": "text_watermark_1"
@@ -1562,15 +1613,15 @@
     ],
     "atomic_facts": [
       {
-        "fact": "A person is placing a raw shrimp into a glass bowl filled with water.",
+        "fact": "A person is peeling the shell off a raw shrimp.",
         "confidence": 1.0
       },
       {
-        "fact": "The person is holding another shrimp in their left hand.",
+        "fact": "The person is holding the shrimp over a glass bowl of water.",
         "confidence": 1.0
       },
       {
-        "fact": "The glass bowl is sitting on a white cutting board.",
+        "fact": "The person is wearing a gold ring on their right hand.",
         "confidence": 1.0
       },
       {
@@ -1581,7 +1632,7 @@
     "ocr": [
       "Our Cookbook"
     ],
-    "spatial": "The person's hands are positioned above the clear glass bowl. The bowl is resting on top of a white cutting board. The text 'Our Cookbook' is located in the top right corner of the frame, above the person's hands.",
+    "spatial": "The person's hands are positioned above the clear glass bowl. The bowl is sitting on a white cutting board. The text 'Our Cookbook' is located in the top right corner of the frame, above the person's hands.",
     "parse_success": true,
     "chunk_idx": 25,
     "video_id": "4lFJnI1uWIE",
@@ -1589,36 +1640,42 @@
   },
   {
     "time": [
-      52,
-      54
+      26,
+      27
     ],
     "visible_entities": [
       {
-        "desc": "person with fair skin, wearing a white garment",
-        "action": "peeling skin off a raw chicken wing",
-        "position": "center",
-        "id": "person_chef_1"
+        "desc": "person's hands with light skin tone",
+        "action": "peeling the skin off a chicken wing",
+        "position": "center/foreground",
+        "id": "hands_assistant_1"
       },
       {
-        "desc": "raw chicken wing, pinkish-white, fleshy",
+        "desc": "raw chicken wing, pale pinkish-white, partially skinned",
         "action": "being held and manipulated",
         "position": "center",
-        "id": "ingredient_chicken_1"
+        "id": "chicken_raw_1"
       },
       {
-        "desc": "clear glass bowl, round, containing raw chicken pieces",
+        "desc": "clear glass bowl containing raw chicken pieces",
         "action": "static",
-        "position": "bottom center",
+        "position": "bottom/center",
         "id": "bowl_glass_clear_1"
       },
       {
-        "desc": "white cutting board, flat, rectangular",
+        "desc": "white cutting board",
         "action": "static",
         "position": "bottom",
         "id": "cutting_board_white_1"
       },
       {
-        "desc": "text 'Our Video Cookbook', white font",
+        "desc": "white apron or clothing",
+        "action": "static",
+        "position": "background",
+        "id": "person_chef_1"
+      },
+      {
+        "desc": "text 'Our Cookbook' in white font",
         "action": "static",
         "position": "top right",
         "id": "text_watermark_1"
@@ -1630,81 +1687,11 @@
         "confidence": 1.0
       },
       {
-        "fact": "The peeled chicken wing is being held above a glass bowl.",
+        "fact": "The chicken wing is being held above a clear glass bowl.",
         "confidence": 1.0
       },
       {
-        "fact": "The glass bowl contains other pieces of raw chicken.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The bowl is resting on a white cutting board.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The text 'Our Video Cookbook' is visible in the top right corner.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [
-      "Our Video Cookbook"
-    ],
-    "spatial": "The person's hands are holding the chicken wing in the center of the frame, positioned above the glass bowl. The glass bowl sits on top of the white cutting board. The text 'Our Video Cookbook' is located in the top right corner of the screen.",
-    "parse_success": true,
-    "chunk_idx": 26,
-    "video_id": "4lFJnI1uWIE",
-    "state_changes": [
-      "Action switch to peeling chicken wing skin"
-    ]
-  },
-  {
-    "time": [
-      54,
-      56
-    ],
-    "visible_entities": [
-      {
-        "desc": "person wearing a white chef's coat",
-        "action": "peeling shrimp",
-        "position": "center",
-        "id": "person_chef_1"
-      },
-      {
-        "desc": "raw shrimp, pinkish-white and translucent",
-        "action": "being peeled",
-        "position": "center",
-        "id": "ingredient_shrimp_1"
-      },
-      {
-        "desc": "clear glass bowl",
-        "action": "static",
-        "position": "bottom",
-        "id": "bowl_glass_clear_1"
-      },
-      {
-        "desc": "white cutting board",
-        "action": "static",
-        "position": "bottom",
-        "id": "cutting_board_white_1"
-      },
-      {
-        "desc": "white text watermark",
-        "action": "static",
-        "position": "top right",
-        "id": "text_watermark_1"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "A person is peeling a raw shrimp with their hands.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The peeled shrimp is being placed into a clear glass bowl.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The bowl is resting on a white cutting board.",
+        "fact": "The glass bowl sits on a white cutting board.",
         "confidence": 1.0
       },
       {
@@ -1715,41 +1702,109 @@
     "ocr": [
       "Our Cookbook"
     ],
-    "spatial": "The person is positioned above the glass bowl. The glass bowl is on top of the white cutting board. The person's hands are holding the shrimp in the center of the frame.",
+    "spatial": "The person's hands are holding the chicken wing in the center of the frame, positioned above the clear glass bowl. The glass bowl rests on a white cutting board which is on a countertop. The text 'Our Cookbook' is located in the top right corner of the screen.",
     "parse_success": true,
-    "chunk_idx": 27,
+    "chunk_idx": 26,
     "video_id": "4lFJnI1uWIE",
-    "state_changes": []
+    "state_changes": [
+      "Action change: specifically peeling skin off a chicken wing."
+    ]
   },
   {
     "time": [
-      56,
-      58
+      27,
+      28
     ],
     "visible_entities": [
       {
-        "desc": "person wearing a white t-shirt with a faint graphic print",
-        "action": "peeling the shell off a shrimp",
+        "desc": "person wearing a white chef's coat or apron",
+        "action": "peeling shrimp",
         "position": "center",
         "id": "person_chef_1"
       },
       {
-        "desc": "raw shrimp, translucent and pinkish-white",
-        "action": "being held and peeled",
+        "desc": "raw shrimp, pinkish-white and translucent",
+        "action": "being peeled",
         "position": "center",
-        "id": "ingredient_shrimp_1"
+        "id": "shrimp_raw_1"
       },
       {
-        "desc": "glass bowl containing other shrimp",
+        "desc": "clear glass bowl",
+        "action": "static",
+        "position": "bottom center",
+        "id": "bowl_glass_clear_1"
+      },
+      {
+        "desc": "white cutting board",
+        "action": "static",
+        "position": "bottom",
+        "id": "cutting_board_white_1"
+      },
+      {
+        "desc": "tiled countertop, beige and grey",
+        "action": "static",
+        "position": "background",
+        "id": "countertop_beige_tile_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The person is using both hands to peel the shell off a shrimp.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The peeled shrimp is being placed into the glass bowl.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The glass bowl contains a pile of other peeled shrimp.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The bowl is resting on a white cutting board.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "Our Cookbook"
+    ],
+    "spatial": "The person is positioned above the glass bowl and cutting board. The glass bowl is on top of the white cutting board. The tiled countertop is behind the person and the bowl.",
+    "parse_success": true,
+    "chunk_idx": 27,
+    "video_id": "4lFJnI1uWIE",
+    "state_changes": [
+      "Ingredient change: switched back from chicken to peeling shrimp."
+    ]
+  },
+  {
+    "time": [
+      28,
+      29
+    ],
+    "visible_entities": [
+      {
+        "desc": "person wearing a white t-shirt with a faint graphic print",
+        "action": "peeling a shrimp",
+        "position": "center",
+        "id": "person_assistant_1"
+      },
+      {
+        "desc": "translucent raw shrimp",
+        "action": "being peeled",
+        "position": "center",
+        "id": "shrimp_raw_1"
+      },
+      {
+        "desc": "clear glass bowl containing shrimp pieces",
         "action": "static",
         "position": "bottom",
         "id": "bowl_glass_clear_1"
       },
       {
-        "desc": "gold ring on the ring finger",
+        "desc": "white text 'OurVideoCookbook' with a red logo",
         "action": "static",
-        "position": "right",
-        "id": "accessory_ring_1"
+        "position": "top right",
+        "id": "text_watermark_1"
       }
     ],
     "atomic_facts": [
@@ -1758,18 +1813,18 @@
         "confidence": 1.0
       },
       {
-        "fact": "The peeled shrimp is being held above a glass bowl.",
+        "fact": "The peeled shrimp is being held over a glass bowl.",
         "confidence": 1.0
       },
       {
-        "fact": "The person is wearing a gold ring on their right hand.",
+        "fact": "The text 'OurVideoCookbook' is visible in the top right corner.",
         "confidence": 1.0
       }
     ],
     "ocr": [
       "OurVideoCookbook"
     ],
-    "spatial": "The person's hands are in the center of the frame, holding the shrimp. The glass bowl is located below the hands. The text 'OurVideoCookbook' is in the top right corner of the screen.",
+    "spatial": "The person's hands are in the center of the frame, holding the shrimp. The glass bowl is positioned below the hands to catch the shrimp. The 'OurVideoCookbook' watermark is located in the top right corner, above the person's right hand.",
     "parse_success": true,
     "chunk_idx": 28,
     "video_id": "4lFJnI1uWIE",
@@ -1777,75 +1832,69 @@
   },
   {
     "time": [
-      58,
-      60
+      29,
+      30
     ],
     "visible_entities": [
       {
-        "desc": "person wearing a white chef's coat with a high collar and embroidered text on the left chest",
-        "action": "holding a small white bowl and pouring contents into a larger bowl",
+        "desc": "person wearing a white chef's coat with a high collar and red piping trim",
+        "action": "mixing ingredients in a bowl",
         "position": "center",
         "id": "person_chef_1"
       },
       {
-        "desc": "small white bowl",
-        "action": "being held and tilted",
-        "position": "center",
-        "id": "bowl_white_rim_1"
-      },
-      {
-        "desc": "large clear glass bowl containing light-colored food items",
-        "action": "static",
-        "position": "bottom",
+        "desc": "clear glass bowl containing light-colored food ingredients",
+        "action": "being held and mixed",
+        "position": "bottom center",
         "id": "bowl_glass_clear_1"
       },
       {
         "desc": "stainless steel refrigerator",
         "action": "static",
-        "position": "left",
+        "position": "left background",
         "id": "refrigerator_steel_1"
       },
       {
-        "desc": "kitchen cabinets with glass doors",
+        "desc": "white text watermark",
         "action": "static",
-        "position": "background",
-        "id": "cabinets_kitchen_1"
+        "position": "top right",
+        "id": "text_watermark_1"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "The person in the white chef's coat is pouring ingredients from a small white bowl into a large glass bowl.",
+        "fact": "The person is using their hands to mix ingredients inside a clear glass bowl.",
         "confidence": 1.0
       },
       {
-        "fact": "The large glass bowl sits on a counter surface.",
+        "fact": "The chef's coat features a distinct red piping detail along the collar and front opening.",
         "confidence": 1.0
       },
       {
-        "fact": "The text 'Our Video Cookbook' is visible in the top right corner.",
+        "fact": "The text 'Our Video Cookbook' is visible in the top right corner of the screen.",
         "confidence": 1.0
       }
     ],
     "ocr": [
       "Our Video Cookbook"
     ],
-    "spatial": "The person in the white chef's coat is standing in the center of the frame, holding the small white bowl above the large glass bowl. The stainless steel refrigerator is to the left of the person. The kitchen cabinets are in the background behind the person.",
+    "spatial": "The person in the white chef's coat is standing in the center of the frame, holding the glass bowl in front of their torso. The stainless steel refrigerator is located to the left of the person in the background. The text watermark is positioned in the top right corner, above the person's shoulder.",
     "parse_success": true,
     "chunk_idx": 29,
     "video_id": "4lFJnI1uWIE",
     "state_changes": [
-      "New action: pouring contents from small bowl to large bowl"
+      "Action change: switched from peeling to mixing ingredients in a bowl."
     ]
   },
   {
     "time": [
-      60,
-      62
+      30,
+      31
     ],
     "visible_entities": [
       {
-        "desc": "man with short grey hair, wearing a white double-breasted chef's coat with red piping and a red skullcap",
-        "action": "looking down and moving slightly",
+        "desc": "man with short grey hair, wearing a white chef's coat with red piping and a red skull cap",
+        "action": "looking down",
         "position": "center",
         "id": "person_chef_1"
       },
@@ -1859,10 +1908,16 @@
         "desc": "light-colored wooden kitchen cabinets with glass panels",
         "action": "static",
         "position": "background",
-        "id": "cabinets_kitchen_1"
+        "id": "cabinets_wood_glass_1"
       },
       {
-        "desc": "text 'Our Video Cookbook' in white font",
+        "desc": "hanging metal pots and pans",
+        "action": "static",
+        "position": "background",
+        "id": "pots_hanging_1"
+      },
+      {
+        "desc": "text 'Our Cookbook' in white font",
         "action": "static",
         "position": "top right",
         "id": "text_watermark_1"
@@ -1870,34 +1925,38 @@
     ],
     "atomic_facts": [
       {
-        "fact": "The man in the chef's coat looks down towards the counter.",
+        "fact": "The man in the white chef's coat looks down towards the counter.",
         "confidence": 1.0
       },
       {
-        "fact": "The text 'Our Video Cookbook' is visible in the top right corner.",
+        "fact": "The text 'Our Cookbook' is visible in the top right corner.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "Metal cookware hangs from a rack behind the man.",
         "confidence": 1.0
       }
     ],
     "ocr": [
-      "Our Video Cookbook"
+      "Our Cookbook"
     ],
-    "spatial": "The man in the chef's coat is standing in the center of the frame. To his left is a stainless steel refrigerator. Behind him are light-colored wooden cabinets. The text 'Our Video Cookbook' is located in the top right corner of the screen.",
+    "spatial": "The man in the white chef's coat stands in the center of the frame. To his left is a large stainless steel refrigerator. Behind him are light-colored wooden cabinets and hanging metal pots.",
     "parse_success": true,
     "chunk_idx": 30,
     "video_id": "4lFJnI1uWIE",
     "state_changes": [
-      "Cut back to chef speaking (face visible)"
+      "Scene change: cut back to chef standing/looking down, prep action paused."
     ]
   },
   {
     "time": [
-      62,
-      64
+      31,
+      32
     ],
     "visible_entities": [
       {
-        "desc": "man with bald head, wearing a white chef's coat with red piping and red embroidery on the left chest, and a red hat",
-        "action": "looking down then looking up",
+        "desc": "man with short hair, wearing a white double-breasted chef's coat with red piping and red embroidery on the left chest, and a red chef's hat",
+        "action": "looking down then lifting head to look forward",
         "position": "center",
         "id": "person_chef_1"
       },
@@ -1908,13 +1967,13 @@
         "id": "refrigerator_steel_1"
       },
       {
-        "desc": "light-colored wooden kitchen cabinets with glass doors",
+        "desc": "light-colored wooden kitchen cabinets with glass-paneled doors",
         "action": "static",
         "position": "background",
-        "id": "cabinets_kitchen_1"
+        "id": "cabinets_wood_glass_1"
       },
       {
-        "desc": "white text logo",
+        "desc": "text overlay 'Our Video Cookbook' in white font",
         "action": "static",
         "position": "top right",
         "id": "text_watermark_1"
@@ -1922,7 +1981,11 @@
     ],
     "atomic_facts": [
       {
-        "fact": "The man in the white chef's coat looks down and then lifts his head.",
+        "fact": "The man in the chef's coat lifts his head from a downward gaze to look forward.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The man is wearing a red chef's hat.",
         "confidence": 1.0
       },
       {
@@ -1933,7 +1996,7 @@
     "ocr": [
       "Our Video Cookbook"
     ],
-    "spatial": "The man in the white chef's coat is standing in the center of the frame. To his left is a stainless steel refrigerator. Behind him are light-colored wooden kitchen cabinets. The text 'Our Video Cookbook' is located in the top right corner of the screen.",
+    "spatial": "The man in the chef's coat is standing in the center of the frame, in front of the kitchen cabinets. The stainless steel refrigerator is to the left of the man. The text overlay is in the top right corner, above the cabinets.",
     "parse_success": true,
     "chunk_idx": 31,
     "video_id": "4lFJnI1uWIE",
@@ -1941,30 +2004,36 @@
   },
   {
     "time": [
-      64,
-      66
+      32,
+      33
     ],
     "visible_entities": [
       {
-        "desc": "man with short graying hair, wearing a red skull cap and a white double-breasted chef's coat with red piping and red embroidery on the left chest",
+        "desc": "man wearing a white chef's coat with red piping and a red skull cap",
         "action": "standing in a kitchen",
         "position": "center",
         "id": "person_chef_1"
       },
       {
-        "desc": "stainless steel refrigerator with a black digital display panel",
+        "desc": "stainless steel refrigerator",
         "action": "static",
         "position": "left",
         "id": "refrigerator_steel_1"
       },
       {
-        "desc": "light-colored wooden kitchen cabinets with glass-paneled doors",
+        "desc": "hanging metal pots and pans",
         "action": "static",
-        "position": "background",
-        "id": "cabinets_kitchen_1"
+        "position": "background left",
+        "id": "pots_hanging_1"
       },
       {
-        "desc": "text overlay reading 'Our Video Cookbook' in white and red font",
+        "desc": "light-colored wooden kitchen cabinets with glass doors",
+        "action": "static",
+        "position": "background right",
+        "id": "cabinets_wood_glass_1"
+      },
+      {
+        "desc": "text 'Our Video Cookbook' in white font",
         "action": "static",
         "position": "top right",
         "id": "text_watermark_1"
@@ -1976,18 +2045,18 @@
         "confidence": 1.0
       },
       {
-        "fact": "The man is positioned between a refrigerator and kitchen cabinets.",
+        "fact": "The text 'Our Video Cookbook' is visible in the top right corner.",
         "confidence": 1.0
       },
       {
-        "fact": "The text 'Our Video Cookbook' is visible in the top right corner.",
+        "fact": "Kitchen cabinets are located behind the man.",
         "confidence": 1.0
       }
     ],
     "ocr": [
       "Our Video Cookbook"
     ],
-    "spatial": "The man in the chef's coat is standing in the center of the frame. To his left is a stainless steel refrigerator. Behind him are light-colored wooden cabinets. The text 'Our Video Cookbook' is located in the top right corner of the screen.",
+    "spatial": "The man in the chef's coat is standing in the center of the frame, in front of the kitchen cabinets. To his left is a stainless steel refrigerator. The text 'Our Video Cookbook' is located in the top right corner of the screen, above the cabinets.",
     "parse_success": true,
     "chunk_idx": 32,
     "video_id": "4lFJnI1uWIE",
@@ -1995,27 +2064,21 @@
   },
   {
     "time": [
-      66,
-      68
+      33,
+      34
     ],
     "visible_entities": [
       {
+        "desc": "person wearing a white t-shirt with a gold ring on their left ring finger",
+        "action": "slicing food on a cutting board",
+        "position": "center",
+        "id": "person_assistant_1"
+      },
+      {
         "desc": "person wearing a white chef's coat and a red hat",
-        "action": "standing",
+        "action": "static",
         "position": "left",
         "id": "person_chef_1"
-      },
-      {
-        "desc": "person wearing a white t-shirt and a gold ring on the left ring finger",
-        "action": "slicing food",
-        "position": "right",
-        "id": "person_chef_1"
-      },
-      {
-        "desc": "silver knife with a black handle",
-        "action": "being used to cut",
-        "position": "center",
-        "id": "knife_kitchen_1"
       },
       {
         "desc": "white rectangular cutting board",
@@ -2024,13 +2087,19 @@
         "id": "cutting_board_white_1"
       },
       {
+        "desc": "silver knife with a black handle",
+        "action": "being used to cut",
+        "position": "center",
+        "id": "knife_chef_1"
+      },
+      {
         "desc": "small piece of light-brown food",
         "action": "being sliced",
         "position": "center",
-        "id": "ingredient_other_1"
+        "id": "food_item_small_1"
       },
       {
-        "desc": "text 'OurVideoCookbook' in white font",
+        "desc": "text 'OurVideo Cookbook' in white font",
         "action": "static",
         "position": "top right",
         "id": "text_watermark_1"
@@ -2038,49 +2107,52 @@
     ],
     "atomic_facts": [
       {
-        "fact": "A person is slicing a piece of food on a white cutting board.",
+        "fact": "A person is slicing a piece of food on a white cutting board with a knife.",
         "confidence": 1.0
       },
       {
-        "fact": "The person holds a knife in their right hand and the food in their left hand.",
+        "fact": "A smaller video frame showing a chef in a red hat is visible on the left side of the screen.",
         "confidence": 1.0
       },
       {
-        "fact": "A second person in a chef's uniform is visible in the background on the left.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The text 'OurVideoCookbook' is displayed in the top right corner.",
+        "fact": "The text 'OurVideo Cookbook' is displayed in the top right corner.",
         "confidence": 1.0
       }
     ],
     "ocr": [
-      "OurVideoCookbook"
+      "OurVideo Cookbook"
     ],
-    "spatial": "The person slicing food is positioned to the right of the person in the chef's uniform. The knife is held above the cutting board, cutting into the piece of food which rests on top of the board. The text overlay is located above the main action in the top right corner.",
+    "spatial": "The person slicing food is in the center of the frame, with the white cutting board in front of them. The smaller video of the chef is to the left of the main action. The knife is held in the person's right hand, positioned above the food on the cutting board.",
     "parse_success": true,
     "chunk_idx": 33,
     "video_id": "4lFJnI1uWIE",
     "state_changes": [
-      "Action switch to slicing light-brown food"
+      "Action start: slicing food (light brown item) on cutting board with a knife."
     ]
   },
   {
     "time": [
-      68,
-      70
+      34,
+      35
     ],
     "visible_entities": [
       {
         "desc": "person wearing a white shirt with a gold ring on the left ring finger",
-        "action": "slicing food with a knife",
-        "position": "center"
+        "action": "cutting food",
+        "position": "center",
+        "id": "person_assistant_1"
       },
       {
         "desc": "silver kitchen knife with a black handle",
-        "action": "being used to cut",
+        "action": "slicing through food",
         "position": "center",
-        "id": "knife_kitchen_1"
+        "id": "knife_chef_1"
+      },
+      {
+        "desc": "small piece of light brown food",
+        "action": "being cut",
+        "position": "center",
+        "id": "food_item_small_1"
       },
       {
         "desc": "white rectangular plastic cutting board",
@@ -2089,12 +2161,6 @@
         "id": "cutting_board_white_1"
       },
       {
-        "desc": "small piece of light-brown food",
-        "action": "being sliced",
-        "position": "center",
-        "id": "ingredient_other_1"
-      },
-      {
         "desc": "text 'OurVideoCookbook' in white font",
         "action": "static",
         "position": "top right",
@@ -2103,15 +2169,11 @@
     ],
     "atomic_facts": [
       {
-        "fact": "A person is slicing a small piece of food on a white cutting board.",
+        "fact": "The person is using a knife to slice a piece of food on a cutting board.",
         "confidence": 1.0
       },
       {
-        "fact": "The person is holding a silver knife with a black handle.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The person is wearing a gold ring on their left hand.",
+        "fact": "The left hand holds the food steady while the right hand maneuvers the knife.",
         "confidence": 1.0
       },
       {
@@ -2122,7 +2184,7 @@
     "ocr": [
       "OurVideoCookbook"
     ],
-    "spatial": "The person is positioned behind the cutting board. The knife is held in the person's right hand and is positioned above the food item on the cutting board. The text 'OurVideoCookbook' is located in the top right corner of the frame, above the person's hands.",
+    "spatial": "The person is positioned behind the white cutting board. The knife is held in the person's right hand and is positioned above the food. The food is located in the center of the cutting board. The text 'OurVideoCookbook' is located in the top right corner of the frame.",
     "parse_success": true,
     "chunk_idx": 34,
     "video_id": "4lFJnI1uWIE",
@@ -2130,21 +2192,27 @@
   },
   {
     "time": [
-      70,
-      72
+      35,
+      36
     ],
     "visible_entities": [
       {
-        "desc": "person with fair skin, wearing a gold ring on the ring finger of the right hand",
-        "action": "holding a knife and pressing down on food",
+        "desc": "person with fair skin, wearing a white shirt and a gold ring on the ring finger",
+        "action": "cutting a shrimp",
         "position": "center",
-        "id": "person_chef_1"
+        "id": "person_assistant_1"
+      },
+      {
+        "desc": "pinkish-orange shrimp, raw, curved",
+        "action": "being sliced",
+        "position": "center",
+        "id": "shrimp_raw_1"
       },
       {
         "desc": "silver kitchen knife with a black handle",
-        "action": "being used to cut food",
+        "action": "slicing the shrimp",
         "position": "center",
-        "id": "knife_kitchen_1"
+        "id": "knife_chef_1"
       },
       {
         "desc": "white rectangular plastic cutting board",
@@ -2153,13 +2221,7 @@
         "id": "cutting_board_white_1"
       },
       {
-        "desc": "small piece of light-brown food, possibly shrimp or meat",
-        "action": "being sliced",
-        "position": "center",
-        "id": "ingredient_other_1"
-      },
-      {
-        "desc": "text 'OurVideoCookbook' in white font with a red logo",
+        "desc": "text 'OurVideoCookbook' in white font",
         "action": "static",
         "position": "top right",
         "id": "text_watermark_1"
@@ -2167,11 +2229,11 @@
     ],
     "atomic_facts": [
       {
-        "fact": "A person is slicing a piece of food on a white cutting board.",
+        "fact": "A person is slicing a raw shrimp on a white cutting board.",
         "confidence": 1.0
       },
       {
-        "fact": "The person's right hand is holding the food steady while the left hand uses a knife.",
+        "fact": "The person is holding the shrimp steady with their left hand while cutting with a knife in their right hand.",
         "confidence": 1.0
       },
       {
@@ -2182,99 +2244,102 @@
     "ocr": [
       "OurVideoCookbook"
     ],
-    "spatial": "The person's hands are positioned above the white cutting board. The knife is held in the left hand and is cutting the food which is being held by the right hand. The text 'OurVideoCookbook' is located in the top right corner of the frame, above the cutting board.",
+    "spatial": "The person is positioned above the white cutting board. The shrimp is on top of the cutting board. The knife is held by the person and is positioned over the shrimp. The text is located in the top right corner of the frame, above the cutting board.",
     "parse_success": true,
     "chunk_idx": 35,
     "video_id": "4lFJnI1uWIE",
-    "state_changes": []
+    "state_changes": [
+      "Ingredient change: switched to slicing raw shrimp."
+    ]
   },
   {
     "time": [
-      72,
-      74
+      36,
+      37
     ],
     "visible_entities": [
       {
-        "desc": "hands with light skin tone, appearing wet or glistening",
-        "action": "peeling a small object",
-        "position": "center/right",
-        "id": "person_chef_1"
-      },
-      {
-        "desc": "small, pale, bulbous object with a brownish tip, resembling a garlic clove or shallot",
-        "action": "being peeled",
+        "desc": "hands with fair skin, fingers manipulating a small object",
+        "action": "peeling a small item",
         "position": "center",
-        "id": "ingredient_garlic_1"
+        "id": "hands_chef_1"
       },
       {
-        "desc": "large kitchen knife with a black handle and a silver blade",
+        "desc": "large kitchen knife with a black handle and silver blade",
         "action": "static",
         "position": "left",
-        "id": "knife_kitchen_1"
+        "id": "knife_chef_1"
       },
       {
-        "desc": "white cutting board",
+        "desc": "white cutting board, smooth surface",
         "action": "static",
-        "position": "center/background",
+        "position": "center",
         "id": "cutting_board_white_1"
+      },
+      {
+        "desc": "small food item with a brownish skin and pale interior",
+        "action": "being peeled",
+        "position": "center",
+        "id": "food_item_small_1"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A person is using their fingers to peel the skin off a small, pale food item.",
+        "fact": "A person is using their hands to peel the skin off a small food item.",
         "confidence": 1.0
       },
       {
-        "fact": "A large knife rests on the white cutting board to the left of the hands.",
+        "fact": "A large knife is resting on the cutting board.",
         "confidence": 1.0
       },
       {
-        "fact": "The hands are holding the small object over the cutting board.",
+        "fact": "The peeling action is taking place over a white surface.",
         "confidence": 1.0
       }
     ],
     "ocr": [
       "Our Cookbook"
     ],
-    "spatial": "The hands are positioned in the center and right of the frame, holding the small object above the white cutting board. The knife is lying on the cutting board to the left of the hands. The text 'Our Cookbook' is visible in the top right corner.",
+    "spatial": "The hands are positioned in the center of the frame, holding the food item above the white cutting board. The knife is lying on the left side of the cutting board, next to the hands.",
     "parse_success": true,
     "chunk_idx": 36,
     "video_id": "4lFJnI1uWIE",
     "state_changes": [
-      "Ingredient switch to peeling garlic/shallot"
+      "Action change: switched to peeling a small food item with brownish skin."
     ]
   },
   {
     "time": [
-      74,
-      76
+      37,
+      38
     ],
     "visible_entities": [
       {
-        "desc": "hands with light skin tone, fingers manipulating food",
-        "action": "peeling shrimp",
+        "desc": "hands with light skin tone, fingers manipulating a small object",
+        "action": "peeling the tail of a shrimp",
         "position": "center",
-        "id": "person_chef_1"
+        "id": "hands_chef_1"
       },
       {
-        "desc": "raw shrimp with translucent white flesh and pink tail",
+        "desc": "raw shrimp, pinkish-white flesh with a reddish tail segment",
         "action": "being peeled",
-        "position": "center"
+        "position": "center",
+        "id": "shrimp_raw_1"
       },
       {
-        "desc": "white cutting board, smooth surface",
+        "desc": "white cutting board, smooth plastic surface",
         "action": "static",
         "position": "bottom",
         "id": "cutting_board_white_1"
       },
       {
-        "desc": "knife with black handle and silver blade",
+        "desc": "kitchen knife with a black handle and silver blade",
         "action": "static",
         "position": "left",
-        "id": "knife_kitchen_1"
+        "id": "knife_chef_1"
       },
       {
-        "desc": "text 'Our Cookbook' in white sans-serif font",
+        "desc": "text overlay 'Our Cookbook' in white sans-serif font",
         "action": "static",
         "position": "top right",
         "id": "text_watermark_1"
@@ -2282,11 +2347,11 @@
     ],
     "atomic_facts": [
       {
-        "fact": "Hands are peeling the shell off a raw shrimp.",
+        "fact": "A person is using their fingers to peel the shell off the tail of a shrimp.",
         "confidence": 1.0
       },
       {
-        "fact": "The shrimp is being held over a white cutting board.",
+        "fact": "The shrimp is positioned over a white cutting board.",
         "confidence": 1.0
       },
       {
@@ -2299,39 +2364,37 @@
       }
     ],
     "ocr": [
-      "Our Cookbook"
+      "Our",
+      "Cookbook"
     ],
-    "spatial": "The hands are positioned in the center of the frame, holding the shrimp directly above the white cutting board. The knife is lying on the left side of the cutting board. The text 'Our Cookbook' is located in the top right corner of the screen.",
+    "spatial": "The hands are positioned in the center of the frame, holding the shrimp directly above the white cutting board. The knife lies to the left of the hands on the cutting board surface. The text overlay is located in the top right corner, above the hands.",
     "parse_success": true,
     "chunk_idx": 37,
     "video_id": "4lFJnI1uWIE",
-    "state_changes": []
+    "state_changes": [
+      "Action change: switched to peeling the tail of a shrimp."
+    ]
   },
   {
     "time": [
-      76,
-      78
+      38,
+      39
     ],
     "visible_entities": [
       {
-        "desc": "hands with light skin tone",
-        "action": "peeling a thin, translucent, white membrane",
-        "position": "foreground",
-        "id": "person_chef_1"
+        "desc": "person with light skin tone, wearing a white t-shirt",
+        "action": "holding and manipulating a translucent object",
+        "position": "center",
+        "id": "person_assistant_1"
       },
       {
-        "desc": "white cutting board",
-        "action": "static",
-        "position": "bottom",
-        "id": "cutting_board_white_1"
+        "desc": "translucent, pale, oval-shaped object, appearing wet and fleshy",
+        "action": "being held",
+        "position": "center",
+        "id": "shrimp_raw_1"
       },
       {
-        "desc": "person wearing a light-colored shirt",
-        "action": "static",
-        "position": "background"
-      },
-      {
-        "desc": "text 'Our Cookbook' in white font",
+        "desc": "white text reading 'Our Cookbook' in a sans-serif font",
         "action": "static",
         "position": "top right",
         "id": "text_watermark_1"
@@ -2339,11 +2402,11 @@
     ],
     "atomic_facts": [
       {
-        "fact": "The person is peeling a thin, translucent, white membrane from a piece of food.",
+        "fact": "A person is holding a wet, translucent object with both hands.",
         "confidence": 1.0
       },
       {
-        "fact": "The hands are holding the food item over a white cutting board.",
+        "fact": "The person's fingers are pressing against the object.",
         "confidence": 1.0
       },
       {
@@ -2354,7 +2417,7 @@
     "ocr": [
       "Our Cookbook"
     ],
-    "spatial": "The hands are in the foreground, positioned above the white cutting board. The person's shirt is visible in the background, behind the hands. The text 'Our Cookbook' is located in the top right corner of the frame.",
+    "spatial": "The person's hands are in the center of the frame, holding the translucent object. The text 'Our Cookbook' is located in the top right corner, above the hands.",
     "parse_success": true,
     "chunk_idx": 38,
     "video_id": "4lFJnI1uWIE",
@@ -2362,13 +2425,13 @@
   },
   {
     "time": [
-      78,
-      80
+      39,
+      40
     ],
     "visible_entities": [
       {
-        "desc": "person wearing a white top",
-        "action": "peeling a small dark object",
+        "desc": "person wearing a white apron or top",
+        "action": "manipulating a small object",
         "position": "center",
         "id": "person_chef_1"
       },
@@ -2382,81 +2445,22 @@
         "desc": "knife with a black handle",
         "action": "static",
         "position": "left",
-        "id": "knife_kitchen_1"
+        "id": "knife_chef_1"
       },
       {
-        "desc": "small dark object",
-        "action": "being peeled",
+        "desc": "small, thin, pale object",
+        "action": "being held",
         "position": "center",
-        "id": "ingredient_other_1"
+        "id": "food_item_small_1"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A person is peeling a small dark object over a white cutting board.",
+        "fact": "A person is holding a small, thin object with both hands.",
         "confidence": 1.0
       },
       {
-        "fact": "The person is using their fingers to remove the skin of the object.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "A knife is resting on the left side of the cutting board.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [
-      "Our Cookbook"
-    ],
-    "spatial": "The person is positioned above the white cutting board. The knife is to the left of the person's hands. The small dark object is held in the center of the frame, directly over the cutting board.",
-    "parse_success": true,
-    "chunk_idx": 39,
-    "video_id": "4lFJnI1uWIE",
-    "state_changes": []
-  },
-  {
-    "time": [
-      80,
-      82
-    ],
-    "visible_entities": [
-      {
-        "desc": "person with light skin, wearing a white top",
-        "action": "manipulating raw shrimp",
-        "position": "center",
-        "id": "person_chef_1"
-      },
-      {
-        "desc": "raw shrimp, pinkish-white, translucent, peeled",
-        "action": "being held and placed",
-        "position": "center",
-        "id": "ingredient_shrimp_1"
-      },
-      {
-        "desc": "white cutting board, rectangular, smooth surface",
-        "action": "static",
-        "position": "bottom"
-      },
-      {
-        "desc": "knife with a black handle and silver blade",
-        "action": "static",
-        "position": "left",
-        "id": "knife_kitchen_1"
-      },
-      {
-        "desc": "text 'Our Cookbook' in white font",
-        "action": "static",
-        "position": "top right",
-        "id": "text_watermark_1"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "The person is holding two pieces of raw shrimp with both hands.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The person places the shrimp onto the white cutting board.",
+        "fact": "The person is manipulating the object over a white cutting board.",
         "confidence": 1.0
       },
       {
@@ -2471,47 +2475,103 @@
     "ocr": [
       "Our Cookbook"
     ],
-    "spatial": "The person's hands are positioned above the white cutting board in the center of the frame. The raw shrimp is held between the person's fingers and then placed on the cutting board. A knife is located to the left of the cutting board. The text 'Our Cookbook' is in the top right corner of the screen.",
+    "spatial": "The person is positioned above the white cutting board. The knife is to the left of the person's hands. The small object is being held by the person in the center of the frame, directly over the cutting board.",
     "parse_success": true,
-    "chunk_idx": 40,
+    "chunk_idx": 39,
     "video_id": "4lFJnI1uWIE",
     "state_changes": []
   },
   {
     "time": [
-      82,
-      84
+      40,
+      41
     ],
     "visible_entities": [
       {
-        "desc": "person with light skin, wearing a white top",
-        "action": "arranging raw shrimp on a cutting board",
+        "desc": "person with light skin, wearing a white t-shirt",
+        "action": "manipulating raw shrimp",
         "position": "center",
-        "id": "person_chef_1"
+        "id": "person_assistant_1"
       },
       {
-        "desc": "raw shrimp, pinkish-white, translucent, peeled",
-        "action": "being placed on the cutting board",
+        "desc": "raw shrimp, pinkish-white and translucent, peeled",
+        "action": "being handled",
         "position": "center",
-        "id": "ingredient_shrimp_1"
+        "id": "shrimp_raw_1"
       },
       {
-        "desc": "white plastic cutting board, rectangular",
+        "desc": "white rectangular cutting board, smooth surface",
         "action": "static",
-        "position": "center",
+        "position": "bottom",
         "id": "cutting_board_white_1"
       },
       {
         "desc": "kitchen knife with a black handle and silver blade",
         "action": "static",
         "position": "left",
-        "id": "knife_kitchen_1"
+        "id": "knife_chef_1"
       },
       {
         "desc": "text 'Our Cookbook' in white font",
         "action": "static",
         "position": "top right",
         "id": "text_watermark_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The person is using both hands to manipulate a raw shrimp on a white cutting board.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A kitchen knife is resting on the left side of the cutting board.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The text 'Our Cookbook' is visible in the top right corner.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "Our Cookbook"
+    ],
+    "spatial": "The person's hands are positioned above the white cutting board in the center of the frame. The raw shrimp is on the cutting board, directly under the person's hands. The kitchen knife is to the left of the shrimp on the board.",
+    "parse_success": true,
+    "chunk_idx": 40,
+    "video_id": "4lFJnI1uWIE",
+    "state_changes": [
+      "Action change: handling/manipulating peeled raw shrimp."
+    ]
+  },
+  {
+    "time": [
+      41,
+      42
+    ],
+    "visible_entities": [
+      {
+        "desc": "person wearing a white t-shirt",
+        "action": "arranging shrimp",
+        "position": "center",
+        "id": "person_assistant_1"
+      },
+      {
+        "desc": "raw shrimp, pink and white, peeled",
+        "action": "being arranged",
+        "position": "center",
+        "id": "shrimp_raw_1"
+      },
+      {
+        "desc": "white cutting board, rectangular",
+        "action": "static",
+        "position": "center",
+        "id": "cutting_board_white_1"
+      },
+      {
+        "desc": "knife with a black handle",
+        "action": "static",
+        "position": "left",
+        "id": "knife_chef_1"
       }
     ],
     "atomic_facts": [
@@ -2520,50 +2580,48 @@
         "confidence": 1.0
       },
       {
-        "fact": "The shrimp are pinkish-white and translucent.",
+        "fact": "The shrimp are being placed in a row.",
         "confidence": 1.0
       },
       {
         "fact": "A knife with a black handle rests on the left side of the cutting board.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The text 'Our Cookbook' is visible in the top right corner.",
         "confidence": 1.0
       }
     ],
     "ocr": [
       "Our Cookbook"
     ],
-    "spatial": "The person is positioned above the white cutting board. The raw shrimp are on the cutting board. The knife is to the left of the cutting board. The text 'Our Cookbook' is in the top right corner of the frame.",
+    "spatial": "The person is positioned behind the white cutting board. The raw shrimp are on top of the cutting board in the center. The knife is to the left of the shrimp on the cutting board.",
     "parse_success": true,
     "chunk_idx": 41,
     "video_id": "4lFJnI1uWIE",
-    "state_changes": []
+    "state_changes": [
+      "Action change: arranging peeled shrimp on the board."
+    ]
   },
   {
     "time": [
-      84,
-      86
+      42,
+      43
     ],
     "visible_entities": [
       {
-        "desc": "person wearing a white short-sleeved shirt and a gold ring on the ring finger of the right hand",
-        "action": "holding a knife and pressing down on food",
+        "desc": "person with fair skin, wearing a white short-sleeved shirt and a gold ring on the left ring finger",
+        "action": "slicing raw meat",
         "position": "center",
-        "id": "person_chef_1"
+        "id": "person_assistant_1"
       },
       {
-        "desc": "large kitchen knife with a silver blade and black handle",
-        "action": "being used to cut food",
+        "desc": "silver knife with a black handle and a long, straight blade",
+        "action": "cutting downwards",
         "position": "center",
-        "id": "knife_kitchen_1"
+        "id": "knife_chef_1"
       },
       {
-        "desc": "pinkish raw shrimp or prawn",
+        "desc": "raw meat, pinkish-white, elongated shape",
         "action": "being sliced",
         "position": "center",
-        "id": "ingredient_shrimp_1"
+        "id": "shrimp_raw_1"
       },
       {
         "desc": "white rectangular cutting board",
@@ -2572,7 +2630,7 @@
         "id": "cutting_board_white_1"
       },
       {
-        "desc": "text 'OurVideoCookbook' in white font with an orange icon",
+        "desc": "text 'OurVideoCookbook' in white font with a red logo",
         "action": "static",
         "position": "top right",
         "id": "text_watermark_1"
@@ -2580,15 +2638,15 @@
     ],
     "atomic_facts": [
       {
-        "fact": "A person is slicing a piece of raw shrimp on a white cutting board.",
+        "fact": "The person is using a knife to slice a piece of raw meat.",
         "confidence": 1.0
       },
       {
-        "fact": "The person's right hand is pressing down on the shrimp while the left hand holds the knife.",
+        "fact": "The meat is resting on a white cutting board.",
         "confidence": 1.0
       },
       {
-        "fact": "The knife blade is positioned vertically against the shrimp.",
+        "fact": "The person's left hand is holding the meat steady while the right hand operates the knife.",
         "confidence": 1.0
       },
       {
@@ -2599,84 +2657,37 @@
     "ocr": [
       "OurVideoCookbook"
     ],
-    "spatial": "The person is positioned above the white cutting board. The knife is held in the person's left hand and is located to the left of the shrimp. The shrimp is placed in the center of the cutting board. The watermark text is in the top right corner of the frame.",
+    "spatial": "The person is positioned above the white cutting board. The raw meat is on top of the cutting board, held by the person's left hand. The knife is in the person's right hand, positioned to the left of the meat and moving downwards into it. The text overlay is in the top right corner of the frame, above the person's arm.",
     "parse_success": true,
     "chunk_idx": 42,
     "video_id": "4lFJnI1uWIE",
     "state_changes": [
-      "Action switch to slicing raw shrimp"
+      "Action change: slicing raw meat (elongated shape)."
     ]
   },
   {
     "time": [
-      86,
-      88
+      43,
+      44
     ],
     "visible_entities": [
       {
-        "desc": "person's hands with fair skin, wearing a gold ring on the left ring finger",
-        "action": "holding a knife and pressing down on raw shrimp",
+        "desc": "person's hand with a gold ring on the ring finger",
+        "action": "holding a shrimp on a cutting board",
         "position": "center",
-        "id": "person_chef_1"
+        "id": "hands_chef_1"
       },
       {
-        "desc": "raw shrimp, pinkish-grey, translucent, with tails attached",
-        "action": "being sliced",
+        "desc": "silver knife with a black handle",
+        "action": "cutting a shrimp",
         "position": "center",
-        "id": "ingredient_shrimp_1"
+        "id": "knife_chef_1"
       },
       {
-        "desc": "white rectangular cutting board, smooth surface",
-        "action": "static",
-        "position": "bottom",
-        "id": "cutting_board_white_1"
-      },
-      {
-        "desc": "silver kitchen knife with a black handle",
-        "action": "cutting",
+        "desc": "raw shrimp, pinkish-grey",
+        "action": "being cut",
         "position": "center",
-        "id": "knife_kitchen_1"
-      },
-      {
-        "desc": "person wearing a light-colored short-sleeved shirt",
-        "action": "static",
-        "position": "top"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "A person is using a knife to slice raw shrimp on a white cutting board.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The person's left hand is holding the shrimp steady while the right hand cuts.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The shrimp are arranged in a row on the board.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [
-      "OurVideoCookbook"
-    ],
-    "spatial": "The person's hands are positioned above the white cutting board. The raw shrimp are on top of the cutting board, directly under the knife. The text 'OurVideoCookbook' is in the top right corner of the frame.",
-    "parse_success": true,
-    "chunk_idx": 43,
-    "video_id": "4lFJnI1uWIE",
-    "state_changes": []
-  },
-  {
-    "time": [
-      88,
-      90
-    ],
-    "visible_entities": [
-      {
-        "desc": "person with fair skin, wearing a white t-shirt and a gold ring on the left ring finger",
-        "action": "slicing shrimp with a knife",
-        "position": "center",
-        "id": "person_chef_1"
+        "id": "shrimp_raw_1"
       },
       {
         "desc": "white rectangular cutting board",
@@ -2685,19 +2696,7 @@
         "id": "cutting_board_white_1"
       },
       {
-        "desc": "pinkish raw shrimp",
-        "action": "being sliced",
-        "position": "center",
-        "id": "ingredient_shrimp_1"
-      },
-      {
-        "desc": "silver kitchen knife with a black handle",
-        "action": "cutting",
-        "position": "center",
-        "id": "knife_kitchen_1"
-      },
-      {
-        "desc": "text 'Our Video Cookbook' in white and red font",
+        "desc": "text 'OurVideoCookbook' in white and red font",
         "action": "static",
         "position": "top right",
         "id": "text_watermark_1"
@@ -2705,22 +2704,84 @@
     ],
     "atomic_facts": [
       {
-        "fact": "The person is using a knife to slice a raw shrimp on a white cutting board.",
+        "fact": "A person is using a knife to cut a shrimp on a white cutting board.",
         "confidence": 1.0
       },
       {
-        "fact": "A gold ring is visible on the person's left hand.",
+        "fact": "The person's hand is holding the shrimp in place.",
         "confidence": 1.0
       },
       {
-        "fact": "The text 'Our Video Cookbook' is displayed in the top right corner.",
+        "fact": "The text 'OurVideoCookbook' is visible in the top right corner.",
         "confidence": 1.0
       }
     ],
     "ocr": [
-      "Our Video Cookbook"
+      "OurVideoCookbook"
     ],
-    "spatial": "The person is positioned behind the cutting board. The shrimp is on top of the cutting board. The knife is held in the person's right hand and is pressing down on the shrimp. The text is located above the person's hands in the top right corner.",
+    "spatial": "The person's hand is on top of the shrimp, which is on the white cutting board. The knife is positioned above the shrimp, cutting into it. The text 'OurVideoCookbook' is in the top right corner of the frame.",
+    "parse_success": true,
+    "chunk_idx": 43,
+    "video_id": "4lFJnI1uWIE",
+    "state_changes": [
+      "Action change: cutting a shrimp."
+    ]
+  },
+  {
+    "time": [
+      44,
+      45
+    ],
+    "visible_entities": [
+      {
+        "desc": "person with fair skin, wearing a white t-shirt and a gold ring on the left ring finger",
+        "action": "slicing shrimp",
+        "position": "center",
+        "id": "person_assistant_1"
+      },
+      {
+        "desc": "silver kitchen knife with a black handle",
+        "action": "cutting shrimp",
+        "position": "center",
+        "id": "knife_chef_1"
+      },
+      {
+        "desc": "raw shrimp, pinkish-white and translucent",
+        "action": "being sliced",
+        "position": "center",
+        "id": "shrimp_raw_1"
+      },
+      {
+        "desc": "white rectangular cutting board",
+        "action": "static",
+        "position": "bottom",
+        "id": "cutting_board_white_1"
+      },
+      {
+        "desc": "text 'OurVideoCookbook' in white and orange font",
+        "action": "static",
+        "position": "top right",
+        "id": "text_watermark_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The person is using a knife to slice a piece of raw shrimp on a cutting board.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A whole shrimp is resting on the left side of the cutting board.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The person is wearing a gold ring on their left hand.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "OurVideoCookbook"
+    ],
+    "spatial": "The person is positioned behind the white cutting board. The knife is held in the person's right hand and is positioned above the shrimp being sliced. The text 'OurVideoCookbook' is located in the top right corner of the frame.",
     "parse_success": true,
     "chunk_idx": 44,
     "video_id": "4lFJnI1uWIE",
@@ -2728,36 +2789,36 @@
   },
   {
     "time": [
-      90,
-      92
+      45,
+      46
     ],
     "visible_entities": [
       {
-        "desc": "person wearing a white t-shirt and a gold ring on the ring finger of the left hand",
+        "desc": "person wearing a white t-shirt with a gold ring on their left ring finger",
         "action": "slicing raw shrimp",
         "position": "center",
-        "id": "person_chef_1"
+        "id": "person_assistant_1"
       },
       {
-        "desc": "silver kitchen knife with a black handle",
-        "action": "being used to cut",
-        "position": "center",
-        "id": "knife_kitchen_1"
-      },
-      {
-        "desc": "raw, peeled shrimp, pinkish-white in color",
+        "desc": "raw, peeled shrimp, pinkish-white and translucent",
         "action": "being sliced",
         "position": "center",
-        "id": "ingredient_shrimp_1"
+        "id": "shrimp_raw_1"
       },
       {
-        "desc": "white rectangular plastic cutting board",
+        "desc": "white rectangular cutting board",
         "action": "static",
-        "position": "bottom",
+        "position": "center",
         "id": "cutting_board_white_1"
       },
       {
-        "desc": "text 'OurVideo Cookbook' in white font",
+        "desc": "silver kitchen knife with a black handle",
+        "action": "cutting shrimp",
+        "position": "center",
+        "id": "knife_chef_1"
+      },
+      {
+        "desc": "text 'OurVideo Cookbook' in white font with a red accent",
         "action": "static",
         "position": "top right",
         "id": "text_watermark_1"
@@ -2765,11 +2826,7 @@
     ],
     "atomic_facts": [
       {
-        "fact": "A person is slicing raw shrimp on a white cutting board.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The person is holding a silver knife in their right hand.",
+        "fact": "A person is using a knife to slice raw shrimp on a white cutting board.",
         "confidence": 1.0
       },
       {
@@ -2784,7 +2841,7 @@
     "ocr": [
       "OurVideo Cookbook"
     ],
-    "spatial": "The person's hands are positioned above the white cutting board. The knife is held in the right hand and is cutting through the shrimp which lies on the board. The text 'OurVideo Cookbook' is located in the top right corner of the frame, above the person's hands.",
+    "spatial": "The person is positioned behind the white cutting board. The raw shrimp are on top of the cutting board. The knife is held by the person and is positioned above the shrimp, cutting into them. The text 'OurVideo Cookbook' is located in the top right corner of the frame, above the person's hands.",
     "parse_success": true,
     "chunk_idx": 45,
     "video_id": "4lFJnI1uWIE",
@@ -2792,33 +2849,33 @@
   },
   {
     "time": [
-      92,
-      94
+      46,
+      47
     ],
     "visible_entities": [
       {
-        "desc": "person's hand with a gold ring on the ring finger",
+        "desc": "person's hand with fair skin, wearing a plain gold band ring on the ring finger",
         "action": "handling raw shrimp",
-        "position": "right/foreground",
-        "id": "person_chef_1"
+        "position": "right",
+        "id": "hands_chef_1"
       },
       {
-        "desc": "raw shrimp, pinkish-white and translucent",
-        "action": "being arranged on cutting board",
+        "desc": "raw shrimp, pinkish-white and translucent, unpeeled",
+        "action": "being arranged on a cutting board",
         "position": "center",
-        "id": "ingredient_shrimp_1"
+        "id": "shrimp_raw_1"
       },
       {
-        "desc": "white plastic cutting board",
+        "desc": "white plastic cutting board, rectangular",
         "action": "static",
-        "position": "center/bottom",
+        "position": "center",
         "id": "cutting_board_white_1"
       },
       {
         "desc": "person wearing a white t-shirt",
-        "action": "static",
+        "action": "standing",
         "position": "background",
-        "id": "person_chef_1"
+        "id": "person_assistant_1"
       }
     ],
     "atomic_facts": [
@@ -2831,14 +2888,14 @@
         "confidence": 1.0
       },
       {
-        "fact": "There are multiple pieces of raw shrimp on the board.",
+        "fact": "The shrimp are pinkish-white and appear raw.",
         "confidence": 1.0
       }
     ],
     "ocr": [
       "Our Cookbook"
     ],
-    "spatial": "The person's hand is to the right of the shrimp on the cutting board. The cutting board is in front of the person wearing the white t-shirt. The text 'Our Cookbook' is in the top right corner of the frame.",
+    "spatial": "The person's hand is on the right side of the frame, positioned above the white cutting board. The raw shrimp are on top of the cutting board in the center. The person in the white t-shirt is behind the cutting board.",
     "parse_success": true,
     "chunk_idx": 46,
     "video_id": "4lFJnI1uWIE",
@@ -2846,36 +2903,36 @@
   },
   {
     "time": [
-      94,
-      96
+      47,
+      48
     ],
     "visible_entities": [
       {
-        "desc": "person with light skin tone, wearing a white shirt",
-        "action": "peeling a shrimp",
+        "desc": "person's hands with light skin tone, wearing a white garment",
+        "action": "peeling the shell off a shrimp",
         "position": "center",
-        "id": "person_chef_1"
+        "id": "hands_chef_1"
       },
       {
-        "desc": "raw shrimp, translucent greyish-pink color",
-        "action": "being peeled",
+        "desc": "raw shrimp, translucent greyish-pink flesh, curved shape",
+        "action": "being held and manipulated",
         "position": "center",
-        "id": "ingredient_shrimp_1"
+        "id": "shrimp_raw_1"
       },
       {
-        "desc": "white rectangular cutting board",
+        "desc": "white rectangular cutting board, smooth surface",
         "action": "static",
         "position": "bottom",
         "id": "cutting_board_white_1"
       },
       {
-        "desc": "peeled shrimp tail, curved and pinkish",
+        "desc": "peeled shrimp tail, pinkish-orange",
         "action": "static",
-        "position": "bottom right",
-        "id": "ingredient_shrimp_1"
+        "position": "bottom",
+        "id": "shrimp_raw_1"
       },
       {
-        "desc": "text 'Our Cookbook' in white font",
+        "desc": "text overlay 'Our Cookbook' in white font",
         "action": "static",
         "position": "top right",
         "id": "text_watermark_1"
@@ -2883,332 +2940,11 @@
     ],
     "atomic_facts": [
       {
-        "fact": "The person is using both hands to peel the shell off a raw shrimp.",
+        "fact": "A person is using their hands to peel the shell off a raw shrimp.",
         "confidence": 1.0
       },
       {
-        "fact": "A peeled shrimp tail is resting on the white cutting board.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The text 'Our Cookbook' is visible in the top right corner of the screen.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [
-      "Our Cookbook"
-    ],
-    "spatial": "The person's hands are positioned in the center of the frame, holding the shrimp above the white cutting board. The cutting board is below the hands. The peeled shrimp tail is lying on the bottom right area of the cutting board. The text 'Our Cookbook' is located in the top right corner, above the person's hands.",
-    "parse_success": true,
-    "chunk_idx": 47,
-    "video_id": "4lFJnI1uWIE",
-    "state_changes": []
-  },
-  {
-    "time": [
-      96,
-      98
-    ],
-    "visible_entities": [
-      {
-        "desc": "person with light skin, wearing a white shirt",
-        "action": "peeling shrimp with a knife",
-        "position": "center",
-        "id": "person_chef_1"
-      },
-      {
-        "desc": "raw shrimp, pale pink and translucent",
-        "action": "being held and peeled",
-        "position": "center",
-        "id": "ingredient_shrimp_1"
-      },
-      {
-        "desc": "small knife with a silver blade",
-        "action": "being used to peel shrimp",
-        "position": "center",
-        "id": "knife_kitchen_1"
-      },
-      {
-        "desc": "white rectangular cutting board",
-        "action": "static",
-        "position": "bottom",
-        "id": "cutting_board_white_1"
-      },
-      {
-        "desc": "peeled shrimp, lying on the board",
-        "action": "static",
-        "position": "bottom",
-        "id": "ingredient_shrimp_1"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "The person is using a knife to peel the shell off a shrimp.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "A peeled shrimp is lying on the white cutting board.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The person is holding the shrimp in their left hand.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [
-      "Our Cookbook"
-    ],
-    "spatial": "The person is positioned above the white cutting board. The person is holding a shrimp in their left hand and a knife in their right hand. The peeled shrimp is lying on the cutting board below the person's hands.",
-    "parse_success": true,
-    "chunk_idx": 48,
-    "video_id": "4lFJnI1uWIE",
-    "state_changes": []
-  },
-  {
-    "time": [
-      98,
-      100
-    ],
-    "visible_entities": [
-      {
-        "desc": "man with short grey hair, wearing a white chef's coat with black embroidery on the chest",
-        "action": "standing in kitchen",
-        "position": "center",
-        "id": "person_chef_1"
-      },
-      {
-        "desc": "hands holding a silver knife and a raw shrimp",
-        "action": "peeling shrimp",
-        "position": "foreground",
-        "id": "person_chef_1"
-      },
-      {
-        "desc": "white rectangular cutting board",
-        "action": "static",
-        "position": "bottom",
-        "id": "cutting_board_white_1"
-      },
-      {
-        "desc": "peeled shrimp, pinkish-white",
-        "action": "static",
-        "position": "bottom",
-        "id": "ingredient_shrimp_1"
-      },
-      {
-        "desc": "stainless steel refrigerator",
-        "action": "static",
-        "position": "left",
-        "id": "refrigerator_steel_1"
-      },
-      {
-        "desc": "light wood kitchen cabinets with glass panels",
-        "action": "static",
-        "position": "background",
-        "id": "cabinets_kitchen_1"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "A person is using a knife to peel a shrimp.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The man is standing in a kitchen environment.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "A peeled shrimp rests on the white cutting board.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [
-      "Our Cookbook"
-    ],
-    "spatial": "The man in the white chef's coat is standing in the center of the kitchen. The hands holding the knife and shrimp are in the foreground, positioned above the white cutting board. The stainless steel refrigerator is to the left of the man. The wooden cabinets are in the background behind the man.",
-    "parse_success": true,
-    "chunk_idx": 49,
-    "video_id": "4lFJnI1uWIE",
-    "state_changes": [
-      "Transition from hands close-up to chef wide shot demonstrating peeling"
-    ]
-  },
-  {
-    "time": [
-      100,
-      102
-    ],
-    "visible_entities": [
-      {
-        "desc": "man with short grey hair, wearing a red beret and a white chef's coat with red piping and embroidered text",
-        "action": "gesturing with right hand",
-        "position": "center",
-        "id": "person_chef_1"
-      },
-      {
-        "desc": "stainless steel refrigerator with black side panel and digital display",
-        "action": "static",
-        "position": "left",
-        "id": "refrigerator_steel_1"
-      },
-      {
-        "desc": "light wood kitchen cabinets with frosted glass inserts",
-        "action": "static",
-        "position": "background",
-        "id": "cabinets_kitchen_1"
-      },
-      {
-        "desc": "metal pot rack with hanging cookware",
-        "action": "static",
-        "position": "background left",
-        "id": "rack_pots_1"
-      },
-      {
-        "desc": "kitchen countertop with appliances and utensils",
-        "action": "static",
-        "position": "background right",
-        "id": "countertop_kitchen_1"
-      },
-      {
-        "desc": "text 'Our Video Cookbook' in white and red font",
-        "action": "static",
-        "position": "top right",
-        "id": "text_watermark_1"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "The man in the red beret is gesturing with his right hand while facing the camera.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The man is wearing a white chef's coat with red piping along the collar and front opening.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The text 'Our Video Cookbook' is visible in the top right corner of the screen.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "A stainless steel refrigerator is positioned to the left of the man.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "Light wood cabinets with glass doors are visible in the background behind the man.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [
-      "Our Video Cookbook"
-    ],
-    "spatial": "The man in the red beret is standing in the center of the frame, in front of the kitchen cabinets. To his left is a large stainless steel refrigerator. Above the cabinets on the right, the text 'Our Video Cookbook' is displayed. A pot rack with hanging utensils is visible behind the man to his left.",
-    "parse_success": true,
-    "chunk_idx": 50,
-    "video_id": "4lFJnI1uWIE",
-    "state_changes": [
-      "Transition to chef outro/gesturing without food prep"
-    ]
-  },
-  {
-    "time": [
-      102,
-      104
-    ],
-    "visible_entities": [
-      {
-        "desc": "man with short dark hair, wearing a white chef's coat with red piping and a red cap",
-        "action": "holding a small bowl and gesturing",
-        "position": "center",
-        "id": "person_chef_1"
-      },
-      {
-        "desc": "small bowl containing light-colored food mixture",
-        "action": "being held",
-        "position": "center foreground"
-      },
-      {
-        "desc": "stainless steel refrigerator with black water dispenser panel",
-        "action": "static",
-        "position": "left",
-        "id": "refrigerator_steel_1"
-      },
-      {
-        "desc": "light wood kitchen cabinets with glass-paneled upper doors",
-        "action": "static",
-        "position": "background",
-        "id": "cabinets_kitchen_1"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "The man holds a bowl in his left hand.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The man gestures with his right hand while speaking.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The chef's coat has red embroidery on the left chest.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [
-      "OurVideoCookbook"
-    ],
-    "spatial": "The man is standing in the center of the kitchen, in front of the light wood cabinets. The stainless steel refrigerator is to the left of the man. The small bowl is held in front of the man's torso.",
-    "parse_success": true,
-    "chunk_idx": 51,
-    "video_id": "4lFJnI1uWIE",
-    "state_changes": []
-  },
-  {
-    "time": [
-      104,
-      106
-    ],
-    "visible_entities": [
-      {
-        "desc": "man with short dark hair, wearing a white chef's coat with red embroidery and a pink hat",
-        "action": "gesturing with right hand",
-        "position": "center",
-        "id": "person_chef_1"
-      },
-      {
-        "desc": "stainless steel refrigerator",
-        "action": "static",
-        "position": "left",
-        "id": "refrigerator_steel_1"
-      },
-      {
-        "desc": "light wood kitchen cabinets with glass panels",
-        "action": "static",
-        "position": "background",
-        "id": "cabinets_kitchen_1"
-      },
-      {
-        "desc": "kitchen counter with appliances and jars",
-        "action": "static",
-        "position": "background",
-        "id": "countertop_kitchen_1"
-      },
-      {
-        "desc": "text 'Our Cookbook' in white and red font",
-        "action": "static",
-        "position": "top right",
-        "id": "text_watermark_1"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "The man in the white chef's coat is gesturing with his right hand.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The man is standing in a kitchen.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "A stainless steel refrigerator is to the left of the man.",
+        "fact": "A peeled shrimp tail rests on the white cutting board.",
         "confidence": 1.0
       },
       {
@@ -3219,7 +2955,337 @@
     "ocr": [
       "Our Cookbook"
     ],
-    "spatial": "The man in the white chef's coat is standing in the center of the frame. To his left is a stainless steel refrigerator. Behind him are light wood kitchen cabinets and a counter with various items. The text 'Our Cookbook' is in the top right corner of the screen.",
+    "spatial": "The person's hands are positioned in the center of the frame, holding a shrimp above the white cutting board. The cutting board is located at the bottom of the frame. A peeled shrimp tail lies on the cutting board below the hands. The text overlay is in the top right corner.",
+    "parse_success": true,
+    "chunk_idx": 47,
+    "video_id": "4lFJnI1uWIE",
+    "state_changes": [
+      "Action change: peeling shell off a shrimp, visible peeled tail appears."
+    ]
+  },
+  {
+    "time": [
+      48,
+      49
+    ],
+    "visible_entities": [
+      {
+        "desc": "person with light skin tone, wearing a white garment",
+        "action": "peeling a shrimp",
+        "position": "center",
+        "id": "person_assistant_1"
+      },
+      {
+        "desc": "raw shrimp, pale pinkish-white, translucent, wet texture",
+        "action": "being held and peeled",
+        "position": "center",
+        "id": "shrimp_raw_1"
+      },
+      {
+        "desc": "white plastic cutting board, rectangular, flat surface",
+        "action": "static",
+        "position": "bottom",
+        "id": "cutting_board_white_1"
+      },
+      {
+        "desc": "peeled shrimp tail, curved, pinkish-white",
+        "action": "static",
+        "position": "bottom right",
+        "id": "shrimp_raw_1"
+      },
+      {
+        "desc": "small knife or tool, metallic, held in hand",
+        "action": "being used to peel",
+        "position": "center",
+        "id": "knife_chef_1"
+      },
+      {
+        "desc": "text 'Our Cookbook' in white font",
+        "action": "static",
+        "position": "top right",
+        "id": "text_watermark_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A person is holding a raw shrimp in their left hand.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The person is using a tool in their right hand to peel the shell off the shrimp.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A peeled shrimp tail is resting on the white cutting board.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The text 'Our Cookbook' is visible in the top right corner.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "Our Cookbook"
+    ],
+    "spatial": "The person's hands are positioned above the white cutting board. The raw shrimp is held in the center of the frame, directly above the board. The peeled shrimp tail lies on the cutting board below the hands. The text 'Our Cookbook' is located in the top right corner, above the person's right hand.",
+    "parse_success": true,
+    "chunk_idx": 48,
+    "video_id": "4lFJnI1uWIE",
+    "state_changes": []
+  },
+  {
+    "time": [
+      49,
+      50
+    ],
+    "visible_entities": [
+      {
+        "desc": "man with short dark hair, wearing a white chef's coat with black embroidery on the left chest",
+        "action": "standing and looking down",
+        "position": "center"
+      },
+      {
+        "desc": "hands holding a silver knife and a raw shrimp",
+        "action": "peeling or deveining the shrimp",
+        "position": "foreground",
+        "id": "hands_chef_1"
+      },
+      {
+        "desc": "white plastic cutting board",
+        "action": "static",
+        "position": "bottom",
+        "id": "cutting_board_white_1"
+      },
+      {
+        "desc": "raw shrimp, pinkish-grey and translucent",
+        "action": "being manipulated",
+        "position": "center",
+        "id": "shrimp_raw_1"
+      },
+      {
+        "desc": "stainless steel refrigerator",
+        "action": "static",
+        "position": "left",
+        "id": "refrigerator_steel_1"
+      },
+      {
+        "desc": "light wood kitchen cabinets with glass panels",
+        "action": "static",
+        "position": "background",
+        "id": "cabinets_wood_glass_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A person is using a knife to peel or devein a shrimp.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The man in the white chef's coat is standing in a kitchen.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A raw shrimp is resting on a white cutting board.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The text 'Our Cookbook' is visible in the top right corner.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "Our Cookbook"
+    ],
+    "spatial": "The man in the white chef's coat is standing behind the hands that are holding the shrimp and knife. The white cutting board is below the hands. The stainless steel refrigerator is to the left of the man. The wooden cabinets are behind the man.",
+    "parse_success": true,
+    "chunk_idx": 49,
+    "video_id": "4lFJnI1uWIE",
+    "state_changes": [
+      "Scene/Action change: Chef returns, performing deveining/peeling on a shrimp."
+    ]
+  },
+  {
+    "time": [
+      50,
+      51
+    ],
+    "visible_entities": [
+      {
+        "desc": "man with short grey hair, wearing a red hat and a white chef's coat with red piping and embroidered text",
+        "action": "gesturing with right hand",
+        "position": "center",
+        "id": "person_chef_1"
+      },
+      {
+        "desc": "stainless steel refrigerator",
+        "action": "static",
+        "position": "left",
+        "id": "refrigerator_steel_1"
+      },
+      {
+        "desc": "light wood kitchen cabinets with glass panels",
+        "action": "static",
+        "position": "background",
+        "id": "cabinets_wood_glass_1"
+      },
+      {
+        "desc": "hanging metal pots and pans",
+        "action": "static",
+        "position": "left background",
+        "id": "pots_hanging_1"
+      },
+      {
+        "desc": "kitchen countertop with appliances",
+        "action": "static",
+        "position": "right background",
+        "id": "countertop_beige_tile_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The man in the white chef's coat is gesturing with his right hand.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The man is wearing a red hat.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The text 'Our Video Cookbook' is visible in the top right corner.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The text 'Mandala' is embroidered on the chef's coat.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "Our Video Cookbook",
+      "Mandala"
+    ],
+    "spatial": "The man in the white chef's coat is in the center of the frame, standing in front of the kitchen cabinets. The stainless steel refrigerator is to the left of the man. The hanging pots and pans are behind the man and to his left. The kitchen countertop is to the right of the man in the background.",
+    "parse_success": true,
+    "chunk_idx": 50,
+    "video_id": "4lFJnI1uWIE",
+    "state_changes": [
+      "Scene change: Chef gesturing, prep action stopped."
+    ]
+  },
+  {
+    "time": [
+      51,
+      52
+    ],
+    "visible_entities": [
+      {
+        "desc": "man with short dark hair, wearing a white double-breasted chef's coat with red piping and a red cap",
+        "action": "holding a bowl and gesturing",
+        "position": "center/foreground",
+        "id": "person_chef_1"
+      },
+      {
+        "desc": "small bowl containing a light-colored mixture",
+        "action": "being held",
+        "position": "center/bottom",
+        "id": "bowl_small_mixture_1"
+      },
+      {
+        "desc": "stainless steel refrigerator",
+        "action": "static",
+        "position": "left/background",
+        "id": "refrigerator_steel_1"
+      },
+      {
+        "desc": "light wood kitchen cabinets with glass panels",
+        "action": "static",
+        "position": "right/background",
+        "id": "cabinets_wood_glass_1"
+      },
+      {
+        "desc": "red cursive text logo",
+        "action": "static",
+        "position": "top right",
+        "id": "text_watermark_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The man holds a bowl in his left hand.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The man gestures with his right hand.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The text 'Our Video Cookbook' is visible in the top right corner.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The chef's coat has red piping along the collar and front opening.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "Our Video Cookbook"
+    ],
+    "spatial": "The man is standing in the center of the frame, in front of the kitchen cabinets and refrigerator. The refrigerator is to the left of the man, and the cabinets are behind him to the right. The bowl is held in front of the man's torso.",
+    "parse_success": true,
+    "chunk_idx": 51,
+    "video_id": "4lFJnI1uWIE",
+    "state_changes": [
+      "Action change: Chef holding a small bowl with mixture."
+    ]
+  },
+  {
+    "time": [
+      52,
+      53
+    ],
+    "visible_entities": [
+      {
+        "desc": "man wearing a white chef's coat with red cursive embroidery on the left chest and a pink hat",
+        "action": "gesturing with right hand",
+        "position": "center",
+        "id": "person_chef_1"
+      },
+      {
+        "desc": "stainless steel refrigerator",
+        "action": "static",
+        "position": "left",
+        "id": "refrigerator_steel_1"
+      },
+      {
+        "desc": "light wood kitchen cabinets with glass panels",
+        "action": "static",
+        "position": "background",
+        "id": "cabinets_wood_glass_1"
+      },
+      {
+        "desc": "text 'Our Video Cookbook' in white and red font",
+        "action": "static",
+        "position": "top right",
+        "id": "text_watermark_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The man raises his right hand in a gesture.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The man is wearing a white chef's coat.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The text 'Our Video Cookbook' is visible in the top right corner.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "Our Video Cookbook"
+    ],
+    "spatial": "The man is standing in the center of the frame, positioned to the right of the stainless steel refrigerator. The wooden cabinets are located in the background behind the man. The text overlay is situated in the top right corner of the screen.",
     "parse_success": true,
     "chunk_idx": 52,
     "video_id": "4lFJnI1uWIE",

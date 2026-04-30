@@ -2,64 +2,12 @@
   {
     "time": [
       0,
-      2
+      1
     ],
     "visible_entities": [
       {
-        "desc": "bald man with a dark beard, wearing a black leather jacket over a maroon t-shirt featuring a graphic of Iron Man",
-        "action": "standing with arms slightly extended",
-        "position": "center",
-        "id": "person_bald_man_1"
-      },
-      {
-        "desc": "large German flag with horizontal black, red, and gold stripes",
-        "action": "static",
-        "position": "background",
-        "id": "german_flag_1"
-      },
-      {
-        "desc": "white 'ZDF' logo",
-        "action": "static",
-        "position": "top left",
-        "id": "zdf_logo_1"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "A man stands in front of a German flag.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The man is wearing a black leather jacket.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The man's t-shirt displays a comic book character.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The ZDF logo is visible in the top left corner.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [
-      "ZDF"
-    ],
-    "spatial": "The man is standing in the center of the frame, in front of the German flag which serves as the background. The ZDF logo is located in the top left corner, above the flag.",
-    "parse_success": true,
-    "chunk_idx": 0,
-    "video_id": "YiFfJ7XBzfY",
-    "state_changes": []
-  },
-  {
-    "time": [
-      2,
-      4
-    ],
-    "visible_entities": [
-      {
-        "desc": "bald man with a dark beard, wearing a black leather jacket over a maroon t-shirt featuring a comic book style graphic of a character in a red and gold suit, and black pants",
-        "action": "standing still",
+        "desc": "bald man with a dark beard, wearing a black leather jacket over a maroon t-shirt featuring a comic book style graphic of Iron Man, and black pants",
+        "action": "standing with arms slightly spread",
         "position": "center",
         "id": "person_bald_man_1"
       },
@@ -67,65 +15,13 @@
         "desc": "large German flag with horizontal stripes of black, red, and gold",
         "action": "static",
         "position": "background",
-        "id": "german_flag_1"
-      },
-      {
-        "desc": "white 'ZDF' logo inside a circle",
-        "action": "static",
-        "position": "top left",
-        "id": "zdf_logo_1"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "A man stands in the center of the frame.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The man is wearing a black leather jacket.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The background consists of a German flag.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The ZDF logo is visible in the top left corner.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [
-      "ZDF"
-    ],
-    "spatial": "The man is standing in front of the German flag. The ZDF logo is located in the top left corner of the screen, above the flag.",
-    "parse_success": true,
-    "chunk_idx": 1,
-    "video_id": "YiFfJ7XBzfY",
-    "state_changes": []
-  },
-  {
-    "time": [
-      4,
-      6
-    ],
-    "visible_entities": [
-      {
-        "desc": "bald man with a beard, wearing a black leather jacket over a maroon t-shirt with a graphic print of a comic book character",
-        "action": "standing still",
-        "position": "center",
-        "id": "person_bald_man_1"
-      },
-      {
-        "desc": "German flag with horizontal black, red, and yellow stripes",
-        "action": "static",
-        "position": "background",
-        "id": "german_flag_1"
+        "id": "flag_german_1"
       },
       {
         "desc": "white 'ZDF' logo",
         "action": "static",
         "position": "top left",
-        "id": "zdf_logo_1"
+        "id": "logo_zdf_1"
       }
     ],
     "atomic_facts": [
@@ -138,7 +34,7 @@
         "confidence": 1.0
       },
       {
-        "fact": "The man is wearing a maroon t-shirt with a graphic print.",
+        "fact": "The man's t-shirt displays a graphic of the superhero Iron Man.",
         "confidence": 1.0
       },
       {
@@ -149,7 +45,107 @@
     "ocr": [
       "ZDF"
     ],
-    "spatial": "The man is in the center of the frame, standing in front of the German flag. The ZDF logo is in the top left corner, above the flag and to the left of the man.",
+    "spatial": "The man is standing in the center foreground, positioned in front of the large German flag which serves as the background. The ZDF logo is located in the top left corner of the frame, above the man's right shoulder.",
+    "parse_success": true,
+    "chunk_idx": 0,
+    "video_id": "YiFfJ7XBzfY",
+    "state_changes": []
+  },
+  {
+    "time": [
+      1,
+      2
+    ],
+    "visible_entities": [
+      {
+        "desc": "bald man with a dark beard, wearing a black leather jacket over a maroon t-shirt featuring a comic book style graphic of a character in a red and gold suit",
+        "action": "standing still",
+        "position": "center",
+        "id": "person_bald_man_1"
+      },
+      {
+        "desc": "large German flag with horizontal stripes of black, red, and gold",
+        "action": "static",
+        "position": "background",
+        "id": "flag_german_1"
+      },
+      {
+        "desc": "white 'ZDF' logo inside a circle",
+        "action": "static",
+        "position": "top left",
+        "id": "logo_zdf_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A bald man with a beard stands in front of a German flag.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The man is wearing a black leather jacket.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The man's t-shirt displays a graphic of a superhero character.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The ZDF logo is visible in the top left corner.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "ZDF"
+    ],
+    "spatial": "The man is standing in the center of the frame, positioned in front of the German flag which fills the background. The ZDF logo is located in the top left corner, above the man's left shoulder.",
+    "parse_success": true,
+    "chunk_idx": 1,
+    "video_id": "YiFfJ7XBzfY",
+    "state_changes": []
+  },
+  {
+    "time": [
+      2,
+      3
+    ],
+    "visible_entities": [
+      {
+        "desc": "bald man with a dark beard, wearing a black leather jacket over a maroon t-shirt featuring a graphic of Iron Man and playing cards",
+        "action": "standing still",
+        "position": "center",
+        "id": "person_bald_man_1"
+      },
+      {
+        "desc": "large German flag with horizontal stripes of black, red, and gold",
+        "action": "static",
+        "position": "background",
+        "id": "flag_german_1"
+      },
+      {
+        "desc": "white circular logo containing the text '2DF'",
+        "action": "static",
+        "position": "top left",
+        "id": "logo_zdf_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A bald man with a beard stands in front of a German flag.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The man is wearing a black leather jacket and a maroon t-shirt with a superhero graphic.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The '2DF' logo is visible in the top left corner of the screen.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "2DF"
+    ],
+    "spatial": "The man is standing in the center foreground, positioned in front of the German flag which fills the background. The '2DF' logo is located in the top left corner, above the flag.",
     "parse_success": true,
     "chunk_idx": 2,
     "video_id": "YiFfJ7XBzfY",
@@ -157,27 +153,27 @@
   },
   {
     "time": [
-      6,
-      8
+      3,
+      4
     ],
     "visible_entities": [
       {
-        "desc": "bald man with a dark beard, wearing a black leather jacket over a maroon t-shirt featuring a graphic of a superhero character holding cards, and black pants",
+        "desc": "bald man with a dark beard, wearing a black leather jacket over a maroon t-shirt featuring a graphic of Iron Man holding playing cards, and black pants",
         "action": "standing still",
         "position": "center",
         "id": "person_bald_man_1"
       },
       {
-        "desc": "large German flag with horizontal stripes of black, red, and gold",
-        "action": "waving gently",
+        "desc": "German flag with horizontal stripes of black, red, and gold",
+        "action": "static",
         "position": "background",
-        "id": "german_flag_1"
+        "id": "flag_german_1"
       },
       {
-        "desc": "white 'ZDF' logo inside a grey circle",
+        "desc": "white '2DF' logo",
         "action": "static",
         "position": "top left",
-        "id": "zdf_logo_1"
+        "id": "logo_zdf_1"
       }
     ],
     "atomic_facts": [
@@ -186,88 +182,80 @@
         "confidence": 1.0
       },
       {
-        "fact": "The man is wearing a black leather jacket over a maroon t-shirt.",
+        "fact": "The man is wearing a black leather jacket over a graphic t-shirt.",
         "confidence": 1.0
       },
       {
-        "fact": "The t-shirt displays a graphic of a superhero character.",
+        "fact": "The background consists of a large German flag.",
         "confidence": 1.0
       },
       {
-        "fact": "A large German flag waves in the background behind the man.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The ZDF logo is visible in the top left corner.",
+        "fact": "The '2DF' logo is visible in the top left corner.",
         "confidence": 1.0
       }
     ],
     "ocr": [
-      "ZDF"
+      "2DF"
     ],
-    "spatial": "The man is standing in front of the German flag. The ZDF logo is located in the top left corner, above and to the left of the man.",
+    "spatial": "The man is standing in front of the German flag. The '2DF' logo is located in the top left corner, above the man's left shoulder.",
     "parse_success": true,
     "chunk_idx": 3,
     "video_id": "YiFfJ7XBzfY",
-    "state_changes": [
-      "German flag started waving gently (was static)"
-    ]
+    "state_changes": []
   },
   {
     "time": [
-      8,
-      10
+      4,
+      5
     ],
     "visible_entities": [
       {
-        "desc": "bald man with a beard, wearing a black leather jacket over a maroon t-shirt with a comic book character graphic, and black pants",
-        "action": "standing still",
-        "position": "center/foreground",
+        "desc": "bald man with a beard, wearing a black leather jacket over a maroon t-shirt with a comic book character graphic",
+        "action": "static",
+        "position": "center",
         "id": "person_bald_man_1"
       },
       {
-        "desc": "large German flag with horizontal black, red, and yellow stripes",
+        "desc": "German flag with horizontal stripes of black, red, and gold",
         "action": "static",
         "position": "background",
-        "id": "german_flag_1"
+        "id": "flag_german_1"
       },
       {
         "desc": "white text on a blue background",
-        "action": "appearing",
-        "position": "center",
-        "id": "lower_third_graphics_1"
+        "action": "static",
+        "position": "center"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "A bald man with a beard stands in front of a German flag.",
+        "fact": "A man stands in front of a German flag.",
         "confidence": 1.0
       },
       {
-        "fact": "The text 'MEIN FREU' appears on a blue screen.",
+        "fact": "The text 'MEIN FREU' is displayed on a blue screen.",
         "confidence": 1.0
       }
     ],
     "ocr": [
+      "ZDF",
       "MEIN FREU"
     ],
-    "spatial": "The man is in front of the German flag. The text 'MEIN FREU' is centered on the blue background.",
+    "spatial": "The man is in front of the German flag. The text 'MEIN FREU' is centered on the blue screen.",
     "parse_success": true,
     "chunk_idx": 4,
     "video_id": "YiFfJ7XBzfY",
-    "state_changes": [
-      "white text on blue background appeared"
-    ]
+    "state_changes": []
   },
   {
     "time": [
-      10,
-      12
+      5,
+      6
     ],
     "visible_entities": [
       {
-        "desc": "bald man with a dark beard, wearing a black leather jacket over a maroon t-shirt featuring a graphic print of a comic book character (Iron Man)",
-        "action": "standing still",
+        "desc": "bald man with a dark beard, wearing a black leather jacket over a maroon t-shirt featuring a comic book style graphic of a character in a yellow and red suit",
+        "action": "standing and facing forward",
         "position": "center",
         "id": "person_bald_man_1"
       },
@@ -275,13 +263,13 @@
         "desc": "large German flag with horizontal black, red, and gold stripes",
         "action": "static",
         "position": "background",
-        "id": "german_flag_1"
+        "id": "flag_german_1"
       },
       {
         "desc": "white text reading 'MEIN FREUND IST AfD' with a red arrow graphic",
         "action": "static",
         "position": "foreground",
-        "id": "afd_logo_text_1"
+        "id": "logo_afd_slogan_1"
       }
     ],
     "atomic_facts": [
@@ -290,34 +278,34 @@
         "confidence": 1.0
       },
       {
-        "fact": "The man is wearing a black leather jacket and a maroon graphic t-shirt.",
+        "fact": "The text 'MEIN FREUND IST AfD' is displayed on the screen.",
         "confidence": 1.0
       },
       {
-        "fact": "The text 'MEIN FREUND IST AfD' is displayed on the screen.",
+        "fact": "The man is wearing a black leather jacket.",
         "confidence": 1.0
       }
     ],
     "ocr": [
-      "MEIN FREUND IST AfD"
+      "MEIN FREUND",
+      "IST",
+      "AfD"
     ],
-    "spatial": "The man is standing in the center of the frame, positioned in front of the German flag which fills the background. The text 'MEIN FREUND IST AfD' is superimposed in the foreground, appearing over the man's torso.",
+    "spatial": "The man is standing in front of the German flag. The text 'MEIN FREUND IST AfD' is positioned in the foreground, overlaying the lower portion of the man's torso.",
     "parse_success": true,
     "chunk_idx": 5,
     "video_id": "YiFfJ7XBzfY",
-    "state_changes": [
-      "text changed to 'MEIN FREUND IST AfD' with red arrow graphic"
-    ]
+    "state_changes": []
   },
   {
     "time": [
-      12,
-      14
+      6,
+      7
     ],
     "visible_entities": [
       {
-        "desc": "bald man with dark beard, wearing a black leather jacket over a maroon t-shirt with a comic book character graphic, and black pants",
-        "action": "gesturing with open hands",
+        "desc": "bald man with a beard, wearing a black leather jacket over a maroon t-shirt featuring a comic book style graphic of a superhero, and black pants",
+        "action": "standing with arms spread wide",
         "position": "center",
         "id": "person_bald_man_1"
       },
@@ -325,33 +313,33 @@
         "desc": "large German flag with horizontal black, red, and gold stripes",
         "action": "static",
         "position": "background",
-        "id": "german_flag_1"
+        "id": "flag_german_1"
       },
       {
-        "desc": "white 'ZDF' logo in a circle",
+        "desc": "white 'ZDF' logo",
         "action": "static",
         "position": "top left",
-        "id": "zdf_logo_1"
+        "id": "logo_zdf_1"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "The man stands in front of the German flag.",
+        "fact": "A man stands in front of a large German flag.",
         "confidence": 1.0
       },
       {
-        "fact": "The man gestures with both hands open and palms facing up.",
+        "fact": "The man spreads his arms outward with palms facing up.",
         "confidence": 1.0
       },
       {
-        "fact": "The ZDF logo is visible in the top left corner.",
+        "fact": "The 'ZDF' logo is visible in the top left corner of the screen.",
         "confidence": 1.0
       }
     ],
     "ocr": [
       "ZDF"
     ],
-    "spatial": "The man is in the center foreground, standing in front of the large German flag which fills the background. The ZDF logo is in the top left corner of the screen, above the man's head.",
+    "spatial": "The man is standing in the center foreground, positioned in front of the German flag which fills the background. The 'ZDF' logo is located in the top left corner, above the man's right shoulder.",
     "parse_success": true,
     "chunk_idx": 6,
     "video_id": "YiFfJ7XBzfY",
@@ -359,18 +347,18 @@
   },
   {
     "time": [
-      14,
-      16
+      7,
+      8
     ],
     "visible_entities": [
       {
-        "desc": "bald man with a beard, wearing a black leather jacket over a maroon t-shirt with a comic book graphic print",
+        "desc": "bald man with beard, wearing a black leather jacket over a maroon t-shirt with a comic book graphic print",
         "action": "standing in the center",
         "position": "center",
         "id": "person_bald_man_1"
       },
       {
-        "desc": "older man with short grey hair, wearing a black suit jacket, white shirt, and grey tie",
+        "desc": "older man with short grey hair, wearing a black suit, white shirt, and grey tie",
         "action": "standing to the right",
         "position": "right",
         "id": "person_older_man_1"
@@ -379,16 +367,22 @@
         "desc": "large German flag with horizontal black, red, and gold stripes",
         "action": "static",
         "position": "background",
-        "id": "german_flag_1"
+        "id": "flag_german_1"
+      },
+      {
+        "desc": "ZDF logo in white text",
+        "action": "static",
+        "position": "top left",
+        "id": "logo_zdf_1"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "The man in the center places his left hand on the shoulder of the man in the suit.",
+        "fact": "The man in the black suit places his left hand on the right shoulder of the man in the leather jacket.",
         "confidence": 1.0
       },
       {
-        "fact": "The man in the suit stands to the right of the man in the leather jacket.",
+        "fact": "The man in the leather jacket stands with his arms at his sides.",
         "confidence": 1.0
       },
       {
@@ -399,59 +393,59 @@
     "ocr": [
       "ZDF"
     ],
-    "spatial": "The man in the leather jacket is standing in the center, to the left of the man in the suit. The man in the suit is standing to the right of the man in the leather jacket. Both men are standing in front of the German flag.",
+    "spatial": "The man in the leather jacket is to the left of the man in the suit. The man in the suit is to the right of the man in the leather jacket. Both men are standing in front of the German flag.",
     "parse_success": true,
     "chunk_idx": 7,
     "video_id": "YiFfJ7XBzfY",
     "state_changes": [
-      "older man in suit appeared in frame for first time"
+      "older man with short grey hair appears in the scene standing next to the bald man"
     ]
   },
   {
     "time": [
-      16,
-      18
+      8,
+      9
     ],
     "visible_entities": [
       {
-        "desc": "bald man with a beard, wearing a black leather jacket over a maroon t-shirt featuring a comic book character graphic",
+        "desc": "bald man with dark beard, wearing a black leather jacket over a maroon t-shirt with a graphic print of a character in a yellow suit",
         "action": "standing with arm around the other man's shoulder",
         "position": "left",
         "id": "person_bald_man_1"
       },
       {
-        "desc": "older man with short grey hair, wearing a black suit jacket, white shirt, and grey tie",
-        "action": "standing with arm around the other man's waist",
-        "position": "right",
-        "id": "person_older_man_1"
+        "desc": "older man with short grey hair, wearing a black suit jacket, white dress shirt, and grey patterned tie",
+        "action": "standing next to the other man",
+        "position": "right"
       },
       {
-        "desc": "large German flag with black, red, and gold horizontal stripes",
+        "desc": "large German flag with horizontal black, red, and gold stripes",
         "action": "static",
-        "position": "background"
+        "position": "background",
+        "id": "flag_german_1"
       },
       {
-        "desc": "ZDF logo in white text inside a grey circle",
+        "desc": "white 'ZDF' logo",
         "action": "static",
-        "position": "top left",
-        "id": "zdf_logo_1"
+        "position": "top-left",
+        "id": "logo_zdf_1"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "The man on the left places his right arm around the shoulder of the man on the right.",
+        "fact": "The man on the left places his left arm around the shoulder of the man on the right.",
         "confidence": 1.0
       },
       {
-        "fact": "The man on the right places his left arm around the waist of the man on the left.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The two men are standing in front of a German flag.",
+        "fact": "The man on the right turns his head to look at the man on the left.",
         "confidence": 1.0
       },
       {
         "fact": "The ZDF logo is visible in the top left corner.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A German flag serves as the backdrop for the two men.",
         "confidence": 1.0
       }
     ],
@@ -463,37 +457,38 @@
     "chunk_idx": 8,
     "video_id": "YiFfJ7XBzfY",
     "state_changes": [
-      "two men made physical contact (arms around each other)"
+      "bald man puts his arm around the older man's shoulder"
     ]
   },
   {
     "time": [
-      18,
-      20
+      9,
+      10
     ],
     "visible_entities": [
       {
-        "desc": "man with a shaved head and beard, wearing a black leather jacket over a maroon t-shirt with a graphic print, and black pants",
+        "desc": "man with bald head and beard, wearing a black leather jacket over a maroon t-shirt with a graphic print of a character in a yellow suit",
         "action": "standing with arm around the other man, then pointing at his own chest",
         "position": "left",
         "id": "person_bald_man_1"
       },
       {
-        "desc": "older man with short grey hair, wearing a black suit jacket, white shirt, and grey tie",
+        "desc": "older man with short grey hair, wearing a black suit jacket, white shirt, and a grey patterned tie",
         "action": "standing still",
         "position": "right",
         "id": "person_older_man_1"
       },
       {
-        "desc": "large German flag with black, red, and gold horizontal stripes",
+        "desc": "large German flag with horizontal stripes of black, red, and gold",
         "action": "static",
-        "position": "background"
+        "position": "background",
+        "id": "flag_german_1"
       },
       {
-        "desc": "ZDF logo in white text inside a grey circle",
+        "desc": "white 'ZDF' logo in a circle",
         "action": "static",
         "position": "top left",
-        "id": "zdf_logo_1"
+        "id": "logo_zdf_1"
       }
     ],
     "atomic_facts": [
@@ -502,122 +497,71 @@
         "confidence": 1.0
       },
       {
-        "fact": "The man on the left points to the graphic on his t-shirt with his right index finger.",
+        "fact": "The man on the left points his right index finger at the graphic on his t-shirt.",
         "confidence": 1.0
       },
       {
-        "fact": "The ZDF logo is visible in the top left corner of the screen.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [
-      "ZDF"
-    ],
-    "spatial": "The man in the leather jacket is to the left of the man in the suit. The German flag is behind both men. The ZDF logo is above the man in the leather jacket.",
-    "parse_success": true,
-    "chunk_idx": 9,
-    "video_id": "YiFfJ7XBzfY",
-    "state_changes": []
-  },
-  {
-    "time": [
-      20,
-      22
-    ],
-    "visible_entities": [
-      {
-        "desc": "bald man with a beard, wearing a black leather jacket over a maroon t-shirt with a graphic print of a superhero character",
-        "action": "gesturing with his right hand",
-        "position": "left"
-      },
-      {
-        "desc": "older man with short grey hair, wearing a black suit jacket, white shirt, and a grey patterned tie",
-        "action": "static",
-        "position": "right",
-        "id": "person_older_man_1"
-      },
-      {
-        "desc": "large German flag with horizontal black, red, and gold stripes",
-        "action": "static",
-        "position": "background",
-        "id": "german_flag_1"
-      },
-      {
-        "desc": "ZDF logo in white text inside a grey circle",
-        "action": "static",
-        "position": "top-left",
-        "id": "zdf_logo_1"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "The man on the left gestures with his right hand, pointing towards the man on the right.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The man on the left places his left hand on the right shoulder of the man in the suit.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The ZDF logo is visible in the top-left corner of the screen.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "A large German flag serves as the backdrop for the two men.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [
-      "ZDF"
-    ],
-    "spatial": "The man in the leather jacket is standing to the left of the man in the suit. The man in the suit is standing to the right of the man in the leather jacket. Both men are positioned in front of the German flag background. The ZDF logo is located in the top-left corner, above the men.",
-    "parse_success": true,
-    "chunk_idx": 10,
-    "video_id": "YiFfJ7XBzfY",
-    "state_changes": []
-  },
-  {
-    "time": [
-      22,
-      24
-    ],
-    "visible_entities": [
-      {
-        "desc": "bald man with a beard, wearing a black leather jacket over a maroon t-shirt with a comic book character graphic, and black pants",
-        "action": "gesturing with both hands",
-        "position": "left",
-        "id": "person_bald_man_1"
-      },
-      {
-        "desc": "older man with short grey hair, wearing a black suit jacket, white collared shirt, and a grey patterned tie",
-        "action": "static",
-        "position": "right",
-        "id": "person_older_man_1"
-      },
-      {
-        "desc": "large German flag with horizontal stripes of black, red, and gold",
-        "action": "static",
-        "position": "background",
-        "id": "german_flag_1"
-      },
-      {
-        "desc": "white 'ZDF' logo in a circle",
-        "action": "static",
-        "position": "top left",
-        "id": "zdf_logo_1"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "The man on the left is gesturing with his hands.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The man on the right is standing still with his arms at his sides.",
+        "fact": "The man on the right stands with his arms at his sides.",
         "confidence": 1.0
       },
       {
         "fact": "The two men are standing in front of a German flag.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "ZDF"
+    ],
+    "spatial": "The man in the leather jacket is to the left of the man in the suit. The man in the suit is to the right of the man in the leather jacket. Both men are in front of the German flag. The ZDF logo is in the top left corner of the frame.",
+    "parse_success": true,
+    "chunk_idx": 9,
+    "video_id": "YiFfJ7XBzfY",
+    "state_changes": [
+      "bald man points at his own chest while keeping arm around the other man"
+    ]
+  },
+  {
+    "time": [
+      10,
+      11
+    ],
+    "visible_entities": [
+      {
+        "desc": "man with bald head and beard, wearing a black leather jacket over a maroon t-shirt with a comic book character graphic",
+        "action": "pointing with right hand",
+        "position": "left",
+        "id": "person_bald_man_1"
+      },
+      {
+        "desc": "older man with short grey hair, wearing a black suit, white shirt, and grey tie",
+        "action": "standing still",
+        "position": "right",
+        "id": "person_older_man_1"
+      },
+      {
+        "desc": "German flag background with black, red, and gold horizontal stripes",
+        "action": "static",
+        "position": "background",
+        "id": "flag_german_1"
+      },
+      {
+        "desc": "ZDF logo in white text inside a grey circle",
+        "action": "static",
+        "position": "top left",
+        "id": "logo_zdf_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The man on the left points his index finger towards the man on the right.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The man on the left has his left hand resting on the shoulder of the man on the right.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The two men are standing in front of a large German flag.",
         "confidence": 1.0
       },
       {
@@ -628,7 +572,65 @@
     "ocr": [
       "ZDF"
     ],
-    "spatial": "The man in the leather jacket is to the left of the man in the suit. Both men are standing in front of the German flag. The ZDF logo is in the top left corner of the screen, above the men.",
+    "spatial": "The man in the leather jacket is to the left of the man in the suit. The man in the suit is to the right of the man in the leather jacket. Both men are in front of the German flag. The ZDF logo is above the man in the leather jacket.",
+    "parse_success": true,
+    "chunk_idx": 10,
+    "video_id": "YiFfJ7XBzfY",
+    "state_changes": []
+  },
+  {
+    "time": [
+      11,
+      12
+    ],
+    "visible_entities": [
+      {
+        "desc": "bald man with dark beard, wearing a red t-shirt with an Iron Man graphic, a black leather jacket, and black pants",
+        "action": "gesturing with both hands",
+        "position": "left",
+        "id": "person_bald_man_1"
+      },
+      {
+        "desc": "older man with short grey hair, wearing a black suit, white shirt, and grey tie",
+        "action": "standing still",
+        "position": "right",
+        "id": "person_older_man_1"
+      },
+      {
+        "desc": "German flag with horizontal stripes of black, red, and gold",
+        "action": "static",
+        "position": "background",
+        "id": "flag_german_1"
+      },
+      {
+        "desc": "white 'ZDF' logo",
+        "action": "static",
+        "position": "top left",
+        "id": "logo_zdf_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The man on the left is gesturing with his hands raised.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The man on the right is standing with his arms at his sides.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A German flag serves as the background for the two men.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The ZDF logo is visible in the top left corner.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "ZDF"
+    ],
+    "spatial": "The man in the leather jacket is to the left of the man in the suit. Both men are standing in front of the German flag. The ZDF logo is above the man in the leather jacket.",
     "parse_success": true,
     "chunk_idx": 11,
     "video_id": "YiFfJ7XBzfY",
@@ -636,76 +638,19 @@
   },
   {
     "time": [
-      24,
-      26
+      12,
+      13
     ],
     "visible_entities": [
       {
-        "desc": "bald man with dark beard, wearing a black leather jacket over a maroon t-shirt with a comic book character graphic, black pants",
+        "desc": "man with bald head and dark beard, wearing a black leather jacket over a maroon t-shirt with a comic book character graphic",
         "action": "gesturing with right hand",
         "position": "left",
         "id": "person_bald_man_1"
       },
       {
-        "desc": "older man with short gray hair, wearing a black suit jacket, white shirt, and gray tie",
+        "desc": "older man with short grey hair, wearing a black suit, white shirt, and grey tie",
         "action": "static",
-        "position": "right"
-      },
-      {
-        "desc": "large German flag with horizontal black, red, and gold stripes",
-        "action": "static",
-        "position": "background",
-        "id": "german_flag_1"
-      },
-      {
-        "desc": "white 'ZDF' logo in a gray circle",
-        "action": "static",
-        "position": "top left",
-        "id": "zdf_logo_1"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "The man on the left is gesturing with his right hand.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The man on the right is standing still.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "A large German flag serves as the background.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The 'ZDF' logo is visible in the top left corner.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [
-      "ZDF"
-    ],
-    "spatial": "The man in the leather jacket is to the left of the man in the suit. Both men are in front of the German flag. The 'ZDF' logo is in the top left corner of the frame.",
-    "parse_success": true,
-    "chunk_idx": 12,
-    "video_id": "YiFfJ7XBzfY",
-    "state_changes": []
-  },
-  {
-    "time": [
-      26,
-      28
-    ],
-    "visible_entities": [
-      {
-        "desc": "bald man with dark beard, wearing a red t-shirt with a graphic print, a black leather jacket, and black pants",
-        "action": "standing",
-        "position": "left",
-        "id": "person_bald_man_1"
-      },
-      {
-        "desc": "older man with short grey hair, wearing a black suit jacket, white shirt, and grey tie",
-        "action": "standing",
         "position": "right",
         "id": "person_older_man_1"
       },
@@ -713,13 +658,66 @@
         "desc": "large German flag with horizontal black, red, and gold stripes",
         "action": "static",
         "position": "background",
-        "id": "german_flag_1"
+        "id": "flag_german_1"
       },
       {
-        "desc": "white 'ZDF' logo in a circle",
+        "desc": "white 'ZDF' logo",
         "action": "static",
-        "position": "top-left",
-        "id": "zdf_logo_1"
+        "position": "top left",
+        "id": "logo_zdf_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The man on the left gestures with his right hand.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The man on the right stands still.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A German flag serves as the backdrop.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "ZDF"
+    ],
+    "spatial": "The man in the leather jacket is to the left of the man in the suit. Both men are standing in front of the German flag. The ZDF logo is in the top left corner of the frame.",
+    "parse_success": true,
+    "chunk_idx": 12,
+    "video_id": "YiFfJ7XBzfY",
+    "state_changes": []
+  },
+  {
+    "time": [
+      13,
+      14
+    ],
+    "visible_entities": [
+      {
+        "desc": "man with a shaved head and beard, wearing a black leather jacket over a maroon t-shirt with a graphic print",
+        "action": "standing",
+        "position": "left",
+        "id": "person_bald_man_1"
+      },
+      {
+        "desc": "older man with short grey hair, wearing a black suit jacket, white shirt, and grey tie",
+        "action": "standing",
+        "position": "right"
+      },
+      {
+        "desc": "German flag with horizontal black, red, and gold stripes",
+        "action": "static",
+        "position": "background",
+        "id": "flag_german_1"
+      },
+      {
+        "desc": "ZDF logo in white text inside a grey circle",
+        "action": "static",
+        "position": "top left",
+        "id": "logo_zdf_1"
       }
     ],
     "atomic_facts": [
@@ -728,37 +726,35 @@
         "confidence": 1.0
       },
       {
-        "fact": "The man on the left is wearing a red t-shirt under a black leather jacket.",
+        "fact": "The man on the left is wearing a graphic t-shirt under a leather jacket.",
         "confidence": 1.0
       },
       {
-        "fact": "The man on the right is wearing a formal black suit and tie.",
+        "fact": "The man on the right is wearing a formal suit and tie.",
         "confidence": 1.0
       },
       {
-        "fact": "The 'ZDF' logo is visible in the top-left corner of the screen.",
+        "fact": "The ZDF logo is visible in the top left corner.",
         "confidence": 1.0
       }
     ],
     "ocr": [
       "ZDF"
     ],
-    "spatial": "The man in the leather jacket is to the left of the man in the suit. Both men are in front of the German flag. The ZDF logo is in the top-left corner, above the men.",
+    "spatial": "The man in the leather jacket is to the left of the man in the suit. Both men are standing in front of the German flag. The ZDF logo is above the man in the leather jacket.",
     "parse_success": true,
     "chunk_idx": 13,
     "video_id": "YiFfJ7XBzfY",
-    "state_changes": [
-      "bald man's t-shirt changed from maroon to red"
-    ]
+    "state_changes": []
   },
   {
     "time": [
-      28,
-      30
+      14,
+      15
     ],
     "visible_entities": [
       {
-        "desc": "bald man with dark beard, wearing a maroon t-shirt with a graphic print (Iron Man), a black leather jacket, and black pants",
+        "desc": "bald man with a beard, wearing a black leather jacket over a maroon t-shirt featuring a comic book character graphic",
         "action": "gesturing with right hand",
         "position": "left",
         "id": "person_bald_man_1"
@@ -770,36 +766,40 @@
         "id": "person_older_man_1"
       },
       {
-        "desc": "large German flag background with horizontal stripes of black, red, and gold",
+        "desc": "large German flag with horizontal black, red, and gold stripes",
         "action": "static",
         "position": "background",
-        "id": "german_flag_1"
+        "id": "flag_german_1"
       },
       {
-        "desc": "white circular logo with text '2DF'",
+        "desc": "ZDF logo in white text",
         "action": "static",
         "position": "top left",
-        "id": "zdf_logo_1"
+        "id": "logo_zdf_1"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "The man on the left gestures with his right hand while speaking.",
+        "fact": "The man on the left raises his right hand while speaking.",
         "confidence": 1.0
       },
       {
-        "fact": "The man on the right stands with his hands at his sides.",
+        "fact": "The man on the right stands with his arms at his sides.",
         "confidence": 1.0
       },
       {
-        "fact": "A '2DF' logo is visible in the top left corner.",
+        "fact": "A large German flag serves as the backdrop for the two men.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The ZDF logo is visible in the top left corner.",
         "confidence": 1.0
       }
     ],
     "ocr": [
-      "2DF"
+      "ZDF"
     ],
-    "spatial": "The man in the leather jacket is to the left of the man in the suit. Both men are standing in front of the German flag. The '2DF' logo is above the man in the leather jacket.",
+    "spatial": "The bald man in the leather jacket is standing to the left of the older man in the suit. Both men are positioned in front of the large German flag. The ZDF logo is located above the man on the left.",
     "parse_success": true,
     "chunk_idx": 14,
     "video_id": "YiFfJ7XBzfY",
@@ -807,42 +807,103 @@
   },
   {
     "time": [
-      30,
-      32
+      15,
+      16
     ],
     "visible_entities": [
       {
-        "desc": "bald man with dark beard, wearing a black leather jacket over a maroon t-shirt featuring a comic book style graphic of a superhero in yellow armor",
-        "action": "standing still",
+        "desc": "man with bald head and beard, wearing a black leather jacket over a maroon t-shirt featuring a comic book character graphic",
+        "action": "static",
         "position": "left",
         "id": "person_bald_man_1"
       },
       {
-        "desc": "older man with short grey hair, wearing a black suit jacket, white dress shirt, and a light grey tie",
-        "action": "standing still",
-        "position": "right",
-        "id": "person_older_man_1"
+        "desc": "older man with short grey hair, wearing a black suit jacket, white shirt, and grey tie",
+        "action": "static",
+        "position": "right"
       },
       {
         "desc": "large German flag with horizontal black, red, and gold stripes",
         "action": "static",
         "position": "background",
-        "id": "german_flag_1"
+        "id": "flag_german_1"
       },
       {
-        "desc": "white circular logo with the text 'ZDF'",
+        "desc": "white 'ZDF' logo in a circle",
         "action": "static",
-        "position": "top left",
-        "id": "zdf_logo_1"
+        "position": "top-left",
+        "id": "logo_zdf_1"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "The man on the left stands next to the man on the right.",
+        "fact": "Two men are standing side-by-side in front of a German flag.",
         "confidence": 1.0
       },
       {
-        "fact": "Both men are positioned in front of the German flag.",
+        "fact": "The man on the left is wearing a leather jacket and a graphic t-shirt.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The man on the right is wearing a formal suit and tie.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The ZDF logo is visible in the top left corner.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "ZDF"
+    ],
+    "spatial": "The man in the leather jacket is to the left of the man in the suit. Both men are standing in front of the German flag. The ZDF logo is above the man in the leather jacket.",
+    "parse_success": true,
+    "chunk_idx": 15,
+    "video_id": "YiFfJ7XBzfY",
+    "state_changes": []
+  },
+  {
+    "time": [
+      16,
+      17
+    ],
+    "visible_entities": [
+      {
+        "desc": "bald man with a beard, wearing a black leather jacket over a maroon t-shirt featuring a comic book style graphic of a superhero in yellow and red armor",
+        "action": "standing and turning head to the right",
+        "position": "left",
+        "id": "person_bald_man_1"
+      },
+      {
+        "desc": "older man with short grey hair, wearing a black suit jacket, white dress shirt, and a grey patterned tie",
+        "action": "standing static",
+        "position": "right",
+        "id": "person_older_man_1"
+      },
+      {
+        "desc": "large German flag with horizontal stripes of black, red, and gold",
+        "action": "static",
+        "position": "background",
+        "id": "flag_german_1"
+      },
+      {
+        "desc": "white circular logo with the text 'ZDF'",
+        "action": "static",
+        "position": "top-left",
+        "id": "logo_zdf_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The man on the left turns his head to look at the man on the right.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The man on the right stands facing forward with a neutral expression.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "Two men are standing in front of a German flag backdrop.",
         "confidence": 1.0
       },
       {
@@ -855,77 +916,24 @@
     ],
     "spatial": "The man in the leather jacket is to the left of the man in the suit. Both men are standing in front of the German flag. The ZDF logo is located in the top left corner of the screen, above the men.",
     "parse_success": true,
-    "chunk_idx": 15,
-    "video_id": "YiFfJ7XBzfY",
-    "state_changes": []
-  },
-  {
-    "time": [
-      32,
-      34
-    ],
-    "visible_entities": [
-      {
-        "desc": "bald man with a beard, wearing a black leather jacket over a maroon t-shirt featuring a comic book style graphic of Iron Man",
-        "action": "turning head to the right",
-        "position": "left"
-      },
-      {
-        "desc": "older man with short grey hair, wearing a dark suit jacket, white collared shirt, and a grey tie",
-        "action": "static",
-        "position": "right",
-        "id": "person_older_man_1"
-      },
-      {
-        "desc": "large German flag with horizontal black, red, and gold stripes",
-        "action": "static",
-        "position": "background",
-        "id": "german_flag_1"
-      },
-      {
-        "desc": "white 'ZDF' logo",
-        "action": "static",
-        "position": "top left",
-        "id": "zdf_logo_1"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "The man on the left turns his head to look at the man on the right.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The man on the right stands still facing forward.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The ZDF logo is visible in the top left corner.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [
-      "ZDF"
-    ],
-    "spatial": "The man in the leather jacket is standing to the left of the man in the suit. Both men are positioned in front of the German flag. The ZDF logo is located in the top left corner of the screen, above the men.",
-    "parse_success": true,
     "chunk_idx": 16,
     "video_id": "YiFfJ7XBzfY",
     "state_changes": []
   },
   {
     "time": [
-      34,
-      36
+      17,
+      18
     ],
     "visible_entities": [
       {
-        "desc": "bald man with a beard, wearing a black leather jacket over a maroon t-shirt with a graphic print of a woman and playing cards",
+        "desc": "man with bald head and beard, wearing a black leather jacket over a maroon t-shirt with a graphic print of a superhero character",
         "action": "gesturing with his right hand",
         "position": "left",
         "id": "person_bald_man_1"
       },
       {
-        "desc": "older man with short grey hair, wearing a black suit jacket, white shirt, and a light blue patterned tie",
+        "desc": "older man with short grey hair, wearing a black suit jacket, white shirt, and a grey patterned tie",
         "action": "static",
         "position": "right",
         "id": "person_older_man_1"
@@ -934,18 +942,18 @@
         "desc": "large German flag with horizontal black, red, and gold stripes",
         "action": "static",
         "position": "background",
-        "id": "german_flag_1"
+        "id": "flag_german_1"
       },
       {
-        "desc": "white 'ZDF' logo in a grey circle",
+        "desc": "white 'ZDF' logo in a circle",
         "action": "static",
         "position": "top left",
-        "id": "zdf_logo_1"
+        "id": "logo_zdf_1"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "The man on the left raises his right hand and points his thumb towards himself.",
+        "fact": "The man on the left raises his right hand and points towards his chest.",
         "confidence": 1.0
       },
       {
@@ -953,14 +961,14 @@
         "confidence": 1.0
       },
       {
-        "fact": "The 'ZDF' logo is visible in the top left corner of the screen.",
+        "fact": "A ZDF logo is visible in the top left corner of the screen.",
         "confidence": 1.0
       }
     ],
     "ocr": [
       "ZDF"
     ],
-    "spatial": "The man in the leather jacket is standing to the left of the man in the suit. Both men are positioned in front of the large German flag. The ZDF logo is located in the top left corner, above the man in the leather jacket.",
+    "spatial": "The man in the leather jacket is to the left of the man in the suit. Both men are standing in front of the German flag. The ZDF logo is above the man in the leather jacket.",
     "parse_success": true,
     "chunk_idx": 17,
     "video_id": "YiFfJ7XBzfY",
@@ -968,42 +976,45 @@
   },
   {
     "time": [
-      36,
-      38
+      18,
+      19
     ],
     "visible_entities": [
       {
-        "desc": "bald man with dark beard, wearing a black leather jacket over a maroon t-shirt featuring a graphic of Iron Man holding playing cards",
-        "action": "standing with hand on chest",
+        "desc": "man with bald head and beard, wearing a black leather jacket over a maroon t-shirt with a cartoon graphic",
+        "action": "standing and gesturing with his right hand",
         "position": "left",
         "id": "person_bald_man_1"
       },
       {
-        "desc": "older man with short grey hair, wearing a black suit jacket, white collared shirt, and a grey patterned tie",
+        "desc": "older man with short grey hair, wearing a black suit jacket, white shirt, and grey tie",
         "action": "static",
-        "position": "right",
-        "id": "person_older_man_1"
+        "position": "right"
       },
       {
         "desc": "large German flag with horizontal black, red, and gold stripes",
         "action": "static",
         "position": "background",
-        "id": "german_flag_1"
+        "id": "flag_german_1"
       },
       {
-        "desc": "white 'ZDF' logo",
+        "desc": "white 'ZDF' logo in a circle",
         "action": "static",
-        "position": "top left",
-        "id": "zdf_logo_1"
+        "position": "top-left",
+        "id": "logo_zdf_1"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "The man on the left places his left hand on his chest.",
+        "fact": "The man on the left gestures with his right hand towards his chest.",
         "confidence": 1.0
       },
       {
         "fact": "The man on the right stands still with his arms at his sides.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "Two men are standing in front of a large German flag.",
         "confidence": 1.0
       },
       {
@@ -1022,32 +1033,33 @@
   },
   {
     "time": [
-      38,
-      40
+      19,
+      20
     ],
     "visible_entities": [
       {
-        "desc": "bald man with a dark beard, wearing a black leather jacket over a maroon t-shirt featuring a comic book style graphic of Iron Man",
-        "action": "gesturing with right hand",
+        "desc": "bald man with a beard, wearing a black leather jacket over a maroon t-shirt with a graphic print of a comic book character",
+        "action": "gesturing with his right hand",
         "position": "left",
         "id": "person_bald_man_1"
       },
       {
-        "desc": "older man with short grey hair, wearing a black suit jacket, white dress shirt, and a light blue tie",
+        "desc": "older man with short grey hair, wearing a black suit jacket, white shirt, and a grey tie",
         "action": "static",
-        "position": "right"
+        "position": "right",
+        "id": "person_older_man_1"
       },
       {
-        "desc": "large German flag with horizontal black, red, and gold stripes",
+        "desc": "large German flag with horizontal stripes of black, red, and gold",
         "action": "static",
         "position": "background",
-        "id": "german_flag_1"
+        "id": "flag_german_1"
       },
       {
         "desc": "white 'ZDF' logo inside a grey circle",
         "action": "static",
         "position": "top left",
-        "id": "zdf_logo_1"
+        "id": "logo_zdf_1"
       }
     ],
     "atomic_facts": [
@@ -1064,14 +1076,14 @@
         "confidence": 1.0
       },
       {
-        "fact": "The ZDF logo is visible in the upper left corner.",
+        "fact": "The ZDF logo is visible in the top left corner.",
         "confidence": 1.0
       }
     ],
     "ocr": [
       "ZDF"
     ],
-    "spatial": "The man in the leather jacket is to the left of the man in the suit. Both men are standing in front of the German flag. The ZDF logo is located in the top left corner of the screen, above the men.",
+    "spatial": "The man in the leather jacket is to the left of the man in the suit. Both men are standing in front of the German flag. The ZDF logo is above the man in the leather jacket.",
     "parse_success": true,
     "chunk_idx": 19,
     "video_id": "YiFfJ7XBzfY",
@@ -1079,45 +1091,42 @@
   },
   {
     "time": [
-      40,
-      42
+      20,
+      21
     ],
     "visible_entities": [
       {
-        "desc": "bald man with dark beard, wearing a black leather jacket over a maroon t-shirt featuring a comic book character graphic",
-        "action": "speaking and gesturing with right hand",
+        "desc": "man with a shaved head and beard, wearing a black leather jacket over a maroon t-shirt with a comic book graphic, black pants",
+        "action": "standing and gesturing with right hand",
         "position": "left",
         "id": "person_bald_man_1"
       },
       {
-        "desc": "older man with short grey hair, wearing a black suit jacket, white dress shirt, and grey tie",
-        "action": "standing static",
-        "position": "right"
+        "desc": "older man with short grey hair, wearing a black suit jacket, white shirt, and grey patterned tie",
+        "action": "static",
+        "position": "right",
+        "id": "person_older_man_1"
       },
       {
         "desc": "large German flag with horizontal black, red, and gold stripes",
         "action": "static",
         "position": "background",
-        "id": "german_flag_1"
+        "id": "flag_german_1"
       },
       {
         "desc": "white 'ZDF' logo in a circle",
         "action": "static",
         "position": "top left",
-        "id": "zdf_logo_1"
+        "id": "logo_zdf_1"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "The man on the left is gesturing with his right hand while speaking.",
+        "fact": "The man on the left is gesturing with his right hand.",
         "confidence": 1.0
       },
       {
-        "fact": "The man on the right stands still with a neutral expression.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The two men are standing in front of a German flag backdrop.",
+        "fact": "The man on the right is standing still with a neutral expression.",
         "confidence": 1.0
       },
       {
@@ -1128,7 +1137,7 @@
     "ocr": [
       "ZDF"
     ],
-    "spatial": "The man in the leather jacket is to the left of the man in the suit. Both men are standing in front of the German flag. The ZDF logo is above the man in the leather jacket.",
+    "spatial": "The man in the leather jacket is to the left of the man in the suit. Both men are standing in front of the German flag. The ZDF logo is in the top left corner of the frame, above the men.",
     "parse_success": true,
     "chunk_idx": 20,
     "video_id": "YiFfJ7XBzfY",
@@ -1136,18 +1145,74 @@
   },
   {
     "time": [
-      42,
-      44
+      21,
+      22
     ],
     "visible_entities": [
       {
-        "desc": "bald man with beard, wearing a black leather jacket over a maroon t-shirt with a comic book style graphic print",
+        "desc": "bald man with beard, wearing a black leather jacket over a maroon t-shirt with a comic book style graphic, and black pants",
         "action": "gesturing with hands",
         "position": "left",
         "id": "person_bald_man_1"
       },
       {
         "desc": "older man with short grey hair, wearing a black suit jacket, white shirt, and grey tie",
+        "action": "standing static",
+        "position": "right"
+      },
+      {
+        "desc": "large German flag with black, red, and gold horizontal stripes",
+        "action": "static",
+        "position": "background",
+        "id": "flag_german_1"
+      },
+      {
+        "desc": "white circular logo with text '2DF'",
+        "action": "static",
+        "position": "top left"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The man on the left is gesturing with his hands open.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The man on the right is standing still with his arms at his sides.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The two men are standing in front of a large German flag.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The logo '2DF' is visible in the top left corner.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "2DF"
+    ],
+    "spatial": "The man in the leather jacket is to the left of the man in the suit. Both men are in front of the German flag. The '2DF' logo is above the man in the leather jacket.",
+    "parse_success": true,
+    "chunk_idx": 21,
+    "video_id": "YiFfJ7XBzfY",
+    "state_changes": []
+  },
+  {
+    "time": [
+      22,
+      23
+    ],
+    "visible_entities": [
+      {
+        "desc": "bald man with a beard, wearing a black leather jacket over a maroon t-shirt featuring a cartoon Iron Man graphic",
+        "action": "gesturing with hands",
+        "position": "left",
+        "id": "person_bald_man_1"
+      },
+      {
+        "desc": "older man with short gray hair, wearing a black suit jacket, white dress shirt, and a gray patterned tie",
         "action": "static",
         "position": "right",
         "id": "person_older_man_1"
@@ -1156,22 +1221,22 @@
         "desc": "large German flag with horizontal black, red, and gold stripes",
         "action": "static",
         "position": "background",
-        "id": "german_flag_1"
+        "id": "flag_german_1"
       },
       {
-        "desc": "white 'ZDF' logo in a circle",
+        "desc": "white 'ZDF' logo",
         "action": "static",
-        "position": "top-left",
-        "id": "zdf_logo_1"
+        "position": "top left",
+        "id": "logo_zdf_1"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "The man on the left is gesturing with his hands while speaking.",
+        "fact": "The man on the left gestures with his hands while speaking.",
         "confidence": 1.0
       },
       {
-        "fact": "The man on the right stands still with his arms at his sides.",
+        "fact": "The man on the right stands still and looks towards the man on the left.",
         "confidence": 1.0
       },
       {
@@ -1186,65 +1251,7 @@
     "ocr": [
       "ZDF"
     ],
-    "spatial": "The man in the leather jacket is to the left of the man in the suit. Both men are standing in front of the German flag. The ZDF logo is above the man in the leather jacket.",
-    "parse_success": true,
-    "chunk_idx": 21,
-    "video_id": "YiFfJ7XBzfY",
-    "state_changes": []
-  },
-  {
-    "time": [
-      44,
-      46
-    ],
-    "visible_entities": [
-      {
-        "desc": "man with bald head and beard, wearing a black leather jacket over a maroon t-shirt with a cartoon graphic",
-        "action": "gesturing with hands",
-        "position": "left",
-        "id": "person_bald_man_1"
-      },
-      {
-        "desc": "older man with short grey hair, wearing a black suit, white shirt, and grey tie",
-        "action": "standing static",
-        "position": "right",
-        "id": "person_older_man_1"
-      },
-      {
-        "desc": "German flag with horizontal black, red, and gold stripes",
-        "action": "static",
-        "position": "background",
-        "id": "german_flag_1"
-      },
-      {
-        "desc": "white 'ZDF' logo",
-        "action": "static",
-        "position": "top left",
-        "id": "zdf_logo_1"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "The man on the left is gesturing with his hands while speaking.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The man on the right is standing still and looking forward.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "A large German flag serves as the backdrop for the two men.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The 'ZDF' logo is visible in the top left corner.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [
-      "ZDF"
-    ],
-    "spatial": "The man in the leather jacket is to the left of the man in the suit. Both men are standing in front of the German flag. The ZDF logo is above and to the left of the man in the leather jacket.",
+    "spatial": "The bald man in the leather jacket is standing to the left of the older man in the suit. Both men are positioned in front of the large German flag. The ZDF logo is located above and to the left of the men.",
     "parse_success": true,
     "chunk_idx": 22,
     "video_id": "YiFfJ7XBzfY",
@@ -1252,46 +1259,53 @@
   },
   {
     "time": [
-      46,
-      48
+      23,
+      24
     ],
     "visible_entities": [
       {
-        "desc": "bald man with a dark beard, wearing a black leather jacket over a maroon t-shirt featuring a comic book character (Iron Man)",
-        "action": "standing next to the older man",
-        "position": "left"
+        "desc": "bald man with a dark beard, wearing a black leather jacket over a maroon t-shirt with a comic book graphic",
+        "action": "standing next to the other man",
+        "position": "left",
+        "id": "person_bald_man_1"
       },
       {
-        "desc": "older man with short grey hair, wearing a black suit jacket, white dress shirt, and a light blue patterned tie",
-        "action": "holding a CD case and a large silver device",
+        "desc": "older man with short grey hair, wearing a black suit jacket, white shirt, and grey tie",
+        "action": "holding a CD case and a silver object",
         "position": "right"
       },
       {
-        "desc": "large silver cylindrical device with metallic texture and circular details",
+        "desc": "silver cylindrical object with a textured surface and circular details",
         "action": "being held by the older man",
-        "position": "center foreground",
-        "id": "boombox_1"
+        "position": "foreground",
+        "id": "object_silver_device_1"
       },
       {
         "desc": "CD case with a cover image of a woman",
         "action": "being held by the older man",
-        "position": "center",
-        "id": "cd_case_1"
+        "position": "foreground",
+        "id": "object_cd_case_1"
       },
       {
-        "desc": "German flag with horizontal black, red, and gold stripes",
+        "desc": "German flag with black, red, and gold horizontal stripes",
         "action": "static",
         "position": "background",
-        "id": "german_flag_1"
+        "id": "flag_german_1"
+      },
+      {
+        "desc": "ZDF logo in white text inside a grey circle",
+        "action": "static",
+        "position": "top left",
+        "id": "logo_zdf_1"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "The older man holds a large silver cylindrical device in his lap.",
+        "fact": "The older man is holding a CD case and a silver cylindrical object.",
         "confidence": 1.0
       },
       {
-        "fact": "The older man holds a CD case in his right hand.",
+        "fact": "The bald man is standing to the left of the older man.",
         "confidence": 1.0
       },
       {
@@ -1299,7 +1313,7 @@
         "confidence": 1.0
       },
       {
-        "fact": "The CD case displays the text 'ANDREA BERG'.",
+        "fact": "The ZDF logo is visible in the top left corner of the screen.",
         "confidence": 1.0
       }
     ],
@@ -1307,55 +1321,61 @@
       "ZDF",
       "ANDREA BERG"
     ],
-    "spatial": "The bald man is to the left of the older man. The older man is holding the silver device in front of his torso and the CD case in his right hand. The German flag is behind both men.",
+    "spatial": "The bald man is to the left of the older man. The older man is holding a silver object and a CD case in front of him. Both men are in front of a German flag. The ZDF logo is in the top left corner of the frame.",
     "parse_success": true,
     "chunk_idx": 23,
     "video_id": "YiFfJ7XBzfY",
     "state_changes": [
-      "older man started holding CD case and silver device"
+      "older man is now holding a CD case and a silver cylindrical object; scene shifts focus to these props"
     ]
   },
   {
     "time": [
-      48,
-      50
+      24,
+      25
     ],
     "visible_entities": [
       {
-        "desc": "older man with short white hair, wearing a black suit jacket, white shirt, and light-colored tie",
-        "action": "holding a CD case and resting arm on a boombox",
+        "desc": "older man with short white hair, wearing a black suit jacket, white shirt, and silver tie",
+        "action": "holding a CD case and a large silver device",
         "position": "left",
         "id": "person_older_man_1"
       },
       {
-        "desc": "bald man with a dark beard, wearing a black leather jacket over a red t-shirt with a comic book graphic",
-        "action": "sitting and looking to the left",
+        "desc": "bald man with a dark beard, wearing a red t-shirt with a comic book graphic and a black leather jacket",
+        "action": "sitting and looking at the man on the left",
         "position": "right",
         "id": "person_bald_man_1"
       },
       {
-        "desc": "large silver boombox with a metallic finish and prominent speakers",
+        "desc": "large silver device with a cylindrical shape, resembling a prop or speaker, with a slot for a CD",
         "action": "static",
         "position": "foreground left",
-        "id": "boombox_1"
+        "id": "object_silver_device_1"
       },
       {
-        "desc": "CD case with a cover image of a woman",
+        "desc": "CD case with a cover featuring a woman's face and text",
         "action": "being held",
         "position": "left",
-        "id": "cd_case_1"
+        "id": "object_cd_case_1"
       },
       {
-        "desc": "green leafy plant",
+        "desc": "grey couch",
         "action": "static",
-        "position": "background left",
-        "id": "plants_trees_1"
+        "position": "background",
+        "id": "object_couch_1"
       },
       {
-        "desc": "blue cushion",
+        "desc": "blue pillow",
         "action": "static",
-        "position": "background right",
-        "id": "blue_cushion_1"
+        "position": "right background",
+        "id": "object_pillow_1"
+      },
+      {
+        "desc": "green plant leaves",
+        "action": "static",
+        "position": "top left",
+        "id": "object_plant_1"
       }
     ],
     "atomic_facts": [
@@ -1364,67 +1384,15 @@
         "confidence": 1.0
       },
       {
-        "fact": "The man on the left has his left arm resting on a large silver boombox.",
+        "fact": "The man on the left is holding a large silver device on his lap.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The CD case has the text 'ANDREA BERG' on it.",
         "confidence": 1.0
       },
       {
         "fact": "The man on the right is looking towards the man on the left.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The text 'ANDREA BERG' is visible on the CD case.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [
-      "ANDREA BERG"
-    ],
-    "spatial": "The older man is to the left of the bald man. The silver boombox is in front of the older man. The CD case is held by the older man, above the boombox. The green plant is behind the older man on the left, and the blue cushion is behind the bald man on the right.",
-    "parse_success": true,
-    "chunk_idx": 24,
-    "video_id": "YiFfJ7XBzfY",
-    "state_changes": [
-      "scene changed - bald man now sitting, boombox and cushion visible"
-    ]
-  },
-  {
-    "time": [
-      50,
-      52
-    ],
-    "visible_entities": [
-      {
-        "desc": "older man with short white hair, wearing a black suit jacket, white collared shirt, and light grey tie",
-        "action": "holding a CD case",
-        "position": "left",
-        "id": "person_older_man_1"
-      },
-      {
-        "desc": "bald man with a dark beard, wearing a black leather jacket over a red t-shirt with a colorful comic book graphic",
-        "action": "static",
-        "position": "right",
-        "id": "person_bald_man_1"
-      },
-      {
-        "desc": "large silver boombox with a metallic finish and black speaker grilles",
-        "action": "static",
-        "position": "foreground left",
-        "id": "boombox_1"
-      },
-      {
-        "desc": "CD case with a cover photo of a woman with reddish-brown hair",
-        "action": "being held",
-        "position": "center left",
-        "id": "cd_case_1"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "The older man holds a CD case in his hands.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The silver boombox rests on the lap of the older man.",
         "confidence": 1.0
       },
       {
@@ -1435,7 +1403,63 @@
     "ocr": [
       "ANDREA BERG"
     ],
-    "spatial": "The older man is to the left of the bald man. The silver boombox is in front of the older man, resting on his lap. The CD case is held by the older man, positioned above the boombox.",
+    "spatial": "The man in the black suit is sitting to the left of the man in the leather jacket. The large silver device is on the lap of the man on the left. The CD case is being held by the man on the left, above the silver device. The blue pillow is on the couch to the right of the man in the leather jacket.",
+    "parse_success": true,
+    "chunk_idx": 24,
+    "video_id": "YiFfJ7XBzfY",
+    "state_changes": [
+      "scene transitions to an indoor setting with a couch, pillow, and plant; bald man is now sitting"
+    ]
+  },
+  {
+    "time": [
+      25,
+      26
+    ],
+    "visible_entities": [
+      {
+        "desc": "older man with short white hair, wearing a black suit jacket, white collared shirt, and patterned tie",
+        "action": "holding a CD case",
+        "position": "left",
+        "id": "person_older_man_1"
+      },
+      {
+        "desc": "bald man with a dark beard, wearing a black leather jacket over a red t-shirt with a comic book character print",
+        "action": "sitting",
+        "position": "right",
+        "id": "person_bald_man_1"
+      },
+      {
+        "desc": "large silver cylindrical object with a metallic finish and circular details",
+        "action": "static",
+        "position": "center foreground",
+        "id": "object_silver_device_1"
+      },
+      {
+        "desc": "CD case featuring a woman's portrait",
+        "action": "being held",
+        "position": "left",
+        "id": "object_cd_case_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The older man on the left is holding a CD case in his hands.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The two men are sitting next to each other on a sofa.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A large silver cylindrical object rests on the lap of the man on the left.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "ANDREA BERG"
+    ],
+    "spatial": "The older man in the suit is to the left of the bald man in the leather jacket. The large silver cylindrical object is in front of the older man, resting on his lap. The CD case is held by the older man, positioned above the silver object.",
     "parse_success": true,
     "chunk_idx": 25,
     "video_id": "YiFfJ7XBzfY",
@@ -1443,8 +1467,8 @@
   },
   {
     "time": [
-      52,
-      54
+      26,
+      27
     ],
     "visible_entities": [
       {
@@ -1463,115 +1487,127 @@
         "desc": "white plate containing yellow pasta and brown meat patties",
         "action": "static",
         "position": "bottom center",
-        "id": "food_plate_1"
+        "id": "object_plate_food_1"
       },
       {
         "desc": "red and white checkered tablecloth",
         "action": "static",
         "position": "bottom",
-        "id": "tablecloth_1"
+        "id": "object_tablecloth_1"
       },
       {
         "desc": "green leafy plant",
         "action": "static",
         "position": "background",
-        "id": "plants_trees_1"
+        "id": "object_plant_1"
       },
       {
         "desc": "white number '2' logo",
         "action": "static",
         "position": "top left",
-        "id": "zdf_logo_1"
+        "id": "logo_zdf_1"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "The man in the suit holds a fork up to the bald man's mouth.",
+        "fact": "The man on the left holds a fork with food and moves it towards the mouth of the man on the right.",
         "confidence": 1.0
       },
       {
-        "fact": "The bald man opens his mouth to receive the food.",
+        "fact": "The man on the right opens his mouth to receive the food.",
         "confidence": 1.0
       },
       {
-        "fact": "A plate of pasta and meat sits on the table.",
+        "fact": "A plate of pasta and meat sits on the table between the two men.",
         "confidence": 1.0
       },
       {
-        "fact": "The table is covered with a red and white checkered cloth.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "A white number '2' is visible in the top left corner.",
+        "fact": "The number '2' is visible in the top left corner of the screen.",
         "confidence": 1.0
       }
     ],
     "ocr": [
       "2"
     ],
-    "spatial": "The man in the suit is to the left of the bald man. The plate of food is on the table in front of the bald man. The green plant is behind the man in the suit.",
+    "spatial": "The older man in the suit is to the left of the bald man in the leather jacket. The plate of food is on the table in front of the bald man. The green plant is behind the older man.",
     "parse_success": true,
     "chunk_idx": 26,
     "video_id": "YiFfJ7XBzfY",
     "state_changes": [
-      "older man started feeding bald man, plate with food and tablecloth appeared"
+      "older man begins feeding the bald man with a fork; plate of food and tablecloth become visible"
     ]
   },
   {
     "time": [
-      54,
-      56
+      27,
+      28
     ],
     "visible_entities": [
       {
         "desc": "bald man with a dark beard, wearing a black leather jacket over a red t-shirt",
         "action": "chewing food",
-        "position": "center"
+        "position": "center",
+        "id": "person_bald_man_1"
       },
       {
-        "desc": "green plant leaves",
+        "desc": "small piece of white food",
+        "action": "static",
+        "position": "foreground",
+        "id": "object_plate_food_1"
+      },
+      {
+        "desc": "green leafy plant",
         "action": "static",
         "position": "bottom left",
-        "id": "plants_trees_1"
+        "id": "object_plant_1"
       },
       {
         "desc": "white logo with the number '2'",
         "action": "static",
         "position": "top left",
-        "id": "zdf_logo_1"
+        "id": "logo_zdf_1"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "The man is chewing food with a piece of food visible on his lip.",
+        "fact": "The man is chewing a piece of food.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A small piece of white food is visible on the man's lower lip.",
         "confidence": 1.0
       },
       {
         "fact": "The man is wearing a black leather jacket.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The man is wearing a red t-shirt underneath the jacket.",
         "confidence": 1.0
       }
     ],
     "ocr": [
       "2"
     ],
-    "spatial": "The man is positioned in the center of the frame. The green plant is to the left of the man. The '2' logo is in the top left corner, above the plant.",
+    "spatial": "The man is centered in the frame. The green plant is to the left of the man. The '2' logo is in the top left corner, above the plant.",
     "parse_success": true,
     "chunk_idx": 27,
     "video_id": "YiFfJ7XBzfY",
     "state_changes": [
-      "bald man chewing food (eating action continued)"
+      "bald man is chewing food; older man is no longer visible in the frame"
     ]
   },
   {
     "time": [
-      56,
-      58
+      28,
+      29
     ],
     "visible_entities": [
       {
-        "desc": "bald man with a beard, wearing a black leather jacket over a maroon t-shirt with a graphic print of a comic book character (Iron Man), and black pants",
-        "action": "standing with arms open and palms facing up",
-        "position": "left"
+        "desc": "bald man with a beard, wearing a black leather jacket over a maroon t-shirt with a graphic print of playing cards and a cartoon character, and black pants",
+        "action": "standing with hands open and palms facing up",
+        "position": "left",
+        "id": "person_bald_man_1"
       },
       {
         "desc": "older man with short grey hair, wearing a black suit jacket, white dress shirt, and a grey patterned tie",
@@ -1583,76 +1619,78 @@
         "desc": "large German flag with horizontal stripes of black, red, and gold",
         "action": "static",
         "position": "background",
-        "id": "german_flag_1"
+        "id": "flag_german_1"
       },
       {
         "desc": "white circular logo with the text 'ZDF'",
         "action": "static",
-        "position": "top-left",
-        "id": "zdf_logo_1"
+        "position": "top left",
+        "id": "logo_zdf_1"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "The man on the left stands with his arms spread wide and palms facing upward.",
+        "fact": "The man on the left is gesturing with both hands open.",
         "confidence": 1.0
       },
       {
-        "fact": "The man on the right stands with his arms at his sides.",
+        "fact": "The man on the right is standing still with his arms at his sides.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A German flag serves as the backdrop for the two men.",
         "confidence": 1.0
       },
       {
         "fact": "The ZDF logo is visible in the top left corner of the screen.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "A large German flag serves as the backdrop for the two men.",
         "confidence": 1.0
       }
     ],
     "ocr": [
       "ZDF"
     ],
-    "spatial": "The bald man in the leather jacket is to the left of the older man in the suit. Both men are standing in front of the large German flag. The ZDF logo is located in the top-left corner, above the men.",
+    "spatial": "The man in the leather jacket is standing to the left of the man in the suit. Both men are positioned in front of the German flag. The ZDF logo is located in the top left corner, above the two men.",
     "parse_success": true,
     "chunk_idx": 28,
     "video_id": "YiFfJ7XBzfY",
     "state_changes": [
-      "scene returned to standing position, food/table setting disappeared"
+      "scene returns to the German flag background; both men are standing again"
     ]
   },
   {
     "time": [
-      58,
-      60
+      29,
+      30
     ],
     "visible_entities": [
       {
-        "desc": "bald man with dark beard, wearing a black leather jacket over a maroon t-shirt with a graphic print of playing cards and a cartoon character",
-        "action": "gesturing with hands",
-        "position": "left"
+        "desc": "man with bald head and beard, wearing a black leather jacket over a maroon t-shirt with a graphic print of playing cards and a superhero figure",
+        "action": "gesturing with open hands",
+        "position": "left",
+        "id": "person_bald_man_1"
       },
       {
-        "desc": "older man with short grey hair, wearing a black suit jacket, white collared shirt, and a light blue patterned tie",
+        "desc": "older man with short grey hair, wearing a black suit jacket, white collared shirt, and a light blue tie",
         "action": "static",
-        "position": "right"
+        "position": "right",
+        "id": "person_older_man_1"
       },
       {
-        "desc": "large German flag with horizontal stripes of black, red, and gold",
+        "desc": "large German flag with horizontal black, red, and gold stripes",
         "action": "static",
         "position": "background",
-        "id": "german_flag_1"
+        "id": "flag_german_1"
       },
       {
-        "desc": "white circular logo with text 'ZDF'",
+        "desc": "white 'ZDF' logo",
         "action": "static",
         "position": "top left",
-        "id": "zdf_logo_1"
+        "id": "logo_zdf_1"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "The man on the left gestures with his hands open and palms facing up.",
+        "fact": "The man on the left gestures with both hands open and palms facing up.",
         "confidence": 1.0
       },
       {
@@ -1660,11 +1698,7 @@
         "confidence": 1.0
       },
       {
-        "fact": "The two men are standing in front of a German flag.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The ZDF logo is visible in the top left corner.",
+        "fact": "The 'ZDF' logo is visible in the top left corner.",
         "confidence": 1.0
       }
     ],
@@ -1679,12 +1713,12 @@
   },
   {
     "time": [
-      60,
-      62
+      30,
+      31
     ],
     "visible_entities": [
       {
-        "desc": "man with bald head and beard, wearing a black leather jacket over a maroon t-shirt with a graphic print of playing cards and a character",
+        "desc": "man with bald head and dark beard, wearing a black leather jacket over a maroon t-shirt with a graphic print of a superhero character",
         "action": "standing still",
         "position": "left",
         "id": "person_bald_man_1"
@@ -1692,53 +1726,46 @@
       {
         "desc": "older man with short grey hair, wearing a black suit jacket, white shirt, and grey tie",
         "action": "standing still",
-        "position": "right",
-        "id": "person_older_man_1"
+        "position": "right"
       },
       {
         "desc": "German flag background with horizontal stripes of black, red, and gold",
         "action": "static",
         "position": "background",
-        "id": "german_flag_1"
+        "id": "flag_german_1"
       },
       {
-        "desc": "blue rectangular text box with white text",
+        "desc": "blue text box overlay with white text",
         "action": "static",
-        "position": "bottom center",
-        "id": "lower_third_graphics_1"
+        "position": "bottom",
+        "id": "graphic_lower_third_1"
       },
       {
         "desc": "logo with text 'MEIN FREUND IST AfD' in white and red",
         "action": "static",
         "position": "bottom left",
-        "id": "afd_logo_text_1"
-      },
-      {
-        "desc": "white 'ZDF' logo",
-        "action": "static",
-        "position": "top left",
-        "id": "zdf_logo_1"
+        "id": "logo_afd_slogan_1"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "Two men are standing side-by-side in front of a German flag.",
+        "fact": "Two men stand side-by-side in front of a German flag.",
         "confidence": 1.0
       },
       {
-        "fact": "A blue text box displays 'Artikel 4: „Die Freiheit des Glaubens, [...] und des religiösen [...] Bekenntnisses sind unverletzlich.“'",
+        "fact": "The man on the left wears a graphic t-shirt under a leather jacket.",
         "confidence": 1.0
       },
       {
-        "fact": "The logo 'MEIN FREUND IST AfD' is visible in the bottom left corner.",
+        "fact": "The man on the right wears a formal suit and tie.",
         "confidence": 1.0
       },
       {
-        "fact": "The man on the left is wearing a graphic t-shirt under a leather jacket.",
+        "fact": "A blue text box displays 'Artikel 4' and a quote about freedom of belief.",
         "confidence": 1.0
       },
       {
-        "fact": "The man on the right is wearing a formal suit and tie.",
+        "fact": "The text 'MEIN FREUND IST AfD' is visible in the bottom left corner.",
         "confidence": 1.0
       }
     ],
@@ -1748,471 +1775,28 @@
       "Artikel 4:",
       "„Die Freiheit des Glaubens, [...] und des religiösen [...] Bekenntnisses sind unverletzlich."
     ],
-    "spatial": "The man in the leather jacket is to the left of the man in the suit. Both men are standing in front of the German flag background. The blue text box is below the men and above the bottom edge of the frame. The 'MEIN FREUND IST AfD' logo is to the left of the blue text box.",
+    "spatial": "The man in the leather jacket is to the left of the man in the suit. Both men are standing in front of the German flag background. The blue text box is below the men. The 'MEIN FREUND IST AfD' logo is to the left of the blue text box.",
     "parse_success": true,
     "chunk_idx": 30,
     "video_id": "YiFfJ7XBzfY",
     "state_changes": [
-      "blue text box and AfD logo appeared"
+      "blue text box overlay and 'MEIN FREUND IST AfD' logo appear on screen"
     ]
   },
   {
     "time": [
-      62,
-      64
+      31,
+      32
     ],
     "visible_entities": [
       {
-        "desc": "man with a shaved head and dark beard, wearing a black leather jacket over a maroon t-shirt featuring a graphic of a superhero holding playing cards",
-        "action": "speaking and gesturing with his right hand",
-        "position": "left",
-        "id": "person_bald_man_1"
-      },
-      {
-        "desc": "older man with short grey hair, wearing a black suit jacket, white dress shirt, and a grey tie",
-        "action": "static",
-        "position": "right",
-        "id": "person_older_man_1"
-      },
-      {
-        "desc": "large German flag with black, red, and gold horizontal stripes",
-        "action": "static",
-        "position": "background"
-      },
-      {
-        "desc": "blue lower-third graphic overlay with white text",
-        "action": "static",
-        "position": "bottom",
-        "id": "lower_third_graphics_1"
-      },
-      {
-        "desc": "white logo with red text reading 'MEIN FREUND IST AFD'",
-        "action": "static",
-        "position": "bottom-left",
-        "id": "afd_logo_text_1"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "The man on the left is gesturing with his right hand while speaking.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The man on the right stands still with his arms at his sides.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The blue text box displays a quote from 'Artikel 4' regarding freedom of faith.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The logo 'MEIN FREUND IST AFD' is visible in the bottom left corner.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [
-      "ZDF",
-      "MEIN FREUND IST AFD",
-      "Artikel 4:",
-      "„Die Freiheit des Glaubens, [...] und des religiösen [...] Bekenntnisses sind unverletzlich.“"
-    ],
-    "spatial": "The man in the leather jacket is standing to the left of the man in the suit. Both men are positioned in front of the large German flag. The blue text box is located below the men, spanning the lower portion of the screen. The 'MEIN FREUND IST AFD' logo is to the left of the blue text box.",
-    "parse_success": true,
-    "chunk_idx": 31,
-    "video_id": "YiFfJ7XBzfY",
-    "state_changes": [
-      "blue lower-third graphic overlay appeared"
-    ]
-  },
-  {
-    "time": [
-      64,
-      66
-    ],
-    "visible_entities": [
-      {
-        "desc": "man with bald head and dark beard, wearing a black leather jacket over a maroon t-shirt with a graphic print of a superhero character",
+        "desc": "bald man with dark beard, wearing a black leather jacket over a maroon t-shirt with a graphic print of a playing card featuring a superhero character",
         "action": "standing and gesturing with right hand",
         "position": "left",
         "id": "person_bald_man_1"
       },
       {
-        "desc": "older man with short grey hair, wearing a black suit jacket, white shirt, and grey tie",
-        "action": "static",
-        "position": "right",
-        "id": "person_older_man_1"
-      },
-      {
-        "desc": "large German flag with horizontal stripes of black, red, and gold",
-        "action": "static",
-        "position": "background",
-        "id": "german_flag_1"
-      },
-      {
-        "desc": "blue rectangular text box with white text",
-        "action": "static",
-        "position": "bottom",
-        "id": "lower_third_graphics_1"
-      },
-      {
-        "desc": "white logo with red text 'MEIN FREUND IST AfD'",
-        "action": "static",
-        "position": "bottom left",
-        "id": "afd_logo_text_1"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "The man on the left raises his right hand while speaking.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The man on the right stands still with his arms at his sides.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "A blue text box at the bottom displays 'Artikel 4' and a quote about freedom of belief.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The logo 'MEIN FREUND IST AfD' is visible in the bottom left corner.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [
-      "ZDF",
-      "MEIN FREUND IST AfD",
-      "Artikel 4:",
-      "„Die Freiheit des Glaubens, [...] und des religiösen [...] Bekenntnisses sind unverletzlich.“"
-    ],
-    "spatial": "The man in the leather jacket is to the left of the man in the suit. Both men are standing in front of the German flag. The blue text box is below the men, spanning the lower portion of the screen. The 'MEIN FREUND IST AfD' logo is to the left of the blue text box.",
-    "parse_success": true,
-    "chunk_idx": 32,
-    "video_id": "YiFfJ7XBzfY",
-    "state_changes": []
-  },
-  {
-    "time": [
-      66,
-      68
-    ],
-    "visible_entities": [
-      {
-        "desc": "man with bald head and beard, wearing a black leather jacket over a maroon t-shirt with a graphic print of playing cards and a superhero character",
-        "action": "standing and speaking",
-        "position": "left",
-        "id": "person_bald_man_1"
-      },
-      {
-        "desc": "older man with short grey hair, wearing a black suit jacket, white collared shirt, and a grey patterned tie",
-        "action": "static",
-        "position": "right",
-        "id": "person_older_man_1"
-      },
-      {
-        "desc": "large German flag with horizontal black, red, and gold stripes",
-        "action": "static",
-        "position": "background",
-        "id": "german_flag_1"
-      },
-      {
-        "desc": "blue lower-third graphic overlay with white text",
-        "action": "static",
-        "position": "bottom",
-        "id": "lower_third_graphics_1"
-      },
-      {
-        "desc": "logo with text 'MEIN FREUND IST AfD' in white and red on a green background",
-        "action": "static",
-        "position": "bottom-left",
-        "id": "afd_logo_text_1"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "The man on the left is speaking while the man on the right stands silently.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The blue text box displays 'Artikel 4' and a quote about freedom of belief.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The logo 'MEIN FREUND IST AfD' is visible in the bottom left corner.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The ZDF channel logo is visible in the top left corner.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [
-      "ZDF",
-      "MEIN FREUND IST AfD",
-      "Artikel 4:",
-      "„Die Freiheit des Glaubens, [...] und des religiösen [...] Bekenntnisses sind unverletzlich.“"
-    ],
-    "spatial": "The man in the leather jacket is standing to the left of the man in the suit. Both men are positioned in front of the German flag background. The blue text overlay is located below the men, spanning the width of the screen. The 'MEIN FREUND IST AfD' logo is to the left of the blue text box.",
-    "parse_success": true,
-    "chunk_idx": 33,
-    "video_id": "YiFfJ7XBzfY",
-    "state_changes": []
-  },
-  {
-    "time": [
-      68,
-      70
-    ],
-    "visible_entities": [
-      {
-        "desc": "man with bald head and beard, wearing a black leather jacket over a maroon t-shirt with a graphic print",
-        "action": "standing",
-        "position": "left",
-        "id": "person_bald_man_1"
-      },
-      {
-        "desc": "older man with short grey hair, wearing a black suit, white shirt, and grey tie",
-        "action": "standing",
-        "position": "right",
-        "id": "person_older_man_1"
-      },
-      {
-        "desc": "German flag with horizontal black, red, and gold stripes",
-        "action": "static",
-        "position": "background",
-        "id": "german_flag_1"
-      },
-      {
-        "desc": "blue lower-third graphic with white text",
-        "action": "static",
-        "position": "bottom",
-        "id": "lower_third_graphics_1"
-      },
-      {
-        "desc": "white logo with red text 'MEIN FREUND IST AfD'",
-        "action": "static",
-        "position": "bottom left",
-        "id": "afd_logo_text_1"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "Two men are standing side-by-side in front of a German flag.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The man on the left is wearing a leather jacket over a graphic t-shirt.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The man on the right is wearing a formal suit and tie.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "A blue text box at the bottom displays 'Artikel 4' and a quote about freedom of belief.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The logo 'MEIN FREUND IST AfD' is visible in the bottom left corner.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [
-      "ZDF",
-      "MEIN FREUND IST AfD",
-      "Artikel 4:",
-      "„Die Freiheit des Glaubens, [...] und des religiösen [...] Bekenntnisses sind unverletzlich.“"
-    ],
-    "spatial": "The man in the leather jacket is to the left of the man in the suit. Both men are standing in front of the German flag. The blue text box is below the men. The 'MEIN FREUND IST AfD' logo is to the left of the blue text box.",
-    "parse_success": true,
-    "chunk_idx": 34,
-    "video_id": "YiFfJ7XBzfY",
-    "state_changes": []
-  },
-  {
-    "time": [
-      70,
-      72
-    ],
-    "visible_entities": [
-      {
-        "desc": "bald man with a beard, wearing a black leather jacket over a maroon t-shirt with a graphic print",
-        "action": "standing and gesturing with his hand near his face",
-        "position": "left"
-      },
-      {
-        "desc": "older man with short grey hair, wearing a black suit, white shirt, and grey tie",
-        "action": "standing with hands slightly raised",
-        "position": "right",
-        "id": "person_older_man_1"
-      },
-      {
-        "desc": "large German flag with black, red, and gold horizontal stripes",
-        "action": "static",
-        "position": "background"
-      },
-      {
-        "desc": "blue lower-third graphic overlay with white text",
-        "action": "static",
-        "position": "bottom",
-        "id": "lower_third_graphics_1"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "The bald man raises his right hand towards his face in the first frame.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The older man stands to the right of the bald man.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "A blue banner at the bottom displays text about 'Artikel 4' and 'Die Freiheit des Glaubens'.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The logo 'MEIN FREUND IST AfD' is visible in the bottom left corner.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [
-      "ZDF",
-      "MEIN FREUND IST AfD",
-      "Artikel 4:",
-      "„Die Freiheit des Glaubens, [...] und des religiösen [...]",
-      "Beke"
-    ],
-    "spatial": "The bald man in the leather jacket is standing to the left of the older man in the suit. Both men are positioned in front of a large German flag. The blue text banner is located below the men at the bottom of the screen.",
-    "parse_success": true,
-    "chunk_idx": 35,
-    "video_id": "YiFfJ7XBzfY",
-    "state_changes": []
-  },
-  {
-    "time": [
-      72,
-      74
-    ],
-    "visible_entities": [
-      {
-        "desc": "bald man with dark beard, wearing a black leather jacket over a maroon t-shirt featuring a comic book character graphic",
-        "action": "standing",
-        "position": "left",
-        "id": "person_bald_man_1"
-      },
-      {
-        "desc": "older man with short grey hair, wearing a dark suit jacket, white shirt, and grey patterned tie",
-        "action": "standing",
-        "position": "right",
-        "id": "person_older_man_1"
-      },
-      {
-        "desc": "large German flag with horizontal black, red, and gold stripes",
-        "action": "static",
-        "position": "background",
-        "id": "german_flag_1"
-      },
-      {
-        "desc": "white 'ZDF' logo in a grey circle",
-        "action": "static",
-        "position": "top-left",
-        "id": "zdf_logo_1"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "Two men are standing side-by-side in front of a German flag.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The man on the left is wearing a graphic t-shirt under a leather jacket.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The man on the right is wearing a formal suit and tie.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The ZDF logo is visible in the top left corner.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [
-      "ZDF"
-    ],
-    "spatial": "The bald man in the leather jacket is to the left of the older man in the suit. Both men are standing in front of the large German flag. The ZDF logo is located in the top-left corner of the screen, above the flag.",
-    "parse_success": true,
-    "chunk_idx": 36,
-    "video_id": "YiFfJ7XBzfY",
-    "state_changes": []
-  },
-  {
-    "time": [
-      74,
-      76
-    ],
-    "visible_entities": [
-      {
-        "desc": "bald man with a beard, wearing a black leather jacket over a maroon t-shirt with a graphic print of a superhero character",
-        "action": "gesturing with open hands",
-        "position": "left"
-      },
-      {
-        "desc": "older man with short grey hair, wearing a black suit jacket, white shirt, and a grey patterned tie",
-        "action": "static",
-        "position": "right",
-        "id": "person_older_man_1"
-      },
-      {
-        "desc": "large German flag with horizontal black, red, and gold stripes",
-        "action": "static",
-        "position": "background",
-        "id": "german_flag_1"
-      },
-      {
-        "desc": "white 'ZDF' logo in a circle",
-        "action": "static",
-        "position": "top left",
-        "id": "zdf_logo_1"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "The man on the left gestures with both hands open and palms facing up.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The man on the right stands still with his arms at his sides.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The ZDF logo is visible in the top left corner.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [
-      "ZDF"
-    ],
-    "spatial": "The man in the leather jacket is to the left of the man in the suit. Both men are standing in front of the German flag. The ZDF logo is above the man in the leather jacket.",
-    "parse_success": true,
-    "chunk_idx": 37,
-    "video_id": "YiFfJ7XBzfY",
-    "state_changes": []
-  },
-  {
-    "time": [
-      76,
-      78
-    ],
-    "visible_entities": [
-      {
-        "desc": "bald man with a beard, wearing a black leather jacket over a maroon t-shirt with a graphic print of a comic book character (Iron Man)",
-        "action": "gesturing with open hands",
-        "position": "left"
-      },
-      {
-        "desc": "older man with short grey hair, wearing a black suit jacket, white shirt, and a grey tie",
+        "desc": "older man with short grey hair, wearing a black suit jacket, white dress shirt, and a grey tie",
         "action": "standing static",
         "position": "right",
         "id": "person_older_man_1"
@@ -2221,70 +1805,19 @@
         "desc": "large German flag with horizontal black, red, and gold stripes",
         "action": "static",
         "position": "background",
-        "id": "german_flag_1"
+        "id": "flag_german_1"
       },
       {
-        "desc": "white 'ZDF' logo",
+        "desc": "blue rectangular graphic overlay with white text",
         "action": "static",
-        "position": "top left",
-        "id": "zdf_logo_1"
-      }
-    ],
-    "atomic_facts": [
-      {
-        "fact": "The man on the left gestures with both hands open.",
-        "confidence": 1.0
+        "position": "bottom",
+        "id": "graphic_lower_third_1"
       },
       {
-        "fact": "The man on the right stands still with his arms at his sides.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The two men are standing in front of a German flag.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The ZDF logo is visible in the top left corner.",
-        "confidence": 1.0
-      }
-    ],
-    "ocr": [
-      "ZDF"
-    ],
-    "spatial": "The man in the leather jacket is to the left of the man in the suit. Both men are standing in front of the German flag. The ZDF logo is above the man in the leather jacket.",
-    "parse_success": true,
-    "chunk_idx": 38,
-    "video_id": "YiFfJ7XBzfY",
-    "state_changes": []
-  },
-  {
-    "time": [
-      78,
-      80
-    ],
-    "visible_entities": [
-      {
-        "desc": "man with bald head and dark beard, wearing a black leather jacket over a maroon t-shirt with an Iron Man comic book graphic",
-        "action": "standing and gesturing with right hand",
-        "position": "left",
-        "id": "person_bald_man_1"
-      },
-      {
-        "desc": "older man with short grey hair, wearing a dark suit, white shirt, and grey tie",
+        "desc": "white logo text 'MEIN FREUND IST AfD' with red 'AFD' box",
         "action": "static",
-        "position": "right",
-        "id": "person_older_man_1"
-      },
-      {
-        "desc": "large German flag with black, red, and gold horizontal stripes",
-        "action": "static",
-        "position": "background"
-      },
-      {
-        "desc": "ZDF logo in white text inside a grey circle",
-        "action": "static",
-        "position": "top left",
-        "id": "zdf_logo_1"
+        "position": "bottom-left",
+        "id": "logo_afd_slogan_1"
       }
     ],
     "atomic_facts": [
@@ -2297,33 +1830,304 @@
         "confidence": 1.0
       },
       {
-        "fact": "The ZDF logo is visible in the top left corner.",
+        "fact": "The blue overlay displays the text 'Artikel 4: „Die Freiheit des Glaubens, [...] und des religiösen [...] Bekenntnisses sind unverletzlich.“'.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The logo 'MEIN FREUND IST AfD' is visible in the bottom left corner.",
         "confidence": 1.0
       }
     ],
     "ocr": [
-      "ZDF"
+      "ZDF",
+      "MEIN FREUND IST AfD",
+      "Artikel 4:",
+      "„Die Freiheit des Glaubens, [...] und des religiösen [...] Bekenntnisses sind unverletzlich.“"
     ],
-    "spatial": "The man in the leather jacket is to the left of the man in the suit. Both men are standing in front of the German flag. The ZDF logo is above the man in the leather jacket.",
+    "spatial": "The man in the leather jacket is standing to the left of the man in the suit. Both men are positioned in front of the German flag. The blue text box is located below the men, spanning the lower portion of the screen.",
     "parse_success": true,
-    "chunk_idx": 39,
+    "chunk_idx": 31,
     "video_id": "YiFfJ7XBzfY",
     "state_changes": []
   },
   {
     "time": [
-      80,
-      82
+      32,
+      33
     ],
     "visible_entities": [
       {
-        "desc": "bald man with a dark beard, wearing a maroon t-shirt with a large Iron Man graphic, a black leather jacket, and black pants",
+        "desc": "man with a shaved head and beard, wearing a black leather jacket over a maroon t-shirt featuring a comic book character print",
+        "action": "standing and speaking",
+        "position": "left",
+        "id": "person_bald_man_1"
+      },
+      {
+        "desc": "older man with short grey hair, wearing a black suit, white shirt, and grey tie",
+        "action": "static",
+        "position": "right",
+        "id": "person_older_man_1"
+      },
+      {
+        "desc": "German flag background with horizontal stripes of black, red, and yellow",
+        "action": "static",
+        "position": "background",
+        "id": "flag_german_1"
+      },
+      {
+        "desc": "blue lower-third graphic overlay with white text",
+        "action": "static",
+        "position": "bottom",
+        "id": "graphic_lower_third_1"
+      },
+      {
+        "desc": "white and red logo reading 'MEIN FREUND IST AfD'",
+        "action": "static",
+        "position": "bottom left",
+        "id": "logo_afd_slogan_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The man on the left is speaking and gesturing with his right hand.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The man on the right stands silently next to the speaker.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A blue banner at the bottom displays text quoting 'Artikel 4'.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The text on the banner reads: 'Die Freiheit des Glaubens, [...] und des religiösen [...] Bekenntnisses sind unverletzlich.'",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The ZDF logo is visible in the top left corner.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "ZDF",
+      "MEIN FREUND IST AfD",
+      "Artikel 4:",
+      "„Die Freiheit des Glaubens, [...] und des religiösen [...] Bekenntnisses sind unverletzlich.“"
+    ],
+    "spatial": "The man in the leather jacket is to the left of the man in the suit. Both men are standing in front of the German flag. The blue text banner is located below the men at the bottom of the screen. The 'MEIN FREUND IST AfD' logo is to the left of the blue text banner.",
+    "parse_success": true,
+    "chunk_idx": 32,
+    "video_id": "YiFfJ7XBzfY",
+    "state_changes": []
+  },
+  {
+    "time": [
+      33,
+      34
+    ],
+    "visible_entities": [
+      {
+        "desc": "bald man with dark beard, wearing a black leather jacket over a maroon t-shirt with a graphic print of a comic book character",
+        "action": "standing and speaking",
+        "position": "left",
+        "id": "person_bald_man_1"
+      },
+      {
+        "desc": "older man with short grey hair, wearing a black suit jacket, white shirt, and grey tie",
+        "action": "static",
+        "position": "right"
+      },
+      {
+        "desc": "large German flag with horizontal stripes of black, red, and gold",
+        "action": "static",
+        "position": "background",
+        "id": "flag_german_1"
+      },
+      {
+        "desc": "blue lower-third graphic overlay with white text",
+        "action": "static",
+        "position": "bottom",
+        "id": "graphic_lower_third_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The man on the left is speaking.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The man on the right is standing silently next to the speaker.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The text on the screen displays 'Artikel 4' and a quote about freedom of belief.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The logo 'MEIN FREUND IST AfD' is visible in the bottom left corner.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "ZDF",
+      "MEIN FREUND IST AfD",
+      "Artikel 4:",
+      "„Die Freiheit des Glaubens, [...] und des religiösen [...] Bekenntnisses sind unverletzlich.“"
+    ],
+    "spatial": "The man in the leather jacket is standing to the left of the man in the suit. Both men are positioned in front of the German flag. The blue text overlay is located at the bottom of the screen, below the men.",
+    "parse_success": true,
+    "chunk_idx": 33,
+    "video_id": "YiFfJ7XBzfY",
+    "state_changes": []
+  },
+  {
+    "time": [
+      34,
+      35
+    ],
+    "visible_entities": [
+      {
+        "desc": "bald man with dark beard, wearing a black leather jacket over a maroon t-shirt with a graphic print of a character holding cards",
         "action": "standing",
         "position": "left",
         "id": "person_bald_man_1"
       },
       {
-        "desc": "older man with short grey hair, wearing a black suit jacket, white dress shirt, and a grey patterned tie",
+        "desc": "older man with short grey hair, wearing a black suit, white shirt, and grey tie",
+        "action": "standing",
+        "position": "right",
+        "id": "person_older_man_1"
+      },
+      {
+        "desc": "large German flag background with black, red, and gold horizontal stripes",
+        "action": "static",
+        "position": "background",
+        "id": "flag_german_1"
+      },
+      {
+        "desc": "blue lower-third graphic with white text",
+        "action": "static",
+        "position": "bottom",
+        "id": "graphic_lower_third_1"
+      },
+      {
+        "desc": "logo with text 'MEIN FREUND IST AfD' in white and red",
+        "action": "static",
+        "position": "bottom-left",
+        "id": "logo_afd_slogan_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "Two men are standing side-by-side in front of a German flag.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The man on the left is wearing a casual leather jacket and graphic tee.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The man on the right is dressed formally in a suit and tie.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A blue text box displays a quote from 'Artikel 4' regarding freedom of belief.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The logo 'MEIN FREUND IST AfD' is visible in the bottom left corner.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "ZDF",
+      "MEIN FREUND IST AfD",
+      "Artikel 4:",
+      "„Die Freiheit des Glaubens, [...] und des religiösen [...] Bekenntnisses sind unverletzlich.“"
+    ],
+    "spatial": "The man in the leather jacket is to the left of the man in the suit. Both men are standing in front of the German flag background. The blue text box is below the men, and the 'MEIN FREUND IST AfD' logo is to the left of the blue text box.",
+    "parse_success": true,
+    "chunk_idx": 34,
+    "video_id": "YiFfJ7XBzfY",
+    "state_changes": []
+  },
+  {
+    "time": [
+      35,
+      36
+    ],
+    "visible_entities": [
+      {
+        "desc": "bald man with beard, wearing a black leather jacket over a maroon t-shirt with a comic book character graphic",
+        "action": "wiping his face with his hand then standing with arms at his sides",
+        "position": "left",
+        "id": "person_bald_man_1"
+      },
+      {
+        "desc": "older man with short grey hair, wearing a black suit, white shirt, and grey tie",
+        "action": "standing next to the other man",
+        "position": "right",
+        "id": "person_older_man_1"
+      },
+      {
+        "desc": "large German flag with horizontal black, red, and gold stripes",
+        "action": "static",
+        "position": "background",
+        "id": "flag_german_1"
+      },
+      {
+        "desc": "blue lower-third graphic with white text",
+        "action": "static",
+        "position": "bottom",
+        "id": "graphic_lower_third_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The man on the left wipes his face with his right hand in the first frame.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The man on the left lowers his hand to his side in the second frame.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The text 'Artikel 4: „Die Freiheit des Glaubens, [...] und des religiösen [...]“ Beke' is visible on the blue banner.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The logo 'MEIN FREUND IST AfD' is visible in the bottom left corner.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "ZDF",
+      "MEIN FREUND IST AfD",
+      "Artikel 4:",
+      "„Die Freiheit des Glaubens, [...] und des religiösen [...]\"",
+      "Beke"
+    ],
+    "spatial": "The bald man is standing to the left of the older man in the suit. Both men are positioned in front of the large German flag. The blue text banner is located at the bottom of the screen, below the men.",
+    "parse_success": true,
+    "chunk_idx": 35,
+    "video_id": "YiFfJ7XBzfY",
+    "state_changes": []
+  },
+  {
+    "time": [
+      36,
+      37
+    ],
+    "visible_entities": [
+      {
+        "desc": "bald man with a beard, wearing a black leather jacket over a maroon t-shirt with a comic book graphic print",
+        "action": "static",
+        "position": "left",
+        "id": "person_bald_man_1"
+      },
+      {
+        "desc": "older man with short grey hair, wearing a dark suit jacket, white shirt, and a light blue patterned tie",
         "action": "static",
         "position": "right",
         "id": "person_older_man_1"
@@ -2332,37 +2136,264 @@
         "desc": "large German flag with horizontal stripes of black, red, and gold",
         "action": "static",
         "position": "background",
-        "id": "german_flag_1"
+        "id": "flag_german_1"
       },
       {
-        "desc": "white 'ZDF' logo in a circle",
+        "desc": "white circular logo with the text '2DF'",
         "action": "static",
         "position": "top left",
-        "id": "zdf_logo_1"
+        "id": "logo_zdf_1"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "The man on the left is standing next to the man on the right.",
+        "fact": "The man in the leather jacket stands next to the man in the suit.",
         "confidence": 1.0
       },
       {
-        "fact": "The man on the left is wearing a graphic t-shirt under an open leather jacket.",
+        "fact": "The men are standing in front of a German flag.",
         "confidence": 1.0
       },
       {
-        "fact": "The man on the right is wearing formal business attire.",
+        "fact": "The logo '2DF' is visible in the top left corner.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "2DF"
+    ],
+    "spatial": "The man in the leather jacket is to the left of the man in the suit. Both men are standing in front of the German flag. The '2DF' logo is in the top left corner of the screen, above the men.",
+    "parse_success": true,
+    "chunk_idx": 36,
+    "video_id": "YiFfJ7XBzfY",
+    "state_changes": []
+  },
+  {
+    "time": [
+      37,
+      38
+    ],
+    "visible_entities": [
+      {
+        "desc": "bald man with a beard, wearing a black leather jacket over a maroon t-shirt featuring a comic book character graphic (Iron Man)",
+        "action": "gesturing with open hands",
+        "position": "left",
+        "id": "person_bald_man_1"
+      },
+      {
+        "desc": "older man with short grey hair, wearing a black suit jacket, white dress shirt, and a grey patterned tie",
+        "action": "standing static",
+        "position": "right",
+        "id": "person_older_man_1"
+      },
+      {
+        "desc": "large German flag with horizontal black, red, and gold stripes",
+        "action": "static",
+        "position": "background",
+        "id": "flag_german_1"
+      },
+      {
+        "desc": "white 'ZDF' logo in a circle",
+        "action": "static",
+        "position": "top-left",
+        "id": "logo_zdf_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The man on the left gestures with his hands open and palms facing up.",
         "confidence": 1.0
       },
       {
-        "fact": "Both men are standing in front of a German flag.",
+        "fact": "The man on the right stands still with his arms at his sides.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A large German flag serves as the backdrop for the two men.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The ZDF logo is visible in the upper left corner.",
         "confidence": 1.0
       }
     ],
     "ocr": [
       "ZDF"
     ],
-    "spatial": "The bald man in the leather jacket is to the left of the older man in the suit. Both men are standing in front of the German flag. The ZDF logo is in the top left corner of the screen, above the men.",
+    "spatial": "The man in the leather jacket is to the left of the man in the suit. Both men are standing in front of the German flag. The ZDF logo is located in the top-left corner, above the men.",
+    "parse_success": true,
+    "chunk_idx": 37,
+    "video_id": "YiFfJ7XBzfY",
+    "state_changes": []
+  },
+  {
+    "time": [
+      38,
+      39
+    ],
+    "visible_entities": [
+      {
+        "desc": "bald man with a beard, wearing a black leather jacket over a maroon t-shirt with a graphic print of a comic book character",
+        "action": "gesturing with hands",
+        "position": "left",
+        "id": "person_bald_man_1"
+      },
+      {
+        "desc": "older man with short grey hair, wearing a black suit jacket, white shirt, and grey tie",
+        "action": "static",
+        "position": "right"
+      },
+      {
+        "desc": "large German flag with horizontal black, red, and gold stripes",
+        "action": "static",
+        "position": "background",
+        "id": "flag_german_1"
+      },
+      {
+        "desc": "white 'ZDF' logo",
+        "action": "static",
+        "position": "top left",
+        "id": "logo_zdf_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The man on the left gestures with his hands open and then points a finger.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The man on the right stands still with his arms at his sides.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The 'ZDF' logo is visible in the top left corner.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A German flag serves as the backdrop for the two men.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "ZDF"
+    ],
+    "spatial": "The bald man in the leather jacket is to the left of the older man in the suit. Both men are standing in front of the German flag. The 'ZDF' logo is above the men in the top left corner.",
+    "parse_success": true,
+    "chunk_idx": 38,
+    "video_id": "YiFfJ7XBzfY",
+    "state_changes": []
+  },
+  {
+    "time": [
+      39,
+      40
+    ],
+    "visible_entities": [
+      {
+        "desc": "bald man with a beard, wearing a black leather jacket over a maroon t-shirt featuring a comic book character graphic (Iron Man)",
+        "action": "standing and speaking",
+        "position": "left",
+        "id": "person_bald_man_1"
+      },
+      {
+        "desc": "older man with short grey hair, wearing a dark suit jacket, white dress shirt, and a grey patterned tie",
+        "action": "standing static",
+        "position": "right",
+        "id": "person_older_man_1"
+      },
+      {
+        "desc": "large German flag with horizontal black, red, and yellow stripes",
+        "action": "static",
+        "position": "background",
+        "id": "flag_german_1"
+      },
+      {
+        "desc": "white 'ZDF' logo",
+        "action": "static",
+        "position": "top left",
+        "id": "logo_zdf_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The man on the left is speaking with his mouth open.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The man on the right is standing still with a neutral expression.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The ZDF logo is visible in the top left corner.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A German flag serves as the backdrop for the two men.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "ZDF"
+    ],
+    "spatial": "The bald man in the leather jacket is standing to the left of the older man in the suit. Both men are positioned in front of the large German flag. The ZDF logo is located in the top left corner, above the men.",
+    "parse_success": true,
+    "chunk_idx": 39,
+    "video_id": "YiFfJ7XBzfY",
+    "state_changes": []
+  },
+  {
+    "time": [
+      40,
+      41
+    ],
+    "visible_entities": [
+      {
+        "desc": "man with bald head and dark beard, wearing a black leather jacket over a maroon t-shirt featuring an Iron Man graphic, and black pants",
+        "action": "standing still",
+        "position": "left",
+        "id": "person_bald_man_1"
+      },
+      {
+        "desc": "older man with short grey hair, wearing a black suit jacket, white collared shirt, and a grey patterned tie",
+        "action": "standing still",
+        "position": "right",
+        "id": "person_older_man_1"
+      },
+      {
+        "desc": "large German flag with horizontal stripes of black, red, and gold",
+        "action": "static",
+        "position": "background",
+        "id": "flag_german_1"
+      },
+      {
+        "desc": "white 'ZDF' logo in a circle",
+        "action": "static",
+        "position": "top left",
+        "id": "logo_zdf_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "Two men are standing side-by-side in front of a large German flag.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The man on the left is wearing a graphic t-shirt under a leather jacket.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The man on the right is dressed in formal business attire with a suit and tie.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The ZDF logo is visible in the upper left corner of the screen.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "ZDF"
+    ],
+    "spatial": "The man in the leather jacket is to the left of the man in the suit. Both men are standing in front of the German flag, which serves as the background. The ZDF logo is located in the top left corner, above the man on the left.",
     "parse_success": true,
     "chunk_idx": 40,
     "video_id": "YiFfJ7XBzfY",
@@ -2370,164 +2401,162 @@
   },
   {
     "time": [
-      82,
-      84
+      41,
+      42
     ],
     "visible_entities": [
       {
-        "desc": "man with bald head, dark beard, and mustache, wearing a black collared shirt",
-        "action": "smiling at the camera",
-        "position": "center",
-        "id": "person_new_man_1"
-      },
-      {
-        "desc": "white text reading 'MEIN FREUND IST' and a red logo with white text 'AfD' featuring an upward-pointing arrow shape",
+        "desc": "bald man with a dark beard, wearing a black shirt, smiling broadly",
         "action": "static",
         "position": "center",
-        "id": "afd_logo_text_1"
+        "id": "person_bald_man_1"
       },
       {
-        "desc": "small white circular logo with '2DF' text",
+        "desc": "white text reading 'MEIN FREUND IST' and a red logo with white text 'AfD'",
         "action": "static",
-        "position": "top-left",
-        "id": "zdf_logo_1"
+        "position": "center",
+        "id": "logo_afd_slogan_1"
+      },
+      {
+        "desc": "small white logo '2DF' in the top left corner",
+        "action": "static",
+        "position": "top left",
+        "id": "logo_zdf_1"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "The text 'MEIN FREUND IST' appears on the screen.",
+        "fact": "The text 'MEIN FREUND IST' appears above the 'AfD' logo.",
         "confidence": 1.0
       },
       {
-        "fact": "The text transitions to include the 'AfD' logo.",
+        "fact": "A man's head appears above the text.",
         "confidence": 1.0
       },
       {
-        "fact": "A man with a beard smiles while looking at the camera.",
+        "fact": "The text reads 'MEIN FREUND IST AfD'.",
         "confidence": 1.0
       }
     ],
     "ocr": [
       "2DF",
       "MEIN FREUND",
-      "IS",
       "IST",
       "AfD"
     ],
-    "spatial": "The man is positioned in the center of the frame, appearing behind the text overlay. The text 'MEIN FREUND IST' is located above the 'AfD' logo. The '2DF' logo is situated in the top-left corner of the screen.",
+    "spatial": "The man is positioned above the text 'MEIN FREUND IST'. The 'AfD' logo is below the text 'IST'. The '2DF' logo is in the top left corner of the screen.",
     "parse_success": true,
     "chunk_idx": 41,
     "video_id": "YiFfJ7XBzfY",
     "state_changes": [
-      "new person appeared (man with mustache in black collared shirt)"
+      "scene changes to close-up of bald man smiling; background elements removed"
     ]
   },
   {
     "time": [
-      84,
-      86
+      42,
+      43
     ],
     "visible_entities": [
       {
-        "desc": "person with a shaved head, dark beard, wearing a black jacket over a maroon t-shirt with a graphic print, black pants, and black boots",
-        "action": "running while holding hands",
+        "desc": "man with a shaved head and beard, wearing a black jacket over a maroon t-shirt with a graphic print, black pants, and a black spiky mohawk wig",
+        "action": "running through a field while holding hands",
         "position": "left",
         "id": "person_bald_man_1"
       },
       {
-        "desc": "person with a mohawk hairstyle, wearing a black suit, white shirt, and a light-colored tie",
-        "action": "running while holding hands",
+        "desc": "older man with white hair, wearing a black suit, white shirt, grey tie, and a black spiky mohawk wig",
+        "action": "running through a field while holding hands",
         "position": "right",
         "id": "person_older_man_1"
       },
       {
-        "desc": "green grassy hill with yellow flowers",
+        "desc": "green grassy hill with yellow flowers and a tree in the background",
         "action": "static",
         "position": "background",
-        "id": "plants_trees_1"
+        "id": "scene_grassy_hill_1"
       },
       {
-        "desc": "tree with green leaves",
-        "action": "static",
-        "position": "background right",
-        "id": "plants_trees_1"
-      },
-      {
-        "desc": "white text 'MEIN FREUND IST AfD' with a red arrow graphic",
+        "desc": "bald man with a beard, smiling, wearing a black top",
         "action": "static",
         "position": "center",
-        "id": "afd_logo_text_1"
+        "id": "person_bald_man_1"
+      },
+      {
+        "desc": "white text 'MEIN FREUND IST' and 'AfD' logo with a red arrow",
+        "action": "static",
+        "position": "center",
+        "id": "logo_afd_slogan_1"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "Two people are running hand-in-hand across a grassy field.",
+        "fact": "Two men wearing matching black spiky mohawk wigs are running hand-in-hand across a green field.",
         "confidence": 1.0
       },
       {
-        "fact": "The person on the left is wearing a maroon t-shirt under a black jacket.",
+        "fact": "The man on the left is wearing a maroon t-shirt with a graphic print under a black jacket.",
         "confidence": 1.0
       },
       {
-        "fact": "The person on the right is wearing a formal black suit.",
+        "fact": "The man on the right is wearing a formal black suit with a grey tie.",
         "confidence": 1.0
       },
       {
-        "fact": "The text 'MEIN FREUND IST AfD' is displayed on the screen.",
+        "fact": "The background features a rolling green hill with yellow flowers and a solitary tree.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A graphic overlay displays the text 'MEIN FREUND IST AfD' with a red arrow logo.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A portrait of a smiling bald man is positioned above the text overlay.",
         "confidence": 1.0
       }
     ],
     "ocr": [
-      "MEIN FREUND IST AfD"
+      "2DF",
+      "MEIN FREUND IST",
+      "AfD"
     ],
-    "spatial": "The person in the maroon shirt is to the left of the person in the black suit. They are holding hands. The tree is in the background to the right of the people. The text graphic is centered in the foreground.",
+    "spatial": "The man in the maroon t-shirt is to the left of the man in the black suit. They are holding hands in the center of the frame. The tree is in the background on the right side of the hill. The text 'MEIN FREUND IST AfD' is superimposed over the center of the screen, below the portrait of the bald man.",
     "parse_success": true,
     "chunk_idx": 42,
     "video_id": "YiFfJ7XBzfY",
     "state_changes": [
-      "scene changed to outdoor - two people running on grassy hill"
+      "scene transitions to outdoor grassy hill; both men are running while holding hands and wearing mohawk wigs"
     ]
   },
   {
     "time": [
-      86,
-      88
+      43,
+      44
     ],
     "visible_entities": [
       {
-        "desc": "man with a shaved head and beard, wearing a black leather jacket over a maroon t-shirt with a graphic print, black pants, and black boots",
-        "action": "walking forward",
+        "desc": "man with a shaved head and beard, wearing a black leather jacket over a maroon t-shirt with a graphic print, and black pants",
+        "action": "walking forward holding hands",
         "position": "left",
         "id": "person_bald_man_1"
       },
       {
-        "desc": "man with short grey hair, wearing a black suit, white dress shirt, and a light grey tie",
-        "action": "walking forward",
+        "desc": "man with short grey hair, wearing a black suit, white shirt, and grey tie",
+        "action": "walking forward holding hands",
         "position": "right",
         "id": "person_older_man_1"
       },
       {
-        "desc": "green grassy hill covered in yellow dandelions",
+        "desc": "green grassy hill covered in yellow flowers",
         "action": "static",
         "position": "background",
-        "id": "plants_trees_1"
+        "id": "scene_grassy_hill_1"
       },
       {
-        "desc": "dark green coniferous trees",
+        "desc": "white '2' logo",
         "action": "static",
-        "position": "background",
-        "id": "plants_trees_1"
-      },
-      {
-        "desc": "large deciduous tree with green leaves",
-        "action": "static",
-        "position": "background",
-        "id": "plants_trees_1"
-      },
-      {
-        "desc": "white '2' logo inside a circle",
-        "action": "static",
-        "position": "top-left"
+        "position": "top left",
+        "id": "logo_zdf_1"
       }
     ],
     "atomic_facts": [
@@ -2540,57 +2569,50 @@
         "confidence": 1.0
       },
       {
-        "fact": "The man on the right is raising his left hand in a fist.",
-        "confidence": 1.0
-      },
-      {
         "fact": "The field is covered in yellow flowers.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The logo '2' is visible in the top left corner.",
         "confidence": 1.0
       }
     ],
     "ocr": [
       "2"
     ],
-    "spatial": "The man in the leather jacket is to the left of the man in the suit. The two men are holding hands. The trees are behind the men on the hill. The '2' logo is above the men in the top-left corner of the frame.",
+    "spatial": "The man in the leather jacket is to the left of the man in the suit. They are walking on a grassy hill that is behind them in the background. The '2' logo is in the top left corner of the frame.",
     "parse_success": true,
     "chunk_idx": 43,
     "video_id": "YiFfJ7XBzfY",
     "state_changes": [
-      "action changed from running to walking"
+      "men transition from running to walking forward while holding hands; wigs removed"
     ]
   },
   {
     "time": [
-      88,
-      90
+      44,
+      45
     ],
     "visible_entities": [
       {
-        "desc": "man with short blonde hair and beard, wearing a red graphic t-shirt, dark jacket, and black pants",
-        "action": "walking forward while holding hands",
+        "desc": "man with a beard, wearing a red t-shirt with a graphic print, a dark open jacket, and black pants",
+        "action": "walking forward",
         "position": "left",
-        "id": "person_older_man_1"
+        "id": "person_bald_man_1"
       },
       {
-        "desc": "man with short grey hair, wearing a black suit, white shirt, and grey tie",
-        "action": "walking forward while holding hands and gesturing",
+        "desc": "man with short hair, wearing a black suit, white shirt, and grey tie",
+        "action": "walking forward",
         "position": "right",
         "id": "person_older_man_1"
       },
       {
-        "desc": "green grassy hill covered in small yellow flowers",
+        "desc": "green grassy hill covered in yellow flowers",
         "action": "static",
         "position": "background",
-        "id": "plants_trees_1"
+        "id": "scene_grassy_hill_1"
       },
       {
-        "desc": "white '2' logo inside a circle",
+        "desc": "white text logo '2 ZDF'",
         "action": "static",
-        "position": "top-left"
+        "position": "top-left",
+        "id": "logo_zdf_1"
       }
     ],
     "atomic_facts": [
@@ -2599,26 +2621,22 @@
         "confidence": 1.0
       },
       {
-        "fact": "The man on the left is holding the right hand of the man on the right.",
+        "fact": "The man on the right is holding the left hand of the man on the left.",
         "confidence": 1.0
       },
       {
-        "fact": "The man on the right raises his left arm in a gesture.",
+        "fact": "The man on the right is pointing his right hand forward.",
         "confidence": 1.0
       },
       {
-        "fact": "The field is filled with yellow dandelions.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "A '2' logo is visible in the top left corner.",
+        "fact": "The field is filled with yellow flowers.",
         "confidence": 1.0
       }
     ],
     "ocr": [
-      "2"
+      "2 ZDF"
     ],
-    "spatial": "The man in the red shirt is to the left of the man in the black suit. They are walking in front of a green hill with trees in the background. The '2' logo is above the man in the red shirt.",
+    "spatial": "The man in the red shirt is to the left of the man in the black suit. The man in the black suit is to the right of the man in the red shirt. They are walking on a green hill that is behind them in the background. The '2 ZDF' logo is in the top-left corner of the frame.",
     "parse_success": true,
     "chunk_idx": 44,
     "video_id": "YiFfJ7XBzfY",
@@ -2626,33 +2644,38 @@
   },
   {
     "time": [
-      90,
-      92
+      45,
+      46
     ],
     "visible_entities": [
       {
-        "desc": "man with shaved head, wearing a maroon t-shirt with a graphic print, a black leather jacket, and black pants",
+        "desc": "man with shaved head, wearing a maroon graphic t-shirt, black leather jacket, and black pants",
         "action": "walking forward",
         "position": "left",
         "id": "person_bald_man_1"
       },
       {
-        "desc": "older man with white hair, wearing a black suit, white shirt, and light grey tie",
+        "desc": "older man with white hair, wearing a black suit, white shirt, and grey tie",
         "action": "walking forward",
         "position": "right",
         "id": "person_older_man_1"
       },
       {
-        "desc": "green grassy hill with yellow flowers",
+        "desc": "green grassy hill covered in yellow flowers",
         "action": "static",
         "position": "background",
-        "id": "plants_trees_1"
+        "id": "scene_grassy_hill_1"
       },
       {
-        "desc": "digital blue map graphic with white text overlays",
+        "desc": "digital blue map graphic with glowing city lights",
         "action": "static",
-        "position": "center",
-        "id": "end_screen_globe_map_1"
+        "position": "background",
+        "id": "graphic_map_globe_1"
+      },
+      {
+        "desc": "white text overlay",
+        "action": "static",
+        "position": "overlay"
       }
     ],
     "atomic_facts": [
@@ -2661,15 +2684,11 @@
         "confidence": 1.0
       },
       {
-        "fact": "The man on the left is wearing a maroon t-shirt under a black jacket.",
+        "fact": "The man on the left is holding the hand of the man on the right.",
         "confidence": 1.0
       },
       {
-        "fact": "The man on the right is wearing a formal black suit.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The scene transitions to a blue digital map graphic with German text.",
+        "fact": "The scene transitions to a blue digital map background with German text overlays.",
         "confidence": 1.0
       },
       {
@@ -2682,12 +2701,13 @@
       }
     ],
     "ocr": [
+      "2",
       "Abonnieren",
       "Mehr aus dieser Folge",
       "Zur ganzen Sendung",
       "Weitere Clips"
     ],
-    "spatial": "The man in the leather jacket is to the left of the man in the suit. They are walking in front of a green hill with trees in the background. The text overlays are positioned above the digital map graphic.",
+    "spatial": "The man in the leather jacket is to the left of the man in the suit. They are walking on a green hill that is below the blue sky. In the second frame, the text 'Abonnieren' is above the text 'Zur ganzen Sendung'.",
     "parse_success": true,
     "chunk_idx": 45,
     "video_id": "YiFfJ7XBzfY",
@@ -2695,65 +2715,47 @@
   },
   {
     "time": [
-      92,
-      94
+      46,
+      47
     ],
     "visible_entities": [
       {
-        "desc": "digital globe graphic with blue glowing grid lines and illuminated city clusters",
+        "desc": "Digital globe background featuring blue, pixelated continents resembling a data map, with a bright lens flare on the right side and a red graphical bar at the bottom right.",
         "action": "static",
-        "position": "background",
-        "id": "end_screen_globe_map_1"
+        "id": "graphic_map_globe_1"
       },
       {
-        "desc": "white sans-serif text overlay reading 'Abonnieren'",
-        "action": "static",
-        "position": "top-left"
+        "desc": "White sans-serif text reading 'Abonnieren' located in the upper left quadrant.",
+        "action": "static"
       },
       {
-        "desc": "white sans-serif text overlay reading 'Mehr aus dieser Folge'",
-        "action": "static",
-        "position": "top-right"
+        "desc": "White sans-serif text reading 'Mehr aus dieser Folge' located in the upper right quadrant.",
+        "action": "static"
       },
       {
-        "desc": "white sans-serif text overlay reading 'Zur ganzen Sendung'",
-        "action": "static",
-        "position": "center-left"
+        "desc": "White sans-serif text reading 'Zur ganzen Sendung' located in the middle left area.",
+        "action": "static"
       },
       {
-        "desc": "white sans-serif text overlay reading 'Weitere Clips'",
-        "action": "static",
-        "position": "center-right"
-      },
-      {
-        "desc": "red and blue graphical bar element",
-        "action": "static",
-        "position": "bottom-right"
+        "desc": "White sans-serif text reading 'Weitere Clips' located in the middle right area.",
+        "action": "static"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "The video displays a static end screen with a digital globe background.",
+        "fact": "The video displays a static end screen with four distinct text options overlaid on a digital globe background.",
         "confidence": 1.0
       },
       {
-        "fact": "Four distinct text options are visible on the screen.",
+        "fact": "The text 'Abonnieren' is positioned above the text 'Zur ganzen Sendung'.",
         "confidence": 1.0
       },
       {
-        "fact": "The text 'Abonnieren' is located in the upper left quadrant.",
+        "fact": "The text 'Mehr aus dieser Folge' is positioned above the text 'Weitere Clips'.",
         "confidence": 1.0
       },
       {
-        "fact": "The text 'Mehr aus dieser Folge' is located in the upper right quadrant.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The text 'Zur ganzen Sendung' is located in the middle left area.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The text 'Weitere Clips' is located in the middle right area.",
+        "fact": "A red graphical element is visible at the very bottom right corner of the frame.",
         "confidence": 1.0
       }
     ],
@@ -2763,68 +2765,74 @@
       "Zur ganzen Sendung",
       "Weitere Clips"
     ],
-    "spatial": "The digital globe graphic serves as the background for the entire scene. The text 'Abonnieren' is to the left of 'Mehr aus dieser Folge' and above 'Zur ganzen Sendung'. The text 'Weitere Clips' is below 'Mehr aus dieser Folge' and to the right of 'Zur ganzen Sendung'. A red and blue graphical bar is positioned in the bottom right corner, partially obscuring the globe.",
+    "spatial": "The text 'Abonnieren' is to the left of 'Mehr aus dieser Folge'. The text 'Zur ganzen Sendung' is below 'Abonnieren' and to the left of 'Weitere Clips'. The text 'Weitere Clips' is below 'Mehr aus dieser Folge'. All text elements are superimposed over the digital globe background.",
     "parse_success": true,
     "chunk_idx": 46,
     "video_id": "YiFfJ7XBzfY",
     "state_changes": [
-      "transition to end screen with digital globe and text overlays"
+      "scene transitions to digital globe background with menu text overlays ('Abonnieren', etc.)"
     ]
   },
   {
     "time": [
-      94,
-      96
+      47,
+      48
     ],
     "visible_entities": [
       {
-        "desc": "Digital globe background featuring blue continents composed of glowing pixel-like dots against a dark void, with a bright lens flare on the right horizon.",
-        "action": "static"
+        "desc": "digital globe background featuring blue landmasses composed of glowing grid-like dots and dark blue oceans",
+        "action": "static",
+        "id": "graphic_map_globe_1"
       },
       {
-        "desc": "White sans-serif text overlay reading 'Abonnieren' in the top-left area.",
-        "action": "static"
+        "desc": "white sans-serif text 'Abonnieren'",
+        "action": "static",
+        "id": "text_overlay_menu_1"
       },
       {
-        "desc": "White sans-serif text overlay reading 'Mehr aus dieser Folge' in the top-right area.",
-        "action": "static"
+        "desc": "white sans-serif text 'Mehr aus dieser Folge'",
+        "action": "static",
+        "id": "text_overlay_menu_1"
       },
       {
-        "desc": "White sans-serif text overlay reading 'Zur ganzen Sendung' in the middle-left area.",
-        "action": "static"
+        "desc": "white sans-serif text 'Zur ganzen Sendung'",
+        "action": "static",
+        "id": "text_overlay_menu_1"
       },
       {
-        "desc": "White sans-serif text overlay reading 'Weitere Clips' in the middle-right area.",
-        "action": "static"
+        "desc": "white sans-serif text 'Weitere Clips'",
+        "action": "static",
+        "id": "text_overlay_menu_1"
       },
       {
-        "desc": "A diagonal graphical bar at the bottom edge, featuring a gradient from blue on the left to red on the right with a glowing white highlight.",
-        "action": "static"
+        "desc": "diagonal graphical bar with blue and red gradients",
+        "action": "static",
+        "id": "graphic_abstract_overlay_1"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "The video displays a static end-screen layout with four clickable text options.",
+        "fact": "The video displays a digital globe background with blue glowing continents.",
         "confidence": 1.0
       },
       {
-        "fact": "The text 'Abonnieren' is positioned in the upper-left quadrant.",
+        "fact": "The text 'Abonnieren' is visible in the upper left.",
         "confidence": 1.0
       },
       {
-        "fact": "The text 'Mehr aus dieser Folge' is positioned in the upper-right quadrant.",
+        "fact": "The text 'Mehr aus dieser Folge' is visible in the upper right.",
         "confidence": 1.0
       },
       {
-        "fact": "The text 'Zur ganzen Sendung' is positioned in the middle-left quadrant.",
+        "fact": "The text 'Zur ganzen Sendung' is visible on the left side.",
         "confidence": 1.0
       },
       {
-        "fact": "The text 'Weitere Clips' is positioned in the middle-right quadrant.",
+        "fact": "The text 'Weitere Clips' is visible on the right side.",
         "confidence": 1.0
       },
       {
-        "fact": "A blue and red graphical bar spans the bottom of the screen.",
+        "fact": "A graphical bar with blue and red colors spans the bottom right corner.",
         "confidence": 1.0
       }
     ],
@@ -2834,7 +2842,7 @@
       "Zur ganzen Sendung",
       "Weitere Clips"
     ],
-    "spatial": "The digital globe serves as the background for the entire scene. The text 'Abonnieren' is to the left of 'Mehr aus dieser Folge' and above 'Zur ganzen Sendung'. The text 'Weitere Clips' is below 'Mehr aus dieser Folge' and to the right of 'Zur ganzen Sendung'. The blue and red graphical bar is at the bottom of the screen, below all the text elements.",
+    "spatial": "The text 'Abonnieren' is located in the upper left, while 'Mehr aus dieser Folge' is in the upper right. The text 'Zur ganzen Sendung' is positioned on the left side, below 'Abonnieren', and 'Weitere Clips' is on the right side, below 'Mehr aus dieser Folge'. A diagonal graphical bar is situated in the bottom right corner, overlaying the globe background.",
     "parse_success": true,
     "chunk_idx": 47,
     "video_id": "YiFfJ7XBzfY",
@@ -2842,45 +2850,45 @@
   },
   {
     "time": [
-      96,
-      98
+      48,
+      49
     ],
     "visible_entities": [
       {
-        "desc": "Digital globe graphic with blue pixelated landmasses and dark oceans, featuring a bright light source on the right horizon",
+        "desc": "Stylized digital map of Europe and Africa, composed of blue glowing dots and geometric shapes on a dark background",
         "action": "static",
         "position": "background",
-        "id": "end_screen_globe_map_1"
+        "id": "graphic_map_globe_1"
       },
       {
-        "desc": "White text overlay reading 'Abonnieren'",
+        "desc": "White sans-serif text reading 'Abonnieren'",
         "action": "static",
-        "position": "top-left",
-        "id": "end_screen_text_overlays_1"
+        "position": "top left",
+        "id": "text_overlay_menu_1"
       },
       {
-        "desc": "White text overlay reading 'Mehr aus dieser Folge'",
+        "desc": "White sans-serif text reading 'Mehr aus dieser Folge'",
         "action": "static",
-        "position": "top-right",
-        "id": "end_screen_text_overlays_1"
+        "position": "top right",
+        "id": "text_overlay_menu_1"
       },
       {
-        "desc": "White text overlay reading 'Zur ganzen Sendung'",
+        "desc": "White sans-serif text reading 'Zur ganzen Sendung'",
         "action": "static",
-        "position": "center-left",
-        "id": "end_screen_text_overlays_1"
+        "position": "center left",
+        "id": "text_overlay_menu_1"
       },
       {
-        "desc": "White text overlay reading 'Weitere Clips'",
+        "desc": "White sans-serif text reading 'Weitere Clips'",
         "action": "static",
-        "position": "center-right",
-        "id": "end_screen_text_overlays_1"
+        "position": "center right",
+        "id": "text_overlay_menu_1"
       },
       {
-        "desc": "Red and blue graphical bars",
+        "desc": "Abstract graphical overlay with blue, white, and red diagonal stripes",
         "action": "static",
-        "position": "bottom-right",
-        "id": "end_screen_graphic_bars_1"
+        "position": "bottom right",
+        "id": "graphic_abstract_overlay_1"
       }
     ],
     "atomic_facts": [
@@ -2889,11 +2897,11 @@
         "confidence": 1.0
       },
       {
-        "fact": "The text 'Abonnieren' is visible in the top-left corner.",
+        "fact": "The text 'Abonnieren' is visible in the top left corner.",
         "confidence": 1.0
       },
       {
-        "fact": "The text 'Mehr aus dieser Folge' is visible in the top-right corner.",
+        "fact": "The text 'Mehr aus dieser Folge' is visible in the top right corner.",
         "confidence": 1.0
       },
       {
@@ -2911,7 +2919,7 @@
       "Zur ganzen Sendung",
       "Weitere Clips"
     ],
-    "spatial": "The digital globe serves as the background for the entire scene. The text 'Abonnieren' is above the text 'Zur ganzen Sendung'. The text 'Mehr aus dieser Folge' is to the right of 'Abonnieren' and above 'Weitere Clips'. The red and blue graphical bars are located in the bottom-right corner, partially overlaying the globe.",
+    "spatial": "The digital map serves as the background for the entire scene. The text 'Abonnieren' is positioned above the text 'Zur ganzen Sendung'. The text 'Mehr aus dieser Folge' is located to the right of 'Abonnieren'. The text 'Weitere Clips' is situated below 'Mehr aus dieser Folge' and to the right of the map's center. The graphical stripes are in the bottom right corner, partially obscuring the map.",
     "parse_success": true,
     "chunk_idx": 48,
     "video_id": "YiFfJ7XBzfY",
@@ -2919,56 +2927,62 @@
   },
   {
     "time": [
-      98,
-      100
+      49,
+      50
     ],
     "visible_entities": [
       {
-        "desc": "digital globe background featuring blue continents composed of glowing data points and a dark ocean, with a bright light source on the right edge",
+        "desc": "stylized digital map of Earth with glowing blue pixelated landmasses against a dark background",
         "action": "static",
-        "id": "end_screen_globe_map_1"
+        "position": "background",
+        "id": "graphic_map_globe_1"
       },
       {
         "desc": "white sans-serif text reading 'Abonnieren'",
-        "action": "static"
+        "action": "static",
+        "position": "top left"
       },
       {
         "desc": "white sans-serif text reading 'Mehr aus dieser Folge'",
-        "action": "static"
+        "action": "static",
+        "position": "top right"
       },
       {
         "desc": "white sans-serif text reading 'Zur ganzen Sendung'",
-        "action": "static"
+        "action": "static",
+        "position": "center left"
       },
       {
         "desc": "white sans-serif text reading 'Weitere Clips'",
-        "action": "static"
+        "action": "static",
+        "position": "center right"
       },
       {
-        "desc": "diagonal graphic overlay with blue and red geometric shapes at the bottom",
+        "desc": "red and blue geometric graphic overlay",
         "action": "static",
-        "id": "end_screen_graphic_bars_1"
+        "position": "bottom right",
+        "id": "graphic_abstract_overlay_1"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "The video displays a static end screen with a digital globe background.",
+        "fact": "The video displays a static end screen with navigation options.",
         "confidence": 1.0
       },
       {
-        "fact": "The text 'Abonnieren' is visible in the top left area.",
+        "fact": "The text 'Abonnieren' is visible in the top left corner.",
         "confidence": 1.0
       },
       {
-        "fact": "The text 'Mehr aus dieser Folge' is visible in the top right area.",
+        "fact": "The text 'Mehr aus dieser Folge' is visible in the top right corner.",
         "confidence": 1.0
       },
       {
-        "fact": "The text 'Zur ganzen Sendung' is visible in the middle left area.",
+        "fact": "The text 'Zur ganzen Sendung' is visible on the left side.",
         "confidence": 1.0
       },
       {
-        "fact": "The text 'Weitere Clips' is visible in the middle right area.",
+        "fact": "The text 'Weitere Clips' is visible on the right side.",
         "confidence": 1.0
       }
     ],
@@ -2978,7 +2992,7 @@
       "Zur ganzen Sendung",
       "Weitere Clips"
     ],
-    "spatial": "The text 'Abonnieren' is to the left of the text 'Mehr aus dieser Folge'. The text 'Zur ganzen Sendung' is below 'Abonnieren'. The text 'Weitere Clips' is below 'Mehr aus dieser Folge' and to the right of 'Zur ganzen Sendung'. The digital globe is in the background behind all the text elements.",
+    "spatial": "The text 'Abonnieren' is located above the text 'Zur ganzen Sendung' on the left side of the screen. The text 'Mehr aus dieser Folge' is positioned above the text 'Weitere Clips' on the right side. A red and blue graphic element is situated in the bottom right corner, partially overlapping the digital map background.",
     "parse_success": true,
     "chunk_idx": 49,
     "video_id": "YiFfJ7XBzfY",
@@ -2986,45 +3000,45 @@
   },
   {
     "time": [
-      100,
-      102
+      50,
+      51
     ],
     "visible_entities": [
       {
-        "desc": "Digital 3D map of Europe with glowing blue pixelated texture and dark ocean background",
+        "desc": "Digital globe background featuring blue, pixelated landmasses with glowing city lights against a dark ocean, with a bright lens flare on the right horizon.",
         "action": "static",
         "position": "background",
-        "id": "end_screen_globe_map_1"
+        "id": "graphic_map_globe_1"
       },
       {
-        "desc": "White sans-serif text reading 'Abonnieren'",
+        "desc": "White sans-serif text overlay reading 'Abonnieren' (Subscribe).",
         "action": "static",
         "position": "top-left",
-        "id": "end_screen_text_overlays_1"
+        "id": "text_overlay_menu_1"
       },
       {
-        "desc": "White sans-serif text reading 'Mehr aus dieser Folge'",
+        "desc": "White sans-serif text overlay reading 'Mehr aus dieser Folge' (More from this episode).",
         "action": "static",
         "position": "top-right",
-        "id": "end_screen_text_overlays_1"
+        "id": "text_overlay_menu_1"
       },
       {
-        "desc": "White sans-serif text reading 'Zur ganzen Sendung'",
+        "desc": "White sans-serif text overlay reading 'Zur ganzen Sendung' (To the whole show).",
         "action": "static",
         "position": "middle-left",
-        "id": "end_screen_text_overlays_1"
+        "id": "text_overlay_menu_1"
       },
       {
-        "desc": "White sans-serif text reading 'Weitere Clips'",
+        "desc": "White sans-serif text overlay reading 'Weitere Clips' (More clips).",
         "action": "static",
         "position": "middle-right",
-        "id": "end_screen_text_overlays_1"
+        "id": "text_overlay_menu_1"
       },
       {
-        "desc": "Red and blue geometric graphic overlay",
+        "desc": "Abstract graphic overlay with blue and red geometric shapes in the bottom right corner.",
         "action": "static",
         "position": "bottom-right",
-        "id": "end_screen_graphic_bars_1"
+        "id": "graphic_abstract_overlay_1"
       }
     ],
     "atomic_facts": [
@@ -3033,23 +3047,23 @@
         "confidence": 1.0
       },
       {
-        "fact": "The text 'Abonnieren' is positioned in the top-left corner.",
+        "fact": "The text 'Abonnieren' is positioned in the upper left quadrant.",
         "confidence": 1.0
       },
       {
-        "fact": "The text 'Mehr aus dieser Folge' is positioned in the top-right corner.",
+        "fact": "The text 'Mehr aus dieser Folge' is positioned in the upper right quadrant.",
         "confidence": 1.0
       },
       {
-        "fact": "The text 'Zur ganzen Sendung' is positioned in the middle-left area.",
+        "fact": "The text 'Zur ganzen Sendung' is positioned in the middle left area.",
         "confidence": 1.0
       },
       {
-        "fact": "The text 'Weitere Clips' is positioned in the middle-right area.",
+        "fact": "The text 'Weitere Clips' is positioned in the middle right area.",
         "confidence": 1.0
       },
       {
-        "fact": "A digital map of Europe serves as the background.",
+        "fact": "A bright light source illuminates the right side of the digital globe.",
         "confidence": 1.0
       }
     ],
@@ -3059,7 +3073,7 @@
       "Zur ganzen Sendung",
       "Weitere Clips"
     ],
-    "spatial": "The text 'Abonnieren' is to the left of the text 'Mehr aus dieser Folge'. The text 'Zur ganzen Sendung' is below 'Abonnieren'. The text 'Weitere Clips' is below 'Mehr aus dieser Folge' and to the right of 'Zur ganzen Sendung'. The red and blue graphic is in the bottom-right corner, partially obscuring the map.",
+    "spatial": "The text 'Abonnieren' is to the left of the text 'Mehr aus dieser Folge'. The text 'Zur ganzen Sendung' is below 'Abonnieren' and to the left of 'Weitere Clips'. The abstract graphic overlay is in the bottom right corner, partially obscuring the globe.",
     "parse_success": true,
     "chunk_idx": 50,
     "video_id": "YiFfJ7XBzfY",
@@ -3067,52 +3081,60 @@
   },
   {
     "time": [
-      102,
-      104
+      51,
+      52
     ],
     "visible_entities": [
       {
-        "desc": "Digital map of Europe with glowing blue city lights and dark oceans, featuring a bright atmospheric glow on the right horizon",
+        "desc": "digital map graphic of Europe with glowing blue grid texture and dark water bodies",
         "action": "static",
-        "id": "end_screen_globe_map_1"
+        "position": "background",
+        "id": "graphic_map_globe_1"
       },
       {
-        "desc": "White sans-serif text overlay reading 'Abonnieren'",
+        "desc": "white sans-serif text reading 'Abonnieren'",
         "action": "static",
-        "id": "end_screen_text_overlays_1"
+        "position": "top-left"
       },
       {
-        "desc": "White sans-serif text overlay reading 'Mehr aus dieser Folge'",
+        "desc": "white sans-serif text reading 'Mehr aus dieser Folge'",
         "action": "static",
-        "id": "end_screen_text_overlays_1"
+        "position": "top-right"
       },
       {
-        "desc": "White sans-serif text overlay reading 'Zur ganzen Sendung'",
+        "desc": "white sans-serif text reading 'Zur ganzen Sendung'",
         "action": "static",
-        "id": "end_screen_text_overlays_1"
+        "position": "center-left"
       },
       {
-        "desc": "White sans-serif text overlay reading 'Weitere Clips'",
+        "desc": "white sans-serif text reading 'Weitere Clips'",
         "action": "static",
-        "id": "end_screen_text_overlays_1"
+        "position": "center-right"
       },
       {
-        "desc": "Red and blue geometric graphic element in the bottom right corner",
+        "desc": "red rectangular graphic element",
         "action": "static",
-        "id": "end_screen_graphic_bars_1"
+        "position": "bottom-right",
+        "id": "graphic_abstract_overlay_1"
+      },
+      {
+        "desc": "blue diagonal graphic bar",
+        "action": "static",
+        "position": "bottom-right",
+        "id": "graphic_abstract_overlay_1"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "The video displays a digital map of Europe with glowing blue lights representing cities.",
+        "fact": "The video displays a static end screen with navigation options.",
         "confidence": 1.0
       },
       {
-        "fact": "The text 'Abonnieren' is visible in the top left area.",
+        "fact": "The text 'Abonnieren' is visible in the upper left area.",
         "confidence": 1.0
       },
       {
-        "fact": "The text 'Mehr aus dieser Folge' is visible in the top right area.",
+        "fact": "The text 'Mehr aus dieser Folge' is visible in the upper right area.",
         "confidence": 1.0
       },
       {
@@ -3124,7 +3146,7 @@
         "confidence": 1.0
       },
       {
-        "fact": "A bright light source illuminates the right side of the globe.",
+        "fact": "A red geometric shape is positioned in the bottom right corner.",
         "confidence": 1.0
       }
     ],
@@ -3134,7 +3156,7 @@
       "Zur ganzen Sendung",
       "Weitere Clips"
     ],
-    "spatial": "The text 'Abonnieren' is located in the top left, while 'Mehr aus dieser Folge' is in the top right. The text 'Zur ganzen Sendung' is positioned below 'Abonnieren' on the left side, and 'Weitere Clips' is below 'Mehr aus dieser Folge' on the right side. The red and blue graphic is in the bottom right corner, partially obscuring the map.",
+    "spatial": "The text 'Abonnieren' is located above the text 'Zur ganzen Sendung'. The text 'Mehr aus dieser Folge' is positioned to the right of 'Abonnieren' and above 'Weitere Clips'. The red rectangular graphic is situated in the bottom right corner, partially overlapping the blue diagonal bar.",
     "parse_success": true,
     "chunk_idx": 51,
     "video_id": "YiFfJ7XBzfY",
@@ -3142,42 +3164,48 @@
   },
   {
     "time": [
-      104,
-      106
+      52,
+      53
     ],
     "visible_entities": [
       {
-        "desc": "Digital map of Earth with blue glowing city lights and dark oceans, featuring a bright atmospheric glow on the right horizon and a red/blue graphic overlay in the bottom right corner.",
-        "action": "static"
+        "desc": "digital 3D map of Earth, dark blue with glowing cyan city lights, showing Europe and Africa",
+        "action": "static",
+        "position": "background",
+        "id": "graphic_map_globe_1"
       },
       {
-        "desc": "White sans-serif text labels overlaid on the map.",
-        "action": "static"
+        "desc": "white sans-serif text overlay",
+        "action": "static",
+        "position": "foreground",
+        "id": "text_overlay_menu_1"
+      },
+      {
+        "desc": "red and blue geometric graphic overlay",
+        "action": "static",
+        "position": "bottom right",
+        "id": "graphic_abstract_overlay_1"
       }
     ],
     "atomic_facts": [
       {
-        "fact": "The video displays a static end screen with a digital globe background.",
+        "fact": "The video displays a static end screen with navigation options.",
         "confidence": 1.0
       },
       {
-        "fact": "Four distinct text options are visible on the screen for user interaction.",
+        "fact": "The text 'Abonnieren' is visible in the top left.",
         "confidence": 1.0
       },
       {
-        "fact": "The text 'Abonnieren' is located in the top left area.",
+        "fact": "The text 'Mehr aus dieser Folge' is visible in the top right.",
         "confidence": 1.0
       },
       {
-        "fact": "The text 'Mehr aus dieser Folge' is located in the top right area.",
+        "fact": "The text 'Zur ganzen Sendung' is visible in the middle left.",
         "confidence": 1.0
       },
       {
-        "fact": "The text 'Zur ganzen Sendung' is located in the middle left area.",
-        "confidence": 1.0
-      },
-      {
-        "fact": "The text 'Weitere Clips' is located in the middle right area.",
+        "fact": "The text 'Weitere Clips' is visible in the middle right.",
         "confidence": 1.0
       }
     ],
@@ -3187,7 +3215,7 @@
       "Zur ganzen Sendung",
       "Weitere Clips"
     ],
-    "spatial": "The text 'Abonnieren' is to the left of 'Mehr aus dieser Folge' in the upper portion of the frame. 'Zur ganzen Sendung' is positioned below 'Abonnieren' on the left side. 'Weitere Clips' is positioned below 'Mehr aus dieser Folge' on the right side. All text elements are superimposed over the digital map background.",
+    "spatial": "The digital map of Earth serves as the background for the entire scene. The white text elements are positioned in the foreground, overlaid on top of the map. The red and blue graphic is located in the bottom right corner, partially obscuring the map.",
     "parse_success": true,
     "chunk_idx": 52,
     "video_id": "YiFfJ7XBzfY",
